@@ -40,11 +40,6 @@ func fetchIdentitystoreGroups(ctx context.Context, meta schema.ClientMeta, paren
 			return err
 		}
 		res <- response.Groups
-		//for _, group := range response.Groups {
-		//	res <- group
-		//	iam_groups <- group
-		//}
-
 		if aws.ToString(response.NextToken) == "" {
 			break
 		}
