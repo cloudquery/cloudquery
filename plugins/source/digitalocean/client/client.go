@@ -199,6 +199,10 @@ func (c *Client) Logger() *zerolog.Logger {
 	return &c.logger
 }
 
+func (c *Client) ID() string {
+	return c.SpacesRegion
+}
+
 func initServices(doClient *godo.Client, spacesService SpacesService) *Services {
 	return &Services{
 		Account:        doClient.Account,
