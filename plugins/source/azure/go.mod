@@ -22,6 +22,8 @@ require (
 	golang.org/x/exp v0.0.0-20221002003631-540bb7301a08
 )
 
+replace github.com/cloudquery/plugin-sdk => ../../../../plugin-sdk-split
+
 require github.com/kylelemons/godebug v1.1.0 // indirect
 
 require (

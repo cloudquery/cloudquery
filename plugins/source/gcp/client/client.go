@@ -46,6 +46,10 @@ func isValidJson(content []byte) error {
 	return nil
 }
 
+func (c *Client) Name() string {
+	return c.ProjectId
+}
+
 func (c *Client) Logger() *zerolog.Logger {
 	return &c.logger
 }

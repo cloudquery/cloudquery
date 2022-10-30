@@ -43,7 +43,6 @@ func fetchCloudformationStackResources(ctx context.Context, meta schema.ClientMe
 		output, err := svc.ListStackResources(ctx, &config)
 		if err != nil {
 			if client.IsErrorRegex(err, "ValidationError", validStackNotFoundRegex) {
-				meta.Logger().Debug().Err(err).Str("region", c.Region).Msg("received ValidationError on ListStackResources, stack does not exist")
 				return nil
 			}
 			return err
