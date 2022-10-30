@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/cli
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v0.13.14
+	github.com/cloudquery/plugin-sdk v0.13.15
 	github.com/getsentry/sentry-go v0.13.0
 	github.com/google/uuid v1.3.0
 	github.com/rs/zerolog v1.28.0
@@ -14,8 +14,6 @@ require (
 	google.golang.org/grpc v1.49.0
 	google.golang.org/protobuf v1.28.1
 )
-
-replace github.com/cloudquery/plugin-sdk => ../../plugin-sdk-split
 
 require (
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
