@@ -316,6 +316,12 @@ type DocDBClient interface {
 	ListTagsForResource(ctx context.Context, params *docdb.ListTagsForResourceInput, optFns ...func(*docdb.Options)) (*docdb.ListTagsForResourceOutput, error)
 	DescribeDBClusterSnapshots(ctx context.Context, params *docdb.DescribeDBClusterSnapshotsInput, optFns ...func(*docdb.Options)) (*docdb.DescribeDBClusterSnapshotsOutput, error)
 	DescribeDBClusterSnapshotAttributes(ctx context.Context, params *docdb.DescribeDBClusterSnapshotAttributesInput, optFns ...func(*docdb.Options)) (*docdb.DescribeDBClusterSnapshotAttributesOutput, error)
+	DescribeDBClusterParameters(ctx context.Context, params *docdb.DescribeDBClusterParametersInput, optFns ...func(*docdb.Options)) (*docdb.DescribeDBClusterParametersOutput, error)
+	DescribeDBClusterParameterGroups(ctx context.Context, params *docdb.DescribeDBClusterParameterGroupsInput, optFns ...func(*docdb.Options)) (*docdb.DescribeDBClusterParameterGroupsOutput, error)
+	DescribeCertificates(ctx context.Context, params *docdb.DescribeCertificatesInput, optFns ...func(*docdb.Options)) (*docdb.DescribeCertificatesOutput, error)
+	DescribeDBEngineVersions(ctx context.Context, params *docdb.DescribeDBEngineVersionsInput, optFns ...func(*docdb.Options)) (*docdb.DescribeDBEngineVersionsOutput, error)
+	DescribeDBInstances(ctx context.Context, params *docdb.DescribeDBInstancesInput, optFns ...func(*docdb.Options)) (*docdb.DescribeDBInstancesOutput, error)
+	DescribeDBSubnetGroups(ctx context.Context, params *docdb.DescribeDBSubnetGroupsInput, optFns ...func(*docdb.Options)) (*docdb.DescribeDBSubnetGroupsOutput, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_dynamodb.go . DynamoDBClient

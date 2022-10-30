@@ -1,33 +1,32 @@
 ---
-title: "sync"
+title: "migrate"
 ---
-## cloudquery sync
+## cloudquery migrate
 
-Sync resources from configured source plugins to destinations
+Run migration for source and destination plugins specified in configuration
 
 ### Synopsis
 
-Sync resources from configured source plugins to destinations
+Run migration for source and destination plugins specified in configuration
 
 ```
-cloudquery sync [files or directories] [flags]
+cloudquery migrate [files or directories] [flags]
 ```
 
 ### Examples
 
 ```
-# Sync resources from configuration in a directory
-cloudquery sync ./directory
-# Sync resources from directories and files
-cloudquery sync ./directory ./aws.yml ./pg.yml
+# Run migration for plugins specified in directory
+cloudquery migrate ./directory
+# Run migration for plugins specified in directory and config files
+cloudquery migrate ./directory ./aws.yml ./pg.yml
 
 ```
 
 ### Options
 
 ```
-  -h, --help         help for sync
-      --no-migrate   Disable auto-migration before sync. By default, sync runs a migration before syncing resources.
+  -h, --help   help for migrate
 ```
 
 ### Options inherited from parent commands
