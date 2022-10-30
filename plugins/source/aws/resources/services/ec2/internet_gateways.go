@@ -9,9 +9,10 @@ import (
 
 func InternetGateways() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_ec2_internet_gateways",
-		Resolver:  fetchEc2InternetGateways,
-		Multiplex: client.ServiceAccountRegionMultiplexer("ec2"),
+		Name:        "aws_ec2_internet_gateways",
+		Description: "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_InternetGateway.html",
+		Resolver:    fetchEc2InternetGateways,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -32,6 +33,11 @@ func InternetGateways() *schema.Table {
 				},
 			},
 			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
+			},
+			{
 				Name:     "attachments",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Attachments"),
@@ -45,11 +51,6 @@ func InternetGateways() *schema.Table {
 				Name:     "owner_id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("OwnerId"),
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
 			},
 		},
 	}

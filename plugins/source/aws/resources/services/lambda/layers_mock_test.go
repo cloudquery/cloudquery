@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -17,7 +17,7 @@ func buildLambdaLayersMock(t *testing.T, ctrl *gomock.Controller) client.Service
 	creationDate := "1994-11-05T08:15:30.000+0500"
 
 	l := types.LayersListItem{}
-	err := faker.FakeData(&l)
+	err := faker.FakeObject(&l)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -28,7 +28,7 @@ func buildLambdaLayersMock(t *testing.T, ctrl *gomock.Controller) client.Service
 		}, nil)
 
 	lv := types.LayerVersionsListItem{}
-	err = faker.FakeData(&lv)
+	err = faker.FakeObject(&lv)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -41,7 +41,7 @@ func buildLambdaLayersMock(t *testing.T, ctrl *gomock.Controller) client.Service
 		}, nil)
 
 	lvp := lambda.GetLayerVersionPolicyOutput{}
-	err = faker.FakeData(&lvp)
+	err = faker.FakeObject(&lvp)
 	if err != nil {
 		t.Fatal(err)
 	}

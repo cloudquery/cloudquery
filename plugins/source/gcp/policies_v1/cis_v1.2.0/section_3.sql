@@ -10,7 +10,7 @@
 \ir ../queries/compute/legacy_network_exist.sql
 \set check_id '3.3'
 \echo "Executing check 3.3"
-\ir ../queries/compute/dnssec_disabled.sql
+\ir ../queries/dns/zones_with_dnssec_disabled.sql
 \set check_id '3.4'
 \echo "Executing check 3.4"
 \ir ../queries/dns/key_signing_with_rsasha1.sql

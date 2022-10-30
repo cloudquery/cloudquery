@@ -9,9 +9,10 @@ import (
 
 func VpcEndpointServices() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_ec2_vpc_endpoint_services",
-		Resolver:  fetchEc2VpcEndpointServices,
-		Multiplex: client.ServiceAccountRegionMultiplexer("ec2"),
+		Name:        "aws_ec2_vpc_endpoint_services",
+		Description: "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ServiceDetail.html",
+		Resolver:    fetchEc2VpcEndpointServices,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -30,6 +31,11 @@ func VpcEndpointServices() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "acceptance_required",
@@ -95,11 +101,6 @@ func VpcEndpointServices() *schema.Table {
 				Name:     "supported_ip_address_types",
 				Type:     schema.TypeStringArray,
 				Resolver: schema.PathResolver("SupportedIpAddressTypes"),
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
 			},
 			{
 				Name:     "vpc_endpoint_policy_supported",

@@ -1,5 +1,115 @@
 # Changelog
 
+## [2.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v2.1.0...plugins-source-k8s-v2.1.1) (2022-10-27)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for k8s to v0.13.14 ([#3219](https://github.com/cloudquery/cloudquery/issues/3219)) ([be559e7](https://github.com/cloudquery/cloudquery/commit/be559e7bc7aaf84273f5a39fae9daa5f8cf296aa))
+
+## [2.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v2.0.3...plugins-source-k8s-v2.1.0) (2022-10-25)
+
+
+### Features
+
+* Add k8s_core_secrets resource ([#3183](https://github.com/cloudquery/cloudquery/issues/3183)) ([c2aa5a6](https://github.com/cloudquery/cloudquery/commit/c2aa5a6d9ade3ec65414189b40cae33c7d1c6214))
+
+## [2.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v2.0.2...plugins-source-k8s-v2.0.3) (2022-10-20)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for k8s to v0.13.12 ([#3107](https://github.com/cloudquery/cloudquery/issues/3107)) ([88f0d9d](https://github.com/cloudquery/cloudquery/commit/88f0d9db429173f8c9e2f97e8e23bc98fba72e89))
+
+## [2.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v2.0.1...plugins-source-k8s-v2.0.2) (2022-10-19)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk to v0.13.11 ([#3030](https://github.com/cloudquery/cloudquery/issues/3030)) ([9909c4a](https://github.com/cloudquery/cloudquery/commit/9909c4a0715a06b7c1d69c9bd23c500ac7b4adc1))
+
+## [2.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v2.0.0...plugins-source-k8s-v2.0.1) (2022-10-18)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for k8s to v0.13.9 ([#2934](https://github.com/cloudquery/cloudquery/issues/2934)) ([2d9d7de](https://github.com/cloudquery/cloudquery/commit/2d9d7de3fb0316ded27fed151e7e86a3d5605bb3))
+
+## [2.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v1.2.3...plugins-source-k8s-v2.0.0) (2022-10-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* Official v1 release (#2335)
+
+### Features
+
+* Convert policies to v1 ([#2467](https://github.com/cloudquery/cloudquery/issues/2467)) ([8ae4547](https://github.com/cloudquery/cloudquery/commit/8ae45472977ec345e2dfbb29160b9d55ee475262))
+* **k8s:** Add jobs.spec_pod_failure_policy and pods.spec_host_users columns ([#2640](https://github.com/cloudquery/cloudquery/issues/2640)) ([7b2c4aa](https://github.com/cloudquery/cloudquery/commit/7b2c4aac79ca356efb41244c9ee3d8306c600dd2))
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for aws to v0.13.5 ([#2660](https://github.com/cloudquery/cloudquery/issues/2660)) ([748a0b3](https://github.com/cloudquery/cloudquery/commit/748a0b3f2cd8429696b38daa386bd0ca32fc3fdf))
+* **deps:** Update plugin-sdk for azure to v0.13.5 ([#2591](https://github.com/cloudquery/cloudquery/issues/2591)) ([c36f60a](https://github.com/cloudquery/cloudquery/commit/c36f60a36fc20823f471ced3ba1726d778bfcda2))
+* **deps:** Update plugin-sdk for cloudflare to v0.13.5 ([#2593](https://github.com/cloudquery/cloudquery/issues/2593)) ([ed96887](https://github.com/cloudquery/cloudquery/commit/ed968873a7310daca0dff9fafc94394cca9801e4))
+* **deps:** Update plugin-sdk for digitalocean to v0.13.5 ([#2594](https://github.com/cloudquery/cloudquery/issues/2594)) ([5570015](https://github.com/cloudquery/cloudquery/commit/55700155cf1afdbe7e2dd8cc9ae5477a992c1306))
+* **deps:** Update plugin-sdk for gcp to v0.13.5 ([#2595](https://github.com/cloudquery/cloudquery/issues/2595)) ([ec17c48](https://github.com/cloudquery/cloudquery/commit/ec17c48959bcdab3d1aed763beee1d0bf37a589e))
+* **deps:** Update plugin-sdk for k8s to v0.12.10 ([#2552](https://github.com/cloudquery/cloudquery/issues/2552)) ([1c0c2a7](https://github.com/cloudquery/cloudquery/commit/1c0c2a74f3063077f6247c6e492d014aee5e9949))
+* **deps:** Update plugin-sdk for k8s to v0.12.3 ([#2360](https://github.com/cloudquery/cloudquery/issues/2360)) ([0e61300](https://github.com/cloudquery/cloudquery/commit/0e613003694739501c8f5c43dee38263dc1350f5))
+* **deps:** Update plugin-sdk for k8s to v0.12.4 ([#2402](https://github.com/cloudquery/cloudquery/issues/2402)) ([4b8cf59](https://github.com/cloudquery/cloudquery/commit/4b8cf59807adc50289a0c995c59afac2da132388))
+* **deps:** Update plugin-sdk for k8s to v0.12.5 ([#2424](https://github.com/cloudquery/cloudquery/issues/2424)) ([539aafc](https://github.com/cloudquery/cloudquery/commit/539aafc7ee4aeba66567a6ad8f62ebb94d01dcee))
+* **deps:** Update plugin-sdk for k8s to v0.12.6 ([#2440](https://github.com/cloudquery/cloudquery/issues/2440)) ([1d8b267](https://github.com/cloudquery/cloudquery/commit/1d8b2675e11b5919da9e859b24bc33b9d7307c9e))
+* **deps:** Update plugin-sdk for k8s to v0.12.7 ([#2453](https://github.com/cloudquery/cloudquery/issues/2453)) ([d19d373](https://github.com/cloudquery/cloudquery/commit/d19d373fe8e019f5484f107a18ae342f0912663e))
+* **deps:** Update plugin-sdk for k8s to v0.12.8 ([#2503](https://github.com/cloudquery/cloudquery/issues/2503)) ([a50ffcc](https://github.com/cloudquery/cloudquery/commit/a50ffcc7c23246694bf77131d696a9a3c7f81176))
+* **deps:** Update plugin-sdk for k8s to v0.12.9 ([#2517](https://github.com/cloudquery/cloudquery/issues/2517)) ([71cdfe8](https://github.com/cloudquery/cloudquery/commit/71cdfe8879099923d18855bc664844030678ab8d))
+* **deps:** Update plugin-sdk for k8s to v0.13.1 ([#2598](https://github.com/cloudquery/cloudquery/issues/2598)) ([85c5ec7](https://github.com/cloudquery/cloudquery/commit/85c5ec74a7f2893ea1063598e3b364d259daa314))
+* **deps:** Update plugin-sdk for k8s to v0.13.6 ([#2730](https://github.com/cloudquery/cloudquery/issues/2730)) ([6debcec](https://github.com/cloudquery/cloudquery/commit/6debcec23ac4a8db69625b2e223b78c725424218))
+* **deps:** Update plugin-sdk for k8s to v0.13.8 ([#2786](https://github.com/cloudquery/cloudquery/issues/2786)) ([c2786d3](https://github.com/cloudquery/cloudquery/commit/c2786d38dcf564774e3bb4223edf282389d3a9f8))
+* **k8s:** Structure plugin so version is embedded by Go Releaser ([#2759](https://github.com/cloudquery/cloudquery/issues/2759)) ([8666bee](https://github.com/cloudquery/cloudquery/commit/8666beecb8cc7d3f95cc18bdb06f66280e81d7a0))
+* Update all source plugin to v0.12.2 ([#2316](https://github.com/cloudquery/cloudquery/issues/2316)) ([5099dcf](https://github.com/cloudquery/cloudquery/commit/5099dcff4683b45b81db721c6a172857b0f796ae))
+* Upgrade source SDK versions to v0.13.5 ([#2610](https://github.com/cloudquery/cloudquery/issues/2610)) ([611868e](https://github.com/cloudquery/cloudquery/commit/611868e7fbb707b524ccc5c04a7ff95fe122ae05))
+
+
+### Miscellaneous Chores
+
+* Official v1 release ([#2335](https://github.com/cloudquery/cloudquery/issues/2335)) ([e32de23](https://github.com/cloudquery/cloudquery/commit/e32de23a1c3da88ea36c327d6244721337c41570))
+
+## [1.2.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v1.2.2...plugins-source-k8s-v1.2.3) (2022-10-14)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for k8s to v0.13.8 ([#2786](https://github.com/cloudquery/cloudquery/issues/2786)) ([c2786d3](https://github.com/cloudquery/cloudquery/commit/c2786d38dcf564774e3bb4223edf282389d3a9f8))
+
+## [1.2.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v1.2.1...plugins-source-k8s-v1.2.2) (2022-10-13)
+
+
+### Bug Fixes
+
+* **k8s:** Structure plugin so version is embedded by Go Releaser ([#2759](https://github.com/cloudquery/cloudquery/issues/2759)) ([8666bee](https://github.com/cloudquery/cloudquery/commit/8666beecb8cc7d3f95cc18bdb06f66280e81d7a0))
+
+## [1.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v1.2.0...plugins-source-k8s-v1.2.1) (2022-10-12)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for k8s to v0.13.6 ([#2730](https://github.com/cloudquery/cloudquery/issues/2730)) ([6debcec](https://github.com/cloudquery/cloudquery/commit/6debcec23ac4a8db69625b2e223b78c725424218))
+
+## [1.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v1.1.0...plugins-source-k8s-v1.2.0) (2022-10-12)
+
+
+### Features
+
+* **k8s:** Add jobs.spec_pod_failure_policy and pods.spec_host_users columns ([#2640](https://github.com/cloudquery/cloudquery/issues/2640)) ([7b2c4aa](https://github.com/cloudquery/cloudquery/commit/7b2c4aac79ca356efb41244c9ee3d8306c600dd2))
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for k8s to v0.12.10 ([#2552](https://github.com/cloudquery/cloudquery/issues/2552)) ([1c0c2a7](https://github.com/cloudquery/cloudquery/commit/1c0c2a74f3063077f6247c6e492d014aee5e9949))
+* **deps:** Update plugin-sdk for k8s to v0.13.1 ([#2598](https://github.com/cloudquery/cloudquery/issues/2598)) ([85c5ec7](https://github.com/cloudquery/cloudquery/commit/85c5ec74a7f2893ea1063598e3b364d259daa314))
+* Upgrade source SDK versions to v0.13.5 ([#2610](https://github.com/cloudquery/cloudquery/issues/2610)) ([611868e](https://github.com/cloudquery/cloudquery/commit/611868e7fbb707b524ccc5c04a7ff95fe122ae05))
+
 ## [1.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v1.0.0...plugins-source-k8s-v1.1.0) (2022-10-09)
 
 

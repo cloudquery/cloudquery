@@ -9,9 +9,10 @@ import (
 
 func LaunchConfigurations() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_autoscaling_launch_configurations",
-		Resolver:  fetchAutoscalingLaunchConfigurations,
-		Multiplex: client.ServiceAccountRegionMultiplexer("autoscaling"),
+		Name:        "aws_autoscaling_launch_configurations",
+		Description: "https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_LaunchConfiguration.html",
+		Resolver:    fetchAutoscalingLaunchConfigurations,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("autoscaling"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

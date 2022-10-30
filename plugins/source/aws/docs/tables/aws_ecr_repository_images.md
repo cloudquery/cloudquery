@@ -1,19 +1,19 @@
 # Table: aws_ecr_repository_images
 
-
+https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_ImageDetail.html
 
 The primary key for this table is **arn**.
 
 ## Relations
-This table depends on [`aws_ecr_repositories`](aws_ecr_repositories.md).
+This table depends on [aws_ecr_repositories](aws_ecr_repositories.md).
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
 |arn (PK)|String|

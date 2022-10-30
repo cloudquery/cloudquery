@@ -5,18 +5,18 @@
 The primary key for this table is **id**.
 
 ## Relations
-This table depends on [`azure_cdn_profiles`](azure_cdn_profiles.md).
-The following tables depend on `azure_cdn_endpoints`:
-  - [`azure_cdn_custom_domains`](azure_cdn_custom_domains.md)
-  - [`azure_cdn_routes`](azure_cdn_routes.md)
+This table depends on [azure_cdn_profiles](azure_cdn_profiles.md).
+The following tables depend on azure_cdn_endpoints:
+  - [azure_cdn_custom_domains](azure_cdn_custom_domains.md)
+  - [azure_cdn_routes](azure_cdn_routes.md)
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |subscription_id|String|
 |cdn_profile_id|String|
 |host_name|String|

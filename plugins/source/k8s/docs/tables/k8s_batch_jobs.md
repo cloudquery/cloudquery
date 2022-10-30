@@ -28,6 +28,7 @@ The primary key for this table is **uid**.
 |spec_parallelism|Int|
 |spec_completions|Int|
 |spec_active_deadline_seconds|Int|
+|spec_pod_failure_policy|JSON|
 |spec_backoff_limit|Int|
 |spec_selector|JSON|
 |spec_manual_selector|Bool|

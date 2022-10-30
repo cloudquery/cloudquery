@@ -15,6 +15,8 @@ import (
 )
 
 func MockTestHelper(t *testing.T, table *schema.Table, createServices func(t *testing.T, ctrl *gomock.Controller) services.Services) {
+	version := "vDev"
+
 	t.Helper()
 
 	table.IgnoreInTests = false
@@ -32,9 +34,11 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(t *te
 		return c, nil
 	}
 
-	p := plugins.NewSourcePlugin(table.Name, "dev", []*schema.Table{table}, newTestExecutionClient)
+	p := plugins.NewSourcePlugin(table.Name, version, []*schema.Table{table}, newTestExecutionClient)
 	plugins.TestSourcePluginSync(t, p, l, specs.Source{
-		Name:   "dev",
-		Tables: []string{table.Name},
+		Name:         "dev",
+		Version:      version,
+		Tables:       []string{table.Name},
+		Destinations: []string{"mock-destination"},
 	})
 }

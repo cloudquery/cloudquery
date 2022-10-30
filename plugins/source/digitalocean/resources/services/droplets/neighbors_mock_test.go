@@ -4,14 +4,14 @@ import (
 	"testing"
 
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/digitalocean/godo"
 	"github.com/golang/mock/gomock"
 )
 
 func createNeighbors(t *testing.T, m *mocks.MockDropletsService) {
 	var data []godo.Droplet
-	if err := faker.FakeData(&data); err != nil {
+	if err := faker.FakeObject(&data); err != nil {
 		t.Fatal(err)
 	}
 

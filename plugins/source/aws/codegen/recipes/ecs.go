@@ -13,9 +13,10 @@ import (
 func ECSResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "clusters",
-			Struct:     &types.Cluster{},
-			SkipFields: []string{"Tags", "ClusterArn"},
+			SubService:  "clusters",
+			Struct:      &types.Cluster{},
+			Description: "https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_Cluster.html",
+			SkipFields:  []string{"Tags", "ClusterArn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -38,9 +39,10 @@ func ECSResources() []*Resource {
 			},
 		},
 		{
-			SubService: "cluster_tasks",
-			Struct:     &types.Task{},
-			SkipFields: []string{"Tags", "TaskArn"},
+			SubService:  "cluster_tasks",
+			Struct:      &types.Task{},
+			Description: "https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_Task.html",
+			SkipFields:  []string{"Tags", "TaskArn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -59,9 +61,10 @@ func ECSResources() []*Resource {
 			Relations: []string{},
 		},
 		{
-			SubService: "cluster_services",
-			Struct:     &types.Service{},
-			SkipFields: []string{"Tags", "ServiceArn"},
+			SubService:  "cluster_services",
+			Struct:      &types.Service{},
+			Description: "https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_Service.html",
+			SkipFields:  []string{"Tags", "ServiceArn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -80,9 +83,10 @@ func ECSResources() []*Resource {
 			Relations: []string{},
 		},
 		{
-			SubService: "cluster_container_instances",
-			Struct:     &types.ContainerInstance{},
-			SkipFields: []string{"Tags"},
+			SubService:  "cluster_container_instances",
+			Struct:      &types.ContainerInstance{},
+			Description: "https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ContainerInstance.html",
+			SkipFields:  []string{"Tags"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -100,9 +104,10 @@ func ECSResources() []*Resource {
 			Relations: []string{},
 		},
 		{
-			SubService: "task_definitions",
-			Struct:     &models.TaskDefinitionWrapper{},
-			SkipFields: []string{"TaskDefinitionArn", "Tags"},
+			SubService:          "task_definitions",
+			Struct:              &models.TaskDefinitionWrapper{},
+			SkipFields:          []string{"TaskDefinitionArn", "Tags"},
+			PreResourceResolver: "getTaskDefinition",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

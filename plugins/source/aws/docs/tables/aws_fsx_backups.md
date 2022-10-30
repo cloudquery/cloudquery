@@ -1,6 +1,6 @@
 # Table: aws_fsx_backups
 
-
+https://docs.aws.amazon.com/fsx/latest/APIReference/API_Backup.html
 
 The composite primary key for this table is (**account_id**, **region**, **id**).
 
@@ -8,10 +8,10 @@ The composite primary key for this table is (**account_id**, **region**, **id**)
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |account_id (PK)|String|
 |region (PK)|String|
 |id (PK)|String|

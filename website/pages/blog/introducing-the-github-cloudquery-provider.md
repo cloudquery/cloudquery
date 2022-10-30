@@ -124,4 +124,4 @@ WHERE state = 'open' AND NOW() - interval '7 days' > created_at
 
 ## What's next
 
-We are going to continue expanding the GitHub Provider, adding support for more resources. Interested in seeing another provider? Check out [Developing New Provider](https://www.cloudquery.io/docs/developers/developing-new-provider) and/or open an issue on our [GitHub](https://github.com/cloudquery/cloudquery).
+We are going to continue expanding the GitHub Provider, adding support for more resources. Interested in seeing another provider? Check out [Developing New Provider](/docs/developers/creating-new-plugin) and/or open an issue on our [GitHub](https://github.com/cloudquery/cloudquery).

@@ -8,7 +8,7 @@ SELECT
 	azure_subscriptions.display_name AS subscription_name,
 	case
     when azure_sql_server_blob_auditing_policies.sql_server_id = azure_sql_servers.id
-	    AND azure_subscriptions.subscription_id = azure_sql_servers.subscription_id
+	    AND azure_subscriptions.id = azure_sql_servers.subscription_id
 	    AND azure_sql_server_blob_auditing_policies.state = 'Disabled'
     then 'fail' else 'pass'
   end

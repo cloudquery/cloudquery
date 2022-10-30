@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/aws/aws-sdk-go-v2/service/docdb"
 	"strings"
 	"time"
 
@@ -18,12 +19,14 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
 	"github.com/aws/aws-sdk-go-v2/service/applicationautoscaling"
+	"github.com/aws/aws-sdk-go-v2/service/apprunner"
 	"github.com/aws/aws-sdk-go-v2/service/appsync"
 	"github.com/aws/aws-sdk-go-v2/service/athena"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
 	"github.com/aws/aws-sdk-go-v2/service/backup"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation"
 	"github.com/aws/aws-sdk-go-v2/service/cloudfront"
+	"github.com/aws/aws-sdk-go-v2/service/cloudhsmv2"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
@@ -39,6 +42,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/aws/aws-sdk-go-v2/service/ecr"
+	"github.com/aws/aws-sdk-go-v2/service/ecrpublic"
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
 	"github.com/aws/aws-sdk-go-v2/service/efs"
 	"github.com/aws/aws-sdk-go-v2/service/eks"
@@ -51,6 +55,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/eventbridge"
 	"github.com/aws/aws-sdk-go-v2/service/firehose"
 	"github.com/aws/aws-sdk-go-v2/service/fsx"
+	"github.com/aws/aws-sdk-go-v2/service/glacier"
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/aws/aws-sdk-go-v2/service/guardduty"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
@@ -62,6 +67,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/lightsail"
 	"github.com/aws/aws-sdk-go-v2/service/mq"
+	"github.com/aws/aws-sdk-go-v2/service/neptune"
 	"github.com/aws/aws-sdk-go-v2/service/organizations"
 	"github.com/aws/aws-sdk-go-v2/service/qldb"
 	"github.com/aws/aws-sdk-go-v2/service/rds"
@@ -131,10 +137,12 @@ type Services struct {
 	Apigateway             ApigatewayClient
 	Apigatewayv2           Apigatewayv2Client
 	ApplicationAutoscaling ApplicationAutoscalingClient
+	Apprunner              AppRunnerClient
 	AppSync                AppSyncClient
 	Athena                 AthenaClient
 	Autoscaling            AutoscalingClient
 	Backup                 BackupClient
+	CloudHSMV2             CloudHSMV2Client
 	Cloudformation         CloudFormationClient
 	Cloudfront             CloudfrontClient
 	Cloudtrail             CloudtrailClient
@@ -148,9 +156,11 @@ type Services struct {
 	DAX                    DAXClient
 	Directconnect          DirectconnectClient
 	DMS                    DatabasemigrationserviceClient
+	DocDB                  DocDBClient
 	DynamoDB               DynamoDBClient
 	EC2                    Ec2Client
 	ECR                    EcrClient
+	ECRPublic              EcrPublicClient
 	ECS                    EcsClient
 	EFS                    EfsClient
 	Eks                    EksClient
@@ -163,6 +173,7 @@ type Services struct {
 	EventBridge            EventBridgeClient
 	Firehose               FirehoseClient
 	FSX                    FsxClient
+	Glacier                GlacierClient
 	Glue                   GlueClient
 	GuardDuty              GuardDutyClient
 	IAM                    IamClient
@@ -174,6 +185,7 @@ type Services struct {
 	Lambda                 LambdaClient
 	Lightsail              LightsailClient
 	MQ                     MQClient
+	Neptune                NeptuneClient
 	Organizations          OrganizationsClient
 	QLDB                   QLDBClient
 	RDS                    RdsClient
@@ -537,13 +549,13 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source) (s
 		awsCfg, err := configureAwsClient(ctx, logger, &awsConfig, account, adminAccountSts)
 		if err != nil {
 			if account.source == "org" {
-				logger.Warn().Msg("unable to assume role in account")
+				logger.Warn().Msg("Unable to assume role in account")
 				continue
 			}
 			var ae smithy.APIError
 			if errors.As(err, &ae) {
 				if strings.Contains(ae.ErrorCode(), "AccessDenied") {
-					// log warning here
+					logger.Warn().Str("account", account.AccountName).Err(err).Msg("Access denied for account")
 					continue
 				}
 			}
@@ -566,15 +578,13 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source) (s
 				}
 			})
 		if err != nil {
-			// log warning here
-			// diags = diags.Add(diag.FromError(fmt.Errorf("failed to find disabled regions for account %s. AWS Error: %w", account.AccountName, err), diag.ACCESS, diag.WithSeverity(diag.WARNING)))
+			logger.Warn().Str("account", account.AccountName).Err(err).Msg("Failed to find disabled regions for account")
 			continue
 		}
 		account.Regions = filterDisabledRegions(localRegions, res.Regions)
 
 		if len(account.Regions) == 0 {
-			// log warning here
-			// diags = diags.Add(FromError(fmt.Errorf("no enabled regions provided in config for account %s", account.AccountName), diag.ACCESS, diag.WithSeverity(diag.WARNING)))
+			logger.Warn().Str("account", account.AccountName).Err(err).Msg("No enabled regions provided in config for account")
 			continue
 		}
 		awsCfg.Region = account.Regions[0]
@@ -593,7 +603,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source) (s
 		client.ServicesManager.InitServicesForPartitionAccountAndScope(iamArn.Partition, *output.Account, initServices(cloudfrontScopeRegion, awsCfg))
 	}
 	if len(client.ServicesManager.services) == 0 {
-		return nil, fmt.Errorf("no enabled accounts instantiated ")
+		return nil, fmt.Errorf("no enabled accounts instantiated")
 	}
 	return &client, nil
 }
@@ -607,10 +617,12 @@ func initServices(region string, c aws.Config) Services {
 		Apigateway:             apigateway.NewFromConfig(awsCfg),
 		Apigatewayv2:           apigatewayv2.NewFromConfig(awsCfg),
 		ApplicationAutoscaling: applicationautoscaling.NewFromConfig(awsCfg),
+		Apprunner:              apprunner.NewFromConfig(awsCfg),
 		AppSync:                appsync.NewFromConfig(awsCfg),
 		Athena:                 athena.NewFromConfig(awsCfg),
 		Autoscaling:            autoscaling.NewFromConfig(awsCfg),
 		Backup:                 backup.NewFromConfig(awsCfg),
+		CloudHSMV2:             cloudhsmv2.NewFromConfig(awsCfg),
 		Cloudformation:         cloudformation.NewFromConfig(awsCfg),
 		Cloudfront:             cloudfront.NewFromConfig(awsCfg),
 		Cloudtrail:             cloudtrail.NewFromConfig(awsCfg),
@@ -624,9 +636,11 @@ func initServices(region string, c aws.Config) Services {
 		DAX:                    dax.NewFromConfig(awsCfg),
 		Directconnect:          directconnect.NewFromConfig(awsCfg),
 		DMS:                    databasemigrationservice.NewFromConfig(awsCfg),
+		DocDB:                  docdb.NewFromConfig(awsCfg),
 		DynamoDB:               dynamodb.NewFromConfig(awsCfg),
 		EC2:                    ec2.NewFromConfig(awsCfg),
 		ECR:                    ecr.NewFromConfig(awsCfg),
+		ECRPublic:              ecrpublic.NewFromConfig(awsCfg),
 		ECS:                    ecs.NewFromConfig(awsCfg),
 		EFS:                    efs.NewFromConfig(awsCfg),
 		Eks:                    eks.NewFromConfig(awsCfg),
@@ -639,6 +653,7 @@ func initServices(region string, c aws.Config) Services {
 		EventBridge:            eventbridge.NewFromConfig(awsCfg),
 		Firehose:               firehose.NewFromConfig(awsCfg),
 		FSX:                    fsx.NewFromConfig(awsCfg),
+		Glacier:                glacier.NewFromConfig(awsCfg),
 		Glue:                   glue.NewFromConfig(awsCfg),
 		GuardDuty:              guardduty.NewFromConfig(awsCfg),
 		IAM:                    iam.NewFromConfig(awsCfg),
@@ -650,6 +665,7 @@ func initServices(region string, c aws.Config) Services {
 		Lambda:                 lambda.NewFromConfig(awsCfg),
 		Lightsail:              lightsail.NewFromConfig(awsCfg),
 		MQ:                     mq.NewFromConfig(awsCfg),
+		Neptune:                neptune.NewFromConfig(awsCfg),
 		Organizations:          organizations.NewFromConfig(awsCfg),
 		QLDB:                   qldb.NewFromConfig(awsCfg),
 		RDS:                    rds.NewFromConfig(awsCfg),

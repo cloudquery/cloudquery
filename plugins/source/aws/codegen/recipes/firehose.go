@@ -9,9 +9,11 @@ import (
 func FirehoseResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "delivery_streams",
-			Struct:     &types.DeliveryStreamDescription{},
-			SkipFields: []string{"DeliveryStreamARN"},
+			SubService:          "delivery_streams",
+			Struct:              &types.DeliveryStreamDescription{},
+			Description:         "https://docs.aws.amazon.com/firehose/latest/APIReference/API_DeliveryStreamDescription.html",
+			SkipFields:          []string{"DeliveryStreamARN"},
+			PreResourceResolver: "getDeliveryStream",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

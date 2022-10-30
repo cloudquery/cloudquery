@@ -1,20 +1,20 @@
 # Table: aws_config_conformance_packs
 
-
+https://docs.aws.amazon.com/config/latest/APIReference/API_ConformancePackDetail.html
 
 The primary key for this table is **arn**.
 
 ## Relations
-The following tables depend on `aws_config_conformance_packs`:
-  - [`aws_config_conformance_pack_rule_compliances`](aws_config_conformance_pack_rule_compliances.md)
+The following tables depend on aws_config_conformance_packs:
+  - [aws_config_conformance_pack_rule_compliances](aws_config_conformance_pack_rule_compliances.md)
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
 |arn (PK)|String|

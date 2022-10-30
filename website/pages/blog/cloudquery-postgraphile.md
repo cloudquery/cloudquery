@@ -28,7 +28,7 @@ In this blog post, we will walk you through how to setup [CloudQuery](https://gi
 
 ### Step 1: **Install or Deploy CloudQuery (fetch)**
 
-If it’s your first time using CloudQuery we suggest you first run it locally to get familiar with the tool. Take a look at our [Getting Started with AWS Guide](https://www.cloudquery.io/docs/getting-started/getting-started-with-aws) or [GCP](https://www.cloudquery.io/docs/getting-started/getting-started-with-gcp), [Azure](https://www.cloudquery.io/docs/getting-started/getting-started-with-azure) .
+If it’s your first time using CloudQuery we suggest you first run it locally to get familiar with the tool. Take a look at our [quickstart guide](/docs/quickstart).
 
 If you are already familiar with CloudQuery, take a look at how to deploy it to AWS on RDS Aurora and EKS at [github.com/cloudquery/terraform-aws-cloudquery](https://github.com/cloudquery/terraform-aws-cloudquery) .
 

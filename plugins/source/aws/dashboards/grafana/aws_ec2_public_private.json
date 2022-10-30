@@ -1,598 +1,649 @@
 {
-    "__inputs": [
+  "__inputs": [
+    {
+      "name": "DS_POSTGRESQL",
+      "label": "PostgreSQL",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "postgres",
+      "pluginName": "PostgreSQL"
+    },
+    {
+      "name": "VAR_ALL",
+      "type": "constant",
+      "label": "ALL",
+      "value": "all",
+      "description": ""
+    }
+  ],
+  "__elements": [],
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "9.0.2"
+    },
+    {
+      "type": "panel",
+      "id": "piechart",
+      "name": "Pie chart",
+      "version": ""
+    },
+    {
+      "type": "datasource",
+      "id": "postgres",
+      "name": "PostgreSQL",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
       {
-        "name": "DS_POSTGRESQL",
-        "label": "PostgreSQL",
-        "description": "",
-        "type": "datasource",
-        "pluginId": "postgres",
-        "pluginName": "PostgreSQL"
-      }
-    ],
-    "__requires": [
-      {
-        "type": "grafana",
-        "id": "grafana",
-        "name": "Grafana",
-        "version": "8.2.3"
-      },
-      {
-        "type": "panel",
-        "id": "piechart",
-        "name": "Pie chart",
-        "version": ""
-      },
-      {
-        "type": "datasource",
-        "id": "postgres",
-        "name": "PostgreSQL",
-        "version": "1.0.0"
-      },
-      {
-        "type": "panel",
-        "id": "table",
-        "name": "Table",
-        "version": ""
-      }
-    ],
-    "annotations": {
-      "list": [
-        {
-          "builtIn": 1,
-          "datasource": "-- Grafana --",
-          "enable": true,
-          "hide": true,
-          "iconColor": "rgba(0, 211, 255, 1)",
-          "name": "Annotations & Alerts",
-          "target": {
-            "limit": 100,
-            "matchAny": false,
-            "tags": [],
-            "type": "dashboard"
-          },
+        "builtIn": 1,
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
           "type": "dashboard"
-        }
-      ]
-    },
-    "editable": true,
-    "fiscalYearStartMonth": 0,
-    "gnetId": null,
-    "graphTooltip": 0,
-    "id": null,
-    "iteration": 1636913339986,
-    "links": [],
-    "liveNow": false,
-    "panels": [
-      {
-        "datasource": "${DS_POSTGRESQL}",
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "thresholds"
-            },
-            "custom": {
-              "align": "auto",
-              "displayMode": "auto"
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            }
-          },
-          "overrides": [
-            {
-              "matcher": {
-                "id": "byName",
-                "options": "subnet_id"
-              },
-              "properties": [
-                {
-                  "id": "custom.width",
-                  "value": 222
-                }
-              ]
-            }
-          ]
         },
-        "gridPos": {
-          "h": 4,
-          "w": 16,
-          "x": 0,
-          "y": 0
-        },
-        "id": 2,
-        "options": {
-          "showHeader": true,
-          "sortBy": []
-        },
-        "pluginVersion": "8.2.3",
-        "targets": [
-          {
-            "format": "table",
-            "group": [],
-            "metricColumn": "none",
-            "rawQuery": true,
-            "rawSql": "SELECT\n  (Tags->>'Name') as Name,\n  subnet_id,\n  id,\n  region,\n  private_ip_address,\n  public_ip_address\nFROM aws_ec2_instances where (aws_ec2_instances.subnet_id in (${Subnets}) and aws_ec2_instances.region in (${Region}) and aws_ec2_instances.public_ip_address is not null)",
-            "refId": "A",
-            "select": [
-              [
-                {
-                  "params": [
-                    "route_settings_throttling_rate_limit"
-                  ],
-                  "type": "column"
-                }
-              ]
-            ],
-            "table": "aws_apigatewayv2_api_stages",
-            "timeColumn": "created_date",
-            "timeColumnType": "timestamp",
-            "where": [
-              {
-                "name": "$__timeFilter",
-                "params": [],
-                "type": "macro"
-              }
-            ]
-          }
-        ],
-        "title": "Public Instances",
-        "transparent": true,
-        "type": "table"
-      },
-      {
-        "datasource": "${DS_POSTGRESQL}",
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              }
-            },
-            "mappings": []
-          },
-          "overrides": [
-            {
-              "matcher": {
-                "id": "byName",
-                "options": "Public Instances"
-              },
-              "properties": [
-                {
-                  "id": "color",
-                  "value": {
-                    "fixedColor": "light-orange",
-                    "mode": "fixed"
-                  }
-                }
-              ]
-            },
-            {
-              "matcher": {
-                "id": "byName",
-                "options": "Privatee Instances"
-              },
-              "properties": [
-                {
-                  "id": "color",
-                  "value": {
-                    "fixedColor": "light-green",
-                    "mode": "fixed"
-                  }
-                }
-              ]
-            }
-          ]
-        },
-        "gridPos": {
-          "h": 8,
-          "w": 8,
-          "x": 16,
-          "y": 0
-        },
-        "id": 6,
-        "options": {
-          "displayLabels": [],
-          "legend": {
-            "displayMode": "table",
-            "placement": "bottom",
-            "values": [
-              "value",
-              "percent"
-            ]
-          },
-          "pieType": "donut",
-          "reduceOptions": {
-            "calcs": [
-              "lastNotNull"
-            ],
-            "fields": "",
-            "values": false
-          },
-          "tooltip": {
-            "mode": "multi"
-          }
-        },
-        "targets": [
-          {
-            "format": "table",
-            "group": [],
-            "metricColumn": "none",
-            "rawQuery": true,
-            "rawSql": "SELECT\n  count(*) as \"Public Instances\"\nFROM aws_ec2_instances where (aws_ec2_instances.subnet_id in (${Subnets}) and aws_ec2_instances.region in (${Region}) and aws_ec2_instances.public_ip_address is not null)",
-            "refId": "A",
-            "select": [
-              [
-                {
-                  "params": [
-                    "route_settings_throttling_rate_limit"
-                  ],
-                  "type": "column"
-                }
-              ]
-            ],
-            "table": "aws_apigatewayv2_api_stages",
-            "timeColumn": "created_date",
-            "timeColumnType": "timestamp",
-            "where": [
-              {
-                "name": "$__timeFilter",
-                "params": [],
-                "type": "macro"
-              }
-            ]
-          },
-          {
-            "format": "table",
-            "group": [],
-            "hide": false,
-            "metricColumn": "none",
-            "rawQuery": true,
-            "rawSql": "SELECT\n  count(*) as \"Privatee Instances\"\nFROM aws_ec2_instances where (aws_ec2_instances.subnet_id in (${Subnets}) and aws_ec2_instances.region in (${Region}) and aws_ec2_instances.public_ip_address is null)",
-            "refId": "B",
-            "select": [
-              [
-                {
-                  "params": [
-                    "route_settings_throttling_rate_limit"
-                  ],
-                  "type": "column"
-                }
-              ]
-            ],
-            "table": "aws_apigatewayv2_api_stages",
-            "timeColumn": "created_date",
-            "timeColumnType": "timestamp",
-            "where": [
-              {
-                "name": "$__timeFilter",
-                "params": [],
-                "type": "macro"
-              }
-            ]
-          }
-        ],
-        "title": "Instances",
-        "transparent": true,
-        "type": "piechart"
-      },
-      {
-        "datasource": "${DS_POSTGRESQL}",
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "thresholds"
-            },
-            "custom": {
-              "align": "auto",
-              "displayMode": "auto"
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            }
-          },
-          "overrides": [
-            {
-              "matcher": {
-                "id": "byName",
-                "options": "subnet_id"
-              },
-              "properties": [
-                {
-                  "id": "custom.width",
-                  "value": 222
-                }
-              ]
-            }
-          ]
-        },
-        "gridPos": {
-          "h": 4,
-          "w": 16,
-          "x": 0,
-          "y": 4
-        },
-        "id": 4,
-        "options": {
-          "showHeader": true,
-          "sortBy": []
-        },
-        "pluginVersion": "8.2.3",
-        "targets": [
-          {
-            "format": "table",
-            "group": [],
-            "metricColumn": "none",
-            "rawQuery": true,
-            "rawSql": "SELECT\n  (Tags->>'Name') as Name,\n  subnet_id,\n  id,\n  region,\n  private_ip_address\nFROM aws_ec2_instances where (aws_ec2_instances.subnet_id in (${Subnets}) and region in (${Region}) and aws_ec2_instances.public_ip_address is null)",
-            "refId": "A",
-            "select": [
-              [
-                {
-                  "params": [
-                    "route_settings_throttling_rate_limit"
-                  ],
-                  "type": "column"
-                }
-              ]
-            ],
-            "table": "aws_apigatewayv2_api_stages",
-            "timeColumn": "created_date",
-            "timeColumnType": "timestamp",
-            "where": [
-              {
-                "name": "$__timeFilter",
-                "params": [],
-                "type": "macro"
-              }
-            ]
-          }
-        ],
-        "title": "Private Instances",
-        "transparent": true,
-        "type": "table"
-      },
-      {
-        "datasource": "${DS_POSTGRESQL}",
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "thresholds"
-            },
-            "custom": {
-              "align": "auto",
-              "displayMode": "auto"
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            }
-          },
-          "overrides": [
-            {
-              "matcher": {
-                "id": "byName",
-                "options": "state"
-              },
-              "properties": [
-                {
-                  "id": "custom.width",
-                  "value": 119
-                }
-              ]
-            },
-            {
-              "matcher": {
-                "id": "byName",
-                "options": "route_table_cq_id"
-              },
-              "properties": [
-                {
-                  "id": "custom.width",
-                  "value": 333
-                }
-              ]
-            }
-          ]
-        },
-        "gridPos": {
-          "h": 7,
-          "w": 20,
-          "x": 0,
-          "y": 8
-        },
-        "id": 8,
-        "options": {
-          "showHeader": true,
-          "sortBy": []
-        },
-        "pluginVersion": "8.2.3",
-        "targets": [
-          {
-            "format": "table",
-            "group": [],
-            "metricColumn": "none",
-            "rawQuery": true,
-            "rawSql": "select distinct aws_ec2_route_table_routes.destination_cidr_block as destination, aws_ec2_route_table_routes.gateway_id, aws_ec2_route_table_routes.instance_id,aws_ec2_route_table_routes.nat_gateway_id, aws_ec2_route_table_routes.state from aws_ec2_route_table_routes where aws_ec2_route_table_routes.route_table_cq_id in (${route_assoc})",
-            "refId": "A",
-            "select": [
-              [
-                {
-                  "params": [
-                    "route_settings_throttling_rate_limit"
-                  ],
-                  "type": "column"
-                }
-              ]
-            ],
-            "table": "aws_apigatewayv2_api_stages",
-            "timeColumn": "created_date",
-            "timeColumnType": "timestamp",
-            "where": [
-              {
-                "name": "$__timeFilter",
-                "params": [],
-                "type": "macro"
-              }
-            ]
-          }
-        ],
-        "title": "Active Routing Table",
-        "transparent": true,
-        "type": "table"
+        "type": "dashboard"
       }
-    ],
-    "refresh": "5s",
-    "schemaVersion": 31,
-    "style": "dark",
-    "tags": [],
-    "templating": {
-      "list": [
-        {
-          "allValue": "",
-          "current": {},
-          "datasource": "${DS_POSTGRESQL}",
-          "definition": "select  id from aws_ec2_vpcs",
-          "description": null,
-          "error": null,
-          "hide": 0,
-          "includeAll": true,
-          "label": "VPC",
-          "multi": true,
-          "name": "VPCs",
-          "options": [],
-          "query": "select  id from aws_ec2_vpcs",
-          "refresh": 1,
-          "regex": "",
-          "skipUrlSync": false,
-          "sort": 0,
-          "type": "query"
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "iteration": 1666278052583,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_POSTGRESQL}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
         },
-        {
-          "allValue": null,
-          "current": {},
-          "datasource": "${DS_POSTGRESQL}",
-          "definition": "select id from aws_ec2_subnets where vpc_id in (${VPCs})",
-          "description": null,
-          "error": null,
-          "hide": 0,
-          "includeAll": true,
-          "label": "Subnet",
-          "multi": true,
-          "name": "Subnets",
-          "options": [],
-          "query": "select id from aws_ec2_subnets where vpc_id in (${VPCs})",
-          "refresh": 2,
-          "regex": "",
-          "skipUrlSync": false,
-          "sort": 1,
-          "type": "query"
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "subnet_id"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 222
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 16,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
         },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "9.0.2",
+      "targets": [
         {
-          "allValue": null,
-          "current": {},
-          "datasource": "${DS_POSTGRESQL}",
-          "definition": "select region from aws_ec2_vpcs where id in (${VPCs})",
-          "description": null,
-          "error": null,
-          "hide": 0,
-          "includeAll": true,
-          "label": "Region",
-          "multi": true,
-          "name": "Region",
-          "options": [],
-          "query": "select region from aws_ec2_vpcs where id in (${VPCs})",
-          "refresh": 2,
-          "regex": "",
-          "skipUrlSync": false,
-          "sort": 0,
-          "type": "query"
-        },
-        {
-          "allValue": null,
-          "current": {},
-          "datasource": "${DS_POSTGRESQL}",
-          "definition": "select distinct(route_table_cq_id) from aws_ec2_route_table_associations where subnet_id in (${Subnets})",
-          "description": null,
-          "error": null,
-          "hide": 2,
-          "includeAll": true,
-          "label": "route_assoc",
-          "multi": true,
-          "name": "route_assoc",
-          "options": [],
-          "query": "select distinct(route_table_cq_id) from aws_ec2_route_table_associations where subnet_id in (${Subnets})",
-          "refresh": 2,
-          "regex": "",
-          "skipUrlSync": false,
-          "sort": 0,
-          "type": "query"
-        },
-        {
-          "allValue": null,
-          "current": {},
-          "datasource": "${DS_POSTGRESQL}",
-          "definition": "select id from aws_ec2_route_tables where cq_id in (${route_assoc})",
-          "description": null,
-          "error": null,
-          "hide": 2,
-          "includeAll": false,
-          "label": "route_table",
-          "multi": true,
-          "name": "route_table",
-          "options": [],
-          "query": "select id from aws_ec2_route_tables where cq_id in (${route_assoc})",
-          "refresh": 1,
-          "regex": "",
-          "skipUrlSync": false,
-          "sort": 0,
-          "type": "query"
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_POSTGRESQL}"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  jsonb_path_query_first(tags, '$[*]? (@.Key == \"Name\")') ->> 'Value' as Name,\n  vpc_id,\n  subnet_id,\n  instance_id,\n  region,\n  private_ip_address,\n  public_ip_address\nFROM aws_ec2_instances where (\n  ('${ALL}' in (${VPCs}) OR aws_ec2_instances.vpc_id in (${VPCs}))\n  AND ('${ALL}' in (${Subnets}) OR aws_ec2_instances.subnet_id in (${Subnets}))\n  AND ('${ALL}' in (${Region}) OR aws_ec2_instances.region in (${Region}))\n  AND (aws_ec2_instances.public_ip_address is not null)\n)",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "route_settings_throttling_rate_limit"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aws_apigatewayv2_api_stages",
+          "timeColumn": "created_date",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
         }
-      ]
+      ],
+      "title": "Public Instances",
+      "transparent": true,
+      "type": "table"
     },
-    "time": {
-      "from": "now-15m",
-      "to": "now"
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_POSTGRESQL}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Public Instances"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Private Instances"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 0
+      },
+      "id": 6,
+      "options": {
+        "displayLabels": [],
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "values": [
+            "value",
+            "percent"
+          ]
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_POSTGRESQL}"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  count(*) as \"Public Instances\"\nFROM aws_ec2_instances where (\n('${ALL}' in (${VPCs}) OR aws_ec2_instances.vpc_id in (${VPCs}))\nAND ('${ALL}' in (${Subnets}) OR aws_ec2_instances.subnet_id in (${Subnets}))\nAND ('${ALL}' in (${Region}) OR aws_ec2_instances.region in (${Region}))\nAND aws_ec2_instances.public_ip_address is not null\n)",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "route_settings_throttling_rate_limit"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aws_apigatewayv2_api_stages",
+          "timeColumn": "created_date",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_POSTGRESQL}"
+          },
+          "format": "table",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  count(*) as \"Private Instances\"\nFROM aws_ec2_instances where (\n('${ALL}' in (${VPCs}) OR aws_ec2_instances.vpc_id in (${VPCs}))\nAND ('${ALL}' in (${Subnets}) OR aws_ec2_instances.subnet_id in (${Subnets}))\nAND ('${ALL}' in (${Region}) OR aws_ec2_instances.region in (${Region}))\nAND aws_ec2_instances.public_ip_address is null\n)",
+          "refId": "B",
+          "select": [
+            [
+              {
+                "params": [
+                  "route_settings_throttling_rate_limit"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aws_apigatewayv2_api_stages",
+          "timeColumn": "created_date",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Instances",
+      "transparent": true,
+      "type": "piechart"
     },
-    "timepicker": {},
-    "timezone": "",
-    "title": "VPC Details",
-    "uid": "oh8ZKDVnk",
-    "version": 32
-  }
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_POSTGRESQL}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "subnet_id"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 222
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 16,
+        "x": 0,
+        "y": 4
+      },
+      "id": 4,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "9.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_POSTGRESQL}"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  jsonb_path_query_first(tags, '$[*]? (@.Key == \"Name\")') ->> 'Value' as Name,\n  vpc_id,\n  subnet_id,\n  instance_id,\n  region,\n  private_ip_address\nFROM aws_ec2_instances where (\n('${ALL}' in (${VPCs}) OR aws_ec2_instances.vpc_id in (${VPCs}))\nAND ('${ALL}' in (${Subnets}) OR aws_ec2_instances.subnet_id in (${Subnets})) \nAND ('${ALL}' in (${Region}) OR aws_ec2_instances.region in (${Region})) \nAND (aws_ec2_instances.public_ip_address is null)\n)",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "route_settings_throttling_rate_limit"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aws_apigatewayv2_api_stages",
+          "timeColumn": "created_date",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Private Instances",
+      "transparent": true,
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_POSTGRESQL}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "state"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 119
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "route_table_cq_id"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 333
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 20,
+        "x": 0,
+        "y": 8
+      },
+      "id": 8,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "9.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_POSTGRESQL}"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT DISTINCT r.value->>'DestinationCidrBlock' AS destination,\n                r.value->>'GatewayId' AS gateway_id,\n                r.value->>'InstanceId' AS instance_id,\n                r.value->>'NatGatewayId' AS nat_gateway_id,\n                r.value->>'State' AS state\nFROM aws_ec2_route_tables,\njsonb_array_elements(aws_ec2_route_tables.routes) r,\njsonb_array_elements(associations) as a\nWHERE (${Subnets} = '${ALL}' OR a->>'SubnetId' in (${Subnets}))",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "route_settings_throttling_rate_limit"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aws_apigatewayv2_api_stages",
+          "timeColumn": "created_date",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Active Routing Table",
+      "transparent": true,
+      "type": "table"
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 36,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "hide": 2,
+        "label": "",
+        "name": "ALL",
+        "query": "${VAR_ALL}",
+        "skipUrlSync": false,
+        "type": "constant",
+        "current": {
+          "value": "${VAR_ALL}",
+          "text": "${VAR_ALL}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_ALL}",
+            "text": "${VAR_ALL}",
+            "selected": false
+          }
+        ]
+      },
+      {
+        "allValue": "'$ALL'",
+        "current": {},
+        "datasource": {
+          "type": "postgres",
+          "uid": "${DS_POSTGRESQL}"
+        },
+        "definition": "select distinct vpc_id from aws_ec2_vpcs",
+        "hide": 0,
+        "includeAll": true,
+        "label": "VPCs",
+        "multi": true,
+        "name": "VPCs",
+        "options": [],
+        "query": "select distinct vpc_id from aws_ec2_vpcs",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allValue": "'$ALL'",
+        "current": {},
+        "datasource": {
+          "type": "postgres",
+          "uid": "${DS_POSTGRESQL}"
+        },
+        "definition": "select distinct subnet_id from aws_ec2_instances where '${ALL}'  in (${VPCs}) OR vpc_id in (${VPCs})",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Subnet",
+        "multi": true,
+        "name": "Subnets",
+        "options": [],
+        "query": "select distinct subnet_id from aws_ec2_instances where '${ALL}'  in (${VPCs}) OR vpc_id in (${VPCs})",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": "'$ALL'",
+        "current": {},
+        "datasource": {
+          "type": "postgres",
+          "uid": "${DS_POSTGRESQL}"
+        },
+        "definition": "select distinct region from aws_ec2_vpcs where '${ALL}' in (${VPCs}) OR vpc_id in (${VPCs})",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Region",
+        "multi": true,
+        "name": "Region",
+        "options": [],
+        "query": "select distinct region from aws_ec2_vpcs where '${ALL}' in (${VPCs}) OR vpc_id in (${VPCs})",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-2d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "VPC Details",
+  "uid": "oh8ZKDVnk",
+  "version": 2,
+  "weekStart": ""
+}

@@ -1,6 +1,6 @@
 # Table: aws_redshift_cluster_parameters
 
-
+https://docs.aws.amazon.com/redshift/latest/APIReference/API_Parameter.html
 
 The composite primary key for this table is (**cluster_arn**, **parameter_name**).
 
@@ -8,10 +8,10 @@ The composite primary key for this table is (**cluster_arn**, **parameter_name**
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
 |cluster_arn (PK)|String|

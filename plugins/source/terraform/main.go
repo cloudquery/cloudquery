@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/cloudquery/cloudquery/plugins/source/terraform/plugin"
+	"github.com/cloudquery/cloudquery/plugins/source/terraform/resources/plugin"
 	"github.com/cloudquery/plugin-sdk/serve"
 )
 

@@ -9,9 +9,11 @@ import (
 func KinesisResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "streams",
-			Struct:     &types.StreamDescriptionSummary{},
-			SkipFields: []string{"StreamARN"},
+			SubService:          "streams",
+			Struct:              &types.StreamDescriptionSummary{},
+			Description:         "https://docs.aws.amazon.com/kinesis/latest/APIReference/API_StreamDescriptionSummary.html",
+			SkipFields:          []string{"StreamARN"},
+			PreResourceResolver: "getStream",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

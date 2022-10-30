@@ -10,9 +10,10 @@ func WAFRegionalResources() []*Resource {
 	resources := []*Resource{
 
 		{
-			SubService: "rate_based_rules",
-			Struct:     &types.RateBasedRule{},
-			SkipFields: []string{},
+			SubService:  "rate_based_rules",
+			Struct:      &types.RateBasedRule{},
+			Description: "https://docs.aws.amazon.com/waf/latest/APIReference/API_wafRegional_RateBasedRule.html",
+			SkipFields:  []string{},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -30,9 +31,10 @@ func WAFRegionalResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "rule_groups",
-			Struct:     &types.RuleGroup{},
-			SkipFields: []string{},
+			SubService:  "rule_groups",
+			Struct:      &types.RuleGroup{},
+			Description: "https://docs.aws.amazon.com/waf/latest/APIReference/API_wafRegional_RuleGroup.html",
+			SkipFields:  []string{},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -51,9 +53,10 @@ func WAFRegionalResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "rules",
-			Struct:     &types.Rule{},
-			SkipFields: []string{},
+			SubService:  "rules",
+			Struct:      &types.Rule{},
+			Description: "https://docs.aws.amazon.com/waf/latest/APIReference/API_wafRegional_Rule.html",
+			SkipFields:  []string{},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -72,9 +75,10 @@ func WAFRegionalResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "web_acls",
-			Struct:     &types.WebACL{},
-			SkipFields: []string{"WebACLArn"},
+			SubService:  "web_acls",
+			Struct:      &types.WebACL{},
+			Description: "https://docs.aws.amazon.com/waf/latest/APIReference/API_wafRegional_WebACL.html",
+			SkipFields:  []string{"WebACLArn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -89,6 +93,11 @@ func WAFRegionalResources() []*Resource {
 						Description: "Web ACL tags.",
 						Type:        schema.TypeJSON,
 						Resolver:    `resolveWafregionalWebACLTags`,
+					},
+					{
+						Name:     "resources_for_web_acl",
+						Type:     schema.TypeStringArray,
+						Resolver: `resolveWafregionalWebACLResourcesForWebACL`,
 					},
 				}...),
 		},

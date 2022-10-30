@@ -43,6 +43,7 @@ func CognitoResources() []*Resource {
 		{
 			SubService:          "user_pools",
 			Struct:              &types.UserPoolType{},
+			Description:         "https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_UserPoolType.html",
 			SkipFields:          []string{"Id"},
 			PreResourceResolver: "getUserPool",
 			ExtraColumns: []codegen.ColumnDefinition{
@@ -72,6 +73,7 @@ func CognitoResources() []*Resource {
 		{
 			SubService:          "user_pool_identity_providers",
 			Struct:              &types.IdentityProviderType{},
+			Description:         "https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_IdentityProviderType.html",
 			SkipFields:          []string{},
 			PreResourceResolver: "getUserPoolIdentityProvider",
 			ExtraColumns: append(

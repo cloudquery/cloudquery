@@ -12,6 +12,7 @@ func TransferResources() []*Resource {
 		{
 			SubService:          "servers",
 			Struct:              &types.DescribedServer{},
+			Description:         "https://docs.aws.amazon.com/transfer/latest/userguide/API_DescribedServer.html",
 			SkipFields:          []string{"Arn", "Tags"},
 			PreResourceResolver: "getServer",
 			ExtraColumns: append(

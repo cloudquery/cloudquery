@@ -1,19 +1,19 @@
 # Table: aws_ecs_cluster_tasks
 
-
+https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_Task.html
 
 The primary key for this table is **arn**.
 
 ## Relations
-This table depends on [`aws_ecs_clusters`](aws_ecs_clusters.md).
+This table depends on [aws_ecs_clusters](aws_ecs_clusters.md).
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
 |arn (PK)|String|

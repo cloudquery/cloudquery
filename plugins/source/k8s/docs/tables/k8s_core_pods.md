@@ -63,6 +63,7 @@ The primary key for this table is **uid**.
 |spec_topology_spread_constraints|JSON|
 |spec_set_hostname_as_fqdn|Bool|
 |spec_os|JSON|
+|spec_host_users|Bool|
 |status_phase|String|
 |status_conditions|JSON|
 |status_message|String|

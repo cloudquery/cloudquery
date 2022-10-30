@@ -5,15 +5,15 @@
 The primary key for this table is **id**.
 
 ## Relations
-This table depends on [`azure_compute_virtual_machines`](azure_compute_virtual_machines.md).
+This table depends on [azure_compute_virtual_machines](azure_compute_virtual_machines.md).
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |subscription_id|String|
 |compute_virtual_machine_id|String|
 |force_update_tag|String|

@@ -5,6 +5,145 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.8](https://github.com/cloudquery/cloudquery/compare/cli-v1.3.7...cli-v1.3.8) (2022-10-27)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for cli to v0.13.13 ([#3213](https://github.com/cloudquery/cloudquery/issues/3213)) ([9a313bb](https://github.com/cloudquery/cloudquery/commit/9a313bb24316b02538d2abde79bd0873bf81fe03))
+* **deps:** Update plugin-sdk for cli to v0.13.14 ([#3229](https://github.com/cloudquery/cloudquery/issues/3229)) ([47f346d](https://github.com/cloudquery/cloudquery/commit/47f346d727e9dbb0db821800fcbad6ee8fe325b9))
+
+## [1.3.7](https://github.com/cloudquery/cloudquery/compare/cli-v1.3.6...cli-v1.3.7) (2022-10-20)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for cli to v0.13.12 ([#3101](https://github.com/cloudquery/cloudquery/issues/3101)) ([404114c](https://github.com/cloudquery/cloudquery/commit/404114cc0a43fb9393ba83d7552fae38894556dd))
+
+## [1.3.6](https://github.com/cloudquery/cloudquery/compare/cli-v1.3.5...cli-v1.3.6) (2022-10-20)
+
+
+### Bug Fixes
+
+* Set Sentry server name to oss to make it fully anonymous ([#3089](https://github.com/cloudquery/cloudquery/issues/3089)) ([2c44927](https://github.com/cloudquery/cloudquery/commit/2c4492792c9b14ba1d22ff3eb6d1db4ae937c49d))
+
+## [1.3.5](https://github.com/cloudquery/cloudquery/compare/cli-v1.3.4...cli-v1.3.5) (2022-10-20)
+
+
+### Bug Fixes
+
+* **cli:** Update binary names to use Go releaser defaults ([#3080](https://github.com/cloudquery/cloudquery/issues/3080)) ([ab3b6f2](https://github.com/cloudquery/cloudquery/commit/ab3b6f27eee85c27bd7c91b8046cab5083adaaf5))
+
+## [1.3.4](https://github.com/cloudquery/cloudquery/compare/cli-v1.3.3...cli-v1.3.4) (2022-10-19)
+
+
+### Bug Fixes
+
+* **cli:** Update CLI doc command links ([485d6ad](https://github.com/cloudquery/cloudquery/commit/485d6ad8ac22fc3dc13d7902033f5d2a0f48ce78))
+
+## [1.3.3](https://github.com/cloudquery/cloudquery/compare/cli-v1.3.2...cli-v1.3.3) (2022-10-19)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for cli to v0.13.11 ([#3028](https://github.com/cloudquery/cloudquery/issues/3028)) ([bb62a54](https://github.com/cloudquery/cloudquery/commit/bb62a548875ecf079674880250250090960fff75))
+
+## [1.3.2](https://github.com/cloudquery/cloudquery/compare/cli-v1.3.1...cli-v1.3.2) (2022-10-19)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for cli to v0.13.10 ([#3013](https://github.com/cloudquery/cloudquery/issues/3013)) ([5b69b16](https://github.com/cloudquery/cloudquery/commit/5b69b1651df34bf2448d65004a09ec58655ee2f6))
+
+## [1.3.1](https://github.com/cloudquery/cloudquery/compare/cli-v1.3.0...cli-v1.3.1) (2022-10-18)
+
+
+### Bug Fixes
+
+* Minor adjustments to anonymized analytics ([#2990](https://github.com/cloudquery/cloudquery/issues/2990)) ([2102286](https://github.com/cloudquery/cloudquery/commit/21022862cb8fb023a365f09c72edc5b867526f59))
+
+## [1.3.0](https://github.com/cloudquery/cloudquery/compare/cli-v1.2.1...cli-v1.3.0) (2022-10-18)
+
+
+### Features
+
+* Add anonymised analytics ([#2619](https://github.com/cloudquery/cloudquery/issues/2619)) ([56d09d2](https://github.com/cloudquery/cloudquery/commit/56d09d25540f88a65b8a0f5f5f7f6fe6ba501403))
+
+## [1.2.1](https://github.com/cloudquery/cloudquery/compare/cli-v1.2.0...cli-v1.2.1) (2022-10-18)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for cli to v0.13.9 ([#2928](https://github.com/cloudquery/cloudquery/issues/2928)) ([017e8e0](https://github.com/cloudquery/cloudquery/commit/017e8e00791a547abd7c92677aaadfcb4a9e4e7a))
+
+## [1.2.0](https://github.com/cloudquery/cloudquery/compare/cli-v1.1.5...cli-v1.2.0) (2022-10-16)
+
+
+### Features
+
+* Deprecate --data-dir in favor of --cq-dir ([#2796](https://github.com/cloudquery/cloudquery/issues/2796)) ([75278ae](https://github.com/cloudquery/cloudquery/commit/75278aed376ffceea46d70fd464e7bd5c60fb4ad))
+
+## [1.1.5](https://github.com/cloudquery/cloudquery/compare/cli-v1.1.4...cli-v1.1.5) (2022-10-16)
+
+
+### Bug Fixes
+
+* **cli:** Deprecate color flag ([#2812](https://github.com/cloudquery/cloudquery/issues/2812)) ([9565195](https://github.com/cloudquery/cloudquery/commit/95651957931271a002a2ca5cc343842b9773aab6))
+
+## [1.1.4](https://github.com/cloudquery/cloudquery/compare/cli-v1.1.3...cli-v1.1.4) (2022-10-16)
+
+
+### Bug Fixes
+
+* Log timestamps in UTC and RFC3339 ([#2839](https://github.com/cloudquery/cloudquery/issues/2839)) ([44fe6ba](https://github.com/cloudquery/cloudquery/commit/44fe6ba0ab627e18f31290a81c1951ba70f47c6e))
+
+## [1.1.3](https://github.com/cloudquery/cloudquery/compare/cli-v1.1.2...cli-v1.1.3) (2022-10-14)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for cli to v0.13.8 ([#2850](https://github.com/cloudquery/cloudquery/issues/2850)) ([1a79e1c](https://github.com/cloudquery/cloudquery/commit/1a79e1c2d8ebf8c73afc200696748704088962c4))
+
+## [1.1.2](https://github.com/cloudquery/cloudquery/compare/cli-v1.1.1...cli-v1.1.2) (2022-10-13)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for cli to v0.13.7 ([#2780](https://github.com/cloudquery/cloudquery/issues/2780)) ([06fd929](https://github.com/cloudquery/cloudquery/commit/06fd92962a00f4cd67fe6fd7d8a6e868f9cc1bd7))
+
+## [1.1.1](https://github.com/cloudquery/cloudquery/compare/cli-v1.1.0...cli-v1.1.1) (2022-10-12)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for cli to v0.13.6 ([#2719](https://github.com/cloudquery/cloudquery/issues/2719)) ([dc10caa](https://github.com/cloudquery/cloudquery/commit/dc10caadc188ab9429994331420bc5dae27b2400))
+
+## [1.1.0](https://github.com/cloudquery/cloudquery/compare/cli-v1.0.9...cli-v1.1.0) (2022-10-12)
+
+
+### Features
+
+* Warn on usage with plugins with SDK < v0.13 ([#2696](https://github.com/cloudquery/cloudquery/issues/2696)) ([a96e1ec](https://github.com/cloudquery/cloudquery/commit/a96e1ec483a4d223541a665874fbffae8bf262a2))
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for cli to v0.13.5 ([#2592](https://github.com/cloudquery/cloudquery/issues/2592)) ([b45b73b](https://github.com/cloudquery/cloudquery/commit/b45b73b306a8504904124c9b02ee511fa7d64c1f))
+
+## [1.0.9](https://github.com/cloudquery/cloudquery/compare/cli-v1.0.8...cli-v1.0.9) (2022-10-12)
+
+
+### Bug Fixes
+
+* Use [files and directories] in sync command description ([#2652](https://github.com/cloudquery/cloudquery/issues/2652)) ([8b7caed](https://github.com/cloudquery/cloudquery/commit/8b7caedb6f51c0b009f19ffb9a66f94486793a71))
+
+## [1.0.8](https://github.com/cloudquery/cloudquery/compare/cli-v1.0.7...cli-v1.0.8) (2022-10-12)
+
+
+### Bug Fixes
+
+* Flush destination plugins when sync finish ([#2651](https://github.com/cloudquery/cloudquery/issues/2651)) ([117e791](https://github.com/cloudquery/cloudquery/commit/117e7912bd12ea7a03ca3e69cba147283df17612))
+
 ## [1.0.7](https://github.com/cloudquery/cloudquery/compare/cli-v1.0.6...cli-v1.0.7) (2022-10-09)
 
 

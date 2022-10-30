@@ -5,18 +5,18 @@
 The primary key for this table is **id**.
 
 ## Relations
-The following tables depend on `azure_sql_managed_instances`:
-  - [`azure_sql_managed_databases`](azure_sql_managed_databases.md)
-  - [`azure_sql_managed_instance_vulnerability_assessments`](azure_sql_managed_instance_vulnerability_assessments.md)
-  - [`azure_sql_managed_instance_encryption_protectors`](azure_sql_managed_instance_encryption_protectors.md)
+The following tables depend on azure_sql_managed_instances:
+  - [azure_sql_managed_databases](azure_sql_managed_databases.md)
+  - [azure_sql_managed_instance_vulnerability_assessments](azure_sql_managed_instance_vulnerability_assessments.md)
+  - [azure_sql_managed_instance_encryption_protectors](azure_sql_managed_instance_encryption_protectors.md)
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |subscription_id|String|
 |identity|JSON|
 |sku|JSON|

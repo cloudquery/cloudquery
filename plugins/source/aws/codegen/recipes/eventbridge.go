@@ -9,9 +9,10 @@ import (
 func EventbridgeResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "event_buses",
-			Struct:     &types.EventBus{},
-			SkipFields: []string{"Arn"},
+			SubService:  "event_buses",
+			Struct:      &types.EventBus{},
+			Description: "https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_EventBus.html",
+			SkipFields:  []string{"Arn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -31,9 +32,10 @@ func EventbridgeResources() []*Resource {
 			},
 		},
 		{
-			SubService: "event_bus_rules",
-			Struct:     &types.Rule{},
-			SkipFields: []string{},
+			SubService:  "event_bus_rules",
+			Struct:      &types.Rule{},
+			Description: "https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_Rule.html",
+			SkipFields:  []string{},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

@@ -5,19 +5,19 @@
 The primary key for this table is **arn**.
 
 ## Relations
-The following tables depend on `aws_s3_buckets`:
-  - [`aws_s3_bucket_encryption_rules`](aws_s3_bucket_encryption_rules.md)
-  - [`aws_s3_bucket_lifecycles`](aws_s3_bucket_lifecycles.md)
-  - [`aws_s3_bucket_grants`](aws_s3_bucket_grants.md)
-  - [`aws_s3_bucket_cors_rules`](aws_s3_bucket_cors_rules.md)
+The following tables depend on aws_s3_buckets:
+  - [aws_s3_bucket_encryption_rules](aws_s3_bucket_encryption_rules.md)
+  - [aws_s3_bucket_lifecycles](aws_s3_bucket_lifecycles.md)
+  - [aws_s3_bucket_grants](aws_s3_bucket_grants.md)
+  - [aws_s3_bucket_cors_rules](aws_s3_bucket_cors_rules.md)
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |account_id|String|
 |arn (PK)|String|
 |creation_date|Timestamp|

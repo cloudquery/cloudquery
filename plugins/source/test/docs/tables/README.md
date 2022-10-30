@@ -1,5 +1,5 @@
 # Source Plugin: test
 ## Tables
-| Name          | Description   |
-| ------------- | ------------- |
-|test_some_table|Test description|
+| Name          |
+| ------------- |
+| [test_some_table](test_some_table.md) |

@@ -1,6 +1,6 @@
 # Table: aws_ec2_network_interfaces
 
-
+https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_NetworkInterface.html
 
 The primary key for this table is **arn**.
 
@@ -8,13 +8,14 @@ The primary key for this table is **arn**.
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
 |arn (PK)|String|
+|tags|JSON|
 |association|JSON|
 |attachment|JSON|
 |availability_zone|String|
@@ -39,5 +40,4 @@ The primary key for this table is **arn**.
 |source_dest_check|Bool|
 |status|String|
 |subnet_id|String|
-|tag_set|JSON|
 |vpc_id|String|

@@ -3,6 +3,7 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"github.com/google/uuid"
 	"strings"
 	"time"
 
@@ -21,11 +22,12 @@ cloudquery sync ./directory
 # Sync resources from directories and files
 cloudquery sync ./directory ./aws.yml ./pg.yml
 `
+	unknownFieldErrorPrefix = "code = InvalidArgument desc = failed to decode spec: json: unknown field "
 )
 
 func NewCmdSync() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "sync [file or directories...]",
+		Use:     "sync [files or directories]",
 		Short:   fetchShort,
 		Long:    fetchShort,
 		Example: fetchExample,
@@ -36,12 +38,22 @@ func NewCmdSync() *cobra.Command {
 }
 
 func sync(cmd *cobra.Command, args []string) error {
+	cqDir, err := cmd.Flags().GetString("cq-dir")
+	if err != nil {
+		return err
+	}
+
 	ctx := cmd.Context()
 	log.Info().Strs("args", args).Msg("Loading spec(s)")
 	fmt.Printf("Loading spec(s) from %s\n", strings.Join(args, ", "))
 	specReader, err := specs.NewSpecReader(args)
 	if err != nil {
 		return fmt.Errorf("failed to load spec(s) from %s. Error: %w", strings.Join(args, ", "), err)
+	}
+
+	invocationUUID, err := uuid.NewRandom()
+	if err != nil {
+		return fmt.Errorf("failed to generate invocation uuid: %w", err)
 	}
 
 	for _, sourceSpec := range specReader.Sources {
@@ -56,7 +68,7 @@ func sync(cmd *cobra.Command, args []string) error {
 			}
 			destinationsSpecs = append(destinationsSpecs, *spec)
 		}
-		if err := syncConnection(ctx, *sourceSpec, destinationsSpecs); err != nil {
+		if err := syncConnection(ctx, cqDir, *sourceSpec, destinationsSpecs, invocationUUID.String()); err != nil {
 			return fmt.Errorf("failed to sync source %s: %w", sourceSpec.Name, err)
 		}
 	}
@@ -64,7 +76,7 @@ func sync(cmd *cobra.Command, args []string) error {
 	return nil
 }
 
-func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSpecs []specs.Destination) error {
+func syncConnection(ctx context.Context, cqDir string, sourceSpec specs.Source, destinationsSpecs []specs.Destination, uid string) error {
 	destinationNames := make([]string, len(destinationsSpecs))
 	for i := range destinationsSpecs {
 		destinationNames[i] = destinationsSpecs[i].Name
@@ -76,6 +88,7 @@ func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSp
 
 	sourceClient, err := clients.NewSourceClient(ctx, sourceSpec.Registry, sourceSpec.Path, sourceSpec.Version,
 		clients.WithSourceLogger(log.Logger),
+		clients.WithSourceDirectory(cqDir),
 	)
 	if err != nil {
 		return fmt.Errorf("failed to get source plugin client for %s: %w", sourceSpec.Name, err)
@@ -105,6 +118,7 @@ func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSp
 	for i, destinationSpec := range destinationsSpecs {
 		destClients[i], err = clients.NewDestinationClient(ctx, destinationSpec.Registry, destinationSpec.Path, destinationSpec.Version,
 			clients.WithDestinationLogger(log.Logger),
+			clients.WithDestinationDirectory(cqDir),
 		)
 		if err != nil {
 			return fmt.Errorf("failed to create destination plugin client for %s: %w", destinationSpec.Name, err)
@@ -129,6 +143,9 @@ func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSp
 	g.Go(func() error {
 		defer close(resources)
 		if err := sourceClient.Sync(gctx, sourceSpec, resources); err != nil {
+			if isUnknownConcurrencyFieldError(err) {
+				return fmt.Errorf("unsupported version of source %s@%s. Please update to the latest version from https://cloudquery.io/docs/plugins/sources", sourceSpec.Name, sourceSpec.Version)
+			}
 			return fmt.Errorf("failed to sync source %s: %w", sourceSpec.Name, err)
 		}
 		return nil
@@ -143,7 +160,7 @@ func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSp
 		progressbar.OptionClearOnFinish(),
 	)
 	failedWrites := uint64(0)
-	totalResources := 0
+	totalResources := uint64(0)
 	for i, destination := range sourceSpec.Destinations {
 		i := i
 		destination := destination
@@ -152,6 +169,9 @@ func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSp
 			var err error
 			if destFailedWrites, err = destClients[i].Write(gctx, sourceSpec.Name, syncTime, destSubscriptions[i]); err != nil {
 				return fmt.Errorf("failed to write for %s->%s: %w", sourceSpec.Name, destination, err)
+			}
+			if destClients[i].Close(ctx); err != nil {
+				return fmt.Errorf("failed to close destination client for %s->%s: %w", sourceSpec.Name, destination, err)
 			}
 			failedWrites += destFailedWrites
 			return nil
@@ -188,8 +208,20 @@ func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSp
 	tt := time.Since(syncTime)
 
 	fmt.Println("Sync completed successfully.")
-	fmt.Printf("Summary: resources: %d, errors: %d, panic: %d, failed_writes: %d, time: %s\n", totalResources, summary.Errors, summary.Panics, failedWrites, tt.Truncate(time.Second).String())
+	fmt.Printf("Summary: resources: %d, errors: %d, panic: %d, failed_writes: %d, time: %s\n", summary.Resources, summary.Errors, summary.Panics, failedWrites, tt.Truncate(time.Second).String())
 	log.Info().Str("source", sourceSpec.Name).Strs("destinations", sourceSpec.Destinations).
-		Int("resources", totalResources).Uint64("errors", summary.Errors).Uint64("panic", summary.Panics).Uint64("failed_writes", failedWrites).Float64("time_took", tt.Seconds()).Msg("Sync completed successfully")
+		Uint64("resources", totalResources).Uint64("errors", summary.Errors).Uint64("panic", summary.Panics).Uint64("failed_writes", failedWrites).Float64("time_took", tt.Seconds()).Msg("Sync completed successfully")
+
+	// Send analytics, if activated. We only send if the source plugin registry is GitHub, mostly to avoid sending data from development machines.
+	if analyticsClient != nil && sourceSpec.Registry == specs.RegistryGithub {
+		log.Info().Msg("Sending sync summary to " + analyticsHost)
+		if err := analyticsClient.SendSyncSummary(ctx, sourceSpec, destinationsSpecs, uid, *summary); err != nil {
+			log.Warn().Err(err).Msg("Failed to send sync summary")
+		}
+	}
 	return nil
+}
+
+func isUnknownConcurrencyFieldError(err error) bool {
+	return strings.Contains(err.Error(), unknownFieldErrorPrefix+`"table_concurrency"`) || strings.Contains(err.Error(), unknownFieldErrorPrefix+`"resource_concurrency"`)
 }

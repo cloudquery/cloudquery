@@ -1,19 +1,19 @@
 # Table: aws_qldb_ledger_journal_kinesis_streams
 
-
+https://docs.aws.amazon.com/qldb/latest/developerguide/API_JournalKinesisStreamDescription.html
 
 The primary key for this table is **_cq_id**.
 
 ## Relations
-This table depends on [`aws_qldb_ledgers`](aws_qldb_ledgers.md).
+This table depends on [aws_qldb_ledgers](aws_qldb_ledgers.md).
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id (PK)|UUID|
-|_cq_parent_id|UUID|
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
 |ledger_arn|String|

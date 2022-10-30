@@ -123,7 +123,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select count(*) from aws_resources where account_id in (${account_ids}) and region in (${regions}) and cq_table in (${cq_tables}) ;",
+          "rawSql": "select count(*) from aws_resources where account_id in (${account_ids}) and region in (${regions}) and _cq_table in (${cq_tables}) ;",
           "refId": "A"
         }
       ],
@@ -183,7 +183,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select account_id, count(*) from aws_resources where region in (${regions}) and cq_table in (${cq_tables}) group by account_id order by count desc;",
+          "rawSql": "select account_id, count(*) from aws_resources where region in (${regions}) and _cq_table in (${cq_tables}) group by account_id order by count desc;",
           "refId": "A"
         }
       ],
@@ -343,7 +343,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "fetch_date"
+              "options": "_cq_sync_time"
             },
             "properties": [
               {
@@ -355,7 +355,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "cq_id"
+              "options": "_cq_id"
             },
             "properties": [
               {
@@ -395,7 +395,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select cq_id, cq_table, account_id, region, arn, fetch_date from aws_resources where account_id in (${account_ids}) and region in (${regions}) and cq_table in (${cq_tables}) ;",
+          "rawSql": "select _cq_id, _cq_table, account_id, region, arn, _cq_sync_time from aws_resources where account_id in (${account_ids}) and region in (${regions}) and _cq_table in (${cq_tables}) ;",
           "refId": "A"
         }
       ],
@@ -450,7 +450,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select cq_table, count(*) from aws_resources where account_id in (${account_ids}) and region in (${regions}) group by cq_table order by count desc;",
+          "rawSql": "select _cq_table, count(*) from aws_resources where account_id in (${account_ids}) and region in (${regions}) group by _cq_table order by count desc;",
           "refId": "A"
         }
       ],
@@ -587,13 +587,13 @@
       },
       {
         "current": {},
-        "definition": "select distinct(cq_table) from aws_resources;",
+        "definition": "select distinct(_cq_table) from aws_resources;",
         "hide": 0,
         "includeAll": true,
         "multi": true,
         "name": "cq_tables",
         "options": [],
-        "query": "select distinct(cq_table) from aws_resources;",
+        "query": "select distinct(_cq_table) from aws_resources;",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,

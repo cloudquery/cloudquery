@@ -5,17 +5,17 @@
 The composite primary key for this table is (**org**, **id**).
 
 ## Relations
-The following tables depend on `github_teams`:
-  - [`github_team_members`](github_team_members.md)
-  - [`github_team_repositories`](github_team_repositories.md)
+The following tables depend on github_teams:
+  - [github_team_members](github_team_members.md)
+  - [github_team_repositories](github_team_repositories.md)
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |org (PK)|String|
 |id (PK)|Int|
 |node_id|String|

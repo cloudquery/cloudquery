@@ -8,12 +8,14 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
 	"github.com/aws/aws-sdk-go-v2/service/applicationautoscaling"
+	"github.com/aws/aws-sdk-go-v2/service/apprunner"
 	"github.com/aws/aws-sdk-go-v2/service/appsync"
 	"github.com/aws/aws-sdk-go-v2/service/athena"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
 	"github.com/aws/aws-sdk-go-v2/service/backup"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation"
 	"github.com/aws/aws-sdk-go-v2/service/cloudfront"
+	"github.com/aws/aws-sdk-go-v2/service/cloudhsmv2"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
@@ -25,9 +27,11 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/databasemigrationservice"
 	"github.com/aws/aws-sdk-go-v2/service/dax"
 	"github.com/aws/aws-sdk-go-v2/service/directconnect"
+	"github.com/aws/aws-sdk-go-v2/service/docdb"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ecr"
+	"github.com/aws/aws-sdk-go-v2/service/ecrpublic"
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
 	"github.com/aws/aws-sdk-go-v2/service/efs"
 	"github.com/aws/aws-sdk-go-v2/service/eks"
@@ -40,6 +44,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/eventbridge"
 	"github.com/aws/aws-sdk-go-v2/service/firehose"
 	"github.com/aws/aws-sdk-go-v2/service/fsx"
+	"github.com/aws/aws-sdk-go-v2/service/glacier"
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/aws/aws-sdk-go-v2/service/guardduty"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
@@ -51,6 +56,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/lightsail"
 	"github.com/aws/aws-sdk-go-v2/service/mq"
+	"github.com/aws/aws-sdk-go-v2/service/neptune"
 	"github.com/aws/aws-sdk-go-v2/service/organizations"
 	"github.com/aws/aws-sdk-go-v2/service/qldb"
 	"github.com/aws/aws-sdk-go-v2/service/rds"
@@ -134,6 +140,22 @@ type Apigatewayv2Client interface {
 	GetVpcLinks(ctx context.Context, params *apigatewayv2.GetVpcLinksInput, optFns ...func(*apigatewayv2.Options)) (*apigatewayv2.GetVpcLinksOutput, error)
 }
 
+//go:generate mockgen -package=mocks -destination=./mocks/mock_apprunner.go . AppRunnerClient
+type AppRunnerClient interface {
+	DescribeAutoScalingConfiguration(ctx context.Context, params *apprunner.DescribeAutoScalingConfigurationInput, optFns ...func(*apprunner.Options)) (*apprunner.DescribeAutoScalingConfigurationOutput, error)
+	DescribeCustomDomains(ctx context.Context, params *apprunner.DescribeCustomDomainsInput, optFns ...func(*apprunner.Options)) (*apprunner.DescribeCustomDomainsOutput, error)
+	DescribeObservabilityConfiguration(ctx context.Context, params *apprunner.DescribeObservabilityConfigurationInput, optFns ...func(*apprunner.Options)) (*apprunner.DescribeObservabilityConfigurationOutput, error)
+	DescribeService(ctx context.Context, params *apprunner.DescribeServiceInput, optFns ...func(*apprunner.Options)) (*apprunner.DescribeServiceOutput, error)
+	DescribeVpcConnector(ctx context.Context, params *apprunner.DescribeVpcConnectorInput, optFns ...func(*apprunner.Options)) (*apprunner.DescribeVpcConnectorOutput, error)
+	ListAutoScalingConfigurations(ctx context.Context, params *apprunner.ListAutoScalingConfigurationsInput, optFns ...func(*apprunner.Options)) (*apprunner.ListAutoScalingConfigurationsOutput, error)
+	ListConnections(ctx context.Context, params *apprunner.ListConnectionsInput, optFns ...func(*apprunner.Options)) (*apprunner.ListConnectionsOutput, error)
+	ListObservabilityConfigurations(ctx context.Context, params *apprunner.ListObservabilityConfigurationsInput, optFns ...func(*apprunner.Options)) (*apprunner.ListObservabilityConfigurationsOutput, error)
+	ListOperations(ctx context.Context, params *apprunner.ListOperationsInput, optFns ...func(*apprunner.Options)) (*apprunner.ListOperationsOutput, error)
+	ListServices(ctx context.Context, params *apprunner.ListServicesInput, optFns ...func(*apprunner.Options)) (*apprunner.ListServicesOutput, error)
+	ListTagsForResource(ctx context.Context, params *apprunner.ListTagsForResourceInput, optFns ...func(*apprunner.Options)) (*apprunner.ListTagsForResourceOutput, error)
+	ListVpcConnectors(ctx context.Context, params *apprunner.ListVpcConnectorsInput, optFns ...func(*apprunner.Options)) (*apprunner.ListVpcConnectorsOutput, error)
+}
+
 //go:generate mockgen -package=mocks -destination=./mocks/mock_appsync.go . AppSyncClient
 type AppSyncClient interface {
 	ListGraphqlApis(ctx context.Context, params *appsync.ListGraphqlApisInput, optFns ...func(*appsync.Options)) (*appsync.ListGraphqlApisOutput, error)
@@ -182,6 +204,12 @@ type BackupClient interface {
 	ListTags(ctx context.Context, params *backup.ListTagsInput, optFns ...func(*backup.Options)) (*backup.ListTagsOutput, error)
 	DescribeGlobalSettings(ctx context.Context, params *backup.DescribeGlobalSettingsInput, optFns ...func(*backup.Options)) (*backup.DescribeGlobalSettingsOutput, error)
 	DescribeRegionSettings(ctx context.Context, params *backup.DescribeRegionSettingsInput, optFns ...func(*backup.Options)) (*backup.DescribeRegionSettingsOutput, error)
+}
+
+//go:generate mockgen -package=mocks -destination=./mocks/mock_cloudhsmv2.go . CloudHSMV2Client
+type CloudHSMV2Client interface {
+	DescribeBackups(ctx context.Context, params *cloudhsmv2.DescribeBackupsInput, optFns ...func(*cloudhsmv2.Options)) (*cloudhsmv2.DescribeBackupsOutput, error)
+	DescribeClusters(ctx context.Context, params *cloudhsmv2.DescribeClustersInput, optFns ...func(*cloudhsmv2.Options)) (*cloudhsmv2.DescribeClustersOutput, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_cloudformation.go . CloudFormationClient
@@ -280,6 +308,20 @@ type DirectconnectClient interface {
 	DescribeVirtualInterfaces(ctx context.Context, params *directconnect.DescribeVirtualInterfacesInput, optFns ...func(*directconnect.Options)) (*directconnect.DescribeVirtualInterfacesOutput, error)
 }
 
+//go:generate mockgen -package=mocks -destination=./mocks/mock_docdb.go . DocDBClient
+type DocDBClient interface {
+	DescribeDBClusters(ctx context.Context, params *docdb.DescribeDBClustersInput, optFns ...func(*docdb.Options)) (*docdb.DescribeDBClustersOutput, error)
+	ListTagsForResource(ctx context.Context, params *docdb.ListTagsForResourceInput, optFns ...func(*docdb.Options)) (*docdb.ListTagsForResourceOutput, error)
+	DescribeDBClusterSnapshots(ctx context.Context, params *docdb.DescribeDBClusterSnapshotsInput, optFns ...func(*docdb.Options)) (*docdb.DescribeDBClusterSnapshotsOutput, error)
+	DescribeDBClusterSnapshotAttributes(ctx context.Context, params *docdb.DescribeDBClusterSnapshotAttributesInput, optFns ...func(*docdb.Options)) (*docdb.DescribeDBClusterSnapshotAttributesOutput, error)
+	DescribeDBClusterParameters(ctx context.Context, params *docdb.DescribeDBClusterParametersInput, optFns ...func(*docdb.Options)) (*docdb.DescribeDBClusterParametersOutput, error)
+	DescribeDBClusterParameterGroups(ctx context.Context, params *docdb.DescribeDBClusterParameterGroupsInput, optFns ...func(*docdb.Options)) (*docdb.DescribeDBClusterParameterGroupsOutput, error)
+	DescribeCertificates(ctx context.Context, params *docdb.DescribeCertificatesInput, optFns ...func(*docdb.Options)) (*docdb.DescribeCertificatesOutput, error)
+	DescribeDBEngineVersions(ctx context.Context, params *docdb.DescribeDBEngineVersionsInput, optFns ...func(*docdb.Options)) (*docdb.DescribeDBEngineVersionsOutput, error)
+	DescribeDBInstances(ctx context.Context, params *docdb.DescribeDBInstancesInput, optFns ...func(*docdb.Options)) (*docdb.DescribeDBInstancesOutput, error)
+	DescribeDBSubnetGroups(ctx context.Context, params *docdb.DescribeDBSubnetGroupsInput, optFns ...func(*docdb.Options)) (*docdb.DescribeDBSubnetGroupsOutput, error)
+}
+
 //go:generate mockgen -package=mocks -destination=./mocks/mock_dynamodb.go . DynamoDBClient
 type DynamoDBClient interface {
 	ListTables(ctx context.Context, params *dynamodb.ListTablesInput, optFns ...func(*dynamodb.Options)) (*dynamodb.ListTablesOutput, error)
@@ -333,9 +375,21 @@ type Ec2Client interface {
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_ecr.go . EcrClient
 type EcrClient interface {
+	DescribeRegistry(ctx context.Context, params *ecr.DescribeRegistryInput, optFns ...func(*ecr.Options)) (*ecr.DescribeRegistryOutput, error)
 	DescribeRepositories(ctx context.Context, params *ecr.DescribeRepositoriesInput, optFns ...func(*ecr.Options)) (*ecr.DescribeRepositoriesOutput, error)
 	DescribeImages(ctx context.Context, params *ecr.DescribeImagesInput, optFns ...func(*ecr.Options)) (*ecr.DescribeImagesOutput, error)
+	GetRegistryPolicy(ctx context.Context, params *ecr.GetRegistryPolicyInput, optFns ...func(*ecr.Options)) (*ecr.GetRegistryPolicyOutput, error)
 	ListTagsForResource(ctx context.Context, params *ecr.ListTagsForResourceInput, optFns ...func(*ecr.Options)) (*ecr.ListTagsForResourceOutput, error)
+}
+
+//go:generate mockgen -package=mocks -destination=./mocks/mock_ecrpublic.go . EcrPublicClient
+type EcrPublicClient interface {
+	DescribeImageTags(ctx context.Context, params *ecrpublic.DescribeImageTagsInput, optFns ...func(*ecrpublic.Options)) (*ecrpublic.DescribeImageTagsOutput, error)
+	DescribeImages(ctx context.Context, params *ecrpublic.DescribeImagesInput, optFns ...func(*ecrpublic.Options)) (*ecrpublic.DescribeImagesOutput, error)
+	DescribeRegistries(ctx context.Context, params *ecrpublic.DescribeRegistriesInput, optFns ...func(*ecrpublic.Options)) (*ecrpublic.DescribeRegistriesOutput, error)
+	DescribeRepositories(ctx context.Context, params *ecrpublic.DescribeRepositoriesInput, optFns ...func(*ecrpublic.Options)) (*ecrpublic.DescribeRepositoriesOutput, error)
+	GetRepositoryPolicy(ctx context.Context, params *ecrpublic.GetRepositoryPolicyInput, optFns ...func(*ecrpublic.Options)) (*ecrpublic.GetRepositoryPolicyOutput, error)
+	ListTagsForResource(ctx context.Context, params *ecrpublic.ListTagsForResourceInput, optFns ...func(*ecrpublic.Options)) (*ecrpublic.ListTagsForResourceOutput, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_ecs.go . EcsClient
@@ -447,6 +501,16 @@ type FsxClient interface {
 	DescribeSnapshots(ctx context.Context, params *fsx.DescribeSnapshotsInput, optFns ...func(*fsx.Options)) (*fsx.DescribeSnapshotsOutput, error)
 	DescribeStorageVirtualMachines(ctx context.Context, params *fsx.DescribeStorageVirtualMachinesInput, optFns ...func(*fsx.Options)) (*fsx.DescribeStorageVirtualMachinesOutput, error)
 	DescribeVolumes(ctx context.Context, params *fsx.DescribeVolumesInput, optFns ...func(*fsx.Options)) (*fsx.DescribeVolumesOutput, error)
+}
+
+//go:generate mockgen -package=mocks -destination=./mocks/glacier.go . GlacierClient
+type GlacierClient interface {
+	ListVaults(ctx context.Context, params *glacier.ListVaultsInput, optFns ...func(*glacier.Options)) (*glacier.ListVaultsOutput, error)
+	ListTagsForVault(ctx context.Context, params *glacier.ListTagsForVaultInput, optFns ...func(*glacier.Options)) (*glacier.ListTagsForVaultOutput, error)
+	GetVaultAccessPolicy(ctx context.Context, params *glacier.GetVaultAccessPolicyInput, optFns ...func(*glacier.Options)) (*glacier.GetVaultAccessPolicyOutput, error)
+	GetVaultLock(ctx context.Context, params *glacier.GetVaultLockInput, optFns ...func(*glacier.Options)) (*glacier.GetVaultLockOutput, error)
+	GetVaultNotifications(ctx context.Context, params *glacier.GetVaultNotificationsInput, optFns ...func(*glacier.Options)) (*glacier.GetVaultNotificationsOutput, error)
+	GetDataRetrievalPolicy(ctx context.Context, params *glacier.GetDataRetrievalPolicyInput, optFns ...func(*glacier.Options)) (*glacier.GetDataRetrievalPolicyOutput, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/glue.go . GlueClient
@@ -630,6 +694,23 @@ type MQClient interface {
 	DescribeUser(ctx context.Context, params *mq.DescribeUserInput, optFns ...func(*mq.Options)) (*mq.DescribeUserOutput, error)
 	ListBrokers(ctx context.Context, params *mq.ListBrokersInput, optFns ...func(*mq.Options)) (*mq.ListBrokersOutput, error)
 	ListConfigurationRevisions(ctx context.Context, params *mq.ListConfigurationRevisionsInput, optFns ...func(*mq.Options)) (*mq.ListConfigurationRevisionsOutput, error)
+}
+
+//go:generate mockgen -package=mocks -destination=./mocks/mock_neptune.go . NeptuneClient
+type NeptuneClient interface {
+	DescribeDBClusterEndpoints(ctx context.Context, params *neptune.DescribeDBClusterEndpointsInput, optFns ...func(*neptune.Options)) (*neptune.DescribeDBClusterEndpointsOutput, error)
+	DescribeDBClusterParameterGroups(ctx context.Context, params *neptune.DescribeDBClusterParameterGroupsInput, optFns ...func(*neptune.Options)) (*neptune.DescribeDBClusterParameterGroupsOutput, error)
+	DescribeDBClusterParameters(ctx context.Context, params *neptune.DescribeDBClusterParametersInput, optFns ...func(*neptune.Options)) (*neptune.DescribeDBClusterParametersOutput, error)
+	DescribeDBClusterSnapshotAttributes(ctx context.Context, params *neptune.DescribeDBClusterSnapshotAttributesInput, optFns ...func(*neptune.Options)) (*neptune.DescribeDBClusterSnapshotAttributesOutput, error)
+	DescribeDBClusterSnapshots(ctx context.Context, params *neptune.DescribeDBClusterSnapshotsInput, optFns ...func(*neptune.Options)) (*neptune.DescribeDBClusterSnapshotsOutput, error)
+	DescribeDBClusters(ctx context.Context, params *neptune.DescribeDBClustersInput, optFns ...func(*neptune.Options)) (*neptune.DescribeDBClustersOutput, error)
+	DescribeDBInstances(ctx context.Context, params *neptune.DescribeDBInstancesInput, optFns ...func(*neptune.Options)) (*neptune.DescribeDBInstancesOutput, error)
+	DescribeDBParameterGroups(ctx context.Context, params *neptune.DescribeDBParameterGroupsInput, optFns ...func(*neptune.Options)) (*neptune.DescribeDBParameterGroupsOutput, error)
+	DescribeDBParameters(ctx context.Context, params *neptune.DescribeDBParametersInput, optFns ...func(*neptune.Options)) (*neptune.DescribeDBParametersOutput, error)
+	DescribeDBSubnetGroups(ctx context.Context, params *neptune.DescribeDBSubnetGroupsInput, optFns ...func(*neptune.Options)) (*neptune.DescribeDBSubnetGroupsOutput, error)
+	DescribeEventSubscriptions(ctx context.Context, params *neptune.DescribeEventSubscriptionsInput, optFns ...func(*neptune.Options)) (*neptune.DescribeEventSubscriptionsOutput, error)
+	DescribeGlobalClusters(ctx context.Context, params *neptune.DescribeGlobalClustersInput, optFns ...func(*neptune.Options)) (*neptune.DescribeGlobalClustersOutput, error)
+	ListTagsForResource(ctx context.Context, params *neptune.ListTagsForResourceInput, optFns ...func(*neptune.Options)) (*neptune.ListTagsForResourceOutput, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_organizations.go . OrganizationsClient
@@ -819,6 +900,7 @@ type WafRegionalClient interface {
 	GetRuleGroup(ctx context.Context, params *wafregional.GetRuleGroupInput, optFns ...func(*wafregional.Options)) (*wafregional.GetRuleGroupOutput, error)
 	GetWebACL(ctx context.Context, params *wafregional.GetWebACLInput, optFns ...func(*wafregional.Options)) (*wafregional.GetWebACLOutput, error)
 	ListRateBasedRules(ctx context.Context, params *wafregional.ListRateBasedRulesInput, optFns ...func(*wafregional.Options)) (*wafregional.ListRateBasedRulesOutput, error)
+	ListResourcesForWebACL(ctx context.Context, params *wafregional.ListResourcesForWebACLInput, optFns ...func(*wafregional.Options)) (*wafregional.ListResourcesForWebACLOutput, error)
 	ListRuleGroups(ctx context.Context, params *wafregional.ListRuleGroupsInput, optFns ...func(*wafregional.Options)) (*wafregional.ListRuleGroupsOutput, error)
 	ListRules(ctx context.Context, params *wafregional.ListRulesInput, optFns ...func(*wafregional.Options)) (*wafregional.ListRulesOutput, error)
 	ListTagsForResource(ctx context.Context, params *wafregional.ListTagsForResourceInput, optFns ...func(*wafregional.Options)) (*wafregional.ListTagsForResourceOutput, error)

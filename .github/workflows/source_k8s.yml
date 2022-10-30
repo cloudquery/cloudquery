@@ -5,15 +5,20 @@ on:
     paths:
       - "plugins/source/k8s/**"
       - ".github/workflows/source_k8s.yml"
-
-defaults:
-  run:
-    working-directory: ./plugins/source/k8s
+  push:
+    branches:
+      - main
+    paths:
+      - "plugins/source/k8s/**"
+      - ".github/workflows/source_k8s.yml"
 
 jobs:
   plugins-source-k8s:
     name: "plugins/source/k8s"
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./plugins/source/k8s
     steps:
       - uses: actions/checkout@v3
         with:
@@ -37,6 +42,48 @@ jobs:
       - name: Test
         run: make test
       - name: gen-docs
+        if: github.event_name == 'pull_request'
         run: make gen-docs
       - name: Fail if docs are changed
+        if: github.event_name == 'pull_request'
         run: test "$(git status -s ./docs/tables | wc -l)" -eq 0
+      - name: gen-code
+        if: github.event_name == 'pull_request'
+        run: make gen-code
+      - name: Fail if code generation changed services
+        if: github.event_name == 'pull_request'
+        run: test "$(git status -s ./resources/services | wc -l)" -eq 0
+  validate-release:
+    runs-on: ubuntu-latest
+    env:
+      CGO_ENABLED: 0
+    steps:
+      - name: Checkout
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-1.19.1-release-cache-${{ hashFiles('plugins/source/k8s/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-1.19.1-release-cache-plugins-source-k8s
+      - name: Set up Go
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: plugins/source/k8s/go.mod
+      - name: Install GoReleaser
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        uses: goreleaser/goreleaser-action@v3
+        with:
+          distribution: goreleaser-pro
+          version: latest
+          install-only: true
+      - name: Run GoReleaser Dry-Run
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        run: goreleaser release --snapshot --rm-dist --skip-validate --skip-publish --skip-sign -f ./plugins/source/k8s/.goreleaser.yaml
+        env:
+          GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}

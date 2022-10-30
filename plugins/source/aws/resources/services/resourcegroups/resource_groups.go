@@ -9,9 +9,10 @@ import (
 
 func ResourceGroups() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_resourcegroups_resource_groups",
-		Resolver:  fetchResourcegroupsResourceGroups,
-		Multiplex: client.ServiceAccountRegionMultiplexer("resource-groups"),
+		Name:                "aws_resourcegroups_resource_groups",
+		Resolver:            fetchResourcegroupsResourceGroups,
+		PreResourceResolver: getResourceGroup,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("resource-groups"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
