@@ -85,8 +85,13 @@
 | [aws_dynamodb_tables](aws_dynamodb_tables.md) |
 | ↳ [aws_dynamodb_table_replica_auto_scalings](aws_dynamodb_table_replica_auto_scalings.md) |
 | ↳ [aws_dynamodb_table_continuous_backups](aws_dynamodb_table_continuous_backups.md) |
+| [aws_docdb_certificates](aws_docdb_certificates.md) |
+| [aws_docdb_cluster_parameter_groups](aws_docdb_cluster_parameter_groups.md) |
 | [aws_docdb_clusters](aws_docdb_clusters.md) |
 | ↳ [aws_docdb_cluster_snapshots](aws_docdb_cluster_snapshots.md) |
+| ↳ [aws_docdb_instances](aws_docdb_instances.md) |
+| [aws_docdb_engine_versions](aws_docdb_engine_versions.md) |
+| [aws_docdb_subnet_groups](aws_docdb_subnet_groups.md) |
 | [aws_ec2_byoip_cidrs](aws_ec2_byoip_cidrs.md) |
 | [aws_ec2_customer_gateways](aws_ec2_customer_gateways.md) |
 | [aws_ec2_ebs_snapshots](aws_ec2_ebs_snapshots.md) |
@@ -312,6 +317,9 @@
 | [aws_sagemaker_notebook_instances](aws_sagemaker_notebook_instances.md) |
 | [aws_sagemaker_training_jobs](aws_sagemaker_training_jobs.md) |
 | [aws_secretsmanager_secrets](aws_secretsmanager_secrets.md) |
+| [aws_servicecatalog_portfolios](aws_servicecatalog_portfolios.md) |
+| [aws_servicecatalog_products](aws_servicecatalog_products.md) |
+| [aws_servicecatalog_provisioned_products](aws_servicecatalog_provisioned_products.md) |
 | [aws_ses_templates](aws_ses_templates.md) |
 | [aws_shield_attacks](aws_shield_attacks.md) |
 | [aws_shield_protection_groups](aws_shield_protection_groups.md) |
