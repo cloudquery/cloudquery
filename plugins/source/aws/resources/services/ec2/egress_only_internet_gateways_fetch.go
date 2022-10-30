@@ -37,7 +37,7 @@ func resolveEgressOnlyInternetGatewaysArn(_ context.Context, meta schema.ClientM
 		Service:   "ec2",
 		Region:    cl.Region,
 		AccountID: cl.AccountID,
-		Resource:  "egress_only_internet_gateway/" + aws.ToString(item.EgressOnlyInternetGatewayId),
+		Resource:  "egress-only-internet-gateway/" + aws.ToString(item.EgressOnlyInternetGatewayId),
 	}
 	return resource.Set(c.Name, a.String())
 }

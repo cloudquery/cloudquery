@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v1.2.7...plugins-destination-test-v1.2.8) (2022-10-27)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for test to v0.13.14 ([#3250](https://github.com/cloudquery/cloudquery/issues/3250)) ([31dbfa0](https://github.com/cloudquery/cloudquery/commit/31dbfa0385f5129a6000e9c7a0e209209807432d))
+
 ## [1.2.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v1.2.6...plugins-destination-test-v1.2.7) (2022-10-20)
 
 
