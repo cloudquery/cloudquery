@@ -30,6 +30,7 @@ func DocumentDBResources() []*Resource {
 				}...),
 			Relations: []string{
 				"ClusterSnapshots()",
+				"Instances()",
 			},
 		},
 		{
@@ -55,6 +56,117 @@ func DocumentDBResources() []*Resource {
 						Name:     "attributes",
 						Type:     schema.TypeJSON,
 						Resolver: `resolveDocdbClusterSnapshotAttributes`,
+					},
+				}...),
+		},
+		{
+			SubService:  "cluster_parameter_groups",
+			Struct:      &types.DBClusterParameterGroup{},
+			Description: "https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBClusterParameterGroup.html",
+			SkipFields:  []string{"DBClusterParameterGroupArn"},
+			ExtraColumns: append(
+				defaultRegionalColumns,
+				[]codegen.ColumnDefinition{
+					{
+						Name:     "tags",
+						Type:     schema.TypeJSON,
+						Resolver: `resolveDBClusterParameterGroupTags`,
+					},
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("DBClusterParameterGroupArn")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+					{
+						Name:     "parameters",
+						Type:     schema.TypeJSON,
+						Resolver: `resolveDocdbClusterParameterGroupParameters`,
+					},
+				}...),
+		},
+		{
+			SubService:  "certificates",
+			Struct:      &types.Certificate{},
+			Description: "https://docs.aws.amazon.com/documentdb/latest/developerguide/API_Certificate.html",
+			SkipFields:  []string{"CertificateArn"},
+			ExtraColumns: append(
+				defaultRegionalColumns,
+				[]codegen.ColumnDefinition{
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("CertificateArn")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				}...),
+		},
+		{
+			SubService:  "engine_versions",
+			Struct:      &types.DBEngineVersion{},
+			Description: "https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBEngineVersion.html",
+			Multiplex:   `client.AccountMultiplex`,
+			SkipFields:  []string{"Engine", "EngineVersion"},
+			ExtraColumns: []codegen.ColumnDefinition{
+				{
+					Name:     "account_id",
+					Type:     schema.TypeString,
+					Resolver: "client.ResolveAWSAccount",
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+				{
+					Name:     "engine",
+					Type:     schema.TypeString,
+					Resolver: `schema.PathResolver("Engine")`,
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+				{
+					Name:     "engine_version",
+					Type:     schema.TypeString,
+					Resolver: `schema.PathResolver("EngineVersion")`,
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+			},
+		},
+		{
+			SubService:  "instances",
+			Struct:      &types.DBInstance{},
+			Description: "https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBInstance.html",
+			SkipFields:  []string{"DBInstanceArn"},
+			ExtraColumns: append(
+				defaultRegionalColumns,
+				[]codegen.ColumnDefinition{
+					{
+						Name:     "tags",
+						Type:     schema.TypeJSON,
+						Resolver: `resolveDBInstanceTags`,
+					},
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("DBInstanceArn")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				}...),
+		},
+		{
+			SubService:  "subnet_groups",
+			Struct:      &types.DBSubnetGroup{},
+			Description: "https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBSubnetGroup.html",
+			SkipFields:  []string{"DBSubnetGroupArn"},
+			ExtraColumns: append(
+				defaultRegionalColumns,
+				[]codegen.ColumnDefinition{
+					{
+						Name:     "tags",
+						Type:     schema.TypeJSON,
+						Resolver: `resolveDBSubnetGroupTags`,
+					},
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("DBSubnetGroupArn")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
 				}...),
 		},

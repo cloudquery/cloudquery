@@ -43,6 +43,16 @@ func buildClustersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
+	var ev docdb.DescribeDBInstancesOutput
+	if err := faker.FakeObject(&ev); err != nil {
+		t.Fatal(err)
+	}
+	ev.Marker = nil
+	m.EXPECT().DescribeDBInstances(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&ev,
+		nil,
+	)
+
 	var tags docdb.ListTagsForResourceOutput
 	if err := faker.FakeObject(&tags); err != nil {
 		t.Fatal(err)
