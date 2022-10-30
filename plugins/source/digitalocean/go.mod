@@ -8,7 +8,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/config v1.8.0
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.27.1
 	github.com/aws/smithy-go v1.13.3
-	github.com/cloudquery/plugin-sdk v0.13.14
+	github.com/cloudquery/plugin-sdk v0.13.15
 	github.com/digitalocean/godo v1.81.0
 	github.com/gertd/go-pluralize v0.2.1
 	github.com/golang/mock v1.6.0
@@ -16,8 +16,6 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/rs/zerolog v1.28.0
 )
-
-replace github.com/cloudquery/plugin-sdk => ../../../../plugin-sdk-split
 
 require (
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.3 // indirect

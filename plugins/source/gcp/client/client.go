@@ -46,7 +46,7 @@ func isValidJson(content []byte) error {
 	return nil
 }
 
-func (c *Client) Name() string {
+func (c *Client) ID() string {
 	return c.ProjectId
 }
 

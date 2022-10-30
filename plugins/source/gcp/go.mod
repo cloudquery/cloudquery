@@ -18,7 +18,7 @@ require (
 	cloud.google.com/go/secretmanager v1.7.0
 	cloud.google.com/go/serviceusage v1.2.0
 	cloud.google.com/go/storage v1.27.0
-	github.com/cloudquery/plugin-sdk v0.13.14
+	github.com/cloudquery/plugin-sdk v0.13.15
 	github.com/golang/mock v1.6.0
 	github.com/iancoleman/strcase v0.2.0
 	github.com/julienschmidt/httprouter v1.3.0
@@ -32,8 +32,6 @@ require (
 	google.golang.org/grpc v1.49.0
 	google.golang.org/protobuf v1.28.1
 )
-
-replace github.com/cloudquery/plugin-sdk => ../../../../plugin-sdk-split
 
 require (
 	cloud.google.com/go v0.104.0 // indirect

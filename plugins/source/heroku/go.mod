@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/heroku
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v0.13.14
+	github.com/cloudquery/plugin-sdk v0.13.15
 	github.com/google/go-cmp v0.5.9
 	github.com/googleapis/gax-go/v2 v2.4.0
 	github.com/heroku/heroku-go/v5 v5.4.1
@@ -15,8 +15,6 @@ require (
 	google.golang.org/api v0.90.0
 	google.golang.org/grpc v1.49.0
 )
-
-replace github.com/cloudquery/plugin-sdk => ../../../../plugin-sdk-split
 
 require (
 	cloud.google.com/go/compute v1.7.0 // indirect

@@ -11,12 +11,10 @@ require (
 )
 
 require (
-	github.com/cloudquery/plugin-sdk v0.13.14
+	github.com/cloudquery/plugin-sdk v0.13.15
 	github.com/golang/mock v1.6.0
 	github.com/rs/zerolog v1.28.0
 )
-
-replace github.com/cloudquery/plugin-sdk => ../../../../plugin-sdk-split
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
