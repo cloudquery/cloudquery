@@ -23,7 +23,7 @@ func Droplets() *schema.Table {
 			},
 			{
 				Name:     "volume_ids",
-				Type:     schema.TypeIntArray,
+				Type:     schema.TypeStringArray,
 				Resolver: schema.PathResolver("VolumeIDs"),
 			},
 			{

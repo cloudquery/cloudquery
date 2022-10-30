@@ -2,13 +2,13 @@ package iam
 
 import (
 	"context"
-	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/iam/models"
+	"github.com/cloudquery/plugin-sdk/cqtypes"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -74,16 +74,16 @@ func fetchIamUserAccessKeys(ctx context.Context, meta schema.ClientMeta, parent 
 		for i, key := range output.AccessKeyMetadata {
 			switch i {
 			case 0:
-				rotated := parent.Get("access_key_1_last_rotated")
+				rotated := parent.Get("access_key_1_last_rotated").(*cqtypes.Timestamptz)
 				if rotated != nil {
-					keys[i] = models.AccessKeyWrapper{AccessKeyMetadata: key, LastRotated: rotated.(time.Time)}
+					keys[i] = models.AccessKeyWrapper{AccessKeyMetadata: key, LastRotated: rotated.Time}
 				} else {
 					keys[i] = models.AccessKeyWrapper{AccessKeyMetadata: key, LastRotated: *key.CreateDate}
 				}
 			case 1:
-				rotated := parent.Get("access_key_2_last_rotated")
+				rotated := parent.Get("access_key_2_last_rotated").(*cqtypes.Timestamptz)
 				if rotated != nil {
-					keys[i] = models.AccessKeyWrapper{AccessKeyMetadata: key, LastRotated: rotated.(time.Time)}
+					keys[i] = models.AccessKeyWrapper{AccessKeyMetadata: key, LastRotated: rotated.Time}
 				} else {
 					keys[i] = models.AccessKeyWrapper{AccessKeyMetadata: key, LastRotated: *key.CreateDate}
 				}
