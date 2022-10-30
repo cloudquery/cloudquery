@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/aws/aws-sdk-go-v2/service/docdb"
 	"strings"
 	"time"
 
@@ -38,6 +37,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/databasemigrationservice"
 	"github.com/aws/aws-sdk-go-v2/service/dax"
 	"github.com/aws/aws-sdk-go-v2/service/directconnect"
+	"github.com/aws/aws-sdk-go-v2/service/docdb"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
@@ -79,6 +79,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3control"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
+	"github.com/aws/aws-sdk-go-v2/service/servicecatalog"
+	"github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry"
 	"github.com/aws/aws-sdk-go-v2/service/sesv2"
 	"github.com/aws/aws-sdk-go-v2/service/shield"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
@@ -198,6 +200,8 @@ type Services struct {
 	S3Manager              S3ManagerClient
 	SageMaker              SageMakerClient
 	SecretsManager         SecretsManagerClient
+	ServiceCatalog         ServiceCatalogClient
+	ServiceCatalogAR       ServiceCatalogAppRegistryClient
 	SES                    SESClient
 	Shield                 ShieldClient
 	SNS                    SnsClient
@@ -298,8 +302,7 @@ func (c *Client) Logger() *zerolog.Logger {
 	return &c.logger
 }
 
-// Identify the given client
-func (c *Client) Identify() string {
+func (c *Client) ID() string {
 	return strings.TrimRight(strings.Join([]string{
 		c.AccountID,
 		c.Region,
@@ -678,6 +681,8 @@ func initServices(region string, c aws.Config) Services {
 		S3Manager:              newS3ManagerFromConfig(awsCfg),
 		SageMaker:              sagemaker.NewFromConfig(awsCfg),
 		SecretsManager:         secretsmanager.NewFromConfig(awsCfg),
+		ServiceCatalog:         servicecatalog.NewFromConfig(awsCfg),
+		ServiceCatalogAR:       servicecatalogappregistry.NewFromConfig(awsCfg),
 		SES:                    sesv2.NewFromConfig(awsCfg),
 		Shield:                 shield.NewFromConfig(awsCfg),
 		SNS:                    sns.NewFromConfig(awsCfg),
