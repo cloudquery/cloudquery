@@ -10,7 +10,7 @@ require (
 	github.com/Azure/go-autorest/autorest v0.11.28
 	github.com/Azure/go-autorest/autorest/azure/auth v0.5.11
 	github.com/Azure/go-autorest/autorest/date v0.3.0
-	github.com/cloudquery/plugin-sdk v0.13.14
+	github.com/cloudquery/plugin-sdk v0.13.15
 	github.com/gertd/go-pluralize v0.2.1
 	github.com/gofrs/uuid v4.3.0+incompatible
 	github.com/golang/mock v1.6.0
@@ -21,8 +21,6 @@ require (
 	github.com/tombuildsstuff/giovanni v0.20.0
 	golang.org/x/exp v0.0.0-20221002003631-540bb7301a08
 )
-
-replace github.com/cloudquery/plugin-sdk => ../../../../plugin-sdk-split
 
 require github.com/kylelemons/godebug v1.1.0 // indirect
 
