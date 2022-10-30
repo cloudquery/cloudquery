@@ -5,6 +5,13 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0](https://github.com/cloudquery/cloudquery/compare/cli-v1.3.8...cli-v1.4.0) (2022-10-30)
+
+
+### Features
+
+* Add migrate command and --no-migrate option to sync ([#3169](https://github.com/cloudquery/cloudquery/issues/3169)) ([b56be8b](https://github.com/cloudquery/cloudquery/commit/b56be8bb6f526cb767ef5648a262ddae1eebfb36))
+
 ## [1.3.8](https://github.com/cloudquery/cloudquery/compare/cli-v1.3.7...cli-v1.3.8) (2022-10-27)
 
 

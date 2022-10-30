@@ -55,7 +55,7 @@ var iamResources = []*Resource{
 				Resolver: `schema.ParentColumnResolver("unique_id")`,
 			},
 		},
-		SkipFields: []string{"ProjectId"},
+		SkipFields: []string{"ProjectId", "PrivateKeyData"},
 		SkipMock:   true,
 	},
 }

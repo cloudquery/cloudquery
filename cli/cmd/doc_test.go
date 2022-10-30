@@ -8,6 +8,7 @@ import (
 var docFiles = []string{
 	"cloudquery.md",
 	"cloudquery_sync.md",
+	"cloudquery_migrate.md",
 }
 
 func TestDoc(t *testing.T) {
