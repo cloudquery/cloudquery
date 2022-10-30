@@ -22,10 +22,7 @@ func fetchIdentitystoreUsers(ctx context.Context, meta schema.ClientMeta, parent
 		if err != nil {
 			return err
 		}
-		for _, user := range response.Users {
-			res <- user
-			//iam_users <- user
-		}
+		res <- response.Users
 
 		if aws.ToString(response.NextToken) == "" {
 			break
