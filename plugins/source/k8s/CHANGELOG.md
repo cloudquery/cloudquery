@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v2.1.1...plugins-source-k8s-v2.1.2) (2022-10-30)
+
+
+### Bug Fixes
+
+* **k8s:** Migrate Grafana dashboards ([#2638](https://github.com/cloudquery/cloudquery/issues/2638)) ([38af08e](https://github.com/cloudquery/cloudquery/commit/38af08eaa216145ffe58407bbfdc4403f58e8167))
+
 ## [2.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v2.1.0...plugins-source-k8s-v2.1.1) (2022-10-27)
 
 
