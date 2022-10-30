@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestSync(t *testing.T) {
+func TestMigrate(t *testing.T) {
 	t.Cleanup(func() {
 		os.RemoveAll("cloudquery.log")
 	})
@@ -16,7 +16,7 @@ func TestSync(t *testing.T) {
 	currentDir := path.Dir(filename)
 	testDataDir := path.Join(currentDir, "testdata")
 	cmd := NewCmdRoot()
-	cmd.SetArgs([]string{"sync", testDataDir})
+	cmd.SetArgs([]string{"migrate", testDataDir})
 	if err := cmd.Execute(); err != nil {
 		t.Fatal(err)
 	}

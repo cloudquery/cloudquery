@@ -68,6 +68,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3control"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
+	"github.com/aws/aws-sdk-go-v2/service/servicecatalog"
+	"github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry"
 	"github.com/aws/aws-sdk-go-v2/service/sesv2"
 	"github.com/aws/aws-sdk-go-v2/service/shield"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
@@ -835,6 +837,18 @@ type SecretsManagerClient interface {
 	DescribeSecret(ctx context.Context, params *secretsmanager.DescribeSecretInput, optFns ...func(*secretsmanager.Options)) (*secretsmanager.DescribeSecretOutput, error)
 	GetResourcePolicy(ctx context.Context, params *secretsmanager.GetResourcePolicyInput, optFns ...func(*secretsmanager.Options)) (*secretsmanager.GetResourcePolicyOutput, error)
 	ListSecrets(ctx context.Context, params *secretsmanager.ListSecretsInput, optFns ...func(*secretsmanager.Options)) (*secretsmanager.ListSecretsOutput, error)
+}
+
+//go:generate mockgen -package=mocks -destination=./mocks/mock_service_catalog.go . ServiceCatalogClient
+type ServiceCatalogClient interface {
+	ListPortfolios(ctx context.Context, input *servicecatalog.ListPortfoliosInput, optFns ...func(*servicecatalog.Options)) (*servicecatalog.ListPortfoliosOutput, error)
+	SearchProductsAsAdmin(ctx context.Context, params *servicecatalog.SearchProductsAsAdminInput, optFns ...func(*servicecatalog.Options)) (*servicecatalog.SearchProductsAsAdminOutput, error)
+	SearchProvisionedProducts(ctx context.Context, params *servicecatalog.SearchProvisionedProductsInput, optFns ...func(*servicecatalog.Options)) (*servicecatalog.SearchProvisionedProductsOutput, error)
+}
+
+//go:generate mockgen -package=mocks -destination=./mocks/mock_service_catalog_app_registry.go . ServiceCatalogAppRegistryClient
+type ServiceCatalogAppRegistryClient interface {
+	ListTagsForResource(ctx context.Context, params *servicecatalogappregistry.ListTagsForResourceInput, optFns ...func(*servicecatalogappregistry.Options)) (*servicecatalogappregistry.ListTagsForResourceOutput, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/ses.go . SESClient

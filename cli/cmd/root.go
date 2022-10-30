@@ -126,7 +126,11 @@ func NewCmdRoot() *cobra.Command {
 	cmd.PersistentFlags().Var(telemetryLevel, "telemetry-level", "Telemetry level (none, errors, stats, all)")
 
 	cmd.SetHelpCommand(&cobra.Command{Hidden: true})
-	cmd.AddCommand(NewCmdSync(), newCmdDoc())
+	cmd.AddCommand(
+		NewCmdSync(),
+		NewCmdMigrate(),
+		newCmdDoc(),
+	)
 	cmd.CompletionOptions.HiddenDefaultCmd = true
 	cmd.DisableAutoGenTag = true
 
