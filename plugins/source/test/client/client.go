@@ -16,7 +16,7 @@ func (*TestClient) Logger() *zerolog.Logger {
 	return &log.Logger
 }
 
-func (*TestClient) Name() string {
+func (*TestClient) ID() string {
 	return "TestClient"
 }
 
