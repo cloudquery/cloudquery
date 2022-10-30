@@ -9,9 +9,10 @@ import (
 
 func RouteTables() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_ec2_route_tables",
-		Resolver:  fetchEc2RouteTables,
-		Multiplex: client.ServiceAccountRegionMultiplexer("ec2"),
+		Name:        "aws_ec2_route_tables",
+		Description: "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_RouteTable.html",
+		Resolver:    fetchEc2RouteTables,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -30,6 +31,11 @@ func RouteTables() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "associations",
@@ -55,11 +61,6 @@ func RouteTables() *schema.Table {
 				Name:     "routes",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Routes"),
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
 			},
 			{
 				Name:     "vpc_id",

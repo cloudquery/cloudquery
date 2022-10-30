@@ -1,21 +1,26 @@
 # Table: azure_sql_databases
 
 
+
 The primary key for this table is **id**.
 
 ## Relations
-This table depends on [`azure_sql_servers`](azure_sql_servers.md).
-The following tables depend on `azure_sql_databases`:
-  - [`azure_sql_database_blob_auditing_policies`](azure_sql_database_blob_auditing_policies.md)
-  - [`azure_sql_database_vulnerability_assessments`](azure_sql_database_vulnerability_assessments.md)
-  - [`azure_sql_database_vulnerability_assessment_scans`](azure_sql_database_vulnerability_assessment_scans.md)
-  - [`azure_sql_backup_long_term_retention_policies`](azure_sql_backup_long_term_retention_policies.md)
-  - [`azure_sql_database_threat_detection_policies`](azure_sql_database_threat_detection_policies.md)
-  - [`azure_sql_transparent_data_encryptions`](azure_sql_transparent_data_encryptions.md)
+This table depends on [azure_sql_servers](azure_sql_servers.md).
+The following tables depend on azure_sql_databases:
+  - [azure_sql_database_blob_auditing_policies](azure_sql_database_blob_auditing_policies.md)
+  - [azure_sql_database_vulnerability_assessments](azure_sql_database_vulnerability_assessments.md)
+  - [azure_sql_database_vulnerability_assessment_scans](azure_sql_database_vulnerability_assessment_scans.md)
+  - [azure_sql_backup_long_term_retention_policies](azure_sql_backup_long_term_retention_policies.md)
+  - [azure_sql_database_threat_detection_policies](azure_sql_database_threat_detection_policies.md)
+  - [azure_sql_transparent_data_encryptions](azure_sql_transparent_data_encryptions.md)
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |subscription_id|String|
 |sql_server_id|String|
 |sku|JSON|
@@ -60,5 +65,3 @@ The following tables depend on `azure_sql_databases`:
 |id (PK)|String|
 |name|String|
 |type|String|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

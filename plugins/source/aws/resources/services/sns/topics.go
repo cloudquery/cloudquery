@@ -9,9 +9,10 @@ import (
 
 func Topics() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_sns_topics",
-		Resolver:  fetchSnsTopics,
-		Multiplex: client.ServiceAccountRegionMultiplexer("sns"),
+		Name:                "aws_sns_topics",
+		Resolver:            fetchSnsTopics,
+		PreResourceResolver: getTopic,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("sns"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -38,8 +39,18 @@ func Topics() *schema.Table {
 			},
 			{
 				Name:     "delivery_policy",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("DeliveryPolicy"),
+				Type:     schema.TypeJSON,
+				Resolver: client.MarshaledJsonResolver("DeliveryPolicy"),
+			},
+			{
+				Name:     "policy",
+				Type:     schema.TypeJSON,
+				Resolver: client.MarshaledJsonResolver("Policy"),
+			},
+			{
+				Name:     "effective_delivery_policy",
+				Type:     schema.TypeJSON,
+				Resolver: client.MarshaledJsonResolver("EffectiveDeliveryPolicy"),
 			},
 			{
 				Name:     "display_name",
@@ -50,11 +61,6 @@ func Topics() *schema.Table {
 				Name:     "owner",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Owner"),
-			},
-			{
-				Name:     "policy",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Policy"),
 			},
 			{
 				Name:     "subscriptions_confirmed",
@@ -70,11 +76,6 @@ func Topics() *schema.Table {
 				Name:     "subscriptions_pending",
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("SubscriptionsPending"),
-			},
-			{
-				Name:     "effective_delivery_policy",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("EffectiveDeliveryPolicy"),
 			},
 			{
 				Name:     "kms_master_key_id",

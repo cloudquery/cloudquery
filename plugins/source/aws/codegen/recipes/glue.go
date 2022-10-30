@@ -284,9 +284,10 @@ func GlueResources() []*Resource {
 			},
 		},
 		{
-			SubService: "registry_schemas",
-			Struct:     &glue.GetSchemaOutput{},
-			SkipFields: []string{"SchemaArn"},
+			SubService:          "registry_schemas",
+			Struct:              &glue.GetSchemaOutput{},
+			SkipFields:          []string{"SchemaArn"},
+			PreResourceResolver: "getRegistrySchema",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -306,9 +307,10 @@ func GlueResources() []*Resource {
 			},
 		},
 		{
-			SubService: "registry_schema_versions",
-			Struct:     &glue.GetSchemaVersionOutput{},
-			SkipFields: []string{},
+			SubService:          "registry_schema_versions",
+			Struct:              &glue.GetSchemaVersionOutput{},
+			SkipFields:          []string{},
+			PreResourceResolver: "getRegistrySchemaVersion",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -349,9 +351,10 @@ func GlueResources() []*Resource {
 			},
 		},
 		{
-			SubService: "triggers",
-			Struct:     &types.Trigger{},
-			SkipFields: []string{},
+			SubService:          "triggers",
+			Struct:              &types.Trigger{},
+			SkipFields:          []string{},
+			PreResourceResolver: "getTrigger",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -369,9 +372,10 @@ func GlueResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "workflows",
-			Struct:     &types.Workflow{},
-			SkipFields: []string{},
+			SubService:          "workflows",
+			Struct:              &types.Workflow{},
+			SkipFields:          []string{},
+			PreResourceResolver: "getWorkflow",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

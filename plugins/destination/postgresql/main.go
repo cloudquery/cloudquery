@@ -2,6 +2,8 @@ package main
 
 import (
 	"github.com/cloudquery/cloudquery/plugins/destination/postgresql/client"
+	"github.com/cloudquery/cloudquery/plugins/destination/postgresql/resources/plugin"
+	"github.com/cloudquery/plugin-sdk/plugins"
 	"github.com/cloudquery/plugin-sdk/serve"
 )
 
@@ -10,5 +12,6 @@ const (
 )
 
 func main() {
-	serve.Destination(client.New(), serve.WithDestinationSentryDSN(sentryDSN))
+	p := plugins.NewDestinationPlugin("postgresql", plugin.Version, client.New)
+	serve.Destination(p, serve.WithDestinationSentryDSN(sentryDSN))
 }

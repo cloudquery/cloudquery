@@ -1,62 +1,32 @@
-import { Callout } from 'nextra-theme-docs'
+---
+title: Telemetry
+---
 
-# Telemetry and Crash Reporting
+# Telemetry
 
-CloudQuery collects anonymized usage statistics and crash reports. Crash reports help us iron out any issues.
+By default, the CloudQuery CLI collects some anonymous usage data. There are two types of data we collect: **errors** and **stats**. These are described below. The [Controlling what is sent](#controlling-what-is-sent) section describes how to control what you send to CloudQuery. 
+ 
+## Errors
 
-## What is Stored
+Errors are stack traces sent whenever a panic occurs in the CLI or an official plugin. Having this data allows us to be notified when there is a bug that needs to be prioritized.    
+ 
+## Stats
 
-- Which operation (fetch, policy, etc.) was executed
-- How long the operation took and whether it succeeded
-- Whether you're running CloudQuery in a CI environment
-- CloudQuery version used, build-date and commit id
-- Installed CloudQuery providers on your system along with their versions
-- Version and build date of the `cloudquery` binary you're using
-- Basic data about which part of the operation took (fetch duration, resource fetch duration, etc')
+Stats data are numbers about the sync that was performed, such as the number of errors and number of resources fetched, as well as the plugin versions used. These are sent at the end of a sync. They contain no identifying information. We use this data to understand which plugins are being used and how much, which helps guide our roadmap and development efforts.  
 
-### For vague identification purposes
+## Controlling what is sent
 
-- A randomly generated UUID, persisted across sessions
-- A SHA1 hash of your: IP address, MAC addresses, Configuration and hostname
-- Your Postgres database instance id, this is a unique generated ID created by your database.
-- Your vague geographic location based on the IP address
+The CLI supports two methods of controlling the telemetry that gets sent to CloudQuery.
 
-This does not allow us to track individual users but does enable us to accurately measure user counts vs. invocation counts.
+### Command-line Flag
 
-<Callout type="info">
+The `--telemetry-level` can be passed to the `cloudquery` CLI. It supports four options: `none`, `stats`, `errors`, `all` (default).
 
-The random ID is stored in the `.cq/telemetry-random-id` file. If you wish to anonymize your requests further but still keep sending us usage statistics, you could remove this file before every invocation (or create a directory with the same name, which also stops the file from getting created)
+### Environment Variable
 
-</Callout>
+A `CQ_TELEMETRY_LEVEL` environment variable can also be used to control the telemetry being sent. It supports the same options as the `--telemetry-level` flag.
 
-### Collector
+### More Information
 
-- We use the [rudder](https://www.rudderstack.com/) collector to send usage analytics.
+See the [`cloudquery` command reference](reference/cli/cloudquery) for all available command-line options.
 
-## What is NOT Stored
-
-- We don't store your IP address directly
-- We don't store any of the command arguments or options (as they might contain sensitive information)
-- We don't store any credentials
-- We don't store any logs
-
-## Inspecting Telemetry Contents
-
-To check what kind of data is collected, invoke the `cloudquery` executable with the `--inspect-telemetry` option. This will stop sending telemetry information and write it data to the log file, by default it should be in `cloudquery.log`. You can then inspect analytics log event contents and decide whether to opt-out or not.
-
-```bash
-# Invoke CloudQuery
-cloudquery --inspect-telemetry [operation] [arguments]
-```
-
-## Opting out of Telemetry
-
-To opt out of telemetry, simply invoke `cloudquery` executable with the `--no-telemetry` option, or set the `CQ_NO_TELEMETRY` environment variable.
-
-```bash
-# Set the environment variable
-export CQ_NO_TELEMETRY=1
-
-# Invoke CloudQuery. No telemetry information or crash reports will be sent
-cloudquery [operation] [arguments]
-```

@@ -1,4 +1,5 @@
 # Table: heroku_invoices
+
 https://devcenter.heroku.com/articles/platform-api-reference#invoice-attributes
 
 The primary key for this table is **id**.
@@ -7,6 +8,10 @@ The primary key for this table is **id**.
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |charges_total|Float|
 |created_at|Timestamp|
 |credits_total|Float|
@@ -17,5 +22,3 @@ The primary key for this table is **id**.
 |state|Int|
 |total|Float|
 |updated_at|Timestamp|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

@@ -2,7 +2,7 @@
 This guide summarizes schema changes from CloudQuery v0 to v1. It is automatically generated and
 not guaranteed to be complete, but we hope it helps as a starting point and reference when migrating to v1.
 
-Last updated 2022-09-26.
+Last updated 2022-10-06.
 
 ## gcp_bigquery_dataset_accesses
 Moved to JSON column on [gcp_bigquery_datasets](#gcp_bigquery_datasets)
@@ -24,8 +24,10 @@ Moved to JSON column on [gcp_bigquery_datasets](#gcp_bigquery_datasets)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |access|jsonb|added|
 |dataset_reference|jsonb|added|
 |default_collation|text|added|
@@ -40,6 +42,10 @@ This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
+|_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |project_id|text|added|
 |clone_definition|jsonb|added|
 |clustering|jsonb|added|
@@ -81,34 +87,36 @@ This table was newly added.
 |time_partitioning|jsonb|added|
 |type|text|added|
 |view|jsonb|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## gcp_billing_billing_accounts
 This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
+|_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |project_id|text|added|
 |name|text|added|
 |open|boolean|added|
 |display_name|text|added|
 |master_billing_account|text|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## gcp_billing_services
 This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
+|_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |project_id|text|added|
 |name|text|added|
 |service_id|text|added|
 |display_name|text|added|
 |business_entity_name|text|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## gcp_cloudbilling_accounts
 This table was removed.
@@ -186,8 +194,10 @@ This table was removed.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |id|bigint|updated|Type changed from text to bigint
 
 ## gcp_compute_autoscaler_custom_metric_utilizations
@@ -198,8 +208,10 @@ Moved to JSON column on [gcp_compute_autoscalers](#gcp_compute_autoscalers)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |autoscaling_policy|jsonb|added|
 |cool_down_period_sec|bigint|removed|
 |cpu_utilization_predictive_method|text|removed|
@@ -223,8 +235,10 @@ Moved to JSON column on [gcp_compute_backend_services](#gcp_compute_backend_serv
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |backends|jsonb|added|
 |cdn_policy|jsonb|added|
 |cdn_policy_bypass_cache_on_request_headers|text[]|removed|
@@ -302,8 +316,10 @@ Moved to JSON column on [gcp_compute_backend_services](#gcp_compute_backend_serv
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |deprecated|jsonb|updated|Type changed from text to jsonb
 |deprecated_deleted|text|removed|
 |deprecated_obsolete|text|removed|
@@ -315,8 +331,10 @@ Moved to JSON column on [gcp_compute_backend_services](#gcp_compute_backend_serv
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |architecture|text|added|
 |disk_encryption_key|jsonb|added|
 |disk_encryption_key_kms_key_name|text|removed|
@@ -350,8 +368,10 @@ Moved to JSON column on [gcp_compute_firewalls](#gcp_compute_firewalls)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |allowed|jsonb|added|
 |denied|jsonb|added|
 |id|bigint|updated|Type changed from text to bigint
@@ -363,8 +383,10 @@ Moved to JSON column on [gcp_compute_firewalls](#gcp_compute_firewalls)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |id|bigint|updated|Type changed from text to bigint
 |metadata_filters|jsonb|added|
 |no_automate_dns_zone|boolean|added|
@@ -375,8 +397,10 @@ Moved to JSON column on [gcp_compute_firewalls](#gcp_compute_firewalls)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |architecture|text|added|
 |deprecated|jsonb|updated|Type changed from text to jsonb
 |deprecated_deleted|text|removed|
@@ -425,8 +449,10 @@ Moved to JSON column on [gcp_compute_instances](#gcp_compute_instances)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |creation_timestamp|text|updated|Type changed from timestamp without time zone to text
 |id|bigint|updated|Type changed from text to bigint
 
@@ -454,8 +480,10 @@ Moved to JSON column on [gcp_compute_instances](#gcp_compute_instances)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |advanced_machine_features|jsonb|added|
 |advanced_machine_features_enable_nested_virtualization|boolean|removed|
 |confidential_instance_config|jsonb|added|
@@ -507,8 +535,10 @@ Moved to JSON column on [gcp_compute_interconnects](#gcp_compute_interconnects)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |circuit_infos|jsonb|added|
 |expected_outages|jsonb|added|
 |id|bigint|updated|Type changed from text to bigint
@@ -522,8 +552,10 @@ Moved to JSON column on [gcp_compute_networks](#gcp_compute_networks)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |enable_ula_internal_ipv6|boolean|added|
 |firewall_policy|text|added|
 |gateway_ip_v4|text|removed|
@@ -546,8 +578,10 @@ Moved to JSON column on [gcp_compute_projects](#gcp_compute_projects)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |common_instance_metadata|jsonb|added|
 |common_instance_metadata_fingerprint|text|removed|
 |common_instance_metadata_items|jsonb|removed|
@@ -564,8 +598,10 @@ Moved to JSON column on [gcp_compute_projects](#gcp_compute_projects)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |id|bigint|updated|Type changed from text to bigint
 |managed|jsonb|added|
 |managed_domain_status|jsonb|removed|
@@ -579,8 +615,10 @@ Moved to JSON column on [gcp_compute_projects](#gcp_compute_projects)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |creation_timestamp|text|updated|Type changed from timestamp without time zone to text
 |id|bigint|updated|Type changed from text to bigint
 |region|text|added|
@@ -598,8 +636,10 @@ Moved to JSON column on [gcp_compute_subnetworks](#gcp_compute_subnetworks)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |external_ipv6_prefix|text|added|
 |id|bigint|updated|Type changed from text to bigint
 |internal_ipv6_prefix|text|added|
@@ -618,8 +658,10 @@ Moved to JSON column on [gcp_compute_subnetworks](#gcp_compute_subnetworks)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |creation_timestamp|text|updated|Type changed from timestamp without time zone to text
 |id|bigint|updated|Type changed from text to bigint
 
@@ -631,8 +673,10 @@ This table was removed.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |certificate_map|text|added|
 |creation_timestamp|text|updated|Type changed from timestamp without time zone to text
 |id|bigint|updated|Type changed from text to bigint
@@ -657,8 +701,10 @@ Moved to JSON column on [gcp_compute_url_maps](#gcp_compute_url_maps)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |cors_policy_allow_credentials|boolean|removed|
 |cors_policy_allow_headers|text[]|removed|
 |cors_policy_allow_methods|text[]|removed|
@@ -709,8 +755,10 @@ Moved to JSON column on [gcp_compute_vpn_gateways](#gcp_compute_vpn_gateways)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |id|bigint|updated|Type changed from text to bigint
 |stack_type|text|added|
 |vpn_interfaces|jsonb|added|
@@ -720,6 +768,10 @@ This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
+|_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |project_id|text|added|
 |self_link|text|added|
 |name|text|added|
@@ -782,8 +834,6 @@ This table was newly added.
 |logging_config|jsonb|added|
 |monitoring_config|jsonb|added|
 |node_pool_auto_config|jsonb|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## gcp_dns_managed_zone_dnssec_config_default_key_specs
 Moved to JSON column on [gcp_dns_managed_zones](#gcp_dns_managed_zones)
@@ -801,8 +851,10 @@ Moved to JSON column on [gcp_dns_managed_zones](#gcp_dns_managed_zones)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |cloud_logging_config|jsonb|added|
 |dnssec_config|jsonb|added|
 |dnssec_config_kind|text|removed|
@@ -830,8 +882,10 @@ Moved to JSON column on [gcp_dns_managed_zones](#gcp_dns_managed_zones)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |alternative_name_server_config|jsonb|added|
 |alternative_name_server_config_kind|text|removed|
 |id|bigint|updated|Type changed from text to bigint
@@ -853,8 +907,10 @@ Moved to JSON column on [gcp_domains_registrations](#gcp_domains_registrations)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |admin_contact_email|text|removed|
 |admin_contact_fax_number|text|removed|
 |admin_contact_phone_number|text|removed|
@@ -870,11 +926,11 @@ Moved to JSON column on [gcp_domains_registrations](#gcp_domains_registrations)
 |admin_contact_postal_address_sorting_code|text|removed|
 |admin_contact_postal_address_sublocality|text|removed|
 |contact_settings|jsonb|added|
-|create_time|jsonb|updated|Type changed from text to jsonb
+|create_time|timestamp without time zone|updated|Type changed from text to timestamp without time zone
 |custom_dns_ds_records|jsonb|removed|
 |custom_dns_name_servers|text[]|removed|
 |dns_settings|jsonb|added|
-|expire_time|jsonb|updated|Type changed from text to jsonb
+|expire_time|timestamp without time zone|updated|Type changed from text to timestamp without time zone
 |google_domains_dns_ds_records|jsonb|removed|
 |google_domains_dns_ds_state|text|removed|
 |google_domains_dns_name_servers|text[]|removed|
@@ -920,6 +976,10 @@ This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
+|_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |project_id|text|added|
 |name|text|added|
 |description|text|added|
@@ -929,7 +989,7 @@ This table was newly added.
 |timeout|jsonb|added|
 |available_memory_mb|bigint|added|
 |service_account_email|text|added|
-|update_time|jsonb|added|
+|update_time|timestamp without time zone|added|
 |version_id|bigint|added|
 |labels|jsonb|added|
 |environment_variables|jsonb|added|
@@ -949,26 +1009,42 @@ This table was newly added.
 |source_token|text|added|
 |docker_repository|text|added|
 |docker_registry|bigint|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## gcp_iam_roles
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 
 ## gcp_iam_service_account_keys
-Moved to JSON column on [gcp_iam_service_accounts](#gcp_iam_service_accounts)
 
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
+|_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
+|disabled|boolean|added|
+|private_key_data|text|added|
+|private_key_type|text|added|
+|project_id|text|added|
+|public_key_data|text|added|
+|service_account_cq_id|uuid|removed|
+|service_account_unique_id|text|added|
+|valid_after_time|text|updated|Type changed from timestamp without time zone to text
+|valid_before_time|text|updated|Type changed from timestamp without time zone to text
 
 ## gcp_iam_service_accounts
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |etag|text|added|
 |id|text|removed|
 |unique_id|text|added|
@@ -978,19 +1054,22 @@ This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|project_id|text|added|
-|name|text|added|
-|primary|jsonb|added|
-|purpose|bigint|added|
-|create_time|jsonb|added|
-|next_rotation_time|jsonb|added|
-|version_template|jsonb|added|
-|labels|jsonb|added|
-|import_only|boolean|added|
-|destroy_scheduled_duration|jsonb|added|
-|crypto_key_backend|text|added|
 |_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
+|project_id|text|added|
+|create_time|text|added|
+|crypto_key_backend|text|added|
+|destroy_scheduled_duration|text|added|
+|import_only|boolean|added|
+|labels|jsonb|added|
+|name|text|added|
+|next_rotation_time|text|added|
+|primary|jsonb|added|
+|purpose|text|added|
+|rotation_period|text|added|
+|version_template|jsonb|added|
 
 ## gcp_kms_keyring_crypto_keys
 Moved to JSON column on [gcp_kms_keyrings](#gcp_kms_keyrings)
@@ -1000,9 +1079,10 @@ Moved to JSON column on [gcp_kms_keyrings](#gcp_kms_keyrings)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
-|create_time|jsonb|updated|Type changed from timestamp without time zone to jsonb
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |location|text|removed|
 
 ## gcp_kubernetes_cluster_node_pools
@@ -1021,10 +1101,12 @@ Moved to JSON column on [gcp_logging_metrics](#gcp_logging_metrics)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |bucket_options|jsonb|added|
-|create_time|jsonb|updated|Type changed from text to jsonb
+|create_time|timestamp without time zone|updated|Type changed from text to timestamp without time zone
 |disabled|boolean|added|
 |exponential_buckets_options_growth_factor|float|removed|
 |exponential_buckets_options_num_finite_buckets|bigint|removed|
@@ -1044,7 +1126,7 @@ Moved to JSON column on [gcp_logging_metrics](#gcp_logging_metrics)
 |metric_descriptor_type|text|removed|
 |metric_descriptor_unit|text|removed|
 |metric_descriptor_value_type|text|removed|
-|update_time|jsonb|updated|Type changed from text to jsonb
+|update_time|timestamp without time zone|updated|Type changed from text to timestamp without time zone
 |version|bigint|updated|Type changed from text to bigint
 
 ## gcp_logging_sink_exclusions
@@ -1055,14 +1137,16 @@ Moved to JSON column on [gcp_logging_sinks](#gcp_logging_sinks)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |bigquery_options_use_partitioned_tables|boolean|removed|
 |bigquery_options_uses_timestamp_column_partitioning|boolean|removed|
-|create_time|jsonb|updated|Type changed from text to jsonb
+|create_time|timestamp without time zone|updated|Type changed from text to timestamp without time zone
 |exclusions|jsonb|added|
 |output_version_format|bigint|updated|Type changed from text to bigint
-|update_time|jsonb|updated|Type changed from text to jsonb
+|update_time|timestamp without time zone|updated|Type changed from text to timestamp without time zone
 
 ## gcp_memorystore_redis_instance_server_ca_certs
 This table was removed.
@@ -1076,8 +1160,10 @@ This table was removed.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |alert_strategy|jsonb|added|
 |combiner|bigint|updated|Type changed from text to bigint
 |conditions|jsonb|added|
@@ -1118,6 +1204,10 @@ This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
+|_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |project_id|text|added|
 |name|text|added|
 |display_name|text|added|
@@ -1130,7 +1220,7 @@ This table was newly added.
 |host|text|added|
 |port|bigint|added|
 |current_location_id|text|added|
-|create_time|jsonb|added|
+|create_time|timestamp without time zone|added|
 |state|bigint|added|
 |status_message|text|added|
 |redis_configs|jsonb|added|
@@ -1149,8 +1239,6 @@ This table was newly added.
 |read_endpoint|text|added|
 |read_endpoint_port|bigint|added|
 |read_replicas_mode|bigint|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## gcp_resource_manager_folders
 Renamed to [gcp_resourcemanager_folders](#gcp_resourcemanager_folders)
@@ -1164,6 +1252,21 @@ Renamed to [gcp_resourcemanager_projects](#gcp_resourcemanager_projects)
 Renamed from [gcp_resource_manager_folders](gcp_resource_manager_folders)
 
 
+## gcp_resourcemanager_project_policies
+This table was newly added.
+
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
+|_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
+|project_id|text|added|
+|audit_configs|jsonb|added|
+|bindings|jsonb|added|
+|etag|text|added|
+|version|bigint|added|
+
 ## gcp_resourcemanager_projects
 Renamed from [gcp_resource_manager_projects](gcp_resource_manager_projects)
 
@@ -1173,6 +1276,10 @@ This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
+|_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |project_id|text|added|
 |name|text|added|
 |description|text|added|
@@ -1180,10 +1287,10 @@ This table was newly added.
 |generation|bigint|added|
 |labels|jsonb|added|
 |annotations|jsonb|added|
-|create_time|jsonb|added|
-|update_time|jsonb|added|
-|delete_time|jsonb|added|
-|expire_time|jsonb|added|
+|create_time|timestamp without time zone|added|
+|update_time|timestamp without time zone|added|
+|delete_time|timestamp without time zone|added|
+|expire_time|timestamp without time zone|added|
 |creator|text|added|
 |last_modifier|text|added|
 |client|text|added|
@@ -1202,25 +1309,25 @@ This table was newly added.
 |uri|text|added|
 |reconciling|boolean|added|
 |etag|text|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## gcp_secretmanager_secrets
 This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
+|_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |project_id|text|added|
 |name|text|added|
 |replication|jsonb|added|
-|create_time|jsonb|added|
+|create_time|timestamp without time zone|added|
 |labels|jsonb|added|
 |topics|jsonb|added|
 |etag|text|added|
 |rotation|jsonb|added|
 |version_aliases|jsonb|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## gcp_security_secret_user_managed_replicas
 This table was removed.
@@ -1235,13 +1342,15 @@ This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
+|_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |project_id|text|added|
 |name|text|added|
 |parent|text|added|
 |config|jsonb|added|
 |state|bigint|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## gcp_sql_instance_ip_addresses
 Moved to JSON column on [gcp_sql_instances](#gcp_sql_instances)
@@ -1259,8 +1368,10 @@ Moved to JSON column on [gcp_sql_instances](#gcp_sql_instances)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |available_maintenance_versions|text[]|added|
 |configuration_kind|text|removed|
 |create_time|text|added|
@@ -1375,12 +1486,27 @@ Moved to JSON column on [gcp_storage_buckets](#gcp_storage_buckets)
 Moved to JSON column on [gcp_storage_buckets](#gcp_storage_buckets)
 
 
+## gcp_storage_bucket_policies
+This table was newly added.
+
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
+|_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
+|project_id|text|added|
+|bucket_name|text|added|
+|bindings|jsonb|added|
+
 ## gcp_storage_buckets
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |acl|jsonb|added|
 |billing_requester_pays|boolean|removed|
 |bucket_policy_only|jsonb|added|

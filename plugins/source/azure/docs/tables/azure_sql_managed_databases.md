@@ -1,17 +1,22 @@
 # Table: azure_sql_managed_databases
 
 
+
 The primary key for this table is **id**.
 
 ## Relations
-This table depends on [`azure_sql_managed_instances`](azure_sql_managed_instances.md).
-The following tables depend on `azure_sql_managed_databases`:
-  - [`azure_sql_managed_database_vulnerability_assessments`](azure_sql_managed_database_vulnerability_assessments.md)
-  - [`azure_sql_managed_database_vulnerability_assessment_scans`](azure_sql_managed_database_vulnerability_assessment_scans.md)
+This table depends on [azure_sql_managed_instances](azure_sql_managed_instances.md).
+The following tables depend on azure_sql_managed_databases:
+  - [azure_sql_managed_database_vulnerability_assessments](azure_sql_managed_database_vulnerability_assessments.md)
+  - [azure_sql_managed_database_vulnerability_assessment_scans](azure_sql_managed_database_vulnerability_assessment_scans.md)
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |subscription_id|String|
 |sql_managed_instance_id|String|
 |collation|String|
@@ -36,5 +41,3 @@ The following tables depend on `azure_sql_managed_databases`:
 |id (PK)|String|
 |name|String|
 |type|String|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

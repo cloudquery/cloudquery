@@ -1,12 +1,17 @@
 # Table: aws_config_configuration_recorders
 
 
+
 The primary key for this table is **arn**.
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
 |arn (PK)|String|
@@ -20,5 +25,3 @@ The primary key for this table is **arn**.
 |status_last_status_change_time|Timestamp|
 |status_last_stop_time|Timestamp|
 |status_recording|Bool|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

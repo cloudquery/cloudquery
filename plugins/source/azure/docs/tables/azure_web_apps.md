@@ -1,17 +1,22 @@
 # Table: azure_web_apps
 
 
+
 The primary key for this table is **id**.
 
 ## Relations
-The following tables depend on `azure_web_apps`:
-  - [`azure_web_site_auth_settings`](azure_web_site_auth_settings.md)
-  - [`azure_web_vnet_connections`](azure_web_vnet_connections.md)
-  - [`azure_web_publishing_profiles`](azure_web_publishing_profiles.md)
+The following tables depend on azure_web_apps:
+  - [azure_web_site_auth_settings](azure_web_site_auth_settings.md)
+  - [azure_web_vnet_connections](azure_web_vnet_connections.md)
+  - [azure_web_publishing_profiles](azure_web_publishing_profiles.md)
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |subscription_id|String|
 |state|String|
 |host_names|StringArray|
@@ -61,5 +66,3 @@ The following tables depend on `azure_web_apps`:
 |location|String|
 |type|String|
 |tags|JSON|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

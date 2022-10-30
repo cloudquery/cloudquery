@@ -9,9 +9,11 @@ import (
 
 func Distributions() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_cloudfront_distributions",
-		Resolver:  fetchCloudfrontDistributions,
-		Multiplex: client.AccountMultiplex,
+		Name:                "aws_cloudfront_distributions",
+		Description:         "https://docs.aws.amazon.com/cloudfront/latest/APIReference/API_Distribution.html",
+		Resolver:            fetchCloudfrontDistributions,
+		PreResourceResolver: getDistribution,
+		Multiplex:           client.AccountMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

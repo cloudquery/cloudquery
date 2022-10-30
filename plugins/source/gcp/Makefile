@@ -3,9 +3,8 @@
 generate-mocks:
 	go generate ./client/services/...
 
-# Test unit
-.PHONY: test-unit
-test-unit:
+.PHONY: test
+test:
 	go test -timeout 3m ./...
 
 # Install tools
@@ -18,3 +17,16 @@ install-tools:
 .PHONY: install-hooks
 install-hooks:
 	pre-commit install
+
+.PHONY: lint
+lint:
+	@golangci-lint run --timeout 10m --verbose
+
+.PHONY: gen-docs
+gen-docs:
+	rm -rf ./docs/tables/*
+	go run main.go doc ./docs/tables
+
+.PHONY: gen-code
+gen-code:
+	go run codegen/main.go

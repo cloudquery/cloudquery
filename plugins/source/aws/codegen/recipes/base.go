@@ -8,21 +8,24 @@ import (
 	"os"
 	"path"
 	"reflect"
-	"regexp"
 	"runtime"
 	"strings"
 	"text/template"
 
+	"github.com/cloudquery/plugin-sdk/caser"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/iancoleman/strcase"
 )
 
 type Resource struct {
+	// Name overrides the table name: used only in rare cases for backwards-compatibility.
+	Name                  string
 	Service               string
 	SubService            string
 	Struct                interface{}
 	SkipFields            []string
+	Description           string
 	ExtraColumns          []codegen.ColumnDefinition
 	Table                 *codegen.TableDefinition
 	Multiplex             string
@@ -56,20 +59,27 @@ var defaultRegionalColumns = []codegen.ColumnDefinition{
 	},
 }
 
+var defaultRegionalColumnsPK = []codegen.ColumnDefinition{
+	{
+		Name:     "account_id",
+		Type:     schema.TypeString,
+		Resolver: "client.ResolveAWSAccount",
+		Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+	},
+	{
+		Name:     "region",
+		Type:     schema.TypeString,
+		Resolver: "client.ResolveAWSRegion",
+		Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+	},
+}
+
 func awsNameTransformer(f reflect.StructField) (string, error) {
-	name, err := codegen.DefaultNameTransformer(f)
-	if err != nil {
-		return name, err
-	}
-	// replace occurrences with <underscore-number> with <number>
-
-	// (this is codegen, no need to hyper-optimize by pre-compiling regular expressions)
-	r, err := regexp.Compile(`_(\d+)`)
-	if err != nil {
-		return "", err
-	}
-
-	return r.ReplaceAllString(name, `$1`), nil
+	c := caser.New(caser.WithCustomInitialisms(map[string]bool{
+		"EC2": true,
+		"VPC": true,
+	}))
+	return c.ToSnake(f.Name), nil
 }
 
 func (r *Resource) Generate() error {
@@ -88,11 +98,16 @@ func (r *Resource) Generate() error {
 	if r.UnwrapEmbeddedStructs {
 		opts = append(opts, codegen.WithUnwrapAllEmbeddedStructs())
 	}
+	name := fmt.Sprintf("aws_%s_%s", r.Service, r.SubService)
+	if r.Name != "" {
+		name = r.Name
+	}
 	r.Table, err = codegen.NewTableFromStruct(
-		fmt.Sprintf("aws_%s_%s", r.Service, r.SubService),
+		name,
 		r.Struct,
 		opts...,
 	)
+	r.Table.Description = r.Description
 	if err != nil {
 		return err
 	}

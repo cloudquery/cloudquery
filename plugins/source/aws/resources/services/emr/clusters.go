@@ -9,9 +9,11 @@ import (
 
 func Clusters() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_emr_clusters",
-		Resolver:  fetchEmrClusters,
-		Multiplex: client.ServiceAccountRegionMultiplexer("elasticmapreduce"),
+		Name:                "aws_emr_clusters",
+		Description:         "https://docs.aws.amazon.com/emr/latest/APIReference/API_Cluster.html",
+		Resolver:            fetchEmrClusters,
+		PreResourceResolver: getCluster,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("elasticmapreduce"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

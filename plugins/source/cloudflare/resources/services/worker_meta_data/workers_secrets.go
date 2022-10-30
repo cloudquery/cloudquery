@@ -22,7 +22,7 @@ func workersSecrets() *schema.Table {
 				Resolver: schema.PathResolver("Name"),
 			},
 			{
-				Name:     "type",
+				Name:     "secret_text",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Type"),
 			},

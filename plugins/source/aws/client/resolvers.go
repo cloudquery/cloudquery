@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"reflect"
 	"time"
@@ -128,6 +129,43 @@ func SliceJsonResolver(path, keyPath, valuePath string) schema.ColumnResolver {
 			}
 			j[k.String()] = value
 		}
+		return r.Set(c.Name, j)
+	}
+}
+
+// MarshaledJsonResolver  resolves a json string into a map[string]interface{}.
+func MarshaledJsonResolver(path string) schema.ColumnResolver {
+	return func(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
+		var j map[string]interface{}
+		field := funk.Get(r.Item, path, funk.WithAllowZero())
+
+		if field == nil {
+			return r.Set(c.Name, nil)
+		}
+
+		var val reflect.Value
+		val = reflect.ValueOf(field)
+		if reflect.TypeOf(field).Kind() == reflect.Ptr {
+			val = val.Elem()
+		}
+
+		var b []byte
+		switch val.Kind() {
+		case reflect.String:
+			b = []byte(val.String())
+		case reflect.Slice, reflect.Array:
+			b = val.Bytes()
+		}
+		if len(b) == 0 {
+			return r.Set(c.Name, nil)
+		}
+
+		j = make(map[string]interface{})
+		err := json.Unmarshal(b, &j)
+		if err != nil {
+			return errors.WithStack(err)
+		}
+
 		return r.Set(c.Name, j)
 	}
 }

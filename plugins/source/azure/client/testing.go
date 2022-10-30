@@ -15,13 +15,14 @@ import (
 )
 
 func MockTestHelper(t *testing.T, table *schema.Table, createServices func(t *testing.T, ctrl *gomock.Controller) services.Services) {
+	version := "vDev"
+
 	t.Helper()
 
 	table.IgnoreInTests = false
-
+	l := zerolog.New(zerolog.NewTestWriter(t)).Output(zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro}).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source) (schema.ClientMeta, error) {
 		svc := createServices(t, gomock.NewController(t))
-		l := zerolog.New(zerolog.NewTestWriter(t)).Output(zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro}).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 		servicesMap := make(map[string]*services.Services)
 		servicesMap["testSubscription"] = &svc
 		c := &Client{
@@ -33,9 +34,11 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(t *te
 		return c, nil
 	}
 
-	p := plugins.NewSourcePlugin(table.Name, "dev", []*schema.Table{table}, newTestExecutionClient)
-	plugins.TestSourcePluginSync(t, p, specs.Source{
-		Name:   "dev",
-		Tables: []string{table.Name},
+	p := plugins.NewSourcePlugin(table.Name, version, []*schema.Table{table}, newTestExecutionClient)
+	plugins.TestSourcePluginSync(t, p, l, specs.Source{
+		Name:         "dev",
+		Version:      version,
+		Tables:       []string{table.Name},
+		Destinations: []string{"mock-destination"},
 	})
 }

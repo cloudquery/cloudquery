@@ -1,5 +1,6 @@
 # Table: aws_directconnect_connections
 
+https://docs.aws.amazon.com/directconnect/latest/APIReference/API_Connection.html
 
 The composite primary key for this table is (**arn**, **id**).
 
@@ -7,6 +8,10 @@ The composite primary key for this table is (**arn**, **id**).
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
 |arn (PK)|String|
@@ -31,5 +36,3 @@ The composite primary key for this table is (**arn**, **id**).
 |port_encryption_status|String|
 |provider_name|String|
 |vlan|Int|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

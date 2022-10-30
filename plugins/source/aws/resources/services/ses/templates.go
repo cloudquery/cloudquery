@@ -9,9 +9,10 @@ import (
 
 func Templates() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_ses_templates",
-		Resolver:  fetchSesTemplates,
-		Multiplex: client.ServiceAccountRegionMultiplexer("email"),
+		Name:                "aws_ses_templates",
+		Resolver:            fetchSesTemplates,
+		PreResourceResolver: getTemplate,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("email"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

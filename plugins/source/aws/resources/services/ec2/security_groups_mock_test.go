@@ -4,23 +4,23 @@ import (
 	"testing"
 
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
-	ec2Types "github.com/aws/aws-sdk-go-v2/service/ec2/types"
+	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildEc2SecurityGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
-	l := ec2Types.SecurityGroup{}
-	err := faker.FakeData(&l)
+	l := types.SecurityGroup{}
+	err := faker.FakeObject(&l)
 	if err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().DescribeSecurityGroups(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&ec2.DescribeSecurityGroupsOutput{
-			SecurityGroups: []ec2Types.SecurityGroup{l},
+			SecurityGroups: []types.SecurityGroup{l},
 		}, nil)
 	return client.Services{
 		EC2: m,

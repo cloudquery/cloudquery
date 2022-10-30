@@ -5,10 +5,10 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
-	cloudtrailTypes "github.com/aws/aws-sdk-go-v2/service/cloudtrail/types"
+	"github.com/aws/aws-sdk-go-v2/service/cloudtrail/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -17,8 +17,8 @@ func buildCloudtrailTrailsMock(t *testing.T, ctrl *gomock.Controller) client.Ser
 	services := client.Services{
 		Cloudtrail: m,
 	}
-	trail := cloudtrailTypes.Trail{}
-	err := faker.FakeData(&trail)
+	trail := types.Trail{}
+	err := faker.FakeObject(&trail)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -27,18 +27,18 @@ func buildCloudtrailTrailsMock(t *testing.T, ctrl *gomock.Controller) client.Ser
 	trail.CloudWatchLogsLogGroupArn = aws.String("arn:aws:logs:eu-central-1:123:log-group:test-group:")
 
 	trailStatus := cloudtrail.GetTrailStatusOutput{}
-	err = faker.FakeData(&trailStatus)
+	err = faker.FakeObject(&trailStatus)
 	if err != nil {
 		t.Fatal(err)
 	}
-	eventSelector := cloudtrailTypes.EventSelector{}
-	err = faker.FakeData(&eventSelector)
+	eventSelector := types.EventSelector{}
+	err = faker.FakeObject(&eventSelector)
 	if err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().DescribeTrails(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&cloudtrail.DescribeTrailsOutput{
-			TrailList: []cloudtrailTypes.Trail{trail},
+			TrailList: []types.Trail{trail},
 		},
 		nil,
 	)
@@ -48,12 +48,12 @@ func buildCloudtrailTrailsMock(t *testing.T, ctrl *gomock.Controller) client.Ser
 	)
 	m.EXPECT().GetEventSelectors(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&cloudtrail.GetEventSelectorsOutput{
-			EventSelectors: []cloudtrailTypes.EventSelector{eventSelector},
+			EventSelectors: []types.EventSelector{eventSelector},
 		},
 		nil,
 	)
 	tags := cloudtrail.ListTagsOutput{}
-	err = faker.FakeData(&tags)
+	err = faker.FakeObject(&tags)
 	if err != nil {
 		t.Fatal(err)
 	}

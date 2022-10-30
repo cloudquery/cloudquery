@@ -6,12 +6,14 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/apigateway"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/apigatewayv2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/applicationautoscaling"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/apprunner"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/appsync"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/athena"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/autoscaling"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/backup"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudformation"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudfront"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudhsmv2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudtrail"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudwatch"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudwatchlogs"
@@ -22,9 +24,11 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/dax"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/directconnect"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/dms"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/docdb"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/dynamodb"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ec2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ecr"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ecrpublic"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ecs"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/efs"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/eks"
@@ -37,6 +41,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/eventbridge"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/firehose"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/fsx"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/glacier"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/glue"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/guardduty"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/iam"
@@ -48,6 +53,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/lambda"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/lightsail"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/mq"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/neptune"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/organizations"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/qldb"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/rds"
@@ -85,6 +91,7 @@ func tables() []*schema.Table {
 		apigatewayv2.DomainNames(),
 		apigatewayv2.VpcLinks(),
 		applicationautoscaling.Policies(),
+		apprunner.Services(),
 		appsync.GraphqlApis(),
 		athena.DataCatalogs(),
 		athena.WorkGroups(),
@@ -98,6 +105,8 @@ func tables() []*schema.Table {
 		cloudformation.Stacks(),
 		cloudfront.CachePolicies(),
 		cloudfront.Distributions(),
+		cloudhsmv2.Backups(),
+		cloudhsmv2.Clusters(),
 		cloudtrail.Trails(),
 		cloudwatch.Alarms(),
 		cloudwatchlogs.LogGroups(),
@@ -117,6 +126,11 @@ func tables() []*schema.Table {
 		directconnect.VirtualInterfaces(),
 		dms.ReplicationInstances(),
 		dynamodb.Tables(),
+		docdb.Certificates(),
+		docdb.ClusterParameterGroups(),
+		docdb.Clusters(),
+		docdb.EngineVersions(),
+		docdb.SubnetGroups(),
 		ec2.ByoipCidrs(),
 		ec2.CustomerGateways(),
 		ec2.EbsSnapshots(),
@@ -126,27 +140,31 @@ func tables() []*schema.Table {
 		ec2.FlowLogs(),
 		ec2.Hosts(),
 		ec2.Images(),
+		ec2.Instances(),
 		ec2.InstanceStatuses(),
 		ec2.InstanceTypes(),
-		ec2.Instances(),
 		ec2.InternetGateways(),
 		ec2.KeyPairs(),
 		ec2.NatGateways(),
 		ec2.NetworkAcls(),
 		ec2.NetworkInterfaces(),
 		ec2.RegionalConfig(),
-		ec2.AwsRegions(),
+		ec2.Regions(),
+		ec2.ReservedInstances(),
 		ec2.RouteTables(),
 		ec2.SecurityGroups(),
 		ec2.Subnets(),
 		ec2.TransitGateways(),
+		ec2.VpcEndpoints(),
 		ec2.VpcEndpointServiceConfigurations(),
 		ec2.VpcEndpointServices(),
-		ec2.VpcEndpoints(),
 		ec2.VpcPeeringConnections(),
 		ec2.Vpcs(),
 		ec2.VpnGateways(),
+		ecr.Registries(),
+		ecr.RegistryPolicies(),
 		ecr.Repositories(),
+		ecrpublic.Repositories(),
 		ecs.Clusters(),
 		ecs.TaskDefinitions(),
 		efs.Filesystems(),
@@ -163,8 +181,8 @@ func tables() []*schema.Table {
 		elasticache.SubnetGroups(),
 		elasticache.UserGroups(),
 		elasticache.Users(),
-		elasticbeanstalk.ApplicationVersions(),
 		elasticbeanstalk.Applications(),
+		elasticbeanstalk.ApplicationVersions(),
 		elasticbeanstalk.Environments(),
 		elasticsearch.Domains(),
 		elbv1.LoadBalancers(),
@@ -181,6 +199,8 @@ func tables() []*schema.Table {
 		fsx.Snapshots(),
 		fsx.StorageVirtualMachines(),
 		fsx.Volumes(),
+		glacier.DataRetrievalPolicies(),
+		glacier.Vaults(),
 		glue.Classifiers(),
 		glue.Connections(),
 		glue.Crawlers(),
@@ -215,10 +235,11 @@ func tables() []*schema.Table {
 		iot.SecurityProfiles(),
 		iot.Streams(),
 		iot.ThingGroups(),
-		iot.ThingTypes(),
 		iot.Things(),
+		iot.ThingTypes(),
 		iot.TopicRules(),
 		kinesis.Streams(),
+		kms.Aliases(),
 		kms.Keys(),
 		lambda.Functions(),
 		lambda.Layers(),
@@ -227,21 +248,28 @@ func tables() []*schema.Table {
 		lightsail.Buckets(),
 		lightsail.Certificates(),
 		lightsail.ContainerServices(),
-		lightsail.DatabaseSnapshots(),
 		lightsail.Databases(),
+		lightsail.DatabaseSnapshots(),
 		lightsail.Disks(),
 		lightsail.Distributions(),
-		lightsail.InstanceSnapshots(),
 		lightsail.Instances(),
+		lightsail.InstanceSnapshots(),
 		lightsail.LoadBalancers(),
 		lightsail.StaticIps(),
 		mq.Brokers(),
+		neptune.ClusterParameterGroups(),
+		neptune.Clusters(),
+		neptune.ClusterSnapshots(),
+		neptune.DbParameterGroups(),
+		neptune.EventSubscriptions(),
+		neptune.Instances(),
+		neptune.SubnetGroups(),
 		organizations.Accounts(),
 		qldb.Ledgers(),
 		rds.Certificates(),
 		rds.ClusterParameterGroups(),
-		rds.ClusterSnapshots(),
 		rds.Clusters(),
+		rds.ClusterSnapshots(),
 		rds.DbParameterGroups(),
 		rds.DbSecurityGroups(),
 		rds.DbSnapshots(),

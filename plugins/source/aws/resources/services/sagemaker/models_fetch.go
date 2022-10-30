@@ -5,6 +5,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
+	"github.com/aws/aws-sdk-go-v2/service/sagemaker/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -25,26 +26,7 @@ func fetchSagemakerModels(ctx context.Context, meta schema.ClientMeta, _ *schema
 			return err
 		}
 
-		// get more details about the notebook instance
-		for _, n := range response.Models {
-			config := sagemaker.DescribeModelInput{
-				ModelName: n.ModelName,
-			}
-			response, err := svc.DescribeModel(ctx, &config, func(options *sagemaker.Options) {
-				options.Region = c.Region
-			})
-			if err != nil {
-				return err
-			}
-
-			model := WrappedSageMakerModel{
-				DescribeModelOutput: response,
-				ModelArn:            n.ModelArn,
-				ModelName:           n.ModelName,
-			}
-
-			res <- model
-		}
+		res <- response.Models
 
 		if aws.ToString(response.NextToken) == "" {
 			break
@@ -54,22 +36,37 @@ func fetchSagemakerModels(ctx context.Context, meta schema.ClientMeta, _ *schema
 	return nil
 }
 
-func resolveSagemakerModelTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
-	r := resource.Item.(WrappedSageMakerModel)
+func getModel(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	c := meta.(*client.Client)
 	svc := c.Services().SageMaker
-	config := sagemaker.ListTagsInput{
-		ResourceArn: r.ModelArn,
-	}
-	response, err := svc.ListTags(ctx, &config)
+	n := resource.Item.(types.ModelSummary)
+
+	response, err := svc.DescribeModel(ctx, &sagemaker.DescribeModelInput{
+		ModelName: n.ModelName,
+	})
 	if err != nil {
 		return err
 	}
 
-	tags := make(map[string]*string, len(response.Tags))
-	for _, t := range response.Tags {
-		tags[*t.Key] = t.Value
+	resource.Item = &WrappedSageMakerModel{
+		DescribeModelOutput: response,
+		ModelArn:            n.ModelArn,
+		ModelName:           n.ModelName,
+	}
+	return nil
+}
+
+func resolveSagemakerModelTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
+	r := resource.Item.(*WrappedSageMakerModel)
+	c := meta.(*client.Client)
+	svc := c.Services().SageMaker
+
+	response, err := svc.ListTags(ctx, &sagemaker.ListTagsInput{
+		ResourceArn: r.ModelArn,
+	})
+	if err != nil {
+		return err
 	}
 
-	return resource.Set("tags", tags)
+	return resource.Set("tags", client.TagsToMap(response.Tags))
 }

@@ -13,10 +13,6 @@ import (
 )
 
 func fetchIamUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	return client.ListAndDetailResolver(ctx, meta, res, listUsers, fetchUserDetail)
-}
-
-func listUsers(ctx context.Context, meta schema.ClientMeta, detailChan chan<- interface{}) error {
 	config := iam.ListUsersInput{}
 	c := meta.(*client.Client)
 	svc := c.Services().IAM
@@ -26,29 +22,22 @@ func listUsers(ctx context.Context, meta schema.ClientMeta, detailChan chan<- in
 		if err != nil {
 			return err
 		}
-		for _, user := range response.Users {
-			detailChan <- user
-		}
+		res <- response.Users
 	}
 	return nil
 }
 
-func fetchUserDetail(ctx context.Context, meta schema.ClientMeta, resultsChan chan<- interface{}, errorChan chan<- error, listInfo interface{}) {
-	c := meta.(*client.Client)
-
-	listUser := listInfo.(types.User)
+func getUser(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	listUser := resource.Item.(types.User)
 	svc := meta.(*client.Client).Services().IAM
 	userDetail, err := svc.GetUser(ctx, &iam.GetUserInput{
 		UserName: aws.String(*listUser.UserName),
 	})
 	if err != nil {
-		if c.IsNotFoundError(err) {
-			return
-		}
-		errorChan <- err
-		return
+		return err
 	}
-	resultsChan <- userDetail.User
+	resource.Item = userDetail.User
+	return nil
 }
 
 func fetchIamUserGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {

@@ -28,13 +28,8 @@ func fetchIamGroupPolicies(ctx context.Context, meta schema.ClientMeta, parent *
 			return err
 		}
 
-		for _, p := range output.PolicyNames {
-			policyResult, err := svc.GetGroupPolicy(ctx, &iam.GetGroupPolicyInput{PolicyName: &p, GroupName: group.GroupName})
-			if err != nil {
-				return err
-			}
-			res <- policyResult
-		}
+		res <- output.PolicyNames
+
 		if aws.ToString(output.Marker) == "" {
 			break
 		}
@@ -42,6 +37,21 @@ func fetchIamGroupPolicies(ctx context.Context, meta schema.ClientMeta, parent *
 	}
 	return nil
 }
+
+func getGroupPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	c := meta.(*client.Client)
+	svc := c.Services().IAM
+	p := resource.Item.(string)
+	group := resource.Parent.Item.(types.Group)
+
+	policyResult, err := svc.GetGroupPolicy(ctx, &iam.GetGroupPolicyInput{PolicyName: &p, GroupName: group.GroupName})
+	if err != nil {
+		return err
+	}
+	resource.Item = policyResult
+	return nil
+}
+
 func resolveIamGroupPolicyPolicyDocument(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(*iam.GetGroupPolicyOutput)
 

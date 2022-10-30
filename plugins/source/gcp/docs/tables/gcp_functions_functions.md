@@ -1,19 +1,23 @@
 # Table: gcp_functions_functions
 
 
+
 The primary key for this table is **_cq_id**.
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
 |project_id|String|
 |name|String|
 |description|String|
 |status|Int|
 |entry_point|String|
 |runtime|String|
-|timeout|JSON|
 |available_memory_mb|Int|
 |service_account_email|String|
 |update_time|Timestamp|
@@ -36,5 +40,3 @@ The primary key for this table is **_cq_id**.
 |source_token|String|
 |docker_repository|String|
 |docker_registry|Int|
-|_cq_id (PK)|UUID|
-|_cq_fetch_time|Timestamp|

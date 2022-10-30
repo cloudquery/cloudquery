@@ -2,51 +2,32 @@
 <h1 align="center"><img alt="cloudquery logo" width=75% src="https://github.com/cloudquery/cloudquery/raw/main/cli/docs/images/logo.png"/></h1>
 <!-- markdownlint-enable MD033 -->
 
-The open source high performance data integration platform designed for security and infrastructure teams.
+CloudQuery is an [open-source](https://github.com/cloudquery/cloudquery),
+high-performance data integration platform for security and infrastructure teams.
 
-CloudQuery extracts, transforms, and loads your cloud assets. CloudQuery enables you to assess, audit, and monitor the configurations of your cloud assets.
+CloudQuery extracts, transforms, and loads configuration from cloud APIs to
+variety of supported destinations such as databases, data lakes, or streaming platforms
+for further analysis.
 
-CloudQuery key use-cases and features:
+### Installation
 
-- **Search**: Use standard SQL to find any asset based on any configuration or relation to other assets.
-- **Visualize**: Connect CloudQuery standard PostgreSQL database to your favorite BI/Visualization tool such as Grafana, QuickSight, etc.
-- **Policy-as-Code**: Codify your security & compliance rules with SQL as the query engine.
+See the **[Quickstart guide](https://www.cloudquery.io/docs/quickstart)** for instructions how to start syncing data with CloudQuery.
+
+## Why CloudQuery?
+
+- **Open source**: Easily extendable plugin architecture. Contribute to our official plugins or develop your own with the CloudQuery SDK.
+- **Blazing fast**: CloudQuery's concurrency system leverages the excellent Go concurrency model with light-weight Goroutines.
+- **Database agnostic**: CloudQuery can store your configuration in any supported destination such as a database, data lake, or streaming platform for further analysis.
+- **Pre-built queries**: CloudQuery maintains a rich set of SQL queries and Grafana dashboards for asset inventory, CSPMs, Security & Compliance, and Cost use-cases.
+- **Raw access to data**: Decouple data ingestion and have raw access to your data, with which you can build your own security stack and re-use
+  best-of-breed tools for querying (SQL,…), transformation (dbt,…), and visualization (Grafana, Preset, Metabase, PowerBI, …).
 
 ### Links
 
 - Homepage: https://www.cloudquery.io
-- Releases: https://github.com/cloudquery/cloudquery/releases
 - Documentation: https://www.cloudquery.io/docs
-- Plugins: https://www.cloudquery.io/docs/plugins/source
-
-### Supported plugins (Actively expanding)
-
-Visit https://www.cloudquery.io/docs/plugins/source
-
-If you want us to add a new plugin or resource, please open an [Issue](https://github.com/cloudquery/cloudquery/issues).
-
-See [our guide for developing a new plugin](https://www.cloudquery.io/docs/developers/developing-new-provider).
-
-## Getting Started
-
-Please check out our 'Getting Started' guides:
-
-- [Getting Started with AWS](https://www.cloudquery.io/docs/getting-started/getting-started-with-aws)
-- [Getting Started with GCP](https://www.cloudquery.io/docs/getting-started/getting-started-with-gcp)
-- [Getting Started with Azure](https://www.cloudquery.io/docs/getting-started/getting-started-with-azure)
-
-For other plugins, you can visit our [plugins directory](https://www.cloudquery.io/docs/plugins/source), as well as reference the [Getting Started with AWS](https://www.cloudquery.io/docs/getting-started/getting-started-with-aws) for general installation and configuration tips.
-
-## Compile and run CLI
-
-```bash
-make build-cli
-./bin/cloudquery # --help to see all options
-```
-
-## Deployment via Helm
-
-Check out [cloudquery/helm-charts](https://github.com/cloudquery/helm-charts)
+- Plugins: https://www.cloudquery.io/docs/plugins/sources
+- Releases: https://github.com/cloudquery/cloudquery/releases
 
 ## License
 

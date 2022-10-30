@@ -1,15 +1,20 @@
 # Table: aws_cloudtrail_trails
 
 
+
 The primary key for this table is **arn**.
 
 ## Relations
-The following tables depend on `aws_cloudtrail_trails`:
-  - [`aws_cloudtrail_trail_event_selectors`](aws_cloudtrail_trail_event_selectors.md)
+The following tables depend on aws_cloudtrail_trails:
+  - [aws_cloudtrail_trail_event_selectors](aws_cloudtrail_trail_event_selectors.md)
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
 |cloudwatch_logs_log_group_name|String|
@@ -30,5 +35,4 @@ The following tables depend on `aws_cloudtrail_trails`:
 |s3_key_prefix|String|
 |sns_topic_arn|String|
 |sns_topic_name|String|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|
+|tags|JSON|

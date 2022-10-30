@@ -1,5 +1,6 @@
 # Table: aws_dax_clusters
 
+https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_dax_Cluster.html
 
 The primary key for this table is **arn**.
 
@@ -7,10 +8,14 @@ The primary key for this table is **arn**.
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
 |arn (PK)|String|
-|tags|String|
+|tags|JSON|
 |active_nodes|Int|
 |cluster_discovery_endpoint|JSON|
 |cluster_endpoint_encryption_type|String|
@@ -28,5 +33,3 @@ The primary key for this table is **arn**.
 |status|String|
 |subnet_group|String|
 |total_nodes|Int|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

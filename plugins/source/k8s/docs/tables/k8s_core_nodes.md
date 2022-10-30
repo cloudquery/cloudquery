@@ -1,12 +1,17 @@
 # Table: k8s_core_nodes
 
 
+
 The primary key for this table is **uid**.
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |context|String|
 |uid (PK)|String|
 |spec_pod_cidr|CIDR|
@@ -37,5 +42,3 @@ The primary key for this table is **uid**.
 |status_volumes_in_use|StringArray|
 |status_volumes_attached|JSON|
 |status_config|JSON|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

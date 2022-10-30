@@ -9,9 +9,10 @@ import (
 
 func Ledgers() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_qldb_ledgers",
-		Resolver:  fetchQldbLedgers,
-		Multiplex: client.ServiceAccountRegionMultiplexer("qldb"),
+		Name:                "aws_qldb_ledgers",
+		Resolver:            fetchQldbLedgers,
+		PreResourceResolver: getLedger,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("qldb"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

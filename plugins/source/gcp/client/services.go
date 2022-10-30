@@ -19,8 +19,8 @@ import (
 	"cloud.google.com/go/storage"
 	bigquery "google.golang.org/api/bigquery/v2"
 	kmsold "google.golang.org/api/cloudkms/v1"
-	"google.golang.org/api/dns/v1"
-	"google.golang.org/api/iam/v1"
+	dns "google.golang.org/api/dns/v1"
+	iam "google.golang.org/api/iam/v1"
 	"google.golang.org/api/option"
 	sql "google.golang.org/api/sqladmin/v1beta4"
 )

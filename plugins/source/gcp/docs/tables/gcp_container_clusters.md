@@ -1,12 +1,17 @@
 # Table: gcp_container_clusters
 
 
+
 The primary key for this table is **self_link**.
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |project_id|String|
 |self_link (PK)|String|
 |name|String|
@@ -69,5 +74,3 @@ The primary key for this table is **self_link**.
 |logging_config|JSON|
 |monitoring_config|JSON|
 |node_pool_auto_config|JSON|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

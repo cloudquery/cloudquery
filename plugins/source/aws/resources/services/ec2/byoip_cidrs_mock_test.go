@@ -4,23 +4,23 @@ import (
 	"testing"
 
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
-	ec2Types "github.com/aws/aws-sdk-go-v2/service/ec2/types"
+	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildEc2ByoipCidrsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
-	l := ec2Types.ByoipCidr{}
-	err := faker.FakeData(&l)
+	l := types.ByoipCidr{}
+	err := faker.FakeObject(&l)
 	if err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().DescribeByoipCidrs(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&ec2.DescribeByoipCidrsOutput{
-			ByoipCidrs: []ec2Types.ByoipCidr{l},
+			ByoipCidrs: []types.ByoipCidr{l},
 		}, nil)
 	return client.Services{
 		EC2: m,

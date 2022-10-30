@@ -1,4 +1,5 @@
 # Table: heroku_regions
+
 https://devcenter.heroku.com/articles/platform-api-reference#region-attributes
 
 The primary key for this table is **id**.
@@ -7,6 +8,10 @@ The primary key for this table is **id**.
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |country|String|
 |created_at|Timestamp|
 |description|String|
@@ -16,5 +21,3 @@ The primary key for this table is **id**.
 |private_capable|Bool|
 |provider|JSON|
 |updated_at|Timestamp|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

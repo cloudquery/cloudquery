@@ -1,12 +1,17 @@
 # Table: k8s_batch_jobs
 
 
+
 The primary key for this table is **uid**.
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |context|String|
 |uid (PK)|String|
 |kind|String|
@@ -23,6 +28,7 @@ The primary key for this table is **uid**.
 |spec_parallelism|Int|
 |spec_completions|Int|
 |spec_active_deadline_seconds|Int|
+|spec_pod_failure_policy|JSON|
 |spec_backoff_limit|Int|
 |spec_selector|JSON|
 |spec_manual_selector|Bool|
@@ -39,5 +45,3 @@ The primary key for this table is **uid**.
 |status_completed_indexes|String|
 |status_uncounted_terminated_pods|JSON|
 |status_ready|Int|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

@@ -10,6 +10,7 @@ import (
 func Clusters() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_eks_clusters",
+		Description:         "https://docs.aws.amazon.com/eks/latest/APIReference/API_Cluster.html",
 		Resolver:            fetchEksClusters,
 		PreResourceResolver: getEksCluster,
 		Multiplex:           client.ServiceAccountRegionMultiplexer("eks"),
@@ -63,6 +64,16 @@ func Clusters() *schema.Table {
 				Resolver: schema.PathResolver("Endpoint"),
 			},
 			{
+				Name:     "health",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Health"),
+			},
+			{
+				Name:     "id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Id"),
+			},
+			{
 				Name:     "identity",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Identity"),
@@ -81,6 +92,11 @@ func Clusters() *schema.Table {
 				Name:     "name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Name"),
+			},
+			{
+				Name:     "outpost_config",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("OutpostConfig"),
 			},
 			{
 				Name:     "platform_version",

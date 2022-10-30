@@ -14,9 +14,10 @@ import (
 func LambdaResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "functions",
-			Struct:     &lambda.GetFunctionOutput{},
-			SkipFields: []string{},
+			SubService:          "functions",
+			Struct:              &lambda.GetFunctionOutput{},
+			SkipFields:          []string{},
+			PreResourceResolver: "getFunction",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -53,9 +54,10 @@ func LambdaResources() []*Resource {
 			},
 		},
 		{
-			SubService: "function_event_invoke_configs",
-			Struct:     &types.FunctionEventInvokeConfig{},
-			SkipFields: []string{"FunctionArn"},
+			SubService:  "function_event_invoke_configs",
+			Struct:      &types.FunctionEventInvokeConfig{},
+			Description: "https://docs.aws.amazon.com/lambda/latest/dg/API_FunctionEventInvokeConfig.html",
+			SkipFields:  []string{"FunctionArn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -67,9 +69,10 @@ func LambdaResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "function_aliases",
-			Struct:     &models.AliasWrapper{},
-			SkipFields: []string{"AliasArn"},
+			SubService:          "function_aliases",
+			Struct:              &models.AliasWrapper{},
+			SkipFields:          []string{"AliasArn"},
+			PreResourceResolver: "getFunctionAliasURLConfig",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -87,9 +90,10 @@ func LambdaResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "function_versions",
-			Struct:     &types.FunctionConfiguration{},
-			SkipFields: []string{"FunctionArn"},
+			SubService:  "function_versions",
+			Struct:      &types.FunctionConfiguration{},
+			Description: "https://docs.aws.amazon.com/lambda/latest/dg/API_FunctionConfiguration.html",
+			SkipFields:  []string{"FunctionArn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -101,9 +105,10 @@ func LambdaResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "function_concurrency_configs",
-			Struct:     &types.ProvisionedConcurrencyConfigListItem{},
-			SkipFields: []string{"FunctionArn"},
+			SubService:  "function_concurrency_configs",
+			Struct:      &types.ProvisionedConcurrencyConfigListItem{},
+			Description: "https://docs.aws.amazon.com/lambda/latest/dg/API_ProvisionedConcurrencyConfigListItem.html",
+			SkipFields:  []string{"FunctionArn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -115,9 +120,10 @@ func LambdaResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "function_event_source_mappings",
-			Struct:     &types.EventSourceMappingConfiguration{},
-			SkipFields: []string{"FunctionArn"},
+			SubService:  "function_event_source_mappings",
+			Struct:      &types.EventSourceMappingConfiguration{},
+			Description: "https://docs.aws.amazon.com/lambda/latest/dg/API_EventSourceMappingConfiguration.html",
+			SkipFields:  []string{"FunctionArn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -129,9 +135,10 @@ func LambdaResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "layers",
-			Struct:     &types.LayersListItem{},
-			SkipFields: []string{},
+			SubService:  "layers",
+			Struct:      &types.LayersListItem{},
+			Description: "https://docs.aws.amazon.com/lambda/latest/dg/API_LayersListItem.html",
+			SkipFields:  []string{},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -147,9 +154,10 @@ func LambdaResources() []*Resource {
 			},
 		},
 		{
-			SubService: "layer_versions",
-			Struct:     &types.LayerVersionsListItem{},
-			SkipFields: []string{"LayerVersionArn"},
+			SubService:  "layer_versions",
+			Struct:      &types.LayerVersionsListItem{},
+			Description: "https://docs.aws.amazon.com/lambda/latest/dg/API_LayerVersionsListItem.html",
+			SkipFields:  []string{"LayerVersionArn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

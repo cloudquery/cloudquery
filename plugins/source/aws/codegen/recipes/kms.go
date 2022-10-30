@@ -9,9 +9,25 @@ import (
 func KMSResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "keys",
-			Struct:     &types.KeyMetadata{},
-			SkipFields: []string{"Arn"},
+			SubService:  "aliases",
+			Struct:      &types.AliasListEntry{},
+			Description: "https://docs.aws.amazon.com/kms/latest/APIReference/API_AliasListEntry.html",
+			SkipFields:  []string{"AliasArn"},
+			ExtraColumns: append(
+				defaultRegionalColumns,
+				[]codegen.ColumnDefinition{
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+						Resolver: `schema.PathResolver("AliasArn")`,
+					},
+				}...),
+		}, {
+			SubService:  "keys",
+			Struct:      &types.KeyMetadata{},
+			Description: "https://docs.aws.amazon.com/kms/latest/APIReference/API_KeyMetadata.html",
+			SkipFields:  []string{"Arn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

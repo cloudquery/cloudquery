@@ -10,13 +10,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudtrail/models"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
-
-type CloudTrailWrapper struct {
-	types.Trail
-	Tags map[string]string
-}
 
 // groupNameRegex extracts log group name from the ARN
 var groupNameRegex = regexp.MustCompile("arn:[a-zA-Z0-9-]+:logs:[a-z0-9-]+:[0-9]+:log-group:([a-zA-Z0-9-/]+):")
@@ -31,15 +27,15 @@ func fetchCloudtrailTrails(ctx context.Context, meta schema.ClientMeta, parent *
 		return err
 	}
 
-	getBundledTrailsWithTags := func(trails []types.Trail, region string) ([]CloudTrailWrapper, error) {
-		processed := make([]CloudTrailWrapper, len(trails))
+	getBundledTrailsWithTags := func(trails []types.Trail, region string) ([]*models.CloudTrailWrapper, error) {
+		processed := make([]*models.CloudTrailWrapper, len(trails))
 
 		input := cloudtrail.ListTagsInput{
 			ResourceIdList: make([]string, 0, len(trails)),
 		}
 
 		for i, h := range trails {
-			processed[i] = CloudTrailWrapper{
+			processed[i] = &models.CloudTrailWrapper{
 				Trail: h,
 				Tags:  make(map[string]string),
 			}
@@ -110,7 +106,7 @@ func fetchCloudtrailTrails(ctx context.Context, meta schema.ClientMeta, parent *
 func resolveCloudTrailStatus(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, col schema.Column) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Cloudtrail
-	r := resource.Item.(CloudTrailWrapper)
+	r := resource.Item.(*models.CloudTrailWrapper)
 	response, err := svc.GetTrailStatus(ctx,
 		&cloudtrail.GetTrailStatusInput{Name: r.TrailARN}, func(o *cloudtrail.Options) {
 			o.Region = *r.HomeRegion
@@ -124,7 +120,7 @@ func resolveCloudTrailStatus(ctx context.Context, meta schema.ClientMeta, resour
 func resolveCloudtrailTrailCloudwatchLogsLogGroupName(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	groupName := ""
 	log := meta.(*client.Client).Logger()
-	r := resource.Item.(CloudTrailWrapper)
+	r := resource.Item.(*models.CloudTrailWrapper)
 	if r.CloudWatchLogsLogGroupArn != nil {
 		matches := groupNameRegex.FindStringSubmatch(*r.CloudWatchLogsLogGroupArn)
 		if len(matches) < 2 {
@@ -140,7 +136,7 @@ func resolveCloudtrailTrailCloudwatchLogsLogGroupName(ctx context.Context, meta 
 }
 
 func fetchCloudtrailTrailEventSelectors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r := parent.Item.(CloudTrailWrapper)
+	r := parent.Item.(*models.CloudTrailWrapper)
 	c := meta.(*client.Client)
 	svc := c.Services().Cloudtrail
 	response, err := svc.GetEventSelectors(ctx, &cloudtrail.GetEventSelectorsInput{TrailName: r.TrailARN}, func(options *cloudtrail.Options) {

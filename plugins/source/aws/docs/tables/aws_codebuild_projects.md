@@ -1,5 +1,6 @@
 # Table: aws_codebuild_projects
 
+https://docs.aws.amazon.com/codebuild/latest/APIReference/API_Project.html
 
 The primary key for this table is **arn**.
 
@@ -7,6 +8,10 @@ The primary key for this table is **arn**.
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
 |arn (PK)|String|
@@ -37,5 +42,3 @@ The primary key for this table is **arn**.
 |timeout_in_minutes|Int|
 |vpc_config|JSON|
 |webhook|JSON|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

@@ -1,15 +1,20 @@
 # Table: aws_cloudformation_stacks
 
+https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_Stack.html
 
 The primary key for this table is **arn**.
 
 ## Relations
-The following tables depend on `aws_cloudformation_stacks`:
-  - [`aws_cloudformation_stack_resources`](aws_cloudformation_stack_resources.md)
+The following tables depend on aws_cloudformation_stacks:
+  - [aws_cloudformation_stack_resources](aws_cloudformation_stack_resources.md)
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
 |id|String|
@@ -35,5 +40,3 @@ The following tables depend on `aws_cloudformation_stacks`:
 |root_id|String|
 |stack_status_reason|String|
 |timeout_in_minutes|Int|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

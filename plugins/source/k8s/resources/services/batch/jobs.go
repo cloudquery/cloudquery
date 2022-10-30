@@ -97,6 +97,11 @@ func Jobs() *schema.Table {
 				Resolver: schema.PathResolver("Spec.ActiveDeadlineSeconds"),
 			},
 			{
+				Name:     "spec_pod_failure_policy",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Spec.PodFailurePolicy"),
+			},
+			{
 				Name:     "spec_backoff_limit",
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("Spec.BackoffLimit"),

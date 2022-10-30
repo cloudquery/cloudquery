@@ -1,8 +1,12 @@
 package recipes
 
 import (
+	"reflect"
+	"strings"
+
 	"github.com/aws/aws-sdk-go-v2/service/route53/types"
-	"github.com/aws/aws-sdk-go/service/route53domains"
+	"github.com/aws/aws-sdk-go-v2/service/route53domains"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/route53/models"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -11,9 +15,10 @@ func Route53Resources() []*Resource {
 	resources := []*Resource{
 
 		{
-			SubService: "delegation_sets",
-			Struct:     &types.DelegationSet{},
-			SkipFields: []string{},
+			SubService:  "delegation_sets",
+			Struct:      &types.DelegationSet{},
+			Description: "https://docs.aws.amazon.com/Route53/latest/APIReference/API_DelegationSet.html",
+			SkipFields:  []string{},
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{
@@ -28,9 +33,10 @@ func Route53Resources() []*Resource {
 		},
 
 		{
-			SubService: "domains",
-			Struct:     &route53domains.GetDomainDetailOutput{},
-			SkipFields: []string{"DomainName", "_"},
+			SubService:          "domains",
+			Struct:              &route53domains.GetDomainDetailOutput{},
+			SkipFields:          []string{"DomainName", "_"},
+			PreResourceResolver: "getDomain",
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:     "account_id",
@@ -53,9 +59,10 @@ func Route53Resources() []*Resource {
 		},
 
 		{
-			SubService: "health_checks",
-			Struct:     &types.HealthCheck{},
-			SkipFields: []string{},
+			SubService:  "health_checks",
+			Struct:      &types.HealthCheck{},
+			Description: "https://docs.aws.amazon.com/Route53/latest/APIReference/API_HealthCheck.html",
+			SkipFields:  []string{},
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{
@@ -80,7 +87,7 @@ func Route53Resources() []*Resource {
 
 		{
 			SubService: "hosted_zones",
-			Struct:     &types.HostedZone{},
+			Struct:     &models.Route53HostedZoneWrapper{},
 			SkipFields: []string{"ARN"},
 			ExtraColumns: append(
 				defaultAccountColumns,
@@ -99,9 +106,10 @@ func Route53Resources() []*Resource {
 			},
 		},
 		{
-			SubService: "hosted_zone_query_logging_configs",
-			Struct:     &types.QueryLoggingConfig{},
-			SkipFields: []string{},
+			SubService:  "hosted_zone_query_logging_configs",
+			Struct:      &types.QueryLoggingConfig{},
+			Description: "https://docs.aws.amazon.com/Route53/latest/APIReference/API_QueryLoggingConfig.html",
+			SkipFields:  []string{},
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{
@@ -119,9 +127,10 @@ func Route53Resources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "hosted_zone_resource_record_sets",
-			Struct:     &types.ResourceRecordSet{},
-			SkipFields: []string{},
+			SubService:  "hosted_zone_resource_record_sets",
+			Struct:      &types.ResourceRecordSet{},
+			Description: "https://docs.aws.amazon.com/Route53/latest/APIReference/API_ResourceRecordSet.html",
+			SkipFields:  []string{},
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{
@@ -133,9 +142,10 @@ func Route53Resources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "hosted_zone_traffic_policy_instances",
-			Struct:     &types.TrafficPolicyInstance{},
-			SkipFields: []string{},
+			SubService:  "hosted_zone_traffic_policy_instances",
+			Struct:      &types.TrafficPolicyInstance{},
+			Description: "https://docs.aws.amazon.com/Route53/latest/APIReference/API_TrafficPolicyInstance.html",
+			SkipFields:  []string{},
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{
@@ -154,9 +164,10 @@ func Route53Resources() []*Resource {
 		},
 
 		{
-			SubService: "traffic_policies",
-			Struct:     &types.TrafficPolicySummary{},
-			SkipFields: []string{"ARN"},
+			SubService:  "traffic_policies",
+			Struct:      &types.TrafficPolicySummary{},
+			Description: "https://docs.aws.amazon.com/Route53/latest/APIReference/API_TrafficPolicySummary.html",
+			SkipFields:  []string{"ARN"},
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{
@@ -172,9 +183,10 @@ func Route53Resources() []*Resource {
 			},
 		},
 		{
-			SubService: "traffic_policy_versions",
-			Struct:     &types.TrafficPolicy{},
-			SkipFields: []string{"Version", "Id"},
+			SubService:  "traffic_policy_versions",
+			Struct:      &types.TrafficPolicy{},
+			Description: "https://docs.aws.amazon.com/Route53/latest/APIReference/API_TrafficPolicy.html",
+			SkipFields:  []string{"Version", "Id", "Document"},
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{
@@ -196,6 +208,11 @@ func Route53Resources() []*Resource {
 						Resolver: `schema.PathResolver("Version")`,
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
+					{
+						Name:     "document",
+						Type:     schema.TypeJSON,
+						Resolver: `client.MarshaledJsonResolver("Document")`,
+					},
 				}...),
 		},
 	}
@@ -204,6 +221,10 @@ func Route53Resources() []*Resource {
 	for _, r := range resources {
 		r.Service = "route53"
 		r.Multiplex = "client.AccountMultiplex"
+		structName := reflect.ValueOf(r.Struct).Elem().Type().Name()
+		if strings.Contains(structName, "Wrapper") {
+			r.UnwrapEmbeddedStructs = true
+		}
 	}
 	return resources
 }

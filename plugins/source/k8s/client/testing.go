@@ -3,7 +3,9 @@ package client
 import (
 	"context"
 	"fmt"
+	"os"
 	"testing"
+	"time"
 
 	"github.com/cloudquery/plugin-sdk/plugins"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -17,12 +19,16 @@ type TestOptions struct {
 }
 
 func K8sMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, *gomock.Controller) Services, options TestOptions) {
+	version := "vDev"
+
 	t.Helper()
 
 	table.IgnoreInTests = false
 
 	mockController := gomock.NewController(t)
-
+	l := zerolog.New(zerolog.NewTestWriter(t)).Output(
+		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
+	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 	configureFunc := func(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.ClientMeta, error) {
 		var k8sSpec Spec
 		if err := s.UnmarshalSpec(&k8sSpec); err != nil {
@@ -40,15 +46,17 @@ func K8sMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.
 
 	plugin := plugins.NewSourcePlugin(
 		table.Name,
-		"dev",
+		version,
 		[]*schema.Table{
 			table,
 		},
 		configureFunc,
 	)
 
-	plugins.TestSourcePluginSync(t, plugin, specs.Source{
-		Name:   "dev",
-		Tables: []string{table.Name},
+	plugins.TestSourcePluginSync(t, plugin, l, specs.Source{
+		Name:         "dev",
+		Version:      version,
+		Tables:       []string{table.Name},
+		Destinations: []string{"mock-destination"},
 	})
 }

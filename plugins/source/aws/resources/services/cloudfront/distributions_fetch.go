@@ -19,17 +19,7 @@ func fetchCloudfrontDistributions(ctx context.Context, meta schema.ClientMeta, p
 		if err != nil {
 			return err
 		}
-		for _, d := range response.DistributionList.Items {
-			distribution, err := svc.GetDistribution(ctx, &cloudfront.GetDistributionInput{
-				Id: d.Id,
-			}, func(options *cloudfront.Options) {
-				options.Region = c.Region
-			})
-			if err != nil {
-				return err
-			}
-			res <- *distribution.Distribution
-		}
+		res <- response.DistributionList.Items
 
 		if aws.ToString(response.DistributionList.Marker) == "" {
 			break
@@ -38,8 +28,25 @@ func fetchCloudfrontDistributions(ctx context.Context, meta schema.ClientMeta, p
 	}
 	return nil
 }
+
+func getDistribution(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	c := meta.(*client.Client)
+	svc := c.Services().Cloudfront
+
+	d := resource.Item.(types.DistributionSummary)
+
+	distribution, err := svc.GetDistribution(ctx, &cloudfront.GetDistributionInput{
+		Id: d.Id,
+	})
+	if err != nil {
+		return err
+	}
+	resource.Item = distribution.Distribution
+	return nil
+}
+
 func resolveCloudfrontDistributionTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	distribution := resource.Item.(types.Distribution)
+	distribution := resource.Item.(*types.Distribution)
 
 	cl := meta.(*client.Client)
 	svc := cl.Services().Cloudfront

@@ -3,9 +3,10 @@
 Thanks for contributing to CloudQuery! You are awesome. This document serves as a guide for adding new services and resources to the AWS source plugin.
 
 There are three main steps to adding a new AWS resource:
- 1. [Add interfaces for the AWS SDK function(s) that fetch the resource](#1-add-interfaces-for-the-aws-sdk-functions-that-fetch-the-resource)
- 2. [Add a code generation recipe](#2-add-a-code-generation-recipe)
- 3. [Writing the resolver function to fetch the resource using the AWS SDK](#3-setting-up-the-resource)
+
+1. [Add interfaces for the AWS SDK function(s) that fetch the resource](#1-add-interfaces-for-the-aws-sdk-functions-that-fetch-the-resource)
+2. [Add a code generation recipe](#2-add-a-code-generation-recipe)
+3. [Writing the resolver function to fetch the resource using the AWS SDK](#3-setting-up-the-resource)
 
 As a prerequisite, in [aws-sdk-go-v2](https://pkg.go.dev/github.com/aws/aws-sdk-go-v2) ensure API calls exist to list/describe the desired resource, and make note of:
 
@@ -54,6 +55,7 @@ The process to follow for adding a new recipe is:
 ### Add a Resource to a Recipe
 
 `MyServiceResources()` should return a slice of `*Resource` instances. Each resource should, at a minimum, have the following fields defined:
+
  1. `Service`: This will become the table prefix, and will usually be the same as the filename you chose for the recipe.
  2. `SubService`: This will be the final part of the table name, e.g. `aws_myservice_subservice`
  3. `Multiplex`: Most AWS services have resources defined per account and region. In such cases, `client.ServiceAccountRegionMultiplexer("my-service")` is usually the correct multiplexer to use. Look in [client/data/partition_service_region.json](client/data/partition_service_region.json) for the correct service name to use.
@@ -79,7 +81,7 @@ for _, r := range resources {
 
 ### Run Code Generation
 
-With the recipe file added and some resources defined, you are ready to run codegen. Inside the [codegen](codegen) directory, run:
+With the recipe file added and some resources defined, you are ready to run `codegen`. Inside the [`codegen`](codegen) directory, run:
 
 ```shell
 go run main.go
@@ -89,7 +91,7 @@ This will update all resources and generate a new directory for your service und
 
 ## 3. Setting up the resource
 
-By following the steps outlined above, you should now have generated a `myservice` directory under `resources/services`, containing a file called `myresource.go` (these names are examples, your actual filenames will differ). We will now set up the resource. This involves two steps: refining the codegen recipe, and writing one or more resolver functions.
+By following the steps outlined above, you should now have generated a `myservice` directory under `resources/services`, containing a file called `myresource.go` (these names are examples, your actual filenames will differ). We will now set up the resource. This involves two steps: refining the `codegen` recipe, and writing one or more resolver functions.
 
 1. Open the generated `myservice/myresource.go` and inspect the `schema.Table` that is being returned. Does it contain the appropriate columns for the resource? Does it have a primary key? If something looks off, return to the recipe for this resource (under [codegen/recipes](codegen/recipes)) and make adjustments. Then re-run code generation as described in [Run Code Generation](#run-code-generation). Repeat this process until the Table looks right.
 2. Your generated `Table` will reference a `Resolver` function that needs to be implemented. The generated file should never be edited directly, so create a new file called `myresource_fetch.go` and add a resolver function with the following signature:
@@ -103,11 +105,17 @@ By following the steps outlined above, you should now have generated a `myservic
    svc := meta.(*client.Client).Services().MyService
    ```
    With this in hand, complete the resolver function to fetch all resources. After resources are retrieved, send them to the `res` channel for the SDK to deliver to all destinations.
-3. Finally, implement a mock test in `myresource_mock_test.go`. We will not describe this in detail here; look at a few examples for similar resources to get you started.
+3. Implement a mock test in `myresource_mock_test.go`. We will not describe this in detail here; look at a few examples for similar resources to get you started.
 
 We recommend looking at other resources similar to yours to get an idea of what needs to be done in this step.  
 
-#### Implementing Resolver Functions
+4. Make sure to register the resource you just created with the plugin by adding it to the array that `plugin.tables()` returns in
+   `/resources/plugin/tables.go`
+
+   using the naming conventions from steps 1-3 the call would look like:
+      `myservice.myresource(),`
+   
+### Implementing Resolver Functions
 
 A few important things to note when adding functions that call the AWS API:
 
@@ -122,4 +130,5 @@ A few important things to note when adding functions that call the AWS API:
 - Keep transformations to a minimum. As far as possible, we aim to deliver an accurate reflection of what the AWS API provides.
 - We generally only unroll structs one level deep. Nested structs should be transformed into JSON columns. 
 - For consistency, make sure the resource has an `ARN` stored in a column named `arn`. Sometimes this means using the AWS SDK to generate an ARN for the resource.
+- Make sure the resource has a `tags` JSON column (if possible). Sometimes this requires additional SDK calls. Sometimes the column needs to be renamed from `tag_list` to `tags` (and converted to a map). There are custom `ResolveTags` and `ResolveTagFields` resolvers to help with this. It's not always possible, but we try to keep the `tags` column consistent across AWS resources.  
 - If you get stuck or need help, feel free to reach out on [Discord](https://www.cloudquery.io/discord). We are a friendly community and would love to help!

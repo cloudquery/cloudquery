@@ -4,9 +4,9 @@ import (
 	"context"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs/types"
-	"github.com/aws/aws-sdk-go/aws/arn"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -33,7 +33,7 @@ func resolveMetricFilterArn(ctx context.Context, meta schema.ClientMeta, resourc
 	cl := meta.(*client.Client)
 	a := arn.ARN{
 		Partition: cl.Partition,
-		Service:   "cloudwatchlogs",
+		Service:   "logs",
 		Region:    cl.Region,
 		AccountID: cl.AccountID,
 		Resource:  "metric_filter/" + aws.ToString(resource.Item.(types.MetricFilter).FilterName),

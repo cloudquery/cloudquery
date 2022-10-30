@@ -9,9 +9,10 @@ import (
 
 func Domains() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_elasticsearch_domains",
-		Resolver:  fetchElasticsearchDomains,
-		Multiplex: client.ServiceAccountRegionMultiplexer("es"),
+		Name:                "aws_elasticsearch_domains",
+		Resolver:            fetchElasticsearchDomains,
+		PreResourceResolver: getDomain,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("es"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

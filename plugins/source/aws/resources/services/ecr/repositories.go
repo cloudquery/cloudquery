@@ -9,9 +9,10 @@ import (
 
 func Repositories() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_ecr_repositories",
-		Resolver:  fetchEcrRepositories,
-		Multiplex: client.ServiceAccountRegionMultiplexer("api.ecr"),
+		Name:        "aws_ecr_repositories",
+		Description: "https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_Repository.html",
+		Resolver:    fetchEcrRepositories,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("api.ecr"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -33,7 +34,7 @@ func Repositories() *schema.Table {
 			},
 			{
 				Name:     "tags",
-				Type:     schema.TypeString,
+				Type:     schema.TypeJSON,
 				Resolver: resolveRepositoryTags,
 			},
 			{

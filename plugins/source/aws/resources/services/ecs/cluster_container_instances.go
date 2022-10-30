@@ -9,9 +9,10 @@ import (
 
 func ClusterContainerInstances() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_ecs_cluster_container_instances",
-		Resolver:  fetchEcsClusterContainerInstances,
-		Multiplex: client.ServiceAccountRegionMultiplexer("ecs"),
+		Name:        "aws_ecs_cluster_container_instances",
+		Description: "https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ContainerInstance.html",
+		Resolver:    fetchEcsClusterContainerInstances,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("ecs"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

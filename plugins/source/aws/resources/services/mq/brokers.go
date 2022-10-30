@@ -9,9 +9,11 @@ import (
 
 func Brokers() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_mq_brokers",
-		Resolver:  fetchMqBrokers,
-		Multiplex: client.ServiceAccountRegionMultiplexer("mq"),
+		Name:                "aws_mq_brokers",
+		Description:         "https://docs.aws.amazon.com/amazon-mq/latest/api-reference/brokers.html",
+		Resolver:            fetchMqBrokers,
+		PreResourceResolver: getMqBroker,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("mq"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

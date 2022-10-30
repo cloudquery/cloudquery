@@ -9,9 +9,10 @@ import (
 
 func Subscriptions() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_sns_subscriptions",
-		Resolver:  fetchSnsSubscriptions,
-		Multiplex: client.ServiceAccountRegionMultiplexer("sns"),
+		Name:                "aws_sns_subscriptions",
+		Resolver:            fetchSnsSubscriptions,
+		PreResourceResolver: getSnsSubscription,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("sns"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -30,6 +31,26 @@ func Subscriptions() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
+			},
+			{
+				Name:     "delivery_policy",
+				Type:     schema.TypeJSON,
+				Resolver: client.MarshaledJsonResolver("DeliveryPolicy"),
+			},
+			{
+				Name:     "effective_delivery_policy",
+				Type:     schema.TypeJSON,
+				Resolver: client.MarshaledJsonResolver("EffectiveDeliveryPolicy"),
+			},
+			{
+				Name:     "filter_policy",
+				Type:     schema.TypeJSON,
+				Resolver: client.MarshaledJsonResolver("FilterPolicy"),
+			},
+			{
+				Name:     "redrive_policy",
+				Type:     schema.TypeJSON,
+				Resolver: client.MarshaledJsonResolver("RedrivePolicy"),
 			},
 			{
 				Name:     "endpoint",
@@ -57,21 +78,6 @@ func Subscriptions() *schema.Table {
 				Resolver: schema.PathResolver("ConfirmationWasAuthenticated"),
 			},
 			{
-				Name:     "delivery_policy",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("DeliveryPolicy"),
-			},
-			{
-				Name:     "effective_delivery_policy",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("EffectiveDeliveryPolicy"),
-			},
-			{
-				Name:     "filter_policy",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("FilterPolicy"),
-			},
-			{
 				Name:     "pending_confirmation",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("PendingConfirmation"),
@@ -80,11 +86,6 @@ func Subscriptions() *schema.Table {
 				Name:     "raw_message_delivery",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("RawMessageDelivery"),
-			},
-			{
-				Name:     "redrive_policy",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("RedrivePolicy"),
 			},
 			{
 				Name:     "subscription_role_arn",

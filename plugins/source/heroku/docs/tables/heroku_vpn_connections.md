@@ -1,4 +1,5 @@
 # Table: heroku_vpn_connections
+
 https://devcenter.heroku.com/articles/platform-api-reference#vpn-connection-attributes
 
 The primary key for this table is **id**.
@@ -7,6 +8,10 @@ The primary key for this table is **id**.
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |id (PK)|String|
 |ike_version|Int|
 |name|String|
@@ -16,5 +21,3 @@ The primary key for this table is **id**.
 |status|String|
 |status_message|String|
 |tunnels|JSON|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

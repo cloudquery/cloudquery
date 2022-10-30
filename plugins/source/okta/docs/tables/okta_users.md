@@ -1,12 +1,17 @@
 # Table: okta_users
 
 
+
 The primary key for this table is **id**.
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |activated|Timestamp|
 |created|Timestamp|
 |credentials_password_hash_algorithm|String|
@@ -37,5 +42,3 @@ The primary key for this table is **id**.
 |type_last_updated|Timestamp|
 |type_last_updated_by|String|
 |type_name|String|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

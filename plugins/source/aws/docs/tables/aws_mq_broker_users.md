@@ -1,14 +1,19 @@
 # Table: aws_mq_broker_users
 
 
+
 The primary key for this table is **_cq_id**.
 
 ## Relations
-This table depends on [`aws_mq_brokers`](aws_mq_brokers.md).
+This table depends on [aws_mq_brokers](aws_mq_brokers.md).
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
 |broker_arn|String|
@@ -18,5 +23,3 @@ This table depends on [`aws_mq_brokers`](aws_mq_brokers.md).
 |pending|JSON|
 |username|String|
 |result_metadata|JSON|
-|_cq_id (PK)|UUID|
-|_cq_fetch_time|Timestamp|

@@ -1,5 +1,6 @@
 # Table: aws_appsync_graphql_apis
 
+https://docs.aws.amazon.com/appsync/latest/APIReference/API_GraphqlApi.html
 
 The primary key for this table is **arn**.
 
@@ -7,6 +8,10 @@ The primary key for this table is **arn**.
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
 |arn (PK)|String|
@@ -22,5 +27,3 @@ The primary key for this table is **arn**.
 |user_pool_config|JSON|
 |waf_web_acl_arn|String|
 |xray_enabled|Bool|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

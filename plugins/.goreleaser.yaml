@@ -22,12 +22,10 @@ builds:
         goarch: arm64
 archives:
   - name_template: "{{ .Binary }}_{{ .Os }}_{{ .Arch }}"
-    format: binary
-  - name_template: "{{ .Binary }}_{{ .Os }}_{{ .Arch }}"
     format: zip
     id: zip
     files:
-      - policies/**
+      - policies_v1/**
 checksum:
   name_template: "checksums.txt"
   ids:

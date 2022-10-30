@@ -9,9 +9,10 @@ import (
 
 func Images() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_ec2_images",
-		Resolver:  fetchEc2Images,
-		Multiplex: client.ServiceAccountRegionMultiplexer("ec2"),
+		Name:        "aws_ec2_images",
+		Description: "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Image.html",
+		Resolver:    fetchEc2Images,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -90,6 +91,11 @@ func Images() *schema.Table {
 				Name:     "image_type",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ImageType"),
+			},
+			{
+				Name:     "imds_support",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ImdsSupport"),
 			},
 			{
 				Name:     "kernel_id",

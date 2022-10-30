@@ -9,9 +9,10 @@ import (
 
 func DbSnapshots() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_rds_db_snapshots",
-		Resolver:  fetchRdsDbSnapshots,
-		Multiplex: client.ServiceAccountRegionMultiplexer("rds"),
+		Name:        "aws_rds_db_snapshots",
+		Description: "https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBSnapshot.html",
+		Resolver:    fetchRdsDbSnapshots,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("rds"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -142,6 +143,11 @@ func DbSnapshots() *schema.Table {
 				Resolver: schema.PathResolver("SnapshotCreateTime"),
 			},
 			{
+				Name:     "snapshot_database_time",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("SnapshotDatabaseTime"),
+			},
+			{
 				Name:     "snapshot_target",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("SnapshotTarget"),
@@ -170,11 +176,6 @@ func DbSnapshots() *schema.Table {
 				Name:     "storage_type",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("StorageType"),
-			},
-			{
-				Name:     "tag_list",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("TagList"),
 			},
 			{
 				Name:     "tde_credential_arn",

@@ -1,14 +1,19 @@
 # Table: aws_glue_job_runs
 
 
+
 The primary key for this table is **_cq_id**.
 
 ## Relations
-This table depends on [`aws_glue_jobs`](aws_glue_jobs.md).
+This table depends on [aws_glue_jobs](aws_glue_jobs.md).
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
 |job_arn|String|
@@ -18,6 +23,7 @@ This table depends on [`aws_glue_jobs`](aws_glue_jobs.md).
 |completed_on|Timestamp|
 |dpu_seconds|Float|
 |error_message|String|
+|execution_class|String|
 |execution_time|Int|
 |glue_version|String|
 |id|String|
@@ -35,5 +41,3 @@ This table depends on [`aws_glue_jobs`](aws_glue_jobs.md).
 |timeout|Int|
 |trigger_name|String|
 |worker_type|String|
-|_cq_id (PK)|UUID|
-|_cq_fetch_time|Timestamp|

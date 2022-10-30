@@ -1,12 +1,17 @@
 # Table: k8s_apps_replica_sets
 
 
+
 The primary key for this table is **uid**.
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |context|String|
 |uid (PK)|String|
 |kind|String|
@@ -30,5 +35,3 @@ The primary key for this table is **uid**.
 |status_available_replicas|Int|
 |status_observed_generation|Int|
 |status_conditions|JSON|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

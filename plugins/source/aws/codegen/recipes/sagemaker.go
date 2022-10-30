@@ -10,9 +10,10 @@ func SagemakerResources() []*Resource {
 	resources := []*Resource{
 
 		{
-			SubService: "endpoint_configurations",
-			Struct:     &sagemaker.DescribeEndpointConfigOutput{},
-			SkipFields: []string{"EndpointConfigArn"},
+			SubService:          "endpoint_configurations",
+			Struct:              &sagemaker.DescribeEndpointConfigOutput{},
+			SkipFields:          []string{"EndpointConfigArn"},
+			PreResourceResolver: "getEndpointConfiguration",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -32,9 +33,10 @@ func SagemakerResources() []*Resource {
 		},
 
 		{
-			SubService: "models",
-			Struct:     &sagemaker.DescribeModelOutput{},
-			SkipFields: []string{"ModelArn"},
+			SubService:          "models",
+			Struct:              &sagemaker.DescribeModelOutput{},
+			SkipFields:          []string{"ModelArn"},
+			PreResourceResolver: "getModel",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -54,9 +56,10 @@ func SagemakerResources() []*Resource {
 		},
 
 		{
-			SubService: "notebook_instances",
-			Struct:     &sagemaker.DescribeNotebookInstanceOutput{},
-			SkipFields: []string{"NotebookInstanceArn"},
+			SubService:          "notebook_instances",
+			Struct:              &sagemaker.DescribeNotebookInstanceOutput{},
+			SkipFields:          []string{"NotebookInstanceArn"},
+			PreResourceResolver: "getNotebookInstance",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -76,9 +79,10 @@ func SagemakerResources() []*Resource {
 		},
 
 		{
-			SubService: "training_jobs",
-			Struct:     &sagemaker.DescribeTrainingJobOutput{},
-			SkipFields: []string{"TrainingJobArn"},
+			SubService:          "training_jobs",
+			Struct:              &sagemaker.DescribeTrainingJobOutput{},
+			SkipFields:          []string{"TrainingJobArn"},
+			PreResourceResolver: "getTrainingJob",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

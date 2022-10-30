@@ -9,9 +9,11 @@ import (
 
 func Attacks() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_shield_attacks",
-		Resolver:  fetchShieldAttacks,
-		Multiplex: client.AccountMultiplex,
+		Name:                "aws_shield_attacks",
+		Description:         "https://docs.aws.amazon.com/waf/latest/DDOSAPIReference/API_AttackDetail.html",
+		Resolver:            fetchShieldAttacks,
+		PreResourceResolver: getAttack,
+		Multiplex:           client.AccountMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

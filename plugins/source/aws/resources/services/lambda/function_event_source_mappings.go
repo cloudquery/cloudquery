@@ -9,9 +9,10 @@ import (
 
 func FunctionEventSourceMappings() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_lambda_function_event_source_mappings",
-		Resolver:  fetchLambdaFunctionEventSourceMappings,
-		Multiplex: client.ServiceAccountRegionMultiplexer("lambda"),
+		Name:        "aws_lambda_function_event_source_mappings",
+		Description: "https://docs.aws.amazon.com/lambda/latest/dg/API_EventSourceMappingConfiguration.html",
+		Resolver:    fetchLambdaFunctionEventSourceMappings,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("lambda"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -27,6 +28,11 @@ func FunctionEventSourceMappings() *schema.Table {
 				Name:     "function_arn",
 				Type:     schema.TypeString,
 				Resolver: schema.ParentColumnResolver("arn"),
+			},
+			{
+				Name:     "amazon_managed_kafka_event_source_config",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("AmazonManagedKafkaEventSourceConfig"),
 			},
 			{
 				Name:     "batch_size",
@@ -97,6 +103,11 @@ func FunctionEventSourceMappings() *schema.Table {
 				Name:     "self_managed_event_source",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("SelfManagedEventSource"),
+			},
+			{
+				Name:     "self_managed_kafka_event_source_config",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("SelfManagedKafkaEventSourceConfig"),
 			},
 			{
 				Name:     "source_access_configurations",

@@ -1,12 +1,17 @@
 # Table: github_issues
 
 
+
 The composite primary key for this table is (**org**, **id**).
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |org (PK)|String|
 |id (PK)|Int|
 |number|Int|
@@ -37,5 +42,3 @@ The composite primary key for this table is (**org**, **id**).
 |node_id|String|
 |text_matches|JSON|
 |active_lock_reason|String|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

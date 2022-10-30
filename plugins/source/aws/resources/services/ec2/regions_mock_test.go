@@ -5,24 +5,24 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
-	ec2Types "github.com/aws/aws-sdk-go-v2/service/ec2/types"
+	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildRegionsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
-	r := ec2Types.Region{}
-	if err := faker.FakeData(&r); err != nil {
+	r := types.Region{}
+	if err := faker.FakeObject(&r); err != nil {
 		t.Fatal(err)
 	}
 	r.OptInStatus = aws.String("opted-in")
 	r.RegionName = aws.String("us-east-1")
 	m.EXPECT().DescribeRegions(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&ec2.DescribeRegionsOutput{
-			Regions: []ec2Types.Region{r},
+			Regions: []types.Region{r},
 		}, nil)
 
 	return client.Services{
@@ -31,5 +31,5 @@ func buildRegionsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 }
 
 func TestRegions(t *testing.T) {
-	client.AwsMockTestHelper(t, AwsRegions(), buildRegionsMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, Regions(), buildRegionsMock, client.TestOptions{})
 }

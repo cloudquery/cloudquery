@@ -1,12 +1,17 @@
 # Table: azure_cdn_routes
 
 
+
 The primary key for this table is **id**.
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |subscription_id|String|
 |cdn_endpoint_id|String|
 |custom_domains|JSON|
@@ -26,5 +31,3 @@ The primary key for this table is **id**.
 |name|String|
 |type|String|
 |system_data|JSON|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

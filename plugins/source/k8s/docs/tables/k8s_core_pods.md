@@ -1,12 +1,17 @@
 # Table: k8s_core_pods
 
 
+
 The primary key for this table is **uid**.
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |context|String|
 |uid (PK)|String|
 |status_host_ip|Inet|
@@ -58,6 +63,7 @@ The primary key for this table is **uid**.
 |spec_topology_spread_constraints|JSON|
 |spec_set_hostname_as_fqdn|Bool|
 |spec_os|JSON|
+|spec_host_users|Bool|
 |status_phase|String|
 |status_conditions|JSON|
 |status_message|String|
@@ -68,5 +74,3 @@ The primary key for this table is **uid**.
 |status_container_statuses|JSON|
 |status_qos_class|String|
 |status_ephemeral_container_statuses|JSON|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

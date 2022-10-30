@@ -1,12 +1,17 @@
 # Table: cloudflare_dns_records
 
 
+
 The primary key for this table is **id**.
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |account_id|String|
 |created_on|Timestamp|
 |modified_on|Timestamp|
@@ -23,5 +28,3 @@ The primary key for this table is **id**.
 |locked|Bool|
 |meta|JSON|
 |data|JSON|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

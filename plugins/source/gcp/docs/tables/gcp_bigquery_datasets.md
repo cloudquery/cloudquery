@@ -1,15 +1,20 @@
 # Table: gcp_bigquery_datasets
 
 
+
 The primary key for this table is **_cq_id**.
 
 ## Relations
-The following tables depend on `gcp_bigquery_datasets`:
-  - [`gcp_bigquery_tables`](gcp_bigquery_tables.md)
+The following tables depend on gcp_bigquery_datasets:
+  - [gcp_bigquery_tables](gcp_bigquery_tables.md)
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
 |project_id|String|
 |access|JSON|
 |creation_time|Int|
@@ -31,5 +36,3 @@ The following tables depend on `gcp_bigquery_datasets`:
 |satisfies_pzs|Bool|
 |self_link|String|
 |tags|JSON|
-|_cq_id (PK)|UUID|
-|_cq_fetch_time|Timestamp|

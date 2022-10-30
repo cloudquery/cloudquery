@@ -1,12 +1,17 @@
 # Table: gcp_compute_images
 
 
+
 The primary key for this table is **self_link**.
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |project_id|String|
 |self_link (PK)|String|
 |architecture|String|
@@ -40,5 +45,3 @@ The primary key for this table is **self_link**.
 |source_type|String|
 |status|String|
 |storage_locations|StringArray|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

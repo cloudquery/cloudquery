@@ -9,9 +9,10 @@ import (
 
 func Instances() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_lightsail_instances",
-		Resolver:  fetchLightsailInstances,
-		Multiplex: client.ServiceAccountRegionMultiplexer("lightsail"),
+		Name:        "aws_lightsail_instances",
+		Description: "https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_Instance.html",
+		Resolver:    fetchLightsailInstances,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("lightsail"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -89,6 +90,11 @@ func Instances() *schema.Table {
 				Name:     "location",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Location"),
+			},
+			{
+				Name:     "metadata_options",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("MetadataOptions"),
 			},
 			{
 				Name:     "name",

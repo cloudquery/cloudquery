@@ -18,9 +18,39 @@ func CryptoKeys() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
+				Name:     "create_time",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("CreateTime"),
+			},
+			{
+				Name:     "crypto_key_backend",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("CryptoKeyBackend"),
+			},
+			{
+				Name:     "destroy_scheduled_duration",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("DestroyScheduledDuration"),
+			},
+			{
+				Name:     "import_only",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("ImportOnly"),
+			},
+			{
+				Name:     "labels",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Labels"),
+			},
+			{
 				Name:     "name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Name"),
+			},
+			{
+				Name:     "next_rotation_time",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("NextRotationTime"),
 			},
 			{
 				Name:     "primary",
@@ -29,43 +59,18 @@ func CryptoKeys() *schema.Table {
 			},
 			{
 				Name:     "purpose",
-				Type:     schema.TypeInt,
+				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Purpose"),
 			},
 			{
-				Name:     "create_time",
-				Type:     schema.TypeTimestamp,
-				Resolver: client.ResolveProtoTimestamp("CreateTime"),
-			},
-			{
-				Name:     "next_rotation_time",
-				Type:     schema.TypeTimestamp,
-				Resolver: client.ResolveProtoTimestamp("NextRotationTime"),
+				Name:     "rotation_period",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("RotationPeriod"),
 			},
 			{
 				Name:     "version_template",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("VersionTemplate"),
-			},
-			{
-				Name:     "labels",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Labels"),
-			},
-			{
-				Name:     "import_only",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("ImportOnly"),
-			},
-			{
-				Name:     "destroy_scheduled_duration",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("DestroyScheduledDuration"),
-			},
-			{
-				Name:     "crypto_key_backend",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("CryptoKeyBackend"),
 			},
 		},
 	}

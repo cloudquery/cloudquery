@@ -1,15 +1,20 @@
 # Table: aws_elbv1_load_balancers
 
 
+
 The primary key for this table is **arn**.
 
 ## Relations
-The following tables depend on `aws_elbv1_load_balancers`:
-  - [`aws_elbv1_load_balancer_policies`](aws_elbv1_load_balancer_policies.md)
+The following tables depend on aws_elbv1_load_balancers:
+  - [aws_elbv1_load_balancer_policies](aws_elbv1_load_balancer_policies.md)
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
 |arn (PK)|String|
@@ -31,5 +36,3 @@ The following tables depend on `aws_elbv1_load_balancers`:
 |vpc_id|String|
 |tags|JSON|
 |attributes|JSON|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

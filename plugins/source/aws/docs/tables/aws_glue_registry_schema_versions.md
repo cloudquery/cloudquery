@@ -1,12 +1,17 @@
 # Table: aws_glue_registry_schema_versions
 
 
+
 The primary key for this table is **_cq_id**.
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
 |registry_schema_arn|String|
@@ -19,5 +24,3 @@ The primary key for this table is **_cq_id**.
 |status|String|
 |version_number|Int|
 |result_metadata|JSON|
-|_cq_id (PK)|UUID|
-|_cq_fetch_time|Timestamp|

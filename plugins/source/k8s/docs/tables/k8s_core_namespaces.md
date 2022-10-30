@@ -1,12 +1,17 @@
 # Table: k8s_core_namespaces
 
 
+
 The primary key for this table is **uid**.
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |context|String|
 |uid (PK)|String|
 |kind|String|
@@ -23,5 +28,3 @@ The primary key for this table is **uid**.
 |spec_finalizers|StringArray|
 |status_phase|String|
 |status_conditions|JSON|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

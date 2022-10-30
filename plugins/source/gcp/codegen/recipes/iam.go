@@ -9,10 +9,8 @@ import (
 
 var iamResources = []*Resource{
 	{
-		SubService:   "roles",
-		Struct:       &iam.Role{},
-		NewFunction:  iam.NewProjectsRolesService,
-		ListFunction: (&iam.ProjectsRolesService{}).List,
+		SubService: "roles",
+		Struct:     &iam.Role{},
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "project_id",
@@ -28,11 +26,9 @@ var iamResources = []*Resource{
 		},
 	},
 	{
-		SubService:   "service_accounts",
-		Struct:       &iam.ServiceAccount{},
-		NewFunction:  iam.NewProjectsServiceAccountsService,
-		ListFunction: (&iam.ProjectsServiceAccountsService{}).List,
-		OutputField:  "Accounts",
+		SubService:  "service_accounts",
+		Struct:      &iam.ServiceAccount{},
+		OutputField: "Accounts",
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "unique_id",
@@ -43,6 +39,24 @@ var iamResources = []*Resource{
 		},
 		SkipFields:      []string{"ProjectId"},
 		NameTransformer: CreateReplaceTransformer(map[string]string{"oauth_2": "oauth2"}),
+		Relations:       []string{"ServiceAccountKeys()"},
+		SkipMock:        true,
+	},
+	{
+		SubService:  "service_account_keys",
+		Struct:      &iam.ServiceAccountKey{},
+		ChildTable:  true,
+		OutputField: "AccountKeys",
+		ExtraColumns: []codegen.ColumnDefinition{
+			{
+				Name:     "service_account_unique_id",
+				Type:     schema.TypeString,
+				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				Resolver: `schema.ParentColumnResolver("unique_id")`,
+			},
+		},
+		SkipFields: []string{"ProjectId", "PrivateKeyData"},
+		SkipMock:   true,
 	},
 }
 

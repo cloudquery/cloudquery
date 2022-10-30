@@ -1,5 +1,6 @@
 # Table: aws_ssm_documents
 
+https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_DocumentDescription.html
 
 The primary key for this table is **arn**.
 
@@ -7,6 +8,10 @@ The primary key for this table is **arn**.
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
 |arn (PK)|String|
@@ -41,5 +46,3 @@ The primary key for this table is **arn**.
 |status_information|String|
 |target_type|String|
 |version_name|String|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

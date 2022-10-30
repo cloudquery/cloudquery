@@ -10,9 +10,11 @@ import (
 func MQResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "brokers",
-			Struct:     &mq.DescribeBrokerOutput{},
-			SkipFields: []string{"BrokerArn"},
+			SubService:          "brokers",
+			Struct:              &mq.DescribeBrokerOutput{},
+			Description:         "https://docs.aws.amazon.com/amazon-mq/latest/api-reference/brokers.html",
+			SkipFields:          []string{"BrokerArn"},
+			PreResourceResolver: "getMqBroker",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -29,9 +31,10 @@ func MQResources() []*Resource {
 			},
 		},
 		{
-			SubService: "broker_configurations",
-			Struct:     &types.Configuration{},
-			SkipFields: []string{},
+			SubService:  "broker_configurations",
+			Struct:      &types.Configuration{},
+			Description: "https://docs.aws.amazon.com/amazon-mq/latest/api-reference/configurations-configuration-id.html",
+			SkipFields:  []string{},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -46,9 +49,11 @@ func MQResources() []*Resource {
 			},
 		},
 		{
-			SubService: "broker_configuration_revisions",
-			Struct:     &mq.DescribeConfigurationRevisionOutput{},
-			SkipFields: []string{"Data"},
+			SubService:          "broker_configuration_revisions",
+			Struct:              &mq.DescribeConfigurationRevisionOutput{},
+			Description:         "https://docs.aws.amazon.com/amazon-mq/latest/api-reference/configurations-configuration-id-revisions.html",
+			SkipFields:          []string{"Data"},
+			PreResourceResolver: "getMqBrokerConfigurationRevision",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

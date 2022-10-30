@@ -27,7 +27,7 @@ function FooterHeader({ children }: { children: ReactNode }) {
 const navigation = {
   general: [
     { name: "Documentation", href: "/docs" },
-    { name: "CLI reference", href: "/docs/cli/commands/cloudquery" },
+    { name: "CLI reference", href: "/docs/reference/cli/cloudquery" },
     { name: "Blog", href: "/blog" },
     {
       name: "Releases",
@@ -46,7 +46,7 @@ const navigation = {
     },
   ],
   company: [
-    { name: "GitHub", href: "https://github.com/cloudquery" },
+    { name: "GitHub", href: "https://github.com/cloudquery/cloudquery" },
     { name: "Twitter", href: "https://twitter.com/cloudqueryio" },
     { name: "Brand Logo", href: "/logo" },
   ],
@@ -145,21 +145,19 @@ function SubmitForm() {
   const [email, setEmail] = useState("");
   const router = useRouter();
 
-  const [message, setMessage] = useState("");
-
   const subscribe = async (e: FormEvent) => {
     e.preventDefault();
-    // 3. Send a request to our API with the user's email address.
-    const res = await fetch(`/api/subscribe?email=${encodeURI(email)}`);
 
-    const { error } = await res.json();
+    const params = new URLSearchParams();
+    params.append("EMAIL", email);
+    params.append("u", "5a433922a8db867a38c8a4a8e");
+    params.append("id", "4a9aca3509");
+    params.append("c", "?");
 
-    if (error) {
-      // 4. If there was an error, update the message in state.
-      setMessage(error);
-
-      return;
-    }
+    await fetch(
+      `https://cloudquery.us1.list-manage.com/subscribe/post-json?${params.toString()}`,
+      { mode: "no-cors" }
+    );
 
     router.push("/confirm");
   };
@@ -185,7 +183,6 @@ function SubmitForm() {
           className="w-full min-w-0 px-4 py-2 text-base text-gray-900 placeholder-gray-500 bg-white border border-transparent rounded-md appearance-none dark:text-white sm:text-sm dark:border-gray-700 dark:bg-transparent focus:outline-none focus:ring-2 focus:ring-gray-800 dark:focus:border-white focus:placeholder-gray-400"
           placeholder="you@domain.com"
         />
-        <div className="text-sm text-red-500 mt-4">{message}</div>
       </div>
       <div className="mt-3 rounded-md sm:mt-0 sm:ml-3 sm:flex-shrink-0">
         <button

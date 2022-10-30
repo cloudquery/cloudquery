@@ -1,5 +1,6 @@
 # Table: aws_iot_jobs
 
+https://docs.aws.amazon.com/iot/latest/apireference/API_Job.html
 
 The primary key for this table is **arn**.
 
@@ -7,6 +8,10 @@ The primary key for this table is **arn**.
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
 |tags|JSON|
@@ -32,5 +37,3 @@ The primary key for this table is **arn**.
 |target_selection|String|
 |targets|StringArray|
 |timeout_config|JSON|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

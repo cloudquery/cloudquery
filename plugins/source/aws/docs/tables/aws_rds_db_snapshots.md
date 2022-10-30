@@ -1,5 +1,6 @@
 # Table: aws_rds_db_snapshots
 
+https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBSnapshot.html
 
 The primary key for this table is **arn**.
 
@@ -7,6 +8,10 @@ The primary key for this table is **arn**.
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
 |arn (PK)|String|
@@ -32,15 +37,13 @@ The primary key for this table is **arn**.
 |port|Int|
 |processor_features|JSON|
 |snapshot_create_time|Timestamp|
+|snapshot_database_time|Timestamp|
 |snapshot_target|String|
 |snapshot_type|String|
 |source_db_snapshot_identifier|String|
 |source_region|String|
 |status|String|
 |storage_type|String|
-|tag_list|JSON|
 |tde_credential_arn|String|
 |timezone|String|
 |vpc_id|String|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+	"time"
 
 	kms "cloud.google.com/go/kms/apiv1"
 	"github.com/cloudquery/plugin-sdk/faker"
@@ -35,13 +36,34 @@ func createKeyrings() (*client.Services, error) {
 		}
 	}()
 
+	location := &kmsold.Location{
+		DisplayName: "testLocation",
+		Name:        "projects/testProject/location/testLocation",
+	}
+
+	var keyring kmsold.KeyRing
+	if err := faker.FakeObject(&keyring); err != nil {
+		return nil, err
+	}
+	keyring.Name = fmt.Sprintf("projects/testProject/location/%s/keyring/%s", location.Name, keyring.Name)
+	keyring.CreateTime = time.Now().Format(time.RFC3339)
+	var key kmsold.CryptoKey
+	if err := faker.FakeObject(&key); err != nil {
+		return nil, err
+	}
+	key.Name = fmt.Sprintf("%s/cryptokey/%s", keyring.Name, "test")
+	key.CreateTime = time.Now().Format(time.RFC3339)
+	key.NextRotationTime = time.Now().Format(time.RFC3339)
+	key.Primary.CreateTime = time.Now().Format(time.RFC3339)
+	key.Primary.DestroyEventTime = time.Now().Format(time.RFC3339)
+	key.Primary.DestroyTime = time.Now().Format(time.RFC3339)
+	key.Primary.GenerateTime = time.Now().Format(time.RFC3339)
+	key.Primary.ImportTime = time.Now().Format(time.RFC3339)
+
 	mux := httprouter.New()
 	mux.GET("/v1/projects/testProject/locations", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		resp := &kmsold.ListLocationsResponse{
-			Locations: []*kmsold.Location{{
-				DisplayName: "testLocation",
-				Name:        "projects/testProject/location/testLocation",
-			}},
+			Locations: []*kmsold.Location{location},
 		}
 		b, err := json.Marshal(resp)
 		if err != nil {
@@ -53,6 +75,25 @@ func createKeyrings() (*client.Services, error) {
 			return
 		}
 	})
+	mux.GET("/v1/test string/cryptoKeys", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+		resp := &kmsold.ListCryptoKeysResponse{
+			CryptoKeys: []*kmsold.CryptoKey{&key},
+		}
+		b, err := json.Marshal(resp)
+		if err != nil {
+			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)
+			return
+		}
+		if _, err := w.Write(b); err != nil {
+			http.Error(w, "failed to write", http.StatusBadRequest)
+			return
+		}
+	})
+
+	mux.NotFound = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.Error(w, "not found: "+r.RequestURI, http.StatusNotFound)
+	})
+
 	ts := httptest.NewServer(mux)
 
 	kmsOld, err := kmsold.NewService(

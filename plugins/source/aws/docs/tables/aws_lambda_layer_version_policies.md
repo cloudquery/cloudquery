@@ -1,12 +1,17 @@
 # Table: aws_lambda_layer_version_policies
 
 
+
 The primary key for this table is **_cq_id**.
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
 |layer_version_arn|String|
@@ -14,5 +19,3 @@ The primary key for this table is **_cq_id**.
 |policy|String|
 |revision_id|String|
 |result_metadata|JSON|
-|_cq_id (PK)|UUID|
-|_cq_fetch_time|Timestamp|

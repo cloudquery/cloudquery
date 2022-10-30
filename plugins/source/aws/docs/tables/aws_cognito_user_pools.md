@@ -1,15 +1,20 @@
 # Table: aws_cognito_user_pools
 
+https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_UserPoolType.html
 
 The composite primary key for this table is (**account_id**, **region**, **id**).
 
 ## Relations
-The following tables depend on `aws_cognito_user_pools`:
-  - [`aws_cognito_user_pool_identity_providers`](aws_cognito_user_pool_identity_providers.md)
+The following tables depend on aws_cognito_user_pools:
+  - [aws_cognito_user_pool_identity_providers](aws_cognito_user_pool_identity_providers.md)
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |account_id (PK)|String|
 |region (PK)|String|
 |id (PK)|String|
@@ -44,5 +49,3 @@ The following tables depend on `aws_cognito_user_pools`:
 |username_attributes|StringArray|
 |username_configuration|JSON|
 |verification_message_template|JSON|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

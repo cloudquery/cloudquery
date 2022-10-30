@@ -13,9 +13,10 @@ import (
 func GuarddutyResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "detectors",
-			Struct:     &models.DetectorWrapper{},
-			SkipFields: []string{"Id"},
+			SubService:          "detectors",
+			Struct:              &models.DetectorWrapper{},
+			SkipFields:          []string{"Id"},
+			PreResourceResolver: "getDetector",
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:     "account_id",
@@ -45,9 +46,10 @@ func GuarddutyResources() []*Resource {
 			},
 		},
 		{
-			SubService: "detector_members",
-			Struct:     &types.Member{},
-			SkipFields: []string{},
+			SubService:  "detector_members",
+			Struct:      &types.Member{},
+			Description: "https://docs.aws.amazon.com/guardduty/latest/APIReference/API_Member.html",
+			SkipFields:  []string{},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:     "region",

@@ -1,42 +1,14 @@
 import { Tabs, Tab } from '../Tabs'
 
-## Download and Install
-
 You can download the precompiled binary from [releases](https://github.com/cloudquery/cloudquery/releases), or using CLI:
 
-<Tabs options={['Linux', 'OSX', 'Windows']}>
+<Tabs options={['OSX', 'Linux', 'Windows']}>
 
 <Tab>
-
-<Tabs options={[ 'Precompiled Binaries (x86_64)', 'Precompiled Binaries (arm64)' ]}>
-
+<Tabs options={['Homebrew', 'Precompiled Binaries (amd64)', 'Precompiled Binaries (arm64)']}>
 <Tab>
 
-```bash
-curl -L https://versions.cloudquery.io/latest/v1/cloudquery_linux_x86_64 -o cloudquery
-chmod a+x cloudquery
-```
-
-</Tab>
-
-<Tab>
-
-```bash
-curl -L https://versions.cloudquery.io/latest/v1/cloudquery_linux_arm64 -o cloudquery
-chmod a+x cloudquery
-```
-
-</Tab>
-
-</Tabs>
-
-</Tab>
-
-<Tab>
-<Tabs options={['Homebrew', 'Precompiled Binaries (x86_64)', 'Precompiled Binaries (arm64)']}>
-<Tab>
-
-```bash
+```bash copy
 brew install cloudquery/tap/cloudquery
 
 # After initial install you can upgrade the version via:
@@ -47,8 +19,8 @@ brew install cloudquery/tap/cloudquery
 
 <Tab>
 
-```bash
-curl -L https://versions.cloudquery.io/latest/v1/cloudquery_darwin_x86_64 -o cloudquery
+```bash copy
+curl -L https://versions.cloudquery.io/latest/v2/cloudquery_darwin_amd64 -o cloudquery
 chmod a+x cloudquery
 ```
 
@@ -56,8 +28,34 @@ chmod a+x cloudquery
 
 <Tab>
 
-```bash
-curl -L https://versions.cloudquery.io/latest/v1/cloudquery_darwin_arm64 -o cloudquery
+```bash copy
+curl -L https://versions.cloudquery.io/latest/v2/cloudquery_darwin_arm64 -o cloudquery
+chmod a+x cloudquery
+```
+
+</Tab>
+
+</Tabs>
+
+</Tab>
+
+<Tab>
+
+<Tabs options={[ 'Precompiled Binaries (amd64)', 'Precompiled Binaries (arm64)' ]}>
+
+<Tab>
+
+```bash copy
+curl -L https://versions.cloudquery.io/latest/v2/cloudquery_linux_amd64 -o cloudquery
+chmod a+x cloudquery
+```
+
+</Tab>
+
+<Tab>
+
+```bash copy
+curl -L https://versions.cloudquery.io/latest/v2/cloudquery_linux_arm64 -o cloudquery
 chmod a+x cloudquery
 ```
 
@@ -73,16 +71,16 @@ chmod a+x cloudquery
 
 <Tab>
 
-```bash
-curl -L https://versions.cloudquery.io/latest/v1/cloudquery_windows_x86_64.exe -o cloudquery.exe
+```bash copy
+curl -L https://versions.cloudquery.io/latest/v2/cloudquery_windows_amd64.exe -o cloudquery.exe
 ```
 
 </Tab>
 
 <Tab>
 
-```powershell
-Invoke-WebRequest https://versions.cloudquery.io/latest/v1/cloudquery_windows_x86_64.exe -o cloudquery.exe
+```powershell copy
+Invoke-WebRequest https://versions.cloudquery.io/latest/v2/cloudquery_windows_amd64.exe -o cloudquery.exe
 ```
 
 </Tab>

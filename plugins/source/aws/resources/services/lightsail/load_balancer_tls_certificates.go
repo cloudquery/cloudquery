@@ -9,9 +9,10 @@ import (
 
 func LoadBalancerTlsCertificates() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_lightsail_load_balancer_tls_certificates",
-		Resolver:  fetchLightsailLoadBalancerTlsCertificates,
-		Multiplex: client.ServiceAccountRegionMultiplexer("lightsail"),
+		Name:        "aws_lightsail_load_balancer_tls_certificates",
+		Description: "https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_LoadBalancerTlsCertificate.html",
+		Resolver:    fetchLightsailLoadBalancerTlsCertificates,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("lightsail"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

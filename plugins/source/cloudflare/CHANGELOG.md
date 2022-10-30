@@ -5,6 +5,127 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.8](https://github.com/cloudquery/cloudquery/compare/plugins-source-cloudflare-v2.0.7...plugins-source-cloudflare-v2.0.8) (2022-10-27)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for cloudflare to v0.13.13 ([#3214](https://github.com/cloudquery/cloudquery/issues/3214)) ([6e944ca](https://github.com/cloudquery/cloudquery/commit/6e944ca3d7c3c24fd0543d64f10bb231c08ef03b))
+* **deps:** Update plugin-sdk for cloudflare to v0.13.14 ([#3230](https://github.com/cloudquery/cloudquery/issues/3230)) ([caf6d58](https://github.com/cloudquery/cloudquery/commit/caf6d58e050e246ec9a722a2655b7b2dc15194e3))
+
+## [2.0.7](https://github.com/cloudquery/cloudquery/compare/plugins-source-cloudflare-v2.0.6...plugins-source-cloudflare-v2.0.7) (2022-10-20)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for cloudflare to v0.13.12 ([#3102](https://github.com/cloudquery/cloudquery/issues/3102)) ([dd2897e](https://github.com/cloudquery/cloudquery/commit/dd2897e6773bc1fa9bd85d489c7267721932560e))
+
+## [2.0.6](https://github.com/cloudquery/cloudquery/compare/plugins-source-cloudflare-v2.0.5...plugins-source-cloudflare-v2.0.6) (2022-10-20)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for cloudflare to v0.13.12 ([#3102](https://github.com/cloudquery/cloudquery/issues/3102)) ([dd2897e](https://github.com/cloudquery/cloudquery/commit/dd2897e6773bc1fa9bd85d489c7267721932560e))
+
+## [2.0.5](https://github.com/cloudquery/cloudquery/compare/plugins-source-cloudflare-v2.0.4...plugins-source-cloudflare-v2.0.5) (2022-10-19)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk to v0.13.11 ([#3030](https://github.com/cloudquery/cloudquery/issues/3030)) ([9909c4a](https://github.com/cloudquery/cloudquery/commit/9909c4a0715a06b7c1d69c9bd23c500ac7b4adc1))
+
+## [2.0.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-cloudflare-v2.0.3...plugins-source-cloudflare-v2.0.4) (2022-10-18)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for cloudflare to v0.13.9 ([#2929](https://github.com/cloudquery/cloudquery/issues/2929)) ([83bc24f](https://github.com/cloudquery/cloudquery/commit/83bc24f583c6fdbf9d37c890c20c0a9952ef76e7))
+
+## [2.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-cloudflare-v2.0.2...plugins-source-cloudflare-v2.0.3) (2022-10-14)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for cloudflare to v0.13.8 ([#2851](https://github.com/cloudquery/cloudquery/issues/2851)) ([9a508bc](https://github.com/cloudquery/cloudquery/commit/9a508bca5a44c7420a85516e6fc5979092f6e8f2))
+
+## [2.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-cloudflare-v2.0.1...plugins-source-cloudflare-v2.0.2) (2022-10-13)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for cloudflare to v0.13.7 ([#2781](https://github.com/cloudquery/cloudquery/issues/2781)) ([7f3ffba](https://github.com/cloudquery/cloudquery/commit/7f3ffba331ffb0fce6fe592179d094bec6fa673a))
+
+## [2.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-cloudflare-v2.0.0...plugins-source-cloudflare-v2.0.1) (2022-10-12)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for cloudflare to v0.13.6 ([#2720](https://github.com/cloudquery/cloudquery/issues/2720)) ([c9a6098](https://github.com/cloudquery/cloudquery/commit/c9a60987a86f0cb9fcbd0886c333cecd834d3276))
+
+## [2.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-cloudflare-v1.0.1...plugins-source-cloudflare-v2.0.0) (2022-10-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* Use JSON tag for column names (#2627)
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for cloudflare to v0.12.10 ([#2547](https://github.com/cloudquery/cloudquery/issues/2547)) ([cf8216d](https://github.com/cloudquery/cloudquery/commit/cf8216d43850631c10a52afc21b224d5dda63f65))
+* Upgrade source SDK versions to v0.13.5 ([#2610](https://github.com/cloudquery/cloudquery/issues/2610)) ([611868e](https://github.com/cloudquery/cloudquery/commit/611868e7fbb707b524ccc5c04a7ff95fe122ae05))
+* Use JSON tag for column names ([#2627](https://github.com/cloudquery/cloudquery/issues/2627)) ([9c98b5e](https://github.com/cloudquery/cloudquery/commit/9c98b5e306da1bc58961d40515c3580300ecca17))
+
+## [1.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-cloudflare-v1.0.0...plugins-source-cloudflare-v1.0.1) (2022-10-09)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for cloudflare to v0.12.3 ([#2355](https://github.com/cloudquery/cloudquery/issues/2355)) ([9bef18e](https://github.com/cloudquery/cloudquery/commit/9bef18e64eaab35e2cba74db096797bbb30820c4))
+* **deps:** Update plugin-sdk for cloudflare to v0.12.4 ([#2397](https://github.com/cloudquery/cloudquery/issues/2397)) ([56b1761](https://github.com/cloudquery/cloudquery/commit/56b1761bf2e9c7087048c1886f62f3dd6f09609a))
+* **deps:** Update plugin-sdk for cloudflare to v0.12.5 ([#2419](https://github.com/cloudquery/cloudquery/issues/2419)) ([33578a8](https://github.com/cloudquery/cloudquery/commit/33578a87a13718285c0a78ed1bccd7f777e248f8))
+* **deps:** Update plugin-sdk for cloudflare to v0.12.6 ([#2435](https://github.com/cloudquery/cloudquery/issues/2435)) ([e59c6bd](https://github.com/cloudquery/cloudquery/commit/e59c6bdd79d2984ca36b9f2925a676ba4729b5f6))
+* **deps:** Update plugin-sdk for cloudflare to v0.12.7 ([#2448](https://github.com/cloudquery/cloudquery/issues/2448)) ([b1b598d](https://github.com/cloudquery/cloudquery/commit/b1b598db31b2d6eeff82e35ab07b33af1309d12a))
+* **deps:** Update plugin-sdk for cloudflare to v0.12.8 ([#2498](https://github.com/cloudquery/cloudquery/issues/2498)) ([b211718](https://github.com/cloudquery/cloudquery/commit/b2117189fb74bdd412400650ed120bc7b1d3c493))
+* **deps:** Update plugin-sdk for cloudflare to v0.12.9 ([#2512](https://github.com/cloudquery/cloudquery/issues/2512)) ([fb684c0](https://github.com/cloudquery/cloudquery/commit/fb684c0c454c862afe4560a00797ad08973f834d))
+
+## [1.0.0](https://github.com/cloudquery/cloudquery/compare/plugins/source/cloudflare/v0.1.7...plugins-source-cloudflare-v1.0.0) (2022-10-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* [Official v1 release](https://www.cloudquery.io/blog/cloudquery-v1-release)
+
+### Features
+
+* [Official v1 release](https://www.cloudquery.io/blog/cloudquery-v1-release)
+
+## [0.2.4-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-cloudflare-v0.2.3-pre.0...plugins-source-cloudflare-v0.2.4-pre.0) (2022-10-03)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for cloudflare to v0.11.6 ([#2254](https://github.com/cloudquery/cloudquery/issues/2254)) ([0ab9847](https://github.com/cloudquery/cloudquery/commit/0ab98471763c5d36ef18e0f8da959b42a46578f3))
+
+## [0.2.3-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-cloudflare-v0.2.2-pre.0...plugins-source-cloudflare-v0.2.3-pre.0) (2022-10-03)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.11.5 ([#2228](https://github.com/cloudquery/cloudquery/issues/2228)) ([a0670f3](https://github.com/cloudquery/cloudquery/commit/a0670f3696789b1c7dbbbf294cc3cda2b7ec60bc))
+
+## [0.2.2-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-cloudflare-v0.2.1-pre.0...plugins-source-cloudflare-v0.2.2-pre.0) (2022-10-02)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.10.2 ([#2048](https://github.com/cloudquery/cloudquery/issues/2048)) ([e407991](https://github.com/cloudquery/cloudquery/commit/e4079914772d8191639b9935aa5970b8e27b082f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.11.0 ([#2135](https://github.com/cloudquery/cloudquery/issues/2135)) ([1729467](https://github.com/cloudquery/cloudquery/commit/1729467b2119555e18b15d73c91cd501ccf7ecb8))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.11.2 ([#2162](https://github.com/cloudquery/cloudquery/issues/2162)) ([5701aa5](https://github.com/cloudquery/cloudquery/commit/5701aa5b0a8d04e9e99e3efe6e27d5f7ff29b216))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.11.4 ([#2211](https://github.com/cloudquery/cloudquery/issues/2211)) ([898b11e](https://github.com/cloudquery/cloudquery/commit/898b11e05cfc916830bd2892dbdb790ccb861a57))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.8.0 ([#1997](https://github.com/cloudquery/cloudquery/issues/1997)) ([4fa40da](https://github.com/cloudquery/cloudquery/commit/4fa40da04b427f864d2dc11f133e5c83e53ce4b6))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.8.1 ([#2024](https://github.com/cloudquery/cloudquery/issues/2024)) ([8f88de4](https://github.com/cloudquery/cloudquery/commit/8f88de4b4eaeabae7369ba309e765a252392ee8c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.8.2 ([#2044](https://github.com/cloudquery/cloudquery/issues/2044)) ([9b69b46](https://github.com/cloudquery/cloudquery/commit/9b69b468536521b20b77ec1fc180fc85aeeba376))
+
 ## [0.2.1-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins/source/cloudflare/v0.2.0-pre.0...plugins/source/cloudflare/v0.2.1-pre.0) (2022-09-22)
 
 

@@ -9,9 +9,11 @@ import (
 
 func Documents() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_ssm_documents",
-		Resolver:  fetchSsmDocuments,
-		Multiplex: client.ServiceAccountRegionMultiplexer("ssm"),
+		Name:                "aws_ssm_documents",
+		Description:         "https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_DocumentDescription.html",
+		Resolver:            fetchSsmDocuments,
+		PreResourceResolver: getDocument,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("ssm"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

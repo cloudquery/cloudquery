@@ -13,9 +13,10 @@ import (
 func ElasticbeanstalkResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "application_versions",
-			Struct:     &types.ApplicationVersionDescription{},
-			SkipFields: []string{"ApplicationVersionArn"},
+			SubService:  "application_versions",
+			Struct:      &types.ApplicationVersionDescription{},
+			Description: "https://docs.aws.amazon.com/elasticbeanstalk/latest/api/API_ApplicationVersionDescription.html",
+			SkipFields:  []string{"ApplicationVersionArn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -28,9 +29,10 @@ func ElasticbeanstalkResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "applications",
-			Struct:     &types.ApplicationDescription{},
-			SkipFields: []string{"ApplicationArn", "DateCreated"},
+			SubService:  "applications",
+			Struct:      &types.ApplicationDescription{},
+			Description: "https://docs.aws.amazon.com/elasticbeanstalk/latest/api/API_ApplicationDescription.html",
+			SkipFields:  []string{"ApplicationArn", "DateCreated"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -48,9 +50,10 @@ func ElasticbeanstalkResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "environments",
-			Struct:     &types.EnvironmentDescription{},
-			SkipFields: []string{"EnvironmentId", "EnvironmentArn"},
+			SubService:  "environments",
+			Struct:      &types.EnvironmentDescription{},
+			Description: "https://docs.aws.amazon.com/elasticbeanstalk/latest/APIReference/API_EnvironmentDescription.html",
+			SkipFields:  []string{"EnvironmentId", "EnvironmentArn"},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:     "account_id",

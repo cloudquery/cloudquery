@@ -9,9 +9,10 @@ import (
 
 func CaCertificates() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_iot_ca_certificates",
-		Resolver:  fetchIotCaCertificates,
-		Multiplex: client.ServiceAccountRegionMultiplexer("iot"),
+		Name:        "aws_iot_ca_certificates",
+		Description: "https://docs.aws.amazon.com/iot/latest/apireference/API_CACertificateDescription.html",
+		Resolver:    fetchIotCaCertificates,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("iot"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -45,6 +46,11 @@ func CaCertificates() *schema.Table {
 				Name:     "certificate_id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("CertificateId"),
+			},
+			{
+				Name:     "certificate_mode",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("CertificateMode"),
 			},
 			{
 				Name:     "certificate_pem",

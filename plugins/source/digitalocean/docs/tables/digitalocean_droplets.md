@@ -1,15 +1,20 @@
 # Table: digitalocean_droplets
 
 
+
 The primary key for this table is **id**.
 
 ## Relations
-The following tables depend on `digitalocean_droplets`:
-  - [`digitalocean_droplet_neighbors`](digitalocean_droplet_neighbors.md)
+The following tables depend on digitalocean_droplets:
+  - [digitalocean_droplet_neighbors](digitalocean_droplet_neighbors.md)
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |backup_ids|IntArray|
 |snapshot_ids|IntArray|
 |volume_ids|IntArray|
@@ -31,5 +36,3 @@ The following tables depend on `digitalocean_droplets`:
 |kernel|JSON|
 |tags|StringArray|
 |vpc_uuid|String|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

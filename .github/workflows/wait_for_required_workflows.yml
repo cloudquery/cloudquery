@@ -11,22 +11,29 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-        with:
-          fetch-depth: 2
       - name: Get changed files
         id: changed-files
-        uses: tj-actions/changed-files@v28
-        with:
-          dir_names: true
+        uses: Ana06/get-changed-files@v2.1.0
       - uses: actions/github-script@v6
         env:
-          DIRS: ${{ steps.changed-files.outputs.all_changed_files }}
+          FILES: ${{ steps.changed-files.outputs.all }}
         with:
           script: |
-            const dirs = process.env.DIRS.split(' ')
-            console.log(dirs)
+            const files = process.env.FILES.split(' ')
+            console.log(files)
             let now = new Date().getTime()
             const deadline = now + 60 * 1000 * 15
+            const matchesWorkflow = (file, action) => {
+              if (!file.startsWith('.github/workflows/')) {
+                return false
+              }
+              const fs = require("fs");
+              const contents = fs.readFileSync(file, 'utf8');
+              return contents.includes(`name: "${action}"`)
+            }
+            const matchesFile = (action) => {
+              return files.some(file => file.startsWith(action) || matchesWorkflow(file, action))
+            }
             let actions = ["cli",
                            "plugins/source/aws",
                            "plugins/source/azure",
@@ -42,15 +49,17 @@ jobs:
                            
                            "plugins/destination/postgresql",
                            "plugins/destination/test",
-                           ]
-            const matchesDir = (action) => {
-              return dirs.some(dir => dir.startsWith(action))
-            }
-            actions = actions.filter(action => matchesDir(action))
+                           ].filter(action => matchesFile(action))
             if (actions.length === 0) {
               console.log("No actions to wait for")
               return
             }
+            // We test the CLI on multiple OSes, so we need to wait for all of them
+            if (actions.includes("cli")) {
+              actions = actions.filter(action => action !== "cli")
+              actions = ["cli (ubuntu-latest)", "cli (windows-latest)", "cli (macos-latest)", ...actions]
+            }
+            actions = [...actions, 'validate-release']
             console.log(`Waiting for ${actions.join(", ")}`)
             while (now <= deadline) {
               const checkRuns = await github.paginate(github.rest.checks.listForRef, {
@@ -60,17 +69,15 @@ jobs:
                 status: 'completed',
                 per_page: 100
               })
-              console.log(checkRuns)
-              checkRuns.forEach(item => {
-                if (actions.includes(item.name)) {
-                  if (item.conclusion !== 'success') {
-                    throw new Error(`Check ${item.name} failed`)
-                  }
-                  actions = actions.filter(action => action !== item.name)
-                }
-              })
-              if (actions.length === 0) {
-                console.log("Done waiting for actions")
+              const runs = checkRuns.map(({ name, conclusion }) => ({ name, conclusion }))
+              console.log(`Got the following check runs: ${JSON.stringify(runs)}`)
+              const matchingRuns = runs.filter(({ name }) => actions.includes(name))
+              const failedRuns = matchingRuns.filter(({ conclusion }) => conclusion !== 'success')
+              if (failedRuns.length > 0) {
+                throw new Error(`The following required workflows failed: ${failedRuns.map(({ name }) => name).join(", ")}`)
+              }
+              if (matchingRuns.length === actions.length) {
+                console.log("All required workflows have passed")
                 return
               }
               

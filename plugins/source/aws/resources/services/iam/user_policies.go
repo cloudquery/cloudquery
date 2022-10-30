@@ -9,9 +9,10 @@ import (
 
 func UserPolicies() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_iam_user_policies",
-		Resolver:  fetchIamUserPolicies,
-		Multiplex: client.AccountMultiplex,
+		Name:                "aws_iam_user_policies",
+		Resolver:            fetchIamUserPolicies,
+		PreResourceResolver: getUserPolicy,
+		Multiplex:           client.AccountMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

@@ -9,9 +9,10 @@ import (
 
 func DataRepositoryTasks() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_fsx_data_repository_tasks",
-		Resolver:  fetchFsxDataRepositoryTasks,
-		Multiplex: client.ServiceAccountRegionMultiplexer("fsx"),
+		Name:        "aws_fsx_data_repository_tasks",
+		Description: "https://docs.aws.amazon.com/fsx/latest/APIReference/API_DataRepositoryTask.html",
+		Resolver:    fetchFsxDataRepositoryTasks,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("fsx"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -42,11 +43,6 @@ func DataRepositoryTasks() *schema.Table {
 				Resolver: schema.PathResolver("CreationTime"),
 			},
 			{
-				Name:     "file_system_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("FileSystemId"),
-			},
-			{
 				Name:     "lifecycle",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Lifecycle"),
@@ -62,6 +58,11 @@ func DataRepositoryTasks() *schema.Table {
 				Resolver: schema.PathResolver("Type"),
 			},
 			{
+				Name:     "capacity_to_release",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("CapacityToRelease"),
+			},
+			{
 				Name:     "end_time",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("EndTime"),
@@ -70,6 +71,16 @@ func DataRepositoryTasks() *schema.Table {
 				Name:     "failure_details",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("FailureDetails"),
+			},
+			{
+				Name:     "file_cache_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("FileCacheId"),
+			},
+			{
+				Name:     "file_system_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("FileSystemId"),
 			},
 			{
 				Name:     "paths",

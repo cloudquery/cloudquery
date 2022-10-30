@@ -90,6 +90,16 @@ func partitionRegionServiceGenerator() error {
 		return err
 	}
 
+	if _, ok := data.Partitions["aws"].Services["api.ecr-public"]; ok {
+		panic("api.ecr-public has been added to the list and code should be updated")
+	}
+	data.Partitions["aws"].Services["api.ecr-public"] = &client.AwsService{
+		Regions: map[string]*map[string]interface{}{
+			"us-east-1": {},
+			"us-west-2": {},
+		},
+	}
+
 	err = saveToJsonFile(data, filepath.Join("client", client.PartitionServiceRegionFile))
 	return err
 }

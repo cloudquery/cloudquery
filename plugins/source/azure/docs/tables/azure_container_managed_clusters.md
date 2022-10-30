@@ -1,12 +1,17 @@
 # Table: azure_container_managed_clusters
 
 
+
 The primary key for this table is **id**.
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |subscription_id|String|
 |provisioning_state|String|
 |power_state|JSON|
@@ -44,5 +49,3 @@ The primary key for this table is **id**.
 |type|String|
 |location|String|
 |tags|JSON|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

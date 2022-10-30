@@ -12,7 +12,11 @@ import (
 )
 
 func fetchIamPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	var config iam.GetAccountAuthorizationDetailsInput
+	config := iam.GetAccountAuthorizationDetailsInput{
+		Filter: []types.EntityType{
+			types.EntityTypeAWSManagedPolicy, types.EntityTypeLocalManagedPolicy,
+		},
+	}
 	svc := meta.(*client.Client).Services().IAM
 	for {
 		response, err := svc.GetAccountAuthorizationDetails(ctx, &config)

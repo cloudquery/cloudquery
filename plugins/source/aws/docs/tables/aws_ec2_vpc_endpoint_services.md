@@ -1,5 +1,6 @@
 # Table: aws_ec2_vpc_endpoint_services
 
+https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ServiceDetail.html
 
 The primary key for this table is **arn**.
 
@@ -7,9 +8,14 @@ The primary key for this table is **arn**.
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
 |arn (PK)|String|
+|tags|JSON|
 |acceptance_required|Bool|
 |availability_zones|StringArray|
 |base_endpoint_dns_names|StringArray|
@@ -23,7 +29,4 @@ The primary key for this table is **arn**.
 |service_name|String|
 |service_type|JSON|
 |supported_ip_address_types|StringArray|
-|tags|JSON|
 |vpc_endpoint_policy_supported|Bool|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

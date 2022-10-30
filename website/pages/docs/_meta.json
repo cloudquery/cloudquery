@@ -1,22 +1,21 @@
 {
   "index": "Introduction",
-  "getting-started": "Getting Started",
-  "tutorials": "Tutorials",
-  "cli": "CLI",
-  "configuration": "Configuration",
-  "policies": "Policies",
+  "quickstart": "Quickstart",
+  "core-concepts": "Core Concepts",
+  "advanced-topics": "Advanced Topics",
+  "reference": "Reference",
+  "recipes": "Recipes",
   "deployment": "Deployment",
   "developers": "Developers",
-  "best-practices": "Best Practices",
-  "security": "Security",
+  "cq-vs-others": "CloudQuery vs Others",
+  "plugins": "Plugins",
   "faq": "FAQ",
+  "telemetry": "Telemetry",
   "troubleshooting": "Troubleshooting",
-  "cq_vs_others": "CloudQuery vs Others",
-  "glossary": "Glossary",
-  "videos-and-blogs": "Videos & Blogs",
+  "support": "Support",
   "changelog": {
     "title": "Changelog",
-    "href": "https://github.com/cloudquery/cloudquery/releases",
+    "href": "https://github.com/cloudquery/cloudquery/blob/main/cli/CHANGELOG.md",
     "newWindow": true
   }
 }

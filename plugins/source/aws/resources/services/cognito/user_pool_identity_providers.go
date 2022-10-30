@@ -9,9 +9,11 @@ import (
 
 func UserPoolIdentityProviders() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_cognito_user_pool_identity_providers",
-		Resolver:  fetchCognitoUserPoolIdentityProviders,
-		Multiplex: client.ServiceAccountRegionMultiplexer("cognito-identity"),
+		Name:                "aws_cognito_user_pool_identity_providers",
+		Description:         "https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_IdentityProviderType.html",
+		Resolver:            fetchCognitoUserPoolIdentityProviders,
+		PreResourceResolver: getUserPoolIdentityProvider,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("cognito-identity"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
