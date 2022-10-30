@@ -25,6 +25,8 @@ func (*Client) SchemaTypeToPg10(t schema.ValueType) string {
 		return "uuid"
 	case schema.TypeString:
 		return "text"
+	case schema.TypeByteArray:
+		return "bytea"
 	case schema.TypeStringArray:
 		return "text[]"
 	case schema.TypeTimestamp:
@@ -50,7 +52,7 @@ func (*Client) SchemaTypeToPg10(t schema.ValueType) string {
 	case schema.TypeIntArray:
 		return "bigint[]"
 	default:
-		return "text"
+		return ""
 	}
 }
 
@@ -89,6 +91,6 @@ func (*Client) SchemaTypeToCockroach(t schema.ValueType) string {
 	case schema.TypeMacAddrArray:
 		return "text[]"
 	default:
-		return "text"
+		return ""
 	}
 }
