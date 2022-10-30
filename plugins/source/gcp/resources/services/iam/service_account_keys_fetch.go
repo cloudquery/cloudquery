@@ -5,7 +5,6 @@ import (
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
-	"github.com/pkg/errors"
 	"google.golang.org/api/iam/v1"
 )
 
@@ -15,7 +14,7 @@ func fetchServiceAccountKeys(ctx context.Context, meta schema.ClientMeta, parent
 
 	output, err := c.Services.Iam.Projects.ServiceAccounts.Keys.List(p.Name).Context(ctx).Do()
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 
 	res <- output.Keys

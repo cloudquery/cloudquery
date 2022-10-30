@@ -6,10 +6,10 @@ import (
 	"testing"
 	"time"
 
+	"github.com/cloudquery/plugin-sdk/plugins"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
 )
-
 
 func getTestLogger(t *testing.T) zerolog.Logger {
 	t.Helper()
@@ -19,13 +19,11 @@ func getTestLogger(t *testing.T) zerolog.Logger {
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 }
 
-
 func TestClient(t *testing.T) {
 	ctx := context.Background()
 	client, err := New(ctx, getTestLogger(t), specs.Destination{
 		WriteMode: specs.WriteModeAppend,
-		Spec: Spec{
-		},
+		Spec:      Spec{},
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -40,5 +38,19 @@ func TestClient(t *testing.T) {
 	_, err = New(ctx, getTestLogger(t), specs.Destination{})
 	if err.Error() != "csv destination only supports append mode only" {
 		t.Fatal("expected error: 'csv destination only supports append mode only'")
+	}
+}
+
+func TestPlugin(t *testing.T) {
+	ctx := context.Background()
+	p := plugins.NewDestinationPlugin("csv", "development", New)
+
+	if err := plugins.DestiantionPluginTestHelper(ctx, p, getTestLogger(t), specs.Destination{
+		WriteMode: specs.WriteModeAppend,
+		Spec: Spec{
+			Directory: t.TempDir(),
+		},
+	}); err != nil {
+		t.Fatal(err)
 	}
 }

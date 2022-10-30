@@ -91,7 +91,7 @@ func resolvePolicyCodeSigningConfig(ctx context.Context, meta schema.ClientMeta,
 
 	// skip getting CodeSigningConfig since containerized lambda functions does not support this feature
 	// value can be nil if the caller doesn't have GetFunctionConfiguration permission and only has List*
-	lambdaType := resource.Get("code_repository_type").(*cqtypes.Text).String
+	lambdaType := resource.Get("code_repository_type").(*cqtypes.Text).Str
 	if lambdaType == "ECR" {
 		return nil
 	}

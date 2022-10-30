@@ -137,11 +137,11 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, res
 func fetchS3BucketGrants(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(*models.WrappedBucket)
 	svc := meta.(*client.Client).Services().S3
-	if parent.Get("region").(*cqtypes.Text).String == "" {
+	if parent.Get("region").(*cqtypes.Text).Str == "" {
 		return nil
 	}
 	aclOutput, err := svc.GetBucketAcl(ctx, &s3.GetBucketAclInput{Bucket: r.Name}, func(options *s3.Options) {
-		options.Region = parent.Get("region").(*cqtypes.Text).String
+		options.Region = parent.Get("region").(*cqtypes.Text).Str
 	})
 	if err != nil {
 		if client.IsAWSError(err, "NoSuchBucket") {
@@ -156,11 +156,11 @@ func fetchS3BucketCorsRules(ctx context.Context, meta schema.ClientMeta, parent 
 	r := parent.Item.(*models.WrappedBucket)
 	c := meta.(*client.Client)
 	svc := c.Services().S3
-	if parent.Get("region").(*cqtypes.Text).String == "" {
+	if parent.Get("region").(*cqtypes.Text).Str == "" {
 		return nil
 	}
 	corsOutput, err := svc.GetBucketCors(ctx, &s3.GetBucketCorsInput{Bucket: r.Name}, func(options *s3.Options) {
-		options.Region = parent.Get("region").(*cqtypes.Text).String
+		options.Region = parent.Get("region").(*cqtypes.Text).Str
 	})
 	if err != nil {
 		if client.IsAWSError(err, "NoSuchCORSConfiguration", "NoSuchBucket") {
@@ -177,11 +177,11 @@ func fetchS3BucketEncryptionRules(ctx context.Context, meta schema.ClientMeta, p
 	r := parent.Item.(*models.WrappedBucket)
 	c := meta.(*client.Client)
 	svc := c.Services().S3
-	if parent.Get("region").(*cqtypes.Text).String == "" {
+	if parent.Get("region").(*cqtypes.Text).Str == "" {
 		return nil
 	}
 	aclOutput, err := svc.GetBucketEncryption(ctx, &s3.GetBucketEncryptionInput{Bucket: r.Name}, func(options *s3.Options) {
-		options.Region = parent.Get("region").(*cqtypes.Text).String
+		options.Region = parent.Get("region").(*cqtypes.Text).Str
 	})
 	if err != nil {
 		if client.IsAWSError(err, "ServerSideEncryptionConfigurationNotFoundError") {
@@ -197,11 +197,11 @@ func fetchS3BucketLifecycles(ctx context.Context, meta schema.ClientMeta, parent
 	r := parent.Item.(*models.WrappedBucket)
 	c := meta.(*client.Client)
 	svc := c.Services().S3
-	if parent.Get("region").(*cqtypes.Text).String == "" {
+	if parent.Get("region").(*cqtypes.Text).Str == "" {
 		return nil
 	}
 	lifecycleOutput, err := svc.GetBucketLifecycleConfiguration(ctx, &s3.GetBucketLifecycleConfigurationInput{Bucket: r.Name}, func(options *s3.Options) {
-		options.Region = parent.Get("region").(*cqtypes.Text).String
+		options.Region = parent.Get("region").(*cqtypes.Text).Str
 	})
 	if err != nil {
 		if client.IsAWSError(err, "NoSuchLifecycleConfiguration") {
