@@ -70,6 +70,7 @@ func main() {
 	resources = append(resources, recipes.S3Resources()...)
 	resources = append(resources, recipes.SagemakerResources()...)
 	resources = append(resources, recipes.SecretsManagerResources()...)
+	resources = append(resources, recipes.ServiceCatalogResources()...)
 	resources = append(resources, recipes.SESResources()...)
 	resources = append(resources, recipes.ShieldResources()...)
 	resources = append(resources, recipes.SNSResources()...)

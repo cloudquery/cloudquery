@@ -63,6 +63,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/s3"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sagemaker"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/secretsmanager"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/servicecatalog"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ses"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/shield"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sns"
@@ -292,6 +293,9 @@ func tables() []*schema.Table {
 		sagemaker.NotebookInstances(),
 		sagemaker.TrainingJobs(),
 		secretsmanager.Secrets(),
+		servicecatalog.Portfolios(),
+		servicecatalog.Products(),
+		servicecatalog.ProvisionedProducts(),
 		ses.Templates(),
 		shield.Attacks(),
 		shield.ProtectionGroups(),
