@@ -125,17 +125,27 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 	}
 
 	_ = bar.Finish()
+<<<<<<< HEAD
 	syncTimeTook := time.Since(syncTime)
+=======
+>>>>>>> 4839c766c (feat: Migrate cli, plugins and destinations to new type system)
 
 	metrics, err := sourceClient.GetMetrics(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to get metrics for source %s: %w", sourceSpec.Name, err)
 	}
 
+<<<<<<< HEAD
 	fmt.Printf("Sync completed successfully. Resources: %d, Errors: %d, Panics: %d, Time: %s\n", metrics.TotalResources(), metrics.TotalErrors(), metrics.TotalPanics(), syncTimeTook.Truncate(time.Second).String())
 	// fmt.Printf("Summary: resources: %d, errors: %d, panic: %d, failed_writes: %d, time: %s\n", summary.Resources, summary.Errors, summary.Panics, failedWrites, tt.Truncate(time.Second).String())
 	// log.Info().Str("source", sourceSpec.Name).Strs("destinations", sourceSpec.Destinations).
 	// Uint64("resources", totalResources).Uint64("errors", summary.Errors).Uint64("panic", summary.Panics).Uint64("failed_writes", failedWrites).Float64("time_took", tt.Seconds()).Msg("Sync completed successfully")
+=======
+	fmt.Printf("Sync completed successfully. Resources: %d, Errors: %d, Panics: %d\n", metrics.TotalResources(), metrics.TotalErrors(), metrics.TotalPanics())
+	// fmt.Printf("Summary: resources: %d, errors: %d, panic: %d, failed_writes: %d, time: %s\n", summary.Resources, summary.Errors, summary.Panics, failedWrites, tt.Truncate(time.Second).String())
+	// log.Info().Str("source", sourceSpec.Name).Strs("destinations", sourceSpec.Destinations).
+		// Uint64("resources", totalResources).Uint64("errors", summary.Errors).Uint64("panic", summary.Panics).Uint64("failed_writes", failedWrites).Float64("time_took", tt.Seconds()).Msg("Sync completed successfully")
+>>>>>>> 4839c766c (feat: Migrate cli, plugins and destinations to new type system)
 
 	// Send analytics, if activated. We only send if the source plugin registry is GitHub, mostly to avoid sending data from development machines.
 	if analyticsClient != nil && sourceSpec.Registry == specs.RegistryGithub {
