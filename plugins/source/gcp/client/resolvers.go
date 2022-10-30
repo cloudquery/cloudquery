@@ -36,7 +36,7 @@ func resolveLocation(_ context.Context, c schema.ClientMeta, r *schema.Resource)
 	}
 	name := r.Get("name")
 	if name == nil {
-		c.Logger().Warn().Str("resource", fmt.Sprintf("%T", r.Item)).Msg("missing name for resource")
+		c.(*Client).Logger().Warn().Str("resource", fmt.Sprintf("%T", r.Item)).Msg("missing name for resource")
 		return nil
 	}
 	nameStr, err := cast.ToStringE(name)

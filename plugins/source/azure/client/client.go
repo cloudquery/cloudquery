@@ -123,6 +123,10 @@ func (c *Client) Logger() *zerolog.Logger {
 	return &c.logger
 }
 
+func (c *Client) ID() string {
+	return c.SubscriptionId
+}
+
 // withSubscription allows multiplexer to create a new client with given subscriptionId
 func (c Client) withSubscription(subscriptionId string) *Client {
 	return &Client{
