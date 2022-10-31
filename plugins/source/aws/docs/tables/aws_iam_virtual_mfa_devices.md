@@ -14,7 +14,6 @@ The primary key for this table is **serial_number**.
 |_cq_parent_id|UUID|
 |account_id|String|
 |serial_number (PK)|String|
-|user_tags|JSON|
 |base32_string_seed|IntArray|
 |enable_date|Timestamp|
 |qr_code_png|IntArray|

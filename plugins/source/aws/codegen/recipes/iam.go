@@ -431,7 +431,7 @@ func IAMResources() []*Resource {
 			SubService:  "virtual_mfa_devices",
 			Struct:      &types.VirtualMFADevice{},
 			Description: "https://docs.aws.amazon.com/IAM/latest/APIReference/API_VirtualMFADevice.html",
-			SkipFields:  []string{"SerialNumber", "UserTags"},
+			SkipFields:  []string{"SerialNumber"},
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{
@@ -439,11 +439,6 @@ func IAMResources() []*Resource {
 						Name:    "serial_number",
 						Type:    schema.TypeString,
 						Options: schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:     "user_tags",
-						Type:     schema.TypeJSON,
-						Resolver: `client.ResolveTags`, // FIXME this is wrong, add path
 					},
 				}...),
 		},
