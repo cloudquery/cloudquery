@@ -14,5 +14,5 @@ jobs:
           token: ${{ secrets.GH_CQ_BOT }}
           reaction-token: ${{ secrets.GITHUB_TOKEN }}
           issue-type: pull-request
-          commands: docs
+          commands: gen
           permission: write

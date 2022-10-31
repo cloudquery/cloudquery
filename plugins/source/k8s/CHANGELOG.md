@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v2.1.2...plugins-source-k8s-v2.2.0) (2022-10-31)
+
+
+### Features
+
+* Update all plugins to SDK with metrics and DFS scheduler ([#3286](https://github.com/cloudquery/cloudquery/issues/3286)) ([a35b8e8](https://github.com/cloudquery/cloudquery/commit/a35b8e89d625287a9b9406ff18cfac78ffdb1241))
+
 ## [2.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v2.1.1...plugins-source-k8s-v2.1.2) (2022-10-30)
 
 
