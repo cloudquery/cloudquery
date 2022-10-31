@@ -25,6 +25,26 @@ func ElastiCacheResources() []*Resource {
 				}...),
 		},
 		{
+			SubService:  "parameter_groups",
+			Struct:      &types.CacheParameterGroup{},
+			Description: "https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_CacheParameterGroup.html",
+			SkipFields:  []string{"ARN"},
+			ExtraColumns: append(
+				defaultRegionalColumns,
+				[]codegen.ColumnDefinition{
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("ARN")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				}...),
+		},
+	}
+
+	// Resources that also autogenerate the table
+	autogenResources := []*Resource{
+		{
 			SubService:  "engine_versions",
 			Struct:      &types.CacheEngineVersion{},
 			Description: "https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_CacheEngineVersion.html",
@@ -49,22 +69,6 @@ func ElastiCacheResources() []*Resource {
 			SubService:  "global_replication_groups",
 			Struct:      &types.GlobalReplicationGroup{},
 			Description: "https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_GlobalReplicationGroup.html",
-			SkipFields:  []string{"ARN"},
-			ExtraColumns: append(
-				defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "arn",
-						Type:     schema.TypeString,
-						Resolver: `schema.PathResolver("ARN")`,
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-				}...),
-		},
-		{
-			SubService:  "parameter_groups",
-			Struct:      &types.CacheParameterGroup{},
-			Description: "https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_CacheParameterGroup.html",
 			SkipFields:  []string{"ARN"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
@@ -194,5 +198,16 @@ func ElastiCacheResources() []*Resource {
 		r.Service = "elasticache"
 		r.Multiplex = `client.ServiceAccountRegionMultiplexer("elasticache")`
 	}
+
+	for _, r := range autogenResources {
+		r.Service = "elasticache"
+		r.Multiplex = `client.ServiceAccountRegionMultiplexer("elasticache")`
+		r.ShouldGenerateResolverAndMockTest = true
+		r.ResolverAndMockTestTemplate = "describe_resources_paginator_1"
+		r.CloudqueryServiceName = "ElastiCache"
+	}
+
+	resources = append(resources, autogenResources...)
+
 	return resources
 }
