@@ -15,6 +15,7 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
+|tags|JSON|
 |cidr_block|String|
 |cidr_block_association_set|JSON|
 |dhcp_options_id|String|
@@ -23,5 +24,4 @@ The primary key for this table is **arn**.
 |is_default|Bool|
 |owner_id|String|
 |state|String|
-|tags|JSON|
 |vpc_id|String|

@@ -12,7 +12,7 @@ func CodeBuildResources() []*Resource {
 			SubService:  "projects",
 			Struct:      &types.Project{},
 			Description: "https://docs.aws.amazon.com/codebuild/latest/APIReference/API_Project.html",
-			SkipFields:  []string{"Arn"},
+			SkipFields:  []string{"Arn", "Tags"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -21,6 +21,11 @@ func CodeBuildResources() []*Resource {
 						Type:     schema.TypeString,
 						Resolver: `schema.PathResolver("Arn")`,
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+					{
+						Name:     "tags",
+						Type:     schema.TypeJSON,
+						Resolver: `client.ResolveTags`,
 					},
 				}...),
 		},

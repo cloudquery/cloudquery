@@ -33,6 +33,11 @@ func Projects() *schema.Table {
 				},
 			},
 			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
+			},
+			{
 				Name:     "artifacts",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Artifacts"),
@@ -146,11 +151,6 @@ func Projects() *schema.Table {
 				Name:     "source_version",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("SourceVersion"),
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
 			},
 			{
 				Name:     "timeout_in_minutes",

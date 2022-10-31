@@ -33,6 +33,11 @@ func VpcEndpointServiceConfigurations() *schema.Table {
 				},
 			},
 			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
+			},
+			{
 				Name:     "acceptance_required",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("AcceptanceRequired"),
@@ -101,11 +106,6 @@ func VpcEndpointServiceConfigurations() *schema.Table {
 				Name:     "supported_ip_address_types",
 				Type:     schema.TypeStringArray,
 				Resolver: schema.PathResolver("SupportedIpAddressTypes"),
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
 			},
 		},
 	}

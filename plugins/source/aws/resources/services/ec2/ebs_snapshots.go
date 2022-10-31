@@ -38,6 +38,11 @@ func EbsSnapshots() *schema.Table {
 				Resolver: resolveEbsSnapshotAttribute,
 			},
 			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
+			},
+			{
 				Name:     "data_encryption_key_id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("DataEncryptionKeyId"),
@@ -106,11 +111,6 @@ func EbsSnapshots() *schema.Table {
 				Name:     "storage_tier",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("StorageTier"),
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
 			},
 			{
 				Name:     "volume_id",

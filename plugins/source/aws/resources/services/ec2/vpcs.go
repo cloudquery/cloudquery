@@ -33,6 +33,11 @@ func Vpcs() *schema.Table {
 				},
 			},
 			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
+			},
+			{
 				Name:     "cidr_block",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("CidrBlock"),
@@ -71,11 +76,6 @@ func Vpcs() *schema.Table {
 				Name:     "state",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("State"),
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
 			},
 			{
 				Name:     "vpc_id",

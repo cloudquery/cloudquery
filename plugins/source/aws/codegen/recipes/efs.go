@@ -11,7 +11,7 @@ var efsResources = []*Resource{
 		SubService:  "filesystems",
 		Struct:      &types.FileSystemDescription{},
 		Description: "https://docs.aws.amazon.com/efs/latest/ug/API_FileSystemDescription.html",
-		SkipFields:  []string{"FileSystemArn"},
+		SkipFields:  []string{"FileSystemArn", "Tags"},
 		ExtraColumns: append(
 			defaultRegionalColumns,
 			[]codegen.ColumnDefinition{
@@ -25,6 +25,11 @@ var efsResources = []*Resource{
 					Name:     "backup_policy_status",
 					Type:     schema.TypeString,
 					Resolver: `ResolveEfsFilesystemBackupPolicyStatus`,
+				},
+				{
+					Name:     "tags",
+					Type:     schema.TypeJSON,
+					Resolver: `client.ResolveTags`,
 				},
 			}...),
 	},

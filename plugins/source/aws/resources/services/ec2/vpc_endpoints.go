@@ -33,6 +33,11 @@ func VpcEndpoints() *schema.Table {
 				},
 			},
 			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
+			},
+			{
 				Name:     "creation_timestamp",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreationTimestamp"),
@@ -106,11 +111,6 @@ func VpcEndpoints() *schema.Table {
 				Name:     "subnet_ids",
 				Type:     schema.TypeStringArray,
 				Resolver: schema.PathResolver("SubnetIds"),
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
 			},
 			{
 				Name:     "vpc_endpoint_id",

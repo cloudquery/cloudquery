@@ -33,6 +33,11 @@ func Hosts() *schema.Table {
 				},
 			},
 			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
+			},
+			{
 				Name:     "allocation_time",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("AllocationTime"),
@@ -116,11 +121,6 @@ func Hosts() *schema.Table {
 				Name:     "state",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("State"),
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
 			},
 		},
 	}

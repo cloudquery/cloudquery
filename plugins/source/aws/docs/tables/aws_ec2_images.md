@@ -15,6 +15,7 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
+|tags|JSON|
 |architecture|String|
 |block_device_mappings|JSON|
 |boot_mode|String|
@@ -41,7 +42,6 @@ The primary key for this table is **arn**.
 |sriov_net_support|String|
 |state|String|
 |state_reason|JSON|
-|tags|JSON|
 |tpm_support|String|
 |usage_operation|String|
 |virtualization_type|String|

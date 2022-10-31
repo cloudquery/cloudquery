@@ -15,10 +15,10 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
+|tags|JSON|
 |amazon_side_asn|Int|
 |availability_zone|String|
 |state|String|
-|tags|JSON|
 |type|String|
 |vpc_attachments|JSON|
 |vpn_gateway_id|String|

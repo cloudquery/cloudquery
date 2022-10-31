@@ -33,6 +33,11 @@ func Subnets() *schema.Table {
 				},
 			},
 			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
+			},
+			{
 				Name:     "assign_ipv6_address_on_creation",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("AssignIpv6AddressOnCreation"),
@@ -126,11 +131,6 @@ func Subnets() *schema.Table {
 				Name:     "subnet_id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("SubnetId"),
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
 			},
 			{
 				Name:     "vpc_id",

@@ -15,6 +15,7 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
+|tags|JSON|
 |artifacts|JSON|
 |badge|JSON|
 |build_batch_config|JSON|
@@ -38,7 +39,6 @@ The primary key for this table is **arn**.
 |service_role|String|
 |source|JSON|
 |source_version|String|
-|tags|JSON|
 |timeout_in_minutes|Int|
 |vpc_config|JSON|
 |webhook|JSON|

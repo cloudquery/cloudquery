@@ -15,6 +15,7 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
+|tags|JSON|
 |connectivity_type|String|
 |create_time|Timestamp|
 |delete_time|Timestamp|
@@ -25,5 +26,4 @@ The primary key for this table is **arn**.
 |provisioned_bandwidth|JSON|
 |state|String|
 |subnet_id|String|
-|tags|JSON|
 |vpc_id|String|
