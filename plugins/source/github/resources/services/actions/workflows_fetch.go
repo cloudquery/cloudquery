@@ -42,21 +42,21 @@ func fetchWorkflows(ctx context.Context, meta schema.ClientMeta, _ *schema.Resou
 }
 
 func resolveContents(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	client := meta.(*client.Client)
+	cl := meta.(*client.Client)
 	workflow := resource.Item.(*github.Workflow)
 
-	url, err := url.Parse(*workflow.URL)
+	parsedUrl, err := url.Parse(*workflow.URL)
 	if err != nil {
 		return err
 	}
 
-	pathParts := strings.Split(url.Path, "/")
+	pathParts := strings.Split(parsedUrl.Path, "/")
 	if len(pathParts) < 2 {
 		return nil
 	}
 	opts := github.RepositoryContentGetOptions{}
 
-	fileContent, _, _, err := client.Github.Repositories.GetContents(ctx, client.Org, pathParts[2], *workflow.Path, &opts)
+	fileContent, _, _, err := cl.Github.Repositories.GetContents(ctx, cl.Org, pathParts[2], *workflow.Path, &opts)
 	if err != nil {
 		// This is not actually an error, it means that a workflow file has been deleted
 		return err
