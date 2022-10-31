@@ -65,7 +65,7 @@ func TestResolveTags(t *testing.T) {
 		err := ResolveTags(context.Background(), nil, r, ta.Columns[0])
 		assert.NoError(t, err)
 		expectedJson := &cqtypes.JSON{}
-		expectedJson.Set(tc.ExpectedTags)
+		_ = expectedJson.Set(tc.ExpectedTags)
 		assert.Equal(t, expectedJson, r.Get(ta.Columns[0].Name))
 	}
 }
@@ -147,7 +147,7 @@ func TestResolveSliceJson(t *testing.T) {
 		err := SliceJsonResolver(tc.path, tc.keyPath, tc.valuePath)(context.Background(), nil, r, ta.Columns[0])
 		assert.NoError(t, err)
 		expectedJson := &cqtypes.JSON{}
-		expectedJson.Set(tc.ExpectedData)
+		_ = expectedJson.Set(tc.ExpectedData)
 		assert.Equal(t, expectedJson, r.Get(ta.Columns[0].Name))
 	}
 }
@@ -232,7 +232,7 @@ func TestResolveStringJson(t *testing.T) {
 		err := MarshaledJsonResolver(tc.Path)(context.Background(), nil, r, ta.Columns[0])
 		assert.NoError(t, err)
 		expectedJson := &cqtypes.JSON{}
-		expectedJson.Set(tc.ExpectedData)
+		_ = expectedJson.Set(tc.ExpectedData)
 		assert.Equal(t, expectedJson, r.Get(ta.Columns[0].Name))
 	}
 }

@@ -75,7 +75,7 @@ func fetchIamUserAccessKeys(ctx context.Context, meta schema.ClientMeta, parent 
 			case 0:
 				keys[i] = models.AccessKeyWrapper{AccessKeyMetadata: key, LastRotated: *key.CreateDate}
 			case 1:
-					keys[i] = models.AccessKeyWrapper{AccessKeyMetadata: key, LastRotated: *key.CreateDate}
+				keys[i] = models.AccessKeyWrapper{AccessKeyMetadata: key, LastRotated: *key.CreateDate}
 			default:
 				keys[i] = models.AccessKeyWrapper{AccessKeyMetadata: key}
 			}

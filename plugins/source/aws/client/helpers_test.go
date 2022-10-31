@@ -68,7 +68,7 @@ func TestResolveARN(t *testing.T) {
 			client := Client{Region: "region", Partition: "aws"}
 			err := resolver(context.Background(), &client, tt.resource, col)
 			expectedText := &cqtypes.Text{}
-			expectedText.Set(tt.want)
+			_ = expectedText.Set(tt.want)
 
 			require.Equal(t, tt.resource.Get(tt.columnName), expectedText)
 			require.Equal(t, err != nil, tt.wantErr)
