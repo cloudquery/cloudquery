@@ -97,13 +97,14 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (pl
 	return c, nil
 }
 
-func (c *Client) close() error {
+func (c *Client) close() {
 	for tableName, w := range c.writers {
 		w.writer.Flush()
-		w.file.Close()
+		if err := w.file.Close(); err != nil {
+			c.logger.Error().Err(err).Str("table", tableName).Msg("failed to close file")
+		}
 		delete(c.writers, tableName)
 	}
-	return nil
 }
 
 func (c *Client) Close(ctx context.Context) error {
@@ -120,7 +121,8 @@ func (c *Client) listen() {
 		case msg := <-c.startWriteChan:
 			msg.err <- c.startWrite(msg.tables)
 		case msg := <-c.endWriteChan:
-			msg.err <- c.endWrite(msg.tables)
+			c.endWrite(msg.tables)
+			msg.err <- nil
 		case resource := <-c.writeChan:
 			c.writeResource(resource)
 		case msg := <-c.migrateChan:
@@ -128,7 +130,8 @@ func (c *Client) listen() {
 		case msg := <-c.readChan:
 			msg.err <- c.read(msg.table, msg.source, msg.resources)
 		case msg := <-c.closeChan:
-			msg.err <- c.close()
+			c.close()
+			msg.err <- nil
 		}
 	}
 }

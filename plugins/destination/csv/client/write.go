@@ -56,7 +56,7 @@ func (c *Client) startWrite(tables schema.Tables) error {
 	return nil
 }
 
-func (c *Client) endWrite(tables schema.Tables) error {
+func (c *Client) endWrite(tables schema.Tables) {
 	for _, t := range tables {
 		if c.writers[t.Name] != nil {
 			c.writers[t.Name].writer.Flush()
@@ -74,7 +74,6 @@ func (c *Client) endWrite(tables schema.Tables) error {
 		}
 		c.endWrite(t.Relations)
 	}
-	return nil
 }
 
 // this should only be called from the main listen goroutine to ensure writing to files

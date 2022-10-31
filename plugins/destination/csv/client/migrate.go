@@ -31,6 +31,7 @@ func (c *Client) migrate(tables schema.Tables) error {
 			if err != nil {
 				return err
 			}
+			//nolint:revive
 			defer f.Close()
 			r := csv.NewReader(f)
 			// skip header
@@ -55,7 +56,6 @@ func (c *Client) migrate(tables schema.Tables) error {
 			if err := f.Close(); err != nil {
 				return err
 			}
-
 		} else {
 			return err
 		}
