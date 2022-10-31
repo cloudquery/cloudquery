@@ -155,12 +155,8 @@ func (c *Client) transformValues(table *schema.Table, values cqtypes.CQTypes) []
 		case *cqtypes.InetArray:
 			pgValues[i] = CQInetArray(t)
 		default:
-			pgValues[i] = pgtype.Text{
-				Status: pgtype.Null,
-			}
+			c.logger.Warn().Str("table", table.Name).Str("column", table.Columns[i].Name).Msgf("unknown type %T", v)
 			c.metrics.Errors++
-			panic(fmt.Errorf("unsupported type %T at index %d column_name %s table_name %s", v, i, table.Columns[i].Name, table.Name))
-			// c.logger.Error().Msgf()
 		}
 	}
 	return pgValues
@@ -176,9 +172,9 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *sc
 			panic(fmt.Errorf("table %s not found", r.TableName))
 		}
 		if c.spec.WriteMode == specs.WriteModeAppend {
-			sql = insert(table)
+			sql = c.insert(table)
 		} else {
-			sql = upsert(table)
+			sql = c.upsert(table)
 		}
 		values := c.transformValues(table, r.Data)
 
@@ -212,12 +208,22 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *sc
 	return nil
 }
 
-func insert(table *schema.Table) string {
+func (c *Client) filterSupportedColumns(columns schema.ColumnList) schema.ColumnList {
+	filtered := make(schema.ColumnList, 0, len(columns))
+	for _, col := range columns {
+		if c.SchemaTypeToPg(col.Type) != "" {
+			filtered = append(filtered, col)
+		}
+	}
+	return filtered
+}
+
+func (c *Client) insert(table *schema.Table) string {
 	var sb strings.Builder
 	sb.WriteString("insert into ")
 	sb.WriteString(pgx.Identifier{table.Name}.Sanitize())
 	sb.WriteString(" (")
-	columns := table.Columns
+	columns := c.filterSupportedColumns(table.Columns)
 	columnsLen := len(columns)
 	for i, c := range columns {
 		sb.WriteString(pgx.Identifier{c.Name}.Sanitize())
@@ -238,11 +244,11 @@ func insert(table *schema.Table) string {
 	return sb.String()
 }
 
-func upsert(table *schema.Table) string {
+func (c *Client) upsert(table *schema.Table) string {
 	var sb strings.Builder
 
-	sb.WriteString(insert(table))
-	columns := table.Columns
+	sb.WriteString(c.insert(table))
+	columns := c.filterSupportedColumns(table.Columns)
 	columnsLen := len(columns)
 
 	constraintName := fmt.Sprintf("%s_cqpk", table.Name)

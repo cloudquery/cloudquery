@@ -79,6 +79,9 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 	for _, col := range table.Columns {
 		columnName := pgx.Identifier{col.Name}.Sanitize()
 		columnType := c.SchemaTypeToPg(col.Type)
+		if columnType == "" {
+			c.logger.Warn().Str("table", table.Name).Str("column", col.Name).Msg("Column type not supported, skipping")
+		}
 		pgColumn := pgColumns.getPgColumn(col.Name)
 
 		switch {
@@ -171,6 +174,9 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 	primaryKeys := []string{}
 	for i, col := range table.Columns {
 		pgType := c.SchemaTypeToPg(col.Type)
+		if pgType == "" {
+			c.logger.Warn().Str("table", table.Name).Str("column", col.Name).Msg("Column type is not supported, skipping")
+		}
 		columnName := pgx.Identifier{col.Name}.Sanitize()
 		fieldDef := columnName + " " + pgType
 		sb.WriteString(fieldDef)
