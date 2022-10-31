@@ -7,7 +7,7 @@ import (
 )
 
 func EventbridgeResources() []*Resource {
-	resources := []*Resource{
+	regionalResources := []*Resource{
 		{
 			SubService:  "event_buses",
 			Struct:      &types.EventBus{},
@@ -30,6 +30,7 @@ func EventbridgeResources() []*Resource {
 			Relations: []string{
 				"EventBusRules()",
 			},
+			ShouldGenerateResolverAndMockTest: false,
 		},
 		{
 			SubService:  "event_bus_rules",
@@ -50,11 +51,8 @@ func EventbridgeResources() []*Resource {
 						Resolver: `resolveEventbridgeEventBusRuleTags`,
 					},
 				}...),
+			ShouldGenerateResolverAndMockTest: false,
 		},
-	}
-
-	// Resources that also auto-generate the resolver.
-	autogenResources := []*Resource{
 		{
 			SubService:  "api_destinations",
 			Struct:      &types.ApiDestination{},
@@ -67,6 +65,7 @@ func EventbridgeResources() []*Resource {
 				Resolver: `schema.PathResolver("ApiDestinationArn")`,
 			},
 			}...),
+			ShouldGenerateResolverAndMockTest: true,
 		},
 		{
 			SubService:  "archives",
@@ -78,6 +77,7 @@ func EventbridgeResources() []*Resource {
 				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 				Resolver: `resolveArchiveArn`,
 			}}...),
+			ShouldGenerateResolverAndMockTest: true,
 		},
 		{
 			SubService:  "connections",
@@ -91,6 +91,7 @@ func EventbridgeResources() []*Resource {
 				Resolver: `schema.PathResolver("ConnectionArn")`,
 			},
 			}...),
+			ShouldGenerateResolverAndMockTest: true,
 		},
 		{
 			SubService:  "event_sources",
@@ -104,6 +105,7 @@ func EventbridgeResources() []*Resource {
 				Resolver: `schema.PathResolver("Arn")`,
 			},
 			}...),
+			ShouldGenerateResolverAndMockTest: true,
 		},
 		{
 			SubService:  "replays",
@@ -116,10 +118,11 @@ func EventbridgeResources() []*Resource {
 				Resolver: `resolveReplayArn`,
 			},
 			}...),
+			ShouldGenerateResolverAndMockTest: true,
 		},
 	}
 
-	autogenGlobalResources := []*Resource{
+	globalResources := []*Resource{
 		{
 			SubService:  "endpoints",
 			Struct:      &types.Endpoint{},
@@ -132,27 +135,32 @@ func EventbridgeResources() []*Resource {
 				Resolver: `schema.PathResolver("Arn")`,
 			},
 			}...),
+			ShouldGenerateResolverAndMockTest: true,
 		},
 	}
 
 	// set default values
-	for _, r := range resources {
+	for _, r := range regionalResources {
 		r.Service = "eventbridge"
 		r.Multiplex = `client.ServiceAccountRegionMultiplexer("events")`
+
+		// Parameters for autogenerating the resolver and mock-test.
+		/// Only used when `ShouldGenerateResolverAndMockTest = true`
+		r.ResolverAndMockTestTemplate = "list_resources_1"
+		r.CloudqueryServiceName = "EventBridge"
 	}
 
-	for _, r := range autogenResources {
-		r.Service = "eventbridge"
-		r.Multiplex = `client.ServiceAccountRegionMultiplexer("events")`
-	}
-
-	for _, r := range autogenGlobalResources {
+	for _, r := range globalResources {
 		r.Service = "eventbridge"
 		r.Multiplex = `client.AccountMultiplex`
+
+		// Parameters for autogenerating the resolver and mock-test.
+		/// Only used when `ShouldGenerateResolverAndMockTest = true`
+		r.ResolverAndMockTestTemplate = "list_resources_1"
+		r.CloudqueryServiceName = "EventBridge"
 	}
 
-	resources = append(resources, autogenResources...)
-	resources = append(resources, autogenGlobalResources...)
+	resources := append(regionalResources, globalResources...)
 
 	return resources
 }

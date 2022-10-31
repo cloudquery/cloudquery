@@ -45,6 +45,7 @@ type Resource struct {
 	CloudqueryServiceName string
 }
 
+//go:embed templates/resolver_and_mock_test/*/*.go.tpl
 //go:embed templates/*.go.tpl
 var templatesFS embed.FS
 
