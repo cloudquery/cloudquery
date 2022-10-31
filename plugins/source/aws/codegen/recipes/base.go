@@ -12,6 +12,7 @@ import (
 	"strings"
 	"text/template"
 
+	"github.com/aws/aws-sdk-go-v2/service/autoscaling/types"
 	"github.com/cloudquery/plugin-sdk/caser"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -91,11 +92,11 @@ func awsResolverTransformer(f reflect.StructField, path string) (string, error) 
 	}
 
 	if path == "Tags" || path == "TagSet" {
-		switch f.Type.String() {
-		case "map[string]string", "map[string]*string", "map[string]interface {}", "[]types.TagDescription":
+		switch f.Type {
+		case reflect.TypeOf(map[string]string{}), reflect.TypeOf(map[string]*string{}), reflect.TypeOf(map[string]interface{}{}), reflect.TypeOf([]types.TagDescription{}):
 			// valid tag types
 		default:
-			return "", fmt.Errorf("%q field is not of type []types.Tag or string map: %s", path, f.Type.String())
+			return "", fmt.Errorf("%q field is not of type []types.Tag or acceptable map: %s", path, f.Type.String())
 		}
 	}
 
