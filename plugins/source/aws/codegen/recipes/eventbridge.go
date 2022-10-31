@@ -144,11 +144,17 @@ func EventbridgeResources() []*Resource {
 	for _, r := range autogenResources {
 		r.Service = "eventbridge"
 		r.Multiplex = `client.ServiceAccountRegionMultiplexer("events")`
+		r.ShouldGenerateResolverAndMockTest = true
+		r.ResolverAndMockTestTemplate = "list_resources_1"
+		r.CloudqueryServiceName = "EventBridge"
 	}
 
 	for _, r := range autogenGlobalResources {
 		r.Service = "eventbridge"
 		r.Multiplex = `client.AccountMultiplex`
+		r.ShouldGenerateResolverAndMockTest = true
+		r.ResolverAndMockTestTemplate = "list_resources_1"
+		r.CloudqueryServiceName = "EventBridge"
 	}
 
 	resources = append(resources, autogenResources...)
