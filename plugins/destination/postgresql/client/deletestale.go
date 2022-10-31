@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"fmt"
 	"strings"
 	"time"
 
@@ -24,7 +25,7 @@ func (c *Client) DeleteStale(ctx context.Context, tables schema.Tables, source s
 	}
 	br := c.conn.SendBatch(ctx, batch)
 	if err := br.Close(); err != nil {
-		return err
+		return fmt.Errorf("failed to execute batch: %w", err)
 	}
 	return nil
 }

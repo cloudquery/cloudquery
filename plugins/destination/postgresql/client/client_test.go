@@ -11,7 +11,6 @@ import (
 	"github.com/rs/zerolog"
 )
 
-
 func getTestLogger(t *testing.T) zerolog.Logger {
 	t.Helper()
 	zerolog.TimeFieldFormat = zerolog.TimeFormatUnixMs
@@ -54,7 +53,6 @@ func TestInitialize(t *testing.T) {
 	}
 }
 
-
 func TestPgPlugin(t *testing.T) {
 	ctx := context.Background()
 	p := plugins.NewDestinationPlugin("postgresql", "development", New)
@@ -63,7 +61,7 @@ func TestPgPlugin(t *testing.T) {
 		WriteMode: specs.WriteModeAppend,
 		Spec: Spec{
 			ConnectionString: getTestConnection(),
-			PgxLogLevel: LogLevelTrace,
+			PgxLogLevel:      LogLevelTrace,
 		},
 	}); err != nil {
 		t.Fatal(err)

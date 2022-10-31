@@ -181,35 +181,27 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *sc
 			sql = upsert(table)
 		}
 		values := c.transformValues(table, r.Data)
-		if _, err := c.conn.Exec(ctx, sql, values...); err != nil {
-			fmt.Println(values)
-			panic(err)
-		}
 
-		// batch.Queue(sql, values...)
-		// if batch.Len() >= c.batchSize {
-		// 	br := c.conn.SendBatch(ctx, batch)
-		// 	if err := br.Close(); err != nil {
-		// 		if _, ok := err.(*pgconn.PgError); ok {
-		// 			atomic.AddUint64(&c.metrics.Errors, 1)
-		// 			c.logger.Error().Err(err).Msgf("failed to execute batch with pgerror")
-		// 		} else {
-		// 			// no recoverable error
-		// 			return fmt.Errorf("failed to execute batch: %w", err)
-		// 		}
-		// 	}
-		// 	atomic.AddUint64(&c.metrics.Writes, uint64(c.batchSize))
-		// 	batch = &pgx.Batch{}
-		// }
+		batch.Queue(sql, values...)
+		if batch.Len() >= c.batchSize {
+			br := c.conn.SendBatch(ctx, batch)
+			if err := br.Close(); err != nil {
+				if _, ok := err.(*pgconn.PgError); !ok {
+					// not recoverable error
+					return fmt.Errorf("failed to execute batch: %w", err)
+				}
+				atomic.AddUint64(&c.metrics.Errors, 1)
+				c.logger.Error().Err(err).Msgf("failed to execute batch with pgerror")
+			}
+			atomic.AddUint64(&c.metrics.Writes, uint64(c.batchSize))
+			batch = &pgx.Batch{}
+		}
 	}
 
 	if batch.Len() > 0 {
 		br := c.conn.SendBatch(ctx, batch)
 		if err := br.Close(); err != nil {
-			if _, ok := err.(*pgconn.PgError); ok {
-				atomic.AddUint64(&c.metrics.Errors, 1)
-				c.logger.Error().Err(err).Msgf("failed to execute batch with pgerror")
-			} else {
+			if _, ok := err.(*pgconn.PgError); !ok {
 				// no recoverable error
 				return fmt.Errorf("failed to execute batch: %w", err)
 			}
@@ -235,7 +227,7 @@ func insert(table *schema.Table) string {
 			sb.WriteString(") values (")
 		}
 	}
-	for i, _ := range columns {
+	for i := range columns {
 		sb.WriteString(fmt.Sprintf("$%d", i+1))
 		if i < columnsLen-1 {
 			sb.WriteString(",")
