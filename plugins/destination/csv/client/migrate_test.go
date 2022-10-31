@@ -21,5 +21,4 @@ func TestMigrate(t *testing.T) {
 	}
 
 	client.Migrate(ctx, nil)
-
 }

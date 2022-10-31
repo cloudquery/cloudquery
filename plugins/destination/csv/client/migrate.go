@@ -55,9 +55,9 @@ func (c *Client) migrate(tables schema.Tables) error {
 			if err := f.Close(); err != nil {
 				return err
 			}
-		
+
 		} else {
-			return err	
+			return err
 		}
 
 		if err := c.migrate(t.Relations); err != nil {

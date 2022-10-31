@@ -45,7 +45,7 @@ func TestPlugin(t *testing.T) {
 	ctx := context.Background()
 	p := plugins.NewDestinationPlugin("csv", "development", New)
 
-	if err := plugins.DestiantionPluginTestHelper(ctx, p, getTestLogger(t), specs.Destination{
+	if err := plugins.DestinationPluginTestHelper(ctx, p, getTestLogger(t), specs.Destination{
 		WriteMode: specs.WriteModeAppend,
 		Spec: Spec{
 			Directory: t.TempDir(),
