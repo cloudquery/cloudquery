@@ -17,7 +17,7 @@ Official source plugins follow [release stages](source-plugin-release-stages).
 | [k8s][k8s] | v2.1.2         | [Changelog][k8s-Changelog]          | Preview |
 | [Okta][okta] | v1.1.0        | [Changelog][Okta-Changelog]         | Preview |
 | [Terraform][terraform] | v1.1.0         | [Changelog][Terraform-Changelog]    | Preview |
-| [Cloudflare][cloudflare] | v2.0.8         | [Changelog][Cloudflare-Changelog]   | Preview |
+| [Cloudflare][cloudflare] | v2.1.0         | [Changelog][Cloudflare-Changelog]   | Preview |
 
 ## Community
 
