@@ -53,10 +53,106 @@ func EventbridgeResources() []*Resource {
 		},
 	}
 
+	// Resources that also auto-generate the resolver.
+	autogenResources := []*Resource{
+		{
+			SubService:  "api_destinations",
+			Struct:      &types.ApiDestination{},
+			Description: "https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_ApiDestination.html",
+			SkipFields:  []string{"ApiDestinationArn"},
+			ExtraColumns: append(defaultRegionalColumns, []codegen.ColumnDefinition{{
+				Name:     "arn",
+				Type:     schema.TypeString,
+				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				Resolver: `schema.PathResolver("ApiDestinationArn")`,
+			},
+			}...),
+		},
+		{
+			SubService:  "archives",
+			Struct:      &types.Archive{},
+			Description: "https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_Archive.html",
+			ExtraColumns: append(defaultRegionalColumns, []codegen.ColumnDefinition{{
+				Name:     "arn",
+				Type:     schema.TypeString,
+				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				Resolver: `resolveArchiveArn`,
+			}}...),
+		},
+		{
+			SubService:  "connections",
+			Struct:      &types.Connection{},
+			Description: "https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_Connection.html",
+			SkipFields:  []string{"ConnectionArn"},
+			ExtraColumns: append(defaultRegionalColumns, []codegen.ColumnDefinition{{
+				Name:     "arn",
+				Type:     schema.TypeString,
+				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				Resolver: `schema.PathResolver("ConnectionArn")`,
+			},
+			}...),
+		},
+		{
+			SubService:  "event_sources",
+			Struct:      &types.EventSource{},
+			Description: "https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_EventSource.html",
+			SkipFields:  []string{"Arn"},
+			ExtraColumns: append(defaultRegionalColumns, []codegen.ColumnDefinition{{
+				Name:     "arn",
+				Type:     schema.TypeString,
+				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				Resolver: `schema.PathResolver("Arn")`,
+			},
+			}...),
+		},
+		{
+			SubService:  "replays",
+			Struct:      &types.Replay{},
+			Description: "https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_Replay.html",
+			ExtraColumns: append(defaultRegionalColumns, []codegen.ColumnDefinition{{
+				Name:     "arn",
+				Type:     schema.TypeString,
+				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				Resolver: `resolveReplayArn`,
+			},
+			}...),
+		},
+	}
+
+	autogenGlobalResources := []*Resource{
+		{
+			SubService:  "endpoints",
+			Struct:      &types.Endpoint{},
+			Description: "https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_Endpoint.html",
+			SkipFields:  []string{"Arn"},
+			ExtraColumns: append(defaultAccountColumns, []codegen.ColumnDefinition{{
+				Name:     "arn",
+				Type:     schema.TypeString,
+				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				Resolver: `schema.PathResolver("Arn")`,
+			},
+			}...),
+		},
+	}
+
 	// set default values
 	for _, r := range resources {
 		r.Service = "eventbridge"
 		r.Multiplex = `client.ServiceAccountRegionMultiplexer("events")`
 	}
+
+	for _, r := range autogenResources {
+		r.Service = "eventbridge"
+		r.Multiplex = `client.ServiceAccountRegionMultiplexer("events")`
+	}
+
+	for _, r := range autogenGlobalResources {
+		r.Service = "eventbridge"
+		r.Multiplex = `client.AccountMultiplex`
+	}
+
+	resources = append(resources, autogenResources...)
+	resources = append(resources, autogenGlobalResources...)
+
 	return resources
 }
