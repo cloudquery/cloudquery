@@ -13,9 +13,27 @@ on:
       - ".github/workflows/source_test.yml"
 
 jobs:
-  plugins-source-test:
-    name: "plugins/source/test"
+  resolve-runner:
     runs-on: ubuntu-latest
+    outputs:
+      runner: ${{ steps.resolve.outputs.runner }}
+    steps:
+      - name: Check if should use large runner
+        id: large-runner
+        # We want to speed up SDK updates, release PRs and runs on the main branch which prime the cache
+        # We allow large runners only in these cases to prevent forks from abusing them (it's enforced via runner groups access rules)
+        if: github.event_name == 'push' || (github.head_ref =='release-please--branches--main--components--plugins-source-test') || (github.head_ref == 'renovate/plugins/source/test-github.com-cloudquery-plugin-sdk-0.x')
+        run: |
+          echo "runner=cloudquery-release-runner" >> $GITHUB_OUTPUT
+      - name: Resolve runner
+        id: resolve
+        run: |
+          RUNNER=${{ steps.large-runner.outputs.runner }}
+          echo "runner=${RUNNER:-"ubuntu-latest"}" >> $GITHUB_OUTPUT
+  plugins-source-test:
+    needs: [resolve-runner]
+    name: "plugins/source/test"
+    runs-on: ${{ needs.resolve-runner.outputs.runner }}
     defaults:
       run:
         working-directory: ./plugins/source/test
@@ -48,7 +66,8 @@ jobs:
         if: github.event_name == 'pull_request'
         run: test "$(git status -s ./docs/tables | wc -l)" -eq 0
   validate-release:
-    runs-on: ubuntu-latest
+    needs: [resolve-runner]
+    runs-on: ${{ needs.resolve-runner.outputs.runner }}
     env:
       CGO_ENABLED: 0
     steps:
