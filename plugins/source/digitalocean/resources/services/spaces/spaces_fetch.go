@@ -22,7 +22,7 @@ type WrappedBucket struct {
 
 func fetchSpacesSpaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	log := meta.Logger()
+	log := meta.(*client.Client).Logger()
 
 	buckets, err := c.Services.Spaces.ListBuckets(ctx, &s3.ListBucketsInput{}, func(options *s3.Options) {
 		options.Region = c.SpacesRegion
@@ -48,7 +48,7 @@ func fetchSpacesSpaces(ctx context.Context, meta schema.ClientMeta, parent *sche
 }
 
 func resolveSpaceAttributes(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	log := meta.Logger()
+	log := meta.(*client.Client).Logger()
 	r := resource.Item.(*WrappedBucket)
 	log.Debug().Str("space", *r.Name).Msg("fetching space attributes")
 

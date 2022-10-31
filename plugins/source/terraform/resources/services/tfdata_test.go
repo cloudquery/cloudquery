@@ -31,7 +31,8 @@ func TestTfData(t *testing.T) {
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 
-	plugins.TestSourcePluginSync(t, p, logger, specs.Source{
+	p.SetLogger(logger)
+	plugins.TestSourcePluginSync(t, p, specs.Source{
 		Name:         "dev",
 		Version:      "vDev",
 		Tables:       []string{"*"},

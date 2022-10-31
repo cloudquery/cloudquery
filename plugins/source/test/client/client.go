@@ -16,6 +16,10 @@ func (*TestClient) Logger() *zerolog.Logger {
 	return &log.Logger
 }
 
+func (*TestClient) ID() string {
+	return "TestClient"
+}
+
 func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.ClientMeta, error) {
 	return &TestClient{}, nil
 }
