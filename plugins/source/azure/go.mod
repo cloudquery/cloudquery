@@ -10,7 +10,7 @@ require (
 	github.com/Azure/go-autorest/autorest v0.11.28
 	github.com/Azure/go-autorest/autorest/azure/auth v0.5.11
 	github.com/Azure/go-autorest/autorest/date v0.3.0
-	github.com/cloudquery/plugin-sdk v0.13.15
+	github.com/cloudquery/plugin-sdk v0.13.16
 	github.com/gertd/go-pluralize v0.2.1
 	github.com/gofrs/uuid v4.3.0+incompatible
 	github.com/golang/mock v1.6.0
@@ -23,8 +23,6 @@ require (
 )
 
 require github.com/kylelemons/godebug v1.1.0 // indirect
-
-replace github.com/cloudquery/plugin-sdk => ../../../../plugin-sdk-split
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.0.0 // indirect
@@ -52,7 +50,6 @@ require (
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.16 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
-	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/spf13/cast v1.5.0 // indirect

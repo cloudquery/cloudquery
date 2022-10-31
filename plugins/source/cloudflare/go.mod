@@ -4,12 +4,10 @@ go 1.19
 
 require (
 	github.com/cloudflare/cloudflare-go v0.46.0
-	github.com/cloudquery/plugin-sdk v0.13.15
+	github.com/cloudquery/plugin-sdk v0.13.16
 	github.com/golang/mock v1.6.0
 	github.com/rs/zerolog v1.28.0
 )
-
-replace github.com/cloudquery/plugin-sdk => ../../../../plugin-sdk-split
 
 require (
 	4d63.com/gochecknoglobals v0.1.0 // indirect
@@ -72,7 +70,6 @@ require (
 	github.com/go-xmlfmt/xmlfmt v0.0.0-20191208150333-d5b6f63a941b // indirect
 	github.com/gobwas/glob v0.2.3 // indirect
 	github.com/gofrs/flock v0.8.1 // indirect
-	github.com/gofrs/uuid v4.3.0+incompatible // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/golangci/check v0.0.0-20180506172741-cfe4005ccda2 // indirect
 	github.com/golangci/dupl v0.0.0-20180902072040-3e9179ac440a // indirect
@@ -141,7 +138,6 @@ require (
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/mitchellh/reflectwalk v1.0.2 // indirect
-	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/moricho/tparallel v0.2.1 // indirect
 	github.com/nakabonne/nestif v0.3.1 // indirect
 	github.com/nbutton23/zxcvbn-go v0.0.0-20210217022336-fa2cb2858354 // indirect

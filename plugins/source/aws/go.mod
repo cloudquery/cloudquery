@@ -82,7 +82,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/xray v1.13.19
 	github.com/aws/smithy-go v1.13.4
 	github.com/basgys/goxml2json v1.1.0
-	github.com/cloudquery/plugin-sdk v0.13.15
+	github.com/cloudquery/plugin-sdk v0.13.16
 	github.com/ettle/strcase v0.1.1
 	github.com/gocarina/gocsv v0.0.0-20220927221512-ad3251f9fa25
 	github.com/golang/mock v1.6.0
@@ -93,8 +93,6 @@ require (
 	github.com/thoas/go-funk v0.9.2
 	golang.org/x/sync v0.1.0
 )
-
-replace github.com/cloudquery/plugin-sdk => ../../../../plugin-sdk-split
 
 require (
 	github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.14 // indirect

@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/destination/csv
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v0.13.15
+	github.com/cloudquery/plugin-sdk v0.13.16
 	github.com/rs/zerolog v1.28.0
 )
 
@@ -30,5 +30,3 @@ require (
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
-
-replace github.com/cloudquery/plugin-sdk => ../../../../plugin-sdk-split
