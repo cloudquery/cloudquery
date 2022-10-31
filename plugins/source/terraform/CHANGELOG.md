@@ -5,6 +5,13 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-terraform-v1.0.10...plugins-source-terraform-v1.1.0) (2022-10-31)
+
+
+### Features
+
+* Update all plugins to SDK with metrics and DFS scheduler ([#3286](https://github.com/cloudquery/cloudquery/issues/3286)) ([a35b8e8](https://github.com/cloudquery/cloudquery/commit/a35b8e89d625287a9b9406ff18cfac78ffdb1241))
+
 ## [1.0.10](https://github.com/cloudquery/cloudquery/compare/plugins-source-terraform-v1.0.9...plugins-source-terraform-v1.0.10) (2022-10-27)
 
 

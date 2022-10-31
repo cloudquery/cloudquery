@@ -1,5 +1,6 @@
 {
   "environment-variable-substitution": "Environment Variable Substitution",
+  "running-cloudquery-in-parallel": "Running CloudQuery in Parallel",
   "proxy-configuration": "Proxy Configuration",
   "docker": "Docker",
   "security": "Security",
