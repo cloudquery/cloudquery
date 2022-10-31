@@ -81,6 +81,7 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 		columnType := c.SchemaTypeToPg(col.Type)
 		if columnType == "" {
 			c.logger.Warn().Str("table", table.Name).Str("column", col.Name).Msg("Column type not supported, skipping")
+			continue
 		}
 		pgColumn := pgColumns.getPgColumn(col.Name)
 
