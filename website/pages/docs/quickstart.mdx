@@ -3,6 +3,7 @@ title: Quickstart
 ---
 
 import DownloadSection from '../../components/mdx/_getting-started-download-section.mdx'
+import { Callout } from 'nextra-theme-docs'
 
 # Quickstart
 
@@ -57,6 +58,13 @@ spec:
 
 For a list of all available destination plugin spec options, see [Destination Spec Reference](/docs/reference/destination-spec).
 
+<Callout>
+
+If you have multiple destination plugins (or running multiple cloudquery instances in parallel), it's required
+that every plugin configuration has a unique `name` (e.g. `postgres1`, `postgres2`, ...).
+
+</Callout>
+
 ## Configure Source Plugin
 
 Source plugins define the APIs you want to sync from (See [available sources](./plugins/sources)).
@@ -97,6 +105,17 @@ spec:
 
 - All general options for source spec you can find under [references/source-spec](/docs/reference/source-spec).
 - All options for `postgresql` destination plugin spec you can find [here](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/configuration.md)
+
+<Callout>
+
+If you have multiple source plugins (or running multiple cloudquery instances in parallel), it's required
+that every plugin configuration has a unique `name` (e.g. `aws1`, `aws2`, ...).
+
+Running multiple plugins with the same name can cause unexpected behavior (e.g. empty tables). 
+
+You can read more [here](/docs/advanced-topics/running-cloudquery-in-parallel).
+
+</Callout>
 
 ## Authenticate with the Cloud Provider
 
