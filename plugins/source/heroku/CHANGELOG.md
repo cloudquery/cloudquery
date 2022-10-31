@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-heroku-v2.0.7...plugins-source-heroku-v2.1.0) (2022-10-31)
+
+
+### Features
+
+* Update all plugins to SDK with metrics and DFS scheduler ([#3286](https://github.com/cloudquery/cloudquery/issues/3286)) ([a35b8e8](https://github.com/cloudquery/cloudquery/commit/a35b8e89d625287a9b9406ff18cfac78ffdb1241))
+
 ## [2.0.7](https://github.com/cloudquery/cloudquery/compare/plugins-source-heroku-v2.0.6...plugins-source-heroku-v2.0.7) (2022-10-27)
 
 
