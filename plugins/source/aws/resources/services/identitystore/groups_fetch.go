@@ -5,26 +5,9 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/identitystore"
-	"github.com/aws/aws-sdk-go-v2/service/ssoadmin"
-	types "github.com/aws/aws-sdk-go-v2/service/ssoadmin/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
-
-//var iam_users chan interface{}
-//var iam_groups chan interface{}
-
-func getIamInstance(ctx context.Context, meta schema.ClientMeta) (types.InstanceMetadata, error) {
-	svc := meta.(*client.Client).Services().SSOAdmin
-	config := ssoadmin.ListInstancesInput{}
-	response, err := svc.ListInstances(ctx, &config)
-	if err == nil {
-		for _, i := range response.Instances {
-			return i, err
-		}
-	}
-	return types.InstanceMetadata{}, err
-}
 
 func fetchIdentitystoreGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	instance, err := getIamInstance(ctx, meta)
@@ -40,6 +23,7 @@ func fetchIdentitystoreGroups(ctx context.Context, meta schema.ClientMeta, paren
 			return err
 		}
 		res <- response.Groups
+
 		if aws.ToString(response.NextToken) == "" {
 			break
 		}
