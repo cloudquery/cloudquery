@@ -7,7 +7,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/thoas/go-funk"
 
 	"github.com/Azure/azure-sdk-for-go/services/web/mgmt/2020-12-01/web"
 )
@@ -93,12 +92,11 @@ func fetchWebVnetConnections(ctx context.Context, meta schema.ClientMeta, parent
 	svc := meta.(*client.Client).Services().Web.VnetConnections
 
 	site := parent.Item.(web.Site)
-	vnetName := funk.Get(site, "SiteConfig.VnetName")
-	if vnetName == nil {
+	if site.SiteConfig == nil || site.SiteConfig.VnetName == nil {
 		return nil
 	}
 
-	response, err := svc.GetVnetConnection(ctx, *site.ResourceGroup, *site.Name, *vnetName.(*string))
+	response, err := svc.GetVnetConnection(ctx, *site.ResourceGroup, *site.Name, *site.SiteConfig.VnetName)
 	if err != nil {
 		return err
 	}
