@@ -1,0 +1,37 @@
+name: Regenerate AWS Resources after upgrading packages
+on:
+  schedule:
+    - cron: "30 * * * *"
+
+defaults:
+  run:
+    working-directory: ./plugins/source/aws
+
+jobs:
+  endpoints:
+    name: aws endpoints verification
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: plugins/source/aws/go.mod
+          cache: true
+          cache-dependency-path: plugins/source/aws/go.sum
+      - name: upgrade all aws sdk packages and regenerate resources
+        run: |
+          go list -m all | grep github.com/aws/aws-sdk-go-v2 | awk '{print $1}' | xargs go get -u && go mod tidy && go run codegen/main.go && make gen-docs
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          # required so the PR triggers workflow runs
+          token: ${{ secrets.GH_CQ_BOT }}
+          branch: fix/update_aws_packages
+          base: main
+          title: "fix(deps): Update AWS packages"
+          commit-message: "fix(deps): Update AWS packages"
+          body: This PR was created by a scheduled workflow to upgrade and regenerate resources
+          author: cq-bot <cq-bot@users.noreply.github.com>
