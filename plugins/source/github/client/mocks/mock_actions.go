@@ -35,6 +35,22 @@ func (m *MockActionsService) EXPECT() *MockActionsServiceMockRecorder {
 	return m.recorder
 }
 
+// GetWorkflowByFileName mocks base method.
+func (m *MockActionsService) GetWorkflowByFileName(arg0 context.Context, arg1, arg2, arg3 string) (*github.Workflow, *github.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetWorkflowByFileName", arg0, arg1, arg2, arg3)
+	ret0, _ := ret[0].(*github.Workflow)
+	ret1, _ := ret[1].(*github.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// GetWorkflowByFileName indicates an expected call of GetWorkflowByFileName.
+func (mr *MockActionsServiceMockRecorder) GetWorkflowByFileName(arg0, arg1, arg2, arg3 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWorkflowByFileName", reflect.TypeOf((*MockActionsService)(nil).GetWorkflowByFileName), arg0, arg1, arg2, arg3)
+}
+
 // ListWorkflows mocks base method.
 func (m *MockActionsService) ListWorkflows(arg0 context.Context, arg1, arg2 string, arg3 *github.ListOptions) (*github.Workflows, *github.Response, error) {
 	m.ctrl.T.Helper()

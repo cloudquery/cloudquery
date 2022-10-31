@@ -31,6 +31,11 @@ func Workflows() *schema.Table {
 				},
 			},
 			{
+				Name:     "contents",
+				Type:     schema.TypeJSON,
+				Resolver: resolveContents,
+			},
+			{
 				Name:     "node_id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("NodeID"),
