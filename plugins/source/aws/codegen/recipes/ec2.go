@@ -250,6 +250,7 @@ func EC2Resources() []*Resource {
 		{
 			SubService:  "network_interfaces",
 			Struct:      &types.NetworkInterface{},
+			SkipFields:  []string{"TagSet"},
 			Description: "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_NetworkInterface.html",
 			ExtraColumns: append(defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -258,6 +259,11 @@ func EC2Resources() []*Resource {
 						Type:     schema.TypeString,
 						Resolver: "resolveNetworkInterfaceArn",
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+					{
+						Name:     "tags",
+						Type:     schema.TypeJSON,
+						Resolver: `client.ResolveTagField("TagSet")`,
 					},
 				}...),
 		},

@@ -100,7 +100,7 @@ func awsResolverTransformer(f reflect.StructField, path string) (string, error) 
 		}
 	}
 
-	return `schema.PathResolver("` + path + `")`, nil
+	return codegen.DefaultResolverTransformer(f, path)
 }
 
 func (r *Resource) Generate() error {
