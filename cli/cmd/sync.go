@@ -3,9 +3,10 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"github.com/google/uuid"
 	"strings"
 	"time"
+
+	"github.com/google/uuid"
 
 	"github.com/cloudquery/plugin-sdk/clients"
 	"github.com/cloudquery/plugin-sdk/specs"
@@ -74,15 +75,44 @@ func sync(cmd *cobra.Command, args []string) error {
 			}
 			destinationsSpecs = append(destinationsSpecs, *spec)
 		}
-		if err := syncConnection(ctx, cqDir, *sourceSpec, destinationsSpecs, invocationUUID.String(), noMigrate); err != nil {
-			return fmt.Errorf("failed to sync source %s: %w", sourceSpec.Name, err)
+		sourceClient, err := clients.NewSourceClient(ctx, sourceSpec.Registry, sourceSpec.Path, sourceSpec.Version,
+			clients.WithSourceLogger(log.Logger),
+			clients.WithSourceDirectory(cqDir),
+		)
+		if err != nil {
+			return fmt.Errorf("failed to get source plugin client for %s: %w", sourceSpec.Name, err)
+		}
+		//nolint:revive
+		defer func() {
+			if err := sourceClient.Terminate(); err != nil {
+				log.Error().Err(err).Msg("Failed to terminate source client")
+				fmt.Println("failed to terminate source client: ", err)
+			}
+		}()
+
+		v, err := sourceClient.GetProtocolVersion(ctx)
+		if err != nil {
+			return fmt.Errorf("failed to get protocol version for source %s: %w", sourceSpec.Name, err)
+		}
+		switch v {
+		case 1:
+			if err := syncConnectionV1(ctx, cqDir, sourceClient, *sourceSpec, destinationsSpecs, invocationUUID.String(), noMigrate); err != nil {
+				return err
+			}
+		case 2:
+			if err := syncConnectionV2(ctx, cqDir, sourceClient, *sourceSpec, destinationsSpecs, invocationUUID.String()); err != nil {
+				return err
+			}
+		default:
+			return fmt.Errorf("unknown protocol version %d for source %s", v, sourceSpec.Name)
 		}
 	}
 
 	return nil
 }
 
-func syncConnection(ctx context.Context, cqDir string, sourceSpec specs.Source, destinationsSpecs []specs.Destination, uid string, noMigrate bool) error {
+func syncConnectionV1(ctx context.Context, cqDir string, sourceClient *clients.SourceClient, sourceSpec specs.Source, destinationsSpecs []specs.Destination, uid string, noMigrate bool) error {
+	var err error
 	destinationNames := make([]string, len(destinationsSpecs))
 	for i := range destinationsSpecs {
 		destinationNames[i] = destinationsSpecs[i].Name
@@ -92,7 +122,7 @@ func syncConnection(ctx context.Context, cqDir string, sourceSpec specs.Source, 
 	log.Info().Str("source", sourceSpec.Name).Strs("destinations", destinationNames).Time("sync_time", syncTime).Msg("Start sync")
 	defer log.Info().Str("source", sourceSpec.Name).Strs("destinations", destinationNames).Time("sync_time", syncTime).Msg("End sync")
 
-	sourceClient, err := clients.NewSourceClient(ctx, sourceSpec.Registry, sourceSpec.Path, sourceSpec.Version,
+	sourceClient, err = clients.NewSourceClient(ctx, sourceSpec.Registry, sourceSpec.Path, sourceSpec.Version,
 		clients.WithSourceLogger(log.Logger),
 		clients.WithSourceDirectory(cqDir),
 	)
