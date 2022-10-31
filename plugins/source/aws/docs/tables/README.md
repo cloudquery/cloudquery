@@ -325,6 +325,9 @@
 | [aws_sagemaker_notebook_instances](aws_sagemaker_notebook_instances.md) |
 | [aws_sagemaker_training_jobs](aws_sagemaker_training_jobs.md) |
 | [aws_secretsmanager_secrets](aws_secretsmanager_secrets.md) |
+| [aws_servicecatalog_portfolios](aws_servicecatalog_portfolios.md) |
+| [aws_servicecatalog_products](aws_servicecatalog_products.md) |
+| [aws_servicecatalog_provisioned_products](aws_servicecatalog_provisioned_products.md) |
 | [aws_ses_templates](aws_ses_templates.md) |
 | [aws_shield_attacks](aws_shield_attacks.md) |
 | [aws_shield_protection_groups](aws_shield_protection_groups.md) |
