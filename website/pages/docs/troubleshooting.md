@@ -30,3 +30,13 @@ CloudQuery makes a best-effort attempt to automatically and transparently manage
 this can sometimes fail during version upgrades.
 
 The easiest solution is to drop and recreate the database or schema (or less destructively, all the plugin's tables, such as `aws_*`).
+
+### I am running `cloudquery sync` with multiple source plugins (or multiple `cloudquery sync`s), but some tables are empty / some rows are duplicated.
+
+When running `cloudquery sync` with multiple source plugins (or multiple `cloudquery sync`s in parallel),
+it is very important that every plugin-configuration has a unique `name`. If the names are not unique,
+the different plugins may overwrite/delete each others data.
+
+It is also important that every plugin-configuration is fetching different data (i.e. no two plugins are fetching the same account/table/region combination).
+
+You read more about this [here](/docs/advanced-topics/running-cloudquery-in-parallel).
