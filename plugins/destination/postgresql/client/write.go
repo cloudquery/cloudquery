@@ -14,7 +14,7 @@ import (
 	"github.com/jackc/pgx/v4"
 )
 
-func CQTextArray(c *cqtypes.TextArray) pgtype.TextArray {
+func cqToPgTextArray(c *cqtypes.TextArray) pgtype.TextArray {
 	r := pgtype.TextArray{}
 	for _, v := range c.Elements {
 		r.Elements = append(r.Elements, pgtype.Text{String: v.Str, Status: pgtype.Status(v.Status)})
@@ -26,7 +26,7 @@ func CQTextArray(c *cqtypes.TextArray) pgtype.TextArray {
 	return r
 }
 
-func CQInt8Array(c *cqtypes.Int8Array) pgtype.Int8Array {
+func cqToPgInt8Array(c *cqtypes.Int8Array) pgtype.Int8Array {
 	r := pgtype.Int8Array{}
 	for _, v := range c.Elements {
 		r.Elements = append(r.Elements, pgtype.Int8{Int: v.Int, Status: pgtype.Status(v.Status)})
@@ -38,7 +38,7 @@ func CQInt8Array(c *cqtypes.Int8Array) pgtype.Int8Array {
 	return r
 }
 
-func CQUUIDArray(c *cqtypes.UUIDArray) pgtype.UUIDArray {
+func cqToPgUUIDArray(c *cqtypes.UUIDArray) pgtype.UUIDArray {
 	r := pgtype.UUIDArray{}
 	for _, v := range c.Elements {
 		r.Elements = append(r.Elements, pgtype.UUID{Bytes: v.Bytes, Status: pgtype.Status(v.Status)})
@@ -50,7 +50,19 @@ func CQUUIDArray(c *cqtypes.UUIDArray) pgtype.UUIDArray {
 	return r
 }
 
-func CQCIDRArray(c *cqtypes.CIDRArray) pgtype.CIDRArray {
+func cqToCCCIDRArray(c *cqtypes.CIDRArray) pgtype.InetArray {
+	r := pgtype.InetArray{}
+	for _, v := range c.Elements {
+		r.Elements = append(r.Elements, pgtype.Inet{IPNet: v.IPNet, Status: pgtype.Status(v.Status)})
+	}
+	r.Status = pgtype.Status(c.Status)
+	for _, d := range c.Dimensions {
+		r.Dimensions = append(r.Dimensions, pgtype.ArrayDimension{Length: d.Length, LowerBound: d.LowerBound})
+	}
+	return r
+}
+
+func cqToPgCIDRArray(c *cqtypes.CIDRArray) pgtype.CIDRArray {
 	r := pgtype.CIDRArray{}
 	for _, v := range c.Elements {
 		r.Elements = append(r.Elements, pgtype.CIDR{IPNet: v.IPNet, Status: pgtype.Status(v.Status)})
@@ -62,7 +74,19 @@ func CQCIDRArray(c *cqtypes.CIDRArray) pgtype.CIDRArray {
 	return r
 }
 
-func CQMacaddrArray(c *cqtypes.MacaddrArray) pgtype.MacaddrArray {
+func cqToCCMacaddrArray(c *cqtypes.MacaddrArray) pgtype.TextArray {
+	r := pgtype.TextArray{}
+	for _, v := range c.Elements {
+		r.Elements = append(r.Elements, pgtype.Text{String: v.String(), Status: pgtype.Status(v.Status)})
+	}
+	r.Status = pgtype.Status(c.Status)
+	for _, d := range c.Dimensions {
+		r.Dimensions = append(r.Dimensions, pgtype.ArrayDimension{Length: d.Length, LowerBound: d.LowerBound})
+	}
+	return r
+}
+
+func cqToPgMacaddrArray(c *cqtypes.MacaddrArray) pgtype.MacaddrArray {
 	r := pgtype.MacaddrArray{}
 	for _, v := range c.Elements {
 		r.Elements = append(r.Elements, pgtype.Macaddr{Addr: v.Addr, Status: pgtype.Status(v.Status)})
@@ -74,7 +98,7 @@ func CQMacaddrArray(c *cqtypes.MacaddrArray) pgtype.MacaddrArray {
 	return r
 }
 
-func CQInetArray(c *cqtypes.InetArray) pgtype.InetArray {
+func cqToPgInetArray(c *cqtypes.InetArray) pgtype.InetArray {
 	r := pgtype.InetArray{}
 	for _, v := range c.Elements {
 		r.Elements = append(r.Elements, pgtype.Inet{IPNet: v.IPNet, Status: pgtype.Status(v.Status)})
@@ -118,9 +142,9 @@ func (c *Client) transformValues(table *schema.Table, values cqtypes.CQTypes) []
 				Status: pgtype.Status(t.Status),
 			}
 		case *cqtypes.TextArray:
-			pgValues[i] = CQTextArray(t)
+			pgValues[i] = cqToPgTextArray(t)
 		case *cqtypes.Int8Array:
-			pgValues[i] = CQInt8Array(t)
+			pgValues[i] = cqToPgInt8Array(t)
 		case *cqtypes.Timestamptz:
 			pgValues[i] = pgtype.Timestamptz{
 				Time:   t.Time,
@@ -132,7 +156,7 @@ func (c *Client) transformValues(table *schema.Table, values cqtypes.CQTypes) []
 				Status: pgtype.Status(t.Status),
 			}
 		case *cqtypes.UUIDArray:
-			pgValues[i] = CQUUIDArray(t)
+			pgValues[i] = cqToPgUUIDArray(t)
 		case *cqtypes.Inet:
 			pgValues[i] = pgtype.Inet{
 				IPNet:  t.IPNet,
@@ -144,16 +168,31 @@ func (c *Client) transformValues(table *schema.Table, values cqtypes.CQTypes) []
 				Status: pgtype.Status(t.Status),
 			}
 		case *cqtypes.CIDRArray:
-			pgValues[i] = CQCIDRArray(t)
+			if c.pgType == pgTypeCockroachDB {
+				pgValues[i] = cqToCCCIDRArray(t)
+			} else {
+				pgValues[i] = cqToPgCIDRArray(t)
+			}
 		case *cqtypes.Macaddr:
-			pgValues[i] = pgtype.Macaddr{
-				Addr:   t.Addr,
-				Status: pgtype.Status(t.Status),
+			if c.pgType == pgTypeCockroachDB {
+				pgValues[i] = pgtype.Text{
+					String: t.String(),
+					Status: pgtype.Status(t.Status),
+				}
+			} else {
+				pgValues[i] = pgtype.Macaddr{
+					Addr:   t.Addr,
+					Status: pgtype.Status(t.Status),
+				}
 			}
 		case *cqtypes.MacaddrArray:
-			pgValues[i] = CQMacaddrArray(t)
+			if c.pgType == pgTypeCockroachDB {
+				pgValues[i] = cqToCCMacaddrArray(t)
+			} else {
+				pgValues[i] = cqToPgMacaddrArray(t)
+			}
 		case *cqtypes.InetArray:
-			pgValues[i] = CQInetArray(t)
+			pgValues[i] = cqToPgInetArray(t)
 		default:
 			c.logger.Warn().Str("table", table.Name).Str("column", table.Columns[i].Name).Msgf("unknown type %T", v)
 			c.metrics.Errors++
@@ -201,6 +240,7 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *sc
 				// no recoverable error
 				return fmt.Errorf("failed to execute batch: %w", err)
 			}
+			c.logger.Error().Err(err).Msgf("failed to execute batch with pgerror")
 		}
 		atomic.AddUint64(&c.metrics.Writes, uint64(c.batchSize))
 	}
