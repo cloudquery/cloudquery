@@ -8,7 +8,7 @@ This is useful in local environments, but also in production environments where 
 
 This is the top level spec used by the CSV destination Plugin.
 
-- `directory` (string) (optional, default to `./cq_csv_output`)
+- `directory` (string) (optional, defaults to `./cq_csv_output`)
 
   Directory where all csv files will be written. a CSV file per table will be created.
 
