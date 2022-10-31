@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v1.3.11...plugins-destination-postgresql-v1.4.0) (2022-10-31)
+
+
+### Features
+
+* Update all plugins to SDK with metrics and DFS scheduler ([#3286](https://github.com/cloudquery/cloudquery/issues/3286)) ([a35b8e8](https://github.com/cloudquery/cloudquery/commit/a35b8e89d625287a9b9406ff18cfac78ffdb1241))
+
 ## [1.3.11](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v1.3.10...plugins-destination-postgresql-v1.3.11) (2022-10-27)
 
 
