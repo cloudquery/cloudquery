@@ -15,7 +15,7 @@ Official source plugins follow [release stages](source-plugin-release-stages).
 | [GitHub][github] | v1.1.0         | [Changelog][GitHub-Changelog]       | GA |
 | [Heroku][heroku] | v2.0.7         | [Changelog][Heroku-Changelog]       | Preview |
 | [k8s][k8s] | v2.1.2         | [Changelog][k8s-Changelog]          | Preview |
-| [Okta][okta] | v1.0.11        | [Changelog][Okta-Changelog]         | Preview |
+| [Okta][okta] | v1.1.0        | [Changelog][Okta-Changelog]         | Preview |
 | [Terraform][terraform] | v1.0.10         | [Changelog][Terraform-Changelog]    | Preview |
 | [Cloudflare][cloudflare] | v2.0.8         | [Changelog][Cloudflare-Changelog]   | Preview |
 
