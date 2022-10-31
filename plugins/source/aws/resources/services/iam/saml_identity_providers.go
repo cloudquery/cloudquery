@@ -28,11 +28,6 @@ func SamlIdentityProviders() *schema.Table {
 				},
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
-			},
-			{
 				Name:     "create_date",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreateDate"),

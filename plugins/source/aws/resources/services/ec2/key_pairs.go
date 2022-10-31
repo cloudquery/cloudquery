@@ -33,11 +33,6 @@ func KeyPairs() *schema.Table {
 				},
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
-			},
-			{
 				Name:     "create_time",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreateTime"),
@@ -66,6 +61,11 @@ func KeyPairs() *schema.Table {
 				Name:     "public_key",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("PublicKey"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 		},
 	}

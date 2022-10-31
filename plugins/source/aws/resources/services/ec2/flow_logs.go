@@ -33,11 +33,6 @@ func FlowLogs() *schema.Table {
 				},
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
-			},
-			{
 				Name:     "creation_time",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreationTime"),
@@ -106,6 +101,11 @@ func FlowLogs() *schema.Table {
 				Name:     "resource_id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ResourceId"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "traffic_type",

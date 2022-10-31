@@ -33,11 +33,6 @@ func Images() *schema.Table {
 				},
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
-			},
-			{
 				Name:     "architecture",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Architecture"),
@@ -166,6 +161,11 @@ func Images() *schema.Table {
 				Name:     "state_reason",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("StateReason"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "tpm_support",

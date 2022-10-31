@@ -33,11 +33,6 @@ func VpcPeeringConnections() *schema.Table {
 				},
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
-			},
-			{
 				Name:     "accepter_vpc_info",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("AccepterVpcInfo"),
@@ -56,6 +51,11 @@ func VpcPeeringConnections() *schema.Table {
 				Name:     "status",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Status"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "vpc_peering_connection_id",

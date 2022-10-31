@@ -82,6 +82,26 @@ func awsNameTransformer(f reflect.StructField) (string, error) {
 	return c.ToSnake(f.Name), nil
 }
 
+func awsResolverTransformer(f reflect.StructField, path string) (string, error) {
+	if f.Type.String() == "[]types.Tag" {
+		if path == "Tags" {
+			return "client.ResolveTags", nil
+		}
+		return `client.ResolveTagField("` + path + `")`, nil
+	}
+
+	if path == "Tags" || path == "TagSet" {
+		switch f.Type.String() {
+		case "map[string]string", "map[string]*string", "map[string]interface {}", "[]types.TagDescription":
+			// valid tag types
+		default:
+			return "", fmt.Errorf("%q field is not of type []types.Tag or string map: %s", path, f.Type.String())
+		}
+	}
+
+	return `schema.PathResolver("` + path + `")`, nil
+}
+
 func (r *Resource) Generate() error {
 	_, filename, _, ok := runtime.Caller(0)
 	if !ok {
@@ -94,6 +114,7 @@ func (r *Resource) Generate() error {
 		codegen.WithSkipFields(r.SkipFields),
 		codegen.WithExtraColumns(r.ExtraColumns),
 		codegen.WithNameTransformer(awsNameTransformer),
+		codegen.WithResolverTransformer(awsResolverTransformer),
 	}
 	if r.UnwrapEmbeddedStructs {
 		opts = append(opts, codegen.WithUnwrapAllEmbeddedStructs())
@@ -107,10 +128,10 @@ func (r *Resource) Generate() error {
 		r.Struct,
 		opts...,
 	)
-	r.Table.Description = r.Description
 	if err != nil {
-		return err
+		return fmt.Errorf("error generating %s: %w", name, err)
 	}
+	r.Table.Description = r.Description
 	r.Table.Resolver = "fetch" + strcase.ToCamel(r.Service) + strcase.ToCamel(r.SubService)
 	if r.Multiplex != "" {
 		r.Table.Multiplex = r.Multiplex

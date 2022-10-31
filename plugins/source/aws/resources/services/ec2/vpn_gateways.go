@@ -33,11 +33,6 @@ func VpnGateways() *schema.Table {
 				},
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
-			},
-			{
 				Name:     "amazon_side_asn",
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("AmazonSideAsn"),
@@ -51,6 +46,11 @@ func VpnGateways() *schema.Table {
 				Name:     "state",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("State"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "type",

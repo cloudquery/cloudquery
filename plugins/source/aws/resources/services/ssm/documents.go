@@ -39,11 +39,6 @@ func Documents() *schema.Table {
 				Resolver: resolveDocumentPermission,
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
-			},
-			{
 				Name:     "approved_version",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ApprovedVersion"),
@@ -177,6 +172,11 @@ func Documents() *schema.Table {
 				Name:     "status_information",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("StatusInformation"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "target_type",

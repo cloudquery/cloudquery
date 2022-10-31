@@ -15,7 +15,6 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
-|tags|JSON|
 |creation_time|Timestamp|
 |deliver_cross_account_role|String|
 |deliver_logs_error_message|String|
@@ -30,4 +29,5 @@ The primary key for this table is **arn**.
 |log_group_name|String|
 |max_aggregation_interval|Int|
 |resource_id|String|
+|tags|JSON|
 |traffic_type|String|

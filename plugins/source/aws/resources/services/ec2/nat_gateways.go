@@ -33,11 +33,6 @@ func NatGateways() *schema.Table {
 				},
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
-			},
-			{
 				Name:     "connectivity_type",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ConnectivityType"),
@@ -86,6 +81,11 @@ func NatGateways() *schema.Table {
 				Name:     "subnet_id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("SubnetId"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "vpc_id",

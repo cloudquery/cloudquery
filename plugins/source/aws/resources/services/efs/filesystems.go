@@ -38,11 +38,6 @@ func Filesystems() *schema.Table {
 				Resolver: ResolveEfsFilesystemBackupPolicyStatus,
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
-			},
-			{
 				Name:     "creation_time",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreationTime"),
@@ -81,6 +76,11 @@ func Filesystems() *schema.Table {
 				Name:     "size_in_bytes",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("SizeInBytes"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "availability_zone_id",

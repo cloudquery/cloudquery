@@ -39,11 +39,6 @@ func Instances() *schema.Table {
 				IgnoreInTests: true,
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
-			},
-			{
 				Name:     "ami_launch_index",
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("AmiLaunchIndex"),
@@ -292,6 +287,11 @@ func Instances() *schema.Table {
 				Name:     "subnet_id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("SubnetId"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "tpm_support",

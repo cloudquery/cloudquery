@@ -14,6 +14,5 @@ The primary key for this table is **arn**.
 |_cq_parent_id|UUID|
 |account_id|String|
 |arn (PK)|String|
-|tags|JSON|
 |create_date|Timestamp|
 |valid_until|Timestamp|

@@ -33,11 +33,6 @@ func EbsVolumes() *schema.Table {
 				},
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
-			},
-			{
 				Name:     "attachments",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Attachments"),
@@ -96,6 +91,11 @@ func EbsVolumes() *schema.Table {
 				Name:     "state",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("State"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "throughput",

@@ -17,7 +17,6 @@ The following tables depend on aws_lightsail_buckets:
 |_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
-|tags|JSON|
 |able_to_update_bundle|Bool|
 |access_log_config|JSON|
 |access_rules|JSON|
@@ -32,4 +31,5 @@ The following tables depend on aws_lightsail_buckets:
 |resources_receiving_access|JSON|
 |state|JSON|
 |support_code|String|
+|tags|JSON|
 |url|String|

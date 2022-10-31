@@ -15,7 +15,6 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
-|tags|JSON|
 |allocation_time|Timestamp|
 |allows_multiple_instance_types|String|
 |auto_placement|String|
@@ -33,3 +32,4 @@ The primary key for this table is **arn**.
 |owner_id|String|
 |release_time|Timestamp|
 |state|String|
+|tags|JSON|

@@ -33,11 +33,6 @@ func NetworkInterfaces() *schema.Table {
 				},
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTagField("TagSet"),
-			},
-			{
 				Name:     "association",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Association"),
@@ -156,6 +151,11 @@ func NetworkInterfaces() *schema.Table {
 				Name:     "subnet_id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("SubnetId"),
+			},
+			{
+				Name:     "tag_set",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTagField("TagSet"),
 			},
 			{
 				Name:     "vpc_id",

@@ -33,11 +33,6 @@ func CustomerGateways() *schema.Table {
 				},
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
-			},
-			{
 				Name:     "bgp_asn",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("BgpAsn"),
@@ -66,6 +61,11 @@ func CustomerGateways() *schema.Table {
 				Name:     "state",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("State"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "type",

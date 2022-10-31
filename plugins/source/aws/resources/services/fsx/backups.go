@@ -39,11 +39,6 @@ func Backups() *schema.Table {
 				},
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
-			},
-			{
 				Name:     "creation_time",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreationTime"),
@@ -107,6 +102,11 @@ func Backups() *schema.Table {
 				Name:     "source_backup_region",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("SourceBackupRegion"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "volume",
