@@ -20,9 +20,9 @@ jobs:
     steps:
       - name: Check if should use large runner
         id: large-runner
-        # We want to speed up SDK updates, release PRs and runs on the main branch which prime the cache
-        # We allow large runners only in these cases to prevent forks from abusing them (it's enforced via runner groups access rules)
-        if: github.event_name == 'push' || (github.head_ref =='release-please--branches--main--components--plugins-source-test') || (github.head_ref == 'renovate/plugins/source/test-github.com-cloudquery-plugin-sdk-0.x')
+        # We want to speed runs on the main branch which prime the cache
+        # We allow large runners only in this case to prevent forks from abusing them (it's enforced via runner groups access rules)
+        if: github.event_name == 'push'
         run: |
           echo "runner=cloudquery-release-runner" >> $GITHUB_OUTPUT
       - name: Resolve runner
