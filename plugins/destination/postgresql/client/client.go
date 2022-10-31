@@ -24,6 +24,7 @@ type Client struct {
 	pgType              pgType
 	batchSize           int
 	batch               *pgx.Batch
+	metrics             plugins.DestinationMetrics
 }
 
 type pgTablePrimaryKeys struct {
@@ -114,6 +115,10 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (pl
 		return nil, fmt.Errorf("failed to get database type: %w", err)
 	}
 	return c, nil
+}
+
+func (c *Client) Metrics() plugins.DestinationMetrics {
+	return c.metrics
 }
 
 func (c *Client) Close(ctx context.Context) error {

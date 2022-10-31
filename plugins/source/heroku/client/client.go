@@ -16,10 +16,15 @@ import (
 type Client struct {
 	logger zerolog.Logger
 	Heroku *heroku.Service
+	spec   specs.Source
 }
 
 func (c *Client) Logger() *zerolog.Logger {
 	return &c.logger
+}
+
+func (c *Client) ID() string {
+	return c.spec.Name
 }
 
 func Configure(ctx context.Context, l zerolog.Logger, s specs.Source) (schema.ClientMeta, error) {
@@ -40,5 +45,6 @@ func Configure(ctx context.Context, l zerolog.Logger, s specs.Source) (schema.Cl
 	return &Client{
 		logger: l,
 		Heroku: h,
+		spec:   s,
 	}, nil
 }
