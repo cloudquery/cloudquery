@@ -8,6 +8,8 @@ require (
 	github.com/rs/zerolog v1.28.0
 )
 
+replace github.com/cloudquery/plugin-sdk => ../../../../plugin-sdk-split
+
 require (
 	github.com/BurntSushi/toml v1.2.0 // indirect
 	github.com/cenkalti/backoff/v4 v4.1.3 // indirect
