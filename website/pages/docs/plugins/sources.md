@@ -8,15 +8,25 @@ Official source plugins follow [release stages](source-plugin-release-stages).
 
 | **Name**              | Latest Version | Changelog                           | Stage |
 |-----------------------|----------------|-------------------------------------|-------|
+TABLE-FILLER
 | [AWS][aws] | v3.8.0         | [Changelog][AWS-Changelog]          | GA |
+TABLE-FILLER
 | [Azure][azure] | v1.1.0         | [Changelog][Azure-Changelog]        | GA |    
+TABLE-FILLER
 | [GCP][gcp] | v2.3.0         | [Changelog][GCP-Changelog]          | GA |
+TABLE-FILLER
 | [DigitalOcean][digitalocean] | v2.1.0         | [Changelog][DigitalOcean-Changelog] | GA |
+TABLE-FILLER
 | [GitHub][github] | v1.1.0         | [Changelog][GitHub-Changelog]       | GA |
+TABLE-FILLER
 | [Heroku][heroku] | v2.1.0         | [Changelog][Heroku-Changelog]       | Preview |
+TABLE-FILLER
 | [k8s][k8s] | v2.2.0         | [Changelog][k8s-Changelog]          | Preview |
+TABLE-FILLER
 | [Okta][okta] | v1.1.0        | [Changelog][Okta-Changelog]         | Preview |
+TABLE-FILLER
 | [Terraform][terraform] | v1.1.0         | [Changelog][Terraform-Changelog]    | Preview |
+TABLE-FILLER
 | [Cloudflare][cloudflare] | v2.1.0         | [Changelog][Cloudflare-Changelog]   | Preview |
 
 ## Community

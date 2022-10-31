@@ -4,6 +4,8 @@
   "private": true,
   "description": "CloudQuery website and docs",
   "scripts": {
+    "predev": "sed -i '' -e ':a' -e 'N' -e '$!ba' -e 's/TABLE-FILLER\\n//g' 'pages/docs/plugins/sources.md'",
+    "prebuild": "sed -i -e ':a' -e 'N' -e '$!ba' -e 's/TABLE-FILLER\\n//g' 'pages/docs/plugins/sources.md'",
     "dev": "next",
     "start": "next start",
     "build": "next build",
