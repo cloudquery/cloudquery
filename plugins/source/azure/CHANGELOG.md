@@ -9,6 +9,21 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v1.1.0...plugins-source-azure-v1.2.0) (2022-11-01)
+
+
+### Features
+
+* Migrate cli, plugins and destinations to new type system ([#3323](https://github.com/cloudquery/cloudquery/issues/3323)) ([f265a94](https://github.com/cloudquery/cloudquery/commit/f265a94448ad55c968b26ba8a19681bc81086c11))
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/exp digest to c99f073 ([#3372](https://github.com/cloudquery/cloudquery/issues/3372)) ([c64bc54](https://github.com/cloudquery/cloudquery/commit/c64bc5410f20aba71e54308b39017dbf102fdead))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/azcore to v1.1.4 ([#3376](https://github.com/cloudquery/cloudquery/issues/3376)) ([294708e](https://github.com/cloudquery/cloudquery/commit/294708e2c36649e23108b1a5985b9cae225fd54d))
+* **deps:** Update plugin-sdk for azure to v0.13.17 ([#3400](https://github.com/cloudquery/cloudquery/issues/3400)) ([a244d6c](https://github.com/cloudquery/cloudquery/commit/a244d6c1421858b2829a8049ad6dfc5bbe655d6d))
+* **deps:** Update plugin-sdk for azure to v0.13.18 ([#3410](https://github.com/cloudquery/cloudquery/issues/3410)) ([36ea67c](https://github.com/cloudquery/cloudquery/commit/36ea67c78e0985309924107b3b33877c800cc937))
+
 ## [1.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v1.0.10...plugins-source-azure-v1.1.0) (2022-10-31)
 
 

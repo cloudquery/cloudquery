@@ -54,6 +54,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/emr"
 	"github.com/aws/aws-sdk-go-v2/service/eventbridge"
 	"github.com/aws/aws-sdk-go-v2/service/firehose"
+	"github.com/aws/aws-sdk-go-v2/service/frauddetector"
 	"github.com/aws/aws-sdk-go-v2/service/fsx"
 	"github.com/aws/aws-sdk-go-v2/service/glacier"
 	"github.com/aws/aws-sdk-go-v2/service/glue"
@@ -174,6 +175,7 @@ type Services struct {
 	EMR                    EmrClient
 	EventBridge            EventBridgeClient
 	Firehose               FirehoseClient
+	FraudDetector          FraudDetectorClient
 	FSX                    FsxClient
 	Glacier                GlacierClient
 	Glue                   GlueClient
@@ -655,6 +657,7 @@ func initServices(region string, c aws.Config) Services {
 		EMR:                    emr.NewFromConfig(awsCfg),
 		EventBridge:            eventbridge.NewFromConfig(awsCfg),
 		Firehose:               firehose.NewFromConfig(awsCfg),
+		FraudDetector:          frauddetector.NewFromConfig(awsCfg),
 		FSX:                    fsx.NewFromConfig(awsCfg),
 		Glacier:                glacier.NewFromConfig(awsCfg),
 		Glue:                   glue.NewFromConfig(awsCfg),

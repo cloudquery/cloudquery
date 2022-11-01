@@ -43,6 +43,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/emr"
 	"github.com/aws/aws-sdk-go-v2/service/eventbridge"
 	"github.com/aws/aws-sdk-go-v2/service/firehose"
+	"github.com/aws/aws-sdk-go-v2/service/frauddetector"
 	"github.com/aws/aws-sdk-go-v2/service/fsx"
 	"github.com/aws/aws-sdk-go-v2/service/glacier"
 	"github.com/aws/aws-sdk-go-v2/service/glue"
@@ -492,6 +493,23 @@ type FirehoseClient interface {
 	DescribeDeliveryStream(ctx context.Context, params *firehose.DescribeDeliveryStreamInput, optFns ...func(*firehose.Options)) (*firehose.DescribeDeliveryStreamOutput, error)
 	ListDeliveryStreams(ctx context.Context, params *firehose.ListDeliveryStreamsInput, optFns ...func(*firehose.Options)) (*firehose.ListDeliveryStreamsOutput, error)
 	ListTagsForDeliveryStream(ctx context.Context, params *firehose.ListTagsForDeliveryStreamInput, optFns ...func(*firehose.Options)) (*firehose.ListTagsForDeliveryStreamOutput, error)
+}
+
+//go:generate mockgen -package=mocks -destination=./mocks/frauddetector.go . FraudDetectorClient
+type FraudDetectorClient interface {
+	frauddetector.DescribeModelVersionsAPIClient
+	frauddetector.GetBatchImportJobsAPIClient
+	frauddetector.GetBatchPredictionJobsAPIClient
+	frauddetector.GetDetectorsAPIClient
+	frauddetector.GetEntityTypesAPIClient
+	frauddetector.GetEventTypesAPIClient
+	frauddetector.GetExternalModelsAPIClient
+	frauddetector.GetLabelsAPIClient
+	frauddetector.GetModelsAPIClient
+	frauddetector.GetOutcomesAPIClient
+	frauddetector.GetRulesAPIClient
+	frauddetector.GetVariablesAPIClient
+	frauddetector.ListTagsForResourceAPIClient
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/fsx.go . FsxClient
