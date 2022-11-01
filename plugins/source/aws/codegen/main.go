@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	resources := make([]*recipes.Resource, 0, 1000)
+	var resources []*recipes.Resource
 	resources = append(resources, recipes.AccessAnalyzerResources()...)
 	resources = append(resources, recipes.ACMResources()...)
 	resources = append(resources, recipes.APIGatewayResources()...)
@@ -47,6 +47,7 @@ func main() {
 	resources = append(resources, recipes.EMRResources()...)
 	resources = append(resources, recipes.EventbridgeResources()...)
 	resources = append(resources, recipes.FirehoseResources()...)
+	resources = append(resources, recipes.FraudDetectorResources()...)
 	resources = append(resources, recipes.FSXResources()...)
 	resources = append(resources, recipes.GlacierResources()...)
 	resources = append(resources, recipes.GlueResources()...)
