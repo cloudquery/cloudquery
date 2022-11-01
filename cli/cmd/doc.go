@@ -18,7 +18,7 @@ func newCmdDoc() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:    "doc [directory_path]",
 		Short:  docShort,
-		Args:   cobra.ExactValidArgs(1),
+		Args:   cobra.MatchAll(cobra.ExactArgs(1), cobra.OnlyValidArgs),
 		Hidden: true,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return doc.GenMarkdownTreeCustom(cmd.Parent(), args[0], filePrepender, linkHandler)
