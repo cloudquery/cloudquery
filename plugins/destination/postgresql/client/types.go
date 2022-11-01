@@ -20,7 +20,7 @@ func (*Client) SchemaTypeToPg10(t schema.ValueType) string {
 	case schema.TypeInt:
 		return "bigint"
 	case schema.TypeFloat:
-		return "real"
+		return "double precision"
 	case schema.TypeUUID:
 		return "uuid"
 	case schema.TypeString:
@@ -63,7 +63,7 @@ func (*Client) SchemaTypeToCockroach(t schema.ValueType) string {
 	case schema.TypeInt:
 		return "bigint"
 	case schema.TypeFloat:
-		return "real"
+		return "double precision"
 	case schema.TypeUUID:
 		return "uuid"
 	case schema.TypeString:
