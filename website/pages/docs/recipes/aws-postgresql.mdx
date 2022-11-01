@@ -1,0 +1,50 @@
+---
+title: AWS
+---
+
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import AWS_VERSION from "../../../components/versions/source-aws.json";
+import POSTGRESQL_VERSION from "../../../components/versions/destination-postgresql.json";
+import { dark } from 'react-syntax-highlighter/dist/cjs/styles/prism';
+
+# AWS + PostgreSQL
+
+export const aws_pg = `
+kind: source
+spec:
+  name: aws
+  path: cloudquery/aws
+  version: "${AWS_VERSION['latest']}"
+  tables: ["*"]
+  destinations: ["postgresql"]
+---
+kind: destination
+spec:
+  name: postgresql
+  path: cloudquery/postgresql
+  version: "${POSTGRESQL_VERSION['latest']}"
+  spec:
+    connection_string: $\{PG_CONNECTION_STRING\}
+`;
+
+<SyntaxHighlighter language="yaml" wrapLines={"false"}>
+{aws_pg}
+</SyntaxHighlighter>
+
+```yaml
+kind: source
+spec:
+  name: aws
+  path: cloudquery/aws
+  version: "v3.8.0" # latest version of aws plugin
+  tables: ["*"]
+  destinations: ["postgresql"]
+---
+kind: destination
+spec:
+  name: postgresql
+  path: cloudquery/postgresql
+  version: "v1.5.0" # latest version of postgresql plugin
+  spec:
+    connection_string: ${PG_CONNECTION_STRING}
+```
