@@ -77,4 +77,4 @@ spec: # Common source spec section
     token: <YOUR_TOKEN_HERE>
 ```
 
-More information on configuration options can be find in the [Source Configuration Documentation](https://www.cloudquery.io/docs/reference/source-spec) and [Heroku Configuration Documentation](./docs/configuration.md)
+More information on configuration options can be found in the [Source Configuration Documentation](https://www.cloudquery.io/docs/reference/source-spec) and [Heroku Configuration Documentation](./docs/configuration.md)
