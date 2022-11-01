@@ -25,7 +25,7 @@ func (*Client) Metrics() plugins.DestinationMetrics {
 	return plugins.DestinationMetrics{}
 }
 
-func (*Client)Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- *schema.DestinationResource) error {
+func (*Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- *schema.DestinationResource) error {
 	return nil
 }
 
