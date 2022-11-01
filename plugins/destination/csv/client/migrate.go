@@ -28,20 +28,24 @@ func (c *Client) migrate(tables schema.Tables) error {
 		filePath := path.Join(c.csvSpec.Directory, t.Name+".csv")
 		//nolint:gocritic,revive
 		if _, err := os.Stat(filePath); err == nil {
-			f, err := os.Open(filePath)
-			if err != nil {
+			if err := func() error {
+				f, err := os.Open(filePath)
+				if err != nil {
+					return err
+				}
+				defer f.Close()
+				r := csv.NewReader(f)
+				// skip header
+				record, err := r.Read()
+				if err != nil {
+					return err
+				}
+				if !isSameColumns(record, t.Columns.Names()) {
+					return fmt.Errorf("csv can't migrate table %s. please delete %s file and try again", t.Name, filePath)
+				}
+				return nil
+			}(); err != nil {
 				return err
-			}
-			//nolint:revive
-			defer f.Close()
-			r := csv.NewReader(f)
-			// skip header
-			record, err := r.Read()
-			if err != nil {
-				return err
-			}
-			if !isSameColumns(record, t.Columns.Names()) {
-				return fmt.Errorf("csv can't migrate table %s. please delete %s file and try again", t.Name, filePath)
 			}
 		} else if errors.Is(err, os.ErrNotExist) {
 			f, err := os.OpenFile(filePath, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
