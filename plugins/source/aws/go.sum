@@ -43,8 +43,8 @@ github.com/aws/aws-sdk-go-v2/service/athena v1.18.10 h1:s8cE1HX3Pi53iMg+A+d7gGvm
 github.com/aws/aws-sdk-go-v2/service/athena v1.18.10/go.mod h1:LiVr7tVQ2lrlv82VQhyuulN8uysLHsEeptFjA5PY1Pc=
 github.com/aws/aws-sdk-go-v2/service/autoscaling v1.23.16 h1:cp30gVVAbZfeDod6UJGppMH2+p+/cRCG2AZ1TbT+LqA=
 github.com/aws/aws-sdk-go-v2/service/autoscaling v1.23.16/go.mod h1:hHTMeJt6CQwFdmS19RK1LsDscus8c25Ve8KiYRhsISg=
-github.com/aws/aws-sdk-go-v2/service/backup v1.17.9 h1:MuOocIwjHn4xHfOPGnjHs/1IrfjChESIhr2mbZMRYtc=
-github.com/aws/aws-sdk-go-v2/service/backup v1.17.9/go.mod h1:7wibi2KeZ1PUrLlxFHOSBKBmmrQBCXJSOUg5GoKa2OM=
+github.com/aws/aws-sdk-go-v2/service/backup v1.17.11 h1:BrCYl+uKVNYBEHYSGBgK1mLFUkunZvsBduzNye+y+9w=
+github.com/aws/aws-sdk-go-v2/service/backup v1.17.11/go.mod h1:W9rt/y8Vb/HDsJ9XW4s+fl0mLXecNbn32yQ81uv4OlA=
 github.com/aws/aws-sdk-go-v2/service/cloudformation v1.22.10 h1:Stmfzuj3KSEBB3tbz7MScXjdmXZbDWo/qLYdpu9uX30=
 github.com/aws/aws-sdk-go-v2/service/cloudformation v1.22.10/go.mod h1:25Dm6AWo23nKPF1kmGP3MpgCWixf4t8ViwWemcTFXQU=
 github.com/aws/aws-sdk-go-v2/service/cloudfront v1.20.5 h1:nLAPA7/DSmDWYP/MGtRNP6bHjiL8Fmyg8qeDxW90nm0=
