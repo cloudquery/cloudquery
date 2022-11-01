@@ -45,6 +45,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/emr v1.20.13
 	github.com/aws/aws-sdk-go-v2/service/eventbridge v1.16.17
 	github.com/aws/aws-sdk-go-v2/service/firehose v1.14.21
+	github.com/aws/aws-sdk-go-v2/service/frauddetector v1.20.12
 	github.com/aws/aws-sdk-go-v2/service/fsx v1.25.4
 	github.com/aws/aws-sdk-go-v2/service/glacier v1.13.19
 	github.com/aws/aws-sdk-go-v2/service/guardduty v1.16.2
