@@ -14,7 +14,7 @@ func resolveResourceTags(ctx context.Context, meta schema.ClientMeta, resource *
 
 	paginator := frauddetector.NewListTagsForResourcePaginator(svc,
 		&frauddetector.ListTagsForResourceInput{
-			ResourceARN: resource.Get("arn").(*string),
+			ResourceARN: resource.Get("arn").Get().(*string),
 		},
 	)
 	tags := make(map[string]string)
