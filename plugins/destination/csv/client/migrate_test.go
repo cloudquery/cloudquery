@@ -20,5 +20,7 @@ func TestMigrate(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	client.Migrate(ctx, nil)
+	if err := client.Migrate(ctx, nil); err != nil {
+		t.Fatal(err)
+	}
 }

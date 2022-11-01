@@ -26,6 +26,7 @@ func isSameColumns(record []string, columns []string) bool {
 func (c *Client) migrate(tables schema.Tables) error {
 	for _, t := range tables {
 		filePath := path.Join(c.csvSpec.Directory, t.Name+".csv")
+		//nolint:gocritic,revive
 		if _, err := os.Stat(filePath); err == nil {
 			f, err := os.Open(filePath)
 			if err != nil {
