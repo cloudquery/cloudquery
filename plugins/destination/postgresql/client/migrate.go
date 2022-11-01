@@ -21,16 +21,6 @@ JOIN   pg_attribute a ON a.attrelid = i.indrelid
 WHERE  i.indrelid = $1::regclass
 AND    i.indisprimary;
 `
-	// Modification of https://stackoverflow.com/a/27752061
-	sqlSelectUniqueConstraints = `SELECT cu.column_name
- FROM information_schema.table_constraints tc
-     inner join information_schema.constraint_column_usage cu
-         on cu.constraint_name = tc.constraint_name
- where
-     tc.constraint_type = 'UNIQUE'
-     and tc.table_name = $1
-     and enforced = 'YES';
-`
 )
 
 // This is the responsibility of the CLI of the client to lock before running migration
@@ -75,7 +65,6 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 	var err error
 	var pgColumns *pgTableColumns
 	var pgPKs map[string]bool
-	var pgUniqueCols map[string]bool
 
 	// create the new column as it doesn't exist
 	tableName := pgx.Identifier{table.Name}.Sanitize()
@@ -85,9 +74,6 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 
 	if pgPKs, err = c.getPgTablePrimaryKeys(ctx, table.Name); err != nil {
 		return fmt.Errorf("failed to get table %s primary key columns: %w", table.Name, err)
-	}
-	if pgUniqueCols, err = c.getPgTableUniqueColumns(ctx, table.Name); err != nil {
-		return fmt.Errorf("failed to get table %s columns with unique constraints: %w", table.Name, err)
 	}
 
 	reCreatePrimaryKeys := false
@@ -135,19 +121,6 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 		if c.enabledPks() && pgPKs[col.Name] != col.CreationOptions.PrimaryKey {
 			c.logger.Info().Str("table", table.Name).Str("column", col.Name).Bool("pk", col.CreationOptions.PrimaryKey).Msg("Column exists with different primary keys")
 			reCreatePrimaryKeys = true
-		}
-
-		// special case for _cq_id: check that unique constraint is present. If not, add it.
-		// We have this special case because we don't generally support unique constraints for other columns
-		// right now.
-		if col.Name == "_cq_id" && !pgUniqueCols[col.Name] {
-			c.logger.Info().Str("table", table.Name).Str("column", col.Name).Msg("Adding unique constraint")
-
-			sql := "alter table " + tableName + " add unique (" + columnName + ")"
-			sql += ", alter column " + columnName + " set not null"
-			if _, err := c.conn.Exec(ctx, sql); err != nil {
-				return fmt.Errorf("failed to add unique not-null constraint to column %s on table %s: %w", col.Name, table.Name, err)
-			}
 		}
 	}
 	if reCreatePrimaryKeys {
@@ -262,26 +235,6 @@ func (c *Client) getPgTablePrimaryKeys(ctx context.Context, tableName string) (m
 		return nil, err
 	}
 	return pks, nil
-}
-
-func (c *Client) getPgTableUniqueColumns(ctx context.Context, tableName string) (map[string]bool, error) {
-	cols := map[string]bool{}
-	rows, err := c.conn.Query(ctx, sqlSelectUniqueConstraints, tableName)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	for rows.Next() {
-		var column string
-		if err := rows.Scan(&column); err != nil {
-			return nil, err
-		}
-		cols[strings.ToLower(column)] = true
-	}
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-	return cols, nil
 }
 
 func (c *Client) enabledPks() bool {
