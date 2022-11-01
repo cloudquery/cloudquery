@@ -26,7 +26,7 @@ func ApprunnerResources() []*Resource {
 					},
 				}...),
 		}, {
-			SubService:          "autos_scaling_configuration",
+			SubService:          "auto_scaling_configuration",
 			Struct:              &types.AutoScalingConfiguration{},
 			Description:         "https://docs.aws.amazon.com/apprunner/latest/api/API_AutoScalingConfiguration.html",
 			SkipFields:          []string{"AutoScalingConfigurationArn"},

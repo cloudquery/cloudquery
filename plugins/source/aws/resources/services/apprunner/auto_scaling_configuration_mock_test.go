@@ -11,7 +11,7 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-func buildApprunnerAutosScalingConfigurationsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildApprunnerAutoScalingConfigurationsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockAppRunnerClient(ctrl)
 	as := types.AutoScalingConfiguration{}
 	err := faker.FakeObject(&as)
@@ -36,6 +36,6 @@ func buildApprunnerAutosScalingConfigurationsMock(t *testing.T, ctrl *gomock.Con
 	}
 }
 
-func TestApprunnerAutosScalingConfigurations(t *testing.T) {
-	client.AwsMockTestHelper(t, AutosScalingConfiguration(), buildApprunnerAutosScalingConfigurationsMock, client.TestOptions{})
+func TestApprunnerAutoScalingConfigurations(t *testing.T) {
+	client.AwsMockTestHelper(t, AutoScalingConfiguration(), buildApprunnerAutoScalingConfigurationsMock, client.TestOptions{})
 }

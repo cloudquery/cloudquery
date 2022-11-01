@@ -93,7 +93,7 @@ func tables() []*schema.Table {
 		apigatewayv2.VpcLinks(),
 		applicationautoscaling.Policies(),
 		apprunner.Services(),
-		apprunner.AutosScalingConfiguration(),
+		apprunner.AutoScalingConfiguration(),
 		apprunner.VpcConnector(),
 		appsync.GraphqlApis(),
 		athena.DataCatalogs(),
