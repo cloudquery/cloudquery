@@ -21,7 +21,7 @@ Let's take a look at your typical ELT pipeline:
 [Source] -> [Database]
 ```
 
-This is the basic architecture where you have one machine/container running your ELT workload scaling vertically and one database machine that needs also to scale vertically to handle the stream/load. This is a very common architecture and it works well for small to medium workloads. However, as your workload grows you will need to scale out your ELT workload. This is where things get complicated and expensive.
+This is the basic architecture where you have one machine/container running your ELT workload scaling vertically, and one database machine that needs to also scale vertically to handle the stream/load. This is a very common architecture and it works well for small to medium workloads. However, as your workload grows you will need to scale out your ELT workload. This is where things get complicated and expensive.
 
 ```
 [Source] --\
