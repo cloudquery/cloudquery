@@ -11,7 +11,10 @@ import (
 )
 
 func fetchNeptuneInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	var config neptune.DescribeDBInstancesInput
+	config := neptune.DescribeDBInstancesInput{
+		Filters: []types.Filter{{Name: aws.String("engine"), Values: []string{"neptune"}}},
+	}
+
 	c := meta.(*client.Client)
 	svc := c.Services().Neptune
 	for {

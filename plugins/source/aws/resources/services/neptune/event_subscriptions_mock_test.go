@@ -18,7 +18,9 @@ func buildNeptuneEventSubscriptions(t *testing.T, ctrl *gomock.Controller) clien
 	if err := faker.FakeObject(&s); err != nil {
 		t.Fatal(err)
 	}
-	mock.EXPECT().DescribeEventSubscriptions(gomock.Any(), &neptune.DescribeEventSubscriptionsInput{}, gomock.Any()).Return(
+	mock.EXPECT().DescribeEventSubscriptions(gomock.Any(), &neptune.DescribeEventSubscriptionsInput{
+		Filters: []types.Filter{{Name: aws.String("engine"), Values: []string{"neptune"}}},
+	}, gomock.Any()).Return(
 		&neptune.DescribeEventSubscriptionsOutput{EventSubscriptionsList: []types.EventSubscription{s}},
 		nil,
 	)

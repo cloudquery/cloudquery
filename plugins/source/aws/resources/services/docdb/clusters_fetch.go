@@ -2,6 +2,8 @@ package docdb
 
 import (
 	"context"
+
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/docdb"
 	"github.com/aws/aws-sdk-go-v2/service/docdb/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -12,8 +14,11 @@ func fetchDocdbClusters(ctx context.Context, meta schema.ClientMeta, _ *schema.R
 	c := meta.(*client.Client)
 	svc := c.Services().DocDB
 
-	input := &docdb.DescribeDBClustersInput{}
-	p := docdb.NewDescribeDBClustersPaginator(svc, input)
+	input := docdb.DescribeDBClustersInput{
+		Filters: []types.Filter{{Name: aws.String("engine"), Values: []string{"docdb"}}},
+	}
+
+	p := docdb.NewDescribeDBClustersPaginator(svc, &input)
 	for p.HasMorePages() {
 		response, err := p.NextPage(ctx)
 		if err != nil {

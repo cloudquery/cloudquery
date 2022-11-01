@@ -13,7 +13,9 @@ import (
 func fetchNeptuneClusterSnapshots(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Neptune
-	var input neptune.DescribeDBClusterSnapshotsInput
+	input := neptune.DescribeDBClusterSnapshotsInput{
+		Filters: []types.Filter{{Name: aws.String("engine"), Values: []string{"neptune"}}},
+	}
 	for {
 		output, err := svc.DescribeDBClusterSnapshots(ctx, &input)
 		if err != nil {
