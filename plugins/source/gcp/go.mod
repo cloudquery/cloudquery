@@ -18,7 +18,7 @@ require (
 	cloud.google.com/go/secretmanager v1.7.0
 	cloud.google.com/go/serviceusage v1.2.0
 	cloud.google.com/go/storage v1.27.0
-	github.com/cloudquery/plugin-sdk v0.13.15
+	github.com/cloudquery/plugin-sdk v0.13.16
 	github.com/golang/mock v1.6.0
 	github.com/iancoleman/strcase v0.2.0
 	github.com/julienschmidt/httprouter v1.3.0
@@ -38,7 +38,6 @@ require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/getsentry/sentry-go v0.13.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
-	github.com/gofrs/uuid v4.3.0+incompatible // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
@@ -50,7 +49,6 @@ require (
 	github.com/inconshreveable/mousetrap v1.0.1 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.16 // indirect
-	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/spf13/cobra v1.5.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
