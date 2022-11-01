@@ -1,7 +1,7 @@
 ---
 title: Scaling out ELT pipelines with CloudQuery and CSV
 tag: tutorial
-date: 2022/10/04
+date: 2022/11/01
 description: >-
   This turoial will show you how to scale out your ELT pipelines with CloudQuery to infinity and beyond!
 author: yevgenypats
