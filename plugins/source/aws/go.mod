@@ -12,7 +12,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/apigateway v1.15.22
 	github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.12.20
 	github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.15.20
-	github.com/aws/aws-sdk-go-v2/service/apprunner v1.14.0
+	github.com/aws/aws-sdk-go-v2/service/apprunner v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/appsync v1.15.12
 	github.com/aws/aws-sdk-go-v2/service/autoscaling v1.23.18
 	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.23.0
@@ -20,7 +20,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.13.21
 	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.19.2
 	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.21.8
-	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.15.22
+	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.16.0
 	github.com/aws/aws-sdk-go-v2/service/codebuild v1.19.19
 	github.com/aws/aws-sdk-go-v2/service/codepipeline v1.13.19
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.14.3
@@ -31,7 +31,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/directconnect v1.17.20
 	github.com/aws/aws-sdk-go-v2/service/docdb v1.19.13
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.17.3
-	github.com/aws/aws-sdk-go-v2/service/ec2 v1.64.0
+	github.com/aws/aws-sdk-go-v2/service/ec2 v1.65.0
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.17.20
 	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.13.19
 	github.com/aws/aws-sdk-go-v2/service/ecs v1.18.26
@@ -45,13 +45,13 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/emr v1.20.13
 	github.com/aws/aws-sdk-go-v2/service/eventbridge v1.16.17
 	github.com/aws/aws-sdk-go-v2/service/firehose v1.14.21
-	github.com/aws/aws-sdk-go-v2/service/fsx v1.25.3
+	github.com/aws/aws-sdk-go-v2/service/fsx v1.25.4
 	github.com/aws/aws-sdk-go-v2/service/glacier v1.13.19
 	github.com/aws/aws-sdk-go-v2/service/guardduty v1.16.2
 	github.com/aws/aws-sdk-go-v2/service/iam v1.18.23
 	github.com/aws/aws-sdk-go-v2/service/inspector v1.12.19
 	github.com/aws/aws-sdk-go-v2/service/inspector2 v1.8.3
-	github.com/aws/aws-sdk-go-v2/service/iot v1.29.4
+	github.com/aws/aws-sdk-go-v2/service/iot v1.30.0
 	github.com/aws/aws-sdk-go-v2/service/kinesis v1.15.21
 	github.com/aws/aws-sdk-go-v2/service/kms v1.18.15
 	github.com/aws/aws-sdk-go-v2/service/lambda v1.24.8
@@ -71,7 +71,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.16.4
 	github.com/aws/aws-sdk-go-v2/service/servicecatalog v1.14.19
 	github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.14.3
-	github.com/aws/aws-sdk-go-v2/service/sesv2 v1.14.2
+	github.com/aws/aws-sdk-go-v2/service/sesv2 v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/sns v1.18.3
 	github.com/aws/aws-sdk-go-v2/service/sqs v1.19.12
 	github.com/aws/aws-sdk-go-v2/service/ssm v1.31.3
