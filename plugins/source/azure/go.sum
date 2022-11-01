@@ -54,8 +54,8 @@ github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03
 github.com/bradleyjkemp/cupaloy/v2 v2.8.0 h1:any4BmKE+jGIaMpnU8YgH/I2LPiLBufr6oMMlVBbn9M=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
-github.com/cloudquery/plugin-sdk v0.13.17 h1:NzVHlxIrbb/ObwGAAAZtuf1oVCoOP9Dp5UKckORbVVA=
-github.com/cloudquery/plugin-sdk v0.13.17/go.mod h1:ij2sQtPpVETDALZpeJ/JaL0KEmzJ9jXCmyem0PZqtUQ=
+github.com/cloudquery/plugin-sdk v0.13.18 h1:b1M57Bpda6in8w31ifNfdnH5xuM7rHZhFTRPMel5P2c=
+github.com/cloudquery/plugin-sdk v0.13.18/go.mod h1:ij2sQtPpVETDALZpeJ/JaL0KEmzJ9jXCmyem0PZqtUQ=
 github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGXZJjfX53e64911xZQV5JYwmTeXPW+k8Sc=
 github.com/coreos/go-systemd v0.0.0-20190321100706-95778dfbb74e/go.mod h1:F5haX7vjVVG0kc13fIWeqUViNPyEJxv/OmvnBo0Yme4=
 github.com/coreos/go-systemd/v22 v22.3.3-0.20220203105225-a9a7ef127534/go.mod h1:Y58oyj3AT4RCenI/lSvhwexgC+NSVTIJ3seZv2GcEnc=
