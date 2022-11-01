@@ -13,7 +13,9 @@ import (
 func fetchNeptuneEventSubscriptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Neptune
-	var input neptune.DescribeEventSubscriptionsInput
+	input := neptune.DescribeEventSubscriptionsInput{
+		Filters: []types.Filter{{Name: aws.String("engine"), Values: []string{"neptune"}}},
+	}
 	for {
 		out, err := svc.DescribeEventSubscriptions(ctx, &input)
 		if err != nil {
