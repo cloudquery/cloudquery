@@ -42,7 +42,7 @@ CloudQuery workers are stateless, so you can run as many as you want and slice a
 [Source] --/
 ```
 
-Loading CSV to datalakes/data warehouse is very fast and cheap without the need to take care of scaling out vertically a database or an intermediate proxy.
+Loading CSVs to datalakes/data warehouses is very fast and cheap without the need to take care of scaling out a database or an intermediate proxy vertically.
 
 ## Summary
 
