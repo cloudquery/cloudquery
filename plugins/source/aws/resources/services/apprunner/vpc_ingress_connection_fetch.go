@@ -26,13 +26,13 @@ func fetchApprunnerVpcIngressConnection(ctx context.Context, meta schema.ClientM
 func getVpcIngressConnection(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Apprunner
-	asConfig := resource.Item.(types.VpcIngressConnectionSummaryList)
+	asConfig := resource.Item.(types.VpcIngressConnectionSummary)
 
-	describeTaskDefinitionOutput, err := svc.DescribeVpcIngressConnection(ctx, &apprunner.DescribeVpcIngressConnectionInput{VpcIngressConnectionArn: asConfig.V})
+	describeTaskDefinitionOutput, err := svc.DescribeVpcIngressConnection(ctx, &apprunner.DescribeVpcIngressConnectionInput{VpcIngressConnectionArn: asConfig.VpcIngressConnectionArn})
 	if err != nil {
 		return err
 	}
 
-	resource.Item = describeTaskDefinitionOutput.AutoScalingConfiguration
+	resource.Item = describeTaskDefinitionOutput.VpcIngressConnection
 	return nil
 }

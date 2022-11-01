@@ -67,7 +67,13 @@ func ApprunnerResources() []*Resource {
 			Multiplex:           `client.ServiceAccountRegionMultiplexer("apprunner")`,
 			PreResourceResolver: "getVpcIngressConnection",
 			ExtraColumns: append(
-				defaultRegionalColumns,
+				[]codegen.ColumnDefinition{
+					{
+						Name:     "region",
+						Type:     schema.TypeString,
+						Resolver: "client.ResolveAWSRegion",
+					},
+				},
 				[]codegen.ColumnDefinition{
 					{
 						Name:     "arn",
