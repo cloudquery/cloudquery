@@ -25,6 +25,25 @@ func ApprunnerResources() []*Resource {
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
 				}...),
+			Relations: []string{
+				"RestApiAuthorizers()"},
+		}, {
+			SubService:  "operations",
+			Struct:      &types.Service{},
+			Description: "https://docs.aws.amazon.com/apprunner/latest/api/API_OperationSummary.html",
+			Multiplex:   `client.ServiceAccountRegionMultiplexer("apprunner")`,
+			ExtraColumns: append(
+				defaultRegionalColumns,
+				[]codegen.ColumnDefinition{
+					{
+						Name:     "id",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("Id")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				}...),
+			Relations: []string{
+				"RestApiAuthorizers()"},
 		},
 	}
 

@@ -7,13 +7,12 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func Services() *schema.Table {
+func Operations() *schema.Table {
 	return &schema.Table{
-		Name:                "aws_apprunner_services",
-		Description:         "https://docs.aws.amazon.com/apprunner/latest/api/API_Service.html",
-		Resolver:            fetchApprunnerServices,
-		PreResourceResolver: getService,
-		Multiplex:           client.ServiceAccountRegionMultiplexer("apprunner"),
+		Name:        "aws_apprunner_operations",
+		Description: "https://docs.aws.amazon.com/apprunner/latest/api/API_OperationSummary.html",
+		Resolver:    fetchApprunnerOperations,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("apprunner"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -26,9 +25,9 @@ func Services() *schema.Table {
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
-				Name:     "arn",
+				Name:     "id",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ServiceArn"),
+				Resolver: schema.PathResolver("Id"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
@@ -52,6 +51,11 @@ func Services() *schema.Table {
 				Name:     "network_configuration",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("NetworkConfiguration"),
+			},
+			{
+				Name:     "service_arn",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ServiceArn"),
 			},
 			{
 				Name:     "service_id",
