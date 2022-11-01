@@ -21,6 +21,16 @@ JOIN   pg_attribute a ON a.attrelid = i.indrelid
 WHERE  i.indrelid = $1::regclass
 AND    i.indisprimary;
 `
+	// Modification of https://stackoverflow.com/a/27752061
+	sqlSelectUniqueConstraints = `SELECT cu.column_name
+ FROM information_schema.table_constraints tc
+     inner join information_schema.constraint_column_usage cu
+         on cu.constraint_name = tc.constraint_name
+ where
+     tc.constraint_type = 'UNIQUE'
+     and tc.table_name = $1
+     and enforced = 'YES';
+`
 )
 
 // This is the responsibility of the CLI of the client to lock before running migration
@@ -64,7 +74,9 @@ func (c *Client) isTableExistSQL(ctx context.Context, table string) (bool, error
 func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) error {
 	var err error
 	var pgColumns *pgTableColumns
-	var pgPKs *pgTablePrimaryKeys
+	var pgPKs map[string]bool
+	var pgUniqueCols map[string]bool
+
 	// create the new column as it doesn't exist
 	tableName := pgx.Identifier{table.Name}.Sanitize()
 	if pgColumns, err = c.getPgTableColumns(ctx, table.Name); err != nil {
@@ -72,8 +84,12 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 	}
 
 	if pgPKs, err = c.getPgTablePrimaryKeys(ctx, table.Name); err != nil {
-		return fmt.Errorf("failed to get table %s columns primary keys: %w", table.Name, err)
+		return fmt.Errorf("failed to get table %s primary key columns: %w", table.Name, err)
 	}
+	if pgUniqueCols, err = c.getPgTableUniqueColumns(ctx, table.Name); err != nil {
+		return fmt.Errorf("failed to get table %s columns with unique constraints: %w", table.Name, err)
+	}
+
 	reCreatePrimaryKeys := false
 
 	for _, col := range table.Columns {
@@ -113,11 +129,24 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 			if _, err := c.conn.Exec(ctx, sql); err != nil {
 				return fmt.Errorf("failed to add column %s on table %s: %w", col.Name, table.Name, err)
 			}
-		default:
-			// column exists and type is the same but constraint might differ
-			if c.enabledPks() && pgPKs.columnExist(col.Name) != col.CreationOptions.PrimaryKey {
-				c.logger.Info().Str("table", table.Name).Str("column", col.Name).Bool("pk", col.CreationOptions.PrimaryKey).Msg("Column exists with different primary keys")
-				reCreatePrimaryKeys = true
+		}
+
+		// column exists and type is the same but constraints might differ
+		if c.enabledPks() && pgPKs[col.Name] != col.CreationOptions.PrimaryKey {
+			c.logger.Info().Str("table", table.Name).Str("column", col.Name).Bool("pk", col.CreationOptions.PrimaryKey).Msg("Column exists with different primary keys")
+			reCreatePrimaryKeys = true
+		}
+
+		// special case for _cq_id: check that unique constraint is present. If not, add it.
+		// We have this special case because we don't generally support unique constraints for other columns
+		// right now.
+		if col.Name == "_cq_id" && !pgUniqueCols[col.Name] {
+			c.logger.Info().Str("table", table.Name).Str("column", col.Name).Msg("Adding unique constraint")
+
+			sql := "alter table " + tableName + " add unique (" + columnName + ")"
+			sql += ", alter column " + columnName + " set not null"
+			if _, err := c.conn.Exec(ctx, sql); err != nil {
+				return fmt.Errorf("failed to add unique not-null constraint to column %s on table %s: %w", col.Name, table.Name, err)
 			}
 		}
 	}
@@ -181,6 +210,10 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 		}
 		columnName := pgx.Identifier{col.Name}.Sanitize()
 		fieldDef := columnName + " " + pgType
+		if col.Name == "_cq_id" {
+			// _cq_id column should always have a "unique not null" constraint
+			fieldDef += " UNIQUE NOT NULL"
+		}
 		sb.WriteString(fieldDef)
 		if i != totalColumns-1 {
 			sb.WriteString(",")
@@ -191,12 +224,14 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 	}
 
 	if len(primaryKeys) > 0 {
+		// add composite PK constraint on primary key columns
 		sb.WriteString(", CONSTRAINT ")
 		sb.WriteString(table.Name)
 		sb.WriteString("_cqpk PRIMARY KEY (")
 		sb.WriteString(strings.Join(primaryKeys, ","))
 		sb.WriteString(")")
 	} else {
+		// if no primary keys are defined, add a PK constraint for _cq_id
 		sb.WriteString(", CONSTRAINT ")
 		sb.WriteString(table.Name)
 		sb.WriteString("_cqpk PRIMARY KEY (_cq_id)")
@@ -209,10 +244,8 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 	return nil
 }
 
-func (c *Client) getPgTablePrimaryKeys(ctx context.Context, tableName string) (*pgTablePrimaryKeys, error) {
-	pks := pgTablePrimaryKeys{
-		name: tableName,
-	}
+func (c *Client) getPgTablePrimaryKeys(ctx context.Context, tableName string) (map[string]bool, error) {
+	pks := map[string]bool{}
 	rows, err := c.conn.Query(ctx, sqlSelectPrimaryKeys, tableName)
 	if err != nil {
 		return nil, err
@@ -223,12 +256,32 @@ func (c *Client) getPgTablePrimaryKeys(ctx context.Context, tableName string) (*
 		if err := rows.Scan(&column); err != nil {
 			return nil, err
 		}
-		pks.columns = append(pks.columns, strings.ToLower(column))
+		pks[strings.ToLower(column)] = true
 	}
 	if err := rows.Err(); err != nil {
 		return nil, err
 	}
-	return &pks, nil
+	return pks, nil
+}
+
+func (c *Client) getPgTableUniqueColumns(ctx context.Context, tableName string) (map[string]bool, error) {
+	cols := map[string]bool{}
+	rows, err := c.conn.Query(ctx, sqlSelectUniqueConstraints, tableName)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var column string
+		if err := rows.Scan(&column); err != nil {
+			return nil, err
+		}
+		cols[strings.ToLower(column)] = true
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return cols, nil
 }
 
 func (c *Client) enabledPks() bool {
