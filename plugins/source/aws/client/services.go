@@ -149,6 +149,7 @@ type AppRunnerClient interface {
 	DescribeObservabilityConfiguration(ctx context.Context, params *apprunner.DescribeObservabilityConfigurationInput, optFns ...func(*apprunner.Options)) (*apprunner.DescribeObservabilityConfigurationOutput, error)
 	DescribeService(ctx context.Context, params *apprunner.DescribeServiceInput, optFns ...func(*apprunner.Options)) (*apprunner.DescribeServiceOutput, error)
 	DescribeVpcConnector(ctx context.Context, params *apprunner.DescribeVpcConnectorInput, optFns ...func(*apprunner.Options)) (*apprunner.DescribeVpcConnectorOutput, error)
+	DescribeVpcIngressConnection(ctx context.Context, params *apprunner.DescribeVpcIngressConnectionInput, optFns ...func(*apprunner.Options)) (*apprunner.DescribeVpcIngressConnectionOutput, error)
 	ListAutoScalingConfigurations(ctx context.Context, params *apprunner.ListAutoScalingConfigurationsInput, optFns ...func(*apprunner.Options)) (*apprunner.ListAutoScalingConfigurationsOutput, error)
 	ListConnections(ctx context.Context, params *apprunner.ListConnectionsInput, optFns ...func(*apprunner.Options)) (*apprunner.ListConnectionsOutput, error)
 	ListObservabilityConfigurations(ctx context.Context, params *apprunner.ListObservabilityConfigurationsInput, optFns ...func(*apprunner.Options)) (*apprunner.ListObservabilityConfigurationsOutput, error)
@@ -156,6 +157,7 @@ type AppRunnerClient interface {
 	ListServices(ctx context.Context, params *apprunner.ListServicesInput, optFns ...func(*apprunner.Options)) (*apprunner.ListServicesOutput, error)
 	ListTagsForResource(ctx context.Context, params *apprunner.ListTagsForResourceInput, optFns ...func(*apprunner.Options)) (*apprunner.ListTagsForResourceOutput, error)
 	ListVpcConnectors(ctx context.Context, params *apprunner.ListVpcConnectorsInput, optFns ...func(*apprunner.Options)) (*apprunner.ListVpcConnectorsOutput, error)
+	ListVpcIngressConnections(context.Context, *apprunner.ListVpcIngressConnectionsInput, ...func(*apprunner.Options)) (*apprunner.ListVpcIngressConnectionsOutput, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_appsync.go . AppSyncClient
