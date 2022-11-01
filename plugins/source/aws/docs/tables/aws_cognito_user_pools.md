@@ -25,6 +25,7 @@ The following tables depend on aws_cognito_user_pools:
 |auto_verified_attributes|StringArray|
 |creation_date|Timestamp|
 |custom_domain|String|
+|deletion_protection|String|
 |device_configuration|JSON|
 |domain|String|
 |email_configuration|JSON|
