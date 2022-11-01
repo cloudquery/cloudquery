@@ -34,7 +34,7 @@ Scaling out sources now creates a problem/bottlenack where you need to scale out
 
 ## Scaling out with CloudQuery and CSV
 
-CloudQuery workers are statless so you can run as many as you want and slice and dice what data they are fetching as you need witout them connecting to any database and/or backend. With the new CloudQuery [CSV Destination Plugin](https://github.com/cloudquery/cloudquery/releases/tag/plugins-destination-csv-v1.0.0) each worker can write the results to a local CSV file and then upload it to a cloud storage of your choice. This way you can scale out your ELT workload to infinity and beyond and only pay for the storage you use.
+CloudQuery workers are stateless, so you can run as many as you want and slice and dice what data they are fetching as you need without them connecting to any database and/or backend. With the new CloudQuery [CSV Destination Plugin](https://github.com/cloudquery/cloudquery/releases/tag/plugins-destination-csv-v1.0.0) each worker can write the results to a local CSV file, from where you can upload it to a cloud storage of your choice. This way you can scale out your ELT workload to infinity and beyond and only pay for the storage you use.
 
 ```
 [Source] --\
