@@ -131,7 +131,7 @@ var Resources = []*recipes.Resource{
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "id",
-				Type:     schema.TypeString,
+				Type:     schema.TypeInt,
 				Resolver: `schema.PathResolver("ID")`,
 				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 			},
@@ -155,7 +155,7 @@ var Resources = []*recipes.Resource{
 			},
 			{
 				Name:     "volume_ids",
-				Type:     schema.TypeIntArray,
+				Type:     schema.TypeStringArray,
 				Resolver: `schema.PathResolver("VolumeIDs")`,
 			},
 			{

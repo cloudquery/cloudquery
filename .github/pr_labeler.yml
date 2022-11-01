@@ -22,6 +22,8 @@ terraform:
   - plugins/source/terraform/**/*
 postgresql:
   - plugins/destination/postgresql/**/*
+csv:
+  - plugins/destination/csv/**/*
 website:
   - website/**/*
 cli:

@@ -2,7 +2,6 @@ package iam
 
 import (
 	"context"
-	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
@@ -74,19 +73,9 @@ func fetchIamUserAccessKeys(ctx context.Context, meta schema.ClientMeta, parent 
 		for i, key := range output.AccessKeyMetadata {
 			switch i {
 			case 0:
-				rotated := parent.Get("access_key_1_last_rotated")
-				if rotated != nil {
-					keys[i] = models.AccessKeyWrapper{AccessKeyMetadata: key, LastRotated: rotated.(time.Time)}
-				} else {
-					keys[i] = models.AccessKeyWrapper{AccessKeyMetadata: key, LastRotated: *key.CreateDate}
-				}
+				keys[i] = models.AccessKeyWrapper{AccessKeyMetadata: key, LastRotated: *key.CreateDate}
 			case 1:
-				rotated := parent.Get("access_key_2_last_rotated")
-				if rotated != nil {
-					keys[i] = models.AccessKeyWrapper{AccessKeyMetadata: key, LastRotated: rotated.(time.Time)}
-				} else {
-					keys[i] = models.AccessKeyWrapper{AccessKeyMetadata: key, LastRotated: *key.CreateDate}
-				}
+				keys[i] = models.AccessKeyWrapper{AccessKeyMetadata: key, LastRotated: *key.CreateDate}
 			default:
 				keys[i] = models.AccessKeyWrapper{AccessKeyMetadata: key}
 			}
