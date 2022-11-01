@@ -13,6 +13,8 @@ import (
 type Spec struct {
 	Token string `yaml:"token,omitempty" json:"token"`
 
+	// These don't actually work (throw a "json unknown field" error) - but not a high-piority to fix this,
+	// since tweaking these values is not a common use case.
 	BaseDelay         int     `yaml:"backoff_base_delay,omitempty" hcl:"backoff_base_delay,optional" default:"-1"`
 	Multiplier        float64 `yaml:"backoff_multiplier,omitempty" hcl:"backoff_multiplier,optional"`
 	MaxDelay          int     `yaml:"backoff_max_delay,omitempty" hcl:"backoff_max_delay,optional"`
