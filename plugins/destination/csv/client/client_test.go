@@ -36,7 +36,7 @@ func TestClient(t *testing.T) {
 	}
 
 	_, err = New(ctx, getTestLogger(t), specs.Destination{})
-	if err.Error() != "csv destination only supports append mode only" {
+	if err.Error() != "csv destination only supports append mode" {
 		t.Fatal("expected error: 'csv destination only supports append mode'")
 	}
 }
