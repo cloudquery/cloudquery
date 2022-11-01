@@ -5,6 +5,19 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-terraform-v1.1.0...plugins-source-terraform-v1.2.0) (2022-11-01)
+
+
+### Features
+
+* Migrate cli, plugins and destinations to new type system ([#3323](https://github.com/cloudquery/cloudquery/issues/3323)) ([f265a94](https://github.com/cloudquery/cloudquery/commit/f265a94448ad55c968b26ba8a19681bc81086c11))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go to v1.44.127 ([#3377](https://github.com/cloudquery/cloudquery/issues/3377)) ([b4f5d32](https://github.com/cloudquery/cloudquery/commit/b4f5d32a1aa76cb9826ceea18884eab5052b5218))
+* **deps:** Update plugin-sdk for terraform to v0.13.18 ([#3418](https://github.com/cloudquery/cloudquery/issues/3418)) ([4aa1202](https://github.com/cloudquery/cloudquery/commit/4aa120251a668938bb9f0ec6fe21d93fbe8ff817))
+
 ## [1.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-terraform-v1.0.10...plugins-source-terraform-v1.1.0) (2022-10-31)
 
 
