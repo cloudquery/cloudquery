@@ -52,6 +52,7 @@ The primary key for this table is **arn**.
 |read_replica_identifiers|StringArray|
 |reader_endpoint|String|
 |replication_source_identifier|String|
+|serverless_v2_scaling_configuration|JSON|
 |status|String|
 |storage_encrypted|Bool|
 |vpc_security_groups|JSON|
