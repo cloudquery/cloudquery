@@ -35,6 +35,8 @@
 | [aws_apigatewayv2_vpc_links](aws_apigatewayv2_vpc_links.md) |
 | [aws_applicationautoscaling_policies](aws_applicationautoscaling_policies.md) |
 | [aws_apprunner_services](aws_apprunner_services.md) |
+| [aws_apprunner_auto_scaling_configuration](aws_apprunner_auto_scaling_configuration.md) |
+| [aws_apprunner_vpc_connector](aws_apprunner_vpc_connector.md) |
 | [aws_appsync_graphql_apis](aws_appsync_graphql_apis.md) |
 | [aws_athena_data_catalogs](aws_athena_data_catalogs.md) |
 | ↳ [aws_athena_data_catalog_databases](aws_athena_data_catalog_databases.md) |
