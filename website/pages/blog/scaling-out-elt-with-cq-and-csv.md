@@ -11,7 +11,7 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 <BlogHeader/>
 
-Performance is a key factor in data pipelines both from usability and cost perspective. This tutorial will show you how to scale out you ELT pipelines with CloudQuery and CSV utilizing CloudQuery statless and performant architecture.
+Performance is a key factor in data pipelines both from usability and cost perspective. This tutorial will show you how to scale out your ELT pipelines with CloudQuery and CSV utilizing CloudQuery's stateless and performant architecture.
 
 ## Background
 
