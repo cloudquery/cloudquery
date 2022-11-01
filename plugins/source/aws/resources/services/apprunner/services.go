@@ -106,7 +106,8 @@ func Services() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			RestApiAuthorizers(),
+			Operations(),
+			CustomDomains(),
 		},
 	}
 }

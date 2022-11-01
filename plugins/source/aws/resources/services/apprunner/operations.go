@@ -12,7 +12,6 @@ func Operations() *schema.Table {
 		Name:        "aws_apprunner_operations",
 		Description: "https://docs.aws.amazon.com/apprunner/latest/api/API_OperationSummary.html",
 		Resolver:    fetchApprunnerOperations,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("apprunner"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -25,57 +24,19 @@ func Operations() *schema.Table {
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
+				Name:     "ended_at",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("EndedAt"),
+			},
+			{
 				Name:     "id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Id"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
-				Name:     "auto_scaling_configuration_summary",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("AutoScalingConfigurationSummary"),
-			},
-			{
-				Name:     "created_at",
+				Name:     "started_at",
 				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("CreatedAt"),
-			},
-			{
-				Name:     "instance_configuration",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("InstanceConfiguration"),
-			},
-			{
-				Name:     "network_configuration",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("NetworkConfiguration"),
-			},
-			{
-				Name:     "service_arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ServiceArn"),
-			},
-			{
-				Name:     "service_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ServiceId"),
-			},
-			{
-				Name:     "service_name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ServiceName"),
-			},
-			{
-				Name:     "service_url",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ServiceUrl"),
-			},
-			{
-				Name:     "source_configuration",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("SourceConfiguration"),
+				Resolver: schema.PathResolver("StartedAt"),
 			},
 			{
 				Name:     "status",
@@ -83,34 +44,20 @@ func Operations() *schema.Table {
 				Resolver: schema.PathResolver("Status"),
 			},
 			{
+				Name:     "target_arn",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("TargetArn"),
+			},
+			{
+				Name:     "type",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Type"),
+			},
+			{
 				Name:     "updated_at",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("UpdatedAt"),
 			},
-			{
-				Name:     "deleted_at",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("DeletedAt"),
-			},
-			{
-				Name:     "encryption_configuration",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("EncryptionConfiguration"),
-			},
-			{
-				Name:     "health_check_configuration",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("HealthCheckConfiguration"),
-			},
-			{
-				Name:     "observability_configuration",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ObservabilityConfiguration"),
-			},
-		},
-
-		Relations: []*schema.Table{
-			RestApiAuthorizers(),
 		},
 	}
 }
