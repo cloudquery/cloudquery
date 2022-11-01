@@ -29,7 +29,7 @@ This is the basic architecture where you have one machine/container running your
 [Source] --/
 ```
 
-Scaling out sources now creates a problem/bottlenack where you need to scale out your database and/or have things like pgbouncer (in-case of PostgreSQL) or use scale-out databases like CockroachDB. If you use datalakes, or data warehouses directly such as BigQuery you can also hit streaming limits because they tend to work better with batch loads and then again you will need some kind of intermediate server that batches all requests from all sources and then loads those to the data warehouse.
+Scaling out sources now creates a bottleneck where you need to scale out your database and/or have things like pgbouncer (in-case of PostgreSQL) or use scale-out databases like CockroachDB. If you use datalakes or data warehouses (such as BigQuery) directly, you can also hit streaming limits because they tend to work better with batch loads. But again you will need some kind of intermediate server that batches all requests from all sources and then loads those to the data warehouse.
 
 
 ## Scaling out with CloudQuery and CSV
