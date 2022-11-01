@@ -13,6 +13,7 @@ The primary key for this table is **_cq_id**.
 |_cq_id (PK)|UUID|
 |_cq_parent_id|UUID|
 |account_id|String|
+|id|String|
 |arn|String|
 |cache_policy|JSON|
 |type|String|

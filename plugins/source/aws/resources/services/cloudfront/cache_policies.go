@@ -20,6 +20,11 @@ func CachePolicies() *schema.Table {
 				Resolver: client.ResolveAWSAccount,
 			},
 			{
+				Name:     "id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("CachePolicy.Id"),
+			},
+			{
 				Name:     "arn",
 				Type:     schema.TypeString,
 				Resolver: resolveCachePolicyARN(),
