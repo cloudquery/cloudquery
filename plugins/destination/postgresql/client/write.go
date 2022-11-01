@@ -125,7 +125,10 @@ func (c *Client) transformValues(table *schema.Table, values cqtypes.CQTypes) []
 				Status: pgtype.Status(t.Status),
 			}
 		case *cqtypes.Float8:
-			pgValues[i] = "0.0"
+			pgValues[i] = pgtype.Float8{
+				Float:  t.Float,
+				Status: pgtype.Status(t.Status),
+			}
 		case *cqtypes.UUID:
 			pgValues[i] = pgtype.UUID{
 				Bytes:  t.Bytes,
