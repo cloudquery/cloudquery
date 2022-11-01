@@ -1,3 +1,18 @@
+---
+title: Sources
+---
+
+import AWS_VERSION from "../../../components/versions/source-aws.json";
+import AZURE_VERSION from "../../../components/versions/source-azure.json";
+import GCP_VERSION from "../../../components/versions/source-azure.json";
+import DIGITALOCEAN_VERSION from "../../../components/versions/source-digitalocean.json";
+import GITHUB_VERSION from "../../../components/versions/source-github.json";
+import HEROKU_VERSION from "../../../components/versions/source-heroku.json";
+import K8S_VERSION from "../../../components/versions/source-k8s.json";
+import OKTA_VERSION from "../../../components/versions/source-okta.json";
+import TERRAFORM_VERSION from "../../../components/versions/source-terraform.json";
+import CLOUDFLARE_VERSION from "../../../components/versions/source-cloudflare.json";
+
 # Source Plugins
 
 ## Official
@@ -8,16 +23,16 @@ Official source plugins follow [release stages](source-plugin-release-stages).
 
 | **Name**              | Latest Version | Changelog                           | Stage |
 |-----------------------|----------------|-------------------------------------|-------|
-| [AWS][aws] | v4.2.0         | [Changelog][AWS-Changelog]          | GA |
-| [Azure][azure] | v1.2.0         | [Changelog][Azure-Changelog]        | GA |    
-| [GCP][gcp] | v2.4.0         | [Changelog][GCP-Changelog]          | GA |
-| [DigitalOcean][digitalocean] | v2.2.0         | [Changelog][DigitalOcean-Changelog] | GA |
-| [GitHub][github] | v1.2.0         | [Changelog][GitHub-Changelog]       | GA |
-| [Heroku][heroku] | v2.2.1         | [Changelog][Heroku-Changelog]       | Preview |
-| [k8s][k8s] | v2.3.0         | [Changelog][k8s-Changelog]          | Preview |
-| [Okta][okta] | v1.2.0        | [Changelog][Okta-Changelog]         | Preview |
-| [Terraform][terraform] | v1.2.0         | [Changelog][Terraform-Changelog]    | Preview |
-| [Cloudflare][cloudflare] | v2.2.0         | [Changelog][Cloudflare-Changelog]   | Preview |
+| [AWS][aws] | {AWS_VERSION['latest']}         | [Changelog][AWS-Changelog]          | GA |
+| [Azure][azure] | {AZURE_VERSION['latest']}         | [Changelog][Azure-Changelog]        | GA |    
+| [GCP][gcp] | {GCP_VERSION['latest']}         | [Changelog][GCP-Changelog]          | GA |
+| [DigitalOcean][digitalocean] | {DIGITALOCEAN_VERSION['latest']}         | [Changelog][DigitalOcean-Changelog] | GA |
+| [GitHub][github] | {GITHUB_VERSION['latest']}         | [Changelog][GitHub-Changelog]       | GA |
+| [Heroku][heroku] | {HEROKU_VERSION['latest']}         | [Changelog][Heroku-Changelog]       | Preview |
+| [k8s][k8s] | {K8S_VERSION['latest']}         | [Changelog][k8s-Changelog]          | Preview |
+| [Okta][okta] | {OKTA_VERSION['latest']}        | [Changelog][Okta-Changelog]         | Preview |
+| [Terraform][terraform] | {TERRAFORM_VERSION['latest']}         | [Changelog][Terraform-Changelog]    | Preview |
+| [Cloudflare][cloudflare] | {CLOUDFLARE_VERSION['latest']}         | [Changelog][Cloudflare-Changelog]   | Preview |
 
 ## Community
 
