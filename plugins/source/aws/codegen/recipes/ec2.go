@@ -400,7 +400,7 @@ func EC2Resources() []*Resource {
 			Struct:      &types.TransitGateway{},
 			Description: "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGateway.html",
 			SkipFields:  []string{"Tags", "TransitGatewayId", "TransitGatewayArn"},
-			ExtraColumns: append(defaultAccountColumns,
+			ExtraColumns: append(defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
 					{
 						Name:     "tags",
@@ -411,7 +411,6 @@ func EC2Resources() []*Resource {
 						Name:     "id",
 						Type:     schema.TypeString,
 						Resolver: `schema.PathResolver("TransitGatewayId")`,
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
 					{
 						Name:     "arn",
