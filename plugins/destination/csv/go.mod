@@ -1,4 +1,4 @@
-module github.com/cloudquery/cloudquery/plugins/source/test
+module github.com/cloudquery/cloudquery/plugins/destination/csv
 
 go 1.19
 
