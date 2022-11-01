@@ -20,11 +20,13 @@ func (*Client) SchemaTypeToPg10(t schema.ValueType) string {
 	case schema.TypeInt:
 		return "bigint"
 	case schema.TypeFloat:
-		return "real"
+		return "double precision"
 	case schema.TypeUUID:
 		return "uuid"
 	case schema.TypeString:
 		return "text"
+	case schema.TypeByteArray:
+		return "bytea"
 	case schema.TypeStringArray:
 		return "text[]"
 	case schema.TypeTimestamp:
@@ -35,8 +37,6 @@ func (*Client) SchemaTypeToPg10(t schema.ValueType) string {
 		return "jsonb"
 	case schema.TypeUUIDArray:
 		return "uuid[]"
-	case schema.TypeInetArray:
-		return "inet[]"
 	case schema.TypeCIDR:
 		return "cidr"
 	case schema.TypeCIDRArray:
@@ -47,10 +47,12 @@ func (*Client) SchemaTypeToPg10(t schema.ValueType) string {
 		return "macaddr[]"
 	case schema.TypeInet:
 		return "inet"
+	case schema.TypeInetArray:
+		return "inet[]"
 	case schema.TypeIntArray:
 		return "bigint[]"
 	default:
-		return "text"
+		return ""
 	}
 }
 
@@ -61,11 +63,13 @@ func (*Client) SchemaTypeToCockroach(t schema.ValueType) string {
 	case schema.TypeInt:
 		return "bigint"
 	case schema.TypeFloat:
-		return "real"
+		return "double precision"
 	case schema.TypeUUID:
 		return "uuid"
 	case schema.TypeString:
 		return "text"
+	case schema.TypeByteArray:
+		return "bytea"
 	case schema.TypeStringArray:
 		return "text[]"
 	case schema.TypeTimestamp:
@@ -76,19 +80,21 @@ func (*Client) SchemaTypeToCockroach(t schema.ValueType) string {
 		return "jsonb"
 	case schema.TypeUUIDArray:
 		return "uuid[]"
-	case schema.TypeInetArray:
-		return "inet[]"
-	case schema.TypeInet:
-		return "inet"
-	case schema.TypeIntArray:
-		return "bigint[]"
 	case schema.TypeCIDR:
 		return "inet"
 	case schema.TypeCIDRArray:
 		return "inet[]"
+	case schema.TypeMacAddr:
+		return "text"
 	case schema.TypeMacAddrArray:
 		return "text[]"
+	case schema.TypeInet:
+		return "inet"
+	case schema.TypeInetArray:
+		return "inet[]"
+	case schema.TypeIntArray:
+		return "bigint[]"
 	default:
-		return "text"
+		return ""
 	}
 }
