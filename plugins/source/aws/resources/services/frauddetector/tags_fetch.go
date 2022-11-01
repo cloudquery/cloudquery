@@ -3,6 +3,7 @@ package frauddetector
 import (
 	"context"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/frauddetector"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -14,7 +15,7 @@ func resolveResourceTags(ctx context.Context, meta schema.ClientMeta, resource *
 
 	paginator := frauddetector.NewListTagsForResourcePaginator(svc,
 		&frauddetector.ListTagsForResourceInput{
-			ResourceARN: resource.Get("arn").Get().(*string),
+			ResourceARN: aws.String(resource.Get("arn").String()),
 		},
 	)
 	tags := make(map[string]string)
