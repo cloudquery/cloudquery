@@ -35,7 +35,7 @@ func NetworkInterfaces() *schema.Table {
 			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("TagSet"),
+				Resolver: client.ResolveTagField("TagSet"),
 			},
 			{
 				Name:     "association",

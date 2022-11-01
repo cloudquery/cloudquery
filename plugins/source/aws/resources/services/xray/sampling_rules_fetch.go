@@ -34,8 +34,5 @@ func resolveXraySamplingRuleTags(ctx context.Context, meta schema.ClientMeta, re
 		return err
 	}
 
-	tags := map[string]string{}
-	client.TagsIntoMap(output.Tags, tags)
-
-	return resource.Set(c.Name, tags)
+	return resource.Set(c.Name, client.TagsToMap(output.Tags))
 }

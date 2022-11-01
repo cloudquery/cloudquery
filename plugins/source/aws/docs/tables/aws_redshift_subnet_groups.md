@@ -15,9 +15,9 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
-|tags|JSON|
 |cluster_subnet_group_name|String|
 |description|String|
 |subnet_group_status|String|
 |subnets|JSON|
+|tags|JSON|
 |vpc_id|String|

@@ -33,11 +33,6 @@ func ClusterServices() *schema.Table {
 				},
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
-			},
-			{
 				Name:     "capacity_provider_strategy",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("CapacityProviderStrategy"),
@@ -171,6 +166,11 @@ func ClusterServices() *schema.Table {
 				Name:     "status",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Status"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "task_definition",

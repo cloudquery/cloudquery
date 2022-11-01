@@ -33,11 +33,6 @@ func RouteTables() *schema.Table {
 				},
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
-			},
-			{
 				Name:     "associations",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Associations"),
@@ -61,6 +56,11 @@ func RouteTables() *schema.Table {
 				Name:     "routes",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Routes"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "vpc_id",

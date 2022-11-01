@@ -15,11 +15,11 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
-|tags|JSON|
 |administrative_actions|JSON|
 |creation_time|Timestamp|
 |lifecycle|String|
 |lifecycle_transition_reason|JSON|
 |name|String|
 |snapshot_id|String|
+|tags|JSON|
 |volume_id|String|

@@ -15,7 +15,6 @@ The composite primary key for this table is (**account_id**, **region**, **id**)
 |account_id (PK)|String|
 |region (PK)|String|
 |id (PK)|String|
-|tags|JSON|
 |creation_time|Timestamp|
 |file_system|JSON|
 |lifecycle|String|
@@ -29,4 +28,5 @@ The composite primary key for this table is (**account_id**, **region**, **id**)
 |resource_type|String|
 |source_backup_id|String|
 |source_backup_region|String|
+|tags|JSON|
 |volume|JSON|
