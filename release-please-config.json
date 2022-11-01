@@ -19,6 +19,9 @@
     "plugins/destination/postgresql": {
       "component": "plugins-destination-postgresql"
     },
+    "plugins/destination/csv": {
+      "component": "plugins-destination-csv"
+    },
     "plugins/destination/test": {
       "component": "plugins-destination-test"
     }
