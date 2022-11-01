@@ -64,7 +64,7 @@ type tableWriter struct {
 
 func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (plugins.DestinationClient, error) {
 	if spec.WriteMode != specs.WriteModeAppend {
-		return nil, fmt.Errorf("csv destination only supports append mode only")
+		return nil, fmt.Errorf("csv destination only supports append mode")
 	}
 
 	c := &Client{
