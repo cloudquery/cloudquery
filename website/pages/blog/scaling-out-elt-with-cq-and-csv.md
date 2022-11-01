@@ -46,7 +46,7 @@ Loading CSV to datalakes/data warehouse is very fast and cheap without the need 
 
 ## Summary
 
-Scaling out ELT workloads with CSV and Cloud Storage will work very well especially if you extract data from high number of sources and accounts, but it will have the downside that data in the destination wont be as live compared to streaming directly to a database, so as always, all depends on the use-case and constraints.
+Scaling out ELT workloads with CSV and Cloud Storage will work very well especially if you extract data from high number of sources and accounts, but it has the downside that data in the destination won't be as live when compared to streaming directly to a database. So as always, all depends on your use-case and constraints.
 
 
 
