@@ -167,8 +167,14 @@
 | ↳ [aws_elbv2_target_group_target_health_descriptions](aws_elbv2_target_group_target_health_descriptions.md) |
 | [aws_emr_block_public_access_configs](aws_emr_block_public_access_configs.md) |
 | [aws_emr_clusters](aws_emr_clusters.md) |
+| [aws_eventbridge_api_destinations](aws_eventbridge_api_destinations.md) |
+| [aws_eventbridge_archives](aws_eventbridge_archives.md) |
+| [aws_eventbridge_connections](aws_eventbridge_connections.md) |
+| [aws_eventbridge_endpoints](aws_eventbridge_endpoints.md) |
 | [aws_eventbridge_event_buses](aws_eventbridge_event_buses.md) |
 | ↳ [aws_eventbridge_event_bus_rules](aws_eventbridge_event_bus_rules.md) |
+| [aws_eventbridge_event_sources](aws_eventbridge_event_sources.md) |
+| [aws_eventbridge_replays](aws_eventbridge_replays.md) |
 | [aws_firehose_delivery_streams](aws_firehose_delivery_streams.md) |
 | [aws_frauddetector_batch_imports](aws_frauddetector_batch_imports.md) |
 | [aws_frauddetector_batch_predictions](aws_frauddetector_batch_predictions.md) |
