@@ -4,15 +4,17 @@ tag: tutorial
 date: 2022/10/25
 ---
 
-# CloudQuery Deploy-less Orchestration with GitHub Actions
+# Deploy-less Orchestration with GitHub Actions
 
-In this tutorial, we will show you how to run CloudQuery with [GitHub Actions](https://github.com/features/actions) and the AWS source plugin.
+In this tutorial, we will show you how to run CloudQuery using [GitHub Actions](https://github.com/features/actions) and the AWS source plugin.
 
-## Pre-requisites
+## Prerequisites
 
 Since we'll be running CloudQuery in the context of a GitHub Action runner, we'll need to add AWS authentication.
 
 To set up authentication with AWS from GitHub Actions you can follow the [Configuring OpenID Connect in Amazon Web Services blog](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services) from GitHub.
+
+> The role that you create will be used by CloudQuery to download your cloud configuration, so you should also grant it permissions to read from your cloud (e.g. ReadOnlyAccess permission policy)
 
 ## Creating the CloudQuery configuration file
 
@@ -23,25 +25,25 @@ kind: source
 spec:
   name: 'aws'
   path: cloudquery/aws
-  version: 'v3.4.2' # latest version of aws plugin
+  version: 'v4.1.0' # latest version of aws plugin
   destinations: ['postgresql']
 ---
 kind: destination
 spec:
   name: 'postgresql'
   path: cloudquery/postgresql
-  version: 'v1.3.3' # latest version of postgresql plugin
+  version: 'v1.6.0' # latest version of postgresql plugin
   spec:
     connection_string: ${CQ_DSN} # The CQ_DSN environment variable will be set by GitHub Action workflow
 ```
 
-> For more configuration options, [visit our docs](https://www.cloudquery.io/docs/reference/source-spec)
+> For more configuration options, [visit our docs](/docs/reference/source-spec)
 
 ## Creating the GitHub Action workflow
 
 First we'll need [to create a GitHub secret](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository) with the name `CQ_DSN` and the value of the connection string to your PostgreSQL database.
 
-Create a workflow file under `.github/workflows/cloudquery.yml` with the following content:
+Create a workflow file under `.github/workflows/cloudquery.yml` with the following content, and fill in `<role-arn>` and `<region>` according to the role you created in the prerequisites.
 
 ```yaml
 name: CloudQuery
@@ -60,7 +62,7 @@ jobs:
       - name: Configure AWS credentials # Setup AWS credentials (example)
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: <role-arn> # based on the role you created in the pre-requisites
+          role-to-assume: <role-arn> # based on the role you created in the prerequisites
           aws-region: <region> # based on the region you created the role in
       - uses: cloudquery/setup-cloudquery@v2
         name: Setup CloudQuery
@@ -90,7 +92,7 @@ First, we'll need to create a new `cloudquery-regions.yml` configuration file un
 ```yaml
 kind: source
 spec:
-  name: 'aws'
+  name: 'aws-REGION_PLACEHOLDER' # when splitting configurations, we need to keep the names unique
   path: cloudquery/aws
   version: 'v3.4.2' # latest version of aws plugin
   destinations: ['postgresql']
@@ -99,7 +101,12 @@ spec:
       - REGION_PLACEHOLDER # This will be replaced by the matrix value
 ---
 kind: destination
-... # Trimmed for brevity, same as before
+spec:
+  name: 'postgresql-REGION_PLACEHOLDER' # when splitting configurations, we need to keep the names unique
+  path: cloudquery/postgresql
+  version: 'v1.6.0' # latest version of postgresql plugin
+  spec:
+    connection_string: ${CQ_DSN} # The CQ_DSN environment variable will be set by GitHub Action workflow
 ```
 
 To do so, create the following workflow file under `.github/workflows/cloudquery-parallel.yml`:
@@ -129,7 +136,7 @@ jobs:
       - name: Configure AWS credentials # Setup AWS credentials (example)
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: <role-arn> # based on the role you created in the pre-requisites
+          role-to-assume: <role-arn> # based on the role you created in the prerequisites
           aws-region: <region> # based on the region you created the role in
       - uses: cloudquery/setup-cloudquery@v2
         name: Setup CloudQuery
