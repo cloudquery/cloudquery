@@ -12,9 +12,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/julienschmidt/httprouter"
-	{{range .MockImports}}
-  "{{.}}"
-  {{end}}
+	{{range .MockImports}}"{{.}}"{{end}}
 	"google.golang.org/api/option"
 )
 

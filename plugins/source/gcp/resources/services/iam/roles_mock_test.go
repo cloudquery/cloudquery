@@ -12,9 +12,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/julienschmidt/httprouter"
-
 	"google.golang.org/api/iam/v1"
-
 	"google.golang.org/api/option"
 )
 

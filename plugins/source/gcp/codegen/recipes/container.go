@@ -3,15 +3,15 @@ package recipes
 import (
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
-	pb "google.golang.org/genproto/googleapis/container/v1"
+	"github.com/iancoleman/strcase"
+	"google.golang.org/api/container/v1"
 )
 
 var containerResources = []*Resource{
 	{
 		SubService: "clusters",
-		Struct:     &pb.Cluster{},
+		Struct:     new(container.Cluster),
 		SkipFetch:  true,
-		SkipMock:   true,
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:    "self_link",
@@ -29,10 +29,11 @@ func ContainerResources() []*Resource {
 
 	for _, resource := range resources {
 		resource.Service = "container"
-		resource.MockImports = []string{"cloud.google.com/go/container/apiv1"}
-		resource.ProtobufImport = "google.golang.org/genproto/googleapis/container/v1"
 		resource.Template = "newapi_list"
-		resource.MockTemplate = "newapi_list_grpc_mock"
+		resource.MockTemplate = "resource_list_mock"
+		if resource.OutputField == "" {
+			resource.OutputField = strcase.ToCamel(resource.SubService)
+		}
 	}
 
 	return resources
