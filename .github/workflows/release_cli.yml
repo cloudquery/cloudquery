@@ -15,7 +15,7 @@ jobs:
         id: split
         run: |
           tag=${{github.ref_name}}
-          echo ::set-output name=version::$(echo $tag | cut -d- -f2-)
+          echo "version=$(echo $tag | cut -d- -f2-)" >> $GITHUB_OUTPUT
       # Fail if not a valid SemVer string
       - name: Parse semver string
         id: semver_parser
