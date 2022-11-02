@@ -1,4 +1,4 @@
-# Heroku Source Plugin Configuration Refernce
+# Heroku Source Plugin Configuration Reference
 
 ## Example
 
