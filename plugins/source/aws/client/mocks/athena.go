@@ -35,6 +35,66 @@ func (m *MockAthenaClient) EXPECT() *MockAthenaClientMockRecorder {
 	return m.recorder
 }
 
+// BatchGetNamedQuery mocks base method.
+func (m *MockAthenaClient) BatchGetNamedQuery(arg0 context.Context, arg1 *athena.BatchGetNamedQueryInput, arg2 ...func(*athena.Options)) (*athena.BatchGetNamedQueryOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "BatchGetNamedQuery", varargs...)
+	ret0, _ := ret[0].(*athena.BatchGetNamedQueryOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// BatchGetNamedQuery indicates an expected call of BatchGetNamedQuery.
+func (mr *MockAthenaClientMockRecorder) BatchGetNamedQuery(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchGetNamedQuery", reflect.TypeOf((*MockAthenaClient)(nil).BatchGetNamedQuery), varargs...)
+}
+
+// BatchGetPreparedStatement mocks base method.
+func (m *MockAthenaClient) BatchGetPreparedStatement(arg0 context.Context, arg1 *athena.BatchGetPreparedStatementInput, arg2 ...func(*athena.Options)) (*athena.BatchGetPreparedStatementOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "BatchGetPreparedStatement", varargs...)
+	ret0, _ := ret[0].(*athena.BatchGetPreparedStatementOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// BatchGetPreparedStatement indicates an expected call of BatchGetPreparedStatement.
+func (mr *MockAthenaClientMockRecorder) BatchGetPreparedStatement(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchGetPreparedStatement", reflect.TypeOf((*MockAthenaClient)(nil).BatchGetPreparedStatement), varargs...)
+}
+
+// BatchGetQueryExecution mocks base method.
+func (m *MockAthenaClient) BatchGetQueryExecution(arg0 context.Context, arg1 *athena.BatchGetQueryExecutionInput, arg2 ...func(*athena.Options)) (*athena.BatchGetQueryExecutionOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "BatchGetQueryExecution", varargs...)
+	ret0, _ := ret[0].(*athena.BatchGetQueryExecutionOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// BatchGetQueryExecution indicates an expected call of BatchGetQueryExecution.
+func (mr *MockAthenaClientMockRecorder) BatchGetQueryExecution(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchGetQueryExecution", reflect.TypeOf((*MockAthenaClient)(nil).BatchGetQueryExecution), varargs...)
+}
+
 // GetDataCatalog mocks base method.
 func (m *MockAthenaClient) GetDataCatalog(arg0 context.Context, arg1 *athena.GetDataCatalogInput, arg2 ...func(*athena.Options)) (*athena.GetDataCatalogOutput, error) {
 	m.ctrl.T.Helper()

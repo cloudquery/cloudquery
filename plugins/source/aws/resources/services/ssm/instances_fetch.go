@@ -12,7 +12,7 @@ import (
 
 func fetchSsmInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().SSM
+	svc := cl.Services().Ssm
 
 	var input ssm.DescribeInstanceInformationInput
 	for {
@@ -32,7 +32,7 @@ func fetchSsmInstances(ctx context.Context, meta schema.ClientMeta, parent *sche
 func fetchSsmInstanceComplianceItems(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	instance := parent.Item.(types.InstanceInformation)
 	cl := meta.(*client.Client)
-	svc := cl.Services().SSM
+	svc := cl.Services().Ssm
 
 	input := ssm.ListComplianceItemsInput{
 		ResourceIds: []string{*instance.InstanceId},

@@ -35,6 +35,166 @@ func (m *MockGlueClient) EXPECT() *MockGlueClientMockRecorder {
 	return m.recorder
 }
 
+// BatchGetBlueprints mocks base method.
+func (m *MockGlueClient) BatchGetBlueprints(arg0 context.Context, arg1 *glue.BatchGetBlueprintsInput, arg2 ...func(*glue.Options)) (*glue.BatchGetBlueprintsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "BatchGetBlueprints", varargs...)
+	ret0, _ := ret[0].(*glue.BatchGetBlueprintsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// BatchGetBlueprints indicates an expected call of BatchGetBlueprints.
+func (mr *MockGlueClientMockRecorder) BatchGetBlueprints(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchGetBlueprints", reflect.TypeOf((*MockGlueClient)(nil).BatchGetBlueprints), varargs...)
+}
+
+// BatchGetCrawlers mocks base method.
+func (m *MockGlueClient) BatchGetCrawlers(arg0 context.Context, arg1 *glue.BatchGetCrawlersInput, arg2 ...func(*glue.Options)) (*glue.BatchGetCrawlersOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "BatchGetCrawlers", varargs...)
+	ret0, _ := ret[0].(*glue.BatchGetCrawlersOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// BatchGetCrawlers indicates an expected call of BatchGetCrawlers.
+func (mr *MockGlueClientMockRecorder) BatchGetCrawlers(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchGetCrawlers", reflect.TypeOf((*MockGlueClient)(nil).BatchGetCrawlers), varargs...)
+}
+
+// BatchGetCustomEntityTypes mocks base method.
+func (m *MockGlueClient) BatchGetCustomEntityTypes(arg0 context.Context, arg1 *glue.BatchGetCustomEntityTypesInput, arg2 ...func(*glue.Options)) (*glue.BatchGetCustomEntityTypesOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "BatchGetCustomEntityTypes", varargs...)
+	ret0, _ := ret[0].(*glue.BatchGetCustomEntityTypesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// BatchGetCustomEntityTypes indicates an expected call of BatchGetCustomEntityTypes.
+func (mr *MockGlueClientMockRecorder) BatchGetCustomEntityTypes(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchGetCustomEntityTypes", reflect.TypeOf((*MockGlueClient)(nil).BatchGetCustomEntityTypes), varargs...)
+}
+
+// BatchGetDevEndpoints mocks base method.
+func (m *MockGlueClient) BatchGetDevEndpoints(arg0 context.Context, arg1 *glue.BatchGetDevEndpointsInput, arg2 ...func(*glue.Options)) (*glue.BatchGetDevEndpointsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "BatchGetDevEndpoints", varargs...)
+	ret0, _ := ret[0].(*glue.BatchGetDevEndpointsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// BatchGetDevEndpoints indicates an expected call of BatchGetDevEndpoints.
+func (mr *MockGlueClientMockRecorder) BatchGetDevEndpoints(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchGetDevEndpoints", reflect.TypeOf((*MockGlueClient)(nil).BatchGetDevEndpoints), varargs...)
+}
+
+// BatchGetJobs mocks base method.
+func (m *MockGlueClient) BatchGetJobs(arg0 context.Context, arg1 *glue.BatchGetJobsInput, arg2 ...func(*glue.Options)) (*glue.BatchGetJobsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "BatchGetJobs", varargs...)
+	ret0, _ := ret[0].(*glue.BatchGetJobsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// BatchGetJobs indicates an expected call of BatchGetJobs.
+func (mr *MockGlueClientMockRecorder) BatchGetJobs(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchGetJobs", reflect.TypeOf((*MockGlueClient)(nil).BatchGetJobs), varargs...)
+}
+
+// BatchGetPartition mocks base method.
+func (m *MockGlueClient) BatchGetPartition(arg0 context.Context, arg1 *glue.BatchGetPartitionInput, arg2 ...func(*glue.Options)) (*glue.BatchGetPartitionOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "BatchGetPartition", varargs...)
+	ret0, _ := ret[0].(*glue.BatchGetPartitionOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// BatchGetPartition indicates an expected call of BatchGetPartition.
+func (mr *MockGlueClientMockRecorder) BatchGetPartition(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchGetPartition", reflect.TypeOf((*MockGlueClient)(nil).BatchGetPartition), varargs...)
+}
+
+// BatchGetTriggers mocks base method.
+func (m *MockGlueClient) BatchGetTriggers(arg0 context.Context, arg1 *glue.BatchGetTriggersInput, arg2 ...func(*glue.Options)) (*glue.BatchGetTriggersOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "BatchGetTriggers", varargs...)
+	ret0, _ := ret[0].(*glue.BatchGetTriggersOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// BatchGetTriggers indicates an expected call of BatchGetTriggers.
+func (mr *MockGlueClientMockRecorder) BatchGetTriggers(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchGetTriggers", reflect.TypeOf((*MockGlueClient)(nil).BatchGetTriggers), varargs...)
+}
+
+// BatchGetWorkflows mocks base method.
+func (m *MockGlueClient) BatchGetWorkflows(arg0 context.Context, arg1 *glue.BatchGetWorkflowsInput, arg2 ...func(*glue.Options)) (*glue.BatchGetWorkflowsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "BatchGetWorkflows", varargs...)
+	ret0, _ := ret[0].(*glue.BatchGetWorkflowsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// BatchGetWorkflows indicates an expected call of BatchGetWorkflows.
+func (mr *MockGlueClientMockRecorder) BatchGetWorkflows(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchGetWorkflows", reflect.TypeOf((*MockGlueClient)(nil).BatchGetWorkflows), varargs...)
+}
+
 // GetBlueprint mocks base method.
 func (m *MockGlueClient) GetBlueprint(arg0 context.Context, arg1 *glue.GetBlueprintInput, arg2 ...func(*glue.Options)) (*glue.GetBlueprintOutput, error) {
 	m.ctrl.T.Helper()
@@ -1533,6 +1693,26 @@ func (mr *MockGlueClientMockRecorder) ListWorkflows(arg0, arg1 interface{}, arg2
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListWorkflows", reflect.TypeOf((*MockGlueClient)(nil).ListWorkflows), varargs...)
+}
+
+// QuerySchemaVersionMetadata mocks base method.
+func (m *MockGlueClient) QuerySchemaVersionMetadata(arg0 context.Context, arg1 *glue.QuerySchemaVersionMetadataInput, arg2 ...func(*glue.Options)) (*glue.QuerySchemaVersionMetadataOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "QuerySchemaVersionMetadata", varargs...)
+	ret0, _ := ret[0].(*glue.QuerySchemaVersionMetadataOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// QuerySchemaVersionMetadata indicates an expected call of QuerySchemaVersionMetadata.
+func (mr *MockGlueClientMockRecorder) QuerySchemaVersionMetadata(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QuerySchemaVersionMetadata", reflect.TypeOf((*MockGlueClient)(nil).QuerySchemaVersionMetadata), varargs...)
 }
 
 // SearchTables mocks base method.

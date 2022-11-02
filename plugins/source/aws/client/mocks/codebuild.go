@@ -35,6 +35,106 @@ func (m *MockCodebuildClient) EXPECT() *MockCodebuildClientMockRecorder {
 	return m.recorder
 }
 
+// BatchGetBuildBatches mocks base method.
+func (m *MockCodebuildClient) BatchGetBuildBatches(arg0 context.Context, arg1 *codebuild.BatchGetBuildBatchesInput, arg2 ...func(*codebuild.Options)) (*codebuild.BatchGetBuildBatchesOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "BatchGetBuildBatches", varargs...)
+	ret0, _ := ret[0].(*codebuild.BatchGetBuildBatchesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// BatchGetBuildBatches indicates an expected call of BatchGetBuildBatches.
+func (mr *MockCodebuildClientMockRecorder) BatchGetBuildBatches(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchGetBuildBatches", reflect.TypeOf((*MockCodebuildClient)(nil).BatchGetBuildBatches), varargs...)
+}
+
+// BatchGetBuilds mocks base method.
+func (m *MockCodebuildClient) BatchGetBuilds(arg0 context.Context, arg1 *codebuild.BatchGetBuildsInput, arg2 ...func(*codebuild.Options)) (*codebuild.BatchGetBuildsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "BatchGetBuilds", varargs...)
+	ret0, _ := ret[0].(*codebuild.BatchGetBuildsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// BatchGetBuilds indicates an expected call of BatchGetBuilds.
+func (mr *MockCodebuildClientMockRecorder) BatchGetBuilds(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchGetBuilds", reflect.TypeOf((*MockCodebuildClient)(nil).BatchGetBuilds), varargs...)
+}
+
+// BatchGetProjects mocks base method.
+func (m *MockCodebuildClient) BatchGetProjects(arg0 context.Context, arg1 *codebuild.BatchGetProjectsInput, arg2 ...func(*codebuild.Options)) (*codebuild.BatchGetProjectsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "BatchGetProjects", varargs...)
+	ret0, _ := ret[0].(*codebuild.BatchGetProjectsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// BatchGetProjects indicates an expected call of BatchGetProjects.
+func (mr *MockCodebuildClientMockRecorder) BatchGetProjects(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchGetProjects", reflect.TypeOf((*MockCodebuildClient)(nil).BatchGetProjects), varargs...)
+}
+
+// BatchGetReportGroups mocks base method.
+func (m *MockCodebuildClient) BatchGetReportGroups(arg0 context.Context, arg1 *codebuild.BatchGetReportGroupsInput, arg2 ...func(*codebuild.Options)) (*codebuild.BatchGetReportGroupsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "BatchGetReportGroups", varargs...)
+	ret0, _ := ret[0].(*codebuild.BatchGetReportGroupsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// BatchGetReportGroups indicates an expected call of BatchGetReportGroups.
+func (mr *MockCodebuildClientMockRecorder) BatchGetReportGroups(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchGetReportGroups", reflect.TypeOf((*MockCodebuildClient)(nil).BatchGetReportGroups), varargs...)
+}
+
+// BatchGetReports mocks base method.
+func (m *MockCodebuildClient) BatchGetReports(arg0 context.Context, arg1 *codebuild.BatchGetReportsInput, arg2 ...func(*codebuild.Options)) (*codebuild.BatchGetReportsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "BatchGetReports", varargs...)
+	ret0, _ := ret[0].(*codebuild.BatchGetReportsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// BatchGetReports indicates an expected call of BatchGetReports.
+func (mr *MockCodebuildClientMockRecorder) BatchGetReports(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchGetReports", reflect.TypeOf((*MockCodebuildClient)(nil).BatchGetReports), varargs...)
+}
+
 // DescribeCodeCoverages mocks base method.
 func (m *MockCodebuildClient) DescribeCodeCoverages(arg0 context.Context, arg1 *codebuild.DescribeCodeCoveragesInput, arg2 ...func(*codebuild.Options)) (*codebuild.DescribeCodeCoveragesOutput, error) {
 	m.ctrl.T.Helper()

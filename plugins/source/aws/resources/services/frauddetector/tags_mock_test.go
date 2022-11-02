@@ -10,7 +10,7 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-func addTagsCall(t *testing.T, client *mocks.MockFraudDetectorClient) {
+func addTagsCall(t *testing.T, client *mocks.MockFrauddetectorClient) {
 	var data []types.Tag
 	err := faker.FakeObject(&data)
 	if err != nil {

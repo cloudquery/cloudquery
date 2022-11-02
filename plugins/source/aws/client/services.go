@@ -414,6 +414,9 @@ type AppsyncClient interface {
 
 //go:generate mockgen -package=mocks -destination=./mocks/athena.go . AthenaClient
 type AthenaClient interface {
+	BatchGetNamedQuery(context.Context, *athena.BatchGetNamedQueryInput, ...func(*athena.Options)) (*athena.BatchGetNamedQueryOutput, error)
+	BatchGetPreparedStatement(context.Context, *athena.BatchGetPreparedStatementInput, ...func(*athena.Options)) (*athena.BatchGetPreparedStatementOutput, error)
+	BatchGetQueryExecution(context.Context, *athena.BatchGetQueryExecutionInput, ...func(*athena.Options)) (*athena.BatchGetQueryExecutionOutput, error)
 	GetDataCatalog(context.Context, *athena.GetDataCatalogInput, ...func(*athena.Options)) (*athena.GetDataCatalogOutput, error)
 	GetDatabase(context.Context, *athena.GetDatabaseInput, ...func(*athena.Options)) (*athena.GetDatabaseOutput, error)
 	GetNamedQuery(context.Context, *athena.GetNamedQueryInput, ...func(*athena.Options)) (*athena.GetNamedQueryOutput, error)
@@ -654,6 +657,11 @@ type CloudwatchlogsClient interface {
 
 //go:generate mockgen -package=mocks -destination=./mocks/codebuild.go . CodebuildClient
 type CodebuildClient interface {
+	BatchGetBuildBatches(context.Context, *codebuild.BatchGetBuildBatchesInput, ...func(*codebuild.Options)) (*codebuild.BatchGetBuildBatchesOutput, error)
+	BatchGetBuilds(context.Context, *codebuild.BatchGetBuildsInput, ...func(*codebuild.Options)) (*codebuild.BatchGetBuildsOutput, error)
+	BatchGetProjects(context.Context, *codebuild.BatchGetProjectsInput, ...func(*codebuild.Options)) (*codebuild.BatchGetProjectsOutput, error)
+	BatchGetReportGroups(context.Context, *codebuild.BatchGetReportGroupsInput, ...func(*codebuild.Options)) (*codebuild.BatchGetReportGroupsOutput, error)
+	BatchGetReports(context.Context, *codebuild.BatchGetReportsInput, ...func(*codebuild.Options)) (*codebuild.BatchGetReportsOutput, error)
 	DescribeCodeCoverages(context.Context, *codebuild.DescribeCodeCoveragesInput, ...func(*codebuild.Options)) (*codebuild.DescribeCodeCoveragesOutput, error)
 	DescribeTestCases(context.Context, *codebuild.DescribeTestCasesInput, ...func(*codebuild.Options)) (*codebuild.DescribeTestCasesOutput, error)
 	GetReportGroupTrend(context.Context, *codebuild.GetReportGroupTrendInput, ...func(*codebuild.Options)) (*codebuild.GetReportGroupTrendOutput, error)
@@ -735,6 +743,8 @@ type CognitoidentityproviderClient interface {
 
 //go:generate mockgen -package=mocks -destination=./mocks/configservice.go . ConfigserviceClient
 type ConfigserviceClient interface {
+	BatchGetAggregateResourceConfig(context.Context, *configservice.BatchGetAggregateResourceConfigInput, ...func(*configservice.Options)) (*configservice.BatchGetAggregateResourceConfigOutput, error)
+	BatchGetResourceConfig(context.Context, *configservice.BatchGetResourceConfigInput, ...func(*configservice.Options)) (*configservice.BatchGetResourceConfigOutput, error)
 	DescribeAggregateComplianceByConfigRules(context.Context, *configservice.DescribeAggregateComplianceByConfigRulesInput, ...func(*configservice.Options)) (*configservice.DescribeAggregateComplianceByConfigRulesOutput, error)
 	DescribeAggregateComplianceByConformancePacks(context.Context, *configservice.DescribeAggregateComplianceByConformancePacksInput, ...func(*configservice.Options)) (*configservice.DescribeAggregateComplianceByConformancePacksOutput, error)
 	DescribeAggregationAuthorizations(context.Context, *configservice.DescribeAggregationAuthorizationsInput, ...func(*configservice.Options)) (*configservice.DescribeAggregationAuthorizationsOutput, error)
@@ -874,6 +884,7 @@ type DocdbClient interface {
 
 //go:generate mockgen -package=mocks -destination=./mocks/dynamodb.go . DynamodbClient
 type DynamodbClient interface {
+	BatchGetItem(context.Context, *dynamodb.BatchGetItemInput, ...func(*dynamodb.Options)) (*dynamodb.BatchGetItemOutput, error)
 	DescribeBackup(context.Context, *dynamodb.DescribeBackupInput, ...func(*dynamodb.Options)) (*dynamodb.DescribeBackupOutput, error)
 	DescribeContinuousBackups(context.Context, *dynamodb.DescribeContinuousBackupsInput, ...func(*dynamodb.Options)) (*dynamodb.DescribeContinuousBackupsOutput, error)
 	DescribeContributorInsights(context.Context, *dynamodb.DescribeContributorInsightsInput, ...func(*dynamodb.Options)) (*dynamodb.DescribeContributorInsightsOutput, error)
@@ -1081,6 +1092,8 @@ type Ec2Client interface {
 
 //go:generate mockgen -package=mocks -destination=./mocks/ecr.go . EcrClient
 type EcrClient interface {
+	BatchGetImage(context.Context, *ecr.BatchGetImageInput, ...func(*ecr.Options)) (*ecr.BatchGetImageOutput, error)
+	BatchGetRepositoryScanningConfiguration(context.Context, *ecr.BatchGetRepositoryScanningConfigurationInput, ...func(*ecr.Options)) (*ecr.BatchGetRepositoryScanningConfigurationOutput, error)
 	DescribeImageReplicationStatus(context.Context, *ecr.DescribeImageReplicationStatusInput, ...func(*ecr.Options)) (*ecr.DescribeImageReplicationStatusOutput, error)
 	DescribeImageScanFindings(context.Context, *ecr.DescribeImageScanFindingsInput, ...func(*ecr.Options)) (*ecr.DescribeImageScanFindingsOutput, error)
 	DescribeImages(context.Context, *ecr.DescribeImagesInput, ...func(*ecr.Options)) (*ecr.DescribeImagesOutput, error)
@@ -1320,6 +1333,7 @@ type FirehoseClient interface {
 
 //go:generate mockgen -package=mocks -destination=./mocks/frauddetector.go . FrauddetectorClient
 type FrauddetectorClient interface {
+	BatchGetVariable(context.Context, *frauddetector.BatchGetVariableInput, ...func(*frauddetector.Options)) (*frauddetector.BatchGetVariableOutput, error)
 	DescribeDetector(context.Context, *frauddetector.DescribeDetectorInput, ...func(*frauddetector.Options)) (*frauddetector.DescribeDetectorOutput, error)
 	DescribeModelVersions(context.Context, *frauddetector.DescribeModelVersionsInput, ...func(*frauddetector.Options)) (*frauddetector.DescribeModelVersionsOutput, error)
 	GetBatchImportJobs(context.Context, *frauddetector.GetBatchImportJobsInput, ...func(*frauddetector.Options)) (*frauddetector.GetBatchImportJobsOutput, error)
@@ -1377,6 +1391,14 @@ type GlacierClient interface {
 
 //go:generate mockgen -package=mocks -destination=./mocks/glue.go . GlueClient
 type GlueClient interface {
+	BatchGetBlueprints(context.Context, *glue.BatchGetBlueprintsInput, ...func(*glue.Options)) (*glue.BatchGetBlueprintsOutput, error)
+	BatchGetCrawlers(context.Context, *glue.BatchGetCrawlersInput, ...func(*glue.Options)) (*glue.BatchGetCrawlersOutput, error)
+	BatchGetCustomEntityTypes(context.Context, *glue.BatchGetCustomEntityTypesInput, ...func(*glue.Options)) (*glue.BatchGetCustomEntityTypesOutput, error)
+	BatchGetDevEndpoints(context.Context, *glue.BatchGetDevEndpointsInput, ...func(*glue.Options)) (*glue.BatchGetDevEndpointsOutput, error)
+	BatchGetJobs(context.Context, *glue.BatchGetJobsInput, ...func(*glue.Options)) (*glue.BatchGetJobsOutput, error)
+	BatchGetPartition(context.Context, *glue.BatchGetPartitionInput, ...func(*glue.Options)) (*glue.BatchGetPartitionOutput, error)
+	BatchGetTriggers(context.Context, *glue.BatchGetTriggersInput, ...func(*glue.Options)) (*glue.BatchGetTriggersOutput, error)
+	BatchGetWorkflows(context.Context, *glue.BatchGetWorkflowsInput, ...func(*glue.Options)) (*glue.BatchGetWorkflowsOutput, error)
 	GetBlueprint(context.Context, *glue.GetBlueprintInput, ...func(*glue.Options)) (*glue.GetBlueprintOutput, error)
 	GetBlueprintRun(context.Context, *glue.GetBlueprintRunInput, ...func(*glue.Options)) (*glue.GetBlueprintRunOutput, error)
 	GetBlueprintRuns(context.Context, *glue.GetBlueprintRunsInput, ...func(*glue.Options)) (*glue.GetBlueprintRunsOutput, error)
@@ -1452,6 +1474,7 @@ type GlueClient interface {
 	ListStatements(context.Context, *glue.ListStatementsInput, ...func(*glue.Options)) (*glue.ListStatementsOutput, error)
 	ListTriggers(context.Context, *glue.ListTriggersInput, ...func(*glue.Options)) (*glue.ListTriggersOutput, error)
 	ListWorkflows(context.Context, *glue.ListWorkflowsInput, ...func(*glue.Options)) (*glue.ListWorkflowsOutput, error)
+	QuerySchemaVersionMetadata(context.Context, *glue.QuerySchemaVersionMetadataInput, ...func(*glue.Options)) (*glue.QuerySchemaVersionMetadataOutput, error)
 	SearchTables(context.Context, *glue.SearchTablesInput, ...func(*glue.Options)) (*glue.SearchTablesOutput, error)
 }
 
@@ -1488,6 +1511,7 @@ type GuarddutyClient interface {
 
 //go:generate mockgen -package=mocks -destination=./mocks/iam.go . IamClient
 type IamClient interface {
+	GenerateCredentialReport(context.Context, *iam.GenerateCredentialReportInput, ...func(*iam.Options)) (*iam.GenerateCredentialReportOutput, error)
 	GetAccessKeyLastUsed(context.Context, *iam.GetAccessKeyLastUsedInput, ...func(*iam.Options)) (*iam.GetAccessKeyLastUsedOutput, error)
 	GetAccountAuthorizationDetails(context.Context, *iam.GetAccountAuthorizationDetailsInput, ...func(*iam.Options)) (*iam.GetAccountAuthorizationDetailsOutput, error)
 	GetAccountPasswordPolicy(context.Context, *iam.GetAccountPasswordPolicyInput, ...func(*iam.Options)) (*iam.GetAccountPasswordPolicyOutput, error)
@@ -1575,6 +1599,8 @@ type InspectorClient interface {
 
 //go:generate mockgen -package=mocks -destination=./mocks/inspector2.go . Inspector2Client
 type Inspector2Client interface {
+	BatchGetAccountStatus(context.Context, *inspector2.BatchGetAccountStatusInput, ...func(*inspector2.Options)) (*inspector2.BatchGetAccountStatusOutput, error)
+	BatchGetFreeTrialInfo(context.Context, *inspector2.BatchGetFreeTrialInfoInput, ...func(*inspector2.Options)) (*inspector2.BatchGetFreeTrialInfoOutput, error)
 	DescribeOrganizationConfiguration(context.Context, *inspector2.DescribeOrganizationConfigurationInput, ...func(*inspector2.Options)) (*inspector2.DescribeOrganizationConfigurationOutput, error)
 	GetConfiguration(context.Context, *inspector2.GetConfigurationInput, ...func(*inspector2.Options)) (*inspector2.GetConfigurationOutput, error)
 	GetDelegatedAdminAccount(context.Context, *inspector2.GetDelegatedAdminAccountInput, ...func(*inspector2.Options)) (*inspector2.GetDelegatedAdminAccountOutput, error)
@@ -2332,6 +2358,7 @@ type ServicecatalogappregistryClient interface {
 
 //go:generate mockgen -package=mocks -destination=./mocks/sesv2.go . Sesv2Client
 type Sesv2Client interface {
+	BatchGetMetricData(context.Context, *sesv2.BatchGetMetricDataInput, ...func(*sesv2.Options)) (*sesv2.BatchGetMetricDataOutput, error)
 	GetAccount(context.Context, *sesv2.GetAccountInput, ...func(*sesv2.Options)) (*sesv2.GetAccountOutput, error)
 	GetBlacklistReports(context.Context, *sesv2.GetBlacklistReportsInput, ...func(*sesv2.Options)) (*sesv2.GetBlacklistReportsOutput, error)
 	GetConfigurationSet(context.Context, *sesv2.GetConfigurationSetInput, ...func(*sesv2.Options)) (*sesv2.GetConfigurationSetOutput, error)
@@ -2643,6 +2670,7 @@ type WorkspacesClient interface {
 
 //go:generate mockgen -package=mocks -destination=./mocks/xray.go . XrayClient
 type XrayClient interface {
+	BatchGetTraces(context.Context, *xray.BatchGetTracesInput, ...func(*xray.Options)) (*xray.BatchGetTracesOutput, error)
 	GetEncryptionConfig(context.Context, *xray.GetEncryptionConfigInput, ...func(*xray.Options)) (*xray.GetEncryptionConfigOutput, error)
 	GetGroup(context.Context, *xray.GetGroupInput, ...func(*xray.Options)) (*xray.GetGroupOutput, error)
 	GetGroups(context.Context, *xray.GetGroupsInput, ...func(*xray.Options)) (*xray.GetGroupsOutput, error)

@@ -35,6 +35,46 @@ func (m *MockConfigserviceClient) EXPECT() *MockConfigserviceClientMockRecorder 
 	return m.recorder
 }
 
+// BatchGetAggregateResourceConfig mocks base method.
+func (m *MockConfigserviceClient) BatchGetAggregateResourceConfig(arg0 context.Context, arg1 *configservice.BatchGetAggregateResourceConfigInput, arg2 ...func(*configservice.Options)) (*configservice.BatchGetAggregateResourceConfigOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "BatchGetAggregateResourceConfig", varargs...)
+	ret0, _ := ret[0].(*configservice.BatchGetAggregateResourceConfigOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// BatchGetAggregateResourceConfig indicates an expected call of BatchGetAggregateResourceConfig.
+func (mr *MockConfigserviceClientMockRecorder) BatchGetAggregateResourceConfig(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchGetAggregateResourceConfig", reflect.TypeOf((*MockConfigserviceClient)(nil).BatchGetAggregateResourceConfig), varargs...)
+}
+
+// BatchGetResourceConfig mocks base method.
+func (m *MockConfigserviceClient) BatchGetResourceConfig(arg0 context.Context, arg1 *configservice.BatchGetResourceConfigInput, arg2 ...func(*configservice.Options)) (*configservice.BatchGetResourceConfigOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "BatchGetResourceConfig", varargs...)
+	ret0, _ := ret[0].(*configservice.BatchGetResourceConfigOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// BatchGetResourceConfig indicates an expected call of BatchGetResourceConfig.
+func (mr *MockConfigserviceClientMockRecorder) BatchGetResourceConfig(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchGetResourceConfig", reflect.TypeOf((*MockConfigserviceClient)(nil).BatchGetResourceConfig), varargs...)
+}
+
 // DescribeAggregateComplianceByConfigRules mocks base method.
 func (m *MockConfigserviceClient) DescribeAggregateComplianceByConfigRules(arg0 context.Context, arg1 *configservice.DescribeAggregateComplianceByConfigRulesInput, arg2 ...func(*configservice.Options)) (*configservice.DescribeAggregateComplianceByConfigRulesOutput, error) {
 	m.ctrl.T.Helper()

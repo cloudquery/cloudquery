@@ -35,6 +35,26 @@ func (m *MockSesv2Client) EXPECT() *MockSesv2ClientMockRecorder {
 	return m.recorder
 }
 
+// BatchGetMetricData mocks base method.
+func (m *MockSesv2Client) BatchGetMetricData(arg0 context.Context, arg1 *sesv2.BatchGetMetricDataInput, arg2 ...func(*sesv2.Options)) (*sesv2.BatchGetMetricDataOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "BatchGetMetricData", varargs...)
+	ret0, _ := ret[0].(*sesv2.BatchGetMetricDataOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// BatchGetMetricData indicates an expected call of BatchGetMetricData.
+func (mr *MockSesv2ClientMockRecorder) BatchGetMetricData(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchGetMetricData", reflect.TypeOf((*MockSesv2Client)(nil).BatchGetMetricData), varargs...)
+}
+
 // GetAccount mocks base method.
 func (m *MockSesv2Client) GetAccount(arg0 context.Context, arg1 *sesv2.GetAccountInput, arg2 ...func(*sesv2.Options)) (*sesv2.GetAccountOutput, error) {
 	m.ctrl.T.Helper()

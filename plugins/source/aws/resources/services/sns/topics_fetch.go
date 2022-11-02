@@ -57,7 +57,7 @@ func getTopic(ctx context.Context, meta schema.ClientMeta, resource *schema.Reso
 func resolveSnsTopicTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	topic := resource.Item.(*models.Topic)
 	cl := meta.(*client.Client)
-	svc := cl.Services().SNS
+	svc := cl.Services().Sns
 	tagParams := sns.ListTagsForResourceInput{
 		ResourceArn: topic.Arn,
 	}

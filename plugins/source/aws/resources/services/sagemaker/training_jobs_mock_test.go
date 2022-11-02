@@ -43,7 +43,7 @@ func buildSageMakerTrainingJobs(t *testing.T, ctrl *gomock.Controller) client.Se
 	)
 
 	return client.Services{
-		SageMaker: m,
+		Sagemaker: m,
 	}
 }
 

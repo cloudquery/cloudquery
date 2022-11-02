@@ -35,6 +35,46 @@ func (m *MockEcrClient) EXPECT() *MockEcrClientMockRecorder {
 	return m.recorder
 }
 
+// BatchGetImage mocks base method.
+func (m *MockEcrClient) BatchGetImage(arg0 context.Context, arg1 *ecr.BatchGetImageInput, arg2 ...func(*ecr.Options)) (*ecr.BatchGetImageOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "BatchGetImage", varargs...)
+	ret0, _ := ret[0].(*ecr.BatchGetImageOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// BatchGetImage indicates an expected call of BatchGetImage.
+func (mr *MockEcrClientMockRecorder) BatchGetImage(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchGetImage", reflect.TypeOf((*MockEcrClient)(nil).BatchGetImage), varargs...)
+}
+
+// BatchGetRepositoryScanningConfiguration mocks base method.
+func (m *MockEcrClient) BatchGetRepositoryScanningConfiguration(arg0 context.Context, arg1 *ecr.BatchGetRepositoryScanningConfigurationInput, arg2 ...func(*ecr.Options)) (*ecr.BatchGetRepositoryScanningConfigurationOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "BatchGetRepositoryScanningConfiguration", varargs...)
+	ret0, _ := ret[0].(*ecr.BatchGetRepositoryScanningConfigurationOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// BatchGetRepositoryScanningConfiguration indicates an expected call of BatchGetRepositoryScanningConfiguration.
+func (mr *MockEcrClientMockRecorder) BatchGetRepositoryScanningConfiguration(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchGetRepositoryScanningConfiguration", reflect.TypeOf((*MockEcrClient)(nil).BatchGetRepositoryScanningConfiguration), varargs...)
+}
+
 // DescribeImageReplicationStatus mocks base method.
 func (m *MockEcrClient) DescribeImageReplicationStatus(arg0 context.Context, arg1 *ecr.DescribeImageReplicationStatusInput, arg2 ...func(*ecr.Options)) (*ecr.DescribeImageReplicationStatusOutput, error) {
 	m.ctrl.T.Helper()

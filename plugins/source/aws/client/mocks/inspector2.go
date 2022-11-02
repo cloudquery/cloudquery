@@ -35,6 +35,46 @@ func (m *MockInspector2Client) EXPECT() *MockInspector2ClientMockRecorder {
 	return m.recorder
 }
 
+// BatchGetAccountStatus mocks base method.
+func (m *MockInspector2Client) BatchGetAccountStatus(arg0 context.Context, arg1 *inspector2.BatchGetAccountStatusInput, arg2 ...func(*inspector2.Options)) (*inspector2.BatchGetAccountStatusOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "BatchGetAccountStatus", varargs...)
+	ret0, _ := ret[0].(*inspector2.BatchGetAccountStatusOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// BatchGetAccountStatus indicates an expected call of BatchGetAccountStatus.
+func (mr *MockInspector2ClientMockRecorder) BatchGetAccountStatus(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchGetAccountStatus", reflect.TypeOf((*MockInspector2Client)(nil).BatchGetAccountStatus), varargs...)
+}
+
+// BatchGetFreeTrialInfo mocks base method.
+func (m *MockInspector2Client) BatchGetFreeTrialInfo(arg0 context.Context, arg1 *inspector2.BatchGetFreeTrialInfoInput, arg2 ...func(*inspector2.Options)) (*inspector2.BatchGetFreeTrialInfoOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "BatchGetFreeTrialInfo", varargs...)
+	ret0, _ := ret[0].(*inspector2.BatchGetFreeTrialInfoOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// BatchGetFreeTrialInfo indicates an expected call of BatchGetFreeTrialInfo.
+func (mr *MockInspector2ClientMockRecorder) BatchGetFreeTrialInfo(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchGetFreeTrialInfo", reflect.TypeOf((*MockInspector2Client)(nil).BatchGetFreeTrialInfo), varargs...)
+}
+
 // DescribeOrganizationConfiguration mocks base method.
 func (m *MockInspector2Client) DescribeOrganizationConfiguration(arg0 context.Context, arg1 *inspector2.DescribeOrganizationConfigurationInput, arg2 ...func(*inspector2.Options)) (*inspector2.DescribeOrganizationConfigurationOutput, error) {
 	m.ctrl.T.Helper()

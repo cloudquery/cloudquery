@@ -10,7 +10,7 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-func buildRules(t *testing.T, client *mocks.MockFraudDetectorClient) {
+func buildRules(t *testing.T, client *mocks.MockFrauddetectorClient) {
 	data := types.RuleDetail{}
 	err := faker.FakeObject(&data)
 	if err != nil {

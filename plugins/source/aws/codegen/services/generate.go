@@ -18,6 +18,17 @@ import (
 //go:embed templates/*.go.tpl
 var templatesFS embed.FS
 
+// these method name prefixes will be part of the generated client interface
+var acceptedPrefixes = []string{
+	"List", "Get", "Describe", "Search", "BatchGet",
+}
+
+// these methods will be included despite not starting with an accepted prefix
+var exceptions = []string{
+	"QuerySchemaVersionMetadata",
+	"GenerateCredentialReport",
+}
+
 // Adapted from https://stackoverflow.com/a/54129236
 func signature(name string, f interface{}) string {
 	t := reflect.TypeOf(f)
@@ -58,10 +69,14 @@ func signature(name string, f interface{}) string {
 	return buf.String()
 }
 
-func isReadFunction(name string) bool {
-	terms := []string{"List", "Get", "Describe", "Search"}
-	for _, t := range terms {
+func shouldInclude(name string) bool {
+	for _, t := range acceptedPrefixes {
 		if strings.HasPrefix(name, t) {
+			return true
+		}
+	}
+	for _, e := range exceptions {
+		if name == e {
 			return true
 		}
 	}
@@ -88,7 +103,7 @@ func getServiceInfo(client interface{}) serviceInfo {
 	signatures := make([]string, 0)
 	for i := 0; i < t.NumMethod(); i++ {
 		method := t.Method(i)
-		if isReadFunction(method.Name) {
+		if shouldInclude(method.Name) {
 			sig := signature(method.Name, v.Method(i).Interface())
 			signatures = append(signatures, sig)
 		}
@@ -102,6 +117,7 @@ func getServiceInfo(client interface{}) serviceInfo {
 	}
 }
 
+// Generate generates a services.go file from the clients defined in clients.go
 func Generate() error {
 	tpl, err := template.New("services.go.tpl").Funcs(template.FuncMap{}).ParseFS(templatesFS, "templates/services.go.tpl")
 	if err != nil {

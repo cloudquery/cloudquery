@@ -92,12 +92,12 @@ func generateResources() error {
 }
 
 func main() {
-	err := generateResources()
+	err := services.Generate()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	err = services.Generate()
+	err = generateResources()
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -35,6 +35,26 @@ func (m *MockIamClient) EXPECT() *MockIamClientMockRecorder {
 	return m.recorder
 }
 
+// GenerateCredentialReport mocks base method.
+func (m *MockIamClient) GenerateCredentialReport(arg0 context.Context, arg1 *iam.GenerateCredentialReportInput, arg2 ...func(*iam.Options)) (*iam.GenerateCredentialReportOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GenerateCredentialReport", varargs...)
+	ret0, _ := ret[0].(*iam.GenerateCredentialReportOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GenerateCredentialReport indicates an expected call of GenerateCredentialReport.
+func (mr *MockIamClientMockRecorder) GenerateCredentialReport(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GenerateCredentialReport", reflect.TypeOf((*MockIamClient)(nil).GenerateCredentialReport), varargs...)
+}
+
 // GetAccessKeyLastUsed mocks base method.
 func (m *MockIamClient) GetAccessKeyLastUsed(arg0 context.Context, arg1 *iam.GetAccessKeyLastUsedInput, arg2 ...func(*iam.Options)) (*iam.GetAccessKeyLastUsedOutput, error) {
 	m.ctrl.T.Helper()

@@ -12,7 +12,7 @@ import (
 )
 
 func buildRoute53Domains(t *testing.T, ctrl *gomock.Controller) client.Services {
-	mock := mocks.NewMockRoute53DomainsClient(ctrl)
+	mock := mocks.NewMockRoute53domainsClient(ctrl)
 
 	var ds types.DomainSummary
 	if err := faker.FakeObject(&ds.DomainName); err != nil {
@@ -41,7 +41,7 @@ func buildRoute53Domains(t *testing.T, ctrl *gomock.Controller) client.Services 
 	)
 
 	return client.Services{
-		Route53Domains: mock,
+		Route53domains: mock,
 	}
 }
 
