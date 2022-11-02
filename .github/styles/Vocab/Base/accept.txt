@@ -125,3 +125,6 @@ Goroutines
 upserted
 write_mode
 skip_tables
+subfolder
+recurse
+CCPA's
