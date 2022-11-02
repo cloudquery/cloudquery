@@ -882,6 +882,8 @@ type SESClient interface {
 	GetConfigurationSet(ctx context.Context, params *sesv2.GetConfigurationSetInput, optFns ...func(*sesv2.Options)) (*sesv2.GetConfigurationSetOutput, error)
 	sesv2.ListConfigurationSetsAPIClient
 	GetConfigurationSetEventDestinations(ctx context.Context, params *sesv2.GetConfigurationSetEventDestinationsInput, optFns ...func(*sesv2.Options)) (*sesv2.GetConfigurationSetEventDestinationsOutput, error)
+	sesv2.ListContactListsAPIClient
+	GetContactList(ctx context.Context, params *sesv2.GetContactListInput, optFns ...func(*sesv2.Options)) (*sesv2.GetContactListOutput, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/shield.go . ShieldClient

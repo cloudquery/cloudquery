@@ -340,6 +340,7 @@
 | [aws_servicecatalog_provisioned_products](aws_servicecatalog_provisioned_products.md) |
 | [aws_ses_configuration_sets](aws_ses_configuration_sets.md) |
 | ↳ [aws_ses_configuration_set_event_destinations](aws_ses_configuration_set_event_destinations.md) |
+| [aws_ses_contact_lists](aws_ses_contact_lists.md) |
 | [aws_ses_templates](aws_ses_templates.md) |
 | [aws_shield_attacks](aws_shield_attacks.md) |
 | [aws_shield_protection_groups](aws_shield_protection_groups.md) |

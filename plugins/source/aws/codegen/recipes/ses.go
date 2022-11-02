@@ -67,6 +67,23 @@ func SESResources() []*Resource {
 					},
 				}...),
 		},
+		{
+			SubService:          "contact_lists",
+			Struct:              &sesv2.GetContactListOutput{},
+			Description:         "https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_GetContactList.html",
+			PreResourceResolver: "getContactList",
+			SkipFields:          []string{"ContactListName", "ResultMetadata"},
+			ExtraColumns: append(
+				defaultRegionalColumnsPK,
+				[]codegen.ColumnDefinition{
+					{
+						Name:     "name",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("ContactListName")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				}...),
+		},
 	}
 
 	// set default values
