@@ -5,6 +5,13 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.2](https://github.com/cloudquery/cloudquery/compare/cli-v1.5.1...cli-v1.5.2) (2022-11-02)
+
+
+### Bug Fixes
+
+* Properly set default telemetry level in cobra ([#3458](https://github.com/cloudquery/cloudquery/issues/3458)) ([31ee505](https://github.com/cloudquery/cloudquery/commit/31ee505475b698ef70b2a9a864c26787aeb946f5))
+
 ## [1.5.1](https://github.com/cloudquery/cloudquery/compare/cli-v1.5.0...cli-v1.5.1) (2022-11-01)
 
 
