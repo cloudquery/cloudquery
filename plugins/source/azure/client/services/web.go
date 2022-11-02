@@ -1,4 +1,4 @@
-//go:generate mockgen -destination=./mocks/web.go -package=mocks . WebAppsClient,WebSiteAuthSettingsClient,WebVnetConnectionsClient,WebPublishingProfilesClient
+//go:generate mockgen -destination=./mocks/web.go -package=mocks . WebAppsClient,WebSiteAuthSettingsClient,WebSiteAuthSettingsV2Client,WebVnetConnectionsClient,WebPublishingProfilesClient
 package services
 
 import (
@@ -13,6 +13,7 @@ import (
 type WebClient struct {
 	Apps               WebAppsClient
 	SiteAuthSettings   WebSiteAuthSettingsClient
+	SiteAuthSettingsV2 WebSiteAuthSettingsV2Client
 	VnetConnections    WebVnetConnectionsClient
 	PublishingProfiles WebPublishingProfilesClient
 }
@@ -32,6 +33,11 @@ type WebVnetConnectionsClient interface {
 type WebSiteAuthSettingsClient interface {
 	GetAuthSettings(ctx context.Context, resourceGroupName string, name string) (result web.SiteAuthSettings, err error)
 }
+
+type WebSiteAuthSettingsV2Client interface {
+	GetAuthSettingsV2(ctx context.Context, resourceGroupName string, name string) (result web.SiteAuthSettingsV2, err error)
+}
+
 type WebPublishingProfilesClientImpl struct {
 	web.AppsClient
 }
@@ -72,6 +78,7 @@ func NewWebClient(subscriptionId string, auth autorest.Authorizer) WebClient {
 	return WebClient{
 		Apps:               apps,
 		SiteAuthSettings:   apps,
+		SiteAuthSettingsV2: apps,
 		VnetConnections:    apps,
 		PublishingProfiles: WebPublishingProfilesClientImpl{apps},
 	}
