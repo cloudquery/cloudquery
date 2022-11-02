@@ -4,7 +4,7 @@ title: Rate Limiting
 
 # Rate Limiting
 
-There are two main levers to control the rate at which Cloudquery fetches resources from cloud providers. These are the `table_concurrency` and `resource_concurrency` options that can be specified as [part of the source spec](/docs/reference/source-spec). Note that these options were introduced in CloudQuery CLI v1.0.8.
+There are two main levers to control the rate at which CloudQuery fetches resources from cloud providers. These are the `table_concurrency` and `resource_concurrency` options that can be specified as [part of the source spec](/docs/reference/source-spec). Note that these options were introduced in CloudQuery CLI v1.0.8.
 
 ## Table Concurrency
 
