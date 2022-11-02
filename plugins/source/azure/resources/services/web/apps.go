@@ -269,6 +269,8 @@ func Apps() *schema.Table {
 			siteAuthSettings(),
 			vnetConnections(),
 			publishingProfiles(),
+			siteAuthSettingsV2(),
+			functions(),
 		},
 	}
 }
