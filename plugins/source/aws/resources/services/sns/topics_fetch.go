@@ -14,7 +14,7 @@ import (
 
 func fetchSnsTopics(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	svc := c.Services().SNS
+	svc := c.Services().Sns
 	config := sns.ListTopicsInput{}
 	for {
 		output, err := svc.ListTopics(ctx, &config)
@@ -33,7 +33,7 @@ func fetchSnsTopics(ctx context.Context, meta schema.ClientMeta, parent *schema.
 
 func getTopic(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	c := meta.(*client.Client)
-	svc := c.Services().SNS
+	svc := c.Services().Sns
 	topic := resource.Item.(types.Topic)
 
 	attrs, err := svc.GetTopicAttributes(ctx, &sns.GetTopicAttributesInput{TopicArn: topic.TopicArn})

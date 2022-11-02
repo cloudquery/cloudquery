@@ -31,7 +31,7 @@ func buildIamOpenIDConnectProviders(t *testing.T, ctrl *gomock.Controller) clien
 	m.EXPECT().GetOpenIDConnectProvider(gomock.Any(), gomock.Any()).Return(&p, nil)
 
 	return client.Services{
-		IAM: m,
+		Iam: m,
 	}
 }
 

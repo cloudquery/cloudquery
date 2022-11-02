@@ -12,7 +12,7 @@ import (
 
 func fetchApplicationautoscalingPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	svc := c.Services().ApplicationAutoscaling
+	svc := c.Services().Applicationautoscaling
 
 	config := applicationautoscaling.DescribeScalingPoliciesInput{
 		ServiceNamespace: types.ServiceNamespace(c.AutoscalingNamespace),

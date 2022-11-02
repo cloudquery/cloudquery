@@ -90,7 +90,7 @@ func fetchS3BucketsWorker(ctx context.Context, meta schema.ClientMeta, buckets <
 
 func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, resource *models.WrappedBucket) error {
 	c := meta.(*client.Client)
-	mgr := c.Services().S3Manager
+	mgr := c.Services().S3manager
 
 	output, err := mgr.GetBucketRegion(ctx, *resource.Name)
 	if err != nil {

@@ -14,7 +14,7 @@ import (
 func fetchEc2SecurityGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config ec2.DescribeSecurityGroupsInput
 	c := meta.(*client.Client)
-	svc := c.Services().EC2
+	svc := c.Services().Ec2
 	for {
 		output, err := svc.DescribeSecurityGroups(ctx, &config, func(o *ec2.Options) {
 			o.Region = c.Region

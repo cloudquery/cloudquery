@@ -14,7 +14,7 @@ import (
 func fetchEc2EbsSnapshots(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config ec2.DescribeSnapshotsInput
 	c := meta.(*client.Client)
-	svc := c.Services().EC2
+	svc := c.Services().Ec2
 	config.OwnerIds = []string{c.AccountID}
 	for {
 		output, err := svc.DescribeSnapshots(ctx, &config)
@@ -33,7 +33,7 @@ func fetchEc2EbsSnapshots(ctx context.Context, meta schema.ClientMeta, parent *s
 func resolveEbsSnapshotAttribute(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.Snapshot)
 	cl := meta.(*client.Client)
-	svc := cl.Services().EC2
+	svc := cl.Services().Ec2
 	output, err := svc.DescribeSnapshotAttribute(ctx, &ec2.DescribeSnapshotAttributeInput{
 		Attribute:  types.SnapshotAttributeNameCreateVolumePermission,
 		SnapshotId: r.SnapshotId,

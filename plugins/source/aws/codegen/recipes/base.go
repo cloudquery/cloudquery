@@ -184,7 +184,7 @@ func (r *Resource) generateSchema(dir string) error {
 		"ToLower": strings.ToLower,
 	}).ParseFS(templatesFS, "templates/resource.go.tpl")
 	if err != nil {
-		return fmt.Errorf("failed to parse gcp templates: %w", err)
+		return fmt.Errorf("failed to parse templates: %w", err)
 	}
 	tpl, err = tpl.ParseFS(codegen.TemplatesFS, "templates/*.go.tpl")
 	if err != nil {

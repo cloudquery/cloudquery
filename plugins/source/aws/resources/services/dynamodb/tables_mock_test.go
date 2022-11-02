@@ -12,9 +12,9 @@ import (
 )
 
 func buildDynamodbTablesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockDynamoDBClient(ctrl)
+	m := mocks.NewMockDynamodbClient(ctrl)
 	services := client.Services{
-		DynamoDB: m,
+		Dynamodb: m,
 	}
 	var tableName string
 	if err := faker.FakeObject(&tableName); err != nil {

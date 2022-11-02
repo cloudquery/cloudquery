@@ -29,7 +29,7 @@ func buildEcsTaskDefinitions(t *testing.T, ctrl *gomock.Controller) client.Servi
 	m.EXPECT().DescribeTaskDefinition(gomock.Any(), gomock.Any(), gomock.Any()).Return(taskDefinition, nil)
 
 	return client.Services{
-		ECS: m,
+		Ecs: m,
 	}
 }
 

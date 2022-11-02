@@ -12,7 +12,7 @@ import (
 
 func fetchRdsDbSecurityGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().RDS
+	svc := cl.Services().Rds
 	var input rds.DescribeDBSecurityGroupsInput
 	for {
 		output, err := svc.DescribeDBSecurityGroups(ctx, &input)
@@ -31,7 +31,7 @@ func fetchRdsDbSecurityGroups(ctx context.Context, meta schema.ClientMeta, paren
 func resolveRdsDbSecurityGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	g := resource.Item.(types.DBSecurityGroup)
 	cl := meta.(*client.Client)
-	svc := cl.Services().RDS
+	svc := cl.Services().Rds
 	out, err := svc.ListTagsForResource(ctx, &rds.ListTagsForResourceInput{ResourceName: g.DBSecurityGroupArn})
 	if err != nil {
 		return err

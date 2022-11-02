@@ -12,7 +12,7 @@ import (
 )
 
 func buildBatchPredictions(t *testing.T, ctrl *gomock.Controller) client.Services {
-	fdClient := mocks.NewMockFraudDetectorClient(ctrl)
+	fdClient := mocks.NewMockFrauddetectorClient(ctrl)
 
 	data := types.BatchPrediction{}
 	err := faker.FakeObject(&data)
@@ -25,7 +25,7 @@ func buildBatchPredictions(t *testing.T, ctrl *gomock.Controller) client.Service
 	)
 
 	return client.Services{
-		FraudDetector: fdClient,
+		Frauddetector: fdClient,
 	}
 }
 

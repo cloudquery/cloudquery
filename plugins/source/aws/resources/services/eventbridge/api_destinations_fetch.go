@@ -14,7 +14,7 @@ import (
 func fetchEventbridgeApiDestinations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var input eventbridge.ListApiDestinationsInput
 	c := meta.(*client.Client)
-	svc := c.Services().EventBridge
+	svc := c.Services().Eventbridge
 	for {
 		response, err := svc.ListApiDestinations(ctx, &input)
 		if err != nil {

@@ -12,8 +12,8 @@ import (
 )
 
 func buildPortfolios(t *testing.T, ctrl *gomock.Controller) client.Services {
-	mk := mocks.NewMockServiceCatalogClient(ctrl)
-	ma := mocks.NewMockServiceCatalogAppRegistryClient(ctrl)
+	mk := mocks.NewMockServicecatalogClient(ctrl)
+	ma := mocks.NewMockServicecatalogappregistryClient(ctrl)
 
 	o := servicecatalog.ListPortfoliosOutput{}
 	if err := faker.FakeObject(&o); err != nil {
@@ -37,8 +37,8 @@ func buildPortfolios(t *testing.T, ctrl *gomock.Controller) client.Services {
 	)
 
 	return client.Services{
-		ServiceCatalog:   mk,
-		ServiceCatalogAR: ma,
+		Servicecatalog:            mk,
+		Servicecatalogappregistry: ma,
 	}
 }
 

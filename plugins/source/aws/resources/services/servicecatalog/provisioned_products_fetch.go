@@ -12,7 +12,7 @@ import (
 
 func fetchServicecatalogProvisionedProducts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	svc := c.Services().ServiceCatalog
+	svc := c.Services().Servicecatalog
 
 	listInput := new(servicecatalog.SearchProvisionedProductsInput)
 	for {

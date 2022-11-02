@@ -12,7 +12,7 @@ import (
 )
 
 func buildSageMakerModels(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockSageMakerClient(ctrl)
+	m := mocks.NewMockSagemakerClient(ctrl)
 
 	summ := types.ModelSummary{}
 	if err := faker.FakeObject(&summ); err != nil {

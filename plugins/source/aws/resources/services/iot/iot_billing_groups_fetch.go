@@ -15,7 +15,7 @@ func fetchIotBillingGroups(ctx context.Context, meta schema.ClientMeta, parent *
 	}
 	c := meta.(*client.Client)
 
-	svc := c.Services().IOT
+	svc := c.Services().Iot
 	for {
 		response, err := svc.ListBillingGroups(ctx, &input)
 		if err != nil {
@@ -43,7 +43,7 @@ func fetchIotBillingGroups(ctx context.Context, meta schema.ClientMeta, parent *
 func resolveIotBillingGroupThingsInGroup(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.DescribeBillingGroupOutput)
 	cl := meta.(*client.Client)
-	svc := cl.Services().IOT
+	svc := cl.Services().Iot
 	input := iot.ListThingsInBillingGroupInput{
 		BillingGroupName: i.BillingGroupName,
 		MaxResults:       aws.Int32(250),
@@ -68,7 +68,7 @@ func resolveIotBillingGroupThingsInGroup(ctx context.Context, meta schema.Client
 func resolveIotBillingGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.DescribeBillingGroupOutput)
 	cl := meta.(*client.Client)
-	svc := cl.Services().IOT
+	svc := cl.Services().Iot
 	input := iot.ListTagsForResourceInput{
 		ResourceArn: i.BillingGroupArn,
 	}

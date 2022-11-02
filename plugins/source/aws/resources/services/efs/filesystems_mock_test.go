@@ -32,7 +32,7 @@ func buildEfsFilesystemsMock(t *testing.T, ctrl *gomock.Controller) client.Servi
 		&b, nil)
 
 	return client.Services{
-		EFS: m,
+		Efs: m,
 	}
 }
 

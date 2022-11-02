@@ -12,7 +12,7 @@ import (
 func fetchElasticbeanstalkApplicationVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config elasticbeanstalk.DescribeApplicationVersionsInput
 	c := meta.(*client.Client)
-	svc := c.Services().ElasticBeanstalk
+	svc := c.Services().Elasticbeanstalk
 
 	for {
 		output, err := svc.DescribeApplicationVersions(ctx, &config)

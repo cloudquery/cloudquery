@@ -12,9 +12,9 @@ import (
 )
 
 func buildApplicationAutoscalingPoliciesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockApplicationAutoscalingClient(ctrl)
+	m := mocks.NewMockApplicationautoscalingClient(ctrl)
 	services := client.Services{
-		ApplicationAutoscaling: m,
+		Applicationautoscaling: m,
 	}
 	c := types.ScalingPolicy{}
 	if err := faker.FakeObject(&c); err != nil {

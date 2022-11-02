@@ -13,7 +13,7 @@ import (
 func fetchEfsFilesystems(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config efs.DescribeFileSystemsInput
 	c := meta.(*client.Client)
-	svc := c.Services().EFS
+	svc := c.Services().Efs
 	for {
 		response, err := svc.DescribeFileSystems(ctx, &config)
 		if err != nil {
@@ -34,7 +34,7 @@ func ResolveEfsFilesystemBackupPolicyStatus(ctx context.Context, meta schema.Cli
 		FileSystemId: p.FileSystemId,
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().EFS
+	svc := cl.Services().Efs
 	response, err := svc.DescribeBackupPolicy(ctx, &config)
 	if err != nil {
 		if cl.IsNotFoundError(err) {

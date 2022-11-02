@@ -12,7 +12,7 @@ import (
 )
 
 func buildBatchImports(t *testing.T, ctrl *gomock.Controller) client.Services {
-	fdClient := mocks.NewMockFraudDetectorClient(ctrl)
+	fdClient := mocks.NewMockFrauddetectorClient(ctrl)
 
 	data := types.BatchImport{}
 	err := faker.FakeObject(&data)
@@ -25,7 +25,7 @@ func buildBatchImports(t *testing.T, ctrl *gomock.Controller) client.Services {
 	)
 
 	return client.Services{
-		FraudDetector: fdClient,
+		Frauddetector: fdClient,
 	}
 }
 

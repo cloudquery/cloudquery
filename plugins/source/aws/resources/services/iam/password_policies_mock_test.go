@@ -24,7 +24,7 @@ func buildIamPasswordPolicies(t *testing.T, ctrl *gomock.Controller) client.Serv
 			PasswordPolicy: &g,
 		}, nil)
 	return client.Services{
-		IAM: m,
+		Iam: m,
 	}
 }
 

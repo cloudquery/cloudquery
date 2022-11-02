@@ -13,7 +13,7 @@ import (
 
 func fetchCodepipelinePipelines(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	svc := c.Services().CodePipeline
+	svc := c.Services().Codepipeline
 	config := codepipeline.ListPipelinesInput{}
 	for {
 		response, err := svc.ListPipelines(ctx, &config)
@@ -32,7 +32,7 @@ func fetchCodepipelinePipelines(ctx context.Context, meta schema.ClientMeta, par
 
 func getPipeline(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	c := meta.(*client.Client)
-	svc := c.Services().CodePipeline
+	svc := c.Services().Codepipeline
 	item := resource.Item.(types.PipelineSummary)
 	response, err := svc.GetPipeline(ctx, &codepipeline.GetPipelineInput{Name: item.Name})
 	if err != nil {
@@ -46,7 +46,7 @@ func resolvePipelineTags(ctx context.Context, meta schema.ClientMeta, resource *
 	pipeline := resource.Item.(*codepipeline.GetPipelineOutput)
 
 	cl := meta.(*client.Client)
-	svc := cl.Services().CodePipeline
+	svc := cl.Services().Codepipeline
 	response, err := svc.ListTagsForResource(ctx, &codepipeline.ListTagsForResourceInput{
 		ResourceArn: pipeline.Metadata.PipelineArn,
 	})

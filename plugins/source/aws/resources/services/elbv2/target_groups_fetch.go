@@ -13,7 +13,7 @@ import (
 func fetchElbv2TargetGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config elbv2.DescribeTargetGroupsInput
 	c := meta.(*client.Client)
-	svc := c.Services().ELBv2
+	svc := c.Services().Elasticloadbalancingv2
 	for {
 		response, err := svc.DescribeTargetGroups(ctx, &config)
 		if err != nil {
@@ -30,7 +30,7 @@ func fetchElbv2TargetGroups(ctx context.Context, meta schema.ClientMeta, parent 
 func resolveElbv2targetGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	region := meta.(*client.Client).Region
-	svc := meta.(*client.Client).Services().ELBv2
+	svc := meta.(*client.Client).Services().Elasticloadbalancingv2
 	targetGroup := resource.Item.(types.TargetGroup)
 	tagsOutput, err := svc.DescribeTags(ctx, &elbv2.DescribeTagsInput{
 		ResourceArns: []string{
@@ -57,7 +57,7 @@ func resolveElbv2targetGroupTags(ctx context.Context, meta schema.ClientMeta, re
 
 func fetchElbv2TargetGroupTargetHealthDescriptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().ELBv2
+	svc := cl.Services().Elasticloadbalancingv2
 	tg := parent.Item.(types.TargetGroup)
 	response, err := svc.DescribeTargetHealth(ctx, &elbv2.DescribeTargetHealthInput{
 		TargetGroupArn: tg.TargetGroupArn,

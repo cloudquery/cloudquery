@@ -1,12 +1,12 @@
 package main
 
 import (
-	"log"
-
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/recipes"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/services"
+	"log"
 )
 
-func main() {
+func generateResources() error {
 	var resources []*recipes.Resource
 	resources = append(resources, recipes.AccessAnalyzerResources()...)
 	resources = append(resources, recipes.ACMResources()...)
@@ -85,7 +85,20 @@ func main() {
 	resources = append(resources, recipes.XRayResources()...)
 	for _, resource := range resources {
 		if err := resource.Generate(); err != nil {
-			log.Fatal(err)
+			return err
 		}
+	}
+	return nil
+}
+
+func main() {
+	err := generateResources()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = services.Generate()
+	if err != nil {
+		log.Fatal(err)
 	}
 }

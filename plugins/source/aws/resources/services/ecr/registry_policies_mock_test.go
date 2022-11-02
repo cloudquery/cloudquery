@@ -48,7 +48,7 @@ func buildEcrRegistryPoliciesMock(t *testing.T, ctrl *gomock.Controller) client.
 		}, nil)
 
 	return client.Services{
-		ECR: m,
+		Ecr: m,
 	}
 }
 

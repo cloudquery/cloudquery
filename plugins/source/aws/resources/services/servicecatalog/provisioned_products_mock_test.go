@@ -11,7 +11,7 @@ import (
 )
 
 func buildProvisionedProducts(t *testing.T, ctrl *gomock.Controller) client.Services {
-	mk := mocks.NewMockServiceCatalogClient(ctrl)
+	mk := mocks.NewMockServicecatalogClient(ctrl)
 
 	o := servicecatalog.SearchProvisionedProductsOutput{}
 	if err := faker.FakeObject(&o); err != nil {
@@ -25,7 +25,7 @@ func buildProvisionedProducts(t *testing.T, ctrl *gomock.Controller) client.Serv
 	)
 
 	return client.Services{
-		ServiceCatalog: mk,
+		Servicecatalog: mk,
 	}
 }
 
