@@ -17,5 +17,6 @@ jobs:
         with:
           vale_flags: "--glob='!{website/pages/blog/podcast-software-engineer-daily.md,*CHANGELOG.md,*/docs/tables/*,.github/styles/proselint/README.md,**/v1-migration.md}'"
           filter_mode: nofilter
+          fail_on_error: true
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
