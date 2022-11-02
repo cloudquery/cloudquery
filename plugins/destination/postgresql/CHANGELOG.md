@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v1.5.0...plugins-destination-postgresql-v1.6.0) (2022-11-02)
+
+
+### Features
+
+* Add unique constraint on _cq_id column ([#3449](https://github.com/cloudquery/cloudquery/issues/3449)) ([30fd8a3](https://github.com/cloudquery/cloudquery/commit/30fd8a370c73fff1effcb8474e49dac5cabf4653))
+
 ## [1.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v1.4.0...plugins-destination-postgresql-v1.5.0) (2022-11-01)
 
 
