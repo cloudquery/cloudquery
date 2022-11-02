@@ -1,0 +1,13 @@
+variables:
+  component: destination/sqlite
+
+project_name: plugins/destination/sqlite
+
+monorepo:
+  tag_prefix: plugins-destination-sqlite-
+  dir: plugins/destination/sqlite
+
+includes:
+  - from_file:
+      # Relative to the directory Go Releaser is run from (which is the root of the repository)
+      path: ./plugins/.goreleaser.yaml
