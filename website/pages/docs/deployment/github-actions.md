@@ -94,7 +94,7 @@ kind: source
 spec:
   name: 'aws-REGION_PLACEHOLDER' # when splitting configurations, we need to keep the names unique
   path: cloudquery/aws
-  version: 'v3.4.2' # latest version of aws plugin
+  version: 'v4.1.0' # latest version of aws plugin
   destinations: ['postgresql']
   spec:
     regions:
