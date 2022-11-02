@@ -29,6 +29,7 @@ func createAppsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
 			VnetConnections:    createVnetConnectionsMock(t, ctrl).Web.VnetConnections,
 			PublishingProfiles: createPublishingProfilesMock(t, ctrl).Web.PublishingProfiles,
 			SiteAuthSettingsV2: createSiteAuthSettingsV2Mock(t, ctrl).Web.SiteAuthSettingsV2,
+			Functions:          createFunctionsMock(t, ctrl).Web.Functions,
 		},
 	}
 
