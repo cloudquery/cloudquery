@@ -70,11 +70,6 @@ jobs:
         run: cloudquery sync cloudquery.yml --log-console
         env:
           CQ_DSN: ${{ secrets.CQ_DSN }} # Connection string to a PostgreSQL database
-      - uses: actions/upload-artifact@v3 # Upload logs as a GitHub actions artifact
-        if: always()
-        with:
-          name: 'cloudquery.log'
-          path: 'cloudquery.log'
 ```
 
 Once committed to the default branch of the repository, the above workflow will run daily at 3 a.m. and will sync the AWS source plugin with the PostgreSQL destination plugin.
@@ -144,11 +139,6 @@ jobs:
         run: cloudquery sync cloudquery-regions.yml --log-console
         env:
           CQ_DSN: ${{ secrets.CQ_DSN }} # Connection string to a PostgreSQL database
-      - uses: actions/upload-artifact@v3 # Upload logs as a GitHub actions artifact
-        if: always()
-        with:
-          name: 'cloudquery.log'
-          path: 'cloudquery-${{ matrix.region }}.log'
 ```
 
 Once committed to the default branch of the repository, the above workflow will run daily at 3 a.m and will sync the AWS source plugin with the PostgreSQL destination plugin, in parallel, using the regions defined in the matrix.
