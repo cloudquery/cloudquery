@@ -483,7 +483,13 @@ type EmrClient interface {
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_eventbridge.go . EventBridgeClient
 type EventBridgeClient interface {
+	ListApiDestinations(ctx context.Context, params *eventbridge.ListApiDestinationsInput, optFns ...func(*eventbridge.Options)) (*eventbridge.ListApiDestinationsOutput, error)
+	ListArchives(ctx context.Context, params *eventbridge.ListArchivesInput, optFns ...func(*eventbridge.Options)) (*eventbridge.ListArchivesOutput, error)
+	ListConnections(ctx context.Context, params *eventbridge.ListConnectionsInput, optFns ...func(*eventbridge.Options)) (*eventbridge.ListConnectionsOutput, error)
+	ListEndpoints(ctx context.Context, params *eventbridge.ListEndpointsInput, optFns ...func(*eventbridge.Options)) (*eventbridge.ListEndpointsOutput, error)
 	ListEventBuses(ctx context.Context, params *eventbridge.ListEventBusesInput, optFns ...func(*eventbridge.Options)) (*eventbridge.ListEventBusesOutput, error)
+	ListEventSources(ctx context.Context, params *eventbridge.ListEventSourcesInput, optFns ...func(*eventbridge.Options)) (*eventbridge.ListEventSourcesOutput, error)
+	ListReplays(ctx context.Context, params *eventbridge.ListReplaysInput, optFns ...func(*eventbridge.Options)) (*eventbridge.ListReplaysOutput, error)
 	ListRules(ctx context.Context, params *eventbridge.ListRulesInput, optFns ...func(*eventbridge.Options)) (*eventbridge.ListRulesOutput, error)
 	ListTagsForResource(ctx context.Context, params *eventbridge.ListTagsForResourceInput, optFns ...func(*eventbridge.Options)) (*eventbridge.ListTagsForResourceOutput, error)
 }

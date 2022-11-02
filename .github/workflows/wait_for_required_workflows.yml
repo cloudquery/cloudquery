@@ -49,6 +49,7 @@ jobs:
                            
                            "plugins/destination/postgresql",
                            "plugins/destination/test",
+                           "plugins/destination/csv",
                            ].filter(action => matchesFile(action))
             if (actions.length === 0) {
               console.log("No actions to wait for")

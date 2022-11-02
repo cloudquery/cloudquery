@@ -12,7 +12,6 @@ func SSMResources() []*Resource {
 			SubService:          "documents",
 			Struct:              &types.DocumentDescription{},
 			Description:         "https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_DocumentDescription.html",
-			SkipFields:          []string{"Tags"},
 			PreResourceResolver: "getDocument",
 			ExtraColumns: append(
 				defaultRegionalColumns,
@@ -27,11 +26,6 @@ func SSMResources() []*Resource {
 						Name:     "permissions",
 						Type:     schema.TypeJSON,
 						Resolver: `resolveDocumentPermission`,
-					},
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `client.ResolveTags`,
 					},
 				}...),
 		},

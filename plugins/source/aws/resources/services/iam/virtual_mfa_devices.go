@@ -27,16 +27,6 @@ func VirtualMfaDevices() *schema.Table {
 				},
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
-			},
-			{
-				Name:     "user_tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
-			},
-			{
 				Name:     "base32_string_seed",
 				Type:     schema.TypeIntArray,
 				Resolver: schema.PathResolver("Base32StringSeed"),
@@ -50,6 +40,11 @@ func VirtualMfaDevices() *schema.Table {
 				Name:     "qr_code_png",
 				Type:     schema.TypeIntArray,
 				Resolver: schema.PathResolver("QRCodePNG"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "user",

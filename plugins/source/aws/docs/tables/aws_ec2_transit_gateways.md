@@ -21,7 +21,6 @@ The following tables depend on aws_ec2_transit_gateways:
 |_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
-|tags|JSON|
 |id|String|
 |arn (PK)|String|
 |creation_time|Timestamp|
@@ -29,3 +28,4 @@ The following tables depend on aws_ec2_transit_gateways:
 |options|JSON|
 |owner_id|String|
 |state|String|
+|tags|JSON|

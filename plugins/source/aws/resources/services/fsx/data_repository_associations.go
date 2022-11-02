@@ -33,11 +33,6 @@ func DataRepositoryAssociations() *schema.Table {
 				},
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
-			},
-			{
 				Name:     "association_id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("AssociationId"),
@@ -106,6 +101,11 @@ func DataRepositoryAssociations() *schema.Table {
 				Name:     "s3",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("S3"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 		},
 	}

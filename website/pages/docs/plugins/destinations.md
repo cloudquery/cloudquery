@@ -6,7 +6,7 @@ This is a list of all official and community destination plugins.
 
 | **Name**                 | Latest Version | Changelog                         | Stage |
 |--------------------------|----------------|-----------------------------------|-------|
-| [PostgreSQL][postgresql] | v1.5.0         | [Changelog][PostgreSQL-Changelog] | GA    |
+| [PostgreSQL][postgresql] | v1.6.0         | [Changelog][PostgreSQL-Changelog] | GA    |
 | [CSV][csv] | v1.0.0         | [Changelog][CSV-Changelog] | Preview|
 
 [PostgreSQL]: https://github.com/cloudquery/cloudquery/blob/main/plugins/destination/postgresql/README.md

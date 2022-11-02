@@ -9,6 +9,19 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v1.2.0...plugins-source-azure-v1.3.0) (2022-11-02)
+
+
+### Features
+
+* Add Azure functions ([#3182](https://github.com/cloudquery/cloudquery/issues/3182)) ([1020ef9](https://github.com/cloudquery/cloudquery/commit/1020ef98e8d2d65b82d215afecdb0d9339911451))
+* **Azure:** Add site auth settings v2 ([#3269](https://github.com/cloudquery/cloudquery/issues/3269)) ([fd54aff](https://github.com/cloudquery/cloudquery/commit/fd54affea4b10c93a79bfb2f7213a87133ff85f5))
+
+
+### Bug Fixes
+
+* **azure:** Handle nil `VnetName` ([#3181](https://github.com/cloudquery/cloudquery/issues/3181)) ([0006490](https://github.com/cloudquery/cloudquery/commit/00064906c202b35e4a1577b9db27c1de52ac4b9c))
+
 ## [1.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v1.1.0...plugins-source-azure-v1.2.0) (2022-11-01)
 
 

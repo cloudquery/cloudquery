@@ -32,11 +32,6 @@ func LoadBalancers() *schema.Table {
 				},
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
-			},
-			{
 				Name:     "configuration_options",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("ConfigurationOptions"),
@@ -110,6 +105,11 @@ func LoadBalancers() *schema.Table {
 				Name:     "support_code",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("SupportCode"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "tls_certificate_summaries",

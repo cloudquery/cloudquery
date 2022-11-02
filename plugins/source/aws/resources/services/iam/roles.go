@@ -42,11 +42,6 @@ func Roles() *schema.Table {
 				Resolver: resolveRolesAssumeRolePolicyDocument,
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
-			},
-			{
 				Name:     "arn",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Arn"),
@@ -85,6 +80,11 @@ func Roles() *schema.Table {
 				Name:     "role_last_used",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("RoleLastUsed"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 		},
 

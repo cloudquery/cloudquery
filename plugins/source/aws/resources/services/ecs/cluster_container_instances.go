@@ -30,11 +30,6 @@ func ClusterContainerInstances() *schema.Table {
 				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
-			},
-			{
 				Name:     "agent_connected",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("AgentConnected"),
@@ -108,6 +103,11 @@ func ClusterContainerInstances() *schema.Table {
 				Name:     "status_reason",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("StatusReason"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "version",
