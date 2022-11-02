@@ -72,6 +72,7 @@ func main() {
 	resources = append(resources, recipes.SagemakerResources()...)
 	resources = append(resources, recipes.SecretsManagerResources()...)
 	resources = append(resources, recipes.ServiceCatalogResources()...)
+	resources = append(resources, recipes.ServiceQuotasResources()...)
 	resources = append(resources, recipes.SESResources()...)
 	resources = append(resources, recipes.ShieldResources()...)
 	resources = append(resources, recipes.SNSResources()...)

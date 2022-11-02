@@ -82,6 +82,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalog"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry"
+	"github.com/aws/aws-sdk-go-v2/service/servicequotas"
 	"github.com/aws/aws-sdk-go-v2/service/sesv2"
 	"github.com/aws/aws-sdk-go-v2/service/shield"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
@@ -204,6 +205,7 @@ type Services struct {
 	SecretsManager         SecretsManagerClient
 	ServiceCatalog         ServiceCatalogClient
 	ServiceCatalogAR       ServiceCatalogAppRegistryClient
+	ServiceQuotas          ServiceQuotasClient
 	SES                    SESClient
 	Shield                 ShieldClient
 	SNS                    SnsClient
@@ -686,6 +688,7 @@ func initServices(region string, c aws.Config) Services {
 		SecretsManager:         secretsmanager.NewFromConfig(awsCfg),
 		ServiceCatalog:         servicecatalog.NewFromConfig(awsCfg),
 		ServiceCatalogAR:       servicecatalogappregistry.NewFromConfig(awsCfg),
+		ServiceQuotas:          servicequotas.NewFromConfig(awsCfg),
 		SES:                    sesv2.NewFromConfig(awsCfg),
 		Shield:                 shield.NewFromConfig(awsCfg),
 		SNS:                    sns.NewFromConfig(awsCfg),

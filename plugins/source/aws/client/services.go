@@ -71,6 +71,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalog"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry"
+	"github.com/aws/aws-sdk-go-v2/service/servicequotas"
 	"github.com/aws/aws-sdk-go-v2/service/sesv2"
 	"github.com/aws/aws-sdk-go-v2/service/shield"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
@@ -873,6 +874,12 @@ type ServiceCatalogClient interface {
 //go:generate mockgen -package=mocks -destination=./mocks/mock_service_catalog_app_registry.go . ServiceCatalogAppRegistryClient
 type ServiceCatalogAppRegistryClient interface {
 	ListTagsForResource(ctx context.Context, params *servicecatalogappregistry.ListTagsForResourceInput, optFns ...func(*servicecatalogappregistry.Options)) (*servicecatalogappregistry.ListTagsForResourceOutput, error)
+}
+
+//go:generate mockgen -package=mocks -destination=./mocks/mock_servicequotas.go . ServiceQuotasClient
+type ServiceQuotasClient interface {
+	servicequotas.ListServiceQuotasAPIClient
+	servicequotas.ListServicesAPIClient
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/ses.go . SESClient
