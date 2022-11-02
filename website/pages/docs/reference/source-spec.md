@@ -12,8 +12,7 @@ This example configures the AWS plugin, and connects is to a `postgresql` destin
 kind: source
 spec:
   name: "aws"
-  registry: github
-  path: "aws"
+  path: "cloudquery/aws"
   version: "v4.0.0" # latest version of aws plugin
   destinations: ["postgresql"]
 

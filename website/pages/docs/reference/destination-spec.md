@@ -10,8 +10,7 @@ This example configures the `postgresql` plugin to connect to a PostgreSQL datab
 kind: destination
 spec:
   name: "postgresql"
-  registry: github
-  path: "postgresql"
+  path: "cloudquery/postgresql"
   version: "v1.6.0" # latest version of postgresql plugin
 
   spec:
