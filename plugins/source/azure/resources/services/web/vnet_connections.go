@@ -92,7 +92,7 @@ func fetchWebVnetConnections(ctx context.Context, meta schema.ClientMeta, parent
 	svc := meta.(*client.Client).Services().Web.VnetConnections
 
 	site := parent.Item.(web.Site)
-	if site.SiteConfig == nil {
+	if site.SiteConfig == nil || site.SiteConfig.VnetName == nil {
 		return nil
 	}
 
