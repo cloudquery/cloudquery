@@ -123,7 +123,8 @@ func NewCmdRoot() *cobra.Command {
 	cmd.PersistentFlags().StringVar(&logFileName, "log-file-name", "cloudquery.log", "Log filename")
 
 	// Telemetry (analytics) flags
-	cmd.PersistentFlags().Var(telemetryLevel, "telemetry-level", "Telemetry level (none, errors, stats, all)")
+	f := cmd.PersistentFlags().VarPF(telemetryLevel, "telemetry-level", "", "Telemetry level (none, errors, stats, all)")
+	f.DefValue = "all"
 
 	cmd.SetHelpCommand(&cobra.Command{Hidden: true})
 	cmd.AddCommand(
