@@ -315,6 +315,7 @@ func tables() []*schema.Table {
 		servicecatalog.ProvisionedProducts(),
 		ses.ConfigurationSets(),
 		ses.ContactLists(),
+		ses.Identities(),
 		ses.Templates(),
 		shield.Attacks(),
 		shield.ProtectionGroups(),

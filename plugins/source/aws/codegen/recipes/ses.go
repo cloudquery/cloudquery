@@ -84,6 +84,24 @@ func SESResources() []*Resource {
 					},
 				}...),
 		},
+		{
+			SubService:            "identities",
+			Struct:                &models.EmailIdentityWrapper{},
+			UnwrapEmbeddedStructs: true,
+			Description:           "https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_GetEmailIdentity.html",
+			PreResourceResolver:   "getEmailIdentity",
+			SkipFields:            []string{"IdentityName", "ResultMetadata"},
+			ExtraColumns: append(
+				defaultRegionalColumnsPK,
+				[]codegen.ColumnDefinition{
+					{
+						Name:     "name",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("IdentityName")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				}...),
+		},
 	}
 
 	// set default values
