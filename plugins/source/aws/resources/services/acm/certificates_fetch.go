@@ -44,5 +44,5 @@ func resolveCertificateTags(ctx context.Context, meta schema.ClientMeta, resourc
 	if err != nil {
 		return err
 	}
-	return resource.Set(c.Name, out.Tags)
+	return resource.Set(c.Name, client.TagsToMap(out.Tags))
 }

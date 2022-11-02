@@ -35,6 +35,86 @@ func (m *MockEventBridgeClient) EXPECT() *MockEventBridgeClientMockRecorder {
 	return m.recorder
 }
 
+// ListApiDestinations mocks base method.
+func (m *MockEventBridgeClient) ListApiDestinations(arg0 context.Context, arg1 *eventbridge.ListApiDestinationsInput, arg2 ...func(*eventbridge.Options)) (*eventbridge.ListApiDestinationsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListApiDestinations", varargs...)
+	ret0, _ := ret[0].(*eventbridge.ListApiDestinationsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListApiDestinations indicates an expected call of ListApiDestinations.
+func (mr *MockEventBridgeClientMockRecorder) ListApiDestinations(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListApiDestinations", reflect.TypeOf((*MockEventBridgeClient)(nil).ListApiDestinations), varargs...)
+}
+
+// ListArchives mocks base method.
+func (m *MockEventBridgeClient) ListArchives(arg0 context.Context, arg1 *eventbridge.ListArchivesInput, arg2 ...func(*eventbridge.Options)) (*eventbridge.ListArchivesOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListArchives", varargs...)
+	ret0, _ := ret[0].(*eventbridge.ListArchivesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListArchives indicates an expected call of ListArchives.
+func (mr *MockEventBridgeClientMockRecorder) ListArchives(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListArchives", reflect.TypeOf((*MockEventBridgeClient)(nil).ListArchives), varargs...)
+}
+
+// ListConnections mocks base method.
+func (m *MockEventBridgeClient) ListConnections(arg0 context.Context, arg1 *eventbridge.ListConnectionsInput, arg2 ...func(*eventbridge.Options)) (*eventbridge.ListConnectionsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListConnections", varargs...)
+	ret0, _ := ret[0].(*eventbridge.ListConnectionsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListConnections indicates an expected call of ListConnections.
+func (mr *MockEventBridgeClientMockRecorder) ListConnections(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListConnections", reflect.TypeOf((*MockEventBridgeClient)(nil).ListConnections), varargs...)
+}
+
+// ListEndpoints mocks base method.
+func (m *MockEventBridgeClient) ListEndpoints(arg0 context.Context, arg1 *eventbridge.ListEndpointsInput, arg2 ...func(*eventbridge.Options)) (*eventbridge.ListEndpointsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListEndpoints", varargs...)
+	ret0, _ := ret[0].(*eventbridge.ListEndpointsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListEndpoints indicates an expected call of ListEndpoints.
+func (mr *MockEventBridgeClientMockRecorder) ListEndpoints(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListEndpoints", reflect.TypeOf((*MockEventBridgeClient)(nil).ListEndpoints), varargs...)
+}
+
 // ListEventBuses mocks base method.
 func (m *MockEventBridgeClient) ListEventBuses(arg0 context.Context, arg1 *eventbridge.ListEventBusesInput, arg2 ...func(*eventbridge.Options)) (*eventbridge.ListEventBusesOutput, error) {
 	m.ctrl.T.Helper()
@@ -53,6 +133,46 @@ func (mr *MockEventBridgeClientMockRecorder) ListEventBuses(arg0, arg1 interface
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListEventBuses", reflect.TypeOf((*MockEventBridgeClient)(nil).ListEventBuses), varargs...)
+}
+
+// ListEventSources mocks base method.
+func (m *MockEventBridgeClient) ListEventSources(arg0 context.Context, arg1 *eventbridge.ListEventSourcesInput, arg2 ...func(*eventbridge.Options)) (*eventbridge.ListEventSourcesOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListEventSources", varargs...)
+	ret0, _ := ret[0].(*eventbridge.ListEventSourcesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListEventSources indicates an expected call of ListEventSources.
+func (mr *MockEventBridgeClientMockRecorder) ListEventSources(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListEventSources", reflect.TypeOf((*MockEventBridgeClient)(nil).ListEventSources), varargs...)
+}
+
+// ListReplays mocks base method.
+func (m *MockEventBridgeClient) ListReplays(arg0 context.Context, arg1 *eventbridge.ListReplaysInput, arg2 ...func(*eventbridge.Options)) (*eventbridge.ListReplaysOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListReplays", varargs...)
+	ret0, _ := ret[0].(*eventbridge.ListReplaysOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListReplays indicates an expected call of ListReplays.
+func (mr *MockEventBridgeClientMockRecorder) ListReplays(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListReplays", reflect.TypeOf((*MockEventBridgeClient)(nil).ListReplays), varargs...)
 }
 
 // ListRules mocks base method.

@@ -37,11 +37,6 @@ func Instances() *schema.Table {
 				},
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
-			},
-			{
 				Name:     "add_ons",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("AddOns"),
@@ -135,6 +130,11 @@ func Instances() *schema.Table {
 				Name:     "support_code",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("SupportCode"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "username",

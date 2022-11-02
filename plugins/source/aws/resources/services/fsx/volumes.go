@@ -33,11 +33,6 @@ func Volumes() *schema.Table {
 				},
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
-			},
-			{
 				Name:          "administrative_actions",
 				Type:          schema.TypeJSON,
 				Resolver:      schema.PathResolver("AdministrativeActions"),
@@ -77,6 +72,11 @@ func Volumes() *schema.Table {
 				Name:     "open_zfs_configuration",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("OpenZFSConfiguration"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "volume_id",

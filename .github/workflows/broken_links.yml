@@ -54,5 +54,6 @@ jobs:
             --exclude fonts.googleapis.com \
             --exclude github.com \
             --exclude support.google.com \
+            --exclude www.work-bench.com \
             ${{ steps.vercel.outputs.url }} \
             | grep -v '───OK───' | grep -v '──SKIP──' | grep -v '0 broken'

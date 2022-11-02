@@ -24,11 +24,6 @@ type Client struct {
 	batchSize           int
 }
 
-type pgTablePrimaryKeys struct {
-	name    string
-	columns []string
-}
-
 type pgColumn struct {
 	name string
 	typ  string
@@ -181,15 +176,6 @@ func (c *Client) getPgTableColumns(ctx context.Context, tableName string) (*pgTa
 		return nil, err
 	}
 	return &tc, nil
-}
-
-func (c *pgTablePrimaryKeys) columnExist(column string) bool {
-	for _, col := range c.columns {
-		if col == column {
-			return true
-		}
-	}
-	return false
 }
 
 func (c *pgTableColumns) getPgColumn(column string) *pgColumn {

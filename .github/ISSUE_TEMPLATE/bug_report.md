@@ -21,7 +21,7 @@ Output of `cloudquery version`
 
 ### Debug Output
 <!--
-Full debug output can be obtained by running `cloudquery --enable-console-log --verbose`
+Full debug output can be obtained by running `cloudquery --log-console --log-level debug`
 
 Debug logs may contain sensitive information. Please review and censor it before posting publicly.
 -->
@@ -30,8 +30,7 @@ Debug logs may contain sensitive information. Please review and censor it before
 <!--
 Please list all steps required to reproduce the issue, for example:
 ```
-cloudquery init
-cloudquery fetch
+cloudquery sync .
 ```
 
 Also please share any other necessary configuration files

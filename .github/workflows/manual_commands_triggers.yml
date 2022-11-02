@@ -14,7 +14,7 @@ jobs:
         id: manually_approved
         run: |
           manually_approved=${{ github.event_name == 'repository_dispatch' && github.event.client_payload.slash_command.args.named.sha != '' && contains(github.event.client_payload.pull_request.head.sha, github.event.client_payload.slash_command.args.named.sha) }}
-          echo ::set-output name=result::"$manually_approved"
+          echo "result=${manually_approved}" >> $GITHUB_OUTPUT
   gen:
     needs: [ok-to-run]
     if: github.event_name == 'repository_dispatch' && github.event.action == 'gen-command' && needs.ok-to-run.outputs.status == 'true'

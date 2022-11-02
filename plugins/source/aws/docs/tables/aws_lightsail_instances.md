@@ -19,7 +19,6 @@ The following tables depend on aws_lightsail_instances:
 |region|String|
 |access_details|JSON|
 |arn (PK)|String|
-|tags|JSON|
 |add_ons|JSON|
 |blueprint_id|String|
 |blueprint_name|String|
@@ -39,4 +38,5 @@ The following tables depend on aws_lightsail_instances:
 |ssh_key_name|String|
 |state|JSON|
 |support_code|String|
+|tags|JSON|
 |username|String|
