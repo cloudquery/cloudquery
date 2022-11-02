@@ -33,11 +33,6 @@ func InternetGateways() *schema.Table {
 				},
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
-			},
-			{
 				Name:     "attachments",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Attachments"),
@@ -51,6 +46,11 @@ func InternetGateways() *schema.Table {
 				Name:     "owner_id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("OwnerId"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 		},
 	}

@@ -38,11 +38,6 @@ func Stacks() *schema.Table {
 				},
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
-			},
-			{
 				Name:     "creation_time",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreationTime"),
@@ -136,6 +131,11 @@ func Stacks() *schema.Table {
 				Name:     "stack_status_reason",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("StackStatusReason"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "timeout_in_minutes",

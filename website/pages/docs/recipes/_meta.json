@@ -1,6 +1,7 @@
 {
   "overview": "Overview",
   "aws-postgresql": "AWS + PostgreSQL",
-  "gcp-postgresql": "GCP + Postgresql",
+  "gcp-postgresql": "GCP + PostgreSQL",
+  "gcp-k8s-postgresql": "GCP + Kubernetes (GKE) + PostgreSQL",
   "azure-postgresql": "Azure + PostgreSQL"
 }

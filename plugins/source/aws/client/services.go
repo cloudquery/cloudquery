@@ -43,6 +43,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/emr"
 	"github.com/aws/aws-sdk-go-v2/service/eventbridge"
 	"github.com/aws/aws-sdk-go-v2/service/firehose"
+	"github.com/aws/aws-sdk-go-v2/service/frauddetector"
 	"github.com/aws/aws-sdk-go-v2/service/fsx"
 	"github.com/aws/aws-sdk-go-v2/service/glacier"
 	"github.com/aws/aws-sdk-go-v2/service/glue"
@@ -482,7 +483,13 @@ type EmrClient interface {
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_eventbridge.go . EventBridgeClient
 type EventBridgeClient interface {
+	ListApiDestinations(ctx context.Context, params *eventbridge.ListApiDestinationsInput, optFns ...func(*eventbridge.Options)) (*eventbridge.ListApiDestinationsOutput, error)
+	ListArchives(ctx context.Context, params *eventbridge.ListArchivesInput, optFns ...func(*eventbridge.Options)) (*eventbridge.ListArchivesOutput, error)
+	ListConnections(ctx context.Context, params *eventbridge.ListConnectionsInput, optFns ...func(*eventbridge.Options)) (*eventbridge.ListConnectionsOutput, error)
+	ListEndpoints(ctx context.Context, params *eventbridge.ListEndpointsInput, optFns ...func(*eventbridge.Options)) (*eventbridge.ListEndpointsOutput, error)
 	ListEventBuses(ctx context.Context, params *eventbridge.ListEventBusesInput, optFns ...func(*eventbridge.Options)) (*eventbridge.ListEventBusesOutput, error)
+	ListEventSources(ctx context.Context, params *eventbridge.ListEventSourcesInput, optFns ...func(*eventbridge.Options)) (*eventbridge.ListEventSourcesOutput, error)
+	ListReplays(ctx context.Context, params *eventbridge.ListReplaysInput, optFns ...func(*eventbridge.Options)) (*eventbridge.ListReplaysOutput, error)
 	ListRules(ctx context.Context, params *eventbridge.ListRulesInput, optFns ...func(*eventbridge.Options)) (*eventbridge.ListRulesOutput, error)
 	ListTagsForResource(ctx context.Context, params *eventbridge.ListTagsForResourceInput, optFns ...func(*eventbridge.Options)) (*eventbridge.ListTagsForResourceOutput, error)
 }
@@ -492,6 +499,23 @@ type FirehoseClient interface {
 	DescribeDeliveryStream(ctx context.Context, params *firehose.DescribeDeliveryStreamInput, optFns ...func(*firehose.Options)) (*firehose.DescribeDeliveryStreamOutput, error)
 	ListDeliveryStreams(ctx context.Context, params *firehose.ListDeliveryStreamsInput, optFns ...func(*firehose.Options)) (*firehose.ListDeliveryStreamsOutput, error)
 	ListTagsForDeliveryStream(ctx context.Context, params *firehose.ListTagsForDeliveryStreamInput, optFns ...func(*firehose.Options)) (*firehose.ListTagsForDeliveryStreamOutput, error)
+}
+
+//go:generate mockgen -package=mocks -destination=./mocks/frauddetector.go . FraudDetectorClient
+type FraudDetectorClient interface {
+	frauddetector.DescribeModelVersionsAPIClient
+	frauddetector.GetBatchImportJobsAPIClient
+	frauddetector.GetBatchPredictionJobsAPIClient
+	frauddetector.GetDetectorsAPIClient
+	frauddetector.GetEntityTypesAPIClient
+	frauddetector.GetEventTypesAPIClient
+	frauddetector.GetExternalModelsAPIClient
+	frauddetector.GetLabelsAPIClient
+	frauddetector.GetModelsAPIClient
+	frauddetector.GetOutcomesAPIClient
+	frauddetector.GetRulesAPIClient
+	frauddetector.GetVariablesAPIClient
+	frauddetector.ListTagsForResourceAPIClient
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/fsx.go . FsxClient

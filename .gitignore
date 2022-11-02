@@ -22,7 +22,7 @@ test_init_config.yml
 telemetry-random-id
 go.work
 go.work.sum
+go.work.backup
+go.work.sum.backup
 cli/examples
 cli/cli
-plugins/source/aws/aws
-plugins/source/gcp/gcp

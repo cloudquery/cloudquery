@@ -30,11 +30,6 @@ func TransitGatewayVpcAttachments() *schema.Table {
 				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
-			},
-			{
 				Name:     "creation_time",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreationTime"),
@@ -53,6 +48,11 @@ func TransitGatewayVpcAttachments() *schema.Table {
 				Name:     "subnet_ids",
 				Type:     schema.TypeStringArray,
 				Resolver: schema.PathResolver("SubnetIds"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "transit_gateway_attachment_id",

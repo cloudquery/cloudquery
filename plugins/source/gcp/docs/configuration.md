@@ -1,15 +1,33 @@
 # GCP Source Plugin Configuration Reference
 
+## Example
+
+This example connects a single GCP project to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](https://www.cloudquery.io/docs/reference/source-spec).
+
+```yml
+kind: source
+spec:
+  # Source spec section
+  name: "gcp"
+  path: "cloudquery/gcp"
+  version: "v2.4.0" # latest version of gcp plugin
+  destinations: ["postgresql"]
+
+  spec:
+    # GCP Spec section described below
+    project_ids: ["my-project"]
+```
+
 ## GCP Spec
 
-This is the top level spec used by GCP Source Plugin
+This is the (nested) spec used by GCP Source Plugin
 
 - `project_ids` ([]string) (default: empty. will use all available projects available to the current authenticated account)
 
   Specify specific projects to connect to. If either `folder_ids` or `project_filter` is specified, these projects will be fetched in addition
   to the projects from the folder/filter.
 
-- `service_account_key_json` (string)
+- `service_account_key_json` (string) (default: empty).
 
   GCP service account key content. Using service accounts is not recommended, but if it is used it is better to use env variable expansion
 

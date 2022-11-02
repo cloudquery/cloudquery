@@ -13,7 +13,9 @@ import (
 func fetchNeptuneDbParameterGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Neptune
-	var input neptune.DescribeDBParameterGroupsInput
+	input := neptune.DescribeDBParameterGroupsInput{
+		Filters: []types.Filter{{Name: aws.String("engine"), Values: []string{"neptune"}}},
+	}
 	for {
 		output, err := svc.DescribeDBParameterGroups(ctx, &input)
 		if err != nil {

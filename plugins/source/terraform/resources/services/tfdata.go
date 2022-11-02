@@ -104,7 +104,7 @@ func TFData() *schema.Table {
 						Columns: []schema.Column{
 							{
 								Name:     "resource_name",
-								Type:     schema.TypeUUID,
+								Type:     schema.TypeString,
 								Resolver: schema.ParentColumnResolver("name"),
 							},
 							{

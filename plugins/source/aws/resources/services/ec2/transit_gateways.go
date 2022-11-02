@@ -20,17 +20,14 @@ func TransitGateways() *schema.Table {
 				Resolver: client.ResolveAWSAccount,
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
+				Name:     "region",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAWSRegion,
 			},
 			{
 				Name:     "id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("TransitGatewayId"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
 				Name:     "arn",
@@ -64,6 +61,11 @@ func TransitGateways() *schema.Table {
 				Name:     "state",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("State"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 		},
 

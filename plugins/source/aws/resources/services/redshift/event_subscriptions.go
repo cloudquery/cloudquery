@@ -34,12 +34,6 @@ func EventSubscriptions() *schema.Table {
 				},
 			},
 			{
-				Name:        "tags",
-				Type:        schema.TypeJSON,
-				Resolver:    client.ResolveTags,
-				Description: `Tags`,
-			},
-			{
 				Name:     "cust_subscription_id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("CustSubscriptionId"),
@@ -88,6 +82,11 @@ func EventSubscriptions() *schema.Table {
 				Name:     "subscription_creation_time",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("SubscriptionCreationTime"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 		},
 	}

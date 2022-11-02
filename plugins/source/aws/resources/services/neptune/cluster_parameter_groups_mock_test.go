@@ -20,7 +20,9 @@ func buildNeptuneClusterParameterGroups(t *testing.T, ctrl *gomock.Controller) c
 	}
 	mock.EXPECT().DescribeDBClusterParameterGroups(
 		gomock.Any(),
-		&neptune.DescribeDBClusterParameterGroupsInput{},
+		&neptune.DescribeDBClusterParameterGroupsInput{
+			Filters: []types.Filter{{Name: aws.String("engine"), Values: []string{"neptune"}}},
+		},
 		gomock.Any(),
 	).Return(
 		&neptune.DescribeDBClusterParameterGroupsOutput{DBClusterParameterGroups: []types.DBClusterParameterGroup{g}},

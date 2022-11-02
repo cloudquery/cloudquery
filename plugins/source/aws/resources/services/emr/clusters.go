@@ -34,11 +34,6 @@ func Clusters() *schema.Table {
 				},
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
-			},
-			{
 				Name:     "applications",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Applications"),
@@ -172,6 +167,11 @@ func Clusters() *schema.Table {
 				Name:     "step_concurrency_level",
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("StepConcurrencyLevel"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "termination_protected",

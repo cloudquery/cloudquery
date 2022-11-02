@@ -167,9 +167,27 @@
 | ↳ [aws_elbv2_target_group_target_health_descriptions](aws_elbv2_target_group_target_health_descriptions.md) |
 | [aws_emr_block_public_access_configs](aws_emr_block_public_access_configs.md) |
 | [aws_emr_clusters](aws_emr_clusters.md) |
+| [aws_eventbridge_api_destinations](aws_eventbridge_api_destinations.md) |
+| [aws_eventbridge_archives](aws_eventbridge_archives.md) |
+| [aws_eventbridge_connections](aws_eventbridge_connections.md) |
+| [aws_eventbridge_endpoints](aws_eventbridge_endpoints.md) |
 | [aws_eventbridge_event_buses](aws_eventbridge_event_buses.md) |
 | ↳ [aws_eventbridge_event_bus_rules](aws_eventbridge_event_bus_rules.md) |
+| [aws_eventbridge_event_sources](aws_eventbridge_event_sources.md) |
+| [aws_eventbridge_replays](aws_eventbridge_replays.md) |
 | [aws_firehose_delivery_streams](aws_firehose_delivery_streams.md) |
+| [aws_frauddetector_batch_imports](aws_frauddetector_batch_imports.md) |
+| [aws_frauddetector_batch_predictions](aws_frauddetector_batch_predictions.md) |
+| [aws_frauddetector_detectors](aws_frauddetector_detectors.md) |
+| ↳ [aws_frauddetector_rules](aws_frauddetector_rules.md) |
+| [aws_frauddetector_entity_types](aws_frauddetector_entity_types.md) |
+| [aws_frauddetector_event_types](aws_frauddetector_event_types.md) |
+| [aws_frauddetector_external_models](aws_frauddetector_external_models.md) |
+| [aws_frauddetector_labels](aws_frauddetector_labels.md) |
+| [aws_frauddetector_models](aws_frauddetector_models.md) |
+| ↳ [aws_frauddetector_model_versions](aws_frauddetector_model_versions.md) |
+| [aws_frauddetector_outcomes](aws_frauddetector_outcomes.md) |
+| [aws_frauddetector_variables](aws_frauddetector_variables.md) |
 | [aws_fsx_backups](aws_fsx_backups.md) |
 | [aws_fsx_data_repository_associations](aws_fsx_data_repository_associations.md) |
 | [aws_fsx_data_repository_tasks](aws_fsx_data_repository_tasks.md) |

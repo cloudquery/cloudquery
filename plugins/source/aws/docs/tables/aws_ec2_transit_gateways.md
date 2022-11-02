@@ -2,7 +2,7 @@
 
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGateway.html
 
-The composite primary key for this table is (**id**, **arn**).
+The primary key for this table is **arn**.
 
 ## Relations
 The following tables depend on aws_ec2_transit_gateways:
@@ -20,11 +20,12 @@ The following tables depend on aws_ec2_transit_gateways:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |account_id|String|
-|tags|JSON|
-|id (PK)|String|
+|region|String|
+|id|String|
 |arn (PK)|String|
 |creation_time|Timestamp|
 |description|String|
 |options|JSON|
 |owner_id|String|
 |state|String|
+|tags|JSON|

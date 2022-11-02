@@ -21,9 +21,9 @@ The following tables depend on aws_iam_users:
 |arn|String|
 |id (PK)|String|
 |account_id (PK)|String|
-|tags|JSON|
 |create_date|Timestamp|
 |path|String|
 |user_name|String|
 |password_last_used|Timestamp|
 |permissions_boundary|JSON|
+|tags|JSON|

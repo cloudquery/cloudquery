@@ -33,11 +33,6 @@ func VirtualInterfaces() *schema.Table {
 				},
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
-			},
-			{
 				Name:     "id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("VirtualInterfaceId"),
@@ -131,6 +126,11 @@ func VirtualInterfaces() *schema.Table {
 				Name:     "site_link_enabled",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("SiteLinkEnabled"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "virtual_gateway_id",
