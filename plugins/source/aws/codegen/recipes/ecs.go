@@ -16,7 +16,7 @@ func ECSResources() []*Resource {
 			SubService:  "clusters",
 			Struct:      &types.Cluster{},
 			Description: "https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_Cluster.html",
-			SkipFields:  []string{"Tags", "ClusterArn"},
+			SkipFields:  []string{"ClusterArn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -25,11 +25,6 @@ func ECSResources() []*Resource {
 						Type:     schema.TypeString,
 						Resolver: `schema.PathResolver("ClusterArn")`,
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `client.ResolveTags`,
 					},
 				}...),
 			Relations: []string{
@@ -64,7 +59,7 @@ func ECSResources() []*Resource {
 			SubService:  "cluster_services",
 			Struct:      &types.Service{},
 			Description: "https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_Service.html",
-			SkipFields:  []string{"Tags", "ServiceArn"},
+			SkipFields:  []string{"ServiceArn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -74,11 +69,6 @@ func ECSResources() []*Resource {
 						Resolver: `schema.PathResolver("ServiceArn")`,
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `client.ResolveTags`,
-					},
 				}...),
 			Relations: []string{},
 		},
@@ -86,7 +76,6 @@ func ECSResources() []*Resource {
 			SubService:  "cluster_container_instances",
 			Struct:      &types.ContainerInstance{},
 			Description: "https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ContainerInstance.html",
-			SkipFields:  []string{"Tags"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -94,11 +83,6 @@ func ECSResources() []*Resource {
 						Name:     "cluster_arn",
 						Type:     schema.TypeString,
 						Resolver: `schema.ParentColumnResolver("arn")`,
-					},
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `client.ResolveTags`,
 					},
 				}...),
 			Relations: []string{},

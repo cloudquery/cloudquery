@@ -20,6 +20,21 @@ func Web() []Resource {
 		mockListResult:           mockDirectResponse,
 	}
 
+	var authSettingsV2Resource = resourceDefinition{
+		azureStruct:          &web.SiteAuthSettingsV2{},
+		listFunction:         "GetAuthSettingsV2",
+		listFunctionArgsInit: []string{"site := parent.Item.(web.Site)"},
+		listFunctionArgs:     []string{"*site.ResourceGroup", "*site.Name"},
+		listHandler: `if err != nil {
+				return err
+			}
+			res <- response`,
+		mockListFunctionArgsInit: []string{""},
+		mockListFunctionArgs:     []string{`"test"`, `"test"`},
+		mockListResult:           mockDirectResponse,
+		subServiceOverride:       "SiteAuthSettingsV2",
+	}
+
 	var vnetInfoResource = resourceDefinition{
 		azureStruct:  &web.VnetInfo{},
 		listFunction: "GetVnetConnection",
@@ -57,6 +72,7 @@ func Web() []Resource {
 		authSettingsResource,
 		vnetInfoResource,
 		publishingProfileResource,
+		authSettingsV2Resource,
 	}
 
 	var resourcesByTemplates = []byTemplates{

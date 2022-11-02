@@ -40,6 +40,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/emr"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/eventbridge"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/firehose"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/frauddetector"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/fsx"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/glacier"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/glue"
@@ -191,8 +192,24 @@ func tables() []*schema.Table {
 		elbv2.TargetGroups(),
 		emr.BlockPublicAccessConfigs(),
 		emr.Clusters(),
+		eventbridge.ApiDestinations(),
+		eventbridge.Archives(),
+		eventbridge.Connections(),
+		eventbridge.Endpoints(),
 		eventbridge.EventBuses(),
+		eventbridge.EventSources(),
+		eventbridge.Replays(),
 		firehose.DeliveryStreams(),
+		frauddetector.BatchImports(),
+		frauddetector.BatchPredictions(),
+		frauddetector.Detectors(),
+		frauddetector.EntityTypes(),
+		frauddetector.EventTypes(),
+		frauddetector.ExternalModels(),
+		frauddetector.Labels(),
+		frauddetector.Models(),
+		frauddetector.Outcomes(),
+		frauddetector.Variables(),
 		fsx.Backups(),
 		fsx.DataRepositoryAssociations(),
 		fsx.DataRepositoryTasks(),

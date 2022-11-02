@@ -37,11 +37,6 @@ func Users() *schema.Table {
 				},
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
-			},
-			{
 				Name:     "create_date",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreateDate"),
@@ -65,6 +60,11 @@ func Users() *schema.Table {
 				Name:     "permissions_boundary",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("PermissionsBoundary"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 		},
 

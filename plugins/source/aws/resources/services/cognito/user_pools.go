@@ -75,6 +75,11 @@ func UserPools() *schema.Table {
 				Resolver: schema.PathResolver("CustomDomain"),
 			},
 			{
+				Name:     "deletion_protection",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("DeletionProtection"),
+			},
+			{
 				Name:     "device_configuration",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("DeviceConfiguration"),

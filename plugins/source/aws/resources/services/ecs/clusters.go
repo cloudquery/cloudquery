@@ -33,11 +33,6 @@ func Clusters() *schema.Table {
 				},
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
-			},
-			{
 				Name:     "active_services_count",
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("ActiveServicesCount"),
@@ -101,6 +96,11 @@ func Clusters() *schema.Table {
 				Name:     "status",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Status"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 		},
 

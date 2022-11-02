@@ -41,11 +41,6 @@ func Connections() *schema.Table {
 				},
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
-			},
-			{
 				Name:     "aws_device",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("AwsDevice"),
@@ -134,6 +129,11 @@ func Connections() *schema.Table {
 				Name:     "provider_name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ProviderName"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "vlan",

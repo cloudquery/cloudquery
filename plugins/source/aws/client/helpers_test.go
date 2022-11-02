@@ -10,6 +10,7 @@ import (
 	ttypes "github.com/aws/aws-sdk-go-v2/service/acm/types"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway/types"
 	"github.com/aws/smithy-go"
+	"github.com/cloudquery/plugin-sdk/cqtypes"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -33,7 +34,7 @@ func TestResolveARN(t *testing.T) {
 			func(resource *schema.Resource) ([]string, error) {
 				return []string{"restapis", *resource.Item.(types.RestApi).Id}, nil
 			},
-			schema.NewResourceData(&schema.Table{Columns: []schema.Column{{Name: "myarn"}}}, nil, types.RestApi{Id: aws.String("myid")}),
+			schema.NewResourceData(&schema.Table{Columns: []schema.Column{{Name: "myarn", Type: schema.TypeString}}}, nil, types.RestApi{Id: aws.String("myid")}),
 			"arn:aws:apigateway:region::restapis/myid",
 			false,
 		},
@@ -44,7 +45,7 @@ func TestResolveARN(t *testing.T) {
 			func(resource *schema.Resource) ([]string, error) {
 				return []string{"", "restapis", *resource.Item.(types.RestApi).Id}, nil
 			},
-			schema.NewResourceData(&schema.Table{Columns: []schema.Column{{Name: "myarn"}}}, nil, types.RestApi{Id: aws.String("myid")}),
+			schema.NewResourceData(&schema.Table{Columns: []schema.Column{{Name: "myarn", Type: schema.TypeString}}}, nil, types.RestApi{Id: aws.String("myid")}),
 			"arn:aws:apigateway:region::/restapis/myid",
 			false,
 		},
@@ -55,7 +56,7 @@ func TestResolveARN(t *testing.T) {
 			func(resource *schema.Resource) ([]string, error) {
 				return nil, errors.New("test")
 			},
-			schema.NewResourceData(&schema.Table{Columns: []schema.Column{{Name: "myarn"}}}, nil, types.RestApi{Id: aws.String("myid")}),
+			schema.NewResourceData(&schema.Table{Columns: []schema.Column{{Name: "myarn", Type: schema.TypeString}}}, nil, types.RestApi{Id: aws.String("myid")}),
 			nil,
 			true,
 		},
@@ -66,7 +67,10 @@ func TestResolveARN(t *testing.T) {
 			col := schema.Column{Name: tt.columnName}
 			client := Client{Region: "region", Partition: "aws"}
 			err := resolver(context.Background(), &client, tt.resource, col)
-			require.Equal(t, tt.resource.Get(tt.columnName), tt.want)
+			expectedText := &cqtypes.Text{}
+			_ = expectedText.Set(tt.want)
+
+			require.Equal(t, tt.resource.Get(tt.columnName), expectedText)
 			require.Equal(t, err != nil, tt.wantErr)
 		})
 	}
