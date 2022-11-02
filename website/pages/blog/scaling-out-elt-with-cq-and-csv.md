@@ -46,4 +46,4 @@ Loading CSV Files to data lakes or data warehouses is fast and cheap without the
 
 ## Summary
 
-Scaling out ELT workloads with CSV and Cloud Storage will work well especially if you extract data from high number of sources and accounts, but it has the downside that data in the destination won't be as live when compared to streaming directly to a database. So as always, all depends on your use-case and constraints. Checkout the [recipes section](../docs/recipes/overview/aws-csv) to see how to configure CSV destination plugin with various sources.
+Scaling out ELT workloads with CSV and Cloud Storage will work well especially if you extract data from high number of sources and accounts, but it has the downside that data in the destination won't be as live when compared to streaming directly to a database. So as always, all depends on your use-case and constraints. Checkout the [recipes section](../docs/recipes/aws-csv) to see how to configure CSV destination plugin with various sources.
