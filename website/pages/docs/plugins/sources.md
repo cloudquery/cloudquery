@@ -18,10 +18,6 @@ Official source plugins follow [release stages](source-plugin-release-stages).
 | [Okta][okta] | v1.1.0        | [Changelog][Okta-Changelog]         | Preview |
 | [Terraform][terraform] | v1.1.0         | [Changelog][Terraform-Changelog]    | Preview |
 | [Cloudflare][cloudflare] | v2.2.0         | [Changelog][Cloudflare-Changelog]   | Preview |
-| [k8s][k8s] | v2.3.0         | [Changelog][k8s-Changelog]          | Preview |
-| [Okta][okta] | v1.2.0        | [Changelog][Okta-Changelog]         | Preview |
-| [Terraform][terraform] | v1.2.0         | [Changelog][Terraform-Changelog]    | Preview |
-| [Cloudflare][cloudflare] | v2.2.0         | [Changelog][Cloudflare-Changelog]   | Preview |
 
 ## Community
 
