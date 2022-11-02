@@ -1,6 +1,8 @@
 package recipes
 
 import (
+	"github.com/aws/aws-sdk-go-v2/service/sesv2"
+	"github.com/aws/aws-sdk-go-v2/service/sesv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ses/models"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -21,6 +23,46 @@ func SESResources() []*Resource {
 						Name:     "arn",
 						Type:     schema.TypeString,
 						Resolver: `resolveSesTemplateArn`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				}...),
+		},
+		{
+			SubService:          "configuration_sets",
+			Struct:              &sesv2.GetConfigurationSetOutput{},
+			Description:         "https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_GetConfigurationSet.html",
+			SkipFields:          []string{"ConfigurationSetName", "ResultMetadata"},
+			PreResourceResolver: "getConfigurationSet",
+			ExtraColumns: append(
+				defaultRegionalColumnsPK,
+				[]codegen.ColumnDefinition{
+					{
+						Name:     "name",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("ConfigurationSetName")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				}...),
+			Relations: []string{"ConfigurationSetEventDestinations()"},
+		},
+		{
+			SubService:  "configuration_set_event_destinations",
+			Struct:      types.EventDestination{},
+			Description: "https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_EventDestination.html",
+			SkipFields:  []string{"Name"},
+			ExtraColumns: append(
+				defaultRegionalColumnsPK,
+				[]codegen.ColumnDefinition{
+					{
+						Name:     "configuration_set_name",
+						Type:     schema.TypeString,
+						Resolver: `schema.ParentColumnResolver("name")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+					{
+						Name:     "name",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("Name")`,
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
 				}...),

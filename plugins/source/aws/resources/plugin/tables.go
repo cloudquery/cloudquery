@@ -313,6 +313,7 @@ func tables() []*schema.Table {
 		servicecatalog.Portfolios(),
 		servicecatalog.Products(),
 		servicecatalog.ProvisionedProducts(),
+		ses.ConfigurationSets(),
 		ses.Templates(),
 		shield.Attacks(),
 		shield.ProtectionGroups(),
