@@ -3,7 +3,7 @@ name: Lint Markdown files
 on:
   pull_request:
     paths:
-      - ".github/workflow/lint_markdown.yml"
+      - ".github/workflows/lint_markdown.yml"
       - "**.md"
 
 jobs:
