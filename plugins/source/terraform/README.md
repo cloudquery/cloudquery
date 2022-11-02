@@ -2,12 +2,6 @@
 
 The CloudQuery Terraform plugin extracts terraform state.
 
-## Install
-
-```bash
-cloudquery generate source terraform
-```
-
 ## Configuration
 
 To configure terraform to read a tfstate file, you need to create a `.yml` file in your cloudquery directory (e.g. named `terraform.yml`):

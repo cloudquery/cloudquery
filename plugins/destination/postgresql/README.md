@@ -1,17 +1,35 @@
 # CloudQuery PostgreSQL Destination Plugin
 
-This destination plugin let's you sync data from a CloudQuery source to a PostgreSQL compatible database.
+This destination plugin lets you sync data from a CloudQuery source to a PostgreSQL compatible database.
 
-Known supported databases versions:
+Supported databases versions:
 
 - PostgreSQL > v10
 - CockroachDB > v20.2
 
-## PostgreSQL Spec
+## Configuration
 
-This is the top level spec used by the PostgreSQL destination Plugin.
+### Example
 
-- `connection_string` (string) (required)
+This example configures a Postgresql destination, located at `localhost:5432`. The (top level) spec section is described in the [Destination Spec Reference](https://www.cloudquery.io/docs/reference/destination-spec).
+
+```yml
+kind: destination
+spec:
+  name: "postgresql"
+  registry: github
+  path: "postgresql"
+  version: "v1.6.0" # latest version of postgresql plugin
+
+  spec:
+    connection_string: "postgresql://postgres:pass@localhost:5432/postgres?sslmode=disable"
+```
+
+### PostgreSQL Spec
+
+This is the (nested) spec used by the PostgreSQL destination Plugin.
+
+- `connection_string` (string, required)
 
   Connection string to connect to the database. This can be a URL or a DSN, as per [`pgxpool`](https://pkg.go.dev/github.com/jackc/pgx/v4/pgxpool#ParseConfig)
 
@@ -22,11 +40,11 @@ This is the top level spec used by the PostgreSQL destination Plugin.
   - `"dbname=mydb"` _unix domain socket, just specifying the db name - useful if you want to use peer authentication_
   - `"user=jack password=jack\\'ssooper\\\\secret host=localhost port=5432 dbname=mydb sslmode=disable"` _DSN with escaped backslash and single quote_
 
-- `pgx_log_level` (string) (optional, defaults to "error")
+- `pgx_log_level` (string, optional. Default: "error")
 
   Available: "error", "warn", "info", "debug", "trace"
   define if and in which level to log [`pgx`](https://github.com/jackc/pgx) call.
 
-- `batch_size` (int) (optional, defaults to 1000)
+- `batch_size` (int, optional. Default: 1000)
 
   Number of rows to insert in a single batch.
