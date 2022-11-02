@@ -44,3 +44,9 @@ func getEmailIdentity(ctx context.Context, meta schema.ClientMeta, resource *sch
 	}
 	return nil
 }
+
+func resolveEmailIdentityArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	return client.ResolveARN(client.SESService, func(resource *schema.Resource) ([]string, error) {
+		return []string{"identity", *resource.Item.(*models.EmailIdentityWrapper).IdentityName}, nil
+	})(ctx, meta, resource, c)
+}

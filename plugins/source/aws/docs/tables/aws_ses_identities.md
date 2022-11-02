@@ -2,7 +2,7 @@
 
 https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_GetEmailIdentity.html
 
-The composite primary key for this table is (**account_id**, **region**, **name**).
+The primary key for this table is **arn**.
 
 
 ## Columns
@@ -12,9 +12,10 @@ The composite primary key for this table is (**account_id**, **region**, **name*
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|account_id (PK)|String|
-|region (PK)|String|
-|name (PK)|String|
+|account_id|String|
+|region|String|
+|arn (PK)|String|
+|identity_name|String|
 |sending_enabled|Bool|
 |configuration_set_name|String|
 |dkim_attributes|JSON|

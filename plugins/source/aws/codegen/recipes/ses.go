@@ -90,14 +90,14 @@ func SESResources() []*Resource {
 			UnwrapEmbeddedStructs: true,
 			Description:           "https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_GetEmailIdentity.html",
 			PreResourceResolver:   "getEmailIdentity",
-			SkipFields:            []string{"IdentityName", "ResultMetadata"},
+			SkipFields:            []string{"ARN", "ResultMetadata"},
 			ExtraColumns: append(
-				defaultRegionalColumnsPK,
+				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
 					{
-						Name:     "name",
+						Name:     "arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.PathResolver("IdentityName")`,
+						Resolver: "resolveEmailIdentityArn",
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
 				}...),

@@ -7,6 +7,7 @@ import (
 )
 
 type EmailIdentityWrapper struct {
+	ARN            *string
 	IdentityName   *string
 	SendingEnabled bool
 
