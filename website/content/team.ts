@@ -65,6 +65,12 @@ const CLOUDQUERY_TEAM = {
     twitterUsername: "",
     image_url: "/images/people/samuel.png",
   },
+  alex: {
+    name: "Aleksandr Shcherbakov",
+    url: "https://www.linkedin.com/in/alex-shcherbakov/",
+    twitterUsername: "candiduslynx",
+    image_url: "/images/people/alex.png",
+  },
 };
 
 export type Author = keyof typeof CLOUDQUERY_TEAM;

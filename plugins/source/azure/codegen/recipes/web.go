@@ -68,11 +68,22 @@ func Web() []Resource {
 		mockDefinitionType:       "PublishingProfiles",
 	}
 
+	var functionsResource = resourceDefinition{azureStruct: &web.FunctionEnvelope{},
+		listFunction:             `ListFunctions`,
+		listFunctionArgsInit:     []string{"site := parent.Item.(web.Site)"},
+		listFunctionArgs:         []string{"*site.ResourceGroup", "*site.Name"},
+		mockListFunctionArgsInit: []string{""},
+		mockListFunctionArgs:     []string{`"test"`, `"test"`},
+		mockListResult:           "FunctionEnvelopeCollection",
+		subServiceOverride:       "Functions",
+	}
+
 	var appRelations = []resourceDefinition{
 		authSettingsResource,
 		vnetInfoResource,
 		publishingProfileResource,
 		authSettingsV2Resource,
+		functionsResource,
 	}
 
 	var resourcesByTemplates = []byTemplates{

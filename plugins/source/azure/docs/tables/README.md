@@ -95,3 +95,4 @@
 | ↳ [azure_web_vnet_connections](azure_web_vnet_connections.md) |
 | ↳ [azure_web_publishing_profiles](azure_web_publishing_profiles.md) |
 | ↳ [azure_web_site_auth_settings_v2](azure_web_site_auth_settings_v2.md) |
+| ↳ [azure_web_functions](azure_web_functions.md) |
