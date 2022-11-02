@@ -74,7 +74,7 @@ jobs:
 
 Once committed to the default branch of the repository, the above workflow will run daily at 3 a.m. and will sync the AWS source plugin with the PostgreSQL destination plugin.
 
-## Running CloudQuery in parallel to speed sync time
+## Running CloudQuery in parallel to speed up sync time
 
 By default, CloudQuery extracts all supported resources, which can take a bit of time, depending on the number of resources you have in your AWS account.
 
