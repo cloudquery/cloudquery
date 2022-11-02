@@ -4,61 +4,51 @@ package container
 
 import (
 	"context"
-	"fmt"
-	"github.com/cloudquery/plugin-sdk/faker"
-	"github.com/cloudquery/plugins/source/gcp/client"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
-	"net"
+	"encoding/json"
+	"net/http"
+	"net/http/httptest"
 	"testing"
 
-	"cloud.google.com/go/container/apiv1"
-
-	pb "google.golang.org/genproto/googleapis/container/v1"
-
+	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugins/source/gcp/client"
+	"github.com/julienschmidt/httprouter"
+	"google.golang.org/api/container/v1"
 	"google.golang.org/api/option"
 )
 
+type MockClustersResult struct {
+	Clusters []*container.Cluster `json:"clusters,omitempty"`
+}
+
 func createClusters() (*client.Services, error) {
-	fakeServer := &fakeClustersServer{}
-	l, err := net.Listen("tcp", "localhost:0")
-	if err != nil {
-		return nil, fmt.Errorf("failed to listen: %w", err)
+	var item container.Cluster
+	if err := faker.FakeObject(&item); err != nil {
+		return nil, err
 	}
-	gsrv := grpc.NewServer()
-	pb.RegisterClusterManagerServer(gsrv, fakeServer)
-	fakeServerAddr := l.Addr().String()
-	go func() {
-		if err := gsrv.Serve(l); err != nil {
-			panic(err)
+
+	mux := httprouter.New()
+	mux.GET("/*filepath", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+		resp := &MockClustersResult{
+			Clusters: []*container.Cluster{&item},
 		}
-	}()
-
-	// Create a client.
-	svc, err := container.NewClusterManagerClient(context.Background(),
-		option.WithEndpoint(fakeServerAddr),
-		option.WithoutAuthentication(),
-		option.WithGRPCDialOption(grpc.WithTransportCredentials(insecure.NewCredentials())),
-	)
+		b, err := json.Marshal(resp)
+		if err != nil {
+			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)
+			return
+		}
+		if _, err := w.Write(b); err != nil {
+			http.Error(w, "failed to write", http.StatusBadRequest)
+			return
+		}
+	})
+	ts := httptest.NewServer(mux)
+	svc, err := container.NewService(context.Background(), option.WithoutAuthentication(), option.WithEndpoint(ts.URL))
 	if err != nil {
-		return nil, fmt.Errorf("failed to create grpc client: %w", err)
+		return nil, err
 	}
-
 	return &client.Services{
-		ContainerClusterManagerClient: svc,
+		Container: svc,
 	}, nil
-}
-
-type fakeClustersServer struct {
-	pb.UnimplementedClusterManagerServer
-}
-
-func (f *fakeClustersServer) ListClusters(context.Context, *pb.ListClustersRequest) (*pb.ListClustersResponse, error) {
-	resp := pb.ListClustersResponse{}
-	if err := faker.FakeObject(&resp); err != nil {
-		return nil, fmt.Errorf("failed to fake data: %w", err)
-	}
-	return &resp, nil
 }
 
 func TestClusters(t *testing.T) {

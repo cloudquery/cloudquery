@@ -5,7 +5,6 @@ import (
 
 	billing "cloud.google.com/go/billing/apiv1"
 	compute "cloud.google.com/go/compute/apiv1"
-	container "cloud.google.com/go/container/apiv1"
 	domains "cloud.google.com/go/domains/apiv1beta1"
 	functions "cloud.google.com/go/functions/apiv1"
 	kms "cloud.google.com/go/kms/apiv1"
@@ -17,10 +16,11 @@ import (
 	secretmanager "cloud.google.com/go/secretmanager/apiv1"
 	serviceusage "cloud.google.com/go/serviceusage/apiv1"
 	"cloud.google.com/go/storage"
-	bigquery "google.golang.org/api/bigquery/v2"
+	"google.golang.org/api/bigquery/v2"
 	kmsold "google.golang.org/api/cloudkms/v1"
-	dns "google.golang.org/api/dns/v1"
-	iam "google.golang.org/api/iam/v1"
+	"google.golang.org/api/container/v1"
+	"google.golang.org/api/dns/v1"
+	"google.golang.org/api/iam/v1"
 	"google.golang.org/api/option"
 	sql "google.golang.org/api/sqladmin/v1beta4"
 )
@@ -56,8 +56,9 @@ type Services struct {
 
 	RunServicesClient *run.ServicesClient
 
-	ContainerClusterManagerClient *container.ClusterManagerClient
-	Dns                           *dns.Service
+	Container *container.Service
+
+	Dns *dns.Service
 
 	DomainsClient                 *domains.Client
 	Iam                           *iam.Service
@@ -182,10 +183,11 @@ func initServices(ctx context.Context, options []option.ClientOption) (*Services
 		return nil, err
 	}
 
-	svcs.ContainerClusterManagerClient, err = container.NewClusterManagerClient(ctx, options...)
+	svcs.Container, err = container.NewService(ctx, options...)
 	if err != nil {
 		return nil, err
 	}
+
 	svcs.DomainsClient, err = domains.NewClient(ctx, options...)
 	if err != nil {
 		return nil, err

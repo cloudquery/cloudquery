@@ -47,10 +47,7 @@ func main() {
 	resources = append(resources, recipes.RunResources()...)
 
 	for _, r := range resources {
-		generateResource(*r, false)
-		if !r.SkipMock {
-			generateResource(*r, true)
-		}
+		generateResource(*r, !r.SkipMock)
 	}
 	generatePlugin(resources)
 }
