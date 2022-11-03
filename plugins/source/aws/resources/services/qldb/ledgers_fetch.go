@@ -12,7 +12,7 @@ import (
 
 func fetchQldbLedgers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	svc := c.Services().QLDB
+	svc := c.Services().Qldb
 	config := qldb.ListLedgersInput{}
 	for {
 		response, err := svc.ListLedgers(ctx, &config)
@@ -31,7 +31,7 @@ func fetchQldbLedgers(ctx context.Context, meta schema.ClientMeta, _ *schema.Res
 
 func getLedger(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	c := meta.(*client.Client)
-	svc := c.Services().QLDB
+	svc := c.Services().Qldb
 	l := resource.Item.(types.LedgerSummary)
 
 	response, err := svc.DescribeLedger(ctx, &qldb.DescribeLedgerInput{Name: l.Name})
@@ -46,7 +46,7 @@ func resolveQldbLedgerTags(ctx context.Context, meta schema.ClientMeta, resource
 	ledger := resource.Item.(*qldb.DescribeLedgerOutput)
 
 	cl := meta.(*client.Client)
-	svc := cl.Services().QLDB
+	svc := cl.Services().Qldb
 	response, err := svc.ListTagsForResource(ctx, &qldb.ListTagsForResourceInput{
 		ResourceArn: ledger.Arn,
 	})
@@ -63,7 +63,7 @@ func fetchQldbLedgerJournalKinesisStreams(ctx context.Context, meta schema.Clien
 		MaxResults: aws.Int32(100),
 	}
 	for {
-		response, err := cl.Services().QLDB.ListJournalKinesisStreamsForLedger(ctx, config)
+		response, err := cl.Services().Qldb.ListJournalKinesisStreamsForLedger(ctx, config)
 		if err != nil {
 			return err
 		}
@@ -85,7 +85,7 @@ func fetchQldbLedgerJournalS3Exports(ctx context.Context, meta schema.ClientMeta
 		MaxResults: aws.Int32(100),
 	}
 	for {
-		response, err := cl.Services().QLDB.ListJournalS3ExportsForLedger(ctx, config)
+		response, err := cl.Services().Qldb.ListJournalS3ExportsForLedger(ctx, config)
 		if err != nil {
 			return err
 		}

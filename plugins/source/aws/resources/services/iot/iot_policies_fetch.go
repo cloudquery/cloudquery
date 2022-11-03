@@ -11,7 +11,7 @@ import (
 
 func fetchIotPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().IOT
+	svc := cl.Services().Iot
 	input := iot.ListPoliciesInput{
 		PageSize: aws.Int32(250),
 	}
@@ -44,7 +44,7 @@ func fetchIotPolicies(ctx context.Context, meta schema.ClientMeta, parent *schem
 func ResolveIotPolicyTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.GetPolicyOutput)
 	cl := meta.(*client.Client)
-	svc := cl.Services().IOT
+	svc := cl.Services().Iot
 	input := iot.ListTagsForResourceInput{
 		ResourceArn: i.PolicyArn,
 	}

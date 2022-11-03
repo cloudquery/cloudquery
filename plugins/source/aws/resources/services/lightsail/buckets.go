@@ -25,11 +25,6 @@ func Buckets() *schema.Table {
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
-			},
-			{
 				Name:     "able_to_update_bundle",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("AbleToUpdateBundle"),
@@ -98,6 +93,11 @@ func Buckets() *schema.Table {
 				Name:     "support_code",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("SupportCode"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "url",

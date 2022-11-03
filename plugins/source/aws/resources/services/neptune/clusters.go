@@ -218,6 +218,11 @@ func Clusters() *schema.Table {
 				Resolver: schema.PathResolver("ReplicationSourceIdentifier"),
 			},
 			{
+				Name:     "serverless_v2_scaling_configuration",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ServerlessV2ScalingConfiguration"),
+			},
+			{
 				Name:     "status",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Status"),

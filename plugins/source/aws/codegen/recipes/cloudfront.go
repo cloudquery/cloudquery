@@ -16,7 +16,11 @@ func CloudfrontResources() []*Resource {
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{
-
+					{
+						Name:     "id",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("CachePolicy.Id")`,
+					},
 					{
 						Name:     "arn",
 						Type:     schema.TypeString,

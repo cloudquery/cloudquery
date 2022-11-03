@@ -59,6 +59,18 @@ const CLOUDQUERY_TEAM = {
     twitterUsername: "spangenberg_d",
     image_url: "/images/people/danielspangenberg.jpg",
   },
+  SCKelemen: {
+    name: "Samuel Kelemen",
+    url: "https://www.linkedin.com/in/skelemen/",
+    twitterUsername: "",
+    image_url: "/images/people/samuel.png",
+  },
+  alex: {
+    name: "Aleksandr Shcherbakov",
+    url: "https://www.linkedin.com/in/alex-shcherbakov/",
+    twitterUsername: "candiduslynx",
+    image_url: "/images/people/alex.png",
+  },
 };
 
 export type Author = keyof typeof CLOUDQUERY_TEAM;

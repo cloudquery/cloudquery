@@ -27,7 +27,7 @@ func buildDataRepoAssociationsMock(t *testing.T, ctrl *gomock.Controller) client
 	)
 
 	return client.Services{
-		FSX: m,
+		Fsx: m,
 	}
 }
 

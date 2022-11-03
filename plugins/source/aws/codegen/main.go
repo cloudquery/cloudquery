@@ -1,13 +1,14 @@
 package main
 
 import (
-	"log"
-
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/recipes"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/services"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/tables"
+	"log"
 )
 
-func main() {
-	resources := make([]*recipes.Resource, 0, 1000)
+func generateResources() ([]*recipes.Resource, error) {
+	var resources []*recipes.Resource
 	resources = append(resources, recipes.AccessAnalyzerResources()...)
 	resources = append(resources, recipes.ACMResources()...)
 	resources = append(resources, recipes.APIGatewayResources()...)
@@ -47,6 +48,7 @@ func main() {
 	resources = append(resources, recipes.EMRResources()...)
 	resources = append(resources, recipes.EventbridgeResources()...)
 	resources = append(resources, recipes.FirehoseResources()...)
+	resources = append(resources, recipes.FraudDetectorResources()...)
 	resources = append(resources, recipes.FSXResources()...)
 	resources = append(resources, recipes.GlacierResources()...)
 	resources = append(resources, recipes.GlueResources()...)
@@ -84,7 +86,26 @@ func main() {
 	resources = append(resources, recipes.XRayResources()...)
 	for _, resource := range resources {
 		if err := resource.Generate(); err != nil {
-			log.Fatal(err)
+			return nil, err
 		}
+	}
+
+	return resources, nil
+}
+
+func main() {
+	err := services.Generate()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	resources, err := generateResources()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = tables.Generate(resources)
+	if err != nil {
+		log.Fatal(err)
 	}
 }

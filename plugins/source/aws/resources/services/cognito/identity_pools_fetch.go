@@ -12,7 +12,7 @@ import (
 
 func fetchCognitoIdentityPools(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	svc := c.Services().CognitoIdentityPools
+	svc := c.Services().Cognitoidentity
 	params := cognitoidentity.ListIdentityPoolsInput{
 		// we want max results to reduce List calls as much as possible, services limited to less than or equal to 60"
 		MaxResults: 60,
@@ -34,7 +34,7 @@ func fetchCognitoIdentityPools(ctx context.Context, meta schema.ClientMeta, pare
 
 func getIdentityPool(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	c := meta.(*client.Client)
-	svc := c.Services().CognitoIdentityPools
+	svc := c.Services().Cognitoidentity
 	item := resource.Item.(types.IdentityPoolShortDescription)
 
 	ipo, err := svc.DescribeIdentityPool(ctx, &cognitoidentity.DescribeIdentityPoolInput{IdentityPoolId: item.IdentityPoolId})

@@ -12,7 +12,7 @@ import (
 )
 
 func buildElbv1LoadBalancers(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockElbV1Client(ctrl)
+	m := mocks.NewMockElasticloadbalancingClient(ctrl)
 	l := elbv1Types.LoadBalancerDescription{}
 	err := faker.FakeObject(&l)
 	if err != nil {
@@ -61,7 +61,7 @@ func buildElbv1LoadBalancers(t *testing.T, ctrl *gomock.Controller) client.Servi
 		}, nil)
 
 	return client.Services{
-		ELBv1: m,
+		Elasticloadbalancing: m,
 	}
 }
 

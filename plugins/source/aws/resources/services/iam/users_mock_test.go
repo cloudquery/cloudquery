@@ -91,7 +91,7 @@ func buildIamUsers(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&p, nil)
 
 	return client.Services{
-		IAM: m,
+		Iam: m,
 	}
 }
 

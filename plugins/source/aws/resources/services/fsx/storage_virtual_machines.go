@@ -33,11 +33,6 @@ func StorageVirtualMachines() *schema.Table {
 				},
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
-			},
-			{
 				Name:     "active_directory_configuration",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("ActiveDirectoryConfiguration"),
@@ -86,6 +81,11 @@ func StorageVirtualMachines() *schema.Table {
 				Name:     "subtype",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Subtype"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "uuid",

@@ -11,7 +11,7 @@ import (
 
 func fetchElasticacheParameterGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	awsProviderClient := meta.(*client.Client)
-	svc := awsProviderClient.Services().ElastiCache
+	svc := awsProviderClient.Services().Elasticache
 
 	var describeCacheParameterGroupsInput elasticache.DescribeCacheParameterGroupsInput
 

@@ -4,6 +4,8 @@
 
 The primary key for this table is **id**.
 
+## Relations
+This table depends on [azure_cdn_rule_sets](azure_cdn_rule_sets.md).
 
 ## Columns
 | Name          | Type          |

@@ -1,5 +1,39 @@
 # Changelog
 
+## [2.2.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-heroku-v2.2.1...plugins-source-heroku-v2.2.2) (2022-11-03)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for heroku to v0.13.19 ([#3508](https://github.com/cloudquery/cloudquery/issues/3508)) ([f0a49d8](https://github.com/cloudquery/cloudquery/commit/f0a49d8674d197079527e715169684c773bc1a09))
+
+## [2.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-heroku-v2.2.0...plugins-source-heroku-v2.2.1) (2022-11-02)
+
+
+### Bug Fixes
+
+* Delete broken spec parameters ([#3455](https://github.com/cloudquery/cloudquery/issues/3455)) ([d6a83fd](https://github.com/cloudquery/cloudquery/commit/d6a83fd7f46b0e306955d6e605e0b5465cbc7e37))
+
+## [2.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-heroku-v2.1.0...plugins-source-heroku-v2.2.0) (2022-11-01)
+
+
+### Features
+
+* Migrate cli, plugins and destinations to new type system ([#3323](https://github.com/cloudquery/cloudquery/issues/3323)) ([f265a94](https://github.com/cloudquery/cloudquery/commit/f265a94448ad55c968b26ba8a19681bc81086c11))
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for heroku to v0.13.17 ([#3406](https://github.com/cloudquery/cloudquery/issues/3406)) ([900439b](https://github.com/cloudquery/cloudquery/commit/900439b8f5c253492c734c3857e430f7e872a658))
+* **deps:** Update plugin-sdk for heroku to v0.13.18 ([#3415](https://github.com/cloudquery/cloudquery/issues/3415)) ([fbe8a77](https://github.com/cloudquery/cloudquery/commit/fbe8a770b3dd3ce1bceea39001dadb95cf433884))
+
+## [2.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-heroku-v2.0.7...plugins-source-heroku-v2.1.0) (2022-10-31)
+
+
+### Features
+
+* Update all plugins to SDK with metrics and DFS scheduler ([#3286](https://github.com/cloudquery/cloudquery/issues/3286)) ([a35b8e8](https://github.com/cloudquery/cloudquery/commit/a35b8e89d625287a9b9406ff18cfac78ffdb1241))
+
 ## [2.0.7](https://github.com/cloudquery/cloudquery/compare/plugins-source-heroku-v2.0.6...plugins-source-heroku-v2.0.7) (2022-10-27)
 
 

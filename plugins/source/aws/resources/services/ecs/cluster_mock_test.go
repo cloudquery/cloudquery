@@ -14,7 +14,7 @@ import (
 func buildEcsClusterMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockEcsClient(ctrl)
 	services := client.Services{
-		ECS: m,
+		Ecs: m,
 	}
 	c := ecsTypes.Cluster{}
 	err := faker.FakeObject(&c)

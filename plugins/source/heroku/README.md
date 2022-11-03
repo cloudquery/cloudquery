@@ -2,17 +2,20 @@
 
 The CloudQuery Heroku plugin extracts and loads your Heroku data into PostgreSQL.
 
-## Install
+## Links
 
-```bash
-cloudquery generate heroku
-```
-
-This will generate a `heroku.yml` file containing example configuration.
+- [Configuration](./docs/configuration.md)
+- [Tables](./docs/tables/README.md)
 
 ## Authentication
 
-The CloudQuery Heroku plugin requires an OAuth token. 
+The CloudQuery Heroku plugin requires an OAuth token. After creating it, you
+will need to copy the token into your `heroku.yml` file (See example below):
+
+```yml
+  ...
+  token: <Token HERE>
+```
 
 ### Option 1: Generate a token with the Heroku CLI
 
@@ -25,12 +28,6 @@ A token can be generated using the Heroku CLI.
     ```
     
     (For additional options for this command, such as expiry, see the [Heroku CLI commands documentation](https://devcenter.heroku.com/articles/heroku-cli-commands#heroku-authorizations-create))
-    
-    Copy the token value into your `heroku.yml` file:
-    
-    ```
-    token: <Token HERE>
-    ```
 
 ### Option 2: Generate a token with the Heroku API
 
@@ -63,6 +60,21 @@ If you are interested in fetching any of these resources, a `global` scope will 
 
 ## Configuration
 
-Edit the generated `heroku.yml` file to include your Heroku OAuth token.
+In order for cloudquery to authenticate with Heroku, you will need to include your OAuth token in your `.yml` configuraion. 
 
-More information can be found in the [CloudQuery documentation](https://docs.cloudquery.io/docs/intro)
+The following example configures a Heroku plugin, and connects it to a Postgres destination:
+
+```yml
+kind: source
+spec: # Common source spec section
+  name: heroku
+  path: cloudquery/heroku
+  version: "v2.2.0" # latest version of heroku plugin
+  tables: ["*"]
+  destinations: ["postgresql"]
+
+  spec: # Heroku specific section
+    token: <YOUR_TOKEN_HERE>
+```
+
+More information on configuration options can be found in the [Source Configuration Documentation](https://www.cloudquery.io/docs/reference/source-spec) and [Heroku Configuration Documentation](./docs/configuration.md)

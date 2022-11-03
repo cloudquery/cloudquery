@@ -17,7 +17,7 @@ func fetchEcrRepositories(ctx context.Context, meta schema.ClientMeta, parent *s
 		MaxResults: &maxResults,
 	}
 	c := meta.(*client.Client)
-	svc := c.Services().ECR
+	svc := c.Services().Ecr
 	for {
 		output, err := svc.DescribeRepositories(ctx, &config)
 		if err != nil {
@@ -34,7 +34,7 @@ func fetchEcrRepositories(ctx context.Context, meta schema.ClientMeta, parent *s
 
 func resolveRepositoryTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().ECR
+	svc := cl.Services().Ecr
 	repo := resource.Item.(types.Repository)
 
 	input := ecr.ListTagsForResourceInput{
@@ -55,7 +55,7 @@ func fetchEcrRepositoryImages(ctx context.Context, meta schema.ClientMeta, paren
 		MaxResults:     &maxResults,
 	}
 	c := meta.(*client.Client)
-	svc := c.Services().ECR
+	svc := c.Services().Ecr
 	for {
 		output, err := svc.DescribeImages(ctx, &config)
 		if err != nil {

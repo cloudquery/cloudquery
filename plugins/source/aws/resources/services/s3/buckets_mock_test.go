@@ -12,7 +12,7 @@ import (
 )
 
 func buildS3Buckets(t *testing.T, ctrl *gomock.Controller) client.Services {
-	mgr := mocks.NewMockS3ManagerClient(ctrl)
+	mgr := mocks.NewMockS3managerClient(ctrl)
 	m := mocks.NewMockS3Client(ctrl)
 	b := s3Types.Bucket{}
 	err := faker.FakeObject(&b)
@@ -120,7 +120,7 @@ func buildS3Buckets(t *testing.T, ctrl *gomock.Controller) client.Services {
 		"us-east-1", nil)
 	return client.Services{
 		S3:        m,
-		S3Manager: mgr,
+		S3manager: mgr,
 	}
 }
 

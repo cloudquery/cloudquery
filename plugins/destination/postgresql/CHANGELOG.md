@@ -1,5 +1,31 @@
 # Changelog
 
+## [1.6.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v1.5.0...plugins-destination-postgresql-v1.6.0) (2022-11-02)
+
+
+### Features
+
+* Add unique constraint on _cq_id column ([#3449](https://github.com/cloudquery/cloudquery/issues/3449)) ([30fd8a3](https://github.com/cloudquery/cloudquery/commit/30fd8a370c73fff1effcb8474e49dac5cabf4653))
+
+## [1.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v1.4.0...plugins-destination-postgresql-v1.5.0) (2022-11-01)
+
+
+### Features
+
+* Migrate cli, plugins and destinations to new type system ([#3323](https://github.com/cloudquery/cloudquery/issues/3323)) ([f265a94](https://github.com/cloudquery/cloudquery/commit/f265a94448ad55c968b26ba8a19681bc81086c11))
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for postgresql to v0.13.18 ([#3417](https://github.com/cloudquery/cloudquery/issues/3417)) ([5c1cfcd](https://github.com/cloudquery/cloudquery/commit/5c1cfcdd2851076571b8350d7301eae9a9ed4004))
+
+## [1.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v1.3.11...plugins-destination-postgresql-v1.4.0) (2022-10-31)
+
+
+### Features
+
+* Update all plugins to SDK with metrics and DFS scheduler ([#3286](https://github.com/cloudquery/cloudquery/issues/3286)) ([a35b8e8](https://github.com/cloudquery/cloudquery/commit/a35b8e89d625287a9b9406ff18cfac78ffdb1241))
+
 ## [1.3.11](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v1.3.10...plugins-destination-postgresql-v1.3.11) (2022-10-27)
 
 

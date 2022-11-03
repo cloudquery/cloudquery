@@ -21,7 +21,8 @@
   },
   "plugins": {
     "title": "Plugins",
-    "href": "/docs/plugins/sources"
+    "href": "/docs/plugins/sources",
+    "route": "/docs/plugins"
   },
   "confirm": {
     "title": "Confirm",

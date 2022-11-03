@@ -24,7 +24,7 @@ func buildRdsCertificates(t *testing.T, ctrl *gomock.Controller) client.Services
 			Certificates: []rdsTypes.Certificate{l},
 		}, nil)
 	return client.Services{
-		RDS: m,
+		Rds: m,
 	}
 }
 
@@ -41,7 +41,7 @@ func buildRdsDBClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
 			DBClusters: []rdsTypes.DBCluster{l},
 		}, nil)
 	return client.Services{
-		RDS: m,
+		Rds: m,
 	}
 }
 
@@ -58,7 +58,7 @@ func buildRdsDBInstances(t *testing.T, ctrl *gomock.Controller) client.Services 
 			DBInstances: []rdsTypes.DBInstance{l},
 		}, nil)
 	return client.Services{
-		RDS: m,
+		Rds: m,
 	}
 }
 
@@ -75,7 +75,7 @@ func buildRdsDBSubnetGroups(t *testing.T, ctrl *gomock.Controller) client.Servic
 			DBSubnetGroups: []rdsTypes.DBSubnetGroup{l},
 		}, nil)
 	return client.Services{
-		RDS: m,
+		Rds: m,
 	}
 }
 

@@ -26,7 +26,7 @@ func buildElasticbeanstalkApplicationVersions(t *testing.T, ctrl *gomock.Control
 		}, nil)
 
 	return client.Services{
-		ElasticBeanstalk: m,
+		Elasticbeanstalk: m,
 	}
 }
 
