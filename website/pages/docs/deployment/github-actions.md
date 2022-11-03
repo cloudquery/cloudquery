@@ -6,7 +6,7 @@ date: 2022/10/25
 
 # Deploy-less Orchestration with GitHub Actions
 
-In this tutorial, we will show you how to run CloudQuery using [GitHub Actions](https://github.com/features/actions) and the AWS source plugin.
+In this tutorial, we will show you how to load AWS resources into a Postgres database by running CloudQuery as a [GitHub Action](https://github.com/features/actions), using the AWS source- and Postgresql destination plugins.
 
 ## Prerequisites
 
