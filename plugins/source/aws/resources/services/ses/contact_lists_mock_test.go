@@ -12,7 +12,7 @@ import (
 )
 
 func buildContactLists(t *testing.T, ctrl *gomock.Controller) client.Services {
-	sesClient := mocks.NewMockSESClient(ctrl)
+	sesClient := mocks.NewMockSesv2Client(ctrl)
 
 	cs := sesv2.GetContactListOutput{}
 	if err := faker.FakeObject(&cs); err != nil {
@@ -29,7 +29,7 @@ func buildContactLists(t *testing.T, ctrl *gomock.Controller) client.Services {
 	)
 
 	return client.Services{
-		SES: sesClient,
+		Sesv2: sesClient,
 	}
 }
 

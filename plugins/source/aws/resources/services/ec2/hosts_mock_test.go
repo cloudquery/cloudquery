@@ -26,7 +26,7 @@ func buildEc2Hosts(t *testing.T, ctrl *gomock.Controller) client.Services {
 		}, nil)
 
 	services := client.Services{
-		EC2: m,
+		Ec2: m,
 	}
 	return services
 }

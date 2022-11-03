@@ -15,7 +15,7 @@ import (
 )
 
 func buildWAFV2WebACLMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockWafV2Client(ctrl)
+	m := mocks.NewMockWafv2Client(ctrl)
 	cfm := mocks.NewMockCloudfrontClient(ctrl)
 
 	tempWebACLSum := types.WebACLSummary{}
@@ -77,7 +77,7 @@ func buildWAFV2WebACLMock(t *testing.T, ctrl *gomock.Controller) client.Services
 		DistributionList: &distributionList,
 	}, nil)
 
-	return client.Services{WafV2: m, Cloudfront: cfm}
+	return client.Services{Wafv2: m, Cloudfront: cfm}
 }
 
 func TestWafV2WebACL(t *testing.T) {

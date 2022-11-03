@@ -10,7 +10,7 @@ import (
 
 func fetchSesConfigurationSetEventDestinations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	svc := c.Services().SES
+	svc := c.Services().Sesv2
 
 	s := parent.Item.(*sesv2.GetConfigurationSetOutput)
 

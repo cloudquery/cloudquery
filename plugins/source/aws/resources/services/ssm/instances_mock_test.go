@@ -13,7 +13,7 @@ import (
 )
 
 func buildSSMInstances(t *testing.T, ctrl *gomock.Controller) client.Services {
-	mock := mocks.NewMockSSMClient(ctrl)
+	mock := mocks.NewMockSsmClient(ctrl)
 
 	var i types.InstanceInformation
 	if err := faker.FakeObject(&i); err != nil {
@@ -40,7 +40,7 @@ func buildSSMInstances(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&ssm.ListComplianceItemsOutput{ComplianceItems: []types.ComplianceItem{c}},
 		nil,
 	)
-	return client.Services{SSM: mock}
+	return client.Services{Ssm: mock}
 }
 
 func TestSSMInstances(t *testing.T) {

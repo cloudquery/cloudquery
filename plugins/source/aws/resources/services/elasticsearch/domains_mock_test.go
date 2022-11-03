@@ -12,7 +12,7 @@ import (
 )
 
 func buildElasticSearchDomains(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockElasticSearch(ctrl)
+	m := mocks.NewMockElasticsearchserviceClient(ctrl)
 
 	var di types.DomainInfo
 	if err := faker.FakeObject(&di); err != nil {
@@ -37,7 +37,7 @@ func buildElasticSearchDomains(t *testing.T, ctrl *gomock.Controller) client.Ser
 	}
 	m.EXPECT().ListTags(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tags, nil)
 
-	return client.Services{ElasticSearch: m}
+	return client.Services{Elasticsearchservice: m}
 }
 
 func TestElasticSearchDomains(t *testing.T) {

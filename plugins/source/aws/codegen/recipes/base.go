@@ -184,7 +184,7 @@ func (r *Resource) generateSchema(dir string) error {
 		"ToLower": strings.ToLower,
 	}).ParseFS(templatesFS, "templates/resource.go.tpl")
 	if err != nil {
-		return fmt.Errorf("failed to parse gcp templates: %w", err)
+		return fmt.Errorf("failed to parse templates: %w", err)
 	}
 	tpl, err = tpl.ParseFS(codegen.TemplatesFS, "templates/*.go.tpl")
 	if err != nil {
@@ -278,6 +278,6 @@ func (r *Resource) generateMockTest(dir string) error {
 // -------------------------------------------------------------------------------
 
 // Because usually the 'Struct' field contains a pointer, we need to dereference with '.Elem()'.
-func (resource Resource) StructName() string {
-	return reflect.TypeOf(resource.Struct).Elem().Name()
+func (r Resource) StructName() string {
+	return reflect.TypeOf(r.Struct).Elem().Name()
 }

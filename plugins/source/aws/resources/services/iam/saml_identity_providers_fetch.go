@@ -11,7 +11,7 @@ import (
 )
 
 func fetchIamSamlIdentityProviders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().IAM
+	svc := meta.(*client.Client).Services().Iam
 	response, err := svc.ListSAMLProviders(ctx, &iam.ListSAMLProvidersInput{})
 	if err != nil {
 		return err
@@ -22,7 +22,7 @@ func fetchIamSamlIdentityProviders(ctx context.Context, meta schema.ClientMeta, 
 }
 
 func getSamlIdentityProvider(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	svc := meta.(*client.Client).Services().IAM
+	svc := meta.(*client.Client).Services().Iam
 	p := resource.Item.(types.SAMLProviderListEntry)
 
 	providerResponse, err := svc.GetSAMLProvider(ctx, &iam.GetSAMLProviderInput{SAMLProviderArn: p.Arn})

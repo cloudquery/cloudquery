@@ -18,7 +18,7 @@ func fetchIamCredentialReports(ctx context.Context, meta schema.ClientMeta, _ *s
 	var err error
 	var apiErr smithy.APIError
 	var reportOutput *iam.GetCredentialReportOutput
-	svc := meta.(*client.Client).Services().IAM
+	svc := meta.(*client.Client).Services().Iam
 	for {
 		reportOutput, err = svc.GetCredentialReport(ctx, &iam.GetCredentialReportInput{})
 		if err == nil && reportOutput != nil {

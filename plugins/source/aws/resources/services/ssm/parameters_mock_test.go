@@ -12,7 +12,7 @@ import (
 )
 
 func buildParameters(t *testing.T, ctrl *gomock.Controller) client.Services {
-	mock := mocks.NewMockSSMClient(ctrl)
+	mock := mocks.NewMockSsmClient(ctrl)
 	var pm types.ParameterMetadata
 	if err := faker.FakeObject(&pm); err != nil {
 		t.Fatal(err)
@@ -24,7 +24,7 @@ func buildParameters(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&ssm.DescribeParametersOutput{Parameters: []types.ParameterMetadata{pm}},
 		nil,
 	)
-	return client.Services{SSM: mock}
+	return client.Services{Ssm: mock}
 }
 
 func TestParameters(t *testing.T) {

@@ -12,7 +12,7 @@ import (
 )
 
 func buildPipelines(t *testing.T, ctrl *gomock.Controller) client.Services {
-	mock := mocks.NewMockCodePipelineClient(ctrl)
+	mock := mocks.NewMockCodepipelineClient(ctrl)
 
 	var pipeSummary types.PipelineSummary
 	if err := faker.FakeObject(&pipeSummary); err != nil {
@@ -49,7 +49,7 @@ func buildPipelines(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
-	return client.Services{CodePipeline: mock}
+	return client.Services{Codepipeline: mock}
 }
 
 func TestCodePipelinePipelines(t *testing.T) {

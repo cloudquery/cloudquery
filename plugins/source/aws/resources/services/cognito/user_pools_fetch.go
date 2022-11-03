@@ -12,7 +12,7 @@ import (
 
 func fetchCognitoUserPools(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	svc := c.Services().CognitoUserPools
+	svc := c.Services().Cognitoidentityprovider
 	params := cognitoidentityprovider.ListUserPoolsInput{
 		// we want max results to reduce List calls as much as possible, services limited to less than or equal to 60"
 		MaxResults: 60,
@@ -34,7 +34,7 @@ func fetchCognitoUserPools(ctx context.Context, meta schema.ClientMeta, parent *
 
 func getUserPool(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	c := meta.(*client.Client)
-	svc := c.Services().CognitoUserPools
+	svc := c.Services().Cognitoidentityprovider
 	item := resource.Item.(types.UserPoolDescriptionType)
 
 	upo, err := svc.DescribeUserPool(ctx, &cognitoidentityprovider.DescribeUserPoolInput{UserPoolId: item.Id})
@@ -49,7 +49,7 @@ func getUserPool(ctx context.Context, meta schema.ClientMeta, resource *schema.R
 func fetchCognitoUserPoolIdentityProviders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	pool := parent.Item.(*types.UserPoolType)
 	c := meta.(*client.Client)
-	svc := c.Services().CognitoUserPools
+	svc := c.Services().Cognitoidentityprovider
 
 	params := cognitoidentityprovider.ListIdentityProvidersInput{UserPoolId: pool.Id}
 	for {
@@ -69,7 +69,7 @@ func fetchCognitoUserPoolIdentityProviders(ctx context.Context, meta schema.Clie
 
 func getUserPoolIdentityProvider(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	c := meta.(*client.Client)
-	svc := c.Services().CognitoUserPools
+	svc := c.Services().Cognitoidentityprovider
 	item := resource.Item.(types.ProviderDescription)
 	pool := resource.Parent.Item.(*types.UserPoolType)
 

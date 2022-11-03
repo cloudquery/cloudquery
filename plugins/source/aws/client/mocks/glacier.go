@@ -35,6 +35,46 @@ func (m *MockGlacierClient) EXPECT() *MockGlacierClientMockRecorder {
 	return m.recorder
 }
 
+// DescribeJob mocks base method.
+func (m *MockGlacierClient) DescribeJob(arg0 context.Context, arg1 *glacier.DescribeJobInput, arg2 ...func(*glacier.Options)) (*glacier.DescribeJobOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeJob", varargs...)
+	ret0, _ := ret[0].(*glacier.DescribeJobOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeJob indicates an expected call of DescribeJob.
+func (mr *MockGlacierClientMockRecorder) DescribeJob(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeJob", reflect.TypeOf((*MockGlacierClient)(nil).DescribeJob), varargs...)
+}
+
+// DescribeVault mocks base method.
+func (m *MockGlacierClient) DescribeVault(arg0 context.Context, arg1 *glacier.DescribeVaultInput, arg2 ...func(*glacier.Options)) (*glacier.DescribeVaultOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeVault", varargs...)
+	ret0, _ := ret[0].(*glacier.DescribeVaultOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeVault indicates an expected call of DescribeVault.
+func (mr *MockGlacierClientMockRecorder) DescribeVault(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeVault", reflect.TypeOf((*MockGlacierClient)(nil).DescribeVault), varargs...)
+}
+
 // GetDataRetrievalPolicy mocks base method.
 func (m *MockGlacierClient) GetDataRetrievalPolicy(arg0 context.Context, arg1 *glacier.GetDataRetrievalPolicyInput, arg2 ...func(*glacier.Options)) (*glacier.GetDataRetrievalPolicyOutput, error) {
 	m.ctrl.T.Helper()
@@ -53,6 +93,26 @@ func (mr *MockGlacierClientMockRecorder) GetDataRetrievalPolicy(arg0, arg1 inter
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDataRetrievalPolicy", reflect.TypeOf((*MockGlacierClient)(nil).GetDataRetrievalPolicy), varargs...)
+}
+
+// GetJobOutput mocks base method.
+func (m *MockGlacierClient) GetJobOutput(arg0 context.Context, arg1 *glacier.GetJobOutputInput, arg2 ...func(*glacier.Options)) (*glacier.GetJobOutputOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetJobOutput", varargs...)
+	ret0, _ := ret[0].(*glacier.GetJobOutputOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetJobOutput indicates an expected call of GetJobOutput.
+func (mr *MockGlacierClientMockRecorder) GetJobOutput(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetJobOutput", reflect.TypeOf((*MockGlacierClient)(nil).GetJobOutput), varargs...)
 }
 
 // GetVaultAccessPolicy mocks base method.
@@ -113,6 +173,86 @@ func (mr *MockGlacierClientMockRecorder) GetVaultNotifications(arg0, arg1 interf
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVaultNotifications", reflect.TypeOf((*MockGlacierClient)(nil).GetVaultNotifications), varargs...)
+}
+
+// ListJobs mocks base method.
+func (m *MockGlacierClient) ListJobs(arg0 context.Context, arg1 *glacier.ListJobsInput, arg2 ...func(*glacier.Options)) (*glacier.ListJobsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListJobs", varargs...)
+	ret0, _ := ret[0].(*glacier.ListJobsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListJobs indicates an expected call of ListJobs.
+func (mr *MockGlacierClientMockRecorder) ListJobs(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListJobs", reflect.TypeOf((*MockGlacierClient)(nil).ListJobs), varargs...)
+}
+
+// ListMultipartUploads mocks base method.
+func (m *MockGlacierClient) ListMultipartUploads(arg0 context.Context, arg1 *glacier.ListMultipartUploadsInput, arg2 ...func(*glacier.Options)) (*glacier.ListMultipartUploadsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListMultipartUploads", varargs...)
+	ret0, _ := ret[0].(*glacier.ListMultipartUploadsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListMultipartUploads indicates an expected call of ListMultipartUploads.
+func (mr *MockGlacierClientMockRecorder) ListMultipartUploads(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListMultipartUploads", reflect.TypeOf((*MockGlacierClient)(nil).ListMultipartUploads), varargs...)
+}
+
+// ListParts mocks base method.
+func (m *MockGlacierClient) ListParts(arg0 context.Context, arg1 *glacier.ListPartsInput, arg2 ...func(*glacier.Options)) (*glacier.ListPartsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListParts", varargs...)
+	ret0, _ := ret[0].(*glacier.ListPartsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListParts indicates an expected call of ListParts.
+func (mr *MockGlacierClientMockRecorder) ListParts(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListParts", reflect.TypeOf((*MockGlacierClient)(nil).ListParts), varargs...)
+}
+
+// ListProvisionedCapacity mocks base method.
+func (m *MockGlacierClient) ListProvisionedCapacity(arg0 context.Context, arg1 *glacier.ListProvisionedCapacityInput, arg2 ...func(*glacier.Options)) (*glacier.ListProvisionedCapacityOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListProvisionedCapacity", varargs...)
+	ret0, _ := ret[0].(*glacier.ListProvisionedCapacityOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListProvisionedCapacity indicates an expected call of ListProvisionedCapacity.
+func (mr *MockGlacierClientMockRecorder) ListProvisionedCapacity(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListProvisionedCapacity", reflect.TypeOf((*MockGlacierClient)(nil).ListProvisionedCapacity), varargs...)
 }
 
 // ListTagsForVault mocks base method.

@@ -12,7 +12,7 @@ import (
 
 func fetchSesIdentities(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	svc := c.Services().SES
+	svc := c.Services().Sesv2
 
 	config := sesv2.ListEmailIdentitiesInput{}
 	p := sesv2.NewListEmailIdentitiesPaginator(svc, &config)
@@ -28,7 +28,7 @@ func fetchSesIdentities(ctx context.Context, meta schema.ClientMeta, parent *sch
 
 func getEmailIdentity(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	c := meta.(*client.Client)
-	svc := c.Services().SES
+	svc := c.Services().Sesv2
 	ei := resource.Item.(types.IdentityInfo)
 
 	getOutput, err := svc.GetEmailIdentity(ctx, &sesv2.GetEmailIdentityInput{EmailIdentity: ei.IdentityName})

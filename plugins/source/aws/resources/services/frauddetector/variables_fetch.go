@@ -9,7 +9,7 @@ import (
 )
 
 func fetchFrauddetectorVariables(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
-	paginator := frauddetector.NewGetVariablesPaginator(meta.(*client.Client).Services().FraudDetector, nil)
+	paginator := frauddetector.NewGetVariablesPaginator(meta.(*client.Client).Services().Frauddetector, nil)
 	for paginator.HasMorePages() {
 		output, err := paginator.NextPage(ctx)
 		if err != nil {

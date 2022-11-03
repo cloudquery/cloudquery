@@ -12,7 +12,7 @@ import (
 )
 
 func buildIdentities(t *testing.T, ctrl *gomock.Controller) client.Services {
-	sesClient := mocks.NewMockSESClient(ctrl)
+	sesClient := mocks.NewMockSesv2Client(ctrl)
 
 	ei := types.IdentityInfo{}
 	if err := faker.FakeObject(&ei); err != nil {
@@ -34,7 +34,7 @@ func buildIdentities(t *testing.T, ctrl *gomock.Controller) client.Services {
 	)
 
 	return client.Services{
-		SES: sesClient,
+		Sesv2: sesClient,
 	}
 }
 

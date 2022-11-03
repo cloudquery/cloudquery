@@ -10,9 +10,9 @@ import (
 )
 
 func buildClustersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockDocDBClient(ctrl)
+	m := mocks.NewMockDocdbClient(ctrl)
 	services := client.Services{
-		DocDB: m,
+		Docdb: m,
 	}
 	var clusters docdb.DescribeDBClustersOutput
 	if err := faker.FakeObject(&clusters); err != nil {

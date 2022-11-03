@@ -11,7 +11,7 @@ import (
 
 func fetchSesContactLists(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	svc := c.Services().SES
+	svc := c.Services().Sesv2
 
 	config := sesv2.ListContactListsInput{}
 	p := sesv2.NewListContactListsPaginator(svc, &config)
@@ -27,7 +27,7 @@ func fetchSesContactLists(ctx context.Context, meta schema.ClientMeta, parent *s
 
 func getContactList(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	c := meta.(*client.Client)
-	svc := c.Services().SES
+	svc := c.Services().Sesv2
 	cl := resource.Item.(types.ContactList)
 
 	getOutput, err := svc.GetContactList(ctx, &sesv2.GetContactListInput{ContactListName: cl.ContactListName})

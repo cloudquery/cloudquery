@@ -11,7 +11,7 @@ import (
 
 func resolveResourceTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, column schema.Column) error {
 	c := meta.(*client.Client)
-	svc := c.Services().FraudDetector
+	svc := c.Services().Frauddetector
 
 	paginator := frauddetector.NewListTagsForResourcePaginator(svc,
 		&frauddetector.ListTagsForResourceInput{

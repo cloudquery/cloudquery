@@ -14,8 +14,8 @@ import (
 )
 
 func buildElbv2LoadBalancers(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockElbV2Client(ctrl)
-	w := mocks.NewMockWafV2Client(ctrl)
+	m := mocks.NewMockElasticloadbalancingv2Client(ctrl)
+	w := mocks.NewMockWafv2Client(ctrl)
 	l := elbv2Types.LoadBalancer{}
 	err := faker.FakeObject(&l)
 	if err != nil {
@@ -73,8 +73,8 @@ func buildElbv2LoadBalancers(t *testing.T, ctrl *gomock.Controller) client.Servi
 	}, nil)
 
 	return client.Services{
-		ELBv2: m,
-		WafV2: w,
+		Elasticloadbalancingv2: m,
+		Wafv2:                  w,
 	}
 }
 

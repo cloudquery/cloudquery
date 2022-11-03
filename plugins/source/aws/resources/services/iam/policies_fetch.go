@@ -17,7 +17,7 @@ func fetchIamPolicies(ctx context.Context, meta schema.ClientMeta, parent *schem
 			types.EntityTypeAWSManagedPolicy, types.EntityTypeLocalManagedPolicy,
 		},
 	}
-	svc := meta.(*client.Client).Services().IAM
+	svc := meta.(*client.Client).Services().Iam
 	for {
 		response, err := svc.GetAccountAuthorizationDetails(ctx, &config)
 		if err != nil {
@@ -35,7 +35,7 @@ func fetchIamPolicies(ctx context.Context, meta schema.ClientMeta, parent *schem
 func resolveIamPolicyTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.ManagedPolicyDetail)
 	cl := meta.(*client.Client)
-	svc := cl.Services().IAM
+	svc := cl.Services().Iam
 	response, err := svc.ListPolicyTags(ctx, &iam.ListPolicyTagsInput{PolicyArn: r.Arn})
 	if err != nil {
 		if cl.IsNotFoundError(err) {

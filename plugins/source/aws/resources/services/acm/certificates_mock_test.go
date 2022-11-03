@@ -13,7 +13,7 @@ import (
 )
 
 func buildACMCertificates(t *testing.T, ctrl *gomock.Controller) client.Services {
-	mock := mocks.NewMockACMClient(ctrl)
+	mock := mocks.NewMockAcmClient(ctrl)
 
 	var cs types.CertificateSummary
 	if err := faker.FakeObject(&cs); err != nil {
@@ -53,7 +53,7 @@ func buildACMCertificates(t *testing.T, ctrl *gomock.Controller) client.Services
 		},
 		nil,
 	)
-	return client.Services{ACM: mock}
+	return client.Services{Acm: mock}
 }
 
 func TestACMCertificates(t *testing.T) {

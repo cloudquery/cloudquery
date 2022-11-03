@@ -12,7 +12,7 @@ import (
 )
 
 func buildConfigurationSets(t *testing.T, ctrl *gomock.Controller) client.Services {
-	sesClient := mocks.NewMockSESClient(ctrl)
+	sesClient := mocks.NewMockSesv2Client(ctrl)
 
 	cs := sesv2.GetConfigurationSetOutput{}
 	if err := faker.FakeObject(&cs); err != nil {
@@ -39,7 +39,7 @@ func buildConfigurationSets(t *testing.T, ctrl *gomock.Controller) client.Servic
 	)
 
 	return client.Services{
-		SES: sesClient,
+		Sesv2: sesClient,
 	}
 }
 

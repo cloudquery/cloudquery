@@ -12,7 +12,7 @@ import (
 )
 
 func buildInspectorV2Findings(t *testing.T, ctrl *gomock.Controller) client.Services {
-	inspectorClient := mocks.NewMockInspectorV2Client(ctrl)
+	inspectorClient := mocks.NewMockInspector2Client(ctrl)
 
 	finding := types.Finding{}
 	err := faker.FakeObject(&finding)
@@ -26,7 +26,7 @@ func buildInspectorV2Findings(t *testing.T, ctrl *gomock.Controller) client.Serv
 	)
 
 	return client.Services{
-		InspectorV2: inspectorClient,
+		Inspector2: inspectorClient,
 	}
 }
 

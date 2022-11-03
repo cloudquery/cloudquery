@@ -48,7 +48,7 @@ func buildKmsKeys(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&rotation, nil)
 
 	return client.Services{
-		KMS: m,
+		Kms: m,
 	}
 }
 

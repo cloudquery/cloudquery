@@ -11,7 +11,7 @@ import (
 )
 
 func buildElasticacheUserGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
-	mockElasticache := mocks.NewMockElastiCache(ctrl)
+	mockElasticache := mocks.NewMockElasticacheClient(ctrl)
 	output := elasticache.DescribeUserGroupsOutput{}
 	err := faker.FakeObject(&output)
 	output.Marker = nil
@@ -22,7 +22,7 @@ func buildElasticacheUserGroups(t *testing.T, ctrl *gomock.Controller) client.Se
 	mockElasticache.EXPECT().DescribeUserGroups(gomock.Any(), gomock.Any(), gomock.Any()).Return(&output, nil)
 
 	return client.Services{
-		ElastiCache: mockElasticache,
+		Elasticache: mockElasticache,
 	}
 }
 

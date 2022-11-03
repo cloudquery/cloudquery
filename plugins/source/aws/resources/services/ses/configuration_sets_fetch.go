@@ -10,7 +10,7 @@ import (
 
 func fetchSesConfigurationSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	svc := c.Services().SES
+	svc := c.Services().Sesv2
 
 	config := sesv2.ListConfigurationSetsInput{}
 	p := sesv2.NewListConfigurationSetsPaginator(svc, &config)
@@ -26,7 +26,7 @@ func fetchSesConfigurationSets(ctx context.Context, meta schema.ClientMeta, pare
 
 func getConfigurationSet(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	c := meta.(*client.Client)
-	svc := c.Services().SES
+	svc := c.Services().Sesv2
 	csName := resource.Item.(string)
 
 	getOutput, err := svc.GetConfigurationSet(ctx, &sesv2.GetConfigurationSetInput{ConfigurationSetName: &csName})

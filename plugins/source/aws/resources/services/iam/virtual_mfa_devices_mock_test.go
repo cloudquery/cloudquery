@@ -24,7 +24,7 @@ func buildIamVirtualMfaDevices(t *testing.T, ctrl *gomock.Controller) client.Ser
 			VirtualMFADevices: []iamTypes.VirtualMFADevice{g},
 		}, nil)
 	return client.Services{
-		IAM: m,
+		Iam: m,
 	}
 }
 func TestIAMVirtualMfaDevices(t *testing.T) {

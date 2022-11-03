@@ -57,7 +57,7 @@ func buildElasticbeanstalkEnvironments(t *testing.T, ctrl *gomock.Controller) cl
 	m.EXPECT().DescribeConfigurationOptions(gomock.Any(), gomock.Any(), gomock.Any()).Return(&configOptsOutput, nil)
 
 	return client.Services{
-		ElasticBeanstalk: m,
+		Elasticbeanstalk: m,
 	}
 }
 

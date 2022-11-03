@@ -12,7 +12,7 @@ import (
 )
 
 func buildSageMakerEndpointConfigs(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockSageMakerClient(ctrl)
+	m := mocks.NewMockSagemakerClient(ctrl)
 
 	summ := types.EndpointConfigSummary{}
 	if err := faker.FakeObject(&summ); err != nil {
@@ -43,7 +43,7 @@ func buildSageMakerEndpointConfigs(t *testing.T, ctrl *gomock.Controller) client
 	)
 
 	return client.Services{
-		SageMaker: m,
+		Sagemaker: m,
 	}
 }
 
