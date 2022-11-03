@@ -13,7 +13,7 @@ import (
 func buildEventsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockDocDBClient(ctrl)
 	services := client.Services{
-		DocDB: m,
+		Docdb: m,
 	}
 	var e docdb.DescribeEventsOutput
 	if err := faker.FakeObject(&e); err != nil {

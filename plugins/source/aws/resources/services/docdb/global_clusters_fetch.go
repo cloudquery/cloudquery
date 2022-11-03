@@ -10,7 +10,7 @@ import (
 
 func fetchDocdbGlobalClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	svc := c.Services().DocDB
+	svc := c.Services().Docdb
 
 	input := &docdb.DescribeGlobalClustersInput{}
 	p := docdb.NewDescribeGlobalClustersPaginator(svc, input)

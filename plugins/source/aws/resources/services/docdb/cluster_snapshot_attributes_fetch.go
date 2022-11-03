@@ -12,7 +12,7 @@ import (
 func fetchDocdbClusterSnapshotAttributes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	item := parent.Item.(types.DBClusterSnapshot)
 	c := meta.(*client.Client)
-	svc := c.Services().DocDB
+	svc := c.Services().Docdb
 
 	input := &docdb.DescribeDBClusterSnapshotAttributesInput{
 		DBClusterSnapshotIdentifier: item.DBClusterSnapshotIdentifier,

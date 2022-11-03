@@ -12,7 +12,7 @@ import (
 func fetchDocdbOrderableDbInstanceOptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	item := parent.Item.(types.DBEngineVersion)
 	c := meta.(*client.Client)
-	svc := c.Services().DocDB
+	svc := c.Services().Docdb
 
 	input := &docdb.DescribeOrderableDBInstanceOptionsInput{Engine: item.Engine}
 
