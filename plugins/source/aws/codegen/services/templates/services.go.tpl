@@ -2,11 +2,11 @@
 package client
 
 import (
-    "context"
     "github.com/aws/aws-sdk-go-v2/aws"
-{{- range $service := . }}
-    "{{ $service.Import }}"
-{{- end }}
+    "github.com/cloudquery/cloudquery/plugins/source/aws/client/services"
+    {{- range $service := . }}
+        "{{ $service.Import }}"
+    {{- end }}
 )
 
 func initServices(region string, c aws.Config) Services {
@@ -21,15 +21,6 @@ func initServices(region string, c aws.Config) Services {
 
 type Services struct {
 	{{- range $service := . }}
-		{{$service.Name}} {{$service.ClientName}}
+		{{$service.Name}} services.{{$service.ClientName}}
     {{- end }}
 }
-
-{{- range $service := . }}
-//go:generate mockgen -package=mocks -destination=./mocks/{{$service.PackageName}}.go . {{$service.ClientName}}
-type {{$service.ClientName}} interface {
-    {{- range $sig := $service.Signatures }}
-    {{ $sig }}
-    {{- end }}
-}
-{{- end }}

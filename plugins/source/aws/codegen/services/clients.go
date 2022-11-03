@@ -80,7 +80,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
 	"github.com/aws/aws-sdk-go-v2/service/workspaces"
 	"github.com/aws/aws-sdk-go-v2/service/xray"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/services/models/s3manager"
 )
 
 var clients = []interface{}{
@@ -148,7 +147,6 @@ var clients = []interface{}{
 	&route53domains.Client{},
 	&s3.Client{},
 	&s3control.Client{},
-	&s3manager.Client{},
 	&sagemaker.Client{},
 	&secretsmanager.Client{},
 	&servicecatalog.Client{},
@@ -164,4 +162,16 @@ var clients = []interface{}{
 	&wafv2.Client{},
 	&workspaces.Client{},
 	&xray.Client{},
+}
+
+// customClients will read files from the "custom" directory
+// and copy the definitions from there. This is useful in some rare cases
+// where we need to define our own interfaces or custom imports.
+var customClients = []serviceInfo{
+	{
+		Import:      "github.com/cloudquery/cloudquery/plugins/source/aws/client/models/s3manager",
+		Name:        "S3manager",
+		PackageName: "s3manager",
+		ClientName:  "S3managerClient",
+	},
 }
