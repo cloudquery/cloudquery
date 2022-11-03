@@ -127,7 +127,12 @@ func DocumentDBResources() []*Resource {
 					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 				},
 			},
+			Relations: []string{
+				"ClusterParameters()",
+				"OrderableDbInstanceOptions()",
+			},
 		},
+
 		{
 			SubService:  "instances",
 			Struct:      &types.DBInstance{},
@@ -169,6 +174,51 @@ func DocumentDBResources() []*Resource {
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
 				}...),
+		},
+		{
+			SubService:  "global_clusters",
+			Struct:      &types.GlobalCluster{},
+			Description: "https://docs.aws.amazon.com/documentdb/latest/developerguide/API_GlobalCluster.html",
+			SkipFields:  []string{"GlobalClusterArn"},
+			ExtraColumns: append(
+				defaultRegionalColumns,
+				[]codegen.ColumnDefinition{
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("GlobalClusterArn")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				}...),
+		},
+		{
+			SubService:   "events",
+			Struct:       &types.Event{},
+			Description:  "https://docs.aws.amazon.com/documentdb/latest/developerguide/API_Event.html",
+			ExtraColumns: defaultRegionalColumns,
+		},
+		{
+			SubService:   "event_subscriptions",
+			Struct:       &types.EventSubscription{},
+			Description:  "https://docs.aws.amazon.com/documentdb/latest/developerguide/API_EventSubscription.html",
+			ExtraColumns: defaultRegionalColumns,
+		},
+		{
+			SubService:   "event_categories",
+			Struct:       &types.EventCategoriesMap{},
+			Description:  "https://docs.aws.amazon.com/documentdb/latest/developerguide/API_EventCategoriesMap.html",
+			ExtraColumns: defaultAccountColumns,
+		},
+		{
+			SubService:   "pending_maintenance_actions",
+			Struct:       &types.PendingMaintenanceAction{},
+			Description:  "https://docs.aws.amazon.com/documentdb/latest/developerguide/API_PendingMaintenanceAction.html",
+			ExtraColumns: defaultRegionalColumns,
+		},
+		{
+			SubService:  "orderable_db_instance_options",
+			Struct:      &types.OrderableDBInstanceOption{},
+			Description: "https://docs.aws.amazon.com/documentdb/latest/developerguide/API_OrderableDBInstanceOption.html",
 		},
 	}
 
