@@ -278,6 +278,6 @@ func (r *Resource) generateMockTest(dir string) error {
 // -------------------------------------------------------------------------------
 
 // Because usually the 'Struct' field contains a pointer, we need to dereference with '.Elem()'.
-func (resource Resource) StructName() string {
-	return reflect.TypeOf(resource.Struct).Elem().Name()
+func (r Resource) StructName() string {
+	return reflect.TypeOf(r.Struct).Elem().Name()
 }

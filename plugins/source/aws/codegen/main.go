@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/recipes"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/services"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/tables"
 	"log"
 )
 
@@ -88,7 +89,8 @@ func generateResources() error {
 			return err
 		}
 	}
-	return nil
+
+	return tables.Generate(resources)
 }
 
 func main() {

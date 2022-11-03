@@ -4,15 +4,15 @@ package plugin
 
 import (
 	"github.com/cloudquery/plugin-sdk/schema"
-{{- range $service := $.Services }}
-	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/{{ $service.PackageName }}"
+{{- range $resource := . }}
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/{{ $resource.Service }}"
 {{- end }}
 )
 
 func tables() []*schema.Table {
 	return []*schema.Table{
-    {{- range $service := $.Services }}
-        {{ $service.PackageName }}.{{ $service.Name }}(),
+    {{- range $resource := . }}
+        {{ $resource.Service }}.{{ $resource.SubService | ToCamel }}(),
     {{- end }}
 	}
 }
