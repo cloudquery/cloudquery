@@ -4,6 +4,8 @@
 
 The primary key for this table is **arn**.
 
+## Relations
+This table depends on [aws_servicequotas_services](aws_servicequotas_services.md).
 
 ## Columns
 | Name          | Type          |
