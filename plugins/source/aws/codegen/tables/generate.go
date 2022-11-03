@@ -9,6 +9,7 @@ import (
 	"os"
 	"path"
 	"runtime"
+	"strings"
 	"text/template"
 
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/recipes"
@@ -25,6 +26,7 @@ func Generate(resources []*recipes.Resource) error {
 		return err
 	}
 
+	resources = removeChildResources(resources)
 	var buff bytes.Buffer
 	if err := tpl.Execute(&buff, resources); err != nil {
 		return fmt.Errorf("failed to execute template: %w", err)
@@ -48,4 +50,22 @@ func Generate(resources []*recipes.Resource) error {
 	}
 
 	return nil
+}
+
+func removeChildResources(resources []*recipes.Resource) []*recipes.Resource {
+	filtered := make([]*recipes.Resource, 0)
+	relations := map[string]bool{}
+	for _, r := range resources {
+		for _, rel := range r.Relations {
+			relations[strings.TrimSuffix(rel, "()")] = true
+		}
+	}
+	for _, r := range resources {
+		funcName := strcase.ToCamel(r.SubService)
+		if relations[funcName] {
+			continue
+		}
+		filtered = append(filtered, r)
+	}
+	return filtered
 }

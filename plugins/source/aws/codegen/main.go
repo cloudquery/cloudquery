@@ -7,7 +7,7 @@ import (
 	"log"
 )
 
-func generateResources() error {
+func generateResources() ([]*recipes.Resource, error) {
 	var resources []*recipes.Resource
 	resources = append(resources, recipes.AccessAnalyzerResources()...)
 	resources = append(resources, recipes.ACMResources()...)
@@ -86,11 +86,11 @@ func generateResources() error {
 	resources = append(resources, recipes.XRayResources()...)
 	for _, resource := range resources {
 		if err := resource.Generate(); err != nil {
-			return err
+			return nil, err
 		}
 	}
 
-	return tables.Generate(resources)
+	return resources, nil
 }
 
 func main() {
@@ -99,7 +99,12 @@ func main() {
 		log.Fatal(err)
 	}
 
-	err = generateResources()
+	resources, err := generateResources()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = tables.Generate(resources)
 	if err != nil {
 		log.Fatal(err)
 	}
