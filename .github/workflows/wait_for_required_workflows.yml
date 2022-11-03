@@ -61,7 +61,8 @@ jobs:
               actions = ["cli (ubuntu-latest)", "cli (windows-latest)", "cli (macos-latest)", ...actions]
             }
             actions = [...actions, 'validate-release']
-            console.log(`Waiting for ${actions.join(", ")}`)
+            pendingActions = [...actions]
+            console.log(`Waiting for ${pendingActions.join(", ")}`)
             while (now <= deadline) {
               const checkRuns = await github.paginate(github.rest.checks.listForRef, {
                 owner: 'cloudquery',
@@ -82,9 +83,11 @@ jobs:
                 return
               }
               
+              pendingActions = actions.filter(action => !runs.some(({ name }) => name === action))
+              console.log(`Waiting for ${pendingActions.join(", ")}`)
               await new Promise(r => setTimeout(r, 5000));
               now = new Date().getTime()
             }
-            throw new Error(`Timed out waiting for ${actions.join(', ')}`)
+            throw new Error(`Timed out waiting for ${pendingActions.join(', ')}`)
 
             

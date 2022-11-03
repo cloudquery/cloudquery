@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-heroku-v2.2.0...plugins-source-heroku-v2.2.1) (2022-11-02)
+
+
+### Bug Fixes
+
+* Delete broken spec parameters ([#3455](https://github.com/cloudquery/cloudquery/issues/3455)) ([d6a83fd](https://github.com/cloudquery/cloudquery/commit/d6a83fd7f46b0e306955d6e605e0b5465cbc7e37))
+
 ## [2.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-heroku-v2.1.0...plugins-source-heroku-v2.2.0) (2022-11-01)
 
 

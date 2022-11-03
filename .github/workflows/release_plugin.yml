@@ -18,10 +18,10 @@ jobs:
           plugin_type=$(echo $tag | cut -d- -f2)
           plugin_name=$(echo $tag | cut -d- -f3)
           plugin_version=$(echo $tag | cut -d- -f4-)
-          echo ::set-output name=plugin_name::${plugin_name}
-          echo ::set-output name=plugin_type::${plugin_type}
-          echo ::set-output name=plugin_version::${plugin_version}
-          echo ::set-output name=plugins_dir::plugins/${plugin_type}/${plugin_name}
+          echo "plugin_name=${plugin_name}" >> $GITHUB_OUTPUT
+          echo "plugin_type=${plugin_type}" >> $GITHUB_OUTPUT
+          echo "plugin_version=${plugin_version}" >> $GITHUB_OUTPUT
+          echo "plugins_dir=plugins/${plugin_type}/${plugin_name}" >> $GITHUB_OUTPUT
       # Fail if not a valid SemVer string
       - name: Parse semver string
         uses: booxmedialtd/ws-action-parse-semver@e4a833cf5d612066a210bd9b62d1c3b20be3b325
@@ -37,9 +37,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.19.2-release-cache-${{ hashFiles(format('{0}/{1}', steps.split.outputs.plugins_dir, 'go.sum')) }}
+          key: ${{ runner.os }}-go-1.19.3-release-cache-${{ hashFiles(format('{0}/{1}', steps.split.outputs.plugins_dir, 'go.sum')) }}
           restore-keys: |
-            ${{ runner.os }}-go-1.19.2-release-cache-plugins-${{ steps.split.outputs.plugin_type }}-${{ steps.split.outputs.plugin_name }}
+            ${{ runner.os }}-go-1.19.3-release-cache-plugins-${{ steps.split.outputs.plugin_type }}-${{ steps.split.outputs.plugin_name }}
       - name: Set up Go 1.x
         uses: actions/setup-go@v3
         with:

@@ -1,4 +1,4 @@
-# Heroku Source Plugin Configuration Refernce
+# Heroku Source Plugin Configuration Reference
 
 ## Example
 
@@ -9,7 +9,7 @@ kind: source
 spec: # Common source spec section
   name: heroku
   path: cloudquery/heroku
-  version: "v2.2.0" # latest version of heroku plugin
+  version: "v2.2.1" # latest version of heroku plugin
   tables: ["*"]
   destinations: ["postgresql"]
 
