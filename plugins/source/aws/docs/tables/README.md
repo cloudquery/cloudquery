@@ -243,6 +243,9 @@
 | ↳ [aws_iam_user_attached_policies](aws_iam_user_attached_policies.md) |
 | ↳ [aws_iam_user_policies](aws_iam_user_policies.md) |
 | [aws_iam_virtual_mfa_devices](aws_iam_virtual_mfa_devices.md) |
+| [aws_identitystore_groups](aws_identitystore_groups.md) |
+| ↳ [aws_identitystore_group_memberships](aws_identitystore_group_memberships.md) |
+| [aws_identitystore_users](aws_identitystore_users.md) |
 | [aws_inspector2_findings](aws_inspector2_findings.md) |
 | [aws_inspector_findings](aws_inspector_findings.md) |
 | [aws_iot_billing_groups](aws_iot_billing_groups.md) |
@@ -367,6 +370,7 @@
 | [aws_ssm_instances](aws_ssm_instances.md) |
 | ↳ [aws_ssm_instance_compliance_items](aws_ssm_instance_compliance_items.md) |
 | [aws_ssm_parameters](aws_ssm_parameters.md) |
+| [aws_ssoadmin_instances](aws_ssoadmin_instances.md) |
 | [aws_transfer_servers](aws_transfer_servers.md) |
 | [aws_wafregional_rate_based_rules](aws_wafregional_rate_based_rules.md) |
 | [aws_wafregional_rule_groups](aws_wafregional_rule_groups.md) |

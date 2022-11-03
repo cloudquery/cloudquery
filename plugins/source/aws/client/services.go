@@ -49,6 +49,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/aws/aws-sdk-go-v2/service/guardduty"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
+	"github.com/aws/aws-sdk-go-v2/service/identitystore"
 	"github.com/aws/aws-sdk-go-v2/service/inspector"
 	"github.com/aws/aws-sdk-go-v2/service/inspector2"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
@@ -78,6 +79,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sns"
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
+	"github.com/aws/aws-sdk-go-v2/service/ssoadmin"
 	"github.com/aws/aws-sdk-go-v2/service/transfer"
 	"github.com/aws/aws-sdk-go-v2/service/waf"
 	"github.com/aws/aws-sdk-go-v2/service/wafregional"
@@ -138,6 +140,7 @@ func initServices(region string, c aws.Config) Services {
 		Glue:                      glue.NewFromConfig(awsCfg),
 		Guardduty:                 guardduty.NewFromConfig(awsCfg),
 		Iam:                       iam.NewFromConfig(awsCfg),
+		Identitystore:             identitystore.NewFromConfig(awsCfg),
 		Inspector:                 inspector.NewFromConfig(awsCfg),
 		Inspector2:                inspector2.NewFromConfig(awsCfg),
 		Iot:                       iot.NewFromConfig(awsCfg),
@@ -167,6 +170,7 @@ func initServices(region string, c aws.Config) Services {
 		Sns:                       sns.NewFromConfig(awsCfg),
 		Sqs:                       sqs.NewFromConfig(awsCfg),
 		Ssm:                       ssm.NewFromConfig(awsCfg),
+		Ssoadmin:                  ssoadmin.NewFromConfig(awsCfg),
 		Transfer:                  transfer.NewFromConfig(awsCfg),
 		Waf:                       waf.NewFromConfig(awsCfg),
 		Wafregional:               wafregional.NewFromConfig(awsCfg),
@@ -224,6 +228,7 @@ type Services struct {
 	Glue                      services.GlueClient
 	Guardduty                 services.GuarddutyClient
 	Iam                       services.IamClient
+	Identitystore             services.IdentitystoreClient
 	Inspector                 services.InspectorClient
 	Inspector2                services.Inspector2Client
 	Iot                       services.IotClient
@@ -253,6 +258,7 @@ type Services struct {
 	Sns                       services.SnsClient
 	Sqs                       services.SqsClient
 	Ssm                       services.SsmClient
+	Ssoadmin                  services.SsoadminClient
 	Transfer                  services.TransferClient
 	Waf                       services.WafClient
 	Wafregional               services.WafregionalClient

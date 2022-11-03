@@ -48,6 +48,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/glue"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/guardduty"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/iam"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/identitystore"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/inspector"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/inspector2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/iot"
@@ -74,6 +75,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sns"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sqs"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ssm"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ssoadmin"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/transfer"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/waf"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/wafregional"
@@ -251,6 +253,8 @@ func tables() []*schema.Table {
 		iam.ServerCertificates(),
 		iam.Users(),
 		iam.VirtualMfaDevices(),
+		identitystore.Groups(),
+		identitystore.Users(),
 		inspector2.Findings(),
 		inspector.Findings(),
 		iot.BillingGroups(),
@@ -338,6 +342,7 @@ func tables() []*schema.Table {
 		ssm.Documents(),
 		ssm.Instances(),
 		ssm.Parameters(),
+		ssoadmin.Instances(),
 		transfer.Servers(),
 		wafregional.RateBasedRules(),
 		wafregional.RuleGroups(),
