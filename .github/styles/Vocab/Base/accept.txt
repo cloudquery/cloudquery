@@ -58,6 +58,7 @@ Lightsail
 Grafana
 CloudFormation
 Okta
+okta
 browsable
 Yandex
 queryable
