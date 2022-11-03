@@ -55,6 +55,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/lightsail"
 	"github.com/aws/aws-sdk-go-v2/service/mq"
+	"github.com/aws/aws-sdk-go-v2/service/mwaa"
 	"github.com/aws/aws-sdk-go-v2/service/neptune"
 	"github.com/aws/aws-sdk-go-v2/service/organizations"
 	"github.com/aws/aws-sdk-go-v2/service/qldb"
@@ -138,6 +139,7 @@ var clients = []interface{}{
 	&lambda.Client{},
 	&lightsail.Client{},
 	&mq.Client{},
+	&mwaa.Client{},
 	&neptune.Client{},
 	&organizations.Client{},
 	&qldb.Client{},

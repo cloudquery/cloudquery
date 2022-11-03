@@ -1,10 +1,11 @@
 package main
 
 import (
+	"log"
+
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/recipes"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/services"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/tables"
-	"log"
 )
 
 func generateResources() ([]*recipes.Resource, error) {
@@ -62,6 +63,7 @@ func generateResources() ([]*recipes.Resource, error) {
 	resources = append(resources, recipes.LambdaResources()...)
 	resources = append(resources, recipes.LightsailResources()...)
 	resources = append(resources, recipes.MQResources()...)
+	resources = append(resources, recipes.MWAAResources()...)
 	resources = append(resources, recipes.NeptuneResources()...)
 	resources = append(resources, recipes.OrganizationsResources()...)
 	resources = append(resources, recipes.QLDBResources()...)
