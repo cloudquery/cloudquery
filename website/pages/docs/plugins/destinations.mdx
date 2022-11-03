@@ -1,9 +1,8 @@
 ---
-title: Sources
+title: Destinations
 ---
 
-import POSTGRESQL_VERSION from "../../../components/versions/destination-postgresql.json";
-import CSV_VERSION from "../../../components/versions/destination-csv.json";
+import { getLatestVersion } from "./utils";
 
 # Destination Plugins
 
@@ -13,8 +12,8 @@ This is a list of all official and community destination plugins.
 
 | **Name**                 | Latest Version | Changelog                         | Stage |
 |--------------------------|----------------|-----------------------------------|-------|
-| [PostgreSQL][postgresql] | {POSTGRESQL_VERSION['latest']}         | [Changelog][PostgreSQL-Changelog] | GA    |
-| [CSV][csv] | {CSV_VERSION['latest']}         | [Changelog][CSV-Changelog] | Preview|
+| [PostgreSQL][postgresql] | {getLatestVersion("destination", "postgresql")}         | [Changelog][PostgreSQL-Changelog] | GA    |
+| [CSV][csv] | {getLatestVersion("destination", "csv")}         | [Changelog][CSV-Changelog] | Preview|
 
 [PostgreSQL]: https://github.com/cloudquery/cloudquery/blob/main/plugins/destination/postgresql/README.md
 [PostgreSQL-Changelog]: https://github.com/cloudquery/cloudquery/blob/main/plugins/destination/postgresql/CHANGELOG.md
