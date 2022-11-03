@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [4.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v4.2.1...plugins-source-aws-v4.3.0) (2022-11-03)
+
+
+### Features
+
+* **aws:** Add Support for Service Quotas ([#3489](https://github.com/cloudquery/cloudquery/issues/3489)) ([d9d0dac](https://github.com/cloudquery/cloudquery/commit/d9d0dac94f94f1316d124dcf27d9f73fdddfb729))
+* **aws:** Managed Workflows for Apache Airflow (MWAA) environments ([#3431](https://github.com/cloudquery/cloudquery/issues/3431)) ([a8a08c3](https://github.com/cloudquery/cloudquery/commit/a8a08c35fad099f80f09327d23c67fdd468545fa)), closes [#2300](https://github.com/cloudquery/cloudquery/issues/2300)
+
+
+### Bug Fixes
+
+* **aws-code-gen:** Prefix service name when filtering relations from table list ([#3546](https://github.com/cloudquery/cloudquery/issues/3546)) ([aefaa9a](https://github.com/cloudquery/cloudquery/commit/aefaa9affb5914123ba49818df6ddca17ce8da27))
+
 ## [4.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v4.2.0...plugins-source-aws-v4.2.1) (2022-11-03)
 
 
