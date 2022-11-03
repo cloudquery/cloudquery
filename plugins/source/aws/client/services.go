@@ -877,8 +877,16 @@ type ServiceCatalogAppRegistryClient interface {
 
 //go:generate mockgen -package=mocks -destination=./mocks/ses.go . SESClient
 type SESClient interface {
+	GetConfigurationSet(ctx context.Context, params *sesv2.GetConfigurationSetInput, optFns ...func(*sesv2.Options)) (*sesv2.GetConfigurationSetOutput, error)
+	GetConfigurationSetEventDestinations(ctx context.Context, params *sesv2.GetConfigurationSetEventDestinationsInput, optFns ...func(*sesv2.Options)) (*sesv2.GetConfigurationSetEventDestinationsOutput, error)
+	GetContactList(ctx context.Context, params *sesv2.GetContactListInput, optFns ...func(*sesv2.Options)) (*sesv2.GetContactListOutput, error)
+	GetEmailIdentity(ctx context.Context, params *sesv2.GetEmailIdentityInput, optFns ...func(*sesv2.Options)) (*sesv2.GetEmailIdentityOutput, error)
 	GetEmailTemplate(ctx context.Context, params *sesv2.GetEmailTemplateInput, optFns ...func(*sesv2.Options)) (*sesv2.GetEmailTemplateOutput, error)
-	ListEmailTemplates(ctx context.Context, params *sesv2.ListEmailTemplatesInput, optFns ...func(*sesv2.Options)) (*sesv2.ListEmailTemplatesOutput, error)
+
+	sesv2.ListConfigurationSetsAPIClient
+	sesv2.ListContactListsAPIClient
+	sesv2.ListEmailIdentitiesAPIClient
+	sesv2.ListEmailTemplatesAPIClient
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/shield.go . ShieldClient
