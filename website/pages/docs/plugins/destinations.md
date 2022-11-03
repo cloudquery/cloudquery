@@ -11,5 +11,5 @@ This is a list of all official and community destination plugins.
 
 [PostgreSQL]: https://github.com/cloudquery/cloudquery/blob/main/plugins/destination/postgresql/README.md
 [PostgreSQL-Changelog]: https://github.com/cloudquery/cloudquery/blob/main/plugins/destination/postgresql/CHANGELOG.md
-[CSV]: https://github.com/cloudquery/cloudquery/blob/main/plugins/destination/postgresql/README.md
-[CSV-Changelog]: https://github.com/cloudquery/cloudquery/blob/main/plugins/destination/postgresql/CHANGELOG.md
+[CSV]: https://github.com/cloudquery/cloudquery/blob/main/plugins/destination/csv/README.md
+[CSV-Changelog]: https://github.com/cloudquery/cloudquery/blob/main/plugins/destination/csv/CHANGELOG.md

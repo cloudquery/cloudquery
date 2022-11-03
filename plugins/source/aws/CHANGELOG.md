@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [4.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v4.0.0...plugins-source-aws-v4.1.0) (2022-11-02)
+
+
+### Features
+
+* **aws:** Add AppRunner Operations and Custom Domain Support ([#3448](https://github.com/cloudquery/cloudquery/issues/3448)) ([7bc1282](https://github.com/cloudquery/cloudquery/commit/7bc12821cafd53b01c8e750573f9dad2a5071930))
+
 ## [4.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v3.8.0...plugins-source-aws-v4.0.0) (2022-11-02)
 
 

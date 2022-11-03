@@ -8,16 +8,15 @@ The CloudQuery GitHub plugin extracts your GitHub information.
 
 ## Authentication
 
-CloudQuery requires only a Personal Access Token. follow this [guide](https://docs.github.com/en/enterprise-server@3.4/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) 
-on how to create a personal access token for CloudQuery.
+CloudQuery requires only a Personal Access Token. follow this [guide](https://docs.github.com/en/enterprise-server@3.4/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) on how to create a personal access token for CloudQuery.
 
 CloudQuery requires only *read* permissions (we will never make any changes to your GitHub account or organizations),
 so, following the principle of least privilege, it's recommended to grant it read-only permissions.
 
 ## Configuration
 
-To configure cloudquery to extract from github, create a `.yml` file in your cloudquery directory.
-For example, the following yml will extract information from the `cloudquery` organization, and connect it to a `postgresql` destination plugin
+To configure CloudQuery to extract from github, create a `.yml` file in your CloudQuery configuration directory.
+For example, the following configuration will extract information from the `cloudquery` organization, and connect it to a `postgresql` destination plugin
 
 ```yml
 kind: source

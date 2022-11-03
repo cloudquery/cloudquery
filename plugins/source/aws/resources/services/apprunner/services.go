@@ -104,5 +104,10 @@ func Services() *schema.Table {
 				Resolver: schema.PathResolver("ServiceUrl"),
 			},
 		},
+
+		Relations: []*schema.Table{
+			Operations(),
+			CustomDomains(),
+		},
 	}
 }
