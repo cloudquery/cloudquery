@@ -35,6 +35,86 @@ func (m *MockSESClient) EXPECT() *MockSESClientMockRecorder {
 	return m.recorder
 }
 
+// GetConfigurationSet mocks base method.
+func (m *MockSESClient) GetConfigurationSet(arg0 context.Context, arg1 *sesv2.GetConfigurationSetInput, arg2 ...func(*sesv2.Options)) (*sesv2.GetConfigurationSetOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetConfigurationSet", varargs...)
+	ret0, _ := ret[0].(*sesv2.GetConfigurationSetOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetConfigurationSet indicates an expected call of GetConfigurationSet.
+func (mr *MockSESClientMockRecorder) GetConfigurationSet(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetConfigurationSet", reflect.TypeOf((*MockSESClient)(nil).GetConfigurationSet), varargs...)
+}
+
+// GetConfigurationSetEventDestinations mocks base method.
+func (m *MockSESClient) GetConfigurationSetEventDestinations(arg0 context.Context, arg1 *sesv2.GetConfigurationSetEventDestinationsInput, arg2 ...func(*sesv2.Options)) (*sesv2.GetConfigurationSetEventDestinationsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetConfigurationSetEventDestinations", varargs...)
+	ret0, _ := ret[0].(*sesv2.GetConfigurationSetEventDestinationsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetConfigurationSetEventDestinations indicates an expected call of GetConfigurationSetEventDestinations.
+func (mr *MockSESClientMockRecorder) GetConfigurationSetEventDestinations(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetConfigurationSetEventDestinations", reflect.TypeOf((*MockSESClient)(nil).GetConfigurationSetEventDestinations), varargs...)
+}
+
+// GetContactList mocks base method.
+func (m *MockSESClient) GetContactList(arg0 context.Context, arg1 *sesv2.GetContactListInput, arg2 ...func(*sesv2.Options)) (*sesv2.GetContactListOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetContactList", varargs...)
+	ret0, _ := ret[0].(*sesv2.GetContactListOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetContactList indicates an expected call of GetContactList.
+func (mr *MockSESClientMockRecorder) GetContactList(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetContactList", reflect.TypeOf((*MockSESClient)(nil).GetContactList), varargs...)
+}
+
+// GetEmailIdentity mocks base method.
+func (m *MockSESClient) GetEmailIdentity(arg0 context.Context, arg1 *sesv2.GetEmailIdentityInput, arg2 ...func(*sesv2.Options)) (*sesv2.GetEmailIdentityOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetEmailIdentity", varargs...)
+	ret0, _ := ret[0].(*sesv2.GetEmailIdentityOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetEmailIdentity indicates an expected call of GetEmailIdentity.
+func (mr *MockSESClientMockRecorder) GetEmailIdentity(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEmailIdentity", reflect.TypeOf((*MockSESClient)(nil).GetEmailIdentity), varargs...)
+}
+
 // GetEmailTemplate mocks base method.
 func (m *MockSESClient) GetEmailTemplate(arg0 context.Context, arg1 *sesv2.GetEmailTemplateInput, arg2 ...func(*sesv2.Options)) (*sesv2.GetEmailTemplateOutput, error) {
 	m.ctrl.T.Helper()
@@ -53,6 +133,66 @@ func (mr *MockSESClientMockRecorder) GetEmailTemplate(arg0, arg1 interface{}, ar
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEmailTemplate", reflect.TypeOf((*MockSESClient)(nil).GetEmailTemplate), varargs...)
+}
+
+// ListConfigurationSets mocks base method.
+func (m *MockSESClient) ListConfigurationSets(arg0 context.Context, arg1 *sesv2.ListConfigurationSetsInput, arg2 ...func(*sesv2.Options)) (*sesv2.ListConfigurationSetsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListConfigurationSets", varargs...)
+	ret0, _ := ret[0].(*sesv2.ListConfigurationSetsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListConfigurationSets indicates an expected call of ListConfigurationSets.
+func (mr *MockSESClientMockRecorder) ListConfigurationSets(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListConfigurationSets", reflect.TypeOf((*MockSESClient)(nil).ListConfigurationSets), varargs...)
+}
+
+// ListContactLists mocks base method.
+func (m *MockSESClient) ListContactLists(arg0 context.Context, arg1 *sesv2.ListContactListsInput, arg2 ...func(*sesv2.Options)) (*sesv2.ListContactListsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListContactLists", varargs...)
+	ret0, _ := ret[0].(*sesv2.ListContactListsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListContactLists indicates an expected call of ListContactLists.
+func (mr *MockSESClientMockRecorder) ListContactLists(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListContactLists", reflect.TypeOf((*MockSESClient)(nil).ListContactLists), varargs...)
+}
+
+// ListEmailIdentities mocks base method.
+func (m *MockSESClient) ListEmailIdentities(arg0 context.Context, arg1 *sesv2.ListEmailIdentitiesInput, arg2 ...func(*sesv2.Options)) (*sesv2.ListEmailIdentitiesOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListEmailIdentities", varargs...)
+	ret0, _ := ret[0].(*sesv2.ListEmailIdentitiesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListEmailIdentities indicates an expected call of ListEmailIdentities.
+func (mr *MockSESClientMockRecorder) ListEmailIdentities(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListEmailIdentities", reflect.TypeOf((*MockSESClient)(nil).ListEmailIdentities), varargs...)
 }
 
 // ListEmailTemplates mocks base method.

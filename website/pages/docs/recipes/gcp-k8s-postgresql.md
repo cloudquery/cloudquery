@@ -4,26 +4,29 @@
 kind: source
 spec:
   name: gcp
-  version: "v1.0.1"
+  path: "cloudquery/gcp"
+  version: "v2.4.0" # latest version of gcp plugin
   destinations: ["postgresql"]
 ---
 kind: source
 spec:
   name: k8s
-  version: "v2.0.1"
+  path: "cloudquery/k8s"
+  version: "v2.3.0" # latest version of k8s plugin
   destinations: ["postgresql"]
 ---
 kind: destination
 spec:
   name: "postgresql"
-  version: "v0.3.0"
-  write_mode: "overwrite" # overwrite, append
+  path: "cloudquery/postgresql"
+  version: "v1.6.0" # latest version of postgresql plugin
   spec:
-    connection_string: "postgresql://{CQ_PG_USER}:{CQ_PG_PASS}@localhost:5432/postgres?sslmode=disable"
+    connection_string: ${PG_CONNECTION_STRING}
 ```
 
 Kubernetes users may see the following message when running the K8s plugin on GKE Clusters:
-```
+
+```bash
 WARNING: the gcp auth plugin is deprecated in v1.22+, unavailable in v1.26+; use gcloud instead.
 ```
 
@@ -31,16 +34,18 @@ As part of an initiative to remove platform specific code from Kubernetes, authe
 
 ## What does this mean for CloudQuery users?
 
-CloudQuery does not use any specific resources which hinder the upgrade. 
+CloudQuery does not use any specific resources which hinder the upgrade.
 
 ### Install
+
 The easiest way to upgrade, is to install `gke-gcloud-auth-plugin` from `gcloud components` on Mac or Windows:
 
-```zsh
+```bash
 gcloud components install gke-gcloud-auth-plugin
 ```
 
 and apt on Deb based systems:
+
 ```bash
 sudo apt-get install google-cloud-sdk-gke-gcloud-auth-plugin
 ```
@@ -48,28 +53,34 @@ sudo apt-get install google-cloud-sdk-gke-gcloud-auth-plugin
 ### Verify
 
 Mac or Linux:
-```
+
+```bash
 gke-gcloud-auth-plugin --version 
 ```
 
 Windows:
-```
+
+```bash
 gke-gcloud-auth-plugin.exe --version
 ```
 
 ### Switch authentication methods
+
 Set the flag:
-```sh
+
+```bash
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 ```
 
 Update components:
-```sh
+
+```bash
 gcloud components update
 ```
 
 Force credential update:
-```
+
+```bash
 gcloud container clusters get-credentials {$CLUSTER_NAME}
 ```
 
