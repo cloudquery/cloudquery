@@ -14,5 +14,5 @@ spec:
   name: csv
   path: cloudquery/csv
   write_mode: "append"
-  version: "v1.0.0" # latest version of csv plugin
+  version: "v1.0.1" # latest version of csv plugin
 ```
