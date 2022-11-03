@@ -2,7 +2,7 @@
 
 This section provides set of basic examples for variety of cloudquery sources and destinations plugins.
 
-Note: Source and destinations plugins receipes are seperate in this directory and you will need to combine them to run sync.
+Note: Source and destinations plugins recipes are separate in this directory and you will need to combine them to run sync.
 
 * Combine them easily by either using two different files and running `cloudquery sync aws.yml gcp.yml`
 
