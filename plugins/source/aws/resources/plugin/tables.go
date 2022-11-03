@@ -98,6 +98,7 @@ func tables() []*schema.Table {
 		apprunner.Services(),
 		apprunner.AutoScalingConfiguration(),
 		apprunner.VpcConnector(),
+		apprunner.VpcIngressConnection(),
 		appsync.GraphqlApis(),
 		athena.DataCatalogs(),
 		athena.WorkGroups(),
