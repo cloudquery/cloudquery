@@ -50,7 +50,7 @@ func buildRdsClusterParameterGroups(t *testing.T, ctrl *gomock.Controller) clien
 		&rds.DescribeDBClusterParametersOutput{Parameters: []types.Parameter{p}},
 		nil,
 	)
-	return client.Services{RDS: mock}
+	return client.Services{Rds: mock}
 }
 
 func TestRdsClusterParameterGroups(t *testing.T) {

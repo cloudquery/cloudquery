@@ -14,7 +14,7 @@ import (
 )
 
 func buildEventbridgeReplaysMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockEventBridgeClient(ctrl)
+	m := mocks.NewMockEventbridgeClient(ctrl)
 	object := types.Replay{}
 	err := faker.FakeObject(&object)
 	if err != nil {
@@ -27,7 +27,7 @@ func buildEventbridgeReplaysMock(t *testing.T, ctrl *gomock.Controller) client.S
 		}, nil)
 
 	return client.Services{
-		EventBridge: m,
+		Eventbridge: m,
 	}
 }
 

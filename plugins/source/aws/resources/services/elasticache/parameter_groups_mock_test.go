@@ -11,7 +11,7 @@ import (
 )
 
 func buildElasticacheParameterGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
-	mockElasticache := mocks.NewMockElastiCache(ctrl)
+	mockElasticache := mocks.NewMockElasticacheClient(ctrl)
 	parameterGroupsOutput := elasticache.DescribeCacheParameterGroupsOutput{}
 	err := faker.FakeObject(&parameterGroupsOutput)
 	parameterGroupsOutput.Marker = nil
@@ -33,7 +33,7 @@ func buildElasticacheParameterGroups(t *testing.T, ctrl *gomock.Controller) clie
 	// mockElasticache.EXPECT().DescribeCacheParameters(gomock.Any(), &expectedInput, gomock.Any()).Return(&parametersOutput, nil)
 
 	return client.Services{
-		ElastiCache: mockElasticache,
+		Elasticache: mockElasticache,
 	}
 }
 

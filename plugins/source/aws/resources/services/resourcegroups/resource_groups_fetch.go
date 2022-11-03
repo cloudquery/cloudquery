@@ -14,7 +14,7 @@ import (
 func fetchResourcegroupsResourceGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config resourcegroups.ListGroupsInput
 	c := meta.(*client.Client)
-	svc := c.Services().ResourceGroups
+	svc := c.Services().Resourcegroups
 	for {
 		output, err := svc.ListGroups(ctx, &config)
 		if err != nil {
@@ -32,7 +32,7 @@ func fetchResourcegroupsResourceGroups(ctx context.Context, meta schema.ClientMe
 func getResourceGroup(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	c := meta.(*client.Client)
 	group := resource.Item.(types.GroupIdentifier)
-	svc := c.Services().ResourceGroups
+	svc := c.Services().Resourcegroups
 	groupResponse, err := svc.GetGroup(ctx, &resourcegroups.GetGroupInput{
 		Group: group.GroupArn,
 	})
@@ -56,7 +56,7 @@ func getResourceGroup(ctx context.Context, meta schema.ClientMeta, resource *sch
 
 func resolveResourcegroupsResourceGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().ResourceGroups
+	svc := cl.Services().Resourcegroups
 	group := resource.Item.(models.ResourceGroupWrapper)
 	input := resourcegroups.GetTagsInput{
 		Arn: group.GroupArn,

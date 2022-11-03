@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [4.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v4.1.0...plugins-source-aws-v4.2.0) (2022-11-03)
+
+
+### Features
+
+* **aws:** SES ConfigurationSet, ConfigurationSetEventDestination, ContactList, EmailIdentities ([#3475](https://github.com/cloudquery/cloudquery/issues/3475)) ([fbe562b](https://github.com/cloudquery/cloudquery/commit/fbe562b5aaaf0f8ad83bce06f561b8171062d366))
+
 ## [4.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v4.0.0...plugins-source-aws-v4.1.0) (2022-11-02)
 
 

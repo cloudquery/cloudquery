@@ -13,7 +13,7 @@ import (
 func fetchRdsClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config rds.DescribeDBClustersInput
 	c := meta.(*client.Client)
-	svc := c.Services().RDS
+	svc := c.Services().Rds
 	for {
 		response, err := svc.DescribeDBClusters(ctx, &config)
 		if err != nil {

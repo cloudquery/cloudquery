@@ -23,7 +23,7 @@ func buildEc2KeyPairs(t *testing.T, ctrl *gomock.Controller) client.Services {
 			KeyPairs: []types.KeyPairInfo{l},
 		}, nil)
 	return client.Services{
-		EC2: m,
+		Ec2: m,
 	}
 }
 

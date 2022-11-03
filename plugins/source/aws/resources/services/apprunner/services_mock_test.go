@@ -12,7 +12,7 @@ import (
 )
 
 func buildApprunnerGraphqlApisMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockAppRunnerClient(ctrl)
+	m := mocks.NewMockApprunnerClient(ctrl)
 	s := types.Service{}
 	err := faker.FakeObject(&s)
 	if err != nil {

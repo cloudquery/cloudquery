@@ -12,7 +12,7 @@ import (
 )
 
 func buildAppsyncGraphqlApisMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockAppSyncClient(ctrl)
+	m := mocks.NewMockAppsyncClient(ctrl)
 	l := types.GraphqlApi{}
 	err := faker.FakeObject(&l)
 	if err != nil {
@@ -25,7 +25,7 @@ func buildAppsyncGraphqlApisMock(t *testing.T, ctrl *gomock.Controller) client.S
 		}, nil)
 
 	return client.Services{
-		AppSync: m,
+		Appsync: m,
 	}
 }
 

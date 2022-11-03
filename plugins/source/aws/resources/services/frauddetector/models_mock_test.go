@@ -12,7 +12,7 @@ import (
 )
 
 func buildModels(t *testing.T, ctrl *gomock.Controller) client.Services {
-	fdClient := mocks.NewMockFraudDetectorClient(ctrl)
+	fdClient := mocks.NewMockFrauddetectorClient(ctrl)
 
 	data := types.Model{}
 	err := faker.FakeObject(&data)
@@ -27,7 +27,7 @@ func buildModels(t *testing.T, ctrl *gomock.Controller) client.Services {
 	buildModelVersions(t, fdClient)
 
 	return client.Services{
-		FraudDetector: fdClient,
+		Frauddetector: fdClient,
 	}
 }
 

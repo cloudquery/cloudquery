@@ -61,7 +61,7 @@ func buildSnsSubscriptions(t *testing.T, ctrl *gomock.Controller) client.Service
 	)
 
 	return client.Services{
-		SNS: m,
+		Sns: m,
 	}
 }
 

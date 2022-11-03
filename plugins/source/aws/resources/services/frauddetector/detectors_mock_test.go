@@ -12,7 +12,7 @@ import (
 )
 
 func buildDetectors(t *testing.T, ctrl *gomock.Controller) client.Services {
-	fdClient := mocks.NewMockFraudDetectorClient(ctrl)
+	fdClient := mocks.NewMockFrauddetectorClient(ctrl)
 
 	data := types.Detector{}
 	err := faker.FakeObject(&data)
@@ -28,7 +28,7 @@ func buildDetectors(t *testing.T, ctrl *gomock.Controller) client.Services {
 	addTagsCall(t, fdClient)
 
 	return client.Services{
-		FraudDetector: fdClient,
+		Frauddetector: fdClient,
 	}
 }
 

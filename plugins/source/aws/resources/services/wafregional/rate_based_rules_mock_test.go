@@ -14,7 +14,7 @@ import (
 )
 
 func buildRateBasedRulesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockWafRegionalClient(ctrl)
+	m := mocks.NewMockWafregionalClient(ctrl)
 
 	var rule types.RateBasedRule
 	if err := faker.FakeObject(&rule); err != nil {
@@ -51,7 +51,7 @@ func buildRateBasedRulesMock(t *testing.T, ctrl *gomock.Controller) client.Servi
 		nil,
 	)
 
-	return client.Services{WafRegional: m}
+	return client.Services{Wafregional: m}
 }
 
 func TestRateBasedRules(t *testing.T) {

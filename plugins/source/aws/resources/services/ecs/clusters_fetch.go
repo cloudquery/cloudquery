@@ -13,7 +13,7 @@ import (
 func fetchEcsClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config ecs.ListClustersInput
 	region := meta.(*client.Client).Region
-	svc := meta.(*client.Client).Services().ECS
+	svc := meta.(*client.Client).Services().Ecs
 	for {
 		listClustersOutput, err := svc.ListClusters(ctx, &config, func(o *ecs.Options) {
 			o.Region = region
@@ -49,7 +49,7 @@ func fetchEcsClusterTasks(ctx context.Context, meta schema.ClientMeta, parent *s
 		return fmt.Errorf("expected to have types.Cluster but got %T", parent.Item)
 	}
 	region := meta.(*client.Client).Region
-	svc := meta.(*client.Client).Services().ECS
+	svc := meta.(*client.Client).Services().Ecs
 	config := ecs.ListTasksInput{
 		Cluster: cluster.ClusterArn,
 	}
@@ -88,7 +88,7 @@ func fetchEcsClusterTasks(ctx context.Context, meta schema.ClientMeta, parent *s
 func fetchEcsClusterServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cluster := parent.Item.(types.Cluster)
 	region := meta.(*client.Client).Region
-	svc := meta.(*client.Client).Services().ECS
+	svc := meta.(*client.Client).Services().Ecs
 	config := ecs.ListServicesInput{
 		Cluster: cluster.ClusterArn,
 	}
@@ -127,7 +127,7 @@ func fetchEcsClusterServices(ctx context.Context, meta schema.ClientMeta, parent
 func fetchEcsClusterContainerInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cluster := parent.Item.(types.Cluster)
 	region := meta.(*client.Client).Region
-	svc := meta.(*client.Client).Services().ECS
+	svc := meta.(*client.Client).Services().Ecs
 	config := ecs.ListContainerInstancesInput{
 		Cluster: cluster.ClusterArn,
 	}

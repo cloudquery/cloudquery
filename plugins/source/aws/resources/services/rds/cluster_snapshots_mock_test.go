@@ -41,7 +41,7 @@ func buildRDSClientForClusterSnapshots(t *testing.T, ctrl *gomock.Controller) cl
 		},
 		nil,
 	)
-	return client.Services{RDS: mock}
+	return client.Services{Rds: mock}
 }
 
 func TestRDSDBClusterSnapshots(t *testing.T) {

@@ -26,7 +26,7 @@ func buildEc2InstanceTypes(t *testing.T, ctrl *gomock.Controller) client.Service
 			ResultMetadata: middleware.Metadata{},
 		}, nil)
 	return client.Services{
-		EC2: m,
+		Ec2: m,
 	}
 }
 

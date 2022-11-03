@@ -14,7 +14,7 @@ import (
 
 func fetchWafv2RuleGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	svc := c.Services().WafV2
+	svc := c.Services().Wafv2
 
 	config := wafv2.ListRuleGroupsInput{Scope: c.WAFScope}
 	for {
@@ -35,7 +35,7 @@ func fetchWafv2RuleGroups(ctx context.Context, meta schema.ClientMeta, parent *s
 
 func getRuleGroup(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	c := meta.(*client.Client)
-	svc := c.Services().WafV2
+	svc := c.Services().Wafv2
 	ruleGroupOutput := resource.Item.(types.RuleGroupSummary)
 
 	// Get RuleGroup object
@@ -56,7 +56,7 @@ func resolveRuleGroupTags(ctx context.Context, meta schema.ClientMeta, resource 
 	ruleGroup := resource.Item.(*types.RuleGroup)
 
 	cl := meta.(*client.Client)
-	service := cl.Services().WafV2
+	service := cl.Services().Wafv2
 
 	// Resolve tags
 	outputTags := make(map[string]*string)
@@ -80,7 +80,7 @@ func resolveWafv2ruleGroupPolicy(ctx context.Context, meta schema.ClientMeta, re
 	ruleGroup := resource.Item.(*types.RuleGroup)
 
 	cl := meta.(*client.Client)
-	service := cl.Services().WafV2
+	service := cl.Services().Wafv2
 
 	// Resolve rule group policy
 	policy, err := service.GetPermissionPolicy(ctx, &wafv2.GetPermissionPolicyInput{ResourceArn: ruleGroup.ARN}, func(options *wafv2.Options) {

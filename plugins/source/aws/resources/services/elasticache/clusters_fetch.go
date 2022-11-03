@@ -13,7 +13,7 @@ func fetchElasticacheClusters(ctx context.Context, meta schema.ClientMeta, paren
 	var input elasticache.DescribeCacheClustersInput
 	input.ShowCacheNodeInfo = aws.Bool(true)
 
-	paginator := elasticache.NewDescribeCacheClustersPaginator(meta.(*client.Client).Services().ElastiCache, &input)
+	paginator := elasticache.NewDescribeCacheClustersPaginator(meta.(*client.Client).Services().Elasticache, &input)
 	for paginator.HasMorePages() {
 		v, err := paginator.NextPage(ctx)
 		if err != nil {

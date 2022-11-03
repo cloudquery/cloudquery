@@ -12,7 +12,7 @@ import (
 
 func fetchIotJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().IOT
+	svc := cl.Services().Iot
 	input := iot.ListJobsInput{
 		MaxResults: aws.Int32(250),
 	}
@@ -45,7 +45,7 @@ func fetchIotJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 func ResolveIotJobTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*types.Job)
 	cl := meta.(*client.Client)
-	svc := cl.Services().IOT
+	svc := cl.Services().Iot
 	input := iot.ListTagsForResourceInput{
 		ResourceArn: i.JobArn,
 	}
