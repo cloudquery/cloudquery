@@ -2,7 +2,6 @@ package kms
 
 import (
 	"context"
-	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/kms"
@@ -14,7 +13,7 @@ import (
 func fetchKmsKeyGrants(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	k := parent.Item.(*types.KeyMetadata)
 	config := kms.ListGrantsInput{
-		KeyId: k.KeyId,
+		KeyId: k.Arn,
 		Limit: aws.Int32(100),
 	}
 
@@ -29,14 +28,4 @@ func fetchKmsKeyGrants(ctx context.Context, meta schema.ClientMeta, parent *sche
 		res <- response.Grants
 	}
 	return nil
-}
-
-func resolveKeyGrantsKeyArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	key := resource.Item.(types.GrantListEntry)
-	if strings.HasPrefix(aws.ToString(key.KeyId), "arn:") {
-		return resource.Set(c.Name, key.KeyId)
-	}
-
-	cl := meta.(*client.Client)
-	return resource.Set(c.Name, cl.ARN("kms", "key", aws.ToString(key.KeyId)))
 }

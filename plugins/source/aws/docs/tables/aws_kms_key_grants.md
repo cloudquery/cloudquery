@@ -22,6 +22,7 @@ This table depends on [aws_kms_keys](aws_kms_keys.md).
 |creation_date|Timestamp|
 |grantee_principal|String|
 |issuing_account|String|
+|key_id|String|
 |name|String|
 |operations|StringArray|
 |retiring_principal|String|

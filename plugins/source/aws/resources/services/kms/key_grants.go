@@ -27,7 +27,7 @@ func KeyGrants() *schema.Table {
 			{
 				Name:     "key_arn",
 				Type:     schema.TypeString,
-				Resolver: resolveKeyGrantsKeyArn,
+				Resolver: schema.ParentColumnResolver("arn"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
@@ -59,6 +59,11 @@ func KeyGrants() *schema.Table {
 				Name:     "issuing_account",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("IssuingAccount"),
+			},
+			{
+				Name:     "key_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("KeyId"),
 			},
 			{
 				Name:     "name",
