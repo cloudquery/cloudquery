@@ -10,7 +10,7 @@ spec:
   name: gcp
   path: "cloudquery/gcp"
   version: "v2.4.0" # latest version of gcp plugin
-  destinations: ["YOUR_DESTINATION"]
+  destinations: ["<destination-name>"]
 ---
 kind: source
 spec:
