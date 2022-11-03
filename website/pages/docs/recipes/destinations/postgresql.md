@@ -20,7 +20,7 @@ spec:
 
 Run PostgreSQL destination in debug mode:
 
-Note: This will use [pgx](https://github.com/jackc/pgx) built-in logging and might output data/sensitive information to logs so make sure to not use it in production but only for debugging.
+Note: This will use [`pgx`](https://github.com/jackc/pgx) built-in logging and might output data/sensitive information to logs so make sure to not use it in production but only for debugging.
 
 ```yaml
 kind: destination
