@@ -47,6 +47,14 @@ func buildKmsKeys(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().GetKeyRotationStatus(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&rotation, nil)
 
+	g := kms.ListGrantsOutput{}
+	err = faker.FakeObject(&g)
+	if err != nil {
+		t.Fatal(err)
+	}
+	g.NextMarker = nil
+	m.EXPECT().ListGrants(gomock.Any(), gomock.Any(), gomock.Any()).Return(&g, nil)
+
 	return client.Services{
 		Kms: m,
 	}
