@@ -2,7 +2,7 @@
 
 Full spec options for PostgreSQL destination available [here](https://github.com/cloudquery/cloudquery/tree/main/plugins/destination/postgresql).
 
-Note: Make sure you use environment variable expansion in production instead of commiting the credentials to the configuration file directly.
+Note: Make sure you use environment variable expansion in production instead of committing the credentials to the configuration file directly.
 
 ## Basic
 
