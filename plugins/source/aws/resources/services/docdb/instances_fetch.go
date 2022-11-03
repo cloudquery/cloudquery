@@ -12,7 +12,7 @@ import (
 func fetchDocdbInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	item := parent.Item.(types.DBCluster)
 	c := meta.(*client.Client)
-	svc := c.Services().DocDB
+	svc := c.Services().Docdb
 
 	input := &docdb.DescribeDBInstancesInput{Filters: []types.Filter{{Name: aws.String("db-cluster-id"), Values: []string{*item.DBClusterIdentifier}}}}
 

@@ -13,7 +13,7 @@ import (
 
 func fetchServicecatalogPortfolios(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	svc := c.Services().ServiceCatalog
+	svc := c.Services().Servicecatalog
 
 	listInput := new(servicecatalog.ListPortfoliosInput)
 	for {
@@ -37,7 +37,7 @@ func resolvePortfolioTags(ctx context.Context, meta schema.ClientMeta, resource 
 	port := resource.Item.(types.PortfolioDetail)
 
 	cl := meta.(*client.Client)
-	svc := cl.Services().ServiceCatalogAR
+	svc := cl.Services().Servicecatalogappregistry
 	response, err := svc.ListTagsForResource(ctx, &servicecatalogappregistry.ListTagsForResourceInput{
 		ResourceArn: port.ARN,
 	})

@@ -23,7 +23,7 @@ func buildEc2Vpcs(t *testing.T, ctrl *gomock.Controller) client.Services {
 			Vpcs: []types.Vpc{l},
 		}, nil)
 	return client.Services{
-		EC2: m,
+		Ec2: m,
 	}
 }
 func TestEc2Vpcs(t *testing.T) {

@@ -25,7 +25,7 @@ func buildEc2FlowLogsMock(t *testing.T, ctrl *gomock.Controller) client.Services
 			FlowLogs: []types.FlowLog{g},
 		}, nil)
 	return client.Services{
-		EC2: m,
+		Ec2: m,
 	}
 }
 func TestEc2FlowLogs(t *testing.T) {

@@ -12,7 +12,7 @@ import (
 
 func fetchRdsDbSnapshots(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	svc := c.Services().RDS
+	svc := c.Services().Rds
 	var input rds.DescribeDBSnapshotsInput
 	for {
 		output, err := svc.DescribeDBSnapshots(ctx, &input)
@@ -40,7 +40,7 @@ func resolveRDSDBSnapshotTags(ctx context.Context, meta schema.ClientMeta, resou
 func resolveRDSDBSnapshotAttributes(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, column schema.Column) error {
 	s := resource.Item.(types.DBSnapshot)
 	c := meta.(*client.Client)
-	svc := c.Services().RDS
+	svc := c.Services().Rds
 	out, err := svc.DescribeDBSnapshotAttributes(
 		ctx,
 		&rds.DescribeDBSnapshotAttributesInput{DBSnapshotIdentifier: s.DBSnapshotIdentifier},

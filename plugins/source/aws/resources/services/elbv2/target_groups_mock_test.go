@@ -12,7 +12,7 @@ import (
 )
 
 func buildElbv2TargetGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockElbV2Client(ctrl)
+	m := mocks.NewMockElasticloadbalancingv2Client(ctrl)
 	l := elbv2Types.TargetGroup{}
 	err := faker.FakeObject(&l)
 	if err != nil {
@@ -38,7 +38,7 @@ func buildElbv2TargetGroups(t *testing.T, ctrl *gomock.Controller) client.Servic
 	}
 	m.EXPECT().DescribeTargetHealth(gomock.Any(), gomock.Any(), gomock.Any()).Return(&th, nil)
 	return client.Services{
-		ELBv2: m,
+		Elasticloadbalancingv2: m,
 	}
 }
 

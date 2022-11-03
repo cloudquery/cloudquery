@@ -12,7 +12,7 @@ To [authenticate](https://developer.okta.com/docs/guides/create-an-api-token/ove
 
 ## Configuration
 
-In order to get started with the Okta plugin, you need to create a yaml file in you cloudquery directory (e.g. named `okta.yml`).
+In order to get started with the Okta plugin, you need to create a YAML file in your CloudQuery configuration directory (e.g. named `okta.yml`).
 
 The following example sets up the Okta plugin, and connects it to a postgresql destination:
 

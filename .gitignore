@@ -18,6 +18,7 @@ database-data/*
 dest/*
 outfile
 cli/examples
+cli/cq_csv_output
 test_init_config.yml
 telemetry-random-id
 go.work

@@ -12,7 +12,7 @@ import (
 
 func fetchDocdbClusters(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	svc := c.Services().DocDB
+	svc := c.Services().Docdb
 
 	input := docdb.DescribeDBClustersInput{
 		Filters: []types.Filter{{Name: aws.String("engine"), Values: []string{"docdb"}}},

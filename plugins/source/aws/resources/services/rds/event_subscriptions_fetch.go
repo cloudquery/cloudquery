@@ -12,7 +12,7 @@ import (
 
 func fetchRdsEventSubscriptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().RDS
+	svc := cl.Services().Rds
 	var input rds.DescribeEventSubscriptionsInput
 	for {
 		out, err := svc.DescribeEventSubscriptions(ctx, &input)
@@ -31,7 +31,7 @@ func fetchRdsEventSubscriptions(ctx context.Context, meta schema.ClientMeta, par
 func resolveRDSEventSubscriptionTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	s := resource.Item.(types.EventSubscription)
 	cl := meta.(*client.Client)
-	svc := cl.Services().RDS
+	svc := cl.Services().Rds
 	out, err := svc.ListTagsForResource(ctx, &rds.ListTagsForResourceInput{ResourceName: s.EventSubscriptionArn})
 	if err != nil {
 		return err

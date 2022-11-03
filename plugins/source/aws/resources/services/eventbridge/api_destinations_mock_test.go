@@ -14,7 +14,7 @@ import (
 )
 
 func buildEventbridgeApiDestinationsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockEventBridgeClient(ctrl)
+	m := mocks.NewMockEventbridgeClient(ctrl)
 	object := types.ApiDestination{}
 	err := faker.FakeObject(&object)
 	if err != nil {
@@ -27,7 +27,7 @@ func buildEventbridgeApiDestinationsMock(t *testing.T, ctrl *gomock.Controller) 
 		}, nil)
 
 	return client.Services{
-		EventBridge: m,
+		Eventbridge: m,
 	}
 }
 

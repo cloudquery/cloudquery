@@ -13,7 +13,7 @@ import (
 
 func fetchEc2NetworkInterfaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	svc := c.Services().EC2
+	svc := c.Services().Ec2
 	input := ec2.DescribeNetworkInterfacesInput{}
 	for {
 		output, err := svc.DescribeNetworkInterfaces(ctx, &input, func(o *ec2.Options) {

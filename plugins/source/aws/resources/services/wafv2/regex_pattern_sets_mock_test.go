@@ -13,7 +13,7 @@ import (
 )
 
 func buildRegexPatternSetsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockWafV2Client(ctrl)
+	m := mocks.NewMockWafv2Client(ctrl)
 
 	for _, scope := range []types.Scope{types.ScopeCloudfront, types.ScopeRegional} {
 		var s types.RegexPatternSet
@@ -54,7 +54,7 @@ func buildRegexPatternSetsMock(t *testing.T, ctrl *gomock.Controller) client.Ser
 		)
 	}
 
-	return client.Services{WafV2: m}
+	return client.Services{Wafv2: m}
 }
 
 func TestWafV2RegexPatternSets(t *testing.T) {

@@ -12,7 +12,7 @@ import (
 )
 
 func buildAccessAnalyzer(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockAnalyzerClient(ctrl)
+	m := mocks.NewMockAccessanalyzerClient(ctrl)
 	u := types.AnalyzerSummary{}
 	if err := faker.FakeObject(&u); err != nil {
 		t.Fatal(err)
@@ -42,7 +42,7 @@ func buildAccessAnalyzer(t *testing.T, ctrl *gomock.Controller) client.Services 
 		}, nil)
 
 	return client.Services{
-		Analyzer: m,
+		Accessanalyzer: m,
 	}
 }
 

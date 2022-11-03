@@ -13,7 +13,7 @@ import (
 
 func fetchServicecatalogProducts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	svc := c.Services().ServiceCatalog
+	svc := c.Services().Servicecatalog
 
 	listInput := new(servicecatalog.SearchProductsAsAdminInput)
 	for {
@@ -37,7 +37,7 @@ func resolveProductTags(ctx context.Context, meta schema.ClientMeta, resource *s
 	p := resource.Item.(types.ProductViewDetail)
 
 	cl := meta.(*client.Client)
-	svc := cl.Services().ServiceCatalogAR
+	svc := cl.Services().Servicecatalogappregistry
 	response, err := svc.ListTagsForResource(ctx, &servicecatalogappregistry.ListTagsForResourceInput{
 		ResourceArn: p.ProductARN,
 	})

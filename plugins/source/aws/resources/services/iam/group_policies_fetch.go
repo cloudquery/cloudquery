@@ -14,7 +14,7 @@ import (
 
 func fetchIamGroupPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	svc := c.Services().IAM
+	svc := c.Services().Iam
 	group := parent.Item.(types.Group)
 	config := iam.ListGroupPoliciesInput{
 		GroupName: group.GroupName,
@@ -40,7 +40,7 @@ func fetchIamGroupPolicies(ctx context.Context, meta schema.ClientMeta, parent *
 
 func getGroupPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	c := meta.(*client.Client)
-	svc := c.Services().IAM
+	svc := c.Services().Iam
 	p := resource.Item.(string)
 	group := resource.Parent.Item.(types.Group)
 

@@ -18,7 +18,7 @@ type WrappedSageMakerNotebookInstance struct {
 
 func fetchSagemakerNotebookInstances(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	svc := c.Services().SageMaker
+	svc := c.Services().Sagemaker
 	config := sagemaker.ListNotebookInstancesInput{}
 	for {
 		response, err := svc.ListNotebookInstances(ctx, &config)
@@ -38,7 +38,7 @@ func fetchSagemakerNotebookInstances(ctx context.Context, meta schema.ClientMeta
 
 func getNotebookInstance(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	c := meta.(*client.Client)
-	svc := c.Services().SageMaker
+	svc := c.Services().Sagemaker
 	n := resource.Item.(types.NotebookInstanceSummary)
 
 	// get more details about the notebook instance
@@ -60,7 +60,7 @@ func getNotebookInstance(ctx context.Context, meta schema.ClientMeta, resource *
 func resolveSagemakerNotebookInstanceTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
 	r := resource.Item.(*WrappedSageMakerNotebookInstance)
 	c := meta.(*client.Client)
-	svc := c.Services().SageMaker
+	svc := c.Services().Sagemaker
 	config := sagemaker.ListTagsInput{
 		ResourceArn: &r.NotebookInstanceArn,
 	}

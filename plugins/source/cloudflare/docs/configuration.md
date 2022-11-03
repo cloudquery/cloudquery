@@ -23,10 +23,10 @@ spec:
 
 This is the (nested) spec used by the Cloudflare source plugin.
 
-- `api_token` (string, optional. Default: empty): 
+- `api_token` (string, optional. Default: empty):
   An API token to access Cloudflare resources. This can also be set with the `CLOUDFLARE_API_TOKEN` environment variable. An API token authentication is preferred over API email and key authentication. If `api_token` is specified, `api_email` and `api_key` shouldn't be specified.
 
-- `api_email` (string, optional. Defualt: empty):
+- `api_email` (string, optional. Default: empty):
   API email to access Cloudflare resources. If `api_email` is specified, `api_key` should also be specified. This can also be set with the `CLOUDFLARE_EMAIL` environment variable. If `api_email` is used, `api_token` shouldn't be specified.
 
 - `api_key` (string, optional. Default: empty):

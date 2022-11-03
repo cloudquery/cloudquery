@@ -14,7 +14,7 @@ import (
 func fetchEc2VpcPeeringConnections(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config ec2.DescribeVpcPeeringConnectionsInput
 	c := meta.(*client.Client)
-	svc := meta.(*client.Client).Services().EC2
+	svc := meta.(*client.Client).Services().Ec2
 	for {
 		output, err := svc.DescribeVpcPeeringConnections(ctx, &config, func(o *ec2.Options) {
 			o.Region = c.Region

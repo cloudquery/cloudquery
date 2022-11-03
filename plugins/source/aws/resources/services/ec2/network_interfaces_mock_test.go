@@ -21,7 +21,7 @@ func buildEc2NetworkInterfaces(t *testing.T, ctrl *gomock.Controller) client.Ser
 	niOutput.NextToken = nil
 	m.EXPECT().DescribeNetworkInterfaces(gomock.Any(), gomock.Any(), gomock.Any()).Return(&niOutput, nil)
 	return client.Services{
-		EC2: m,
+		Ec2: m,
 	}
 }
 

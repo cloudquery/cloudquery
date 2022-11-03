@@ -10,7 +10,7 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-func buildModelVersions(t *testing.T, client *mocks.MockFraudDetectorClient) {
+func buildModelVersions(t *testing.T, client *mocks.MockFrauddetectorClient) {
 	data := types.ModelVersionDetail{}
 	err := faker.FakeObject(&data)
 	if err != nil {
