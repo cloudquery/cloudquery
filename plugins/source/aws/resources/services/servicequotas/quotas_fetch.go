@@ -22,7 +22,6 @@ func fetchServicequotasQuotas(ctx context.Context, meta schema.ClientMeta, paren
 			return err
 		}
 		res <- output.Quotas
-
 	}
 	return nil
 }
