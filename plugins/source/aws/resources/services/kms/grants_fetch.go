@@ -11,7 +11,7 @@ import (
 )
 
 func fetchKmsGrants(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	k := parent.Item.(types.KeyMetadata) // FIXME parent is nil for me here
+	k := parent.Item.(*types.KeyMetadata)
 	config := kms.ListGrantsInput{
 		KeyId: k.KeyId,
 		Limit: aws.Int32(100),

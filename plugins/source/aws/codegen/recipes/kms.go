@@ -24,10 +24,11 @@ func KMSResources() []*Resource {
 					},
 				}...),
 		}, {
-			SubService:  "keys",
-			Struct:      &types.KeyMetadata{},
-			Description: "https://docs.aws.amazon.com/kms/latest/APIReference/API_KeyMetadata.html",
-			SkipFields:  []string{"Arn"},
+			SubService:          "keys",
+			Struct:              &types.KeyMetadata{},
+			Description:         "https://docs.aws.amazon.com/kms/latest/APIReference/API_KeyMetadata.html",
+			PreResourceResolver: "getKey",
+			SkipFields:          []string{"Arn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
