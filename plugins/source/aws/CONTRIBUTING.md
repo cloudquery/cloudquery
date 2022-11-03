@@ -79,7 +79,7 @@ for _, r := range resources {
 
 ### Run Code Generation
 
-With the recipe file added and some resources defined, you are ready to run `codegen`. Inside the [`codegen`](codegen) directory, run:
+With the recipe file added and some resources defined, you are ready to run code generation. Run:
 
 ```shell
 make gen-code
