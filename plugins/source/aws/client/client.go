@@ -12,10 +12,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws/retry"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials/stscreds"
-	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
-	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/sts"
 	wafv2types "github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/aws/smithy-go"
@@ -39,14 +37,6 @@ type Client struct {
 	AutoscalingNamespace string
 	WAFScope             wafv2types.Scope
 	Partition            string
-}
-
-// S3Manager This is needed because https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/feature/s3/manager
-// has different structure then all other services (i.e no service but just a function) and we need
-// the ability to mock it.
-// Also we need to use s3 manager to be able to query the bucket-region https://github.com/aws/aws-sdk-go-v2/pull/1027#issuecomment-759818990
-type S3Manager struct {
-	s3Client *s3.Client
 }
 
 type AwsLogger struct {
@@ -110,16 +100,6 @@ func (s *ServicesManager) InitServicesForPartitionAccountAndScope(partition, acc
 		s.wafScopeServices[partition] = make(map[string]*Services)
 	}
 	s.wafScopeServices[partition][accountId] = &services
-}
-
-func newS3ManagerFromConfig(cfg aws.Config) S3Manager {
-	return S3Manager{
-		s3Client: s3.NewFromConfig(cfg),
-	}
-}
-
-func (s3Manager S3Manager) GetBucketRegion(ctx context.Context, bucket string, optFns ...func(*s3.Options)) (string, error) {
-	return manager.GetBucketRegion(ctx, s3Manager.s3Client, bucket, optFns...)
 }
 
 func NewAwsClient(logger zerolog.Logger) Client {
