@@ -6,7 +6,7 @@ The primary key for this table is **arn**.
 
 ## Relations
 The following tables depend on aws_kms_keys:
-  - [aws_kms_grants](aws_kms_grants.md)
+  - [aws_kms_key_grants](aws_kms_key_grants.md)
 
 ## Columns
 | Name          | Type          |

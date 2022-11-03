@@ -252,7 +252,7 @@
 | [aws_kinesis_streams](aws_kinesis_streams.md) |
 | [aws_kms_aliases](aws_kms_aliases.md) |
 | [aws_kms_keys](aws_kms_keys.md) |
-| ↳ [aws_kms_grants](aws_kms_grants.md) |
+| ↳ [aws_kms_key_grants](aws_kms_key_grants.md) |
 | [aws_lambda_functions](aws_lambda_functions.md) |
 | ↳ [aws_lambda_function_event_invoke_configs](aws_lambda_function_event_invoke_configs.md) |
 | ↳ [aws_lambda_function_aliases](aws_lambda_function_aliases.md) |

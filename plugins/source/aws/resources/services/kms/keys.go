@@ -161,7 +161,7 @@ func Keys() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			Grants(),
+			KeyGrants(),
 		},
 	}
 }

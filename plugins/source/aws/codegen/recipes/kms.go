@@ -54,9 +54,9 @@ func KMSResources() []*Resource {
 						IgnoreInTests: true,
 					},
 				}...),
-			Relations: []string{"Grants()"},
+			Relations: []string{"KeyGrants()"},
 		}, {
-			SubService:  "grants",
+			SubService:  "key_grants",
 			Struct:      &types.GrantListEntry{},
 			Description: "https://docs.aws.amazon.com/kms/latest/APIReference/API_GrantListEntry.html",
 			SkipFields:  []string{"GrantId", "KeyId"},

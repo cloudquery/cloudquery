@@ -1,4 +1,4 @@
-# Table: aws_kms_grants
+# Table: aws_kms_key_grants
 
 https://docs.aws.amazon.com/kms/latest/APIReference/API_GrantListEntry.html
 
