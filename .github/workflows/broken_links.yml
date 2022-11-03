@@ -55,5 +55,6 @@ jobs:
             --exclude github.com \
             --exclude support.google.com \
             --exclude work-bench.com \
+            --exclude mailchimp.com \
             ${{ steps.vercel.outputs.url }} \
             | grep -v '───OK───' | grep -v '──SKIP──' | grep -v '0 broken'
