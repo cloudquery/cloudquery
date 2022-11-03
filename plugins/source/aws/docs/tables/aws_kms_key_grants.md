@@ -2,7 +2,7 @@
 
 https://docs.aws.amazon.com/kms/latest/APIReference/API_GrantListEntry.html
 
-The composite primary key for this table is (**account_id**, **region**, **grant_id**, **key_id**).
+The composite primary key for this table is (**key_arn**, **grant_id**).
 
 ## Relations
 This table depends on [aws_kms_keys](aws_kms_keys.md).
@@ -14,10 +14,10 @@ This table depends on [aws_kms_keys](aws_kms_keys.md).
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|account_id (PK)|String|
-|region (PK)|String|
+|account_id|String|
+|region|String|
+|key_arn (PK)|String|
 |grant_id (PK)|String|
-|key_id (PK)|String|
 |constraints|JSON|
 |creation_date|Timestamp|
 |grantee_principal|String|

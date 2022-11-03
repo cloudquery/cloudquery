@@ -61,18 +61,18 @@ func KMSResources() []*Resource {
 			Description: "https://docs.aws.amazon.com/kms/latest/APIReference/API_GrantListEntry.html",
 			SkipFields:  []string{"GrantId", "KeyId"},
 			ExtraColumns: append(
-				defaultRegionalColumnsPK,
+				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
+					{
+						Name:     "key_arn",
+						Type:     schema.TypeString,
+						Resolver: `resolveKeyGrantsKeyArn`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
 					{
 						Name:     "grant_id",
 						Type:     schema.TypeString,
 						Resolver: `schema.PathResolver("GrantId")`,
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:     "key_id",
-						Type:     schema.TypeString,
-						Resolver: `schema.PathResolver("KeyId")`,
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
 				}...),

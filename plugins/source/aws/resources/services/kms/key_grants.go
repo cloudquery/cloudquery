@@ -18,14 +18,16 @@ func KeyGrants() *schema.Table {
 				Name:     "account_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveAWSAccount,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
 				Name:     "region",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveAWSRegion,
+			},
+			{
+				Name:     "key_arn",
+				Type:     schema.TypeString,
+				Resolver: resolveKeyGrantsKeyArn,
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
@@ -34,14 +36,6 @@ func KeyGrants() *schema.Table {
 				Name:     "grant_id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("GrantId"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "key_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("KeyId"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
