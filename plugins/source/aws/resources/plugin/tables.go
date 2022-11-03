@@ -304,7 +304,7 @@ func tables() []*schema.Table {
 		servicecatalog.Portfolios(),
 		servicecatalog.Products(),
 		servicecatalog.ProvisionedProducts(),
-		servicequotas.Quotas(),
+		servicequotas.Services(),
 		ses.Templates(),
 		ses.ConfigurationSets(),
 		ses.ContactLists(),

@@ -10,7 +10,7 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-func buildQuotas(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildServices(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockServicequotasClient(ctrl)
 
 	services := servicequotas.ListServicesOutput{}
@@ -36,5 +36,5 @@ func buildQuotas(t *testing.T, ctrl *gomock.Controller) client.Services {
 }
 
 func TestQuotas(t *testing.T) {
-	client.AwsMockTestHelper(t, Quotas(), buildQuotas, client.TestOptions{})
+	client.AwsMockTestHelper(t, Services(), buildServices, client.TestOptions{})
 }

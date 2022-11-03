@@ -9,9 +9,8 @@ import (
 
 func Quotas() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_servicequotas_quotas",
-		Resolver:  fetchServicequotasQuotas,
-		Multiplex: client.ServiceAccountRegionMultiplexer("servicequotas"),
+		Name:     "aws_servicequotas_quotas",
+		Resolver: fetchServicequotasQuotas,
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

@@ -9,6 +9,30 @@ import (
 func ServiceQuotasResources() []*Resource {
 	resources := []*Resource{
 		{
+			SubService: "services",
+			Struct:     &types.ServiceInfo{},
+			SkipFields: []string{"ServiceCode", "ServiceName"},
+			Multiplex:  `client.ServiceAccountRegionMultiplexer("servicequotas")`,
+			ExtraColumns: append(
+				defaultRegionalColumnsPK,
+				[]codegen.ColumnDefinition{
+					{
+						Name:     "service_code",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("ServiceCode")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					}, {
+						Name:     "service_name",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("ServiceName")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				}...),
+			Relations: []string{
+				"Quotas()",
+			},
+		},
+		{
 			SubService: "quotas",
 			Struct:     &types.ServiceQuota{},
 			SkipFields: []string{"QuotaArn"},
@@ -28,7 +52,6 @@ func ServiceQuotasResources() []*Resource {
 	// set default values
 	for _, r := range resources {
 		r.Service = "servicequotas"
-		r.Multiplex = `client.ServiceAccountRegionMultiplexer("servicequotas")`
 	}
 	return resources
 }
