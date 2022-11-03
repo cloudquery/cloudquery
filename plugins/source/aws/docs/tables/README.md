@@ -90,7 +90,14 @@
 | [aws_docdb_cluster_parameter_groups](aws_docdb_cluster_parameter_groups.md) |
 | [aws_docdb_certificates](aws_docdb_certificates.md) |
 | [aws_docdb_engine_versions](aws_docdb_engine_versions.md) |
+| ↳ [aws_docdb_cluster_parameters](aws_docdb_cluster_parameters.md) |
+| ↳ [aws_docdb_orderable_db_instance_options](aws_docdb_orderable_db_instance_options.md) |
 | [aws_docdb_subnet_groups](aws_docdb_subnet_groups.md) |
+| [aws_docdb_global_clusters](aws_docdb_global_clusters.md) |
+| [aws_docdb_events](aws_docdb_events.md) |
+| [aws_docdb_event_subscriptions](aws_docdb_event_subscriptions.md) |
+| [aws_docdb_event_categories](aws_docdb_event_categories.md) |
+| [aws_docdb_pending_maintenance_actions](aws_docdb_pending_maintenance_actions.md) |
 | [aws_dynamodb_tables](aws_dynamodb_tables.md) |
 | ↳ [aws_dynamodb_table_replica_auto_scalings](aws_dynamodb_table_replica_auto_scalings.md) |
 | ↳ [aws_dynamodb_table_continuous_backups](aws_dynamodb_table_continuous_backups.md) |

@@ -10,21 +10,21 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchDocdbEngineVersions(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchDocdbEventCategories(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Docdb
 
-	input := &docdb.DescribeDBEngineVersionsInput{
+	input := &docdb.DescribeEventCategoriesInput{
 		Filters: []types.Filter{{Name: aws.String("engine"), Values: []string{"docdb"}}},
 	}
 
-	p := docdb.NewDescribeDBEngineVersionsPaginator(svc, input)
-	for p.HasMorePages() {
-		response, err := p.NextPage(ctx)
-		if err != nil {
-			return err
+	response, err := svc.DescribeEventCategories(ctx, input)
+	if err != nil {
+		if c.IsNotFoundError(err) {
+			return nil
 		}
-		res <- response.DBEngineVersions
+		return err
 	}
+	res <- response.EventCategoriesMapList
 	return nil
 }

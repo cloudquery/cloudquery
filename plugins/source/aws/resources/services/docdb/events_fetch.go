@@ -8,18 +8,19 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchDocdbCertificates(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchDocdbEvents(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Docdb
 
-	input := &docdb.DescribeCertificatesInput{}
-	p := docdb.NewDescribeCertificatesPaginator(svc, input)
+	input := &docdb.DescribeEventsInput{}
+
+	p := docdb.NewDescribeEventsPaginator(svc, input)
 	for p.HasMorePages() {
 		response, err := p.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- response.Certificates
+		res <- response.Events
 	}
 	return nil
 }
