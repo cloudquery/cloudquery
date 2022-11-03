@@ -87,6 +87,7 @@
 | [aws_docdb_clusters](aws_docdb_clusters.md) |
 | ↳ [aws_docdb_cluster_snapshots](aws_docdb_cluster_snapshots.md) |
 | ↳ [aws_docdb_instances](aws_docdb_instances.md) |
+| [aws_docdb_cluster_parameter_groups](aws_docdb_cluster_parameter_groups.md) |
 | [aws_docdb_certificates](aws_docdb_certificates.md) |
 | [aws_docdb_engine_versions](aws_docdb_engine_versions.md) |
 | [aws_docdb_subnet_groups](aws_docdb_subnet_groups.md) |
@@ -103,6 +104,7 @@
 | [aws_ec2_hosts](aws_ec2_hosts.md) |
 | [aws_ec2_images](aws_ec2_images.md) |
 | [aws_ec2_instance_statuses](aws_ec2_instance_statuses.md) |
+| [aws_ec2_instances](aws_ec2_instances.md) |
 | [aws_ec2_instance_types](aws_ec2_instance_types.md) |
 | [aws_ec2_internet_gateways](aws_ec2_internet_gateways.md) |
 | [aws_ec2_key_pairs](aws_ec2_key_pairs.md) |
@@ -148,6 +150,8 @@
 | [aws_elasticache_reserved_cache_nodes_offerings](aws_elasticache_reserved_cache_nodes_offerings.md) |
 | [aws_elasticache_reserved_cache_nodes](aws_elasticache_reserved_cache_nodes.md) |
 | [aws_elasticache_service_updates](aws_elasticache_service_updates.md) |
+| [aws_elasticache_snapshots](aws_elasticache_snapshots.md) |
+| [aws_elasticache_user_groups](aws_elasticache_user_groups.md) |
 | [aws_elasticache_users](aws_elasticache_users.md) |
 | [aws_elasticbeanstalk_application_versions](aws_elasticbeanstalk_application_versions.md) |
 | [aws_elasticbeanstalk_applications](aws_elasticbeanstalk_applications.md) |
@@ -189,6 +193,7 @@
 | [aws_fsx_data_repository_associations](aws_fsx_data_repository_associations.md) |
 | [aws_fsx_data_repository_tasks](aws_fsx_data_repository_tasks.md) |
 | [aws_fsx_file_systems](aws_fsx_file_systems.md) |
+| [aws_fsx_snapshots](aws_fsx_snapshots.md) |
 | [aws_fsx_storage_virtual_machines](aws_fsx_storage_virtual_machines.md) |
 | [aws_fsx_volumes](aws_fsx_volumes.md) |
 | [aws_glacier_vaults](aws_glacier_vaults.md) |
@@ -272,6 +277,8 @@
 | ↳ [aws_lightsail_disk_snapshot](aws_lightsail_disk_snapshot.md) |
 | [aws_lightsail_distributions](aws_lightsail_distributions.md) |
 | [aws_lightsail_instance_snapshots](aws_lightsail_instance_snapshots.md) |
+| [aws_lightsail_instances](aws_lightsail_instances.md) |
+| ↳ [aws_lightsail_instance_port_states](aws_lightsail_instance_port_states.md) |
 | [aws_lightsail_load_balancers](aws_lightsail_load_balancers.md) |
 | ↳ [aws_lightsail_load_balancer_tls_certificates](aws_lightsail_load_balancer_tls_certificates.md) |
 | [aws_lightsail_static_ips](aws_lightsail_static_ips.md) |
@@ -279,23 +286,31 @@
 | ↳ [aws_mq_broker_configurations](aws_mq_broker_configurations.md) |
 | ↳ [aws_mq_broker_users](aws_mq_broker_users.md) |
 | [aws_mwaa_environments](aws_mwaa_environments.md) |
+| [aws_neptune_cluster_parameter_groups](aws_neptune_cluster_parameter_groups.md) |
+| ↳ [aws_neptune_cluster_parameter_group_parameters](aws_neptune_cluster_parameter_group_parameters.md) |
+| [aws_neptune_cluster_snapshots](aws_neptune_cluster_snapshots.md) |
 | [aws_neptune_clusters](aws_neptune_clusters.md) |
 | [aws_neptune_db_parameter_groups](aws_neptune_db_parameter_groups.md) |
 | ↳ [aws_neptune_db_parameter_group_db_parameters](aws_neptune_db_parameter_group_db_parameters.md) |
 | [aws_neptune_global_clusters](aws_neptune_global_clusters.md) |
 | [aws_neptune_event_subscriptions](aws_neptune_event_subscriptions.md) |
+| [aws_neptune_instances](aws_neptune_instances.md) |
 | [aws_neptune_subnet_groups](aws_neptune_subnet_groups.md) |
 | [aws_organizations_accounts](aws_organizations_accounts.md) |
 | [aws_qldb_ledgers](aws_qldb_ledgers.md) |
 | ↳ [aws_qldb_ledger_journal_kinesis_streams](aws_qldb_ledger_journal_kinesis_streams.md) |
 | ↳ [aws_qldb_ledger_journal_s3_exports](aws_qldb_ledger_journal_s3_exports.md) |
 | [aws_rds_certificates](aws_rds_certificates.md) |
+| [aws_rds_cluster_parameter_groups](aws_rds_cluster_parameter_groups.md) |
+| ↳ [aws_rds_cluster_parameter_group_parameters](aws_rds_cluster_parameter_group_parameters.md) |
+| [aws_rds_cluster_snapshots](aws_rds_cluster_snapshots.md) |
 | [aws_rds_clusters](aws_rds_clusters.md) |
 | [aws_rds_db_parameter_groups](aws_rds_db_parameter_groups.md) |
 | ↳ [aws_rds_db_parameter_group_db_parameters](aws_rds_db_parameter_group_db_parameters.md) |
 | [aws_rds_db_security_groups](aws_rds_db_security_groups.md) |
 | [aws_rds_db_snapshots](aws_rds_db_snapshots.md) |
 | [aws_rds_event_subscriptions](aws_rds_event_subscriptions.md) |
+| [aws_rds_instances](aws_rds_instances.md) |
 | [aws_rds_subnet_groups](aws_rds_subnet_groups.md) |
 | [aws_redshift_clusters](aws_redshift_clusters.md) |
 | ↳ [aws_redshift_snapshots](aws_redshift_snapshots.md) |
@@ -341,12 +356,16 @@
 | [aws_sns_topics](aws_sns_topics.md) |
 | [aws_sqs_queues](aws_sqs_queues.md) |
 | [aws_ssm_documents](aws_ssm_documents.md) |
+| [aws_ssm_instances](aws_ssm_instances.md) |
+| ↳ [aws_ssm_instance_compliance_items](aws_ssm_instance_compliance_items.md) |
 | [aws_ssm_parameters](aws_ssm_parameters.md) |
 | [aws_transfer_servers](aws_transfer_servers.md) |
 | [aws_wafregional_rate_based_rules](aws_wafregional_rate_based_rules.md) |
 | [aws_wafregional_rule_groups](aws_wafregional_rule_groups.md) |
+| [aws_wafregional_rules](aws_wafregional_rules.md) |
 | [aws_wafregional_web_acls](aws_wafregional_web_acls.md) |
 | [aws_waf_rule_groups](aws_waf_rule_groups.md) |
+| [aws_waf_rules](aws_waf_rules.md) |
 | [aws_waf_subscribed_rule_groups](aws_waf_subscribed_rule_groups.md) |
 | [aws_waf_web_acls](aws_waf_web_acls.md) |
 | [aws_wafv2_ipsets](aws_wafv2_ipsets.md) |
