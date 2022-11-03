@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/cloudtrail.go . CloudtrailClient
+//go:generate mockgen -package=mocks -destination=../mocks/cloudtrail.go -source=cloudtrail.go CloudtrailClient
 type CloudtrailClient interface {
 	DescribeQuery(context.Context, *cloudtrail.DescribeQueryInput, ...func(*cloudtrail.Options)) (*cloudtrail.DescribeQueryOutput, error)
 	DescribeTrails(context.Context, *cloudtrail.DescribeTrailsInput, ...func(*cloudtrail.Options)) (*cloudtrail.DescribeTrailsOutput, error)

@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/route53"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/route53.go . Route53Client
+//go:generate mockgen -package=mocks -destination=../mocks/route53.go -source=route53.go Route53Client
 type Route53Client interface {
 	GetAccountLimit(context.Context, *route53.GetAccountLimitInput, ...func(*route53.Options)) (*route53.GetAccountLimitOutput, error)
 	GetChange(context.Context, *route53.GetChangeInput, ...func(*route53.Options)) (*route53.GetChangeOutput, error)

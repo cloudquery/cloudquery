@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/elasticbeanstalk.go . ElasticbeanstalkClient
+//go:generate mockgen -package=mocks -destination=../mocks/elasticbeanstalk.go -source=elasticbeanstalk.go ElasticbeanstalkClient
 type ElasticbeanstalkClient interface {
 	DescribeAccountAttributes(context.Context, *elasticbeanstalk.DescribeAccountAttributesInput, ...func(*elasticbeanstalk.Options)) (*elasticbeanstalk.DescribeAccountAttributesOutput, error)
 	DescribeApplicationVersions(context.Context, *elasticbeanstalk.DescribeApplicationVersionsInput, ...func(*elasticbeanstalk.Options)) (*elasticbeanstalk.DescribeApplicationVersionsOutput, error)

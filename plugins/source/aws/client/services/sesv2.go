@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sesv2"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/sesv2.go . Sesv2Client
+//go:generate mockgen -package=mocks -destination=../mocks/sesv2.go -source=sesv2.go Sesv2Client
 type Sesv2Client interface {
 	BatchGetMetricData(context.Context, *sesv2.BatchGetMetricDataInput, ...func(*sesv2.Options)) (*sesv2.BatchGetMetricDataOutput, error)
 	GetAccount(context.Context, *sesv2.GetAccountInput, ...func(*sesv2.Options)) (*sesv2.GetAccountOutput, error)

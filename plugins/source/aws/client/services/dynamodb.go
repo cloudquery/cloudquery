@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/dynamodb.go . DynamodbClient
+//go:generate mockgen -package=mocks -destination=../mocks/dynamodb.go -source=dynamodb.go DynamodbClient
 type DynamodbClient interface {
 	BatchGetItem(context.Context, *dynamodb.BatchGetItemInput, ...func(*dynamodb.Options)) (*dynamodb.BatchGetItemOutput, error)
 	DescribeBackup(context.Context, *dynamodb.DescribeBackupInput, ...func(*dynamodb.Options)) (*dynamodb.DescribeBackupOutput, error)

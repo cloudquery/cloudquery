@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/acm"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/acm.go . AcmClient
+//go:generate mockgen -package=mocks -destination=../mocks/acm.go -source=acm.go AcmClient
 type AcmClient interface {
 	DescribeCertificate(context.Context, *acm.DescribeCertificateInput, ...func(*acm.Options)) (*acm.DescribeCertificateOutput, error)
 	GetAccountConfiguration(context.Context, *acm.GetAccountConfigurationInput, ...func(*acm.Options)) (*acm.GetAccountConfigurationOutput, error)

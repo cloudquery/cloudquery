@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/appsync"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/appsync.go . AppsyncClient
+//go:generate mockgen -package=mocks -destination=../mocks/appsync.go -source=appsync.go AppsyncClient
 type AppsyncClient interface {
 	GetApiAssociation(context.Context, *appsync.GetApiAssociationInput, ...func(*appsync.Options)) (*appsync.GetApiAssociationOutput, error)
 	GetApiCache(context.Context, *appsync.GetApiCacheInput, ...func(*appsync.Options)) (*appsync.GetApiCacheOutput, error)

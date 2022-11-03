@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalog"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/servicecatalog.go . ServicecatalogClient
+//go:generate mockgen -package=mocks -destination=../mocks/servicecatalog.go -source=servicecatalog.go ServicecatalogClient
 type ServicecatalogClient interface {
 	DescribeConstraint(context.Context, *servicecatalog.DescribeConstraintInput, ...func(*servicecatalog.Options)) (*servicecatalog.DescribeConstraintOutput, error)
 	DescribeCopyProductStatus(context.Context, *servicecatalog.DescribeCopyProductStatusInput, ...func(*servicecatalog.Options)) (*servicecatalog.DescribeCopyProductStatusOutput, error)

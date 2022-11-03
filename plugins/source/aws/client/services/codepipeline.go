@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/codepipeline"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/codepipeline.go . CodepipelineClient
+//go:generate mockgen -package=mocks -destination=../mocks/codepipeline.go -source=codepipeline.go CodepipelineClient
 type CodepipelineClient interface {
 	GetActionType(context.Context, *codepipeline.GetActionTypeInput, ...func(*codepipeline.Options)) (*codepipeline.GetActionTypeOutput, error)
 	GetJobDetails(context.Context, *codepipeline.GetJobDetailsInput, ...func(*codepipeline.Options)) (*codepipeline.GetJobDetailsOutput, error)

@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sns"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/sns.go . SnsClient
+//go:generate mockgen -package=mocks -destination=../mocks/sns.go -source=sns.go SnsClient
 type SnsClient interface {
 	GetDataProtectionPolicy(context.Context, *sns.GetDataProtectionPolicyInput, ...func(*sns.Options)) (*sns.GetDataProtectionPolicyOutput, error)
 	GetEndpointAttributes(context.Context, *sns.GetEndpointAttributesInput, ...func(*sns.Options)) (*sns.GetEndpointAttributesOutput, error)

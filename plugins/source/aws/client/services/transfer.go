@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/transfer"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/transfer.go . TransferClient
+//go:generate mockgen -package=mocks -destination=../mocks/transfer.go -source=transfer.go TransferClient
 type TransferClient interface {
 	DescribeAccess(context.Context, *transfer.DescribeAccessInput, ...func(*transfer.Options)) (*transfer.DescribeAccessOutput, error)
 	DescribeAgreement(context.Context, *transfer.DescribeAgreementInput, ...func(*transfer.Options)) (*transfer.DescribeAgreementOutput, error)

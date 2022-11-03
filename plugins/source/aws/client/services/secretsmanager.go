@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/secretsmanager.go . SecretsmanagerClient
+//go:generate mockgen -package=mocks -destination=../mocks/secretsmanager.go -source=secretsmanager.go SecretsmanagerClient
 type SecretsmanagerClient interface {
 	DescribeSecret(context.Context, *secretsmanager.DescribeSecretInput, ...func(*secretsmanager.Options)) (*secretsmanager.DescribeSecretOutput, error)
 	GetRandomPassword(context.Context, *secretsmanager.GetRandomPasswordInput, ...func(*secretsmanager.Options)) (*secretsmanager.GetRandomPasswordOutput, error)

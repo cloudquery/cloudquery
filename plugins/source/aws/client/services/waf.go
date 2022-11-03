@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/waf"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/waf.go . WafClient
+//go:generate mockgen -package=mocks -destination=../mocks/waf.go -source=waf.go WafClient
 type WafClient interface {
 	GetByteMatchSet(context.Context, *waf.GetByteMatchSetInput, ...func(*waf.Options)) (*waf.GetByteMatchSetOutput, error)
 	GetChangeToken(context.Context, *waf.GetChangeTokenInput, ...func(*waf.Options)) (*waf.GetChangeTokenOutput, error)

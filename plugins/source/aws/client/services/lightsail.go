@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/lightsail"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/lightsail.go . LightsailClient
+//go:generate mockgen -package=mocks -destination=../mocks/lightsail.go -source=lightsail.go LightsailClient
 type LightsailClient interface {
 	GetActiveNames(context.Context, *lightsail.GetActiveNamesInput, ...func(*lightsail.Options)) (*lightsail.GetActiveNamesOutput, error)
 	GetAlarms(context.Context, *lightsail.GetAlarmsInput, ...func(*lightsail.Options)) (*lightsail.GetAlarmsOutput, error)

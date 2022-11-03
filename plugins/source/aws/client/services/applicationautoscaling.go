@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/applicationautoscaling"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/applicationautoscaling.go . ApplicationautoscalingClient
+//go:generate mockgen -package=mocks -destination=../mocks/applicationautoscaling.go -source=applicationautoscaling.go ApplicationautoscalingClient
 type ApplicationautoscalingClient interface {
 	DescribeScalableTargets(context.Context, *applicationautoscaling.DescribeScalableTargetsInput, ...func(*applicationautoscaling.Options)) (*applicationautoscaling.DescribeScalableTargetsOutput, error)
 	DescribeScalingActivities(context.Context, *applicationautoscaling.DescribeScalingActivitiesInput, ...func(*applicationautoscaling.Options)) (*applicationautoscaling.DescribeScalingActivitiesOutput, error)

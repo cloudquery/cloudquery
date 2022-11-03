@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/autoscaling.go . AutoscalingClient
+//go:generate mockgen -package=mocks -destination=../mocks/autoscaling.go -source=autoscaling.go AutoscalingClient
 type AutoscalingClient interface {
 	DescribeAccountLimits(context.Context, *autoscaling.DescribeAccountLimitsInput, ...func(*autoscaling.Options)) (*autoscaling.DescribeAccountLimitsOutput, error)
 	DescribeAdjustmentTypes(context.Context, *autoscaling.DescribeAdjustmentTypesInput, ...func(*autoscaling.Options)) (*autoscaling.DescribeAdjustmentTypesOutput, error)

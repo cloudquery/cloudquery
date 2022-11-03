@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/databasemigrationservice"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/databasemigrationservice.go . DatabasemigrationserviceClient
+//go:generate mockgen -package=mocks -destination=../mocks/databasemigrationservice.go -source=databasemigrationservice.go DatabasemigrationserviceClient
 type DatabasemigrationserviceClient interface {
 	DescribeAccountAttributes(context.Context, *databasemigrationservice.DescribeAccountAttributesInput, ...func(*databasemigrationservice.Options)) (*databasemigrationservice.DescribeAccountAttributesOutput, error)
 	DescribeApplicableIndividualAssessments(context.Context, *databasemigrationservice.DescribeApplicableIndividualAssessmentsInput, ...func(*databasemigrationservice.Options)) (*databasemigrationservice.DescribeApplicableIndividualAssessmentsOutput, error)

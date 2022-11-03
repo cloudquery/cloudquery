@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/directconnect"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/directconnect.go . DirectconnectClient
+//go:generate mockgen -package=mocks -destination=../mocks/directconnect.go -source=directconnect.go DirectconnectClient
 type DirectconnectClient interface {
 	DescribeConnectionLoa(context.Context, *directconnect.DescribeConnectionLoaInput, ...func(*directconnect.Options)) (*directconnect.DescribeConnectionLoaOutput, error)
 	DescribeConnections(context.Context, *directconnect.DescribeConnectionsInput, ...func(*directconnect.Options)) (*directconnect.DescribeConnectionsOutput, error)

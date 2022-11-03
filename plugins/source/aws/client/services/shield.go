@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/shield"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/shield.go . ShieldClient
+//go:generate mockgen -package=mocks -destination=../mocks/shield.go -source=shield.go ShieldClient
 type ShieldClient interface {
 	DescribeAttack(context.Context, *shield.DescribeAttackInput, ...func(*shield.Options)) (*shield.DescribeAttackOutput, error)
 	DescribeAttackStatistics(context.Context, *shield.DescribeAttackStatisticsInput, ...func(*shield.Options)) (*shield.DescribeAttackStatisticsOutput, error)

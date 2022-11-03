@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/resourcegroups"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/resourcegroups.go . ResourcegroupsClient
+//go:generate mockgen -package=mocks -destination=../mocks/resourcegroups.go -source=resourcegroups.go ResourcegroupsClient
 type ResourcegroupsClient interface {
 	GetGroup(context.Context, *resourcegroups.GetGroupInput, ...func(*resourcegroups.Options)) (*resourcegroups.GetGroupOutput, error)
 	GetGroupConfiguration(context.Context, *resourcegroups.GetGroupConfigurationInput, ...func(*resourcegroups.Options)) (*resourcegroups.GetGroupConfigurationOutput, error)

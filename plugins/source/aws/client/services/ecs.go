@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/ecs.go . EcsClient
+//go:generate mockgen -package=mocks -destination=../mocks/ecs.go -source=ecs.go EcsClient
 type EcsClient interface {
 	DescribeCapacityProviders(context.Context, *ecs.DescribeCapacityProvidersInput, ...func(*ecs.Options)) (*ecs.DescribeCapacityProvidersOutput, error)
 	DescribeClusters(context.Context, *ecs.DescribeClustersInput, ...func(*ecs.Options)) (*ecs.DescribeClustersOutput, error)

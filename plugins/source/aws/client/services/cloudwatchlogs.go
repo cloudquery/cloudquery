@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/cloudwatchlogs.go . CloudwatchlogsClient
+//go:generate mockgen -package=mocks -destination=../mocks/cloudwatchlogs.go -source=cloudwatchlogs.go CloudwatchlogsClient
 type CloudwatchlogsClient interface {
 	DescribeDestinations(context.Context, *cloudwatchlogs.DescribeDestinationsInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.DescribeDestinationsOutput, error)
 	DescribeExportTasks(context.Context, *cloudwatchlogs.DescribeExportTasksInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.DescribeExportTasksOutput, error)

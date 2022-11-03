@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/kinesis"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/kinesis.go . KinesisClient
+//go:generate mockgen -package=mocks -destination=../mocks/kinesis.go -source=kinesis.go KinesisClient
 type KinesisClient interface {
 	DescribeLimits(context.Context, *kinesis.DescribeLimitsInput, ...func(*kinesis.Options)) (*kinesis.DescribeLimitsOutput, error)
 	DescribeStream(context.Context, *kinesis.DescribeStreamInput, ...func(*kinesis.Options)) (*kinesis.DescribeStreamOutput, error)

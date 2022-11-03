@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/organizations"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/organizations.go . OrganizationsClient
+//go:generate mockgen -package=mocks -destination=../mocks/organizations.go -source=organizations.go OrganizationsClient
 type OrganizationsClient interface {
 	DescribeAccount(context.Context, *organizations.DescribeAccountInput, ...func(*organizations.Options)) (*organizations.DescribeAccountOutput, error)
 	DescribeCreateAccountStatus(context.Context, *organizations.DescribeCreateAccountStatusInput, ...func(*organizations.Options)) (*organizations.DescribeCreateAccountStatusOutput, error)

@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/codebuild"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/codebuild.go . CodebuildClient
+//go:generate mockgen -package=mocks -destination=../mocks/codebuild.go -source=codebuild.go CodebuildClient
 type CodebuildClient interface {
 	BatchGetBuildBatches(context.Context, *codebuild.BatchGetBuildBatchesInput, ...func(*codebuild.Options)) (*codebuild.BatchGetBuildBatchesOutput, error)
 	BatchGetBuilds(context.Context, *codebuild.BatchGetBuildsInput, ...func(*codebuild.Options)) (*codebuild.BatchGetBuildsOutput, error)

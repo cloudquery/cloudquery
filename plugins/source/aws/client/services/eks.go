@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/eks"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/eks.go . EksClient
+//go:generate mockgen -package=mocks -destination=../mocks/eks.go -source=eks.go EksClient
 type EksClient interface {
 	DescribeAddon(context.Context, *eks.DescribeAddonInput, ...func(*eks.Options)) (*eks.DescribeAddonOutput, error)
 	DescribeAddonVersions(context.Context, *eks.DescribeAddonVersionsInput, ...func(*eks.Options)) (*eks.DescribeAddonVersionsOutput, error)

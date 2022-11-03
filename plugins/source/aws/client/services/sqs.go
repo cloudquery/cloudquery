@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/sqs.go . SqsClient
+//go:generate mockgen -package=mocks -destination=../mocks/sqs.go -source=sqs.go SqsClient
 type SqsClient interface {
 	GetQueueAttributes(context.Context, *sqs.GetQueueAttributesInput, ...func(*sqs.Options)) (*sqs.GetQueueAttributesOutput, error)
 	GetQueueUrl(context.Context, *sqs.GetQueueUrlInput, ...func(*sqs.Options)) (*sqs.GetQueueUrlOutput, error)

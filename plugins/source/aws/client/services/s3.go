@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/s3.go . S3Client
+//go:generate mockgen -package=mocks -destination=../mocks/s3.go -source=s3.go S3Client
 type S3Client interface {
 	GetBucketAccelerateConfiguration(context.Context, *s3.GetBucketAccelerateConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketAccelerateConfigurationOutput, error)
 	GetBucketAcl(context.Context, *s3.GetBucketAclInput, ...func(*s3.Options)) (*s3.GetBucketAclOutput, error)

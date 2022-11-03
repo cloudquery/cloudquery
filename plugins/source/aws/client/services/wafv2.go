@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/wafv2.go . Wafv2Client
+//go:generate mockgen -package=mocks -destination=../mocks/wafv2.go -source=wafv2.go Wafv2Client
 type Wafv2Client interface {
 	DescribeManagedRuleGroup(context.Context, *wafv2.DescribeManagedRuleGroupInput, ...func(*wafv2.Options)) (*wafv2.DescribeManagedRuleGroupOutput, error)
 	GetIPSet(context.Context, *wafv2.GetIPSetInput, ...func(*wafv2.Options)) (*wafv2.GetIPSetOutput, error)

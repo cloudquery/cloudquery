@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/efs"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/efs.go . EfsClient
+//go:generate mockgen -package=mocks -destination=../mocks/efs.go -source=efs.go EfsClient
 type EfsClient interface {
 	DescribeAccessPoints(context.Context, *efs.DescribeAccessPointsInput, ...func(*efs.Options)) (*efs.DescribeAccessPointsOutput, error)
 	DescribeAccountPreferences(context.Context, *efs.DescribeAccountPreferencesInput, ...func(*efs.Options)) (*efs.DescribeAccountPreferencesOutput, error)

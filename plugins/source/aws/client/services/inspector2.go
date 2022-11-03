@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/inspector2"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/inspector2.go . Inspector2Client
+//go:generate mockgen -package=mocks -destination=../mocks/inspector2.go -source=inspector2.go Inspector2Client
 type Inspector2Client interface {
 	BatchGetAccountStatus(context.Context, *inspector2.BatchGetAccountStatusInput, ...func(*inspector2.Options)) (*inspector2.BatchGetAccountStatusOutput, error)
 	BatchGetFreeTrialInfo(context.Context, *inspector2.BatchGetFreeTrialInfoInput, ...func(*inspector2.Options)) (*inspector2.BatchGetFreeTrialInfoOutput, error)

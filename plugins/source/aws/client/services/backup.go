@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/backup"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/backup.go . BackupClient
+//go:generate mockgen -package=mocks -destination=../mocks/backup.go -source=backup.go BackupClient
 type BackupClient interface {
 	DescribeBackupJob(context.Context, *backup.DescribeBackupJobInput, ...func(*backup.Options)) (*backup.DescribeBackupJobOutput, error)
 	DescribeBackupVault(context.Context, *backup.DescribeBackupVaultInput, ...func(*backup.Options)) (*backup.DescribeBackupVaultOutput, error)

@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/frauddetector"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/frauddetector.go . FrauddetectorClient
+//go:generate mockgen -package=mocks -destination=../mocks/frauddetector.go -source=frauddetector.go FrauddetectorClient
 type FrauddetectorClient interface {
 	BatchGetVariable(context.Context, *frauddetector.BatchGetVariableInput, ...func(*frauddetector.Options)) (*frauddetector.BatchGetVariableOutput, error)
 	DescribeDetector(context.Context, *frauddetector.DescribeDetectorInput, ...func(*frauddetector.Options)) (*frauddetector.DescribeDetectorOutput, error)

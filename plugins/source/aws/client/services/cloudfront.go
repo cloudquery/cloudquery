@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudfront"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/cloudfront.go . CloudfrontClient
+//go:generate mockgen -package=mocks -destination=../mocks/cloudfront.go -source=cloudfront.go CloudfrontClient
 type CloudfrontClient interface {
 	DescribeFunction(context.Context, *cloudfront.DescribeFunctionInput, ...func(*cloudfront.Options)) (*cloudfront.DescribeFunctionOutput, error)
 	GetCachePolicy(context.Context, *cloudfront.GetCachePolicyInput, ...func(*cloudfront.Options)) (*cloudfront.GetCachePolicyOutput, error)

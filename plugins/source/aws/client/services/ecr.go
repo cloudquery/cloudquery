@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ecr"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/ecr.go . EcrClient
+//go:generate mockgen -package=mocks -destination=../mocks/ecr.go -source=ecr.go EcrClient
 type EcrClient interface {
 	BatchGetImage(context.Context, *ecr.BatchGetImageInput, ...func(*ecr.Options)) (*ecr.BatchGetImageOutput, error)
 	BatchGetRepositoryScanningConfiguration(context.Context, *ecr.BatchGetRepositoryScanningConfigurationInput, ...func(*ecr.Options)) (*ecr.BatchGetRepositoryScanningConfigurationOutput, error)

@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/guardduty"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/guardduty.go . GuarddutyClient
+//go:generate mockgen -package=mocks -destination=../mocks/guardduty.go -source=guardduty.go GuarddutyClient
 type GuarddutyClient interface {
 	DescribeMalwareScans(context.Context, *guardduty.DescribeMalwareScansInput, ...func(*guardduty.Options)) (*guardduty.DescribeMalwareScansOutput, error)
 	DescribeOrganizationConfiguration(context.Context, *guardduty.DescribeOrganizationConfigurationInput, ...func(*guardduty.Options)) (*guardduty.DescribeOrganizationConfigurationOutput, error)

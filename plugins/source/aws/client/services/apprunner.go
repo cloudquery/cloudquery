@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apprunner"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/apprunner.go . ApprunnerClient
+//go:generate mockgen -package=mocks -destination=../mocks/apprunner.go -source=apprunner.go ApprunnerClient
 type ApprunnerClient interface {
 	DescribeAutoScalingConfiguration(context.Context, *apprunner.DescribeAutoScalingConfigurationInput, ...func(*apprunner.Options)) (*apprunner.DescribeAutoScalingConfigurationOutput, error)
 	DescribeCustomDomains(context.Context, *apprunner.DescribeCustomDomainsInput, ...func(*apprunner.Options)) (*apprunner.DescribeCustomDomainsOutput, error)

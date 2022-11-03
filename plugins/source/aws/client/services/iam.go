@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/iam.go . IamClient
+//go:generate mockgen -package=mocks -destination=../mocks/iam.go -source=iam.go IamClient
 type IamClient interface {
 	GenerateCredentialReport(context.Context, *iam.GenerateCredentialReportInput, ...func(*iam.Options)) (*iam.GenerateCredentialReportOutput, error)
 	GetAccessKeyLastUsed(context.Context, *iam.GetAccessKeyLastUsedInput, ...func(*iam.Options)) (*iam.GetAccessKeyLastUsedOutput, error)

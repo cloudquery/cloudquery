@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/fsx"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/fsx.go . FsxClient
+//go:generate mockgen -package=mocks -destination=../mocks/fsx.go -source=fsx.go FsxClient
 type FsxClient interface {
 	DescribeBackups(context.Context, *fsx.DescribeBackupsInput, ...func(*fsx.Options)) (*fsx.DescribeBackupsOutput, error)
 	DescribeDataRepositoryAssociations(context.Context, *fsx.DescribeDataRepositoryAssociationsInput, ...func(*fsx.Options)) (*fsx.DescribeDataRepositoryAssociationsOutput, error)

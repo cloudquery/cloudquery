@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/route53domains"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/route53domains.go . Route53domainsClient
+//go:generate mockgen -package=mocks -destination=../mocks/route53domains.go -source=route53domains.go Route53domainsClient
 type Route53domainsClient interface {
 	GetContactReachabilityStatus(context.Context, *route53domains.GetContactReachabilityStatusInput, ...func(*route53domains.Options)) (*route53domains.GetContactReachabilityStatusOutput, error)
 	GetDomainDetail(context.Context, *route53domains.GetDomainDetailInput, ...func(*route53domains.Options)) (*route53domains.GetDomainDetailOutput, error)

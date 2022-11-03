@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elasticsearchservice"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/elasticsearchservice.go . ElasticsearchserviceClient
+//go:generate mockgen -package=mocks -destination=../mocks/elasticsearchservice.go -source=elasticsearchservice.go ElasticsearchserviceClient
 type ElasticsearchserviceClient interface {
 	DescribeDomainAutoTunes(context.Context, *elasticsearchservice.DescribeDomainAutoTunesInput, ...func(*elasticsearchservice.Options)) (*elasticsearchservice.DescribeDomainAutoTunesOutput, error)
 	DescribeDomainChangeProgress(context.Context, *elasticsearchservice.DescribeDomainChangeProgressInput, ...func(*elasticsearchservice.Options)) (*elasticsearchservice.DescribeDomainChangeProgressOutput, error)

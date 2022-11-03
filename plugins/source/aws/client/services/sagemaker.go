@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/sagemaker.go . SagemakerClient
+//go:generate mockgen -package=mocks -destination=../mocks/sagemaker.go -source=sagemaker.go SagemakerClient
 type SagemakerClient interface {
 	DescribeAction(context.Context, *sagemaker.DescribeActionInput, ...func(*sagemaker.Options)) (*sagemaker.DescribeActionOutput, error)
 	DescribeAlgorithm(context.Context, *sagemaker.DescribeAlgorithmInput, ...func(*sagemaker.Options)) (*sagemaker.DescribeAlgorithmOutput, error)

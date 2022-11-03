@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/neptune"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/neptune.go . NeptuneClient
+//go:generate mockgen -package=mocks -destination=../mocks/neptune.go -source=neptune.go NeptuneClient
 type NeptuneClient interface {
 	DescribeDBClusterEndpoints(context.Context, *neptune.DescribeDBClusterEndpointsInput, ...func(*neptune.Options)) (*neptune.DescribeDBClusterEndpointsOutput, error)
 	DescribeDBClusterParameterGroups(context.Context, *neptune.DescribeDBClusterParameterGroupsInput, ...func(*neptune.Options)) (*neptune.DescribeDBClusterParameterGroupsOutput, error)

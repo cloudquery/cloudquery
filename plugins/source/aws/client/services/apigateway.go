@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/apigateway.go . ApigatewayClient
+//go:generate mockgen -package=mocks -destination=../mocks/apigateway.go -source=apigateway.go ApigatewayClient
 type ApigatewayClient interface {
 	GetAccount(context.Context, *apigateway.GetAccountInput, ...func(*apigateway.Options)) (*apigateway.GetAccountOutput, error)
 	GetApiKey(context.Context, *apigateway.GetApiKeyInput, ...func(*apigateway.Options)) (*apigateway.GetApiKeyOutput, error)

@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/xray"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/xray.go . XrayClient
+//go:generate mockgen -package=mocks -destination=../mocks/xray.go -source=xray.go XrayClient
 type XrayClient interface {
 	BatchGetTraces(context.Context, *xray.BatchGetTracesInput, ...func(*xray.Options)) (*xray.BatchGetTracesOutput, error)
 	GetEncryptionConfig(context.Context, *xray.GetEncryptionConfigInput, ...func(*xray.Options)) (*xray.GetEncryptionConfigOutput, error)

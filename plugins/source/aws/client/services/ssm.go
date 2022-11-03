@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/ssm.go . SsmClient
+//go:generate mockgen -package=mocks -destination=../mocks/ssm.go -source=ssm.go SsmClient
 type SsmClient interface {
 	DescribeActivations(context.Context, *ssm.DescribeActivationsInput, ...func(*ssm.Options)) (*ssm.DescribeActivationsOutput, error)
 	DescribeAssociation(context.Context, *ssm.DescribeAssociationInput, ...func(*ssm.Options)) (*ssm.DescribeAssociationOutput, error)

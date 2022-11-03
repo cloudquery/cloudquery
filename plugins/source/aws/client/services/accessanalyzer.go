@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/accessanalyzer.go . AccessanalyzerClient
+//go:generate mockgen -package=mocks -destination=../mocks/accessanalyzer.go -source=accessanalyzer.go AccessanalyzerClient
 type AccessanalyzerClient interface {
 	GetAccessPreview(context.Context, *accessanalyzer.GetAccessPreviewInput, ...func(*accessanalyzer.Options)) (*accessanalyzer.GetAccessPreviewOutput, error)
 	GetAnalyzedResource(context.Context, *accessanalyzer.GetAnalyzedResourceInput, ...func(*accessanalyzer.Options)) (*accessanalyzer.GetAnalyzedResourceOutput, error)

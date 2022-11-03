@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/athena"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/athena.go . AthenaClient
+//go:generate mockgen -package=mocks -destination=../mocks/athena.go -source=athena.go AthenaClient
 type AthenaClient interface {
 	BatchGetNamedQuery(context.Context, *athena.BatchGetNamedQueryInput, ...func(*athena.Options)) (*athena.BatchGetNamedQueryOutput, error)
 	BatchGetPreparedStatement(context.Context, *athena.BatchGetPreparedStatementInput, ...func(*athena.Options)) (*athena.BatchGetPreparedStatementOutput, error)

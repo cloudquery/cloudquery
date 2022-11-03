@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/cloudformation.go . CloudformationClient
+//go:generate mockgen -package=mocks -destination=../mocks/cloudformation.go -source=cloudformation.go CloudformationClient
 type CloudformationClient interface {
 	DescribeAccountLimits(context.Context, *cloudformation.DescribeAccountLimitsInput, ...func(*cloudformation.Options)) (*cloudformation.DescribeAccountLimitsOutput, error)
 	DescribeChangeSet(context.Context, *cloudformation.DescribeChangeSetInput, ...func(*cloudformation.Options)) (*cloudformation.DescribeChangeSetOutput, error)

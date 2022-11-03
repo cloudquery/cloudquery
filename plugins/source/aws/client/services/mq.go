@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/mq"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/mq.go . MqClient
+//go:generate mockgen -package=mocks -destination=../mocks/mq.go -source=mq.go MqClient
 type MqClient interface {
 	DescribeBroker(context.Context, *mq.DescribeBrokerInput, ...func(*mq.Options)) (*mq.DescribeBrokerOutput, error)
 	DescribeBrokerEngineTypes(context.Context, *mq.DescribeBrokerEngineTypesInput, ...func(*mq.Options)) (*mq.DescribeBrokerEngineTypesOutput, error)

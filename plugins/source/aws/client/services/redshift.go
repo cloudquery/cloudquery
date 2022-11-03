@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/redshift"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/redshift.go . RedshiftClient
+//go:generate mockgen -package=mocks -destination=../mocks/redshift.go -source=redshift.go RedshiftClient
 type RedshiftClient interface {
 	DescribeAccountAttributes(context.Context, *redshift.DescribeAccountAttributesInput, ...func(*redshift.Options)) (*redshift.DescribeAccountAttributesOutput, error)
 	DescribeAuthenticationProfiles(context.Context, *redshift.DescribeAuthenticationProfilesInput, ...func(*redshift.Options)) (*redshift.DescribeAuthenticationProfilesOutput, error)

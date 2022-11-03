@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/glacier"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/glacier.go . GlacierClient
+//go:generate mockgen -package=mocks -destination=../mocks/glacier.go -source=glacier.go GlacierClient
 type GlacierClient interface {
 	DescribeJob(context.Context, *glacier.DescribeJobInput, ...func(*glacier.Options)) (*glacier.DescribeJobOutput, error)
 	DescribeVault(context.Context, *glacier.DescribeVaultInput, ...func(*glacier.Options)) (*glacier.DescribeVaultOutput, error)

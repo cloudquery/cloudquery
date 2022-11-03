@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/configservice"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/configservice.go . ConfigserviceClient
+//go:generate mockgen -package=mocks -destination=../mocks/configservice.go -source=configservice.go ConfigserviceClient
 type ConfigserviceClient interface {
 	BatchGetAggregateResourceConfig(context.Context, *configservice.BatchGetAggregateResourceConfigInput, ...func(*configservice.Options)) (*configservice.BatchGetAggregateResourceConfigOutput, error)
 	BatchGetResourceConfig(context.Context, *configservice.BatchGetResourceConfigInput, ...func(*configservice.Options)) (*configservice.BatchGetResourceConfigOutput, error)

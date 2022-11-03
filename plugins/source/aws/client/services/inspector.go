@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/inspector"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/inspector.go . InspectorClient
+//go:generate mockgen -package=mocks -destination=../mocks/inspector.go -source=inspector.go InspectorClient
 type InspectorClient interface {
 	DescribeAssessmentRuns(context.Context, *inspector.DescribeAssessmentRunsInput, ...func(*inspector.Options)) (*inspector.DescribeAssessmentRunsOutput, error)
 	DescribeAssessmentTargets(context.Context, *inspector.DescribeAssessmentTargetsInput, ...func(*inspector.Options)) (*inspector.DescribeAssessmentTargetsOutput, error)

@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/eventbridge"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/eventbridge.go . EventbridgeClient
+//go:generate mockgen -package=mocks -destination=../mocks/eventbridge.go -source=eventbridge.go EventbridgeClient
 type EventbridgeClient interface {
 	DescribeApiDestination(context.Context, *eventbridge.DescribeApiDestinationInput, ...func(*eventbridge.Options)) (*eventbridge.DescribeApiDestinationOutput, error)
 	DescribeArchive(context.Context, *eventbridge.DescribeArchiveInput, ...func(*eventbridge.Options)) (*eventbridge.DescribeArchiveOutput, error)

@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/firehose"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/firehose.go . FirehoseClient
+//go:generate mockgen -package=mocks -destination=../mocks/firehose.go -source=firehose.go FirehoseClient
 type FirehoseClient interface {
 	DescribeDeliveryStream(context.Context, *firehose.DescribeDeliveryStreamInput, ...func(*firehose.Options)) (*firehose.DescribeDeliveryStreamOutput, error)
 	ListDeliveryStreams(context.Context, *firehose.ListDeliveryStreamsInput, ...func(*firehose.Options)) (*firehose.ListDeliveryStreamsOutput, error)

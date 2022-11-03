@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/elasticloadbalancing.go . ElasticloadbalancingClient
+//go:generate mockgen -package=mocks -destination=../mocks/elasticloadbalancing.go -source=elasticloadbalancing.go ElasticloadbalancingClient
 type ElasticloadbalancingClient interface {
 	DescribeAccountLimits(context.Context, *elasticloadbalancing.DescribeAccountLimitsInput, ...func(*elasticloadbalancing.Options)) (*elasticloadbalancing.DescribeAccountLimitsOutput, error)
 	DescribeInstanceHealth(context.Context, *elasticloadbalancing.DescribeInstanceHealthInput, ...func(*elasticloadbalancing.Options)) (*elasticloadbalancing.DescribeInstanceHealthOutput, error)

@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iot"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/iot.go . IotClient
+//go:generate mockgen -package=mocks -destination=../mocks/iot.go -source=iot.go IotClient
 type IotClient interface {
 	DescribeAccountAuditConfiguration(context.Context, *iot.DescribeAccountAuditConfigurationInput, ...func(*iot.Options)) (*iot.DescribeAccountAuditConfigurationOutput, error)
 	DescribeAuditFinding(context.Context, *iot.DescribeAuditFindingInput, ...func(*iot.Options)) (*iot.DescribeAuditFindingOutput, error)

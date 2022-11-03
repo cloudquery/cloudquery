@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafregional"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/wafregional.go . WafregionalClient
+//go:generate mockgen -package=mocks -destination=../mocks/wafregional.go -source=wafregional.go WafregionalClient
 type WafregionalClient interface {
 	GetByteMatchSet(context.Context, *wafregional.GetByteMatchSetInput, ...func(*wafregional.Options)) (*wafregional.GetByteMatchSetOutput, error)
 	GetChangeToken(context.Context, *wafregional.GetChangeTokenInput, ...func(*wafregional.Options)) (*wafregional.GetChangeTokenOutput, error)

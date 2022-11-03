@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/glue.go . GlueClient
+//go:generate mockgen -package=mocks -destination=../mocks/glue.go -source=glue.go GlueClient
 type GlueClient interface {
 	BatchGetBlueprints(context.Context, *glue.BatchGetBlueprintsInput, ...func(*glue.Options)) (*glue.BatchGetBlueprintsOutput, error)
 	BatchGetCrawlers(context.Context, *glue.BatchGetCrawlersInput, ...func(*glue.Options)) (*glue.BatchGetCrawlersOutput, error)

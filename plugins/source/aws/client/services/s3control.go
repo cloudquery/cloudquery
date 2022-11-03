@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3control"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/s3control.go . S3controlClient
+//go:generate mockgen -package=mocks -destination=../mocks/s3control.go -source=s3control.go S3controlClient
 type S3controlClient interface {
 	DescribeJob(context.Context, *s3control.DescribeJobInput, ...func(*s3control.Options)) (*s3control.DescribeJobOutput, error)
 	DescribeMultiRegionAccessPointOperation(context.Context, *s3control.DescribeMultiRegionAccessPointOperationInput, ...func(*s3control.Options)) (*s3control.DescribeMultiRegionAccessPointOperationOutput, error)

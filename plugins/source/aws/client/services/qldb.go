@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/qldb"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/qldb.go . QldbClient
+//go:generate mockgen -package=mocks -destination=../mocks/qldb.go -source=qldb.go QldbClient
 type QldbClient interface {
 	DescribeJournalKinesisStream(context.Context, *qldb.DescribeJournalKinesisStreamInput, ...func(*qldb.Options)) (*qldb.DescribeJournalKinesisStreamOutput, error)
 	DescribeJournalS3Export(context.Context, *qldb.DescribeJournalS3ExportInput, ...func(*qldb.Options)) (*qldb.DescribeJournalS3ExportOutput, error)

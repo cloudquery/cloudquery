@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/rds"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/rds.go . RdsClient
+//go:generate mockgen -package=mocks -destination=../mocks/rds.go -source=rds.go RdsClient
 type RdsClient interface {
 	DescribeAccountAttributes(context.Context, *rds.DescribeAccountAttributesInput, ...func(*rds.Options)) (*rds.DescribeAccountAttributesOutput, error)
 	DescribeCertificates(context.Context, *rds.DescribeCertificatesInput, ...func(*rds.Options)) (*rds.DescribeCertificatesOutput, error)

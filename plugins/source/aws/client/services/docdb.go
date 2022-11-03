@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/docdb"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/docdb.go . DocdbClient
+//go:generate mockgen -package=mocks -destination=../mocks/docdb.go -source=docdb.go DocdbClient
 type DocdbClient interface {
 	DescribeCertificates(context.Context, *docdb.DescribeCertificatesInput, ...func(*docdb.Options)) (*docdb.DescribeCertificatesOutput, error)
 	DescribeDBClusterParameterGroups(context.Context, *docdb.DescribeDBClusterParameterGroupsInput, ...func(*docdb.Options)) (*docdb.DescribeDBClusterParameterGroupsOutput, error)

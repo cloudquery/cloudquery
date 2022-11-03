@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/lambda.go . LambdaClient
+//go:generate mockgen -package=mocks -destination=../mocks/lambda.go -source=lambda.go LambdaClient
 type LambdaClient interface {
 	GetAccountSettings(context.Context, *lambda.GetAccountSettingsInput, ...func(*lambda.Options)) (*lambda.GetAccountSettingsOutput, error)
 	GetAlias(context.Context, *lambda.GetAliasInput, ...func(*lambda.Options)) (*lambda.GetAliasOutput, error)

@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/cognitoidentityprovider.go . CognitoidentityproviderClient
+//go:generate mockgen -package=mocks -destination=../mocks/cognitoidentityprovider.go -source=cognitoidentityprovider.go CognitoidentityproviderClient
 type CognitoidentityproviderClient interface {
 	DescribeIdentityProvider(context.Context, *cognitoidentityprovider.DescribeIdentityProviderInput, ...func(*cognitoidentityprovider.Options)) (*cognitoidentityprovider.DescribeIdentityProviderOutput, error)
 	DescribeResourceServer(context.Context, *cognitoidentityprovider.DescribeResourceServerInput, ...func(*cognitoidentityprovider.Options)) (*cognitoidentityprovider.DescribeResourceServerOutput, error)

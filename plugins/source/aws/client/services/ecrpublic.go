@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ecrpublic"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/ecrpublic.go . EcrpublicClient
+//go:generate mockgen -package=mocks -destination=../mocks/ecrpublic.go -source=ecrpublic.go EcrpublicClient
 type EcrpublicClient interface {
 	DescribeImageTags(context.Context, *ecrpublic.DescribeImageTagsInput, ...func(*ecrpublic.Options)) (*ecrpublic.DescribeImageTagsOutput, error)
 	DescribeImages(context.Context, *ecrpublic.DescribeImagesInput, ...func(*ecrpublic.Options)) (*ecrpublic.DescribeImagesOutput, error)

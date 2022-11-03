@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elasticache"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/elasticache.go . ElasticacheClient
+//go:generate mockgen -package=mocks -destination=../mocks/elasticache.go -source=elasticache.go ElasticacheClient
 type ElasticacheClient interface {
 	DescribeCacheClusters(context.Context, *elasticache.DescribeCacheClustersInput, ...func(*elasticache.Options)) (*elasticache.DescribeCacheClustersOutput, error)
 	DescribeCacheEngineVersions(context.Context, *elasticache.DescribeCacheEngineVersionsInput, ...func(*elasticache.Options)) (*elasticache.DescribeCacheEngineVersionsOutput, error)

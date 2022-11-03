@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/dax"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/dax.go . DaxClient
+//go:generate mockgen -package=mocks -destination=../mocks/dax.go -source=dax.go DaxClient
 type DaxClient interface {
 	DescribeClusters(context.Context, *dax.DescribeClustersInput, ...func(*dax.Options)) (*dax.DescribeClustersOutput, error)
 	DescribeDefaultParameters(context.Context, *dax.DescribeDefaultParametersInput, ...func(*dax.Options)) (*dax.DescribeDefaultParametersOutput, error)

@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/emr"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/emr.go . EmrClient
+//go:generate mockgen -package=mocks -destination=../mocks/emr.go -source=emr.go EmrClient
 type EmrClient interface {
 	DescribeCluster(context.Context, *emr.DescribeClusterInput, ...func(*emr.Options)) (*emr.DescribeClusterOutput, error)
 	DescribeJobFlows(context.Context, *emr.DescribeJobFlowsInput, ...func(*emr.Options)) (*emr.DescribeJobFlowsOutput, error)

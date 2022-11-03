@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/ec2.go . Ec2Client
+//go:generate mockgen -package=mocks -destination=../mocks/ec2.go -source=ec2.go Ec2Client
 type Ec2Client interface {
 	DescribeAccountAttributes(context.Context, *ec2.DescribeAccountAttributesInput, ...func(*ec2.Options)) (*ec2.DescribeAccountAttributesOutput, error)
 	DescribeAddressTransfers(context.Context, *ec2.DescribeAddressTransfersInput, ...func(*ec2.Options)) (*ec2.DescribeAddressTransfersOutput, error)

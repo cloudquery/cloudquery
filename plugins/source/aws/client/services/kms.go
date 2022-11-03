@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/kms"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/kms.go . KmsClient
+//go:generate mockgen -package=mocks -destination=../mocks/kms.go -source=kms.go KmsClient
 type KmsClient interface {
 	DescribeCustomKeyStores(context.Context, *kms.DescribeCustomKeyStoresInput, ...func(*kms.Options)) (*kms.DescribeCustomKeyStoresOutput, error)
 	DescribeKey(context.Context, *kms.DescribeKeyInput, ...func(*kms.Options)) (*kms.DescribeKeyOutput, error)

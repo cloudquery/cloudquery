@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/servicecatalogappregistry.go . ServicecatalogappregistryClient
+//go:generate mockgen -package=mocks -destination=../mocks/servicecatalogappregistry.go -source=servicecatalogappregistry.go ServicecatalogappregistryClient
 type ServicecatalogappregistryClient interface {
 	GetApplication(context.Context, *servicecatalogappregistry.GetApplicationInput, ...func(*servicecatalogappregistry.Options)) (*servicecatalogappregistry.GetApplicationOutput, error)
 	GetAssociatedResource(context.Context, *servicecatalogappregistry.GetAssociatedResourceInput, ...func(*servicecatalogappregistry.Options)) (*servicecatalogappregistry.GetAssociatedResourceOutput, error)

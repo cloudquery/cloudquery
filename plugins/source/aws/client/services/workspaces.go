@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/workspaces"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/workspaces.go . WorkspacesClient
+//go:generate mockgen -package=mocks -destination=../mocks/workspaces.go -source=workspaces.go WorkspacesClient
 type WorkspacesClient interface {
 	DescribeAccount(context.Context, *workspaces.DescribeAccountInput, ...func(*workspaces.Options)) (*workspaces.DescribeAccountOutput, error)
 	DescribeAccountModifications(context.Context, *workspaces.DescribeAccountModificationsInput, ...func(*workspaces.Options)) (*workspaces.DescribeAccountModificationsOutput, error)
