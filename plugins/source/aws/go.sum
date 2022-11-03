@@ -138,6 +138,8 @@ github.com/aws/aws-sdk-go-v2/service/lightsail v1.23.2 h1:taL77V/XEcokFi29cmG9aF
 github.com/aws/aws-sdk-go-v2/service/lightsail v1.23.2/go.mod h1:LYCAGTJ4XgNZAESKxLC9L12F7IIQbJHccVxanY8DYzo=
 github.com/aws/aws-sdk-go-v2/service/mq v1.13.15 h1:K0UbxNfaPHoIXo0T4L4jrbE+TKcVPYp55nEnMLxVRPk=
 github.com/aws/aws-sdk-go-v2/service/mq v1.13.15/go.mod h1:ycghPMXYItx5Y74iehFgGwDNUMXdq0xCxLaYC5uYZO0=
+github.com/aws/aws-sdk-go-v2/service/mwaa v1.13.12 h1:9piNP7cXEY4/kyb9jp2mZmApADQ4xSPmybNd/N+BFCc=
+github.com/aws/aws-sdk-go-v2/service/mwaa v1.13.12/go.mod h1:fU/hThlyHRbtVU2K0R1iWi65xByYVi+Rcxti3pr4zdQ=
 github.com/aws/aws-sdk-go-v2/service/neptune v1.18.0 h1:KjuTmFGJsFIkdrwb3Mn5vifuZQ7po2LuEoiVizMztgg=
 github.com/aws/aws-sdk-go-v2/service/neptune v1.18.0/go.mod h1:YW+k1DAbNfgK2aS3AGPYSbNWCfsclfzEf4ZsNMGFdik=
 github.com/aws/aws-sdk-go-v2/service/organizations v1.16.15 h1:DKPB04iAh04HwzriUgKlnRYfrpQzWkbjRdvnePO1glM=
@@ -166,6 +168,8 @@ github.com/aws/aws-sdk-go-v2/service/servicecatalog v1.14.19 h1:IsBui5OwBHfMiwdB
 github.com/aws/aws-sdk-go-v2/service/servicecatalog v1.14.19/go.mod h1:LK9h10/zEBOFiR0RccANZ7PjXAMQX3vaBsVthOtJl5A=
 github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.14.3 h1:0E7QBG6IX+aQeVYu8z9shyrEYB8pdEj1xPtjFXA5NQY=
 github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.14.3/go.mod h1:vkpPtfwM2VWYr/FyJf8ATmTmehAIJIvVCEfNm2YP2xQ=
+github.com/aws/aws-sdk-go-v2/service/servicequotas v1.13.20 h1:0nyaHSI6mAGpilMph7ChBgiCcQtBMtkNj5wGaFdcQXg=
+github.com/aws/aws-sdk-go-v2/service/servicequotas v1.13.20/go.mod h1:EuAU2Q75NynMT3F3VTpgN5t+lO7Yl+1MJGeKS7ucGGw=
 github.com/aws/aws-sdk-go-v2/service/sesv2 v1.15.0 h1:I/EKJDC0fQTlUE656GEBSsrvwYSDd22EKxuXk46kFIU=
 github.com/aws/aws-sdk-go-v2/service/sesv2 v1.15.0/go.mod h1:IeH7fIK+ReovHp+9rw9n5xxsxg5dDMLPF0DnL0AjPZc=
 github.com/aws/aws-sdk-go-v2/service/shield v1.17.11 h1:asVClnJw6E3j+Eut6yDKKj8g2L7IxrumuuR9ljezDj0=

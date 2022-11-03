@@ -57,6 +57,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/lightsail"
 	"github.com/aws/aws-sdk-go-v2/service/mq"
+	"github.com/aws/aws-sdk-go-v2/service/mwaa"
 	"github.com/aws/aws-sdk-go-v2/service/neptune"
 	"github.com/aws/aws-sdk-go-v2/service/organizations"
 	"github.com/aws/aws-sdk-go-v2/service/qldb"
@@ -71,6 +72,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalog"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry"
+	"github.com/aws/aws-sdk-go-v2/service/servicequotas"
 	"github.com/aws/aws-sdk-go-v2/service/sesv2"
 	"github.com/aws/aws-sdk-go-v2/service/shield"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
@@ -144,6 +146,7 @@ func initServices(region string, c aws.Config) Services {
 		Lambda:                    lambda.NewFromConfig(awsCfg),
 		Lightsail:                 lightsail.NewFromConfig(awsCfg),
 		Mq:                        mq.NewFromConfig(awsCfg),
+		Mwaa:                      mwaa.NewFromConfig(awsCfg),
 		Neptune:                   neptune.NewFromConfig(awsCfg),
 		Organizations:             organizations.NewFromConfig(awsCfg),
 		Qldb:                      qldb.NewFromConfig(awsCfg),
@@ -158,6 +161,7 @@ func initServices(region string, c aws.Config) Services {
 		Secretsmanager:            secretsmanager.NewFromConfig(awsCfg),
 		Servicecatalog:            servicecatalog.NewFromConfig(awsCfg),
 		Servicecatalogappregistry: servicecatalogappregistry.NewFromConfig(awsCfg),
+		Servicequotas:             servicequotas.NewFromConfig(awsCfg),
 		Sesv2:                     sesv2.NewFromConfig(awsCfg),
 		Shield:                    shield.NewFromConfig(awsCfg),
 		Sns:                       sns.NewFromConfig(awsCfg),
@@ -228,6 +232,7 @@ type Services struct {
 	Lambda                    services.LambdaClient
 	Lightsail                 services.LightsailClient
 	Mq                        services.MqClient
+	Mwaa                      services.MwaaClient
 	Neptune                   services.NeptuneClient
 	Organizations             services.OrganizationsClient
 	Qldb                      services.QldbClient
@@ -242,6 +247,7 @@ type Services struct {
 	Secretsmanager            services.SecretsmanagerClient
 	Servicecatalog            services.ServicecatalogClient
 	Servicecatalogappregistry services.ServicecatalogappregistryClient
+	Servicequotas             services.ServicequotasClient
 	Sesv2                     services.Sesv2Client
 	Shield                    services.ShieldClient
 	Sns                       services.SnsClient

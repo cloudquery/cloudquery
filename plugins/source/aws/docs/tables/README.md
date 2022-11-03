@@ -278,6 +278,7 @@
 | [aws_mq_brokers](aws_mq_brokers.md) |
 | ↳ [aws_mq_broker_configurations](aws_mq_broker_configurations.md) |
 | ↳ [aws_mq_broker_users](aws_mq_broker_users.md) |
+| [aws_mwaa_environments](aws_mwaa_environments.md) |
 | [aws_neptune_clusters](aws_neptune_clusters.md) |
 | [aws_neptune_db_parameter_groups](aws_neptune_db_parameter_groups.md) |
 | ↳ [aws_neptune_db_parameter_group_db_parameters](aws_neptune_db_parameter_group_db_parameters.md) |
@@ -325,6 +326,8 @@
 | [aws_servicecatalog_portfolios](aws_servicecatalog_portfolios.md) |
 | [aws_servicecatalog_products](aws_servicecatalog_products.md) |
 | [aws_servicecatalog_provisioned_products](aws_servicecatalog_provisioned_products.md) |
+| [aws_servicequotas_services](aws_servicequotas_services.md) |
+| ↳ [aws_servicequotas_quotas](aws_servicequotas_quotas.md) |
 | [aws_ses_templates](aws_ses_templates.md) |
 | [aws_ses_configuration_sets](aws_ses_configuration_sets.md) |
 | ↳ [aws_ses_configuration_set_event_destinations](aws_ses_configuration_set_event_destinations.md) |

@@ -56,6 +56,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/lambda"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/lightsail"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/mq"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/mwaa"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/neptune"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/organizations"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/qldb"
@@ -67,6 +68,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sagemaker"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/secretsmanager"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/servicecatalog"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/servicequotas"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ses"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/shield"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sns"
@@ -270,6 +272,7 @@ func tables() []*schema.Table {
 		lightsail.LoadBalancers(),
 		lightsail.StaticIps(),
 		mq.Brokers(),
+		mwaa.Environments(),
 		neptune.Clusters(),
 		neptune.DbParameterGroups(),
 		neptune.GlobalClusters(),
@@ -303,6 +306,7 @@ func tables() []*schema.Table {
 		servicecatalog.Portfolios(),
 		servicecatalog.Products(),
 		servicecatalog.ProvisionedProducts(),
+		servicequotas.Services(),
 		ses.Templates(),
 		ses.ConfigurationSets(),
 		ses.ContactLists(),
