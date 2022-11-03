@@ -278,6 +278,7 @@
 | [aws_mq_brokers](aws_mq_brokers.md) |
 | ↳ [aws_mq_broker_configurations](aws_mq_broker_configurations.md) |
 | ↳ [aws_mq_broker_users](aws_mq_broker_users.md) |
+| [aws_mwaa_environments](aws_mwaa_environments.md) |
 | [aws_neptune_clusters](aws_neptune_clusters.md) |
 | [aws_neptune_db_parameter_groups](aws_neptune_db_parameter_groups.md) |
 | ↳ [aws_neptune_db_parameter_group_db_parameters](aws_neptune_db_parameter_group_db_parameters.md) |
