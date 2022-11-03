@@ -5,6 +5,13 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.4.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v2.4.0...plugins-source-gcp-v2.4.1) (2022-11-03)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for gcp to v0.13.19 ([#3506](https://github.com/cloudquery/cloudquery/issues/3506)) ([af1bcd8](https://github.com/cloudquery/cloudquery/commit/af1bcd8968ed899757759b77d26a6e94f0ae70b9))
+
 ## [2.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v2.3.0...plugins-source-gcp-v2.4.0) (2022-11-01)
 
 
