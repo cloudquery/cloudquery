@@ -44,7 +44,7 @@ func buildEMRClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&emr.DescribeClusterOutput{Cluster: &cluster},
 		nil,
 	)
-	return client.Services{EMR: mock}
+	return client.Services{Emr: mock}
 }
 
 func TestEMRClusters(t *testing.T) {

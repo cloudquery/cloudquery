@@ -37,7 +37,7 @@ spec:
 
   ## Required. Must be a specific version starting with v, e.g. v1.2.3
   ## checkout latest versions here https://github.com/cloudquery/cloudquery/releases?q=plugins-destination-postgresql&expanded=true
-  version: "v1.3.11" # latest version of postgresql plugin
+  version: "v1.6.0" # latest version of postgresql plugin
 
   ## Optional. Default: "overwrite-delete-stale". Available: "overwrite-delete-stale", "overwrite", "append". 
   ##  Not all modes are supported by all plugins, so make sure to check the plugin documentation for more details.
@@ -61,7 +61,7 @@ For a list of all available destination plugin spec options, see [Destination Sp
 <Callout>
 
 If you have multiple destination plugins (or running multiple cloudquery instances in parallel), it's required
-that every plugin configuration has a unique `name` (e.g. `postgres1`, `postgres2`, ...).
+that every plugin configuration has a unique `name` (e.g. `postgres1`, `postgres2`, …).
 
 </Callout>
 
@@ -87,7 +87,7 @@ spec:
 
   ## Required. Must be a specific version starting with v, e.g. v1.2.3
   ## checkout latest versions here https://github.com/cloudquery/cloudquery/releases?q=plugins-source-aws&expanded=true
-  version: "v3.7.0" # latest version of aws plugin
+  version: "v4.2.1" # latest version of aws plugin
 
   ## Optional. Default: ["*"] - all tables. We recommend to specify specific tables that you need to sync as this
   ## will reduce the amount of data synced and improve performance.
@@ -109,7 +109,7 @@ spec:
 <Callout>
 
 If you have multiple source plugins (or running multiple cloudquery instances in parallel), it's required
-that every plugin configuration has a unique `name` (e.g. `aws1`, `aws2`, ...).
+that every plugin configuration has a unique `name` (e.g. `aws1`, `aws2`, …).
 
 Running multiple plugins with the same name can cause unexpected behavior (e.g. empty tables). 
 

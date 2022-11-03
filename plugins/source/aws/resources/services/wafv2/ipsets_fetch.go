@@ -13,7 +13,7 @@ import (
 
 func fetchWafv2Ipsets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().WafV2
+	svc := cl.Services().Wafv2
 
 	params := wafv2.ListIPSetsInput{
 		Scope: cl.WAFScope,
@@ -36,7 +36,7 @@ func fetchWafv2Ipsets(ctx context.Context, meta schema.ClientMeta, parent *schem
 
 func getIpset(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().WafV2
+	svc := cl.Services().Wafv2
 	s := resource.Item.(types.IPSetSummary)
 
 	info, err := svc.GetIPSet(
@@ -73,7 +73,7 @@ func resolveIpsetAddresses(ctx context.Context, meta schema.ClientMeta, resource
 
 func resolveIpsetTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().WafV2
+	svc := cl.Services().Wafv2
 	s := resource.Item.(*types.IPSet)
 	tags := make(map[string]string)
 	params := wafv2.ListTagsForResourceInput{ResourceARN: s.ARN}

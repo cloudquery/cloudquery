@@ -13,7 +13,7 @@ import (
 )
 
 func buildMqBrokers(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockMQClient(ctrl)
+	m := mocks.NewMockMqClient(ctrl)
 
 	bs := types.BrokerSummary{}
 	if err := faker.FakeObject(&bs); err != nil {
@@ -70,7 +70,7 @@ func buildMqBrokers(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().DescribeConfigurationRevision(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&revision, nil)
 
-	return client.Services{MQ: m}
+	return client.Services{Mq: m}
 }
 
 func TestMqBrokers(t *testing.T) {

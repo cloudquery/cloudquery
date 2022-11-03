@@ -15,7 +15,6 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
-|tags|JSON|
 |association_id|String|
 |batch_import_meta_data_on_create|Bool|
 |creation_time|Timestamp|
@@ -30,3 +29,4 @@ The primary key for this table is **arn**.
 |lifecycle|String|
 |nfs|JSON|
 |s3|JSON|
+|tags|JSON|

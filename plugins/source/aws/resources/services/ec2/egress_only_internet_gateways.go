@@ -45,7 +45,7 @@ func EgressOnlyInternetGateways() *schema.Table {
 			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
+				Resolver: client.ResolveTags,
 			},
 		},
 	}

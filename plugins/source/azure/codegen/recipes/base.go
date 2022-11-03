@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/Azure/go-autorest/autorest/date"
+	"github.com/cloudquery/plugin-sdk/caser"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/gertd/go-pluralize"
@@ -110,6 +111,9 @@ var (
 		Resolver: "client.ResolveAzureSubscription",
 	}
 	defaultSkipFields = []string{"Response", "SubscriptionID"}
+	azureCaser        = caser.New(caser.WithCustomInitialisms(map[string]bool{
+		"V2": true,
+	}))
 )
 
 func AllResources() []Resource {
@@ -190,7 +194,8 @@ func getTableName(azureService, azureSubService string, override string) string 
 	if override != "" {
 		return fmt.Sprintf("%s_%s", pluginName, override)
 	}
-	return fmt.Sprintf("%s_%s_%s", pluginName, strings.ToLower(azureService), strcase.ToSnake(azureSubService))
+
+	return fmt.Sprintf("%s_%s_%s", pluginName, strings.ToLower(azureService), azureCaser.ToSnake(azureSubService))
 }
 
 func timeStampTransformer(field reflect.StructField) (schema.ValueType, error) {
@@ -292,7 +297,7 @@ func generateResources(resourcesByTemplates []byTemplates) []Resource {
 					Imports:          template.imports,
 					Template: Template{
 						Source:      template.source,
-						Destination: path.Join(strings.ToLower(azureService), strcase.ToSnake(azureSubService)+template.destinationSuffix),
+						Destination: path.Join(strings.ToLower(azureService), azureCaser.ToSnake(azureSubService)+template.destinationSuffix),
 					},
 					Helpers:                  definition.helpers,
 					ListFunction:             definition.listFunction,
@@ -328,7 +333,7 @@ func initParentsForResources(serviceNameOverride string, resources []resourceDef
 		relations := parent.relations
 		if relations != nil {
 			_, _, azureService, azureSubService := parseAzureStruct(serviceNameOverride, parent)
-			parentColumnName := fmt.Sprintf("%s_%s_id", strings.ToLower(azureService), strcase.ToSnake(plural.Singular(azureSubService)))
+			parentColumnName := fmt.Sprintf("%s_%s_id", strings.ToLower(azureService), azureCaser.ToSnake(plural.Singular(azureSubService)))
 			for j := range relations {
 				relations[j].parent = parentColumnName
 			}

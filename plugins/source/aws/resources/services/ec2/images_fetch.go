@@ -15,7 +15,7 @@ import (
 func fetchEc2Images(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 
-	svc := c.Services().EC2
+	svc := c.Services().Ec2
 	g, ctx := errgroup.WithContext(ctx)
 	g.Go(func() error {
 		// fetch ec2.Images owned by this account

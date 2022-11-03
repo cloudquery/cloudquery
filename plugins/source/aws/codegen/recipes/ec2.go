@@ -195,7 +195,6 @@ func EC2Resources() []*Resource {
 			SubService:  "internet_gateways",
 			Struct:      &types.InternetGateway{},
 			Description: "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_InternetGateway.html",
-			SkipFields:  []string{"Tags"},
 			ExtraColumns: append(defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
 					{
@@ -203,11 +202,6 @@ func EC2Resources() []*Resource {
 						Type:     schema.TypeString,
 						Resolver: "resolveInternetGatewayArn",
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `client.ResolveTags`,
 					},
 				}...),
 		},
@@ -243,7 +237,6 @@ func EC2Resources() []*Resource {
 			SubService:  "network_acls",
 			Struct:      &types.NetworkAcl{},
 			Description: "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_NetworkAcl.html",
-			SkipFields:  []string{"Tags"},
 			ExtraColumns: append(defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
 					{
@@ -251,11 +244,6 @@ func EC2Resources() []*Resource {
 						Type:     schema.TypeString,
 						Resolver: "resolveNetworkAclArn",
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `client.ResolveTags`,
 					},
 				}...),
 		},
@@ -275,7 +263,7 @@ func EC2Resources() []*Resource {
 					{
 						Name:     "tags",
 						Type:     schema.TypeJSON,
-						Resolver: `schema.PathResolver("TagSet")`,
+						Resolver: `client.ResolveTagField("TagSet")`,
 					},
 				}...),
 		},
@@ -331,7 +319,6 @@ func EC2Resources() []*Resource {
 			SubService:  "reserved_instances",
 			Struct:      &types.ReservedInstances{},
 			Description: "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ReservedInstances.html",
-			SkipFields:  []string{"Tags"},
 			ExtraColumns: append(defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
 					{
@@ -340,18 +327,12 @@ func EC2Resources() []*Resource {
 						Resolver: "resolveReservedInstanceArn",
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `client.ResolveTags`,
-					},
 				}...),
 		},
 		{
 			SubService:  "route_tables",
 			Struct:      &types.RouteTable{},
 			Description: "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_RouteTable.html",
-			SkipFields:  []string{"Tags"},
 			ExtraColumns: append(defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
 					{
@@ -359,11 +340,6 @@ func EC2Resources() []*Resource {
 						Type:     schema.TypeString,
 						Resolver: "resolveRouteTableArn",
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `client.ResolveTags`,
 					},
 				}...),
 		},
@@ -399,19 +375,13 @@ func EC2Resources() []*Resource {
 			SubService:  "transit_gateways",
 			Struct:      &types.TransitGateway{},
 			Description: "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGateway.html",
-			SkipFields:  []string{"Tags", "TransitGatewayId", "TransitGatewayArn"},
-			ExtraColumns: append(defaultAccountColumns,
+			SkipFields:  []string{"TransitGatewayId", "TransitGatewayArn"},
+			ExtraColumns: append(defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `client.ResolveTags`,
-					},
 					{
 						Name:     "id",
 						Type:     schema.TypeString,
 						Resolver: `schema.PathResolver("TransitGatewayId")`,
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
 					{
 						Name:     "arn",
@@ -432,7 +402,6 @@ func EC2Resources() []*Resource {
 			SubService:  "transit_gateway_attachments",
 			Struct:      &types.TransitGatewayAttachment{},
 			Description: "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGatewayAttachment.html",
-			SkipFields:  []string{"Tags"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -440,11 +409,6 @@ func EC2Resources() []*Resource {
 						Name:     "transit_gateway_arn",
 						Type:     schema.TypeString,
 						Resolver: `schema.ParentColumnResolver("arn")`,
-					},
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `client.ResolveTags`,
 					},
 				}...),
 		},
@@ -452,7 +416,6 @@ func EC2Resources() []*Resource {
 			SubService:  "transit_gateway_route_tables",
 			Struct:      &types.TransitGatewayRouteTable{},
 			Description: "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGatewayRouteTable.html",
-			SkipFields:  []string{"Tags"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -460,11 +423,6 @@ func EC2Resources() []*Resource {
 						Name:     "transit_gateway_arn",
 						Type:     schema.TypeString,
 						Resolver: `schema.ParentColumnResolver("arn")`,
-					},
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `client.ResolveTags`,
 					},
 				}...),
 		},
@@ -472,7 +430,6 @@ func EC2Resources() []*Resource {
 			SubService:  "transit_gateway_vpc_attachments",
 			Struct:      &types.TransitGatewayVpcAttachment{},
 			Description: "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGatewayVpcAttachment.html",
-			SkipFields:  []string{"Tags"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -480,11 +437,6 @@ func EC2Resources() []*Resource {
 						Name:     "transit_gateway_arn",
 						Type:     schema.TypeString,
 						Resolver: `schema.ParentColumnResolver("arn")`,
-					},
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `client.ResolveTags`,
 					},
 				}...),
 		},
@@ -492,7 +444,6 @@ func EC2Resources() []*Resource {
 			SubService:  "transit_gateway_peering_attachments",
 			Struct:      &types.TransitGatewayPeeringAttachment{},
 			Description: "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGatewayPeeringAttachment.html",
-			SkipFields:  []string{"Tags"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -500,11 +451,6 @@ func EC2Resources() []*Resource {
 						Name:     "transit_gateway_arn",
 						Type:     schema.TypeString,
 						Resolver: `schema.ParentColumnResolver("arn")`,
-					},
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `client.ResolveTags`,
 					},
 				}...),
 		},
@@ -512,7 +458,6 @@ func EC2Resources() []*Resource {
 			SubService:  "transit_gateway_multicast_domains",
 			Struct:      &types.TransitGatewayMulticastDomain{},
 			Description: "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGatewayMulticastDomain.html",
-			SkipFields:  []string{"Tags"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -520,11 +465,6 @@ func EC2Resources() []*Resource {
 						Name:     "transit_gateway_arn",
 						Type:     schema.TypeString,
 						Resolver: `schema.ParentColumnResolver("arn")`,
-					},
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `client.ResolveTags`,
 					},
 				}...),
 		},
@@ -546,7 +486,6 @@ func EC2Resources() []*Resource {
 			SubService:  "vpc_endpoint_services",
 			Struct:      &types.ServiceDetail{},
 			Description: "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ServiceDetail.html",
-			SkipFields:  []string{"Tags"},
 			ExtraColumns: append(defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
 					{
@@ -554,11 +493,6 @@ func EC2Resources() []*Resource {
 						Type:     schema.TypeString,
 						Resolver: `resolveVpcEndpointServiceArn`,
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `client.ResolveTags`,
 					},
 				}...),
 		},

@@ -19,7 +19,6 @@ The following tables depend on aws_iam_roles:
 |policies|JSON|
 |id (PK)|String|
 |assume_role_policy_document|JSON|
-|tags|JSON|
 |arn|String|
 |create_date|Timestamp|
 |path|String|
@@ -28,3 +27,4 @@ The following tables depend on aws_iam_roles:
 |max_session_duration|Int|
 |permissions_boundary|JSON|
 |role_last_used|JSON|
+|tags|JSON|

@@ -4,16 +4,16 @@ Thanks for contributing to CloudQuery! You are awesome. This document serves as 
 
 There are three main steps to adding a new AWS resource:
 
-1. [Add interfaces for the AWS SDK function(s) that fetch the resource](#1-add-interfaces-for-the-aws-sdk-functions-that-fetch-the-resource)
+1. [Generate interfaces for the AWS SDK function(s) that fetch the resource](#1-generate-interfaces-for-the-aws-sdk-functions-that-fetch-the-resource)
 2. [Add a code generation recipe](#2-add-a-code-generation-recipe)
-3. [Writing the resolver function to fetch the resource using the AWS SDK](#3-setting-up-the-resource)
+3. [Write the resolver function to fetch the resource using the AWS SDK](#3-setting-up-the-resource)
 
 As a prerequisite, in [aws-sdk-go-v2](https://pkg.go.dev/github.com/aws/aws-sdk-go-v2) ensure API calls exist to list/describe the desired resource, and make note of:
 
 - to which aws service the resource belongs
 - the schema of the returned object(s)
 
-## 1. Add Interfaces for the AWS SDK Function(s) that Fetch the Resource
+## 1. Generate Interfaces for the AWS SDK Function(s) that Fetch the Resource
 
 ### Before you Start
 
@@ -25,13 +25,11 @@ make install-tools
 
 This will install `mockgen` and any other tools necessary to complete the process.
 
-### Create the Service Interface
+### Generate the Service Interface
 
-1. Create the service interface (or add new functions to an existing one) in [client/services.go](../../client/services.go)
-2. Add a `go:generate mockgen` comment if there isn't one already
-3. Inside the [client](client) directory, run `go generate` to generate mocks from the interfaces.
-4. Add the service to the `Services` struct in [client/client.go](client/client.go).
-5. Also add an instantiation for the service inside `func initServices` in [client/client.go](client/client.go).
+1. Check in [client/services.go](client/services.go) that the service you need has an interface defined. If it does, you can skip to [2. Add a Code Generation Recipe](#2-add-a-code-generation-recipe). If not, read on to learn how to generate the interface.
+2. Inside [codegen/services/clients.go](codegen/services/clients.go), add the client for the AWS SDK you need to the `clients` slice. You may need to run `go get github.com/aws/aws-sdk-go-v2/service/<service-name>` (e.g. `go get github.com/aws/aws-sdk-go-v2/service/dynamodb`) to add the dependency first.
+3. Run `make gen`. This should add the interface for your client to [client/services.go](client/services.go) and create a mock for it that will be used in unit tests later.
 
 ## 2. Add a Code Generation Recipe
 
@@ -61,7 +59,7 @@ The process to follow for adding a new recipe is:
  3. `Multiplex`: Most AWS services have resources defined per account and region. In such cases, `client.ServiceAccountRegionMultiplexer("my-service")` is usually the correct multiplexer to use. Look in [client/data/partition_service_region.json](client/data/partition_service_region.json) for the correct service name to use.
  4. `Struct`: This should be a pointer to the struct that will be synced to the destination. CloudQuery's plugin-sdk code generation will read the fields of this struct and convert it to a `Table` instance with appropriate column types.
     
-    Deciding which struct to use takes some practice. To find the right struct, explore the return types of the SDK functions provided by the [AWS Go SDK](https://pkg.go.dev/github.com/aws/aws-sdk-go-v2) (and that you created interface functions for in Step 1). Often there will be a `Get` or `Describe` call that returns a `GetResourceOutput` (or similar) struct. Sometimes this Output struct can be used directly. Other times, the Output struct will contain reference an inner type, which should then be used for defining the Resource.
+    Deciding which struct to use takes some practice. To find the right struct, explore the return types of the SDK functions provided by the [AWS Go SDK](https://pkg.go.dev/github.com/aws/aws-sdk-go-v2) (and that you created interface functions for in Step 1). Often there will be a `Get` or `Describe` call that returns a `GetResourceOutput` (or similar) struct. Sometimes this Output struct can be used directly. Other times, the Output struct will reference an inner type, which should then be used for defining the Resource.
 
 #### All Available Resource Fields
 
@@ -81,10 +79,10 @@ for _, r := range resources {
 
 ### Run Code Generation
 
-With the recipe file added and some resources defined, you are ready to run `codegen`. Inside the [`codegen`](codegen) directory, run:
+With the recipe file added and some resources defined, you are ready to run code generation. Run:
 
 ```shell
-go run main.go
+make gen-code
 ```
 
 This will update all resources and generate a new directory for your service under [resources/services](resources/services).
@@ -109,12 +107,6 @@ By following the steps outlined above, you should now have generated a `myservic
 
 We recommend looking at other resources similar to yours to get an idea of what needs to be done in this step.  
 
-4. Make sure to register the resource you just created with the plugin by adding it to the array that `plugin.tables()` returns in
-   `/resources/plugin/tables.go`
-
-   using the naming conventions from steps 1-3 the call would look like:
-      `myservice.myresource(),`
-   
 ### Implementing Resolver Functions
 
 A few important things to note when adding functions that call the AWS API:
@@ -130,5 +122,6 @@ A few important things to note when adding functions that call the AWS API:
 - Keep transformations to a minimum. As far as possible, we aim to deliver an accurate reflection of what the AWS API provides.
 - We generally only unroll structs one level deep. Nested structs should be transformed into JSON columns. 
 - For consistency, make sure the resource has an `ARN` stored in a column named `arn`. Sometimes this means using the AWS SDK to generate an ARN for the resource.
-- Make sure the resource has a `tags` JSON column (if possible). Sometimes this requires additional SDK calls. Sometimes the column needs to be renamed from `tag_list` to `tags` (and converted to a map). There are custom `ResolveTags` and `ResolveTagFields` resolvers to help with this. It's not always possible, but we try to keep the `tags` column consistent across AWS resources.  
+- Make sure the resource has a `tags` JSON column (if possible). Sometimes this requires additional SDK calls. Sometimes the column needs to be renamed from `tag_list` to `tags` (and converted to a map). There are custom `ResolveTags` and `ResolveTagFields` resolvers to help with this. It's not always possible, but we try to keep the `tags` column consistent across AWS resources.
+- Before submitting a pull request, run `make gen-docs` to generate documentation for the table. Include these generated files in the pull request.
 - If you get stuck or need help, feel free to reach out on [Discord](https://www.cloudquery.io/discord). We are a friendly community and would love to help!

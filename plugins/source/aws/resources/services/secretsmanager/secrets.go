@@ -33,12 +33,6 @@ func Secrets() *schema.Table {
 				},
 			},
 			{
-				Name:        "tags",
-				Type:        schema.TypeJSON,
-				Resolver:    client.ResolveTags,
-				Description: `The list of user-defined tags associated with the secret`,
-			},
-			{
 				Name:        "policy",
 				Type:        schema.TypeJSON,
 				Resolver:    fetchSecretsmanagerSecretPolicy,
@@ -113,6 +107,11 @@ func Secrets() *schema.Table {
 				Name:     "rotation_rules",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("RotationRules"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "version_ids_to_stages",

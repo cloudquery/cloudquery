@@ -12,7 +12,7 @@ import (
 )
 
 func buildEventBridgeEventBusesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockEventBridgeClient(ctrl)
+	m := mocks.NewMockEventbridgeClient(ctrl)
 	bus := types.EventBus{}
 	err := faker.FakeObject(&bus)
 	if err != nil {
@@ -43,7 +43,7 @@ func buildEventBridgeEventBusesMock(t *testing.T, ctrl *gomock.Controller) clien
 		&tags, nil)
 
 	return client.Services{
-		EventBridge: m,
+		Eventbridge: m,
 	}
 }
 

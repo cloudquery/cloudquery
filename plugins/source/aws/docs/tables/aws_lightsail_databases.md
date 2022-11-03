@@ -19,7 +19,6 @@ The following tables depend on aws_lightsail_databases:
 |_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
-|tags|JSON|
 |arn|String|
 |backup_retention_enabled|Bool|
 |ca_certificate_identifier|String|
@@ -45,3 +44,4 @@ The following tables depend on aws_lightsail_databases:
 |secondary_availability_zone|String|
 |state|String|
 |support_code|String|
+|tags|JSON|

@@ -17,7 +17,7 @@ The following tables depend on digitalocean_droplets:
 |_cq_parent_id|UUID|
 |backup_ids|IntArray|
 |snapshot_ids|IntArray|
-|volume_ids|IntArray|
+|volume_ids|StringArray|
 |id (PK)|Int|
 |name|String|
 |memory|Int|

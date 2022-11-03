@@ -34,12 +34,6 @@ func Clusters() *schema.Table {
 				},
 			},
 			{
-				Name:        "tags",
-				Type:        schema.TypeJSON,
-				Resolver:    client.ResolveTags,
-				Description: `The list of tags for the cluster.`,
-			},
-			{
 				Name:        "logging_status",
 				Type:        schema.TypeJSON,
 				Resolver:    resolveRedshiftClusterLoggingStatus,
@@ -279,6 +273,11 @@ func Clusters() *schema.Table {
 				Name:     "snapshot_schedule_state",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("SnapshotScheduleState"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "total_storage_capacity_in_mega_bytes",

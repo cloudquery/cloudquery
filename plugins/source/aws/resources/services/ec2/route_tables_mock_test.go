@@ -24,7 +24,7 @@ func buildEc2RouteTables(t *testing.T, ctrl *gomock.Controller) client.Services 
 			RouteTables: []types.RouteTable{l},
 		}, nil)
 	return client.Services{
-		EC2: m,
+		Ec2: m,
 	}
 }
 

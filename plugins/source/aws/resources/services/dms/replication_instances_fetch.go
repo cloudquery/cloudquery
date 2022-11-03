@@ -11,7 +11,7 @@ import (
 
 func fetchDmsReplicationInstances(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	svc := c.Services().DMS
+	svc := c.Services().Databasemigrationservice
 
 	var describeReplicationInstancesInput *databasemigrationservice.DescribeReplicationInstancesInput
 	describeReplicationInstancesOutput, err := svc.DescribeReplicationInstances(ctx, describeReplicationInstancesInput)

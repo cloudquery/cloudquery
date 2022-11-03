@@ -58,6 +58,7 @@ Lightsail
 Grafana
 CloudFormation
 Okta
+okta
 browsable
 Yandex
 queryable
@@ -125,3 +126,6 @@ Goroutines
 upserted
 write_mode
 skip_tables
+subfolder
+recurse
+CCPA's

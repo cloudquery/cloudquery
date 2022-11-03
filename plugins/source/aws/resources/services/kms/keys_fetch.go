@@ -13,7 +13,7 @@ import (
 func fetchKmsKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var input kms.ListKeysInput
 	c := meta.(*client.Client)
-	svc := c.Services().KMS
+	svc := c.Services().Kms
 	for {
 		response, err := svc.ListKeys(ctx, &input)
 		if err != nil {
@@ -49,7 +49,7 @@ func resolveKeysReplicaKeys(ctx context.Context, meta schema.ClientMeta, resourc
 }
 func resolveKeysTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().KMS
+	svc := cl.Services().Kms
 	key := resource.Item.(types.KeyMetadata)
 	if key.Origin == "EXTERNAL" || key.KeyManager == "AWS" {
 		return nil
@@ -73,7 +73,7 @@ func resolveKeysTags(ctx context.Context, meta schema.ClientMeta, resource *sche
 }
 func resolveKeysRotationEnabled(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().KMS
+	svc := cl.Services().Kms
 	key := resource.Item.(types.KeyMetadata)
 	if key.Origin == "EXTERNAL" || key.KeyManager == "AWS" {
 		return nil

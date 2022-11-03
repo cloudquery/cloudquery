@@ -31,7 +31,7 @@ func buildIamSAMLProviders(t *testing.T, ctrl *gomock.Controller) client.Service
 	m.EXPECT().GetSAMLProvider(gomock.Any(), gomock.Any()).Return(&p, nil)
 
 	return client.Services{
-		IAM: m,
+		Iam: m,
 	}
 }
 

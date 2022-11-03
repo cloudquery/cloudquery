@@ -42,7 +42,7 @@ func buildEcrRepositoriesMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tagResponse, nil)
 
 	return client.Services{
-		ECR: m,
+		Ecr: m,
 	}
 }
 

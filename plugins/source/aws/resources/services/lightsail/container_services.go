@@ -32,11 +32,6 @@ func ContainerServices() *schema.Table {
 				},
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
-			},
-			{
 				Name:     "container_service_name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ContainerServiceName"),
@@ -115,6 +110,11 @@ func ContainerServices() *schema.Table {
 				Name:     "state_detail",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("StateDetail"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "url",

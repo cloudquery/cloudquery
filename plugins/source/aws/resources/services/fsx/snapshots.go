@@ -33,11 +33,6 @@ func Snapshots() *schema.Table {
 				},
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
-			},
-			{
 				Name:          "administrative_actions",
 				Type:          schema.TypeJSON,
 				Resolver:      schema.PathResolver("AdministrativeActions"),
@@ -67,6 +62,11 @@ func Snapshots() *schema.Table {
 				Name:     "snapshot_id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("SnapshotId"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "volume_id",

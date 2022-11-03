@@ -11,7 +11,7 @@ import (
 
 func fetchFsxFileSystems(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().FSX
+	svc := cl.Services().Fsx
 	input := fsx.DescribeFileSystemsInput{MaxResults: aws.Int32(1000)}
 	paginator := fsx.NewDescribeFileSystemsPaginator(svc, &input)
 	for paginator.HasMorePages() {

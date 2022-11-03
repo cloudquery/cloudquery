@@ -12,7 +12,7 @@ import (
 )
 
 func buildResourceGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockResourceGroupsClient(ctrl)
+	m := mocks.NewMockResourcegroupsClient(ctrl)
 	gId := types.GroupIdentifier{}
 	err := faker.FakeObject(&gId)
 	if err != nil {
@@ -52,7 +52,7 @@ func buildResourceGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Servi
 		}, nil)
 
 	return client.Services{
-		ResourceGroups: m,
+		Resourcegroups: m,
 	}
 }
 

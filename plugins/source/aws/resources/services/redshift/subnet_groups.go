@@ -34,12 +34,6 @@ func SubnetGroups() *schema.Table {
 				},
 			},
 			{
-				Name:        "tags",
-				Type:        schema.TypeJSON,
-				Resolver:    client.ResolveTags,
-				Description: `The list of tags for the cluster subnet group.`,
-			},
-			{
 				Name:     "cluster_subnet_group_name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ClusterSubnetGroupName"),
@@ -58,6 +52,11 @@ func SubnetGroups() *schema.Table {
 				Name:     "subnets",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Subnets"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "vpc_id",

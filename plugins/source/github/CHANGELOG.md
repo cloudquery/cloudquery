@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v1.1.0...plugins-source-github-v1.2.0) (2022-11-01)
+
+
+### Features
+
+* Migrate cli, plugins and destinations to new type system ([#3323](https://github.com/cloudquery/cloudquery/issues/3323)) ([f265a94](https://github.com/cloudquery/cloudquery/commit/f265a94448ad55c968b26ba8a19681bc81086c11))
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for github to v0.13.18 ([#3405](https://github.com/cloudquery/cloudquery/issues/3405)) ([b6be94c](https://github.com/cloudquery/cloudquery/commit/b6be94c1c9d3a75d2cc6967eb5d7dd7a19abbc51))
+
+## [1.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v1.0.9...plugins-source-github-v1.1.0) (2022-10-31)
+
+
+### Features
+
+* Update all plugins to SDK with metrics and DFS scheduler ([#3286](https://github.com/cloudquery/cloudquery/issues/3286)) ([a35b8e8](https://github.com/cloudquery/cloudquery/commit/a35b8e89d625287a9b9406ff18cfac78ffdb1241))
+
 ## [1.0.9](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v1.0.8...plugins-source-github-v1.0.9) (2022-10-27)
 
 

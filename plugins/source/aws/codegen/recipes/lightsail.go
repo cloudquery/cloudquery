@@ -25,19 +25,10 @@ func LightsailResources() []*Resource {
 				}...),
 		},
 		{
-			SubService:  "buckets",
-			Struct:      &types.Bucket{},
-			Description: "https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_Bucket.html",
-			SkipFields:  []string{"Tags"},
-			ExtraColumns: append(
-				defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `client.ResolveTags`,
-					},
-				}...),
+			SubService:   "buckets",
+			Struct:       &types.Bucket{},
+			Description:  "https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_Bucket.html",
+			ExtraColumns: defaultRegionalColumns,
 			Relations: []string{
 				"BucketAccessKeys()",
 			},
@@ -76,7 +67,7 @@ func LightsailResources() []*Resource {
 			SubService:  "container_services",
 			Struct:      &types.ContainerService{},
 			Description: "https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_ContainerService.html",
-			SkipFields:  []string{"Arn", "Tags"},
+			SkipFields:  []string{"Arn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -84,11 +75,6 @@ func LightsailResources() []*Resource {
 						Name:    "arn",
 						Type:    schema.TypeString,
 						Options: schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `client.ResolveTags`,
 					},
 				}...),
 			Relations: []string{
@@ -130,7 +116,7 @@ func LightsailResources() []*Resource {
 			SubService:  "database_snapshots",
 			Struct:      &types.RelationalDatabaseSnapshot{},
 			Description: "https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_RelationalDatabaseSnapshot.html",
-			SkipFields:  []string{"Arn", "Tags"},
+			SkipFields:  []string{"Arn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -139,27 +125,13 @@ func LightsailResources() []*Resource {
 						Type:    schema.TypeString,
 						Options: schema.ColumnCreationOptions{PrimaryKey: true},
 					},
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `client.ResolveTags`,
-					},
 				}...),
 		},
 		{
-			SubService:  "databases",
-			Struct:      &types.RelationalDatabase{},
-			Description: "https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_RelationalDatabase.html",
-			SkipFields:  []string{"Tags"},
-			ExtraColumns: append(
-				defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `client.ResolveTags`,
-					},
-				}...),
+			SubService:   "databases",
+			Struct:       &types.RelationalDatabase{},
+			Description:  "https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_RelationalDatabase.html",
+			ExtraColumns: defaultRegionalColumns,
 			Relations: []string{
 				"DatabaseParameters()",
 				"DatabaseEvents()",
@@ -237,7 +209,6 @@ func LightsailResources() []*Resource {
 			SubService:  "disk_snapshot",
 			Struct:      &types.DiskSnapshot{},
 			Description: "https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_DiskSnapshot.html",
-			SkipFields:  []string{"Tags"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -245,11 +216,6 @@ func LightsailResources() []*Resource {
 						Name:     "disk_arn",
 						Type:     schema.TypeString,
 						Resolver: `schema.ParentColumnResolver("arn")`,
-					},
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `client.ResolveTags`,
 					},
 				}...),
 		},
@@ -277,7 +243,7 @@ func LightsailResources() []*Resource {
 			SubService:  "instance_snapshots",
 			Struct:      &types.InstanceSnapshot{},
 			Description: "https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_InstanceSnapshot.html",
-			SkipFields:  []string{"Arn", "Tags"},
+			SkipFields:  []string{"Arn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -286,18 +252,13 @@ func LightsailResources() []*Resource {
 						Type:    schema.TypeString,
 						Options: schema.ColumnCreationOptions{PrimaryKey: true},
 					},
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `client.ResolveTags`,
-					},
 				}...),
 		},
 		{
 			SubService:  "instances",
 			Struct:      &types.Instance{},
 			Description: "https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_Instance.html",
-			SkipFields:  []string{"Arn", "Tags"},
+			SkipFields:  []string{"Arn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -310,11 +271,6 @@ func LightsailResources() []*Resource {
 						Name:    "arn",
 						Type:    schema.TypeString,
 						Options: schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `client.ResolveTags`,
 					},
 				}...),
 			Relations: []string{
@@ -340,7 +296,7 @@ func LightsailResources() []*Resource {
 			SubService:  "load_balancers",
 			Struct:      &types.LoadBalancer{},
 			Description: "https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_LoadBalancer.html",
-			SkipFields:  []string{"Arn", "Tags"},
+			SkipFields:  []string{"Arn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -348,11 +304,6 @@ func LightsailResources() []*Resource {
 						Name:    "arn",
 						Type:    schema.TypeString,
 						Options: schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `client.ResolveTags`,
 					},
 				}...),
 			Relations: []string{
@@ -363,7 +314,6 @@ func LightsailResources() []*Resource {
 			SubService:  "load_balancer_tls_certificates",
 			Struct:      &types.LoadBalancerTlsCertificate{},
 			Description: "https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_LoadBalancerTlsCertificate.html",
-			SkipFields:  []string{"Tags"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -371,11 +321,6 @@ func LightsailResources() []*Resource {
 						Name:     "load_balancer_arn",
 						Type:     schema.TypeString,
 						Resolver: `schema.ParentColumnResolver("arn")`,
-					},
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `client.ResolveTags`,
 					},
 				}...),
 		},

@@ -12,7 +12,7 @@ import (
 func fetchEc2RegionalConfig(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 
-	svc := c.Services().EC2
+	svc := c.Services().Ec2
 	var regionalConfig models.RegionalConfig
 	resp, err := svc.GetEbsDefaultKmsKeyId(ctx, &ec2.GetEbsDefaultKmsKeyIdInput{})
 	if err != nil {

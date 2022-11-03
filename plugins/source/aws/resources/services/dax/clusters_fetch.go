@@ -12,7 +12,7 @@ import (
 
 func fetchDaxClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	svc := c.Services().DAX
+	svc := c.Services().Dax
 
 	config := dax.DescribeClustersInput{}
 	for {
@@ -35,12 +35,12 @@ func resolveClusterTags(ctx context.Context, meta schema.ClientMeta, resource *s
 	cluster := resource.Item.(types.Cluster)
 
 	cl := meta.(*client.Client)
-	svc := cl.Services().DAX
+	svc := cl.Services().Dax
 	response, err := svc.ListTags(ctx, &dax.ListTagsInput{
 		ResourceName: cluster.ClusterArn,
 	})
 	if err != nil {
 		return err
 	}
-	return resource.Set(c.Name, response.Tags)
+	return resource.Set(c.Name, client.TagsToMap(response.Tags))
 }

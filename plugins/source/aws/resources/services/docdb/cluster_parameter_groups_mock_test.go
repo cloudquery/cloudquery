@@ -11,9 +11,9 @@ import (
 )
 
 func buildClusterParameterGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockDocDBClient(ctrl)
+	m := mocks.NewMockDocdbClient(ctrl)
 	services := client.Services{
-		DocDB: m,
+		Docdb: m,
 	}
 	var parameterGroups docdb.DescribeDBClusterParameterGroupsOutput
 	if err := faker.FakeObject(&parameterGroups); err != nil {

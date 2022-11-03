@@ -5,6 +5,33 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v2.2.0...plugins-source-digitalocean-v2.2.1) (2022-11-03)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for digitalocean to v0.13.19 ([#3505](https://github.com/cloudquery/cloudquery/issues/3505)) ([9f3a1a4](https://github.com/cloudquery/cloudquery/commit/9f3a1a4ef51c759a2899802a9669eafae9c139a9))
+
+## [2.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v2.1.0...plugins-source-digitalocean-v2.2.0) (2022-11-01)
+
+
+### Features
+
+* Migrate cli, plugins and destinations to new type system ([#3323](https://github.com/cloudquery/cloudquery/issues/3323)) ([f265a94](https://github.com/cloudquery/cloudquery/commit/f265a94448ad55c968b26ba8a19681bc81086c11))
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for digitalocean to v0.13.17 ([#3403](https://github.com/cloudquery/cloudquery/issues/3403)) ([e2f2255](https://github.com/cloudquery/cloudquery/commit/e2f2255084c527c601ac82b515bfd722b5370952))
+* **deps:** Update plugin-sdk for digitalocean to v0.13.18 ([#3412](https://github.com/cloudquery/cloudquery/issues/3412)) ([9d19db1](https://github.com/cloudquery/cloudquery/commit/9d19db1313dfd4f97d6f7f9856d44467da8ac2b6))
+
+## [2.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v2.0.8...plugins-source-digitalocean-v2.1.0) (2022-10-31)
+
+
+### Features
+
+* Update all plugins to SDK with metrics and DFS scheduler ([#3286](https://github.com/cloudquery/cloudquery/issues/3286)) ([a35b8e8](https://github.com/cloudquery/cloudquery/commit/a35b8e89d625287a9b9406ff18cfac78ffdb1241))
+
 ## [2.0.8](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v2.0.7...plugins-source-digitalocean-v2.0.8) (2022-10-27)
 
 

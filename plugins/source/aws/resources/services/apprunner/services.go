@@ -64,11 +64,6 @@ func Services() *schema.Table {
 				Resolver: schema.PathResolver("ServiceName"),
 			},
 			{
-				Name:     "service_url",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ServiceUrl"),
-			},
-			{
 				Name:     "source_configuration",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("SourceConfiguration"),
@@ -103,6 +98,16 @@ func Services() *schema.Table {
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("ObservabilityConfiguration"),
 			},
+			{
+				Name:     "service_url",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ServiceUrl"),
+			},
+		},
+
+		Relations: []*schema.Table{
+			Operations(),
+			CustomDomains(),
 		},
 	}
 }

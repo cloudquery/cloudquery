@@ -29,7 +29,7 @@ func buildCredentialReports(_ *testing.T, ctrl *gomock.Controller) client.Servic
 		}, nil)
 
 	return client.Services{
-		IAM: m,
+		Iam: m,
 	}
 }
 
@@ -41,7 +41,7 @@ func buildCredentialReportsWithNilValues(ctrl *gomock.Controller) client.Service
 		}, nil)
 
 	return client.Services{
-		IAM: m,
+		Iam: m,
 	}
 }
 

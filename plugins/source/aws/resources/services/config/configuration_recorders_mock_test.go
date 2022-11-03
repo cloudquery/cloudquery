@@ -12,7 +12,7 @@ import (
 )
 
 func buildConfigConfigurationRecorders(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockConfigServiceClient(ctrl)
+	m := mocks.NewMockConfigserviceClient(ctrl)
 	l := types.ConfigurationRecorder{}
 	if err := faker.FakeObject(&l); err != nil {
 		t.Fatal(err)
@@ -31,7 +31,7 @@ func buildConfigConfigurationRecorders(t *testing.T, ctrl *gomock.Controller) cl
 			ConfigurationRecorders: []types.ConfigurationRecorder{l},
 		}, nil)
 	return client.Services{
-		ConfigService: m,
+		Configservice: m,
 	}
 }
 
