@@ -79,7 +79,7 @@ func (s *ServicesManager) ServicesByAccountForWAFScope(partition, accountId stri
 	return s.wafScopeServices[partition][accountId]
 }
 
-func (s *ServicesManager) InitServicesForPartitionAccountAndRegion(partition, accountId, region string, services Services) {
+func (s *ServicesManager) InitServicesForPartitionAccountAndRegion(partition, accountId, region string, svcs Services) {
 	if s.services == nil {
 		s.services = make(map[string]map[string]map[string]*Services)
 	}
@@ -89,17 +89,17 @@ func (s *ServicesManager) InitServicesForPartitionAccountAndRegion(partition, ac
 	if s.services[partition][accountId] == nil {
 		s.services[partition][accountId] = make(map[string]*Services)
 	}
-	s.services[partition][accountId][region] = &services
+	s.services[partition][accountId][region] = &svcs
 }
 
-func (s *ServicesManager) InitServicesForPartitionAccountAndScope(partition, accountId string, services Services) {
+func (s *ServicesManager) InitServicesForPartitionAccountAndScope(partition, accountId string, svcs Services) {
 	if s.wafScopeServices == nil {
 		s.wafScopeServices = make(map[string]map[string]*Services)
 	}
 	if s.wafScopeServices[partition] == nil {
 		s.wafScopeServices[partition] = make(map[string]*Services)
 	}
-	s.wafScopeServices[partition][accountId] = &services
+	s.wafScopeServices[partition][accountId] = &svcs
 }
 
 func NewAwsClient(logger zerolog.Logger) Client {
