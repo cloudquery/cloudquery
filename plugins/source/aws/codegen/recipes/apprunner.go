@@ -65,8 +65,7 @@ func ApprunnerResources() []*Resource {
 		}, {
 			SubService:          "vpc_ingress_connection",
 			Struct:              &types.VpcIngressConnection{},
-			Description:         `https://docs.aws.amazon.com/apprunner/latest/api/API_VpcIngressConnection.html
-			account_id has been renamed to 'source_account_id' to avoid conflict with the account_id column that indicates what account this was synced from.`,
+			Description:         "https://docs.aws.amazon.com/apprunner/latest/api/API_VpcIngressConnection.html: account_id has been renamed to `source_account_id` to avoid conflict with the account_id column that indicates what account this was synced from.",
 			SkipFields:          []string{"VpcIngressConnectionArn", "AccountId"},
 			Multiplex:           `client.ServiceAccountRegionMultiplexer("apprunner")`,
 			PreResourceResolver: "getVpcIngressConnection",

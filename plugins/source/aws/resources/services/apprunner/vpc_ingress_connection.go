@@ -10,11 +10,16 @@ import (
 func VpcIngressConnection() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_apprunner_vpc_ingress_connection",
-		Description:         "https://docs.aws.amazon.com/apprunner/latest/api/API_VpcIngressConnection.html",
+		Description:         "https://docs.aws.amazon.com/apprunner/latest/api/API_VpcIngressConnection.html: account_id has been renamed to `source_account_id` to avoid conflict with the account_id column that indicates what account this was synced from.",
 		Resolver:            fetchApprunnerVpcIngressConnection,
 		PreResourceResolver: getVpcIngressConnection,
 		Multiplex:           client.ServiceAccountRegionMultiplexer("apprunner"),
 		Columns: []schema.Column{
+			{
+				Name:     "account_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAWSAccount,
+			},
 			{
 				Name:     "region",
 				Type:     schema.TypeString,
@@ -29,7 +34,7 @@ func VpcIngressConnection() *schema.Table {
 				},
 			},
 			{
-				Name:     "account_id",
+				Name:     "source_account_id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("AccountId"),
 			},
