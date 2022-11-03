@@ -12,7 +12,7 @@ import (
 )
 
 func buildApprunnerAutoScalingConfigurationsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockAppRunnerClient(ctrl)
+	m := mocks.NewMockApprunnerClient(ctrl)
 	as := types.AutoScalingConfiguration{}
 	err := faker.FakeObject(&as)
 	if err != nil {

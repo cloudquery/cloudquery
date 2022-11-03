@@ -12,7 +12,7 @@ import (
 )
 
 func buildApprunnerVpcIngressConnectionsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockAppRunnerClient(ctrl)
+	m := mocks.NewMockApprunnerClient(ctrl)
 	vc := types.VpcIngressConnection{}
 	err := faker.FakeObject(&vc)
 	if err != nil {
