@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v1.6.0...plugins-destination-postgresql-v1.6.1) (2022-11-03)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for postgresql to v0.13.19 ([#3525](https://github.com/cloudquery/cloudquery/issues/3525)) ([c0c705c](https://github.com/cloudquery/cloudquery/commit/c0c705c05e4f659f9f9f8ab3eb1ea11dc7719a04))
+
 ## [1.6.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v1.5.0...plugins-destination-postgresql-v1.6.0) (2022-11-02)
 
 
