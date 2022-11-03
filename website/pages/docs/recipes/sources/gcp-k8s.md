@@ -17,7 +17,7 @@ spec:
   name: k8s
   path: "cloudquery/k8s"
   version: "v2.3.0" # latest version of k8s plugin
-  destinations: ["YOUR_DESTINATION"]
+  destinations: ["<destination-name>"]
 ```
 
 Kubernetes users may see the following message when running the K8s plugin on GKE Clusters:
