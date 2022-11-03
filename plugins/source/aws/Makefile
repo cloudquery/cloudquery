@@ -34,4 +34,4 @@ gen-code:
 
 # All gen targets
 .PHONY: gen
-gen: gen-mocks gen-code gen-docs
+gen: gen-code gen-mocks gen-docs
