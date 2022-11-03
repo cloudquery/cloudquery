@@ -244,6 +244,7 @@ type Services struct {
 	Secretsmanager            services.SecretsmanagerClient
 	Servicecatalog            services.ServicecatalogClient
 	Servicecatalogappregistry services.ServicecatalogappregistryClient
+	Servicequotas             services.ServicequotasClient
 	Sesv2                     services.Sesv2Client
 	Shield                    services.ShieldClient
 	Sns                       services.SnsClient

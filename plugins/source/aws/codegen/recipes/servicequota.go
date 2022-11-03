@@ -9,10 +9,11 @@ import (
 func ServiceQuotasResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "services",
-			Struct:     &types.ServiceInfo{},
-			SkipFields: []string{"ServiceCode", "ServiceName"},
-			Multiplex:  `client.ServiceAccountRegionMultiplexer("servicequotas")`,
+			SubService:  "services",
+			Struct:      &types.ServiceInfo{},
+			SkipFields:  []string{"ServiceCode", "ServiceName"},
+			Description: "https://docs.aws.amazon.com/servicequotas/2019-06-24/apireference/API_ServiceInfo.html",
+			Multiplex:   `client.ServiceAccountRegionMultiplexer("servicequotas")`,
 			ExtraColumns: append(
 				defaultRegionalColumnsPK,
 				[]codegen.ColumnDefinition{
@@ -33,9 +34,10 @@ func ServiceQuotasResources() []*Resource {
 			},
 		},
 		{
-			SubService: "quotas",
-			Struct:     &types.ServiceQuota{},
-			SkipFields: []string{"QuotaArn"},
+			SubService:  "quotas",
+			Struct:      &types.ServiceQuota{},
+			Description: "https://docs.aws.amazon.com/servicequotas/2019-06-24/apireference/API_ServiceQuota.html",
+			SkipFields:  []string{"QuotaArn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
