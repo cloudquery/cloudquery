@@ -72,6 +72,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalog"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry"
+	"github.com/aws/aws-sdk-go-v2/service/servicequotas"
 	"github.com/aws/aws-sdk-go-v2/service/sesv2"
 	"github.com/aws/aws-sdk-go-v2/service/shield"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
@@ -159,6 +160,7 @@ func initServices(region string, c aws.Config) Services {
 		Secretsmanager:            secretsmanager.NewFromConfig(awsCfg),
 		Servicecatalog:            servicecatalog.NewFromConfig(awsCfg),
 		Servicecatalogappregistry: servicecatalogappregistry.NewFromConfig(awsCfg),
+		Servicequotas:             servicequotas.NewFromConfig(awsCfg),
 		Sesv2:                     sesv2.NewFromConfig(awsCfg),
 		Shield:                    shield.NewFromConfig(awsCfg),
 		Sns:                       sns.NewFromConfig(awsCfg),
@@ -243,6 +245,7 @@ type Services struct {
 	Secretsmanager            SecretsmanagerClient
 	Servicecatalog            ServicecatalogClient
 	Servicecatalogappregistry ServicecatalogappregistryClient
+	Servicequotas             ServicequotasClient
 	Sesv2                     Sesv2Client
 	Shield                    ShieldClient
 	Sns                       SnsClient
@@ -2354,6 +2357,22 @@ type ServicecatalogappregistryClient interface {
 	ListAttributeGroups(context.Context, *servicecatalogappregistry.ListAttributeGroupsInput, ...func(*servicecatalogappregistry.Options)) (*servicecatalogappregistry.ListAttributeGroupsOutput, error)
 	ListAttributeGroupsForApplication(context.Context, *servicecatalogappregistry.ListAttributeGroupsForApplicationInput, ...func(*servicecatalogappregistry.Options)) (*servicecatalogappregistry.ListAttributeGroupsForApplicationOutput, error)
 	ListTagsForResource(context.Context, *servicecatalogappregistry.ListTagsForResourceInput, ...func(*servicecatalogappregistry.Options)) (*servicecatalogappregistry.ListTagsForResourceOutput, error)
+}
+
+//go:generate mockgen -package=mocks -destination=./mocks/servicequotas.go . ServicequotasClient
+type ServicequotasClient interface {
+	GetAWSDefaultServiceQuota(context.Context, *servicequotas.GetAWSDefaultServiceQuotaInput, ...func(*servicequotas.Options)) (*servicequotas.GetAWSDefaultServiceQuotaOutput, error)
+	GetAssociationForServiceQuotaTemplate(context.Context, *servicequotas.GetAssociationForServiceQuotaTemplateInput, ...func(*servicequotas.Options)) (*servicequotas.GetAssociationForServiceQuotaTemplateOutput, error)
+	GetRequestedServiceQuotaChange(context.Context, *servicequotas.GetRequestedServiceQuotaChangeInput, ...func(*servicequotas.Options)) (*servicequotas.GetRequestedServiceQuotaChangeOutput, error)
+	GetServiceQuota(context.Context, *servicequotas.GetServiceQuotaInput, ...func(*servicequotas.Options)) (*servicequotas.GetServiceQuotaOutput, error)
+	GetServiceQuotaIncreaseRequestFromTemplate(context.Context, *servicequotas.GetServiceQuotaIncreaseRequestFromTemplateInput, ...func(*servicequotas.Options)) (*servicequotas.GetServiceQuotaIncreaseRequestFromTemplateOutput, error)
+	ListAWSDefaultServiceQuotas(context.Context, *servicequotas.ListAWSDefaultServiceQuotasInput, ...func(*servicequotas.Options)) (*servicequotas.ListAWSDefaultServiceQuotasOutput, error)
+	ListRequestedServiceQuotaChangeHistory(context.Context, *servicequotas.ListRequestedServiceQuotaChangeHistoryInput, ...func(*servicequotas.Options)) (*servicequotas.ListRequestedServiceQuotaChangeHistoryOutput, error)
+	ListRequestedServiceQuotaChangeHistoryByQuota(context.Context, *servicequotas.ListRequestedServiceQuotaChangeHistoryByQuotaInput, ...func(*servicequotas.Options)) (*servicequotas.ListRequestedServiceQuotaChangeHistoryByQuotaOutput, error)
+	ListServiceQuotaIncreaseRequestsInTemplate(context.Context, *servicequotas.ListServiceQuotaIncreaseRequestsInTemplateInput, ...func(*servicequotas.Options)) (*servicequotas.ListServiceQuotaIncreaseRequestsInTemplateOutput, error)
+	ListServiceQuotas(context.Context, *servicequotas.ListServiceQuotasInput, ...func(*servicequotas.Options)) (*servicequotas.ListServiceQuotasOutput, error)
+	ListServices(context.Context, *servicequotas.ListServicesInput, ...func(*servicequotas.Options)) (*servicequotas.ListServicesOutput, error)
+	ListTagsForResource(context.Context, *servicequotas.ListTagsForResourceInput, ...func(*servicequotas.Options)) (*servicequotas.ListTagsForResourceOutput, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/sesv2.go . Sesv2Client

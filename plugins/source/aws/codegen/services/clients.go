@@ -69,6 +69,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalog"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry"
+	"github.com/aws/aws-sdk-go-v2/service/servicequotas"
 	"github.com/aws/aws-sdk-go-v2/service/sesv2"
 	"github.com/aws/aws-sdk-go-v2/service/shield"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
@@ -153,6 +154,7 @@ var clients = []interface{}{
 	&secretsmanager.Client{},
 	&servicecatalog.Client{},
 	&servicecatalogappregistry.Client{},
+	&servicequotas.Client{},
 	&sesv2.Client{},
 	&shield.Client{},
 	&sns.Client{},

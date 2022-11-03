@@ -11,7 +11,8 @@ import (
 )
 
 func buildQuotas(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockServiceQuotasClient(ctrl)
+	m := mocks.NewMockServicequotasClient(ctrl)
+
 	services := servicequotas.ListServicesOutput{}
 	err := faker.FakeObject(&services)
 	if err != nil {
@@ -28,8 +29,9 @@ func buildQuotas(t *testing.T, ctrl *gomock.Controller) client.Services {
 
 	quotas.NextToken = nil
 	m.EXPECT().ListServiceQuotas(gomock.Any(), gomock.Any(), gomock.Any()).Return(&quotas, nil).AnyTimes()
+
 	return client.Services{
-		ServiceQuotas: m,
+		Servicequotas: m,
 	}
 }
 

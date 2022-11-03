@@ -10,7 +10,7 @@ import (
 
 func fetchServicequotasQuotas(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config servicequotas.ListServicesInput
-	svc := meta.(*client.Client).Services().ServiceQuotas
+	svc := meta.(*client.Client).Services().Servicequotas
 	servicePaginator := servicequotas.NewListServicesPaginator(svc, &config)
 	for servicePaginator.HasMorePages() {
 		output, err := servicePaginator.NextPage(ctx)
