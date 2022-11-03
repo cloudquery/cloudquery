@@ -47,6 +47,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/aws/aws-sdk-go-v2/service/guardduty"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
+	"github.com/aws/aws-sdk-go-v2/service/identitystore"
 	"github.com/aws/aws-sdk-go-v2/service/inspector"
 	"github.com/aws/aws-sdk-go-v2/service/inspector2"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
@@ -76,6 +77,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sns"
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
+	"github.com/aws/aws-sdk-go-v2/service/ssoadmin"
 	"github.com/aws/aws-sdk-go-v2/service/transfer"
 	"github.com/aws/aws-sdk-go-v2/service/waf"
 	"github.com/aws/aws-sdk-go-v2/service/wafregional"
@@ -131,6 +133,7 @@ var clients = []interface{}{
 	&glue.Client{},
 	&guardduty.Client{},
 	&iam.Client{},
+	&identitystore.Client{},
 	&inspector.Client{},
 	&inspector2.Client{},
 	&iot.Client{},
@@ -160,6 +163,7 @@ var clients = []interface{}{
 	&sns.Client{},
 	&sqs.Client{},
 	&ssm.Client{},
+	&ssoadmin.Client{},
 	&transfer.Client{},
 	&waf.Client{},
 	&wafregional.Client{},

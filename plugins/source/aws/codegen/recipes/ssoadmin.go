@@ -6,7 +6,6 @@ import (
 
 func SSOAdminResources() []*Resource {
 	resources := []*Resource{
-
 		{
 			SubService: "instances",
 			Struct:     &types.InstanceMetadata{},

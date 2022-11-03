@@ -9,7 +9,7 @@ import (
 )
 
 func fetchSsoadminInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().SSOAdmin
+	svc := meta.(*client.Client).Services().Ssoadmin
 	config := ssoadmin.ListInstancesInput{}
 	response, err := svc.ListInstances(ctx, &config)
 	if err != nil {

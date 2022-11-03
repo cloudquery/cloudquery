@@ -10,7 +10,7 @@ import (
 )
 
 func getIamInstance(ctx context.Context, meta schema.ClientMeta) (types.InstanceMetadata, error) {
-	svc := meta.(*client.Client).Services().SSOAdmin
+	svc := meta.(*client.Client).Services().Ssoadmin
 	config := ssoadmin.ListInstancesInput{}
 	response, err := svc.ListInstances(ctx, &config)
 	if err == nil {

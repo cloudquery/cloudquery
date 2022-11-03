@@ -48,6 +48,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/glue"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/guardduty"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/iam"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/identitystore"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/inspector"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/inspector2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/iot"
@@ -247,6 +248,8 @@ func tables() []*schema.Table {
 		iam.ServerCertificates(),
 		iam.Users(),
 		iam.VirtualMfaDevices(),
+		identitystore.Groups(),
+		identitystore.Users(),
 		inspector2.Findings(),
 		inspector.Findings(),
 		iot.BillingGroups(),
