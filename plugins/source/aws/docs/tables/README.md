@@ -34,6 +34,7 @@
 | ↳ [aws_apigatewayv2_domain_name_rest_api_mappings](aws_apigatewayv2_domain_name_rest_api_mappings.md) |
 | [aws_apigatewayv2_vpc_links](aws_apigatewayv2_vpc_links.md) |
 | [aws_applicationautoscaling_policies](aws_applicationautoscaling_policies.md) |
+| [aws_apprunner_observability_configurations](aws_apprunner_observability_configurations.md) |
 | [aws_apprunner_services](aws_apprunner_services.md) |
 | ↳ [aws_apprunner_operations](aws_apprunner_operations.md) |
 | ↳ [aws_apprunner_custom_domains](aws_apprunner_custom_domains.md) |
