@@ -9,6 +9,23 @@ import (
 func ApprunnerResources() []*Resource {
 	resources := []*Resource{
 		{
+			SubService:          "observability_configurations",
+			Struct:              &types.ObservabilityConfiguration{},
+			Description:         "https://docs.aws.amazon.com/apprunner/latest/api/API_ObservabilityConfiguration.html",
+			SkipFields:          []string{"ObservabilityConfigurationArn"},
+			Multiplex:           `client.ServiceAccountRegionMultiplexer("apprunner")`,
+			PreResourceResolver: "getObservabilityConfiguration",
+			ExtraColumns: append(
+				defaultRegionalColumns,
+				[]codegen.ColumnDefinition{
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("ObservabilityConfigurationArn")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				}...),
+		}, {
 			SubService:          "services",
 			Struct:              &types.Service{},
 			Description:         "https://docs.aws.amazon.com/apprunner/latest/api/API_Service.html",
