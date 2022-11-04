@@ -114,6 +114,7 @@ github.com/ashanbrown/forbidigo v1.3.0 h1:VkYIwb/xxdireGAdJNZoo24O4lmnEWkactplBl
 github.com/ashanbrown/forbidigo v1.3.0/go.mod h1:vVW7PEdqEFqapJe95xHkTfB1+XvZXBFg8t0sG2FIxmI=
 github.com/ashanbrown/makezero v1.1.1 h1:iCQ87C0V0vSyO+M9E/FZYbu65auqH0lnsOkf5FcB28s=
 github.com/ashanbrown/makezero v1.1.1/go.mod h1:i1bJLCRSCHOcOa9Y6MyF2FTfMZMFdHvxKHxgO5Z1axI=
+github.com/avast/retry-go/v4 v4.3.0 h1:cqI48aXx0BExKoM7XPklDpoHAg7/srPPLAfWG5z62jo=
 github.com/aws/aws-sdk-go v1.15.78/go.mod h1:E3/ieXAlvM0XWO57iftYVDLLvQ824smPP3ATZkfNZeM=
 github.com/aws/aws-sdk-go v1.23.20/go.mod h1:KmX6BPdI08NWTb3/sm4ZGu5ShLoqVDhKgpiN924inxo=
 github.com/aws/aws-sdk-go v1.25.3/go.mod h1:KmX6BPdI08NWTb3/sm4ZGu5ShLoqVDhKgpiN924inxo=
@@ -160,8 +161,8 @@ github.com/client9/misspell v0.3.4 h1:ta993UF76GwbvJcIo3Y68y/M3WxlpEHPWIGDkJYwzJ
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
 github.com/cloudflare/cloudflare-go v0.46.0 h1:dk7sVDyTzZQeq1MJESPRLckhgia7A1w1pgxNj6ZJ//w=
 github.com/cloudflare/cloudflare-go v0.46.0/go.mod h1:nu0mrt2jKx7USgPWijlJOF1aizZ1TGyRvfIqTTUQwsI=
-github.com/cloudquery/plugin-sdk v0.13.19 h1:VblOBu/kisLJwWjp6lss8bziTAJ9fZZfbfJ6R/F9Gis=
-github.com/cloudquery/plugin-sdk v0.13.19/go.mod h1:ij2sQtPpVETDALZpeJ/JaL0KEmzJ9jXCmyem0PZqtUQ=
+github.com/cloudquery/plugin-sdk v0.13.20 h1:BtaPZdEhwVp0xvIjz00Se/nuO73lDiFryBWo6VH3p3I=
+github.com/cloudquery/plugin-sdk v0.13.20/go.mod h1:VbqV2BE0wbYbArSUNxAuh6jH1FlrHyJp0f/5ERuBcew=
 github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGXZJjfX53e64911xZQV5JYwmTeXPW+k8Sc=
 github.com/cncf/udpa/go v0.0.0-20200629203442-efcf912fb354/go.mod h1:WmhPx2Nbnhtbo57+VJT5O0JRkEi1Wbu0z5j0R8u5Hbk=
 github.com/cncf/udpa/go v0.0.0-20201120205902-5459f2c99403/go.mod h1:WmhPx2Nbnhtbo57+VJT5O0JRkEi1Wbu0z5j0R8u5Hbk=
