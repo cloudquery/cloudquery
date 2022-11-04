@@ -10,7 +10,7 @@ import (
 func Projects() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_codebuild_projects",
-		Description: "https://docs.aws.amazon.com/codebuild/latest/APIReference/API_Project.html",
+		Description: `https://docs.aws.amazon.com/codebuild/latest/APIReference/API_Project.html`,
 		Resolver:    fetchCodebuildProjects,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("codebuild"),
 		Columns: []schema.Column{

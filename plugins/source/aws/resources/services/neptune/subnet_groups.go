@@ -10,7 +10,7 @@ import (
 func SubnetGroups() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_neptune_subnet_groups",
-		Description: "https://docs.aws.amazon.com/neptune/latest/userguide/api-subnets.html#DescribeDBSubnetGroups",
+		Description: `https://docs.aws.amazon.com/neptune/latest/userguide/api-subnets.html#DescribeDBSubnetGroups`,
 		Resolver:    fetchNeptuneSubnetGroups,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("neptune"),
 		Columns: []schema.Column{

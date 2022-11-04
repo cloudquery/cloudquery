@@ -10,7 +10,7 @@ import (
 func DataCatalogs() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_athena_data_catalogs",
-		Description:         "https://docs.aws.amazon.com/athena/latest/APIReference/API_DataCatalog.html",
+		Description:         `https://docs.aws.amazon.com/athena/latest/APIReference/API_DataCatalog.html`,
 		Resolver:            fetchAthenaDataCatalogs,
 		PreResourceResolver: getDataCatalog,
 		Multiplex:           client.ServiceAccountRegionMultiplexer("athena"),

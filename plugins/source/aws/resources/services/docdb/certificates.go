@@ -10,7 +10,7 @@ import (
 func Certificates() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_docdb_certificates",
-		Description: "https://docs.aws.amazon.com/documentdb/latest/developerguide/API_Certificate.html",
+		Description: `https://docs.aws.amazon.com/documentdb/latest/developerguide/API_Certificate.html`,
 		Resolver:    fetchDocdbCertificates,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("docdb"),
 		Columns: []schema.Column{

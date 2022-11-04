@@ -10,7 +10,7 @@ import (
 func Instances() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_rds_instances",
-		Description: "https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBInstance.html",
+		Description: `https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBInstance.html`,
 		Resolver:    fetchRdsInstances,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("rds"),
 		Columns: []schema.Column{

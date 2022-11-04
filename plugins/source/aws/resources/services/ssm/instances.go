@@ -10,7 +10,7 @@ import (
 func Instances() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_ssm_instances",
-		Description: "https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_InstanceInformation.html",
+		Description: `https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_InstanceInformation.html`,
 		Resolver:    fetchSsmInstances,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ssm"),
 		Columns: []schema.Column{

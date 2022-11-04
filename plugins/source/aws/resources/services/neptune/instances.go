@@ -10,7 +10,7 @@ import (
 func Instances() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_neptune_instances",
-		Description: "https://docs.aws.amazon.com/neptune/latest/userguide/api-instances.html#DescribeDBInstances",
+		Description: `https://docs.aws.amazon.com/neptune/latest/userguide/api-instances.html#DescribeDBInstances`,
 		Resolver:    fetchNeptuneInstances,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("neptune"),
 		Columns: []schema.Column{
