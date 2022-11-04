@@ -100,6 +100,7 @@ func tables() []*schema.Table {
 		apigatewayv2.VpcLinks(),
 		applicationautoscaling.Policies(),
 		apprunner.Connections(),
+		apprunner.ObservabilityConfigurations(),
 		apprunner.Services(),
 		apprunner.AutoScalingConfiguration(),
 		apprunner.VpcConnector(),
