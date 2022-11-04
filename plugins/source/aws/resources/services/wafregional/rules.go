@@ -10,7 +10,7 @@ import (
 func Rules() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_wafregional_rules",
-		Description: "https://docs.aws.amazon.com/waf/latest/APIReference/API_wafRegional_Rule.html",
+		Description: `https://docs.aws.amazon.com/waf/latest/APIReference/API_wafRegional_Rule.html`,
 		Resolver:    fetchWafregionalRules,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("waf-regional"),
 		Columns: []schema.Column{

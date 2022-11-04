@@ -10,7 +10,7 @@ import (
 func ServerCertificates() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_iam_server_certificates",
-		Description: "https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServerCertificateMetadata.html",
+		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServerCertificateMetadata.html`,
 		Resolver:    fetchIamServerCertificates,
 		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{

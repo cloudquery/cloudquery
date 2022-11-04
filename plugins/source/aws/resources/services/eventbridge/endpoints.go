@@ -10,7 +10,7 @@ import (
 func Endpoints() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_eventbridge_endpoints",
-		Description: "https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_Endpoint.html",
+		Description: `https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_Endpoint.html`,
 		Resolver:    fetchEventbridgeEndpoints,
 		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{

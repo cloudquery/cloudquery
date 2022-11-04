@@ -10,7 +10,7 @@ import (
 func EventTypes() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_frauddetector_event_types",
-		Description: "https://docs.aws.amazon.com/frauddetector/latest/api/API_EventType.html",
+		Description: `https://docs.aws.amazon.com/frauddetector/latest/api/API_EventType.html`,
 		Resolver:    fetchFrauddetectorEventTypes,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("frauddetector"),
 		Columns: []schema.Column{

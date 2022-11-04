@@ -10,7 +10,7 @@ import (
 func Clusters() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_rds_clusters",
-		Description: "https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBCluster.html",
+		Description: `https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBCluster.html`,
 		Resolver:    fetchRdsClusters,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("rds"),
 		Columns: []schema.Column{
