@@ -10,7 +10,7 @@ import (
 func RepositoryImageScanFindings() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_ecr_repository_image_scan_findings",
-		Description: "https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_ImageScanFindings.html",
+		Description: `https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_ImageScanFindings.html`,
 		Resolver:    fetchEcrRepositoryImageScanFindings,
 		Columns: []schema.Column{
 			{
@@ -24,29 +24,34 @@ func RepositoryImageScanFindings() *schema.Table {
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
-				Name:     "enhanced_findings",
+				Name:     "image_tag",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ImageTag"),
+			},
+			{
+				Name:     "image_digest",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ImageDigest"),
+			},
+			{
+				Name:     "image_scan_findings",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("EnhancedFindings"),
+				Resolver: schema.PathResolver("ImageScanFindings"),
 			},
 			{
-				Name:     "finding_severity_counts",
+				Name:     "image_scan_status",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("FindingSeverityCounts"),
+				Resolver: schema.PathResolver("ImageScanStatus"),
 			},
 			{
-				Name:     "findings",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Findings"),
+				Name:     "registry_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("RegistryId"),
 			},
 			{
-				Name:     "image_scan_completed_at",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("ImageScanCompletedAt"),
-			},
-			{
-				Name:     "vulnerability_source_updated_at",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("VulnerabilitySourceUpdatedAt"),
+				Name:     "repository_name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("RepositoryName"),
 			},
 		},
 	}
