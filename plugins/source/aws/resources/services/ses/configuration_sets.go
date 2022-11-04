@@ -10,7 +10,7 @@ import (
 func ConfigurationSets() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_ses_configuration_sets",
-		Description:         "https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_GetConfigurationSet.html",
+		Description:         `https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_GetConfigurationSet.html`,
 		Resolver:            fetchSesConfigurationSets,
 		PreResourceResolver: getConfigurationSet,
 		Multiplex:           client.ServiceAccountRegionMultiplexer("email"),

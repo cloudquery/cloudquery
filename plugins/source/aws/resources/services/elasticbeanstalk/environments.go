@@ -10,7 +10,7 @@ import (
 func Environments() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_elasticbeanstalk_environments",
-		Description: "https://docs.aws.amazon.com/elasticbeanstalk/latest/APIReference/API_EnvironmentDescription.html",
+		Description: `https://docs.aws.amazon.com/elasticbeanstalk/latest/APIReference/API_EnvironmentDescription.html`,
 		Resolver:    fetchElasticbeanstalkEnvironments,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticbeanstalk"),
 		Columns: []schema.Column{

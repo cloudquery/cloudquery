@@ -10,7 +10,7 @@ import (
 func Volumes() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_fsx_volumes",
-		Description: "https://docs.aws.amazon.com/fsx/latest/APIReference/API_Volume.html",
+		Description: `https://docs.aws.amazon.com/fsx/latest/APIReference/API_Volume.html`,
 		Resolver:    fetchFsxVolumes,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("fsx"),
 		Columns: []schema.Column{

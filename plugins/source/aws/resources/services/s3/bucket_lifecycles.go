@@ -10,7 +10,7 @@ import (
 func BucketLifecycles() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_s3_bucket_lifecycles",
-		Description: "https://docs.aws.amazon.com/AmazonS3/latest/API/API_LifecycleRule.html",
+		Description: `https://docs.aws.amazon.com/AmazonS3/latest/API/API_LifecycleRule.html`,
 		Resolver:    fetchS3BucketLifecycles,
 		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{

@@ -10,7 +10,7 @@ import (
 func Identities() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_ses_identities",
-		Description:         "https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_GetEmailIdentity.html",
+		Description:         `https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_GetEmailIdentity.html`,
 		Resolver:            fetchSesIdentities,
 		PreResourceResolver: getEmailIdentity,
 		Multiplex:           client.ServiceAccountRegionMultiplexer("email"),

@@ -10,7 +10,7 @@ import (
 func DbParameterGroupDbParameters() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_neptune_db_parameter_group_db_parameters",
-		Description: "https://docs.aws.amazon.com/neptune/latest/userguide/api-parameters.html#DescribeDBClusterParameters",
+		Description: `https://docs.aws.amazon.com/neptune/latest/userguide/api-parameters.html#DescribeDBClusterParameters`,
 		Resolver:    fetchNeptuneDbParameterGroupDbParameters,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("neptune"),
 		Columns: []schema.Column{

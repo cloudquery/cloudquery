@@ -10,7 +10,7 @@ import (
 func Portfolios() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_servicecatalog_portfolios",
-		Description: "https://docs.aws.amazon.com/servicecatalog/latest/dg/API_PortfolioDetail.html",
+		Description: `https://docs.aws.amazon.com/servicecatalog/latest/dg/API_PortfolioDetail.html`,
 		Resolver:    fetchServicecatalogPortfolios,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("servicecatalog"),
 		Columns: []schema.Column{

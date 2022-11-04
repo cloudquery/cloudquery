@@ -10,7 +10,7 @@ import (
 func Accounts() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_organizations_accounts",
-		Description: "https://docs.aws.amazon.com/organizations/latest/APIReference/API_Account.html",
+		Description: `https://docs.aws.amazon.com/organizations/latest/APIReference/API_Account.html`,
 		Resolver:    fetchOrganizationsAccounts,
 		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{

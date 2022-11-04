@@ -10,7 +10,7 @@ import (
 func UserGroups() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_iam_user_groups",
-		Description: "https://docs.aws.amazon.com/IAM/latest/APIReference/API_Group.html",
+		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_Group.html`,
 		Resolver:    fetchIamUserGroups,
 		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{

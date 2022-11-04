@@ -10,7 +10,7 @@ import (
 func GatewayAttachments() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_directconnect_gateway_attachments",
-		Description: "https://docs.aws.amazon.com/directconnect/latest/APIReference/API_DirectConnectGatewayAttachment.html",
+		Description: `https://docs.aws.amazon.com/directconnect/latest/APIReference/API_DirectConnectGatewayAttachment.html`,
 		Resolver:    fetchDirectconnectGatewayAttachments,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("directconnect"),
 		Columns: []schema.Column{

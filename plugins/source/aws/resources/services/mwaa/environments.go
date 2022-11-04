@@ -10,7 +10,7 @@ import (
 func Environments() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_mwaa_environments",
-		Description:         "https://docs.aws.amazon.com/mwaa/latest/API/API_Environment.html",
+		Description:         `https://docs.aws.amazon.com/mwaa/latest/API/API_Environment.html`,
 		Resolver:            fetchMwaaEnvironments,
 		PreResourceResolver: getEnvironment,
 		Multiplex:           client.ServiceAccountRegionMultiplexer("airflow"),
