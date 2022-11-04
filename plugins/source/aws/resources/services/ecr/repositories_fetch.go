@@ -91,7 +91,6 @@ func fetchEcrRepositoryImageScanFindings(ctx context.Context, meta schema.Client
 				RegistryId:        repo.RegistryId,
 				RepositoryName:    repo.RepositoryName,
 			}
-
 		}
 	}
 
