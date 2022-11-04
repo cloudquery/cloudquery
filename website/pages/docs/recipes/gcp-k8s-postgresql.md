@@ -5,21 +5,21 @@ kind: source
 spec:
   name: gcp
   path: "cloudquery/gcp"
-  version: "v2.4.0" # latest version of gcp plugin
+  version: "v2.4.1" # latest version of gcp plugin
   destinations: ["postgresql"]
 ---
 kind: source
 spec:
   name: k8s
   path: "cloudquery/k8s"
-  version: "v2.3.0" # latest version of k8s plugin
+  version: "v2.3.1" # latest version of k8s plugin
   destinations: ["postgresql"]
 ---
 kind: destination
 spec:
   name: "postgresql"
   path: "cloudquery/postgresql"
-  version: "v1.6.0" # latest version of postgresql plugin
+  version: "v1.6.1" # latest version of postgresql plugin
   spec:
     connection_string: ${PG_CONNECTION_STRING}
 ```

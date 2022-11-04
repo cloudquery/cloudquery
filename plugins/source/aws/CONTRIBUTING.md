@@ -59,7 +59,7 @@ The process to follow for adding a new recipe is:
  3. `Multiplex`: Most AWS services have resources defined per account and region. In such cases, `client.ServiceAccountRegionMultiplexer("my-service")` is usually the correct multiplexer to use. Look in [client/data/partition_service_region.json](client/data/partition_service_region.json) for the correct service name to use.
  4. `Struct`: This should be a pointer to the struct that will be synced to the destination. CloudQuery's plugin-sdk code generation will read the fields of this struct and convert it to a `Table` instance with appropriate column types.
     
-    Deciding which struct to use takes some practice. To find the right struct, explore the return types of the SDK functions provided by the [AWS Go SDK](https://pkg.go.dev/github.com/aws/aws-sdk-go-v2) (and that you created interface functions for in Step 1). Often there will be a `Get` or `Describe` call that returns a `GetResourceOutput` (or similar) struct. Sometimes this Output struct can be used directly. Other times, the Output struct will contain reference an inner type, which should then be used for defining the Resource.
+    Deciding which struct to use takes some practice. To find the right struct, explore the return types of the SDK functions provided by the [AWS Go SDK](https://pkg.go.dev/github.com/aws/aws-sdk-go-v2) (and that you created interface functions for in Step 1). Often there will be a `Get` or `Describe` call that returns a `GetResourceOutput` (or similar) struct. Sometimes this Output struct can be used directly. Other times, the Output struct will reference an inner type, which should then be used for defining the Resource.
 
 #### All Available Resource Fields
 

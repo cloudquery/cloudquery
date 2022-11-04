@@ -1,3 +1,9 @@
+---
+title: Destinations
+---
+
+import { getLatestVersion } from "../../../utils/versions";
+
 # Destination Plugins
 
 This is a list of all official and community destination plugins.
@@ -6,8 +12,8 @@ This is a list of all official and community destination plugins.
 
 | **Name**                 | Latest Version | Changelog                         | Stage |
 |--------------------------|----------------|-----------------------------------|-------|
-| [PostgreSQL][postgresql] | v1.6.0         | [Changelog][PostgreSQL-Changelog] | GA    |
-| [CSV][csv] | v1.0.0         | [Changelog][CSV-Changelog] | Preview|
+| [PostgreSQL][postgresql] | {getLatestVersion("destination", "postgresql")}         | [Changelog][PostgreSQL-Changelog] | GA    |
+| [CSV][csv] | {getLatestVersion("destination", "csv")}         | [Changelog][CSV-Changelog] | Preview|
 
 [PostgreSQL]: https://github.com/cloudquery/cloudquery/blob/main/plugins/destination/postgresql/README.md
 [PostgreSQL-Changelog]: https://github.com/cloudquery/cloudquery/blob/main/plugins/destination/postgresql/CHANGELOG.md

@@ -1,3 +1,9 @@
+---
+title: Sources
+---
+
+import { getLatestVersion } from "../../../utils/versions";
+
 # Source Plugins
 
 ## Official
@@ -8,16 +14,16 @@ Official source plugins follow [release stages](source-plugin-release-stages).
 
 | **Name**              | Latest Version | Changelog                           | Stage |
 |-----------------------|----------------|-------------------------------------|-------|
-| [AWS][aws] | v4.2.0         | [Changelog][AWS-Changelog]          | GA |
-| [Azure][azure] | v1.2.0         | [Changelog][Azure-Changelog]        | GA |    
-| [GCP][gcp] | v2.4.0         | [Changelog][GCP-Changelog]          | GA |
-| [DigitalOcean][digitalocean] | v2.2.0         | [Changelog][DigitalOcean-Changelog] | GA |
-| [GitHub][github] | v1.2.0         | [Changelog][GitHub-Changelog]       | GA |
-| [Heroku][heroku] | v2.2.1         | [Changelog][Heroku-Changelog]       | Preview |
-| [k8s][k8s] | v2.3.0         | [Changelog][k8s-Changelog]          | Preview |
-| [Okta][okta] | v1.2.0        | [Changelog][Okta-Changelog]         | Preview |
-| [Terraform][terraform] | v1.2.0         | [Changelog][Terraform-Changelog]    | Preview |
-| [Cloudflare][cloudflare] | v2.2.0         | [Changelog][Cloudflare-Changelog]   | Preview |
+| [AWS][aws] | {getLatestVersion("source", "aws")}         | [Changelog][AWS-Changelog]          | GA |
+| [Azure][azure] | {getLatestVersion("source", "azure")}         | [Changelog][Azure-Changelog]        | GA |    
+| [GCP][gcp] | {getLatestVersion("source", "gcp")}         | [Changelog][GCP-Changelog]          | GA |
+| [DigitalOcean][digitalocean] | {getLatestVersion("source", "digitalocean")}         | [Changelog][DigitalOcean-Changelog] | GA |
+| [GitHub][github] | {getLatestVersion("source", "github")}         | [Changelog][GitHub-Changelog]       | GA |
+| [Heroku][heroku] | {getLatestVersion("source", "heroku")}         | [Changelog][Heroku-Changelog]       | Preview |
+| [k8s][k8s] | {getLatestVersion("source", "k8s")}         | [Changelog][k8s-Changelog]          | Preview |
+| [Okta][okta] | {getLatestVersion("source", "okta")}        | [Changelog][Okta-Changelog]         | Preview |
+| [Terraform][terraform] | {getLatestVersion("source", "terraform")}         | [Changelog][Terraform-Changelog]    | Preview |
+| [Cloudflare][cloudflare] | {getLatestVersion("source", "cloudflare")}         | [Changelog][Cloudflare-Changelog]   | Preview |
 
 ## Community
 

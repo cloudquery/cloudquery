@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/client/services"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
@@ -39,7 +40,7 @@ func loadOrgAccounts(ctx context.Context, logger zerolog.Logger, awsConfig *Spec
 }
 
 // Load accounts from the appropriate endpoint as well as normalizing response
-func loadAccounts(ctx context.Context, awsConfig *Spec, accountsApi OrganizationsClient) ([]Account, error) {
+func loadAccounts(ctx context.Context, awsConfig *Spec, accountsApi services.OrganizationsClient) ([]Account, error) {
 	var rawAccounts []orgTypes.Account
 	var err error
 	if len(awsConfig.Organization.OrganizationUnits) > 0 {
@@ -82,7 +83,7 @@ func loadAccounts(ctx context.Context, awsConfig *Spec, accountsApi Organization
 }
 
 // Get Accounts for specific Organizational Units
-func getOUAccounts(ctx context.Context, accountsApi OrganizationsClient, ous []string) ([]orgTypes.Account, error) {
+func getOUAccounts(ctx context.Context, accountsApi services.OrganizationsClient, ous []string) ([]orgTypes.Account, error) {
 	var rawAccounts []orgTypes.Account
 
 	for _, ou := range ous {
@@ -106,7 +107,7 @@ func getOUAccounts(ctx context.Context, accountsApi OrganizationsClient, ous []s
 }
 
 // Get All accounts in a specific organization
-func getAllAccounts(ctx context.Context, accountsApi OrganizationsClient) ([]orgTypes.Account, error) {
+func getAllAccounts(ctx context.Context, accountsApi services.OrganizationsClient) ([]orgTypes.Account, error) {
 	var rawAccounts []orgTypes.Account
 	var paginationToken *string
 

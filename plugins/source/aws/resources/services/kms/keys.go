@@ -158,5 +158,9 @@ func Keys() *schema.Table {
 				Resolver: schema.PathResolver("ValidTo"),
 			},
 		},
+
+		Relations: []*schema.Table{
+			KeyGrants(),
+		},
 	}
 }

@@ -48,6 +48,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/glue"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/guardduty"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/iam"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/identitystore"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/inspector"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/inspector2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/iot"
@@ -56,6 +57,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/lambda"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/lightsail"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/mq"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/mwaa"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/neptune"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/organizations"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/qldb"
@@ -67,11 +69,13 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sagemaker"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/secretsmanager"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/servicecatalog"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/servicequotas"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ses"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/shield"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sns"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sqs"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ssm"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ssoadmin"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/transfer"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/waf"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/wafregional"
@@ -133,9 +137,15 @@ func tables() []*schema.Table {
 		directconnect.VirtualInterfaces(),
 		dms.ReplicationInstances(),
 		docdb.Clusters(),
+		docdb.ClusterParameterGroups(),
 		docdb.Certificates(),
 		docdb.EngineVersions(),
 		docdb.SubnetGroups(),
+		docdb.GlobalClusters(),
+		docdb.Events(),
+		docdb.EventSubscriptions(),
+		docdb.EventCategories(),
+		docdb.PendingMaintenanceActions(),
 		dynamodb.Tables(),
 		ec2.ByoipCidrs(),
 		ec2.CustomerGateways(),
@@ -147,6 +157,7 @@ func tables() []*schema.Table {
 		ec2.Hosts(),
 		ec2.Images(),
 		ec2.InstanceStatuses(),
+		ec2.Instances(),
 		ec2.InstanceTypes(),
 		ec2.InternetGateways(),
 		ec2.KeyPairs(),
@@ -182,6 +193,8 @@ func tables() []*schema.Table {
 		elasticache.ReservedCacheNodesOfferings(),
 		elasticache.ReservedCacheNodes(),
 		elasticache.ServiceUpdates(),
+		elasticache.Snapshots(),
+		elasticache.UserGroups(),
 		elasticache.Users(),
 		elasticbeanstalk.ApplicationVersions(),
 		elasticbeanstalk.Applications(),
@@ -214,6 +227,7 @@ func tables() []*schema.Table {
 		fsx.DataRepositoryAssociations(),
 		fsx.DataRepositoryTasks(),
 		fsx.FileSystems(),
+		fsx.Snapshots(),
 		fsx.StorageVirtualMachines(),
 		fsx.Volumes(),
 		glacier.Vaults(),
@@ -242,6 +256,8 @@ func tables() []*schema.Table {
 		iam.ServerCertificates(),
 		iam.Users(),
 		iam.VirtualMfaDevices(),
+		identitystore.Groups(),
+		identitystore.Users(),
 		inspector2.Findings(),
 		inspector.Findings(),
 		iot.BillingGroups(),
@@ -270,22 +286,30 @@ func tables() []*schema.Table {
 		lightsail.Disks(),
 		lightsail.Distributions(),
 		lightsail.InstanceSnapshots(),
+		lightsail.Instances(),
 		lightsail.LoadBalancers(),
 		lightsail.StaticIps(),
 		mq.Brokers(),
+		mwaa.Environments(),
+		neptune.ClusterParameterGroups(),
+		neptune.ClusterSnapshots(),
 		neptune.Clusters(),
 		neptune.DbParameterGroups(),
 		neptune.GlobalClusters(),
 		neptune.EventSubscriptions(),
+		neptune.Instances(),
 		neptune.SubnetGroups(),
 		organizations.Accounts(),
 		qldb.Ledgers(),
 		rds.Certificates(),
+		rds.ClusterParameterGroups(),
+		rds.ClusterSnapshots(),
 		rds.Clusters(),
 		rds.DbParameterGroups(),
 		rds.DbSecurityGroups(),
 		rds.DbSnapshots(),
 		rds.EventSubscriptions(),
+		rds.Instances(),
 		rds.SubnetGroups(),
 		redshift.Clusters(),
 		redshift.EventSubscriptions(),
@@ -306,6 +330,7 @@ func tables() []*schema.Table {
 		servicecatalog.Portfolios(),
 		servicecatalog.Products(),
 		servicecatalog.ProvisionedProducts(),
+		servicequotas.Services(),
 		ses.Templates(),
 		ses.ConfigurationSets(),
 		ses.ContactLists(),
@@ -318,12 +343,16 @@ func tables() []*schema.Table {
 		sns.Topics(),
 		sqs.Queues(),
 		ssm.Documents(),
+		ssm.Instances(),
 		ssm.Parameters(),
+		ssoadmin.Instances(),
 		transfer.Servers(),
 		wafregional.RateBasedRules(),
 		wafregional.RuleGroups(),
+		wafregional.Rules(),
 		wafregional.WebAcls(),
 		waf.RuleGroups(),
+		waf.Rules(),
 		waf.SubscribedRuleGroups(),
 		waf.WebAcls(),
 		wafv2.Ipsets(),

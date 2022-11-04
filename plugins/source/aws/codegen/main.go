@@ -1,10 +1,11 @@
 package main
 
 import (
+	"log"
+
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/recipes"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/services"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/tables"
-	"log"
 )
 
 func generateResources() ([]*recipes.Resource, error) {
@@ -54,6 +55,7 @@ func generateResources() ([]*recipes.Resource, error) {
 	resources = append(resources, recipes.GlueResources()...)
 	resources = append(resources, recipes.GuarddutyResources()...)
 	resources = append(resources, recipes.IAMResources()...)
+	resources = append(resources, recipes.IdentitystoreResources()...)
 	resources = append(resources, recipes.Inspector2Resources()...)
 	resources = append(resources, recipes.InspectorResources()...)
 	resources = append(resources, recipes.IOTResources()...)
@@ -62,6 +64,7 @@ func generateResources() ([]*recipes.Resource, error) {
 	resources = append(resources, recipes.LambdaResources()...)
 	resources = append(resources, recipes.LightsailResources()...)
 	resources = append(resources, recipes.MQResources()...)
+	resources = append(resources, recipes.MWAAResources()...)
 	resources = append(resources, recipes.NeptuneResources()...)
 	resources = append(resources, recipes.OrganizationsResources()...)
 	resources = append(resources, recipes.QLDBResources()...)
@@ -73,11 +76,13 @@ func generateResources() ([]*recipes.Resource, error) {
 	resources = append(resources, recipes.SagemakerResources()...)
 	resources = append(resources, recipes.SecretsManagerResources()...)
 	resources = append(resources, recipes.ServiceCatalogResources()...)
+	resources = append(resources, recipes.ServiceQuotasResources()...)
 	resources = append(resources, recipes.SESResources()...)
 	resources = append(resources, recipes.ShieldResources()...)
 	resources = append(resources, recipes.SNSResources()...)
 	resources = append(resources, recipes.SQSResources()...)
 	resources = append(resources, recipes.SSMResources()...)
+	resources = append(resources, recipes.SSOAdminResources()...)
 	resources = append(resources, recipes.TransferResources()...)
 	resources = append(resources, recipes.WAFRegionalResources()...)
 	resources = append(resources, recipes.WAFResources()...)

@@ -50,6 +50,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/glacier v1.13.19
 	github.com/aws/aws-sdk-go-v2/service/guardduty v1.16.2
 	github.com/aws/aws-sdk-go-v2/service/iam v1.18.23
+	github.com/aws/aws-sdk-go-v2/service/identitystore v1.15.7
 	github.com/aws/aws-sdk-go-v2/service/inspector v1.12.19
 	github.com/aws/aws-sdk-go-v2/service/inspector2 v1.8.3
 	github.com/aws/aws-sdk-go-v2/service/iot v1.30.0
@@ -58,6 +59,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/lambda v1.24.8
 	github.com/aws/aws-sdk-go-v2/service/lightsail v1.23.2
 	github.com/aws/aws-sdk-go-v2/service/mq v1.13.15
+	github.com/aws/aws-sdk-go-v2/service/mwaa v1.13.12
 	github.com/aws/aws-sdk-go-v2/service/neptune v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/organizations v1.16.15
 	github.com/aws/aws-sdk-go-v2/service/qldb v1.14.20
@@ -72,10 +74,12 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.16.4
 	github.com/aws/aws-sdk-go-v2/service/servicecatalog v1.14.19
 	github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.14.3
+	github.com/aws/aws-sdk-go-v2/service/servicequotas v1.13.20
 	github.com/aws/aws-sdk-go-v2/service/sesv2 v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/sns v1.18.3
 	github.com/aws/aws-sdk-go-v2/service/sqs v1.19.12
 	github.com/aws/aws-sdk-go-v2/service/ssm v1.31.3
+	github.com/aws/aws-sdk-go-v2/service/ssoadmin v1.15.13
 	github.com/aws/aws-sdk-go-v2/service/sts v1.17.1
 	github.com/aws/aws-sdk-go-v2/service/waf v1.11.19
 	github.com/aws/aws-sdk-go-v2/service/wafv2 v1.23.0
@@ -84,7 +88,6 @@ require (
 	github.com/aws/smithy-go v1.13.4
 	github.com/basgys/goxml2json v1.1.0
 	github.com/cloudquery/plugin-sdk v0.13.20
-	github.com/ettle/strcase v0.1.1
 	github.com/gocarina/gocsv v0.0.0-20220927221512-ad3251f9fa25
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.9

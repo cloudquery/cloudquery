@@ -4,13 +4,14 @@ import (
 	"bytes"
 	"embed"
 	"fmt"
-	"github.com/iancoleman/strcase"
 	"go/format"
 	"os"
 	"path"
 	"runtime"
 	"strings"
 	"text/template"
+
+	"github.com/iancoleman/strcase"
 
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/recipes"
 )
@@ -57,11 +58,11 @@ func removeChildResources(resources []*recipes.Resource) []*recipes.Resource {
 	relations := map[string]bool{}
 	for _, r := range resources {
 		for _, rel := range r.Relations {
-			relations[strings.TrimSuffix(rel, "()")] = true
+			relations[r.Service+"."+strings.TrimSuffix(rel, "()")] = true
 		}
 	}
 	for _, r := range resources {
-		funcName := strcase.ToCamel(r.SubService)
+		funcName := r.Service + "." + strcase.ToCamel(r.SubService)
 		if relations[funcName] {
 			continue
 		}
