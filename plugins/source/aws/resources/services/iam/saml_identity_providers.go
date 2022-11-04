@@ -10,7 +10,7 @@ import (
 func SamlIdentityProviders() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_iam_saml_identity_providers",
-		Description:         "https://docs.aws.amazon.com/IAM/latest/APIReference/API_SAMLProviderListEntry.html",
+		Description:         `https://docs.aws.amazon.com/IAM/latest/APIReference/API_SAMLProviderListEntry.html`,
 		Resolver:            fetchIamSamlIdentityProviders,
 		PreResourceResolver: getSamlIdentityProvider,
 		Multiplex:           client.AccountMultiplex,

@@ -10,7 +10,7 @@ import (
 func ParameterGroups() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_elasticache_parameter_groups",
-		Description: "https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_CacheParameterGroup.html",
+		Description: `https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_CacheParameterGroup.html`,
 		Resolver:    fetchElasticacheParameterGroups,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticache"),
 		Columns: []schema.Column{

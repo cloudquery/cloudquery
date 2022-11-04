@@ -10,7 +10,7 @@ import (
 func FunctionVersions() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_lambda_function_versions",
-		Description: "https://docs.aws.amazon.com/lambda/latest/dg/API_FunctionConfiguration.html",
+		Description: `https://docs.aws.amazon.com/lambda/latest/dg/API_FunctionConfiguration.html`,
 		Resolver:    fetchLambdaFunctionVersions,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("lambda"),
 		Columns: []schema.Column{

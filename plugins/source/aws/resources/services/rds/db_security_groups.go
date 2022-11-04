@@ -10,7 +10,7 @@ import (
 func DbSecurityGroups() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_rds_db_security_groups",
-		Description: "https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBSecurityGroup.html",
+		Description: `https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBSecurityGroup.html`,
 		Resolver:    fetchRdsDbSecurityGroups,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("rds"),
 		Columns: []schema.Column{

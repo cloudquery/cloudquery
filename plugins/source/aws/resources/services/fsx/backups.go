@@ -10,7 +10,7 @@ import (
 func Backups() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_fsx_backups",
-		Description: "https://docs.aws.amazon.com/fsx/latest/APIReference/API_Backup.html",
+		Description: `https://docs.aws.amazon.com/fsx/latest/APIReference/API_Backup.html`,
 		Resolver:    fetchFsxBackups,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("fsx"),
 		Columns: []schema.Column{

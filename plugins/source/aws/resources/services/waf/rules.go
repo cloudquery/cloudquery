@@ -10,7 +10,7 @@ import (
 func Rules() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_waf_rules",
-		Description: "https://docs.aws.amazon.com/waf/latest/APIReference/API_waf_RuleSummary.html",
+		Description: `https://docs.aws.amazon.com/waf/latest/APIReference/API_waf_RuleSummary.html`,
 		Resolver:    fetchWafRules,
 		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{

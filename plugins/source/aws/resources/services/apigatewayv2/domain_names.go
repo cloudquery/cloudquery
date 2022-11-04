@@ -10,7 +10,7 @@ import (
 func DomainNames() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_apigatewayv2_domain_names",
-		Description: "https://docs.aws.amazon.com/apigateway/latest/api/API_DomainName.html",
+		Description: `https://docs.aws.amazon.com/apigateway/latest/api/API_DomainName.html`,
 		Resolver:    fetchApigatewayv2DomainNames,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
 		Columns: []schema.Column{

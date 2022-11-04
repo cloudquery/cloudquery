@@ -10,7 +10,7 @@ import (
 func Clusters() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_elasticache_clusters",
-		Description: "https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_CacheCluster.html",
+		Description: `https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_CacheCluster.html`,
 		Resolver:    fetchElasticacheClusters,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticache"),
 		Columns: []schema.Column{
