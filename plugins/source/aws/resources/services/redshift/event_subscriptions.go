@@ -10,7 +10,7 @@ import (
 func EventSubscriptions() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_redshift_event_subscriptions",
-		Description: "https://docs.aws.amazon.com/redshift/latest/APIReference/API_EventSubscription.html",
+		Description: `https://docs.aws.amazon.com/redshift/latest/APIReference/API_EventSubscription.html`,
 		Resolver:    fetchRedshiftEventSubscriptions,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("redshift"),
 		Columns: []schema.Column{

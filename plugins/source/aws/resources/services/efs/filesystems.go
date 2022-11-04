@@ -10,7 +10,7 @@ import (
 func Filesystems() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_efs_filesystems",
-		Description: "https://docs.aws.amazon.com/efs/latest/ug/API_FileSystemDescription.html",
+		Description: `https://docs.aws.amazon.com/efs/latest/ug/API_FileSystemDescription.html`,
 		Resolver:    fetchEfsFilesystems,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticfilesystem"),
 		Columns: []schema.Column{
