@@ -10,7 +10,7 @@ import (
 func Plans() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_backup_plans",
-		Description:         "https://docs.aws.amazon.com/aws-backup/latest/devguide/API_GetBackupPlan.html",
+		Description:         `https://docs.aws.amazon.com/aws-backup/latest/devguide/API_GetBackupPlan.html`,
 		Resolver:            fetchBackupPlans,
 		PreResourceResolver: getPlan,
 		Multiplex:           client.ServiceAccountRegionMultiplexer("backup"),

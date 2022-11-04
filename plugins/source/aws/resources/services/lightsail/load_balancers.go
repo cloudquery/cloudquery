@@ -10,7 +10,7 @@ import (
 func LoadBalancers() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_lightsail_load_balancers",
-		Description: "https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_LoadBalancer.html",
+		Description: `https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_LoadBalancer.html`,
 		Resolver:    fetchLightsailLoadBalancers,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("lightsail"),
 		Columns: []schema.Column{

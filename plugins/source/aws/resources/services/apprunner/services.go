@@ -10,7 +10,7 @@ import (
 func Services() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_apprunner_services",
-		Description:         "https://docs.aws.amazon.com/apprunner/latest/api/API_Service.html",
+		Description:         `https://docs.aws.amazon.com/apprunner/latest/api/API_Service.html`,
 		Resolver:            fetchApprunnerServices,
 		PreResourceResolver: getService,
 		Multiplex:           client.ServiceAccountRegionMultiplexer("apprunner"),

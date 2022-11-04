@@ -10,7 +10,7 @@ import (
 func BucketEncryptionRules() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_s3_bucket_encryption_rules",
-		Description: "https://docs.aws.amazon.com/AmazonS3/latest/API/API_ServerSideEncryptionRule.html",
+		Description: `https://docs.aws.amazon.com/AmazonS3/latest/API/API_ServerSideEncryptionRule.html`,
 		Resolver:    fetchS3BucketEncryptionRules,
 		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{

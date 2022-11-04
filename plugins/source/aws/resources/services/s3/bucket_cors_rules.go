@@ -10,7 +10,7 @@ import (
 func BucketCorsRules() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_s3_bucket_cors_rules",
-		Description: "https://docs.aws.amazon.com/AmazonS3/latest/API/API_CORSRule.html",
+		Description: `https://docs.aws.amazon.com/AmazonS3/latest/API/API_CORSRule.html`,
 		Resolver:    fetchS3BucketCorsRules,
 		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{

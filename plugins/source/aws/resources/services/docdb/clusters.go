@@ -10,7 +10,7 @@ import (
 func Clusters() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_docdb_clusters",
-		Description: "https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBCluster.html",
+		Description: `https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBCluster.html`,
 		Resolver:    fetchDocdbClusters,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("docdb"),
 		Columns: []schema.Column{

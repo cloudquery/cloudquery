@@ -10,7 +10,7 @@ import (
 func EventSources() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_eventbridge_event_sources",
-		Description: "https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_EventSource.html",
+		Description: `https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_EventSource.html`,
 		Resolver:    fetchEventbridgeEventSources,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("events"),
 		Columns: []schema.Column{

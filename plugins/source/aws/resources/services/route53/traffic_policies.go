@@ -10,7 +10,7 @@ import (
 func TrafficPolicies() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_route53_traffic_policies",
-		Description: "https://docs.aws.amazon.com/Route53/latest/APIReference/API_TrafficPolicySummary.html",
+		Description: `https://docs.aws.amazon.com/Route53/latest/APIReference/API_TrafficPolicySummary.html`,
 		Resolver:    fetchRoute53TrafficPolicies,
 		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{

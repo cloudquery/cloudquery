@@ -10,7 +10,7 @@ import (
 func BatchPredictions() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_frauddetector_batch_predictions",
-		Description: "https://docs.aws.amazon.com/frauddetector/latest/api/API_BatchPrediction.html",
+		Description: `https://docs.aws.amazon.com/frauddetector/latest/api/API_BatchPrediction.html`,
 		Resolver:    fetchFrauddetectorBatchPredictions,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("frauddetector"),
 		Columns: []schema.Column{

@@ -10,7 +10,7 @@ import (
 func ReservedCacheNodesOfferings() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_elasticache_reserved_cache_nodes_offerings",
-		Description: "https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_ReservedCacheNodesOffering.html",
+		Description: `https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_ReservedCacheNodesOffering.html`,
 		Resolver:    fetchElasticacheReservedCacheNodesOfferings,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticache"),
 		Columns: []schema.Column{

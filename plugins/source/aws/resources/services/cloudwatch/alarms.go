@@ -10,7 +10,7 @@ import (
 func Alarms() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_cloudwatch_alarms",
-		Description: "https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_MetricAlarm.html",
+		Description: `https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_MetricAlarm.html`,
 		Resolver:    fetchCloudwatchAlarms,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("logs"),
 		Columns: []schema.Column{

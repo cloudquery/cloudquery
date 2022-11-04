@@ -10,7 +10,7 @@ import (
 func LayerVersions() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_lambda_layer_versions",
-		Description: "https://docs.aws.amazon.com/lambda/latest/dg/API_LayerVersionsListItem.html",
+		Description: `https://docs.aws.amazon.com/lambda/latest/dg/API_LayerVersionsListItem.html`,
 		Resolver:    fetchLambdaLayerVersions,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("lambda"),
 		Columns: []schema.Column{

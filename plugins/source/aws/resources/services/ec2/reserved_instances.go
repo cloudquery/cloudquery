@@ -10,7 +10,7 @@ import (
 func ReservedInstances() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_ec2_reserved_instances",
-		Description: "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ReservedInstances.html",
+		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ReservedInstances.html`,
 		Resolver:    fetchEc2ReservedInstances,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Columns: []schema.Column{

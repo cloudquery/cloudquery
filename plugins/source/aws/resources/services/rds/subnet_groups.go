@@ -10,7 +10,7 @@ import (
 func SubnetGroups() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_rds_subnet_groups",
-		Description: "https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBSubnetGroup.html",
+		Description: `https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBSubnetGroup.html`,
 		Resolver:    fetchRdsSubnetGroups,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("rds"),
 		Columns: []schema.Column{

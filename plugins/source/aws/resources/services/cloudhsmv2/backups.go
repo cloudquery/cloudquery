@@ -10,7 +10,7 @@ import (
 func Backups() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_cloudhsmv2_backups",
-		Description: "https://docs.aws.amazon.com/cloudhsm/latest/APIReference/API_Backup.html",
+		Description: `https://docs.aws.amazon.com/cloudhsm/latest/APIReference/API_Backup.html`,
 		Resolver:    fetchCloudhsmv2Backups,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("cloudhsmv2"),
 		Columns: []schema.Column{
