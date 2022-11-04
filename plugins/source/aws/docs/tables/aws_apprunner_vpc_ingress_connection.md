@@ -1,6 +1,9 @@
 # Table: aws_apprunner_vpc_ingress_connection
 
-https://docs.aws.amazon.com/apprunner/latest/api/API_VpcIngressConnection.html: account_id has been renamed to `source_account_id` to avoid conflict with the account_id column that indicates what account this was synced from.
+https://docs.aws.amazon.com/apprunner/latest/api/API_VpcIngressConnection.html
+
+			Notes:
+			 - 'account_id' has been renamed to 'source_account_id' to avoid conflict with the 'account_id' column that indicates what account this was synced from.
 
 The primary key for this table is **arn**.
 
