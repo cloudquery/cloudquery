@@ -83,6 +83,13 @@ func ECRResources() []*Resource {
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
 				}...),
+			Relations: []string{"RepositoryImageScanFindings()"},
+		},
+		{
+			SubService:   "repository_image_scan_findings",
+			Struct:       &types.ImageScanFindings{},
+			Description:  "https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_ImageScanFindings.html",
+			ExtraColumns: defaultRegionalColumns,
 		},
 	}
 

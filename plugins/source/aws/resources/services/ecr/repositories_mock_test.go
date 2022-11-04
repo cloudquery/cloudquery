@@ -41,6 +41,17 @@ func buildEcrRepositoriesMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 	}
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tagResponse, nil)
 
+	f := types.ImageScanFindings{}
+	err = faker.FakeObject(&f)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	m.EXPECT().DescribeImageScanFindings(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&ecr.DescribeImageScanFindingsOutput{
+			ImageScanFindings: &f,
+		}, nil)
+
 	return client.Services{
 		Ecr: m,
 	}
