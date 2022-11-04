@@ -28,6 +28,7 @@ func ElastiCacheResources() []*Resource {
 			SubService:  "engine_versions",
 			Struct:      &types.CacheEngineVersion{},
 			Description: "https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_CacheEngineVersion.html",
+			SkipFields:  []string{"Engine", "EngineVersion"},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:        "account_id",
@@ -42,6 +43,18 @@ func ElastiCacheResources() []*Resource {
 					Type:        schema.TypeString,
 					Resolver:    `client.ResolveAWSRegion`,
 					Options:     schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+				{
+					Name:     "engine",
+					Type:     schema.TypeString,
+					Resolver: `schema.PathResolver("Engine")`,
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+				{
+					Name:     "engine_version",
+					Type:     schema.TypeString,
+					Resolver: `schema.PathResolver("EngineVersion")`,
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 				},
 			},
 		},
