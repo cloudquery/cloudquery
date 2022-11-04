@@ -26,7 +26,7 @@ spec:
     connection_string: ${PG_CONNECTION_STRING}
 ```
 
-* Combine source and destination to a single file
+* Or combine source and destination to a single file
 
 ```yaml
 kind: source
