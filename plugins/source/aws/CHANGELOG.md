@@ -6,6 +6,40 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [4.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v4.4.0...plugins-source-aws-v4.5.0) (2022-11-03)
+
+
+### Features
+
+* **aws:** KMS Key Grants, better key fetch ([#3441](https://github.com/cloudquery/cloudquery/issues/3441)) ([98575f0](https://github.com/cloudquery/cloudquery/commit/98575f0551e363e18764da854e8e911a8389112c)), closes [#1906](https://github.com/cloudquery/cloudquery/issues/1906)
+
+## [4.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v4.3.0...plugins-source-aws-v4.4.0) (2022-11-03)
+
+
+### Features
+
+* Added docdb resources `global_clusters`, `event_subscriptions`, `events_categories`, `pending_maintenance_actions` ([#3277](https://github.com/cloudquery/cloudquery/issues/3277)) ([d14058e](https://github.com/cloudquery/cloudquery/commit/d14058edd602249fd34515ffe79d40a9a7b3d783))
+
+## [4.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v4.2.1...plugins-source-aws-v4.3.0) (2022-11-03)
+
+
+### Features
+
+* **aws:** Add Support for Service Quotas ([#3489](https://github.com/cloudquery/cloudquery/issues/3489)) ([d9d0dac](https://github.com/cloudquery/cloudquery/commit/d9d0dac94f94f1316d124dcf27d9f73fdddfb729))
+* **aws:** Managed Workflows for Apache Airflow (MWAA) environments ([#3431](https://github.com/cloudquery/cloudquery/issues/3431)) ([a8a08c3](https://github.com/cloudquery/cloudquery/commit/a8a08c35fad099f80f09327d23c67fdd468545fa)), closes [#2300](https://github.com/cloudquery/cloudquery/issues/2300)
+
+
+### Bug Fixes
+
+* **aws-code-gen:** Prefix service name when filtering relations from table list ([#3546](https://github.com/cloudquery/cloudquery/issues/3546)) ([aefaa9a](https://github.com/cloudquery/cloudquery/commit/aefaa9affb5914123ba49818df6ddca17ce8da27))
+
+## [4.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v4.2.0...plugins-source-aws-v4.2.1) (2022-11-03)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for aws to v0.13.19 ([#3500](https://github.com/cloudquery/cloudquery/issues/3500)) ([18ddc2d](https://github.com/cloudquery/cloudquery/commit/18ddc2deaa88d7719341fb3284620840fa48539a))
+
 ## [4.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v4.1.0...plugins-source-aws-v4.2.0) (2022-11-03)
 
 

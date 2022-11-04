@@ -5,6 +5,7 @@ import (
 	"embed"
 	"fmt"
 	"go/format"
+	"io"
 	"os"
 	"path"
 	"reflect"
@@ -117,21 +118,11 @@ func getServiceInfo(client interface{}) serviceInfo {
 	}
 }
 
-// Generate generates a services.go file from the clients defined in clients.go
+// Generate generates a services.go file and individual service files from the clients defined in clients.go
 func Generate() error {
-	tpl, err := template.New("services.go.tpl").Funcs(template.FuncMap{}).ParseFS(templatesFS, "templates/services.go.tpl")
-	if err != nil {
-		return err
-	}
-
 	services := make([]serviceInfo, 0)
 	for _, client := range clients {
 		services = append(services, getServiceInfo(client))
-	}
-
-	var buff bytes.Buffer
-	if err := tpl.Execute(&buff, services); err != nil {
-		return fmt.Errorf("failed to execute template: %w", err)
 	}
 
 	_, filename, _, ok := runtime.Caller(0)
@@ -139,7 +130,65 @@ func Generate() error {
 		return fmt.Errorf("failed to get caller information")
 	}
 
+	// write services.go file
+	servicesTpl, err := template.New("services.go.tpl").ParseFS(templatesFS, "templates/services.go.tpl")
+	if err != nil {
+		return err
+	}
+
+	var buff bytes.Buffer
+	all := append(services, customClients...)
+	if err := servicesTpl.Execute(&buff, all); err != nil {
+		return fmt.Errorf("failed to execute template: %w", err)
+	}
 	filePath := path.Join(path.Dir(filename), "../../client/services.go")
+	formatAndWriteFile(filePath, buff)
+
+	// write individual service files
+	serviceTpl, err := template.New("service.go.tpl").ParseFS(templatesFS, "templates/service.go.tpl")
+	if err != nil {
+		return err
+	}
+
+	for _, service := range services {
+		buff = bytes.Buffer{}
+		if err := serviceTpl.Execute(&buff, service); err != nil {
+			return fmt.Errorf("failed to execute template: %w", err)
+		}
+		filePath := path.Join(path.Dir(filename), fmt.Sprintf("../../client/services/%s.go", service.PackageName))
+		formatAndWriteFile(filePath, buff)
+	}
+
+	for _, custom := range customClients {
+		src := path.Join(path.Dir(filename), "custom", custom.PackageName+".go")
+		dst := path.Join(path.Dir(filename), "../../client/services/"+custom.PackageName+".go")
+		err := copyCustomFile(src, dst)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func copyCustomFile(src, dst string) error {
+	source, err := os.Open(src)
+	if err != nil {
+		return err
+	}
+	defer source.Close()
+
+	destination, err := os.Create(dst)
+	if err != nil {
+		return err
+	}
+	defer destination.Close()
+
+	_, err = io.Copy(destination, source)
+	return err
+}
+
+func formatAndWriteFile(filePath string, buff bytes.Buffer) error {
 	content := buff.Bytes()
 	formattedContent, err := format.Source(buff.Bytes())
 	if err != nil {
@@ -150,6 +199,5 @@ func Generate() error {
 	if err := os.WriteFile(filePath, content, 0644); err != nil {
 		return fmt.Errorf("failed to write file %s: %w", filePath, err)
 	}
-
 	return nil
 }
