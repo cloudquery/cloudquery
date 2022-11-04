@@ -9,12 +9,11 @@ import (
 func ApprunnerResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService:          "connections",
-			Struct:              &types.Connection{},
-			Description:         "https://docs.aws.amazon.com/apprunner/latest/api/API_Connection.html",
-			SkipFields:          []string{"ConnectionArn"},
-			Multiplex:           `client.ServiceAccountRegionMultiplexer("apprunner")`,
-			PreResourceResolver: "getConnection",
+			SubService:  "connections",
+			Struct:      &types.ConnectionSummary{},
+			Description: "https://docs.aws.amazon.com/apprunner/latest/api/API_Connection.html",
+			SkipFields:  []string{"ConnectionArn"},
+			Multiplex:   `client.ServiceAccountRegionMultiplexer("apprunner")`,
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
