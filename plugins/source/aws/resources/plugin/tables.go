@@ -99,6 +99,7 @@ func tables() []*schema.Table {
 		apigatewayv2.DomainNames(),
 		apigatewayv2.VpcLinks(),
 		applicationautoscaling.Policies(),
+		apprunner.Connections(),
 		apprunner.ObservabilityConfigurations(),
 		apprunner.Services(),
 		appsync.GraphqlApis(),

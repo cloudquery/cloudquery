@@ -9,6 +9,29 @@ import (
 func ApprunnerResources() []*Resource {
 	resources := []*Resource{
 		{
+			SubService:   "custom_domains",
+			Struct:       &types.CustomDomain{},
+			Description:  "https://docs.aws.amazon.com/apprunner/latest/api/API_CustomDomain.html",
+			Multiplex:    "",
+			ExtraColumns: defaultRegionalColumns,
+		},
+		{
+			SubService:  "connections",
+			Struct:      &types.ConnectionSummary{},
+			Description: "https://docs.aws.amazon.com/apprunner/latest/api/API_Connection.html",
+			SkipFields:  []string{"ConnectionArn"},
+			Multiplex:   `client.ServiceAccountRegionMultiplexer("apprunner")`,
+			ExtraColumns: append(
+				defaultRegionalColumns,
+				[]codegen.ColumnDefinition{
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("ConnectionArn")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				}...),
+		}, {
 			SubService:          "observability_configurations",
 			Struct:              &types.ObservabilityConfiguration{},
 			Description:         "https://docs.aws.amazon.com/apprunner/latest/api/API_ObservabilityConfiguration.html",
@@ -24,8 +47,14 @@ func ApprunnerResources() []*Resource {
 						Resolver: `schema.PathResolver("ObservabilityConfigurationArn")`,
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
-				}...),
-		}, {
+				 }...),
+		},{
+			SubService:   "operations",
+			Struct:       &types.OperationSummary{},
+			Description:  "https://docs.aws.amazon.com/apprunner/latest/api/API_OperationSummary.html",
+			Multiplex:    "",
+			ExtraColumns: defaultRegionalColumns,
+		},{
 			SubService:          "services",
 			Struct:              &types.Service{},
 			Description:         "https://docs.aws.amazon.com/apprunner/latest/api/API_Service.html",
@@ -38,26 +67,14 @@ func ApprunnerResources() []*Resource {
 					{
 						Name:     "arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.PathResolver("ServiceArn")`,
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					Resolver: `schema.PathResolver("ServiceArn")`,
+							Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
 				}...),
 			Relations: []string{
 				"Operations()",
 				"CustomDomains()"},
-		}, {
-			SubService:   "operations",
-			Struct:       &types.OperationSummary{},
-			Description:  "https://docs.aws.amazon.com/apprunner/latest/api/API_OperationSummary.html",
-			Multiplex:    "",
-			ExtraColumns: defaultRegionalColumns,
-		}, {
-			SubService:   "custom_domains",
-			Struct:       &types.CustomDomain{},
-			Description:  "https://docs.aws.amazon.com/apprunner/latest/api/API_CustomDomain.html",
-			Multiplex:    "",
-			ExtraColumns: defaultRegionalColumns,
-		},
+		},  
 	}
 
 	for _, r := range resources {
