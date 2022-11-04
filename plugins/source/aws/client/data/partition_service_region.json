@@ -2857,6 +2857,9 @@
             "ingest-fips-us-east-1": {},
             "ingest-fips-us-east-2": {},
             "ingest-fips-us-west-2": {},
+            "ingest-us-east-1": {},
+            "ingest-us-east-2": {},
+            "ingest-us-west-2": {},
             "us-east-1": {},
             "us-east-2": {},
             "us-west-2": {}
@@ -4128,6 +4131,7 @@
             "eu-central-1": {},
             "eu-west-1": {},
             "eu-west-2": {},
+            "fips-ca-central-1": {},
             "fips-us-east-1": {},
             "fips-us-east-2": {},
             "fips-us-west-2": {},
