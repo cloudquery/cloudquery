@@ -37,6 +37,18 @@
 | [aws_apprunner_services](aws_apprunner_services.md) |
 | ↳ [aws_apprunner_operations](aws_apprunner_operations.md) |
 | ↳ [aws_apprunner_custom_domains](aws_apprunner_custom_domains.md) |
+| [aws_appstream_app_blocks](aws_appstream_app_blocks.md) |
+| [aws_appstream_applications](aws_appstream_applications.md) |
+| ↳ [aws_appstream_application_fleet_associations](aws_appstream_application_fleet_associations.md) |
+| [aws_appstream_directory_configs](aws_appstream_directory_configs.md) |
+| [aws_appstream_fleets](aws_appstream_fleets.md) |
+| [aws_appstream_image_builders](aws_appstream_image_builders.md) |
+| [aws_appstream_images](aws_appstream_images.md) |
+| [aws_appstream_stacks](aws_appstream_stacks.md) |
+| ↳ [aws_appstream_stack_entitlements](aws_appstream_stack_entitlements.md) |
+| ↳ [aws_appstream_stack_user_associations](aws_appstream_stack_user_associations.md) |
+| [aws_appstream_usage_report_subscriptions](aws_appstream_usage_report_subscriptions.md) |
+| [aws_appstream_users](aws_appstream_users.md) |
 | [aws_appsync_graphql_apis](aws_appsync_graphql_apis.md) |
 | [aws_athena_data_catalogs](aws_athena_data_catalogs.md) |
 | ↳ [aws_athena_data_catalog_databases](aws_athena_data_catalog_databases.md) |
