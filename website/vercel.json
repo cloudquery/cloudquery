@@ -42,6 +42,18 @@
       "destination": "/docs"
     },
     {
+      "source": "/docs/recipes",
+      "destination": "/docs/recipes/overview"
+    },
+    {
+      "source": "/docs/recipes/sources",
+      "destination": "/docs/recipes/sources/aws"
+    },
+    {
+      "source": "/docs/recipes/destinations",
+      "destination": "/docs/recipes/destinations/postgresql"
+    },
+    {
       "source": "/docs/policies",
       "destination": "/docs/core-concepts/policies"
     },
