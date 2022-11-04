@@ -10,7 +10,7 @@ import (
 func EbsVolumes() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_ec2_ebs_volumes",
-		Description: "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Volume.html",
+		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Volume.html`,
 		Resolver:    fetchEc2EbsVolumes,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Columns: []schema.Column{

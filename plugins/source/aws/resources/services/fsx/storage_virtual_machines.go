@@ -10,7 +10,7 @@ import (
 func StorageVirtualMachines() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_fsx_storage_virtual_machines",
-		Description: "https://docs.aws.amazon.com/fsx/latest/APIReference/API_StorageVirtualMachine.html",
+		Description: `https://docs.aws.amazon.com/fsx/latest/APIReference/API_StorageVirtualMachine.html`,
 		Resolver:    fetchFsxStorageVirtualMachines,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("fsx"),
 		Columns: []schema.Column{

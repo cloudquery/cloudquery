@@ -10,7 +10,7 @@ import (
 func Jobs() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_iot_jobs",
-		Description: "https://docs.aws.amazon.com/iot/latest/apireference/API_Job.html",
+		Description: `https://docs.aws.amazon.com/iot/latest/apireference/API_Job.html`,
 		Resolver:    fetchIotJobs,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("iot"),
 		Columns: []schema.Column{

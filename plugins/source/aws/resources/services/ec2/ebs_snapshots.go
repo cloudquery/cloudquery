@@ -10,7 +10,7 @@ import (
 func EbsSnapshots() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_ec2_ebs_snapshots",
-		Description: "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Snapshot.html",
+		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Snapshot.html`,
 		Resolver:    fetchEc2EbsSnapshots,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Columns: []schema.Column{

@@ -59,6 +59,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/lambda v1.24.8
 	github.com/aws/aws-sdk-go-v2/service/lightsail v1.23.2
 	github.com/aws/aws-sdk-go-v2/service/mq v1.13.15
+	github.com/aws/aws-sdk-go-v2/service/mwaa v1.13.12
 	github.com/aws/aws-sdk-go-v2/service/neptune v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/organizations v1.16.15
 	github.com/aws/aws-sdk-go-v2/service/qldb v1.14.20
@@ -86,8 +87,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/xray v1.13.21
 	github.com/aws/smithy-go v1.13.4
 	github.com/basgys/goxml2json v1.1.0
-	github.com/cloudquery/plugin-sdk v0.13.19
-	github.com/ettle/strcase v0.1.1
+	github.com/cloudquery/plugin-sdk v0.13.20
 	github.com/gocarina/gocsv v0.0.0-20220927221512-ad3251f9fa25
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.9
@@ -101,7 +101,6 @@ require (
 require (
 	github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.16 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.1.20 // indirect
-	github.com/aws/aws-sdk-go-v2/service/mwaa v1.13.12 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.13.8 // indirect
 	github.com/bitly/go-simplejson v0.5.0 // indirect
 	github.com/getsentry/sentry-go v0.14.0 // indirect

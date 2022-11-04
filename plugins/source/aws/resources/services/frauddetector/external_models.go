@@ -10,7 +10,7 @@ import (
 func ExternalModels() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_frauddetector_external_models",
-		Description: "https://docs.aws.amazon.com/frauddetector/latest/api/API_ExternalModel.html",
+		Description: `https://docs.aws.amazon.com/frauddetector/latest/api/API_ExternalModel.html`,
 		Resolver:    fetchFrauddetectorExternalModels,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("frauddetector"),
 		Columns: []schema.Column{

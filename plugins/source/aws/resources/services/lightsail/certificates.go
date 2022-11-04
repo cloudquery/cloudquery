@@ -10,7 +10,7 @@ import (
 func Certificates() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_lightsail_certificates",
-		Description: "https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_Certificate.html",
+		Description: `https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_Certificate.html`,
 		Resolver:    fetchLightsailCertificates,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("lightsail"),
 		Columns: []schema.Column{

@@ -10,7 +10,7 @@ import (
 func GlobalClusters() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_neptune_global_clusters",
-		Description: "https://docs.aws.amazon.com/neptune/latest/userguide/api-instances.html#DescribeDBInstances",
+		Description: `https://docs.aws.amazon.com/neptune/latest/userguide/api-instances.html#DescribeDBInstances`,
 		Resolver:    fetchNeptuneGlobalClusters,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("neptune"),
 		Columns: []schema.Column{

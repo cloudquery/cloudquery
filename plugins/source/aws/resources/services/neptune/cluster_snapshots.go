@@ -10,7 +10,7 @@ import (
 func ClusterSnapshots() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_neptune_cluster_snapshots",
-		Description: "https://docs.aws.amazon.com/neptune/latest/userguide/api-snapshots.html#DescribeDBClusterSnapshots",
+		Description: `https://docs.aws.amazon.com/neptune/latest/userguide/api-snapshots.html#DescribeDBClusterSnapshots`,
 		Resolver:    fetchNeptuneClusterSnapshots,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("neptune"),
 		Columns: []schema.Column{

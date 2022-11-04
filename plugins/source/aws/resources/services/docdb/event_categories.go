@@ -10,7 +10,7 @@ import (
 func EventCategories() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_docdb_event_categories",
-		Description: "https://docs.aws.amazon.com/documentdb/latest/developerguide/API_EventCategoriesMap.html",
+		Description: `https://docs.aws.amazon.com/documentdb/latest/developerguide/API_EventCategoriesMap.html`,
 		Resolver:    fetchDocdbEventCategories,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("docdb"),
 		Columns: []schema.Column{

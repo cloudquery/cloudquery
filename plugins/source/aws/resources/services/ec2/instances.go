@@ -10,7 +10,7 @@ import (
 func Instances() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_ec2_instances",
-		Description: "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Instance.html",
+		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Instance.html`,
 		Resolver:    fetchEc2Instances,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Columns: []schema.Column{
