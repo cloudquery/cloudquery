@@ -10,7 +10,7 @@ import (
 func GroupScalingPolicies() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_autoscaling_group_scaling_policies",
-		Description: "https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_ScalingPolicy.html",
+		Description: `https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_ScalingPolicy.html`,
 		Resolver:    fetchAutoscalingGroupScalingPolicies,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("autoscaling"),
 		Columns: []schema.Column{

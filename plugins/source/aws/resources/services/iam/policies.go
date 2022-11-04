@@ -10,7 +10,7 @@ import (
 func Policies() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_iam_policies",
-		Description: "https://docs.aws.amazon.com/IAM/latest/APIReference/API_ManagedPolicyDetail.html",
+		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_ManagedPolicyDetail.html`,
 		Resolver:    fetchIamPolicies,
 		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{

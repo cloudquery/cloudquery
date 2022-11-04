@@ -10,7 +10,7 @@ import (
 func Repositories() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_ecr_repositories",
-		Description: "https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_Repository.html",
+		Description: `https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_Repository.html`,
 		Resolver:    fetchEcrRepositories,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("api.ecr"),
 		Columns: []schema.Column{

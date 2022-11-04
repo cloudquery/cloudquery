@@ -10,7 +10,7 @@ import (
 func Buckets() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_lightsail_buckets",
-		Description: "https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_Bucket.html",
+		Description: `https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_Bucket.html`,
 		Resolver:    fetchLightsailBuckets,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("lightsail"),
 		Columns: []schema.Column{

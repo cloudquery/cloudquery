@@ -10,7 +10,7 @@ import (
 func BrokerConfigurations() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_mq_broker_configurations",
-		Description: "https://docs.aws.amazon.com/amazon-mq/latest/api-reference/configurations-configuration-id.html",
+		Description: `https://docs.aws.amazon.com/amazon-mq/latest/api-reference/configurations-configuration-id.html`,
 		Resolver:    fetchMqBrokerConfigurations,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("mq"),
 		Columns: []schema.Column{

@@ -10,7 +10,7 @@ import (
 func Stacks() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_cloudformation_stacks",
-		Description: "https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_Stack.html",
+		Description: `https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_Stack.html`,
 		Resolver:    fetchCloudformationStacks,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("cloudformation"),
 		Columns: []schema.Column{

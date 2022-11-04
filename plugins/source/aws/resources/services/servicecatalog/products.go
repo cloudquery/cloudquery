@@ -10,7 +10,7 @@ import (
 func Products() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_servicecatalog_products",
-		Description: "https://docs.aws.amazon.com/servicecatalog/latest/dg/API_ProductViewDetail.html",
+		Description: `https://docs.aws.amazon.com/servicecatalog/latest/dg/API_ProductViewDetail.html`,
 		Resolver:    fetchServicecatalogProducts,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("servicecatalog"),
 		Columns: []schema.Column{

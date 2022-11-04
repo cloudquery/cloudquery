@@ -10,7 +10,7 @@ import (
 func ContactLists() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_ses_contact_lists",
-		Description:         "https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_GetContactList.html",
+		Description:         `https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_GetContactList.html`,
 		Resolver:            fetchSesContactLists,
 		PreResourceResolver: getContactList,
 		Multiplex:           client.ServiceAccountRegionMultiplexer("email"),

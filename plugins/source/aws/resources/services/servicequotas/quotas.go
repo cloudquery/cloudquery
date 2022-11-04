@@ -10,7 +10,7 @@ import (
 func Quotas() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_servicequotas_quotas",
-		Description: "https://docs.aws.amazon.com/servicequotas/2019-06-24/apireference/API_ServiceQuota.html",
+		Description: `https://docs.aws.amazon.com/servicequotas/2019-06-24/apireference/API_ServiceQuota.html`,
 		Resolver:    fetchServicequotasQuotas,
 		Columns: []schema.Column{
 			{

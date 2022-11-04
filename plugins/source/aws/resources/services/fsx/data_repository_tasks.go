@@ -10,7 +10,7 @@ import (
 func DataRepositoryTasks() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_fsx_data_repository_tasks",
-		Description: "https://docs.aws.amazon.com/fsx/latest/APIReference/API_DataRepositoryTask.html",
+		Description: `https://docs.aws.amazon.com/fsx/latest/APIReference/API_DataRepositoryTask.html`,
 		Resolver:    fetchFsxDataRepositoryTasks,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("fsx"),
 		Columns: []schema.Column{

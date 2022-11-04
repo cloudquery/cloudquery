@@ -10,7 +10,7 @@ import (
 func EncryptionConfig() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_xray_encryption_config",
-		Description: "https://docs.aws.amazon.com/xray/latest/api/API_EncryptionConfig.html",
+		Description: `https://docs.aws.amazon.com/xray/latest/api/API_EncryptionConfig.html`,
 		Resolver:    fetchXrayEncryptionConfig,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("xray"),
 		Columns: []schema.Column{
