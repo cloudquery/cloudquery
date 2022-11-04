@@ -13,7 +13,7 @@ func VpcIngressConnection() *schema.Table {
 		Description: `https://docs.aws.amazon.com/apprunner/latest/api/API_VpcIngressConnection.html
 
 Notes:
-	- 'account_id' has been renamed to 'source_account_id' to avoid conflict with the 'account_id' column that indicates what account this was synced from.`,
+- 'account_id' has been renamed to 'source_account_id' to avoid conflict with the 'account_id' column that indicates what account this was synced from.`,
 		Resolver:            fetchApprunnerVpcIngressConnection,
 		PreResourceResolver: getVpcIngressConnection,
 		Multiplex:           client.ServiceAccountRegionMultiplexer("apprunner"),
