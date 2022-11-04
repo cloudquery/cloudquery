@@ -10,7 +10,7 @@ import (
 func ManagedRuleGroups() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_wafv2_managed_rule_groups",
-		Description: "https://docs.aws.amazon.com/waf/latest/APIReference/API_ManagedRuleGroupSummary.html",
+		Description: `https://docs.aws.amazon.com/waf/latest/APIReference/API_ManagedRuleGroupSummary.html`,
 		Resolver:    fetchWafv2ManagedRuleGroups,
 		Multiplex:   client.ServiceAccountRegionScopeMultiplexer("waf-regional"),
 		Columns: []schema.Column{

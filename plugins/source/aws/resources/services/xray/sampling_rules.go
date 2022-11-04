@@ -10,7 +10,7 @@ import (
 func SamplingRules() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_xray_sampling_rules",
-		Description: "https://docs.aws.amazon.com/xray/latest/api/API_SamplingRuleRecord.html",
+		Description: `https://docs.aws.amazon.com/xray/latest/api/API_SamplingRuleRecord.html`,
 		Resolver:    fetchXraySamplingRules,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("xray"),
 		Columns: []schema.Column{

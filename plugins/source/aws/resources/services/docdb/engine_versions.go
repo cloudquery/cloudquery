@@ -10,7 +10,7 @@ import (
 func EngineVersions() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_docdb_engine_versions",
-		Description: "https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBEngineVersion.html",
+		Description: `https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBEngineVersion.html`,
 		Resolver:    fetchDocdbEngineVersions,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("docdb"),
 		Columns: []schema.Column{

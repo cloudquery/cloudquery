@@ -10,7 +10,7 @@ import (
 func VpcEndpointServices() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_ec2_vpc_endpoint_services",
-		Description: "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ServiceDetail.html",
+		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ServiceDetail.html`,
 		Resolver:    fetchEc2VpcEndpointServices,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Columns: []schema.Column{

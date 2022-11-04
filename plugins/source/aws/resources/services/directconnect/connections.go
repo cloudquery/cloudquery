@@ -10,7 +10,7 @@ import (
 func Connections() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_directconnect_connections",
-		Description: "https://docs.aws.amazon.com/directconnect/latest/APIReference/API_Connection.html",
+		Description: `https://docs.aws.amazon.com/directconnect/latest/APIReference/API_Connection.html`,
 		Resolver:    fetchDirectconnectConnections,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("directconnect"),
 		Columns: []schema.Column{

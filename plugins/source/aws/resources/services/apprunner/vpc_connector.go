@@ -10,7 +10,7 @@ import (
 func VpcConnector() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_apprunner_vpc_connector",
-		Description: "https://docs.aws.amazon.com/apprunner/latest/api/API_VpcConnector.html",
+		Description: `https://docs.aws.amazon.com/apprunner/latest/api/API_VpcConnector.html`,
 		Resolver:    fetchApprunnerVpcConnector,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("apprunner"),
 		Columns: []schema.Column{

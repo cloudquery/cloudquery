@@ -10,7 +10,7 @@ import (
 func AutoScalingConfiguration() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_apprunner_auto_scaling_configuration",
-		Description:         "https://docs.aws.amazon.com/apprunner/latest/api/API_AutoScalingConfiguration.html",
+		Description:         `https://docs.aws.amazon.com/apprunner/latest/api/API_AutoScalingConfiguration.html`,
 		Resolver:            fetchApprunnerAutoScalingConfiguration,
 		PreResourceResolver: getAutoScalingConfiguration,
 		Multiplex:           client.ServiceAccountRegionMultiplexer("apprunner"),

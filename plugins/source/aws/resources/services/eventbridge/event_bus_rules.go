@@ -10,7 +10,7 @@ import (
 func EventBusRules() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_eventbridge_event_bus_rules",
-		Description: "https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_Rule.html",
+		Description: `https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_Rule.html`,
 		Resolver:    fetchEventbridgeEventBusRules,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("events"),
 		Columns: []schema.Column{

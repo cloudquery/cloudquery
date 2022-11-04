@@ -10,7 +10,7 @@ import (
 func Keys() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_kms_keys",
-		Description: "https://docs.aws.amazon.com/kms/latest/APIReference/API_KeyMetadata.html",
+		Description: `https://docs.aws.amazon.com/kms/latest/APIReference/API_KeyMetadata.html`,
 		Resolver:    fetchKmsKeys,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("kms"),
 		Columns: []schema.Column{
