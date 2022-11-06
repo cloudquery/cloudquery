@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-heroku-v2.2.2...plugins-source-heroku-v2.2.3) (2022-11-06)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for heroku to v0.13.20 ([#3577](https://github.com/cloudquery/cloudquery/issues/3577)) ([5f8f336](https://github.com/cloudquery/cloudquery/commit/5f8f33639a1395ee478c1d2f9568db00cfbd4692))
+
 ## [2.2.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-heroku-v2.2.1...plugins-source-heroku-v2.2.2) (2022-11-03)
 
 
