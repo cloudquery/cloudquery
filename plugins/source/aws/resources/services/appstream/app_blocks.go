@@ -10,7 +10,7 @@ import (
 func AppBlocks() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_appstream_app_blocks",
-		Description: "https://docs.aws.amazon.com/appstream2/latest/APIReference/API_AppBlock.html",
+		Description: `https://docs.aws.amazon.com/appstream2/latest/APIReference/API_AppBlock.html`,
 		Resolver:    fetchAppstreamAppBlocks,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("appstream2"),
 		Columns: []schema.Column{

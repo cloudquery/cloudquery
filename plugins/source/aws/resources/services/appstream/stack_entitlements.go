@@ -10,7 +10,7 @@ import (
 func StackEntitlements() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_appstream_stack_entitlements",
-		Description: "https://docs.aws.amazon.com/appstream2/latest/APIReference/API_Entitlement.html",
+		Description: `https://docs.aws.amazon.com/appstream2/latest/APIReference/API_Entitlement.html`,
 		Resolver:    fetchAppstreamStackEntitlements,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("appstream2"),
 		Columns: []schema.Column{

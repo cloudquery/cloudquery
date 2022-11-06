@@ -10,7 +10,7 @@ import (
 func DirectoryConfigs() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_appstream_directory_configs",
-		Description: "https://docs.aws.amazon.com/appstream2/latest/APIReference/API_DirectoryConfig.html",
+		Description: `https://docs.aws.amazon.com/appstream2/latest/APIReference/API_DirectoryConfig.html`,
 		Resolver:    fetchAppstreamDirectoryConfigs,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("appstream2"),
 		Columns: []schema.Column{

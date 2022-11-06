@@ -10,7 +10,7 @@ import (
 func StackUserAssociations() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_appstream_stack_user_associations",
-		Description: "https://docs.aws.amazon.com/appstream2/latest/APIReference/API_UserStackAssociation.html",
+		Description: `https://docs.aws.amazon.com/appstream2/latest/APIReference/API_UserStackAssociation.html`,
 		Resolver:    fetchAppstreamStackUserAssociations,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("appstream2"),
 		Columns: []schema.Column{

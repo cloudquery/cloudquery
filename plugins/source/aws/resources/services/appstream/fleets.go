@@ -10,7 +10,7 @@ import (
 func Fleets() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_appstream_fleets",
-		Description: "https://docs.aws.amazon.com/appstream2/latest/APIReference/API_Fleet.html",
+		Description: `https://docs.aws.amazon.com/appstream2/latest/APIReference/API_Fleet.html`,
 		Resolver:    fetchAppstreamFleets,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("appstream2"),
 		Columns: []schema.Column{

@@ -10,7 +10,7 @@ import (
 func ImageBuilders() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_appstream_image_builders",
-		Description: "https://docs.aws.amazon.com/appstream2/latest/APIReference/API_ImageBuilder.html",
+		Description: `https://docs.aws.amazon.com/appstream2/latest/APIReference/API_ImageBuilder.html`,
 		Resolver:    fetchAppstreamImageBuilders,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("appstream2"),
 		Columns: []schema.Column{

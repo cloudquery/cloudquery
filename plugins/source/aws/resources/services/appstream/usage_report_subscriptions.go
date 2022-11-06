@@ -10,7 +10,7 @@ import (
 func UsageReportSubscriptions() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_appstream_usage_report_subscriptions",
-		Description: "https://docs.aws.amazon.com/appstream2/latest/APIReference/API_UsageReportSubscription.html",
+		Description: `https://docs.aws.amazon.com/appstream2/latest/APIReference/API_UsageReportSubscription.html`,
 		Resolver:    fetchAppstreamUsageReportSubscriptions,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("appstream2"),
 		Columns: []schema.Column{
