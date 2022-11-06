@@ -284,7 +284,7 @@ func checkPluginsCompatibility(ctx context.Context, sourcePluginName string, sou
 			return fmt.Errorf("failed to get protocol version from destination %q: %w", destPluginName+"@"+destPluginVersion, err)
 		}
 		if destProtocolVersion != expectedProtocolVersion {
-			message += fmt.Sprintf("\nsource %q and destination %q are incompatible", destPluginName+"@"+destPluginVersion, sourcePluginName+"@"+sourcePluginVersion)
+			message += fmt.Sprintf("\nsource %q and destination %q are incompatible", sourcePluginName+"@"+sourcePluginVersion, destPluginName+"@"+destPluginVersion)
 		}
 	}
 
