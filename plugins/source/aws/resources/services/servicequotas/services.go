@@ -10,7 +10,7 @@ import (
 func Services() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_servicequotas_services",
-		Description: "https://docs.aws.amazon.com/servicequotas/2019-06-24/apireference/API_ServiceInfo.html",
+		Description: `https://docs.aws.amazon.com/servicequotas/2019-06-24/apireference/API_ServiceInfo.html`,
 		Resolver:    fetchServicequotasServices,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("servicequotas"),
 		Columns: []schema.Column{

@@ -20,7 +20,7 @@ spec:
     accounts:
       - id: "account1"
         local_profile: "account1"
-    debug: false
+    aws_debug: false
 ```
 
 ## AWS Spec
@@ -39,7 +39,7 @@ This is the (nested) spec used by the AWS source plugin.
 
   In AWS organization mode, CloudQuery will source all accounts underneath automatically
 
-- `debug` (bool) (default: false)
+- `aws_debug` (bool) (default: false)
 
   If true, will log AWS debug logs, including retries and other request/response metadata
 

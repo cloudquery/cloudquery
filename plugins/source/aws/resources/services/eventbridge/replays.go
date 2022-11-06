@@ -10,7 +10,7 @@ import (
 func Replays() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_eventbridge_replays",
-		Description: "https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_Replay.html",
+		Description: `https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_Replay.html`,
 		Resolver:    fetchEventbridgeReplays,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("events"),
 		Columns: []schema.Column{

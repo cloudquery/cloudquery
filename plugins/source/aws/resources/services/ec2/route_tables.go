@@ -10,7 +10,7 @@ import (
 func RouteTables() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_ec2_route_tables",
-		Description: "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_RouteTable.html",
+		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_RouteTable.html`,
 		Resolver:    fetchEc2RouteTables,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Columns: []schema.Column{

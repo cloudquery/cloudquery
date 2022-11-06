@@ -34,9 +34,14 @@
 | ↳ [aws_apigatewayv2_domain_name_rest_api_mappings](aws_apigatewayv2_domain_name_rest_api_mappings.md) |
 | [aws_apigatewayv2_vpc_links](aws_apigatewayv2_vpc_links.md) |
 | [aws_applicationautoscaling_policies](aws_applicationautoscaling_policies.md) |
+| [aws_apprunner_connections](aws_apprunner_connections.md) |
+| [aws_apprunner_observability_configurations](aws_apprunner_observability_configurations.md) |
 | [aws_apprunner_services](aws_apprunner_services.md) |
 | ↳ [aws_apprunner_operations](aws_apprunner_operations.md) |
 | ↳ [aws_apprunner_custom_domains](aws_apprunner_custom_domains.md) |
+| [aws_apprunner_auto_scaling_configuration](aws_apprunner_auto_scaling_configuration.md) |
+| [aws_apprunner_vpc_connector](aws_apprunner_vpc_connector.md) |
+| [aws_apprunner_vpc_ingress_connection](aws_apprunner_vpc_ingress_connection.md) |
 | [aws_appsync_graphql_apis](aws_appsync_graphql_apis.md) |
 | [aws_athena_data_catalogs](aws_athena_data_catalogs.md) |
 | ↳ [aws_athena_data_catalog_databases](aws_athena_data_catalog_databases.md) |

@@ -10,7 +10,7 @@ import (
 func Operations() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_apprunner_operations",
-		Description: "https://docs.aws.amazon.com/apprunner/latest/api/API_OperationSummary.html",
+		Description: `https://docs.aws.amazon.com/apprunner/latest/api/API_OperationSummary.html`,
 		Resolver:    fetchApprunnerOperations,
 		Columns: []schema.Column{
 			{

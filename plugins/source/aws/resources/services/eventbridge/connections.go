@@ -10,7 +10,7 @@ import (
 func Connections() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_eventbridge_connections",
-		Description: "https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_Connection.html",
+		Description: `https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_Connection.html`,
 		Resolver:    fetchEventbridgeConnections,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("events"),
 		Columns: []schema.Column{

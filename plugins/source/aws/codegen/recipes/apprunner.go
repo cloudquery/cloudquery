@@ -9,6 +9,68 @@ import (
 func ApprunnerResources() []*Resource {
 	resources := []*Resource{
 		{
+			SubService:          "auto_scaling_configuration",
+			Struct:              &types.AutoScalingConfiguration{},
+			Description:         "https://docs.aws.amazon.com/apprunner/latest/api/API_AutoScalingConfiguration.html",
+			SkipFields:          []string{"AutoScalingConfigurationArn"},
+			Multiplex:           `client.ServiceAccountRegionMultiplexer("apprunner")`,
+			PreResourceResolver: "getAutoScalingConfiguration",
+			ExtraColumns: append(
+				defaultRegionalColumns,
+				[]codegen.ColumnDefinition{
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("AutoScalingConfigurationArn")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				}...),
+		},{
+			SubService:   "custom_domains",
+			Struct:       &types.CustomDomain{},
+			Description:  "https://docs.aws.amazon.com/apprunner/latest/api/API_CustomDomain.html",
+			Multiplex:    "",
+			ExtraColumns: defaultRegionalColumns,
+		}, {
+			SubService:  "connections",
+			Struct:      &types.ConnectionSummary{},
+			Description: "https://docs.aws.amazon.com/apprunner/latest/api/API_Connection.html",
+			SkipFields:  []string{"ConnectionArn"},
+			Multiplex:   `client.ServiceAccountRegionMultiplexer("apprunner")`,
+			ExtraColumns: append(
+				defaultRegionalColumns,
+				[]codegen.ColumnDefinition{
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("ConnectionArn")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+				 }...),
+		}, {
+			SubService:          "observability_configurations",
+			Struct:              &types.ObservabilityConfiguration{},
+			Description:         "https://docs.aws.amazon.com/apprunner/latest/api/API_ObservabilityConfiguration.html",
+			SkipFields:          []string{"ObservabilityConfigurationArn"},
+			Multiplex:           `client.ServiceAccountRegionMultiplexer("apprunner")`,
+			PreResourceResolver: "getObservabilityConfiguration",
+			ExtraColumns: append(
+				defaultRegionalColumns,
+				[]codegen.ColumnDefinition{
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("ObservabilityConfigurationArn")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				 }...),
+		},{
+			SubService:   "operations",
+			Struct:       &types.OperationSummary{},
+			Description:  "https://docs.aws.amazon.com/apprunner/latest/api/API_OperationSummary.html",
+			Multiplex:    "",
+			ExtraColumns: defaultRegionalColumns,
+		},{
 			SubService:          "services",
 			Struct:              &types.Service{},
 			Description:         "https://docs.aws.amazon.com/apprunner/latest/api/API_Service.html",
@@ -21,13 +83,55 @@ func ApprunnerResources() []*Resource {
 					{
 						Name:     "arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.PathResolver("ServiceArn")`,
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					Resolver: `schema.PathResolver("ServiceArn")`,
+							Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
 				}...),
 			Relations: []string{
 				"Operations()",
 				"CustomDomains()"},
+		}, 
+		{
+			SubService:  "vpc_connector",
+			Struct:      &types.VpcConnector{},
+			Description: "https://docs.aws.amazon.com/apprunner/latest/api/API_VpcConnector.html",
+			SkipFields:  []string{"VpcConnectorArn"},
+			Multiplex:   `client.ServiceAccountRegionMultiplexer("apprunner")`,
+			ExtraColumns: append(
+				defaultRegionalColumns,
+				[]codegen.ColumnDefinition{
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("VpcConnectorArn")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				}...),
+		}, {
+			SubService: "vpc_ingress_connection",
+			Struct:     &types.VpcIngressConnection{},
+			Description: `https://docs.aws.amazon.com/apprunner/latest/api/API_VpcIngressConnection.html
+
+Notes:
+- 'account_id' has been renamed to 'source_account_id' to avoid conflict with the 'account_id' column that indicates what account this was synced from.`,
+			SkipFields:          []string{"VpcIngressConnectionArn", "AccountId"},
+			Multiplex:           `client.ServiceAccountRegionMultiplexer("apprunner")`,
+			PreResourceResolver: "getVpcIngressConnection",
+			ExtraColumns: append(
+				defaultRegionalColumns,
+				[]codegen.ColumnDefinition{
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("VpcIngressConnectionArn")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+					{
+						Name:     "source_account_id",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("AccountId")`,
+					},
+				}...),
 		}, {
 			SubService:   "operations",
 			Struct:       &types.OperationSummary{},

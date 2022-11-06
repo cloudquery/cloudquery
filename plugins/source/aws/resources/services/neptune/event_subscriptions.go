@@ -10,7 +10,7 @@ import (
 func EventSubscriptions() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_neptune_event_subscriptions",
-		Description: "https://docs.aws.amazon.com/neptune/latest/userguide/api-events.html#DescribeEventSubscriptions",
+		Description: `https://docs.aws.amazon.com/neptune/latest/userguide/api-events.html#DescribeEventSubscriptions`,
 		Resolver:    fetchNeptuneEventSubscriptions,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("neptune"),
 		Columns: []schema.Column{

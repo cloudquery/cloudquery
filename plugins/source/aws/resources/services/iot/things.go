@@ -10,7 +10,7 @@ import (
 func Things() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_iot_things",
-		Description: "https://docs.aws.amazon.com/iot/latest/apireference/API_ThingAttribute.html",
+		Description: `https://docs.aws.amazon.com/iot/latest/apireference/API_ThingAttribute.html`,
 		Resolver:    fetchIotThings,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("iot"),
 		Columns: []schema.Column{

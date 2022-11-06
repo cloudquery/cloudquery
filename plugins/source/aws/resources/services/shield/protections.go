@@ -10,7 +10,7 @@ import (
 func Protections() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_shield_protections",
-		Description: "https://docs.aws.amazon.com/waf/latest/DDOSAPIReference/API_Protection.html",
+		Description: `https://docs.aws.amazon.com/waf/latest/DDOSAPIReference/API_Protection.html`,
 		Resolver:    fetchShieldProtections,
 		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{

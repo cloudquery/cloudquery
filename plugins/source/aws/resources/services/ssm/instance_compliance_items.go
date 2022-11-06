@@ -10,7 +10,7 @@ import (
 func InstanceComplianceItems() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_ssm_instance_compliance_items",
-		Description: "https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_ComplianceItem.html",
+		Description: `https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_ComplianceItem.html`,
 		Resolver:    fetchSsmInstanceComplianceItems,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ssm"),
 		Columns: []schema.Column{

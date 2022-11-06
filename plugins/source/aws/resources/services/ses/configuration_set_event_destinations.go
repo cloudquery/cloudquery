@@ -10,7 +10,7 @@ import (
 func ConfigurationSetEventDestinations() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_ses_configuration_set_event_destinations",
-		Description: "https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_EventDestination.html",
+		Description: `https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_EventDestination.html`,
 		Resolver:    fetchSesConfigurationSetEventDestinations,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("email"),
 		Columns: []schema.Column{

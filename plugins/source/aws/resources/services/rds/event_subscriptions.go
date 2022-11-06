@@ -10,7 +10,7 @@ import (
 func EventSubscriptions() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_rds_event_subscriptions",
-		Description: "https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_EventSubscription.html",
+		Description: `https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_EventSubscription.html`,
 		Resolver:    fetchRdsEventSubscriptions,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("rds"),
 		Columns: []schema.Column{

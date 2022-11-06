@@ -10,7 +10,7 @@ import (
 func Users() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_elasticache_users",
-		Description: "https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_User.html",
+		Description: `https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_User.html`,
 		Resolver:    fetchElasticacheUsers,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticache"),
 		Columns: []schema.Column{

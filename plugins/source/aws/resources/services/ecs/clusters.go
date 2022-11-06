@@ -10,7 +10,7 @@ import (
 func Clusters() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_ecs_clusters",
-		Description: "https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_Cluster.html",
+		Description: `https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_Cluster.html`,
 		Resolver:    fetchEcsClusters,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ecs"),
 		Columns: []schema.Column{

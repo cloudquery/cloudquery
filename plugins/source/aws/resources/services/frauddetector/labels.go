@@ -10,7 +10,7 @@ import (
 func Labels() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_frauddetector_labels",
-		Description: "https://docs.aws.amazon.com/frauddetector/latest/api/API_Label.html",
+		Description: `https://docs.aws.amazon.com/frauddetector/latest/api/API_Label.html`,
 		Resolver:    fetchFrauddetectorLabels,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("frauddetector"),
 		Columns: []schema.Column{
