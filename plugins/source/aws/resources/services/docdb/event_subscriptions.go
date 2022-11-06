@@ -10,7 +10,7 @@ import (
 func EventSubscriptions() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_docdb_event_subscriptions",
-		Description: "https://docs.aws.amazon.com/documentdb/latest/developerguide/API_EventSubscription.html",
+		Description: `https://docs.aws.amazon.com/documentdb/latest/developerguide/API_EventSubscription.html`,
 		Resolver:    fetchDocdbEventSubscriptions,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("docdb"),
 		Columns: []schema.Column{

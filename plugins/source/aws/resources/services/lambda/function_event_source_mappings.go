@@ -10,7 +10,7 @@ import (
 func FunctionEventSourceMappings() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_lambda_function_event_source_mappings",
-		Description: "https://docs.aws.amazon.com/lambda/latest/dg/API_EventSourceMappingConfiguration.html",
+		Description: `https://docs.aws.amazon.com/lambda/latest/dg/API_EventSourceMappingConfiguration.html`,
 		Resolver:    fetchLambdaFunctionEventSourceMappings,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("lambda"),
 		Columns: []schema.Column{

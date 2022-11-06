@@ -10,7 +10,7 @@ import (
 func Findings() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_inspector_findings",
-		Description: "https://docs.aws.amazon.com/inspector/v1/APIReference/API_Finding.html",
+		Description: `https://docs.aws.amazon.com/inspector/v1/APIReference/API_Finding.html`,
 		Resolver:    fetchInspectorFindings,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("inspector"),
 		Columns: []schema.Column{

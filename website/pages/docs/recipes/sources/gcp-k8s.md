@@ -1,27 +1,19 @@
-# GCP + Kubernetes (GKE) + PostgreSQL
+# GCP + Kubernetes (GKE)
 
 ```yaml
 kind: source
 spec:
   name: gcp
   path: "cloudquery/gcp"
-  version: "v2.4.1" # latest version of gcp plugin
-  destinations: ["postgresql"]
+  version: "v2.4.3" # latest version of gcp plugin
+  destinations: ["<destination>"]
 ---
 kind: source
 spec:
   name: k8s
   path: "cloudquery/k8s"
-  version: "v2.3.1" # latest version of k8s plugin
-  destinations: ["postgresql"]
----
-kind: destination
-spec:
-  name: "postgresql"
-  path: "cloudquery/postgresql"
-  version: "v1.6.1" # latest version of postgresql plugin
-  spec:
-    connection_string: ${PG_CONNECTION_STRING}
+  version: "v2.3.3" # latest version of k8s plugin
+  destinations: ["<destination>"]
 ```
 
 Kubernetes users may see the following message when running the K8s plugin on GKE Clusters:
@@ -55,7 +47,7 @@ sudo apt-get install google-cloud-sdk-gke-gcloud-auth-plugin
 Mac or Linux:
 
 ```bash
-gke-gcloud-auth-plugin --version 
+gke-gcloud-auth-plugin --version
 ```
 
 Windows:

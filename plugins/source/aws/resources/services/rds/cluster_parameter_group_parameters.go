@@ -10,7 +10,7 @@ import (
 func ClusterParameterGroupParameters() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_rds_cluster_parameter_group_parameters",
-		Description: "https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_Parameter.html",
+		Description: `https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_Parameter.html`,
 		Resolver:    fetchRdsClusterParameterGroupParameters,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("rds"),
 		Columns: []schema.Column{
