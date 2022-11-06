@@ -9,5 +9,5 @@ spec:
   path: cloudquery/azure
   version: "v1.3.0" # latest version of azure plugin
   tables: ["*"]
-  destinations: ["YOUR_DESTINATION"]
+  destinations: ["<destination>"]
 ```
