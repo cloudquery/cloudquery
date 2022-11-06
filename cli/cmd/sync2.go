@@ -54,6 +54,11 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 			Msg("End migration")
 	}
 
+	err = checkPluginsCompatibility(ctx, sourceSpec.Name, sourceSpec.Version, 2, destClients)
+	if err != nil {
+		return err
+	}
+
 	resources := make(chan []byte)
 	g, gctx := errgroup.WithContext(ctx)
 	log.Info().Str("source", sourceSpec.Name).Strs("destinations", sourceSpec.Destinations).Msg("Start fetching resources")

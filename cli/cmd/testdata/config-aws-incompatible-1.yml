@@ -1,0 +1,21 @@
+kind: source
+spec:
+  name: aws
+  version: v3.8.0
+  destinations: [postgresql,csv]
+  path: cloudquery/aws
+---
+kind: destination
+spec:
+  name: postgresql
+  path: cloudquery/postgresql
+  version: v1.6.0
+  spec:
+    connection_string: postgresql://postgres:pass@localhost:5432/postgres
+---
+kind: destination
+spec:
+  name: csv
+  path: cloudquery/csv
+  version: v1.0.0
+  write_mode: append

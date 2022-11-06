@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/spf13/cobra"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -57,5 +58,18 @@ func TestSync(t *testing.T) {
 				require.Contains(t, commandError.Error(), tc.err)
 			}
 		})
+	}
+}
+
+func TestValidateProtocols(t *testing.T) {
+	configs := []string{"config-aws-incompatible-1.yml", "config-aws-incompatible-2.yml"}
+
+	for _, tc := range configs {
+		cmd, _ := getSyncCommand(t, tc)
+		if err := cmd.Execute(); err == nil {
+			t.Fatal("expected error for invalid protocols")
+		} else {
+			assert.Contains(t, err.Error(), "please update sources and destinations to the latest versions")
+		}
 	}
 }

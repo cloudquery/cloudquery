@@ -145,6 +145,10 @@ func syncConnectionV1(ctx context.Context, cqDir string, sourceClient *clients.S
 		return err
 	}
 	defer destClients.Close()
+	err = checkPluginsCompatibility(ctx, sourceSpec.Name, sourceSpec.Version, 1, destClients)
+	if err != nil {
+		return err
+	}
 
 	if !noMigrate {
 		fmt.Println("Starting migration for:", sourceSpec.Name, "->", sourceSpec.Destinations)
@@ -260,4 +264,32 @@ func syncConnectionV1(ctx context.Context, cqDir string, sourceClient *clients.S
 
 func isUnknownConcurrencyFieldError(err error) bool {
 	return strings.Contains(err.Error(), unknownFieldErrorPrefix+`"table_concurrency"`) || strings.Contains(err.Error(), unknownFieldErrorPrefix+`"resource_concurrency"`)
+}
+
+func checkPluginsCompatibility(ctx context.Context, sourcePluginName string, sourcePluginVersion string, expectedProtocolVersion uint64, destClients destinationClients) error {
+	message := ""
+
+	for _, destClient := range destClients {
+		destPluginName, err := destClient.Name(ctx)
+		if err != nil {
+			return fmt.Errorf("failed to get destination name: %w", err)
+		}
+		destPluginVersion, err := destClient.Version(ctx)
+		if err != nil {
+			return fmt.Errorf("failed to get destination version: %w", err)
+		}
+
+		destProtocolVersion, err := destClient.GetProtocolVersion(ctx)
+		if err != nil {
+			return fmt.Errorf("failed to get protocol version from destination %q: %w", destPluginName+"@"+destPluginVersion, err)
+		}
+		if destProtocolVersion != expectedProtocolVersion {
+			message += fmt.Sprintf("\nsource %q and destination %q are incompatible", destPluginName+"@"+destPluginVersion, sourcePluginName+"@"+sourcePluginVersion)
+		}
+	}
+
+	if message != "" {
+		return fmt.Errorf(message + "\nplease update sources and destinations to the latest versions from https://cloudquery.io/docs/plugins/sources")
+	}
+	return nil
 }
