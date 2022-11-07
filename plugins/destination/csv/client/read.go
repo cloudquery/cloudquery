@@ -9,6 +9,7 @@ import (
 	"os"
 	"path"
 
+	"github.com/cloudquery/plugin-sdk/plugins"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -32,6 +33,7 @@ func (c *Client) read(table *schema.Table, sourceName string, res chan<- *schema
 	if sourceNameIndex == -1 {
 		return fmt.Errorf("could not find column %s in table %s", schema.CqSourceNameColumn.Name, table.Name)
 	}
+	transformer := plugins.DefaultReverseTransformer{}
 
 	for {
 		record, err := r.Read()
@@ -44,8 +46,12 @@ func (c *Client) read(table *schema.Table, sourceName string, res chan<- *schema
 		if record[sourceNameIndex] != sourceName {
 			continue
 		}
+		values := make([]interface{}, len(record))
+		for i, v := range record {
+			values[i] = v
+		}
 
-		cqTypes, err := schema.CQTypesFromValues(table, record)
+		cqTypes, err := transformer.ReverseTransformValues(table, values)
 		if err != nil {
 			return err
 		}
