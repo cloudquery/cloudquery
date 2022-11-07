@@ -16,16 +16,19 @@
 \echo "Executing check 5.1.2"
 \echo "Minimize user access to GCR (Manual)"
 \ir ../queries/manual.sql
+-- no generic check
 
 \set check_id '5.1.3'
 \echo "Executing check 5.1.3"
 \echo "Minimize cluster access to read-only for GCR (Manual)"
 \ir ../queries/manual.sql
+-- no generic check
 
 \set check_id '5.1.4'
 \echo "Executing check 5.1.4"
 \echo "Minimize Container Registries to only those approved (Manual)"
 \ir ../queries/manual.sql
+-- no generic check
 
 \echo "5.2 Identity and Access Management (IAM)"
 \set check_id '5.2.1'
@@ -43,6 +46,7 @@
 \echo "Executing check 5.3.1"
 \echo "Ensure Kubernetes Secrets are encrypted using keys managed in Cloud KMS (Manual)"
 \ir ../queries/manual.sql
+-- no generic check
 
 \echo "5.4 Node Metadata"
 \set check_id '5.4.1'
@@ -75,6 +79,7 @@
 \echo "Executing check 5.5.4"
 \echo "When creating New Clusters - Automate GKE version management using Release Channels (Manual)"
 \ir ../queries/manual.sql
+-- no generic check
 
 \set check_id '5.5.5'
 \echo "Executing check 5.5.5"
@@ -122,16 +127,19 @@
 \echo "Executing check 5.6.6"
 \echo "Consider firewalling GKE worker nodes (Manual)"
 \ir ../queries/manual.sql
+-- no generic check
 
 \set check_id '5.6.7'
 \echo "Executing check 5.6.7"
 \echo "Ensure Network Policy is Enabled and set as appropriate (Manual)"
 \ir ../queries/manual.sql
+-- can check if enabled only
 
 \set check_id '5.6.8'
 \echo "Executing check 5.6.8"
 \echo "Ensure use of Google-managed SSL Certificates (Manual)"
 \ir ../queries/manual.sql
+-- no generic check
 
 \echo "5.7 Logging"
 \set check_id '5.7.1'
@@ -143,7 +151,7 @@
 \echo "Executing check 5.7.2"
 \echo "Enable Linux auditd logging (Manual)"
 \ir ../queries/manual.sql
-
+-- no generic check
 
 \echo "5.8 Authentication and Authorization"
 \set check_id '5.8.1'
@@ -160,6 +168,7 @@
 \echo "Executing check 5.8.3"
 \echo "Manage Kubernetes RBAC users with Google Groups for GKE (Manual)"
 \ir ../queries/manual.sql
+-- no generic check
 
 \set check_id '5.8.4'
 \echo "Executing check 5.8.4"
@@ -193,6 +202,7 @@
 \echo "Executing check 5.10.4"
 \echo "Consider GKE Sandbox for running untrusted workloads (Manual)"
 \ir ../queries/manual.sql
+-- no generic check
 
 \set check_id '5.10.5'
 \echo "Executing check 5.10.5"

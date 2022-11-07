@@ -9,6 +9,7 @@
 \echo "Executing check 2.1.1"
 \echo "Client certificate authentication should not be used for users (Manual)"
 \ir ../queries/manual.sql
+-- no automated query
 
 \echo "2.2 Logging"
 
@@ -16,9 +17,10 @@
 \echo "Executing check 2.2.1"
 \echo "Ensure that a minimal audit policy is created (Manual)"
 \ir ../queries/manual.sql
+-- no generic query
 
 \set check_id '2.2.2'
 \echo "Executing check 2.2.2"
 \echo "Ensure that the audit policy covers key security concerns (Manual)"
 \ir ../queries/manual.sql
-
+-- no generic query
