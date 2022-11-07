@@ -16,19 +16,19 @@ The following tables depend on okta_applications:
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|id (PK)|String|
-|label|String|
-|name|String|
-|status|String|
-|sign_on_mode|String|
-|created|Timestamp|
 |embedded|JSON|
 |links|JSON|
-|last_updated|Timestamp|
 |accessibility|JSON|
+|created|Timestamp|
 |credentials|JSON|
-|licensing|JSON|
-|settings|JSON|
-|visibility|JSON|
 |features|StringArray|
+|id (PK)|String|
+|label|String|
+|last_updated|Timestamp|
+|licensing|JSON|
+|name|String|
 |profile|JSON|
+|settings|JSON|
+|sign_on_mode|String|
+|status|String|
+|visibility|JSON|

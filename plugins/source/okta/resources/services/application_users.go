@@ -21,10 +21,55 @@ func ApplicationUsers() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
+				Name:     "embedded",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Embedded"),
+			},
+			{
+				Name:     "links",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Links"),
+			},
+			{
+				Name:     "created",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Created"),
+			},
+			{
+				Name:     "credentials",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Credentials"),
+			},
+			{
+				Name:     "external_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ExternalId"),
+			},
+			{
 				Name:            "id",
 				Type:            schema.TypeString,
 				Resolver:        schema.PathResolver("Id"),
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
+			},
+			{
+				Name:     "last_sync",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("LastSync"),
+			},
+			{
+				Name:     "last_updated",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("LastUpdated"),
+			},
+			{
+				Name:     "password_changed",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("PasswordChanged"),
+			},
+			{
+				Name:     "profile",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Profile"),
 			},
 			{
 				Name:     "scope",
@@ -45,56 +90,6 @@ func ApplicationUsers() *schema.Table {
 				Name:     "sync_state",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("SyncState"),
-			},
-			{
-				Name:     "created",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("Created"),
-			},
-			{
-				Name:     "embedded",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Embedded"),
-			},
-			{
-				Name:     "links",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Links"),
-			},
-			{
-				Name:     "password_changed",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("PasswordChanged"),
-			},
-			{
-				Name:     "last_updated",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("LastUpdated"),
-			},
-			{
-				Name:     "last_sync",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("LastSync"),
-			},
-			{
-				Name:     "accessibility",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Accessibility"),
-			},
-			{
-				Name:     "credentials",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Credentials"),
-			},
-			{
-				Name:     "external_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ExternalId"),
-			},
-			{
-				Name:     "profile",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Profile"),
 			},
 		},
 	}

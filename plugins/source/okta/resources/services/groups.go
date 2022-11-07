@@ -15,22 +15,6 @@ func Groups() *schema.Table {
 		Resolver: fetchGroups,
 		Columns: []schema.Column{
 			{
-				Name:            "id",
-				Type:            schema.TypeString,
-				Resolver:        schema.PathResolver("Id"),
-				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
-			},
-			{
-				Name:     "type",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Type"),
-			},
-			{
-				Name:     "created",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("Created"),
-			},
-			{
 				Name:     "embedded",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Embedded"),
@@ -39,6 +23,17 @@ func Groups() *schema.Table {
 				Name:     "links",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Links"),
+			},
+			{
+				Name:     "created",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Created"),
+			},
+			{
+				Name:            "id",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("Id"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:     "last_membership_updated",
@@ -59,6 +54,11 @@ func Groups() *schema.Table {
 				Name:     "profile",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Profile"),
+			},
+			{
+				Name:     "type",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Type"),
 			},
 		},
 		Relations: []*schema.Table{

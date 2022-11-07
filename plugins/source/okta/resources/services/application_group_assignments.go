@@ -21,17 +21,6 @@ func ApplicationGroupAssignments() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
-				Name:            "id",
-				Type:            schema.TypeString,
-				Resolver:        schema.PathResolver("Id"),
-				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
-			},
-			{
-				Name:     "priority",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("Priority"),
-			},
-			{
 				Name:     "embedded",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Embedded"),
@@ -42,9 +31,20 @@ func ApplicationGroupAssignments() *schema.Table {
 				Resolver: schema.PathResolver("Links"),
 			},
 			{
+				Name:            "id",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("Id"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
+			},
+			{
 				Name:     "last_updated",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("LastUpdated"),
+			},
+			{
+				Name:     "priority",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("Priority"),
 			},
 			{
 				Name:     "profile",

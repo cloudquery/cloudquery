@@ -15,6 +15,36 @@ func Applications() *schema.Table {
 		Resolver: fetchApplications,
 		Columns: []schema.Column{
 			{
+				Name:     "embedded",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Embedded"),
+			},
+			{
+				Name:     "links",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Links"),
+			},
+			{
+				Name:     "accessibility",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Accessibility"),
+			},
+			{
+				Name:     "created",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Created"),
+			},
+			{
+				Name:     "credentials",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Credentials"),
+			},
+			{
+				Name:     "features",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("Features"),
+			},
+			{
 				Name:            "id",
 				Type:            schema.TypeString,
 				Resolver:        schema.PathResolver("Id"),
@@ -26,49 +56,9 @@ func Applications() *schema.Table {
 				Resolver: schema.PathResolver("Label"),
 			},
 			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
-			},
-			{
-				Name:     "status",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Status"),
-			},
-			{
-				Name:     "sign_on_mode",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("SignOnMode"),
-			},
-			{
-				Name:     "created",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("Created"),
-			},
-			{
-				Name:     "embedded",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Embedded"),
-			},
-			{
-				Name:     "links",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Links"),
-			},
-			{
 				Name:     "last_updated",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("LastUpdated"),
-			},
-			{
-				Name:     "accessibility",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Accessibility"),
-			},
-			{
-				Name:     "credentials",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Credentials"),
 			},
 			{
 				Name:     "licensing",
@@ -76,25 +66,34 @@ func Applications() *schema.Table {
 				Resolver: schema.PathResolver("Licensing"),
 			},
 			{
-				Name:     "settings",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Settings"),
-			},
-			{
-				Name:     "visibility",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Visibility"),
-			},
-
-			{
-				Name:     "features",
-				Type:     schema.TypeStringArray,
-				Resolver: schema.PathResolver("Features"),
+				Name:     "name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Name"),
 			},
 			{
 				Name:     "profile",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Profile"),
+			},
+			{
+				Name:     "settings",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Settings"),
+			},
+			{
+				Name:     "sign_on_mode",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SignOnMode"),
+			},
+			{
+				Name:     "status",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Status"),
+			},
+			{
+				Name:     "visibility",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Visibility"),
 			},
 		},
 		Relations: []*schema.Table{
