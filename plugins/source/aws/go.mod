@@ -13,6 +13,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.12.20
 	github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.15.20
 	github.com/aws/aws-sdk-go-v2/service/apprunner v1.15.0
+	github.com/aws/aws-sdk-go-v2/service/appstream v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/appsync v1.15.12
 	github.com/aws/aws-sdk-go-v2/service/autoscaling v1.23.18
 	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.23.0
@@ -70,7 +71,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/route53domains v1.12.19
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.29.1
 	github.com/aws/aws-sdk-go-v2/service/s3control v1.24.2
-	github.com/aws/aws-sdk-go-v2/service/sagemaker v1.52.0
+	github.com/aws/aws-sdk-go-v2/service/sagemaker v1.54.0
 	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.16.4
 	github.com/aws/aws-sdk-go-v2/service/servicecatalog v1.14.19
 	github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.14.3
@@ -87,7 +88,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/xray v1.13.21
 	github.com/aws/smithy-go v1.13.4
 	github.com/basgys/goxml2json v1.1.0
-	github.com/cloudquery/plugin-sdk v0.13.20
+	github.com/cloudquery/plugin-sdk v0.13.23
 	github.com/gocarina/gocsv v0.0.0-20220927221512-ad3251f9fa25
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.9

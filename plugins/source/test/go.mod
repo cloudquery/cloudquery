@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/test
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v0.13.20
+	github.com/cloudquery/plugin-sdk v0.13.23
 	github.com/rs/zerolog v1.28.0
 )
 
