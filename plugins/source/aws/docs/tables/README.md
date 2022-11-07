@@ -177,6 +177,7 @@
 | [aws_elasticache_snapshots](aws_elasticache_snapshots.md) |
 | [aws_elasticache_user_groups](aws_elasticache_user_groups.md) |
 | [aws_elasticache_users](aws_elasticache_users.md) |
+| [aws_elasticache_subnet_groups](aws_elasticache_subnet_groups.md) |
 | [aws_elasticbeanstalk_application_versions](aws_elasticbeanstalk_application_versions.md) |
 | [aws_elasticbeanstalk_applications](aws_elasticbeanstalk_applications.md) |
 | [aws_elasticbeanstalk_environments](aws_elasticbeanstalk_environments.md) |
