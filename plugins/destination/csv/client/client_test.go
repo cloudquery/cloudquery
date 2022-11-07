@@ -50,6 +50,6 @@ func TestPlugin(t *testing.T) {
 			Directory: t.TempDir(),
 		},
 	},
-	plugins.DestinationPluginTestWithSuiteSkipTestOverWriteDeleteStale(),
-	plugins.DestinationPluginTestWithSuiteSkipTestOverwrite())
+		plugins.DestinationPluginTestWithSuiteSkipTestOverWriteDeleteStale(),
+		plugins.DestinationPluginTestWithSuiteSkipTestOverwrite())
 }
