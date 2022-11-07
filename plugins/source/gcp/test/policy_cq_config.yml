@@ -1,0 +1,14 @@
+kind: source
+spec:
+  name: gcp
+  version: v1.0.0
+  destinations: [postgresql]
+  path: ./gcp
+  registry: local
+---
+kind: destination
+spec:
+  name: postgresql
+  version: "v1.6.5" # latest version of postgresql plugin
+  spec:
+    connection_string: ${CQ_DSN}
