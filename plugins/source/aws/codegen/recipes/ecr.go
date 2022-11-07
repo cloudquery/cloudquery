@@ -87,12 +87,10 @@ func ECRResources() []*Resource {
 			Relations: []string{"RepositoryImageScanFindings()"},
 		},
 		{
-			SubService:            "repository_image_scan_findings",
-			Struct:                &models.ImageScanWrapper{},
-			SkipFields:            []string{"RepositoryArn"},
-			UnwrapEmbeddedStructs: false,
-			Description:           "https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_ImageScanFindings.html",
-			ExtraColumns:          defaultRegionalColumns,
+			SubService:   "repository_image_scan_findings",
+			Struct:       &models.ImageScanWrapper{},
+			Description:  "https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_ImageScanFindings.html",
+			ExtraColumns: defaultRegionalColumns,
 		},
 	}
 
