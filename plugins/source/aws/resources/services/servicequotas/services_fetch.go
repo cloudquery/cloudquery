@@ -9,7 +9,10 @@ import (
 )
 
 func fetchServicequotasServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	var config servicequotas.ListServicesInput
+	config := servicequotas.ListServicesInput{
+		MaxResults: defaultMaxResults,
+	}
+
 	svc := meta.(*client.Client).Services().Servicequotas
 	servicePaginator := servicequotas.NewListServicesPaginator(svc, &config)
 	for servicePaginator.HasMorePages() {
