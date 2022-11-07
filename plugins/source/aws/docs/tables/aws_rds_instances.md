@@ -86,7 +86,6 @@ The primary key for this table is **arn**.
 |secondary_availability_zone|String|
 |status_infos|JSON|
 |storage_encrypted|Bool|
-|storage_throughput|Int|
 |storage_type|String|
 |tde_credential_arn|String|
 |timezone|String|
