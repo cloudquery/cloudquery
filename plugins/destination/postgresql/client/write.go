@@ -14,9 +14,9 @@ import (
 )
 
 var cqStatusToPgStatus = map[schema.Status]pgtype.Status{
-	schema.Null: pgtype.Null,
+	schema.Null:      pgtype.Null,
 	schema.Undefined: pgtype.Null,
-	schema.Present: pgtype.Present,
+	schema.Present:   pgtype.Present,
 }
 
 func cqToPgTextArray(c *schema.TextArray) pgtype.TextArray {
