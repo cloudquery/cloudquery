@@ -39,6 +39,9 @@ type Resource struct {
 	// --------------------------------
 	ShouldGenerateResolverAndMockTest bool
 	ResolverAndMockTestTemplate       string
+
+	// To be used in list/paginator resolver
+	MaxResults int
 }
 
 //go:embed templates/resolver_and_mock_test/*/*.go.tpl
