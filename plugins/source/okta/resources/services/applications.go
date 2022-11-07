@@ -99,6 +99,7 @@ func Applications() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			ApplicationUsers(),
+			ApplicationGroupAssignments(),
 		},
 	}
 }
