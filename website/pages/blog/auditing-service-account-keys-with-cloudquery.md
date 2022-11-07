@@ -60,7 +60,7 @@ Service Account Keys are just another way to use Service Accounts, albeit
 one with significant risks.
 
 
-Typically, the account kesy would look something like this:
+Typically, the account keys would look something like this:
 
 GCP Service Account Key:
 ```yaml
@@ -84,9 +84,9 @@ SecretKey:   "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
 It is probably tempting to store your Service Account Keys in
 a Key or Secret Management system such as AWS Secret Manager, GCP Secrets Manager,
 Azure KeyVault, or Hashicorp Vault. These systems allow secure
-desimination of secret material to services or users.
+dissemination of secret material to services or users.
 
-However, this approach is also fraught with perile.
+However, this approach is also fraught with peril.
 
 Although secret managers allow secure storage, once the secret material leaves
 the storage system, the security of the secret material is reliant on the client,
