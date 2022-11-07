@@ -33,7 +33,7 @@
 \set check_id '5.1.6' 
 \echo "Executing check 5.1.6"
 \echo "Ensure that Service Account Tokens are only mounted where necessary (Manual)"
-\ir ../queries/manual.sql 
+\ir ../queries/pod_security/pod_service_account_token_disabled.sql
 
 
 
@@ -93,7 +93,8 @@
 \set check_id '5.3.2'
 \echo "Executing check 5.3.2"
 \echo "Ensure that all Namespaces have Network Policies defined (Manual)"
-\ir ../queries/manual.sql
+\ir ../queries/network_hardening/network_policy_default_deny_ingress.sql
+\ir ../queries/network_hardening/network_policy_default_deny_egress.sql
 
 
 
