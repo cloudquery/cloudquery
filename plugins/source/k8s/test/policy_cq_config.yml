@@ -1,9 +1,9 @@
 kind: source
 spec:
-  name: aws
+  name: k8s
   version: v1.0.0
   destinations: [postgresql]
-  path: ./aws
+  path: ./k8s
   registry: local
 ---
 kind: destination
