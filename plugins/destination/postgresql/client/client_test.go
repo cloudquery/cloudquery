@@ -1,7 +1,6 @@
 package client
 
 import (
-	"context"
 	"os"
 	"testing"
 	"time"
@@ -27,43 +26,13 @@ func getTestConnection() string {
 	return testConn
 }
 
-func TestInitialize(t *testing.T) {
-	ctx := context.Background()
-	client, err := New(ctx, getTestLogger(t), specs.Destination{
-		Spec: Spec{
-			ConnectionString: getTestConnection(),
-		},
-	})
-	if err != nil {
-		t.Fatal(err)
-	}
-	if client == nil {
-		t.Fatal("client is nil")
-	}
-	if err := client.Close(ctx); err != nil {
-		t.Fatal(err)
-	}
-	err = client.Close(ctx)
-	if err == nil {
-		t.Fatal("expected error when closing a closed client second time")
-	}
-
-	if err.Error() != "client already closed or not initialized" {
-		t.Fatal("expected error when closing a closed client second time")
-	}
-}
-
 func TestPgPlugin(t *testing.T) {
-	ctx := context.Background()
 	p := plugins.NewDestinationPlugin("postgresql", "development", New)
-
-	if err := plugins.DestinationPluginTestHelper(ctx, p, getTestLogger(t), specs.Destination{
-		WriteMode: specs.WriteModeAppend,
+	plugins.DestinationPluginTestSuiteRunner(t, p, specs.Destination{
+		WriteMode: specs.WriteModeOverwriteDeleteStale,
 		Spec: Spec{
 			ConnectionString: getTestConnection(),
 			PgxLogLevel:      LogLevelTrace,
 		},
-	}); err != nil {
-		t.Fatal(err)
-	}
+	})
 }
