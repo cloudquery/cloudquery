@@ -15,6 +15,7 @@ type Account struct {
 type AwsOrg struct {
 	OrganizationUnits           []string `json:"organization_units,omitempty"`
 	AdminAccount                *Account `json:"admin_account"`
+	UseDefaultCredentials       bool     `json:"use_default_credentials,omitempty"`
 	MemberCredentials           *Account `json:"member_trusted_principal"`
 	ChildAccountRoleName        string   `json:"member_role_name,omitempty"`
 	ChildAccountRoleSessionName string   `json:"member_role_session_name,omitempty"`

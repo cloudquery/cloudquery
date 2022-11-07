@@ -346,6 +346,10 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source) (s
 			logger.Error().Err(err).Msg("error getting child accounts")
 			return nil, err
 		}
+		// All member account role assumption should be done using the default credentials as defined by the environment variables
+		if awsConfig.Organization.UseDefaultCredentials {
+			adminAccountSts = nil
+		}
 	}
 	if len(awsConfig.Accounts) == 0 {
 		awsConfig.Accounts = append(awsConfig.Accounts, Account{
