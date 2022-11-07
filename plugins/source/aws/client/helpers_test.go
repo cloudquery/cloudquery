@@ -10,7 +10,6 @@ import (
 	ttypes "github.com/aws/aws-sdk-go-v2/service/acm/types"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway/types"
 	"github.com/aws/smithy-go"
-	"github.com/cloudquery/plugin-sdk/cqtypes"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -67,7 +66,7 @@ func TestResolveARN(t *testing.T) {
 			col := schema.Column{Name: tt.columnName}
 			client := Client{Region: "region", Partition: "aws"}
 			err := resolver(context.Background(), &client, tt.resource, col)
-			expectedText := &cqtypes.Text{}
+			expectedText := &schema.Text{}
 			_ = expectedText.Set(tt.want)
 
 			require.Equal(t, tt.resource.Get(tt.columnName), expectedText)
