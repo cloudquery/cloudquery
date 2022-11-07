@@ -21,16 +21,6 @@ func ApplicationUsers() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
-				Name:     "embedded",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Embedded"),
-			},
-			{
-				Name:     "links",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Links"),
-			},
-			{
 				Name:     "created",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("Created"),

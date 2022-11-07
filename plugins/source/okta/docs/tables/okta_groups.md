@@ -15,8 +15,6 @@ The following tables depend on okta_groups:
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|embedded|JSON|
-|links|JSON|
 |created|Timestamp|
 |id (PK)|String|
 |last_membership_updated|Timestamp|

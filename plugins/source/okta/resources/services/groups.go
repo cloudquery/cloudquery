@@ -15,16 +15,6 @@ func Groups() *schema.Table {
 		Resolver: fetchGroups,
 		Columns: []schema.Column{
 			{
-				Name:     "embedded",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Embedded"),
-			},
-			{
-				Name:     "links",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Links"),
-			},
-			{
 				Name:     "created",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("Created"),
