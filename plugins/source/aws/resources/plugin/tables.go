@@ -9,6 +9,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/apigatewayv2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/applicationautoscaling"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/apprunner"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/appstream"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/appsync"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/athena"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/autoscaling"
@@ -105,6 +106,15 @@ func tables() []*schema.Table {
 		apprunner.Services(),
 		apprunner.VpcConnector(),
 		apprunner.VpcIngressConnection(),
+		appstream.AppBlocks(),
+		appstream.Applications(),
+		appstream.DirectoryConfigs(),
+		appstream.Fleets(),
+		appstream.ImageBuilders(),
+		appstream.Images(),
+		appstream.Stacks(),
+		appstream.UsageReportSubscriptions(),
+		appstream.Users(),
 		appsync.GraphqlApis(),
 		athena.DataCatalogs(),
 		athena.WorkGroups(),

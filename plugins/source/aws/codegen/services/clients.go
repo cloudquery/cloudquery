@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
 	"github.com/aws/aws-sdk-go-v2/service/applicationautoscaling"
 	"github.com/aws/aws-sdk-go-v2/service/apprunner"
+	"github.com/aws/aws-sdk-go-v2/service/appstream"
 	"github.com/aws/aws-sdk-go-v2/service/appsync"
 	"github.com/aws/aws-sdk-go-v2/service/athena"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
@@ -93,6 +94,7 @@ var clients = []interface{}{
 	&apigatewayv2.Client{},
 	&applicationautoscaling.Client{},
 	&apprunner.Client{},
+	&appstream.Client{},
 	&appsync.Client{},
 	&athena.Client{},
 	&autoscaling.Client{},

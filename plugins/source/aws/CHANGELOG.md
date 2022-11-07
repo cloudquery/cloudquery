@@ -6,6 +6,53 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [4.7.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v4.7.1...plugins-source-aws-v4.7.2) (2022-11-06)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for aws to v0.13.22 ([#3677](https://github.com/cloudquery/cloudquery/issues/3677)) ([11effa2](https://github.com/cloudquery/cloudquery/commit/11effa22ddd4b12dec1291ea940df4824f8a58e1))
+
+## [4.7.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v4.7.0...plugins-source-aws-v4.7.1) (2022-11-06)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/sagemaker to v1.54.0 ([#3675](https://github.com/cloudquery/cloudquery/issues/3675)) ([59b244d](https://github.com/cloudquery/cloudquery/commit/59b244da7f2ac447b308ad655449a802908fbe34))
+
+## [4.7.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v4.6.1...plugins-source-aws-v4.7.0) (2022-11-06)
+
+
+### Features
+
+* Appstream resources ([#3567](https://github.com/cloudquery/cloudquery/issues/3567)) ([084a1d3](https://github.com/cloudquery/cloudquery/commit/084a1d3db2209a768db8b2fb7034fc85f537a617))
+
+## [4.6.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v4.6.0...plugins-source-aws-v4.6.1) (2022-11-06)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for aws to v0.13.21 ([#3629](https://github.com/cloudquery/cloudquery/issues/3629)) ([5a239b2](https://github.com/cloudquery/cloudquery/commit/5a239b25e29160918f712b9db131242ec302c82d))
+
+## [4.6.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v4.5.0...plugins-source-aws-v4.6.0) (2022-11-06)
+
+
+### Features
+
+* AppRunner add support for Connections ([#3602](https://github.com/cloudquery/cloudquery/issues/3602)) ([b6c17a2](https://github.com/cloudquery/cloudquery/commit/b6c17a299bc52d7cf78893803ed1028554c90b26))
+* **aws:** AppRunner Resources: VPC Connector, VPC Ingress Connection And Autotscaling ([#3450](https://github.com/cloudquery/cloudquery/issues/3450)) ([f5cd42c](https://github.com/cloudquery/cloudquery/commit/f5cd42c308f99dc62d3e476316dd6a4b69a5a8b7))
+* **aws:** AppRunner support ObservabilityConfiguration ([#3603](https://github.com/cloudquery/cloudquery/issues/3603)) ([b93a66d](https://github.com/cloudquery/cloudquery/commit/b93a66d702a927c9dbd3936b7a237006584fb293))
+* **aws:** Support identitystore and ssoadmin ([#3005](https://github.com/cloudquery/cloudquery/issues/3005)) ([afa463d](https://github.com/cloudquery/cloudquery/commit/afa463d07fd288a0aa937740c5d39f7884482bd4))
+
+
+### Bug Fixes
+
+* **aws:** Elasticache Engine Versions PK ([#3562](https://github.com/cloudquery/cloudquery/issues/3562)) ([59a7400](https://github.com/cloudquery/cloudquery/commit/59a740069527946d92ed448288122118d247551d)), closes [#3561](https://github.com/cloudquery/cloudquery/issues/3561)
+* **deps:** Update plugin-sdk for aws to v0.13.20 ([#3569](https://github.com/cloudquery/cloudquery/issues/3569)) ([3876311](https://github.com/cloudquery/cloudquery/commit/38763114e431f44c593e6a139eefec1fa586c45b))
+* Fix bug in s3_cross_region_replication policy ([#3565](https://github.com/cloudquery/cloudquery/issues/3565)) ([515a7d0](https://github.com/cloudquery/cloudquery/commit/515a7d0ed1d83aa393bf74e60a12cc806a6684b4))
+* Fix documentation ([#3608](https://github.com/cloudquery/cloudquery/issues/3608)) ([ea14f06](https://github.com/cloudquery/cloudquery/commit/ea14f06e86928db81e13da9d17169e3f8ef5a3af))
+* Update endpoints ([#3605](https://github.com/cloudquery/cloudquery/issues/3605)) ([20b9f4f](https://github.com/cloudquery/cloudquery/commit/20b9f4f9f8ee79fe44ee26ae7f934006be7d96bd))
+
 ## [4.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v4.4.0...plugins-source-aws-v4.5.0) (2022-11-03)
 
 
