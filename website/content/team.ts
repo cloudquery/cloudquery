@@ -63,7 +63,7 @@ const CLOUDQUERY_TEAM = {
     name: "Samuel Kelemen",
     url: "https://www.linkedin.com/in/skelemen/",
     twitterUsername: "",
-    image_url: "/images/people/samuel.png",
+    image_url: "/images/people/samuel.jpg",
   },
   alex: {
     name: "Aleksandr Shcherbakov",
