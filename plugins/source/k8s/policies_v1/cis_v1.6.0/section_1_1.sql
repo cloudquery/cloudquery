@@ -54,3 +54,58 @@
 \echo "Executing check 1.1.10"
 \echo  "Ensure that the Container Network Interface file ownership is set to root:root (Manual)"
 \ir ../queries/manual.sql
+
+\set check_id '1.1.11'
+\echo "Executing check 1.1.11"
+\echo "Ensure that the etcd data directory permissions are set to 700 or more restrictive (Automated)"
+\ir ../queries/manual.sql
+
+\set check_id '1.1.12'
+\echo "Executing check 1.1.12"
+\echo "Ensure that the etcd data directory ownership is set to etcd:etcd (Automated)"
+\ir ../queries/manual.sql
+
+\set check_id '1.1.13'
+\echo "Executing check 1.1.13"
+\echo "Ensure that the admin.conf file permissions are set to 644 or more restrictive (Automated)"
+\ir ../queries/manual.sql
+
+\set check_id '1.1.14'
+\echo "Executing check 1.1.14"
+\echo "Ensure that the admin.conf file ownership is set to root:root (Automated)"
+\ir ../queries/manual.sql
+
+\set check_id '1.1.15'
+\echo "Executing check 1.1.15"
+\echo "Ensure that the scheduler.conf file permissions are set to 644 or more restrictive (Automated)"
+
+\ir ../queries/manual.sql
+\set check_id '1.1.16'
+\echo "Executing check 1.1.16"
+\echo "Ensure that the scheduler.conf file ownership is set to root:root (Automated)"
+\ir ../queries/manual.sql
+
+\set check_id '1.1.17'
+\echo "Executing check 1.1.17"
+\echo "Ensure that the controller-manager.conf file permissions are set to 644 or more restrictive (Automated)"
+\ir ../queries/manual.sql
+
+\set check_id '1.1.18'
+\echo "Executing check 1.1.18"
+\echo "Ensure that the controller-manager.conf file ownership is set to root:root (Automated)"
+\ir ../queries/manual.sql
+
+\set check_id '1.1.19'
+\echo "Executing check 1.1.19"
+\echo "Ensure that the Kubernetes PKI directory and file ownership is set to root:root (Automated)"
+\ir ../queries/manual.sql
+
+\set check_id '1.1.20'
+\echo "Executing check 1.1.20"
+\echo "Ensure that the Kubernetes PKI certificate file permissions are set to 644 or more restrictive (Manual)"
+\ir ../queries/manual.sql
+
+\set check_id '1.1.21'
+\echo "Executing check 1.1.21"
+\echo "Ensure that the Kubernetes PKI key file permissions are set to 600 (Manual)"
+\ir ../queries/manual.sql
