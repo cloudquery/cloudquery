@@ -10,7 +10,7 @@ select DISTINCT uid                                    AS resource_id,
                 name                                   AS resource_name,
                 CASE
                     WHEN
-                        spec_automount_service_account_token
+                        automount_service_account_token
                         THEN 'fail'
                     ELSE 'pass'
                     END                                AS status
