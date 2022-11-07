@@ -34,7 +34,7 @@ func TestResolveARN(t *testing.T) {
 				return []string{"restapis", *resource.Item.(types.RestApi).Id}, nil
 			},
 			schema.NewResourceData(&schema.Table{Columns: []schema.Column{{Name: "myarn", Type: schema.TypeString}}}, nil, types.RestApi{Id: aws.String("myid")}),
-			"arn:aws:apigateway:region::restapis/myid",
+			&schema.Text{Status: schema.Present, Str: "arn:aws:apigateway:region::restapis/myid"},
 			false,
 		},
 		{
@@ -45,7 +45,7 @@ func TestResolveARN(t *testing.T) {
 				return []string{"", "restapis", *resource.Item.(types.RestApi).Id}, nil
 			},
 			schema.NewResourceData(&schema.Table{Columns: []schema.Column{{Name: "myarn", Type: schema.TypeString}}}, nil, types.RestApi{Id: aws.String("myid")}),
-			"arn:aws:apigateway:region::/restapis/myid",
+			&schema.Text{Status: schema.Present, Str: "arn:aws:apigateway:region::/restapis/myid"},
 			false,
 		},
 		{
@@ -56,7 +56,7 @@ func TestResolveARN(t *testing.T) {
 				return nil, errors.New("test")
 			},
 			schema.NewResourceData(&schema.Table{Columns: []schema.Column{{Name: "myarn", Type: schema.TypeString}}}, nil, types.RestApi{Id: aws.String("myid")}),
-			nil,
+			&schema.Text{Status: schema.Undefined},
 			true,
 		},
 	}
@@ -66,11 +66,10 @@ func TestResolveARN(t *testing.T) {
 			col := schema.Column{Name: tt.columnName}
 			client := Client{Region: "region", Partition: "aws"}
 			err := resolver(context.Background(), &client, tt.resource, col)
-			expectedText := &schema.Text{}
-			_ = expectedText.Set(tt.want)
 
-			require.Equal(t, tt.resource.Get(tt.columnName), expectedText)
-			require.Equal(t, err != nil, tt.wantErr)
+			actual := tt.resource.Get(tt.columnName)
+			require.Equal(t, tt.want, actual)
+			require.Equal(t, tt.wantErr, err != nil)
 		})
 	}
 }
