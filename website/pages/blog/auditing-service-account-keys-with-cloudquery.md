@@ -102,8 +102,7 @@ why not lean into the IAM platform and use it for authorizing the end service di
 
 AWS has a feature called [Access Keys](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html). 
 Access Keys can be disabled by marking them inactive, so at the very least you can quickly pull the authorization without 
-completely getting rid of the keys. However, if you 100% sure the key was leaked, the safest option would still be just 
-removing the key completely.
+completely getting rid of the keys. 
 
 ## GCP
 
@@ -112,7 +111,8 @@ GCP has two types of Service Account Keys: `SYSTEM_MANAGED` and `USER_MANAGED` k
 `SYSTEM_MANAGED` keys are keys used internally by GCP for creating short-lived service account credentials,
 and for signing blobs and JSON Web Tokens. Users don’t have control over these keys.
 
-`USER_MANAGED` keys are keys created by end users. 
+`USER_MANAGED` keys are keys created by end users. These service account keys should
+be avoided.
 
 
 # Implementing checks
@@ -121,6 +121,7 @@ and for signing blobs and JSON Web Tokens. Users don’t have control over these
 
 ### AWS
 
+Find all Access Keys:
 ```sql
 select * from aws_iam_user_access_keys;
 ```
@@ -136,16 +137,16 @@ Permissions:
 
 ### GCP
 
+Find all user-created Service Account Keys:
 ```sql
 select * from gcp_iam_service_account_keys where key_type != 'SYSTEM_MANAGED';
 ```
 
-### Azure
 
 # Ensuring compliance
 
-If you still prefer to stick with account keys you can at least make this checks regular. 
-Setup a CQ sync and run it every day/week and use the queries abogve to make sure everything’s looking OK.
+If you still prefer to stick with account keys, you can at least make these checks regular. 
+Setup a CQ sync and run it every day/week and use the queries above to ensure everything is okay.
 
 The better option would be to drop the account keys usage altogether.
 
@@ -153,6 +154,7 @@ The better option would be to drop the account keys usage altogether.
 
 AWS and GCP allow you to restrict the creation of service account keys with Organizational Policies and Service Control Policies. 
 
+AWS Service Control Policy:
 ```json
 {
   "Version": "2012-10-17",
@@ -161,14 +163,13 @@ AWS and GCP allow you to restrict the creation of service account keys with Orga
     "Action": "iam:CreateAccessKey",
     "Resource": "arn:aws:iam::/*",
 }
-
 ```
 
+GCP Organizational Policy:
 ```jsx
 constraints/iam.disableServiceAccountKeyCreation is:True
 ```
 
-Enabling constraints:
 
 # Conclusion
 
