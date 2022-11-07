@@ -56,6 +56,26 @@
     {
       "source": "/docs/deployment/observability",
       "destination": "/docs/deployment/overview"
+    },
+    {
+      "source": "/docs/recipes/aws-postgresql",
+      "destination": "/docs/recipes/sources/aws"
+    },
+    {
+      "source": "/docs/recipes/gcp-postgresql",
+      "destination": "/docs/recipes/sources/gcp"
+    },
+    {
+      "source": "/docs/recipes/gcp-k8s-postgresql",
+      "destination": "/docs/recipes/sources/gcp-k8s"
+    },
+    {
+      "source": "/docs/recipes/azure-postgresql",
+      "destination": "/docs/recipes/sources/azure"
+    },
+    {
+      "source": "/docs/recipes/aws-csv",
+      "destination": "/docs/recipes/destinations/csv"
     }
   ]
 }

@@ -7,3 +7,5 @@
 
 **/go.mod
 **/go.sum
+.release-please-manifest.json
+**/CHANGELOG.md
