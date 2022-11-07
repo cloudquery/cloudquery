@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.3.6](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v2.3.5...plugins-source-k8s-v2.3.6) (2022-11-07)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for k8s to v1 ([#3794](https://github.com/cloudquery/cloudquery/issues/3794)) ([e4bb6e9](https://github.com/cloudquery/cloudquery/commit/e4bb6e9f162fccfdd71a5f32635cbcc816d9dd85))
+* **k8s:** Use `automount_service_account_token` in policy ([#3817](https://github.com/cloudquery/cloudquery/issues/3817)) ([f465f23](https://github.com/cloudquery/cloudquery/commit/f465f231294ccdc350c507937d3a671f532b03d6))
+
 ## [2.3.5](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v2.3.4...plugins-source-k8s-v2.3.5) (2022-11-07)
 
 
