@@ -22,10 +22,11 @@ func KafkaResources() []*Resource {
 				Resolver: `schema.PathResolver("ClusterArn")`,
 			},
 			}...),
-			ShouldGenerateResolverAndMockTest: true,
 			Relations: []string{
 				"Nodes()",
 			},
+			ShouldGenerateResolverAndMockTest: true,
+			ResolverAndMockTestTemplate:       "list_and_describe_resources_1",
 		},
 		{
 			SubService:  "nodes",
@@ -46,6 +47,7 @@ func KafkaResources() []*Resource {
 				},
 			}...),
 			ShouldGenerateResolverAndMockTest: true,
+			ResolverAndMockTestTemplate:       "list_resources_1",
 		},
 	}
 
@@ -56,7 +58,6 @@ func KafkaResources() []*Resource {
 
 		// Parameters for auto-generating the resolver and mock-test.
 		// Only used when `ShouldGenerateResolverAndMockTest = true`
-		r.ResolverAndMockTestTemplate = "list_and_describe_resources_1"
 		r.Client = &kafka.Client{}
 	}
 

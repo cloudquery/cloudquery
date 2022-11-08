@@ -25,7 +25,6 @@ func buildEventbridgeArchivesMock(t *testing.T, ctrl *gomock.Controller) client.
 		&eventbridge.ListArchivesOutput{
 			Archives: []types.Archive{object},
 		}, nil)
-
 	return client.Services{
 		Eventbridge: m,
 	}

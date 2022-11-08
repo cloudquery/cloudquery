@@ -1,6 +1,7 @@
 package recipes
 
 import (
+	"github.com/aws/aws-sdk-go-v2/service/appstream"
 	"github.com/aws/aws-sdk-go-v2/service/appstream/types"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -243,7 +244,7 @@ func AppstreamResources() []*Resource {
 	for _, resource := range resources {
 		resource.Service = "appstream"
 		resource.Multiplex = `client.ServiceAccountRegionMultiplexer("appstream2")`
-
+		resource.Client = &appstream.Client{}
 		resource.ResolverAndMockTestTemplate = "describe_resources_1"
 	}
 

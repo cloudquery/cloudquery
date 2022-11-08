@@ -20,6 +20,7 @@ func buildKafkaClustersMock(t *testing.T, ctrl *gomock.Controller) client.Servic
 	if err != nil {
 		t.Fatal(err)
 	}
+	buildKafkaNodesMock(t, m)
 
 	m.EXPECT().ListClustersV2(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&kafka.ListClustersV2Output{

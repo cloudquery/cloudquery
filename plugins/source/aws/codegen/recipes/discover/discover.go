@@ -73,16 +73,16 @@ func FindMethods(client, targetStruct interface{}, prefixes []string) []Discover
 func FindMethod(client, targetStruct interface{}, prefixes []string) (DiscoveredMethod, error) {
 	f := FindMethods(client, targetStruct, prefixes)
 	if len(f) == 0 {
-		name := reflect.TypeOf(targetStruct).Name()
+		name := reflect.TypeOf(targetStruct).Elem().Name()
 		return DiscoveredMethod{}, fmt.Errorf("found no method with prefix in %v that also returns %v", prefixes, name)
 	}
 	if len(f) > 1 {
-		name := reflect.TypeOf(targetStruct).Name()
+		name := reflect.TypeOf(targetStruct).Elem().Name()
 		names := make([]string, len(f))
 		for i := range f {
 			names[i] = f[i].Method.Name
 		}
-		return DiscoveredMethod{}, fmt.Errorf("found %d potential list methods that also return %s: %v", len(f), name, strings.Join(names, ","))
+		return DiscoveredMethod{}, fmt.Errorf("found %d potential list methods that also returns %s: %v", len(f), name, strings.Join(names, ","))
 	}
 	return f[0], nil
 }

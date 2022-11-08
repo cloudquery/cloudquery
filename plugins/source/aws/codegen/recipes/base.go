@@ -173,8 +173,11 @@ func (r *Resource) Generate() error {
 		if err := r.generateResolver(dir); err != nil {
 			return err
 		}
-		if err := r.generateMockTest(dir); err != nil {
-			return err
+		// if resource has a parent, the mock test will happen there
+		if r.parent == nil {
+			if err := r.generateMockTest(dir); err != nil {
+				return err
+			}
 		}
 	}
 
@@ -221,12 +224,12 @@ func (r *Resource) generateResolver(dir string) error {
 	}).ParseFS(templatesFS,
 		fmt.Sprintf("templates/resolver_and_mock_test/%s/fetch.go.tpl", r.ResolverAndMockTestTemplate))
 	if err != nil {
-		return fmt.Errorf("failed to parse gcp templates: %w", err)
+		return fmt.Errorf("failed to parse templates: %w", err)
 	}
 
 	var buff bytes.Buffer
 	if err := tpl.Execute(&buff, r); err != nil {
-		return fmt.Errorf("failed to execute template: %w", err)
+		return fmt.Errorf("failed to execute resolver template for %s.%s: %w", r.Service, r.SubService, err)
 	}
 
 	filePath := path.Join(dir, r.SubService+"_fetch.go")
@@ -257,7 +260,7 @@ func (r *Resource) generateMockTest(dir string) error {
 
 	var buff bytes.Buffer
 	if err := tpl.Execute(&buff, r); err != nil {
-		return fmt.Errorf("failed to execute template: %w", err)
+		return fmt.Errorf("failed to execute mock template for %s.%s: %w", r.Service, r.SubService, err)
 	}
 
 	filePath := path.Join(dir, r.SubService+"_mock_test.go")

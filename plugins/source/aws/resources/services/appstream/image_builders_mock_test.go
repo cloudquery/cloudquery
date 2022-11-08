@@ -23,7 +23,7 @@ func buildAppstreamImageBuildersMock(t *testing.T, ctrl *gomock.Controller) clie
 
 	m.EXPECT().DescribeImageBuilders(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&appstream.DescribeImageBuildersOutput{
-			ImageBuilders: &types.ImageBuilder{object},
+			ImageBuilders: []types.ImageBuilder{object},
 		}, nil)
 
 	return client.Services{

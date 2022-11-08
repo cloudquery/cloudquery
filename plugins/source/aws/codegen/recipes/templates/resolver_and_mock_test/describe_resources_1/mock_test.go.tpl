@@ -13,18 +13,22 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
+{{- if .Parent }}
+func build{{.Service | ToCamel}}{{.SubService | ToCamel}}Mock(t *testing.T, m *mocks.MockKafkaClient) {
+{{- else }}
 func build{{.Service | ToCamel}}{{.SubService | ToCamel}}Mock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMock{{.CloudQueryServiceName}}Client(ctrl)
+  m := mocks.NewMock{{.CloudQueryServiceName}}Client(ctrl)
+{{- end }}
 	object := types.{{.StructName}}{}
 	err := faker.FakeObject(&object)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	m.EXPECT().Describe{{.StructName}}s(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&{{.Service}}.Describe{{.StructName}}sOutput{
-			{{.StructName}}s: &types.{{.StructName}}{object},
-		}, nil)
+    m.EXPECT().{{.DescribeMethod.Method.Name}}(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+    &{{.Service}}.{{.DescribeMethod.Method.Name}}Output{
+      {{.DescribeMethod.OutputFieldName}}: []types.{{.StructName}}{object},
+    }, nil)
 
 	return client.Services{
 		{{.Service | ToCamel}}: m,

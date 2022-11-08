@@ -23,7 +23,7 @@ func buildAppstreamAppBlocksMock(t *testing.T, ctrl *gomock.Controller) client.S
 
 	m.EXPECT().DescribeAppBlocks(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&appstream.DescribeAppBlocksOutput{
-			AppBlocks: &types.AppBlock{object},
+			AppBlocks: []types.AppBlock{object},
 		}, nil)
 
 	return client.Services{

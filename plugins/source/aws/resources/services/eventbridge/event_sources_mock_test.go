@@ -25,7 +25,6 @@ func buildEventbridgeEventSourcesMock(t *testing.T, ctrl *gomock.Controller) cli
 		&eventbridge.ListEventSourcesOutput{
 			EventSources: []types.EventSource{object},
 		}, nil)
-
 	return client.Services{
 		Eventbridge: m,
 	}

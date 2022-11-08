@@ -5,6 +5,7 @@ package appstream
 import (
 	"context"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/appstream"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -20,11 +21,11 @@ func fetchAppstreamFleets(ctx context.Context, meta schema.ClientMeta, parent *s
 			return err
 		}
 		res <- response.Fleets
-		if response.NextToken == nil {
+
+		if aws.ToString(response.NextToken) == "" {
 			break
 		}
 		input.NextToken = response.NextToken
 	}
-
 	return nil
 }

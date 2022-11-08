@@ -25,7 +25,6 @@ func buildEventbridgeEndpointsMock(t *testing.T, ctrl *gomock.Controller) client
 		&eventbridge.ListEndpointsOutput{
 			Endpoints: []types.Endpoint{object},
 		}, nil)
-
 	return client.Services{
 		Eventbridge: m,
 	}

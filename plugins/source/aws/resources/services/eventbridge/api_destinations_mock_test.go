@@ -25,7 +25,6 @@ func buildEventbridgeApiDestinationsMock(t *testing.T, ctrl *gomock.Controller) 
 		&eventbridge.ListApiDestinationsOutput{
 			ApiDestinations: []types.ApiDestination{object},
 		}, nil)
-
 	return client.Services{
 		Eventbridge: m,
 	}

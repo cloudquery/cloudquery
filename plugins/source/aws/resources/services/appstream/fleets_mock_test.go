@@ -23,7 +23,7 @@ func buildAppstreamFleetsMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 
 	m.EXPECT().DescribeFleets(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&appstream.DescribeFleetsOutput{
-			Fleets: &types.Fleet{object},
+			Fleets: []types.Fleet{object},
 		}, nil)
 
 	return client.Services{

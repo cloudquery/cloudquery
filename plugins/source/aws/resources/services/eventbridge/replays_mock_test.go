@@ -25,7 +25,6 @@ func buildEventbridgeReplaysMock(t *testing.T, ctrl *gomock.Controller) client.S
 		&eventbridge.ListReplaysOutput{
 			Replays: []types.Replay{object},
 		}, nil)
-
 	return client.Services{
 		Eventbridge: m,
 	}
