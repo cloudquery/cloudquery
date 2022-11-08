@@ -57,7 +57,7 @@ func buildEcrRepositoriesMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 		t.Fatal(err)
 	}
 	m.EXPECT().GetRepositoryPolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(&repoResponse, nil)
-  
+
 	return client.Services{
 		Ecr: m,
 	}
