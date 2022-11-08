@@ -12,7 +12,7 @@ const (
 	readSQL = "SELECT * FROM %s WHERE _cq_source_name = $1"
 )
 
-func (c *Client) createResultsArray(table *schema.Table) []interface{} {
+func (*Client) createResultsArray(table *schema.Table) []interface{} {
 	results := make([]interface{}, 0, len(table.Columns))
 	for _, col := range table.Columns {
 		switch col.Type {
@@ -38,9 +38,6 @@ func (c *Client) createResultsArray(table *schema.Table) []interface{} {
 			var r string
 			results = append(results, &r)
 		case schema.TypeTimestamp:
-			var r string
-			results = append(results, &r)
-		case schema.TypeTimeInterval:
 			var r string
 			results = append(results, &r)
 		case schema.TypeJSON:
@@ -75,9 +72,8 @@ func (c *Client) createResultsArray(table *schema.Table) []interface{} {
 	return results
 }
 
-func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- *schema.DestinationResource) error {
-	sql := fmt.Sprintf(readSQL, table.Name)
-	rows, err := c.db.Query(sql, sourceName)
+func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- []interface{}) error {
+	rows, err := c.db.Query(fmt.Sprintf(readSQL, table.Name), sourceName)
 	if err != nil {
 		return err
 	}
@@ -86,14 +82,7 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 		if err := rows.Scan(values...); err != nil {
 			return fmt.Errorf("failed to read from table %s: %w", table.Name, err)
 		}
-		cqTypes, err := schema.CQTypesFromValues(table, values)
-		if err != nil {
-			return err
-		}
-		res <- &schema.DestinationResource{
-			TableName: table.Name,
-			Data:      cqTypes,
-		}
+		res <- values
 	}
 	rows.Close()
 	return nil

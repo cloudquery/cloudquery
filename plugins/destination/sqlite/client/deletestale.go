@@ -15,10 +15,11 @@ func (c *Client) DeleteStale(ctx context.Context, tables schema.Tables, source s
 		sb.WriteString(table.Name)
 		sb.WriteString(" where ")
 		sb.WriteString(schema.CqSourceNameColumn.Name)
-		sb.WriteString(" = $1 and ")
+		sb.WriteString(" = $1 and datetime(")
 		sb.WriteString(schema.CqSyncTimeColumn.Name)
-		sb.WriteString(" < $2")
-		if _, err := c.db.Exec(sb.String(), source, syncTime); err != nil {
+		sb.WriteString(") < datetime($2)")
+		sql := sb.String()
+		if _, err := c.db.Exec(sql, source, syncTime); err != nil {
 			return err
 		}
 	}

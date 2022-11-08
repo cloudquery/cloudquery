@@ -4,7 +4,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func (c *Client) SchemaTypeToPg(t schema.ValueType) string {
+func (*Client) SchemaTypeToSqlite(t schema.ValueType) string {
 	switch t {
 	case schema.TypeBool:
 		return "integer"
@@ -21,9 +21,7 @@ func (c *Client) SchemaTypeToPg(t schema.ValueType) string {
 	case schema.TypeStringArray:
 		return "text"
 	case schema.TypeTimestamp:
-		return "text"
-	case schema.TypeTimeInterval:
-		return "text"
+		return "timestamp"
 	case schema.TypeJSON:
 		return "text"
 	case schema.TypeUUIDArray:
@@ -43,6 +41,6 @@ func (c *Client) SchemaTypeToPg(t schema.ValueType) string {
 	case schema.TypeIntArray:
 		return "text"
 	default:
-		return ""
+		panic("unknown type")
 	}
 }
