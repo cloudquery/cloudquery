@@ -42,15 +42,16 @@ func TestClient(t *testing.T) {
 }
 
 func TestPlugin(t *testing.T) {
-	ctx := context.Background()
 	p := plugins.NewDestinationPlugin("csv", "development", New)
 
-	if err := plugins.DestinationPluginTestHelper(ctx, p, getTestLogger(t), specs.Destination{
-		WriteMode: specs.WriteModeAppend,
-		Spec: Spec{
+	plugins.DestinationPluginTestSuiteRunner(t, p,
+		Spec{
 			Directory: t.TempDir(),
 		},
-	}); err != nil {
-		t.Fatal(err)
-	}
+		plugins.DestinationTestSuiteTests{
+			Overwrite:   true,
+			Append:      true,
+			DeleteStale: true,
+		},
+	)
 }
