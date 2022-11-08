@@ -1,9 +1,9 @@
 kind: source
 spec:
-  name: aws
+  name: azure
   version: v1.0.0
   destinations: [postgresql]
-  path: ./aws
+  path: ./azure
   registry: local
 ---
 kind: destination

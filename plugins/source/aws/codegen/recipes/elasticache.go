@@ -200,6 +200,21 @@ func ElastiCacheResources() []*Resource {
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
 				}...),
+		}, {
+			SubService:  "subnet_groups",
+			Struct:      &types.CacheSubnetGroup{},
+			Description: "https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_CacheSubnetGroup.html",
+			SkipFields:  []string{"ARN"},
+			ExtraColumns: append(
+				defaultRegionalColumns,
+				[]codegen.ColumnDefinition{
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("ARN")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				}...),
 		},
 	}
 

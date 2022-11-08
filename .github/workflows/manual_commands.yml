@@ -5,10 +5,10 @@ on:
     types: [created]
 
 jobs:
-  docs:
+  gen:
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger Source Plugin Docs Generation Command
+      - name: Trigger Source Plugin Generation Command
         uses: peter-evans/slash-command-dispatch@v3
         with:
           token: ${{ secrets.GH_CQ_BOT }}
