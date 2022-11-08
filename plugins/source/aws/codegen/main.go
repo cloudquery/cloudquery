@@ -91,6 +91,8 @@ func generateResources() ([]*recipes.Resource, error) {
 	resources = append(resources, recipes.WAFv2Resources()...)
 	resources = append(resources, recipes.WorkspacesResources()...)
 	resources = append(resources, recipes.XRayResources()...)
+
+	recipes.SetParentChildRelationships(resources)
 	for _, resource := range resources {
 		if err := resource.Generate(); err != nil {
 			return nil, err

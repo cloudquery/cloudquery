@@ -14,7 +14,7 @@ import (
 )
 
 func buildAppstreamDirectoryConfigsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockAppstreamClient(ctrl)
+	m := mocks.NewMockClient(ctrl)
 	object := types.DirectoryConfig{}
 	err := faker.FakeObject(&object)
 	if err != nil {
@@ -23,7 +23,7 @@ func buildAppstreamDirectoryConfigsMock(t *testing.T, ctrl *gomock.Controller) c
 
 	m.EXPECT().DescribeDirectoryConfigs(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&appstream.DescribeDirectoryConfigsOutput{
-			DirectoryConfigs: []types.DirectoryConfig{object},
+			DirectoryConfigs: &types.DirectoryConfig{object},
 		}, nil)
 
 	return client.Services{

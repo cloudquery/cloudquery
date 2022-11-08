@@ -21,9 +21,14 @@ func build{{.Service | ToCamel}}{{.SubService | ToCamel}}Mock(t *testing.T, ctrl
 		t.Fatal(err)
 	}
 
-  m.EXPECT().List{{.StructName}}s(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-    &{{.Service}}.List{{.StructName}}sOutput{
-      {{.StructName}}s: []types.{{.StructName}}{object},
+  m.EXPECT().{{.ListMethod.Method.Name}}(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+    &{{.Service}}.{{.ListMethod.Method.Name}}Output{
+      {{.ListMethod.OutputFieldName}}: []types.{{.StructName}}{object},
+    }, nil)
+
+  m.EXPECT().{{.DescribeMethod.Method.Name}}(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+    &{{.Service}}.{{.DescribeMethod.Method.Name}}Output{
+      {{.DescribeMethod.OutputFieldName}}: &object,
     }, nil)
 
   return client.Services{

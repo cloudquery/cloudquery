@@ -14,7 +14,7 @@ import (
 )
 
 func buildAppstreamUsageReportSubscriptionsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockAppstreamClient(ctrl)
+	m := mocks.NewMockClient(ctrl)
 	object := types.UsageReportSubscription{}
 	err := faker.FakeObject(&object)
 	if err != nil {
@@ -23,7 +23,7 @@ func buildAppstreamUsageReportSubscriptionsMock(t *testing.T, ctrl *gomock.Contr
 
 	m.EXPECT().DescribeUsageReportSubscriptions(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&appstream.DescribeUsageReportSubscriptionsOutput{
-			UsageReportSubscriptions: []types.UsageReportSubscription{object},
+			UsageReportSubscriptions: &types.UsageReportSubscription{object},
 		}, nil)
 
 	return client.Services{

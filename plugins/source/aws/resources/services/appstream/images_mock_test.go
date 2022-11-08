@@ -14,7 +14,7 @@ import (
 )
 
 func buildAppstreamImagesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockAppstreamClient(ctrl)
+	m := mocks.NewMockClient(ctrl)
 	object := types.Image{}
 	err := faker.FakeObject(&object)
 	if err != nil {
@@ -23,7 +23,7 @@ func buildAppstreamImagesMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 
 	m.EXPECT().DescribeImages(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&appstream.DescribeImagesOutput{
-			Images: []types.Image{object},
+			Images: &types.Image{object},
 		}, nil)
 
 	return client.Services{

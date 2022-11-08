@@ -13,6 +13,7 @@ import (
 	"text/template"
 
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling/types"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/recipes/discover"
 	"github.com/cloudquery/plugin-sdk/caser"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -39,10 +40,14 @@ type Resource struct {
 	// --------------------------------
 	ShouldGenerateResolverAndMockTest bool
 	ResolverAndMockTestTemplate       string
-
+	Client                            interface{}
 	// Needed because it's usually capitalised differently than 'Service'.
 	// Used for accessing 'client.Services().{{.CloudqueryServiceName}}'.
 	CloudqueryServiceName string
+
+	// used for generating resolver and mock tests, but set automatically
+	parent   *Resource
+	children []*Resource
 }
 
 //go:embed templates/resolver_and_mock_test/*/*.go.tpl
@@ -277,7 +282,57 @@ func (r *Resource) generateMockTest(dir string) error {
 // Because of this, we use a value receiver.
 // -------------------------------------------------------------------------------
 
-// Because usually the 'Struct' field contains a pointer, we need to dereference with '.Elem()'.
+// StructName returns the name of the resource's Struct field
 func (r Resource) StructName() string {
+	// because usually the 'Struct' field contains a pointer, we need to dereference with '.Elem()'.
 	return reflect.TypeOf(r.Struct).Elem().Name()
+}
+
+// DescribeMethod finds a describe method for the resource
+func (r Resource) DescribeMethod() discover.DiscoveredMethod {
+	m, err := discover.FindDescribeMethod(r.Client, r.Struct)
+	if err != nil {
+		panic(err)
+	}
+	return m
+}
+
+// ListMethod finds a list method for the resource
+func (r Resource) ListMethod() discover.DiscoveredMethod {
+	m, err := discover.FindListMethod(r.Client, r.Struct)
+	if err != nil {
+		panic(err)
+	}
+	return m
+}
+
+// Parent returns the parent resource, if any
+func (r Resource) Parent() *Resource {
+	return r.parent
+}
+
+// Children returns the child resources, if any
+func (r Resource) Children() []*Resource {
+	return r.children
+}
+
+func SetParentChildRelationships(resources []*Resource) {
+	m := map[string]*Resource{}
+	for _, r := range resources {
+		m[r.Service+"."+r.SubService] = r
+	}
+	csr := caser.New()
+	for _, r := range resources {
+		for _, ch := range r.Relations {
+			name := csr.ToSnake(strings.TrimSuffix(ch, "()"))
+			v, ok := m[r.Service+"."+name]
+			if !ok {
+				for k := range m {
+					fmt.Println(k)
+				}
+				panic("child not found for " + r.Service + "." + r.SubService + " : " + name)
+			}
+			r.children = append(r.children, v)
+		}
+	}
 }

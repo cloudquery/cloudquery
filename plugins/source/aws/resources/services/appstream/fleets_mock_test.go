@@ -14,7 +14,7 @@ import (
 )
 
 func buildAppstreamFleetsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockAppstreamClient(ctrl)
+	m := mocks.NewMockClient(ctrl)
 	object := types.Fleet{}
 	err := faker.FakeObject(&object)
 	if err != nil {
@@ -23,7 +23,7 @@ func buildAppstreamFleetsMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 
 	m.EXPECT().DescribeFleets(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&appstream.DescribeFleetsOutput{
-			Fleets: []types.Fleet{object},
+			Fleets: &types.Fleet{object},
 		}, nil)
 
 	return client.Services{

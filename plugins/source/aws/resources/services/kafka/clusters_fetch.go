@@ -5,22 +5,27 @@ package kafka
 import (
 	"context"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/kafka"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchKafkaEndpoints(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchKafkaClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var input kafka.ListClustersV2Input
 	c := meta.(*client.Client)
 	svc := c.Services().Kafka
-	paginator := kafka.NewListClustersV2Paginator(svc, &input)
-	for paginator.HasMorePages() {
-		response, err := paginator.NextPage(ctx)
+	for {
+		response, err := svc.ListClustersV2(ctx, &input)
 		if err != nil {
 			return err
 		}
 		res <- response.ClusterInfoList
+
+		if aws.ToString(response.NextToken) == "" {
+			break
+		}
+		input.NextToken = response.NextToken
 	}
 	return nil
 }

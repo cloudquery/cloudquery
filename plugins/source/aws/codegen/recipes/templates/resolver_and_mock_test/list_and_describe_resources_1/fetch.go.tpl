@@ -5,35 +5,48 @@ package {{.Service}}
 import (
 	"context"
 
+    "github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/{{.Service}}"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	var input {{.Service}}.List{{.StructName}}sInput
+	var input {{.Service}}.{{.ListMethod.Method.Name}}Input
 	c := meta.(*client.Client)
 	svc := c.Services().{{.CloudqueryServiceName}}
-	paginator := {{.Service}}.NewList{{.StructName}}sPaginator(svc, &input)
-	for paginator.HasMorePages() {
-		response, err := paginator.NextPage(ctx)
-		if err != nil {
-			return err
-		}
-		res <- response.{{.StructName}}s
-	}
-	return nil
+	for {
+        response, err := svc.{{.ListMethod.Method.Name}}(ctx, &input)
+        if err != nil {
+            return err
+        }
+        {{- if .ListMethod.OutputFieldName }}
+        res <- response.{{.ListMethod.OutputFieldName}}
+        {{- else }}
+        res <- response
+        {{- end }}
+
+        if aws.ToString(response.NextToken) == "" {
+            break
+        }
+        input.NextToken = response.NextToken
+    }
+    return nil
 }
 
 func {{.Table.PreResourceResolver}}(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().{{.CloudqueryServiceName}}
-	input := {{.Service}}.Describe{{.StructName}}Input{
+	input := {{.Service}}.{{.DescribeMethod.Method.Name}}Input{
 	}
-	output, err := svc.Describe{{.StructName}}(ctx, &input)
+	output, err := svc.{{.DescribeMethod.Method.Name}}(ctx, &input)
 	if err != nil {
 		return err
 	}
-	resource.Item = output.{{.StructName}}
+	{{- if .DescribeMethod.OutputFieldName }}
+	resource.Item = output.{{.DescribeMethod.OutputFieldName}}
+	{{- else }}
+	resource.Item = output
+	{{- end }}
 	return nil
 }

@@ -13,7 +13,7 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-func buildKafkaEndpointsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildKafkaClustersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockKafkaClient(ctrl)
 	object := types.Cluster{}
 	err := faker.FakeObject(&object)
@@ -21,9 +21,14 @@ func buildKafkaEndpointsMock(t *testing.T, ctrl *gomock.Controller) client.Servi
 		t.Fatal(err)
 	}
 
-	m.EXPECT().ListClusters(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&kafka.ListClustersOutput{
-			Clusters: []types.Cluster{object},
+	m.EXPECT().ListClustersV2(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&kafka.ListClustersV2Output{
+			ClusterInfoList: []types.Cluster{object},
+		}, nil)
+
+	m.EXPECT().DescribeClusterV2(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&kafka.DescribeClusterV2Output{
+			ClusterInfo: &object,
 		}, nil)
 
 	return client.Services{
@@ -31,6 +36,6 @@ func buildKafkaEndpointsMock(t *testing.T, ctrl *gomock.Controller) client.Servi
 	}
 }
 
-func TestKafkaEndpoints(t *testing.T) {
-	client.AwsMockTestHelper(t, Endpoints(), buildKafkaEndpointsMock, client.TestOptions{})
+func TestKafkaClusters(t *testing.T) {
+	client.AwsMockTestHelper(t, Clusters(), buildKafkaClustersMock, client.TestOptions{})
 }

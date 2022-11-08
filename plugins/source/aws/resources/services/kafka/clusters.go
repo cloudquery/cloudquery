@@ -7,11 +7,11 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func Endpoints() *schema.Table {
+func Clusters() *schema.Table {
 	return &schema.Table{
-		Name:                "aws_kafka_endpoints",
+		Name:                "aws_kafka_clusters",
 		Description:         `https://docs.aws.amazon.com/MSK/2.0/APIReference/v2-clusters-clusterarn.html#v2-clusters-clusterarn-properties`,
-		Resolver:            fetchKafkaEndpoints,
+		Resolver:            fetchKafkaClusters,
 		PreResourceResolver: getCluster,
 		Multiplex:           client.ServiceAccountRegionMultiplexer("kafka"),
 		Columns: []schema.Column{
@@ -78,6 +78,10 @@ func Endpoints() *schema.Table {
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Tags"),
 			},
+		},
+
+		Relations: []*schema.Table{
+			Nodes(),
 		},
 	}
 }
