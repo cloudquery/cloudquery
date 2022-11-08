@@ -77,7 +77,7 @@ jobs:
         uses: jacobtomlinson/gha-find-replace@657b0d1fe020da9943d1702b576f5d37d43b9c03
         continue-on-error: true
         with:
-          include: "plugins/source/${{steps.split.outputs.plugin_name}}/docs/**"
+          include: "plugins/${{steps.split.outputs.plugin_type}}/${{steps.split.outputs.plugin_name}}/docs/**"
           find: 'version:\s+\"v\d+\.\d+\.\d+\"\s+\#\s+latest version of ${{steps.split.outputs.plugin_name}} plugin'
           replace: 'version: "${{steps.split.outputs.plugin_version}}" # latest version of ${{steps.split.outputs.plugin_name}} plugin'
 
