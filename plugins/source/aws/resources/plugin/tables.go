@@ -208,6 +208,7 @@ func tables() []*schema.Table {
 		elasticache.Snapshots(),
 		elasticache.UserGroups(),
 		elasticache.Users(),
+		elasticache.SubnetGroups(),
 		elasticbeanstalk.ApplicationVersions(),
 		elasticbeanstalk.Applications(),
 		elasticbeanstalk.Environments(),

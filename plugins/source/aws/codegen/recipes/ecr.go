@@ -67,8 +67,15 @@ func ECRResources() []*Resource {
 						Type:     schema.TypeJSON,
 						Resolver: `resolveRepositoryTags`,
 					},
+					{
+						Name:     "policy_text",
+						Type:     schema.TypeJSON,
+						Resolver: `resolveRepositoryPolicy`,
+					},
 				}...),
-			Relations: []string{"RepositoryImages()"},
+			Relations: []string{
+				"RepositoryImages()",
+			},
 		},
 		{
 			SubService:  "repository_images",
