@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [4.9.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v4.8.0...plugins-source-aws-v4.9.0) (2022-11-08)
+
+
+### Features
+
+* **aws:** ECR Image Scan Findings ([#3607](https://github.com/cloudquery/cloudquery/issues/3607)) ([8c53348](https://github.com/cloudquery/cloudquery/commit/8c533482643cd150c20c8ec5e9c77e0c85304fdf))
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for aws to v1.1.0 ([#3914](https://github.com/cloudquery/cloudquery/issues/3914)) ([ff566a2](https://github.com/cloudquery/cloudquery/commit/ff566a29baaf0106d850c60d9c2f444d2663d2cf))
+
 ## [4.8.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v4.7.6...plugins-source-aws-v4.8.0) (2022-11-08)
 
 
