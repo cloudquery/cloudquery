@@ -53,6 +53,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/inspector"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/inspector2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/iot"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/kafka"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/kinesis"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/kms"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/lambda"
@@ -283,6 +284,7 @@ func tables() []*schema.Table {
 		iot.ThingTypes(),
 		iot.Things(),
 		iot.TopicRules(),
+		kafka.Endpoints(),
 		kinesis.Streams(),
 		kms.Aliases(),
 		kms.Keys(),

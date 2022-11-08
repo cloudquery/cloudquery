@@ -60,6 +60,7 @@ func generateResources() ([]*recipes.Resource, error) {
 	resources = append(resources, recipes.Inspector2Resources()...)
 	resources = append(resources, recipes.InspectorResources()...)
 	resources = append(resources, recipes.IOTResources()...)
+	resources = append(resources, recipes.KafkaResources()...)
 	resources = append(resources, recipes.KinesisResources()...)
 	resources = append(resources, recipes.KMSResources()...)
 	resources = append(resources, recipes.LambdaResources()...)
