@@ -29,7 +29,6 @@ func buildEventbridgeReplaysMock(t *testing.T, ctrl *gomock.Controller) client.S
 		Eventbridge: m,
 	}
 }
-
 func TestEventbridgeReplays(t *testing.T) {
 	client.AwsMockTestHelper(t, Replays(), buildEventbridgeReplaysMock, client.TestOptions{})
 }

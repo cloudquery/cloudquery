@@ -11,16 +11,16 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchKafkaNodes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	var input kafka.ListNodesInput = getListNodesInput(parent)
+func fetchKafkaClusterOperations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+	var input kafka.ListClusterOperationsInput = getListClusterOperationsInput(parent)
 	c := meta.(*client.Client)
 	svc := c.Services().Kafka
 	for {
-		response, err := svc.ListNodes(ctx, &input)
+		response, err := svc.ListClusterOperations(ctx, &input)
 		if err != nil {
 			return err
 		}
-		res <- response.NodeInfoList
+		res <- response.ClusterOperationInfoList
 		if aws.ToString(response.NextToken) == "" {
 			break
 		}

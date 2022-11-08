@@ -30,7 +30,6 @@ func buildAppstreamDirectoryConfigsMock(t *testing.T, ctrl *gomock.Controller) c
 		Appstream: m,
 	}
 }
-
 func TestAppstreamDirectoryConfigs(t *testing.T) {
 	client.AwsMockTestHelper(t, DirectoryConfigs(), buildAppstreamDirectoryConfigsMock, client.TestOptions{})
 }

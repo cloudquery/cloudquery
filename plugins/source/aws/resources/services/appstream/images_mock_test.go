@@ -30,7 +30,6 @@ func buildAppstreamImagesMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 		Appstream: m,
 	}
 }
-
 func TestAppstreamImages(t *testing.T) {
 	client.AwsMockTestHelper(t, Images(), buildAppstreamImagesMock, client.TestOptions{})
 }

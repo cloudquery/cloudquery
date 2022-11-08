@@ -82,6 +82,7 @@ func Clusters() *schema.Table {
 
 		Relations: []*schema.Table{
 			Nodes(),
+			ClusterOperations(),
 		},
 	}
 }

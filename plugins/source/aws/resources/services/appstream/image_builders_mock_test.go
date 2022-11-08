@@ -30,7 +30,6 @@ func buildAppstreamImageBuildersMock(t *testing.T, ctrl *gomock.Controller) clie
 		Appstream: m,
 	}
 }
-
 func TestAppstreamImageBuilders(t *testing.T) {
 	client.AwsMockTestHelper(t, ImageBuilders(), buildAppstreamImageBuildersMock, client.TestOptions{})
 }

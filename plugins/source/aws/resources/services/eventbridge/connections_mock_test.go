@@ -29,7 +29,6 @@ func buildEventbridgeConnectionsMock(t *testing.T, ctrl *gomock.Controller) clie
 		Eventbridge: m,
 	}
 }
-
 func TestEventbridgeConnections(t *testing.T) {
 	client.AwsMockTestHelper(t, Connections(), buildEventbridgeConnectionsMock, client.TestOptions{})
 }

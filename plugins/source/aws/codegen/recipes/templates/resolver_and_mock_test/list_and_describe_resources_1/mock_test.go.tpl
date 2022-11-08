@@ -7,7 +7,9 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/{{.Service}}"
 	"github.com/aws/aws-sdk-go-v2/service/{{.Service}}/types"
+	{{- if not .Parent }}
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
+	{{- end }}
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
@@ -44,6 +46,8 @@ func build{{.Service | ToCamel}}{{.SubService | ToCamel}}Mock(t *testing.T, ctrl
   }
 }
 
+{{- if not .Parent }}
 func Test{{.Service | ToCamel}}{{.SubService | ToCamel}}(t *testing.T) {
   client.AwsMockTestHelper(t, {{.SubService | ToCamel}}(), build{{.Service | ToCamel}}{{.SubService | ToCamel}}Mock, client.TestOptions{})
 }
+{{- end }}

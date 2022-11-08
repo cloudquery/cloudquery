@@ -21,6 +21,7 @@ func buildKafkaClustersMock(t *testing.T, ctrl *gomock.Controller) client.Servic
 		t.Fatal(err)
 	}
 	buildKafkaNodesMock(t, m)
+	buildKafkaClusterOperationsMock(t, m)
 
 	m.EXPECT().ListClustersV2(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&kafka.ListClustersV2Output{
@@ -36,7 +37,6 @@ func buildKafkaClustersMock(t *testing.T, ctrl *gomock.Controller) client.Servic
 		Kafka: m,
 	}
 }
-
 func TestKafkaClusters(t *testing.T) {
 	client.AwsMockTestHelper(t, Clusters(), buildKafkaClustersMock, client.TestOptions{})
 }

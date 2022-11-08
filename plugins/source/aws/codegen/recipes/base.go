@@ -42,6 +42,7 @@ type Resource struct {
 	ShouldGenerateResolverAndMockTest bool
 	ResolverAndMockTestTemplate       string
 	Client                            interface{}
+	CustomListInput                   string // optional string to List input to
 
 	// used for generating resolver and mock tests, but set automatically
 	parent   *Resource
@@ -173,11 +174,8 @@ func (r *Resource) Generate() error {
 		if err := r.generateResolver(dir); err != nil {
 			return err
 		}
-		// if resource has a parent, the mock test will happen there
-		if r.parent == nil {
-			if err := r.generateMockTest(dir); err != nil {
-				return err
-			}
+		if err := r.generateMockTest(dir); err != nil {
+			return err
 		}
 	}
 

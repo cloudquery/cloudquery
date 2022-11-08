@@ -286,6 +286,7 @@ func tables() []*schema.Table {
 		iot.Things(),
 		iot.TopicRules(),
 		kafka.Clusters(),
+		kafka.Configurations(),
 		kinesis.Streams(),
 		kms.Aliases(),
 		kms.Keys(),

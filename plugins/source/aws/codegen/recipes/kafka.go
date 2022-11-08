@@ -24,6 +24,7 @@ func KafkaResources() []*Resource {
 			}...),
 			Relations: []string{
 				"Nodes()",
+				"ClusterOperations()",
 			},
 			ShouldGenerateResolverAndMockTest: true,
 			ResolverAndMockTestTemplate:       "list_and_describe_resources_1",
@@ -44,6 +45,45 @@ func KafkaResources() []*Resource {
 					Name:     "cluster_arn",
 					Type:     schema.TypeString,
 					Resolver: `schema.ParentColumnResolver("arn")`,
+				},
+			}...),
+			ShouldGenerateResolverAndMockTest: true,
+			ResolverAndMockTestTemplate:       "list_resources_1",
+			CustomListInput:                   `getListNodesInput(parent)`,
+		},
+		{
+			SubService:  "cluster_operations",
+			Struct:      &types.ClusterOperationInfo{},
+			Description: "https://docs.aws.amazon.com/msk/1.0/apireference/clusters-clusterarn-operations.html",
+			SkipFields:  []string{"OperationArn", "ClusterArn"},
+			ExtraColumns: append(defaultAccountColumns, []codegen.ColumnDefinition{
+				{
+					Name:     "arn",
+					Type:     schema.TypeString,
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					Resolver: `schema.PathResolver("OperationArn")`,
+				},
+				{
+					Name:     "cluster_arn",
+					Type:     schema.TypeString,
+					Resolver: `schema.ParentColumnResolver("arn")`,
+				},
+			}...),
+			ShouldGenerateResolverAndMockTest: true,
+			ResolverAndMockTestTemplate:       "list_resources_1",
+			CustomListInput:                   `getListClusterOperationsInput(parent)`,
+		},
+		{
+			SubService:  "configurations",
+			Struct:      &types.Configuration{},
+			Description: "https://docs.aws.amazon.com/msk/1.0/apireference/clusters-clusterarn-configuration.html",
+			SkipFields:  []string{"Arn"},
+			ExtraColumns: append(defaultAccountColumns, []codegen.ColumnDefinition{
+				{
+					Name:     "arn",
+					Type:     schema.TypeString,
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					Resolver: `schema.PathResolver("Arn")`,
 				},
 			}...),
 			ShouldGenerateResolverAndMockTest: true,

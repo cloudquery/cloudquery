@@ -30,7 +30,6 @@ func buildAppstreamFleetsMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 		Appstream: m,
 	}
 }
-
 func TestAppstreamFleets(t *testing.T) {
 	client.AwsMockTestHelper(t, Fleets(), buildAppstreamFleetsMock, client.TestOptions{})
 }

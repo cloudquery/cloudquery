@@ -30,7 +30,6 @@ func buildAppstreamUsageReportSubscriptionsMock(t *testing.T, ctrl *gomock.Contr
 		Appstream: m,
 	}
 }
-
 func TestAppstreamUsageReportSubscriptions(t *testing.T) {
 	client.AwsMockTestHelper(t, UsageReportSubscriptions(), buildAppstreamUsageReportSubscriptionsMock, client.TestOptions{})
 }

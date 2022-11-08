@@ -12,15 +12,15 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-func buildKafkaNodesMock(t *testing.T, m *mocks.MockKafkaClient) {
-	object := types.NodeInfo{}
+func buildKafkaClusterOperationsMock(t *testing.T, m *mocks.MockKafkaClient) {
+	object := types.ClusterOperationInfo{}
 	err := faker.FakeObject(&object)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	m.EXPECT().ListNodes(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&kafka.ListNodesOutput{
-			NodeInfoList: []types.NodeInfo{object},
+	m.EXPECT().ListClusterOperations(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&kafka.ListClusterOperationsOutput{
+			ClusterOperationInfoList: []types.ClusterOperationInfo{object},
 		}, nil)
 }

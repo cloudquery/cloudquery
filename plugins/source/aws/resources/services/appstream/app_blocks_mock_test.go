@@ -30,7 +30,6 @@ func buildAppstreamAppBlocksMock(t *testing.T, ctrl *gomock.Controller) client.S
 		Appstream: m,
 	}
 }
-
 func TestAppstreamAppBlocks(t *testing.T) {
 	client.AwsMockTestHelper(t, AppBlocks(), buildAppstreamAppBlocksMock, client.TestOptions{})
 }

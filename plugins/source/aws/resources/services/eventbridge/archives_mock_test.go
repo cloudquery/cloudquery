@@ -29,7 +29,6 @@ func buildEventbridgeArchivesMock(t *testing.T, ctrl *gomock.Controller) client.
 		Eventbridge: m,
 	}
 }
-
 func TestEventbridgeArchives(t *testing.T) {
 	client.AwsMockTestHelper(t, Archives(), buildEventbridgeArchivesMock, client.TestOptions{})
 }

@@ -29,7 +29,6 @@ func buildEventbridgeApiDestinationsMock(t *testing.T, ctrl *gomock.Controller) 
 		Eventbridge: m,
 	}
 }
-
 func TestEventbridgeApiDestinations(t *testing.T) {
 	client.AwsMockTestHelper(t, ApiDestinations(), buildEventbridgeApiDestinationsMock, client.TestOptions{})
 }
