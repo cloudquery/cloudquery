@@ -60,6 +60,11 @@ func WorkGroupQueryExecutions() *schema.Table {
 				Resolver: schema.PathResolver("ResultConfiguration"),
 			},
 			{
+				Name:     "result_reuse_configuration",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ResultReuseConfiguration"),
+			},
+			{
 				Name:     "statement_type",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("StatementType"),

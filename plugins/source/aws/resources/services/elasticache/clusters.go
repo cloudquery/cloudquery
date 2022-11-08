@@ -113,9 +113,19 @@ func Clusters() *schema.Table {
 				Resolver: schema.PathResolver("EngineVersion"),
 			},
 			{
+				Name:     "ip_discovery",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("IpDiscovery"),
+			},
+			{
 				Name:     "log_delivery_configurations",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("LogDeliveryConfigurations"),
+			},
+			{
+				Name:     "network_type",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("NetworkType"),
 			},
 			{
 				Name:     "notification_configuration",
