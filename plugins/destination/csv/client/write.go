@@ -6,6 +6,7 @@ import (
 	"os"
 	"path"
 
+	"github.com/cloudquery/plugin-sdk/plugins"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -78,10 +79,10 @@ func (c *Client) endWrite(tables schema.Tables) {
 
 // this should only be called from the main listen goroutine to ensure writing to files
 // only happens in one place
-func (c *Client) writeResource(resource *schema.DestinationResource) {
+func (c *Client) writeResource(resource *plugins.ClientResource) {
 	record := make([]string, len(resource.Data))
 	for i, v := range resource.Data {
-		record[i] = v.String()
+		record[i] = v.(string)
 	}
 
 	if err := c.writers[resource.TableName].writer.Write(record); err != nil {
@@ -90,7 +91,7 @@ func (c *Client) writeResource(resource *schema.DestinationResource) {
 	}
 }
 
-func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *schema.DestinationResource) error {
+func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *plugins.ClientResource) error {
 	startWriteMsg := &startWriteMsg{
 		tables: tables,
 		err:    make(chan error),
