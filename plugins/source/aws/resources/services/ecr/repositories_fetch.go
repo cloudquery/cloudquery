@@ -8,6 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ecr"
 	"github.com/aws/aws-sdk-go-v2/service/ecr/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ecr/models"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -64,25 +65,51 @@ func resolveRepositoryPolicy(ctx context.Context, meta schema.ClientMeta, resour
 }
 
 func fetchEcrRepositoryImages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	maxResults := int32(1000)
-	p := parent.Item.(types.Repository)
 	config := ecr.DescribeImagesInput{
-		RepositoryName: p.RepositoryName,
-		MaxResults:     &maxResults,
+		RepositoryName: parent.Item.(types.Repository).RepositoryName,
+		MaxResults:     aws.Int32(1000),
 	}
-	c := meta.(*client.Client)
-	svc := c.Services().Ecr
-	for {
-		output, err := svc.DescribeImages(ctx, &config)
+	paginator := ecr.NewDescribeImagesPaginator(meta.(*client.Client).Services().Ecr, &config)
+	for paginator.HasMorePages() {
+		output, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
 		res <- output.ImageDetails
-		if aws.ToString(output.NextToken) == "" {
-			break
-		}
-		config.NextToken = output.NextToken
 	}
+	return nil
+}
+
+func fetchEcrRepositoryImageScanFindings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+	image := parent.Item.(types.ImageDetail)
+	repo := parent.Parent.Item.(types.Repository)
+	for _, tag := range image.ImageTags {
+		config := ecr.DescribeImageScanFindingsInput{
+			RepositoryName: repo.RepositoryName,
+			ImageId: &types.ImageIdentifier{
+				ImageDigest: image.ImageDigest,
+				ImageTag:    aws.String(tag),
+			},
+			MaxResults: aws.Int32(1000),
+		}
+
+		paginator := ecr.NewDescribeImageScanFindingsPaginator(meta.(*client.Client).Services().Ecr, &config)
+		for paginator.HasMorePages() {
+			output, err := paginator.NextPage(ctx)
+			if err != nil {
+				return err
+			}
+			res <- models.ImageScanWrapper{
+				ImageScanFindings: output.ImageScanFindings,
+				ImageTag:          aws.String(tag),
+				ImageDigest:       image.ImageDigest,
+				ImageScanStatus:   output.ImageScanStatus,
+				RegistryId:        repo.RegistryId,
+				RepositoryName:    repo.RepositoryName,
+			}
+		}
+	}
+
 	return nil
 }
 
