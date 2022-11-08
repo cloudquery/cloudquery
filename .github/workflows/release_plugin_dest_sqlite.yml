@@ -1,4 +1,4 @@
-name: release-plugin
+name: release-destination-sqlite-plugin
 on:
   push:
     tags:
@@ -7,7 +7,7 @@ env:
   CGO_ENABLED: 0
 
 jobs:
-  release-plugin-binary:
+  release-destination-sqlite-plugin-binary:
     runs-on: ubuntu-latest
     steps:
       # Tag format is plugins-<type>-<name>-<version>
