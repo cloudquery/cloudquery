@@ -10,7 +10,7 @@ spec:
   # Source spec section
   name: aws
   path: cloudquery/aws
-  version: "v4.7.5" # latest version of aws plugin
+  version: "v4.7.6" # latest version of aws plugin
   tables: ["*"]
   destinations: ["postgresql"]
   spec: 
