@@ -97,7 +97,7 @@ require (
 	github.com/basgys/goxml2json v1.1.0
 	github.com/cloudquery/plugin-sdk v1.11.0
 	github.com/gocarina/gocsv v0.0.0-20221105105431-c8ef78125b99
-	github.com/golang/mock v1.6.0
+	github.com/golang/mock v1.4.4
 	github.com/google/go-cmp v0.5.9
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/rs/zerolog v1.28.0

@@ -364,6 +364,7 @@ func tables() []*schema.Table {
 		route53.TrafficPolicies(),
 		s3.Accounts(),
 		s3.Buckets(),
+		s3.StorageLensConfigurations(),
 		sagemaker.EndpointConfigurations(),
 		sagemaker.Models(),
 		sagemaker.NotebookInstances(),

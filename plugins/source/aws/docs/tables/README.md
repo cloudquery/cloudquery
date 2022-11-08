@@ -399,6 +399,7 @@
   - [aws_s3_bucket_lifecycles](aws_s3_bucket_lifecycles.md)
   - [aws_s3_bucket_grants](aws_s3_bucket_grants.md)
   - [aws_s3_bucket_cors_rules](aws_s3_bucket_cors_rules.md)
+- [aws_s3_storage_lens_configurations](aws_s3_storage_lens_configurations.md)
 - [aws_sagemaker_endpoint_configurations](aws_sagemaker_endpoint_configurations.md)
 - [aws_sagemaker_models](aws_sagemaker_models.md)
 - [aws_sagemaker_notebook_instances](aws_sagemaker_notebook_instances.md)

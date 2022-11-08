@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
+	s3controltypes "github.com/aws/aws-sdk-go-v2/service/s3control/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/s3/models"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -107,12 +108,37 @@ func S3Resources() []*Resource {
 					},
 				}...),
 		},
+		{
+			SubService:          "storage_lens_configurations",
+			Struct:              &s3controltypes.StorageLensConfiguration{},
+			PreResourceResolver: "getStorageLensConfiguration",
+			Multiplex:           `client.ServiceAccountRegionMultiplexer("s3-control")`,
+			Description:         "https://docs.aws.amazon.com/AmazonS3/latest/API/API_control_StorageLensConfiguration.html",
+			SkipFields:          []string{"StorageLensArn"},
+			ExtraColumns: append(
+				defaultRegionalColumns,
+				[]codegen.ColumnDefinition{
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("StorageLensArn")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+					{
+						Name:     "tags",
+						Type:     schema.TypeJSON,
+						Resolver: `resolveStorageLensTags`,
+					},
+				}...),
+		},
 	}
 
 	// set default values
 	for _, r := range resources {
 		r.Service = "s3"
-		r.Multiplex = "client.AccountMultiplex"
+		if r.Multiplex == "" {
+			r.Multiplex = "client.AccountMultiplex"
+		}
 		structName := reflect.ValueOf(r.Struct).Elem().Type().Name()
 		if strings.Contains(structName, "Wrapper") {
 			r.UnwrapEmbeddedStructs = true
