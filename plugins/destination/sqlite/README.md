@@ -1,6 +1,6 @@
 # CloudQuery SQLite Destination Plugin
 
-This destination plugin let's you sync data from a CloudQuery source to a sqlite. This can be useful for local data exploration as no db/service is required.
+This destination plugin let's you sync data from a CloudQuery source to an SQLite database. This can be useful for local data exploration as no db/service is required.
 
 ## PostgreSQL Spec
 
