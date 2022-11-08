@@ -9,7 +9,7 @@ kind: source
 spec: # Common source spec section
   name: heroku
   path: cloudquery/heroku
-  version: "v2.2.7" # latest version of heroku plugin
+  version: "v2.2.8" # latest version of heroku plugin
   tables: ["*"]
   destinations: ["postgresql"]
 
