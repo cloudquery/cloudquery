@@ -50,7 +50,7 @@ func (*Client) SchemaTypeToPg10(t schema.ValueType) string {
 	case schema.TypeIntArray:
 		return "bigint[]"
 	default:
-		return ""
+		panic("unknown type " + t.String())
 	}
 }
 
@@ -91,6 +91,6 @@ func (*Client) SchemaTypeToCockroach(t schema.ValueType) string {
 	case schema.TypeIntArray:
 		return "bigint[]"
 	default:
-		return ""
+		panic("unknown type " + t.String())
 	}
 }
