@@ -1,8 +1,6 @@
 package recipes
 
 import (
-	"reflect"
-
 	"github.com/aws/aws-sdk-go-v2/service/ram/types"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -160,7 +158,7 @@ func RAMResources() []*Resource {
 	}
 	for _, r := range resources {
 		r.Service = "ram"
-		r.Description = "https://docs.aws.amazon.com/ram/latest/APIReference/API_" + reflect.TypeOf(r.Struct).Elem().Name() + ".html"
+		r.Description = "https://docs.aws.amazon.com/ram/latest/APIReference/API_" + r.StructName() + ".html"
 		if len(r.ResolverAndMockTestTemplate) > 0 {
 			r.ShouldGenerateResolverAndMockTest = true
 			r.MaxResults = 500

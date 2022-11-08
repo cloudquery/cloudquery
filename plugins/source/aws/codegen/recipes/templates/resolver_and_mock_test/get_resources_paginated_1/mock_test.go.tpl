@@ -14,7 +14,7 @@ import (
 )
 
 func build{{.Service | ToCamel}}{{.SubService | ToCamel}}Mock(t *testing.T, ctrl *gomock.Controller) client.Services {
-    m := mocks.NewMock{{.CloudqueryServiceName}}Client(ctrl)
+    m := mocks.NewMock{{.Service | ToCamel}}Client(ctrl)
     object := types.{{.StructName}}{}
     err := faker.FakeObject(&object)
     if err != nil {
@@ -24,7 +24,7 @@ func build{{.Service | ToCamel}}{{.SubService | ToCamel}}Mock(t *testing.T, ctrl
     m.EXPECT().Get{{.StructName}}s(gomock.Any(), gomock.Any(), gomock.Any()).Return(
         &{{.Service}}.Get{{.StructName}}sOutput{ {{.StructName}}s: []types.{{.StructName}}{object}}, nil)
 
-    return client.Services{ {{.CloudqueryServiceName}}: m}
+    return client.Services{ {{.Service | ToCamel}}: m}
 }
 
 func Test{{.Service | ToCamel}}{{.SubService | ToCamel}}(t *testing.T) {
