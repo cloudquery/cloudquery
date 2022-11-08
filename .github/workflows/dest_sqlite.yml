@@ -39,7 +39,7 @@ jobs:
         run: go get -t -d ./...
       - name: Build
         run: go build .
-      - name: Test PG
+      - name: Test
         run: make test
   validate-release:
     runs-on: ubuntu-latest

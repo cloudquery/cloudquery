@@ -129,3 +129,4 @@ skip_tables
 subfolder
 recurse
 CCPA's
+sqlite
