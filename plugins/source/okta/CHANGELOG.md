@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-okta-v1.2.7...plugins-source-okta-v1.3.0) (2022-11-08)
+
+
+### Features
+
+* **okta:** Add groups, group users, applications, app users ([#3766](https://github.com/cloudquery/cloudquery/issues/3766)) ([9e73b6f](https://github.com/cloudquery/cloudquery/commit/9e73b6f419d8191650282242956b7a5a21c93252))
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for okta to v1.1.0 ([#3924](https://github.com/cloudquery/cloudquery/issues/3924)) ([6cdcc6b](https://github.com/cloudquery/cloudquery/commit/6cdcc6bcf69e16ebb317375c8a85634b709cd8da))
+
+## [1.2.7](https://github.com/cloudquery/cloudquery/compare/plugins-source-okta-v1.2.6...plugins-source-okta-v1.2.7) (2022-11-08)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for okta to v1.0.3 ([#3855](https://github.com/cloudquery/cloudquery/issues/3855)) ([f22b006](https://github.com/cloudquery/cloudquery/commit/f22b006d1ac324006025b838214a40eac0f46366))
+* **deps:** Update plugin-sdk for okta to v1.0.4 ([#3884](https://github.com/cloudquery/cloudquery/issues/3884)) ([f04b80a](https://github.com/cloudquery/cloudquery/commit/f04b80a8f990da4183b4d3bcb9281818223a775e))
+
 ## [1.2.6](https://github.com/cloudquery/cloudquery/compare/plugins-source-okta-v1.2.5...plugins-source-okta-v1.2.6) (2022-11-07)
 
 

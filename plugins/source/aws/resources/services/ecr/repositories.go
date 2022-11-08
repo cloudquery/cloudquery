@@ -38,6 +38,11 @@ func Repositories() *schema.Table {
 				Resolver: resolveRepositoryTags,
 			},
 			{
+				Name:     "policy_text",
+				Type:     schema.TypeJSON,
+				Resolver: resolveRepositoryPolicy,
+			},
+			{
 				Name:     "created_at",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreatedAt"),
