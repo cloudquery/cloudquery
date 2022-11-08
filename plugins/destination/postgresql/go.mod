@@ -3,14 +3,12 @@ module github.com/cloudquery/cloudquery/plugins/destination/postgresql
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v1.0.4
+	github.com/cloudquery/plugin-sdk v1.1.0
 	github.com/jackc/pgconn v1.13.0
 	github.com/jackc/pgtype v1.12.0
 	github.com/jackc/pgx/v4 v4.17.2
 	github.com/rs/zerolog v1.28.0
 )
-
-replace github.com/cloudquery/plugin-sdk => ../../../../plugin-sdk-split
 
 require (
 	github.com/getsentry/sentry-go v0.14.0 // indirect

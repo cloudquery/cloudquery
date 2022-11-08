@@ -44,12 +44,14 @@ func TestClient(t *testing.T) {
 func TestPlugin(t *testing.T) {
 	p := plugins.NewDestinationPlugin("csv", "development", New)
 
-	plugins.DestinationPluginTestSuiteRunner(t, p, specs.Destination{
-		WriteMode: specs.WriteModeAppend,
-		Spec: Spec{
+	plugins.DestinationPluginTestSuiteRunner(t, p,
+		Spec{
 			Directory: t.TempDir(),
 		},
-	},
-		plugins.DestinationPluginTestWithSuiteSkipTestOverWriteDeleteStale(),
-		plugins.DestinationPluginTestWithSuiteSkipTestOverwrite())
+		plugins.DestinationTestSuiteTests{
+			Overwrite:   true,
+			Append:      true,
+			DeleteStale: true,
+		},
+	)
 }

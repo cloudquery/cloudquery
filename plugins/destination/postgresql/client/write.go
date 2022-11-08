@@ -66,8 +66,7 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *pl
 	return nil
 }
 
-
-func (c *Client) insert(table *schema.Table) string {
+func (*Client) insert(table *schema.Table) string {
 	var sb strings.Builder
 	sb.WriteString("insert into ")
 	sb.WriteString(pgx.Identifier{table.Name}.Sanitize())
