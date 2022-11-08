@@ -5,6 +5,17 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0](https://github.com/cloudquery/cloudquery/compare/cli-v1.5.9...cli-v2.0.0) (2022-11-08)
+
+
+### ⚠ BREAKING CHANGES
+
+* Make path a required config parameter (#3872)
+
+### Bug Fixes
+
+* Make path a required config parameter ([#3872](https://github.com/cloudquery/cloudquery/issues/3872)) ([b0b4560](https://github.com/cloudquery/cloudquery/commit/b0b4560c571cab0332e586e1429f6ce66f91c224))
+
 ## [1.5.9](https://github.com/cloudquery/cloudquery/compare/cli-v1.5.8...cli-v1.5.9) (2022-11-08)
 
 
