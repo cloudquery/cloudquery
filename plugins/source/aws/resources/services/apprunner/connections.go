@@ -33,6 +33,11 @@ func Connections() *schema.Table {
 				},
 			},
 			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: resolveApprunnerTags("ConnectionArn"),
+			},
+			{
 				Name:     "connection_name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ConnectionName"),
