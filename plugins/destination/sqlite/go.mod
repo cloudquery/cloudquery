@@ -3,13 +3,10 @@ module github.com/cloudquery/cloudquery/plugins/destination/sqlite
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v0.13.18
-	github.com/jackc/pgtype v1.12.0
+	github.com/cloudquery/plugin-sdk v1.1.0
 	github.com/mattn/go-sqlite3 v1.14.16
 	github.com/rs/zerolog v1.28.0
 )
-
-replace github.com/cloudquery/plugin-sdk => ../../../../plugin-sdk-split
 
 require (
 	github.com/getsentry/sentry-go v0.14.0 // indirect
@@ -19,8 +16,6 @@ require (
 	github.com/grpc-ecosystem/go-grpc-middleware/providers/zerolog/v2 v2.0.0-rc.3 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.0-rc.2.0.20201002093600-73cf2ae9d891 // indirect
 	github.com/inconshreveable/mousetrap v1.0.1 // indirect
-	github.com/jackc/pgio v1.0.0 // indirect
-	github.com/jackc/pgx/v4 v4.17.2 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.16 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
