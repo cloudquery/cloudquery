@@ -25,6 +25,7 @@ Open source data integration at scale.
 Find more information at:
 	https://www.cloudquery.io`
 
+	disableSentry   = false
 	analyticsClient *AnalyticsClient
 )
 
@@ -88,6 +89,8 @@ func NewCmdRoot() *cobra.Command {
 					// we don't fail on sentry init errors as there might be no connection or sentry can be blocked.
 					log.Warn().Err(err).Msg("failed to initialize sentry")
 				}
+			} else {
+				disableSentry = true
 			}
 
 			return nil

@@ -22,10 +22,14 @@ func newDestinationClients(ctx context.Context, sourceSpec specs.Source, destina
 	}()
 
 	for i, destinationSpec := range destinationsSpecs {
-		destClients[i], err = clients.NewDestinationClient(ctx, destinationSpec.Registry, destinationSpec.Path, destinationSpec.Version,
+		opts := []clients.DestinationClientOption{
 			clients.WithDestinationLogger(log.Logger),
 			clients.WithDestinationDirectory(cqDir),
-		)
+		}
+		if disableSentry {
+			opts = append(opts, clients.WithDestinationNoSentry())
+		}
+		destClients[i], err = clients.NewDestinationClient(ctx, destinationSpec.Registry, destinationSpec.Path, destinationSpec.Version, opts...)
 		if err != nil {
 			return nil, fmt.Errorf("failed to create destination plugin client for %s: %w", destinationSpec.Name, err)
 		}
