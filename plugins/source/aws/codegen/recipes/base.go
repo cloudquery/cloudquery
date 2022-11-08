@@ -39,10 +39,6 @@ type Resource struct {
 	// --------------------------------
 	ShouldGenerateResolverAndMockTest bool
 	ResolverAndMockTestTemplate       string
-
-	// Needed because it's usually capitalised differently than 'Service'.
-	// Used for accessing 'client.Services().{{.CloudqueryServiceName}}'.
-	CloudqueryServiceName string
 }
 
 //go:embed templates/resolver_and_mock_test/*/*.go.tpl
@@ -280,4 +276,10 @@ func (r *Resource) generateMockTest(dir string) error {
 // Because usually the 'Struct' field contains a pointer, we need to dereference with '.Elem()'.
 func (r Resource) StructName() string {
 	return reflect.TypeOf(r.Struct).Elem().Name()
+}
+
+// CloudQueryServiceName is used for accessing 'client.Services().{{.CloudqueryServiceName}}' in templates
+func (r Resource) CloudQueryServiceName() string {
+	csr := caser.New()
+	return csr.ToPascal(r.Service)
 }
