@@ -47,6 +47,22 @@ func resolveRepositoryTags(ctx context.Context, meta schema.ClientMeta, resource
 	return resource.Set(c.Name, client.TagsToMap(output.Tags))
 }
 
+func resolveRepositoryPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cl := meta.(*client.Client)
+	svc := cl.Services().Ecr
+	repo := resource.Item.(types.Repository)
+
+	input := ecr.GetRepositoryPolicyInput{
+		RepositoryName: repo.RepositoryName,
+		RegistryId:     repo.RegistryId,
+	}
+	output, err := svc.GetRepositoryPolicy(ctx, &input)
+	if err != nil {
+		return err
+	}
+	return resource.Set(c.Name, output.PolicyText)
+}
+
 func fetchEcrRepositoryImages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	maxResults := int32(1000)
 	p := parent.Item.(types.Repository)

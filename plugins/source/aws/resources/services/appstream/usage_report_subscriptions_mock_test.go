@@ -14,7 +14,7 @@ import (
 )
 
 func buildAppstreamUsageReportSubscriptionsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockClient(ctrl)
+	m := mocks.NewMockAppstreamClient(ctrl)
 	object := types.UsageReportSubscription{}
 	err := faker.FakeObject(&object)
 	if err != nil {

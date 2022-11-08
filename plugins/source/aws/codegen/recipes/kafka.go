@@ -57,7 +57,6 @@ func KafkaResources() []*Resource {
 		// Parameters for auto-generating the resolver and mock-test.
 		// Only used when `ShouldGenerateResolverAndMockTest = true`
 		r.ResolverAndMockTestTemplate = "list_and_describe_resources_1"
-		r.CloudqueryServiceName = "Kafka"
 		r.Client = &kafka.Client{}
 	}
 

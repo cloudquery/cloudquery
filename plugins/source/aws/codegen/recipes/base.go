@@ -3,6 +3,7 @@ package recipes
 import (
 	"bytes"
 	"embed"
+	"errors"
 	"fmt"
 	"go/format"
 	"os"
@@ -41,9 +42,6 @@ type Resource struct {
 	ShouldGenerateResolverAndMockTest bool
 	ResolverAndMockTestTemplate       string
 	Client                            interface{}
-	// Needed because it's usually capitalised differently than 'Service'.
-	// Used for accessing 'client.Services().{{.CloudqueryServiceName}}'.
-	CloudqueryServiceName string
 
 	// used for generating resolver and mock tests, but set automatically
 	parent   *Resource
@@ -278,6 +276,27 @@ func (r *Resource) generateMockTest(dir string) error {
 	return nil
 }
 
+// SetParentChildRelationships calculates and sets the parent and children fields on resources.
+func SetParentChildRelationships(resources []*Resource) error {
+	m := map[string]*Resource{}
+	for _, r := range resources {
+		m[r.Service+"."+r.SubService] = r
+	}
+	csr := caser.New()
+	for _, r := range resources {
+		for _, ch := range r.Relations {
+			name := csr.ToSnake(strings.TrimSuffix(ch, "()"))
+			v, ok := m[r.Service+"."+name]
+			if !ok {
+				return errors.New("child not found for " + r.Service + "." + r.SubService + " : " + name)
+			}
+			r.children = append(r.children, v)
+			v.parent = r
+		}
+	}
+	return nil
+}
+
 // These methods are called from the template.
 // Because of this, we use a value receiver.
 // -------------------------------------------------------------------------------
@@ -316,23 +335,8 @@ func (r Resource) Children() []*Resource {
 	return r.children
 }
 
-func SetParentChildRelationships(resources []*Resource) {
-	m := map[string]*Resource{}
-	for _, r := range resources {
-		m[r.Service+"."+r.SubService] = r
-	}
+// CloudQueryServiceName is used for accessing 'client.Services().{{.CloudqueryServiceName}}' in templates
+func (r Resource) CloudQueryServiceName() string {
 	csr := caser.New()
-	for _, r := range resources {
-		for _, ch := range r.Relations {
-			name := csr.ToSnake(strings.TrimSuffix(ch, "()"))
-			v, ok := m[r.Service+"."+name]
-			if !ok {
-				for k := range m {
-					fmt.Println(k)
-				}
-				panic("child not found for " + r.Service + "." + r.SubService + " : " + name)
-			}
-			r.children = append(r.children, v)
-		}
-	}
+	return csr.ToPascal(r.Service)
 }

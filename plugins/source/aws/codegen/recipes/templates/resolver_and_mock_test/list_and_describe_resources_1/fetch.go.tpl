@@ -14,7 +14,7 @@ import (
 func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var input {{.Service}}.{{.ListMethod.Method.Name}}Input
 	c := meta.(*client.Client)
-	svc := c.Services().{{.CloudqueryServiceName}}
+	svc := c.Services().{{.CloudQueryServiceName}}
 	for {
         response, err := svc.{{.ListMethod.Method.Name}}(ctx, &input)
         if err != nil {
@@ -36,7 +36,7 @@ func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, parent *sc
 
 func {{.Table.PreResourceResolver}}(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().{{.CloudqueryServiceName}}
+	svc := cl.Services().{{.CloudQueryServiceName}}
 	input := {{.Service}}.{{.DescribeMethod.Method.Name}}Input{
 	}
 	output, err := svc.{{.DescribeMethod.Method.Name}}(ctx, &input)
