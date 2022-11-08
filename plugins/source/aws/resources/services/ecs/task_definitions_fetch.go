@@ -3,6 +3,7 @@ package ecs
 import (
 	"context"
 	"errors"
+	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
@@ -13,7 +14,9 @@ import (
 )
 
 func fetchEcsTaskDefinitions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	var config ecs.ListTaskDefinitionsInput
+	config := ecs.ListTaskDefinitionsInput{
+		MaxResults: aws.Int32(100),
+	}
 	svc := meta.(*client.Client).Services().Ecs
 	for {
 		listClustersOutput, err := svc.ListTaskDefinitions(ctx, &config)
@@ -34,7 +37,7 @@ func getTaskDefinition(ctx context.Context, meta schema.ClientMeta, resource *sc
 	c := meta.(*client.Client)
 	svc := c.Services().Ecs
 	taskArn := resource.Item.(string)
-
+	client.Sleep(ctx, 1*time.Minute)
 	describeTaskDefinitionOutput, err := svc.DescribeTaskDefinition(ctx, &ecs.DescribeTaskDefinitionInput{
 		TaskDefinition: aws.String(taskArn),
 		Include:        []types.TaskDefinitionField{types.TaskDefinitionFieldTags},
