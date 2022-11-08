@@ -17,7 +17,7 @@
   "plugins/source/heroku+FILLER": "0.0.0",
   "plugins/source/k8s": "2.3.6",
   "plugins/source/k8s+FILLER": "0.0.0",
-  "plugins/source/okta": "1.2.6",
+  "plugins/source/okta": "1.2.7",
   "plugins/source/okta+FILLER": "0.0.0",
   "plugins/source/terraform": "1.2.6",
   "plugins/source/terraform+FILLER": "0.0.0",
