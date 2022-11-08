@@ -1,9 +1,9 @@
 kind: source
 spec:
-  name: aws
+  name: gcp
   version: v1.0.0
   destinations: [postgresql]
-  path: ./aws
+  path: ./gcp
   registry: local
 ---
 kind: destination
