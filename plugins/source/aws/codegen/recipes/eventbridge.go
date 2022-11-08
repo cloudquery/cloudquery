@@ -147,7 +147,6 @@ func EventbridgeResources() []*Resource {
 		// Parameters for autogenerating the resolver and mock-test.
 		/// Only used when `ShouldGenerateResolverAndMockTest = true`
 		r.ResolverAndMockTestTemplate = "list_resources_1"
-		r.CloudqueryServiceName = "Eventbridge"
 	}
 
 	for _, r := range globalResources {
@@ -157,7 +156,6 @@ func EventbridgeResources() []*Resource {
 		// Parameters for autogenerating the resolver and mock-test.
 		/// Only used when `ShouldGenerateResolverAndMockTest = true`
 		r.ResolverAndMockTestTemplate = "list_resources_1"
-		r.CloudqueryServiceName = "Eventbridge"
 	}
 
 	resources := append(regionalResources, globalResources...)
