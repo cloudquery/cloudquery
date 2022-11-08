@@ -19,6 +19,7 @@ The following tables depend on aws_apprunner_services:
 |account_id|String|
 |region|String|
 |arn (PK)|String|
+|tags|JSON|
 |auto_scaling_configuration_summary|JSON|
 |created_at|Timestamp|
 |instance_configuration|JSON|
