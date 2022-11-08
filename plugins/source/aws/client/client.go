@@ -314,7 +314,7 @@ func configureAwsClient(ctx context.Context, logger zerolog.Logger, awsConfig *S
 	}
 
 	if awsConfig.AWSDebug {
-		awsCfg.ClientLogMode = aws.LogRequest | aws.LogResponse | aws.LogRetries
+		awsCfg.ClientLogMode = aws.LogRequestWithBody | aws.LogResponseWithBody | aws.LogRetries
 		awsCfg.Logger = AwsLogger{logger.With().Str("accountName", account.AccountName).Logger()}
 	}
 
