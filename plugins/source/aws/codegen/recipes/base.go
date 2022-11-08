@@ -39,10 +39,10 @@ type Resource struct {
 
 	// Used for generating the resolver and mock tests.
 	// --------------------------------
-	ShouldGenerateResolverAndMockTest bool
-	ResolverAndMockTestTemplate       string
-	Client                            interface{}
-	CustomListInput                   string // optional string to List input to
+	ShouldGenerateResolverAndMockTest bool        // if true, resolver and mock will be generated using the options below
+	ResolverAndMockTestTemplate       string      // required: name of template directory to use
+	Client                            interface{} // required: AWS client struct to use, e.g. &ec2.Client{}
+	CustomListInput                   string      // optional: string to set List input to (otherwise empty input will be used)
 
 	// used for generating resolver and mock tests, but set automatically
 	parent   *Resource
