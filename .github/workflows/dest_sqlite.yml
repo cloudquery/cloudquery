@@ -43,8 +43,12 @@ jobs:
         run: make test
   validate-release:
     runs-on: ubuntu-latest
-    env:
-      CGO_ENABLED: 0
+    container:
+      image: ghcr.io/cloudquery/golang-cross:latest     
+      env:
+        CGO_ENABLED: 1
+      volumnes:
+        
     steps:
       - name: Checkout
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'

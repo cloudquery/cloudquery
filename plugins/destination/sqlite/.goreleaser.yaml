@@ -5,9 +5,59 @@ project_name: plugins/destination/sqlite
 
 monorepo:
   tag_prefix: plugins-destination-sqlite-
-  dir: plugins/destination/sqlite
+#   dir: plugins/destination/sqlite
 
-includes:
-  - from_file:
-      # Relative to the directory Go Releaser is run from (which is the root of the repository)
-      path: ./plugins/.goreleaser.yaml
+# includes:
+#   - from_file:
+#       # Relative to the directory Go Releaser is run from (which is the root of the repository)
+#       path: ./plugins/.goreleaser.yaml
+before:
+  hooks:
+    - go mod download
+builds:
+  - flags:
+      - -buildmode=exe
+    env:
+      - CGO_ENABLED=1
+      - GO111MODULE=on
+      - CC=/usr/bin/gencc.sh
+      - CXX=/usr/bin/gencpp.sh
+    ldflags:
+      - -s -w -X github.com/cloudquery/cloudquery/plugins/{{ .Var.component }}/resources/plugin.Version={{.Version}}
+    goos:
+      # - windows
+      - linux
+      # - darwin
+    goarch:
+      - amd64
+      # - arm64
+    ignore:
+      - goos: windows
+        goarch: arm64
+archives:
+  - name_template: "{{ .Binary }}_{{ .Os }}_{{ .Arch }}"
+    format: zip
+    id: zip
+    files:
+      - policies_v1/**
+checksum:
+  name_template: "checksums.txt"
+  ids:
+    - default
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+# signs:
+#   - artifacts: checksum
+#     args:
+#       - "--batch"
+#       - "--output"
+#       - "${signature}"
+#       - "--detach-sign"
+#       - "${artifact}"
+# release:
+#   disable: true
+  # prerelease: auto
