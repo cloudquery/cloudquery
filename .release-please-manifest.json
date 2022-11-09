@@ -1,9 +1,9 @@
 {
-  "cli": "2.0.6",
+  "cli": "2.0.7",
   "cli+FILLER": "0.0.0",
   "plugins/source/aws": "4.11.1",
   "plugins/source/aws+FILLER": "0.0.0",
-  "plugins/source/azure": "1.3.9",
+  "plugins/source/azure": "1.3.10",
   "plugins/source/azure+FILLER": "0.0.0",
   "plugins/source/cloudflare": "2.2.10",
   "plugins/source/cloudflare+FILLER": "0.0.0",
