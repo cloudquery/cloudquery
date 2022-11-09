@@ -114,7 +114,6 @@ func getWorkGroupPreparedStatement(ctx context.Context, meta schema.ClientMeta, 
 	}
 	resource.Item = *dc.PreparedStatement
 	return nil
-
 }
 
 func fetchAthenaWorkGroupQueryExecutions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
