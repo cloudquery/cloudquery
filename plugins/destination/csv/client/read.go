@@ -9,11 +9,10 @@ import (
 	"os"
 	"path"
 
-	"github.com/cloudquery/plugin-sdk/plugins"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func (c *Client) read(table *schema.Table, sourceName string, res chan<- *schema.DestinationResource) error {
+func (c *Client) read(table *schema.Table, sourceName string, res chan<- []interface{}) error {
 	filePath := path.Join(c.csvSpec.Directory, table.Name+".csv")
 	f, err := os.Open(filePath)
 	if err != nil {
@@ -33,7 +32,6 @@ func (c *Client) read(table *schema.Table, sourceName string, res chan<- *schema
 	if sourceNameIndex == -1 {
 		return fmt.Errorf("could not find column %s in table %s", schema.CqSourceNameColumn.Name, table.Name)
 	}
-	transformer := plugins.DefaultReverseTransformer{}
 
 	for {
 		record, err := r.Read()
@@ -51,24 +49,17 @@ func (c *Client) read(table *schema.Table, sourceName string, res chan<- *schema
 			values[i] = v
 		}
 
-		cqTypes, err := transformer.ReverseTransformValues(table, values)
-		if err != nil {
-			return err
-		}
-		res <- &schema.DestinationResource{
-			TableName: table.Name,
-			Data:      cqTypes,
-		}
+		res <- values
 	}
 	return nil
 }
 
-func (c *Client) Read(tx context.Context, table *schema.Table, sourceName string, res chan<- *schema.DestinationResource) error {
+func (c *Client) Read(tx context.Context, table *schema.Table, sourceName string, res chan<- []interface{}) error {
 	msg := &readMsg{
 		table:     table,
 		source:    sourceName,
 		err:       make(chan error),
-		resources: make(chan *schema.DestinationResource),
+		resources: make(chan []interface{}),
 	}
 	c.readChan <- msg
 	for {
