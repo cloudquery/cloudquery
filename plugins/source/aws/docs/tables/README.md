@@ -330,6 +330,8 @@
 | ↳ [aws_qldb_ledger_journal_kinesis_streams](aws_qldb_ledger_journal_kinesis_streams.md) |
 | ↳ [aws_qldb_ledger_journal_s3_exports](aws_qldb_ledger_journal_s3_exports.md) |
 | [aws_rds_certificates](aws_rds_certificates.md) |
+| [aws_rds_engine_versions](aws_rds_engine_versions.md) |
+| ↳ [aws_rds_cluster_parameters](aws_rds_cluster_parameters.md) |
 | [aws_rds_cluster_parameter_groups](aws_rds_cluster_parameter_groups.md) |
 | ↳ [aws_rds_cluster_parameter_group_parameters](aws_rds_cluster_parameter_group_parameters.md) |
 | [aws_rds_cluster_snapshots](aws_rds_cluster_snapshots.md) |
