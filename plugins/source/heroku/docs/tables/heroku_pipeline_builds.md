@@ -1,6 +1,6 @@
 # Table: heroku_pipeline_builds
 
-https://devcenter.heroku.com/articles/platform-api-reference#pipeline-build-attributes
+https://devcenter.heroku.com/articles/platform-api-reference#pipeline-build
 
 The primary key for this table is **id**.
 

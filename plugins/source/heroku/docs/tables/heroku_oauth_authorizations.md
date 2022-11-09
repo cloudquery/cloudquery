@@ -1,6 +1,6 @@
 # Table: heroku_oauth_authorizations
 
-https://devcenter.heroku.com/articles/platform-api-reference#o-auth-authorization-attributes
+https://devcenter.heroku.com/articles/platform-api-reference#o-auth-authorization
 
 The primary key for this table is **id**.
 

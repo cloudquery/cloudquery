@@ -13,7 +13,7 @@ import (
 func AppWebhooks() *schema.Table {
 	return &schema.Table{
 		Name:        "heroku_app_webhooks",
-		Description: `https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-attributes`,
+		Description: `https://devcenter.heroku.com/articles/platform-api-reference#app-webhook`,
 		Resolver:    fetchAppWebhooks,
 		Columns: []schema.Column{
 			{

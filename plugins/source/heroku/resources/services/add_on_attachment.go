@@ -13,7 +13,7 @@ import (
 func AddOnAttachments() *schema.Table {
 	return &schema.Table{
 		Name:        "heroku_add_on_attachments",
-		Description: `https://devcenter.heroku.com/articles/platform-api-reference#add-on-attachment-attributes`,
+		Description: `https://devcenter.heroku.com/articles/platform-api-reference#add-on-attachment`,
 		Resolver:    fetchAddOnAttachments,
 		Columns: []schema.Column{
 			{

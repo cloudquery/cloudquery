@@ -1,6 +1,6 @@
 # Table: heroku_app_webhooks
 
-https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-attributes
+https://devcenter.heroku.com/articles/platform-api-reference#app-webhook
 
 The primary key for this table is **id**.
 
