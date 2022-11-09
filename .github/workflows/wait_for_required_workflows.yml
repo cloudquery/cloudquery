@@ -60,6 +60,11 @@ jobs:
               actions = actions.filter(action => action !== "cli")
               actions = ["cli (ubuntu-latest)", "cli (windows-latest)", "cli (macos-latest)", ...actions]
             }
+            // Enforce policy tests for AWS,GCP,Azure and K8s plugins
+            const pluginsWithPolicyTests = ["plugins/source/aws", "plugins/source/gcp", "plugins/source/azure", "plugins/source/k8s"]
+            if (actions.some(action => pluginsWithPolicyTests.includes(action))) {
+              actions = [...actions, 'test-policies']
+            }
             actions = [...actions, 'validate-release']
             pendingActions = [...actions]
             console.log(`Waiting for ${pendingActions.join(", ")}`)
