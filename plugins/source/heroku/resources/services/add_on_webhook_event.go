@@ -15,7 +15,36 @@ func AddOnWebhookEvents() *schema.Table {
 		Name:        "heroku_add_on_webhook_events",
 		Description: `https://devcenter.heroku.com/articles/platform-api-reference#add-on-webhook-event-attributes`,
 		Resolver:    fetchAddOnWebhookEvents,
-		Columns:     []schema.Column{},
+		Columns: []schema.Column{
+			{
+				Name:     "created_at",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("CreatedAt"),
+			},
+			{
+				Name:     "id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ID"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "include",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Include"),
+			},
+			{
+				Name:     "payload",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Payload"),
+			},
+			{
+				Name:     "updated_at",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("UpdatedAt"),
+			},
+		},
 	}
 }
 
