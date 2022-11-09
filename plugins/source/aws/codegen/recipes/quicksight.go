@@ -19,7 +19,7 @@ func QuickSightResources() []*Resource {
 					{
 						Name:     "tags",
 						Type:     schema.TypeJSON,
-						Resolver: `resolveTags("Arn")`,
+						Resolver: `resolveTags()`,
 					},
 					{
 						Name:     "arn",
@@ -39,7 +39,7 @@ func QuickSightResources() []*Resource {
 					{
 						Name:     "tags",
 						Type:     schema.TypeJSON,
-						Resolver: `resolveTags("Arn")`,
+						Resolver: `resolveTags()`,
 					},
 					{
 						Name:     "arn",
@@ -59,7 +59,7 @@ func QuickSightResources() []*Resource {
 					{
 						Name:     "tags",
 						Type:     schema.TypeJSON,
-						Resolver: `resolveTags("Arn")`,
+						Resolver: `resolveTags()`,
 					},
 					{
 						Name:     "arn",
@@ -82,7 +82,7 @@ func QuickSightResources() []*Resource {
 					{
 						Name:     "tags",
 						Type:     schema.TypeJSON,
-						Resolver: `resolveTags("Arn")`,
+						Resolver: `resolveTags()`,
 					},
 					{
 						Name:     "arn",
@@ -109,7 +109,7 @@ func QuickSightResources() []*Resource {
 					{
 						Name:     "tags",
 						Type:     schema.TypeJSON,
-						Resolver: `resolveTags("Arn")`,
+						Resolver: `resolveTags()`,
 					},
 					{
 						Name:     "arn",
@@ -129,7 +129,7 @@ func QuickSightResources() []*Resource {
 					{
 						Name:     "tags",
 						Type:     schema.TypeJSON,
-						Resolver: `resolveTags("Arn")`,
+						Resolver: `resolveTags()`,
 					},
 					{
 						Name:     "arn",
@@ -173,7 +173,7 @@ func QuickSightResources() []*Resource {
 					{
 						Name:     "tags",
 						Type:     schema.TypeJSON,
-						Resolver: `resolveTags("Arn")`,
+						Resolver: `resolveTags()`,
 					},
 					{
 						Name:     "arn",
@@ -199,7 +199,7 @@ func QuickSightResources() []*Resource {
 					{
 						Name:     "tags",
 						Type:     schema.TypeJSON,
-						Resolver: `resolveTags("Arn")`,
+						Resolver: `resolveTags()`,
 					},
 					{
 						Name:     "arn",
@@ -219,7 +219,7 @@ func QuickSightResources() []*Resource {
 					{
 						Name:     "tags",
 						Type:     schema.TypeJSON,
-						Resolver: `resolveTags("Arn")`,
+						Resolver: `resolveTags()`,
 					},
 					{
 						Name:     "arn",

@@ -26,7 +26,7 @@ func Users() *schema.Table {
 			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,
-				Resolver: resolveTags("Arn"),
+				Resolver: resolveTags(),
 			},
 			{
 				Name:     "arn",

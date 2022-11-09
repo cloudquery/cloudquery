@@ -9,9 +9,9 @@ import (
 	"github.com/thoas/go-funk"
 )
 
-func resolveTags(path string) schema.ColumnResolver {
+func resolveTags() schema.ColumnResolver {
 	return func(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
-		arn := funk.Get(r.Item, path, funk.WithAllowZero()).(*string)
+		arn := funk.Get(r.Item, "Arn", funk.WithAllowZero()).(*string)
 		cl := meta.(*client.Client)
 		svc := cl.Services().Quicksight
 		params := quicksight.ListTagsForResourceInput{ResourceArn: arn}
