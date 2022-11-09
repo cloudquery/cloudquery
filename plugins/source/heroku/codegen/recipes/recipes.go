@@ -138,6 +138,7 @@ type PipelineRelease struct {
 	Version int `json:"version" url:"version,key"` // unique version assigned to the release
 }
 
+// Element of TeamSpaceListResult
 type TeamSpace struct {
 	CIDR string `json:"cidr" url:"cidr,key"` // The RFC-1918 CIDR the Private Space will use. It must be a /16 in
 	// 10.0.0.0/8, 172.16.0.0/12 or 192.168.0.0/16
