@@ -1,6 +1,6 @@
 # Table: heroku_team_invitations
 
-https://devcenter.heroku.com/articles/platform-api-reference#team-invitation-attributes
+https://devcenter.heroku.com/articles/platform-api-reference#team-invitation
 
 The primary key for this table is **id**.
 

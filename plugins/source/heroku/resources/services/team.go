@@ -13,7 +13,7 @@ import (
 func Teams() *schema.Table {
 	return &schema.Table{
 		Name:        "heroku_teams",
-		Description: `https://devcenter.heroku.com/articles/platform-api-reference#team-attributes`,
+		Description: `https://devcenter.heroku.com/articles/platform-api-reference#team`,
 		Resolver:    fetchTeams,
 		Columns: []schema.Column{
 			{

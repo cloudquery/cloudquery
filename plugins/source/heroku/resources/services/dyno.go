@@ -13,7 +13,7 @@ import (
 func Dynos() *schema.Table {
 	return &schema.Table{
 		Name:        "heroku_dynos",
-		Description: `https://devcenter.heroku.com/articles/platform-api-reference#dyno-attributes`,
+		Description: `https://devcenter.heroku.com/articles/platform-api-reference#dyno`,
 		Resolver:    fetchDynos,
 		Columns: []schema.Column{
 			{

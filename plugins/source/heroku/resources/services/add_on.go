@@ -13,7 +13,7 @@ import (
 func AddOns() *schema.Table {
 	return &schema.Table{
 		Name:        "heroku_add_ons",
-		Description: `https://devcenter.heroku.com/articles/platform-api-reference#add-on-attributes`,
+		Description: `https://devcenter.heroku.com/articles/platform-api-reference#add-on`,
 		Resolver:    fetchAddOns,
 		Columns: []schema.Column{
 			{

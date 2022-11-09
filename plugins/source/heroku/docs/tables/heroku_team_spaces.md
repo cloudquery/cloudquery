@@ -1,6 +1,6 @@
 # Table: heroku_team_spaces
 
-https://devcenter.heroku.com/articles/platform-api-reference#team-space-attributes
+https://devcenter.heroku.com/articles/platform-api-reference#team-space
 
 The primary key for this table is **id**.
 
