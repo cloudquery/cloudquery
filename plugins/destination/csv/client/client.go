@@ -32,7 +32,7 @@ type readMsg struct {
 	table     *schema.Table
 	source    string
 	err       chan error
-	resources chan *schema.DestinationResource
+	resources chan []interface{}
 }
 
 type closeMsg struct {
@@ -40,6 +40,7 @@ type closeMsg struct {
 }
 
 type Client struct {
+	plugins.DefaultReverseTransformer
 	logger  zerolog.Logger
 	spec    specs.Destination
 	csvSpec Spec
@@ -47,7 +48,7 @@ type Client struct {
 	writers map[string]*tableWriter
 
 	startWriteChan chan *startWriteMsg
-	writeChan      chan *schema.DestinationResource
+	writeChan      chan *plugins.ClientResource
 	endWriteChan   chan *endWriteMsg
 	migrateChan    chan *migrateMsg
 	readChan       chan *readMsg
@@ -71,7 +72,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (pl
 		logger:         logger.With().Str("module", "csv-dest").Logger(),
 		spec:           spec,
 		startWriteChan: make(chan *startWriteMsg),
-		writeChan:      make(chan *schema.DestinationResource),
+		writeChan:      make(chan *plugins.ClientResource),
 		endWriteChan:   make(chan *endWriteMsg),
 		migrateChan:    make(chan *migrateMsg),
 		readChan:       make(chan *readMsg),

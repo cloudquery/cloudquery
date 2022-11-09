@@ -14,6 +14,8 @@ This table depends on [aws_docdb_engine_versions](aws_docdb_engine_versions.md).
 |_cq_sync_time|Timestamp|
 |_cq_id (PK)|UUID|
 |_cq_parent_id|UUID|
+|account_id|String|
+|region|String|
 |allowed_values|String|
 |apply_method|String|
 |apply_type|String|

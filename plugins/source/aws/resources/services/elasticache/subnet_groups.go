@@ -48,6 +48,11 @@ func SubnetGroups() *schema.Table {
 				Resolver: schema.PathResolver("Subnets"),
 			},
 			{
+				Name:     "supported_network_types",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("SupportedNetworkTypes"),
+			},
+			{
 				Name:     "vpc_id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("VpcId"),
