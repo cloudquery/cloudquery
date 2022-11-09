@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.6](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v1.2.5...plugins-source-github-v1.2.6) (2022-11-09)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for csv to v1.1.0 ([#3918](https://github.com/cloudquery/cloudquery/issues/3918)) ([f1acd68](https://github.com/cloudquery/cloudquery/commit/f1acd688fcd90011cc9be1be2285e3fe9369e341))
+
 ## [1.2.5](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v1.2.4...plugins-source-github-v1.2.5) (2022-11-09)
 
 
