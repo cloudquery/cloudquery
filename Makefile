@@ -40,3 +40,8 @@ update-docs:
 .PHONY: update-plugin-sdk
 update-plugin-sdk:
 	./scripts/update-plugin-sdk.sh
+
+
+.PHONY: list
+list:
+	@grep '^[^#[:space:].].*$$' Makefile | sed 's/\(.*\):/"\1",/' | tr -d '\n' | sed 's/,$$//g'
