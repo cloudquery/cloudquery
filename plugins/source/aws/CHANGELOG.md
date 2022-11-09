@@ -6,6 +6,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [4.11.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v4.11.0...plugins-source-aws-v4.11.1) (2022-11-09)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for aws to v1.1.1 ([#3983](https://github.com/cloudquery/cloudquery/issues/3983)) ([7a4184e](https://github.com/cloudquery/cloudquery/commit/7a4184e213f51d9e18e66d7949895fcb47e581d4))
+* **deps:** Update plugin-sdk for csv to v1.1.0 ([#3918](https://github.com/cloudquery/cloudquery/issues/3918)) ([f1acd68](https://github.com/cloudquery/cloudquery/commit/f1acd688fcd90011cc9be1be2285e3fe9369e341))
+
+## [4.11.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v4.10.0...plugins-source-aws-v4.11.0) (2022-11-09)
+
+
+### Features
+
+* **aws:** Support AppRunner Tags ([#3968](https://github.com/cloudquery/cloudquery/issues/3968)) ([7c4b633](https://github.com/cloudquery/cloudquery/commit/7c4b6336fa56ef0e34aeabf1a164dc4011828059))
+
 ## [4.10.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v4.9.0...plugins-source-aws-v4.10.0) (2022-11-09)
 
 

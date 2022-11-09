@@ -34,6 +34,11 @@ func Services() *schema.Table {
 				},
 			},
 			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: resolveApprunnerTags("ServiceArn"),
+			},
+			{
 				Name:     "auto_scaling_configuration_summary",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("AutoScalingConfigurationSummary"),

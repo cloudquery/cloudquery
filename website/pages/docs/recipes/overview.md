@@ -11,7 +11,7 @@ kind: source
 spec:
   name: aws
   path: cloudquery/aws
-  version: "v4.10.0" # latest version of aws plugin
+  version: "v4.11.1" # latest version of aws plugin
   tables: ["*"]
   destinations: ["postgresql"]
 ```
@@ -21,7 +21,7 @@ kind: destination
 spec:
   name: postgresql
   path: cloudquery/postgresql
-  version: "v1.7.0" # latest version of postgresql plugin
+  version: "v1.7.2" # latest version of postgresql plugin
   spec:
     connection_string: ${PG_CONNECTION_STRING}
 ```
@@ -33,7 +33,7 @@ kind: source
 spec:
   name: aws
   path: cloudquery/aws
-  version: "v4.10.0" # latest version of aws plugin
+  version: "v4.11.1" # latest version of aws plugin
   tables: ["*"]
   destinations: ["postgresql"]
 ---
@@ -41,7 +41,7 @@ kind: destination
 spec:
   name: postgresql
   path: cloudquery/postgresql
-  version: "v1.7.0" # latest version of postgresql plugin
+  version: "v1.7.2" # latest version of postgresql plugin
   spec:
     connection_string: ${PG_CONNECTION_STRING}
 ```
