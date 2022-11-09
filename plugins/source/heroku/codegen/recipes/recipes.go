@@ -187,7 +187,7 @@ var listResources = []Resource{
 	},
 	{
 		TableName:           "heroku_pipeline_builds",
-		HerokuStruct:        &heroku.PipelineBuildListResult{},
+		HerokuStruct:        &heroku.PipelineBuildListResult{{}}[0],
 		HerokuStructName:    "PipelineBuild",
 		HerokuPrimaryStruct: &heroku.Pipeline{},
 		Template:            "relational_resource_list",
@@ -197,14 +197,14 @@ var listResources = []Resource{
 	},
 	{
 		TableName:           "heroku_pipeline_deployments",
-		HerokuStruct:        &heroku.PipelineDeploymentListResult{},
+		HerokuStruct:        &heroku.PipelineDeploymentListResult{{}}[0],
 		HerokuStructName:    "PipelineDeployment",
 		HerokuPrimaryStruct: &heroku.Pipeline{},
 		Template:            "relational_resource_list",
 	},
 	{
 		TableName:           "heroku_pipeline_releases",
-		HerokuStruct:        &heroku.PipelineReleaseListResult{},
+		HerokuStruct:        &heroku.PipelineReleaseListResult{{}}[0],
 		HerokuStructName:    "PipelineRelease",
 		HerokuPrimaryStruct: &heroku.Pipeline{},
 		Template:            "relational_resource_list",
@@ -261,7 +261,7 @@ var listResources = []Resource{
 	},
 	{
 		TableName:           "heroku_team_spaces",
-		HerokuStruct:        &heroku.TeamSpaceListResult{},
+		HerokuStruct:        &heroku.TeamSpaceListResult{{}}[0],
 		HerokuStructName:    "TeamSpace",
 		HerokuPrimaryStruct: &heroku.Team{},
 		Template:            "relational_resource_list",
