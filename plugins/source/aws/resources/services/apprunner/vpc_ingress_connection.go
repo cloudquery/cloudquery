@@ -42,6 +42,11 @@ Notes:
 				Resolver: schema.PathResolver("AccountId"),
 			},
 			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: resolveApprunnerTags("VpcIngressConnectionArn"),
+			},
+			{
 				Name:     "created_at",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreatedAt"),
