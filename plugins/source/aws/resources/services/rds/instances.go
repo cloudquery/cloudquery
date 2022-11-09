@@ -388,6 +388,11 @@ func Instances() *schema.Table {
 				Resolver: schema.PathResolver("StorageEncrypted"),
 			},
 			{
+				Name:     "storage_throughput",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("StorageThroughput"),
+			},
+			{
 				Name:     "storage_type",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("StorageType"),

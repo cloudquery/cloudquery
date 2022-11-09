@@ -43,6 +43,7 @@ The primary key for this table is **arn**.
 |source_db_snapshot_identifier|String|
 |source_region|String|
 |status|String|
+|storage_throughput|Int|
 |storage_type|String|
 |tde_credential_arn|String|
 |timezone|String|
