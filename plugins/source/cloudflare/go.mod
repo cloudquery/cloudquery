@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/cloudflare/cloudflare-go v0.46.0
-	github.com/cloudquery/plugin-sdk v1.2.0
+	github.com/cloudquery/plugin-sdk v1.3.0
 	github.com/golang/mock v1.6.0
 	github.com/rs/zerolog v1.28.0
 )
@@ -54,7 +54,7 @@ require (
 	github.com/firefart/nonamedreturns v1.0.4 // indirect
 	github.com/fsnotify/fsnotify v1.5.4 // indirect
 	github.com/fzipp/gocyclo v0.6.0 // indirect
-	github.com/getsentry/sentry-go v0.14.0 // indirect
+	github.com/getsentry/sentry-go v0.15.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/go-critic/go-critic v0.6.3 // indirect
 	github.com/go-git/gcfg v1.5.0 // indirect
@@ -204,18 +204,18 @@ require (
 	go.uber.org/multierr v1.6.0 // indirect
 	go.uber.org/zap v1.17.0 // indirect
 	golang.org/x/crypto v0.1.0 // indirect
-	golang.org/x/exp v0.0.0-20221031165847-c99f073a8326 // indirect
+	golang.org/x/exp v0.0.0-20221108223516-5d533826c662 // indirect
 	golang.org/x/exp/typeparams v0.0.0-20220722155223-a9213eeb770e // indirect
 	golang.org/x/mod v0.6.0 // indirect
-	golang.org/x/net v0.1.0 // indirect
+	golang.org/x/net v0.2.0 // indirect
 	golang.org/x/oauth2 v0.0.0-20220718184931-c8730f7fcb92 // indirect
 	golang.org/x/sync v0.1.0 // indirect
-	golang.org/x/sys v0.1.0 // indirect
+	golang.org/x/sys v0.2.0 // indirect
 	golang.org/x/text v0.4.0 // indirect
 	golang.org/x/time v0.0.0-20220922220347-f3bd1da661af // indirect
 	golang.org/x/tools v0.2.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
-	google.golang.org/genproto v0.0.0-20220920201722-2b89144ce006 // indirect
+	google.golang.org/genproto v0.0.0-20221107162902-2d387536bcdd // indirect
 	google.golang.org/grpc v1.50.1 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect

@@ -5,6 +5,13 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.11](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v1.3.10...plugins-source-azure-v1.3.11) (2022-11-09)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for azure to v1.3.0 ([#4068](https://github.com/cloudquery/cloudquery/issues/4068)) ([30d5543](https://github.com/cloudquery/cloudquery/commit/30d55433a61e54758ba36173f0e626319b7afdab))
+
 ## [1.3.10](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v1.3.9...plugins-source-azure-v1.3.10) (2022-11-09)
 
 
