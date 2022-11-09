@@ -30,7 +30,13 @@ func buildApprunnerAutoScalingConfigurationsMock(t *testing.T, ctrl *gomock.Cont
 		&apprunner.DescribeAutoScalingConfigurationOutput{
 			AutoScalingConfiguration: &as,
 		}, nil)
-
+	tags := types.Tag{}
+	err = faker.FakeObject(&tags)
+	if err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&apprunner.ListTagsForResourceOutput{Tags: []types.Tag{tags}}, nil)
 	return client.Services{
 		Apprunner: m,
 	}

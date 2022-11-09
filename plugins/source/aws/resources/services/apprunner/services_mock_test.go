@@ -56,7 +56,13 @@ func buildApprunnerGraphqlApisMock(t *testing.T, ctrl *gomock.Controller) client
 				cd,
 			},
 		}, nil)
-
+	tags := types.Tag{}
+	err = faker.FakeObject(&tags)
+	if err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&apprunner.ListTagsForResourceOutput{Tags: []types.Tag{tags}}, nil)
 	return client.Services{
 		Apprunner: m,
 	}
