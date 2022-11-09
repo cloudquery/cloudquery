@@ -13,7 +13,7 @@ import (
 func Formations() *schema.Table {
 	return &schema.Table{
 		Name:        "heroku_formations",
-		Description: `https://devcenter.heroku.com/articles/platform-api-reference#formation-attributes`,
+		Description: `https://devcenter.heroku.com/articles/platform-api-reference#formation`,
 		Resolver:    fetchFormations,
 		Columns: []schema.Column{
 			{

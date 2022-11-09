@@ -13,7 +13,7 @@ import (
 func LogDrains() *schema.Table {
 	return &schema.Table{
 		Name:        "heroku_log_drains",
-		Description: `https://devcenter.heroku.com/articles/platform-api-reference#log-drain-attributes`,
+		Description: `https://devcenter.heroku.com/articles/platform-api-reference#log-drain`,
 		Resolver:    fetchLogDrains,
 		Columns: []schema.Column{
 			{

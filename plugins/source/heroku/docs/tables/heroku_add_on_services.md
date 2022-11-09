@@ -1,6 +1,6 @@
 # Table: heroku_add_on_services
 
-https://devcenter.heroku.com/articles/platform-api-reference#add-on-service-attributes
+https://devcenter.heroku.com/articles/platform-api-reference#add-on-service
 
 The primary key for this table is **id**.
 

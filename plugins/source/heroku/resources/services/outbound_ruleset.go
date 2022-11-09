@@ -13,7 +13,7 @@ import (
 func OutboundRulesets() *schema.Table {
 	return &schema.Table{
 		Name:        "heroku_outbound_rulesets",
-		Description: `https://devcenter.heroku.com/articles/platform-api-reference#outbound-ruleset-attributes`,
+		Description: `https://devcenter.heroku.com/articles/platform-api-reference#outbound-ruleset`,
 		Resolver:    fetchOutboundRulesets,
 		Columns: []schema.Column{
 			{
