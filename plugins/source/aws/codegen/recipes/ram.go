@@ -13,7 +13,7 @@ func RAMResources() []*Resource {
 			SubService:                  "principals",
 			Struct:                      new(types.Principal),
 			Multiplex:                   mx,
-			PKColumns:                   []string{"id"},
+			PKColumns:                   []string{"id", "account_id"},
 			ExtraColumns:                defaultRegionalColumns,
 			ResolverAndMockTestTemplate: "list_resources_paginated_1",
 		},
@@ -76,7 +76,7 @@ func RAMResources() []*Resource {
 			SubService:   "resource_types",
 			Struct:       new(types.ServiceNameAndResourceType),
 			Multiplex:    mx,
-			PKColumns:    []string{"resource_type", "service_name"},
+			PKColumns:    []string{"account_id", "resource_type", "service_name"},
 			ExtraColumns: defaultRegionalColumns,
 		},
 	}

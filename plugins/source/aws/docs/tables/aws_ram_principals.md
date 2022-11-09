@@ -2,7 +2,7 @@
 
 https://docs.aws.amazon.com/ram/latest/APIReference/API_Principal.html
 
-The primary key for this table is **id**.
+The composite primary key for this table is (**account_id**, **id**).
 
 
 ## Columns
@@ -12,7 +12,7 @@ The primary key for this table is **id**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|account_id|String|
+|account_id (PK)|String|
 |region|String|
 |creation_time|Timestamp|
 |external|Bool|
