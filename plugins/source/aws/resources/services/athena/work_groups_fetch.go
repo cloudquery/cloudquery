@@ -87,26 +87,34 @@ func fetchAthenaWorkGroupPreparedStatements(ctx context.Context, meta schema.Cli
 		if err != nil {
 			return err
 		}
-		for _, d := range response.PreparedStatements {
-			dc, err := svc.GetPreparedStatement(ctx, &athena.GetPreparedStatementInput{
-				WorkGroup:     wg.Name,
-				StatementName: d.StatementName,
-			})
-			if err != nil {
-				if c.IsNotFoundError(err) {
-					continue
-				}
-				return err
-			}
-			res <- *dc.PreparedStatement
-			return nil
-		}
+		res <- response.PreparedStatements
 		if aws.ToString(response.NextToken) == "" {
 			break
 		}
 		input.NextToken = response.NextToken
 	}
 	return nil
+}
+
+func getWorkGroupPreparedStatement(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	c := meta.(*client.Client)
+	svc := c.Services().Athena
+	wg := resource.Parent.Item.(types.WorkGroup)
+
+	d := resource.Item.(types.PreparedStatementSummary)
+	dc, err := svc.GetPreparedStatement(ctx, &athena.GetPreparedStatementInput{
+		WorkGroup:     wg.Name,
+		StatementName: d.StatementName,
+	})
+	if err != nil {
+		if c.IsNotFoundError(err) {
+			return nil
+		}
+		return err
+	}
+	resource.Item = *dc.PreparedStatement
+	return nil
+
 }
 
 func fetchAthenaWorkGroupQueryExecutions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
@@ -119,24 +127,30 @@ func fetchAthenaWorkGroupQueryExecutions(ctx context.Context, meta schema.Client
 		if err != nil {
 			return err
 		}
-		for _, d := range response.QueryExecutionIds {
-			dc, err := svc.GetQueryExecution(ctx, &athena.GetQueryExecutionInput{
-				QueryExecutionId: aws.String(d),
-			})
-			if err != nil {
-				if c.IsNotFoundError(err) || isQueryExecutionNotFound(err) {
-					continue
-				}
-				return err
-			}
-			res <- *dc.QueryExecution
-			return nil
-		}
+		res <- response.QueryExecutionIds
 		if aws.ToString(response.NextToken) == "" {
 			break
 		}
 		input.NextToken = response.NextToken
 	}
+	return nil
+}
+
+func getWorkGroupQueryExecution(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	c := meta.(*client.Client)
+	svc := c.Services().Athena
+
+	d := resource.Item.(string)
+	dc, err := svc.GetQueryExecution(ctx, &athena.GetQueryExecutionInput{
+		QueryExecutionId: aws.String(d),
+	})
+	if err != nil {
+		if c.IsNotFoundError(err) || isQueryExecutionNotFound(err) {
+			return nil
+		}
+		return err
+	}
+	resource.Item = *dc.QueryExecution
 	return nil
 }
 
@@ -150,24 +164,30 @@ func fetchAthenaWorkGroupNamedQueries(ctx context.Context, meta schema.ClientMet
 		if err != nil {
 			return err
 		}
-		for _, d := range response.NamedQueryIds {
-			dc, err := svc.GetNamedQuery(ctx, &athena.GetNamedQueryInput{
-				NamedQueryId: aws.String(d),
-			})
-			if err != nil {
-				if c.IsNotFoundError(err) {
-					continue
-				}
-				return err
-			}
-			res <- *dc.NamedQuery
-			return nil
-		}
+		res <- response.NamedQueryIds
 		if aws.ToString(response.NextToken) == "" {
 			break
 		}
 		input.NextToken = response.NextToken
 	}
+	return nil
+}
+
+func getWorkGroupNamedQuery(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	c := meta.(*client.Client)
+	svc := c.Services().Athena
+
+	d := resource.Item.(string)
+	dc, err := svc.GetNamedQuery(ctx, &athena.GetNamedQueryInput{
+		NamedQueryId: aws.String(d),
+	})
+	if err != nil {
+		if c.IsNotFoundError(err) {
+			return nil
+		}
+		return err
+	}
+	resource.Item = *dc.NamedQuery
 	return nil
 }
 
