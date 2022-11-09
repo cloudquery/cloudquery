@@ -12,7 +12,7 @@ kind: source
 spec:
   name: k8s
   path: "cloudquery/k8s"
-  version: "v2.3.10" # latest version of k8s plugin
+  version: "v2.3.11" # latest version of k8s plugin
   destinations: ["<destination>"]
 ```
 
