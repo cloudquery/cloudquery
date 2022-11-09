@@ -75,10 +75,14 @@ func sync(cmd *cobra.Command, args []string) error {
 			}
 			destinationsSpecs = append(destinationsSpecs, *spec)
 		}
-		sourceClient, err := clients.NewSourceClient(ctx, sourceSpec.Registry, sourceSpec.Path, sourceSpec.Version,
+		opts := []clients.SourceClientOption{
 			clients.WithSourceLogger(log.Logger),
 			clients.WithSourceDirectory(cqDir),
-		)
+		}
+		if disableSentry {
+			opts = append(opts, clients.WithSourceNoSentry())
+		}
+		sourceClient, err := clients.NewSourceClient(ctx, sourceSpec.Registry, sourceSpec.Path, sourceSpec.Version, opts...)
 		if err != nil {
 			return fmt.Errorf("failed to get source plugin client for %s: %w", sourceSpec.Name, err)
 		}
