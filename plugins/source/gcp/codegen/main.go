@@ -160,7 +160,7 @@ func generateResource(r recipes.Resource, mock bool) {
 				return schema.TypeTimestamp, nil
 			case *durationpb.Duration,
 				durationpb.Duration:
-				return schema.TypeTimeInterval, nil
+				return schema.TypeInt, nil
 			default:
 				return schema.TypeInvalid, nil
 			}

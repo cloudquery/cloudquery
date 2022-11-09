@@ -9,7 +9,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/lambda/models"
-	"github.com/cloudquery/plugin-sdk/cqtypes"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -91,7 +90,7 @@ func resolvePolicyCodeSigningConfig(ctx context.Context, meta schema.ClientMeta,
 
 	// skip getting CodeSigningConfig since containerized lambda functions does not support this feature
 	// value can be nil if the caller doesn't have GetFunctionConfiguration permission and only has List*
-	lambdaType := resource.Get("code_repository_type").(*cqtypes.Text)
+	lambdaType := resource.Get("code_repository_type").(*schema.Text)
 	if lambdaType != nil && lambdaType.Str == "ECR" {
 		return nil
 	}

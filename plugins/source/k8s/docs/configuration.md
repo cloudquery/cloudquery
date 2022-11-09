@@ -10,7 +10,7 @@ spec:
   # Source spec section
   name: k8s
   path: cloudquery/k8s
-  version: "v2.3.1" # latest version of k8s plugin
+  version: "v2.3.8" # latest version of k8s plugin
   tables: ["*"]
   destinations: ["postgresql"]
 

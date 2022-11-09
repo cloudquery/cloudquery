@@ -87,5 +87,9 @@ func RepositoryImages() *schema.Table {
 				Resolver: schema.PathResolver("RepositoryName"),
 			},
 		},
+
+		Relations: []*schema.Table{
+			RepositoryImageScanFindings(),
+		},
 	}
 }

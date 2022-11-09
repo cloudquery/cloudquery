@@ -34,14 +34,26 @@
 | ↳ [aws_apigatewayv2_domain_name_rest_api_mappings](aws_apigatewayv2_domain_name_rest_api_mappings.md) |
 | [aws_apigatewayv2_vpc_links](aws_apigatewayv2_vpc_links.md) |
 | [aws_applicationautoscaling_policies](aws_applicationautoscaling_policies.md) |
+| [aws_apprunner_auto_scaling_configuration](aws_apprunner_auto_scaling_configuration.md) |
 | [aws_apprunner_connections](aws_apprunner_connections.md) |
 | [aws_apprunner_observability_configurations](aws_apprunner_observability_configurations.md) |
 | [aws_apprunner_services](aws_apprunner_services.md) |
 | ↳ [aws_apprunner_operations](aws_apprunner_operations.md) |
 | ↳ [aws_apprunner_custom_domains](aws_apprunner_custom_domains.md) |
-| [aws_apprunner_auto_scaling_configuration](aws_apprunner_auto_scaling_configuration.md) |
 | [aws_apprunner_vpc_connector](aws_apprunner_vpc_connector.md) |
 | [aws_apprunner_vpc_ingress_connection](aws_apprunner_vpc_ingress_connection.md) |
+| [aws_appstream_app_blocks](aws_appstream_app_blocks.md) |
+| [aws_appstream_applications](aws_appstream_applications.md) |
+| ↳ [aws_appstream_application_fleet_associations](aws_appstream_application_fleet_associations.md) |
+| [aws_appstream_directory_configs](aws_appstream_directory_configs.md) |
+| [aws_appstream_fleets](aws_appstream_fleets.md) |
+| [aws_appstream_image_builders](aws_appstream_image_builders.md) |
+| [aws_appstream_images](aws_appstream_images.md) |
+| [aws_appstream_stacks](aws_appstream_stacks.md) |
+| ↳ [aws_appstream_stack_entitlements](aws_appstream_stack_entitlements.md) |
+| ↳ [aws_appstream_stack_user_associations](aws_appstream_stack_user_associations.md) |
+| [aws_appstream_usage_report_subscriptions](aws_appstream_usage_report_subscriptions.md) |
+| [aws_appstream_users](aws_appstream_users.md) |
 | [aws_appsync_graphql_apis](aws_appsync_graphql_apis.md) |
 | [aws_athena_data_catalogs](aws_athena_data_catalogs.md) |
 | ↳ [aws_athena_data_catalog_databases](aws_athena_data_catalog_databases.md) |
@@ -165,6 +177,7 @@
 | [aws_elasticache_snapshots](aws_elasticache_snapshots.md) |
 | [aws_elasticache_user_groups](aws_elasticache_user_groups.md) |
 | [aws_elasticache_users](aws_elasticache_users.md) |
+| [aws_elasticache_subnet_groups](aws_elasticache_subnet_groups.md) |
 | [aws_elasticbeanstalk_application_versions](aws_elasticbeanstalk_application_versions.md) |
 | [aws_elasticbeanstalk_applications](aws_elasticbeanstalk_applications.md) |
 | [aws_elasticbeanstalk_environments](aws_elasticbeanstalk_environments.md) |

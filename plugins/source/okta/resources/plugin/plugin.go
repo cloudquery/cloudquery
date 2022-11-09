@@ -17,6 +17,8 @@ func Plugin() *plugins.SourcePlugin {
 		Version,
 		[]*schema.Table{
 			services.Users(),
+			services.Groups(),
+			services.Applications(),
 		},
 		client.Configure,
 	)
