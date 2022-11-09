@@ -14,6 +14,6 @@ The composite primary key for this table is (**resource_type**, **service_name**
 |_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
+|resource_region_scope|String|
 |resource_type (PK)|String|
 |service_name (PK)|String|
-|resource_region_scope|String|

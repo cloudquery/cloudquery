@@ -17,11 +17,11 @@ This table depends on [aws_ram_resource_shares](aws_ram_resource_shares.md).
 |account_id|String|
 |region|String|
 |associated_entity (PK)|String|
-|resource_share_arn (PK)|String|
 |association_type|String|
 |creation_time|Timestamp|
 |external|Bool|
 |last_updated_time|Timestamp|
+|resource_share_arn (PK)|String|
 |resource_share_name|String|
 |status|String|
 |status_message|String|

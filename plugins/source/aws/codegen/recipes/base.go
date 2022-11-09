@@ -28,6 +28,7 @@ type Resource struct {
 	SkipFields            []string
 	Description           string
 	ExtraColumns          []codegen.ColumnDefinition
+	PKColumns             []string
 	Table                 *codegen.TableDefinition
 	Multiplex             string
 	PreResourceResolver   string
@@ -128,6 +129,7 @@ func (r *Resource) Generate() error {
 	opts := []codegen.TableOption{
 		codegen.WithSkipFields(r.SkipFields),
 		codegen.WithExtraColumns(r.ExtraColumns),
+		codegen.WithPKColumns(r.PKColumns...),
 		codegen.WithNameTransformer(awsNameTransformer),
 		codegen.WithResolverTransformer(awsResolverTransformer),
 	}

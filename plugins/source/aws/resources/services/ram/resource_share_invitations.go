@@ -25,14 +25,6 @@ func ResourceShareInvitations() *schema.Table {
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ResourceShareInvitationArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
 				Name:     "invitation_timestamp",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("InvitationTimestamp"),
@@ -56,6 +48,14 @@ func ResourceShareInvitations() *schema.Table {
 				Name:     "resource_share_associations",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("ResourceShareAssociations"),
+			},
+			{
+				Name:     "resource_share_invitation_arn",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ResourceShareInvitationArn"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "resource_share_name",

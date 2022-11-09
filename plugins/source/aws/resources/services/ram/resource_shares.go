@@ -25,14 +25,6 @@ func ResourceShares() *schema.Table {
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ResourceShareArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
 				Name:     "allow_external_principals",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("AllowExternalPrincipals"),
@@ -61,6 +53,14 @@ func ResourceShares() *schema.Table {
 				Name:     "owning_account_id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("OwningAccountId"),
+			},
+			{
+				Name:     "resource_share_arn",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ResourceShareArn"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "status",

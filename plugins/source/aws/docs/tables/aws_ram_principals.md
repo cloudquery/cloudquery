@@ -14,8 +14,8 @@ The primary key for this table is **id**.
 |_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
-|id (PK)|String|
 |creation_time|Timestamp|
 |external|Bool|
+|id (PK)|String|
 |last_updated_time|Timestamp|
 |resource_share_arn|String|

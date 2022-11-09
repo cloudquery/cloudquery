@@ -25,17 +25,17 @@ func ResourceSharePermissions() *schema.Table {
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
+				Name:     "permission",
+				Type:     schema.TypeJSON,
+				Resolver: resolveResourceSharePermissionDetailPermission,
+			},
+			{
 				Name:     "arn",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Arn"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
-			},
-			{
-				Name:     "permission",
-				Type:     schema.TypeJSON,
-				Resolver: resolveResourceSharePermissionDetailPermission,
 			},
 			{
 				Name:     "creation_time",

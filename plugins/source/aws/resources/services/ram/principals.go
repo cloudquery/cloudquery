@@ -25,14 +25,6 @@ func Principals() *schema.Table {
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Id"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
 				Name:     "creation_time",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreationTime"),
@@ -41,6 +33,14 @@ func Principals() *schema.Table {
 				Name:     "external",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("External"),
+			},
+			{
+				Name:     "id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Id"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "last_updated_time",

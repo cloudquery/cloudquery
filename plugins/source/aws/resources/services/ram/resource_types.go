@@ -25,6 +25,11 @@ func ResourceTypes() *schema.Table {
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
+				Name:     "resource_region_scope",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ResourceRegionScope"),
+			},
+			{
 				Name:     "resource_type",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ResourceType"),
@@ -39,11 +44,6 @@ func ResourceTypes() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
-			},
-			{
-				Name:     "resource_region_scope",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ResourceRegionScope"),
 			},
 		},
 	}

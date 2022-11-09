@@ -32,15 +32,6 @@ func ResourceShareAssociatedResources() *schema.Table {
 				},
 			},
 			{
-				Name:        "resource_share_arn",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ResourceShareArn"),
-				Description: `Resource Share ARN`,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
 				Name:     "association_type",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("AssociationType"),
@@ -59,6 +50,14 @@ func ResourceShareAssociatedResources() *schema.Table {
 				Name:     "last_updated_time",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("LastUpdatedTime"),
+			},
+			{
+				Name:     "resource_share_arn",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ResourceShareArn"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "resource_share_name",
