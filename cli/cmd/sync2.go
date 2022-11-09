@@ -12,7 +12,7 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
-func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.SourceClient, sourceSpec specs.Source, destinationsSpecs []specs.Destination, uid string) error {
+func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.SourceClient, sourceSpec specs.Source, destinationsSpecs []specs.Destination, uid string, noMigrate bool) error {
 	var err error
 	destinationNames := make([]string, len(destinationsSpecs))
 	for i := range destinationsSpecs {
@@ -23,40 +23,35 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 	log.Info().Str("source", sourceSpec.Name).Strs("destinations", destinationNames).Time("sync_time", syncTime).Msg("Start sync")
 	defer log.Info().Str("source", sourceSpec.Name).Strs("destinations", destinationNames).Time("sync_time", syncTime).Msg("End sync")
 
-	destClients := make([]*clients.DestinationClient, len(sourceSpec.Destinations))
-	destSubscriptions := make([]chan []byte, len(sourceSpec.Destinations))
-	for i := range destSubscriptions {
-		destSubscriptions[i] = make(chan []byte)
+	destClients, err := newDestinationClients(ctx, sourceSpec, destinationsSpecs, cqDir)
+	if err != nil {
+		return err
 	}
-	defer func() {
-		for _, destClient := range destClients {
-			if destClient != nil {
-				if err := destClient.Terminate(); err != nil {
-					log.Error().Err(err).Msg("Failed to terminate destination client")
-					fmt.Println("failed to terminate destination client: ", err)
-				}
-			}
-		}
-	}()
+	defer destClients.Close()
+
 	tables, err := sourceClient.GetTables(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to get tables for source %s: %w", sourceSpec.Name, err)
 	}
-	for i, destinationSpec := range destinationsSpecs {
-		destClients[i], err = clients.NewDestinationClient(ctx, destinationSpec.Registry, destinationSpec.Path, destinationSpec.Version,
-			clients.WithDestinationLogger(log.Logger),
-			clients.WithDestinationDirectory(cqDir),
-		)
-		if err != nil {
-			return fmt.Errorf("failed to create destination plugin client for %s: %w", destinationSpec.Name, err)
-		}
-		if err := destClients[i].Initialize(ctx, destinationSpec); err != nil {
-			return fmt.Errorf("failed to initialize destination plugin client for %s: %w", destinationSpec.Name, err)
-		}
 
-		if err := destClients[i].Migrate(ctx, tables); err != nil {
-			return fmt.Errorf("failed to migrate source %s on destination %s : %w", sourceSpec.Name, destinationSpec.Name, err)
+	if !noMigrate {
+		fmt.Println("Starting migration for:", sourceSpec.Name, "->", sourceSpec.Destinations)
+		log.Info().Str("source", sourceSpec.Name).Strs("destinations", sourceSpec.Destinations).Msg("Start migration")
+		migrateStart := time.Now()
+
+		for i, destinationSpec := range destinationsSpecs {
+			if err := destClients[i].Migrate(ctx, tables); err != nil {
+				return fmt.Errorf("failed to migrate source %s on destination %s : %w", sourceSpec.Name, destinationSpec.Name, err)
+			}
 		}
+		migrateTimeTook := time.Since(migrateStart)
+		fmt.Printf("Migration completed successfully.\n")
+		log.Info().
+			Str("source", sourceSpec.Name).
+			Strs("destinations", sourceSpec.Destinations).
+			Int("num_tables", len(tables)).
+			Float64("time_took", migrateTimeTook.Seconds()).
+			Msg("End migration")
 	}
 
 	resources := make(chan []byte)
@@ -74,6 +69,10 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 		return nil
 	})
 
+	destSubscriptions := make([]chan []byte, len(sourceSpec.Destinations))
+	for i := range destSubscriptions {
+		destSubscriptions[i] = make(chan []byte)
+	}
 	bar := progressbar.NewOptions(-1,
 		progressbar.OptionSetDescription("Syncing resources..."),
 		progressbar.OptionSetItsString("resources"),
@@ -136,6 +135,12 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 	// fmt.Printf("Summary: resources: %d, errors: %d, panic: %d, failed_writes: %d, time: %s\n", summary.Resources, summary.Errors, summary.Panics, failedWrites, tt.Truncate(time.Second).String())
 	// log.Info().Str("source", sourceSpec.Name).Strs("destinations", sourceSpec.Destinations).
 	// Uint64("resources", totalResources).Uint64("errors", summary.Errors).Uint64("panic", summary.Panics).Uint64("failed_writes", failedWrites).Float64("time_took", tt.Seconds()).Msg("Sync completed successfully")
+
+	for k1, clientMetrics := range metrics.TableClient {
+		for k2, m := range clientMetrics {
+			fmt.Println(k1, k2, m.EndTime.Sub(m.StartTime))
+		}
+	}
 
 	// Send analytics, if activated. We only send if the source plugin registry is GitHub, mostly to avoid sending data from development machines.
 	if analyticsClient != nil && sourceSpec.Registry == specs.RegistryGithub {
