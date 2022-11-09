@@ -13,7 +13,7 @@ import (
 func AddOnWebhookDeliveries() *schema.Table {
 	return &schema.Table{
 		Name:        "heroku_add_on_webhook_deliveries",
-		Description: `https://devcenter.heroku.com/articles/platform-api-reference#add-on-webhook-delivery-attributes`,
+		Description: `https://devcenter.heroku.com/articles/platform-api-reference#add-on-webhook-delivery`,
 		Resolver:    fetchAddOnWebhookDeliveries,
 		Columns: []schema.Column{
 			{

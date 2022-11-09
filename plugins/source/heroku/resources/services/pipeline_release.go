@@ -13,7 +13,7 @@ import (
 func PipelineReleases() *schema.Table {
 	return &schema.Table{
 		Name:        "heroku_pipeline_releases",
-		Description: `https://devcenter.heroku.com/articles/platform-api-reference#pipeline-release-attributes`,
+		Description: `https://devcenter.heroku.com/articles/platform-api-reference#pipeline-release`,
 		Resolver:    fetchPipelineReleases,
 		Columns: []schema.Column{
 			{

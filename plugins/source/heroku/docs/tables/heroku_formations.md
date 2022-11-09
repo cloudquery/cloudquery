@@ -1,6 +1,6 @@
 # Table: heroku_formations
 
-https://devcenter.heroku.com/articles/platform-api-reference#formation-attributes
+https://devcenter.heroku.com/articles/platform-api-reference#formation
 
 The primary key for this table is **id**.
 

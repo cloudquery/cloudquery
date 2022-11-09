@@ -1,6 +1,6 @@
 # Table: heroku_buildpack_installations
 
-https://devcenter.heroku.com/articles/platform-api-reference#buildpack-installation-attributes
+https://devcenter.heroku.com/articles/platform-api-reference#buildpack-installation
 
 The primary key for this table is **_cq_id**.
 

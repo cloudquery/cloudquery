@@ -1,6 +1,6 @@
 # Table: heroku_credits
 
-https://devcenter.heroku.com/articles/platform-api-reference#credit-attributes
+https://devcenter.heroku.com/articles/platform-api-reference#credit
 
 The primary key for this table is **id**.
 

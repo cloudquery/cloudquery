@@ -1,6 +1,6 @@
 # Table: heroku_invoices
 
-https://devcenter.heroku.com/articles/platform-api-reference#invoice-attributes
+https://devcenter.heroku.com/articles/platform-api-reference#invoice
 
 The primary key for this table is **id**.
 

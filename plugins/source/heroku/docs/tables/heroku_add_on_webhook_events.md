@@ -1,6 +1,6 @@
 # Table: heroku_add_on_webhook_events
 
-https://devcenter.heroku.com/articles/platform-api-reference#add-on-webhook-event-attributes
+https://devcenter.heroku.com/articles/platform-api-reference#add-on-webhook-event
 
 The primary key for this table is **id**.
 

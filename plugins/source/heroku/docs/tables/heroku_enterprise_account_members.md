@@ -1,6 +1,6 @@
 # Table: heroku_enterprise_account_members
 
-https://devcenter.heroku.com/articles/platform-api-reference#enterprise-account-member-attributes
+https://devcenter.heroku.com/articles/platform-api-reference#enterprise-account-member
 
 The primary key for this table is **id**.
 
