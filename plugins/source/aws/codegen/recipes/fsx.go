@@ -67,6 +67,27 @@ func FSXResources() []*Resource {
 				}...),
 		},
 		{
+			SubService:  "file_caches",
+			Struct:      &types.FileCache{},
+			Description: "https://docs.aws.amazon.com/fsx/latest/APIReference/API_FileCache.html",
+			SkipFields:  []string{"ResourceARN"},
+			ExtraColumns: append(
+				defaultRegionalColumns,
+				[]codegen.ColumnDefinition{
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("ResourceARN")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+					{
+						Name:     "tags",
+						Type:     schema.TypeJSON,
+						Resolver: `resolveFileCacheTags`,
+					},
+				}...),
+		},
+		{
 			SubService:  "file_systems",
 			Struct:      &types.FileSystem{},
 			Description: "https://docs.aws.amazon.com/fsx/latest/APIReference/API_FileSystem.html",

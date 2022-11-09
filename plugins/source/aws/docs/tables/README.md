@@ -217,6 +217,7 @@
 | [aws_fsx_backups](aws_fsx_backups.md) |
 | [aws_fsx_data_repository_associations](aws_fsx_data_repository_associations.md) |
 | [aws_fsx_data_repository_tasks](aws_fsx_data_repository_tasks.md) |
+| [aws_fsx_file_caches](aws_fsx_file_caches.md) |
 | [aws_fsx_file_systems](aws_fsx_file_systems.md) |
 | [aws_fsx_snapshots](aws_fsx_snapshots.md) |
 | [aws_fsx_storage_virtual_machines](aws_fsx_storage_virtual_machines.md) |
