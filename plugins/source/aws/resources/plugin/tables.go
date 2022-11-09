@@ -315,6 +315,7 @@ func tables() []*schema.Table {
 		organizations.Accounts(),
 		qldb.Ledgers(),
 		rds.Certificates(),
+		rds.EngineVersions(),
 		rds.ClusterParameterGroups(),
 		rds.ClusterSnapshots(),
 		rds.Clusters(),
