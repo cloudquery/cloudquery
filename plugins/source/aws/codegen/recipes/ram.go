@@ -29,12 +29,13 @@ func RAMResources() []*Resource {
 			SubService:   "resource_shares",
 			Struct:       new(types.ResourceShare),
 			Multiplex:    mx,
-			PKColumns:    []string{"resource_share_arn"},
+			PKColumns:    []string{"arn"},
 			ExtraColumns: defaultRegionalColumns,
 			Relations: []string{
 				"ResourceShareAssociatedPrincipals()",
 				"ResourceShareAssociatedResources()",
 			},
+			NameTransformer: CreateReplaceTransformer(map[string]string{"resource_share_arn": "arn"}),
 		},
 		{
 			SubService:   "resource_share_associated_principals",
@@ -54,9 +55,10 @@ func RAMResources() []*Resource {
 			SubService:                  "resource_share_invitations",
 			Struct:                      new(types.ResourceShareInvitation),
 			Multiplex:                   mx,
-			PKColumns:                   []string{"resource_share_invitation_arn"},
+			PKColumns:                   []string{"arn"},
 			ExtraColumns:                defaultRegionalColumns,
 			ResolverAndMockTestTemplate: "get_resources_paginated_1",
+			NameTransformer:             CreateReplaceTransformer(map[string]string{"resource_share_invitation_arn": "arn"}),
 		},
 		{
 			SubService: "resource_share_permissions",

@@ -2,7 +2,7 @@
 
 https://docs.aws.amazon.com/ram/latest/APIReference/API_ResourceShare.html
 
-The primary key for this table is **resource_share_arn**.
+The primary key for this table is **arn**.
 
 ## Relations
 The following tables depend on aws_ram_resource_shares:
@@ -24,7 +24,7 @@ The following tables depend on aws_ram_resource_shares:
 |last_updated_time|Timestamp|
 |name|String|
 |owning_account_id|String|
-|resource_share_arn (PK)|String|
+|arn (PK)|String|
 |status|String|
 |status_message|String|
 |tags|JSON|

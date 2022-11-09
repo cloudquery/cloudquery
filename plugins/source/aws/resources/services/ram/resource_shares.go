@@ -55,7 +55,7 @@ func ResourceShares() *schema.Table {
 				Resolver: schema.PathResolver("OwningAccountId"),
 			},
 			{
-				Name:     "resource_share_arn",
+				Name:     "arn",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ResourceShareArn"),
 				CreationOptions: schema.ColumnCreationOptions{

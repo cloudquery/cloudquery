@@ -50,7 +50,7 @@ func ResourceShareInvitations() *schema.Table {
 				Resolver: schema.PathResolver("ResourceShareAssociations"),
 			},
 			{
-				Name:     "resource_share_invitation_arn",
+				Name:     "arn",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ResourceShareInvitationArn"),
 				CreationOptions: schema.ColumnCreationOptions{

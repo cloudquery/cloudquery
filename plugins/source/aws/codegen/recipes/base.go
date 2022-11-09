@@ -36,6 +36,9 @@ type Resource struct {
 	Relations             []string
 	UnwrapEmbeddedStructs bool
 
+	// NameTransformer custom name transformer for resource
+	NameTransformer func(field reflect.StructField) (string, error)
+
 	// Used for generating the resolver and mock tests.
 	// --------------------------------
 	ShouldGenerateResolverAndMockTest bool
@@ -135,6 +138,9 @@ func (r *Resource) Generate() error {
 	}
 	if r.UnwrapEmbeddedStructs {
 		opts = append(opts, codegen.WithUnwrapAllEmbeddedStructs())
+	}
+	if r.NameTransformer != nil {
+		opts = append(opts, codegen.WithNameTransformer(r.NameTransformer))
 	}
 	name := fmt.Sprintf("aws_%s_%s", r.Service, r.SubService)
 	if r.Name != "" {
@@ -287,4 +293,18 @@ func (r Resource) StructName() string {
 func (r Resource) CloudQueryServiceName() string {
 	csr := caser.New()
 	return csr.ToPascal(r.Service)
+}
+
+// CreateReplaceTransformer allows overriding column names
+func CreateReplaceTransformer(replace map[string]string) func(field reflect.StructField) (string, error) {
+	return func(field reflect.StructField) (string, error) {
+		name, err := codegen.DefaultNameTransformer(field)
+		if err != nil {
+			return "", err
+		}
+		for k, v := range replace {
+			name = strings.ReplaceAll(name, k, v)
+		}
+		return name, nil
+	}
 }
