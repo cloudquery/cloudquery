@@ -25,6 +25,7 @@ spec:
     - aws_neptune_db_parameter_groups
     - aws_rds_cluster_parameter_groups
     - aws_rds_db_parameter_groups
+    - aws_rds_engine_versions
     - aws_servicequotas_services
   destinations: ["<destination>"]
 ```
