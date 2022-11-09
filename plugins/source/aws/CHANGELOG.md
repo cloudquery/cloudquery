@@ -6,6 +6,34 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [4.11.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v4.11.0...plugins-source-aws-v4.11.1) (2022-11-09)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for aws to v1.1.1 ([#3983](https://github.com/cloudquery/cloudquery/issues/3983)) ([7a4184e](https://github.com/cloudquery/cloudquery/commit/7a4184e213f51d9e18e66d7949895fcb47e581d4))
+* **deps:** Update plugin-sdk for csv to v1.1.0 ([#3918](https://github.com/cloudquery/cloudquery/issues/3918)) ([f1acd68](https://github.com/cloudquery/cloudquery/commit/f1acd688fcd90011cc9be1be2285e3fe9369e341))
+
+## [4.11.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v4.10.0...plugins-source-aws-v4.11.0) (2022-11-09)
+
+
+### Features
+
+* **aws:** Support AppRunner Tags ([#3968](https://github.com/cloudquery/cloudquery/issues/3968)) ([7c4b633](https://github.com/cloudquery/cloudquery/commit/7c4b6336fa56ef0e34aeabf1a164dc4011828059))
+
+## [4.10.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v4.9.0...plugins-source-aws-v4.10.0) (2022-11-09)
+
+
+### Features
+
+* **aws:** Update AWS packages ([#3965](https://github.com/cloudquery/cloudquery/issues/3965)) ([139899d](https://github.com/cloudquery/cloudquery/commit/139899db078490b0cdd9cacea4d0f894960e900e))
+
+
+### Bug Fixes
+
+* **codegen:** Fix issues related to missing codegen for AWS ([#3954](https://github.com/cloudquery/cloudquery/issues/3954)) ([d485853](https://github.com/cloudquery/cloudquery/commit/d485853a143db091ebe65d71803da4e5b8933d70))
+* Update endpoints ([#3966](https://github.com/cloudquery/cloudquery/issues/3966)) ([31f19b4](https://github.com/cloudquery/cloudquery/commit/31f19b4689196bcde25fc125131cf52625fd5133))
+
 ## [4.9.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v4.8.0...plugins-source-aws-v4.9.0) (2022-11-08)
 
 

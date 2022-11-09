@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/destination/csv
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v1.1.0
+	github.com/cloudquery/plugin-sdk v1.2.0
 	github.com/rs/zerolog v1.28.0
 )
 

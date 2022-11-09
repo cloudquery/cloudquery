@@ -104,7 +104,7 @@ func sync(cmd *cobra.Command, args []string) error {
 				return err
 			}
 		case 2:
-			if err := syncConnectionV2(ctx, cqDir, sourceClient, *sourceSpec, destinationsSpecs, invocationUUID.String()); err != nil {
+			if err := syncConnectionV2(ctx, cqDir, sourceClient, *sourceSpec, destinationsSpecs, invocationUUID.String(), noMigrate); err != nil {
 				return err
 			}
 		default:

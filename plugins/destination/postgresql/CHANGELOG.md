@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.7.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v1.7.1...plugins-destination-postgresql-v1.7.2) (2022-11-09)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for postgresql to v1.1.2 ([#4016](https://github.com/cloudquery/cloudquery/issues/4016)) ([2762eab](https://github.com/cloudquery/cloudquery/commit/2762eab9fbe2b545723919603b3d4bba59ec1366))
+
+## [1.7.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v1.7.0...plugins-destination-postgresql-v1.7.1) (2022-11-09)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for csv to v1.1.0 ([#3918](https://github.com/cloudquery/cloudquery/issues/3918)) ([f1acd68](https://github.com/cloudquery/cloudquery/commit/f1acd688fcd90011cc9be1be2285e3fe9369e341))
+* **deps:** Update plugin-sdk for postgresql to v1.1.1 ([#4001](https://github.com/cloudquery/cloudquery/issues/4001)) ([3a11b2b](https://github.com/cloudquery/cloudquery/commit/3a11b2b3e276e7c11ade65c5e1250dccaf324e0d))
+
 ## [1.7.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v1.6.7...plugins-destination-postgresql-v1.7.0) (2022-11-08)
 
 
