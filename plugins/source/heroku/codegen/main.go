@@ -72,7 +72,7 @@ func generateResource(r recipes.Resource, mock bool) {
 	if r.TableName != "" {
 		tableName = r.TableName
 	}
-	r.Table, err = sdkgen.NewTableFromStruct(tableName, r.HerokuStruct)
+	r.Table, err = sdkgen.NewTableFromStruct(tableName, r.HerokuStruct, sdkgen.WithUnwrapAllEmbeddedStructs())
 	if err != nil {
 		log.Fatal(err)
 	}
