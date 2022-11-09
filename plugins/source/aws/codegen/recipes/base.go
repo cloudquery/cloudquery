@@ -282,3 +282,9 @@ func (r *Resource) generateMockTest(dir string) error {
 func (r Resource) StructName() string {
 	return reflect.TypeOf(r.Struct).Elem().Name()
 }
+
+// CloudQueryServiceName is used for accessing 'client.Services().{{.CloudqueryServiceName}}' in templates
+func (r Resource) CloudQueryServiceName() string {
+	csr := caser.New()
+	return csr.ToPascal(r.Service)
+}
