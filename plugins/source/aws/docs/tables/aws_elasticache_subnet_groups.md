@@ -18,4 +18,5 @@ The primary key for this table is **arn**.
 |cache_subnet_group_description|String|
 |cache_subnet_group_name|String|
 |subnets|JSON|
+|supported_network_types|StringArray|
 |vpc_id|String|
