@@ -1,7 +1,7 @@
-before:
-  hooks:
-    - cmd: go mod download
-      dir: ./plugins/{{ .Var.component }}
+includes:
+  - from_file:
+      # Relative to the directory Go Releaser is run from (which is the root of the repository)
+      path: ./plugins/.goreleaser.template.yaml
 builds:
   - flags:
       - -buildmode=exe
@@ -20,29 +20,3 @@ builds:
     ignore:
       - goos: windows
         goarch: arm64
-archives:
-  - name_template: "{{ .Binary }}_{{ .Os }}_{{ .Arch }}"
-    format: zip
-    id: zip
-    files:
-      - policies_v1/**
-checksum:
-  name_template: "checksums.txt"
-  ids:
-    - default
-changelog:
-  sort: asc
-  filters:
-    exclude:
-      - "^docs:"
-      - "^test:"
-signs:
-  - artifacts: checksum
-    args:
-      - "--batch"
-      - "--output"
-      - "${signature}"
-      - "--detach-sign"
-      - "${artifact}"
-release:
-  prerelease: auto
