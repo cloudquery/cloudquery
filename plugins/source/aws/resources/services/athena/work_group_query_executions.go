@@ -9,10 +9,11 @@ import (
 
 func WorkGroupQueryExecutions() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_athena_work_group_query_executions",
-		Description: `https://docs.aws.amazon.com/athena/latest/APIReference/API_QueryExecution.html`,
-		Resolver:    fetchAthenaWorkGroupQueryExecutions,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("athena"),
+		Name:                "aws_athena_work_group_query_executions",
+		Description:         `https://docs.aws.amazon.com/athena/latest/APIReference/API_QueryExecution.html`,
+		Resolver:            fetchAthenaWorkGroupQueryExecutions,
+		PreResourceResolver: getWorkGroupQueryExecution,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("athena"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
