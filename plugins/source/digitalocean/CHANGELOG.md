@@ -5,6 +5,14 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.12](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v2.2.11...plugins-source-digitalocean-v2.2.12) (2022-11-10)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2 to v1.17.1 ([#4124](https://github.com/cloudquery/cloudquery/issues/4124)) ([650b3be](https://github.com/cloudquery/cloudquery/commit/650b3beb358e429f3737c407ab012bd379021c29))
+* **deps:** Update module github.com/aws/smithy-go to v1.13.4 ([#4123](https://github.com/cloudquery/cloudquery/issues/4123)) ([b4b8372](https://github.com/cloudquery/cloudquery/commit/b4b83721a316bbaa2435004b28b3d6357bc7eb5f))
+
 ## [2.2.11](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v2.2.10...plugins-source-digitalocean-v2.2.11) (2022-11-09)
 
 
