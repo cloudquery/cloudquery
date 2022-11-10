@@ -1,5 +1,6 @@
 kind: "destination"
 spec:
   name: "test"
-  path: "cloudquery/test"
-  version: "v1.2.0" # latest version of destination test plugin
+  path: "localhost:7778"
+  registry: "grpc"
+  version: "v1.2.19" # latest version of destination test plugin

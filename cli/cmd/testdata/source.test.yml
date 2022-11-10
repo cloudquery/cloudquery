@@ -1,6 +1,7 @@
 kind: "source"
 spec:
   name: "test"
-  path: "cloudquery/test"
+  path: "localhost:7777"
+  registry: "grpc"
   destinations: [test]
-  version: "v1.2.1" # latest version of source test plugin
+  version: "v1.3.10" # latest version of source test plugin
