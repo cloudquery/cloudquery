@@ -1,6 +1,6 @@
 # Table: azure_servicebus_access_keys
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/servicebus/mgmt/2021-06-01-preview/servicebus#AccessKeys
 
 The primary key for this table is **_cq_id**.
 

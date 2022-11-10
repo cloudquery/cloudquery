@@ -1,6 +1,6 @@
 # Table: azure_web_publishing_profiles
 
-
+https://pkg.go.dev/github.com/cloudquery/cloudquery/plugins/source/azure/client/services#PublishingProfile
 
 The primary key for this table is **_cq_id**.
 
