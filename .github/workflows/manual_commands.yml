@@ -6,6 +6,7 @@ on:
 
 jobs:
   gen:
+    timeout-minutes: 5
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Source Plugin Generation Command
