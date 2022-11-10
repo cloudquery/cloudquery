@@ -1,6 +1,6 @@
 # Table: azure_subscriptions_locations
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions#Location
 
 The primary key for this table is **id**.
 

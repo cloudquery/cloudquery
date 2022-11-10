@@ -11,9 +11,10 @@ import (
 
 func LogProfiles() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_monitor_log_profiles",
-		Resolver:  fetchMonitorLogProfiles,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:        "azure_monitor_log_profiles",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2021-07-01-preview/insights#LogProfileResource`,
+		Resolver:    fetchMonitorLogProfiles,
+		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

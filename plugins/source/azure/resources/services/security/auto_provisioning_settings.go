@@ -11,9 +11,10 @@ import (
 
 func AutoProvisioningSettings() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_security_auto_provisioning_settings",
-		Resolver:  fetchSecurityAutoProvisioningSettings,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:        "azure_security_auto_provisioning_settings",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security#AutoProvisioningSetting`,
+		Resolver:    fetchSecurityAutoProvisioningSettings,
+		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

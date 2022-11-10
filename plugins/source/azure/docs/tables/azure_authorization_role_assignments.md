@@ -1,6 +1,6 @@
 # Table: azure_authorization_role_assignments
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/authorization/mgmt/2015-07-01/authorization#RoleAssignment
 
 The primary key for this table is **id**.
 

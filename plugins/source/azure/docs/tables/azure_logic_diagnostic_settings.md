@@ -1,6 +1,6 @@
 # Table: azure_logic_diagnostic_settings
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2019-06-01/insights#DiagnosticSettingsResource
 
 The primary key for this table is **id**.
 

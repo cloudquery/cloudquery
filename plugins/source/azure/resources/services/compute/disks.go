@@ -11,9 +11,10 @@ import (
 
 func Disks() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_compute_disks",
-		Resolver:  fetchComputeDisks,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:        "azure_compute_disks",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-03-01/compute#Disk`,
+		Resolver:    fetchComputeDisks,
+		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

@@ -11,9 +11,10 @@ import (
 
 func StreamingJobs() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_streamanalytics_streaming_jobs",
-		Resolver:  fetchStreamAnalyticsStreamingJobs,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:        "azure_streamanalytics_streaming_jobs",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/streamanalytics/mgmt/2020-03-01/streamanalytics#StreamingJob`,
+		Resolver:    fetchStreamAnalyticsStreamingJobs,
+		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

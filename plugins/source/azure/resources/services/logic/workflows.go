@@ -11,9 +11,10 @@ import (
 
 func Workflows() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_logic_workflows",
-		Resolver:  fetchLogicWorkflows,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:        "azure_logic_workflows",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/logic/mgmt/2019-05-01/logic#Workflow`,
+		Resolver:    fetchLogicWorkflows,
+		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
