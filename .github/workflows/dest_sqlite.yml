@@ -72,10 +72,10 @@ jobs:
         CGO_ENABLED: 1
     steps:
       - name: Checkout
-        if: startsWith(github.head_ref, 'feat/sqlite') || github.event_name == 'push'
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/checkout@v3
       - uses: actions/cache@v3
-        if: startsWith(github.head_ref, 'feat/sqlite') || github.event_name == 'push'
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         with:
           path: |
             ~/.cache/go-build
@@ -84,19 +84,19 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-1.19.2-release-cache-plugins-destination-sqlite
       - name: Set up Go
-        if: startsWith(github.head_ref, 'feat/sqlite') || github.event_name == 'push'
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/setup-go@v3
         with:
           go-version-file: plugins/destination/sqlite/go.mod
       - name: Install GoReleaser
-        if: startsWith(github.head_ref, 'feat/sqlite') || github.event_name == 'push'
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: goreleaser/goreleaser-action@v3
         with:
           distribution: goreleaser-pro
           version: latest
           install-only: true
       - name: Run GoReleaser Dry-Run
-        if: startsWith(github.head_ref, 'feat/sqlite') || github.event_name == 'push'
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         run: goreleaser release --snapshot --rm-dist --skip-validate --skip-publish --skip-sign -f ./plugins/destination/sqlite/.goreleaser.yaml
         env:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
