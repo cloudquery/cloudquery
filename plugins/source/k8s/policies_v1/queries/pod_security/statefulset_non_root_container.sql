@@ -1,4 +1,3 @@
--- https://hub.steampipe.io/mods/turbot/kubernetes_compliance/queries/statefulset_non_root_container
 WITH stateful_set_containers AS (SELECT uid, value AS container 
                                FROM k8s_apps_stateful_sets
                                CROSS JOIN jsonb_array_elements(spec_template->'spec'->'containers') AS value)
