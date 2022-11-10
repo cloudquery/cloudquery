@@ -146,6 +146,12 @@ func (r *Resource) Generate() error {
 	if r.Name != "" {
 		name = r.Name
 	}
+
+	// All table names must be plural
+	if !strings.HasSuffix(name, "s") {
+		return fmt.Errorf("invalid table name: %s . must be plural. ", name)
+	}
+
 	r.Table, err = codegen.NewTableFromStruct(
 		name,
 		r.Struct,
