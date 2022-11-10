@@ -1,6 +1,6 @@
 # Table: azure_keyvault_vaults
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/keyvault/mgmt/2019-09-01/keyvault#Vault
 
 The primary key for this table is **id**.
 

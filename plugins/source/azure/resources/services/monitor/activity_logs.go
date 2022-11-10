@@ -13,9 +13,10 @@ import (
 
 func ActivityLogs() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_monitor_activity_logs",
-		Resolver:  fetchMonitorActivityLogs,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:        "azure_monitor_activity_logs",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2021-07-01-preview/insights#EventData`,
+		Resolver:    fetchMonitorActivityLogs,
+		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

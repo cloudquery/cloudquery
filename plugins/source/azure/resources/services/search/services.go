@@ -11,9 +11,10 @@ import (
 
 func Services() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_search_services",
-		Resolver:  fetchSearchServices,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:        "azure_search_services",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/search/mgmt/2020-08-01/search#Service`,
+		Resolver:    fetchSearchServices,
+		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

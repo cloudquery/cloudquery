@@ -11,9 +11,10 @@ import (
 
 func JitNetworkAccessPolicies() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_security_jit_network_access_policies",
-		Resolver:  fetchSecurityJitNetworkAccessPolicies,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:        "azure_security_jit_network_access_policies",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security#JitNetworkAccessPolicy`,
+		Resolver:    fetchSecurityJitNetworkAccessPolicies,
+		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

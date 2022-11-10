@@ -13,8 +13,9 @@ import (
 
 func siteAuthSettings() *schema.Table {
 	return &schema.Table{
-		Name:     "azure_web_site_auth_settings",
-		Resolver: fetchWebSiteAuthSettings,
+		Name:        "azure_web_site_auth_settings",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/web/mgmt/2020-12-01/web#SiteAuthSettings`,
+		Resolver:    fetchWebSiteAuthSettings,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

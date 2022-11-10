@@ -25,6 +25,42 @@ func RDSResources() []*Resource {
 				}...),
 		},
 		{
+			SubService:  "engine_versions",
+			Struct:      &types.DBEngineVersion{},
+			Description: "https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBEngineVersion.html",
+			Multiplex:   `client.AccountMultiplex`,
+			SkipFields:  []string{"Engine", "EngineVersion"},
+			ExtraColumns: []codegen.ColumnDefinition{
+				{
+					Name:     "account_id",
+					Type:     schema.TypeString,
+					Resolver: "client.ResolveAWSAccount",
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+				{
+					Name:     "engine",
+					Type:     schema.TypeString,
+					Resolver: `schema.PathResolver("Engine")`,
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+				{
+					Name:     "engine_version",
+					Type:     schema.TypeString,
+					Resolver: `schema.PathResolver("EngineVersion")`,
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+			},
+			Relations: []string{
+				"ClusterParameters()",
+			},
+		},
+		{
+			SubService:   "cluster_parameters",
+			Struct:       &types.Parameter{},
+			SkipFields:   []string{"DBClusterParameterGroupArn"},
+			ExtraColumns: defaultRegionalColumns,
+		},
+		{
 			SubService:  "cluster_parameter_groups",
 			Struct:      &types.DBClusterParameterGroup{},
 			Description: "https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBClusterParameterGroup.html",
