@@ -17,4 +17,4 @@ spec:
     connection_string: ./db.sql
 ```
 
-Now you can easily explore the data locally with sqlite cli without running any database.
+Now you can easily explore the data locally with SQLite cli without running any database.
