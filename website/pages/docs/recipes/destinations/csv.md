@@ -12,7 +12,7 @@ kind: destination
 spec:
   name: csv
   path: cloudquery/csv
-  version: "v1.1.4" # latest version of csv plugin
+  version: "v1.1.5" # latest version of csv plugin
   spec:
     directory: ./output # default to ./cq_csv_output
 ```
