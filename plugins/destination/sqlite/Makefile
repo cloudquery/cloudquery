@@ -17,7 +17,7 @@ release-dry-run:
 	@docker run \
 		--privileged \
 		-e CGO_ENABLED=1 \
-		-e GORELEASER_KEY="$(KEY)" \
+		-e GORELEASER_KEY="$(GORELEASER_KEY)" \
 		-v /var/run/docker.sock:/var/run/docker.sock \
 		-v `pwd`:/go/src/$(PACKAGE_NAME) \
 		-w /go/src/$(PACKAGE_NAME) \

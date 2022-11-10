@@ -5,7 +5,7 @@ project_name: plugins/destination/sqlite
 
 monorepo:
   tag_prefix: plugins-destination-sqlite-
-#   dir: plugins/destination/sqlite
+  dir: plugins/destination/sqlite
 
 # includes:
 #   - from_file:
@@ -25,14 +25,17 @@ builds:
     ldflags:
       - -s -w -X github.com/cloudquery/cloudquery/plugins/{{ .Var.component }}/resources/plugin.Version={{.Version}}
     goos:
-      # - windows
+      - windows
       - linux
-      # - darwin
+      - darwin
     goarch:
       - amd64
-      # - arm64
+      - arm64
     ignore:
       - goos: windows
+        goarch: arm64
+# linux arm64 has some issues with cross-compile
+      - goos: linux
         goarch: arm64
 archives:
   - name_template: "{{ .Binary }}_{{ .Os }}_{{ .Arch }}"
@@ -58,6 +61,5 @@ changelog:
 #       - "${signature}"
 #       - "--detach-sign"
 #       - "${artifact}"
-# release:
-#   disable: true
-  # prerelease: auto
+release:
+  prerelease: auto

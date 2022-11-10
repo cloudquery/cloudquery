@@ -11,3 +11,7 @@ RUN  \
   echo "$GORELEASER_SHA $GORELEASER_DOWNLOAD_FILE" | sha256sum -c - || exit 1; \
   tar -xzf $GORELEASER_DOWNLOAD_FILE -C /usr/bin/ goreleaser; \
   rm $GORELEASER_DOWNLOAD_FILE;
+
+# Copy generic compiler wrappers
+COPY gencc.sh /usr/bin/gencc.sh
+COPY gencpp.sh /usr/bin/gencpp.sh
