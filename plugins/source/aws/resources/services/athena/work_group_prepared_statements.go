@@ -9,10 +9,11 @@ import (
 
 func WorkGroupPreparedStatements() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_athena_work_group_prepared_statements",
-		Description: `https://docs.aws.amazon.com/athena/latest/APIReference/API_PreparedStatement.html`,
-		Resolver:    fetchAthenaWorkGroupPreparedStatements,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("athena"),
+		Name:                "aws_athena_work_group_prepared_statements",
+		Description:         `https://docs.aws.amazon.com/athena/latest/APIReference/API_PreparedStatement.html`,
+		Resolver:            fetchAthenaWorkGroupPreparedStatements,
+		PreResourceResolver: getWorkGroupPreparedStatement,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("athena"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
