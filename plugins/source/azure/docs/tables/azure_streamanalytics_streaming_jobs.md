@@ -1,6 +1,6 @@
 # Table: azure_streamanalytics_streaming_jobs
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/streamanalytics/mgmt/2020-03-01/streamanalytics#StreamingJob
 
 The primary key for this table is **id**.
 

@@ -11,9 +11,10 @@ import (
 
 func Profiles() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_cdn_profiles",
-		Resolver:  fetchCDNProfiles,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:        "azure_cdn_profiles",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2020-09-01/cdn#Profile`,
+		Resolver:    fetchCDNProfiles,
+		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

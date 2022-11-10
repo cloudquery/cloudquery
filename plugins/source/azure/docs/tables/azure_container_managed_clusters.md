@@ -1,6 +1,6 @@
 # Table: azure_container_managed_clusters
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2021-03-01/containerservice#ManagedCluster
 
 The primary key for this table is **id**.
 

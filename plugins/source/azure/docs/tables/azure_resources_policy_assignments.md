@@ -1,6 +1,6 @@
 # Table: azure_resources_policy_assignments
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2020-03-01-preview/policy#Assignment
 
 The primary key for this table is **id**.
 

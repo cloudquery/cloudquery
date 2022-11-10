@@ -11,9 +11,10 @@ import (
 
 func Servers() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_mysql_servers",
-		Resolver:  fetchMySQLServers,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:        "azure_mysql_servers",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/mysql/mgmt/2020-01-01/mysql#Server`,
+		Resolver:    fetchMySQLServers,
+		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

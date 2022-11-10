@@ -17,8 +17,9 @@ import (
 
 func diagnosticSettings() *schema.Table {
 	return &schema.Table{
-		Name:     "azure_monitor_diagnostic_settings",
-		Resolver: fetchMonitorDiagnosticSettings,
+		Name:        "azure_monitor_diagnostic_settings",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2021-07-01-preview/insights#DiagnosticSettingsResource`,
+		Resolver:    fetchMonitorDiagnosticSettings,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

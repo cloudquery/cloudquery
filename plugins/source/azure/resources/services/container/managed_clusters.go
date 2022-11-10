@@ -11,9 +11,10 @@ import (
 
 func ManagedClusters() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_container_managed_clusters",
-		Resolver:  fetchContainerManagedClusters,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:        "azure_container_managed_clusters",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2021-03-01/containerservice#ManagedCluster`,
+		Resolver:    fetchContainerManagedClusters,
+		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

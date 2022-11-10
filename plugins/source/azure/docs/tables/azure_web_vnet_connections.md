@@ -1,6 +1,6 @@
 # Table: azure_web_vnet_connections
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/web/mgmt/2020-12-01/web#VnetInfo
 
 The primary key for this table is **id**.
 
