@@ -14,23 +14,19 @@ import (
 )
 
 func build{{.Service | ToCamel}}{{.SubService | ToCamel}}Mock(t *testing.T, ctrl *gomock.Controller) client.Services {
-  m := mocks.NewMock{{.Service | ToCamel}}Client(ctrl)
-  object := types.{{.StructName}}{}
-  err := faker.FakeObject(&object)
-  if err != nil {
+    m := mocks.NewMock{{.Service | ToCamel}}Client(ctrl)
+    object := types.{{.StructName}}{}
+    err := faker.FakeObject(&object)
+    if err != nil {
 		t.Fatal(err)
-	}
+    }
 
-  m.EXPECT().List{{.StructName}}s(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-    &{{.Service}}.List{{.StructName}}sOutput{
-      {{.StructName}}s: []types.{{.StructName}}{object},
-    }, nil)
+    m.EXPECT().List{{.StructName}}s(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+        &{{.Service}}.List{{.StructName}}sOutput{ {{.StructName}}s: []types.{{.StructName}}{object}}, nil)
 
-  return client.Services{
-    {{.Service | ToCamel}}: m,
-  }
+    return client.Services{ {{.Service | ToCamel}}: m}
 }
 
 func Test{{.Service | ToCamel}}{{.SubService | ToCamel}}(t *testing.T) {
-  client.AwsMockTestHelper(t, {{.SubService | ToCamel}}(), build{{.Service | ToCamel}}{{.SubService | ToCamel}}Mock, client.TestOptions{})
+    client.AwsMockTestHelper(t, {{.SubService | ToCamel}}(), build{{.Service | ToCamel}}{{.SubService | ToCamel}}Mock, client.TestOptions{})
 }

@@ -151,6 +151,8 @@ github.com/aws/aws-sdk-go-v2/service/organizations v1.16.15 h1:DKPB04iAh04HwzriU
 github.com/aws/aws-sdk-go-v2/service/organizations v1.16.15/go.mod h1:ysLUNmzoQk89rK4yF0hjDBEX83YCuYSw6fK6KXqXpJ0=
 github.com/aws/aws-sdk-go-v2/service/qldb v1.14.20 h1:3B5nC4Ih+aC/hRIkswN0pX1W6ityjWZL40gz/YSZXAo=
 github.com/aws/aws-sdk-go-v2/service/qldb v1.14.20/go.mod h1:9morR/lAo8ziBkYz5gxtGe0FzAjkcUfxAqSk0Q9obDc=
+github.com/aws/aws-sdk-go-v2/service/ram v1.16.24 h1:pzB33ZEhd1szVKHkgYe4cXQ+kSLJEFGBLy+IpbAKY9Y=
+github.com/aws/aws-sdk-go-v2/service/ram v1.16.24/go.mod h1:el3+/AiwdwKk5qZEcCQqm+t3b1A5QLZI2nr/OkhM/gc=
 github.com/aws/aws-sdk-go-v2/service/rds v1.28.0 h1:8JCmx/lE86cKxfnqHB1B0c5nj/l17Nh9KmxVVqEy83Q=
 github.com/aws/aws-sdk-go-v2/service/rds v1.28.0/go.mod h1:wPFe1Cj3nZWmNWKKdkXw961l1dJheTZQ5JjPImqbMuI=
 github.com/aws/aws-sdk-go-v2/service/redshift v1.26.13 h1:q1SMdYb6hOggSGeq9LZ+7cyTaOPyvjNcCTPxUldLyrc=
