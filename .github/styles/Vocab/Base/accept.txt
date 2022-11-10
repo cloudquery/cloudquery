@@ -129,5 +129,3 @@ skip_tables
 subfolder
 recurse
 CCPA's
-SQLite
-sqlite
