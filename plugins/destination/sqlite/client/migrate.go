@@ -128,7 +128,7 @@ func (c *Client) createTableIfNotExist(_ context.Context, table *schema.Table) e
 			sb.WriteString(",")
 		}
 		if c.enabledPks() && col.CreationOptions.PrimaryKey {
-			primaryKeys = append(primaryKeys, `"` + col.Name + `"`)
+			primaryKeys = append(primaryKeys, `"`+col.Name+`"`)
 		}
 	}
 
