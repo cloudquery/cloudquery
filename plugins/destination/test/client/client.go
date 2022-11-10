@@ -34,6 +34,7 @@ func (*Client) Migrate(ctx context.Context, tables schema.Tables) error {
 	return nil
 }
 
+//revive:disable We need to range over the channel to clear it, but revive thinks it can be removed
 func (*Client) Write(ctx context.Context, tables schema.Tables, res <-chan *plugins.ClientResource) error {
 	for range res {
 		// do nothing
