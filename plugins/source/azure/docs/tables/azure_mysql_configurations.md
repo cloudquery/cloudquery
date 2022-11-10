@@ -1,6 +1,6 @@
 # Table: azure_mysql_configurations
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/mysql/mgmt/2020-01-01/mysql#Configuration
 
 The primary key for this table is **id**.
 

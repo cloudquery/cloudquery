@@ -1,6 +1,6 @@
 # Table: azure_sql_virtual_network_rules
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql#VirtualNetworkRule
 
 The primary key for this table is **id**.
 
