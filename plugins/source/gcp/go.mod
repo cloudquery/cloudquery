@@ -5,7 +5,6 @@ go 1.19
 require (
 	cloud.google.com/go/billing v1.5.0
 	cloud.google.com/go/compute v1.10.0
-	cloud.google.com/go/container v1.4.0
 	cloud.google.com/go/domains v0.7.0
 	cloud.google.com/go/functions v1.7.0
 	cloud.google.com/go/iam v0.4.0
