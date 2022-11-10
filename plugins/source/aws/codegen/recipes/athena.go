@@ -114,10 +114,11 @@ func AthenaResources() []*Resource {
 			},
 		},
 		{
-			SubService:  "work_group_prepared_statements",
-			Struct:      &types.PreparedStatement{},
-			Description: "https://docs.aws.amazon.com/athena/latest/APIReference/API_PreparedStatement.html",
-			SkipFields:  []string{},
+			SubService:          "work_group_prepared_statements",
+			Struct:              &types.PreparedStatement{},
+			Description:         "https://docs.aws.amazon.com/athena/latest/APIReference/API_PreparedStatement.html",
+			PreResourceResolver: "getWorkGroupPreparedStatement",
+			SkipFields:          []string{},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -129,10 +130,11 @@ func AthenaResources() []*Resource {
 				}...),
 		},
 		{
-			SubService:  "work_group_query_executions",
-			Struct:      &types.QueryExecution{},
-			Description: "https://docs.aws.amazon.com/athena/latest/APIReference/API_QueryExecution.html",
-			SkipFields:  []string{},
+			SubService:          "work_group_query_executions",
+			Struct:              &types.QueryExecution{},
+			Description:         "https://docs.aws.amazon.com/athena/latest/APIReference/API_QueryExecution.html",
+			PreResourceResolver: "getWorkGroupQueryExecution",
+			SkipFields:          []string{},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -144,10 +146,11 @@ func AthenaResources() []*Resource {
 				}...),
 		},
 		{
-			SubService:  "work_group_named_queries",
-			Struct:      &types.NamedQuery{},
-			Description: "https://docs.aws.amazon.com/athena/latest/APIReference/API_NamedQuery.html",
-			SkipFields:  []string{},
+			SubService:          "work_group_named_queries",
+			Struct:              &types.NamedQuery{},
+			Description:         "https://docs.aws.amazon.com/athena/latest/APIReference/API_NamedQuery.html",
+			PreResourceResolver: "getWorkGroupNamedQuery",
+			SkipFields:          []string{},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
