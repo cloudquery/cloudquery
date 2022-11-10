@@ -9,6 +9,9 @@ SELECT CASE
 END AS "execution_time"  \gset
 \set framework 'cis_v1.6.0'
 \ir ../create_k8s_policy_results.sql
+\ir ../views/daemon_set_containers.sql
+\ir ../views/replica_set_containers.sql
+\ir ../views/stateful_set_containers.sql
 \ir section_1_1.sql
 \ir section_1_2.sql
 \ir section_1_3.sql
