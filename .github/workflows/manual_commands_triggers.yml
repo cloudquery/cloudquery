@@ -6,6 +6,7 @@ on:
 
 jobs:
   ok-to-run:
+    timeout-minutes: 5
     runs-on: ubuntu-latest
     outputs:
       status: ${{ steps.manually_approved.outputs.result }}
@@ -16,6 +17,7 @@ jobs:
           manually_approved=${{ github.event_name == 'repository_dispatch' && github.event.client_payload.slash_command.args.named.sha != '' && contains(github.event.client_payload.pull_request.head.sha, github.event.client_payload.slash_command.args.named.sha) }}
           echo "result=${manually_approved}" >> $GITHUB_OUTPUT
   gen:
+    timeout-minutes: 30
     needs: [ok-to-run]
     if: github.event_name == 'repository_dispatch' && github.event.action == 'gen-command' && needs.ok-to-run.outputs.status == 'true'
     runs-on: ubuntu-latest
