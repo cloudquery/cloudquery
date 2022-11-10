@@ -62,6 +62,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/neptune"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/organizations"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/qldb"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ram"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/rds"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/redshift"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/resourcegroups"
@@ -314,6 +315,12 @@ func tables() []*schema.Table {
 		neptune.SubnetGroups(),
 		organizations.Accounts(),
 		qldb.Ledgers(),
+		ram.Principals(),
+		ram.Resources(),
+		ram.ResourceShares(),
+		ram.ResourceShareInvitations(),
+		ram.ResourceSharePermissions(),
+		ram.ResourceTypes(),
 		rds.Certificates(),
 		rds.ClusterParameterGroups(),
 		rds.ClusterSnapshots(),
