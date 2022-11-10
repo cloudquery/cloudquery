@@ -11,9 +11,10 @@ import (
 
 func Accounts() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_cosmosdb_accounts",
-		Resolver:  fetchCosmosDBAccounts,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:        "azure_cosmosdb_accounts",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2020-04-01-preview/documentdb#DatabaseAccountGetResults`,
+		Resolver:    fetchCosmosDBAccounts,
+		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

@@ -11,9 +11,10 @@ import (
 
 func Contacts() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_security_contacts",
-		Resolver:  fetchSecurityContacts,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:        "azure_security_contacts",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security#Contact`,
+		Resolver:    fetchSecurityContacts,
+		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

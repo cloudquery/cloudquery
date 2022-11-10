@@ -13,8 +13,9 @@ import (
 
 func topics() *schema.Table {
 	return &schema.Table{
-		Name:     "azure_servicebus_topics",
-		Resolver: fetchServicebusTopics,
+		Name:        "azure_servicebus_topics",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/servicebus/mgmt/2021-06-01-preview/servicebus#SBTopic`,
+		Resolver:    fetchServicebusTopics,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

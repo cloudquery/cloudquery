@@ -13,8 +13,9 @@ import (
 
 func secrets() *schema.Table {
 	return &schema.Table{
-		Name:     "azure_keyvault_secrets",
-		Resolver: fetchKeyVaultSecrets,
+		Name:        "azure_keyvault_secrets",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/keyvault/v7.1/keyvault#SecretItem`,
+		Resolver:    fetchKeyVaultSecrets,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

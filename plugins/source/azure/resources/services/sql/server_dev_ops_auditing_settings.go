@@ -13,8 +13,9 @@ import (
 
 func serverDevOpsAuditingSettings() *schema.Table {
 	return &schema.Table{
-		Name:     "azure_sql_server_dev_ops_auditing_settings",
-		Resolver: fetchSQLServerDevOpsAuditingSettings,
+		Name:        "azure_sql_server_dev_ops_auditing_settings",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql#ServerDevOpsAuditingSettings`,
+		Resolver:    fetchSQLServerDevOpsAuditingSettings,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

@@ -11,9 +11,10 @@ import (
 
 func VirtualMachines() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_compute_virtual_machines",
-		Resolver:  fetchComputeVirtualMachines,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:        "azure_compute_virtual_machines",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-03-01/compute#VirtualMachine`,
+		Resolver:    fetchComputeVirtualMachines,
+		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

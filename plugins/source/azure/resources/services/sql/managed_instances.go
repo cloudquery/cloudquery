@@ -11,9 +11,10 @@ import (
 
 func ManagedInstances() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_sql_managed_instances",
-		Resolver:  fetchSQLManagedInstances,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:        "azure_sql_managed_instances",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql#ManagedInstance`,
+		Resolver:    fetchSQLManagedInstances,
+		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
