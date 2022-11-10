@@ -5,6 +5,14 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.14](https://github.com/cloudquery/cloudquery/compare/plugins-source-cloudflare-v2.2.13...plugins-source-cloudflare-v2.2.14) (2022-11-10)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for cloudflare to v1.4.0 ([#4229](https://github.com/cloudquery/cloudquery/issues/4229)) ([ae34c35](https://github.com/cloudquery/cloudquery/commit/ae34c358a022f44a50068f1f06b3ddbd2c2b4a67))
+* **deps:** Update plugin-sdk for cloudflare to v1.4.1 ([#4291](https://github.com/cloudquery/cloudquery/issues/4291)) ([404a07a](https://github.com/cloudquery/cloudquery/commit/404a07abfed33c04a04d3e1dd927b6612c3aacce))
+
 ## [2.2.13](https://github.com/cloudquery/cloudquery/compare/plugins-source-cloudflare-v2.2.12...plugins-source-cloudflare-v2.2.13) (2022-11-10)
 
 

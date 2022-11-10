@@ -2,6 +2,12 @@ before:
   hooks:
     - cmd: go mod download
       dir: ./plugins/{{ .Var.component }}
+archives:
+  - name_template: "{{ .Binary }}_{{ .Os }}_{{ .Arch }}"
+    format: zip
+    id: zip
+    files:
+      - policies_v1/**
 checksum:
   name_template: "checksums.txt"
   ids:
