@@ -4,7 +4,7 @@ on:
     tags:
       - "plugins-destination-sqlite-v*.*.*"
 env:
-  CGO_ENABLED: 0
+  CGO_ENABLED: 1
 
 jobs:
   release-destination-sqlite-plugin-binary:

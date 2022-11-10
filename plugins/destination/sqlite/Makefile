@@ -21,5 +21,5 @@ release-dry-run:
 		-v /var/run/docker.sock:/var/run/docker.sock \
 		-v `pwd`:/go/src/$(PACKAGE_NAME) \
 		-w /go/src/$(PACKAGE_NAME) \
-		cross:v2.2 \
+		ghcr.io/cloudquery/golang-cross:v10.0.0 \
 		--rm-dist --skip-validate --snapshot --skip-publish
