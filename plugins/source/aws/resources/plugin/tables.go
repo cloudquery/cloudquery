@@ -322,6 +322,7 @@ func tables() []*schema.Table {
 		ram.ResourceSharePermissions(),
 		ram.ResourceTypes(),
 		rds.Certificates(),
+		rds.EngineVersions(),
 		rds.ClusterParameterGroups(),
 		rds.ClusterSnapshots(),
 		rds.Clusters(),
