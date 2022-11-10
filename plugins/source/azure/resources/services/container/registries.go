@@ -11,9 +11,10 @@ import (
 
 func Registries() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_container_registries",
-		Resolver:  fetchContainerRegistries,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:        "azure_container_registries",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/containerregistry/mgmt/2019-05-01/containerregistry#Registry`,
+		Resolver:    fetchContainerRegistries,
+		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

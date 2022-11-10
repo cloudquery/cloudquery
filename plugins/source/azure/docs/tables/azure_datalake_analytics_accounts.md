@@ -1,6 +1,6 @@
 # Table: azure_datalake_analytics_accounts
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/datalake/analytics/mgmt/2016-11-01/account#DataLakeAnalyticsAccount
 
 The primary key for this table is **id**.
 

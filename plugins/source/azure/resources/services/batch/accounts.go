@@ -11,9 +11,10 @@ import (
 
 func Accounts() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_batch_accounts",
-		Resolver:  fetchBatchAccounts,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:        "azure_batch_accounts",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/batch/mgmt/2021-06-01/batch#Account`,
+		Resolver:    fetchBatchAccounts,
+		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

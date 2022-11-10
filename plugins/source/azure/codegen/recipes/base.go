@@ -220,6 +220,8 @@ func initTable(serviceNameOverride string, definition resourceDefinition, azureS
 		codegen.WithUnwrapStructFields([]string{"Properties"}), // Some resources have a `Properties` field which contains the actual resource properties instead of an embedded struct
 		codegen.WithTypeTransformer(timeStampTransformer),
 	)
+	azureType := reflect.TypeOf(definition.azureStruct).Elem()
+	table.Description = fmt.Sprintf("https://pkg.go.dev/%s#%s", azureType.PkgPath(), azureType.Name())
 	if err != nil {
 		log.Fatal(err)
 	}

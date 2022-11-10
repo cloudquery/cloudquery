@@ -11,9 +11,10 @@ import (
 
 func Links() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_resources_links",
-		Resolver:  fetchResourcesLinks,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:        "azure_resources_links",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-09-01/links#ResourceLink`,
+		Resolver:    fetchResourcesLinks,
+		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
