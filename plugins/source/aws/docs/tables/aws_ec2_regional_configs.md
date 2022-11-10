@@ -1,4 +1,4 @@
-# Table: aws_ec2_regional_config
+# Table: aws_ec2_regional_configs
 
 
 

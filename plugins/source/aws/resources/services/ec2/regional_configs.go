@@ -7,10 +7,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func RegionalConfig() *schema.Table {
+func RegionalConfigs() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_ec2_regional_config",
-		Resolver:  fetchEc2RegionalConfig,
+		Name:      "aws_ec2_regional_configs",
+		Resolver:  fetchEc2RegionalConfigs,
 		Multiplex: client.ServiceAccountRegionMultiplexer("ec2"),
 		Columns: []schema.Column{
 			{

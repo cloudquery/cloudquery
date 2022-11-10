@@ -40,5 +40,5 @@ func buildApprunnerVpcIngressConnectionsMock(t *testing.T, ctrl *gomock.Controll
 }
 
 func TestApprunnerVpcIngressConnector(t *testing.T) {
-	client.AwsMockTestHelper(t, VpcIngressConnection(), buildApprunnerVpcIngressConnectionsMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, VpcIngressConnections(), buildApprunnerVpcIngressConnectionsMock, client.TestOptions{})
 }

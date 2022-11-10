@@ -1,4 +1,4 @@
-# Table: aws_xray_encryption_config
+# Table: aws_xray_encryption_configs
 
 https://docs.aws.amazon.com/xray/latest/api/API_EncryptionConfig.html
 

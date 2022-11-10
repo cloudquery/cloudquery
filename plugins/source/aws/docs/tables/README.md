@@ -34,14 +34,14 @@
 | ↳ [aws_apigatewayv2_domain_name_rest_api_mappings](aws_apigatewayv2_domain_name_rest_api_mappings.md) |
 | [aws_apigatewayv2_vpc_links](aws_apigatewayv2_vpc_links.md) |
 | [aws_applicationautoscaling_policies](aws_applicationautoscaling_policies.md) |
-| [aws_apprunner_auto_scaling_configuration](aws_apprunner_auto_scaling_configuration.md) |
+| [aws_apprunner_auto_scaling_configurations](aws_apprunner_auto_scaling_configurations.md) |
 | [aws_apprunner_connections](aws_apprunner_connections.md) |
 | [aws_apprunner_observability_configurations](aws_apprunner_observability_configurations.md) |
 | [aws_apprunner_services](aws_apprunner_services.md) |
 | ↳ [aws_apprunner_operations](aws_apprunner_operations.md) |
 | ↳ [aws_apprunner_custom_domains](aws_apprunner_custom_domains.md) |
-| [aws_apprunner_vpc_connector](aws_apprunner_vpc_connector.md) |
-| [aws_apprunner_vpc_ingress_connection](aws_apprunner_vpc_ingress_connection.md) |
+| [aws_apprunner_vpc_connectors](aws_apprunner_vpc_connectors.md) |
+| [aws_apprunner_vpc_ingress_connections](aws_apprunner_vpc_ingress_connections.md) |
 | [aws_appstream_app_blocks](aws_appstream_app_blocks.md) |
 | [aws_appstream_applications](aws_appstream_applications.md) |
 | ↳ [aws_appstream_application_fleet_associations](aws_appstream_application_fleet_associations.md) |
@@ -136,7 +136,7 @@
 | [aws_ec2_network_acls](aws_ec2_network_acls.md) |
 | [aws_ec2_network_interfaces](aws_ec2_network_interfaces.md) |
 | [aws_regions](aws_regions.md) |
-| [aws_ec2_regional_config](aws_ec2_regional_config.md) |
+| [aws_ec2_regional_configs](aws_ec2_regional_configs.md) |
 | [aws_ec2_reserved_instances](aws_ec2_reserved_instances.md) |
 | [aws_ec2_route_tables](aws_ec2_route_tables.md) |
 | [aws_ec2_security_groups](aws_ec2_security_groups.md) |
@@ -303,7 +303,7 @@
 | ↳ [aws_lightsail_database_events](aws_lightsail_database_events.md) |
 | ↳ [aws_lightsail_database_log_events](aws_lightsail_database_log_events.md) |
 | [aws_lightsail_disks](aws_lightsail_disks.md) |
-| ↳ [aws_lightsail_disk_snapshot](aws_lightsail_disk_snapshot.md) |
+| ↳ [aws_lightsail_disk_snapshots](aws_lightsail_disk_snapshots.md) |
 | [aws_lightsail_distributions](aws_lightsail_distributions.md) |
 | [aws_lightsail_instance_snapshots](aws_lightsail_instance_snapshots.md) |
 | [aws_lightsail_instances](aws_lightsail_instances.md) |
@@ -415,6 +415,6 @@
 | [aws_wafv2_web_acls](aws_wafv2_web_acls.md) |
 | [aws_workspaces_workspaces](aws_workspaces_workspaces.md) |
 | [aws_workspaces_directories](aws_workspaces_directories.md) |
-| [aws_xray_encryption_config](aws_xray_encryption_config.md) |
+| [aws_xray_encryption_configs](aws_xray_encryption_configs.md) |
 | [aws_xray_groups](aws_xray_groups.md) |
 | [aws_xray_sampling_rules](aws_xray_sampling_rules.md) |

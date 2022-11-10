@@ -7,11 +7,11 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func VpcConnector() *schema.Table {
+func VpcConnectors() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_apprunner_vpc_connector",
+		Name:        "aws_apprunner_vpc_connectors",
 		Description: `https://docs.aws.amazon.com/apprunner/latest/api/API_VpcConnector.html`,
-		Resolver:    fetchApprunnerVpcConnector,
+		Resolver:    fetchApprunnerVpcConnectors,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("apprunner"),
 		Columns: []schema.Column{
 			{

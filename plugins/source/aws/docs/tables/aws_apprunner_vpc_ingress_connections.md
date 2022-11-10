@@ -1,4 +1,4 @@
-# Table: aws_apprunner_vpc_ingress_connection
+# Table: aws_apprunner_vpc_ingress_connections
 
 https://docs.aws.amazon.com/apprunner/latest/api/API_VpcIngressConnection.html
 
