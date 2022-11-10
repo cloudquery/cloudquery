@@ -9,8 +9,8 @@ select uid                              AS resource_id,
         namespace                         AS namespace,
         name                              AS resource_name,
         CASE WHEN
-            (SELECT COUNT(*) FROM daemonset_containers WHERE daemonset_containers.uid = k8s_apps_daemon_sets.uid AND
-              daemonset_containers.container->'securityContext'->>'runAsNonRoot' IS DISTINCT FROM 'true') > 0
+            (SELECT COUNT(*) FROM daemon_set_containers WHERE daemon_set_containers.uid = k8s_apps_daemon_sets.uid AND
+              daemon_set_containers.container->'securityContext'->>'runAsNonRoot' IS DISTINCT FROM 'true') > 0
             THEN 'fail'
             ELSE 'pass'
             END                          AS status
