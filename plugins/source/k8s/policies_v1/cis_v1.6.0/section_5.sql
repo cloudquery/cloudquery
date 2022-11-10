@@ -126,7 +126,9 @@
 \set check_id '5.7.2'
 \echo "Executing check 5.7.2"
 \echo "Ensure that the seccomp profile is set to docker/default in your pod definitions (Manual)"
-\ir ../queries/manual.sql
+\set check_id '5.7.2.1'
+\echo "Executing check 5.7.2.1"
+\ir ../queries/sec
 
 \set check_id '5.7.3'
 \echo "Executing check 5.7.3"
@@ -136,4 +138,21 @@
 \set check_id '5.7.4'
 \echo "Executing check 5.7.4"
 \echo "The default namespace should not be used (Manual)"
-\ir ../queries/manual.sql
+\set check_id '5.7.4.1'
+\echo "Executing check 5.7.4.1"
+\ir ../queries/pod_security/daemonset_default_namespace.sql
+\set check_id '5.7.4.2'
+\echo "Executing check 5.7.4.2"
+\ir ../queries/pod_security/deployment_container_uses_default_namespace.sql
+\set check_id '5.7.4.3'
+\echo "Executing check 5.7.4.3"
+\ir ../queries/pod_security/pod_container_uses_default_namespace.sql
+\set check_id '5.7.4.4'
+\echo "Executing check 5.7.4.4"
+\ir ../queries/pod_security/job_container_uses_default_namespace.sql
+\set check_id '5.7.4.5'
+\echo "Executing check 5.7.4.5"
+\ir ../queries/pod_security/replicaset_uses_default_namespace.sql
+\set check_id '5.7.4.6'
+\echo "Executing check 5.7.4.6"
+\ir ../queries/pod_security/statefulset_uses_default_namespace.sql
