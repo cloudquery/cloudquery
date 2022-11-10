@@ -32,7 +32,7 @@ kind: destination
 spec:
   name: 'postgresql'
   path: cloudquery/postgresql
-  version: "v1.7.3" # latest version of postgresql plugin
+  version: "v1.7.4" # latest version of postgresql plugin
   spec:
     connection_string: ${CQ_DSN} # The CQ_DSN environment variable will be set by GitHub Action workflow
 ```
@@ -99,7 +99,7 @@ kind: destination
 spec:
   name: 'postgresql-REGION_PLACEHOLDER' # when splitting configurations, we need to keep the names unique
   path: cloudquery/postgresql
-  version: "v1.7.3" # latest version of postgresql plugin
+  version: "v1.7.4" # latest version of postgresql plugin
   spec:
     connection_string: ${CQ_DSN} # The CQ_DSN environment variable will be set by GitHub Action workflow
 ```
