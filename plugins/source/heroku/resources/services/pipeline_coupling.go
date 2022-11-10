@@ -13,7 +13,7 @@ import (
 func PipelineCouplings() *schema.Table {
 	return &schema.Table{
 		Name:        "heroku_pipeline_couplings",
-		Description: `https://devcenter.heroku.com/articles/platform-api-reference#pipeline-coupling-attributes`,
+		Description: `https://devcenter.heroku.com/articles/platform-api-reference#pipeline-coupling`,
 		Resolver:    fetchPipelineCouplings,
 		Columns: []schema.Column{
 			{

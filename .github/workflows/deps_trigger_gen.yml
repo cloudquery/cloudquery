@@ -8,6 +8,7 @@ on:
 
 jobs:
   gen-code-deps:
+    timeout-minutes: 5
     runs-on: ubuntu-latest
     # We auto gen code for service SDK updates (e.g. AWS SDK), but not for our own SDK, as those changes should be handled manually
     if: github.event.pull_request.user.login == 'cq-bot' && startsWith(github.event.pull_request.title, 'fix(deps)') && startsWith(github.head_ref, 'renovate/') && !contains(github.head_ref, 'cloudquery-plugin-sdk')

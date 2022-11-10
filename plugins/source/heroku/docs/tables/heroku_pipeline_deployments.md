@@ -1,6 +1,6 @@
 # Table: heroku_pipeline_deployments
 
-https://devcenter.heroku.com/articles/platform-api-reference#pipeline-deployment-attributes
+https://devcenter.heroku.com/articles/platform-api-reference#pipeline-deployment
 
 The primary key for this table is **id**.
 

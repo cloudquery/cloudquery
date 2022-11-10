@@ -1,6 +1,6 @@
 # Table: azure_postgresql_firewall_rules
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/postgresql/mgmt/2020-01-01/postgresql#FirewallRule
 
 The primary key for this table is **id**.
 

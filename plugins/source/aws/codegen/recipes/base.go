@@ -28,6 +28,7 @@ type Resource struct {
 	SkipFields            []string
 	Description           string
 	ExtraColumns          []codegen.ColumnDefinition
+	PKColumns             []string
 	Table                 *codegen.TableDefinition
 	Multiplex             string
 	PreResourceResolver   string
@@ -35,10 +36,16 @@ type Resource struct {
 	Relations             []string
 	UnwrapEmbeddedStructs bool
 
+	// NameTransformer custom name transformer for resource
+	NameTransformer func(field reflect.StructField) (string, error)
+
 	// Used for generating the resolver and mock tests.
 	// --------------------------------
 	ShouldGenerateResolverAndMockTest bool
 	ResolverAndMockTestTemplate       string
+
+	// To be used in list/paginator resolver
+	MaxResults int
 }
 
 //go:embed templates/resolver_and_mock_test/*/*.go.tpl
@@ -125,11 +132,15 @@ func (r *Resource) Generate() error {
 	opts := []codegen.TableOption{
 		codegen.WithSkipFields(r.SkipFields),
 		codegen.WithExtraColumns(r.ExtraColumns),
+		codegen.WithPKColumns(r.PKColumns...),
 		codegen.WithNameTransformer(awsNameTransformer),
 		codegen.WithResolverTransformer(awsResolverTransformer),
 	}
 	if r.UnwrapEmbeddedStructs {
 		opts = append(opts, codegen.WithUnwrapAllEmbeddedStructs())
+	}
+	if r.NameTransformer != nil {
+		opts = append(opts, codegen.WithNameTransformer(r.NameTransformer))
 	}
 	name := fmt.Sprintf("aws_%s_%s", r.Service, r.SubService)
 	if r.Name != "" {
@@ -282,4 +293,18 @@ func (r Resource) StructName() string {
 func (r Resource) CloudQueryServiceName() string {
 	csr := caser.New()
 	return csr.ToPascal(r.Service)
+}
+
+// CreateReplaceTransformer allows overriding column names
+func CreateReplaceTransformer(replace map[string]string) func(field reflect.StructField) (string, error) {
+	return func(field reflect.StructField) (string, error) {
+		name, err := codegen.DefaultNameTransformer(field)
+		if err != nil {
+			return "", err
+		}
+		for k, v := range replace {
+			name = strings.ReplaceAll(name, k, v)
+		}
+		return name, nil
+	}
 }

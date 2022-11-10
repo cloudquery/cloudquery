@@ -64,6 +64,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/neptune v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/organizations v1.16.15
 	github.com/aws/aws-sdk-go-v2/service/qldb v1.14.20
+	github.com/aws/aws-sdk-go-v2/service/ram v1.16.24
 	github.com/aws/aws-sdk-go-v2/service/rds v1.28.0
 	github.com/aws/aws-sdk-go-v2/service/redshift v1.26.13
 	github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.12.20
@@ -88,7 +89,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/xray v1.13.21
 	github.com/aws/smithy-go v1.13.4
 	github.com/basgys/goxml2json v1.1.0
-	github.com/cloudquery/plugin-sdk v1.3.0
+	github.com/cloudquery/plugin-sdk v1.3.1
 	github.com/gocarina/gocsv v0.0.0-20220927221512-ad3251f9fa25
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.9

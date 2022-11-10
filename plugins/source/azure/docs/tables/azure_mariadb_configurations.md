@@ -1,6 +1,6 @@
 # Table: azure_mariadb_configurations
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/mariadb/mgmt/2020-01-01/mariadb#Configuration
 
 The primary key for this table is **id**.
 

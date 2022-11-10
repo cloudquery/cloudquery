@@ -13,7 +13,7 @@ import (
 func PermissionEntities() *schema.Table {
 	return &schema.Table{
 		Name:        "heroku_permission_entities",
-		Description: `https://devcenter.heroku.com/articles/platform-api-reference#permission-entity-attributes`,
+		Description: `https://devcenter.heroku.com/articles/platform-api-reference#permission-entity`,
 		Resolver:    fetchPermissionEntities,
 		Columns: []schema.Column{
 			{

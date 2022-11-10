@@ -11,9 +11,10 @@ import (
 
 func RoleAssignments() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_authorization_role_assignments",
-		Resolver:  fetchAuthorizationRoleAssignments,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:        "azure_authorization_role_assignments",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/authorization/mgmt/2015-07-01/authorization#RoleAssignment`,
+		Resolver:    fetchAuthorizationRoleAssignments,
+		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

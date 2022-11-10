@@ -11,9 +11,10 @@ import (
 
 func PolicyAssignments() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_resources_policy_assignments",
-		Resolver:  fetchResourcesPolicyAssignments,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:        "azure_resources_policy_assignments",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2020-03-01-preview/policy#Assignment`,
+		Resolver:    fetchResourcesPolicyAssignments,
+		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

@@ -13,7 +13,7 @@ import (
 func PipelineBuilds() *schema.Table {
 	return &schema.Table{
 		Name:        "heroku_pipeline_builds",
-		Description: `https://devcenter.heroku.com/articles/platform-api-reference#pipeline-build-attributes`,
+		Description: `https://devcenter.heroku.com/articles/platform-api-reference#pipeline-build`,
 		Resolver:    fetchPipelineBuilds,
 		Columns: []schema.Column{
 			{

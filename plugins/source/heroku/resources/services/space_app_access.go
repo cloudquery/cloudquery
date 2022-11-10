@@ -13,7 +13,7 @@ import (
 func SpaceAppAccesses() *schema.Table {
 	return &schema.Table{
 		Name:        "heroku_space_app_accesses",
-		Description: `https://devcenter.heroku.com/articles/platform-api-reference#space-app-access-attributes`,
+		Description: `https://devcenter.heroku.com/articles/platform-api-reference#space-app-access`,
 		Resolver:    fetchSpaceAppAccesses,
 		Columns: []schema.Column{
 			{

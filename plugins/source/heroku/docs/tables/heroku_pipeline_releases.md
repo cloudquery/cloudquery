@@ -1,6 +1,6 @@
 # Table: heroku_pipeline_releases
 
-https://devcenter.heroku.com/articles/platform-api-reference#pipeline-release-attributes
+https://devcenter.heroku.com/articles/platform-api-reference#pipeline-release
 
 The primary key for this table is **id**.
 
