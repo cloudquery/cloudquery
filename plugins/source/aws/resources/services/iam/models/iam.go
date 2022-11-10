@@ -99,3 +99,8 @@ type PasswordPolicyWrapper struct {
 	types.PasswordPolicy
 	PolicyExists bool
 }
+
+type ServiceLastAccessedEntitiesWrapper struct {
+	*types.ServiceLastAccessed
+	Entities []types.EntityDetails
+}

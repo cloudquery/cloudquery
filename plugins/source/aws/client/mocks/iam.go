@@ -55,6 +55,26 @@ func (mr *MockIamClientMockRecorder) GenerateCredentialReport(arg0, arg1 interfa
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GenerateCredentialReport", reflect.TypeOf((*MockIamClient)(nil).GenerateCredentialReport), varargs...)
 }
 
+// GenerateServiceLastAccessedDetails mocks base method.
+func (m *MockIamClient) GenerateServiceLastAccessedDetails(arg0 context.Context, arg1 *iam.GenerateServiceLastAccessedDetailsInput, arg2 ...func(*iam.Options)) (*iam.GenerateServiceLastAccessedDetailsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GenerateServiceLastAccessedDetails", varargs...)
+	ret0, _ := ret[0].(*iam.GenerateServiceLastAccessedDetailsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GenerateServiceLastAccessedDetails indicates an expected call of GenerateServiceLastAccessedDetails.
+func (mr *MockIamClientMockRecorder) GenerateServiceLastAccessedDetails(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GenerateServiceLastAccessedDetails", reflect.TypeOf((*MockIamClient)(nil).GenerateServiceLastAccessedDetails), varargs...)
+}
+
 // GetAccessKeyLastUsed mocks base method.
 func (m *MockIamClient) GetAccessKeyLastUsed(arg0 context.Context, arg1 *iam.GetAccessKeyLastUsedInput, arg2 ...func(*iam.Options)) (*iam.GetAccessKeyLastUsedOutput, error) {
 	m.ctrl.T.Helper()

@@ -155,6 +155,12 @@ func IAMResources() []*Resource {
 				}...),
 		},
 		{
+			SubService:   "group_services_last_accessed",
+			Struct:       &models.ServiceLastAccessedEntitiesWrapper{},
+			Description:  "https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServiceLastAccessed.html",
+			ExtraColumns: defaultAccountColumns,
+		},
+		{
 			SubService:          "openid_connect_identity_providers",
 			Struct:              &models.IamOpenIdIdentityProviderWrapper{},
 			SkipFields:          []string{"Arn"},
@@ -213,6 +219,12 @@ func IAMResources() []*Resource {
 			},
 		},
 		{
+			SubService:   "policy_services_last_accessed",
+			Struct:       &models.ServiceLastAccessedEntitiesWrapper{},
+			Description:  "https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServiceLastAccessed.html",
+			ExtraColumns: defaultAccountColumns,
+		},
+		{
 			SubService:          "roles",
 			Struct:              &types.Role{},
 			Description:         "https://docs.aws.amazon.com/IAM/latest/APIReference/API_Role.html",
@@ -265,6 +277,12 @@ func IAMResources() []*Resource {
 						Resolver: `resolveRolePoliciesPolicyDocument`,
 					},
 				}...),
+		},
+		{
+			SubService:   "role_services_last_accessed",
+			Struct:       &models.ServiceLastAccessedEntitiesWrapper{},
+			Description:  "https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServiceLastAccessed.html",
+			ExtraColumns: defaultAccountColumns,
 		},
 		{
 			SubService:          "saml_identity_providers",
@@ -426,6 +444,12 @@ func IAMResources() []*Resource {
 						Resolver: `resolveIamUserPolicyPolicyDocument`,
 					},
 				}...),
+		},
+		{
+			SubService:   "user_services_last_accessed",
+			Struct:       &models.ServiceLastAccessedEntitiesWrapper{},
+			Description:  "https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServiceLastAccessed.html",
+			ExtraColumns: defaultAccountColumns,
 		},
 		{
 			SubService:  "virtual_mfa_devices",

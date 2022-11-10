@@ -28,6 +28,7 @@ var acceptedPrefixes = []string{
 var exceptions = []string{
 	"QuerySchemaVersionMetadata",
 	"GenerateCredentialReport",
+	"GenerateServiceLastAccessedDetails",
 }
 
 // Adapted from https://stackoverflow.com/a/54129236

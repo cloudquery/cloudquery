@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/services"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
