@@ -5,6 +5,13 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v1.3.12...plugins-source-azure-v1.4.0) (2022-11-10)
+
+
+### Features
+
+* **azure:** Add description to tables ([#4189](https://github.com/cloudquery/cloudquery/issues/4189)) ([a5fb33d](https://github.com/cloudquery/cloudquery/commit/a5fb33d1b2ee51f7abfa11eddf24d333668590d2))
+
 ## [1.3.12](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v1.3.11...plugins-source-azure-v1.3.12) (2022-11-10)
 
 
