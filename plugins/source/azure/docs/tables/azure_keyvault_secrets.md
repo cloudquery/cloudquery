@@ -1,6 +1,6 @@
 # Table: azure_keyvault_secrets
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/keyvault/v7.1/keyvault#SecretItem
 
 The primary key for this table is **id**.
 

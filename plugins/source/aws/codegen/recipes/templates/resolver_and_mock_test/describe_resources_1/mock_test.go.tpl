@@ -14,7 +14,7 @@ import (
 )
 
 func build{{.Service | ToCamel}}{{.SubService | ToCamel}}Mock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockAppstreamClient(ctrl)
+	m := mocks.NewMock{{.Service | ToCamel}}Client(ctrl)
 	object := types.{{.StructName}}{}
 	err := faker.FakeObject(&object)
 	if err != nil {
@@ -22,7 +22,7 @@ func build{{.Service | ToCamel}}{{.SubService | ToCamel}}Mock(t *testing.T, ctrl
 	}
 
 	m.EXPECT().Describe{{.StructName}}s(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&appstream.Describe{{.StructName}}sOutput{
+		&{{.Service}}.Describe{{.StructName}}sOutput{
 			{{.StructName}}s: []types.{{.StructName}}{object},
 		}, nil)
 

@@ -1,6 +1,6 @@
 # Table: heroku_keys
 
-https://devcenter.heroku.com/articles/platform-api-reference#key-attributes
+https://devcenter.heroku.com/articles/platform-api-reference#key
 
 The primary key for this table is **id**.
 

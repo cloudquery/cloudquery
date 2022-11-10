@@ -3,11 +3,13 @@ on:
   push:
     tags:
       - "plugins-*-*-v*.*.*"
+      - "!plugins-destination-sqlite-v*.*.*"
 env:
   CGO_ENABLED: 0
 
 jobs:
   release-plugin-binary:
+    timeout-minutes: 30
     runs-on: ubuntu-latest
     steps:
       # Tag format is plugins-<type>-<name>-<version>

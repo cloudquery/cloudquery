@@ -1,6 +1,6 @@
 # Table: azure_sql_transparent_data_encryptions
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql#TransparentDataEncryption
 
 The primary key for this table is **id**.
 

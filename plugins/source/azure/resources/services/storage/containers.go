@@ -13,8 +13,9 @@ import (
 
 func containers() *schema.Table {
 	return &schema.Table{
-		Name:     "azure_storage_containers",
-		Resolver: fetchStorageContainers,
+		Name:        "azure_storage_containers",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-01-01/storage#ListContainerItem`,
+		Resolver:    fetchStorageContainers,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

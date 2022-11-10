@@ -13,8 +13,9 @@ import (
 
 func serverBlobAuditingPolicies() *schema.Table {
 	return &schema.Table{
-		Name:     "azure_sql_server_blob_auditing_policies",
-		Resolver: fetchSQLServerBlobAuditingPolicies,
+		Name:        "azure_sql_server_blob_auditing_policies",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql#ServerBlobAuditingPolicy`,
+		Resolver:    fetchSQLServerBlobAuditingPolicies,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

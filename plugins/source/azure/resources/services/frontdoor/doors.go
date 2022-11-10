@@ -11,9 +11,10 @@ import (
 
 func Doors() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_frontdoor_doors",
-		Resolver:  fetchFrontDoorDoors,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:        "azure_frontdoor_doors",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/frontdoor/mgmt/2020-11-01/frontdoor#FrontDoor`,
+		Resolver:    fetchFrontDoorDoors,
+		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

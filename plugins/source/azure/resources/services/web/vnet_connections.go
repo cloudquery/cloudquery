@@ -13,8 +13,9 @@ import (
 
 func vnetConnections() *schema.Table {
 	return &schema.Table{
-		Name:     "azure_web_vnet_connections",
-		Resolver: fetchWebVnetConnections,
+		Name:        "azure_web_vnet_connections",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/web/mgmt/2020-12-01/web#VnetInfo`,
+		Resolver:    fetchWebVnetConnections,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

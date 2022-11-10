@@ -1,6 +1,6 @@
 # Table: azure_sql_managed_instance_encryption_protectors
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql#ManagedInstanceEncryptionProtector
 
 The primary key for this table is **id**.
 
