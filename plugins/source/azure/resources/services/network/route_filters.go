@@ -11,9 +11,10 @@ import (
 
 func RouteFilters() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_network_route_filters",
-		Resolver:  fetchNetworkRouteFilters,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:        "azure_network_route_filters",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network#RouteFilter`,
+		Resolver:    fetchNetworkRouteFilters,
+		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

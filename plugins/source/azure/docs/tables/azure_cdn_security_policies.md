@@ -1,6 +1,6 @@
 # Table: azure_cdn_security_policies
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2020-09-01/cdn#SecurityPolicy
 
 The primary key for this table is **id**.
 

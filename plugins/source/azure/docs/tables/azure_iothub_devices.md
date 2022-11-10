@@ -1,6 +1,6 @@
 # Table: azure_iothub_devices
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/iothub/mgmt/2021-07-02/devices#IotHubDescription
 
 The primary key for this table is **id**.
 
