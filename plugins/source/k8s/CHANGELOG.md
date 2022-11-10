@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.12](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v2.3.11...plugins-source-k8s-v2.3.12) (2022-11-10)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for k8s to v1.3.1 ([#4152](https://github.com/cloudquery/cloudquery/issues/4152)) ([8ea46ec](https://github.com/cloudquery/cloudquery/commit/8ea46ecdfeb822298280b056f35741ccb7bd074d))
+
 ## [2.3.11](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v2.3.10...plugins-source-k8s-v2.3.11) (2022-11-09)
 
 
