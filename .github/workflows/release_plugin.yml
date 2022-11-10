@@ -3,7 +3,6 @@ on:
   push:
     tags:
       - "plugins-*-*-v*.*.*"
-      - "!plugins-destination-sqlite-v*.*.*"
 env:
   CGO_ENABLED: 0
 

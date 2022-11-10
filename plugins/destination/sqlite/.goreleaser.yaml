@@ -13,7 +13,8 @@ monorepo:
 #       path: ./plugins/.goreleaser.yaml
 before:
   hooks:
-    - go mod download
+    - cmd: go mod download
+      dir: ./plugins/{{ .Var.component }}
 builds:
   - flags:
       - -buildmode=exe
