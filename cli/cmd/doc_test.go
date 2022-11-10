@@ -15,8 +15,9 @@ var docFiles = []string{
 func TestDoc(t *testing.T) {
 	cmd := NewCmdRoot()
 	tmpDir := t.TempDir()
-	logFileName := path.Join(tmpDir, "cloudquery.log")
-	cmd.SetArgs([]string{"doc", tmpDir, "--cq-dir", tmpDir, "--log-file-name", logFileName})
+	cqTmpDir := t.TempDir()
+	logFileName := path.Join(cqTmpDir, "cloudquery.log")
+	cmd.SetArgs([]string{"doc", tmpDir, "--cq-dir", cqTmpDir, "--log-file-name", logFileName})
 	if err := cmd.Execute(); err != nil {
 		t.Fatal(err)
 	}
