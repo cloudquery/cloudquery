@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-csv-v1.1.4...plugins-destination-csv-v1.1.5) (2022-11-10)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for csv to v1.3.2 ([#4197](https://github.com/cloudquery/cloudquery/issues/4197)) ([a095528](https://github.com/cloudquery/cloudquery/commit/a0955286678a837d9e58902dd379f96a79f9783b))
+
 ## [1.1.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-csv-v1.1.3...plugins-destination-csv-v1.1.4) (2022-11-10)
 
 
