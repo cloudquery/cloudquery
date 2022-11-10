@@ -88,7 +88,7 @@ func (c *Client) autoMigrateTable(_ context.Context, table *schema.Table) error 
 		switch {
 		case sqliteColumn == nil:
 			c.logger.Debug().Str("table", table.Name).Str("column", col.Name).Msg("Column doesn't exist, creating")
-			sql := "alter table " + table.Name + " add column " + columnName + " " + columnType
+			sql := "alter table \"" + table.Name + "\" add column \"" + columnName + "\" \"" + columnType + `"`
 			if col.CreationOptions.PrimaryKey {
 				return fmt.Errorf("failed to auto-migrate table %s: primary key changes are not supported. please drop and re-run", table.Name)
 			}
@@ -106,7 +106,7 @@ func (c *Client) createTableIfNotExist(_ context.Context, table *schema.Table) e
 	var sb strings.Builder
 	// TODO sanitize tablename
 	sb.WriteString("CREATE TABLE IF NOT EXISTS ")
-	sb.WriteString(table.Name)
+	sb.WriteString(`"` + table.Name + `"`)
 	sb.WriteString(" (")
 	totalColumns := len(table.Columns)
 
@@ -118,7 +118,7 @@ func (c *Client) createTableIfNotExist(_ context.Context, table *schema.Table) e
 			continue
 		}
 		// TODO: sanitize column name
-		fieldDef := col.Name + " " + sqlType
+		fieldDef := `"` + col.Name + `" ` + sqlType
 		if col.Name == "_cq_id" {
 			// _cq_id column should always have a "unique not null" constraint
 			fieldDef += " UNIQUE NOT NULL"
@@ -128,7 +128,7 @@ func (c *Client) createTableIfNotExist(_ context.Context, table *schema.Table) e
 			sb.WriteString(",")
 		}
 		if c.enabledPks() && col.CreationOptions.PrimaryKey {
-			primaryKeys = append(primaryKeys, col.Name)
+			primaryKeys = append(primaryKeys, `"` + col.Name + `"`)
 		}
 	}
 
@@ -148,7 +148,7 @@ func (c *Client) createTableIfNotExist(_ context.Context, table *schema.Table) e
 	sb.WriteString(")")
 	_, err := c.db.Exec(sb.String())
 	if err != nil {
-		return fmt.Errorf("failed to create table %s: %w", table.Name, err)
+		return fmt.Errorf("failed to create table with '%s': %w", sb.String(), err)
 	}
 	return nil
 }
