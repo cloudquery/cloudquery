@@ -1,6 +1,6 @@
 \set framework 'cis_v1.6.0'
 \echo "Creating CIS V1.6.0 Section 4 Views"
-\ir ../views/project_policy_members.sql
+-- \ir ../views/project_policy_members.sql
 \echo "Executing CIS V1.6.0 Section 4"
 \echo "4 Worker Nodes"
 

@@ -1,6 +1,6 @@
 \set framework 'cis_v1.6.0'
 \echo "Creating CIS V1.6.0 Section 3 Views"
-\ir ../views/project_policy_members.sql
+-- \ir ../views/project_policy_members.sql
 \echo "Executing CIS V1.6.0 Section 3"
 \echo "3 Control Plane Configuration"
 

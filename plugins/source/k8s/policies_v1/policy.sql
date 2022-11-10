@@ -9,3 +9,4 @@ SELECT CASE
 END AS "execution_time"  \gset
 
 \ir nsa_cisa_v1/policy.sql
+\ir cis_v1.6.0/policy.sql
