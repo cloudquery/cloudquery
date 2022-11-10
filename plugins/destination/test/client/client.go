@@ -35,6 +35,7 @@ func (*Client) Migrate(ctx context.Context, tables schema.Tables) error {
 }
 
 func (*Client) Write(ctx context.Context, tables schema.Tables, res <-chan *plugins.ClientResource) error {
+	<-res
 	return nil
 }
 
