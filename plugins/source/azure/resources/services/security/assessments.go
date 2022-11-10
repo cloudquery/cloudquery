@@ -12,9 +12,10 @@ import (
 
 func Assessments() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_security_assessments",
-		Resolver:  fetchSecurityAssessments,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:        "azure_security_assessments",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security#Assessment`,
+		Resolver:    fetchSecurityAssessments,
+		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

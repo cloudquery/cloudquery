@@ -1,6 +1,6 @@
 # Table: azure_web_apps
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/web/mgmt/2020-12-01/web#Site
 
 The primary key for this table is **id**.
 

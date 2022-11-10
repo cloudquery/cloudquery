@@ -1,6 +1,6 @@
 # Table: azure_logic_workflows
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/logic/mgmt/2019-05-01/logic#Workflow
 
 The primary key for this table is **id**.
 

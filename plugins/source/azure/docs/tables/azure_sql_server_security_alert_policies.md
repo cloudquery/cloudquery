@@ -1,6 +1,6 @@
 # Table: azure_sql_server_security_alert_policies
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql#ServerSecurityAlertPolicy
 
 The primary key for this table is **id**.
 

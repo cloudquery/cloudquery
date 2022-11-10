@@ -1,6 +1,6 @@
 # Table: azure_redis_caches
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2020-12-01/redis#ResourceType
 
 The primary key for this table is **id**.
 
