@@ -1,7 +1,3 @@
-WITH daemonset_containers AS (SELECT uid, value AS container 
-                               FROM k8s_apps_daemon_sets
-                               CROSS JOIN jsonb_array_elements(spec_template->'spec'->'containers') AS value)
-
 INSERT INTO k8s_policy_results (resource_id, execution_time, framework, check_id, title, context, namespace,
                                 resource_name, status)
 select uid                              AS resource_id,
@@ -15,7 +11,7 @@ select uid                              AS resource_id,
         CASE
             WHEN
                   
-                  (SELECT * FROM k8s_apps_daemon_sets WHERE daemonset_containers.namespace = 'default')
+                  (SELECT * FROM k8s_apps_daemon_sets WHERE daemon_set_containers.namespace = 'default')
                 THEN 'fail'
                 ELSE 'pass'
             END                          AS status

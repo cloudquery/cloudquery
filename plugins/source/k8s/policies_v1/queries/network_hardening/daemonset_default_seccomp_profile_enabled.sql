@@ -11,8 +11,8 @@ select uid                              AS resource_id,
         CASE
             WHEN
                   
-                  (SELECT * FROM k8s_apps_daemon_sets WHERE daemonset_containers.uid = k8s_apps_daemon_sets.uid AND
-                  daemonset_containers.container->'resources'->'securityContext'->'seccompProfile'->>'type' != 'RuntimeDefault') > 0
+                  (SELECT * FROM k8s_apps_daemon_sets WHERE daemon_set_containers.uid = k8s_apps_daemon_sets.uid AND
+                  daemon_set_containers.container->'resources'->'securityContext'->'seccompProfile'->>'type' != 'RuntimeDefault') > 0
                 THEN 'fail'
                 ELSE 'pass'
             END                          AS status
