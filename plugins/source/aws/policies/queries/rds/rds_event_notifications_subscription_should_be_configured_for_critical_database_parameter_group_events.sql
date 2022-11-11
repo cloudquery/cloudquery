@@ -50,4 +50,4 @@ left outer join any_category on TRUE
 inner join any_source_id on TRUE
 left outer join
     specific_categories on
-        aws_rds_db_parameter_groups.name = specific_categories.source_id
+        aws_rds_db_parameter_groups.db_parameter_group_name = specific_categories.source_id

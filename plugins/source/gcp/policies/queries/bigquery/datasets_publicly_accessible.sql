@@ -21,11 +21,9 @@ SELECT DISTINCT d.id                                                            
                 d.project_id                                                                           AS project_id,
                 CASE
                     WHEN
-                                a."role" = 'allUsers'
-                            OR a."role" = 'allAuthenticatedUsers'
+                                a->>'role' = 'allUsers'
+                            OR a->>'role' = 'allAuthenticatedUsers'
                         THEN 'fail'
                     ELSE 'pass'
                     END                                                                                AS status
-FROM gcp_bigquery_datasets d
-         JOIN gcp_bigquery_dataset_accesses a ON
-    d.id = a.dataset_id;
+FROM gcp_bigquery_datasets d, JSONB_ARRAY_ELEMENTS(d.access) AS a;
