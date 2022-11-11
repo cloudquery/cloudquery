@@ -4,14 +4,14 @@ select
   :'framework',
   :'check_id',
   'App Service should use a virtual network service endpoint',
-  azure_subscription_subscriptions.id AS subscription_id,
-  azure_web_apps.id,
+  awa.subscription_id AS subscription_id,
+  awa.id,
   case
-    when vnet_connection -> 'properties' -> 'vnetResourceId' is null
+    when vnet_resource_id is null
     then 'fail' else 'pass'
   end
 from
-    azure_web_apps,
-    azure_subscription_subscriptions
-where
-  azure_subscription_subscriptions.subscription_id = azure_web_apps.subscription_id
+    azure_web_apps awa
+left join
+    azure_web_vnet_connections as vnet
+on vnet.web_app_id = awa.id

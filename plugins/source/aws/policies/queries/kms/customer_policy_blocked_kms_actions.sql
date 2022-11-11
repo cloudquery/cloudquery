@@ -2,18 +2,15 @@ insert into aws_policy_results
 
 with iam_policies as (
     select
-        document,
+        (v->>'Document')::jsonb AS document,
         account_id,
         arn,
-        aws_iam_policies.cq_id
-    from aws_iam_policy_versions
-    inner join
-        aws_iam_policies on
-            aws_iam_policies.cq_id = aws_iam_policy_versions.policy_cq_id
+        id
+    from aws_iam_policies, jsonb_array_elements(aws_iam_policies.policy_version_list) AS v
 ),
 
 violations as (
-    select distinct cq_id
+    select distinct id
     from iam_policies,
         jsonb_array_elements(
             case jsonb_typeof(document -> 'Statement')
@@ -38,7 +35,7 @@ select
     account_id,
     arn AS resource_id,
     case when
-        violations.cq_id is not null
+        violations.id is not null
     then 'fail' else 'pass' end as status
 from aws_iam_policies
-left join violations on violations.cq_id = aws_iam_policies.cq_id
+left join violations on violations.id = aws_iam_policies.id

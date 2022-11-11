@@ -7,7 +7,7 @@ SELECT
   subscription_id,
   id,
   case
-    when enable_https_traffic_only IS NOT TRUE
+    when supports_https_traffic_only IS NOT TRUE
       then 'fail' else 'pass'
   end
 FROM azure_storage_accounts
