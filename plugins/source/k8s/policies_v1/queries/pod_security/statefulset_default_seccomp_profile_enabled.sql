@@ -9,9 +9,8 @@ select uid                              AS resource_id,
         namespace                        AS namespace,
         name                             AS resource_name,
         CASE
-            WHEN
-                  
-                  stateful_set_containers.container->'resources'->'securityContext'->'seccompProfile'->>'type' != 'RuntimeDefault'
+            WHEN                 
+                  container->'resources'->'securityContext'->'seccompProfile'->>'type' != 'RuntimeDefault'
                 THEN 'fail'
                 ELSE 'pass'
             END                          AS status
