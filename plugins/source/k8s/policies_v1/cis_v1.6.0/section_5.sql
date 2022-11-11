@@ -128,7 +128,22 @@
 \echo "Ensure that the seccomp profile is set to docker/default in your pod definitions (Manual)"
 \set check_id '5.7.2.1'
 \echo "Executing check 5.7.2.1"
-\ir ../queries/sec
+\ir ../queries/pod_security/daemonset_default_seccomp_profile_enabled.sql
+\set check_id '5.7.2.2'
+\echo "Executing check 5.7.2.2"
+\ir ../queries/pod_security/deployment_container_default_seccomp_profile_enabled.sql
+\set check_id '5.7.2.3'
+\echo "Executing check 5.7.2.3"
+\ir ../queries/pod_security/pod_container_default_seccomp_profile_enabled.sql
+\set check_id '5.7.2.4'
+\echo "Executing check 5.7.2.4"
+\ir ../queries/pod_security/job_container_default_seccomp_profile_enabled.sql
+\set check_id '5.7.2.5'
+\echo "Executing check 5.7.2.5"
+\ir ../queries/pod_security/replicaset_default_seccomp_profile_enabled.sql
+\set check_id '5.7.2.6'
+\echo "Executing check 5.7.2.6"
+\ir ../queries/pod_security/statefulset_default_seccomp_profile_enabled.sql
 
 \set check_id '5.7.3'
 \echo "Executing check 5.7.3"
