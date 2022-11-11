@@ -33,7 +33,7 @@ Similar to previous blog posts about how it is possible to scale out ELT workloa
 
 ## Analysis/Transformation backend
 
-[Data analysis backend](https://www.sqlite.org/whentouse.html): Given the fact that sqlite is just a file it is easy and performant to actually run various transform workloads from python, or any other language you prefer as sqlite is supported everywhere. This can also serve as intermediate storage before you load them to a data warehouse for further analysis and visualization.
+[Data analysis backend](https://www.sqlite.org/whentouse.html): Given the fact that SQLite is just a file it is easy and performant to actually run various transform workloads from python, or any other language you prefer as SQLite is supported everywhere. This can also serve as intermediate storage before you load them to a data warehouse for further analysis and visualization.
 
 Found this discussion on [HN](https://news.ycombinator.com/item?id=22153447) about similar use case.
 
