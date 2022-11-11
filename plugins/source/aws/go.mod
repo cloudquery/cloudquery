@@ -4,9 +4,9 @@ go 1.19
 
 require (
 	github.com/aws/aws-sdk-go-v2 v1.17.1
-	github.com/aws/aws-sdk-go-v2/config v1.17.10
+	github.com/aws/aws-sdk-go-v2/config v1.17.11
 	github.com/aws/aws-sdk-go-v2/credentials v1.12.24
-	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.37
+	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.38
 	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.17.1
 	github.com/aws/aws-sdk-go-v2/service/acm v1.15.2
 	github.com/aws/aws-sdk-go-v2/service/apigateway v1.15.23
@@ -70,7 +70,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.12.20
 	github.com/aws/aws-sdk-go-v2/service/route53 v1.22.4
 	github.com/aws/aws-sdk-go-v2/service/route53domains v1.12.19
-	github.com/aws/aws-sdk-go-v2/service/s3 v1.29.1
+	github.com/aws/aws-sdk-go-v2/service/s3 v1.29.2
 	github.com/aws/aws-sdk-go-v2/service/s3control v1.25.0
 	github.com/aws/aws-sdk-go-v2/service/sagemaker v1.54.0
 	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.16.4
