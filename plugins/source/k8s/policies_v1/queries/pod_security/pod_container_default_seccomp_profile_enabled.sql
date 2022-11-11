@@ -4,16 +4,13 @@ select uid                              AS resource_id,
         :'execution_time'::timestamp     AS execution_time,
         :'framework'                     AS framework,
         :'check_id'                      AS check_id,
-        'Stateful has seccomp enabled' AS title,
+        'Pod container has seccomp enabled' AS title,
         context                          AS context,
         namespace                        AS namespace,
         name                             AS resource_name,
         CASE
-            WHEN
-                  
-                  (SELECT * FROM pod_containers 
-                    WHERE 
-                  pod_containers.container->'resources'->'securityContext'->'seccompProfile'->>'type' != 'RuntimeDefault') > 0
+            WHEN                 
+                  container->'resources'->'securityContext'->'seccompProfile'->>'type' != 'RuntimeDefault'
                 THEN 'fail'
                 ELSE 'pass'
             END                          AS status

@@ -9,11 +9,8 @@ select uid                              AS resource_id,
         namespace                        AS namespace,
         name                             AS resource_name,
         CASE
-            WHEN
-                  
-                  (SELECT * FROM replica_set_containers 
-                    WHERE 
-                  replica_set_containers.container->'resources'->'securityContext'->'seccompProfile'->>'type' != 'RuntimeDefault') > 0
+            WHEN                 
+                  container->'resources'->'securityContext'->'seccompProfile'->>'type' != 'RuntimeDefault'
                 THEN 'fail'
                 ELSE 'pass'
             END                          AS status
