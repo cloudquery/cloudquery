@@ -12,4 +12,4 @@ SELECT
   end
 FROM azure_sql_servers s
     LEFT JOIN azure_sql_server_vulnerability_assessments a ON
-        s.cq_id = a.server_cq_id
+        s.id = a.sql_server_id
