@@ -59,12 +59,6 @@
 \set check_id "replicaset_cpu_request"
 \ir ../queries/network_hardening/replicaset_cpu_request.sql
 
-\echo "Ensure contorl plane hardening"
-\echo "Endpoint API served on secure port"
-\set check_id "endpoint_api_serve_on_secure_port"
-\ir ../queries/network_hardening/endpoint_api_serve_on_secure_port.sql
-
-
 \echo "Ensure memory limits set"
 
 \echo "Deamonsets enforce memory limit"
@@ -136,10 +130,3 @@
 \set check_id "network_policy_default_deny_ingress"
 \ir ../queries/network_hardening/network_policy_default_deny_ingress.sql
 
-\echo "Network policy default don't allow egress"
-\set check_id "network_policy_default_dont_allow_egress"
-\ir ../queries/network_hardening/network_policy_default_dont_allow_egress.sql
-
-\echo "Network policy default don't allow ingress"
-\set check_id "network_policy_default_dont_allow_ingress"
-\ir ../queries/network_hardening/network_policy_default_dont_allow_ingress.sql

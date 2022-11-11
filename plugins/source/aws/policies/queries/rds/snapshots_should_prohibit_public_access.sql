@@ -8,6 +8,6 @@ select
     arn AS resource_id,
     case when
          (attrs ->> 'AttributeName' is not distinct from 'restore')
-         and (attrs -> 'AttributeValues') ? 'all'
+         and (attrs -> 'AttributeValues')::jsonb ? 'all'
     then 'fail' else 'pass' end as status
 from aws_rds_cluster_snapshots, jsonb_array_elements(attributes) as attrs
