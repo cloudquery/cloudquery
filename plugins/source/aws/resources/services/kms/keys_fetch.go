@@ -34,6 +34,7 @@ func getKey(ctx context.Context, meta schema.ClientMeta, resource *schema.Resour
 	d, err := svc.DescribeKey(ctx, &kms.DescribeKeyInput{KeyId: item.KeyId})
 	if err != nil {
 		if c.IsNotFoundError(err) {
+			resource.Item = nil
 			return nil
 		}
 		return err
