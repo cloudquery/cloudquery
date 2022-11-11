@@ -6,8 +6,8 @@ SELECT :'execution_time'                                                        
        subscription_id                                                                       AS subscription_id,
        id                                                                                    AS resource_id,
        CASE
-           WHEN enable_purge_protection IS NOT TRUE
-               OR enable_soft_delete IS NOT TRUE THEN 'fail'
+           WHEN properties_enable_purge_protection IS NOT TRUE
+               OR properties_enable_soft_delete IS NOT TRUE THEN 'fail'
            ELSE 'pass'
       END                                                                               AS status
-FROM azure_keyvault_managed_hsm;
+FROM azure_keyvault_managed_hsms;

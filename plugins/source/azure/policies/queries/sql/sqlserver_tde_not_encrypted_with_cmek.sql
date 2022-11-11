@@ -13,5 +13,5 @@ SELECT
     then 'fail' else 'pass'
   end
 FROM azure_sql_servers s
-         LEFT JOIN azure_sql_server_encryption_protectors p ON
-    s.cq_id = p.server_cq_id
+         LEFT JOIN azure_sql_encryption_protectors p ON
+    s.id = p.sql_server_id
