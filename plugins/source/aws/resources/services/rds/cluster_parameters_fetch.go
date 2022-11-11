@@ -3,6 +3,7 @@ package rds
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/service/rds"
 	"github.com/aws/aws-sdk-go-v2/service/rds/types"
@@ -39,9 +40,14 @@ func fetchParameterGroupParameters(ctx context.Context, svc services.RdsClient, 
 }
 
 func fetchEngineVersionParameters(ctx context.Context, svc services.RdsClient, item types.DBEngineVersion, res chan<- interface{}) error {
+	if !strings.Contains(*item.DBParameterGroupFamily, "aurora") {
+		return nil
+	}
+
 	input := &rds.DescribeEngineDefaultClusterParametersInput{
 		DBParameterGroupFamily: item.DBParameterGroupFamily,
 	}
+
 	output, err := svc.DescribeEngineDefaultClusterParameters(ctx, input)
 	if err != nil {
 		return err
