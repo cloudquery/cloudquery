@@ -29,12 +29,10 @@ func SSMResources() []*Resource {
 					},
 				}...),
 		},
-
 		{
 			SubService:  "instances",
 			Struct:      &types.InstanceInformation{},
 			Description: "https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_InstanceInformation.html",
-			SkipFields:  []string{},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -69,35 +67,32 @@ func SSMResources() []*Resource {
 					},
 				}...),
 		},
-
 		{
 			SubService:  "parameters",
 			Struct:      &types.ParameterMetadata{},
 			Description: "https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_ParameterMetadata.html",
 			SkipFields:  []string{"Name"},
-			ExtraColumns: []codegen.ColumnDefinition{
-				{
-					Name:        "account_id",
-					Description: "The AWS Account ID of the resource",
-					Type:        schema.TypeString,
-					Resolver:    `client.ResolveAWSAccount`,
-					Options:     schema.ColumnCreationOptions{PrimaryKey: true},
-				},
-				{
-					Name:        "region",
-					Description: "The AWS Region of the resource",
-					Type:        schema.TypeString,
-					Resolver:    `client.ResolveAWSRegion`,
-					Options:     schema.ColumnCreationOptions{PrimaryKey: true},
-				},
-
+			ExtraColumns: append(defaultRegionalColumnsPK, []codegen.ColumnDefinition{
 				{
 					Name:        "name",
 					Description: "The parameter name",
 					Type:        schema.TypeString,
 					Options:     schema.ColumnCreationOptions{PrimaryKey: true},
 				},
-			},
+			}...),
+		},
+		{
+			SubService:  "compliance_summary_items",
+			Struct:      &types.ComplianceSummaryItem{},
+			Description: "https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_ComplianceSummaryItem.html",
+			SkipFields:  []string{"ComplianceType"},
+			ExtraColumns: append(defaultRegionalColumnsPK, []codegen.ColumnDefinition{
+				{
+					Name:    "compliance_type",
+					Type:    schema.TypeString,
+					Options: schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+			}...),
 		},
 	}
 

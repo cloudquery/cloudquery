@@ -366,6 +366,7 @@ func tables() []*schema.Table {
 		ssm.Documents(),
 		ssm.Instances(),
 		ssm.Parameters(),
+		ssm.ComplianceSummaryItems(),
 		ssoadmin.Instances(),
 		transfer.Servers(),
 		wafregional.RateBasedRules(),
