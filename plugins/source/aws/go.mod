@@ -26,7 +26,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/codepipeline v1.13.19
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.14.3
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.21.1
-	github.com/aws/aws-sdk-go-v2/service/configservice v1.27.2
+	github.com/aws/aws-sdk-go-v2/service/configservice v1.27.3
 	github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.21.14
 	github.com/aws/aws-sdk-go-v2/service/dax v1.11.19
 	github.com/aws/aws-sdk-go-v2/service/directconnect v1.17.20
