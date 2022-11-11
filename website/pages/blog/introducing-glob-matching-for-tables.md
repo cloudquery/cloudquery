@@ -51,7 +51,7 @@ skip_tables:
 
 ## Skipping relations
 
-With the same change also came the ability to skip relations. By default, if a table is matched, all of its descendents will also be synced. So for example, this config:
+With the same change also came the ability to skip relations. By default, if a table is matched, all of its descendants will also be synced. So for example, this config:
 
 ```yaml
 tables: 
