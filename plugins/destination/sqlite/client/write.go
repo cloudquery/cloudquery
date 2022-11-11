@@ -30,12 +30,12 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *pl
 func (*Client) insert(table *schema.Table) string {
 	var sb strings.Builder
 	sb.WriteString("insert into ")
-	sb.WriteString(table.Name)
+	sb.WriteString(`"` + table.Name + `"`)
 	sb.WriteString(" (")
 	columns := table.Columns
 	columnsLen := len(columns)
 	for i, c := range columns {
-		sb.WriteString(c.Name)
+		sb.WriteString(`"` + c.Name + `"`)
 		if i < columnsLen-1 {
 			sb.WriteString(",")
 		} else {
@@ -56,12 +56,12 @@ func (*Client) insert(table *schema.Table) string {
 func (*Client) upsert(table *schema.Table) string {
 	var sb strings.Builder
 	sb.WriteString("insert or replace into ")
-	sb.WriteString(table.Name)
+	sb.WriteString(`"` + table.Name + `"`)
 	sb.WriteString(" (")
 	columns := table.Columns
 	columnsLen := len(columns)
 	for i, c := range columns {
-		sb.WriteString(c.Name)
+		sb.WriteString(`"` + c.Name + `"`)
 		if i < columnsLen-1 {
 			sb.WriteString(",")
 		} else {
