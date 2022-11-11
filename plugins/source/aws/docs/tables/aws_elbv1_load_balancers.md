@@ -1,6 +1,6 @@
 # Table: aws_elbv1_load_balancers
 
-
+https://docs.aws.amazon.com/elasticloadbalancing/2012-06-01/APIReference/API_LoadBalancerDescription.html
 
 The primary key for this table is **arn**.
 

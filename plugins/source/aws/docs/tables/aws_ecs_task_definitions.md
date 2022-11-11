@@ -1,6 +1,6 @@
 # Table: aws_ecs_task_definitions
 
-
+https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_TaskDefinition.html
 
 The primary key for this table is **arn**.
 
