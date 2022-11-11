@@ -107,10 +107,6 @@ func getWorkGroupPreparedStatement(ctx context.Context, meta schema.ClientMeta, 
 		StatementName: d.StatementName,
 	})
 	if err != nil {
-		if c.IsNotFoundError(err) {
-			resource.Item = nil
-			return nil
-		}
 		return err
 	}
 	resource.Item = *dc.PreparedStatement
@@ -145,10 +141,6 @@ func getWorkGroupQueryExecution(ctx context.Context, meta schema.ClientMeta, res
 		QueryExecutionId: aws.String(d),
 	})
 	if err != nil {
-		if c.IsNotFoundError(err) || isQueryExecutionNotFound(err) {
-			resource.Item = nil
-			return nil
-		}
 		return err
 	}
 	resource.Item = *dc.QueryExecution
@@ -183,10 +175,6 @@ func getWorkGroupNamedQuery(ctx context.Context, meta schema.ClientMeta, resourc
 		NamedQueryId: aws.String(d),
 	})
 	if err != nil {
-		if c.IsNotFoundError(err) {
-			resource.Item = nil
-			return nil
-		}
 		return err
 	}
 	resource.Item = *dc.NamedQuery
