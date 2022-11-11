@@ -20,17 +20,17 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/cloudfront v1.20.7
 	github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.13.21
 	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.20.1
-	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.21.8
+	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.21.9
 	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.16.2
 	github.com/aws/aws-sdk-go-v2/service/codebuild v1.19.19
 	github.com/aws/aws-sdk-go-v2/service/codepipeline v1.13.19
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.14.3
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.21.1
 	github.com/aws/aws-sdk-go-v2/service/configservice v1.27.3
-	github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.21.14
+	github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.21.15
 	github.com/aws/aws-sdk-go-v2/service/dax v1.11.19
 	github.com/aws/aws-sdk-go-v2/service/directconnect v1.17.21
-	github.com/aws/aws-sdk-go-v2/service/docdb v1.19.13
+	github.com/aws/aws-sdk-go-v2/service/docdb v1.19.14
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.17.4
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.67.0
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.17.21
@@ -55,7 +55,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/inspector v1.12.19
 	github.com/aws/aws-sdk-go-v2/service/inspector2 v1.8.3
 	github.com/aws/aws-sdk-go-v2/service/iot v1.30.0
-	github.com/aws/aws-sdk-go-v2/service/kinesis v1.15.21
+	github.com/aws/aws-sdk-go-v2/service/kinesis v1.15.22
 	github.com/aws/aws-sdk-go-v2/service/kms v1.18.15
 	github.com/aws/aws-sdk-go-v2/service/lambda v1.24.9
 	github.com/aws/aws-sdk-go-v2/service/lightsail v1.23.2
