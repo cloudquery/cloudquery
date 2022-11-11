@@ -22,11 +22,13 @@ func buildRamPrincipalsMock(t *testing.T, ctrl *gomock.Controller) client.Servic
 	}
 
 	m.EXPECT().ListPrincipals(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&ram.ListPrincipalsOutput{Principals: []types.Principal{object}}, nil)
-
-	return client.Services{Ram: m}
+		&ram.ListPrincipalsOutput{
+			Principals: []types.Principal{object},
+		}, nil)
+	return client.Services{
+		Ram: m,
+	}
 }
-
 func TestRamPrincipals(t *testing.T) {
 	client.AwsMockTestHelper(t, Principals(), buildRamPrincipalsMock, client.TestOptions{})
 }

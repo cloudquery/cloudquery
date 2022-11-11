@@ -135,7 +135,7 @@ func AppstreamResources() []*Resource {
 					},
 				}...),
 			ShouldGenerateResolverAndMockTest: true,
-			MaxResults:                        25,
+			CustomListInput:                   `MaxResults = aws.Int32(25)`,
 		},
 		{
 			SubService:  "stacks",

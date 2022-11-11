@@ -6,9 +6,24 @@ import (
 	"strings"
 )
 
+// DiscoveredMethod is a method on the Client struct that was discovered
+// to have the right output type. If the output type was found in a return struct field,
+// that name is specified in OutputFieldName.
 type DiscoveredMethod struct {
 	Method          reflect.Method
 	OutputFieldName string // field name on the output struct
+}
+
+// MethodByName returns a method on the client that matches a specific name.
+func MethodByName(client interface{}, targetStruct interface{}, name string) (DiscoveredMethod, error) {
+	methods := FindMethods(client, targetStruct, []string{name})
+	for _, m := range methods {
+		if m.Method.Name == name {
+			return m, nil
+		}
+	}
+	tt := reflect.TypeOf(targetStruct).Elem()
+	return DiscoveredMethod{}, fmt.Errorf("method %v that returns %v not found", name, tt.Name())
 }
 
 // FindMethods returns a slice of methods that return the targetStruct (either directly or as a field

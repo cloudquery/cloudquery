@@ -46,14 +46,14 @@ type Resource struct {
 	ShouldGenerateResolverAndMockTest bool        // if true, resolver and mock will be generated using the options below
 	ResolverAndMockTestTemplate       string      // required: name of template directory to use
 	Client                            interface{} // required: AWS client struct to use, e.g. &ec2.Client{}
-	CustomListInput                   string      // optional: string to set List input to (otherwise empty input will be used)
+
+	// Applies only to list resources:
+	ListMethodName  string // optional: List method on the Client to use. Only required if we need to disambiguate between multiple options.
+	CustomListInput string // optional: string to set List input to (otherwise empty input will be used)
 
 	// used for generating resolver and mock tests, but set automatically
 	parent   *Resource
 	children []*Resource
-	
-	// To be used in list/paginator resolver
-	MaxResults int
 }
 
 //go:embed templates/resolver_and_mock_test/*/*.go.tpl
@@ -330,6 +330,13 @@ func (r Resource) DescribeMethod() discover.DiscoveredMethod {
 
 // ListMethod finds a list method for the resource
 func (r Resource) ListMethod() discover.DiscoveredMethod {
+	if r.ListMethodName != "" {
+		m, err := discover.MethodByName(r.Client, r.Struct, r.ListMethodName)
+		if err != nil {
+			panic(err)
+		}
+		return m
+	}
 	m, err := discover.FindListMethod(r.Client, r.Struct)
 	if err != nil {
 		panic(err)

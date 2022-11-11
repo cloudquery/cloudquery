@@ -11,15 +11,20 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchRamPrincipals(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
-	input := &ram.ListPrincipalsInput{MaxResults: aws.Int32(500)}
-	paginator := ram.NewListPrincipalsPaginator(meta.(*client.Client).Services().Ram, input)
-	for paginator.HasMorePages() {
-		response, err := paginator.NextPage(ctx)
+func fetchRamPrincipals(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+  var input ram.ListPrincipalsInput = MaxResults = aws.Int32(500)
+  c := meta.(*client.Client)
+  svc := c.Services().Ram
+  for {
+		response, err := svc.ListPrincipals(ctx, &input)
 		if err != nil {
 			return err
 		}
-		res <- response.Principals
+        res <- response.Principals
+		if aws.ToString(response.NextToken) == "" {
+			break
+		}
+		input.NextToken = response.NextToken
 	}
 	return nil
 }

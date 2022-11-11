@@ -1,0 +1,7 @@
+kind: "destination"
+spec:
+  name: "test-error"
+  path: "cloudquery/test"
+  version: "v1.2.0" # latest version of destination test plugin
+  spec:
+    error_on_write: true
