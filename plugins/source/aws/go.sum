@@ -26,8 +26,8 @@ github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.17.1 h1:VmTNMxKYKZbqS99sq
 github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.17.1/go.mod h1:O769hLd/n0YUcFAfCi4g3lnpSntWCKkIFXzgi7H493s=
 github.com/aws/aws-sdk-go-v2/service/acm v1.15.2 h1:mVVton0wBx+DjcbqhwebiAe5IEIC4vPkXhcVKCWyVIc=
 github.com/aws/aws-sdk-go-v2/service/acm v1.15.2/go.mod h1:LR3qi788mHzUYfv2MNs+xwbvig6QlrPYVOhKv/Ae5M0=
-github.com/aws/aws-sdk-go-v2/service/apigateway v1.15.22 h1:1j2Ww+oWbVexc97e4SgyRoeUmHKWkrjat8w0qVUBRn8=
-github.com/aws/aws-sdk-go-v2/service/apigateway v1.15.22/go.mod h1:3olVANhEv+CFhEvC/TTkqh+1kg+r0px3CbH5eRKx7J4=
+github.com/aws/aws-sdk-go-v2/service/apigateway v1.15.23 h1:6/X3UHnwLUjfHTz4K4jstKlgSDz/OfKiqmUQ1h7vtOs=
+github.com/aws/aws-sdk-go-v2/service/apigateway v1.15.23/go.mod h1:3olVANhEv+CFhEvC/TTkqh+1kg+r0px3CbH5eRKx7J4=
 github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.12.20 h1:7N4o3yLag3c3c22POkmCAfrr/OQG5807a9NRh9lUUKw=
 github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.12.20/go.mod h1:BEIWaGqO27qq9JeFeY746S4+SFmBajpV+yhGne2qbMo=
 github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.15.20 h1:hVu6j4IipQfj4Y5ZIbvlZCUVkXs+lBMiabgl8gMTf0c=
