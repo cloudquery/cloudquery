@@ -13,8 +13,8 @@ SELECT d.id                                                                     
        d.project_id                                                                                            AS project_id,
        CASE
            WHEN
-                       d.default_encryption_configuration_kms_key_name = ''
-                   OR d.default_encryption_configuration_kms_key_name IS NULL
+                   d.default_encryption_configuration->>'kmsKeyName' = ''
+                   OR d.default_encryption_configuration->>'kmsKeyName' IS NULL -- TODO check if valid
                THEN 'fail'
            ELSE 'pass'
            END                                                                                                 AS status

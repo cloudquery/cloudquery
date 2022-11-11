@@ -10,6 +10,7 @@ import (
 func Secrets() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_secretsmanager_secrets",
+		Description:         `https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_ListSecrets.html`,
 		Resolver:            fetchSecretsmanagerSecrets,
 		PreResourceResolver: getSecret,
 		Multiplex:           client.ServiceAccountRegionMultiplexer("secretsmanager"),

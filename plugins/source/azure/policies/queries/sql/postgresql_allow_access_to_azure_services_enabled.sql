@@ -13,5 +13,5 @@ SELECT
     then 'fail' else 'pass'
   end
 FROM azure_postgresql_servers aps
-    LEFT JOIN azure_postgresql_server_firewall_rules apsfr ON
-        aps.cq_id = apsfr.server_cq_id
+    LEFT JOIN azure_postgresql_firewall_rules apsfr ON
+        aps.id = apsfr.postgresql_server_id

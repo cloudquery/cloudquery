@@ -7,12 +7,13 @@ select
   account_id,
   cloud_watch_logs_log_group_arn as resource_id,
   case
-      when pattern = '{ ($.eventName = CreateNetworkAcl) '
-          || '|| ($.eventName = CreateNetworkAclEntry) '
-          || '|| ($.eventName = DeleteNetworkAcl) '
-          || '|| ($.eventName = DeleteNetworkAclEntry) '
-          || '|| ($.eventName = ReplaceNetworkAclEntry) '
-          || '|| ($.eventName = ReplaceNetworkAclAssociation) }' then 'pass'
+      when pattern NOT LIKE '%NOT%'
+          AND pattern LIKE '%($.eventName = CreateNetworkAcl)%'
+          AND pattern LIKE '%($.eventName = CreateNetworkAclEntry)%'
+          AND pattern LIKE '%($.eventName = DeleteNetworkAcl)%'
+          AND pattern LIKE '%($.eventName = DeleteNetworkAclEntry)%'
+          AND pattern LIKE '%($.eventName = ReplaceNetworkAclAssociation)%'
+          AND pattern LIKE '%($.eventName = ReplaceNetworkAclEntry)%' then 'pass'
       else 'fail'
   end as status
 from view_aws_log_metric_filter_and_alarm

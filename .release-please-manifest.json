@@ -1,15 +1,15 @@
 {
   "cli": "2.0.12",
   "cli+FILLER": "0.0.0",
-  "plugins/source/aws": "4.14.0",
+  "plugins/source/aws": "4.15.0",
   "plugins/source/aws+FILLER": "0.0.0",
-  "plugins/source/azure": "1.4.3",
+  "plugins/source/azure": "1.4.4",
   "plugins/source/azure+FILLER": "0.0.0",
   "plugins/source/cloudflare": "2.2.14",
   "plugins/source/cloudflare+FILLER": "0.0.0",
   "plugins/source/digitalocean": "2.2.16",
   "plugins/source/digitalocean+FILLER": "0.0.0",
-  "plugins/source/gcp": "2.4.14",
+  "plugins/source/gcp": "2.4.15",
   "plugins/source/gcp+FILLER": "0.0.0",
   "plugins/source/github": "1.2.12",
   "plugins/source/github+FILLER": "0.0.0",
@@ -29,6 +29,6 @@
   "plugins/destination/test+FILLER": "0.0.0",
   "plugins/destination/csv": "1.1.6",
   "plugins/destination/csv+FILLER": "0.0.0",
-  "plugins/destination/sqlite": "1.0.2",
+  "plugins/destination/sqlite": "1.0.3",
   "plugins/destination/sqlite+FILLER": "0.0.0"
 }
