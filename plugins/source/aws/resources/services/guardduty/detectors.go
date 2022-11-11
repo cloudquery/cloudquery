@@ -10,6 +10,7 @@ import (
 func Detectors() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_guardduty_detectors",
+		Description:         `https://docs.aws.amazon.com/guardduty/latest/APIReference/API_GetDetector.html`,
 		Resolver:            fetchGuarddutyDetectors,
 		PreResourceResolver: getDetector,
 		Multiplex:           client.ServiceAccountRegionMultiplexer("guardduty"),

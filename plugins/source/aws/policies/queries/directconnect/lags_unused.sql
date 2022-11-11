@@ -7,5 +7,4 @@ select :'execution_time'                         as execution_time,
        arn                                       as resource_id,
        'fail'                                    as status
 from aws_directconnect_lags
-where number_of_connections == 0
-  or array_length(connection_ids, 1) == 0
+where number_of_connections = 0 or coalesce(jsonb_array_length(connections), 0) = 0;

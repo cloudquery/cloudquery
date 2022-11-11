@@ -1,10 +1,12 @@
 insert into aws_policy_results
 
-with violations as (
+with pvs as (
+    select id, (v->>'Document')::jsonb as document from aws_iam_policies, jsonb_array_elements(aws_iam_policies.policy_version_list) AS v
+), violations as (
     select
-        policy_cq_id,
+        id,
         COUNT(*) as violations
-    from aws_iam_policy_versions,
+    from pvs,
         JSONB_ARRAY_ELEMENTS(
             case JSONB_TYPEOF(document -> 'Statement')
                 when 'string' then JSONB_BUILD_ARRAY(document ->> 'Statement')
@@ -23,7 +25,7 @@ with violations as (
     where statement ->> 'Effect' = 'Allow'
           and resource = '*'
           and ( action = '*' or action = '*:*' )
-    group by policy_cq_id
+    group by id
 )
 
 select distinct
@@ -34,7 +36,7 @@ select distinct
     account_id,
     arn AS resource_id,
     case when
-        violations.policy_cq_id is not null AND violations.violations > 0
+        violations.id is not null AND violations.violations > 0
     then 'fail' else 'pass' end as status
 from aws_iam_policies
-left join violations on violations.policy_cq_id = aws_iam_policies.cq_id
+left join violations on violations.id = aws_iam_policies.id

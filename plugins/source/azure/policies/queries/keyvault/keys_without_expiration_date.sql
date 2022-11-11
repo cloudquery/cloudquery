@@ -7,13 +7,13 @@ SELECT :'execution_time'                                                AS execu
        akv.id                                                           AS resource_id,
        CASE
            WHEN akvk.kid IS NULL
-               OR enabled != TRUE
-               OR expires IS NULL
+               OR (akvk.attributes->>'enabled')::boolean IS DISTINCT FROM TRUE
+               OR (akvk.attributes->>'exp') IS NULL
                THEN 'fail'
            ELSE 'pass'
            END                                                          AS status
 FROM azure_keyvault_vaults akv
          LEFT JOIN
-     azure_keyvault_vault_keys akvk ON
-         akv.cq_id = akvk.vault_cq_id;
+     azure_keyvault_keys akvk ON
+         akv.id = akvk.keyvault_vault_id;
 

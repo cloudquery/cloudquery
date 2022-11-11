@@ -7,9 +7,9 @@ SELECT
   s.subscription_id,
   s.id AS server_id,
   case
-    when a.recurring_scans_email_subscription_admins IS NULL OR a.recurring_scans_email_subscription_admins != TRUE
+    when (a.recurring_scans->>'emailSubscriptionAdmins')::boolean IS DISTINCT FROM TRUE
       then 'fail' else 'pass'
   end
 FROM azure_sql_servers s
     LEFT JOIN azure_sql_server_vulnerability_assessments a ON
-        s.cq_id = a.server_cq_id
+        s.id = a.sql_server_id

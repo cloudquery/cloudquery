@@ -90,7 +90,7 @@
         "type": "postgres",
         "uid": "${DS_POSTGRESQL}"
       },
-      "description": "This panel will show OK if the gcp_resources view has been created and is accessible to the current Postgres user. See https://github.com/cloudquery/dashboards#gcp for more information.",
+      "description": "This panel will show OK if the gcp_resources view has been created and is accessible to the current Postgres user. See https://github.com/cloudquery/cloudquery/tree/main/plugins/source/gcp/dashboards for more information.",
       "fieldConfig": {
         "defaults": {
           "color": {

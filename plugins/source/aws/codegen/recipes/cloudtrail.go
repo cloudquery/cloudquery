@@ -13,9 +13,10 @@ import (
 func CloudtrailResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "trails",
-			Struct:     &models.CloudTrailWrapper{},
-			SkipFields: []string{"TrailARN"},
+			SubService:  "trails",
+			Struct:      &models.CloudTrailWrapper{},
+			Description: "https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_Trail.html",
+			SkipFields:  []string{"TrailARN"},
 			ExtraColumns: append(defaultRegionalColumns, []codegen.ColumnDefinition{
 				{
 					Name:     "cloudwatch_logs_log_group_name",
