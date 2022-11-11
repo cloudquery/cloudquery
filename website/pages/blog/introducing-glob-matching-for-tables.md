@@ -78,7 +78,7 @@ tables:
 - "aws_ec2_*"
 ```
 
-will not only sync all the EC2 tables today, it will also automatically include any new ones when the AWS plugin version is upgraded. This is a great way to keep on the cutting edge of the data exposed by the cloud services you care about.
+will not only sync all the EC2 tables today, it will also automatically include any new ones when the AWS plugin version is upgraded. This is a good way to always have data from the latest APIs exposed by the cloud services you care about (along with reviewing CloudQuery plugin changelogs once in a while, of course).
 
 ## A note about versions
 
