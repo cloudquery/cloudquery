@@ -16,11 +16,8 @@ func fetchIamRoleServicesLastAccessed(ctx context.Context, meta schema.ClientMet
 
 	g, ctx := errgroup.WithContext(ctx)
 	g.Go(func() error {
-		if err := fetchIamRoles(ctx, meta, nil, ch); err != nil {
-			return err
-		}
-		close(ch)
-		return nil
+		defer close(ch)
+		return fetchIamRoles(ctx, meta, nil, ch)
 	})
 
 	g.Go(func() error {

@@ -16,11 +16,8 @@ func fetchIamUserServicesLastAccessed(ctx context.Context, meta schema.ClientMet
 
 	g, ctx := errgroup.WithContext(ctx)
 	g.Go(func() error {
-		if err := fetchIamUsers(ctx, meta, nil, ch); err != nil {
-			return err
-		}
-		close(ch)
-		return nil
+		defer close(ch)
+		return fetchIamUsers(ctx, meta, nil, ch)
 	})
 
 	g.Go(func() error {

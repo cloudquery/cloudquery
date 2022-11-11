@@ -20,9 +20,28 @@ func UserServicesLastAccessed() *schema.Table {
 				Resolver: client.ResolveAWSAccount,
 			},
 			{
+				Name:     "job_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver(`JobId`),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "resource_arn",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver(`ResourceARN`),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
 				Name:     "service_name",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ServiceName"),
+				Resolver: schema.PathResolver(`ServiceName`),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "service_namespace",

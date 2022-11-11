@@ -101,6 +101,8 @@ type PasswordPolicyWrapper struct {
 }
 
 type ServiceLastAccessedEntitiesWrapper struct {
+	ResourceARN string
+	JobId       *string
 	*types.ServiceLastAccessed
 	Entities []types.EntityDetails
 }

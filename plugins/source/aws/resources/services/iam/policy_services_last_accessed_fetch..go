@@ -16,11 +16,8 @@ func fetchIamPolicyServicesLastAccessed(ctx context.Context, meta schema.ClientM
 
 	g, ctx := errgroup.WithContext(ctx)
 	g.Go(func() error {
-		if err := fetchIamPolicies(ctx, meta, nil, ch); err != nil {
-			return err
-		}
-		close(ch)
-		return nil
+		defer close(ch)
+		return fetchIamPolicies(ctx, meta, nil, ch)
 	})
 
 	g.Go(func() error {

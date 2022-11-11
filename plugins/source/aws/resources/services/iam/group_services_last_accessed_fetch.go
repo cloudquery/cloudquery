@@ -16,11 +16,8 @@ func fetchIamGroupServicesLastAccessed(ctx context.Context, meta schema.ClientMe
 
 	g, ctx := errgroup.WithContext(ctx)
 	g.Go(func() error {
-		if err := fetchIamGroups(ctx, meta, nil, ch); err != nil {
-			return err
-		}
-		close(ch)
-		return nil
+		defer close(ch)
+		return fetchIamGroups(ctx, meta, nil, ch)
 	})
 
 	g.Go(func() error {

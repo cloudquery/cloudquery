@@ -30,17 +30,15 @@ func fetchIamAccessDetails(ctx context.Context, res chan<- interface{}, svc serv
 			return err
 		}
 
-		requestTime := 0
 		switch details.JobStatus {
 		case types.JobStatusTypeInProgress:
-			time.Sleep(time.Millisecond * 200)
-			requestTime += 200
+			time.Sleep(time.Second)
 			continue
 		case types.JobStatusTypeFailed:
-			return fmt.Errorf("failed to get last acessed details with error: %s - %s", *details.Error.Code, *details.Error.Message)
+			return fmt.Errorf("failed to get last accessed details with error: %s - %s", *details.Error.Code, *details.Error.Message)
 		case types.JobStatusTypeCompleted:
 			for _, s := range details.ServicesLastAccessed {
-				if err := fetchDetailEntities(ctx, res, svc, s, *output.JobId); err != nil {
+				if err := fetchDetailEntities(ctx, res, svc, s, *output.JobId, arn); err != nil {
 					return err
 				}
 			}
@@ -54,12 +52,14 @@ func fetchIamAccessDetails(ctx context.Context, res chan<- interface{}, svc serv
 	}
 }
 
-func fetchDetailEntities(ctx context.Context, res chan<- interface{}, svc services.IamClient, sla types.ServiceLastAccessed, jobId string) error {
+func fetchDetailEntities(ctx context.Context, res chan<- interface{}, svc services.IamClient, sla types.ServiceLastAccessed, jobId string, arn string) error {
 	config := iam.GetServiceLastAccessedDetailsWithEntitiesInput{
 		JobId:            &jobId,
 		ServiceNamespace: sla.ServiceNamespace,
 	}
 	details := models.ServiceLastAccessedEntitiesWrapper{
+		ResourceARN:         arn,
+		JobId:               &jobId,
 		ServiceLastAccessed: &sla,
 	}
 	for {
