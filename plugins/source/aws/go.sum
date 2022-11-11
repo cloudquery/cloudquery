@@ -65,8 +65,8 @@ github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.21.1 h1:lj4DpCep
 github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.21.1/go.mod h1:2LQRr4SMTXDqUodAi6pIi0u7t1f0+kMOCRYjh3dAflw=
 github.com/aws/aws-sdk-go-v2/service/configservice v1.27.3 h1:rh64LIO4qJVVZHeyTNmWAs8J9XxFqUDzpD6Qz7HGcRE=
 github.com/aws/aws-sdk-go-v2/service/configservice v1.27.3/go.mod h1:YRQyy4b5FEc0SCSKOlZU68rzv6xnIWfw5fFkxPr5sgc=
-github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.21.14 h1:KSFsGTdjLYxT94vMSDvn0FXVIFT1OSw7zzd0zW6YjhY=
-github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.21.14/go.mod h1:9vkqDk+MFmcWqby2e00fO9S0OOCbBFvryL8Cnui978w=
+github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.21.15 h1:fn3ER+OWc2bvmuc3z6o0eBp8qYIGb8s7bnZAR2jtors=
+github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.21.15/go.mod h1:9vkqDk+MFmcWqby2e00fO9S0OOCbBFvryL8Cnui978w=
 github.com/aws/aws-sdk-go-v2/service/dax v1.11.19 h1:oMqf+cUOpO0ovxHSL4fz11LPRXTgcosampySsUyuneM=
 github.com/aws/aws-sdk-go-v2/service/dax v1.11.19/go.mod h1:J2KFwTpLM6JCqbox0q98hsZbj0oRNhDoKck44uAebyc=
 github.com/aws/aws-sdk-go-v2/service/directconnect v1.17.21 h1:H9moaXjCDfR7BAa8w+GYA8X3lbZ84HZWhLOfrf14kxk=
