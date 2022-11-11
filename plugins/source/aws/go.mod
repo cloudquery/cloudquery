@@ -5,9 +5,9 @@ go 1.19
 require (
 	github.com/aws/aws-sdk-go-v2 v1.17.1
 	github.com/aws/aws-sdk-go-v2/config v1.17.10
-	github.com/aws/aws-sdk-go-v2/credentials v1.12.23
+	github.com/aws/aws-sdk-go-v2/credentials v1.12.24
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.37
-	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.17.0
+	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.17.1
 	github.com/aws/aws-sdk-go-v2/service/acm v1.15.2
 	github.com/aws/aws-sdk-go-v2/service/apigateway v1.15.23
 	github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.12.20
@@ -82,7 +82,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sqs v1.19.12
 	github.com/aws/aws-sdk-go-v2/service/ssm v1.32.0
 	github.com/aws/aws-sdk-go-v2/service/ssoadmin v1.15.13
-	github.com/aws/aws-sdk-go-v2/service/sts v1.17.1
+	github.com/aws/aws-sdk-go-v2/service/sts v1.17.2
 	github.com/aws/aws-sdk-go-v2/service/waf v1.11.19
 	github.com/aws/aws-sdk-go-v2/service/wafv2 v1.23.1
 	github.com/aws/aws-sdk-go-v2/service/workspaces v1.25.0
