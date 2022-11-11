@@ -25,15 +25,15 @@ SQLite use-cases in data integration are infinite but I'd like to share a few in
 
 ## Local data exploration
 
-If you don't want to run a database and/or docker, running sqlite as destination will be super performant similar to our [CSV destination plugin](../docs/recipes/destinations/csv) but with the ability to do complex queries and store everything in one file.
+If you don't want to run a database and/or docker, running SQLite as destination will be super performant similar to our [CSV destination plugin](../docs/recipes/destinations/csv) but with the ability to do complex queries and store everything in one file.
 
 ## Scaling ETL workloads
 
-Similar to previous blog posts about how it is possible to scale out ELT workloads with [CSV plugin](./scaling-out-elt-with-cq-and-csv), you can do the same with sqlite and enjoy all the benefits of a relational database.
+Similar to previous blog posts about how it is possible to scale out ELT workloads with [CSV plugin](./scaling-out-elt-with-cq-and-csv), you can do the same with SQLite and enjoy a lot of the benefits of a relational database.
 
 ## Analysis/Transformation backend
 
-[Data analysis backend](https://www.sqlite.org/whentouse.html): Given the fact that sqlite is just a file it is easy and performant to actually run various transform workloads from python, or any other language you perfer as sqlite is supported everywhere. This can also serve as intermediate storage before you load them to a data warehouse for further analysis and visualization.
+[Data analysis backend](https://www.sqlite.org/whentouse.html): Given the fact that sqlite is just a file it is easy and performant to actually run various transform workloads from python, or any other language you prefer as sqlite is supported everywhere. This can also serve as intermediate storage before you load them to a data warehouse for further analysis and visualization.
 
 Found this discussion on [HN](https://news.ycombinator.com/item?id=22153447) about similar use case.
 
