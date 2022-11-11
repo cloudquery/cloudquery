@@ -94,9 +94,10 @@ func ElasticbeanstalkResources() []*Resource {
 			},
 		},
 		{
-			SubService: "configuration_settings",
-			Struct:     &models.ConfigurationSettingsDescriptionWrapper{},
-			SkipFields: []string{},
+			SubService:  "configuration_settings",
+			Struct:      &models.ConfigurationSettingsDescriptionWrapper{},
+			Description: "https://docs.aws.amazon.com/elasticbeanstalk/latest/api/API_ConfigurationSettingsDescription.html",
+			SkipFields:  []string{},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -108,9 +109,10 @@ func ElasticbeanstalkResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "configuration_options",
-			Struct:     &models.ConfigurationOptionDescriptionWrapper{},
-			SkipFields: []string{},
+			SubService:  "configuration_options",
+			Struct:      &models.ConfigurationOptionDescriptionWrapper{},
+			Description: "https://docs.aws.amazon.com/elasticbeanstalk/latest/api/API_ConfigurationOptionDescription.html",
+			SkipFields:  []string{},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
