@@ -26,7 +26,7 @@ tables:
 - aws_ec2_eips
 - aws_ec2_flow_logs
 - aws_ec2_hosts
-# ... plus ~21 more, omitted here to keep this post short!
+# ... plus ~21 more, omitted here to keep this post short
 ```
 
 As you can see, this was quite verbose!
