@@ -11,10 +11,8 @@ select uid                              AS resource_id,
         CASE
             WHEN
                   
-                  (SELECT * FROM stateful_set_containers 
-                    WHERE 
-                  stateful_set_containers.container->'resources'->'securityContext'->'seccompProfile'->>'type' != 'RuntimeDefault') > 0
+                  stateful_set_containers.container->'resources'->'securityContext'->'seccompProfile'->>'type' != 'RuntimeDefault'
                 THEN 'fail'
                 ELSE 'pass'
             END                          AS status
-FROM stateful_set_containers
+FROM stateful_set_containers;
