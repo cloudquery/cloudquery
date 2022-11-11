@@ -7,8 +7,10 @@ select
     account_id,
     cloud_watch_logs_log_group_arn as resource_id,
     case
-      when pattern = '{($.eventSource = kms.amazonaws.com) '
-          || '&& (($.eventName=DisableKey)||($.eventName=ScheduleKeyDeletion)) }"' then 'pass'
+      when pattern NOT LIKE '%NOT%'
+          AND pattern LIKE '%($.eventSource = kms.amazonaws.com)%'
+          AND pattern LIKE '%($.eventName = DisableKey)%'
+          AND pattern LIKE '%($.eventName = ScheduleKeyDeletion)%' then 'pass'
       else 'fail'
     end as status
 from view_aws_log_metric_filter_and_alarm

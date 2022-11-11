@@ -1,18 +1,5 @@
--- SELECT
---     project_id,
---     gisa.id AS "account_id",
---     gisak.name AS "key_name",
---     gisak.valid_after_time
--- FROM gcp_iam_service_accounts gisa
---     JOIN gcp_iam_service_account_keys gisak ON
---             gisa.cq_id = gisak.service_account_cq_id
--- WHERE gisa.email LIKE '%iam.gserviceaccount.com'
---     AND gisak.valid_after_time <=
---         (now() - INTERVAL '90' day) -- noqa
-
-
 INSERT INTO gcp_policy_results (resource_id, execution_time, framework, check_id, title, project_id, status)
-SELECT DISTINCT gisa.id                                                                                                AS resource_id,
+SELECT DISTINCT gisa.name                                                                                              AS resource_id,
                 :'execution_time'::timestamp                                                                           AS execution_time,
                 :'framework'                                                                                           AS framework,
                 :'check_id'                                                                                            AS check_id,
@@ -21,11 +8,11 @@ SELECT DISTINCT gisa.id                                                         
                 CASE
                     WHEN
                                 gisa.email LIKE '%iam.gserviceaccount.com'
-                            AND gisak.valid_after_time <=
+                            AND gisak.valid_after_time::timestamp <=
                                 (now() - INTERVAL '90' day)
                         THEN 'fail'
                     ELSE 'pass'
                     END                                                                                                AS status
 FROM gcp_iam_service_accounts gisa
          JOIN gcp_iam_service_account_keys gisak ON
-    gisa.cq_id = gisak.service_account_cq_id;
+    gisa.project_id = gisak.project_id AND gisa.unique_id = gisak.service_account_unique_id;

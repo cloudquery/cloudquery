@@ -28,8 +28,8 @@ SELECT "name"                                                                   
                    AND REPLACE(rotation_period, 'm', '')::NUMERIC > 129600)
                    OR (rotation_period LIKE '%d'
                    AND REPLACE(rotation_period, 'd', '')::NUMERIC > 90)
-                   OR DATE_PART('day', CURRENT_DATE - next_rotation_time) > 90
+                   OR next_rotation_time = '' OR DATE_PART('day', CURRENT_DATE - next_rotation_time::timestamp) > 90
                THEN 'fail'
            ELSE 'pass'
            END                                                                         AS status
-FROM gcp_kms_keyring_crypto_keys;
+FROM gcp_kms_crypto_keys;
