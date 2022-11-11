@@ -1,6 +1,6 @@
 # Table: azure_storage_accounts
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-01-01/storage#Account
 
 The primary key for this table is **id**.
 

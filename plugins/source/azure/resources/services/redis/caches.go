@@ -11,9 +11,10 @@ import (
 
 func Caches() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_redis_caches",
-		Resolver:  fetchRedisCaches,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:        "azure_redis_caches",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2020-12-01/redis#ResourceType`,
+		Resolver:    fetchRedisCaches,
+		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

@@ -1,6 +1,6 @@
 # Table: heroku_log_drains
 
-https://devcenter.heroku.com/articles/platform-api-reference#log-drain-attributes
+https://devcenter.heroku.com/articles/platform-api-reference#log-drain
 
 The primary key for this table is **id**.
 

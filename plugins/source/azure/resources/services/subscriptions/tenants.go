@@ -11,9 +11,10 @@ import (
 
 func Tenants() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_subscriptions_tenants",
-		Resolver:  fetchSubscriptionsTenants,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:        "azure_subscriptions_tenants",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions#TenantIDDescription`,
+		Resolver:    fetchSubscriptionsTenants,
+		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

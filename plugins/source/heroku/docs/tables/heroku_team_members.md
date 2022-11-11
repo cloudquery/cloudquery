@@ -1,6 +1,6 @@
 # Table: heroku_team_members
 
-https://devcenter.heroku.com/articles/platform-api-reference#team-member-attributes
+https://devcenter.heroku.com/articles/platform-api-reference#team-member
 
 The primary key for this table is **id**.
 

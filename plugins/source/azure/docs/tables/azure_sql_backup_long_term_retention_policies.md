@@ -1,6 +1,6 @@
 # Table: azure_sql_backup_long_term_retention_policies
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql#BackupLongTermRetentionPolicy
 
 The primary key for this table is **id**.
 

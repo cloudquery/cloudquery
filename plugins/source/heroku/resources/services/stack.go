@@ -13,7 +13,7 @@ import (
 func Stacks() *schema.Table {
 	return &schema.Table{
 		Name:        "heroku_stacks",
-		Description: `https://devcenter.heroku.com/articles/platform-api-reference#stack-attributes`,
+		Description: `https://devcenter.heroku.com/articles/platform-api-reference#stack`,
 		Resolver:    fetchStacks,
 		Columns: []schema.Column{
 			{

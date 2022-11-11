@@ -13,8 +13,9 @@ import (
 
 func transparentDataEncryptions() *schema.Table {
 	return &schema.Table{
-		Name:     "azure_sql_transparent_data_encryptions",
-		Resolver: fetchSQLTransparentDataEncryptions,
+		Name:        "azure_sql_transparent_data_encryptions",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql#TransparentDataEncryption`,
+		Resolver:    fetchSQLTransparentDataEncryptions,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

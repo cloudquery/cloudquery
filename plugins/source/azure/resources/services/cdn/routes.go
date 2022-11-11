@@ -12,8 +12,9 @@ import (
 
 func routes() *schema.Table {
 	return &schema.Table{
-		Name:     "azure_cdn_routes",
-		Resolver: fetchCDNRoutes,
+		Name:        "azure_cdn_routes",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2020-09-01/cdn#Route`,
+		Resolver:    fetchCDNRoutes,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

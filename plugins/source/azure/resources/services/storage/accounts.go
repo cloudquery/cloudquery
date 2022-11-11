@@ -13,9 +13,10 @@ import (
 
 func Accounts() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_storage_accounts",
-		Resolver:  fetchStorageAccounts,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:        "azure_storage_accounts",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-01-01/storage#Account`,
+		Resolver:    fetchStorageAccounts,
+		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

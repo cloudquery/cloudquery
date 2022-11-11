@@ -11,9 +11,10 @@ import (
 
 func PublicIPAddresses() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_network_public_ip_addresses",
-		Resolver:  fetchNetworkPublicIPAddresses,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:        "azure_network_public_ip_addresses",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network#PublicIPAddress`,
+		Resolver:    fetchNetworkPublicIPAddresses,
+		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

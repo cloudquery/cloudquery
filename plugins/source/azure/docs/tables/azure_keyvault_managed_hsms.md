@@ -1,6 +1,6 @@
 # Table: azure_keyvault_managed_hsms
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/keyvault/mgmt/2020-04-01-preview/keyvault#ManagedHsm
 
 The primary key for this table is **id**.
 

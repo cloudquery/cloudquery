@@ -1,6 +1,6 @@
 # Table: heroku_add_on_configs
 
-https://devcenter.heroku.com/articles/platform-api-reference#add-on-config-attributes
+https://devcenter.heroku.com/articles/platform-api-reference#add-on-config
 
 The primary key for this table is **_cq_id**.
 

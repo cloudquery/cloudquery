@@ -1,6 +1,6 @@
 # Table: azure_datalake_store_accounts
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/datalake/store/mgmt/2016-11-01/account#DataLakeStoreAccount
 
 The primary key for this table is **id**.
 

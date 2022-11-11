@@ -11,9 +11,10 @@ import (
 
 func Groups() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_resources_groups",
-		Resolver:  fetchResourcesGroups,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:        "azure_resources_groups",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-10-01/resources#Group`,
+		Resolver:    fetchResourcesGroups,
+		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
