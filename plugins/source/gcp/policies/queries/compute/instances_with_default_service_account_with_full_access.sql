@@ -17,13 +17,11 @@ SELECT DISTINCT gci.name                                                        
                 gci.project_id                                                                                                               AS project_id,
                 CASE
                     WHEN
-                                gcisa.email = (SELECT default_service_account
+                            gcisa->>'email' = (SELECT default_service_account
                                                FROM gcp_compute_projects
                                                WHERE project_id = gci.project_id)
-                            AND 'https://www.googleapis.com/auth/cloud-platform' = ANY (gcisa.scopes)
+                            AND ARRAY['https://www.googleapis.com/auth/cloud-platform'] <@ ARRAY(SELECT JSONB_ARRAY_ELEMENTS_TEXT(gcisa->'scopes'))
                         THEN 'fail'
                     ELSE 'pass'
                     END                                                                                                                      AS status
-FROM gcp_compute_instances gci
-         JOIN gcp_compute_instance_service_accounts gcisa ON
-    gci.id = gcisa.instance_id;
+FROM gcp_compute_instances gci, JSONB_ARRAY_ELEMENTS(gci.service_accounts) gcisa;

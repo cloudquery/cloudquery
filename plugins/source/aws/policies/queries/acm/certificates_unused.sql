@@ -7,4 +7,4 @@ select :'execution_time'        as execution_time,
        arn                      as resource_id,
        'fail'                   as status
 from aws_acm_certificates
-where array_length(in_use_by, 1) == 0
+where array_length(in_use_by, 1) = 0

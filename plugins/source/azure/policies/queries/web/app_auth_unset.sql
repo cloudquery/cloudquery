@@ -11,5 +11,5 @@ SELECT :'execution_time'                                                        
            ELSE 'pass'
            END                                                                     AS status
 FROM azure_web_apps awa
-         LEFT JOIN azure_web_app_auth_settings awaas ON
-    awa.cq_id = awaas.app_cq_id
+         LEFT JOIN azure_web_site_auth_settings awaas ON
+    awa.id = awaas.web_app_id
