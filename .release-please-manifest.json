@@ -5,7 +5,7 @@
   "plugins/source/aws+FILLER": "0.0.0",
   "plugins/source/azure": "1.4.3",
   "plugins/source/azure+FILLER": "0.0.0",
-  "plugins/source/cloudflare": "2.2.14",
+  "plugins/source/cloudflare": "2.2.15",
   "plugins/source/cloudflare+FILLER": "0.0.0",
   "plugins/source/digitalocean": "2.2.16",
   "plugins/source/digitalocean+FILLER": "0.0.0",
