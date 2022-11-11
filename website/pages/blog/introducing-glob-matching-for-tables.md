@@ -10,7 +10,7 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 <BlogHeader/>
 
-I am excited to announce a small feature that quietly rolled out today: glob matching for tables in CloudQuery config files!
+We are excited to announce a small feature that quietly rolled out today: glob matching for tables in CloudQuery config files!
 
 ## Before
 
@@ -82,10 +82,11 @@ will not only sync all the EC2 tables today, it will also automatically include 
 
 ## Versions
 
-Glob matching is supported in the latest version of all official source plugins. For the big cloud providers, these are:
+Glob matching is supported in the latest version of all official source plugins. For the big three cloud providers, it was first released in the following versions, and will be supported in these versions and higher:
 
- - AWS: 
- - GCP: 
- - Azure: 
- - Github: 
+ - AWS [v4.15.0](https://github.com/cloudquery/cloudquery/releases/tag/plugins-source-aws-v4.15.0)
+ - GCP [v2.4.15](https://github.com/cloudquery/cloudquery/releases/tag/plugins-source-gcp-v2.4.15)
+ - Azure: [v1.4.4](https://github.com/cloudquery/cloudquery/releases/tag/plugins-source-azure-v1.4.4)
+ 
+See [this link](https://www.cloudquery.io/docs/plugins/sources) for a list of the latest versions of all official source plugins.
 
