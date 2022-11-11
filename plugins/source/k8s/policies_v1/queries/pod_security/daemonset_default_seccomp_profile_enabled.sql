@@ -14,4 +14,4 @@ select uid                              AS resource_id,
                 THEN 'fail'
                 ELSE 'pass'
             END                          AS status
-FROM daemon_set_containers.uid
+FROM daemon_set_containers;
