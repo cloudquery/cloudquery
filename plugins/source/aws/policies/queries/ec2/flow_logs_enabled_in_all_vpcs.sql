@@ -13,4 +13,4 @@ select
   end
 from aws_ec2_vpcs
 left join aws_ec2_flow_logs on
-        aws_ec2_vpcs.id = aws_ec2_flow_logs.resource_id
+        aws_ec2_vpcs.vpc_id = aws_ec2_flow_logs.resource_id

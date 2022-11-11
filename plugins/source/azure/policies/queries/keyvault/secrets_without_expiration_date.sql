@@ -6,11 +6,10 @@ SELECT :'execution_time'                                                   AS ex
        akv.subscription_id                                                 AS subscription_id,
        akv.id                                                              AS resource_id,
        CASE
-           WHEN enabled != TRUE OR expires IS NULL THEN 'fail'
+           WHEN (attributes->>'enabled')::boolean != TRUE OR (attributes->>'exp') IS NULL THEN 'fail'
            ELSE 'pass'
            END                                                             AS status
 FROM azure_keyvault_vaults akv
          LEFT JOIN
-     azure_keyvault_vault_secrets akvs ON
-         akv.cq_id = akvs.vault_cq_id
-
+     azure_keyvault_secrets akvs ON
+         akv.id = akvs.keyvault_vault_id

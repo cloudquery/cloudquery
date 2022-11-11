@@ -49,4 +49,4 @@ from
 left outer join any_category on TRUE
 inner join any_source_id on TRUE
 left outer join
-    specific_categories on user_instance_id = specific_categories.source_id
+    specific_categories on db_instance_identifier = specific_categories.source_id

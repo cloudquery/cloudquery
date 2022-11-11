@@ -1,32 +1,29 @@
-WITH details AS (
+WITH
+    ds AS (
+        SELECT logic_workflow_id, jsonb_array_elements(logs) AS logs FROM azure_logic_diagnostic_settings
+    ),
+    details AS (
 	SELECT DISTINCT id AS
 		workflow_id
 	FROM
-		azure_logic_app_workflows,
-		jsonb_array_elements ( diagnostic_settings ) setting,
-		jsonb_array_elements ( setting -> 'properties' -> 'logs' ) log
+        azure_logic_workflows w
+    LEFT JOIN ds ON ds.logic_workflow_id = w.id
 	WHERE
-		diagnostic_settings IS NOT NULL
-		AND (
-			( ( log ->> 'enabled' ) :: bool AND ( log -> 'retentionPolicy' ->> 'enabled' ) :: bool AND ( log -> 'retentionPolicy' ) :: jsonb ? 'days' )
-			OR ( ( log ->> 'enabled' ) :: bool AND ( log -> 'retentionPolicy' ->> 'enabled' <> 'true' OR setting -> 'properties' ->> 'storageAccountId' = '' ) )
-		)
-	)
+        (ds.logs->>'enabled')::boolean IS TRUE AND
+        (ds.logs->'retentionPolicy'->>'enabled')::boolean IS TRUE)
+-- TODO check
 insert into azure_policy_results
 SELECT
   :'execution_time',
   :'framework',
   :'check_id',
   'Resource logs in Logic Apps should be enabled',
-	sub.id AS subscription_id,
+	subscription_id,
 	workflows.id AS logic_app_workflow_id,
   case
-    when workflows.diagnostic_settings IS NULL
+    when l.workflow_id IS NULL
       then 'fail' else 'pass'
   end
 FROM
-	azure_logic_app_workflows
-	AS workflows LEFT JOIN details AS l ON workflows.id = l.workflow_id,
-	azure_subscription_subscriptions AS sub
-WHERE
-	sub.subscription_id = workflows.subscription_id
+    azure_logic_workflows
+	AS workflows LEFT JOIN details AS l ON workflows.id = l.workflow_id
