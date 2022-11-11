@@ -7,4 +7,4 @@ select :'execution_time'                  as execution_time,
        arn                                as resource_id,
        'fail'                             as status
 from aws_cloudfront_distributions
-where enabled = false
+where (distribution_config->>'Enabled')::boolean is distinct from true;

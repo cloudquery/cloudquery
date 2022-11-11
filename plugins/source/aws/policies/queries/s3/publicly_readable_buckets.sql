@@ -2,23 +2,21 @@ insert into aws_policy_results
 with policy_allow_public as (
     select
         arn,
-        bucket_cq_id,
         count(*) as statement_count
     from
         (
             select
                 aws_s3_buckets.arn,
-                aws_s3_buckets.cq_id as bucket_cq_id,
                 statements -> 'Principal' as principals
             from
                 aws_s3_buckets,
                 jsonb_array_elements(
-                    case jsonb_typeof(policy -> 'Statement')
+                    case jsonb_typeof(policy::jsonb -> 'Statement')
                         when
                             'string' then jsonb_build_array(
-                                policy ->> 'Statement'
+                                policy::jsonb ->> 'Statement'
                             )
-                        when 'array' then policy -> 'Statement'
+                        when 'array' then policy::jsonb -> 'Statement'
                     end
                 ) as statements
             where
@@ -34,7 +32,7 @@ with policy_allow_public as (
             )
         )
     group by
-        arn, bucket_cq_id
+        arn
 )
 
 select
@@ -50,19 +48,19 @@ from
     aws_s3_buckets
 left join
     aws_s3_bucket_grants on
-        aws_s3_buckets.cq_id = aws_s3_bucket_grants.bucket_cq_id
+            aws_s3_buckets.arn = aws_s3_bucket_grants.bucket_arn
 -- Find all statements that could give public allow access 
 -- Statements that give public access have 1) Effect == Allow 2) One of the following principal:
 --       Principal = {"AWS": "*"}
 --       Principal = {"AWS": ["arn:aws:iam::12345678910:root", "*"]}
 --       Principal = "*"
 left join policy_allow_public on
-        aws_s3_buckets.cq_id = policy_allow_public.bucket_cq_id
+        aws_s3_buckets.arn = policy_allow_public.arn
 where
     (
         aws_s3_buckets.block_public_acls != TRUE
         and (
-            uri = 'http://acs.amazonaws.com/groups/global/AllUsers'
+            grantee->>'URI' = 'http://acs.amazonaws.com/groups/global/AllUsers'
             and permission in ('READ_ACP', 'FULL_CONTROL')
         )
     )

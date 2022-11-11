@@ -10,7 +10,7 @@ select uid                                                   AS resource_id,
        name                                                  AS resource_name,
        CASE
            WHEN
-               host_pid OR host_ipc
+               spec_host_pid OR spec_host_ipc
                THEN 'fail'
            ELSE 'pass'
            END                                               AS status
