@@ -4,23 +4,23 @@ go 1.19
 
 require (
 	github.com/aws/aws-sdk-go-v2 v1.17.1
-	github.com/aws/aws-sdk-go-v2/config v1.17.10
+	github.com/aws/aws-sdk-go-v2/config v1.17.11
 	github.com/aws/aws-sdk-go-v2/credentials v1.12.24
-	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.37
+	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.38
 	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.17.1
 	github.com/aws/aws-sdk-go-v2/service/acm v1.15.2
 	github.com/aws/aws-sdk-go-v2/service/apigateway v1.15.23
-	github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.12.20
+	github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.12.21
 	github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.15.21
 	github.com/aws/aws-sdk-go-v2/service/apprunner v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/appstream v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/appsync v1.15.12
-	github.com/aws/aws-sdk-go-v2/service/autoscaling v1.24.0
+	github.com/aws/aws-sdk-go-v2/service/autoscaling v1.24.1
 	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.23.1
 	github.com/aws/aws-sdk-go-v2/service/cloudfront v1.20.7
 	github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.13.21
 	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.20.1
-	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.21.8
+	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.21.9
 	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.16.2
 	github.com/aws/aws-sdk-go-v2/service/codebuild v1.19.19
 	github.com/aws/aws-sdk-go-v2/service/codepipeline v1.13.19
@@ -36,15 +36,15 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.17.21
 	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.13.19
 	github.com/aws/aws-sdk-go-v2/service/ecs v1.18.26
-	github.com/aws/aws-sdk-go-v2/service/efs v1.17.18
+	github.com/aws/aws-sdk-go-v2/service/efs v1.17.19
 	github.com/aws/aws-sdk-go-v2/service/eks v1.22.4
-	github.com/aws/aws-sdk-go-v2/service/elasticache v1.23.0
+	github.com/aws/aws-sdk-go-v2/service/elasticache v1.23.1
 	github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk v1.14.20
-	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.14.20
+	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.14.21
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.18.22
 	github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.16.12
 	github.com/aws/aws-sdk-go-v2/service/emr v1.20.13
-	github.com/aws/aws-sdk-go-v2/service/eventbridge v1.16.17
+	github.com/aws/aws-sdk-go-v2/service/eventbridge v1.16.18
 	github.com/aws/aws-sdk-go-v2/service/firehose v1.14.22
 	github.com/aws/aws-sdk-go-v2/service/frauddetector v1.20.12
 	github.com/aws/aws-sdk-go-v2/service/fsx v1.25.4
@@ -55,7 +55,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/inspector v1.12.19
 	github.com/aws/aws-sdk-go-v2/service/inspector2 v1.8.3
 	github.com/aws/aws-sdk-go-v2/service/iot v1.30.0
-	github.com/aws/aws-sdk-go-v2/service/kinesis v1.15.21
+	github.com/aws/aws-sdk-go-v2/service/kinesis v1.15.22
 	github.com/aws/aws-sdk-go-v2/service/kms v1.18.15
 	github.com/aws/aws-sdk-go-v2/service/lambda v1.24.9
 	github.com/aws/aws-sdk-go-v2/service/lightsail v1.23.2
@@ -70,7 +70,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.12.20
 	github.com/aws/aws-sdk-go-v2/service/route53 v1.22.4
 	github.com/aws/aws-sdk-go-v2/service/route53domains v1.12.19
-	github.com/aws/aws-sdk-go-v2/service/s3 v1.29.1
+	github.com/aws/aws-sdk-go-v2/service/s3 v1.29.2
 	github.com/aws/aws-sdk-go-v2/service/s3control v1.25.0
 	github.com/aws/aws-sdk-go-v2/service/sagemaker v1.54.0
 	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.16.4
