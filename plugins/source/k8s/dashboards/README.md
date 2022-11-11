@@ -27,6 +27,6 @@ Checkout those tutorials:
 
 #### Installing the Compliance Dashboard
 
-1. Execute one more of the Kubernetes [policies](../policies/).
+1. Execute one more of the Kubernetes [policies](../policies_v1/).
 2. Add the CloudQuery postgres database as a data source to Grafana (`Configuration -> Data Sources -> Add Data Source`)
 3. Import [../dashboards/grafana/compliance.json](../dashboards/grafana/compliance.json) into Grafana (`Import -> Upload JSON File`).
