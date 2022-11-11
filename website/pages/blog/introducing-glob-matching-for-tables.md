@@ -10,7 +10,7 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 <BlogHeader/>
 
-We are excited to announce a small feature that quietly rolled out today: glob matching for tables in CloudQuery config files!
+I am excited to introduce a small feature that quietly rolled out today: glob matching for tables in CloudQuery config files!
 
 ## Before
 
@@ -67,7 +67,7 @@ skip_tables:
 - "aws_ec2_transit_gateway_*"  # will skip all child relations of aws_ec2_transit_gateways
 ```
 
-Since child tables often have many rows and require many API calls to fetch, skipping these when they're not needed can really speed up the time it takes to sync.
+Since child tables often have many rows and can require thousands API calls to fetch, skipping these when they're not needed can really speed up the time it takes to sync.
 
 ## Keeping up-to-date
 
@@ -80,13 +80,17 @@ tables:
 
 will not only sync all the EC2 tables today, it will also automatically include any new ones when the AWS plugin version is upgraded. This is a great way to keep on the cutting edge of the data exposed by the cloud services you care about.
 
-## Versions
+## A note about versions
 
-Glob matching is supported in the latest version of all official source plugins. For the big three cloud providers, it was first released in the following versions, and will be supported in these versions and higher:
+Glob matching was introduced as a backwards-compatible change, so no config updates are necessary when you upgrade to a version with support for glob matching. Glob matching is supported in the latest version of all official source plugins. For the big three cloud providers, it was first released in the following versions, and will be supported in these versions and higher:
 
  - AWS [v4.15.0](https://github.com/cloudquery/cloudquery/releases/tag/plugins-source-aws-v4.15.0)
  - GCP [v2.4.15](https://github.com/cloudquery/cloudquery/releases/tag/plugins-source-gcp-v2.4.15)
  - Azure: [v1.4.4](https://github.com/cloudquery/cloudquery/releases/tag/plugins-source-azure-v1.4.4)
  
 See [this link](https://www.cloudquery.io/docs/plugins/sources) for a list of the latest versions of all official source plugins.
+
+## Conclusion
+
+This is a small change, but sometimes small changes make a big difference. If you have any thoughts or feedback about the feature, please share them as a [Github issue](https://github.com/cloudquery/cloudquery) or chat to us on [Discord](https://www.cloudquery.io/discord)! ❤️
 
