@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/rds"
 	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -40,7 +41,7 @@ func fetchParameterGroupParameters(ctx context.Context, svc services.RdsClient, 
 }
 
 func fetchEngineVersionParameters(ctx context.Context, svc services.RdsClient, item types.DBEngineVersion, res chan<- interface{}) error {
-	if !strings.Contains(*item.DBParameterGroupFamily, "aurora") {
+	if !strings.Contains(aws.ToString(item.DBParameterGroupFamily), "aurora") {
 		return nil
 	}
 
