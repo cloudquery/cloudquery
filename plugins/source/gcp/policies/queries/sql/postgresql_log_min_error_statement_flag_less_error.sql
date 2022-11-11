@@ -16,10 +16,9 @@ SELECT gsi.name                                                                 
        CASE
            WHEN
                        gsi.database_version LIKE 'POSTGRES%'
-                   AND (gsi.settings_database_flags IS NULL
-                   OR gsi.settings_database_flags ->> 'log_min_error_statement' NOT IN ('error', 'log', 'fatal', 'panic')
-                   OR gsi.settings_database_flags ->> 'log_min_error_statement' IS NULL)
+                   AND (f->>'value' IS NULL
+                   OR f->>'value' NOT IN ('error', 'log', 'fatal', 'panic'))
                THEN 'fail'
            ELSE 'pass'
            END                                                                                                            AS status
-FROM gcp_sql_instances gsi;
+FROM gcp_sql_instances gsi LEFT JOIN JSONB_ARRAY_ELEMENTS(gsi.settings->'databaseFlags') AS f ON f->>'name'='log_min_error_statement';

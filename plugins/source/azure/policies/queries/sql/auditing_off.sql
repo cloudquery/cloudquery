@@ -12,5 +12,5 @@ SELECT
       else 'pass'
   end
 FROM azure_sql_servers s
-    LEFT JOIN azure_sql_server_db_blob_auditing_policies assdbap ON
-        s.cq_id = assdbap.server_cq_id
+    LEFT JOIN azure_sql_database_blob_auditing_policies assdbap ON
+        s.id = assdbap.sql_database_id

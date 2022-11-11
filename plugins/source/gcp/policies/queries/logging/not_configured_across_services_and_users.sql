@@ -1,8 +1,8 @@
 -- WITH project_policy_audit_configs AS (
 --     SELECT
 --         project_id,
---         jsonb_array_elements(p.policy -> 'auditConfigs') AS audit_config
---     FROM gcp_resource_manager_projects p
+--         jsonb_array_elements(audit_configs) AS audit_config
+--     FROM gcp_resourcemanager_project_policies
 -- ),
 -- log_types AS (
 --     SELECT
@@ -21,11 +21,10 @@
 -- --count(*) > 2 means DATA_READ and DATA_WRITE are there
 -- HAVING count(*) = 2;
 
---
 INSERT INTO gcp_policy_results (resource_id, execution_time, framework, check_id, title, project_id, status)
 WITH project_policy_audit_configs AS (SELECT project_id,
-                                             jsonb_array_elements(p.policy -> 'auditConfigs') AS audit_config
-                                      FROM gcp_resource_manager_projects p),
+                                             jsonb_array_elements(audit_configs) AS audit_config
+                                      FROM gcp_resourcemanager_project_policies),
      log_types AS (SELECT project_id,
                           audit_config ->> 'service'                                                    AS "service",
                           jsonb_array_elements(audit_config -> 'auditLogConfigs') ->> 'logType'         AS logs,

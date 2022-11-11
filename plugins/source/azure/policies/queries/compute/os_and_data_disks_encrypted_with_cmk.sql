@@ -7,7 +7,7 @@ SELECT :'execution_time'                                                      AS
        v.subscription_id                                                      AS subscription_id,
        v.id                                                                   AS resource_id,
        CASE
-           WHEN encryption_type NOT LIKE '%CustomerKey%'
+           WHEN d.encryption->>'type' NOT LIKE '%CustomerKey%'
                THEN 'fail'
            ELSE 'pass'
            END                                                                AS status
