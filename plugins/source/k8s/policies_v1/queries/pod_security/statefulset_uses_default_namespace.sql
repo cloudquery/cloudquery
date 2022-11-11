@@ -10,9 +10,8 @@ select uid                              AS resource_id,
         name                             AS resource_name,
         CASE
             WHEN
-                  
-                  (SELECT * FROM stateful_set_containers WHERE namespace = 'default')
+                  namespace = 'default'
                 THEN 'fail'
                 ELSE 'pass'
             END                          AS status
-FROM stateful_set_containers
+FROM stateful_set_containers;

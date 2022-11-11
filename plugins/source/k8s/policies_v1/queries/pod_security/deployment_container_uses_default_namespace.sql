@@ -10,9 +10,8 @@ select uid                              AS resource_id,
         name                             AS resource_name,
         CASE
             WHEN
-                  
-                  (SELECT * FROM deployment_containers WHERE namespace = 'default')
+                  namespace = 'default'
                 THEN 'fail'
                 ELSE 'pass'
             END                          AS status
-FROM deployment_containers
+FROM deployment_containers;

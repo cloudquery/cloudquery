@@ -10,9 +10,8 @@ select uid                              AS resource_id,
         name                             AS resource_name,
         CASE
             WHEN
-                  
-                  (SELECT * FROM k8s_apps_daemon_sets WHERE daemon_set_containers.namespace = 'default')
+                  namespace = 'default'
                 THEN 'fail'
                 ELSE 'pass'
             END                          AS status
-FROM k8s_apps_daemon_sets
+FROM daemon_set_containers;

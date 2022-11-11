@@ -10,9 +10,8 @@ select uid                              AS resource_id,
         name                             AS resource_name,
         CASE
             WHEN
-                  
-                  (SELECT * FROM pod_containers WHERE namespace = 'default')
+                  namespace = 'default'
                 THEN 'fail'
                 ELSE 'pass'
             END                          AS status
-FROM pod_containers
+FROM pod_containers;
