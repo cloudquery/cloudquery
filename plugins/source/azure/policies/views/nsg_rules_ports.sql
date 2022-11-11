@@ -1,32 +1,39 @@
 create or replace view view_azure_nsg_rules as
+WITH tmp AS (
+    SELECT subscription_id, id, name, rls FROM azure_network_security_groups, jsonb_array_elements(security_rules) AS rls
+),
+ansg AS (
+    SELECT tmp.*, dprs FROM tmp, jsonb_array_elements_text(rls->'destinationPortRanges') AS dprs
+)
+(
 SELECT
     ansg.subscription_id AS subscription_id,
     ansg.id AS nsg_id,
     ansg."name" AS nsg_name,
-    ansgsr.id AS rule_id,
-    ansgsr."access",
-    ansgsr.direction,
-    ansgsr.source_address_prefix,
-    ansgsr.protocol,
-    pr.range_start,
-    pr.range_end,
-    pr.single_port
-FROM azure_network_security_groups ansg
-    LEFT JOIN azure_network_security_group_security_rules ansgsr ON
-        ansg.cq_id = ansgsr.security_group_cq_id
-    LEFT JOIN (
-        SELECT cq_id, range_start, range_end, single_port
-        FROM (
-            SELECT
-                cq_id,
-                Split_part(destination_port_range, '-', 1) :: INTEGER AS range_start,
-                split_part(destination_port_range, '-', 2) :: INTEGER AS range_end,
-                NULL AS single_port
-            FROM azure_network_security_group_security_rules
-            WHERE destination_port_range ~ '^[0-9]+(-[0-9]+)$'
-            UNION
-            SELECT cq_id, NULL AS range_start, NULL AS range_end, destination_port_range AS single_port
-            FROM azure_network_security_group_security_rules
-            WHERE destination_port_range ~ '^[0-9]*$'
-        ) AS s
-    ) AS pr ON ansgsr.cq_id = pr.cq_id;
+    ansg.rls->>'id' AS rule_id,
+    ansg.rls->>'access' AS access,
+    ansg.rls->>'direction' AS direction,
+    ansg.rls->>'sourceAddressPrefix' AS source_address_prefix,
+    ansg.rls->>'protocol' AS protocol,
+    split_part(ansg.dprs, '-', 1) :: INTEGER AS range_start,
+    split_part(ansg.dprs, '-', 2) :: INTEGER AS range_end,
+    NULL AS single_port
+FROM ansg
+WHERE ansg.dprs ~ '^[0-9]+(-[0-9]+)$'
+)
+UNION
+(
+SELECT
+    ansg.subscription_id AS subscription_id,
+    ansg.id AS nsg_id,
+    ansg."name" AS nsg_name,
+    ansg.rls->>'id' AS rule_id,
+    ansg.rls->>'access' AS access,
+    ansg.rls->>'direction' AS direction,
+    ansg.rls->>'sourceAddressPrefix' AS source_address_prefix,
+    ansg.rls->>'protocol' AS protocol,
+    NULL AS range_start, NULL AS range_end,
+    ansg.dprs AS single_port
+FROM ansg
+WHERE ansg.dprs ~ '^[0-9]*$'
+    )
