@@ -1,6 +1,6 @@
 # Table: azure_resources_links
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-09-01/links#ResourceLink
 
 The primary key for this table is **id**.
 

@@ -1,6 +1,6 @@
 # Table: heroku_app_features
 
-https://devcenter.heroku.com/articles/platform-api-reference#app-feature-attributes
+https://devcenter.heroku.com/articles/platform-api-reference#app-feature
 
 The primary key for this table is **id**.
 

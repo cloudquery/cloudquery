@@ -34,6 +34,11 @@ func AutoScalingConfiguration() *schema.Table {
 				},
 			},
 			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: resolveApprunnerTags("AutoScalingConfigurationArn"),
+			},
+			{
 				Name:     "auto_scaling_configuration_name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("AutoScalingConfigurationName"),

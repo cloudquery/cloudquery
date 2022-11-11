@@ -11,9 +11,10 @@ import (
 
 func RouteTables() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_network_route_tables",
-		Resolver:  fetchNetworkRouteTables,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:        "azure_network_route_tables",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network#RouteTable`,
+		Resolver:    fetchNetworkRouteTables,
+		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

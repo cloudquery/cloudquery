@@ -15,9 +15,10 @@ import (
 
 func Settings() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_security_settings",
-		Resolver:  fetchSecuritySettings,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:        "azure_security_settings",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security#Setting`,
+		Resolver:    fetchSecuritySettings,
+		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

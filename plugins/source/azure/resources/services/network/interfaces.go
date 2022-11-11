@@ -11,9 +11,10 @@ import (
 
 func Interfaces() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_network_interfaces",
-		Resolver:  fetchNetworkInterfaces,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:        "azure_network_interfaces",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network#Interface`,
+		Resolver:    fetchNetworkInterfaces,
+		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

@@ -1,6 +1,6 @@
 # Table: azure_subscriptions_tenants
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions#TenantIDDescription
 
 The primary key for this table is **id**.
 

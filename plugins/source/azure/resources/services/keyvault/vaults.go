@@ -11,9 +11,10 @@ import (
 
 func Vaults() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_keyvault_vaults",
-		Resolver:  fetchKeyVaultVaults,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:        "azure_keyvault_vaults",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/keyvault/mgmt/2019-09-01/keyvault#Vault`,
+		Resolver:    fetchKeyVaultVaults,
+		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

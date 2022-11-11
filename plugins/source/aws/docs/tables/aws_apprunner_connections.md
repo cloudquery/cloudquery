@@ -15,6 +15,7 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
+|tags|JSON|
 |connection_name|String|
 |created_at|Timestamp|
 |provider_type|String|

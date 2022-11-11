@@ -10,6 +10,7 @@ import (
 func TaskDefinitions() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_ecs_task_definitions",
+		Description:         `https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_TaskDefinition.html`,
 		Resolver:            fetchEcsTaskDefinitions,
 		PreResourceResolver: getTaskDefinition,
 		Multiplex:           client.ServiceAccountRegionMultiplexer("ecs"),

@@ -1,6 +1,6 @@
 # Table: aws_secretsmanager_secrets
 
-
+https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_ListSecrets.html
 
 The primary key for this table is **arn**.
 

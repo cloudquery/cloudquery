@@ -83,7 +83,7 @@ func generateResource(r recipes.Resource, mock bool) {
 	}
 
 	r.Table.Resolver = "fetch" + inflection.Plural(r.HerokuStructName)
-	r.Table.Description = fmt.Sprintf("https://devcenter.heroku.com/articles/platform-api-reference#%s-attributes", strcase.ToKebab(r.HerokuStructName))
+	r.Table.Description = fmt.Sprintf("https://devcenter.heroku.com/articles/platform-api-reference#%s", strcase.ToKebab(r.HerokuStructName))
 	mainTemplate := r.Template + ".go.tpl"
 	if mock {
 		mainTemplate = r.Template + "_mock_test.go.tpl"

@@ -1,6 +1,6 @@
 # Table: azure_sql_firewall_rules
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql#FirewallRule
 
 The primary key for this table is **id**.
 

@@ -13,7 +13,7 @@ import (
 func AppWebhookDeliveries() *schema.Table {
 	return &schema.Table{
 		Name:        "heroku_app_webhook_deliveries",
-		Description: `https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-delivery-attributes`,
+		Description: `https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-delivery`,
 		Resolver:    fetchAppWebhookDeliveries,
 		Columns: []schema.Column{
 			{

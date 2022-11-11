@@ -38,7 +38,7 @@ func build{{.Service | ToCamel}}{{.SubService | ToCamel}}Mock(t *testing.T, ctrl
 
 {{- if not .Parent }}
   return client.Services{
-    {{.CloudQueryServiceName}}: m,
+    {{.Service | ToCamel}}: m,
   }
 {{- end }}
 }

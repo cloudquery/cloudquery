@@ -13,7 +13,7 @@ import (
 func AppTransfers() *schema.Table {
 	return &schema.Table{
 		Name:        "heroku_app_transfers",
-		Description: `https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-attributes`,
+		Description: `https://devcenter.heroku.com/articles/platform-api-reference#app-transfer`,
 		Resolver:    fetchAppTransfers,
 		Columns: []schema.Column{
 			{

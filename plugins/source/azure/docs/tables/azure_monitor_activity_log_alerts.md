@@ -1,6 +1,6 @@
 # Table: azure_monitor_activity_log_alerts
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2019-11-01-preview/insights#ActivityLogAlertResource
 
 The primary key for this table is **id**.
 

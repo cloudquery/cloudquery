@@ -14,7 +14,7 @@ import (
 func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
   var input {{.Service}}.{{.ListMethod.Method.Name}}Input = {{ if .CustomListInput }}{{.CustomListInput}}{{ else }}{{.Service}}.{{.ListMethod.Method.Name}}Input{}{{ end }}
   c := meta.(*client.Client)
-  svc := c.Services().{{.CloudQueryServiceName}}
+  svc := c.Services().{{.Service | ToCamel}}
   for {
 		response, err := svc.{{.ListMethod.Method.Name}}(ctx, &input)
 		if err != nil {

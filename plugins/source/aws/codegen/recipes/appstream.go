@@ -135,6 +135,7 @@ func AppstreamResources() []*Resource {
 					},
 				}...),
 			ShouldGenerateResolverAndMockTest: true,
+			MaxResults:                        25,
 		},
 		{
 			SubService:  "stacks",

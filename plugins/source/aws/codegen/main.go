@@ -71,6 +71,7 @@ func generateResources() ([]*recipes.Resource, error) {
 	resources = append(resources, recipes.NeptuneResources()...)
 	resources = append(resources, recipes.OrganizationsResources()...)
 	resources = append(resources, recipes.QLDBResources()...)
+	resources = append(resources, recipes.RAMResources()...)
 	resources = append(resources, recipes.RDSResources()...)
 	resources = append(resources, recipes.RedshiftResources()...)
 	resources = append(resources, recipes.ResourceGroupsResources()...)

@@ -12,8 +12,9 @@ import (
 
 func configurations() *schema.Table {
 	return &schema.Table{
-		Name:     "azure_postgresql_configurations",
-		Resolver: fetchPostgreSQLConfigurations,
+		Name:        "azure_postgresql_configurations",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/postgresql/mgmt/2020-01-01/postgresql#Configuration`,
+		Resolver:    fetchPostgreSQLConfigurations,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
