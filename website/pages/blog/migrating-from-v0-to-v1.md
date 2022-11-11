@@ -36,7 +36,7 @@ spec:
   name: "aws" # required
  
   # Required. Must be a specific version starting with v, e.g. v1.2.3
-  version: "v4.13.1" # latest version of aws plugin
+  version: "v4.14.0" # latest version of aws plugin
  
   ## Optional. Default: "github". Available: "local", "grpc"
   # registry: github
@@ -70,7 +70,7 @@ spec:
   path: "cloudquery/postgresql"
 
   # Required. Must be a specific version starting with v, e.g. v1.2.3
-  version: "v1.7.5" # latest version of postgresql plugin
+  version: "v1.7.7" # latest version of postgresql plugin
  
   ## Optional. Default: "overwrite". Available: "overwrite", "append", "overwrite-delete-stale". Not all modes are 
   ## supported by all plugins, so make sure to check the plugin documentation for more details.
@@ -136,13 +136,13 @@ The `sync` command supports loading config from files or directories, and you ma
 kind: source
 spec:
     name: "aws"
-    version: "v4.13.1" # latest version of aws plugin
+    version: "v4.14.0" # latest version of aws plugin
     # rest of source spec here
 ---
 kind: destination
 spec:
     name: "postgresql"
-    version: "v1.7.5" # latest version of postgresql plugin
+    version: "v1.7.7" # latest version of postgresql plugin
     # rest of destination spec here
 ```
 

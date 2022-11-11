@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	readSQL = "SELECT * FROM %s WHERE _cq_source_name = $1"
+	readSQL = `SELECT * FROM "%s" WHERE _cq_source_name = $1`
 )
 
 func (*Client) createResultsArray(table *schema.Table) []interface{} {

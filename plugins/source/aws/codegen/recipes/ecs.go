@@ -90,6 +90,7 @@ func ECSResources() []*Resource {
 		{
 			SubService:          "task_definitions",
 			Struct:              &models.TaskDefinitionWrapper{},
+			Description:         "https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_TaskDefinition.html",
 			SkipFields:          []string{"TaskDefinitionArn", "Tags"},
 			PreResourceResolver: "getTaskDefinition",
 			ExtraColumns: append(
