@@ -12,6 +12,7 @@ import (
 
 func fetchAppstreamUsageReportSubscriptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var input appstream.DescribeUsageReportSubscriptionsInput
+
 	c := meta.(*client.Client)
 	svc := c.Services().Appstream
 	for {
