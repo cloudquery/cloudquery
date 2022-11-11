@@ -1,6 +1,6 @@
 # Table: aws_elasticbeanstalk_configuration_settings
 
-
+https://docs.aws.amazon.com/elasticbeanstalk/latest/api/API_ConfigurationSettingsDescription.html
 
 The primary key for this table is **_cq_id**.
 
