@@ -10,10 +10,8 @@ select uid                              AS resource_id,
         name                             AS resource_name,
         CASE
             WHEN
-                  
-                  (SELECT * FROM k8s_apps_daemon_sets WHERE daemon_set_containers.uid = k8s_apps_daemon_sets.uid AND
-                  daemon_set_containers.container->'resources'->'securityContext'->'seccompProfile'->>'type' != 'RuntimeDefault') > 0
+                  container->'resources'->'securityContext'->'seccompProfile'->>'type' != 'RuntimeDefault'
                 THEN 'fail'
                 ELSE 'pass'
             END                          AS status
-FROM k8s_apps_daemon_sets
+FROM daemon_set_containers.uid
