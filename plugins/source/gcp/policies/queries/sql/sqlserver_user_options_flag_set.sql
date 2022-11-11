@@ -15,9 +15,8 @@ SELECT gsi.name                                                                 
        CASE
            WHEN
                            gsi.database_version LIKE 'SQLSERVER%'
-                       AND gsi.settings_database_flags IS NULL
-                   OR gsi.settings_database_flags ->> 'user options' IS NOT NULL
+                       AND f->>'value' IS NOT NULL
                THEN 'fail'
            ELSE 'pass'
            END                                                                                               AS status
-FROM gcp_sql_instances gsi;
+FROM gcp_sql_instances gsi LEFT JOIN JSONB_ARRAY_ELEMENTS(gsi.settings->'databaseFlags') AS f ON f->>'name'='user options';

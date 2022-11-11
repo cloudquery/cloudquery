@@ -13,9 +13,10 @@ SELECT gci.name                                                                 
        gci.project_id                                                                       AS project_id,
        CASE
            WHEN
-                       gci.metadata_items ->> 'block-project-ssh-keys' IS NULL
-                   OR NOT gci.metadata_items ->> 'block-project-ssh-keys' = ANY ('{1,true,True,TRUE,y,yes}')
+                gcmi->>'key' IS NULL OR
+                NOT gcmi->>'value' = ANY ('{1,true,True,TRUE,y,yes}')
                THEN 'fail'
            ELSE 'pass'
            END                                                                          AS status
-FROM gcp_compute_instances gci;
+FROM gcp_compute_instances gci
+    LEFT JOIN JSONB_ARRAY_ELEMENTS(gci.metadata->'items') gcmi ON gcmi->>'key' = 'block-project-ssh-keys';

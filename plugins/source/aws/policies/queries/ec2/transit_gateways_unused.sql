@@ -1,5 +1,5 @@
 insert into aws_policy_results
-with attachment as (select distinct transit_gateway_cq_id from aws_ec2_transit_gateway_attachments)
+with attachment as (select distinct transit_gateway_arn from aws_ec2_transit_gateway_attachments)
 select :'execution_time'        as execution_time,
        :'framework'             as framework,
        :'check_id'              as check_id,
@@ -8,5 +8,5 @@ select :'execution_time'        as execution_time,
        gateway.arn              as resource_id,
        'fail'                   as status
 from aws_ec2_transit_gateways gateway
-         left join attachment on attachment.transit_gateway_cq_id = gateway.cq_id
-where attachment.transit_gateway_cq_id is null
+         left join attachment on attachment.transit_gateway_arn = gateway.arn
+where attachment.transit_gateway_arn is null;
