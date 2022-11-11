@@ -9,9 +9,10 @@ import (
 func Inspector2Resources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "findings",
-			Struct:     &types.Finding{},
-			SkipFields: []string{"FindingArn"},
+			SubService:  "findings",
+			Struct:      &types.Finding{},
+			Description: "https://docs.aws.amazon.com/inspector/v2/APIReference/API_Finding.html",
+			SkipFields:  []string{"FindingArn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

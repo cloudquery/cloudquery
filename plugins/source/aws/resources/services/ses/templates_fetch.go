@@ -13,7 +13,7 @@ import (
 
 func fetchSesTemplates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	svc := c.Services().SES
+	svc := c.Services().Sesv2
 
 	listInput := new(sesv2.ListEmailTemplatesInput)
 	for {
@@ -35,7 +35,7 @@ func fetchSesTemplates(ctx context.Context, meta schema.ClientMeta, parent *sche
 
 func getTemplate(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	c := meta.(*client.Client)
-	svc := c.Services().SES
+	svc := c.Services().Sesv2
 	templateMeta := resource.Item.(types.EmailTemplateMetadata)
 
 	getOutput, err := svc.GetEmailTemplate(ctx, &sesv2.GetEmailTemplateInput{TemplateName: templateMeta.TemplateName})

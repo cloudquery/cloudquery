@@ -13,7 +13,7 @@ import (
 func EnterpriseAccountMembers() *schema.Table {
 	return &schema.Table{
 		Name:        "heroku_enterprise_account_members",
-		Description: "https://devcenter.heroku.com/articles/platform-api-reference#enterprise-account-member-attributes",
+		Description: `https://devcenter.heroku.com/articles/platform-api-reference#enterprise-account-member`,
 		Resolver:    fetchEnterpriseAccountMembers,
 		Columns: []schema.Column{
 			{

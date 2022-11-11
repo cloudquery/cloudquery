@@ -1,6 +1,6 @@
 # Table: aws_redshift_event_subscriptions
 
-
+https://docs.aws.amazon.com/redshift/latest/APIReference/API_EventSubscription.html
 
 The primary key for this table is **arn**.
 
@@ -15,7 +15,6 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
-|tags|JSON|
 |cust_subscription_id|String|
 |customer_aws_id|String|
 |enabled|Bool|
@@ -26,3 +25,4 @@ The primary key for this table is **arn**.
 |source_type|String|
 |status|String|
 |subscription_creation_time|Timestamp|
+|tags|JSON|

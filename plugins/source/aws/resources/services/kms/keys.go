@@ -9,9 +9,11 @@ import (
 
 func Keys() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_kms_keys",
-		Resolver:  fetchKmsKeys,
-		Multiplex: client.ServiceAccountRegionMultiplexer("kms"),
+		Name:                "aws_kms_keys",
+		Description:         `https://docs.aws.amazon.com/kms/latest/APIReference/API_KeyMetadata.html`,
+		Resolver:            fetchKmsKeys,
+		PreResourceResolver: getKey,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("kms"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -156,6 +158,10 @@ func Keys() *schema.Table {
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("ValidTo"),
 			},
+		},
+
+		Relations: []*schema.Table{
+			KeyGrants(),
 		},
 	}
 }

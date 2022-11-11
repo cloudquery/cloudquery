@@ -6,19 +6,20 @@ import (
 	"github.com/cloudflare/cloudflare-go"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/client"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildAccessGroups(t *testing.T, ctrl *gomock.Controller) client.Clients {
 	mock := mocks.NewMockApi(ctrl)
 
-	faker.SetIgnoreInterface(true)
-
 	var accessGroup cloudflare.AccessGroup
-	if err := faker.FakeData(&accessGroup); err != nil {
+	if err := faker.FakeObject(&accessGroup); err != nil {
 		t.Fatal(err)
 	}
+	accessGroup.Include = []interface{}{"a"}
+	accessGroup.Exclude = []interface{}{"b"}
+	accessGroup.Require = []interface{}{"c"}
 	mock.EXPECT().ZoneLevelAccessGroups(
 		gomock.Any(),
 		client.TestZoneID,

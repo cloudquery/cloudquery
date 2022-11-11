@@ -11,7 +11,7 @@ import (
 func fetchBucketPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 
-	bkt := parent.Data["name"].(string)
+	bkt := parent.Get("name").(*schema.Text).Str
 	output, err := c.Services.StorageClient.Bucket(bkt).IAM().V3().Policy(ctx)
 	if err != nil {
 		return errors.WithStack(err)

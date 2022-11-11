@@ -13,7 +13,7 @@ import (
 
 func fetchElbv1LoadBalancers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	svc := c.Services().ELBv1
+	svc := c.Services().Elasticloadbalancing
 	processLoadBalancers := func(loadBalancers []types.LoadBalancerDescription) error {
 		tagsCfg := &elbv1.DescribeTagsInput{LoadBalancerNames: make([]string, 0, len(loadBalancers))}
 		for _, lb := range loadBalancers {
@@ -74,7 +74,7 @@ func fetchElbv1LoadBalancers(ctx context.Context, meta schema.ClientMeta, parent
 func fetchElbv1LoadBalancerPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(models.ELBv1LoadBalancerWrapper)
 	c := meta.(*client.Client)
-	svc := c.Services().ELBv1
+	svc := c.Services().Elasticloadbalancing
 	response, err := svc.DescribeLoadBalancerPolicies(ctx, &elbv1.DescribeLoadBalancerPoliciesInput{LoadBalancerName: r.LoadBalancerName})
 	if err != nil {
 		return err

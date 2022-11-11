@@ -7,14 +7,14 @@ import (
 	elbv2Types "github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildElbv2TargetGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockElbV2Client(ctrl)
+	m := mocks.NewMockElasticloadbalancingv2Client(ctrl)
 	l := elbv2Types.TargetGroup{}
-	err := faker.FakeData(&l)
+	err := faker.FakeObject(&l)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -25,20 +25,20 @@ func buildElbv2TargetGroups(t *testing.T, ctrl *gomock.Controller) client.Servic
 		}, nil)
 
 	tags := elasticloadbalancingv2.DescribeTagsOutput{}
-	err = faker.FakeData(&tags)
+	err = faker.FakeObject(&tags)
 	if err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().DescribeTags(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tags, nil)
 
 	th := elasticloadbalancingv2.DescribeTargetHealthOutput{}
-	err = faker.FakeData(&th)
+	err = faker.FakeObject(&th)
 	if err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().DescribeTargetHealth(gomock.Any(), gomock.Any(), gomock.Any()).Return(&th, nil)
 	return client.Services{
-		ELBv2: m,
+		Elasticloadbalancingv2: m,
 	}
 }
 

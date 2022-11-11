@@ -4,8 +4,13 @@ on:
     branches:
       - main
 
+concurrency:
+  group: release-please-main
+  cancel-in-progress: true
+
 jobs:
   release-pr:
+    timeout-minutes: 30
     runs-on: ubuntu-latest
     steps:
       - uses: google-github-actions/release-please-action@v3

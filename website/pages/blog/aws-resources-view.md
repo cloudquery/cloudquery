@@ -19,53 +19,53 @@ So here at CloudQuery we built a simple `aws_resources` view, to demonstrate the
 
 ## Getting Started
 
-As always, before we create this view, you should check out our [getting-started with AWS](https://www.cloudquery.io/docs/getting-started/getting-started-with-aws) guide, and make sure you executed a fetch.
+As always, before we create this view, you should check out our [quickstart guide](/docs/quickstart), and make sure you execute a sync.
 
-After our AWS provider is set up and we executed our fetch, run the following SQL in your database. This statement creates a view that extracts and transform each row in our `aws` tables with an `arn` column into a `aws_resource` form, and unites all of them rows into our singular view.
+After our AWS provider is set up and we executed our sync, run the following SQL in your database. This statement creates a view that extracts and transform each row in our `aws` tables with an `arn` column into a `aws_resource` form, and unites all of them rows into our singular view.
 
 ```sql
 DROP VIEW IF EXISTS aws_resources;
 
-do $$
-declare
-  tbl text;
-	strSQL text = '';
-begin
- -- iterate over every table in our information_schema that has an `arn` column available
- FOR tbl IN SELECT table_name
-            FROM information_schema.columns where table_name like 'aws_%s' and COLUMN_NAME  = 'arn'
- LOOP
-     -- UNION each table query to create one view
- 	 IF NOT (strSQL = ''::text) THEN
-	      strSQL = strSQL || ' UNION ALL ';
-	 END IF;
-	 -- create an SQL query to select from table and transform it into our resources view schema
-	 strSQL = strSQL || format('select  cq_id,  cq_meta, arn, %L as cq_table,
-							   split_part(arn, '':'', 2) as partition,
-			  				 split_part(arn, '':'', 3) as service,
-							   COALESCE(%s, split_part(arn, '':'', 4)) as region,
-							   COALESCE(%s, split_part(arn, '':'', 5)) as account_id,
-							   CASE WHEN split_part(arn, '':'', 6) like ''%%/%%''
-							   THEN split_part(split_part(arn, '':'', 6), ''/'', 1)
-							   ELSE split_part(arn, '':'', 6) END  as type,
-							   CASE WHEN split_part(arn, '':'', 6) like ''%%/%%''
-							   THEN split_part(split_part(arn, '':'', 6), ''/'', 2)
-							   ELSE reverse((string_to_array(reverse(arn), '':'')::text[])[1]) END as id,
-							  		COALESCE(%s, ''{}''::jsonb) as tags,
-		  					 COALESCE(%s, (cq_meta->>''last_updated'')::timestamp) as fetch_date
-							   FROM %s', tbl,
-							   CASE WHEN EXISTS (SELECT 1 FROM information_schema.columns WHERE column_name='region' AND table_name=tbl) THEN 'region' ELSE 'NULL' END,
-							   CASE WHEN EXISTS (SELECT 1 FROM information_schema.columns WHERE column_name='account_id' AND table_name=tbl) THEN 'account_id' ELSE 'NULL' END,
-							   CASE WHEN EXISTS (SELECT 1 FROM information_schema.columns WHERE column_name='tags' AND table_name=tbl) THEN 'tags' ELSE '''{}''::jsonb' END,
-							   CASE WHEN EXISTS (SELECT 1 FROM information_schema.columns WHERE column_name='fetch_date' AND table_name=tbl) THEN 'fetch_date' ELSE 'NULL::timestamp' END,
-							   tbl);
-
+DO $$
+DECLARE
+    tbl TEXT;
+    strSQL TEXT = '';
+BEGIN
+-- iterate over every table in our information_schema that has an `arn` column available
+FOR tbl IN
+    SELECT table_name
+    FROM information_schema.columns
+    WHERE table_name LIKE 'aws_%s' and COLUMN_NAME = 'account_id'
+    INTERSECT
+    SELECT table_name
+    FROM information_schema.columns
+    WHERE table_name LIKE 'aws_%s' and COLUMN_NAME = 'arn'
+LOOP 
+    -- UNION each table query to create one view
+ 	IF NOT (strSQL = ''::TEXT) THEN
+		strSQL = strSQL || ' UNION ALL ';
+	END IF;
+	-- create an SQL query to select from table and transform it into our resources view schema
+	strSQL = strSQL || FORMAT('
+        select _cq_id, _cq_source_name, _cq_sync_time, %L as _cq_table, account_id, %s as region, arn, %s as tags
+        FROM %s',
+        tbl,
+        CASE WHEN EXISTS (SELECT 1 FROM information_schema.columns WHERE column_name='region' AND table_name=tbl) THEN 'region' ELSE E'\'unavailable\'' END,
+        CASE WHEN EXISTS (SELECT 1 FROM information_schema.columns WHERE column_name='tags' AND table_name=tbl) THEN 'tags' ELSE '''{}''::jsonb' END,
+        tbl);
 END LOOP;
-execute format('CREATE VIEW aws_resources AS (%s)', strSQL);
 
-end $$;
+IF strSQL = ''::TEXT THEN
+    RAISE EXCEPTION 'No tables found with ARN and ACCOUNT_ID columns. Run a sync first and try again.';
+ELSE
+	EXECUTE FORMAT('CREATE VIEW aws_resources AS (%s)', strSQL);
+END IF;
+
+END $$;
 
 ```
+
+Up to date version of this query can be [found here](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/aws/views).
 
 ### Run the following query to view all your AWS resources:
 
@@ -127,6 +127,6 @@ select count(distinct arn) as distinct_resources, count(*) as total from aws_res
 
 ## What's next?
 
-There are many views we can create on top of CloudQuery that make it easier to query our data, some examples can be found in our [policies](/docs/policies). We are working on more awesome views that will make your life even easier, such as `aws_policies`
+There are many views we can create on top of CloudQuery that make it easier to query our data, some examples can be found in our [policies](/docs/core-concepts/policies). We are working on more awesome views that will make your life even easier, such as `aws_policies`
 
 We are always excited to hear use cases or questions around CloudQuery so feel free to hop into our [discord](https://www.cloudquery.io/discord) and message us.

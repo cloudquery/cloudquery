@@ -10,7 +10,7 @@ import (
 func TransitGatewayPeeringAttachments() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_ec2_transit_gateway_peering_attachments",
-		Description: "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGatewayPeeringAttachment.html",
+		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGatewayPeeringAttachment.html`,
 		Resolver:    fetchEc2TransitGatewayPeeringAttachments,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Columns: []schema.Column{
@@ -28,11 +28,6 @@ func TransitGatewayPeeringAttachments() *schema.Table {
 				Name:     "transit_gateway_arn",
 				Type:     schema.TypeString,
 				Resolver: schema.ParentColumnResolver("arn"),
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "accepter_tgw_info",
@@ -68,6 +63,11 @@ func TransitGatewayPeeringAttachments() *schema.Table {
 				Name:     "status",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Status"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "transit_gateway_attachment_id",

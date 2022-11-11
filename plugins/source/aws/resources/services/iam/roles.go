@@ -10,6 +10,7 @@ import (
 func Roles() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_iam_roles",
+		Description:         `https://docs.aws.amazon.com/IAM/latest/APIReference/API_Role.html`,
 		Resolver:            fetchIamRoles,
 		PreResourceResolver: getRole,
 		Multiplex:           client.AccountMultiplex,
@@ -39,11 +40,6 @@ func Roles() *schema.Table {
 				Name:     "assume_role_policy_document",
 				Type:     schema.TypeJSON,
 				Resolver: resolveRolesAssumeRolePolicyDocument,
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "arn",
@@ -84,6 +80,11 @@ func Roles() *schema.Table {
 				Name:     "role_last_used",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("RoleLastUsed"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 		},
 

@@ -1,11 +1,11 @@
 # Table: azure_postgresql_configurations
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/postgresql/mgmt/2020-01-01/postgresql#Configuration
 
 The primary key for this table is **id**.
 
 ## Relations
-This table depends on [`azure_postgresql_servers`](azure_postgresql_servers.md).
+This table depends on [azure_postgresql_servers](azure_postgresql_servers.md).
 
 ## Columns
 | Name          | Type          |

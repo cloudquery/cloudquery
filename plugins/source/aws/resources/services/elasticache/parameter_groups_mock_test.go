@@ -6,21 +6,21 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elasticache"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildElasticacheParameterGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
-	mockElasticache := mocks.NewMockElastiCache(ctrl)
+	mockElasticache := mocks.NewMockElasticacheClient(ctrl)
 	parameterGroupsOutput := elasticache.DescribeCacheParameterGroupsOutput{}
-	err := faker.FakeData(&parameterGroupsOutput)
+	err := faker.FakeObject(&parameterGroupsOutput)
 	parameterGroupsOutput.Marker = nil
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	parametersOutput := elasticache.DescribeCacheParametersOutput{}
-	err = faker.FakeData(&parametersOutput)
+	err = faker.FakeObject(&parametersOutput)
 	parametersOutput.Marker = nil
 	if err != nil {
 		t.Fatal(err)
@@ -33,7 +33,7 @@ func buildElasticacheParameterGroups(t *testing.T, ctrl *gomock.Controller) clie
 	// mockElasticache.EXPECT().DescribeCacheParameters(gomock.Any(), &expectedInput, gomock.Any()).Return(&parametersOutput, nil)
 
 	return client.Services{
-		ElastiCache: mockElasticache,
+		Elasticache: mockElasticache,
 	}
 }
 

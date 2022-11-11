@@ -6,7 +6,7 @@ import (
 	"github.com/cloudflare/cloudflare-go"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/client"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -14,7 +14,7 @@ func buildWAFPackages(t *testing.T, ctrl *gomock.Controller) client.Clients {
 	mock := mocks.NewMockApi(ctrl)
 
 	var wafPackage cloudflare.WAFPackage
-	if err := faker.FakeData(&wafPackage); err != nil {
+	if err := faker.FakeObject(&wafPackage); err != nil {
 		t.Fatal(err)
 	}
 	mock.EXPECT().ListWAFPackages(
@@ -26,7 +26,7 @@ func buildWAFPackages(t *testing.T, ctrl *gomock.Controller) client.Clients {
 	)
 
 	var wafGroup cloudflare.WAFGroup
-	if err := faker.FakeData(&wafGroup); err != nil {
+	if err := faker.FakeObject(&wafGroup); err != nil {
 		t.Fatal(err)
 	}
 	mock.EXPECT().ListWAFGroups(
@@ -39,8 +39,7 @@ func buildWAFPackages(t *testing.T, ctrl *gomock.Controller) client.Clients {
 	)
 
 	var wafRule cloudflare.WAFRule
-	skipFields := []string{"group"}
-	if err := faker.FakeDataSkipFields(&wafRule, skipFields); err != nil {
+	if err := faker.FakeObject(&wafRule); err != nil {
 		t.Fatal(err)
 	}
 

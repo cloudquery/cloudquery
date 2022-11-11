@@ -7,14 +7,14 @@ import (
 	route53Types "github.com/aws/aws-sdk-go-v2/service/route53/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildRoute53DelegationSetsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockRoute53Client(ctrl)
 	ds := route53Types.DelegationSet{}
-	if err := faker.FakeData(&ds); err != nil {
+	if err := faker.FakeObject(&ds); err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().ListReusableDelegationSets(gomock.Any(), gomock.Any(), gomock.Any()).Return(

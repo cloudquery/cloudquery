@@ -13,9 +13,10 @@ import (
 func ELBv1Resources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "load_balancers",
-			Struct:     &models.ELBv1LoadBalancerWrapper{},
-			SkipFields: []string{},
+			SubService:  "load_balancers",
+			Struct:      &models.ELBv1LoadBalancerWrapper{},
+			Description: "https://docs.aws.amazon.com/elasticloadbalancing/2012-06-01/APIReference/API_LoadBalancerDescription.html",
+			SkipFields:  []string{},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -32,9 +33,10 @@ func ELBv1Resources() []*Resource {
 			},
 		},
 		{
-			SubService: "load_balancer_policies",
-			Struct:     &types.PolicyDescription{},
-			SkipFields: []string{"PolicyAttributeDescriptions"},
+			SubService:  "load_balancer_policies",
+			Struct:      &types.PolicyDescription{},
+			Description: "https://docs.aws.amazon.com/elasticloadbalancing/2012-06-01/APIReference/API_PolicyDescription.html",
+			SkipFields:  []string{"PolicyAttributeDescriptions"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

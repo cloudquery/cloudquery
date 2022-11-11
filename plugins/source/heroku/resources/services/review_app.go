@@ -13,7 +13,7 @@ import (
 func ReviewApps() *schema.Table {
 	return &schema.Table{
 		Name:        "heroku_review_apps",
-		Description: "https://devcenter.heroku.com/articles/platform-api-reference#review-app-attributes",
+		Description: `https://devcenter.heroku.com/articles/platform-api-reference#review-app`,
 		Resolver:    fetchReviewApps,
 		Columns: []schema.Column{
 			{

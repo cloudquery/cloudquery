@@ -32,7 +32,7 @@ In this blog post, we will walk you through how to setup CloudQuery to build you
 
 ### Step 1: **Install or Deploy CloudQuery**
 
-If it’s your first time using CloudQuery we suggest you first run it locally to get familiar with the tool, take a look at our [Getting Started with GCP Guide](https://www.cloudquery.io/docs/getting-started/getting-started-with-gcp).
+If it’s your first time using CloudQuery we suggest you first run it locally to get familiar with the tool, take a look at our [quickstart guide](/docs/quickstart) and [GCP recipe](/docs/recipes/sources/gcp).
 
 If you are already familiar with CloudQuery, take a look at how to deploy it to GCP on Cloud SQL and GKE at [https://github.com/cloudquery/terraform-gcp-cloudquery](https://github.com/cloudquery/terraform-gcp-cloudquery).
 

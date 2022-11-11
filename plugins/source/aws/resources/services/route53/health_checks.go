@@ -9,9 +9,10 @@ import (
 
 func HealthChecks() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_route53_health_checks",
-		Resolver:  fetchRoute53HealthChecks,
-		Multiplex: client.AccountMultiplex,
+		Name:        "aws_route53_health_checks",
+		Description: `https://docs.aws.amazon.com/Route53/latest/APIReference/API_HealthCheck.html`,
+		Resolver:    fetchRoute53HealthChecks,
+		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

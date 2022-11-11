@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/codebuild"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -14,7 +14,7 @@ func buildCodebuildProjects(t *testing.T, ctrl *gomock.Controller) client.Servic
 	m := mocks.NewMockCodebuildClient(ctrl)
 
 	projectsList := codebuild.ListProjectsOutput{}
-	if err := faker.FakeData(&projectsList); err != nil {
+	if err := faker.FakeObject(&projectsList); err != nil {
 		t.Fatal(err)
 	}
 	projectsList.NextToken = nil
@@ -28,7 +28,7 @@ func buildCodebuildProjects(t *testing.T, ctrl *gomock.Controller) client.Servic
 	)
 
 	projects := codebuild.BatchGetProjectsOutput{}
-	if err := faker.FakeData(&projects); err != nil {
+	if err := faker.FakeObject(&projects); err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().BatchGetProjects(

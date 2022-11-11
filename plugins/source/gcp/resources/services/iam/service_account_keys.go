@@ -52,11 +52,6 @@ func ServiceAccountKeys() *schema.Table {
 				Resolver: schema.PathResolver("Name"),
 			},
 			{
-				Name:     "private_key_data",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("PrivateKeyData"),
-			},
-			{
 				Name:     "private_key_type",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("PrivateKeyType"),

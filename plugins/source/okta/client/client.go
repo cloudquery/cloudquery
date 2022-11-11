@@ -17,12 +17,17 @@ type Client struct {
 	// It will be passed for each resource fetcher.
 	logger zerolog.Logger
 	Okta   *okta.Client
+	spec   specs.Source
 }
 
 const exampleDomain = "https://<CHANGE_THIS_TO_YOUR_OKTA_DOMAIN>.okta.com"
 
 func (c *Client) Logger() *zerolog.Logger {
 	return &c.logger
+}
+
+func (c *Client) ID() string {
+	return c.spec.Name
 }
 
 func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.ClientMeta, error) {
@@ -52,5 +57,6 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (sche
 	return &Client{
 		logger: logger,
 		Okta:   c,
+		spec:   s,
 	}, nil
 }

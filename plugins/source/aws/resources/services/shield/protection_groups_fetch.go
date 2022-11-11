@@ -47,8 +47,5 @@ func resolveShieldProtectionGroupTags(ctx context.Context, meta schema.ClientMet
 		return err
 	}
 
-	tags := map[string]string{}
-	client.TagsIntoMap(output.Tags, tags)
-
-	return resource.Set(c.Name, tags)
+	return resource.Set(c.Name, client.TagsToMap(output.Tags))
 }

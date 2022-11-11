@@ -6,7 +6,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client/mocks"
 	k8sTesting "github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/testing"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	batchv1 "k8s.io/api/batch/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -26,15 +26,7 @@ func createBatchCronJobs(t *testing.T, ctrl *gomock.Controller) client.Services 
 
 func fakeCronJob(t *testing.T) batchv1.CronJob {
 	var job batchv1.CronJob
-	if err := faker.FakeDataSkipFields(&job, []string{
-		"Spec"}); err != nil {
-		t.Fatal(err)
-	}
-	if err := faker.FakeDataSkipFields(&job.Spec, []string{
-		"JobTemplate", "ConcurrencyPolicy"}); err != nil {
-		t.Fatal(err)
-	}
-	if err := faker.FakeData(&job.Spec.JobTemplate.ObjectMeta); err != nil {
+	if err := faker.FakeObject(&job); err != nil {
 		t.Fatal(err)
 	}
 	job.ManagedFields = []metav1.ManagedFieldsEntry{k8sTesting.FakeManagedFields(t)}

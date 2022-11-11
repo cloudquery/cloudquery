@@ -8,19 +8,19 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ecr/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildEcrRegistriesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockEcrClient(ctrl)
 	var registryId string
-	err := faker.FakeData(&registryId)
+	err := faker.FakeObject(&registryId)
 	if err != nil {
 		t.Fatal(err)
 	}
 	rcs := types.ReplicationConfiguration{}
-	err = faker.FakeData(&rcs)
+	err = faker.FakeObject(&rcs)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -32,7 +32,7 @@ func buildEcrRegistriesMock(t *testing.T, ctrl *gomock.Controller) client.Servic
 		}, nil)
 
 	return client.Services{
-		ECR: m,
+		Ecr: m,
 	}
 }
 

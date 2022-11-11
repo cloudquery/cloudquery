@@ -7,15 +7,15 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildSecretsmanagerModels(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockSecretsManagerClient(ctrl)
+	m := mocks.NewMockSecretsmanagerClient(ctrl)
 
 	secret := types.SecretListEntry{}
-	if err := faker.FakeData(&secret); err != nil {
+	if err := faker.FakeObject(&secret); err != nil {
 		t.Fatal(err)
 	}
 
@@ -25,7 +25,7 @@ func buildSecretsmanagerModels(t *testing.T, ctrl *gomock.Controller) client.Ser
 	)
 
 	dsecret := secretsmanager.DescribeSecretOutput{}
-	if err := faker.FakeData(&dsecret); err != nil {
+	if err := faker.FakeObject(&dsecret); err != nil {
 		t.Fatal(err)
 	}
 
@@ -35,7 +35,7 @@ func buildSecretsmanagerModels(t *testing.T, ctrl *gomock.Controller) client.Ser
 	)
 
 	var policy secretsmanager.GetResourcePolicyOutput
-	if err := faker.FakeData(&policy); err != nil {
+	if err := faker.FakeObject(&policy); err != nil {
 		t.Fatal(err)
 	}
 	p := `{"key":"value"}`
@@ -46,7 +46,7 @@ func buildSecretsmanagerModels(t *testing.T, ctrl *gomock.Controller) client.Ser
 	)
 
 	return client.Services{
-		SecretsManager: m,
+		Secretsmanager: m,
 	}
 }
 

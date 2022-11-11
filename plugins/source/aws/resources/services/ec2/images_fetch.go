@@ -15,7 +15,7 @@ import (
 func fetchEc2Images(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 
-	svc := c.Services().EC2
+	svc := c.Services().Ec2
 	g, ctx := errgroup.WithContext(ctx)
 	g.Go(func() error {
 		// fetch ec2.Images owned by this account
@@ -48,7 +48,7 @@ func resolveImageArn(_ context.Context, meta schema.ClientMeta, resource *schema
 		Service:   "ec2",
 		Region:    cl.Region,
 		AccountID: cl.AccountID,
-		Resource:  "images/" + aws.ToString(item.ImageId),
+		Resource:  "image/" + aws.ToString(item.ImageId),
 	}
 	return resource.Set(c.Name, a.String())
 }

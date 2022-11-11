@@ -8,14 +8,14 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildRegionsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 	r := types.Region{}
-	if err := faker.FakeData(&r); err != nil {
+	if err := faker.FakeObject(&r); err != nil {
 		t.Fatal(err)
 	}
 	r.OptInStatus = aws.String("opted-in")
@@ -26,7 +26,7 @@ func buildRegionsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 		}, nil)
 
 	return client.Services{
-		EC2: m,
+		Ec2: m,
 	}
 }
 

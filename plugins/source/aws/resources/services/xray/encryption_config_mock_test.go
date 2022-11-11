@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/xray/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -15,7 +15,7 @@ func buildEncryptionConfig(t *testing.T, ctrl *gomock.Controller) client.Service
 	mock := mocks.NewMockXrayClient(ctrl)
 
 	var config types.EncryptionConfig
-	if err := faker.FakeData(&config); err != nil {
+	if err := faker.FakeObject(&config); err != nil {
 		t.Fatal(err)
 	}
 

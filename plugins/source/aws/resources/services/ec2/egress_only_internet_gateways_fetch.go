@@ -13,7 +13,7 @@ import (
 
 func fetchEc2EgressOnlyInternetGateways(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	svc := c.Services().EC2
+	svc := c.Services().Ec2
 	input := ec2.DescribeEgressOnlyInternetGatewaysInput{}
 	for {
 		output, err := svc.DescribeEgressOnlyInternetGateways(ctx, &input)
@@ -37,7 +37,7 @@ func resolveEgressOnlyInternetGatewaysArn(_ context.Context, meta schema.ClientM
 		Service:   "ec2",
 		Region:    cl.Region,
 		AccountID: cl.AccountID,
-		Resource:  "egress_only_internet_gateway/" + aws.ToString(item.EgressOnlyInternetGatewayId),
+		Resource:  "egress-only-internet-gateway/" + aws.ToString(item.EgressOnlyInternetGatewayId),
 	}
 	return resource.Set(c.Name, a.String())
 }

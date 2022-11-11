@@ -3,11 +3,13 @@ on:
   push:
     tags:
       - "plugins-*-*-v*.*.*"
+      - "!plugins-destination-sqlite-v*.*.*"
 env:
   CGO_ENABLED: 0
 
 jobs:
   release-plugin-binary:
+    timeout-minutes: 30
     runs-on: ubuntu-latest
     steps:
       # Tag format is plugins-<type>-<name>-<version>
@@ -18,9 +20,10 @@ jobs:
           plugin_type=$(echo $tag | cut -d- -f2)
           plugin_name=$(echo $tag | cut -d- -f3)
           plugin_version=$(echo $tag | cut -d- -f4-)
-          echo ::set-output name=plugin_name::${plugin_name}
-          echo ::set-output name=plugin_type::${plugin_type}
-          echo ::set-output name=plugin_version::${plugin_version}
+          echo "plugin_name=${plugin_name}" >> $GITHUB_OUTPUT
+          echo "plugin_type=${plugin_type}" >> $GITHUB_OUTPUT
+          echo "plugin_version=${plugin_version}" >> $GITHUB_OUTPUT
+          echo "plugins_dir=plugins/${plugin_type}/${plugin_name}" >> $GITHUB_OUTPUT
       # Fail if not a valid SemVer string
       - name: Parse semver string
         uses: booxmedialtd/ws-action-parse-semver@e4a833cf5d612066a210bd9b62d1c3b20be3b325
@@ -31,12 +34,18 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 2
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-1.19.3-release-cache-${{ hashFiles(format('{0}/{1}', steps.split.outputs.plugins_dir, 'go.sum')) }}
+          restore-keys: |
+            ${{ runner.os }}-go-1.19.3-release-cache-plugins-${{ steps.split.outputs.plugin_type }}-${{ steps.split.outputs.plugin_name }}
       - name: Set up Go 1.x
         uses: actions/setup-go@v3
         with:
-          go-version-file: plugins/${{steps.split.outputs.plugin_type}}/${{steps.split.outputs.plugin_name}}/go.mod
-          cache: true
-          cache-dependency-path: plugins/${{steps.split.outputs.plugin_type}}/${{steps.split.outputs.plugin_name}}/go.sum
+          go-version-file: ${{steps.split.outputs.plugins_dir}}/go.mod
       - name: Install GoReleaser
         uses: goreleaser/goreleaser-action@v3
         with:
@@ -44,7 +53,7 @@ jobs:
           version: latest
           install-only: true
       - name: Run GoReleaser Dry-Run
-        run: goreleaser release --rm-dist --skip-validate --skip-publish --skip-sign -f ./plugins/${{steps.split.outputs.plugin_type}}/${{steps.split.outputs.plugin_name}}/.goreleaser.yaml
+        run: goreleaser release --rm-dist --skip-validate --skip-publish --skip-sign -f ./${{steps.split.outputs.plugins_dir}}/.goreleaser.yaml
         env:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
           GORELEASER_CURRENT_TAG: ${{ github.ref_name }}
@@ -54,7 +63,7 @@ jobs:
         with:
           gpg_private_key: ${{ secrets.PRIVATE_KEY }}
       - name: Run GoReleaser
-        run: goreleaser release --rm-dist -f ./plugins/${{steps.split.outputs.plugin_type}}/${{steps.split.outputs.plugin_name}}/.goreleaser.yaml
+        run: goreleaser release --rm-dist -f ./${{steps.split.outputs.plugins_dir}}/.goreleaser.yaml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GPG_FINGERPRINT: ${{ steps.import_gpg.outputs.fingerprint }}
@@ -65,6 +74,15 @@ jobs:
         if: steps.semver_parser.outputs.prerelease == ''
         run: 'echo "{ \"latest\": \"${{github.ref_name}}\" }" > ./sites/versions/v2/${{steps.split.outputs.plugin_type}}-${{steps.split.outputs.plugin_name}}.json'
 
+      - name: Update version in example config files
+        if: steps.semver_parser.outputs.prerelease == ''
+        uses: jacobtomlinson/gha-find-replace@657b0d1fe020da9943d1702b576f5d37d43b9c03
+        continue-on-error: true
+        with:
+          include: "plugins/${{steps.split.outputs.plugin_type}}/${{steps.split.outputs.plugin_name}}/docs/**"
+          find: 'version:\s+\"v\d+\.\d+\.\d+\"\s+\#\s+latest version of ${{steps.split.outputs.plugin_name}} plugin'
+          replace: 'version: "${{steps.split.outputs.plugin_version}}" # latest version of ${{steps.split.outputs.plugin_name}} plugin'
+
       - name: Update version in doc config files
         if: steps.semver_parser.outputs.prerelease == ''
         uses: jacobtomlinson/gha-find-replace@657b0d1fe020da9943d1702b576f5d37d43b9c03
@@ -73,15 +91,6 @@ jobs:
           include: "website/pages/**"
           find: 'version:\s+\"v\d+\.\d+\.\d+\"\s+\#\s+latest version of ${{steps.split.outputs.plugin_name}} plugin'
           replace: 'version: "${{steps.split.outputs.plugin_version}}" # latest version of ${{steps.split.outputs.plugin_name}} plugin'
-
-      - name: Update version in doc tables
-        if: steps.semver_parser.outputs.prerelease == ''
-        uses: jacobtomlinson/gha-find-replace@657b0d1fe020da9943d1702b576f5d37d43b9c03
-        continue-on-error: true
-        with:
-          include: "website/pages/docs/plugins/**"
-          find: '\[${{steps.split.outputs.plugin_name}}\]\s+\|\s+v\d+\.\d+\.\d+'
-          replace: '[${{steps.split.outputs.plugin_name}}] | ${{steps.split.outputs.plugin_version}}'
 
       - name: Create Pull Request
         if: steps.semver_parser.outputs.prerelease == ''

@@ -10,11 +10,10 @@ import (
 
 func fetchEmrBlockPublicAccessConfigs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	svc := c.Services().EMR
+	svc := c.Services().Emr
 	out, err := svc.GetBlockPublicAccessConfiguration(ctx, &emr.GetBlockPublicAccessConfigurationInput{})
 	if err != nil {
 		if client.IgnoreNotAvailableRegion(err) {
-			meta.Logger().Debug().Err(err).Msg("received InvalidRequestException on GetBlockPublicAccessConfiguration, api is not available in the current Region.")
 			return nil
 		}
 		return err

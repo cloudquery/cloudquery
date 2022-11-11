@@ -7,7 +7,7 @@ import (
 	elasticbeanstalkTypes "github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -15,7 +15,7 @@ func buildElasticbeanstalkApplicationVersions(t *testing.T, ctrl *gomock.Control
 	m := mocks.NewMockElasticbeanstalkClient(ctrl)
 
 	la := elasticbeanstalkTypes.ApplicationVersionDescription{}
-	err := faker.FakeData(&la)
+	err := faker.FakeObject(&la)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -26,7 +26,7 @@ func buildElasticbeanstalkApplicationVersions(t *testing.T, ctrl *gomock.Control
 		}, nil)
 
 	return client.Services{
-		ElasticBeanstalk: m,
+		Elasticbeanstalk: m,
 	}
 }
 

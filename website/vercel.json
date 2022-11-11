@@ -18,6 +18,10 @@
       "destination": "https://img.abyssale.com/3b183707-abf0-46ec-9edd-16b712a08b65?text_title=:title"
     },
     {
+      "source": "/docs/cli/commands/cloudquery",
+      "destination": "/docs/reference/cli/cloudquery"
+    },
+    {
       "source": "/providers/:path*",
       "destination": "/docs/plugins/sources"
     },
@@ -30,12 +34,68 @@
       "destination": "/docs/developers/creating-new-plugin"
     },
     {
+      "source": "/docs/developers/developing-new-provider",
+      "destination": "/docs/developers/creating-new-plugin"
+    },
+    {
+      "source": "/docs/configuration/overview",
+      "destination": "/docs"
+    },
+    {
+      "source": "/docs/policies",
+      "destination": "/docs/core-concepts/policies"
+    },
+    {
       "source": "/providers",
       "destination": "/docs/plugins/sources"
     },
     {
       "source": "/docs/getting-started/:path*",
       "destination": "/docs/quickstart"
+    },
+    {
+      "source": "/docs/deployment/observability",
+      "destination": "/docs/deployment/overview"
+    },
+    {
+      "source": "/docs/recipes/aws-postgresql",
+      "destination": "/docs/recipes/sources/aws"
+    },
+    {
+      "source": "/docs/recipes/gcp-postgresql",
+      "destination": "/docs/recipes/sources/gcp"
+    },
+    {
+      "source": "/docs/recipes/gcp-k8s-postgresql",
+      "destination": "/docs/recipes/sources/gcp-k8s"
+    },
+    {
+      "source": "/docs/recipes/azure-postgresql",
+      "destination": "/docs/recipes/sources/azure"
+    },
+    {
+      "source": "/docs/recipes/aws-csv",
+      "destination": "/docs/recipes/destinations/csv"
+    },
+    {
+      "source": "/docs/cli/fetch/overview",
+      "destination": "/docs/reference/cli/cloudquery"
+    },
+    {
+      "source": "/docs/cli/commands/provider-purge",
+      "destination": "/docs/reference/cli/cloudquery"
+    },
+    {
+      "source": "/docs/security",
+      "destination": "/docs/advanced-topics/security"
+    },
+    {
+      "source": "/docs/best-practices",
+      "destination": "/docs"
+    },
+    {
+      "source": "/docs/tutorials/assume_role",
+      "destination": "/blog/cross-account-access-aws-assumerole"
     }
   ]
 }

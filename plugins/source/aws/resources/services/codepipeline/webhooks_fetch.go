@@ -11,7 +11,7 @@ import (
 
 func fetchCodepipelineWebhooks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	svc := c.Services().CodePipeline
+	svc := c.Services().Codepipeline
 	config := codepipeline.ListWebhooksInput{}
 	for {
 		response, err := svc.ListWebhooks(ctx, &config)

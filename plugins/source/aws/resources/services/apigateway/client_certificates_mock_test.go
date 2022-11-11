@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigateway/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -15,7 +15,7 @@ func buildApigatewayClientCertificates(t *testing.T, ctrl *gomock.Controller) cl
 	m := mocks.NewMockApigatewayClient(ctrl)
 
 	c := types.ClientCertificate{}
-	err := faker.FakeData(&c)
+	err := faker.FakeObject(&c)
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -9,9 +9,10 @@ import (
 
 func ListenerCertificates() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_elbv2_listener_certificates",
-		Resolver:  fetchElbv2ListenerCertificates,
-		Multiplex: client.ServiceAccountRegionMultiplexer("elasticloadbalancing"),
+		Name:        "aws_elbv2_listener_certificates",
+		Description: `https://docs.aws.amazon.com/elasticloadbalancing/latest/APIReference/API_Certificate.html`,
+		Resolver:    fetchElbv2ListenerCertificates,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticloadbalancing"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

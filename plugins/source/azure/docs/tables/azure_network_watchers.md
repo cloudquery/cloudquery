@@ -1,12 +1,12 @@
 # Table: azure_network_watchers
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network#Watcher
 
 The primary key for this table is **id**.
 
 ## Relations
-The following tables depend on `azure_network_watchers`:
-  - [`azure_network_flow_logs`](azure_network_flow_logs.md)
+The following tables depend on azure_network_watchers:
+  - [azure_network_flow_logs](azure_network_flow_logs.md)
 
 ## Columns
 | Name          | Type          |

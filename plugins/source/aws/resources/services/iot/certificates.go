@@ -9,9 +9,10 @@ import (
 
 func Certificates() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_iot_certificates",
-		Resolver:  fetchIotCertificates,
-		Multiplex: client.ServiceAccountRegionMultiplexer("iot"),
+		Name:        "aws_iot_certificates",
+		Description: `https://docs.aws.amazon.com/iot/latest/apireference/API_CertificateDescription.html`,
+		Resolver:    fetchIotCertificates,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("iot"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

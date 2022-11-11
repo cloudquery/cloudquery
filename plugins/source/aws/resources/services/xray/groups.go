@@ -9,9 +9,10 @@ import (
 
 func Groups() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_xray_groups",
-		Resolver:  fetchXrayGroups,
-		Multiplex: client.ServiceAccountRegionMultiplexer("xray"),
+		Name:        "aws_xray_groups",
+		Description: `https://docs.aws.amazon.com/xray/latest/api/API_Group.html`,
+		Resolver:    fetchXrayGroups,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("xray"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

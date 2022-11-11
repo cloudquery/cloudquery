@@ -12,7 +12,7 @@ import (
 func fetchIamPasswordPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config iam.GetAccountPasswordPolicyInput
 	c := meta.(*client.Client)
-	svc := c.Services().IAM
+	svc := c.Services().Iam
 	response, err := svc.GetAccountPasswordPolicy(ctx, &config)
 	if err != nil {
 		if c.IsNotFoundError(err) {

@@ -33,8 +33,8 @@ func TestResolveARN(t *testing.T) {
 			func(resource *schema.Resource) ([]string, error) {
 				return []string{"restapis", *resource.Item.(types.RestApi).Id}, nil
 			},
-			schema.NewResourceData(&schema.Table{Columns: []schema.Column{{Name: "myarn"}}}, nil, types.RestApi{Id: aws.String("myid")}),
-			"arn:aws:apigateway:region::restapis/myid",
+			schema.NewResourceData(&schema.Table{Columns: []schema.Column{{Name: "myarn", Type: schema.TypeString}}}, nil, types.RestApi{Id: aws.String("myid")}),
+			&schema.Text{Status: schema.Present, Str: "arn:aws:apigateway:region::restapis/myid"},
 			false,
 		},
 		{
@@ -44,8 +44,8 @@ func TestResolveARN(t *testing.T) {
 			func(resource *schema.Resource) ([]string, error) {
 				return []string{"", "restapis", *resource.Item.(types.RestApi).Id}, nil
 			},
-			schema.NewResourceData(&schema.Table{Columns: []schema.Column{{Name: "myarn"}}}, nil, types.RestApi{Id: aws.String("myid")}),
-			"arn:aws:apigateway:region::/restapis/myid",
+			schema.NewResourceData(&schema.Table{Columns: []schema.Column{{Name: "myarn", Type: schema.TypeString}}}, nil, types.RestApi{Id: aws.String("myid")}),
+			&schema.Text{Status: schema.Present, Str: "arn:aws:apigateway:region::/restapis/myid"},
 			false,
 		},
 		{
@@ -55,8 +55,8 @@ func TestResolveARN(t *testing.T) {
 			func(resource *schema.Resource) ([]string, error) {
 				return nil, errors.New("test")
 			},
-			schema.NewResourceData(&schema.Table{Columns: []schema.Column{{Name: "myarn"}}}, nil, types.RestApi{Id: aws.String("myid")}),
-			nil,
+			schema.NewResourceData(&schema.Table{Columns: []schema.Column{{Name: "myarn", Type: schema.TypeString}}}, nil, types.RestApi{Id: aws.String("myid")}),
+			&schema.Text{Status: schema.Undefined},
 			true,
 		},
 	}
@@ -66,8 +66,10 @@ func TestResolveARN(t *testing.T) {
 			col := schema.Column{Name: tt.columnName}
 			client := Client{Region: "region", Partition: "aws"}
 			err := resolver(context.Background(), &client, tt.resource, col)
-			require.Equal(t, tt.resource.Get(tt.columnName), tt.want)
-			require.Equal(t, err != nil, tt.wantErr)
+
+			actual := tt.resource.Get(tt.columnName)
+			require.Equal(t, tt.want, actual)
+			require.Equal(t, tt.wantErr, err != nil)
 		})
 	}
 }

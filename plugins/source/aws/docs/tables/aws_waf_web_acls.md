@@ -1,6 +1,6 @@
 # Table: aws_waf_web_acls
 
-
+https://docs.aws.amazon.com/waf/latest/APIReference/API_waf_WebACLSummary.html
 
 The primary key for this table is **arn**.
 

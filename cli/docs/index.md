@@ -9,16 +9,9 @@ You can download pre-compiled binaries from [GitHub releases](https://github.com
 ```sh
 git clone https://github.com/cloudquery/cloudquery.git
 cd cloudquery/cli
+go build .
 ```
 
 ## Setup
 
-```shell
-cloudquery init aws
-```
-
-or
-
-```sh
-go run main.go init aws
-```
+See our [Quickstart](https://www.cloudquery.io/docs/quickstart) guide.

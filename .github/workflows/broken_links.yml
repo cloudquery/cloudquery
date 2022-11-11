@@ -9,70 +9,52 @@ on:
       - main
     paths:
       - .github/workflows/broken_links.yml
-      - plugins/**/docs/**
       - "website/**"
     types:
       - opened
       - synchronize
       - reopened
-      - labeled
 
 jobs:
   check-broken-links:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-      - id: check-labels
-        if: github.event_name == 'pull_request'
-        uses: mheap/github-action-required-labels@a0c3d802afdc992e48f03bc90c0a1ee51a8f6b28
-        with:
-          mode: exactly
-          count: 1
-          labels: "check_broken_links"
-          exit_type: success
-
-      - uses: actions/checkout@v3
-        if: steps.check-labels.outputs.status == 'success' || github.event_name != 'pull_request'
-
       - name: Setup node
         uses: actions/setup-node@v3
-        if: steps.check-labels.outputs.status == 'success' || github.event_name != 'pull_request'
         with:
           node-version: "lts/*"
 
       - name: Waiting for Vercel Preview
-        if: steps.check-labels.outputs.status == 'success' && github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request'
         uses: patrickedqvist/wait-for-vercel-preview@v1.2.0
         id: preview-deployment
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          environment: "Preview - cloudquery-web"
           max_timeout: 360
           check_interval: 10
+          environment: 'Preview – cloudquery-web'
 
       - name: Set Vercel URL output
         id: vercel
         run: |
           DEPLOY_URL=${{ steps.preview-deployment.outputs.url }}
-          echo "::set-output name=url::${DEPLOY_URL:-"https://www.cloudquery.io/"}"
+          echo "url=${DEPLOY_URL:-"https://www.cloudquery.io/"}" >> $GITHUB_OUTPUT
 
       - name: Check for broken links
-        if: steps.check-labels.outputs.status == 'success' || github.event_name != 'pull_request'
+        # We need to exclude some hosts that protect against bots
         run: |
           set -o pipefail
 
-          npx broken-link-checker --requests 10 --host-requests 1 -f -r -v -o --filter-level 3 \
+          npx broken-link-checker --requests 100 --host-requests 10 -f -r -v -o --filter-level 3 \
+            --exclude "${{ steps.vercel.outputs.url }}/logo" \
             --exclude linkedin \
             --exclude cloudquery.io/discord \
-            --exclude cloudquery.io/assets/aws_security_group_view.sql \
-            --exclude https://www.cloudquery.io/logo \
             --exclude fonts.gstatic.com \
             --exclude fonts.googleapis.com \
-            --exclude twitter.com \
+            --exclude github.com \
             --exclude support.google.com \
             --exclude work-bench.com \
-            --exclude podcasts.apple.com \
-            --exclude docs.cloudquery.io/cdn-cgi/l/email-protection \
-            --exclude pcisecuritystandards.org \
+            --exclude mailchimp.com \
             ${{ steps.vercel.outputs.url }} \
-            | grep -v '───OK───' | grep -v '──SKIP──'
+            | grep -v '───OK───' | grep -v '──SKIP──' | grep -v '0 broken'

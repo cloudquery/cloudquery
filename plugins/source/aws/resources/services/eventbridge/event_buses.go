@@ -9,9 +9,10 @@ import (
 
 func EventBuses() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_eventbridge_event_buses",
-		Resolver:  fetchEventbridgeEventBuses,
-		Multiplex: client.ServiceAccountRegionMultiplexer("events"),
+		Name:        "aws_eventbridge_event_buses",
+		Description: `https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_EventBus.html`,
+		Resolver:    fetchEventbridgeEventBuses,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("events"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

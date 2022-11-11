@@ -9,9 +9,10 @@ import (
 
 func TargetGroups() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_elbv2_target_groups",
-		Resolver:  fetchElbv2TargetGroups,
-		Multiplex: client.ServiceAccountRegionMultiplexer("elasticloadbalancing"),
+		Name:        "aws_elbv2_target_groups",
+		Description: `https://docs.aws.amazon.com/elasticloadbalancing/latest/APIReference/API_TargetGroup.html`,
+		Resolver:    fetchElbv2TargetGroups,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticloadbalancing"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

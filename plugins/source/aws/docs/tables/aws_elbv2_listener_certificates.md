@@ -1,9 +1,11 @@
 # Table: aws_elbv2_listener_certificates
 
-
+https://docs.aws.amazon.com/elasticloadbalancing/latest/APIReference/API_Certificate.html
 
 The primary key for this table is **_cq_id**.
 
+## Relations
+This table depends on [aws_elbv2_listeners](aws_elbv2_listeners.md).
 
 ## Columns
 | Name          | Type          |

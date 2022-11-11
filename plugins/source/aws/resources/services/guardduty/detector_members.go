@@ -9,9 +9,10 @@ import (
 
 func DetectorMembers() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_guardduty_detector_members",
-		Resolver:  fetchGuarddutyDetectorMembers,
-		Multiplex: client.ServiceAccountRegionMultiplexer("guardduty"),
+		Name:        "aws_guardduty_detector_members",
+		Description: `https://docs.aws.amazon.com/guardduty/latest/APIReference/API_Member.html`,
+		Resolver:    fetchGuarddutyDetectorMembers,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("guardduty"),
 		Columns: []schema.Column{
 			{
 				Name:     "region",

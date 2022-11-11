@@ -5,7 +5,7 @@
 The primary key for this table is **_cq_id**.
 
 ## Relations
-This table depends on [`cloudflare_worker_meta_data`](cloudflare_worker_meta_data.md).
+This table depends on [cloudflare_worker_meta_data](cloudflare_worker_meta_data.md).
 
 ## Columns
 | Name          | Type          |

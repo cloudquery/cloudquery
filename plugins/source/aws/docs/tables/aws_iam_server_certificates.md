@@ -1,6 +1,6 @@
 # Table: aws_iam_server_certificates
 
-
+https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServerCertificateMetadata.html
 
 The composite primary key for this table is (**account_id**, **id**).
 

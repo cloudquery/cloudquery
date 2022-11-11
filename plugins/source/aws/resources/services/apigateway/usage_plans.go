@@ -10,7 +10,7 @@ import (
 func UsagePlans() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_apigateway_usage_plans",
-		Description: "https://docs.aws.amazon.com/apigateway/latest/api/API_UsagePlan.html",
+		Description: `https://docs.aws.amazon.com/apigateway/latest/api/API_UsagePlan.html`,
 		Resolver:    fetchApigatewayUsagePlans,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
 		Columns: []schema.Column{

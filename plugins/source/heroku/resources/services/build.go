@@ -13,7 +13,7 @@ import (
 func Builds() *schema.Table {
 	return &schema.Table{
 		Name:        "heroku_builds",
-		Description: "https://devcenter.heroku.com/articles/platform-api-reference#build-attributes",
+		Description: `https://devcenter.heroku.com/articles/platform-api-reference#build`,
 		Resolver:    fetchBuilds,
 		Columns: []schema.Column{
 			{

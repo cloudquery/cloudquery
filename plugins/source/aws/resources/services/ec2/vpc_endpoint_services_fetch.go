@@ -14,7 +14,7 @@ import (
 func fetchEc2VpcEndpointServices(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	var config ec2.DescribeVpcEndpointServicesInput
 	c := meta.(*client.Client)
-	svc := c.Services().EC2
+	svc := c.Services().Ec2
 	for {
 		output, err := svc.DescribeVpcEndpointServices(ctx, &config)
 		if err != nil {
@@ -37,7 +37,7 @@ func resolveVpcEndpointServiceArn(_ context.Context, meta schema.ClientMeta, res
 		Service:   "ec2",
 		Region:    cl.Region,
 		AccountID: cl.AccountID,
-		Resource:  "vpc_endpoint_service/" + aws.ToString(item.ServiceId),
+		Resource:  "vpc-endpoint-service/" + aws.ToString(item.ServiceId),
 	}
 	return resource.Set(c.Name, a.String())
 }

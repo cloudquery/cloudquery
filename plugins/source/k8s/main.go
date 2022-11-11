@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/cloudquery/cloudquery/plugins/source/k8s/plugin"
+	"github.com/cloudquery/cloudquery/plugins/source/k8s/resources/plugin"
 
 	"github.com/cloudquery/plugin-sdk/serve"
 )

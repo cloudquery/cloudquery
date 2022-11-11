@@ -10,7 +10,7 @@ import (
 func AnalyzerArchiveRules() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_accessanalyzer_analyzer_archive_rules",
-		Description: "https://docs.aws.amazon.com/access-analyzer/latest/APIReference/API_ArchiveRuleSummary.html",
+		Description: `https://docs.aws.amazon.com/access-analyzer/latest/APIReference/API_ArchiveRuleSummary.html`,
 		Resolver:    fetchAccessanalyzerAnalyzerArchiveRules,
 		Columns: []schema.Column{
 			{

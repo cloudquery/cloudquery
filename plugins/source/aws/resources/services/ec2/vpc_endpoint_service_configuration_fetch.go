@@ -14,7 +14,7 @@ import (
 func fetchEc2VpcEndpointServiceConfigurations(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	var config ec2.DescribeVpcEndpointServiceConfigurationsInput
 	c := meta.(*client.Client)
-	svc := c.Services().EC2
+	svc := c.Services().Ec2
 	for {
 		output, err := svc.DescribeVpcEndpointServiceConfigurations(ctx, &config)
 		if err != nil {

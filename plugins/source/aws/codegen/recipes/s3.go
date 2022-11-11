@@ -48,9 +48,10 @@ func S3Resources() []*Resource {
 			},
 		},
 		{
-			SubService: "bucket_encryption_rules",
-			Struct:     &types.ServerSideEncryptionRule{},
-			SkipFields: []string{},
+			SubService:  "bucket_encryption_rules",
+			Struct:      &types.ServerSideEncryptionRule{},
+			Description: "https://docs.aws.amazon.com/AmazonS3/latest/API/API_ServerSideEncryptionRule.html",
+			SkipFields:  []string{},
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{
@@ -62,9 +63,10 @@ func S3Resources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "bucket_lifecycles",
-			Struct:     &types.LifecycleRule{},
-			SkipFields: []string{"Filter"},
+			SubService:  "bucket_lifecycles",
+			Struct:      &types.LifecycleRule{},
+			Description: "https://docs.aws.amazon.com/AmazonS3/latest/API/API_LifecycleRule.html",
+			SkipFields:  []string{"Filter"},
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{
@@ -76,9 +78,10 @@ func S3Resources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "bucket_grants",
-			Struct:     &types.Grant{},
-			SkipFields: []string{},
+			SubService:  "bucket_grants",
+			Struct:      &types.Grant{},
+			Description: "https://docs.aws.amazon.com/AmazonS3/latest/API/API_Grant.html",
+			SkipFields:  []string{},
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{
@@ -90,9 +93,10 @@ func S3Resources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "bucket_cors_rules",
-			Struct:     &types.CORSRule{},
-			SkipFields: []string{},
+			SubService:  "bucket_cors_rules",
+			Struct:      &types.CORSRule{},
+			Description: "https://docs.aws.amazon.com/AmazonS3/latest/API/API_CORSRule.html",
+			SkipFields:  []string{},
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{

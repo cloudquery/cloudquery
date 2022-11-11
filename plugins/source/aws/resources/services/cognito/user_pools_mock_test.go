@@ -7,15 +7,15 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildCognitoUserPools(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockCognitoUserPoolsClient(ctrl)
+	m := mocks.NewMockCognitoidentityproviderClient(ctrl)
 
 	var desc types.UserPoolDescriptionType
-	if err := faker.FakeData(&desc); err != nil {
+	if err := faker.FakeObject(&desc); err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().ListUserPools(
@@ -28,7 +28,7 @@ func buildCognitoUserPools(t *testing.T, ctrl *gomock.Controller) client.Service
 	)
 
 	var pool types.UserPoolType
-	if err := faker.FakeData(&pool); err != nil {
+	if err := faker.FakeObject(&pool); err != nil {
 		t.Fatal(err)
 	}
 	pool.Id = desc.Id
@@ -42,7 +42,7 @@ func buildCognitoUserPools(t *testing.T, ctrl *gomock.Controller) client.Service
 	)
 
 	var providerDesc types.ProviderDescription
-	if err := faker.FakeData(&providerDesc); err != nil {
+	if err := faker.FakeObject(&providerDesc); err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().ListIdentityProviders(
@@ -55,7 +55,7 @@ func buildCognitoUserPools(t *testing.T, ctrl *gomock.Controller) client.Service
 	)
 
 	var provider types.IdentityProviderType
-	if err := faker.FakeData(&provider); err != nil {
+	if err := faker.FakeObject(&provider); err != nil {
 		t.Fatal(err)
 	}
 	provider.ProviderName = providerDesc.ProviderName
@@ -72,7 +72,7 @@ func buildCognitoUserPools(t *testing.T, ctrl *gomock.Controller) client.Service
 		nil,
 	)
 
-	return client.Services{CognitoUserPools: m}
+	return client.Services{Cognitoidentityprovider: m}
 }
 
 func TestCognitoUserPools(t *testing.T) {

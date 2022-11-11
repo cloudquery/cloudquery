@@ -24,6 +24,10 @@ gen-docs:
 	rm -rf ./docs/tables/*
 	go run main.go doc ./docs/tables
 
+.PHONY: lint
+lint:
+	golangci-lint run --config ../../.golangci.yml 
+
 .PHONY: gen-code
 gen-code:
 	go run codegen/main.go

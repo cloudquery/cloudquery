@@ -21,7 +21,7 @@ func fetchElbv2Listeners(ctx context.Context, meta schema.ClientMeta, parent *sc
 		LoadBalancerArn: lb.LoadBalancerArn,
 	}
 	c := meta.(*client.Client)
-	svc := c.Services().ELBv2
+	svc := c.Services().Elasticloadbalancingv2
 	for {
 		response, err := svc.DescribeListeners(ctx, &config)
 		if err != nil {
@@ -40,7 +40,7 @@ func fetchElbv2Listeners(ctx context.Context, meta schema.ClientMeta, parent *sc
 }
 func resolveElbv2listenerTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	region := meta.(*client.Client).Region
-	svc := meta.(*client.Client).Services().ELBv2
+	svc := meta.(*client.Client).Services().Elasticloadbalancingv2
 	listener := resource.Item.(types.Listener)
 	tagsOutput, err := svc.DescribeTags(ctx, &elbv2.DescribeTagsInput{
 		ResourceArns: []string{
@@ -67,7 +67,7 @@ func resolveElbv2listenerTags(ctx context.Context, meta schema.ClientMeta, resou
 func fetchElbv2ListenerCertificates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	region := c.Region
-	svc := c.Services().ELBv2
+	svc := c.Services().Elasticloadbalancingv2
 	listener := parent.Item.(types.Listener)
 	config := elbv2.DescribeListenerCertificatesInput{ListenerArn: listener.ListenerArn}
 	for {

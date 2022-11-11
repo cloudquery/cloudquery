@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -18,7 +18,7 @@ func buildCloudtrailTrailsMock(t *testing.T, ctrl *gomock.Controller) client.Ser
 		Cloudtrail: m,
 	}
 	trail := types.Trail{}
-	err := faker.FakeData(&trail)
+	err := faker.FakeObject(&trail)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -27,12 +27,12 @@ func buildCloudtrailTrailsMock(t *testing.T, ctrl *gomock.Controller) client.Ser
 	trail.CloudWatchLogsLogGroupArn = aws.String("arn:aws:logs:eu-central-1:123:log-group:test-group:")
 
 	trailStatus := cloudtrail.GetTrailStatusOutput{}
-	err = faker.FakeData(&trailStatus)
+	err = faker.FakeObject(&trailStatus)
 	if err != nil {
 		t.Fatal(err)
 	}
 	eventSelector := types.EventSelector{}
-	err = faker.FakeData(&eventSelector)
+	err = faker.FakeObject(&eventSelector)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -53,7 +53,7 @@ func buildCloudtrailTrailsMock(t *testing.T, ctrl *gomock.Controller) client.Ser
 		nil,
 	)
 	tags := cloudtrail.ListTagsOutput{}
-	err = faker.FakeData(&tags)
+	err = faker.FakeObject(&tags)
 	if err != nil {
 		t.Fatal(err)
 	}

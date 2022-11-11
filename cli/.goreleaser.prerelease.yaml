@@ -32,22 +32,10 @@ builds:
 archives:
   -
     name_template: "{{ .Binary }}_{{ .Os }}_{{ .Arch }}"
-    replacements:
-      darwin: Darwin
-      linux: Linux
-      windows: Windows
-      386: i386
-      amd64: x86_64
     format: binary
   -
     id: homebrew
     name_template: "{{ .Binary }}_{{ .Os }}_{{ .Arch }}"
-    replacements:
-      darwin: Darwin
-      linux: Linux
-      windows: Windows
-      386: i386
-      amd64: x86_64
     format: zip
 checksum:
   name_template: 'checksums.txt'

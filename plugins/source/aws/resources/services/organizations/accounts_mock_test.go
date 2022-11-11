@@ -7,14 +7,14 @@ import (
 	organizationsTypes "github.com/aws/aws-sdk-go-v2/service/organizations/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildOrganizationsAccounts(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockOrganizationsClient(ctrl)
 	g := organizationsTypes.Account{}
-	err := faker.FakeData(&g)
+	err := faker.FakeObject(&g)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -25,7 +25,7 @@ func buildOrganizationsAccounts(t *testing.T, ctrl *gomock.Controller) client.Se
 		}, nil)
 
 	tt := make([]organizationsTypes.Tag, 3)
-	if err := faker.FakeData(&tt); err != nil {
+	if err := faker.FakeObject(&tt); err != nil {
 		t.Fatal(err)
 	}
 

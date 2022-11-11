@@ -9,9 +9,10 @@ import (
 func FSXResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "backups",
-			Struct:     &types.Backup{},
-			SkipFields: []string{"BackupId", "Tags"},
+			SubService:  "backups",
+			Struct:      &types.Backup{},
+			Description: "https://docs.aws.amazon.com/fsx/latest/APIReference/API_Backup.html",
+			SkipFields:  []string{"BackupId"},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:     "account_id",
@@ -31,17 +32,13 @@ func FSXResources() []*Resource {
 					Resolver: `schema.PathResolver("BackupId")`,
 					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 				},
-				{
-					Name:     "tags",
-					Type:     schema.TypeJSON,
-					Resolver: `client.ResolveTags`,
-				},
 			},
 		},
 		{
-			SubService: "data_repository_associations",
-			Struct:     &types.DataRepositoryAssociation{},
-			SkipFields: []string{"ResourceARN", "Tags"},
+			SubService:  "data_repository_associations",
+			Struct:      &types.DataRepositoryAssociation{},
+			Description: "https://docs.aws.amazon.com/fsx/latest/APIReference/API_DataRepositoryAssociation.html",
+			SkipFields:  []string{"ResourceARN"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -51,17 +48,13 @@ func FSXResources() []*Resource {
 						Resolver: `schema.PathResolver("ResourceARN")`,
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `client.ResolveTags`,
-					},
 				}...),
 		},
 		{
-			SubService: "data_repository_tasks",
-			Struct:     &types.DataRepositoryTask{},
-			SkipFields: []string{"ResourceARN", "Tags"},
+			SubService:  "data_repository_tasks",
+			Struct:      &types.DataRepositoryTask{},
+			Description: "https://docs.aws.amazon.com/fsx/latest/APIReference/API_DataRepositoryTask.html",
+			SkipFields:  []string{"ResourceARN"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -71,17 +64,13 @@ func FSXResources() []*Resource {
 						Resolver: `schema.PathResolver("ResourceARN")`,
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `client.ResolveTags`,
-					},
 				}...),
 		},
 		{
-			SubService: "file_systems",
-			Struct:     &types.FileSystem{},
-			SkipFields: []string{"AdministrativeActions", "ResourceARN", "Tags"},
+			SubService:  "file_systems",
+			Struct:      &types.FileSystem{},
+			Description: "https://docs.aws.amazon.com/fsx/latest/APIReference/API_FileSystem.html",
+			SkipFields:  []string{"AdministrativeActions", "ResourceARN", "Tags"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -105,9 +94,10 @@ func FSXResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "snapshots",
-			Struct:     &types.Snapshot{},
-			SkipFields: []string{"AdministrativeActions", "ResourceARN", "Tags"},
+			SubService:  "snapshots",
+			Struct:      &types.Snapshot{},
+			Description: "https://docs.aws.amazon.com/fsx/latest/APIReference/API_Snapshot.html",
+			SkipFields:  []string{"AdministrativeActions", "ResourceARN"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -116,11 +106,6 @@ func FSXResources() []*Resource {
 						Type:     schema.TypeString,
 						Resolver: `schema.PathResolver("ResourceARN")`,
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `client.ResolveTags`,
 					},
 					{
 						Name:          "administrative_actions",
@@ -131,9 +116,10 @@ func FSXResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "storage_virtual_machines",
-			Struct:     &types.StorageVirtualMachine{},
-			SkipFields: []string{"ResourceARN", "Tags"},
+			SubService:  "storage_virtual_machines",
+			Struct:      &types.StorageVirtualMachine{},
+			Description: "https://docs.aws.amazon.com/fsx/latest/APIReference/API_StorageVirtualMachine.html",
+			SkipFields:  []string{"ResourceARN"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -142,18 +128,14 @@ func FSXResources() []*Resource {
 						Type:     schema.TypeString,
 						Resolver: `schema.PathResolver("ResourceARN")`,
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `client.ResolveTags`,
 					},
 				}...),
 		},
 		{
-			SubService: "volumes",
-			Struct:     &types.Volume{},
-			SkipFields: []string{"AdministrativeActions", "ResourceARN", "Tags"},
+			SubService:  "volumes",
+			Struct:      &types.Volume{},
+			Description: "https://docs.aws.amazon.com/fsx/latest/APIReference/API_Volume.html",
+			SkipFields:  []string{"AdministrativeActions", "ResourceARN"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -162,11 +144,6 @@ func FSXResources() []*Resource {
 						Type:     schema.TypeString,
 						Resolver: `schema.PathResolver("ResourceARN")`,
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `client.ResolveTags`,
 					},
 					{
 						Name:          "administrative_actions",

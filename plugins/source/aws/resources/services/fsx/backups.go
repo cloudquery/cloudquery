@@ -9,9 +9,10 @@ import (
 
 func Backups() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_fsx_backups",
-		Resolver:  fetchFsxBackups,
-		Multiplex: client.ServiceAccountRegionMultiplexer("fsx"),
+		Name:        "aws_fsx_backups",
+		Description: `https://docs.aws.amazon.com/fsx/latest/APIReference/API_Backup.html`,
+		Resolver:    fetchFsxBackups,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("fsx"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -36,11 +37,6 @@ func Backups() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "creation_time",
@@ -106,6 +102,11 @@ func Backups() *schema.Table {
 				Name:     "source_backup_region",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("SourceBackupRegion"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "volume",

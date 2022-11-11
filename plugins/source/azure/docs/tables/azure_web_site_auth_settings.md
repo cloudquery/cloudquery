@@ -1,11 +1,11 @@
 # Table: azure_web_site_auth_settings
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/web/mgmt/2020-12-01/web#SiteAuthSettings
 
 The primary key for this table is **id**.
 
 ## Relations
-This table depends on [`azure_web_apps`](azure_web_apps.md).
+This table depends on [azure_web_apps](azure_web_apps.md).
 
 ## Columns
 | Name          | Type          |

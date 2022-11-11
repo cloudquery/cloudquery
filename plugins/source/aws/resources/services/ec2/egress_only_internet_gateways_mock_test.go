@@ -6,21 +6,21 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildEgressOnlyInternetGateways(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 	egressOutput := ec2.DescribeEgressOnlyInternetGatewaysOutput{}
-	err := faker.FakeData(&egressOutput)
+	err := faker.FakeObject(&egressOutput)
 	if err != nil {
 		t.Fatal(err)
 	}
 	egressOutput.NextToken = nil
 	m.EXPECT().DescribeEgressOnlyInternetGateways(gomock.Any(), gomock.Any(), gomock.Any()).Return(&egressOutput, nil)
 	return client.Services{
-		EC2: m,
+		Ec2: m,
 	}
 }
 

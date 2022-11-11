@@ -11,7 +11,7 @@ import (
 
 func fetchFsxDataRepositoryAssociations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().FSX
+	svc := cl.Services().Fsx
 	input := fsx.DescribeDataRepositoryAssociationsInput{MaxResults: aws.Int32(25)}
 	paginator := fsx.NewDescribeDataRepositoryAssociationsPaginator(svc, &input)
 	for paginator.HasMorePages() {

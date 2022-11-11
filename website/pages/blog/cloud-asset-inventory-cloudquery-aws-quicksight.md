@@ -32,7 +32,7 @@ In this blog post, we will walk you through how to setup CloudQuery to build you
 
 ### Step 1: **Install or Deploy CloudQuery**
 
-If it’s your first time using CloudQuery we suggest you first run it locally to get familiar with the tool, take a look at our [Getting Started with AWS Guide](https://www.cloudquery.io/docs/getting-started/getting-started-with-aws).
+If it’s your first time using CloudQuery we suggest you first run it locally to get familiar with the tool, take a look at our [quickstart guide](/docs/quickstart) and [AWS recipe](/docs/recipes/overview).
 
 If you are already familiar with CloudQuery, take a look at how to deploy it to AWS on Amazon Aurora and EKS at [here](https://github.com/cloudquery/terraform-aws-cloudquery).
 

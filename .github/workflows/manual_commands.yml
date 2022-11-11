@@ -1,0 +1,19 @@
+name: Manual Commands
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  gen:
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Source Plugin Generation Command
+        uses: peter-evans/slash-command-dispatch@v3
+        with:
+          token: ${{ secrets.GH_CQ_BOT }}
+          reaction-token: ${{ secrets.GITHUB_TOKEN }}
+          issue-type: pull-request
+          commands: gen
+          permission: write

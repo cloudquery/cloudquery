@@ -17,7 +17,7 @@ func fetchEcrpublicRepositories(ctx context.Context, meta schema.ClientMeta, par
 		MaxResults: &maxResults,
 	}
 	c := meta.(*client.Client)
-	svc := c.Services().ECRPublic
+	svc := c.Services().Ecrpublic
 	for {
 		output, err := svc.DescribeRepositories(ctx, &config)
 		if err != nil {
@@ -34,7 +34,7 @@ func fetchEcrpublicRepositories(ctx context.Context, meta schema.ClientMeta, par
 
 func resolveRepositoryTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().ECRPublic
+	svc := cl.Services().Ecrpublic
 	repo := resource.Item.(types.Repository)
 
 	input := ecrpublic.ListTagsForResourceInput{
@@ -55,7 +55,7 @@ func fetchEcrpublicRepositoryImages(ctx context.Context, meta schema.ClientMeta,
 		MaxResults:     &maxResults,
 	}
 	c := meta.(*client.Client)
-	svc := c.Services().ECRPublic
+	svc := c.Services().Ecrpublic
 	for {
 		output, err := svc.DescribeImages(ctx, &config)
 		if err != nil {
@@ -76,7 +76,7 @@ func resolveImageArn(ctx context.Context, meta schema.ClientMeta, resource *sche
 
 	a := arn.ARN{
 		Partition: cl.Partition,
-		Service:   "ecr",
+		Service:   "ecr-public",
 		Region:    cl.Region,
 		AccountID: cl.AccountID,
 		Resource:  "repository_image/" + *item.RegistryId + "/" + *item.ImageDigest,

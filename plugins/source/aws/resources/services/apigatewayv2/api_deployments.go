@@ -10,7 +10,7 @@ import (
 func ApiDeployments() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_apigatewayv2_api_deployments",
-		Description: "https://docs.aws.amazon.com/apigateway/latest/api/API_Deployment.html",
+		Description: `https://docs.aws.amazon.com/apigateway/latest/api/API_Deployment.html`,
 		Resolver:    fetchApigatewayv2ApiDeployments,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
 		Columns: []schema.Column{

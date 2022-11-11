@@ -16,7 +16,6 @@ The composite primary key for this table is (**arn**, **id**).
 |region|String|
 |arn (PK)|String|
 |id (PK)|String|
-|tags|JSON|
 |aws_device|String|
 |aws_device_v2|String|
 |aws_logical_device_id|String|
@@ -35,4 +34,5 @@ The composite primary key for this table is (**arn**, **id**).
 |partner_name|String|
 |port_encryption_status|String|
 |provider_name|String|
+|tags|JSON|
 |vlan|Int|

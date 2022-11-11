@@ -3,6 +3,7 @@ title: Quickstart
 ---
 
 import DownloadSection from '../../components/mdx/_getting-started-download-section.mdx'
+import { Callout } from 'nextra-theme-docs'
 
 # Quickstart
 
@@ -23,24 +24,24 @@ For example, let's configure the [PostgreSQL](https://github.com/cloudquery/clou
 kind: destination
 spec:
   ## Required. name of the plugin.
-  ## This is an alias so it should be unique if you have number of postgresql destinatino plugins.
+  ## This is an alias so it should be unique if you have a number of postgresql destination plugins.
   name: "postgresql"
 
-  ## Optinal. Where to search for the plugin. Default: "github". Options: "github", "local", "grpc"
+  ## Optional. Where to search for the plugin. Default: "github". Options: "github", "local", "grpc".
   # registry: "github"
 
-  ## Optional. path for the plugin. Default: "cloudquery/name".
+  ## Path for the plugin.
   ## If registry is "github" path should be "repo/name"
   ## If registry is "local", path is path to binary. If "grpc" then it should be address of the plugin (usually useful in debug).
-  # path: "cloudquery/postgresql"
+  path: "cloudquery/postgresql"
 
   ## Required. Must be a specific version starting with v, e.g. v1.2.3
   ## checkout latest versions here https://github.com/cloudquery/cloudquery/releases?q=plugins-destination-postgresql&expanded=true
-  version: "v1.2.2" # latest version of postgresql plugin
+  version: "v1.7.7" # latest version of postgresql plugin
 
-  ## Optional. Default: "overwrite". Available: "overwrite", "overwrite-delete-stale", "append". Not all modes are supported by all plugins,
-  ## so make sure to check the plugin documentation for more details.
-  write_mode: "overwrite" # overwrite, overwrite-delete-stale, append
+  ## Optional. Default: "overwrite-delete-stale". Available: "overwrite-delete-stale", "overwrite", "append". 
+  ##  Not all modes are supported by all plugins, so make sure to check the plugin documentation for more details.
+  write_mode: "overwrite-delete-stale" # overwrite-delete-stale, overwrite, append
 
   spec:
     ## plugin-specific configuration for PostgreSQL.
@@ -57,6 +58,13 @@ spec:
 
 For a list of all available destination plugin spec options, see [Destination Spec Reference](/docs/reference/destination-spec).
 
+<Callout>
+
+If you have multiple destination plugins (or running multiple cloudquery instances in parallel), it's required
+that every plugin configuration has a unique `name` (e.g. `postgres1`, `postgres2`, …).
+
+</Callout>
+
 ## Configure Source Plugin
 
 Source plugins define the APIs you want to sync from (See [available sources](./plugins/sources)).
@@ -69,18 +77,17 @@ spec:
   ## Required. name of the plugin to use.
   ## This should be unique if you have number of aws plugins.
   name: "aws"
-
-  ## Required. Must be a specific version starting with v, e.g. v1.2.3
-  ## checkout latest versions here https://github.com/cloudquery/cloudquery/releases?q=plugins-source-aws&expanded=true
-  version: "v2.5.0" # latest version of aws plugin
-
   ## Optional. Where to search for the plugin. Default: "github". Options: "github", "local", "grpc"
   # registry: "github"
 
-  ## Optional. path for the plugin. Default: "cloudquery/name".
+  ## Path for the plugin.
   ## If registry is "github" path should be "repo/name"
   ## If registry is "local", path is path to binary. If "grpc" then it should be address of the plugin (usually useful in debug).
-  # path: cloudquery/aws
+  path: "cloudquery/aws"
+
+  ## Required. Must be a specific version starting with v, e.g. v1.2.3
+  ## checkout latest versions here https://github.com/cloudquery/cloudquery/releases?q=plugins-source-aws&expanded=true
+  version: "v4.14.0" # latest version of aws plugin
 
   ## Optional. Default: ["*"] - all tables. We recommend to specify specific tables that you need to sync as this
   ## will reduce the amount of data synced and improve performance.
@@ -98,6 +105,24 @@ spec:
 
 - All general options for source spec you can find under [references/source-spec](/docs/reference/source-spec).
 - All options for `postgresql` destination plugin spec you can find [here](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/configuration.md)
+
+<Callout>
+
+If you have multiple source plugins (or running multiple cloudquery instances in parallel), it's required
+that every plugin configuration has a unique `name` (e.g. `aws1`, `aws2`, …).
+
+Running multiple plugins with the same name can cause unexpected behavior (e.g. empty tables). 
+
+You can read more [here](/docs/advanced-topics/running-cloudquery-in-parallel).
+
+</Callout>
+
+## Authenticate with the Cloud Provider
+
+CloudQuery uses similar authentication methods to the official SDKs of each cloud provider.
+The AWS authentication guide is located [here](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/README.md).
+
+You can find authentication for other plugins in their corresponding [READMEs](https://github.com/cloudquery/cloudquery/tree/main/plugins/source).
 
 ## Start Syncing
 

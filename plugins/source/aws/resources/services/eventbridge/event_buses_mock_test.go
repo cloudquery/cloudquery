@@ -7,26 +7,26 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/eventbridge/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildEventBridgeEventBusesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockEventBridgeClient(ctrl)
+	m := mocks.NewMockEventbridgeClient(ctrl)
 	bus := types.EventBus{}
-	err := faker.FakeData(&bus)
+	err := faker.FakeObject(&bus)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	rule := types.Rule{}
-	err = faker.FakeData(&rule)
+	err = faker.FakeObject(&rule)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	tags := eventbridge.ListTagsForResourceOutput{}
-	err = faker.FakeData(&tags)
+	err = faker.FakeObject(&tags)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -43,7 +43,7 @@ func buildEventBridgeEventBusesMock(t *testing.T, ctrl *gomock.Controller) clien
 		&tags, nil)
 
 	return client.Services{
-		EventBridge: m,
+		Eventbridge: m,
 	}
 }
 

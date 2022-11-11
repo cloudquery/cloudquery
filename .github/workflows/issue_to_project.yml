@@ -7,9 +7,10 @@ on:
 
 jobs:
   issue_opened_or_reopened:
+    timeout-minutes: 5
     name: issue_opened_or_reopened
     runs-on: ubuntu-latest
-    if: github.event_name == 'issues' && (github.event.action == 'opened' || github.event.action == 'reopened')  && github.event.issue.user.login != 'cq-bot'
+    if: github.event.issue.user.login != 'cq-bot'
     steps:
       - name: Add issue to Public Roadmap
         uses: leonsteinhaeuser/project-beta-automations@v2.0.1

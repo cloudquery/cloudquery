@@ -7,32 +7,32 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/resourcegroups/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildResourceGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockResourceGroupsClient(ctrl)
+	m := mocks.NewMockResourcegroupsClient(ctrl)
 	gId := types.GroupIdentifier{}
-	err := faker.FakeData(&gId)
+	err := faker.FakeObject(&gId)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	groupResponse := types.Group{}
-	err = faker.FakeData(&groupResponse)
+	err = faker.FakeObject(&groupResponse)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	tagsResponse := resourcegroups.GetTagsOutput{}
-	err = faker.FakeData(&tagsResponse)
+	err = faker.FakeObject(&tagsResponse)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	query := types.GroupQuery{}
-	err = faker.FakeData(&query)
+	err = faker.FakeObject(&query)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -52,7 +52,7 @@ func buildResourceGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Servi
 		}, nil)
 
 	return client.Services{
-		ResourceGroups: m,
+		Resourcegroups: m,
 	}
 }
 

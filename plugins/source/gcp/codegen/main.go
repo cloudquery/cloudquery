@@ -17,6 +17,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/codegen/recipes"
 	"github.com/iancoleman/strcase"
+	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -157,6 +158,9 @@ func generateResource(r recipes.Resource, mock bool) {
 			case *timestamppb.Timestamp,
 				timestamppb.Timestamp:
 				return schema.TypeTimestamp, nil
+			case *durationpb.Duration,
+				durationpb.Duration:
+				return schema.TypeInt, nil
 			default:
 				return schema.TypeInvalid, nil
 			}
@@ -166,6 +170,9 @@ func generateResource(r recipes.Resource, mock bool) {
 			case *timestamppb.Timestamp,
 				timestamppb.Timestamp:
 				return `client.ResolveProtoTimestamp("` + path + `")`, nil
+			case *durationpb.Duration,
+				durationpb.Duration:
+				return `client.ResolveProtoDuration("` + path + `")`, nil
 			default:
 				return "", nil
 			}

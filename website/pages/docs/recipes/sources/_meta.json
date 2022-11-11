@@ -1,0 +1,6 @@
+{
+  "aws": "AWS",
+  "azure": "Azure",
+  "gcp": "GCP",
+  "gcp-k8s": "GCP K8S"
+}

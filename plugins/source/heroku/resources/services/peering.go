@@ -13,7 +13,7 @@ import (
 func Peerings() *schema.Table {
 	return &schema.Table{
 		Name:        "heroku_peerings",
-		Description: "https://devcenter.heroku.com/articles/platform-api-reference#peering-attributes",
+		Description: `https://devcenter.heroku.com/articles/platform-api-reference#peering`,
 		Resolver:    fetchPeerings,
 		Columns: []schema.Column{
 			{

@@ -9,9 +9,10 @@ import (
 
 func DataRepositoryTasks() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_fsx_data_repository_tasks",
-		Resolver:  fetchFsxDataRepositoryTasks,
-		Multiplex: client.ServiceAccountRegionMultiplexer("fsx"),
+		Name:        "aws_fsx_data_repository_tasks",
+		Description: `https://docs.aws.amazon.com/fsx/latest/APIReference/API_DataRepositoryTask.html`,
+		Resolver:    fetchFsxDataRepositoryTasks,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("fsx"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -30,11 +31,6 @@ func DataRepositoryTasks() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "creation_time",
@@ -100,6 +96,11 @@ func DataRepositoryTasks() *schema.Table {
 				Name:     "status",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Status"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 		},
 	}

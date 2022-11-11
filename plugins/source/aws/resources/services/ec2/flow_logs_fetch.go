@@ -14,7 +14,7 @@ import (
 func fetchEc2FlowLogs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config ec2.DescribeFlowLogsInput
 	c := meta.(*client.Client)
-	svc := c.Services().EC2
+	svc := c.Services().Ec2
 	for {
 		output, err := svc.DescribeFlowLogs(ctx, &config)
 		if err != nil {
@@ -37,7 +37,7 @@ func resolveFlowLogArn(_ context.Context, meta schema.ClientMeta, resource *sche
 		Service:   "ec2",
 		Region:    cl.Region,
 		AccountID: cl.AccountID,
-		Resource:  "flow_logs/" + aws.ToString(item.FlowLogId),
+		Resource:  "vpc-flow-log/" + aws.ToString(item.FlowLogId),
 	}
 	return resource.Set(c.Name, a.String())
 }

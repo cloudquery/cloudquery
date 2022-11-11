@@ -13,9 +13,10 @@ import (
 func ECSResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "clusters",
-			Struct:     &types.Cluster{},
-			SkipFields: []string{"Tags", "ClusterArn"},
+			SubService:  "clusters",
+			Struct:      &types.Cluster{},
+			Description: "https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_Cluster.html",
+			SkipFields:  []string{"ClusterArn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -25,11 +26,6 @@ func ECSResources() []*Resource {
 						Resolver: `schema.PathResolver("ClusterArn")`,
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `client.ResolveTags`,
-					},
 				}...),
 			Relations: []string{
 				"ClusterTasks()",
@@ -38,9 +34,10 @@ func ECSResources() []*Resource {
 			},
 		},
 		{
-			SubService: "cluster_tasks",
-			Struct:     &types.Task{},
-			SkipFields: []string{"Tags", "TaskArn"},
+			SubService:  "cluster_tasks",
+			Struct:      &types.Task{},
+			Description: "https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_Task.html",
+			SkipFields:  []string{"Tags", "TaskArn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -59,9 +56,10 @@ func ECSResources() []*Resource {
 			Relations: []string{},
 		},
 		{
-			SubService: "cluster_services",
-			Struct:     &types.Service{},
-			SkipFields: []string{"Tags", "ServiceArn"},
+			SubService:  "cluster_services",
+			Struct:      &types.Service{},
+			Description: "https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_Service.html",
+			SkipFields:  []string{"ServiceArn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -71,18 +69,13 @@ func ECSResources() []*Resource {
 						Resolver: `schema.PathResolver("ServiceArn")`,
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `client.ResolveTags`,
-					},
 				}...),
 			Relations: []string{},
 		},
 		{
-			SubService: "cluster_container_instances",
-			Struct:     &types.ContainerInstance{},
-			SkipFields: []string{"Tags"},
+			SubService:  "cluster_container_instances",
+			Struct:      &types.ContainerInstance{},
+			Description: "https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ContainerInstance.html",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -91,17 +84,13 @@ func ECSResources() []*Resource {
 						Type:     schema.TypeString,
 						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `client.ResolveTags`,
-					},
 				}...),
 			Relations: []string{},
 		},
 		{
 			SubService:          "task_definitions",
 			Struct:              &models.TaskDefinitionWrapper{},
+			Description:         "https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_TaskDefinition.html",
 			SkipFields:          []string{"TaskDefinitionArn", "Tags"},
 			PreResourceResolver: "getTaskDefinition",
 			ExtraColumns: append(

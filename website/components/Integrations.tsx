@@ -20,7 +20,7 @@ export function Integrations() {
   return (
     <div className="flex justify-center items-center flex-wrap gap-9 mt-8 sm:mt-4">
       {INTEGRATIONS.map(({ name, logo, id }) => (
-        <LogoContainer title={name} href={`/plugins/${id}`} key={id}>
+        <LogoContainer title={name} href={`/docs/plugins/sources`} key={id}>
           {logo}
         </LogoContainer>
       ))}

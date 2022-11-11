@@ -7,19 +7,19 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ecrpublic/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildEcrPublicRepositoriesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockEcrPublicClient(ctrl)
+	m := mocks.NewMockEcrpublicClient(ctrl)
 	l := types.Repository{}
-	err := faker.FakeData(&l)
+	err := faker.FakeObject(&l)
 	if err != nil {
 		t.Fatal(err)
 	}
 	i := types.ImageDetail{}
-	err = faker.FakeData(&i)
+	err = faker.FakeObject(&i)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -35,14 +35,14 @@ func buildEcrPublicRepositoriesMock(t *testing.T, ctrl *gomock.Controller) clien
 		}, nil)
 
 	tagResponse := ecrpublic.ListTagsForResourceOutput{}
-	err = faker.FakeData(&tagResponse)
+	err = faker.FakeObject(&tagResponse)
 	if err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tagResponse, nil)
 
 	return client.Services{
-		ECRPublic: m,
+		Ecrpublic: m,
 	}
 }
 

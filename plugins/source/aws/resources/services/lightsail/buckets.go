@@ -9,9 +9,10 @@ import (
 
 func Buckets() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_lightsail_buckets",
-		Resolver:  fetchLightsailBuckets,
-		Multiplex: client.ServiceAccountRegionMultiplexer("lightsail"),
+		Name:        "aws_lightsail_buckets",
+		Description: `https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_Bucket.html`,
+		Resolver:    fetchLightsailBuckets,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("lightsail"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -22,11 +23,6 @@ func Buckets() *schema.Table {
 				Name:     "region",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveAWSRegion,
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "able_to_update_bundle",
@@ -97,6 +93,11 @@ func Buckets() *schema.Table {
 				Name:     "support_code",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("SupportCode"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "url",

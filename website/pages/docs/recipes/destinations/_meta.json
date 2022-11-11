@@ -1,0 +1,5 @@
+{
+  "postgresql": "PostgreSQL",
+  "csv": "CSV",
+  "sqlite": "SQLite"
+}

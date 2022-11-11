@@ -13,7 +13,7 @@ import (
 func Regions() *schema.Table {
 	return &schema.Table{
 		Name:        "heroku_regions",
-		Description: "https://devcenter.heroku.com/articles/platform-api-reference#region-attributes",
+		Description: `https://devcenter.heroku.com/articles/platform-api-reference#region`,
 		Resolver:    fetchRegions,
 		Columns: []schema.Column{
 			{

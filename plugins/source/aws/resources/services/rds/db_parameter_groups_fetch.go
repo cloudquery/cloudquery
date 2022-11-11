@@ -12,7 +12,7 @@ import (
 
 func fetchRdsDbParameterGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().RDS
+	svc := cl.Services().Rds
 	var input rds.DescribeDBParameterGroupsInput
 	for {
 		output, err := svc.DescribeDBParameterGroups(ctx, &input)
@@ -30,7 +30,7 @@ func fetchRdsDbParameterGroups(ctx context.Context, meta schema.ClientMeta, pare
 
 func fetchRdsDbParameterGroupDbParameters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().RDS
+	svc := cl.Services().Rds
 	g := parent.Item.(types.DBParameterGroup)
 	input := rds.DescribeDBParametersInput{DBParameterGroupName: g.DBParameterGroupName}
 	for {
@@ -54,7 +54,7 @@ func fetchRdsDbParameterGroupDbParameters(ctx context.Context, meta schema.Clien
 func resolveRdsDbParameterGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	g := resource.Item.(types.DBParameterGroup)
 	cl := meta.(*client.Client)
-	svc := cl.Services().RDS
+	svc := cl.Services().Rds
 	out, err := svc.ListTagsForResource(ctx, &rds.ListTagsForResourceInput{ResourceName: g.DBParameterGroupArn})
 	if err != nil {
 		return err

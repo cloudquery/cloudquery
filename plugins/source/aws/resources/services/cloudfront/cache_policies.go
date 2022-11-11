@@ -10,7 +10,7 @@ import (
 func CachePolicies() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_cloudfront_cache_policies",
-		Description: "https://docs.aws.amazon.com/cloudfront/latest/APIReference/API_CachePolicySummary.html",
+		Description: `https://docs.aws.amazon.com/cloudfront/latest/APIReference/API_CachePolicySummary.html`,
 		Resolver:    fetchCloudfrontCachePolicies,
 		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{
@@ -18,6 +18,11 @@ func CachePolicies() *schema.Table {
 				Name:     "account_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveAWSAccount,
+			},
+			{
+				Name:     "id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("CachePolicy.Id"),
 			},
 			{
 				Name:     "arn",

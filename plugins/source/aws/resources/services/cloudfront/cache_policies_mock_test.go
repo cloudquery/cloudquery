@@ -7,7 +7,7 @@ import (
 	cloudfrontTypes "github.com/aws/aws-sdk-go-v2/service/cloudfront/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -17,7 +17,7 @@ func buildCloudfrontCachePoliciesMock(t *testing.T, ctrl *gomock.Controller) cli
 		Cloudfront: m,
 	}
 	cp := cloudfrontTypes.CachePolicySummary{}
-	if err := faker.FakeData(&cp); err != nil {
+	if err := faker.FakeObject(&cp); err != nil {
 		t.Fatal(err)
 	}
 

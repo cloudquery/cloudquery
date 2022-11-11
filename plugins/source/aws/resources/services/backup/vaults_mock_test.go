@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/backup/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -16,7 +16,7 @@ func buildBackupVaultsMock(t *testing.T, ctrl *gomock.Controller) client.Service
 	m := mocks.NewMockBackupClient(ctrl)
 
 	var vault types.BackupVaultListMember
-	if err := faker.FakeData(&vault); err != nil {
+	if err := faker.FakeObject(&vault); err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().ListBackupVaults(
@@ -64,7 +64,7 @@ func buildBackupVaultsMock(t *testing.T, ctrl *gomock.Controller) client.Service
 	)
 
 	var rp types.RecoveryPointByBackupVault
-	if err := faker.FakeData(&rp); err != nil {
+	if err := faker.FakeObject(&rp); err != nil {
 		t.Fatal(err)
 	}
 	rp.ResourceArn = aws.String("arn:aws:s3:eu-central-1:testAccount:resource/id")

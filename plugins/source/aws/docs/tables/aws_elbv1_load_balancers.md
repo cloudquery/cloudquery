@@ -1,12 +1,12 @@
 # Table: aws_elbv1_load_balancers
 
-
+https://docs.aws.amazon.com/elasticloadbalancing/2012-06-01/APIReference/API_LoadBalancerDescription.html
 
 The primary key for this table is **arn**.
 
 ## Relations
-The following tables depend on `aws_elbv1_load_balancers`:
-  - [`aws_elbv1_load_balancer_policies`](aws_elbv1_load_balancer_policies.md)
+The following tables depend on aws_elbv1_load_balancers:
+  - [aws_elbv1_load_balancer_policies](aws_elbv1_load_balancer_policies.md)
 
 ## Columns
 | Name          | Type          |

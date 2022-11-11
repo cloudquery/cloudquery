@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
 )
@@ -17,7 +17,7 @@ func buildWorkflowsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockGlueClient(ctrl)
 
 	var name string
-	require.NoError(t, faker.FakeData(&name))
+	require.NoError(t, faker.FakeObject(&name))
 	m.EXPECT().ListWorkflows(
 		gomock.Any(),
 		&glue.ListWorkflowsInput{MaxResults: aws.Int32(25)},
@@ -27,7 +27,7 @@ func buildWorkflowsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	)
 
 	var w types.Workflow
-	require.NoError(t, faker.FakeData(&w))
+	require.NoError(t, faker.FakeObject(&w))
 	w.Name = &name
 	m.EXPECT().GetWorkflow(
 		gomock.Any(),

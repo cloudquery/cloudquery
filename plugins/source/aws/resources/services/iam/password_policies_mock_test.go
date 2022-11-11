@@ -7,14 +7,14 @@ import (
 	iamTypes "github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildIamPasswordPolicies(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockIamClient(ctrl)
 	g := iamTypes.PasswordPolicy{}
-	err := faker.FakeData(&g)
+	err := faker.FakeObject(&g)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -24,7 +24,7 @@ func buildIamPasswordPolicies(t *testing.T, ctrl *gomock.Controller) client.Serv
 			PasswordPolicy: &g,
 		}, nil)
 	return client.Services{
-		IAM: m,
+		Iam: m,
 	}
 }
 

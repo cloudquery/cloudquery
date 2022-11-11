@@ -30,7 +30,7 @@ Audit logs are great, although they only focus on what **changed** and not on wh
 
 - **Visualize Historical State:** Enhance your current visualization workflows such as Grafana and re-use the [dashboards](https://www.cloudquery.io/blog/open-source-cloud-asset-inventory-with-cloudquery-and-grafana) to view current and historical state.
 - **Alert on change using standard SQL:** Use TimescaleDB's [hyperfunctions](https://docs.timescale.com/api/latest/hyperfunctions/) and [continuous aggregates](https://docs.timescale.com/api/latest/continuous-aggregates/) to aggregate at predefined intervals and materialize results and find changes that occurred between fetches.
-- **Compliance:** To ensure you were compliant not only in point in time but also over time, you can re-use pre-made and custom [CloudQuery Policies](/docs/policies) to prove compliance over-time.
+- **Compliance:** To ensure you were compliant not only in point in time but also over time, you can re-use pre-made and custom [CloudQuery Policies](/docs/core-concepts/policies) to prove compliance over-time.
 - **Visibility:** Find resources that might already be deleted. Inspect what was created and understand what happened.
 - **Postmortems and incident response:** Full historical snapshots of your cloud assets allow you to gain better insights into what happened in your environment and determine the blast radius. Re-use any standard analytics or BI tools.
 
@@ -40,7 +40,7 @@ History is currently in alpha version, so we welcome any feedback as it's not ye
 
 Setting up History is fairly simple, you are required to either install the TimescaleDB extension on your existing PostgreSQL instance or setup a self hosted TimescaleDB instance. See [here](https://docs.timescale.com/timescaledb/latest/how-to-guides/install-timescaledb/self-hosted/) for more details.
 
-See CloudQuery [getting started guide](https://www.cloudquery.io/docs/getting-started/getting-started-with-aws) and [history configuration](https://www.cloudquery.io/docs/configuration/overview) for more details on how to configure your cloudquery to run with History enabled.
+See CloudQuery [quickstart guide](/docs/quickstart) and [history configuration](/docs) for more details on how to configure CloudQuery to run with History enabled.
 
 ## What next?
 

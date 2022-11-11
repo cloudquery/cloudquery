@@ -9,9 +9,10 @@ import (
 
 func Alarms() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_lightsail_alarms",
-		Resolver:  fetchLightsailAlarms,
-		Multiplex: client.ServiceAccountRegionMultiplexer("lightsail"),
+		Name:        "aws_lightsail_alarms",
+		Description: `https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_Alarm.html`,
+		Resolver:    fetchLightsailAlarms,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("lightsail"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

@@ -26,7 +26,7 @@ DevOps/SRE/Security team.
 
 ## GCP Provider Improvements
 
-**Project Auto Discovery**: The [GCP Provider](/plugins/gcp#configuration)
+**Project Auto Discovery**: The [GCP Provider](/docs/plugins/sources)
 can now auto-discover all projects under your organization and recursively fetch all the configuration from each project
 (and project sprawl in GCP is common!). This should significantly simplify CloudQuery configuration and maintenance as
 well as open-up opportunity to build new workflows and alert on things like project creation.
@@ -39,10 +39,10 @@ databases! Checkout our [blog](https://www.cloudquery.io/blog/migration-and-hist
 
 ## Store Policy Data in The Database
 
-CloudQuery supports six open-source security & compliance [policies](/docs/policies) implemented
+CloudQuery supports six open-source security & compliance [policies](/docs/core-concepts/policies) implemented
 in SQL so you can codify your security and compliance posture. With this release you can also store the result in
 PostgreSQL and enable more workflows downstream like monitoring security results in your favorite BI tool,
-alerting and much more! To see more checkout the [documentation](/docs/policies).
+alerting and much more! To see more checkout the [documentation](/docs/core-concepts/policies).
 
 ## Deployments
 

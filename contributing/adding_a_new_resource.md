@@ -38,6 +38,6 @@ Here are the general steps to follow:
 
 See the following guides for deep-dives into adding resources for specific source plugins:
 
-- [Adding a new resource (AWS)](../plugins/source/aws/docs/contributing/adding_a_new_resource.md)
-- [Adding a new resource (Azure)](../plugins/source/azure/docs/contributing/adding_a_new_resource.md)
-- [Adding a new resource (GCP)](../plugins/source/gcp/docs/contributing/adding_a_new_resource.md)
+- [Adding a new resource (AWS)](../plugins/source/aws/CONTRIBUTING.md)
+- [Adding a new resource (Azure)](../plugins/source/azure/CONTRIBUTING.md)
+- [Adding a new resource (GCP)](../plugins/source/gcp/CONTRIBUTING.md)

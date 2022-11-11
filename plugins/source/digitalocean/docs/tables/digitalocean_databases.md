@@ -5,10 +5,10 @@
 The primary key for this table is **id**.
 
 ## Relations
-The following tables depend on `digitalocean_databases`:
-  - [`digitalocean_database_firewall_rules`](digitalocean_database_firewall_rules.md)
-  - [`digitalocean_database_replicas`](digitalocean_database_replicas.md)
-  - [`digitalocean_database_backups`](digitalocean_database_backups.md)
+The following tables depend on digitalocean_databases:
+  - [digitalocean_database_firewall_rules](digitalocean_database_firewall_rules.md)
+  - [digitalocean_database_replicas](digitalocean_database_replicas.md)
+  - [digitalocean_database_backups](digitalocean_database_backups.md)
 
 ## Columns
 | Name          | Type          |

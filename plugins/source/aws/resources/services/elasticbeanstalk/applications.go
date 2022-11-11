@@ -9,9 +9,10 @@ import (
 
 func Applications() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_elasticbeanstalk_applications",
-		Resolver:  fetchElasticbeanstalkApplications,
-		Multiplex: client.ServiceAccountRegionMultiplexer("elasticbeanstalk"),
+		Name:        "aws_elasticbeanstalk_applications",
+		Description: `https://docs.aws.amazon.com/elasticbeanstalk/latest/api/API_ApplicationDescription.html`,
+		Resolver:    fetchElasticbeanstalkApplications,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticbeanstalk"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

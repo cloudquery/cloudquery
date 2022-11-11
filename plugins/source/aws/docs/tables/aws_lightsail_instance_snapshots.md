@@ -1,6 +1,6 @@
 # Table: aws_lightsail_instance_snapshots
 
-
+https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_InstanceSnapshot.html
 
 The primary key for this table is **arn**.
 
@@ -15,7 +15,6 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
-|tags|JSON|
 |created_at|Timestamp|
 |from_attached_disks|JSON|
 |from_blueprint_id|String|
@@ -30,3 +29,4 @@ The primary key for this table is **arn**.
 |size_in_gb|Int|
 |state|String|
 |support_code|String|
+|tags|JSON|

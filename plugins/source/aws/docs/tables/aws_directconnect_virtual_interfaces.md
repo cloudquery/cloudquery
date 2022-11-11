@@ -15,7 +15,6 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
-|tags|JSON|
 |id|String|
 |address_family|String|
 |amazon_address|String|
@@ -35,6 +34,7 @@ The primary key for this table is **arn**.
 |owner_account|String|
 |route_filter_prefixes|JSON|
 |site_link_enabled|Bool|
+|tags|JSON|
 |virtual_gateway_id|String|
 |virtual_interface_name|String|
 |virtual_interface_state|String|

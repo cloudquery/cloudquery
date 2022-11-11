@@ -8,15 +8,15 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/acm/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildACMCertificates(t *testing.T, ctrl *gomock.Controller) client.Services {
-	mock := mocks.NewMockACMClient(ctrl)
+	mock := mocks.NewMockAcmClient(ctrl)
 
 	var cs types.CertificateSummary
-	if err := faker.FakeData(&cs); err != nil {
+	if err := faker.FakeObject(&cs); err != nil {
 		t.Fatal(err)
 	}
 	mock.EXPECT().ListCertificates(
@@ -29,7 +29,7 @@ func buildACMCertificates(t *testing.T, ctrl *gomock.Controller) client.Services
 	)
 
 	var cert types.CertificateDetail
-	if err := faker.FakeData(&cert); err != nil {
+	if err := faker.FakeObject(&cert); err != nil {
 		t.Fatal(err)
 	}
 	cert.CertificateArn = cs.CertificateArn
@@ -53,7 +53,7 @@ func buildACMCertificates(t *testing.T, ctrl *gomock.Controller) client.Services
 		},
 		nil,
 	)
-	return client.Services{ACM: mock}
+	return client.Services{Acm: mock}
 }
 
 func TestACMCertificates(t *testing.T) {

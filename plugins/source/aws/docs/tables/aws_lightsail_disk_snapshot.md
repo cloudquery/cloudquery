@@ -1,11 +1,11 @@
 # Table: aws_lightsail_disk_snapshot
 
-
+https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_DiskSnapshot.html
 
 The primary key for this table is **_cq_id**.
 
 ## Relations
-This table depends on [`aws_lightsail_disks`](aws_lightsail_disks.md).
+This table depends on [aws_lightsail_disks](aws_lightsail_disks.md).
 
 ## Columns
 | Name          | Type          |
@@ -17,7 +17,6 @@ This table depends on [`aws_lightsail_disks`](aws_lightsail_disks.md).
 |account_id|String|
 |region|String|
 |disk_arn|String|
-|tags|JSON|
 |arn|String|
 |created_at|Timestamp|
 |from_disk_arn|String|
@@ -32,3 +31,4 @@ This table depends on [`aws_lightsail_disks`](aws_lightsail_disks.md).
 |size_in_gb|Int|
 |state|String|
 |support_code|String|
+|tags|JSON|

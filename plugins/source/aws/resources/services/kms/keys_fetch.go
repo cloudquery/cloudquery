@@ -11,46 +11,49 @@ import (
 )
 
 func fetchKmsKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	var input kms.ListKeysInput
 	c := meta.(*client.Client)
-	svc := c.Services().KMS
-	for {
-		response, err := svc.ListKeys(ctx, &input)
+	svc := c.Services().Kms
+
+	config := kms.ListKeysInput{Limit: aws.Int32(1000)}
+	p := kms.NewListKeysPaginator(svc, &config)
+	for p.HasMorePages() {
+		response, err := p.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		for _, item := range response.Keys {
-			d, err := svc.DescribeKey(ctx, &kms.DescribeKeyInput{KeyId: item.KeyId}, func(options *kms.Options) {
-				options.Region = c.Region
-			})
-			if err != nil {
-				if c.IsNotFoundError(err) {
-					continue
-				}
-				return err
-			}
-			if d.KeyMetadata != nil {
-				res <- *d.KeyMetadata
-			}
-		}
-		if aws.ToString(response.NextMarker) == "" {
-			break
-		}
-		input.Marker = response.NextMarker
+		res <- response.Keys
 	}
 	return nil
 }
+
+func getKey(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	c := meta.(*client.Client)
+	svc := c.Services().Kms
+	item := resource.Item.(types.KeyListEntry)
+
+	d, err := svc.DescribeKey(ctx, &kms.DescribeKeyInput{KeyId: item.KeyId})
+	if err != nil {
+		if c.IsNotFoundError(err) {
+			return nil
+		}
+		return err
+	}
+	resource.Item = d.KeyMetadata
+	return nil
+}
+
 func resolveKeysReplicaKeys(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	key := resource.Item.(types.KeyMetadata)
+	key := resource.Item.(*types.KeyMetadata)
 	if key.MultiRegionConfiguration == nil {
 		return nil
 	}
 	return resource.Set(c.Name, key.MultiRegionConfiguration.ReplicaKeys)
 }
+
 func resolveKeysTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().KMS
-	key := resource.Item.(types.KeyMetadata)
+	svc := cl.Services().Kms
+	key := resource.Item.(*types.KeyMetadata)
 	if key.Origin == "EXTERNAL" || key.KeyManager == "AWS" {
 		return nil
 	}
@@ -71,10 +74,11 @@ func resolveKeysTags(ctx context.Context, meta schema.ClientMeta, resource *sche
 	}
 	return resource.Set(c.Name, tags)
 }
+
 func resolveKeysRotationEnabled(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().KMS
-	key := resource.Item.(types.KeyMetadata)
+	svc := cl.Services().Kms
+	key := resource.Item.(*types.KeyMetadata)
 	if key.Origin == "EXTERNAL" || key.KeyManager == "AWS" {
 		return nil
 	}

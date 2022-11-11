@@ -9,9 +9,10 @@ import (
 
 func StaticIps() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_lightsail_static_ips",
-		Resolver:  fetchLightsailStaticIps,
-		Multiplex: client.ServiceAccountRegionMultiplexer("lightsail"),
+		Name:        "aws_lightsail_static_ips",
+		Description: `https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_StaticIp.html`,
+		Resolver:    fetchLightsailStaticIps,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("lightsail"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

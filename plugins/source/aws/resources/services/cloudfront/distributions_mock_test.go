@@ -7,7 +7,7 @@ import (
 	cloudfrontTypes "github.com/aws/aws-sdk-go-v2/service/cloudfront/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -17,7 +17,7 @@ func buildCloudfrontDistributionsMock(t *testing.T, ctrl *gomock.Controller) cli
 		Cloudfront: m,
 	}
 	ds := cloudfrontTypes.DistributionSummary{}
-	if err := faker.FakeData(&ds); err != nil {
+	if err := faker.FakeObject(&ds); err != nil {
 		t.Fatal(err)
 	}
 	cloudfrontOutput := &cloudfront.ListDistributionsOutput{
@@ -31,7 +31,7 @@ func buildCloudfrontDistributionsMock(t *testing.T, ctrl *gomock.Controller) cli
 	)
 
 	distribution := &cloudfront.GetDistributionOutput{}
-	if err := faker.FakeData(&distribution); err != nil {
+	if err := faker.FakeObject(&distribution); err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().GetDistribution(gomock.Any(), gomock.Any(), gomock.Any()).Return(
@@ -40,7 +40,7 @@ func buildCloudfrontDistributionsMock(t *testing.T, ctrl *gomock.Controller) cli
 	)
 
 	tags := &cloudfront.ListTagsForResourceOutput{}
-	if err := faker.FakeData(&tags); err != nil {
+	if err := faker.FakeObject(&tags); err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(

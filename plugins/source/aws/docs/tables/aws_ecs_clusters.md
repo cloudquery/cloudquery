@@ -1,14 +1,14 @@
 # Table: aws_ecs_clusters
 
-
+https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_Cluster.html
 
 The primary key for this table is **arn**.
 
 ## Relations
-The following tables depend on `aws_ecs_clusters`:
-  - [`aws_ecs_cluster_tasks`](aws_ecs_cluster_tasks.md)
-  - [`aws_ecs_cluster_services`](aws_ecs_cluster_services.md)
-  - [`aws_ecs_cluster_container_instances`](aws_ecs_cluster_container_instances.md)
+The following tables depend on aws_ecs_clusters:
+  - [aws_ecs_cluster_tasks](aws_ecs_cluster_tasks.md)
+  - [aws_ecs_cluster_services](aws_ecs_cluster_services.md)
+  - [aws_ecs_cluster_container_instances](aws_ecs_cluster_container_instances.md)
 
 ## Columns
 | Name          | Type          |
@@ -20,7 +20,6 @@ The following tables depend on `aws_ecs_clusters`:
 |account_id|String|
 |region|String|
 |arn (PK)|String|
-|tags|JSON|
 |active_services_count|Int|
 |attachments|JSON|
 |attachments_status|String|
@@ -34,3 +33,4 @@ The following tables depend on `aws_ecs_clusters`:
 |settings|JSON|
 |statistics|JSON|
 |status|String|
+|tags|JSON|

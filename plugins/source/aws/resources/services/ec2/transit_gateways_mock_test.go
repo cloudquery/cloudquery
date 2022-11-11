@@ -7,44 +7,44 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildEc2TransitGateways(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 	tgw := types.TransitGateway{}
-	err := faker.FakeData(&tgw)
+	err := faker.FakeObject(&tgw)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	tgwvpca := types.TransitGatewayVpcAttachment{}
-	err = faker.FakeData(&tgwvpca)
+	err = faker.FakeObject(&tgwvpca)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	tgwpeera := types.TransitGatewayPeeringAttachment{}
-	err = faker.FakeData(&tgwpeera)
+	err = faker.FakeObject(&tgwpeera)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	tgwrt := types.TransitGatewayRouteTable{}
-	err = faker.FakeData(&tgwrt)
+	err = faker.FakeObject(&tgwrt)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	tgwmcd := types.TransitGatewayMulticastDomain{}
-	err = faker.FakeData(&tgwmcd)
+	err = faker.FakeObject(&tgwmcd)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	tgwa := types.TransitGatewayAttachment{}
-	err = faker.FakeData(&tgwa)
+	err = faker.FakeObject(&tgwa)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -77,7 +77,7 @@ func buildEc2TransitGateways(t *testing.T, ctrl *gomock.Controller) client.Servi
 			TransitGateways: []types.TransitGateway{tgw},
 		}, nil)
 	return client.Services{
-		EC2: m,
+		Ec2: m,
 	}
 }
 

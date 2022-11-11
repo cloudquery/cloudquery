@@ -6,7 +6,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client/mocks"
 	k8sTesting "github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/testing"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	batchv1 "k8s.io/api/batch/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -15,15 +15,9 @@ import (
 func createBatchJobs(t *testing.T, ctrl *gomock.Controller) client.Services {
 	jobs := mocks.NewMockJobsClient(ctrl)
 	j := batchv1.Job{}
-	if err := faker.FakeDataSkipFields(&j, []string{
-		"Spec"}); err != nil {
+	if err := faker.FakeObject(&j); err != nil {
 		t.Fatal(err)
 	}
-	if err := faker.FakeDataSkipFields(&j.Spec, []string{
-		"Template"}); err != nil {
-		t.Fatal(err)
-	}
-
 	j.Spec.Template = k8sTesting.FakePodTemplateSpec(t)
 	j.ManagedFields = []metav1.ManagedFieldsEntry{k8sTesting.FakeManagedFields(t)}
 	j.Spec.Template.ManagedFields = []metav1.ManagedFieldsEntry{k8sTesting.FakeManagedFields(t)}

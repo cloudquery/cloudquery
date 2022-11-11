@@ -13,7 +13,7 @@ import (
 func Credits() *schema.Table {
 	return &schema.Table{
 		Name:        "heroku_credits",
-		Description: "https://devcenter.heroku.com/articles/platform-api-reference#credit-attributes",
+		Description: `https://devcenter.heroku.com/articles/platform-api-reference#credit`,
 		Resolver:    fetchCredits,
 		Columns: []schema.Column{
 			{

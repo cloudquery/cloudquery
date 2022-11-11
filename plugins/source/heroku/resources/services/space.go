@@ -13,7 +13,7 @@ import (
 func Spaces() *schema.Table {
 	return &schema.Table{
 		Name:        "heroku_spaces",
-		Description: "https://devcenter.heroku.com/articles/platform-api-reference#space-attributes",
+		Description: `https://devcenter.heroku.com/articles/platform-api-reference#space`,
 		Resolver:    fetchSpaces,
 		Columns: []schema.Column{
 			{

@@ -10,6 +10,7 @@ import (
 func DeliveryStreams() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_firehose_delivery_streams",
+		Description:         `https://docs.aws.amazon.com/firehose/latest/APIReference/API_DeliveryStreamDescription.html`,
 		Resolver:            fetchFirehoseDeliveryStreams,
 		PreResourceResolver: getDeliveryStream,
 		Multiplex:           client.ServiceAccountRegionMultiplexer("firehose"),

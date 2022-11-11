@@ -1,6 +1,6 @@
 # Table: aws_emr_clusters
 
-
+https://docs.aws.amazon.com/emr/latest/APIReference/API_Cluster.html
 
 The primary key for this table is **arn**.
 
@@ -15,7 +15,6 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
-|tags|JSON|
 |applications|JSON|
 |auto_scaling_role|String|
 |auto_terminate|Bool|
@@ -43,5 +42,6 @@ The primary key for this table is **arn**.
 |service_role|String|
 |status|JSON|
 |step_concurrency_level|Int|
+|tags|JSON|
 |termination_protected|Bool|
 |visible_to_all_users|Bool|

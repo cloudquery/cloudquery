@@ -5,8 +5,8 @@
 The primary key for this table is **name**.
 
 ## Relations
-The following tables depend on `gcp_storage_buckets`:
-  - [`gcp_storage_bucket_policies`](gcp_storage_bucket_policies.md)
+The following tables depend on gcp_storage_buckets:
+  - [gcp_storage_bucket_policies](gcp_storage_bucket_policies.md)
 
 ## Columns
 | Name          | Type          |

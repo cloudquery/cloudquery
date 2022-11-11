@@ -13,9 +13,73 @@ import (
 func PipelineBuilds() *schema.Table {
 	return &schema.Table{
 		Name:        "heroku_pipeline_builds",
-		Description: "https://devcenter.heroku.com/articles/platform-api-reference#pipeline-build-attributes",
+		Description: `https://devcenter.heroku.com/articles/platform-api-reference#pipeline-build`,
 		Resolver:    fetchPipelineBuilds,
-		Columns:     []schema.Column{},
+		Columns: []schema.Column{
+			{
+				Name:     "app",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("App"),
+			},
+			{
+				Name:     "buildpacks",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Buildpacks"),
+			},
+			{
+				Name:     "created_at",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("CreatedAt"),
+			},
+			{
+				Name:     "id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ID"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "output_stream_url",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("OutputStreamURL"),
+			},
+			{
+				Name:     "release",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Release"),
+			},
+			{
+				Name:     "slug",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Slug"),
+			},
+			{
+				Name:     "source_blob",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("SourceBlob"),
+			},
+			{
+				Name:     "stack",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Stack"),
+			},
+			{
+				Name:     "status",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Status"),
+			},
+			{
+				Name:     "updated_at",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("UpdatedAt"),
+			},
+			{
+				Name:     "user",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("User"),
+			},
+		},
 	}
 }
 

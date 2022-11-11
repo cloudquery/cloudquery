@@ -11,9 +11,16 @@ import (
 )
 
 func fetchEmrClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	var config emr.ListClustersInput
+	config := emr.ListClustersInput{
+		ClusterStates: []types.ClusterState{
+			types.ClusterStateRunning,
+			types.ClusterStateStarting,
+			types.ClusterStateBootstrapping,
+			types.ClusterStateWaiting,
+		},
+	}
 	c := meta.(*client.Client)
-	svc := c.Services().EMR
+	svc := c.Services().Emr
 	for {
 		response, err := svc.ListClusters(ctx, &config)
 		if err != nil {
@@ -31,7 +38,7 @@ func fetchEmrClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 
 func getCluster(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	c := meta.(*client.Client)
-	svc := c.Services().EMR
+	svc := c.Services().Emr
 	response, err := svc.DescribeCluster(ctx, &emr.DescribeClusterInput{ClusterId: resource.Item.(types.ClusterSummary).Id})
 	if err != nil {
 		return err

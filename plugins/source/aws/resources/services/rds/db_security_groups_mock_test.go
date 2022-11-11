@@ -8,14 +8,14 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildRdsDbSecurityGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mock := mocks.NewMockRdsClient(ctrl)
 	var g types.DBSecurityGroup
-	if err := faker.FakeData(&g); err != nil {
+	if err := faker.FakeObject(&g); err != nil {
 		t.Fatal(err)
 	}
 	mock.EXPECT().DescribeDBSecurityGroups(
@@ -38,7 +38,7 @@ func buildRdsDbSecurityGroups(t *testing.T, ctrl *gomock.Controller) client.Serv
 		nil,
 	)
 
-	return client.Services{RDS: mock}
+	return client.Services{Rds: mock}
 }
 
 func TestRDSDBSecurityGroups(t *testing.T) {

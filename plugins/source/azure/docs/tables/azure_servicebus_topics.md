@@ -1,13 +1,13 @@
 # Table: azure_servicebus_topics
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/servicebus/mgmt/2021-06-01-preview/servicebus#SBTopic
 
 The primary key for this table is **id**.
 
 ## Relations
-This table depends on [`azure_servicebus_namespaces`](azure_servicebus_namespaces.md).
-The following tables depend on `azure_servicebus_topics`:
-  - [`azure_servicebus_authorization_rules`](azure_servicebus_authorization_rules.md)
+This table depends on [azure_servicebus_namespaces](azure_servicebus_namespaces.md).
+The following tables depend on azure_servicebus_topics:
+  - [azure_servicebus_authorization_rules](azure_servicebus_authorization_rules.md)
 
 ## Columns
 | Name          | Type          |

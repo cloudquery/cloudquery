@@ -5,7 +5,7 @@
 The primary key for this table is **urn**.
 
 ## Relations
-This table depends on [`digitalocean_projects`](digitalocean_projects.md).
+This table depends on [digitalocean_projects](digitalocean_projects.md).
 
 ## Columns
 | Name          | Type          |

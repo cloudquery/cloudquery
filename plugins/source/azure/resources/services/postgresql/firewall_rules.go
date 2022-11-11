@@ -12,8 +12,9 @@ import (
 
 func firewallRules() *schema.Table {
 	return &schema.Table{
-		Name:     "azure_postgresql_firewall_rules",
-		Resolver: fetchPostgreSQLFirewallRules,
+		Name:        "azure_postgresql_firewall_rules",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/postgresql/mgmt/2020-01-01/postgresql#FirewallRule`,
+		Resolver:    fetchPostgreSQLFirewallRules,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

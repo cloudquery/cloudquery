@@ -9,9 +9,10 @@ import (
 
 func ClusterParameterGroups() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_rds_cluster_parameter_groups",
-		Resolver:  fetchRdsClusterParameterGroups,
-		Multiplex: client.ServiceAccountRegionMultiplexer("rds"),
+		Name:        "aws_rds_cluster_parameter_groups",
+		Description: `https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBClusterParameterGroup.html`,
+		Resolver:    fetchRdsClusterParameterGroups,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("rds"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

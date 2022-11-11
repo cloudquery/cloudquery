@@ -7,15 +7,15 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/route53domains/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildRoute53Domains(t *testing.T, ctrl *gomock.Controller) client.Services {
-	mock := mocks.NewMockRoute53DomainsClient(ctrl)
+	mock := mocks.NewMockRoute53domainsClient(ctrl)
 
 	var ds types.DomainSummary
-	if err := faker.FakeData(&ds.DomainName); err != nil {
+	if err := faker.FakeObject(&ds.DomainName); err != nil {
 		t.Fatal(err)
 	}
 	mock.EXPECT().ListDomains(gomock.Any(), &route53domains.ListDomainsInput{}, gomock.Any()).Return(
@@ -24,7 +24,7 @@ func buildRoute53Domains(t *testing.T, ctrl *gomock.Controller) client.Services 
 	)
 
 	var detail route53domains.GetDomainDetailOutput
-	if err := faker.FakeData(&detail); err != nil {
+	if err := faker.FakeObject(&detail); err != nil {
 		t.Fatal(err)
 	}
 	detail.DomainName = ds.DomainName
@@ -33,7 +33,7 @@ func buildRoute53Domains(t *testing.T, ctrl *gomock.Controller) client.Services 
 	)
 
 	var tagsOut route53domains.ListTagsForDomainOutput
-	if err := faker.FakeData(&tagsOut); err != nil {
+	if err := faker.FakeObject(&tagsOut); err != nil {
 		t.Fatal(err)
 	}
 	mock.EXPECT().ListTagsForDomain(gomock.Any(), &route53domains.ListTagsForDomainInput{DomainName: ds.DomainName}, gomock.Any()).Return(
@@ -41,7 +41,7 @@ func buildRoute53Domains(t *testing.T, ctrl *gomock.Controller) client.Services 
 	)
 
 	return client.Services{
-		Route53Domains: mock,
+		Route53domains: mock,
 	}
 }
 

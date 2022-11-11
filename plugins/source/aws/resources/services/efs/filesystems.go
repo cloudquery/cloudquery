@@ -9,9 +9,10 @@ import (
 
 func Filesystems() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_efs_filesystems",
-		Resolver:  fetchEfsFilesystems,
-		Multiplex: client.ServiceAccountRegionMultiplexer("elasticfilesystem"),
+		Name:        "aws_efs_filesystems",
+		Description: `https://docs.aws.amazon.com/efs/latest/ug/API_FileSystemDescription.html`,
+		Resolver:    fetchEfsFilesystems,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticfilesystem"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -79,7 +80,7 @@ func Filesystems() *schema.Table {
 			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "availability_zone_id",

@@ -6,7 +6,7 @@ import (
 	"github.com/cloudflare/cloudflare-go"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/client"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -14,7 +14,7 @@ func buildWorkerMetaData(t *testing.T, ctrl *gomock.Controller) client.Clients {
 	mock := mocks.NewMockApi(ctrl)
 
 	var workerScript cloudflare.WorkerMetaData
-	if err := faker.FakeData(&workerScript); err != nil {
+	if err := faker.FakeObject(&workerScript); err != nil {
 		t.Fatal(err)
 	}
 	mock.EXPECT().ListWorkerScripts(
@@ -27,7 +27,7 @@ func buildWorkerMetaData(t *testing.T, ctrl *gomock.Controller) client.Clients {
 	)
 
 	var workerCronTrigger cloudflare.WorkerCronTrigger
-	if err := faker.FakeData(&workerCronTrigger); err != nil {
+	if err := faker.FakeObject(&workerCronTrigger); err != nil {
 		t.Fatal(err)
 	}
 	mock.EXPECT().ListWorkerCronTriggers(
@@ -40,7 +40,7 @@ func buildWorkerMetaData(t *testing.T, ctrl *gomock.Controller) client.Clients {
 	)
 
 	var workerSecret cloudflare.WorkersSecret
-	if err := faker.FakeData(&workerSecret); err != nil {
+	if err := faker.FakeObject(&workerSecret); err != nil {
 		t.Fatal(err)
 	}
 	mock.EXPECT().ListWorkersSecrets(

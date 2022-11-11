@@ -13,7 +13,7 @@ import (
 
 func fetchEc2NetworkInterfaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	svc := c.Services().EC2
+	svc := c.Services().Ec2
 	input := ec2.DescribeNetworkInterfacesInput{}
 	for {
 		output, err := svc.DescribeNetworkInterfaces(ctx, &input, func(o *ec2.Options) {
@@ -39,7 +39,7 @@ func resolveNetworkInterfaceArn(_ context.Context, meta schema.ClientMeta, resou
 		Service:   "ec2",
 		Region:    cl.Region,
 		AccountID: cl.AccountID,
-		Resource:  "network_interface/" + aws.ToString(item.NetworkInterfaceId),
+		Resource:  "network-interface/" + aws.ToString(item.NetworkInterfaceId),
 	}
 	return resource.Set(c.Name, a.String())
 }

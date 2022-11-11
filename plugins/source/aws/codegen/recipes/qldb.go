@@ -35,9 +35,10 @@ func QLDBResources() []*Resource {
 			},
 		},
 		{
-			SubService: "ledger_journal_kinesis_streams",
-			Struct:     &types.JournalKinesisStreamDescription{},
-			SkipFields: []string{},
+			SubService:  "ledger_journal_kinesis_streams",
+			Struct:      &types.JournalKinesisStreamDescription{},
+			Description: "https://docs.aws.amazon.com/qldb/latest/developerguide/API_JournalKinesisStreamDescription.html",
+			SkipFields:  []string{},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -49,9 +50,10 @@ func QLDBResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "ledger_journal_s3_exports",
-			Struct:     &types.JournalS3ExportDescription{},
-			SkipFields: []string{},
+			SubService:  "ledger_journal_s3_exports",
+			Struct:      &types.JournalS3ExportDescription{},
+			Description: "https://docs.aws.amazon.com/qldb/latest/developerguide/API_JournalS3ExportDescription.html",
+			SkipFields:  []string{},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

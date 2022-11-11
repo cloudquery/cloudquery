@@ -13,7 +13,7 @@ import (
 func DynoSizes() *schema.Table {
 	return &schema.Table{
 		Name:        "heroku_dyno_sizes",
-		Description: "https://devcenter.heroku.com/articles/platform-api-reference#dyno-size-attributes",
+		Description: `https://devcenter.heroku.com/articles/platform-api-reference#dyno-size`,
 		Resolver:    fetchDynoSizes,
 		Columns: []schema.Column{
 			{

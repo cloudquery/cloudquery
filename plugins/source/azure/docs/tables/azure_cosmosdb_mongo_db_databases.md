@@ -1,11 +1,11 @@
 # Table: azure_cosmosdb_mongo_db_databases
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2020-04-01-preview/documentdb#MongoDBDatabaseGetResults
 
 The primary key for this table is **id**.
 
 ## Relations
-This table depends on [`azure_cosmosdb_accounts`](azure_cosmosdb_accounts.md).
+This table depends on [azure_cosmosdb_accounts](azure_cosmosdb_accounts.md).
 
 ## Columns
 | Name          | Type          |

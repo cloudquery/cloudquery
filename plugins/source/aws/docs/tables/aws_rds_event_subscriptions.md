@@ -1,6 +1,6 @@
 # Table: aws_rds_event_subscriptions
 
-
+https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_EventSubscription.html
 
 The primary key for this table is **arn**.
 

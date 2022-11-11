@@ -11,7 +11,7 @@ import (
 )
 
 func fetchIamOpenidConnectIdentityProviders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().IAM
+	svc := meta.(*client.Client).Services().Iam
 	response, err := svc.ListOpenIDConnectProviders(ctx, &iam.ListOpenIDConnectProvidersInput{})
 	if err != nil {
 		return err
@@ -22,7 +22,7 @@ func fetchIamOpenidConnectIdentityProviders(ctx context.Context, meta schema.Cli
 }
 
 func getOpenIdConnectIdentityProvider(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	svc := meta.(*client.Client).Services().IAM
+	svc := meta.(*client.Client).Services().Iam
 
 	p := resource.Item.(types.OpenIDConnectProviderListEntry)
 	providerResponse, err := svc.GetOpenIDConnectProvider(ctx, &iam.GetOpenIDConnectProviderInput{OpenIDConnectProviderArn: p.Arn})

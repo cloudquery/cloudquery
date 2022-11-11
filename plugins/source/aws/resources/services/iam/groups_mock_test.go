@@ -7,20 +7,20 @@ import (
 	iamTypes "github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildIamGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockIamClient(ctrl)
 	g := iamTypes.Group{}
-	err := faker.FakeData(&g)
+	err := faker.FakeObject(&g)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	p := iamTypes.AttachedPolicy{}
-	err = faker.FakeData(&p)
+	err = faker.FakeObject(&p)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -36,7 +36,7 @@ func buildIamGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
 
 	//list policies
 	var l []string
-	err = faker.FakeData(&l)
+	err = faker.FakeObject(&l)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -47,7 +47,7 @@ func buildIamGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
 
 	//get policy
 	gp := iam.GetGroupPolicyOutput{}
-	err = faker.FakeData(&gp)
+	err = faker.FakeObject(&gp)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -56,7 +56,7 @@ func buildIamGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().GetGroupPolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&gp, nil)
 	return client.Services{
-		IAM: m,
+		Iam: m,
 	}
 }
 

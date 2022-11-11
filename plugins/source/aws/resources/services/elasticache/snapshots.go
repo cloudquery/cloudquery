@@ -9,9 +9,10 @@ import (
 
 func Snapshots() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_elasticache_snapshots",
-		Resolver:  fetchElasticacheSnapshots,
-		Multiplex: client.ServiceAccountRegionMultiplexer("elasticache"),
+		Name:        "aws_elasticache_snapshots",
+		Description: `https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_Snapshot.html`,
+		Resolver:    fetchElasticacheSnapshots,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticache"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

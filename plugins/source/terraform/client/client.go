@@ -29,6 +29,10 @@ func (c *Client) Logger() *zerolog.Logger {
 	return &c.logger
 }
 
+func (c *Client) ID() string {
+	return c.CurrentBackend
+}
+
 func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.ClientMeta, error) {
 	tfSpec := &Spec{}
 	if err := s.UnmarshalSpec(tfSpec); err != nil {

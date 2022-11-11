@@ -11,6 +11,7 @@ func EKSResources() []*Resource {
 		{
 			SubService:          "clusters",
 			Struct:              &types.Cluster{},
+			Description:         "https://docs.aws.amazon.com/eks/latest/APIReference/API_Cluster.html",
 			SkipFields:          []string{"Arn"},
 			PreResourceResolver: "getEksCluster",
 			ExtraColumns: append(

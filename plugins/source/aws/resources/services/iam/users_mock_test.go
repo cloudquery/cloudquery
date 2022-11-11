@@ -7,40 +7,40 @@ import (
 	iamTypes "github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildIamUsers(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockIamClient(ctrl)
 	u := iamTypes.User{}
-	err := faker.FakeData(&u)
+	err := faker.FakeObject(&u)
 	if err != nil {
 		t.Fatal(err)
 	}
 	g := iamTypes.Group{}
-	err = faker.FakeData(&g)
+	err = faker.FakeObject(&g)
 	if err != nil {
 		t.Fatal(err)
 	}
 	km := iamTypes.AccessKeyMetadata{}
-	err = faker.FakeData(&km)
+	err = faker.FakeObject(&km)
 	if err != nil {
 		t.Fatal(err)
 	}
 	aup := iamTypes.AttachedPolicy{}
-	err = faker.FakeData(&aup)
+	err = faker.FakeObject(&aup)
 	if err != nil {
 		t.Fatal(err)
 	}
 	akl := iam.GetAccessKeyLastUsedOutput{}
-	err = faker.FakeData(&akl)
+	err = faker.FakeObject(&akl)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	var tags []iamTypes.Tag
-	err = faker.FakeData(&tags)
+	err = faker.FakeObject(&tags)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -70,7 +70,7 @@ func buildIamUsers(t *testing.T, ctrl *gomock.Controller) client.Services {
 
 	//list user inline policies
 	var l []string
-	err = faker.FakeData(&l)
+	err = faker.FakeObject(&l)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -81,7 +81,7 @@ func buildIamUsers(t *testing.T, ctrl *gomock.Controller) client.Services {
 
 	//get policy
 	p := iam.GetUserPolicyOutput{}
-	err = faker.FakeData(&p)
+	err = faker.FakeObject(&p)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -91,7 +91,7 @@ func buildIamUsers(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&p, nil)
 
 	return client.Services{
-		IAM: m,
+		Iam: m,
 	}
 }
 

@@ -10,6 +10,7 @@ import (
 func RuleGroups() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_wafv2_rule_groups",
+		Description:         `https://docs.aws.amazon.com/waf/latest/APIReference/API_RuleGroup.html`,
 		Resolver:            fetchWafv2RuleGroups,
 		PreResourceResolver: getRuleGroup,
 		Multiplex:           client.ServiceAccountRegionScopeMultiplexer("waf-regional"),

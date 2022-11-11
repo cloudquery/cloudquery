@@ -11,7 +11,8 @@ func SecretsManagerResources() []*Resource {
 		{
 			SubService:          "secrets",
 			Struct:              &secretsmanager.DescribeSecretOutput{},
-			SkipFields:          []string{"ARN", "Tags", "ResultMetadata"},
+			Description:         "https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_ListSecrets.html",
+			SkipFields:          []string{"ARN", "ResultMetadata"},
 			PreResourceResolver: "getSecret",
 			ExtraColumns: append(
 				defaultRegionalColumns,
@@ -21,12 +22,6 @@ func SecretsManagerResources() []*Resource {
 						Type:     schema.TypeString,
 						Resolver: `schema.PathResolver("ARN")`,
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:        "tags",
-						Description: "The list of user-defined tags associated with the secret",
-						Type:        schema.TypeJSON,
-						Resolver:    `client.ResolveTags`,
 					},
 					{
 						Name:        "policy",

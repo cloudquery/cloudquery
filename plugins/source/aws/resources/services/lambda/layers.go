@@ -9,9 +9,10 @@ import (
 
 func Layers() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_lambda_layers",
-		Resolver:  fetchLambdaLayers,
-		Multiplex: client.ServiceAccountRegionMultiplexer("lambda"),
+		Name:        "aws_lambda_layers",
+		Description: `https://docs.aws.amazon.com/lambda/latest/dg/API_LayersListItem.html`,
+		Resolver:    fetchLambdaLayers,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("lambda"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

@@ -8,6 +8,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/spf13/cast"
 	"github.com/thoas/go-funk"
+	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -35,7 +36,7 @@ func resolveLocation(_ context.Context, c schema.ClientMeta, r *schema.Resource)
 	}
 	name := r.Get("name")
 	if name == nil {
-		c.Logger().Warn().Str("resource", fmt.Sprintf("%T", r.Item)).Msg("missing name for resource")
+		c.(*Client).Logger().Warn().Str("resource", fmt.Sprintf("%T", r.Item)).Msg("missing name for resource")
 		return nil
 	}
 	nameStr, err := cast.ToStringE(name)
@@ -60,5 +61,19 @@ func ResolveProtoTimestamp(path string) schema.ColumnResolver {
 			return fmt.Errorf("unextected type, wanted \"*timestamppb.Timestamp\", have \"%T\"", data)
 		}
 		return resource.Set(c.Name, ts.AsTime())
+	}
+}
+
+func ResolveProtoDuration(path string) schema.ColumnResolver {
+	return func(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+		data := funk.Get(resource.Item, path)
+		if data == nil {
+			return nil
+		}
+		dur, ok := data.(*durationpb.Duration)
+		if !ok {
+			return fmt.Errorf("unextected type, wanted \"*durationpb.Duration\", have \"%T\"", data)
+		}
+		return resource.Set(c.Name, dur.AsDuration())
 	}
 }

@@ -7,14 +7,14 @@ import (
 	iamTypes "github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildIamPolicies(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockIamClient(ctrl)
 	g := iamTypes.ManagedPolicyDetail{}
-	err := faker.FakeData(&g)
+	err := faker.FakeObject(&g)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -31,7 +31,7 @@ func buildIamPolicies(t *testing.T, ctrl *gomock.Controller) client.Services {
 
 	//get tags
 	tag := iamTypes.Tag{}
-	err = faker.FakeData(&tag)
+	err = faker.FakeObject(&tag)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -42,7 +42,7 @@ func buildIamPolicies(t *testing.T, ctrl *gomock.Controller) client.Services {
 			},
 		}, nil)
 	return client.Services{
-		IAM: m,
+		Iam: m,
 	}
 }
 

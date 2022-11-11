@@ -73,6 +73,11 @@ func WebAcls() *schema.Table {
 				Resolver: schema.PathResolver("CaptchaConfig"),
 			},
 			{
+				Name:     "challenge_config",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ChallengeConfig"),
+			},
+			{
 				Name:     "custom_response_bodies",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("CustomResponseBodies"),
@@ -106,6 +111,11 @@ func WebAcls() *schema.Table {
 				Name:     "rules",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Rules"),
+			},
+			{
+				Name:     "token_domains",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("TokenDomains"),
 			},
 			{
 				Name:     "logging_configuration",

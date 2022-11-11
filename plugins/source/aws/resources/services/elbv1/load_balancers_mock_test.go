@@ -7,14 +7,14 @@ import (
 	elbv1Types "github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildElbv1LoadBalancers(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockElbV1Client(ctrl)
+	m := mocks.NewMockElasticloadbalancingClient(ctrl)
 	l := elbv1Types.LoadBalancerDescription{}
-	err := faker.FakeData(&l)
+	err := faker.FakeObject(&l)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -25,7 +25,7 @@ func buildElbv1LoadBalancers(t *testing.T, ctrl *gomock.Controller) client.Servi
 		}, nil)
 
 	tag := elbv1Types.Tag{}
-	err = faker.FakeData(&tag)
+	err = faker.FakeObject(&tag)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -40,7 +40,7 @@ func buildElbv1LoadBalancers(t *testing.T, ctrl *gomock.Controller) client.Servi
 		}, nil)
 
 	a := elbv1Types.LoadBalancerAttributes{}
-	err = faker.FakeData(&a)
+	err = faker.FakeObject(&a)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -50,7 +50,7 @@ func buildElbv1LoadBalancers(t *testing.T, ctrl *gomock.Controller) client.Servi
 		}, nil)
 
 	p := elbv1Types.PolicyDescription{}
-	err = faker.FakeData(&p)
+	err = faker.FakeObject(&p)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -61,7 +61,7 @@ func buildElbv1LoadBalancers(t *testing.T, ctrl *gomock.Controller) client.Servi
 		}, nil)
 
 	return client.Services{
-		ELBv1: m,
+		Elasticloadbalancing: m,
 	}
 }
 

@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sns/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -15,11 +15,11 @@ func buildSnsTopics(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockSnsClient(ctrl)
 	topic := types.Topic{}
 	tag := types.Tag{}
-	err := faker.FakeData(&topic)
+	err := faker.FakeObject(&topic)
 	if err != nil {
 		t.Fatal(err)
 	}
-	tagerr := faker.FakeData(&tag)
+	tagerr := faker.FakeObject(&tag)
 	if tagerr != nil {
 		t.Fatal(tagerr)
 	}
@@ -50,7 +50,7 @@ func buildSnsTopics(t *testing.T, ctrl *gomock.Controller) client.Services {
 			Tags: []types.Tag{tag},
 		}, nil)
 	return client.Services{
-		SNS: m,
+		Sns: m,
 	}
 }
 

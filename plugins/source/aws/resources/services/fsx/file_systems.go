@@ -9,9 +9,10 @@ import (
 
 func FileSystems() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_fsx_file_systems",
-		Resolver:  fetchFsxFileSystems,
-		Multiplex: client.ServiceAccountRegionMultiplexer("fsx"),
+		Name:        "aws_fsx_file_systems",
+		Description: `https://docs.aws.amazon.com/fsx/latest/APIReference/API_FileSystem.html`,
+		Resolver:    fetchFsxFileSystems,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("fsx"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

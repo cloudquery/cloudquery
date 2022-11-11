@@ -14,7 +14,7 @@ import (
 func fetchEc2SecurityGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config ec2.DescribeSecurityGroupsInput
 	c := meta.(*client.Client)
-	svc := c.Services().EC2
+	svc := c.Services().Ec2
 	for {
 		output, err := svc.DescribeSecurityGroups(ctx, &config, func(o *ec2.Options) {
 			o.Region = c.Region
@@ -39,7 +39,7 @@ func resolveSecurityGroupArn(_ context.Context, meta schema.ClientMeta, resource
 		Service:   "ec2",
 		Region:    cl.Region,
 		AccountID: cl.AccountID,
-		Resource:  "security_group/" + aws.ToString(item.GroupId),
+		Resource:  "security-group/" + aws.ToString(item.GroupId),
 	}
 	return resource.Set(c.Name, a.String())
 }

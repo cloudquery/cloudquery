@@ -6,14 +6,14 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/shield"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildProtectionGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockShieldClient(ctrl)
 	pp := shield.ListProtectionGroupsOutput{}
-	err := faker.FakeData(&pp)
+	err := faker.FakeObject(&pp)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -21,7 +21,7 @@ func buildProtectionGroups(t *testing.T, ctrl *gomock.Controller) client.Service
 	m.EXPECT().ListProtectionGroups(gomock.Any(), gomock.Any(), gomock.Any()).Return(&pp, nil)
 
 	tags := shield.ListTagsForResourceOutput{}
-	err = faker.FakeData(&tags)
+	err = faker.FakeObject(&tags)
 	if err != nil {
 		t.Fatal(err)
 	}

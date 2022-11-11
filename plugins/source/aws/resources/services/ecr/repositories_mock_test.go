@@ -7,19 +7,19 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ecr/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildEcrRepositoriesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockEcrClient(ctrl)
 	l := types.Repository{}
-	err := faker.FakeData(&l)
+	err := faker.FakeObject(&l)
 	if err != nil {
 		t.Fatal(err)
 	}
 	i := types.ImageDetail{}
-	err = faker.FakeData(&i)
+	err = faker.FakeObject(&i)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -35,14 +35,31 @@ func buildEcrRepositoriesMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 		}, nil)
 
 	tagResponse := ecr.ListTagsForResourceOutput{}
-	err = faker.FakeData(&tagResponse)
+	err = faker.FakeObject(&tagResponse)
 	if err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tagResponse, nil)
 
+	iF := ecr.DescribeImageScanFindingsOutput{}
+	err = faker.FakeObject(&iF)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	iF.NextToken = nil
+	m.EXPECT().DescribeImageScanFindings(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&iF, nil)
+
+	repoResponse := ecr.GetRepositoryPolicyOutput{}
+	err = faker.FakeObject(&repoResponse)
+	if err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().GetRepositoryPolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(&repoResponse, nil)
+
 	return client.Services{
-		ECR: m,
+		Ecr: m,
 	}
 }
 

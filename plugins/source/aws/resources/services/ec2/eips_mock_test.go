@@ -7,14 +7,14 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildEc2Eips(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 	a := types.Address{}
-	err := faker.FakeData(&a)
+	err := faker.FakeObject(&a)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -32,7 +32,7 @@ func buildEc2Eips(t *testing.T, ctrl *gomock.Controller) client.Services {
 			Addresses: []types.Address{a},
 		}, nil)
 	return client.Services{
-		EC2: m,
+		Ec2: m,
 	}
 }
 

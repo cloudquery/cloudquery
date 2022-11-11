@@ -13,7 +13,7 @@ import (
 func Domains() *schema.Table {
 	return &schema.Table{
 		Name:        "heroku_domains",
-		Description: "https://devcenter.heroku.com/articles/platform-api-reference#domain-attributes",
+		Description: `https://devcenter.heroku.com/articles/platform-api-reference#domain`,
 		Resolver:    fetchDomains,
 		Columns: []schema.Column{
 			{

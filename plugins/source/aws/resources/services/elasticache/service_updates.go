@@ -9,9 +9,10 @@ import (
 
 func ServiceUpdates() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_elasticache_service_updates",
-		Resolver:  fetchElasticacheServiceUpdates,
-		Multiplex: client.ServiceAccountRegionMultiplexer("elasticache"),
+		Name:        "aws_elasticache_service_updates",
+		Description: `https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_ServiceUpdate.html`,
+		Resolver:    fetchElasticacheServiceUpdates,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticache"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

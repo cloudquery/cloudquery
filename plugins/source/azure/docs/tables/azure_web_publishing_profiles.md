@@ -1,11 +1,11 @@
 # Table: azure_web_publishing_profiles
 
-
+https://pkg.go.dev/github.com/cloudquery/cloudquery/plugins/source/azure/client/services#PublishingProfile
 
 The primary key for this table is **_cq_id**.
 
 ## Relations
-This table depends on [`azure_web_apps`](azure_web_apps.md).
+This table depends on [azure_web_apps](azure_web_apps.md).
 
 ## Columns
 | Name          | Type          |

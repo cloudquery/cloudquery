@@ -10,7 +10,7 @@ import (
 func VirtualInterfaces() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_directconnect_virtual_interfaces",
-		Description: "https://docs.aws.amazon.com/directconnect/latest/APIReference/API_VirtualInterface.html",
+		Description: `https://docs.aws.amazon.com/directconnect/latest/APIReference/API_VirtualInterface.html`,
 		Resolver:    fetchDirectconnectVirtualInterfaces,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("directconnect"),
 		Columns: []schema.Column{
@@ -31,11 +31,6 @@ func VirtualInterfaces() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "id",
@@ -131,6 +126,11 @@ func VirtualInterfaces() *schema.Table {
 				Name:     "site_link_enabled",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("SiteLinkEnabled"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "virtual_gateway_id",

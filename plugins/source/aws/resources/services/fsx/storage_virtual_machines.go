@@ -9,9 +9,10 @@ import (
 
 func StorageVirtualMachines() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_fsx_storage_virtual_machines",
-		Resolver:  fetchFsxStorageVirtualMachines,
-		Multiplex: client.ServiceAccountRegionMultiplexer("fsx"),
+		Name:        "aws_fsx_storage_virtual_machines",
+		Description: `https://docs.aws.amazon.com/fsx/latest/APIReference/API_StorageVirtualMachine.html`,
+		Resolver:    fetchFsxStorageVirtualMachines,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("fsx"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -30,11 +31,6 @@ func StorageVirtualMachines() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "active_directory_configuration",
@@ -85,6 +81,11 @@ func StorageVirtualMachines() *schema.Table {
 				Name:     "subtype",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Subtype"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "uuid",

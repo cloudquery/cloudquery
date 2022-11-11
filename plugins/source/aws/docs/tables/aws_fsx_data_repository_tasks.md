@@ -1,6 +1,6 @@
 # Table: aws_fsx_data_repository_tasks
 
-
+https://docs.aws.amazon.com/fsx/latest/APIReference/API_DataRepositoryTask.html
 
 The primary key for this table is **arn**.
 
@@ -15,7 +15,6 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
-|tags|JSON|
 |creation_time|Timestamp|
 |lifecycle|String|
 |task_id|String|
@@ -29,3 +28,4 @@ The primary key for this table is **arn**.
 |report|JSON|
 |start_time|Timestamp|
 |status|JSON|
+|tags|JSON|

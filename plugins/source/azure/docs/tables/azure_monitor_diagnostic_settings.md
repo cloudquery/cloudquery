@@ -1,11 +1,11 @@
 # Table: azure_monitor_diagnostic_settings
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2021-07-01-preview/insights#DiagnosticSettingsResource
 
 The primary key for this table is **id**.
 
 ## Relations
-This table depends on [`azure_monitor_resources`](azure_monitor_resources.md).
+This table depends on [azure_monitor_resources](azure_monitor_resources.md).
 
 ## Columns
 | Name          | Type          |

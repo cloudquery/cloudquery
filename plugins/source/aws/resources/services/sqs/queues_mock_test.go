@@ -11,7 +11,7 @@ import (
 )
 
 func buildSQSQueues(t *testing.T, ctrl *gomock.Controller) client.Services {
-	sqsMock := mocks.NewMockSQSClient(ctrl)
+	sqsMock := mocks.NewMockSqsClient(ctrl)
 
 	var queueURL = "https://url1"
 	sqsMock.EXPECT().ListQueues(
@@ -63,7 +63,7 @@ func buildSQSQueues(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&sqs.ListQueueTagsOutput{Tags: map[string]string{"tag": "value"}},
 		nil,
 	)
-	return client.Services{SQS: sqsMock}
+	return client.Services{Sqs: sqsMock}
 }
 
 func TestQueues(t *testing.T) {

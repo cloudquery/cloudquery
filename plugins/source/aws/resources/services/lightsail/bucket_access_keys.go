@@ -9,9 +9,10 @@ import (
 
 func BucketAccessKeys() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_lightsail_bucket_access_keys",
-		Resolver:  fetchLightsailBucketAccessKeys,
-		Multiplex: client.ServiceAccountRegionMultiplexer("lightsail"),
+		Name:        "aws_lightsail_bucket_access_keys",
+		Description: `https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_AccessKey.html`,
+		Resolver:    fetchLightsailBucketAccessKeys,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("lightsail"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

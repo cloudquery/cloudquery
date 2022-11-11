@@ -1,6 +1,6 @@
 # Source Plugin Release Stages
 
-[Official](source) source plugins go through two release stages: Preview, and GA.
+[Official source plugins](sources) go through two release stages: Preview, and GA.
 
 Both Preview and GA plugins follow [semantic versioning](#semantic-versioning).
 The main differences between the two stages are:

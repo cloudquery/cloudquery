@@ -1,6 +1,6 @@
 # Table: aws_ssm_documents
 
-
+https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_DocumentDescription.html
 
 The primary key for this table is **arn**.
 
@@ -16,7 +16,6 @@ The primary key for this table is **arn**.
 |region|String|
 |arn (PK)|String|
 |permissions|JSON|
-|tags|JSON|
 |approved_version|String|
 |attachments_information|JSON|
 |author|String|
@@ -44,5 +43,6 @@ The primary key for this table is **arn**.
 |sha1|String|
 |status|String|
 |status_information|String|
+|tags|JSON|
 |target_type|String|
 |version_name|String|

@@ -1,14 +1,14 @@
 # Table: azure_sql_managed_instances
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql#ManagedInstance
 
 The primary key for this table is **id**.
 
 ## Relations
-The following tables depend on `azure_sql_managed_instances`:
-  - [`azure_sql_managed_databases`](azure_sql_managed_databases.md)
-  - [`azure_sql_managed_instance_vulnerability_assessments`](azure_sql_managed_instance_vulnerability_assessments.md)
-  - [`azure_sql_managed_instance_encryption_protectors`](azure_sql_managed_instance_encryption_protectors.md)
+The following tables depend on azure_sql_managed_instances:
+  - [azure_sql_managed_databases](azure_sql_managed_databases.md)
+  - [azure_sql_managed_instance_vulnerability_assessments](azure_sql_managed_instance_vulnerability_assessments.md)
+  - [azure_sql_managed_instance_encryption_protectors](azure_sql_managed_instance_encryption_protectors.md)
 
 ## Columns
 | Name          | Type          |

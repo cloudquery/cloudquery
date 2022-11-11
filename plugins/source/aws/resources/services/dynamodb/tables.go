@@ -10,7 +10,7 @@ import (
 func Tables() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_dynamodb_tables",
-		Description:         "https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_TableDescription.html",
+		Description:         `https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_TableDescription.html`,
 		Resolver:            fetchDynamodbTables,
 		PreResourceResolver: getTable,
 		Multiplex:           client.ServiceAccountRegionMultiplexer("dynamodb"),

@@ -26,23 +26,23 @@ cloudquery sync ./directory ./aws.yml ./pg.yml
 ### Options
 
 ```
-  -h, --help   help for sync
+  -h, --help         help for sync
+      --no-migrate   Disable auto-migration before sync. By default, sync runs a migration before syncing resources.
 ```
 
 ### Options inherited from parent commands
 
 ```
-      --color string           Enable colorized output (on, off, auto) (default "auto")
-      --data-dir string        set persistent data directory (env: CQ_DATA_DIR) (default "./.cq")
-      --log-console            enable console logging
-      --log-file-name string   Log filename (default "cloudquery.log")
-      --log-format string      Logging format (json, text) (default "text")
-      --log-level string       Logging level (default "info")
-      --no-log-file            Disable logging to file
-      --no-telemetry           disable telemetry collection
+      --cq-dir string            directory to store cloudquery files, such as downloaded plugins (default ".cq")
+      --log-console              enable console logging
+      --log-file-name string     Log filename (default "cloudquery.log")
+      --log-format string        Logging format (json, text) (default "text")
+      --log-level string         Logging level (default "info")
+      --no-log-file              Disable logging to file
+      --telemetry-level string   Telemetry level (none, errors, stats, all) (default "all")
 ```
 
 ### SEE ALSO
 
-* [cloudquery](/docs/cli/commands/cloudquery)	 - CloudQuery CLI
+* [cloudquery](/docs/reference/cli/cloudquery)	 - CloudQuery CLI
 

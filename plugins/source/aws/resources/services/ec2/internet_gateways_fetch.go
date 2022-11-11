@@ -14,7 +14,7 @@ import (
 func fetchEc2InternetGateways(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config ec2.DescribeInternetGatewaysInput
 	c := meta.(*client.Client)
-	svc := c.Services().EC2
+	svc := c.Services().Ec2
 	for {
 		output, err := svc.DescribeInternetGateways(ctx, &config)
 		if err != nil {
@@ -37,7 +37,7 @@ func resolveInternetGatewayArn(_ context.Context, meta schema.ClientMeta, resour
 		Service:   "ec2",
 		Region:    cl.Region,
 		AccountID: cl.AccountID,
-		Resource:  "internet_gateways/" + aws.ToString(item.InternetGatewayId),
+		Resource:  "internet-gateway/" + aws.ToString(item.InternetGatewayId),
 	}
 	return resource.Set(c.Name, a.String())
 }

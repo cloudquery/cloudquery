@@ -10,7 +10,7 @@ import (
 func GraphqlApis() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_appsync_graphql_apis",
-		Description: "https://docs.aws.amazon.com/appsync/latest/APIReference/API_GraphqlApi.html",
+		Description: `https://docs.aws.amazon.com/appsync/latest/APIReference/API_GraphqlApi.html`,
 		Resolver:    fetchAppsyncGraphqlApis,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("appsync"),
 		Columns: []schema.Column{

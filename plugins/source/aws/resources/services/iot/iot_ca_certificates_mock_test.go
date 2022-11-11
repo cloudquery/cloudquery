@@ -6,15 +6,15 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iot"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildIotCaCertificatesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockIOTClient(ctrl)
+	m := mocks.NewMockIotClient(ctrl)
 
 	ca := iot.ListCACertificatesOutput{}
-	err := faker.FakeData(&ca)
+	err := faker.FakeObject(&ca)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -23,7 +23,7 @@ func buildIotCaCertificatesMock(t *testing.T, ctrl *gomock.Controller) client.Se
 		&ca, nil)
 
 	cd := iot.DescribeCACertificateOutput{}
-	err = faker.FakeData(&cd)
+	err = faker.FakeObject(&cd)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -31,7 +31,7 @@ func buildIotCaCertificatesMock(t *testing.T, ctrl *gomock.Controller) client.Se
 		&cd, nil)
 
 	ct := iot.ListCertificatesByCAOutput{}
-	err = faker.FakeData(&ct)
+	err = faker.FakeObject(&ct)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -40,7 +40,7 @@ func buildIotCaCertificatesMock(t *testing.T, ctrl *gomock.Controller) client.Se
 		&ct, nil)
 
 	return client.Services{
-		IOT: m,
+		Iot: m,
 	}
 }
 

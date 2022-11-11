@@ -16,7 +16,7 @@ import (
 func fetchElbv2LoadBalancers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config elbv2.DescribeLoadBalancersInput
 	c := meta.(*client.Client)
-	svc := c.Services().ELBv2
+	svc := c.Services().Elasticloadbalancingv2
 	for {
 		response, err := svc.DescribeLoadBalancers(ctx, &config)
 		if err != nil {
@@ -36,7 +36,7 @@ func resolveElbv2loadBalancerWebACLArn(ctx context.Context, meta schema.ClientMe
 	if p.Type != types.LoadBalancerTypeEnumApplication {
 		return nil
 	}
-	cl := meta.(*client.Client).Services().WafV2
+	cl := meta.(*client.Client).Services().Wafv2
 	input := wafv2.GetWebACLForResourceInput{ResourceArn: p.LoadBalancerArn}
 	response, err := cl.GetWebACLForResource(ctx, &input, func(options *wafv2.Options) {})
 	if err != nil {
@@ -58,7 +58,7 @@ func resolveElbv2loadBalancerWebACLArn(ctx context.Context, meta schema.ClientMe
 func resolveElbv2loadBalancerTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	region := cl.Region
-	svc := cl.Services().ELBv2
+	svc := cl.Services().Elasticloadbalancingv2
 	loadBalancer := resource.Item.(types.LoadBalancer)
 	tagsOutput, err := svc.DescribeTags(ctx, &elbv2.DescribeTagsInput{
 		ResourceArns: []string{
@@ -89,7 +89,7 @@ func resolveElbv2loadBalancerTags(ctx context.Context, meta schema.ClientMeta, r
 func fetchElbv2LoadBalancerAttributes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	lb := parent.Item.(types.LoadBalancer)
 	c := meta.(*client.Client)
-	svc := c.Services().ELBv2
+	svc := c.Services().Elasticloadbalancingv2
 	result, err := svc.DescribeLoadBalancerAttributes(ctx, &elbv2.DescribeLoadBalancerAttributesInput{LoadBalancerArn: lb.LoadBalancerArn})
 	if err != nil {
 		return err

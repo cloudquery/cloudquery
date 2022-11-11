@@ -1,6 +1,6 @@
 # Table: aws_kinesis_streams
 
-
+https://docs.aws.amazon.com/kinesis/latest/APIReference/API_StreamDescriptionSummary.html
 
 The primary key for this table is **arn**.
 

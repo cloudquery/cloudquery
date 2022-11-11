@@ -5,8 +5,8 @@ https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_Stack.html
 The primary key for this table is **arn**.
 
 ## Relations
-The following tables depend on `aws_cloudformation_stacks`:
-  - [`aws_cloudformation_stack_resources`](aws_cloudformation_stack_resources.md)
+The following tables depend on aws_cloudformation_stacks:
+  - [aws_cloudformation_stack_resources](aws_cloudformation_stack_resources.md)
 
 ## Columns
 | Name          | Type          |
@@ -19,7 +19,6 @@ The following tables depend on `aws_cloudformation_stacks`:
 |region|String|
 |id|String|
 |arn (PK)|String|
-|tags|JSON|
 |creation_time|Timestamp|
 |stack_name|String|
 |stack_status|String|
@@ -39,4 +38,5 @@ The following tables depend on `aws_cloudformation_stacks`:
 |rollback_configuration|JSON|
 |root_id|String|
 |stack_status_reason|String|
+|tags|JSON|
 |timeout_in_minutes|Int|

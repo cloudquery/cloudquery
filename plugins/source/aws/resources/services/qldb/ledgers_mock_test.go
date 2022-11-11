@@ -7,22 +7,22 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/qldb/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildLedgersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockQLDBClient(ctrl)
+	m := mocks.NewMockQldbClient(ctrl)
 
 	ledger := types.LedgerSummary{}
-	if err := faker.FakeData(&ledger); err != nil {
+	if err := faker.FakeObject(&ledger); err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().ListLedgers(gomock.Any(), &qldb.ListLedgersInput{}, gomock.Any()).Return(
 		&qldb.ListLedgersOutput{Ledgers: []types.LedgerSummary{ledger}}, nil)
 
 	var resource qldb.DescribeLedgerOutput
-	if err := faker.FakeData(&resource); err != nil {
+	if err := faker.FakeObject(&resource); err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().DescribeLedger(
@@ -35,7 +35,7 @@ func buildLedgersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	)
 
 	tags := &qldb.ListTagsForResourceOutput{}
-	if err := faker.FakeData(&tags); err != nil {
+	if err := faker.FakeObject(&tags); err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(
@@ -44,7 +44,7 @@ func buildLedgersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	)
 
 	s3 := types.JournalS3ExportDescription{}
-	if err := faker.FakeData(&s3); err != nil {
+	if err := faker.FakeObject(&s3); err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().ListJournalS3ExportsForLedger(gomock.Any(), gomock.Any(), gomock.Any()).
@@ -53,7 +53,7 @@ func buildLedgersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 		}, nil)
 
 	ke := types.JournalKinesisStreamDescription{}
-	if err := faker.FakeData(&ke); err != nil {
+	if err := faker.FakeObject(&ke); err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().ListJournalKinesisStreamsForLedger(gomock.Any(), gomock.Any(), gomock.Any()).
@@ -61,7 +61,7 @@ func buildLedgersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 			Streams: []types.JournalKinesisStreamDescription{ke},
 		}, nil)
 
-	return client.Services{QLDB: m}
+	return client.Services{Qldb: m}
 }
 
 func TestQldbLedgers(t *testing.T) {

@@ -5,7 +5,7 @@ https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGatewayPeering
 The primary key for this table is **_cq_id**.
 
 ## Relations
-This table depends on [`aws_ec2_transit_gateways`](aws_ec2_transit_gateways.md).
+This table depends on [aws_ec2_transit_gateways](aws_ec2_transit_gateways.md).
 
 ## Columns
 | Name          | Type          |
@@ -17,7 +17,6 @@ This table depends on [`aws_ec2_transit_gateways`](aws_ec2_transit_gateways.md).
 |account_id|String|
 |region|String|
 |transit_gateway_arn|String|
-|tags|JSON|
 |accepter_tgw_info|JSON|
 |accepter_transit_gateway_attachment_id|String|
 |creation_time|Timestamp|
@@ -25,4 +24,5 @@ This table depends on [`aws_ec2_transit_gateways`](aws_ec2_transit_gateways.md).
 |requester_tgw_info|JSON|
 |state|String|
 |status|JSON|
+|tags|JSON|
 |transit_gateway_attachment_id|String|

@@ -2,6 +2,8 @@ package client
 
 import (
 	"context"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
+	"github.com/golang/mock/gomock"
 	"testing"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -11,38 +13,19 @@ import (
 	"github.com/google/go-cmp/cmp/cmpopts"
 )
 
-type mockOrgClient struct {
-	listAccountsForParent func(ctx context.Context, params *organizations.ListAccountsForParentInput, optFns ...func(*organizations.Options)) (*organizations.ListAccountsForParentOutput, error)
-	listAccounts          func(ctx context.Context, params *organizations.ListAccountsInput, optFns ...func(*organizations.Options)) (*organizations.ListAccountsOutput, error)
-}
-
-func (m mockOrgClient) ListAccountsForParent(ctx context.Context, params *organizations.ListAccountsForParentInput, optFns ...func(*organizations.Options)) (*organizations.ListAccountsForParentOutput, error) {
-	return m.listAccountsForParent(ctx, params, optFns...)
-}
-
-func (m mockOrgClient) ListAccounts(ctx context.Context, params *organizations.ListAccountsInput, optFns ...func(*organizations.Options)) (*organizations.ListAccountsOutput, error) {
-	return m.listAccounts(ctx, params, optFns...)
-}
-
-func (mockOrgClient) ListTagsForResource(ctx context.Context, input *organizations.ListTagsForResourceInput, f ...func(*organizations.Options)) (*organizations.ListTagsForResourceOutput, error) {
-	return &organizations.ListTagsForResourceOutput{Tags: nil, NextToken: nil}, nil
-}
-
 func Test_Org_Configure(t *testing.T) {
 	ctx := context.Background()
 	tests := []struct {
-		listAccountsForParent func(ctx context.Context, params *organizations.ListAccountsForParentInput, optFns ...func(*organizations.Options)) (*organizations.ListAccountsForParentOutput, error)
-		listAccounts          func(ctx context.Context, params *organizations.ListAccountsInput, optFns ...func(*organizations.Options)) (*organizations.ListAccountsOutput, error)
+		listAccountsForParent *organizations.ListAccountsForParentOutput
+		listAccounts          *organizations.ListAccountsOutput
 		ous                   []string
 		accounts              []Account
 		err                   error
 		config                *Spec
 	}{
 		{
-			listAccounts: func(ctx context.Context, params *organizations.ListAccountsInput, optFns ...func(*organizations.Options)) (*organizations.ListAccountsOutput, error) {
-				return &organizations.ListAccountsOutput{
-					Accounts: []orgTypes.Account{},
-				}, nil
+			listAccounts: &organizations.ListAccountsOutput{
+				Accounts: []orgTypes.Account{},
 			},
 			accounts: []Account{},
 			err:      nil,
@@ -51,15 +34,13 @@ func Test_Org_Configure(t *testing.T) {
 			},
 		},
 		{
-			listAccountsForParent: func(ctx context.Context, params *organizations.ListAccountsForParentInput, optFns ...func(*organizations.Options)) (*organizations.ListAccountsForParentOutput, error) {
-				return &organizations.ListAccountsForParentOutput{
-					Accounts: []orgTypes.Account{
-						{
-							Id:     aws.String("012345678910"),
-							Status: orgTypes.AccountStatusActive,
-						},
+			listAccountsForParent: &organizations.ListAccountsForParentOutput{
+				Accounts: []orgTypes.Account{
+					{
+						Id:     aws.String("012345678910"),
+						Status: orgTypes.AccountStatusActive,
 					},
-				}, nil
+				},
 			},
 			config: &Spec{
 				Organization: &AwsOrg{
@@ -84,9 +65,13 @@ func Test_Org_Configure(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		api := mockOrgClient{
-			listAccountsForParent: test.listAccountsForParent,
-			listAccounts:          test.listAccounts,
+		ctrl := gomock.NewController(t)
+		api := mocks.NewMockOrganizationsClient(ctrl)
+		if test.listAccounts != nil {
+			api.EXPECT().ListAccounts(gomock.Any(), gomock.Any()).Return(test.listAccounts, nil)
+		}
+		if test.listAccountsForParent != nil {
+			api.EXPECT().ListAccountsForParent(gomock.Any(), gomock.Any(), gomock.Any()).Return(test.listAccountsForParent, nil)
 		}
 		resp, err := loadAccounts(ctx, test.config, api)
 		respDiff := cmp.Diff(resp, test.accounts, cmpopts.IgnoreUnexported(Account{}), cmpopts.EquateEmpty())

@@ -6,7 +6,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client/mocks"
 	k8sTesting "github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/testing"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	appsv1 "k8s.io/api/apps/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -25,10 +25,7 @@ func createDeployments(t *testing.T, ctrl *gomock.Controller) client.Services {
 
 func fakeAppsDeployment(t *testing.T) appsv1.Deployment {
 	var deployment appsv1.Deployment
-	if err := faker.FakeDataSkipFields(&deployment, []string{"Spec"}); err != nil {
-		t.Fatal(err)
-	}
-	if err := faker.FakeDataSkipFields(&deployment.Spec, []string{"Template"}); err != nil {
+	if err := faker.FakeObject(&deployment); err != nil {
 		t.Fatal(err)
 	}
 

@@ -9,9 +9,10 @@ import (
 
 func Snapshots() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_fsx_snapshots",
-		Resolver:  fetchFsxSnapshots,
-		Multiplex: client.ServiceAccountRegionMultiplexer("fsx"),
+		Name:        "aws_fsx_snapshots",
+		Description: `https://docs.aws.amazon.com/fsx/latest/APIReference/API_Snapshot.html`,
+		Resolver:    fetchFsxSnapshots,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("fsx"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -30,11 +31,6 @@ func Snapshots() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
 			},
 			{
 				Name:          "administrative_actions",
@@ -66,6 +62,11 @@ func Snapshots() *schema.Table {
 				Name:     "snapshot_id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("SnapshotId"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "volume_id",

@@ -5,7 +5,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/github/client"
 	"github.com/cloudquery/cloudquery/plugins/source/github/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/google/go-github/v45/github"
 )
@@ -14,20 +14,20 @@ func buildOrganizations(t *testing.T, ctrl *gomock.Controller) client.GithubServ
 	mock := mocks.NewMockOrganizationsService(ctrl)
 
 	var cs *github.Organization
-	if err := faker.FakeData(&cs); err != nil {
+	if err := faker.FakeObject(&cs); err != nil {
 		t.Fatal(err)
 	}
 	mock.EXPECT().Get(gomock.Any(), gomock.Any()).Return(cs, &github.Response{}, nil)
 
 	var u github.User
-	if err := faker.FakeDataSkipFields(&u, []string{"Parent"}); err != nil {
+	if err := faker.FakeObject(&u); err != nil {
 		t.Fatal(err)
 	}
 	mock.EXPECT().ListMembers(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		[]*github.User{&u}, &github.Response{}, nil)
 
 	var m github.Membership
-	if err := faker.FakeDataSkipFields(&m, []string{}); err != nil {
+	if err := faker.FakeObject(&m); err != nil {
 		t.Fatal(err)
 	}
 	mock.EXPECT().GetOrgMembership(gomock.Any(), *u.Login, gomock.Any()).Return(

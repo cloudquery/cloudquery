@@ -1,11 +1,11 @@
 # Table: azure_eventhub_network_rule_sets
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/eventhub/mgmt/2018-01-01-preview/eventhub#NetworkRuleSet
 
 The primary key for this table is **id**.
 
 ## Relations
-This table depends on [`azure_eventhub_namespaces`](azure_eventhub_namespaces.md).
+This table depends on [azure_eventhub_namespaces](azure_eventhub_namespaces.md).
 
 ## Columns
 | Name          | Type          |

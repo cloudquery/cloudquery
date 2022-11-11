@@ -5,7 +5,7 @@ https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_StackResou
 The primary key for this table is **_cq_id**.
 
 ## Relations
-This table depends on [`aws_cloudformation_stacks`](aws_cloudformation_stacks.md).
+This table depends on [aws_cloudformation_stacks](aws_cloudformation_stacks.md).
 
 ## Columns
 | Name          | Type          |

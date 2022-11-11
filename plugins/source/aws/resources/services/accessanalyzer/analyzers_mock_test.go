@@ -7,18 +7,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildAccessAnalyzer(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockAnalyzerClient(ctrl)
+	m := mocks.NewMockAccessanalyzerClient(ctrl)
 	u := types.AnalyzerSummary{}
-	if err := faker.FakeData(&u); err != nil {
+	if err := faker.FakeObject(&u); err != nil {
 		t.Fatal(err)
 	}
 	f := types.FindingSummary{}
-	if err := faker.FakeData(&f); err != nil {
+	if err := faker.FakeObject(&f); err != nil {
 		t.Fatal(err)
 	}
 
@@ -33,7 +33,7 @@ func buildAccessAnalyzer(t *testing.T, ctrl *gomock.Controller) client.Services 
 		}, nil)
 
 	arch := types.ArchiveRuleSummary{}
-	if err := faker.FakeData(&arch); err != nil {
+	if err := faker.FakeObject(&arch); err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().ListArchiveRules(gomock.Any(), gomock.Any(), gomock.Any()).Return(
@@ -42,7 +42,7 @@ func buildAccessAnalyzer(t *testing.T, ctrl *gomock.Controller) client.Services 
 		}, nil)
 
 	return client.Services{
-		Analyzer: m,
+		Accessanalyzer: m,
 	}
 }
 

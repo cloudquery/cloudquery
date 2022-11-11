@@ -1,11 +1,11 @@
 # Table: aws_route53_hosted_zone_resource_record_sets
 
-
+https://docs.aws.amazon.com/Route53/latest/APIReference/API_ResourceRecordSet.html
 
 The primary key for this table is **_cq_id**.
 
 ## Relations
-This table depends on [`aws_route53_hosted_zones`](aws_route53_hosted_zones.md).
+This table depends on [aws_route53_hosted_zones](aws_route53_hosted_zones.md).
 
 ## Columns
 | Name          | Type          |

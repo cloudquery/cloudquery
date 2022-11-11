@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/transfer/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
 )
@@ -17,7 +17,7 @@ func buildServersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockTransferClient(ctrl)
 
 	var ls types.ListedServer
-	require.NoError(t, faker.FakeData(&ls))
+	require.NoError(t, faker.FakeObject(&ls))
 	m.EXPECT().ListServers(
 		gomock.Any(),
 		&transfer.ListServersInput{MaxResults: aws.Int32(1000)},
@@ -27,7 +27,7 @@ func buildServersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	)
 
 	var ds types.DescribedServer
-	require.NoError(t, faker.FakeData(&ds))
+	require.NoError(t, faker.FakeObject(&ds))
 	ds.ServerId = ls.ServerId
 	ds.Arn = ls.Arn
 	m.EXPECT().DescribeServer(

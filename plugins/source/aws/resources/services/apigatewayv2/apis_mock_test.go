@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -15,7 +15,7 @@ func buildApigatewayv2Apis(t *testing.T, ctrl *gomock.Controller) client.Service
 	m := mocks.NewMockApigatewayv2Client(ctrl)
 
 	a := types.Api{}
-	err := faker.FakeData(&a)
+	err := faker.FakeObject(&a)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -25,7 +25,7 @@ func buildApigatewayv2Apis(t *testing.T, ctrl *gomock.Controller) client.Service
 		}, nil)
 
 	aa := types.Authorizer{}
-	err = faker.FakeData(&aa)
+	err = faker.FakeObject(&aa)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -35,7 +35,7 @@ func buildApigatewayv2Apis(t *testing.T, ctrl *gomock.Controller) client.Service
 		}, nil)
 
 	d := types.Deployment{}
-	err = faker.FakeData(&d)
+	err = faker.FakeObject(&d)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -45,7 +45,7 @@ func buildApigatewayv2Apis(t *testing.T, ctrl *gomock.Controller) client.Service
 		}, nil)
 
 	i := types.Integration{}
-	err = faker.FakeData(&i)
+	err = faker.FakeObject(&i)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -55,7 +55,7 @@ func buildApigatewayv2Apis(t *testing.T, ctrl *gomock.Controller) client.Service
 		}, nil)
 
 	ir := types.IntegrationResponse{}
-	err = faker.FakeData(&ir)
+	err = faker.FakeObject(&ir)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -65,7 +65,7 @@ func buildApigatewayv2Apis(t *testing.T, ctrl *gomock.Controller) client.Service
 		}, nil)
 
 	am := types.Model{}
-	err = faker.FakeData(&am)
+	err = faker.FakeObject(&am)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -75,7 +75,7 @@ func buildApigatewayv2Apis(t *testing.T, ctrl *gomock.Controller) client.Service
 		}, nil)
 
 	mt := apigatewayv2.GetModelTemplateOutput{}
-	err = faker.FakeData(&mt)
+	err = faker.FakeObject(&mt)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -83,7 +83,7 @@ func buildApigatewayv2Apis(t *testing.T, ctrl *gomock.Controller) client.Service
 		&mt, nil)
 
 	r := types.Route{}
-	err = faker.FakeData(&r)
+	err = faker.FakeObject(&r)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -93,7 +93,7 @@ func buildApigatewayv2Apis(t *testing.T, ctrl *gomock.Controller) client.Service
 		}, nil)
 
 	s := types.Stage{}
-	err = faker.FakeData(&s)
+	err = faker.FakeObject(&s)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -103,7 +103,7 @@ func buildApigatewayv2Apis(t *testing.T, ctrl *gomock.Controller) client.Service
 		}, nil)
 
 	rr := types.RouteResponse{}
-	err = faker.FakeData(&rr)
+	err = faker.FakeObject(&rr)
 	if err != nil {
 		t.Fatal(err)
 	}

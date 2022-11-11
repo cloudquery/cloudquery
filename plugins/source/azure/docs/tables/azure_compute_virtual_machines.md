@@ -1,13 +1,13 @@
 # Table: azure_compute_virtual_machines
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-03-01/compute#VirtualMachine
 
 The primary key for this table is **id**.
 
 ## Relations
-The following tables depend on `azure_compute_virtual_machines`:
-  - [`azure_compute_instance_views`](azure_compute_instance_views.md)
-  - [`azure_compute_virtual_machine_extensions`](azure_compute_virtual_machine_extensions.md)
+The following tables depend on azure_compute_virtual_machines:
+  - [azure_compute_instance_views](azure_compute_instance_views.md)
+  - [azure_compute_virtual_machine_extensions](azure_compute_virtual_machine_extensions.md)
 
 ## Columns
 | Name          | Type          |

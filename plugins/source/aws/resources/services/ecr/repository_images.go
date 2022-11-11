@@ -9,8 +9,9 @@ import (
 
 func RepositoryImages() *schema.Table {
 	return &schema.Table{
-		Name:     "aws_ecr_repository_images",
-		Resolver: fetchEcrRepositoryImages,
+		Name:        "aws_ecr_repository_images",
+		Description: `https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_ImageDetail.html`,
+		Resolver:    fetchEcrRepositoryImages,
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -85,6 +86,10 @@ func RepositoryImages() *schema.Table {
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("RepositoryName"),
 			},
+		},
+
+		Relations: []*schema.Table{
+			RepositoryImageScanFindings(),
 		},
 	}
 }

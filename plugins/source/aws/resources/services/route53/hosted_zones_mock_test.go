@@ -8,14 +8,14 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/route53/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildRoute53HostedZonesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockRoute53Client(ctrl)
 	h := types.HostedZone{}
-	if err := faker.FakeData(&h); err != nil {
+	if err := faker.FakeObject(&h); err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().ListHostedZones(gomock.Any(), gomock.Any(), gomock.Any()).Return(
@@ -23,7 +23,7 @@ func buildRoute53HostedZonesMock(t *testing.T, ctrl *gomock.Controller) client.S
 			HostedZones: []types.HostedZone{h},
 		}, nil)
 	tag := types.Tag{}
-	if err := faker.FakeData(&tag); err != nil {
+	if err := faker.FakeObject(&tag); err != nil {
 		t.Fatal(err)
 	}
 	//create id that is usually returned by aws
@@ -40,7 +40,7 @@ func buildRoute53HostedZonesMock(t *testing.T, ctrl *gomock.Controller) client.S
 			},
 		}, nil)
 	qlc := types.QueryLoggingConfig{}
-	if err := faker.FakeData(&qlc); err != nil {
+	if err := faker.FakeObject(&qlc); err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().ListQueryLoggingConfigs(gomock.Any(), gomock.Any(), gomock.Any()).Return(
@@ -48,7 +48,7 @@ func buildRoute53HostedZonesMock(t *testing.T, ctrl *gomock.Controller) client.S
 			QueryLoggingConfigs: []types.QueryLoggingConfig{qlc},
 		}, nil)
 	rrs := types.ResourceRecordSet{}
-	if err := faker.FakeData(&rrs); err != nil {
+	if err := faker.FakeObject(&rrs); err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().ListResourceRecordSets(gomock.Any(), gomock.Any(), gomock.Any()).Return(
@@ -56,7 +56,7 @@ func buildRoute53HostedZonesMock(t *testing.T, ctrl *gomock.Controller) client.S
 			ResourceRecordSets: []types.ResourceRecordSet{rrs},
 		}, nil)
 	tpi := types.TrafficPolicyInstance{}
-	if err := faker.FakeData(&tpi); err != nil {
+	if err := faker.FakeObject(&tpi); err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().ListTrafficPolicyInstancesByHostedZone(gomock.Any(), gomock.Any(), gomock.Any()).Return(
@@ -64,11 +64,11 @@ func buildRoute53HostedZonesMock(t *testing.T, ctrl *gomock.Controller) client.S
 			TrafficPolicyInstances: []types.TrafficPolicyInstance{tpi},
 		}, nil)
 	vpc := types.VPC{}
-	if err := faker.FakeData(&vpc); err != nil {
+	if err := faker.FakeObject(&vpc); err != nil {
 		t.Fatal(err)
 	}
 	ds := types.DelegationSet{}
-	if err := faker.FakeData(&ds); err != nil {
+	if err := faker.FakeObject(&ds); err != nil {
 		t.Fatal(err)
 	}
 

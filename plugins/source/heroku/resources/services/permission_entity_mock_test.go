@@ -9,18 +9,18 @@ import (
 	"testing"
 
 	"github.com/cloudquery/cloudquery/plugins/source/heroku/client"
-	faker "github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	heroku "github.com/heroku/heroku-go/v5"
 	"github.com/julienschmidt/httprouter"
 )
 
 func createPermissionEntities() (*heroku.Service, error) {
 	primaryItems := make(heroku.TeamListResult, 1)
-	if err := faker.FakeData(&primaryItems); err != nil {
+	if err := faker.FakeObject(&primaryItems); err != nil {
 		return nil, err
 	}
 	items := make(heroku.PermissionEntityListResult, 1)
-	if err := faker.FakeData(&items); err != nil {
+	if err := faker.FakeObject(&items); err != nil {
 		return nil, err
 	}
 	mux := httprouter.New()

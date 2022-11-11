@@ -12,7 +12,7 @@ import (
 )
 
 func fetchElasticacheReservedCacheNodesOfferings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	paginator := elasticache.NewDescribeReservedCacheNodesOfferingsPaginator(meta.(*client.Client).Services().ElastiCache, nil)
+	paginator := elasticache.NewDescribeReservedCacheNodesOfferingsPaginator(meta.(*client.Client).Services().Elasticache, nil)
 	for paginator.HasMorePages() {
 		v, err := paginator.NextPage(ctx)
 		if err != nil {

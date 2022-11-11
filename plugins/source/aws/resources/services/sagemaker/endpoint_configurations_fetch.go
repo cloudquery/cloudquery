@@ -12,7 +12,7 @@ import (
 
 func fetchSagemakerEndpointConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	svc := c.Services().SageMaker
+	svc := c.Services().Sagemaker
 	config := sagemaker.ListEndpointConfigsInput{}
 	for {
 		response, err := svc.ListEndpointConfigs(ctx, &config)
@@ -32,7 +32,7 @@ func fetchSagemakerEndpointConfigurations(ctx context.Context, meta schema.Clien
 
 func getEndpointConfiguration(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	c := meta.(*client.Client)
-	svc := c.Services().SageMaker
+	svc := c.Services().Sagemaker
 	n := resource.Item.(types.EndpointConfigSummary)
 
 	response, err := svc.DescribeEndpointConfig(ctx, &sagemaker.DescribeEndpointConfigInput{
@@ -49,7 +49,7 @@ func getEndpointConfiguration(ctx context.Context, meta schema.ClientMeta, resou
 func resolveSagemakerEndpointConfigurationTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
 	r := resource.Item.(*sagemaker.DescribeEndpointConfigOutput)
 	c := meta.(*client.Client)
-	svc := c.Services().SageMaker
+	svc := c.Services().Sagemaker
 	config := sagemaker.ListTagsInput{
 		ResourceArn: r.EndpointConfigArn,
 	}

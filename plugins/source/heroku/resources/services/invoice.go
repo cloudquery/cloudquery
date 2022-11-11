@@ -13,7 +13,7 @@ import (
 func Invoices() *schema.Table {
 	return &schema.Table{
 		Name:        "heroku_invoices",
-		Description: "https://devcenter.heroku.com/articles/platform-api-reference#invoice-attributes",
+		Description: `https://devcenter.heroku.com/articles/platform-api-reference#invoice`,
 		Resolver:    fetchInvoices,
 		Columns: []schema.Column{
 			{

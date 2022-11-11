@@ -6,21 +6,21 @@ import { Callout } from 'nextra-theme-docs'
 
 # Docker
 
-It is possible to use CloudQuery in an isolated container, you can pull the relevant image with the docker commands shown on [getting started](/docs/getting-started/getting-started-with-aws) guide.
+It is possible to use CloudQuery in an isolated container, you can pull the relevant image via `docker pull ghcr.io/cloudquery/cloudquery:latest`.
 
 ## Configuration
 
-CloudQuery uses a YAML file as the primary means of configuration. For the CloudQuery docker container to use this configuration file you will need to mount the volume to the container like so:
+CloudQuery uses YAML files as the primary means of configuration. For the CloudQuery docker container to use this configuration file you will need to mount the volume to the container like so:
 
 ```docker
 docker run \
-  -v <ABSOLUTE_PATH_TO_CONFIG_DIR>:/config \
+  -v <ABSOLUTE_PATH_TO_CONFIG_FILE>:/config.yml \
   # set any env variable with -e <ENV_VAR_NAME>=<ENV_VAR_VALUE>
   ghcr.io/cloudquery/cloudquery:latest \
-  sync /config
+  sync /config.yml
 ```
 
-As with running any `cloudquery` command on your CLI you can override the config with the [optional flags](/docs/cli/commands/cloudquery_options) with the docker container. You will also need to make sure you load any ENV variables for source and destination plugins, such as your `AWS_*` keys etc.
+As with running any `cloudquery` command on your CLI you can override the config with the [optional flags](/docs/reference/cli/cloudquery) with the docker container. You will also need to make sure you load any ENV variables for source and destination plugins, such as your `AWS_*` keys etc.
 
 <Callout type="info">
 

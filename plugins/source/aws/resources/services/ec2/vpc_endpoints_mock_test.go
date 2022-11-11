@@ -7,14 +7,14 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildEc2VpcEndpoints(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 	e := types.VpcEndpoint{}
-	if err := faker.FakeData(&e); err != nil {
+	if err := faker.FakeObject(&e); err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().DescribeVpcEndpoints(gomock.Any(), gomock.Any(), gomock.Any()).Return(
@@ -22,7 +22,7 @@ func buildEc2VpcEndpoints(t *testing.T, ctrl *gomock.Controller) client.Services
 			VpcEndpoints: []types.VpcEndpoint{e},
 		}, nil)
 	return client.Services{
-		EC2: m,
+		Ec2: m,
 	}
 }
 

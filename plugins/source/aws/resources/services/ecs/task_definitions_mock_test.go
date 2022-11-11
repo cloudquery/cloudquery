@@ -6,16 +6,15 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildEcsTaskDefinitions(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockEcsClient(ctrl)
 
-	faker.SetIgnoreInterface(true)
 	listTaskDefinitionsOutput := ecs.ListTaskDefinitionsOutput{}
-	err := faker.FakeData(&listTaskDefinitionsOutput)
+	err := faker.FakeObject(&listTaskDefinitionsOutput)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -23,14 +22,14 @@ func buildEcsTaskDefinitions(t *testing.T, ctrl *gomock.Controller) client.Servi
 	m.EXPECT().ListTaskDefinitions(gomock.Any(), gomock.Any(), gomock.Any()).Return(&listTaskDefinitionsOutput, nil)
 
 	taskDefinition := &ecs.DescribeTaskDefinitionOutput{}
-	err = faker.FakeData(&taskDefinition)
+	err = faker.FakeObject(&taskDefinition)
 	if err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().DescribeTaskDefinition(gomock.Any(), gomock.Any(), gomock.Any()).Return(taskDefinition, nil)
 
 	return client.Services{
-		ECS: m,
+		Ecs: m,
 	}
 }
 

@@ -8,14 +8,14 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/databasemigrationservice/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildDmsReplicationInstances(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockDatabasemigrationserviceClient(ctrl)
 	l := types.ReplicationInstance{}
-	if err := faker.FakeData(&l); err != nil {
+	if err := faker.FakeObject(&l); err != nil {
 		t.Fatal(err)
 	}
 	l.ReplicationInstancePrivateIpAddress = aws.String("1.2.3.4") //nolint
@@ -27,7 +27,7 @@ func buildDmsReplicationInstances(t *testing.T, ctrl *gomock.Controller) client.
 			ReplicationInstances: []types.ReplicationInstance{l},
 		}, nil)
 	lt := types.Tag{}
-	if err := faker.FakeData(&lt); err != nil {
+	if err := faker.FakeObject(&lt); err != nil {
 		t.Fatal(err)
 	}
 	lt.ResourceArn = l.ReplicationInstanceArn
@@ -36,7 +36,7 @@ func buildDmsReplicationInstances(t *testing.T, ctrl *gomock.Controller) client.
 			TagList: []types.Tag{lt},
 		}, nil)
 	return client.Services{
-		DMS: m,
+		Databasemigrationservice: m,
 	}
 }
 

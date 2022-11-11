@@ -18,7 +18,7 @@ type WrappedSageMakerModel struct {
 
 func fetchSagemakerModels(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	svc := c.Services().SageMaker
+	svc := c.Services().Sagemaker
 	config := sagemaker.ListModelsInput{}
 	for {
 		response, err := svc.ListModels(ctx, &config)
@@ -38,7 +38,7 @@ func fetchSagemakerModels(ctx context.Context, meta schema.ClientMeta, _ *schema
 
 func getModel(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	c := meta.(*client.Client)
-	svc := c.Services().SageMaker
+	svc := c.Services().Sagemaker
 	n := resource.Item.(types.ModelSummary)
 
 	response, err := svc.DescribeModel(ctx, &sagemaker.DescribeModelInput{
@@ -59,7 +59,7 @@ func getModel(ctx context.Context, meta schema.ClientMeta, resource *schema.Reso
 func resolveSagemakerModelTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
 	r := resource.Item.(*WrappedSageMakerModel)
 	c := meta.(*client.Client)
-	svc := c.Services().SageMaker
+	svc := c.Services().Sagemaker
 
 	response, err := svc.ListTags(ctx, &sagemaker.ListTagsInput{
 		ResourceArn: r.ModelArn,

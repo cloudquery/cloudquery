@@ -10,7 +10,7 @@ import (
 func ApiAuthorizers() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_apigatewayv2_api_authorizers",
-		Description: "https://docs.aws.amazon.com/apigateway/latest/api/API_Authorizer.html",
+		Description: `https://docs.aws.amazon.com/apigateway/latest/api/API_Authorizer.html`,
 		Resolver:    fetchApigatewayv2ApiAuthorizers,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
 		Columns: []schema.Column{

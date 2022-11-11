@@ -1,13 +1,13 @@
 # Table: azure_network_virtual_network_gateways
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network#VirtualNetworkGateway
 
 The primary key for this table is **id**.
 
 ## Relations
-This table depends on [`azure_network_virtual_networks`](azure_network_virtual_networks.md).
-The following tables depend on `azure_network_virtual_network_gateways`:
-  - [`azure_network_virtual_network_gateway_connections`](azure_network_virtual_network_gateway_connections.md)
+This table depends on [azure_network_virtual_networks](azure_network_virtual_networks.md).
+The following tables depend on azure_network_virtual_network_gateways:
+  - [azure_network_virtual_network_gateway_connections](azure_network_virtual_network_gateway_connections.md)
 
 ## Columns
 | Name          | Type          |

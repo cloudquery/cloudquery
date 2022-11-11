@@ -15,7 +15,7 @@ func fetchIotThingGroups(ctx context.Context, meta schema.ClientMeta, parent *sc
 	}
 	c := meta.(*client.Client)
 
-	svc := c.Services().IOT
+	svc := c.Services().Iot
 	for {
 		response, err := svc.ListThingGroups(ctx, &input)
 		if err != nil {
@@ -43,7 +43,7 @@ func fetchIotThingGroups(ctx context.Context, meta schema.ClientMeta, parent *sc
 func ResolveIotThingGroupThingsInGroup(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.DescribeThingGroupOutput)
 	cl := meta.(*client.Client)
-	svc := cl.Services().IOT
+	svc := cl.Services().Iot
 	input := iot.ListThingsInThingGroupInput{
 		ThingGroupName: i.ThingGroupName,
 		MaxResults:     aws.Int32(250),
@@ -68,7 +68,7 @@ func ResolveIotThingGroupThingsInGroup(ctx context.Context, meta schema.ClientMe
 func ResolveIotThingGroupPolicies(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.DescribeThingGroupOutput)
 	cl := meta.(*client.Client)
-	svc := cl.Services().IOT
+	svc := cl.Services().Iot
 	input := iot.ListAttachedPoliciesInput{
 		Target:   i.ThingGroupArn,
 		PageSize: aws.Int32(250),
@@ -95,7 +95,7 @@ func ResolveIotThingGroupPolicies(ctx context.Context, meta schema.ClientMeta, r
 func ResolveIotThingGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.DescribeThingGroupOutput)
 	cl := meta.(*client.Client)
-	svc := cl.Services().IOT
+	svc := cl.Services().Iot
 	input := iot.ListTagsForResourceInput{
 		ResourceArn: i.ThingGroupArn,
 	}

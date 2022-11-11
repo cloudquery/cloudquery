@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigateway/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -15,7 +15,7 @@ func buildApigatewayRestApis(t *testing.T, ctrl *gomock.Controller) client.Servi
 	m := mocks.NewMockApigatewayClient(ctrl)
 
 	r := types.RestApi{}
-	err := faker.FakeData(&r)
+	err := faker.FakeObject(&r)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -25,7 +25,7 @@ func buildApigatewayRestApis(t *testing.T, ctrl *gomock.Controller) client.Servi
 		}, nil)
 
 	a := types.Authorizer{}
-	err = faker.FakeData(&a)
+	err = faker.FakeObject(&a)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -35,7 +35,7 @@ func buildApigatewayRestApis(t *testing.T, ctrl *gomock.Controller) client.Servi
 		}, nil)
 
 	d := types.Deployment{}
-	err = faker.FakeData(&d)
+	err = faker.FakeObject(&d)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -45,7 +45,7 @@ func buildApigatewayRestApis(t *testing.T, ctrl *gomock.Controller) client.Servi
 		}, nil)
 
 	dp := types.DocumentationPart{}
-	err = faker.FakeData(&dp)
+	err = faker.FakeObject(&dp)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -55,7 +55,7 @@ func buildApigatewayRestApis(t *testing.T, ctrl *gomock.Controller) client.Servi
 		}, nil)
 
 	dv := types.DocumentationVersion{}
-	err = faker.FakeData(&dv)
+	err = faker.FakeObject(&dv)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -65,7 +65,7 @@ func buildApigatewayRestApis(t *testing.T, ctrl *gomock.Controller) client.Servi
 		}, nil)
 
 	gr := types.GatewayResponse{}
-	err = faker.FakeData(&gr)
+	err = faker.FakeObject(&gr)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -75,7 +75,7 @@ func buildApigatewayRestApis(t *testing.T, ctrl *gomock.Controller) client.Servi
 		}, nil)
 
 	am := types.Model{}
-	err = faker.FakeData(&am)
+	err = faker.FakeObject(&am)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -85,7 +85,7 @@ func buildApigatewayRestApis(t *testing.T, ctrl *gomock.Controller) client.Servi
 		}, nil)
 
 	mt := apigateway.GetModelTemplateOutput{}
-	err = faker.FakeData(&mt)
+	err = faker.FakeObject(&mt)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -93,7 +93,7 @@ func buildApigatewayRestApis(t *testing.T, ctrl *gomock.Controller) client.Servi
 		&mt, nil)
 
 	rv := types.RequestValidator{}
-	err = faker.FakeData(&rv)
+	err = faker.FakeObject(&rv)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -103,7 +103,7 @@ func buildApigatewayRestApis(t *testing.T, ctrl *gomock.Controller) client.Servi
 		}, nil)
 
 	ar := types.Resource{}
-	err = faker.FakeData(&ar)
+	err = faker.FakeObject(&ar)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -113,7 +113,7 @@ func buildApigatewayRestApis(t *testing.T, ctrl *gomock.Controller) client.Servi
 		}, nil)
 
 	s := types.Stage{}
-	err = faker.FakeData(&s)
+	err = faker.FakeObject(&s)
 	if err != nil {
 		t.Fatal(err)
 	}

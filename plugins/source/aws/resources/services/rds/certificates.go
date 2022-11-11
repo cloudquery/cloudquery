@@ -9,9 +9,10 @@ import (
 
 func Certificates() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_rds_certificates",
-		Resolver:  fetchRdsCertificates,
-		Multiplex: client.ServiceAccountRegionMultiplexer("rds"),
+		Name:        "aws_rds_certificates",
+		Description: `https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_Certificate.html`,
+		Resolver:    fetchRdsCertificates,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("rds"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

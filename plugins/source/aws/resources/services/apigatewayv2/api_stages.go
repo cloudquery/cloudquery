@@ -10,7 +10,7 @@ import (
 func ApiStages() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_apigatewayv2_api_stages",
-		Description: "https://docs.aws.amazon.com/apigateway/latest/api/API_Stage.html",
+		Description: `https://docs.aws.amazon.com/apigateway/latest/api/API_Stage.html`,
 		Resolver:    fetchApigatewayv2ApiStages,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
 		Columns: []schema.Column{

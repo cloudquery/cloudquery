@@ -7,24 +7,23 @@ on:
 
 jobs:
   wait_for_required_workflows:
+    timeout-minutes: 30
     name: wait-for-required-workflows
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-        with:
-          fetch-depth: 2
       - name: Get changed files
         id: changed-files
-        uses: tj-actions/changed-files@v28
+        uses: Ana06/get-changed-files@v2.1.0
       - uses: actions/github-script@v6
         env:
-          FILES: ${{ steps.changed-files.outputs.all_changed_files }}
+          FILES: ${{ steps.changed-files.outputs.all }}
         with:
           script: |
             const files = process.env.FILES.split(' ')
             console.log(files)
             let now = new Date().getTime()
-            const deadline = now + 60 * 1000 * 15
+            const deadline = now + 60 * 1000 * 25
             const matchesWorkflow = (file, action) => {
               if (!file.startsWith('.github/workflows/')) {
                 return false
@@ -51,6 +50,8 @@ jobs:
                            
                            "plugins/destination/postgresql",
                            "plugins/destination/test",
+                           "plugins/destination/csv",
+                           "plugins/destination/sqlite",
                            ].filter(action => matchesFile(action))
             if (actions.length === 0) {
               console.log("No actions to wait for")
@@ -61,7 +62,14 @@ jobs:
               actions = actions.filter(action => action !== "cli")
               actions = ["cli (ubuntu-latest)", "cli (windows-latest)", "cli (macos-latest)", ...actions]
             }
-            console.log(`Waiting for ${actions.join(", ")}`)
+            // Enforce policy tests for AWS,GCP,Azure and K8s plugins
+            const pluginsWithPolicyTests = ["plugins/source/aws", "plugins/source/gcp", "plugins/source/azure", "plugins/source/k8s"]
+            if (actions.some(action => pluginsWithPolicyTests.includes(action))) {
+              actions = [...actions, 'test-policies']
+            }
+            actions = [...actions, 'validate-release']
+            pendingActions = [...actions]
+            console.log(`Waiting for ${pendingActions.join(", ")}`)
             while (now <= deadline) {
               const checkRuns = await github.paginate(github.rest.checks.listForRef, {
                 owner: 'cloudquery',
@@ -82,9 +90,11 @@ jobs:
                 return
               }
               
+              pendingActions = actions.filter(action => !runs.some(({ name }) => name === action))
+              console.log(`Waiting for ${pendingActions.join(", ")}`)
               await new Promise(r => setTimeout(r, 5000));
               now = new Date().getTime()
             }
-            throw new Error(`Timed out waiting for ${actions.join(', ')}`)
+            throw new Error(`Timed out waiting for ${pendingActions.join(', ')}`)
 
             

@@ -1,6 +1,6 @@
 # Table: aws_elasticache_users
 
-
+https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_User.html
 
 The primary key for this table is **arn**.
 

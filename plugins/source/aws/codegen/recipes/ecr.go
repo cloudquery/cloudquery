@@ -3,6 +3,7 @@ package recipes
 import (
 	"github.com/aws/aws-sdk-go-v2/service/ecr"
 	"github.com/aws/aws-sdk-go-v2/service/ecr/types"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ecr/models"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -47,10 +48,11 @@ func ECRResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "repositories",
-			Struct:     &types.Repository{},
-			SkipFields: []string{"RepositoryArn"},
-			Multiplex:  `client.ServiceAccountRegionMultiplexer("api.ecr")`,
+			SubService:  "repositories",
+			Struct:      &types.Repository{},
+			Description: "https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_Repository.html",
+			SkipFields:  []string{"RepositoryArn"},
+			Multiplex:   `client.ServiceAccountRegionMultiplexer("api.ecr")`,
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -65,12 +67,20 @@ func ECRResources() []*Resource {
 						Type:     schema.TypeJSON,
 						Resolver: `resolveRepositoryTags`,
 					},
+					{
+						Name:     "policy_text",
+						Type:     schema.TypeJSON,
+						Resolver: `resolveRepositoryPolicy`,
+					},
 				}...),
-			Relations: []string{"RepositoryImages()"},
+			Relations: []string{
+				"RepositoryImages()",
+			},
 		},
 		{
-			SubService: "repository_images",
-			Struct:     &types.ImageDetail{},
+			SubService:  "repository_images",
+			Struct:      &types.ImageDetail{},
+			Description: "https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_ImageDetail.html",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -81,6 +91,13 @@ func ECRResources() []*Resource {
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
 				}...),
+			Relations: []string{"RepositoryImageScanFindings()"},
+		},
+		{
+			SubService:   "repository_image_scan_findings",
+			Struct:       &models.ImageScanWrapper{},
+			Description:  "https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_ImageScanFindings.html",
+			ExtraColumns: defaultRegionalColumns,
 		},
 	}
 

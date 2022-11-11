@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -18,7 +18,7 @@ func buildLambdaFunctionsMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 	lastModified := "1994-11-05T08:15:30.000+0500"
 
 	f := lambda.GetFunctionOutput{}
-	err := faker.FakeData(&f)
+	err := faker.FakeObject(&f)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -27,7 +27,7 @@ func buildLambdaFunctionsMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 		&f, nil)
 
 	fc := types.FunctionConfiguration{}
-	err = faker.FakeData(&fc)
+	err = faker.FakeObject(&fc)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -37,7 +37,7 @@ func buildLambdaFunctionsMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 		}, nil)
 
 	a := types.AliasConfiguration{}
-	err = faker.FakeData(&a)
+	err = faker.FakeObject(&a)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -47,7 +47,7 @@ func buildLambdaFunctionsMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 		}, nil)
 
 	i := types.FunctionEventInvokeConfig{}
-	err = faker.FakeData(&i)
+	err = faker.FakeObject(&i)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -57,7 +57,7 @@ func buildLambdaFunctionsMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 		}, nil)
 
 	cc := types.ProvisionedConcurrencyConfigListItem{}
-	err = faker.FakeData(&cc)
+	err = faker.FakeObject(&cc)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -68,7 +68,7 @@ func buildLambdaFunctionsMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 		}, nil)
 
 	esm := types.EventSourceMappingConfiguration{}
-	err = faker.FakeData(&esm)
+	err = faker.FakeObject(&esm)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -78,7 +78,7 @@ func buildLambdaFunctionsMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 		}, nil)
 
 	fp := lambda.GetPolicyOutput{}
-	err = faker.FakeData(&fp)
+	err = faker.FakeObject(&fp)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -88,7 +88,7 @@ func buildLambdaFunctionsMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 		&fp, nil)
 
 	csco := lambda.GetFunctionCodeSigningConfigOutput{}
-	err = faker.FakeData(&csco)
+	err = faker.FakeObject(&csco)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -96,7 +96,7 @@ func buildLambdaFunctionsMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 		&csco, nil)
 
 	csc := types.CodeSigningConfig{}
-	err = faker.FakeData(&csc)
+	err = faker.FakeObject(&csc)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -113,7 +113,7 @@ func buildLambdaFunctionsMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 		}, nil)
 
 	urlConfig := lambda.GetFunctionUrlConfigOutput{}
-	err = faker.FakeData(&urlConfig)
+	err = faker.FakeObject(&urlConfig)
 	if err != nil {
 		t.Fatal(err)
 	}

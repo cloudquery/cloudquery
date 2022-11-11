@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/lightsail"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -14,7 +14,7 @@ func buildDatabaseSnapshotsMock(t *testing.T, ctrl *gomock.Controller) client.Se
 	m := mocks.NewMockLightsailClient(ctrl)
 
 	s := lightsail.GetRelationalDatabaseSnapshotsOutput{}
-	err := faker.FakeData(&s)
+	err := faker.FakeObject(&s)
 	if err != nil {
 		t.Fatal(err)
 	}

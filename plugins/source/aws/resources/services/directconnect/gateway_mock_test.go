@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/directconnect/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -16,15 +16,15 @@ func buildDirectconnectGatewaysMock(t *testing.T, ctrl *gomock.Controller) clien
 	l := types.DirectConnectGateway{}
 	association := types.DirectConnectGatewayAssociation{}
 	attachment := types.DirectConnectGatewayAttachment{}
-	err := faker.FakeData(&l)
+	err := faker.FakeObject(&l)
 	if err != nil {
 		t.Fatal(err)
 	}
-	err = faker.FakeData(&association)
+	err = faker.FakeObject(&association)
 	if err != nil {
 		t.Fatal(err)
 	}
-	err = faker.FakeData(&attachment)
+	err = faker.FakeObject(&attachment)
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -7,15 +7,15 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafregional/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildWebACLsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockWafRegionalClient(ctrl)
+	m := mocks.NewMockWafregionalClient(ctrl)
 
 	var acl types.WebACL
-	if err := faker.FakeData(&acl); err != nil {
+	if err := faker.FakeObject(&acl); err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().ListWebACLs(
@@ -62,7 +62,7 @@ func buildWebACLsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
-	return client.Services{WafRegional: m}
+	return client.Services{Wafregional: m}
 }
 
 func TestWebACLs(t *testing.T) {

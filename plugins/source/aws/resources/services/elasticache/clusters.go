@@ -9,9 +9,10 @@ import (
 
 func Clusters() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_elasticache_clusters",
-		Resolver:  fetchElasticacheClusters,
-		Multiplex: client.ServiceAccountRegionMultiplexer("elasticache"),
+		Name:        "aws_elasticache_clusters",
+		Description: `https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_CacheCluster.html`,
+		Resolver:    fetchElasticacheClusters,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticache"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -112,9 +113,19 @@ func Clusters() *schema.Table {
 				Resolver: schema.PathResolver("EngineVersion"),
 			},
 			{
+				Name:     "ip_discovery",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("IpDiscovery"),
+			},
+			{
 				Name:     "log_delivery_configurations",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("LogDeliveryConfigurations"),
+			},
+			{
+				Name:     "network_type",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("NetworkType"),
 			},
 			{
 				Name:     "notification_configuration",

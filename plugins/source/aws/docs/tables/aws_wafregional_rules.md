@@ -1,6 +1,6 @@
 # Table: aws_wafregional_rules
 
-
+https://docs.aws.amazon.com/waf/latest/APIReference/API_wafRegional_Rule.html
 
 The primary key for this table is **arn**.
 

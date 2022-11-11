@@ -12,7 +12,7 @@ import (
 )
 
 func buildMetricFiltersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockCloudwatchLogsClient(ctrl)
+	m := mocks.NewMockCloudwatchlogsClient(ctrl)
 	l := types.MetricFilter{}
 	err := faker.FakeObject(&l)
 	if err != nil {
@@ -23,7 +23,7 @@ func buildMetricFiltersMock(t *testing.T, ctrl *gomock.Controller) client.Servic
 			MetricFilters: []types.MetricFilter{l},
 		}, nil)
 	return client.Services{
-		CloudwatchLogs: m,
+		Cloudwatchlogs: m,
 	}
 }
 

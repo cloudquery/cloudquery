@@ -14,7 +14,7 @@ import (
 
 func fetchSqsQueues(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	svc := c.Services().SQS
+	svc := c.Services().Sqs
 	var params sqs.ListQueuesInput
 	for {
 		result, err := svc.ListQueues(ctx, &params)
@@ -33,7 +33,7 @@ func fetchSqsQueues(ctx context.Context, meta schema.ClientMeta, parent *schema.
 
 func getQueue(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	c := meta.(*client.Client)
-	svc := c.Services().SQS
+	svc := c.Services().Sqs
 	qURL := resource.Item.(string)
 
 	input := sqs.GetQueueAttributesInput{
@@ -60,7 +60,7 @@ func getQueue(ctx context.Context, meta schema.ClientMeta, resource *schema.Reso
 
 func resolveSqsQueueTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().SQS
+	svc := cl.Services().Sqs
 	q := resource.Item.(*models.Queue)
 	result, err := svc.ListQueueTags(ctx, &sqs.ListQueueTagsInput{QueueUrl: &q.URL})
 	if err != nil {

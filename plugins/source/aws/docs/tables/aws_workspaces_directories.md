@@ -1,6 +1,6 @@
 # Table: aws_workspaces_directories
 
-
+https://docs.aws.amazon.com/workspaces/latest/api/API_WorkspaceDirectory.html
 
 The primary key for this table is **arn**.
 

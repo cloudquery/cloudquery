@@ -200,7 +200,7 @@
         "type": "postgres",
         "uid": "${DS_POSTGRESQL}"
       },
-      "description": "Time since the most recent CloudQuery fetch happened.",
+      "description": "Time since the most recent CloudQuery sync happened.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -254,11 +254,11 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT (cq_meta::JSONB->>'last_updated')::TIMESTAMP WITH TIME ZONE AS time, 1 FROM k8s_core_pods ORDER BY time DESC LIMIT 1;",
+          "rawSql": "SELECT _cq_sync_time AS time, 1 FROM k8s_core_pods ORDER BY time DESC LIMIT 1;",
           "refId": "A"
         }
       ],
-      "title": "Last Fetch",
+      "title": "Last Sync",
       "type": "stat"
     },
     {

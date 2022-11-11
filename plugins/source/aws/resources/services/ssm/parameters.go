@@ -9,9 +9,10 @@ import (
 
 func Parameters() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_ssm_parameters",
-		Resolver:  fetchSsmParameters,
-		Multiplex: client.ServiceAccountRegionMultiplexer("ssm"),
+		Name:        "aws_ssm_parameters",
+		Description: `https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_ParameterMetadata.html`,
+		Resolver:    fetchSsmParameters,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("ssm"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",

@@ -1,12 +1,12 @@
 # Table: azure_eventhub_namespaces
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/eventhub/mgmt/2018-01-01-preview/eventhub#EHNamespace
 
 The primary key for this table is **id**.
 
 ## Relations
-The following tables depend on `azure_eventhub_namespaces`:
-  - [`azure_eventhub_network_rule_sets`](azure_eventhub_network_rule_sets.md)
+The following tables depend on azure_eventhub_namespaces:
+  - [azure_eventhub_network_rule_sets](azure_eventhub_network_rule_sets.md)
 
 ## Columns
 | Name          | Type          |

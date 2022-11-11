@@ -7,19 +7,19 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildWAFV2ManagedRuleGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockWafV2Client(ctrl)
+	m := mocks.NewMockWafv2Client(ctrl)
 	var tempDescribeManagedRuleGroup wafv2.DescribeManagedRuleGroupOutput
-	if err := faker.FakeData(&tempDescribeManagedRuleGroup); err != nil {
+	if err := faker.FakeObject(&tempDescribeManagedRuleGroup); err != nil {
 		t.Fatal(err)
 	}
 	for _, scope := range []types.Scope{types.ScopeCloudfront, types.ScopeRegional} {
 		tempManagedRuleGroupSum := types.ManagedRuleGroupSummary{}
-		if err := faker.FakeData(&tempManagedRuleGroupSum); err != nil {
+		if err := faker.FakeObject(&tempManagedRuleGroupSum); err != nil {
 			t.Fatal(err)
 		}
 		m.EXPECT().ListAvailableManagedRuleGroups(gomock.Any(), &wafv2.ListAvailableManagedRuleGroupsInput{
@@ -30,7 +30,7 @@ func buildWAFV2ManagedRuleGroupsMock(t *testing.T, ctrl *gomock.Controller) clie
 		m.EXPECT().DescribeManagedRuleGroup(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tempDescribeManagedRuleGroup, nil)
 	}
 
-	return client.Services{WafV2: m}
+	return client.Services{Wafv2: m}
 }
 
 func TestWafV2ManagedRuleGroups(t *testing.T) {

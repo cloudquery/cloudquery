@@ -17,7 +17,8 @@ var functionsResources = []*Resource{
 		RequestStructFields: `Parent: "projects/" + c.ProjectId + "/locations/-",`,
 		UnimplementedServer: &pb.UnimplementedCloudFunctionsServiceServer{},
 		FakerFieldsToIgnore: []string{"SourceCode", "Trigger"},
-		SkipFields:          []string{"SourceCode", "Trigger"},
+		// Skipping Timeout because `TypeInterval` is broken right now, and breaks the plugin completely.
+		SkipFields: []string{"SourceCode", "Trigger", "Timeout"},
 	},
 }
 

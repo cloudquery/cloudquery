@@ -1,0 +1,39 @@
+name: Auto trigger gen code
+
+on:
+  pull_request:
+    types: [opened, reopened]
+    paths:
+      - '**.mod'
+
+jobs:
+  gen-code-deps:
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    # We auto gen code for service SDK updates (e.g. AWS SDK), but not for our own SDK, as those changes should be handled manually
+    if: github.event.pull_request.user.login == 'cq-bot' && startsWith(github.event.pull_request.title, 'fix(deps)') && startsWith(github.head_ref, 'renovate/') && !contains(github.head_ref, 'cloudquery-plugin-sdk')
+    steps:
+      - name: Get changed files
+        id: changed-files
+        uses: Ana06/get-changed-files@v2.1.0
+        with:
+          filter: 'go.mod'
+      - uses: actions/github-script@v6
+        if: startsWith(steps.changed-files.outputs.all, 'plugins/source')
+        env:
+          SHA: ${{ github.event.pull_request.head.sha }}
+          GO_MOD_FILE: ${{ steps.changed-files.outputs.all }}
+        with:
+          github-token: ${{ secrets.GH_CQ_BOT }}
+          script: |
+            const { issue: { number: issue_number }, repo: { owner, repo } } = context;
+            const { SHA: sha, GO_MOD_FILE: goModFile } = process.env;
+            // e.g. plugins/source/aws/go.mod
+            const plugin = goModFile.split('/')[2]
+            console.log({ issue_number, owner, repo, sha, plugin });
+            await github.rest.issues.createComment({
+              issue_number,
+              owner,
+              repo,
+              body: `/gen sha=${sha} plugin=${plugin}`
+            })

@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/backup/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -16,7 +16,7 @@ func buildBackupPlansMock(t *testing.T, ctrl *gomock.Controller) client.Services
 	m := mocks.NewMockBackupClient(ctrl)
 
 	var plan backup.GetBackupPlanOutput
-	if err := faker.FakeData(&plan); err != nil {
+	if err := faker.FakeObject(&plan); err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().ListBackupPlans(
@@ -54,7 +54,7 @@ func buildBackupPlansMock(t *testing.T, ctrl *gomock.Controller) client.Services
 	)
 
 	var selection backup.GetBackupSelectionOutput
-	if err := faker.FakeData(&selection); err != nil {
+	if err := faker.FakeObject(&selection); err != nil {
 		t.Fatal(err)
 	}
 	selection.BackupPlanId = plan.BackupPlanId

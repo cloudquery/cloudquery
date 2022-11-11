@@ -9,9 +9,10 @@ import (
 
 func SubnetGroups() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_redshift_subnet_groups",
-		Resolver:  fetchRedshiftSubnetGroups,
-		Multiplex: client.ServiceAccountRegionMultiplexer("redshift"),
+		Name:        "aws_redshift_subnet_groups",
+		Description: `https://docs.aws.amazon.com/redshift/latest/APIReference/API_ClusterSubnetGroup.html`,
+		Resolver:    fetchRedshiftSubnetGroups,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("redshift"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -33,12 +34,6 @@ func SubnetGroups() *schema.Table {
 				},
 			},
 			{
-				Name:        "tags",
-				Type:        schema.TypeJSON,
-				Resolver:    client.ResolveTags,
-				Description: `The list of tags for the cluster subnet group.`,
-			},
-			{
 				Name:     "cluster_subnet_group_name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ClusterSubnetGroupName"),
@@ -57,6 +52,11 @@ func SubnetGroups() *schema.Table {
 				Name:     "subnets",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Subnets"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "vpc_id",

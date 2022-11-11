@@ -6,15 +6,15 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iot"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildIotThingTypesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockIOTClient(ctrl)
+	m := mocks.NewMockIotClient(ctrl)
 
 	groupsOutput := iot.ListThingTypesOutput{}
-	err := faker.FakeData(&groupsOutput)
+	err := faker.FakeObject(&groupsOutput)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -23,7 +23,7 @@ func buildIotThingTypesMock(t *testing.T, ctrl *gomock.Controller) client.Servic
 		&groupsOutput, nil)
 
 	tags := iot.ListTagsForResourceOutput{}
-	err = faker.FakeData(&tags)
+	err = faker.FakeObject(&tags)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -32,7 +32,7 @@ func buildIotThingTypesMock(t *testing.T, ctrl *gomock.Controller) client.Servic
 		&tags, nil)
 
 	return client.Services{
-		IOT: m,
+		Iot: m,
 	}
 }
 

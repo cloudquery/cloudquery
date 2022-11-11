@@ -7,20 +7,20 @@ import (
 	iamTypes "github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildRoles(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockIamClient(ctrl)
 	r := iamTypes.Role{}
-	err := faker.FakeData(&r)
+	err := faker.FakeObject(&r)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	p := iamTypes.AttachedPolicy{}
-	err = faker.FakeData(&p)
+	err = faker.FakeObject(&p)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -45,7 +45,7 @@ func buildRoles(t *testing.T, ctrl *gomock.Controller) client.Services {
 
 	// list policies by role
 	var l []string
-	err = faker.FakeData(&l)
+	err = faker.FakeObject(&l)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -56,7 +56,7 @@ func buildRoles(t *testing.T, ctrl *gomock.Controller) client.Services {
 
 	//get policy
 	pd := iam.GetRolePolicyOutput{}
-	err = faker.FakeData(&pd)
+	err = faker.FakeObject(&pd)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -66,13 +66,13 @@ func buildRoles(t *testing.T, ctrl *gomock.Controller) client.Services {
 
 	//get tags
 	tag := iamTypes.Tag{}
-	err = faker.FakeData(&tag)
+	err = faker.FakeObject(&tag)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	return client.Services{
-		IAM: m,
+		Iam: m,
 	}
 }
 

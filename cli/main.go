@@ -9,6 +9,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/cli/cmd"
 	"github.com/getsentry/sentry-go"
+	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )
 
@@ -43,9 +44,11 @@ func main() {
 		}
 	}()
 
+	// This ensures we don't print anything until logging is configured
+	log.Logger = log.Level(zerolog.Disabled)
 	if err := executeRootCmdWithContext(); err != nil {
 		log.Error().Err(err).Msg("exiting with error")
-		//nolint:all This is fine if deffered is not called because there was no panic
+		//nolint:all This is fine if deferred is not called because there was no panic
 		os.Exit(1)
 	}
 }

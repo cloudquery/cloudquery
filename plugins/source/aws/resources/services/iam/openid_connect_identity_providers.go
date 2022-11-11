@@ -27,11 +27,6 @@ func OpenidConnectIdentityProviders() *schema.Table {
 				},
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
-			},
-			{
 				Name:     "client_id_list",
 				Type:     schema.TypeStringArray,
 				Resolver: schema.PathResolver("ClientIDList"),
@@ -40,6 +35,11 @@ func OpenidConnectIdentityProviders() *schema.Table {
 				Name:     "create_date",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreateDate"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "thumbprint_list",

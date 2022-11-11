@@ -9,9 +9,10 @@ import (
 
 func Policies() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_iot_policies",
-		Resolver:  fetchIotPolicies,
-		Multiplex: client.ServiceAccountRegionMultiplexer("iot"),
+		Name:        "aws_iot_policies",
+		Description: `https://docs.aws.amazon.com/iot/latest/apireference/API_Policy.html`,
+		Resolver:    fetchIotPolicies,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("iot"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

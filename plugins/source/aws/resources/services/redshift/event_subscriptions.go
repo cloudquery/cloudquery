@@ -9,9 +9,10 @@ import (
 
 func EventSubscriptions() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_redshift_event_subscriptions",
-		Resolver:  fetchRedshiftEventSubscriptions,
-		Multiplex: client.ServiceAccountRegionMultiplexer("redshift"),
+		Name:        "aws_redshift_event_subscriptions",
+		Description: `https://docs.aws.amazon.com/redshift/latest/APIReference/API_EventSubscription.html`,
+		Resolver:    fetchRedshiftEventSubscriptions,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("redshift"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -31,12 +32,6 @@ func EventSubscriptions() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
-			},
-			{
-				Name:        "tags",
-				Type:        schema.TypeJSON,
-				Resolver:    client.ResolveTags,
-				Description: `Tags`,
 			},
 			{
 				Name:     "cust_subscription_id",
@@ -87,6 +82,11 @@ func EventSubscriptions() *schema.Table {
 				Name:     "subscription_creation_time",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("SubscriptionCreationTime"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 		},
 	}

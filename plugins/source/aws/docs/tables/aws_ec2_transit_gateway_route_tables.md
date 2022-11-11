@@ -5,7 +5,7 @@ https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGatewayRouteTa
 The primary key for this table is **_cq_id**.
 
 ## Relations
-This table depends on [`aws_ec2_transit_gateways`](aws_ec2_transit_gateways.md).
+This table depends on [aws_ec2_transit_gateways](aws_ec2_transit_gateways.md).
 
 ## Columns
 | Name          | Type          |
@@ -17,10 +17,10 @@ This table depends on [`aws_ec2_transit_gateways`](aws_ec2_transit_gateways.md).
 |account_id|String|
 |region|String|
 |transit_gateway_arn|String|
-|tags|JSON|
 |creation_time|Timestamp|
 |default_association_route_table|Bool|
 |default_propagation_route_table|Bool|
 |state|String|
+|tags|JSON|
 |transit_gateway_id|String|
 |transit_gateway_route_table_id|String|

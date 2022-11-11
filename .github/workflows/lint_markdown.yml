@@ -3,11 +3,12 @@ name: Lint Markdown files
 on:
   pull_request:
     paths:
-      - ".github/workflow/lint_markdown.yml"
+      - ".github/workflows/lint_markdown.yml"
       - "**.md"
 
 jobs:
   lint-grammar:
+    timeout-minutes: 30
     runs-on: ubuntu-latest
     steps:
       - name: Git checkout
@@ -15,7 +16,8 @@ jobs:
       - name: Vale
         uses: errata-ai/vale-action@v2
         with:
-          vale_flags: "--glob='!{website/pages/blog/podcast-software-engineer-daily.md,*CHANGELOG.md,*/docs/tables/*,.github/styles/proselint/README.md,**/v1-migration.md}'"
+          vale_flags: "--glob=!{website/pages/blog/podcast-software-engineer-daily.md,*CHANGELOG.md,*/docs/tables/*,.github/styles/proselint/README.md,**/v1-migration.md}"
           filter_mode: nofilter
+          fail_on_error: true
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}

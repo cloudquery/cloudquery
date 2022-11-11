@@ -36,7 +36,7 @@ In this blog post, we will walk you through how to setup CloudQuery to build you
 
 ### Step 1: **Install or Deploy CloudQuery**
 
-If it’s your first time using CloudQuery we suggest you first run it locally to get familiar with the tool, take a look at our [Getting Started with Azure Guide](https://www.cloudquery.io/docs/getting-started/getting-started-with-azure).
+If it’s your first time using CloudQuery we suggest you first run it locally to get familiar with the tool, take a look at our [quickstart guide](/docs/quickstart) and [Azure recipe](/docs/recipes/sources/azure).
 
 If you are already familiar with CloudQuery, take a look at how to deploy it to Azure on AKS at [https://github.com/cloudquery/terraform-azure-cloudquery](https://github.com/cloudquery/terraform-azure-cloudquery).
 

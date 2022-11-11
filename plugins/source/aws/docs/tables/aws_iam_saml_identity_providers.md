@@ -1,6 +1,6 @@
 # Table: aws_iam_saml_identity_providers
 
-
+https://docs.aws.amazon.com/IAM/latest/APIReference/API_SAMLProviderListEntry.html
 
 The primary key for this table is **arn**.
 
@@ -14,6 +14,5 @@ The primary key for this table is **arn**.
 |_cq_parent_id|UUID|
 |account_id|String|
 |arn (PK)|String|
-|tags|JSON|
 |create_date|Timestamp|
 |valid_until|Timestamp|

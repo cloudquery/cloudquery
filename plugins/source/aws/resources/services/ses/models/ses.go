@@ -2,7 +2,17 @@ package models
 
 import (
 	"time"
+
+	"github.com/aws/aws-sdk-go-v2/service/sesv2"
 )
+
+type EmailIdentityWrapper struct {
+	ARN            *string
+	IdentityName   *string
+	SendingEnabled bool
+
+	*sesv2.GetEmailIdentityOutput
+}
 
 type Template struct {
 	TemplateName *string

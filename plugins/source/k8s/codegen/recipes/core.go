@@ -73,6 +73,11 @@ func CoreResources() []*Resource {
 			Struct:     &corev1.ResourceQuota{},
 		},
 		{
+			SubService: "secrets",
+			Struct:     &corev1.Secret{},
+			SkipFields: []string{"Data", "StringData"},
+		},
+		{
 			SubService: "service_accounts",
 			Struct:     &corev1.ServiceAccount{},
 		},

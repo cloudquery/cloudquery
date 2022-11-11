@@ -10,7 +10,7 @@ import (
 func Eips() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_ec2_eips",
-		Description: "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Address.html",
+		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Address.html`,
 		Resolver:    fetchEc2Eips,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Columns: []schema.Column{
@@ -92,7 +92,7 @@ func Eips() *schema.Table {
 			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
+				Resolver: client.ResolveTags,
 			},
 		},
 	}

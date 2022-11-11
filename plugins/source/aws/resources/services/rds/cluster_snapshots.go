@@ -9,9 +9,10 @@ import (
 
 func ClusterSnapshots() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_rds_cluster_snapshots",
-		Resolver:  fetchRdsClusterSnapshots,
-		Multiplex: client.ServiceAccountRegionMultiplexer("rds"),
+		Name:        "aws_rds_cluster_snapshots",
+		Description: `https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBClusterSnapshot.html`,
+		Resolver:    fetchRdsClusterSnapshots,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("rds"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -135,11 +136,6 @@ func ClusterSnapshots() *schema.Table {
 				Name:     "storage_encrypted",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("StorageEncrypted"),
-			},
-			{
-				Name:     "tag_list",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("TagList"),
 			},
 			{
 				Name:     "vpc_id",

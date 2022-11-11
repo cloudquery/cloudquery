@@ -1,6 +1,6 @@
 # Table: heroku_apps
 
-https://devcenter.heroku.com/articles/platform-api-reference#app-attributes
+https://devcenter.heroku.com/articles/platform-api-reference#app
 
 The primary key for this table is **id**.
 

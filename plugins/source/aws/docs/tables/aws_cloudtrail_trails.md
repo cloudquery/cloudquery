@@ -1,12 +1,12 @@
 # Table: aws_cloudtrail_trails
 
-
+https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_Trail.html
 
 The primary key for this table is **arn**.
 
 ## Relations
-The following tables depend on `aws_cloudtrail_trails`:
-  - [`aws_cloudtrail_trail_event_selectors`](aws_cloudtrail_trail_event_selectors.md)
+The following tables depend on aws_cloudtrail_trails:
+  - [aws_cloudtrail_trail_event_selectors](aws_cloudtrail_trail_event_selectors.md)
 
 ## Columns
 | Name          | Type          |

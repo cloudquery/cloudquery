@@ -1,6 +1,6 @@
 # Table: aws_firehose_delivery_streams
 
-
+https://docs.aws.amazon.com/firehose/latest/APIReference/API_DeliveryStreamDescription.html
 
 The primary key for this table is **arn**.
 

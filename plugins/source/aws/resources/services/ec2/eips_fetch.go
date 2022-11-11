@@ -12,7 +12,7 @@ import (
 
 func fetchEc2Eips(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	svc := c.Services().EC2
+	svc := c.Services().Ec2
 	output, err := svc.DescribeAddresses(ctx, &ec2.DescribeAddressesInput{
 		Filters: []types.Filter{{Name: aws.String("domain"), Values: []string{"vpc"}}},
 	})

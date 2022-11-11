@@ -9,8 +9,9 @@ import (
 func WorkspacesResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "workspaces",
-			Struct:     &types.Workspace{},
+			SubService:  "workspaces",
+			Struct:      &types.Workspace{},
+			Description: "https://docs.aws.amazon.com/workspaces/latest/api/API_Workspace.html",
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{
@@ -23,8 +24,9 @@ func WorkspacesResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "directories",
-			Struct:     &types.WorkspaceDirectory{},
+			SubService:  "directories",
+			Struct:      &types.WorkspaceDirectory{},
+			Description: "https://docs.aws.amazon.com/workspaces/latest/api/API_WorkspaceDirectory.html",
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{

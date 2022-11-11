@@ -1,6 +1,6 @@
 # Table: aws_regions
 
-Describes a Region.
+https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Region.html
 
 The primary key for this table is **_cq_id**.
 
@@ -14,7 +14,7 @@ The primary key for this table is **_cq_id**.
 |_cq_parent_id|UUID|
 |account_id|String|
 |enabled|Bool|
+|partition|String|
+|region|String|
 |endpoint|String|
 |opt_in_status|String|
-|region|String|
-|partition|String|

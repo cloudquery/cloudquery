@@ -10,7 +10,7 @@ import (
 func TrailEventSelectors() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_cloudtrail_trail_event_selectors",
-		Description: "https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_EventSelector.html",
+		Description: `https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_EventSelector.html`,
 		Resolver:    fetchCloudtrailTrailEventSelectors,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("cloudtrail"),
 		Columns: []schema.Column{

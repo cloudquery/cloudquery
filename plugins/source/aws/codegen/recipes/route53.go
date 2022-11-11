@@ -15,9 +15,10 @@ func Route53Resources() []*Resource {
 	resources := []*Resource{
 
 		{
-			SubService: "delegation_sets",
-			Struct:     &types.DelegationSet{},
-			SkipFields: []string{},
+			SubService:  "delegation_sets",
+			Struct:      &types.DelegationSet{},
+			Description: "https://docs.aws.amazon.com/Route53/latest/APIReference/API_DelegationSet.html",
+			SkipFields:  []string{},
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{
@@ -58,9 +59,10 @@ func Route53Resources() []*Resource {
 		},
 
 		{
-			SubService: "health_checks",
-			Struct:     &types.HealthCheck{},
-			SkipFields: []string{},
+			SubService:  "health_checks",
+			Struct:      &types.HealthCheck{},
+			Description: "https://docs.aws.amazon.com/Route53/latest/APIReference/API_HealthCheck.html",
+			SkipFields:  []string{},
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{
@@ -104,9 +106,10 @@ func Route53Resources() []*Resource {
 			},
 		},
 		{
-			SubService: "hosted_zone_query_logging_configs",
-			Struct:     &types.QueryLoggingConfig{},
-			SkipFields: []string{},
+			SubService:  "hosted_zone_query_logging_configs",
+			Struct:      &types.QueryLoggingConfig{},
+			Description: "https://docs.aws.amazon.com/Route53/latest/APIReference/API_QueryLoggingConfig.html",
+			SkipFields:  []string{},
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{
@@ -124,9 +127,10 @@ func Route53Resources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "hosted_zone_resource_record_sets",
-			Struct:     &types.ResourceRecordSet{},
-			SkipFields: []string{},
+			SubService:  "hosted_zone_resource_record_sets",
+			Struct:      &types.ResourceRecordSet{},
+			Description: "https://docs.aws.amazon.com/Route53/latest/APIReference/API_ResourceRecordSet.html",
+			SkipFields:  []string{},
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{
@@ -138,9 +142,10 @@ func Route53Resources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "hosted_zone_traffic_policy_instances",
-			Struct:     &types.TrafficPolicyInstance{},
-			SkipFields: []string{},
+			SubService:  "hosted_zone_traffic_policy_instances",
+			Struct:      &types.TrafficPolicyInstance{},
+			Description: "https://docs.aws.amazon.com/Route53/latest/APIReference/API_TrafficPolicyInstance.html",
+			SkipFields:  []string{},
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{
@@ -159,9 +164,10 @@ func Route53Resources() []*Resource {
 		},
 
 		{
-			SubService: "traffic_policies",
-			Struct:     &types.TrafficPolicySummary{},
-			SkipFields: []string{"ARN"},
+			SubService:  "traffic_policies",
+			Struct:      &types.TrafficPolicySummary{},
+			Description: "https://docs.aws.amazon.com/Route53/latest/APIReference/API_TrafficPolicySummary.html",
+			SkipFields:  []string{"ARN"},
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{
@@ -177,9 +183,10 @@ func Route53Resources() []*Resource {
 			},
 		},
 		{
-			SubService: "traffic_policy_versions",
-			Struct:     &types.TrafficPolicy{},
-			SkipFields: []string{"Version", "Id", "Document"},
+			SubService:  "traffic_policy_versions",
+			Struct:      &types.TrafficPolicy{},
+			Description: "https://docs.aws.amazon.com/Route53/latest/APIReference/API_TrafficPolicy.html",
+			SkipFields:  []string{"Version", "Id", "Document"},
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{

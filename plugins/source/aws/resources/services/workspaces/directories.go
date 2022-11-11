@@ -9,9 +9,10 @@ import (
 
 func Directories() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_workspaces_directories",
-		Resolver:  fetchWorkspacesDirectories,
-		Multiplex: client.ServiceAccountRegionMultiplexer("workspaces"),
+		Name:        "aws_workspaces_directories",
+		Description: `https://docs.aws.amazon.com/workspaces/latest/api/API_WorkspaceDirectory.html`,
+		Resolver:    fetchWorkspacesDirectories,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("workspaces"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

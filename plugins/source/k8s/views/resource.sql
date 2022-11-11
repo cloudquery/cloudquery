@@ -19,15 +19,10 @@ BEGIN
             strSQL = strSQL || ' UNION ALL ';
         END IF;
         -- create an SQL query to select from table and transform it into our resources view schema
-        strSQL = strSQL || format('SELECT cq_id, cq_meta, %L AS cq_table, context, uid,
-            COALESCE(%s, (cq_meta->>''last_updated'')::timestamp) AS fetch_date
-            FROM %s',
-            tbl,
-            CASE WHEN EXISTS (SELECT 1 FROM information_schema.columns WHERE column_name='fetch_date' AND table_name=tbl) THEN 'fetch_date' ELSE 'NULL::timestamp' END,
-            tbl);
+        strSQL = strSQL || format('SELECT _cq_id, _cq_source_name, _cq_sync_time, %L AS cq_table, context, uid FROM %s', tbl, tbl);
     END LOOP;
     IF strSQL = ''::TEXT THEN
-        RAISE EXCEPTION 'No tables found with UID and CONTEXT columns. Run a fetch first and try again.';
+        RAISE EXCEPTION 'No tables found with UID and CONTEXT columns. Run a sync first and try again.';
     ELSE
         EXECUTE FORMAT('CREATE VIEW k8s_resources AS (%s)', strSQL);
     END IF;

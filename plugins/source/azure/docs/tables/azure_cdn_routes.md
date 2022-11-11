@@ -1,9 +1,11 @@
 # Table: azure_cdn_routes
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2020-09-01/cdn#Route
 
 The primary key for this table is **id**.
 
+## Relations
+This table depends on [azure_cdn_endpoints](azure_cdn_endpoints.md).
 
 ## Columns
 | Name          | Type          |

@@ -9,9 +9,10 @@ import (
 
 func DiskSnapshot() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_lightsail_disk_snapshot",
-		Resolver:  fetchLightsailDiskSnapshot,
-		Multiplex: client.ServiceAccountRegionMultiplexer("lightsail"),
+		Name:        "aws_lightsail_disk_snapshot",
+		Description: `https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_DiskSnapshot.html`,
+		Resolver:    fetchLightsailDiskSnapshot,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("lightsail"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -27,11 +28,6 @@ func DiskSnapshot() *schema.Table {
 				Name:     "disk_arn",
 				Type:     schema.TypeString,
 				Resolver: schema.ParentColumnResolver("arn"),
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "arn",
@@ -102,6 +98,11 @@ func DiskSnapshot() *schema.Table {
 				Name:     "support_code",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("SupportCode"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 		},
 	}

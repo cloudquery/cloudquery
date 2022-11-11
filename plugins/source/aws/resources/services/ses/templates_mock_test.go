@@ -7,21 +7,21 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sesv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildSESTemplates(t *testing.T, ctrl *gomock.Controller) client.Services {
-	sesClient := mocks.NewMockSESClient(ctrl)
+	sesClient := mocks.NewMockSesv2Client(ctrl)
 
 	tplMeta := types.EmailTemplateMetadata{}
-	err := faker.FakeData(&tplMeta)
+	err := faker.FakeObject(&tplMeta)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	tpl := new(types.EmailTemplateContent)
-	err = faker.FakeData(tpl)
+	err = faker.FakeObject(tpl)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -38,7 +38,7 @@ func buildSESTemplates(t *testing.T, ctrl *gomock.Controller) client.Services {
 	)
 
 	return client.Services{
-		SES: sesClient,
+		Sesv2: sesClient,
 	}
 }
 

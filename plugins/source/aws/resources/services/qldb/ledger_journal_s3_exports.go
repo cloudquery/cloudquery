@@ -9,9 +9,10 @@ import (
 
 func LedgerJournalS3Exports() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_qldb_ledger_journal_s3_exports",
-		Resolver:  fetchQldbLedgerJournalS3Exports,
-		Multiplex: client.ServiceAccountRegionMultiplexer("qldb"),
+		Name:        "aws_qldb_ledger_journal_s3_exports",
+		Description: `https://docs.aws.amazon.com/qldb/latest/developerguide/API_JournalS3ExportDescription.html`,
+		Resolver:    fetchQldbLedgerJournalS3Exports,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("qldb"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

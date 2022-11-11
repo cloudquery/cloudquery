@@ -1,0 +1,55 @@
+# Running CloudQuery in Parallel
+
+import { Callout } from 'nextra-theme-docs'
+
+Running multiple instances of `cloudquery sync` in parallel can be useful when fetching from a large number of accounts,
+or when fetching from large accounts. This page provides important guidelines for this use case.
+
+<Callout> 
+
+All guidelines in this page also apply when running a single cloudquery instance with multiple source-plugins.
+
+</Callout>
+
+## Unique Names
+
+Every source and destination plugin configuration must have a unique `name`. This is required because the `name` is
+written into the database (`_cq_source_name`), and is used to later delete stale resources.
+
+For instance, a configuration with multiple source plugins could look like:
+
+```yaml
+kind: source
+spec:
+  name: aws1
+  path: cloudquery/aws
+  ...
+---
+kind: source
+spec:
+  name: aws2
+  path: cloudquery/aws
+  ...
+---
+kind: destination
+spec:
+  name: "postgresql"
+  path: cloudquery/postgresql
+  ...
+```
+
+If the names are not unique, then the different plugins may delete/overwrite each other's resources.
+
+## No Overlapping Syncs
+
+When splitting a sync into multiple source-plugin configurations to be run in parallel, it is important
+that these syncs don't overlap - the set of Account/Table/Region that every source-plugin grabs must not intersect.
+
+For instance, in GCP, if the first source-plugin fetches resource `A` from project `1`, the second source-plugin
+can fetch resource `B` from project `1`, or resource `A` from project `2`, but can never fetch resource `A` from project `1`.
+
+For another example, if the first source-plugin fetches from region `europe-west1` in project `1`, the second source-plugin
+can fetch from region `europe-west1` in project `2`, or from region `europe-west2` in project `1`, but can never fetch from
+region `europe-west1` in project `1`.
+
+If the configurations overlap, the behavior is unexpected, and the database may contain duplicate rows.

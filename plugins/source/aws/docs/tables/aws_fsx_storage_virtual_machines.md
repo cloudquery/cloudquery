@@ -1,6 +1,6 @@
 # Table: aws_fsx_storage_virtual_machines
 
-
+https://docs.aws.amazon.com/fsx/latest/APIReference/API_StorageVirtualMachine.html
 
 The primary key for this table is **arn**.
 
@@ -15,7 +15,6 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
-|tags|JSON|
 |active_directory_configuration|JSON|
 |creation_time|Timestamp|
 |endpoints|JSON|
@@ -26,4 +25,5 @@ The primary key for this table is **arn**.
 |root_volume_security_style|String|
 |storage_virtual_machine_id|String|
 |subtype|String|
+|tags|JSON|
 |uuid|String|

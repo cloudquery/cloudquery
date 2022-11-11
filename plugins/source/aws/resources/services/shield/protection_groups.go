@@ -9,9 +9,10 @@ import (
 
 func ProtectionGroups() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_shield_protection_groups",
-		Resolver:  fetchShieldProtectionGroups,
-		Multiplex: client.AccountMultiplex,
+		Name:        "aws_shield_protection_groups",
+		Description: `https://docs.aws.amazon.com/waf/latest/DDOSAPIReference/API_ProtectionGroup.html`,
+		Resolver:    fetchShieldProtectionGroups,
+		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

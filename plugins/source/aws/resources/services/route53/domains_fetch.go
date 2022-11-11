@@ -17,7 +17,7 @@ func domainClientOpts(options *route53domains.Options) {
 
 func fetchRoute53Domains(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	svc := c.Services().Route53Domains
+	svc := c.Services().Route53domains
 	var input route53domains.ListDomainsInput
 
 	for {
@@ -37,7 +37,7 @@ func fetchRoute53Domains(ctx context.Context, meta schema.ClientMeta, parent *sc
 
 func getDomain(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	c := meta.(*client.Client)
-	svc := c.Services().Route53Domains
+	svc := c.Services().Route53domains
 	v := resource.Item.(types.DomainSummary)
 
 	d, err := svc.GetDomainDetail(ctx, &route53domains.GetDomainDetailInput{DomainName: v.DomainName}, domainClientOpts)
@@ -51,7 +51,7 @@ func getDomain(ctx context.Context, meta schema.ClientMeta, resource *schema.Res
 
 func resolveRoute53DomainTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, col schema.Column) error {
 	c := meta.(*client.Client)
-	svc := c.Services().Route53Domains
+	svc := c.Services().Route53domains
 	d := resource.Item.(*route53domains.GetDomainDetailOutput)
 	out, err := svc.ListTagsForDomain(ctx, &route53domains.ListTagsForDomainInput{DomainName: d.DomainName}, domainClientOpts)
 	if err != nil {

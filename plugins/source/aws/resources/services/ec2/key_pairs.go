@@ -10,7 +10,7 @@ import (
 func KeyPairs() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_ec2_key_pairs",
-		Description: "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_KeyPairInfo.html",
+		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_KeyPairInfo.html`,
 		Resolver:    fetchEc2KeyPairs,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Columns: []schema.Column{
@@ -65,7 +65,7 @@ func KeyPairs() *schema.Table {
 			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
+				Resolver: client.ResolveTags,
 			},
 		},
 	}

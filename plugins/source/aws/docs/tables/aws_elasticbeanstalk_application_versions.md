@@ -1,6 +1,6 @@
 # Table: aws_elasticbeanstalk_application_versions
 
-
+https://docs.aws.amazon.com/elasticbeanstalk/latest/api/API_ApplicationVersionDescription.html
 
 The primary key for this table is **arn**.
 

@@ -6,15 +6,15 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iot"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildIotSecurityProfilesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockIOTClient(ctrl)
+	m := mocks.NewMockIotClient(ctrl)
 
 	sp := iot.ListSecurityProfilesOutput{}
-	err := faker.FakeData(&sp)
+	err := faker.FakeObject(&sp)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -23,7 +23,7 @@ func buildIotSecurityProfilesMock(t *testing.T, ctrl *gomock.Controller) client.
 		&sp, nil)
 
 	profileOutput := iot.DescribeSecurityProfileOutput{}
-	err = faker.FakeData(&profileOutput)
+	err = faker.FakeObject(&profileOutput)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -31,7 +31,7 @@ func buildIotSecurityProfilesMock(t *testing.T, ctrl *gomock.Controller) client.
 		&profileOutput, nil)
 
 	targets := iot.ListTargetsForSecurityProfileOutput{}
-	err = faker.FakeData(&targets)
+	err = faker.FakeObject(&targets)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -41,7 +41,7 @@ func buildIotSecurityProfilesMock(t *testing.T, ctrl *gomock.Controller) client.
 		&targets, nil)
 
 	tags := iot.ListTagsForResourceOutput{}
-	err = faker.FakeData(&tags)
+	err = faker.FakeObject(&tags)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -50,7 +50,7 @@ func buildIotSecurityProfilesMock(t *testing.T, ctrl *gomock.Controller) client.
 		&tags, nil)
 
 	return client.Services{
-		IOT: m,
+		Iot: m,
 	}
 }
 

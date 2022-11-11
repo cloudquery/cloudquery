@@ -8,7 +8,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	faker "github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/cloudquery/cloudquery/plugins/source/heroku/client"
 	"github.com/julienschmidt/httprouter"
 	heroku "github.com/heroku/heroku-go/v5"
@@ -16,11 +16,11 @@ import (
 
 func create{{.HerokuStructName | Pluralize }}() (*heroku.Service, error) {
 	primaryItems := make(heroku.{{.HerokuPrimaryStructName}}ListResult, 1)
-	if err := faker.FakeData(&primaryItems); err != nil {
+	if err := faker.FakeObject(&primaryItems); err != nil {
 		return nil, err
 	}
     items := make(heroku.{{.HerokuStructName}}ListResult, 1)
-	if err := faker.FakeData(&items); err != nil {
+	if err := faker.FakeObject(&items); err != nil {
 		return nil, err
 	}
 	mux := httprouter.New()

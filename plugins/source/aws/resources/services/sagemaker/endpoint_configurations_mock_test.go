@@ -7,15 +7,15 @@ import (
 	types "github.com/aws/aws-sdk-go-v2/service/sagemaker/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildSageMakerEndpointConfigs(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockSageMakerClient(ctrl)
+	m := mocks.NewMockSagemakerClient(ctrl)
 
 	summ := types.EndpointConfigSummary{}
-	if err := faker.FakeData(&summ); err != nil {
+	if err := faker.FakeObject(&summ); err != nil {
 		t.Fatal(err)
 	}
 
@@ -25,7 +25,7 @@ func buildSageMakerEndpointConfigs(t *testing.T, ctrl *gomock.Controller) client
 	)
 
 	endpointConfig := sagemaker.DescribeEndpointConfigOutput{}
-	if err := faker.FakeData(&endpointConfig); err != nil {
+	if err := faker.FakeObject(&endpointConfig); err != nil {
 		t.Fatal(err)
 	}
 
@@ -35,7 +35,7 @@ func buildSageMakerEndpointConfigs(t *testing.T, ctrl *gomock.Controller) client
 	)
 
 	var tagsOut sagemaker.ListTagsOutput
-	if err := faker.FakeData(&tagsOut); err != nil {
+	if err := faker.FakeObject(&tagsOut); err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().ListTags(gomock.Any(), gomock.Any(), gomock.Any()).Return(
@@ -43,7 +43,7 @@ func buildSageMakerEndpointConfigs(t *testing.T, ctrl *gomock.Controller) client
 	)
 
 	return client.Services{
-		SageMaker: m,
+		Sagemaker: m,
 	}
 }
 

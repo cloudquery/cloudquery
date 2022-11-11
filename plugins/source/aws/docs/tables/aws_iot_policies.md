@@ -1,6 +1,6 @@
 # Table: aws_iot_policies
 
-
+https://docs.aws.amazon.com/iot/latest/apireference/API_Policy.html
 
 The primary key for this table is **arn**.
 

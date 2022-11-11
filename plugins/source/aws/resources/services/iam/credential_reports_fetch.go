@@ -18,7 +18,7 @@ func fetchIamCredentialReports(ctx context.Context, meta schema.ClientMeta, _ *s
 	var err error
 	var apiErr smithy.APIError
 	var reportOutput *iam.GetCredentialReportOutput
-	svc := meta.(*client.Client).Services().IAM
+	svc := meta.(*client.Client).Services().Iam
 	for {
 		reportOutput, err = svc.GetCredentialReport(ctx, &iam.GetCredentialReportInput{})
 		if err == nil && reportOutput != nil {
@@ -51,7 +51,7 @@ func fetchIamCredentialReports(ctx context.Context, meta schema.ClientMeta, _ *s
 				}
 			}
 		case "ReportInProgress":
-			meta.Logger().Debug().Msg("Waiting for credential report to be generated")
+			meta.(*client.Client).Logger().Debug().Msg("Waiting for credential report to be generated")
 			if err := client.Sleep(ctx, 5*time.Second); err != nil {
 				return err
 			}

@@ -12,6 +12,7 @@ func ShieldResources() []*Resource {
 		{
 			SubService:          "attacks",
 			Struct:              &types.AttackDetail{},
+			Description:         "https://docs.aws.amazon.com/waf/latest/DDOSAPIReference/API_AttackDetail.html",
 			SkipFields:          []string{"AttackId"},
 			PreResourceResolver: "getAttack",
 			ExtraColumns: append(
@@ -28,9 +29,10 @@ func ShieldResources() []*Resource {
 		},
 
 		{
-			SubService: "protection_groups",
-			Struct:     &types.ProtectionGroup{},
-			SkipFields: []string{"ProtectionGroupArn"},
+			SubService:  "protection_groups",
+			Struct:      &types.ProtectionGroup{},
+			Description: "https://docs.aws.amazon.com/waf/latest/DDOSAPIReference/API_ProtectionGroup.html",
+			SkipFields:  []string{"ProtectionGroupArn"},
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{
@@ -49,9 +51,10 @@ func ShieldResources() []*Resource {
 		},
 
 		{
-			SubService: "protections",
-			Struct:     &types.Protection{},
-			SkipFields: []string{"ProtectionArn"},
+			SubService:  "protections",
+			Struct:      &types.Protection{},
+			Description: "https://docs.aws.amazon.com/waf/latest/DDOSAPIReference/API_Protection.html",
+			SkipFields:  []string{"ProtectionArn"},
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{
@@ -70,9 +73,10 @@ func ShieldResources() []*Resource {
 		},
 
 		{
-			SubService: "subscriptions",
-			Struct:     &types.Subscription{},
-			SkipFields: []string{"SubscriptionArn"},
+			SubService:  "subscriptions",
+			Struct:      &types.Subscription{},
+			Description: "https://docs.aws.amazon.com/waf/latest/DDOSAPIReference/API_Subscription.html",
+			SkipFields:  []string{"SubscriptionArn"},
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{

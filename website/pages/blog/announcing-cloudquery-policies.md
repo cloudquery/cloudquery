@@ -24,9 +24,9 @@ The new CloudQuery Policies feature brings policy-as-code to the CloudQuery ecos
 - **Query and sub-policy execution**: Users can execute specific queries or sub-policies via CQ CLI (`cloudquery policy run my-policy --sub-path=my-sub-policy`).
 - **Inline policy functions**: New inline policy functions are now available that allow users to define more dynamic policies. One example is the new file function that allows users to out-source query definitions to other files and to dynamically insert them during execution time.
 
-You can see all of the available policy packs, as well as their documentation and detailed specification of all checks, on [hub.cloudquery.io/policies](/docs/policies).
+You can see all of the available policy packs, as well as their documentation and detailed specification of all checks, on [hub.cloudquery.io/policies](/docs/core-concepts/policies).
 
-For detailed documentation please check-out our [docs](/docs/policies).
+For detailed documentation please check-out our [docs](/docs/core-concepts/policies).
 
 ## Example Policies
 

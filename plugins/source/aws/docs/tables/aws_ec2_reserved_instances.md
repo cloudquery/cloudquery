@@ -15,7 +15,6 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
-|tags|JSON|
 |availability_zone|String|
 |currency_code|String|
 |duration|Int|
@@ -32,4 +31,5 @@ The primary key for this table is **arn**.
 |scope|String|
 |start|Timestamp|
 |state|String|
+|tags|JSON|
 |usage_price|Float|

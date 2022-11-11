@@ -10,6 +10,7 @@ import (
 func Secrets() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_secretsmanager_secrets",
+		Description:         `https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_ListSecrets.html`,
 		Resolver:            fetchSecretsmanagerSecrets,
 		PreResourceResolver: getSecret,
 		Multiplex:           client.ServiceAccountRegionMultiplexer("secretsmanager"),
@@ -31,12 +32,6 @@ func Secrets() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
-			},
-			{
-				Name:        "tags",
-				Type:        schema.TypeJSON,
-				Resolver:    client.ResolveTags,
-				Description: `The list of user-defined tags associated with the secret`,
 			},
 			{
 				Name:        "policy",
@@ -113,6 +108,11 @@ func Secrets() *schema.Table {
 				Name:     "rotation_rules",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("RotationRules"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "version_ids_to_stages",

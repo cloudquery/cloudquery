@@ -6,15 +6,15 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iot"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildIotJobs(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockIOTClient(ctrl)
+	m := mocks.NewMockIotClient(ctrl)
 
 	lp := iot.ListJobsOutput{}
-	err := faker.FakeData(&lp)
+	err := faker.FakeObject(&lp)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -23,7 +23,7 @@ func buildIotJobs(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&lp, nil)
 
 	p := iot.DescribeJobOutput{}
-	err = faker.FakeData(&p)
+	err = faker.FakeObject(&p)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -31,7 +31,7 @@ func buildIotJobs(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&p, nil)
 
 	tags := iot.ListTagsForResourceOutput{}
-	err = faker.FakeData(&tags)
+	err = faker.FakeObject(&tags)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -40,7 +40,7 @@ func buildIotJobs(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&tags, nil)
 
 	return client.Services{
-		IOT: m,
+		Iot: m,
 	}
 }
 

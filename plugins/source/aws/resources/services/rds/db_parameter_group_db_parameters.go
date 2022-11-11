@@ -9,9 +9,10 @@ import (
 
 func DbParameterGroupDbParameters() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_rds_db_parameter_group_db_parameters",
-		Resolver:  fetchRdsDbParameterGroupDbParameters,
-		Multiplex: client.ServiceAccountRegionMultiplexer("rds"),
+		Name:        "aws_rds_db_parameter_group_db_parameters",
+		Description: `https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_Parameter.html`,
+		Resolver:    fetchRdsDbParameterGroupDbParameters,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("rds"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

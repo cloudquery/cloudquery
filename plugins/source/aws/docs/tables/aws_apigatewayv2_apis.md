@@ -5,13 +5,13 @@ https://docs.aws.amazon.com/apigateway/latest/api/API_Api.html
 The primary key for this table is **_cq_id**.
 
 ## Relations
-The following tables depend on `aws_apigatewayv2_apis`:
-  - [`aws_apigatewayv2_api_authorizers`](aws_apigatewayv2_api_authorizers.md)
-  - [`aws_apigatewayv2_api_deployments`](aws_apigatewayv2_api_deployments.md)
-  - [`aws_apigatewayv2_api_integrations`](aws_apigatewayv2_api_integrations.md)
-  - [`aws_apigatewayv2_api_models`](aws_apigatewayv2_api_models.md)
-  - [`aws_apigatewayv2_api_routes`](aws_apigatewayv2_api_routes.md)
-  - [`aws_apigatewayv2_api_stages`](aws_apigatewayv2_api_stages.md)
+The following tables depend on aws_apigatewayv2_apis:
+  - [aws_apigatewayv2_api_authorizers](aws_apigatewayv2_api_authorizers.md)
+  - [aws_apigatewayv2_api_deployments](aws_apigatewayv2_api_deployments.md)
+  - [aws_apigatewayv2_api_integrations](aws_apigatewayv2_api_integrations.md)
+  - [aws_apigatewayv2_api_models](aws_apigatewayv2_api_models.md)
+  - [aws_apigatewayv2_api_routes](aws_apigatewayv2_api_routes.md)
+  - [aws_apigatewayv2_api_stages](aws_apigatewayv2_api_stages.md)
 
 ## Columns
 | Name          | Type          |

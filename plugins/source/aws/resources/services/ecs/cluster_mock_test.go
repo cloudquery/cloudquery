@@ -7,18 +7,17 @@ import (
 	ecsTypes "github.com/aws/aws-sdk-go-v2/service/ecs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildEcsClusterMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockEcsClient(ctrl)
 	services := client.Services{
-		ECS: m,
+		Ecs: m,
 	}
-	faker.SetIgnoreInterface(true)
 	c := ecsTypes.Cluster{}
-	err := faker.FakeData(&c)
+	err := faker.FakeObject(&c)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -37,7 +36,7 @@ func buildEcsClusterMock(t *testing.T, ctrl *gomock.Controller) client.Services 
 	m.EXPECT().ListServices(gomock.Any(), gomock.Any(), gomock.Any()).Return(&servicesList, nil)
 
 	svcs := ecs.DescribeServicesOutput{}
-	err = faker.FakeData(&svcs)
+	err = faker.FakeObject(&svcs)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -49,14 +48,14 @@ func buildEcsClusterMock(t *testing.T, ctrl *gomock.Controller) client.Services 
 	m.EXPECT().ListContainerInstances(gomock.Any(), gomock.Any(), gomock.Any()).Return(&instancesList, nil)
 
 	instances := ecs.DescribeContainerInstancesOutput{}
-	err = faker.FakeData(&instances)
+	err = faker.FakeObject(&instances)
 	if err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().DescribeContainerInstances(gomock.Any(), gomock.Any(), gomock.Any()).Return(&instances, nil)
 
 	listTasks := ecs.ListTasksOutput{}
-	err = faker.FakeData(&listTasks)
+	err = faker.FakeObject(&listTasks)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -64,7 +63,7 @@ func buildEcsClusterMock(t *testing.T, ctrl *gomock.Controller) client.Services 
 	m.EXPECT().ListTasks(gomock.Any(), gomock.Any(), gomock.Any()).Return(&listTasks, nil)
 
 	tasks := ecs.DescribeTasksOutput{}
-	err = faker.FakeData(&tasks)
+	err = faker.FakeObject(&tasks)
 	if err != nil {
 		t.Fatal(err)
 	}

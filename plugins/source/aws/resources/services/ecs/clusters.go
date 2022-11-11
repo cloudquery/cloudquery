@@ -9,9 +9,10 @@ import (
 
 func Clusters() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_ecs_clusters",
-		Resolver:  fetchEcsClusters,
-		Multiplex: client.ServiceAccountRegionMultiplexer("ecs"),
+		Name:        "aws_ecs_clusters",
+		Description: `https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_Cluster.html`,
+		Resolver:    fetchEcsClusters,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("ecs"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -30,11 +31,6 @@ func Clusters() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "active_services_count",
@@ -100,6 +96,11 @@ func Clusters() *schema.Table {
 				Name:     "status",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Status"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 		},
 

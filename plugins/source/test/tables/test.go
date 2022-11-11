@@ -10,7 +10,7 @@ func TestSomeTable() *schema.Table {
 	return &schema.Table{
 		Name:        "test_some_table",
 		Description: "Test description",
-		Resolver:    fetchBigqueryDatasets,
+		Resolver:    fetchTestData,
 		Columns: []schema.Column{
 			{
 				Name:            "column1",
@@ -27,7 +27,7 @@ func TestSomeTable() *schema.Table {
 	}
 }
 
-func fetchBigqueryDatasets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchTestData(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	res <- map[string]interface{}{
 		"column1": "test_project_id",
 		"column2": "test_id",

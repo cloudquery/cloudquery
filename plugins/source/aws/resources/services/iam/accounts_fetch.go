@@ -12,7 +12,7 @@ import (
 )
 
 func fetchIamAccounts(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().IAM
+	svc := meta.(*client.Client).Services().Iam
 
 	summary, err := svc.GetAccountSummary(ctx, &iam.GetAccountSummaryInput{})
 	if err != nil {

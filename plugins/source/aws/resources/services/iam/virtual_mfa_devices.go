@@ -9,9 +9,10 @@ import (
 
 func VirtualMfaDevices() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_iam_virtual_mfa_devices",
-		Resolver:  fetchIamVirtualMfaDevices,
-		Multiplex: client.AccountMultiplex,
+		Name:        "aws_iam_virtual_mfa_devices",
+		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_VirtualMFADevice.html`,
+		Resolver:    fetchIamVirtualMfaDevices,
+		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -24,16 +25,6 @@ func VirtualMfaDevices() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
-			},
-			{
-				Name:     "user_tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "base32_string_seed",
@@ -49,6 +40,11 @@ func VirtualMfaDevices() *schema.Table {
 				Name:     "qr_code_png",
 				Type:     schema.TypeIntArray,
 				Resolver: schema.PathResolver("QRCodePNG"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "user",

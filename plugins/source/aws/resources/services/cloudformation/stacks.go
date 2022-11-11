@@ -10,7 +10,7 @@ import (
 func Stacks() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_cloudformation_stacks",
-		Description: "https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_Stack.html",
+		Description: `https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_Stack.html`,
 		Resolver:    fetchCloudformationStacks,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("cloudformation"),
 		Columns: []schema.Column{
@@ -36,11 +36,6 @@ func Stacks() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "creation_time",
@@ -136,6 +131,11 @@ func Stacks() *schema.Table {
 				Name:     "stack_status_reason",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("StackStatusReason"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "timeout_in_minutes",

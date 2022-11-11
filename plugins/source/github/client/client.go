@@ -28,6 +28,10 @@ func (c *Client) Logger() *zerolog.Logger {
 	return &c.logger
 }
 
+func (c *Client) ID() string {
+	return c.Org
+}
+
 func (c Client) WithOrg(org string) schema.ClientMeta {
 	return &Client{
 		logger: c.logger.With().Str("org", org).Logger(),

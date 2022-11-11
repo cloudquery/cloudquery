@@ -90,7 +90,7 @@
         "type": "postgres",
         "uid": "${DS_POSTGRESQL}"
       },
-      "description": "This panel will show OK if the azure_resources view has been created and is accessible to the current Postgres user. See https://github.com/cloudquery/dashboards#azure for more information.",
+      "description": "This panel will show OK if the azure_resources view has been created and is accessible to the current Postgres user. See https://github.com/cloudquery/cloudquery/tree/main/plugins/source/azure/dashboards for more information.",
       "fieldConfig": {
         "defaults": {
           "color": {

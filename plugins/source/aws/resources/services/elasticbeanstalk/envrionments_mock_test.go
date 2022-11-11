@@ -7,7 +7,7 @@ import (
 	elasticbeanstalkTypes "github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -15,7 +15,7 @@ func buildElasticbeanstalkEnvironments(t *testing.T, ctrl *gomock.Controller) cl
 	m := mocks.NewMockElasticbeanstalkClient(ctrl)
 
 	la := elasticbeanstalkTypes.ApplicationDescription{}
-	err := faker.FakeData(&la)
+	err := faker.FakeObject(&la)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -23,7 +23,7 @@ func buildElasticbeanstalkEnvironments(t *testing.T, ctrl *gomock.Controller) cl
 	l := elasticbeanstalkTypes.EnvironmentDescription{
 		ApplicationName: la.ApplicationName,
 	}
-	err = faker.FakeData(&l)
+	err = faker.FakeObject(&l)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -34,7 +34,7 @@ func buildElasticbeanstalkEnvironments(t *testing.T, ctrl *gomock.Controller) cl
 		}, nil)
 
 	tags := elasticbeanstalk.ListTagsForResourceOutput{}
-	err = faker.FakeData(&tags)
+	err = faker.FakeObject(&tags)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -43,21 +43,21 @@ func buildElasticbeanstalkEnvironments(t *testing.T, ctrl *gomock.Controller) cl
 		&tags, nil)
 
 	configSettingsOutput := elasticbeanstalk.DescribeConfigurationSettingsOutput{}
-	err = faker.FakeData(&configSettingsOutput)
+	err = faker.FakeObject(&configSettingsOutput)
 	if err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().DescribeConfigurationSettings(gomock.Any(), gomock.Any(), gomock.Any()).Return(&configSettingsOutput, nil)
 
 	configOptsOutput := elasticbeanstalk.DescribeConfigurationOptionsOutput{}
-	err = faker.FakeData(&configOptsOutput)
+	err = faker.FakeObject(&configOptsOutput)
 	if err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().DescribeConfigurationOptions(gomock.Any(), gomock.Any(), gomock.Any()).Return(&configOptsOutput, nil)
 
 	return client.Services{
-		ElasticBeanstalk: m,
+		Elasticbeanstalk: m,
 	}
 }
 

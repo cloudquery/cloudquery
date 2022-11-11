@@ -12,7 +12,7 @@ import (
 
 func fetchWafregionalRuleGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().WafRegional
+	svc := cl.Services().Wafregional
 	var params wafregional.ListRuleGroupsInput
 	for {
 		result, err := svc.ListRuleGroups(ctx, &params, func(o *wafregional.Options) {
@@ -51,7 +51,7 @@ func resolveWafregionalRuleGroupArn(ctx context.Context, meta schema.ClientMeta,
 
 func resolveWafregionalRuleGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().WafRegional
+	svc := cl.Services().Wafregional
 	arn := ruleGroupARN(meta, *resource.Item.(types.RuleGroup).RuleGroupId)
 	params := wafregional.ListTagsForResourceInput{ResourceARN: &arn}
 	tags := make(map[string]string)

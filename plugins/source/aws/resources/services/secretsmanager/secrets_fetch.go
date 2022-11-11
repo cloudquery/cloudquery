@@ -13,7 +13,7 @@ import (
 
 func fetchSecretsmanagerSecrets(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	svc := c.Services().SecretsManager
+	svc := c.Services().Secretsmanager
 	cfg := secretsmanager.ListSecretsInput{}
 	for {
 		response, err := svc.ListSecrets(ctx, &cfg)
@@ -32,7 +32,7 @@ func fetchSecretsmanagerSecrets(ctx context.Context, meta schema.ClientMeta, _ *
 
 func getSecret(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	c := meta.(*client.Client)
-	svc := c.Services().SecretsManager
+	svc := c.Services().Secretsmanager
 	n := resource.Item.(types.SecretListEntry)
 
 	// get more details about the secret
@@ -50,7 +50,7 @@ func getSecret(ctx context.Context, meta schema.ClientMeta, resource *schema.Res
 func fetchSecretsmanagerSecretPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(*secretsmanager.DescribeSecretOutput)
 	cl := meta.(*client.Client)
-	svc := cl.Services().SecretsManager
+	svc := cl.Services().Secretsmanager
 	cfg := secretsmanager.GetResourcePolicyInput{
 		SecretId: r.ARN,
 	}

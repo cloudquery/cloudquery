@@ -7,15 +7,15 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildStacks(t *testing.T, ctrl *gomock.Controller) client.Services {
-	mock := mocks.NewMockCloudFormationClient(ctrl)
+	mock := mocks.NewMockCloudformationClient(ctrl)
 
 	var stack types.Stack
-	if err := faker.FakeData(&stack); err != nil {
+	if err := faker.FakeObject(&stack); err != nil {
 		t.Fatal(err)
 	}
 	mock.EXPECT().DescribeStacks(
@@ -28,7 +28,7 @@ func buildStacks(t *testing.T, ctrl *gomock.Controller) client.Services {
 	)
 
 	var resource types.StackResourceSummary
-	if err := faker.FakeData(&resource); err != nil {
+	if err := faker.FakeObject(&resource); err != nil {
 		t.Fatal(err)
 	}
 	mock.EXPECT().ListStackResources(

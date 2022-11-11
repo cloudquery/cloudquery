@@ -6,7 +6,7 @@ import (
 	"github.com/cloudflare/cloudflare-go"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/client"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -14,7 +14,7 @@ func buildAccounts(t *testing.T, ctrl *gomock.Controller) client.Clients {
 	mock := mocks.NewMockApi(ctrl)
 
 	var acc cloudflare.Account
-	if err := faker.FakeData(&acc); err != nil {
+	if err := faker.FakeObject(&acc); err != nil {
 		t.Fatal(err)
 	}
 	mock.EXPECT().Accounts(
@@ -30,7 +30,7 @@ func buildAccounts(t *testing.T, ctrl *gomock.Controller) client.Clients {
 	)
 
 	var accMem cloudflare.AccountMember
-	if err := faker.FakeData(&accMem); err != nil {
+	if err := faker.FakeObject(&accMem); err != nil {
 		t.Fatal(err)
 	}
 	mock.EXPECT().AccountMembers(

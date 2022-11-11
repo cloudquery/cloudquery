@@ -3,22 +3,19 @@ package iot
 import (
 	"testing"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
 	"github.com/aws/aws-sdk-go-v2/service/iot/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildIotTopicRules(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockIOTClient(ctrl)
+	m := mocks.NewMockIotClient(ctrl)
 
-	faker.SetIgnoreInterface(true)
 	lp := iot.ListTopicRulesOutput{}
-	err := faker.FakeData(&lp)
-	if err != nil {
+	if err := faker.FakeObject(&lp); err != nil {
 		t.Fatal(err)
 	}
 	lp.NextToken = nil
@@ -33,8 +30,7 @@ func buildIotTopicRules(t *testing.T, ctrl *gomock.Controller) client.Services {
 		p, nil)
 
 	tags := iot.ListTagsForResourceOutput{}
-	err = faker.FakeData(&tags)
-	if err != nil {
+	if err := faker.FakeObject(&tags); err != nil {
 		t.Fatal(err)
 	}
 	tags.NextToken = nil
@@ -42,33 +38,29 @@ func buildIotTopicRules(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&tags, nil)
 
 	return client.Services{
-		IOT: m,
+		Iot: m,
 	}
 }
 
 func buildRule() (*iot.GetTopicRuleOutput, error) {
 	p := types.TopicRule{}
-	err := faker.FakeDataSkipFields(&p, []string{"Actions", "ErrorAction", "noSmithyDocumentSerde"})
-	if err != nil {
+	if err := faker.FakeObject(&p); err != nil {
 		return nil, err
 	}
 	a := types.Action{}
-	err = faker.FakeDataSkipFields(&a, []string{"IotSiteWise", "noSmithyDocumentSerde"})
-	if err != nil {
+	if err := faker.FakeObject(&a); err != nil {
 		return nil, err
-	}
-	a.IotSiteWise = &types.IotSiteWiseAction{
-		RoleArn: aws.String(faker.Word()),
 	}
 	p.Actions = []types.Action{
 		a,
 	}
 	p.ErrorAction = &a
-
-	return &iot.GetTopicRuleOutput{
-		Rule:    &p,
-		RuleArn: aws.String(faker.Word()),
-	}, nil
+	o := iot.GetTopicRuleOutput{}
+	if err := faker.FakeObject(&o); err != nil {
+		return nil, err
+	}
+	o.Rule = &p
+	return &o, nil
 }
 
 func TestIotTopicRules(t *testing.T) {

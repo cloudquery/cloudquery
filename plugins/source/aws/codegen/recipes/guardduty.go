@@ -15,6 +15,7 @@ func GuarddutyResources() []*Resource {
 		{
 			SubService:          "detectors",
 			Struct:              &models.DetectorWrapper{},
+			Description:         "https://docs.aws.amazon.com/guardduty/latest/APIReference/API_GetDetector.html",
 			SkipFields:          []string{"Id"},
 			PreResourceResolver: "getDetector",
 			ExtraColumns: []codegen.ColumnDefinition{
@@ -46,9 +47,10 @@ func GuarddutyResources() []*Resource {
 			},
 		},
 		{
-			SubService: "detector_members",
-			Struct:     &types.Member{},
-			SkipFields: []string{},
+			SubService:  "detector_members",
+			Struct:      &types.Member{},
+			Description: "https://docs.aws.amazon.com/guardduty/latest/APIReference/API_Member.html",
+			SkipFields:  []string{},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:     "region",

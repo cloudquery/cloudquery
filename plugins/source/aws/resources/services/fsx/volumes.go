@@ -9,9 +9,10 @@ import (
 
 func Volumes() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_fsx_volumes",
-		Resolver:  fetchFsxVolumes,
-		Multiplex: client.ServiceAccountRegionMultiplexer("fsx"),
+		Name:        "aws_fsx_volumes",
+		Description: `https://docs.aws.amazon.com/fsx/latest/APIReference/API_Volume.html`,
+		Resolver:    fetchFsxVolumes,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("fsx"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -30,11 +31,6 @@ func Volumes() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
 			},
 			{
 				Name:          "administrative_actions",
@@ -76,6 +72,11 @@ func Volumes() *schema.Table {
 				Name:     "open_zfs_configuration",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("OpenZFSConfiguration"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "volume_id",

@@ -10,7 +10,7 @@ import (
 
 func fetchEcrRegistryPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	svc := c.Services().ECR
+	svc := c.Services().Ecr
 	output, err := svc.GetRegistryPolicy(ctx, &ecr.GetRegistryPolicyInput{})
 	if err != nil {
 		if client.IsAWSError(err, "RegistryPolicyNotFoundException") {

@@ -12,7 +12,7 @@ import (
 
 func fetchSagemakerTrainingJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	svc := c.Services().SageMaker
+	svc := c.Services().Sagemaker
 	config := sagemaker.ListTrainingJobsInput{}
 
 	for {
@@ -31,7 +31,7 @@ func fetchSagemakerTrainingJobs(ctx context.Context, meta schema.ClientMeta, par
 
 func getTrainingJob(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	c := meta.(*client.Client)
-	svc := c.Services().SageMaker
+	svc := c.Services().Sagemaker
 	n := resource.Item.(types.TrainingJobSummary)
 	config := sagemaker.DescribeTrainingJobInput{
 		TrainingJobName: n.TrainingJobName,
@@ -51,7 +51,7 @@ func resolveSagemakerTrainingJobTags(ctx context.Context, meta schema.ClientMeta
 	}
 
 	c := meta.(*client.Client)
-	svc := c.Services().SageMaker
+	svc := c.Services().Sagemaker
 	config := sagemaker.ListTagsInput{
 		ResourceArn: r.TrainingJobArn,
 	}

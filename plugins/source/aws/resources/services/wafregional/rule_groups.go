@@ -9,9 +9,10 @@ import (
 
 func RuleGroups() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_wafregional_rule_groups",
-		Resolver:  fetchWafregionalRuleGroups,
-		Multiplex: client.ServiceAccountRegionMultiplexer("waf-regional"),
+		Name:        "aws_wafregional_rule_groups",
+		Description: `https://docs.aws.amazon.com/waf/latest/APIReference/API_wafRegional_RuleGroup.html`,
+		Resolver:    fetchWafregionalRuleGroups,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("waf-regional"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

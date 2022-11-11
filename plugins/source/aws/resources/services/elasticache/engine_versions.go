@@ -9,9 +9,10 @@ import (
 
 func EngineVersions() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_elasticache_engine_versions",
-		Resolver:  fetchElasticacheEngineVersions,
-		Multiplex: client.ServiceAccountRegionMultiplexer("elasticache"),
+		Name:        "aws_elasticache_engine_versions",
+		Description: `https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_CacheEngineVersion.html`,
+		Resolver:    fetchElasticacheEngineVersions,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticache"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -32,6 +33,22 @@ func EngineVersions() *schema.Table {
 				},
 			},
 			{
+				Name:     "engine",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Engine"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "engine_version",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("EngineVersion"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
 				Name:     "cache_engine_description",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("CacheEngineDescription"),
@@ -45,16 +62,6 @@ func EngineVersions() *schema.Table {
 				Name:     "cache_parameter_group_family",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("CacheParameterGroupFamily"),
-			},
-			{
-				Name:     "engine",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Engine"),
-			},
-			{
-				Name:     "engine_version",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("EngineVersion"),
 			},
 		},
 	}

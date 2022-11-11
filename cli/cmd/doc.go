@@ -18,7 +18,7 @@ func newCmdDoc() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:    "doc [directory_path]",
 		Short:  docShort,
-		Args:   cobra.ExactValidArgs(1),
+		Args:   cobra.MatchAll(cobra.ExactArgs(1), cobra.OnlyValidArgs),
 		Hidden: true,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return doc.GenMarkdownTreeCustom(cmd.Parent(), args[0], filePrepender, linkHandler)
@@ -30,7 +30,7 @@ func newCmdDoc() *cobra.Command {
 func linkHandler(s string) string {
 	if strings.HasSuffix(s, ".md") {
 		fileName := strings.TrimSuffix(s, ".md")
-		fullPath := "/docs/cli/commands/" + fileName
+		fullPath := "/docs/reference/cli/" + fileName
 
 		return fullPath
 	}

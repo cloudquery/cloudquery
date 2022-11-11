@@ -5,15 +5,41 @@ on:
     paths:
       - "plugins/destination/postgresql/**"
       - ".github/workflows/dest_postgresql.yml"
-
-defaults:
-  run:
-    working-directory: ./plugins/destination/postgresql
+  push:
+    branches:
+      - main
+    paths:
+      - "plugins/destination/postgresql/**"
+      - ".github/workflows/dest_postgresql.yml"
 
 jobs:
-  plugins-destination-postgresql:
-    name: "plugins/destination/postgresql"
+  resolve-runner:
+    timeout-minutes: 5
     runs-on: ubuntu-latest
+    outputs:
+      runner: ${{ steps.resolve.outputs.runner }}
+    steps:
+      - name: Check if should use large runner
+        id: large-runner
+        # We want to speed runs on the main branch which prime the cache
+        # We allow large runners only in this case to prevent forks from abusing them (it's enforced via runner groups access rules)
+        # IF YOU WANT TO USE A LARGE RUNNER YOU NEED TO ADD THE WORKFLOW TO THE `CloudQuery releases` GROUP IN https://github.com/organizations/cloudquery/settings/actions/runner-groups
+        if: github.event_name == 'push'
+        run: |
+          echo "runner=cloudquery-release-runner" >> $GITHUB_OUTPUT
+      - name: Resolve runner
+        id: resolve
+        run: |
+          RUNNER=${{ steps.large-runner.outputs.runner }}
+          echo "runner=${RUNNER:-"ubuntu-latest"}" >> $GITHUB_OUTPUT
+  plugins-destination-postgresql:
+    timeout-minutes: 30
+    name: "plugins/destination/postgresql"
+    needs: [resolve-runner]
+    runs-on: ${{ needs.resolve-runner.outputs.runner }}
+    defaults:
+      run:
+        working-directory: ./plugins/destination/postgresql
     services:
       # Label used to access the service container
       postgres:
@@ -61,3 +87,39 @@ jobs:
           wait-for-it -h localhost -p 26257
       - name: Test CockroachDB
         run: CQ_DEST_PG_TEST_CONN="postgresql://root@localhost:26257/postgres?sslmode=disable" make test
+  validate-release:
+    timeout-minutes: 30
+    needs: [resolve-runner]
+    runs-on: ${{ needs.resolve-runner.outputs.runner }}
+    env:
+      CGO_ENABLED: 0
+    steps:
+      - name: Checkout
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-1.19.3-release-cache-${{ hashFiles('plugins/destination/postgresql/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-1.19.3-release-cache-plugins-destination-postgresql
+      - name: Set up Go
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: plugins/destination/postgresql/go.mod
+      - name: Install GoReleaser
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        uses: goreleaser/goreleaser-action@v3
+        with:
+          distribution: goreleaser-pro
+          version: latest
+          install-only: true
+      - name: Run GoReleaser Dry-Run
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        run: goreleaser release --snapshot --rm-dist --skip-validate --skip-publish --skip-sign -f ./plugins/destination/postgresql/.goreleaser.yaml
+        env:
+          GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}

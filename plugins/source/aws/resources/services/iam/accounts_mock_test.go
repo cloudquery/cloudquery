@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -43,7 +43,7 @@ func buildAccount(t *testing.T, ctrl *gomock.Controller) client.Services {
 		GlobalEndpointTokenVersion        int32 `json:"global_endpoint_token_version,omitempty"`
 	}{}
 
-	if err := faker.FakeData(&acc); err != nil {
+	if err := faker.FakeObject(&acc); err != nil {
 		t.Fatal(err)
 	}
 	data, err := json.Marshal(acc)
@@ -59,7 +59,7 @@ func buildAccount(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().ListAccountAliases(gomock.Any(), gomock.Any()).Return(&iam.ListAccountAliasesOutput{AccountAliases: []string{"testAccount"}}, nil)
 
 	return client.Services{
-		IAM: m,
+		Iam: m,
 	}
 }
 

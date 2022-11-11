@@ -7,28 +7,22 @@ import (
 
 	"github.com/cloudquery/plugin-sdk/plugins"
 	"github.com/cloudquery/plugin-sdk/specs"
-	"github.com/jackc/pgtype"
 	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/log/zerologadapter"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/rs/zerolog"
-	pgxUUID "github.com/vgarvardt/pgx-google-uuid/v4"
 )
 
 type Client struct {
+	plugins.DefaultReverseTransformer
 	conn                *pgxpool.Pool
 	logger              zerolog.Logger
 	spec                specs.Destination
 	currentDatabaseName string
 	currentSchemaName   string
 	pgType              pgType
+	metrics             plugins.DestinationMetrics
 	batchSize           int
-	batch               *pgx.Batch
-}
-
-type pgTablePrimaryKeys struct {
-	name    string
-	columns []string
 }
 
 type pgColumn struct {
@@ -70,7 +64,6 @@ const (
 func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (plugins.DestinationClient, error) {
 	c := &Client{
 		logger: logger.With().Str("module", "pg-dest").Logger(),
-		batch:  &pgx.Batch{},
 	}
 	var specPostgreSql Spec
 	c.spec = spec
@@ -91,7 +84,6 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (pl
 		return nil, fmt.Errorf("failed to parse connection string %w", err)
 	}
 	pgxConfig.AfterConnect = func(ctx context.Context, conn *pgx.Conn) error {
-		conn.ConnInfo().RegisterDataType(pgtype.DataType{Value: &pgxUUID.UUID{}, Name: "uuid", OID: pgtype.UUIDOID})
 		return nil
 	}
 	l := zerologadapter.NewLogger(c.logger)
@@ -120,11 +112,6 @@ func (c *Client) Close(ctx context.Context) error {
 	var err error
 	if c.conn == nil {
 		return fmt.Errorf("client already closed or not initialized")
-	}
-	if c.batch.Len() > 0 {
-		br := c.conn.SendBatch(ctx, c.batch)
-		err = br.Close()
-		c.batch = &pgx.Batch{}
 	}
 	if c.conn != nil {
 		c.conn.Close()
@@ -190,15 +177,6 @@ func (c *Client) getPgTableColumns(ctx context.Context, tableName string) (*pgTa
 		return nil, err
 	}
 	return &tc, nil
-}
-
-func (c *pgTablePrimaryKeys) columnExist(column string) bool {
-	for _, col := range c.columns {
-		if col == column {
-			return true
-		}
-	}
-	return false
 }
 
 func (c *pgTableColumns) getPgColumn(column string) *pgColumn {

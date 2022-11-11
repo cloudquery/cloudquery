@@ -7,15 +7,15 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudhsmv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildHSMClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
-	mock := mocks.NewMockCloudHSMV2Client(ctrl)
+	mock := mocks.NewMockCloudhsmv2Client(ctrl)
 
 	var clusters []types.Cluster
-	if err := faker.FakeData(&clusters); err != nil {
+	if err := faker.FakeObject(&clusters); err != nil {
 		t.Fatal(err)
 	}
 
@@ -28,7 +28,7 @@ func buildHSMClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
-	return client.Services{CloudHSMV2: mock}
+	return client.Services{Cloudhsmv2: mock}
 }
 
 func TestClusters(t *testing.T) {

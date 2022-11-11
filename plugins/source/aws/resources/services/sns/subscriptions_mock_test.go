@@ -1,27 +1,28 @@
 package sns
 
 import (
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"testing"
+
+	"github.com/aws/aws-sdk-go-v2/aws"
 
 	"github.com/aws/aws-sdk-go-v2/service/sns"
 	"github.com/aws/aws-sdk-go-v2/service/sns/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildSnsSubscriptions(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockSnsClient(ctrl)
 	sub := types.Subscription{}
-	err := faker.FakeData(&sub)
+	err := faker.FakeObject(&sub)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	subTemp := types.Subscription{}
-	err = faker.FakeData(&subTemp)
+	err = faker.FakeObject(&subTemp)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -60,7 +61,7 @@ func buildSnsSubscriptions(t *testing.T, ctrl *gomock.Controller) client.Service
 	)
 
 	return client.Services{
-		SNS: m,
+		Sns: m,
 	}
 }
 

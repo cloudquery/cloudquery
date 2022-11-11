@@ -31,7 +31,8 @@ func EMRResources() []*Resource {
 		{
 			SubService:          "clusters",
 			Struct:              &types.Cluster{},
-			SkipFields:          []string{"ClusterArn", "Tags"},
+			Description:         "https://docs.aws.amazon.com/emr/latest/APIReference/API_Cluster.html",
+			SkipFields:          []string{"ClusterArn"},
 			PreResourceResolver: "getCluster",
 			ExtraColumns: append(
 				defaultRegionalColumns,
@@ -41,11 +42,6 @@ func EMRResources() []*Resource {
 						Type:     schema.TypeString,
 						Resolver: `schema.PathResolver("ClusterArn")`,
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `client.ResolveTags`,
 					},
 				}...),
 		},

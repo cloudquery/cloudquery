@@ -1,11 +1,11 @@
 # Table: azure_keyvault_keys
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/keyvault/v7.1/keyvault#KeyItem
 
 The primary key for this table is **kid**.
 
 ## Relations
-This table depends on [`azure_keyvault_vaults`](azure_keyvault_vaults.md).
+This table depends on [azure_keyvault_vaults](azure_keyvault_vaults.md).
 
 ## Columns
 | Name          | Type          |

@@ -5,7 +5,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/github/client"
 	"github.com/cloudquery/cloudquery/plugins/source/github/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/google/go-github/v45/github"
 )
@@ -14,7 +14,7 @@ func buildInstallations(t *testing.T, ctrl *gomock.Controller) client.GithubServ
 	mock := mocks.NewMockOrganizationsService(ctrl)
 
 	var cs github.Installation
-	if err := faker.FakeData(&cs); err != nil {
+	if err := faker.FakeObject(&cs); err != nil {
 		t.Fatal(err)
 	}
 	total := 1

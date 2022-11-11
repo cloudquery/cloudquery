@@ -1,6 +1,6 @@
 # Table: aws_elasticache_subnet_groups
 
-
+https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_CacheSubnetGroup.html
 
 The primary key for this table is **arn**.
 
@@ -18,4 +18,5 @@ The primary key for this table is **arn**.
 |cache_subnet_group_description|String|
 |cache_subnet_group_name|String|
 |subnets|JSON|
+|supported_network_types|StringArray|
 |vpc_id|String|

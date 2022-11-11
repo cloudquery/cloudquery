@@ -11,7 +11,7 @@ import (
 func fetchElasticbeanstalkApplications(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config elasticbeanstalk.DescribeApplicationsInput
 	c := meta.(*client.Client)
-	svc := c.Services().ElasticBeanstalk
+	svc := c.Services().Elasticbeanstalk
 	output, err := svc.DescribeApplications(ctx, &config)
 	if err != nil {
 		return err

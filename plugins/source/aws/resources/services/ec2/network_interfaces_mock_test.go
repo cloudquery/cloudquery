@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -14,14 +14,14 @@ func buildEc2NetworkInterfaces(t *testing.T, ctrl *gomock.Controller) client.Ser
 	m := mocks.NewMockEc2Client(ctrl)
 
 	niOutput := ec2.DescribeNetworkInterfacesOutput{}
-	err := faker.FakeData(&niOutput)
+	err := faker.FakeObject(&niOutput)
 	if err != nil {
 		t.Fatal(err)
 	}
 	niOutput.NextToken = nil
 	m.EXPECT().DescribeNetworkInterfaces(gomock.Any(), gomock.Any(), gomock.Any()).Return(&niOutput, nil)
 	return client.Services{
-		EC2: m,
+		Ec2: m,
 	}
 }
 

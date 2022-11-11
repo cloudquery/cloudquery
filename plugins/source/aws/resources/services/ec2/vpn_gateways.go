@@ -10,7 +10,7 @@ import (
 func VpnGateways() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_ec2_vpn_gateways",
-		Description: "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_VpnGateway.html",
+		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_VpnGateway.html`,
 		Resolver:    fetchEc2VpnGateways,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Columns: []schema.Column{
@@ -50,7 +50,7 @@ func VpnGateways() *schema.Table {
 			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "type",

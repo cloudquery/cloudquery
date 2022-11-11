@@ -9,15 +9,15 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildElbv2LoadBalancers(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockElbV2Client(ctrl)
-	w := mocks.NewMockWafV2Client(ctrl)
+	m := mocks.NewMockElasticloadbalancingv2Client(ctrl)
+	w := mocks.NewMockWafv2Client(ctrl)
 	l := elbv2Types.LoadBalancer{}
-	err := faker.FakeData(&l)
+	err := faker.FakeObject(&l)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -35,11 +35,7 @@ func buildElbv2LoadBalancers(t *testing.T, ctrl *gomock.Controller) client.Servi
 	).Return(fakeLoadBalancerAttributes(), nil)
 
 	webAcl := types.WebACL{}
-	err = faker.FakeDataSkipFields(&webAcl, []string{
-		"PostProcessFirewallManagerRuleGroups",
-		"PreProcessFirewallManagerRuleGroups",
-		"Rules",
-	})
+	err = faker.FakeObject(&webAcl)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -48,14 +44,14 @@ func buildElbv2LoadBalancers(t *testing.T, ctrl *gomock.Controller) client.Servi
 		&wafv2.GetWebACLForResourceOutput{WebACL: &webAcl}, nil).AnyTimes()
 
 	tags := elasticloadbalancingv2.DescribeTagsOutput{}
-	err = faker.FakeData(&tags)
+	err = faker.FakeObject(&tags)
 	if err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().DescribeTags(gomock.Any(), gomock.Any(), gomock.Any()).Times(2).Return(&tags, nil)
 
 	lis := elbv2Types.Listener{}
-	if err := faker.FakeData(&lis); err != nil {
+	if err := faker.FakeObject(&lis); err != nil {
 		t.Fatal(err)
 	}
 
@@ -65,7 +61,7 @@ func buildElbv2LoadBalancers(t *testing.T, ctrl *gomock.Controller) client.Servi
 		}, nil)
 
 	c := elbv2Types.Certificate{}
-	if err := faker.FakeData(&c); err != nil {
+	if err := faker.FakeObject(&c); err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().DescribeListenerCertificates(
@@ -77,8 +73,8 @@ func buildElbv2LoadBalancers(t *testing.T, ctrl *gomock.Controller) client.Servi
 	}, nil)
 
 	return client.Services{
-		ELBv2: m,
-		WafV2: w,
+		Elasticloadbalancingv2: m,
+		Wafv2:                  w,
 	}
 }
 

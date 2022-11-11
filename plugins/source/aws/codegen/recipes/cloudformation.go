@@ -12,7 +12,7 @@ func CloudformationResources() []*Resource {
 			SubService:  "stacks",
 			Struct:      &types.Stack{},
 			Description: "https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_Stack.html",
-			SkipFields:  []string{"StackId", "Tags"},
+			SkipFields:  []string{"StackId"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -29,11 +29,6 @@ func CloudformationResources() []*Resource {
 						Type:     schema.TypeString,
 						Resolver: `schema.PathResolver("StackId")`,
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `client.ResolveTags`,
 					},
 				}...),
 			Relations: []string{

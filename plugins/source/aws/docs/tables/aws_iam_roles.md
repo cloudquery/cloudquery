@@ -1,12 +1,12 @@
 # Table: aws_iam_roles
 
-
+https://docs.aws.amazon.com/IAM/latest/APIReference/API_Role.html
 
 The composite primary key for this table is (**account_id**, **id**).
 
 ## Relations
-The following tables depend on `aws_iam_roles`:
-  - [`aws_iam_role_policies`](aws_iam_role_policies.md)
+The following tables depend on aws_iam_roles:
+  - [aws_iam_role_policies](aws_iam_role_policies.md)
 
 ## Columns
 | Name          | Type          |
@@ -19,7 +19,6 @@ The following tables depend on `aws_iam_roles`:
 |policies|JSON|
 |id (PK)|String|
 |assume_role_policy_document|JSON|
-|tags|JSON|
 |arn|String|
 |create_date|Timestamp|
 |path|String|
@@ -28,3 +27,4 @@ The following tables depend on `aws_iam_roles`:
 |max_session_duration|Int|
 |permissions_boundary|JSON|
 |role_last_used|JSON|
+|tags|JSON|

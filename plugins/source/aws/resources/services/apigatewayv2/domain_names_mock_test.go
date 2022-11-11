@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -15,7 +15,7 @@ func buildApigatewayv2DomainNames(t *testing.T, ctrl *gomock.Controller) client.
 	m := mocks.NewMockApigatewayv2Client(ctrl)
 
 	dn := types.DomainName{}
-	err := faker.FakeData(&dn)
+	err := faker.FakeObject(&dn)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -25,7 +25,7 @@ func buildApigatewayv2DomainNames(t *testing.T, ctrl *gomock.Controller) client.
 		}, nil)
 
 	am := types.ApiMapping{}
-	err = faker.FakeData(&am)
+	err = faker.FakeObject(&am)
 	if err != nil {
 		t.Fatal(err)
 	}

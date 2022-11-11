@@ -35,9 +35,10 @@ func IOTResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "ca_certificates",
-			Struct:     &types.CACertificateDescription{},
-			SkipFields: []string{"CertificateArn"},
+			SubService:  "ca_certificates",
+			Struct:      &types.CACertificateDescription{},
+			Description: "https://docs.aws.amazon.com/iot/latest/apireference/API_CACertificateDescription.html",
+			SkipFields:  []string{"CertificateArn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -55,9 +56,10 @@ func IOTResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "certificates",
-			Struct:     &types.CertificateDescription{},
-			SkipFields: []string{"CertificateArn"},
+			SubService:  "certificates",
+			Struct:      &types.CertificateDescription{},
+			Description: "https://docs.aws.amazon.com/iot/latest/apireference/API_CertificateDescription.html",
+			SkipFields:  []string{"CertificateArn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -75,9 +77,10 @@ func IOTResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "jobs",
-			Struct:     &types.Job{},
-			SkipFields: []string{"JobArn"},
+			SubService:  "jobs",
+			Struct:      &types.Job{},
+			Description: "https://docs.aws.amazon.com/iot/latest/apireference/API_Job.html",
+			SkipFields:  []string{"JobArn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -95,9 +98,10 @@ func IOTResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "policies",
-			Struct:     &types.Policy{},
-			SkipFields: []string{"PolicyArn"},
+			SubService:  "policies",
+			Struct:      &types.Policy{},
+			Description: "https://docs.aws.amazon.com/iot/latest/apireference/API_Policy.html",
+			SkipFields:  []string{"PolicyArn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -140,9 +144,10 @@ func IOTResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "streams",
-			Struct:     &types.StreamInfo{},
-			SkipFields: []string{"StreamArn"},
+			SubService:  "streams",
+			Struct:      &types.StreamInfo{},
+			Description: "https://docs.aws.amazon.com/iot/latest/apireference/API_StreamInfo.html",
+			SkipFields:  []string{"StreamArn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -186,9 +191,10 @@ func IOTResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "thing_types",
-			Struct:     &types.ThingTypeDefinition{},
-			SkipFields: []string{"ThingTypeArn"},
+			SubService:  "thing_types",
+			Struct:      &types.ThingTypeDefinition{},
+			Description: "https://docs.aws.amazon.com/iot/latest/apireference/API_ThingTypeDefinition.html",
+			SkipFields:  []string{"ThingTypeArn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -206,9 +212,10 @@ func IOTResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "things",
-			Struct:     &types.ThingAttribute{},
-			SkipFields: []string{"ThingArn"},
+			SubService:  "things",
+			Struct:      &types.ThingAttribute{},
+			Description: "https://docs.aws.amazon.com/iot/latest/apireference/API_ThingAttribute.html",
+			SkipFields:  []string{"ThingArn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

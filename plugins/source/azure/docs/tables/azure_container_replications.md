@@ -1,11 +1,11 @@
 # Table: azure_container_replications
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/containerregistry/mgmt/2019-05-01/containerregistry#Replication
 
 The primary key for this table is **id**.
 
 ## Relations
-This table depends on [`azure_container_registries`](azure_container_registries.md).
+This table depends on [azure_container_registries](azure_container_registries.md).
 
 ## Columns
 | Name          | Type          |

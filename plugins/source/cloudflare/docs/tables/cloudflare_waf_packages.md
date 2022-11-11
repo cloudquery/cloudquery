@@ -5,9 +5,9 @@
 The primary key for this table is **id**.
 
 ## Relations
-The following tables depend on `cloudflare_waf_packages`:
-  - [`cloudflare_waf_groups`](cloudflare_waf_groups.md)
-  - [`cloudflare_waf_rules`](cloudflare_waf_rules.md)
+The following tables depend on cloudflare_waf_packages:
+  - [cloudflare_waf_groups](cloudflare_waf_groups.md)
+  - [cloudflare_waf_rules](cloudflare_waf_rules.md)
 
 ## Columns
 | Name          | Type          |

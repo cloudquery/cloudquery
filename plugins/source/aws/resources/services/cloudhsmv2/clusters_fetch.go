@@ -13,7 +13,7 @@ import (
 
 func fetchCloudhsmv2Clusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().CloudHSMV2
+	svc := cl.Services().Cloudhsmv2
 	var input cloudhsmv2.DescribeClustersInput
 	paginator := cloudhsmv2.NewDescribeClustersPaginator(svc, &input)
 	for paginator.HasMorePages() {

@@ -1,12 +1,12 @@
 # Table: azure_mysql_servers
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/mysql/mgmt/2020-01-01/mysql#Server
 
 The primary key for this table is **id**.
 
 ## Relations
-The following tables depend on `azure_mysql_servers`:
-  - [`azure_mysql_configurations`](azure_mysql_configurations.md)
+The following tables depend on azure_mysql_servers:
+  - [azure_mysql_configurations](azure_mysql_configurations.md)
 
 ## Columns
 | Name          | Type          |

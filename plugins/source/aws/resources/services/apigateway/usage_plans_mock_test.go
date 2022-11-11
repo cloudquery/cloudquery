@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigateway/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -15,7 +15,7 @@ func buildApigatewayUsagePlans(t *testing.T, ctrl *gomock.Controller) client.Ser
 	m := mocks.NewMockApigatewayClient(ctrl)
 
 	u := types.UsagePlan{}
-	err := faker.FakeData(&u)
+	err := faker.FakeObject(&u)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -25,7 +25,7 @@ func buildApigatewayUsagePlans(t *testing.T, ctrl *gomock.Controller) client.Ser
 		}, nil)
 
 	uk := types.UsagePlanKey{}
-	err = faker.FakeData(&uk)
+	err = faker.FakeObject(&uk)
 	if err != nil {
 		t.Fatal(err)
 	}

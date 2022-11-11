@@ -14,7 +14,7 @@ import (
 func fetchEc2RouteTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config ec2.DescribeRouteTablesInput
 	c := meta.(*client.Client)
-	svc := c.Services().EC2
+	svc := c.Services().Ec2
 	for {
 		output, err := svc.DescribeRouteTables(ctx, &config)
 		if err != nil {
@@ -37,7 +37,7 @@ func resolveRouteTableArn(_ context.Context, meta schema.ClientMeta, resource *s
 		Service:   "ec2",
 		Region:    cl.Region,
 		AccountID: cl.AccountID,
-		Resource:  "route_table/" + aws.ToString(item.RouteTableId),
+		Resource:  "route-table/" + aws.ToString(item.RouteTableId),
 	}
 	return resource.Set(c.Name, a.String())
 }

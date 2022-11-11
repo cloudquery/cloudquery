@@ -9,9 +9,10 @@ import (
 
 func Streams() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_iot_streams",
-		Resolver:  fetchIotStreams,
-		Multiplex: client.ServiceAccountRegionMultiplexer("iot"),
+		Name:        "aws_iot_streams",
+		Description: `https://docs.aws.amazon.com/iot/latest/apireference/API_StreamInfo.html`,
+		Resolver:    fetchIotStreams,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("iot"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

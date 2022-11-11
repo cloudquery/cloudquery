@@ -36,13 +36,13 @@ spec:
   name: "aws" # required
  
   # Required. Must be a specific version starting with v, e.g. v1.2.3
-  version: "v2.5.0" # latest version of aws plugin
+  version: "v4.14.0" # latest version of aws plugin
  
   ## Optional. Default: "github". Available: "local", "grpc"
   # registry: github
  
-  ## Optional. Default: cloudquery/name
-  # path: cloudquery/aws
+  ## Plugin path. For official plugins, this should be in the format "cloudquery/<name>", e.g. "cloudquery/aws"
+  path: "cloudquery/aws"
  
   ## Optional. Default: ["*"] - all tables. We recommend to specify specific tables that you need to sync as this
   ## will reduce the amount of data synced and improve performance.
@@ -67,8 +67,10 @@ spec:
   ## Required. name of the plugin
   name: "postgresql"
  
+  path: "cloudquery/postgresql"
+
   # Required. Must be a specific version starting with v, e.g. v1.2.3
-  version: "v1.2.2" # latest version of postgresql plugin
+  version: "v1.7.7" # latest version of postgresql plugin
  
   ## Optional. Default: "overwrite". Available: "overwrite", "append", "overwrite-delete-stale". Not all modes are 
   ## supported by all plugins, so make sure to check the plugin documentation for more details.
@@ -134,13 +136,13 @@ The `sync` command supports loading config from files or directories, and you ma
 kind: source
 spec:
     name: "aws"
-    version: "v2.5.0" # latest version of aws plugin
+    version: "v4.14.0" # latest version of aws plugin
     # rest of source spec here
 ---
 kind: destination
 spec:
     name: "postgresql"
-    version: "v1.2.2" # latest version of postgresql plugin
+    version: "v1.7.7" # latest version of postgresql plugin
     # rest of destination spec here
 ```
 

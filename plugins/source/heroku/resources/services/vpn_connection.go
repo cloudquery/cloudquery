@@ -13,7 +13,7 @@ import (
 func VPNConnections() *schema.Table {
 	return &schema.Table{
 		Name:        "heroku_vpn_connections",
-		Description: "https://devcenter.heroku.com/articles/platform-api-reference#vpn-connection-attributes",
+		Description: `https://devcenter.heroku.com/articles/platform-api-reference#vpn-connection`,
 		Resolver:    fetchVPNConnections,
 		Columns: []schema.Column{
 			{

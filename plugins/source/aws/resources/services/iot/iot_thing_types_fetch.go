@@ -16,7 +16,7 @@ func fetchIotThingTypes(ctx context.Context, meta schema.ClientMeta, parent *sch
 	}
 	c := meta.(*client.Client)
 
-	svc := c.Services().IOT
+	svc := c.Services().Iot
 	for {
 		response, err := svc.ListThingTypes(ctx, &input)
 		if err != nil {
@@ -35,7 +35,7 @@ func fetchIotThingTypes(ctx context.Context, meta schema.ClientMeta, parent *sch
 func ResolveIotThingTypeTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(types.ThingTypeDefinition)
 	cl := meta.(*client.Client)
-	svc := cl.Services().IOT
+	svc := cl.Services().Iot
 	input := iot.ListTagsForResourceInput{
 		ResourceArn: i.ThingTypeArn,
 	}

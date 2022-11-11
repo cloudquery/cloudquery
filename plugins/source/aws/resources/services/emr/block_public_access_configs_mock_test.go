@@ -39,7 +39,7 @@ func buildEMRClient(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&emr.GetBlockPublicAccessConfigurationInput{},
 		gomock.Any(),
 	).Return(out, nil)
-	return client.Services{EMR: emrmock}
+	return client.Services{Emr: emrmock}
 }
 
 func TestEMRBlockPublicAccessConfigs(t *testing.T) {

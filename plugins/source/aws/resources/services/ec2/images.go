@@ -10,7 +10,7 @@ import (
 func Images() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_ec2_images",
-		Description: "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Image.html",
+		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Image.html`,
 		Resolver:    fetchEc2Images,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Columns: []schema.Column{
@@ -165,7 +165,7 @@ func Images() *schema.Table {
 			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "tpm_support",

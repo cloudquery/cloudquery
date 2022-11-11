@@ -10,7 +10,7 @@ import (
 func CustomerGateways() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_ec2_customer_gateways",
-		Description: "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_CustomerGateway.html",
+		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_CustomerGateway.html`,
 		Resolver:    fetchEc2CustomerGateways,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Columns: []schema.Column{
@@ -65,7 +65,7 @@ func CustomerGateways() *schema.Table {
 			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "type",

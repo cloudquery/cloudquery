@@ -10,9 +10,10 @@ func RedshiftResources() []*Resource {
 	resources := []*Resource{
 
 		{
-			SubService: "clusters",
-			Struct:     &types.Cluster{},
-			SkipFields: []string{"ClusterParameterGroups", "Tags"},
+			SubService:  "clusters",
+			Struct:      &types.Cluster{},
+			Description: "https://docs.aws.amazon.com/redshift/latest/APIReference/API_Cluster.html",
+			SkipFields:  []string{"ClusterParameterGroups"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -22,12 +23,6 @@ func RedshiftResources() []*Resource {
 						Type:        schema.TypeString,
 						Resolver:    `resolveClusterArn()`,
 						Options:     schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:        "tags",
-						Description: "The list of tags for the cluster.",
-						Type:        schema.TypeJSON,
-						Resolver:    `client.ResolveTags`,
 					},
 					{
 						Name:        "logging_status",
@@ -42,9 +37,10 @@ func RedshiftResources() []*Resource {
 			},
 		},
 		{
-			SubService: "cluster_parameter_groups",
-			Struct:     &types.ClusterParameterGroupStatus{},
-			SkipFields: []string{"ParameterGroupName"},
+			SubService:  "cluster_parameter_groups",
+			Struct:      &types.ClusterParameterGroupStatus{},
+			Description: "https://docs.aws.amazon.com/redshift/latest/APIReference/API_ClusterParameterGroupStatus.html",
+			SkipFields:  []string{"ParameterGroupName"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -67,9 +63,10 @@ func RedshiftResources() []*Resource {
 			},
 		},
 		{
-			SubService: "cluster_parameters",
-			Struct:     &types.Parameter{},
-			SkipFields: []string{"ParameterName"},
+			SubService:  "cluster_parameters",
+			Struct:      &types.Parameter{},
+			Description: "https://docs.aws.amazon.com/redshift/latest/APIReference/API_Parameter.html",
+			SkipFields:  []string{"ParameterName"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -90,9 +87,9 @@ func RedshiftResources() []*Resource {
 		},
 
 		{
-			SubService: "event_subscriptions",
-			Struct:     &types.EventSubscription{},
-			SkipFields: []string{"Tags"},
+			SubService:  "event_subscriptions",
+			Struct:      &types.EventSubscription{},
+			Description: "https://docs.aws.amazon.com/redshift/latest/APIReference/API_EventSubscription.html",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -103,19 +100,14 @@ func RedshiftResources() []*Resource {
 						Resolver:    `resolveEventSubscriptionARN`,
 						Options:     schema.ColumnCreationOptions{PrimaryKey: true},
 					},
-					{
-						Name:        "tags",
-						Description: "Tags",
-						Type:        schema.TypeJSON,
-						Resolver:    `client.ResolveTags`,
-					},
 				}...),
 		},
 
 		{
-			SubService: "snapshots",
-			Struct:     &types.Snapshot{},
-			SkipFields: []string{"Tags"},
+			SubService:  "snapshots",
+			Struct:      &types.Snapshot{},
+			Description: "https://docs.aws.amazon.com/redshift/latest/APIReference/API_Snapshot.html",
+			SkipFields:  []string{"Tags"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -136,9 +128,9 @@ func RedshiftResources() []*Resource {
 		},
 
 		{
-			SubService: "subnet_groups",
-			Struct:     &types.ClusterSubnetGroup{},
-			SkipFields: []string{"Tags"},
+			SubService:  "subnet_groups",
+			Struct:      &types.ClusterSubnetGroup{},
+			Description: "https://docs.aws.amazon.com/redshift/latest/APIReference/API_ClusterSubnetGroup.html",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -148,12 +140,6 @@ func RedshiftResources() []*Resource {
 						Type:        schema.TypeString,
 						Resolver:    `resolveSubnetGroupArn()`,
 						Options:     schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:        "tags",
-						Description: "The list of tags for the cluster subnet group.",
-						Type:        schema.TypeJSON,
-						Resolver:    `client.ResolveTags`,
 					},
 				}...),
 		},

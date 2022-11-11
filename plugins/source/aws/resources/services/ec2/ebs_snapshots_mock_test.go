@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -19,7 +19,7 @@ func buildEc2EbsSnapshots(t *testing.T, ctrl *gomock.Controller) client.Services
 		Group:  "test",
 		UserId: &userId,
 	}
-	err := faker.FakeData(&s)
+	err := faker.FakeObject(&s)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -32,7 +32,7 @@ func buildEc2EbsSnapshots(t *testing.T, ctrl *gomock.Controller) client.Services
 			CreateVolumePermissions: []types.CreateVolumePermission{sa},
 		}, nil)
 	return client.Services{
-		EC2: m,
+		Ec2: m,
 	}
 }
 

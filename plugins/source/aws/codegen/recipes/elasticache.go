@@ -9,9 +9,10 @@ import (
 func ElastiCacheResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "clusters",
-			Struct:     &types.CacheCluster{},
-			SkipFields: []string{"ARN"},
+			SubService:  "clusters",
+			Struct:      &types.CacheCluster{},
+			Description: "https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_CacheCluster.html",
+			SkipFields:  []string{"ARN"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -24,8 +25,10 @@ func ElastiCacheResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "engine_versions",
-			Struct:     &types.CacheEngineVersion{},
+			SubService:  "engine_versions",
+			Struct:      &types.CacheEngineVersion{},
+			Description: "https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_CacheEngineVersion.html",
+			SkipFields:  []string{"Engine", "EngineVersion"},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:        "account_id",
@@ -41,12 +44,25 @@ func ElastiCacheResources() []*Resource {
 					Resolver:    `client.ResolveAWSRegion`,
 					Options:     schema.ColumnCreationOptions{PrimaryKey: true},
 				},
+				{
+					Name:     "engine",
+					Type:     schema.TypeString,
+					Resolver: `schema.PathResolver("Engine")`,
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+				{
+					Name:     "engine_version",
+					Type:     schema.TypeString,
+					Resolver: `schema.PathResolver("EngineVersion")`,
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				},
 			},
 		},
 		{
-			SubService: "global_replication_groups",
-			Struct:     &types.GlobalReplicationGroup{},
-			SkipFields: []string{"ARN"},
+			SubService:  "global_replication_groups",
+			Struct:      &types.GlobalReplicationGroup{},
+			Description: "https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_GlobalReplicationGroup.html",
+			SkipFields:  []string{"ARN"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -59,9 +75,10 @@ func ElastiCacheResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "parameter_groups",
-			Struct:     &types.CacheParameterGroup{},
-			SkipFields: []string{"ARN"},
+			SubService:  "parameter_groups",
+			Struct:      &types.CacheParameterGroup{},
+			Description: "https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_CacheParameterGroup.html",
+			SkipFields:  []string{"ARN"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -74,9 +91,10 @@ func ElastiCacheResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "replication_groups",
-			Struct:     &types.ReplicationGroup{},
-			SkipFields: []string{"ARN"},
+			SubService:  "replication_groups",
+			Struct:      &types.ReplicationGroup{},
+			Description: "https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_ReplicationGroup.html",
+			SkipFields:  []string{"ARN"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -89,9 +107,10 @@ func ElastiCacheResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "reserved_cache_nodes_offerings",
-			Struct:     &types.ReservedCacheNodesOffering{},
-			SkipFields: []string{"ARN"},
+			SubService:  "reserved_cache_nodes_offerings",
+			Struct:      &types.ReservedCacheNodesOffering{},
+			Description: "https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_ReservedCacheNodesOffering.html",
+			SkipFields:  []string{"ARN"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -104,9 +123,10 @@ func ElastiCacheResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "reserved_cache_nodes",
-			Struct:     &types.ReservedCacheNode{},
-			SkipFields: []string{"ReservationARN"},
+			SubService:  "reserved_cache_nodes",
+			Struct:      &types.ReservedCacheNode{},
+			Description: "https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_ReservedCacheNode.html",
+			SkipFields:  []string{"ReservationARN"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -119,8 +139,9 @@ func ElastiCacheResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "service_updates",
-			Struct:     &types.ServiceUpdate{},
+			SubService:  "service_updates",
+			Struct:      &types.ServiceUpdate{},
+			Description: "https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_ServiceUpdate.html",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -133,9 +154,10 @@ func ElastiCacheResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "snapshots",
-			Struct:     &types.Snapshot{},
-			SkipFields: []string{"ARN"},
+			SubService:  "snapshots",
+			Struct:      &types.Snapshot{},
+			Description: "https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_Snapshot.html",
+			SkipFields:  []string{"ARN"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -148,9 +170,10 @@ func ElastiCacheResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "user_groups",
-			Struct:     &types.UserGroup{},
-			SkipFields: []string{"ARN"},
+			SubService:  "user_groups",
+			Struct:      &types.UserGroup{},
+			Description: "https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_UserGroup.html",
+			SkipFields:  []string{"ARN"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -163,9 +186,25 @@ func ElastiCacheResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "users",
-			Struct:     &types.User{},
-			SkipFields: []string{"ARN"},
+			SubService:  "users",
+			Struct:      &types.User{},
+			Description: "https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_User.html",
+			SkipFields:  []string{"ARN"},
+			ExtraColumns: append(
+				defaultRegionalColumns,
+				[]codegen.ColumnDefinition{
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("ARN")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				}...),
+		}, {
+			SubService:  "subnet_groups",
+			Struct:      &types.CacheSubnetGroup{},
+			Description: "https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_CacheSubnetGroup.html",
+			SkipFields:  []string{"ARN"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

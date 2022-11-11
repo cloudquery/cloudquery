@@ -9,9 +9,10 @@ import (
 
 func WebAcls() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_waf_web_acls",
-		Resolver:  fetchWafWebAcls,
-		Multiplex: client.AccountMultiplex,
+		Name:        "aws_waf_web_acls",
+		Description: `https://docs.aws.amazon.com/waf/latest/APIReference/API_waf_WebACLSummary.html`,
+		Resolver:    fetchWafWebAcls,
+		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

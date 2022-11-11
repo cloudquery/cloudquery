@@ -7,14 +7,14 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/directconnect/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildDirectconnectLag(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockDirectconnectClient(ctrl)
 	lag := types.Lag{}
-	err := faker.FakeData(&lag)
+	err := faker.FakeObject(&lag)
 	if err != nil {
 		t.Fatal(err)
 	}

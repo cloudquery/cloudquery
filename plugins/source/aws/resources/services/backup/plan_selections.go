@@ -10,7 +10,7 @@ import (
 func PlanSelections() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_backup_plan_selections",
-		Description: "https://docs.aws.amazon.com/aws-backup/latest/devguide/API_GetBackupSelection.html",
+		Description: `https://docs.aws.amazon.com/aws-backup/latest/devguide/API_GetBackupSelection.html`,
 		Resolver:    fetchBackupPlanSelections,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("backup"),
 		Columns: []schema.Column{

@@ -14,7 +14,7 @@ import (
 
 func fetchWafv2WebAcls(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	service := c.Services().WafV2
+	service := c.Services().Wafv2
 
 	config := wafv2.ListWebACLsInput{
 		Scope: c.WAFScope,
@@ -38,7 +38,7 @@ func fetchWafv2WebAcls(ctx context.Context, meta schema.ClientMeta, parent *sche
 
 func getWebAcl(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	c := meta.(*client.Client)
-	svc := c.Services().WafV2
+	svc := c.Services().Wafv2
 	webAcl := resource.Item.(types.WebACLSummary)
 
 	webAclConfig := wafv2.GetWebACLInput{Id: webAcl.Id, Name: webAcl.Name, Scope: c.WAFScope}
@@ -80,7 +80,7 @@ func resolveWafv2webACLResourcesForWebACL(ctx context.Context, meta schema.Clien
 	webACL := resource.Item.(*models.WebACLWrapper)
 
 	cl := meta.(*client.Client)
-	service := cl.Services().WafV2
+	service := cl.Services().Wafv2
 
 	resourceArns := []string{}
 	if cl.WAFScope == types.ScopeCloudfront {
@@ -117,7 +117,7 @@ func resolveWebACLTags(ctx context.Context, meta schema.ClientMeta, resource *sc
 	webACL := resource.Item.(*models.WebACLWrapper)
 
 	cl := meta.(*client.Client)
-	service := cl.Services().WafV2
+	service := cl.Services().Wafv2
 
 	// Resolve tags
 	outputTags := make(map[string]*string)

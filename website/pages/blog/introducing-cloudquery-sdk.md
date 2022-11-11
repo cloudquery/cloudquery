@@ -106,7 +106,7 @@ Essentially you have to implement two things:
 
 More Documentation available at:
 
-- [Docs](https://www.cloudquery.io/docs/developers/developing-new-provider)
+- [Docs](/docs/developers/creating-new-plugin)
 - [Template provider](https://github.com/cloudquery/cq-provider-template)
 - [AWS provider](https://github.com/cloudquery/cq-provider-aws)
 

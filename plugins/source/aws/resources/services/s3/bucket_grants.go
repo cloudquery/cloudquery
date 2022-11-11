@@ -9,9 +9,10 @@ import (
 
 func BucketGrants() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_s3_bucket_grants",
-		Resolver:  fetchS3BucketGrants,
-		Multiplex: client.AccountMultiplex,
+		Name:        "aws_s3_bucket_grants",
+		Description: `https://docs.aws.amazon.com/AmazonS3/latest/API/API_Grant.html`,
+		Resolver:    fetchS3BucketGrants,
+		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

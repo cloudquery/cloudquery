@@ -10,7 +10,7 @@ import (
 func Connections() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_directconnect_connections",
-		Description: "https://docs.aws.amazon.com/directconnect/latest/APIReference/API_Connection.html",
+		Description: `https://docs.aws.amazon.com/directconnect/latest/APIReference/API_Connection.html`,
 		Resolver:    fetchDirectconnectConnections,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("directconnect"),
 		Columns: []schema.Column{
@@ -39,11 +39,6 @@ func Connections() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "aws_device",
@@ -134,6 +129,11 @@ func Connections() *schema.Table {
 				Name:     "provider_name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ProviderName"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "vlan",

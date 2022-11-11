@@ -11,7 +11,7 @@ import (
 
 func fetchAcmCertificates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().ACM
+	svc := cl.Services().Acm
 	var input acm.ListCertificatesInput
 	paginator := acm.NewListCertificatesPaginator(svc, &input)
 	for paginator.HasMorePages() {
@@ -26,7 +26,7 @@ func fetchAcmCertificates(ctx context.Context, meta schema.ClientMeta, parent *s
 
 func getCertificate(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().ACM
+	svc := cl.Services().Acm
 	input := acm.DescribeCertificateInput{CertificateArn: resource.Item.(types.CertificateSummary).CertificateArn}
 	output, err := svc.DescribeCertificate(ctx, &input)
 	if err != nil {
@@ -39,10 +39,10 @@ func getCertificate(ctx context.Context, meta schema.ClientMeta, resource *schem
 func resolveCertificateTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cert := resource.Item.(*types.CertificateDetail)
 	cl := meta.(*client.Client)
-	svc := cl.Services().ACM
+	svc := cl.Services().Acm
 	out, err := svc.ListTagsForCertificate(ctx, &acm.ListTagsForCertificateInput{CertificateArn: cert.CertificateArn})
 	if err != nil {
 		return err
 	}
-	return resource.Set(c.Name, out.Tags)
+	return resource.Set(c.Name, client.TagsToMap(out.Tags))
 }

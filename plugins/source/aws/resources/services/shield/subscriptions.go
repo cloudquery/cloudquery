@@ -9,9 +9,10 @@ import (
 
 func Subscriptions() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_shield_subscriptions",
-		Resolver:  fetchShieldSubscriptions,
-		Multiplex: client.AccountMultiplex,
+		Name:        "aws_shield_subscriptions",
+		Description: `https://docs.aws.amazon.com/waf/latest/DDOSAPIReference/API_Subscription.html`,
+		Resolver:    fetchShieldSubscriptions,
+		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

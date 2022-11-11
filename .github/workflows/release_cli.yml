@@ -8,6 +8,7 @@ env:
 
 jobs:
   release-cli:
+    timeout-minutes: 30
     runs-on: ubuntu-latest
     steps:
       # Tag format is cli-<version>
@@ -15,7 +16,7 @@ jobs:
         id: split
         run: |
           tag=${{github.ref_name}}
-          echo ::set-output name=version::$(echo $tag | cut -d- -f2-)
+          echo "version=$(echo $tag | cut -d- -f2-)" >> $GITHUB_OUTPUT
       # Fail if not a valid SemVer string
       - name: Parse semver string
         id: semver_parser
@@ -26,12 +27,18 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 2
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-1.19.3-release-cache-${{ hashFiles('cli/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-1.19.3-release-cache-cli
       - name: Set up Go 1.x
         uses: actions/setup-go@v3
         with:
           go-version-file: cli/go.mod
-          cache: true
-          cache-dependency-path: cli/go.sum
       - name: Install GoReleaser
         uses: goreleaser/goreleaser-action@v3
         with:
@@ -79,8 +86,8 @@ jobs:
         continue-on-error: true
         with:
           include: "sites/versions/vercel.json"
-          find: 'releases\/download\/cli\-v[^\/]+'
-          replace: "releases/download/${{github.ref_name}}"
+          find: 'releases\/download\/cli\-v[^\/]+[\s\S]+?},'
+          replace: 'releases/download/${{github.ref_name}}/:binary" },'
           
       - name: Create Pull Request
         if: steps.semver_parser.outputs.prerelease == ''

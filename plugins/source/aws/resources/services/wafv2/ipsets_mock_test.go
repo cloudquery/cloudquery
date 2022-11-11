@@ -8,16 +8,16 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildIpsetsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockWafV2Client(ctrl)
+	m := mocks.NewMockWafv2Client(ctrl)
 
 	for _, scope := range []types.Scope{types.ScopeCloudfront, types.ScopeRegional} {
 		var s types.IPSet
-		if err := faker.FakeData(&s); err != nil {
+		if err := faker.FakeObject(&s); err != nil {
 			t.Fatal(err)
 		}
 		s.Addresses = []string{"192.0.2.0/24", "2001:db8::/32"}
@@ -55,7 +55,7 @@ func buildIpsetsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 		)
 	}
 
-	return client.Services{WafV2: m}
+	return client.Services{Wafv2: m}
 }
 
 func TestWafV2IPSets(t *testing.T) {

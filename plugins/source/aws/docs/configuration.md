@@ -1,28 +1,51 @@
 # AWS Source Plugin Configuration Reference
 
+## Example
+
+This example connects a single AWS account in one region to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](https://www.cloudquery.io/docs/reference/source-spec).
+
+```yml
+kind: source
+spec:
+  # Source spec section
+  name: aws
+  path: cloudquery/aws
+  version: "v4.14.0" # latest version of aws plugin
+  tables: ["*"]
+  destinations: ["postgresql"]
+  spec: 
+    # AWS Spec section described below
+    regions: 
+      - us-east-1
+    accounts:
+      - id: "account1"
+        local_profile: "account1"
+    aws_debug: false
+```
+
 ## AWS Spec
 
-This is the top level spec used by the AWS source plugin.
+This is the (nested) spec used by the AWS source plugin.
 
 - `regions` ([]string) (default: Empty. Will use all enabled regions)
 
   Regions to use.
 
-- `accounts` ([][Account](#account)) (default: current account)
+- `accounts` ([][account](#accounts)) (default: current account)
 
   List of all accounts to fetch information from
 
-- `organization` ([Organization](#organization)) (default: not used)
+- `org` ([org](#org)) (default: not used)
 
   In AWS organization mode, CloudQuery will source all accounts underneath automatically
 
-- `debug` (bool) (default: false)
+- `aws_debug` (bool) (default: false)
 
   If true, will log AWS debug logs, including retries and other request/response metadata
 
-## Account
+## accounts
 
-This is used to specify one or more accounts to extract information from.
+This is used to specify one or more accounts to extract information from. Note that it should be an array of objects, each with the following fields:
 
 - `id` (string) (**required**)
 
@@ -44,7 +67,16 @@ This is used to specify one or more accounts to extract information from.
 
   If specified will use this when assuming role to `role_arn`
 
-## Organization
+- `default_region` (string) (default: `us-east-1`)
+
+  If specified, this region will be used as the default region for the account.
+
+- `regions` (string)
+
+  Regions to use for this account. Defaults to global `regions` setting.
+
+
+## org
 
 - `organization_units` ([]string)
 

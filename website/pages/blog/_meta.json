@@ -8,6 +8,8 @@
     },
     "searchable": false
   },
+  "announcing-cloudquery-sqlite-destination": "Announcing the CloudQuery SQLite Destination Plugin",
+  "scaling-out-elt-with-cq-and-csv": "Scaling out ELT with CloudQuery and CSV",
   "cloudquery-v1-release": "CloudQuery v1 Release",
   "migrating-from-v0-to-v1": "Migrating from CloudQuery v0 to v1",
   "aws-encryption-and-multi-account-access": "Encryption in AWS and Multi-Account Access",

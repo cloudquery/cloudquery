@@ -14,7 +14,7 @@ import (
 
 func fetchEcsTaskDefinitions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config ecs.ListTaskDefinitionsInput
-	svc := meta.(*client.Client).Services().ECS
+	svc := meta.(*client.Client).Services().Ecs
 	for {
 		listClustersOutput, err := svc.ListTaskDefinitions(ctx, &config)
 		if err != nil {
@@ -32,7 +32,7 @@ func fetchEcsTaskDefinitions(ctx context.Context, meta schema.ClientMeta, parent
 
 func getTaskDefinition(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	c := meta.(*client.Client)
-	svc := c.Services().ECS
+	svc := c.Services().Ecs
 	taskArn := resource.Item.(string)
 
 	describeTaskDefinitionOutput, err := svc.DescribeTaskDefinition(ctx, &ecs.DescribeTaskDefinitionInput{

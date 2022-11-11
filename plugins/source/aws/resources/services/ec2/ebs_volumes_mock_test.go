@@ -6,14 +6,14 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildEc2EbsVolumes(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 	volumesOutput := ec2.DescribeVolumesOutput{}
-	err := faker.FakeData(&volumesOutput)
+	err := faker.FakeObject(&volumesOutput)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -21,7 +21,7 @@ func buildEc2EbsVolumes(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().DescribeVolumes(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&volumesOutput, nil)
 	return client.Services{
-		EC2: m,
+		Ec2: m,
 	}
 }
 

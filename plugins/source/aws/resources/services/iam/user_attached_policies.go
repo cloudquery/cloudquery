@@ -9,9 +9,10 @@ import (
 
 func UserAttachedPolicies() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_iam_user_attached_policies",
-		Resolver:  fetchIamUserAttachedPolicies,
-		Multiplex: client.AccountMultiplex,
+		Name:        "aws_iam_user_attached_policies",
+		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_AttachedPolicy.html`,
+		Resolver:    fetchIamUserAttachedPolicies,
+		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

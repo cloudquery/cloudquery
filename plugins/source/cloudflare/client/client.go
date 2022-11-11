@@ -45,6 +45,10 @@ func (c *Client) Logger() *zerolog.Logger {
 	return &c.logger
 }
 
+func (c *Client) ID() string {
+	return c.AccountId
+}
+
 func (c *Client) withAccountID(accountId string) *Client {
 	return &Client{
 		logger:        c.logger.With().Str("account_id", accountId).Logger(),

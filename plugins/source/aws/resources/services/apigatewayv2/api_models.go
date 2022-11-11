@@ -10,7 +10,7 @@ import (
 func ApiModels() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_apigatewayv2_api_models",
-		Description: "https://docs.aws.amazon.com/apigateway/latest/api/API_Model.html",
+		Description: `https://docs.aws.amazon.com/apigateway/latest/api/API_Model.html`,
 		Resolver:    fetchApigatewayv2ApiModels,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
 		Columns: []schema.Column{

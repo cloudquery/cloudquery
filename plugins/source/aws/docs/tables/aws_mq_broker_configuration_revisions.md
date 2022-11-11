@@ -1,9 +1,11 @@
 # Table: aws_mq_broker_configuration_revisions
 
-
+https://docs.aws.amazon.com/amazon-mq/latest/api-reference/configurations-configuration-id-revisions.html
 
 The primary key for this table is **_cq_id**.
 
+## Relations
+This table depends on [aws_mq_broker_configurations](aws_mq_broker_configurations.md).
 
 ## Columns
 | Name          | Type          |

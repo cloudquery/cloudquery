@@ -10,7 +10,7 @@ import (
 func ReservedInstances() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_ec2_reserved_instances",
-		Description: "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ReservedInstances.html",
+		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ReservedInstances.html`,
 		Resolver:    fetchEc2ReservedInstances,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Columns: []schema.Column{
@@ -31,11 +31,6 @@ func ReservedInstances() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "availability_zone",
@@ -116,6 +111,11 @@ func ReservedInstances() *schema.Table {
 				Name:     "state",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("State"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "usage_price",

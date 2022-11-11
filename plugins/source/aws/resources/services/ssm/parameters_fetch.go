@@ -11,7 +11,7 @@ import (
 
 func fetchSsmParameters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().SSM
+	svc := cl.Services().Ssm
 	params := ssm.DescribeParametersInput{}
 	for {
 		output, err := svc.DescribeParameters(ctx, &params)

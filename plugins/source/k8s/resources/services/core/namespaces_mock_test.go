@@ -6,7 +6,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client/mocks"
 	k8sTesting "github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/testing"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -15,7 +15,7 @@ import (
 func createCoreNamespace(t *testing.T, ctrl *gomock.Controller) client.Services {
 	s := mocks.NewMockNamespacesClient(ctrl)
 	var namespace corev1.Namespace
-	if err := faker.FakeData(&namespace); err != nil {
+	if err := faker.FakeObject(&namespace); err != nil {
 		t.Fatal(err)
 	}
 	namespace.ManagedFields = []metav1.ManagedFieldsEntry{k8sTesting.FakeManagedFields(t)}

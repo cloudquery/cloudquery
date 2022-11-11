@@ -5,7 +5,7 @@
 The composite primary key for this table is (**org**, **id**, **hook_id**).
 
 ## Relations
-This table depends on [`github_hooks`](github_hooks.md).
+This table depends on [github_hooks](github_hooks.md).
 
 ## Columns
 | Name          | Type          |

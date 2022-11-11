@@ -10,7 +10,7 @@ import (
 func NetworkInterfaces() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_ec2_network_interfaces",
-		Description: "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_NetworkInterface.html",
+		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_NetworkInterface.html`,
 		Resolver:    fetchEc2NetworkInterfaces,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Columns: []schema.Column{
@@ -31,6 +31,11 @@ func NetworkInterfaces() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTagField("TagSet"),
 			},
 			{
 				Name:     "association",
@@ -151,11 +156,6 @@ func NetworkInterfaces() *schema.Table {
 				Name:     "subnet_id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("SubnetId"),
-			},
-			{
-				Name:     "tag_set",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("TagSet"),
 			},
 			{
 				Name:     "vpc_id",

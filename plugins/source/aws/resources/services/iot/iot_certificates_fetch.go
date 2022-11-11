@@ -12,7 +12,7 @@ import (
 
 func fetchIotCertificates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().IOT
+	svc := cl.Services().Iot
 	input := iot.ListCertificatesInput{
 		PageSize: aws.Int32(250),
 	}
@@ -45,7 +45,7 @@ func fetchIotCertificates(ctx context.Context, meta schema.ClientMeta, parent *s
 func ResolveIotCertificatePolicies(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*types.CertificateDescription)
 	cl := meta.(*client.Client)
-	svc := cl.Services().IOT
+	svc := cl.Services().Iot
 	input := iot.ListAttachedPoliciesInput{
 		Target:   i.CertificateArn,
 		PageSize: aws.Int32(250),

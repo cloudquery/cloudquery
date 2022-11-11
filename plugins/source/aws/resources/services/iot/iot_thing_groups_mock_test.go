@@ -6,15 +6,15 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iot"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildIotThingGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockIOTClient(ctrl)
+	m := mocks.NewMockIotClient(ctrl)
 
 	groupsOutput := iot.ListThingGroupsOutput{}
-	err := faker.FakeData(&groupsOutput)
+	err := faker.FakeObject(&groupsOutput)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -23,7 +23,7 @@ func buildIotThingGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Servi
 		&groupsOutput, nil)
 
 	groupOutput := iot.DescribeThingGroupOutput{}
-	err = faker.FakeData(&groupOutput)
+	err = faker.FakeObject(&groupOutput)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -31,7 +31,7 @@ func buildIotThingGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Servi
 		&groupOutput, nil)
 
 	thingsInThingGroupOutput := iot.ListThingsInThingGroupOutput{}
-	err = faker.FakeData(&thingsInThingGroupOutput)
+	err = faker.FakeObject(&thingsInThingGroupOutput)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -40,7 +40,7 @@ func buildIotThingGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Servi
 		&thingsInThingGroupOutput, nil)
 
 	p := iot.ListAttachedPoliciesOutput{}
-	err = faker.FakeData(&p)
+	err = faker.FakeObject(&p)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -49,7 +49,7 @@ func buildIotThingGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Servi
 		&p, nil)
 
 	tags := iot.ListTagsForResourceOutput{}
-	err = faker.FakeData(&tags)
+	err = faker.FakeObject(&tags)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -58,7 +58,7 @@ func buildIotThingGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Servi
 		&tags, nil)
 
 	return client.Services{
-		IOT: m,
+		Iot: m,
 	}
 }
 

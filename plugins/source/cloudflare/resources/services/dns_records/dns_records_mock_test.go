@@ -6,7 +6,7 @@ import (
 	"github.com/cloudflare/cloudflare-go"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/client"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -14,8 +14,7 @@ func buildDNSRecords(t *testing.T, ctrl *gomock.Controller) client.Clients {
 	mock := mocks.NewMockApi(ctrl)
 
 	var record cloudflare.DNSRecord
-	skipFields := []string{"Meta", "Data"}
-	if err := faker.FakeDataSkipFields(&record, skipFields); err != nil {
+	if err := faker.FakeObject(&record); err != nil {
 		t.Fatal(err)
 	}
 

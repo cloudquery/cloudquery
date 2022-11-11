@@ -10,7 +10,7 @@ import (
 func DomainNameBasePathMappings() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_apigateway_domain_name_base_path_mappings",
-		Description: "https://docs.aws.amazon.com/apigateway/latest/api/API_BasePathMapping.html",
+		Description: `https://docs.aws.amazon.com/apigateway/latest/api/API_BasePathMapping.html`,
 		Resolver:    fetchApigatewayDomainNameBasePathMappings,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
 		Columns: []schema.Column{

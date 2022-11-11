@@ -56,8 +56,10 @@ func MockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, 
 		},
 		newTestExecutionClient,
 	)
-	plugins.TestSourcePluginSync(t, p, logger, specs.Source{
+	p.SetLogger(logger)
+	plugins.TestSourcePluginSync(t, p, specs.Source{
 		Name:         "dev",
+		Path:         "cloudquery/dev",
 		Version:      version,
 		Tables:       []string{table.Name},
 		Destinations: []string{"mock-destination"},

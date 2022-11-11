@@ -1,11 +1,11 @@
 # Table: aws_lightsail_load_balancer_tls_certificates
 
-
+https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_LoadBalancerTlsCertificate.html
 
 The primary key for this table is **_cq_id**.
 
 ## Relations
-This table depends on [`aws_lightsail_load_balancers`](aws_lightsail_load_balancers.md).
+This table depends on [aws_lightsail_load_balancers](aws_lightsail_load_balancers.md).
 
 ## Columns
 | Name          | Type          |
@@ -17,7 +17,6 @@ This table depends on [`aws_lightsail_load_balancers`](aws_lightsail_load_balanc
 |account_id|String|
 |region|String|
 |load_balancer_arn|String|
-|tags|JSON|
 |arn|String|
 |created_at|Timestamp|
 |domain_name|String|
@@ -42,3 +41,4 @@ This table depends on [`aws_lightsail_load_balancers`](aws_lightsail_load_balanc
 |subject|String|
 |subject_alternative_names|StringArray|
 |support_code|String|
+|tags|JSON|

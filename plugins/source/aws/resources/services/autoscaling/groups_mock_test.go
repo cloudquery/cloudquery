@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -14,7 +14,7 @@ func buildAutoscalingGroups(t *testing.T, ctrl *gomock.Controller) client.Servic
 	m := mocks.NewMockAutoscalingClient(ctrl)
 
 	groups := autoscaling.DescribeAutoScalingGroupsOutput{}
-	err := faker.FakeData(&groups)
+	err := faker.FakeObject(&groups)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -22,7 +22,7 @@ func buildAutoscalingGroups(t *testing.T, ctrl *gomock.Controller) client.Servic
 	m.EXPECT().DescribeAutoScalingGroups(gomock.Any(), gomock.Any(), gomock.Any()).Return(&groups, nil)
 
 	configurations := autoscaling.DescribeNotificationConfigurationsOutput{}
-	err = faker.FakeData(&configurations)
+	err = faker.FakeObject(&configurations)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -31,7 +31,7 @@ func buildAutoscalingGroups(t *testing.T, ctrl *gomock.Controller) client.Servic
 	m.EXPECT().DescribeNotificationConfigurations(gomock.Any(), gomock.Any(), gomock.Any()).Return(&configurations, nil)
 
 	loadBalancers := autoscaling.DescribeLoadBalancersOutput{}
-	err = faker.FakeData(&loadBalancers)
+	err = faker.FakeObject(&loadBalancers)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -39,7 +39,7 @@ func buildAutoscalingGroups(t *testing.T, ctrl *gomock.Controller) client.Servic
 	m.EXPECT().DescribeLoadBalancers(gomock.Any(), gomock.Any(), gomock.Any()).Return(&loadBalancers, nil)
 
 	loadBalancerTargetGroups := autoscaling.DescribeLoadBalancerTargetGroupsOutput{}
-	err = faker.FakeData(&loadBalancerTargetGroups)
+	err = faker.FakeObject(&loadBalancerTargetGroups)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -47,7 +47,7 @@ func buildAutoscalingGroups(t *testing.T, ctrl *gomock.Controller) client.Servic
 	m.EXPECT().DescribeLoadBalancerTargetGroups(gomock.Any(), gomock.Any(), gomock.Any()).Return(&loadBalancerTargetGroups, nil)
 
 	policies := autoscaling.DescribePoliciesOutput{}
-	err = faker.FakeData(&policies)
+	err = faker.FakeObject(&policies)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -55,7 +55,7 @@ func buildAutoscalingGroups(t *testing.T, ctrl *gomock.Controller) client.Servic
 	m.EXPECT().DescribePolicies(gomock.Any(), gomock.Any(), gomock.Any()).Return(&policies, nil)
 
 	lifecycleHooks := autoscaling.DescribeLifecycleHooksOutput{}
-	err = faker.FakeData(&lifecycleHooks)
+	err = faker.FakeObject(&lifecycleHooks)
 	if err != nil {
 		t.Fatal(err)
 	}

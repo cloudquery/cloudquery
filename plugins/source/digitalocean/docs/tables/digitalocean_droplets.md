@@ -5,8 +5,8 @@
 The primary key for this table is **id**.
 
 ## Relations
-The following tables depend on `digitalocean_droplets`:
-  - [`digitalocean_droplet_neighbors`](digitalocean_droplet_neighbors.md)
+The following tables depend on digitalocean_droplets:
+  - [digitalocean_droplet_neighbors](digitalocean_droplet_neighbors.md)
 
 ## Columns
 | Name          | Type          |
@@ -17,7 +17,7 @@ The following tables depend on `digitalocean_droplets`:
 |_cq_parent_id|UUID|
 |backup_ids|IntArray|
 |snapshot_ids|IntArray|
-|volume_ids|IntArray|
+|volume_ids|StringArray|
 |id (PK)|Int|
 |name|String|
 |memory|Int|

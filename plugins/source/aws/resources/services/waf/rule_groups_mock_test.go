@@ -7,26 +7,26 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/waf/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildWAFRuleGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockWafClient(ctrl)
 	tempRuleGroupSum := types.RuleGroupSummary{}
-	if err := faker.FakeData(&tempRuleGroupSum); err != nil {
+	if err := faker.FakeObject(&tempRuleGroupSum); err != nil {
 		t.Fatal(err)
 	}
 	tempRuleGroup := types.RuleGroup{}
-	if err := faker.FakeData(&tempRuleGroup); err != nil {
+	if err := faker.FakeObject(&tempRuleGroup); err != nil {
 		t.Fatal(err)
 	}
 	tempRule := types.ActivatedRule{}
-	if err := faker.FakeData(&tempRule); err != nil {
+	if err := faker.FakeObject(&tempRule); err != nil {
 		t.Fatal(err)
 	}
 	var tempTags []types.Tag
-	if err := faker.FakeData(&tempTags); err != nil {
+	if err := faker.FakeObject(&tempTags); err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().ListRuleGroups(gomock.Any(), gomock.Any(), gomock.Any()).Return(&waf.ListRuleGroupsOutput{

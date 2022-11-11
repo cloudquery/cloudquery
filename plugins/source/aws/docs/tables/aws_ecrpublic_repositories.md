@@ -1,12 +1,12 @@
 # Table: aws_ecrpublic_repositories
 
-
+https://docs.aws.amazon.com/AmazonECRPublic/latest/APIReference/API_Repository.html
 
 The primary key for this table is **arn**.
 
 ## Relations
-The following tables depend on `aws_ecrpublic_repositories`:
-  - [`aws_ecrpublic_repository_images`](aws_ecrpublic_repository_images.md)
+The following tables depend on aws_ecrpublic_repositories:
+  - [aws_ecrpublic_repository_images](aws_ecrpublic_repository_images.md)
 
 ## Columns
 | Name          | Type          |

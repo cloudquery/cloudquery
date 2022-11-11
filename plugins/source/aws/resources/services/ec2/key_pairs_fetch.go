@@ -14,7 +14,7 @@ import (
 func fetchEc2KeyPairs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config ec2.DescribeKeyPairsInput
 	c := meta.(*client.Client)
-	svc := c.Services().EC2
+	svc := c.Services().Ec2
 	output, err := svc.DescribeKeyPairs(ctx, &config)
 	if err != nil {
 		return err
@@ -31,7 +31,7 @@ func resolveKeyPairArn(_ context.Context, meta schema.ClientMeta, resource *sche
 		Service:   "ec2",
 		Region:    cl.Region,
 		AccountID: cl.AccountID,
-		Resource:  "key_pair/" + aws.ToString(item.KeyPairId),
+		Resource:  "key-pair/" + aws.ToString(item.KeyPairId),
 	}
 	return resource.Set(c.Name, a.String())
 }

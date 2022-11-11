@@ -1,12 +1,12 @@
 # Table: azure_servicebus_namespaces
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/servicebus/mgmt/2021-06-01-preview/servicebus#SBNamespace
 
 The primary key for this table is **id**.
 
 ## Relations
-The following tables depend on `azure_servicebus_namespaces`:
-  - [`azure_servicebus_topics`](azure_servicebus_topics.md)
+The following tables depend on azure_servicebus_namespaces:
+  - [azure_servicebus_topics](azure_servicebus_topics.md)
 
 ## Columns
 | Name          | Type          |

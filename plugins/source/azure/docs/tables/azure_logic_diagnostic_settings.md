@@ -1,11 +1,11 @@
 # Table: azure_logic_diagnostic_settings
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2019-06-01/insights#DiagnosticSettingsResource
 
 The primary key for this table is **id**.
 
 ## Relations
-This table depends on [`azure_logic_workflows`](azure_logic_workflows.md).
+This table depends on [azure_logic_workflows](azure_logic_workflows.md).
 
 ## Columns
 | Name          | Type          |

@@ -9,9 +9,10 @@ import (
 
 func DelegationSets() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_route53_delegation_sets",
-		Resolver:  fetchRoute53DelegationSets,
-		Multiplex: client.AccountMultiplex,
+		Name:        "aws_route53_delegation_sets",
+		Description: `https://docs.aws.amazon.com/Route53/latest/APIReference/API_DelegationSet.html`,
+		Resolver:    fetchRoute53DelegationSets,
+		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

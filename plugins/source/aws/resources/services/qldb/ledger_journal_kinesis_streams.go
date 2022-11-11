@@ -9,9 +9,10 @@ import (
 
 func LedgerJournalKinesisStreams() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_qldb_ledger_journal_kinesis_streams",
-		Resolver:  fetchQldbLedgerJournalKinesisStreams,
-		Multiplex: client.ServiceAccountRegionMultiplexer("qldb"),
+		Name:        "aws_qldb_ledger_journal_kinesis_streams",
+		Description: `https://docs.aws.amazon.com/qldb/latest/developerguide/API_JournalKinesisStreamDescription.html`,
+		Resolver:    fetchQldbLedgerJournalKinesisStreams,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("qldb"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

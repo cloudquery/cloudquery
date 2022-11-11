@@ -14,7 +14,7 @@ import (
 func fetchEc2NetworkAcls(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config ec2.DescribeNetworkAclsInput
 	c := meta.(*client.Client)
-	svc := c.Services().EC2
+	svc := c.Services().Ec2
 	for {
 		output, err := svc.DescribeNetworkAcls(ctx, &config)
 		if err != nil {
@@ -37,7 +37,7 @@ func resolveNetworkAclArn(_ context.Context, meta schema.ClientMeta, resource *s
 		Service:   "ec2",
 		Region:    cl.Region,
 		AccountID: cl.AccountID,
-		Resource:  "network_acl/" + aws.ToString(item.NetworkAclId),
+		Resource:  "network-acl/" + aws.ToString(item.NetworkAclId),
 	}
 	return resource.Set(c.Name, a.String())
 }

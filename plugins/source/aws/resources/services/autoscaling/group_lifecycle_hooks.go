@@ -10,7 +10,7 @@ import (
 func GroupLifecycleHooks() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_autoscaling_group_lifecycle_hooks",
-		Description: "https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_LifecycleHook.html",
+		Description: `https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_LifecycleHook.html`,
 		Resolver:    fetchAutoscalingGroupLifecycleHooks,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("autoscaling"),
 		Columns: []schema.Column{

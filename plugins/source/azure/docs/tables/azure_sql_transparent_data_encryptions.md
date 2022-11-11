@@ -1,9 +1,11 @@
 # Table: azure_sql_transparent_data_encryptions
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql#TransparentDataEncryption
 
 The primary key for this table is **id**.
 
+## Relations
+This table depends on [azure_sql_databases](azure_sql_databases.md).
 
 ## Columns
 | Name          | Type          |

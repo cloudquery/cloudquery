@@ -9,9 +9,10 @@ import (
 
 func Aliases() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_kms_aliases",
-		Resolver:  fetchKmsAliases,
-		Multiplex: client.ServiceAccountRegionMultiplexer("kms"),
+		Name:        "aws_kms_aliases",
+		Description: `https://docs.aws.amazon.com/kms/latest/APIReference/API_AliasListEntry.html`,
+		Resolver:    fetchKmsAliases,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("kms"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

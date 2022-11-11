@@ -1,11 +1,11 @@
 # Table: aws_s3_bucket_encryption_rules
 
-
+https://docs.aws.amazon.com/AmazonS3/latest/API/API_ServerSideEncryptionRule.html
 
 The primary key for this table is **_cq_id**.
 
 ## Relations
-This table depends on [`aws_s3_buckets`](aws_s3_buckets.md).
+This table depends on [aws_s3_buckets](aws_s3_buckets.md).
 
 ## Columns
 | Name          | Type          |

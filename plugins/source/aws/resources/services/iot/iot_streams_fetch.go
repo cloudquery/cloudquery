@@ -15,7 +15,7 @@ func fetchIotStreams(ctx context.Context, meta schema.ClientMeta, parent *schema
 	}
 	c := meta.(*client.Client)
 
-	svc := c.Services().IOT
+	svc := c.Services().Iot
 	for {
 		response, err := svc.ListStreams(ctx, &input)
 		if err != nil {

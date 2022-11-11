@@ -9,9 +9,10 @@ import (
 
 func Workspaces() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_workspaces_workspaces",
-		Resolver:  fetchWorkspacesWorkspaces,
-		Multiplex: client.ServiceAccountRegionMultiplexer("workspaces"),
+		Name:        "aws_workspaces_workspaces",
+		Description: `https://docs.aws.amazon.com/workspaces/latest/api/API_Workspace.html`,
+		Resolver:    fetchWorkspacesWorkspaces,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("workspaces"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

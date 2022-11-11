@@ -9,9 +9,10 @@ import (
 func RDSResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "certificates",
-			Struct:     &types.Certificate{},
-			SkipFields: []string{"CertificateArn"},
+			SubService:  "certificates",
+			Struct:      &types.Certificate{},
+			Description: "https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_Certificate.html",
+			SkipFields:  []string{"CertificateArn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -24,9 +25,46 @@ func RDSResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "cluster_parameter_groups",
-			Struct:     &types.DBClusterParameterGroup{},
-			SkipFields: []string{"DBClusterParameterGroupArn"},
+			SubService:  "engine_versions",
+			Struct:      &types.DBEngineVersion{},
+			Description: "https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBEngineVersion.html",
+			Multiplex:   `client.AccountMultiplex`,
+			SkipFields:  []string{"Engine", "EngineVersion"},
+			ExtraColumns: []codegen.ColumnDefinition{
+				{
+					Name:     "account_id",
+					Type:     schema.TypeString,
+					Resolver: "client.ResolveAWSAccount",
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+				{
+					Name:     "engine",
+					Type:     schema.TypeString,
+					Resolver: `schema.PathResolver("Engine")`,
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+				{
+					Name:     "engine_version",
+					Type:     schema.TypeString,
+					Resolver: `schema.PathResolver("EngineVersion")`,
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+			},
+			Relations: []string{
+				"ClusterParameters()",
+			},
+		},
+		{
+			SubService:   "cluster_parameters",
+			Struct:       &types.Parameter{},
+			SkipFields:   []string{"DBClusterParameterGroupArn"},
+			ExtraColumns: defaultRegionalColumns,
+		},
+		{
+			SubService:  "cluster_parameter_groups",
+			Struct:      &types.DBClusterParameterGroup{},
+			Description: "https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBClusterParameterGroup.html",
+			SkipFields:  []string{"DBClusterParameterGroupArn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -45,9 +83,10 @@ func RDSResources() []*Resource {
 			Relations: []string{"ClusterParameterGroupParameters()"},
 		},
 		{
-			SubService: "cluster_parameter_group_parameters",
-			Struct:     &types.Parameter{},
-			SkipFields: []string{},
+			SubService:  "cluster_parameter_group_parameters",
+			Struct:      &types.Parameter{},
+			Description: "https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_Parameter.html",
+			SkipFields:  []string{},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -59,9 +98,10 @@ func RDSResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "cluster_snapshots",
-			Struct:     &types.DBClusterSnapshot{},
-			SkipFields: []string{"DBClusterSnapshotArn"},
+			SubService:  "cluster_snapshots",
+			Struct:      &types.DBClusterSnapshot{},
+			Description: "https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBClusterSnapshot.html",
+			SkipFields:  []string{"DBClusterSnapshotArn", "TagList"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -84,9 +124,10 @@ func RDSResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "clusters",
-			Struct:     &types.DBCluster{},
-			SkipFields: []string{"DBClusterArn"},
+			SubService:  "clusters",
+			Struct:      &types.DBCluster{},
+			Description: "https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBCluster.html",
+			SkipFields:  []string{"DBClusterArn", "TagList"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -104,9 +145,10 @@ func RDSResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "db_parameter_groups",
-			Struct:     &types.DBParameterGroup{},
-			SkipFields: []string{"DBParameterGroupArn"},
+			SubService:  "db_parameter_groups",
+			Struct:      &types.DBParameterGroup{},
+			Description: "https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBParameterGroup.html",
+			SkipFields:  []string{"DBParameterGroupArn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -125,9 +167,10 @@ func RDSResources() []*Resource {
 			Relations: []string{"DbParameterGroupDbParameters()"},
 		},
 		{
-			SubService: "db_parameter_group_db_parameters",
-			Struct:     &types.Parameter{},
-			SkipFields: []string{},
+			SubService:  "db_parameter_group_db_parameters",
+			Struct:      &types.Parameter{},
+			Description: "https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_Parameter.html",
+			SkipFields:  []string{},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -139,9 +182,10 @@ func RDSResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "db_security_groups",
-			Struct:     &types.DBSecurityGroup{},
-			SkipFields: []string{"DBSecurityGroupArn"},
+			SubService:  "db_security_groups",
+			Struct:      &types.DBSecurityGroup{},
+			Description: "https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBSecurityGroup.html",
+			SkipFields:  []string{"DBSecurityGroupArn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -159,9 +203,10 @@ func RDSResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "db_snapshots",
-			Struct:     &types.DBSnapshot{},
-			SkipFields: []string{"DBSnapshotArn"},
+			SubService:  "db_snapshots",
+			Struct:      &types.DBSnapshot{},
+			Description: "https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBSnapshot.html",
+			SkipFields:  []string{"DBSnapshotArn", "TagList"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -184,9 +229,10 @@ func RDSResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "event_subscriptions",
-			Struct:     &types.EventSubscription{},
-			SkipFields: []string{"EventSubscriptionArn"},
+			SubService:  "event_subscriptions",
+			Struct:      &types.EventSubscription{},
+			Description: "https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_EventSubscription.html",
+			SkipFields:  []string{"EventSubscriptionArn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -204,9 +250,10 @@ func RDSResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "instances",
-			Struct:     &types.DBInstance{},
-			SkipFields: []string{"DBInstanceArn", "ProcessorFeatures", "Tags"},
+			SubService:  "instances",
+			Struct:      &types.DBInstance{},
+			Description: "https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBInstance.html",
+			SkipFields:  []string{"DBInstanceArn", "ProcessorFeatures", "TagList"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -229,9 +276,10 @@ func RDSResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "subnet_groups",
-			Struct:     &types.DBSubnetGroup{},
-			SkipFields: []string{"DBSubnetGroupArn"},
+			SubService:  "subnet_groups",
+			Struct:      &types.DBSubnetGroup{},
+			Description: "https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBSubnetGroup.html",
+			SkipFields:  []string{"DBSubnetGroupArn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

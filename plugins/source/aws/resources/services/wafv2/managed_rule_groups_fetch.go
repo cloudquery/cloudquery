@@ -12,7 +12,7 @@ import (
 
 func fetchWafv2ManagedRuleGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	service := c.Services().WafV2
+	service := c.Services().Wafv2
 
 	config := wafv2.ListAvailableManagedRuleGroupsInput{Scope: c.WAFScope}
 	for {
@@ -33,7 +33,7 @@ func resolveManageRuleGroupProperties(ctx context.Context, meta schema.ClientMet
 	managedRuleGroupSum := resource.Item.(types.ManagedRuleGroupSummary)
 
 	c := meta.(*client.Client)
-	service := c.Services().WafV2
+	service := c.Services().Wafv2
 
 	// Resolve managed rule group via describe managed rule group
 	output, err := service.DescribeManagedRuleGroup(ctx, &wafv2.DescribeManagedRuleGroupInput{
