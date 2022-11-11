@@ -108,6 +108,7 @@ func getWorkGroupPreparedStatement(ctx context.Context, meta schema.ClientMeta, 
 	})
 	if err != nil {
 		if c.IsNotFoundError(err) {
+			resource.Item = nil
 			return nil
 		}
 		return err
@@ -145,6 +146,7 @@ func getWorkGroupQueryExecution(ctx context.Context, meta schema.ClientMeta, res
 	})
 	if err != nil {
 		if c.IsNotFoundError(err) || isQueryExecutionNotFound(err) {
+			resource.Item = nil
 			return nil
 		}
 		return err
@@ -182,6 +184,7 @@ func getWorkGroupNamedQuery(ctx context.Context, meta schema.ClientMeta, resourc
 	})
 	if err != nil {
 		if c.IsNotFoundError(err) {
+			resource.Item = nil
 			return nil
 		}
 		return err
