@@ -268,11 +268,12 @@ func EC2Resources() []*Resource {
 				}...),
 		},
 		{
-			Name:       "aws_regions", // rename table for backwards-compatibility
-			SubService: "regions",
-			Struct:     &types.Region{},
-			SkipFields: []string{"RegionName"},
-			Multiplex:  `client.AccountMultiplex`,
+			Name:        "aws_regions", // rename table for backwards-compatibility
+			SubService:  "regions",
+			Struct:      &types.Region{},
+			Description: "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Region.html",
+			SkipFields:  []string{"RegionName"},
+			Multiplex:   `client.AccountMultiplex`,
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:     "account_id",
