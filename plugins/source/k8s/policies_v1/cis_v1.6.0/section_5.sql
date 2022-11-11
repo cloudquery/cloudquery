@@ -93,7 +93,11 @@
 \set check_id '5.3.2'
 \echo "Executing check 5.3.2"
 \echo "Ensure that all Namespaces have Network Policies defined (Manual)"
+\set check_id '5.3.2.1'
+\echo "Executing check 5.3.2.1"
 \ir ../queries/network_hardening/network_policy_default_deny_ingress.sql
+\set check_id '5.3.2.2'
+\echo "Executing check 5.3.2.2"
 \ir ../queries/network_hardening/network_policy_default_deny_egress.sql
 
 
