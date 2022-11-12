@@ -155,8 +155,8 @@ github.com/aws/aws-sdk-go-v2/service/ram v1.16.24 h1:pzB33ZEhd1szVKHkgYe4cXQ+kSL
 github.com/aws/aws-sdk-go-v2/service/ram v1.16.24/go.mod h1:el3+/AiwdwKk5qZEcCQqm+t3b1A5QLZI2nr/OkhM/gc=
 github.com/aws/aws-sdk-go-v2/service/rds v1.28.1 h1:ya7H1VyJLgFxVSwdrfyp7EzgB6imv0O4pE0EU2giT1E=
 github.com/aws/aws-sdk-go-v2/service/rds v1.28.1/go.mod h1:wPFe1Cj3nZWmNWKKdkXw961l1dJheTZQ5JjPImqbMuI=
-github.com/aws/aws-sdk-go-v2/service/redshift v1.26.13 h1:q1SMdYb6hOggSGeq9LZ+7cyTaOPyvjNcCTPxUldLyrc=
-github.com/aws/aws-sdk-go-v2/service/redshift v1.26.13/go.mod h1:Ds+ElMoF3oxjYWJZofKeNeih3q3W7vzRCkRdnu/aOj8=
+github.com/aws/aws-sdk-go-v2/service/redshift v1.26.14 h1:s39wn3MH7CO8RfKbKMWqA93eI6hfaODPxY9UZdXCt/E=
+github.com/aws/aws-sdk-go-v2/service/redshift v1.26.14/go.mod h1:Ds+ElMoF3oxjYWJZofKeNeih3q3W7vzRCkRdnu/aOj8=
 github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.12.21 h1:fniP5cg84nnMQlISDvV7auixxpM3wVrn2dndAFKDIHM=
 github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.12.21/go.mod h1:8U4gfVNaaVETUbr/j4DZNlplr6RF+ieI3tgQ7g4CtkA=
 github.com/aws/aws-sdk-go-v2/service/route53 v1.22.4 h1:+dIaOyfJxK8ECZyJ+Y94ei51LhtGVMx+Yfwf7gMMorQ=
