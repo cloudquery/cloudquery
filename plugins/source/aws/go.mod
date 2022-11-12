@@ -8,7 +8,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/credentials v1.13.0
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.39
 	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.17.1
-	github.com/aws/aws-sdk-go-v2/service/acm v1.15.2
+	github.com/aws/aws-sdk-go-v2/service/acm v1.16.1
 	github.com/aws/aws-sdk-go-v2/service/apigateway v1.15.23
 	github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.12.21
 	github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.15.21
