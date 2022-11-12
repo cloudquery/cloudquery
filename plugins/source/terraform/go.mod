@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/terraform
 go 1.19
 
 require (
-	github.com/aws/aws-sdk-go v1.44.135
+	github.com/aws/aws-sdk-go v1.44.136
 	github.com/mattn/go-isatty v0.0.16 // indirect
 	golang.org/x/net v0.2.0 // indirect
 	golang.org/x/sys v0.2.0 // indirect
