@@ -4,9 +4,9 @@ go 1.19
 
 require (
 	github.com/aws/aws-sdk-go-v2 v1.17.1
-	github.com/aws/aws-sdk-go-v2/config v1.17.11
-	github.com/aws/aws-sdk-go-v2/credentials v1.12.24
-	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.38
+	github.com/aws/aws-sdk-go-v2/config v1.18.0
+	github.com/aws/aws-sdk-go-v2/credentials v1.13.0
+	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.39
 	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.17.1
 	github.com/aws/aws-sdk-go-v2/service/acm v1.15.2
 	github.com/aws/aws-sdk-go-v2/service/apigateway v1.15.23
@@ -56,7 +56,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/inspector2 v1.8.3
 	github.com/aws/aws-sdk-go-v2/service/iot v1.30.0
 	github.com/aws/aws-sdk-go-v2/service/kinesis v1.15.22
-	github.com/aws/aws-sdk-go-v2/service/kms v1.18.15
+	github.com/aws/aws-sdk-go-v2/service/kms v1.18.16
 	github.com/aws/aws-sdk-go-v2/service/lambda v1.24.9
 	github.com/aws/aws-sdk-go-v2/service/lightsail v1.23.2
 	github.com/aws/aws-sdk-go-v2/service/mq v1.13.15
@@ -65,7 +65,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/organizations v1.16.15
 	github.com/aws/aws-sdk-go-v2/service/qldb v1.14.20
 	github.com/aws/aws-sdk-go-v2/service/ram v1.16.24
-	github.com/aws/aws-sdk-go-v2/service/rds v1.28.0
+	github.com/aws/aws-sdk-go-v2/service/rds v1.28.1
 	github.com/aws/aws-sdk-go-v2/service/redshift v1.26.13
 	github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.12.20
 	github.com/aws/aws-sdk-go-v2/service/route53 v1.22.4
@@ -123,7 +123,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.3.26 // indirect
 	github.com/aws/aws-sdk-go-v2/service/athena v1.19.1
 	github.com/aws/aws-sdk-go-v2/service/backup v1.17.11
-	github.com/aws/aws-sdk-go-v2/service/glue v1.34.0
+	github.com/aws/aws-sdk-go-v2/service/glue v1.34.1
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.9.10 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.7.19 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.19 // indirect
