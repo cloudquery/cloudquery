@@ -67,26 +67,26 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/ram v1.16.24
 	github.com/aws/aws-sdk-go-v2/service/rds v1.28.1
 	github.com/aws/aws-sdk-go-v2/service/redshift v1.26.13
-	github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.12.20
+	github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.12.21
 	github.com/aws/aws-sdk-go-v2/service/route53 v1.22.4
 	github.com/aws/aws-sdk-go-v2/service/route53domains v1.12.19
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.29.2
-	github.com/aws/aws-sdk-go-v2/service/s3control v1.25.0
+	github.com/aws/aws-sdk-go-v2/service/s3control v1.25.1
 	github.com/aws/aws-sdk-go-v2/service/sagemaker v1.54.0
-	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.16.4
+	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.16.5
 	github.com/aws/aws-sdk-go-v2/service/servicecatalog v1.14.19
 	github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.14.3
 	github.com/aws/aws-sdk-go-v2/service/servicequotas v1.13.20
-	github.com/aws/aws-sdk-go-v2/service/sesv2 v1.15.0
+	github.com/aws/aws-sdk-go-v2/service/sesv2 v1.15.1
 	github.com/aws/aws-sdk-go-v2/service/sns v1.18.3
 	github.com/aws/aws-sdk-go-v2/service/sqs v1.19.12
-	github.com/aws/aws-sdk-go-v2/service/ssm v1.32.0
+	github.com/aws/aws-sdk-go-v2/service/ssm v1.32.1
 	github.com/aws/aws-sdk-go-v2/service/ssoadmin v1.15.13
 	github.com/aws/aws-sdk-go-v2/service/sts v1.17.2
 	github.com/aws/aws-sdk-go-v2/service/waf v1.11.19
 	github.com/aws/aws-sdk-go-v2/service/wafv2 v1.23.1
 	github.com/aws/aws-sdk-go-v2/service/workspaces v1.25.0
-	github.com/aws/aws-sdk-go-v2/service/xray v1.13.21
+	github.com/aws/aws-sdk-go-v2/service/xray v1.13.22
 	github.com/aws/smithy-go v1.13.4
 	github.com/basgys/goxml2json v1.1.0
 	github.com/cloudquery/plugin-sdk v1.5.0
@@ -130,7 +130,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.13.19 // indirect
 	github.com/aws/aws-sdk-go-v2/service/shield v1.17.11
 	github.com/aws/aws-sdk-go-v2/service/sso v1.11.25 // indirect
-	github.com/aws/aws-sdk-go-v2/service/transfer v1.23.2
+	github.com/aws/aws-sdk-go-v2/service/transfer v1.23.3
 	github.com/aws/aws-sdk-go-v2/service/wafregional v1.12.20
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
