@@ -77,7 +77,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/servicecatalog v1.14.19
 	github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.14.3
 	github.com/aws/aws-sdk-go-v2/service/servicequotas v1.13.20
-	github.com/aws/aws-sdk-go-v2/service/sesv2 v1.15.0
+	github.com/aws/aws-sdk-go-v2/service/sesv2 v1.15.1
 	github.com/aws/aws-sdk-go-v2/service/sns v1.18.3
 	github.com/aws/aws-sdk-go-v2/service/sqs v1.19.12
 	github.com/aws/aws-sdk-go-v2/service/ssm v1.32.0
