@@ -23,8 +23,8 @@ github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.16 h1:2EXB7dtGwRYIN3XQ9qwIW504DVb
 github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.16/go.mod h1:XH+3h395e3WVdd6T2Z3mPxuI+x/HVtdqVOREkTiyubs=
 github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.17.1 h1:VmTNMxKYKZbqS99sqLO03g2xauAwI5Lfrw9Ez5/+WJk=
 github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.17.1/go.mod h1:O769hLd/n0YUcFAfCi4g3lnpSntWCKkIFXzgi7H493s=
-github.com/aws/aws-sdk-go-v2/service/acm v1.15.2 h1:mVVton0wBx+DjcbqhwebiAe5IEIC4vPkXhcVKCWyVIc=
-github.com/aws/aws-sdk-go-v2/service/acm v1.15.2/go.mod h1:LR3qi788mHzUYfv2MNs+xwbvig6QlrPYVOhKv/Ae5M0=
+github.com/aws/aws-sdk-go-v2/service/acm v1.16.1 h1:2EA0LBmv1VaKQKDpO98uXA2puEF7T8ReIFC8AaBQPmY=
+github.com/aws/aws-sdk-go-v2/service/acm v1.16.1/go.mod h1:LR3qi788mHzUYfv2MNs+xwbvig6QlrPYVOhKv/Ae5M0=
 github.com/aws/aws-sdk-go-v2/service/apigateway v1.15.23 h1:6/X3UHnwLUjfHTz4K4jstKlgSDz/OfKiqmUQ1h7vtOs=
 github.com/aws/aws-sdk-go-v2/service/apigateway v1.15.23/go.mod h1:3olVANhEv+CFhEvC/TTkqh+1kg+r0px3CbH5eRKx7J4=
 github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.12.21 h1:rLGJaH0pdnk8Y3oJmx3QWPn7ikgsTMhVO5bWfR1QfsM=
@@ -75,8 +75,8 @@ github.com/aws/aws-sdk-go-v2/service/docdb v1.19.14 h1:TLqHPkhMJNzKVWjo7c1BZBqke
 github.com/aws/aws-sdk-go-v2/service/docdb v1.19.14/go.mod h1:SJncjLW+0PykKd5bUp/QwIIpizudvSTBJPhm664lpGQ=
 github.com/aws/aws-sdk-go-v2/service/dynamodb v1.17.4 h1:mN72saOOYAq2qBczDTi2LznXFf98lvimpSethXyVnOQ=
 github.com/aws/aws-sdk-go-v2/service/dynamodb v1.17.4/go.mod h1:BiglbKCG56L8tmMnUEyEQo422BO9xnNR8vVHnOsByf8=
-github.com/aws/aws-sdk-go-v2/service/ec2 v1.67.0 h1:B00K221BEqATbzk+a8anVZH2qyvglKlZ6DtPBEWACtM=
-github.com/aws/aws-sdk-go-v2/service/ec2 v1.67.0/go.mod h1:zul71QqzR4D1a90/5FloZiAnZ1CtuIjVH7R9MP997+A=
+github.com/aws/aws-sdk-go-v2/service/ec2 v1.70.0 h1:09PzSKQbPSMSK26JwjdpqhNsUEsaC8IPAZQslhR3HHg=
+github.com/aws/aws-sdk-go-v2/service/ec2 v1.70.0/go.mod h1:zul71QqzR4D1a90/5FloZiAnZ1CtuIjVH7R9MP997+A=
 github.com/aws/aws-sdk-go-v2/service/ecr v1.17.21 h1:YfWzziVOyeSfl2I5Qq0rL7PVQmtBRdNa2HAaQ+0tAG4=
 github.com/aws/aws-sdk-go-v2/service/ecr v1.17.21/go.mod h1:kEVGiy2tACP0cegVqx4MrjsgQMSgrtgRq1fSa+Ix6F0=
 github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.13.19 h1:AwWP9a5n9a6kcgpTOfZ2/AeHKdq1Cb+HwgWQ1ADqiZM=
@@ -137,8 +137,8 @@ github.com/aws/aws-sdk-go-v2/service/kinesis v1.15.22 h1:xkxEl+SSR6VgPmI4ozt4asG
 github.com/aws/aws-sdk-go-v2/service/kinesis v1.15.22/go.mod h1:ucTnH7zv9Q8tIpVDU4rqA12YvWewxeluLWjynCpHDKM=
 github.com/aws/aws-sdk-go-v2/service/kms v1.18.16 h1:KHzeOb0G5ZvaIOewRSs3iyHR5MeAKkIZ75tUJCO9ijg=
 github.com/aws/aws-sdk-go-v2/service/kms v1.18.16/go.mod h1:kZodDPTQjSH/qM6/OvyTfM5mms5JHB/EKYp5dhn/vI4=
-github.com/aws/aws-sdk-go-v2/service/lambda v1.24.9 h1:kwJgUuaVaTPLfiUsxtFl0+GYhUs/yQ11+REDGjkOX74=
-github.com/aws/aws-sdk-go-v2/service/lambda v1.24.9/go.mod h1:2oqKd3SCTyhVaUei20xDUOOcqOAuAnbCy79w/t1dDVs=
+github.com/aws/aws-sdk-go-v2/service/lambda v1.24.10 h1:5ms2Iysy4XqWvLj04RxlwG+EZwfl22nvqvOW6wTEZ98=
+github.com/aws/aws-sdk-go-v2/service/lambda v1.24.10/go.mod h1:2oqKd3SCTyhVaUei20xDUOOcqOAuAnbCy79w/t1dDVs=
 github.com/aws/aws-sdk-go-v2/service/lightsail v1.23.2 h1:taL77V/XEcokFi29cmG9aFmCx42IlWbXOvQVk4cGpCs=
 github.com/aws/aws-sdk-go-v2/service/lightsail v1.23.2/go.mod h1:LYCAGTJ4XgNZAESKxLC9L12F7IIQbJHccVxanY8DYzo=
 github.com/aws/aws-sdk-go-v2/service/mq v1.13.15 h1:K0UbxNfaPHoIXo0T4L4jrbE+TKcVPYp55nEnMLxVRPk=
@@ -205,8 +205,8 @@ github.com/aws/aws-sdk-go-v2/service/wafv2 v1.23.1 h1:VKbJnbTqdo0vbQjg/dme0JPPjO
 github.com/aws/aws-sdk-go-v2/service/wafv2 v1.23.1/go.mod h1:siJ63pQyokf9MFT2atLZOn73cnGg0GFoNyLxGWGbANo=
 github.com/aws/aws-sdk-go-v2/service/workspaces v1.25.0 h1:lInnzRZTGWumEcSruYwv7oX4waAFPLY789P+j8MWQac=
 github.com/aws/aws-sdk-go-v2/service/workspaces v1.25.0/go.mod h1:+rXEZ6ZaZr62yuD2l/jqrQ45hKVRaBL9X+y48wsAz2Q=
-github.com/aws/aws-sdk-go-v2/service/xray v1.13.21 h1:70kwSD2R4DZyqGcLhQ7HekDIY64ZmjbXJNm6kY+a2vg=
-github.com/aws/aws-sdk-go-v2/service/xray v1.13.21/go.mod h1:nbd2wBKxIAnziLIN5cKQm2qLMpaovxv+nOOSIr4FzAM=
+github.com/aws/aws-sdk-go-v2/service/xray v1.13.22 h1:2rUutEMFsOXQwqRVTrrFD6ULbM9rfbU/NRr2bD2NuB4=
+github.com/aws/aws-sdk-go-v2/service/xray v1.13.22/go.mod h1:nbd2wBKxIAnziLIN5cKQm2qLMpaovxv+nOOSIr4FzAM=
 github.com/aws/smithy-go v1.13.4 h1:/RN2z1txIJWeXeOkzX+Hk/4Uuvv7dWtCjbmVJcrskyk=
 github.com/aws/smithy-go v1.13.4/go.mod h1:Tg+OJXh4MB2R/uN61Ko2f6hTZwB/ZYGOtib8J3gBHzA=
 github.com/basgys/goxml2json v1.1.0 h1:4ln5i4rseYfXNd86lGEB+Vi652IsIXIvggKM/BhUKVw=
