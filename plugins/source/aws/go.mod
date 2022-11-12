@@ -8,7 +8,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/credentials v1.13.0
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.39
 	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.17.1
-	github.com/aws/aws-sdk-go-v2/service/acm v1.15.2
+	github.com/aws/aws-sdk-go-v2/service/acm v1.16.1
 	github.com/aws/aws-sdk-go-v2/service/apigateway v1.15.23
 	github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.12.21
 	github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.15.21
@@ -32,7 +32,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/directconnect v1.17.21
 	github.com/aws/aws-sdk-go-v2/service/docdb v1.19.14
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.17.4
-	github.com/aws/aws-sdk-go-v2/service/ec2 v1.67.0
+	github.com/aws/aws-sdk-go-v2/service/ec2 v1.70.0
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.17.21
 	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.13.19
 	github.com/aws/aws-sdk-go-v2/service/ecs v1.18.26
@@ -57,7 +57,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/iot v1.30.0
 	github.com/aws/aws-sdk-go-v2/service/kinesis v1.15.22
 	github.com/aws/aws-sdk-go-v2/service/kms v1.18.16
-	github.com/aws/aws-sdk-go-v2/service/lambda v1.24.9
+	github.com/aws/aws-sdk-go-v2/service/lambda v1.24.10
 	github.com/aws/aws-sdk-go-v2/service/lightsail v1.23.2
 	github.com/aws/aws-sdk-go-v2/service/mq v1.13.15
 	github.com/aws/aws-sdk-go-v2/service/mwaa v1.13.12
@@ -66,7 +66,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/qldb v1.14.20
 	github.com/aws/aws-sdk-go-v2/service/ram v1.16.24
 	github.com/aws/aws-sdk-go-v2/service/rds v1.28.1
-	github.com/aws/aws-sdk-go-v2/service/redshift v1.26.13
+	github.com/aws/aws-sdk-go-v2/service/redshift v1.26.14
 	github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.12.21
 	github.com/aws/aws-sdk-go-v2/service/route53 v1.22.4
 	github.com/aws/aws-sdk-go-v2/service/route53domains v1.12.19
@@ -86,7 +86,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/waf v1.11.19
 	github.com/aws/aws-sdk-go-v2/service/wafv2 v1.23.1
 	github.com/aws/aws-sdk-go-v2/service/workspaces v1.25.0
-	github.com/aws/aws-sdk-go-v2/service/xray v1.13.21
+	github.com/aws/aws-sdk-go-v2/service/xray v1.13.22
 	github.com/aws/smithy-go v1.13.4
 	github.com/basgys/goxml2json v1.1.0
 	github.com/cloudquery/plugin-sdk v1.5.0
