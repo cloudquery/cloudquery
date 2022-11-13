@@ -9,14 +9,14 @@ import (
 func BatchResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "jobs",
-			Struct:     &batchv1.Job{},
+			SubService:   "jobs",
+			Struct:       &batchv1.Job{},
 			ResourceFunc: v1.JobsGetter.Jobs,
 		},
 		{
-			SubService: "cron_jobs",
-			Struct:     &batchv1.CronJob{},
-			Multiplex:  `client.APIFilterContextMultiplex("/apis/batch/v1/cronjobs")`,
+			SubService:   "cron_jobs",
+			Struct:       &batchv1.CronJob{},
+			Multiplex:    `client.APIFilterContextMultiplex("/apis/batch/v1/cronjobs")`,
 			ResourceFunc: v1.CronJobsGetter.CronJobs,
 		},
 	}

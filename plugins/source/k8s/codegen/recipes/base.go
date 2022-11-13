@@ -23,27 +23,27 @@ import (
 var templatesFS embed.FS
 
 type Resource struct {
-	Service      string
-	SubService   string
-	ServicePath string
-	GlobalResource bool
-	ServiceFunc interface{}
-	ResourceFunc	interface{}
-	ServiceFuncName string
-	ResourceFuncName string
-	ResourcePath string
-	ImportPath string
+	Service             string
+	SubService          string
+	ServicePath         string
+	GlobalResource      bool
+	ServiceFunc         interface{}
+	ResourceFunc        interface{}
+	ServiceFuncName     string
+	ResourceFuncName    string
+	ResourcePath        string
+	ImportPath          string
 	SubServiceInterface interface{}
-	ResourceInterface interface{}
-	Struct       interface{}
-	StructName string
-	Multiplex    string // By default, Multiplex is `client.ContextMultiplex`
-	Table        *codegen.TableDefinition
-	ExtraColumns []codegen.ColumnDefinition
-	SkipFields   []string
-	SkipMockFields []string
-	SkipMockTypeFields []string
-	MockFieldsValue map[string]string
+	ResourceInterface   interface{}
+	Struct              interface{}
+	StructName          string
+	Multiplex           string // By default, Multiplex is `client.ContextMultiplex`
+	Table               *codegen.TableDefinition
+	ExtraColumns        []codegen.ColumnDefinition
+	SkipFields          []string
+	SkipMockFields      []string
+	SkipMockTypeFields  []string
+	MockFieldsValue     map[string]string
 }
 
 func getFunctionName(i interface{}) string {
@@ -61,9 +61,9 @@ func getPackagePath(myvar interface{}) string {
 
 func getType(myvar interface{}) string {
 	if t := reflect.TypeOf(myvar); t.Kind() == reflect.Ptr {
-			return t.Elem().Name()
+		return t.Elem().Name()
 	} else {
-			return t.Name()
+		return t.Name()
 	}
 }
 
@@ -178,7 +178,7 @@ func (resource *Resource) Generate() error {
 	if err := resource.generate(false); err != nil {
 		return err
 	}
-	
+
 	if err := resource.generate(true); err != nil {
 		return err
 	}

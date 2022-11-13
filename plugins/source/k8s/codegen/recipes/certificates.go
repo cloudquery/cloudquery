@@ -9,9 +9,9 @@ import (
 func Certificates() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "signing_requests",
-			Struct:     &resource.CertificateSigningRequest{},
-			ResourceFunc: resourceType.CertificateSigningRequestsGetter.CertificateSigningRequests,
+			SubService:     "signing_requests",
+			Struct:         &resource.CertificateSigningRequest{},
+			ResourceFunc:   resourceType.CertificateSigningRequestsGetter.CertificateSigningRequests,
 			GlobalResource: true,
 		},
 	}

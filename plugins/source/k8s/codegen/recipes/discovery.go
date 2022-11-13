@@ -9,8 +9,8 @@ import (
 func Discovery() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "endpoint_slices",
-			Struct:     &resource.EndpointSlice{},
+			SubService:   "endpoint_slices",
+			Struct:       &resource.EndpointSlice{},
 			ResourceFunc: resourceType.EndpointSlicesGetter.EndpointSlices,
 		},
 	}

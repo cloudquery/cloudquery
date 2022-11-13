@@ -16,12 +16,10 @@ import (
 	"k8s.io/client-go/tools/clientcmd/api"
 )
 
-
-
 type Client struct {
 	logger zerolog.Logger
 	// map context_name -> Services struct
-	clients map[string]kubernetes.Interface
+	clients  map[string]kubernetes.Interface
 	spec     *Spec
 	contexts []string
 	paths    map[string]struct{}
@@ -45,7 +43,7 @@ func (c *Client) Client() kubernetes.Interface {
 func (c Client) WithContext(k8sContext string) *Client {
 	return &Client{
 		logger:   c.logger.With().Str("context", k8sContext).Logger(),
-		clients: c.clients,
+		clients:  c.clients,
 		spec:     c.spec,
 		contexts: c.contexts,
 		paths:    c.paths,
@@ -111,7 +109,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (sche
 
 	c := Client{
 		logger:   logger,
-		clients: make(map[string]kubernetes.Interface),
+		clients:  make(map[string]kubernetes.Interface),
 		spec:     &k8sSpec,
 		contexts: contexts,
 		Context:  contexts[0],
@@ -164,4 +162,3 @@ func getAPIsMap(client *kubernetes.Clientset) (map[string]struct{}, error) {
 	}
 	return paths, nil
 }
-

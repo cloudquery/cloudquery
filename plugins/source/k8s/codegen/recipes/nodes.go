@@ -9,9 +9,9 @@ import (
 func Nodes() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "runtime_classes",
-			Struct:     &resource.RuntimeClass{},
-			ResourceFunc: resourceType.RuntimeClassesGetter.RuntimeClasses,
+			SubService:     "runtime_classes",
+			Struct:         &resource.RuntimeClass{},
+			ResourceFunc:   resourceType.RuntimeClassesGetter.RuntimeClasses,
 			GlobalResource: true,
 		},
 	}

@@ -9,8 +9,8 @@ import (
 func Coordination() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "leases",
-			Struct:     &resource.Lease{},
+			SubService:   "leases",
+			Struct:       &resource.Lease{},
 			ResourceFunc: resourceType.LeasesGetter.Leases,
 		},
 	}

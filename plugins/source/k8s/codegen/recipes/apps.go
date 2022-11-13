@@ -9,23 +9,23 @@ import (
 func AppsResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "daemon_sets",
-			Struct:     &appsv1.DaemonSet{},
+			SubService:   "daemon_sets",
+			Struct:       &appsv1.DaemonSet{},
 			ResourceFunc: v1.DaemonSetsGetter.DaemonSets,
 		},
 		{
-			SubService: "deployments",
-			Struct:     &appsv1.Deployment{},
+			SubService:   "deployments",
+			Struct:       &appsv1.Deployment{},
 			ResourceFunc: v1.DeploymentsGetter.Deployments,
 		},
 		{
-			SubService: "replica_sets",
-			Struct:     &appsv1.ReplicaSet{},
+			SubService:   "replica_sets",
+			Struct:       &appsv1.ReplicaSet{},
 			ResourceFunc: v1.ReplicaSetsGetter.ReplicaSets,
 		},
 		{
-			SubService: "stateful_sets",
-			Struct:     &appsv1.StatefulSet{},
+			SubService:   "stateful_sets",
+			Struct:       &appsv1.StatefulSet{},
 			ResourceFunc: v1.StatefulSetsGetter.StatefulSets,
 		},
 	}
@@ -38,5 +38,3 @@ func AppsResources() []*Resource {
 
 	return resources
 }
-
-

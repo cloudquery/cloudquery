@@ -9,25 +9,25 @@ import (
 func RbacResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "cluster_roles",
-			Struct:     &rbacv1.ClusterRole{},
-			ResourceFunc: v1.ClusterRolesGetter.ClusterRoles,
+			SubService:     "cluster_roles",
+			Struct:         &rbacv1.ClusterRole{},
+			ResourceFunc:   v1.ClusterRolesGetter.ClusterRoles,
 			GlobalResource: true,
 		},
 		{
-			SubService: "cluster_role_bindings",
-			Struct:     &rbacv1.ClusterRoleBinding{},
-			ResourceFunc: v1.ClusterRoleBindingsGetter.ClusterRoleBindings,
+			SubService:     "cluster_role_bindings",
+			Struct:         &rbacv1.ClusterRoleBinding{},
+			ResourceFunc:   v1.ClusterRoleBindingsGetter.ClusterRoleBindings,
 			GlobalResource: true,
 		},
 		{
-			SubService: "roles",
-			Struct:     &rbacv1.Role{},
+			SubService:   "roles",
+			Struct:       &rbacv1.Role{},
 			ResourceFunc: v1.RolesGetter.Roles,
 		},
 		{
-			SubService: "role_bindings",
-			Struct:     &rbacv1.RoleBinding{},
+			SubService:   "role_bindings",
+			Struct:       &rbacv1.RoleBinding{},
 			ResourceFunc: v1.RoleBindingsGetter.RoleBindings,
 		},
 	}

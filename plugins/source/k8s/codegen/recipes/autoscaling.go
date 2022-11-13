@@ -9,8 +9,8 @@ import (
 func Autoscaling() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "hpas",
-			Struct:     &resource.HorizontalPodAutoscaler{},
+			SubService:   "hpas",
+			Struct:       &resource.HorizontalPodAutoscaler{},
 			ResourceFunc: resourceType.HorizontalPodAutoscalersGetter.HorizontalPodAutoscalers,
 		},
 	}

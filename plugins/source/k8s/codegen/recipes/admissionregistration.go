@@ -9,15 +9,15 @@ import (
 func AdmissionRegistration() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "mutating_webhook_configurations",
-			Struct:     &admissionregistration.MutatingWebhookConfiguration{},
-			ResourceFunc: v1.MutatingWebhookConfigurationsGetter.MutatingWebhookConfigurations,
+			SubService:     "mutating_webhook_configurations",
+			Struct:         &admissionregistration.MutatingWebhookConfiguration{},
+			ResourceFunc:   v1.MutatingWebhookConfigurationsGetter.MutatingWebhookConfigurations,
 			GlobalResource: true,
 		},
 		{
-			SubService: "validating_webhook_configurations",
-			Struct:     &admissionregistration.ValidatingWebhookConfiguration{},
-			ResourceFunc: v1.ValidatingWebhookConfigurationsGetter.ValidatingWebhookConfigurations,
+			SubService:     "validating_webhook_configurations",
+			Struct:         &admissionregistration.ValidatingWebhookConfiguration{},
+			ResourceFunc:   v1.ValidatingWebhookConfigurationsGetter.ValidatingWebhookConfigurations,
 			GlobalResource: true,
 		},
 	}

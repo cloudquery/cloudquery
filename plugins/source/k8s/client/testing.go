@@ -15,12 +15,11 @@ import (
 	"k8s.io/client-go/kubernetes"
 )
 
-
 func K8sMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, *gomock.Controller) kubernetes.Interface) {
 	version := "vDev"
 
 	t.Helper()
-	
+
 	table.IgnoreInTests = false
 
 	mockController := gomock.NewController(t)
@@ -34,9 +33,9 @@ func K8sMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.
 		}
 
 		c := &Client{
-			logger:  logger,
-			Context: "testContext",
-			spec:    &k8sSpec,
+			logger:   logger,
+			Context:  "testContext",
+			spec:     &k8sSpec,
 			contexts: []string{"testContext"},
 		}
 		c.clients = map[string]kubernetes.Interface{"testContext": builder(t, mockController)}
