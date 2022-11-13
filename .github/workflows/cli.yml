@@ -57,7 +57,7 @@ jobs:
         uses: golangci/golangci-lint-action@v3
         if: matrix.os == 'ubuntu-latest'
         with:
-          version: v1.49.0
+          version: v1.50.1
           working-directory: cli
       - name: Get dependencies
         run: go get -t -d ./...
