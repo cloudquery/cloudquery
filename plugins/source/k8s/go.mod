@@ -13,8 +13,6 @@ require (
 	k8s.io/client-go v0.25.4
 )
 
-replace  github.com/cloudquery/plugin-sdk => ../../../../plugin-sdk-split
-
 require (
 	cloud.google.com/go/compute v1.10.0 // indirect
 	github.com/Azure/go-autorest v14.2.0+incompatible // indirect
