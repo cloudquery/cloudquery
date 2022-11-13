@@ -11,14 +11,36 @@ import (
 func CoreResources() []*Resource {
 	resources := []*Resource{
 		{
+			SubService: "component_statuses",
+			Struct:     &corev1.ComponentStatus{},
+			ResourceFunc: v1.ComponentStatusesGetter.ComponentStatuses,
+			GlobalResource: true,
+		},
+		{
+			SubService: "config_maps",
+			Struct:     &corev1.ConfigMap{},
+			ResourceFunc: v1.ConfigMapsGetter.ConfigMaps,
+		},
+		{
 			SubService: "endpoints",
 			Struct:     &corev1.Endpoints{},
 			ResourceFunc: v1.EndpointsGetter.Endpoints,
 		},
 		{
+			SubService: "events",
+			Struct:     &corev1.Event{},
+			ResourceFunc: v1.EventsGetter.Events,
+		},
+		{
 			SubService: "limit_ranges",
 			Struct:     &corev1.LimitRange{},
 			ResourceFunc: v1.LimitRangesGetter.LimitRanges,
+		},
+		{
+			SubService: "namespaces",
+			Struct:     &corev1.Namespace{},
+			GlobalResource: true,
+			ResourceFunc: v1.NamespacesGetter.Namespaces,
 		},
 		{
 			SubService: "namespaces",
@@ -54,6 +76,17 @@ func CoreResources() []*Resource {
 			},
 		},
 		{
+			SubService: "pvs",
+			Struct:     &corev1.PersistentVolume{},
+			ResourceFunc: v1.PersistentVolumesGetter.PersistentVolumes,
+			GlobalResource: true,
+		},
+		{
+			SubService: "pvcs",
+			Struct:     &corev1.PersistentVolumeClaim{},
+			ResourceFunc: v1.PersistentVolumeClaimsGetter.PersistentVolumeClaims,
+		},
+		{
 			SubService: "pods",
 			Struct:     &corev1.Pod{},
 			ResourceFunc: v1.PodsGetter.Pods,
@@ -87,6 +120,14 @@ func CoreResources() []*Resource {
 			},
 		},
 		{
+			SubService: "replication_controllers",
+			Struct:     &corev1.ReplicationController{},
+			ResourceFunc: v1.ReplicationControllersGetter.ReplicationControllers,
+			// MockFieldsValue: map[string]string{
+			// 	"": 
+			// },
+		},
+		{
 			SubService: "resource_quotas",
 			Struct:     &corev1.ResourceQuota{},
 			ResourceFunc: v1.ResourceQuotasGetter.ResourceQuotas,
@@ -96,11 +137,6 @@ func CoreResources() []*Resource {
 			Struct:     &corev1.Secret{},
 			SkipFields: []string{"Data", "StringData"},
 			ResourceFunc: v1.SecretsGetter.Secrets,
-		},
-		{
-			SubService: "service_accounts",
-			Struct:     &corev1.ServiceAccount{},
-			ResourceFunc: v1.ServiceAccountsGetter.ServiceAccounts,
 		},
 		{
 			SubService: "services",
@@ -136,12 +172,18 @@ func CoreResources() []*Resource {
 				"LoadBalancerIP": `"8.8.8.8"`,
 			},
 		},
+		{
+			SubService: "service_accounts",
+			Struct:     &corev1.ServiceAccount{},
+			ResourceFunc: v1.ServiceAccountsGetter.ServiceAccounts,
+		},
 	}
 
 	for _, resource := range resources {
 		resource.Service = "core"
 		resource.ServiceFunc = kubernetes.Interface.CoreV1
 		resource.SkipMockTypeFields = []string{"IntOrString"}
+		resource.SkipMockFields = []string{"FieldsV1"}
 	}
 
 	return resources

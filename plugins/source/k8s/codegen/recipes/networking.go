@@ -1,17 +1,29 @@
 package recipes
 
 import (
-	networkingv1 "k8s.io/api/networking/v1"
+	resource "k8s.io/api/networking/v1"
 	"k8s.io/client-go/kubernetes"
+	resourceType "k8s.io/client-go/kubernetes/typed/networking/v1"
 	v1 "k8s.io/client-go/kubernetes/typed/networking/v1"
 )
 
 func NetworkingResources() []*Resource {
 	resources := []*Resource{
 		{
+			SubService: "ingresses",
+			Struct:     &resource.Ingress{},
+			ResourceFunc: resourceType.IngressesGetter.Ingresses,
+		},
+		{
 			SubService: "network_policies",
-			Struct:     &networkingv1.NetworkPolicy{},
+			Struct:     &resource.NetworkPolicy{},
 			ResourceFunc: v1.NetworkPoliciesGetter.NetworkPolicies,
+		},
+		{
+			SubService: "ingress_classes",
+			Struct:     &resource.IngressClass{},
+			ResourceFunc: v1.IngressClassesGetter.IngressClasses,
+			GlobalResource: true,
 		},
 	}
 

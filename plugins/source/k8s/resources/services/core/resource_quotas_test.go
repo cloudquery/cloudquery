@@ -20,7 +20,7 @@ import (
 func createResourceQuotas(t *testing.T, ctrl *gomock.Controller) kubernetes.Interface {
 	r := resource.ResourceQuota{}
 	if err := faker.FakeObject(&r,
-		faker.WithSkipFields(),
+		faker.WithSkipFields("FieldsV1"),
 		faker.WithSkipTypeFields("IntOrString"),
 		faker.WithFieldsValue(
 			map[string]interface{}{},

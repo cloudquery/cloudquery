@@ -17,8 +17,8 @@ import (
 	"k8s.io/client-go/kubernetes"
 )
 
-func createServiceAccounts(t *testing.T, ctrl *gomock.Controller) kubernetes.Interface {
-	r := resource.ServiceAccount{}
+func createEvents(t *testing.T, ctrl *gomock.Controller) kubernetes.Interface {
+	r := resource.Event{}
 	if err := faker.FakeObject(&r,
 		faker.WithSkipFields("FieldsV1"),
 		faker.WithSkipTypeFields("IntOrString"),
@@ -28,14 +28,14 @@ func createServiceAccounts(t *testing.T, ctrl *gomock.Controller) kubernetes.Int
 		t.Fatal(err)
 	}
 
-	resourceClient := resourcemock.NewMockServiceAccountInterface(ctrl)
+	resourceClient := resourcemock.NewMockEventInterface(ctrl)
 	resourceClient.EXPECT().List(gomock.Any(), metav1.ListOptions{}).Return(
-		&resource.ServiceAccountList{Items: []resource.ServiceAccount{r}}, nil,
+		&resource.EventList{Items: []resource.Event{r}}, nil,
 	)
 
 	serviceClient := resourcemock.NewMockCoreV1Interface(ctrl)
 
-	serviceClient.EXPECT().ServiceAccounts("").Return(resourceClient)
+	serviceClient.EXPECT().Events("").Return(resourceClient)
 
 	client := mocks.NewMockInterface(ctrl)
 	client.EXPECT().CoreV1().Return(serviceClient)
@@ -43,6 +43,6 @@ func createServiceAccounts(t *testing.T, ctrl *gomock.Controller) kubernetes.Int
 	return client
 }
 
-func TestServiceAccounts(t *testing.T) {
-	client.K8sMockTestHelper(t, ServiceAccounts(), createServiceAccounts)
+func TestEvents(t *testing.T) {
+	client.K8sMockTestHelper(t, Events(), createEvents)
 }

@@ -17,10 +17,10 @@ import (
 	"k8s.io/client-go/kubernetes"
 )
 
-func createServiceAccounts(t *testing.T, ctrl *gomock.Controller) kubernetes.Interface {
-	r := resource.ServiceAccount{}
+func createPodTemplates(t *testing.T, ctrl *gomock.Controller) kubernetes.Interface {
+	r := resource.PodTemplate{}
 	if err := faker.FakeObject(&r,
-		faker.WithSkipFields("FieldsV1"),
+		faker.WithSkipFields(),
 		faker.WithSkipTypeFields("IntOrString"),
 		faker.WithFieldsValue(
 			map[string]interface{}{},
@@ -28,14 +28,14 @@ func createServiceAccounts(t *testing.T, ctrl *gomock.Controller) kubernetes.Int
 		t.Fatal(err)
 	}
 
-	resourceClient := resourcemock.NewMockServiceAccountInterface(ctrl)
+	resourceClient := resourcemock.NewMockPodTemplateInterface(ctrl)
 	resourceClient.EXPECT().List(gomock.Any(), metav1.ListOptions{}).Return(
-		&resource.ServiceAccountList{Items: []resource.ServiceAccount{r}}, nil,
+		&resource.PodTemplateList{Items: []resource.PodTemplate{r}}, nil,
 	)
 
 	serviceClient := resourcemock.NewMockCoreV1Interface(ctrl)
 
-	serviceClient.EXPECT().ServiceAccounts("").Return(resourceClient)
+	serviceClient.EXPECT().PodTemplates("").Return(resourceClient)
 
 	client := mocks.NewMockInterface(ctrl)
 	client.EXPECT().CoreV1().Return(serviceClient)
@@ -43,6 +43,6 @@ func createServiceAccounts(t *testing.T, ctrl *gomock.Controller) kubernetes.Int
 	return client
 }
 
-func TestServiceAccounts(t *testing.T) {
-	client.K8sMockTestHelper(t, ServiceAccounts(), createServiceAccounts)
+func TestPodTemplates(t *testing.T) {
+	client.K8sMockTestHelper(t, PodTemplates(), createPodTemplates)
 }

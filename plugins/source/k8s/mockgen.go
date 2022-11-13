@@ -4,7 +4,9 @@ package main
 
 //go:generate mockgen --package=mocks --destination=mocks/discovery/client.go "k8s.io/client-go/discovery" DiscoveryInterface
 
-//go:generate mockgen --package=mocks --destination=mocks/admissionregistration/v1/client.go "k8s.io/client-go/kubernetes/typed/admissionregistration/v1" AdmissionregistrationV1Interface
+//go:generate mockgen --package=v1 --destination=mocks/admissionregistration/v1/client.go "k8s.io/client-go/kubernetes/typed/admissionregistration/v1" AdmissionregistrationV1Interface
+//go:generate mockgen --package=v1 --destination=mocks/admissionregistration/v1/mutating_webhook_configuration.go "k8s.io/client-go/kubernetes/typed/admissionregistration/v1" MutatingWebhookConfigurationsGetter,MutatingWebhookConfigurationInterface
+//go:generate mockgen --package=v1 --destination=mocks/admissionregistration/v1/validating_webhook_configuration.go "k8s.io/client-go/kubernetes/typed/admissionregistration/v1" ValidatingWebhookConfigurationsGetter,ValidatingWebhookConfigurationInterface
 
 //go:generate mockgen --package=mocks --destination=mocks/admissionregistration/v1beta1/client.go "k8s.io/client-go/kubernetes/typed/admissionregistration/v1beta1" AdmissionregistrationV1beta1Interface
 
@@ -48,7 +50,8 @@ package main
 
 //go:generate mockgen --package=mocks --destination=mocks/certificates/v1beta1/client.go "k8s.io/client-go/kubernetes/typed/certificates/v1beta1" CertificatesV1beta1Interface
 
-//go:generate mockgen --package=mocks --destination=mocks/coordination/v1/client.go "k8s.io/client-go/kubernetes/typed/coordination/v1" CoordinationV1Interface
+//go:generate mockgen --package=v1 --destination=mocks/coordination/v1/client.go "k8s.io/client-go/kubernetes/typed/coordination/v1" CoordinationV1Interface
+//go:generate mockgen --package=v1 --destination=mocks/coordination/v1/lease.go "k8s.io/client-go/kubernetes/typed/coordination/v1" LeasesGetter,LeaseInterface
 
 //go:generate mockgen --package=mocks --destination=mocks/core/v1/client.go "k8s.io/client-go/kubernetes/typed/core/v1" CoreV1Interface
 //go:generate mockgen --package=mocks --destination=mocks/core/v1/componentstatus.go "k8s.io/client-go/kubernetes/typed/core/v1" ComponentStatusesGetter,ComponentStatusInterface
@@ -96,6 +99,7 @@ package main
 //go:generate mockgen --package=v1beta1 --destination=mocks/networking/v1beta1/client.go "k8s.io/client-go/kubernetes/typed/networking/v1beta1" NetworkingV1beta1Interface
 
 //go:generate mockgen --package=v1 --destination=mocks/node/v1/client.go "k8s.io/client-go/kubernetes/typed/node/v1" NodeV1Interface
+//go:generate mockgen --package=v1 --destination=mocks/node/v1/runtime.go "k8s.io/client-go/kubernetes/typed/node/v1" RuntimeClassesGetter,RuntimeClassInterface
 
 //go:generate mockgen --package=v1alpha1 --destination=mocks/node/v1alpha1/client.go "k8s.io/client-go/kubernetes/typed/node/v1alpha1" NodeV1alpha1Interface
 
