@@ -241,6 +241,7 @@ func tables() []*schema.Table {
 		fsx.Backups(),
 		fsx.DataRepositoryAssociations(),
 		fsx.DataRepositoryTasks(),
+		fsx.FileCaches(),
 		fsx.FileSystems(),
 		fsx.Snapshots(),
 		fsx.StorageVirtualMachines(),
