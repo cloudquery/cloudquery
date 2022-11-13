@@ -81,8 +81,8 @@ github.com/aws/aws-sdk-go-v2/service/ecr v1.17.21 h1:YfWzziVOyeSfl2I5Qq0rL7PVQmt
 github.com/aws/aws-sdk-go-v2/service/ecr v1.17.21/go.mod h1:kEVGiy2tACP0cegVqx4MrjsgQMSgrtgRq1fSa+Ix6F0=
 github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.13.19 h1:AwWP9a5n9a6kcgpTOfZ2/AeHKdq1Cb+HwgWQ1ADqiZM=
 github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.13.19/go.mod h1:j3mVo8gEwXjgzf9PfORBnYUUQnnjkd4OY6y5JmubV94=
-github.com/aws/aws-sdk-go-v2/service/ecs v1.18.26 h1:EHJAYkUnlFJ/KwuFMvUs/bPbb0DaqAI+gTfXxffTPZ0=
-github.com/aws/aws-sdk-go-v2/service/ecs v1.18.26/go.mod h1:NpR78BP2STxvF/R1GXLDM4gAEfjz68W/h0nC5b6Jk3s=
+github.com/aws/aws-sdk-go-v2/service/ecs v1.19.0 h1:1YBaW1OVJfh5HScRrFq+pSoTP03/SzO9Xfyf+iTVKJ4=
+github.com/aws/aws-sdk-go-v2/service/ecs v1.19.0/go.mod h1:NpR78BP2STxvF/R1GXLDM4gAEfjz68W/h0nC5b6Jk3s=
 github.com/aws/aws-sdk-go-v2/service/efs v1.17.19 h1:e9oyZ/TUV8IekYJJ71A5f2G7zshaWiozrweYhva2gD0=
 github.com/aws/aws-sdk-go-v2/service/efs v1.17.19/go.mod h1:DdO6hLx0XiYuj2Tn8VsR8et3BW1aXiv74GfsjHvhN9U=
 github.com/aws/aws-sdk-go-v2/service/eks v1.22.4 h1:S/1Efo9TlNPwKeAKmH8nQTteRerftR65uddmI6GrvBE=
@@ -95,8 +95,8 @@ github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.14.21 h1:kS7XDxGf70
 github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.14.21/go.mod h1:gHgx63dm28U/o5NotzfFWhxUASzcZuPgO8GDpsI1Aqw=
 github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.18.23 h1:UC5k0LA23kX40rpmPP4tHqd8kmCs/JCG2D1PjSl0ipI=
 github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.18.23/go.mod h1:uIsRP+M5F/Ch+21isqTg6u16FXl2yzupCX0Dli4eQEM=
-github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.16.12 h1:jQugOx7b1FnjZL4HzNMroh7ulj0oN5Pp8akS8UvRh1A=
-github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.16.12/go.mod h1:UY0dc/ngkmYkBegXTwQ3kILLtItU8UJuueHHD91vn88=
+github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.17.0 h1:9Abd0yyOotKqI0aSSDetMuNKs8NlMXgnOCejdUBRHOI=
+github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.17.0/go.mod h1:UY0dc/ngkmYkBegXTwQ3kILLtItU8UJuueHHD91vn88=
 github.com/aws/aws-sdk-go-v2/service/emr v1.20.14 h1:T9h9NiiMNV7igqwoDqS8FlTCsuZXUeEg9+HVs4VBx68=
 github.com/aws/aws-sdk-go-v2/service/emr v1.20.14/go.mod h1:uz/j390yhhyjOoxOKyj1VcMh0XXxgwyUU/r/vcPuOzo=
 github.com/aws/aws-sdk-go-v2/service/eventbridge v1.16.18 h1:w1gPDC0BpINH6eZ5QbWBk94B4LavzGt2sq76ej2GlzM=
@@ -131,8 +131,8 @@ github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.19 h1:GE25AWCdN
 github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.19/go.mod h1:02CP6iuYP+IVnBX5HULVdSAku/85eHB2Y9EsFhrkEwU=
 github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.13.19 h1:piDBAaWkaxkkVV3xJJbTehXCZRXYs49kvpi/LG6LR2o=
 github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.13.19/go.mod h1:BmQWRVkLTmyNzYPFAZgon53qKLWBNSvonugD1MrSWUs=
-github.com/aws/aws-sdk-go-v2/service/iot v1.30.0 h1:0kuklEMb+zxeu47hO9+SmHOowwecMhIoeJji+76TnXc=
-github.com/aws/aws-sdk-go-v2/service/iot v1.30.0/go.mod h1:qDeNiCLWGv+ndS6YhqROH3uw+S2MU3xuutmtxVTRIpk=
+github.com/aws/aws-sdk-go-v2/service/iot v1.31.0 h1:AUhMuv/DrlW3BXGYsALfHrHTvBuXYwUBrGdK1EsA0cQ=
+github.com/aws/aws-sdk-go-v2/service/iot v1.31.0/go.mod h1:qDeNiCLWGv+ndS6YhqROH3uw+S2MU3xuutmtxVTRIpk=
 github.com/aws/aws-sdk-go-v2/service/kinesis v1.15.22 h1:xkxEl+SSR6VgPmI4ozt4asGckR7lcV27QXMRiRAv4b0=
 github.com/aws/aws-sdk-go-v2/service/kinesis v1.15.22/go.mod h1:ucTnH7zv9Q8tIpVDU4rqA12YvWewxeluLWjynCpHDKM=
 github.com/aws/aws-sdk-go-v2/service/kms v1.18.16 h1:KHzeOb0G5ZvaIOewRSs3iyHR5MeAKkIZ75tUJCO9ijg=
