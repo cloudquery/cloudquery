@@ -131,8 +131,8 @@ github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.19 h1:GE25AWCdN
 github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.19/go.mod h1:02CP6iuYP+IVnBX5HULVdSAku/85eHB2Y9EsFhrkEwU=
 github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.13.19 h1:piDBAaWkaxkkVV3xJJbTehXCZRXYs49kvpi/LG6LR2o=
 github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.13.19/go.mod h1:BmQWRVkLTmyNzYPFAZgon53qKLWBNSvonugD1MrSWUs=
-github.com/aws/aws-sdk-go-v2/service/iot v1.30.0 h1:0kuklEMb+zxeu47hO9+SmHOowwecMhIoeJji+76TnXc=
-github.com/aws/aws-sdk-go-v2/service/iot v1.30.0/go.mod h1:qDeNiCLWGv+ndS6YhqROH3uw+S2MU3xuutmtxVTRIpk=
+github.com/aws/aws-sdk-go-v2/service/iot v1.31.0 h1:AUhMuv/DrlW3BXGYsALfHrHTvBuXYwUBrGdK1EsA0cQ=
+github.com/aws/aws-sdk-go-v2/service/iot v1.31.0/go.mod h1:qDeNiCLWGv+ndS6YhqROH3uw+S2MU3xuutmtxVTRIpk=
 github.com/aws/aws-sdk-go-v2/service/kinesis v1.15.22 h1:xkxEl+SSR6VgPmI4ozt4asGckR7lcV27QXMRiRAv4b0=
 github.com/aws/aws-sdk-go-v2/service/kinesis v1.15.22/go.mod h1:ucTnH7zv9Q8tIpVDU4rqA12YvWewxeluLWjynCpHDKM=
 github.com/aws/aws-sdk-go-v2/service/kms v1.18.16 h1:KHzeOb0G5ZvaIOewRSs3iyHR5MeAKkIZ75tUJCO9ijg=
