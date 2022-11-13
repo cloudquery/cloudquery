@@ -11,7 +11,7 @@ kind: source
 spec:
   name: aws
   path: cloudquery/aws
-  version: "v4.15.0" # latest version of aws plugin
+  version: "v4.16.0" # latest version of aws plugin
   tables: ["*"]
   destinations: ["postgresql"]
 ```
@@ -33,7 +33,7 @@ kind: source
 spec:
   name: aws
   path: cloudquery/aws
-  version: "v4.15.0" # latest version of aws plugin
+  version: "v4.16.0" # latest version of aws plugin
   tables: ["*"]
   destinations: ["postgresql"]
 ---

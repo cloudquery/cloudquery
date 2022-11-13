@@ -35,15 +35,15 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.70.0
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.17.21
 	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.13.19
-	github.com/aws/aws-sdk-go-v2/service/ecs v1.18.26
+	github.com/aws/aws-sdk-go-v2/service/ecs v1.19.0
 	github.com/aws/aws-sdk-go-v2/service/efs v1.17.19
 	github.com/aws/aws-sdk-go-v2/service/eks v1.22.4
 	github.com/aws/aws-sdk-go-v2/service/elasticache v1.23.1
 	github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk v1.14.20
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.14.21
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.18.23
-	github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.16.12
-	github.com/aws/aws-sdk-go-v2/service/emr v1.20.13
+	github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.17.0
+	github.com/aws/aws-sdk-go-v2/service/emr v1.20.14
 	github.com/aws/aws-sdk-go-v2/service/eventbridge v1.16.18
 	github.com/aws/aws-sdk-go-v2/service/firehose v1.14.22
 	github.com/aws/aws-sdk-go-v2/service/frauddetector v1.20.12
@@ -54,7 +54,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/identitystore v1.15.7
 	github.com/aws/aws-sdk-go-v2/service/inspector v1.12.19
 	github.com/aws/aws-sdk-go-v2/service/inspector2 v1.8.3
-	github.com/aws/aws-sdk-go-v2/service/iot v1.30.0
+	github.com/aws/aws-sdk-go-v2/service/iot v1.31.0
 	github.com/aws/aws-sdk-go-v2/service/kinesis v1.15.22
 	github.com/aws/aws-sdk-go-v2/service/kms v1.18.16
 	github.com/aws/aws-sdk-go-v2/service/lambda v1.24.10
@@ -64,6 +64,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/neptune v1.18.1
 	github.com/aws/aws-sdk-go-v2/service/organizations v1.16.15
 	github.com/aws/aws-sdk-go-v2/service/qldb v1.14.20
+	github.com/aws/aws-sdk-go-v2/service/quicksight v1.26.2
 	github.com/aws/aws-sdk-go-v2/service/ram v1.16.24
 	github.com/aws/aws-sdk-go-v2/service/rds v1.28.1
 	github.com/aws/aws-sdk-go-v2/service/redshift v1.26.14
