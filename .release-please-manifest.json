@@ -25,7 +25,7 @@
   "plugins/source/test+FILLER": "0.0.0",
   "plugins/destination/postgresql": "1.7.8",
   "plugins/destination/postgresql+FILLER": "0.0.0",
-  "plugins/destination/test": "1.2.25",
+  "plugins/destination/test": "1.2.26",
   "plugins/destination/test+FILLER": "0.0.0",
   "plugins/destination/csv": "1.1.7",
   "plugins/destination/csv+FILLER": "0.0.0",
