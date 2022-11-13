@@ -43,7 +43,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.14.21
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.18.23
 	github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.16.12
-	github.com/aws/aws-sdk-go-v2/service/emr v1.20.13
+	github.com/aws/aws-sdk-go-v2/service/emr v1.20.14
 	github.com/aws/aws-sdk-go-v2/service/eventbridge v1.16.18
 	github.com/aws/aws-sdk-go-v2/service/firehose v1.14.22
 	github.com/aws/aws-sdk-go-v2/service/frauddetector v1.20.12
@@ -64,6 +64,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/neptune v1.18.1
 	github.com/aws/aws-sdk-go-v2/service/organizations v1.16.15
 	github.com/aws/aws-sdk-go-v2/service/qldb v1.14.20
+	github.com/aws/aws-sdk-go-v2/service/quicksight v1.26.2
 	github.com/aws/aws-sdk-go-v2/service/ram v1.16.24
 	github.com/aws/aws-sdk-go-v2/service/rds v1.28.1
 	github.com/aws/aws-sdk-go-v2/service/redshift v1.26.14
