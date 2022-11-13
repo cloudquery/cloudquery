@@ -29,9 +29,10 @@ func AutoscalingResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "groups",
-			Struct:     &models.AutoScalingGroupWrapper{},
-			SkipFields: []string{"AutoScalingGroupARN"},
+			SubService:  "groups",
+			Struct:      &models.AutoScalingGroupWrapper{},
+			Description: "https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_AutoScalingGroup.html",
+			SkipFields:  []string{"AutoScalingGroupARN"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

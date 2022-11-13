@@ -6,18 +6,18 @@ select
   'Ensure a log metric filter and alarm exist for VPC changes (Scored)' as title,
   account_id,
   cloud_watch_logs_log_group_arn as resource_id,
-  case when
-      pattern = '{ ($.eventName = CreateVpc) '
-      || '|| ($.eventName = DeleteVpc) '
-      || '|| ($.eventName = ModifyVpcAttribute) '
-      || '|| ($.eventName = AcceptVpcPeeringConnection) '
-      || '|| ($.eventName = CreateVpcPeeringConnection) '
-      || '|| ($.eventName = DeleteVpcPeeringConnection) '
-      || '|| ($.eventName = RejectVpcPeeringConnection) '
-      || '|| ($.eventName = AttachClassicLinkVpc) '
-      || '|| ($.eventName = DetachClassicLinkVpc) '
-      || '|| ($.eventName = DisableVpcClassicLink) '
-      || '|| ($.eventName = EnableVpcClassicLink) }'
+  case when pattern NOT LIKE '%NOT%'
+           AND pattern LIKE '%($.eventName = CreateVpc)%'
+           AND pattern LIKE '%($.eventName = DeleteVpc)%'
+           AND pattern LIKE '%($.eventName = ModifyVpcAttribute)%'
+           AND pattern LIKE '%($.eventName = AcceptVpcPeeringConnection)%'
+           AND pattern LIKE '%($.eventName = CreateVpcPeeringConnection)%'
+           AND pattern LIKE '%($.eventName = DeleteVpcPeeringConnection)%'
+           AND pattern LIKE '%($.eventName = RejectVpcPeeringConnection)%'
+           AND pattern LIKE '%($.eventName = AttachClassicLinkVpc)%'
+           AND pattern LIKE '%($.eventName = DetachClassicLinkVpc)%'
+           AND pattern LIKE '%($.eventName = DisableVpcClassicLink)%'
+           AND pattern LIKE '%($.eventName = EnableVpcClassicLink)%'
       then 'pass'
       else 'fail'
   end as status

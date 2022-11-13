@@ -1,5 +1,27 @@
 # Changelog
 
+## [3.0.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-heroku-v3.0.3...plugins-source-heroku-v3.0.4) (2022-11-11)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for heroku to v1.5.0 ([#4393](https://github.com/cloudquery/cloudquery/issues/4393)) ([5404063](https://github.com/cloudquery/cloudquery/commit/5404063e6db4c8c491fd7022d579168451c3a424))
+
+## [3.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-heroku-v3.0.2...plugins-source-heroku-v3.0.3) (2022-11-10)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for heroku to v1.4.0 ([#4234](https://github.com/cloudquery/cloudquery/issues/4234)) ([8fd049c](https://github.com/cloudquery/cloudquery/commit/8fd049c49e2d2a32f2326753947a58eba3b981eb))
+* **deps:** Update plugin-sdk for heroku to v1.4.1 ([#4297](https://github.com/cloudquery/cloudquery/issues/4297)) ([7217b21](https://github.com/cloudquery/cloudquery/commit/7217b215b9f147f295675cf85f847b5fe7550713))
+
+## [3.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-heroku-v3.0.1...plugins-source-heroku-v3.0.2) (2022-11-10)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for heroku to v1.3.2 ([#4201](https://github.com/cloudquery/cloudquery/issues/4201)) ([03c50fd](https://github.com/cloudquery/cloudquery/commit/03c50fda1402baeef89ee46b6bea0e547aea2447))
+
 ## [3.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-heroku-v3.0.0...plugins-source-heroku-v3.0.1) (2022-11-10)
 
 

@@ -55,8 +55,8 @@ github.com/avast/retry-go/v4 v4.3.0 h1:cqI48aXx0BExKoM7XPklDpoHAg7/srPPLAfWG5z62
 github.com/bradleyjkemp/cupaloy/v2 v2.8.0 h1:any4BmKE+jGIaMpnU8YgH/I2LPiLBufr6oMMlVBbn9M=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
-github.com/cloudquery/plugin-sdk v1.3.1 h1:/gSyYvS70zQd5A7/0OY42jgYGZQbILAhOK41H5WSmOk=
-github.com/cloudquery/plugin-sdk v1.3.1/go.mod h1:VbqV2BE0wbYbArSUNxAuh6jH1FlrHyJp0f/5ERuBcew=
+github.com/cloudquery/plugin-sdk v1.5.0 h1:cLRcwEPau4FENv6GVl37p+QTgt/FGI5EFW6F+OxZUIo=
+github.com/cloudquery/plugin-sdk v1.5.0/go.mod h1:VbqV2BE0wbYbArSUNxAuh6jH1FlrHyJp0f/5ERuBcew=
 github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGXZJjfX53e64911xZQV5JYwmTeXPW+k8Sc=
 github.com/coreos/go-systemd v0.0.0-20190321100706-95778dfbb74e/go.mod h1:F5haX7vjVVG0kc13fIWeqUViNPyEJxv/OmvnBo0Yme4=
 github.com/coreos/go-systemd/v22 v22.3.3-0.20220203105225-a9a7ef127534/go.mod h1:Y58oyj3AT4RCenI/lSvhwexgC+NSVTIJ3seZv2GcEnc=
