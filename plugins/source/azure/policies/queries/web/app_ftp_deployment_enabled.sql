@@ -3,7 +3,7 @@ SELECT :'execution_time'                                 AS execution_time,
        :'framework'                                      AS framework,
        :'check_id'                                       AS check_id,
        'Ensure FTP deployments are disabled (Automated)' AS title,
-       subscription_id                                   AS subscription_id,
+       a.subscription_id                                 AS subscription_id,
        id                                                AS resource_id,
        CASE
            WHEN p.user_name NOT LIKE concat('%', a."name", '%')
@@ -11,5 +11,5 @@ SELECT :'execution_time'                                 AS execution_time,
            ELSE 'pass'
            END                                           AS status
 FROM azure_web_apps a
-         LEFT JOIN azure_web_app_publishing_profiles p ON
-    a.cq_id = p.app_cq_id
+         LEFT JOIN azure_web_publishing_profiles p ON
+    a.id = p.web_app_id

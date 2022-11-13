@@ -1,6 +1,6 @@
 # Table: heroku_collaborators
 
-https://devcenter.heroku.com/articles/platform-api-reference#collaborator-attributes
+https://devcenter.heroku.com/articles/platform-api-reference#collaborator
 
 The primary key for this table is **id**.
 

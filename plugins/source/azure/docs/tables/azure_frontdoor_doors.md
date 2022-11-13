@@ -1,6 +1,6 @@
 # Table: azure_frontdoor_doors
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/frontdoor/mgmt/2020-11-01/frontdoor#FrontDoor
 
 The primary key for this table is **id**.
 

@@ -1,6 +1,6 @@
 # Table: azure_search_services
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/search/mgmt/2020-08-01/search#Service
 
 The primary key for this table is **id**.
 

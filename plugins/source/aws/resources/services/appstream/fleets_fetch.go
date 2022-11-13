@@ -12,6 +12,7 @@ import (
 
 func fetchAppstreamFleets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var input appstream.DescribeFleetsInput
+
 	c := meta.(*client.Client)
 	svc := c.Services().Appstream
 	for {

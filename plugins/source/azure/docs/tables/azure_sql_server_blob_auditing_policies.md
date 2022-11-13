@@ -1,6 +1,6 @@
 # Table: azure_sql_server_blob_auditing_policies
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql#ServerBlobAuditingPolicy
 
 The primary key for this table is **id**.
 

@@ -13,9 +13,10 @@ import (
 
 func Resources() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_monitor_resources",
-		Resolver:  fetchMonitorResources,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:        "azure_monitor_resources",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-10-01/resources#GenericResourceExpanded`,
+		Resolver:    fetchMonitorResources,
+		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "id",

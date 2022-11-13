@@ -11,9 +11,10 @@ import (
 
 func ExpressRouteCircuits() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_network_express_route_circuits",
-		Resolver:  fetchNetworkExpressRouteCircuits,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:        "azure_network_express_route_circuits",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network#ExpressRouteCircuit`,
+		Resolver:    fetchNetworkExpressRouteCircuits,
+		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

@@ -1,6 +1,6 @@
 # Table: aws_cloudtrail_trails
 
-
+https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_Trail.html
 
 The primary key for this table is **arn**.
 

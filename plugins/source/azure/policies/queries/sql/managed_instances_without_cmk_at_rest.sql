@@ -1,7 +1,7 @@
 WITH protected_instances AS (SELECT s.id AS instance_id
                              FROM azure_sql_managed_instances s
                                       LEFT JOIN azure_sql_managed_instance_encryption_protectors ep
-                                                ON s.cq_id = ep.managed_instance_cq_id
+                                                ON s.id = ep.sql_managed_instance_id
                              WHERE ep.server_key_type = 'AzureKeyVault'
                                AND ep.uri IS NOT NULL)
 insert into azure_policy_results

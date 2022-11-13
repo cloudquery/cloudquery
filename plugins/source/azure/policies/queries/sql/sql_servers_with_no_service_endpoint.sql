@@ -1,11 +1,14 @@
-WITH secured_servers AS (SELECT s.cq_id
+WITH subs AS (
+    SELECT subscription_id, jsonb_array_elements(subnets) AS subnet, provisioning_state
+    FROM azure_network_virtual_networks
+), secured_servers AS (SELECT s._cq_id
                          FROM azure_sql_servers s
-                                  LEFT JOIN azure_sql_server_virtual_network_rules r
-                                            ON s.cq_id = r.server_cq_id
-                                  LEFT JOIN azure_network_virtual_network_subnets sb
-                                            ON r.subnet_id = sb.id
-                         WHERE r.subnet_id IS NOT NULL
-                           AND sb.provisioning_state = 'Succeeded')
+                                  LEFT JOIN azure_sql_virtual_network_rules r
+                                            ON s.id = r.sql_server_id
+                                  LEFT JOIN subs
+                                            ON r.virtual_network_subnet_id = subs.subnet->>'id'
+                         WHERE r.virtual_network_subnet_id IS NOT NULL
+                           AND subs.provisioning_state = 'Succeeded')
 insert into azure_policy_results
 SELECT
   :'execution_time',
@@ -15,8 +18,8 @@ SELECT
   subscription_id,
   id,
   case
-    when ss.cq_id IS NULL
+    when ss._cq_id IS NULL
       then 'fail' else 'pass'
   end
 FROM azure_sql_servers s
-         LEFT JOIN secured_servers ss ON s.cq_id = ss.cq_id
+     LEFT JOIN secured_servers ss ON s._cq_id = ss._cq_id

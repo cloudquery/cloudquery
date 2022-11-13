@@ -1,6 +1,6 @@
 # Table: azure_resources_groups
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-10-01/resources#Group
 
 The primary key for this table is **id**.
 

@@ -13,7 +13,7 @@ import (
 func Keys() *schema.Table {
 	return &schema.Table{
 		Name:        "heroku_keys",
-		Description: `https://devcenter.heroku.com/articles/platform-api-reference#key-attributes`,
+		Description: `https://devcenter.heroku.com/articles/platform-api-reference#key`,
 		Resolver:    fetchKeys,
 		Columns: []schema.Column{
 			{

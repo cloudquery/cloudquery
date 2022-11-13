@@ -1,6 +1,6 @@
 # Table: heroku_builds
 
-https://devcenter.heroku.com/articles/platform-api-reference#build-attributes
+https://devcenter.heroku.com/articles/platform-api-reference#build
 
 The primary key for this table is **id**.
 

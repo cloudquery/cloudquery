@@ -12,6 +12,6 @@ SELECT
   end
 FROM azure_sql_servers s
     LEFT JOIN azure_sql_databases d ON
-        s.cq_id = d.server_cq_id
-    LEFT JOIN azure_sql_database_db_threat_detection_policies p ON
-        d.cq_id = p.database_cq_id
+        s.id = d.sql_server_id
+    LEFT JOIN azure_sql_database_threat_detection_policies p ON
+        d.id = p.sql_database_id

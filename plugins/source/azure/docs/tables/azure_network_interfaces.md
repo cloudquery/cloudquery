@@ -1,6 +1,6 @@
 # Table: azure_network_interfaces
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network#Interface
 
 The primary key for this table is **id**.
 
