@@ -1,5 +1,6 @@
 variables:
   component: source/gcp
+  binary: gcp
 
 project_name: plugins/source/gcp
 

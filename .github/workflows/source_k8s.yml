@@ -110,16 +110,6 @@ jobs:
         run: goreleaser release --snapshot --rm-dist --skip-validate --skip-publish --skip-sign -f ./plugins/source/k8s/.goreleaser.yaml
         env:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
-      - name: Validate created ZIP files
-        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        run: |
-          unzip -o k8s_linux_arm64.zip
-          unzip -o k8s_darwin_arm64.zip
-          unzip -o k8s_darwin_amd64.zip
-          unzip -o k8s_windows_amd64.zip
-          unzip -o k8s_linux_amd64.zip
-          plugins/source/k8s --version
-        working-directory: dist
   test-policies:
     timeout-minutes: 30
     needs: [resolve-runner]
