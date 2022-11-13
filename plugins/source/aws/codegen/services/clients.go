@@ -61,6 +61,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/neptune"
 	"github.com/aws/aws-sdk-go-v2/service/organizations"
 	"github.com/aws/aws-sdk-go-v2/service/qldb"
+	"github.com/aws/aws-sdk-go-v2/service/quicksight"
 	"github.com/aws/aws-sdk-go-v2/service/ram"
 	"github.com/aws/aws-sdk-go-v2/service/rds"
 	"github.com/aws/aws-sdk-go-v2/service/redshift"
@@ -149,6 +150,7 @@ var clients = []interface{}{
 	&neptune.Client{},
 	&organizations.Client{},
 	&qldb.Client{},
+	&quicksight.Client{},
 	&ram.Client{},
 	&rds.Client{},
 	&redshift.Client{},
