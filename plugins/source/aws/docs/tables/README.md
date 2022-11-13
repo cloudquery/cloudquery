@@ -348,6 +348,8 @@
 | [aws_ram_resource_share_permissions](aws_ram_resource_share_permissions.md) |
 | [aws_ram_resource_types](aws_ram_resource_types.md) |
 | [aws_rds_certificates](aws_rds_certificates.md) |
+| [aws_rds_engine_versions](aws_rds_engine_versions.md) |
+| ↳ [aws_rds_cluster_parameters](aws_rds_cluster_parameters.md) |
 | [aws_rds_cluster_parameter_groups](aws_rds_cluster_parameter_groups.md) |
 | ↳ [aws_rds_cluster_parameter_group_parameters](aws_rds_cluster_parameter_group_parameters.md) |
 | [aws_rds_cluster_snapshots](aws_rds_cluster_snapshots.md) |

@@ -1,6 +1,6 @@
 # Table: aws_dms_replication_instances
 
-
+https://docs.aws.amazon.com/dms/latest/APIReference/API_ReplicationInstance.html
 
 The primary key for this table is **arn**.
 

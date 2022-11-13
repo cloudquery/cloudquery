@@ -11,9 +11,10 @@ import (
 
 func Namespaces() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_servicebus_namespaces",
-		Resolver:  fetchServicebusNamespaces,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:        "azure_servicebus_namespaces",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/servicebus/mgmt/2021-06-01-preview/servicebus#SBNamespace`,
+		Resolver:    fetchServicebusNamespaces,
+		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

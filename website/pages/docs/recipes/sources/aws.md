@@ -7,7 +7,7 @@ kind: source
 spec:
   name: aws
   path: cloudquery/aws
-  version: "v4.12.0" # latest version of aws plugin
+  version: "v4.15.0" # latest version of aws plugin
   tables: ["*"]
 
   # Comment out any of the following tables if you want to sync them
@@ -25,6 +25,7 @@ spec:
     - aws_neptune_db_parameter_groups
     - aws_rds_cluster_parameter_groups
     - aws_rds_db_parameter_groups
+    - aws_rds_engine_versions
     - aws_servicequotas_services
   destinations: ["<destination>"]
 ```

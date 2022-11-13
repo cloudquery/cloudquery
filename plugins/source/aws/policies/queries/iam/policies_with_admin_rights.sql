@@ -1,27 +1,29 @@
 insert into aws_policy_results
 
-with policy_statements as (
+with iam_policies as (
     select
-        aws_iam_policies.cq_id as cq_id,
+        id,
+        (v->>'Document')::jsonb AS document
+    from aws_iam_policies, jsonb_array_elements(aws_iam_policies.policy_version_list) AS v
+    where aws_iam_policies.default_version_id = v->>'VersionId' and arn not like 'arn:aws:iam::aws:policy%'
+),
+policy_statements as (
+    select
+        id,
         JSONB_ARRAY_ELEMENTS(
-            case JSONB_TYPEOF(aws_iam_policy_versions.document -> 'Statement')
+            case JSONB_TYPEOF(document -> 'Statement')
                 when
                     'string' then JSONB_BUILD_ARRAY(
-                        aws_iam_policy_versions.document ->> 'Statement'
+                        document ->> 'Statement'
                     )
-                when 'array' then aws_iam_policy_versions.document -> 'Statement' end
+                when 'array' then document -> 'Statement' end
         ) as statement
     from
-        aws_iam_policies
-    left join aws_iam_policy_versions
-        on
-            aws_iam_policies.cq_id = aws_iam_policy_versions.policy_cq_id and aws_iam_policies.default_version_id = aws_iam_policy_versions.version_id
-    where aws_iam_policies.arn not like 'arn:aws:iam::aws:policy%'
+        iam_policies
 ),
-
 allow_all_statements as (
     select
-        cq_id,
+        id,
         COUNT(statement) as statements_count
     from policy_statements
     where (statement ->> 'Action' = '*'
@@ -29,7 +31,7 @@ allow_all_statements as (
         and statement ->> 'Effect' = 'Allow'
         and (statement ->> 'Resource' = '*'
             or statement ->> 'Resource' like '%"*"%')
-    group by cq_id
+    group by id
 )
 
 select distinct
@@ -42,4 +44,4 @@ select distinct
     CASE WHEN statements_count > 0 THEN 'fail' ELSE 'pass' END AS status
 from aws_iam_policies
 left join
-    allow_all_statements on aws_iam_policies.cq_id = allow_all_statements.cq_id
+    allow_all_statements on aws_iam_policies.id = allow_all_statements.id

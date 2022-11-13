@@ -12,6 +12,7 @@ import (
 
 func fetchAppstreamDirectoryConfigs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var input appstream.DescribeDirectoryConfigsInput
+
 	c := meta.(*client.Client)
 	svc := c.Services().Appstream
 	for {

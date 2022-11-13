@@ -11,9 +11,10 @@ import (
 
 func ExpressRoutePorts() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_network_express_route_ports",
-		Resolver:  fetchNetworkExpressRoutePorts,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:        "azure_network_express_route_ports",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network#ExpressRoutePort`,
+		Resolver:    fetchNetworkExpressRoutePorts,
+		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

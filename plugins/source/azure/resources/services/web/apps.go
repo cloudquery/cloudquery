@@ -11,9 +11,10 @@ import (
 
 func Apps() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_web_apps",
-		Resolver:  fetchWebApps,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:        "azure_web_apps",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/web/mgmt/2020-12-01/web#Site`,
+		Resolver:    fetchWebApps,
+		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

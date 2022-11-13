@@ -14,4 +14,4 @@ SELECT
       then 'fail' else 'pass'
   end
 FROM azure_sql_servers s
-         LEFT JOIN azure_sql_databases d ON s.cq_id = d.server_cq_id
+         LEFT JOIN azure_sql_databases d ON s.id = d.sql_server_id

@@ -1,6 +1,6 @@
 # Table: azure_security_contacts
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security#Contact
 
 The primary key for this table is **id**.
 

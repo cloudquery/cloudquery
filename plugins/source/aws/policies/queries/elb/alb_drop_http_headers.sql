@@ -4,14 +4,14 @@ select
   :'framework' as framework,
   :'check_id' as check_id,
   'Application load balancers should be configured to drop HTTP headers' as title,
-  account_id,
-  arn as resource_id,
+  lb.account_id,
+  lb.arn as resource_id,
   case when
-    aws_elbv2_load_balancers.type = 'application' and aws_elbv2_load_balancer_attributes.routing_http_drop_invalid_header_fields is not true
+       lb.type = 'application' and (a.value)::boolean is not true -- TODO check
     then 'fail'
     else 'pass'
   end as status
-from aws_elbv2_load_balancers
+from aws_elbv2_load_balancers lb
 inner join
-    aws_elbv2_load_balancer_attributes on
-        aws_elbv2_load_balancer_attributes.load_balancer_cq_id = aws_elbv2_load_balancers.cq_id
+    aws_elbv2_load_balancer_attributes a on
+        a.load_balancer_arn = lb.arn and a.key='routing.http.drop_invalid_header_fields.enabled'

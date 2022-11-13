@@ -1,6 +1,6 @@
 # Table: azure_compute_instance_views
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-03-01/compute#VirtualMachineInstanceView
 
 The primary key for this table is **_cq_id**.
 

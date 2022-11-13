@@ -11,9 +11,10 @@ import (
 
 func Locations() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_subscriptions_locations",
-		Resolver:  fetchSubscriptionsLocations,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:        "azure_subscriptions_locations",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions#Location`,
+		Resolver:    fetchSubscriptionsLocations,
+		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

@@ -13,8 +13,9 @@ import (
 
 func virtualMachineExtensions() *schema.Table {
 	return &schema.Table{
-		Name:     "azure_compute_virtual_machine_extensions",
-		Resolver: fetchComputeVirtualMachineExtensions,
+		Name:        "azure_compute_virtual_machine_extensions",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-03-01/compute#VirtualMachineExtension`,
+		Resolver:    fetchComputeVirtualMachineExtensions,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

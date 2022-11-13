@@ -1,6 +1,6 @@
 # Table: azure_monitor_activity_logs
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2021-07-01-preview/insights#EventData
 
 The primary key for this table is **id**.
 

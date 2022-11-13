@@ -9,9 +9,10 @@ import (
 
 func Groups() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_autoscaling_groups",
-		Resolver:  fetchAutoscalingGroups,
-		Multiplex: client.ServiceAccountRegionMultiplexer("autoscaling"),
+		Name:        "aws_autoscaling_groups",
+		Description: `https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_AutoScalingGroup.html`,
+		Resolver:    fetchAutoscalingGroups,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("autoscaling"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
