@@ -9,9 +9,10 @@ import (
 
 func ConfigurationSettings() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_elasticbeanstalk_configuration_settings",
-		Resolver:  fetchElasticbeanstalkConfigurationSettings,
-		Multiplex: client.ServiceAccountRegionMultiplexer("elasticbeanstalk"),
+		Name:        "aws_elasticbeanstalk_configuration_settings",
+		Description: `https://docs.aws.amazon.com/elasticbeanstalk/latest/api/API_ConfigurationSettingsDescription.html`,
+		Resolver:    fetchElasticbeanstalkConfigurationSettings,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticbeanstalk"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

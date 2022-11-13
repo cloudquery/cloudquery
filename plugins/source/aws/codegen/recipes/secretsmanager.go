@@ -11,6 +11,7 @@ func SecretsManagerResources() []*Resource {
 		{
 			SubService:          "secrets",
 			Struct:              &secretsmanager.DescribeSecretOutput{},
+			Description:         "https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_ListSecrets.html",
 			SkipFields:          []string{"ARN", "ResultMetadata"},
 			PreResourceResolver: "getSecret",
 			ExtraColumns: append(
