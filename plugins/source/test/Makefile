@@ -21,3 +21,7 @@ lint:
 .PHONY: gen-docs
 gen-docs:
 	go run main.go doc ./docs/tables
+
+# All gen targets
+.PHONY: gen
+gen: gen-docs
