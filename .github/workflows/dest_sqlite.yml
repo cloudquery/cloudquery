@@ -100,3 +100,14 @@ jobs:
         run: goreleaser release --snapshot --rm-dist --skip-validate --skip-publish --skip-sign -f ./plugins/destination/sqlite/.goreleaser.yaml
         env:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
+      - name: Validate created ZIP files
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        run: |
+          # Not supported for SQLite
+          # unzip -o sqlite_linux_arm64.zip
+          unzip -o sqlite_darwin_arm64.zip
+          unzip -o sqlite_darwin_amd64.zip
+          unzip -o sqlite_windows_amd64.zip
+          unzip -o sqlite_linux_amd64.zip
+          plugins/destination/sqlite --version
+        working-directory: dist

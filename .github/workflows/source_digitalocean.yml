@@ -110,3 +110,13 @@ jobs:
         run: goreleaser release --snapshot --rm-dist --skip-validate --skip-publish --skip-sign -f ./plugins/source/digitalocean/.goreleaser.yaml
         env:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
+      - name: Validate created ZIP files
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        run: |
+          unzip -o digitalocean_linux_arm64.zip
+          unzip -o digitalocean_darwin_arm64.zip
+          unzip -o digitalocean_darwin_amd64.zip
+          unzip -o digitalocean_windows_amd64.zip
+          unzip -o digitalocean_linux_amd64.zip
+          plugins/source/digitalocean --version
+        working-directory: dist

@@ -110,6 +110,16 @@ jobs:
         run: goreleaser release --snapshot --rm-dist --skip-validate --skip-publish --skip-sign -f ./plugins/source/aws/.goreleaser.yaml
         env:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
+      - name: Validate created ZIP files
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        run: |
+          unzip -o aws_linux_arm64.zip
+          unzip -o aws_darwin_arm64.zip
+          unzip -o aws_darwin_amd64.zip
+          unzip -o aws_windows_amd64.zip
+          unzip -o aws_linux_amd64.zip
+          plugins/source/aws --version
+        working-directory: dist
   test-policies:
     timeout-minutes: 30
     needs: [resolve-runner]
