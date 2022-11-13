@@ -12,17 +12,15 @@ import (
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/golang/mock/gomock"
 	"github.com/rs/zerolog"
+	"k8s.io/client-go/kubernetes"
 )
 
-type TestOptions struct {
-	SkipEmptyJsonB bool
-}
 
-func K8sMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, *gomock.Controller) Services, options TestOptions) {
+func K8sMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, *gomock.Controller) kubernetes.Interface) {
 	version := "vDev"
 
 	t.Helper()
-
+	
 	table.IgnoreInTests = false
 
 	mockController := gomock.NewController(t)
@@ -39,8 +37,9 @@ func K8sMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.
 			logger:  logger,
 			Context: "testContext",
 			spec:    &k8sSpec,
+			contexts: []string{"testContext"},
 		}
-		c.SetServices(map[string]Services{"testContext": builder(t, mockController)})
+		c.clients = map[string]kubernetes.Interface{"testContext": builder(t, mockController)}
 		return c, nil
 	}
 

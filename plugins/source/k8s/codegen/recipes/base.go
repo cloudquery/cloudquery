@@ -25,22 +25,103 @@ var templatesFS embed.FS
 type Resource struct {
 	Service      string
 	SubService   string
+	ServicePath string
+	GlobalResource bool
+	ServiceFunc interface{}
+	ResourceFunc	interface{}
+	ServiceFuncName string
+	ResourceFuncName string
+	ResourcePath string
+	ImportPath string
+	SubServiceInterface interface{}
+	ResourceInterface interface{}
 	Struct       interface{}
+	StructName string
 	Multiplex    string // By default, Multiplex is `client.ContextMultiplex`
 	Table        *codegen.TableDefinition
 	ExtraColumns []codegen.ColumnDefinition
 	SkipFields   []string
+	SkipMockFields []string
+	SkipMockTypeFields []string
+	MockFieldsValue map[string]string
 }
 
-func (resource *Resource) Generate() error {
+func getFunctionName(i interface{}) string {
+	s := runtime.FuncForPC(reflect.ValueOf(i).Pointer()).Name()
+	return s[strings.LastIndex(s, ".")+1:]
+}
+
+func getPackagePath(myvar interface{}) string {
+	if t := reflect.TypeOf(myvar); t.Kind() == reflect.Ptr {
+		return t.Elem().PkgPath()
+	} else {
+		return t.PkgPath()
+	}
+}
+
+func getType(myvar interface{}) string {
+	if t := reflect.TypeOf(myvar); t.Kind() == reflect.Ptr {
+			return t.Elem().Name()
+	} else {
+			return t.Name()
+	}
+}
+
+func (resource *Resource) generate(mock bool) error {
 	_, filename, _, ok := runtime.Caller(0)
 	if !ok {
 		return fmt.Errorf("failed to get caller information")
 	}
 	dir := path.Dir(filename)
 
-	var err error
+	tplName := "resource.go.tpl"
+	if mock {
+		tplName = "mock.go.tpl"
+	}
+	tpl, err := template.New(tplName).Funcs(template.FuncMap{
+		"ToCamel": strcase.ToCamel,
+		"ToLower": strings.ToLower,
+	}).ParseFS(templatesFS, "templates/*.go.tpl")
+	if err != nil {
+		return fmt.Errorf("failed to parse k8s templates: %w", err)
+	}
+	tpl, err = tpl.ParseFS(codegen.TemplatesFS, "templates/*.go.tpl")
+	if err != nil {
+		return fmt.Errorf("failed to parse sdk template: %w", err)
+	}
 
+	var buff bytes.Buffer
+	if err := tpl.Execute(&buff, resource); err != nil {
+		return fmt.Errorf("failed to execute template: %w", err)
+	}
+	dir = path.Join(dir, "../../resources/services", resource.Service)
+	if err := os.MkdirAll(dir, os.ModePerm); err != nil {
+		return fmt.Errorf("failed to create directory %s: %w", dir, err)
+	}
+
+	filePath := path.Join(dir, resource.SubService)
+	if mock {
+		filePath = filePath + "_test.go"
+	} else {
+		filePath = filePath + ".go"
+	}
+	content := buff.Bytes()
+
+	formattedContent, err := format.Source(buff.Bytes())
+	if err != nil {
+		fmt.Printf("failed to format source: %s: %v\n", filePath, err)
+	} else {
+		content = formattedContent
+	}
+
+	if err := os.WriteFile(filePath, content, 0644); err != nil {
+		return fmt.Errorf("failed to write file %s: %w", filePath, err)
+	}
+	return nil
+}
+
+func (resource *Resource) Generate() error {
+	var err error
 	skipFields := []string{
 		"GenerateName",
 		"SelfLink",
@@ -82,47 +163,26 @@ func (resource *Resource) Generate() error {
 		return err
 	}
 
-	resource.Table.Resolver = "fetch" + strcase.ToCamel(resource.Service) + strcase.ToCamel(resource.SubService)
+	resource.Table.Resolver = "fetch" + strcase.ToCamel(resource.SubService)
 	if resource.Multiplex != "" {
 		resource.Table.Multiplex = resource.Multiplex
 	} else {
 		resource.Table.Multiplex = "client.ContextMultiplex"
 	}
 
-	tpl, err := template.New("resource.go.tpl").Funcs(template.FuncMap{
-		"ToCamel": strcase.ToCamel,
-		"ToLower": strings.ToLower,
-	}).ParseFS(templatesFS, "templates/*.go.tpl")
-	if err != nil {
-		return fmt.Errorf("failed to parse k8s templates: %w", err)
+	resource.StructName = getType(resource.Struct)
+	resource.ImportPath = strings.TrimPrefix(getPackagePath(resource.Struct), "k8s.io/api/")
+	resource.ServiceFuncName = getFunctionName(resource.ServiceFunc)
+	resource.ResourceFuncName = getFunctionName(resource.ResourceFunc)
+
+	if err := resource.generate(false); err != nil {
+		return err
 	}
-	tpl, err = tpl.ParseFS(codegen.TemplatesFS, "templates/*.go.tpl")
-	if err != nil {
-		return fmt.Errorf("failed to parse sdk template: %w", err)
+	
+	if err := resource.generate(true); err != nil {
+		return err
 	}
 
-	var buff bytes.Buffer
-	if err := tpl.Execute(&buff, resource); err != nil {
-		return fmt.Errorf("failed to execute template: %w", err)
-	}
-	dir = path.Join(dir, "../../resources/services", resource.Service)
-	if err := os.MkdirAll(dir, os.ModePerm); err != nil {
-		return fmt.Errorf("failed to create directory %s: %w", dir, err)
-	}
-
-	filePath := path.Join(dir, resource.SubService+".go")
-	content := buff.Bytes()
-
-	formattedContent, err := format.Source(buff.Bytes())
-	if err != nil {
-		fmt.Printf("failed to format source: %s: %v\n", filePath, err)
-	} else {
-		content = formattedContent
-	}
-
-	if err := os.WriteFile(filePath, content, 0644); err != nil {
-		return fmt.Errorf("failed to write file %s: %w", filePath, err)
-	}
 	return nil
 }
 

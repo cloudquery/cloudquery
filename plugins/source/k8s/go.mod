@@ -8,10 +8,12 @@ require (
 	github.com/iancoleman/strcase v0.2.0
 	github.com/rs/zerolog v1.28.0
 	github.com/thoas/go-funk v0.9.2
-	k8s.io/api v0.25.3
-	k8s.io/apimachinery v0.25.3
-	k8s.io/client-go v0.25.3
+	k8s.io/api v0.25.4
+	k8s.io/apimachinery v0.25.4
+	k8s.io/client-go v0.25.4
 )
+
+replace  github.com/cloudquery/plugin-sdk => ../../../../plugin-sdk-split
 
 require (
 	cloud.google.com/go/compute v1.10.0 // indirect
