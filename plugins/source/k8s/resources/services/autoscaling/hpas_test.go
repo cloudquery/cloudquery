@@ -19,12 +19,7 @@ import (
 
 func createHpas(t *testing.T, ctrl *gomock.Controller) kubernetes.Interface {
 	r := resource.HorizontalPodAutoscaler{}
-	if err := faker.FakeObject(&r,
-		faker.WithSkipFields(),
-		faker.WithSkipTypeFields(),
-		faker.WithFieldsValue(
-			map[string]interface{}{},
-		)); err != nil {
+	if err := faker.FakeObject(&r); err != nil {
 		t.Fatal(err)
 	}
 

@@ -19,14 +19,11 @@ import (
 
 func createCronJobs(t *testing.T, ctrl *gomock.Controller) kubernetes.Interface {
 	r := resource.CronJob{}
-	if err := faker.FakeObject(&r,
-		faker.WithSkipFields("FieldsV1"),
-		faker.WithSkipTypeFields(),
-		faker.WithFieldsValue(
-			map[string]interface{}{},
-		)); err != nil {
+	if err := faker.FakeObject(&r); err != nil {
 		t.Fatal(err)
 	}
+
+	r.Spec.JobTemplate = resource.JobTemplateSpec{}
 
 	resourceClient := resourcemock.NewMockCronJobInterface(ctrl)
 	resourceClient.EXPECT().List(gomock.Any(), metav1.ListOptions{}).Return(

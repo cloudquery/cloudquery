@@ -1,34 +1,34 @@
 package recipes
 
 import (
-	rbacv1 "k8s.io/api/rbac/v1"
+	resource "k8s.io/api/rbac/v1"
 	"k8s.io/client-go/kubernetes"
-	v1 "k8s.io/client-go/kubernetes/typed/rbac/v1"
+	resourceType "k8s.io/client-go/kubernetes/typed/rbac/v1"
 )
 
-func RbacResources() []*Resource {
+func Rbac() []*Resource {
 	resources := []*Resource{
 		{
 			SubService:     "cluster_roles",
-			Struct:         &rbacv1.ClusterRole{},
-			ResourceFunc:   v1.ClusterRolesGetter.ClusterRoles,
+			Struct:         &resource.ClusterRole{},
+			ResourceFunc:   resourceType.ClusterRolesGetter.ClusterRoles,
 			GlobalResource: true,
 		},
 		{
 			SubService:     "cluster_role_bindings",
-			Struct:         &rbacv1.ClusterRoleBinding{},
-			ResourceFunc:   v1.ClusterRoleBindingsGetter.ClusterRoleBindings,
+			Struct:         &resource.ClusterRoleBinding{},
+			ResourceFunc:   resourceType.ClusterRoleBindingsGetter.ClusterRoleBindings,
 			GlobalResource: true,
 		},
 		{
 			SubService:   "roles",
-			Struct:       &rbacv1.Role{},
-			ResourceFunc: v1.RolesGetter.Roles,
+			Struct:       &resource.Role{},
+			ResourceFunc: resourceType.RolesGetter.Roles,
 		},
 		{
 			SubService:   "role_bindings",
-			Struct:       &rbacv1.RoleBinding{},
-			ResourceFunc: v1.RoleBindingsGetter.RoleBindings,
+			Struct:       &resource.RoleBinding{},
+			ResourceFunc: resourceType.RoleBindingsGetter.RoleBindings,
 		},
 	}
 

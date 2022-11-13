@@ -19,14 +19,12 @@ import (
 
 func createNetworkPolicies(t *testing.T, ctrl *gomock.Controller) kubernetes.Interface {
 	r := resource.NetworkPolicy{}
-	if err := faker.FakeObject(&r,
-		faker.WithSkipFields("Port"),
-		faker.WithSkipTypeFields(),
-		faker.WithFieldsValue(
-			map[string]interface{}{},
-		)); err != nil {
+	if err := faker.FakeObject(&r); err != nil {
 		t.Fatal(err)
 	}
+
+	r.Spec.Ingress = []resource.NetworkPolicyIngressRule{}
+	r.Spec.Egress = []resource.NetworkPolicyEgressRule{}
 
 	resourceClient := resourcemock.NewMockNetworkPolicyInterface(ctrl)
 	resourceClient.EXPECT().List(gomock.Any(), metav1.ListOptions{}).Return(

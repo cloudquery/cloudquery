@@ -15,22 +15,17 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"github.com/cloudquery/plugin-sdk/faker"
+	{{range .MockImports}}
+	{{.}}
+	{{end}}
 )
 
 func create{{.SubService | ToCamel}}(t *testing.T, ctrl *gomock.Controller) kubernetes.Interface {
 	r := resource.{{.StructName}}{}
-	if err := faker.FakeObject(&r,
-		faker.WithSkipFields({{range $i, $e := .SkipMockFields}}{{if $i}},{{end}}"{{$e}}"{{end}}),
-		faker.WithSkipTypeFields({{range $i, $e := .SkipMockTypeFields}}{{if $i}},{{end}}"{{.}}"{{end}}),
-		faker.WithFieldsValue(
-			map[string]interface{}{
-			{{range $k, $v := .MockFieldsValue}}
-			"{{$k}}": {{$v}},
-			{{end}}
-			},
-		)); err != nil {
+	if err := faker.FakeObject(&r); err != nil {
 		t.Fatal(err)
 	}
+	{{.FakerOverride}}
 
 	resourceClient := resourcemock.NewMock{{.StructName}}Interface(ctrl)
 	resourceClient.EXPECT().List(gomock.Any(), metav1.ListOptions{}).Return(

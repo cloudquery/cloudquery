@@ -19,7 +19,6 @@ func Nodes() []*Resource {
 	for _, resource := range resources {
 		resource.Service = "nodes"
 		resource.ServiceFunc = kubernetes.Interface.NodeV1
-		resource.SkipMockFields = []string{"Port"}
 	}
 
 	return resources

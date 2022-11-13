@@ -41,9 +41,8 @@ type Resource struct {
 	Table               *codegen.TableDefinition
 	ExtraColumns        []codegen.ColumnDefinition
 	SkipFields          []string
-	SkipMockFields      []string
-	SkipMockTypeFields  []string
-	MockFieldsValue     map[string]string
+	FakerOverride       string
+	MockImports         []string
 }
 
 func getFunctionName(i interface{}) string {

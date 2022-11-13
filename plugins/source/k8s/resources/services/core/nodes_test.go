@@ -19,19 +19,12 @@ import (
 
 func createNodes(t *testing.T, ctrl *gomock.Controller) kubernetes.Interface {
 	r := resource.Node{}
-	if err := faker.FakeObject(&r,
-		faker.WithSkipFields("FieldsV1"),
-		faker.WithSkipTypeFields("IntOrString"),
-		faker.WithFieldsValue(
-			map[string]interface{}{
-
-				"PodCIDR": "8.8.8.8",
-
-				"PodCIDRs": []string{"1.1.1.1"},
-			},
-		)); err != nil {
+	if err := faker.FakeObject(&r); err != nil {
 		t.Fatal(err)
 	}
+
+	r.Spec.PodCIDR = "8.8.8.8"
+	r.Spec.PodCIDRs = []string{"8.8.8.8"}
 
 	resourceClient := resourcemock.NewMockNodeInterface(ctrl)
 	resourceClient.EXPECT().List(gomock.Any(), metav1.ListOptions{}).Return(

@@ -19,21 +19,15 @@ import (
 
 func createPods(t *testing.T, ctrl *gomock.Controller) kubernetes.Interface {
 	r := resource.Pod{}
-	if err := faker.FakeObject(&r,
-		faker.WithSkipFields("FieldsV1"),
-		faker.WithSkipTypeFields("IntOrString"),
-		faker.WithFieldsValue(
-			map[string]interface{}{
-
-				"HostIP": "8.8.8.8",
-
-				"PodIP": "8.8.8.8",
-
-				"PodIPs": []resource.PodIP{resource.PodIP{IP: "8.8.8.8"}},
-			},
-		)); err != nil {
+	if err := faker.FakeObject(&r); err != nil {
 		t.Fatal(err)
 	}
+
+	r.Status.HostIP = "8.8.8.8"
+	r.Status.PodIP = "1.1.1.1"
+	r.Status.PodIPs = []resource.PodIP{resource.PodIP{IP: "1.1.1.1"}}
+	r.Spec.Containers = []resource.Container{resource.Container{Name: "test"}}
+	r.Spec.InitContainers = []resource.Container{resource.Container{Name: "test"}}
 
 	resourceClient := resourcemock.NewMockPodInterface(ctrl)
 	resourceClient.EXPECT().List(gomock.Any(), metav1.ListOptions{}).Return(

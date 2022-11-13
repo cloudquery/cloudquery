@@ -8,7 +8,7 @@ import (
 	v1 "k8s.io/client-go/kubernetes/typed/core/v1"
 )
 
-func CoreResources() []*Resource {
+func Core() []*Resource {
 	resources := []*Resource{
 		{
 			SubService:     "component_statuses",
@@ -70,10 +70,10 @@ func CoreResources() []*Resource {
 					Resolver: `schema.PathResolver("Spec.PodCIDRs")`,
 				},
 			},
-			MockFieldsValue: map[string]string{
-				"PodCIDR":  `"8.8.8.8"`,
-				"PodCIDRs": `[]string{"1.1.1.1"}`,
-			},
+			FakerOverride: `
+			r.Spec.PodCIDR = "8.8.8.8"
+			r.Spec.PodCIDRs = []string{"8.8.8.8"}
+			`,
 		},
 		{
 			SubService:     "pvs",
@@ -113,19 +113,21 @@ func CoreResources() []*Resource {
 					Resolver: `resolveCorePodPodIPs`,
 				},
 			},
-			MockFieldsValue: map[string]string{
-				"HostIP": `"8.8.8.8"`,
-				"PodIP":  `"8.8.8.8"`,
-				"PodIPs": `[]resource.PodIP{resource.PodIP{IP: "8.8.8.8"}}`,
-			},
+			FakerOverride: `
+			r.Status.HostIP = "8.8.8.8"
+			r.Status.PodIP = "1.1.1.1"
+			r.Status.PodIPs = []resource.PodIP{resource.PodIP{IP: "1.1.1.1"}}
+			r.Spec.Containers = []resource.Container{resource.Container{Name: "test"}}
+			r.Spec.InitContainers = []resource.Container{resource.Container{Name: "test"}}
+			`,
 		},
 		{
 			SubService:   "replication_controllers",
 			Struct:       &corev1.ReplicationController{},
 			ResourceFunc: v1.ReplicationControllersGetter.ReplicationControllers,
-			// MockFieldsValue: map[string]string{
-			// 	"":
-			// },
+			FakerOverride: `
+			r.Spec.Template = &resource.PodTemplateSpec{}
+			`,
 		},
 		{
 			SubService:   "resource_quotas",
@@ -165,12 +167,13 @@ func CoreResources() []*Resource {
 					Resolver: `client.StringToInetPathResolver("Spec.LoadBalancerIP")`,
 				},
 			},
-			MockFieldsValue: map[string]string{
-				"ExternalIPs":    `[]string{"8.8.8.8"}`,
-				"ClusterIPs":     `[]string{"8.8.8.8"}`,
-				"ClusterIP":      `"8.8.8.8"`,
-				"LoadBalancerIP": `"8.8.8.8"`,
-			},
+			FakerOverride: `
+			r.Spec.ClusterIP = "8.8.8.8"
+			r.Spec.ClusterIPs = []string{"1.1.1.1"}
+			r.Spec.ExternalIPs = []string{"1.1.1.1"}
+			r.Spec.LoadBalancerIP = "1.1.1.1"
+			r.Spec.Ports = []resource.ServicePort{}
+			`,
 		},
 		{
 			SubService:   "service_accounts",
@@ -182,8 +185,6 @@ func CoreResources() []*Resource {
 	for _, resource := range resources {
 		resource.Service = "core"
 		resource.ServiceFunc = kubernetes.Interface.CoreV1
-		resource.SkipMockTypeFields = []string{"IntOrString"}
-		resource.SkipMockFields = []string{"FieldsV1"}
 	}
 
 	return resources

@@ -15,18 +15,17 @@ import (
 	resource "k8s.io/api/batch/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
+
+	corev1 "k8s.io/api/core/v1"
 )
 
 func createJobs(t *testing.T, ctrl *gomock.Controller) kubernetes.Interface {
 	r := resource.Job{}
-	if err := faker.FakeObject(&r,
-		faker.WithSkipFields("FieldsV1"),
-		faker.WithSkipTypeFields(),
-		faker.WithFieldsValue(
-			map[string]interface{}{},
-		)); err != nil {
+	if err := faker.FakeObject(&r); err != nil {
 		t.Fatal(err)
 	}
+
+	r.Spec.Template = corev1.PodTemplateSpec{}
 
 	resourceClient := resourcemock.NewMockJobInterface(ctrl)
 	resourceClient.EXPECT().List(gomock.Any(), metav1.ListOptions{}).Return(

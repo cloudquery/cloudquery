@@ -15,18 +15,18 @@ import (
 	resource "k8s.io/api/apps/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
+
+	corev1 "k8s.io/api/core/v1"
 )
 
 func createDaemonSets(t *testing.T, ctrl *gomock.Controller) kubernetes.Interface {
 	r := resource.DaemonSet{}
-	if err := faker.FakeObject(&r,
-		faker.WithSkipFields(),
-		faker.WithSkipTypeFields("IntOrString", "*IntOrString", "*intstr.IntOrString"),
-		faker.WithFieldsValue(
-			map[string]interface{}{},
-		)); err != nil {
+	if err := faker.FakeObject(&r); err != nil {
 		t.Fatal(err)
 	}
+
+	r.Spec.Template = corev1.PodTemplateSpec{}
+	r.Spec.UpdateStrategy = resource.DaemonSetUpdateStrategy{}
 
 	resourceClient := resourcemock.NewMockDaemonSetInterface(ctrl)
 	resourceClient.EXPECT().List(gomock.Any(), metav1.ListOptions{}).Return(
