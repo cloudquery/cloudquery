@@ -11,9 +11,10 @@ import (
 
 func Watchers() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_network_watchers",
-		Resolver:  fetchNetworkWatchers,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:        "azure_network_watchers",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network#Watcher`,
+		Resolver:    fetchNetworkWatchers,
+		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

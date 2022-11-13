@@ -5,6 +5,42 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.4.15](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v2.4.14...plugins-source-gcp-v2.4.15) (2022-11-11)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for gcp to v1.5.0 ([#4391](https://github.com/cloudquery/cloudquery/issues/4391)) ([c098a89](https://github.com/cloudquery/cloudquery/commit/c098a89bdd13378c9575343af47e64098d831692))
+* Fix links in Grafana compliance dashboards ([#4338](https://github.com/cloudquery/cloudquery/issues/4338)) ([e71ba56](https://github.com/cloudquery/cloudquery/commit/e71ba567fdd21ae9cf059023795c6765d1766848))
+
+## [2.4.14](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v2.4.13...plugins-source-gcp-v2.4.14) (2022-11-10)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for gcp to v1.4.1 ([#4294](https://github.com/cloudquery/cloudquery/issues/4294)) ([00ccfd7](https://github.com/cloudquery/cloudquery/commit/00ccfd7435abbd82bf277872aba3c168cca4f4d2))
+
+## [2.4.13](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v2.4.12...plugins-source-gcp-v2.4.13) (2022-11-10)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for gcp to v1.4.0 ([#4232](https://github.com/cloudquery/cloudquery/issues/4232)) ([b75ae70](https://github.com/cloudquery/cloudquery/commit/b75ae709037950934fc68842d389a0138a7afbaa))
+
+## [2.4.12](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v2.4.11...plugins-source-gcp-v2.4.12) (2022-11-10)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for gcp to v1.3.2 ([#4199](https://github.com/cloudquery/cloudquery/issues/4199)) ([f2dae12](https://github.com/cloudquery/cloudquery/commit/f2dae1247ebb279e00455b3bea75ea02a2d2e286))
+
+## [2.4.11](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v2.4.10...plugins-source-gcp-v2.4.11) (2022-11-10)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for gcp to v1.3.1 ([#4074](https://github.com/cloudquery/cloudquery/issues/4074)) ([3b3f171](https://github.com/cloudquery/cloudquery/commit/3b3f1713f2cd98169ec22a44471968619d12fe9c))
+
 ## [2.4.10](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v2.4.9...plugins-source-gcp-v2.4.10) (2022-11-09)
 
 

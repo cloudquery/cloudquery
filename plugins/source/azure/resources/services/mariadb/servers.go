@@ -11,9 +11,10 @@ import (
 
 func Servers() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_mariadb_servers",
-		Resolver:  fetchMariaDBServers,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:        "azure_mariadb_servers",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/mariadb/mgmt/2020-01-01/mariadb#Server`,
+		Resolver:    fetchMariaDBServers,
+		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

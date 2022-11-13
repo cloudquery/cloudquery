@@ -5,6 +5,42 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.13](https://github.com/cloudquery/cloudquery/compare/cli-v2.0.12...cli-v2.0.13) (2022-11-11)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for cli to v1.5.0 ([#4387](https://github.com/cloudquery/cloudquery/issues/4387)) ([cd1b727](https://github.com/cloudquery/cloudquery/commit/cd1b72727e7dd60104f856d01c6c8753c80e40f8))
+
+## [2.0.12](https://github.com/cloudquery/cloudquery/compare/cli-v2.0.11...cli-v2.0.12) (2022-11-10)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for cli to v1.4.1 ([#4290](https://github.com/cloudquery/cloudquery/issues/4290)) ([7d227ef](https://github.com/cloudquery/cloudquery/commit/7d227efcde7593e96e9bbb9ead2684d67696d673))
+
+## [2.0.11](https://github.com/cloudquery/cloudquery/compare/cli-v2.0.10...cli-v2.0.11) (2022-11-10)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for cli to v1.4.0 ([#4228](https://github.com/cloudquery/cloudquery/issues/4228)) ([dfaf6e2](https://github.com/cloudquery/cloudquery/commit/dfaf6e20ca93ae9f67aa5a80286cf72f84e76b42))
+
+## [2.0.10](https://github.com/cloudquery/cloudquery/compare/cli-v2.0.9...cli-v2.0.10) (2022-11-10)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for cli to v1.3.2 ([#4195](https://github.com/cloudquery/cloudquery/issues/4195)) ([7fd1e3d](https://github.com/cloudquery/cloudquery/commit/7fd1e3d22390219f186a89f6d8552d655c41c58e))
+
+## [2.0.9](https://github.com/cloudquery/cloudquery/compare/cli-v2.0.8...cli-v2.0.9) (2022-11-10)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for cli to v1.3.1 ([#4146](https://github.com/cloudquery/cloudquery/issues/4146)) ([0c521db](https://github.com/cloudquery/cloudquery/commit/0c521db2cecd7ccf7d1b86f97a451a45b6e70a19))
+* Fix test destination plugin hang ([#4158](https://github.com/cloudquery/cloudquery/issues/4158)) ([d9f9d30](https://github.com/cloudquery/cloudquery/commit/d9f9d30238d25e8e7a6a4641ed71179735742939))
+
 ## [2.0.8](https://github.com/cloudquery/cloudquery/compare/cli-v2.0.7...cli-v2.0.8) (2022-11-10)
 
 

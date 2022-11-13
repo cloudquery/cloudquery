@@ -11,9 +11,10 @@ import (
 
 func Devices() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_iothub_devices",
-		Resolver:  fetchIotHubDevices,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:        "azure_iothub_devices",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/iothub/mgmt/2021-07-02/devices#IotHubDescription`,
+		Resolver:    fetchIotHubDevices,
+		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

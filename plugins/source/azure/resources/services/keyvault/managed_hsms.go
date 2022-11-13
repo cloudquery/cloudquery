@@ -11,9 +11,10 @@ import (
 
 func ManagedHsms() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_keyvault_managed_hsms",
-		Resolver:  fetchKeyVaultManagedHsms,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:        "azure_keyvault_managed_hsms",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/keyvault/mgmt/2020-04-01-preview/keyvault#ManagedHsm`,
+		Resolver:    fetchKeyVaultManagedHsms,
+		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

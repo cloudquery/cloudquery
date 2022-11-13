@@ -9,9 +9,10 @@ import (
 
 func ReplicationInstances() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_dms_replication_instances",
-		Resolver:  fetchDmsReplicationInstances,
-		Multiplex: client.ServiceAccountRegionMultiplexer("dms"),
+		Name:        "aws_dms_replication_instances",
+		Description: `https://docs.aws.amazon.com/dms/latest/APIReference/API_ReplicationInstance.html`,
+		Resolver:    fetchDmsReplicationInstances,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("dms"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
