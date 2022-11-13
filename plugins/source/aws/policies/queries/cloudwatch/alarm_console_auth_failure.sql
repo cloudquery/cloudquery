@@ -7,8 +7,9 @@ select
     account_id,
     cloud_watch_logs_log_group_arn as resource_id,
     case
-      when pattern = '{ ($.eventName = ConsoleLogin) '
-          || '&& ($.errorMessage = "Failed authentication") }' then 'pass'
+      when pattern NOT LIKE '%NOT%'
+          AND pattern LIKE '%($.eventName = ConsoleLogin)%'
+          AND pattern LIKE '%($.errorMessage = "Failed authentication")%' then 'pass'
       else 'fail'
     end as status
 from view_aws_log_metric_filter_and_alarm
