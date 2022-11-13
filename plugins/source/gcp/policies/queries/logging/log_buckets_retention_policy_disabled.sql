@@ -23,8 +23,8 @@ SELECT DISTINCT gsb.name                                                        
                 CASE
                     WHEN
                                 gls.destination LIKE 'storage.googleapis.com/%'
-                            AND (gsb.retention_policy_is_locked = FALSE
-                            OR gsb.retention_policy_retention_period = 0)
+                            AND ((gsb.retention_policy->>'IsLocked')::boolean = FALSE
+                            OR (gsb.retention_policy->>'RetentionPeriod')::integer = 0)
                         THEN 'fail'
                     ELSE 'pass'
                     END                                                                                      AS status
