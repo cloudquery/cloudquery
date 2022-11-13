@@ -152,6 +152,6 @@ jobs:
         env:
           CQ_DSN: postgresql://postgres:pass@localhost:5432/postgres
       - name: Run all policies
-        run: cd policies_v1 && psql -h localhost -p 5432 -U postgres -d postgres -w -f ./policy.sql
+        run: cd policies && psql -h localhost -p 5432 -U postgres -d postgres -w -f ./policy.sql
         env:
           PGPASSWORD: pass

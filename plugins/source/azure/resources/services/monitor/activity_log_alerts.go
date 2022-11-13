@@ -11,9 +11,10 @@ import (
 
 func ActivityLogAlerts() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_monitor_activity_log_alerts",
-		Resolver:  fetchMonitorActivityLogAlerts,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:        "azure_monitor_activity_log_alerts",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2019-11-01-preview/insights#ActivityLogAlertResource`,
+		Resolver:    fetchMonitorActivityLogAlerts,
+		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

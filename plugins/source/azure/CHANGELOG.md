@@ -5,6 +5,42 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v1.4.3...plugins-source-azure-v1.4.4) (2022-11-11)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for azure to v1.5.0 ([#4386](https://github.com/cloudquery/cloudquery/issues/4386)) ([26fa93f](https://github.com/cloudquery/cloudquery/commit/26fa93fb9ff3ada21d6dfc1ba75df423ffd7d176))
+* Fix links in Grafana compliance dashboards ([#4338](https://github.com/cloudquery/cloudquery/issues/4338)) ([e71ba56](https://github.com/cloudquery/cloudquery/commit/e71ba567fdd21ae9cf059023795c6765d1766848))
+
+## [1.4.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v1.4.2...plugins-source-azure-v1.4.3) (2022-11-10)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for azure to v1.4.1 ([#4289](https://github.com/cloudquery/cloudquery/issues/4289)) ([f91d03d](https://github.com/cloudquery/cloudquery/commit/f91d03dcee936fb3edcce49ec7dcbb43d3c47d8b))
+
+## [1.4.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v1.4.1...plugins-source-azure-v1.4.2) (2022-11-10)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for azure to v1.4.0 ([#4227](https://github.com/cloudquery/cloudquery/issues/4227)) ([d9b582a](https://github.com/cloudquery/cloudquery/commit/d9b582a9dd153a5e15228c8ea4b4c56da4758001))
+
+## [1.4.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v1.4.0...plugins-source-azure-v1.4.1) (2022-11-10)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for azure to v1.3.2 ([#4194](https://github.com/cloudquery/cloudquery/issues/4194)) ([792f8b4](https://github.com/cloudquery/cloudquery/commit/792f8b4ddeef7ecc5f67e1f5baf5ce43cd50a063))
+
+## [1.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v1.3.12...plugins-source-azure-v1.4.0) (2022-11-10)
+
+
+### Features
+
+* **azure:** Add description to tables ([#4189](https://github.com/cloudquery/cloudquery/issues/4189)) ([a5fb33d](https://github.com/cloudquery/cloudquery/commit/a5fb33d1b2ee51f7abfa11eddf24d333668590d2))
+
 ## [1.3.12](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v1.3.11...plugins-source-azure-v1.3.12) (2022-11-10)
 
 

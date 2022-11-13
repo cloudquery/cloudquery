@@ -11,9 +11,10 @@ import (
 
 func Pricings() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_security_pricings",
-		Resolver:  fetchSecurityPricings,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:        "azure_security_pricings",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security#Pricing`,
+		Resolver:    fetchSecurityPricings,
+		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

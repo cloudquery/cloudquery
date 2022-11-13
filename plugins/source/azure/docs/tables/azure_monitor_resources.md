@@ -1,6 +1,6 @@
 # Table: azure_monitor_resources
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-10-01/resources#GenericResourceExpanded
 
 The primary key for this table is **id**.
 

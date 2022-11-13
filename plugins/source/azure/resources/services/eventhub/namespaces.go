@@ -11,9 +11,10 @@ import (
 
 func Namespaces() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_eventhub_namespaces",
-		Resolver:  fetchEventHubNamespaces,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:        "azure_eventhub_namespaces",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/eventhub/mgmt/2018-01-01-preview/eventhub#EHNamespace`,
+		Resolver:    fetchEventHubNamespaces,
+		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
