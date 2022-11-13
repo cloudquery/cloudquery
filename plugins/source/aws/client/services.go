@@ -63,6 +63,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/neptune"
 	"github.com/aws/aws-sdk-go-v2/service/organizations"
 	"github.com/aws/aws-sdk-go-v2/service/qldb"
+	"github.com/aws/aws-sdk-go-v2/service/quicksight"
+	"github.com/aws/aws-sdk-go-v2/service/ram"
 	"github.com/aws/aws-sdk-go-v2/service/rds"
 	"github.com/aws/aws-sdk-go-v2/service/redshift"
 	"github.com/aws/aws-sdk-go-v2/service/resourcegroups"
@@ -155,6 +157,8 @@ func initServices(region string, c aws.Config) Services {
 		Neptune:                   neptune.NewFromConfig(awsCfg),
 		Organizations:             organizations.NewFromConfig(awsCfg),
 		Qldb:                      qldb.NewFromConfig(awsCfg),
+		Quicksight:                quicksight.NewFromConfig(awsCfg),
+		Ram:                       ram.NewFromConfig(awsCfg),
 		Rds:                       rds.NewFromConfig(awsCfg),
 		Redshift:                  redshift.NewFromConfig(awsCfg),
 		Resourcegroups:            resourcegroups.NewFromConfig(awsCfg),
@@ -244,6 +248,8 @@ type Services struct {
 	Neptune                   services.NeptuneClient
 	Organizations             services.OrganizationsClient
 	Qldb                      services.QldbClient
+	Quicksight                services.QuicksightClient
+	Ram                       services.RamClient
 	Rds                       services.RdsClient
 	Redshift                  services.RedshiftClient
 	Resourcegroups            services.ResourcegroupsClient

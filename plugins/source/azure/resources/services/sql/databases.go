@@ -13,8 +13,9 @@ import (
 
 func databases() *schema.Table {
 	return &schema.Table{
-		Name:     "azure_sql_databases",
-		Resolver: fetchSQLDatabases,
+		Name:        "azure_sql_databases",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql#Database`,
+		Resolver:    fetchSQLDatabases,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

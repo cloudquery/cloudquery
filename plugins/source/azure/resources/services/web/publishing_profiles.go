@@ -13,8 +13,9 @@ import (
 
 func publishingProfiles() *schema.Table {
 	return &schema.Table{
-		Name:     "azure_web_publishing_profiles",
-		Resolver: fetchWebPublishingProfiles,
+		Name:        "azure_web_publishing_profiles",
+		Description: `https://pkg.go.dev/github.com/cloudquery/cloudquery/plugins/source/azure/client/services#PublishingProfile`,
+		Resolver:    fetchWebPublishingProfiles,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

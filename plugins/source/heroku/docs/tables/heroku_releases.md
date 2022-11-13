@@ -1,6 +1,6 @@
 # Table: heroku_releases
 
-https://devcenter.heroku.com/articles/platform-api-reference#release-attributes
+https://devcenter.heroku.com/articles/platform-api-reference#release
 
 The primary key for this table is **id**.
 

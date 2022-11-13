@@ -13,8 +13,9 @@ import (
 
 func functions() *schema.Table {
 	return &schema.Table{
-		Name:     "azure_web_functions",
-		Resolver: fetchWebFunctions,
+		Name:        "azure_web_functions",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/web/mgmt/2020-12-01/web#FunctionEnvelope`,
+		Resolver:    fetchWebFunctions,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

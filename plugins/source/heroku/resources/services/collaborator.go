@@ -13,7 +13,7 @@ import (
 func Collaborators() *schema.Table {
 	return &schema.Table{
 		Name:        "heroku_collaborators",
-		Description: `https://devcenter.heroku.com/articles/platform-api-reference#collaborator-attributes`,
+		Description: `https://devcenter.heroku.com/articles/platform-api-reference#collaborator`,
 		Resolver:    fetchCollaborators,
 		Columns: []schema.Column{
 			{

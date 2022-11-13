@@ -13,7 +13,7 @@ import (
 func TeamAppPermissions() *schema.Table {
 	return &schema.Table{
 		Name:        "heroku_team_app_permissions",
-		Description: `https://devcenter.heroku.com/articles/platform-api-reference#team-app-permission-attributes`,
+		Description: `https://devcenter.heroku.com/articles/platform-api-reference#team-app-permission`,
 		Resolver:    fetchTeamAppPermissions,
 		Columns: []schema.Column{
 			{

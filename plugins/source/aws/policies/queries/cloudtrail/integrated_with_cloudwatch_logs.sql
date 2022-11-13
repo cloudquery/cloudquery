@@ -8,7 +8,7 @@ select
     arn as resource_id,
     case
         when cloud_watch_logs_log_group_arn is null
-            OR latest_cloud_watch_logs_delivery_time < (now() - '1 days'::INTERVAL)
+            OR (status->>'LatestCloudWatchLogsDeliveryTime')::timestamp < (now() - '1 days'::INTERVAL)
         then 'fail'
         else 'pass'
     end as status

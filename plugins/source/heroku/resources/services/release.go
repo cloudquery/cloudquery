@@ -13,7 +13,7 @@ import (
 func Releases() *schema.Table {
 	return &schema.Table{
 		Name:        "heroku_releases",
-		Description: `https://devcenter.heroku.com/articles/platform-api-reference#release-attributes`,
+		Description: `https://devcenter.heroku.com/articles/platform-api-reference#release`,
 		Resolver:    fetchReleases,
 		Columns: []schema.Column{
 			{

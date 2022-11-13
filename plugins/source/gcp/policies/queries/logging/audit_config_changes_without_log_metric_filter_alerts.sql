@@ -14,10 +14,10 @@ SELECT "filter"                                                                 
        project_id                                                                                       AS project_id,
        CASE
            WHEN
-                       enabled = TRUE
+                       disabled = FALSE
                    AND "filter" ~
                        '\s*protoPayload.methodName\s*=\s*"SetIamPolicy"\s*AND\s*protoPayload.serviceData.policyDelta.auditConfigDeltas:*\s*'
                THEN 'fail'
            ELSE 'pass'
            END                                                                                          AS status
-FROM gcp_log_metric_filters;
+FROM gcp_logging_metrics;

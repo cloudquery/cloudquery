@@ -1,6 +1,6 @@
 # Table: heroku_pipeline_couplings
 
-https://devcenter.heroku.com/articles/platform-api-reference#pipeline-coupling-attributes
+https://devcenter.heroku.com/articles/platform-api-reference#pipeline-coupling
 
 The primary key for this table is **id**.
 

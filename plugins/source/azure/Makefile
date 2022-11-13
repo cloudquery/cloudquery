@@ -32,3 +32,7 @@ lint:
 gen-code:
 	go install golang.org/x/tools/cmd/goimports@latest
 	go run codegen/main.go
+
+# All gen targets
+.PHONY: gen
+gen: gen-code gen-docs

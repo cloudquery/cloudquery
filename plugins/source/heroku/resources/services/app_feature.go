@@ -13,7 +13,7 @@ import (
 func AppFeatures() *schema.Table {
 	return &schema.Table{
 		Name:        "heroku_app_features",
-		Description: `https://devcenter.heroku.com/articles/platform-api-reference#app-feature-attributes`,
+		Description: `https://devcenter.heroku.com/articles/platform-api-reference#app-feature`,
 		Resolver:    fetchAppFeatures,
 		Columns: []schema.Column{
 			{

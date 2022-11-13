@@ -58,12 +58,16 @@ var listResources = []Resource{
 		Template:            "relational_resource_list",
 	},
 	{
-		HerokuStruct:        &heroku.AddOnWebhookDelivery{},
+		TableName:           "heroku_add_on_webhook_deliveries",
+		HerokuStruct:        &heroku.AddOnWebhookDeliveryInfoResult{},
+		HerokuStructName:    "AddOnWebhookDelivery",
 		HerokuPrimaryStruct: &heroku.AddOn{},
 		Template:            "relational_resource_list",
 	},
 	{
-		HerokuStruct:        &heroku.AddOnWebhookEvent{},
+		TableName:           "heroku_add_on_webhook_events",
+		HerokuStruct:        &heroku.AddOnWebhookEventInfoResult{},
+		HerokuStructName:    "AddOnWebhookEvent",
 		HerokuPrimaryStruct: &heroku.AddOn{},
 		Template:            "relational_resource_list",
 	},
@@ -79,7 +83,9 @@ var listResources = []Resource{
 		HerokuStruct: &heroku.AppTransfer{},
 	},
 	{
-		HerokuStruct:        &heroku.AppWebhook{},
+		TableName:           "heroku_app_webhooks",
+		HerokuStruct:        &heroku.AppWebhookInfoResult{},
+		HerokuStructName:    "AppWebhook",
 		HerokuPrimaryStruct: &heroku.App{},
 		Template:            "relational_resource_list",
 	},
@@ -180,7 +186,9 @@ var listResources = []Resource{
 		HerokuStruct: &heroku.Pipeline{},
 	},
 	{
-		HerokuStruct:        &heroku.PipelineBuild{},
+		TableName:           "heroku_pipeline_builds",
+		HerokuStruct:        &heroku.PipelineBuildListResult{{}}[0],
+		HerokuStructName:    "PipelineBuild",
 		HerokuPrimaryStruct: &heroku.Pipeline{},
 		Template:            "relational_resource_list",
 	},
@@ -188,12 +196,16 @@ var listResources = []Resource{
 		HerokuStruct: &heroku.PipelineCoupling{},
 	},
 	{
-		HerokuStruct:        &heroku.PipelineDeployment{},
+		TableName:           "heroku_pipeline_deployments",
+		HerokuStruct:        &heroku.PipelineDeploymentListResult{{}}[0],
+		HerokuStructName:    "PipelineDeployment",
 		HerokuPrimaryStruct: &heroku.Pipeline{},
 		Template:            "relational_resource_list",
 	},
 	{
-		HerokuStruct:        &heroku.PipelineRelease{},
+		TableName:           "heroku_pipeline_releases",
+		HerokuStruct:        &heroku.PipelineReleaseListResult{{}}[0],
+		HerokuStructName:    "PipelineRelease",
 		HerokuPrimaryStruct: &heroku.Pipeline{},
 		Template:            "relational_resource_list",
 	},
@@ -248,7 +260,9 @@ var listResources = []Resource{
 		Template:            "relational_resource_list",
 	},
 	{
-		HerokuStruct:        &heroku.TeamSpace{},
+		TableName:           "heroku_team_spaces",
+		HerokuStruct:        &heroku.TeamSpaceListResult{{}}[0],
+		HerokuStructName:    "TeamSpace",
 		HerokuPrimaryStruct: &heroku.Team{},
 		Template:            "relational_resource_list",
 	},
@@ -344,7 +358,9 @@ func All() []Resource {
 		if r.Template == "" {
 			r.Template = "resource_list"
 		}
-		r.HerokuStructName = reflect.TypeOf(r.HerokuStruct).Elem().Name()
+		if len(r.HerokuStructName) == 0 {
+			r.HerokuStructName = reflect.TypeOf(r.HerokuStruct).Elem().Name()
+		}
 		if r.HerokuPrimaryStruct != nil {
 			r.HerokuPrimaryStructName = reflect.TypeOf(r.HerokuPrimaryStruct).Elem().Name()
 		}

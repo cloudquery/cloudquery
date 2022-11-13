@@ -330,7 +330,27 @@
 | [aws_qldb_ledgers](aws_qldb_ledgers.md) |
 | ↳ [aws_qldb_ledger_journal_kinesis_streams](aws_qldb_ledger_journal_kinesis_streams.md) |
 | ↳ [aws_qldb_ledger_journal_s3_exports](aws_qldb_ledger_journal_s3_exports.md) |
+| [aws_quicksight_analyses](aws_quicksight_analyses.md) |
+| [aws_quicksight_dashboards](aws_quicksight_dashboards.md) |
+| [aws_quicksight_data_sets](aws_quicksight_data_sets.md) |
+| ↳ [aws_quicksight_ingestions](aws_quicksight_ingestions.md) |
+| [aws_quicksight_data_sources](aws_quicksight_data_sources.md) |
+| [aws_quicksight_folders](aws_quicksight_folders.md) |
+| [aws_quicksight_groups](aws_quicksight_groups.md) |
+| ↳ [aws_quicksight_group_members](aws_quicksight_group_members.md) |
+| [aws_quicksight_templates](aws_quicksight_templates.md) |
+| [aws_quicksight_users](aws_quicksight_users.md) |
+| [aws_ram_principals](aws_ram_principals.md) |
+| [aws_ram_resources](aws_ram_resources.md) |
+| [aws_ram_resource_shares](aws_ram_resource_shares.md) |
+| ↳ [aws_ram_resource_share_associated_principals](aws_ram_resource_share_associated_principals.md) |
+| ↳ [aws_ram_resource_share_associated_resources](aws_ram_resource_share_associated_resources.md) |
+| [aws_ram_resource_share_invitations](aws_ram_resource_share_invitations.md) |
+| [aws_ram_resource_share_permissions](aws_ram_resource_share_permissions.md) |
+| [aws_ram_resource_types](aws_ram_resource_types.md) |
 | [aws_rds_certificates](aws_rds_certificates.md) |
+| [aws_rds_engine_versions](aws_rds_engine_versions.md) |
+| ↳ [aws_rds_cluster_parameters](aws_rds_cluster_parameters.md) |
 | [aws_rds_cluster_parameter_groups](aws_rds_cluster_parameter_groups.md) |
 | ↳ [aws_rds_cluster_parameter_group_parameters](aws_rds_cluster_parameter_group_parameters.md) |
 | [aws_rds_cluster_snapshots](aws_rds_cluster_snapshots.md) |

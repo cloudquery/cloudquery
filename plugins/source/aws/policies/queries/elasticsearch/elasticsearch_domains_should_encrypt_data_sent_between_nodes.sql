@@ -7,7 +7,7 @@ select
   account_id,
   arn as resource_id,
   case when
-    node_to_node_encryption_enabled is not true
+        (node_to_node_encryption_options->>'Enabled')::boolean is not true
     then 'fail'
     else 'pass'
   end as status
