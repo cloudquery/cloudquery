@@ -11,7 +11,7 @@ kind: destination
 spec:
   name: "postgresql"
   path: "cloudquery/postgresql"
-  version: "v1.7.8" # latest version of postgresql plugin
+  version: "v1.7.7" # latest version of postgresql plugin
 
   spec:
     connection_string: "postgresql://postgres:pass@localhost:5432/postgres?sslmode=disable"
