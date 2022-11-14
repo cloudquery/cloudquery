@@ -2,7 +2,7 @@
 
 https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBEngineVersion.html
 
-The composite primary key for this table is (**account_id**, **engine**, **engine_version**).
+The composite primary key for this table is (**account_id**, **region**, **engine**, **engine_version**).
 
 ## Relations
 The following tables depend on aws_rds_engine_versions:
@@ -16,6 +16,7 @@ The following tables depend on aws_rds_engine_versions:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |account_id (PK)|String|
+|region (PK)|String|
 |engine (PK)|String|
 |engine_version (PK)|String|
 |create_time|Timestamp|

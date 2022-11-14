@@ -1,13 +1,13 @@
 cloud.google.com/go v0.26.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMTw=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/avast/retry-go/v4 v4.3.0 h1:cqI48aXx0BExKoM7XPklDpoHAg7/srPPLAfWG5z62jo=
-github.com/aws/aws-sdk-go v1.44.135 h1:DJJP/CkEpgafA5p5jlY9VzDRyKrfABVixzIxrK/3tWU=
-github.com/aws/aws-sdk-go v1.44.135/go.mod h1:aVsgQcEevwlmQ7qHE9I3h+dtQgpqhFB+i8Phjh7fkwI=
+github.com/aws/aws-sdk-go v1.44.136 h1:J1KJJssa8pjU8jETYUxwRS37KTcxjACfKd9GK8t+5ZU=
+github.com/aws/aws-sdk-go v1.44.136/go.mod h1:aVsgQcEevwlmQ7qHE9I3h+dtQgpqhFB+i8Phjh7fkwI=
 github.com/bradleyjkemp/cupaloy/v2 v2.8.0 h1:any4BmKE+jGIaMpnU8YgH/I2LPiLBufr6oMMlVBbn9M=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
-github.com/cloudquery/plugin-sdk v1.5.0 h1:cLRcwEPau4FENv6GVl37p+QTgt/FGI5EFW6F+OxZUIo=
-github.com/cloudquery/plugin-sdk v1.5.0/go.mod h1:VbqV2BE0wbYbArSUNxAuh6jH1FlrHyJp0f/5ERuBcew=
+github.com/cloudquery/plugin-sdk v1.5.1 h1:Ox/5MMjy0/ohUpaKihwCYIRp7oMPqCZq4fX08v4mlg4=
+github.com/cloudquery/plugin-sdk v1.5.1/go.mod h1:VbqV2BE0wbYbArSUNxAuh6jH1FlrHyJp0f/5ERuBcew=
 github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGXZJjfX53e64911xZQV5JYwmTeXPW+k8Sc=
 github.com/coreos/go-systemd v0.0.0-20190321100706-95778dfbb74e/go.mod h1:F5haX7vjVVG0kc13fIWeqUViNPyEJxv/OmvnBo0Yme4=
 github.com/coreos/go-systemd/v22 v22.3.3-0.20220203105225-a9a7ef127534/go.mod h1:Y58oyj3AT4RCenI/lSvhwexgC+NSVTIJ3seZv2GcEnc=
