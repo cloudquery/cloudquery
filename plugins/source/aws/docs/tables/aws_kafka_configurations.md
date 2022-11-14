@@ -14,6 +14,7 @@ The primary key for this table is **arn**.
 |_cq_parent_id|UUID|
 |account_id|String|
 |arn (PK)|String|
+|tags|JSON|
 |creation_time|Timestamp|
 |description|String|
 |kafka_versions|StringArray|

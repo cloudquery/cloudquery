@@ -17,6 +17,7 @@ This table depends on [aws_kafka_clusters](aws_kafka_clusters.md).
 |account_id|String|
 |arn (PK)|String|
 |cluster_arn|String|
+|tags|JSON|
 |client_request_id|String|
 |creation_time|Timestamp|
 |end_time|Timestamp|

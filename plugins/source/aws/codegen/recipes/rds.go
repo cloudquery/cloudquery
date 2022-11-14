@@ -28,15 +28,8 @@ func RDSResources() []*Resource {
 			SubService:  "engine_versions",
 			Struct:      &types.DBEngineVersion{},
 			Description: "https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBEngineVersion.html",
-			Multiplex:   `client.AccountMultiplex`,
 			SkipFields:  []string{"Engine", "EngineVersion"},
-			ExtraColumns: []codegen.ColumnDefinition{
-				{
-					Name:     "account_id",
-					Type:     schema.TypeString,
-					Resolver: "client.ResolveAWSAccount",
-					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-				},
+			ExtraColumns: append(defaultRegionalColumnsPK, []codegen.ColumnDefinition{
 				{
 					Name:     "engine",
 					Type:     schema.TypeString,
@@ -49,7 +42,7 @@ func RDSResources() []*Resource {
 					Resolver: `schema.PathResolver("EngineVersion")`,
 					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 				},
-			},
+			}...),
 			Relations: []string{
 				"ClusterParameters()",
 			},

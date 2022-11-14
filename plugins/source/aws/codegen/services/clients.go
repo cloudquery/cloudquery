@@ -82,6 +82,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
 	"github.com/aws/aws-sdk-go-v2/service/ssoadmin"
+	"github.com/aws/aws-sdk-go-v2/service/timestreamwrite"
 	"github.com/aws/aws-sdk-go-v2/service/transfer"
 	"github.com/aws/aws-sdk-go-v2/service/waf"
 	"github.com/aws/aws-sdk-go-v2/service/wafregional"
@@ -172,6 +173,7 @@ var clients = []interface{}{
 	&sqs.Client{},
 	&ssm.Client{},
 	&ssoadmin.Client{},
+	&timestreamwrite.Client{},
 	&transfer.Client{},
 	&waf.Client{},
 	&wafregional.Client{},

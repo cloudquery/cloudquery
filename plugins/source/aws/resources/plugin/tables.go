@@ -80,6 +80,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sqs"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ssm"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ssoadmin"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/timestream"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/transfer"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/waf"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/wafregional"
@@ -380,6 +381,7 @@ func tables() []*schema.Table {
 		ssm.Instances(),
 		ssm.Parameters(),
 		ssoadmin.Instances(),
+		timestream.Databases(),
 		transfer.Servers(),
 		wafregional.RateBasedRules(),
 		wafregional.RuleGroups(),
