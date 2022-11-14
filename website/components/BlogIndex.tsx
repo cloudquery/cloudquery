@@ -26,7 +26,7 @@ export function BlogIndex({ more = "Read more" }) {
           <Link href={page.route}>
             <a
               style={{ color: "inherit", textDecoration: "none" }}
-              className="block font-semibold mt-8 text-2xl"
+              className="block font-semibold mt-8 nx-text-2xl"
             >
               {page.meta?.title || page.meta?.title || page.name}
             </a>

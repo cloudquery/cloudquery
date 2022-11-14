@@ -51,17 +51,17 @@ export default function Home() {
       <div className="flex flex-col md:flex-row justify-between px-4 pt-16 pb-8 mx-auto sm:pt-24 lg:px-8 w-auto lg:max-w-7xl">
         <div className="flex flex-col justify-between md:mr-4">
           <div>
-            <h1 className="max-w-5xl mx-auto text-6xl font-extrabold tracking-tighter leading-[1.1] sm:text-7xl lg:text-8xl xl:text-8xl">
+            <h1 className="max-w-5xl mx-auto nx-text-6xl font-extrabold tracking-tighter leading-[1.1] sm:text-7xl lg:nx-text-8xl xl:nx-text-8xl">
               Data integration
               <br className="hidden lg:block" />
               <span className="pr-1 inline-block text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-blue-500 ">
                 at scale.
               </span>
             </h1>
-            <p className="max-w-2xl mt-6 text-xl font-medium leading-tight text-gray-400 sm:text-2xl md:text-3xl lg:text-4xl">
+            <p className="max-w-2xl mt-6 nx-text-xl font-medium leading-tight text-gray-400 sm:nx-text-2xl md:nx-text-3xl lg:nx-text-4xl">
               Sync cloud assets to any database, transform and visualize.
             </p>
-            <p className="max-w-2xl mt-6 text-xl font-medium leading-tight text-gray-400 sm:text-2xl md:text-3xl lg:text-4xl">
+            <p className="max-w-2xl mt-6 nx-text-xl font-medium leading-tight text-gray-400 sm:nx-text-2xl md:nx-text-3xl lg:nx-text-4xl">
               CloudQuery is an open source high performance data integration platform designed for security and infrastructure teams.
             </p>
           </div>
@@ -90,7 +90,7 @@ export default function Home() {
               <div className="pr-1 text-white font-semibold text-base md:text-lg ml-6 leading-tight">
                 {title}
                 {description &&
-                  <div className="mt-1 font-normal text-xs leading-none">
+                  <div className="mt-1 font-normal nx-text-xs leading-none">
                     {description}
                   </div>
                 }
@@ -112,7 +112,7 @@ export default function Home() {
 
       <div className="relative from-gray-50 to-gray-100">
         <div className="px-4 py-16 mx-auto sm:pt-20 sm:pb-24 lg:max-w-7xl lg:pt-24">
-          <h2 className="text-4xl font-extrabold tracking-tight lg:text-5xl xl:text-6xl lg:text-center dark:text-white">
+          <h2 className="nx-text-4xl font-extrabold tracking-tight lg:nx-text-5xl xl:nx-text-6xl lg:text-center dark:text-white">
             Regain access to your data
           </h2>
           <p className="mx-auto mt-4 text-lg font-medium text-gray-400 lg:max-w-3xl lg:text-xl lg:text-center">
@@ -125,7 +125,7 @@ export default function Home() {
 
       <div className="relative from-gray-50 to-gray-100">
         <div className="px-4 py-16 mx-auto sm:pt-20 sm:pb-24 lg:max-w-7xl lg:pt-24">
-          <h2 className="text-4xl font-extrabold tracking-tight lg:text-5xl xl:text-6xl lg:text-center dark:text-white">
+          <h2 className="nx-text-4xl font-extrabold tracking-tight lg:nx-text-5xl xl:nx-text-6xl lg:text-center dark:text-white">
             Data analysis, security, auditing, and compliance
           </h2>
           <p className="mx-auto mt-4 text-lg font-medium text-gray-400 lg:max-w-3xl lg:text-xl lg:text-center">
@@ -137,10 +137,10 @@ export default function Home() {
 
       <div className="sm:py-20 lg:py-24">
         <div className="max-w-4xl px-4 pb-12 mx-auto lg:px-8 ">
-          <h2 className="text-4xl font-extrabold leading-tight tracking-tight lg:text-5xl xl:text-6xl text-center dark:text-white">
+          <h2 className="nx-text-4xl font-extrabold leading-tight tracking-tight lg:nx-text-5xl xl:nx-text-6xl text-center dark:text-white">
             Integrations
           </h2>
-          <p className="mx-auto mt-4 font-medium text-gray-400 lg:max-w-3xl lg:text-xl text-center">
+          <p className="mx-auto mt-4 font-medium text-gray-400 lg:max-w-3xl lg:nx-text-xl text-center">
             Integrate with 10+ cloud providers and SaaS apps with more than 1,000 unique tables.
           </p>
           <Integrations />
