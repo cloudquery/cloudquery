@@ -90,7 +90,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/xray v1.13.22
 	github.com/aws/smithy-go v1.13.4
 	github.com/basgys/goxml2json v1.1.0
-	github.com/cloudquery/plugin-sdk v1.5.0
+	github.com/cloudquery/plugin-sdk v1.5.1
 	github.com/gocarina/gocsv v0.0.0-20220927221512-ad3251f9fa25
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.9
