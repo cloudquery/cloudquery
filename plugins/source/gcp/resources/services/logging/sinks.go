@@ -59,8 +59,8 @@ func Sinks() *schema.Table {
 			},
 			{
 				Name:     "output_version_format",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("OutputVersionFormat"),
+				Type:     schema.TypeString,
+				Resolver: client.ResolveProtoEnum("OutputVersionFormat"),
 			},
 			{
 				Name:     "writer_identity",

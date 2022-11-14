@@ -96,13 +96,13 @@ func Services() *schema.Table {
 			},
 			{
 				Name:     "ingress",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("Ingress"),
+				Type:     schema.TypeString,
+				Resolver: client.ResolveProtoEnum("Ingress"),
 			},
 			{
 				Name:     "launch_stage",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("LaunchStage"),
+				Type:     schema.TypeString,
+				Resolver: client.ResolveProtoEnum("LaunchStage"),
 			},
 			{
 				Name:     "binary_authorization",

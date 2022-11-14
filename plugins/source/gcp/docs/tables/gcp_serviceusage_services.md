@@ -16,4 +16,4 @@ The primary key for this table is **name**.
 |name (PK)|String|
 |parent|String|
 |config|JSON|
-|state|Int|
+|state|String|
