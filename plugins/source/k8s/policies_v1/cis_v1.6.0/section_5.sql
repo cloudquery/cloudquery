@@ -40,17 +40,17 @@
 \set check_id '5.2.1' 
 \echo "Executing check 5.2.1"
 \echo "Minimize the admission of privileged containers (Manual)"
-\ir ../queries/pod_security/pod_container_privilege_disabled
+\ir ../queries/pod_security/pod_container_privilege_disabled.sql
 
 \set check_id '5.2.2' 
 \echo "Executing check 5.2.2"
 \echo "Minimize the admission of containers wishing to share the host process ID namespace (Manual)"
-\ir ../queries/manual.sql
+\ir ../queries/pod_security/pod_hostpid_hostipc_sharing_disabled.sql
 
 \set check_id '5.2.3' 
 \echo "Executing check 5.2.3"
 \echo "Minimize the admission of containers wishing to share the host IPC namespace (Manual)"
-\ir ../queries/manual.sql
+\ir ../queries/pod_security/pod_hostpid_hostipc_sharing_disabled.sql
 
 \set check_id '5.2.4' 
 \echo "Executing check 5.2.4"
