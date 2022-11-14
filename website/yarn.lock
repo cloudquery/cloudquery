@@ -695,6 +695,11 @@
     "@typescript-eslint/types" "5.32.0"
     eslint-visitor-keys "^3.3.0"
 
+"@vercel/edge@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@vercel/edge/-/edge-0.1.1.tgz#5d4919815525e98b7d58c25411625807642bcdd7"
+  integrity sha512-yISmGBQ8SSYBjuUCZHJPeuTGpIfT9HiEMiPy8wcUWCZWbknS0sXWoJE3ubAmyEJVmYe5JPH6dt9A7nzK9oT/dg==
+
 acorn-jsx@^5.0.0, acorn-jsx@^5.3.2:
   version "5.3.2"
   resolved "https://registry.yarnpkg.com/acorn-jsx/-/acorn-jsx-5.3.2.tgz#7ed5bb55908b3b2f1bc55c6af1653bada7f07937"
@@ -3917,6 +3922,11 @@ typescript@4.8.4:
   version "4.8.4"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.8.4.tgz#c464abca159669597be5f96b8943500b238e60e6"
   integrity sha512-QCh+85mCy+h0IGff8r5XWzOVSbBO+KfeYrMQh7NJ58QujwcE22u+NUSmUxqF+un70P9GXKxa2HCNiTTMJknyjQ==
+
+ua-parser-js@^1.0.32:
+  version "1.0.32"
+  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-1.0.32.tgz#786bf17df97de159d5b1c9d5e8e9e89806f8a030"
+  integrity sha512-dXVsz3M4j+5tTiovFVyVqssXBu5HM47//YSOeZ9fQkdDKkfzv2v3PP1jmH6FUyPW+yCSn7aBVK1fGGKNhowdDA==
 
 unbox-primitive@^1.0.2:
   version "1.0.2"

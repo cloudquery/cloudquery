@@ -1,8 +1,11 @@
 import { Tabs, Tab } from '../Tabs'
+import { OSes } from './_os'
 
 You can download the precompiled binary from [releases](https://github.com/cloudquery/cloudquery/releases), or using CLI:
 
-<Tabs options={['OSX', 'Linux', 'Windows']}>
+
+
+<Tabs options={OSes.options} defaultIndex={OSes.index()}>
 
 <Tab>
 <Tabs options={['Homebrew', 'Precompiled Binaries (amd64)', 'Precompiled Binaries (arm64)']}>
