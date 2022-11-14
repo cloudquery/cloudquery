@@ -28,3 +28,7 @@ func fetchCryptoKeys(ctx context.Context, meta schema.ClientMeta, parent *schema
 		}
 	}
 }
+
+func resolveRotationPeriod(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	return resource.Set(c.Name, resource.Item.(*kmspb.CryptoKey).GetRotationPeriod().AsDuration())
+}

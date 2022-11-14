@@ -2,6 +2,8 @@ package recipes
 
 import (
 	"cloud.google.com/go/kms/apiv1/kmspb"
+	"github.com/cloudquery/plugin-sdk/codegen"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 var emptyString = ""
@@ -15,6 +17,13 @@ var kmsResources = []*Resource{
 		SkipMock:   true,
 		SkipFetch:  true,
 		SkipFields: []string{"RotationSchedule"},
+		ExtraColumns: codegen.ColumnDefinitions{
+			{
+				Name:     "rotation_period",
+				Type:     schema.TypeInt,
+				Resolver: "resolveRotationPeriod",
+			},
+		},
 	},
 	{
 		SubService: "keyrings",

@@ -15,6 +15,7 @@ This table depends on [gcp_kms_keyrings](gcp_kms_keyrings.md).
 |_cq_id (PK)|UUID|
 |_cq_parent_id|UUID|
 |project_id|String|
+|rotation_period|Int|
 |name|String|
 |primary|JSON|
 |purpose|String|

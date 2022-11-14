@@ -18,6 +18,11 @@ func CryptoKeys() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
+				Name:     "rotation_period",
+				Type:     schema.TypeInt,
+				Resolver: resolveRotationPeriod,
+			},
+			{
 				Name:     "name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Name"),
