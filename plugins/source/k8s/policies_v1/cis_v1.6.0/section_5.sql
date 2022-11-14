@@ -55,18 +55,17 @@
 \set check_id '5.2.4' 
 \echo "Executing check 5.2.4"
 \echo "Minimize the admission of containers wishing to share the host network namespace (Manual)"
-\ir ../queries/manual.sql
+\ir ../queries/pod_security/pod_host_network_access_disabled.sql
 
 \set check_id '5.2.5' 
 \echo "Executing check 5.2.5"
 \echo "Minimize the admission of containers with allowPrivilegeEscalation (Manual)"
-\ir ../queries/manual.sql
+\ir ../queries/pod_security/pod_container_privilege_escalation_disabled.sql
 
 \set check_id '5.2.6' 
 \echo "Executing check 5.2.6"
 \echo "Minimize the admission of root containers (Manual)"
-\ir ../queries/manual.sql
-
+\ir ../queries/pod_security/pod_non_root_container.sql
 \set check_id '5.2.7' 
 \echo "Executing check 5.2.7"
 \echo "Minimize the admission of containers with the NET_RAW capability (Manual)"
