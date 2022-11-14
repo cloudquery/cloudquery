@@ -25,6 +25,7 @@ func buildEventbridgeApiDestinationsMock(t *testing.T, ctrl *gomock.Controller) 
 		&eventbridge.ListApiDestinationsOutput{
 			ApiDestinations: []types.ApiDestination{object},
 		}, nil)
+
 	tagsOutput := eventbridge.ListTagsForResourceOutput{}
 	err = faker.FakeObject(&tagsOutput)
 	if err != nil {

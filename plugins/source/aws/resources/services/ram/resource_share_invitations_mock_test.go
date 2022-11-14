@@ -25,12 +25,6 @@ func buildRamResourceShareInvitationsMock(t *testing.T, ctrl *gomock.Controller)
 		&ram.GetResourceShareInvitationsOutput{
 			ResourceShareInvitations: []types.ResourceShareInvitation{object},
 		}, nil)
-	tagsOutput := ram.ListTagsForResourceOutput{}
-	err = faker.FakeObject(&tagsOutput)
-	if err != nil {
-		t.Fatal(err)
-	}
-	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any()).Return(&tagsOutput, nil).AnyTimes()
 
 	return client.Services{
 		Ram: m,

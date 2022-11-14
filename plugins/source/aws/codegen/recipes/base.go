@@ -323,13 +323,33 @@ func (r Resource) StructName() string {
 	return reflect.TypeOf(r.Struct).Elem().Name()
 }
 
-// ListTagsMethod finds a ListTags method for the service, if any
-func (r Resource) ListTagsMethod() discover.DiscoveredMethod {
+type ListTagsMethodResponse struct {
+	Method reflect.Method
+	Found  bool
+}
 
+// ListTagsMethod finds a ListTags method for the service, if any
+func (r Resource) ListTagsMethod() ListTagsMethodResponse {
+	if r.Client == nil || reflect.ValueOf(r.Client).IsNil() {
+		panic("Client needs to be set to generate resolvers and mocks")
+	}
+	m, err := discover.FindListTagsMethod(r.Client)
+	if err != nil {
+		return ListTagsMethodResponse{
+			Found: false,
+		}
+	}
+	return ListTagsMethodResponse{
+		Method: m.Method,
+		Found:  true,
+	}
 }
 
 // DescribeMethod finds a describe method for the resource
 func (r Resource) DescribeMethod() discover.DiscoveredMethod {
+	if r.Client == nil || (reflect.ValueOf(r.Client).Kind() == reflect.Ptr && reflect.ValueOf(r.Client).IsNil()) {
+		panic("Client needs to be set to generate resolvers and mocks")
+	}
 	if r.DescribeMethodName != "" {
 		m, err := discover.MethodByName(r.Client, r.Struct, r.DescribeMethodName)
 		if err != nil {
@@ -346,6 +366,9 @@ func (r Resource) DescribeMethod() discover.DiscoveredMethod {
 
 // ListMethod finds a list method for the resource
 func (r Resource) ListMethod() discover.DiscoveredMethod {
+	if r.Client == nil {
+		panic("Client needs to be set to generate resolvers and mocks")
+	}
 	if r.ListMethodName != "" {
 		m, err := discover.MethodByName(r.Client, r.Struct, r.ListMethodName)
 		if err != nil {

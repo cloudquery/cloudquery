@@ -25,6 +25,7 @@ func buildEventbridgeReplaysMock(t *testing.T, ctrl *gomock.Controller) client.S
 		&eventbridge.ListReplaysOutput{
 			Replays: []types.Replay{object},
 		}, nil)
+
 	tagsOutput := eventbridge.ListTagsForResourceOutput{}
 	err = faker.FakeObject(&tagsOutput)
 	if err != nil {

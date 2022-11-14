@@ -25,6 +25,7 @@ func buildEventbridgeEndpointsMock(t *testing.T, ctrl *gomock.Controller) client
 		&eventbridge.ListEndpointsOutput{
 			Endpoints: []types.Endpoint{object},
 		}, nil)
+
 	tagsOutput := eventbridge.ListTagsForResourceOutput{}
 	err = faker.FakeObject(&tagsOutput)
 	if err != nil {

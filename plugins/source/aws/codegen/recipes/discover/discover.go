@@ -31,7 +31,10 @@ func MethodByName(client interface{}, targetStruct interface{}, name string) (Di
 func FindMethods(client, targetStruct interface{}, prefixes []string) []DiscoveredMethod {
 	v := reflect.ValueOf(client)
 	t := v.Type()
-	tt := reflect.TypeOf(targetStruct).Elem()
+	var tt reflect.Type
+	if targetStruct != nil {
+		tt = reflect.TypeOf(targetStruct).Elem()
+	}
 	found := make([]DiscoveredMethod, 0)
 	// iterate over the methods of the given client
 	for i := 0; i < t.NumMethod(); i++ {
@@ -47,6 +50,15 @@ func FindMethods(client, targetStruct interface{}, prefixes []string) []Discover
 			continue
 		}
 
+		if tt == nil {
+			// no specific target struct was requested, so return any method
+			// that matches the prefix requirements
+			found = append(found, DiscoveredMethod{
+				Method: method,
+			})
+			continue
+		}
+
 		// iterate over the output types of the method to find matches for targetStruct
 		f := v.Method(i).Interface()
 		ft := reflect.TypeOf(f)
@@ -58,7 +70,7 @@ func FindMethods(client, targetStruct interface{}, prefixes []string) []Discover
 			if e.Kind() != reflect.Struct {
 				continue
 			}
-			if reflect.TypeOf(e) == tt {
+			if tt == nil || reflect.TypeOf(e) == tt {
 				// struct is directly returned by the method
 				found = append(found, DiscoveredMethod{
 					Method: method,
@@ -71,7 +83,7 @@ func FindMethods(client, targetStruct interface{}, prefixes []string) []Discover
 				if eft.Kind() == reflect.Ptr || eft.Kind() == reflect.Slice {
 					eft = ef.Type.Elem()
 				}
-				if eft == tt {
+				if tt == nil || eft == tt {
 					// struct is returned by the method as a field in an Output struct
 					found = append(found, DiscoveredMethod{
 						Method:          method,
@@ -88,16 +100,22 @@ func FindMethods(client, targetStruct interface{}, prefixes []string) []Discover
 func FindMethod(client, targetStruct interface{}, prefixes []string) (DiscoveredMethod, error) {
 	f := FindMethods(client, targetStruct, prefixes)
 	if len(f) == 0 {
+		if targetStruct == nil {
+			return DiscoveredMethod{}, fmt.Errorf("found no method with prefix in %v", prefixes)
+		}
 		name := reflect.TypeOf(targetStruct).Elem().Name()
 		return DiscoveredMethod{}, fmt.Errorf("found no method with prefix in %v that also returns %v", prefixes, name)
 	}
 	if len(f) > 1 {
+		if targetStruct == nil {
+			return DiscoveredMethod{}, fmt.Errorf("found %d potential methods for prefix: %v", len(f), prefixes)
+		}
 		name := reflect.TypeOf(targetStruct).Elem().Name()
 		names := make([]string, len(f))
 		for i := range f {
 			names[i] = f[i].Method.Name
 		}
-		return DiscoveredMethod{}, fmt.Errorf("found %d potential list methods that also returns %s: %v", len(f), name, strings.Join(names, ","))
+		return DiscoveredMethod{}, fmt.Errorf("found %d potential methods that also return %s: %v", len(f), name, strings.Join(names, ","))
 	}
 	return f[0], nil
 }
@@ -108,4 +126,8 @@ func FindDescribeMethod(client, targetStruct interface{}) (DiscoveredMethod, err
 
 func FindListMethod(client, targetStruct interface{}) (DiscoveredMethod, error) {
 	return FindMethod(client, targetStruct, []string{"List"})
+}
+
+func FindListTagsMethod(client interface{}) (DiscoveredMethod, error) {
+	return FindMethod(client, nil, []string{"ListTagsForResource", "ListTagsOfResource"})
 }

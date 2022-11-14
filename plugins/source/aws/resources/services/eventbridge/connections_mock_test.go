@@ -25,6 +25,7 @@ func buildEventbridgeConnectionsMock(t *testing.T, ctrl *gomock.Controller) clie
 		&eventbridge.ListConnectionsOutput{
 			Connections: []types.Connection{object},
 		}, nil)
+
 	tagsOutput := eventbridge.ListTagsForResourceOutput{}
 	err = faker.FakeObject(&tagsOutput)
 	if err != nil {

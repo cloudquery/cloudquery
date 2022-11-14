@@ -25,12 +25,7 @@ func buildRamResourcesMock(t *testing.T, ctrl *gomock.Controller) client.Service
 		&ram.ListResourcesOutput{
 			Resources: []types.Resource{object},
 		}, nil)
-	tagsOutput := ram.ListTagsForResourceOutput{}
-	err = faker.FakeObject(&tagsOutput)
-	if err != nil {
-		t.Fatal(err)
-	}
-	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any()).Return(&tagsOutput, nil).AnyTimes()
+
 	return client.Services{
 		Ram: m,
 	}

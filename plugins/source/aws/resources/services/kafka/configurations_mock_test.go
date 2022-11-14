@@ -25,6 +25,7 @@ func buildKafkaConfigurationsMock(t *testing.T, ctrl *gomock.Controller) client.
 		&kafka.ListConfigurationsOutput{
 			Configurations: []types.Configuration{object},
 		}, nil)
+
 	tagsOutput := kafka.ListTagsForResourceOutput{}
 	err = faker.FakeObject(&tagsOutput)
 	if err != nil {

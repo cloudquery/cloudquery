@@ -54,9 +54,7 @@ func KafkaResources() []*Resource {
 					Resolver: `resolveKafkaTags("NodeARN")`,
 				},
 			}...),
-			ShouldGenerateResolverAndMockTest: true,
-			ResolverAndMockTestTemplate:       "list_resources_1",
-			CustomListInput:                   `getListNodesInput(parent)`,
+			ShouldGenerateResolverAndMockTest: false,
 		},
 		{
 			SubService:  "cluster_operations",
@@ -81,9 +79,7 @@ func KafkaResources() []*Resource {
 					Resolver: `resolveKafkaTags("OperationArn")`,
 				},
 			}...),
-			ShouldGenerateResolverAndMockTest: true,
-			ResolverAndMockTestTemplate:       "list_resources_1",
-			CustomListInput:                   `getListClusterOperationsInput(parent)`,
+			ShouldGenerateResolverAndMockTest: false,
 		},
 		{
 			SubService:  "configurations",

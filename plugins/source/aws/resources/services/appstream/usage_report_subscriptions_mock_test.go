@@ -25,6 +25,7 @@ func buildAppstreamUsageReportSubscriptionsMock(t *testing.T, ctrl *gomock.Contr
 		&appstream.DescribeUsageReportSubscriptionsOutput{
 			UsageReportSubscriptions: []types.UsageReportSubscription{object},
 		}, nil)
+
 	tagsOutput := appstream.ListTagsForResourceOutput{}
 	err = faker.FakeObject(&tagsOutput)
 	if err != nil {

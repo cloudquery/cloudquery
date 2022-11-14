@@ -25,6 +25,7 @@ func buildAppstreamDirectoryConfigsMock(t *testing.T, ctrl *gomock.Controller) c
 		&appstream.DescribeDirectoryConfigsOutput{
 			DirectoryConfigs: []types.DirectoryConfig{object},
 		}, nil)
+
 	tagsOutput := appstream.ListTagsForResourceOutput{}
 	err = faker.FakeObject(&tagsOutput)
 	if err != nil {

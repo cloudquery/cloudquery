@@ -36,13 +36,14 @@ func build{{.Service | ToCamel}}{{.SubService | ToCamel}}Mock(t *testing.T, ctrl
       {{.ListMethod.OutputFieldName}}: []types.{{.StructName}}{object},
     }, nil)
 
-{{- if not .Parent }}
-	tagsOutput := {{.Service}}.ListTagsForResourceOutput{}
+{{ $listTagsMethod := .ListTagsMethod}}
+{{- if $listTagsMethod.Found }}
+	tagsOutput := {{.Service}}.{{$listTagsMethod.Method.Name}}Output{}
 	err = faker.FakeObject(&tagsOutput)
 	if err != nil {
 		t.Fatal(err)
 	}
-	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any()).Return(&tagsOutput, nil).AnyTimes()
+	m.EXPECT().{{$listTagsMethod.Method.Name}}(gomock.Any(), gomock.Any()).Return(&tagsOutput, nil).AnyTimes()
 {{- end }}
 
 {{- if not .Parent }}

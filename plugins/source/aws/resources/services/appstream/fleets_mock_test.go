@@ -25,6 +25,7 @@ func buildAppstreamFleetsMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 		&appstream.DescribeFleetsOutput{
 			Fleets: []types.Fleet{object},
 		}, nil)
+
 	tagsOutput := appstream.ListTagsForResourceOutput{}
 	err = faker.FakeObject(&tagsOutput)
 	if err != nil {
