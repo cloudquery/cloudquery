@@ -106,7 +106,7 @@
       "destination": "/docs/reference/destination-spec"
     },
     {
-      "source": "/docs/cli/commands/*",
+      "source": "/docs/cli/commands/(.*)",
       "destination": "/docs/reference/cli/cloudquery"
     },
     {
