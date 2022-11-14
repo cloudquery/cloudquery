@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/cli
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v1.5.1
+	github.com/cloudquery/plugin-sdk v1.5.2
 	github.com/getsentry/sentry-go v0.15.0
 	github.com/google/uuid v1.3.0
 	github.com/rs/zerolog v1.28.0
@@ -33,7 +33,7 @@ require (
 	golang.org/x/sys v0.2.0 // indirect
 	golang.org/x/term v0.2.0 // indirect
 	golang.org/x/text v0.4.0 // indirect
-	google.golang.org/genproto v0.0.0-20221107162902-2d387536bcdd // indirect
+	google.golang.org/genproto v0.0.0-20221111202108-142d8a6fa32e // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
