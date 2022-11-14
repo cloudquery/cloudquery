@@ -1,13 +1,13 @@
 {
   "*": {
     "//": "Disable sidebar and search for these pages",
-    "hidden": false,
     "theme": {
       "sidebar": false,
       "typesetting": "article"
     },
     "searchable": false
   },
+  "introducing-wildcard-matching-for-tables": "Introducing Wildcard Matching for Tables",
   "announcing-cloudquery-sqlite-destination": "Announcing the CloudQuery SQLite Destination Plugin",
   "scaling-out-elt-with-cq-and-csv": "Scaling out ELT with CloudQuery and CSV",
   "cloudquery-v1-release": "CloudQuery v1 Release",
