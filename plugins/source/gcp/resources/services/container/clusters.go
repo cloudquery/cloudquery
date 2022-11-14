@@ -196,6 +196,11 @@ func Clusters() *schema.Table {
 				Resolver: schema.PathResolver("MeshCertificates"),
 			},
 			{
+				Name:     "cost_management_config",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("CostManagementConfig"),
+			},
+			{
 				Name:     "notification_config",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("NotificationConfig"),
@@ -242,8 +247,8 @@ func Clusters() *schema.Table {
 			},
 			{
 				Name:     "status",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("Status"),
+				Type:     schema.TypeString,
+				Resolver: client.ResolveProtoEnum("Status"),
 			},
 			{
 				Name:     "status_message",

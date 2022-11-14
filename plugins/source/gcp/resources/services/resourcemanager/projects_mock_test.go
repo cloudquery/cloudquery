@@ -7,10 +7,10 @@ import (
 	"testing"
 
 	resourcemanager "cloud.google.com/go/resourcemanager/apiv3"
+	"cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"google.golang.org/api/option"
-	pb "google.golang.org/genproto/googleapis/cloud/resourcemanager/v3"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
@@ -22,7 +22,7 @@ func createProjects() (*client.Services, error) {
 		return nil, fmt.Errorf("failed to listen: %w", err)
 	}
 	gsrv := grpc.NewServer()
-	pb.RegisterProjectsServer(gsrv, fakeServer)
+	resourcemanagerpb.RegisterProjectsServer(gsrv, fakeServer)
 	fakeServerAddr := l.Addr().String()
 	go func() {
 		if err := gsrv.Serve(l); err != nil {
@@ -46,11 +46,11 @@ func createProjects() (*client.Services, error) {
 }
 
 type fakeProjectsServer struct {
-	pb.UnimplementedProjectsServer
+	resourcemanagerpb.UnimplementedProjectsServer
 }
 
-func (*fakeProjectsServer) GetProject(context.Context, *pb.GetProjectRequest) (*pb.Project, error) {
-	resp := pb.Project{}
+func (*fakeProjectsServer) GetProject(context.Context, *resourcemanagerpb.GetProjectRequest) (*resourcemanagerpb.Project, error) {
+	resp := resourcemanagerpb.Project{}
 	if err := faker.FakeObject(&resp); err != nil {
 		return nil, fmt.Errorf("failed to fake data: %w", err)
 	}

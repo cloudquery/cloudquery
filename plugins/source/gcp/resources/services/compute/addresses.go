@@ -62,6 +62,11 @@ func Addresses() *schema.Table {
 				Resolver: schema.PathResolver("IpVersion"),
 			},
 			{
+				Name:     "ipv6_endpoint_type",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Ipv6EndpointType"),
+			},
+			{
 				Name:     "kind",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Kind"),
