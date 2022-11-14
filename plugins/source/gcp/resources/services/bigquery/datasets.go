@@ -115,6 +115,11 @@ func Datasets() *schema.Table {
 				Resolver: schema.PathResolver("SelfLink"),
 			},
 			{
+				Name:     "storage_billing_model",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("StorageBillingModel"),
+			},
+			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Tags"),

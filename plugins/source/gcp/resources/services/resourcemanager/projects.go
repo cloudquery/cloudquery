@@ -30,8 +30,8 @@ func Projects() *schema.Table {
 			},
 			{
 				Name:     "state",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("State"),
+				Type:     schema.TypeString,
+				Resolver: client.ResolveProtoEnum("State"),
 			},
 			{
 				Name:     "display_name",
