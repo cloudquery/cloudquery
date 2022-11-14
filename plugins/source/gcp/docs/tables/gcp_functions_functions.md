@@ -18,6 +18,7 @@ The primary key for this table is **_cq_id**.
 |status|Int|
 |entry_point|String|
 |runtime|String|
+|timeout|Int|
 |available_memory_mb|Int|
 |service_account_email|String|
 |update_time|Timestamp|

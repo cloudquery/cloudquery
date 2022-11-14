@@ -50,6 +50,11 @@ func Functions() *schema.Table {
 				Resolver: schema.PathResolver("Runtime"),
 			},
 			{
+				Name:     "timeout",
+				Type:     schema.TypeInt,
+				Resolver: client.ResolveProtoDuration("Timeout"),
+			},
+			{
 				Name:     "available_memory_mb",
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("AvailableMemoryMb"),
