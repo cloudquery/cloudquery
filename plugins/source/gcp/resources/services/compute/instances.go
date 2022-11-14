@@ -182,6 +182,11 @@ func Instances() *schema.Table {
 				Resolver: schema.PathResolver("ResourcePolicies"),
 			},
 			{
+				Name:     "resource_status",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ResourceStatus"),
+			},
+			{
 				Name:     "satisfies_pzs",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("SatisfiesPzs"),

@@ -20,15 +20,9 @@ SELECT "name"                                                                   
        project_id                                                                      AS project_id,
        CASE
            WHEN
-                   (rotation_period LIKE '%s'
-                       AND REPLACE(rotation_period, 's', '')::NUMERIC > 7776000)
-                   OR (rotation_period LIKE '%h'
-                   AND REPLACE(rotation_period, 'h', '')::NUMERIC > 2160)
-                   OR (rotation_period LIKE '%m'
-                   AND REPLACE(rotation_period, 'm', '')::NUMERIC > 129600)
-                   OR (rotation_period LIKE '%d'
-                   AND REPLACE(rotation_period, 'd', '')::NUMERIC > 90)
-                   OR next_rotation_time = '' OR DATE_PART('day', CURRENT_DATE - next_rotation_time::timestamp) > 90
+               (make_interval(secs => rotation_period/1000000000.0) > make_interval(days => 90))
+               OR next_rotation_time IS NULL
+               OR DATE_PART('day', CURRENT_DATE - next_rotation_time::timestamp) > 90
                THEN 'fail'
            ELSE 'pass'
            END                                                                         AS status
