@@ -17,6 +17,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/codegen/recipes"
 	"github.com/iancoleman/strcase"
+	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
@@ -161,6 +162,8 @@ func generateResource(r recipes.Resource, mock bool) {
 			case *durationpb.Duration,
 				durationpb.Duration:
 				return schema.TypeInt, nil
+			case protoreflect.Enum:
+				return schema.TypeString, nil
 			default:
 				return schema.TypeInvalid, nil
 			}
@@ -173,6 +176,8 @@ func generateResource(r recipes.Resource, mock bool) {
 			case *durationpb.Duration,
 				durationpb.Duration:
 				return `client.ResolveProtoDuration("` + path + `")`, nil
+			case protoreflect.Enum:
+				return `client.ResolveProtoEnum("` + path + `")`, nil
 			default:
 				return "", nil
 			}
