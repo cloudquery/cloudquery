@@ -7,9 +7,9 @@ select
   account_id,
   arn as resource_id,
   case when
-    cluster_dedicated_master_enabled is not TRUE
-    or cluster_dedicated_master_count is null
-    or cluster_dedicated_master_count < 3
+    (elasticsearch_cluster_config->>'DedicatedMasterEnabled')::boolean is not TRUE
+    or (elasticsearch_cluster_config->>'DedicatedMasterCount')::integer is null
+    or (elasticsearch_cluster_config->>'DedicatedMasterCount')::integer < 3
     then 'fail'
     else 'pass'
   end as status

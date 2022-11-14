@@ -7,7 +7,7 @@ SELECT
   subscription_id,
   id,
   case
-    when geo_redundant_backup IS DISTINCT FROM 'Enabled'
+    when storage_profile->>'geoRedundantBackup' IS DISTINCT FROM 'Enabled'
       then 'fail' else 'pass'
   end
 FROM azure_mariadb_servers

@@ -3,7 +3,7 @@ SELECT :'execution_time'                                                        
        :'framework'                                                                        AS framework,
        :'check_id'                                                                         AS check_id,
        'External accounts with owner permissions should be removed from your subscription' AS title,
-       sub.subscription_id                                                                 AS subscription_id,
+       mc.subscription_id                                                                  AS subscription_id,
        mc.id                                                                               AS resource_id,
        CASE
            WHEN enable_rbac IS NOT TRUE
@@ -11,4 +11,4 @@ SELECT :'execution_time'                                                        
            ELSE 'pass'
            END                                                                             AS status
 FROM azure_container_managed_clusters AS mc
-         INNER JOIN azure_subscription_subscriptions AS sub ON sub.subscription_id = mc.subscription_id
+         INNER JOIN azure_subscriptions AS sub ON sub.id = mc.subscription_id

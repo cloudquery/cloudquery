@@ -2,13 +2,10 @@ package athena
 
 import (
 	"context"
-	"errors"
-	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/athena"
 	"github.com/aws/aws-sdk-go-v2/service/athena/types"
-	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -107,9 +104,6 @@ func getWorkGroupPreparedStatement(ctx context.Context, meta schema.ClientMeta, 
 		StatementName: d.StatementName,
 	})
 	if err != nil {
-		if c.IsNotFoundError(err) {
-			return nil
-		}
 		return err
 	}
 	resource.Item = *dc.PreparedStatement
@@ -144,9 +138,6 @@ func getWorkGroupQueryExecution(ctx context.Context, meta schema.ClientMeta, res
 		QueryExecutionId: aws.String(d),
 	})
 	if err != nil {
-		if c.IsNotFoundError(err) || isQueryExecutionNotFound(err) {
-			return nil
-		}
 		return err
 	}
 	resource.Item = *dc.QueryExecution
@@ -181,9 +172,6 @@ func getWorkGroupNamedQuery(ctx context.Context, meta schema.ClientMeta, resourc
 		NamedQueryId: aws.String(d),
 	})
 	if err != nil {
-		if c.IsNotFoundError(err) {
-			return nil
-		}
 		return err
 	}
 	resource.Item = *dc.NamedQuery
@@ -192,12 +180,4 @@ func getWorkGroupNamedQuery(ctx context.Context, meta schema.ClientMeta, resourc
 
 func createWorkGroupArn(cl *client.Client, groupName string) string {
 	return cl.ARN(client.Athena, "workgroup", groupName)
-}
-
-func isQueryExecutionNotFound(err error) bool {
-	var ae smithy.APIError
-	if !errors.As(err, &ae) {
-		return false
-	}
-	return ae.ErrorCode() == "InvalidRequestException" && strings.Contains(ae.ErrorMessage(), "was not found")
 }

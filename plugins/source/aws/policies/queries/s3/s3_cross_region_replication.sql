@@ -7,10 +7,12 @@ select
     aws_s3_buckets.account_id,
     aws_s3_buckets.arn as resource_id,
     case when
-        aws_s3_bucket_replication_rules.status is distinct from 'Enabled'
+        r->>'Status' is distinct from 'Enabled'
     then 'fail' else 'pass' end as status
 from
-    aws_s3_buckets
-left join aws_s3_bucket_replication_rules on aws_s3_bucket_replication_rules.bucket_cq_id=aws_s3_buckets.cq_id
-
+     aws_s3_buckets, JSONB_ARRAY_ELEMENTS(
+         case jsonb_typeof(replication_rules)
+         when 'array' then replication_rules
+         else '[]' end
+     ) as r
 -- Note: This query doesn't validate that the destination bucket is actually in a different region

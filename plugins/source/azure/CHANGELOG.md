@@ -5,6 +5,21 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.5](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v1.4.4...plugins-source-azure-v1.4.5) (2022-11-14)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for azure to v1.5.1 ([#4497](https://github.com/cloudquery/cloudquery/issues/4497)) ([b0a2a7d](https://github.com/cloudquery/cloudquery/commit/b0a2a7d102b1b970163743cca3865683196c4bb5))
+
+## [1.4.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v1.4.3...plugins-source-azure-v1.4.4) (2022-11-11)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for azure to v1.5.0 ([#4386](https://github.com/cloudquery/cloudquery/issues/4386)) ([26fa93f](https://github.com/cloudquery/cloudquery/commit/26fa93fb9ff3ada21d6dfc1ba75df423ffd7d176))
+* Fix links in Grafana compliance dashboards ([#4338](https://github.com/cloudquery/cloudquery/issues/4338)) ([e71ba56](https://github.com/cloudquery/cloudquery/commit/e71ba567fdd21ae9cf059023795c6765d1766848))
+
 ## [1.4.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v1.4.2...plugins-source-azure-v1.4.3) (2022-11-10)
 
 

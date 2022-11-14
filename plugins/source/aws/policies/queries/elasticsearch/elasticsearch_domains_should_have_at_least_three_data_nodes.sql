@@ -7,9 +7,9 @@ select
   account_id,
   arn as resource_id,
   case when
-    not cluster_zone_awareness_enabled
-    or cluster_instance_count is null
-    or cluster_instance_count < 3
+    not (elasticsearch_cluster_config->>'ZoneAwarenessEnabled')::boolean
+    or (elasticsearch_cluster_config->>'InstanceCount')::integer is null
+    or (elasticsearch_cluster_config->>'InstanceCount')::integer < 3
     then 'fail'
     else 'pass'
   end as status
