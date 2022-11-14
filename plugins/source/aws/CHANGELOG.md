@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [5.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v5.0.0...plugins-source-aws-v5.1.0) (2022-11-14)
+
+
+### Features
+
+* **aws:** Implement Timestream resources ([#4553](https://github.com/cloudquery/cloudquery/issues/4553)) ([5a2ac0f](https://github.com/cloudquery/cloudquery/commit/5a2ac0f1fe2b36bf1356722c77ff7d79b445842d))
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for aws to v1.5.2 ([#4555](https://github.com/cloudquery/cloudquery/issues/4555)) ([c5c1fc1](https://github.com/cloudquery/cloudquery/commit/c5c1fc1df7d4f4f4ab92e8a47b140075103affc8))
+
 ## [5.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v4.17.1...plugins-source-aws-v5.0.0) (2022-11-14)
 
 
