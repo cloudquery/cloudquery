@@ -53,7 +53,7 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
-          version: v1.49.0
+          version: v1.50.1
           working-directory: plugins/source/github
           args: "--config ../../.golangci.yml"
       - name: Get dependencies

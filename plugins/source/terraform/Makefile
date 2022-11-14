@@ -27,3 +27,7 @@ gen-docs:
 .PHONY: lint
 lint:
 	golangci-lint run
+
+# All gen targets
+.PHONY: gen
+gen: gen-docs

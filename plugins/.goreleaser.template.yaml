@@ -7,7 +7,7 @@ archives:
     format: zip
     id: zip
     files:
-      - policies_v1/**
+      - policies/**
 checksum:
   name_template: "checksums.txt"
   ids:
