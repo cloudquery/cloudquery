@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [5.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v4.17.1...plugins-source-aws-v5.0.0) (2022-11-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* change `aws_rds_engine_versions`  to be regional. If you've previously synced this table you'll need to drop it for the PK change (migration) to succeed.
+
+### Bug Fixes
+
+* change `aws_rds_engine_versions`  to be regional. If you've previously synced this table you'll need to drop it for the PK change (migration) to succeed. ([71926dd](https://github.com/cloudquery/cloudquery/commit/71926dd2923be6dbea0550103c05a3011fa7ba9f))
+
 ## [4.17.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v4.17.0...plugins-source-aws-v4.17.1) (2022-11-14)
 
 
