@@ -17,16 +17,15 @@ func fetchCryptoKeys(ctx context.Context, meta schema.ClientMeta, parent *schema
 	it := c.Services.KmsKeyManagementClient.ListCryptoKeys(ctx, &kmspb.ListCryptoKeysRequest{Parent: p.Name})
 	for {
 		key, err := it.Next()
-		if key != nil {
-			res <- key
+		if err == iterator.Done {
+			break
 		}
 		if err != nil {
-			if errors.Is(err, iterator.Done) {
-				return nil
-			}
 			return errors.WithStack(err)
 		}
+		res <- key
 	}
+	return nil
 }
 
 func resolveRotationPeriod(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
