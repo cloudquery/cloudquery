@@ -89,8 +89,8 @@ func Instances() *schema.Table {
 			},
 			{
 				Name:     "state",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("State"),
+				Type:     schema.TypeString,
+				Resolver: client.ResolveProtoEnum("State"),
 			},
 			{
 				Name:     "status_message",
@@ -104,8 +104,8 @@ func Instances() *schema.Table {
 			},
 			{
 				Name:     "tier",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("Tier"),
+				Type:     schema.TypeString,
+				Resolver: client.ResolveProtoEnum("Tier"),
 			},
 			{
 				Name:     "memory_size_gb",
@@ -124,8 +124,8 @@ func Instances() *schema.Table {
 			},
 			{
 				Name:     "connect_mode",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("ConnectMode"),
+				Type:     schema.TypeString,
+				Resolver: client.ResolveProtoEnum("ConnectMode"),
 			},
 			{
 				Name:     "auth_enabled",
@@ -139,8 +139,8 @@ func Instances() *schema.Table {
 			},
 			{
 				Name:     "transit_encryption_mode",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("TransitEncryptionMode"),
+				Type:     schema.TypeString,
+				Resolver: client.ResolveProtoEnum("TransitEncryptionMode"),
 			},
 			{
 				Name:     "maintenance_policy",
@@ -174,8 +174,8 @@ func Instances() *schema.Table {
 			},
 			{
 				Name:     "read_replicas_mode",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("ReadReplicasMode"),
+				Type:     schema.TypeString,
+				Resolver: client.ResolveProtoEnum("ReadReplicasMode"),
 			},
 		},
 	}

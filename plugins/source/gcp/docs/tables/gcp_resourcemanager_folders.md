@@ -16,7 +16,7 @@ The primary key for this table is **_cq_id**.
 |name|String|
 |parent|String|
 |display_name|String|
-|state|Int|
+|state|String|
 |create_time|Timestamp|
 |update_time|Timestamp|
 |delete_time|Timestamp|
