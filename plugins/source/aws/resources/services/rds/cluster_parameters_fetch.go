@@ -2,7 +2,9 @@ package rds
 
 import (
 	"context"
+	"strings"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/rds"
 	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -15,9 +17,14 @@ func fetchRdsClusterParameters(ctx context.Context, meta schema.ClientMeta, pare
 
 	parentEngineVersion := parent.Item.(types.DBEngineVersion)
 
+	if !strings.Contains(aws.ToString(parentEngineVersion.DBParameterGroupFamily), "aurora") {
+		return nil
+	}
+
 	input := &rds.DescribeEngineDefaultClusterParametersInput{
 		DBParameterGroupFamily: parentEngineVersion.DBParameterGroupFamily,
 	}
+
 	output, err := svc.DescribeEngineDefaultClusterParameters(ctx, input)
 	if err != nil {
 		return err
