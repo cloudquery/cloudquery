@@ -37,8 +37,7 @@ func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, parent *sc
 func {{.Table.PreResourceResolver}}(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().{{.CloudQueryServiceName}}
-	input := {{.Service}}.{{.DescribeMethod.Method.Name}}Input{
-	}
+	var input {{.Service}}.{{.DescribeMethod.Method.Name}}Input = {{ if .CustomDescribeInput }}{{.CustomDescribeInput}}{{ else }}{{.Service}}.{{.DescribeMethod.Method.Name}}Input{}{{ end }}
 	output, err := svc.{{.DescribeMethod.Method.Name}}(ctx, &input)
 	if err != nil {
 		return err

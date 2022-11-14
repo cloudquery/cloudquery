@@ -33,7 +33,7 @@ func fetchKafkaClusters(ctx context.Context, meta schema.ClientMeta, parent *sch
 func getCluster(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Kafka
-	input := kafka.DescribeClusterV2Input{}
+	var input kafka.DescribeClusterV2Input = kafka.DescribeClusterV2Input{}
 	output, err := svc.DescribeClusterV2(ctx, &input)
 	if err != nil {
 		return err

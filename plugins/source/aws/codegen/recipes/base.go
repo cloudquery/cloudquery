@@ -51,6 +51,10 @@ type Resource struct {
 	ListMethodName  string // optional: List method on the Client to use. Only required if we need to disambiguate between multiple options.
 	CustomListInput string // optional: string to set List input to (otherwise empty input will be used)
 
+	// Applies only to describe resources:
+	DescribeMethodName  string // optional: Describe method on the Client to use. Only required if we need to disambiguate between multiple options.
+	CustomDescribeInput string // optional: string to set List input to (otherwise empty input will be used)
+
 	// used for generating resolver and mock tests, but set automatically
 	parent   *Resource
 	children []*Resource
@@ -321,6 +325,13 @@ func (r Resource) StructName() string {
 
 // DescribeMethod finds a describe method for the resource
 func (r Resource) DescribeMethod() discover.DiscoveredMethod {
+	if r.DescribeMethodName != "" {
+		m, err := discover.MethodByName(r.Client, r.Struct, r.DescribeMethodName)
+		if err != nil {
+			panic(err)
+		}
+		return m
+	}
 	m, err := discover.FindDescribeMethod(r.Client, r.Struct)
 	if err != nil {
 		panic(err)

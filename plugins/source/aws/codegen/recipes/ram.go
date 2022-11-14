@@ -17,6 +17,7 @@ func RAMResources() []*Resource {
 			PKColumns:                   []string{"id", "account_id"},
 			ExtraColumns:                defaultRegionalColumns,
 			ResolverAndMockTestTemplate: "list_resources_1",
+			CustomListInput:             `listPrincipalsInput()`,
 		},
 		{
 			SubService:                  "resources",
@@ -25,6 +26,8 @@ func RAMResources() []*Resource {
 			PKColumns:                   []string{"arn"},
 			ExtraColumns:                defaultRegionalColumns,
 			ResolverAndMockTestTemplate: "list_resources_1",
+			ListMethodName:              "ListResources",
+			CustomListInput:             `listResourcesInput()`,
 		},
 		{
 			SubService:   "resource_shares",
@@ -58,8 +61,9 @@ func RAMResources() []*Resource {
 			Multiplex:                   mx,
 			PKColumns:                   []string{"arn"},
 			ExtraColumns:                defaultRegionalColumns,
-			ResolverAndMockTestTemplate: "get_resources_1",
+			ResolverAndMockTestTemplate: "describe_resources_1",
 			NameTransformer:             CreateReplaceTransformer(map[string]string{"resource_share_invitation_arn": "arn"}),
+			CustomDescribeInput:         `getResourceShareInvitationsInput()`,
 		},
 		{
 			SubService: "resource_share_permissions",
@@ -74,13 +78,15 @@ func RAMResources() []*Resource {
 					Resolver: `resolveResourceSharePermissionDetailPermission`,
 				},
 			),
+			CustomListInput: `listResourceSharePermissionsInput()`,
 		},
 		{
-			SubService:   "resource_types",
-			Struct:       new(types.ServiceNameAndResourceType),
-			Multiplex:    mx,
-			PKColumns:    []string{"account_id", "resource_type", "service_name"},
-			ExtraColumns: defaultRegionalColumns,
+			SubService:      "resource_types",
+			Struct:          new(types.ServiceNameAndResourceType),
+			Multiplex:       mx,
+			PKColumns:       []string{"account_id", "resource_type", "service_name"},
+			ExtraColumns:    defaultRegionalColumns,
+			CustomListInput: `listResourceTypesInput()`,
 		},
 	}
 	for _, r := range resources {
@@ -89,7 +95,6 @@ func RAMResources() []*Resource {
 		if len(r.ResolverAndMockTestTemplate) > 0 {
 			r.ShouldGenerateResolverAndMockTest = true
 			r.Client = &ram.Client{}
-			r.CustomListInput = `MaxResults = aws.Int32(500)`
 		}
 	}
 	return resources

@@ -12,7 +12,7 @@ import (
 )
 
 func fetchAppstreamImageBuilders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	var input appstream.DescribeImageBuildersInput
+	var input appstream.DescribeImageBuildersInput = appstream.DescribeImageBuildersInput{}
 	c := meta.(*client.Client)
 	svc := c.Services().Appstream
 	for {

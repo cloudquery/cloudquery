@@ -12,7 +12,7 @@ import (
 )
 
 func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	var input {{.Service}}.{{.DescribeMethod.Method.Name}}Input
+	var input {{.Service}}.{{.DescribeMethod.Method.Name}}Input = {{ if .CustomDescribeInput }}{{.CustomDescribeInput}}{{ else }}{{.Service}}.{{.DescribeMethod.Method.Name}}Input{}{{ end }}
 	c := meta.(*client.Client)
 	svc := c.Services().{{.CloudQueryServiceName}}
 	for {

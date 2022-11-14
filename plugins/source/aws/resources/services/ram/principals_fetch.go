@@ -12,15 +12,15 @@ import (
 )
 
 func fetchRamPrincipals(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-  var input ram.ListPrincipalsInput = MaxResults = aws.Int32(500)
-  c := meta.(*client.Client)
-  svc := c.Services().Ram
-  for {
+	var input ram.ListPrincipalsInput = listPrincipalsInput()
+	c := meta.(*client.Client)
+	svc := c.Services().Ram
+	for {
 		response, err := svc.ListPrincipals(ctx, &input)
 		if err != nil {
 			return err
 		}
-        res <- response.Principals
+		res <- response.Principals
 		if aws.ToString(response.NextToken) == "" {
 			break
 		}
