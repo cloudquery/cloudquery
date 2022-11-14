@@ -3,7 +3,9 @@ package rds
 import (
 	"testing"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/rds"
+	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/faker"
@@ -20,6 +22,9 @@ func buildEngineVersionsMock(t *testing.T, ctrl *gomock.Controller) client.Servi
 		t.Fatal(err)
 	}
 	ev.Marker = nil
+	ev.DBEngineVersions = append(ev.DBEngineVersions, types.DBEngineVersion{
+		DBParameterGroupFamily: aws.String("aurora-mysql5.7"),
+	})
 	m.EXPECT().DescribeDBEngineVersions(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&ev,
 		nil,
