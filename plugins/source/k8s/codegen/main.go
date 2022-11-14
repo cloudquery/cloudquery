@@ -26,4 +26,8 @@ func main() {
 			log.Fatal(err)
 		}
 	}
+	if err := recipes.GeneratePlugin(resources); err != nil {
+		log.Fatal(err)
+	}
 }
+

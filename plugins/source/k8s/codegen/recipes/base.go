@@ -207,3 +207,47 @@ func isK8sTimeStruct(fieldType reflect.Type) bool {
 
 	return false
 }
+
+func GeneratePlugin(resources []*Resource) error {
+	_, filename, _, ok := runtime.Caller(0)
+	if !ok {
+		return fmt.Errorf("failed to get caller information")
+	}
+	dir := path.Dir(filename)
+
+	tpl, err := template.New("plugin.go.tpl").Funcs(template.FuncMap{
+		"ToCamel": strcase.ToCamel,
+		"ToLower": strings.ToLower,
+	}).ParseFS(templatesFS, "templates/*.go.tpl")
+	if err != nil {
+		return fmt.Errorf("failed to parse k8s templates: %w", err)
+	}
+	tpl, err = tpl.ParseFS(codegen.TemplatesFS, "templates/*.go.tpl")
+	if err != nil {
+		return fmt.Errorf("failed to parse sdk template: %w", err)
+	}
+
+	var buff bytes.Buffer
+	if err := tpl.Execute(&buff, resources); err != nil {
+		return fmt.Errorf("failed to execute template: %w", err)
+	}
+	dir = path.Join(dir, "../../resources/plugin")
+	if err := os.MkdirAll(dir, os.ModePerm); err != nil {
+		return fmt.Errorf("failed to create directory %s: %w", dir, err)
+	}
+
+	filePath := path.Join(dir, "plugin.go")
+	content := buff.Bytes()
+	formattedContent, err := format.Source(buff.Bytes())
+	if err != nil {
+		fmt.Printf("failed to format source: %s: %v\n", filePath, err)
+	} else {
+		content = formattedContent
+	}
+
+	if err := os.WriteFile(filePath, content, 0644); err != nil {
+		return fmt.Errorf("failed to write file %s: %w", filePath, err)
+	}
+	return nil
+}
+
