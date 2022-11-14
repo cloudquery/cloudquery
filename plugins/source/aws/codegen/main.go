@@ -86,6 +86,7 @@ func generateResources() ([]*recipes.Resource, error) {
 	resources = append(resources, recipes.SQSResources()...)
 	resources = append(resources, recipes.SSMResources()...)
 	resources = append(resources, recipes.SSOAdminResources()...)
+	resources = append(resources, recipes.TimestreamResources()...)
 	resources = append(resources, recipes.TransferResources()...)
 	resources = append(resources, recipes.WAFRegionalResources()...)
 	resources = append(resources, recipes.WAFResources()...)

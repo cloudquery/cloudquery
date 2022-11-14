@@ -410,6 +410,8 @@
 | ↳ [aws_ssm_instance_compliance_items](aws_ssm_instance_compliance_items.md) |
 | [aws_ssm_parameters](aws_ssm_parameters.md) |
 | [aws_ssoadmin_instances](aws_ssoadmin_instances.md) |
+| [aws_timestream_databases](aws_timestream_databases.md) |
+| ↳ [aws_timestream_tables](aws_timestream_tables.md) |
 | [aws_transfer_servers](aws_transfer_servers.md) |
 | [aws_wafregional_rate_based_rules](aws_wafregional_rate_based_rules.md) |
 | [aws_wafregional_rule_groups](aws_wafregional_rule_groups.md) |
