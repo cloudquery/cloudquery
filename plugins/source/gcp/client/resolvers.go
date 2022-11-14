@@ -60,7 +60,7 @@ func ResolveProtoTimestamp(path string) schema.ColumnResolver {
 		}
 		ts, ok := data.(*timestamppb.Timestamp)
 		if !ok {
-			return fmt.Errorf("unextected type, wanted \"*timestamppb.Timestamp\", have \"%T\"", data)
+			return fmt.Errorf("unexpected type, wanted \"*timestamppb.Timestamp\", have \"%T\"", data)
 		}
 		return resource.Set(c.Name, ts.AsTime())
 	}
@@ -74,7 +74,7 @@ func ResolveProtoDuration(path string) schema.ColumnResolver {
 		}
 		dur, ok := data.(*durationpb.Duration)
 		if !ok {
-			return fmt.Errorf("unextected type, wanted \"*durationpb.Duration\", have \"%T\"", data)
+			return fmt.Errorf("unexpected type, wanted \"*durationpb.Duration\", have \"%T\"", data)
 		}
 		return resource.Set(c.Name, dur.AsDuration())
 	}
@@ -88,7 +88,7 @@ func ResolveProtoEnum(path string) schema.ColumnResolver {
 		}
 		enum, ok := data.(protoreflect.Enum)
 		if !ok {
-			return fmt.Errorf("unextected type, wanted \"protoreflect.Enum\", have \"%T\"", data)
+			return fmt.Errorf("unexpected type, wanted \"protoreflect.Enum\", have \"%T\"", data)
 		}
 		return resource.Set(c.Name, protoimpl.X.EnumStringOf(enum.Descriptor(), enum.Number()))
 	}
