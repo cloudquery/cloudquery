@@ -15,9 +15,10 @@ The primary key for this table is **_cq_id**.
 |project_id|String|
 |name|String|
 |description|String|
-|status|Int|
+|status|String|
 |entry_point|String|
 |runtime|String|
+|timeout|Int|
 |available_memory_mb|Int|
 |service_account_email|String|
 |update_time|Timestamp|
@@ -29,8 +30,8 @@ The primary key for this table is **_cq_id**.
 |max_instances|Int|
 |min_instances|Int|
 |vpc_connector|String|
-|vpc_connector_egress_settings|Int|
-|ingress_settings|Int|
+|vpc_connector_egress_settings|String|
+|ingress_settings|String|
 |kms_key_name|String|
 |build_worker_pool|String|
 |build_id|String|
@@ -39,4 +40,4 @@ The primary key for this table is **_cq_id**.
 |secret_volumes|JSON|
 |source_token|String|
 |docker_repository|String|
-|docker_registry|Int|
+|docker_registry|String|
