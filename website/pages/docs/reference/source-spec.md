@@ -13,7 +13,7 @@ kind: source
 spec:
   name: "aws"
   path: "cloudquery/aws"
-  version: "v5.1.0" # latest version of aws plugin
+  version: "v5.1.1" # latest version of aws plugin
   destinations: ["postgresql"]
 
   spec:
