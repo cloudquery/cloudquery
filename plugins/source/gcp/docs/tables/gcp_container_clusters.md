@@ -48,6 +48,7 @@ The primary key for this table is **self_link**.
 |release_channel|JSON|
 |workload_identity_config|JSON|
 |mesh_certificates|JSON|
+|cost_management_config|JSON|
 |notification_config|JSON|
 |confidential_nodes|JSON|
 |identity_service_config|JSON|
