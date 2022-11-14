@@ -13,6 +13,7 @@ var docFiles = []string{
 }
 
 func TestDoc(t *testing.T) {
+	defer CloseLogFile()
 	cmd := NewCmdRoot()
 	tmpDir := t.TempDir()
 	cqTmpDir := t.TempDir()

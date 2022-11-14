@@ -42,6 +42,7 @@ func TestSync(t *testing.T) {
 
 	for _, tc := range configs {
 		t.Run(tc.name, func(t *testing.T) {
+			defer CloseLogFile()
 			cmd, cqDir := getSyncCommand(t, tc.config)
 			commandError := cmd.Execute()
 

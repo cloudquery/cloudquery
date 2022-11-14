@@ -8,6 +8,7 @@ import (
 )
 
 func TestMigrate(t *testing.T) {
+	defer CloseLogFile()
 	_, filename, _, _ := runtime.Caller(0)
 	currentDir := path.Dir(filename)
 	testConfig := path.Join(currentDir, "testdata", "sync-success.yml")
