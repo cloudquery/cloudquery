@@ -1,6 +1,5 @@
 \set framework 'cis_v1.6.0'
 \echo "Creating CIS V1.6.0 Section 5 Views"
--- \ir ../views/project_policy_members.sql
 \echo "Executing CIS V1.6.0 Section 5"
 \echo "5 Policies"
 
@@ -41,7 +40,7 @@
 \set check_id '5.2.1' 
 \echo "Executing check 5.2.1"
 \echo "Minimize the admission of privileged containers (Manual)"
-\ir ../queries/manual.sql
+\ir ../queries/pod_security/pod_container_privilege_disabled
 
 \set check_id '5.2.2' 
 \echo "Executing check 5.2.2"
