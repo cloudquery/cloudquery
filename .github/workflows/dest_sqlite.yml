@@ -53,7 +53,7 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
-          version: v1.49.0
+          version: v1.50.1
           working-directory: plugins/destination/sqlite
           args: "--config ../../.golangci.yml"
       - name: Get dependencies
@@ -80,9 +80,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.19.2-release-cache-${{ hashFiles('plugins/destination/sqlite/go.sum') }}
+          key: ${{ runner.os }}-go-1.19.3-release-cache-${{ hashFiles('plugins/destination/sqlite/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.19.2-release-cache-plugins-destination-sqlite
+            ${{ runner.os }}-go-1.19.3-release-cache-plugins-destination-sqlite
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/setup-go@v3
