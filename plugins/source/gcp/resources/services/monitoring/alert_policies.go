@@ -53,8 +53,8 @@ func AlertPolicies() *schema.Table {
 			},
 			{
 				Name:     "combiner",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("Combiner"),
+				Type:     schema.TypeString,
+				Resolver: client.ResolveProtoEnum("Combiner"),
 			},
 			{
 				Name:     "enabled",

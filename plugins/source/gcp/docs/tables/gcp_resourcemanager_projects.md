@@ -15,7 +15,7 @@ The primary key for this table is **_cq_id**.
 |project_id|String|
 |name|String|
 |parent|String|
-|state|Int|
+|state|String|
 |display_name|String|
 |create_time|Timestamp|
 |update_time|Timestamp|

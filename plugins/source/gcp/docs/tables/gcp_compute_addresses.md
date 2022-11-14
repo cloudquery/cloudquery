@@ -20,6 +20,7 @@ The primary key for this table is **self_link**.
 |description|String|
 |id|Int|
 |ip_version|String|
+|ipv6_endpoint_type|String|
 |kind|String|
 |name|String|
 |network|String|

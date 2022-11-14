@@ -15,6 +15,7 @@ type EcsClient interface {
 	DescribeTaskDefinition(context.Context, *ecs.DescribeTaskDefinitionInput, ...func(*ecs.Options)) (*ecs.DescribeTaskDefinitionOutput, error)
 	DescribeTaskSets(context.Context, *ecs.DescribeTaskSetsInput, ...func(*ecs.Options)) (*ecs.DescribeTaskSetsOutput, error)
 	DescribeTasks(context.Context, *ecs.DescribeTasksInput, ...func(*ecs.Options)) (*ecs.DescribeTasksOutput, error)
+	GetTaskProtection(context.Context, *ecs.GetTaskProtectionInput, ...func(*ecs.Options)) (*ecs.GetTaskProtectionOutput, error)
 	ListAccountSettings(context.Context, *ecs.ListAccountSettingsInput, ...func(*ecs.Options)) (*ecs.ListAccountSettingsOutput, error)
 	ListAttributes(context.Context, *ecs.ListAttributesInput, ...func(*ecs.Options)) (*ecs.ListAttributesOutput, error)
 	ListClusters(context.Context, *ecs.ListClustersInput, ...func(*ecs.Options)) (*ecs.ListClustersOutput, error)

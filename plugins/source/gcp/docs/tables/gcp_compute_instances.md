@@ -44,6 +44,7 @@ The primary key for this table is **self_link**.
 |private_ipv6_google_access|String|
 |reservation_affinity|JSON|
 |resource_policies|StringArray|
+|resource_status|JSON|
 |satisfies_pzs|Bool|
 |scheduling|JSON|
 |service_accounts|JSON|
