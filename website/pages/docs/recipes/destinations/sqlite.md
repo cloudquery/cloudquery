@@ -12,7 +12,7 @@ kind: destination
 spec:
   name: sqlite
   path: cloudquery/sqlite
-  version: "v1.0.4" # latest version of sqlite plugin
+  version: "v1.0.5" # latest version of sqlite plugin
   spec:
     connection_string: ./db.sql
 ```
