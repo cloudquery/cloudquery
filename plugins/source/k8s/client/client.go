@@ -51,16 +51,6 @@ func (c Client) WithContext(k8sContext string) *Client {
 	}
 }
 
-// Used for testing
-// func (c *Client) SetServices(s map[string]Services) {
-// 	c.services = s
-// 	contexts := make([]string, 0, len(s))
-// 	for k := range s {
-// 		contexts = append(contexts, k)
-// 	}
-// 	c.contexts = contexts
-// }
-
 func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.ClientMeta, error) {
 	var k8sSpec Spec
 
