@@ -88,9 +88,9 @@ Wildcard matching was introduced as a backwards-compatible change, so no config 
  - GCP [v2.4.15](https://github.com/cloudquery/cloudquery/releases/tag/plugins-source-gcp-v2.4.15)
  - Azure: [v1.4.4](https://github.com/cloudquery/cloudquery/releases/tag/plugins-source-azure-v1.4.4)
  
-See [this link](https://www.cloudquery.io/docs/plugins/sources) for a list of the latest versions of all official source plugins.
+See [this link](/docs/plugins/sources) for a list of the latest versions of all official source plugins.
 
 ## Conclusion
 
-If you have any thoughts or feedback about the feature, please share them as a [Github issue](https://github.com/cloudquery/cloudquery) or chat to us on [Discord](https://www.cloudquery.io/discord)! ❤️
+If you have any thoughts or feedback about the feature, please share them as a [Github issue](https://github.com/cloudquery/cloudquery) or chat to us on [Discord](/discord)! ❤️
 
