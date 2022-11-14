@@ -29,6 +29,6 @@
   "plugins/destination/test+FILLER": "0.0.0",
   "plugins/destination/csv": "1.1.8",
   "plugins/destination/csv+FILLER": "0.0.0",
-  "plugins/destination/sqlite": "1.0.5",
+  "plugins/destination/sqlite": "1.0.6",
   "plugins/destination/sqlite+FILLER": "0.0.0"
 }
