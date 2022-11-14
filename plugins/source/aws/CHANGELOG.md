@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [5.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v5.1.0...plugins-source-aws-v5.1.1) (2022-11-14)
+
+
+### Bug Fixes
+
+* **aws:** RDS Version Errors ([#4431](https://github.com/cloudquery/cloudquery/issues/4431)) ([c9aaf79](https://github.com/cloudquery/cloudquery/commit/c9aaf7976f20d1275f0859fdb61258bac5676536))
+
 ## [5.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v5.0.0...plugins-source-aws-v5.1.0) (2022-11-14)
 
 
