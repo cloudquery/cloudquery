@@ -1,9 +1,9 @@
 {
   "cli": "2.0.14",
   "cli+FILLER": "0.0.0",
-  "plugins/source/aws": "4.17.0",
+  "plugins/source/aws": "4.17.1",
   "plugins/source/aws+FILLER": "0.0.0",
-  "plugins/source/azure": "1.4.4",
+  "plugins/source/azure": "1.4.5",
   "plugins/source/azure+FILLER": "0.0.0",
   "plugins/source/cloudflare": "2.2.15",
   "plugins/source/cloudflare+FILLER": "0.0.0",
@@ -29,6 +29,6 @@
   "plugins/destination/test+FILLER": "0.0.0",
   "plugins/destination/csv": "1.1.7",
   "plugins/destination/csv+FILLER": "0.0.0",
-  "plugins/destination/sqlite": "1.0.4",
+  "plugins/destination/sqlite": "1.0.5",
   "plugins/destination/sqlite+FILLER": "0.0.0"
 }
