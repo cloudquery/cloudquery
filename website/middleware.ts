@@ -7,21 +7,22 @@ const getOS = (request) => {
     return "macOS";
   }
   if (parsed.os.name.includes("Windows")) {
-    return "Windows";
+    return "windows";
   }
 
-  return "Linux";
+  return "linux";
 };
 
 export function middleware(request: NextRequest) {
-  if (request.url.includes("/docs/quickstart?")) {
+  if (request.url.includes("/docs/quickstart/")) {
+    // Don't rewrite if the URL has the OS already
     return;
   }
   try {
     const url = request.nextUrl.clone();
     const os = getOS(request);
-    url.searchParams.set("os", os);
-    return NextResponse.rewrite(url);
+    const nextUrl = new URL(`/docs/quickstart/${os}`, url);
+    return NextResponse.redirect(nextUrl);
   } catch {
     // do nothing
   }
