@@ -5,6 +5,21 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.4.16](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v2.4.15...plugins-source-gcp-v2.4.16) (2022-11-14)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for gcp to v1.5.1 ([#4502](https://github.com/cloudquery/cloudquery/issues/4502)) ([99fc23d](https://github.com/cloudquery/cloudquery/commit/99fc23d6fa0493988d1faf5ef9230ecf0569c940))
+
+## [2.4.15](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v2.4.14...plugins-source-gcp-v2.4.15) (2022-11-11)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for gcp to v1.5.0 ([#4391](https://github.com/cloudquery/cloudquery/issues/4391)) ([c098a89](https://github.com/cloudquery/cloudquery/commit/c098a89bdd13378c9575343af47e64098d831692))
+* Fix links in Grafana compliance dashboards ([#4338](https://github.com/cloudquery/cloudquery/issues/4338)) ([e71ba56](https://github.com/cloudquery/cloudquery/commit/e71ba567fdd21ae9cf059023795c6765d1766848))
+
 ## [2.4.14](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v2.4.13...plugins-source-gcp-v2.4.14) (2022-11-10)
 
 

@@ -37,15 +37,7 @@ jobs:
           cache-dependency-path: plugins/source/${{ github.event.client_payload.slash_command.args.named.plugin }}/go.sum
 
       - name: Generate code
-        run: make gen-code
-        # Not all plugins have code generation
-        continue-on-error: true
-        working-directory: plugins/source/${{ github.event.client_payload.slash_command.args.named.plugin }}
-
-      - name: Generate docs
-        run: make gen-docs
-        # All plugins should have docs generation
-        continue-on-error: false
+        run: make gen
         working-directory: plugins/source/${{ github.event.client_payload.slash_command.args.named.plugin }}
 
       - uses: stefanzweifel/git-auto-commit-action@v4
