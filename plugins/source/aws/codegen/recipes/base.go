@@ -323,6 +323,11 @@ func (r Resource) StructName() string {
 	return reflect.TypeOf(r.Struct).Elem().Name()
 }
 
+// ListTagsMethod finds a ListTags method for the service, if any
+func (r Resource) ListTagsMethod() discover.DiscoveredMethod {
+
+}
+
 // DescribeMethod finds a describe method for the resource
 func (r Resource) DescribeMethod() discover.DiscoveredMethod {
 	if r.DescribeMethodName != "" {

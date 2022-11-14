@@ -33,6 +33,11 @@ func Nodes() *schema.Table {
 				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: resolveKafkaTags("NodeARN"),
+			},
+			{
 				Name:     "added_to_cluster_time",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("AddedToClusterTime"),

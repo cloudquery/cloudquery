@@ -33,6 +33,11 @@ func ClusterOperations() *schema.Table {
 				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: resolveKafkaTags("OperationArn"),
+			},
+			{
 				Name:     "client_request_id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ClientRequestId"),

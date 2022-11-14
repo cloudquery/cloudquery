@@ -25,6 +25,12 @@ func buildAppstreamAppBlocksMock(t *testing.T, ctrl *gomock.Controller) client.S
 		&appstream.DescribeAppBlocksOutput{
 			AppBlocks: []types.AppBlock{object},
 		}, nil)
+	tagsOutput := appstream.ListTagsForResourceOutput{}
+	err = faker.FakeObject(&tagsOutput)
+	if err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any()).Return(&tagsOutput, nil).AnyTimes()
 
 	return client.Services{
 		Appstream: m,

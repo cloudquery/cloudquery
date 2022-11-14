@@ -32,6 +32,12 @@ func buildKafkaClustersMock(t *testing.T, ctrl *gomock.Controller) client.Servic
 		&kafka.DescribeClusterV2Output{
 			ClusterInfo: &object,
 		}, nil)
+	tagsOutput := kafka.ListTagsForResourceOutput{}
+	err = faker.FakeObject(&tagsOutput)
+	if err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any()).Return(&tagsOutput, nil).AnyTimes()
 
 	return client.Services{
 		Kafka: m,

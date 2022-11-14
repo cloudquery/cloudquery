@@ -25,6 +25,12 @@ func buildKafkaConfigurationsMock(t *testing.T, ctrl *gomock.Controller) client.
 		&kafka.ListConfigurationsOutput{
 			Configurations: []types.Configuration{object},
 		}, nil)
+	tagsOutput := kafka.ListTagsForResourceOutput{}
+	err = faker.FakeObject(&tagsOutput)
+	if err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any()).Return(&tagsOutput, nil).AnyTimes()
 	return client.Services{
 		Kafka: m,
 	}

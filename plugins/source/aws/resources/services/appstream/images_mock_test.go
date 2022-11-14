@@ -25,6 +25,12 @@ func buildAppstreamImagesMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 		&appstream.DescribeImagesOutput{
 			Images: []types.Image{object},
 		}, nil)
+	tagsOutput := appstream.ListTagsForResourceOutput{}
+	err = faker.FakeObject(&tagsOutput)
+	if err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any()).Return(&tagsOutput, nil).AnyTimes()
 
 	return client.Services{
 		Appstream: m,
