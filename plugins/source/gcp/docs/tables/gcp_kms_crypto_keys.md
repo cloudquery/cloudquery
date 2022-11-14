@@ -17,7 +17,7 @@ This table depends on [gcp_kms_keyrings](gcp_kms_keyrings.md).
 |project_id|String|
 |name|String|
 |primary|JSON|
-|purpose|Int|
+|purpose|String|
 |create_time|Timestamp|
 |next_rotation_time|Timestamp|
 |version_template|JSON|

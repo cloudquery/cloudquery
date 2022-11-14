@@ -29,8 +29,8 @@ func CryptoKeys() *schema.Table {
 			},
 			{
 				Name:     "purpose",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("Purpose"),
+				Type:     schema.TypeString,
+				Resolver: client.ResolveProtoEnum("Purpose"),
 			},
 			{
 				Name:     "create_time",

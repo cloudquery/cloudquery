@@ -36,8 +36,8 @@ func Functions() *schema.Table {
 			},
 			{
 				Name:     "status",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("Status"),
+				Type:     schema.TypeString,
+				Resolver: client.ResolveProtoEnum("Status"),
 			},
 			{
 				Name:     "entry_point",
@@ -111,13 +111,13 @@ func Functions() *schema.Table {
 			},
 			{
 				Name:     "vpc_connector_egress_settings",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("VpcConnectorEgressSettings"),
+				Type:     schema.TypeString,
+				Resolver: client.ResolveProtoEnum("VpcConnectorEgressSettings"),
 			},
 			{
 				Name:     "ingress_settings",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("IngressSettings"),
+				Type:     schema.TypeString,
+				Resolver: client.ResolveProtoEnum("IngressSettings"),
 			},
 			{
 				Name:     "kms_key_name",
@@ -161,8 +161,8 @@ func Functions() *schema.Table {
 			},
 			{
 				Name:     "docker_registry",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("DockerRegistry"),
+				Type:     schema.TypeString,
+				Resolver: client.ResolveProtoEnum("DockerRegistry"),
 			},
 		},
 	}

@@ -58,7 +58,7 @@ The primary key for this table is **self_link**.
 |current_master_version|String|
 |current_node_version|String|
 |create_time|String|
-|status|Int|
+|status|String|
 |status_message|String|
 |node_ipv4_cidr_size|Int|
 |services_ipv4_cidr|String|

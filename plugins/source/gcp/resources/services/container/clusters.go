@@ -247,8 +247,8 @@ func Clusters() *schema.Table {
 			},
 			{
 				Name:     "status",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("Status"),
+				Type:     schema.TypeString,
+				Resolver: client.ResolveProtoEnum("Status"),
 			},
 			{
 				Name:     "status_message",
