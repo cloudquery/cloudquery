@@ -35,4 +35,5 @@ The following tables depend on gcp_bigquery_datasets:
 |max_time_travel_hours|Int|
 |satisfies_pzs|Bool|
 |self_link|String|
+|storage_billing_model|String|
 |tags|JSON|
