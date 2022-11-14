@@ -1,7 +1,8 @@
 WITH valid_namespaces AS (
-  SELECT id
-  FROM azure_eventhub_namespaces, jsonb_array_elements(network_rule_set -> 'properties' -> 'virtualNetworkRules') AS rule
-  WHERE rule -> 'subnet' ->> 'id' IS NOT NULL
+  SELECT n.id
+  FROM azure_eventhub_namespaces n
+    LEFT JOIN azure_eventhub_network_rule_sets r ON r.eventhub_namespace_id = n.id
+  WHERE r.id IS NOT NULL
 )
 insert into azure_policy_results
 SELECT

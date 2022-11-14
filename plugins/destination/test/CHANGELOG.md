@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v1.2.26...plugins-destination-test-v1.3.0) (2022-11-13)
+
+
+### Features
+
+* Add flag to force test destination plugin to return an error ([#4378](https://github.com/cloudquery/cloudquery/issues/4378)) ([5b72de9](https://github.com/cloudquery/cloudquery/commit/5b72de9744258e1eadf0b3e845349922bfb26071))
+
+## [1.2.26](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v1.2.25...plugins-destination-test-v1.2.26) (2022-11-13)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for test to v1.5.0 ([#4399](https://github.com/cloudquery/cloudquery/issues/4399)) ([9573c4a](https://github.com/cloudquery/cloudquery/commit/9573c4af4a974f176df49e5658107c4b09a57fb1))
+
 ## [1.2.25](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v1.2.24...plugins-destination-test-v1.2.25) (2022-11-10)
 
 

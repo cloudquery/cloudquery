@@ -53,7 +53,7 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
-          version: v1.49.0
+          version: v1.50.1
           working-directory: plugins/source/aws
           args: "--config ../../.golangci.yml"
       - name: Get dependencies
@@ -150,6 +150,6 @@ jobs:
         env:
           CQ_DSN: postgresql://postgres:pass@localhost:5432/postgres
       - name: Run all policies
-        run: cd policies_v1 && psql -h localhost -p 5432 -U postgres -d postgres -w -f ./policy.sql
+        run: cd policies && psql -h localhost -p 5432 -U postgres -d postgres -w -f ./policy.sql
         env:
           PGPASSWORD: pass

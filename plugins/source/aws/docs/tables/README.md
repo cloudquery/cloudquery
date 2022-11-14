@@ -217,6 +217,7 @@
 | [aws_fsx_backups](aws_fsx_backups.md) |
 | [aws_fsx_data_repository_associations](aws_fsx_data_repository_associations.md) |
 | [aws_fsx_data_repository_tasks](aws_fsx_data_repository_tasks.md) |
+| [aws_fsx_file_caches](aws_fsx_file_caches.md) |
 | [aws_fsx_file_systems](aws_fsx_file_systems.md) |
 | [aws_fsx_snapshots](aws_fsx_snapshots.md) |
 | [aws_fsx_storage_virtual_machines](aws_fsx_storage_virtual_machines.md) |
@@ -333,6 +334,16 @@
 | [aws_qldb_ledgers](aws_qldb_ledgers.md) |
 | ↳ [aws_qldb_ledger_journal_kinesis_streams](aws_qldb_ledger_journal_kinesis_streams.md) |
 | ↳ [aws_qldb_ledger_journal_s3_exports](aws_qldb_ledger_journal_s3_exports.md) |
+| [aws_quicksight_analyses](aws_quicksight_analyses.md) |
+| [aws_quicksight_dashboards](aws_quicksight_dashboards.md) |
+| [aws_quicksight_data_sets](aws_quicksight_data_sets.md) |
+| ↳ [aws_quicksight_ingestions](aws_quicksight_ingestions.md) |
+| [aws_quicksight_data_sources](aws_quicksight_data_sources.md) |
+| [aws_quicksight_folders](aws_quicksight_folders.md) |
+| [aws_quicksight_groups](aws_quicksight_groups.md) |
+| ↳ [aws_quicksight_group_members](aws_quicksight_group_members.md) |
+| [aws_quicksight_templates](aws_quicksight_templates.md) |
+| [aws_quicksight_users](aws_quicksight_users.md) |
 | [aws_ram_principals](aws_ram_principals.md) |
 | [aws_ram_resources](aws_ram_resources.md) |
 | [aws_ram_resource_shares](aws_ram_resource_shares.md) |
