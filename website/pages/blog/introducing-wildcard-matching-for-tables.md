@@ -92,5 +92,5 @@ See [this link](/docs/plugins/sources) for a list of the latest versions of all 
 
 ## Conclusion
 
-With wildcard matching support, we're hoping to reduce a lot of the boilerplate required to configure tables to sync with CloudQuery. If you have any thoughts or feedback about the feature, please share them as a [GitHub issue](https://github.com/cloudquery/cloudquery) or chat to us on [Discord](/discord)! ❤️
+With wildcard matching support, we're hoping to reduce a lot of the boilerplate required to configure tables to sync with CloudQuery. If you have any thoughts or feedback about the feature, please share them as a [GitHub issue](https://github.com/cloudquery/cloudquery) or chat to us on [Discord](https://cloudquery.io/discord)! ❤️
 
