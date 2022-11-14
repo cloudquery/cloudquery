@@ -67,7 +67,7 @@ export default function Home() {
           </div>
           <div className="flex fix-flex-col h-32 mt-4 md:mt-0 mb-6 md:mb-0 items-center gap-3 md:flex-row xl:flex-row">
             <div className="rounded-md fix-width-auto xl:w-auto">
-              <Link href="/docs">
+              <Link href="/docs/quickstart">
                 <a className="flex items-center justify-center w-full px-8 py-3 text-base font-medium text-white no-underline bg-black border border-transparent rounded-md dark:bg-white dark:text-black betterhover:dark:hover:bg-gray-300 betterhover:hover:bg-gray-700 md:py-3 md:text-lg md:px-10 md:leading-6">
                   Get Started →
                 </a>
