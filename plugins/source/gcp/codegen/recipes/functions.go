@@ -2,23 +2,22 @@ package recipes
 
 import (
 	functions "cloud.google.com/go/functions/apiv1"
-	pb "google.golang.org/genproto/googleapis/cloud/functions/v1"
+	"cloud.google.com/go/functions/apiv1/functionspb"
 )
 
 var functionsResources = []*Resource{
 	{
 		SubService:          "functions",
-		Struct:              &pb.CloudFunction{},
+		Struct:              &functionspb.CloudFunction{},
 		NewFunction:         functions.NewCloudFunctionsClient,
-		RequestStruct:       &pb.ListFunctionsRequest{},
-		ResponseStruct:      &pb.ListFunctionsResponse{},
-		RegisterServer:      pb.RegisterCloudFunctionsServiceServer,
-		ListFunction:        (&pb.UnimplementedCloudFunctionsServiceServer{}).ListFunctions,
+		RequestStruct:       &functionspb.ListFunctionsRequest{},
+		ResponseStruct:      &functionspb.ListFunctionsResponse{},
+		RegisterServer:      functionspb.RegisterCloudFunctionsServiceServer,
+		ListFunction:        (&functionspb.UnimplementedCloudFunctionsServiceServer{}).ListFunctions,
 		RequestStructFields: `Parent: "projects/" + c.ProjectId + "/locations/-",`,
-		UnimplementedServer: &pb.UnimplementedCloudFunctionsServiceServer{},
+		UnimplementedServer: &functionspb.UnimplementedCloudFunctionsServiceServer{},
 		FakerFieldsToIgnore: []string{"SourceCode", "Trigger"},
-		// Skipping Timeout because `TypeInterval` is broken right now, and breaks the plugin completely.
-		SkipFields: []string{"SourceCode", "Trigger", "Timeout"},
+		SkipFields:          []string{"SourceCode", "Trigger"},
 	},
 }
 

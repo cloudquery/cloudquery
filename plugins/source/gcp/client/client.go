@@ -6,13 +6,13 @@ import (
 	"fmt"
 
 	resourcemanagerv3 "cloud.google.com/go/resourcemanager/apiv3"
+	"cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
 	crmv1 "google.golang.org/api/cloudresourcemanager/v1"
 	"google.golang.org/api/iterator"
 	"google.golang.org/api/option"
-	resourcemanagerv3pb "google.golang.org/genproto/googleapis/cloud/resourcemanager/v3"
 )
 
 const maxProjectIdsToLog int = 100
@@ -31,10 +31,11 @@ type Client struct {
 //revive:disable:modifies-value-receiver
 
 // withProject allows multiplexer to create a new client with given subscriptionId
-func (c Client) withProject(project string) *Client {
-	c.logger = c.logger.With().Str("project_id", project).Logger()
-	c.ProjectId = project
-	return &c
+func (c *Client) withProject(project string) *Client {
+	newClient := *c
+	newClient.logger = c.logger.With().Str("project_id", project).Logger()
+	newClient.ProjectId = project
+	return &newClient
 }
 
 func isValidJson(content []byte) error {
@@ -100,7 +101,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 		}
 
 	case len(gcpSpec.FolderIDs) > 0:
-		folderIds := []string{}
+		var folderIds []string
 
 		for _, parentFolder := range gcpSpec.FolderIDs {
 			c.logger.Info().Msg("Listing folders...")
@@ -235,7 +236,7 @@ func listFolders(ctx context.Context, folderClient *resourcemanagerv3.FoldersCli
 		return folders, nil
 	}
 
-	it := folderClient.ListFolders(ctx, &resourcemanagerv3pb.ListFoldersRequest{
+	it := folderClient.ListFolders(ctx, &resourcemanagerpb.ListFoldersRequest{
 		Parent: parent,
 	})
 
@@ -249,7 +250,7 @@ func listFolders(ctx context.Context, folderClient *resourcemanagerv3.FoldersCli
 			return nil, err
 		}
 
-		if child.State == resourcemanagerv3pb.Folder_ACTIVE {
+		if child.State == resourcemanagerpb.Folder_ACTIVE {
 			childFolders, err := listFolders(ctx, folderClient, child.Name, recursionDepth-1)
 			if err != nil {
 				return nil, err
@@ -262,9 +263,9 @@ func listFolders(ctx context.Context, folderClient *resourcemanagerv3.FoldersCli
 }
 
 func listProjectsInFolders(ctx context.Context, projectClient *resourcemanagerv3.ProjectsClient, folders []string) ([]string, error) {
-	projects := []string{}
+	var projects []string
 	for _, folder := range folders {
-		it := projectClient.ListProjects(ctx, &resourcemanagerv3pb.ListProjectsRequest{
+		it := projectClient.ListProjects(ctx, &resourcemanagerpb.ListProjectsRequest{
 			Parent: folder,
 		})
 
@@ -278,7 +279,7 @@ func listProjectsInFolders(ctx context.Context, projectClient *resourcemanagerv3
 				return nil, err
 			}
 
-			if project.State == resourcemanagerv3pb.Project_ACTIVE {
+			if project.State == resourcemanagerpb.Project_ACTIVE {
 				projects = append(projects, project.ProjectId)
 			}
 		}
@@ -288,15 +289,15 @@ func listProjectsInFolders(ctx context.Context, projectClient *resourcemanagerv3
 }
 
 func setUnion(a []string, b []string) []string {
-	set := map[string]bool{}
+	set := make(map[string]struct{}, len(a)+len(b)) // alloc max
 	for _, s := range a {
-		set[s] = true
+		set[s] = struct{}{}
 	}
 	for _, s := range b {
-		set[s] = true
+		set[s] = struct{}{}
 	}
 
-	union := []string{}
+	union := make([]string, 0, len(set))
 	for s := range set {
 		union = append(union, s)
 	}

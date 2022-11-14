@@ -79,8 +79,8 @@ func Metrics() *schema.Table {
 			},
 			{
 				Name:     "version",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("Version"),
+				Type:     schema.TypeString,
+				Resolver: client.ResolveProtoEnum("Version"),
 			},
 		},
 	}
