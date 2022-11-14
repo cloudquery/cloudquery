@@ -40,14 +40,13 @@ func getAllKmsLocations(ctx context.Context, c *client.Client) ([]*locationpb.Lo
 	it := c.Services.KmsKeyManagementClient.ListLocations(ctx, &locationpb.ListLocationsRequest{Name: "projects/" + c.ProjectId})
 	for {
 		resp, err := it.Next()
-		if resp != nil {
-			locations = append(locations, resp)
+		if err == iterator.Done {
+			break
 		}
 		if err != nil {
-			if errors.Is(err, iterator.Done) {
-				return locations, nil
-			}
 			return nil, errors.WithStack(err)
 		}
+		locations = append(locations, resp)
 	}
+	return locations, nil
 }
