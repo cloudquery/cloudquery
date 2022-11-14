@@ -5,11 +5,7 @@ interface Page {
   name: string;
   route: string;
   children?: Page[];
-  meta: {
-    type?: string;
-    title?: string;
-    hidden?: boolean;
-  };
+  meta?: Record<string, any>;
   frontMatter?: any;
 }
 
