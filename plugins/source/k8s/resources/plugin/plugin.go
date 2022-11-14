@@ -47,7 +47,6 @@ func Plugin() *plugins.SourcePlugin {
 			core.Events(),
 			core.LimitRanges(),
 			core.Namespaces(),
-			core.Namespaces(),
 			core.Nodes(),
 			core.Pvs(),
 			core.Pvcs(),

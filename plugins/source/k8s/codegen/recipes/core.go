@@ -43,12 +43,6 @@ func Core() []*Resource {
 			ResourceFunc:   v1.NamespacesGetter.Namespaces,
 		},
 		{
-			SubService:     "namespaces",
-			Struct:         &corev1.Namespace{},
-			GlobalResource: true,
-			ResourceFunc:   v1.NamespacesGetter.Namespaces,
-		},
-		{
 			SubService:     "nodes",
 			Struct:         corev1.Node{},
 			GlobalResource: true,
