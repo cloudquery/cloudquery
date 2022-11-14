@@ -27,8 +27,8 @@ The primary key for this table is **_cq_id**.
 |last_modifier|String|
 |client|String|
 |client_version|String|
-|ingress|Int|
-|launch_stage|Int|
+|ingress|String|
+|launch_stage|String|
 |binary_authorization|JSON|
 |template|JSON|
 |traffic|JSON|

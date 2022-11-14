@@ -17,7 +17,7 @@ The primary key for this table is **_cq_id**.
 |domain_name|String|
 |create_time|Timestamp|
 |expire_time|Timestamp|
-|state|Int|
+|state|String|
 |issues|IntArray|
 |labels|JSON|
 |management_settings|JSON|
