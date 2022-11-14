@@ -15,7 +15,7 @@ const getOS = (request) => {
 
 export function middleware(request: NextRequest) {
   if (request.url.includes("/docs/quickstart/")) {
-    // Don't rewrite if the URL has the OS already
+    // Don't redirect if the URL has the OS already to avoid infinite redirects
     return;
   }
   try {
