@@ -1,5 +1,5 @@
 ---
-title: Introducing Glob Matching for Tables
+title: Introducing Wildcard Matching for Tables
 tag: product
 date: 2022/11/11
 description: 
@@ -10,7 +10,7 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 <BlogHeader/>
 
-I am excited to introduce a small feature that quietly rolled out today: glob matching for tables in CloudQuery config files!
+I am excited to introduce a feature that quietly rolled out today: wildcard matching for tables in CloudQuery config files!
 
 ## Before
 
@@ -33,7 +33,7 @@ As you can see, this was quite verbose!
 
 ## Now
 
-Config files now support glob matching. This means you can add a wildcard character (`*`) anywhere, and CloudQuery will include all tables that match. We can rewrite the previous EC2 config like this now:
+Config files now support wildcard matching. This means you can add a wildcard character (`*`) anywhere, and CloudQuery will include all tables that match. We can rewrite the previous EC2 config like this now:
 
 ```yaml
 tables: 
@@ -71,7 +71,7 @@ Since child tables often have many rows and can require thousands API calls to f
 
 ## Keeping up-to-date
 
-Another nice thing about glob matching is that you can use it to automatically sync new tables that get added to CloudQuery. Using our example from above, this config:
+Another nice thing about wildcard matching is that you can use it to automatically sync new tables that get added to CloudQuery. Using our example from above, this config:
 
 ```yaml
 tables: 
@@ -82,7 +82,7 @@ will not only sync all the EC2 tables today, it will also automatically include 
 
 ## A note about versions
 
-Glob matching was introduced as a backwards-compatible change, so no config updates are necessary when you upgrade to a version with support for glob matching. Glob matching is supported in the latest version of all official source plugins. For the big three cloud providers, it was first released in the following versions, and will be supported in these versions and higher:
+Wildcard matching was introduced as a backwards-compatible change, so no config updates are necessary when you upgrade to a version with support for wildcard matching. Wildcard matching is supported in the latest version of all official source plugins. For the big three cloud providers, it was first released in the following versions, and will be supported in these versions and higher:
 
  - AWS [v4.15.0](https://github.com/cloudquery/cloudquery/releases/tag/plugins-source-aws-v4.15.0)
  - GCP [v2.4.15](https://github.com/cloudquery/cloudquery/releases/tag/plugins-source-gcp-v2.4.15)
@@ -92,5 +92,5 @@ See [this link](https://www.cloudquery.io/docs/plugins/sources) for a list of th
 
 ## Conclusion
 
-This is a small change, but sometimes small changes make a big difference. If you have any thoughts or feedback about the feature, please share them as a [Github issue](https://github.com/cloudquery/cloudquery) or chat to us on [Discord](https://www.cloudquery.io/discord)! ❤️
+If you have any thoughts or feedback about the feature, please share them as a [Github issue](https://github.com/cloudquery/cloudquery) or chat to us on [Discord](https://www.cloudquery.io/discord)! ❤️
 
