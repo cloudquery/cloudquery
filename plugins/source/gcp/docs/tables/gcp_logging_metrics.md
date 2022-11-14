@@ -23,4 +23,4 @@ The primary key for this table is **name**.
 |bucket_options|JSON|
 |create_time|Timestamp|
 |update_time|Timestamp|
-|version|Int|
+|version|String|
