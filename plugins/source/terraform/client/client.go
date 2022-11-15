@@ -49,11 +49,11 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (sche
 
 		logger.Info().Msg("creating new backend")
 		// create backend for each backend config
-		if b, err := NewBackend(&config); err == nil { //nolint:revive
-			backends[b.BackendName] = b
-		} else {
+		b, err := NewBackend(ctx, &config)
+		if err != nil {
 			return nil, fmt.Errorf("cannot initialize backend: %w", err)
 		}
+		backends[b.BackendName] = b
 	}
 
 	client := New(logger, backends)

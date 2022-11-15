@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/cloudflare/cloudflare-go v0.46.0
-	github.com/cloudquery/plugin-sdk v1.5.2
+	github.com/cloudquery/plugin-sdk v1.5.3
 	github.com/golang/mock v1.6.0
 	github.com/rs/zerolog v1.28.0
 )
