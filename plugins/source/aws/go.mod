@@ -67,7 +67,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/qldb v1.14.20
 	github.com/aws/aws-sdk-go-v2/service/quicksight v1.26.2
 	github.com/aws/aws-sdk-go-v2/service/ram v1.16.24
-	github.com/aws/aws-sdk-go-v2/service/rds v1.28.1
+	github.com/aws/aws-sdk-go-v2/service/rds v1.29.0
 	github.com/aws/aws-sdk-go-v2/service/redshift v1.26.14
 	github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.12.21
 	github.com/aws/aws-sdk-go-v2/service/route53 v1.23.0
@@ -89,7 +89,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/waf v1.11.19
 	github.com/aws/aws-sdk-go-v2/service/wafv2 v1.23.1
 	github.com/aws/aws-sdk-go-v2/service/workspaces v1.25.0
-	github.com/aws/aws-sdk-go-v2/service/xray v1.13.22
+	github.com/aws/aws-sdk-go-v2/service/xray v1.14.0
 	github.com/aws/smithy-go v1.13.4
 	github.com/basgys/goxml2json v1.1.0
 	github.com/cloudquery/plugin-sdk v1.5.2

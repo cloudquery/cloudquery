@@ -8,13 +8,14 @@ import (
 )
 
 func TestMigrate(t *testing.T) {
+	defer CloseLogFile()
 	_, filename, _, _ := runtime.Caller(0)
 	currentDir := path.Dir(filename)
-	testDataDir := path.Join(currentDir, "testdata")
+	testConfig := path.Join(currentDir, "testdata", "sync-success.yml")
 	cmd := NewCmdRoot()
 	tmpDir := t.TempDir()
 	logFileName := path.Join(tmpDir, "cloudquery.log")
-	cmd.SetArgs([]string{"migrate", testDataDir, "--cq-dir", tmpDir, "--log-file-name", logFileName})
+	cmd.SetArgs([]string{"migrate", testConfig, "--cq-dir", tmpDir, "--log-file-name", logFileName})
 	if err := cmd.Execute(); err != nil {
 		t.Fatal(err)
 	}

@@ -35,6 +35,7 @@ func executeRootCmdWithContext() error {
 }
 
 func main() {
+	exitCode := 0
 	defer func() {
 		err := recover()
 		if err != nil {
@@ -42,13 +43,15 @@ func main() {
 			sentry.CurrentHub().CaptureMessage(originalMessage)
 			panic(err)
 		}
+
+		os.Exit(exitCode)
 	}()
+	defer cmd.CloseLogFile()
 
 	// This ensures we don't print anything until logging is configured
 	log.Logger = log.Level(zerolog.Disabled)
 	if err := executeRootCmdWithContext(); err != nil {
 		log.Error().Err(err).Msg("exiting with error")
-		//nolint:all This is fine if deferred is not called because there was no panic
-		os.Exit(1)
+		exitCode = 1
 	}
 }
