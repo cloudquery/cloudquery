@@ -62,10 +62,10 @@ jobs:
         run: go build .
       - name: Test
         run: make test
-      - name: gen-code
+      - name: gen
         if: github.event_name == 'pull_request'
         run: make gen
-      - name: Fail if code generation updated files
+      - name: Fail if generation updated files
         if: github.event_name == 'pull_request'
         run: test "$(git status -s | wc -l)" -eq 0
   validate-release:
