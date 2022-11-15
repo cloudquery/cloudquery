@@ -4,7 +4,7 @@ title: Performance Tuning
 
 # Performance Tuning
 
-This page contains a number of tips and tricks for improving the performance of `cloudquery sync` for very large cloud estates.
+This page contains a number of tips and tricks for improving the performance of `cloudquery sync` for large cloud estates.
 
 ## Wildcard Matching
 
@@ -38,10 +38,12 @@ The CloudQuery CLI will warn if a wildcard pattern does not match any known tabl
 
 Some tables require many API calls to sync. This is especially true of tables that depend on other tables, because often multiple API calls need to be made for every row in the parent table. This can lead to thousands of API calls, increasing the time it takes to sync. If you know that some child tables are not strictly necessary, you can improve sync performance by skipping them with the `skip_tables` setting.
 
-Let's say we have three tables: `A`, `B` and `C`. `A` is the top-level table. `B` depends on `A`, and `C` depends on `B`:
+Let's say we have three tables: `A`, `B` and `C`. `A` is the top-level table. `B` depends on it, and `C` depends on `B`:
 
 ```text
-A <- B <- C
+A 
+ ↳ B
+   ↳ C
 ```
 
 We might want table `A`, but not need the information in table `B`. We can then write our source config as:
