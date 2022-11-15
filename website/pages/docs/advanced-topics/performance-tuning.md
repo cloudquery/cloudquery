@@ -2,7 +2,7 @@
 title: Performance Tuning
 ---
 
-# Performance tuning
+# Performance Tuning
 
 This page contains a number of tips and tricks for improving the performance of `cloudquery sync` for very large cloud estates.
 
