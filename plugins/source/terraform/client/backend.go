@@ -68,7 +68,7 @@ func NewS3TerraformBackend(ctx context.Context, cfg *BackendConfigBlock) (*Terra
 		return nil, fmt.Errorf("cannot parse s3 backend config: %w", err)
 	}
 
-	awsConfig, err := config.LoadDefaultConfig(context.TODO())
+	awsConfig, err := config.LoadDefaultConfig(ctx)
 	if err != nil {
 		return nil, err
 	}
