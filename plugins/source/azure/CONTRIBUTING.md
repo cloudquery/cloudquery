@@ -36,7 +36,7 @@ This will install `mockgen` and any other tools necessary to complete the proces
 
 Every supported Azure service has a recipe file under [`codegen/recipes`](codegen/recipes). For example, all Web resources are listed in [`codegen/recipes/web.go`](codegen/recipes/web.go).
 
-In the following examples, we will use the fictional `MyService` Azure service with `MyResource` resource as an example. We recommend taking a look at a few examples in [codegen/recipes](codegen/recipes) first, as these steps will make more sense with some examples to reference.
+In the following example, we will use the fictional `MyService` Azure service with `MyResource` resource as an example. We recommend taking a look at a few examples in [codegen/recipes](codegen/recipes) first, as these steps will make more sense with some examples to reference.
 
 If you are adding a service that needs a new recipe, see [Add a New Recipe File](#add-a-new-recipe-file). Otherwise, if the Azure service is already supported but is missing resource(s), you may skip to [Add a Resource to a Recipe](#add-a-resource-to-a-recipe).
 
