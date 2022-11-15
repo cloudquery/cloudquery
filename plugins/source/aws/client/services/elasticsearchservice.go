@@ -19,6 +19,7 @@ type ElasticsearchserviceClient interface {
 	DescribePackages(context.Context, *elasticsearchservice.DescribePackagesInput, ...func(*elasticsearchservice.Options)) (*elasticsearchservice.DescribePackagesOutput, error)
 	DescribeReservedElasticsearchInstanceOfferings(context.Context, *elasticsearchservice.DescribeReservedElasticsearchInstanceOfferingsInput, ...func(*elasticsearchservice.Options)) (*elasticsearchservice.DescribeReservedElasticsearchInstanceOfferingsOutput, error)
 	DescribeReservedElasticsearchInstances(context.Context, *elasticsearchservice.DescribeReservedElasticsearchInstancesInput, ...func(*elasticsearchservice.Options)) (*elasticsearchservice.DescribeReservedElasticsearchInstancesOutput, error)
+	DescribeVpcEndpoints(context.Context, *elasticsearchservice.DescribeVpcEndpointsInput, ...func(*elasticsearchservice.Options)) (*elasticsearchservice.DescribeVpcEndpointsOutput, error)
 	GetCompatibleElasticsearchVersions(context.Context, *elasticsearchservice.GetCompatibleElasticsearchVersionsInput, ...func(*elasticsearchservice.Options)) (*elasticsearchservice.GetCompatibleElasticsearchVersionsOutput, error)
 	GetPackageVersionHistory(context.Context, *elasticsearchservice.GetPackageVersionHistoryInput, ...func(*elasticsearchservice.Options)) (*elasticsearchservice.GetPackageVersionHistoryOutput, error)
 	GetUpgradeHistory(context.Context, *elasticsearchservice.GetUpgradeHistoryInput, ...func(*elasticsearchservice.Options)) (*elasticsearchservice.GetUpgradeHistoryOutput, error)
@@ -29,4 +30,7 @@ type ElasticsearchserviceClient interface {
 	ListElasticsearchVersions(context.Context, *elasticsearchservice.ListElasticsearchVersionsInput, ...func(*elasticsearchservice.Options)) (*elasticsearchservice.ListElasticsearchVersionsOutput, error)
 	ListPackagesForDomain(context.Context, *elasticsearchservice.ListPackagesForDomainInput, ...func(*elasticsearchservice.Options)) (*elasticsearchservice.ListPackagesForDomainOutput, error)
 	ListTags(context.Context, *elasticsearchservice.ListTagsInput, ...func(*elasticsearchservice.Options)) (*elasticsearchservice.ListTagsOutput, error)
+	ListVpcEndpointAccess(context.Context, *elasticsearchservice.ListVpcEndpointAccessInput, ...func(*elasticsearchservice.Options)) (*elasticsearchservice.ListVpcEndpointAccessOutput, error)
+	ListVpcEndpoints(context.Context, *elasticsearchservice.ListVpcEndpointsInput, ...func(*elasticsearchservice.Options)) (*elasticsearchservice.ListVpcEndpointsOutput, error)
+	ListVpcEndpointsForDomain(context.Context, *elasticsearchservice.ListVpcEndpointsForDomainInput, ...func(*elasticsearchservice.Options)) (*elasticsearchservice.ListVpcEndpointsForDomainOutput, error)
 }
