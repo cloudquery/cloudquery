@@ -1,6 +1,10 @@
 # Terraform Plugin
 
-The CloudQuery Terraform plugin extracts terraform state.
+The CloudQuery Terraform plugin extracts terraform state and loads it into any supported CloudQuery destination (e.g. PostgreSQL).
+
+## Links
+
+- [Tables](./docs/tables/README.md)
 
 ## Configuration
 
@@ -12,28 +16,15 @@ spec:
   # Source spec section
   name: terraform
   path: cloudquery/terraform
-  version: "v1.2.0" # latest version of terraform plugin
+  version: "v1.2.19" # latest version of terraform plugin
   tables: ["*"]
   destinations: ["postgresql"]
-  spec:
-    backends:
-    - name: mylocal # local backend
-      type: local
-      config:
-        path: <PATH_TO_YOUR_TERRAfORM_FILE>
-   # - name: myremote # s3 backend
-   #   type: s3
-   #   config:
-   #     bucket: tf-states
-   #     key: terraform.tfstate
-   #     region: us-east-1
-   #     role_arn: ""
 ```
 
 You can have multiple backends at the same time, by describing them in the configuration. Every configuration block describes one backend to handle.
 CloudQuery currently supports LOCAL and S3 backends.
 
-### Authentication for S3 backends
+## Authentication for S3 backends
 
 To authenticate CloudQuery with your Terraform state in S3 you can use any of the following options (see full documentation at [AWS SDK V2](https://aws.github.io/aws-sdk-go-v2/docs/configuring-sdk/#specifying-credentials)):
 

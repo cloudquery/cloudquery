@@ -1,6 +1,6 @@
 # K8s Source Plugin
 
-The K8s Source plugin for CloudQuery extracts configuration from a variety of K8s APIs and loads them into any supported CloudQuery destinations (e.g. PostgreSQL).
+The K8s Source plugin for CloudQuery extracts configuration from a variety of K8s APIs and loads it into any supported CloudQuery destination (e.g. PostgreSQL).
 
 ## Links
 
