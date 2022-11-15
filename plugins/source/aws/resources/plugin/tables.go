@@ -330,7 +330,6 @@ func tables() []*schema.Table {
 		ram.Resources(),
 		ram.ResourceShares(),
 		ram.ResourceShareInvitations(),
-		ram.ResourceSharePermissions(),
 		ram.ResourceTypes(),
 		rds.Certificates(),
 		rds.EngineVersions(),

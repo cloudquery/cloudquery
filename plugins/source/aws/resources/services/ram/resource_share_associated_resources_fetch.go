@@ -18,10 +18,9 @@ func fetchRamResourceShareAssociatedResources(
 ) error {
 	input := &ram.GetResourceShareAssociationsInput{
 		AssociationType: types.ResourceShareAssociationTypeResource,
-		ResourceArn:     parent.Item.(types.ResourceShare).ResourceShareArn,
-		MaxResults:      aws.Int32(500),
+		// ResourceArn:     parent.Item.(types.ResourceShare).ResourceShareArn,
+		MaxResults: aws.Int32(500),
 	}
-
 	paginator := ram.NewGetResourceShareAssociationsPaginator(meta.(*client.Client).Services().Ram, input)
 	for paginator.HasMorePages() {
 		response, err := paginator.NextPage(ctx)

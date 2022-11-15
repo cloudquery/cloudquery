@@ -11,8 +11,11 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchRamResourceSharePermissions(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
-	input := &ram.ListResourceSharePermissionsInput{MaxResults: aws.Int32(500)}
+func fetchRamResourceSharePermissions(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, res chan<- interface{}) error {
+	input := &ram.ListResourceSharePermissionsInput{
+		MaxResults:       aws.Int32(500),
+		ResourceShareArn: resource.Item.(types.ResourceShare).ResourceShareArn,
+	}
 	paginator := ram.NewListResourceSharePermissionsPaginator(meta.(*client.Client).Services().Ram, input)
 	for paginator.HasMorePages() {
 		response, err := paginator.NextPage(ctx)

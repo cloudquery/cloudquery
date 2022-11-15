@@ -30,6 +30,7 @@ func RAMResources() []*Resource {
 			PKColumns:    []string{"arn"},
 			ExtraColumns: defaultRegionalColumns,
 			Relations: []string{
+				"ResourceSharePermissions()",
 				"ResourceShareAssociatedPrincipals()",
 				"ResourceShareAssociatedResources()",
 			},
@@ -61,7 +62,7 @@ func RAMResources() []*Resource {
 		{
 			SubService: "resource_share_permissions",
 			Struct:     new(types.ResourceSharePermissionSummary),
-			Multiplex:  mx,
+			Multiplex:  "", // it's a relation for resource_shares
 			PKColumns:  []string{"arn"},
 			ExtraColumns: append(defaultRegionalColumns,
 				codegen.ColumnDefinition{

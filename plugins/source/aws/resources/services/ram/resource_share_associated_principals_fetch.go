@@ -18,7 +18,6 @@ func fetchRamResourceShareAssociatedPrincipals(
 ) error {
 	input := &ram.GetResourceShareAssociationsInput{
 		AssociationType: types.ResourceShareAssociationTypePrincipal,
-		Principal:       parent.Item.(types.ResourceShare).ResourceShareArn,
 		MaxResults:      aws.Int32(500),
 	}
 	paginator := ram.NewGetResourceShareAssociationsPaginator(meta.(*client.Client).Services().Ram, input)

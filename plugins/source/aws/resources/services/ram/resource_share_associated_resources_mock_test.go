@@ -18,5 +18,5 @@ func buildRamResourceShareAssociatedResourcesMock(t *testing.T, m *mocks.MockRam
 	}
 
 	m.EXPECT().GetResourceShareAssociations(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&ram.GetResourceShareAssociationsOutput{ResourceShareAssociations: []types.ResourceShareAssociation{object}}, nil)
+		&ram.GetResourceShareAssociationsOutput{ResourceShareAssociations: []types.ResourceShareAssociation{object}}, nil).AnyTimes()
 }
