@@ -22,11 +22,14 @@ func buildRamResourcesMock(t *testing.T, ctrl *gomock.Controller) client.Service
 	}
 
 	m.EXPECT().ListResources(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&ram.ListResourcesOutput{Resources: []types.Resource{object}}, nil)
+		&ram.ListResourcesOutput{
+			Resources: []types.Resource{object},
+		}, nil)
 
-	return client.Services{Ram: m}
+	return client.Services{
+		Ram: m,
+	}
 }
-
 func TestRamResources(t *testing.T) {
 	client.AwsMockTestHelper(t, Resources(), buildRamResourcesMock, client.TestOptions{})
 }

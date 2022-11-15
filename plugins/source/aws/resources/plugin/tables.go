@@ -53,6 +53,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/inspector"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/inspector2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/iot"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/kafka"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/kinesis"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/kms"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/lambda"
@@ -103,12 +104,12 @@ func tables() []*schema.Table {
 		apigatewayv2.DomainNames(),
 		apigatewayv2.VpcLinks(),
 		applicationautoscaling.Policies(),
-		apprunner.AutoScalingConfiguration(),
+		apprunner.AutoScalingConfigurations(),
 		apprunner.Connections(),
 		apprunner.ObservabilityConfigurations(),
 		apprunner.Services(),
-		apprunner.VpcConnector(),
-		apprunner.VpcIngressConnection(),
+		apprunner.VpcConnectors(),
+		apprunner.VpcIngressConnections(),
 		appstream.AppBlocks(),
 		appstream.Applications(),
 		appstream.DirectoryConfigs(),
@@ -180,7 +181,7 @@ func tables() []*schema.Table {
 		ec2.NetworkAcls(),
 		ec2.NetworkInterfaces(),
 		ec2.Regions(),
-		ec2.RegionalConfig(),
+		ec2.RegionalConfigs(),
 		ec2.ReservedInstances(),
 		ec2.RouteTables(),
 		ec2.SecurityGroups(),
@@ -288,6 +289,8 @@ func tables() []*schema.Table {
 		iot.ThingTypes(),
 		iot.Things(),
 		iot.TopicRules(),
+		kafka.Clusters(),
+		kafka.Configurations(),
 		kinesis.Streams(),
 		kms.Aliases(),
 		kms.Keys(),
@@ -395,7 +398,7 @@ func tables() []*schema.Table {
 		wafv2.WebAcls(),
 		workspaces.Workspaces(),
 		workspaces.Directories(),
-		xray.EncryptionConfig(),
+		xray.EncryptionConfigs(),
 		xray.Groups(),
 		xray.SamplingRules(),
 	}

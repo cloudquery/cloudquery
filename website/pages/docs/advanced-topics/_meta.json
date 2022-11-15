@@ -1,8 +1,9 @@
 {
   "environment-variable-substitution": "Environment Variable Substitution",
-  "running-cloudquery-in-parallel": "Running CloudQuery in Parallel",
-  "proxy-configuration": "Proxy Configuration",
   "docker": "Docker",
-  "security": "Security",
-  "rate-limiting": "Rate Limiting"
+  "proxy-configuration": "Proxy Configuration",
+  "performance-tuning": "Performance Tuning",
+  "rate-limiting": "Rate Limiting",
+  "running-cloudquery-in-parallel": "Running CloudQuery in Parallel",
+  "security": "Security"
 }

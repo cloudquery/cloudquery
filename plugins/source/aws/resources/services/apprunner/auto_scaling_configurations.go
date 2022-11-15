@@ -7,11 +7,11 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func AutoScalingConfiguration() *schema.Table {
+func AutoScalingConfigurations() *schema.Table {
 	return &schema.Table{
-		Name:                "aws_apprunner_auto_scaling_configuration",
+		Name:                "aws_apprunner_auto_scaling_configurations",
 		Description:         `https://docs.aws.amazon.com/apprunner/latest/api/API_AutoScalingConfiguration.html`,
-		Resolver:            fetchApprunnerAutoScalingConfiguration,
+		Resolver:            fetchApprunnerAutoScalingConfigurations,
 		PreResourceResolver: getAutoScalingConfiguration,
 		Multiplex:           client.ServiceAccountRegionMultiplexer("apprunner"),
 		Columns: []schema.Column{

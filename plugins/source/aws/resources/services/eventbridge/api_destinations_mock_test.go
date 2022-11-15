@@ -26,11 +26,16 @@ func buildEventbridgeApiDestinationsMock(t *testing.T, ctrl *gomock.Controller) 
 			ApiDestinations: []types.ApiDestination{object},
 		}, nil)
 
+	tagsOutput := eventbridge.ListTagsForResourceOutput{}
+	err = faker.FakeObject(&tagsOutput)
+	if err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any()).Return(&tagsOutput, nil).AnyTimes()
 	return client.Services{
 		Eventbridge: m,
 	}
 }
-
 func TestEventbridgeApiDestinations(t *testing.T) {
 	client.AwsMockTestHelper(t, ApiDestinations(), buildEventbridgeApiDestinationsMock, client.TestOptions{})
 }
