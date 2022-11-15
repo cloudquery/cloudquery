@@ -15,12 +15,5 @@ END AS "execution_time"  \gset
 \ir ../views/pod_containers.sql
 \ir ../views/replica_set_containers.sql
 \ir ../views/stateful_set_containers.sql
-\ir section_1_1.sql
-\ir section_1_2.sql
-\ir section_1_3.sql
-\ir section_1_4.sql
-\ir section_2.sql
-\ir section_3.sql
-\ir section_4_1.sql
-\ir section_4_2.sql
+
 \ir section_5.sql
