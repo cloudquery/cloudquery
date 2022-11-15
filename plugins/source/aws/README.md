@@ -1,6 +1,6 @@
 # AWS Source Plugin
 
-The AWS Source plugin extracts information from many of the supported services by Amazon Web Services (AWS).
+The AWS Source plugin extracts information from many of the supported services by Amazon Web Services (AWS) and loads it into any supported CloudQuery destination (e.g. PostgreSQL).
 
 ## Links
 
