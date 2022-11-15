@@ -1,5 +1,6 @@
 variables:
   component: source/k8s
+  binary: k8s
 
 project_name: plugins/source/k8s
 

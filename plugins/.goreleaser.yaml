@@ -20,3 +20,17 @@ builds:
     ignore:
       - goos: windows
         goarch: arm64
+after:
+  hooks:
+    - cmd: unzip -o {{ .Var.binary }}_linux_arm64.zip
+      dir: dist
+    - cmd: unzip -o {{ .Var.binary }}_darwin_arm64.zip
+      dir: dist
+    - cmd: unzip -o {{ .Var.binary }}_windows_amd64.zip
+      dir: dist
+    - cmd: unzip -o {{ .Var.binary }}_darwin_amd64.zip
+      dir: dist
+    - cmd: unzip -o {{ .Var.binary }}_linux_amd64.zip
+      dir: dist
+    - cmd: plugins/{{ .Var.component }} --version
+      dir: dist
