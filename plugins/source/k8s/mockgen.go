@@ -76,8 +76,7 @@ package main
 
 //go:generate mockgen --package=v1 --destination=mocks/discovery/v1beta1/client.go "k8s.io/client-go/kubernetes/typed/discovery/v1beta1" DiscoveryV1beta1Interface
 
-//go:generate mockgen --package=v1 --destination=mocks/discovery/v1/client.go "k8s.io/client-go/kubernetes/typed/events/v1" EventsV1Interface
-//go:generate mockgen --package=v1 --destination=mocks/discovery/v1/event.go "k8s.io/client-go/kubernetes/typed/events/v1" EventsGetter,EventInterface
+//go:generate mockgen --package=v1 --destination=mocks/discovery/v1/client.go "k8s.io/client-go/kubernetes/typed/discovery/v1" DiscoveryV1Interface
 
 //go:generate mockgen --package=v1 --destination=mocks/discovery/v1beta1/client.go "k8s.io/client-go/kubernetes/typed/events/v1beta1" EventsV1beta1Interface
 
