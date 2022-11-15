@@ -7,11 +7,11 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func ResourceShareAssociatedPrincipals() *schema.Table {
+func ResourceShareAssociations() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_ram_resource_share_associated_principals",
+		Name:        "aws_ram_resource_share_associations",
 		Description: `https://docs.aws.amazon.com/ram/latest/APIReference/API_ResourceShareAssociation.html`,
-		Resolver:    fetchRamResourceShareAssociatedPrincipals,
+		Resolver:    fetchRamResourceShareAssociations,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ram"),
 		Columns: []schema.Column{
 			{

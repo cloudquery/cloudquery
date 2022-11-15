@@ -22,7 +22,7 @@ func buildRamPrincipalsMock(t *testing.T, ctrl *gomock.Controller) client.Servic
 	m.EXPECT().ListPrincipals(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&ram.ListPrincipalsOutput{
 			Principals: []types.Principal{object},
-		}, nil)
+		}, nil).MinTimes(1)
 
 	return client.Services{
 		Ram: m,
