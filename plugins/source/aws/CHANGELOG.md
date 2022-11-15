@@ -11,7 +11,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### ⚠ BREAKING CHANGES
 
-* **aws:** Renamed `aws_apprunner_auto_scaling_configuration` to `aws_apprunner_auto_scaling_configurations`, renamed `aws_apprunner_vpc_connector` to `aws_apprunner_vpc_connectors`, renamed `aws_apprunner_vpc_ingress_connection` to `aws_apprunner_vpc_ingress_connections`, renamed `aws_ec2_regional_config` to `aws_ec2_regional_configs`, renamed `aws_lightsail_disk_snapshot` to `aws_lightsail_disk_snapshots`, renamed `aws_xray_encryption_config` to `aws_xray_encryption_configs`
+* **aws:** Renamed `aws_apprunner_auto_scaling_configuration` to `aws_apprunner_auto_scaling_configurations`
+* **aws:** Renamed `aws_apprunner_vpc_connector` to `aws_apprunner_vpc_connectors`
+* **aws:** Renamed `aws_apprunner_vpc_ingress_connection` to `aws_apprunner_vpc_ingress_connections`
+* **aws:** Renamed `aws_ec2_regional_config` to `aws_ec2_regional_configs`
+* **aws:** Renamed `aws_lightsail_disk_snapshot` to `aws_lightsail_disk_snapshots`
+* **aws:** Renamed `aws_xray_encryption_config` to `aws_xray_encryption_configs`
 
 ### Bug Fixes
 
