@@ -2,20 +2,21 @@
 
 https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServiceLastAccessed.html
 
-The composite primary key for this table is (**job_id**, **resource_arn**, **service_name**).
+The primary key for this table is **_cq_id**.
 
+## Relations
+This table depends on [aws_iam_groups](aws_iam_groups.md).
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
-|_cq_id|UUID|
+|_cq_id (PK)|UUID|
 |_cq_parent_id|UUID|
-|account_id|String|
-|job_id (PK)|String|
-|resource_arn (PK)|String|
-|service_name (PK)|String|
+|resource_arn|String|
+|job_id|String|
+|service_name|String|
 |service_namespace|String|
 |last_authenticated|Timestamp|
 |last_authenticated_entity|String|
