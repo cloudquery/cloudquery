@@ -68,7 +68,6 @@ jobs:
       - name: Fail if generation updated files
         if: github.event_name == 'pull_request'
         run: |
-          git status -s
           test "$(git status -s | wc -l)" -eq 0
   validate-release:
     timeout-minutes: 30
