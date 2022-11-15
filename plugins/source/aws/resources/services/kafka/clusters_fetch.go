@@ -12,7 +12,7 @@ import (
 )
 
 func fetchKafkaClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	var input kafka.ListClustersV2Input = kafka.ListClustersV2Input{}
+	var input kafka.ListClustersV2Input
 	c := meta.(*client.Client)
 	svc := c.Services().Kafka
 	for {

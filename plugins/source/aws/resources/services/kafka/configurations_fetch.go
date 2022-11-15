@@ -12,7 +12,7 @@ import (
 )
 
 func fetchKafkaConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	var input kafka.ListConfigurationsInput = kafka.ListConfigurationsInput{}
+	var input kafka.ListConfigurationsInput
 	c := meta.(*client.Client)
 	svc := c.Services().Kafka
 	for {

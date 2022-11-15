@@ -12,7 +12,7 @@ import (
 )
 
 func fetchAppstreamAppBlocks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	var input appstream.DescribeAppBlocksInput = appstream.DescribeAppBlocksInput{}
+	var input appstream.DescribeAppBlocksInput
 	c := meta.(*client.Client)
 	svc := c.Services().Appstream
 	for {

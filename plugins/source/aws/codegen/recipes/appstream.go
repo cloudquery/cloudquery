@@ -135,7 +135,7 @@ func AppstreamResources() []*Resource {
 					},
 				}...),
 			ShouldGenerateResolverAndMockTest: true,
-			CustomListInput:                   `MaxResults = aws.Int32(25)`,
+			CustomDescribeInput:               `appstream.DescribeImagesInput{MaxResults: aws.Int32(25)}`,
 		},
 		{
 			SubService:  "stacks",

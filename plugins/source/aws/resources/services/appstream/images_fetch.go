@@ -12,7 +12,7 @@ import (
 )
 
 func fetchAppstreamImages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	var input appstream.DescribeImagesInput = appstream.DescribeImagesInput{}
+	var input appstream.DescribeImagesInput = appstream.DescribeImagesInput{MaxResults: aws.Int32(25)}
 	c := meta.(*client.Client)
 	svc := c.Services().Appstream
 	for {

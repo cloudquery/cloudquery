@@ -12,7 +12,7 @@ import (
 )
 
 func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-    var input {{.Service}}.{{.ListMethod.Method.Name}}Input = {{ if .CustomListInput }}{{.CustomListInput}}{{ else }}{{.Service}}.{{.ListMethod.Method.Name}}Input{}{{ end }}
+    var input {{.Service}}.{{.ListMethod.Method.Name}}Input{{ if .CustomListInput }} = {{.CustomListInput}}{{ end }}
 	c := meta.(*client.Client)
 	svc := c.Services().{{.CloudQueryServiceName}}
 	for {
@@ -37,7 +37,7 @@ func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, parent *sc
 func {{.Table.PreResourceResolver}}(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().{{.CloudQueryServiceName}}
-	var input {{.Service}}.{{.DescribeMethod.Method.Name}}Input = {{ if .CustomDescribeInput }}{{.CustomDescribeInput}}{{ else }}{{.Service}}.{{.DescribeMethod.Method.Name}}Input{}{{ end }}
+	var input {{.Service}}.{{.DescribeMethod.Method.Name}}Input{{ if .CustomDescribeInput }} = {{.CustomDescribeInput}}{{ end }}
 	output, err := svc.{{.DescribeMethod.Method.Name}}(ctx, &input)
 	if err != nil {
 		return err

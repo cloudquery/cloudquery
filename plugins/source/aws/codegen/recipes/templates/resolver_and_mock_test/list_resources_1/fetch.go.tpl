@@ -12,7 +12,7 @@ import (
 )
 
 func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-  var input {{.Service}}.{{.ListMethod.Method.Name}}Input = {{ if .CustomListInput }}{{.CustomListInput}}{{ else }}{{.Service}}.{{.ListMethod.Method.Name}}Input{}{{ end }}
+  var input {{.Service}}.{{.ListMethod.Method.Name}}Input{{ if .CustomListInput }} = {{.CustomListInput}}{{ end }}
   c := meta.(*client.Client)
   svc := c.Services().{{.Service | ToCamel}}
   for {

@@ -12,7 +12,7 @@ import (
 )
 
 func fetchEventbridgeArchives(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	var input eventbridge.ListArchivesInput = eventbridge.ListArchivesInput{}
+	var input eventbridge.ListArchivesInput
 	c := meta.(*client.Client)
 	svc := c.Services().Eventbridge
 	for {
