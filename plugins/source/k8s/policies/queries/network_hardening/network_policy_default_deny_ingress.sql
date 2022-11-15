@@ -20,4 +20,4 @@ select uid                                   AS resource_id,
          ELSE 'pass'
          END                                AS STATUS
 
-FROM k8s_core_namespaces
+FROM k8s_core_namespaces;
