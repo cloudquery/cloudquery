@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [5.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v5.1.1...plugins-source-aws-v5.1.2) (2022-11-15)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/rds to v1.29.0 ([#4612](https://github.com/cloudquery/cloudquery/issues/4612)) ([4bcf227](https://github.com/cloudquery/cloudquery/commit/4bcf227dc16956164a22db53caee5fac62c05e50))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/xray to v1.14.0 ([#4613](https://github.com/cloudquery/cloudquery/issues/4613)) ([e2c7e64](https://github.com/cloudquery/cloudquery/commit/e2c7e64c93a52867eab903a964d71110b42498e3))
+
 ## [5.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v5.1.0...plugins-source-aws-v5.1.1) (2022-11-14)
 
 
