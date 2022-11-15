@@ -21,5 +21,5 @@ func buildEc2RegionalConfig(t *testing.T, ctrl *gomock.Controller) client.Servic
 }
 
 func TestEc2RegionalConfig(t *testing.T) {
-	client.AwsMockTestHelper(t, RegionalConfig(), buildEc2RegionalConfig, client.TestOptions{})
+	client.AwsMockTestHelper(t, RegionalConfigs(), buildEc2RegionalConfig, client.TestOptions{})
 }

@@ -6,6 +6,29 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [6.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v5.2.0...plugins-source-aws-v6.0.0) (2022-11-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* **aws:** Renamed `aws_apprunner_auto_scaling_configuration` to `aws_apprunner_auto_scaling_configurations`
+* **aws:** Renamed `aws_apprunner_vpc_connector` to `aws_apprunner_vpc_connectors`
+* **aws:** Renamed `aws_apprunner_vpc_ingress_connection` to `aws_apprunner_vpc_ingress_connections`
+* **aws:** Renamed `aws_ec2_regional_config` to `aws_ec2_regional_configs`
+* **aws:** Renamed `aws_lightsail_disk_snapshot` to `aws_lightsail_disk_snapshots`
+* **aws:** Renamed `aws_xray_encryption_config` to `aws_xray_encryption_configs`
+
+### Bug Fixes
+
+* **aws:** Ensure all AWS table names are plural ([944f1b1](https://github.com/cloudquery/cloudquery/commit/944f1b12991965c2de5dc58c6c504ae7775e368d))
+
+## [5.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v5.1.2...plugins-source-aws-v5.2.0) (2022-11-15)
+
+
+### Features
+
+* Add MSK and codegen from AWS Client structs ([#3967](https://github.com/cloudquery/cloudquery/issues/3967)) ([eb602bb](https://github.com/cloudquery/cloudquery/commit/eb602bb45cb325f75b4e1fc22727b25ed7db5f33))
+
 ## [5.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v5.1.1...plugins-source-aws-v5.1.2) (2022-11-15)
 
 

@@ -299,7 +299,7 @@ func EC2Resources() []*Resource {
 			},
 		},
 		{
-			SubService: "regional_config",
+			SubService: "regional_configs",
 			Struct:     &models.RegionalConfig{},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{

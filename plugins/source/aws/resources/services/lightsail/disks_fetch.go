@@ -26,7 +26,7 @@ func fetchLightsailDisks(ctx context.Context, meta schema.ClientMeta, parent *sc
 	}
 	return nil
 }
-func fetchLightsailDiskSnapshot(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchLightsailDiskSnapshots(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var input lightsail.GetDiskSnapshotsInput
 	c := meta.(*client.Client)
 	svc := c.Services().Lightsail
