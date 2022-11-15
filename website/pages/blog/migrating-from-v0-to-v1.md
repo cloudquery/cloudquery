@@ -70,7 +70,7 @@ spec:
   path: "cloudquery/postgresql"
 
   # Required. Must be a specific version starting with v, e.g. v1.2.3
-  version: "v1.7.10" # latest version of postgresql plugin
+  version: "v1.7.11" # latest version of postgresql plugin
  
   ## Optional. Default: "overwrite". Available: "overwrite", "append", "overwrite-delete-stale". Not all modes are 
   ## supported by all plugins, so make sure to check the plugin documentation for more details.
@@ -142,7 +142,7 @@ spec:
 kind: destination
 spec:
     name: "postgresql"
-    version: "v1.7.10" # latest version of postgresql plugin
+    version: "v1.7.11" # latest version of postgresql plugin
     # rest of destination spec here
 ```
 
