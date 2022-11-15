@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/recipes"
@@ -60,6 +61,7 @@ func generateResources() ([]*recipes.Resource, error) {
 	resources = append(resources, recipes.Inspector2Resources()...)
 	resources = append(resources, recipes.InspectorResources()...)
 	resources = append(resources, recipes.IOTResources()...)
+	resources = append(resources, recipes.KafkaResources()...)
 	resources = append(resources, recipes.KinesisResources()...)
 	resources = append(resources, recipes.KMSResources()...)
 	resources = append(resources, recipes.LambdaResources()...)
@@ -69,6 +71,7 @@ func generateResources() ([]*recipes.Resource, error) {
 	resources = append(resources, recipes.NeptuneResources()...)
 	resources = append(resources, recipes.OrganizationsResources()...)
 	resources = append(resources, recipes.QLDBResources()...)
+	resources = append(resources, recipes.QuickSightResources()...)
 	resources = append(resources, recipes.RAMResources()...)
 	resources = append(resources, recipes.RDSResources()...)
 	resources = append(resources, recipes.RedshiftResources()...)
@@ -85,12 +88,18 @@ func generateResources() ([]*recipes.Resource, error) {
 	resources = append(resources, recipes.SQSResources()...)
 	resources = append(resources, recipes.SSMResources()...)
 	resources = append(resources, recipes.SSOAdminResources()...)
+	resources = append(resources, recipes.TimestreamResources()...)
 	resources = append(resources, recipes.TransferResources()...)
 	resources = append(resources, recipes.WAFRegionalResources()...)
 	resources = append(resources, recipes.WAFResources()...)
 	resources = append(resources, recipes.WAFv2Resources()...)
 	resources = append(resources, recipes.WorkspacesResources()...)
 	resources = append(resources, recipes.XRayResources()...)
+
+	err := recipes.SetParentChildRelationships(resources)
+	if err != nil {
+		return nil, fmt.Errorf("failed to set parent-child relationships: %w", err)
+	}
 	for _, resource := range resources {
 		if err := resource.Generate(); err != nil {
 			return nil, err

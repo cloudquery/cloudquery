@@ -54,6 +54,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/inspector"
 	"github.com/aws/aws-sdk-go-v2/service/inspector2"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
+	"github.com/aws/aws-sdk-go-v2/service/kafka"
 	"github.com/aws/aws-sdk-go-v2/service/kinesis"
 	"github.com/aws/aws-sdk-go-v2/service/kms"
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
@@ -63,6 +64,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/neptune"
 	"github.com/aws/aws-sdk-go-v2/service/organizations"
 	"github.com/aws/aws-sdk-go-v2/service/qldb"
+	"github.com/aws/aws-sdk-go-v2/service/quicksight"
 	"github.com/aws/aws-sdk-go-v2/service/ram"
 	"github.com/aws/aws-sdk-go-v2/service/rds"
 	"github.com/aws/aws-sdk-go-v2/service/redshift"
@@ -82,6 +84,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
 	"github.com/aws/aws-sdk-go-v2/service/ssoadmin"
+	"github.com/aws/aws-sdk-go-v2/service/timestreamwrite"
 	"github.com/aws/aws-sdk-go-v2/service/transfer"
 	"github.com/aws/aws-sdk-go-v2/service/waf"
 	"github.com/aws/aws-sdk-go-v2/service/wafregional"
@@ -147,6 +150,7 @@ func initServices(region string, c aws.Config) Services {
 		Inspector:                 inspector.NewFromConfig(awsCfg),
 		Inspector2:                inspector2.NewFromConfig(awsCfg),
 		Iot:                       iot.NewFromConfig(awsCfg),
+		Kafka:                     kafka.NewFromConfig(awsCfg),
 		Kinesis:                   kinesis.NewFromConfig(awsCfg),
 		Kms:                       kms.NewFromConfig(awsCfg),
 		Lambda:                    lambda.NewFromConfig(awsCfg),
@@ -156,6 +160,7 @@ func initServices(region string, c aws.Config) Services {
 		Neptune:                   neptune.NewFromConfig(awsCfg),
 		Organizations:             organizations.NewFromConfig(awsCfg),
 		Qldb:                      qldb.NewFromConfig(awsCfg),
+		Quicksight:                quicksight.NewFromConfig(awsCfg),
 		Ram:                       ram.NewFromConfig(awsCfg),
 		Rds:                       rds.NewFromConfig(awsCfg),
 		Redshift:                  redshift.NewFromConfig(awsCfg),
@@ -175,6 +180,7 @@ func initServices(region string, c aws.Config) Services {
 		Sqs:                       sqs.NewFromConfig(awsCfg),
 		Ssm:                       ssm.NewFromConfig(awsCfg),
 		Ssoadmin:                  ssoadmin.NewFromConfig(awsCfg),
+		Timestreamwrite:           timestreamwrite.NewFromConfig(awsCfg),
 		Transfer:                  transfer.NewFromConfig(awsCfg),
 		Waf:                       waf.NewFromConfig(awsCfg),
 		Wafregional:               wafregional.NewFromConfig(awsCfg),
@@ -237,6 +243,7 @@ type Services struct {
 	Inspector                 services.InspectorClient
 	Inspector2                services.Inspector2Client
 	Iot                       services.IotClient
+	Kafka                     services.KafkaClient
 	Kinesis                   services.KinesisClient
 	Kms                       services.KmsClient
 	Lambda                    services.LambdaClient
@@ -246,6 +253,7 @@ type Services struct {
 	Neptune                   services.NeptuneClient
 	Organizations             services.OrganizationsClient
 	Qldb                      services.QldbClient
+	Quicksight                services.QuicksightClient
 	Ram                       services.RamClient
 	Rds                       services.RdsClient
 	Redshift                  services.RedshiftClient
@@ -265,6 +273,7 @@ type Services struct {
 	Sqs                       services.SqsClient
 	Ssm                       services.SsmClient
 	Ssoadmin                  services.SsoadminClient
+	Timestreamwrite           services.TimestreamwriteClient
 	Transfer                  services.TransferClient
 	Waf                       services.WafClient
 	Wafregional               services.WafregionalClient

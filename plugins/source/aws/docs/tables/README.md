@@ -217,6 +217,7 @@
 | [aws_fsx_backups](aws_fsx_backups.md) |
 | [aws_fsx_data_repository_associations](aws_fsx_data_repository_associations.md) |
 | [aws_fsx_data_repository_tasks](aws_fsx_data_repository_tasks.md) |
+| [aws_fsx_file_caches](aws_fsx_file_caches.md) |
 | [aws_fsx_file_systems](aws_fsx_file_systems.md) |
 | [aws_fsx_snapshots](aws_fsx_snapshots.md) |
 | [aws_fsx_storage_virtual_machines](aws_fsx_storage_virtual_machines.md) |
@@ -277,6 +278,10 @@
 | [aws_iot_thing_types](aws_iot_thing_types.md) |
 | [aws_iot_things](aws_iot_things.md) |
 | [aws_iot_topic_rules](aws_iot_topic_rules.md) |
+| [aws_kafka_clusters](aws_kafka_clusters.md) |
+| ↳ [aws_kafka_nodes](aws_kafka_nodes.md) |
+| ↳ [aws_kafka_cluster_operations](aws_kafka_cluster_operations.md) |
+| [aws_kafka_configurations](aws_kafka_configurations.md) |
 | [aws_kinesis_streams](aws_kinesis_streams.md) |
 | [aws_kms_aliases](aws_kms_aliases.md) |
 | [aws_kms_keys](aws_kms_keys.md) |
@@ -329,6 +334,16 @@
 | [aws_qldb_ledgers](aws_qldb_ledgers.md) |
 | ↳ [aws_qldb_ledger_journal_kinesis_streams](aws_qldb_ledger_journal_kinesis_streams.md) |
 | ↳ [aws_qldb_ledger_journal_s3_exports](aws_qldb_ledger_journal_s3_exports.md) |
+| [aws_quicksight_analyses](aws_quicksight_analyses.md) |
+| [aws_quicksight_dashboards](aws_quicksight_dashboards.md) |
+| [aws_quicksight_data_sets](aws_quicksight_data_sets.md) |
+| ↳ [aws_quicksight_ingestions](aws_quicksight_ingestions.md) |
+| [aws_quicksight_data_sources](aws_quicksight_data_sources.md) |
+| [aws_quicksight_folders](aws_quicksight_folders.md) |
+| [aws_quicksight_groups](aws_quicksight_groups.md) |
+| ↳ [aws_quicksight_group_members](aws_quicksight_group_members.md) |
+| [aws_quicksight_templates](aws_quicksight_templates.md) |
+| [aws_quicksight_users](aws_quicksight_users.md) |
 | [aws_ram_principals](aws_ram_principals.md) |
 | [aws_ram_resources](aws_ram_resources.md) |
 | [aws_ram_resource_shares](aws_ram_resource_shares.md) |
@@ -399,6 +414,8 @@
 | ↳ [aws_ssm_instance_compliance_items](aws_ssm_instance_compliance_items.md) |
 | [aws_ssm_parameters](aws_ssm_parameters.md) |
 | [aws_ssoadmin_instances](aws_ssoadmin_instances.md) |
+| [aws_timestream_databases](aws_timestream_databases.md) |
+| ↳ [aws_timestream_tables](aws_timestream_tables.md) |
 | [aws_transfer_servers](aws_transfer_servers.md) |
 | [aws_wafregional_rate_based_rules](aws_wafregional_rate_based_rules.md) |
 | [aws_wafregional_rule_groups](aws_wafregional_rule_groups.md) |

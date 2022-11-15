@@ -175,6 +175,26 @@ func (mr *MockEcsClientMockRecorder) DescribeTasks(arg0, arg1 interface{}, arg2 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeTasks", reflect.TypeOf((*MockEcsClient)(nil).DescribeTasks), varargs...)
 }
 
+// GetTaskProtection mocks base method.
+func (m *MockEcsClient) GetTaskProtection(arg0 context.Context, arg1 *ecs.GetTaskProtectionInput, arg2 ...func(*ecs.Options)) (*ecs.GetTaskProtectionOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetTaskProtection", varargs...)
+	ret0, _ := ret[0].(*ecs.GetTaskProtectionOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetTaskProtection indicates an expected call of GetTaskProtection.
+func (mr *MockEcsClientMockRecorder) GetTaskProtection(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTaskProtection", reflect.TypeOf((*MockEcsClient)(nil).GetTaskProtection), varargs...)
+}
+
 // ListAccountSettings mocks base method.
 func (m *MockEcsClient) ListAccountSettings(arg0 context.Context, arg1 *ecs.ListAccountSettingsInput, arg2 ...func(*ecs.Options)) (*ecs.ListAccountSettingsOutput, error) {
 	m.ctrl.T.Helper()

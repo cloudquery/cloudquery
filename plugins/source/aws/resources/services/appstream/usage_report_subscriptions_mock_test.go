@@ -26,11 +26,17 @@ func buildAppstreamUsageReportSubscriptionsMock(t *testing.T, ctrl *gomock.Contr
 			UsageReportSubscriptions: []types.UsageReportSubscription{object},
 		}, nil)
 
+	tagsOutput := appstream.ListTagsForResourceOutput{}
+	err = faker.FakeObject(&tagsOutput)
+	if err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any()).Return(&tagsOutput, nil).AnyTimes()
+
 	return client.Services{
 		Appstream: m,
 	}
 }
-
 func TestAppstreamUsageReportSubscriptions(t *testing.T) {
 	client.AwsMockTestHelper(t, UsageReportSubscriptions(), buildAppstreamUsageReportSubscriptionsMock, client.TestOptions{})
 }

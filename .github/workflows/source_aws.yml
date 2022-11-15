@@ -33,7 +33,7 @@ jobs:
           RUNNER=${{ steps.large-runner.outputs.runner }}
           echo "runner=${RUNNER:-"ubuntu-latest"}" >> $GITHUB_OUTPUT
   plugins-source-aws:
-    timeout-minutes: 30
+    timeout-minutes: 45
     name: "plugins/source/aws"
     needs: [resolve-runner]
     runs-on: ${{ needs.resolve-runner.outputs.runner }}
@@ -53,7 +53,7 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
-          version: v1.49.0
+          version: v1.50.1
           working-directory: plugins/source/aws
           args: "--config ../../.golangci.yml"
       - name: Get dependencies
@@ -62,20 +62,14 @@ jobs:
         run: go build .
       - name: Test
         run: make test
-      - name: gen-docs
+      - name: gen
         if: github.event_name == 'pull_request'
-        run: make gen-docs
-      - name: Fail if docs are changed
+        run: make gen
+      - name: Fail if generation updated files
         if: github.event_name == 'pull_request'
-        run: test "$(git status -s ./docs/tables | wc -l)" -eq 0
-      - name: gen-code
-        if: github.event_name == 'pull_request'
-        run: make gen-code
-      - name: Fail if code generation changed services
-        if: github.event_name == 'pull_request'
-        run: test "$(git status -s ./resources/services | wc -l)" -eq 0
+        run: test "$(git status -s | wc -l)" -eq 0
   validate-release:
-    timeout-minutes: 30
+    timeout-minutes: 45
     needs: [resolve-runner]
     runs-on: ${{ needs.resolve-runner.outputs.runner }}
     env:
@@ -150,6 +144,6 @@ jobs:
         env:
           CQ_DSN: postgresql://postgres:pass@localhost:5432/postgres
       - name: Run all policies
-        run: cd policies_v1 && psql -h localhost -p 5432 -U postgres -d postgres -w -f ./policy.sql
+        run: cd policies && psql -h localhost -p 5432 -U postgres -d postgres -w -f ./policy.sql
         env:
           PGPASSWORD: pass
