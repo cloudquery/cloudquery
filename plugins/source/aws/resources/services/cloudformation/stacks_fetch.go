@@ -37,9 +37,6 @@ func fetchCloudformationStackResources(ctx context.Context, meta schema.ClientMe
 	for {
 		output, err := svc.ListStackResources(ctx, &config)
 		if err != nil {
-			if client.IsErrorRegex(err, "ValidationError", validStackNotFoundRegex) {
-				return nil
-			}
 			return err
 		}
 		res <- output.StackResourceSummaries
