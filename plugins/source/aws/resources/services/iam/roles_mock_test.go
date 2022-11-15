@@ -70,6 +70,8 @@ func buildRoles(t *testing.T, ctrl *gomock.Controller) client.Services {
 	if err != nil {
 		t.Fatal(err)
 	}
+
+	iamAccessDetailsMock(t, m)
 	return client.Services{
 		Iam: m,
 	}

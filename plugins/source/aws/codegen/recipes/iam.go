@@ -127,7 +127,10 @@ func IAMResources() []*Resource {
 					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 				},
 			},
-			Relations: []string{"GroupPolicies()"},
+			Relations: []string{
+				"GroupPolicies()",
+				"GroupServicesLastAccessed()",
+			},
 		},
 		{
 			SubService:          "group_policies",
@@ -158,29 +161,6 @@ func IAMResources() []*Resource {
 			SubService:  "group_services_last_accessed",
 			Struct:      &models.ServiceLastAccessedEntitiesWrapper{},
 			Description: "https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServiceLastAccessed.html",
-			SkipFields:  []string{"JobId", "ResourceARN", "ServiceName"},
-			ExtraColumns: append(
-				defaultAccountColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "job_id",
-						Type:     schema.TypeString,
-						Resolver: "schema.PathResolver(`JobId`)",
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:     "resource_arn",
-						Type:     schema.TypeString,
-						Resolver: "schema.PathResolver(`ResourceARN`)",
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:     "service_name",
-						Type:     schema.TypeString,
-						Resolver: "schema.PathResolver(`ServiceName`)",
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-				}...),
 		},
 		{
 			SubService:          "openid_connect_identity_providers",
@@ -239,34 +219,14 @@ func IAMResources() []*Resource {
 					Resolver: `resolveIamPolicyVersionList`,
 				},
 			},
+			Relations: []string{
+				"PolicyServicesLastAccessed()",
+			},
 		},
 		{
 			SubService:  "policy_services_last_accessed",
 			Struct:      &models.ServiceLastAccessedEntitiesWrapper{},
 			Description: "https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServiceLastAccessed.html",
-			SkipFields:  []string{"JobId", "ResourceARN", "ServiceName"},
-			ExtraColumns: append(
-				defaultAccountColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "job_id",
-						Type:     schema.TypeString,
-						Resolver: "schema.PathResolver(`JobId`)",
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:     "resource_arn",
-						Type:     schema.TypeString,
-						Resolver: "schema.PathResolver(`ResourceARN`)",
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:     "service_name",
-						Type:     schema.TypeString,
-						Resolver: "schema.PathResolver(`ServiceName`)",
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-				}...),
 		},
 		{
 			SubService:          "roles",
@@ -300,6 +260,7 @@ func IAMResources() []*Resource {
 			},
 			Relations: []string{
 				"RolePolicies()",
+				"RoleServicesLastAccessed()",
 			},
 		},
 		{
@@ -326,29 +287,6 @@ func IAMResources() []*Resource {
 			SubService:  "role_services_last_accessed",
 			Struct:      &models.ServiceLastAccessedEntitiesWrapper{},
 			Description: "https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServiceLastAccessed.html",
-			SkipFields:  []string{"JobId", "ResourceARN", "ServiceName"},
-			ExtraColumns: append(
-				defaultAccountColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "job_id",
-						Type:     schema.TypeString,
-						Resolver: "schema.PathResolver(`JobId`)",
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:     "resource_arn",
-						Type:     schema.TypeString,
-						Resolver: "schema.PathResolver(`ResourceARN`)",
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:     "service_name",
-						Type:     schema.TypeString,
-						Resolver: "schema.PathResolver(`ServiceName`)",
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-				}...),
 		},
 		{
 			SubService:          "saml_identity_providers",
@@ -416,6 +354,7 @@ func IAMResources() []*Resource {
 				"UserGroups()",
 				"UserAttachedPolicies()",
 				"UserPolicies()",
+				"UserServicesLastAccessed()",
 			},
 		},
 		{
@@ -515,29 +454,6 @@ func IAMResources() []*Resource {
 			SubService:  "user_services_last_accessed",
 			Struct:      &models.ServiceLastAccessedEntitiesWrapper{},
 			Description: "https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServiceLastAccessed.html",
-			SkipFields:  []string{"JobId", "ResourceARN", "ServiceName"},
-			ExtraColumns: append(
-				defaultAccountColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "job_id",
-						Type:     schema.TypeString,
-						Resolver: "schema.PathResolver(`JobId`)",
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:     "resource_arn",
-						Type:     schema.TypeString,
-						Resolver: "schema.PathResolver(`ResourceARN`)",
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:     "service_name",
-						Type:     schema.TypeString,
-						Resolver: "schema.PathResolver(`ServiceName`)",
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-				}...),
 		},
 		{
 			SubService:  "virtual_mfa_devices",

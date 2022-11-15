@@ -3,6 +3,7 @@ package iam
 import (
 	"context"
 	"fmt"
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/service/iam"
@@ -56,6 +57,7 @@ func fetchDetailEntities(ctx context.Context, res chan<- interface{}, svc servic
 	config := iam.GetServiceLastAccessedDetailsWithEntitiesInput{
 		JobId:            &jobId,
 		ServiceNamespace: sla.ServiceNamespace,
+		MaxItems:         aws.Int32(1000),
 	}
 	details := models.ServiceLastAccessedEntitiesWrapper{
 		ResourceARN:         arn,
@@ -63,6 +65,7 @@ func fetchDetailEntities(ctx context.Context, res chan<- interface{}, svc servic
 		ServiceLastAccessed: &sla,
 	}
 	for {
+
 		output, err := svc.GetServiceLastAccessedDetailsWithEntities(ctx, &config)
 		if err != nil {
 			return err

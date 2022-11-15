@@ -15,33 +15,19 @@ func UserServicesLastAccessed() *schema.Table {
 		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{
 			{
-				Name:     "account_id",
+				Name:     "resource_arn",
 				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
+				Resolver: schema.PathResolver("ResourceARN"),
 			},
 			{
 				Name:     "job_id",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver(`JobId`),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "resource_arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver(`ResourceARN`),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Resolver: schema.PathResolver("JobId"),
 			},
 			{
 				Name:     "service_name",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver(`ServiceName`),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Resolver: schema.PathResolver("ServiceName"),
 			},
 			{
 				Name:     "service_namespace",
