@@ -206,4 +206,3 @@ func TestTagsIntoMap(t *testing.T) {
 
 	assert.Equal(t, map[string]string{"k": "v", "k2": "v2"}, res)
 }
-
