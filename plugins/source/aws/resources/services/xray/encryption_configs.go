@@ -7,11 +7,11 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func EncryptionConfig() *schema.Table {
+func EncryptionConfigs() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_xray_encryption_config",
+		Name:        "aws_xray_encryption_configs",
 		Description: `https://docs.aws.amazon.com/xray/latest/api/API_EncryptionConfig.html`,
-		Resolver:    fetchXrayEncryptionConfig,
+		Resolver:    fetchXrayEncryptionConfigs,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("xray"),
 		Columns: []schema.Column{
 			{
