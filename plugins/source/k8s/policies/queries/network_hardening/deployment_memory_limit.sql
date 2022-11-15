@@ -17,4 +17,4 @@ select uid                              AS resource_id,
                 ELSE 'pass'
             END                          AS status
 
-FROM k8s_apps_deployments
+FROM k8s_apps_deployments;

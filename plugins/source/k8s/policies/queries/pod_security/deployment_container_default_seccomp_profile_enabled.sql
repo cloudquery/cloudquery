@@ -14,4 +14,4 @@ select uid                              AS resource_id,
                 THEN 'fail'
                 ELSE 'pass'
             END                          AS status
-FROM deployment_containers
+FROM deployment_containers;

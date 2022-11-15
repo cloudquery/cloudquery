@@ -14,4 +14,4 @@ select uid                              AS resource_id,
                 THEN 'fail'
                 ELSE 'pass'
             END                          AS status
-FROM pod_containers
+FROM pod_containers;
