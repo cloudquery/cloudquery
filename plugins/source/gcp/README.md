@@ -1,6 +1,6 @@
 # GCP Source Plugin
 
-The GCP Source plugin for CloudQuery extracts configuration from a variety of GCP APIs and loads them into any supported CloudQuery destinations (e.g. PostgreSQL).
+The GCP Source plugin for CloudQuery extracts configuration from a variety of GCP APIs and loads it into any supported CloudQuery destination (e.g. PostgreSQL).
 
 ## Links
 
