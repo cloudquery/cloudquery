@@ -10,20 +10,18 @@ func RAMResources() []*Resource {
 	mx := `client.ServiceAccountRegionMultiplexer("ram")`
 	resources := []*Resource{
 		{
-			SubService:                  "principals",
-			Struct:                      new(types.Principal),
-			Multiplex:                   mx,
-			PKColumns:                   []string{"id", "account_id"},
-			ExtraColumns:                defaultRegionalColumns,
-			ResolverAndMockTestTemplate: "list_resources_paginated_1",
+			SubService:   "principals",
+			Struct:       new(types.Principal),
+			Multiplex:    mx,
+			PKColumns:    []string{"id", "account_id"},
+			ExtraColumns: defaultRegionalColumns,
 		},
 		{
-			SubService:                  "resources",
-			Struct:                      new(types.Resource),
-			Multiplex:                   mx,
-			PKColumns:                   []string{"arn"},
-			ExtraColumns:                defaultRegionalColumns,
-			ResolverAndMockTestTemplate: "list_resources_paginated_1",
+			SubService:   "resources",
+			Struct:       new(types.Resource),
+			Multiplex:    mx,
+			PKColumns:    []string{"arn"},
+			ExtraColumns: defaultRegionalColumns,
 		},
 		{
 			SubService:   "resource_shares",
