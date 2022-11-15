@@ -2,17 +2,12 @@ package elbv2
 
 import (
 	"context"
-	"regexp"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	elbv2 "github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2"
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-)
-
-var (
-	notSupportedGatewayLB = regexp.MustCompile("This operation does not support Gateway Load Balancer Listeners")
 )
 
 func fetchElbv2Listeners(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
@@ -75,10 +70,6 @@ func fetchElbv2ListenerCertificates(ctx context.Context, meta schema.ClientMeta,
 			options.Region = region
 		})
 		if err != nil {
-			if client.IsErrorRegex(err, "ValidationError", notSupportedGatewayLB) {
-				c.Logger().Debug().Msg("ELBv2: DescribeListenerCertificates not supported for Gateway Load Balancers")
-				return nil
-			}
 			return err
 		}
 		res <- response.Certificates
