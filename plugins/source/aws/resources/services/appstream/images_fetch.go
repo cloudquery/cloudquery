@@ -12,8 +12,7 @@ import (
 )
 
 func fetchAppstreamImages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	var input appstream.DescribeImagesInput
-	input.MaxResults = aws.Int32(25)
+	var input appstream.DescribeImagesInput = appstream.DescribeImagesInput{MaxResults: aws.Int32(25)}
 	c := meta.(*client.Client)
 	svc := c.Services().Appstream
 	for {
@@ -22,11 +21,11 @@ func fetchAppstreamImages(ctx context.Context, meta schema.ClientMeta, parent *s
 			return err
 		}
 		res <- response.Images
-		if response.NextToken == nil {
+
+		if aws.ToString(response.NextToken) == "" {
 			break
 		}
 		input.NextToken = response.NextToken
 	}
-
 	return nil
 }

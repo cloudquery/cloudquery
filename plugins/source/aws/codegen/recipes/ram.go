@@ -1,6 +1,7 @@
 package recipes
 
 import (
+	"github.com/aws/aws-sdk-go-v2/service/ram"
 	"github.com/aws/aws-sdk-go-v2/service/ram/types"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -56,8 +57,9 @@ func RAMResources() []*Resource {
 			Multiplex:                   mx,
 			PKColumns:                   []string{"arn"},
 			ExtraColumns:                defaultRegionalColumns,
-			ResolverAndMockTestTemplate: "get_resources_paginated_1",
+			ResolverAndMockTestTemplate: "describe_resources_1",
 			NameTransformer:             CreateReplaceTransformer(map[string]string{"resource_share_invitation_arn": "arn"}),
+			CustomDescribeInput:         `getResourceShareInvitationsInput()`,
 		},
 		{
 			SubService: "resource_share_permissions",
@@ -72,13 +74,15 @@ func RAMResources() []*Resource {
 					Resolver: `resolveResourceSharePermissionDetailPermission`,
 				},
 			),
+			CustomListInput: `listResourceSharePermissionsInput()`,
 		},
 		{
-			SubService:   "resource_types",
-			Struct:       new(types.ServiceNameAndResourceType),
-			Multiplex:    mx,
-			PKColumns:    []string{"account_id", "resource_type", "service_name"},
-			ExtraColumns: defaultRegionalColumns,
+			SubService:      "resource_types",
+			Struct:          new(types.ServiceNameAndResourceType),
+			Multiplex:       mx,
+			PKColumns:       []string{"account_id", "resource_type", "service_name"},
+			ExtraColumns:    defaultRegionalColumns,
+			CustomListInput: `listResourceTypesInput()`,
 		},
 	}
 	for _, r := range resources {
@@ -86,7 +90,7 @@ func RAMResources() []*Resource {
 		r.Description = "https://docs.aws.amazon.com/ram/latest/APIReference/API_" + r.StructName() + ".html"
 		if len(r.ResolverAndMockTestTemplate) > 0 {
 			r.ShouldGenerateResolverAndMockTest = true
-			r.MaxResults = 500
+			r.Client = &ram.Client{}
 		}
 	}
 	return resources

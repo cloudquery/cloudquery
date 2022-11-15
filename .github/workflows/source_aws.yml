@@ -33,7 +33,7 @@ jobs:
           RUNNER=${{ steps.large-runner.outputs.runner }}
           echo "runner=${RUNNER:-"ubuntu-latest"}" >> $GITHUB_OUTPUT
   plugins-source-aws:
-    timeout-minutes: 30
+    timeout-minutes: 45
     name: "plugins/source/aws"
     needs: [resolve-runner]
     runs-on: ${{ needs.resolve-runner.outputs.runner }}
@@ -62,20 +62,14 @@ jobs:
         run: go build .
       - name: Test
         run: make test
-      - name: gen-docs
+      - name: gen
         if: github.event_name == 'pull_request'
-        run: make gen-docs
-      - name: Fail if docs are changed
+        run: make gen
+      - name: Fail if generation updated files
         if: github.event_name == 'pull_request'
-        run: test "$(git status -s ./docs/tables | wc -l)" -eq 0
-      - name: gen-code
-        if: github.event_name == 'pull_request'
-        run: make gen-code
-      - name: Fail if code generation changed services
-        if: github.event_name == 'pull_request'
-        run: test "$(git status -s ./resources/services | wc -l)" -eq 0
+        run: test "$(git status -s | wc -l)" -eq 0
   validate-release:
-    timeout-minutes: 30
+    timeout-minutes: 45
     needs: [resolve-runner]
     runs-on: ${{ needs.resolve-runner.outputs.runner }}
     env:
