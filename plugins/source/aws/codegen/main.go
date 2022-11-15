@@ -98,7 +98,7 @@ func generateResources() ([]*recipes.Resource, error) {
 
 	err := recipes.SetParentChildRelationships(resources)
 	if err != nil {
-		return nil, fmt.Errorf("failed to set parent-child relationships: %v", err)
+		return nil, fmt.Errorf("failed to set parent-child relationships: %w", err)
 	}
 	for _, resource := range resources {
 		if err := resource.Generate(); err != nil {
