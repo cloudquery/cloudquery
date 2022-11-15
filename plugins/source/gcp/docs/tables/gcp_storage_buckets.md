@@ -17,6 +17,7 @@ The following tables depend on gcp_storage_buckets:
 |_cq_parent_id|UUID|
 |project_id|String|
 |name (PK)|String|
+|self_link|String|
 |acl|JSON|
 |bucket_policy_only|JSON|
 |uniform_bucket_level_access|JSON|
