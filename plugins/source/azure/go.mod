@@ -10,7 +10,7 @@ require (
 	github.com/Azure/go-autorest/autorest v0.11.28
 	github.com/Azure/go-autorest/autorest/azure/auth v0.5.11
 	github.com/Azure/go-autorest/autorest/date v0.3.0
-	github.com/cloudquery/plugin-sdk v1.5.2
+	github.com/cloudquery/plugin-sdk v1.5.3
 	github.com/gertd/go-pluralize v0.2.1
 	github.com/gofrs/uuid v4.3.0+incompatible
 	github.com/golang/mock v1.6.0
