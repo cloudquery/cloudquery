@@ -1,4 +1,4 @@
-## DigitalOcean Plugin
+# DigitalOcean Plugin
 
 The CloudQuery DigitalOcean plugin pulls configuration from DigitalOcean resources and loads it into any supported CloudQuery destination (e.g. PostgreSQL).
 
