@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
 	"github.com/aws/aws-sdk-go-v2/service/ecs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -83,6 +84,20 @@ func fetchEcsClusterTasks(ctx context.Context, meta schema.ClientMeta, parent *s
 		config.NextToken = listTasks.NextToken
 	}
 	return nil
+}
+
+func getEcsTaskProtection(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	svc := meta.(*client.Client).Services().Ecs
+	task := resource.Item.(types.Task)
+	resp, err := svc.GetTaskProtection(ctx, &ecs.GetTaskProtectionInput{
+		Cluster: task.ClusterArn,
+		Tasks:   []string{aws.ToString(task.TaskArn)},
+	})
+	if err != nil {
+		return err
+	}
+
+	return resource.Set(c.Name, resp.ProtectedTasks)
 }
 
 func fetchEcsClusterServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
