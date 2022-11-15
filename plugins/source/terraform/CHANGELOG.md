@@ -5,6 +5,13 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.19](https://github.com/cloudquery/cloudquery/compare/plugins-source-terraform-v1.2.18...plugins-source-terraform-v1.2.19) (2022-11-15)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go to v1.44.137 ([#4611](https://github.com/cloudquery/cloudquery/issues/4611)) ([25dad81](https://github.com/cloudquery/cloudquery/commit/25dad8144caf2578addb51eab128e3aa39e31718))
+
 ## [1.2.18](https://github.com/cloudquery/cloudquery/compare/plugins-source-terraform-v1.2.17...plugins-source-terraform-v1.2.18) (2022-11-14)
 
 
