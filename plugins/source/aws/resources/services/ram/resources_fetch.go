@@ -11,30 +11,30 @@ import (
 )
 
 func fetchRamResources(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
-	input := &ram.ListResourcesInput{
-		MaxResults:    aws.Int32(500),
-		ResourceOwner: types.ResourceOwnerSelf,
+	err := fetchRamResourcesByOwner(ctx, meta, types.ResourceOwnerSelf, res)
+	if err != nil {
+		return err
 	}
-	paginator := ram.NewListResourcesPaginator(meta.(*client.Client).Services().Ram, input)
-	for paginator.HasMorePages() {
-		response, err := paginator.NextPage(ctx)
-		if err != nil {
-			return err
-		}
-		res <- response.Resources
-	}
-
-	input = &ram.ListResourcesInput{
-		MaxResults:    aws.Int32(500),
-		ResourceOwner: types.ResourceOwnerOtherAccounts,
-	}
-	paginator = ram.NewListResourcesPaginator(meta.(*client.Client).Services().Ram, input)
-	for paginator.HasMorePages() {
-		response, err := paginator.NextPage(ctx)
-		if err != nil {
-			return err
-		}
-		res <- response.Resources
+	err = fetchRamResourcesByOwner(ctx, meta, types.ResourceOwnerOtherAccounts, res)
+	if err != nil {
+		return err
 	}
 	return nil
+}
+
+func fetchRamResourcesByOwner(ctx context.Context, meta schema.ClientMeta, shareType types.ResourceOwner, res chan<- interface{}) error {
+	input := &ram.GetResourceSharesInput{
+		MaxResults:    aws.Int32(500),
+		ResourceOwner: shareType,
+	}
+	paginator := ram.NewGetResourceSharesPaginator(meta.(*client.Client).Services().Ram, input)
+	for paginator.HasMorePages() {
+		response, err := paginator.NextPage(ctx)
+		if err != nil {
+			return err
+		}
+		res <- response.ResourceShares
+	}
+	return nil
+
 }

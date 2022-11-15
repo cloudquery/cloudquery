@@ -11,9 +11,21 @@ import (
 )
 
 func fetchRamResourceShares(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+	err := fetchRamResourceSharesByType(ctx, meta, types.ResourceOwnerOtherAccounts, res)
+	if err != nil {
+		return err
+	}
+	err = fetchRamResourceSharesByType(ctx, meta, types.ResourceOwnerSelf, res)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func fetchRamResourceSharesByType(ctx context.Context, meta schema.ClientMeta, shareType types.ResourceOwner, res chan<- interface{}) error {
 	input := &ram.GetResourceSharesInput{
 		MaxResults:    aws.Int32(500),
-		ResourceOwner: types.ResourceOwnerSelf,
+		ResourceOwner: shareType,
 	}
 	paginator := ram.NewGetResourceSharesPaginator(meta.(*client.Client).Services().Ram, input)
 	for paginator.HasMorePages() {
@@ -23,18 +35,6 @@ func fetchRamResourceShares(ctx context.Context, meta schema.ClientMeta, _ *sche
 		}
 		res <- response.ResourceShares
 	}
-
-	input = &ram.GetResourceSharesInput{
-		MaxResults:    aws.Int32(500),
-		ResourceOwner: types.ResourceOwnerOtherAccounts,
-	}
-	paginator = ram.NewGetResourceSharesPaginator(meta.(*client.Client).Services().Ram, input)
-	for paginator.HasMorePages() {
-		response, err := paginator.NextPage(ctx)
-		if err != nil {
-			return err
-		}
-		res <- response.ResourceShares
-	}
 	return nil
+
 }
