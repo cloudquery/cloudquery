@@ -1,4 +1,4 @@
-# Table: aws_apprunner_vpc_connector
+# Table: aws_apprunner_vpc_connectors
 
 https://docs.aws.amazon.com/apprunner/latest/api/API_VpcConnector.html
 

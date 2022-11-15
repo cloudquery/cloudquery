@@ -1,4 +1,4 @@
-# Table: aws_apprunner_auto_scaling_configuration
+# Table: aws_apprunner_auto_scaling_configurations
 
 https://docs.aws.amazon.com/apprunner/latest/api/API_AutoScalingConfiguration.html
 
