@@ -8,8 +8,6 @@ The CloudQuery DigitalOcean plugin pulls configuration from DigitalOcean resourc
 
 ## Authentication
 
-### DigitalOcean API
-
 - [Obtain a DigitalOcean API authentication token](https://docs.digitalocean.com/reference/api/api-reference/#section/Authentication)
 - [Obtain a Spaces API access key](https://cloud.digitalocean.com/settings/api/tokens?i=d6d4a6)
 
