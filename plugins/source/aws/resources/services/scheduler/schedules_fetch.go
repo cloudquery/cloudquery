@@ -12,7 +12,6 @@ import (
 )
 
 func fetchSchedulerSchedules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-
 	config := scheduler.ListSchedulesInput{
 		MaxResults: aws.Int32(100),
 	}
@@ -27,7 +26,6 @@ func fetchSchedulerSchedules(ctx context.Context, meta schema.ClientMeta, parent
 		res <- output.Schedules
 	}
 	return nil
-
 }
 
 func getSchedule(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
