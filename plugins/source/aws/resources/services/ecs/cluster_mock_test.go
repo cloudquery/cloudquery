@@ -74,6 +74,7 @@ func buildEcsClusterMock(t *testing.T, ctrl *gomock.Controller) client.Services 
 	if err != nil {
 		t.Fatal(err)
 	}
+	protection.Failures = nil
 	m.EXPECT().GetTaskProtection(gomock.Any(), gomock.Any(), gomock.Any()).Return(&protection, nil)
 
 	return services
