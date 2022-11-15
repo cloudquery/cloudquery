@@ -19,7 +19,7 @@ import (
 type Client struct {
 	logger zerolog.Logger
 	// map context_name -> Services struct
-	services map[string]Services
+	clients  map[string]kubernetes.Interface
 	spec     *Spec
 	contexts []string
 	paths    map[string]struct{}
@@ -35,30 +35,20 @@ func (c *Client) ID() string {
 	return c.Context
 }
 
-func (c *Client) Services() Services {
-	return c.services[c.Context]
+func (c *Client) Client() kubernetes.Interface {
+	return c.clients[c.Context]
 }
 
 // Don't confuse `k8sContext` with `context.ctx`! k8s-context is a k8s-term that refers to a k8s cluster.
 func (c Client) WithContext(k8sContext string) *Client {
 	return &Client{
 		logger:   c.logger.With().Str("context", k8sContext).Logger(),
-		services: c.services,
+		clients:  c.clients,
 		spec:     c.spec,
 		contexts: c.contexts,
 		paths:    c.paths,
 		Context:  k8sContext,
 	}
-}
-
-// Used for testing
-func (c *Client) SetServices(s map[string]Services) {
-	c.services = s
-	contexts := make([]string, 0, len(s))
-	for k := range s {
-		contexts = append(contexts, k)
-	}
-	c.contexts = contexts
 }
 
 func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.ClientMeta, error) {
@@ -109,7 +99,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (sche
 
 	c := Client{
 		logger:   logger,
-		services: make(map[string]Services),
+		clients:  make(map[string]kubernetes.Interface),
 		spec:     &k8sSpec,
 		contexts: contexts,
 		Context:  contexts[0],
@@ -126,7 +116,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (sche
 		if err != nil {
 			logger.Warn().Err(err).Msg("Failed to get OpenAPI schema. It might be not supported in the current version of Kubernetes. OpenAPI has been supported since Kubernetes 1.4")
 		}
-		c.services[ctxName] = initServices(kClient)
+		c.clients[ctxName] = kClient
 	}
 
 	return &c, nil
@@ -161,28 +151,4 @@ func getAPIsMap(client *kubernetes.Clientset) (map[string]struct{}, error) {
 		}
 	}
 	return paths, nil
-}
-
-func initServices(client *kubernetes.Clientset) Services {
-	return Services{
-		Client:          client,
-		CronJobs:        client.BatchV1().CronJobs(""),
-		DaemonSets:      client.AppsV1().DaemonSets(""),
-		Deployments:     client.AppsV1().Deployments(""),
-		Endpoints:       client.CoreV1().Endpoints(""),
-		Jobs:            client.BatchV1().Jobs(""),
-		LimitRanges:     client.CoreV1().LimitRanges(""),
-		Namespaces:      client.CoreV1().Namespaces(),
-		NetworkPolicies: client.NetworkingV1().NetworkPolicies(""),
-		Nodes:           client.CoreV1().Nodes(),
-		Pods:            client.CoreV1().Pods(""),
-		ReplicaSets:     client.AppsV1().ReplicaSets(""),
-		ResourceQuotas:  client.CoreV1().ResourceQuotas(""),
-		RoleBindings:    client.RbacV1().RoleBindings(""),
-		Roles:           client.RbacV1().Roles(""),
-		Secrets:         client.CoreV1().Secrets(""),
-		ServiceAccounts: client.CoreV1().ServiceAccounts(""),
-		Services:        client.CoreV1().Services(""),
-		StatefulSets:    client.AppsV1().StatefulSets(""),
-	}
 }

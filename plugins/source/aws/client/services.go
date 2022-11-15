@@ -83,6 +83,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
 	"github.com/aws/aws-sdk-go-v2/service/ssoadmin"
+	"github.com/aws/aws-sdk-go-v2/service/timestreamwrite"
 	"github.com/aws/aws-sdk-go-v2/service/transfer"
 	"github.com/aws/aws-sdk-go-v2/service/waf"
 	"github.com/aws/aws-sdk-go-v2/service/wafregional"
@@ -177,6 +178,7 @@ func initServices(region string, c aws.Config) Services {
 		Sqs:                       sqs.NewFromConfig(awsCfg),
 		Ssm:                       ssm.NewFromConfig(awsCfg),
 		Ssoadmin:                  ssoadmin.NewFromConfig(awsCfg),
+		Timestreamwrite:           timestreamwrite.NewFromConfig(awsCfg),
 		Transfer:                  transfer.NewFromConfig(awsCfg),
 		Waf:                       waf.NewFromConfig(awsCfg),
 		Wafregional:               wafregional.NewFromConfig(awsCfg),
@@ -268,6 +270,7 @@ type Services struct {
 	Sqs                       services.SqsClient
 	Ssm                       services.SsmClient
 	Ssoadmin                  services.SsoadminClient
+	Timestreamwrite           services.TimestreamwriteClient
 	Transfer                  services.TransferClient
 	Waf                       services.WafClient
 	Wafregional               services.WafregionalClient

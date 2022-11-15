@@ -5,14 +5,14 @@ kind: source
 spec:
   name: gcp
   path: "cloudquery/gcp"
-  version: "v2.4.16" # latest version of gcp plugin
+  version: "v3.0.0" # latest version of gcp plugin
   destinations: ["<destination>"]
 ---
 kind: source
 spec:
   name: k8s
   path: "cloudquery/k8s"
-  version: "v2.3.16" # latest version of k8s plugin
+  version: "v2.4.0" # latest version of k8s plugin
   destinations: ["<destination>"]
 ```
 
