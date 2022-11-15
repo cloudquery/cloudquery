@@ -42,8 +42,8 @@ Let's say we have three tables: `A`, `B` and `C`. `A` is the top-level table. `B
 
 ```text
 A 
- ↳ B
-   ↳ C
+↳ B
+  ↳ C
 ```
 
 We might want table `A`, but not need the information in table `B`. We can then write our source config as:
