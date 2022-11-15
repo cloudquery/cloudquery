@@ -27,6 +27,11 @@ func Buckets() *schema.Table {
 				},
 			},
 			{
+				Name:     "self_link",
+				Type:     schema.TypeString,
+				Resolver: resolveBucketSelfLink,
+			},
+			{
 				Name:     "acl",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("ACL"),

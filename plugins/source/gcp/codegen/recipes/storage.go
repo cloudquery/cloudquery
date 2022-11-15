@@ -21,7 +21,13 @@ var storageResources = []*Resource{
 				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 				Resolver: `schema.PathResolver("Name")`,
 			},
+			{
+				Name:     "self_link",
+				Type:     schema.TypeString,
+				Resolver: `resolveBucketSelfLink`,
+			},
 		},
+
 		Relations: []string{"BucketPolicies()"},
 	},
 	{
