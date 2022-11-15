@@ -1,0 +1,23 @@
+import { Tabs, Tab } from '../Tabs'
+
+<Tabs options={[ 'Precompiled Binaries (amd64)', 'Precompiled Binaries (arm64)' ]}>
+
+<Tab>
+
+```bash copy
+curl -L https://versions.cloudquery.io/latest/v2/cloudquery_linux_amd64 -o cloudquery
+chmod a+x cloudquery
+```
+
+</Tab>
+
+<Tab>
+
+```bash copy
+curl -L https://versions.cloudquery.io/latest/v2/cloudquery_linux_arm64 -o cloudquery
+chmod a+x cloudquery
+```
+
+</Tab>
+
+</Tabs>
