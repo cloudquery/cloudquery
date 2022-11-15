@@ -14,7 +14,6 @@ on:
 
 jobs:
   resolve-runner:
-    timeout-minutes: 5
     runs-on: ubuntu-latest
     outputs:
       runner: ${{ steps.resolve.outputs.runner }}
@@ -33,7 +32,6 @@ jobs:
           RUNNER=${{ steps.large-runner.outputs.runner }}
           echo "runner=${RUNNER:-"ubuntu-latest"}" >> $GITHUB_OUTPUT
   plugins-source-k8s:
-    timeout-minutes: 30
     name: "plugins/source/k8s"
     needs: [resolve-runner]
     runs-on: ${{ needs.resolve-runner.outputs.runner }}
@@ -53,7 +51,7 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
-          version: v1.50.1
+          version: v1.49.0
           working-directory: plugins/source/k8s
           args: "--config ../../.golangci.yml"
       - name: Get dependencies
@@ -75,7 +73,6 @@ jobs:
         if: github.event_name == 'pull_request'
         run: test "$(git status -s ./resources/services | wc -l)" -eq 0
   validate-release:
-    timeout-minutes: 30
     needs: [resolve-runner]
     runs-on: ${{ needs.resolve-runner.outputs.runner }}
     env:
@@ -111,7 +108,6 @@ jobs:
         env:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
   test-policies:
-    timeout-minutes: 30
     needs: [resolve-runner]
     runs-on: ${{ needs.resolve-runner.outputs.runner }}
     defaults:
@@ -150,6 +146,6 @@ jobs:
         env:
           CQ_DSN: postgresql://postgres:pass@localhost:5432/postgres
       - name: Run all policies
-        run: cd policies && psql -h localhost -p 5432 -U postgres -d postgres -w -f ./policy.sql
+        run: cd policies_v1 && psql -h localhost -p 5432 -U postgres -d postgres -w -f ./policy.sql
         env:
           PGPASSWORD: pass
