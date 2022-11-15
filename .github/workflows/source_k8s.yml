@@ -60,15 +60,15 @@ jobs:
         run: go get -t -d ./...
       - name: Build
         run: go build .
-      - name: Test
-        run: make test
       - name: gen
         if: github.event_name == 'pull_request'
-        run: make gen
+        run: make gen-code && make gen-docs
       - name: Fail if generation updated files
         if: github.event_name == 'pull_request'
         run: |
           test "$(git status -s | wc -l)" -eq 0
+      - name: Test
+        run: make test
   validate-release:
     timeout-minutes: 30
     needs: [resolve-runner]
