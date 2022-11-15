@@ -13,7 +13,7 @@ import (
 
 func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
     input := &{{.Service}}.Get{{.StructName}}sInput{MaxResults: aws.Int32({{.MaxResults}})}
-    paginator := ram.NewGet{{.StructName}}sPaginator(meta.(*client.Client).Services().{{.Service | ToCamel}}, input)
+    paginator := {{.Service}}.NewGet{{.StructName}}sPaginator(meta.(*client.Client).Services().{{.Service | ToCamel}}, input)
     for paginator.HasMorePages() {
         response, err := paginator.NextPage(ctx)
         if err != nil {

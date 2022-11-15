@@ -3,14 +3,16 @@
 package apps
 
 import (
+	"context"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 func ReplicaSets() *schema.Table {
 	return &schema.Table{
 		Name:      "k8s_apps_replica_sets",
-		Resolver:  fetchAppsReplicaSets,
+		Resolver:  fetchReplicaSets,
 		Multiplex: client.ContextMultiplex,
 		Columns: []schema.Column{
 			{
@@ -132,5 +134,23 @@ func ReplicaSets() *schema.Table {
 				Resolver: schema.PathResolver("Status.Conditions"),
 			},
 		},
+	}
+}
+
+func fetchReplicaSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+
+	cl := meta.(*client.Client).Client().AppsV1().ReplicaSets("")
+
+	opts := metav1.ListOptions{}
+	for {
+		result, err := cl.List(ctx, opts)
+		if err != nil {
+			return err
+		}
+		res <- result.Items
+		if result.GetContinue() == "" {
+			return nil
+		}
+		opts.Continue = result.GetContinue()
 	}
 }

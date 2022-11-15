@@ -33,7 +33,7 @@ jobs:
           RUNNER=${{ steps.large-runner.outputs.runner }}
           echo "runner=${RUNNER:-"ubuntu-latest"}" >> $GITHUB_OUTPUT
   plugins-source-aws:
-    timeout-minutes: 30
+    timeout-minutes: 45
     name: "plugins/source/aws"
     needs: [resolve-runner]
     runs-on: ${{ needs.resolve-runner.outputs.runner }}
@@ -75,7 +75,7 @@ jobs:
         if: github.event_name == 'pull_request'
         run: test "$(git status -s ./resources/services | wc -l)" -eq 0
   validate-release:
-    timeout-minutes: 30
+    timeout-minutes: 45
     needs: [resolve-runner]
     runs-on: ${{ needs.resolve-runner.outputs.runner }}
     env:
