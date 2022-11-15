@@ -4,5 +4,6 @@
   "proxy-configuration": "Proxy Configuration",
   "docker": "Docker",
   "security": "Security",
-  "rate-limiting": "Rate Limiting"
+  "rate-limiting": "Rate Limiting",
+  "wildcard-matching": "Wildcard matching"
 }
