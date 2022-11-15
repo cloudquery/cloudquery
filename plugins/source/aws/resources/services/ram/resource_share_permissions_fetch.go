@@ -27,12 +27,7 @@ func fetchRamResourceSharePermissions(ctx context.Context, meta schema.ClientMet
 	return nil
 }
 
-func resolveResourceSharePermissionDetailPermission(
-	ctx context.Context,
-	meta schema.ClientMeta,
-	resource *schema.Resource,
-	c schema.Column,
-) error {
+func resolveResourceSharePermissionDetailPermission(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	permission := resource.Item.(types.ResourceSharePermissionSummary)
 	version, err := strconv.ParseInt(aws.ToString(permission.Version), 10, 32)
 	if err != nil {

@@ -161,7 +161,7 @@ func (r *Resource) Generate() error {
 
 	// All table names must be plural
 	if !strings.HasSuffix(name, "s") {
-		return fmt.Errorf("invalid table name: %s. must be plural.", name)
+		return fmt.Errorf("invalid table name: %s. must be plural", name)
 	}
 
 	r.Table, err = codegen.NewTableFromStruct(
