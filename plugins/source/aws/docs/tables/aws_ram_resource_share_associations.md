@@ -1,4 +1,4 @@
-# Table: aws_ram_resource_share_associated_resources
+# Table: aws_ram_resource_share_associations
 
 https://docs.aws.amazon.com/ram/latest/APIReference/API_ResourceShareAssociation.html
 
