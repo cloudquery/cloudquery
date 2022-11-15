@@ -48,11 +48,6 @@ func KafkaResources() []*Resource {
 					Type:     schema.TypeString,
 					Resolver: `schema.ParentColumnResolver("arn")`,
 				},
-				{
-					Name:     "tags",
-					Type:     schema.TypeJSON,
-					Resolver: `resolveKafkaTags("NodeARN")`,
-				},
 			}...),
 			ShouldGenerateResolverAndMockTest: false,
 		},
@@ -92,11 +87,6 @@ func KafkaResources() []*Resource {
 					Type:     schema.TypeString,
 					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					Resolver: `schema.PathResolver("Arn")`,
-				},
-				{
-					Name:     "tags",
-					Type:     schema.TypeJSON,
-					Resolver: `resolveKafkaTags("Arn")`,
 				},
 			}...),
 			ShouldGenerateResolverAndMockTest: true,
