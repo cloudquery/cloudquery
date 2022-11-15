@@ -5,6 +5,7 @@ package appstream
 import (
 	"context"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/appstream"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -12,7 +13,6 @@ import (
 
 func fetchAppstreamUsageReportSubscriptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var input appstream.DescribeUsageReportSubscriptionsInput
-
 	c := meta.(*client.Client)
 	svc := c.Services().Appstream
 	for {
@@ -21,11 +21,11 @@ func fetchAppstreamUsageReportSubscriptions(ctx context.Context, meta schema.Cli
 			return err
 		}
 		res <- response.UsageReportSubscriptions
-		if response.NextToken == nil {
+
+		if aws.ToString(response.NextToken) == "" {
 			break
 		}
 		input.NextToken = response.NextToken
 	}
-
 	return nil
 }

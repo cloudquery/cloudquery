@@ -278,6 +278,10 @@
 | [aws_iot_thing_types](aws_iot_thing_types.md) |
 | [aws_iot_things](aws_iot_things.md) |
 | [aws_iot_topic_rules](aws_iot_topic_rules.md) |
+| [aws_kafka_clusters](aws_kafka_clusters.md) |
+| ↳ [aws_kafka_nodes](aws_kafka_nodes.md) |
+| ↳ [aws_kafka_cluster_operations](aws_kafka_cluster_operations.md) |
+| [aws_kafka_configurations](aws_kafka_configurations.md) |
 | [aws_kinesis_streams](aws_kinesis_streams.md) |
 | [aws_kms_aliases](aws_kms_aliases.md) |
 | [aws_kms_keys](aws_kms_keys.md) |

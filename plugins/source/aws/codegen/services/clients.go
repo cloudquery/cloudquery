@@ -52,6 +52,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/inspector"
 	"github.com/aws/aws-sdk-go-v2/service/inspector2"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
+	"github.com/aws/aws-sdk-go-v2/service/kafka"
 	"github.com/aws/aws-sdk-go-v2/service/kinesis"
 	"github.com/aws/aws-sdk-go-v2/service/kms"
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
@@ -142,6 +143,7 @@ var clients = []interface{}{
 	&inspector.Client{},
 	&inspector2.Client{},
 	&iot.Client{},
+	&kafka.Client{},
 	&kinesis.Client{},
 	&kms.Client{},
 	&lambda.Client{},
