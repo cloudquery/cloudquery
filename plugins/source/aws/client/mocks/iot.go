@@ -1715,6 +1715,26 @@ func (mr *MockIotClientMockRecorder) ListProvisioningTemplates(arg0, arg1 interf
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListProvisioningTemplates", reflect.TypeOf((*MockIotClient)(nil).ListProvisioningTemplates), varargs...)
 }
 
+// ListRelatedResourcesForAuditFinding mocks base method.
+func (m *MockIotClient) ListRelatedResourcesForAuditFinding(arg0 context.Context, arg1 *iot.ListRelatedResourcesForAuditFindingInput, arg2 ...func(*iot.Options)) (*iot.ListRelatedResourcesForAuditFindingOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListRelatedResourcesForAuditFinding", varargs...)
+	ret0, _ := ret[0].(*iot.ListRelatedResourcesForAuditFindingOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListRelatedResourcesForAuditFinding indicates an expected call of ListRelatedResourcesForAuditFinding.
+func (mr *MockIotClientMockRecorder) ListRelatedResourcesForAuditFinding(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListRelatedResourcesForAuditFinding", reflect.TypeOf((*MockIotClient)(nil).ListRelatedResourcesForAuditFinding), varargs...)
+}
+
 // ListRoleAliases mocks base method.
 func (m *MockIotClient) ListRoleAliases(arg0 context.Context, arg1 *iot.ListRoleAliasesInput, arg2 ...func(*iot.Options)) (*iot.ListRoleAliasesOutput, error) {
 	m.ctrl.T.Helper()
