@@ -7,8 +7,6 @@ The primary key for this table is **arn**.
 ## Relations
 The following tables depend on aws_ram_resource_shares:
   - [aws_ram_resource_share_permissions](aws_ram_resource_share_permissions.md)
-  - [aws_ram_resource_share_associated_principals](aws_ram_resource_share_associated_principals.md)
-  - [aws_ram_resource_share_associated_resources](aws_ram_resource_share_associated_resources.md)
 
 ## Columns
 | Name          | Type          |

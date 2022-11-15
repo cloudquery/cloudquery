@@ -5,12 +5,15 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/ram"
 	"github.com/aws/aws-sdk-go-v2/service/ram/types"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
-func buildRamResourceShareAssociatedPrincipalsMock(t *testing.T, m *mocks.MockRamClient) {
+func buildRamResourceShareAssociatedPrincipalsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+	m := mocks.NewMockRamClient(ctrl)
+
 	object := types.ResourceShareAssociation{}
 	err := faker.FakeObject(&object)
 	if err != nil {
@@ -19,4 +22,9 @@ func buildRamResourceShareAssociatedPrincipalsMock(t *testing.T, m *mocks.MockRa
 
 	m.EXPECT().GetResourceShareAssociations(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&ram.GetResourceShareAssociationsOutput{ResourceShareAssociations: []types.ResourceShareAssociation{object}}, nil).AnyTimes()
+	return client.Services{Ram: m}
+}
+
+func TestRamResourceShareAssociatedPrincipals(t *testing.T) {
+	client.AwsMockTestHelper(t, ResourceShareAssociatedPrincipals(), buildRamResourceShareAssociatedPrincipalsMock, client.TestOptions{})
 }

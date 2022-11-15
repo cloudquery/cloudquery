@@ -332,6 +332,8 @@ func tables() []*schema.Table {
 		ram.Principals(),
 		ram.Resources(),
 		ram.ResourceShares(),
+		ram.ResourceShareAssociatedPrincipals(),
+		ram.ResourceShareAssociatedResources(),
 		ram.ResourceShareInvitations(),
 		ram.ResourceTypes(),
 		rds.Certificates(),

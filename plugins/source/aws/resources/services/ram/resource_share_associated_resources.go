@@ -12,6 +12,7 @@ func ResourceShareAssociatedResources() *schema.Table {
 		Name:        "aws_ram_resource_share_associated_resources",
 		Description: `https://docs.aws.amazon.com/ram/latest/APIReference/API_ResourceShareAssociation.html`,
 		Resolver:    fetchRamResourceShareAssociatedResources,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("ram"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

@@ -32,22 +32,20 @@ func RAMResources() []*Resource {
 			ExtraColumns: defaultRegionalColumns,
 			Relations: []string{
 				"ResourceSharePermissions()",
-				"ResourceShareAssociatedPrincipals()",
-				"ResourceShareAssociatedResources()",
 			},
 			NameTransformer: CreateReplaceTransformer(map[string]string{"resource_share_arn": "arn"}),
 		},
 		{
 			SubService:   "resource_share_associated_principals",
 			Struct:       new(types.ResourceShareAssociation),
-			Multiplex:    "", // it's a relation for resource_shares
+			Multiplex:    mx,
 			PKColumns:    []string{"associated_entity", "resource_share_arn"},
 			ExtraColumns: defaultRegionalColumns,
 		},
 		{
 			SubService:   "resource_share_associated_resources",
 			Struct:       new(types.ResourceShareAssociation),
-			Multiplex:    "", // it's a relation for resource_shares
+			Multiplex:    mx,
 			PKColumns:    []string{"associated_entity", "resource_share_arn"},
 			ExtraColumns: defaultRegionalColumns,
 		},
