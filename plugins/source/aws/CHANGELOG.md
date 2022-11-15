@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [6.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v6.0.0...plugins-source-aws-v6.0.1) (2022-11-15)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for aws to v1.5.3 ([#4640](https://github.com/cloudquery/cloudquery/issues/4640)) ([29f6adc](https://github.com/cloudquery/cloudquery/commit/29f6adc387dc7003803b8830c3f683ae916360d4))
+* Update endpoints ([#4686](https://github.com/cloudquery/cloudquery/issues/4686)) ([a33c13e](https://github.com/cloudquery/cloudquery/commit/a33c13e12cb6e3473c4ee16dd01e7454c0ba8705))
+
 ## [6.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v5.2.0...plugins-source-aws-v6.0.0) (2022-11-15)
 
 
