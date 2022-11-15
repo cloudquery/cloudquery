@@ -65,7 +65,6 @@ func fetchDetailEntities(ctx context.Context, res chan<- interface{}, svc servic
 		ServiceLastAccessed: &sla,
 	}
 	for {
-
 		output, err := svc.GetServiceLastAccessedDetailsWithEntities(ctx, &config)
 		if err != nil {
 			return err
