@@ -26,11 +26,16 @@ func buildEventbridgeArchivesMock(t *testing.T, ctrl *gomock.Controller) client.
 			Archives: []types.Archive{object},
 		}, nil)
 
+	tagsOutput := eventbridge.ListTagsForResourceOutput{}
+	err = faker.FakeObject(&tagsOutput)
+	if err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any()).Return(&tagsOutput, nil).AnyTimes()
 	return client.Services{
 		Eventbridge: m,
 	}
 }
-
 func TestEventbridgeArchives(t *testing.T) {
 	client.AwsMockTestHelper(t, Archives(), buildEventbridgeArchivesMock, client.TestOptions{})
 }
