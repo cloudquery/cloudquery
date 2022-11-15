@@ -54,6 +54,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/inspector"
 	"github.com/aws/aws-sdk-go-v2/service/inspector2"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
+	"github.com/aws/aws-sdk-go-v2/service/kafka"
 	"github.com/aws/aws-sdk-go-v2/service/kinesis"
 	"github.com/aws/aws-sdk-go-v2/service/kms"
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
@@ -149,6 +150,7 @@ func initServices(region string, c aws.Config) Services {
 		Inspector:                 inspector.NewFromConfig(awsCfg),
 		Inspector2:                inspector2.NewFromConfig(awsCfg),
 		Iot:                       iot.NewFromConfig(awsCfg),
+		Kafka:                     kafka.NewFromConfig(awsCfg),
 		Kinesis:                   kinesis.NewFromConfig(awsCfg),
 		Kms:                       kms.NewFromConfig(awsCfg),
 		Lambda:                    lambda.NewFromConfig(awsCfg),
@@ -241,6 +243,7 @@ type Services struct {
 	Inspector                 services.InspectorClient
 	Inspector2                services.Inspector2Client
 	Iot                       services.IotClient
+	Kafka                     services.KafkaClient
 	Kinesis                   services.KinesisClient
 	Kms                       services.KmsClient
 	Lambda                    services.LambdaClient

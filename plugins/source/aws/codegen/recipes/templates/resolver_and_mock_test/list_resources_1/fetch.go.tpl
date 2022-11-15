@@ -12,15 +12,19 @@ import (
 )
 
 func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-  var input {{.Service}}.List{{.StructName}}sInput
+  var input {{.Service}}.{{.ListMethod.Method.Name}}Input{{ if .CustomListInput }} = {{.CustomListInput}}{{ end }}
   c := meta.(*client.Client)
   svc := c.Services().{{.Service | ToCamel}}
   for {
-		response, err := svc.List{{.StructName}}s(ctx, &input)
+		response, err := svc.{{.ListMethod.Method.Name}}(ctx, &input)
 		if err != nil {
 			return err
 		}
-		res <- response.{{.StructName}}s
+        {{- if .ListMethod.OutputFieldName }}
+        res <- response.{{.ListMethod.OutputFieldName}}
+        {{- else }}
+        res <- response
+        {{- end }}
 		if aws.ToString(response.NextToken) == "" {
 			break
 		}

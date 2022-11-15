@@ -26,11 +26,17 @@ func buildAppstreamDirectoryConfigsMock(t *testing.T, ctrl *gomock.Controller) c
 			DirectoryConfigs: []types.DirectoryConfig{object},
 		}, nil)
 
+	tagsOutput := appstream.ListTagsForResourceOutput{}
+	err = faker.FakeObject(&tagsOutput)
+	if err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any()).Return(&tagsOutput, nil).AnyTimes()
+
 	return client.Services{
 		Appstream: m,
 	}
 }
-
 func TestAppstreamDirectoryConfigs(t *testing.T) {
 	client.AwsMockTestHelper(t, DirectoryConfigs(), buildAppstreamDirectoryConfigsMock, client.TestOptions{})
 }

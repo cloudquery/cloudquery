@@ -11,15 +11,20 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchRamResources(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
-	input := &ram.ListResourcesInput{MaxResults: aws.Int32(500)}
-	paginator := ram.NewListResourcesPaginator(meta.(*client.Client).Services().Ram, input)
-	for paginator.HasMorePages() {
-		response, err := paginator.NextPage(ctx)
+func fetchRamResources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+	var input ram.ListResourcesInput = listResourcesInput()
+	c := meta.(*client.Client)
+	svc := c.Services().Ram
+	for {
+		response, err := svc.ListResources(ctx, &input)
 		if err != nil {
 			return err
 		}
 		res <- response.Resources
+		if aws.ToString(response.NextToken) == "" {
+			break
+		}
+		input.NextToken = response.NextToken
 	}
 	return nil
 }
