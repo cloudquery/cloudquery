@@ -39,5 +39,4 @@ func fetchRamResourceShareAssociationsByType(ctx context.Context, meta schema.Cl
 		res <- response.ResourceShareAssociations
 	}
 	return nil
-
 }

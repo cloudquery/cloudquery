@@ -20,7 +20,6 @@ func fetchRamPrincipals(ctx context.Context, meta schema.ClientMeta, _ *schema.R
 		return err
 	}
 	return nil
-
 }
 
 func fetchRamPrincipalsByOwner(ctx context.Context, meta schema.ClientMeta, shareType types.ResourceOwner, res chan<- interface{}) error {
@@ -37,5 +36,4 @@ func fetchRamPrincipalsByOwner(ctx context.Context, meta schema.ClientMeta, shar
 		res <- response.Principals
 	}
 	return nil
-
 }

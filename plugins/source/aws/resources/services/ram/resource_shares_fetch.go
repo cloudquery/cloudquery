@@ -36,5 +36,4 @@ func fetchRamResourceSharesByType(ctx context.Context, meta schema.ClientMeta, s
 		res <- response.ResourceShares
 	}
 	return nil
-
 }
