@@ -32,7 +32,7 @@ spec:
   # Source spec section
   name: okta
   path: cloudquery/digitalocean
-  version: "v1.2.0" # latest version of digitalocean plugin
+  version: "v2.2.21" # latest version of digitalocean plugin
   tables: ["*"]
   destinations: ["postgresql"]
 ```
