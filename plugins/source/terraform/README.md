@@ -1,6 +1,10 @@
-# Terraform Plugin
+## Terraform Plugin
 
-The CloudQuery Terraform plugin extracts terraform state.
+The CloudQuery Terraform plugin extracts terraform state and loads it into any supported CloudQuery destination (e.g. PostgreSQL).
+
+### Links
+
+- [Tables](./docs/tables/README.md)
 
 ## Configuration
 

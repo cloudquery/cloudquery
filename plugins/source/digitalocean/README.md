@@ -1,12 +1,10 @@
 ## DigitalOcean Plugin
 
-The CloudQuery DigitalOcean provider pulls configuration out of DigitalOcean resources, normalizes them and stores them in PostgreSQL database.
+The CloudQuery DigitalOcean plugin pulls configuration from DigitalOcean resources and loads it into any supported CloudQuery destination (e.g. PostgreSQL).
 
-### Install
+### Links
 
-```bash
-cloudquery init digitalocean
-```
+- [Tables](./docs/tables/README.md)
 
 ### Authentication
 

@@ -1,6 +1,6 @@
 ## Cloudflare Plugin
 
-The CloudQuery Cloudflare plugin pulls configuration out of Cloudflare resources, normalizes them and stores them in a PostgreSQL database.
+The CloudQuery Cloudflare plugin pulls configuration out of Cloudflare resources and loads it into any supported CloudQuery destination (e.g. PostgreSQL).
 
 ### Links
 

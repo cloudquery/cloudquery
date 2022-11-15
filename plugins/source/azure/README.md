@@ -1,6 +1,6 @@
 # CloudQuery Azure Source Plugin
 
-The CloudQuery Azure source plugin extracts information from many of the supported services by Microsoft Azure.
+The CloudQuery Azure source plugin extracts information from many of the supported services by Microsoft Azure and loads it into any supported CloudQuery destination (e.g. PostgreSQL).
 
 ## Links
 
