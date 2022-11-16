@@ -24,11 +24,9 @@ In this post, we will deep dive on KMS Key Access via KMS Key Grants and best pr
 
 [KMS Key Access](https://docs.aws.amazon.com/kms/latest/developerguide/control-access.html) is similar to other resource access in AWS and the underlying access system in AWS: AWS Identity and Access Management.  [Typical AWS evaluation of access](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic.html) to a resource is done via AWS’s policy evaluation logic that evaluates the request context, evaluates whether the actions are within a single account or [cross-account](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic-cross-account.html) (between 2 distinct AWS accounts), and evaluating identity-based policies with resource-based policies and other advanced policies such as permission boundaries, Organizationals Service-Control Policies, Session Policies, and more.
 
-From AWS: 
+The below image is from AWS's Documentation regarding policy evaluation for evaluating identity-based policies with resource-based policies.
 
-![Policy Evaluation for evaluating identity-based policies with resource-based policies](/images/blog/aws-kms-key-grants-deep-dive/policy-eval-resource.png)
-
-Policy Evaluation for evaluating identity-based policies with resource-based policies
+![From AWS, Policy Evaluation for evaluating identity-based policies with resource-based policies](/images/blog/aws-kms-key-grants-deep-dive/policy-eval-resource.png)
 
 Typical policy evaluation within a single account is done as a logical ****or****, where an explicit permission on either the resource-based policy or the identity-based policy evaluations allows for access to the resource for [resources that support resource-based policies](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_aws-services-that-work-with-iam.html).  More information from AWS can be found [here](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_identity-vs-resource.html).  An example is an S3 Bucket Policy.  If an S3 Bucket Policy allows an IAM entity within the account explicit access to the S3 Bucket, the IAM entity does not need explicit allows on the identity-based policies for access to the S3 Bucket.
 
@@ -42,7 +40,7 @@ There are [3 access mechanisms for KMS Keys](https://docs.aws.amazon.com/kms/lat
 - IAM Policies
 - Grants
 
-Thus, we have the following important differences about access to KMS Keys:
+Thus, we have the following important differences about access to KMS Keys vs access to other resources in AWS:
 
 - Permissions must be granted explicitly on the KMS Key Policy (Resource-based policy).
 - Access to KMS Keys can also be managed by KMS Key Grants.
@@ -171,11 +169,26 @@ Even if the IAM principal creating a key Grants made on KMS resources within an 
 
 ![CloudTrail Event Record for KMS CreateGrant](/images/blog/aws-kms-key-grants-deep-dive/create-grant-cloudtrail.png)
 
-- [https://docs.aws.amazon.com/kms/latest/developerguide/security-logging-monitoring.html](https://docs.aws.amazon.com/kms/latest/developerguide/security-logging-monitoring.html)
-
 ## Managing KMS Key Grant Lifecycle
 
-Retire vs Revoke
+AWS provides 2 different operations for managing KMS Key Grant lifecycle:
+- [RetireGrant](https://docs.aws.amazon.com/kms/latest/APIReference/API_RetireGrant.html)
+- [RevokeGrant](https://docs.aws.amazon.com/kms/latest/APIReference/API_RevokeGrant.html)
+
+While both of these actions provide the same result of deleting a KMS Key Grant, which eliminates the permissions the grant allows.  However, these permissions are authorized differently.
+
+A few key differences include:
+- RevokeGrant is similar to a typical AWS KMS operation and can be controlled via key policies and IAM policies via the `kms:RevokeGrant` permission.  The usage of `kms:RetireGrant` in policies does not behave similarly.
+
+- RetireGrant can be granted by specifiying a retiring principal when creating the grant.  RetireGrant can also be granted to the Grantee Principal similar to other available operations in CreateGrant.  Principals specified in the grant can then retire a grant without the `kms:RetireGrant` permission explicitly allowed in either a key policy or an identity policy.
+
+```bash
+aws kms create-grant --key-id arn:aws:kms:us-east-1:123412341234:key/aaaaaaaa-1234-1234-1234-123412341234 --grantee-principal arn:aws:iam::123412341234:user/sample-user --retiring-principal arn:aws:iam::123412341234:user/sample-principal --operations DescribeKey --profile testprofile --region us-east-1
+```
+
+```bash
+aws kms create-grant --key-id arn:aws:kms:us-east-1:123412341234:key/aaaaaaaa-1234-1234-1234-123412341234 --grantee-principal arn:aws:iam::123412341234:user/sample-user --operations DescribeKey RetireGrant --profile testprofile --region us-east-1
+```
 
 ## Recommendations
 
@@ -288,3 +301,11 @@ We’ll use the `kms:GrantIsForAWSResource` Condition Key here.  An example belo
     - However, this can be configured to only allow usage to AWS Services with the condition key `kms:GrantIsForAWSResource.`
 
 Your organization’s use cases may be slightly different. If you have comments, feedback on this post, follow-up topics you’d like to see, or would like to talk about your KMS and encryption experiences  - email us at security@cloudquery.io or come chat with us on [Discord](https://www.cloudquery.io/discord)!
+
+## References
+
+[AWS: Grants in AWS KMS](https://docs.aws.amazon.com/kms/latest/developerguide/grants.html)
+
+[AWS: Authentication and access control for AWS KMS](https://docs.aws.amazon.com/kms/latest/developerguide/control-access.html) 
+
+[AWS: Logging and monitoring in AWS Key Management Service](https://docs.aws.amazon.com/kms/latest/developerguide/security-logging-monitoring.html)
