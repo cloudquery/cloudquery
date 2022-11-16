@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [7.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v6.2.0...plugins-source-aws-v7.0.0) (2022-11-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* **aws:** Removed `aws_resource_share_associated_principals` and `aws_resource_share_associated_resources` relations of `aws_ram_resource_shares` and created a new top level table to hold this data `aws_resource_share_associations`.  To sync these resources, ensure to either use `tables: ["*"]` or `tables: ["aws_resource_share_associations"]`
+* **aws:** Moved `aws_ram_resource_share_permissions` to be a relation of `aws_ram_resource_shares` instead of a top level table. To sync `aws_ram_resource_share_permissions` you'll need to ensure to sync `aws_ram_resource_shares` too by specifying either `tables: ["*"]` or `tables: ["aws_ram_resource_shares"]`
+
+### Bug Fixes
+
+* **aws:** Fix ram resources ([#4636](https://github.com/cloudquery/cloudquery/issues/4636)) ([2609f3e](https://github.com/cloudquery/cloudquery/commit/2609f3e868369f3a2af8fa6c7e5bdc00a036974a))
+* **aws:** Moved `aws_ram_resource_share_permissions` to be a relation of `aws_ram_resource_shares` instead of a top level table. To sync `aws_ram_resource_share_permissions` you'll need to ensure to sync `aws_ram_resource_shares` too by specifying either `tables: ["*"]` or `tables: ["aws_ram_resource_shares"]` ([2609f3e](https://github.com/cloudquery/cloudquery/commit/2609f3e868369f3a2af8fa6c7e5bdc00a036974a))
+* **aws:** Removed `aws_resource_share_associated_principals` and `aws_resource_share_associated_resources` relations of `aws_ram_resource_shares` and created a new top level table to hold this data `aws_resource_share_associations`.  To sync these resources, ensure to either use `tables: ["*"]` or `tables: ["aws_resource_share_associations"]` ([2609f3e](https://github.com/cloudquery/cloudquery/commit/2609f3e868369f3a2af8fa6c7e5bdc00a036974a))
+
 ## [6.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v6.1.0...plugins-source-aws-v6.2.0) (2022-11-16)
 
 
