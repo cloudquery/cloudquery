@@ -6,7 +6,7 @@ Note: Source and destinations plugins recipes are separate in this directory and
 
 * Combine them easily by either using two different files and running `cloudquery sync aws.yml gcp.yml`
 
-```yaml file=aws.yml
+```yaml copy
 kind: source
 spec:
   name: aws
@@ -16,7 +16,7 @@ spec:
   destinations: ["postgresql"]
 ```
 
-```yaml file=pg.yml
+```yaml copy
 kind: destination
 spec:
   name: postgresql
@@ -28,7 +28,7 @@ spec:
 
 * Or combine source and destination to a single file
 
-```yaml
+```yaml copy
 kind: source
 spec:
   name: aws
