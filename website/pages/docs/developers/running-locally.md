@@ -40,7 +40,7 @@ If you are running multiple plugins this way simultaneously, you will need to sp
 
 > `1:16PM INF Source plugin server listening address=127.0.0.1:7778`
 
-After the plugins are running, you can tell the CLI to connect to them by setting the `registry` to `grpc` and the `path` to the listen address of the plugin:
+After the plugin is running, you can tell the CLI to connect to it by setting the `registry` to `grpc` and the `path` to the listen address of the plugin:
 
 ```yaml
 kind: source
