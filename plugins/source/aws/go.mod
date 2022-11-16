@@ -8,6 +8,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/credentials v1.13.0
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.39
 	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.17.1
+	github.com/aws/aws-sdk-go-v2/service/account v1.7.11
 	github.com/aws/aws-sdk-go-v2/service/acm v1.16.1
 	github.com/aws/aws-sdk-go-v2/service/apigateway v1.15.23
 	github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.12.21
@@ -106,7 +107,6 @@ require (
 
 require (
 	github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.16 // indirect
-	github.com/aws/aws-sdk-go-v2/service/account v1.7.11 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.1.20 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.13.8 // indirect
 	github.com/bitly/go-simplejson v0.5.0 // indirect
