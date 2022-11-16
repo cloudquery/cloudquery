@@ -71,6 +71,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/route53"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/s3"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sagemaker"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/scheduler"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/secretsmanager"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/servicecatalog"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/servicequotas"
@@ -361,6 +362,8 @@ func tables() []*schema.Table {
 		sagemaker.Models(),
 		sagemaker.NotebookInstances(),
 		sagemaker.TrainingJobs(),
+		scheduler.ScheduleGroups(),
+		scheduler.Schedules(),
 		secretsmanager.Secrets(),
 		servicecatalog.Portfolios(),
 		servicecatalog.Products(),
