@@ -7,7 +7,7 @@ kind: source
 spec:
   name: gcp
   path: cloudquery/gcp
-  version: "v3.0.1" # latest version of gcp plugin
+  version: "v3.0.2" # latest version of gcp plugin
   tables: ["*"]
   destinations: ["YOUR_DESTINATION"]
 ```
