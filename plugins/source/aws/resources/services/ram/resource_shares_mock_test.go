@@ -23,9 +23,6 @@ func buildRamResourceSharesMock(t *testing.T, ctrl *gomock.Controller) client.Se
 	m.EXPECT().GetResourceShares(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&ram.GetResourceSharesOutput{ResourceShares: []types.ResourceShare{object}}, nil).MinTimes(1)
 
-	// buildRamResourceShareAssociatedResourcesMock(t, m)
-	// buildRamResourceShareAssociatedPrincipalsMock(t, m)
-
 	summary := types.ResourceSharePermissionSummary{}
 	err = faker.FakeObject(&summary)
 	if err != nil {
