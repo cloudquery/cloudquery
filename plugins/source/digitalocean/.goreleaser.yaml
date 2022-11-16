@@ -1,5 +1,6 @@
 variables:
   component: source/digitalocean
+  binary: digitalocean
 
 project_name: plugins/source/digitalocean
 

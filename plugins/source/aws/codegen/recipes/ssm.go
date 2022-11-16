@@ -29,12 +29,10 @@ func SSMResources() []*Resource {
 					},
 				}...),
 		},
-
 		{
 			SubService:  "instances",
 			Struct:      &types.InstanceInformation{},
 			Description: "https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_InstanceInformation.html",
-			SkipFields:  []string{},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -45,7 +43,10 @@ func SSMResources() []*Resource {
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
 				}...),
-			Relations: []string{`InstanceComplianceItems()`},
+			Relations: []string{
+				`InstanceComplianceItems()`,
+				`InstancePatches()`,
+			},
 		},
 		{
 			SubService:  "instance_compliance_items",
@@ -69,35 +70,118 @@ func SSMResources() []*Resource {
 					},
 				}...),
 		},
-
 		{
 			SubService:  "parameters",
 			Struct:      &types.ParameterMetadata{},
 			Description: "https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_ParameterMetadata.html",
 			SkipFields:  []string{"Name"},
-			ExtraColumns: []codegen.ColumnDefinition{
-				{
-					Name:        "account_id",
-					Description: "The AWS Account ID of the resource",
-					Type:        schema.TypeString,
-					Resolver:    `client.ResolveAWSAccount`,
-					Options:     schema.ColumnCreationOptions{PrimaryKey: true},
-				},
-				{
-					Name:        "region",
-					Description: "The AWS Region of the resource",
-					Type:        schema.TypeString,
-					Resolver:    `client.ResolveAWSRegion`,
-					Options:     schema.ColumnCreationOptions{PrimaryKey: true},
-				},
-
+			ExtraColumns: append(defaultRegionalColumnsPK, []codegen.ColumnDefinition{
 				{
 					Name:        "name",
 					Description: "The parameter name",
 					Type:        schema.TypeString,
 					Options:     schema.ColumnCreationOptions{PrimaryKey: true},
 				},
-			},
+			}...),
+		},
+		{
+			SubService:  "compliance_summary_items",
+			Struct:      &types.ComplianceSummaryItem{},
+			Description: "https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_ComplianceSummaryItem.html",
+			SkipFields:  []string{"ComplianceType"},
+			ExtraColumns: append(defaultRegionalColumnsPK, []codegen.ColumnDefinition{
+				{
+					Name:    "compliance_type",
+					Type:    schema.TypeString,
+					Options: schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+			}...),
+		},
+		{
+			SubService:  "associations",
+			Struct:      &types.Association{},
+			Description: "https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_Association.html",
+			SkipFields:  []string{"AssociationId"},
+			ExtraColumns: append(
+				defaultRegionalColumnsPK,
+				[]codegen.ColumnDefinition{
+					{
+						Name:     "association_id",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("AssociationId")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				}...),
+		},
+		{
+			SubService:  "inventories",
+			Struct:      &types.InventoryResultEntity{},
+			Description: "https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_InventoryResultEntity.html",
+			SkipFields:  []string{"Id"},
+			ExtraColumns: append(
+				defaultRegionalColumnsPK,
+				[]codegen.ColumnDefinition{
+					{
+						Name:     "id",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("Id")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				}...),
+		},
+		{
+			SubService:  "inventory_schemas",
+			Struct:      &types.InventoryItemSchema{},
+			Description: "https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_InventoryItemSchema.html",
+			SkipFields:  []string{"TypeName", "Version"},
+			ExtraColumns: append(
+				defaultRegionalColumnsPK,
+				[]codegen.ColumnDefinition{
+					{
+						Name:     "type_name",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("TypeName")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+					{
+						Name:     "version",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("Version")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				}...),
+		},
+		{
+			SubService:  "patch_baselines",
+			Struct:      &types.PatchBaselineIdentity{},
+			Description: "https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_PatchBaselineIdentity.html",
+			SkipFields:  []string{"BaselineId"},
+			ExtraColumns: append(
+				defaultRegionalColumnsPK,
+				[]codegen.ColumnDefinition{
+					{
+						Name:     "baseline_id",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("BaselineId")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				}...),
+		},
+		{
+			SubService:  "instance_patches",
+			Struct:      &types.PatchComplianceData{},
+			Description: "https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_PatchComplianceData.html",
+			SkipFields:  []string{"KBId"},
+			ExtraColumns: append(
+				defaultRegionalColumnsPK,
+				[]codegen.ColumnDefinition{
+					{
+						Name:     "kb_id",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("KBId")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				}...),
 		},
 	}
 
