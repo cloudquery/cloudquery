@@ -22,13 +22,11 @@ In this post, we will deep dive on KMS Key Access via KMS Key Grants and best pr
 
 ## KMS Key Access
 
-[KMS Key Access](https://docs.aws.amazon.com/kms/latest/developerguide/control-access.html) lean on similar principals to other access in AWS: AWS Identity and Access Management including IAM Policies and Key Policies.  
-
-[Typical AWS evaluation of access](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic.html) to a resource is done via AWS’s policy evaluation logic that evaluates the request context, evaluates whether the actions are within a single account or [cross-account](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic-cross-account.html) (between 2 distinct AWS accounts), and evaluating identity-based policies with resource-based policies and other advanced policies such as permission boundaries, Organizationals Service-Control Policies, Session Policies, and more.
+[KMS Key Access](https://docs.aws.amazon.com/kms/latest/developerguide/control-access.html) is similar to other resource access in AWS and the underlying access system in AWS: AWS Identity and Access Management.  [Typical AWS evaluation of access](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic.html) to a resource is done via AWS’s policy evaluation logic that evaluates the request context, evaluates whether the actions are within a single account or [cross-account](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic-cross-account.html) (between 2 distinct AWS accounts), and evaluating identity-based policies with resource-based policies and other advanced policies such as permission boundaries, Organizationals Service-Control Policies, Session Policies, and more.
 
 From AWS: 
 
-![Policy Evaluation for evaluating identity-based policies with resource-based policies](Deep%20Dive%20on%20KMS%20Key%20Access%20KMS%20Key%20Grants%20c5807d5a06104a328d486f231000330d/Untitled.png)
+![Policy Evaluation for evaluating identity-based policies with resource-based policies](/images/blog/aws-kms-key-grants-deep-dive/policy-eval-resource.png)
 
 Policy Evaluation for evaluating identity-based policies with resource-based policies
 
@@ -69,7 +67,7 @@ The following permissions and associated API/CLI actions are related to managing
 
 We’ll go into detail on some of these permissions later in this post.
 
-A sample key policy that allows for a key administrator to Create Grants is as follows.  Note with this policy, we’ve modified the default key policy from AWS so that it does not [enable IAM policies](https://docs.aws.amazon.com/kms/latest/developerguide/key-policy-default.html).
+A sample key policy that allows for a key administrator to Create Grants is as follows.  Note with this policy, we’ve modified the default key policy from AWS so that it does not [enable IAM policies](https://docs.aws.amazon.com/kms/latest/developerguide/key-policy-default.html).  If you plan on using this key policy, ensure that any other permissions necessary are either explicitly allowed on the key policy or are enabled in IAM similar to the `Allow access to key metadata to the account` statement.
 
 ```json
 {
@@ -127,21 +125,38 @@ The permission to create a grant differs slightly depending on how the grantee p
 
 ### Nested Granting
 
-A Grantee Principal that was granted access to `CreateGrant` via a Grant can then create child grants.  Thus, despite the Grantee Principal not having an explicit allow via either an Identity Policy or the KMS Key Policy can still create Grants via the Grant Permissions as shown in the below screenshot.  
+A Grantee Principal that was granted access to `CreateGrant` via a Grant can then create child grants.  
 
-![A KMS Grant Operation that Grants the hugh-grant user the ability to Decrypt, DescribeKey, and CreateGrant.](Deep%20Dive%20on%20KMS%20Key%20Access%20KMS%20Key%20Grants%20c5807d5a06104a328d486f231000330d/Screen_Shot_2022-11-15_at_10.03.47_AM.png)
-
-A KMS Grant Operation that Grants the hugh-grant user the ability to Decrypt, DescribeKey, and CreateGrant.
+```bash
+aws kms create-grant --key-id arn:aws:kms:us-east-1:123412341234:key/aaaaaaaa-1234-1234-1234-123412341234 --grantee-principal arn:aws:iam::123412341234:user/hugh-grant --operations DescribeKey CreateGrant --profile myprofilewithoutpermpolicy --region us-east-1
+```
+In the above code snippet, we've granted our `hugh-grant` user the permissions to `DescribeKey` and `CreateGrant`.
 
 Now, we’ll try the following 3 use cases:
 
 - Creating a Grant with more operations than the parent grant.
+```bash
+aws kms create-grant --key-id arn:aws:kms:us-east-1:123412341234:key/aaaaaaaa-1234-1234-1234-123412341234 --grantee-principal arn:aws:iam::123412341234:user/sample-user --operations DescribeKey Decrypt CreateGrant --profile hughgrant --region us-east-1
+```
+
+- Creating a Grant with the same operations as the parent grant.
+```bash
+aws kms create-grant --key-id arn:aws:kms:us-east-1:123412341234:key/aaaaaaaa-1234-1234-1234-123412341234 --grantee-principal arn:aws:iam::123412341234:user/sample-user --operations DescribeKey CreateGrant --profile hughgrant --region us-east-1
+```
+
+- Creating a Grant with fewer operations as the parent grant.
+```bash
+aws kms create-grant --key-id arn:aws:kms:us-east-1:123412341234:key/aaaaaaaa-1234-1234-1234-123412341234 --grantee-principal arn:aws:iam::123412341234:user/sample-user --operations DescribeKey --profile hughgrant --region us-east-1
+```
+
+In this case, the following use cases succeed since the child grant is as strict or stricter than the parent grant:
 - Creating a Grant with the same operations as the parent grant.
 - Creating a Grant with fewer operations as the parent grant.
 
-[https://docs.aws.amazon.com/kms/latest/developerguide/create-grant-overview.html#grant-creategrant](https://docs.aws.amazon.com/kms/latest/developerguide/create-grant-overview.html#grant-creategrant)
+The following use case failed since the child grant is not as strict or stricter than the parent grant:
+- Creating a Grant with more operations than the parent grant.
 
-![Screen Shot 2022-11-15 at 10.15.34 AM.png](Deep%20Dive%20on%20KMS%20Key%20Access%20KMS%20Key%20Grants%20c5807d5a06104a328d486f231000330d/Screen_Shot_2022-11-15_at_10.15.34_AM.png)
+[https://docs.aws.amazon.com/kms/latest/developerguide/create-grant-overview.html#grant-creategrant](https://docs.aws.amazon.com/kms/latest/developerguide/create-grant-overview.html#grant-creategrant)
 
 ## Logging of KMS Key Grants
 
@@ -150,13 +165,11 @@ CloudTrail keeps a record of events and actions [taken via the AWS CLI, SDKs & A
 CloudTrail records some activity made outside of your AWS Account.  Activity outside of the AWS Account that can be recorded include:
 
 - KMS Key Grants on a KMS Key in your AWS Account.
-- Similar to EBS on SharedSnapshotVolumeCreated and SharedSnapshotCopyInitiated.
+- EBS on SharedSnapshotVolumeCreated and SharedSnapshotCopyInitiated for Shared EBS Snapshots.
 
-The `CreateGrant` API call will still show up in the account CloudTrail log
+Even if the IAM principal creating a key Grants made on KMS resources within an account (Account A) lives outside of your account (Account B), the `CreateGrant` API call will still show up in account A's CloudTrail logs.
 
-- Even if the IAM principal creating a key Grants made on KMS resources within your account lives outside of your account, the CreateKeyGrant API call will still show up in your account’s CloudTrail logs.
-
-![Screen Shot 2022-11-15 at 10.26.15 AM.png](Deep%20Dive%20on%20KMS%20Key%20Access%20KMS%20Key%20Grants%20c5807d5a06104a328d486f231000330d/Screen_Shot_2022-11-15_at_10.26.15_AM.png)
+![CloudTrail Event Record for KMS CreateGrant](/images/blog/aws-kms-key-grants-deep-dive/create-grant-cloudtrail.png)
 
 - [https://docs.aws.amazon.com/kms/latest/developerguide/security-logging-monitoring.html](https://docs.aws.amazon.com/kms/latest/developerguide/security-logging-monitoring.html)
 
