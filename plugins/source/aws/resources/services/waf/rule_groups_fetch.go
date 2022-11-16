@@ -2,8 +2,10 @@ package waf
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/waf"
 	"github.com/aws/aws-sdk-go-v2/service/waf/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -73,7 +75,13 @@ func resolveWafRuleGroupTags(ctx context.Context, meta schema.ClientMeta, resour
 	service := cl.Services().Waf
 
 	// Generate arn
-	arnStr := cl.AccountGlobalARN("waf", "rulegroup", aws.ToString(ruleGroup.RuleGroupId))
+	arnStr := arn.ARN{
+		Partition: cl.Partition,
+		Service:   "waf",
+		Region:    "",
+		AccountID: cl.AccountID,
+		Resource:  fmt.Sprintf("rulegroup/%s", aws.ToString(ruleGroup.RuleGroupId)),
+	}.String()
 
 	outputTags := make(map[string]*string)
 	tagsConfig := waf.ListTagsForResourceInput{ResourceARN: aws.String(arnStr)}

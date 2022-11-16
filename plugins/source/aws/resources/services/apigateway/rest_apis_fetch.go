@@ -2,8 +2,10 @@ package apigateway
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -26,8 +28,13 @@ func fetchApigatewayRestApis(ctx context.Context, meta schema.ClientMeta, parent
 func resolveApigatewayRestAPIArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	rapi := resource.Item.(types.RestApi)
-	arn := cl.RegionGlobalARN(client.ApigatewayService, restApiIDPart, *rapi.Id)
-	return resource.Set(c.Name, arn)
+	return resource.Set(c.Name, arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.ApigatewayService),
+		Region:    cl.Region,
+		AccountID: "",
+		Resource:  fmt.Sprintf("/restapis/%s", aws.ToString(rapi.Id)),
+	}.String())
 }
 func fetchApigatewayRestApiAuthorizers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.RestApi)
@@ -54,8 +61,13 @@ func resolveApigatewayRestAPIAuthorizerArn(ctx context.Context, meta schema.Clie
 	cl := meta.(*client.Client)
 	auth := resource.Item.(types.Authorizer)
 	rapi := resource.Parent.Item.(types.RestApi)
-	arn := cl.RegionGlobalARN(client.ApigatewayService, restApiIDPart, *rapi.Id, "authorizers", *auth.Id)
-	return resource.Set(c.Name, arn)
+	return resource.Set(c.Name, arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.ApigatewayService),
+		Region:    cl.Region,
+		AccountID: "",
+		Resource:  fmt.Sprintf("/restapis/%s/authorizers/%s", aws.ToString(rapi.Id), aws.ToString(auth.Id)),
+	}.String())
 }
 func fetchApigatewayRestApiDeployments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.RestApi)
@@ -78,8 +90,13 @@ func resolveApigatewayRestAPIDeploymentArn(ctx context.Context, meta schema.Clie
 	cl := meta.(*client.Client)
 	d := resource.Item.(types.Deployment)
 	rapi := resource.Parent.Item.(types.RestApi)
-	arn := cl.RegionGlobalARN(client.ApigatewayService, restApiIDPart, *rapi.Id, "deployments", *d.Id)
-	return resource.Set(c.Name, arn)
+	return resource.Set(c.Name, arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.ApigatewayService),
+		Region:    cl.Region,
+		AccountID: "",
+		Resource:  fmt.Sprintf("/restapis/%s/deployments/%s", aws.ToString(rapi.Id), aws.ToString(d.Id)),
+	}.String())
 }
 func fetchApigatewayRestApiDocumentationParts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.RestApi)
@@ -106,8 +123,13 @@ func resolveApigatewayRestAPIDocumentationPartArn(ctx context.Context, meta sche
 	cl := meta.(*client.Client)
 	d := resource.Item.(types.DocumentationPart)
 	rapi := resource.Parent.Item.(types.RestApi)
-	arn := cl.RegionGlobalARN(client.ApigatewayService, restApiIDPart, *rapi.Id, "documentation/parts", *d.Id)
-	return resource.Set(c.Name, arn)
+	return resource.Set(c.Name, arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.ApigatewayService),
+		Region:    cl.Region,
+		AccountID: "",
+		Resource:  fmt.Sprintf("/restapis/%s/documentation/parts/%s", aws.ToString(rapi.Id), aws.ToString(d.Id)),
+	}.String())
 }
 func fetchApigatewayRestApiDocumentationVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.RestApi)
@@ -134,8 +156,13 @@ func resolveApigatewayRestAPIDocumentationVersionArn(ctx context.Context, meta s
 	cl := meta.(*client.Client)
 	v := resource.Item.(types.DocumentationVersion)
 	rapi := resource.Parent.Item.(types.RestApi)
-	arn := cl.RegionGlobalARN(client.ApigatewayService, restApiIDPart, *rapi.Id, "documentation/versions", *v.Version)
-	return resource.Set(c.Name, arn)
+	return resource.Set(c.Name, arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.ApigatewayService),
+		Region:    cl.Region,
+		AccountID: "",
+		Resource:  fmt.Sprintf("/restapis/%s/documentation/versions/%s", aws.ToString(rapi.Id), aws.ToString(v.Version)),
+	}.String())
 }
 func fetchApigatewayRestApiGatewayResponses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.RestApi)
@@ -162,8 +189,13 @@ func resolveApigatewayRestAPIGatewayResponseArn(ctx context.Context, meta schema
 	cl := meta.(*client.Client)
 	r := resource.Item.(types.GatewayResponse)
 	rapi := resource.Parent.Item.(types.RestApi)
-	arn := cl.RegionGlobalARN(client.ApigatewayService, restApiIDPart, *rapi.Id, "gatewayresponses", string(r.ResponseType))
-	return resource.Set(c.Name, arn)
+	return resource.Set(c.Name, arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.ApigatewayService),
+		Region:    cl.Region,
+		AccountID: "",
+		Resource:  fmt.Sprintf("/restapis/%s/gatewayresponses/%s", aws.ToString(rapi.Id), string(r.ResponseType)),
+	}.String())
 }
 func fetchApigatewayRestApiModels(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.RestApi)
@@ -186,8 +218,13 @@ func resolveApigatewayRestAPIModelArn(ctx context.Context, meta schema.ClientMet
 	cl := meta.(*client.Client)
 	m := resource.Item.(types.Model)
 	rapi := resource.Parent.Item.(types.RestApi)
-	arn := cl.RegionGlobalARN(client.ApigatewayService, restApiIDPart, *rapi.Id, "models", *m.Name)
-	return resource.Set(c.Name, arn)
+	return resource.Set(c.Name, arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.ApigatewayService),
+		Region:    cl.Region,
+		AccountID: "",
+		Resource:  fmt.Sprintf("/restapis/%s/models/%s", aws.ToString(rapi.Id), aws.ToString(m.Name)),
+	}.String())
 }
 func resolveApigatewayRestAPIModelModelTemplate(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.Model)
@@ -245,8 +282,13 @@ func resolveApigatewayRestAPIRequestValidatorArn(ctx context.Context, meta schem
 	cl := meta.(*client.Client)
 	r := resource.Item.(types.RequestValidator)
 	rapi := resource.Parent.Item.(types.RestApi)
-	arn := cl.RegionGlobalARN(client.ApigatewayService, restApiIDPart, *rapi.Id, "requestvalidators", *r.Id)
-	return resource.Set(c.Name, arn)
+	return resource.Set(c.Name, arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.ApigatewayService),
+		Region:    cl.Region,
+		AccountID: "",
+		Resource:  fmt.Sprintf("/restapis/%s/requestvalidators/%s", aws.ToString(rapi.Id), aws.ToString(r.Id)),
+	}.String())
 }
 func fetchApigatewayRestApiResources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.RestApi)
@@ -269,8 +311,13 @@ func resolveApigatewayRestAPIResourceArn(ctx context.Context, meta schema.Client
 	cl := meta.(*client.Client)
 	r := resource.Item.(types.Resource)
 	rapi := resource.Parent.Item.(types.RestApi)
-	arn := cl.RegionGlobalARN(client.ApigatewayService, restApiIDPart, *rapi.Id, "resources", *r.Id)
-	return resource.Set(c.Name, arn)
+	return resource.Set(c.Name, arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.ApigatewayService),
+		Region:    cl.Region,
+		AccountID: "",
+		Resource:  fmt.Sprintf("/restapis/%s/resources/%s", aws.ToString(rapi.Id), aws.ToString(r.Id)),
+	}.String())
 }
 func fetchApigatewayRestApiStages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.RestApi)
@@ -293,6 +340,11 @@ func resolveApigatewayRestAPIStageArn(ctx context.Context, meta schema.ClientMet
 	cl := meta.(*client.Client)
 	s := resource.Item.(types.Stage)
 	rapi := resource.Parent.Item.(types.RestApi)
-	arn := cl.RegionGlobalARN(client.ApigatewayService, restApiIDPart, *rapi.Id, "stages", *s.StageName)
-	return resource.Set(c.Name, arn)
+	return resource.Set(c.Name, arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.ApigatewayService),
+		Region:    cl.Region,
+		AccountID: "",
+		Resource:  fmt.Sprintf("/restapis/%s/stages/%s", aws.ToString(rapi.Id), aws.ToString(s.StageName)),
+	}.String())
 }

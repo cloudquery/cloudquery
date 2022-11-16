@@ -146,21 +146,6 @@ func (c *Client) ARN(service AWSService, idParts ...string) string {
 	return makeARN(service, c.Partition, c.AccountID, c.Region, idParts...).String()
 }
 
-// AccountGlobalARN builds an ARN tied to current client's partition and accountID
-func (c *Client) AccountGlobalARN(service AWSService, idParts ...string) string {
-	return makeARN(service, c.Partition, c.AccountID, "", idParts...).String()
-}
-
-// PartitionGlobalARN builds an ARN tied to current client's partition
-func (c *Client) PartitionGlobalARN(service AWSService, idParts ...string) string {
-	return makeARN(service, c.Partition, "", "", idParts...).String()
-}
-
-// RegionGlobalARN builds an ARN tied to current client's partition and accountID
-func (c *Client) RegionGlobalARN(service AWSService, idParts ...string) string {
-	return makeARN(service, c.Partition, "", c.Region, idParts...).String()
-}
-
 func (c *Client) withPartitionAccountIDAndRegion(partition, accountID, region string) *Client {
 	return &Client{
 		Partition:            partition,
