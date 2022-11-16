@@ -21,7 +21,7 @@ Community plugins use the following GitHub repository naming conventions:
 
 A community plugin using this convention can be imported in a config by using:
 
-```yaml
+```yaml copy
 kind: source
 spec:
   path: org/name
@@ -29,7 +29,7 @@ spec:
 
 for source plugins, or
 
-```yaml
+```yaml copy
 kind: destination
 spec:
   path: org/name

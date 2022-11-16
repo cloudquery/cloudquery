@@ -8,7 +8,7 @@ Note: For configuring individual plugins, please refer to the configuration sect
 
 This example configures the AWS plugin, and connects is to a `postgresql` destination:
 
-```yaml
+```yaml copy
 kind: source
 spec:
   name: "aws"

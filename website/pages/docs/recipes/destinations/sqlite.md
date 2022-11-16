@@ -7,7 +7,7 @@ Full spec options for CSV destination available [here](https://github.com/cloudq
 
 This is a basic configuration that will save all your sync resources to `db.sql`.
 
-```yaml
+```yaml copy
 kind: destination
 spec:
   name: sqlite
