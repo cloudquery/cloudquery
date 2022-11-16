@@ -80,8 +80,7 @@ func ResourceShares() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			ResourceShareAssociatedPrincipals(),
-			ResourceShareAssociatedResources(),
+			ResourceSharePermissions(),
 		},
 	}
 }

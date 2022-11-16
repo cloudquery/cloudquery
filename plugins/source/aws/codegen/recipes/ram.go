@@ -11,23 +11,18 @@ func RAMResources() []*Resource {
 	mx := `client.ServiceAccountRegionMultiplexer("ram")`
 	resources := []*Resource{
 		{
-			SubService:                  "principals",
-			Struct:                      new(types.Principal),
-			Multiplex:                   mx,
-			PKColumns:                   []string{"id", "account_id"},
-			ExtraColumns:                defaultRegionalColumns,
-			ResolverAndMockTestTemplate: "list_resources_1",
-			CustomListInput:             `listPrincipalsInput()`,
+			SubService:   "principals",
+			Struct:       new(types.Principal),
+			Multiplex:    mx,
+			PKColumns:    []string{"id", "account_id"},
+			ExtraColumns: defaultRegionalColumns,
 		},
 		{
-			SubService:                  "resources",
-			Struct:                      new(types.Resource),
-			Multiplex:                   mx,
-			PKColumns:                   []string{"arn"},
-			ExtraColumns:                defaultRegionalColumns,
-			ResolverAndMockTestTemplate: "list_resources_1",
-			ListMethodName:              "ListResources",
-			CustomListInput:             `listResourcesInput()`,
+			SubService:   "resources",
+			Struct:       new(types.Resource),
+			Multiplex:    mx,
+			PKColumns:    []string{"arn"},
+			ExtraColumns: defaultRegionalColumns,
 		},
 		{
 			SubService:   "resource_shares",
@@ -36,22 +31,14 @@ func RAMResources() []*Resource {
 			PKColumns:    []string{"arn"},
 			ExtraColumns: defaultRegionalColumns,
 			Relations: []string{
-				"ResourceShareAssociatedPrincipals()",
-				"ResourceShareAssociatedResources()",
+				"ResourceSharePermissions()",
 			},
 			NameTransformer: CreateReplaceTransformer(map[string]string{"resource_share_arn": "arn"}),
 		},
 		{
-			SubService:   "resource_share_associated_principals",
+			SubService:   "resource_share_associations",
 			Struct:       new(types.ResourceShareAssociation),
-			Multiplex:    "", // it's a relation for resource_shares
-			PKColumns:    []string{"associated_entity", "resource_share_arn"},
-			ExtraColumns: defaultRegionalColumns,
-		},
-		{
-			SubService:   "resource_share_associated_resources",
-			Struct:       new(types.ResourceShareAssociation),
-			Multiplex:    "", // it's a relation for resource_shares
+			Multiplex:    mx,
 			PKColumns:    []string{"associated_entity", "resource_share_arn"},
 			ExtraColumns: defaultRegionalColumns,
 		},
@@ -68,7 +55,7 @@ func RAMResources() []*Resource {
 		{
 			SubService: "resource_share_permissions",
 			Struct:     new(types.ResourceSharePermissionSummary),
-			Multiplex:  mx,
+			Multiplex:  "", // it's a relation for resource_shares
 			PKColumns:  []string{"arn"},
 			ExtraColumns: append(defaultRegionalColumns,
 				codegen.ColumnDefinition{
