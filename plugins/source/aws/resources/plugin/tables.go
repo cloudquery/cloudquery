@@ -4,6 +4,7 @@ package plugin
 
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/accessanalyzer"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/account"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/acm"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/apigateway"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/apigatewayv2"
@@ -94,6 +95,8 @@ import (
 func tables() []*schema.Table {
 	return []*schema.Table{
 		accessanalyzer.Analyzers(),
+		account.AlternateContacts(),
+		account.Contacts(),
 		acm.Certificates(),
 		apigateway.ApiKeys(),
 		apigateway.ClientCertificates(),
