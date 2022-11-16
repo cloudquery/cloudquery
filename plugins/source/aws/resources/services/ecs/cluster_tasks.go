@@ -38,6 +38,11 @@ func ClusterTasks() *schema.Table {
 				Resolver: client.ResolveTags,
 			},
 			{
+				Name:     "task_protection",
+				Type:     schema.TypeJSON,
+				Resolver: getEcsTaskProtection,
+			},
+			{
 				Name:     "attachments",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Attachments"),

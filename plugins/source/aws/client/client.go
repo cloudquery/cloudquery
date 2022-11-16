@@ -321,7 +321,7 @@ func configureAwsClient(ctx context.Context, logger zerolog.Logger, awsConfig *S
 	// Test out retrieving credentials
 	if _, err := awsCfg.Credentials.Retrieve(ctx); err != nil {
 		logger.Error().Err(err).Msg("error retrieving credentials")
-		return awsCfg, fmt.Errorf("error retrieving credentials: %w", err)
+		return awsCfg, fmt.Errorf("error retrieving AWS credentials (see logs for details). Please verify your credentials and try again")
 	}
 
 	return awsCfg, err
