@@ -35,14 +35,14 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.70.0
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.17.21
 	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.13.19
-	github.com/aws/aws-sdk-go-v2/service/ecs v1.18.26
+	github.com/aws/aws-sdk-go-v2/service/ecs v1.19.0
 	github.com/aws/aws-sdk-go-v2/service/efs v1.17.19
 	github.com/aws/aws-sdk-go-v2/service/eks v1.22.4
 	github.com/aws/aws-sdk-go-v2/service/elasticache v1.23.1
 	github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk v1.14.20
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.14.21
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.18.23
-	github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.16.12
+	github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.17.0
 	github.com/aws/aws-sdk-go-v2/service/emr v1.20.14
 	github.com/aws/aws-sdk-go-v2/service/eventbridge v1.16.18
 	github.com/aws/aws-sdk-go-v2/service/firehose v1.14.22
@@ -54,7 +54,8 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/identitystore v1.15.7
 	github.com/aws/aws-sdk-go-v2/service/inspector v1.12.19
 	github.com/aws/aws-sdk-go-v2/service/inspector2 v1.8.3
-	github.com/aws/aws-sdk-go-v2/service/iot v1.30.0
+	github.com/aws/aws-sdk-go-v2/service/iot v1.31.0
+	github.com/aws/aws-sdk-go-v2/service/kafka v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/kinesis v1.15.22
 	github.com/aws/aws-sdk-go-v2/service/kms v1.18.16
 	github.com/aws/aws-sdk-go-v2/service/lambda v1.24.10
@@ -64,15 +65,17 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/neptune v1.18.1
 	github.com/aws/aws-sdk-go-v2/service/organizations v1.16.15
 	github.com/aws/aws-sdk-go-v2/service/qldb v1.14.20
+	github.com/aws/aws-sdk-go-v2/service/quicksight v1.26.2
 	github.com/aws/aws-sdk-go-v2/service/ram v1.16.24
-	github.com/aws/aws-sdk-go-v2/service/rds v1.28.1
+	github.com/aws/aws-sdk-go-v2/service/rds v1.29.0
 	github.com/aws/aws-sdk-go-v2/service/redshift v1.26.14
 	github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.12.21
-	github.com/aws/aws-sdk-go-v2/service/route53 v1.23.0
+	github.com/aws/aws-sdk-go-v2/service/route53 v1.24.0
 	github.com/aws/aws-sdk-go-v2/service/route53domains v1.12.19
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.29.2
 	github.com/aws/aws-sdk-go-v2/service/s3control v1.25.1
 	github.com/aws/aws-sdk-go-v2/service/sagemaker v1.54.0
+	github.com/aws/aws-sdk-go-v2/service/scheduler v1.0.1
 	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.16.5
 	github.com/aws/aws-sdk-go-v2/service/servicecatalog v1.14.19
 	github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.14.3
@@ -83,13 +86,14 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/ssm v1.32.1
 	github.com/aws/aws-sdk-go-v2/service/ssoadmin v1.15.13
 	github.com/aws/aws-sdk-go-v2/service/sts v1.17.2
+	github.com/aws/aws-sdk-go-v2/service/timestreamwrite v1.14.5
 	github.com/aws/aws-sdk-go-v2/service/waf v1.11.19
 	github.com/aws/aws-sdk-go-v2/service/wafv2 v1.23.1
-	github.com/aws/aws-sdk-go-v2/service/workspaces v1.25.0
-	github.com/aws/aws-sdk-go-v2/service/xray v1.13.22
+	github.com/aws/aws-sdk-go-v2/service/workspaces v1.26.0
+	github.com/aws/aws-sdk-go-v2/service/xray v1.14.0
 	github.com/aws/smithy-go v1.13.4
 	github.com/basgys/goxml2json v1.1.0
-	github.com/cloudquery/plugin-sdk v1.5.0
+	github.com/cloudquery/plugin-sdk v1.5.3
 	github.com/gocarina/gocsv v0.0.0-20220927221512-ad3251f9fa25
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.9
@@ -107,12 +111,12 @@ require (
 	github.com/bitly/go-simplejson v0.5.0 // indirect
 	github.com/getsentry/sentry-go v0.15.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/providers/zerolog/v2 v2.0.0-rc.3 // indirect
-	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.0-rc.2.0.20201002093600-73cf2ae9d891 // indirect
+	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.0-rc.3 // indirect
 	github.com/inconshreveable/mousetrap v1.0.1 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/cobra v1.6.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	golang.org/x/exp v0.0.0-20221108223516-5d533826c662 // indirect
+	golang.org/x/exp v0.0.0-20221111204811-129d8d6c17ab // indirect
 )
 
 require (
@@ -147,7 +151,7 @@ require (
 	golang.org/x/sys v0.2.0 // indirect
 	golang.org/x/text v0.4.0 // indirect
 	golang.org/x/tools v0.2.0 // indirect
-	google.golang.org/genproto v0.0.0-20221107162902-2d387536bcdd // indirect
+	google.golang.org/genproto v0.0.0-20221111202108-142d8a6fa32e // indirect
 	google.golang.org/grpc v1.50.1 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect

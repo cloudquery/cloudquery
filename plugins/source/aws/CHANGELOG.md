@@ -6,6 +6,123 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [6.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v6.0.1...plugins-source-aws-v6.1.0) (2022-11-16)
+
+
+### Features
+
+* **aws:** Add Support for ECS Scale In Task protection ([#4688](https://github.com/cloudquery/cloudquery/issues/4688)) ([44e8830](https://github.com/cloudquery/cloudquery/commit/44e88305ef0430e873e3bcacc6f6349ad7c336a7))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/route53 to v1.24.0 ([#4694](https://github.com/cloudquery/cloudquery/issues/4694)) ([a6d1fec](https://github.com/cloudquery/cloudquery/commit/a6d1fecba8e56d38c1b92bd6599298d2d0f1efc3))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/workspaces to v1.26.0 ([#4695](https://github.com/cloudquery/cloudquery/issues/4695)) ([ea07f09](https://github.com/cloudquery/cloudquery/commit/ea07f0923b1f5541c543f17e1b3074838420a682))
+
+## [6.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v6.0.0...plugins-source-aws-v6.0.1) (2022-11-15)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for aws to v1.5.3 ([#4640](https://github.com/cloudquery/cloudquery/issues/4640)) ([29f6adc](https://github.com/cloudquery/cloudquery/commit/29f6adc387dc7003803b8830c3f683ae916360d4))
+* Update endpoints ([#4686](https://github.com/cloudquery/cloudquery/issues/4686)) ([a33c13e](https://github.com/cloudquery/cloudquery/commit/a33c13e12cb6e3473c4ee16dd01e7454c0ba8705))
+
+## [6.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v5.2.0...plugins-source-aws-v6.0.0) (2022-11-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* **aws:** Renamed `aws_apprunner_auto_scaling_configuration` to `aws_apprunner_auto_scaling_configurations`
+* **aws:** Renamed `aws_apprunner_vpc_connector` to `aws_apprunner_vpc_connectors`
+* **aws:** Renamed `aws_apprunner_vpc_ingress_connection` to `aws_apprunner_vpc_ingress_connections`
+* **aws:** Renamed `aws_ec2_regional_config` to `aws_ec2_regional_configs`
+* **aws:** Renamed `aws_lightsail_disk_snapshot` to `aws_lightsail_disk_snapshots`
+* **aws:** Renamed `aws_xray_encryption_config` to `aws_xray_encryption_configs`
+
+### Bug Fixes
+
+* **aws:** Ensure all AWS table names are plural ([944f1b1](https://github.com/cloudquery/cloudquery/commit/944f1b12991965c2de5dc58c6c504ae7775e368d))
+
+## [5.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v5.1.2...plugins-source-aws-v5.2.0) (2022-11-15)
+
+
+### Features
+
+* Add MSK and codegen from AWS Client structs ([#3967](https://github.com/cloudquery/cloudquery/issues/3967)) ([eb602bb](https://github.com/cloudquery/cloudquery/commit/eb602bb45cb325f75b4e1fc22727b25ed7db5f33))
+
+## [5.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v5.1.1...plugins-source-aws-v5.1.2) (2022-11-15)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/rds to v1.29.0 ([#4612](https://github.com/cloudquery/cloudquery/issues/4612)) ([4bcf227](https://github.com/cloudquery/cloudquery/commit/4bcf227dc16956164a22db53caee5fac62c05e50))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/xray to v1.14.0 ([#4613](https://github.com/cloudquery/cloudquery/issues/4613)) ([e2c7e64](https://github.com/cloudquery/cloudquery/commit/e2c7e64c93a52867eab903a964d71110b42498e3))
+
+## [5.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v5.1.0...plugins-source-aws-v5.1.1) (2022-11-14)
+
+
+### Bug Fixes
+
+* **aws:** RDS Version Errors ([#4431](https://github.com/cloudquery/cloudquery/issues/4431)) ([c9aaf79](https://github.com/cloudquery/cloudquery/commit/c9aaf7976f20d1275f0859fdb61258bac5676536))
+
+## [5.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v5.0.0...plugins-source-aws-v5.1.0) (2022-11-14)
+
+
+### Features
+
+* **aws:** Implement Timestream resources ([#4553](https://github.com/cloudquery/cloudquery/issues/4553)) ([5a2ac0f](https://github.com/cloudquery/cloudquery/commit/5a2ac0f1fe2b36bf1356722c77ff7d79b445842d))
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for aws to v1.5.2 ([#4555](https://github.com/cloudquery/cloudquery/issues/4555)) ([c5c1fc1](https://github.com/cloudquery/cloudquery/commit/c5c1fc1df7d4f4f4ab92e8a47b140075103affc8))
+
+## [5.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v4.17.1...plugins-source-aws-v5.0.0) (2022-11-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* change `aws_rds_engine_versions`  to be regional. If you've previously synced this table you'll need to drop it for the PK change (migration) to succeed.
+
+### Bug Fixes
+
+* change `aws_rds_engine_versions`  to be regional. If you've previously synced this table you'll need to drop it for the PK change (migration) to succeed. ([71926dd](https://github.com/cloudquery/cloudquery/commit/71926dd2923be6dbea0550103c05a3011fa7ba9f))
+
+## [4.17.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v4.17.0...plugins-source-aws-v4.17.1) (2022-11-14)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for aws to v1.5.1 ([#4496](https://github.com/cloudquery/cloudquery/issues/4496)) ([62e1c11](https://github.com/cloudquery/cloudquery/commit/62e1c11709522796a44d7b52c883cd67c163b5b3))
+
+## [4.17.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v4.16.0...plugins-source-aws-v4.17.0) (2022-11-13)
+
+
+### Features
+
+* **aws:** Add support for FSX File Caches ([#4091](https://github.com/cloudquery/cloudquery/issues/4091)) ([5b6597a](https://github.com/cloudquery/cloudquery/commit/5b6597afe6cde7a4c2f8d50c9008e71c131284e2)), closes [#2605](https://github.com/cloudquery/cloudquery/issues/2605)
+
+
+### Bug Fixes
+
+* **aws:** Remove NotFound checks in PreResourceResolvers ([#4376](https://github.com/cloudquery/cloudquery/issues/4376)) ([01a173b](https://github.com/cloudquery/cloudquery/commit/01a173b786eeac8c8addb1e2642f262eff11f397)), closes [#4374](https://github.com/cloudquery/cloudquery/issues/4374)
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/ecs to v1.19.0 ([#4452](https://github.com/cloudquery/cloudquery/issues/4452)) ([21aff52](https://github.com/cloudquery/cloudquery/commit/21aff52cf7157c2e346d7b454cd596234cb181ab))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/elasticsearchservice to v1.17.0 ([#4453](https://github.com/cloudquery/cloudquery/issues/4453)) ([0b6a342](https://github.com/cloudquery/cloudquery/commit/0b6a342da93fb5084b1aab73462fe9c1cb084348))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/iot to v1.31.0 ([#4454](https://github.com/cloudquery/cloudquery/issues/4454)) ([85d3fc9](https://github.com/cloudquery/cloudquery/commit/85d3fc9b1480d274abc51329e775d975b455d73a))
+
+## [4.16.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v4.15.1...plugins-source-aws-v4.16.0) (2022-11-13)
+
+
+### Features
+
+* **aws:** Debug logging to include body ([#3964](https://github.com/cloudquery/cloudquery/issues/3964)) ([089ba2f](https://github.com/cloudquery/cloudquery/commit/089ba2fc89df2d41930aa5d96dda85a96b4897dd))
+* **aws:** Quicksight resources ([#4116](https://github.com/cloudquery/cloudquery/issues/4116)) ([6190de2](https://github.com/cloudquery/cloudquery/commit/6190de2f272c8fff9cf22adcfaa2ccb4acab2e4a))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/emr to v1.20.14 ([#4367](https://github.com/cloudquery/cloudquery/issues/4367)) ([a36d3e2](https://github.com/cloudquery/cloudquery/commit/a36d3e2927387a100c8881eb6cfb343112007372))
+
 ## [4.15.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v4.15.0...plugins-source-aws-v4.15.1) (2022-11-13)
 
 

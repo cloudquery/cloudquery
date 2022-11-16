@@ -19,7 +19,7 @@ The primary key for this table is **name**.
 |description|String|
 |disabled|Bool|
 |exclusions|JSON|
-|output_version_format|Int|
+|output_version_format|String|
 |writer_identity|String|
 |include_children|Bool|
 |create_time|Timestamp|

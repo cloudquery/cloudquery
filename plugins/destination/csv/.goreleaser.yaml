@@ -1,5 +1,6 @@
 variables:
   component: destination/csv
+  binary: csv
 
 project_name: plugins/destination/csv
 

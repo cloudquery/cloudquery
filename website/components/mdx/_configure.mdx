@@ -1,0 +1,129 @@
+import { Callout } from 'nextra-theme-docs'
+
+## Configure Destination Plugin
+
+Destination plugins define where you will be syncing your data to (See: [available destinations](/docs/plugins/destinations)).
+
+For example, let's configure the [PostgreSQL](https://github.com/cloudquery/cloudquery/tree/main/plugins/destination/postgresql) destination plugin
+(See all available versions [here](https://github.com/cloudquery/cloudquery/releases?q=plugins-destination-postgresql&expanded=true)).
+
+```yaml copy
+kind: destination
+spec:
+  ## Required. name of the plugin.
+  ## This is an alias so it should be unique if you have a number of postgresql destination plugins.
+  name: "postgresql"
+
+  ## Optional. Where to search for the plugin. Default: "github". Options: "github", "local", "grpc".
+  # registry: "github"
+
+  ## Path for the plugin.
+  ## If registry is "github" path should be "repo/name"
+  ## If registry is "local", path is path to binary. If "grpc" then it should be address of the plugin (usually useful in debug).
+  path: "cloudquery/postgresql"
+
+  ## Required. Must be a specific version starting with v, e.g. v1.2.3
+  ## checkout latest versions here https://github.com/cloudquery/cloudquery/releases?q=plugins-destination-postgresql&expanded=true
+  version: "v1.7.10" # latest version of postgresql plugin
+
+  ## Optional. Default: "overwrite-delete-stale". Available: "overwrite-delete-stale", "overwrite", "append". 
+  ##  Not all modes are supported by all plugins, so make sure to check the plugin documentation for more details.
+  write_mode: "overwrite-delete-stale" # overwrite-delete-stale, overwrite, append
+
+  spec:
+    ## plugin-specific configuration for PostgreSQL.
+    ## See all available options here: https://github.com/cloudquery/cloudquery/tree/main/plugins/destination/postgresql#postgresql-spec
+
+    ## Required. Connection string to your PostgreSQL instance
+    ## In production it is highly recommended to use environment variable expansion
+    ## connection_string: ${PG_CONNECTION_STRING}
+    connection_string: "postgresql://postgres:pass@localhost:5432/postgres?sslmode=disable"
+```
+
+- All general options for destination spec you can find under [references/destination-spec](/docs/reference/destination-spec).
+- All options for `postgresql` destination plugin spec you can find [here](https://github.com/cloudquery/cloudquery/tree/main/plugins/destination/postgresql#postgresql-spec)
+
+For a list of all available destination plugin spec options, see [Destination Spec Reference](/docs/reference/destination-spec).
+
+<Callout>
+
+If you have multiple destination plugins (or running multiple cloudquery instances in parallel), it's required
+that every plugin configuration has a unique `name` (e.g. `postgres1`, `postgres2`, …).
+
+</Callout>
+
+## Configure Source Plugin
+
+Source plugins define the APIs you want to sync from (See [available sources](/docs/plugins/sources)).
+
+For example, let's configure the [AWS](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/aws) source plugin.
+
+```yaml copy
+kind: source
+spec:
+  ## Required. name of the plugin to use.
+  ## This should be unique if you have number of aws plugins.
+  name: "aws"
+  ## Optional. Where to search for the plugin. Default: "github". Options: "github", "local", "grpc"
+  # registry: "github"
+
+  ## Path for the plugin.
+  ## If registry is "github" path should be "repo/name"
+  ## If registry is "local", path is path to binary. If "grpc" then it should be address of the plugin (usually useful in debug).
+  path: "cloudquery/aws"
+
+  ## Required. Must be a specific version starting with v, e.g. v1.2.3
+  ## checkout latest versions here https://github.com/cloudquery/cloudquery/releases?q=plugins-source-aws&expanded=true
+  version: "v5.1.2" # latest version of aws plugin
+
+  ## Optional. Default: ["*"] - all tables. We recommend to specify specific tables that you need to sync as this
+  ## will reduce the amount of data synced and improve performance.
+  ## See all tables: https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/README.md
+  # tables: ["*"]
+
+  ## Required. all destinations you want to sync data to.
+  destinations: ["postgresql"]
+
+  spec:
+    ## Optional. plugin specific configuration
+    ## By default will use the current aws credentials available (just like AWS CLI)
+    ## See all available options here: https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/configuration.md
+```
+
+- All general options for source spec you can find under [references/source-spec](/docs/reference/source-spec).
+- All options for `aws` source plugin spec you can find [here](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/configuration.md)
+
+<Callout>
+
+If you have multiple source plugins (or running multiple cloudquery instances in parallel), it's required
+that every plugin configuration has a unique `name` (e.g. `aws1`, `aws2`, …).
+
+Running multiple plugins with the same name can cause unexpected behavior (e.g. empty tables). 
+
+You can read more [here](/docs/advanced-topics/running-cloudquery-in-parallel).
+
+</Callout>
+
+## Authenticate with the Cloud Provider
+
+CloudQuery uses similar authentication methods to the official SDKs of each cloud provider.
+The AWS authentication guide is located [here](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/README.md).
+
+You can find authentication for other plugins in their corresponding [READMEs](https://github.com/cloudquery/cloudquery/tree/main/plugins/source).
+
+## Start Syncing
+
+Now you can start syncing the data from your source plugins to the specified destinations.
+
+You can sync the by specifying a directory with the configuration files or specify files directly
+
+```bash copy
+cloudquery sync ./example
+
+# or cloudquery sync aws.yml postgresql.yml
+```
+
+You should see a spinner with number of resources synced and the time it took to sync.
+Once the sync is done you can query the data via the database directly.
+
+Note: All logs are written by default to `cloudquery.log` so you can easily see if any APIs failed and analyse those further.

@@ -206,7 +206,7 @@ func syncConnectionV1(ctx context.Context, cqDir string, sourceClient *clients.S
 			if destFailedWrites, err = destClients[i].Write(gctx, sourceSpec.Name, syncTime, destSubscriptions[i]); err != nil {
 				return fmt.Errorf("failed to write for %s->%s: %w", sourceSpec.Name, destination, err)
 			}
-			if destClients[i].Close(ctx); err != nil {
+			if err := destClients[i].Close(ctx); err != nil {
 				return fmt.Errorf("failed to close destination client for %s->%s: %w", sourceSpec.Name, destination, err)
 			}
 			failedWrites += destFailedWrites

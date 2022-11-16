@@ -33,6 +33,11 @@ func Directories() *schema.Table {
 				Resolver: schema.PathResolver("Alias"),
 			},
 			{
+				Name:     "certificate_based_auth_properties",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("CertificateBasedAuthProperties"),
+			},
+			{
 				Name:     "customer_user_name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("CustomerUserName"),

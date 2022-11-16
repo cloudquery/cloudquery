@@ -43,3 +43,4 @@ The following tables depend on gcp_storage_buckets:
 |location_type|String|
 |project_number|Int|
 |rpo|Int|
+|autoclass|JSON|

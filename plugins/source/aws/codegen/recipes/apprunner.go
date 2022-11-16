@@ -9,7 +9,7 @@ import (
 func ApprunnerResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService:          "auto_scaling_configuration",
+			SubService:          "auto_scaling_configurations",
 			Struct:              &types.AutoScalingConfiguration{},
 			Description:         "https://docs.aws.amazon.com/apprunner/latest/api/API_AutoScalingConfiguration.html",
 			SkipFields:          []string{"AutoScalingConfigurationArn"},
@@ -112,7 +112,7 @@ func ApprunnerResources() []*Resource {
 				"CustomDomains()"},
 		},
 		{
-			SubService:  "vpc_connector",
+			SubService:  "vpc_connectors",
 			Struct:      &types.VpcConnector{},
 			Description: "https://docs.aws.amazon.com/apprunner/latest/api/API_VpcConnector.html",
 			SkipFields:  []string{"VpcConnectorArn"},
@@ -133,7 +133,7 @@ func ApprunnerResources() []*Resource {
 					},
 				}...),
 		}, {
-			SubService: "vpc_ingress_connection",
+			SubService: "vpc_ingress_connections",
 			Struct:     &types.VpcIngressConnection{},
 			Description: `https://docs.aws.amazon.com/apprunner/latest/api/API_VpcIngressConnection.html
 
