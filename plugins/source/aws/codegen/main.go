@@ -79,6 +79,7 @@ func generateResources() ([]*recipes.Resource, error) {
 	resources = append(resources, recipes.Route53Resources()...)
 	resources = append(resources, recipes.S3Resources()...)
 	resources = append(resources, recipes.SagemakerResources()...)
+	resources = append(resources, recipes.SchedulerResources()...)
 	resources = append(resources, recipes.SecretsManagerResources()...)
 	resources = append(resources, recipes.ServiceCatalogResources()...)
 	resources = append(resources, recipes.ServiceQuotasResources()...)

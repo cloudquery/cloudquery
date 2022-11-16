@@ -74,6 +74,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/s3control"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
+	"github.com/aws/aws-sdk-go-v2/service/scheduler"
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalog"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry"
@@ -170,6 +171,7 @@ func initServices(region string, c aws.Config) Services {
 		S3:                        s3.NewFromConfig(awsCfg),
 		S3control:                 s3control.NewFromConfig(awsCfg),
 		Sagemaker:                 sagemaker.NewFromConfig(awsCfg),
+		Scheduler:                 scheduler.NewFromConfig(awsCfg),
 		Secretsmanager:            secretsmanager.NewFromConfig(awsCfg),
 		Servicecatalog:            servicecatalog.NewFromConfig(awsCfg),
 		Servicecatalogappregistry: servicecatalogappregistry.NewFromConfig(awsCfg),
@@ -263,6 +265,7 @@ type Services struct {
 	S3                        services.S3Client
 	S3control                 services.S3controlClient
 	Sagemaker                 services.SagemakerClient
+	Scheduler                 services.SchedulerClient
 	Secretsmanager            services.SecretsmanagerClient
 	Servicecatalog            services.ServicecatalogClient
 	Servicecatalogappregistry services.ServicecatalogappregistryClient
