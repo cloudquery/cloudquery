@@ -278,7 +278,7 @@ Along with [AWS Best Practices for KMS Key Grants](https://docs.aws.amazon.com/k
 
 * The following CloudQuery query in postgresql finds grants where the grantee principal is not an AWS service.
 ```sql
-        SELECT * from aws_kms_key_grants where (grantee_principal NOT LIKE '%.amazonaws.com' AND grantee_principal NOT LIKE 'AWS Internal');
+SELECT * from aws_kms_key_grants where (grantee_principal NOT LIKE '%.amazonaws.com' AND grantee_principal NOT LIKE 'AWS Internal');
 ```
 
 6. If retiring/revoking KMS Key Grants, ensure the Key Grant is not being used by production systems to avoid outages and adverse impact.
