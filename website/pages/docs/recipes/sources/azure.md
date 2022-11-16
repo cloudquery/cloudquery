@@ -2,7 +2,7 @@
 
 Full spec options for Azure Source available [here](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/configuration.md).
 
-```yaml
+```yaml copy
 kind: source
 spec:
   name: azure
