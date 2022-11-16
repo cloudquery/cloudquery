@@ -13,10 +13,8 @@ The CloudQuery DigitalOcean plugin pulls configuration from DigitalOcean resourc
 
 Set the following environment variables in your shell (with values from the previous steps):
 
-```bash
-
-1. `DIGITALOCEAN_ACCESS_TOKEN` and `DIGITALOCEAN_TOKEN`
-2. `SPACES_ACCESS_KEY_ID` and `SPACES_SECRET_ACCESS_KEY`
+- `DIGITALOCEAN_TOKEN`
+- `SPACES_ACCESS_KEY_ID` and `SPACES_SECRET_ACCESS_KEY`
 
 ## Configuration
 
@@ -28,7 +26,7 @@ The following example sets up the DigitalOcean plugin, and connects it to a post
 kind: source
 spec:
   # Source spec section
-  name: okta
+  name: digitalocean
   path: cloudquery/digitalocean
   version: "v2.2.21" # latest version of digitalocean plugin
   tables: ["*"]
