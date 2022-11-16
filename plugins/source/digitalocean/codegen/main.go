@@ -341,15 +341,7 @@ var Resources = []*recipes.Resource{
 		Service:    "spaces",
 		SubService: "cors",
 		Struct:     types.CORSRule{},
-		ExtraColumns: []codegen.ColumnDefinition{
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: `schema.PathResolver("ID")`,
-				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-			},
-		},
-		SkipFields: []string{"ID"},
+		// 'id' is not a PK - it can be `null` when arriving from the upstream API.
 	},
 	{
 		Service:    "storage",

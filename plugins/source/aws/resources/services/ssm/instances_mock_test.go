@@ -40,6 +40,19 @@ func buildSSMInstances(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&ssm.ListComplianceItemsOutput{ComplianceItems: []types.ComplianceItem{c}},
 		nil,
 	)
+
+	var p types.PatchComplianceData
+	if err := faker.FakeObject(&p); err != nil {
+		t.Fatal(err)
+	}
+	mock.EXPECT().DescribeInstancePatches(gomock.Any(),
+		&ssm.DescribeInstancePatchesInput{InstanceId: i.InstanceId},
+		gomock.Any(),
+	).Return(
+		&ssm.DescribeInstancePatchesOutput{Patches: []types.PatchComplianceData{p}},
+		nil,
+	)
+
 	return client.Services{Ssm: mock}
 }
 

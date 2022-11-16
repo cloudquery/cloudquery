@@ -1,6 +1,7 @@
 package ram
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/aws/aws-sdk-go-v2/service/ram"
@@ -20,10 +21,33 @@ func buildRamResourceSharesMock(t *testing.T, ctrl *gomock.Controller) client.Se
 	}
 
 	m.EXPECT().GetResourceShares(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&ram.GetResourceSharesOutput{ResourceShares: []types.ResourceShare{object}}, nil)
+		&ram.GetResourceSharesOutput{ResourceShares: []types.ResourceShare{object}}, nil).MinTimes(1)
 
-	buildRamResourceShareAssociatedResourcesMock(t, m)
-	buildRamResourceShareAssociatedPrincipalsMock(t, m)
+	summary := types.ResourceSharePermissionSummary{}
+	err = faker.FakeObject(&summary)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	var version int32
+	err = faker.FakeObject(&version)
+	if err != nil {
+		t.Fatal(err)
+	}
+	verStr := fmt.Sprint(version)
+	summary.Version = &verStr
+
+	m.EXPECT().ListResourceSharePermissions(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&ram.ListResourceSharePermissionsOutput{Permissions: []types.ResourceSharePermissionSummary{summary}}, nil).MinTimes(1)
+
+	detail := ""
+	err = faker.FakeObject(&detail)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	m.EXPECT().GetPermission(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&ram.GetPermissionOutput{Permission: &types.ResourceSharePermissionDetail{Permission: &detail}}, nil).MinTimes(1)
 
 	return client.Services{Ram: m}
 }
