@@ -15,19 +15,17 @@ func Parameters() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ssm"),
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
-				Description: `The AWS Account ID of the resource`,
+				Name:     "account_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAWSAccount,
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
 			},
 			{
-				Name:        "region",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSRegion,
-				Description: `The AWS Region of the resource`,
+				Name:     "region",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAWSRegion,
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
