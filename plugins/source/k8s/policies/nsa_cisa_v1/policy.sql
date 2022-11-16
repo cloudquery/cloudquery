@@ -8,7 +8,7 @@ SELECT CASE
   ELSE :'execution_time'
 END AS "execution_time"  \gset
 
-\set framework 'cis_v1.2.0'
+\set framework 'nsa_cisa_v1'
 
 \ir ../create_k8s_policy_results.sql
 \ir ../views/daemon_set_containers.sql
