@@ -192,15 +192,15 @@ aws kms create-grant --key-id arn:aws:kms:us-east-1:123412341234:key/aaaaaaaa-12
 
 ## Recommendations
 
-Along with [AWS Best Practicesfor KMS Key Grants](https://docs.aws.amazon.com/kms/latest/developerguide/grants.html#grant-best-practices), we recommend the additional following practices:
+Along with [AWS Best Practices for KMS Key Grants](https://docs.aws.amazon.com/kms/latest/developerguide/grants.html#grant-best-practices), we recommend the additional following practices:
 
-1. Limit Grant Ability to usage of the KMS Key and not management of future grants.  
+1. Limit grant ability to usage of the KMS Key and not management of future grants.  
 
 * The list of [supported grant operations provided by AWS](https://docs.aws.amazon.com/kms/latest/developerguide/grants.html#grant-concepts) includes cryptographic operations such as `Decrypt` and other operations such as `CreateGrant`.  We recommend limiting the ability to `CreateGrant` to only Key Administrators and first-level grants.
 
 2. Further limit delegation abilities to only the Key Administrators and Services
 
-* We recommend limiting the ability to delegate access to the KMS key to only Key Administrators and Services.  This includes the `kms:CreateGrant` permission and the `kms:PutKeyPolicy`.  Below is a example Key Policy that limits key delegation abilities to the root account user and to the KeyAdminRole, but does not enable IAM policy access. 
+* We recommend limiting the ability to delegate access to the KMS key to only Key Administrators and Services.  This includes the `kms:CreateGrant` permission and the `kms:PutKeyPolicy`.  Below is an example key policy that limits key delegation abilities to the root account user and to the KeyAdminRole, but does not enable IAM policy access. 
 
 ```json
 {
@@ -228,7 +228,7 @@ Along with [AWS Best Practicesfor KMS Key Grants](https://docs.aws.amazon.com/km
 }
 ```
 
-3. Limit Grant delegation to AWS Services usage where possible.
+3. Limit grant delegation to AWS Services usage where possible.
 
 * This can be done by the `kms:GrantIsForAWSResource` Condition Key here.  An example key policy for EC2 Autoscaling with encrypted volumes is below.
 
