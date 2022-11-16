@@ -1,7 +1,7 @@
 ---
 title: A Deep Dive on AWS KMS Key Access and AWS Key Grants
 tag: security
-date: 2022/11/16
+date: 2022/11/17
 description: >-
   A Technical Deep Dive on AWS KMS Key Access and AWS Key Grants, one mechanism for granting access to AWS KMS Keys.
 author: jsonkao
@@ -24,7 +24,7 @@ In this post, we will deep dive on KMS Key Access via KMS Key Grants and best pr
 
 [KMS Key Access](https://docs.aws.amazon.com/kms/latest/developerguide/control-access.html) is similar to other resource access in AWS and the underlying access system in AWS: AWS Identity and Access Management.  [Typical AWS evaluation of access](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic.html) to a resource is done via AWS’s policy evaluation logic that evaluates the request context, evaluates whether the actions are within a single account or [cross-account](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic-cross-account.html) (between 2 distinct AWS accounts), and evaluating identity-based policies with resource-based policies and other advanced policies such as permission boundaries, Organizationals Service-Control Policies, Session Policies, and more.
 
-The below image is from AWS's Documentation regarding policy evaluation for evaluating identity-based policies with resource-based policies.
+The below image is from AWS's [documentation regarding policy evaluation](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic.html) for evaluating identity-based policies with resource-based policies.
 
 ![From AWS, Policy Evaluation for evaluating identity-based policies with resource-based policies](/images/blog/aws-kms-key-grants-deep-dive/policy-eval-resource.png)
 
@@ -192,31 +192,15 @@ aws kms create-grant --key-id arn:aws:kms:us-east-1:123412341234:key/aaaaaaaa-12
 
 ## Recommendations
 
-Along with [AWS Best Practices](https://docs.aws.amazon.com/kms/latest/developerguide/grants.html#grant-best-practices), we recommend the additional following practices:
+Along with [AWS Best Practicesfor KMS Key Grants](https://docs.aws.amazon.com/kms/latest/developerguide/grants.html#grant-best-practices), we recommend the additional following practices:
 
-- Limit Grant Ability to usage of the KMS Key and not management of the KMS Key.
+1. Limit Grant Ability to usage of the KMS Key and not management of future grants.  
 
-Grant Operations [(from AWS)](https://docs.aws.amazon.com/kms/latest/developerguide/grants.html#grant-concepts):
+* The list of [supported grant operations provided by AWS](https://docs.aws.amazon.com/kms/latest/developerguide/grants.html#grant-concepts) includes cryptographic operations such as `Decrypt` and other operations such as `CreateGrant`.  We recommend limiting the ability to `CreateGrant` to only Key Administrators and first-level grants.
 
-- Cryptographic operations
-    - [Decrypt](https://docs.aws.amazon.com/kms/latest/APIReference/API_Decrypt.html)
-    - [Encrypt](https://docs.aws.amazon.com/kms/latest/APIReference/API_Encrypt.html)
-    - [GenerateDataKey](https://docs.aws.amazon.com/kms/latest/APIReference/API_GenerateDataKey.html)
-    - [GenerateDataKeyPair](https://docs.aws.amazon.com/kms/latest/APIReference/API_GenerateDataKeyPair.html)
-    - [GenerateDataKeyPairWithoutPlaintext](https://docs.aws.amazon.com/kms/latest/APIReference/API_GenerateDataKeyPairWithoutPlaintext.html)
-    - [GenerateDataKeyWithoutPlaintext](https://docs.aws.amazon.com/kms/latest/APIReference/API_GenerateDataKeyWithoutPlaintext.html)
-    - [GenerateMac](https://docs.aws.amazon.com/kms/latest/APIReference/API_GenerateMac.html)
-    - [ReEncryptFrom](https://docs.aws.amazon.com/kms/latest/APIReference/API_ReEncrypt.html)
-    - [ReEncryptTo](https://docs.aws.amazon.com/kms/latest/APIReference/API_ReEncrypt.html)
-    - [Sign](https://docs.aws.amazon.com/kms/latest/APIReference/API_Sign.html)
-    - [Verify](https://docs.aws.amazon.com/kms/latest/APIReference/API_Verify.html)
-    - [VerifyMac](https://docs.aws.amazon.com/kms/latest/APIReference/API_VerifyMac.html)
-- Other operations
-    - [CreateGrant](https://docs.aws.amazon.com/kms/latest/APIReference/API_CreateGrant.html)
-    - [DescribeKey](https://docs.aws.amazon.com/kms/latest/APIReference/API_DescribeKey.html)
-    - [GetPublicKey](https://docs.aws.amazon.com/kms/latest/APIReference/API_GetPublicKey.html)
-    - [RetireGrant](https://docs.aws.amazon.com/kms/latest/APIReference/API_RetireGrant.html)
-- Limit Delegation abilities to only the Key Administrators and Services
+2. Further limit delegation abilities to only the Key Administrators and Services
+
+* We recommend limiting the ability to delegate access to the KMS key to only Key Administrators and Services.  This includes the `kms:CreateGrant` permission and the `kms:PutKeyPolicy`.  Below is a example Key Policy that limits key delegation abilities to the root account user and to the KeyAdminRole, but does not enable IAM policy access. 
 
 ```json
 {
@@ -244,9 +228,9 @@ Grant Operations [(from AWS)](https://docs.aws.amazon.com/kms/latest/developergu
 }
 ```
 
-- Limit Grant Delegation to only AWS Services usage.
+3. Limit Grant delegation to AWS Services usage where possible.
 
-We’ll use the `kms:GrantIsForAWSResource` Condition Key here.  An example below is for EC2 Autoscaling with encrypted volumes.
+* This can be done by the `kms:GrantIsForAWSResource` Condition Key here.  An example key policy for EC2 Autoscaling with encrypted volumes is below.
 
 ```json
 {
@@ -286,19 +270,18 @@ We’ll use the `kms:GrantIsForAWSResource` Condition Key here.  An example belo
 }
 ```
 
-- Logging and Monitoring KMS Key Grants
-    
-    
-- Control usage and lifecycle of KMS Key Grants.
-    - Limit usage of KMS Key Grants to AWS Services.
-        
-        ```sql
+4. Logging and Monitoring KMS Key Grants
+
+* We recommend monitoring KMS Key Grants in CloudTrail as shown in the logging section above to monitor for external accounts and undesired usage and creation of KMS Key Grants. 
+
+5. Take inventory of KMS Key Grants and validate usage of KMS Key Grants.
+
+* The following CloudQuery query in postgresql finds grants where the grantee principal is not an AWS service.
+```sql
         SELECT * from aws_kms_key_grants where (grantee_principal NOT LIKE '%.amazonaws.com' AND grantee_principal NOT LIKE 'AWS Internal');
-        ```
-        
-    - Ensure KMS Key Grant Lifecycles are managed properly.  AWS Services retires grants as soon as the task is complete.
-    - Use Condition Keys
-    - However, this can be configured to only allow usage to AWS Services with the condition key `kms:GrantIsForAWSResource.`
+```
+
+6. If retiring/revoking KMS Key Grants, ensure the Key Grant is not being used by production systems to avoid outages and adverse impact.
 
 Your organization’s use cases may be slightly different. If you have comments, feedback on this post, follow-up topics you’d like to see, or would like to talk about your KMS and encryption experiences  - email us at security@cloudquery.io or come chat with us on [Discord](https://www.cloudquery.io/discord)!
 
