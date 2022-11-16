@@ -18,6 +18,7 @@ This table depends on [aws_ecs_clusters](aws_ecs_clusters.md).
 |region|String|
 |arn (PK)|String|
 |tags|JSON|
+|task_protection|JSON|
 |attachments|JSON|
 |attributes|JSON|
 |availability_zone|String|

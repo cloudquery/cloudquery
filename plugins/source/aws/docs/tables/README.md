@@ -390,6 +390,8 @@
 | [aws_sagemaker_models](aws_sagemaker_models.md) |
 | [aws_sagemaker_notebook_instances](aws_sagemaker_notebook_instances.md) |
 | [aws_sagemaker_training_jobs](aws_sagemaker_training_jobs.md) |
+| [aws_scheduler_schedule_groups](aws_scheduler_schedule_groups.md) |
+| [aws_scheduler_schedules](aws_scheduler_schedules.md) |
 | [aws_secretsmanager_secrets](aws_secretsmanager_secrets.md) |
 | [aws_servicecatalog_portfolios](aws_servicecatalog_portfolios.md) |
 | [aws_servicecatalog_products](aws_servicecatalog_products.md) |
@@ -411,7 +413,13 @@
 | [aws_ssm_documents](aws_ssm_documents.md) |
 | [aws_ssm_instances](aws_ssm_instances.md) |
 | ↳ [aws_ssm_instance_compliance_items](aws_ssm_instance_compliance_items.md) |
+| ↳ [aws_ssm_instance_patches](aws_ssm_instance_patches.md) |
 | [aws_ssm_parameters](aws_ssm_parameters.md) |
+| [aws_ssm_compliance_summary_items](aws_ssm_compliance_summary_items.md) |
+| [aws_ssm_associations](aws_ssm_associations.md) |
+| [aws_ssm_inventories](aws_ssm_inventories.md) |
+| [aws_ssm_inventory_schemas](aws_ssm_inventory_schemas.md) |
+| [aws_ssm_patch_baselines](aws_ssm_patch_baselines.md) |
 | [aws_ssoadmin_instances](aws_ssoadmin_instances.md) |
 | [aws_timestream_databases](aws_timestream_databases.md) |
 | ↳ [aws_timestream_tables](aws_timestream_tables.md) |
