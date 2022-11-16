@@ -7,7 +7,6 @@ import (
 	"errors"
 	"fmt"
 	"reflect"
-	"regexp"
 	"strings"
 	"sync"
 	"time"
@@ -345,17 +344,6 @@ func IsAWSError(err error, code ...string) bool {
 		if strings.Contains(ae.ErrorCode(), c) {
 			return true
 		}
-	}
-	return false
-}
-
-func IsErrorRegex(err error, code string, messageRegex *regexp.Regexp) bool {
-	var ae smithy.APIError
-	if !errors.As(err, &ae) {
-		return false
-	}
-	if ae.ErrorCode() == code && messageRegex.MatchString(ae.ErrorMessage()) {
-		return true
 	}
 	return false
 }
