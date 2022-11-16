@@ -3,7 +3,7 @@ title: A Deep Dive on AWS KMS Key Access and AWS Key Grants
 tag: security
 date: 2022/11/16
 description: >-
-  How to encrypt in AWS given a multi-account environment.
+  A Technical Deep Dive on AWS KMS Key Access and AWS Key Grants, one mechanism for granting access to AWS KMS Keys.
 author: jsonkao
 ---
 
