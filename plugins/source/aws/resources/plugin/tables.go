@@ -146,6 +146,7 @@ func tables() []*schema.Table {
 		cognito.UserPools(),
 		config.ConfigurationRecorders(),
 		config.ConformancePacks(),
+		config.ConfigRules(),
 		dax.Clusters(),
 		directconnect.Connections(),
 		directconnect.Gateways(),
