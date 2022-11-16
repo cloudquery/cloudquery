@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [6.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v6.1.0...plugins-source-aws-v6.2.0) (2022-11-16)
+
+
+### Features
+
+* **aws:** Add Support for Eventbridge scheduler ([#4693](https://github.com/cloudquery/cloudquery/issues/4693)) ([a4ef661](https://github.com/cloudquery/cloudquery/commit/a4ef661c23e95e44df57a380cd8dda8bdd7900ee))
+* **aws:** More SSM resources ([#4381](https://github.com/cloudquery/cloudquery/issues/4381)) ([42b0c70](https://github.com/cloudquery/cloudquery/commit/42b0c70c2246977596b32b164e0958d62688acd9))
+
 ## [6.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v6.0.1...plugins-source-aws-v6.1.0) (2022-11-16)
 
 
