@@ -180,7 +180,7 @@ While both of these actions provide the same result of deleting a KMS Key Grant,
 A few key differences include:
 - RevokeGrant is similar to a typical AWS KMS operation and can be controlled via key policies and IAM policies via the `kms:RevokeGrant` permission.  The usage of `kms:RetireGrant` in policies does not behave similarly.
 
-- RetireGrant can be granted by specifiying a retiring principal when creating the grant.  RetireGrant can also be granted to the Grantee Principal similar to other available operations in CreateGrant.  Principals specified in the grant can then retire a grant without the `kms:RetireGrant` permission explicitly allowed in either a key policy or an identity policy.
+- RetireGrant can be granted by specifying a retiring principal when creating the grant.  RetireGrant can also be granted to the Grantee Principal similar to other available operations in CreateGrant.  Principals specified in the grant can then retire a grant without the `kms:RetireGrant` permission explicitly allowed in either a key policy or an identity policy.
 
 ```bash
 aws kms create-grant --key-id arn:aws:kms:us-east-1:123412341234:key/aaaaaaaa-1234-1234-1234-123412341234 --grantee-principal arn:aws:iam::123412341234:user/sample-user --retiring-principal arn:aws:iam::123412341234:user/sample-principal --operations DescribeKey --profile testprofile --region us-east-1
