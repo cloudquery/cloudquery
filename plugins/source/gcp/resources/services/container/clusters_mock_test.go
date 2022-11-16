@@ -6,16 +6,13 @@ import (
 	"net"
 	"testing"
 
+	"cloud.google.com/go/container/apiv1"
+	pb "cloud.google.com/go/container/apiv1/containerpb"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/cloudquery/plugins/source/gcp/client"
+	"google.golang.org/api/option"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
-
-	"cloud.google.com/go/container/apiv1"
-
-	pb "google.golang.org/genproto/googleapis/container/v1"
-
-	"google.golang.org/api/option"
 )
 
 func createClusters() (*client.Services, error) {
