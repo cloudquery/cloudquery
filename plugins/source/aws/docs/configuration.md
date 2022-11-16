@@ -10,7 +10,7 @@ spec:
   # Source spec section
   name: aws
   path: cloudquery/aws
-  version: "v6.2.0" # latest version of aws plugin
+  version: "v7.0.0" # latest version of aws plugin
   tables: ["*"]
   destinations: ["postgresql"]
   spec: 
@@ -53,7 +53,20 @@ This is used to specify one or more accounts to extract information from. Note t
 
 - `local_profile` (string) (default: will use current credentials)
 
-  [Local profile](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html) to use to authenticate this account with
+  [Local profile](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html) to use to authenticate this account with.
+  Please note this should be set to the name of the profile. For example, with the following credentials file:
+
+  ```ini
+  [default]
+  aws_access_key_id=xxxx
+  aws_secret_access_key=xxxx
+
+  [user1]
+  aws_access_key_id=xxxx
+  aws_secret_access_key=xxxx
+  ```
+
+  `local_profile` should be set to either `default` or `user1`.
 
 - `role_arn` (string)
 
