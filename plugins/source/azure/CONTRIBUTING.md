@@ -16,7 +16,7 @@ As a prerequisite, ensure that API calls to list/describe the desired resource a
 
 ### Before you Start
 
-Inside the root of this repository, run:
+Inside the Azure plugin directory, run:
 
 ```shell
 make install-tools
@@ -109,6 +109,6 @@ Once everything is generated, you might need to update the recipe to handle any 
 - Keep transformations to a minimum. As far as possible, we aim to deliver an accurate reflection of what the Azure API provides.
 - We generally only unroll structs one level deep. Nested structs should be transformed into JSON columns.
 - It's recommended to split each resource addition into a separate PR. This makes it easier to review and merge.
-- If the Azure SDK API is not consistent, it's recommended wrap it inside [`client/services`](client/services) to simplify the code generation process. See example [here](client/services/web.go#L61).
+- If the Azure SDK API is not consistent, it's recommended to wrap it inside [`client/services`](client/services) to simplify the code generation process. See example [here](client/services/web.go#L61).
 - Before submitting a pull request, run `make gen-docs` to generate documentation for the table. Include these generated files in the pull request.
 - If you get stuck or need help, feel free to reach out on [Discord](https://www.cloudquery.io/discord). We are a friendly community and would love to help!
