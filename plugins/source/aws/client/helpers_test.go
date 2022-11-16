@@ -3,13 +3,11 @@ package client
 import (
 	"context"
 	"errors"
-	"regexp"
 	"testing"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	ttypes "github.com/aws/aws-sdk-go-v2/service/acm/types"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway/types"
-	"github.com/aws/smithy-go"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -207,55 +205,4 @@ func TestTagsIntoMap(t *testing.T) {
 	}, res)
 
 	assert.Equal(t, map[string]string{"k": "v", "k2": "v2"}, res)
-}
-
-func TestIsErrorRegex(t *testing.T) {
-	cfErr := &smithy.OperationError{
-		ServiceID:     "Cloudformation",
-		OperationName: "ListStackResources",
-		Err: &smithy.GenericAPIError{
-			Code:    "ValidationError",
-			Message: "Stack with id xxxxxxxxx does not exist",
-			Fault:   smithy.FaultUnknown,
-		},
-	}
-	validRegex := regexp.MustCompile("Stack with id (.*) does not exist")
-	notValidRegex := regexp.MustCompile("Not valid error message")
-
-	tests := []struct {
-		name         string
-		err          *smithy.OperationError
-		code         string
-		messageRegex *regexp.Regexp
-		want         bool
-	}{
-		{
-			name:         "RegexMatched",
-			err:          cfErr,
-			code:         "ValidationError",
-			messageRegex: validRegex,
-			want:         true,
-		},
-		{
-			name:         "RegexNotMatched",
-			err:          cfErr,
-			code:         "ValidationError",
-			messageRegex: notValidRegex,
-			want:         false,
-		},
-		{
-			name:         "CodeNotMatched",
-			err:          cfErr,
-			code:         "not valid error code",
-			messageRegex: validRegex,
-			want:         false,
-		},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			found := IsErrorRegex(tt.err, tt.code, tt.messageRegex)
-			require.Equal(t, found, tt.want)
-		})
-	}
 }

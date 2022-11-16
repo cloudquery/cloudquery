@@ -6,6 +6,35 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [6.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v6.1.0...plugins-source-aws-v6.2.0) (2022-11-16)
+
+
+### Features
+
+* **aws:** Add Support for Eventbridge scheduler ([#4693](https://github.com/cloudquery/cloudquery/issues/4693)) ([a4ef661](https://github.com/cloudquery/cloudquery/commit/a4ef661c23e95e44df57a380cd8dda8bdd7900ee))
+* **aws:** More SSM resources ([#4381](https://github.com/cloudquery/cloudquery/issues/4381)) ([42b0c70](https://github.com/cloudquery/cloudquery/commit/42b0c70c2246977596b32b164e0958d62688acd9))
+
+## [6.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v6.0.1...plugins-source-aws-v6.1.0) (2022-11-16)
+
+
+### Features
+
+* **aws:** Add Support for ECS Scale In Task protection ([#4688](https://github.com/cloudquery/cloudquery/issues/4688)) ([44e8830](https://github.com/cloudquery/cloudquery/commit/44e88305ef0430e873e3bcacc6f6349ad7c336a7))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/route53 to v1.24.0 ([#4694](https://github.com/cloudquery/cloudquery/issues/4694)) ([a6d1fec](https://github.com/cloudquery/cloudquery/commit/a6d1fecba8e56d38c1b92bd6599298d2d0f1efc3))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/workspaces to v1.26.0 ([#4695](https://github.com/cloudquery/cloudquery/issues/4695)) ([ea07f09](https://github.com/cloudquery/cloudquery/commit/ea07f0923b1f5541c543f17e1b3074838420a682))
+
+## [6.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v6.0.0...plugins-source-aws-v6.0.1) (2022-11-15)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for aws to v1.5.3 ([#4640](https://github.com/cloudquery/cloudquery/issues/4640)) ([29f6adc](https://github.com/cloudquery/cloudquery/commit/29f6adc387dc7003803b8830c3f683ae916360d4))
+* Update endpoints ([#4686](https://github.com/cloudquery/cloudquery/issues/4686)) ([a33c13e](https://github.com/cloudquery/cloudquery/commit/a33c13e12cb6e3473c4ee16dd01e7454c0ba8705))
+
 ## [6.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v5.2.0...plugins-source-aws-v6.0.0) (2022-11-15)
 
 

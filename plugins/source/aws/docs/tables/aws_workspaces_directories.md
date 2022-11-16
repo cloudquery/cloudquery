@@ -15,6 +15,7 @@ The primary key for this table is **arn**.
 |account_id|String|
 |arn (PK)|String|
 |alias|String|
+|certificate_based_auth_properties|JSON|
 |customer_user_name|String|
 |directory_id|String|
 |directory_name|String|
