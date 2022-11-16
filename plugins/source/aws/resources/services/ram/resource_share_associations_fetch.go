@@ -10,7 +10,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchRamResourceShareAssociations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchRamResourceShareAssociations(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	err := fetchRamResourceShareAssociationsByType(ctx, meta, &ram.GetResourceShareAssociationsInput{
 		AssociationType: types.ResourceShareAssociationTypeResource,
 		MaxResults:      aws.Int32(500),
