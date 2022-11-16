@@ -158,9 +158,10 @@ func IAMResources() []*Resource {
 				}...),
 		},
 		{
-			SubService:  "group_last_accessed_services",
-			Struct:      &models.ServiceLastAccessedEntitiesWrapper{},
-			Description: "https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServiceLastAccessed.html",
+			SubService:          "group_last_accessed_services",
+			Struct:              &models.ServiceLastAccessedEntitiesWrapper{},
+			Description:         "https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServiceLastAccessed.html",
+			PreResourceResolver: "groupLastAccessedServicesPreResourceResolver",
 		},
 		{
 			SubService:          "openid_connect_identity_providers",
@@ -224,9 +225,10 @@ func IAMResources() []*Resource {
 			},
 		},
 		{
-			SubService:  "policy_last_accessed_services",
-			Struct:      &models.ServiceLastAccessedEntitiesWrapper{},
-			Description: "https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServiceLastAccessed.html",
+			SubService:          "policy_last_accessed_services",
+			Struct:              &models.ServiceLastAccessedEntitiesWrapper{},
+			Description:         "https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServiceLastAccessed.html",
+			PreResourceResolver: "policyLastAccessedServicesPreResourceResolver",
 		},
 		{
 			SubService:          "roles",
@@ -284,9 +286,10 @@ func IAMResources() []*Resource {
 				}...),
 		},
 		{
-			SubService:  "role_last_accessed_services",
-			Struct:      &models.ServiceLastAccessedEntitiesWrapper{},
-			Description: "https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServiceLastAccessed.html",
+			SubService:          "role_last_accessed_services",
+			Struct:              &models.ServiceLastAccessedEntitiesWrapper{},
+			Description:         "https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServiceLastAccessed.html",
+			PreResourceResolver: "roleLastAccessedServicesPreResourceResolver",
 		},
 		{
 			SubService:          "saml_identity_providers",
@@ -454,7 +457,7 @@ func IAMResources() []*Resource {
 			SubService:          "user_last_accessed_services",
 			Struct:              &models.ServiceLastAccessedEntitiesWrapper{},
 			Description:         "https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServiceLastAccessed.html",
-			PreResourceResolver: "userServicesLastAccessedPreResourceResolver",
+			PreResourceResolver: "userLastAccessedServicesPreResourceResolver",
 		},
 		{
 			SubService:  "virtual_mfa_devices",

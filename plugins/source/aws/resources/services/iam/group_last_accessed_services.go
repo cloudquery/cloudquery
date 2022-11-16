@@ -9,10 +9,11 @@ import (
 
 func GroupLastAccessedServices() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_iam_group_last_accessed_services",
-		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServiceLastAccessed.html`,
-		Resolver:    fetchIamGroupLastAccessedServices,
-		Multiplex:   client.AccountMultiplex,
+		Name:                "aws_iam_group_last_accessed_services",
+		Description:         `https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServiceLastAccessed.html`,
+		Resolver:            fetchIamGroupLastAccessedServices,
+		PreResourceResolver: groupLastAccessedServicesPreResourceResolver,
+		Multiplex:           client.AccountMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "resource_arn",

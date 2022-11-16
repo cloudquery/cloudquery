@@ -2,6 +2,7 @@ package iam
 
 import (
 	"context"
+
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/iam/models"
 
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
@@ -16,7 +17,7 @@ func fetchIamUserLastAccessedServices(ctx context.Context, meta schema.ClientMet
 	return fetchIamAccessDetails(ctx, res, svc, *p.Arn)
 }
 
-func userServicesLastAccessedPreResourceResolver(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+func userLastAccessedServicesPreResourceResolver(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	p := resource.Item.(models.ServiceLastAccessedEntitiesWrapper)
 	c := meta.(*client.Client)
 	svc := c.Services().Iam

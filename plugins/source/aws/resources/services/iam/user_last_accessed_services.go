@@ -12,7 +12,7 @@ func UserLastAccessedServices() *schema.Table {
 		Name:                "aws_iam_user_last_accessed_services",
 		Description:         `https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServiceLastAccessed.html`,
 		Resolver:            fetchIamUserLastAccessedServices,
-		PreResourceResolver: userServicesLastAccessedPreResourceResolver,
+		PreResourceResolver: userLastAccessedServicesPreResourceResolver,
 		Multiplex:           client.AccountMultiplex,
 		Columns: []schema.Column{
 			{

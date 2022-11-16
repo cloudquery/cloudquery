@@ -9,10 +9,11 @@ import (
 
 func RoleLastAccessedServices() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_iam_role_last_accessed_services",
-		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServiceLastAccessed.html`,
-		Resolver:    fetchIamRoleLastAccessedServices,
-		Multiplex:   client.AccountMultiplex,
+		Name:                "aws_iam_role_last_accessed_services",
+		Description:         `https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServiceLastAccessed.html`,
+		Resolver:            fetchIamRoleLastAccessedServices,
+		PreResourceResolver: roleLastAccessedServicesPreResourceResolver,
+		Multiplex:           client.AccountMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "resource_arn",
