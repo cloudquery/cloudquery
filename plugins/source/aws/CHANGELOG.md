@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [6.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v6.0.1...plugins-source-aws-v6.1.0) (2022-11-16)
+
+
+### Features
+
+* **aws:** Add Support for ECS Scale In Task protection ([#4688](https://github.com/cloudquery/cloudquery/issues/4688)) ([44e8830](https://github.com/cloudquery/cloudquery/commit/44e88305ef0430e873e3bcacc6f6349ad7c336a7))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/route53 to v1.24.0 ([#4694](https://github.com/cloudquery/cloudquery/issues/4694)) ([a6d1fec](https://github.com/cloudquery/cloudquery/commit/a6d1fecba8e56d38c1b92bd6599298d2d0f1efc3))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/workspaces to v1.26.0 ([#4695](https://github.com/cloudquery/cloudquery/issues/4695)) ([ea07f09](https://github.com/cloudquery/cloudquery/commit/ea07f0923b1f5541c543f17e1b3074838420a682))
+
 ## [6.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v6.0.0...plugins-source-aws-v6.0.1) (2022-11-15)
 
 
