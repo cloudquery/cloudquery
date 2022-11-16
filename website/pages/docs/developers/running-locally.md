@@ -10,7 +10,7 @@ You can run a plugin locally yourself and tell the CLI to connect to it, or you 
 
 ### Getting the CLI to run your binary
 
-Set the `registry` in the spec file to be `local`. `path` then becomes filepath to the local binary:
+Set the `registry` in the spec file to be `local`. `path` then becomes file path to the local binary:
 
 ```yaml
 kind: source
