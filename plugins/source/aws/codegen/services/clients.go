@@ -72,6 +72,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/s3control"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
+	"github.com/aws/aws-sdk-go-v2/service/scheduler"
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalog"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry"
@@ -163,6 +164,7 @@ var clients = []interface{}{
 	&s3.Client{},
 	&s3control.Client{},
 	&sagemaker.Client{},
+	&scheduler.Client{},
 	&secretsmanager.Client{},
 	&servicecatalog.Client{},
 	&servicecatalogappregistry.Client{},
