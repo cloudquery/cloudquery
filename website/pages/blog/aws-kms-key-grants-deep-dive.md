@@ -10,9 +10,9 @@ author: jsonkao
 import { BlogHeader } from "../../components/BlogHeader"
 
 <BlogHeader/>
-We recently published a [blog post](https://www.cloudquery.io/blog/aws-encryption-and-multi-account-access) about Encryption in AWS and Multi-Account Access.  As a follow-up to that post, we’re focusing on encryption access in AWS and information on how CloudQuery can help including how to audit access to those encryption keys and the underlying data to help assist with your security and compliance needs.
+We recently published a [blog post](https://www.cloudquery.io/blog/aws-encryption-and-multi-account-access) about Encryption in AWS and Multi-Account Access.  As a follow-up to that post, we’re focusing on encryption access in AWS and information on [how CloudQuery can help](https://www.cloudquery.io/docs/plugins/sources) including how to audit access to those encryption keys and the underlying data to help assist with your security and compliance needs.
 
-CloudQuery has released the following updates to encryption resources to aid with Encryption discovery in AWS:
+CloudQuery has released the following updates to encryption resources to aid with Encryption discovery in AWS in addition to our [existing coverage of AWS](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/README.md) and [AWS resources](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/aws/docs/tables):
 
 - Support for [KMS Key Aliases](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_kms_aliases.md)
 - Support for [KMS Key Grants](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_kms_key_grants.md)
@@ -302,10 +302,14 @@ We’ll use the `kms:GrantIsForAWSResource` Condition Key here.  An example belo
 
 Your organization’s use cases may be slightly different. If you have comments, feedback on this post, follow-up topics you’d like to see, or would like to talk about your KMS and encryption experiences  - email us at security@cloudquery.io or come chat with us on [Discord](https://www.cloudquery.io/discord)!
 
-## References
+## References and Useful Links
 
 [AWS: Grants in AWS KMS](https://docs.aws.amazon.com/kms/latest/developerguide/grants.html)
 
 [AWS: Authentication and access control for AWS KMS](https://docs.aws.amazon.com/kms/latest/developerguide/control-access.html) 
 
 [AWS: Logging and monitoring in AWS Key Management Service](https://docs.aws.amazon.com/kms/latest/developerguide/security-logging-monitoring.html)
+
+[CloudQuery: Source Plugins](https://www.cloudquery.io/docs/plugins/sources)
+
+[CloudQuery: AWS Plugin](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/aws)
