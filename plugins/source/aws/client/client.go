@@ -143,7 +143,13 @@ func (c *Client) Services() *Services {
 
 // ARN builds an ARN tied to current client's partition, accountID and region
 func (c *Client) ARN(service AWSService, idParts ...string) string {
-	return makeARN(service, c.Partition, c.AccountID, c.Region, idParts...).String()
+	return arn.ARN{
+		Partition: c.Partition,
+		Service:   string(service),
+		Region:    c.Region,
+		AccountID: c.AccountID,
+		Resource:  strings.Join(idParts, "/"),
+	}.String()
 }
 
 func (c *Client) withPartitionAccountIDAndRegion(partition, accountID, region string) *Client {
