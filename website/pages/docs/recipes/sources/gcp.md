@@ -2,7 +2,7 @@
 
 Full spec options for GCP Source available [here](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/configuration.md).
 
-```yaml
+```yaml copy
 kind: source
 spec:
   name: gcp

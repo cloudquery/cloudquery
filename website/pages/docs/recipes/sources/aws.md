@@ -2,7 +2,7 @@
 
 Full spec options for AWS Source available [here](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/configuration.md).
 
-```yaml
+```yaml copy
 kind: source
 spec:
   name: aws
