@@ -7,11 +7,11 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func RoleServicesLastAccessed() *schema.Table {
+func RoleLastAccessedServices() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_iam_role_services_last_accessed",
+		Name:        "aws_iam_role_last_accessed_services",
 		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServiceLastAccessed.html`,
-		Resolver:    fetchIamRoleServicesLastAccessed,
+		Resolver:    fetchIamRoleLastAccessedServices,
 		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{
 			{

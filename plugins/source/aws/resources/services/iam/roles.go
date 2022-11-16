@@ -90,7 +90,7 @@ func Roles() *schema.Table {
 
 		Relations: []*schema.Table{
 			RolePolicies(),
-			RoleServicesLastAccessed(),
+			RoleLastAccessedServices(),
 		},
 	}
 }

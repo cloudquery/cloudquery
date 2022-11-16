@@ -93,7 +93,7 @@ func Policies() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			PolicyServicesLastAccessed(),
+			PolicyLastAccessedServices(),
 		},
 	}
 }

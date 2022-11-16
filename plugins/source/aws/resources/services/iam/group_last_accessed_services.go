@@ -7,11 +7,11 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func GroupServicesLastAccessed() *schema.Table {
+func GroupLastAccessedServices() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_iam_group_services_last_accessed",
+		Name:        "aws_iam_group_last_accessed_services",
 		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServiceLastAccessed.html`,
-		Resolver:    fetchIamGroupServicesLastAccessed,
+		Resolver:    fetchIamGroupLastAccessedServices,
 		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{
 			{

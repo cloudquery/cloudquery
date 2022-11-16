@@ -7,12 +7,13 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func PolicyServicesLastAccessed() *schema.Table {
+func UserLastAccessedServices() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_iam_policy_services_last_accessed",
-		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServiceLastAccessed.html`,
-		Resolver:    fetchIamPolicyServicesLastAccessed,
-		Multiplex:   client.AccountMultiplex,
+		Name:                "aws_iam_user_last_accessed_services",
+		Description:         `https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServiceLastAccessed.html`,
+		Resolver:            fetchIamUserLastAccessedServices,
+		PreResourceResolver: userServicesLastAccessedPreResourceResolver,
+		Multiplex:           client.AccountMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "resource_arn",

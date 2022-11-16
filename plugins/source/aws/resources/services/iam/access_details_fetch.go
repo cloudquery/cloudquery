@@ -3,7 +3,6 @@ package iam
 import (
 	"context"
 	"fmt"
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/service/iam"
@@ -39,8 +38,10 @@ func fetchIamAccessDetails(ctx context.Context, res chan<- interface{}, svc serv
 			return fmt.Errorf("failed to get last accessed details with error: %s - %s", *details.Error.Code, *details.Error.Message)
 		case types.JobStatusTypeCompleted:
 			for _, s := range details.ServicesLastAccessed {
-				if err := fetchDetailEntities(ctx, res, svc, s, *output.JobId, arn); err != nil {
-					return err
+				res <- models.ServiceLastAccessedEntitiesWrapper{
+					ResourceARN:         arn,
+					JobId:               output.JobId,
+					ServiceLastAccessed: &s,
 				}
 			}
 			if details.Marker == nil {
@@ -53,23 +54,19 @@ func fetchIamAccessDetails(ctx context.Context, res chan<- interface{}, svc serv
 	}
 }
 
-func fetchDetailEntities(ctx context.Context, res chan<- interface{}, svc services.IamClient, sla types.ServiceLastAccessed, jobId string, arn string) error {
+func fetchDetailEntities(ctx context.Context, svc services.IamClient, resource models.ServiceLastAccessedEntitiesWrapper) ([]types.EntityDetails, error) {
 	config := iam.GetServiceLastAccessedDetailsWithEntitiesInput{
-		JobId:            &jobId,
-		ServiceNamespace: sla.ServiceNamespace,
-		MaxItems:         aws.Int32(1000),
+		JobId:            resource.JobId,
+		ServiceNamespace: resource.ServiceNamespace,
 	}
-	details := models.ServiceLastAccessedEntitiesWrapper{
-		ResourceARN:         arn,
-		JobId:               &jobId,
-		ServiceLastAccessed: &sla,
-	}
+
+	var entities []types.EntityDetails
 	for {
 		output, err := svc.GetServiceLastAccessedDetailsWithEntities(ctx, &config)
 		if err != nil {
-			return err
+			return nil, err
 		}
-		details.Entities = append(details.Entities, output.EntityDetailsList...)
+		entities = append(entities, output.EntityDetailsList...)
 		if output.Marker == nil {
 			break
 		}
@@ -77,6 +74,5 @@ func fetchDetailEntities(ctx context.Context, res chan<- interface{}, svc servic
 			config.Marker = output.Marker
 		}
 	}
-	res <- details
-	return nil
+	return entities, nil
 }

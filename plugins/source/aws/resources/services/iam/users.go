@@ -73,7 +73,7 @@ func Users() *schema.Table {
 			UserGroups(),
 			UserAttachedPolicies(),
 			UserPolicies(),
-			UserServicesLastAccessed(),
+			UserLastAccessedServices(),
 		},
 	}
 }
