@@ -10,7 +10,7 @@ The following tables depend on aws_iam_users:
   - [aws_iam_user_groups](aws_iam_user_groups.md)
   - [aws_iam_user_attached_policies](aws_iam_user_attached_policies.md)
   - [aws_iam_user_policies](aws_iam_user_policies.md)
-  - [aws_iam_user_services_last_accessed](aws_iam_user_services_last_accessed.md)
+  - [aws_iam_user_last_accessed_services](aws_iam_user_last_accessed_services.md)
 
 ## Columns
 | Name          | Type          |

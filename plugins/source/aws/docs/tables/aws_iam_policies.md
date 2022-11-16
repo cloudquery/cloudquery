@@ -6,7 +6,7 @@ The composite primary key for this table is (**account_id**, **id**).
 
 ## Relations
 The following tables depend on aws_iam_policies:
-  - [aws_iam_policy_services_last_accessed](aws_iam_policy_services_last_accessed.md)
+  - [aws_iam_policy_last_accessed_services](aws_iam_policy_last_accessed_services.md)
 
 ## Columns
 | Name          | Type          |
