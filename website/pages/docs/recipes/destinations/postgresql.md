@@ -6,7 +6,7 @@ Note: Make sure you use environment variable expansion in production instead of 
 
 ## Basic
 
-```yaml
+```yaml copy
 kind: destination
 spec:
   name: postgresql
@@ -22,7 +22,7 @@ Run PostgreSQL destination in debug mode:
 
 Note: This will use [`pgx`](https://github.com/jackc/pgx) built-in logging and might output data/sensitive information to logs so make sure to not use it in production but only for debugging.
 
-```yaml
+```yaml copy
 kind: destination
 spec:
   name: postgresql

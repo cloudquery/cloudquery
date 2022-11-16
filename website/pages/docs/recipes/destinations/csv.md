@@ -7,7 +7,7 @@ Full spec options for CSV destination available [here](https://github.com/cloudq
 
 This is a basic configuration that will output all tables as CSV files to the specified directory.
 
-```yaml
+```yaml copy
 kind: destination
 spec:
   name: csv
