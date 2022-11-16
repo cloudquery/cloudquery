@@ -70,7 +70,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/rds v1.29.0
 	github.com/aws/aws-sdk-go-v2/service/redshift v1.26.14
 	github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.12.21
-	github.com/aws/aws-sdk-go-v2/service/route53 v1.23.0
+	github.com/aws/aws-sdk-go-v2/service/route53 v1.24.0
 	github.com/aws/aws-sdk-go-v2/service/route53domains v1.12.19
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.29.2
 	github.com/aws/aws-sdk-go-v2/service/s3control v1.25.1
