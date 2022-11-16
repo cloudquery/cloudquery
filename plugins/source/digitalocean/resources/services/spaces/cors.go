@@ -12,14 +12,6 @@ func Cors() *schema.Table {
 		Resolver: fetchSpacesCors,
 		Columns: []schema.Column{
 			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
 				Name:     "allowed_methods",
 				Type:     schema.TypeStringArray,
 				Resolver: schema.PathResolver("AllowedMethods"),
@@ -38,6 +30,11 @@ func Cors() *schema.Table {
 				Name:     "expose_headers",
 				Type:     schema.TypeStringArray,
 				Resolver: schema.PathResolver("ExposeHeaders"),
+			},
+			{
+				Name:     "id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ID"),
 			},
 			{
 				Name:     "max_age_seconds",
