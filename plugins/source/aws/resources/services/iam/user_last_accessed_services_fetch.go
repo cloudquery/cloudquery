@@ -2,6 +2,7 @@ package iam
 
 import (
 	"context"
+	"golang.org/x/sync/errgroup"
 
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/iam/models"
 
@@ -11,10 +12,29 @@ import (
 )
 
 func fetchIamUserLastAccessedServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p := parent.Item.(*types.User)
 	c := meta.(*client.Client)
 	svc := c.Services().Iam
-	return fetchIamAccessDetails(ctx, res, svc, *p.Arn)
+	ch := make(chan interface{})
+
+	g, ctx := errgroup.WithContext(ctx)
+	g.Go(func() error {
+		defer close(ch)
+		return fetchIamUsers(ctx, meta, nil, ch)
+	})
+
+	g.Go(func() error {
+		for i := range ch {
+			users := i.([]types.User)
+			for _, user := range users {
+				if err := fetchIamAccessDetails(ctx, res, svc, *user.Arn); err != nil {
+					return err
+				}
+			}
+		}
+		return nil
+	})
+
+	return g.Wait()
 }
 
 func userLastAccessedServicesPreResourceResolver(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
