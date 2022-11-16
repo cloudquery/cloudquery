@@ -283,6 +283,8 @@ Along with [AWS Best Practicesfor KMS Key Grants](https://docs.aws.amazon.com/km
 
 6. If retiring/revoking KMS Key Grants, ensure the Key Grant is not being used by production systems to avoid outages and adverse impact.
 
+7. Determine appropriate organization and team strategy for different access mechanisms for KMS regarding KMS Key Policies, Identity Policies, and KMS Key Grants.  
+
 Your organization’s use cases may be slightly different. If you have comments, feedback on this post, follow-up topics you’d like to see, or would like to talk about your KMS and encryption experiences  - email us at security@cloudquery.io or come chat with us on [Discord](https://www.cloudquery.io/discord)!
 
 ## References and Useful Links
