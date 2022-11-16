@@ -211,7 +211,7 @@ func Route53Resources() []*Resource {
 					{
 						Name:     "document",
 						Type:     schema.TypeJSON,
-						Resolver: `client.MarshaledJsonResolver("Document")`,
+						Resolver: `schema.PathResolver("Document")`,
 					},
 				}...),
 		},

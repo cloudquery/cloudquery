@@ -1,5 +1,6 @@
 {
   "architecture": "Architecture",
   "creating-new-plugin": "Creating a New Plugin",
-  "codegen": "Generating Resources"
+  "codegen": "Generating Resources",
+  "running-locally": "Running Plugins Locally"
 }
