@@ -1,8 +1,3 @@
--- Join every row in the deployment table with its json array of containers.
-With replica_set_containers AS (SELECT uid, value AS container 
-                               FROM k8s_apps_replica_sets
-                               CROSS JOIN jsonb_array_elements(spec_template->'spec'->'containers') AS value)
-
 Insert Into k8s_policy_results (resource_id, execution_time, framework, check_id, title, context, namespace,
                                 resource_name, status)
 select uid                              AS resource_id,
@@ -21,4 +16,4 @@ select uid                              AS resource_id,
                 THEN 'fail'
                 ELSE 'pass'
             END                          AS status
-FROM k8s_apps_replica_sets
+FROM k8s_apps_replica_sets;
