@@ -43,7 +43,7 @@ func ECRResources() []*Resource {
 					{
 						Name:     "policy_text",
 						Type:     schema.TypeJSON,
-						Resolver: `client.MarshaledJsonResolver("PolicyText")`,
+						Resolver: `schema.PathResolver("PolicyText")`,
 					},
 				}...),
 		},
