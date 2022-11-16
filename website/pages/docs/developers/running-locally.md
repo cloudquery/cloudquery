@@ -1,8 +1,8 @@
 # Running Plugins Locally
 
-Plugins are normally invoked as separate processes inside `cloudquery` cli. However, for development purposes, it is possible to run plugins directly from the command line.
+Plugins are normally invoked as separate processes inside CloudQuery CLI. However, for development purposes, it is possible to run plugins directly from the command line.
 
-You can run a single plugin or multiple plugins locally. It's also possible to have some plugins (from other registries such as `github`) managed and ran by the `cloudquery` cli, and have some running locally simultaneously. 
+You can run a single plugin or multiple plugins locally. It's also possible to have some plugins (from other registries such as `github`) managed and ran by the CloudQuery CLI, and have some running locally simultaneously. 
 
 ## Required Settings
 
@@ -51,4 +51,4 @@ spec:
 # other settings like tables, etc.
 ```
 
-Now when you run `cloudquery` it will connect to the plugin as specified.
+When you run CloudQuery CLI with this config it will connect to the plugin as specified.
