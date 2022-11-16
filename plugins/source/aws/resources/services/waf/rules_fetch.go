@@ -42,7 +42,13 @@ func fetchWafRules(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 func resolveWafRuleArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	rule := resource.Item.(*types.Rule)
-	return resource.Set(c.Name, cl.ARN("waf", "rule", aws.ToString(rule.RuleId)))
+	return resource.Set(c.Name, arn.ARN{
+		Partition: cl.Partition,
+		Service:   "waf",
+		Region:    cl.Region,
+		AccountID: cl.AccountID,
+		Resource:  fmt.Sprintf("rule/%s", aws.ToString(rule.RuleId)),
+	}.String())
 }
 
 func resolveWafRuleTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {

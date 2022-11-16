@@ -47,10 +47,10 @@ func getSchedule(ctx context.Context, meta schema.ClientMeta, resource *schema.R
 
 func resolveSchedulerScheduleTags() schema.ColumnResolver {
 	return func(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
-		arn := funk.Get(r.Item, "Arn", funk.WithAllowZero()).(*string)
+		arnStr := funk.Get(r.Item, "Arn", funk.WithAllowZero()).(*string)
 		cl := meta.(*client.Client)
 		svc := cl.Services().Scheduler
-		params := scheduler.ListTagsForResourceInput{ResourceArn: arn}
+		params := scheduler.ListTagsForResourceInput{ResourceArn: arnStr}
 
 		output, err := svc.ListTagsForResource(ctx, &params)
 		if err != nil {

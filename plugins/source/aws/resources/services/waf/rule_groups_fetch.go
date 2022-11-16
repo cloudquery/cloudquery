@@ -41,7 +41,13 @@ func fetchWafRuleGroups(ctx context.Context, meta schema.ClientMeta, parent *sch
 func resolveWafRuleGroupArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	ruleGroup := resource.Item.(*types.RuleGroup)
-	return resource.Set(c.Name, cl.ARN("waf", "rulegroup", aws.ToString(ruleGroup.RuleGroupId)))
+	return resource.Set(c.Name, arn.ARN{
+		Partition: cl.Partition,
+		Service:   "waf",
+		Region:    cl.Region,
+		AccountID: cl.AccountID,
+		Resource:  fmt.Sprintf("rulegroup/%s", aws.ToString(ruleGroup.RuleGroupId)),
+	}.String())
 }
 func resolveWafRuleGroupRuleIds(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	ruleGroup := resource.Item.(*types.RuleGroup)
