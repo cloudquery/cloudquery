@@ -96,6 +96,22 @@
     {
       "source": "/docs/tutorials/assume_role",
       "destination": "/blog/cross-account-access-aws-assumerole"
+    },
+    {
+      "source": "/docs/cq_vs_others/:other",
+      "destination": "/docs/cq-vs-others/:other"
+    },
+    {
+      "source": "/database-configuration",
+      "destination": "/docs/reference/destination-spec"
+    },
+    {
+      "source": "/docs/cli/commands/(.*)",
+      "destination": "/docs/reference/cli/cloudquery"
+    },
+    {
+      "source": "/developers/developing-new-provider",
+      "destination": "/docs/developers/creating-new-plugin"
     }
   ]
 }

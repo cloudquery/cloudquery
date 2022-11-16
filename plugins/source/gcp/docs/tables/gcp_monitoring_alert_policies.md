@@ -18,7 +18,7 @@ The primary key for this table is **name**.
 |documentation|JSON|
 |user_labels|JSON|
 |conditions|JSON|
-|combiner|Int|
+|combiner|String|
 |enabled|JSON|
 |validity|JSON|
 |notification_channels|StringArray|

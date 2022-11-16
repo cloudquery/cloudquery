@@ -1,6 +1,0 @@
-kind: "source"
-spec:
-  name: "test"
-  path: "cloudquery/test"
-  destinations: [test]
-  version: "v1.3.16" # latest version of source test plugin

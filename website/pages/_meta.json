@@ -5,7 +5,7 @@
   "index": {
     "title": "Home",
     "type": "page",
-    "hidden": true,
+    "display": "hidden",
     "theme": {
       "layout": "raw",
       "sidebar": false,
@@ -26,18 +26,18 @@
   },
   "confirm": {
     "title": "Confirm",
-    "hidden": true
+    "display": "hidden"
   },
   "terms": {
     "title": "Terms of Use",
-    "hidden": true
+    "display": "hidden"
   },
   "privacy": {
     "title": "Privacy Policy",
-    "hidden": true
+    "display": "hidden"
   },
   "logo": {
     "title": "Brand Logo",
-    "hidden": true
+    "display": "hidden"
   }
 }

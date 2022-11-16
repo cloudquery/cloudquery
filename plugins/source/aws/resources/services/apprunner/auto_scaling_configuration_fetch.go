@@ -9,7 +9,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchApprunnerAutoScalingConfiguration(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchApprunnerAutoScalingConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config apprunner.ListAutoScalingConfigurationsInput
 	svc := meta.(*client.Client).Services().Apprunner
 	paginator := apprunner.NewListAutoScalingConfigurationsPaginator(svc, &config)
