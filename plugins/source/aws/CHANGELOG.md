@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [7.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v7.0.0...plugins-source-aws-v7.0.1) (2022-11-16)
+
+
+### Bug Fixes
+
+* Improve AWS credentials error message and local profile docs ([#4708](https://github.com/cloudquery/cloudquery/issues/4708)) ([2a159b8](https://github.com/cloudquery/cloudquery/commit/2a159b83528a7f1127c7292add2ea299a56bc0c7))
+
 ## [7.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v6.2.0...plugins-source-aws-v7.0.0) (2022-11-16)
 
 
