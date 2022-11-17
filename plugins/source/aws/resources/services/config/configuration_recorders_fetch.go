@@ -2,7 +2,10 @@ package config
 
 import (
 	"context"
+	"fmt"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/configservice"
 	"github.com/aws/aws-sdk-go-v2/service/configservice/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -62,5 +65,11 @@ func fetchConfigConfigurationRecorders(ctx context.Context, meta schema.ClientMe
 func generateConfigRecorderArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	cfg := resource.Item.(models.ConfigurationRecorderWrapper)
-	return resource.Set(c.Name, cl.ARN("config", "config-recorder", *cfg.Name))
+	return resource.Set(c.Name, arn.ARN{
+		Partition: cl.Partition,
+		Service:   "config",
+		Region:    cl.Region,
+		AccountID: cl.AccountID,
+		Resource:  fmt.Sprintf("config-recorder/%s", aws.ToString(cfg.Name)),
+	}.String())
 }

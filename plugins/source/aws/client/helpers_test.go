@@ -72,34 +72,6 @@ func TestResolveARN(t *testing.T) {
 	}
 }
 
-func TestMakeARN(t *testing.T) {
-	cases := []struct {
-		service  AWSService
-		region   string
-		idParts  []string
-		expected string
-	}{
-		{
-			service:  S3Service,
-			region:   "us-east-1",
-			idParts:  []string{"my-bucket"},
-			expected: `arn:aws:s3:us-east-1:12345:my-bucket`,
-		},
-		{
-			service: S3Service,
-			region:  "cn-north-1",
-			//idParts:  []string{"my-bucket"},
-			idParts:  []string{"我的桶"},
-			expected: `arn:aws-cn:s3:cn-north-1:12345:我的桶`,
-		},
-	}
-	for _, tc := range cases {
-		p, _ := RegionsPartition(tc.region)
-		res := makeARN(tc.service, p, "12345", tc.region, tc.idParts...).String()
-		assert.Equal(t, tc.expected, res)
-	}
-}
-
 func TestTagsToMap(t *testing.T) {
 	type randomType struct {
 		Key   string
