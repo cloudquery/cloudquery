@@ -62,7 +62,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/lightsail v1.24.0
 	github.com/aws/aws-sdk-go-v2/service/mq v1.13.15
 	github.com/aws/aws-sdk-go-v2/service/mwaa v1.13.12
-	github.com/aws/aws-sdk-go-v2/service/neptune v1.18.1
+	github.com/aws/aws-sdk-go-v2/service/neptune v1.18.2
 	github.com/aws/aws-sdk-go-v2/service/organizations v1.16.15
 	github.com/aws/aws-sdk-go-v2/service/qldb v1.14.20
 	github.com/aws/aws-sdk-go-v2/service/quicksight v1.26.2
