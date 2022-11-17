@@ -3,7 +3,7 @@ title: A Deep Dive on AWS KMS Key Access and AWS Key Grants
 tag: security
 date: 2022/11/17
 description: >-
-  A Technical Deep Dive on AWS KMS Key Access and AWS Key Grants, one mechanism for granting access to AWS KMS Keys.
+  A Technical Deep Dive on AWS KMS Key Access and AWS Key Grants.
 author: jsonkao
 ---
 
@@ -32,7 +32,7 @@ Typical policy evaluation within a single account is done as a logical ****or***
 
 Unlike most other resource-based policies, [KMS Key access within an AWS Account](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic.html#policy-eval-basics) ********must******** be granted on the KMS resource-based policy: the KMS Key policy.  If the KMS Key policy doesn’t explicitly allow access, an identity cannot access the KMS key via identity-based policies.  We’ll deep dive on KMS Key policies and recommendations in a later post.
 
-However, KMS Keys are a unique resource in AWS, where there’s a third access mechanism for KMS Keys: KMS Key Grants. 
+However, KMS Keys are a unique resource in AWS, where there’s a third access mechanism for KMS Keys: KMS Key Grants. KMS Key Grants are not manageable or viewable via the AWS Management Console and can only be managed and viewed via AWS CLI and API/SDK.
 
 There are [3 access mechanisms for KMS Keys](https://docs.aws.amazon.com/kms/latest/developerguide/control-access.html):
 
