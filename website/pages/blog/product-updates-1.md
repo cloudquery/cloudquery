@@ -50,7 +50,7 @@ We've added 16 new AWS services!
 * [App Runner](https://github.com/cloudquery/cloudquery/issues/2997)
 * [Neptune](https://github.com/cloudquery/cloudquery/issues/2923)
 
-Also, tons of others bug fixes and performance tuning. See full [AWS Changelog](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/CHANGELOG.md)
+Also, tons of others bug fixes and performance tuning. See [full changelog](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/CHANGELOG.md)
 
 ### Azure
 
