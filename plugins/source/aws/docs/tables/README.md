@@ -94,6 +94,8 @@
 | [aws_config_configuration_recorders](aws_config_configuration_recorders.md) |
 | [aws_config_conformance_packs](aws_config_conformance_packs.md) |
 | ↳ [aws_config_conformance_pack_rule_compliances](aws_config_conformance_pack_rule_compliances.md) |
+| [aws_config_config_rules](aws_config_config_rules.md) |
+| ↳ [aws_config_config_rule_compliances](aws_config_config_rule_compliances.md) |
 | [aws_dax_clusters](aws_dax_clusters.md) |
 | [aws_directconnect_connections](aws_directconnect_connections.md) |
 | [aws_directconnect_gateways](aws_directconnect_gateways.md) |

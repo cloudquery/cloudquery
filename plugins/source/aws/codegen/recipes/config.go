@@ -60,6 +60,26 @@ func ConfigResources() []*Resource {
 					},
 				}...),
 		},
+		{
+			SubService: "config_rules",
+			Struct:     new(types.ConfigRule),
+			SkipFields: []string{"ConfigRuleArn"},
+			ExtraColumns: append(defaultRegionalColumns,
+				[]codegen.ColumnDefinition{
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("ConfigRuleArn")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				}...),
+			Relations: []string{"ConfigRuleCompliances()"},
+		},
+		{
+			SubService:   "config_rule_compliances",
+			Struct:       new(types.ComplianceByConfigRule),
+			ExtraColumns: defaultRegionalColumns,
+		},
 	}
 
 	// set default values
