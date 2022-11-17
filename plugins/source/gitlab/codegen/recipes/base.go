@@ -13,7 +13,6 @@ import (
 	"text/template"
 
 	"github.com/cloudquery/plugin-sdk/codegen"
-	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/iancoleman/strcase"
 )
 
@@ -29,6 +28,7 @@ type Resource struct {
 	ResourceFunc   interface{}
 	// ServiceFuncName     string
 	// ResourceFuncName    string
+	PKColumns           []string
 	ResourcePath        string
 	ImportPath          string
 	SubServiceInterface interface{}
@@ -134,12 +134,12 @@ func (resource *Resource) Generate() error {
 		// 	Type:     schema.TypeString,
 		// 	Resolver: `client.ResolveContext`,
 		// },
-		{
-			Name:     "uid",
-			Type:     schema.TypeString,
-			Resolver: `schema.PathResolver("UID")`,
-			Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-		},
+		// {
+		// 	Name:     "uid",
+		// 	Type:     schema.TypeString,
+		// 	Resolver: `schema.PathResolver("UID")`,
+		// 	Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+		// },
 	}
 
 	extraColumns = append(extraColumns, resource.ExtraColumns...)
@@ -152,6 +152,7 @@ func (resource *Resource) Generate() error {
 		codegen.WithExtraColumns(extraColumns),
 		codegen.WithUnwrapStructFields([]string{"Spec", "Status"}),
 		codegen.WithTypeTransformer(codegen.DefaultTypeTransformer),
+		codegen.WithPKColumns(resource.PKColumns...),
 	)
 
 	if err != nil {

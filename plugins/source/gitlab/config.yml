@@ -1,0 +1,23 @@
+kind: source
+spec:
+  name: gitlab-0
+  # registry: github
+  # path: cloudquery/aws
+  registry: grpc
+  path: localhost:7777
+  # version: v7.0.1
+  tables: ['*']
+  destinations: ["postgresql"]
+  spec:
+    token: "glpat-onchgja97TrNq1xwsnwR"
+---
+kind: destination
+spec:
+  name: postgresql
+  path: cloudquery/postgresql
+  version: v1.7.9
+  write_mode: append
+  spec:
+    connection_string: "postgresql://postgres:pass@localhost:5432/postgres?sslmode=disable"
+
+

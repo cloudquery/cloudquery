@@ -9,6 +9,7 @@ func Users() []*Resource {
 		{
 			SubService: "users",
 			Struct:     &gitlab.User{},
+			PKColumns:  []string{"id"},
 		},
 	}
 

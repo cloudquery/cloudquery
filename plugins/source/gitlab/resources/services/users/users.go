@@ -12,17 +12,12 @@ func Users() *schema.Table {
 		Resolver: fetchUsers,
 		Columns: []schema.Column{
 			{
-				Name:     "uid",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("UID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
 				Name:     "id",
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("ID"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "username",
