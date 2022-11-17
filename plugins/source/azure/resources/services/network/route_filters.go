@@ -3,8 +3,6 @@
 package network
 
 import (
-	"context"
-
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -12,39 +10,15 @@ import (
 func RouteFilters() *schema.Table {
 	return &schema.Table{
 		Name:        "azure_network_route_filters",
-		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network#RouteFilter`,
-		Resolver:    fetchNetworkRouteFilters,
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2#RouteFilter`,
+		Resolver:    fetchRouteFilters,
 		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "rules",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Rules"),
-			},
-			{
-				Name:     "peerings",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Peerings"),
-			},
-			{
-				Name:     "ipv6_peerings",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Ipv6Peerings"),
-			},
-			{
-				Name:     "provisioning_state",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ProvisioningState"),
-			},
-			{
-				Name:     "etag",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Etag"),
+				Name:        "subscription_id",
+				Type:        schema.TypeString,
+				Resolver:    client.SubscriptionIDResolver,
+				Description: `Azure subscription ID`,
 			},
 			{
 				Name:     "id",
@@ -53,6 +27,41 @@ func RouteFilters() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
+			},
+			{
+				Name:     "location",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Location"),
+			},
+			{
+				Name:     "rules",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.Rules"),
+			},
+			{
+				Name:     "ipv6_peerings",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.IPv6Peerings"),
+			},
+			{
+				Name:     "peerings",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.Peerings"),
+			},
+			{
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.ProvisioningState"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Tags"),
+			},
+			{
+				Name:     "etag",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Etag"),
 			},
 			{
 				Name:     "name",
@@ -64,35 +73,6 @@ func RouteFilters() *schema.Table {
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Type"),
 			},
-			{
-				Name:     "location",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Location"),
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
-			},
 		},
 	}
-}
-
-func fetchNetworkRouteFilters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().Network.RouteFilters
-
-	response, err := svc.List(ctx)
-
-	if err != nil {
-		return err
-	}
-
-	for response.NotDone() {
-		res <- response.Values()
-		if err := response.NextWithContext(ctx); err != nil {
-			return err
-		}
-	}
-
-	return nil
 }

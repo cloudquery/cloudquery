@@ -3,39 +3,39 @@
 package keyvault
 
 import (
-	"context"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/keyvault"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/keyvault"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/services/preview/keyvault/mgmt/2020-04-01-preview/keyvault"
 )
 
-func TestKeyVaultManagedHsms(t *testing.T) {
-	client.MockTestHelper(t, ManagedHsms(), createManagedHsmsMock)
-}
+func buildManagedHsms(t *testing.T, ctrl *gomock.Controller) *client.Services {
+	mockManagedHsmsClient := mocks.NewMockManagedHsmsClient(ctrl)
 
-func createManagedHsmsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockKeyVaultManagedHsmsClient(ctrl)
-	s := services.Services{
-		KeyVault: services.KeyVaultClient{
-			ManagedHsms: mockClient,
-		},
+	var response api.ManagedHsmsClientListBySubscriptionResponse
+	require.NoError(t, faker.FakeObject(&response))
+	// Use correct Azure ID format
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.Value[0].ID = to.Ptr(id)
+
+	mockManagedHsmsClient.EXPECT().NewListBySubscriptionPager(gomock.Any()).
+		Return(client.CreatePager(response)).MinTimes(1)
+
+	keyvaultClient := &service.KeyvaultClient{
+		ManagedHsmsClient: mockManagedHsmsClient,
 	}
 
-	data := keyvault.ManagedHsm{}
-	require.Nil(t, faker.FakeObject(&data))
+	c := &client.Services{Keyvault: keyvaultClient}
 
-	result := keyvault.NewManagedHsmListResultPage(keyvault.ManagedHsmListResult{Value: &[]keyvault.ManagedHsm{data}}, func(ctx context.Context, result keyvault.ManagedHsmListResult) (keyvault.ManagedHsmListResult, error) {
-		return keyvault.ManagedHsmListResult{}, nil
-	})
+	return c
+}
 
-	maxResults := int32(100)
-	mockClient.EXPECT().ListBySubscription(gomock.Any(), &maxResults).Return(result, nil)
-	return s
+func TestManagedHsms(t *testing.T) {
+	client.MockTestHelper(t, ManagedHsms(), buildManagedHsms)
 }

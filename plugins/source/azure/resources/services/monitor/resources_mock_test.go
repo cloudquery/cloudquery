@@ -3,46 +3,41 @@
 package monitor
 
 import (
-	"context"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/profiles/latest/resources/mgmt/resources"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/resources"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/resources"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
 )
 
-func TestMonitorResources(t *testing.T) {
-	client.MockTestHelper(t, Resources(), createResourcesMock)
-}
+func buildResources(t *testing.T, ctrl *gomock.Controller) *client.Services {
+	mockClient := mocks.NewMockClient(ctrl)
 
-func createResourcesMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockMonitorResourcesClient(ctrl)
-	s := services.Services{
-		Monitor: services.MonitorClient{
-			Resources:          mockClient,
-			DiagnosticSettings: createDiagnosticSettingsMock(t, ctrl).Monitor.DiagnosticSettings,
-		},
+	var response api.ClientListResponse
+	require.NoError(t, faker.FakeObject(&response))
+	// Use correct Azure ID format
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.Value[0].ID = to.Ptr(id)
+
+	mockClient.EXPECT().NewListPager(gomock.Any()).
+		Return(client.CreatePager(response)).MinTimes(1)
+
+	resourcesClient := &service.ResourcesClient{
+		Client: mockClient,
 	}
 
-	data := resources.GenericResourceExpanded{}
-	require.Nil(t, faker.FakeObject(&data))
+	c := &client.Services{Resources: resourcesClient}
 
-	// Ensure name and ID are consistent so we can reference it in other mock
-	name := "test"
-	data.Name = &name
+	buildDiagnosticSettings(t, ctrl, c)
 
-	// Use correct Azure ID format
-	id := "/subscriptions/test/resourceGroups/test/providers/test/test/test"
-	data.ID = &id
+	return c
+}
 
-	result := resources.NewListResultPage(resources.ListResult{Value: &[]resources.GenericResourceExpanded{data}}, func(ctx context.Context, result resources.ListResult) (resources.ListResult, error) {
-		return resources.ListResult{}, nil
-	})
-
-	mockClient.EXPECT().List(gomock.Any(), "", "", nil).Return(result, nil)
-	return s
+func TestResources(t *testing.T) {
+	client.MockTestHelper(t, Resources(), buildResources)
 }

@@ -3,8 +3,6 @@
 package security
 
 import (
-	"context"
-
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -12,34 +10,35 @@ import (
 func Contacts() *schema.Table {
 	return &schema.Table{
 		Name:        "azure_security_contacts",
-		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security#Contact`,
-		Resolver:    fetchSecurityContacts,
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity#Contact`,
+		Resolver:    fetchContacts,
 		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
+				Name:        "subscription_id",
+				Type:        schema.TypeString,
+				Resolver:    client.SubscriptionIDResolver,
+				Description: `Azure subscription ID`,
 			},
 			{
-				Name:     "email",
+				Name:     "alert_notifications",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.AlertNotifications"),
+			},
+			{
+				Name:     "emails",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Email"),
+				Resolver: schema.PathResolver("Properties.Emails"),
+			},
+			{
+				Name:     "notifications_by_role",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.NotificationsByRole"),
 			},
 			{
 				Name:     "phone",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Phone"),
-			},
-			{
-				Name:     "alert_notifications",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("AlertNotifications"),
-			},
-			{
-				Name:     "alerts_to_admins",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("AlertsToAdmins"),
+				Resolver: schema.PathResolver("Properties.Phone"),
 			},
 			{
 				Name:     "id",
@@ -61,23 +60,4 @@ func Contacts() *schema.Table {
 			},
 		},
 	}
-}
-
-func fetchSecurityContacts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().Security.Contacts
-
-	response, err := svc.List(ctx)
-
-	if err != nil {
-		return err
-	}
-
-	for response.NotDone() {
-		res <- response.Values()
-		if err := response.NextWithContext(ctx); err != nil {
-			return err
-		}
-	}
-
-	return nil
 }

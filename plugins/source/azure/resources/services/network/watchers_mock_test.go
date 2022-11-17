@@ -5,42 +5,39 @@ package network
 import (
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/network"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/network"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"
 )
 
-func TestNetworkWatchers(t *testing.T) {
-	client.MockTestHelper(t, Watchers(), createWatchersMock)
-}
+func buildWatchers(t *testing.T, ctrl *gomock.Controller) *client.Services {
+	mockWatchersClient := mocks.NewMockWatchersClient(ctrl)
 
-func createWatchersMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockNetworkWatchersClient(ctrl)
-	s := services.Services{
-		Network: services.NetworkClient{
-			Watchers: mockClient,
-			FlowLogs: createFlowLogsMock(t, ctrl).Network.FlowLogs,
-		},
+	var response api.WatchersClientListAllResponse
+	require.NoError(t, faker.FakeObject(&response))
+	// Use correct Azure ID format
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.Value[0].ID = to.Ptr(id)
+
+	mockWatchersClient.EXPECT().NewListAllPager(gomock.Any()).
+		Return(client.CreatePager(response)).MinTimes(1)
+
+	networkClient := &service.NetworkClient{
+		WatchersClient: mockWatchersClient,
 	}
 
-	data := network.Watcher{}
-	require.Nil(t, faker.FakeObject(&data))
+	c := &client.Services{Network: networkClient}
 
-	// Ensure name and ID are consistent so we can reference it in other mock
-	name := "test"
-	data.Name = &name
+	buildFlowLogs(t, ctrl, c)
 
-	// Use correct Azure ID format
-	id := "/subscriptions/test/resourceGroups/test/providers/test/test/test"
-	data.ID = &id
+	return c
+}
 
-	result := network.WatcherListResult{Value: &[]network.Watcher{data}}
-
-	mockClient.EXPECT().ListAll(gomock.Any()).Return(result, nil)
-	return s
+func TestWatchers(t *testing.T) {
+	client.MockTestHelper(t, Watchers(), buildWatchers)
 }

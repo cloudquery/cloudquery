@@ -5,28 +5,33 @@ package mysql
 import (
 	"testing"
 
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/mysql"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mysql"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/services/mysql/mgmt/2020-01-01/mysql"
 )
 
-func createConfigurationsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockMySQLConfigurationsClient(ctrl)
-	s := services.Services{
-		MySQL: services.MySQLClient{
-			Configurations: mockClient,
-		},
+func buildConfigurations(t *testing.T, ctrl *gomock.Controller, c *client.Services) {
+	if c.Mysql == nil {
+		c.Mysql = new(service.MysqlClient)
+	}
+	mysqlClient := c.Mysql
+	if mysqlClient.ConfigurationsClient == nil {
+		mysqlClient.ConfigurationsClient = mocks.NewMockConfigurationsClient(ctrl)
 	}
 
-	data := mysql.Configuration{}
-	require.Nil(t, faker.FakeObject(&data))
+	mockConfigurationsClient := mysqlClient.ConfigurationsClient.(*mocks.MockConfigurationsClient)
 
-	result := mysql.ConfigurationListResult{Value: &[]mysql.Configuration{data}}
+	var response api.ConfigurationsClientListByServerResponse
+	require.NoError(t, faker.FakeObject(&response))
+	// Use correct Azure ID format
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.Value[0].ID = to.Ptr(id)
 
-	mockClient.EXPECT().ListByServer(gomock.Any(), "test", "test").Return(result, nil)
-	return s
+	mockConfigurationsClient.EXPECT().NewListByServerPager(gomock.Any(), gomock.Any(), gomock.Any()).
+		Return(client.CreatePager(response)).MinTimes(1)
 }

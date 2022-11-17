@@ -3,49 +3,41 @@
 package sql
 
 import (
-	"context"
-
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-
-	"github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql"
 )
 
 func backupLongTermRetentionPolicies() *schema.Table {
 	return &schema.Table{
 		Name:        "azure_sql_backup_long_term_retention_policies",
-		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql#BackupLongTermRetentionPolicy`,
-		Resolver:    fetchSQLBackupLongTermRetentionPolicies,
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql#LongTermRetentionPolicy`,
+		Resolver:    fetchBackupLongTermRetentionPolicies,
 		Columns: []schema.Column{
 			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "sql_database_id",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("id"),
-			},
-			{
-				Name:     "weekly_retention",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("WeeklyRetention"),
+				Name:        "subscription_id",
+				Type:        schema.TypeString,
+				Resolver:    client.SubscriptionIDResolver,
+				Description: `Azure subscription ID`,
 			},
 			{
 				Name:     "monthly_retention",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("MonthlyRetention"),
-			},
-			{
-				Name:     "yearly_retention",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("YearlyRetention"),
+				Resolver: schema.PathResolver("Properties.MonthlyRetention"),
 			},
 			{
 				Name:     "week_of_year",
 				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("WeekOfYear"),
+				Resolver: schema.PathResolver("Properties.WeekOfYear"),
+			},
+			{
+				Name:     "weekly_retention",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.WeeklyRetention"),
+			},
+			{
+				Name:     "yearly_retention",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.YearlyRetention"),
 			},
 			{
 				Name:     "id",
@@ -65,23 +57,11 @@ func backupLongTermRetentionPolicies() *schema.Table {
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Type"),
 			},
+			{
+				Name:     "database_id",
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("id"),
+			},
 		},
 	}
-}
-
-func fetchSQLBackupLongTermRetentionPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().SQL.BackupLongTermRetentionPolicies
-
-	server := parent.Parent.Item.(sql.Server)
-	database := parent.Item.(sql.Database)
-	resourceDetails, err := client.ParseResourceID(*database.ID)
-	if err != nil {
-		return err
-	}
-	response, err := svc.ListByDatabase(ctx, resourceDetails.ResourceGroup, *server.Name, *database.Name)
-	if err != nil {
-		return err
-	}
-	res <- response
-	return nil
 }

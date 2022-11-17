@@ -3,33 +3,35 @@
 package sql
 
 import (
-	"context"
 	"testing"
 
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/sql"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/sql"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql"
 )
 
-func createServerSecurityAlertPoliciesMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockSQLServerSecurityAlertPoliciesClient(ctrl)
-	s := services.Services{
-		SQL: services.SQLClient{
-			ServerSecurityAlertPolicies: mockClient,
-		},
+func buildServerSecurityAlertPolicies(t *testing.T, ctrl *gomock.Controller, c *client.Services) {
+	if c.Sql == nil {
+		c.Sql = new(service.SqlClient)
+	}
+	sqlClient := c.Sql
+	if sqlClient.ServerSecurityAlertPoliciesClient == nil {
+		sqlClient.ServerSecurityAlertPoliciesClient = mocks.NewMockServerSecurityAlertPoliciesClient(ctrl)
 	}
 
-	data := sql.ServerSecurityAlertPolicy{}
-	require.Nil(t, faker.FakeObject(&data))
+	mockServerSecurityAlertPoliciesClient := sqlClient.ServerSecurityAlertPoliciesClient.(*mocks.MockServerSecurityAlertPoliciesClient)
 
-	result := sql.NewLogicalServerSecurityAlertPolicyListResultPage(sql.LogicalServerSecurityAlertPolicyListResult{Value: &[]sql.ServerSecurityAlertPolicy{data}}, func(ctx context.Context, result sql.LogicalServerSecurityAlertPolicyListResult) (sql.LogicalServerSecurityAlertPolicyListResult, error) {
-		return sql.LogicalServerSecurityAlertPolicyListResult{}, nil
-	})
+	var response api.ServerSecurityAlertPoliciesClientListByServerResponse
+	require.NoError(t, faker.FakeObject(&response))
+	// Use correct Azure ID format
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.Value[0].ID = to.Ptr(id)
 
-	mockClient.EXPECT().ListByServer(gomock.Any(), "test", "test").Return(result, nil)
-	return s
+	mockServerSecurityAlertPoliciesClient.EXPECT().NewListByServerPager(gomock.Any(), gomock.Any(), gomock.Any()).
+		Return(client.CreatePager(response)).MinTimes(1)
 }

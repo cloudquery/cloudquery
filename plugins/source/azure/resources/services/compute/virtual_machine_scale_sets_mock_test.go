@@ -3,38 +3,35 @@
 package compute
 
 import (
-	"context"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v4"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/compute"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/compute"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-03-01/compute"
 )
 
-func TestComputeVirtualMachineScaleSets(t *testing.T) {
-	client.MockTestHelper(t, VirtualMachineScaleSets(), createVirtualMachineScaleSetsMock)
-}
-
-func createVirtualMachineScaleSetsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockComputeVirtualMachineScaleSetsClient(ctrl)
-	s := services.Services{
-		Compute: services.ComputeClient{
-			VirtualMachineScaleSets: mockClient,
-		},
+func buildVirtualMachineScaleSets(t *testing.T, ctrl *gomock.Controller, c *client.Services) {
+	if c.Compute == nil {
+		c.Compute = new(service.ComputeClient)
+	}
+	computeClient := c.Compute
+	if computeClient.VirtualMachineScaleSetsClient == nil {
+		computeClient.VirtualMachineScaleSetsClient = mocks.NewMockVirtualMachineScaleSetsClient(ctrl)
 	}
 
-	data := compute.VirtualMachineScaleSet{}
-	require.Nil(t, faker.FakeObject(&data))
+	mockVirtualMachineScaleSetsClient := computeClient.VirtualMachineScaleSetsClient.(*mocks.MockVirtualMachineScaleSetsClient)
 
-	result := compute.NewVirtualMachineScaleSetListWithLinkResultPage(compute.VirtualMachineScaleSetListWithLinkResult{Value: &[]compute.VirtualMachineScaleSet{data}}, func(ctx context.Context, result compute.VirtualMachineScaleSetListWithLinkResult) (compute.VirtualMachineScaleSetListWithLinkResult, error) {
-		return compute.VirtualMachineScaleSetListWithLinkResult{}, nil
-	})
+	var response api.VirtualMachineScaleSetsClientListResponse
+	require.NoError(t, faker.FakeObject(&response))
+	// Use correct Azure ID format
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.Value[0].ID = to.Ptr(id)
 
-	mockClient.EXPECT().ListAll(gomock.Any()).Return(result, nil)
-	return s
+	mockVirtualMachineScaleSetsClient.EXPECT().NewListPager(gomock.Any(), gomock.Any()).
+		Return(client.CreatePager(response)).MinTimes(1)
 }

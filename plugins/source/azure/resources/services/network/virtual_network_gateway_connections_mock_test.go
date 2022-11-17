@@ -3,33 +3,57 @@
 package network
 
 import (
-	"context"
 	"testing"
 
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/network"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/network"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"
 )
 
-func createVirtualNetworkGatewayConnectionsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockNetworkVirtualNetworkGatewayConnectionsClient(ctrl)
-	s := services.Services{
-		Network: services.NetworkClient{
-			VirtualNetworkGatewayConnections: mockClient,
-		},
+func buildVirtualNetworkGatewayConnections(t *testing.T, ctrl *gomock.Controller, c *client.Services) {
+	if c.Network == nil {
+		c.Network = new(service.NetworkClient)
+	}
+	networkClient := c.Network
+	if networkClient.VirtualNetworkGatewaysClient == nil {
+		networkClient.VirtualNetworkGatewaysClient = mocks.NewMockVirtualNetworkGatewaysClient(ctrl)
 	}
 
-	data := network.VirtualNetworkGatewayConnectionListEntity{}
-	require.Nil(t, faker.FakeObject(&data))
+	mockVirtualNetworkGatewaysClient := networkClient.VirtualNetworkGatewaysClient.(*mocks.MockVirtualNetworkGatewaysClient)
 
-	result := network.NewVirtualNetworkGatewayListConnectionsResultPage(network.VirtualNetworkGatewayListConnectionsResult{Value: &[]network.VirtualNetworkGatewayConnectionListEntity{data}}, func(ctx context.Context, result network.VirtualNetworkGatewayListConnectionsResult) (network.VirtualNetworkGatewayListConnectionsResult, error) {
-		return network.VirtualNetworkGatewayListConnectionsResult{}, nil
-	})
+	var response api.VirtualNetworkGatewaysClientListConnectionsResponse
+	require.NoError(t, faker.FakeObject(&response))
+	// Use correct Azure ID format
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.Value[0].ID = to.Ptr(id)
 
-	mockClient.EXPECT().ListConnections(gomock.Any(), "test", "test").Return(result, nil)
-	return s
+	mockVirtualNetworkGatewaysClient.EXPECT().NewListConnectionsPager(gomock.Any(), gomock.Any(), gomock.Any()).
+		Return(client.CreatePager(response)).MinTimes(1)
+	buildVirtualNetworkGatewayConnectionsPreResolver(t, ctrl, c)
+}
+
+func buildVirtualNetworkGatewayConnectionsPreResolver(t *testing.T, ctrl *gomock.Controller, c *client.Services) {
+	if c.Network == nil {
+		c.Network = new(service.NetworkClient)
+	}
+	networkClient := c.Network
+	if networkClient.VirtualNetworkGatewayConnectionsClient == nil {
+		networkClient.VirtualNetworkGatewayConnectionsClient = mocks.NewMockVirtualNetworkGatewayConnectionsClient(ctrl)
+	}
+
+	mockVirtualNetworkGatewayConnectionsClient := networkClient.VirtualNetworkGatewayConnectionsClient.(*mocks.MockVirtualNetworkGatewayConnectionsClient)
+
+	var response api.VirtualNetworkGatewayConnectionsClientGetResponse
+	require.NoError(t, faker.FakeObject(&response))
+	// Use correct Azure ID format
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.ID = to.Ptr(id)
+
+	mockVirtualNetworkGatewayConnectionsClient.EXPECT().Get(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).
+		Return(response, nil).MinTimes(1)
 }

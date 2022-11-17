@@ -3,9 +3,6 @@
 package cdn
 
 import (
-	"context"
-
-	"github.com/Azure/azure-sdk-for-go/profiles/latest/cdn/mgmt/cdn"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -13,48 +10,44 @@ import (
 func customDomains() *schema.Table {
 	return &schema.Table{
 		Name:        "azure_cdn_custom_domains",
-		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2020-09-01/cdn#CustomDomain`,
-		Resolver:    fetchCDNCustomDomains,
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn#CustomDomain`,
+		Resolver:    fetchCustomDomains,
 		Columns: []schema.Column{
 			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "cdn_endpoint_id",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("id"),
+				Name:        "subscription_id",
+				Type:        schema.TypeString,
+				Resolver:    client.SubscriptionIDResolver,
+				Description: `Azure subscription ID`,
 			},
 			{
 				Name:     "host_name",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("HostName"),
-			},
-			{
-				Name:     "resource_state",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ResourceState"),
-			},
-			{
-				Name:     "custom_https_provisioning_state",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("CustomHTTPSProvisioningState"),
-			},
-			{
-				Name:     "custom_https_provisioning_substate",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("CustomHTTPSProvisioningSubstate"),
+				Resolver: schema.PathResolver("Properties.HostName"),
 			},
 			{
 				Name:     "validation_data",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ValidationData"),
+				Resolver: schema.PathResolver("Properties.ValidationData"),
+			},
+			{
+				Name:     "custom_https_provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.CustomHTTPSProvisioningState"),
+			},
+			{
+				Name:     "custom_https_provisioning_substate",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.CustomHTTPSProvisioningSubstate"),
 			},
 			{
 				Name:     "provisioning_state",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ProvisioningState"),
+				Resolver: schema.PathResolver("Properties.ProvisioningState"),
+			},
+			{
+				Name:     "resource_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.ResourceState"),
 			},
 			{
 				Name:     "id",
@@ -70,40 +63,20 @@ func customDomains() *schema.Table {
 				Resolver: schema.PathResolver("Name"),
 			},
 			{
+				Name:     "system_data",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("SystemData"),
+			},
+			{
 				Name:     "type",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Type"),
 			},
 			{
-				Name:     "system_data",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("SystemData"),
+				Name:     "endpoint_id",
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 		},
 	}
-}
-
-func fetchCDNCustomDomains(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().CDN.CustomDomains
-
-	profile := parent.Parent.Item.(cdn.Profile)
-	resource, err := client.ParseResourceID(*profile.ID)
-	if err != nil {
-		return err
-	}
-	endpoint := parent.Item.(cdn.Endpoint)
-	response, err := svc.ListByEndpoint(ctx, resource.ResourceGroup, *profile.Name, *endpoint.Name)
-
-	if err != nil {
-		return err
-	}
-
-	for response.NotDone() {
-		res <- response.Values()
-		if err := response.NextWithContext(ctx); err != nil {
-			return err
-		}
-	}
-
-	return nil
 }

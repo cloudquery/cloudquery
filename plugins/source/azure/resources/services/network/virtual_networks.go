@@ -3,8 +3,6 @@
 package network
 
 import (
-	"context"
-
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -12,79 +10,20 @@ import (
 func VirtualNetworks() *schema.Table {
 	return &schema.Table{
 		Name:        "azure_network_virtual_networks",
-		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network#VirtualNetwork`,
-		Resolver:    fetchNetworkVirtualNetworks,
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2#VirtualNetwork`,
+		Resolver:    fetchVirtualNetworks,
 		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
+				Name:        "subscription_id",
+				Type:        schema.TypeString,
+				Resolver:    client.SubscriptionIDResolver,
+				Description: `Azure subscription ID`,
 			},
 			{
 				Name:     "extended_location",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("ExtendedLocation"),
-			},
-			{
-				Name:     "address_space",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("AddressSpace"),
-			},
-			{
-				Name:     "dhcp_options",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("DhcpOptions"),
-			},
-			{
-				Name:     "subnets",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Subnets"),
-			},
-			{
-				Name:     "virtual_network_peerings",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("VirtualNetworkPeerings"),
-			},
-			{
-				Name:     "resource_guid",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ResourceGUID"),
-			},
-			{
-				Name:     "provisioning_state",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ProvisioningState"),
-			},
-			{
-				Name:     "enable_ddos_protection",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("EnableDdosProtection"),
-			},
-			{
-				Name:     "enable_vm_protection",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("EnableVMProtection"),
-			},
-			{
-				Name:     "ddos_protection_plan",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("DdosProtectionPlan"),
-			},
-			{
-				Name:     "bgp_communities",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("BgpCommunities"),
-			},
-			{
-				Name:     "ip_allocations",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("IPAllocations"),
-			},
-			{
-				Name:     "etag",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Etag"),
 			},
 			{
 				Name:     "id",
@@ -93,6 +32,86 @@ func VirtualNetworks() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
+			},
+			{
+				Name:     "location",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Location"),
+			},
+			{
+				Name:     "address_space",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.AddressSpace"),
+			},
+			{
+				Name:     "bgp_communities",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.BgpCommunities"),
+			},
+			{
+				Name:     "ddos_protection_plan",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.DdosProtectionPlan"),
+			},
+			{
+				Name:     "dhcp_options",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.DhcpOptions"),
+			},
+			{
+				Name:     "enable_ddos_protection",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Properties.EnableDdosProtection"),
+			},
+			{
+				Name:     "enable_vm_protection",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Properties.EnableVMProtection"),
+			},
+			{
+				Name:     "encryption",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.Encryption"),
+			},
+			{
+				Name:     "flow_timeout_in_minutes",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("Properties.FlowTimeoutInMinutes"),
+			},
+			{
+				Name:     "ip_allocations",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.IPAllocations"),
+			},
+			{
+				Name:     "subnets",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.Subnets"),
+			},
+			{
+				Name:     "virtual_network_peerings",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.VirtualNetworkPeerings"),
+			},
+			{
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.ProvisioningState"),
+			},
+			{
+				Name:     "resource_guid",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.ResourceGUID"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Tags"),
+			},
+			{
+				Name:     "etag",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Etag"),
 			},
 			{
 				Name:     "name",
@@ -104,39 +123,10 @@ func VirtualNetworks() *schema.Table {
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Type"),
 			},
-			{
-				Name:     "location",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Location"),
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
-			},
 		},
 
 		Relations: []*schema.Table{
 			virtualNetworkGateways(),
 		},
 	}
-}
-
-func fetchNetworkVirtualNetworks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().Network.VirtualNetworks
-
-	response, err := svc.ListAll(ctx)
-
-	if err != nil {
-		return err
-	}
-
-	for response.NotDone() {
-		res <- response.Values()
-		if err := response.NextWithContext(ctx); err != nil {
-			return err
-		}
-	}
-
-	return nil
 }

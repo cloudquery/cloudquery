@@ -1,6 +1,6 @@
 # Table: azure_cdn_endpoints
 
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2020-09-01/cdn#Endpoint
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn#Endpoint
 
 The primary key for this table is **id**.
 
@@ -19,29 +19,30 @@ The following tables depend on azure_cdn_endpoints:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|cdn_profile_id|String|
-|host_name|String|
+|location|String|
 |origins|JSON|
-|origin_groups|JSON|
-|resource_state|String|
-|provisioning_state|String|
-|origin_path|String|
 |content_types_to_compress|StringArray|
-|origin_host_header|String|
+|default_origin_group|JSON|
+|delivery_policy|JSON|
+|geo_filters|JSON|
 |is_compression_enabled|Bool|
 |is_http_allowed|Bool|
 |is_https_allowed|Bool|
-|query_string_caching_behavior|String|
 |optimization_type|String|
+|origin_groups|JSON|
+|origin_host_header|String|
+|origin_path|String|
 |probe_path|String|
-|geo_filters|JSON|
-|default_origin_group|JSON|
+|query_string_caching_behavior|String|
 |url_signing_keys|JSON|
-|delivery_policy|JSON|
 |web_application_firewall_policy_link|JSON|
-|location|String|
+|custom_domains|JSON|
+|host_name|String|
+|provisioning_state|String|
+|resource_state|String|
 |tags|JSON|
 |id (PK)|String|
 |name|String|
-|type|String|
 |system_data|JSON|
+|type|String|
+|profile_id|String|

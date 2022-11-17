@@ -3,34 +3,35 @@
 package keyvault
 
 import (
-	"context"
 	"testing"
 
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/keyvault"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/keyvault"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/services/keyvault/v7.1/keyvault"
 )
 
-func createKeysMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockKeyVaultKeysClient(ctrl)
-	s := services.Services{
-		KeyVault: services.KeyVaultClient{
-			Keys: mockClient,
-		},
+func buildKeys(t *testing.T, ctrl *gomock.Controller, c *client.Services) {
+	if c.Keyvault == nil {
+		c.Keyvault = new(service.KeyvaultClient)
+	}
+	keyvaultClient := c.Keyvault
+	if keyvaultClient.KeysClient == nil {
+		keyvaultClient.KeysClient = mocks.NewMockKeysClient(ctrl)
 	}
 
-	data := keyvault.KeyItem{}
-	require.Nil(t, faker.FakeObject(&data))
+	mockKeysClient := keyvaultClient.KeysClient.(*mocks.MockKeysClient)
 
-	result := keyvault.NewKeyListResultPage(keyvault.KeyListResult{Value: &[]keyvault.KeyItem{data}}, func(ctx context.Context, result keyvault.KeyListResult) (keyvault.KeyListResult, error) {
-		return keyvault.KeyListResult{}, nil
-	})
+	var response api.KeysClientListResponse
+	require.NoError(t, faker.FakeObject(&response))
+	// Use correct Azure ID format
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.Value[0].ID = to.Ptr(id)
 
-	maxResults := int32(25)
-	mockClient.EXPECT().GetKeys(gomock.Any(), "test", &maxResults).Return(result, nil)
-	return s
+	mockKeysClient.EXPECT().NewListPager(gomock.Any(), gomock.Any(), gomock.Any()).
+		Return(client.CreatePager(response)).MinTimes(1)
 }

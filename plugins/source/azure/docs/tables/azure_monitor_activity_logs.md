@@ -1,6 +1,6 @@
 # Table: azure_monitor_activity_logs
 
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2021-07-01-preview/insights#EventData
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor#EventData
 
 The primary key for this table is **id**.
 
@@ -13,27 +13,27 @@ The primary key for this table is **id**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|subscription_id|String|
 |authorization|JSON|
-|claims|JSON|
 |caller|String|
-|description|String|
-|id (PK)|String|
-|event_data_id|String|
-|correlation_id|String|
-|event_name|JSON|
 |category|JSON|
+|claims|JSON|
+|correlation_id|String|
+|description|String|
+|event_data_id|String|
+|event_name|JSON|
+|event_timestamp|Timestamp|
 |http_request|JSON|
+|id (PK)|String|
 |level|String|
-|resource_group_name|String|
-|resource_provider_name|JSON|
-|resource_id|String|
-|resource_type|JSON|
 |operation_id|String|
 |operation_name|JSON|
 |properties|JSON|
+|resource_group_name|String|
+|resource_id|String|
+|resource_provider_name|JSON|
+|resource_type|JSON|
 |status|JSON|
 |sub_status|JSON|
-|event_timestamp|Timestamp|
 |submission_timestamp|Timestamp|
+|subscription_id|String|
 |tenant_id|String|

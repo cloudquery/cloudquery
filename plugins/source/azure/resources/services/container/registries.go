@@ -3,8 +3,6 @@
 package container
 
 import (
-	"context"
-
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -12,59 +10,110 @@ import (
 func Registries() *schema.Table {
 	return &schema.Table{
 		Name:        "azure_container_registries",
-		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/containerregistry/mgmt/2019-05-01/containerregistry#Registry`,
-		Resolver:    fetchContainerRegistries,
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry#Registry`,
+		Resolver:    fetchRegistries,
 		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
-				Name:     "subscription_id",
+				Name:        "subscription_id",
+				Type:        schema.TypeString,
+				Resolver:    client.SubscriptionIDResolver,
+				Description: `Azure subscription ID`,
+			},
+			{
+				Name:     "location",
 				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
+				Resolver: schema.PathResolver("Location"),
 			},
 			{
 				Name:     "sku",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Sku"),
+				Resolver: schema.PathResolver("SKU"),
 			},
 			{
-				Name:     "login_server",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("LoginServer"),
-			},
-			{
-				Name:     "creation_date",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("CreationDate"),
-			},
-			{
-				Name:     "provisioning_state",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ProvisioningState"),
-			},
-			{
-				Name:     "status",
+				Name:     "identity",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Status"),
+				Resolver: schema.PathResolver("Identity"),
 			},
 			{
 				Name:     "admin_user_enabled",
 				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("AdminUserEnabled"),
+				Resolver: schema.PathResolver("Properties.AdminUserEnabled"),
 			},
 			{
-				Name:     "storage_account",
+				Name:     "anonymous_pull_enabled",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Properties.AnonymousPullEnabled"),
+			},
+			{
+				Name:     "data_endpoint_enabled",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Properties.DataEndpointEnabled"),
+			},
+			{
+				Name:     "encryption",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("StorageAccount"),
+				Resolver: schema.PathResolver("Properties.Encryption"),
+			},
+			{
+				Name:     "network_rule_bypass_options",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.NetworkRuleBypassOptions"),
 			},
 			{
 				Name:     "network_rule_set",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("NetworkRuleSet"),
+				Resolver: schema.PathResolver("Properties.NetworkRuleSet"),
 			},
 			{
 				Name:     "policies",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Policies"),
+				Resolver: schema.PathResolver("Properties.Policies"),
+			},
+			{
+				Name:     "public_network_access",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.PublicNetworkAccess"),
+			},
+			{
+				Name:     "zone_redundancy",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.ZoneRedundancy"),
+			},
+			{
+				Name:     "creation_date",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Properties.CreationDate"),
+			},
+			{
+				Name:     "data_endpoint_host_names",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("Properties.DataEndpointHostNames"),
+			},
+			{
+				Name:     "login_server",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.LoginServer"),
+			},
+			{
+				Name:     "private_endpoint_connections",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.PrivateEndpointConnections"),
+			},
+			{
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.ProvisioningState"),
+			},
+			{
+				Name:     "status",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.Status"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Tags"),
 			},
 			{
 				Name:     "id",
@@ -80,19 +129,14 @@ func Registries() *schema.Table {
 				Resolver: schema.PathResolver("Name"),
 			},
 			{
+				Name:     "system_data",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("SystemData"),
+			},
+			{
 				Name:     "type",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Type"),
-			},
-			{
-				Name:     "location",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Location"),
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
 			},
 		},
 
@@ -100,23 +144,4 @@ func Registries() *schema.Table {
 			replications(),
 		},
 	}
-}
-
-func fetchContainerRegistries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().Container.Registries
-
-	response, err := svc.List(ctx)
-
-	if err != nil {
-		return err
-	}
-
-	for response.NotDone() {
-		res <- response.Values()
-		if err := response.NextWithContext(ctx); err != nil {
-			return err
-		}
-	}
-
-	return nil
 }

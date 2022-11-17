@@ -3,88 +3,97 @@
 package frontdoor
 
 import (
-	"context"
-
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Doors() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_frontdoor_doors",
-		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/frontdoor/mgmt/2020-11-01/frontdoor#FrontDoor`,
-		Resolver:    fetchFrontDoorDoors,
+		Name:        "azure_front_doors",
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor#FrontDoor`,
+		Resolver:    fetchDoors,
 		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
-				Name:     "subscription_id",
+				Name:        "subscription_id",
+				Type:        schema.TypeString,
+				Resolver:    client.SubscriptionIDResolver,
+				Description: `Azure subscription ID`,
+			},
+			{
+				Name:     "location",
 				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "resource_state",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ResourceState"),
-			},
-			{
-				Name:     "provisioning_state",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ProvisioningState"),
-			},
-			{
-				Name:     "cname",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Cname"),
-			},
-			{
-				Name:     "frontdoor_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("FrontdoorID"),
-			},
-			{
-				Name:     "rules_engines",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("RulesEngines"),
-			},
-			{
-				Name:     "friendly_name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("FriendlyName"),
-			},
-			{
-				Name:     "routing_rules",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("RoutingRules"),
-			},
-			{
-				Name:     "load_balancing_settings",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("LoadBalancingSettings"),
-			},
-			{
-				Name:     "health_probe_settings",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("HealthProbeSettings"),
+				Resolver: schema.PathResolver("Location"),
 			},
 			{
 				Name:     "backend_pools",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("BackendPools"),
-			},
-			{
-				Name:     "frontend_endpoints",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("FrontendEndpoints"),
+				Resolver: schema.PathResolver("Properties.BackendPools"),
 			},
 			{
 				Name:     "backend_pools_settings",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("BackendPoolsSettings"),
+				Resolver: schema.PathResolver("Properties.BackendPoolsSettings"),
 			},
 			{
 				Name:     "enabled_state",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("EnabledState"),
+				Resolver: schema.PathResolver("Properties.EnabledState"),
+			},
+			{
+				Name:     "friendly_name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.FriendlyName"),
+			},
+			{
+				Name:     "frontend_endpoints",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.FrontendEndpoints"),
+			},
+			{
+				Name:     "health_probe_settings",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.HealthProbeSettings"),
+			},
+			{
+				Name:     "load_balancing_settings",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.LoadBalancingSettings"),
+			},
+			{
+				Name:     "routing_rules",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.RoutingRules"),
+			},
+			{
+				Name:     "cname",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.Cname"),
+			},
+			{
+				Name:     "frontdoor_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.FrontdoorID"),
+			},
+			{
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.ProvisioningState"),
+			},
+			{
+				Name:     "resource_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.ResourceState"),
+			},
+			{
+				Name:     "rules_engines",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.RulesEngines"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Tags"),
 			},
 			{
 				Name:     "id",
@@ -104,35 +113,6 @@ func Doors() *schema.Table {
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Type"),
 			},
-			{
-				Name:     "location",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Location"),
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
-			},
 		},
 	}
-}
-
-func fetchFrontDoorDoors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().FrontDoor.Doors
-
-	response, err := svc.List(ctx)
-
-	if err != nil {
-		return err
-	}
-
-	for response.NotDone() {
-		res <- response.Values()
-		if err := response.NextWithContext(ctx); err != nil {
-			return err
-		}
-	}
-
-	return nil
 }

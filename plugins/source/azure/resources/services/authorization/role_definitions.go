@@ -3,8 +3,6 @@
 package authorization
 
 import (
-	"context"
-
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -12,14 +10,40 @@ import (
 func RoleDefinitions() *schema.Table {
 	return &schema.Table{
 		Name:        "azure_authorization_role_definitions",
-		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/authorization/mgmt/2015-07-01/authorization#RoleDefinition`,
-		Resolver:    fetchAuthorizationRoleDefinitions,
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization/v2#RoleDefinition`,
+		Resolver:    fetchRoleDefinitions,
 		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
-				Name:     "subscription_id",
+				Name:        "subscription_id",
+				Type:        schema.TypeString,
+				Resolver:    client.SubscriptionIDResolver,
+				Description: `Azure subscription ID`,
+			},
+			{
+				Name:     "assignable_scopes",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("Properties.AssignableScopes"),
+			},
+			{
+				Name:     "description",
 				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
+				Resolver: schema.PathResolver("Properties.Description"),
+			},
+			{
+				Name:     "permissions",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.Permissions"),
+			},
+			{
+				Name:     "role_name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.RoleName"),
+			},
+			{
+				Name:     "properties_type",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.RoleType"),
 			},
 			{
 				Name:     "id",
@@ -39,50 +63,6 @@ func RoleDefinitions() *schema.Table {
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Type"),
 			},
-			{
-				Name:     "role_name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("RoleName"),
-			},
-			{
-				Name:     "description",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Description"),
-			},
-			{
-				Name:     "permissions",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Permissions"),
-			},
-			{
-				Name:     "assignable_scopes",
-				Type:     schema.TypeStringArray,
-				Resolver: schema.PathResolver("AssignableScopes"),
-			},
-			{
-				Name:     "role_type",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("RoleType"),
-			},
 		},
 	}
-}
-
-func fetchAuthorizationRoleDefinitions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().Authorization.RoleDefinitions
-
-	response, err := svc.List(ctx, client.ScopeSubscription(meta.(*client.Client).SubscriptionId), "")
-
-	if err != nil {
-		return err
-	}
-
-	for response.NotDone() {
-		res <- response.Values()
-		if err := response.NextWithContext(ctx); err != nil {
-			return err
-		}
-	}
-
-	return nil
 }

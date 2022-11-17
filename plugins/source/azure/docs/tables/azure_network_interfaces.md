@@ -1,6 +1,6 @@
 # Table: azure_network_interfaces
 
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network#Interface
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2#Interface
 
 The primary key for this table is **id**.
 
@@ -15,26 +15,30 @@ The primary key for this table is **id**.
 |_cq_parent_id|UUID|
 |subscription_id|String|
 |extended_location|JSON|
-|virtual_machine|JSON|
-|network_security_group|JSON|
-|private_endpoint|JSON|
-|ip_configurations|JSON|
-|tap_configurations|JSON|
+|id (PK)|String|
+|location|String|
+|auxiliary_mode|String|
 |dns_settings|JSON|
-|mac_address|String|
-|primary|Bool|
+|disable_tcp_state_tracking|Bool|
 |enable_accelerated_networking|Bool|
 |enable_ip_forwarding|Bool|
-|hosted_workloads|StringArray|
-|dscp_configuration|JSON|
-|resource_guid|String|
-|provisioning_state|String|
+|ip_configurations|JSON|
+|migration_phase|String|
+|network_security_group|JSON|
 |nic_type|String|
 |private_link_service|JSON|
-|migration_phase|String|
+|workload_type|String|
+|dscp_configuration|JSON|
+|hosted_workloads|StringArray|
+|mac_address|String|
+|primary|Bool|
+|private_endpoint|JSON|
+|provisioning_state|String|
+|resource_guid|String|
+|tap_configurations|JSON|
+|virtual_machine|JSON|
+|vnet_encryption_supported|Bool|
+|tags|JSON|
 |etag|String|
-|id (PK)|String|
 |name|String|
 |type|String|
-|location|String|
-|tags|JSON|

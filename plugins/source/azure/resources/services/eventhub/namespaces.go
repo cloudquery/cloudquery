@@ -3,8 +3,6 @@
 package eventhub
 
 import (
-	"context"
-
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -12,19 +10,15 @@ import (
 func Namespaces() *schema.Table {
 	return &schema.Table{
 		Name:        "azure_eventhub_namespaces",
-		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/eventhub/mgmt/2018-01-01-preview/eventhub#EHNamespace`,
-		Resolver:    fetchEventHubNamespaces,
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub#EHNamespace`,
+		Resolver:    fetchNamespaces,
 		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "sku",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Sku"),
+				Name:        "subscription_id",
+				Type:        schema.TypeString,
+				Resolver:    client.SubscriptionIDResolver,
+				Description: `Azure subscription ID`,
 			},
 			{
 				Name:     "identity",
@@ -32,64 +26,89 @@ func Namespaces() *schema.Table {
 				Resolver: schema.PathResolver("Identity"),
 			},
 			{
-				Name:     "provisioning_state",
+				Name:     "location",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ProvisioningState"),
+				Resolver: schema.PathResolver("Location"),
 			},
 			{
-				Name:     "created_at",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("CreatedAt"),
-			},
-			{
-				Name:     "updated_at",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("UpdatedAt"),
-			},
-			{
-				Name:     "service_bus_endpoint",
+				Name:     "alternate_name",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ServiceBusEndpoint"),
+				Resolver: schema.PathResolver("Properties.AlternateName"),
 			},
 			{
 				Name:     "cluster_arm_id",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ClusterArmID"),
+				Resolver: schema.PathResolver("Properties.ClusterArmID"),
 			},
 			{
-				Name:     "metric_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("MetricID"),
-			},
-			{
-				Name:     "is_auto_inflate_enabled",
+				Name:     "disable_local_auth",
 				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("IsAutoInflateEnabled"),
-			},
-			{
-				Name:     "maximum_throughput_units",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("MaximumThroughputUnits"),
-			},
-			{
-				Name:     "kafka_enabled",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("KafkaEnabled"),
-			},
-			{
-				Name:     "zone_redundant",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("ZoneRedundant"),
+				Resolver: schema.PathResolver("Properties.DisableLocalAuth"),
 			},
 			{
 				Name:     "encryption",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Encryption"),
+				Resolver: schema.PathResolver("Properties.Encryption"),
 			},
 			{
-				Name:     "location",
+				Name:     "is_auto_inflate_enabled",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Properties.IsAutoInflateEnabled"),
+			},
+			{
+				Name:     "kafka_enabled",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Properties.KafkaEnabled"),
+			},
+			{
+				Name:     "maximum_throughput_units",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("Properties.MaximumThroughputUnits"),
+			},
+			{
+				Name:     "private_endpoint_connections",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.PrivateEndpointConnections"),
+			},
+			{
+				Name:     "zone_redundant",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Properties.ZoneRedundant"),
+			},
+			{
+				Name:     "created_at",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Properties.CreatedAt"),
+			},
+			{
+				Name:     "metric_id",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Location"),
+				Resolver: schema.PathResolver("Properties.MetricID"),
+			},
+			{
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.ProvisioningState"),
+			},
+			{
+				Name:     "service_bus_endpoint",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.ServiceBusEndpoint"),
+			},
+			{
+				Name:     "status",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.Status"),
+			},
+			{
+				Name:     "updated_at",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Properties.UpdatedAt"),
+			},
+			{
+				Name:     "sku",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("SKU"),
 			},
 			{
 				Name:     "tags",
@@ -110,6 +129,11 @@ func Namespaces() *schema.Table {
 				Resolver: schema.PathResolver("Name"),
 			},
 			{
+				Name:     "system_data",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("SystemData"),
+			},
+			{
 				Name:     "type",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Type"),
@@ -120,23 +144,4 @@ func Namespaces() *schema.Table {
 			networkRuleSets(),
 		},
 	}
-}
-
-func fetchEventHubNamespaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().EventHub.Namespaces
-
-	response, err := svc.List(ctx)
-
-	if err != nil {
-		return err
-	}
-
-	for response.NotDone() {
-		res <- response.Values()
-		if err := response.NextWithContext(ctx); err != nil {
-			return err
-		}
-	}
-
-	return nil
 }

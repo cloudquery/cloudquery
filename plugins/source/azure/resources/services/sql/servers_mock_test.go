@@ -3,61 +3,49 @@
 package sql
 
 import (
-	"context"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/sql"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/sql"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql"
 )
 
-func TestSQLServers(t *testing.T) {
-	client.MockTestHelper(t, Servers(), createServersMock)
-}
+func buildServers(t *testing.T, ctrl *gomock.Controller) *client.Services {
+	mockServersClient := mocks.NewMockServersClient(ctrl)
 
-func createServersMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockSQLServersClient(ctrl)
-	s := services.Services{
-		SQL: services.SQLClient{
-			Servers:                              mockClient,
-			FirewallRules:                        createFirewallRulesMock(t, ctrl).SQL.FirewallRules,
-			Databases:                            createDatabasesMock(t, ctrl).SQL.Databases,
-			DatabaseBlobAuditingPolicies:         createDatabaseBlobAuditingPoliciesMock(t, ctrl).SQL.DatabaseBlobAuditingPolicies,
-			DatabaseVulnerabilityAssessments:     createDatabaseVulnerabilityAssessmentsMock(t, ctrl).SQL.DatabaseVulnerabilityAssessments,
-			DatabaseVulnerabilityAssessmentScans: createDatabaseVulnerabilityAssessmentScansMock(t, ctrl).SQL.DatabaseVulnerabilityAssessmentScans,
-			BackupLongTermRetentionPolicies:      createBackupLongTermRetentionPoliciesMock(t, ctrl).SQL.BackupLongTermRetentionPolicies,
-			DatabaseThreatDetectionPolicies:      createDatabaseThreatDetectionPoliciesMock(t, ctrl).SQL.DatabaseThreatDetectionPolicies,
-			TransparentDataEncryptions:           createTransparentDataEncryptionsMock(t, ctrl).SQL.TransparentDataEncryptions,
-			EncryptionProtectors:                 createEncryptionProtectorsMock(t, ctrl).SQL.EncryptionProtectors,
-			VirtualNetworkRules:                  createVirtualNetworkRulesMock(t, ctrl).SQL.VirtualNetworkRules,
-			ServerAdmins:                         createServerAdminsMock(t, ctrl).SQL.ServerAdmins,
-			ServerBlobAuditingPolicies:           createServerBlobAuditingPoliciesMock(t, ctrl).SQL.ServerBlobAuditingPolicies,
-			ServerDevOpsAuditingSettings:         createServerDevOpsAuditingSettingsMock(t, ctrl).SQL.ServerDevOpsAuditingSettings,
-			ServerVulnerabilityAssessments:       createServerVulnerabilityAssessmentsMock(t, ctrl).SQL.ServerVulnerabilityAssessments,
-			ServerSecurityAlertPolicies:          createServerSecurityAlertPoliciesMock(t, ctrl).SQL.ServerSecurityAlertPolicies,
-		},
+	var response api.ServersClientListResponse
+	require.NoError(t, faker.FakeObject(&response))
+	// Use correct Azure ID format
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.Value[0].ID = to.Ptr(id)
+
+	mockServersClient.EXPECT().NewListPager(gomock.Any()).
+		Return(client.CreatePager(response)).MinTimes(1)
+
+	sqlClient := &service.SqlClient{
+		ServersClient: mockServersClient,
 	}
 
-	data := sql.Server{}
-	require.Nil(t, faker.FakeObject(&data))
+	c := &client.Services{Sql: sqlClient}
 
-	// Ensure name and ID are consistent so we can reference it in other mock
-	name := "test"
-	data.Name = &name
+	buildFirewallRules(t, ctrl, c)
+	buildDatabases(t, ctrl, c)
+	buildEncryptionProtectors(t, ctrl, c)
+	buildVirtualNetworkRules(t, ctrl, c)
+	buildServerAdministrators(t, ctrl, c)
+	buildServerBlobAuditingPolicies(t, ctrl, c)
+	buildServerDevOpsAuditingSettings(t, ctrl, c)
+	buildServerVulnerabilityAssessments(t, ctrl, c)
+	buildServerSecurityAlertPolicies(t, ctrl, c)
 
-	// Use correct Azure ID format
-	id := "/subscriptions/test/resourceGroups/test/providers/test/test/test"
-	data.ID = &id
+	return c
+}
 
-	result := sql.NewServerListResultPage(sql.ServerListResult{Value: &[]sql.Server{data}}, func(ctx context.Context, result sql.ServerListResult) (sql.ServerListResult, error) {
-		return sql.ServerListResult{}, nil
-	})
-
-	mockClient.EXPECT().List(gomock.Any()).Return(result, nil)
-	return s
+func TestServers(t *testing.T) {
+	client.MockTestHelper(t, Servers(), buildServers)
 }

@@ -3,8 +3,6 @@
 package keyvault
 
 import (
-	"context"
-
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -12,59 +10,95 @@ import (
 func ManagedHsms() *schema.Table {
 	return &schema.Table{
 		Name:        "azure_keyvault_managed_hsms",
-		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/keyvault/mgmt/2020-04-01-preview/keyvault#ManagedHsm`,
-		Resolver:    fetchKeyVaultManagedHsms,
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault#ManagedHsm`,
+		Resolver:    fetchManagedHsms,
 		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
-				Name:     "subscription_id",
+				Name:        "subscription_id",
+				Type:        schema.TypeString,
+				Resolver:    client.SubscriptionIDResolver,
+				Description: `Azure subscription ID`,
+			},
+			{
+				Name:     "location",
 				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
+				Resolver: schema.PathResolver("Location"),
 			},
 			{
-				Name:     "properties_tenant_id",
-				Type:     schema.TypeUUID,
-				Resolver: schema.PathResolver("Properties.TenantID"),
-			},
-			{
-				Name:     "properties_initial_admin_object_ids",
-				Type:     schema.TypeStringArray,
-				Resolver: schema.PathResolver("Properties.InitialAdminObjectIds"),
-			},
-			{
-				Name:     "properties_hsm_uri",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Properties.HsmURI"),
-			},
-			{
-				Name:     "properties_enable_soft_delete",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("Properties.EnableSoftDelete"),
-			},
-			{
-				Name:     "properties_soft_delete_retention_in_days",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("Properties.SoftDeleteRetentionInDays"),
-			},
-			{
-				Name:     "properties_enable_purge_protection",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("Properties.EnablePurgeProtection"),
-			},
-			{
-				Name:     "properties_create_mode",
+				Name:     "create_mode",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Properties.CreateMode"),
 			},
 			{
-				Name:     "properties_status_message",
+				Name:     "enable_purge_protection",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Properties.EnablePurgeProtection"),
+			},
+			{
+				Name:     "enable_soft_delete",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Properties.EnableSoftDelete"),
+			},
+			{
+				Name:     "initial_admin_object_ids",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("Properties.InitialAdminObjectIDs"),
+			},
+			{
+				Name:     "network_acls",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.NetworkACLs"),
+			},
+			{
+				Name:     "public_network_access",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.PublicNetworkAccess"),
+			},
+			{
+				Name:     "soft_delete_retention_in_days",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("Properties.SoftDeleteRetentionInDays"),
+			},
+			{
+				Name:     "tenant_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.TenantID"),
+			},
+			{
+				Name:     "hsm_uri",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.HsmURI"),
+			},
+			{
+				Name:     "private_endpoint_connections",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.PrivateEndpointConnections"),
+			},
+			{
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.ProvisioningState"),
+			},
+			{
+				Name:     "scheduled_purge_date",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Properties.ScheduledPurgeDate"),
+			},
+			{
+				Name:     "status_message",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Properties.StatusMessage"),
 			},
 			{
-				Name:     "properties_provisioning_state",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Properties.ProvisioningState"),
+				Name:     "sku",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("SKU"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Tags"),
 			},
 			{
 				Name:     "id",
@@ -80,45 +114,15 @@ func ManagedHsms() *schema.Table {
 				Resolver: schema.PathResolver("Name"),
 			},
 			{
+				Name:     "system_data",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("SystemData"),
+			},
+			{
 				Name:     "type",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Type"),
 			},
-			{
-				Name:     "location",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Location"),
-			},
-			{
-				Name:     "sku",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Sku"),
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
-			},
 		},
 	}
-}
-
-func fetchKeyVaultManagedHsms(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().KeyVault.ManagedHsms
-
-	maxResults := int32(100)
-	response, err := svc.ListBySubscription(ctx, &maxResults)
-
-	if err != nil {
-		return err
-	}
-
-	for response.NotDone() {
-		res <- response.Values()
-		if err := response.NextWithContext(ctx); err != nil {
-			return err
-		}
-	}
-
-	return nil
 }

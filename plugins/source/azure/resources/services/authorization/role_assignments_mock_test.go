@@ -3,38 +3,39 @@
 package authorization
 
 import (
-	"context"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization/v2"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/authorization"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/authorization"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/services/authorization/mgmt/2015-07-01/authorization"
 )
 
-func TestAuthorizationRoleAssignments(t *testing.T) {
-	client.MockTestHelper(t, RoleAssignments(), createRoleAssignmentsMock)
-}
+func buildRoleAssignments(t *testing.T, ctrl *gomock.Controller) *client.Services {
+	mockRoleAssignmentsClient := mocks.NewMockRoleAssignmentsClient(ctrl)
 
-func createRoleAssignmentsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockAuthorizationRoleAssignmentsClient(ctrl)
-	s := services.Services{
-		Authorization: services.AuthorizationClient{
-			RoleAssignments: mockClient,
-		},
+	var response api.RoleAssignmentsClientListForSubscriptionResponse
+	require.NoError(t, faker.FakeObject(&response))
+	// Use correct Azure ID format
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.Value[0].ID = to.Ptr(id)
+
+	mockRoleAssignmentsClient.EXPECT().NewListForSubscriptionPager(gomock.Any()).
+		Return(client.CreatePager(response)).MinTimes(1)
+
+	authorizationClient := &service.AuthorizationClient{
+		RoleAssignmentsClient: mockRoleAssignmentsClient,
 	}
 
-	data := authorization.RoleAssignment{}
-	require.Nil(t, faker.FakeObject(&data))
+	c := &client.Services{Authorization: authorizationClient}
 
-	result := authorization.NewRoleAssignmentListResultPage(authorization.RoleAssignmentListResult{Value: &[]authorization.RoleAssignment{data}}, func(ctx context.Context, result authorization.RoleAssignmentListResult) (authorization.RoleAssignmentListResult, error) {
-		return authorization.RoleAssignmentListResult{}, nil
-	})
+	return c
+}
 
-	mockClient.EXPECT().List(gomock.Any(), "").Return(result, nil)
-	return s
+func TestRoleAssignments(t *testing.T) {
+	client.MockTestHelper(t, RoleAssignments(), buildRoleAssignments)
 }

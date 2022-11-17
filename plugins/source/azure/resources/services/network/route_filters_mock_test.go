@@ -3,38 +3,39 @@
 package network
 
 import (
-	"context"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/network"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/network"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"
 )
 
-func TestNetworkRouteFilters(t *testing.T) {
-	client.MockTestHelper(t, RouteFilters(), createRouteFiltersMock)
-}
+func buildRouteFilters(t *testing.T, ctrl *gomock.Controller) *client.Services {
+	mockRouteFiltersClient := mocks.NewMockRouteFiltersClient(ctrl)
 
-func createRouteFiltersMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockNetworkRouteFiltersClient(ctrl)
-	s := services.Services{
-		Network: services.NetworkClient{
-			RouteFilters: mockClient,
-		},
+	var response api.RouteFiltersClientListResponse
+	require.NoError(t, faker.FakeObject(&response))
+	// Use correct Azure ID format
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.Value[0].ID = to.Ptr(id)
+
+	mockRouteFiltersClient.EXPECT().NewListPager(gomock.Any()).
+		Return(client.CreatePager(response)).MinTimes(1)
+
+	networkClient := &service.NetworkClient{
+		RouteFiltersClient: mockRouteFiltersClient,
 	}
 
-	data := network.RouteFilter{}
-	require.Nil(t, faker.FakeObject(&data))
+	c := &client.Services{Network: networkClient}
 
-	result := network.NewRouteFilterListResultPage(network.RouteFilterListResult{Value: &[]network.RouteFilter{data}}, func(ctx context.Context, result network.RouteFilterListResult) (network.RouteFilterListResult, error) {
-		return network.RouteFilterListResult{}, nil
-	})
+	return c
+}
 
-	mockClient.EXPECT().List(gomock.Any()).Return(result, nil)
-	return s
+func TestRouteFilters(t *testing.T) {
+	client.MockTestHelper(t, RouteFilters(), buildRouteFilters)
 }

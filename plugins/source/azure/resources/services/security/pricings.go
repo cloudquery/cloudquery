@@ -3,8 +3,6 @@
 package security
 
 import (
-	"context"
-
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -12,24 +10,40 @@ import (
 func Pricings() *schema.Table {
 	return &schema.Table{
 		Name:        "azure_security_pricings",
-		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security#Pricing`,
-		Resolver:    fetchSecurityPricings,
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity#Pricing`,
+		Resolver:    fetchPricings,
 		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
+				Name:        "subscription_id",
+				Type:        schema.TypeString,
+				Resolver:    client.SubscriptionIDResolver,
+				Description: `Azure subscription ID`,
 			},
 			{
 				Name:     "pricing_tier",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("PricingTier"),
+				Resolver: schema.PathResolver("Properties.PricingTier"),
+			},
+			{
+				Name:     "sub_plan",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.SubPlan"),
+			},
+			{
+				Name:     "deprecated",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Properties.Deprecated"),
 			},
 			{
 				Name:     "free_trial_remaining_time",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("FreeTrialRemainingTime"),
+				Resolver: schema.PathResolver("Properties.FreeTrialRemainingTime"),
+			},
+			{
+				Name:     "replaced_by",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("Properties.ReplacedBy"),
 			},
 			{
 				Name:     "id",
@@ -51,19 +65,4 @@ func Pricings() *schema.Table {
 			},
 		},
 	}
-}
-
-func fetchSecurityPricings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().Security.Pricings
-
-	response, err := svc.List(ctx)
-	if err != nil {
-		return err
-	}
-	if response.Value == nil {
-		return nil
-	}
-	res <- *response.Value
-
-	return nil
 }

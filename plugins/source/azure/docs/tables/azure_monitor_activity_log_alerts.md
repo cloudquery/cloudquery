@@ -1,6 +1,6 @@
 # Table: azure_monitor_activity_log_alerts
 
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2019-11-01-preview/insights#ActivityLogAlertResource
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor#ActivityLogAlertResource
 
 The primary key for this table is **id**.
 
@@ -14,13 +14,13 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|scopes|StringArray|
-|enabled|Bool|
-|condition|JSON|
+|location|String|
 |actions|JSON|
+|condition|JSON|
+|scopes|StringArray|
 |description|String|
+|enabled|Bool|
+|tags|JSON|
 |id (PK)|String|
 |name|String|
 |type|String|
-|location|String|
-|tags|JSON|

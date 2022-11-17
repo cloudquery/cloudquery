@@ -3,27 +3,27 @@
 package security
 
 import (
-	"context"
-	"fmt"
-
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/pkg/errors"
-
-	"github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security"
 )
 
 func Settings() *schema.Table {
 	return &schema.Table{
 		Name:        "azure_security_settings",
-		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security#Setting`,
-		Resolver:    fetchSecuritySettings,
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity#Setting`,
+		Resolver:    fetchSettings,
 		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
+				Name:     "enabled",
+				Type:     schema.TypeBool,
+				Resolver: resolveEnabled,
+			},
+			{
+				Name:        "subscription_id",
+				Type:        schema.TypeString,
+				Resolver:    client.SubscriptionIDResolver,
+				Description: `Azure subscription ID`,
 			},
 			{
 				Name:     "kind",
@@ -48,48 +48,6 @@ func Settings() *schema.Table {
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Type"),
 			},
-			{
-				Name:     "enabled",
-				Type:     schema.TypeBool,
-				Resolver: resolveEnabled,
-			},
 		},
 	}
-}
-
-func resolveEnabled(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	item := resource.Item.(security.BasicSetting)
-	if v, ok := item.AsDataExportSettings(); ok {
-		return errors.WithStack(resource.Set(c.Name, v.Enabled))
-	}
-	if v, ok := item.AsAlertSyncSettings(); ok {
-		return errors.WithStack(resource.Set(c.Name, v.Enabled))
-	}
-	return errors.WithStack(resource.Set(c.Name, true))
-}
-
-func fetchSecuritySettings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().Security.Settings
-
-	response, err := svc.List(ctx)
-	if err != nil {
-		return err
-	}
-	for response.NotDone() {
-		for _, item := range response.Values() {
-			if v, ok := item.AsSetting(); ok {
-				res <- v
-			} else if v, ok := item.AsDataExportSettings(); ok {
-				res <- v
-			} else if v, ok := item.AsAlertSyncSettings(); ok {
-				res <- v
-			} else {
-				return errors.WithStack(fmt.Errorf("unexpected BasicSetting: %#v", item))
-			}
-		}
-		if err := response.NextWithContext(ctx); err != nil {
-			return err
-		}
-	}
-	return nil
 }

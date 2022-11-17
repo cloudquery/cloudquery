@@ -1,6 +1,6 @@
 # Table: azure_cdn_rule_sets
 
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2020-09-01/cdn#RuleSet
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn#RuleSet
 
 The primary key for this table is **id**.
 
@@ -18,10 +18,11 @@ The following tables depend on azure_cdn_rule_sets:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|cdn_profile_id|String|
-|provisioning_state|String|
 |deployment_status|String|
+|profile_name|String|
+|provisioning_state|String|
 |id (PK)|String|
 |name|String|
-|type|String|
 |system_data|JSON|
+|type|String|
+|profile_id|String|

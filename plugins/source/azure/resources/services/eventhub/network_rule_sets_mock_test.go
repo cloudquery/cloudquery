@@ -5,28 +5,33 @@ package eventhub
 import (
 	"testing"
 
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/eventhub"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/eventhub"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/services/preview/eventhub/mgmt/2018-01-01-preview/eventhub"
 )
 
-func createNetworkRuleSetsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockEventHubNetworkRuleSetsClient(ctrl)
-	s := services.Services{
-		EventHub: services.EventHubClient{
-			NetworkRuleSets: mockClient,
-		},
+func buildNetworkRuleSets(t *testing.T, ctrl *gomock.Controller, c *client.Services) {
+	if c.Eventhub == nil {
+		c.Eventhub = new(service.EventhubClient)
+	}
+	eventhubClient := c.Eventhub
+	if eventhubClient.NamespacesClient == nil {
+		eventhubClient.NamespacesClient = mocks.NewMockNamespacesClient(ctrl)
 	}
 
-	data := eventhub.NetworkRuleSet{}
-	require.Nil(t, faker.FakeObject(&data))
+	mockNamespacesClient := eventhubClient.NamespacesClient.(*mocks.MockNamespacesClient)
 
-	result := data
+	var response api.NamespacesClientListNetworkRuleSetResponse
+	require.NoError(t, faker.FakeObject(&response))
+	// Use correct Azure ID format
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.Value[0].ID = to.Ptr(id)
 
-	mockClient.EXPECT().GetNetworkRuleSet(gomock.Any(), "test", "test").Return(result, nil)
-	return s
+	mockNamespacesClient.EXPECT().ListNetworkRuleSet(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).
+		Return(response, nil).MinTimes(1)
 }

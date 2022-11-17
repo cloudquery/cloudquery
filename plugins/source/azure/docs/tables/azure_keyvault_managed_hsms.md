@@ -1,6 +1,6 @@
 # Table: azure_keyvault_managed_hsms
 
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/keyvault/mgmt/2020-04-01-preview/keyvault#ManagedHsm
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault#ManagedHsm
 
 The primary key for this table is **id**.
 
@@ -14,18 +14,23 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|properties_tenant_id|UUID|
-|properties_initial_admin_object_ids|StringArray|
-|properties_hsm_uri|String|
-|properties_enable_soft_delete|Bool|
-|properties_soft_delete_retention_in_days|Int|
-|properties_enable_purge_protection|Bool|
-|properties_create_mode|String|
-|properties_status_message|String|
-|properties_provisioning_state|String|
-|id (PK)|String|
-|name|String|
-|type|String|
 |location|String|
+|create_mode|String|
+|enable_purge_protection|Bool|
+|enable_soft_delete|Bool|
+|initial_admin_object_ids|StringArray|
+|network_acls|JSON|
+|public_network_access|String|
+|soft_delete_retention_in_days|Int|
+|tenant_id|String|
+|hsm_uri|String|
+|private_endpoint_connections|JSON|
+|provisioning_state|String|
+|scheduled_purge_date|Timestamp|
+|status_message|String|
 |sku|JSON|
 |tags|JSON|
+|id (PK)|String|
+|name|String|
+|system_data|JSON|
+|type|String|

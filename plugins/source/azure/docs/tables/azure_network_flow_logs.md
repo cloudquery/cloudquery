@@ -1,6 +1,6 @@
 # Table: azure_network_flow_logs
 
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network#FlowLog
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2#FlowLog
 
 The primary key for this table is **id**.
 
@@ -16,18 +16,18 @@ This table depends on [azure_network_watchers](azure_network_watchers.md).
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|network_watcher_id|String|
-|target_resource_id|String|
-|target_resource_guid|String|
-|storage_id|String|
-|enabled|Bool|
-|retention_policy|JSON|
-|format|JSON|
-|flow_analytics_configuration|JSON|
-|provisioning_state|String|
-|etag|String|
 |id (PK)|String|
+|location|String|
+|storage_id|String|
+|target_resource_id|String|
+|enabled|Bool|
+|flow_analytics_configuration|JSON|
+|format|JSON|
+|retention_policy|JSON|
+|provisioning_state|String|
+|target_resource_guid|String|
+|tags|JSON|
+|etag|String|
 |name|String|
 |type|String|
-|location|String|
-|tags|JSON|
+|watcher_id|String|

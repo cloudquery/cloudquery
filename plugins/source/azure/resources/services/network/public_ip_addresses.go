@@ -3,118 +3,27 @@
 package network
 
 import (
-	"context"
-
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func PublicIPAddresses() *schema.Table {
+func PublicIpAddresses() *schema.Table {
 	return &schema.Table{
 		Name:        "azure_network_public_ip_addresses",
-		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network#PublicIPAddress`,
-		Resolver:    fetchNetworkPublicIPAddresses,
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2#PublicIPAddress`,
+		Resolver:    fetchPublicIpAddresses,
 		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
+				Name:        "subscription_id",
+				Type:        schema.TypeString,
+				Resolver:    client.SubscriptionIDResolver,
+				Description: `Azure subscription ID`,
 			},
 			{
 				Name:     "extended_location",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("ExtendedLocation"),
-			},
-			{
-				Name:     "sku",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Sku"),
-			},
-			{
-				Name:     "public_ip_allocation_method",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("PublicIPAllocationMethod"),
-			},
-			{
-				Name:     "public_ip_address_version",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("PublicIPAddressVersion"),
-			},
-			{
-				Name:     "ip_configuration",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("IPConfiguration"),
-			},
-			{
-				Name:     "dns_settings",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("DNSSettings"),
-			},
-			{
-				Name:     "ddos_settings",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("DdosSettings"),
-			},
-			{
-				Name:     "ip_tags",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("IPTags"),
-			},
-			{
-				Name:     "ip_address",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("IPAddress"),
-			},
-			{
-				Name:     "public_ip_prefix",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("PublicIPPrefix"),
-			},
-			{
-				Name:     "idle_timeout_in_minutes",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("IdleTimeoutInMinutes"),
-			},
-			{
-				Name:     "resource_guid",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ResourceGUID"),
-			},
-			{
-				Name:     "provisioning_state",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ProvisioningState"),
-			},
-			{
-				Name:     "service_public_ip_address",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ServicePublicIPAddress"),
-			},
-			{
-				Name:     "nat_gateway",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("NatGateway"),
-			},
-			{
-				Name:     "migration_phase",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("MigrationPhase"),
-			},
-			{
-				Name:     "linked_public_ip_address",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("LinkedPublicIPAddress"),
-			},
-			{
-				Name:     "etag",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Etag"),
-			},
-			{
-				Name:     "zones",
-				Type:     schema.TypeStringArray,
-				Resolver: schema.PathResolver("Zones"),
 			},
 			{
 				Name:     "id",
@@ -123,6 +32,111 @@ func PublicIPAddresses() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
+			},
+			{
+				Name:     "location",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Location"),
+			},
+			{
+				Name:     "dns_settings",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.DNSSettings"),
+			},
+			{
+				Name:     "ddos_settings",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.DdosSettings"),
+			},
+			{
+				Name:     "delete_option",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.DeleteOption"),
+			},
+			{
+				Name:     "ip_address",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.IPAddress"),
+			},
+			{
+				Name:     "ip_tags",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.IPTags"),
+			},
+			{
+				Name:     "idle_timeout_in_minutes",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("Properties.IdleTimeoutInMinutes"),
+			},
+			{
+				Name:     "linked_public_ip_address",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.LinkedPublicIPAddress"),
+			},
+			{
+				Name:     "migration_phase",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.MigrationPhase"),
+			},
+			{
+				Name:     "nat_gateway",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.NatGateway"),
+			},
+			{
+				Name:     "public_ip_address_version",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.PublicIPAddressVersion"),
+			},
+			{
+				Name:     "public_ip_allocation_method",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.PublicIPAllocationMethod"),
+			},
+			{
+				Name:     "public_ip_prefix",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.PublicIPPrefix"),
+			},
+			{
+				Name:     "service_public_ip_address",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.ServicePublicIPAddress"),
+			},
+			{
+				Name:     "ip_configuration",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.IPConfiguration"),
+			},
+			{
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.ProvisioningState"),
+			},
+			{
+				Name:     "resource_guid",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.ResourceGUID"),
+			},
+			{
+				Name:     "sku",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("SKU"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Tags"),
+			},
+			{
+				Name:     "zones",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("Zones"),
+			},
+			{
+				Name:     "etag",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Etag"),
 			},
 			{
 				Name:     "name",
@@ -134,35 +148,6 @@ func PublicIPAddresses() *schema.Table {
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Type"),
 			},
-			{
-				Name:     "location",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Location"),
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
-			},
 		},
 	}
-}
-
-func fetchNetworkPublicIPAddresses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().Network.PublicIPAddresses
-
-	response, err := svc.ListAll(ctx)
-
-	if err != nil {
-		return err
-	}
-
-	for response.NotDone() {
-		res <- response.Values()
-		if err := response.NextWithContext(ctx); err != nil {
-			return err
-		}
-	}
-
-	return nil
 }

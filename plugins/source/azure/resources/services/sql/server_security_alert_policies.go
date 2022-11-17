@@ -3,69 +3,61 @@
 package sql
 
 import (
-	"context"
-
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-
-	"github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql"
 )
 
 func serverSecurityAlertPolicies() *schema.Table {
 	return &schema.Table{
 		Name:        "azure_sql_server_security_alert_policies",
-		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql#ServerSecurityAlertPolicy`,
-		Resolver:    fetchSQLServerSecurityAlertPolicies,
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql#ServerSecurityAlertPolicy`,
+		Resolver:    fetchServerSecurityAlertPolicies,
 		Columns: []schema.Column{
 			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "sql_server_id",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("id"),
+				Name:        "subscription_id",
+				Type:        schema.TypeString,
+				Resolver:    client.SubscriptionIDResolver,
+				Description: `Azure subscription ID`,
 			},
 			{
 				Name:     "state",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("State"),
+				Resolver: schema.PathResolver("Properties.State"),
 			},
 			{
 				Name:     "disabled_alerts",
 				Type:     schema.TypeStringArray,
-				Resolver: schema.PathResolver("DisabledAlerts"),
-			},
-			{
-				Name:     "email_addresses",
-				Type:     schema.TypeStringArray,
-				Resolver: schema.PathResolver("EmailAddresses"),
+				Resolver: schema.PathResolver("Properties.DisabledAlerts"),
 			},
 			{
 				Name:     "email_account_admins",
 				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("EmailAccountAdmins"),
+				Resolver: schema.PathResolver("Properties.EmailAccountAdmins"),
 			},
 			{
-				Name:     "storage_endpoint",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("StorageEndpoint"),
-			},
-			{
-				Name:     "storage_account_access_key",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("StorageAccountAccessKey"),
+				Name:     "email_addresses",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("Properties.EmailAddresses"),
 			},
 			{
 				Name:     "retention_days",
 				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("RetentionDays"),
+				Resolver: schema.PathResolver("Properties.RetentionDays"),
+			},
+			{
+				Name:     "storage_account_access_key",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.StorageAccountAccessKey"),
+			},
+			{
+				Name:     "storage_endpoint",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.StorageEndpoint"),
 			},
 			{
 				Name:     "creation_time",
 				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("CreationTime"),
+				Resolver: schema.PathResolver("Properties.CreationTime"),
 			},
 			{
 				Name:     "id",
@@ -81,34 +73,20 @@ func serverSecurityAlertPolicies() *schema.Table {
 				Resolver: schema.PathResolver("Name"),
 			},
 			{
+				Name:     "system_data",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("SystemData"),
+			},
+			{
 				Name:     "type",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Type"),
 			},
+			{
+				Name:     "server_id",
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("id"),
+			},
 		},
 	}
-}
-
-func fetchSQLServerSecurityAlertPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().SQL.ServerSecurityAlertPolicies
-
-	server := parent.Item.(sql.Server)
-	resourceDetails, err := client.ParseResourceID(*server.ID)
-	if err != nil {
-		return err
-	}
-	response, err := svc.ListByServer(ctx, resourceDetails.ResourceGroup, *server.Name)
-
-	if err != nil {
-		return err
-	}
-
-	for response.NotDone() {
-		res <- response.Values()
-		if err := response.NextWithContext(ctx); err != nil {
-			return err
-		}
-	}
-
-	return nil
 }

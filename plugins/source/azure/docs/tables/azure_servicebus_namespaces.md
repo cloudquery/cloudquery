@@ -1,6 +1,6 @@
 # Table: azure_servicebus_namespaces
 
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/servicebus/mgmt/2021-06-01-preview/servicebus#SBNamespace
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus/v2#SBNamespace
 
 The primary key for this table is **id**.
 
@@ -17,21 +17,24 @@ The following tables depend on azure_servicebus_namespaces:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|sku|JSON|
-|identity|JSON|
-|system_data|JSON|
-|provisioning_state|String|
-|status|String|
-|created_at|Timestamp|
-|updated_at|Timestamp|
-|service_bus_endpoint|String|
-|metric_id|String|
-|zone_redundant|Bool|
-|encryption|JSON|
-|private_endpoint_connections|JSON|
-|disable_local_auth|Bool|
 |location|String|
+|identity|JSON|
+|alternate_name|String|
+|disable_local_auth|Bool|
+|encryption|JSON|
+|minimum_tls_version|String|
+|private_endpoint_connections|JSON|
+|public_network_access|String|
+|zone_redundant|Bool|
+|created_at|Timestamp|
+|metric_id|String|
+|provisioning_state|String|
+|service_bus_endpoint|String|
+|status|String|
+|updated_at|Timestamp|
+|sku|JSON|
 |tags|JSON|
 |id (PK)|String|
 |name|String|
+|system_data|JSON|
 |type|String|

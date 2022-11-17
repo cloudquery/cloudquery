@@ -3,69 +3,66 @@
 package logic
 
 import (
-	"context"
-
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-
-	"github.com/Azure/azure-sdk-for-go/services/logic/mgmt/2019-05-01/logic"
 )
 
 func diagnosticSettings() *schema.Table {
 	return &schema.Table{
 		Name:        "azure_logic_diagnostic_settings",
-		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2019-06-01/insights#DiagnosticSettingsResource`,
-		Resolver:    fetchLogicDiagnosticSettings,
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor#DiagnosticSettingsResource`,
+		Resolver:    fetchDiagnosticSettings,
 		Columns: []schema.Column{
 			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "logic_workflow_id",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("id"),
-			},
-			{
-				Name:     "storage_account_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("StorageAccountID"),
-			},
-			{
-				Name:     "service_bus_rule_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ServiceBusRuleID"),
+				Name:        "subscription_id",
+				Type:        schema.TypeString,
+				Resolver:    client.SubscriptionIDResolver,
+				Description: `Azure subscription ID`,
 			},
 			{
 				Name:     "event_hub_authorization_rule_id",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("EventHubAuthorizationRuleID"),
+				Resolver: schema.PathResolver("Properties.EventHubAuthorizationRuleID"),
 			},
 			{
 				Name:     "event_hub_name",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("EventHubName"),
-			},
-			{
-				Name:     "metrics",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Metrics"),
-			},
-			{
-				Name:     "logs",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Logs"),
-			},
-			{
-				Name:     "workspace_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("WorkspaceID"),
+				Resolver: schema.PathResolver("Properties.EventHubName"),
 			},
 			{
 				Name:     "log_analytics_destination_type",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("LogAnalyticsDestinationType"),
+				Resolver: schema.PathResolver("Properties.LogAnalyticsDestinationType"),
+			},
+			{
+				Name:     "logs",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.Logs"),
+			},
+			{
+				Name:     "marketplace_partner_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.MarketplacePartnerID"),
+			},
+			{
+				Name:     "metrics",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.Metrics"),
+			},
+			{
+				Name:     "service_bus_rule_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.ServiceBusRuleID"),
+			},
+			{
+				Name:     "storage_account_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.StorageAccountID"),
+			},
+			{
+				Name:     "workspace_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.WorkspaceID"),
 			},
 			{
 				Name:     "id",
@@ -81,26 +78,20 @@ func diagnosticSettings() *schema.Table {
 				Resolver: schema.PathResolver("Name"),
 			},
 			{
+				Name:     "system_data",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("SystemData"),
+			},
+			{
 				Name:     "type",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Type"),
 			},
+			{
+				Name:     "workflow_id",
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("id"),
+			},
 		},
 	}
-}
-
-func fetchLogicDiagnosticSettings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().Logic.DiagnosticSettings
-
-	workflow := parent.Item.(logic.Workflow)
-	response, err := svc.List(ctx, *workflow.ID)
-	if err != nil {
-		return err
-	}
-	if response.Value == nil {
-		return nil
-	}
-	res <- *response.Value
-
-	return nil
 }

@@ -1,6 +1,6 @@
 # Table: azure_postgresql_servers
 
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/postgresql/mgmt/2020-01-01/postgresql#Server
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql#Server
 
 The primary key for this table is **id**.
 
@@ -18,25 +18,25 @@ The following tables depend on azure_postgresql_servers:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|identity|JSON|
-|sku|JSON|
-|administrator_login|String|
-|version|String|
-|ssl_enforcement|String|
-|minimal_tls_version|String|
-|byok_enforcement|String|
-|infrastructure_encryption|String|
-|user_visible_state|String|
-|fully_qualified_domain_name|String|
-|earliest_restore_date|Timestamp|
-|storage_profile|JSON|
-|replication_role|String|
-|master_server_id|String|
-|replica_capacity|Int|
-|public_network_access|String|
-|private_endpoint_connections|JSON|
-|tags|JSON|
 |location|String|
+|identity|JSON|
+|administrator_login|String|
+|earliest_restore_date|Timestamp|
+|fully_qualified_domain_name|String|
+|infrastructure_encryption|String|
+|master_server_id|String|
+|minimal_tls_version|String|
+|public_network_access|String|
+|replica_capacity|Int|
+|replication_role|String|
+|ssl_enforcement|String|
+|storage_profile|JSON|
+|user_visible_state|String|
+|version|String|
+|byok_enforcement|String|
+|private_endpoint_connections|JSON|
+|sku|JSON|
+|tags|JSON|
 |id (PK)|String|
 |name|String|
 |type|String|

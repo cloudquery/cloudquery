@@ -5,28 +5,33 @@ package postgresql
 import (
 	"testing"
 
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/postgresql"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/postgresql"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/services/postgresql/mgmt/2020-01-01/postgresql"
 )
 
-func createConfigurationsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockPostgreSQLConfigurationsClient(ctrl)
-	s := services.Services{
-		PostgreSQL: services.PostgreSQLClient{
-			Configurations: mockClient,
-		},
+func buildConfigurations(t *testing.T, ctrl *gomock.Controller, c *client.Services) {
+	if c.Postgresql == nil {
+		c.Postgresql = new(service.PostgresqlClient)
+	}
+	postgresqlClient := c.Postgresql
+	if postgresqlClient.ConfigurationsClient == nil {
+		postgresqlClient.ConfigurationsClient = mocks.NewMockConfigurationsClient(ctrl)
 	}
 
-	data := postgresql.Configuration{}
-	require.Nil(t, faker.FakeObject(&data))
+	mockConfigurationsClient := postgresqlClient.ConfigurationsClient.(*mocks.MockConfigurationsClient)
 
-	result := postgresql.ConfigurationListResult{Value: &[]postgresql.Configuration{data}}
+	var response api.ConfigurationsClientListByServerResponse
+	require.NoError(t, faker.FakeObject(&response))
+	// Use correct Azure ID format
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.Value[0].ID = to.Ptr(id)
 
-	mockClient.EXPECT().ListByServer(gomock.Any(), "test", "test").Return(result, nil)
-	return s
+	mockConfigurationsClient.EXPECT().NewListByServerPager(gomock.Any(), gomock.Any(), gomock.Any()).
+		Return(client.CreatePager(response)).MinTimes(1)
 }

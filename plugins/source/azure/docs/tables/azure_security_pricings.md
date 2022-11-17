@@ -1,6 +1,6 @@
 # Table: azure_security_pricings
 
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security#Pricing
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity#Pricing
 
 The primary key for this table is **id**.
 
@@ -15,7 +15,10 @@ The primary key for this table is **id**.
 |_cq_parent_id|UUID|
 |subscription_id|String|
 |pricing_tier|String|
+|sub_plan|String|
+|deprecated|Bool|
 |free_trial_remaining_time|String|
+|replaced_by|StringArray|
 |id (PK)|String|
 |name|String|
 |type|String|

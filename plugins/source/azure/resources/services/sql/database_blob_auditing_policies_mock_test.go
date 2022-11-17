@@ -3,33 +3,35 @@
 package sql
 
 import (
-	"context"
 	"testing"
 
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/sql"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/sql"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql"
 )
 
-func createDatabaseBlobAuditingPoliciesMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockSQLDatabaseBlobAuditingPoliciesClient(ctrl)
-	s := services.Services{
-		SQL: services.SQLClient{
-			DatabaseBlobAuditingPolicies: mockClient,
-		},
+func buildDatabaseBlobAuditingPolicies(t *testing.T, ctrl *gomock.Controller, c *client.Services) {
+	if c.Sql == nil {
+		c.Sql = new(service.SqlClient)
+	}
+	sqlClient := c.Sql
+	if sqlClient.DatabaseBlobAuditingPoliciesClient == nil {
+		sqlClient.DatabaseBlobAuditingPoliciesClient = mocks.NewMockDatabaseBlobAuditingPoliciesClient(ctrl)
 	}
 
-	data := sql.DatabaseBlobAuditingPolicy{}
-	require.Nil(t, faker.FakeObject(&data))
+	mockDatabaseBlobAuditingPoliciesClient := sqlClient.DatabaseBlobAuditingPoliciesClient.(*mocks.MockDatabaseBlobAuditingPoliciesClient)
 
-	result := sql.NewDatabaseBlobAuditingPolicyListResultPage(sql.DatabaseBlobAuditingPolicyListResult{Value: &[]sql.DatabaseBlobAuditingPolicy{data}}, func(ctx context.Context, result sql.DatabaseBlobAuditingPolicyListResult) (sql.DatabaseBlobAuditingPolicyListResult, error) {
-		return sql.DatabaseBlobAuditingPolicyListResult{}, nil
-	})
+	var response api.DatabaseBlobAuditingPoliciesClientListByDatabaseResponse
+	require.NoError(t, faker.FakeObject(&response))
+	// Use correct Azure ID format
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.Value[0].ID = to.Ptr(id)
 
-	mockClient.EXPECT().ListByDatabase(gomock.Any(), "test", "test", "test").Return(result, nil)
-	return s
+	mockDatabaseBlobAuditingPoliciesClient.EXPECT().NewListByDatabasePager(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).
+		Return(client.CreatePager(response)).MinTimes(1)
 }

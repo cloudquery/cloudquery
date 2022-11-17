@@ -3,39 +3,41 @@
 package cosmosdb
 
 import (
-	"context"
-
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-
-	"github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2020-04-01-preview/documentdb"
 )
 
-func mongoDBDatabases() *schema.Table {
+func mongoDbDatabases() *schema.Table {
 	return &schema.Table{
 		Name:        "azure_cosmosdb_mongo_db_databases",
-		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2020-04-01-preview/documentdb#MongoDBDatabaseGetResults`,
-		Resolver:    fetchCosmosDBMongoDBDatabases,
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v2#MongoDBDatabaseGetResults`,
+		Resolver:    fetchMongoDbDatabases,
 		Columns: []schema.Column{
 			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
+				Name:        "subscription_id",
+				Type:        schema.TypeString,
+				Resolver:    client.SubscriptionIDResolver,
+				Description: `Azure subscription ID`,
 			},
 			{
-				Name:     "cosmosdb_account_id",
+				Name:     "location",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("id"),
-			},
-			{
-				Name:     "resource",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Resource"),
+				Resolver: schema.PathResolver("Location"),
 			},
 			{
 				Name:     "options",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Options"),
+				Resolver: schema.PathResolver("Properties.Options"),
+			},
+			{
+				Name:     "resource",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.Resource"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Tags"),
 			},
 			{
 				Name:     "id",
@@ -56,35 +58,10 @@ func mongoDBDatabases() *schema.Table {
 				Resolver: schema.PathResolver("Type"),
 			},
 			{
-				Name:     "location",
+				Name:     "account_id",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Location"),
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 		},
 	}
-}
-
-func fetchCosmosDBMongoDBDatabases(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().CosmosDB.MongoDBDatabases
-
-	account := parent.Item.(documentdb.DatabaseAccountGetResults)
-	resource, err := client.ParseResourceID(*account.ID)
-	if err != nil {
-		return err
-	}
-	response, err := svc.ListMongoDBDatabases(ctx, resource.ResourceGroup, *account.Name)
-	if err != nil {
-		return err
-	}
-	if response.Value == nil {
-		return nil
-	}
-	res <- *response.Value
-
-	return nil
 }

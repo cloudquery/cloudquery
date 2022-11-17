@@ -3,49 +3,41 @@
 package servicebus
 
 import (
-	"context"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus/v2"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/servicebus"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/servicebus"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/services/preview/servicebus/mgmt/2021-06-01-preview/servicebus"
 )
 
-func TestServicebusNamespaces(t *testing.T) {
-	client.MockTestHelper(t, Namespaces(), createNamespacesMock)
-}
+func buildNamespaces(t *testing.T, ctrl *gomock.Controller) *client.Services {
+	mockNamespacesClient := mocks.NewMockNamespacesClient(ctrl)
 
-func createNamespacesMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockServicebusNamespacesClient(ctrl)
-	s := services.Services{
-		Servicebus: services.ServicebusClient{
-			Namespaces:         mockClient,
-			Topics:             createTopicsMock(t, ctrl).Servicebus.Topics,
-			AuthorizationRules: createAuthorizationRulesMock(t, ctrl).Servicebus.AuthorizationRules,
-			AccessKeys:         createAccessKeysMock(t, ctrl).Servicebus.AccessKeys,
-		},
+	var response api.NamespacesClientListResponse
+	require.NoError(t, faker.FakeObject(&response))
+	// Use correct Azure ID format
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.Value[0].ID = to.Ptr(id)
+
+	mockNamespacesClient.EXPECT().NewListPager(gomock.Any()).
+		Return(client.CreatePager(response)).MinTimes(1)
+
+	servicebusClient := &service.ServicebusClient{
+		NamespacesClient: mockNamespacesClient,
 	}
 
-	data := servicebus.SBNamespace{}
-	require.Nil(t, faker.FakeObject(&data))
+	c := &client.Services{Servicebus: servicebusClient}
 
-	// Ensure name and ID are consistent so we can reference it in other mock
-	name := "test"
-	data.Name = &name
+	buildTopics(t, ctrl, c)
 
-	// Use correct Azure ID format
-	id := "/subscriptions/test/resourceGroups/test/providers/test/test/test"
-	data.ID = &id
+	return c
+}
 
-	result := servicebus.NewSBNamespaceListResultPage(servicebus.SBNamespaceListResult{Value: &[]servicebus.SBNamespace{data}}, func(ctx context.Context, result servicebus.SBNamespaceListResult) (servicebus.SBNamespaceListResult, error) {
-		return servicebus.SBNamespaceListResult{}, nil
-	})
-
-	mockClient.EXPECT().List(gomock.Any()).Return(result, nil)
-	return s
+func TestNamespaces(t *testing.T) {
+	client.MockTestHelper(t, Namespaces(), buildNamespaces)
 }

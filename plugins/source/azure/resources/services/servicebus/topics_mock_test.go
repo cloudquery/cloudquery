@@ -3,41 +3,37 @@
 package servicebus
 
 import (
-	"context"
 	"testing"
 
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus/v2"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/servicebus"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/servicebus"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/services/preview/servicebus/mgmt/2021-06-01-preview/servicebus"
 )
 
-func createTopicsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockServicebusTopicsClient(ctrl)
-	s := services.Services{
-		Servicebus: services.ServicebusClient{
-			Topics: mockClient,
-		},
+func buildTopics(t *testing.T, ctrl *gomock.Controller, c *client.Services) {
+	if c.Servicebus == nil {
+		c.Servicebus = new(service.ServicebusClient)
+	}
+	servicebusClient := c.Servicebus
+	if servicebusClient.TopicsClient == nil {
+		servicebusClient.TopicsClient = mocks.NewMockTopicsClient(ctrl)
 	}
 
-	data := servicebus.SBTopic{}
-	require.Nil(t, faker.FakeObject(&data))
+	mockTopicsClient := servicebusClient.TopicsClient.(*mocks.MockTopicsClient)
 
-	// Ensure name and ID are consistent so we can reference it in other mock
-	name := "test"
-	data.Name = &name
-
+	var response api.TopicsClientListByNamespaceResponse
+	require.NoError(t, faker.FakeObject(&response))
 	// Use correct Azure ID format
-	id := "/subscriptions/test/resourceGroups/test/providers/test/test/test"
-	data.ID = &id
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.Value[0].ID = to.Ptr(id)
 
-	result := servicebus.NewSBTopicListResultPage(servicebus.SBTopicListResult{Value: &[]servicebus.SBTopic{data}}, func(ctx context.Context, result servicebus.SBTopicListResult) (servicebus.SBTopicListResult, error) {
-		return servicebus.SBTopicListResult{}, nil
-	})
+	mockTopicsClient.EXPECT().NewListByNamespacePager(gomock.Any(), gomock.Any(), gomock.Any()).
+		Return(client.CreatePager(response)).MinTimes(1)
 
-	mockClient.EXPECT().ListByNamespace(gomock.Any(), "test", "test", nil, nil).Return(result, nil)
-	return s
+	buildAuthorizationRules(t, ctrl, c)
 }

@@ -1,6 +1,6 @@
 # Table: azure_network_virtual_network_gateway_connections
 
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network#VirtualNetworkGatewayConnectionListEntity
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2#VirtualNetworkGatewayConnection
 
 The primary key for this table is **id**.
 
@@ -16,31 +16,37 @@ This table depends on [azure_network_virtual_network_gateways](azure_network_vir
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|network_virtual_network_gateway_id|String|
-|authorization_key|String|
-|virtual_network_gateway1|JSON|
-|virtual_network_gateway2|JSON|
-|local_network_gateway2|JSON|
 |connection_type|String|
-|connection_protocol|String|
-|routing_weight|Int|
+|virtual_network_gateway1|JSON|
+|authorization_key|String|
 |connection_mode|String|
+|connection_protocol|String|
+|dpd_timeout_seconds|Int|
+|egress_nat_rules|JSON|
+|enable_bgp|Bool|
+|enable_private_link_fast_path|Bool|
+|express_route_gateway_bypass|Bool|
+|gateway_custom_bgp_ip_addresses|JSON|
+|ipsec_policies|JSON|
+|ingress_nat_rules|JSON|
+|local_network_gateway2|JSON|
+|peer|JSON|
+|routing_weight|Int|
 |shared_key|String|
+|traffic_selector_policies|JSON|
+|use_local_azure_ip_address|Bool|
+|use_policy_based_traffic_selectors|Bool|
+|virtual_network_gateway2|JSON|
 |connection_status|String|
-|tunnel_connection_status|JSON|
 |egress_bytes_transferred|Int|
 |ingress_bytes_transferred|Int|
-|peer|JSON|
-|enable_bgp|Bool|
-|use_policy_based_traffic_selectors|Bool|
-|ipsec_policies|JSON|
-|traffic_selector_policies|JSON|
-|resource_guid|String|
 |provisioning_state|String|
-|express_route_gateway_bypass|Bool|
-|etag|String|
+|resource_guid|String|
+|tunnel_connection_status|JSON|
 |id (PK)|String|
-|name|String|
-|type|String|
 |location|String|
 |tags|JSON|
+|etag|String|
+|name|String|
+|type|String|
+|virtual_network_gateway_id|String|

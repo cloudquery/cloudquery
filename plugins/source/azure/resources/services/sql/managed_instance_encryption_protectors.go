@@ -3,54 +3,46 @@
 package sql
 
 import (
-	"context"
-
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-
-	"github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql"
 )
 
 func managedInstanceEncryptionProtectors() *schema.Table {
 	return &schema.Table{
 		Name:        "azure_sql_managed_instance_encryption_protectors",
-		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql#ManagedInstanceEncryptionProtector`,
-		Resolver:    fetchSQLManagedInstanceEncryptionProtectors,
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql#ManagedInstanceEncryptionProtector`,
+		Resolver:    fetchManagedInstanceEncryptionProtectors,
 		Columns: []schema.Column{
 			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "sql_managed_instance_id",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("id"),
-			},
-			{
-				Name:     "kind",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Kind"),
-			},
-			{
-				Name:     "server_key_name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ServerKeyName"),
+				Name:        "subscription_id",
+				Type:        schema.TypeString,
+				Resolver:    client.SubscriptionIDResolver,
+				Description: `Azure subscription ID`,
 			},
 			{
 				Name:     "server_key_type",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ServerKeyType"),
+				Resolver: schema.PathResolver("Properties.ServerKeyType"),
 			},
 			{
-				Name:     "uri",
+				Name:     "auto_rotation_enabled",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Properties.AutoRotationEnabled"),
+			},
+			{
+				Name:     "server_key_name",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("URI"),
+				Resolver: schema.PathResolver("Properties.ServerKeyName"),
 			},
 			{
 				Name:     "thumbprint",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Thumbprint"),
+				Resolver: schema.PathResolver("Properties.Thumbprint"),
+			},
+			{
+				Name:     "uri",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.URI"),
 			},
 			{
 				Name:     "id",
@@ -59,6 +51,11 @@ func managedInstanceEncryptionProtectors() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
+			},
+			{
+				Name:     "kind",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Kind"),
 			},
 			{
 				Name:     "name",
@@ -70,30 +67,11 @@ func managedInstanceEncryptionProtectors() *schema.Table {
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Type"),
 			},
+			{
+				Name:     "managed_instance_id",
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("id"),
+			},
 		},
 	}
-}
-
-func fetchSQLManagedInstanceEncryptionProtectors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().SQL.ManagedInstanceEncryptionProtectors
-
-	instance := parent.Item.(sql.ManagedInstance)
-	resourceDetails, err := client.ParseResourceID(*instance.ID)
-	if err != nil {
-		return err
-	}
-	response, err := svc.ListByInstance(ctx, resourceDetails.ResourceGroup, *instance.Name)
-
-	if err != nil {
-		return err
-	}
-
-	for response.NotDone() {
-		res <- response.Values()
-		if err := response.NextWithContext(ctx); err != nil {
-			return err
-		}
-	}
-
-	return nil
 }

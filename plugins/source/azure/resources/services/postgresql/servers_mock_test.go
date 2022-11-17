@@ -5,43 +5,40 @@ package postgresql
 import (
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/postgresql"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/postgresql"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/services/postgresql/mgmt/2020-01-01/postgresql"
 )
 
-func TestPostgreSQLServers(t *testing.T) {
-	client.MockTestHelper(t, Servers(), createServersMock)
-}
+func buildServers(t *testing.T, ctrl *gomock.Controller) *client.Services {
+	mockServersClient := mocks.NewMockServersClient(ctrl)
 
-func createServersMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockPostgreSQLServersClient(ctrl)
-	s := services.Services{
-		PostgreSQL: services.PostgreSQLClient{
-			Servers:        mockClient,
-			Configurations: createConfigurationsMock(t, ctrl).PostgreSQL.Configurations,
-			FirewallRules:  createFirewallRulesMock(t, ctrl).PostgreSQL.FirewallRules,
-		},
+	var response api.ServersClientListResponse
+	require.NoError(t, faker.FakeObject(&response))
+	// Use correct Azure ID format
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.Value[0].ID = to.Ptr(id)
+
+	mockServersClient.EXPECT().NewListPager(gomock.Any()).
+		Return(client.CreatePager(response)).MinTimes(1)
+
+	postgresqlClient := &service.PostgresqlClient{
+		ServersClient: mockServersClient,
 	}
 
-	data := postgresql.Server{}
-	require.Nil(t, faker.FakeObject(&data))
+	c := &client.Services{Postgresql: postgresqlClient}
 
-	// Ensure name and ID are consistent so we can reference it in other mock
-	name := "test"
-	data.Name = &name
+	buildConfigurations(t, ctrl, c)
+	buildFirewallRules(t, ctrl, c)
 
-	// Use correct Azure ID format
-	id := "/subscriptions/test/resourceGroups/test/providers/test/test/test"
-	data.ID = &id
+	return c
+}
 
-	result := postgresql.ServerListResult{Value: &[]postgresql.Server{data}}
-
-	mockClient.EXPECT().List(gomock.Any()).Return(result, nil)
-	return s
+func TestServers(t *testing.T) {
+	client.MockTestHelper(t, Servers(), buildServers)
 }

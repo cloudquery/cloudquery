@@ -3,121 +3,23 @@
 package datalake
 
 import (
-	"context"
-
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-
-	"github.com/Azure/azure-sdk-for-go/profiles/latest/datalake/store/mgmt/account"
 )
 
 func StoreAccounts() *schema.Table {
 	return &schema.Table{
 		Name:                "azure_datalake_store_accounts",
-		Description:         `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/datalake/store/mgmt/2016-11-01/account#DataLakeStoreAccount`,
-		Resolver:            fetchDataLakeStoreAccounts,
-		PreResourceResolver: getDataLakeStoreAccount,
+		Description:         `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-store/armdatalakestore#Account`,
+		Resolver:            fetchStoreAccounts,
+		PreResourceResolver: getStoreAccounts,
 		Multiplex:           client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "identity",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Identity"),
-			},
-			{
-				Name:     "default_group",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("DefaultGroup"),
-			},
-			{
-				Name:     "encryption_config",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("EncryptionConfig"),
-			},
-			{
-				Name:     "encryption_state",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("EncryptionState"),
-			},
-			{
-				Name:     "encryption_provisioning_state",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("EncryptionProvisioningState"),
-			},
-			{
-				Name:     "firewall_rules",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("FirewallRules"),
-			},
-			{
-				Name:     "virtual_network_rules",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("VirtualNetworkRules"),
-			},
-			{
-				Name:     "firewall_state",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("FirewallState"),
-			},
-			{
-				Name:     "firewall_allow_azure_ips",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("FirewallAllowAzureIps"),
-			},
-			{
-				Name:     "trusted_id_providers",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("TrustedIDProviders"),
-			},
-			{
-				Name:     "trusted_id_provider_state",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("TrustedIDProviderState"),
-			},
-			{
-				Name:     "new_tier",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("NewTier"),
-			},
-			{
-				Name:     "current_tier",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("CurrentTier"),
-			},
-			{
-				Name:     "account_id",
-				Type:     schema.TypeUUID,
-				Resolver: schema.PathResolver("AccountID"),
-			},
-			{
-				Name:     "provisioning_state",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ProvisioningState"),
-			},
-			{
-				Name:     "state",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("State"),
-			},
-			{
-				Name:     "creation_time",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("CreationTime"),
-			},
-			{
-				Name:     "last_modified_time",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("LastModifiedTime"),
-			},
-			{
-				Name:     "endpoint",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Endpoint"),
+				Name:        "subscription_id",
+				Type:        schema.TypeString,
+				Resolver:    client.SubscriptionIDResolver,
+				Description: `Azure subscription ID`,
 			},
 			{
 				Name:     "id",
@@ -128,14 +30,9 @@ func StoreAccounts() *schema.Table {
 				},
 			},
 			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
-			},
-			{
-				Name:     "type",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Type"),
+				Name:     "identity",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Identity"),
 			},
 			{
 				Name:     "location",
@@ -143,45 +40,110 @@ func StoreAccounts() *schema.Table {
 				Resolver: schema.PathResolver("Location"),
 			},
 			{
+				Name:     "name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Name"),
+			},
+			{
+				Name:     "account_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.AccountID"),
+			},
+			{
+				Name:     "creation_time",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Properties.CreationTime"),
+			},
+			{
+				Name:     "current_tier",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.CurrentTier"),
+			},
+			{
+				Name:     "default_group",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.DefaultGroup"),
+			},
+			{
+				Name:     "encryption_config",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.EncryptionConfig"),
+			},
+			{
+				Name:     "encryption_provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.EncryptionProvisioningState"),
+			},
+			{
+				Name:     "encryption_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.EncryptionState"),
+			},
+			{
+				Name:     "endpoint",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.Endpoint"),
+			},
+			{
+				Name:     "firewall_allow_azure_ips",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.FirewallAllowAzureIPs"),
+			},
+			{
+				Name:     "firewall_rules",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.FirewallRules"),
+			},
+			{
+				Name:     "firewall_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.FirewallState"),
+			},
+			{
+				Name:     "last_modified_time",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Properties.LastModifiedTime"),
+			},
+			{
+				Name:     "new_tier",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.NewTier"),
+			},
+			{
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.ProvisioningState"),
+			},
+			{
+				Name:     "state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.State"),
+			},
+			{
+				Name:     "trusted_id_provider_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.TrustedIDProviderState"),
+			},
+			{
+				Name:     "trusted_id_providers",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.TrustedIDProviders"),
+			},
+			{
+				Name:     "virtual_network_rules",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.VirtualNetworkRules"),
+			},
+			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Tags"),
 			},
+			{
+				Name:     "type",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Type"),
+			},
 		},
 	}
-}
-
-func fetchDataLakeStoreAccounts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().DataLake.StoreAccounts
-
-	response, err := svc.List(ctx, "", nil, nil, "", "", nil)
-
-	if err != nil {
-		return err
-	}
-
-	for response.NotDone() {
-		res <- response.Values()
-		if err := response.NextWithContext(ctx); err != nil {
-			return err
-		}
-	}
-
-	return nil
-}
-
-func getDataLakeStoreAccount(ctx context.Context, meta schema.ClientMeta, r *schema.Resource) error {
-	svc := meta.(*client.Client).Services().DataLake.StoreAccounts
-
-	account := r.Item.(account.DataLakeStoreAccountBasic)
-	resourceDetails, err := client.ParseResourceID(*account.ID)
-	if err != nil {
-		return err
-	}
-	item, err := svc.Get(ctx, resourceDetails.ResourceGroup, *account.Name)
-	if err != nil {
-		return err
-	}
-	r.SetItem(item)
-	return nil
 }

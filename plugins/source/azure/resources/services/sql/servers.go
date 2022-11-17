@@ -3,8 +3,6 @@
 package sql
 
 import (
-	"context"
-
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -12,14 +10,20 @@ import (
 func Servers() *schema.Table {
 	return &schema.Table{
 		Name:        "azure_sql_servers",
-		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql#Server`,
-		Resolver:    fetchSQLServers,
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql#Server`,
+		Resolver:    fetchServers,
 		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
-				Name:     "subscription_id",
+				Name:        "subscription_id",
+				Type:        schema.TypeString,
+				Resolver:    client.SubscriptionIDResolver,
+				Description: `Azure subscription ID`,
+			},
+			{
+				Name:     "location",
 				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
+				Resolver: schema.PathResolver("Location"),
 			},
 			{
 				Name:     "identity",
@@ -27,54 +31,74 @@ func Servers() *schema.Table {
 				Resolver: schema.PathResolver("Identity"),
 			},
 			{
-				Name:     "kind",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Kind"),
-			},
-			{
 				Name:     "administrator_login",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("AdministratorLogin"),
+				Resolver: schema.PathResolver("Properties.AdministratorLogin"),
 			},
 			{
 				Name:     "administrator_login_password",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("AdministratorLoginPassword"),
+				Resolver: schema.PathResolver("Properties.AdministratorLoginPassword"),
 			},
 			{
-				Name:     "version",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Version"),
-			},
-			{
-				Name:     "state",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("State"),
-			},
-			{
-				Name:     "fully_qualified_domain_name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("FullyQualifiedDomainName"),
-			},
-			{
-				Name:     "private_endpoint_connections",
+				Name:     "administrators",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("PrivateEndpointConnections"),
+				Resolver: schema.PathResolver("Properties.Administrators"),
+			},
+			{
+				Name:     "federated_client_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.FederatedClientID"),
+			},
+			{
+				Name:     "key_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.KeyID"),
 			},
 			{
 				Name:     "minimal_tls_version",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("MinimalTLSVersion"),
+				Resolver: schema.PathResolver("Properties.MinimalTLSVersion"),
+			},
+			{
+				Name:     "primary_user_assigned_identity_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.PrimaryUserAssignedIdentityID"),
 			},
 			{
 				Name:     "public_network_access",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("PublicNetworkAccess"),
+				Resolver: schema.PathResolver("Properties.PublicNetworkAccess"),
 			},
 			{
-				Name:     "location",
+				Name:     "restrict_outbound_network_access",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Location"),
+				Resolver: schema.PathResolver("Properties.RestrictOutboundNetworkAccess"),
+			},
+			{
+				Name:     "version",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.Version"),
+			},
+			{
+				Name:     "fully_qualified_domain_name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.FullyQualifiedDomainName"),
+			},
+			{
+				Name:     "private_endpoint_connections",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.PrivateEndpointConnections"),
+			},
+			{
+				Name:     "state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.State"),
+			},
+			{
+				Name:     "workspace_feature",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.WorkspaceFeature"),
 			},
 			{
 				Name:     "tags",
@@ -90,6 +114,11 @@ func Servers() *schema.Table {
 				},
 			},
 			{
+				Name:     "kind",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Kind"),
+			},
+			{
 				Name:     "name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Name"),
@@ -102,34 +131,15 @@ func Servers() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			firewallRules(),
 			databases(),
 			encryptionProtectors(),
-			virtualNetworkRules(),
-			serverAdmins(),
+			firewallRules(),
+			serverAdministrators(),
 			serverBlobAuditingPolicies(),
 			serverDevOpsAuditingSettings(),
-			serverVulnerabilityAssessments(),
 			serverSecurityAlertPolicies(),
+			serverVulnerabilityAssessments(),
+			virtualNetworkRules(),
 		},
 	}
-}
-
-func fetchSQLServers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().SQL.Servers
-
-	response, err := svc.List(ctx)
-
-	if err != nil {
-		return err
-	}
-
-	for response.NotDone() {
-		res <- response.Values()
-		if err := response.NextWithContext(ctx); err != nil {
-			return err
-		}
-	}
-
-	return nil
 }

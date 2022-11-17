@@ -5,42 +5,39 @@ package mariadb
 import (
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/mariadb"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mariadb"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/services/mariadb/mgmt/2020-01-01/mariadb"
 )
 
-func TestMariaDBServers(t *testing.T) {
-	client.MockTestHelper(t, Servers(), createServersMock)
-}
+func buildServers(t *testing.T, ctrl *gomock.Controller) *client.Services {
+	mockServersClient := mocks.NewMockServersClient(ctrl)
 
-func createServersMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockMariaDBServersClient(ctrl)
-	s := services.Services{
-		MariaDB: services.MariaDBClient{
-			Servers:        mockClient,
-			Configurations: createConfigurationsMock(t, ctrl).MariaDB.Configurations,
-		},
+	var response api.ServersClientListResponse
+	require.NoError(t, faker.FakeObject(&response))
+	// Use correct Azure ID format
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.Value[0].ID = to.Ptr(id)
+
+	mockServersClient.EXPECT().NewListPager(gomock.Any()).
+		Return(client.CreatePager(response)).MinTimes(1)
+
+	mariadbClient := &service.MariadbClient{
+		ServersClient: mockServersClient,
 	}
 
-	data := mariadb.Server{}
-	require.Nil(t, faker.FakeObject(&data))
+	c := &client.Services{Mariadb: mariadbClient}
 
-	// Ensure name and ID are consistent so we can reference it in other mock
-	name := "test"
-	data.Name = &name
+	buildConfigurations(t, ctrl, c)
 
-	// Use correct Azure ID format
-	id := "/subscriptions/test/resourceGroups/test/providers/test/test/test"
-	data.ID = &id
+	return c
+}
 
-	result := mariadb.ServerListResult{Value: &[]mariadb.Server{data}}
-
-	mockClient.EXPECT().List(gomock.Any()).Return(result, nil)
-	return s
+func TestServers(t *testing.T) {
+	client.MockTestHelper(t, Servers(), buildServers)
 }

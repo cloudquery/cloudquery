@@ -3,139 +3,157 @@
 package network
 
 import (
-	"context"
-
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-
-	"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"
 )
 
 func virtualNetworkGatewayConnections() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_network_virtual_network_gateway_connections",
-		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network#VirtualNetworkGatewayConnectionListEntity`,
-		Resolver:    fetchNetworkVirtualNetworkGatewayConnections,
+		Name:                "azure_network_virtual_network_gateway_connections",
+		Description:         `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2#VirtualNetworkGatewayConnection`,
+		Resolver:            fetchVirtualNetworkGatewayConnections,
+		PreResourceResolver: getVirtualNetworkGatewayConnections,
 		Columns: []schema.Column{
 			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "network_virtual_network_gateway_id",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("id"),
-			},
-			{
-				Name:     "authorization_key",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("AuthorizationKey"),
-			},
-			{
-				Name:     "virtual_network_gateway1",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("VirtualNetworkGateway1"),
-			},
-			{
-				Name:     "virtual_network_gateway2",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("VirtualNetworkGateway2"),
-			},
-			{
-				Name:     "local_network_gateway2",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("LocalNetworkGateway2"),
+				Name:        "subscription_id",
+				Type:        schema.TypeString,
+				Resolver:    client.SubscriptionIDResolver,
+				Description: `Azure subscription ID`,
 			},
 			{
 				Name:     "connection_type",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ConnectionType"),
+				Resolver: schema.PathResolver("Properties.ConnectionType"),
 			},
 			{
-				Name:     "connection_protocol",
+				Name:     "virtual_network_gateway1",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.VirtualNetworkGateway1"),
+			},
+			{
+				Name:     "authorization_key",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ConnectionProtocol"),
-			},
-			{
-				Name:     "routing_weight",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("RoutingWeight"),
+				Resolver: schema.PathResolver("Properties.AuthorizationKey"),
 			},
 			{
 				Name:     "connection_mode",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ConnectionMode"),
+				Resolver: schema.PathResolver("Properties.ConnectionMode"),
 			},
 			{
-				Name:     "shared_key",
+				Name:     "connection_protocol",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("SharedKey"),
+				Resolver: schema.PathResolver("Properties.ConnectionProtocol"),
 			},
 			{
-				Name:     "connection_status",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ConnectionStatus"),
-			},
-			{
-				Name:     "tunnel_connection_status",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("TunnelConnectionStatus"),
-			},
-			{
-				Name:     "egress_bytes_transferred",
+				Name:     "dpd_timeout_seconds",
 				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("EgressBytesTransferred"),
+				Resolver: schema.PathResolver("Properties.DpdTimeoutSeconds"),
 			},
 			{
-				Name:     "ingress_bytes_transferred",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("IngressBytesTransferred"),
-			},
-			{
-				Name:     "peer",
+				Name:     "egress_nat_rules",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Peer"),
+				Resolver: schema.PathResolver("Properties.EgressNatRules"),
 			},
 			{
 				Name:     "enable_bgp",
 				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("EnableBgp"),
+				Resolver: schema.PathResolver("Properties.EnableBgp"),
 			},
 			{
-				Name:     "use_policy_based_traffic_selectors",
+				Name:     "enable_private_link_fast_path",
 				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("UsePolicyBasedTrafficSelectors"),
-			},
-			{
-				Name:     "ipsec_policies",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("IpsecPolicies"),
-			},
-			{
-				Name:     "traffic_selector_policies",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("TrafficSelectorPolicies"),
-			},
-			{
-				Name:     "resource_guid",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ResourceGUID"),
-			},
-			{
-				Name:     "provisioning_state",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ProvisioningState"),
+				Resolver: schema.PathResolver("Properties.EnablePrivateLinkFastPath"),
 			},
 			{
 				Name:     "express_route_gateway_bypass",
 				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("ExpressRouteGatewayBypass"),
+				Resolver: schema.PathResolver("Properties.ExpressRouteGatewayBypass"),
 			},
 			{
-				Name:     "etag",
+				Name:     "gateway_custom_bgp_ip_addresses",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.GatewayCustomBgpIPAddresses"),
+			},
+			{
+				Name:     "ipsec_policies",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.IPSecPolicies"),
+			},
+			{
+				Name:     "ingress_nat_rules",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.IngressNatRules"),
+			},
+			{
+				Name:     "local_network_gateway2",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.LocalNetworkGateway2"),
+			},
+			{
+				Name:     "peer",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.Peer"),
+			},
+			{
+				Name:     "routing_weight",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("Properties.RoutingWeight"),
+			},
+			{
+				Name:     "shared_key",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Etag"),
+				Resolver: schema.PathResolver("Properties.SharedKey"),
+			},
+			{
+				Name:     "traffic_selector_policies",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.TrafficSelectorPolicies"),
+			},
+			{
+				Name:     "use_local_azure_ip_address",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Properties.UseLocalAzureIPAddress"),
+			},
+			{
+				Name:     "use_policy_based_traffic_selectors",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Properties.UsePolicyBasedTrafficSelectors"),
+			},
+			{
+				Name:     "virtual_network_gateway2",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.VirtualNetworkGateway2"),
+			},
+			{
+				Name:     "connection_status",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.ConnectionStatus"),
+			},
+			{
+				Name:     "egress_bytes_transferred",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("Properties.EgressBytesTransferred"),
+			},
+			{
+				Name:     "ingress_bytes_transferred",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("Properties.IngressBytesTransferred"),
+			},
+			{
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.ProvisioningState"),
+			},
+			{
+				Name:     "resource_guid",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.ResourceGUID"),
+			},
+			{
+				Name:     "tunnel_connection_status",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.TunnelConnectionStatus"),
 			},
 			{
 				Name:     "id",
@@ -144,6 +162,21 @@ func virtualNetworkGatewayConnections() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
+			},
+			{
+				Name:     "location",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Location"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Tags"),
+			},
+			{
+				Name:     "etag",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Etag"),
 			},
 			{
 				Name:     "name",
@@ -156,39 +189,10 @@ func virtualNetworkGatewayConnections() *schema.Table {
 				Resolver: schema.PathResolver("Type"),
 			},
 			{
-				Name:     "location",
+				Name:     "virtual_network_gateway_id",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Location"),
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 		},
 	}
-}
-
-func fetchNetworkVirtualNetworkGatewayConnections(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().Network.VirtualNetworkGatewayConnections
-
-	gateway := parent.Item.(network.VirtualNetworkGateway)
-	resourceDetails, err := client.ParseResourceID(*gateway.ID)
-	if err != nil {
-		return err
-	}
-	response, err := svc.ListConnections(ctx, resourceDetails.ResourceGroup, *gateway.Name)
-
-	if err != nil {
-		return err
-	}
-
-	for response.NotDone() {
-		res <- response.Values()
-		if err := response.NextWithContext(ctx); err != nil {
-			return err
-		}
-	}
-
-	return nil
 }

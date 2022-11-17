@@ -5,28 +5,33 @@ package sql
 import (
 	"testing"
 
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/sql"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/sql"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql"
 )
 
-func createFirewallRulesMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockSQLFirewallRulesClient(ctrl)
-	s := services.Services{
-		SQL: services.SQLClient{
-			FirewallRules: mockClient,
-		},
+func buildFirewallRules(t *testing.T, ctrl *gomock.Controller, c *client.Services) {
+	if c.Sql == nil {
+		c.Sql = new(service.SqlClient)
+	}
+	sqlClient := c.Sql
+	if sqlClient.FirewallRulesClient == nil {
+		sqlClient.FirewallRulesClient = mocks.NewMockFirewallRulesClient(ctrl)
 	}
 
-	data := sql.FirewallRule{}
-	require.Nil(t, faker.FakeObject(&data))
+	mockFirewallRulesClient := sqlClient.FirewallRulesClient.(*mocks.MockFirewallRulesClient)
 
-	result := sql.FirewallRuleListResult{Value: &[]sql.FirewallRule{data}}
+	var response api.FirewallRulesClientListByServerResponse
+	require.NoError(t, faker.FakeObject(&response))
+	// Use correct Azure ID format
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.Value[0].ID = to.Ptr(id)
 
-	mockClient.EXPECT().ListByServer(gomock.Any(), "test", "test").Return(result, nil)
-	return s
+	mockFirewallRulesClient.EXPECT().NewListByServerPager(gomock.Any(), gomock.Any(), gomock.Any()).
+		Return(client.CreatePager(response)).MinTimes(1)
 }

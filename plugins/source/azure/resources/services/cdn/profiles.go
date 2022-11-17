@@ -3,8 +3,6 @@
 package cdn
 
 import (
-	"context"
-
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -12,39 +10,45 @@ import (
 func Profiles() *schema.Table {
 	return &schema.Table{
 		Name:        "azure_cdn_profiles",
-		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2020-09-01/cdn#Profile`,
-		Resolver:    fetchCDNProfiles,
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn#Profile`,
+		Resolver:    fetchProfiles,
 		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "sku",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Sku"),
-			},
-			{
-				Name:     "resource_state",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ResourceState"),
-			},
-			{
-				Name:     "provisioning_state",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ProvisioningState"),
-			},
-			{
-				Name:     "frontdoor_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("FrontdoorID"),
+				Name:        "subscription_id",
+				Type:        schema.TypeString,
+				Resolver:    client.SubscriptionIDResolver,
+				Description: `Azure subscription ID`,
 			},
 			{
 				Name:     "location",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Location"),
+			},
+			{
+				Name:     "sku",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("SKU"),
+			},
+			{
+				Name:     "origin_response_timeout_seconds",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("Properties.OriginResponseTimeoutSeconds"),
+			},
+			{
+				Name:     "front_door_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.FrontDoorID"),
+			},
+			{
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.ProvisioningState"),
+			},
+			{
+				Name:     "resource_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.ResourceState"),
 			},
 			{
 				Name:     "tags",
@@ -60,19 +64,24 @@ func Profiles() *schema.Table {
 				},
 			},
 			{
+				Name:     "kind",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Kind"),
+			},
+			{
 				Name:     "name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Name"),
 			},
 			{
-				Name:     "type",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Type"),
-			},
-			{
 				Name:     "system_data",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("SystemData"),
+			},
+			{
+				Name:     "type",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Type"),
 			},
 		},
 
@@ -82,23 +91,4 @@ func Profiles() *schema.Table {
 			securityPolicies(),
 		},
 	}
-}
-
-func fetchCDNProfiles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().CDN.Profiles
-
-	response, err := svc.List(ctx)
-
-	if err != nil {
-		return err
-	}
-
-	for response.NotDone() {
-		res <- response.Values()
-		if err := response.NextWithContext(ctx); err != nil {
-			return err
-		}
-	}
-
-	return nil
 }

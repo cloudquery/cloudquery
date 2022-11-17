@@ -3,33 +3,35 @@
 package sql
 
 import (
-	"context"
 	"testing"
 
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/sql"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/sql"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql"
 )
 
-func createManagedInstanceEncryptionProtectorsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockSQLManagedInstanceEncryptionProtectorsClient(ctrl)
-	s := services.Services{
-		SQL: services.SQLClient{
-			ManagedInstanceEncryptionProtectors: mockClient,
-		},
+func buildManagedInstanceEncryptionProtectors(t *testing.T, ctrl *gomock.Controller, c *client.Services) {
+	if c.Sql == nil {
+		c.Sql = new(service.SqlClient)
+	}
+	sqlClient := c.Sql
+	if sqlClient.ManagedInstanceEncryptionProtectorsClient == nil {
+		sqlClient.ManagedInstanceEncryptionProtectorsClient = mocks.NewMockManagedInstanceEncryptionProtectorsClient(ctrl)
 	}
 
-	data := sql.ManagedInstanceEncryptionProtector{}
-	require.Nil(t, faker.FakeObject(&data))
+	mockManagedInstanceEncryptionProtectorsClient := sqlClient.ManagedInstanceEncryptionProtectorsClient.(*mocks.MockManagedInstanceEncryptionProtectorsClient)
 
-	result := sql.NewManagedInstanceEncryptionProtectorListResultPage(sql.ManagedInstanceEncryptionProtectorListResult{Value: &[]sql.ManagedInstanceEncryptionProtector{data}}, func(ctx context.Context, result sql.ManagedInstanceEncryptionProtectorListResult) (sql.ManagedInstanceEncryptionProtectorListResult, error) {
-		return sql.ManagedInstanceEncryptionProtectorListResult{}, nil
-	})
+	var response api.ManagedInstanceEncryptionProtectorsClientListByInstanceResponse
+	require.NoError(t, faker.FakeObject(&response))
+	// Use correct Azure ID format
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.Value[0].ID = to.Ptr(id)
 
-	mockClient.EXPECT().ListByInstance(gomock.Any(), "test", "test").Return(result, nil)
-	return s
+	mockManagedInstanceEncryptionProtectorsClient.EXPECT().NewListByInstancePager(gomock.Any(), gomock.Any(), gomock.Any()).
+		Return(client.CreatePager(response)).MinTimes(1)
 }

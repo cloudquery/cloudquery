@@ -3,8 +3,6 @@
 package compute
 
 import (
-	"context"
-
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -12,14 +10,203 @@ import (
 func Disks() *schema.Table {
 	return &schema.Table{
 		Name:        "azure_compute_disks",
-		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-03-01/compute#Disk`,
-		Resolver:    fetchComputeDisks,
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v4#Disk`,
+		Resolver:    fetchDisks,
 		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
-				Name:     "subscription_id",
+				Name:        "subscription_id",
+				Type:        schema.TypeString,
+				Resolver:    client.SubscriptionIDResolver,
+				Description: `Azure subscription ID`,
+			},
+			{
+				Name:     "location",
 				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
+				Resolver: schema.PathResolver("Location"),
+			},
+			{
+				Name:     "extended_location",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ExtendedLocation"),
+			},
+			{
+				Name:     "creation_data",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.CreationData"),
+			},
+			{
+				Name:     "bursting_enabled",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Properties.BurstingEnabled"),
+			},
+			{
+				Name:     "completion_percent",
+				Type:     schema.TypeFloat,
+				Resolver: schema.PathResolver("Properties.CompletionPercent"),
+			},
+			{
+				Name:     "data_access_auth_mode",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.DataAccessAuthMode"),
+			},
+			{
+				Name:     "disk_access_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.DiskAccessID"),
+			},
+			{
+				Name:     "disk_iops_read_only",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("Properties.DiskIOPSReadOnly"),
+			},
+			{
+				Name:     "disk_iops_read_write",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("Properties.DiskIOPSReadWrite"),
+			},
+			{
+				Name:     "disk_m_bps_read_only",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("Properties.DiskMBpsReadOnly"),
+			},
+			{
+				Name:     "disk_m_bps_read_write",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("Properties.DiskMBpsReadWrite"),
+			},
+			{
+				Name:     "disk_size_gb",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("Properties.DiskSizeGB"),
+			},
+			{
+				Name:     "encryption",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.Encryption"),
+			},
+			{
+				Name:     "encryption_settings_collection",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.EncryptionSettingsCollection"),
+			},
+			{
+				Name:     "hyper_v_generation",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.HyperVGeneration"),
+			},
+			{
+				Name:     "max_shares",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("Properties.MaxShares"),
+			},
+			{
+				Name:     "network_access_policy",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.NetworkAccessPolicy"),
+			},
+			{
+				Name:     "os_type",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.OSType"),
+			},
+			{
+				Name:     "optimized_for_frequent_attach",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Properties.OptimizedForFrequentAttach"),
+			},
+			{
+				Name:     "public_network_access",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.PublicNetworkAccess"),
+			},
+			{
+				Name:     "purchase_plan",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.PurchasePlan"),
+			},
+			{
+				Name:     "security_profile",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.SecurityProfile"),
+			},
+			{
+				Name:     "supported_capabilities",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.SupportedCapabilities"),
+			},
+			{
+				Name:     "supports_hibernation",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Properties.SupportsHibernation"),
+			},
+			{
+				Name:     "tier",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.Tier"),
+			},
+			{
+				Name:     "bursting_enabled_time",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Properties.BurstingEnabledTime"),
+			},
+			{
+				Name:     "disk_size_bytes",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("Properties.DiskSizeBytes"),
+			},
+			{
+				Name:     "disk_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.DiskState"),
+			},
+			{
+				Name:     "property_updates_in_progress",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.PropertyUpdatesInProgress"),
+			},
+			{
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.ProvisioningState"),
+			},
+			{
+				Name:     "share_info",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.ShareInfo"),
+			},
+			{
+				Name:     "time_created",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Properties.TimeCreated"),
+			},
+			{
+				Name:     "unique_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.UniqueID"),
+			},
+			{
+				Name:     "sku",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("SKU"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Tags"),
+			},
+			{
+				Name:     "zones",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("Zones"),
+			},
+			{
+				Name:     "id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ID"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "managed_by",
@@ -32,154 +219,6 @@ func Disks() *schema.Table {
 				Resolver: schema.PathResolver("ManagedByExtended"),
 			},
 			{
-				Name:     "sku",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Sku"),
-			},
-			{
-				Name:     "zones",
-				Type:     schema.TypeStringArray,
-				Resolver: schema.PathResolver("Zones"),
-			},
-			{
-				Name:     "extended_location",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ExtendedLocation"),
-			},
-			{
-				Name:     "time_created",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("TimeCreated"),
-			},
-			{
-				Name:     "os_type",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("OsType"),
-			},
-			{
-				Name:     "hyper_v_generation",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("HyperVGeneration"),
-			},
-			{
-				Name:     "purchase_plan",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("PurchasePlan"),
-			},
-			{
-				Name:     "creation_data",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("CreationData"),
-			},
-			{
-				Name:     "disk_size_gb",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("DiskSizeGB"),
-			},
-			{
-				Name:     "disk_size_bytes",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("DiskSizeBytes"),
-			},
-			{
-				Name:     "unique_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("UniqueID"),
-			},
-			{
-				Name:     "encryption_settings_collection",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("EncryptionSettingsCollection"),
-			},
-			{
-				Name:     "provisioning_state",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ProvisioningState"),
-			},
-			{
-				Name:     "disk_iops_read_write",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("DiskIOPSReadWrite"),
-			},
-			{
-				Name:     "disk_m_bps_read_write",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("DiskMBpsReadWrite"),
-			},
-			{
-				Name:     "disk_iops_read_only",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("DiskIOPSReadOnly"),
-			},
-			{
-				Name:     "disk_m_bps_read_only",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("DiskMBpsReadOnly"),
-			},
-			{
-				Name:     "disk_state",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("DiskState"),
-			},
-			{
-				Name:     "encryption",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Encryption"),
-			},
-			{
-				Name:     "max_shares",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("MaxShares"),
-			},
-			{
-				Name:     "share_info",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ShareInfo"),
-			},
-			{
-				Name:     "network_access_policy",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("NetworkAccessPolicy"),
-			},
-			{
-				Name:     "disk_access_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("DiskAccessID"),
-			},
-			{
-				Name:     "tier",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Tier"),
-			},
-			{
-				Name:     "bursting_enabled",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("BurstingEnabled"),
-			},
-			{
-				Name:     "property_updates_in_progress",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("PropertyUpdatesInProgress"),
-			},
-			{
-				Name:     "supports_hibernation",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("SupportsHibernation"),
-			},
-			{
-				Name:     "security_profile",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("SecurityProfile"),
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
 				Name:     "name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Name"),
@@ -189,35 +228,6 @@ func Disks() *schema.Table {
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Type"),
 			},
-			{
-				Name:     "location",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Location"),
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
-			},
 		},
 	}
-}
-
-func fetchComputeDisks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().Compute.Disks
-
-	response, err := svc.List(ctx)
-
-	if err != nil {
-		return err
-	}
-
-	for response.NotDone() {
-		res <- response.Values()
-		if err := response.NextWithContext(ctx); err != nil {
-			return err
-		}
-	}
-
-	return nil
 }

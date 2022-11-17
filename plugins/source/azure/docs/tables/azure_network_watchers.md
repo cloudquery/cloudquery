@@ -1,6 +1,6 @@
 # Table: azure_network_watchers
 
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network#Watcher
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2#Watcher
 
 The primary key for this table is **id**.
 
@@ -17,10 +17,10 @@ The following tables depend on azure_network_watchers:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|etag|String|
-|provisioning_state|String|
 |id (PK)|String|
+|location|String|
+|provisioning_state|String|
+|tags|JSON|
+|etag|String|
 |name|String|
 |type|String|
-|location|String|
-|tags|JSON|

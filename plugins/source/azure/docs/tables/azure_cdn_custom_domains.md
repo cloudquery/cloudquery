@@ -1,6 +1,6 @@
 # Table: azure_cdn_custom_domains
 
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2020-09-01/cdn#CustomDomain
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn#CustomDomain
 
 The primary key for this table is **id**.
 
@@ -16,14 +16,14 @@ This table depends on [azure_cdn_endpoints](azure_cdn_endpoints.md).
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|cdn_endpoint_id|String|
 |host_name|String|
-|resource_state|String|
+|validation_data|String|
 |custom_https_provisioning_state|String|
 |custom_https_provisioning_substate|String|
-|validation_data|String|
 |provisioning_state|String|
+|resource_state|String|
 |id (PK)|String|
 |name|String|
-|type|String|
 |system_data|JSON|
+|type|String|
+|endpoint_id|String|

@@ -1,6 +1,6 @@
 # Table: azure_storage_blob_services
 
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-01-01/storage#BlobServiceProperties
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage#BlobServiceProperties
 
 The primary key for this table is **id**.
 
@@ -16,17 +16,17 @@ This table depends on [azure_storage_accounts](azure_storage_accounts.md).
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|storage_account_id|String|
+|automatic_snapshot_policy_enabled|Bool|
+|change_feed|JSON|
+|container_delete_retention_policy|JSON|
 |cors|JSON|
 |default_service_version|String|
 |delete_retention_policy|JSON|
 |is_versioning_enabled|Bool|
-|automatic_snapshot_policy_enabled|Bool|
-|change_feed|JSON|
-|restore_policy|JSON|
-|container_delete_retention_policy|JSON|
 |last_access_time_tracking_policy|JSON|
-|sku|JSON|
+|restore_policy|JSON|
 |id (PK)|String|
 |name|String|
+|sku|JSON|
 |type|String|
+|account_id|String|

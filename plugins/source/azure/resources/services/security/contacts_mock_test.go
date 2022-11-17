@@ -3,38 +3,39 @@
 package security
 
 import (
-	"context"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/security"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/security"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security"
 )
 
-func TestSecurityContacts(t *testing.T) {
-	client.MockTestHelper(t, Contacts(), createContactsMock)
-}
+func buildContacts(t *testing.T, ctrl *gomock.Controller) *client.Services {
+	mockContactsClient := mocks.NewMockContactsClient(ctrl)
 
-func createContactsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockSecurityContactsClient(ctrl)
-	s := services.Services{
-		Security: services.SecurityClient{
-			Contacts: mockClient,
-		},
+	var response api.ContactsClientListResponse
+	require.NoError(t, faker.FakeObject(&response))
+	// Use correct Azure ID format
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.Value[0].ID = to.Ptr(id)
+
+	mockContactsClient.EXPECT().NewListPager(gomock.Any()).
+		Return(client.CreatePager(response)).MinTimes(1)
+
+	securityClient := &service.SecurityClient{
+		ContactsClient: mockContactsClient,
 	}
 
-	data := security.Contact{}
-	require.Nil(t, faker.FakeObject(&data))
+	c := &client.Services{Security: securityClient}
 
-	result := security.NewContactListPage(security.ContactList{Value: &[]security.Contact{data}}, func(ctx context.Context, result security.ContactList) (security.ContactList, error) {
-		return security.ContactList{}, nil
-	})
+	return c
+}
 
-	mockClient.EXPECT().List(gomock.Any()).Return(result, nil)
-	return s
+func TestContacts(t *testing.T) {
+	client.MockTestHelper(t, Contacts(), buildContacts)
 }

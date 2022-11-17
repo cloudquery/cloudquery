@@ -1,6 +1,6 @@
 # Table: azure_keyvault_secrets
 
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/keyvault/v7.1/keyvault#SecretItem
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault#Secret
 
 The primary key for this table is **id**.
 
@@ -16,9 +16,14 @@ This table depends on [azure_keyvault_vaults](azure_keyvault_vaults.md).
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|keyvault_vault_id|String|
-|id (PK)|String|
 |attributes|JSON|
-|tags|JSON|
 |content_type|String|
-|managed|Bool|
+|value|String|
+|secret_uri|String|
+|secret_uri_with_version|String|
+|id (PK)|String|
+|location|String|
+|name|String|
+|tags|JSON|
+|type|String|
+|vault_id|String|

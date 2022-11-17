@@ -3,8 +3,6 @@
 package authorization
 
 import (
-	"context"
-
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -12,14 +10,75 @@ import (
 func RoleAssignments() *schema.Table {
 	return &schema.Table{
 		Name:        "azure_authorization_role_assignments",
-		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/authorization/mgmt/2015-07-01/authorization#RoleAssignment`,
-		Resolver:    fetchAuthorizationRoleAssignments,
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization/v2#RoleAssignment`,
+		Resolver:    fetchRoleAssignments,
 		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
-				Name:     "subscription_id",
+				Name:        "subscription_id",
+				Type:        schema.TypeString,
+				Resolver:    client.SubscriptionIDResolver,
+				Description: `Azure subscription ID`,
+			},
+			{
+				Name:     "principal_id",
 				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
+				Resolver: schema.PathResolver("Properties.PrincipalID"),
+			},
+			{
+				Name:     "role_definition_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.RoleDefinitionID"),
+			},
+			{
+				Name:     "condition",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.Condition"),
+			},
+			{
+				Name:     "condition_version",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.ConditionVersion"),
+			},
+			{
+				Name:     "delegated_managed_identity_resource_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.DelegatedManagedIdentityResourceID"),
+			},
+			{
+				Name:     "description",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.Description"),
+			},
+			{
+				Name:     "principal_type",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.PrincipalType"),
+			},
+			{
+				Name:     "created_by",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.CreatedBy"),
+			},
+			{
+				Name:     "created_on",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Properties.CreatedOn"),
+			},
+			{
+				Name:     "scope",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.Scope"),
+			},
+			{
+				Name:     "updated_by",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.UpdatedBy"),
+			},
+			{
+				Name:     "updated_on",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Properties.UpdatedOn"),
 			},
 			{
 				Name:     "id",
@@ -39,40 +98,6 @@ func RoleAssignments() *schema.Table {
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Type"),
 			},
-			{
-				Name:     "properties_scope",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Properties.Scope"),
-			},
-			{
-				Name:     "properties_role_definition_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Properties.RoleDefinitionID"),
-			},
-			{
-				Name:     "properties_principal_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Properties.PrincipalID"),
-			},
 		},
 	}
-}
-
-func fetchAuthorizationRoleAssignments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().Authorization.RoleAssignments
-
-	response, err := svc.List(ctx, "")
-
-	if err != nil {
-		return err
-	}
-
-	for response.NotDone() {
-		res <- response.Values()
-		if err := response.NextWithContext(ctx); err != nil {
-			return err
-		}
-	}
-
-	return nil
 }

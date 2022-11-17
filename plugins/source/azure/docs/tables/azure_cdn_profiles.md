@@ -1,6 +1,6 @@
 # Table: azure_cdn_profiles
 
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2020-09-01/cdn#Profile
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn#Profile
 
 The primary key for this table is **id**.
 
@@ -19,13 +19,15 @@ The following tables depend on azure_cdn_profiles:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|sku|JSON|
-|resource_state|String|
-|provisioning_state|String|
-|frontdoor_id|String|
 |location|String|
+|sku|JSON|
+|origin_response_timeout_seconds|Int|
+|front_door_id|String|
+|provisioning_state|String|
+|resource_state|String|
 |tags|JSON|
 |id (PK)|String|
+|kind|String|
 |name|String|
-|type|String|
 |system_data|JSON|
+|type|String|

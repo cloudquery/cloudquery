@@ -1,6 +1,6 @@
 # Table: azure_network_route_filters
 
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network#RouteFilter
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2#RouteFilter
 
 The primary key for this table is **id**.
 
@@ -14,13 +14,13 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|rules|JSON|
-|peerings|JSON|
-|ipv6_peerings|JSON|
-|provisioning_state|String|
-|etag|String|
 |id (PK)|String|
+|location|String|
+|rules|JSON|
+|ipv6_peerings|JSON|
+|peerings|JSON|
+|provisioning_state|String|
+|tags|JSON|
+|etag|String|
 |name|String|
 |type|String|
-|location|String|
-|tags|JSON|

@@ -1,6 +1,6 @@
 # Table: azure_logic_workflows
 
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/logic/mgmt/2019-05-01/logic#Workflow
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logic/armlogic#Workflow
 
 The primary key for this table is **id**.
 
@@ -17,21 +17,21 @@ The following tables depend on azure_logic_workflows:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|provisioning_state|String|
-|created_time|Timestamp|
-|changed_time|Timestamp|
-|state|String|
-|version|String|
-|access_endpoint|String|
-|endpoints_configuration|JSON|
+|identity|JSON|
+|location|String|
 |access_control|JSON|
-|sku|JSON|
+|endpoints_configuration|JSON|
 |integration_account|JSON|
 |integration_service_environment|JSON|
 |parameters|JSON|
-|identity|JSON|
+|state|String|
+|access_endpoint|String|
+|changed_time|Timestamp|
+|created_time|Timestamp|
+|provisioning_state|String|
+|sku|JSON|
+|version|String|
+|tags|JSON|
 |id (PK)|String|
 |name|String|
 |type|String|
-|location|String|
-|tags|JSON|

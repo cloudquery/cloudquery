@@ -3,29 +3,46 @@
 package keyvault
 
 import (
-	"context"
-
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-
-	"github.com/Azure/azure-sdk-for-go/services/keyvault/mgmt/2019-09-01/keyvault"
 )
 
 func secrets() *schema.Table {
 	return &schema.Table{
 		Name:        "azure_keyvault_secrets",
-		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/keyvault/v7.1/keyvault#SecretItem`,
-		Resolver:    fetchKeyVaultSecrets,
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault#Secret`,
+		Resolver:    fetchSecrets,
 		Columns: []schema.Column{
 			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
+				Name:        "subscription_id",
+				Type:        schema.TypeString,
+				Resolver:    client.SubscriptionIDResolver,
+				Description: `Azure subscription ID`,
 			},
 			{
-				Name:     "keyvault_vault_id",
+				Name:     "attributes",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.Attributes"),
+			},
+			{
+				Name:     "content_type",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("id"),
+				Resolver: schema.PathResolver("Properties.ContentType"),
+			},
+			{
+				Name:     "value",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.Value"),
+			},
+			{
+				Name:     "secret_uri",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.SecretURI"),
+			},
+			{
+				Name:     "secret_uri_with_version",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.SecretURIWithVersion"),
 			},
 			{
 				Name:     "id",
@@ -36,9 +53,14 @@ func secrets() *schema.Table {
 				},
 			},
 			{
-				Name:     "attributes",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Attributes"),
+				Name:     "location",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Location"),
+			},
+			{
+				Name:     "name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Name"),
 			},
 			{
 				Name:     "tags",
@@ -46,36 +68,15 @@ func secrets() *schema.Table {
 				Resolver: schema.PathResolver("Tags"),
 			},
 			{
-				Name:     "content_type",
+				Name:     "type",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ContentType"),
+				Resolver: schema.PathResolver("Type"),
 			},
 			{
-				Name:     "managed",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("Managed"),
+				Name:     "vault_id",
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 		},
 	}
-}
-
-func fetchKeyVaultSecrets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().KeyVault.Secrets
-
-	vault := parent.Item.(keyvault.Vault)
-	maxResults := int32(25)
-	response, err := svc.GetSecrets(ctx, *vault.Properties.VaultURI, &maxResults)
-
-	if err != nil {
-		return err
-	}
-
-	for response.NotDone() {
-		res <- response.Values()
-		if err := response.NextWithContext(ctx); err != nil {
-			return err
-		}
-	}
-
-	return nil
 }

@@ -3,74 +3,76 @@
 package sql
 
 import (
-	"context"
-
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-
-	"github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql"
 )
 
 func serverBlobAuditingPolicies() *schema.Table {
 	return &schema.Table{
 		Name:        "azure_sql_server_blob_auditing_policies",
-		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql#ServerBlobAuditingPolicy`,
-		Resolver:    fetchSQLServerBlobAuditingPolicies,
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql#ServerBlobAuditingPolicy`,
+		Resolver:    fetchServerBlobAuditingPolicies,
 		Columns: []schema.Column{
 			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "sql_server_id",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("id"),
+				Name:        "subscription_id",
+				Type:        schema.TypeString,
+				Resolver:    client.SubscriptionIDResolver,
+				Description: `Azure subscription ID`,
 			},
 			{
 				Name:     "state",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("State"),
-			},
-			{
-				Name:     "storage_endpoint",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("StorageEndpoint"),
-			},
-			{
-				Name:     "storage_account_access_key",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("StorageAccountAccessKey"),
-			},
-			{
-				Name:     "retention_days",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("RetentionDays"),
+				Resolver: schema.PathResolver("Properties.State"),
 			},
 			{
 				Name:     "audit_actions_and_groups",
 				Type:     schema.TypeStringArray,
-				Resolver: schema.PathResolver("AuditActionsAndGroups"),
-			},
-			{
-				Name:     "storage_account_subscription_id",
-				Type:     schema.TypeUUID,
-				Resolver: schema.PathResolver("StorageAccountSubscriptionID"),
-			},
-			{
-				Name:     "is_storage_secondary_key_in_use",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("IsStorageSecondaryKeyInUse"),
+				Resolver: schema.PathResolver("Properties.AuditActionsAndGroups"),
 			},
 			{
 				Name:     "is_azure_monitor_target_enabled",
 				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("IsAzureMonitorTargetEnabled"),
+				Resolver: schema.PathResolver("Properties.IsAzureMonitorTargetEnabled"),
+			},
+			{
+				Name:     "is_devops_audit_enabled",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Properties.IsDevopsAuditEnabled"),
+			},
+			{
+				Name:     "is_managed_identity_in_use",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Properties.IsManagedIdentityInUse"),
+			},
+			{
+				Name:     "is_storage_secondary_key_in_use",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Properties.IsStorageSecondaryKeyInUse"),
 			},
 			{
 				Name:     "queue_delay_ms",
 				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("QueueDelayMs"),
+				Resolver: schema.PathResolver("Properties.QueueDelayMs"),
+			},
+			{
+				Name:     "retention_days",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("Properties.RetentionDays"),
+			},
+			{
+				Name:     "storage_account_access_key",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.StorageAccountAccessKey"),
+			},
+			{
+				Name:     "storage_account_subscription_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.StorageAccountSubscriptionID"),
+			},
+			{
+				Name:     "storage_endpoint",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.StorageEndpoint"),
 			},
 			{
 				Name:     "id",
@@ -90,30 +92,11 @@ func serverBlobAuditingPolicies() *schema.Table {
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Type"),
 			},
+			{
+				Name:     "server_id",
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("id"),
+			},
 		},
 	}
-}
-
-func fetchSQLServerBlobAuditingPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().SQL.ServerBlobAuditingPolicies
-
-	server := parent.Item.(sql.Server)
-	resourceDetails, err := client.ParseResourceID(*server.ID)
-	if err != nil {
-		return err
-	}
-	response, err := svc.ListByServer(ctx, resourceDetails.ResourceGroup, *server.Name)
-
-	if err != nil {
-		return err
-	}
-
-	for response.NotDone() {
-		res <- response.Values()
-		if err := response.NextWithContext(ctx); err != nil {
-			return err
-		}
-	}
-
-	return nil
 }

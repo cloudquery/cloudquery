@@ -3,8 +3,6 @@
 package security
 
 import (
-	"context"
-
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -12,19 +10,20 @@ import (
 func AutoProvisioningSettings() *schema.Table {
 	return &schema.Table{
 		Name:        "azure_security_auto_provisioning_settings",
-		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security#AutoProvisioningSetting`,
-		Resolver:    fetchSecurityAutoProvisioningSettings,
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity#AutoProvisioningSetting`,
+		Resolver:    fetchAutoProvisioningSettings,
 		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
+				Name:        "subscription_id",
+				Type:        schema.TypeString,
+				Resolver:    client.SubscriptionIDResolver,
+				Description: `Azure subscription ID`,
 			},
 			{
 				Name:     "auto_provision",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("AutoProvision"),
+				Resolver: schema.PathResolver("Properties.AutoProvision"),
 			},
 			{
 				Name:     "id",
@@ -46,23 +45,4 @@ func AutoProvisioningSettings() *schema.Table {
 			},
 		},
 	}
-}
-
-func fetchSecurityAutoProvisioningSettings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().Security.AutoProvisioningSettings
-
-	response, err := svc.List(ctx)
-
-	if err != nil {
-		return err
-	}
-
-	for response.NotDone() {
-		res <- response.Values()
-		if err := response.NextWithContext(ctx); err != nil {
-			return err
-		}
-	}
-
-	return nil
 }

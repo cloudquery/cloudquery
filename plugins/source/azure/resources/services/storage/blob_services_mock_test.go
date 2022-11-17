@@ -5,28 +5,33 @@ package storage
 import (
 	"testing"
 
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/storage"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/storage"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-01-01/storage"
 )
 
-func createBlobServicesMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockStorageBlobServicesClient(ctrl)
-	s := services.Services{
-		Storage: services.StorageClient{
-			BlobServices: mockClient,
-		},
+func buildBlobServices(t *testing.T, ctrl *gomock.Controller, c *client.Services) {
+	if c.Storage == nil {
+		c.Storage = new(service.StorageClient)
+	}
+	storageClient := c.Storage
+	if storageClient.BlobServicesClient == nil {
+		storageClient.BlobServicesClient = mocks.NewMockBlobServicesClient(ctrl)
 	}
 
-	data := storage.BlobServiceProperties{}
-	require.Nil(t, faker.FakeObject(&data))
+	mockBlobServicesClient := storageClient.BlobServicesClient.(*mocks.MockBlobServicesClient)
 
-	result := storage.BlobServiceItems{Value: &[]storage.BlobServiceProperties{data}}
+	var response api.BlobServicesClientListResponse
+	require.NoError(t, faker.FakeObject(&response))
+	// Use correct Azure ID format
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.Value[0].ID = to.Ptr(id)
 
-	mockClient.EXPECT().List(gomock.Any(), "test", "test").Return(result, nil)
-	return s
+	mockBlobServicesClient.EXPECT().NewListPager(gomock.Any(), gomock.Any(), gomock.Any()).
+		Return(client.CreatePager(response)).MinTimes(1)
 }

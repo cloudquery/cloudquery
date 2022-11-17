@@ -3,8 +3,6 @@
 package logic
 
 import (
-	"context"
-
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -12,79 +10,90 @@ import (
 func Workflows() *schema.Table {
 	return &schema.Table{
 		Name:        "azure_logic_workflows",
-		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/logic/mgmt/2019-05-01/logic#Workflow`,
-		Resolver:    fetchLogicWorkflows,
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logic/armlogic#Workflow`,
+		Resolver:    fetchWorkflows,
 		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "provisioning_state",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ProvisioningState"),
-			},
-			{
-				Name:     "created_time",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("CreatedTime"),
-			},
-			{
-				Name:     "changed_time",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("ChangedTime"),
-			},
-			{
-				Name:     "state",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("State"),
-			},
-			{
-				Name:     "version",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Version"),
-			},
-			{
-				Name:     "access_endpoint",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("AccessEndpoint"),
-			},
-			{
-				Name:     "endpoints_configuration",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("EndpointsConfiguration"),
-			},
-			{
-				Name:     "access_control",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("AccessControl"),
-			},
-			{
-				Name:     "sku",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Sku"),
-			},
-			{
-				Name:     "integration_account",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("IntegrationAccount"),
-			},
-			{
-				Name:     "integration_service_environment",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("IntegrationServiceEnvironment"),
-			},
-			{
-				Name:     "parameters",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Parameters"),
+				Name:        "subscription_id",
+				Type:        schema.TypeString,
+				Resolver:    client.SubscriptionIDResolver,
+				Description: `Azure subscription ID`,
 			},
 			{
 				Name:     "identity",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Identity"),
+			},
+			{
+				Name:     "location",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Location"),
+			},
+			{
+				Name:     "access_control",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.AccessControl"),
+			},
+			{
+				Name:     "endpoints_configuration",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.EndpointsConfiguration"),
+			},
+			{
+				Name:     "integration_account",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.IntegrationAccount"),
+			},
+			{
+				Name:     "integration_service_environment",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.IntegrationServiceEnvironment"),
+			},
+			{
+				Name:     "parameters",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.Parameters"),
+			},
+			{
+				Name:     "state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.State"),
+			},
+			{
+				Name:     "access_endpoint",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.AccessEndpoint"),
+			},
+			{
+				Name:     "changed_time",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Properties.ChangedTime"),
+			},
+			{
+				Name:     "created_time",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Properties.CreatedTime"),
+			},
+			{
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.ProvisioningState"),
+			},
+			{
+				Name:     "sku",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.SKU"),
+			},
+			{
+				Name:     "version",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.Version"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Tags"),
 			},
 			{
 				Name:     "id",
@@ -104,40 +113,10 @@ func Workflows() *schema.Table {
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Type"),
 			},
-			{
-				Name:     "location",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Location"),
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
-			},
 		},
 
 		Relations: []*schema.Table{
 			diagnosticSettings(),
 		},
 	}
-}
-
-func fetchLogicWorkflows(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().Logic.Workflows
-
-	var top int32 = 100
-	response, err := svc.ListBySubscription(ctx, &top, "")
-
-	if err != nil {
-		return err
-	}
-
-	for response.NotDone() {
-		res <- response.Values()
-		if err := response.NextWithContext(ctx); err != nil {
-			return err
-		}
-	}
-
-	return nil
 }

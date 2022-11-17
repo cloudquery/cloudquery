@@ -3,33 +3,35 @@
 package storage
 
 import (
-	"context"
 	"testing"
 
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/storage"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/storage"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-01-01/storage"
 )
 
-func createContainersMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockStorageContainersClient(ctrl)
-	s := services.Services{
-		Storage: services.StorageClient{
-			Containers: mockClient,
-		},
+func buildContainers(t *testing.T, ctrl *gomock.Controller, c *client.Services) {
+	if c.Storage == nil {
+		c.Storage = new(service.StorageClient)
+	}
+	storageClient := c.Storage
+	if storageClient.BlobContainersClient == nil {
+		storageClient.BlobContainersClient = mocks.NewMockBlobContainersClient(ctrl)
 	}
 
-	data := storage.ListContainerItem{}
-	require.Nil(t, faker.FakeObject(&data))
+	mockBlobContainersClient := storageClient.BlobContainersClient.(*mocks.MockBlobContainersClient)
 
-	result := storage.NewListContainerItemsPage(storage.ListContainerItems{Value: &[]storage.ListContainerItem{data}}, func(ctx context.Context, result storage.ListContainerItems) (storage.ListContainerItems, error) {
-		return storage.ListContainerItems{}, nil
-	})
+	var response api.BlobContainersClientListResponse
+	require.NoError(t, faker.FakeObject(&response))
+	// Use correct Azure ID format
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.Value[0].ID = to.Ptr(id)
 
-	mockClient.EXPECT().List(gomock.Any(), "test", "test", "", "", gomock.Any()).Return(result, nil)
-	return s
+	mockBlobContainersClient.EXPECT().NewListPager(gomock.Any(), gomock.Any(), gomock.Any()).
+		Return(client.CreatePager(response)).MinTimes(1)
 }

@@ -3,41 +3,37 @@
 package cdn
 
 import (
-	"context"
 	"testing"
 
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/cdn"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/cdn"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2020-09-01/cdn"
 )
 
-func createRuleSetsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockCDNRuleSetsClient(ctrl)
-	s := services.Services{
-		CDN: services.CDNClient{
-			RuleSets: mockClient,
-		},
+func buildRuleSets(t *testing.T, ctrl *gomock.Controller, c *client.Services) {
+	if c.Cdn == nil {
+		c.Cdn = new(service.CdnClient)
+	}
+	cdnClient := c.Cdn
+	if cdnClient.RuleSetsClient == nil {
+		cdnClient.RuleSetsClient = mocks.NewMockRuleSetsClient(ctrl)
 	}
 
-	data := cdn.RuleSet{}
-	require.Nil(t, faker.FakeObject(&data))
+	mockRuleSetsClient := cdnClient.RuleSetsClient.(*mocks.MockRuleSetsClient)
 
-	// Ensure name and ID are consistent so we can reference it in other mock
-	name := "test"
-	data.Name = &name
-
+	var response api.RuleSetsClientListByProfileResponse
+	require.NoError(t, faker.FakeObject(&response))
 	// Use correct Azure ID format
-	id := "/subscriptions/test/resourceGroups/test/providers/test/test/test"
-	data.ID = &id
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.Value[0].ID = to.Ptr(id)
 
-	result := cdn.NewRuleSetListResultPage(cdn.RuleSetListResult{Value: &[]cdn.RuleSet{data}}, func(ctx context.Context, result cdn.RuleSetListResult) (cdn.RuleSetListResult, error) {
-		return cdn.RuleSetListResult{}, nil
-	})
+	mockRuleSetsClient.EXPECT().NewListByProfilePager(gomock.Any(), gomock.Any(), gomock.Any()).
+		Return(client.CreatePager(response)).MinTimes(1)
 
-	mockClient.EXPECT().ListByProfile(gomock.Any(), "test", "test").Return(result, nil)
-	return s
+	buildRules(t, ctrl, c)
 }

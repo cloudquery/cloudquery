@@ -5,28 +5,33 @@ package logic
 import (
 	"testing"
 
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/monitor"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/monitor"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/profiles/2020-09-01/monitor/mgmt/insights"
 )
 
-func createDiagnosticSettingsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockLogicDiagnosticSettingsClient(ctrl)
-	s := services.Services{
-		Logic: services.LogicClient{
-			DiagnosticSettings: mockClient,
-		},
+func buildDiagnosticSettings(t *testing.T, ctrl *gomock.Controller, c *client.Services) {
+	if c.Monitor == nil {
+		c.Monitor = new(service.MonitorClient)
+	}
+	monitorClient := c.Monitor
+	if monitorClient.DiagnosticSettingsClient == nil {
+		monitorClient.DiagnosticSettingsClient = mocks.NewMockDiagnosticSettingsClient(ctrl)
 	}
 
-	data := insights.DiagnosticSettingsResource{}
-	require.Nil(t, faker.FakeObject(&data))
+	mockDiagnosticSettingsClient := monitorClient.DiagnosticSettingsClient.(*mocks.MockDiagnosticSettingsClient)
 
-	result := insights.DiagnosticSettingsResourceCollection{Value: &[]insights.DiagnosticSettingsResource{data}}
+	var response api.DiagnosticSettingsClientListResponse
+	require.NoError(t, faker.FakeObject(&response))
+	// Use correct Azure ID format
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.Value[0].ID = to.Ptr(id)
 
-	mockClient.EXPECT().List(gomock.Any(), "/subscriptions/test/resourceGroups/test/providers/test/test/test").Return(result, nil)
-	return s
+	mockDiagnosticSettingsClient.EXPECT().NewListPager(gomock.Any(), gomock.Any()).
+		Return(client.CreatePager(response)).MinTimes(1)
 }
