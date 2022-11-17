@@ -4,6 +4,7 @@ package client
 import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
+	"github.com/aws/aws-sdk-go-v2/service/account"
 	"github.com/aws/aws-sdk-go-v2/service/acm"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
@@ -101,6 +102,7 @@ func initServices(region string, c aws.Config) Services {
 	awsCfg.Region = region
 	return Services{
 		Accessanalyzer:            accessanalyzer.NewFromConfig(awsCfg),
+		Account:                   account.NewFromConfig(awsCfg),
 		Acm:                       acm.NewFromConfig(awsCfg),
 		Apigateway:                apigateway.NewFromConfig(awsCfg),
 		Apigatewayv2:              apigatewayv2.NewFromConfig(awsCfg),
@@ -195,6 +197,7 @@ func initServices(region string, c aws.Config) Services {
 
 type Services struct {
 	Accessanalyzer            services.AccessanalyzerClient
+	Account                   services.AccountClient
 	Acm                       services.AcmClient
 	Apigateway                services.ApigatewayClient
 	Apigatewayv2              services.Apigatewayv2Client

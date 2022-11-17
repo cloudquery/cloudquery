@@ -5,6 +5,8 @@
 | [aws_accessanalyzer_analyzers](aws_accessanalyzer_analyzers.md) |
 | ↳ [aws_accessanalyzer_analyzer_findings](aws_accessanalyzer_analyzer_findings.md) |
 | ↳ [aws_accessanalyzer_analyzer_archive_rules](aws_accessanalyzer_analyzer_archive_rules.md) |
+| [aws_account_alternate_contacts](aws_account_alternate_contacts.md) |
+| [aws_account_contacts](aws_account_contacts.md) |
 | [aws_acm_certificates](aws_acm_certificates.md) |
 | [aws_apigateway_api_keys](aws_apigateway_api_keys.md) |
 | [aws_apigateway_client_certificates](aws_apigateway_client_certificates.md) |
