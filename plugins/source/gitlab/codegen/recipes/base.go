@@ -21,21 +21,21 @@ import (
 var templatesFS embed.FS
 
 type Resource struct {
-	Service             string
-	SubService          string
-	ServicePath         string
-	GlobalResource      bool
-	ServiceFunc         interface{}
-	ResourceFunc        interface{}
-	ServiceFuncName     string
-	ResourceFuncName    string
+	Service        string
+	SubService     string
+	ServicePath    string
+	GlobalResource bool
+	ServiceFunc    interface{}
+	ResourceFunc   interface{}
+	// ServiceFuncName     string
+	// ResourceFuncName    string
 	ResourcePath        string
 	ImportPath          string
 	SubServiceInterface interface{}
 	ResourceInterface   interface{}
 	Struct              interface{}
 	StructName          string
-	Multiplex           string // By default, Multiplex is `client.ContextMultiplex`
+	Multiplex           string // By default, there is no multiplex
 	Table               *codegen.TableDefinition
 	ExtraColumns        []codegen.ColumnDefinition
 	SkipFields          []string
@@ -78,7 +78,7 @@ func (resource *Resource) generate(mock bool) error {
 		"ToLower": strings.ToLower,
 	}).ParseFS(templatesFS, "templates/*.go.tpl")
 	if err != nil {
-		return fmt.Errorf("failed to parse k8s templates: %w", err)
+		return fmt.Errorf("failed to parse gitlab templates: %w", err)
 	}
 	tpl, err = tpl.ParseFS(codegen.TemplatesFS, "templates/*.go.tpl")
 	if err != nil {
@@ -129,11 +129,11 @@ func (resource *Resource) Generate() error {
 	skipFields = append(skipFields, resource.SkipFields...)
 
 	extraColumns := []codegen.ColumnDefinition{
-		{
-			Name:     "context",
-			Type:     schema.TypeString,
-			Resolver: `client.ResolveContext`,
-		},
+		// {
+		// 	Name:     "context",
+		// 	Type:     schema.TypeString,
+		// 	Resolver: `client.ResolveContext`,
+		// },
 		{
 			Name:     "uid",
 			Type:     schema.TypeString,
@@ -145,7 +145,7 @@ func (resource *Resource) Generate() error {
 	extraColumns = append(extraColumns, resource.ExtraColumns...)
 
 	resource.Table, err = codegen.NewTableFromStruct(
-		fmt.Sprintf("k8s_%s_%s", resource.Service, resource.SubService),
+		fmt.Sprintf("gitlab_%s_%s", resource.Service, resource.SubService),
 		resource.Struct,
 		codegen.WithUnwrapAllEmbeddedStructs(),
 		codegen.WithSkipFields(skipFields),
@@ -161,22 +161,17 @@ func (resource *Resource) Generate() error {
 	resource.Table.Resolver = "fetch" + strcase.ToCamel(resource.SubService)
 	if resource.Multiplex != "" {
 		resource.Table.Multiplex = resource.Multiplex
-	} else {
-		resource.Table.Multiplex = "client.ContextMultiplex"
 	}
 
 	resource.StructName = getType(resource.Struct)
-	resource.ImportPath = strings.TrimPrefix(getPackagePath(resource.Struct), "k8s.io/api/")
-	resource.ServiceFuncName = getFunctionName(resource.ServiceFunc)
-	resource.ResourceFuncName = getFunctionName(resource.ResourceFunc)
 
 	if err := resource.generate(false); err != nil {
 		return err
 	}
 
-	if err := resource.generate(true); err != nil {
-		return err
-	}
+	// if err := resource.generate(true); err != nil {
+	// 	return err
+	// }
 
 	return nil
 }
@@ -193,7 +188,7 @@ func GeneratePlugin(resources []*Resource) error {
 		"ToLower": strings.ToLower,
 	}).ParseFS(templatesFS, "templates/*.go.tpl")
 	if err != nil {
-		return fmt.Errorf("failed to parse k8s templates: %w", err)
+		return fmt.Errorf("failed to parse gitlab templates: %w", err)
 	}
 	tpl, err = tpl.ParseFS(codegen.TemplatesFS, "templates/*.go.tpl")
 	if err != nil {
