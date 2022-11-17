@@ -130,8 +130,8 @@ github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.18.23 h1:UC5k0LA2
 github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.18.23/go.mod h1:uIsRP+M5F/Ch+21isqTg6u16FXl2yzupCX0Dli4eQEM=
 github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.17.0 h1:9Abd0yyOotKqI0aSSDetMuNKs8NlMXgnOCejdUBRHOI=
 github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.17.0/go.mod h1:UY0dc/ngkmYkBegXTwQ3kILLtItU8UJuueHHD91vn88=
-github.com/aws/aws-sdk-go-v2/service/emr v1.20.14 h1:T9h9NiiMNV7igqwoDqS8FlTCsuZXUeEg9+HVs4VBx68=
-github.com/aws/aws-sdk-go-v2/service/emr v1.20.14/go.mod h1:uz/j390yhhyjOoxOKyj1VcMh0XXxgwyUU/r/vcPuOzo=
+github.com/aws/aws-sdk-go-v2/service/emr v1.20.15 h1:EWb9QZmFhI3n8nOIiPH2UISleP1+0g/leaAHFqeUoEk=
+github.com/aws/aws-sdk-go-v2/service/emr v1.20.15/go.mod h1:uz/j390yhhyjOoxOKyj1VcMh0XXxgwyUU/r/vcPuOzo=
 github.com/aws/aws-sdk-go-v2/service/eventbridge v1.16.18 h1:w1gPDC0BpINH6eZ5QbWBk94B4LavzGt2sq76ej2GlzM=
 github.com/aws/aws-sdk-go-v2/service/eventbridge v1.16.18/go.mod h1:8g5GmQrg6Q44ap2NIxBb6eCZojS70QhJiv0qsgHVSKo=
 github.com/aws/aws-sdk-go-v2/service/firehose v1.14.22 h1:XQmegBm7AoJp8hlvF6CkgyX+RVuAMP5S7E3XH4HpPPY=
