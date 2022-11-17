@@ -3,41 +3,38 @@
 package cdn
 
 import (
-	"context"
 	"testing"
 
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/cdn"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/cdn"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2020-09-01/cdn"
 )
 
-func createEndpointsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockCDNEndpointsClient(ctrl)
-	s := services.Services{
-		CDN: services.CDNClient{
-			Endpoints: mockClient,
-		},
+func buildEndpoints(t *testing.T, ctrl *gomock.Controller, c *client.Services) {
+	if c.Cdn == nil {
+		c.Cdn = new(service.CdnClient)
+	}
+	cdnClient := c.Cdn
+	if cdnClient.EndpointsClient == nil {
+		cdnClient.EndpointsClient = mocks.NewMockEndpointsClient(ctrl)
 	}
 
-	data := cdn.Endpoint{}
-	require.Nil(t, faker.FakeObject(&data))
+	mockEndpointsClient := cdnClient.EndpointsClient.(*mocks.MockEndpointsClient)
 
-	// Ensure name and ID are consistent so we can reference it in other mock
-	name := "test"
-	data.Name = &name
-
+	var response api.EndpointsClientListByProfileResponse
+	require.NoError(t, faker.FakeObject(&response))
 	// Use correct Azure ID format
-	id := "/subscriptions/test/resourceGroups/test/providers/test/test/test"
-	data.ID = &id
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.Value[0].ID = to.Ptr(id)
 
-	result := cdn.NewEndpointListResultPage(cdn.EndpointListResult{Value: &[]cdn.Endpoint{data}}, func(ctx context.Context, result cdn.EndpointListResult) (cdn.EndpointListResult, error) {
-		return cdn.EndpointListResult{}, nil
-	})
+	mockEndpointsClient.EXPECT().NewListByProfilePager(gomock.Any(), gomock.Any(), gomock.Any()).
+		Return(client.CreatePager(response)).MinTimes(1)
 
-	mockClient.EXPECT().ListByProfile(gomock.Any(), "test", "test").Return(result, nil)
-	return s
+	buildCustomDomains(t, ctrl, c)
+	buildRoutes(t, ctrl, c)
 }

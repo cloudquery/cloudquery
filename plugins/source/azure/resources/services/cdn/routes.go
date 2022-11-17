@@ -3,9 +3,6 @@
 package cdn
 
 import (
-	"context"
-
-	"github.com/Azure/azure-sdk-for-go/profiles/latest/cdn/mgmt/cdn"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -13,83 +10,84 @@ import (
 func routes() *schema.Table {
 	return &schema.Table{
 		Name:        "azure_cdn_routes",
-		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2020-09-01/cdn#Route`,
-		Resolver:    fetchCDNRoutes,
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn#Route`,
+		Resolver:    fetchRoutes,
 		Columns: []schema.Column{
 			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
+				Name:        "subscription_id",
+				Type:        schema.TypeString,
+				Resolver:    client.SubscriptionIDResolver,
+				Description: `Azure subscription ID`,
 			},
 			{
-				Name:     "cdn_endpoint_id",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("id"),
+				Name:     "cache_configuration",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.CacheConfiguration"),
 			},
 			{
 				Name:     "custom_domains",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("CustomDomains"),
-			},
-			{
-				Name:     "origin_group",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("OriginGroup"),
-			},
-			{
-				Name:     "origin_path",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("OriginPath"),
-			},
-			{
-				Name:     "rule_sets",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("RuleSets"),
-			},
-			{
-				Name:     "supported_protocols",
-				Type:     schema.TypeStringArray,
-				Resolver: schema.PathResolver("SupportedProtocols"),
-			},
-			{
-				Name:     "patterns_to_match",
-				Type:     schema.TypeStringArray,
-				Resolver: schema.PathResolver("PatternsToMatch"),
-			},
-			{
-				Name:     "query_string_caching_behavior",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("QueryStringCachingBehavior"),
-			},
-			{
-				Name:     "forwarding_protocol",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ForwardingProtocol"),
-			},
-			{
-				Name:     "link_to_default_domain",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("LinkToDefaultDomain"),
-			},
-			{
-				Name:     "https_redirect",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("HTTPSRedirect"),
+				Resolver: schema.PathResolver("Properties.CustomDomains"),
 			},
 			{
 				Name:     "enabled_state",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("EnabledState"),
+				Resolver: schema.PathResolver("Properties.EnabledState"),
 			},
 			{
-				Name:     "provisioning_state",
+				Name:     "forwarding_protocol",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ProvisioningState"),
+				Resolver: schema.PathResolver("Properties.ForwardingProtocol"),
+			},
+			{
+				Name:     "https_redirect",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.HTTPSRedirect"),
+			},
+			{
+				Name:     "link_to_default_domain",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.LinkToDefaultDomain"),
+			},
+			{
+				Name:     "origin_group",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.OriginGroup"),
+			},
+			{
+				Name:     "origin_path",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.OriginPath"),
+			},
+			{
+				Name:     "patterns_to_match",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("Properties.PatternsToMatch"),
+			},
+			{
+				Name:     "rule_sets",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.RuleSets"),
+			},
+			{
+				Name:     "supported_protocols",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("Properties.SupportedProtocols"),
 			},
 			{
 				Name:     "deployment_status",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("DeploymentStatus"),
+				Resolver: schema.PathResolver("Properties.DeploymentStatus"),
+			},
+			{
+				Name:     "endpoint_name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.EndpointName"),
+			},
+			{
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.ProvisioningState"),
 			},
 			{
 				Name:     "id",
@@ -105,40 +103,20 @@ func routes() *schema.Table {
 				Resolver: schema.PathResolver("Name"),
 			},
 			{
+				Name:     "system_data",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("SystemData"),
+			},
+			{
 				Name:     "type",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Type"),
 			},
 			{
-				Name:     "system_data",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("SystemData"),
+				Name:     "endpoint_id",
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 		},
 	}
-}
-
-func fetchCDNRoutes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().CDN.Routes
-
-	profile := parent.Parent.Item.(cdn.Profile)
-	resource, err := client.ParseResourceID(*profile.ID)
-	if err != nil {
-		return err
-	}
-	endpoint := parent.Item.(cdn.Endpoint)
-	response, err := svc.ListByEndpoint(ctx, resource.ResourceGroup, *profile.Name, *endpoint.Name)
-
-	if err != nil {
-		return err
-	}
-
-	for response.NotDone() {
-		res <- response.Values()
-		if err := response.NextWithContext(ctx); err != nil {
-			return err
-		}
-	}
-
-	return nil
 }

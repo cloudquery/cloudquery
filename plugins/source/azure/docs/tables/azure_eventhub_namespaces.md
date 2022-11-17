@@ -1,6 +1,6 @@
 # Table: azure_eventhub_namespaces
 
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/eventhub/mgmt/2018-01-01-preview/eventhub#EHNamespace
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub#EHNamespace
 
 The primary key for this table is **id**.
 
@@ -17,21 +17,26 @@ The following tables depend on azure_eventhub_namespaces:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|sku|JSON|
 |identity|JSON|
-|provisioning_state|String|
-|created_at|Timestamp|
-|updated_at|Timestamp|
-|service_bus_endpoint|String|
-|cluster_arm_id|String|
-|metric_id|String|
-|is_auto_inflate_enabled|Bool|
-|maximum_throughput_units|Int|
-|kafka_enabled|Bool|
-|zone_redundant|Bool|
-|encryption|JSON|
 |location|String|
+|alternate_name|String|
+|cluster_arm_id|String|
+|disable_local_auth|Bool|
+|encryption|JSON|
+|is_auto_inflate_enabled|Bool|
+|kafka_enabled|Bool|
+|maximum_throughput_units|Int|
+|private_endpoint_connections|JSON|
+|zone_redundant|Bool|
+|created_at|Timestamp|
+|metric_id|String|
+|provisioning_state|String|
+|service_bus_endpoint|String|
+|status|String|
+|updated_at|Timestamp|
+|sku|JSON|
 |tags|JSON|
 |id (PK)|String|
 |name|String|
+|system_data|JSON|
 |type|String|

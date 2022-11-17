@@ -3,8 +3,6 @@
 package network
 
 import (
-	"context"
-
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -12,79 +10,15 @@ import (
 func ExpressRoutePorts() *schema.Table {
 	return &schema.Table{
 		Name:        "azure_network_express_route_ports",
-		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network#ExpressRoutePort`,
-		Resolver:    fetchNetworkExpressRoutePorts,
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2#ExpressRoutePort`,
+		Resolver:    fetchExpressRoutePorts,
 		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "peering_location",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("PeeringLocation"),
-			},
-			{
-				Name:     "bandwidth_in_gbps",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("BandwidthInGbps"),
-			},
-			{
-				Name:     "provisioned_bandwidth_in_gbps",
-				Type:     schema.TypeFloat,
-				Resolver: schema.PathResolver("ProvisionedBandwidthInGbps"),
-			},
-			{
-				Name:     "mtu",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Mtu"),
-			},
-			{
-				Name:     "encapsulation",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Encapsulation"),
-			},
-			{
-				Name:     "ether_type",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("EtherType"),
-			},
-			{
-				Name:     "allocation_date",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("AllocationDate"),
-			},
-			{
-				Name:     "links",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Links"),
-			},
-			{
-				Name:     "circuits",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Circuits"),
-			},
-			{
-				Name:     "provisioning_state",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ProvisioningState"),
-			},
-			{
-				Name:     "resource_guid",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ResourceGUID"),
-			},
-			{
-				Name:     "etag",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Etag"),
-			},
-			{
-				Name:     "identity",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Identity"),
+				Name:        "subscription_id",
+				Type:        schema.TypeString,
+				Resolver:    client.SubscriptionIDResolver,
+				Description: `Azure subscription ID`,
 			},
 			{
 				Name:     "id",
@@ -93,6 +27,86 @@ func ExpressRoutePorts() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
+			},
+			{
+				Name:     "identity",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Identity"),
+			},
+			{
+				Name:     "location",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Location"),
+			},
+			{
+				Name:     "bandwidth_in_gbps",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("Properties.BandwidthInGbps"),
+			},
+			{
+				Name:     "billing_type",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.BillingType"),
+			},
+			{
+				Name:     "encapsulation",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.Encapsulation"),
+			},
+			{
+				Name:     "links",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.Links"),
+			},
+			{
+				Name:     "peering_location",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.PeeringLocation"),
+			},
+			{
+				Name:     "allocation_date",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.AllocationDate"),
+			},
+			{
+				Name:     "circuits",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.Circuits"),
+			},
+			{
+				Name:     "ether_type",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.EtherType"),
+			},
+			{
+				Name:     "mtu",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.Mtu"),
+			},
+			{
+				Name:     "provisioned_bandwidth_in_gbps",
+				Type:     schema.TypeFloat,
+				Resolver: schema.PathResolver("Properties.ProvisionedBandwidthInGbps"),
+			},
+			{
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.ProvisioningState"),
+			},
+			{
+				Name:     "resource_guid",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.ResourceGUID"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Tags"),
+			},
+			{
+				Name:     "etag",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Etag"),
 			},
 			{
 				Name:     "name",
@@ -104,35 +118,6 @@ func ExpressRoutePorts() *schema.Table {
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Type"),
 			},
-			{
-				Name:     "location",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Location"),
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
-			},
 		},
 	}
-}
-
-func fetchNetworkExpressRoutePorts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().Network.ExpressRoutePorts
-
-	response, err := svc.List(ctx)
-
-	if err != nil {
-		return err
-	}
-
-	for response.NotDone() {
-		res <- response.Values()
-		if err := response.NextWithContext(ctx); err != nil {
-			return err
-		}
-	}
-
-	return nil
 }

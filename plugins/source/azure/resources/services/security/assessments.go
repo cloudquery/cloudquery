@@ -3,9 +3,6 @@
 package security
 
 import (
-	"context"
-	"fmt"
-
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -13,44 +10,45 @@ import (
 func Assessments() *schema.Table {
 	return &schema.Table{
 		Name:        "azure_security_assessments",
-		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security#Assessment`,
-		Resolver:    fetchSecurityAssessments,
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity#Assessment`,
+		Resolver:    fetchAssessments,
 		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "display_name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("DisplayName"),
+				Name:        "subscription_id",
+				Type:        schema.TypeString,
+				Resolver:    client.SubscriptionIDResolver,
+				Description: `Azure subscription ID`,
 			},
 			{
 				Name:     "status",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Status"),
+				Resolver: schema.PathResolver("Properties.Status"),
 			},
 			{
 				Name:     "additional_data",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("AdditionalData"),
-			},
-			{
-				Name:     "links",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Links"),
+				Resolver: schema.PathResolver("Properties.AdditionalData"),
 			},
 			{
 				Name:     "metadata",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Metadata"),
+				Resolver: schema.PathResolver("Properties.Metadata"),
 			},
 			{
 				Name:     "partners_data",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("PartnersData"),
+				Resolver: schema.PathResolver("Properties.PartnersData"),
+			},
+			{
+				Name:     "display_name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.DisplayName"),
+			},
+			{
+				Name:     "links",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.Links"),
 			},
 			{
 				Name:     "id",
@@ -72,23 +70,4 @@ func Assessments() *schema.Table {
 			},
 		},
 	}
-}
-
-func fetchSecurityAssessments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().Security.Assessments
-
-	response, err := svc.List(ctx, fmt.Sprintf("/subscriptions/%s", meta.(*client.Client).SubscriptionId))
-
-	if err != nil {
-		return err
-	}
-
-	for response.NotDone() {
-		res <- response.Values()
-		if err := response.NextWithContext(ctx); err != nil {
-			return err
-		}
-	}
-
-	return nil
 }

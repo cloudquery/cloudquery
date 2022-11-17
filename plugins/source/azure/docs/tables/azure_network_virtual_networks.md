@@ -1,6 +1,6 @@
 # Table: azure_network_virtual_networks
 
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network#VirtualNetwork
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2#VirtualNetwork
 
 The primary key for this table is **id**.
 
@@ -18,20 +18,22 @@ The following tables depend on azure_network_virtual_networks:
 |_cq_parent_id|UUID|
 |subscription_id|String|
 |extended_location|JSON|
+|id (PK)|String|
+|location|String|
 |address_space|JSON|
+|bgp_communities|JSON|
+|ddos_protection_plan|JSON|
 |dhcp_options|JSON|
-|subnets|JSON|
-|virtual_network_peerings|JSON|
-|resource_guid|String|
-|provisioning_state|String|
 |enable_ddos_protection|Bool|
 |enable_vm_protection|Bool|
-|ddos_protection_plan|JSON|
-|bgp_communities|JSON|
+|encryption|JSON|
+|flow_timeout_in_minutes|Int|
 |ip_allocations|JSON|
+|subnets|JSON|
+|virtual_network_peerings|JSON|
+|provisioning_state|String|
+|resource_guid|String|
+|tags|JSON|
 |etag|String|
-|id (PK)|String|
 |name|String|
 |type|String|
-|location|String|
-|tags|JSON|

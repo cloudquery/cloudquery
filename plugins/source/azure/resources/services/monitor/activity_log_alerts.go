@@ -3,8 +3,6 @@
 package monitor
 
 import (
-	"context"
-
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -12,39 +10,50 @@ import (
 func ActivityLogAlerts() *schema.Table {
 	return &schema.Table{
 		Name:        "azure_monitor_activity_log_alerts",
-		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2019-11-01-preview/insights#ActivityLogAlertResource`,
-		Resolver:    fetchMonitorActivityLogAlerts,
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor#ActivityLogAlertResource`,
+		Resolver:    fetchActivityLogAlerts,
 		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
-				Name:     "subscription_id",
+				Name:        "subscription_id",
+				Type:        schema.TypeString,
+				Resolver:    client.SubscriptionIDResolver,
+				Description: `Azure subscription ID`,
+			},
+			{
+				Name:     "location",
 				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "scopes",
-				Type:     schema.TypeStringArray,
-				Resolver: schema.PathResolver("Scopes"),
-			},
-			{
-				Name:     "enabled",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("Enabled"),
-			},
-			{
-				Name:     "condition",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Condition"),
+				Resolver: schema.PathResolver("Location"),
 			},
 			{
 				Name:     "actions",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Actions"),
+				Resolver: schema.PathResolver("Properties.Actions"),
+			},
+			{
+				Name:     "condition",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.Condition"),
+			},
+			{
+				Name:     "scopes",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("Properties.Scopes"),
 			},
 			{
 				Name:     "description",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Description"),
+				Resolver: schema.PathResolver("Properties.Description"),
+			},
+			{
+				Name:     "enabled",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Properties.Enabled"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Tags"),
 			},
 			{
 				Name:     "id",
@@ -64,31 +73,6 @@ func ActivityLogAlerts() *schema.Table {
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Type"),
 			},
-			{
-				Name:     "location",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Location"),
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
-			},
 		},
 	}
-}
-
-func fetchMonitorActivityLogAlerts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().Monitor.ActivityLogAlerts
-
-	response, err := svc.ListBySubscriptionID(ctx)
-	if err != nil {
-		return err
-	}
-	if response.Value == nil {
-		return nil
-	}
-	res <- *response.Value
-
-	return nil
 }

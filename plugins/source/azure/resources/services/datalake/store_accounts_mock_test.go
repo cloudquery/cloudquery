@@ -3,51 +3,62 @@
 package datalake
 
 import (
-	"context"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-store/armdatalakestore"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/datalakestore"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/datalakestore"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/profiles/latest/datalake/store/mgmt/account"
 )
 
-func TestDataLakeStoreAccounts(t *testing.T) {
-	client.MockTestHelper(t, StoreAccounts(), createStoreAccountsMock)
-}
+func buildStoreAccounts(t *testing.T, ctrl *gomock.Controller) *client.Services {
+	mockAccountsClient := mocks.NewMockAccountsClient(ctrl)
 
-func createStoreAccountsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockDataLakeStoreAccountsClient(ctrl)
-	s := services.Services{
-		DataLake: services.DataLakeClient{
-			StoreAccounts: mockClient,
-		},
+	var response api.AccountsClientListResponse
+	require.NoError(t, faker.FakeObject(&response))
+	// Use correct Azure ID format
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.Value[0].ID = to.Ptr(id)
+
+	mockAccountsClient.EXPECT().NewListPager(gomock.Any()).
+		Return(client.CreatePager(response)).MinTimes(1)
+
+	datalakestoreClient := &service.DatalakestoreClient{
+		AccountsClient: mockAccountsClient,
 	}
 
-	data := account.DataLakeStoreAccountBasic{}
-	require.Nil(t, faker.FakeObject(&data))
+	c := &client.Services{Datalakestore: datalakestoreClient}
 
-	// Ensure name and ID are consistent so we can reference it in other mock
-	name := "test"
-	data.Name = &name
+	buildStoreAccountsPreResolver(t, ctrl, c)
 
+	return c
+}
+
+func buildStoreAccountsPreResolver(t *testing.T, ctrl *gomock.Controller, c *client.Services) {
+	if c.Datalakestore == nil {
+		c.Datalakestore = new(service.DatalakestoreClient)
+	}
+	datalakestoreClient := c.Datalakestore
+	if datalakestoreClient.AccountsClient == nil {
+		datalakestoreClient.AccountsClient = mocks.NewMockAccountsClient(ctrl)
+	}
+
+	mockAccountsClient := datalakestoreClient.AccountsClient.(*mocks.MockAccountsClient)
+
+	var response api.AccountsClientGetResponse
+	require.NoError(t, faker.FakeObject(&response))
 	// Use correct Azure ID format
-	id := "/subscriptions/test/resourceGroups/test/providers/test/test/test"
-	data.ID = &id
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.ID = to.Ptr(id)
 
-	getData := account.DataLakeStoreAccount{}
-	require.Nil(t, faker.FakeObject(&getData))
+	mockAccountsClient.EXPECT().Get(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).
+		Return(response, nil).MinTimes(1)
+}
 
-	result := account.NewDataLakeStoreAccountListResultPage(account.DataLakeStoreAccountListResult{Value: &[]account.DataLakeStoreAccountBasic{data}}, func(ctx context.Context, result account.DataLakeStoreAccountListResult) (account.DataLakeStoreAccountListResult, error) {
-		return account.DataLakeStoreAccountListResult{}, nil
-	})
-
-	mockClient.EXPECT().List(gomock.Any(), "", nil, nil, "", "", nil).Return(result, nil)
-
-	mockClient.EXPECT().Get(gomock.Any(), "test", *data.Name).Return(getData, nil)
-	return s
+func TestStoreAccounts(t *testing.T) {
+	client.MockTestHelper(t, StoreAccounts(), buildStoreAccounts)
 }

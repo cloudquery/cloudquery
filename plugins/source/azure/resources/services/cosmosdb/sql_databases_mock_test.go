@@ -5,28 +5,33 @@ package cosmosdb
 import (
 	"testing"
 
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v2"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/cosmos"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/cosmos"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2020-04-01-preview/documentdb"
 )
 
-func createSQLDatabasesMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockCosmosDBSQLDatabasesClient(ctrl)
-	s := services.Services{
-		CosmosDB: services.CosmosDBClient{
-			SQLDatabases: mockClient,
-		},
+func buildSqlDatabases(t *testing.T, ctrl *gomock.Controller, c *client.Services) {
+	if c.Cosmos == nil {
+		c.Cosmos = new(service.CosmosClient)
+	}
+	cosmosClient := c.Cosmos
+	if cosmosClient.SQLResourcesClient == nil {
+		cosmosClient.SQLResourcesClient = mocks.NewMockSQLResourcesClient(ctrl)
 	}
 
-	data := documentdb.SQLDatabaseGetResults{}
-	require.Nil(t, faker.FakeObject(&data))
+	mockSQLResourcesClient := cosmosClient.SQLResourcesClient.(*mocks.MockSQLResourcesClient)
 
-	result := documentdb.SQLDatabaseListResult{Value: &[]documentdb.SQLDatabaseGetResults{data}}
+	var response api.SQLResourcesClientListSQLDatabasesResponse
+	require.NoError(t, faker.FakeObject(&response))
+	// Use correct Azure ID format
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.Value[0].ID = to.Ptr(id)
 
-	mockClient.EXPECT().ListSQLDatabases(gomock.Any(), "test", "test").Return(result, nil)
-	return s
+	mockSQLResourcesClient.EXPECT().NewListSQLDatabasesPager(gomock.Any(), gomock.Any(), gomock.Any()).
+		Return(client.CreatePager(response)).MinTimes(1)
 }

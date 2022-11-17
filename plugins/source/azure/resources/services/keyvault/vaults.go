@@ -3,8 +3,6 @@
 package keyvault
 
 import (
-	"context"
-
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -12,14 +10,110 @@ import (
 func Vaults() *schema.Table {
 	return &schema.Table{
 		Name:        "azure_keyvault_vaults",
-		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/keyvault/mgmt/2019-09-01/keyvault#Vault`,
-		Resolver:    fetchKeyVaultVaults,
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault#Vault`,
+		Resolver:    fetchVaults,
 		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
-				Name:     "subscription_id",
+				Name:        "subscription_id",
+				Type:        schema.TypeString,
+				Resolver:    client.SubscriptionIDResolver,
+				Description: `Azure subscription ID`,
+			},
+			{
+				Name:     "sku",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.SKU"),
+			},
+			{
+				Name:     "tenant_id",
 				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
+				Resolver: schema.PathResolver("Properties.TenantID"),
+			},
+			{
+				Name:     "access_policies",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.AccessPolicies"),
+			},
+			{
+				Name:     "create_mode",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.CreateMode"),
+			},
+			{
+				Name:     "enable_purge_protection",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Properties.EnablePurgeProtection"),
+			},
+			{
+				Name:     "enable_rbac_authorization",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Properties.EnableRbacAuthorization"),
+			},
+			{
+				Name:     "enable_soft_delete",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Properties.EnableSoftDelete"),
+			},
+			{
+				Name:     "enabled_for_deployment",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Properties.EnabledForDeployment"),
+			},
+			{
+				Name:     "enabled_for_disk_encryption",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Properties.EnabledForDiskEncryption"),
+			},
+			{
+				Name:     "enabled_for_template_deployment",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Properties.EnabledForTemplateDeployment"),
+			},
+			{
+				Name:     "network_acls",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.NetworkACLs"),
+			},
+			{
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.ProvisioningState"),
+			},
+			{
+				Name:     "public_network_access",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.PublicNetworkAccess"),
+			},
+			{
+				Name:     "soft_delete_retention_in_days",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("Properties.SoftDeleteRetentionInDays"),
+			},
+			{
+				Name:     "vault_uri",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.VaultURI"),
+			},
+			{
+				Name:     "hsm_pool_resource_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.HsmPoolResourceID"),
+			},
+			{
+				Name:     "private_endpoint_connections",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.PrivateEndpointConnections"),
+			},
+			{
+				Name:     "location",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Location"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Tags"),
 			},
 			{
 				Name:     "id",
@@ -35,89 +129,14 @@ func Vaults() *schema.Table {
 				Resolver: schema.PathResolver("Name"),
 			},
 			{
+				Name:     "system_data",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("SystemData"),
+			},
+			{
 				Name:     "type",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Type"),
-			},
-			{
-				Name:     "location",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Location"),
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
-			},
-			{
-				Name:     "properties_tenant_id",
-				Type:     schema.TypeUUID,
-				Resolver: schema.PathResolver("Properties.TenantID"),
-			},
-			{
-				Name:     "properties_sku",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Properties.Sku"),
-			},
-			{
-				Name:     "properties_access_policies",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Properties.AccessPolicies"),
-			},
-			{
-				Name:     "properties_vault_uri",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Properties.VaultURI"),
-			},
-			{
-				Name:     "properties_enabled_for_deployment",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("Properties.EnabledForDeployment"),
-			},
-			{
-				Name:     "properties_enabled_for_disk_encryption",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("Properties.EnabledForDiskEncryption"),
-			},
-			{
-				Name:     "properties_enabled_for_template_deployment",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("Properties.EnabledForTemplateDeployment"),
-			},
-			{
-				Name:     "properties_enable_soft_delete",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("Properties.EnableSoftDelete"),
-			},
-			{
-				Name:     "properties_soft_delete_retention_in_days",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("Properties.SoftDeleteRetentionInDays"),
-			},
-			{
-				Name:     "properties_enable_rbac_authorization",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("Properties.EnableRbacAuthorization"),
-			},
-			{
-				Name:     "properties_create_mode",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Properties.CreateMode"),
-			},
-			{
-				Name:     "properties_enable_purge_protection",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("Properties.EnablePurgeProtection"),
-			},
-			{
-				Name:     "properties_network_acls",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Properties.NetworkAcls"),
-			},
-			{
-				Name:     "properties_private_endpoint_connections",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Properties.PrivateEndpointConnections"),
 			},
 		},
 
@@ -126,24 +145,4 @@ func Vaults() *schema.Table {
 			secrets(),
 		},
 	}
-}
-
-func fetchKeyVaultVaults(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().KeyVault.Vaults
-
-	maxResults := int32(1000)
-	response, err := svc.ListBySubscription(ctx, &maxResults)
-
-	if err != nil {
-		return err
-	}
-
-	for response.NotDone() {
-		res <- response.Values()
-		if err := response.NextWithContext(ctx); err != nil {
-			return err
-		}
-	}
-
-	return nil
 }

@@ -1,8 +1,8 @@
 # Table: azure_keyvault_keys
 
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/keyvault/v7.1/keyvault#KeyItem
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault#Key
 
-The primary key for this table is **kid**.
+The primary key for this table is **id**.
 
 ## Relations
 This table depends on [azure_keyvault_vaults](azure_keyvault_vaults.md).
@@ -16,8 +16,16 @@ This table depends on [azure_keyvault_vaults](azure_keyvault_vaults.md).
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|keyvault_vault_id|String|
-|kid (PK)|String|
 |attributes|JSON|
+|curve_name|String|
+|key_ops|StringArray|
+|key_size|Int|
+|kty|String|
+|key_uri|String|
+|key_uri_with_version|String|
+|id (PK)|String|
+|location|String|
+|name|String|
 |tags|JSON|
-|managed|Bool|
+|type|String|
+|vault_id|String|

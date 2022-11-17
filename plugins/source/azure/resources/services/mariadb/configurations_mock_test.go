@@ -5,28 +5,33 @@ package mariadb
 import (
 	"testing"
 
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/mariadb"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mariadb"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/services/mariadb/mgmt/2020-01-01/mariadb"
 )
 
-func createConfigurationsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockMariaDBConfigurationsClient(ctrl)
-	s := services.Services{
-		MariaDB: services.MariaDBClient{
-			Configurations: mockClient,
-		},
+func buildConfigurations(t *testing.T, ctrl *gomock.Controller, c *client.Services) {
+	if c.Mariadb == nil {
+		c.Mariadb = new(service.MariadbClient)
+	}
+	mariadbClient := c.Mariadb
+	if mariadbClient.ConfigurationsClient == nil {
+		mariadbClient.ConfigurationsClient = mocks.NewMockConfigurationsClient(ctrl)
 	}
 
-	data := mariadb.Configuration{}
-	require.Nil(t, faker.FakeObject(&data))
+	mockConfigurationsClient := mariadbClient.ConfigurationsClient.(*mocks.MockConfigurationsClient)
 
-	result := mariadb.ConfigurationListResult{Value: &[]mariadb.Configuration{data}}
+	var response api.ConfigurationsClientListByServerResponse
+	require.NoError(t, faker.FakeObject(&response))
+	// Use correct Azure ID format
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.Value[0].ID = to.Ptr(id)
 
-	mockClient.EXPECT().ListByServer(gomock.Any(), "test", "test").Return(result, nil)
-	return s
+	mockConfigurationsClient.EXPECT().NewListByServerPager(gomock.Any(), gomock.Any(), gomock.Any()).
+		Return(client.CreatePager(response)).MinTimes(1)
 }

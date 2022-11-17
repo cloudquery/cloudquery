@@ -1,6 +1,6 @@
 # Table: azure_security_auto_provisioning_settings
 
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security#AutoProvisioningSetting
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity#AutoProvisioningSetting
 
 The primary key for this table is **id**.
 

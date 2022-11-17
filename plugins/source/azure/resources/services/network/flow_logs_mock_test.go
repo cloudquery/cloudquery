@@ -3,33 +3,35 @@
 package network
 
 import (
-	"context"
 	"testing"
 
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/network"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/network"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"
 )
 
-func createFlowLogsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockNetworkFlowLogsClient(ctrl)
-	s := services.Services{
-		Network: services.NetworkClient{
-			FlowLogs: mockClient,
-		},
+func buildFlowLogs(t *testing.T, ctrl *gomock.Controller, c *client.Services) {
+	if c.Network == nil {
+		c.Network = new(service.NetworkClient)
+	}
+	networkClient := c.Network
+	if networkClient.FlowLogsClient == nil {
+		networkClient.FlowLogsClient = mocks.NewMockFlowLogsClient(ctrl)
 	}
 
-	data := network.FlowLog{}
-	require.Nil(t, faker.FakeObject(&data))
+	mockFlowLogsClient := networkClient.FlowLogsClient.(*mocks.MockFlowLogsClient)
 
-	result := network.NewFlowLogListResultPage(network.FlowLogListResult{Value: &[]network.FlowLog{data}}, func(ctx context.Context, result network.FlowLogListResult) (network.FlowLogListResult, error) {
-		return network.FlowLogListResult{}, nil
-	})
+	var response api.FlowLogsClientListResponse
+	require.NoError(t, faker.FakeObject(&response))
+	// Use correct Azure ID format
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.Value[0].ID = to.Ptr(id)
 
-	mockClient.EXPECT().List(gomock.Any(), "test", "test").Return(result, nil)
-	return s
+	mockFlowLogsClient.EXPECT().NewListPager(gomock.Any(), gomock.Any(), gomock.Any()).
+		Return(client.CreatePager(response)).MinTimes(1)
 }

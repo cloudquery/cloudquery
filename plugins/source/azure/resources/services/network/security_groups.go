@@ -3,8 +3,6 @@
 package network
 
 import (
-	"context"
-
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -12,54 +10,15 @@ import (
 func SecurityGroups() *schema.Table {
 	return &schema.Table{
 		Name:        "azure_network_security_groups",
-		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network#SecurityGroup`,
-		Resolver:    fetchNetworkSecurityGroups,
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2#SecurityGroup`,
+		Resolver:    fetchSecurityGroups,
 		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "security_rules",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("SecurityRules"),
-			},
-			{
-				Name:     "default_security_rules",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("DefaultSecurityRules"),
-			},
-			{
-				Name:     "network_interfaces",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("NetworkInterfaces"),
-			},
-			{
-				Name:     "subnets",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Subnets"),
-			},
-			{
-				Name:     "flow_logs",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("FlowLogs"),
-			},
-			{
-				Name:     "resource_guid",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ResourceGUID"),
-			},
-			{
-				Name:     "provisioning_state",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ProvisioningState"),
-			},
-			{
-				Name:     "etag",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Etag"),
+				Name:        "subscription_id",
+				Type:        schema.TypeString,
+				Resolver:    client.SubscriptionIDResolver,
+				Description: `Azure subscription ID`,
 			},
 			{
 				Name:     "id",
@@ -68,6 +27,61 @@ func SecurityGroups() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
+			},
+			{
+				Name:     "location",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Location"),
+			},
+			{
+				Name:     "flush_connection",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Properties.FlushConnection"),
+			},
+			{
+				Name:     "security_rules",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.SecurityRules"),
+			},
+			{
+				Name:     "default_security_rules",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.DefaultSecurityRules"),
+			},
+			{
+				Name:     "flow_logs",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.FlowLogs"),
+			},
+			{
+				Name:     "network_interfaces",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.NetworkInterfaces"),
+			},
+			{
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.ProvisioningState"),
+			},
+			{
+				Name:     "resource_guid",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.ResourceGUID"),
+			},
+			{
+				Name:     "subnets",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.Subnets"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Tags"),
+			},
+			{
+				Name:     "etag",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Etag"),
 			},
 			{
 				Name:     "name",
@@ -79,35 +93,6 @@ func SecurityGroups() *schema.Table {
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Type"),
 			},
-			{
-				Name:     "location",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Location"),
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
-			},
 		},
 	}
-}
-
-func fetchNetworkSecurityGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().Network.SecurityGroups
-
-	response, err := svc.ListAll(ctx)
-
-	if err != nil {
-		return err
-	}
-
-	for response.NotDone() {
-		res <- response.Values()
-		if err := response.NextWithContext(ctx); err != nil {
-			return err
-		}
-	}
-
-	return nil
 }

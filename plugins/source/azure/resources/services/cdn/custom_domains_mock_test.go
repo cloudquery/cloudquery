@@ -3,33 +3,35 @@
 package cdn
 
 import (
-	"context"
 	"testing"
 
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/cdn"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/cdn"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2020-09-01/cdn"
 )
 
-func createCustomDomainsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockCDNCustomDomainsClient(ctrl)
-	s := services.Services{
-		CDN: services.CDNClient{
-			CustomDomains: mockClient,
-		},
+func buildCustomDomains(t *testing.T, ctrl *gomock.Controller, c *client.Services) {
+	if c.Cdn == nil {
+		c.Cdn = new(service.CdnClient)
+	}
+	cdnClient := c.Cdn
+	if cdnClient.CustomDomainsClient == nil {
+		cdnClient.CustomDomainsClient = mocks.NewMockCustomDomainsClient(ctrl)
 	}
 
-	data := cdn.CustomDomain{}
-	require.Nil(t, faker.FakeObject(&data))
+	mockCustomDomainsClient := cdnClient.CustomDomainsClient.(*mocks.MockCustomDomainsClient)
 
-	result := cdn.NewCustomDomainListResultPage(cdn.CustomDomainListResult{Value: &[]cdn.CustomDomain{data}}, func(ctx context.Context, result cdn.CustomDomainListResult) (cdn.CustomDomainListResult, error) {
-		return cdn.CustomDomainListResult{}, nil
-	})
+	var response api.CustomDomainsClientListByEndpointResponse
+	require.NoError(t, faker.FakeObject(&response))
+	// Use correct Azure ID format
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.Value[0].ID = to.Ptr(id)
 
-	mockClient.EXPECT().ListByEndpoint(gomock.Any(), "test", "test", "test").Return(result, nil)
-	return s
+	mockCustomDomainsClient.EXPECT().NewListByEndpointPager(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).
+		Return(client.CreatePager(response)).MinTimes(1)
 }

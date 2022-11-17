@@ -3,38 +3,39 @@
 package authorization
 
 import (
-	"context"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization/v2"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/authorization"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/authorization"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/services/authorization/mgmt/2015-07-01/authorization"
 )
 
-func TestAuthorizationRoleDefinitions(t *testing.T) {
-	client.MockTestHelper(t, RoleDefinitions(), createRoleDefinitionsMock)
-}
+func buildRoleDefinitions(t *testing.T, ctrl *gomock.Controller) *client.Services {
+	mockRoleDefinitionsClient := mocks.NewMockRoleDefinitionsClient(ctrl)
 
-func createRoleDefinitionsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockAuthorizationRoleDefinitionsClient(ctrl)
-	s := services.Services{
-		Authorization: services.AuthorizationClient{
-			RoleDefinitions: mockClient,
-		},
+	var response api.RoleDefinitionsClientListResponse
+	require.NoError(t, faker.FakeObject(&response))
+	// Use correct Azure ID format
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.Value[0].ID = to.Ptr(id)
+
+	mockRoleDefinitionsClient.EXPECT().NewListPager(gomock.Any(), gomock.Any()).
+		Return(client.CreatePager(response)).MinTimes(1)
+
+	authorizationClient := &service.AuthorizationClient{
+		RoleDefinitionsClient: mockRoleDefinitionsClient,
 	}
 
-	data := authorization.RoleDefinition{}
-	require.Nil(t, faker.FakeObject(&data))
+	c := &client.Services{Authorization: authorizationClient}
 
-	result := authorization.NewRoleDefinitionListResultPage(authorization.RoleDefinitionListResult{Value: &[]authorization.RoleDefinition{data}}, func(ctx context.Context, result authorization.RoleDefinitionListResult) (authorization.RoleDefinitionListResult, error) {
-		return authorization.RoleDefinitionListResult{}, nil
-	})
+	return c
+}
 
-	mockClient.EXPECT().List(gomock.Any(), gomock.Any(), "").Return(result, nil)
-	return s
+func TestRoleDefinitions(t *testing.T) {
+	client.MockTestHelper(t, RoleDefinitions(), buildRoleDefinitions)
 }

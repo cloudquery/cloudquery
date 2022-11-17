@@ -3,9 +3,6 @@
 package container
 
 import (
-	"context"
-
-	"github.com/Azure/azure-sdk-for-go/profiles/latest/containerregistry/mgmt/containerregistry"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -13,28 +10,44 @@ import (
 func replications() *schema.Table {
 	return &schema.Table{
 		Name:        "azure_container_replications",
-		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/containerregistry/mgmt/2019-05-01/containerregistry#Replication`,
-		Resolver:    fetchContainerReplications,
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry#Replication`,
+		Resolver:    fetchReplications,
 		Columns: []schema.Column{
 			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
+				Name:        "subscription_id",
+				Type:        schema.TypeString,
+				Resolver:    client.SubscriptionIDResolver,
+				Description: `Azure subscription ID`,
 			},
 			{
-				Name:     "container_registry_id",
+				Name:     "location",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("id"),
+				Resolver: schema.PathResolver("Location"),
+			},
+			{
+				Name:     "region_endpoint_enabled",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Properties.RegionEndpointEnabled"),
+			},
+			{
+				Name:     "zone_redundancy",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.ZoneRedundancy"),
 			},
 			{
 				Name:     "provisioning_state",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ProvisioningState"),
+				Resolver: schema.PathResolver("Properties.ProvisioningState"),
 			},
 			{
 				Name:     "status",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Status"),
+				Resolver: schema.PathResolver("Properties.Status"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Tags"),
 			},
 			{
 				Name:     "id",
@@ -50,44 +63,20 @@ func replications() *schema.Table {
 				Resolver: schema.PathResolver("Name"),
 			},
 			{
+				Name:     "system_data",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("SystemData"),
+			},
+			{
 				Name:     "type",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Type"),
 			},
 			{
-				Name:     "location",
+				Name:     "registry_id",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Location"),
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 		},
 	}
-}
-
-func fetchContainerReplications(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().Container.Replications
-
-	registry := parent.Item.(containerregistry.Registry)
-	resource, err := client.ParseResourceID(*registry.ID)
-	if err != nil {
-		return err
-	}
-	response, err := svc.List(ctx, resource.ResourceGroup, *registry.Name)
-
-	if err != nil {
-		return err
-	}
-
-	for response.NotDone() {
-		res <- response.Values()
-		if err := response.NextWithContext(ctx); err != nil {
-			return err
-		}
-	}
-
-	return nil
 }

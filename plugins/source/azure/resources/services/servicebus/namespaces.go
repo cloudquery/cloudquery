@@ -3,8 +3,6 @@
 package servicebus
 
 import (
-	"context"
-
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -12,19 +10,20 @@ import (
 func Namespaces() *schema.Table {
 	return &schema.Table{
 		Name:        "azure_servicebus_namespaces",
-		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/servicebus/mgmt/2021-06-01-preview/servicebus#SBNamespace`,
-		Resolver:    fetchServicebusNamespaces,
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus/v2#SBNamespace`,
+		Resolver:    fetchNamespaces,
 		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
+				Name:        "subscription_id",
+				Type:        schema.TypeString,
+				Resolver:    client.SubscriptionIDResolver,
+				Description: `Azure subscription ID`,
 			},
 			{
-				Name:     "sku",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Sku"),
+				Name:     "location",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Location"),
 			},
 			{
 				Name:     "identity",
@@ -32,64 +31,74 @@ func Namespaces() *schema.Table {
 				Resolver: schema.PathResolver("Identity"),
 			},
 			{
-				Name:     "system_data",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("SystemData"),
-			},
-			{
-				Name:     "provisioning_state",
+				Name:     "alternate_name",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ProvisioningState"),
-			},
-			{
-				Name:     "status",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Status"),
-			},
-			{
-				Name:     "created_at",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("CreatedAt"),
-			},
-			{
-				Name:     "updated_at",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("UpdatedAt"),
-			},
-			{
-				Name:     "service_bus_endpoint",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ServiceBusEndpoint"),
-			},
-			{
-				Name:     "metric_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("MetricID"),
-			},
-			{
-				Name:     "zone_redundant",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("ZoneRedundant"),
-			},
-			{
-				Name:     "encryption",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Encryption"),
-			},
-			{
-				Name:     "private_endpoint_connections",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("PrivateEndpointConnections"),
+				Resolver: schema.PathResolver("Properties.AlternateName"),
 			},
 			{
 				Name:     "disable_local_auth",
 				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("DisableLocalAuth"),
+				Resolver: schema.PathResolver("Properties.DisableLocalAuth"),
 			},
 			{
-				Name:     "location",
+				Name:     "encryption",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.Encryption"),
+			},
+			{
+				Name:     "minimum_tls_version",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Location"),
+				Resolver: schema.PathResolver("Properties.MinimumTLSVersion"),
+			},
+			{
+				Name:     "private_endpoint_connections",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.PrivateEndpointConnections"),
+			},
+			{
+				Name:     "public_network_access",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.PublicNetworkAccess"),
+			},
+			{
+				Name:     "zone_redundant",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Properties.ZoneRedundant"),
+			},
+			{
+				Name:     "created_at",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Properties.CreatedAt"),
+			},
+			{
+				Name:     "metric_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.MetricID"),
+			},
+			{
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.ProvisioningState"),
+			},
+			{
+				Name:     "service_bus_endpoint",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.ServiceBusEndpoint"),
+			},
+			{
+				Name:     "status",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.Status"),
+			},
+			{
+				Name:     "updated_at",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Properties.UpdatedAt"),
+			},
+			{
+				Name:     "sku",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("SKU"),
 			},
 			{
 				Name:     "tags",
@@ -110,6 +119,11 @@ func Namespaces() *schema.Table {
 				Resolver: schema.PathResolver("Name"),
 			},
 			{
+				Name:     "system_data",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("SystemData"),
+			},
+			{
 				Name:     "type",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Type"),
@@ -120,23 +134,4 @@ func Namespaces() *schema.Table {
 			topics(),
 		},
 	}
-}
-
-func fetchServicebusNamespaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().Servicebus.Namespaces
-
-	response, err := svc.List(ctx)
-
-	if err != nil {
-		return err
-	}
-
-	for response.NotDone() {
-		res <- response.Values()
-		if err := response.NextWithContext(ctx); err != nil {
-			return err
-		}
-	}
-
-	return nil
 }

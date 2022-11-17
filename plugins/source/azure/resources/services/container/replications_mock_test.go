@@ -3,33 +3,35 @@
 package container
 
 import (
-	"context"
 	"testing"
 
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/containerregistry"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/containerregistry"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/services/containerregistry/mgmt/2019-05-01/containerregistry"
 )
 
-func createReplicationsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockContainerReplicationsClient(ctrl)
-	s := services.Services{
-		Container: services.ContainerClient{
-			Replications: mockClient,
-		},
+func buildReplications(t *testing.T, ctrl *gomock.Controller, c *client.Services) {
+	if c.Containerregistry == nil {
+		c.Containerregistry = new(service.ContainerregistryClient)
+	}
+	containerregistryClient := c.Containerregistry
+	if containerregistryClient.ReplicationsClient == nil {
+		containerregistryClient.ReplicationsClient = mocks.NewMockReplicationsClient(ctrl)
 	}
 
-	data := containerregistry.Replication{}
-	require.Nil(t, faker.FakeObject(&data))
+	mockReplicationsClient := containerregistryClient.ReplicationsClient.(*mocks.MockReplicationsClient)
 
-	result := containerregistry.NewReplicationListResultPage(containerregistry.ReplicationListResult{Value: &[]containerregistry.Replication{data}}, func(ctx context.Context, result containerregistry.ReplicationListResult) (containerregistry.ReplicationListResult, error) {
-		return containerregistry.ReplicationListResult{}, nil
-	})
+	var response api.ReplicationsClientListResponse
+	require.NoError(t, faker.FakeObject(&response))
+	// Use correct Azure ID format
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.Value[0].ID = to.Ptr(id)
 
-	mockClient.EXPECT().List(gomock.Any(), "test", "test").Return(result, nil)
-	return s
+	mockReplicationsClient.EXPECT().NewListPager(gomock.Any(), gomock.Any(), gomock.Any()).
+		Return(client.CreatePager(response)).MinTimes(1)
 }

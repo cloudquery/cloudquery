@@ -5,28 +5,29 @@ package servicebus
 import (
 	"testing"
 
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus/v2"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/servicebus"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/servicebus"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/services/preview/servicebus/mgmt/2021-06-01-preview/servicebus"
 )
 
-func createAccessKeysMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockServicebusAccessKeysClient(ctrl)
-	s := services.Services{
-		Servicebus: services.ServicebusClient{
-			AccessKeys: mockClient,
-		},
+func buildAccessKeys(t *testing.T, ctrl *gomock.Controller, c *client.Services) {
+	if c.Servicebus == nil {
+		c.Servicebus = new(service.ServicebusClient)
+	}
+	servicebusClient := c.Servicebus
+	if servicebusClient.TopicsClient == nil {
+		servicebusClient.TopicsClient = mocks.NewMockTopicsClient(ctrl)
 	}
 
-	data := servicebus.AccessKeys{}
-	require.Nil(t, faker.FakeObject(&data))
+	mockTopicsClient := servicebusClient.TopicsClient.(*mocks.MockTopicsClient)
 
-	result := data
+	var response api.TopicsClientListKeysResponse
+	require.NoError(t, faker.FakeObject(&response))
 
-	mockClient.EXPECT().ListKeys(gomock.Any(), "test", "test", "test", "test").Return(result, nil)
-	return s
+	mockTopicsClient.EXPECT().ListKeys(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).
+		Return(response, nil).MinTimes(1)
 }

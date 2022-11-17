@@ -1,6 +1,6 @@
 # Table: azure_sql_server_dev_ops_auditing_settings
 
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql#ServerDevOpsAuditingSettings
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql#ServerDevOpsAuditingSettings
 
 The primary key for this table is **id**.
 
@@ -16,13 +16,13 @@ This table depends on [azure_sql_servers](azure_sql_servers.md).
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|sql_server_id|String|
-|system_data|JSON|
-|is_azure_monitor_target_enabled|Bool|
 |state|String|
-|storage_endpoint|String|
+|is_azure_monitor_target_enabled|Bool|
 |storage_account_access_key|String|
-|storage_account_subscription_id|UUID|
+|storage_account_subscription_id|String|
+|storage_endpoint|String|
 |id (PK)|String|
 |name|String|
+|system_data|JSON|
 |type|String|
+|server_id|String|

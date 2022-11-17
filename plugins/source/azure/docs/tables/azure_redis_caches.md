@@ -1,6 +1,6 @@
 # Table: azure_redis_caches
 
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2020-12-01/redis#ResourceType
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis/v2#ResourceInfo
 
 The primary key for this table is **id**.
 
@@ -14,29 +14,30 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|provisioning_state|String|
-|host_name|String|
-|port|Int|
-|ssl_port|Int|
-|access_keys|JSON|
-|linked_servers|JSON|
-|instances|JSON|
-|private_endpoint_connections|JSON|
+|location|String|
 |sku|JSON|
-|subnet_id|String|
-|static_ip|String|
-|redis_configuration|JSON|
-|redis_version|String|
 |enable_non_ssl_port|Bool|
-|replicas_per_master|Int|
-|replicas_per_primary|Int|
-|tenant_settings|JSON|
-|shard_count|Int|
 |minimum_tls_version|String|
 |public_network_access|String|
-|zones|StringArray|
+|redis_configuration|JSON|
+|redis_version|String|
+|replicas_per_master|Int|
+|replicas_per_primary|Int|
+|shard_count|Int|
+|static_ip|String|
+|subnet_id|String|
+|tenant_settings|JSON|
+|access_keys|JSON|
+|host_name|String|
+|instances|JSON|
+|linked_servers|JSON|
+|port|Int|
+|private_endpoint_connections|JSON|
+|provisioning_state|String|
+|ssl_port|Int|
+|identity|JSON|
 |tags|JSON|
-|location|String|
+|zones|StringArray|
 |id (PK)|String|
 |name|String|
 |type|String|

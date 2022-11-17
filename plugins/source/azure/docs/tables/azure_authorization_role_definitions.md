@@ -1,6 +1,6 @@
 # Table: azure_authorization_role_definitions
 
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/authorization/mgmt/2015-07-01/authorization#RoleDefinition
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization/v2#RoleDefinition
 
 The primary key for this table is **id**.
 
@@ -14,11 +14,11 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
+|assignable_scopes|StringArray|
+|description|String|
+|permissions|JSON|
+|role_name|String|
+|properties_type|String|
 |id (PK)|String|
 |name|String|
 |type|String|
-|role_name|String|
-|description|String|
-|permissions|JSON|
-|assignable_scopes|StringArray|
-|role_type|String|

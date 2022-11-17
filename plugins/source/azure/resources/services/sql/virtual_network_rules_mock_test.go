@@ -3,33 +3,35 @@
 package sql
 
 import (
-	"context"
 	"testing"
 
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/sql"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/sql"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql"
 )
 
-func createVirtualNetworkRulesMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockSQLVirtualNetworkRulesClient(ctrl)
-	s := services.Services{
-		SQL: services.SQLClient{
-			VirtualNetworkRules: mockClient,
-		},
+func buildVirtualNetworkRules(t *testing.T, ctrl *gomock.Controller, c *client.Services) {
+	if c.Sql == nil {
+		c.Sql = new(service.SqlClient)
+	}
+	sqlClient := c.Sql
+	if sqlClient.VirtualNetworkRulesClient == nil {
+		sqlClient.VirtualNetworkRulesClient = mocks.NewMockVirtualNetworkRulesClient(ctrl)
 	}
 
-	data := sql.VirtualNetworkRule{}
-	require.Nil(t, faker.FakeObject(&data))
+	mockVirtualNetworkRulesClient := sqlClient.VirtualNetworkRulesClient.(*mocks.MockVirtualNetworkRulesClient)
 
-	result := sql.NewVirtualNetworkRuleListResultPage(sql.VirtualNetworkRuleListResult{Value: &[]sql.VirtualNetworkRule{data}}, func(ctx context.Context, result sql.VirtualNetworkRuleListResult) (sql.VirtualNetworkRuleListResult, error) {
-		return sql.VirtualNetworkRuleListResult{}, nil
-	})
+	var response api.VirtualNetworkRulesClientListByServerResponse
+	require.NoError(t, faker.FakeObject(&response))
+	// Use correct Azure ID format
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.Value[0].ID = to.Ptr(id)
 
-	mockClient.EXPECT().ListByServer(gomock.Any(), "test", "test").Return(result, nil)
-	return s
+	mockVirtualNetworkRulesClient.EXPECT().NewListByServerPager(gomock.Any(), gomock.Any(), gomock.Any()).
+		Return(client.CreatePager(response)).MinTimes(1)
 }

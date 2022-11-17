@@ -3,38 +3,39 @@
 package network
 
 import (
-	"context"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/network"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/network"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"
 )
 
-func TestNetworkPublicIPAddresses(t *testing.T) {
-	client.MockTestHelper(t, PublicIPAddresses(), createPublicIPAddressesMock)
-}
+func buildPublicIpAddresses(t *testing.T, ctrl *gomock.Controller) *client.Services {
+	mockPublicIPAddressesClient := mocks.NewMockPublicIPAddressesClient(ctrl)
 
-func createPublicIPAddressesMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockNetworkPublicIPAddressesClient(ctrl)
-	s := services.Services{
-		Network: services.NetworkClient{
-			PublicIPAddresses: mockClient,
-		},
+	var response api.PublicIPAddressesClientListAllResponse
+	require.NoError(t, faker.FakeObject(&response))
+	// Use correct Azure ID format
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.Value[0].ID = to.Ptr(id)
+
+	mockPublicIPAddressesClient.EXPECT().NewListAllPager(gomock.Any()).
+		Return(client.CreatePager(response)).MinTimes(1)
+
+	networkClient := &service.NetworkClient{
+		PublicIPAddressesClient: mockPublicIPAddressesClient,
 	}
 
-	data := network.PublicIPAddress{}
-	require.Nil(t, faker.FakeObject(&data))
+	c := &client.Services{Network: networkClient}
 
-	result := network.NewPublicIPAddressListResultPage(network.PublicIPAddressListResult{Value: &[]network.PublicIPAddress{data}}, func(ctx context.Context, result network.PublicIPAddressListResult) (network.PublicIPAddressListResult, error) {
-		return network.PublicIPAddressListResult{}, nil
-	})
+	return c
+}
 
-	mockClient.EXPECT().ListAll(gomock.Any()).Return(result, nil)
-	return s
+func TestPublicIpAddresses(t *testing.T) {
+	client.MockTestHelper(t, PublicIpAddresses(), buildPublicIpAddresses)
 }

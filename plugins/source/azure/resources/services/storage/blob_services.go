@@ -3,79 +3,66 @@
 package storage
 
 import (
-	"context"
-
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-
-	"github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-01-01/storage"
 )
 
 func blobServices() *schema.Table {
 	return &schema.Table{
 		Name:        "azure_storage_blob_services",
-		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-01-01/storage#BlobServiceProperties`,
-		Resolver:    fetchStorageBlobServices,
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage#BlobServiceProperties`,
+		Resolver:    fetchBlobServices,
 		Columns: []schema.Column{
 			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "storage_account_id",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("id"),
-			},
-			{
-				Name:     "cors",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Cors"),
-			},
-			{
-				Name:     "default_service_version",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("DefaultServiceVersion"),
-			},
-			{
-				Name:     "delete_retention_policy",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("DeleteRetentionPolicy"),
-			},
-			{
-				Name:     "is_versioning_enabled",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("IsVersioningEnabled"),
+				Name:        "subscription_id",
+				Type:        schema.TypeString,
+				Resolver:    client.SubscriptionIDResolver,
+				Description: `Azure subscription ID`,
 			},
 			{
 				Name:     "automatic_snapshot_policy_enabled",
 				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("AutomaticSnapshotPolicyEnabled"),
+				Resolver: schema.PathResolver("BlobServiceProperties.AutomaticSnapshotPolicyEnabled"),
 			},
 			{
 				Name:     "change_feed",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ChangeFeed"),
-			},
-			{
-				Name:     "restore_policy",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("RestorePolicy"),
+				Resolver: schema.PathResolver("BlobServiceProperties.ChangeFeed"),
 			},
 			{
 				Name:     "container_delete_retention_policy",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ContainerDeleteRetentionPolicy"),
+				Resolver: schema.PathResolver("BlobServiceProperties.ContainerDeleteRetentionPolicy"),
+			},
+			{
+				Name:     "cors",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("BlobServiceProperties.Cors"),
+			},
+			{
+				Name:     "default_service_version",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("BlobServiceProperties.DefaultServiceVersion"),
+			},
+			{
+				Name:     "delete_retention_policy",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("BlobServiceProperties.DeleteRetentionPolicy"),
+			},
+			{
+				Name:     "is_versioning_enabled",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("BlobServiceProperties.IsVersioningEnabled"),
 			},
 			{
 				Name:     "last_access_time_tracking_policy",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("LastAccessTimeTrackingPolicy"),
+				Resolver: schema.PathResolver("BlobServiceProperties.LastAccessTimeTrackingPolicy"),
 			},
 			{
-				Name:     "sku",
+				Name:     "restore_policy",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Sku"),
+				Resolver: schema.PathResolver("BlobServiceProperties.RestorePolicy"),
 			},
 			{
 				Name:     "id",
@@ -91,34 +78,20 @@ func blobServices() *schema.Table {
 				Resolver: schema.PathResolver("Name"),
 			},
 			{
+				Name:     "sku",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("SKU"),
+			},
+			{
 				Name:     "type",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Type"),
 			},
+			{
+				Name:     "account_id",
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("id"),
+			},
 		},
 	}
-}
-
-func fetchStorageBlobServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().Storage.BlobServices
-
-	account := parent.Item.(storage.Account)
-	if !isBlobSupported(&account) {
-		return nil
-	}
-
-	resource, err := client.ParseResourceID(*account.ID)
-	if err != nil {
-		return err
-	}
-	response, err := svc.List(ctx, resource.ResourceGroup, *account.Name)
-	if err != nil {
-		return err
-	}
-	if response.Value == nil {
-		return nil
-	}
-	res <- *response.Value
-
-	return nil
 }

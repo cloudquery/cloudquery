@@ -3,39 +3,26 @@
 package servicebus
 
 import (
-	"context"
-
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-
-	"github.com/Azure/azure-sdk-for-go/services/preview/servicebus/mgmt/2021-06-01-preview/servicebus"
 )
 
 func authorizationRules() *schema.Table {
 	return &schema.Table{
 		Name:        "azure_servicebus_authorization_rules",
-		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/servicebus/mgmt/2021-06-01-preview/servicebus#SBAuthorizationRule`,
-		Resolver:    fetchServicebusAuthorizationRules,
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus/v2#SBAuthorizationRule`,
+		Resolver:    fetchAuthorizationRules,
 		Columns: []schema.Column{
 			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "servicebus_topic_id",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("id"),
+				Name:        "subscription_id",
+				Type:        schema.TypeString,
+				Resolver:    client.SubscriptionIDResolver,
+				Description: `Azure subscription ID`,
 			},
 			{
 				Name:     "rights",
 				Type:     schema.TypeStringArray,
-				Resolver: schema.PathResolver("Rights"),
-			},
-			{
-				Name:     "system_data",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("SystemData"),
+				Resolver: schema.PathResolver("Properties.Rights"),
 			},
 			{
 				Name:     "id",
@@ -46,14 +33,29 @@ func authorizationRules() *schema.Table {
 				},
 			},
 			{
+				Name:     "location",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Location"),
+			},
+			{
 				Name:     "name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Name"),
 			},
 			{
+				Name:     "system_data",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("SystemData"),
+			},
+			{
 				Name:     "type",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Type"),
+			},
+			{
+				Name:     "topic_id",
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 		},
 
@@ -61,29 +63,4 @@ func authorizationRules() *schema.Table {
 			accessKeys(),
 		},
 	}
-}
-
-func fetchServicebusAuthorizationRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().Servicebus.AuthorizationRules
-
-	namespace := parent.Parent.Item.(servicebus.SBNamespace)
-	topic := parent.Item.(servicebus.SBTopic)
-	resourceDetails, err := client.ParseResourceID(*topic.ID)
-	if err != nil {
-		return err
-	}
-	response, err := svc.ListAuthorizationRules(ctx, resourceDetails.ResourceGroup, *namespace.Name, *topic.Name)
-
-	if err != nil {
-		return err
-	}
-
-	for response.NotDone() {
-		res <- response.Values()
-		if err := response.NextWithContext(ctx); err != nil {
-			return err
-		}
-	}
-
-	return nil
 }

@@ -1,6 +1,6 @@
 # Table: azure_cdn_security_policies
 
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2020-09-01/cdn#SecurityPolicy
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn#SecurityPolicy
 
 The primary key for this table is **id**.
 
@@ -16,10 +16,11 @@ This table depends on [azure_cdn_profiles](azure_cdn_profiles.md).
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|cdn_profile_id|String|
-|provisioning_state|String|
 |deployment_status|String|
+|profile_name|String|
+|provisioning_state|String|
 |id (PK)|String|
 |name|String|
-|type|String|
 |system_data|JSON|
+|type|String|
+|profile_id|String|

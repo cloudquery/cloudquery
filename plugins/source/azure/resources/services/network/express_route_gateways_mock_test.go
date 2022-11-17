@@ -5,33 +5,37 @@ package network
 import (
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/network"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/network"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"
 )
 
-func TestNetworkExpressRouteGateways(t *testing.T) {
-	client.MockTestHelper(t, ExpressRouteGateways(), createExpressRouteGatewaysMock)
-}
+func buildExpressRouteGateways(t *testing.T, ctrl *gomock.Controller) *client.Services {
+	mockExpressRouteGatewaysClient := mocks.NewMockExpressRouteGatewaysClient(ctrl)
 
-func createExpressRouteGatewaysMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockNetworkExpressRouteGatewaysClient(ctrl)
-	s := services.Services{
-		Network: services.NetworkClient{
-			ExpressRouteGateways: mockClient,
-		},
+	var response api.ExpressRouteGatewaysClientListBySubscriptionResponse
+	require.NoError(t, faker.FakeObject(&response))
+	// Use correct Azure ID format
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.Value[0].ID = to.Ptr(id)
+
+	mockExpressRouteGatewaysClient.EXPECT().ListBySubscription(gomock.Any(), gomock.Any()).
+		Return(response, nil).MinTimes(1)
+
+	networkClient := &service.NetworkClient{
+		ExpressRouteGatewaysClient: mockExpressRouteGatewaysClient,
 	}
 
-	data := network.ExpressRouteGateway{}
-	require.Nil(t, faker.FakeObject(&data))
+	c := &client.Services{Network: networkClient}
 
-	result := network.ExpressRouteGatewayList{Value: &[]network.ExpressRouteGateway{data}}
+	return c
+}
 
-	mockClient.EXPECT().ListBySubscription(gomock.Any()).Return(result, nil)
-	return s
+func TestExpressRouteGateways(t *testing.T) {
+	client.MockTestHelper(t, ExpressRouteGateways(), buildExpressRouteGateways)
 }

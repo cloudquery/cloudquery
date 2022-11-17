@@ -1,6 +1,6 @@
 # Table: azure_sql_server_blob_auditing_policies
 
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql#ServerBlobAuditingPolicy
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql#ServerBlobAuditingPolicy
 
 The primary key for this table is **id**.
 
@@ -16,16 +16,18 @@ This table depends on [azure_sql_servers](azure_sql_servers.md).
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|sql_server_id|String|
 |state|String|
-|storage_endpoint|String|
-|storage_account_access_key|String|
-|retention_days|Int|
 |audit_actions_and_groups|StringArray|
-|storage_account_subscription_id|UUID|
-|is_storage_secondary_key_in_use|Bool|
 |is_azure_monitor_target_enabled|Bool|
+|is_devops_audit_enabled|Bool|
+|is_managed_identity_in_use|Bool|
+|is_storage_secondary_key_in_use|Bool|
 |queue_delay_ms|Int|
+|retention_days|Int|
+|storage_account_access_key|String|
+|storage_account_subscription_id|String|
+|storage_endpoint|String|
 |id (PK)|String|
 |name|String|
 |type|String|
+|server_id|String|

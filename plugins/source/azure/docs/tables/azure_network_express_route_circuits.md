@@ -1,6 +1,6 @@
 # Table: azure_network_express_route_circuits
 
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network#ExpressRouteCircuit
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2#ExpressRouteCircuit
 
 The primary key for this table is **id**.
 
@@ -14,24 +14,25 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|sku|JSON|
+|id (PK)|String|
+|location|String|
 |allow_classic_operations|Bool|
-|circuit_provisioning_state|String|
-|service_provider_provisioning_state|String|
+|authorization_key|String|
 |authorizations|JSON|
+|bandwidth_in_gbps|Float|
+|circuit_provisioning_state|String|
+|express_route_port|JSON|
+|gateway_manager_etag|String|
+|global_reach_enabled|Bool|
 |peerings|JSON|
 |service_key|String|
 |service_provider_notes|String|
 |service_provider_properties|JSON|
-|express_route_port|JSON|
-|bandwidth_in_gbps|Float|
-|stag|Int|
+|service_provider_provisioning_state|String|
 |provisioning_state|String|
-|gateway_manager_etag|String|
-|global_reach_enabled|Bool|
+|stag|Int|
+|sku|JSON|
+|tags|JSON|
 |etag|String|
-|id (PK)|String|
 |name|String|
 |type|String|
-|location|String|
-|tags|JSON|

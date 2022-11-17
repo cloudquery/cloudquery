@@ -1,6 +1,6 @@
 # Table: azure_keyvault_vaults
 
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/keyvault/mgmt/2019-09-01/keyvault#Vault
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault#Vault
 
 The primary key for this table is **id**.
 
@@ -18,22 +18,26 @@ The following tables depend on azure_keyvault_vaults:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|id (PK)|String|
-|name|String|
-|type|String|
+|sku|JSON|
+|tenant_id|String|
+|access_policies|JSON|
+|create_mode|String|
+|enable_purge_protection|Bool|
+|enable_rbac_authorization|Bool|
+|enable_soft_delete|Bool|
+|enabled_for_deployment|Bool|
+|enabled_for_disk_encryption|Bool|
+|enabled_for_template_deployment|Bool|
+|network_acls|JSON|
+|provisioning_state|String|
+|public_network_access|String|
+|soft_delete_retention_in_days|Int|
+|vault_uri|String|
+|hsm_pool_resource_id|String|
+|private_endpoint_connections|JSON|
 |location|String|
 |tags|JSON|
-|properties_tenant_id|UUID|
-|properties_sku|JSON|
-|properties_access_policies|JSON|
-|properties_vault_uri|String|
-|properties_enabled_for_deployment|Bool|
-|properties_enabled_for_disk_encryption|Bool|
-|properties_enabled_for_template_deployment|Bool|
-|properties_enable_soft_delete|Bool|
-|properties_soft_delete_retention_in_days|Int|
-|properties_enable_rbac_authorization|Bool|
-|properties_create_mode|String|
-|properties_enable_purge_protection|Bool|
-|properties_network_acls|JSON|
-|properties_private_endpoint_connections|JSON|
+|id (PK)|String|
+|name|String|
+|system_data|JSON|
+|type|String|

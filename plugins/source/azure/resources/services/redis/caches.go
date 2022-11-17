@@ -3,8 +3,6 @@
 package redis
 
 import (
-	"context"
-
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -12,119 +10,125 @@ import (
 func Caches() *schema.Table {
 	return &schema.Table{
 		Name:        "azure_redis_caches",
-		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2020-12-01/redis#ResourceType`,
-		Resolver:    fetchRedisCaches,
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis/v2#ResourceInfo`,
+		Resolver:    fetchCaches,
 		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
-				Name:     "subscription_id",
+				Name:        "subscription_id",
+				Type:        schema.TypeString,
+				Resolver:    client.SubscriptionIDResolver,
+				Description: `Azure subscription ID`,
+			},
+			{
+				Name:     "location",
 				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "provisioning_state",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ProvisioningState"),
-			},
-			{
-				Name:     "host_name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("HostName"),
-			},
-			{
-				Name:     "port",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("Port"),
-			},
-			{
-				Name:     "ssl_port",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("SslPort"),
-			},
-			{
-				Name:     "access_keys",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("AccessKeys"),
-			},
-			{
-				Name:     "linked_servers",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("LinkedServers"),
-			},
-			{
-				Name:     "instances",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Instances"),
-			},
-			{
-				Name:     "private_endpoint_connections",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("PrivateEndpointConnections"),
+				Resolver: schema.PathResolver("Location"),
 			},
 			{
 				Name:     "sku",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Sku"),
-			},
-			{
-				Name:     "subnet_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("SubnetID"),
-			},
-			{
-				Name:     "static_ip",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("StaticIP"),
-			},
-			{
-				Name:     "redis_configuration",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("RedisConfiguration"),
-			},
-			{
-				Name:     "redis_version",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("RedisVersion"),
+				Resolver: schema.PathResolver("Properties.SKU"),
 			},
 			{
 				Name:     "enable_non_ssl_port",
 				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("EnableNonSslPort"),
-			},
-			{
-				Name:     "replicas_per_master",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("ReplicasPerMaster"),
-			},
-			{
-				Name:     "replicas_per_primary",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("ReplicasPerPrimary"),
-			},
-			{
-				Name:     "tenant_settings",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("TenantSettings"),
-			},
-			{
-				Name:     "shard_count",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("ShardCount"),
+				Resolver: schema.PathResolver("Properties.EnableNonSSLPort"),
 			},
 			{
 				Name:     "minimum_tls_version",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("MinimumTLSVersion"),
+				Resolver: schema.PathResolver("Properties.MinimumTLSVersion"),
 			},
 			{
 				Name:     "public_network_access",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("PublicNetworkAccess"),
+				Resolver: schema.PathResolver("Properties.PublicNetworkAccess"),
 			},
 			{
-				Name:     "zones",
-				Type:     schema.TypeStringArray,
-				Resolver: schema.PathResolver("Zones"),
+				Name:     "redis_configuration",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.RedisConfiguration"),
+			},
+			{
+				Name:     "redis_version",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.RedisVersion"),
+			},
+			{
+				Name:     "replicas_per_master",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("Properties.ReplicasPerMaster"),
+			},
+			{
+				Name:     "replicas_per_primary",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("Properties.ReplicasPerPrimary"),
+			},
+			{
+				Name:     "shard_count",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("Properties.ShardCount"),
+			},
+			{
+				Name:     "static_ip",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.StaticIP"),
+			},
+			{
+				Name:     "subnet_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.SubnetID"),
+			},
+			{
+				Name:     "tenant_settings",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.TenantSettings"),
+			},
+			{
+				Name:     "access_keys",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.AccessKeys"),
+			},
+			{
+				Name:     "host_name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.HostName"),
+			},
+			{
+				Name:     "instances",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.Instances"),
+			},
+			{
+				Name:     "linked_servers",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.LinkedServers"),
+			},
+			{
+				Name:     "port",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("Properties.Port"),
+			},
+			{
+				Name:     "private_endpoint_connections",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.PrivateEndpointConnections"),
+			},
+			{
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.ProvisioningState"),
+			},
+			{
+				Name:     "ssl_port",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("Properties.SSLPort"),
+			},
+			{
+				Name:     "identity",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Identity"),
 			},
 			{
 				Name:     "tags",
@@ -132,9 +136,9 @@ func Caches() *schema.Table {
 				Resolver: schema.PathResolver("Tags"),
 			},
 			{
-				Name:     "location",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Location"),
+				Name:     "zones",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("Zones"),
 			},
 			{
 				Name:     "id",
@@ -156,23 +160,4 @@ func Caches() *schema.Table {
 			},
 		},
 	}
-}
-
-func fetchRedisCaches(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().Redis.Caches
-
-	response, err := svc.ListBySubscription(ctx)
-
-	if err != nil {
-		return err
-	}
-
-	for response.NotDone() {
-		res <- response.Values()
-		if err := response.NextWithContext(ctx); err != nil {
-			return err
-		}
-	}
-
-	return nil
 }

@@ -1,6 +1,6 @@
 # Table: azure_security_contacts
 
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security#Contact
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity#Contact
 
 The primary key for this table is **id**.
 
@@ -14,10 +14,10 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|email|String|
+|alert_notifications|JSON|
+|emails|String|
+|notifications_by_role|JSON|
 |phone|String|
-|alert_notifications|String|
-|alerts_to_admins|String|
 |id (PK)|String|
 |name|String|
 |type|String|

@@ -1,6 +1,6 @@
 # Table: azure_sql_managed_instance_encryption_protectors
 
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql#ManagedInstanceEncryptionProtector
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql#ManagedInstanceEncryptionProtector
 
 The primary key for this table is **id**.
 
@@ -16,12 +16,13 @@ This table depends on [azure_sql_managed_instances](azure_sql_managed_instances.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|sql_managed_instance_id|String|
-|kind|String|
-|server_key_name|String|
 |server_key_type|String|
-|uri|String|
+|auto_rotation_enabled|Bool|
+|server_key_name|String|
 |thumbprint|String|
+|uri|String|
 |id (PK)|String|
+|kind|String|
 |name|String|
 |type|String|
+|managed_instance_id|String|

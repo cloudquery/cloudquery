@@ -3,8 +3,6 @@
 package postgresql
 
 import (
-	"context"
-
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -12,14 +10,20 @@ import (
 func Servers() *schema.Table {
 	return &schema.Table{
 		Name:        "azure_postgresql_servers",
-		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/postgresql/mgmt/2020-01-01/postgresql#Server`,
-		Resolver:    fetchPostgreSQLServers,
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql#Server`,
+		Resolver:    fetchServers,
 		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
-				Name:     "subscription_id",
+				Name:        "subscription_id",
+				Type:        schema.TypeString,
+				Resolver:    client.SubscriptionIDResolver,
+				Description: `Azure subscription ID`,
+			},
+			{
+				Name:     "location",
 				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
+				Resolver: schema.PathResolver("Location"),
 			},
 			{
 				Name:     "identity",
@@ -27,94 +31,89 @@ func Servers() *schema.Table {
 				Resolver: schema.PathResolver("Identity"),
 			},
 			{
-				Name:     "sku",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Sku"),
-			},
-			{
 				Name:     "administrator_login",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("AdministratorLogin"),
-			},
-			{
-				Name:     "version",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Version"),
-			},
-			{
-				Name:     "ssl_enforcement",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("SslEnforcement"),
-			},
-			{
-				Name:     "minimal_tls_version",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("MinimalTLSVersion"),
-			},
-			{
-				Name:     "byok_enforcement",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ByokEnforcement"),
-			},
-			{
-				Name:     "infrastructure_encryption",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("InfrastructureEncryption"),
-			},
-			{
-				Name:     "user_visible_state",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("UserVisibleState"),
-			},
-			{
-				Name:     "fully_qualified_domain_name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("FullyQualifiedDomainName"),
+				Resolver: schema.PathResolver("Properties.AdministratorLogin"),
 			},
 			{
 				Name:     "earliest_restore_date",
 				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("EarliestRestoreDate"),
+				Resolver: schema.PathResolver("Properties.EarliestRestoreDate"),
 			},
 			{
-				Name:     "storage_profile",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("StorageProfile"),
-			},
-			{
-				Name:     "replication_role",
+				Name:     "fully_qualified_domain_name",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ReplicationRole"),
+				Resolver: schema.PathResolver("Properties.FullyQualifiedDomainName"),
+			},
+			{
+				Name:     "infrastructure_encryption",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.InfrastructureEncryption"),
 			},
 			{
 				Name:     "master_server_id",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("MasterServerID"),
+				Resolver: schema.PathResolver("Properties.MasterServerID"),
 			},
 			{
-				Name:     "replica_capacity",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("ReplicaCapacity"),
+				Name:     "minimal_tls_version",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.MinimalTLSVersion"),
 			},
 			{
 				Name:     "public_network_access",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("PublicNetworkAccess"),
+				Resolver: schema.PathResolver("Properties.PublicNetworkAccess"),
+			},
+			{
+				Name:     "replica_capacity",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("Properties.ReplicaCapacity"),
+			},
+			{
+				Name:     "replication_role",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.ReplicationRole"),
+			},
+			{
+				Name:     "ssl_enforcement",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.SSLEnforcement"),
+			},
+			{
+				Name:     "storage_profile",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.StorageProfile"),
+			},
+			{
+				Name:     "user_visible_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.UserVisibleState"),
+			},
+			{
+				Name:     "version",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.Version"),
+			},
+			{
+				Name:     "byok_enforcement",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.ByokEnforcement"),
 			},
 			{
 				Name:     "private_endpoint_connections",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("PrivateEndpointConnections"),
+				Resolver: schema.PathResolver("Properties.PrivateEndpointConnections"),
+			},
+			{
+				Name:     "sku",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("SKU"),
 			},
 			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Tags"),
-			},
-			{
-				Name:     "location",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Location"),
 			},
 			{
 				Name:     "id",
@@ -141,19 +140,4 @@ func Servers() *schema.Table {
 			firewallRules(),
 		},
 	}
-}
-
-func fetchPostgreSQLServers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().PostgreSQL.Servers
-
-	response, err := svc.List(ctx)
-	if err != nil {
-		return err
-	}
-	if response.Value == nil {
-		return nil
-	}
-	res <- *response.Value
-
-	return nil
 }

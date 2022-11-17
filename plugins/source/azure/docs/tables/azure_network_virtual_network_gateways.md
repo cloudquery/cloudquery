@@ -1,6 +1,6 @@
 # Table: azure_network_virtual_network_gateways
 
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network#VirtualNetworkGateway
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2#VirtualNetworkGateway
 
 The primary key for this table is **id**.
 
@@ -18,28 +18,34 @@ The following tables depend on azure_network_virtual_network_gateways:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|network_virtual_network_id|String|
-|extended_location|JSON|
-|ip_configurations|JSON|
-|gateway_type|String|
-|vpn_type|String|
-|vpn_gateway_generation|String|
-|enable_bgp|Bool|
-|enable_private_ip_address|Bool|
 |active_active|Bool|
-|gateway_default_site|JSON|
-|sku|JSON|
-|vpn_client_configuration|JSON|
+|allow_remote_vnet_traffic|Bool|
+|allow_virtual_wan_traffic|Bool|
 |bgp_settings|JSON|
 |custom_routes|JSON|
-|resource_guid|String|
-|provisioning_state|String|
+|disable_ip_sec_replay_protection|Bool|
+|enable_bgp|Bool|
+|enable_bgp_route_translation_for_nat|Bool|
 |enable_dns_forwarding|Bool|
-|inbound_dns_forwarding_endpoint|String|
+|enable_private_ip_address|Bool|
+|gateway_default_site|JSON|
+|gateway_type|String|
+|ip_configurations|JSON|
+|nat_rules|JSON|
+|sku|JSON|
 |v_net_extended_location_resource_id|String|
-|etag|String|
+|vpn_client_configuration|JSON|
+|vpn_gateway_generation|String|
+|vpn_type|String|
+|virtual_network_gateway_policy_groups|JSON|
+|inbound_dns_forwarding_endpoint|String|
+|provisioning_state|String|
+|resource_guid|String|
+|extended_location|JSON|
 |id (PK)|String|
-|name|String|
-|type|String|
 |location|String|
 |tags|JSON|
+|etag|String|
+|name|String|
+|type|String|
+|virtual_network_id|String|

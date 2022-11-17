@@ -1,6 +1,6 @@
 # Table: azure_servicebus_authorization_rules
 
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/servicebus/mgmt/2021-06-01-preview/servicebus#SBAuthorizationRule
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus/v2#SBAuthorizationRule
 
 The primary key for this table is **id**.
 
@@ -18,9 +18,10 @@ The following tables depend on azure_servicebus_authorization_rules:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|servicebus_topic_id|String|
 |rights|StringArray|
-|system_data|JSON|
 |id (PK)|String|
+|location|String|
 |name|String|
+|system_data|JSON|
 |type|String|
+|topic_id|String|

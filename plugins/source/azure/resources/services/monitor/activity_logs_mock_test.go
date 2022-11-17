@@ -3,57 +3,39 @@
 package monitor
 
 import (
-	"context"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/monitor"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/monitor"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	"regexp"
-
-	"github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2021-07-01-preview/insights"
 )
 
-func TestMonitorActivityLogs(t *testing.T) {
-	client.MockTestHelper(t, ActivityLogs(), createActivityLogsMock)
-}
+func buildActivityLogs(t *testing.T, ctrl *gomock.Controller) *client.Services {
+	mockActivityLogsClient := mocks.NewMockActivityLogsClient(ctrl)
 
-type regexMatcher struct {
-	re *regexp.Regexp
-}
+	var response api.ActivityLogsClientListResponse
+	require.NoError(t, faker.FakeObject(&response))
+	// Use correct Azure ID format
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.Value[0].ID = to.Ptr(id)
 
-func (m regexMatcher) Matches(x interface{}) bool {
-	s, ok := x.(string)
-	if !ok {
-		return false
-	}
-	return m.re.MatchString(s)
-}
+	mockActivityLogsClient.EXPECT().NewListPager(gomock.Any(), gomock.Any()).
+		Return(client.CreatePager(response)).MinTimes(1)
 
-func (m regexMatcher) String() string {
-	return m.re.String()
-}
-
-func createActivityLogsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockMonitorActivityLogsClient(ctrl)
-	s := services.Services{
-		Monitor: services.MonitorClient{
-			ActivityLogs: mockClient,
-		},
+	monitorClient := &service.MonitorClient{
+		ActivityLogsClient: mockActivityLogsClient,
 	}
 
-	data := insights.EventData{}
-	require.Nil(t, faker.FakeObject(&data))
+	c := &client.Services{Monitor: monitorClient}
 
-	result := insights.NewEventDataCollectionPage(insights.EventDataCollection{Value: &[]insights.EventData{data}}, func(ctx context.Context, result insights.EventDataCollection) (insights.EventDataCollection, error) {
-		return insights.EventDataCollection{}, nil
-	})
+	return c
+}
 
-	filterRe := regexp.MustCompile(`eventTimestamp ge '\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(\.\d+)Z' and eventTimestamp le '\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(\.\d+)Z'`)
-	mockClient.EXPECT().List(gomock.Any(), regexMatcher{filterRe}, "").Return(result, nil)
-	return s
+func TestActivityLogs(t *testing.T) {
+	client.MockTestHelper(t, ActivityLogs(), buildActivityLogs)
 }

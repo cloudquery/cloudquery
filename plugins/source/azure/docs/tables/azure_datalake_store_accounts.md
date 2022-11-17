@@ -1,6 +1,6 @@
 # Table: azure_datalake_store_accounts
 
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/datalake/store/mgmt/2016-11-01/account#DataLakeStoreAccount
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-store/armdatalakestore#Account
 
 The primary key for this table is **id**.
 
@@ -14,27 +14,27 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
+|id (PK)|String|
 |identity|JSON|
+|location|String|
+|name|String|
+|account_id|String|
+|creation_time|Timestamp|
+|current_tier|String|
 |default_group|String|
 |encryption_config|JSON|
-|encryption_state|String|
 |encryption_provisioning_state|String|
-|firewall_rules|JSON|
-|virtual_network_rules|JSON|
-|firewall_state|String|
+|encryption_state|String|
+|endpoint|String|
 |firewall_allow_azure_ips|String|
-|trusted_id_providers|JSON|
-|trusted_id_provider_state|String|
+|firewall_rules|JSON|
+|firewall_state|String|
+|last_modified_time|Timestamp|
 |new_tier|String|
-|current_tier|String|
-|account_id|UUID|
 |provisioning_state|String|
 |state|String|
-|creation_time|Timestamp|
-|last_modified_time|Timestamp|
-|endpoint|String|
-|id (PK)|String|
-|name|String|
-|type|String|
-|location|String|
+|trusted_id_provider_state|String|
+|trusted_id_providers|JSON|
+|virtual_network_rules|JSON|
 |tags|JSON|
+|type|String|

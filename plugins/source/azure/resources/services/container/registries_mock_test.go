@@ -3,47 +3,41 @@
 package container
 
 import (
-	"context"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/containerregistry"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/containerregistry"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/services/containerregistry/mgmt/2019-05-01/containerregistry"
 )
 
-func TestContainerRegistries(t *testing.T) {
-	client.MockTestHelper(t, Registries(), createRegistriesMock)
-}
+func buildRegistries(t *testing.T, ctrl *gomock.Controller) *client.Services {
+	mockRegistriesClient := mocks.NewMockRegistriesClient(ctrl)
 
-func createRegistriesMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockContainerRegistriesClient(ctrl)
-	s := services.Services{
-		Container: services.ContainerClient{
-			Registries:   mockClient,
-			Replications: createReplicationsMock(t, ctrl).Container.Replications,
-		},
+	var response api.RegistriesClientListResponse
+	require.NoError(t, faker.FakeObject(&response))
+	// Use correct Azure ID format
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.Value[0].ID = to.Ptr(id)
+
+	mockRegistriesClient.EXPECT().NewListPager(gomock.Any()).
+		Return(client.CreatePager(response)).MinTimes(1)
+
+	containerregistryClient := &service.ContainerregistryClient{
+		RegistriesClient: mockRegistriesClient,
 	}
 
-	data := containerregistry.Registry{}
-	require.Nil(t, faker.FakeObject(&data))
+	c := &client.Services{Containerregistry: containerregistryClient}
 
-	// Ensure name and ID are consistent so we can reference it in other mock
-	name := "test"
-	data.Name = &name
+	buildReplications(t, ctrl, c)
 
-	// Use correct Azure ID format
-	id := "/subscriptions/test/resourceGroups/test/providers/test/test/test"
-	data.ID = &id
+	return c
+}
 
-	result := containerregistry.NewRegistryListResultPage(containerregistry.RegistryListResult{Value: &[]containerregistry.Registry{data}}, func(ctx context.Context, result containerregistry.RegistryListResult) (containerregistry.RegistryListResult, error) {
-		return containerregistry.RegistryListResult{}, nil
-	})
-
-	mockClient.EXPECT().List(gomock.Any()).Return(result, nil)
-	return s
+func TestRegistries(t *testing.T) {
+	client.MockTestHelper(t, Registries(), buildRegistries)
 }

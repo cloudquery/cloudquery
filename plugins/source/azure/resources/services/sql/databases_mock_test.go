@@ -3,41 +3,42 @@
 package sql
 
 import (
-	"context"
 	"testing"
 
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/sql"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/sql"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql"
 )
 
-func createDatabasesMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockSQLDatabasesClient(ctrl)
-	s := services.Services{
-		SQL: services.SQLClient{
-			Databases: mockClient,
-		},
+func buildDatabases(t *testing.T, ctrl *gomock.Controller, c *client.Services) {
+	if c.Sql == nil {
+		c.Sql = new(service.SqlClient)
+	}
+	sqlClient := c.Sql
+	if sqlClient.DatabasesClient == nil {
+		sqlClient.DatabasesClient = mocks.NewMockDatabasesClient(ctrl)
 	}
 
-	data := sql.Database{}
-	require.Nil(t, faker.FakeObject(&data))
+	mockDatabasesClient := sqlClient.DatabasesClient.(*mocks.MockDatabasesClient)
 
-	// Ensure name and ID are consistent so we can reference it in other mock
-	name := "test"
-	data.Name = &name
-
+	var response api.DatabasesClientListByServerResponse
+	require.NoError(t, faker.FakeObject(&response))
 	// Use correct Azure ID format
-	id := "/subscriptions/test/resourceGroups/test/providers/test/test/test"
-	data.ID = &id
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.Value[0].ID = to.Ptr(id)
 
-	result := sql.NewDatabaseListResultPage(sql.DatabaseListResult{Value: &[]sql.Database{data}}, func(ctx context.Context, result sql.DatabaseListResult) (sql.DatabaseListResult, error) {
-		return sql.DatabaseListResult{}, nil
-	})
+	mockDatabasesClient.EXPECT().NewListByServerPager(gomock.Any(), gomock.Any(), gomock.Any()).
+		Return(client.CreatePager(response)).MinTimes(1)
 
-	mockClient.EXPECT().ListByServer(gomock.Any(), "test", "test").Return(result, nil)
-	return s
+	buildDatabaseBlobAuditingPolicies(t, ctrl, c)
+	buildDatabaseVulnerabilityAssessments(t, ctrl, c)
+	buildDatabaseVulnerabilityAssessmentScans(t, ctrl, c)
+	buildBackupLongTermRetentionPolicies(t, ctrl, c)
+	buildDatabaseThreatDetectionPolicies(t, ctrl, c)
+	buildTransparentDataEncryptions(t, ctrl, c)
 }

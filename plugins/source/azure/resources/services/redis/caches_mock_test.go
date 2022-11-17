@@ -3,38 +3,39 @@
 package redis
 
 import (
-	"context"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis/v2"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/redis"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/redis"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2020-12-01/redis"
 )
 
-func TestRedisCaches(t *testing.T) {
-	client.MockTestHelper(t, Caches(), createCachesMock)
-}
+func buildCaches(t *testing.T, ctrl *gomock.Controller) *client.Services {
+	mockClient := mocks.NewMockClient(ctrl)
 
-func createCachesMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockRedisCachesClient(ctrl)
-	s := services.Services{
-		Redis: services.RedisClient{
-			Caches: mockClient,
-		},
+	var response api.ClientListBySubscriptionResponse
+	require.NoError(t, faker.FakeObject(&response))
+	// Use correct Azure ID format
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.Value[0].ID = to.Ptr(id)
+
+	mockClient.EXPECT().NewListBySubscriptionPager(gomock.Any()).
+		Return(client.CreatePager(response)).MinTimes(1)
+
+	redisClient := &service.RedisClient{
+		Client: mockClient,
 	}
 
-	data := redis.ResourceType{}
-	require.Nil(t, faker.FakeObject(&data))
+	c := &client.Services{Redis: redisClient}
 
-	result := redis.NewListResultPage(redis.ListResult{Value: &[]redis.ResourceType{data}}, func(ctx context.Context, result redis.ListResult) (redis.ListResult, error) {
-		return redis.ListResult{}, nil
-	})
+	return c
+}
 
-	mockClient.EXPECT().ListBySubscription(gomock.Any()).Return(result, nil)
-	return s
+func TestCaches(t *testing.T) {
+	client.MockTestHelper(t, Caches(), buildCaches)
 }

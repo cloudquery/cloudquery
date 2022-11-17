@@ -3,109 +3,116 @@
 package storage
 
 import (
-	"context"
-
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-
-	"github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-01-01/storage"
 )
 
 func containers() *schema.Table {
 	return &schema.Table{
 		Name:        "azure_storage_containers",
-		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-01-01/storage#ListContainerItem`,
-		Resolver:    fetchStorageContainers,
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage#ListContainerItem`,
+		Resolver:    fetchContainers,
 		Columns: []schema.Column{
 			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "storage_account_id",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("id"),
-			},
-			{
-				Name:     "version",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Version"),
-			},
-			{
-				Name:     "deleted",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("Deleted"),
-			},
-			{
-				Name:     "deleted_time",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("DeletedTime"),
-			},
-			{
-				Name:     "remaining_retention_days",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("RemainingRetentionDays"),
+				Name:        "subscription_id",
+				Type:        schema.TypeString,
+				Resolver:    client.SubscriptionIDResolver,
+				Description: `Azure subscription ID`,
 			},
 			{
 				Name:     "default_encryption_scope",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("DefaultEncryptionScope"),
+				Resolver: schema.PathResolver("Properties.DefaultEncryptionScope"),
 			},
 			{
 				Name:     "deny_encryption_scope_override",
 				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("DenyEncryptionScopeOverride"),
+				Resolver: schema.PathResolver("Properties.DenyEncryptionScopeOverride"),
 			},
 			{
-				Name:     "public_access",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("PublicAccess"),
+				Name:     "enable_nfs_v3_all_squash",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Properties.EnableNfsV3AllSquash"),
 			},
 			{
-				Name:     "last_modified_time",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("LastModifiedTime"),
+				Name:     "enable_nfs_v3_root_squash",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Properties.EnableNfsV3RootSquash"),
 			},
 			{
-				Name:     "lease_status",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("LeaseStatus"),
-			},
-			{
-				Name:     "lease_state",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("LeaseState"),
-			},
-			{
-				Name:     "lease_duration",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("LeaseDuration"),
+				Name:     "immutable_storage_with_versioning",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.ImmutableStorageWithVersioning"),
 			},
 			{
 				Name:     "metadata",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Metadata"),
+				Resolver: schema.PathResolver("Properties.Metadata"),
 			},
 			{
-				Name:     "immutability_policy",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ImmutabilityPolicy"),
+				Name:     "public_access",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.PublicAccess"),
 			},
 			{
-				Name:     "legal_hold",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("LegalHold"),
-			},
-			{
-				Name:     "has_legal_hold",
+				Name:     "deleted",
 				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("HasLegalHold"),
+				Resolver: schema.PathResolver("Properties.Deleted"),
+			},
+			{
+				Name:     "deleted_time",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Properties.DeletedTime"),
 			},
 			{
 				Name:     "has_immutability_policy",
 				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("HasImmutabilityPolicy"),
+				Resolver: schema.PathResolver("Properties.HasImmutabilityPolicy"),
+			},
+			{
+				Name:     "has_legal_hold",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Properties.HasLegalHold"),
+			},
+			{
+				Name:     "immutability_policy",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.ImmutabilityPolicy"),
+			},
+			{
+				Name:     "last_modified_time",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Properties.LastModifiedTime"),
+			},
+			{
+				Name:     "lease_duration",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.LeaseDuration"),
+			},
+			{
+				Name:     "lease_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.LeaseState"),
+			},
+			{
+				Name:     "lease_status",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.LeaseStatus"),
+			},
+			{
+				Name:     "legal_hold",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.LegalHold"),
+			},
+			{
+				Name:     "remaining_retention_days",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("Properties.RemainingRetentionDays"),
+			},
+			{
+				Name:     "version",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.Version"),
 			},
 			{
 				Name:     "etag",
@@ -130,34 +137,11 @@ func containers() *schema.Table {
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Type"),
 			},
+			{
+				Name:     "account_id",
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("id"),
+			},
 		},
 	}
-}
-
-func fetchStorageContainers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().Storage.Containers
-
-	account := parent.Item.(storage.Account)
-	if !isBlobSupported(&account) {
-		return nil
-	}
-
-	resource, err := client.ParseResourceID(*account.ID)
-	if err != nil {
-		return err
-	}
-	response, err := svc.List(ctx, resource.ResourceGroup, *account.Name, "", "", "")
-
-	if err != nil {
-		return err
-	}
-
-	for response.NotDone() {
-		res <- response.Values()
-		if err := response.NextWithContext(ctx); err != nil {
-			return err
-		}
-	}
-
-	return nil
 }

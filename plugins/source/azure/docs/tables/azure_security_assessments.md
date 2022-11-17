@@ -1,6 +1,6 @@
 # Table: azure_security_assessments
 
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security#Assessment
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity#Assessment
 
 The primary key for this table is **id**.
 
@@ -14,12 +14,12 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|display_name|String|
 |status|JSON|
 |additional_data|JSON|
-|links|JSON|
 |metadata|JSON|
 |partners_data|JSON|
+|display_name|String|
+|links|JSON|
 |id (PK)|String|
 |name|String|
 |type|String|

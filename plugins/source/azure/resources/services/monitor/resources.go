@@ -3,21 +3,73 @@
 package monitor
 
 import (
-	"context"
-
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-
-	"github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-10-01/resources"
 )
 
 func Resources() *schema.Table {
 	return &schema.Table{
 		Name:        "azure_monitor_resources",
-		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-10-01/resources#GenericResourceExpanded`,
-		Resolver:    fetchMonitorResources,
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources#GenericResourceExpanded`,
+		Resolver:    fetchResources,
 		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
+			{
+				Name:        "subscription_id",
+				Type:        schema.TypeString,
+				Resolver:    client.SubscriptionIDResolver,
+				Description: `Azure subscription ID`,
+			},
+			{
+				Name:     "extended_location",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ExtendedLocation"),
+			},
+			{
+				Name:     "identity",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Identity"),
+			},
+			{
+				Name:     "kind",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Kind"),
+			},
+			{
+				Name:     "location",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Location"),
+			},
+			{
+				Name:     "managed_by",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ManagedBy"),
+			},
+			{
+				Name:     "plan",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Plan"),
+			},
+			{
+				Name:     "sku",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("SKU"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Tags"),
+			},
+			{
+				Name:     "changed_time",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("ChangedTime"),
+			},
+			{
+				Name:     "created_time",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("CreatedTime"),
+			},
 			{
 				Name:     "id",
 				Type:     schema.TypeString,
@@ -26,32 +78,25 @@ func Resources() *schema.Table {
 					PrimaryKey: true,
 				},
 			},
+			{
+				Name:     "name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Name"),
+			},
+			{
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ProvisioningState"),
+			},
+			{
+				Name:     "type",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Type"),
+			},
 		},
 
 		Relations: []*schema.Table{
 			diagnosticSettings(),
 		},
 	}
-}
-
-func fetchMonitorResources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().Monitor.Resources
-
-	// Add subscription id as the first entry
-	subscriptionId := "/" + client.ScopeSubscription(meta.(*client.Client).SubscriptionId)
-	res <- resources.GenericResourceExpanded{ID: &subscriptionId}
-	response, err := svc.List(ctx, "", "", nil)
-
-	if err != nil {
-		return err
-	}
-
-	for response.NotDone() {
-		res <- response.Values()
-		if err := response.NextWithContext(ctx); err != nil {
-			return err
-		}
-	}
-
-	return nil
 }

@@ -1,6 +1,6 @@
 # Table: azure_monitor_resources
 
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-10-01/resources#GenericResourceExpanded
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources#GenericResourceExpanded
 
 The primary key for this table is **id**.
 
@@ -16,4 +16,18 @@ The following tables depend on azure_monitor_resources:
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
+|subscription_id|String|
+|extended_location|JSON|
+|identity|JSON|
+|kind|String|
+|location|String|
+|managed_by|String|
+|plan|JSON|
+|sku|JSON|
+|tags|JSON|
+|changed_time|Timestamp|
+|created_time|Timestamp|
 |id (PK)|String|
+|name|String|
+|provisioning_state|String|
+|type|String|

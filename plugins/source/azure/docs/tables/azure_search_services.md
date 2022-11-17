@@ -1,6 +1,6 @@
 # Table: azure_search_services
 
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/search/mgmt/2020-08-01/search#Service
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch#Service
 
 The primary key for this table is **id**.
 
@@ -14,20 +14,20 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|replica_count|Int|
-|partition_count|Int|
+|location|String|
+|identity|JSON|
 |hosting_mode|String|
+|network_rule_set|JSON|
+|partition_count|Int|
 |public_network_access|String|
+|replica_count|Int|
+|private_endpoint_connections|JSON|
+|provisioning_state|String|
+|shared_private_link_resources|JSON|
 |status|String|
 |status_details|String|
-|provisioning_state|String|
-|network_rule_set|JSON|
-|private_endpoint_connections|JSON|
-|shared_private_link_resources|JSON|
 |sku|JSON|
-|identity|JSON|
 |tags|JSON|
-|location|String|
 |id (PK)|String|
 |name|String|
 |type|String|

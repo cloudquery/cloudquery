@@ -3,51 +3,43 @@
 package sql
 
 import (
-	"context"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/sql"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/sql"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql"
 )
 
-func TestSQLManagedInstances(t *testing.T) {
-	client.MockTestHelper(t, ManagedInstances(), createManagedInstancesMock)
-}
+func buildManagedInstances(t *testing.T, ctrl *gomock.Controller) *client.Services {
+	mockManagedInstancesClient := mocks.NewMockManagedInstancesClient(ctrl)
 
-func createManagedInstancesMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockSQLManagedInstancesClient(ctrl)
-	s := services.Services{
-		SQL: services.SQLClient{
-			ManagedInstances:                            mockClient,
-			ManagedDatabases:                            createManagedDatabasesMock(t, ctrl).SQL.ManagedDatabases,
-			ManagedDatabaseVulnerabilityAssessments:     createManagedDatabaseVulnerabilityAssessmentsMock(t, ctrl).SQL.ManagedDatabaseVulnerabilityAssessments,
-			ManagedDatabaseVulnerabilityAssessmentScans: createManagedDatabaseVulnerabilityAssessmentScansMock(t, ctrl).SQL.ManagedDatabaseVulnerabilityAssessmentScans,
-			ManagedInstanceVulnerabilityAssessments:     createManagedInstanceVulnerabilityAssessmentsMock(t, ctrl).SQL.ManagedInstanceVulnerabilityAssessments,
-			ManagedInstanceEncryptionProtectors:         createManagedInstanceEncryptionProtectorsMock(t, ctrl).SQL.ManagedInstanceEncryptionProtectors,
-		},
+	var response api.ManagedInstancesClientListResponse
+	require.NoError(t, faker.FakeObject(&response))
+	// Use correct Azure ID format
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.Value[0].ID = to.Ptr(id)
+
+	mockManagedInstancesClient.EXPECT().NewListPager(gomock.Any()).
+		Return(client.CreatePager(response)).MinTimes(1)
+
+	sqlClient := &service.SqlClient{
+		ManagedInstancesClient: mockManagedInstancesClient,
 	}
 
-	data := sql.ManagedInstance{}
-	require.Nil(t, faker.FakeObject(&data))
+	c := &client.Services{Sql: sqlClient}
 
-	// Ensure name and ID are consistent so we can reference it in other mock
-	name := "test"
-	data.Name = &name
+	buildManagedDatabases(t, ctrl, c)
+	buildManagedInstanceVulnerabilityAssessments(t, ctrl, c)
+	buildManagedInstanceEncryptionProtectors(t, ctrl, c)
 
-	// Use correct Azure ID format
-	id := "/subscriptions/test/resourceGroups/test/providers/test/test/test"
-	data.ID = &id
+	return c
+}
 
-	result := sql.NewManagedInstanceListResultPage(sql.ManagedInstanceListResult{Value: &[]sql.ManagedInstance{data}}, func(ctx context.Context, result sql.ManagedInstanceListResult) (sql.ManagedInstanceListResult, error) {
-		return sql.ManagedInstanceListResult{}, nil
-	})
-
-	mockClient.EXPECT().List(gomock.Any()).Return(result, nil)
-	return s
+func TestManagedInstances(t *testing.T) {
+	client.MockTestHelper(t, ManagedInstances(), buildManagedInstances)
 }

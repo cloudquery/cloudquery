@@ -3,38 +3,39 @@
 package streamanalytics
 
 import (
-	"context"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/streamanalytics"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/streamanalytics"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/services/streamanalytics/mgmt/2020-03-01/streamanalytics"
 )
 
-func TestStreamAnalyticsStreamingJobs(t *testing.T) {
-	client.MockTestHelper(t, StreamingJobs(), createStreamingJobsMock)
-}
+func buildStreamingJobs(t *testing.T, ctrl *gomock.Controller) *client.Services {
+	mockStreamingJobsClient := mocks.NewMockStreamingJobsClient(ctrl)
 
-func createStreamingJobsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockStreamAnalyticsStreamingJobsClient(ctrl)
-	s := services.Services{
-		StreamAnalytics: services.StreamAnalyticsClient{
-			StreamingJobs: mockClient,
-		},
+	var response api.StreamingJobsClientListResponse
+	require.NoError(t, faker.FakeObject(&response))
+	// Use correct Azure ID format
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.Value[0].ID = to.Ptr(id)
+
+	mockStreamingJobsClient.EXPECT().NewListPager(gomock.Any()).
+		Return(client.CreatePager(response)).MinTimes(1)
+
+	streamanalyticsClient := &service.StreamanalyticsClient{
+		StreamingJobsClient: mockStreamingJobsClient,
 	}
 
-	data := streamanalytics.StreamingJob{}
-	require.Nil(t, faker.FakeObject(&data))
+	c := &client.Services{Streamanalytics: streamanalyticsClient}
 
-	result := streamanalytics.NewStreamingJobListResultPage(streamanalytics.StreamingJobListResult{Value: &[]streamanalytics.StreamingJob{data}}, func(ctx context.Context, result streamanalytics.StreamingJobListResult) (streamanalytics.StreamingJobListResult, error) {
-		return streamanalytics.StreamingJobListResult{}, nil
-	})
+	return c
+}
 
-	mockClient.EXPECT().List(gomock.Any(), "").Return(result, nil)
-	return s
+func TestStreamingJobs(t *testing.T) {
+	client.MockTestHelper(t, StreamingJobs(), buildStreamingJobs)
 }

@@ -5,28 +5,33 @@ package cosmosdb
 import (
 	"testing"
 
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v2"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/cosmos"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/cosmos"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2020-04-01-preview/documentdb"
 )
 
-func createMongoDBDatabasesMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockCosmosDBMongoDBDatabasesClient(ctrl)
-	s := services.Services{
-		CosmosDB: services.CosmosDBClient{
-			MongoDBDatabases: mockClient,
-		},
+func buildMongoDbDatabases(t *testing.T, ctrl *gomock.Controller, c *client.Services) {
+	if c.Cosmos == nil {
+		c.Cosmos = new(service.CosmosClient)
+	}
+	cosmosClient := c.Cosmos
+	if cosmosClient.MongoDBResourcesClient == nil {
+		cosmosClient.MongoDBResourcesClient = mocks.NewMockMongoDBResourcesClient(ctrl)
 	}
 
-	data := documentdb.MongoDBDatabaseGetResults{}
-	require.Nil(t, faker.FakeObject(&data))
+	mockMongoDBResourcesClient := cosmosClient.MongoDBResourcesClient.(*mocks.MockMongoDBResourcesClient)
 
-	result := documentdb.MongoDBDatabaseListResult{Value: &[]documentdb.MongoDBDatabaseGetResults{data}}
+	var response api.MongoDBResourcesClientListMongoDBDatabasesResponse
+	require.NoError(t, faker.FakeObject(&response))
+	// Use correct Azure ID format
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.Value[0].ID = to.Ptr(id)
 
-	mockClient.EXPECT().ListMongoDBDatabases(gomock.Any(), "test", "test").Return(result, nil)
-	return s
+	mockMongoDBResourcesClient.EXPECT().NewListMongoDBDatabasesPager(gomock.Any(), gomock.Any(), gomock.Any()).
+		Return(client.CreatePager(response)).MinTimes(1)
 }

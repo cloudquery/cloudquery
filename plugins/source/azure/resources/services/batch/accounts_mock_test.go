@@ -3,38 +3,39 @@
 package batch
 
 import (
-	"context"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/batch"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/batch"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/services/batch/mgmt/2021-06-01/batch"
 )
 
-func TestBatchAccounts(t *testing.T) {
-	client.MockTestHelper(t, Accounts(), createAccountsMock)
-}
+func buildAccounts(t *testing.T, ctrl *gomock.Controller) *client.Services {
+	mockAccountClient := mocks.NewMockAccountClient(ctrl)
 
-func createAccountsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockBatchAccountsClient(ctrl)
-	s := services.Services{
-		Batch: services.BatchClient{
-			Accounts: mockClient,
-		},
+	var response api.AccountClientListResponse
+	require.NoError(t, faker.FakeObject(&response))
+	// Use correct Azure ID format
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.Value[0].ID = to.Ptr(id)
+
+	mockAccountClient.EXPECT().NewListPager(gomock.Any()).
+		Return(client.CreatePager(response)).MinTimes(1)
+
+	batchClient := &service.BatchClient{
+		AccountClient: mockAccountClient,
 	}
 
-	data := batch.Account{}
-	require.Nil(t, faker.FakeObject(&data))
+	c := &client.Services{Batch: batchClient}
 
-	result := batch.NewAccountListResultPage(batch.AccountListResult{Value: &[]batch.Account{data}}, func(ctx context.Context, result batch.AccountListResult) (batch.AccountListResult, error) {
-		return batch.AccountListResult{}, nil
-	})
+	return c
+}
 
-	mockClient.EXPECT().List(gomock.Any()).Return(result, nil)
-	return s
+func TestAccounts(t *testing.T) {
+	client.MockTestHelper(t, Accounts(), buildAccounts)
 }

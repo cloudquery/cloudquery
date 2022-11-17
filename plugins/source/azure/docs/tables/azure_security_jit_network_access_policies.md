@@ -1,6 +1,6 @@
 # Table: azure_security_jit_network_access_policies
 
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security#JitNetworkAccessPolicy
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity#JitNetworkAccessPolicy
 
 The primary key for this table is **id**.
 
@@ -14,11 +14,11 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|id (PK)|String|
-|name|String|
-|type|String|
-|kind|String|
-|location|String|
 |virtual_machines|JSON|
 |requests|JSON|
 |provisioning_state|String|
+|kind|String|
+|id (PK)|String|
+|location|String|
+|name|String|
+|type|String|

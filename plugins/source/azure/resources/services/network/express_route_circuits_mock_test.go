@@ -3,38 +3,39 @@
 package network
 
 import (
-	"context"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	api "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
+	mocks "github.com/cloudquery/cloudquery/plugins/source/azure/client/mocks/network"
+	service "github.com/cloudquery/cloudquery/plugins/source/azure/client/services/network"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-
-	"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"
 )
 
-func TestNetworkExpressRouteCircuits(t *testing.T) {
-	client.MockTestHelper(t, ExpressRouteCircuits(), createExpressRouteCircuitsMock)
-}
+func buildExpressRouteCircuits(t *testing.T, ctrl *gomock.Controller) *client.Services {
+	mockExpressRouteCircuitsClient := mocks.NewMockExpressRouteCircuitsClient(ctrl)
 
-func createExpressRouteCircuitsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockNetworkExpressRouteCircuitsClient(ctrl)
-	s := services.Services{
-		Network: services.NetworkClient{
-			ExpressRouteCircuits: mockClient,
-		},
+	var response api.ExpressRouteCircuitsClientListAllResponse
+	require.NoError(t, faker.FakeObject(&response))
+	// Use correct Azure ID format
+	const id = "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	response.Value[0].ID = to.Ptr(id)
+
+	mockExpressRouteCircuitsClient.EXPECT().NewListAllPager(gomock.Any()).
+		Return(client.CreatePager(response)).MinTimes(1)
+
+	networkClient := &service.NetworkClient{
+		ExpressRouteCircuitsClient: mockExpressRouteCircuitsClient,
 	}
 
-	data := network.ExpressRouteCircuit{}
-	require.Nil(t, faker.FakeObject(&data))
+	c := &client.Services{Network: networkClient}
 
-	result := network.NewExpressRouteCircuitListResultPage(network.ExpressRouteCircuitListResult{Value: &[]network.ExpressRouteCircuit{data}}, func(ctx context.Context, result network.ExpressRouteCircuitListResult) (network.ExpressRouteCircuitListResult, error) {
-		return network.ExpressRouteCircuitListResult{}, nil
-	})
+	return c
+}
 
-	mockClient.EXPECT().ListAll(gomock.Any()).Return(result, nil)
-	return s
+func TestExpressRouteCircuits(t *testing.T) {
+	client.MockTestHelper(t, ExpressRouteCircuits(), buildExpressRouteCircuits)
 }

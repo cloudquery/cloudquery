@@ -3,8 +3,6 @@
 package network
 
 import (
-	"context"
-
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -12,39 +10,15 @@ import (
 func ExpressRouteGateways() *schema.Table {
 	return &schema.Table{
 		Name:        "azure_network_express_route_gateways",
-		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network#ExpressRouteGateway`,
-		Resolver:    fetchNetworkExpressRouteGateways,
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2#ExpressRouteGateway`,
+		Resolver:    fetchExpressRouteGateways,
 		Multiplex:   client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "auto_scale_configuration",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("AutoScaleConfiguration"),
-			},
-			{
-				Name:     "express_route_connections",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ExpressRouteConnections"),
-			},
-			{
-				Name:     "provisioning_state",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ProvisioningState"),
-			},
-			{
-				Name:     "virtual_hub",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("VirtualHub"),
-			},
-			{
-				Name:     "etag",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Etag"),
+				Name:        "subscription_id",
+				Type:        schema.TypeString,
+				Resolver:    client.SubscriptionIDResolver,
+				Description: `Azure subscription ID`,
 			},
 			{
 				Name:     "id",
@@ -53,6 +27,46 @@ func ExpressRouteGateways() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
+			},
+			{
+				Name:     "location",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Location"),
+			},
+			{
+				Name:     "virtual_hub",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.VirtualHub"),
+			},
+			{
+				Name:     "allow_non_virtual_wan_traffic",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Properties.AllowNonVirtualWanTraffic"),
+			},
+			{
+				Name:     "auto_scale_configuration",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.AutoScaleConfiguration"),
+			},
+			{
+				Name:     "express_route_connections",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties.ExpressRouteConnections"),
+			},
+			{
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.ProvisioningState"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Tags"),
+			},
+			{
+				Name:     "etag",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Etag"),
 			},
 			{
 				Name:     "name",
@@ -64,31 +78,6 @@ func ExpressRouteGateways() *schema.Table {
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Type"),
 			},
-			{
-				Name:     "location",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Location"),
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
-			},
 		},
 	}
-}
-
-func fetchNetworkExpressRouteGateways(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().Network.ExpressRouteGateways
-
-	response, err := svc.ListBySubscription(ctx)
-	if err != nil {
-		return err
-	}
-	if response.Value == nil {
-		return nil
-	}
-	res <- *response.Value
-
-	return nil
 }

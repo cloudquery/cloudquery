@@ -1,6 +1,6 @@
 # Table: azure_sql_transparent_data_encryptions
 
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql#TransparentDataEncryption
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql#LogicalDatabaseTransparentDataEncryption
 
 The primary key for this table is **id**.
 
@@ -16,9 +16,8 @@ This table depends on [azure_sql_databases](azure_sql_databases.md).
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|sql_database_id|String|
-|location|String|
-|status|String|
+|state|String|
 |id (PK)|String|
 |name|String|
 |type|String|
+|database_id|String|

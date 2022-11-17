@@ -1,14 +1,14 @@
 # Table: azure_storage_accounts
 
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-01-01/storage#Account
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage#Account
 
 The primary key for this table is **id**.
 
 ## Relations
 
 The following tables depend on azure_storage_accounts:
-  - [azure_storage_containers](azure_storage_containers.md)
   - [azure_storage_blob_services](azure_storage_blob_services.md)
+  - [azure_storage_containers](azure_storage_containers.md)
 
 ## Columns
 | Name          | Type          |
@@ -18,40 +18,50 @@ The following tables depend on azure_storage_accounts:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|sku|JSON|
-|kind|String|
-|identity|JSON|
+|location|String|
 |extended_location|JSON|
-|provisioning_state|String|
-|primary_endpoints|JSON|
-|primary_location|String|
-|status_of_primary|String|
-|last_geo_failover_time|Timestamp|
-|secondary_location|String|
-|status_of_secondary|String|
+|identity|JSON|
+|allow_blob_public_access|Bool|
+|allow_cross_tenant_replication|Bool|
+|allow_shared_key_access|Bool|
+|allowed_copy_scope|String|
+|azure_files_identity_based_authentication|JSON|
+|dns_endpoint_type|String|
+|default_to_o_auth_authentication|Bool|
+|supports_https_traffic_only|Bool|
+|is_nfs_v3_enabled|Bool|
+|immutable_storage_with_versioning|JSON|
+|is_hns_enabled|Bool|
+|is_local_user_enabled|Bool|
+|is_sftp_enabled|Bool|
+|large_file_shares_state|String|
+|minimum_tls_version|String|
+|public_network_access|String|
+|routing_preference|JSON|
+|storage_account_sku_conversion_status|JSON|
+|access_tier|String|
+|blob_restore_status|JSON|
 |creation_time|Timestamp|
 |custom_domain|JSON|
-|secondary_endpoints|JSON|
 |encryption|JSON|
-|access_tier|String|
-|azure_files_identity_based_authentication|JSON|
-|supports_https_traffic_only|Bool|
-|network_acls|JSON|
-|is_hns_enabled|Bool|
-|geo_replication_stats|JSON|
 |failover_in_progress|Bool|
-|large_file_shares_state|String|
+|geo_replication_stats|JSON|
+|key_creation_time|JSON|
+|key_policy|JSON|
+|last_geo_failover_time|Timestamp|
+|network_acls|JSON|
+|primary_endpoints|JSON|
+|primary_location|String|
 |private_endpoint_connections|JSON|
-|routing_preference|JSON|
-|blob_restore_status|JSON|
-|allow_blob_public_access|Bool|
-|minimum_tls_version|String|
-|allow_shared_key_access|Bool|
+|provisioning_state|String|
+|sas_policy|JSON|
+|secondary_endpoints|JSON|
+|secondary_location|String|
+|status_of_primary|String|
+|status_of_secondary|String|
 |tags|JSON|
-|location|String|
 |id (PK)|String|
+|kind|String|
 |name|String|
+|sku|JSON|
 |type|String|
-|blob_logging_settings|JSON|
-|queue_logging_settings|JSON|
-|is_nfs_v3_enabled|Bool|

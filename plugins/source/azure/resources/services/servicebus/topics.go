@@ -3,119 +3,106 @@
 package servicebus
 
 import (
-	"context"
-
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-
-	"github.com/Azure/azure-sdk-for-go/services/preview/servicebus/mgmt/2021-06-01-preview/servicebus"
 )
 
 func topics() *schema.Table {
 	return &schema.Table{
 		Name:        "azure_servicebus_topics",
-		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/servicebus/mgmt/2021-06-01-preview/servicebus#SBTopic`,
-		Resolver:    fetchServicebusTopics,
+		Description: `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus/v2#SBTopic`,
+		Resolver:    fetchTopics,
 		Columns: []schema.Column{
 			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "servicebus_namespace_id",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("id"),
-			},
-			{
-				Name:     "size_in_bytes",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("SizeInBytes"),
-			},
-			{
-				Name:     "created_at",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("CreatedAt"),
-			},
-			{
-				Name:     "updated_at",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("UpdatedAt"),
-			},
-			{
-				Name:     "accessed_at",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("AccessedAt"),
-			},
-			{
-				Name:     "subscription_count",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("SubscriptionCount"),
-			},
-			{
-				Name:     "count_details",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("CountDetails"),
-			},
-			{
-				Name:     "default_message_time_to_live",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("DefaultMessageTimeToLive"),
-			},
-			{
-				Name:     "max_size_in_megabytes",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("MaxSizeInMegabytes"),
-			},
-			{
-				Name:     "max_message_size_in_kilobytes",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("MaxMessageSizeInKilobytes"),
-			},
-			{
-				Name:     "requires_duplicate_detection",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("RequiresDuplicateDetection"),
-			},
-			{
-				Name:     "duplicate_detection_history_time_window",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("DuplicateDetectionHistoryTimeWindow"),
-			},
-			{
-				Name:     "enable_batched_operations",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("EnableBatchedOperations"),
-			},
-			{
-				Name:     "status",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Status"),
-			},
-			{
-				Name:     "support_ordering",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("SupportOrdering"),
+				Name:        "subscription_id",
+				Type:        schema.TypeString,
+				Resolver:    client.SubscriptionIDResolver,
+				Description: `Azure subscription ID`,
 			},
 			{
 				Name:     "auto_delete_on_idle",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("AutoDeleteOnIdle"),
+				Resolver: schema.PathResolver("Properties.AutoDeleteOnIdle"),
 			},
 			{
-				Name:     "enable_partitioning",
+				Name:     "default_message_time_to_live",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.DefaultMessageTimeToLive"),
+			},
+			{
+				Name:     "duplicate_detection_history_time_window",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.DuplicateDetectionHistoryTimeWindow"),
+			},
+			{
+				Name:     "enable_batched_operations",
 				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("EnablePartitioning"),
+				Resolver: schema.PathResolver("Properties.EnableBatchedOperations"),
 			},
 			{
 				Name:     "enable_express",
 				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("EnableExpress"),
+				Resolver: schema.PathResolver("Properties.EnableExpress"),
 			},
 			{
-				Name:     "system_data",
+				Name:     "enable_partitioning",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Properties.EnablePartitioning"),
+			},
+			{
+				Name:     "max_message_size_in_kilobytes",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("Properties.MaxMessageSizeInKilobytes"),
+			},
+			{
+				Name:     "max_size_in_megabytes",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("Properties.MaxSizeInMegabytes"),
+			},
+			{
+				Name:     "requires_duplicate_detection",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Properties.RequiresDuplicateDetection"),
+			},
+			{
+				Name:     "status",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Properties.Status"),
+			},
+			{
+				Name:     "support_ordering",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Properties.SupportOrdering"),
+			},
+			{
+				Name:     "accessed_at",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Properties.AccessedAt"),
+			},
+			{
+				Name:     "count_details",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("SystemData"),
+				Resolver: schema.PathResolver("Properties.CountDetails"),
+			},
+			{
+				Name:     "created_at",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Properties.CreatedAt"),
+			},
+			{
+				Name:     "size_in_bytes",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("Properties.SizeInBytes"),
+			},
+			{
+				Name:     "subscription_count",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("Properties.SubscriptionCount"),
+			},
+			{
+				Name:     "updated_at",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Properties.UpdatedAt"),
 			},
 			{
 				Name:     "id",
@@ -126,14 +113,29 @@ func topics() *schema.Table {
 				},
 			},
 			{
+				Name:     "location",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Location"),
+			},
+			{
 				Name:     "name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Name"),
 			},
 			{
+				Name:     "system_data",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("SystemData"),
+			},
+			{
 				Name:     "type",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Type"),
+			},
+			{
+				Name:     "namespace_id",
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 		},
 
@@ -141,28 +143,4 @@ func topics() *schema.Table {
 			authorizationRules(),
 		},
 	}
-}
-
-func fetchServicebusTopics(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().Servicebus.Topics
-
-	namespace := parent.Item.(servicebus.SBNamespace)
-	resourceDetails, err := client.ParseResourceID(*namespace.ID)
-	if err != nil {
-		return err
-	}
-	response, err := svc.ListByNamespace(ctx, resourceDetails.ResourceGroup, *namespace.Name, nil, nil)
-
-	if err != nil {
-		return err
-	}
-
-	for response.NotDone() {
-		res <- response.Values()
-		if err := response.NextWithContext(ctx); err != nil {
-			return err
-		}
-	}
-
-	return nil
 }
