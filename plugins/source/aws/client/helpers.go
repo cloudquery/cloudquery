@@ -230,19 +230,6 @@ func IgnoreNotAvailableRegion(err error) bool {
 	return false
 }
 
-// makeARN creates an ARN using supplied service name, partition, account id, region name and resource id parts.
-// Resource id parts are concatenated using forward slash (/).
-// See https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html for more information.
-func makeARN(service AWSService, partition, accountID, region string, idParts ...string) arn.ARN {
-	return arn.ARN{
-		Partition: partition,
-		Service:   string(service),
-		Region:    region,
-		AccountID: accountID,
-		Resource:  strings.Join(idParts, "/"),
-	}
-}
-
 func resolveARN(service AWSService, resourceID func(resource *schema.Resource) ([]string, error), useRegion, useAccountID bool) schema.ColumnResolver {
 	return func(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 		cl := meta.(*Client)
@@ -257,7 +244,13 @@ func resolveARN(service AWSService, resourceID func(resource *schema.Resource) (
 		if useRegion {
 			region = cl.Region
 		}
-		return resource.Set(c.Name, makeARN(service, cl.Partition, accountID, region, idParts...).String())
+		return resource.Set(c.Name, arn.ARN{
+			Partition: cl.Partition,
+			Service:   string(service),
+			Region:    region,
+			AccountID: accountID,
+			Resource:  strings.Join(idParts, "/"),
+		}.String())
 	}
 }
 

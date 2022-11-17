@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/redshift"
 	"github.com/aws/aws-sdk-go-v2/service/redshift/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -41,5 +42,11 @@ func resolveSnapshotARN(ctx context.Context, meta schema.ClientMeta, resource *s
 }
 
 func snapshotARN(cl *client.Client, clusterName, snapshotName string) string {
-	return cl.ARN(client.RedshiftService, fmt.Sprintf("snapshot:%s", clusterName), snapshotName)
+	return arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.RedshiftService),
+		Region:    cl.Region,
+		AccountID: cl.AccountID,
+		Resource:  fmt.Sprintf("snapshot:%s/%s", clusterName, snapshotName),
+	}.String()
 }
