@@ -10,7 +10,7 @@ import (
 func AlternateContacts() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_account_alternate_contacts",
-		Description: `https://docs.aws.amazon.com/acm/latest/APIReference/API_CertificateDetail.html`,
+		Description: `https://docs.aws.amazon.com/accounts/latest/reference/API_AlternateContact.html`,
 		Resolver:    fetchAccountAlternateContacts,
 		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{

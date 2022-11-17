@@ -11,7 +11,7 @@ func AccountResources() []*Resource {
 		{
 			SubService:  "alternate_contacts",
 			Struct:      &types.AlternateContact{},
-			Description: "https://docs.aws.amazon.com/acm/latest/APIReference/API_CertificateDetail.html",
+			Description: "https://docs.aws.amazon.com/accounts/latest/reference/API_AlternateContact.html",
 			PKColumns:   []string{"alternate_contact_type"},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
@@ -25,7 +25,7 @@ func AccountResources() []*Resource {
 		{
 			SubService:  "contacts",
 			Struct:      &types.ContactInformation{},
-			Description: "https://docs.aws.amazon.com/acm/latest/APIReference/API_CertificateDetail.html",
+			Description: "https://docs.aws.amazon.com/accounts/latest/reference/API_ContactInformation.html",
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:     "account_id",

@@ -1,6 +1,6 @@
 # Table: aws_account_alternate_contacts
 
-https://docs.aws.amazon.com/acm/latest/APIReference/API_CertificateDetail.html
+https://docs.aws.amazon.com/accounts/latest/reference/API_AlternateContact.html
 
 The composite primary key for this table is (**account_id**, **alternate_contact_type**).
 
