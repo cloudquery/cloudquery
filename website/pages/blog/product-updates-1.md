@@ -11,7 +11,7 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 <BlogHeader/>
 
-Hey everyone! Since CloudQuery [V1 is out](./cloudquery-v1-release.md) we will be restarting our monthly products updates and starting from #1 as figured it easier to use number then months :)
+Hey everyone! Since CloudQuery [V1 is out](./cloudquery-v1-release.md) we will be restarting our monthly products updates and starting from #1 as I figured it is easier to use numbers than months :)
 
 This months we've been really cranking it at CQ so lot's of good stuff!
 
