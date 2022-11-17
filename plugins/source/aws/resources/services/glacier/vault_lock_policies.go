@@ -34,7 +34,7 @@ func VaultLockPolicies() *schema.Table {
 			{
 				Name:     "policy",
 				Type:     schema.TypeJSON,
-				Resolver: client.MarshaledJsonResolver("Policy"),
+				Resolver: schema.PathResolver("Policy"),
 			},
 		},
 	}

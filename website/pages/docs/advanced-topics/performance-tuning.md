@@ -14,14 +14,14 @@ Sometimes the easiest way to improve the performance of the `sync` command is to
 
 For example, when using the `aws` source plugin, it is possible to use a wildcard pattern to match all tables related to AWS EC2:
 
-```yaml
+```yaml copy
 tables:
  - aws_ec2_*
 ```
 
 This can also be combined with `skip_tables`. For example, let's say we want to include all EC2 tables, but not EBS-related ones:
 
-```yaml
+```yaml copy
 tables: 
 - "aws_ec2_*"
 skip_tables:
@@ -48,7 +48,7 @@ A
 
 We might want table `A`, but not need the information in table `B`. We can then write our source config as:
 
-```yaml
+```yaml copy
 tables:
  - A
 skip_tables:
