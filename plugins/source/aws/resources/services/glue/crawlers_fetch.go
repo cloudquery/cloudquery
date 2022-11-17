@@ -2,8 +2,10 @@ package glue
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -30,8 +32,7 @@ func fetchGlueCrawlers(ctx context.Context, meta schema.ClientMeta, parent *sche
 }
 func resolveGlueCrawlerArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	arn := aws.String(crawlerARN(cl, aws.ToString(resource.Item.(types.Crawler).Name)))
-	return resource.Set(c.Name, arn)
+	return resource.Set(c.Name, crawlerARN(cl, aws.ToString(resource.Item.(types.Crawler).Name)))
 }
 func resolveGlueCrawlerTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
@@ -52,5 +53,11 @@ func resolveGlueCrawlerTags(ctx context.Context, meta schema.ClientMeta, resourc
 // ====================================================================================================================
 
 func crawlerARN(cl *client.Client, name string) string {
-	return cl.ARN(client.GlueService, "crawler", name)
+	return arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.GlueService),
+		Region:    cl.Region,
+		AccountID: cl.AccountID,
+		Resource:  fmt.Sprintf("crawler/%s", name),
+	}.String()
 }
