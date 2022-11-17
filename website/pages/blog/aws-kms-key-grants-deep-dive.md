@@ -179,7 +179,7 @@ AWS provides 2 different operations for managing KMS Key Grant lifecycle:
 - [RetireGrant](https://docs.aws.amazon.com/kms/latest/APIReference/API_RetireGrant.html)
 - [RevokeGrant](https://docs.aws.amazon.com/kms/latest/APIReference/API_RevokeGrant.html)
 
-While both of these actions provide the same result of deleting a KMS Key Grant, which eliminates the permissions the grant allows.  However, these permissions are authorized differently.
+While both of these actions provide the same result of deleting a KMS Key Grant, which eliminates the permissions the grant allows. This is one of a few use cases in AWS where multiple operations may provide the same result. However, these permissions are authorized differently.  
 
 A few key differences include:
 - RevokeGrant is similar to a typical AWS KMS operation and can be controlled via key policies and IAM policies via the `kms:RevokeGrant` permission.  The usage of `kms:RetireGrant` in policies does not behave similarly.
