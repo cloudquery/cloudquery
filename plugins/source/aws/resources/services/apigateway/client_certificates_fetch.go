@@ -2,7 +2,10 @@ package apigateway
 
 import (
 	"context"
+	"fmt"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -25,6 +28,11 @@ func fetchApigatewayClientCertificates(ctx context.Context, meta schema.ClientMe
 func resolveApigatewayClientCertificateArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	cert := resource.Item.(types.ClientCertificate)
-	arn := cl.RegionGlobalARN(client.ApigatewayService, "/clientcertificates", *cert.ClientCertificateId)
-	return resource.Set(c.Name, arn)
+	return resource.Set(c.Name, arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.ApigatewayService),
+		Region:    cl.Region,
+		AccountID: "",
+		Resource:  fmt.Sprintf("/clientcertificates/%s", aws.ToString(cert.ClientCertificateId)),
+	}.String())
 }

@@ -2,8 +2,10 @@ package apigateway
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -29,6 +31,11 @@ func fetchApigatewayApiKeys(ctx context.Context, meta schema.ClientMeta, parent 
 func resolveApigatewayAPIKeyArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	ak := resource.Item.(types.ApiKey)
-	arn := cl.RegionGlobalARN(client.ApigatewayService, "/apikeys", *ak.Id)
-	return resource.Set(c.Name, arn)
+	return resource.Set(c.Name, arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.ApigatewayService),
+		Region:    cl.Region,
+		AccountID: "",
+		Resource:  fmt.Sprintf("/apikeys/%s", aws.ToString(ak.Id)),
+	}.String())
 }

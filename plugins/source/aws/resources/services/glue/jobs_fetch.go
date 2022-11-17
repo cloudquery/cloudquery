@@ -2,8 +2,10 @@ package glue
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -29,8 +31,7 @@ func fetchGlueJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 }
 func resolveGlueJobArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	arn := aws.String(jobARN(cl, aws.ToString(resource.Item.(types.Job).Name)))
-	return resource.Set(c.Name, arn)
+	return resource.Set(c.Name, jobARN(cl, aws.ToString(resource.Item.(types.Job).Name)))
 }
 func resolveGlueJobTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
@@ -71,5 +72,11 @@ func fetchGlueJobRuns(ctx context.Context, meta schema.ClientMeta, parent *schem
 // ====================================================================================================================
 
 func jobARN(cl *client.Client, name string) string {
-	return cl.ARN(client.GlueService, "job", name)
+	return arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.GlueService),
+		Region:    cl.Region,
+		AccountID: cl.AccountID,
+		Resource:  fmt.Sprintf("job/%s", name),
+	}.String()
 }
