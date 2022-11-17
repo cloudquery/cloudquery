@@ -24,7 +24,7 @@ This month we've been really cranking it at CQ so lots of good stuff!
 We've added two new destinations to CQ!
 
 * [CSV](https://github.com/cloudquery/cloudquery/blob/main/plugins/destination/csv/README.md). See [Release Blog](https://www.cloudquery.io/blog/scaling-out-elt-with-cq-and-csv)
-* [SQLite](https://github.com/cloudquery/cloudquery/tree/main/plugins/destination/sqlite). See Release [Blog](https://www.cloudquery.io/blog/announcing-cloudquery-sqlite-destination)
+* [SQLite](https://github.com/cloudquery/cloudquery/tree/main/plugins/destination/sqlite). See [Release Blog](https://www.cloudquery.io/blog/announcing-cloudquery-sqlite-destination)
 
 
 ## Sources
