@@ -47,7 +47,7 @@ Thus, we have the following important differences about access to KMS Keys vs ac
 
 ## Access via KMS Key Grants
 
-Grants allow for AWS principals to use KMS Keys.  One such example is when [sharing encrypted EBS Snapshots](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-modifying-snapshot-permissions.html#share-kms-key).  Grants can also be used for temporary permissions because they can be used without modifying key policies or IAM policies.  
+Grants allow for AWS principals to use KMS Keys.  One such example is when [sharing encrypted EBS Snapshots](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-modifying-snapshot-permissions.html#share-kms-key).  Grants can also be used for temporary permissions because they can be used without modifying key policies or IAM policies.  AWS also (recommends using KMS Key Grants)[https://docs.aws.amazon.com/kms/latest/developerguide/resource-limits.html#key-policy-limit] if the Key Policy size approaches the limit of 32 KB.
 
 As such, grants are used by [AWS services that integrate with AWS KMS](https://docs.aws.amazon.com/kms/latest/developerguide/service-integration.html) such as RDS and ACM.
 
@@ -114,7 +114,7 @@ aws kms create-grant --key-id arn:aws:kms:us-east-1:123412341234:key/aaaaaaaa-12
 
 The ability and permissions to create a grant must either come from a policy or a grant.  If no grants exist, the permissions must come from the KMS Key Policy or if the Key Policy allows for management via identity policies, can then come from identity policies.
 
-The permission to create a grant differs slightly depending on how the grantee principal gets permissions to call CreateGrant:
+The permission to [create a grant](https://docs.aws.amazon.com/kms/latest/developerguide/create-grant-overview.html#grant-creategrant) differs slightly depending on how the grantee principal gets permissions to call CreateGrant:
 
 |  | Policy as Permission Source | Grant as Permission Source |
 | --- | --- | --- |
@@ -152,9 +152,11 @@ In this case, the following use cases succeed since the child grant is as strict
 - Creating a Grant with fewer operations as the parent grant.
 
 The following use case failed since the child grant is not as strict or stricter than the parent grant:
-- Creating a Grant with more operations than the parent grant.
+- Creating a Grant with more operations than the parent grant.  
 
-[https://docs.aws.amazon.com/kms/latest/developerguide/create-grant-overview.html#grant-creategrant](https://docs.aws.amazon.com/kms/latest/developerguide/create-grant-overview.html#grant-creategrant)
+With the failed use case, the error message on CLI will display a more generic `AccessDeniedException` error message that will reference `no identity-based policy allows the kms:CreateGrant action`.  
+
+![Example Failure of KMS Create Grant](/images/blog/aws-kms-key-grants-deep-dive/grant-error.png)
 
 ## Logging of KMS Key Grants
 
@@ -168,6 +170,8 @@ CloudTrail records some activity made outside of your AWS Account.  Activity out
 Even if the IAM principal creating a key Grants made on KMS resources within an account (Account A) lives outside of your account (Account B), the `CreateGrant` API call will still show up in account A's CloudTrail logs.
 
 ![CloudTrail Event Record for KMS CreateGrant](/images/blog/aws-kms-key-grants-deep-dive/create-grant-cloudtrail.png)
+
+Note that the `userIdentity` [element of the CloudTrail event record](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-event-reference-user-identity.html) may contain unexpected results for the `type` field.  Typically, this will specify the type of identity such as `Root`, `IAMUser`, `AssumedRole`, `Role`, `FederatedUser`, `Directory`, `AWSService`, `Unknown`, or `AWSAccount`.  For cross-account access, `AWSAccount` may appear in the logs.  In the example above, `AWSAccount` shows up for cross-account access using an IAM user. We've pointed out this difference to AWS.  
 
 ## Managing KMS Key Grant Lifecycle
 
@@ -285,7 +289,7 @@ SELECT * from aws_kms_key_grants where (grantee_principal NOT LIKE '%.amazonaws.
 
 7. Determine appropriate organization and team strategy for different access mechanisms for KMS regarding KMS Key Policies, Identity Policies, and KMS Key Grants.  
 
-Your organization’s use cases may be slightly different. If you have comments, feedback on this post, follow-up topics you’d like to see, or would like to talk about your KMS and encryption experiences  - email us at security@cloudquery.io or come chat with us on [Discord](https://www.cloudquery.io/discord)!
+If you have comments, feedback on this post, follow-up topics you’d like to see, or would like to talk about your KMS and encryption experiences  - email us at security@cloudquery.io or come chat with us on [Discord](https://www.cloudquery.io/discord)!  We'd love to hear your feedback and thoughts on encryption and your experiences with KMS Key Grants.
 
 ## References and Useful Links
 
