@@ -17,7 +17,7 @@ This month we've been really cranking it at CQ so lots of good stuff!
 
 ## CLI Improvements
 
-* We've introduced glob to specify tables. Check out release [blog](https://www.cloudquery.io/blog/introducing-wildcard-matching-for-tables)
+* We've introduced wildcard matching to specify tables. Check out the [release blog](https://www.cloudquery.io/blog/introducing-wildcard-matching-for-tables)
 
 ## Destinations
 
