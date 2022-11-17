@@ -63,6 +63,7 @@ func ConfigResources() []*Resource {
 		{
 			SubService: "config_rules",
 			Struct:     new(types.ConfigRule),
+			SkipFields: []string{"ConfigRuleArn"},
 			ExtraColumns: append(defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
 					{

@@ -37,11 +37,6 @@ func ConfigRules() *schema.Table {
 				Resolver: schema.PathResolver("Source"),
 			},
 			{
-				Name:     "config_rule_arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ConfigRuleArn"),
-			},
-			{
 				Name:     "config_rule_id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ConfigRuleId"),
