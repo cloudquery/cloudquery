@@ -2,8 +2,10 @@
 
 
 
-The primary key for this table is **uid**.
+The primary key for this table is **id**.
 
+## Relations
+This table depends on [gitlab_users_group_members](gitlab_users_group_members.md).
 
 ## Columns
 | Name          | Type          |
@@ -12,8 +14,7 @@ The primary key for this table is **uid**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|uid (PK)|String|
-|id|Int|
+|id (PK)|Int|
 |username|String|
 |email|String|
 |name|String|
