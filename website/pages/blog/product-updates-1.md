@@ -15,7 +15,7 @@ Hey everyone! Since CloudQuery [V1 is out](./cloudquery-v1-release.md) we will b
 
 This month we've been really cranking it at CQ so lots of good stuff!
 
-## CLI Imprvoments
+## CLI Improvements
 
 * We've introduced glob to specify tables. Check out release [blog](https://www.cloudquery.io/blog/introducing-wildcard-matching-for-tables)
 
