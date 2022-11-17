@@ -4,32 +4,32 @@ go 1.19
 
 require (
 	github.com/aws/aws-sdk-go-v2 v1.17.1
-	github.com/aws/aws-sdk-go-v2/config v1.18.0
-	github.com/aws/aws-sdk-go-v2/credentials v1.13.0
+	github.com/aws/aws-sdk-go-v2/config v1.18.1
+	github.com/aws/aws-sdk-go-v2/credentials v1.13.1
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.39
-	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.17.1
+	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.17.2
 	github.com/aws/aws-sdk-go-v2/service/acm v1.16.1
-	github.com/aws/aws-sdk-go-v2/service/apigateway v1.15.23
+	github.com/aws/aws-sdk-go-v2/service/apigateway v1.15.24
 	github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.12.21
 	github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.15.21
 	github.com/aws/aws-sdk-go-v2/service/apprunner v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/appstream v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/appsync v1.15.12
-	github.com/aws/aws-sdk-go-v2/service/autoscaling v1.24.1
+	github.com/aws/aws-sdk-go-v2/service/autoscaling v1.24.2
 	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.23.1
 	github.com/aws/aws-sdk-go-v2/service/cloudfront v1.20.7
 	github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.13.21
-	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.20.1
+	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.20.2
 	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.21.9
-	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.16.2
+	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.16.3
 	github.com/aws/aws-sdk-go-v2/service/codebuild v1.19.19
 	github.com/aws/aws-sdk-go-v2/service/codepipeline v1.13.19
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.14.3
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.21.1
-	github.com/aws/aws-sdk-go-v2/service/configservice v1.27.3
+	github.com/aws/aws-sdk-go-v2/service/configservice v1.27.4
 	github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.21.15
 	github.com/aws/aws-sdk-go-v2/service/dax v1.11.19
-	github.com/aws/aws-sdk-go-v2/service/directconnect v1.17.21
+	github.com/aws/aws-sdk-go-v2/service/directconnect v1.17.22
 	github.com/aws/aws-sdk-go-v2/service/docdb v1.19.14
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.17.5
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.70.0
@@ -85,7 +85,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sqs v1.19.13
 	github.com/aws/aws-sdk-go-v2/service/ssm v1.32.1
 	github.com/aws/aws-sdk-go-v2/service/ssoadmin v1.15.13
-	github.com/aws/aws-sdk-go-v2/service/sts v1.17.2
+	github.com/aws/aws-sdk-go-v2/service/sts v1.17.3
 	github.com/aws/aws-sdk-go-v2/service/timestreamwrite v1.14.5
 	github.com/aws/aws-sdk-go-v2/service/waf v1.11.19
 	github.com/aws/aws-sdk-go-v2/service/wafv2 v1.23.1
