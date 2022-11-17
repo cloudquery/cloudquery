@@ -11,5 +11,5 @@ select
             or d->>'ViewerProtocolPolicy' = 'allow-all' then 'fail'
         else 'pass'
     end as status
-from aws_cloudfront_distributions
+from (select * from	aws_cloudfront_distributions where distribution_config->'CacheBehaviors'->'Items' is distinct from 'null') cd
 left join jsonb_array_elements(distribution_config->'CacheBehaviors'->'Items') as d on d->>'ViewerProtocolPolicy' = 'allow-all'
