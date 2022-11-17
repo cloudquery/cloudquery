@@ -6,11 +6,11 @@ require (
 	github.com/aws/aws-sdk-go-v2 v1.17.1
 	github.com/aws/aws-sdk-go-v2/config v1.18.1
 	github.com/aws/aws-sdk-go-v2/credentials v1.13.1
-	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.39
+	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.40
 	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.17.2
-	github.com/aws/aws-sdk-go-v2/service/acm v1.16.1
+	github.com/aws/aws-sdk-go-v2/service/acm v1.16.2
 	github.com/aws/aws-sdk-go-v2/service/apigateway v1.15.24
-	github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.12.21
+	github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.12.22
 	github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.15.21
 	github.com/aws/aws-sdk-go-v2/service/apprunner v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/appstream v1.18.0
@@ -31,11 +31,11 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/dax v1.11.19
 	github.com/aws/aws-sdk-go-v2/service/directconnect v1.17.22
 	github.com/aws/aws-sdk-go-v2/service/docdb v1.19.14
-	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.17.4
+	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.17.5
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.70.0
-	github.com/aws/aws-sdk-go-v2/service/ecr v1.17.21
+	github.com/aws/aws-sdk-go-v2/service/ecr v1.17.22
 	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.13.19
-	github.com/aws/aws-sdk-go-v2/service/ecs v1.19.0
+	github.com/aws/aws-sdk-go-v2/service/ecs v1.19.1
 	github.com/aws/aws-sdk-go-v2/service/efs v1.17.19
 	github.com/aws/aws-sdk-go-v2/service/eks v1.22.4
 	github.com/aws/aws-sdk-go-v2/service/elasticache v1.23.1
@@ -72,7 +72,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.12.21
 	github.com/aws/aws-sdk-go-v2/service/route53 v1.24.0
 	github.com/aws/aws-sdk-go-v2/service/route53domains v1.12.19
-	github.com/aws/aws-sdk-go-v2/service/s3 v1.29.2
+	github.com/aws/aws-sdk-go-v2/service/s3 v1.29.3
 	github.com/aws/aws-sdk-go-v2/service/s3control v1.25.1
 	github.com/aws/aws-sdk-go-v2/service/sagemaker v1.54.0
 	github.com/aws/aws-sdk-go-v2/service/scheduler v1.0.1
