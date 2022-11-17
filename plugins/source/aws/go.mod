@@ -10,7 +10,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.17.2
 	github.com/aws/aws-sdk-go-v2/service/acm v1.16.1
 	github.com/aws/aws-sdk-go-v2/service/apigateway v1.15.24
-	github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.12.21
+	github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.12.22
 	github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.15.21
 	github.com/aws/aws-sdk-go-v2/service/apprunner v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/appstream v1.18.0
