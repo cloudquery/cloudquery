@@ -1,6 +1,6 @@
 package client
 
 type Spec struct {
-	Token string `json:"token,omitempty"`
-	// Domain string `json:"domain"`
+	Token   string `json:"token,omitempty"`
+	BaseURL string `json:"base_url,omitempty"`
 }

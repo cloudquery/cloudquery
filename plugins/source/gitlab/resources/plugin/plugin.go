@@ -16,7 +16,7 @@ func Plugin() *plugins.SourcePlugin {
 		"gitlab",
 		Version,
 		[]*schema.Table{
-			users.Users(),
+			users.Groups(),
 		},
 		client.Configure,
 	)

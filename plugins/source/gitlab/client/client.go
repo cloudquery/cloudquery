@@ -42,8 +42,11 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (sche
 
 		gitlabToken = gitlabSpec.Token
 	}
-
-	c, err := gitlab.NewClient(gitlabToken)
+	opts := []gitlab.ClientOptionFunc{}
+	if gitlabSpec.BaseURL != "" {
+		opts = append(opts, gitlab.WithBaseURL(gitlabSpec.BaseURL))
+	}
+	c, err := gitlab.NewClient(gitlabToken, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -54,3 +57,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (sche
 		spec:   s,
 	}, nil
 }
+
+// cannot use opts (variable of type gitlab.RequestOptionFunc) as []gitlab.ClientOptionFunc value in argument to gitlab.NewClientcompilerIncompatibleAssign
+// cannot use opts (variable of type gitlab.RequestOptionFunc) as gitlab.ClientOptionFunc value in argument to gitlab.NewClientcompilerIncompatibleAssign
+// cannot use opts (variable of type []gitlab.RequestOptionFunc) as []gitlab.ClientOptionFunc value in argument to gitlab.NewClientcompilerIncompatibleAssign

@@ -7,15 +7,25 @@ import (
 func Users() []*Resource {
 	resources := []*Resource{
 		{
+			Service:    "users",
 			SubService: "users",
 			Struct:     &gitlab.User{},
 			PKColumns:  []string{"id"},
 		},
-	}
-
-	for _, resource := range resources {
-		resource.Service = "users"
-		// resource.ServiceFunc = kubernetes.Interface.AppsV1
+		{
+			Service:    "users",
+			SubService: "groups",
+			PKColumns:  []string{"id", "name"},
+			Struct:     &gitlab.Group{},
+			Relations:  []string{"GroupMembers()"},
+		},
+		{
+			Service:    "users",
+			SubService: "group_members",
+			PKColumns:  []string{"id"},
+			Struct:     &gitlab.GroupMember{},
+			Relations:  []string{"Users()"},
+		},
 	}
 
 	return resources

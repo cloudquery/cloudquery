@@ -39,6 +39,7 @@ type Resource struct {
 	Table               *codegen.TableDefinition
 	ExtraColumns        []codegen.ColumnDefinition
 	SkipFields          []string
+	Relations           []string
 }
 
 func getFunctionName(i interface{}) string {
@@ -163,7 +164,9 @@ func (resource *Resource) Generate() error {
 	if resource.Multiplex != "" {
 		resource.Table.Multiplex = resource.Multiplex
 	}
-
+	if resource.Relations != nil {
+		resource.Table.Relations = resource.Relations
+	}
 	resource.StructName = getType(resource.Struct)
 
 	if err := resource.generate(false); err != nil {

@@ -10,13 +10,17 @@ import (
 
 func fetchUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	users, _, err := c.Gitlab.Users.ListUsers(&gitlab.ListUsersOptions{})
+	groupMember := parent.Item.(*gitlab.GroupMember)
+
+	opt := gitlab.GetUsersOptions{}
+
+	// Get the first page with projects.
+	users, _, err := c.Gitlab.Users.GetUser(groupMember.ID, opt)
 	if err != nil {
 		return err
 	}
-	if len(users) == 0 {
-		return nil
-	}
+
 	res <- users
+
 	return nil
 }
