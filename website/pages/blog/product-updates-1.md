@@ -33,7 +33,7 @@ We've added two new destinations to CQ!
 
 We've added 16 New Service!
 
-* [EventBridge Schedule](https://github.com/cloudquery/cloudquery/issues/4693)
+* [EventBridge Scheduler](https://github.com/cloudquery/cloudquery/issues/4693)
 * [SSM Resources](https://github.com/cloudquery/cloudquery/issues/4381)
 * [ECS Scale](https://github.com/cloudquery/cloudquery/issues/4688)
 * [MSK](https://github.com/cloudquery/cloudquery/issues/3967)
