@@ -31,7 +31,7 @@ We've added two new destinations to CQ!
 
 ### AWS
 
-We've added 16 New Service!
+We've added 16 new AWS services!
 
 * [EventBridge Scheduler](https://github.com/cloudquery/cloudquery/issues/4693)
 * [SSM Resources](https://github.com/cloudquery/cloudquery/issues/4381)
