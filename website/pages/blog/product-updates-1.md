@@ -1,7 +1,7 @@
 ---
 title: "CloudQuery Product Updates #1"
 tag: product
-date: 2022/11/01
+date: 2022/11/18
 description: >-
   Monthly updates on CloudQuery product and roadmap.
 author: yevgenypats
@@ -23,8 +23,8 @@ This month we've been really cranking it at CQ so lots of good stuff!
 
 We've added two new destinations to CQ!
 
-* [CSV](https://github.com/cloudquery/cloudquery/blob/main/plugins/destination/csv/README.md). See [Release Blog](https://www.cloudquery.io/blog/scaling-out-elt-with-cq-and-csv)
-* [SQLite](https://github.com/cloudquery/cloudquery/tree/main/plugins/destination/sqlite). See [Release Blog](https://www.cloudquery.io/blog/announcing-cloudquery-sqlite-destination)
+* [CSV](https://github.com/cloudquery/cloudquery/blob/main/plugins/destination/csv/README.md). See [release blog](https://www.cloudquery.io/blog/scaling-out-elt-with-cq-and-csv)
+* [SQLite](https://github.com/cloudquery/cloudquery/tree/main/plugins/destination/sqlite). See [release blog](https://www.cloudquery.io/blog/announcing-cloudquery-sqlite-destination)
 
 
 ## Sources
@@ -50,7 +50,7 @@ We've added 16 new AWS services!
 * [App Runner](https://github.com/cloudquery/cloudquery/issues/2997)
 * [Neptune](https://github.com/cloudquery/cloudquery/issues/2923)
 
-Also, tons of others bug fixes and performance tuning. See [full changelog](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/CHANGELOG.md)
+Also, tons of others bugfixes and performance tuning. See [full changelog](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/CHANGELOG.md)
 
 ### Azure
 
