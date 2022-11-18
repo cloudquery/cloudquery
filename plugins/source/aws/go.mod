@@ -4,9 +4,9 @@ go 1.19
 
 require (
 	github.com/aws/aws-sdk-go-v2 v1.17.1
-	github.com/aws/aws-sdk-go-v2/config v1.18.1
+	github.com/aws/aws-sdk-go-v2/config v1.18.2
 	github.com/aws/aws-sdk-go-v2/credentials v1.13.2
-	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.40
+	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.41
 	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.17.2
 	github.com/aws/aws-sdk-go-v2/service/account v1.7.11
 	github.com/aws/aws-sdk-go-v2/service/acm v1.16.2
@@ -15,9 +15,9 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.15.22
 	github.com/aws/aws-sdk-go-v2/service/apprunner v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/appstream v1.18.0
-	github.com/aws/aws-sdk-go-v2/service/appsync v1.15.12
+	github.com/aws/aws-sdk-go-v2/service/appsync v1.16.0
 	github.com/aws/aws-sdk-go-v2/service/autoscaling v1.24.2
-	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.23.1
+	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.24.0
 	github.com/aws/aws-sdk-go-v2/service/cloudfront v1.20.7
 	github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.13.21
 	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.20.2
@@ -28,12 +28,12 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.14.3
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.21.1
 	github.com/aws/aws-sdk-go-v2/service/configservice v1.27.4
-	github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.21.16
+	github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.22.0
 	github.com/aws/aws-sdk-go-v2/service/dax v1.11.19
 	github.com/aws/aws-sdk-go-v2/service/directconnect v1.17.22
 	github.com/aws/aws-sdk-go-v2/service/docdb v1.19.15
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.17.5
-	github.com/aws/aws-sdk-go-v2/service/ec2 v1.70.1
+	github.com/aws/aws-sdk-go-v2/service/ec2 v1.71.0
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.17.22
 	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.13.19
 	github.com/aws/aws-sdk-go-v2/service/ecs v1.19.1
@@ -42,7 +42,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/elasticache v1.23.1
 	github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk v1.14.20
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.14.22
-	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.18.24
+	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.18.25
 	github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.17.1
 	github.com/aws/aws-sdk-go-v2/service/emr v1.20.15
 	github.com/aws/aws-sdk-go-v2/service/eventbridge v1.16.19
@@ -69,25 +69,25 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/quicksight v1.26.2
 	github.com/aws/aws-sdk-go-v2/service/ram v1.16.24
 	github.com/aws/aws-sdk-go-v2/service/rds v1.29.0
-	github.com/aws/aws-sdk-go-v2/service/redshift v1.26.14
+	github.com/aws/aws-sdk-go-v2/service/redshift v1.26.15
 	github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.12.21
 	github.com/aws/aws-sdk-go-v2/service/route53 v1.24.0
 	github.com/aws/aws-sdk-go-v2/service/route53domains v1.12.19
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.29.3
-	github.com/aws/aws-sdk-go-v2/service/s3control v1.25.1
+	github.com/aws/aws-sdk-go-v2/service/s3control v1.26.0
 	github.com/aws/aws-sdk-go-v2/service/sagemaker v1.54.0
 	github.com/aws/aws-sdk-go-v2/service/scheduler v1.0.1
-	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.16.5
+	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.16.7
 	github.com/aws/aws-sdk-go-v2/service/servicecatalog v1.14.19
-	github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.14.3
+	github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/servicequotas v1.13.20
 	github.com/aws/aws-sdk-go-v2/service/sesv2 v1.15.1
-	github.com/aws/aws-sdk-go-v2/service/sns v1.18.4
+	github.com/aws/aws-sdk-go-v2/service/sns v1.18.5
 	github.com/aws/aws-sdk-go-v2/service/sqs v1.19.13
-	github.com/aws/aws-sdk-go-v2/service/ssm v1.32.1
+	github.com/aws/aws-sdk-go-v2/service/ssm v1.33.0
 	github.com/aws/aws-sdk-go-v2/service/ssoadmin v1.15.13
 	github.com/aws/aws-sdk-go-v2/service/sts v1.17.4
-	github.com/aws/aws-sdk-go-v2/service/timestreamwrite v1.14.5
+	github.com/aws/aws-sdk-go-v2/service/timestreamwrite v1.14.6
 	github.com/aws/aws-sdk-go-v2/service/waf v1.11.19
 	github.com/aws/aws-sdk-go-v2/service/wafv2 v1.23.1
 	github.com/aws/aws-sdk-go-v2/service/workspaces v1.26.0
