@@ -1135,6 +1135,26 @@ func (mr *MockSsmClientMockRecorder) GetPatchBaselineForPatchGroup(arg0, arg1 in
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPatchBaselineForPatchGroup", reflect.TypeOf((*MockSsmClient)(nil).GetPatchBaselineForPatchGroup), varargs...)
 }
 
+// GetResourcePolicies mocks base method.
+func (m *MockSsmClient) GetResourcePolicies(arg0 context.Context, arg1 *ssm.GetResourcePoliciesInput, arg2 ...func(*ssm.Options)) (*ssm.GetResourcePoliciesOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetResourcePolicies", varargs...)
+	ret0, _ := ret[0].(*ssm.GetResourcePoliciesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetResourcePolicies indicates an expected call of GetResourcePolicies.
+func (mr *MockSsmClientMockRecorder) GetResourcePolicies(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetResourcePolicies", reflect.TypeOf((*MockSsmClient)(nil).GetResourcePolicies), varargs...)
+}
+
 // GetServiceSetting mocks base method.
 func (m *MockSsmClient) GetServiceSetting(arg0 context.Context, arg1 *ssm.GetServiceSettingInput, arg2 ...func(*ssm.Options)) (*ssm.GetServiceSettingOutput, error) {
 	m.ctrl.T.Helper()
