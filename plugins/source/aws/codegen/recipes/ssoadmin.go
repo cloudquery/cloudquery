@@ -9,6 +9,14 @@ func SSOAdminResources() []*Resource {
 		{
 			SubService: "instances",
 			Struct:     &types.InstanceMetadata{},
+			Relations: []string{
+				"PermissionSets()",
+			},
+		},
+		{
+			SubService:          "permission_sets",
+			Struct:              &types.PermissionSet{},
+			PreResourceResolver: "getSsoadminPermissionSet",
 		},
 	}
 

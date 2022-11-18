@@ -24,5 +24,9 @@ func Instances() *schema.Table {
 				Resolver: schema.PathResolver("InstanceArn"),
 			},
 		},
+
+		Relations: []*schema.Table{
+			PermissionSets(),
+		},
 	}
 }
