@@ -12,6 +12,7 @@ import (
 func generateResources() ([]*recipes.Resource, error) {
 	var resources []*recipes.Resource
 	resources = append(resources, recipes.AccessAnalyzerResources()...)
+	resources = append(resources, recipes.AccountResources()...)
 	resources = append(resources, recipes.ACMResources()...)
 	resources = append(resources, recipes.APIGatewayResources()...)
 	resources = append(resources, recipes.APIGatewayV2Resources()...)
