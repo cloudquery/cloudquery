@@ -3047,6 +3047,12 @@
             "us-east-1": {}
           }
         },
+        "iotroborunner": {
+          "regions": {
+            "eu-central-1": {},
+            "us-east-1": {}
+          }
+        },
         "iotsecuredtunneling": {
           "regions": {
             "ap-east-1": {},
@@ -4291,7 +4297,13 @@
         "proton": {
           "regions": {
             "ap-northeast-1": {},
+            "ap-northeast-2": {},
+            "ap-southeast-1": {},
+            "ap-southeast-2": {},
+            "ca-central-1": {},
+            "eu-central-1": {},
             "eu-west-1": {},
+            "eu-west-2": {},
             "us-east-1": {},
             "us-east-2": {},
             "us-west-2": {}
@@ -5739,6 +5751,21 @@
             "us-east-2": {},
             "us-east-2-fips": {},
             "us-west-1": {},
+            "us-west-2": {},
+            "us-west-2-fips": {}
+          }
+        },
+        "voice-chime": {
+          "regions": {
+            "ap-northeast-1": {},
+            "ap-northeast-2": {},
+            "ap-southeast-1": {},
+            "ca-central-1": {},
+            "eu-central-1": {},
+            "eu-west-1": {},
+            "eu-west-2": {},
+            "us-east-1": {},
+            "us-east-1-fips": {},
             "us-west-2": {},
             "us-west-2-fips": {}
           }
