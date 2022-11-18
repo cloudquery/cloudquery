@@ -39,17 +39,20 @@ spec:
 
 ```sql
 --  public facing spaces are accessible by anyone, easily query which space is public facing in your account
-SELECT name, location, public, creation_date FROM digitalocean_spaces WHERE public = true;
+SELECT bucket->>'Name',location,public FROM digitalocean_spaces WHERE public = true;
 ```
 
 ### List Droplets with public facing ipv4 or ipv6
 
 ```sql
 -- Find any droplets that have a public ipv6 or ipv4 IP
-SELECT d.id as droplet_id, dnv4.ip_address as ip, dnv4.netmask, dnv4.gateway,  dnv6.ip_address as ipv6, dnv6.netmask as ipv6_netmask, dnv6.gateway as ipv6_gateway
-	from digitalocean_droplets d 
-LEFT JOIN digitalocean_droplet_networks_v4 dnv4 ON d.cq_id = dnv4.droplet_cq_id 
-LEFT JOIN digitalocean_droplet_networks_v6 dnv6 ON d.cq_id = dnv6.droplet_cq_id where dnv4.type = 'public' OR dnv6.type = 'public';
+SELECT id, name, v4->>'ip_address' AS address_v4, v4->>'netmask' AS netmask_v4, v4->>'gateway' AS gateway_v4,
+       v6->>'ip_address' AS address_v6, v6->>'netmask' AS netmask_v6, v6->>'gateway' AS gateway_v6
+FROM 
+  (SELECT id,name,v4,NULL as v6 FROM digitalocean_droplets CROSS JOIN JSONB_ARRAY_ELEMENTS(digitalocean_droplets.networks->'v4') AS v4 
+  UNION
+  SELECT id,name,NULL as v4,v6 FROM digitalocean_droplets CROSS JOIN JSONB_ARRAY_ELEMENTS(digitalocean_droplets.networks->'v6') AS v6) AS union_v46
+WHERE v4->>'type' = 'public' OR v6->>'type' = 'public';
 ```
 
 ### Billing History including current month balance
