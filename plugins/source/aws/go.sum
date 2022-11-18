@@ -216,8 +216,8 @@ github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.16.7 h1:bfC2Q8ABNbYYm9mh3
 github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.16.7/go.mod h1:k6CPuxyzO247nYEM1baEwHH1kRtosRCvgahAepaaShw=
 github.com/aws/aws-sdk-go-v2/service/servicecatalog v1.14.19 h1:IsBui5OwBHfMiwdBnfN7fLX4RCWnwu3s/v+yB1K2WiY=
 github.com/aws/aws-sdk-go-v2/service/servicecatalog v1.14.19/go.mod h1:LK9h10/zEBOFiR0RccANZ7PjXAMQX3vaBsVthOtJl5A=
-github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.14.3 h1:0E7QBG6IX+aQeVYu8z9shyrEYB8pdEj1xPtjFXA5NQY=
-github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.14.3/go.mod h1:vkpPtfwM2VWYr/FyJf8ATmTmehAIJIvVCEfNm2YP2xQ=
+github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.15.0 h1:6JXB9jmiawh0F4oTla5zqDeDi6xGBZeY/7pbcSLSMOc=
+github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.15.0/go.mod h1:vkpPtfwM2VWYr/FyJf8ATmTmehAIJIvVCEfNm2YP2xQ=
 github.com/aws/aws-sdk-go-v2/service/servicequotas v1.13.20 h1:0nyaHSI6mAGpilMph7ChBgiCcQtBMtkNj5wGaFdcQXg=
 github.com/aws/aws-sdk-go-v2/service/servicequotas v1.13.20/go.mod h1:EuAU2Q75NynMT3F3VTpgN5t+lO7Yl+1MJGeKS7ucGGw=
 github.com/aws/aws-sdk-go-v2/service/sesv2 v1.15.1 h1:gx9Jw/Y1otFYh1fH3CeVTIOSco2PzBWGNDteZQq1Z+k=
