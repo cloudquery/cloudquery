@@ -78,6 +78,11 @@ func ReplicationInstances() *schema.Table {
 				Resolver: schema.PathResolver("MultiAZ"),
 			},
 			{
+				Name:     "network_type",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("NetworkType"),
+			},
+			{
 				Name:     "pending_modified_values",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("PendingModifiedValues"),
@@ -101,6 +106,11 @@ func ReplicationInstances() *schema.Table {
 				Name:     "replication_instance_identifier",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ReplicationInstanceIdentifier"),
+			},
+			{
+				Name:     "replication_instance_ipv6_addresses",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("ReplicationInstanceIpv6Addresses"),
 			},
 			{
 				Name:     "replication_instance_private_ip_address",
