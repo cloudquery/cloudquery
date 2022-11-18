@@ -175,8 +175,8 @@ github.com/aws/aws-sdk-go-v2/service/kinesis v1.15.23 h1:DA9pHicNaiXauDe6tFu/9LJ
 github.com/aws/aws-sdk-go-v2/service/kinesis v1.15.23/go.mod h1:ucTnH7zv9Q8tIpVDU4rqA12YvWewxeluLWjynCpHDKM=
 github.com/aws/aws-sdk-go-v2/service/kms v1.18.17 h1:51GXKEIWtdwPUNPT+1GvjFJejiy/2uV0OWHKCXWCB68=
 github.com/aws/aws-sdk-go-v2/service/kms v1.18.17/go.mod h1:kZodDPTQjSH/qM6/OvyTfM5mms5JHB/EKYp5dhn/vI4=
-github.com/aws/aws-sdk-go-v2/service/lambda v1.24.11 h1:XuCEiIIyXFuqWdRvefocQLbkMYZZr23m3VvpP1DxBH0=
-github.com/aws/aws-sdk-go-v2/service/lambda v1.24.11/go.mod h1:2oqKd3SCTyhVaUei20xDUOOcqOAuAnbCy79w/t1dDVs=
+github.com/aws/aws-sdk-go-v2/service/lambda v1.25.0 h1:2ZhmVpSd54gdJkJ0BWBSK0e2/ahIcf88lVnHJNFaqAg=
+github.com/aws/aws-sdk-go-v2/service/lambda v1.25.0/go.mod h1:2oqKd3SCTyhVaUei20xDUOOcqOAuAnbCy79w/t1dDVs=
 github.com/aws/aws-sdk-go-v2/service/lightsail v1.24.0 h1:ILjBjigugB2APXvhntZU+XwDAcaTId22dE0OwIbi/2A=
 github.com/aws/aws-sdk-go-v2/service/lightsail v1.24.0/go.mod h1:LYCAGTJ4XgNZAESKxLC9L12F7IIQbJHccVxanY8DYzo=
 github.com/aws/aws-sdk-go-v2/service/mq v1.13.15 h1:K0UbxNfaPHoIXo0T4L4jrbE+TKcVPYp55nEnMLxVRPk=
