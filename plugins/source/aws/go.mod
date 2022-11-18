@@ -91,7 +91,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/waf v1.11.19
 	github.com/aws/aws-sdk-go-v2/service/wafv2 v1.23.1
 	github.com/aws/aws-sdk-go-v2/service/workspaces v1.26.0
-	github.com/aws/aws-sdk-go-v2/service/xray v1.14.0
+	github.com/aws/aws-sdk-go-v2/service/xray v1.15.0
 	github.com/aws/smithy-go v1.13.4
 	github.com/basgys/goxml2json v1.1.0
 	github.com/cloudquery/plugin-sdk v1.5.3
