@@ -12,6 +12,7 @@ import (
 func generateResources() ([]*recipes.Resource, error) {
 	var resources []*recipes.Resource
 	resources = append(resources, recipes.AccessAnalyzerResources()...)
+	resources = append(resources, recipes.AccountResources()...)
 	resources = append(resources, recipes.ACMResources()...)
 	resources = append(resources, recipes.APIGatewayResources()...)
 	resources = append(resources, recipes.APIGatewayV2Resources()...)
@@ -79,6 +80,7 @@ func generateResources() ([]*recipes.Resource, error) {
 	resources = append(resources, recipes.Route53Resources()...)
 	resources = append(resources, recipes.S3Resources()...)
 	resources = append(resources, recipes.SagemakerResources()...)
+	resources = append(resources, recipes.SchedulerResources()...)
 	resources = append(resources, recipes.SecretsManagerResources()...)
 	resources = append(resources, recipes.ServiceCatalogResources()...)
 	resources = append(resources, recipes.ServiceQuotasResources()...)

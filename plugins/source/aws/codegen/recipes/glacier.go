@@ -49,7 +49,7 @@ func GlacierResources() []*Resource {
 					{
 						Name:     "policy",
 						Type:     schema.TypeJSON,
-						Resolver: `client.MarshaledJsonResolver("Policy")`,
+						Resolver: `schema.PathResolver("Policy")`,
 					},
 				}...),
 		},
@@ -69,7 +69,7 @@ func GlacierResources() []*Resource {
 					{
 						Name:     "policy",
 						Type:     schema.TypeJSON,
-						Resolver: `client.MarshaledJsonResolver("Policy")`,
+						Resolver: `schema.PathResolver("Policy")`,
 					},
 				}...),
 		},

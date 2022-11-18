@@ -2,6 +2,7 @@ package services
 
 import (
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
+	"github.com/aws/aws-sdk-go-v2/service/account"
 	"github.com/aws/aws-sdk-go-v2/service/acm"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
@@ -72,6 +73,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/s3control"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
+	"github.com/aws/aws-sdk-go-v2/service/scheduler"
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalog"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry"
@@ -93,6 +95,7 @@ import (
 
 var clients = []interface{}{
 	&accessanalyzer.Client{},
+	&account.Client{},
 	&acm.Client{},
 	&apigateway.Client{},
 	&apigatewayv2.Client{},
@@ -163,6 +166,7 @@ var clients = []interface{}{
 	&s3.Client{},
 	&s3control.Client{},
 	&sagemaker.Client{},
+	&scheduler.Client{},
 	&secretsmanager.Client{},
 	&servicecatalog.Client{},
 	&servicecatalogappregistry.Client{},

@@ -5,6 +5,8 @@
 | [aws_accessanalyzer_analyzers](aws_accessanalyzer_analyzers.md) |
 | ↳ [aws_accessanalyzer_analyzer_findings](aws_accessanalyzer_analyzer_findings.md) |
 | ↳ [aws_accessanalyzer_analyzer_archive_rules](aws_accessanalyzer_analyzer_archive_rules.md) |
+| [aws_account_alternate_contacts](aws_account_alternate_contacts.md) |
+| [aws_account_contacts](aws_account_contacts.md) |
 | [aws_acm_certificates](aws_acm_certificates.md) |
 | [aws_apigateway_api_keys](aws_apigateway_api_keys.md) |
 | [aws_apigateway_client_certificates](aws_apigateway_client_certificates.md) |
@@ -92,6 +94,8 @@
 | [aws_config_configuration_recorders](aws_config_configuration_recorders.md) |
 | [aws_config_conformance_packs](aws_config_conformance_packs.md) |
 | ↳ [aws_config_conformance_pack_rule_compliances](aws_config_conformance_pack_rule_compliances.md) |
+| [aws_config_config_rules](aws_config_config_rules.md) |
+| ↳ [aws_config_config_rule_compliances](aws_config_config_rule_compliances.md) |
 | [aws_dax_clusters](aws_dax_clusters.md) |
 | [aws_directconnect_connections](aws_directconnect_connections.md) |
 | [aws_directconnect_gateways](aws_directconnect_gateways.md) |
@@ -347,10 +351,9 @@
 | [aws_ram_principals](aws_ram_principals.md) |
 | [aws_ram_resources](aws_ram_resources.md) |
 | [aws_ram_resource_shares](aws_ram_resource_shares.md) |
-| ↳ [aws_ram_resource_share_associated_principals](aws_ram_resource_share_associated_principals.md) |
-| ↳ [aws_ram_resource_share_associated_resources](aws_ram_resource_share_associated_resources.md) |
+| ↳ [aws_ram_resource_share_permissions](aws_ram_resource_share_permissions.md) |
+| [aws_ram_resource_share_associations](aws_ram_resource_share_associations.md) |
 | [aws_ram_resource_share_invitations](aws_ram_resource_share_invitations.md) |
-| [aws_ram_resource_share_permissions](aws_ram_resource_share_permissions.md) |
 | [aws_ram_resource_types](aws_ram_resource_types.md) |
 | [aws_rds_certificates](aws_rds_certificates.md) |
 | [aws_rds_engine_versions](aws_rds_engine_versions.md) |
@@ -391,6 +394,8 @@
 | [aws_sagemaker_models](aws_sagemaker_models.md) |
 | [aws_sagemaker_notebook_instances](aws_sagemaker_notebook_instances.md) |
 | [aws_sagemaker_training_jobs](aws_sagemaker_training_jobs.md) |
+| [aws_scheduler_schedule_groups](aws_scheduler_schedule_groups.md) |
+| [aws_scheduler_schedules](aws_scheduler_schedules.md) |
 | [aws_secretsmanager_secrets](aws_secretsmanager_secrets.md) |
 | [aws_servicecatalog_portfolios](aws_servicecatalog_portfolios.md) |
 | [aws_servicecatalog_products](aws_servicecatalog_products.md) |
@@ -412,7 +417,13 @@
 | [aws_ssm_documents](aws_ssm_documents.md) |
 | [aws_ssm_instances](aws_ssm_instances.md) |
 | ↳ [aws_ssm_instance_compliance_items](aws_ssm_instance_compliance_items.md) |
+| ↳ [aws_ssm_instance_patches](aws_ssm_instance_patches.md) |
 | [aws_ssm_parameters](aws_ssm_parameters.md) |
+| [aws_ssm_compliance_summary_items](aws_ssm_compliance_summary_items.md) |
+| [aws_ssm_associations](aws_ssm_associations.md) |
+| [aws_ssm_inventories](aws_ssm_inventories.md) |
+| [aws_ssm_inventory_schemas](aws_ssm_inventory_schemas.md) |
+| [aws_ssm_patch_baselines](aws_ssm_patch_baselines.md) |
 | [aws_ssoadmin_instances](aws_ssoadmin_instances.md) |
 | [aws_timestream_databases](aws_timestream_databases.md) |
 | ↳ [aws_timestream_tables](aws_timestream_tables.md) |

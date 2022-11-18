@@ -2,8 +2,10 @@ package athena
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/athena"
 	"github.com/aws/aws-sdk-go-v2/service/athena/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -57,8 +59,8 @@ func resolveAthenaDataCatalogTags(ctx context.Context, meta schema.ClientMeta, r
 	cl := meta.(*client.Client)
 	svc := cl.Services().Athena
 	dc := resource.Item.(types.DataCatalog)
-	arn := createDataCatalogArn(cl, *dc.Name)
-	params := athena.ListTagsForResourceInput{ResourceARN: &arn}
+	arnStr := createDataCatalogArn(cl, *dc.Name)
+	params := athena.ListTagsForResourceInput{ResourceARN: &arnStr}
 	tags := make(map[string]string)
 	for {
 		result, err := svc.ListTagsForResource(ctx, &params)
@@ -119,5 +121,11 @@ func fetchAthenaDataCatalogDatabaseTables(ctx context.Context, meta schema.Clien
 }
 
 func createDataCatalogArn(cl *client.Client, catalogName string) string {
-	return cl.ARN(client.Athena, "datacatalog", catalogName)
+	return arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.Athena),
+		Region:    cl.Region,
+		AccountID: cl.AccountID,
+		Resource:  fmt.Sprintf("datacatalog/%s", catalogName),
+	}.String()
 }

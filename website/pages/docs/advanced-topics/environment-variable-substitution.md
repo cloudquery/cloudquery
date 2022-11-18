@@ -7,7 +7,7 @@ from environment variables. This allows you to keep sensitive data (like passwor
 
 And use it inside `postgresql.yml`:
 
-```yaml
+```yaml copy
 kind: "destination"
 spec:
   name: "postgresql"

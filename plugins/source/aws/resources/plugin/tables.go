@@ -4,6 +4,7 @@ package plugin
 
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/accessanalyzer"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/account"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/acm"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/apigateway"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/apigatewayv2"
@@ -71,6 +72,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/route53"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/s3"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sagemaker"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/scheduler"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/secretsmanager"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/servicecatalog"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/servicequotas"
@@ -93,6 +95,8 @@ import (
 func tables() []*schema.Table {
 	return []*schema.Table{
 		accessanalyzer.Analyzers(),
+		account.AlternateContacts(),
+		account.Contacts(),
 		acm.Certificates(),
 		apigateway.ApiKeys(),
 		apigateway.ClientCertificates(),
@@ -145,6 +149,7 @@ func tables() []*schema.Table {
 		cognito.UserPools(),
 		config.ConfigurationRecorders(),
 		config.ConformancePacks(),
+		config.ConfigRules(),
 		dax.Clusters(),
 		directconnect.Connections(),
 		directconnect.Gateways(),
@@ -332,8 +337,8 @@ func tables() []*schema.Table {
 		ram.Principals(),
 		ram.Resources(),
 		ram.ResourceShares(),
+		ram.ResourceShareAssociations(),
 		ram.ResourceShareInvitations(),
-		ram.ResourceSharePermissions(),
 		ram.ResourceTypes(),
 		rds.Certificates(),
 		rds.EngineVersions(),
@@ -361,6 +366,8 @@ func tables() []*schema.Table {
 		sagemaker.Models(),
 		sagemaker.NotebookInstances(),
 		sagemaker.TrainingJobs(),
+		scheduler.ScheduleGroups(),
+		scheduler.Schedules(),
 		secretsmanager.Secrets(),
 		servicecatalog.Portfolios(),
 		servicecatalog.Products(),
@@ -380,6 +387,11 @@ func tables() []*schema.Table {
 		ssm.Documents(),
 		ssm.Instances(),
 		ssm.Parameters(),
+		ssm.ComplianceSummaryItems(),
+		ssm.Associations(),
+		ssm.Inventories(),
+		ssm.InventorySchemas(),
+		ssm.PatchBaselines(),
 		ssoadmin.Instances(),
 		timestream.Databases(),
 		transfer.Servers(),

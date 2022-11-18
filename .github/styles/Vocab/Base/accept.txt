@@ -6,6 +6,8 @@ env
 ENV
 aws
 AWS
+Autoscaling
+autoscaling
 hcl
 HCL
 graphql

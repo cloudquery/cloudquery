@@ -6,6 +6,48 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [7.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v7.0.0...plugins-source-aws-v7.0.1) (2022-11-16)
+
+
+### Bug Fixes
+
+* Improve AWS credentials error message and local profile docs ([#4708](https://github.com/cloudquery/cloudquery/issues/4708)) ([2a159b8](https://github.com/cloudquery/cloudquery/commit/2a159b83528a7f1127c7292add2ea299a56bc0c7))
+
+## [7.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v6.2.0...plugins-source-aws-v7.0.0) (2022-11-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* **aws:** Removed `aws_resource_share_associated_principals` and `aws_resource_share_associated_resources` relations of `aws_ram_resource_shares` and created a new top level table to hold this data `aws_resource_share_associations`.  To sync these resources, ensure to either use `tables: ["*"]` or `tables: ["aws_resource_share_associations"]`
+* **aws:** Moved `aws_ram_resource_share_permissions` to be a relation of `aws_ram_resource_shares` instead of a top level table. To sync `aws_ram_resource_share_permissions` you'll need to ensure to sync `aws_ram_resource_shares` too by specifying either `tables: ["*"]` or `tables: ["aws_ram_resource_shares"]`
+
+### Bug Fixes
+
+* **aws:** Fix ram resources ([#4636](https://github.com/cloudquery/cloudquery/issues/4636)) ([2609f3e](https://github.com/cloudquery/cloudquery/commit/2609f3e868369f3a2af8fa6c7e5bdc00a036974a))
+* **aws:** Moved `aws_ram_resource_share_permissions` to be a relation of `aws_ram_resource_shares` instead of a top level table. To sync `aws_ram_resource_share_permissions` you'll need to ensure to sync `aws_ram_resource_shares` too by specifying either `tables: ["*"]` or `tables: ["aws_ram_resource_shares"]` ([2609f3e](https://github.com/cloudquery/cloudquery/commit/2609f3e868369f3a2af8fa6c7e5bdc00a036974a))
+* **aws:** Removed `aws_resource_share_associated_principals` and `aws_resource_share_associated_resources` relations of `aws_ram_resource_shares` and created a new top level table to hold this data `aws_resource_share_associations`.  To sync these resources, ensure to either use `tables: ["*"]` or `tables: ["aws_resource_share_associations"]` ([2609f3e](https://github.com/cloudquery/cloudquery/commit/2609f3e868369f3a2af8fa6c7e5bdc00a036974a))
+
+## [6.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v6.1.0...plugins-source-aws-v6.2.0) (2022-11-16)
+
+
+### Features
+
+* **aws:** Add Support for Eventbridge scheduler ([#4693](https://github.com/cloudquery/cloudquery/issues/4693)) ([a4ef661](https://github.com/cloudquery/cloudquery/commit/a4ef661c23e95e44df57a380cd8dda8bdd7900ee))
+* **aws:** More SSM resources ([#4381](https://github.com/cloudquery/cloudquery/issues/4381)) ([42b0c70](https://github.com/cloudquery/cloudquery/commit/42b0c70c2246977596b32b164e0958d62688acd9))
+
+## [6.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v6.0.1...plugins-source-aws-v6.1.0) (2022-11-16)
+
+
+### Features
+
+* **aws:** Add Support for ECS Scale In Task protection ([#4688](https://github.com/cloudquery/cloudquery/issues/4688)) ([44e8830](https://github.com/cloudquery/cloudquery/commit/44e88305ef0430e873e3bcacc6f6349ad7c336a7))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/route53 to v1.24.0 ([#4694](https://github.com/cloudquery/cloudquery/issues/4694)) ([a6d1fec](https://github.com/cloudquery/cloudquery/commit/a6d1fecba8e56d38c1b92bd6599298d2d0f1efc3))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/workspaces to v1.26.0 ([#4695](https://github.com/cloudquery/cloudquery/issues/4695)) ([ea07f09](https://github.com/cloudquery/cloudquery/commit/ea07f0923b1f5541c543f17e1b3074838420a682))
+
 ## [6.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v6.0.0...plugins-source-aws-v6.0.1) (2022-11-15)
 
 
