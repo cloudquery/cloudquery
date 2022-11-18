@@ -41,6 +41,7 @@ The primary key for this table is **arn**.
 |db_cluster_option_group_memberships|JSON|
 |db_cluster_parameter_group|String|
 |db_subnet_group|String|
+|db_system_id|String|
 |database_name|String|
 |db_cluster_resource_id|String|
 |deletion_protection|Bool|
