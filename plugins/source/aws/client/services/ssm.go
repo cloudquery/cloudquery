@@ -63,6 +63,7 @@ type SsmClient interface {
 	GetParametersByPath(context.Context, *ssm.GetParametersByPathInput, ...func(*ssm.Options)) (*ssm.GetParametersByPathOutput, error)
 	GetPatchBaseline(context.Context, *ssm.GetPatchBaselineInput, ...func(*ssm.Options)) (*ssm.GetPatchBaselineOutput, error)
 	GetPatchBaselineForPatchGroup(context.Context, *ssm.GetPatchBaselineForPatchGroupInput, ...func(*ssm.Options)) (*ssm.GetPatchBaselineForPatchGroupOutput, error)
+	GetResourcePolicies(context.Context, *ssm.GetResourcePoliciesInput, ...func(*ssm.Options)) (*ssm.GetResourcePoliciesOutput, error)
 	GetServiceSetting(context.Context, *ssm.GetServiceSettingInput, ...func(*ssm.Options)) (*ssm.GetServiceSettingOutput, error)
 	ListAssociationVersions(context.Context, *ssm.ListAssociationVersionsInput, ...func(*ssm.Options)) (*ssm.ListAssociationVersionsOutput, error)
 	ListAssociations(context.Context, *ssm.ListAssociationsInput, ...func(*ssm.Options)) (*ssm.ListAssociationsOutput, error)
