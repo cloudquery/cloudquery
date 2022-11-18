@@ -62,5 +62,3 @@ Other bugfixes as well, see full [changelog](https://github.com/cloudquery/cloud
 ### K8S
 
 We've added 22 new resources to give a complete coverage to K8s API. Check out all new tables [here](https://github.com/cloudquery/cloudquery/pull/4495/files#diff-ad7c419ed1d4020a168d179d12011ec7f20e5902de49d9c10d6b370f864a0d5cR1)
-
-## Bugfixes
