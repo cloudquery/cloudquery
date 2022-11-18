@@ -6,7 +6,7 @@ require (
 	github.com/aws/aws-sdk-go-v2 v1.17.1
 	github.com/aws/aws-sdk-go-v2/config v1.18.2
 	github.com/aws/aws-sdk-go-v2/credentials v1.13.2
-	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.40
+	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.41
 	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.17.2
 	github.com/aws/aws-sdk-go-v2/service/account v1.7.11
 	github.com/aws/aws-sdk-go-v2/service/acm v1.16.2
@@ -84,7 +84,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sesv2 v1.15.1
 	github.com/aws/aws-sdk-go-v2/service/sns v1.18.5
 	github.com/aws/aws-sdk-go-v2/service/sqs v1.19.13
-	github.com/aws/aws-sdk-go-v2/service/ssm v1.32.1
+	github.com/aws/aws-sdk-go-v2/service/ssm v1.33.0
 	github.com/aws/aws-sdk-go-v2/service/ssoadmin v1.15.13
 	github.com/aws/aws-sdk-go-v2/service/sts v1.17.4
 	github.com/aws/aws-sdk-go-v2/service/timestreamwrite v1.14.5
