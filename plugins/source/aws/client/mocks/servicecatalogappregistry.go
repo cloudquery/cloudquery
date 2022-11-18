@@ -95,6 +95,26 @@ func (mr *MockServicecatalogappregistryClientMockRecorder) GetAttributeGroup(arg
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAttributeGroup", reflect.TypeOf((*MockServicecatalogappregistryClient)(nil).GetAttributeGroup), varargs...)
 }
 
+// GetConfiguration mocks base method.
+func (m *MockServicecatalogappregistryClient) GetConfiguration(arg0 context.Context, arg1 *servicecatalogappregistry.GetConfigurationInput, arg2 ...func(*servicecatalogappregistry.Options)) (*servicecatalogappregistry.GetConfigurationOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetConfiguration", varargs...)
+	ret0, _ := ret[0].(*servicecatalogappregistry.GetConfigurationOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetConfiguration indicates an expected call of GetConfiguration.
+func (mr *MockServicecatalogappregistryClientMockRecorder) GetConfiguration(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetConfiguration", reflect.TypeOf((*MockServicecatalogappregistryClient)(nil).GetConfiguration), varargs...)
+}
+
 // ListApplications mocks base method.
 func (m *MockServicecatalogappregistryClient) ListApplications(arg0 context.Context, arg1 *servicecatalogappregistry.ListApplicationsInput, arg2 ...func(*servicecatalogappregistry.Options)) (*servicecatalogappregistry.ListApplicationsOutput, error) {
 	m.ctrl.T.Helper()
