@@ -51,7 +51,7 @@ function BlogDate({ data }: { data: BlogPostMeta }) {
   if (!date) {
     return null;
   }
-  let options = {year: 'numeric', month: 'long', day: 'numeric' };
+  const options: Intl.DateTimeFormatOptions = {year: 'numeric', month: 'long', day: 'numeric' };
   let dateObject = new Date(date);
   let formattedDate = dateObject.toLocaleDateString("en-US", options);
   return <div className="text-center">
