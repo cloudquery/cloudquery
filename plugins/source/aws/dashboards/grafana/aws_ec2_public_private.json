@@ -147,7 +147,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  jsonb_path_query_first(tags, '$[*]? (@.Key == \"Name\")') ->> 'Value' as Name,\n  vpc_id,\n  subnet_id,\n  instance_id,\n  region,\n  private_ip_address,\n  public_ip_address\nFROM aws_ec2_instances where (\n  ('${ALL}' in (${VPCs}) OR aws_ec2_instances.vpc_id in (${VPCs}))\n  AND ('${ALL}' in (${Subnets}) OR aws_ec2_instances.subnet_id in (${Subnets}))\n  AND ('${ALL}' in (${Region}) OR aws_ec2_instances.region in (${Region}))\n  AND (aws_ec2_instances.public_ip_address is not null)\n)",
+          "rawSql": "SELECT\n  tags ->> 'Name' as Name,\n  vpc_id,\n  subnet_id,\n  instance_id,\n  region,\n  private_ip_address,\n  public_ip_address\nFROM aws_ec2_instances where (\n  ('${ALL}' in (${VPCs}) OR aws_ec2_instances.vpc_id in (${VPCs}))\n  AND ('${ALL}' in (${Subnets}) OR aws_ec2_instances.subnet_id in (${Subnets}))\n  AND ('${ALL}' in (${Region}) OR aws_ec2_instances.region in (${Region}))\n  AND (aws_ec2_instances.public_ip_address is not null)\n)",
           "refId": "A",
           "select": [
             [
@@ -402,7 +402,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  jsonb_path_query_first(tags, '$[*]? (@.Key == \"Name\")') ->> 'Value' as Name,\n  vpc_id,\n  subnet_id,\n  instance_id,\n  region,\n  private_ip_address\nFROM aws_ec2_instances where (\n('${ALL}' in (${VPCs}) OR aws_ec2_instances.vpc_id in (${VPCs}))\nAND ('${ALL}' in (${Subnets}) OR aws_ec2_instances.subnet_id in (${Subnets})) \nAND ('${ALL}' in (${Region}) OR aws_ec2_instances.region in (${Region})) \nAND (aws_ec2_instances.public_ip_address is null)\n)",
+          "rawSql": "SELECT\n  tags ->> 'Name' as Name,\n  vpc_id,\n  subnet_id,\n  instance_id,\n  region,\n  private_ip_address\nFROM aws_ec2_instances where (\n('${ALL}' in (${VPCs}) OR aws_ec2_instances.vpc_id in (${VPCs}))\nAND ('${ALL}' in (${Subnets}) OR aws_ec2_instances.subnet_id in (${Subnets})) \nAND ('${ALL}' in (${Region}) OR aws_ec2_instances.region in (${Region})) \nAND (aws_ec2_instances.public_ip_address is null)\n)",
           "refId": "A",
           "select": [
             [
