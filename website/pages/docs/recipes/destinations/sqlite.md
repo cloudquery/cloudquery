@@ -7,12 +7,12 @@ Full spec options for CSV destination available [here](https://github.com/cloudq
 
 This is a basic configuration that will save all your sync resources to `db.sql`.
 
-```yaml
+```yaml copy
 kind: destination
 spec:
   name: sqlite
   path: cloudquery/sqlite
-  version: "v1.0.5" # latest version of sqlite plugin
+  version: "v1.0.7" # latest version of sqlite plugin
   spec:
     connection_string: ./db.sql
 ```

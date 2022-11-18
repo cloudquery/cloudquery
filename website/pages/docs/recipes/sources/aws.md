@@ -2,12 +2,12 @@
 
 Full spec options for AWS Source available [here](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/configuration.md).
 
-```yaml
+```yaml copy
 kind: source
 spec:
   name: aws
   path: cloudquery/aws
-  version: "v4.17.1" # latest version of aws plugin
+  version: "v7.0.1" # latest version of aws plugin
   tables: ["*"]
 
   # Comment out any of the following tables if you want to sync them

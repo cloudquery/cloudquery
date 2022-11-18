@@ -4,6 +4,7 @@ package client
 import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
+	"github.com/aws/aws-sdk-go-v2/service/account"
 	"github.com/aws/aws-sdk-go-v2/service/acm"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
@@ -54,6 +55,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/inspector"
 	"github.com/aws/aws-sdk-go-v2/service/inspector2"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
+	"github.com/aws/aws-sdk-go-v2/service/kafka"
 	"github.com/aws/aws-sdk-go-v2/service/kinesis"
 	"github.com/aws/aws-sdk-go-v2/service/kms"
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
@@ -73,6 +75,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/s3control"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
+	"github.com/aws/aws-sdk-go-v2/service/scheduler"
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalog"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry"
@@ -83,6 +86,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
 	"github.com/aws/aws-sdk-go-v2/service/ssoadmin"
+	"github.com/aws/aws-sdk-go-v2/service/timestreamwrite"
 	"github.com/aws/aws-sdk-go-v2/service/transfer"
 	"github.com/aws/aws-sdk-go-v2/service/waf"
 	"github.com/aws/aws-sdk-go-v2/service/wafregional"
@@ -98,6 +102,7 @@ func initServices(region string, c aws.Config) Services {
 	awsCfg.Region = region
 	return Services{
 		Accessanalyzer:            accessanalyzer.NewFromConfig(awsCfg),
+		Account:                   account.NewFromConfig(awsCfg),
 		Acm:                       acm.NewFromConfig(awsCfg),
 		Apigateway:                apigateway.NewFromConfig(awsCfg),
 		Apigatewayv2:              apigatewayv2.NewFromConfig(awsCfg),
@@ -148,6 +153,7 @@ func initServices(region string, c aws.Config) Services {
 		Inspector:                 inspector.NewFromConfig(awsCfg),
 		Inspector2:                inspector2.NewFromConfig(awsCfg),
 		Iot:                       iot.NewFromConfig(awsCfg),
+		Kafka:                     kafka.NewFromConfig(awsCfg),
 		Kinesis:                   kinesis.NewFromConfig(awsCfg),
 		Kms:                       kms.NewFromConfig(awsCfg),
 		Lambda:                    lambda.NewFromConfig(awsCfg),
@@ -167,6 +173,7 @@ func initServices(region string, c aws.Config) Services {
 		S3:                        s3.NewFromConfig(awsCfg),
 		S3control:                 s3control.NewFromConfig(awsCfg),
 		Sagemaker:                 sagemaker.NewFromConfig(awsCfg),
+		Scheduler:                 scheduler.NewFromConfig(awsCfg),
 		Secretsmanager:            secretsmanager.NewFromConfig(awsCfg),
 		Servicecatalog:            servicecatalog.NewFromConfig(awsCfg),
 		Servicecatalogappregistry: servicecatalogappregistry.NewFromConfig(awsCfg),
@@ -177,6 +184,7 @@ func initServices(region string, c aws.Config) Services {
 		Sqs:                       sqs.NewFromConfig(awsCfg),
 		Ssm:                       ssm.NewFromConfig(awsCfg),
 		Ssoadmin:                  ssoadmin.NewFromConfig(awsCfg),
+		Timestreamwrite:           timestreamwrite.NewFromConfig(awsCfg),
 		Transfer:                  transfer.NewFromConfig(awsCfg),
 		Waf:                       waf.NewFromConfig(awsCfg),
 		Wafregional:               wafregional.NewFromConfig(awsCfg),
@@ -189,6 +197,7 @@ func initServices(region string, c aws.Config) Services {
 
 type Services struct {
 	Accessanalyzer            services.AccessanalyzerClient
+	Account                   services.AccountClient
 	Acm                       services.AcmClient
 	Apigateway                services.ApigatewayClient
 	Apigatewayv2              services.Apigatewayv2Client
@@ -239,6 +248,7 @@ type Services struct {
 	Inspector                 services.InspectorClient
 	Inspector2                services.Inspector2Client
 	Iot                       services.IotClient
+	Kafka                     services.KafkaClient
 	Kinesis                   services.KinesisClient
 	Kms                       services.KmsClient
 	Lambda                    services.LambdaClient
@@ -258,6 +268,7 @@ type Services struct {
 	S3                        services.S3Client
 	S3control                 services.S3controlClient
 	Sagemaker                 services.SagemakerClient
+	Scheduler                 services.SchedulerClient
 	Secretsmanager            services.SecretsmanagerClient
 	Servicecatalog            services.ServicecatalogClient
 	Servicecatalogappregistry services.ServicecatalogappregistryClient
@@ -268,6 +279,7 @@ type Services struct {
 	Sqs                       services.SqsClient
 	Ssm                       services.SsmClient
 	Ssoadmin                  services.SsoadminClient
+	Timestreamwrite           services.TimestreamwriteClient
 	Transfer                  services.TransferClient
 	Waf                       services.WafClient
 	Wafregional               services.WafregionalClient

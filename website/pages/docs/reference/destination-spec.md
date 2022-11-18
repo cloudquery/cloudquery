@@ -6,12 +6,12 @@ This goes through all the available options for the destination plugin `spec` ob
 
 This example configures the `postgresql` plugin to connect to a PostgreSQL database located at `localhost:5432`.
 
-```yaml
+```yaml copy
 kind: destination
 spec:
   name: "postgresql"
   path: "cloudquery/postgresql"
-  version: "v1.7.9" # latest version of postgresql plugin
+  version: "v1.7.11" # latest version of postgresql plugin
 
   spec:
     connection_string: "postgresql://postgres:pass@localhost:5432/postgres?sslmode=disable"

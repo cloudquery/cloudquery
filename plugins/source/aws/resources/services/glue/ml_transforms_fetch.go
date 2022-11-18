@@ -2,8 +2,10 @@ package glue
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -30,8 +32,7 @@ func fetchGlueMlTransforms(ctx context.Context, meta schema.ClientMeta, parent *
 func resolveGlueMlTransformArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	r := resource.Item.(types.MLTransform)
-	arn := aws.String(mlTransformARN(cl, &r))
-	return resource.Set(c.Name, arn)
+	return resource.Set(c.Name, mlTransformARN(cl, &r))
 }
 func resolveGlueMlTransformTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
@@ -78,5 +79,11 @@ func fetchGlueMlTransformTaskRuns(ctx context.Context, meta schema.ClientMeta, p
 }
 
 func mlTransformARN(cl *client.Client, tr *types.MLTransform) string {
-	return cl.ARN(client.GlueService, "mlTransform", *tr.TransformId)
+	return arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.GlueService),
+		Region:    cl.Region,
+		AccountID: cl.AccountID,
+		Resource:  fmt.Sprintf("mlTransform/%s", aws.ToString(tr.TransformId)),
+	}.String()
 }

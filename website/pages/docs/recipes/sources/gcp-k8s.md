@@ -1,24 +1,24 @@
 # GCP + Kubernetes (GKE)
 
-```yaml
+```yaml copy
 kind: source
 spec:
   name: gcp
   path: "cloudquery/gcp"
-  version: "v2.4.16" # latest version of gcp plugin
+  version: "v3.0.2" # latest version of gcp plugin
   destinations: ["<destination>"]
 ---
 kind: source
 spec:
   name: k8s
   path: "cloudquery/k8s"
-  version: "v2.3.16" # latest version of k8s plugin
+  version: "v2.4.1" # latest version of k8s plugin
   destinations: ["<destination>"]
 ```
 
 Kubernetes users may see the following message when running the K8s plugin on GKE Clusters:
 
-```bash
+```bash copy
 WARNING: the gcp auth plugin is deprecated in v1.22+, unavailable in v1.26+; use gcloud instead.
 ```
 
@@ -32,13 +32,13 @@ CloudQuery does not use any specific resources which hinder the upgrade.
 
 The easiest way to upgrade, is to install `gke-gcloud-auth-plugin` from `gcloud components` on Mac or Windows:
 
-```bash
+```bash copy
 gcloud components install gke-gcloud-auth-plugin
 ```
 
 and apt on Deb based systems:
 
-```bash
+```bash copy
 sudo apt-get install google-cloud-sdk-gke-gcloud-auth-plugin
 ```
 
@@ -46,13 +46,13 @@ sudo apt-get install google-cloud-sdk-gke-gcloud-auth-plugin
 
 Mac or Linux:
 
-```bash
+```bash copy
 gke-gcloud-auth-plugin --version
 ```
 
 Windows:
 
-```bash
+```bash copy
 gke-gcloud-auth-plugin.exe --version
 ```
 
@@ -60,19 +60,19 @@ gke-gcloud-auth-plugin.exe --version
 
 Set the flag:
 
-```bash
+```bash copy
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 ```
 
 Update components:
 
-```bash
+```bash copy
 gcloud components update
 ```
 
 Force credential update:
 
-```bash
+```bash copy
 gcloud container clusters get-credentials {$CLUSTER_NAME}
 ```
 

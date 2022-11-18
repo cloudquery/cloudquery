@@ -26,11 +26,17 @@ func buildAppstreamImagesMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 			Images: []types.Image{object},
 		}, nil)
 
+	tagsOutput := appstream.ListTagsForResourceOutput{}
+	err = faker.FakeObject(&tagsOutput)
+	if err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any()).Return(&tagsOutput, nil).AnyTimes()
+
 	return client.Services{
 		Appstream: m,
 	}
 }
-
 func TestAppstreamImages(t *testing.T) {
 	client.AwsMockTestHelper(t, Images(), buildAppstreamImagesMock, client.TestOptions{})
 }

@@ -2,6 +2,7 @@ package services
 
 import (
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
+	"github.com/aws/aws-sdk-go-v2/service/account"
 	"github.com/aws/aws-sdk-go-v2/service/acm"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
@@ -52,6 +53,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/inspector"
 	"github.com/aws/aws-sdk-go-v2/service/inspector2"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
+	"github.com/aws/aws-sdk-go-v2/service/kafka"
 	"github.com/aws/aws-sdk-go-v2/service/kinesis"
 	"github.com/aws/aws-sdk-go-v2/service/kms"
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
@@ -71,6 +73,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/s3control"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
+	"github.com/aws/aws-sdk-go-v2/service/scheduler"
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalog"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry"
@@ -81,6 +84,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
 	"github.com/aws/aws-sdk-go-v2/service/ssoadmin"
+	"github.com/aws/aws-sdk-go-v2/service/timestreamwrite"
 	"github.com/aws/aws-sdk-go-v2/service/transfer"
 	"github.com/aws/aws-sdk-go-v2/service/waf"
 	"github.com/aws/aws-sdk-go-v2/service/wafregional"
@@ -91,6 +95,7 @@ import (
 
 var clients = []interface{}{
 	&accessanalyzer.Client{},
+	&account.Client{},
 	&acm.Client{},
 	&apigateway.Client{},
 	&apigatewayv2.Client{},
@@ -141,6 +146,7 @@ var clients = []interface{}{
 	&inspector.Client{},
 	&inspector2.Client{},
 	&iot.Client{},
+	&kafka.Client{},
 	&kinesis.Client{},
 	&kms.Client{},
 	&lambda.Client{},
@@ -160,6 +166,7 @@ var clients = []interface{}{
 	&s3.Client{},
 	&s3control.Client{},
 	&sagemaker.Client{},
+	&scheduler.Client{},
 	&secretsmanager.Client{},
 	&servicecatalog.Client{},
 	&servicecatalogappregistry.Client{},
@@ -170,6 +177,7 @@ var clients = []interface{}{
 	&sqs.Client{},
 	&ssm.Client{},
 	&ssoadmin.Client{},
+	&timestreamwrite.Client{},
 	&transfer.Client{},
 	&waf.Client{},
 	&wafregional.Client{},

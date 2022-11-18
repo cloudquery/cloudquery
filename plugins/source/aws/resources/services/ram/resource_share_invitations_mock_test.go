@@ -22,11 +22,14 @@ func buildRamResourceShareInvitationsMock(t *testing.T, ctrl *gomock.Controller)
 	}
 
 	m.EXPECT().GetResourceShareInvitations(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&ram.GetResourceShareInvitationsOutput{ResourceShareInvitations: []types.ResourceShareInvitation{object}}, nil)
+		&ram.GetResourceShareInvitationsOutput{
+			ResourceShareInvitations: []types.ResourceShareInvitation{object},
+		}, nil)
 
-	return client.Services{Ram: m}
+	return client.Services{
+		Ram: m,
+	}
 }
-
 func TestRamResourceShareInvitations(t *testing.T) {
 	client.AwsMockTestHelper(t, ResourceShareInvitations(), buildRamResourceShareInvitationsMock, client.TestOptions{})
 }

@@ -10,7 +10,7 @@ spec:
   # Source spec section
   name: "gcp"
   path: "cloudquery/gcp"
-  version: "v2.4.16" # latest version of gcp plugin
+  version: "v3.0.2" # latest version of gcp plugin
   destinations: ["postgresql"]
 
   spec:
