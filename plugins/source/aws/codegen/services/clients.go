@@ -2,6 +2,7 @@ package services
 
 import (
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
+	"github.com/aws/aws-sdk-go-v2/service/account"
 	"github.com/aws/aws-sdk-go-v2/service/acm"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
@@ -94,6 +95,7 @@ import (
 
 var clients = []interface{}{
 	&accessanalyzer.Client{},
+	&account.Client{},
 	&acm.Client{},
 	&apigateway.Client{},
 	&apigatewayv2.Client{},

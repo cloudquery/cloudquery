@@ -2,7 +2,10 @@ package apigateway
 
 import (
 	"context"
+	"fmt"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -25,8 +28,13 @@ func fetchApigatewayDomainNames(ctx context.Context, meta schema.ClientMeta, par
 func resolveApigatewayDomainNameArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	domain := resource.Item.(types.DomainName)
-	arn := cl.RegionGlobalARN(client.ApigatewayService, domainNameIDPart, *domain.DomainName)
-	return resource.Set(c.Name, arn)
+	return resource.Set(c.Name, arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.ApigatewayService),
+		Region:    cl.Region,
+		AccountID: "",
+		Resource:  fmt.Sprintf("/domainnames/%s", aws.ToString(domain.DomainName)),
+	}.String())
 }
 func fetchApigatewayDomainNameBasePathMappings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.DomainName)
@@ -46,6 +54,11 @@ func resolveApigatewayDomainNameBasePathMappingArn(ctx context.Context, meta sch
 	cl := meta.(*client.Client)
 	domain := resource.Parent.Item.(types.DomainName)
 	mapping := resource.Item.(types.BasePathMapping)
-	arn := cl.RegionGlobalARN(client.ApigatewayService, domainNameIDPart, *domain.DomainName, "basepathmappings", *mapping.BasePath)
-	return resource.Set(c.Name, arn)
+	return resource.Set(c.Name, arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.ApigatewayService),
+		Region:    cl.Region,
+		AccountID: "",
+		Resource:  fmt.Sprintf("/domainnames/%s/basepathmappings/%s", aws.ToString(domain.DomainName), aws.ToString(mapping.BasePath)),
+	}.String())
 }

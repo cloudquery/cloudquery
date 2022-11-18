@@ -2,8 +2,10 @@ package glue
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -29,8 +31,7 @@ func fetchGlueDatabases(ctx context.Context, meta schema.ClientMeta, parent *sch
 }
 func resolveGlueDatabaseArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	arn := aws.String(databaseARN(cl, aws.ToString(resource.Item.(types.Database).Name)))
-	return resource.Set(c.Name, arn)
+	return resource.Set(c.Name, databaseARN(cl, aws.ToString(resource.Item.(types.Database).Name)))
 }
 func resolveGlueDatabaseTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
@@ -90,5 +91,11 @@ func fetchGlueDatabaseTableIndexes(ctx context.Context, meta schema.ClientMeta, 
 // ====================================================================================================================
 
 func databaseARN(cl *client.Client, name string) string {
-	return cl.ARN(client.GlueService, "database", name)
+	return arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.GlueService),
+		Region:    cl.Region,
+		AccountID: cl.AccountID,
+		Resource:  fmt.Sprintf("database/%s", name),
+	}.String()
 }

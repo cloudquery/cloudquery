@@ -6,6 +6,7 @@ Destination plugins define where you will be syncing your data to (See: [availab
 
 For example, let's configure the [PostgreSQL](https://github.com/cloudquery/cloudquery/tree/main/plugins/destination/postgresql) destination plugin
 (See all available versions [here](https://github.com/cloudquery/cloudquery/releases?q=plugins-destination-postgresql&expanded=true)).
+Create a file in a new directory `cloudquery-config/postgresql.yml`: 
 
 ```yaml copy
 kind: destination
@@ -57,6 +58,7 @@ that every plugin configuration has a unique `name` (e.g. `postgres1`, `postgres
 Source plugins define the APIs you want to sync from (See [available sources](/docs/plugins/sources)).
 
 For example, let's configure the [AWS](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/aws) source plugin.
+Create an `aws.yml` file in your `cloudquery-config` directory:
 
 ```yaml copy
 kind: source
@@ -118,9 +120,9 @@ Now you can start syncing the data from your source plugins to the specified des
 You can sync the by specifying a directory with the configuration files or specify files directly
 
 ```bash copy
-cloudquery sync ./example
+cloudquery sync ./cloudquery-config
 
-# or cloudquery sync aws.yml postgresql.yml
+# or cloudquery sync cloudquery-config/aws.yml cloudquery-config/postgresql.yml
 ```
 
 You should see a spinner with number of resources synced and the time it took to sync.
