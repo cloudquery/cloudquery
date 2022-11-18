@@ -35,7 +35,7 @@ We've added 16 new AWS services!
 
 * [EventBridge Scheduler](https://github.com/cloudquery/cloudquery/issues/4693)
 * [SSM Resources](https://github.com/cloudquery/cloudquery/issues/4381)
-* [ECS Scale In Protection](https://github.com/cloudquery/cloudquery/issues/4688)
+* [ECS Task Scale-In Protection](https://github.com/cloudquery/cloudquery/issues/4688)
 * [MSK](https://github.com/cloudquery/cloudquery/issues/3967)
 * [AWS RAM](https://github.com/cloudquery/cloudquery/issues/3961) 
 * [ECR Image Scan Findings](https://github.com/cloudquery/cloudquery/issues/3607)
