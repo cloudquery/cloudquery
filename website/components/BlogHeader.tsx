@@ -46,6 +46,19 @@ function BlogTitle({ data }: { data: BlogPostMeta }) {
   return <h1>{title}</h1>;
 }
 
+function BlogDate({ data }: { data: BlogPostMeta }) {
+  const date = data.date;
+  if (!date) {
+    return null;
+  }
+  const options: Intl.DateTimeFormatOptions = {year: 'numeric', month: 'long', day: 'numeric' };
+  let dateObject = new Date(date);
+  let formattedDate = dateObject.toLocaleDateString("en-US", options);
+  return <div className="text-center">
+    <p className="opacity-50 text-sm">{formattedDate}</p>
+  </div>
+}
+
 export function BlogHeader() {
   const config = useConfig();
   const meta = config.frontMatter as BlogPostMeta;
@@ -63,6 +76,7 @@ export function BlogHeader() {
         <meta property="og:image" content={image} />
       </Head>
       <BlogTitle data={meta} />
+      <BlogDate data={meta} />
       <Authors data={meta} />
     </>
   );

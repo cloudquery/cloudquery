@@ -188,6 +188,11 @@ func Instances() *schema.Table {
 				Resolver: schema.PathResolver("DBSubnetGroup"),
 			},
 			{
+				Name:     "db_system_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("DBSystemId"),
+			},
+			{
 				Name:     "db_instance_port",
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("DbInstancePort"),
