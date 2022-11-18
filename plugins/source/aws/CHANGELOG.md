@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [7.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v7.1.0...plugins-source-aws-v7.1.1) (2022-11-18)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/rds to v1.30.0 ([#4782](https://github.com/cloudquery/cloudquery/issues/4782)) ([3be128c](https://github.com/cloudquery/cloudquery/commit/3be128c5cea7ce6bee5da8c9565d5b85d3c3a908))
+* Fixed cloudfront policy queries with null json fields ([#4773](https://github.com/cloudquery/cloudquery/issues/4773)) ([43095c4](https://github.com/cloudquery/cloudquery/commit/43095c45a0dd343f262018e864a542879d02021b))
+
 ## [7.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v7.0.1...plugins-source-aws-v7.1.0) (2022-11-18)
 
 
