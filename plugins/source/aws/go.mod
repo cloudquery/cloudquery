@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/aws/aws-sdk-go-v2 v1.17.1
-	github.com/aws/aws-sdk-go-v2/config v1.18.1
+	github.com/aws/aws-sdk-go-v2/config v1.18.2
 	github.com/aws/aws-sdk-go-v2/credentials v1.13.2
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.40
 	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.17.2
@@ -42,7 +42,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/elasticache v1.23.1
 	github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk v1.14.20
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.14.22
-	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.18.24
+	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.18.25
 	github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.17.1
 	github.com/aws/aws-sdk-go-v2/service/emr v1.20.15
 	github.com/aws/aws-sdk-go-v2/service/eventbridge v1.16.19
