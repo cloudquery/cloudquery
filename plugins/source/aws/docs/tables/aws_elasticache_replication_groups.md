@@ -26,11 +26,13 @@ The primary key for this table is **arn**.
 |data_tiering|String|
 |description|String|
 |global_replication_group_info|JSON|
+|ip_discovery|String|
 |kms_key_id|String|
 |log_delivery_configurations|JSON|
 |member_clusters|StringArray|
 |member_clusters_outpost_arns|StringArray|
 |multi_az|String|
+|network_type|String|
 |node_groups|JSON|
 |pending_modified_values|JSON|
 |replication_group_create_time|Timestamp|

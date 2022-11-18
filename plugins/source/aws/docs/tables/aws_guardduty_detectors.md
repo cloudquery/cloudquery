@@ -1,6 +1,6 @@
 # Table: aws_guardduty_detectors
 
-
+https://docs.aws.amazon.com/guardduty/latest/APIReference/API_GetDetector.html
 
 The composite primary key for this table is (**account_id**, **region**, **id**).
 

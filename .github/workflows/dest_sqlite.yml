@@ -1,0 +1,102 @@
+name: Destination Plugin SQLite Workflow
+
+on:
+  pull_request:
+    paths:
+      - "plugins/destination/sqlite/**"
+      - ".github/workflows/dest_sqlite.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "plugins/destination/sqlite/**"
+      - ".github/workflows/dest_sqlite.yml"
+
+jobs:
+  resolve-runner:
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    outputs:
+      runner: ${{ steps.resolve.outputs.runner }}
+    steps:
+      - name: Check if should use large runner
+        id: large-runner
+        # We want to speed runs on the main branch which prime the cache
+        # We allow large runners only in this case to prevent forks from abusing them (it's enforced via runner groups access rules)
+        # IF YOU WANT TO USE A LARGE RUNNER YOU NEED TO ADD THE WORKFLOW TO THE `CloudQuery releases` GROUP IN https://github.com/organizations/cloudquery/settings/actions/runner-groups
+        if: github.event_name == 'push'
+        run: |
+          echo "runner=cloudquery-release-runner" >> $GITHUB_OUTPUT
+      - name: Resolve runner
+        id: resolve
+        run: |
+          RUNNER=${{ steps.large-runner.outputs.runner }}
+          echo "runner=${RUNNER:-"ubuntu-latest"}" >> $GITHUB_OUTPUT
+  plugins-destination-sqlite:
+    timeout-minutes: 30
+    name: "plugins/destination/sqlite"
+    needs: [resolve-runner]
+    runs-on: ${{ needs.resolve-runner.outputs.runner }}
+    defaults:
+      run:
+        working-directory: ./plugins/destination/sqlite
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: plugins/destination/sqlite/go.mod
+          cache: true
+          cache-dependency-path: plugins/destination/sqlite/go.sum
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v3
+        with:
+          version: v1.50.1
+          working-directory: plugins/destination/sqlite
+          args: "--config ../../.golangci.yml"
+      - name: Get dependencies
+        run: go get -t -d ./...
+      - name: Build
+        run: go build .
+      - name: Test
+        run: make test
+  validate-release:
+    timeout-minutes: 30
+    needs: [resolve-runner]
+    runs-on: ${{ needs.resolve-runner.outputs.runner }}
+    container:
+      image: ghcr.io/cloudquery/golang-cross:v10.0.0
+      env:
+        CGO_ENABLED: 1
+    steps:
+      - name: Checkout
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-1.19.3-release-cache-${{ hashFiles('plugins/destination/sqlite/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-1.19.3-release-cache-plugins-destination-sqlite
+      - name: Set up Go
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: plugins/destination/sqlite/go.mod
+      - name: Install GoReleaser
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        uses: goreleaser/goreleaser-action@v3
+        with:
+          distribution: goreleaser-pro
+          version: latest
+          install-only: true
+      - name: Run GoReleaser Dry-Run
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        run: goreleaser release --snapshot --rm-dist --skip-validate --skip-publish --skip-sign -f ./plugins/destination/sqlite/.goreleaser.yaml
+        env:
+          GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}

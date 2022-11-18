@@ -14,6 +14,7 @@ func fetchServicequotasQuotas(ctx context.Context, meta schema.ClientMeta, paren
 	service := parent.Item.(types.ServiceInfo)
 	config := servicequotas.ListServiceQuotasInput{
 		ServiceCode: service.ServiceCode,
+		MaxResults:  defaultMaxResults,
 	}
 	quotasPaginator := servicequotas.NewListServiceQuotasPaginator(svc, &config)
 	for quotasPaginator.HasMorePages() {

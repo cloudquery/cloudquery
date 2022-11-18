@@ -1,6 +1,6 @@
 # Table: azure_container_registries
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/containerregistry/mgmt/2019-05-01/containerregistry#Registry
 
 The primary key for this table is **id**.
 

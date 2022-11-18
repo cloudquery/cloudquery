@@ -5,6 +5,119 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v3.0.1...plugins-source-gcp-v3.0.2) (2022-11-16)
+
+
+### Bug Fixes
+
+* Remove codegen files before re-generating for GCP ([#4720](https://github.com/cloudquery/cloudquery/issues/4720)) ([7ca4667](https://github.com/cloudquery/cloudquery/commit/7ca4667babdb5a9808aacf26c632be7fa9b36fd2))
+
+## [3.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v3.0.0...plugins-source-gcp-v3.0.1) (2022-11-15)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for gcp to v1.5.3 ([#4646](https://github.com/cloudquery/cloudquery/issues/4646)) ([79d30e5](https://github.com/cloudquery/cloudquery/commit/79d30e5c5fac86b502c68bd7aa9f8fe551f67dfa))
+
+## [3.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v2.4.16...plugins-source-gcp-v3.0.0) (2022-11-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* **gcp:** Update libraries (#4532)
+
+### Features
+
+* **gcp:** Update libraries ([#4532](https://github.com/cloudquery/cloudquery/issues/4532)) ([c2fa54b](https://github.com/cloudquery/cloudquery/commit/c2fa54b7c64214a9f17e394a4428e5a7d12f1c65))
+
+## [2.4.16](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v2.4.15...plugins-source-gcp-v2.4.16) (2022-11-14)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for gcp to v1.5.1 ([#4502](https://github.com/cloudquery/cloudquery/issues/4502)) ([99fc23d](https://github.com/cloudquery/cloudquery/commit/99fc23d6fa0493988d1faf5ef9230ecf0569c940))
+
+## [2.4.15](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v2.4.14...plugins-source-gcp-v2.4.15) (2022-11-11)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for gcp to v1.5.0 ([#4391](https://github.com/cloudquery/cloudquery/issues/4391)) ([c098a89](https://github.com/cloudquery/cloudquery/commit/c098a89bdd13378c9575343af47e64098d831692))
+* Fix links in Grafana compliance dashboards ([#4338](https://github.com/cloudquery/cloudquery/issues/4338)) ([e71ba56](https://github.com/cloudquery/cloudquery/commit/e71ba567fdd21ae9cf059023795c6765d1766848))
+
+## [2.4.14](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v2.4.13...plugins-source-gcp-v2.4.14) (2022-11-10)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for gcp to v1.4.1 ([#4294](https://github.com/cloudquery/cloudquery/issues/4294)) ([00ccfd7](https://github.com/cloudquery/cloudquery/commit/00ccfd7435abbd82bf277872aba3c168cca4f4d2))
+
+## [2.4.13](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v2.4.12...plugins-source-gcp-v2.4.13) (2022-11-10)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for gcp to v1.4.0 ([#4232](https://github.com/cloudquery/cloudquery/issues/4232)) ([b75ae70](https://github.com/cloudquery/cloudquery/commit/b75ae709037950934fc68842d389a0138a7afbaa))
+
+## [2.4.12](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v2.4.11...plugins-source-gcp-v2.4.12) (2022-11-10)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for gcp to v1.3.2 ([#4199](https://github.com/cloudquery/cloudquery/issues/4199)) ([f2dae12](https://github.com/cloudquery/cloudquery/commit/f2dae1247ebb279e00455b3bea75ea02a2d2e286))
+
+## [2.4.11](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v2.4.10...plugins-source-gcp-v2.4.11) (2022-11-10)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for gcp to v1.3.1 ([#4074](https://github.com/cloudquery/cloudquery/issues/4074)) ([3b3f171](https://github.com/cloudquery/cloudquery/commit/3b3f1713f2cd98169ec22a44471968619d12fe9c))
+
+## [2.4.10](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v2.4.9...plugins-source-gcp-v2.4.10) (2022-11-09)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for gcp to v1.2.0 ([#4042](https://github.com/cloudquery/cloudquery/issues/4042)) ([86a4239](https://github.com/cloudquery/cloudquery/commit/86a423925fdc1ea477835d1ab0444ed521dc6b71))
+
+## [2.4.9](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v2.4.8...plugins-source-gcp-v2.4.9) (2022-11-09)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for csv to v1.1.0 ([#3918](https://github.com/cloudquery/cloudquery/issues/3918)) ([f1acd68](https://github.com/cloudquery/cloudquery/commit/f1acd688fcd90011cc9be1be2285e3fe9369e341))
+* **deps:** Update plugin-sdk for gcp to v1.1.2 ([#3988](https://github.com/cloudquery/cloudquery/issues/3988)) ([6a8fe21](https://github.com/cloudquery/cloudquery/commit/6a8fe210bf1e97cbd3324afc350fee11a21d7c81))
+
+## [2.4.8](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v2.4.7...plugins-source-gcp-v2.4.8) (2022-11-08)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for gcp to v1.1.0 ([#3920](https://github.com/cloudquery/cloudquery/issues/3920)) ([d76c6f4](https://github.com/cloudquery/cloudquery/commit/d76c6f448b8c4118c3409f05ad4dc904daa11abe))
+
+## [2.4.7](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v2.4.6...plugins-source-gcp-v2.4.7) (2022-11-08)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency cloudquery/cloudquery to v1.6.6 ([#3830](https://github.com/cloudquery/cloudquery/issues/3830)) ([2b30af3](https://github.com/cloudquery/cloudquery/commit/2b30af3b6269e827d4744748c898046330648521))
+* **deps:** Update plugin-sdk for gcp to v1.0.3 ([#3851](https://github.com/cloudquery/cloudquery/issues/3851)) ([3553234](https://github.com/cloudquery/cloudquery/commit/35532343314f3e8b5006f198220f2b1a46ba6b0f))
+* **deps:** Upgrade plugin-sdk to v1.0.4 for plugins ([#3889](https://github.com/cloudquery/cloudquery/issues/3889)) ([6767243](https://github.com/cloudquery/cloudquery/commit/6767243ec70bfae7a4c457bf4b5edf013c54c392))
+
+## [2.4.6](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v2.4.5...plugins-source-gcp-v2.4.6) (2022-11-07)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for gcp to v1 ([#3780](https://github.com/cloudquery/cloudquery/issues/3780)) ([5908af3](https://github.com/cloudquery/cloudquery/commit/5908af36f5d7a2ced030ba17bfe765c756b1c6ca))
+
+## [2.4.5](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v2.4.4...plugins-source-gcp-v2.4.5) (2022-11-07)
+
+
+### Bug Fixes
+
+* **deps:** Update SDK to v0.13.23 ([#3739](https://github.com/cloudquery/cloudquery/issues/3739)) ([732ce61](https://github.com/cloudquery/cloudquery/commit/732ce6187f92906f510e95c07b32c44d0439dc39))
+
 ## [2.4.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v2.4.3...plugins-source-gcp-v2.4.4) (2022-11-06)
 
 

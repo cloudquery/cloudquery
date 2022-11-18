@@ -13,7 +13,7 @@ import (
 func OAuthAuthorizations() *schema.Table {
 	return &schema.Table{
 		Name:        "heroku_oauth_authorizations",
-		Description: `https://devcenter.heroku.com/articles/platform-api-reference#o-auth-authorization-attributes`,
+		Description: `https://devcenter.heroku.com/articles/platform-api-reference#o-auth-authorization`,
 		Resolver:    fetchOAuthAuthorizations,
 		Columns: []schema.Column{
 			{

@@ -1,5 +1,126 @@
 # Changelog
 
+## [1.3.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v1.3.2...plugins-destination-test-v1.3.3) (2022-11-16)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for test to v1.5.3 ([#4654](https://github.com/cloudquery/cloudquery/issues/4654)) ([dab71c4](https://github.com/cloudquery/cloudquery/commit/dab71c4f655225fe7d51d734a5657b36fd0b53a5))
+
+## [1.3.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v1.3.1...plugins-destination-test-v1.3.2) (2022-11-14)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for test to v1.5.2 ([#4569](https://github.com/cloudquery/cloudquery/issues/4569)) ([dac5f00](https://github.com/cloudquery/cloudquery/commit/dac5f00efc5758938dd00b7db47af4e6b050b01c))
+
+## [1.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v1.3.0...plugins-destination-test-v1.3.1) (2022-11-14)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for test to v1.5.1 ([#4509](https://github.com/cloudquery/cloudquery/issues/4509)) ([d26232d](https://github.com/cloudquery/cloudquery/commit/d26232d4ebbd2d5a6ba002c70f1ff4d1166c9d06))
+
+## [1.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v1.2.26...plugins-destination-test-v1.3.0) (2022-11-13)
+
+
+### Features
+
+* Add flag to force test destination plugin to return an error ([#4378](https://github.com/cloudquery/cloudquery/issues/4378)) ([5b72de9](https://github.com/cloudquery/cloudquery/commit/5b72de9744258e1eadf0b3e845349922bfb26071))
+
+## [1.2.26](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v1.2.25...plugins-destination-test-v1.2.26) (2022-11-13)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for test to v1.5.0 ([#4399](https://github.com/cloudquery/cloudquery/issues/4399)) ([9573c4a](https://github.com/cloudquery/cloudquery/commit/9573c4af4a974f176df49e5658107c4b09a57fb1))
+
+## [1.2.25](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v1.2.24...plugins-destination-test-v1.2.25) (2022-11-10)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for test to v1.4.1 ([#4303](https://github.com/cloudquery/cloudquery/issues/4303)) ([6b2b5f0](https://github.com/cloudquery/cloudquery/commit/6b2b5f0c8e3e0e2937a7ef869d59ee66e75dd2ee))
+
+## [1.2.24](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v1.2.23...plugins-destination-test-v1.2.24) (2022-11-10)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for test to v1.4.0 ([#4239](https://github.com/cloudquery/cloudquery/issues/4239)) ([1b5db1e](https://github.com/cloudquery/cloudquery/commit/1b5db1ee996ee713419f4117fe665804a3cad254))
+
+## [1.2.23](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v1.2.22...plugins-destination-test-v1.2.23) (2022-11-10)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for test to v1.3.2 ([#4206](https://github.com/cloudquery/cloudquery/issues/4206)) ([3d0eed9](https://github.com/cloudquery/cloudquery/commit/3d0eed9286a8ac951d2aabc8d63004337770121b))
+
+## [1.2.22](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v1.2.21...plugins-destination-test-v1.2.22) (2022-11-10)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for test to v1.3.1 ([#4156](https://github.com/cloudquery/cloudquery/issues/4156)) ([7a1e6b0](https://github.com/cloudquery/cloudquery/commit/7a1e6b02f537678e89ce2dc418ca214c20d2ad6f))
+
+## [1.2.21](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v1.2.20...plugins-destination-test-v1.2.21) (2022-11-10)
+
+
+### Bug Fixes
+
+* Fix test destination plugin hang ([#4158](https://github.com/cloudquery/cloudquery/issues/4158)) ([d9f9d30](https://github.com/cloudquery/cloudquery/commit/d9f9d30238d25e8e7a6a4641ed71179735742939))
+
+## [1.2.20](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v1.2.19...plugins-destination-test-v1.2.20) (2022-11-09)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for test to v1.2.0 ([#4049](https://github.com/cloudquery/cloudquery/issues/4049)) ([74960e8](https://github.com/cloudquery/cloudquery/commit/74960e89f3e62f589585fd05cc59ce4fc7c6765e))
+* **deps:** Update plugin-sdk for test to v1.3.0 ([#4080](https://github.com/cloudquery/cloudquery/issues/4080)) ([b8a3171](https://github.com/cloudquery/cloudquery/commit/b8a31717a30de451ffbd10b5a8ba988d8551d05b))
+
+## [1.2.19](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v1.2.18...plugins-destination-test-v1.2.19) (2022-11-09)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for test to v1.1.2 ([#4004](https://github.com/cloudquery/cloudquery/issues/4004)) ([a9ff295](https://github.com/cloudquery/cloudquery/commit/a9ff2955ae87ea0f668cf540857c727b340487e6))
+
+## [1.2.18](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v1.2.17...plugins-destination-test-v1.2.18) (2022-11-09)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for csv to v1.1.0 ([#3918](https://github.com/cloudquery/cloudquery/issues/3918)) ([f1acd68](https://github.com/cloudquery/cloudquery/commit/f1acd688fcd90011cc9be1be2285e3fe9369e341))
+
+## [1.2.17](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v1.2.16...plugins-destination-test-v1.2.17) (2022-11-09)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for test to v1.1.0 ([#3927](https://github.com/cloudquery/cloudquery/issues/3927)) ([ae965ef](https://github.com/cloudquery/cloudquery/commit/ae965efd66943abc6c56fbd1badc68f7582644f0))
+
+## [1.2.16](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v1.2.15...plugins-destination-test-v1.2.16) (2022-11-08)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for test to v1.0.3 ([#3858](https://github.com/cloudquery/cloudquery/issues/3858)) ([938af17](https://github.com/cloudquery/cloudquery/commit/938af177436e609175e737e8e6fdeb055d985377))
+* **deps:** Update plugin-sdk for test to v1.0.4 ([#3887](https://github.com/cloudquery/cloudquery/issues/3887)) ([dae87dc](https://github.com/cloudquery/cloudquery/commit/dae87dc58448d77b0eaecbd19bb7bf9c131b96d9))
+
+## [1.2.15](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v1.2.14...plugins-destination-test-v1.2.15) (2022-11-07)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for test to v1 ([#3798](https://github.com/cloudquery/cloudquery/issues/3798)) ([c997e5a](https://github.com/cloudquery/cloudquery/commit/c997e5ae79023e0d35480d44b292cb2258709709))
+
+## [1.2.14](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v1.2.13...plugins-destination-test-v1.2.14) (2022-11-07)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for test to v0.13.23 ([#3760](https://github.com/cloudquery/cloudquery/issues/3760)) ([c57c882](https://github.com/cloudquery/cloudquery/commit/c57c882eb2ff423f923259e609ab995cde110db0))
+
 ## [1.2.13](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v1.2.12...plugins-destination-test-v1.2.13) (2022-11-06)
 
 

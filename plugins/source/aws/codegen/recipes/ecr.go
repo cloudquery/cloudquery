@@ -3,6 +3,7 @@ package recipes
 import (
 	"github.com/aws/aws-sdk-go-v2/service/ecr"
 	"github.com/aws/aws-sdk-go-v2/service/ecr/types"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ecr/models"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -42,7 +43,7 @@ func ECRResources() []*Resource {
 					{
 						Name:     "policy_text",
 						Type:     schema.TypeJSON,
-						Resolver: `client.MarshaledJsonResolver("PolicyText")`,
+						Resolver: `schema.PathResolver("PolicyText")`,
 					},
 				}...),
 		},
@@ -66,8 +67,15 @@ func ECRResources() []*Resource {
 						Type:     schema.TypeJSON,
 						Resolver: `resolveRepositoryTags`,
 					},
+					{
+						Name:     "policy_text",
+						Type:     schema.TypeJSON,
+						Resolver: `resolveRepositoryPolicy`,
+					},
 				}...),
-			Relations: []string{"RepositoryImages()"},
+			Relations: []string{
+				"RepositoryImages()",
+			},
 		},
 		{
 			SubService:  "repository_images",
@@ -83,6 +91,13 @@ func ECRResources() []*Resource {
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
 				}...),
+			Relations: []string{"RepositoryImageScanFindings()"},
+		},
+		{
+			SubService:   "repository_image_scan_findings",
+			Struct:       &models.ImageScanWrapper{},
+			Description:  "https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_ImageScanFindings.html",
+			ExtraColumns: defaultRegionalColumns,
 		},
 	}
 

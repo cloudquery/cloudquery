@@ -9,9 +9,10 @@ import (
 
 func ReplicationInstances() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_dms_replication_instances",
-		Resolver:  fetchDmsReplicationInstances,
-		Multiplex: client.ServiceAccountRegionMultiplexer("dms"),
+		Name:        "aws_dms_replication_instances",
+		Description: `https://docs.aws.amazon.com/dms/latest/APIReference/API_ReplicationInstance.html`,
+		Resolver:    fetchDmsReplicationInstances,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("dms"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -77,6 +78,11 @@ func ReplicationInstances() *schema.Table {
 				Resolver: schema.PathResolver("MultiAZ"),
 			},
 			{
+				Name:     "network_type",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("NetworkType"),
+			},
+			{
 				Name:     "pending_modified_values",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("PendingModifiedValues"),
@@ -100,6 +106,11 @@ func ReplicationInstances() *schema.Table {
 				Name:     "replication_instance_identifier",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ReplicationInstanceIdentifier"),
+			},
+			{
+				Name:     "replication_instance_ipv6_addresses",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("ReplicationInstanceIpv6Addresses"),
 			},
 			{
 				Name:     "replication_instance_private_ip_address",

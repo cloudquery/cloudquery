@@ -1,4 +1,5 @@
 {
   "cloudquery": "cloudquery",
-  "cloudquery_sync": "cloudquery sync"
+  "cloudquery_sync": "cloudquery sync",
+  "cloudquery_migrate": "cloudquery migrate"
 }

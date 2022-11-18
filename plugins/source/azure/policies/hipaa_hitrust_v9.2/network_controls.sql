@@ -19,7 +19,7 @@
 \ir ../queries/keyvault/vaults_with_no_service_endpoint.sql
 \set check_id '0866.09m3Organizational.1516 - 09.m - 1'
 \echo :check_id
-\ir ../queries/storage/accounts_with_not_restricted_asscess.sql
+\ir ../queries/storage/accounts_with_unrestricted_access.sql
 \set check_id '0867.09m3Organizational.17 - 09.m - 1'
 \echo :check_id
 \ir ../queries/storage/accounts_with_no_service_endpoint_associated.sql

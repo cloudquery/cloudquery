@@ -1,6 +1,7 @@
 package recipes
 
 import (
+	"github.com/aws/aws-sdk-go-v2/service/eventbridge"
 	"github.com/aws/aws-sdk-go-v2/service/eventbridge/types"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -147,7 +148,7 @@ func EventbridgeResources() []*Resource {
 		// Parameters for autogenerating the resolver and mock-test.
 		/// Only used when `ShouldGenerateResolverAndMockTest = true`
 		r.ResolverAndMockTestTemplate = "list_resources_1"
-		r.CloudqueryServiceName = "Eventbridge"
+		r.Client = &eventbridge.Client{}
 	}
 
 	for _, r := range globalResources {
@@ -157,7 +158,7 @@ func EventbridgeResources() []*Resource {
 		// Parameters for autogenerating the resolver and mock-test.
 		/// Only used when `ShouldGenerateResolverAndMockTest = true`
 		r.ResolverAndMockTestTemplate = "list_resources_1"
-		r.CloudqueryServiceName = "Eventbridge"
+		r.Client = &eventbridge.Client{}
 	}
 
 	resources := append(regionalResources, globalResources...)

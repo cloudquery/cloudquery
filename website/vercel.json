@@ -76,6 +76,42 @@
     {
       "source": "/docs/recipes/aws-csv",
       "destination": "/docs/recipes/destinations/csv"
+    },
+    {
+      "source": "/docs/cli/fetch/overview",
+      "destination": "/docs/reference/cli/cloudquery"
+    },
+    {
+      "source": "/docs/cli/commands/provider-purge",
+      "destination": "/docs/reference/cli/cloudquery"
+    },
+    {
+      "source": "/docs/security",
+      "destination": "/docs/advanced-topics/security"
+    },
+    {
+      "source": "/docs/best-practices",
+      "destination": "/docs"
+    },
+    {
+      "source": "/docs/tutorials/assume_role",
+      "destination": "/blog/cross-account-access-aws-assumerole"
+    },
+    {
+      "source": "/docs/cq_vs_others/:other",
+      "destination": "/docs/cq-vs-others/:other"
+    },
+    {
+      "source": "/database-configuration",
+      "destination": "/docs/reference/destination-spec"
+    },
+    {
+      "source": "/docs/cli/commands/(.*)",
+      "destination": "/docs/reference/cli/cloudquery"
+    },
+    {
+      "source": "/developers/developing-new-provider",
+      "destination": "/docs/developers/creating-new-plugin"
     }
   ]
 }

@@ -26,11 +26,17 @@ func buildAppstreamAppBlocksMock(t *testing.T, ctrl *gomock.Controller) client.S
 			AppBlocks: []types.AppBlock{object},
 		}, nil)
 
+	tagsOutput := appstream.ListTagsForResourceOutput{}
+	err = faker.FakeObject(&tagsOutput)
+	if err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any()).Return(&tagsOutput, nil).AnyTimes()
+
 	return client.Services{
 		Appstream: m,
 	}
 }
-
 func TestAppstreamAppBlocks(t *testing.T) {
 	client.AwsMockTestHelper(t, AppBlocks(), buildAppstreamAppBlocksMock, client.TestOptions{})
 }

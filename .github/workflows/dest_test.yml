@@ -14,6 +14,7 @@ on:
 
 jobs:
   resolve-runner:
+    timeout-minutes: 5
     runs-on: ubuntu-latest
     outputs:
       runner: ${{ steps.resolve.outputs.runner }}
@@ -32,6 +33,7 @@ jobs:
           RUNNER=${{ steps.large-runner.outputs.runner }}
           echo "runner=${RUNNER:-"ubuntu-latest"}" >> $GITHUB_OUTPUT
   plugins-destination-test:
+    timeout-minutes: 30
     name: "plugins/destination/test"
     needs: [resolve-runner]
     runs-on: ${{ needs.resolve-runner.outputs.runner }}
@@ -51,7 +53,7 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
-          version: v1.49.0
+          version: v1.50.1
           working-directory: plugins/destination/test
           args: "--config ../../.golangci.yml"
       - name: Get dependencies
@@ -61,6 +63,7 @@ jobs:
       - name: Test
         run: go test ./...
   validate-release:
+    timeout-minutes: 30
     needs: [resolve-runner]
     runs-on: ${{ needs.resolve-runner.outputs.runner }}
     env:

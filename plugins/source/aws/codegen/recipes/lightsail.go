@@ -202,11 +202,11 @@ func LightsailResources() []*Resource {
 					},
 				}...),
 			Relations: []string{
-				"DiskSnapshot()",
+				"DiskSnapshots()",
 			},
 		},
 		{
-			SubService:  "disk_snapshot",
+			SubService:  "disk_snapshots",
 			Struct:      &types.DiskSnapshot{},
 			Description: "https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_DiskSnapshot.html",
 			ExtraColumns: append(

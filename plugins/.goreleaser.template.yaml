@@ -1,0 +1,30 @@
+before:
+  hooks:
+    - cmd: go mod download
+      dir: ./plugins/{{ .Var.component }}
+archives:
+  - name_template: "{{ .Binary }}_{{ .Os }}_{{ .Arch }}"
+    format: zip
+    id: zip
+    files:
+      - policies/**
+checksum:
+  name_template: "checksums.txt"
+  ids:
+    - default
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+signs:
+  - artifacts: checksum
+    args:
+      - "--batch"
+      - "--output"
+      - "${signature}"
+      - "--detach-sign"
+      - "${artifact}"
+release:
+  prerelease: auto

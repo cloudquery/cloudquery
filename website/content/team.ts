@@ -13,7 +13,7 @@ const CLOUDQUERY_TEAM = {
   },
   hermanschaaf: {
     name: "Herman Schaaf",
-    url: "https://www.linkedin.com/in/hermanschaaf/",
+    url: "https://github.com/hermanschaaf",
     twitterUsername: "",
     image_url: "/images/people/hermanschaaf.jpg",
   },

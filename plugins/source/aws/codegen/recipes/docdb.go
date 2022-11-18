@@ -60,6 +60,13 @@ func DocumentDBResources() []*Resource {
 				}...),
 		},
 		{
+			SubService:   "cluster_parameters",
+			Struct:       &types.Parameter{},
+			Description:  "https://docs.aws.amazon.com/documentdb/latest/developerguide/API_Parameter.html",
+			SkipFields:   []string{"DBClusterParameterGroupArn"},
+			ExtraColumns: defaultRegionalColumns,
+		},
+		{
 			SubService:  "cluster_parameter_groups",
 			Struct:      &types.DBClusterParameterGroup{},
 			Description: "https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBClusterParameterGroup.html",

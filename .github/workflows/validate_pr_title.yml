@@ -9,6 +9,7 @@ on:
 
 jobs:
   main:
+    timeout-minutes: 5
     name: validate-pr-title
     runs-on: ubuntu-latest
     steps:

@@ -9,9 +9,10 @@ import (
 
 func Regions() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_regions",
-		Resolver:  fetchEc2Regions,
-		Multiplex: client.AccountMultiplex,
+		Name:        "aws_regions",
+		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Region.html`,
+		Resolver:    fetchEc2Regions,
+		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

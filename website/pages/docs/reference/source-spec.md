@@ -8,12 +8,13 @@ Note: For configuring individual plugins, please refer to the configuration sect
 
 This example configures the AWS plugin, and connects is to a `postgresql` destination:
 
-```yaml
+```yaml copy
 kind: source
 spec:
   name: "aws"
   path: "cloudquery/aws"
-  version: "v4.7.2" # latest version of aws plugin
+  version: "v7.0.1" # latest version of aws plugin
+  tables: ["*"]
   destinations: ["postgresql"]
 
   spec:
@@ -57,13 +58,13 @@ Configures how to retrieve the plugin. The contents depend on the value of `regi
 
 (`[]string`, optional, default: `["*"]`)
 
-Tables to sync from the source plugin.
+Tables to sync from the source plugin. It accepts wildcards. For example, to match all EC2-related tables, : `aws_ec2_*`. Matched tables will also sync all their descendant tables, unless these are skipped in `skip_tables`.
 
 ### skip_tables
 
 (`[]string`, optional, default: `[]`)
 
-Useful when using glob in `tables`, specify which tables to skip when syncing the source plugin.
+Useful when using wildcards in `tables`. Specify which tables to skip when syncing the source plugin. Note that if a table with dependencies is skipped, all its dependant tables will also be skipped.
 
 ### destinations
 

@@ -26,11 +26,19 @@ func buildApprunnerVpcIngressConnectionsMock(t *testing.T, ctrl *gomock.Controll
 	m.EXPECT().DescribeVpcIngressConnection(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&apprunner.DescribeVpcIngressConnectionOutput{VpcIngressConnection: &vc}, nil)
 
+	tags := types.Tag{}
+	err = faker.FakeObject(&tags)
+	if err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&apprunner.ListTagsForResourceOutput{Tags: []types.Tag{tags}}, nil)
+
 	return client.Services{
 		Apprunner: m,
 	}
 }
 
 func TestApprunnerVpcIngressConnector(t *testing.T) {
-	client.AwsMockTestHelper(t, VpcIngressConnection(), buildApprunnerVpcIngressConnectionsMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, VpcIngressConnections(), buildApprunnerVpcIngressConnectionsMock, client.TestOptions{})
 }

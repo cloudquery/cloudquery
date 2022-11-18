@@ -1,7 +1,6 @@
 {
   "*": {
     "//": "Disable sidebar and search for these pages",
-    "hidden": false,
     "theme": {
       "sidebar": false,
       "typesetting": "article"
@@ -9,6 +8,9 @@
     "searchable": false
   },
   "auditing-service-account-keys-with-cloudquery": "Auditing Service Account Keys with CloudQuery",
+  "aws-kms-key-grants-deep-dive": "A Deep Dive on AWS KMS Key Grants and Access",
+  "introducing-wildcard-matching-for-tables": "Introducing Wildcard Matching for Tables",
+  "announcing-cloudquery-sqlite-destination": "Announcing the CloudQuery SQLite Destination Plugin",
   "scaling-out-elt-with-cq-and-csv": "Scaling out ELT with CloudQuery and CSV",
   "cloudquery-v1-release": "CloudQuery v1 Release",
   "migrating-from-v0-to-v1": "Migrating from CloudQuery v0 to v1",

@@ -13,13 +13,34 @@ on:
       - ".github/workflows/cli.yml"
 
 jobs:
+  resolve-runner:
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    outputs:
+      runner: ${{ steps.resolve.outputs.runner }}
+    steps:
+      - name: Check if should use large runner
+        id: large-runner
+        # We want to speed runs on the main branch which prime the cache
+        # We allow large runners only in this case to prevent forks from abusing them (it's enforced via runner groups access rules)
+        # IF YOU WANT TO USE A LARGE RUNNER YOU NEED TO ADD THE WORKFLOW TO THE `CloudQuery releases` GROUP IN https://github.com/organizations/cloudquery/settings/actions/runner-groups
+        if: github.event_name == 'push'
+        run: |
+          echo "runner=cloudquery-release-runner" >> $GITHUB_OUTPUT
+      - name: Resolve runner
+        id: resolve
+        run: |
+          RUNNER=${{ steps.large-runner.outputs.runner }}
+          echo "runner=${RUNNER:-"ubuntu-latest"}" >> $GITHUB_OUTPUT
   cli:
+    timeout-minutes: 30
     name: "cli"
     runs-on: ${{ matrix.os }}
     defaults:
       run:
         working-directory: ./cli
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
     steps:
@@ -36,7 +57,7 @@ jobs:
         uses: golangci/golangci-lint-action@v3
         if: matrix.os == 'ubuntu-latest'
         with:
-          version: v1.49.0
+          version: v1.50.1
           working-directory: cli
       - name: Get dependencies
         run: go get -t -d ./...
@@ -51,7 +72,9 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         run: test "$(git status -s ../website/pages/docs/reference/cli/*.md | wc -l)" -eq 0
   validate-release:
-    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: [resolve-runner]
+    runs-on: ${{ needs.resolve-runner.outputs.runner }}
     env:
       CGO_ENABLED: 0
     steps:

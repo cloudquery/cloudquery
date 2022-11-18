@@ -1,6 +1,6 @@
 # Table: heroku_outbound_rulesets
 
-https://devcenter.heroku.com/articles/platform-api-reference#outbound-ruleset-attributes
+https://devcenter.heroku.com/articles/platform-api-reference#outbound-ruleset
 
 The primary key for this table is **id**.
 

@@ -1,6 +1,6 @@
 # Table: azure_cosmosdb_sql_databases
 
-
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2020-04-01-preview/documentdb#SQLDatabaseGetResults
 
 The primary key for this table is **id**.
 

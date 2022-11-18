@@ -9,7 +9,7 @@ import (
 func XRayResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService:  "encryption_config",
+			SubService:  "encryption_configs",
 			Struct:      &types.EncryptionConfig{},
 			Description: "https://docs.aws.amazon.com/xray/latest/api/API_EncryptionConfig.html",
 		},

@@ -1,8 +1,8 @@
 # Table: heroku_add_on_webhook_events
 
-https://devcenter.heroku.com/articles/platform-api-reference#add-on-webhook-event-attributes
+https://devcenter.heroku.com/articles/platform-api-reference#add-on-webhook-event
 
-The primary key for this table is **_cq_id**.
+The primary key for this table is **id**.
 
 
 ## Columns
@@ -10,5 +10,10 @@ The primary key for this table is **_cq_id**.
 | ------------- | ------------- |
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
+|_cq_id|UUID|
 |_cq_parent_id|UUID|
+|created_at|Timestamp|
+|id (PK)|String|
+|include|String|
+|payload|JSON|
+|updated_at|Timestamp|

@@ -5,6 +5,121 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.7](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v1.4.6...plugins-source-azure-v1.4.7) (2022-11-15)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for azure to v1.5.3 ([#4641](https://github.com/cloudquery/cloudquery/issues/4641)) ([67a7aa0](https://github.com/cloudquery/cloudquery/commit/67a7aa0f8fd18ba074fd7e8746c12ae80ae0e653))
+
+## [1.4.6](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v1.4.5...plugins-source-azure-v1.4.6) (2022-11-14)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for azure to v1.5.2 ([#4556](https://github.com/cloudquery/cloudquery/issues/4556)) ([034e8f7](https://github.com/cloudquery/cloudquery/commit/034e8f7668b7272aa9ad7299ee00eb6100e83bea))
+
+## [1.4.5](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v1.4.4...plugins-source-azure-v1.4.5) (2022-11-14)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for azure to v1.5.1 ([#4497](https://github.com/cloudquery/cloudquery/issues/4497)) ([b0a2a7d](https://github.com/cloudquery/cloudquery/commit/b0a2a7d102b1b970163743cca3865683196c4bb5))
+
+## [1.4.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v1.4.3...plugins-source-azure-v1.4.4) (2022-11-11)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for azure to v1.5.0 ([#4386](https://github.com/cloudquery/cloudquery/issues/4386)) ([26fa93f](https://github.com/cloudquery/cloudquery/commit/26fa93fb9ff3ada21d6dfc1ba75df423ffd7d176))
+* Fix links in Grafana compliance dashboards ([#4338](https://github.com/cloudquery/cloudquery/issues/4338)) ([e71ba56](https://github.com/cloudquery/cloudquery/commit/e71ba567fdd21ae9cf059023795c6765d1766848))
+
+## [1.4.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v1.4.2...plugins-source-azure-v1.4.3) (2022-11-10)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for azure to v1.4.1 ([#4289](https://github.com/cloudquery/cloudquery/issues/4289)) ([f91d03d](https://github.com/cloudquery/cloudquery/commit/f91d03dcee936fb3edcce49ec7dcbb43d3c47d8b))
+
+## [1.4.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v1.4.1...plugins-source-azure-v1.4.2) (2022-11-10)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for azure to v1.4.0 ([#4227](https://github.com/cloudquery/cloudquery/issues/4227)) ([d9b582a](https://github.com/cloudquery/cloudquery/commit/d9b582a9dd153a5e15228c8ea4b4c56da4758001))
+
+## [1.4.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v1.4.0...plugins-source-azure-v1.4.1) (2022-11-10)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for azure to v1.3.2 ([#4194](https://github.com/cloudquery/cloudquery/issues/4194)) ([792f8b4](https://github.com/cloudquery/cloudquery/commit/792f8b4ddeef7ecc5f67e1f5baf5ce43cd50a063))
+
+## [1.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v1.3.12...plugins-source-azure-v1.4.0) (2022-11-10)
+
+
+### Features
+
+* **azure:** Add description to tables ([#4189](https://github.com/cloudquery/cloudquery/issues/4189)) ([a5fb33d](https://github.com/cloudquery/cloudquery/commit/a5fb33d1b2ee51f7abfa11eddf24d333668590d2))
+
+## [1.3.12](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v1.3.11...plugins-source-azure-v1.3.12) (2022-11-10)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for azure to v1.3.1 ([#4145](https://github.com/cloudquery/cloudquery/issues/4145)) ([d9462e6](https://github.com/cloudquery/cloudquery/commit/d9462e6c66c0371f75fd6917d2668096bce661c7))
+
+## [1.3.11](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v1.3.10...plugins-source-azure-v1.3.11) (2022-11-09)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for azure to v1.3.0 ([#4068](https://github.com/cloudquery/cloudquery/issues/4068)) ([30d5543](https://github.com/cloudquery/cloudquery/commit/30d55433a61e54758ba36173f0e626319b7afdab))
+
+## [1.3.10](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v1.3.9...plugins-source-azure-v1.3.10) (2022-11-09)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for azure to v1.2.0 ([#4037](https://github.com/cloudquery/cloudquery/issues/4037)) ([b96a731](https://github.com/cloudquery/cloudquery/commit/b96a731bd9590f76c4d08518d2a9fa1e3747f137))
+
+## [1.3.9](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v1.3.8...plugins-source-azure-v1.3.9) (2022-11-09)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for csv to v1.1.0 ([#3918](https://github.com/cloudquery/cloudquery/issues/3918)) ([f1acd68](https://github.com/cloudquery/cloudquery/commit/f1acd688fcd90011cc9be1be2285e3fe9369e341))
+
+## [1.3.8](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v1.3.7...plugins-source-azure-v1.3.8) (2022-11-08)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for azure to v1.1.0 ([#3915](https://github.com/cloudquery/cloudquery/issues/3915)) ([6b240e7](https://github.com/cloudquery/cloudquery/commit/6b240e758ea2ee6b72d68afffcb792b4117d93ba))
+
+## [1.3.7](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v1.3.6...plugins-source-azure-v1.3.7) (2022-11-08)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency cloudquery/cloudquery to v1.6.6 ([#3830](https://github.com/cloudquery/cloudquery/issues/3830)) ([2b30af3](https://github.com/cloudquery/cloudquery/commit/2b30af3b6269e827d4744748c898046330648521))
+* **deps:** Update plugin-sdk for azure to v1.0.3 ([#3846](https://github.com/cloudquery/cloudquery/issues/3846)) ([5830730](https://github.com/cloudquery/cloudquery/commit/583073042b405463bf1176b9dcc9b2ad7f5dfa94))
+* **deps:** Upgrade plugin-sdk to v1.0.4 for plugins ([#3889](https://github.com/cloudquery/cloudquery/issues/3889)) ([6767243](https://github.com/cloudquery/cloudquery/commit/6767243ec70bfae7a4c457bf4b5edf013c54c392))
+
+## [1.3.6](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v1.3.5...plugins-source-azure-v1.3.6) (2022-11-07)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for azure to v1 ([#3775](https://github.com/cloudquery/cloudquery/issues/3775)) ([49928d6](https://github.com/cloudquery/cloudquery/commit/49928d62666f187417800c9628f5408c40359732))
+
+## [1.3.5](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v1.3.4...plugins-source-azure-v1.3.5) (2022-11-07)
+
+
+### Bug Fixes
+
+* **deps:** Update SDK to v0.13.23 ([#3742](https://github.com/cloudquery/cloudquery/issues/3742)) ([eed6590](https://github.com/cloudquery/cloudquery/commit/eed6590a518340a96f0705ac9f0ff53344f57e88))
+
 ## [1.3.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v1.3.3...plugins-source-azure-v1.3.4) (2022-11-06)
 
 

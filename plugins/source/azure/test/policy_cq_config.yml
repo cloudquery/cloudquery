@@ -1,0 +1,15 @@
+kind: source
+spec:
+  name: azure
+  version: v1.0.0
+  destinations: [postgresql]
+  path: ./azure
+  registry: local
+---
+kind: destination
+spec:
+  name: postgresql
+  path: cloudquery/postgresql
+  version: "v1.7.11" # latest version of postgresql plugin
+  spec:
+    connection_string: ${CQ_DSN}

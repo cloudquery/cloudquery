@@ -31,3 +31,7 @@ lint:
 .PHONY: gen-code
 gen-code:
 	go run codegen/main.go
+
+# All gen targets
+.PHONY: gen
+gen: gen-code gen-docs

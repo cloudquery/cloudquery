@@ -52,6 +52,11 @@ func ECSResources() []*Resource {
 						Type:     schema.TypeJSON,
 						Resolver: `client.ResolveTags`,
 					},
+					{
+						Name:     "task_protection",
+						Type:     schema.TypeJSON,
+						Resolver: `getEcsTaskProtection`,
+					},
 				}...),
 			Relations: []string{},
 		},
@@ -90,6 +95,7 @@ func ECSResources() []*Resource {
 		{
 			SubService:          "task_definitions",
 			Struct:              &models.TaskDefinitionWrapper{},
+			Description:         "https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_TaskDefinition.html",
 			SkipFields:          []string{"TaskDefinitionArn", "Tags"},
 			PreResourceResolver: "getTaskDefinition",
 			ExtraColumns: append(

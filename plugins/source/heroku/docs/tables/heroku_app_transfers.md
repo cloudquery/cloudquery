@@ -1,6 +1,6 @@
 # Table: heroku_app_transfers
 
-https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-attributes
+https://devcenter.heroku.com/articles/platform-api-reference#app-transfer
 
 The primary key for this table is **id**.
 

@@ -13,7 +13,7 @@ import (
 func BuildpackInstallations() *schema.Table {
 	return &schema.Table{
 		Name:        "heroku_buildpack_installations",
-		Description: `https://devcenter.heroku.com/articles/platform-api-reference#buildpack-installation-attributes`,
+		Description: `https://devcenter.heroku.com/articles/platform-api-reference#buildpack-installation`,
 		Resolver:    fetchBuildpackInstallations,
 		Columns: []schema.Column{
 			{

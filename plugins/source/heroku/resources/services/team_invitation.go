@@ -13,7 +13,7 @@ import (
 func TeamInvitations() *schema.Table {
 	return &schema.Table{
 		Name:        "heroku_team_invitations",
-		Description: `https://devcenter.heroku.com/articles/platform-api-reference#team-invitation-attributes`,
+		Description: `https://devcenter.heroku.com/articles/platform-api-reference#team-invitation`,
 		Resolver:    fetchTeamInvitations,
 		Columns: []schema.Column{
 			{
