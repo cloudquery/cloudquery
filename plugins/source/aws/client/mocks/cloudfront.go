@@ -135,6 +135,46 @@ func (mr *MockCloudfrontClientMockRecorder) GetCloudFrontOriginAccessIdentityCon
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetCloudFrontOriginAccessIdentityConfig", reflect.TypeOf((*MockCloudfrontClient)(nil).GetCloudFrontOriginAccessIdentityConfig), varargs...)
 }
 
+// GetContinuousDeploymentPolicy mocks base method.
+func (m *MockCloudfrontClient) GetContinuousDeploymentPolicy(arg0 context.Context, arg1 *cloudfront.GetContinuousDeploymentPolicyInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.GetContinuousDeploymentPolicyOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetContinuousDeploymentPolicy", varargs...)
+	ret0, _ := ret[0].(*cloudfront.GetContinuousDeploymentPolicyOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetContinuousDeploymentPolicy indicates an expected call of GetContinuousDeploymentPolicy.
+func (mr *MockCloudfrontClientMockRecorder) GetContinuousDeploymentPolicy(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetContinuousDeploymentPolicy", reflect.TypeOf((*MockCloudfrontClient)(nil).GetContinuousDeploymentPolicy), varargs...)
+}
+
+// GetContinuousDeploymentPolicyConfig mocks base method.
+func (m *MockCloudfrontClient) GetContinuousDeploymentPolicyConfig(arg0 context.Context, arg1 *cloudfront.GetContinuousDeploymentPolicyConfigInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.GetContinuousDeploymentPolicyConfigOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetContinuousDeploymentPolicyConfig", varargs...)
+	ret0, _ := ret[0].(*cloudfront.GetContinuousDeploymentPolicyConfigOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetContinuousDeploymentPolicyConfig indicates an expected call of GetContinuousDeploymentPolicyConfig.
+func (mr *MockCloudfrontClientMockRecorder) GetContinuousDeploymentPolicyConfig(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetContinuousDeploymentPolicyConfig", reflect.TypeOf((*MockCloudfrontClient)(nil).GetContinuousDeploymentPolicyConfig), varargs...)
+}
+
 // GetDistribution mocks base method.
 func (m *MockCloudfrontClient) GetDistribution(arg0 context.Context, arg1 *cloudfront.GetDistributionInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.GetDistributionOutput, error) {
 	m.ctrl.T.Helper()
@@ -633,6 +673,26 @@ func (mr *MockCloudfrontClientMockRecorder) ListConflictingAliases(arg0, arg1 in
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListConflictingAliases", reflect.TypeOf((*MockCloudfrontClient)(nil).ListConflictingAliases), varargs...)
+}
+
+// ListContinuousDeploymentPolicies mocks base method.
+func (m *MockCloudfrontClient) ListContinuousDeploymentPolicies(arg0 context.Context, arg1 *cloudfront.ListContinuousDeploymentPoliciesInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.ListContinuousDeploymentPoliciesOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListContinuousDeploymentPolicies", varargs...)
+	ret0, _ := ret[0].(*cloudfront.ListContinuousDeploymentPoliciesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListContinuousDeploymentPolicies indicates an expected call of ListContinuousDeploymentPolicies.
+func (mr *MockCloudfrontClientMockRecorder) ListContinuousDeploymentPolicies(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListContinuousDeploymentPolicies", reflect.TypeOf((*MockCloudfrontClient)(nil).ListContinuousDeploymentPolicies), varargs...)
 }
 
 // ListDistributions mocks base method.
