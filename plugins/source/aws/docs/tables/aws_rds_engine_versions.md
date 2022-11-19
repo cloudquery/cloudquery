@@ -20,6 +20,7 @@ The following tables depend on aws_rds_engine_versions:
 |engine (PK)|String|
 |engine_version (PK)|String|
 |create_time|Timestamp|
+|custom_db_engine_version_manifest|String|
 |db_engine_description|String|
 |db_engine_version_arn|String|
 |db_engine_version_description|String|
