@@ -10,7 +10,6 @@ import (
 	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/rs/zerolog/log"
 )
 
 func fetchFsxFileCaches(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
@@ -23,7 +22,7 @@ func fetchFsxFileCaches(ctx context.Context, meta schema.ClientMeta, parent *sch
 		if err != nil {
 			var ae smithy.APIError
 			if errors.As(err, &ae) && ae.ErrorCode() == "BadRequest" && ae.ErrorMessage() == "The requested feature is not enabled for this AWS account." {
-				log.Warn().Err(err).Msg("skipping resource")
+				cl.Logger().Warn().Err(err).Msg("skipping resource")
 				return nil
 			}
 
