@@ -52,6 +52,11 @@ func EngineVersions() *schema.Table {
 				Resolver: schema.PathResolver("CreateTime"),
 			},
 			{
+				Name:     "custom_db_engine_version_manifest",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("CustomDBEngineVersionManifest"),
+			},
+			{
 				Name:     "db_engine_description",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("DBEngineDescription"),

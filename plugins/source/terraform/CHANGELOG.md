@@ -5,6 +5,17 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.22](https://github.com/cloudquery/cloudquery/compare/plugins-source-terraform-v1.2.21...plugins-source-terraform-v1.2.22) (2022-11-18)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/config to v1.18.1 ([#4736](https://github.com/cloudquery/cloudquery/issues/4736)) ([db70d2a](https://github.com/cloudquery/cloudquery/commit/db70d2a602fc4edfc74ed61fd7d28ada6da6a3af))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/config to v1.18.2 ([#4775](https://github.com/cloudquery/cloudquery/issues/4775)) ([136fb42](https://github.com/cloudquery/cloudquery/commit/136fb4213da150f8f9e4a68019fbe7fe94397370))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/credentials to v1.13.2 ([#4737](https://github.com/cloudquery/cloudquery/issues/4737)) ([2b2433d](https://github.com/cloudquery/cloudquery/commit/2b2433dd3e091147d0a8beed86159fa7b670e783))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/feature/s3/manager to v1.11.40 ([#4738](https://github.com/cloudquery/cloudquery/issues/4738)) ([69b01cc](https://github.com/cloudquery/cloudquery/commit/69b01cc65d9a62a4b734c956315a95aa1daafa86))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/feature/s3/manager to v1.11.41 ([#4776](https://github.com/cloudquery/cloudquery/issues/4776)) ([d0b2bae](https://github.com/cloudquery/cloudquery/commit/d0b2baeb33e047accc5ef0ac3b68f1605866fe4f))
+
 ## [1.2.21](https://github.com/cloudquery/cloudquery/compare/plugins-source-terraform-v1.2.20...plugins-source-terraform-v1.2.21) (2022-11-16)
 
 
