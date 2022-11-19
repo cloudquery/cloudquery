@@ -18,7 +18,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/appsync v1.16.0
 	github.com/aws/aws-sdk-go-v2/service/autoscaling v1.24.2
 	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.24.0
-	github.com/aws/aws-sdk-go-v2/service/cloudfront v1.20.7
+	github.com/aws/aws-sdk-go-v2/service/cloudfront v1.21.0
 	github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.13.21
 	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.20.2
 	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.21.10
@@ -32,7 +32,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/dax v1.11.19
 	github.com/aws/aws-sdk-go-v2/service/directconnect v1.17.22
 	github.com/aws/aws-sdk-go-v2/service/docdb v1.19.15
-	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.17.5
+	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.17.6
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.71.0
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.17.22
 	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.13.19
@@ -59,7 +59,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/kafka v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/kinesis v1.15.23
 	github.com/aws/aws-sdk-go-v2/service/kms v1.18.17
-	github.com/aws/aws-sdk-go-v2/service/lambda v1.24.11
+	github.com/aws/aws-sdk-go-v2/service/lambda v1.25.0
 	github.com/aws/aws-sdk-go-v2/service/lightsail v1.24.0
 	github.com/aws/aws-sdk-go-v2/service/mq v1.13.15
 	github.com/aws/aws-sdk-go-v2/service/mwaa v1.13.12
@@ -128,7 +128,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.3.26 // indirect
 	github.com/aws/aws-sdk-go-v2/service/athena v1.19.1
 	github.com/aws/aws-sdk-go-v2/service/backup v1.17.11
-	github.com/aws/aws-sdk-go-v2/service/glue v1.34.1
+	github.com/aws/aws-sdk-go-v2/service/glue v1.35.0
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.9.10 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.7.19 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.19 // indirect
