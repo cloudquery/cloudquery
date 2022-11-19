@@ -18,7 +18,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/appsync v1.16.0
 	github.com/aws/aws-sdk-go-v2/service/autoscaling v1.24.2
 	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.24.0
-	github.com/aws/aws-sdk-go-v2/service/cloudfront v1.20.7
+	github.com/aws/aws-sdk-go-v2/service/cloudfront v1.21.0
 	github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.13.21
 	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.20.2
 	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.21.10
