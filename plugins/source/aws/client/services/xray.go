@@ -23,5 +23,6 @@ type XrayClient interface {
 	GetTimeSeriesServiceStatistics(context.Context, *xray.GetTimeSeriesServiceStatisticsInput, ...func(*xray.Options)) (*xray.GetTimeSeriesServiceStatisticsOutput, error)
 	GetTraceGraph(context.Context, *xray.GetTraceGraphInput, ...func(*xray.Options)) (*xray.GetTraceGraphOutput, error)
 	GetTraceSummaries(context.Context, *xray.GetTraceSummariesInput, ...func(*xray.Options)) (*xray.GetTraceSummariesOutput, error)
+	ListResourcePolicies(context.Context, *xray.ListResourcePoliciesInput, ...func(*xray.Options)) (*xray.ListResourcePoliciesOutput, error)
 	ListTagsForResource(context.Context, *xray.ListTagsForResourceInput, ...func(*xray.Options)) (*xray.ListTagsForResourceOutput, error)
 }
