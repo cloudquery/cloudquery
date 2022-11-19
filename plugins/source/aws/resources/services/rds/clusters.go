@@ -163,6 +163,11 @@ func Clusters() *schema.Table {
 				Resolver: schema.PathResolver("DBSubnetGroup"),
 			},
 			{
+				Name:     "db_system_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("DBSystemId"),
+			},
+			{
 				Name:     "database_name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("DatabaseName"),

@@ -21,6 +21,7 @@ The primary key for this table is **arn**.
 |error_message|String|
 |ip_address|String|
 |modification_states|JSON|
+|related_workspaces|JSON|
 |root_volume_encryption_enabled|Bool|
 |state|String|
 |subnet_id|String|
