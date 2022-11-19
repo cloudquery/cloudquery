@@ -63,6 +63,11 @@ func Workspaces() *schema.Table {
 				Resolver: schema.PathResolver("ModificationStates"),
 			},
 			{
+				Name:     "related_workspaces",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("RelatedWorkspaces"),
+			},
+			{
 				Name:     "root_volume_encryption_enabled",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("RootVolumeEncryptionEnabled"),
