@@ -38,7 +38,6 @@ docker run \
   -v <PATH TO CONFIG>/cloudquery.yml:/config/cloudquery.yml \
   ghcr.io/cloudquery/cloudquery:latest \
   fetch --config /config/cloudquery.yml \
-    --data-dir /cache/.cq
 ```
 
 <Callout type="info">
