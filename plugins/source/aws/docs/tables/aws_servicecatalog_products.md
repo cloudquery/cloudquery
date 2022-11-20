@@ -17,4 +17,5 @@ The primary key for this table is **arn**.
 |tags|JSON|
 |created_time|Timestamp|
 |product_view_summary|JSON|
+|source_connection|JSON|
 |status|String|

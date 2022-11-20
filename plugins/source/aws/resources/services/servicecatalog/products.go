@@ -43,6 +43,11 @@ func Products() *schema.Table {
 				Resolver: schema.PathResolver("ProductViewSummary"),
 			},
 			{
+				Name:     "source_connection",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("SourceConnection"),
+			},
+			{
 				Name:     "status",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Status"),

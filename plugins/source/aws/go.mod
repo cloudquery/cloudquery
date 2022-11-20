@@ -18,7 +18,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/appsync v1.16.0
 	github.com/aws/aws-sdk-go-v2/service/autoscaling v1.24.2
 	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.24.0
-	github.com/aws/aws-sdk-go-v2/service/cloudfront v1.20.7
+	github.com/aws/aws-sdk-go-v2/service/cloudfront v1.21.0
 	github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.13.21
 	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.20.2
 	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.21.10
@@ -32,8 +32,8 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/dax v1.11.19
 	github.com/aws/aws-sdk-go-v2/service/directconnect v1.17.22
 	github.com/aws/aws-sdk-go-v2/service/docdb v1.19.15
-	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.17.5
-	github.com/aws/aws-sdk-go-v2/service/ec2 v1.71.0
+	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.17.6
+	github.com/aws/aws-sdk-go-v2/service/ec2 v1.72.0
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.17.22
 	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.13.19
 	github.com/aws/aws-sdk-go-v2/service/ecs v1.19.1
@@ -59,14 +59,14 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/kafka v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/kinesis v1.15.23
 	github.com/aws/aws-sdk-go-v2/service/kms v1.18.17
-	github.com/aws/aws-sdk-go-v2/service/lambda v1.24.11
+	github.com/aws/aws-sdk-go-v2/service/lambda v1.25.0
 	github.com/aws/aws-sdk-go-v2/service/lightsail v1.24.0
 	github.com/aws/aws-sdk-go-v2/service/mq v1.13.15
 	github.com/aws/aws-sdk-go-v2/service/mwaa v1.13.12
 	github.com/aws/aws-sdk-go-v2/service/neptune v1.18.2
 	github.com/aws/aws-sdk-go-v2/service/organizations v1.16.15
 	github.com/aws/aws-sdk-go-v2/service/qldb v1.14.20
-	github.com/aws/aws-sdk-go-v2/service/quicksight v1.26.2
+	github.com/aws/aws-sdk-go-v2/service/quicksight v1.27.0
 	github.com/aws/aws-sdk-go-v2/service/ram v1.16.24
 	github.com/aws/aws-sdk-go-v2/service/rds v1.30.0
 	github.com/aws/aws-sdk-go-v2/service/redshift v1.26.15
@@ -75,10 +75,10 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/route53domains v1.12.19
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.29.3
 	github.com/aws/aws-sdk-go-v2/service/s3control v1.26.0
-	github.com/aws/aws-sdk-go-v2/service/sagemaker v1.54.0
+	github.com/aws/aws-sdk-go-v2/service/sagemaker v1.55.0
 	github.com/aws/aws-sdk-go-v2/service/scheduler v1.0.1
 	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.16.7
-	github.com/aws/aws-sdk-go-v2/service/servicecatalog v1.14.19
+	github.com/aws/aws-sdk-go-v2/service/servicecatalog v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/servicequotas v1.13.20
 	github.com/aws/aws-sdk-go-v2/service/sesv2 v1.15.1
@@ -90,7 +90,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/timestreamwrite v1.14.6
 	github.com/aws/aws-sdk-go-v2/service/waf v1.11.19
 	github.com/aws/aws-sdk-go-v2/service/wafv2 v1.23.1
-	github.com/aws/aws-sdk-go-v2/service/workspaces v1.26.0
+	github.com/aws/aws-sdk-go-v2/service/workspaces v1.27.0
 	github.com/aws/aws-sdk-go-v2/service/xray v1.14.0
 	github.com/aws/smithy-go v1.13.4
 	github.com/basgys/goxml2json v1.1.0
@@ -128,14 +128,14 @@ require (
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.3.26 // indirect
 	github.com/aws/aws-sdk-go-v2/service/athena v1.19.1
 	github.com/aws/aws-sdk-go-v2/service/backup v1.17.11
-	github.com/aws/aws-sdk-go-v2/service/glue v1.34.1
+	github.com/aws/aws-sdk-go-v2/service/glue v1.35.0
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.9.10 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.7.19 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.19 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.13.19 // indirect
 	github.com/aws/aws-sdk-go-v2/service/shield v1.17.11
 	github.com/aws/aws-sdk-go-v2/service/sso v1.11.25 // indirect
-	github.com/aws/aws-sdk-go-v2/service/transfer v1.23.3
+	github.com/aws/aws-sdk-go-v2/service/transfer v1.25.0
 	github.com/aws/aws-sdk-go-v2/service/wafregional v1.12.20
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
