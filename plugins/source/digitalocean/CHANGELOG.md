@@ -5,6 +5,15 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v3.0.0...plugins-source-digitalocean-v3.0.1) (2022-11-18)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/config to v1.18.1 ([#4736](https://github.com/cloudquery/cloudquery/issues/4736)) ([db70d2a](https://github.com/cloudquery/cloudquery/commit/db70d2a602fc4edfc74ed61fd7d28ada6da6a3af))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/config to v1.18.2 ([#4775](https://github.com/cloudquery/cloudquery/issues/4775)) ([136fb42](https://github.com/cloudquery/cloudquery/commit/136fb4213da150f8f9e4a68019fbe7fe94397370))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/s3 to v1.29.3 ([#4779](https://github.com/cloudquery/cloudquery/issues/4779)) ([9332cfb](https://github.com/cloudquery/cloudquery/commit/9332cfbfbd7ec9b16e849f8ea28d2ae0e0e7508d))
+
 ## [3.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v2.2.22...plugins-source-digitalocean-v3.0.0) (2022-11-16)
 
 
