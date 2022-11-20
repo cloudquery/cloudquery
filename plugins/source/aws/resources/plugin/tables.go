@@ -413,5 +413,6 @@ func tables() []*schema.Table {
 		xray.EncryptionConfigs(),
 		xray.Groups(),
 		xray.SamplingRules(),
+		xray.ResourcePolicies(),
 	}
 }

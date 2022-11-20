@@ -50,6 +50,19 @@ func XRayResources() []*Resource {
 				},
 			},
 		},
+		{
+			SubService:  "resource_policies",
+			Struct:      &types.ResourcePolicy{},
+			Description: "https://docs.aws.amazon.com/xray/latest/api/API_ResourcePolicy.html",
+			ExtraColumns: []codegen.ColumnDefinition{
+				{
+					Name:     "arn",
+					Type:     schema.TypeString,
+					Resolver: `createXrayResourcePolicyArn`,
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+			},
+		},
 	}
 
 	// set default values
