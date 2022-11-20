@@ -10,7 +10,7 @@ import (
 
 func (c *Client) writeJSONResource(ctx context.Context, tableName string, resources <-chan []interface{}) error {
 	var buf bytes.Buffer
-	totalRecords := 0
+	totalRecords := uint64(0)
 	filePath := path.Join(c.csvSpec.Directory, tableName+".csv")
 	var f *os.File
 	if c.csvSpec.Backend == BackendTypeLocal {

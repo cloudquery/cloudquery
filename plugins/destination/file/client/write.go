@@ -39,6 +39,9 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *pl
 	for r := range res {
 		workers[r.TableName].writeChan <- r.Data
 	}
+	for _, w := range workers {
+		close(w.writeChan)
+	}
 
 	wg.Wait()
 	return nil
