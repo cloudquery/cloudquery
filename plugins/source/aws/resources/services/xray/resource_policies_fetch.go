@@ -34,5 +34,4 @@ func createXrayResourcePolicyArn(ctx context.Context, meta schema.ClientMeta, re
 		AccountID: "",
 		Resource:  fmt.Sprintf("/resource-policy/%s", aws.ToString(rp.PolicyName)),
 	}.String())
-
 }

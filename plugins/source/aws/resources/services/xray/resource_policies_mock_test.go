@@ -14,8 +14,6 @@ import (
 func buildResourcePolicies(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mock := mocks.NewMockXrayClient(ctrl)
 
-	test := "test"
-
 	var pols types.ResourcePolicy
 	if err := faker.FakeObject(&pols); err != nil {
 		t.Fatal(err)
