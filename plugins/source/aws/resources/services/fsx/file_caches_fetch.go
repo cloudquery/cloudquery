@@ -2,15 +2,12 @@ package fsx
 
 import (
 	"context"
-	"errors"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/fsx"
 	"github.com/aws/aws-sdk-go-v2/service/fsx/types"
-	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/rs/zerolog/log"
 )
 
 func fetchFsxFileCaches(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
@@ -21,12 +18,6 @@ func fetchFsxFileCaches(ctx context.Context, meta schema.ClientMeta, parent *sch
 	for paginator.HasMorePages() {
 		result, err := paginator.NextPage(ctx)
 		if err != nil {
-			var ae smithy.APIError
-			if errors.As(err, &ae) && ae.ErrorCode() == "BadRequest" && ae.ErrorMessage() == "The requested feature is not enabled for this AWS account." {
-				log.Warn().Err(err).Msg("skipping resource")
-				return nil
-			}
-
 			return err
 		}
 		res <- result.FileCaches
