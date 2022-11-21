@@ -61,6 +61,8 @@ type QuicksightClient interface {
 	ListUsers(context.Context, *quicksight.ListUsersInput, ...func(*quicksight.Options)) (*quicksight.ListUsersOutput, error)
 	SearchAnalyses(context.Context, *quicksight.SearchAnalysesInput, ...func(*quicksight.Options)) (*quicksight.SearchAnalysesOutput, error)
 	SearchDashboards(context.Context, *quicksight.SearchDashboardsInput, ...func(*quicksight.Options)) (*quicksight.SearchDashboardsOutput, error)
+	SearchDataSets(context.Context, *quicksight.SearchDataSetsInput, ...func(*quicksight.Options)) (*quicksight.SearchDataSetsOutput, error)
+	SearchDataSources(context.Context, *quicksight.SearchDataSourcesInput, ...func(*quicksight.Options)) (*quicksight.SearchDataSourcesOutput, error)
 	SearchFolders(context.Context, *quicksight.SearchFoldersInput, ...func(*quicksight.Options)) (*quicksight.SearchFoldersOutput, error)
 	SearchGroups(context.Context, *quicksight.SearchGroupsInput, ...func(*quicksight.Options)) (*quicksight.SearchGroupsOutput, error)
 }
