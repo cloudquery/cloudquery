@@ -367,26 +367,21 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source) (s
 
 			return nil, err
 		}
-
-		// This is a work-around to skip disabled regions
-		// https://github.com/aws/aws-sdk-go-v2/issues/1068
-		res, err := ec2.NewFromConfig(awsCfg).DescribeRegions(ctx,
-			&ec2.DescribeRegionsInput{AllRegions: aws.Bool(false)},
-			func(o *ec2.Options) {
-				o.Region = defaultRegion
-				if account.DefaultRegion != "" {
-					o.Region = account.DefaultRegion
-				}
-
-				if len(localRegions) > 0 && !isAllRegions(localRegions) {
-					o.Region = localRegions[0]
-				}
-			})
-		if err != nil {
-			logger.Warn().Str("account", account.AccountName).Err(err).Msg("Failed to find disabled regions for account")
-			continue
+		regionsToCheck := []string{defaultRegion}
+		if account.DefaultRegion != "" {
+			regionsToCheck = []string{account.DefaultRegion}
+		} else if len(localRegions) > 0 && !isAllRegions(localRegions) {
+			regionsToCheck = localRegions
 		}
-		account.Regions = filterDisabledRegions(localRegions, res.Regions)
+
+		for _, region := range regionsToCheck {
+			enabledRegions, err := getEnabledRegions(ctx, awsCfg, region)
+			if err != nil {
+				logger.Warn().Str("account", account.AccountName).Err(err).Msgf("Failed to find disabled regions for account when checking: %s", region)
+				continue
+			}
+			account.Regions = filterDisabledRegions(localRegions, enabledRegions)
+		}
 
 		if len(account.Regions) == 0 {
 			logger.Warn().Str("account", account.AccountName).Err(err).Msg("No enabled regions provided in config for account")
@@ -411,6 +406,18 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source) (s
 		return nil, fmt.Errorf("no enabled accounts instantiated")
 	}
 	return &client, nil
+}
+
+func getEnabledRegions(ctx context.Context, awsCfg aws.Config, region string) ([]types.Region, error) {
+	res, err := ec2.NewFromConfig(awsCfg).DescribeRegions(ctx,
+		&ec2.DescribeRegionsInput{AllRegions: aws.Bool(false)},
+		func(o *ec2.Options) {
+			o.Region = region
+		})
+	if err != nil {
+		return nil, err
+	}
+	return res.Regions, nil
 }
 
 func filterDisabledRegions(regions []string, enabledRegions []types.Region) []string {
