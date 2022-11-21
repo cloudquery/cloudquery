@@ -7,10 +7,13 @@ author: roneliahu
 ---
 
 import { BlogHeader } from "../../components/BlogHeader"
+import { Callout } from 'nextra-theme-docs'
 
 <BlogHeader/>
 
-**This feature was deprecated, [see blog post](https://www.cloudquery.io/blog/migration-and-history-deprecation).**
+<Callout type="warning">
+This feature was deprecated, [see blog post](https://www.cloudquery.io/blog/migration-and-history-deprecation).
+</Callout>
 
 ---
 

@@ -47,22 +47,17 @@ The other approach (and the reason why we started [CloudQuery](https://github.co
 - Cloud Native ETL - That takes care of connecting to the various APIs, extracting the configuration and meta-data, transforming/normalising the data and loading it into a relational-database.
 - Once you have all the up-to-date data. This issue can be solved with two SQL queries.
 
-The first step in our case is taken care of by CloudQuery ([GitHub](https://github.com/cloudquery/cloudquery)), - all you have to do is download a single binary from our GitHub and run it against your cloud account and Okta/G Suite/AzureAD. You can fetch the configuration with the following commands:
-
-```bash
-docker run -p 5432:5432 -e POSTGRES_PASSWORD=pass -d postgres
-cloudquery init aws okta
-cloudquery fetch
-```
+The first step in our case is taken care of by CloudQuery ([GitHub](https://github.com/cloudquery/cloudquery)) - all you have to do is follow our [quickstart guide](/docs/quickstart).
 
 Once CloudQuery loads the data into PostgreSQL, you can run the following queries to answer the above questions:
 
 ```sql
-/* All keys with last-rotated-timestamp older than 90 days */
-SELECT account_id, arn, password_last_used, user_name, access_key_id, last_used FROM aws_iam_users
-    JOIN aws_iam_user_access_keys on aws_iam_users.cq_id = aws_iam_user_access_keys.user_cq_id
-WHERE (password_enabled AND password_last_used < (now() - '90 days'::interval) OR
-        (last_used < (now() - '90 days'::interval)))
+/* All keys with not used in the last 90 days */
+SELECT DISTINCT aws_iam_users.account_id, aws_iam_users.arn, MAX(password_last_used), aws_iam_users.user_name, access_key_id, MAX(last_used) FROM aws_iam_users
+    JOIN aws_iam_user_access_keys on aws_iam_users.arn = aws_iam_user_access_keys.user_arn
+WHERE (password_last_used < (now() - '90 days'::interval) OR
+        (last_used < (now() - '90 days'::interval))) 
+GROUP BY (aws_iam_users.account_id, aws_iam_users.arn, aws_iam_users.user_name, access_key_id);
 
 /* This will return all IAM keys with emails that don't exist in the Okta directory. */
 select tags, arn from aws_iam_users
