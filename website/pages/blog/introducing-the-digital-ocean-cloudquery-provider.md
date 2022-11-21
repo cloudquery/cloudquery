@@ -21,8 +21,8 @@ In this short tutorial, we will install CloudQuery and use it to fetch a Digital
 
 ## Setup
 
-- Follow our [quickstart guide](docs/quickstart) to setup cloudquery.
-- [authenticate with digitalocean](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/digitalocean#authentication).
+- Follow our [quickstart guide](/docs/quickstart) to setup cloudquery.
+- [authenticate with DigitalOcean](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/digitalocean#authentication).
 - Run `cloudquery sync`.
 
 ## Use Cases

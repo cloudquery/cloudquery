@@ -54,12 +54,3 @@ FROM
   SELECT id,name,NULL as v4,v6 FROM digitalocean_droplets CROSS JOIN JSONB_ARRAY_ELEMENTS(digitalocean_droplets.networks->'v6') AS v6) AS union_v46
 WHERE v4->>'type' = 'public' OR v6->>'type' = 'public';
 ```
-
-### Billing History including current month balance
-
-```sql
--- Get you current monthly balance and previous billing histories in one table
-SELECT invoice_id as id, description, amount, "date" FROM digitalocean_billing_history
-UNION 
-SELECT'current' as id, 'current month balance' as description, month_to_date_usage as amount , generated_at as "date" FROM digitalocean_balance;
-```
