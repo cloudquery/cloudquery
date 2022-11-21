@@ -367,9 +367,13 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source) (s
 
 			return nil, err
 		}
+
+		// By default we should use the default region (us-east-1)
 		regionsToCheck := []string{defaultRegion}
+		// If user specifies a Default Region we should use it
 		if account.DefaultRegion != "" {
 			regionsToCheck = []string{account.DefaultRegion}
+			// If no default region and * is not specified we should use all specified regions
 		} else if len(localRegions) > 0 && !isAllRegions(localRegions) {
 			regionsToCheck = localRegions
 		}
