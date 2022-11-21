@@ -385,6 +385,9 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source) (s
 				continue
 			}
 			account.Regions = filterDisabledRegions(localRegions, enabledRegions)
+			if len(account.Regions) > 0 {
+				break
+			}
 		}
 
 		if len(account.Regions) == 0 {
