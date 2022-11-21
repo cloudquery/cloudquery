@@ -9,7 +9,7 @@
   "plugins/source/cloudflare+FILLER": "0.0.0",
   "plugins/source/digitalocean": "3.0.2",
   "plugins/source/digitalocean+FILLER": "0.0.0",
-  "plugins/source/gcp": "3.0.3",
+  "plugins/source/gcp": "3.0.4",
   "plugins/source/gcp+FILLER": "0.0.0",
   "plugins/source/github": "1.2.16",
   "plugins/source/github+FILLER": "0.0.0",
