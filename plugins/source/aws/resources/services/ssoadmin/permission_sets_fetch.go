@@ -28,8 +28,8 @@ func getSsoadminPermissionSet(ctx context.Context, meta schema.ClientMeta, resou
 }
 
 func fetchSsoadminPermissionSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	client := meta.(*client.Client)
-	svc := client.Services().Ssoadmin
+	cl := meta.(*client.Client)
+	svc := cl.Services().Ssoadmin
 	instance_arn := parent.Item.(types.InstanceMetadata).InstanceArn
 	config := ssoadmin.ListPermissionSetsInput{
 		InstanceArn: instance_arn,
