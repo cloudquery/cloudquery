@@ -12,7 +12,7 @@ import (
 
 func fetchSsoadminAccountAssignments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
-	svc := client.Services().Ssoadmin
+	svc := cl.Services().Ssoadmin
 	permission_set_arn := parent.Item.(*types.PermissionSet).PermissionSetArn
 	instance_arn := parent.Parent.Item.(types.InstanceMetadata).InstanceArn
 	config := ssoadmin.ListAccountAssignmentsInput{
