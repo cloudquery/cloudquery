@@ -82,6 +82,7 @@
 | [aws_cloudhsmv2_backups](aws_cloudhsmv2_backups.md) |
 | [aws_cloudtrail_trails](aws_cloudtrail_trails.md) |
 | ↳ [aws_cloudtrail_trail_event_selectors](aws_cloudtrail_trail_event_selectors.md) |
+| [aws_cloudwatchlogs_resource_policies](aws_cloudwatchlogs_resource_policies.md) |
 | [aws_cloudwatchlogs_metric_filters](aws_cloudwatchlogs_metric_filters.md) |
 | [aws_cloudwatchlogs_log_groups](aws_cloudwatchlogs_log_groups.md) |
 | [aws_cloudwatch_alarms](aws_cloudwatch_alarms.md) |

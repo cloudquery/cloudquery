@@ -139,6 +139,7 @@ func tables() []*schema.Table {
 		cloudhsmv2.Clusters(),
 		cloudhsmv2.Backups(),
 		cloudtrail.Trails(),
+		cloudwatchlogs.ResourcePolicies(),
 		cloudwatchlogs.MetricFilters(),
 		cloudwatchlogs.LogGroups(),
 		cloudwatch.Alarms(),
