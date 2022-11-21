@@ -19,7 +19,7 @@ spec:
 
 ## File variable substitution example
 
-And use it inside `postgresql.yml`:
+Inside `postgresql.yml`:
 
 ```yaml copy
 kind: "destination"
