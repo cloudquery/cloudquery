@@ -5,7 +5,7 @@ from environment variables. This allows you to keep sensitive data (like passwor
 
 ## Environment variable substitution example
 
-And use it inside `postgresql.yml`:
+Inside `postgresql.yml`:
 
 ```yaml copy
 kind: "destination"
