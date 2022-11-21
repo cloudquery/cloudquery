@@ -100,6 +100,11 @@ func IAMResources() []*Resource {
 					Type:     schema.TypeTimestamp,
 					Resolver: `timestampPathResolver("PasswordLastUsed")`,
 				},
+				{
+					Name:     "password_enabled",
+					Type:     schema.TypeString,
+					Resolver: `schema.PathResolver("PasswordStatus")`,
+				},
 			},
 			Relations: []string{},
 		},
