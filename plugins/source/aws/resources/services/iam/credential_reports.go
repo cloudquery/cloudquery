@@ -75,6 +75,11 @@ func CredentialReports() *schema.Table {
 				Resolver: timestampPathResolver("PasswordLastUsed"),
 			},
 			{
+				Name:     "password_enabled",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("PasswordStatus"),
+			},
+			{
 				Name:     "user",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("User"),
