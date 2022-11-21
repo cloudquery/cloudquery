@@ -82,13 +82,11 @@ func Test_findEnabledRegions(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		api := mocks.NewMockEc2Client(ctrl)
 		api.EXPECT().DescribeRegions(gomock.Any(), gomock.Any(), gomock.Any()).Return(test.regionsReply, test.regionsReplyError)
-
 		enabledRegions := findEnabledRegions(ctx, zerolog.New(os.Stderr).With().Logger(), "test", api, test.requestedRegions, test.requestedDefaultRegion)
 		respDiff := cmp.Diff(test.expectedRegions, enabledRegions)
 
 		if respDiff != "" {
 			t.Fatal(respDiff)
 		}
-
 	}
 }
