@@ -5,6 +5,13 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.19](https://github.com/cloudquery/cloudquery/compare/cli-v2.0.18...cli-v2.0.19) (2022-11-21)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for cli to v1.6.0 ([#4843](https://github.com/cloudquery/cloudquery/issues/4843)) ([7bf42b2](https://github.com/cloudquery/cloudquery/commit/7bf42b2b8d13abb991e7b7f564fae84f1bc22a2e))
+
 ## [2.0.18](https://github.com/cloudquery/cloudquery/compare/cli-v2.0.17...cli-v2.0.18) (2022-11-15)
 
 

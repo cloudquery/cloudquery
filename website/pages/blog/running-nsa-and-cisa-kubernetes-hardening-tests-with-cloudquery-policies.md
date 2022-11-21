@@ -11,8 +11,13 @@ author: danielspangenberg
 ---
 
 import { BlogHeader } from "../../components/BlogHeader"
+import { Callout } from 'nextra-theme-docs'
 
 <BlogHeader/>
+
+<Callout type="warning">
+HCL policies were deprecated - see up-to-date policy documentation [here](https://www.cloudquery.io/docs/core-concepts/policies).
+</Callout>
 
 On August 29th, 2022, USA's National Security Agency (NSA) and the Cybersecurity and Infrastructure Security Agency (CISA) released, [“Kubernetes Hardening Guidance”](https://media.defense.gov/2022/Aug/29/2003066362/-1/-1/0/CTR_KUBERNETES_HARDENING_GUIDANCE_1.2_20220829.PDF). The guide describes in great detail the challenges in the security k8s environment, base threat model and guidance on how to provide secure configuration to minimize risk.
 
