@@ -25,7 +25,7 @@ We want to highlight some of the features that we have released that will improv
 
 ### What is CloudQuery ?
 
-CloudQuery is the open-source cloud asset inventory powered by SQL, enabling you to [catalog, audit, and evaluate the configurations](/docs/core-concepts/policies) and even [drifts](https://www.cloudquery.io/blog/announcing-cloudquery-terraform-drift-detection) of your cloud assets.
+CloudQuery is the open-source cloud asset inventory powered by SQL, enabling you to [catalog, audit, and evaluate the configurations](/docs/core-concepts/policies).
 
 CloudQuery key use-cases and features:
 

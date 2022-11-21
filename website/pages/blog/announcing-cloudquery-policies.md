@@ -7,14 +7,19 @@ author: michelvocks
 ---
 
 import { BlogHeader } from "../../components/BlogHeader"
+import { Callout } from 'nextra-theme-docs'
 
 <BlogHeader/>
+
+<Callout type="warning">
+HCL policies were deprecated - see up-to-date policy documentation [here](https://www.cloudquery.io/docs/core-concepts/policies).
+</Callout>
 
 We are excited to announce the release of the CloudQuery Policies!
 
 CloudQuery brings the power of SQL to your cloud infrastructure, providing easy monitoring, governance and security.
 
-The new CloudQuery Policies feature brings policy-as-code to the CloudQuery ecosystem. CQ Policies enable users to codify, version and run security, governance, cost and compliance rules, using SQL as the query layer and HCL as the logical layer.
+The new CloudQuery Policies feature brings policy-as-code to the CloudQuery ecosystem. CQ Policies enable users to codify, version and run security, governance, cost and compliance rules, using SQL.
 
 ## What’s inside?
 

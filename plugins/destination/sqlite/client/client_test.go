@@ -13,9 +13,5 @@ func TestPlugin(t *testing.T) {
 		Spec{
 			ConnectionString: ":memory:",
 		},
-		plugins.DestinationTestSuiteTests{
-			Overwrite:   true,
-			Append:      true,
-			DeleteStale: true,
-		})
+		plugins.DestinationTestSuiteTests{})
 }
