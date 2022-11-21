@@ -9,11 +9,14 @@ import (
 	"os"
 	"path"
 	"reflect"
+	"regexp"
 	"runtime"
+	"sort"
 	"strings"
 	"text/template"
 
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling/types"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/recipes/discover"
 	"github.com/cloudquery/plugin-sdk/caser"
 	"github.com/cloudquery/plugin-sdk/codegen"
@@ -176,6 +179,10 @@ func (r *Resource) Generate() error {
 	r.Table.Resolver = "fetch" + strcase.ToCamel(r.Service) + strcase.ToCamel(r.SubService)
 	if r.Multiplex != "" {
 		r.Table.Multiplex = r.Multiplex
+		err = validateServiceMultiplex(r.Multiplex)
+		if err != nil {
+			return err
+		}
 	}
 	if r.PreResourceResolver != "" {
 		r.Table.PreResourceResolver = r.PreResourceResolver
@@ -417,4 +424,43 @@ func CreateReplaceTransformer(replace map[string]string) func(field reflect.Stru
 		}
 		return name, nil
 	}
+}
+
+func validateServiceMultiplex(multiplexerCall string) error {
+	re := regexp.MustCompile(`\"(.*?)\"`)
+	// Find the value of the service parameter
+	submatchAll := re.FindStringSubmatch(multiplexerCall)
+	t := client.ReadSupportedServiceRegions()
+
+	var services []string
+	for _, partition := range t.Partitions {
+		for service := range partition.Services {
+			services = appendIfMissing(services, service)
+		}
+	}
+	if len(submatchAll) == 2 {
+		if !contains(services, submatchAll[1]) {
+			return fmt.Errorf("invalid partition: %s", submatchAll[1])
+		}
+	}
+	return nil
+
+}
+
+func appendIfMissing(slice []string, i string) []string {
+	if contains(slice, i) {
+		return slice
+	}
+	slice = append(slice, i)
+	sort.Strings(slice)
+	return slice
+}
+
+func contains(s []string, e string) bool {
+	for _, a := range s {
+		if a == e {
+			return true
+		}
+	}
+	return false
 }
