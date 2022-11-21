@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [7.1.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v7.1.2...plugins-source-aws-v7.1.3) (2022-11-21)
+
+
+### Bug Fixes
+
+* Added password enabled column to `aws_iam_credential_reports` ([#4840](https://github.com/cloudquery/cloudquery/issues/4840)) ([a172cb9](https://github.com/cloudquery/cloudquery/commit/a172cb9648d46ab3efcbc6e6b2aae039e3f85e96))
+* **aws:** Fix logger in aws_fsx_file_caches ([#4830](https://github.com/cloudquery/cloudquery/issues/4830)) ([ea6642c](https://github.com/cloudquery/cloudquery/commit/ea6642c24638287009b40259d04016a2bc71e1e1))
+* **aws:** Fixed typo in JSON key ([#4868](https://github.com/cloudquery/cloudquery/issues/4868)) ([5ba36cd](https://github.com/cloudquery/cloudquery/commit/5ba36cd1af62824fef28291cb08432bc44912433)), closes [#4837](https://github.com/cloudquery/cloudquery/issues/4837)
+* Region Ordering Failures ([#4870](https://github.com/cloudquery/cloudquery/issues/4870)) ([38ee9cd](https://github.com/cloudquery/cloudquery/commit/38ee9cdde554c9e873191120dc25568349c8ef0b))
+
 ## [7.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v7.1.1...plugins-source-aws-v7.1.2) (2022-11-21)
 
 
