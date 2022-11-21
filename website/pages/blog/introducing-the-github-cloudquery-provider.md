@@ -22,7 +22,7 @@ In this tutorial, we will install CloudQuery and use it to fetch GitHub resource
 ## Setup
 
 - [Download CloudQuery](https://www.cloudquery.io/docs/quickstart/macOS#download-cloudquery-cli).
-- Acquire a github (personal access token)[https://docs.github.com/en/enterprise-server@3.4/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token]
+- Acquire a GitHub (personal access token)[https://docs.github.com/en/enterprise-server@3.4/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token]
   with the scopes:
   ```
     read:org
