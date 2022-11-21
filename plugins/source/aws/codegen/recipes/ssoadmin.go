@@ -9,7 +9,7 @@ func SSOAdminResources() []*Resource {
 		{
 			SubService:  "instances",
 			Struct:      &types.InstanceMetadata{},
-			Description: "https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_ListInstances.html",
+			Description: "https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_InstanceMetadata.html",
 			Relations: []string{
 				"PermissionSets()",
 			},
@@ -17,7 +17,7 @@ func SSOAdminResources() []*Resource {
 		{
 			SubService:          "permission_sets",
 			Struct:              &types.PermissionSet{},
-			Description:         "https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_DescribePermissionSet.html",
+			Description:         "https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_PermissionSet.html",
 			PreResourceResolver: "getSsoadminPermissionSet",
 			Relations: []string{
 				"AccountAssignments()",
@@ -26,7 +26,7 @@ func SSOAdminResources() []*Resource {
 		{
 			SubService:  "account_assignments",
 			Struct:      &types.AccountAssignment{},
-			Description: "https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_ListAccountAssignments.html",
+			Description: "https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_AccountAssignment.html",
 		},
 	}
 
