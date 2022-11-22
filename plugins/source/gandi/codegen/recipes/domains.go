@@ -55,15 +55,8 @@ func DomainResources() []Resource {
 			ResolverFuncName: "fetchDomainDNSSecKeys",
 		},
 		{
-			DataStruct: &domain.GlueRecord{},
-			PKColumns:  []string{"domain_fqdn", "name"},
-			ExtraColumns: []codegen.ColumnDefinition{
-				{
-					Name:     "domain_fqdn",
-					Type:     schema.TypeString,
-					Resolver: `schema.ParentColumnResolver("fqdn")`,
-				},
-			},
+			DataStruct:       &domain.GlueRecord{},
+			PKColumns:        []string{"fqdn", "name"},
 			TableName:        "gandi_domain_glue_records",
 			Template:         "resource_manual",
 			Package:          "domains",
@@ -73,10 +66,10 @@ func DomainResources() []Resource {
 		},
 		{
 			DataStruct: &domain.WebRedirection{},
-			PKColumns:  []string{"domain_fqdn", "host", "type"},
+			PKColumns:  []string{"fqdn", "host", "type"},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
-					Name:     "domain_fqdn",
+					Name:     "fqdn",
 					Type:     schema.TypeString,
 					Resolver: `schema.ParentColumnResolver("fqdn")`,
 				},

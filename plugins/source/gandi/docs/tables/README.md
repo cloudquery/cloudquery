@@ -2,6 +2,8 @@
 ## Tables
 | Name          |
 | ------------- |
+| [gandi_certificates](gandi_certificates.md) |
+| [gandi_certificate_packages](gandi_certificate_packages.md) |
 | [gandi_domains](gandi_domains.md) |
 | ↳ [gandi_domain_live_dns](gandi_domain_live_dns.md) |
 | ↳ [gandi_domain_web_redirections](gandi_domain_web_redirections.md) |

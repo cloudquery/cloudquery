@@ -2,7 +2,7 @@
 
 
 
-The composite primary key for this table is (**domain_fqdn**, **name**).
+The composite primary key for this table is (**name**, **fqdn**).
 
 ## Relations
 This table depends on [gandi_domains](gandi_domains.md).
@@ -14,9 +14,8 @@ This table depends on [gandi_domains](gandi_domains.md).
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|domain_fqdn (PK)|String|
 |name (PK)|String|
 |ips|StringArray|
-|fqdn|String|
+|fqdn (PK)|String|
 |href|String|
 |fqdn_unicode|String|

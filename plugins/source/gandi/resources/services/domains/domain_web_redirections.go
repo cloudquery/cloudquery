@@ -12,7 +12,7 @@ func DomainWebRedirections() *schema.Table {
 		Resolver: fetchDomainWebRedirections,
 		Columns: []schema.Column{
 			{
-				Name:     "domain_fqdn",
+				Name:     "fqdn",
 				Type:     schema.TypeString,
 				Resolver: schema.ParentColumnResolver("fqdn"),
 				CreationOptions: schema.ColumnCreationOptions{

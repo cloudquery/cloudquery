@@ -12,14 +12,6 @@ func DomainGlueRecords() *schema.Table {
 		Resolver: fetchDomainGlueRecords,
 		Columns: []schema.Column{
 			{
-				Name:     "domain_fqdn",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("fqdn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
 				Name:     "name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Name"),
@@ -36,6 +28,9 @@ func DomainGlueRecords() *schema.Table {
 				Name:     "fqdn",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("FQDN"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "href",
