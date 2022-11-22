@@ -447,5 +447,4 @@ func validateServiceMultiplex(multiplexerCall string) error {
 		return fmt.Errorf("invalid partition: %s", submatchAll[1])
 	}
 	return nil
-
 }
