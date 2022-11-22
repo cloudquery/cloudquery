@@ -1,6 +1,6 @@
 # Table: aws_ssoadmin_account_assignments
 
-https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_ListAccountAssignments.html
+https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_AccountAssignment.html
 
 The primary key for this table is **_cq_id**.
 

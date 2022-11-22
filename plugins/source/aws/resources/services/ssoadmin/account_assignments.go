@@ -10,7 +10,7 @@ import (
 func AccountAssignments() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_ssoadmin_account_assignments",
-		Description: `https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_ListAccountAssignments.html`,
+		Description: `https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_AccountAssignment.html`,
 		Resolver:    fetchSsoadminAccountAssignments,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("identitystore"),
 		Columns: []schema.Column{

@@ -10,7 +10,7 @@ import (
 func PermissionSets() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_ssoadmin_permission_sets",
-		Description:         `https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_DescribePermissionSet.html`,
+		Description:         `https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_PermissionSet.html`,
 		Resolver:            fetchSsoadminPermissionSets,
 		PreResourceResolver: getSsoadminPermissionSet,
 		Multiplex:           client.ServiceAccountRegionMultiplexer("identitystore"),

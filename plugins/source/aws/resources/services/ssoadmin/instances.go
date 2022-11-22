@@ -10,7 +10,7 @@ import (
 func Instances() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_ssoadmin_instances",
-		Description: `https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_ListInstances.html`,
+		Description: `https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_InstanceMetadata.html`,
 		Resolver:    fetchSsoadminInstances,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("identitystore"),
 		Columns: []schema.Column{

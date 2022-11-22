@@ -1,6 +1,6 @@
 # Table: aws_ssoadmin_permission_sets
 
-https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_DescribePermissionSet.html
+https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_PermissionSet.html
 
 The primary key for this table is **_cq_id**.
 
