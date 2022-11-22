@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"io"
+	"io/fs"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
@@ -12,7 +13,7 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
-type file struct {
+type fileWriter struct {
 	ctx         context.Context
 	writer      io.Writer
 	reader      io.Reader
@@ -25,11 +26,24 @@ type file struct {
 	maxFileSize uint64
 }
 
-func (f *file) Read(p []byte) (n int, err error) {
+type fileReader struct {
+	ctx         context.Context
+	reader      io.Reader
+	downloader  *manager.Downloader
+	bucket      string
+	name        string
+}
+
+func (f *fileReader) Read(p []byte) (n int, err error) {
 	return f.reader.Read(p)
 }
 
-func (f *file) Write(data []byte) (int, error) {
+func (f *fileReader) Close() error {
+	f.reader = nil
+	return nil
+}
+
+func (f *fileWriter) Write(data []byte) (int, error) {
 	n, err := f.writer.Write(data)
 	if err != nil {
 		return n, err
@@ -53,14 +67,18 @@ func (f *file) Write(data []byte) (int, error) {
 	return n, nil
 }
 
-func (f *file) Close() error {
-	if f.eg != nil {
-		if err := f.writer.(*io.PipeWriter).Close(); err != nil {
-			return err
-		}
-		return f.eg.Wait()
+func (f *fileWriter) Close() error {
+	defer func() {
+		f.writer = nil
+		f.eg = nil
+	}()
+	if f.eg == nil || f.writer == nil {
+		return fs.ErrClosed
 	}
-	return nil
+	if err := f.writer.(*io.PipeWriter).Close(); err != nil {
+		return err
+	}
+	return f.eg.Wait()
 }
 
 func OpenAppendOnly(
@@ -74,7 +92,7 @@ func OpenAppendOnly(
 		uniqueName = name + "." + uuid.NewString()
 	}
 	r, w := io.Pipe()
-	f := file{
+	f := fileWriter{
 		ctx:      ctx,
 		bucket:   bucket,
 		name:     uniqueName,
@@ -99,7 +117,7 @@ func OpenReadOnly(
 	downloader *manager.Downloader,
 	bucket string,
 	name string) (io.ReadCloser, error) {
-	f := file{
+	f := fileReader{
 		ctx:        ctx,
 		bucket:     bucket,
 		name:       name,

@@ -32,7 +32,7 @@ type Client struct {
 	gcpStorageClient *storage.Client
 	gcpBucket        *storage.BucketHandle
 
-	testMode bool
+	// testMode bool
 
 	metrics plugins.DestinationMetrics
 }

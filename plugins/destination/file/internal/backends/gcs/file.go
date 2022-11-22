@@ -3,52 +3,72 @@ package gcs
 import (
 	"context"
 	"io"
+	"io/fs"
 
 	"cloud.google.com/go/storage"
 	"github.com/google/uuid"
 )
 
-type file struct {
+type fileWriter struct {
 	ctx           context.Context
 	storageClient *storage.Client
-	gcsWriter     *storage.Writer
-	gcsReader     *storage.Reader
+	writer     *storage.Writer
 	written       uint64
 	bucket        string
 	name          string
 	maxFileSize   uint64
 }
 
-func (f *file) Write(data []byte) (int, error) {
-	n, err := f.gcsWriter.Write(data)
+type fileReader struct {
+	ctx           context.Context
+	storageClient *storage.Client
+	reader     *storage.Reader
+	bucket        string
+	name          string
+}
+
+func (f *fileReader) Read(p []byte) (n int, err error) {
+	return f.reader.Read(p)
+}
+
+func (f *fileReader) Close() error {
+	defer func() {
+		f.reader = nil
+	}()
+	if f.reader == nil {
+		return fs.ErrClosed
+	}
+	return f.reader.Close()
+}
+
+func (f *fileWriter) Write(data []byte) (int, error) {
+	n, err := f.writer.Write(data)
 	if err != nil {
 		return n, err
 	}
 	f.written += uint64(n)
 	if f.maxFileSize != 0 && f.written >= f.maxFileSize {
-		if err := f.gcsWriter.Close(); err != nil {
+		if err := f.writer.Close(); err != nil {
 			return n, err
 		}
 		f.written = 0
 		name := f.name + "." + uuid.NewString()
-		f.gcsWriter = f.storageClient.Bucket(f.bucket).Object(name).NewWriter(f.ctx)
+		f.writer = f.storageClient.Bucket(f.bucket).Object(name).NewWriter(f.ctx)
 	}
 	return n, nil
 }
 
-func (f *file) Close() error {
-	if f.gcsWriter != nil {
-		return f.gcsWriter.Close()
+func (f *fileWriter) Close() error {
+	defer func() {
+		f.writer = nil
+		f.written = 0
+	}()
+	if f.writer == nil {
+		return fs.ErrClosed
 	}
-	if f.gcsReader != nil {
-		return f.gcsReader.Close()
-	}
-	return nil
+	return f.writer.Close()
 }
 
-func (f *file) Read(p []byte) (n int, err error) {
-	return f.gcsReader.Read(p)
-}
 
 // OpenAppendOnly opens a file on GCS for writing in append only mode.
 // if maxFileSize is 0 then all data will be written to a single file
@@ -66,10 +86,10 @@ func OpenAppendOnly(
 	if maxFileSize != 0 {
 		uniqueName = name + "." + uuid.NewString()
 	}
-	return &file{
+	return &fileWriter{
 		ctx:           ctx,
 		storageClient: storageClient,
-		gcsWriter:     storageClient.Bucket(bucket).Object(uniqueName).NewWriter(ctx),
+		writer:     storageClient.Bucket(bucket).Object(uniqueName).NewWriter(ctx),
 		bucket:        bucket,
 		name:          name,
 		maxFileSize:   maxFileSize,
@@ -88,10 +108,10 @@ func OpenReadOnly(
 	if err != nil {
 		return nil, err
 	}
-	return &file{
+	return &fileReader{
 		ctx:           ctx,
 		storageClient: storageClient,
-		gcsReader:     reader,
+		reader:     reader,
 		bucket:        bucket,
 		name:          name,
 	}, nil
