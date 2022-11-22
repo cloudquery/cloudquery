@@ -9,6 +9,20 @@ import (
 func CloudWatchLogsResources() []*Resource {
 	resources := []*Resource{
 		{
+			SubService:  "resource_policies",
+			Struct:      &types.ResourcePolicy{},
+			Description: "https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_ResourcePolicy.html",
+			PKColumns:   []string{"account_id", "region", "policy_name"},
+			SkipFields:  []string{"PolicyDocument"},
+			ExtraColumns: append(defaultRegionalColumns, []codegen.ColumnDefinition{
+				{
+					Name:     "policy_document",
+					Type:     schema.TypeJSON,
+					Resolver: `schema.PathResolver("PolicyDocument")`,
+				},
+			}...),
+		},
+		{
 			SubService:  "metric_filters",
 			Struct:      &types.MetricFilter{},
 			Description: "https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_MetricFilter.html",
