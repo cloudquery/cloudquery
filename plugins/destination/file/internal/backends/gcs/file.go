@@ -1,4 +1,4 @@
-package client
+package gcs
 
 import (
 	"context"
@@ -8,7 +8,7 @@ import (
 	"github.com/google/uuid"
 )
 
-type gcsFile struct {
+type file struct {
 	ctx 				 context.Context
 	storageClient *storage.Client
 	gcsWriter *storage.Writer
@@ -17,7 +17,7 @@ type gcsFile struct {
 	name string
 }
 
-func (f *gcsFile) Write(data []byte) (int, error) {
+func (f *file) Write(data []byte) (int, error) {
 	n, err := f.gcsWriter.Write(data)
 	if err != nil {
 		return n, err
@@ -28,22 +28,23 @@ func (f *gcsFile) Write(data []byte) (int, error) {
 			return n, err
 		}
 		f.written = 0
-		name := uuid.NewString() + "." + f.name
+		name := f.name + "." + uuid.NewString()
 		f.gcsWriter = f.storageClient.Bucket(f.bucket).Object(name).NewWriter(f.ctx)
 	}
 	return n, nil
 }
 
-func (f *gcsFile) Close() error {
+func (f *file) Close() error {
 	return f.gcsWriter.Close()
 }
 
-func (c *Client) openGCSFileAppend(ctx context.Context, name string) (io.Writer, error) {
-	return &gcsFile{
+
+func OpenAppendOnly(ctx context.Context, storageClient *storage.Client, bucket string, name string) (io.WriteCloser, error) {
+	return &file{
 		ctx: ctx,
-		storageClient: c.gcpStorageClient,
-		gcsWriter: c.gcpStorageClient.Bucket(c.bucket).Object(name).NewWriter(ctx),
-		bucket: c.bucket,
+		storageClient: storageClient,
+		gcsWriter: storageClient.Bucket(bucket).Object(name).NewWriter(ctx),
+		bucket: bucket,
 		name: name,
 	}, nil
 }
