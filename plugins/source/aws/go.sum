@@ -198,8 +198,8 @@ github.com/aws/aws-sdk-go-v2/service/redshift v1.26.15 h1:+WF4GTge7bdjZyoyxz4f1R
 github.com/aws/aws-sdk-go-v2/service/redshift v1.26.15/go.mod h1:Ds+ElMoF3oxjYWJZofKeNeih3q3W7vzRCkRdnu/aOj8=
 github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.12.21 h1:fniP5cg84nnMQlISDvV7auixxpM3wVrn2dndAFKDIHM=
 github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.12.21/go.mod h1:8U4gfVNaaVETUbr/j4DZNlplr6RF+ieI3tgQ7g4CtkA=
-github.com/aws/aws-sdk-go-v2/service/route53 v1.24.0 h1:ncUXZRu4ns8DWTGQwpMNFZ/wgqBQUtrK8AtjwIYoLZI=
-github.com/aws/aws-sdk-go-v2/service/route53 v1.24.0/go.mod h1:kUSK8EkGYdzFbTmADk0t7yRIoESH80xjWe8Bp6dQce8=
+github.com/aws/aws-sdk-go-v2/service/route53 v1.25.0 h1:ubppi63qDFs3J7cg8uDOzyvlmKFQDoxL2tlHb7mfbR8=
+github.com/aws/aws-sdk-go-v2/service/route53 v1.25.0/go.mod h1:kUSK8EkGYdzFbTmADk0t7yRIoESH80xjWe8Bp6dQce8=
 github.com/aws/aws-sdk-go-v2/service/route53domains v1.12.19 h1:UNe7/1LUyQ9udyVIdAg++HfuqnBgm3Or8f2nFCfSl0U=
 github.com/aws/aws-sdk-go-v2/service/route53domains v1.12.19/go.mod h1:R+IY2m6VS/E6kIovpTeDOOvoZ0solwP7xBdsMXmkoaw=
 github.com/aws/aws-sdk-go-v2/service/s3 v1.29.3 h1:F6wgg8aHGNyhaAy2ONnWBThiPdLa386qNA0j33FIuSM=
@@ -262,8 +262,8 @@ github.com/chzyer/logex v1.1.10/go.mod h1:+Ywpsq7O8HXn0nuIou7OrIPyXbp3wmkHB+jjWR
 github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e/go.mod h1:nSuG5e5PlCu98SY8svDHJxuZscDgtXS6KTTbou5AhLI=
 github.com/chzyer/test v0.0.0-20180213035817-a1ea475d72b1/go.mod h1:Q3SI9o4m/ZMnBNeIyt5eFwwo7qiLfzFZmjNmxjkiQlU=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
-github.com/cloudquery/plugin-sdk v1.6.0 h1:AzN8gpepZMbPYtyb/D+zBHErzC0U8NFk6Dw0m4nf66M=
-github.com/cloudquery/plugin-sdk v1.6.0/go.mod h1:DY5Wd6JW+yUqtGzKOKuFXzx3PxtwCmfU4eXd7MPNkFQ=
+github.com/cloudquery/plugin-sdk v1.7.0 h1:dei0AbVm+fWeaS9LgtqNjavXaaF9ha/fI+aQtZo9bRU=
+github.com/cloudquery/plugin-sdk v1.7.0/go.mod h1:DY5Wd6JW+yUqtGzKOKuFXzx3PxtwCmfU4eXd7MPNkFQ=
 github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGXZJjfX53e64911xZQV5JYwmTeXPW+k8Sc=
 github.com/cncf/udpa/go v0.0.0-20201120205902-5459f2c99403/go.mod h1:WmhPx2Nbnhtbo57+VJT5O0JRkEi1Wbu0z5j0R8u5Hbk=
 github.com/coreos/go-systemd v0.0.0-20190321100706-95778dfbb74e/go.mod h1:F5haX7vjVVG0kc13fIWeqUViNPyEJxv/OmvnBo0Yme4=
