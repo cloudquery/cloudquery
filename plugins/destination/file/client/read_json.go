@@ -5,7 +5,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"path"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -18,7 +17,7 @@ func (c *Client) readJSON(ctx context.Context, table *schema.Table, sourceName s
 	if sourceNameIndex == -1 {
 		return fmt.Errorf("could not find column %s in table %s", schema.CqSourceNameColumn.Name, table.Name)
 	}
-	name := path.Join(c.csvSpec.Directory, table.Name+".json")
+	name := table.Name + ".json"
 	f, err := c.openReadOnly(ctx, name)
 	if err != nil {
 		return err

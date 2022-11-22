@@ -6,13 +6,12 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"path"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func (c *Client) readCSV(ctx context.Context, table *schema.Table, sourceName string, res chan<- []interface{}) error {
-	name := path.Join(c.csvSpec.Directory, table.Name+".csv")
+	name := table.Name + ".csv"
 	reader, err := c.openReadOnly(ctx, name)
 	if err != nil {
 		return err
