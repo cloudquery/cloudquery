@@ -13,7 +13,7 @@ func TestPluginJSONLocal(t *testing.T) {
 			Directory: t.TempDir(),
 			Backend:   BackendTypeLocal,
 			Format:    FormatTypeJSON,
-			NoRotate: true,
+			NoRotate:  true,
 		},
 		plugins.DestinationTestSuiteTests{
 			SkipOverwrite:   true,
@@ -22,15 +22,14 @@ func TestPluginJSONLocal(t *testing.T) {
 	)
 }
 
-
-func TestPluginJSONGCS(t *testing.T) { 
+func TestPluginJSONGCS(t *testing.T) {
 	p := plugins.NewDestinationPlugin("file", "development", New)
 	plugins.DestinationPluginTestSuiteRunner(t, p,
 		Spec{
 			Directory: "cq-yev-test/dest-plugin-file",
 			Backend:   BackendTypeGCS,
 			Format:    FormatTypeJSON,
-			NoRotate: true,
+			NoRotate:  true,
 		},
 		plugins.DestinationTestSuiteTests{
 			SkipOverwrite:   true,
@@ -40,14 +39,14 @@ func TestPluginJSONGCS(t *testing.T) {
 	)
 }
 
-func TestPluginJSONAWS(t *testing.T) { 
+func TestPluginJSONAWS(t *testing.T) {
 	p := plugins.NewDestinationPlugin("file", "development", New)
 	plugins.DestinationPluginTestSuiteRunner(t, p,
 		Spec{
 			Directory: "cq-playground-test/dest-plugin-file",
 			Backend:   BackendTypeS3,
 			Format:    FormatTypeJSON,
-			NoRotate: true,
+			NoRotate:  true,
 		},
 		plugins.DestinationTestSuiteTests{
 			SkipOverwrite:   true,

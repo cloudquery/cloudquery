@@ -18,7 +18,6 @@ type fileWriter struct {
 	writer      io.Writer
 	reader      io.Reader
 	uploader    *manager.Uploader
-	downloader  *manager.Downloader
 	eg          *errgroup.Group
 	written     uint64
 	bucket      string
@@ -27,11 +26,11 @@ type fileWriter struct {
 }
 
 type fileReader struct {
-	ctx         context.Context
-	reader      io.Reader
-	downloader  *manager.Downloader
-	bucket      string
-	name        string
+	ctx        context.Context
+	reader     io.Reader
+	downloader *manager.Downloader
+	bucket     string
+	name       string
 }
 
 func (f *fileReader) Read(p []byte) (n int, err error) {

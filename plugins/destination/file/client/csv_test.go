@@ -13,7 +13,7 @@ func TestPluginCSVLocal(t *testing.T) {
 			Directory: t.TempDir(),
 			Backend:   BackendTypeLocal,
 			Format:    FormatTypeCSV,
-			NoRotate: true,
+			NoRotate:  true,
 		},
 		plugins.DestinationTestSuiteTests{
 			SkipOverwrite:   true,
@@ -29,7 +29,7 @@ func TestPluginCSVGCS(t *testing.T) {
 			Directory: "cq-yev-test/test-csv-gcs",
 			Backend:   BackendTypeGCS,
 			Format:    FormatTypeCSV,
-			NoRotate: true,
+			NoRotate:  true,
 		},
 		plugins.DestinationTestSuiteTests{
 			SkipOverwrite:   true,
@@ -46,7 +46,7 @@ func TestPluginCSVS3(t *testing.T) {
 			Directory: "cq-playground-test/dest-plugin-file",
 			Backend:   BackendTypeS3,
 			Format:    FormatTypeCSV,
-			NoRotate: true,
+			NoRotate:  true,
 		},
 		plugins.DestinationTestSuiteTests{
 			SkipOverwrite:   true,

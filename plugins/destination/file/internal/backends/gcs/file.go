@@ -12,7 +12,7 @@ import (
 type fileWriter struct {
 	ctx           context.Context
 	storageClient *storage.Client
-	writer     *storage.Writer
+	writer        *storage.Writer
 	written       uint64
 	bucket        string
 	name          string
@@ -22,7 +22,7 @@ type fileWriter struct {
 type fileReader struct {
 	ctx           context.Context
 	storageClient *storage.Client
-	reader     *storage.Reader
+	reader        *storage.Reader
 	bucket        string
 	name          string
 }
@@ -69,7 +69,6 @@ func (f *fileWriter) Close() error {
 	return f.writer.Close()
 }
 
-
 // OpenAppendOnly opens a file on GCS for writing in append only mode.
 // if maxFileSize is 0 then all data will be written to a single file
 // otherwise a new file will be created when the maxFileSize is reached (with uuid suffix)
@@ -89,7 +88,7 @@ func OpenAppendOnly(
 	return &fileWriter{
 		ctx:           ctx,
 		storageClient: storageClient,
-		writer:     storageClient.Bucket(bucket).Object(uniqueName).NewWriter(ctx),
+		writer:        storageClient.Bucket(bucket).Object(uniqueName).NewWriter(ctx),
 		bucket:        bucket,
 		name:          name,
 		maxFileSize:   maxFileSize,
@@ -111,7 +110,7 @@ func OpenReadOnly(
 	return &fileReader{
 		ctx:           ctx,
 		storageClient: storageClient,
-		reader:     reader,
+		reader:        reader,
 		bucket:        bucket,
 		name:          name,
 	}, nil

@@ -45,7 +45,6 @@ func (c *Client) readCSV(ctx context.Context, table *schema.Table, sourceName st
 	return nil
 }
 
-
 func (c *Client) writeCSVResource(ctx context.Context, tableName string, resources <-chan []interface{}) error {
 	var err error
 	f, err := c.openAppendOnly(ctx, tableName+".csv")
