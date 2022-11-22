@@ -32,7 +32,7 @@ type EmailClient interface {
 //go:generate mockgen -package=mocks -destination=./mocks/mock_livedns_client.go . LiveDNSClient
 type LiveDNSClient interface {
 	ListDomains() ([]livedns.Domain, error)
-	GetDomainNS(fqdn string) ([]string, error)
+	//GetDomainNS(fqdn string) ([]string, error)
 	ListSnapshots(fqdn string) ([]livedns.Snapshot, error)
 	// not implemented: axfr, keys, domain records
 }

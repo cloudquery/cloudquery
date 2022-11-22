@@ -34,21 +34,6 @@ func (m *MockLiveDNSClient) EXPECT() *MockLiveDNSClientMockRecorder {
 	return m.recorder
 }
 
-// GetDomainNS mocks base method.
-func (m *MockLiveDNSClient) GetDomainNS(arg0 string) ([]string, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetDomainNS", arg0)
-	ret0, _ := ret[0].([]string)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetDomainNS indicates an expected call of GetDomainNS.
-func (mr *MockLiveDNSClientMockRecorder) GetDomainNS(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDomainNS", reflect.TypeOf((*MockLiveDNSClient)(nil).GetDomainNS), arg0)
-}
-
 // ListDomains mocks base method.
 func (m *MockLiveDNSClient) ListDomains() ([]livedns.Domain, error) {
 	m.ctrl.T.Helper()

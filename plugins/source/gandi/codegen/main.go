@@ -27,6 +27,7 @@ func main() {
 	codegenDir := path.Join(path.Dir(filename), "..", "resources", "services")
 
 	var resources []recipes.Resource
+	resources = append(resources, recipes.LiveDNSResources()...)
 	resources = append(resources, recipes.SimpleHostingResources()...)
 
 	for _, r := range resources {
