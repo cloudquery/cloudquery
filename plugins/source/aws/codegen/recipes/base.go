@@ -443,10 +443,8 @@ func validateServiceMultiplex(multiplexerCall string) error {
 			}
 		}
 	}
-	if len(submatchAll) == 2 {
-		if _, ok := services[submatchAll[1]]; !ok {
-			return fmt.Errorf("invalid partition: %s", submatchAll[1])
-		}
+	if _, ok := services[submatchAll[1]]; !ok {
+		return fmt.Errorf("invalid partition: %s", submatchAll[1])
 	}
 	return nil
 
