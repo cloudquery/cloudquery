@@ -20,12 +20,15 @@ type Resource struct {
 	ExtraColumns []codegen.ColumnDefinition
 	PKColumns    []string
 
-	Relations        []string
-	ResolverFuncName string
-	TableFuncName    string
-	Filename         string
-	Package          string
-	ImportClient     bool
+	PreResourceResolver   string
+	PostResourceResolver  string
+	Relations             []string
+	UnwrapEmbeddedStructs bool
+	ResolverFuncName      string
+	TableFuncName         string
+	Filename              string
+	Package               string
+	ImportClient          bool
 }
 
 var (

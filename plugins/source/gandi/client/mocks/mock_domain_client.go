@@ -34,21 +34,6 @@ func (m *MockDomainClient) EXPECT() *MockDomainClientMockRecorder {
 	return m.recorder
 }
 
-// GetContacts mocks base method.
-func (m *MockDomainClient) GetContacts(arg0 string) (domain.Contacts, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetContacts", arg0)
-	ret0, _ := ret[0].(domain.Contacts)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetContacts indicates an expected call of GetContacts.
-func (mr *MockDomainClientMockRecorder) GetContacts(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetContacts", reflect.TypeOf((*MockDomainClient)(nil).GetContacts), arg0)
-}
-
 // GetDomain mocks base method.
 func (m *MockDomainClient) GetDomain(arg0 string) (domain.Details, error) {
 	m.ctrl.T.Helper()
@@ -77,36 +62,6 @@ func (m *MockDomainClient) GetLiveDNS(arg0 string) (domain.LiveDNS, error) {
 func (mr *MockDomainClientMockRecorder) GetLiveDNS(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLiveDNS", reflect.TypeOf((*MockDomainClient)(nil).GetLiveDNS), arg0)
-}
-
-// GetNameServers mocks base method.
-func (m *MockDomainClient) GetNameServers(arg0 string) ([]string, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetNameServers", arg0)
-	ret0, _ := ret[0].([]string)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetNameServers indicates an expected call of GetNameServers.
-func (mr *MockDomainClientMockRecorder) GetNameServers(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetNameServers", reflect.TypeOf((*MockDomainClient)(nil).GetNameServers), arg0)
-}
-
-// GetTags mocks base method.
-func (m *MockDomainClient) GetTags(arg0 string) ([]string, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetTags", arg0)
-	ret0, _ := ret[0].([]string)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetTags indicates an expected call of GetTags.
-func (mr *MockDomainClientMockRecorder) GetTags(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTags", reflect.TypeOf((*MockDomainClient)(nil).GetTags), arg0)
 }
 
 // ListDNSSECKeys mocks base method.

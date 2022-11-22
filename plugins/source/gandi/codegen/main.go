@@ -27,6 +27,7 @@ func main() {
 	codegenDir := path.Join(path.Dir(filename), "..", "resources", "services")
 
 	var resources []recipes.Resource
+	resources = append(resources, recipes.DomainResources()...)
 	resources = append(resources, recipes.LiveDNSResources()...)
 	resources = append(resources, recipes.SimpleHostingResources()...)
 
@@ -39,11 +40,16 @@ func generateTable(basedir string, r recipes.Resource) {
 	var err error
 
 	log.Println("Generating table", r.TableName)
-	r.Table, err = codegen.NewTableFromStruct(r.TableName, r.DataStruct,
+	opts := []codegen.TableOption{
 		codegen.WithSkipFields(r.SkipFields),
 		codegen.WithExtraColumns(r.ExtraColumns),
 		codegen.WithPKColumns(r.PKColumns...),
-	)
+	}
+	if r.UnwrapEmbeddedStructs {
+		opts = append(opts, codegen.WithUnwrapAllEmbeddedStructs())
+	}
+	r.Table, err = codegen.NewTableFromStruct(r.TableName, r.DataStruct, opts...)
+
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -52,6 +58,8 @@ func generateTable(basedir string, r recipes.Resource) {
 	r.Table.Multiplex = r.Multiplex
 	r.ImportClient = strings.HasPrefix(r.Multiplex, "client.")
 	r.Table.Relations = r.Relations
+	r.Table.PreResourceResolver = r.PreResourceResolver
+	r.Table.PostResourceResolver = r.PostResourceResolver
 
 	for _, c := range r.Table.Columns {
 		if strings.HasPrefix(c.Resolver, "client.") {
