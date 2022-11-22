@@ -5,6 +5,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"strings"
 
 	"cloud.google.com/go/storage"
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -16,14 +17,25 @@ import (
 	"github.com/rs/zerolog"
 )
 
+
+const batchSize = 1024*1024*4
+
 type Client struct {
 	plugins.DefaultReverseTransformer
 	logger  zerolog.Logger
 	spec    specs.Destination
 	csvSpec Spec
 
+	bucket string
+	dir string
+
 	awsUploader      *manager.Uploader
+	awsDownloader    *manager.Downloader
+
 	gcpStorageClient *storage.Client
+	gcpBucket 			 *storage.BucketHandle
+
+	testMode bool
 
 	metrics plugins.DestinationMetrics
 }
@@ -54,9 +66,18 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (pl
 		}
 		awsClient := s3.NewFromConfig(awsCfg)
 		c.awsUploader = manager.NewUploader(awsClient)
+		c.awsDownloader = manager.NewDownloader(awsClient)
+
+		split := strings.Split(c.csvSpec.Directory, "/")
+		if len(split) == 0 {
+			return nil, fmt.Errorf("invalid S3 Bucket: %s", c.csvSpec.Directory)
+		}
+		c.dir = strings.Join(split[1:], "/")
+		c.bucket = split[0]
+		
 		if _, err := c.awsUploader.Upload(ctx, &s3.PutObjectInput{
 			Bucket: aws.String(c.csvSpec.Directory),
-			Key:    aws.String("cq-test-file"),
+			Key:    aws.String(c.dir + "/cq-test-file"),
 			Body:   bytes.NewReader([]byte("test")),
 		}); err != nil {
 			return nil, fmt.Errorf("failed to write test file to S3: %w", err)
@@ -67,8 +88,19 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (pl
 		if err != nil {
 			return nil, fmt.Errorf("failed to create GCP storage client %w", err)
 		}
-		if _, err := c.gcpStorageClient.Bucket(c.csvSpec.Directory).Object("cq-test-file").NewWriter(ctx).Write([]byte("test")); err != nil {
-			return nil, fmt.Errorf("failed to write test file to gs://%s %w", c.csvSpec.Directory, err)
+		split := strings.Split(c.csvSpec.Directory, "/")
+		if len(split) == 0 {
+			return nil, fmt.Errorf("invalid GCS Bucket: %s", c.csvSpec.Directory)
+		}
+		c.dir = strings.Join(split[1:], "/")
+		c.bucket = split[0]
+		c.gcpBucket = c.gcpStorageClient.Bucket(c.bucket)
+		gcpWriter := c.gcpBucket.Object(c.dir + "/cq-test-file").NewWriter(ctx)
+		if _, err := gcpWriter.Write([]byte("test")); err != nil {
+			return nil, fmt.Errorf("failed to write test file to GCS: %w", err)
+		}
+		if err := gcpWriter.Close(); err != nil {
+			return nil, fmt.Errorf("failed to close GCS writer: %w", err)
 		}
 	default:
 		return nil, fmt.Errorf("unknown backend: %s", c.csvSpec.Backend)
@@ -77,6 +109,6 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (pl
 	return c, nil
 }
 
-func (c *Client) Close(ctx context.Context) error {
+func (*Client) Close(ctx context.Context) error {
 	return nil
 }

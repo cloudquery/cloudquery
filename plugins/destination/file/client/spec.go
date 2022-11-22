@@ -18,7 +18,7 @@ type Spec struct {
 	Directory string      `json:"directory,omitempty"`
 	Backend   BackendType `json:"backend,omitempty"`
 	Format    FormatType  `json:"format,omitempty"`
-	BatchSize uint64         `json:"batchSize,omitempty"`
+	BatchSize uint64      `json:"batchSize,omitempty"`
 }
 
 func (s *Spec) SetDefaults() {
@@ -36,6 +36,6 @@ func (s *Spec) SetDefaults() {
 	}
 }
 
-func (s *Spec) Validate() error {
+func (*Spec) Validate() error {
 	return nil
 }

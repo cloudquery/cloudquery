@@ -1,24 +1,45 @@
 package client
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
+	"io"
 	"os"
 	"path"
+
+	"github.com/aws/aws-sdk-go-v2/service/s3"
 )
 
 func (c *Client) writeJSONResource(ctx context.Context, tableName string, resources <-chan []interface{}) error {
-	var buf bytes.Buffer
-	totalRecords := uint64(0)
-	filePath := path.Join(c.csvSpec.Directory, tableName+".csv")
-	var f *os.File
-	if c.csvSpec.Backend == BackendTypeLocal {
+	filePath := path.Join(c.csvSpec.Directory, tableName+".json")
+	var writer io.Writer
+	var err error
+	switch c.csvSpec.Backend {
+	case BackendTypeLocal:
 		f, err := os.OpenFile(filePath, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
 		if err != nil {
 			return err
 		}
-		defer f.Close()
+		defer func() {
+			err = f.Close()
+		}()
+		writer = f
+	case BackendTypeS3:
+		rPipe, wPipe := io.Pipe()
+		if _, err := c.awsUploader.Upload(ctx, &s3.PutObjectInput{
+			Bucket: &c.csvSpec.Directory,
+			Key:    &tableName,
+			Body:   rPipe,
+		}); err != nil {
+			return err
+		}
+		writer = wPipe
+	case BackendTypeGCS:
+		fileName := tableName + "_" + uid + ".csv"
+		gcpWriter := c.gcpStorageClient.Bucket(c.csvSpec.Directory).Object(fileName).NewWriter(ctx)
+		writer = gcpWriter
+	default:
+		panic("unknown backend type: " + c.csvSpec.Backend)
 	}
 
 	for r := range resources {
@@ -26,33 +47,12 @@ func (c *Client) writeJSONResource(ctx context.Context, tableName string, resour
 		if err != nil {
 			return err
 		}
-		_, err = buf.Write(b)
-		if err != nil {
+		b = append(b, '\n')
+		if _, err := writer.Write(b); err != nil {
 			return err
 		}
-		_, err = buf.Write([]byte("\n"))
-		if err != nil {
-			return err
-		}
-		totalRecords++
-		if totalRecords >= c.csvSpec.BatchSize {
-			if c.csvSpec.Backend == BackendTypeLocal {
-				_, err = f.Write(buf.Bytes())
-				if err != nil {
-					return err
-				}
-				if err := f.Sync(); err != nil {
-					return err
-				}
-			} else {
-				if err := c.writeRemote(ctx, tableName, buf.Bytes()); err != nil {
-					return err
-				}
-			}
-		}
-		buf = bytes.Buffer{}
-		totalRecords = 0
 	}
 
-	return nil
+
+	return err
 }

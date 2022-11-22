@@ -16,6 +16,7 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *pl
 	wg := sync.WaitGroup{}
 	workers := make(map[string]*worker, len(tables))
 	for _, t := range tables {
+		t := t
 		workers[t.Name] = &worker{
 			writeChan: make(chan []interface{}),
 		}

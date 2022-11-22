@@ -7,11 +7,9 @@ import (
 	"path"
 )
 
-func (c *Client) writeCSVResource(ctx context.Context, tableName string, resources <-chan []interface{}) error {
+func (c *Client) writeCSVResource(_ context.Context, tableName string, resources <-chan []interface{}) error {
 	var err error
-	var records [][]string
 	var f *os.File
-	totalRecords := uint64(0)
 	filePath := path.Join(c.csvSpec.Directory, tableName+".csv")
 	if c.csvSpec.Backend == BackendTypeLocal {
 		f, err = os.OpenFile(filePath, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
@@ -20,28 +18,15 @@ func (c *Client) writeCSVResource(ctx context.Context, tableName string, resourc
 		}
 		defer f.Close()
 	}
+	csvWriter := csv.NewWriter(f)
 
 	for r := range resources {
 		record := make([]string, len(r))
 		for i, v := range r {
 			record[i] = v.(string)
 		}
-		records = append(records, record)
-		totalRecords++
-		if totalRecords >= c.csvSpec.BatchSize {
-			csvWriter := csv.NewWriter(f)
-			if err := csvWriter.WriteAll(records); err != nil {
-				return err
-			}
-			records = nil
-			totalRecords = 0
-		}
+		csvWriter.Write(record)
 	}
-	if totalRecords > 0 {
-		csvWriter := csv.NewWriter(f)
-		if err := csvWriter.WriteAll(records); err != nil {
-			return err
-		}
-	}
+	csvWriter.Flush()
 	return nil
 }
