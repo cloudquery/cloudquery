@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [7.1.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v7.1.3...plugins-source-aws-v7.1.4) (2022-11-22)
+
+
+### Bug Fixes
+
+* **aws:** Typo in lambda query ([#4901](https://github.com/cloudquery/cloudquery/issues/4901)) ([c05f49c](https://github.com/cloudquery/cloudquery/commit/c05f49ca1d08157983a065f1a0fe30bf158cc930))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/route53 to v1.25.0 ([#4899](https://github.com/cloudquery/cloudquery/issues/4899)) ([6cb81ca](https://github.com/cloudquery/cloudquery/commit/6cb81ca0e5bd5d53f03955d8634ebd4aa86c64e8))
+* **deps:** Update plugin-sdk for aws to v1.7.0 ([#4903](https://github.com/cloudquery/cloudquery/issues/4903)) ([4ba5acd](https://github.com/cloudquery/cloudquery/commit/4ba5acdcc4118c15986b40e5a0fdfcd368a971c3))
+
 ## [7.1.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v7.1.2...plugins-source-aws-v7.1.3) (2022-11-21)
 
 
