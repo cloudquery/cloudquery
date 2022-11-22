@@ -28,11 +28,11 @@ func (c *Client) openReadOnly(name string) (io.Reader, error) {
 func (c *Client) OpenAppendOnly(ctx context.Context, name string) (io.WriteCloser, error) {
 	switch c.csvSpec.Backend {
 	case BackendTypeLocal:
-		return local.OpenAppendOnly(name)
+		return local.OpenAppendOnly(name, c.csvSpec.MaxFileSize)
 	case BackendTypeGCS:
-		return gcs.OpenAppendOnly(ctx, c.gcpStorageClient, c.bucket, name)
+		return gcs.OpenAppendOnly(ctx, c.gcpStorageClient, c.bucket, name, c.csvSpec.MaxFileSize)
 	case BackendTypeS3:
-		return s3.OpenS3FileAppend(ctx, c.awsUploader, c.bucket, name)
+		return s3.OpenAppendOnly(ctx, c.awsUploader, c.bucket, name, c.csvSpec.MaxFileSize)
 	default:
 		panic("unknown backend " + c.csvSpec.Backend)
 	}

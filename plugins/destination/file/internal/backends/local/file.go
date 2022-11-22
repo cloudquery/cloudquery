@@ -12,6 +12,7 @@ type file struct {
 	file *os.File
 	written  uint64
 	name string
+	maxFileSize uint64
 }
 
 func (f *file) Write(data []byte) (int, error) {
@@ -21,13 +22,13 @@ func (f *file) Write(data []byte) (int, error) {
 	}
 	
 	f.written += uint64(n)
-	if f.written >= 10000 {
+	if f.maxFileSize != 0 && f.written >= f.maxFileSize {
 		if err := f.file.Close(); err != nil {
 			f.file = nil
 			return n, err
 		}
 		f.written = 0
-		name := uuid.NewString() + "." + f.name
+		name := f.name + "." + uuid.NewString()
 		f.file, err = os.OpenFile(name, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
 		if err != nil {
 			return n, err
@@ -51,14 +52,19 @@ func (f *file) Close() error {
 	return f.file.Close()
 }
 
-func OpenAppendOnly(name string) (io.WriteCloser, error) {
-	f, err := os.OpenFile(name, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
+func OpenAppendOnly(name string, maxFileSize uint64) (io.WriteCloser, error) {
+	uniqueName := name
+	if maxFileSize != 0 {
+		uniqueName = name + "." + uuid.NewString()
+	}
+	f, err := os.OpenFile(uniqueName, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
 	if err != nil {
 		return nil, err
 	}
 	return &file{
 		file: f,
 		name: name,
+		maxFileSize: maxFileSize,
 	}, nil
 }
 
