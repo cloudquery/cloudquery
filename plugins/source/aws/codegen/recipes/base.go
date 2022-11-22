@@ -429,8 +429,11 @@ func validateServiceMultiplex(multiplexerCall string) error {
 	re := regexp.MustCompile(`\"(.*?)\"`)
 	// Find the value of the service parameter
 	submatchAll := re.FindStringSubmatch(multiplexerCall)
-	t := client.ReadSupportedServiceRegions()
+	if len(submatchAll) != 2 {
+		return nil
+	}
 
+	t := client.ReadSupportedServiceRegions()
 	services := make(map[string]bool)
 
 	for _, partition := range t.Partitions {
