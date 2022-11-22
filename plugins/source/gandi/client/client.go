@@ -47,14 +47,6 @@ func (c *Client) ID() string {
 	return c.sharingID
 }
 
-func (c *Client) withSharingID(sharingID string) *Client {
-	return &Client{
-		logger:    c.logger.With().Str("sharing_id", sharingID).Logger(),
-		sharingID: sharingID,
-		Services:  c.Services,
-	}
-}
-
 func Configure(_ context.Context, logger zerolog.Logger, s specs.Source) (schema.ClientMeta, error) {
 	gaSpec := &Spec{}
 	if err := s.UnmarshalSpec(gaSpec); err != nil {

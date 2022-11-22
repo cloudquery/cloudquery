@@ -10,19 +10,19 @@ import (
 //go:generate mockgen -package=mocks -destination=./mocks/mock_domain_client.go . DomainClient
 type DomainClient interface {
 	ListDomains() ([]domain.ListResponse, error)
-	GetDomain(domain string) (domain.Details, error)
-	ListDNSSECKeys(domain string) ([]domain.DNSSECKey, error)
-	ListGlueRecords(domain string) ([]domain.GlueRecord, error)
-	ListWebRedirections(domain string) ([]domain.WebRedirection, error)
-	GetLiveDNS(domain string) (domain.LiveDNS, error)
+	GetDomain(domainname string) (domain.Details, error)
+	ListDNSSECKeys(domainname string) ([]domain.DNSSECKey, error)
+	ListGlueRecords(domainname string) ([]domain.GlueRecord, error)
+	ListWebRedirections(domainname string) ([]domain.WebRedirection, error)
+	GetLiveDNS(domainname string) (domain.LiveDNS, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_email_client.go . EmailClient
 type EmailClient interface {
 	// not implemented
-	// ListMailboxes(domain string) ([]email.ListMailboxResponse, error)
-	// GetMailbox(domain, mailbox_id string) (email.MailboxResponse, error)
-	// GetForwards(domain string) ([]email.GetForwardRequest, error)
+	// ListMailboxes(domainname string) ([]email.ListMailboxResponse, error)
+	// GetMailbox(domainname, mailbox_id string) (email.MailboxResponse, error)
+	// GetForwards(domainname string) ([]email.GetForwardRequest, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_livedns_client.go . LiveDNSClient
