@@ -13,6 +13,6 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 	case FormatTypeJSON:
 		return c.readJSON(ctx, table, sourceName, res)
 	default:
-		panic("unknown backend type " + c.csvSpec.Backend.String())
+		panic("unknown backend type " + c.csvSpec.Backend)
 	}
 }

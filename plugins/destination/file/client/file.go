@@ -22,7 +22,7 @@ func (c *Client) openReadOnly(ctx context.Context, name string) (io.ReadCloser, 
 		name := path.Join(c.path, name)
 		return s3.OpenReadOnly(ctx, c.awsDownloader, c.baseDir, name)
 	default:
-		panic("unknown backend " + c.csvSpec.Backend.String())
+		panic("unknown backend " + c.csvSpec.Backend)
 	}
 }
 
@@ -38,6 +38,6 @@ func (c *Client) openAppendOnly(ctx context.Context, name string) (io.WriteClose
 		name := path.Join(c.path, name)
 		return s3.OpenAppendOnly(ctx, c.awsUploader, c.baseDir, name, c.csvSpec.MaxFileSize)
 	default:
-		panic("unknown backend " + c.csvSpec.Backend.String())
+		panic("unknown backend " + c.csvSpec.Backend)
 	}
 }

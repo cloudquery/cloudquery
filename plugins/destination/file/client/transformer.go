@@ -9,7 +9,7 @@ func (c *Client) TransformBool(v *schema.Bool) interface{} {
 	case FormatTypeJSON:
 		return c.transformJSONBool(v)
 	default:
-		panic("unknown format" + c.csvSpec.Format.String())
+		panic("unknown format" + c.csvSpec.Format)
 	}
 }
 
@@ -20,7 +20,7 @@ func (c *Client) TransformBytea(v *schema.Bytea) interface{} {
 	case FormatTypeJSON:
 		return c.transformJSONBytea(v)
 	default:
-		panic("unknown format" + c.csvSpec.Format.String())
+		panic("unknown format" + c.csvSpec.Format)
 	}
 }
 
@@ -31,7 +31,7 @@ func (c *Client) TransformFloat8(v *schema.Float8) interface{} {
 	case FormatTypeJSON:
 		return c.transformJSONFloat8(v)
 	default:
-		panic("unknown format" + c.csvSpec.Format.String())
+		panic("unknown format" + c.csvSpec.Format)
 	}
 }
 
@@ -42,7 +42,7 @@ func (c *Client) TransformInt8(v *schema.Int8) interface{} {
 	case FormatTypeJSON:
 		return c.transformJSONInt8(v)
 	default:
-		panic("unknown format" + c.csvSpec.Format.String())
+		panic("unknown format" + c.csvSpec.Format)
 	}
 }
 
@@ -53,7 +53,7 @@ func (c *Client) TransformInt8Array(v *schema.Int8Array) interface{} {
 	case FormatTypeJSON:
 		return c.transformJSONInt8Array(v)
 	default:
-		panic("unknown format" + c.csvSpec.Format.String())
+		panic("unknown format" + c.csvSpec.Format)
 	}
 }
 
@@ -64,7 +64,7 @@ func (c *Client) TransformJSON(v *schema.JSON) interface{} {
 	case FormatTypeJSON:
 		return c.transformJSONJSON(v)
 	default:
-		panic("unknown format" + c.csvSpec.Format.String())
+		panic("unknown format" + c.csvSpec.Format)
 	}
 }
 
@@ -75,7 +75,7 @@ func (c *Client) TransformText(v *schema.Text) interface{} {
 	case FormatTypeJSON:
 		return c.transformJSONText(v)
 	default:
-		panic("unknown format" + c.csvSpec.Format.String())
+		panic("unknown format" + c.csvSpec.Format)
 	}
 }
 
@@ -86,7 +86,7 @@ func (c *Client) TransformTextArray(v *schema.TextArray) interface{} {
 	case FormatTypeJSON:
 		return c.transformJSONTextArray(v)
 	default:
-		panic("unknown format" + c.csvSpec.Format.String())
+		panic("unknown format" + c.csvSpec.Format)
 	}
 }
 
@@ -97,7 +97,7 @@ func (c *Client) TransformTimestamptz(v *schema.Timestamptz) interface{} {
 	case FormatTypeJSON:
 		return c.transformJSONTimestamptz(v)
 	default:
-		panic("unknown format" + c.csvSpec.Format.String())
+		panic("unknown format" + c.csvSpec.Format)
 	}
 }
 
@@ -108,7 +108,7 @@ func (c *Client) TransformUUID(v *schema.UUID) interface{} {
 	case FormatTypeJSON:
 		return c.transformJSONUUID(v)
 	default:
-		panic("unknown format" + c.csvSpec.Format.String())
+		panic("unknown format" + c.csvSpec.Format)
 	}
 }
 
@@ -119,7 +119,7 @@ func (c *Client) TransformUUIDArray(v *schema.UUIDArray) interface{} {
 	case FormatTypeJSON:
 		return c.transformJSONUUIDArray(v)
 	default:
-		panic("unknown format" + c.csvSpec.Format.String())
+		panic("unknown format" + c.csvSpec.Format)
 	}
 }
 
@@ -130,7 +130,7 @@ func (c *Client) TransformCIDR(v *schema.CIDR) interface{} {
 	case FormatTypeJSON:
 		return c.transformJSONCIDR(v)
 	default:
-		panic("unknown format" + c.csvSpec.Format.String())
+		panic("unknown format" + c.csvSpec.Format)
 	}
 }
 
@@ -141,7 +141,7 @@ func (c *Client) TransformCIDRArray(v *schema.CIDRArray) interface{} {
 	case FormatTypeJSON:
 		return c.transformJSONCIDRArray(v)
 	default:
-		panic("unknown format" + c.csvSpec.Format.String())
+		panic("unknown format" + c.csvSpec.Format)
 	}
 }
 
@@ -152,7 +152,7 @@ func (c *Client) TransformInet(v *schema.Inet) interface{} {
 	case FormatTypeJSON:
 		return c.transformJSONInet(v)
 	default:
-		panic("unknown format" + c.csvSpec.Format.String())
+		panic("unknown format" + c.csvSpec.Format)
 	}
 }
 
@@ -163,7 +163,7 @@ func (c *Client) TransformInetArray(v *schema.InetArray) interface{} {
 	case FormatTypeJSON:
 		return c.transformJSONInetArray(v)
 	default:
-		panic("unknown format" + c.csvSpec.Format.String())
+		panic("unknown format" + c.csvSpec.Format)
 	}
 }
 
@@ -174,7 +174,7 @@ func (c *Client) TransformMacaddr(v *schema.Macaddr) interface{} {
 	case FormatTypeJSON:
 		return c.transformJSONMacaddr(v)
 	default:
-		panic("unknown format" + c.csvSpec.Format.String())
+		panic("unknown format" + c.csvSpec.Format)
 	}
 }
 
@@ -185,6 +185,6 @@ func (c *Client) TransformMacaddrArray(v *schema.MacaddrArray) interface{} {
 	case FormatTypeJSON:
 		return c.transformJSONMacaddrArray(v)
 	default:
-		panic("unknown format" + c.csvSpec.Format.String())
+		panic("unknown format" + c.csvSpec.Format)
 	}
 }
