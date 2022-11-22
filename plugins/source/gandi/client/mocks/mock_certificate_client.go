@@ -34,21 +34,6 @@ func (m *MockCertificateClient) EXPECT() *MockCertificateClientMockRecorder {
 	return m.recorder
 }
 
-// GetCertificate mocks base method.
-func (m *MockCertificateClient) GetCertificate(arg0 string) (certificate.CertificateType, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetCertificate", arg0)
-	ret0, _ := ret[0].(certificate.CertificateType)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetCertificate indicates an expected call of GetCertificate.
-func (mr *MockCertificateClientMockRecorder) GetCertificate(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetCertificate", reflect.TypeOf((*MockCertificateClient)(nil).GetCertificate), arg0)
-}
-
 // ListCertificates mocks base method.
 func (m *MockCertificateClient) ListCertificates() ([]certificate.CertificateType, error) {
 	m.ctrl.T.Helper()

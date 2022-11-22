@@ -2,6 +2,7 @@ package plugin
 
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/gandi/client"
+	"github.com/cloudquery/cloudquery/plugins/source/gandi/resources/services/certificates"
 	"github.com/cloudquery/cloudquery/plugins/source/gandi/resources/services/domains"
 	"github.com/cloudquery/cloudquery/plugins/source/gandi/resources/services/livedns"
 	"github.com/cloudquery/cloudquery/plugins/source/gandi/resources/services/simplehosting"
@@ -18,6 +19,8 @@ func Plugin() *plugins.SourcePlugin {
 		"gandi",
 		Version,
 		[]*schema.Table{
+			certificates.Certificates(),
+			certificates.Packages(),
 			domains.Domains(),
 			livedns.Domains(),
 			simplehosting.Instances(),

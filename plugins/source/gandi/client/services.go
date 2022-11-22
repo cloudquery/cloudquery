@@ -44,6 +44,6 @@ type SimpleHostingClient interface {
 //go:generate mockgen -package=mocks -destination=./mocks/mock_certificate_client.go . CertificateClient
 type CertificateClient interface {
 	ListCertificates() ([]certificate.CertificateType, error)
-	GetCertificate(certificateId string) (certificate.CertificateType, error)
+	//GetCertificate(certificateId string) (certificate.CertificateType, error)
 	ListPackages() ([]certificate.Package, error)
 }
