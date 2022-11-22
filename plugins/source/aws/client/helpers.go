@@ -92,7 +92,7 @@ var accessDeniedErrorStrings = map[string]struct{}{
 	"Unauthorized":                    {},
 }
 
-func readSupportedServiceRegions() *SupportedServiceRegionsData {
+func ReadSupportedServiceRegions() *SupportedServiceRegionsData {
 	f, err := supportedServiceRegionFile.Open(PartitionServiceRegionFile)
 	if err != nil {
 		return nil
@@ -125,7 +125,7 @@ func readSupportedServiceRegions() *SupportedServiceRegionsData {
 
 func isSupportedServiceForRegion(service string, region string) bool {
 	readOnce.Do(func() {
-		supportedServiceRegion = readSupportedServiceRegions()
+		supportedServiceRegion = ReadSupportedServiceRegions()
 	})
 
 	if supportedServiceRegion == nil {
@@ -152,7 +152,7 @@ func isSupportedServiceForRegion(service string, region string) bool {
 
 func getAvailableRegions() (map[string]bool, error) {
 	readOnce.Do(func() {
-		supportedServiceRegion = readSupportedServiceRegions()
+		supportedServiceRegion = ReadSupportedServiceRegions()
 	})
 
 	regionsSet := make(map[string]bool)
@@ -178,7 +178,7 @@ func getAvailableRegions() (map[string]bool, error) {
 
 func RegionsPartition(region string) (string, bool) {
 	readOnce.Do(func() {
-		supportedServiceRegion = readSupportedServiceRegions()
+		supportedServiceRegion = ReadSupportedServiceRegions()
 	})
 
 	prt, ok := supportedServiceRegion.regionVsPartition[region]

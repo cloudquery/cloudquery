@@ -71,7 +71,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/rds v1.30.0
 	github.com/aws/aws-sdk-go-v2/service/redshift v1.26.15
 	github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.12.21
-	github.com/aws/aws-sdk-go-v2/service/route53 v1.24.0
+	github.com/aws/aws-sdk-go-v2/service/route53 v1.25.0
 	github.com/aws/aws-sdk-go-v2/service/route53domains v1.12.19
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.29.3
 	github.com/aws/aws-sdk-go-v2/service/s3control v1.26.0
@@ -82,6 +82,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/servicequotas v1.13.20
 	github.com/aws/aws-sdk-go-v2/service/sesv2 v1.15.1
+	github.com/aws/aws-sdk-go-v2/service/sfn v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/sns v1.18.5
 	github.com/aws/aws-sdk-go-v2/service/sqs v1.19.14
 	github.com/aws/aws-sdk-go-v2/service/ssm v1.33.0
@@ -94,7 +95,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/xray v1.15.0
 	github.com/aws/smithy-go v1.13.4
 	github.com/basgys/goxml2json v1.1.0
-	github.com/cloudquery/plugin-sdk v1.5.3
+	github.com/cloudquery/plugin-sdk v1.7.0
 	github.com/gocarina/gocsv v0.0.0-20220927221512-ad3251f9fa25
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.9

@@ -25,14 +25,14 @@ kind: source
 spec:
   name: 'aws'
   path: cloudquery/aws
-  version: "v7.1.1" # latest version of aws plugin
+  version: "v7.1.4" # latest version of aws plugin
   destinations: ['postgresql']
 ---
 kind: destination
 spec:
   name: 'postgresql'
   path: cloudquery/postgresql
-  version: "v1.7.11" # latest version of postgresql plugin
+  version: "v1.7.13" # latest version of postgresql plugin
   spec:
     connection_string: ${CQ_DSN} # The CQ_DSN environment variable will be set by GitHub Action workflow
 ```
@@ -89,7 +89,7 @@ kind: source
 spec:
   name: 'aws-REGION_PLACEHOLDER' # when splitting configurations, we need to keep the names unique
   path: cloudquery/aws
-  version: "v7.1.1" # latest version of aws plugin
+  version: "v7.1.4" # latest version of aws plugin
   destinations: ['postgresql-REGION_PLACEHOLDER']
   spec:
     regions:
@@ -99,7 +99,7 @@ kind: destination
 spec:
   name: 'postgresql-REGION_PLACEHOLDER' # when splitting configurations, we need to keep the names unique
   path: cloudquery/postgresql
-  version: "v1.7.11" # latest version of postgresql plugin
+  version: "v1.7.13" # latest version of postgresql plugin
   spec:
     connection_string: ${CQ_DSN} # The CQ_DSN environment variable will be set by GitHub Action workflow
 ```

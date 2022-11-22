@@ -82,6 +82,7 @@
 | [aws_cloudhsmv2_backups](aws_cloudhsmv2_backups.md) |
 | [aws_cloudtrail_trails](aws_cloudtrail_trails.md) |
 | ↳ [aws_cloudtrail_trail_event_selectors](aws_cloudtrail_trail_event_selectors.md) |
+| [aws_cloudwatchlogs_resource_policies](aws_cloudwatchlogs_resource_policies.md) |
 | [aws_cloudwatchlogs_metric_filters](aws_cloudwatchlogs_metric_filters.md) |
 | [aws_cloudwatchlogs_log_groups](aws_cloudwatchlogs_log_groups.md) |
 | [aws_cloudwatch_alarms](aws_cloudwatch_alarms.md) |
@@ -425,6 +426,7 @@
 | [aws_ssm_inventory_schemas](aws_ssm_inventory_schemas.md) |
 | [aws_ssm_patch_baselines](aws_ssm_patch_baselines.md) |
 | [aws_ssoadmin_instances](aws_ssoadmin_instances.md) |
+| [aws_stepfunctions_state_machines](aws_stepfunctions_state_machines.md) |
 | [aws_timestream_databases](aws_timestream_databases.md) |
 | ↳ [aws_timestream_tables](aws_timestream_tables.md) |
 | [aws_transfer_servers](aws_transfer_servers.md) |
