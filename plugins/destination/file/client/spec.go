@@ -6,6 +6,10 @@ type BackendType string
 type FormatType string
 
 const (
+	remoteBackendMaxFileSize = 1024 * 1024 * 4 // 4MB
+)
+
+const (
 	BackendTypeLocal BackendType = "local"
 	BackendTypeS3    BackendType = "s3"
 	BackendTypeGCS   BackendType = "gcs"
@@ -27,6 +31,10 @@ func (s *Spec) SetDefaults() {
 	}
 	if s.Format == "" {
 		s.Format = FormatTypeCSV
+	}
+
+	if s.Backend != BackendTypeLocal && s.MaxFileSize == 0 {
+		s.MaxFileSize = remoteBackendMaxFileSize
 	}
 }
 
