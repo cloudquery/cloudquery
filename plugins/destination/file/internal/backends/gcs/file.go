@@ -37,7 +37,13 @@ func (f *file) Write(data []byte) (int, error) {
 }
 
 func (f *file) Close() error {
-	return f.gcsWriter.Close()
+	if f.gcsWriter != nil {
+		return f.gcsWriter.Close()
+	}
+	if f.gcsReader != nil {
+		return f.gcsReader.Close()
+	}
+	return nil
 }
 
 func (f *file) Read(p []byte) (n int, err error) {

@@ -9,7 +9,7 @@ import (
 func (c *Client) writeCSVResource(ctx context.Context, tableName string, resources <-chan []interface{}) error {
 	var err error
 	filePath := path.Join(c.csvSpec.Directory, tableName+".csv")
-	f, err := c.OpenAppendOnly(ctx, filePath)
+	f, err := c.openAppendOnly(ctx, filePath)
 	if err != nil {
 		return err
 	}

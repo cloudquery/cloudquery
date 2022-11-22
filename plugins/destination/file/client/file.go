@@ -2,7 +2,6 @@ package client
 
 import (
 	"context"
-	"fmt"
 	"io"
 
 	"github.com/cloudquery/cloudquery/plugins/destination/file/internal/backends/gcs"
@@ -11,21 +10,21 @@ import (
 )
 
 
-func (c *Client) openReadOnly(name string) (io.Reader, error) {
+func (c *Client) openReadOnly(ctx context.Context, name string) (io.ReadCloser, error) {
 	// io.Writer
 	switch c.csvSpec.Backend {
 	case BackendTypeLocal:
 		return local.OpenReadOnly(name)
 	case BackendTypeGCS:
-		return nil, fmt.Errorf("not implemented")
+		return gcs.OpenReadOnly(ctx, c.gcpStorageClient, c.bucket, name)
 	case BackendTypeS3:
-		return nil, fmt.Errorf("not implemented")
+		return s3.OpenReadOnly(ctx, c.awsDownloader, c.bucket, name)
 	default:
 		panic("unknown backend " + c.csvSpec.Backend)
 	}
 }
 
-func (c *Client) OpenAppendOnly(ctx context.Context, name string) (io.WriteCloser, error) {
+func (c *Client) openAppendOnly(ctx context.Context, name string) (io.WriteCloser, error) {
 	switch c.csvSpec.Backend {
 	case BackendTypeLocal:
 		return local.OpenAppendOnly(name, c.csvSpec.MaxFileSize)

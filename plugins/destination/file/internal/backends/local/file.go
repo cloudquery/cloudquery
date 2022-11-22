@@ -61,6 +61,7 @@ func OpenAppendOnly(name string, maxFileSize uint64) (io.WriteCloser, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	return &file{
 		file: f,
 		name: name,

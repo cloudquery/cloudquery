@@ -5,7 +5,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"os"
 	"path"
 
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -13,18 +12,19 @@ import (
 
 const maxJsonSize = 1024 * 1024 * 20
 
-func (c *Client) readJSON(_ context.Context, table *schema.Table, sourceName string, res chan<- []interface{}) error {
+func (c *Client) readJSON(ctx context.Context, table *schema.Table, sourceName string, res chan<- []interface{}) error {
 	var rowJson []interface{}
 	sourceNameIndex := table.Columns.Index(schema.CqSourceNameColumn.Name)
 	if sourceNameIndex == -1 {
 		return fmt.Errorf("could not find column %s in table %s", schema.CqSourceNameColumn.Name, table.Name)
 	}
-	filePath := path.Join(c.csvSpec.Directory, table.Name+".json")
-	f, err := os.Open(filePath)
+	name := path.Join(c.csvSpec.Directory, table.Name+".csv")
+	f, err := c.openReadOnly(ctx, name)
 	if err != nil {
 		return err
 	}
 	defer f.Close()
+
 	scanner := bufio.NewScanner(f)
 	scanner.Buffer(make([]byte, maxJsonSize), maxJsonSize)
 	for scanner.Scan() {
