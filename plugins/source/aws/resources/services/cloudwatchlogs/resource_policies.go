@@ -31,14 +31,14 @@ func ResourcePolicies() *schema.Table {
 				},
 			},
 			{
+				Name:     "policy_document",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("PolicyDocument"),
+			},
+			{
 				Name:     "last_updated_time",
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("LastUpdatedTime"),
-			},
-			{
-				Name:     "policy_document",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("PolicyDocument"),
 			},
 			{
 				Name:     "policy_name",
