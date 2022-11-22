@@ -9,14 +9,14 @@ import (
 )
 
 type file struct {
-	ctx 				 context.Context
+	ctx           context.Context
 	storageClient *storage.Client
-	gcsWriter *storage.Writer
-	gcsReader *storage.Reader
-	written  uint64
-	bucket string
-	name string
-	maxFileSize uint64
+	gcsWriter     *storage.Writer
+	gcsReader     *storage.Reader
+	written       uint64
+	bucket        string
+	name          string
+	maxFileSize   uint64
 }
 
 func (f *file) Write(data []byte) (int, error) {
@@ -67,12 +67,12 @@ func OpenAppendOnly(
 		uniqueName = name + "." + uuid.NewString()
 	}
 	return &file{
-		ctx: ctx,
+		ctx:           ctx,
 		storageClient: storageClient,
-		gcsWriter: storageClient.Bucket(bucket).Object(uniqueName).NewWriter(ctx),
-		bucket: bucket,
-		name: name,
-		maxFileSize: maxFileSize,
+		gcsWriter:     storageClient.Bucket(bucket).Object(uniqueName).NewWriter(ctx),
+		bucket:        bucket,
+		name:          name,
+		maxFileSize:   maxFileSize,
 	}, nil
 }
 
@@ -89,10 +89,10 @@ func OpenReadOnly(
 		return nil, err
 	}
 	return &file{
-		ctx: ctx,
+		ctx:           ctx,
 		storageClient: storageClient,
-		gcsReader: reader,
-		bucket: bucket,
-		name: name,
+		gcsReader:     reader,
+		bucket:        bucket,
+		name:          name,
 	}, nil
 }

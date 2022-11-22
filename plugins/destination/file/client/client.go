@@ -17,23 +17,20 @@ import (
 	"github.com/rs/zerolog"
 )
 
-
-const batchSize = 1024*1024*4
-
 type Client struct {
 	plugins.DefaultReverseTransformer
 	logger  zerolog.Logger
 	spec    specs.Destination
 	csvSpec Spec
 
-	bucket string
-	dir string
+	baseDir string
+	path    string
 
-	awsUploader      *manager.Uploader
-	awsDownloader    *manager.Downloader
+	awsUploader   *manager.Uploader
+	awsDownloader *manager.Downloader
 
 	gcpStorageClient *storage.Client
-	gcpBucket 			 *storage.BucketHandle
+	gcpBucket        *storage.BucketHandle
 
 	testMode bool
 
@@ -53,6 +50,16 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (pl
 		return nil, fmt.Errorf("failed to unmarshal postgresql spec: %w", err)
 	}
 	c.csvSpec.SetDefaults()
+	split := strings.Split(c.csvSpec.Directory, "/")
+	if len(split) == 0 {
+		return nil, fmt.Errorf("invalid directory: %s", c.csvSpec.Directory)
+	}
+	c.baseDir = split[0]
+	if len(split) > 1 {
+		c.path = strings.Join(split[1:], "/")
+	} else {
+		c.path = ""
+	}
 
 	switch c.csvSpec.Backend {
 	case BackendTypeLocal:
@@ -68,16 +75,9 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (pl
 		c.awsUploader = manager.NewUploader(awsClient)
 		c.awsDownloader = manager.NewDownloader(awsClient)
 
-		split := strings.Split(c.csvSpec.Directory, "/")
-		if len(split) == 0 {
-			return nil, fmt.Errorf("invalid S3 Bucket: %s", c.csvSpec.Directory)
-		}
-		c.dir = strings.Join(split[1:], "/")
-		c.bucket = split[0]
-		
 		if _, err := c.awsUploader.Upload(ctx, &s3.PutObjectInput{
-			Bucket: aws.String(c.csvSpec.Directory),
-			Key:    aws.String(c.dir + "/cq-test-file"),
+			Bucket: aws.String(c.baseDir),
+			Key:    aws.String(c.path + "/cq-test-file"),
 			Body:   bytes.NewReader([]byte("test")),
 		}); err != nil {
 			return nil, fmt.Errorf("failed to write test file to S3: %w", err)
@@ -92,10 +92,8 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (pl
 		if len(split) == 0 {
 			return nil, fmt.Errorf("invalid GCS Bucket: %s", c.csvSpec.Directory)
 		}
-		c.dir = strings.Join(split[1:], "/")
-		c.bucket = split[0]
-		c.gcpBucket = c.gcpStorageClient.Bucket(c.bucket)
-		gcpWriter := c.gcpBucket.Object(c.dir + "/cq-test-file").NewWriter(ctx)
+		c.gcpBucket = c.gcpStorageClient.Bucket(c.baseDir)
+		gcpWriter := c.gcpBucket.Object(c.path + "/cq-test-file").NewWriter(ctx)
 		if _, err := gcpWriter.Write([]byte("test")); err != nil {
 			return nil, fmt.Errorf("failed to write test file to GCS: %w", err)
 		}

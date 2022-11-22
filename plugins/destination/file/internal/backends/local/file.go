@@ -9,9 +9,9 @@ import (
 )
 
 type file struct {
-	file *os.File
-	written  uint64
-	name string
+	file        *os.File
+	written     uint64
+	name        string
 	maxFileSize uint64
 }
 
@@ -20,7 +20,7 @@ func (f *file) Write(data []byte) (int, error) {
 	if err != nil {
 		return n, err
 	}
-	
+
 	f.written += uint64(n)
 	if f.maxFileSize != 0 && f.written >= f.maxFileSize {
 		if err := f.file.Close(); err != nil {
@@ -63,8 +63,8 @@ func OpenAppendOnly(name string, maxFileSize uint64) (io.WriteCloser, error) {
 	}
 
 	return &file{
-		file: f,
-		name: name,
+		file:        f,
+		name:        name,
 		maxFileSize: maxFileSize,
 	}, nil
 }

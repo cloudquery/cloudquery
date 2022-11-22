@@ -3,13 +3,10 @@ package client
 import (
 	"context"
 	"encoding/json"
-	"path"
 )
 
 func (c *Client) writeJSONResource(ctx context.Context, tableName string, resources <-chan []interface{}) error {
-	filePath := path.Join(c.csvSpec.Directory, tableName+".json")
-	var err error
-	f, err := c.openAppendOnly(ctx, filePath)
+	f, err := c.openAppendOnly(ctx, tableName+".json")
 	if err != nil {
 		return err
 	}
@@ -25,7 +22,6 @@ func (c *Client) writeJSONResource(ctx context.Context, tableName string, resour
 			return err
 		}
 	}
-
 
 	return err
 }

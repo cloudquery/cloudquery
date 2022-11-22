@@ -13,15 +13,15 @@ import (
 )
 
 type file struct {
-	ctx 				 context.Context
-	writer io.Writer
-	reader io.Reader
-	uploader *manager.Uploader
-	downloader *manager.Downloader
-	eg *errgroup.Group
-	written  uint64
-	bucket string
-	name string
+	ctx         context.Context
+	writer      io.Writer
+	reader      io.Reader
+	uploader    *manager.Uploader
+	downloader  *manager.Downloader
+	eg          *errgroup.Group
+	written     uint64
+	bucket      string
+	name        string
 	maxFileSize uint64
 }
 
@@ -54,7 +54,13 @@ func (f *file) Write(data []byte) (int, error) {
 }
 
 func (f *file) Close() error {
-	return f.eg.Wait()
+	if f.eg != nil {
+		if err := f.writer.(*io.PipeWriter).Close(); err != nil {
+			return err
+		}
+		return f.eg.Wait()
+	}
+	return nil
 }
 
 func OpenAppendOnly(
@@ -65,16 +71,17 @@ func OpenAppendOnly(
 	maxFileSize uint64) (io.WriteCloser, error) {
 	uniqueName := name
 	if maxFileSize != 0 {
-		uniqueName = name + "." + uuid.NewString()	
+		uniqueName = name + "." + uuid.NewString()
 	}
 	r, w := io.Pipe()
 	f := file{
-		ctx: ctx,
-		bucket: bucket,
-		name: uniqueName,
+		ctx:      ctx,
+		bucket:   bucket,
+		name:     uniqueName,
 		uploader: uploader,
-		writer: w,
-		reader: r,
+		writer:   w,
+		reader:   r,
+		eg:       &errgroup.Group{},
 	}
 	f.eg.Go(func() error {
 		_, err := uploader.Upload(ctx, &s3.PutObjectInput{
@@ -93,9 +100,9 @@ func OpenReadOnly(
 	bucket string,
 	name string) (io.ReadCloser, error) {
 	f := file{
-		ctx: ctx,
-		bucket: bucket,
-		name: name,
+		ctx:        ctx,
+		bucket:     bucket,
+		name:       name,
 		downloader: downloader,
 	}
 	// we are downloading everything into memory because we only
@@ -105,9 +112,9 @@ func OpenReadOnly(
 	_, err := downloader.Download(ctx,
 		writerAtBuffer,
 		&s3.GetObjectInput{
-		Bucket: aws.String(bucket),
-		Key:    aws.String(name),
-	})
+			Bucket: aws.String(bucket),
+			Key:    aws.String(name),
+		})
 	if err != nil {
 		return nil, err
 	}

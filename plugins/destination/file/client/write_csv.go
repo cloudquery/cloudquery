@@ -3,13 +3,11 @@ package client
 import (
 	"context"
 	"encoding/csv"
-	"path"
 )
 
 func (c *Client) writeCSVResource(ctx context.Context, tableName string, resources <-chan []interface{}) error {
 	var err error
-	filePath := path.Join(c.csvSpec.Directory, tableName+".csv")
-	f, err := c.openAppendOnly(ctx, filePath)
+	f, err := c.openAppendOnly(ctx, tableName+".csv")
 	if err != nil {
 		return err
 	}

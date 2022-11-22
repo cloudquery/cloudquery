@@ -12,14 +12,13 @@ const (
 
 	FormatTypeCSV  FormatType = "csv"
 	FormatTypeJSON FormatType = "json"
-
 )
 
 type Spec struct {
-	Directory string      `json:"directory,omitempty"`
-	Backend   BackendType `json:"backend,omitempty"`
-	Format    FormatType  `json:"format,omitempty"`
-	MaxFileSize uint64    `json:"max_file_size,omitempty"`
+	Directory   string      `json:"directory,omitempty"`
+	Backend     BackendType `json:"backend,omitempty"`
+	Format      FormatType  `json:"format,omitempty"`
+	MaxFileSize uint64      `json:"max_file_size,omitempty"`
 }
 
 func (s *Spec) SetDefaults() {
