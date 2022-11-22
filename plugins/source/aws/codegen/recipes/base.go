@@ -11,7 +11,6 @@ import (
 	"reflect"
 	"regexp"
 	"runtime"
-	"sort"
 	"strings"
 	"text/template"
 
@@ -432,35 +431,20 @@ func validateServiceMultiplex(multiplexerCall string) error {
 	submatchAll := re.FindStringSubmatch(multiplexerCall)
 	t := client.ReadSupportedServiceRegions()
 
-	var services []string
+	services := make(map[string]bool)
+
 	for _, partition := range t.Partitions {
 		for service := range partition.Services {
-			services = appendIfMissing(services, service)
+			if _, ok := services[service]; !ok {
+				services[service] = true
+			}
 		}
 	}
 	if len(submatchAll) == 2 {
-		if !contains(services, submatchAll[1]) {
+		if _, ok := services[submatchAll[1]]; !ok {
 			return fmt.Errorf("invalid partition: %s", submatchAll[1])
 		}
 	}
 	return nil
 
-}
-
-func appendIfMissing(slice []string, i string) []string {
-	if contains(slice, i) {
-		return slice
-	}
-	slice = append(slice, i)
-	sort.Strings(slice)
-	return slice
-}
-
-func contains(s []string, e string) bool {
-	for _, a := range s {
-		if a == e {
-			return true
-		}
-	}
-	return false
 }
