@@ -18,7 +18,6 @@ func (c *Client) writeJSONResource(ctx context.Context, table *schema.Table, res
 	}
 	defer f.Close()
 
-
 	for r := range resources {
 		jsonObj := make(map[string]interface{}, len(table.Columns))
 		for i := range r {
