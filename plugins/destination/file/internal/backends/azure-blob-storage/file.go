@@ -119,6 +119,6 @@ func OpenReadOnly(
 	if err != nil {
 		return nil, err
 	}
-	f.reader = s.Body
+	f.reader = s.NewRetryReader(ctx, nil)
 	return &f, nil
 }

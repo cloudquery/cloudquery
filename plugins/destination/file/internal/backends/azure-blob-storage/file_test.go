@@ -3,6 +3,8 @@ package azure_blob_storage
 import (
 	"bytes"
 	"context"
+	"errors"
+	"io"
 	"os"
 	"testing"
 
@@ -66,7 +68,7 @@ func TestFileNoLimit(t *testing.T) {
 	}
 	content := make([]byte, testBufferSize)
 	n, err := reader.Read(content)
-	if err != nil {
+	if err != nil && !errors.Is(err, io.EOF) {
 		t.Fatal("error reading file:", err)
 	}
 	if n != len(testContent)*2 {
