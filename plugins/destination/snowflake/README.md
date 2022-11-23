@@ -6,7 +6,7 @@ The snowflake plugin helps you sync data to your Snowflake data warehouse. Note:
 
 This is the top level spec used by the Snowflake destination Plugin.
 
-- `connection_string` (string) (required)
+- `dsn` (string) (required)
 
   path to a file. such as `./mydb.sql`
 
@@ -25,6 +25,7 @@ Example DSNs:
 From Snowflake documentation:
 
 `account` - Name assigned to your Snowflake account. If you are not on us-west-2 or AWS deployement, append the region and platform to the end, e.g., <account>.<region> or <account>.<region>.<platform>.
+
 
 ## Underlying library
 
