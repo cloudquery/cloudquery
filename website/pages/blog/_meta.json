@@ -57,5 +57,6 @@
   "announcing-cloudquery-sqlite-destination": "Announcing the CloudQuery SQLite Destination Plugin",
   "introducing-wildcard-matching-for-tables": "Introducing Wildcard Matching for Tables",
   "aws-kms-key-grants-deep-dive": "A Deep Dive on AWS KMS Key Grants and Access",
-  "product-updates-1": "CloudQuery Product Updates #1"
+  "product-updates-1": "CloudQuery Product Updates #1",
+  "how-to-find-cross-account-eventbridge-usage": "How a Customer Used CloudQuery to find Cross Account AWS EventBridge Usage"
 }
