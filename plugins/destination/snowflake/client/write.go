@@ -8,7 +8,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *plugins.ClientResource) error {
+func (*Client) Write(ctx context.Context, tables schema.Tables, res <-chan *plugins.ClientResource) error {
 	return fmt.Errorf("Write not implemented for snowflake. Please use file destination plugin for writing/reading to snowflake")
 }
-

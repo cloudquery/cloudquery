@@ -14,7 +14,7 @@ func TestPlugin(t *testing.T) {
 			DSN: os.Getenv("SNOW_TEST_DSN"),
 		},
 		plugins.DestinationTestSuiteTests{
-			SkipOverwrite: true,
+			SkipOverwrite:   true,
 			SkipDeleteStale: true,
 		})
 }

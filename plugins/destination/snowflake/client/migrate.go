@@ -15,9 +15,9 @@ const (
 )
 
 type columnInfo struct {
-	name         string
-	typ          string
-	notNull      bool
+	name    string
+	typ     string
+	notNull bool
 }
 
 type tableInfo struct {
@@ -151,4 +151,3 @@ func (c *Client) getTableInfo(tableName string) (*tableInfo, error) {
 	}
 	return &info, nil
 }
-
