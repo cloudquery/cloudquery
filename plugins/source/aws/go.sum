@@ -100,8 +100,8 @@ github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.21.1 h1:lj4DpCep
 github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.21.1/go.mod h1:2LQRr4SMTXDqUodAi6pIi0u7t1f0+kMOCRYjh3dAflw=
 github.com/aws/aws-sdk-go-v2/service/configservice v1.27.5 h1:6s1OqpmRXjdS2vNM2Prel/k2qfRTBjNXw8gN5cX+u5o=
 github.com/aws/aws-sdk-go-v2/service/configservice v1.27.5/go.mod h1:YRQyy4b5FEc0SCSKOlZU68rzv6xnIWfw5fFkxPr5sgc=
-github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.22.0 h1:P2drMtOmet5foWfKV/T4zvFRsSsqaVzzxoCGrzJj1ss=
-github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.22.0/go.mod h1:9vkqDk+MFmcWqby2e00fO9S0OOCbBFvryL8Cnui978w=
+github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.22.1 h1:jceb7VsHfEIu30M/0/pIWp7YZIv6GN0bXTJ8mYNn5TU=
+github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.22.1/go.mod h1:9vkqDk+MFmcWqby2e00fO9S0OOCbBFvryL8Cnui978w=
 github.com/aws/aws-sdk-go-v2/service/dax v1.11.19 h1:oMqf+cUOpO0ovxHSL4fz11LPRXTgcosampySsUyuneM=
 github.com/aws/aws-sdk-go-v2/service/dax v1.11.19/go.mod h1:J2KFwTpLM6JCqbox0q98hsZbj0oRNhDoKck44uAebyc=
 github.com/aws/aws-sdk-go-v2/service/directconnect v1.17.22 h1:VG5hXnWYnmp0dL7ZQPKroXuSAQH8vQQxcBgg/jhNMiM=
@@ -132,8 +132,8 @@ github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.18.26 h1:gAy84CkC
 github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.18.26/go.mod h1:uIsRP+M5F/Ch+21isqTg6u16FXl2yzupCX0Dli4eQEM=
 github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.17.2 h1:wVWqmbAibjQmO4m6GPZStqk0j4Y5Ao8nojqGRa83Ha0=
 github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.17.2/go.mod h1:UY0dc/ngkmYkBegXTwQ3kILLtItU8UJuueHHD91vn88=
-github.com/aws/aws-sdk-go-v2/service/emr v1.20.15 h1:EWb9QZmFhI3n8nOIiPH2UISleP1+0g/leaAHFqeUoEk=
-github.com/aws/aws-sdk-go-v2/service/emr v1.20.15/go.mod h1:uz/j390yhhyjOoxOKyj1VcMh0XXxgwyUU/r/vcPuOzo=
+github.com/aws/aws-sdk-go-v2/service/emr v1.20.16 h1:E7Emd07dj3zvimPXAJHXDocTQ0nBKBHUAOHDhVXQO3A=
+github.com/aws/aws-sdk-go-v2/service/emr v1.20.16/go.mod h1:uz/j390yhhyjOoxOKyj1VcMh0XXxgwyUU/r/vcPuOzo=
 github.com/aws/aws-sdk-go-v2/service/eventbridge v1.16.19 h1:33ly4ZtlD+nBISiRybOPFA0F1ecm8LApckdYdm1HY5s=
 github.com/aws/aws-sdk-go-v2/service/eventbridge v1.16.19/go.mod h1:8g5GmQrg6Q44ap2NIxBb6eCZojS70QhJiv0qsgHVSKo=
 github.com/aws/aws-sdk-go-v2/service/firehose v1.14.22 h1:XQmegBm7AoJp8hlvF6CkgyX+RVuAMP5S7E3XH4HpPPY=
