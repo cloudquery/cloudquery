@@ -83,7 +83,7 @@ func (c *Client) autoMigrateTable(_ context.Context, table *schema.Table) error 
 		switch {
 		case sqliteColumn == nil:
 			c.logger.Debug().Str("table", table.Name).Str("column", col.Name).Msg("Column doesn't exist, creating")
-			sql := "alter table \"" + table.Name + "\" add column \"" + columnName + "\" \"" + columnType + `"`
+			sql := "alter table " + table.Name + " add column \"" + columnName + "\" \"" + columnType + `"`
 			if _, err := c.db.Exec(sql); err != nil {
 				return fmt.Errorf("failed to add column %s on table %s: %w", col.Name, table.Name, err)
 			}
@@ -98,7 +98,7 @@ func (c *Client) createTableIfNotExist(_ context.Context, table *schema.Table) e
 	var sb strings.Builder
 	// TODO sanitize tablename
 	sb.WriteString("CREATE TABLE IF NOT EXISTS ")
-	sb.WriteString(`"` + table.Name + `"`)
+	sb.WriteString(table.Name)
 	sb.WriteString(" (")
 	totalColumns := len(table.Columns)
 
