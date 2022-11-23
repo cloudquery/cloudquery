@@ -10,7 +10,7 @@ kind: source
 spec:
   name: cloudflare
   path: cloudquery/cloudflare
-  version: "v2.2.19" # latest version of cloudflare plugin
+  version: "v2.2.20" # latest version of cloudflare plugin
   tables: ["*"]
   destinations: ["postgresql"]
 
