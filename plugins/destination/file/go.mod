@@ -13,7 +13,7 @@ require (
 	github.com/rs/zerolog v1.28.0
 )
 
-replace github.com/cloudquery/plugin-sdk => /Users/hermanschaaf/code/cloudquery/plugin-sdk
+replace github.com/cloudquery/plugin-sdk => ../../../../plugin-sdk-split
 
 require (
 	cloud.google.com/go v0.105.0 // indirect
