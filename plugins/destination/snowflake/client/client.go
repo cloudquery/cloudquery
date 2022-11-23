@@ -5,16 +5,18 @@ import (
 	"fmt"
 
 	"github.com/cloudquery/plugin-sdk/plugins"
+	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
 
 	"database/sql"
 
-	sf "github.com/snowflakedb/gosnowflake"
+	"github.com/snowflakedb/gosnowflake"
 )
 
 type Client struct {
 	plugins.DefaultReverseTransformer
+	schema.DefaultTransformer
 	db      *sql.DB
 	logger  zerolog.Logger
 	spec    specs.Destination
@@ -37,7 +39,7 @@ func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination)
 	if err := spec.Validate(); err != nil {
 		return nil, err
 	}
-	_, err := sf.ParseDSN(spec.DSN)
+	_, err := gosnowflake.ParseDSN(spec.DSN)
 	if err != nil {
 		return nil, err
 	}
