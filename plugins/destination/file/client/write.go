@@ -30,7 +30,7 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *pl
 		case FormatTypeJSON:
 			go func() {
 				defer wg.Done()
-				c.writeJSONResource(ctx, t.Name, workers[t.Name].writeChan)
+				c.writeJSONResource(ctx, t, workers[t.Name].writeChan)
 			}()
 		default:
 			panic("unknown format type")

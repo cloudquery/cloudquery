@@ -11,15 +11,21 @@ import (
 
 const maxJsonSize = 1024 * 1024 * 20
 
-func (c *Client) writeJSONResource(ctx context.Context, tableName string, resources <-chan []interface{}) error {
-	f, err := c.openAppendOnly(ctx, tableName+".json")
+func (c *Client) writeJSONResource(ctx context.Context, table *schema.Table, resources <-chan []interface{}) error {
+	f, err := c.openAppendOnly(ctx, table.Name+".json")
 	if err != nil {
 		return err
 	}
 	defer f.Close()
 
+
 	for r := range resources {
-		b, err := json.Marshal(r)
+		jsonObj := make(map[string]interface{}, len(table.Columns))
+		for i := range r {
+			jsonObj[table.Columns[i].Name] = r[i]
+		}
+
+		b, err := json.Marshal(jsonObj)
 		if err != nil {
 			return err
 		}

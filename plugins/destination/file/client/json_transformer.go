@@ -1,8 +1,6 @@
 package client
 
 import (
-	"encoding/json"
-
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -31,11 +29,15 @@ func (*Client) transformJSONInt8Array(v *schema.Int8Array) interface{} {
 }
 
 func (*Client) transformJSONJSON(v *schema.JSON) interface{} {
-	var res map[string]interface{}
-	if err := json.Unmarshal(v.Bytes, &res); err != nil {
-		panic(err)
-	}
-	return res
+	return map[string]interface{}{}
+	// if v.Status != schema.Present {
+	// 	return nil
+	// }
+	// var res map[string]interface{}
+	// if err := json.Unmarshal(v.Bytes, &res); err != nil {
+	// 	panic(err)
+	// }
+	// return res
 }
 
 func (*Client) transformJSONText(v *schema.Text) interface{} {
