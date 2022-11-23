@@ -14,7 +14,17 @@ import (
 func buildInstances(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mSSOAdmin := mocks.NewMockSsoadminClient(ctrl)
 	im := types.InstanceMetadata{}
-	err := faker.FakeObject(&im)
+	ps := types.PermissionSet{}
+	as := types.AccountAssignment{}
+	err := faker.FakeObject(&ps)
+	if err != nil {
+		t.Fatal(err)
+	}
+	err = faker.FakeObject(&as)
+	if err != nil {
+		t.Fatal(err)
+	}
+	err = faker.FakeObject(&im)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -22,6 +32,21 @@ func buildInstances(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mSSOAdmin.EXPECT().ListInstances(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&ssoadmin.ListInstancesOutput{
 			Instances: []types.InstanceMetadata{im},
+		}, nil)
+
+	mSSOAdmin.EXPECT().ListPermissionSets(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&ssoadmin.ListPermissionSetsOutput{
+			PermissionSets: []string{*ps.Name},
+		}, nil)
+
+	mSSOAdmin.EXPECT().DescribePermissionSet(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&ssoadmin.DescribePermissionSetOutput{
+			PermissionSet: &ps,
+		}, nil)
+
+	mSSOAdmin.EXPECT().ListAccountAssignments(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&ssoadmin.ListAccountAssignmentsOutput{
+			AccountAssignments: []types.AccountAssignment{as},
 		}, nil)
 
 	return client.Services{
