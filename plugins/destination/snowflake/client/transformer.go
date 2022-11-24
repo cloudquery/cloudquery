@@ -34,13 +34,9 @@ func (*Client) TransformJSON(v *schema.JSON) interface{} {
 	if v.Status != schema.Present {
 		return map[string]interface{}{}
 	}
-	var res map[string]interface{}
+	var res interface{}
 	if err := json.Unmarshal(v.Bytes, &res); err != nil {
-		var jsonArr []map[string]interface{}
-		if err := json.Unmarshal(v.Bytes, &jsonArr); err != nil {
-			panic(err)
-		}
-		return jsonArr
+		panic(err)
 	}
 	return res
 }

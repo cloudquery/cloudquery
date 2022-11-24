@@ -16,18 +16,17 @@ const batchFileSize = uint64(1024 * 1024 * 4) // 4MB
 
 const (
 	createOrReplaceFileFormat = `create or replace file format cq_plugin_json_format type = 'JSON' strip_outer_array = true`
-	createOrReplaceStage = `create or replace stage cq_plugin_stage file_format = cq_plugin_json_format;`
-	putFileIntoStage = `put file://%s @cq_plugin_stage auto_compress=true`
-	copyIntoTable = `copy into %s from @cq_plugin_stage/%s file_format = (format_name = cq_plugin_json_format) match_by_column_name = case_insensitive`
+	createOrReplaceStage      = `create or replace stage cq_plugin_stage file_format = cq_plugin_json_format;`
+	putFileIntoStage          = `put file://%s @cq_plugin_stage auto_compress=true`
+	copyIntoTable             = `copy into %s from @cq_plugin_stage/%s file_format = (format_name = cq_plugin_json_format) match_by_column_name = case_insensitive`
 )
 
 type worker struct {
 	writeChan chan []interface{}
 }
 
-
 func (c *Client) writeResource(ctx context.Context, table *schema.Table, resources <-chan []interface{}) error {
-	f, err := os.CreateTemp(os.TempDir(), table.Name + ".json.*")
+	f, err := os.CreateTemp(os.TempDir(), table.Name+".json.*")
 	if err != nil {
 		return err
 	}
@@ -64,10 +63,10 @@ func (c *Client) writeResource(ctx context.Context, table *schema.Table, resourc
 				return err
 			}
 			sql = fmt.Sprintf(copyIntoTable, table.Name, path.Base(f.Name()))
-			if _, err := c.db.Exec(sql); err != nil {
+			if _, err := c.db.ExecContext(ctx, sql); err != nil {
 				return fmt.Errorf("failed to copy file into table %s: %w", sql, err)
 			}
-			f, err = os.CreateTemp(os.TempDir(), table.Name + ".json.*")
+			f, err = os.CreateTemp(os.TempDir(), table.Name+".json.*")
 			if err != nil {
 				return err
 			}
@@ -79,7 +78,7 @@ func (c *Client) writeResource(ctx context.Context, table *schema.Table, resourc
 			return fmt.Errorf("failed to close temp file with last resource %s: %w", f.Name(), err)
 		}
 		sql := fmt.Sprintf(putFileIntoStage, f.Name())
-		if _, err := c.db.Exec(sql); err != nil {
+		if _, err := c.db.ExecContext(ctx, sql); err != nil {
 			return fmt.Errorf("failed to put file into stage with last resource %s: %w", sql, err)
 		}
 		sql = fmt.Sprintf(copyIntoTable, table.Name, path.Base(f.Name()))

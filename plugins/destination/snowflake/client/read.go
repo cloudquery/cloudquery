@@ -73,8 +73,8 @@ func (*Client) createResultsArray(table *schema.Table) []interface{} {
 }
 
 func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- []interface{}) error {
-	sql := fmt.Sprintf(readSQL, table.Name)
-	rows, err := c.db.Query(sql, sourceName)
+	stmt := fmt.Sprintf(readSQL, table.Name)
+	rows, err := c.db.Query(stmt, sourceName)
 	if err != nil {
 		return err
 	}
