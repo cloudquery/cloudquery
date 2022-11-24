@@ -132,3 +132,5 @@ subfolder
 recurse
 CCPA's
 bugfix
+nvm
+npm
