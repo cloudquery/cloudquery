@@ -64,7 +64,7 @@ spec:
   - On a per account basis you can reference local credentials in your `~/.aws/config` or `~/.aws/credentials` files. Prior to this all accounts sourced their credentials from default credential chain.
     In the example below, `account1` utilizes the default credential provider chain while `account2` sources its credentials from the shared credentials file
 
-  ```yaml
+```yaml
 kind: source
 spec:
   name: aws-0
@@ -82,7 +82,6 @@ spec:
         local_profile: "<NAMED_PROFILE>"
         role_arn: "<ARN_OF_ROLE_IN_account2>"
         session_name: "NAMED_OF_SESSION"
-  ```
 
   - On any account users can now specify a session name that CloudQuery will use when assuming a role in an account. This is important because some organizations enforce naming restrictions of their IAM Role sessions for better audibility.
 
