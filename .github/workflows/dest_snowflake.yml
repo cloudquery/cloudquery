@@ -68,8 +68,10 @@ jobs:
     timeout-minutes: 30
     needs: [resolve-runner]
     runs-on: ${{ needs.resolve-runner.outputs.runner }}
-    env:
-      CGO_ENABLED: 0
+    container:
+      image: ghcr.io/cloudquery/golang-cross:v10.0.0
+      env:
+        CGO_ENABLED: 1
     steps:
       - name: Checkout
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
@@ -80,14 +82,14 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.19.3-release-cache-${{ hashFiles('plugins/destination/snowflake/go.sum') }}
+          key: ${{ runner.os }}-go-1.19.3-release-cache-${{ hashFiles('plugins/destination/sqlite/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.19.3-release-cache-plugins-destination-snowflake
+            ${{ runner.os }}-go-1.19.3-release-cache-plugins-destination-sqlite
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/setup-go@v3
         with:
-          go-version-file: plugins/destination/snowflake/go.mod
+          go-version-file: plugins/destination/sqlite/go.mod
       - name: Install GoReleaser
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: goreleaser/goreleaser-action@v3
@@ -97,6 +99,6 @@ jobs:
           install-only: true
       - name: Run GoReleaser Dry-Run
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        run: goreleaser release --snapshot --rm-dist --skip-validate --skip-publish --skip-sign -f ./plugins/destination/snowflake/.goreleaser.yaml
+        run: goreleaser release --snapshot --rm-dist --skip-validate --skip-publish --skip-sign -f ./plugins/destination/sqlite/.goreleaser.yaml
         env:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
