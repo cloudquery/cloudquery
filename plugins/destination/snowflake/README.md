@@ -16,21 +16,22 @@ This is the top level spec used by the Snowflake destination Plugin.
 
   Snowflake DSN
 
-Example DSN:
+  Example DSN:
 
-```
-// user[:password]@account/database/schema[?param1=value1&paramN=valueN]
-// or
-// user[:password]@account/database[?param1=value1&paramN=valueN]
-// or
-// user[:password]@host:port/database/schema?account=user_account[?param1=value1&paramN=valueN]
-// or
-// host:port/database/schema?account=user_account[?param1=value1&paramN=valueN]
-```
+  ```
+  // user[:password]@account/database/schema[?param1=value1&paramN=valueN]
+  // or
+  // user[:password]@account/database[?param1=value1&paramN=valueN]
+  // or
+  // user[:password]@host:port/database/schema?account=user_account[?param1=value1&paramN=valueN]
+  // or
+  // host:port/database/schema?account=user_account[?param1=value1&paramN=valueN]
+  ```
 
-From Snowflake documentation:
+  From Snowflake documentation:
 
-`account` - Name assigned to your Snowflake account. If you are not on us-west-2 or AWS deployment, append the region and platform to the end, e.g., <account>.<region> or <account>.<region>.<platform>.
+  `account` - Name assigned to your Snowflake account. If you are not on us-west-2 or AWS deployment, append the region and platform to the end, e.g., <account>.<region> or <account>.<region>.<platform>.
+
 
 
 ## Underlying library
