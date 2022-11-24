@@ -40,7 +40,6 @@ func AccountResources() []*Resource {
 	for _, r := range resources {
 		r.Service = "account"
 		r.Multiplex = `client.AccountMultiplex`
-
 	}
 	return resources
 }
