@@ -11,13 +11,12 @@ func CertificateResources() []*Resource {
 			DataStruct:   &certificate.CertificateType{},
 			PKColumns:    []string{"id"},
 			ExtraColumns: []codegen.ColumnDefinition{SharingIDColumn},
-			TableName:    "certificates",
+			TableName:    "certificates", // Override
 		},
 		{
 			DataStruct:   &certificate.Package{},
 			PKColumns:    []string{"name"},
 			ExtraColumns: []codegen.ColumnDefinition{SharingIDColumn},
-			TableName:    "certificate_packages",
 		},
 	}
 }

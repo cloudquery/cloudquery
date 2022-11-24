@@ -16,61 +16,76 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/gandi/codegen/recipes"
 	"github.com/cloudquery/plugin-sdk/caser"
 	"github.com/cloudquery/plugin-sdk/codegen"
+	"github.com/gertd/go-pluralize"
 )
 
 //go:embed templates/*.go.tpl
 var templatesFS embed.FS
 
-var csr = caser.New(caser.WithCustomInitialisms(map[string]bool{
-	//"DNS": true,
-	//"DNSSec":        true,
-	//"LiveDNS":       true,
-	//"Simplehosting": true,
-	//"Vhost":         true,
-}), caser.WithCustomExceptions(map[string]string{
-	"dnssec":  "DNSSec",
-	"livedns": "LiveDNS",
-	"vhost":   "Vhost",
-}),
-)
-
 func main() {
-	_, filename, _, ok := runtime.Caller(0)
-	if !ok {
-		log.Fatal("Failed to get caller information")
-	}
-	codegenDir := path.Join(path.Dir(filename), "..", "resources", "services")
-
 	var resources []*recipes.Resource
 	resources = append(resources, recipes.CertificateResources()...)
 	resources = append(resources, recipes.DomainResources()...)
 	resources = append(resources, recipes.LiveDNSResources()...)
 	resources = append(resources, recipes.SimpleHostingResources()...)
 
+	pluralizeClient := pluralize.NewClient()
+	for _, s := range []string{"livedns", "simplehosting"} {
+		pluralizeClient.AddUncountableRule(s)
+	}
+
+	csr := caser.New(
+		caser.WithCustomInitialisms(map[string]bool{
+			"DNS":     true,
+			"DNSSec":  true,
+			"LiveDNS": true,
+			//"Simplehosting": true,
+			//"Vhost":         true,
+		}),
+		caser.WithCustomExceptions(map[string]string{
+			"dnssec":  "DNSSec",
+			"livedns": "LiveDNS",
+			"vhost":   "Vhost",
+		}),
+	)
+
 	for _, r := range resources {
 		// Set defaults and/or infer fields
 		if r.Template == "" {
 			r.Template = "resource"
 		}
+
+		ds := reflect.TypeOf(r.DataStruct)
+		if ds.Kind() == reflect.Ptr {
+			ds = ds.Elem()
+		}
+		basepkg := strings.ToLower(path.Base(ds.PkgPath()))
+
 		if r.Package == "" {
-			ds := reflect.TypeOf(r.DataStruct)
-			if ds.Kind() == reflect.Ptr {
-				ds = ds.Elem()
-			}
-			basepkg := strings.ToLower(path.Base(ds.PkgPath()))
-			if basepkg != "simplehosting" && !strings.HasSuffix(basepkg, "s") { // pluralize, except for "livedns", "simplehosting" or if already plural
-				basepkg += "s"
+			if !pluralizeClient.IsPlural(basepkg) {
+				basepkg = pluralizeClient.Plural(basepkg)
 			}
 			r.Package = basepkg
 		}
 
 		if r.TableName == "" {
-			r.TableName = ""
+			// TODO include parent table name in child table name
+			n := pluralizeClient.Singular(basepkg) + "_" + csr.ToSnake(ds.Name())
+			if !pluralizeClient.IsPlural(n) {
+				n = pluralizeClient.Plural(n)
+			}
+			r.TableName = n
 		}
 
 		r.Filename = csr.ToSnake(r.TableName) + ".go"
 		r.TableFuncName = csr.ToPascal(r.TableName)
 		r.ResolverFuncName = "fetch" + r.TableFuncName
+
+		_, filename, _, ok := runtime.Caller(0)
+		if !ok {
+			log.Fatal("Failed to get caller information")
+		}
+		codegenDir := path.Join(path.Dir(filename), "..", "resources", "services")
 
 		generateTable(codegenDir, *r)
 	}

@@ -13,7 +13,6 @@ func LiveDNSResources() []*Resource {
 			PKColumns:    []string{"fqdn"},
 			ExtraColumns: []codegen.ColumnDefinition{SharingIDColumn},
 			Relations:    []string{"LiveDNSSnapshots()"},
-			TableName:    "livedns_domains",
 		},
 		{
 			DataStruct: &livedns.Snapshot{},
@@ -25,7 +24,6 @@ func LiveDNSResources() []*Resource {
 					Resolver: `schema.ParentColumnResolver("fqdn")`,
 				},
 			},
-			TableName: "livedns_snapshots",
 		},
 	}
 }

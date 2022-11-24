@@ -12,7 +12,7 @@ func DomainResources() []*Resource {
 			DataStruct:          &domain.Details{},
 			PKColumns:           []string{"id"},
 			Relations:           []string{"DomainLiveDNS()", "DomainWebRedirections()", "DomainGlueRecords()", "DomainDNSSecKeys()"},
-			TableName:           "domains",
+			TableName:           "domains", // Override
 			PreResourceResolver: "getDomain",
 		},
 		{
@@ -25,7 +25,6 @@ func DomainResources() []*Resource {
 					Resolver: `schema.ParentColumnResolver("fqdn")`,
 				},
 			},
-			TableName: "domain_live_dns",
 		},
 		{
 			DataStruct: &domain.DNSSECKey{},
@@ -37,12 +36,11 @@ func DomainResources() []*Resource {
 					Resolver: `schema.ParentColumnResolver("fqdn")`,
 				},
 			},
-			TableName: "domain_dnssec_keys",
+			TableName: "domain_dnssec_keys", // Override
 		},
 		{
 			DataStruct: &domain.GlueRecord{},
 			PKColumns:  []string{"fqdn", "name"},
-			TableName:  "domain_glue_records",
 		},
 		{
 			DataStruct: &domain.WebRedirection{},
@@ -54,7 +52,6 @@ func DomainResources() []*Resource {
 					Resolver: `schema.ParentColumnResolver("fqdn")`,
 				},
 			},
-			TableName: "domain_web_redirections",
 		},
 	}
 }

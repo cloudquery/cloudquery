@@ -13,7 +13,6 @@ func SimpleHostingResources() []*Resource {
 			PKColumns:    []string{"id"},
 			ExtraColumns: []codegen.ColumnDefinition{SharingIDColumn},
 			Relations:    []string{"SimplehostingInstanceVhosts()"},
-			TableName:    "simplehosting_instances",
 		},
 		{
 			DataStruct: &simplehosting.Vhost{},
@@ -25,7 +24,7 @@ func SimpleHostingResources() []*Resource {
 					Resolver: `schema.ParentColumnResolver("id")`,
 				},
 			},
-			TableName: "simplehosting_instance_vhosts",
+			TableName: "simplehosting_instance_vhosts", // Override
 		},
 	}
 }
