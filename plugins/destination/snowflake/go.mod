@@ -3,13 +3,11 @@ module github.com/cloudquery/cloudquery/plugins/destination/snowflake
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v1.5.3
+	github.com/cloudquery/plugin-sdk v1.8.1
 	github.com/rs/zerolog v1.28.0
 	github.com/snowflakedb/gosnowflake v1.6.15
 	golang.org/x/sync v0.1.0
 )
-
-replace github.com/cloudquery/plugin-sdk => ../../../../plugin-sdk-split
 
 require (
 	github.com/99designs/go-keychain v0.0.0-20191008050251-8e49817e8af4 // indirect
