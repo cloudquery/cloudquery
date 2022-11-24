@@ -2,7 +2,7 @@
 
 The snowflake plugin helps you sync data to your Snowflake data warehouse.
 
-There are two ways to sync data two Snowflake:
+There are two ways to sync data to Snowflake:
 
 1. Direct (easy but not recommended for production or large data sets): This is the default mode of operation where CQ plugin will stream the results directly to the snowflake database, there is no additional setup needed apart from authentication to Snowflake.
 
