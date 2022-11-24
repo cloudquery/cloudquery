@@ -24,8 +24,9 @@ type Resource struct {
 	UnwrapEmbeddedStructs bool
 
 	// These are inferred with reflection but can be overridden
-	Package   string // Inferred from DataStruct package name pluralized
-	TableName string // Inferred from DataStruct package + name pluralized
+	Service    string // Inferred from DataStruct package, pluralized
+	SubService string // Inferred from DataStruct name, singular
+	TableName  string // singular Service + plural SubService
 
 	// These are auto calculated
 	ImportClient     bool   // true if the resource/column resolvers use the client package

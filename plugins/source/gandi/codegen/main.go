@@ -61,20 +61,22 @@ func main() {
 		}
 		basepkg := strings.ToLower(path.Base(ds.PkgPath()))
 
-		if r.Package == "" {
+		if r.Service == "" {
 			if !pluralizeClient.IsPlural(basepkg) {
 				basepkg = pluralizeClient.Plural(basepkg)
 			}
-			r.Package = basepkg
+			r.Service = basepkg
+		}
+		if r.SubService == "" {
+			r.SubService = csr.ToSnake(pluralizeClient.Singular(ds.Name()))
 		}
 
 		if r.TableName == "" {
 			// TODO include parent table name in child table name
-			n := pluralizeClient.Singular(basepkg) + "_" + csr.ToSnake(ds.Name())
-			if !pluralizeClient.IsPlural(n) {
-				n = pluralizeClient.Plural(n)
+			n := pluralizeClient.Singular(r.Service) + "_" + pluralizeClient.Plural(r.SubService)
+			if r.TableName == "" {
+				r.TableName = n
 			}
-			r.TableName = n
 		}
 
 		r.Filename = csr.ToSnake(r.TableName) + ".go"
@@ -138,7 +140,7 @@ func generateTable(basedir string, r recipes.Resource) {
 		log.Fatal(fmt.Errorf("failed to execute template: %w", err))
 	}
 
-	pkgPath := path.Join(basedir, r.Package)
+	pkgPath := path.Join(basedir, r.Service)
 	if err := os.Mkdir(pkgPath, 0755); err != nil && !os.IsExist(err) {
 		log.Fatal(err)
 	}
