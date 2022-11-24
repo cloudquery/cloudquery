@@ -62,6 +62,8 @@ jobs:
         run: go build .
       - name: Test
         run: make test
+        env: # Or as an environment variable
+          SNOW_TEST_DSN: ${{ secrets.SNOW_TEST_DSN }}
   validate-release:
     timeout-minutes: 30
     needs: [resolve-runner]

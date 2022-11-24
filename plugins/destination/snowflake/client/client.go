@@ -23,7 +23,7 @@ type Client struct {
 
 func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination) (plugins.DestinationClient, error) {
 	if destSpec.WriteMode != specs.WriteModeAppend {
-		return nil, fmt.Errorf("csv destination only supports append mode")
+		return nil, fmt.Errorf("snowflake destination only supports append mode")
 	}
 	c := &Client{
 		logger: logger.With().Str("module", "sf-dest").Logger(),
