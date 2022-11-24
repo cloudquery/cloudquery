@@ -3,6 +3,7 @@ module github.com/cloudquery/plugins/source/gcp
 go 1.19
 
 require (
+	cloud.google.com/go/apikeys v0.2.0
 	cloud.google.com/go/billing v1.7.0
 	cloud.google.com/go/compute v1.12.1
 	cloud.google.com/go/container v1.8.0

@@ -1,5 +1,6 @@
 # Source Plugin: gcp
 ## Tables
+- [gcp_apikeys_keys](gcp_apikeys_keys.md)
 - [gcp_compute_addresses](gcp_compute_addresses.md)
 - [gcp_compute_autoscalers](gcp_compute_autoscalers.md)
 - [gcp_compute_backend_services](gcp_compute_backend_services.md)

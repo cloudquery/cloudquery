@@ -3,6 +3,7 @@ package client
 import (
 	"context"
 
+	apikeys "cloud.google.com/go/apikeys/apiv2"
 	billing "cloud.google.com/go/billing/apiv1"
 	compute "cloud.google.com/go/compute/apiv1"
 	container "cloud.google.com/go/container/apiv1"
@@ -27,6 +28,7 @@ import (
 type GcpService string
 
 type Services struct {
+	ApikeysClient                 *apikeys.Client
 	BigqueryService               *bigquery.Service
 	BillingCloudBillingClient     *billing.CloudBillingClient
 	BillingCloudCatalogClient     *billing.CloudCatalogClient
@@ -77,6 +79,12 @@ func initServices(ctx context.Context, options []option.ClientOption) (*Services
 	options = append(options, option.WithTelemetryDisabled())
 	svcs := Services{}
 	var err error
+
+	svcs.ApikeysClient, err = apikeys.NewClient(ctx, options...)
+	if err != nil {
+		return nil, err
+	}
+
 	svcs.BigqueryService, err = bigquery.NewService(ctx, options...)
 	if err != nil {
 		return nil, err
