@@ -8,7 +8,7 @@ import (
 )
 
 func TestPlugin(t *testing.T) {
-	p := plugins.NewDestinationPlugin("postgresql", "development", New)
+	p := plugins.NewDestinationPlugin("snowflake", "development", New)
 	plugins.DestinationPluginTestSuiteRunner(t, p,
 		Spec{
 			DSN: os.Getenv("SNOW_TEST_DSN"),
