@@ -69,7 +69,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/quicksight v1.27.0
 	github.com/aws/aws-sdk-go-v2/service/ram v1.16.24
 	github.com/aws/aws-sdk-go-v2/service/rds v1.30.1
-	github.com/aws/aws-sdk-go-v2/service/redshift v1.26.15
+	github.com/aws/aws-sdk-go-v2/service/redshift v1.26.16
 	github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.12.21
 	github.com/aws/aws-sdk-go-v2/service/route53 v1.25.0
 	github.com/aws/aws-sdk-go-v2/service/route53domains v1.12.19
