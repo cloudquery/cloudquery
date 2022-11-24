@@ -2,7 +2,7 @@
 
 This small guide relates only when you add a new plugin to the CQ Monorepo.
 
-There are number of steps to follow in order to all the relevant CI and release process to your plugin.
+There are number of steps to follow in order to add all the relevant CI and release processes to your plugin.
 
 1) Add your plugin to the `plugins/destination` or `plugins/source` folder.
 2) Add an entry to `.github/pr_labeler.yml`
