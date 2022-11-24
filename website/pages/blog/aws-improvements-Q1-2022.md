@@ -56,7 +56,6 @@ spec:
       member_role_name: OrganizationAccountAccessRole
     regions:
       - '*'
-  ```
 
   for more information feel free to check out the documentation [here](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/configuration.md)
 
