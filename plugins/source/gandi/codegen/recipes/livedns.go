@@ -6,20 +6,14 @@ import (
 	"github.com/go-gandi/go-gandi/livedns"
 )
 
-func LiveDNSResources() []Resource {
-	return []Resource{
+func LiveDNSResources() []*Resource {
+	return []*Resource{
 		{
 			DataStruct:   &livedns.Domain{},
 			PKColumns:    []string{"fqdn"},
 			ExtraColumns: []codegen.ColumnDefinition{SharingIDColumn},
-			Relations:    []string{"DomainSnapshots()"},
-			TableName:    "gandi_livedns_domains",
-
-			Template:         "resource_manual",
-			Package:          "livedns",
-			TableFuncName:    "Domains",
-			Filename:         "domains.go",
-			ResolverFuncName: "fetchDomains",
+			Relations:    []string{"LiveDNSSnapshots()"},
+			TableName:    "livedns_domains",
 		},
 		{
 			DataStruct: &livedns.Snapshot{},
@@ -31,13 +25,7 @@ func LiveDNSResources() []Resource {
 					Resolver: `schema.ParentColumnResolver("fqdn")`,
 				},
 			},
-			TableName: "gandi_livedns_snapshots",
-
-			Template:         "resource_manual",
-			Package:          "livedns",
-			TableFuncName:    "DomainSnapshots",
-			Filename:         "domain_snapshots.go",
-			ResolverFuncName: "fetchDomainSnapshots",
+			TableName: "livedns_snapshots",
 		},
 	}
 }

@@ -6,20 +6,14 @@ import (
 	"github.com/go-gandi/go-gandi/simplehosting"
 )
 
-func SimpleHostingResources() []Resource {
-	return []Resource{
+func SimpleHostingResources() []*Resource {
+	return []*Resource{
 		{
 			DataStruct:   &simplehosting.Instance{},
 			PKColumns:    []string{"id"},
 			ExtraColumns: []codegen.ColumnDefinition{SharingIDColumn},
-			Relations:    []string{"InstanceVhosts()"},
-			TableName:    "gandi_simplehosting_instances",
-
-			Template:         "resource_manual",
-			Package:          "simplehosting",
-			TableFuncName:    "Instances",
-			Filename:         "instances.go",
-			ResolverFuncName: "fetchInstances",
+			Relations:    []string{"SimplehostingInstanceVhosts()"},
+			TableName:    "simplehosting_instances",
 		},
 		{
 			DataStruct: &simplehosting.Vhost{},
@@ -31,13 +25,7 @@ func SimpleHostingResources() []Resource {
 					Resolver: `schema.ParentColumnResolver("id")`,
 				},
 			},
-			TableName: "gandi_simplehosting_instance_vhosts",
-
-			Template:         "resource_manual",
-			Package:          "simplehosting",
-			TableFuncName:    "InstanceVhosts",
-			Filename:         "instance_vhosts.go",
-			ResolverFuncName: "fetchInstanceVhosts",
+			TableName: "simplehosting_instance_vhosts",
 		},
 	}
 }

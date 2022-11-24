@@ -26,5 +26,5 @@ func buildPackages(t *testing.T, ctrl *gomock.Controller) client.Services {
 }
 
 func TestPackages(t *testing.T) {
-	client.MockTestHelper(t, Packages(), buildPackages)
+	client.MockTestHelper(t, CertificatePackages(), buildPackages)
 }

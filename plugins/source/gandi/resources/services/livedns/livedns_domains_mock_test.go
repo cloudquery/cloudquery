@@ -33,5 +33,5 @@ func buildDomains(t *testing.T, ctrl *gomock.Controller) client.Services {
 }
 
 func TestDomains(t *testing.T) {
-	client.MockTestHelper(t, Domains(), buildDomains)
+	client.MockTestHelper(t, LiveDNSDomains(), buildDomains)
 }

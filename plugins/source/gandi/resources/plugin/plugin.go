@@ -20,10 +20,10 @@ func Plugin() *plugins.SourcePlugin {
 		Version,
 		[]*schema.Table{
 			certificates.Certificates(),
-			certificates.Packages(),
+			certificates.CertificatePackages(),
 			domains.Domains(),
-			livedns.Domains(),
-			simplehosting.Instances(),
+			livedns.LiveDNSDomains(),
+			simplehosting.SimplehostingInstances(),
 		},
 		client.Configure,
 	)

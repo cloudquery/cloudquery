@@ -8,16 +8,31 @@ import (
 	"log"
 	"os"
 	"path"
+	"reflect"
 	"runtime"
 	"strings"
 	"text/template"
 
 	"github.com/cloudquery/cloudquery/plugins/source/gandi/codegen/recipes"
+	"github.com/cloudquery/plugin-sdk/caser"
 	"github.com/cloudquery/plugin-sdk/codegen"
 )
 
 //go:embed templates/*.go.tpl
 var templatesFS embed.FS
+
+var csr = caser.New(caser.WithCustomInitialisms(map[string]bool{
+	//"DNS": true,
+	//"DNSSec":        true,
+	//"LiveDNS":       true,
+	//"Simplehosting": true,
+	//"Vhost":         true,
+}), caser.WithCustomExceptions(map[string]string{
+	"dnssec":  "DNSSec",
+	"livedns": "LiveDNS",
+	"vhost":   "Vhost",
+}),
+)
 
 func main() {
 	_, filename, _, ok := runtime.Caller(0)
@@ -26,19 +41,45 @@ func main() {
 	}
 	codegenDir := path.Join(path.Dir(filename), "..", "resources", "services")
 
-	var resources []recipes.Resource
+	var resources []*recipes.Resource
 	resources = append(resources, recipes.CertificateResources()...)
 	resources = append(resources, recipes.DomainResources()...)
 	resources = append(resources, recipes.LiveDNSResources()...)
 	resources = append(resources, recipes.SimpleHostingResources()...)
 
 	for _, r := range resources {
-		generateTable(codegenDir, r)
+		// Set defaults and/or infer fields
+		if r.Template == "" {
+			r.Template = "resource"
+		}
+		if r.Package == "" {
+			ds := reflect.TypeOf(r.DataStruct)
+			if ds.Kind() == reflect.Ptr {
+				ds = ds.Elem()
+			}
+			basepkg := strings.ToLower(path.Base(ds.PkgPath()))
+			if basepkg != "simplehosting" && !strings.HasSuffix(basepkg, "s") { // pluralize, except for "livedns", "simplehosting" or if already plural
+				basepkg += "s"
+			}
+			r.Package = basepkg
+		}
+
+		if r.TableName == "" {
+			r.TableName = ""
+		}
+
+		r.Filename = csr.ToSnake(r.TableName) + ".go"
+		r.TableFuncName = csr.ToPascal(r.TableName)
+		r.ResolverFuncName = "fetch" + r.TableFuncName
+
+		generateTable(codegenDir, *r)
 	}
 }
 
 func generateTable(basedir string, r recipes.Resource) {
 	var err error
+
+	r.TableName = "gandi_" + r.TableName
 
 	log.Println("Generating table", r.TableName)
 	opts := []codegen.TableOption{

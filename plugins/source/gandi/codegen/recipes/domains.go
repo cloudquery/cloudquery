@@ -6,19 +6,14 @@ import (
 	"github.com/go-gandi/go-gandi/domain"
 )
 
-func DomainResources() []Resource {
-	return []Resource{
+func DomainResources() []*Resource {
+	return []*Resource{
 		{
 			DataStruct:          &domain.Details{},
 			PKColumns:           []string{"id"},
 			Relations:           []string{"DomainLiveDNS()", "DomainWebRedirections()", "DomainGlueRecords()", "DomainDNSSecKeys()"},
-			TableName:           "gandi_domains",
+			TableName:           "domains",
 			PreResourceResolver: "getDomain",
-			Template:            "resource_manual",
-			Package:             "domains",
-			TableFuncName:       "Domains",
-			Filename:            "domains.go",
-			ResolverFuncName:    "fetchDomains",
 		},
 		{
 			DataStruct: &domain.LiveDNS{},
@@ -30,12 +25,7 @@ func DomainResources() []Resource {
 					Resolver: `schema.ParentColumnResolver("fqdn")`,
 				},
 			},
-			TableName:        "gandi_domain_live_dns",
-			Template:         "resource_manual",
-			Package:          "domains",
-			Filename:         "domain_live_dns.go",
-			TableFuncName:    "DomainLiveDNS",
-			ResolverFuncName: "fetchDomainLiveDNS",
+			TableName: "domain_live_dns",
 		},
 		{
 			DataStruct: &domain.DNSSECKey{},
@@ -47,22 +37,12 @@ func DomainResources() []Resource {
 					Resolver: `schema.ParentColumnResolver("fqdn")`,
 				},
 			},
-			TableName:        "gandi_domain_dnssec_keys",
-			Template:         "resource_manual",
-			Package:          "domains",
-			Filename:         "domain_dnssec_keys.go",
-			TableFuncName:    "DomainDNSSecKeys",
-			ResolverFuncName: "fetchDomainDNSSecKeys",
+			TableName: "domain_dnssec_keys",
 		},
 		{
-			DataStruct:       &domain.GlueRecord{},
-			PKColumns:        []string{"fqdn", "name"},
-			TableName:        "gandi_domain_glue_records",
-			Template:         "resource_manual",
-			Package:          "domains",
-			Filename:         "domain_glue_records.go",
-			TableFuncName:    "DomainGlueRecords",
-			ResolverFuncName: "fetchDomainGlueRecords",
+			DataStruct: &domain.GlueRecord{},
+			PKColumns:  []string{"fqdn", "name"},
+			TableName:  "domain_glue_records",
 		},
 		{
 			DataStruct: &domain.WebRedirection{},
@@ -74,12 +54,7 @@ func DomainResources() []Resource {
 					Resolver: `schema.ParentColumnResolver("fqdn")`,
 				},
 			},
-			TableName:        "gandi_domain_web_redirections",
-			Template:         "resource_manual",
-			Package:          "domains",
-			Filename:         "domain_web_redirections.go",
-			TableFuncName:    "DomainWebRedirections",
-			ResolverFuncName: "fetchDomainWebRedirections",
+			TableName: "domain_web_redirections",
 		},
 	}
 }

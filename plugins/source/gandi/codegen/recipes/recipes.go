@@ -24,11 +24,19 @@ type Resource struct {
 	PostResourceResolver  string
 	Relations             []string
 	UnwrapEmbeddedStructs bool
-	ResolverFuncName      string
-	TableFuncName         string
-	Filename              string
-	Package               string
-	ImportClient          bool
+
+	// These are inferred with reflection
+	Package string // Inferred from DataStruct package name pluralized
+
+	// These are auto calculated
+	ImportClient     bool   // true if the resource/column resolvers use the client package
+	Filename         string // Calculated from TableName
+	TableFuncName    string // Calculated from TableName
+	ResolverFuncName string // Calculated from TableFuncName
+
+	// used for generating resolver and mock tests, but set automatically
+	//parent   *Resource
+	//children []*Resource
 }
 
 var (

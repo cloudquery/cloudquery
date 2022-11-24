@@ -33,5 +33,5 @@ func buildInstances(t *testing.T, ctrl *gomock.Controller) client.Services {
 }
 
 func TestInstances(t *testing.T) {
-	client.MockTestHelper(t, Instances(), buildInstances)
+	client.MockTestHelper(t, SimplehostingInstances(), buildInstances)
 }
