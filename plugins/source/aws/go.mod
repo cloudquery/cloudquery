@@ -59,16 +59,16 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/kafka v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/kinesis v1.15.24
 	github.com/aws/aws-sdk-go-v2/service/kms v1.18.17
-	github.com/aws/aws-sdk-go-v2/service/lambda v1.25.0
+	github.com/aws/aws-sdk-go-v2/service/lambda v1.25.1
 	github.com/aws/aws-sdk-go-v2/service/lightsail v1.24.0
 	github.com/aws/aws-sdk-go-v2/service/mq v1.13.15
 	github.com/aws/aws-sdk-go-v2/service/mwaa v1.13.12
-	github.com/aws/aws-sdk-go-v2/service/neptune v1.18.2
+	github.com/aws/aws-sdk-go-v2/service/neptune v1.18.3
 	github.com/aws/aws-sdk-go-v2/service/organizations v1.16.15
 	github.com/aws/aws-sdk-go-v2/service/qldb v1.14.20
 	github.com/aws/aws-sdk-go-v2/service/quicksight v1.27.0
 	github.com/aws/aws-sdk-go-v2/service/ram v1.16.24
-	github.com/aws/aws-sdk-go-v2/service/rds v1.30.0
+	github.com/aws/aws-sdk-go-v2/service/rds v1.30.1
 	github.com/aws/aws-sdk-go-v2/service/redshift v1.26.15
 	github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.12.21
 	github.com/aws/aws-sdk-go-v2/service/route53 v1.25.0
