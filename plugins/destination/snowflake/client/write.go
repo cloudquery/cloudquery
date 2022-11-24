@@ -15,7 +15,7 @@ import (
 const batchFileSize = uint64(1024 * 1024 * 4) // 4MB
 
 const (
-	createOrReplaceFileFormat = `create or replace file format cq_plugin_json_format type = 'JSON' strip_outer_array = true`
+	createOrReplaceFileFormat = `create or replace file format cq_plugin_json_format type = 'JSON'`
 	createOrReplaceStage      = `create or replace stage cq_plugin_stage file_format = cq_plugin_json_format;`
 	putFileIntoStage          = `put file://%s @cq_plugin_stage auto_compress=true`
 	copyIntoTable             = `copy into %s from @cq_plugin_stage/%s file_format = (format_name = cq_plugin_json_format) match_by_column_name = case_insensitive`
