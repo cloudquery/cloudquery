@@ -38,25 +38,26 @@ CloudQuery key use-cases and features:
 - **Org Support**:
   You used to have to manually create (and maintain) an `account` block for each account in your entire organization. This was difficult for larger organizations where accounts are constantly being added and removed. We now integrate directly with AWS Organizations to find and configure all accounts in your Organization or in specific Organizational Units. Here is an example of a configuration for using the new organizations feature:
 
-```yaml
-kind: source
-spec:
-  name: aws-0
-  registry: github
-  path: cloudquery/aws
-  version: <LatestVersion>
-  tables: ['*']
-  # skip_tables: []
-  destinations: ["postgresql"]
+  ```yaml
+  kind: source
   spec:
-    aws_debug: false
-    org:
-      admin_account:
-        local_profile: "<NAMED_PROFILE>"
-      member_role_name: OrganizationAccountAccessRole
-    regions:
-      - '*'
-
+    name: aws-0
+    registry: github
+    path: cloudquery/aws
+    version: <LatestVersion>
+    tables: ['*']
+    # skip_tables: []
+    destinations: ["postgresql"]
+    spec:
+      aws_debug: false
+      org:
+        admin_account:
+          local_profile: "<NAMED_PROFILE>"
+        member_role_name: OrganizationAccountAccessRole
+      regions:
+        - '*'
+  ```
+  
   for more information feel free to check out the documentation [here](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/configuration.md)
 
 - **Credentials**:
@@ -64,24 +65,25 @@ spec:
   - On a per account basis you can reference local credentials in your `~/.aws/config` or `~/.aws/credentials` files. Prior to this all accounts sourced their credentials from default credential chain.
     In the example below, `account1` utilizes the default credential provider chain while `account2` sources its credentials from the shared credentials file
 
-```yaml
-kind: source
-spec:
-  name: aws-0
-  registry: github
-  path: cloudquery/aws
-  version: <LatestVersion>
-  tables: ['*']
-  # skip_tables: []
-  destinations: ["postgresql"]
+  ```yaml
+  kind: source
   spec:
-    accounts:
-      - id: "account1"
-        role_arn: "<ARN_OF_ROLE_IN_account1>"
-      - id: "account2"
-        local_profile: "<NAMED_PROFILE>"
-        role_arn: "<ARN_OF_ROLE_IN_account2>"
-        session_name: "NAMED_OF_SESSION"
+    name: aws-0
+    registry: github
+    path: cloudquery/aws
+    version: <LatestVersion>
+    tables: ['*']
+    # skip_tables: []
+    destinations: ["postgresql"]
+    spec:
+      accounts:
+        - id: "account1"
+          role_arn: "<ARN_OF_ROLE_IN_account1>"
+        - id: "account2"
+          local_profile: "<NAMED_PROFILE>"
+          role_arn: "<ARN_OF_ROLE_IN_account2>"
+          session_name: "NAMED_OF_SESSION"
+  ```
 
   - On any account users can now specify a session name that CloudQuery will use when assuming a role in an account. This is important because some organizations enforce naming restrictions of their IAM Role sessions for better audibility.
 
