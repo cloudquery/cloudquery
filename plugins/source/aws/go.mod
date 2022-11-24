@@ -82,9 +82,9 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/servicequotas v1.13.20
 	github.com/aws/aws-sdk-go-v2/service/sesv2 v1.15.1
-	github.com/aws/aws-sdk-go-v2/service/sfn v1.15.0
+	github.com/aws/aws-sdk-go-v2/service/sfn v1.15.1
 	github.com/aws/aws-sdk-go-v2/service/sns v1.18.5
-	github.com/aws/aws-sdk-go-v2/service/sqs v1.19.14
+	github.com/aws/aws-sdk-go-v2/service/sqs v1.19.15
 	github.com/aws/aws-sdk-go-v2/service/ssm v1.33.0
 	github.com/aws/aws-sdk-go-v2/service/ssoadmin v1.15.13
 	github.com/aws/aws-sdk-go-v2/service/sts v1.17.5
@@ -92,7 +92,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/waf v1.11.19
 	github.com/aws/aws-sdk-go-v2/service/wafv2 v1.23.1
 	github.com/aws/aws-sdk-go-v2/service/workspaces v1.27.0
-	github.com/aws/aws-sdk-go-v2/service/xray v1.15.0
+	github.com/aws/aws-sdk-go-v2/service/xray v1.15.1
 	github.com/aws/smithy-go v1.13.4
 	github.com/basgys/goxml2json v1.1.0
 	github.com/cloudquery/plugin-sdk v1.8.0
