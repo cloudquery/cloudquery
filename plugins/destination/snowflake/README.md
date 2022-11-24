@@ -10,7 +10,7 @@ There are two ways to sync data to Snowflake:
 
 ## Snowflake Spec
 
-This is the top level spec used by the Snowflake destination Plugin.
+This is the top level spec used by the Snowflake destination plugin.
 
 - `dsn` (string) (required)
 
