@@ -31,7 +31,7 @@ func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination)
 	var spec Spec
 	c.spec = destSpec
 	if err := destSpec.UnmarshalSpec(&spec); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal postgresql spec: %w", err)
+		return nil, fmt.Errorf("failed to unmarshal snowflake spec: %w", err)
 	}
 	spec.SetDefaults()
 	if err := spec.Validate(); err != nil {
