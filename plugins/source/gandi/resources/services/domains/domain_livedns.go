@@ -8,7 +8,7 @@ import (
 
 func DomainLiveDNS() *schema.Table {
 	return &schema.Table{
-		Name:     "gandi_domain_live_dns",
+		Name:     "gandi_domain_livedns",
 		Resolver: fetchDomainLiveDNS,
 		Columns: []schema.Column{
 			{

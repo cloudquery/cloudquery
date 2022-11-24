@@ -8,15 +8,12 @@ import (
 	"log"
 	"os"
 	"path"
-	"reflect"
 	"runtime"
 	"strings"
 	"text/template"
 
 	"github.com/cloudquery/cloudquery/plugins/source/gandi/codegen/recipes"
-	"github.com/cloudquery/plugin-sdk/caser"
 	"github.com/cloudquery/plugin-sdk/codegen"
-	"github.com/gertd/go-pluralize"
 )
 
 //go:embed templates/*.go.tpl
@@ -29,59 +26,14 @@ func main() {
 	resources = append(resources, recipes.LiveDNSResources()...)
 	resources = append(resources, recipes.SimpleHostingResources()...)
 
-	pluralizeClient := pluralize.NewClient()
-	for _, s := range []string{"livedns", "simplehosting"} {
-		pluralizeClient.AddUncountableRule(s)
-	}
-
-	csr := caser.New(
-		caser.WithCustomInitialisms(map[string]bool{
-			"DNS":     true,
-			"DNSSec":  true,
-			"LiveDNS": true,
-			//"Simplehosting": true,
-			//"Vhost":         true,
-		}),
-		caser.WithCustomExceptions(map[string]string{
-			"dnssec":  "DNSSec",
-			"livedns": "LiveDNS",
-			"vhost":   "Vhost",
-		}),
-	)
-
 	for _, r := range resources {
-		// Set defaults and/or infer fields
-		if r.Template == "" {
-			r.Template = "resource"
-		}
-
-		ds := reflect.TypeOf(r.DataStruct)
-		if ds.Kind() == reflect.Ptr {
-			ds = ds.Elem()
-		}
-		basepkg := strings.ToLower(path.Base(ds.PkgPath()))
-
-		if r.Service == "" {
-			if !pluralizeClient.IsPlural(basepkg) {
-				basepkg = pluralizeClient.Plural(basepkg)
-			}
-			r.Service = basepkg
-		}
-		if r.SubService == "" {
-			r.SubService = csr.ToSnake(pluralizeClient.Singular(ds.Name()))
-		}
-
-		if r.TableName == "" {
-			// TODO include parent table name in child table name
-			n := pluralizeClient.Singular(r.Service) + "_" + pluralizeClient.Plural(r.SubService)
-			if r.TableName == "" {
-				r.TableName = n
-			}
-		}
-
-		r.Filename = csr.ToSnake(r.TableName) + ".go"
-		r.TableFuncName = csr.ToPascal(r.TableName)
-		r.ResolverFuncName = "fetch" + r.TableFuncName
+		r.Infer()
+	}
+	if err := recipes.SetParentChildRelationships(resources); err != nil {
+		log.Fatal(err)
+	}
+	for _, r := range resources {
+		r.GenerateNames()
 
 		_, filename, _, ok := runtime.Caller(0)
 		if !ok {

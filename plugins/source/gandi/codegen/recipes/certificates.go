@@ -8,10 +8,10 @@ import (
 func CertificateResources() []*Resource {
 	return []*Resource{
 		{
-			DataStruct:   &certificate.CertificateType{},
-			PKColumns:    []string{"id"},
-			ExtraColumns: []codegen.ColumnDefinition{SharingIDColumn},
-			TableName:    "certificates", // Override
+			DataStruct:         &certificate.CertificateType{},
+			PKColumns:          []string{"id"},
+			ExtraColumns:       []codegen.ColumnDefinition{SharingIDColumn},
+			SkipSubserviceName: true,
 		},
 		{
 			DataStruct:   &certificate.Package{},

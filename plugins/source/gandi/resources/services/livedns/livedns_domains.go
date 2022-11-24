@@ -49,7 +49,7 @@ func LiveDNSDomains() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			LiveDNSSnapshots(),
+			LiveDNSDomainSnapshots(),
 		},
 	}
 }

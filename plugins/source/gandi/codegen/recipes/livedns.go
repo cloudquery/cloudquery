@@ -12,7 +12,7 @@ func LiveDNSResources() []*Resource {
 			DataStruct:   &livedns.Domain{},
 			PKColumns:    []string{"fqdn"},
 			ExtraColumns: []codegen.ColumnDefinition{SharingIDColumn},
-			Relations:    []string{"LiveDNSSnapshots()"},
+			Relations:    []string{"LiveDNSDomainSnapshots()"},
 		},
 		{
 			DataStruct: &livedns.Snapshot{},

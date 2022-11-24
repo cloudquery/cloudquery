@@ -24,7 +24,6 @@ func SimpleHostingResources() []*Resource {
 					Resolver: `schema.ParentColumnResolver("id")`,
 				},
 			},
-			TableName: "simplehosting_instance_vhosts", // Override
 		},
 	}
 }

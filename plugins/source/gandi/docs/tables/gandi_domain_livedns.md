@@ -1,4 +1,4 @@
-# Table: gandi_domain_live_dns
+# Table: gandi_domain_livedns
 
 
 

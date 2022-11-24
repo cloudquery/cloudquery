@@ -6,10 +6,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func LiveDNSSnapshots() *schema.Table {
+func LiveDNSDomainSnapshots() *schema.Table {
 	return &schema.Table{
-		Name:     "gandi_livedns_snapshots",
-		Resolver: fetchLiveDNSSnapshots,
+		Name:     "gandi_livedns_domain_snapshots",
+		Resolver: fetchLiveDNSDomainSnapshots,
 		Columns: []schema.Column{
 			{
 				Name:     "fqdn",
