@@ -26,7 +26,7 @@ func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination)
 		return nil, fmt.Errorf("csv destination only supports append mode")
 	}
 	c := &Client{
-		logger: logger.With().Str("module", "pg-dest").Logger(),
+		logger: logger.With().Str("module", "sf-dest").Logger(),
 	}
 	var spec Spec
 	c.spec = destSpec
