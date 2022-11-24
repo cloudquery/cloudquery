@@ -64,10 +64,11 @@ const (
 	cloudfrontScopeRegion      = defaultRegion
 )
 
-var errInvalidRegion = fmt.Errorf("region wildcard \"*\" is only supported as first argument")
+var errInvalidRegion = errors.New("region wildcard \"*\" is only supported as first argument")
 var errUnknownRegion = func(region string) error {
 	return fmt.Errorf("unknown region: %q", region)
 }
+var errRetrievingCredentials = errors.New("error retrieving AWS credentials (see logs for details). Please verify your credentials and try again")
 
 func (s *ServicesManager) ServicesByPartitionAccountAndRegion(partition, accountId, region string) *Services {
 	if region == "" {
@@ -302,7 +303,7 @@ func configureAwsClient(ctx context.Context, logger zerolog.Logger, awsConfig *S
 	// Test out retrieving credentials
 	if _, err := awsCfg.Credentials.Retrieve(ctx); err != nil {
 		logger.Error().Err(err).Msg("error retrieving credentials")
-		return awsCfg, fmt.Errorf("error retrieving AWS credentials (see logs for details). Please verify your credentials and try again")
+		return awsCfg, errRetrievingCredentials
 	}
 
 	return awsCfg, err
@@ -364,6 +365,10 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source) (s
 					logger.Warn().Str("account", account.AccountName).Err(err).Msg("Access denied for account")
 					continue
 				}
+			}
+			if errors.Is(err, errRetrievingCredentials) {
+				logger.Warn().Str("account", account.AccountName).Err(err).Msg("Could not retrieve credentials for account")
+				continue
 			}
 
 			return nil, err
