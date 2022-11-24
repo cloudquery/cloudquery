@@ -33,7 +33,6 @@ This is the top level spec used by the Snowflake destination plugin.
   `account` - Name assigned to your Snowflake account. If you are not on us-west-2 or AWS deployment, append the region and platform to the end, e.g., <account>.<region> or <account>.<region>.<platform>.
 
 
-
 ## Underlying library
 
 We use the official [github.com/snowflakedb/gosnowflake](https://github.com/snowflakedb/gosnowflake) package for database connection.
