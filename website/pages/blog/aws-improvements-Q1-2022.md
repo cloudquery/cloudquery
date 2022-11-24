@@ -46,7 +46,7 @@ spec:
   path: cloudquery/aws
   version: <LatestVersion>
   tables: ['*']
-  #skip_tables: ['']
+  # skip_tables: []
   destinations: ["postgresql"]
   spec:
     aws_debug: false
