@@ -77,7 +77,7 @@ func (c *Client) autoMigrateTable(_ context.Context, table *schema.Table) error 
 
 	for _, col := range table.Columns {
 		columnName := col.Name
-		columnType := c.SchemaTypeToSqlite(col.Type)
+		columnType := c.SchemaTypeToSnowflake(col.Type)
 		sqliteColumn := info.getColumn(columnName)
 
 		switch {
@@ -103,7 +103,7 @@ func (c *Client) createTableIfNotExist(_ context.Context, table *schema.Table) e
 	totalColumns := len(table.Columns)
 
 	for i, col := range table.Columns {
-		sqlType := c.SchemaTypeToSqlite(col.Type)
+		sqlType := c.SchemaTypeToSnowflake(col.Type)
 		if sqlType == "" {
 			c.logger.Warn().Str("table", table.Name).Str("column", col.Name).Msg("Column type is not supported, skipping")
 			continue

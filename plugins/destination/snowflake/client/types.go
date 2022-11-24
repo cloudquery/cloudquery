@@ -4,7 +4,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func (*Client) SchemaTypeToSqlite(t schema.ValueType) string {
+func (*Client) SchemaTypeToSnowflake(t schema.ValueType) string {
 	switch t {
 	case schema.TypeBool:
 		return "boolean"
