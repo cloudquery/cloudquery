@@ -18,6 +18,7 @@ import (
 	wafv2types "github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/aws/smithy-go"
 	"github.com/aws/smithy-go/logging"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/client/services"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
@@ -367,27 +368,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source) (s
 
 			return nil, err
 		}
-
-		// This is a work-around to skip disabled regions
-		// https://github.com/aws/aws-sdk-go-v2/issues/1068
-		res, err := ec2.NewFromConfig(awsCfg).DescribeRegions(ctx,
-			&ec2.DescribeRegionsInput{AllRegions: aws.Bool(false)},
-			func(o *ec2.Options) {
-				o.Region = defaultRegion
-				if account.DefaultRegion != "" {
-					o.Region = account.DefaultRegion
-				}
-
-				if len(localRegions) > 0 && !isAllRegions(localRegions) {
-					o.Region = localRegions[0]
-				}
-			})
-		if err != nil {
-			logger.Warn().Str("account", account.AccountName).Err(err).Msg("Failed to find disabled regions for account")
-			continue
-		}
-		account.Regions = filterDisabledRegions(localRegions, res.Regions)
-
+		account.Regions = findEnabledRegions(ctx, logger, account.AccountName, ec2.NewFromConfig(awsCfg), localRegions, account.DefaultRegion)
 		if len(account.Regions) == 0 {
 			logger.Warn().Str("account", account.AccountName).Err(err).Msg("No enabled regions provided in config for account")
 			continue
@@ -411,6 +392,43 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source) (s
 		return nil, fmt.Errorf("no enabled accounts instantiated")
 	}
 	return &client, nil
+}
+
+func findEnabledRegions(ctx context.Context, logger zerolog.Logger, accountName string, ec2Client services.Ec2Client, localRegions []string, accountDefaultRegion string) []string {
+	// By default we should use the default region (us-east-1)
+	regionsToCheck := []string{defaultRegion}
+	// If user specifies a Default Region we should use it
+	if accountDefaultRegion != "" {
+		regionsToCheck = []string{accountDefaultRegion}
+		// If no default region and * is not specified we should use all specified regions
+	} else if len(localRegions) > 0 && !isAllRegions(localRegions) {
+		regionsToCheck = localRegions
+	}
+
+	for _, region := range regionsToCheck {
+		enabledRegions, err := getEnabledRegions(ctx, ec2Client, region)
+		if err != nil {
+			logger.Warn().Str("account", accountName).Err(err).Msgf("Failed to find disabled regions for account when checking: %s", region)
+			continue
+		}
+		filteredRegions := filterDisabledRegions(localRegions, enabledRegions)
+		if len(filteredRegions) > 0 {
+			return filteredRegions
+		}
+	}
+	return []string{}
+}
+
+func getEnabledRegions(ctx context.Context, ec2Client services.Ec2Client, region string) ([]types.Region, error) {
+	res, err := ec2Client.DescribeRegions(ctx,
+		&ec2.DescribeRegionsInput{AllRegions: aws.Bool(false)},
+		func(o *ec2.Options) {
+			o.Region = region
+		})
+	if err != nil {
+		return nil, err
+	}
+	return res.Regions, nil
 }
 
 func filterDisabledRegions(regions []string, enabledRegions []types.Region) []string {
