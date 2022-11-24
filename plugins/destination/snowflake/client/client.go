@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	"github.com/cloudquery/plugin-sdk/plugins"
-	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
 
@@ -16,7 +15,6 @@ import (
 
 type Client struct {
 	plugins.DefaultReverseTransformer
-	schema.DefaultTransformer
 	db      *sql.DB
 	logger  zerolog.Logger
 	spec    specs.Destination

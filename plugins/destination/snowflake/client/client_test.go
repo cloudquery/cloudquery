@@ -15,6 +15,5 @@ func TestPlugin(t *testing.T) {
 		},
 		plugins.DestinationTestSuiteTests{
 			SkipOverwrite:   true,
-			SkipDeleteStale: true,
 		})
 }

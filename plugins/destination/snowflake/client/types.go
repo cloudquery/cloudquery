@@ -23,7 +23,7 @@ func (*Client) SchemaTypeToSqlite(t schema.ValueType) string {
 	case schema.TypeTimestamp:
 		return "timestamp"
 	case schema.TypeJSON:
-		return "object"
+		return "variant"
 	case schema.TypeUUIDArray:
 		return "array"
 	case schema.TypeCIDR:
