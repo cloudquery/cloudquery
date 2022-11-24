@@ -30,16 +30,16 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/configservice v1.27.5
 	github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.22.1
 	github.com/aws/aws-sdk-go-v2/service/dax v1.11.19
-	github.com/aws/aws-sdk-go-v2/service/directconnect v1.17.22
+	github.com/aws/aws-sdk-go-v2/service/directconnect v1.17.23
 	github.com/aws/aws-sdk-go-v2/service/docdb v1.19.15
-	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.17.6
+	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.17.7
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.72.1
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.17.23
 	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.13.19
-	github.com/aws/aws-sdk-go-v2/service/ecs v1.19.1
+	github.com/aws/aws-sdk-go-v2/service/ecs v1.19.2
 	github.com/aws/aws-sdk-go-v2/service/efs v1.17.19
 	github.com/aws/aws-sdk-go-v2/service/eks v1.23.0
-	github.com/aws/aws-sdk-go-v2/service/elasticache v1.24.0
+	github.com/aws/aws-sdk-go-v2/service/elasticache v1.24.1
 	github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk v1.14.20
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.14.23
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.18.26
