@@ -35,4 +35,4 @@ From Snowflake documentation:
 
 ## Underlying library
 
-We use the official [github.com/snowflakedb/gosnowflake](https://github.com/snowflakedb/gosnowflake) library to communicate with the database
+We use the official [github.com/snowflakedb/gosnowflake](https://github.com/snowflakedb/gosnowflake) package for database connection.
