@@ -56,7 +56,7 @@ func (c *Client) writeResource(ctx context.Context, table *schema.Table, resourc
 				return err
 			}
 			sql := fmt.Sprintf(putFileIntoStage, f.Name())
-			if _, err := c.db.Exec(sql); err != nil {
+			if _, err := c.db.ExecContext(ctx, sql); err != nil {
 				return fmt.Errorf("failed to put file into stage %s: %w", sql, err)
 			}
 			if err := os.Remove(f.Name()); err != nil {
@@ -82,7 +82,7 @@ func (c *Client) writeResource(ctx context.Context, table *schema.Table, resourc
 			return fmt.Errorf("failed to put file into stage with last resource %s: %w", sql, err)
 		}
 		sql = fmt.Sprintf(copyIntoTable, table.Name, path.Base(f.Name()))
-		if _, err := c.db.Exec(sql); err != nil {
+		if _, err := c.db.ExecContext(ctx, sql); err != nil {
 			return fmt.Errorf("failed to copy file into table with last resource %s: %w", sql, err)
 		}
 	}
@@ -94,11 +94,11 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *pl
 	eg := errgroup.Group{}
 	workers := make(map[string]*worker, len(tables))
 
-	if _, err := c.db.Exec(createOrReplaceFileFormat); err != nil {
+	if _, err := c.db.ExecContext(ctx, createOrReplaceFileFormat); err != nil {
 		return fmt.Errorf("failed to create file format %s: %w", createOrReplaceFileFormat, err)
 	}
 
-	if _, err := c.db.Exec(createOrReplaceStage); err != nil {
+	if _, err := c.db.ExecContext(ctx, createOrReplaceStage); err != nil {
 		return fmt.Errorf("failed to create stage %s: %w", createOrReplaceStage, err)
 	}
 
