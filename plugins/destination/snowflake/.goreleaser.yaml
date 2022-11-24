@@ -11,7 +11,7 @@ monorepo:
 includes:
   - from_file:
       # Relative to the directory Go Releaser is run from (which is the root of the repository)
-      path: ./plugins/.goreleaser.yaml
+      path: ./plugins/.goreleaser.template.yaml
 
 builds:
   - flags:
@@ -33,12 +33,13 @@ builds:
     ignore:
       - goos: windows
         goarch: arm64
-# linux arm64 has some issues with cross-compile
+      # linux arm64 has some issues with cross-compile
       - goos: linux
         goarch: arm64
     overrides:
       - goos: windows
         goarch: amd64
+        goamd64: v1
         env:
           - CGO_ENABLED=1
           - GO111MODULE=on
