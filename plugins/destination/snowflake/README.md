@@ -14,7 +14,7 @@ This is the top level spec used by the Snowflake destination Plugin.
 
 - `dsn` (string) (required)
 
-  path to a file. such as `./mydb.sql`
+  Snowflake DSN
 
 Example DSN:
 
