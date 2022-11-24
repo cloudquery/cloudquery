@@ -30,22 +30,22 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/configservice v1.27.5
 	github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.22.1
 	github.com/aws/aws-sdk-go-v2/service/dax v1.11.19
-	github.com/aws/aws-sdk-go-v2/service/directconnect v1.17.22
+	github.com/aws/aws-sdk-go-v2/service/directconnect v1.17.23
 	github.com/aws/aws-sdk-go-v2/service/docdb v1.19.15
-	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.17.6
+	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.17.7
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.72.1
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.17.23
 	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.13.19
-	github.com/aws/aws-sdk-go-v2/service/ecs v1.19.1
+	github.com/aws/aws-sdk-go-v2/service/ecs v1.19.2
 	github.com/aws/aws-sdk-go-v2/service/efs v1.17.19
 	github.com/aws/aws-sdk-go-v2/service/eks v1.23.0
-	github.com/aws/aws-sdk-go-v2/service/elasticache v1.24.0
+	github.com/aws/aws-sdk-go-v2/service/elasticache v1.24.1
 	github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk v1.14.20
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.14.23
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.18.26
 	github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.17.2
 	github.com/aws/aws-sdk-go-v2/service/emr v1.20.16
-	github.com/aws/aws-sdk-go-v2/service/eventbridge v1.16.19
+	github.com/aws/aws-sdk-go-v2/service/eventbridge v1.16.20
 	github.com/aws/aws-sdk-go-v2/service/firehose v1.14.22
 	github.com/aws/aws-sdk-go-v2/service/frauddetector v1.20.12
 	github.com/aws/aws-sdk-go-v2/service/fsx v1.25.4
@@ -57,9 +57,9 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/inspector2 v1.8.3
 	github.com/aws/aws-sdk-go-v2/service/iot v1.31.0
 	github.com/aws/aws-sdk-go-v2/service/kafka v1.18.0
-	github.com/aws/aws-sdk-go-v2/service/kinesis v1.15.23
+	github.com/aws/aws-sdk-go-v2/service/kinesis v1.15.24
 	github.com/aws/aws-sdk-go-v2/service/kms v1.18.17
-	github.com/aws/aws-sdk-go-v2/service/lambda v1.25.0
+	github.com/aws/aws-sdk-go-v2/service/lambda v1.25.1
 	github.com/aws/aws-sdk-go-v2/service/lightsail v1.24.0
 	github.com/aws/aws-sdk-go-v2/service/mq v1.13.15
 	github.com/aws/aws-sdk-go-v2/service/mwaa v1.13.12
