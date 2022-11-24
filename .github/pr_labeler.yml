@@ -26,6 +26,8 @@ sqlite:
   - plugins/destination/sqlite/**/*
 csv:
   - plugins/destination/csv/**/*
+snowflake:
+  - plugins/destination/snowflake/**/*
 website:
   - website/**/*
 cli:

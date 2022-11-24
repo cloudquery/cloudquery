@@ -25,6 +25,9 @@
     "plugins/destination/sqlite": {
       "component": "plugins-destination-sqlite"
     },
+    "plugins/destination/snowflake": {
+      "component": "plugins-destination-snowflake"
+    },
     "plugins/destination/test": {
       "component": "plugins-destination-test"
     }
