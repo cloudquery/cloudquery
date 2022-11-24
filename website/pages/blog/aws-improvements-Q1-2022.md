@@ -38,7 +38,7 @@ CloudQuery key use-cases and features:
 - **Org Support**:
   You used to have to manually create (and maintain) an `account` block for each account in your entire organization. This was difficult for larger organizations where accounts are constantly being added and removed. We now integrate directly with AWS Organizations to find and configure all accounts in your Organization or in specific Organizational Units. Here is an example of a configuration for using the new organizations feature:
 
-  ``` yaml
+  ```yaml
 kind: source
 spec:
   name: aws-0
