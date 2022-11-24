@@ -63,12 +63,12 @@ func Configure(_ context.Context, logger zerolog.Logger, s specs.Source) (schema
 }
 
 func getGandiServices(spec *Spec) (*Services, error) {
-	if spec.ApiKey == "" {
+	if spec.APIKey == "" {
 		return nil, errors.New("no API key provided")
 	}
 
 	gCfg := config.Config{
-		APIKey:    spec.ApiKey,
+		APIKey:    spec.APIKey,
 		SharingID: spec.SharingID,
 		Debug:     spec.GandiDebug,
 		APIURL:    spec.EndpointURL,
