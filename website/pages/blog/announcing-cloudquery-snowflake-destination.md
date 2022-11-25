@@ -13,7 +13,7 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 ## Introduction
 
-Cloud Infrastructure data exploded over the last decade which created the need to store those in data-warehouses and datalakes for analysis and reporting enabled by cheap storage. Today I'm excited to announce the release of our new [Snowflake destination plugin](../docs/recipes/destinations/snowflake), which enables you to take advantage of [CloudQuery open source](https://github.com/cloudquery/cloudquery) high-performance data-integration platform and sync all supported CloudQuery [source plugins](../docs/plugins/sources) to a [Snowflake](https://www.snowflake.com/) database.
+Cloud infrastructure data exploded over the last decade. Teams using CloudQuery open source now collect data on more than 50 million (!) of their organization's cloud resources on a daily basis. This explosion has created the need to store this data in data warehouses and data lakes for better scaleability, analysis and reporting. Today I'm excited to announce the release of our new [Snowflake destination plugin](../docs/recipes/destinations/snowflake), which enables you to achieve this by syncing all supported CloudQuery [source plugins](../docs/plugins/sources) directly to a [Snowflake](https://www.snowflake.com/) database.
 
 ## Use Cases
 
