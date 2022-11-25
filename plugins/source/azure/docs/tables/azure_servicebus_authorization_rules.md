@@ -6,6 +6,7 @@ The primary key for this table is **id**.
 
 ## Relations
 This table depends on [azure_servicebus_topics](azure_servicebus_topics.md).
+
 The following tables depend on azure_servicebus_authorization_rules:
   - [azure_servicebus_access_keys](azure_servicebus_access_keys.md)
 
