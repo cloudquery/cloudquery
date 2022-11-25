@@ -11,7 +11,7 @@ kind: destination
 spec:
   name: snowflake
   path: cloudquery/snowflake
-  version: "v1.0.1" # latest version of snowflake plugin
+  version: "v1.0.2" # latest version of snowflake plugin
   spec:
     connection_string: ${SNOWFLAKE_CONNECTION_STRING}
 ```
