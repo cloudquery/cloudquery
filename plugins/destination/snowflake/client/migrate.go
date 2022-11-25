@@ -78,17 +78,17 @@ func (c *Client) autoMigrateTable(_ context.Context, table *schema.Table) error 
 	for _, col := range table.Columns {
 		columnName := col.Name
 		columnType := c.SchemaTypeToSnowflake(col.Type)
-		sqliteColumn := info.getColumn(columnName)
+		snowflakeColumn := info.getColumn(columnName)
 
 		switch {
-		case sqliteColumn == nil:
+		case snowflakeColumn == nil:
 			c.logger.Debug().Str("table", table.Name).Str("column", col.Name).Msg("Column doesn't exist, creating")
 			sql := "alter table " + table.Name + " add column \"" + columnName + "\" \"" + columnType + `"`
 			if _, err := c.db.Exec(sql); err != nil {
 				return fmt.Errorf("failed to add column %s on table %s: %w", col.Name, table.Name, err)
 			}
-		case sqliteColumn.typ != columnType:
-			return fmt.Errorf("column %s on table %s has different type than schema, expected %s got %s. trying dropping table and re-running", col.Name, table.Name, columnType, sqliteColumn.typ)
+		case snowflakeColumn.typ != columnType:
+			return fmt.Errorf("column %s on table %s has different type than schema, expected %s got %s. trying dropping table and re-running", col.Name, table.Name, columnType, snowflakeColumn.typ)
 		}
 	}
 	return nil
