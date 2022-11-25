@@ -5,18 +5,17 @@ import (
 	"github.com/cloudquery/plugin-sdk/codegen"
 )
 
-func AccessGroupResources() []Resource {
-	return []Resource{
+func AccessGroupResources() []*Resource {
+	return []*Resource{
 		{
-			DefaultColumns:   []codegen.ColumnDefinition{AccountIDColumn, ZoneIDColumn},
+			ExtraColumns:     []codegen.ColumnDefinition{AccountIDColumn, ZoneIDColumn},
 			Multiplex:        "client.ZoneMultiplex",
-			CFStruct:         &cloudflare.AccessGroup{},
-			PrimaryKey:       "id",
-			Template:         "resource_manual",
+			DataStruct:       &cloudflare.AccessGroup{},
+			PKColumns:        []string{"id"},
 			TableName:        "cloudflare_access_groups",
 			TableFuncName:    "AccessGroups",
 			Filename:         "access_groups.go",
-			Package:          "access_groups",
+			Service:          "access_groups",
 			ResolverFuncName: "fetchAccessGroups",
 		},
 	}

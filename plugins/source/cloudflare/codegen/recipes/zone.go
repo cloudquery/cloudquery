@@ -5,18 +5,17 @@ import (
 	"github.com/cloudquery/plugin-sdk/codegen"
 )
 
-func ZoneResources() []Resource {
-	return []Resource{
+func ZoneResources() []*Resource {
+	return []*Resource{
 		{
-			DefaultColumns:   []codegen.ColumnDefinition{AccountIDColumn},
+			ExtraColumns:     []codegen.ColumnDefinition{AccountIDColumn},
 			Multiplex:        "client.AccountMultiplex",
-			CFStruct:         &cloudflare.Zone{},
-			PrimaryKey:       "id",
-			Template:         "resource_manual",
+			DataStruct:       &cloudflare.Zone{},
+			PKColumns:        []string{"id"},
 			TableName:        "cloudflare_zones",
 			TableFuncName:    "Zones",
 			Filename:         "zones.go",
-			Package:          "zones",
+			Service:          "zones",
 			ResolverFuncName: "fetchZones",
 		},
 	}
