@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/apprunner/latest/api/API_Service.html
 The primary key for this table is **arn**.
 
 ## Relations
+
 The following tables depend on aws_apprunner_services:
   - [aws_apprunner_operations](aws_apprunner_operations.md)
   - [aws_apprunner_custom_domains](aws_apprunner_custom_domains.md)

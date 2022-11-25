@@ -7,6 +7,7 @@ The primary key for this table is **arn**.
 ## Relations
 This table depends on [aws_backup_vaults](aws_backup_vaults.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

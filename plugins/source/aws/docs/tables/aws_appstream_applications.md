@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/appstream2/latest/APIReference/API_Application.html
 The primary key for this table is **arn**.
 
 ## Relations
+
 The following tables depend on aws_appstream_applications:
   - [aws_appstream_application_fleet_associations](aws_appstream_application_fleet_associations.md)
 

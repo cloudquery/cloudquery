@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/waf/latest/DDOSAPIReference/API_Subscription.html
 The primary key for this table is **arn**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
