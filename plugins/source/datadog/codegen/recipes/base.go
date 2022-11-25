@@ -1,9 +1,10 @@
-package recipies
+package recipes
 
 import (
 	"bytes"
 	"embed"
 	"fmt"
+	"github.com/cloudquery/plugin-sdk/caser"
 	"go/format"
 	"os"
 	"path"
@@ -13,7 +14,6 @@ import (
 
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/iancoleman/strcase"
 )
 
 type Resource struct {
@@ -62,7 +62,8 @@ func (r *Resource) Generate() error {
 	if err != nil {
 		return err
 	}
-	r.Table.Resolver = "fetch" + strcase.ToCamel(r.SubService)
+	csr := caser.New()
+	r.Table.Resolver = "fetch" + csr.ToCamel(r.SubService)
 	if r.Multiplex != "" {
 		r.Table.Multiplex = r.Multiplex
 	}
@@ -77,7 +78,7 @@ func (r *Resource) Generate() error {
 	}
 
 	tpl, err := template.New("resource.go.tpl").Funcs(template.FuncMap{
-		"ToCamel": strcase.ToCamel,
+		"ToCamel": csr.ToCamel,
 		"ToLower": strings.ToLower,
 	}).ParseFS(templatesFS, "templates/resource.go.tpl")
 	if err != nil {

@@ -1,4 +1,4 @@
-package recipies
+package recipes
 
 import (
 	"github.com/DataDog/datadog-api-client-go/v2/api/datadogV2"

@@ -77,12 +77,11 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (sche
 	}
 
 	if len(cfSpec.Accounts) == 0 {
-		return nil, errors.New("error no datadog accounts configured")
+		return nil, errors.New("no datadog accounts configured")
 	}
 	configuration := datadog.NewConfiguration()
 	apiClient := datadog.NewAPIClient(configuration)
 
-	// For now, going to do that in the resources. Still not sure how multiplexers work
 	client := Client{
 		logger:   logger,
 		Accounts: cfSpec.Accounts,

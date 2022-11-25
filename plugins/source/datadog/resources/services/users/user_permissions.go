@@ -7,10 +7,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func UserPermissions() *schema.Table {
+func userPermissions() *schema.Table {
 	return &schema.Table{
 		Name:     "datadog_user_permissions",
-		Resolver: fetchUserPermissions,
+		Resolver: fetchuserPermissions,
 		Columns: []schema.Column{
 			{
 				Name:     "account_name",

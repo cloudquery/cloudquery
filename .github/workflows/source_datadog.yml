@@ -1,4 +1,4 @@
-name: Source Plugin AWS Workflow
+name: Source Plugin Datadog Workflow
 
 on:
   pull_request:

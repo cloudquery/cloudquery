@@ -7,10 +7,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func Users() *schema.Table {
+func users() *schema.Table {
 	return &schema.Table{
 		Name:      "datadog_users",
-		Resolver:  fetchUsers,
+		Resolver:  fetchusers,
 		Multiplex: client.AccountMultiplex,
 		Columns: []schema.Column{
 			{

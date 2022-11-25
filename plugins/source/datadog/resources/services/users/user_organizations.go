@@ -7,10 +7,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func UserOrganizations() *schema.Table {
+func userOrganizations() *schema.Table {
 	return &schema.Table{
 		Name:     "datadog_user_organizations",
-		Resolver: fetchUserOrganizations,
+		Resolver: fetchuserOrganizations,
 		Columns: []schema.Column{
 			{
 				Name:     "account_name",
