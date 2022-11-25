@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.2.18](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v1.2.17...plugins-source-github-v1.2.18) (2022-11-23)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for github to v1.7.0 ([#4910](https://github.com/cloudquery/cloudquery/issues/4910)) ([faf723b](https://github.com/cloudquery/cloudquery/commit/faf723b18bb808f7859443df7f1ae24478210cf1))
+* **deps:** Update plugin-sdk for github to v1.8.0 ([#4973](https://github.com/cloudquery/cloudquery/issues/4973)) ([f9c16d0](https://github.com/cloudquery/cloudquery/commit/f9c16d0d6749bb8c3aef4e3160983b524657e4a6))
+
+## [1.2.17](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v1.2.16...plugins-source-github-v1.2.17) (2022-11-21)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for github to v1.6.0 ([#4848](https://github.com/cloudquery/cloudquery/issues/4848)) ([8d59baf](https://github.com/cloudquery/cloudquery/commit/8d59baff0a3a6e40617400e72a82a1068d2032f0))
+
 ## [1.2.16](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v1.2.15...plugins-source-github-v1.2.16) (2022-11-15)
 
 

@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/servicequotas/2019-06-24/apireference/API_ServiceInf
 The composite primary key for this table is (**account_id**, **region**, **service_code**, **service_name**).
 
 ## Relations
+
 The following tables depend on aws_servicequotas_services:
   - [aws_servicequotas_quotas](aws_servicequotas_quotas.md)
 

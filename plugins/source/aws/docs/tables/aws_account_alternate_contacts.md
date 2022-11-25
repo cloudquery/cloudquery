@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/accounts/latest/reference/API_AlternateContact.html
 The composite primary key for this table is (**account_id**, **alternate_contact_type**).
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

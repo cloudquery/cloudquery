@@ -5,6 +5,7 @@
 The primary key for this table is **_cq_id**.
 
 ## Relations
+
 The following tables depend on digitalocean_spaces:
   - [digitalocean_space_cors](digitalocean_space_cors.md)
 

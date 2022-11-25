@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/ram/latest/APIReference/API_ServiceNameAndResourceTy
 The composite primary key for this table is (**account_id**, **resource_type**, **service_name**).
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

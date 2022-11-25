@@ -4,6 +4,7 @@ on:
     tags:
       - "plugins-*-*-v*.*.*"
       - "!plugins-destination-sqlite-v*.*.*"
+      - "!plugins-destination-snowflake-v*.*.*"
 env:
   CGO_ENABLED: 0
 

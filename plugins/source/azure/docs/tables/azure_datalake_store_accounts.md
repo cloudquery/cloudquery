@@ -5,6 +5,7 @@ https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/datalake/store/mgm
 The primary key for this table is **id**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

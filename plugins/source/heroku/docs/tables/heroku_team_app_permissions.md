@@ -5,6 +5,7 @@ https://devcenter.heroku.com/articles/platform-api-reference#team-app-permission
 The primary key for this table is **_cq_id**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

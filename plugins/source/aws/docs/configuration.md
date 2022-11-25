@@ -1,6 +1,6 @@
 # AWS Source Plugin Configuration Reference
 
-## Example
+## Simple Example
 
 This example connects a single AWS account in one region to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](https://www.cloudquery.io/docs/reference/source-spec).
 
@@ -10,7 +10,7 @@ spec:
   # Source spec section
   name: aws
   path: cloudquery/aws
-  version: "v7.1.2" # latest version of aws plugin
+  version: "v7.2.0" # latest version of aws plugin
   tables: ["*"]
   destinations: ["postgresql"]
   spec: 
@@ -22,6 +22,115 @@ spec:
         local_profile: "account1"
     aws_debug: false
 ```
+
+### AWS Organization Example
+
+
+``` yml
+kind: source
+spec:
+  name: aws
+  registry: github
+  path: cloudquery/aws
+  version: "v7.1.4" # latest version of aws plugin
+  tables: ['*']
+  destinations: ["postgresql"]
+  spec:
+    aws_debug: false
+    org:
+      admin_account:
+        local_profile: "<NAMED_PROFILE>"
+      member_role_name: OrganizationAccountAccessRole
+    regions:
+      - '*'
+  ```
+
+
+CloudQuery supports discovery of AWS Accounts via AWS Organizations. This means that as Accounts get added or removed from your organization CloudQuery will be able to handle new or removed accounts without any configuration changes.
+
+Prerequisites for using AWS Org functionality:
+1. Have a role (or user) in an Admin account with the following access:
+
+  - `organizations:ListAccounts`
+  - `organizations:ListAccountsForParent`
+  - `organizations:ListChildren`
+
+2. Have a role in each member account that has a trust policy with a single principal. The default profile name is `OrganizationAccountAccessRole`. More information can be found [here](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html#orgs_manage_accounts_create-cross-account-role), including how to create the role if it doesn't already exist in your account.
+
+
+
+
+
+
+Using AWS Organization:
+1. Specify member role name:
+
+```yml
+    org:
+      member_role_name: OrganizationAccountAccessRole
+```
+
+2. Getting credentials that have  the necessary `organizations` permissions:
+
+    1. Sourcing Credentials from the default credential tool chain:
+    ```yml
+        org:
+          member_role_name: OrganizationAccountAccessRole
+    ```
+
+    2. Sourcing credentials from a named profile in the shared configuration or credentials file
+
+    ```yml
+        org:
+          member_role_name: OrganizationAccountAccessRole
+          admin_account:
+            local_profile: <Named-Profile>
+    ```
+
+    3. Assuming a role in admin account using credentials in the shared configuration or credentials file:
+
+    ```yml
+        org:
+          member_role_name: OrganizationAccountAccessRole
+          admin_account:
+            local_profile: <Named-Profile>
+            role_arn: arn:aws:iam::<ACCOUNT_ID>:role/<ROLE_NAME>
+            
+            // Optional. Specify the name of the session 
+            // role_session_name: ""
+
+            // Optional. Specify the ExternalID if required for trust policy 
+            // external_id: ""
+    ```
+
+3. Optional. If the trust policy configured for the member accounts requires different credentials than you configured in the previous step, then you can specify the credentials to use in the `member_trusted_principal` block 
+
+```yml
+    org:
+      member_role_name: OrganizationAccountAccessRole
+      admin_account:
+        local_profile: <Named-Profile-Admin>
+      member_trusted_principal:
+        local_profile: <Named-Profile-Member>
+      organization_units:
+        - ou-<ID-1>
+        - ou-<ID-2>
+```
+
+4. Optional. If you want to specify specific Organizational Units to fetch from you can add them to the `organization_units` list. 
+
+```yml
+    org:
+      member_role_name: OrganizationAccountAccessRole
+      admin_account:
+        local_profile: <Named-Profile-Admin>
+      organization_units:
+        - ou-<ID-1>
+        - ou-<ID-2>
+```
+
+
+
 
 ## AWS Spec
 
@@ -93,7 +202,7 @@ This is used to specify one or more accounts to extract information from. Note t
 
 - `organization_units` ([]string)
 
-  List of Organizational Units that CloudQuery should use to source accounts from
+  List of Organizational Units that CloudQuery should use to source accounts from. If you specify an OU, CloudQuery will not traverse nested OUs
 
 - `admin_account` ([Account](#account))
 

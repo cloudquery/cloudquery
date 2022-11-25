@@ -56,6 +56,7 @@ jobs:
                            "plugins/destination/test",
                            "plugins/destination/csv",
                            "plugins/destination/sqlite",
+                           "plugins/destination/snowflake",
                            ].filter(action => matchesFile(action))
             if (actions.length === 0) {
               console.log("No actions to wait for")
