@@ -6,6 +6,7 @@ The primary key for this table is **id**.
 
 ## Relations
 This table depends on [azure_cdn_profiles](azure_cdn_profiles.md).
+
 The following tables depend on azure_cdn_endpoints:
   - [azure_cdn_custom_domains](azure_cdn_custom_domains.md)
   - [azure_cdn_routes](azure_cdn_routes.md)

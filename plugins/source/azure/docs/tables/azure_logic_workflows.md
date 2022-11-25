@@ -5,6 +5,7 @@ https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/logic/mgmt/2019-05
 The primary key for this table is **id**.
 
 ## Relations
+
 The following tables depend on azure_logic_workflows:
   - [azure_logic_diagnostic_settings](azure_logic_diagnostic_settings.md)
 
