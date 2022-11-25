@@ -17,9 +17,9 @@ Cloud Infrastructure data exploded over the last decade which created the need t
 
 ## Use Cases
 
-### Cloud Infrastructure datalake and data-warehouse
+### Cloud Infrastructure data-lake and data-warehouse
 
-Snowflake is already used for ["Security data lake"](https://www.snowflake.com/en/data-cloud/workloads/cybersecurity/). CloudQuery unlocks bringing all your cloud [infrastructure configuration](../docs/plugins/sources) to the same place consolidating all your cloud infrastructure data in one place and enabling you to gain new insights.
+Snowflake is already used as a ["Security data lake"](https://www.snowflake.com/en/data-cloud/workloads/cybersecurity/). CloudQuery brings all your cloud [infrastructure configuration data](../docs/plugins/sources) to the same place consolidating all your security and infrastructure data in one place and enabling new insights.
 
 ### Historical data
 
