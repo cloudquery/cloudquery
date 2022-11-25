@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"embed"
 	"fmt"
-	"github.com/cloudquery/plugin-sdk/caser"
 	"go/format"
 	"os"
 	"path"
@@ -12,6 +11,7 @@ import (
 	"strings"
 	"text/template"
 
+	"github.com/cloudquery/plugin-sdk/caser"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -63,7 +63,7 @@ func (r *Resource) Generate() error {
 		return err
 	}
 	csr := caser.New()
-	r.Table.Resolver = "fetch" + csr.ToCamel(r.SubService)
+	r.Table.Resolver = "fetch" + csr.ToPascal(r.SubService)
 	if r.Multiplex != "" {
 		r.Table.Multiplex = r.Multiplex
 	}
@@ -78,7 +78,7 @@ func (r *Resource) Generate() error {
 	}
 
 	tpl, err := template.New("resource.go.tpl").Funcs(template.FuncMap{
-		"ToCamel": csr.ToCamel,
+		"ToCamel": csr.ToPascal,
 		"ToLower": strings.ToLower,
 	}).ParseFS(templatesFS, "templates/resource.go.tpl")
 	if err != nil {
