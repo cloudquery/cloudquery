@@ -5,6 +5,7 @@
 The composite primary key for this table is (**org**, **group_id**).
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
