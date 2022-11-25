@@ -8,15 +8,11 @@ import (
 func CertificatePackResources() []*Resource {
 	return []*Resource{
 		{
-			ExtraColumns:     []codegen.ColumnDefinition{AccountIDColumn, ZoneIDColumn},
-			Multiplex:        "client.ZoneMultiplex",
-			DataStruct:       &cloudflare.CertificatePack{},
-			PKColumns:        []string{"id"},
-			TableName:        "cloudflare_certificate_packs",
-			TableFuncName:    "CertificatePacks",
-			Filename:         "certificate_packs.go",
-			Service:          "certificate_packs",
-			ResolverFuncName: "fetchCertificatePacks",
+			ExtraColumns: []codegen.ColumnDefinition{AccountIDColumn, ZoneIDColumn},
+			Multiplex:    "client.ZoneMultiplex",
+			DataStruct:   &cloudflare.CertificatePack{},
+			PKColumns:    []string{"id"},
+			Service:      "certificate_packs",
 		},
 	}
 }

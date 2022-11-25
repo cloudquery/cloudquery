@@ -27,11 +27,7 @@ func DNSRecordResources() []*Resource {
 					Type:        schema.TypeJSON,
 				},
 			},
-			TableName:        "cloudflare_dns_records",
-			TableFuncName:    "DNSRecords",
-			Filename:         "dns_records.go",
-			Service:          "dns_records",
-			ResolverFuncName: "fetchDNSRecords",
+			Service: "dns_records",
 		},
 	}
 }

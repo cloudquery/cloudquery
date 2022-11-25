@@ -3,7 +3,6 @@ package recipes
 import (
 	"fmt"
 	"log"
-	"path"
 	"reflect"
 	"strings"
 
@@ -31,7 +30,8 @@ type Resource struct {
 	Relations             []string
 	UnwrapEmbeddedStructs bool
 
-	SkipSubserviceName bool // Skip name of the subservice in auto generated table names (including relations)
+	SkipServiceInTableName bool // Don't prepend service name to table name
+	SkipParentInTableName  bool // Don't prepend parent name to table name
 
 	// These are inferred with reflection but can be overridden
 	Service    string // Inferred from DataStruct package, pluralized
@@ -70,34 +70,23 @@ var (
 
 func init() {
 	pluralizeClient = pluralize.NewClient()
-	for _, s := range []string{"livedns", "simplehosting"} {
+	for _, s := range []string{"dns", "waf"} {
 		pluralizeClient.AddUncountableRule(s)
 	}
 
 	csr = caser.New(
 		caser.WithCustomInitialisms(map[string]bool{
-			"DNS":     true,
-			"DNSSec":  true,
-			"LiveDNS": true,
-			//"Simplehosting": true,
-			//"Vhost":         true,
+			"dns": true,
+			"url": true,
+			"waf": true,
 		}),
 		caser.WithCustomExceptions(map[string]string{
-			"dnssec":  "DNSSec",
-			"livedns": "LiveDNS",
-			"vhost":   "Vhost",
+			"dns":  "DNS",
+			"url":  "URL",
+			"urls": "URLs",
+			"waf":  "WAF",
 		}),
 	)
-}
-
-func enforceAbbrevations(word string) string {
-	word = strings.ReplaceAll(word, "live_dns", "livedns")
-	word = strings.ReplaceAll(word, "dns_sec", "dnssec")
-	return word
-}
-
-func toSnake(word string) string {
-	return enforceAbbrevations(csr.ToSnake(word))
 }
 
 func (r *Resource) Infer() {
@@ -110,44 +99,42 @@ func (r *Resource) Infer() {
 	if ds.Kind() == reflect.Ptr {
 		ds = ds.Elem()
 	}
-	basepkg := strings.ToLower(path.Base(ds.PkgPath()))
 
 	if r.Service == "" {
-		if !pluralizeClient.IsPlural(basepkg) {
-			basepkg = pluralizeClient.Plural(basepkg)
-		}
-		r.Service = basepkg
+		log.Fatalf("Service is required for %s", r.SubService)
 	}
 	if r.SubService == "" {
-		r.SubService = toSnake(pluralizeClient.Singular(ds.Name()))
+		r.SubService = csr.ToSnake(pluralizeClient.Singular(ds.Name()))
 	}
 }
 
 func (r *Resource) GenerateNames() {
 	if r.TableName == "" {
-		nParts := []string{pluralizeClient.Singular(r.Service)}
+		// Table names are always in [<singular>...]<plural> format. Add everything in singular form and pluralize the last word later
+
+		const sep = "_"
+		var nParts []string
+		if !r.SkipServiceInTableName {
+			nParts = strings.Split(pluralizeClient.Singular(r.Service), sep)
+		}
 		p := r.parent
-		for p != nil {
-			if !p.SkipSubserviceName {
-				nParts = append(nParts, pluralizeClient.Singular(p.SubService))
-			}
+		for !r.SkipParentInTableName && p != nil {
+			nParts = appendNoRepeat(nParts, strings.Split(pluralizeClient.Singular(p.SubService), sep)...)
 			p = p.parent
 		}
-		if !r.SkipSubserviceName {
-			nParts = append(nParts, pluralizeClient.Plural(r.SubService))
-		}
-		if l := len(nParts); l == 1 {
-			nParts[0] = pluralizeClient.Plural(nParts[0])
-		} else if l == 0 {
-			log.Fatalf("Could not generate table name for %s.%s", r.Service, r.SubService)
-		}
+		nParts = appendNoRepeat(nParts, strings.Split(pluralizeClient.Singular(r.SubService), sep)...)
+		nParts[len(nParts)-1] = pluralizeClient.Plural(nParts[len(nParts)-1])
 
 		if r.TableName == "" {
-			r.TableName = strings.Join(nParts, "_")
+			if len(nParts) == 0 {
+				log.Fatalf("Could not generate table name for %s.%s", r.Service, r.SubService)
+			}
+
+			r.TableName = strings.Join(nParts, sep)
 		}
 	}
 
-	r.Filename = toSnake(r.TableName) + ".go"
+	r.Filename = csr.ToSnake(r.TableName) + ".go"
 	r.TableFuncName = csr.ToPascal(r.TableName)
 	r.ResolverFuncName = "fetch" + r.TableFuncName
 }
@@ -156,15 +143,14 @@ func (r *Resource) GenerateNames() {
 func SetParentChildRelationships(resources []*Resource) error {
 	m := map[string]*Resource{}
 	for _, r := range resources {
-		key := enforceAbbrevations(pluralizeClient.Singular(r.Service) + "_" + pluralizeClient.Plural(r.SubService))
+		key := r.Service + "_" + pluralizeClient.Plural(r.SubService)
+		//log.Printf("%s.%s => %s", r.Service, r.SubService, key)
 		m[key] = r
 	}
 	for _, r := range resources {
 		for _, ch := range r.Relations {
-			name := strings.TrimPrefix(toSnake(strings.TrimSuffix(ch, "()")), r.Service+"_"+r.SubService+"_")
-			if !r.SkipSubserviceName {
-				name = r.Service + "_" + name
-			}
+			name := strings.TrimPrefix(csr.ToSnake(strings.TrimSuffix(ch, "()")), r.Service+"_"+r.SubService+"_")
+			name = r.Service + "_" + name
 			v, ok := m[name]
 			if !ok {
 				return fmt.Errorf("child not found for %s.%s: %s missing", r.Service, r.SubService, name)
@@ -174,4 +160,28 @@ func SetParentChildRelationships(resources []*Resource) error {
 		}
 	}
 	return nil
+}
+
+func appendNoRepeat(parts []string, addition ...string) []string {
+	// foo + bar = foo_bar
+	// foo + foo_bar = foo_bar
+	// foo_bar + bar_baz = foo_bar_baz
+	// foo_bar + baz_bax = foo_bar_baz_bax
+	// foo_bar_baz + bar_baz_bax = foo_bar_baz_bax
+
+	for i := len(addition); i > 0; i-- {
+		// ever-increasing from long form to short: foo_bar_baz, foo_bar, foo
+		if sliceEndsWith(parts, addition[:i]) {
+			return append(parts, addition[i:]...)
+		}
+	}
+	return append(parts, addition...)
+}
+
+func sliceEndsWith(haystack, needle []string) bool {
+	ln, lh := len(needle), len(haystack)
+	if ln > lh {
+		return false
+	}
+	return reflect.DeepEqual(needle, haystack[lh-ln:])
 }

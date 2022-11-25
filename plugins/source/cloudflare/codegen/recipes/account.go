@@ -9,14 +9,10 @@ import (
 func AccountResources() []*Resource {
 	return []*Resource{
 		{
-			DataStruct:       &cloudflare.Account{},
-			PKColumns:        []string{"id"},
-			TableName:        "cloudflare_accounts",
-			TableFuncName:    "Accounts",
-			Filename:         "accounts.go",
-			Service:          "accounts",
-			Relations:        []string{"accountMembers()"},
-			ResolverFuncName: "fetchAccounts",
+			DataStruct: &cloudflare.Account{},
+			PKColumns:  []string{"id"},
+			Service:    "accounts",
+			Relations:  []string{"AccountMembers()"},
 		},
 		{
 			DataStruct: &cloudflare.AccountMember{},
@@ -27,11 +23,7 @@ func AccountResources() []*Resource {
 					Resolver: "schema.ParentColumnResolver(\"id\")",
 				},
 			},
-			TableName:        "cloudflare_account_members",
-			TableFuncName:    "accountMembers",
-			Filename:         "account_members.go",
-			Service:          "accounts",
-			ResolverFuncName: "fetchAccountMembers",
+			Service: "accounts",
 		},
 	}
 }

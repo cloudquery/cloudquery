@@ -8,15 +8,11 @@ import (
 func ZoneResources() []*Resource {
 	return []*Resource{
 		{
-			ExtraColumns:     []codegen.ColumnDefinition{AccountIDColumn},
-			Multiplex:        "client.AccountMultiplex",
-			DataStruct:       &cloudflare.Zone{},
-			PKColumns:        []string{"id"},
-			TableName:        "cloudflare_zones",
-			TableFuncName:    "Zones",
-			Filename:         "zones.go",
-			Service:          "zones",
-			ResolverFuncName: "fetchZones",
+			ExtraColumns: []codegen.ColumnDefinition{AccountIDColumn},
+			Multiplex:    "client.AccountMultiplex",
+			DataStruct:   &cloudflare.Zone{},
+			PKColumns:    []string{"id"},
+			Service:      "zones",
 		},
 	}
 }

@@ -9,16 +9,12 @@ import (
 func WAFPackageResources() []*Resource {
 	return []*Resource{
 		{
-			ExtraColumns:     []codegen.ColumnDefinition{AccountIDColumn}, // ZoneIDColumn is already in the response
-			Multiplex:        "client.ZoneMultiplex",
-			DataStruct:       &cloudflare.WAFPackage{},
-			PKColumns:        []string{"id"},
-			TableName:        "cloudflare_waf_packages",
-			TableFuncName:    "WAFPackages",
-			Filename:         "waf_packages.go",
-			Service:          "waf_packages",
-			Relations:        []string{"wafGroups()", "wafRules()"},
-			ResolverFuncName: "fetchWAFPackages",
+			ExtraColumns: []codegen.ColumnDefinition{AccountIDColumn}, // ZoneIDColumn is already in the response
+			Multiplex:    "client.ZoneMultiplex",
+			DataStruct:   &cloudflare.WAFPackage{},
+			PKColumns:    []string{"id"},
+			Service:      "waf_packages",
+			Relations:    []string{"WAFGroups()", "WAFRules()"},
 		},
 		{
 			DataStruct: &cloudflare.WAFGroup{},
@@ -29,11 +25,8 @@ func WAFPackageResources() []*Resource {
 					Resolver: "schema.ParentColumnResolver(\"id\")",
 				},
 			},
-			TableName:        "cloudflare_waf_groups",
-			TableFuncName:    "wafGroups",
-			Filename:         "waf_groups.go",
-			Service:          "waf_packages",
-			ResolverFuncName: "fetchWAFGroups",
+			Service:   "waf_packages",
+			TableName: "waf_groups",
 		},
 		{
 			DataStruct: &cloudflare.WAFRule{},
@@ -44,11 +37,8 @@ func WAFPackageResources() []*Resource {
 					Resolver: "schema.ParentColumnResolver(\"id\")",
 				},
 			},
-			TableName:        "cloudflare_waf_rules",
-			TableFuncName:    "wafRules",
-			Filename:         "waf_rules.go",
-			Service:          "waf_packages",
-			ResolverFuncName: "fetchWAFRules",
+			Service:   "waf_packages",
+			TableName: "waf_rules",
 		},
 	}
 }

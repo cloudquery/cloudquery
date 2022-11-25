@@ -8,15 +8,11 @@ import (
 func AccessGroupResources() []*Resource {
 	return []*Resource{
 		{
-			ExtraColumns:     []codegen.ColumnDefinition{AccountIDColumn, ZoneIDColumn},
-			Multiplex:        "client.ZoneMultiplex",
-			DataStruct:       &cloudflare.AccessGroup{},
-			PKColumns:        []string{"id"},
-			TableName:        "cloudflare_access_groups",
-			TableFuncName:    "AccessGroups",
-			Filename:         "access_groups.go",
-			Service:          "access_groups",
-			ResolverFuncName: "fetchAccessGroups",
+			ExtraColumns: []codegen.ColumnDefinition{AccountIDColumn, ZoneIDColumn},
+			Multiplex:    "client.ZoneMultiplex",
+			DataStruct:   &cloudflare.AccessGroup{},
+			PKColumns:    []string{"id"},
+			Service:      "access_groups",
 		},
 	}
 }

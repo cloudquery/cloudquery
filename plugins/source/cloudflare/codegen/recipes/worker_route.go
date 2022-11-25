@@ -8,15 +8,11 @@ import (
 func WorkerRouteResources() []*Resource {
 	return []*Resource{
 		{
-			ExtraColumns:     []codegen.ColumnDefinition{AccountIDColumn, ZoneIDColumn},
-			Multiplex:        "client.ZoneMultiplex",
-			DataStruct:       &cloudflare.WorkerRoute{},
-			PKColumns:        []string{"id"},
-			TableName:        "cloudflare_worker_routes",
-			TableFuncName:    "WorkerRoutes",
-			Filename:         "worker_routes.go",
-			Service:          "worker_routes",
-			ResolverFuncName: "fetchWorkerRoutes",
+			ExtraColumns: []codegen.ColumnDefinition{AccountIDColumn, ZoneIDColumn},
+			Multiplex:    "client.ZoneMultiplex",
+			DataStruct:   &cloudflare.WorkerRoute{},
+			PKColumns:    []string{"id"},
+			Service:      "worker_routes",
 		},
 	}
 }
