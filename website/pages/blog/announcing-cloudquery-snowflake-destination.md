@@ -23,7 +23,7 @@ Snowflake is already used as a ["Security data lake"](https://www.snowflake.com/
 
 ### Historical data
 
-Maintaing historical data is a common use case for data warehouses. By using Snowflake as a destination you can now store all your cloud infrastructure data in a data warehouse for long term storage, analysis and investigation use-cases.
+Maintaining historical data is a common use case for data warehouses. By using Snowflake as a destination you can now store all your cloud infrastructure data in a data warehouse for long term storage, analysis and investigation use-cases.
 
 ## Syncing data
 
