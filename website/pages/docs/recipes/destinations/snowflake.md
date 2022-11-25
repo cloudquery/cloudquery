@@ -10,7 +10,7 @@ Note: Make sure you use environment variable expansion in production instead of 
 kind: destination
 spec:
   name: snowflake
-  path: cloudquery/snow
+  path: cloudquery/snowflake
   version: "v1.0.1" # latest version of postgresql plugin
   spec:
     connection_string: ${SNOW_CONNECTION_STRING}
