@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/cloudquery/plugin-sdk/clients"
+	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog/log"
 	"github.com/schollz/progressbar/v3"
@@ -29,13 +30,15 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 	}
 	defer destClients.Close()
 
-	tables, err := sourceClient.GetTables(ctx)
+	tables, err := sourceClient.GetTablesForSpec(ctx, &sourceSpec)
 	if err != nil {
 		return fmt.Errorf("failed to get tables for source %s: %w", sourceSpec.Name, err)
 	}
 
+	tableCount := len(schema.Tables(tables).FlattenTables())
+	fmt.Printf("Source %s will sync %d tables.\n", sourceSpec.Name, tableCount)
 	if !noMigrate {
-		fmt.Println("Starting migration for:", sourceSpec.Name, "->", sourceSpec.Destinations)
+		fmt.Printf("Starting migration for: %s -> %s\n", sourceSpec.Name, sourceSpec.Destinations)
 		log.Info().Str("source", sourceSpec.Name).Strs("destinations", sourceSpec.Destinations).Msg("Start migration")
 		migrateStart := time.Now()
 
@@ -57,7 +60,7 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 	resources := make(chan []byte)
 	g, gctx := errgroup.WithContext(ctx)
 	log.Info().Str("source", sourceSpec.Name).Strs("destinations", sourceSpec.Destinations).Msg("Start fetching resources")
-	fmt.Println("Starting sync for: ", sourceSpec.Name, "->", sourceSpec.Destinations)
+	fmt.Printf("Starting sync for: %v -> %v\n", sourceSpec.Name, sourceSpec.Destinations)
 	g.Go(func() error {
 		defer close(resources)
 		if err := sourceClient.Sync2(gctx, sourceSpec, resources); err != nil {
