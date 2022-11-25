@@ -7,6 +7,7 @@ The primary key for this table is **arn**.
 ## Relations
 This table depends on [aws_frauddetector_detectors](aws_frauddetector_detectors.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

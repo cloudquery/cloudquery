@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_ScheduledUpdateGrou
 The primary key for this table is **arn**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

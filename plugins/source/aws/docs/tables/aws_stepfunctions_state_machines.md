@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/step-functions/latest/apireference/API_DescribeState
 The primary key for this table is **arn**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
