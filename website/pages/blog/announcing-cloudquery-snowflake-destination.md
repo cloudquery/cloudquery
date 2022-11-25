@@ -19,11 +19,11 @@ Cloud infrastructure data exploded over the last decade. Teams using CloudQuery 
 
 ### Cloud Infrastructure data-lake and data-warehouse
 
-Snowflake is already used as a ["Security data-lake"](https://www.snowflake.com/en/data-cloud/workloads/cybersecurity/). CloudQuery brings all your cloud [infrastructure configuration data](../docs/plugins/sources) to the same place consolidating all your security and infrastructure data in one place and enabling new insights.
+Snowflake is already used as a ["Security data lake"](https://www.snowflake.com/en/data-cloud/workloads/cybersecurity/). CloudQuery brings all your cloud [infrastructure configuration data](../docs/plugins/sources) to the same place, consolidating your security and infrastructure data in one place and enabling new insights.
 
 ### Historical data
 
-Maintaining historical data is a common use case for data-lakes and data-warehouses. By using Snowflake as a destination you can now store all your cloud infrastructure data for long term storage, analysis and investigation use-cases.
+Maintaining historical data is a common use case for data warehouses. By using Snowflake as a destination, you can now store all your cloud infrastructure data in a data warehouse for long term storage, analysis and investigation use-cases.
 
 ## Syncing data
 
