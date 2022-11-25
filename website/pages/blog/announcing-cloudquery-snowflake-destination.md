@@ -35,7 +35,7 @@ There are two ways to sync data to Snowflake:
 
 2. Loading via CSV/JSON from a remote storage: This is the standard way of loading data into Snowflake, it is recommended for production and large data sets. This mode requires a remote storage (e.g. S3, GCS, Azure Blob Storage) and a Snowflake stage to be created. The CQ plugin will stream the results to the remote storage. You can then load those files via a cronjob or via SnowPipe. This method is still in the works and will be updated soon with a guide.
 
-Once data is synced you can start querying either with the native Snowflake interface, code or with any BI tool that supports Snowflake. Here is an the equivalent of cloud infrastructure Hello World query:
+Once data is synced you can start querying either with the native Snowflake interface, code or with any BI tool that supports Snowflake. Here is the "Hello World" of cloud infrastructure  queries:
 
 ![Select Public S3 Buckets](/images/blog/announcing-cloudquery-snowflake-destination/get-public-buckets.png)
 
