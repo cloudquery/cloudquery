@@ -37,4 +37,4 @@ There are two ways to sync data to Snowflake:
 
 ## Summary
 
-This is the first Snowflake destination plugin release with more improvments coming, and I'd love to hear your use-cases and ideas on how you leverage it. Feel free to open an issue on [GitHub](https://github.com/cloudquery/cloudquery) or join our [Discord](https://cloudquery.io/discord) to share your ideas.
+This is the first Snowflake destination plugin release with more improvements coming, and I'd love to hear your use-cases and ideas on how to leverage it. Feel free to open an issue on [GitHub](https://github.com/cloudquery/cloudquery) or join our [Discord](https://cloudquery.io/discord) to share your ideas.
