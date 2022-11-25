@@ -3,7 +3,7 @@ package client
 import "fmt"
 
 type Spec struct {
-	DSN string `json:"dsn,omitempty"`
+	ConnectionString string `json:"connection_string,omitempty"`
 }
 
 func (*Spec) SetDefaults() {
@@ -11,8 +11,8 @@ func (*Spec) SetDefaults() {
 }
 
 func (s *Spec) Validate() error {
-	if s.DSN == "" {
-		return fmt.Errorf("dsn is required")
+	if s.ConnectionString == "" {
+		return fmt.Errorf("connection_string is required")
 	}
 	return nil
 }
