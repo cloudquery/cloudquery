@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/waf/latest/APIReference/API_wafRegional_RuleGroup.ht
 The primary key for this table is **arn**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

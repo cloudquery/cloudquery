@@ -6,6 +6,7 @@ The primary key for this table is **arn**.
 
 ## Relations
 This table depends on [aws_ecr_repositories](aws_ecr_repositories.md).
+
 The following tables depend on aws_ecr_repository_images:
   - [aws_ecr_repository_image_scan_findings](aws_ecr_repository_image_scan_findings.md)
 

@@ -7,6 +7,7 @@ The primary key for this table is **_cq_id**.
 ## Relations
 This table depends on [aws_directconnect_gateways](aws_directconnect_gateways.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
