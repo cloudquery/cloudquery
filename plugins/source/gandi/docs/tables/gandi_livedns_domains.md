@@ -5,6 +5,7 @@
 The primary key for this table is **fqdn**.
 
 ## Relations
+
 The following tables depend on gandi_livedns_domains:
   - [gandi_livedns_domain_snapshots](gandi_livedns_domain_snapshots.md)
 

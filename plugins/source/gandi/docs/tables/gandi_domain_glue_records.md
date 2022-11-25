@@ -7,6 +7,7 @@ The composite primary key for this table is (**name**, **fqdn**).
 ## Relations
 This table depends on [gandi_domains](gandi_domains.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

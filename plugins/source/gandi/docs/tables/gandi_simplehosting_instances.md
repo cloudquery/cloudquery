@@ -5,6 +5,7 @@
 The primary key for this table is **id**.
 
 ## Relations
+
 The following tables depend on gandi_simplehosting_instances:
   - [gandi_simplehosting_instance_vhosts](gandi_simplehosting_instance_vhosts.md)
 

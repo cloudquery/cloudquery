@@ -7,6 +7,7 @@ The composite primary key for this table is (**instance_id**, **fqdn**).
 ## Relations
 This table depends on [gandi_simplehosting_instances](gandi_simplehosting_instances.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

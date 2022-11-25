@@ -3,14 +3,14 @@ module github.com/cloudquery/cloudquery/plugins/source/gandi
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v1.6.0
+	github.com/cloudquery/plugin-sdk v1.9.0
+	github.com/gertd/go-pluralize v0.2.1
 	github.com/go-gandi/go-gandi v0.5.1-0.20221118201059-f69b292fa399
 	github.com/golang/mock v1.6.0
 	github.com/rs/zerolog v1.28.0
 )
 
 require (
-	github.com/gertd/go-pluralize v0.2.1 // indirect
 	github.com/getsentry/sentry-go v0.15.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect

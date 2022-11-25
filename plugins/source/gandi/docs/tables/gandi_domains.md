@@ -5,6 +5,7 @@
 The primary key for this table is **id**.
 
 ## Relations
+
 The following tables depend on gandi_domains:
   - [gandi_domain_livedns](gandi_domain_livedns.md)
   - [gandi_domain_web_redirections](gandi_domain_web_redirections.md)
