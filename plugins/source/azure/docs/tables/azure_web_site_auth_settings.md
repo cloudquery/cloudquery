@@ -7,6 +7,7 @@ The primary key for this table is **id**.
 ## Relations
 This table depends on [azure_web_apps](azure_web_apps.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
