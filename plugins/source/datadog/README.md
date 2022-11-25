@@ -1,6 +1,6 @@
 # Datadog Plugin
 
-The CloudQuery DataDog plugin extracts your Datadog information and loads it into any supported CloudQuery destination (e.g. PostgreSQL).
+The CloudQuery Datadog plugin extracts your Datadog information and loads it into any supported CloudQuery destination (e.g. PostgreSQL).
 
 ## Links
 
