@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/xray/latest/api/API_Group.html
 The primary key for this table is **arn**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

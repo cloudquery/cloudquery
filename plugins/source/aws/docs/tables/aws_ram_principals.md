@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/ram/latest/APIReference/API_Principal.html
 The composite primary key for this table is (**account_id**, **id**).
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/appstream2/latest/APIReference/API_ImageBuilder.html
 The primary key for this table is **arn**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

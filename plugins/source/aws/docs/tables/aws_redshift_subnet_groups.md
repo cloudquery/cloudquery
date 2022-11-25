@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/redshift/latest/APIReference/API_ClusterSubnetGroup.
 The primary key for this table is **arn**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

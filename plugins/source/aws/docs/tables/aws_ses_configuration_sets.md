@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_GetConfigurationSet.h
 The composite primary key for this table is (**account_id**, **region**, **name**).
 
 ## Relations
+
 The following tables depend on aws_ses_configuration_sets:
   - [aws_ses_configuration_set_event_destinations](aws_ses_configuration_set_event_destinations.md)
 

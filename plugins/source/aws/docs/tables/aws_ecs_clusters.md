@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_Cluster.html
 The primary key for this table is **arn**.
 
 ## Relations
+
 The following tables depend on aws_ecs_clusters:
   - [aws_ecs_cluster_tasks](aws_ecs_cluster_tasks.md)
   - [aws_ecs_cluster_services](aws_ecs_cluster_services.md)

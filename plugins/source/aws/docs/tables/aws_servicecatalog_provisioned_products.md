@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/servicecatalog/latest/dg/API_ProvisionedProductAttri
 The primary key for this table is **arn**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
