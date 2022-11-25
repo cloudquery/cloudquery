@@ -13,6 +13,6 @@ spec:
   path: cloudquery/snowflake
   version: "v1.0.1" # latest version of snowflake plugin
   spec:
-    connection_string: ${SNOW_CONNECTION_STRING}
+    connection_string: ${SNOWFLAKE_CONNECTION_STRING}
 ```
 
