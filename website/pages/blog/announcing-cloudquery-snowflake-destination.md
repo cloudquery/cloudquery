@@ -27,7 +27,7 @@ Maintaining historical data is a common use case for data warehouses. By using S
 
 ## Syncing data
 
-Syncing data to snowflake can be done as with any other destination plugin so checkout our [Quickstart](../docs/quickstart) and [Snowflake recipe](../docs/recipes/destinations/snowflake).
+Syncing data to snowflake can be done as with any other destination plugin so check-out our [Quickstart](../docs/quickstart) and [Snowflake recipe](../docs/recipes/destinations/snowflake).
 
 There are two ways to sync data to Snowflake:
 
