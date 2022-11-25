@@ -8,6 +8,8 @@ digitalocean:
   - plugins/source/digitalocean/**/*
 fuzz:
   - plugins/source/fuzz/**/*
+gandi:
+  - plugins/source/gandi/**/*
 gcp:
   - plugins/source/gcp/**/*
 github:
