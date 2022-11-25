@@ -1,7 +1,7 @@
 package client
 
 type Spec struct {
-	Accounts []Account `hcl:"accounts,block"`
+	Accounts []Account `json:"accounts,block"`
 }
 
 type Account struct {
