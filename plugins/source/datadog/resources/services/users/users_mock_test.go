@@ -1,18 +1,19 @@
 package users
 
 import (
+	"testing"
+
 	"github.com/DataDog/datadog-api-client-go/v2/api/datadogV2"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/client"
 	mocks "github.com/cloudquery/cloudquery/plugins/source/datadog/client/mocks"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
-	"testing"
 )
 
 func buildUsersMock(t *testing.T, ctrl *gomock.Controller) client.DatadogServices {
 	m := mocks.NewMockUsersService(ctrl)
 	services := client.DatadogServices{
-		Users: m,
+		UsersAPI: m,
 	}
 
 	var users datadogV2.UsersResponse

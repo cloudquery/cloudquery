@@ -2,6 +2,7 @@ package users
 
 import (
 	"context"
+
 	"github.com/DataDog/datadog-api-client-go/v2/api/datadogV2"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -11,7 +12,7 @@ func fetchUserOrganizations(ctx context.Context, meta schema.ClientMeta, parent 
 	p := parent.Item.(datadogV2.User)
 	c := meta.(*client.Client)
 	ctx = c.BuildContextV2(ctx)
-	resp, _, err := c.DDServices.Users.ListUserOrganizations(ctx, *p.Id)
+	resp, _, err := c.DDServices.UsersAPI.ListUserOrganizations(ctx, *p.Id)
 	if err != nil {
 		return err
 	}

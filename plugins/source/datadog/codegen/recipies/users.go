@@ -7,9 +7,8 @@ import (
 )
 
 func Users() []*Resource {
-	return []*Resource{
+	resources := []*Resource{
 		{
-			Service:    "users",
 			SubService: "users",
 			Multiplex:  "client.AccountMultiplex",
 			Struct:     new(datadogV2.User),
@@ -24,16 +23,20 @@ func Users() []*Resource {
 			Relations: []string{"UserPermissions()", "UserOrganizations()"},
 		},
 		{
-			Service:      "users",
 			SubService:   "user_permissions",
 			Struct:       new(datadogV2.Permission),
 			ExtraColumns: defaultAccountColumns,
 		},
 		{
-			Service:      "users",
 			SubService:   "user_organizations",
 			Struct:       new(datadogV2.User),
 			ExtraColumns: defaultAccountColumns,
 		},
 	}
+
+	// set default values
+	for _, r := range resources {
+		r.Service = "users"
+	}
+	return resources
 }

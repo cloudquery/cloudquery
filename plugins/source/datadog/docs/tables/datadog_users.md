@@ -4,6 +4,10 @@
 
 The primary key for this table is **id**.
 
+## Relations
+The following tables depend on datadog_users:
+  - [datadog_user_permissions](datadog_user_permissions.md)
+  - [datadog_user_organizations](datadog_user_organizations.md)
 
 ## Columns
 | Name          | Type          |
@@ -13,8 +17,7 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |account_name|String|
-|id (PK)|JSON|
+|id (PK)|String|
 |attributes|JSON|
 |relationships|JSON|
 |type|String|
-|additional_properties|JSON|

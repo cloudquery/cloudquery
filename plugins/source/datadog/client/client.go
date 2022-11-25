@@ -3,6 +3,7 @@ package client
 import (
 	"context"
 	"fmt"
+
 	"github.com/DataDog/datadog-api-client-go/v2/api/datadog"
 	"github.com/DataDog/datadog-api-client-go/v2/api/datadogV2"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -86,7 +87,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (sche
 		logger:   logger,
 		Accounts: cfSpec.Accounts,
 		DDServices: DatadogServices{
-			Users: datadogV2.NewUsersApi(apiClient),
+			UsersAPI: datadogV2.NewUsersApi(apiClient),
 		},
 	}
 
