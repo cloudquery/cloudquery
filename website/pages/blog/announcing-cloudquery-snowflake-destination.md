@@ -31,7 +31,7 @@ Syncing data to snowflake can be done as with any other destination plugin, so c
 
 There are two ways to sync data to Snowflake:
 
-1. Direct (easy but not recommended for production or large data sets): This is the default mode of operation where CQ plugin will stream the results directly to the Snowflake database. There is no additional setup needed apart from authentication to Snowflake.
+1. Direct (easy but not recommended for production or large data sets): This is the default mode of operation where the CQ plugin will stream the results directly to the Snowflake database. There is no additional setup needed apart from authentication to Snowflake.
 
 2. Loading via CSV/JSON from a remote storage: This is the standard way of loading data into Snowflake, it is recommended for production and large data sets. This mode requires a remote storage (e.g. S3, GCS, Azure Blob Storage) and a Snowflake stage to be created. The CQ plugin will stream the results to the remote storage. You can then load those files via a cronjob or via SnowPipe. This method is still in the works and will be updated soon with a guide.
 
