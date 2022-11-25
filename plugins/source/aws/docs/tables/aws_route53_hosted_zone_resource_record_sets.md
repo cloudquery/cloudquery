@@ -7,6 +7,7 @@ The primary key for this table is **_cq_id**.
 ## Relations
 This table depends on [aws_route53_hosted_zones](aws_route53_hosted_zones.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
