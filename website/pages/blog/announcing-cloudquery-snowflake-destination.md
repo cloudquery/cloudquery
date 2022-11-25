@@ -19,7 +19,7 @@ Cloud Infrastructure data exploded over the last decade which created the need t
 
 ### Cloud Infrastructure datalake and data-warehouse
 
-Companies already maintain some of their cloud configuration data in a data warehouse for reporting and analysis. By bringing all [CloudQuery supported source plugins](../docs/plugins/sources) to Snowflake, you can now have a single source of truth for all your cloud infrastructure data in your current data warehouse. Having one cloud infrastructure data-warehouse can replace a sprawl of different fragmented closed source collection tools that are hard to maintain, scale and lock your data under yet another API.
+Snowflake is already used for ["Security data lake"](https://www.snowflake.com/en/data-cloud/workloads/cybersecurity/). CloudQuery unlocks bringing all your cloud [infrastructure configuration](../docs/plugins/sources) to the same place consolidating all your cloud infrastructure data in one place and enabling you to gain new insights.
 
 ### Historical data
 
