@@ -7,6 +7,7 @@ The composite primary key for this table is (**org**, **id**).
 ## Relations
 This table depends on [github_organizations](github_organizations.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

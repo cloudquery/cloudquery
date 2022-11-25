@@ -7,6 +7,7 @@ The primary key for this table is **arn**.
 ## Relations
 This table depends on [aws_redshift_clusters](aws_redshift_clusters.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_CacheClust
 The primary key for this table is **arn**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
