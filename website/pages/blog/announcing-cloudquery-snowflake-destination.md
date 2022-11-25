@@ -13,7 +13,7 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 ## Introduction
 
-Cloud Infrastructure data exploded over the last decade which created the need to store those in data-warehouses and datalakes for analysis and reporting enabled by cheap storage. Today I'm excited to announce the release of our new [Snowflake destination plugin](../docs/recipes/destinations/snowflake), which enables you to sync all supported CloudQuery [source plugins](../docs/plugins/sources) to a [Snowflake](https://www.sqlite.org/index.html) database.
+Cloud Infrastructure data exploded over the last decade which created the need to store those in data-warehouses and datalakes for analysis and reporting enabled by cheap storage. Today I'm excited to announce the release of our new [Snowflake destination plugin](../docs/recipes/destinations/snowflake), which enables you to sync all supported CloudQuery [source plugins](../docs/plugins/sources) to a [Snowflake](https://www.snowflake.com/) database.
 
 ## Use Cases
 
