@@ -29,7 +29,7 @@ spec:
   destinations: ["postgresql"]
   spec:
     accounts:
-      name:
-      api_key: <DD_CLIENT_API_KEY> # Required. API key
-      app_key: <DD_CLIENT_APP_KEY> # Required. app key
+      - name:
+        api_key: <DD_CLIENT_API_KEY> # Required. API key
+        app_key: <DD_CLIENT_APP_KEY> # Required. app key
 ```
