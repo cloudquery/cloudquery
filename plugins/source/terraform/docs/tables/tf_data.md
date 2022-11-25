@@ -5,6 +5,7 @@ Terraform meta data
 The primary key for this table is **_cq_id**.
 
 ## Relations
+
 The following tables depend on tf_data:
   - [tf_resources](tf_resources.md)
 
