@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_ComplianceSu
 The composite primary key for this table is (**account_id**, **region**, **compliance_type**).
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

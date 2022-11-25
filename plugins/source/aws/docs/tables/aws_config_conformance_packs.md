@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/config/latest/APIReference/API_ConformancePackDetail
 The primary key for this table is **arn**.
 
 ## Relations
+
 The following tables depend on aws_config_conformance_packs:
   - [aws_config_conformance_pack_rule_compliances](aws_config_conformance_pack_rule_compliances.md)
 

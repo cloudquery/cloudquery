@@ -7,6 +7,7 @@ The primary key for this table is **id**.
 ## Relations
 This table depends on [azure_keyvault_vaults](azure_keyvault_vaults.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

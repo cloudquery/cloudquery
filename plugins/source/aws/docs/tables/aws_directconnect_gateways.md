@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/directconnect/latest/APIReference/API_DirectConnectG
 The primary key for this table is **arn**.
 
 ## Relations
+
 The following tables depend on aws_directconnect_gateways:
   - [aws_directconnect_gateway_associations](aws_directconnect_gateway_associations.md)
   - [aws_directconnect_gateway_attachments](aws_directconnect_gateway_attachments.md)

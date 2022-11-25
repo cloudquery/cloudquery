@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/IAM/latest/APIReference/API_User.html
 The composite primary key for this table is (**id**, **account_id**).
 
 ## Relations
+
 The following tables depend on aws_iam_users:
   - [aws_iam_user_access_keys](aws_iam_user_access_keys.md)
   - [aws_iam_user_groups](aws_iam_user_groups.md)

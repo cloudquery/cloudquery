@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/accounts/latest/reference/API_ContactInformation.htm
 The primary key for this table is **account_id**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

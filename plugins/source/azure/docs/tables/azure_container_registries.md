@@ -5,6 +5,7 @@ https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/containerregistry/
 The primary key for this table is **id**.
 
 ## Relations
+
 The following tables depend on azure_container_registries:
   - [azure_container_replications](azure_container_replications.md)
 
