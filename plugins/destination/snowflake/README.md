@@ -12,11 +12,11 @@ There are two ways to sync data to Snowflake:
 
 This is the top level spec used by the Snowflake destination plugin.
 
-- `dsn` (string) (required)
+- `connection_string` (string) (required)
 
-  Snowflake DSN
+  Snowflake `connection_string`
 
-  Example DSN:
+  Example `connection_string`:
 
   ```
   // user[:password]@account/database/schema[?param1=value1&paramN=valueN]

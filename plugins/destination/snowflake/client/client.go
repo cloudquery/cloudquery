@@ -37,11 +37,11 @@ func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination)
 	if err := spec.Validate(); err != nil {
 		return nil, err
 	}
-	_, err := gosnowflake.ParseDSN(spec.DSN)
+	_, err := gosnowflake.ParseDSN(spec.ConnectionString)
 	if err != nil {
 		return nil, err
 	}
-	db, err := sql.Open("snowflake", spec.DSN)
+	db, err := sql.Open("snowflake", spec.ConnectionString)
 	if err != nil {
 		return nil, err
 	}
