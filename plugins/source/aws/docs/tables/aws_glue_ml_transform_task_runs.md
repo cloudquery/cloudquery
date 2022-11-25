@@ -7,6 +7,7 @@ The primary key for this table is **_cq_id**.
 ## Relations
 This table depends on [aws_glue_ml_transforms](aws_glue_ml_transforms.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

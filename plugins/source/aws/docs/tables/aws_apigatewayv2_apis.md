@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/apigateway/latest/api/API_Api.html
 The primary key for this table is **_cq_id**.
 
 ## Relations
+
 The following tables depend on aws_apigatewayv2_apis:
   - [aws_apigatewayv2_api_authorizers](aws_apigatewayv2_api_authorizers.md)
   - [aws_apigatewayv2_api_deployments](aws_apigatewayv2_api_deployments.md)

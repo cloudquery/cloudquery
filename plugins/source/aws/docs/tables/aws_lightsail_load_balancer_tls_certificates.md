@@ -7,6 +7,7 @@ The primary key for this table is **_cq_id**.
 ## Relations
 This table depends on [aws_lightsail_load_balancers](aws_lightsail_load_balancers.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
