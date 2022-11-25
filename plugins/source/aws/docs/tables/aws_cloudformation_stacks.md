@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_Stack.html
 The primary key for this table is **arn**.
 
 ## Relations
+
 The following tables depend on aws_cloudformation_stacks:
   - [aws_cloudformation_stack_resources](aws_cloudformation_stack_resources.md)
 

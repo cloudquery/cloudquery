@@ -7,6 +7,7 @@ The primary key for this table is **_cq_id**.
 ## Relations
 This table depends on [aws_qldb_ledgers](aws_qldb_ledgers.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

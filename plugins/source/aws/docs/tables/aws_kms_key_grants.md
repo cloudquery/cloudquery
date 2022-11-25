@@ -7,6 +7,7 @@ The composite primary key for this table is (**key_arn**, **grant_id**).
 ## Relations
 This table depends on [aws_kms_keys](aws_kms_keys.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
