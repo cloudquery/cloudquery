@@ -30,12 +30,13 @@ type Resource struct {
 	Relations             []string
 	UnwrapEmbeddedStructs bool
 
+	Service string // Required
+
 	SkipServiceInTableName bool // Don't prepend service name to table name
 	SkipParentInTableName  bool // Don't prepend parent name to table name
 
 	// These are inferred with reflection but can be overridden
-	Service    string // Inferred from DataStruct package, pluralized
-	SubService string // Inferred from DataStruct name, singular
+	SubService string // Inferred from DataStruct name
 	TableName  string // singular Service + plural SubService
 
 	// These are auto calculated
@@ -44,7 +45,7 @@ type Resource struct {
 	TableFuncName    string // Calculated from TableName
 	ResolverFuncName string // Calculated from TableFuncName
 
-	//used for generating better table names
+	// Used for generating better table names
 	parent   *Resource
 	children []*Resource
 }
