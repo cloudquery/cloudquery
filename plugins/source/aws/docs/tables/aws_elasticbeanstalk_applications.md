@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/elasticbeanstalk/latest/api/API_ApplicationDescripti
 The composite primary key for this table is (**arn**, **date_created**).
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
