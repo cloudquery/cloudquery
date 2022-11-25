@@ -7,6 +7,7 @@ The composite primary key for this table is (**arn**, **data_set_arn**).
 ## Relations
 This table depends on [aws_quicksight_data_sets](aws_quicksight_data_sets.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

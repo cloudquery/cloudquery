@@ -7,6 +7,7 @@ The primary key for this table is **_cq_id**.
 ## Relations
 This table depends on [aws_config_config_rules](aws_config_config_rules.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

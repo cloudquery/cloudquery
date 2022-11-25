@@ -7,6 +7,7 @@ The primary key for this table is **_cq_id**.
 ## Relations
 This table depends on [aws_docdb_engine_versions](aws_docdb_engine_versions.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
