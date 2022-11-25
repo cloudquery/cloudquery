@@ -13,17 +13,17 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 ## Introduction
 
-Cloud Infrastructure data exploded over the last decade which created the need to store those in data-warehouses and datalakes for analysis and reporting enabled by cheap storage. Today I'm excited to announce the release of our new [Snowflake destination plugin](../docs/recipes/destinations/snowflake), which enables you to sync all supported CloudQuery [source plugins](../docs/plugins/sources) to a [Snowflake](https://www.snowflake.com/) database.
+Cloud Infrastructure data exploded over the last decade which created the need to store those in data-warehouses and datalakes for analysis and reporting enabled by cheap storage. Today I'm excited to announce the release of our new [Snowflake destination plugin](../docs/recipes/destinations/snowflake), which enables you to take advantage of [CloudQuery open source](https://github.com/cloudquery/cloudquery) high-performance data-integration platform and sync all supported CloudQuery [source plugins](../docs/plugins/sources) to a [Snowflake](https://www.snowflake.com/) database.
 
 ## Use Cases
 
 ### Cloud Infrastructure data-lake and data-warehouse
 
-Snowflake is already used as a ["Security data lake"](https://www.snowflake.com/en/data-cloud/workloads/cybersecurity/). CloudQuery brings all your cloud [infrastructure configuration data](../docs/plugins/sources) to the same place consolidating all your security and infrastructure data in one place and enabling new insights.
+Snowflake is already used as a ["Security data-lake"](https://www.snowflake.com/en/data-cloud/workloads/cybersecurity/). CloudQuery brings all your cloud [infrastructure configuration data](../docs/plugins/sources) to the same place consolidating all your security and infrastructure data in one place and enabling new insights.
 
 ### Historical data
 
-Maintaining historical data is a common use case for data warehouses. By using Snowflake as a destination you can now store all your cloud infrastructure data in a data warehouse for long term storage, analysis and investigation use-cases.
+Maintaining historical data is a common use case for data-lakes and data-warehouses. By using Snowflake as a destination you can now store all your cloud infrastructure data for long term storage, analysis and investigation use-cases.
 
 ## Syncing data
 
