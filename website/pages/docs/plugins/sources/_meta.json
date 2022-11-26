@@ -1,0 +1,13 @@
+{
+  "overview": "Overview",
+  "aws": "AWS",
+  "azure": "Azure",
+  "gcp": "GCP",
+  "cloudflare": "Cloudflare",
+  "digitalocean": "DigitalOcean",
+  "github": "GitHub",
+  "heroku": "Heroku",
+  "k8s": "Kubernetes",
+  "okta": "Okta",
+  "terraform": "Terraform"
+}
