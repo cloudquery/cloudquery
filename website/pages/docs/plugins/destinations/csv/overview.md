@@ -10,7 +10,7 @@ This example configures a CSV destination, to create CSV files in  `./cq_csv_out
 
 The (top level) spec section is described in the [Destination Spec Reference](https://www.cloudquery.io/docs/reference/destination-spec).
 
-```yml
+```yaml
 kind: destination
 spec:
   name: "csv"

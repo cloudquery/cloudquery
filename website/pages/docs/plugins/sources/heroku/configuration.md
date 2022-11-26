@@ -4,7 +4,7 @@
 
 This example connects a Heroku account to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](https://www.cloudquery.io/docs/reference/source-spec).
 
-```yml
+```yaml
 kind: source
 spec: # Common source spec section
   name: heroku
