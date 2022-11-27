@@ -12,7 +12,7 @@ kind: destination
 spec:
   name: sqlite
   path: cloudquery/sqlite
-  version: "${VERSION_DESTINATION_SQLITE}"
+  version: "VERSION_DESTINATION_SQLITE"
   spec:
     connection_string: ./db.sql
 ```

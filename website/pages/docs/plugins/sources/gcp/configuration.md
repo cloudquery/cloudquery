@@ -10,7 +10,7 @@ spec:
   # Source spec section
   name: "gcp"
   path: "cloudquery/gcp"
-  version: "${VERSION_SOURCE_GCP}"
+  version: "VERSION_SOURCE_GCP"
   destinations: ["postgresql"]
 
   spec:

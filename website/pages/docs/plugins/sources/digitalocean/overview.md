@@ -24,7 +24,7 @@ spec:
   # Source spec section
   name: digitalocean
   path: cloudquery/digitalocean
-  version: "${VERSION_SOURCE_DIGITALOCEAN}"
+  version: "VERSION_SOURCE_DIGITALOCEAN"
   tables: ["*"]
   destinations: ["postgresql"]
 ```

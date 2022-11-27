@@ -10,7 +10,7 @@ kind: source
 spec:
   name: cloudflare
   path: cloudquery/cloudflare
-  version: "${VERSION_SOURCE_CLOUDFLARE}"
+  version: "VERSION_SOURCE_CLOUDFLARE"
   tables: ["*"]
   destinations: ["postgresql"]
 

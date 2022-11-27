@@ -15,7 +15,7 @@ kind: destination
 spec:
   name: "csv"
   path: "cloudquery/csv"
-  version: "${VERSION_DESTINATION_CSV}"
+  version: "VERSION_DESTINATION_CSV"
   write_mode: "append" # CSV only supports 'append' mode
 
   spec:

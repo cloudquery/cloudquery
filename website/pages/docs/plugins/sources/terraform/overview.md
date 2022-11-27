@@ -12,7 +12,7 @@ spec:
   # Source spec section
   name: terraform
   path: cloudquery/terraform
-  version: "${VERSION_SOURCE_TERRAFORM}"
+  version: "VERSION_SOURCE_TERRAFORM"
   tables: ["*"]
   destinations: ["postgresql"]
 ```

@@ -18,7 +18,7 @@ spec:
   # Source spec section
   name: okta
   path: cloudquery/okta
-  version: "${VERSION_SOURCE_OKTA}"
+  version: "VERSION_SOURCE_OKTA"
   tables: ["*"]
   destinations: ["postgresql"]
   spec:

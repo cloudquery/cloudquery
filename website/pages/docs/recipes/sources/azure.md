@@ -7,7 +7,7 @@ kind: source
 spec:
   name: azure
   path: cloudquery/azure
-  version: "${VERSION_SOURCE_AZURE}"
+  version: "VERSION_SOURCE_AZURE"
   tables: ["*"]
   destinations: ["<destination>"]
 ```

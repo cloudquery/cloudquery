@@ -5,7 +5,7 @@ kind: source
 spec:
   name: gcp
   path: "cloudquery/gcp"
-  version: "${VERSION_SOURCE_GCP}"
+  version: "VERSION_SOURCE_GCP"
   destinations: ["<destination>"]
 ---
 kind: source

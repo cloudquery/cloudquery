@@ -11,7 +11,7 @@ kind: destination
 spec:
   name: postgresql
   path: cloudquery/postgresql
-  version: "${VERSION_DESTINATION_POSTGRESQL}"
+  version: "VERSION_DESTINATION_POSTGRESQL"
   spec:
     connection_string: ${PG_CONNECTION_STRING}
 ```
@@ -27,7 +27,7 @@ kind: destination
 spec:
   name: postgresql
   path: cloudquery/postgresql
-  version: "${VERSION_DESTINATION_POSTGRESQL}"
+  version: "VERSION_DESTINATION_POSTGRESQL"
   spec:
     connection_string: ${PG_CONNECTION_STRING}
     pgx_log_level: debug # Available: error, warn, info, debug, trace. Default: "error"

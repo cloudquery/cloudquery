@@ -10,7 +10,7 @@ spec:
   # Source spec section
   name: "azure"
   path: "cloudquery/azure"
-  version: "${VERSION_SOURCE_AZURE}"
+  version: "VERSION_SOURCE_AZURE"
   destinations: ["postgresql"]
 
   spec:

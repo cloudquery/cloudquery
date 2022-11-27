@@ -10,7 +10,7 @@ spec:
   # Source spec section
   name: aws
   path: cloudquery/aws
-  version: "${VERSION_SOURCE_AWS}"
+  version: "VERSION_SOURCE_AWS"
   tables: ["*"]
   destinations: ["postgresql"]
   spec: 
@@ -32,7 +32,7 @@ spec:
   name: aws
   registry: github
   path: cloudquery/aws
-  version: "${VERSION_SOURCE_AWS}"
+  version: "VERSION_SOURCE_AWS"
   tables: ['*']
   destinations: ["postgresql"]
   spec:

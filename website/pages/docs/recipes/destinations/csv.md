@@ -12,7 +12,7 @@ kind: destination
 spec:
   name: csv
   path: cloudquery/csv
-  version: "${VERSION_DESTINATION_CSV}"
+  version: "VERSION_DESTINATION_CSV"
   spec:
     directory: ./output # default to ./cq_csv_output
 ```

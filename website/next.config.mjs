@@ -1,25 +1,29 @@
 import nextra from 'nextra'
 import * as fs from 'fs';
 
-const reSourcePluginVersion = /\${VERSION_SOURCE_([a-zA-Z_]*)}/;
-const reDestPluginVersion = /\${VERSION_DESTINATION_([a-zA-Z_]*)}/;
+const reSourcePluginVersion = /VERSION_SOURCE_([a-zA-Z_]*)/;
+const reDestPluginVersion = /VERSION_DESTINATION_([a-zA-Z_]*)/;
+const reCLI = "VERSION_CLI";
 
 function getVersions() {
   let versions = {
     sources: {},
-    destinations: {}
+    destinations: {},
+    cli: "",
   }
   const dir = fs.opendirSync('./versions')
   let dirent
   while ((dirent = dir.readSync()) !== null) {
     if (dirent.isFile() && dirent.name.startsWith('source-')) {
       let name = dirent.name.split('-')[1].split('.')[0]
-      let {latest} = JSON.parse(fs.readFileSync('../sites/versions/v2/' + dirent.name, 'utf8'))
+      let {latest} = JSON.parse(fs.readFileSync('./versions/' + dirent.name, 'utf8'))
       versions.sources[name] = latest.split('-')[3]
     } else if (dirent.isFile() && dirent.name.startsWith('destination-')) { 
       let name = dirent.name.split('-')[1].split('.')[0]
-      let {latest} = JSON.parse(fs.readFileSync('../sites/versions/v2/' + dirent.name, 'utf8'))
+      let {latest} = JSON.parse(fs.readFileSync('./versions/' + dirent.name, 'utf8'))
       versions.destinations[name] = latest.split('-')[3]
+    } else if (dirent.isFile() && dirent.name == "cli.json") {
+      versions.cli = JSON.parse(fs.readFileSync('./versions/' + dirent.name, 'utf8')).latest.split('-')[1]
     }
   }
   dir.closeSync()
@@ -45,6 +49,13 @@ const replaceMdxCodeVersions = (node) => {
         throw new Error(`Could not find version for destination plugin ${match[1]}`)
       }
       node.value = node.value.replace(reDestPluginVersion, version)
+    }
+    if (node.value.includes(reCLI)) {
+      let version = versions.cli
+      if (version === undefined) {
+        throw new Error(`Could not find version for cli ${match}`)
+      }
+      node.value = node.value.replace(reCLI, version)
     }
   }
   if (node.children !== undefined) {

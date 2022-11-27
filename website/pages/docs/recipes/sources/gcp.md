@@ -7,7 +7,7 @@ kind: source
 spec:
   name: gcp
   path: cloudquery/gcp
-  version: "${VERSION_SOURCE_GCP}"
+  version: "VERSION_SOURCE_GCP"
   tables: ["*"]
   destinations: ["YOUR_DESTINATION"]
 ```

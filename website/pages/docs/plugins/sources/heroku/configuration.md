@@ -9,7 +9,7 @@ kind: source
 spec: # Common source spec section
   name: heroku
   path: cloudquery/heroku
-  version: "${VERSION_SOURCE_HEROKU}"
+  version: "VERSION_SOURCE_HEROKU"
   tables: ["*"]
   destinations: ["postgresql"]
 
