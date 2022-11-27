@@ -9,7 +9,7 @@ function getVersions() {
     sources: {},
     destinations: {}
   }
-  const dir = fs.opendirSync('../sites/versions/v2')
+  const dir = fs.opendirSync('./versions')
   let dirent
   while ((dirent = dir.readSync()) !== null) {
     if (dirent.isFile() && dirent.name.startsWith('source-')) {

@@ -67,7 +67,7 @@ jobs:
 
       - name: Update version file
         if: steps.semver_parser.outputs.prerelease == ''
-        run: 'echo "{ \"latest\": \"${{github.ref_name}}\" }" > ./sites/versions/v2/destination-sqlite.json'
+        run: 'echo "{ \"latest\": \"${{github.ref_name}}\" }" > ./website/versions/destination-sqlite.json'
 
       - name: Create Pull Request
         if: steps.semver_parser.outputs.prerelease == ''
