@@ -2,7 +2,7 @@ import nextra from 'nextra'
 import * as fs from 'fs';
 
 const reSourcePluginVersion = /\${VERSION_SOURCE_([a-zA-Z_]*)}/;
-const reDestPluginVersion = /\${VERSION_DEST_([a-zA-Z_]*)}/;
+const reDestPluginVersion = /\${VERSION_DESTINATION_([a-zA-Z_]*)}/;
 
 function getVersions() {
   let versions = {
@@ -33,11 +33,17 @@ const replaceMdxCodeVersions = (node) => {
     let match = node.value.match(reSourcePluginVersion)
     if (match && match.length >= 1) {
       let version = versions.sources[match[1].toLowerCase()]
+      if (version === undefined) {
+        throw new Error(`Could not find version for source plugin ${match[1]}`)
+      }
       node.value = node.value.replace(reSourcePluginVersion, version)
     }
     match = node.value.match(reDestPluginVersion)
     if (match && match.length >= 1) {
       let version = versions.destinations[match[1].toLowerCase()]
+      if (version === undefined) {
+        throw new Error(`Could not find version for destination plugin ${match[1]}`)
+      }
       node.value = node.value.replace(reDestPluginVersion, version)
     }
   }
