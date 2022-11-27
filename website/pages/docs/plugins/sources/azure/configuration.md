@@ -10,7 +10,7 @@ spec:
   # Source spec section
   name: "azure"
   path: "cloudquery/azure"
-  version: "v1.4.9" # latest version of azure plugin
+  version: "${VERSION_SOURCE_AZURE}"
   destinations: ["postgresql"]
 
   spec:

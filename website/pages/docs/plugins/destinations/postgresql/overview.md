@@ -19,7 +19,7 @@ spec:
   name: "postgresql"
   registry: github
   path: "postgresql"
-  version: "v1.6.0" # latest version of postgresql plugin
+  version: "${VERSION_DESTINATION_POSTGRESQL}"
 
   spec:
     connection_string: "postgresql://postgres:pass@localhost:5432/postgres?sslmode=disable"

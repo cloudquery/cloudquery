@@ -12,7 +12,7 @@ spec:
   # Source spec section
   name: terraform
   path: cloudquery/terraform
-  version: "v1.2.19" # latest version of terraform plugin
+  version: "${VERSION_SOURCE_TERRAFORM}"
   tables: ["*"]
   destinations: ["postgresql"]
 ```

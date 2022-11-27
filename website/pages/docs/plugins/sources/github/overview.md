@@ -20,7 +20,7 @@ spec:
   # Source spec section
   name: github
   path: cloudquery/github
-  version: "v1.2.0" # latest version of github plugin
+  version: "${VERSION_SOURCE_GCP}"
   tables: ["*"]
   destinations: ["postgresql"]
   spec:
