@@ -93,7 +93,7 @@ Cloud Infrastructure hyperscale created new challenges for the ELT world. For ex
 
 As part of our SDK which provides the concurrency model for all the source plugins we took advantage of the excellent support in Go for concurrency with Goroutines which enables us to scale to tens of thousands of API calls with low number of OS threads and low memory overhead.
 
-The second thing we did here is to create a good scheduler. Extracting APIs in concurrent matter involves restrictions on memory and this is similar to the classic computer science of crawling on how to efficiently crawl the web where you don’t know the number of links in each “depth”. CQ SDK is built in such a way that can support multiple scheduling algorithms and mechanisms with the default one being a concurrent DFS algorithm which makes sure memory usage is being kept at a given limit while taking advantage of all compute resources available for concurrency.
+The second thing we did here is to create a good scheduler. Extracting APIs in a concurrent manner involves restrictions on memory. This is similar to the classic computer science problem of crawling, and how to efficiently crawl the web when you don’t know the number of links in each “depth”. CQ SDK is built in such a way that can support multiple scheduling algorithms and mechanisms with the default one being a concurrent DFS algorithm which makes sure memory usage is being kept at a given limit while taking advantage of all compute resources available for concurrency.
 
 ### Horizontal Scaling
 
