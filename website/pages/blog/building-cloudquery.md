@@ -48,7 +48,7 @@ Our [pluggable system](https://www.cloudquery.io/docs/developers/architecture) i
 
 ### SDK for Source Plugins
 
-Writing ELT code involves a lot of boilerplate code, testing code, tricky performance and parallelization code. We’ve built an [Go SDK](https://github.com/cloudquery/plugin-sdk/) that enables both us and other developers to focus only on the E(Extract) code while CloudQuery SDK takes care of parallelization, transformation, loading and testing.
+Writing ELT code involves a lot of boilerplate code, testing code, tricky performance and parallelization code. We’ve built a [Go SDK](https://github.com/cloudquery/plugin-sdk/) that enables both us and other developers to focus only on the E(Extract) code while CloudQuery SDK takes care of parallelization, transformation, loading and testing.
 
 ### Code Generation
 
