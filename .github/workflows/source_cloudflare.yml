@@ -65,9 +65,6 @@ jobs:
       - name: gen
         if: github.event_name == 'pull_request'
         run: make gen
-      - name: Check if generation updated files
-        if: github.event_name == 'pull_request'
-        run: git status -s
       - name: Fail if generation updated files
         if: github.event_name == 'pull_request'
         run: test "$(git status -s | wc -l)" -eq 0
