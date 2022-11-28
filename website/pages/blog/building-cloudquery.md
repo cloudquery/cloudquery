@@ -22,9 +22,9 @@ Addressing this problem comes with significant challenges. In this post, I’ll 
 
 Before we go over the technical and architecture decisions we made in CloudQuery, let’s cover the main challenges and requirements of an ELT framework:
 
-- **API Coverage**: Scaling and supporting the number of APIs covered in an efficient manner (i.e less developers, more APIs supported)--leveraging the community is key.
-- **Scaling Destinations**: Unlike sources, destinations are finite but the right architecture should ensure source and destinations are decoupled correctly so new destinations will work out-of-the-box and won't require any changes in sources (otherwise development work will grow exponentially).
-- **Performance**: Running ELT workload is compute intensive and can get expensive depending on the number of APIs to extract from. Having high performance and concurrent architecture is key to both making cost as low as possible and bringing information as fast as possible from sources to destinations.
+- **API Coverage:** Scaling and supporting the number of APIs covered in an efficient manner (i.e less developers, more APIs supported)--leveraging the community is key.
+- **Scaling Destinations:** Unlike sources, destinations are finite but the right architecture should ensure source and destinations are decoupled correctly so new destinations will work out-of-the-box and won't require any changes in sources (otherwise development work will grow exponentially).
+- **Performance:** Running ELT workload is compute intensive and can get expensive depending on the number of APIs to extract from. Having high performance and concurrent architecture is key to both making cost as low as possible and bringing information as fast as possible from sources to destinations.
 
 # Technical Deep Dive
 
@@ -41,8 +41,8 @@ There is no vendor that can support all integrations in-house thus the best and 
 Pluggable sources are key to scale API coverage both from development and usability perspective and solve the following challenges:
 
 - **Binary Size:** Users download only the plugins they want to use to ensure good performance and user experience without a binary that grows infinitely and will eventually cause not only binary size issues but library clashes from different services.
-- **Versioning**: Given plugins are developed as standalone gRPC binaries users can use different versions of different plugins depending on their needs.
-- **Independent development**: Developers can develop their own plugins in their own repositories without being blocked by a vendor (us in this case) to review PRs.
+- **Versioning:** Given plugins are developed as standalone gRPC binaries users can use different versions of different plugins depending on their needs.
+- **Independent development:** Developers can develop their own plugins in their own repositories without being blocked by a vendor (us in this case) to review PRs.
 
 Our [pluggable system](https://www.cloudquery.io/docs/developers/architecture) is based on gRPC to ensure our plugins can be cross-platform, independent  and performant.
 
