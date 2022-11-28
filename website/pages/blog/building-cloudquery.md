@@ -62,7 +62,7 @@ We could take advantage of the schema definition and generate the source plugin 
 
 Go is incredibly suited for code analysis so we created a [code generation library](https://github.com/cloudquery/plugin-sdk/tree/main/codegen) that generates CloudQuery schema from Go structs using reflection. This helps achieve number of things:
 
-1. Keep up CloudQuery schema with APIs automatically
+1. Keep CloudQuery schema up-to-date with APIs automatically
 2. Enable developers to use the Go Client which is built for developers and include important capabilities when talking to the service API.
 3. Our current set of plugins are >80% auto-generated!
 
