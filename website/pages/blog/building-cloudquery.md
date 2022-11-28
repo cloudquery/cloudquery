@@ -44,7 +44,7 @@ Pluggable sources are key to scale API coverage both from development and usabil
 - **Versioning:** Given plugins are developed as standalone gRPC binaries users can use different versions of different plugins depending on their needs.
 - **Independent development:** Developers can develop their own plugins in their own repositories without being blocked by a vendor (us in this case) to review PRs.
 
-Our [pluggable system](https://www.cloudquery.io/docs/developers/architecture) is based on gRPC to ensure our plugins can be cross-platform, independent  and performant.
+Our [pluggable system](https://www.cloudquery.io/docs/developers/architecture) is based on gRPC to ensure our plugins can be cross-platform, independent and performant.
 
 ### SDK for Source Plugins
 
