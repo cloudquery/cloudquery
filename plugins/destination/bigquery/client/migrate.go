@@ -3,157 +3,104 @@ package client
 import (
 	"context"
 	"fmt"
-	"strings"
+	"net/http"
 
 	"cloud.google.com/go/bigquery"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"golang.org/x/sync/errgroup"
+	"google.golang.org/api/googleapi"
 )
 
-const (
-	doesTableExistSQL = "SELECT count(*) as count FROM information_schema.tables WHERE table_name=@table_name;"
-	sqlTableInfo      = "select column_name, data_type, is_nullable from information_schema.columns where table_name=@table_name;"
-)
-
-type countRow struct {
-	Count int64 `bigquery:"count"`
-}
-
-type columnInfo struct {
-	name    string
-	typ     string
-	notNull bool
-}
-
-type tableInfo struct {
-	columns []columnInfo
-}
-
-func (i *tableInfo) getColumn(name string) *columnInfo {
-	for _, col := range i.columns {
-		if col.name == name {
-			return &col
-		}
-	}
-	return nil
-}
+const concurrentMigrations = 10
 
 // Migrate tables. It is the responsibility of the CLI of the client to lock before running migrations.
 func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
+	eg := errgroup.Group{}
+	eg.SetLimit(concurrentMigrations)
 	for _, table := range tables {
-		c.logger.Debug().Str("table", table.Name).Msg("Migrating table")
-		tableExists, err := c.doesTableExist(ctx, table.Name)
-		if err != nil {
-			return fmt.Errorf("failed to check if table %s exists: %w", table.Name, err)
-		}
-		if tableExists {
-			c.logger.Debug().Str("table", table.Name).Msg("Table exists, auto-migrating")
-			if err := c.autoMigrateTable(ctx, table); err != nil {
+		table := table
+		eg.Go(func() error {
+			c.logger.Debug().Str("table", table.Name).Msg("Migrating table")
+			tableExists, err := c.doesTableExist(ctx, table.Name)
+			if err != nil {
+				return fmt.Errorf("failed to check if table %s exists: %w", table.Name, err)
+			}
+			if tableExists {
+				c.logger.Debug().Str("table", table.Name).Msg("Table exists, auto-migrating")
+				if err := c.autoMigrateTable(ctx, table); err != nil {
+					return err
+				}
+			} else {
+				c.logger.Debug().Str("table", table.Name).Msg("Table doesn't exist, creating")
+				if err := c.createTable(ctx, table); err != nil {
+					return err
+				}
+			}
+			if err := c.Migrate(ctx, table.Relations); err != nil {
 				return err
 			}
-		} else {
-			c.logger.Debug().Str("table", table.Name).Msg("Table doesn't exist, creating")
-			if err := c.createTableIfNotExist(ctx, table); err != nil {
-				return err
-			}
-		}
-		if err := c.Migrate(ctx, table.Relations); err != nil {
-			return err
-		}
+			return nil
+		})
 	}
+	eg.Wait()
 	return nil
 }
 
 func (c *Client) doesTableExist(ctx context.Context, table string) (bool, error) {
-	var cr countRow
-	q := c.client.Query(doesTableExistSQL)
-	q.Parameters = []bigquery.QueryParameter{
-		{Name: "table_name", Value: table},
+	c.logger.Debug().Str("dataset", c.datasetID).Str("table", table).Msg("Checking existence")
+	tableRef := c.client.Dataset(c.datasetID).Table(table)
+	if md, err := tableRef.Metadata(ctx); err != nil {
+		if e, ok := err.(*googleapi.Error); ok {
+			if e.Code == http.StatusNotFound {
+				return false, nil
+			}
+		}
+		c.logger.Error().Err(err).Msg("Got unexpected error while checking table metadata")
+		return false, err
+	} else {
+		c.logger.Debug().Interface("creation_time", md.CreationTime).Msg("Got table metadata")
 	}
-	ri, err := q.Read(ctx)
-	if err != nil {
-		return false, fmt.Errorf("failed to check if table %s exists: %w", table, err)
-	}
-	if ri.TotalRows != 1 {
-		return false, fmt.Errorf("failed to check if table %s exists (%d rows in result)", table, ri.TotalRows)
-	}
-	ri.Next(&cr)
-	return cr.Count == 1, nil
+	return true, nil
 }
 
 func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) error {
-	var err error
-	var info *tableInfo
-
-	if info, err = c.getTableInfo(ctx, table.Name); err != nil {
-		return fmt.Errorf("failed to get table %s columns types: %w", table.Name, err)
-	}
-
-	for _, col := range table.Columns {
-		columnName := col.Name
-		columnType := c.SchemaTypeToBigQuery(col.Type)
-		sqliteColumn := info.getColumn(columnName)
-
-		switch {
-		case sqliteColumn == nil:
-			c.logger.Debug().Str("table", table.Name).Str("column", col.Name).Msg("Column doesn't exist, creating")
-			sql := "alter table " + table.Name + " add column \"" + columnName + "\" \"" + columnType + `"`
-			job, err := c.client.Query(sql).Run(ctx)
-			if err != nil {
-				return fmt.Errorf("failed to add column %s on table %s: %w", col.Name, table.Name, err)
-			}
-			_, err = job.Wait(ctx)
-			if err != nil {
-				return err
-			}
-		case sqliteColumn.typ != columnType:
-			return fmt.Errorf("column %s on table %s has different type than schema, expected %s got %s. trying dropping table and re-running", col.Name, table.Name, columnType, sqliteColumn.typ)
-		}
-	}
-	return nil
-}
-
-func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table) error {
-	var sb strings.Builder
-	// TODO sanitize tablename
-	sb.WriteString("CREATE TABLE IF NOT EXISTS ")
-	sb.WriteString(table.Name)
-	sb.WriteString(" (")
-	totalColumns := len(table.Columns)
-
-	for i, col := range table.Columns {
-		sqlType := c.SchemaTypeToBigQuery(col.Type)
-		if sqlType == "" {
-			c.logger.Warn().Str("table", table.Name).Str("column", col.Name).Msg("Column type is not supported, skipping")
-			continue
-		}
-		// TODO: sanitize column name
-		fieldDef := `"` + col.Name + `" ` + sqlType
-		if col.Name == "_cq_id" {
-			// _cq_id column should always have a "unique not null" constraint
-			fieldDef += " UNIQUE NOT NULL"
-		}
-		sb.WriteString(fieldDef)
-		if i != totalColumns-1 {
-			sb.WriteString(",")
-		}
-	}
-
-	sb.WriteString(")")
-	job, err := c.client.Query(sb.String()).Run(ctx)
+	bqSchema, err := c.bigQuerySchemaForTable(table)
 	if err != nil {
-		return fmt.Errorf("failed to create table with '%s': %w", sb.String(), err)
+		return fmt.Errorf("failed to create BigQuery schema for table: %w", err)
 	}
-	_, err = job.Wait(ctx)
+	tm := bigquery.TableMetadataToUpdate{
+		Name:        table.Name,
+		Description: table.Description,
+		Schema:      bqSchema,
+	}
+	_, err = c.client.Dataset(c.datasetID).Table(table.Name).Update(ctx, tm, "")
 	return err
 }
 
-func (c *Client) getTableInfo(ctx context.Context, tableName string) (*tableInfo, error) {
-	meta, err := c.client.Dataset(c.datasetID).Table(tableName).Metadata(ctx)
+func (c *Client) createTable(ctx context.Context, table *schema.Table) error {
+	bqSchema, err := c.bigQuerySchemaForTable(table)
 	if err != nil {
-		return nil, err
+		return fmt.Errorf("failed to create BigQuery schema for table: %w", err)
 	}
-	// TODO
-	return &tableInfo{
-		meta.Name
+	tm := bigquery.TableMetadata{
+		Name:        table.Name,
+		Description: table.Description,
+		Schema:      bqSchema,
 	}
+	return c.client.Dataset(c.datasetID).Table(table.Name).Create(ctx, &tm)
+}
+
+func (c *Client) bigQuerySchemaForTable(table *schema.Table) (bigquery.Schema, error) {
+	s := bigquery.Schema{}
+	for _, col := range table.Columns {
+		columnType, repeated := c.SchemaTypeToBigQuery(col.Type)
+		s = append(s, &bigquery.FieldSchema{
+			Name:        col.Name,
+			Description: col.Description,
+			Repeated:    repeated,
+			Type:        columnType,
+			Schema:      bigquery.Schema{},
+		})
+	}
+	return s, nil
 }

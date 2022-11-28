@@ -3,7 +3,6 @@ package client
 import (
 	"context"
 	"fmt"
-	"log"
 
 	"cloud.google.com/go/bigquery"
 	"github.com/cloudquery/plugin-sdk/plugins"
@@ -20,10 +19,10 @@ type Client struct {
 	datasetID string
 }
 
-func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination) (plugins.DestinationClient, error) {
-	if destSpec.WriteMode != specs.WriteModeAppend {
-		return nil, fmt.Errorf("bigquery destination only supports append mode")
-	}
+func New(_ context.Context, logger zerolog.Logger, destSpec specs.Destination) (plugins.DestinationClient, error) {
+	//if destSpec.WriteMode != specs.WriteModeAppend {
+	//	return nil, fmt.Errorf("bigquery destination only supports append mode")
+	//}
 	c := &Client{
 		logger: logger.With().Str("module", "bq-dest").Logger(),
 	}
@@ -36,16 +35,16 @@ func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination)
 	if err := spec.Validate(); err != nil {
 		return nil, err
 	}
-	client, err := bigquery.NewClient(ctx, spec.ProjectID)
+	client, err := bigquery.NewClient(context.Background(), spec.ProjectID)
 	if err != nil {
-		log.Fatalf("bigquery.NewClient: %v", err)
+		return nil, fmt.Errorf("failed to create new BigQuery client: %w", err)
 	}
 	c.client = client
 	c.datasetID = spec.DatasetID
 	return c, nil
 }
 
-func (c *Client) Close(ctx context.Context) error {
+func (c *Client) Close(_ context.Context) error {
 	var err error
 	if c.client == nil {
 		return fmt.Errorf("client already closed or not initialized")

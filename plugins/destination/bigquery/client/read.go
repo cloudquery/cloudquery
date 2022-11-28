@@ -5,11 +5,13 @@ import (
 	"database/sql"
 	"fmt"
 
+	"cloud.google.com/go/bigquery"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"google.golang.org/api/iterator"
 )
 
 const (
-	readSQL = "SELECT * FROM %s WHERE \"_cq_source_name\" = ?"
+	readSQL = "SELECT * FROM %s WHERE \"_cq_source_name\" = @cq_source_name"
 )
 
 func (*Client) createResultsArray(table *schema.Table) []interface{} {
@@ -74,18 +76,27 @@ func (*Client) createResultsArray(table *schema.Table) []interface{} {
 
 func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- []interface{}) error {
 	stmt := fmt.Sprintf(readSQL, table.Name)
-	rows, err := c.db.Query(stmt, sourceName)
-	if err != nil {
-		return err
+	q := c.client.Query(stmt)
+	q.Parameters = []bigquery.QueryParameter{
+		{
+			Name:  "cq_source_name",
+			Value: sourceName,
+		},
 	}
-	defer rows.Close()
+	it, err := q.Read(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to read table %s: %w", table.Name, err)
+	}
 	values := c.createResultsArray(table)
-	for rows.Next() {
-		if err := rows.Scan(values...); err != nil {
+	for {
+		err := it.Next(&values)
+		if err == iterator.Done {
+			break
+		}
+		if err != nil {
 			return fmt.Errorf("failed to read from table %s: %w", table.Name, err)
 		}
 		res <- values
 	}
-	rows.Close()
 	return nil
 }

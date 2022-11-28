@@ -1,45 +1,46 @@
 package client
 
 import (
+	"cloud.google.com/go/bigquery"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func (*Client) SchemaTypeToBigQuery(t schema.ValueType) string {
+func (*Client) SchemaTypeToBigQuery(t schema.ValueType) (ft bigquery.FieldType, repeated bool) {
 	switch t {
 	case schema.TypeBool:
-		return "bool"
+		return bigquery.BooleanFieldType, false
 	case schema.TypeInt:
-		return "int64"
+		return bigquery.IntegerFieldType, false
 	case schema.TypeFloat:
-		return "float64"
+		return bigquery.FloatFieldType, false
 	case schema.TypeUUID:
-		return "string"
+		return bigquery.StringFieldType, false
 	case schema.TypeString:
-		return "string"
+		return bigquery.StringFieldType, false
 	case schema.TypeByteArray:
-		return "bytes"
+		return bigquery.BytesFieldType, false
 	case schema.TypeStringArray:
-		return "array" // what do to here? TODO
+		return bigquery.StringFieldType, true
 	case schema.TypeTimestamp:
-		return "timestamp"
+		return bigquery.TimestampFieldType, false
 	case schema.TypeJSON:
-		return "json"
+		return bigquery.JSONFieldType, false
 	case schema.TypeUUIDArray:
-		return "array"
+		return bigquery.StringFieldType, true
 	case schema.TypeCIDR:
-		return "string"
+		return bigquery.StringFieldType, false
 	case schema.TypeCIDRArray:
-		return "array"
+		return bigquery.StringFieldType, true
 	case schema.TypeMacAddr:
-		return "text"
+		return bigquery.StringFieldType, false
 	case schema.TypeMacAddrArray:
-		return "array"
+		return bigquery.StringFieldType, true
 	case schema.TypeInet:
-		return "string"
+		return bigquery.StringFieldType, false
 	case schema.TypeInetArray:
-		return "array"
+		return bigquery.StringFieldType, true
 	case schema.TypeIntArray:
-		return "array"
+		return bigquery.IntegerFieldType, true
 	default:
 		panic("unknown type")
 	}
