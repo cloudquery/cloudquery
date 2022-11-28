@@ -12,8 +12,7 @@ func WAFOverrideResources() []*Resource {
 			Multiplex:    "client.ZoneMultiplex",
 			DataStruct:   &cloudflare.WAFOverride{},
 			PKColumns:    []string{"id"},
-			//RenameColumns:    map[string]string{"ur_ls": "urls"}, // TODO
-			Service: "waf_overrides",
+			Service:      "waf_overrides",
 		},
 	}
 }
