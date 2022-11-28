@@ -101,4 +101,4 @@ The previously described concurrency and scheduling algorithm gives a good utili
 
 # Future
 
-This gives a short walkthrough on the main design decisions we took in CloudQuery. If anything is interesting in particular feel free to reach out to us on [github](https://github.com/cloudquery/cloudquery) or [discord](https://cloudquery.io/discord) and I’ll be happy to write a follow-up blog-post.
+This gives a short walkthrough on the main design decisions we took in CloudQuery. If anything is of particular interest, feel free to reach out to us on [GitHub](https://github.com/cloudquery/cloudquery) or [Discord](https://cloudquery.io/discord) and I’ll be happy to write a follow-up blog-post.
