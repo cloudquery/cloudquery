@@ -8,7 +8,6 @@ import (
 
 	"github.com/cloudquery/plugin-sdk/caser"
 	"github.com/cloudquery/plugin-sdk/codegen"
-	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/gertd/go-pluralize"
 )
 
@@ -51,43 +50,13 @@ type Resource struct {
 }
 
 var (
-	AccountIDColumn = codegen.ColumnDefinition{
-		Name:        "account_id",
-		Description: "The Account ID of the resource.",
-		Type:        schema.TypeString,
-		Resolver:    "client.ResolveAccountID",
-	}
-
-	ZoneIDColumn = codegen.ColumnDefinition{
-		Name:        "zone_id",
-		Description: "Zone identifier tag.",
-		Type:        schema.TypeString,
-		Resolver:    "client.ResolveZoneID",
-	}
-
 	pluralizeClient *pluralize.Client
 	csr             *caser.Caser
 )
 
 func init() {
 	pluralizeClient = pluralize.NewClient()
-	for _, s := range []string{"dns", "waf"} {
-		pluralizeClient.AddUncountableRule(s)
-	}
-
-	csr = caser.New(
-		caser.WithCustomInitialisms(map[string]bool{
-			"dns": true,
-			"url": true,
-			"waf": true,
-		}),
-		caser.WithCustomExceptions(map[string]string{
-			"dns":  "DNS",
-			"url":  "URL",
-			"urls": "URLs",
-			"waf":  "WAF",
-		}),
-	)
+	csr = caser.New()
 }
 
 func (r *Resource) Infer() {
