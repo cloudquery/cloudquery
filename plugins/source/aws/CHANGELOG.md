@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [7.2.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v7.2.1...plugins-source-aws-v7.2.2) (2022-11-28)
+
+
+### Bug Fixes
+
+* Add refresh window and jitter for cached credentials ([#5097](https://github.com/cloudquery/cloudquery/issues/5097)) ([919aa8c](https://github.com/cloudquery/cloudquery/commit/919aa8c0ad711cd6686d81cc6f5ff60cb1d66c36))
+* **deps:** Update plugin-sdk for aws to v1.8.1 ([#5032](https://github.com/cloudquery/cloudquery/issues/5032)) ([75a1e28](https://github.com/cloudquery/cloudquery/commit/75a1e28e6da252c062b7c32bd9d1c4419b4f08ec))
+* **deps:** Update plugin-sdk for aws to v1.8.2 ([#5074](https://github.com/cloudquery/cloudquery/issues/5074)) ([7112a9a](https://github.com/cloudquery/cloudquery/commit/7112a9ae9282f1e5523d5d87ed78324edd9e6875))
+* **deps:** Update plugin-sdk for aws to v1.9.0 ([#5092](https://github.com/cloudquery/cloudquery/issues/5092)) ([7906991](https://github.com/cloudquery/cloudquery/commit/790699183f33dfe31374b5f4a1113c99a109b463))
+* Update content ([#5005](https://github.com/cloudquery/cloudquery/issues/5005)) ([ae188d0](https://github.com/cloudquery/cloudquery/commit/ae188d0f58f2684091ee2f0915a51af9b14795fb))
+* Update endpoints ([#5106](https://github.com/cloudquery/cloudquery/issues/5106)) ([33b1f08](https://github.com/cloudquery/cloudquery/commit/33b1f08ad7a2a8bd81e5906bd022a837be28711a))
+
 ## [7.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v7.2.0...plugins-source-aws-v7.2.1) (2022-11-24)
 
 
