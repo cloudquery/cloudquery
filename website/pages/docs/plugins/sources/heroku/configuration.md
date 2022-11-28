@@ -2,7 +2,7 @@
 
 ## Example
 
-This example connects a Heroku account to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](https://www.cloudquery.io/docs/reference/source-spec).
+This example connects a Heroku account to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
 
 ```yaml
 kind: source
@@ -23,4 +23,4 @@ This is the (nested) spec used by the Heroku source plugin.
 
 - `token` (string, **required**)
 
-  Heroku API token. See the [Authentication section](../README.md#Authentication) on how to generate it.
+  Heroku API token. See the [Authentication section](overview#authentication) on how to generate it.
