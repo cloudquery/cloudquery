@@ -1,8 +1,8 @@
 import nextra from 'nextra'
 import * as fs from 'fs';
 
-const reSourcePluginVersion = /VERSION_SOURCE_([a-zA-Z0-9_]*)/;
-const reDestPluginVersion = /VERSION_DESTINATION_([a-zA-Z0-9_]*)/;
+const reSourcePluginVersion = /VERSION_SOURCE_([a-zA-Z0-9_]+)/;
+const reDestPluginVersion = /VERSION_DESTINATION_([a-zA-Z0-9_]+)/;
 const reCLI = "VERSION_CLI";
 
 function getVersions() {
