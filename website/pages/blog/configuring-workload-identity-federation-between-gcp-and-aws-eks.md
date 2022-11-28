@@ -105,7 +105,7 @@ kubectl -ncloudquery create configmap \
 
 Now we just need to inject the Client library config into our Pod with the help of a volume mount. This can be achieved by adding those values into the `values.yaml` of the Helm Chart.
 
-```yaml
+```yaml copy
 volumes:
 - name: gcp
   configMap:

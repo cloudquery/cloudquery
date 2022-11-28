@@ -13,7 +13,7 @@ Supported database versions:
 
 This example configures a Postgresql destination, located at `localhost:5432`. The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
 
-```yaml
+```yaml copy
 kind: destination
 spec:
   name: "postgresql"
