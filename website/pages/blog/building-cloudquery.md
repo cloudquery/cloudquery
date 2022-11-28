@@ -24,7 +24,7 @@ Before we go over the technical and architecture decisions we made in CloudQuery
 
 - **API Coverage:** Scaling and supporting the number of APIs covered in an efficient manner (i.e less developers, more APIs supported)--leveraging the community is key.
 - **Scaling Destinations:** Unlike sources, destinations are finite but the right architecture should ensure source and destinations are decoupled correctly so new destinations will work out-of-the-box and won't require any changes in sources (otherwise development work will grow by `n*m` where `n` is number of source plugins and `m` is number of destination plugins).
-- **Performance:** Running ELT workload is compute intensive and can get expensive depending on the number of APIs to extract from. Having high performance and concurrent architecture is key to both making cost as low as possible and bringing information as fast as possible from sources to destinations.
+- **Performance:** Running ELT workloads is compute-intensive and can get expensive, growing with the number of APIs being extracted from. Having a high-performance and concurrent architecture is key to both driving costs down and transferring information from source to destination as fast as possible.
 
 # Technical Deep Dive
 
