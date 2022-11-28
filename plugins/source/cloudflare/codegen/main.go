@@ -87,7 +87,7 @@ func generateTable(basedir string, r recipes.Resource) {
 	mainTemplate := r.Template + ".go.tpl"
 	tpl, err := template.New(mainTemplate).ParseFS(templatesFS, "templates/"+mainTemplate)
 	if err != nil {
-		log.Fatal(fmt.Errorf("failed to parse gandi templates: %w", err))
+		log.Fatal(fmt.Errorf("failed to parse templates: %w", err))
 	}
 	tpl, err = tpl.ParseFS(codegen.TemplatesFS, "templates/*.go.tpl")
 	if err != nil {
