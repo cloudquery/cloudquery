@@ -81,7 +81,7 @@ The job of an ELT platform is to mostly do two things:
 1. Transform and normalize the data from an API
 2. For each transformed field add type data.
 
-CloudQuery transforms every single field to its own rich type system, which contains more than [17 types](https://github.com/cloudquery/plugin-sdk/tree/main/schema) (including things like IP Addresses, MAC Addresses) This ensures all the validation is happening in the transformation phase and then all destination plugins needs to do is just transform it depending on what types each destination is supporting. This is a big shift from how Singer or Airbyte works where they mostly use what is available in JSON and [JSON Schema](https://json-schema.org/) as they couple the encoding together with their type system.
+CloudQuery transforms every single field to its own rich type system, which contains more than [17 types](https://github.com/cloudquery/plugin-sdk/tree/main/schema) (including things like IP Addresses, MAC Addresses). This ensures all the validation is happening in the transformation phase. Destination plugins then only need transform this, depending on what types each destination supports. This is a big shift from how Singer or Airbyte works. These systems use what is available in JSON and [JSON Schema](https://json-schema.org/), as they couple the encoding together with the type system.
 
 With those two decisions CloudQuery already supports more than [5 destinations](https://www.cloudquery.io/docs/plugins/destinations) two months after our initial [V1 release](https://www.cloudquery.io/blog/cloudquery-v1-release)
 
