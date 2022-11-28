@@ -97,7 +97,7 @@ The second thing we did here is to create a good scheduler. Extracting APIs in a
 
 ### Horizontal Scaling
 
-The previously described concurrency and scheduling algorithm gives a good utilization of compute and memory for one CQ process which makes it easy to scale vertically but what about horizontal scaling? To be able to scale both vertically and horizontally we designed CQ as stateless - i.e it doesn’t have any backend and it runs with just the right credentials and configuration file. This gives the ability for users to split configuration (for example configuration per account) and run CQ on as many nodes as needed which will work without any need for orchestration.
+The previously described concurrency and scheduling algorithm gives a good utilization of compute and memory for one CQ process. This makes it easy to scale vertically, but what about horizontal scaling? To be able to scale both vertically and horizontally, we designed CQ as stateless - i.e it doesn’t have any backend and it runs with just the right credentials and configuration file. This gives the ability for users to split configuration (for example configuration per account) and run CQ on as many nodes as needed without any need for orchestration.
 
 # Future
 
