@@ -122,7 +122,7 @@
       "destination": "/docs/plugins/destinations/overview"
     },
     {
-      "source": "/docs/plugins/sources/source-plugin-release-stages",
+      "source": "/docs/plugins/source-plugin-release-stages",
       "destination": "/docs/plugins/sources/overview#source-plugin-release-stages"
     }
   ]
