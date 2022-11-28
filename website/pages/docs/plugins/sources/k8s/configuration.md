@@ -10,7 +10,7 @@ spec:
   # Source spec section
   name: k8s
   path: cloudquery/k8s
-  version: "${VERSION_SOURCE_K8S}"
+  version: "VERSION_SOURCE_K8S"
   tables: ["*"]
   destinations: ["postgresql"]
 
