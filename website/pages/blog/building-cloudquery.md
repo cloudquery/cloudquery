@@ -1,7 +1,7 @@
 ---
 title: "Building CloudQuery: High Performance Data Integration Framework in Go"
 tag: engineering
-date: 2021/11/28
+date: 2022/11/28
 description: >-
   Deep dive on how we built CloudQuery and the design decisions we made along the way.
 author: yevgenypats
