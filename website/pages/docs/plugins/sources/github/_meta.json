@@ -1,7 +1,7 @@
 {
   "overview": "Overview",
   "tables": {
-    "title": "Tables",
+    "title": "Tables ↗",
     "href": "https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/README.md",
     "newWindow": true
   }
