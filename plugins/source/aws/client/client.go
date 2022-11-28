@@ -249,13 +249,11 @@ func configureAwsClient(ctx context.Context, logger zerolog.Logger, awsConfig *S
 		config.WithDefaultRegion(defaultRegion),
 		// https://aws.github.io/aws-sdk-go-v2/docs/configuring-sdk/retries-timeouts/
 		config.WithRetryer(func() aws.Retryer {
-			// return retry.NewAdaptiveMode()
 			return retry.NewStandard(func(so *retry.StandardOptions) {
 				so.MaxAttempts = maxAttempts
 				so.MaxBackoff = time.Duration(maxBackoff) * time.Second
 				so.RateLimiter = &NoRateLimiter{}
 			})
-			// return retry.AddWithMaxAttempts(retry.NewStandard(), 5)
 		}),
 	}
 
@@ -287,12 +285,26 @@ func configureAwsClient(ctx context.Context, logger zerolog.Logger, awsConfig *S
 				opts.RoleSessionName = account.RoleSessionName
 			})
 		}
+
 		if stsClient == nil {
 			stsClient = sts.NewFromConfig(awsCfg)
 		}
 		provider := stscreds.NewAssumeRoleProvider(stsClient, account.RoleARN, opts...)
 
-		awsCfg.Credentials = aws.NewCredentialsCache(provider)
+		awsCfg.Credentials = aws.NewCredentialsCache(provider, func(options *aws.CredentialsCacheOptions) {
+			// ExpiryWindow will allow the credentials to trigger refreshing prior to
+			// the credentials actually expiring. This is beneficial so race conditions
+			// with expiring credentials do not cause requests to fail unexpectedly
+			// due to ExpiredToken exceptions.
+			//
+			// An ExpiryWindow of 5 minute would cause calls to IsExpired() to return true
+			// 5 minutes before the credentials are actually expired. This can cause an
+			// increased number of requests to refresh the credentials to occur. We balance this with jitter.
+			options.ExpiryWindow = 5 * time.Minute
+			// Jitter is added to avoid the thundering herd problem of many refresh requests
+			// happening all at once.
+			options.ExpiryWindowJitterFrac = 0.5
+		})
 	}
 
 	if awsConfig.AWSDebug {
@@ -319,7 +331,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source) (s
 	client := NewAwsClient(logger)
 	var adminAccountSts AssumeRoleAPIClient
 	if awsConfig.Organization != nil && len(awsConfig.Accounts) > 0 {
-		return nil, errors.New("specifying accounts via both the Accounts and Org properties is not supported. If you want to do both, you should use multiple provider blocks")
+		return nil, errors.New("specifying accounts via both the Accounts and Org properties is not supported. To achieve both, use multiple source configurations")
 	}
 	if awsConfig.Organization != nil {
 		var err error
