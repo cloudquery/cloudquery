@@ -137,3 +137,4 @@ npm
 Gandi
 parallelization
 hyperscale
+goroutines
