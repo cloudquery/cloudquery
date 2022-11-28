@@ -135,3 +135,5 @@ bugfix
 nvm
 npm
 Gandi
+parallelization
+hyperscale
