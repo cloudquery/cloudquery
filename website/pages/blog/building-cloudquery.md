@@ -87,7 +87,7 @@ With those two decisions CloudQuery already supports more than [5 destinations](
 
 ## Performance
 
-Cloud Infrastructure hyperscale created new challenges for the ELT world. For example, some companies have more than 10,000 accounts GCP and/or AWS accounts with more than 100 million resources. How do you fetch those on a daily (or twice a day)? To address this we made two architecture decisions:
+Cloud Infrastructure hyperscale created new challenges for the ELT world. For example, some companies have more than 10,000 GCP and AWS accounts, with more than 100 million resources in total. How do you keep your inventory of these up-to-date, and fetch them on a daily (or twice daily) basis? To address this we made two architecture decisions:
 
 ### Concurrency and Scheduling Model
 
