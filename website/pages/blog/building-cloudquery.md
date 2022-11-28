@@ -58,7 +58,7 @@ Usually there is some intermediate language such as gRPC/GraphQL/Smithy that gen
 
 There were some significant advances around client library generation in the recent years that we also took advantage of.
 
-We could take advantage of the schema definition and generate the source plugin from that, but we decided to do that one step further in the pipeline from the Go Code.
+We could take advantage of the schema definition and generate the source plugin from that, but we decided to do that one step further in the pipeline: from the Go Code.
 
 Go is incredibly suited for code analysis so we created a [code generation library](https://github.com/cloudquery/plugin-sdk/tree/main/codegen) that generates CloudQuery schema from Go structs using reflection. This helps achieve number of things:
 
