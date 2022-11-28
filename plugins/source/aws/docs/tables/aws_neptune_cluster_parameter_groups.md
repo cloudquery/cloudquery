@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/neptune/latest/userguide/api-parameters.html#Describ
 The primary key for this table is **arn**.
 
 ## Relations
+
 The following tables depend on aws_neptune_cluster_parameter_groups:
   - [aws_neptune_cluster_parameter_group_parameters](aws_neptune_cluster_parameter_group_parameters.md)
 

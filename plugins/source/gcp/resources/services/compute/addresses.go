@@ -120,7 +120,7 @@ func Addresses() *schema.Table {
 	}
 }
 
-func fetchAddresses(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
+func fetchAddresses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	req := &pb.AggregatedListAddressesRequest{
 		Project: c.ProjectId,

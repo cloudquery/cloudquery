@@ -5,6 +5,7 @@ https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-
 The primary key for this table is **id**.
 
 ## Relations
+
 The following tables depend on azure_storage_accounts:
   - [azure_storage_containers](azure_storage_containers.md)
   - [azure_storage_blob_services](azure_storage_blob_services.md)

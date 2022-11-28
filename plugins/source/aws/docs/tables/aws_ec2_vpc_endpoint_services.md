@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ServiceDetail.html
 The primary key for this table is **arn**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

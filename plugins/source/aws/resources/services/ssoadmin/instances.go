@@ -9,9 +9,10 @@ import (
 
 func Instances() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_ssoadmin_instances",
-		Resolver:  fetchSsoadminInstances,
-		Multiplex: client.ServiceAccountRegionMultiplexer("identitystore"),
+		Name:        "aws_ssoadmin_instances",
+		Description: `https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_InstanceMetadata.html`,
+		Resolver:    fetchSsoadminInstances,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("identitystore"),
 		Columns: []schema.Column{
 			{
 				Name:     "identity_store_id",
@@ -23,6 +24,10 @@ func Instances() *schema.Table {
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("InstanceArn"),
 			},
+		},
+
+		Relations: []*schema.Table{
+			PermissionSets(),
 		},
 	}
 }

@@ -7,7 +7,7 @@ kind: source
 spec:
   name: aws
   path: cloudquery/aws
-  version: "v7.1.4" # latest version of aws plugin
+  version: "VERSION_SOURCE_AWS"
   tables: ["*"]
 
   # Comment out any of the following tables if you want to sync them

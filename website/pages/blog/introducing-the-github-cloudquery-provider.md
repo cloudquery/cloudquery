@@ -35,7 +35,7 @@ In this tutorial, we will install CloudQuery and use it to fetch GitHub resource
   spec:
     name: github
     path: cloudquery/github
-    version: "v1.2.17" # latest version of github plugin
+    version: "VERSION_SOURCE_GITHUB"
     tables: ["*"]
     destinations: ["postgresql"]
     
@@ -47,7 +47,7 @@ In this tutorial, we will install CloudQuery and use it to fetch GitHub resource
   spec:
     name: "postgresql"
     path: cloudquery/postgresql
-    version: "v1.7.13" # latest version of postgresql plugin
+    version: "VERSION_DESTINATION_POSTGRESQL"
     write_mode: "overwrite-delete-stale"
 
     spec:

@@ -1,0 +1,9 @@
+{
+  "overview": "Overview",
+  "configuration": "Configuration",
+  "tables": {
+    "title": "Tables ↗",
+    "href": "https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/README.md",
+    "newWindow": true
+  }
+}

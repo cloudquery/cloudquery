@@ -7,7 +7,7 @@ kind: source
 spec:
   name: azure
   path: cloudquery/azure
-  version: "v1.4.8" # latest version of azure plugin
+  version: "VERSION_SOURCE_AZURE"
   tables: ["*"]
   destinations: ["<destination>"]
 ```

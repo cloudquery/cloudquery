@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/directconnect/latest/APIReference/API_VirtualGateway
 The composite primary key for this table is (**account_id**, **region**, **id**).
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

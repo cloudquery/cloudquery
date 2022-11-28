@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/Route53/latest/APIReference/API_DelegationSet.html
 The primary key for this table is **arn**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

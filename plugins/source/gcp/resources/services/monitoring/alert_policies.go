@@ -90,7 +90,7 @@ func AlertPolicies() *schema.Table {
 	}
 }
 
-func fetchAlertPolicies(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
+func fetchAlertPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	req := &pb.ListAlertPoliciesRequest{
 		Name: "projects/" + c.ProjectId,

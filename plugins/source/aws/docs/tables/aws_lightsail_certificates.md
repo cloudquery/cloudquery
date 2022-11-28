@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_Certificate.h
 The primary key for this table is **_cq_id**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
