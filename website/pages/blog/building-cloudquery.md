@@ -23,7 +23,7 @@ Addressing this problem comes with significant challenges. In this post, I’ll 
 Before we go over the technical and architecture decisions we made in CloudQuery, let’s cover the main challenges and requirements of an ELT framework:
 
 - **API Coverage:** Scaling and supporting the number of APIs covered in an efficient manner (i.e less developers, more APIs supported)--leveraging the community is key.
-- **Scaling Destinations:** Unlike sources, destinations are finite but the right architecture should ensure source and destinations are decoupled correctly so new destinations will work out-of-the-box and won't require any changes in sources (otherwise development work will grow exponentially).
+- **Scaling Destinations:** Unlike sources, destinations are finite but the right architecture should ensure source and destinations are decoupled correctly so new destinations will work out-of-the-box and won't require any changes in sources (otherwise development work will grow by `n*m` where `n` is number of source plugins and `m` is number of destination plugins).
 - **Performance:** Running ELT workload is compute intensive and can get expensive depending on the number of APIs to extract from. Having high performance and concurrent architecture is key to both making cost as low as possible and bringing information as fast as possible from sources to destinations.
 
 # Technical Deep Dive
@@ -52,7 +52,7 @@ Writing ELT code involves a lot of boilerplate code, testing code, tricky perfor
 
 ### Code Generation
 
-Big challenge is scaling and continuously supportting large number of APIs. Before we dive into how we leveraged code-generation to generate CloudQuery plugins, let’s take a quick look at how client library generation for multiple languages worked in those days.
+A Big challenge is scaling and continuously supporting large number of APIs. Before we dive into how we leveraged code-generation to generate CloudQuery plugins, let’s take a quick look at how client library generation for multiple languages works.
 
 Usually there is some intermediate language such as gRPC/GraphQL/Smithy that generates server stubs and clients automatically for multiple languages instead of manually maintaining clients for a number of languages and keeping up with the server APIs.
 
@@ -60,17 +60,19 @@ There were some significant advances around client library generation in the rec
 
 We could take advantage of the schema definition and generate the source plugin from that, but we decided to do that one step further in the pipeline from the Go Code.
 
-Go is incredibly suited for Code Analysis so we created a [code generation library](https://github.com/cloudquery/plugin-sdk/tree/main/codegen) that generates CloudQuery schema from Go structs. This helps achieve number of things:
+Go is incredibly suited for code analysis so we created a [code generation library](https://github.com/cloudquery/plugin-sdk/tree/main/codegen) that generates CloudQuery schema from Go structs using reflection. This helps achieve number of things:
 
 1. Keep up CloudQuery schema with APIs automatically
-2. Enable users to use the Go Client which is built for developers and include important capabilities when talking to the service API.
+2. Enable developers to use the Go Client which is built for developers and include important capabilities when talking to the service API.
 3. Our current set of plugins are >80% auto-generated!
 
 ## Scaling Destinations
 
 ### Pluggable Destinations
 
-Another key requirement is supporting multiple destinations. Number of destinations is actually limited but if destinations won't be decoupled from sources, source plugins will grow exponentially and will need updating every time there will be a need for a new destination which makes it unsustainable. Destination plugins implemented in a similar way to source plugins as gRPC servers.
+Another key requirement is supporting multiple destinations. The number of destinations is actually limited, but if destinations won't be decoupled from sources, source plugins will need to be updated every time there is a new destination, which will require a growing `n*m` (`n` number of source plugins and `m` number of destinations plugins) number of code-changes and make development unsustainable.
+
+Destination plugins are implemented in a similar way to source plugins as gRPC servers.
 
 ### Typing System
 
@@ -81,11 +83,11 @@ The job of an ELT platform is to mostly do two things:
 
 CloudQuery transforms every single field to its own rich type system, which contains more than [17 types](https://github.com/cloudquery/plugin-sdk/tree/main/schema) (including things like IP Addresses, MAC Addresses) This ensures all the validation is happening in the transformation phase and then all destination plugins needs to do is just transform it depending on what types each destination is supporting. This is a big shift from how Singer or Airbyte works where they mostly use what is available in JSON and [JSON Schema](https://json-schema.org/) as they couple the encoding together with their type system.
 
-With those two decisions CloudQuery already supports more than [5 destination](https://www.cloudquery.io/docs/plugins/destinations) two months after our initial [V1 release](https://www.cloudquery.io/blog/cloudquery-v1-release)
+With those two decisions CloudQuery already supports more than [5 destinations](https://www.cloudquery.io/docs/plugins/destinations) two months after our initial [V1 release](https://www.cloudquery.io/blog/cloudquery-v1-release)
 
 ## Performance
 
-Cloud Infrastructure hyperscale created new challenges for the ELT world, For example some companies have more than 10K accounts GCP and/or AWS accounts with more than 100M resources. How do you fetch those on a daily (or twice a day)? To address this we made two architecture decisions:
+Cloud Infrastructure hyperscale created new challenges for the ELT world. For example, some companies have more than 10,000 accounts GCP and/or AWS accounts with more than 100 million resources. How do you fetch those on a daily (or twice a day)? To address this we made two architecture decisions:
 
 ### Concurrency and Scheduling Model
 
@@ -95,7 +97,7 @@ The second thing we did here is to create a good scheduler. Extracting APIs in c
 
 ### Horizontal Scaling
 
-The previously described in-process concurrency and scheduling algorithm gives a good utilization of compute and memory for one CQ process which makes it easy to scale vertically but what about horizontal scaling? To be able to scale both vertically and horizontally we designed CQ as stateless - i.e it doesn’t have any backend and it runs with just the right credentials and configuration file. This gives the ability for users to split configuration (for example configuration per account) and run CQ on as many nodes as possible which will work without any need for orchestration.
+The previously described concurrency and scheduling algorithm gives a good utilization of compute and memory for one CQ process which makes it easy to scale vertically but what about horizontal scaling? To be able to scale both vertically and horizontally we designed CQ as stateless - i.e it doesn’t have any backend and it runs with just the right credentials and configuration file. This gives the ability for users to split configuration (for example configuration per account) and run CQ on as many nodes as needed which will work without any need for orchestration.
 
 # Future
 
