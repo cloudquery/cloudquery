@@ -74,7 +74,7 @@ Another key requirement is supporting multiple destinations. The number of desti
 
 Destination plugins are implemented in a similar way to source plugins as gRPC servers.
 
-### Typing System
+### Type System
 
 The job of a pluggable ELT platform is to do two things:
 
