@@ -12,6 +12,11 @@ func Applications() *schema.Table {
 		Resolver: fetchApplications,
 		Columns: []schema.Column{
 			{
+				Name:     "profile",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Profile"),
+			},
+			{
 				Name:     "accessibility",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Accessibility"),

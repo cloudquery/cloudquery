@@ -20,6 +20,11 @@ func ApplicationUsers() *schema.Table {
 				},
 			},
 			{
+				Name:     "profile",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Profile"),
+			},
+			{
 				Name:     "created",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("Created"),

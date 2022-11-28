@@ -17,6 +17,7 @@ func Groups() []*Resource {
 		},
 		{
 			DataStruct: &models.GroupUser{},
+			PKColumns:  []string{"group_id", "id"},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:     "group_id",

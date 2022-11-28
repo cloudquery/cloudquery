@@ -20,6 +20,11 @@ func ApplicationGroupAssignments() *schema.Table {
 				},
 			},
 			{
+				Name:     "profile",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Profile"),
+			},
+			{
 				Name:     "id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Id"),

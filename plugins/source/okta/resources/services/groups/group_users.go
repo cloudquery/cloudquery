@@ -15,11 +15,17 @@ func GroupUsers() *schema.Table {
 				Name:     "group_id",
 				Type:     schema.TypeString,
 				Resolver: schema.ParentColumnResolver("id"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Id"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 		},
 	}
