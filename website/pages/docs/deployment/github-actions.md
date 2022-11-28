@@ -64,8 +64,10 @@ jobs:
         with:
           role-to-assume: <role-arn> # based on the role you created in the prerequisites
           aws-region: <region> # based on the region you created the role in
-      - uses: cloudquery/setup-cloudquery@v2
+      - uses: cloudquery/setup-cloudquery@v3
         name: Setup CloudQuery
+        with:
+          version: "VERSION_CLI"
       - name: Sync with CloudQuery
         run: cloudquery sync cloudquery.yml --log-console
         env:
@@ -133,8 +135,10 @@ jobs:
         with:
           role-to-assume: <role-arn> # based on the role you created in the prerequisites
           aws-region: <region> # based on the region you created the role in
-      - uses: cloudquery/setup-cloudquery@v2
+      - uses: cloudquery/setup-cloudquery@v3
         name: Setup CloudQuery
+        with:
+          version: "VERSION_CLI"
       - name: Sync with CloudQuery
         run: cloudquery sync cloudquery-regions.yml --log-console
         env:
