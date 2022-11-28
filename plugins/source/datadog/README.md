@@ -24,7 +24,7 @@ spec:
   # Source spec section
   name: datadog
   path: cloudquery/datadog
-  version: "0.0.1" # latest version of datadog plugin
+  version: "1.0.0" # latest version of datadog plugin
   tables: ["*"]
   destinations: ["postgresql"]
   spec:
