@@ -17,6 +17,7 @@ func buildApplications(t *testing.T, ctrl *gomock.Controller) client.Services {
 	if err := faker.FakeObject(&a); err != nil {
 		t.Fatal(err)
 	}
+	a.Profile = map[string]string{"test": "value"}
 
 	mock.EXPECT().ListApplications(
 		gomock.Any(),
@@ -31,6 +32,7 @@ func buildApplications(t *testing.T, ctrl *gomock.Controller) client.Services {
 	if err := faker.FakeObject(&aga); err != nil {
 		t.Fatal(err)
 	}
+	aga.Profile = map[string]string{"test": "value"}
 
 	mock.EXPECT().ListApplicationGroupAssignments(
 		gomock.Any(),
@@ -46,6 +48,7 @@ func buildApplications(t *testing.T, ctrl *gomock.Controller) client.Services {
 	if err := faker.FakeObject(&au); err != nil {
 		t.Fatal(err)
 	}
+	au.Profile = map[string]string{"test": "value"}
 
 	mock.EXPECT().ListApplicationUsers(
 		gomock.Any(),
