@@ -34,7 +34,7 @@ This section will discuss the most important decisions and solutions we landed o
 
 ### Open Source
 
-There is no vendor that can support all integrations in-house thus the best and only way in our opinion is to go the open-source way and give the ability for others to contribute to our official plugins and develop community plugins without being blocked by a single vendor. Good recent examples that dealt with the “infinite APIs integrations” problem and took the open source route successfully are Terraform and Pulumi.
+There is no vendor that can support all integrations in-house, thus the best and only way in our opinion is to open-source the software and give users the ability to contribute to our official plugins and develop community plugins without being blocked by a single vendor. Good recent examples that dealt with this “infinite APIs integrations” problem and took the open source route successfully are Terraform and Pulumi.
 
 ### Pluggable Sources
 
