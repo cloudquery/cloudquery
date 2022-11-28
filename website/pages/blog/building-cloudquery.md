@@ -76,7 +76,7 @@ Destination plugins are implemented in a similar way to source plugins as gRPC s
 
 ### Typing System
 
-The job of an ELT platform is to mostly do two things:
+The job of a pluggable ELT platform is to do two things:
 
 1. Transform and normalize the data from an API
 2. For each transformed field, add type data.
