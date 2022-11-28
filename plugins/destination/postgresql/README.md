@@ -4,4 +4,4 @@ This destination plugin lets you sync data from a CloudQuery source to a Postgre
 
 ## Links
 
-- [User Guide](https://docs.cloudquery.io/docs/plugins/destinations/postgresql/overview)
+- [User Guide](https://cloudquery.io/docs/plugins/destinations/postgresql/overview)
