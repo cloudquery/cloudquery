@@ -4,12 +4,12 @@ import (
 	"github.com/crowdstrike/gofalcon/falcon/models"
 )
 
-func CrowdScore() []*Resource {
+func Alerts() []*Resource {
 	resources := []*Resource{
 		{
-			Service:    "incidents",
-			SubService: "crowdscore",
-			Struct:     &models.APIMsaEnvironmentScoreResponse{},
+			Service:    "Alerts",
+			SubService: "Query",
+			Struct:     &models.MsaQueryResponse{},
 			// PKColumns:  []string{"id"},
 		},
 	}
