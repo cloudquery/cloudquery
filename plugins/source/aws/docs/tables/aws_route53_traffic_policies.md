@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/Route53/latest/APIReference/API_TrafficPolicySummary
 The primary key for this table is **arn**.
 
 ## Relations
+
 The following tables depend on aws_route53_traffic_policies:
   - [aws_route53_traffic_policy_versions](aws_route53_traffic_policy_versions.md)
 

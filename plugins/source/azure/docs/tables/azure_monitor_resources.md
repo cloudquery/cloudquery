@@ -5,6 +5,7 @@ https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/resources/mgmt/202
 The primary key for this table is **id**.
 
 ## Relations
+
 The following tables depend on azure_monitor_resources:
   - [azure_monitor_diagnostic_settings](azure_monitor_diagnostic_settings.md)
 

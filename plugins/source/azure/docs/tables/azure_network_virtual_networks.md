@@ -5,6 +5,7 @@ https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-
 The primary key for this table is **id**.
 
 ## Relations
+
 The following tables depend on azure_network_virtual_networks:
   - [azure_network_virtual_network_gateways](azure_network_virtual_network_gateways.md)
 

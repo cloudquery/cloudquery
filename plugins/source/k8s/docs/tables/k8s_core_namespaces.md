@@ -5,6 +5,7 @@
 The primary key for this table is **uid**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

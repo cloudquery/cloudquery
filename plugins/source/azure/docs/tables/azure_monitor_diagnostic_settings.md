@@ -7,6 +7,7 @@ The primary key for this table is **id**.
 ## Relations
 This table depends on [azure_monitor_resources](azure_monitor_resources.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

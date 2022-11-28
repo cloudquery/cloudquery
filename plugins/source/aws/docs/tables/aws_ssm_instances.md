@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_InstanceInfo
 The primary key for this table is **arn**.
 
 ## Relations
+
 The following tables depend on aws_ssm_instances:
   - [aws_ssm_instance_compliance_items](aws_ssm_instance_compliance_items.md)
   - [aws_ssm_instance_patches](aws_ssm_instance_patches.md)
