@@ -2,7 +2,7 @@
 
 This destination plugin lets you sync data from a CloudQuery source to a PostgreSQL compatible database.
 
-Supported databases versions:
+Supported database versions:
 
 - PostgreSQL > v10
 - CockroachDB > v20.2
