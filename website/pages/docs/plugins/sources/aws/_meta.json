@@ -3,7 +3,7 @@
   "configuration": "Configuration",
   "multi_account": "Multi Account Configuration",
   "tables": {
-    "title": "Tables",
+    "title": "Tables ↗",
     "href": "https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/README.md",
     "newWindow": true
   }
