@@ -297,10 +297,10 @@ func configureAwsClient(ctx context.Context, logger zerolog.Logger, awsConfig *S
 			// with expiring credentials do not cause requests to fail unexpectedly
 			// due to ExpiredToken exceptions.
 			//
-			// An ExpiryWindow of 1 minute would cause calls to IsExpired() to return true
-			// 1 minute before the credentials are actually expired. This can cause an
-			// increased number of requests to refresh the credentials to occur.
-			options.ExpiryWindow = 1 * time.Minute
+			// An ExpiryWindow of 5 minute would cause calls to IsExpired() to return true
+			// 5 minutes before the credentials are actually expired. This can cause an
+			// increased number of requests to refresh the credentials to occur. We balance this with jitter.
+			options.ExpiryWindow = 5 * time.Minute
 			// Jitter is added to avoid the thundering herd problem of many refresh requests
 			// happening all at once.
 			options.ExpiryWindowJitterFrac = 0.5
