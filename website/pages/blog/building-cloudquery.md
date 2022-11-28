@@ -52,7 +52,7 @@ Writing ELT code involves a lot of boilerplate code, testing code, tricky perfor
 
 ### Code Generation
 
-Big challenge around scaling support for services and APIs support for highly different APIs and keeping up the code with the server APIs and schema. Before we dive into how we leveraged code-generation to generate CloudQuery plugins, let’s take a quick look at how client library generation for multiple languages worked in those days.
+Big challenge is scaling and continuously supportting large number of APIs. Before we dive into how we leveraged code-generation to generate CloudQuery plugins, let’s take a quick look at how client library generation for multiple languages worked in those days.
 
 Usually there is some intermediate language such as gRPC/GraphQL/Smithy that generates server stubs and clients automatically for multiple languages instead of manually maintaining clients for a number of languages and keeping up with the server APIs.
 
