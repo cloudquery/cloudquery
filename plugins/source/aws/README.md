@@ -5,6 +5,6 @@ The AWS Source plugin extracts information from many of the supported services b
 
 ## Links
 
-- [User Guide](https://docs.cloudquery.io/docs/plugins/sources/aws/overview)
+- [User Guide](https://cloudquery.io/docs/plugins/sources/aws/overview)
 - [Contribution Guide](./CONTRIBUTING.md)
 
