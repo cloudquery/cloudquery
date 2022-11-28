@@ -55,7 +55,7 @@ spec:
     # plugin specific configuration.
 ```
 
-Check the [source spec documentation](/docs/reference/source-spec) for general layout, and individual [plugin documentation](/docs/plugins/sources) for details on how to configure the plugin-specific spec. Generally these will be the same as in v0, and all the same authentication functionality is still supported.
+Check the [source spec documentation](/docs/reference/source-spec) for general layout, and individual [plugin documentation](/docs/plugins/sources/overview) for details on how to configure the plugin-specific spec. Generally these will be the same as in v0, and all the same authentication functionality is still supported.
 
 ### Destination Plugins
 
@@ -83,7 +83,7 @@ spec:
     connection_string: "postgresql://postgres:pass@localhost:5432/postgres?sslmode=disable"```
 ```
 
-Check the [destination spec documentation](/docs/reference/destination-spec) for general layout, and individual [destination plugin documentation](/docs/plugins/destinations) for details on how to configure the plugin-specific spec part. Generally these will be the same as in v0, and all the same authentication functionality is still supported.
+Check the [destination spec documentation](/docs/reference/destination-spec) for general layout, and individual [destination plugin documentation](/docs/plugins/destinations/overview) for details on how to configure the plugin-specific spec part. Generally these will be the same as in v0, and all the same authentication functionality is still supported.
 
 ## Changes to the CLI Commands
 
@@ -91,7 +91,7 @@ Users of CloudQuery v0 would be familiar with the main commands `init` and `fetc
 
 ### Init
 
-`init` was a command that generated a starter configuration template, but it is no longer a command in v1 of the CLI. Instead, please refer to our [Quickstart](https://www.cloudquery.io/docs/quickstart) guide to see how source and destination plugins should be configured.
+`init` was a command that generated a starter configuration template, but it is no longer a command in v1 of the CLI. Instead, please refer to our [Quickstart](/docs/quickstart) guide to see how source and destination plugins should be configured.
 
 The previous `init` command also generated a full list of tables to fetch. In v1, you can fetch all tables by using a wildcard entry:
 

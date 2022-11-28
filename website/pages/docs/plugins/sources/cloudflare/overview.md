@@ -8,7 +8,7 @@ In order to fetch information from Cloudflare, `cloudquery` needs to be authenti
 
 - Export the `CLOUDFLARE_API_TOKEN` environment variable before running `cloudquery sync`.
 - Export the `CLOUDFLARE_EMAIL` and `CLOUDFLARE_API_KEY` environment variables before running cloudquery
-- Specifying either the `api_token` or `api_email, api_key` parameters in the YAML configuration (See [Configuration](./docs/configuration.md) for more details).
+- Specifying either the `api_token` or `api_email, api_key` parameters in the YAML configuration (See [Configuration](configuration) for more details).
 
 ## Query Examples
 

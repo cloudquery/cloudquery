@@ -8,7 +8,7 @@ This is useful in local environments, but also in production environments where 
 
 This example configures a CSV destination, to create CSV files in  `./cq_csv_output`. Note that the CSV plugin only supports `append` write-mode.
 
-The (top level) spec section is described in the [Destination Spec Reference](https://www.cloudquery.io/docs/reference/destination-spec).
+The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
 
 ```yaml
 kind: destination

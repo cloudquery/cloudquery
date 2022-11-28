@@ -85,7 +85,7 @@ Following is a quick start to run the policy. Otherwise, checkout full details o
 
 ### Prerequisite
 
-Please follow the [quickstart guide](/docs/quickstart) documentation on how to `install`, `init`, and `fetch` the [K8S Provider](/docs/plugins/sources).
+Please follow the [quickstart guide](/docs/quickstart) documentation on how to `install`, `init`, and `fetch` the [K8S Provider](/docs/plugins/sources/overview).
 
 ### Running
 
