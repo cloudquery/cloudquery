@@ -13,7 +13,7 @@ import (
 func fetchCrowdscore(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	desc := "timestamp.desc"
-	retval, err := c.CrowdStrike.Incidents.CrowdScore(&incidents.CrowdScoreParams{
+	retval, err := c.Services.Incidents.CrowdScore(&incidents.CrowdScoreParams{
 		Context: ctx,
 		Sort:    &desc,
 	})

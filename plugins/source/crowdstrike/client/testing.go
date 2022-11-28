@@ -14,11 +14,7 @@ import (
 	"github.com/rs/zerolog"
 )
 
-const (
-	TestSharingID = "test_account"
-)
-
-func MockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, *gomock.Controller) Client) {
+func MockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, *gomock.Controller) Services) {
 	version := "vDev"
 
 	t.Helper()
@@ -37,8 +33,11 @@ func MockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, 
 		}
 
 		services := builder(t, ctrl)
-		c := New(logger, services, TestSharingID)
-		return &c, nil
+		return &Client{
+			logger:   logger,
+			Services: services,
+			spec:     spec,
+		}, nil
 	}
 
 	p := plugins.NewSourcePlugin(

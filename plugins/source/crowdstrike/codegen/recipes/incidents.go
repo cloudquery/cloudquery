@@ -10,9 +10,7 @@ func CrowdScore() []*Resource {
 			Service:    "incidents",
 			SubService: "crowdscore",
 			Struct:     &models.APIMsaEnvironmentScoreResponse{},
-			// PKColumns:  []string{"id"},
 		},
 	}
-
 	return resources
 }

@@ -9,15 +9,19 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/crowdstrike/gofalcon/falcon"
-	"github.com/crowdstrike/gofalcon/falcon/client"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )
 
 type Client struct {
-	logger      zerolog.Logger
-	CrowdStrike *client.CrowdStrikeAPISpecification
-	spec        specs.Source
+	logger   zerolog.Logger
+	spec     specs.Source
+	Services Services
+}
+
+type Services struct {
+	Incidents Incidents
+	Alerts    Alerts
 }
 
 func (*Client) Logger() *zerolog.Logger {
@@ -49,14 +53,20 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 		secret = crowdStrikeSpec.ClientSecret
 	}
 
-	c, _ := falcon.NewClient(&falcon.ApiConfig{
+	c, err := falcon.NewClient(&falcon.ApiConfig{
 		ClientId:     clientId,
 		ClientSecret: secret,
 		Context:      ctx,
 	})
+	if err != nil {
+		return nil, err
+	}
 	return &Client{
-		logger:      logger,
-		CrowdStrike: c,
-		spec:        s,
+		logger: logger,
+		Services: Services{
+			Incidents: c.Incidents,
+			Alerts:    c.Alerts,
+		},
+		spec: s,
 	}, nil
 }

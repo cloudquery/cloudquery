@@ -7,10 +7,9 @@ import (
 func Alerts() []*Resource {
 	resources := []*Resource{
 		{
-			Service:    "Alerts",
-			SubService: "Query",
+			Service:    "alerts",
+			SubService: "query",
 			Struct:     &models.MsaQueryResponse{},
-			// PKColumns:  []string{"id"},
 		},
 	}
 
