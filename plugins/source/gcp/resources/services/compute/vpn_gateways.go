@@ -90,7 +90,7 @@ func VpnGateways() *schema.Table {
 	}
 }
 
-func fetchVpnGateways(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
+func fetchVpnGateways(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	req := &pb.AggregatedListVpnGatewaysRequest{
 		Project: c.ProjectId,

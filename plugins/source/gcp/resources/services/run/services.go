@@ -168,7 +168,7 @@ func Services() *schema.Table {
 	}
 }
 
-func fetchServices(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
+func fetchServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	req := &pb.ListServicesRequest{
 		Parent: "projects/" + c.ProjectId + "locations/-",
