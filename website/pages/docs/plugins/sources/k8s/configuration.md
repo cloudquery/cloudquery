@@ -2,7 +2,7 @@
 
 ## Example
 
-This example connects a single k8s context to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](https://www.cloudquery.io/docs/reference/source-spec).
+This example connects a single k8s context to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
 
 ```yaml
 kind: source
