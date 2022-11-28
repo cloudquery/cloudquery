@@ -22,7 +22,6 @@ This table depends on [okta_applications](okta_applications.md).
 |last_sync|Timestamp|
 |last_updated|Timestamp|
 |password_changed|Timestamp|
-|profile|JSON|
 |scope|String|
 |status|String|
 |status_changed|Timestamp|

@@ -25,7 +25,6 @@ The following tables depend on okta_applications:
 |last_updated|Timestamp|
 |licensing|JSON|
 |name|String|
-|profile|JSON|
 |settings|JSON|
 |sign_on_mode|String|
 |status|String|
