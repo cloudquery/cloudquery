@@ -10,8 +10,8 @@ import (
 )
 
 func fetchApplications(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	api := meta.(*client.Client)
-	items, resp, err := api.Okta.Application.ListApplications(ctx, query.NewQueryParams(query.WithLimit(200), query.WithAfter("")))
+	cl := meta.(*client.Client)
+	items, resp, err := cl.Services.Applications.ListApplications(ctx, query.NewQueryParams(query.WithLimit(200), query.WithAfter("")))
 	if err != nil {
 		return err
 	}

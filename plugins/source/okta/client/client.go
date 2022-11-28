@@ -16,8 +16,15 @@ type Client struct {
 	// This is a client that you need to create and initialize in Configure
 	// It will be passed for each resource fetcher.
 	logger zerolog.Logger
-	Okta   *okta.Client
 	spec   specs.Source
+
+	Services Services
+}
+
+type Services struct {
+	Applications ApplicationService
+	Groups       GroupService
+	Users        UserService
 }
 
 const exampleDomain = "https://<CHANGE_THIS_TO_YOUR_OKTA_DOMAIN>.okta.com"
@@ -28,6 +35,14 @@ func (c *Client) Logger() *zerolog.Logger {
 
 func (c *Client) ID() string {
 	return c.spec.Name
+}
+
+func New(logger zerolog.Logger, s specs.Source, services Services) *Client {
+	return &Client{
+		logger:   logger,
+		spec:     s,
+		Services: services,
+	}
 }
 
 func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.ClientMeta, error) {
@@ -54,9 +69,9 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (sche
 		return nil, err
 	}
 
-	return &Client{
-		logger: logger,
-		Okta:   c,
-		spec:   s,
-	}, nil
+	return New(logger, s, Services{
+		Applications: c.Application,
+		Groups:       c.Group,
+		Users:        c.User,
+	}), nil
 }

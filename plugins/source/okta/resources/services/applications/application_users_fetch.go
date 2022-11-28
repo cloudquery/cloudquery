@@ -11,9 +11,9 @@ import (
 )
 
 func fetchApplicationUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	api := meta.(*client.Client)
+	cl := meta.(*client.Client)
 	app := parent.Item.(*okta.Application)
-	items, resp, err := api.Okta.Application.ListApplicationUsers(ctx, app.Id, query.NewQueryParams(query.WithLimit(200), query.WithAfter("")))
+	items, resp, err := cl.Services.Applications.ListApplicationUsers(ctx, app.Id, query.NewQueryParams(query.WithLimit(200), query.WithAfter("")))
 	if err != nil {
 		return err
 	}

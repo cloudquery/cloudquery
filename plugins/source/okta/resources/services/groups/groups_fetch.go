@@ -10,8 +10,8 @@ import (
 )
 
 func fetchGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	api := meta.(*client.Client)
-	items, resp, err := api.Okta.Group.ListGroups(ctx, query.NewQueryParams(query.WithLimit(200), query.WithAfter("")))
+	cl := meta.(*client.Client)
+	items, resp, err := cl.Services.Groups.ListGroups(ctx, query.NewQueryParams(query.WithLimit(200), query.WithAfter("")))
 	if err != nil {
 		return err
 	}

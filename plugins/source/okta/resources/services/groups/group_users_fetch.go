@@ -11,10 +11,10 @@ import (
 )
 
 func fetchGroupUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	api := meta.(*client.Client)
+	cl := meta.(*client.Client)
 	grp := parent.Item.(*okta.Group)
 
-	items, resp, err := api.Okta.Group.ListGroupUsers(ctx, grp.Id, query.NewQueryParams(query.WithLimit(200), query.WithAfter("")))
+	items, resp, err := cl.Services.Groups.ListGroupUsers(ctx, grp.Id, query.NewQueryParams(query.WithLimit(200), query.WithAfter("")))
 	if err != nil {
 		return err
 	}
