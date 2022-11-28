@@ -5,6 +5,7 @@
 The primary key for this table is **arn**.
 
 ## Relations
+
 The following tables depend on aws_qldb_ledgers:
   - [aws_qldb_ledger_journal_kinesis_streams](aws_qldb_ledger_journal_kinesis_streams.md)
   - [aws_qldb_ledger_journal_s3_exports](aws_qldb_ledger_journal_s3_exports.md)

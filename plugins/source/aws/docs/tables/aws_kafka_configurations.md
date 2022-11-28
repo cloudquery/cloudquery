@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/msk/1.0/apireference/clusters-clusterarn-configurati
 The primary key for this table is **arn**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

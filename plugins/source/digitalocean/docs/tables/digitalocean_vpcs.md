@@ -5,6 +5,7 @@
 The primary key for this table is **id**.
 
 ## Relations
+
 The following tables depend on digitalocean_vpcs:
   - [digitalocean_vpc_members](digitalocean_vpc_members.md)
 

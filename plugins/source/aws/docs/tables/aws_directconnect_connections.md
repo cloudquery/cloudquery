@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/directconnect/latest/APIReference/API_Connection.htm
 The composite primary key for this table is (**arn**, **id**).
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
