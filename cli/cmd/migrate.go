@@ -97,17 +97,17 @@ func migrateConnection(ctx context.Context, cqDir string, sourceSpec specs.Sourc
 	}
 	defer destClients.Close()
 
-	tables, _, err := getTablesForSpec(ctx, sourceClient, sourceSpec)
+	// We currently migrate ALL tables, but this is subject to change once policies are updated
+	// to handle missing tables in some way.
+	allTables, err := sourceClient.GetTables(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to get tables for source %s: %w", sourceSpec.Name, err)
 	}
-	tableCount := len(tables.FlattenTables())
-	fmt.Printf("Source %s will migrate %d tables.\n", sourceSpec.Name, tableCount)
 	fmt.Println("Starting migration for:", sourceSpec.Name, "->", sourceSpec.Destinations)
 	log.Info().Str("source", sourceSpec.Name).Strs("destinations", sourceSpec.Destinations).Msg("Starting migration")
 
 	for i, destinationSpec := range destinationsSpecs {
-		if err := destClients[i].Migrate(ctx, tables); err != nil {
+		if err := destClients[i].Migrate(ctx, allTables); err != nil {
 			return fmt.Errorf("failed to migrate source %s on destination %s : %w", sourceSpec.Name, destinationSpec.Name, err)
 		}
 	}
@@ -115,7 +115,7 @@ func migrateConnection(ctx context.Context, cqDir string, sourceSpec specs.Sourc
 	fmt.Printf("Migration completed successfully.\n")
 	log.Info().Str("source", sourceSpec.Name).
 		Strs("destinations", sourceSpec.Destinations).
-		Int("num_tables", len(tables)).
+		Int("num_tables", len(allTables)).
 		Float64("time_took", tt.Seconds()).
 		Msg("Migration completed successfully")
 

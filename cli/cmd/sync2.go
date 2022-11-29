@@ -45,9 +45,8 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 	// Print a count of the tables that will be synced / migrated. This is a little tricky because older
 	// servers don't necessarily support GetTablesForSpec.
 	if tablesForSpecSupported {
-		if noMigrate {
-			fmt.Printf("Source %s will sync %d tables.\n", sourceSpec.Name, tableCount)
-		}
+		fmt.Printf("Source %s will sync %d tables.\n", sourceSpec.Name, tableCount)
+
 		// TODO: add this back once we also use the filtered list for table migrations
 		//else {
 		//	fmt.Printf("Source %s will migrate and sync %d tables.\n", sourceSpec.Name, tableCount)
