@@ -17,7 +17,7 @@ func fetchQuery(ctx context.Context, meta schema.ClientMeta, parent *schema.Reso
 		Sort:    &desc,
 	})
 	if err != nil {
-		panic(err)
+		return err
 	}
 	payload := retval.GetPayload()
 	res <- payload
