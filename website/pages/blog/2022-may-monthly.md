@@ -26,7 +26,7 @@ DevOps/SRE/Security team.
 
 ## GCP Provider Improvements
 
-**Project Auto Discovery**: The [GCP Provider](/docs/plugins/sources)
+**Project Auto Discovery**: The [GCP Provider](/docs/plugins/sources/overview)
 can now auto-discover all projects under your organization and recursively fetch all the configuration from each project
 (and project sprawl in GCP is common!). This should significantly simplify CloudQuery configuration and maintenance as
 well as open-up opportunity to build new workflows and alert on things like project creation.

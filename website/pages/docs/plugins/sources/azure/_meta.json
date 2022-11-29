@@ -1,0 +1,10 @@
+{
+  "overview": "Overview",
+  "configuration": "Configuration",
+  "tables": {
+    "title": "Tables ↗",
+    "href": "https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/README.md",
+    "newWindow": true,
+    "route": "https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/README.md"
+  }
+}

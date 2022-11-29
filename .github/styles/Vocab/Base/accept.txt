@@ -136,3 +136,6 @@ nvm
 npm
 Gandi
 CrowdStrike
+parallelization
+hyperscale
+goroutines

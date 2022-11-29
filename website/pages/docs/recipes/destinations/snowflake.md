@@ -1,6 +1,6 @@
 # Snowflake Destination Plugin Recipes
 
-Full spec options for Snowflake destination available [here](https://github.com/cloudquery/cloudquery/tree/main/plugins/destination/snowflake).
+Full spec options for the Snowflake destination plugin are available [here](/docs/plugins/destinations/snowflake/overview#snowflake-spec).
 
 Note: Make sure you use environment variable expansion in production instead of committing the credentials to the configuration file directly.
 
@@ -11,8 +11,7 @@ kind: destination
 spec:
   name: snowflake
   path: cloudquery/snowflake
-  version: "v1.0.2" # latest version of snowflake plugin
+  version: "VERSION_DESTINATION_SNOWFLAKE"
   spec:
     connection_string: ${SNOWFLAKE_CONNECTION_STRING}
 ```
-

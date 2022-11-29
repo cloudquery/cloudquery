@@ -50,7 +50,7 @@ func BillingAccounts() *schema.Table {
 	}
 }
 
-func fetchBillingAccounts(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
+func fetchBillingAccounts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	req := &pb.ListBillingAccountsRequest{}
 	it := c.Services.BillingCloudBillingClient.ListBillingAccounts(ctx, req)
