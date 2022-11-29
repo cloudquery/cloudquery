@@ -65,7 +65,10 @@ func main() {
 
 	generatePlugin(pluginDir, plugin{Packages: sortedPackages, Resources: sortedResources})
 
-	exec.Command("goimports", "-w", resourcesDir).Run()
+	err := exec.Command("goimports", "-w", resourcesDir).Run()
+	if err != nil {
+		log.Fatal(fmt.Errorf("failed to run goimports: %w", err))
+	}
 }
 
 func getFilename() string {
