@@ -1,4 +1,3 @@
-import { DuplicateIcon } from "@heroicons/react/outline";
 import copy from "copy-to-clipboard";
 import Head from "next/head";
 import Link from "next/link";
@@ -75,20 +74,7 @@ export default function Home() {
                 </a>
               </Link>
             </div>
-            <div className="rounded-md fix-width-auto xl:w-auto">
-              <TableSearch />
-            </div>
-            <div className="relative rounded-md fix-width-auto xl:w-auto">
-              <button
-                onClick={() =>
-                  onClick("brew install cloudquery/tap/cloudquery")
-                }
-                className="flex items-center justify-center w-full px-8 py-3 font-mono text-sm font-medium text-gray-600 bg-black border border-transparent border-gray-200 rounded-md bg-opacity-5 dark:bg-white dark:text-gray-300 dark:border-gray-700 dark:bg-opacity-5 betterhover:hover:bg-gray-50 betterhover:dark:hover:bg-gray-900 md:py-3 md:text-base md:leading-6 md:px-10"
-              >
-                brew install cloudquery/tap/cloudquery
-                <DuplicateIcon className="w-6 h-6 ml-2 -mr-3 text-gray-400" />
-              </button>
-            </div>
+            <TableSearch />
           </div>
         </div>
         <div className="w-full max-w-[436px] flex flex-col gap-1.5 m-auto md:justify-start">
