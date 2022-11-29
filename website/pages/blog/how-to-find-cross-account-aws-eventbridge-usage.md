@@ -64,7 +64,7 @@ WHERE account_id != ext_account[1];
 ```
 The above query will detect any usage the AWS account reference for cross-account access to Amazon EventBridge Event Buses and will return a table of each occurrence of a cross-account reference. If there are multiple accounts referenced in a policy, each account will be a separate row.
 
-By filtering on the regex `[0-9]{12}:root`, we look for any string that matches part of an AWS account resource identifier such as `1213412341234:root`.  While we do look through the entire policy, AWS Account arns should only exist in the `Principal` block of statements. 
+By filtering on the regex `[0-9]{12}:root`, we look for any string that matches part of an AWS account resource identifier such as `1213412341234:root`.  While we do look through the entire policy, AWS account ARNs should only exist in the `Principal` block of statements. 
 
 ## Contact Us
 
