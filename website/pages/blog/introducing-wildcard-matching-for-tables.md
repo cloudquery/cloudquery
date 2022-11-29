@@ -14,7 +14,7 @@ I am excited to introduce a feature that quietly rolled out today: wildcard matc
 
 ## Before
 
-Before, the config passed to `cloudquery sync` had two options: either specify a wildcard (`*`) to match all tables, or specify a list of tables explicitly. So for example, if we wanted to include all EC2 resources, we would have to write a config like this: 
+Before, the config passed to `cloudquery sync` had two options: either specify a wildcard (`*`) to match all tables, or specify a list of tables explicitly. So for example, if we wanted to include all EC2 resources, we would have to write a config like this:
 
 ```yaml
 tables:
@@ -88,9 +88,8 @@ Wildcard matching was introduced as a backwards-compatible change, so no config 
  - GCP [v2.4.15](https://github.com/cloudquery/cloudquery/releases/tag/plugins-source-gcp-v2.4.15)
  - Azure: [v1.4.4](https://github.com/cloudquery/cloudquery/releases/tag/plugins-source-azure-v1.4.4)
  
-See [this link](/docs/plugins/sources) for a list of the latest versions of all official source plugins.
+See [this link](/docs/plugins/sources/overview) for a list of the latest versions of all official source plugins.
 
 ## Conclusion
 
 With wildcard matching support, we're hoping to reduce a lot of the boilerplate required to configure tables to sync with CloudQuery. If you have any thoughts or feedback about the feature, please share them as a [GitHub issue](https://github.com/cloudquery/cloudquery) or chat to us on [Discord](https://cloudquery.io/discord)! ❤️
-

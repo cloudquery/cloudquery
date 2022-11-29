@@ -6,34 +6,24 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func AccountResources() []Resource {
-	return []Resource{
+func AccountResources() []*Resource {
+	return []*Resource{
 		{
-			CFStruct:         &cloudflare.Account{},
-			PrimaryKey:       "id",
-			Template:         "resource_manual",
-			TableName:        "cloudflare_accounts",
-			TableFuncName:    "Accounts",
-			Filename:         "accounts.go",
-			Package:          "accounts",
-			Relations:        []string{"accountMembers()"},
-			ResolverFuncName: "fetchAccounts",
+			DataStruct: &cloudflare.Account{},
+			PKColumns:  []string{"id"},
+			Service:    "accounts",
+			Relations:  []string{"AccountMembers()"},
 		},
 		{
-			CFStruct: &cloudflare.AccountMember{},
-			DefaultColumns: []codegen.ColumnDefinition{
+			DataStruct: &cloudflare.AccountMember{},
+			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:     "account_id",
 					Type:     schema.TypeString,
 					Resolver: "schema.ParentColumnResolver(\"id\")",
 				},
 			},
-			Template:         "resource_manual",
-			TableName:        "cloudflare_account_members",
-			TableFuncName:    "accountMembers",
-			Filename:         "account_members.go",
-			Package:          "accounts",
-			ResolverFuncName: "fetchAccountMembers",
+			Service: "accounts",
 		},
 	}
 }

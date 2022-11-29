@@ -250,7 +250,7 @@ func Instances() *schema.Table {
 	}
 }
 
-func fetchInstances(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
+func fetchInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	req := &pb.AggregatedListInstancesRequest{
 		Project: c.ProjectId,
