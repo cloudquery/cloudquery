@@ -7,6 +7,7 @@ The primary key for this table is **_cq_id**.
 ## Relations
 This table depends on [aws_ssoadmin_permission_sets](aws_ssoadmin_permission_sets.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

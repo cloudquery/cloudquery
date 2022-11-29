@@ -78,16 +78,7 @@ jobs:
 
       - name: Update version file
         if: steps.semver_parser.outputs.prerelease == ''
-        run: 'echo "{ \"latest\": \"${{github.ref_name}}\" }" > ./sites/versions/v2/cli.json'
-
-      - name: Update docs
-        if: steps.semver_parser.outputs.prerelease == ''
-        uses: jacobtomlinson/gha-find-replace@657b0d1fe020da9943d1702b576f5d37d43b9c03
-        continue-on-error: true
-        with:
-          include: "sites/versions/vercel.json"
-          find: 'releases\/download\/cli\-v[^\/]+[\s\S]+?},'
-          replace: 'releases/download/${{github.ref_name}}/:binary" },'
+        run: 'echo "{ \"latest\": \"${{github.ref_name}}\" }" > ./websites/versions/cli.json'
           
       - name: Create Pull Request
         if: steps.semver_parser.outputs.prerelease == ''

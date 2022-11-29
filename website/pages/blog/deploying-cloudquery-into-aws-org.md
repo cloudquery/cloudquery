@@ -130,19 +130,22 @@ Where the output should be in this form:
 Here is an example configuration that makes use of the resources you just created
 
 ```yaml
-providers:
-  # provider configurations
-  - name: aws
-    configuration:
-      org:
-        admin_account:
-          role_arn: <AdminRoleArn>
-        member_role_name: <MemberRoleName>
-      regions:
-        - '*'
-    # list of resources to fetch
-    resources:
-      - '*'
+kind: source
+spec:
+  name: aws-0
+  registry: github
+  path: cloudquery/aws
+  version: <LatestVersion>
+  tables: ['*']
+  destinations: ["postgresql"]
+  spec:
+    aws_debug: false
+    org:
+      admin_account:
+        role_arn: <AdminRoleArn>
+      member_role_name: <MemberRoleName>
+    regions:
+      - '*'      
 ```
 
 ### Step 5: Run Fetch

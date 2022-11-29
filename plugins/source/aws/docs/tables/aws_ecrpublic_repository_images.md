@@ -7,6 +7,7 @@ The primary key for this table is **arn**.
 ## Relations
 This table depends on [aws_ecrpublic_repositories](aws_ecrpublic_repositories.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

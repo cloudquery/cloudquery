@@ -23,7 +23,7 @@ func {{.SubService | ToCamel}}() *schema.Table {
 }
 
 {{if not .SkipFetch}}
-func fetch{{.SubService | ToCamel}}(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
+func fetch{{.SubService | ToCamel}}(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	req := &pb.{{.RequestStructName}}{
 		{{if .RequestStructFields}}{{.RequestStructFields}}{{end}}

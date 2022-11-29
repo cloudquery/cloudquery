@@ -5,6 +5,7 @@
 The primary key for this table is **unique_id**.
 
 ## Relations
+
 The following tables depend on gcp_iam_service_accounts:
   - [gcp_iam_service_account_keys](gcp_iam_service_account_keys.md)
 

@@ -21,6 +21,7 @@ type EcsClient interface {
 	ListClusters(context.Context, *ecs.ListClustersInput, ...func(*ecs.Options)) (*ecs.ListClustersOutput, error)
 	ListContainerInstances(context.Context, *ecs.ListContainerInstancesInput, ...func(*ecs.Options)) (*ecs.ListContainerInstancesOutput, error)
 	ListServices(context.Context, *ecs.ListServicesInput, ...func(*ecs.Options)) (*ecs.ListServicesOutput, error)
+	ListServicesByNamespace(context.Context, *ecs.ListServicesByNamespaceInput, ...func(*ecs.Options)) (*ecs.ListServicesByNamespaceOutput, error)
 	ListTagsForResource(context.Context, *ecs.ListTagsForResourceInput, ...func(*ecs.Options)) (*ecs.ListTagsForResourceOutput, error)
 	ListTaskDefinitionFamilies(context.Context, *ecs.ListTaskDefinitionFamiliesInput, ...func(*ecs.Options)) (*ecs.ListTaskDefinitionFamiliesOutput, error)
 	ListTaskDefinitions(context.Context, *ecs.ListTaskDefinitionsInput, ...func(*ecs.Options)) (*ecs.ListTaskDefinitionsOutput, error)

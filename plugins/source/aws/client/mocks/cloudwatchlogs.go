@@ -215,6 +215,26 @@ func (mr *MockCloudwatchlogsClientMockRecorder) DescribeSubscriptionFilters(arg0
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeSubscriptionFilters", reflect.TypeOf((*MockCloudwatchlogsClient)(nil).DescribeSubscriptionFilters), varargs...)
 }
 
+// GetDataProtectionPolicy mocks base method.
+func (m *MockCloudwatchlogsClient) GetDataProtectionPolicy(arg0 context.Context, arg1 *cloudwatchlogs.GetDataProtectionPolicyInput, arg2 ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.GetDataProtectionPolicyOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetDataProtectionPolicy", varargs...)
+	ret0, _ := ret[0].(*cloudwatchlogs.GetDataProtectionPolicyOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetDataProtectionPolicy indicates an expected call of GetDataProtectionPolicy.
+func (mr *MockCloudwatchlogsClientMockRecorder) GetDataProtectionPolicy(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDataProtectionPolicy", reflect.TypeOf((*MockCloudwatchlogsClient)(nil).GetDataProtectionPolicy), varargs...)
+}
+
 // GetLogEvents mocks base method.
 func (m *MockCloudwatchlogsClient) GetLogEvents(arg0 context.Context, arg1 *cloudwatchlogs.GetLogEventsInput, arg2 ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.GetLogEventsOutput, error) {
 	m.ctrl.T.Helper()

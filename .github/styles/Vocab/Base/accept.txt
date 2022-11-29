@@ -134,3 +134,7 @@ CCPA's
 bugfix
 nvm
 npm
+Gandi
+parallelization
+hyperscale
+goroutines

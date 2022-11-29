@@ -7,6 +7,7 @@ The primary key for this table is **id**.
 ## Relations
 This table depends on [azure_cdn_endpoints](azure_cdn_endpoints.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
