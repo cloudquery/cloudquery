@@ -3,7 +3,7 @@ title: Finding Cross Account AWS EventBridge Usage
 tag: security
 date: 2022/11/25
 description: >-
-  How a CloudQuery customer wrote custom queries to find cross-account AWS EventBridge Usage to help their teams migrate to new AWS EventBridge security features to increase security and compliance.
+  How a CloudQuery customer wrote custom queries to find cross-account AWS EventBridge Usage.  AWS recently updated security features to help improve security of cross-account AWS EventBridge Event Bus Targets.  Teams can migrate to these new features to increase security and compliance.
 author: jsonkao
 ---
 
@@ -13,24 +13,24 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 ## Overview
 
-Recently, AWS sent out customer notification emails regarding upcoming changes for EventBridge cross account event bus targets.  This email was titled `Security posture recommendations for your cross account invocations.` This notification email went to customers who were determined to have one or more impacted resources.
+Recently, AWS sent out customer notification emails regarding upcoming changes for EventBridge cross-account event bus targets.  This email was titled `Security posture recommendations for your cross-account invocations.` This notification email went to customers who were determined to have one or more impacted resources.
 
 ## EventBridge Change
 
-Beginning February 16, 2023, Amazon EventBridge will start requiring IAM roles for all new cross account event bus targets.
+Beginning February 16, 2023, Amazon EventBridge will start requiring IAM roles for all new cross-account event bus targets.
 
-Previously, Amazon EventBridge did not require usage of IAM roles when sending events to cross account event buses. Other routing use cases including cross-region or within the same account already requires IAM roles for event bus to event bus delivery use cases. 
+Previously, Amazon EventBridge did not require usage of IAM roles when sending events to cross-account event buses. Other routing use cases including cross-region or within the same account already requires IAM roles for event bus to event bus delivery use cases. 
 
 ## What this Means
 
 With this notice, AWS provided 90 days for customers to update their infrastructure-as-code templates for any new event bus targets.
 
-We recommend ensuring all legacy cross account event bus targets are updated.  To do so, we need to do the following:
+We recommend ensuring all legacy cross-account event bus targets are updated.  To do so, we need to do the following:
 * Find all impacted EventBridge Event Buses
 * Update all impacted EventBridge Event Buses (Stepping through environments and testing to ensure no adverse impact)
 * Validating that there are no legacy EventBridge Event Buses and they've all been updated to use IAM roles.
 
-For cross account access, scoping permissions and principals in resource policies helps with reducing access and improves security posture.   
+For cross-account access, scoping permissions and principals in resource policies helps with reducing access and improves security posture.   
 
 ## Customer Query
 
