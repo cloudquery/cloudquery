@@ -78,4 +78,4 @@ If you have use cases or custom queries and examples from using CloudQuery, we w
 
 [AWS EventBridge API Reference: PutTargets](https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_PutTargets.html)
 
-[CloudQuery: AWS Plugin](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/aws)
+[CloudQuery: AWS Plugin](https://www.cloudquery.io/docs/plugins/sources/aws/overview)
