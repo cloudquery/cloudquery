@@ -105,4 +105,12 @@ export default withNextra({
       },
     ];
   },
+  webpack: (config) => {
+    config.cache.buildDependencies = {
+      versions: fs
+        .readdirSync("versions")
+        .map((file) => path.resolve("versions", file)),
+    };
+    return config;
+  },
 });
