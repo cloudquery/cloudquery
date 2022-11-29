@@ -1,6 +1,6 @@
 # AWS Source Plugin Recipes
 
-Full spec options for AWS Source available [here](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/configuration.md).
+Full spec options for the AWS source plugin are available [here](/docs/plugins/sources/aws/configuration#aws-spec).
 
 ```yaml copy
 kind: source
