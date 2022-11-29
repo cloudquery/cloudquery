@@ -29,7 +29,7 @@ func (*Client) Logger() *zerolog.Logger {
 }
 
 func (*Client) ID() string {
-	return "CrowdStrikeClient"
+	return c.spec.Name
 }
 
 func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.ClientMeta, error) {
