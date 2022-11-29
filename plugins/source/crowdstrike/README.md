@@ -1,6 +1,6 @@
 # CrowdStrike Plugin
 
-This plugin pulls information from Crowdstrike and loads it into any supported CloudQuery destination (e.g. PostgreSQL).
+This plugin pulls information from CrowdStrike and loads it into any supported CloudQuery destination (e.g. PostgreSQL).
 
 ## Links
 
