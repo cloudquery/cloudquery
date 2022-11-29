@@ -1,6 +1,6 @@
 # Azure Source Plugin Recipes
 
-Full spec options for Azure Source available [here](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/configuration.md).
+Full spec options for the Azure source plugin are available [here](/docs/plugins/sources/azure/configuration#azure-spec).
 
 ```yaml copy
 kind: source

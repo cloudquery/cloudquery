@@ -31,6 +31,7 @@ The following tables depend on aws_ecs_clusters:
 |pending_tasks_count|Int|
 |registered_container_instances_count|Int|
 |running_tasks_count|Int|
+|service_connect_defaults|JSON|
 |settings|JSON|
 |statistics|JSON|
 |status|String|

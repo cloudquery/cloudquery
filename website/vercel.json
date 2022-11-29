@@ -120,6 +120,10 @@
     {
       "source": "/docs/plugins/destinations",
       "destination": "/docs/plugins/destinations/overview"
+    },
+    {
+      "source": "/docs/plugins/source-plugin-release-stages",
+      "destination": "/docs/plugins/sources/overview#source-plugin-release-stages"
     }
   ]
 }
