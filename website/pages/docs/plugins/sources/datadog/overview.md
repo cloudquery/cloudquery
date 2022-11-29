@@ -14,12 +14,10 @@ so, following the principle of the least privilege, it's recommended to grant it
 ### Find all not verified users
 
 ```sql
-select
-    "attributes" ->> 'name' as username
-from
+SELECT 
+    "attributes" ->> 'name' AS username
+FROM
     datadog_users
-where
-    ("attributes" ->> 'verified')::boolean is distinct
-from
-    true
+WHERE
+    ("attributes" ->> 'verified')::boolean is distinct FROM TRUE
 ```
