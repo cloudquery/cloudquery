@@ -19,7 +19,23 @@ Recently, AWS sent out customer notification emails regarding upcoming changes f
 
 Beginning February 16, 2023, Amazon EventBridge will start requiring IAM roles for all new cross-account event bus targets.
 
-Previously, Amazon EventBridge did not require usage of IAM roles when sending events to cross-account event buses. Other routing use cases including cross-region or within the same account already requires IAM roles for event bus to event bus delivery use cases. 
+Previously, Amazon EventBridge did not require usage of IAM roles when sending events to cross-account event buses. Other routing use cases including cross-region or within the same account already require IAM roles for event bus to event bus delivery use cases. 
+
+Sample Resource Policy:
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [{
+    "Sid": "AccountExternal",
+    "Effect": "Allow",
+    "Principal": {
+      "AWS": "arn:aws:iam::123412341234:root"
+    },
+    "Action": "events:PutEvents",
+    "Resource": "arn:aws:events:us-east-1:111111111111:event-bus/wheels-on-the-bus"
+  }]
+}
+```
 
 ## What this Means
 
@@ -46,9 +62,9 @@ FROM
 ) data
 WHERE account_id != ext_account[1];
 ```
-The above query will detect any usage the AWS account reference for cross-account access to Amazon EventBridge Event Buses and will return a table of each occurence of a cross-account reference. If there are multiple accounts referenced in a policy, each account will be a separate row.
+The above query will detect any usage the AWS account reference for cross-account access to Amazon EventBridge Event Buses and will return a table of each occurrence of a cross-account reference. If there are multiple accounts referenced in a policy, each account will be a separate row.
 
-By filtering on the regex `[0-9]{12}:root`, we look for any string that matches part of an AWS account ARN such as `1213412341234:root`.  While we do look through the entire policy, AWS Account arns should only exist in the `Principal` block of statements. 
+By filtering on the regex `[0-9]{12}:root`, we look for any string that matches part of an AWS account resource identifier such as `1213412341234:root`.  While we do look through the entire policy, AWS Account arns should only exist in the `Principal` block of statements. 
 
 ## References and Useful Links
 
