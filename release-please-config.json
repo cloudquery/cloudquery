@@ -9,6 +9,7 @@
     "plugins/source/digitalocean": {
       "component": "plugins-source-digitalocean"
     },
+    "plugins/source/gandi": { "component": "plugins-source-gandi" },
     "plugins/source/gcp": { "component": "plugins-source-gcp" },
     "plugins/source/github": { "component": "plugins-source-github" },
     "plugins/source/heroku": { "component": "plugins-source-heroku" },
@@ -24,6 +25,9 @@
     },
     "plugins/destination/sqlite": {
       "component": "plugins-destination-sqlite"
+    },
+    "plugins/destination/snowflake": {
+      "component": "plugins-destination-snowflake"
     },
     "plugins/destination/test": {
       "component": "plugins-destination-test"

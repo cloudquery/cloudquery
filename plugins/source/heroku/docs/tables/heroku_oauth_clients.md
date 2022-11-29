@@ -5,6 +5,7 @@ https://devcenter.heroku.com/articles/platform-api-reference#o-auth-client
 The primary key for this table is **id**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

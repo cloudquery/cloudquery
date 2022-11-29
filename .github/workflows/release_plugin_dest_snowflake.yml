@@ -1,0 +1,84 @@
+name: release-plugin-destination-snowflake
+on:
+  push:
+    tags:
+      - "plugins-destination-snowflake-v*.*.*"
+jobs:
+  release-plugin-binary-destination-snowflake:
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/cloudquery/golang-cross:v10.0.0
+      env:
+        CGO_ENABLED: 1
+    steps:
+      # Tag format is plugins-<type>-<name>-<version>
+      - name: Split tag
+        id: split
+        run: |
+          tag=${{ github.ref_name }}
+          plugin_version=$(echo $tag | cut -d- -f4-)
+          echo "plugin_version=${plugin_version}" >> $GITHUB_OUTPUT
+      # Fail if not a valid SemVer string
+      - name: Parse semver string
+        uses: booxmedialtd/ws-action-parse-semver@e4a833cf5d612066a210bd9b62d1c3b20be3b325
+        id: semver_parser
+        with:
+          input_string: ${{steps.split.outputs.plugin_version}}
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-1.19.3-release-cache-${{ hashFiles('plugins/destination/snowflake/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-1.19.3-release-cache-plugins-destination-snowflake
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: plugins/destination/snowflake/go.mod
+      - name: Install GoReleaser
+        uses: goreleaser/goreleaser-action@v3
+        with:
+          distribution: goreleaser-pro
+          version: latest
+          install-only: true
+      - name: Run GoReleaser Dry-Run
+        run: goreleaser release --rm-dist --skip-validate --skip-publish --skip-sign -f ./plugins/destination/snowflake/.goreleaser.yaml
+        env:
+          GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
+          GORELEASER_CURRENT_TAG: ${{ github.ref_name }}
+      - name: Import GPG key
+        id: import_gpg
+        uses: crazy-max/ghaction-import-gpg@v5
+        with:
+          gpg_private_key: ${{ secrets.PRIVATE_KEY }}
+      - name: Run GoReleaser
+        run: goreleaser release --rm-dist -f ./plugins/destination/snowflake/.goreleaser.yaml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GPG_FINGERPRINT: ${{ steps.import_gpg.outputs.fingerprint }}
+          GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
+          GORELEASER_CURRENT_TAG: ${{ github.ref_name }}
+
+      - name: Update version file
+        if: steps.semver_parser.outputs.prerelease == ''
+        run: 'echo "{ \"latest\": \"${{github.ref_name}}\" }" > ./website/versions/destination-snowflake.json'
+
+      - name: Create Pull Request
+        if: steps.semver_parser.outputs.prerelease == ''
+        uses: peter-evans/create-pull-request@v4
+        with:
+          # required so the PR triggers workflow runs
+          token: ${{ secrets.GH_CQ_BOT }}
+          branch: chore/update-plugin-destination-snowflake-version
+          base: main
+          title: "chore: Update plugin `destination-snowflake` version to ${{steps.split.outputs.plugin_version}}"
+          commit-message: "chore: Update plugin `destination-snowflake` version to ${{steps.split.outputs.plugin_version}}"
+          body: Updates the `destination-snowflake` plugin latest version to ${{steps.split.outputs.plugin_version}}
+          labels: automerge
+          author: cq-bot <cq-bot@users.noreply.github.com>

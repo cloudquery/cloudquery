@@ -8,6 +8,8 @@ digitalocean:
   - plugins/source/digitalocean/**/*
 fuzz:
   - plugins/source/fuzz/**/*
+gandi:
+  - plugins/source/gandi/**/*
 gcp:
   - plugins/source/gcp/**/*
 github:
@@ -26,6 +28,8 @@ sqlite:
   - plugins/destination/sqlite/**/*
 csv:
   - plugins/destination/csv/**/*
+snowflake:
+  - plugins/destination/snowflake/**/*
 website:
   - website/**/*
 cli:

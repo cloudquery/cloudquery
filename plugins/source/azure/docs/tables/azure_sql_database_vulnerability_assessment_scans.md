@@ -7,6 +7,7 @@ The primary key for this table is **id**.
 ## Relations
 This table depends on [azure_sql_databases](azure_sql_databases.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
