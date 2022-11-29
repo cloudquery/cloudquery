@@ -30,30 +30,39 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 	}
 	defer destClients.Close()
 
-	tables, tablesForSpecSupported, err := getTablesForSpec(ctx, sourceClient, sourceSpec)
+	allTables, err := sourceClient.GetTables(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to get tables for source %s: %w", sourceSpec.Name, err)
 	}
 
-	tableCount := len(tables.FlattenTables())
+	selectedTables, tablesForSpecSupported, err := getTablesForSpec(ctx, sourceClient, sourceSpec)
+	if err != nil {
+		return fmt.Errorf("failed to get tables for source %s: %w", sourceSpec.Name, err)
+	}
+
+	tableCount := len(selectedTables.FlattenTables())
 
 	// Print a count of the tables that will be synced / migrated. This is a little tricky because older
 	// servers don't necessarily support GetTablesForSpec.
 	if tablesForSpecSupported {
 		if noMigrate {
 			fmt.Printf("Source %s will sync %d tables.\n", sourceSpec.Name, tableCount)
-		} else {
-			fmt.Printf("Source %s will migrate and sync %d tables.\n", sourceSpec.Name, tableCount)
 		}
+		// TODO: add this back once we also use the filtered list for table migrations
+		//else {
+		//	fmt.Printf("Source %s will migrate and sync %d tables.\n", sourceSpec.Name, tableCount)
+		//}
 	}
-	
+
 	if !noMigrate {
 		fmt.Println("Starting migration for:", sourceSpec.Name, "->", sourceSpec.Destinations)
 		log.Info().Str("source", sourceSpec.Name).Strs("destinations", sourceSpec.Destinations).Msg("Start migration")
 		migrateStart := time.Now()
 
 		for i, destinationSpec := range destinationsSpecs {
-			if err := destClients[i].Migrate(ctx, tables); err != nil {
+			// Currently we migrate all tables, but this is subject to change once policies
+			// are adapted to handle non-existent tables in some way.
+			if err := destClients[i].Migrate(ctx, allTables); err != nil {
 				return fmt.Errorf("failed to migrate source %s on destination %s : %w", sourceSpec.Name, destinationSpec.Name, err)
 			}
 		}
@@ -62,7 +71,7 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 		log.Info().
 			Str("source", sourceSpec.Name).
 			Strs("destinations", sourceSpec.Destinations).
-			Int("num_tables", len(tables)).
+			Int("num_tables", len(allTables)).
 			Float64("time_took", migrateTimeTook.Seconds()).
 			Msg("End migration")
 	}
@@ -102,7 +111,7 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 		g.Go(func() error {
 			var destFailedWrites uint64
 			var err error
-			if err = destClients[i].Write2(gctx, tables, sourceSpec.Name, syncTime, destSubscriptions[i]); err != nil {
+			if err = destClients[i].Write2(gctx, selectedTables, sourceSpec.Name, syncTime, destSubscriptions[i]); err != nil {
 				return fmt.Errorf("failed to write for %s->%s: %w", sourceSpec.Name, destination, err)
 			}
 			if err := destClients[i].Close(ctx); err != nil {
@@ -163,7 +172,7 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 // GetTables. The returned `supported` value indicates whether GetTablesForSpec was supported by the server.
 func getTablesForSpec(ctx context.Context, sourceClient *clients.SourceClient, sourceSpec specs.Source) (tables schema.Tables, supported bool, err error) {
 	tables, err = sourceClient.GetTablesForSpec(ctx, &sourceSpec)
-	if err == clients.ErrMethodNotSupported {
+	if clients.IsUnimplemented(err) {
 		// the plugin server does not support GetTablesForSpec. Fall back to GetTables.
 		tables, err = sourceClient.GetTables(ctx)
 		return tables, false, err
