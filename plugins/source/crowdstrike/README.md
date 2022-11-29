@@ -31,7 +31,7 @@ spec:
 
 ## Example
 
-You can reduce alert fatigue by narrowing alerts from crowdstrike using fuzzy matching.
+You can reduce alert fatigue by narrowing alerts down from CrowdStrike using fuzzy matching.
 
 ```sql
 select * from crowdstrike_alerts_query where resources like ('%filter_here%');
