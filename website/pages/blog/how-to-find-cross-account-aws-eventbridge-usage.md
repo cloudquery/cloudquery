@@ -1,7 +1,7 @@
 ---
 title: Finding Cross Account AWS EventBridge Usage
 tag: security
-date: 2022/11/25
+date: 2022/11/29
 description: >-
   How a CloudQuery customer wrote custom queries to find cross-account AWS EventBridge Usage.  AWS recently updated security features to help improve security of cross-account AWS EventBridge Event Bus Targets.  Teams can migrate to these new features to increase security and compliance.
 author: jsonkao
