@@ -1,0 +1,10 @@
+[
+  {
+    "name": "aws_accessanalyzer_analyzer_archive_rules",
+    "docs_link": "https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_accessanalyzer_analyzer_archive_rules.md"
+  },
+  {
+    "name": "aws_accessanalyzer_analyzer_findings",
+    "docs_link": "https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_accessanalyzer_analyzer_findings.md"
+  }
+]

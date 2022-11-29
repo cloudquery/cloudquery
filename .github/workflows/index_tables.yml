@@ -1,0 +1,20 @@
+name: Docsearch
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 */2 * * *'
+
+jobs:
+  runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "lts/*"
+      - name: Index to Algolia
+        run: node scripts/algolia.js
+        working-directory: website
+        env:
+          CQ_ALGOLIA_API_ADMIN_KEY: ${{ secrets.CQ_ALGOLIA_API_ADMIN_KEY }}
