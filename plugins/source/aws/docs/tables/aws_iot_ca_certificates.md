@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/iot/latest/apireference/API_CACertificateDescription
 The primary key for this table is **arn**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

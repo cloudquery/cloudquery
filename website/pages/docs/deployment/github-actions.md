@@ -25,14 +25,14 @@ kind: source
 spec:
   name: 'aws'
   path: cloudquery/aws
-  version: "v7.1.1" # latest version of aws plugin
+  version: "VERSION_SOURCE_AWS"
   destinations: ['postgresql']
 ---
 kind: destination
 spec:
   name: 'postgresql'
   path: cloudquery/postgresql
-  version: "v1.7.11" # latest version of postgresql plugin
+  version: "VERSION_DESTINATION_POSTGRESQL"
   spec:
     connection_string: ${CQ_DSN} # The CQ_DSN environment variable will be set by GitHub Action workflow
 ```
@@ -64,8 +64,10 @@ jobs:
         with:
           role-to-assume: <role-arn> # based on the role you created in the prerequisites
           aws-region: <region> # based on the region you created the role in
-      - uses: cloudquery/setup-cloudquery@v2
+      - uses: cloudquery/setup-cloudquery@v3
         name: Setup CloudQuery
+        with:
+          version: "VERSION_CLI"
       - name: Sync with CloudQuery
         run: cloudquery sync cloudquery.yml --log-console
         env:
@@ -89,7 +91,7 @@ kind: source
 spec:
   name: 'aws-REGION_PLACEHOLDER' # when splitting configurations, we need to keep the names unique
   path: cloudquery/aws
-  version: "v7.1.1" # latest version of aws plugin
+  version: "VERSION_SOURCE_AWS"
   destinations: ['postgresql-REGION_PLACEHOLDER']
   spec:
     regions:
@@ -99,7 +101,7 @@ kind: destination
 spec:
   name: 'postgresql-REGION_PLACEHOLDER' # when splitting configurations, we need to keep the names unique
   path: cloudquery/postgresql
-  version: "v1.7.11" # latest version of postgresql plugin
+  version: "VERSION_DESTINATION_POSTGRESQL"
   spec:
     connection_string: ${CQ_DSN} # The CQ_DSN environment variable will be set by GitHub Action workflow
 ```
@@ -133,8 +135,10 @@ jobs:
         with:
           role-to-assume: <role-arn> # based on the role you created in the prerequisites
           aws-region: <region> # based on the region you created the role in
-      - uses: cloudquery/setup-cloudquery@v2
+      - uses: cloudquery/setup-cloudquery@v3
         name: Setup CloudQuery
+        with:
+          version: "VERSION_CLI"
       - name: Sync with CloudQuery
         run: cloudquery sync cloudquery-regions.yml --log-console
         env:

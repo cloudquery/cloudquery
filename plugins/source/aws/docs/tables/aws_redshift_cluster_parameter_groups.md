@@ -6,6 +6,7 @@ The composite primary key for this table is (**cluster_arn**, **parameter_group_
 
 ## Relations
 This table depends on [aws_redshift_clusters](aws_redshift_clusters.md).
+
 The following tables depend on aws_redshift_cluster_parameter_groups:
   - [aws_redshift_cluster_parameters](aws_redshift_cluster_parameters.md)
 

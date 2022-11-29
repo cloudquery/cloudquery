@@ -68,6 +68,11 @@ func VaultRecoveryPoints() *schema.Table {
 				Resolver: schema.PathResolver("CompletionDate"),
 			},
 			{
+				Name:     "composite_member_identifier",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("CompositeMemberIdentifier"),
+			},
+			{
 				Name:     "created_by",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("CreatedBy"),
@@ -93,6 +98,11 @@ func VaultRecoveryPoints() *schema.Table {
 				Resolver: schema.PathResolver("IsEncrypted"),
 			},
 			{
+				Name:     "is_parent",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("IsParent"),
+			},
+			{
 				Name:     "last_restore_time",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("LastRestoreTime"),
@@ -101,6 +111,11 @@ func VaultRecoveryPoints() *schema.Table {
 				Name:     "lifecycle",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Lifecycle"),
+			},
+			{
+				Name:     "parent_recovery_point_arn",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ParentRecoveryPointArn"),
 			},
 			{
 				Name:     "resource_arn",

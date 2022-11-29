@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBCluster.html
 The primary key for this table is **arn**.
 
 ## Relations
+
 The following tables depend on aws_docdb_clusters:
   - [aws_docdb_cluster_snapshots](aws_docdb_cluster_snapshots.md)
   - [aws_docdb_instances](aws_docdb_instances.md)

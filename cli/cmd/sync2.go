@@ -57,7 +57,7 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 	resources := make(chan []byte)
 	g, gctx := errgroup.WithContext(ctx)
 	log.Info().Str("source", sourceSpec.Name).Strs("destinations", sourceSpec.Destinations).Msg("Start fetching resources")
-	fmt.Println("Starting sync for: ", sourceSpec.Name, "->", sourceSpec.Destinations)
+	fmt.Println("Starting sync for:", sourceSpec.Name, "->", sourceSpec.Destinations)
 	g.Go(func() error {
 		defer close(resources)
 		if err := sourceClient.Sync2(gctx, sourceSpec, resources); err != nil {

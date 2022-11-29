@@ -3,7 +3,7 @@ select distinct
     :'execution_time'::timestamp as execution_time,
     :'framework' as framework,
     :'check_id' as check_id,
-    'Find all ec2 instances that have unrestricted access to the internet' AS title,
+    'Find all lambda functions that have unrestricted access to the internet' AS title,
     account_id,
     arn AS resource_id,
     'fail' AS status -- TODO FIXME
@@ -25,7 +25,7 @@ select distinct
     :'execution_time'::timestamp as execution_time,
     :'framework' as framework,
     :'check_id' as check_id,
-    'Find all ec2 instances that have unrestricted access to the internet' AS title,
+    'Find all lambda functions that have unrestricted access to the internet' AS title,
     account_id,
     arn AS resource_id,
     'fail' AS status -- TODO FIXME

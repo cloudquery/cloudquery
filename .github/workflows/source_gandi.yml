@@ -1,0 +1,106 @@
+name: Source Plugin Gandi Workflow
+
+on:
+  pull_request:
+    paths:
+      - "plugins/source/gandi/**"
+      - ".github/workflows/source_gandi.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "plugins/source/gandi/**"
+      - ".github/workflows/source_gandi.yml"
+
+jobs:
+  resolve-runner:
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    outputs:
+      runner: ${{ steps.resolve.outputs.runner }}
+    steps:
+      - name: Check if should use large runner
+        id: large-runner
+        # We want to speed runs on the main branch which prime the cache
+        # We allow large runners only in this case to prevent forks from abusing them (it's enforced via runner groups access rules)
+        # IF YOU WANT TO USE A LARGE RUNNER YOU NEED TO ADD THE WORKFLOW TO THE `CloudQuery releases` GROUP IN https://github.com/organizations/cloudquery/settings/actions/runner-groups
+        if: github.event_name == 'push'
+        run: |
+          echo "runner=cloudquery-release-runner" >> $GITHUB_OUTPUT
+      - name: Resolve runner
+        id: resolve
+        run: |
+          RUNNER=${{ steps.large-runner.outputs.runner }}
+          echo "runner=${RUNNER:-"ubuntu-latest"}" >> $GITHUB_OUTPUT
+  plugins-source-gandi:
+    timeout-minutes: 30
+    name: "plugins/source/gandi"
+    needs: [resolve-runner]
+    runs-on: ${{ needs.resolve-runner.outputs.runner }}
+    defaults:
+      run:
+        working-directory: ./plugins/source/gandi
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: plugins/source/gandi/go.mod
+          cache: true
+          cache-dependency-path: plugins/source/gandi/go.sum
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v3
+        with:
+          version: v1.50.1
+          working-directory: plugins/source/gandi
+          args: "--config ../../.golangci.yml"
+      - name: Get dependencies
+        run: go get -t -d ./...
+      - name: Build
+        run: go build .
+      - name: Test
+        run: make test
+      - name: gen
+        if: github.event_name == 'pull_request'
+        run: make gen
+      - name: Fail if generation updated files
+        if: github.event_name == 'pull_request'
+        run: test "$(git status -s | wc -l)" -eq 0
+  validate-release:
+    timeout-minutes: 30
+    needs: [resolve-runner]
+    runs-on: ${{ needs.resolve-runner.outputs.runner }}
+    env:
+      CGO_ENABLED: 0
+    steps:
+      - name: Checkout
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-1.19.3-release-cache-${{ hashFiles('plugins/source/gandi/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-1.19.3-release-cache-plugins-source-gandi
+      - name: Set up Go
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: plugins/source/gandi/go.mod
+      - name: Install GoReleaser
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        uses: goreleaser/goreleaser-action@v3
+        with:
+          distribution: goreleaser-pro
+          version: latest
+          install-only: true
+      - name: Run GoReleaser Dry-Run
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        run: goreleaser release --snapshot --rm-dist --skip-validate --skip-publish --skip-sign -f ./plugins/source/gandi/.goreleaser.yaml
+        env:
+          GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}

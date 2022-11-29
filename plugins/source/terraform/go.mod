@@ -4,12 +4,12 @@ go 1.19
 
 require (
 	github.com/aws/aws-sdk-go-v2 v1.17.1
-	github.com/aws/aws-sdk-go-v2/config v1.18.2
-	github.com/aws/aws-sdk-go-v2/credentials v1.13.2
-	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.41
-	github.com/aws/aws-sdk-go-v2/service/s3 v1.29.3
-	github.com/aws/aws-sdk-go-v2/service/sts v1.17.4
-	github.com/cloudquery/plugin-sdk v1.5.3
+	github.com/aws/aws-sdk-go-v2/config v1.18.3
+	github.com/aws/aws-sdk-go-v2/credentials v1.13.3
+	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.42
+	github.com/aws/aws-sdk-go-v2/service/s3 v1.29.4
+	github.com/aws/aws-sdk-go-v2/service/sts v1.17.5
+	github.com/cloudquery/plugin-sdk v1.9.0
 	github.com/golang/mock v1.6.0
 	github.com/rs/zerolog v1.28.0
 )

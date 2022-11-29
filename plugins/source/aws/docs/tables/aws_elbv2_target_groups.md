@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/elasticloadbalancing/latest/APIReference/API_TargetG
 The primary key for this table is **arn**.
 
 ## Relations
+
 The following tables depend on aws_elbv2_target_groups:
   - [aws_elbv2_target_group_target_health_descriptions](aws_elbv2_target_group_target_health_descriptions.md)
 

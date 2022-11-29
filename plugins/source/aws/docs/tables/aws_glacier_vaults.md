@@ -5,6 +5,7 @@
 The primary key for this table is **arn**.
 
 ## Relations
+
 The following tables depend on aws_glacier_vaults:
   - [aws_glacier_vault_access_policies](aws_glacier_vault_access_policies.md)
   - [aws_glacier_vault_lock_policies](aws_glacier_vault_lock_policies.md)

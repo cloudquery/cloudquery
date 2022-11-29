@@ -7,6 +7,7 @@ The primary key for this table is **_cq_id**.
 ## Relations
 This table depends on [aws_cloudtrail_trails](aws_cloudtrail_trails.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

@@ -36,7 +36,7 @@ spec:
   name: "aws" # required
  
   # Required. Must be a specific version starting with v, e.g. v1.2.3
-  version: "v7.1.1" # latest version of aws plugin
+  version: "VERSION_SOURCE_AWS"
  
   ## Optional. Default: "github". Available: "local", "grpc"
   # registry: github
@@ -55,7 +55,7 @@ spec:
     # plugin specific configuration.
 ```
 
-Check the [source spec documentation](/docs/reference/source-spec) for general layout, and individual [plugin documentation](/docs/plugins/sources) for details on how to configure the plugin-specific spec. Generally these will be the same as in v0, and all the same authentication functionality is still supported.
+Check the [source spec documentation](/docs/reference/source-spec) for general layout, and individual [plugin documentation](/docs/plugins/sources/overview) for details on how to configure the plugin-specific spec. Generally these will be the same as in v0, and all the same authentication functionality is still supported.
 
 ### Destination Plugins
 
@@ -70,7 +70,7 @@ spec:
   path: "cloudquery/postgresql"
 
   # Required. Must be a specific version starting with v, e.g. v1.2.3
-  version: "v1.7.11" # latest version of postgresql plugin
+  version: "VERSION_DESTINATION_POSTGRESQL"
  
   ## Optional. Default: "overwrite". Available: "overwrite", "append", "overwrite-delete-stale". Not all modes are 
   ## supported by all plugins, so make sure to check the plugin documentation for more details.
@@ -83,7 +83,7 @@ spec:
     connection_string: "postgresql://postgres:pass@localhost:5432/postgres?sslmode=disable"```
 ```
 
-Check the [destination spec documentation](/docs/reference/destination-spec) for general layout, and individual [destination plugin documentation](/docs/plugins/destinations) for details on how to configure the plugin-specific spec part. Generally these will be the same as in v0, and all the same authentication functionality is still supported.
+Check the [destination spec documentation](/docs/reference/destination-spec) for general layout, and individual [destination plugin documentation](/docs/plugins/destinations/overview) for details on how to configure the plugin-specific spec part. Generally these will be the same as in v0, and all the same authentication functionality is still supported.
 
 ## Changes to the CLI Commands
 
@@ -91,7 +91,7 @@ Users of CloudQuery v0 would be familiar with the main commands `init` and `fetc
 
 ### Init
 
-`init` was a command that generated a starter configuration template, but it is no longer a command in v1 of the CLI. Instead, please refer to our [Quickstart](https://www.cloudquery.io/docs/quickstart) guide to see how source and destination plugins should be configured.
+`init` was a command that generated a starter configuration template, but it is no longer a command in v1 of the CLI. Instead, please refer to our [Quickstart](/docs/quickstart) guide to see how source and destination plugins should be configured.
 
 The previous `init` command also generated a full list of tables to fetch. In v1, you can fetch all tables by using a wildcard entry:
 
@@ -136,13 +136,13 @@ The `sync` command supports loading config from files or directories, and you ma
 kind: source
 spec:
     name: "aws"
-    version: "v7.1.1" # latest version of aws plugin
+    version: "VERSION_SOURCE_AWS"
     # rest of source spec here
 ---
 kind: destination
 spec:
     name: "postgresql"
-    version: "v1.7.11" # latest version of postgresql plugin
+    version: "VERSION_DESTINATION_POSTGRESQL"
     # rest of destination spec here
 ```
 

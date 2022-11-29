@@ -1,9 +1,13 @@
 # Table: aws_ssoadmin_instances
 
-
+https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_InstanceMetadata.html
 
 The primary key for this table is **_cq_id**.
 
+## Relations
+
+The following tables depend on aws_ssoadmin_instances:
+  - [aws_ssoadmin_permission_sets](aws_ssoadmin_permission_sets.md)
 
 ## Columns
 | Name          | Type          |

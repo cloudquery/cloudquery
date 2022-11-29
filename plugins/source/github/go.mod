@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/github
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v1.5.3
+	github.com/cloudquery/plugin-sdk v1.9.0
 	github.com/golang/mock v1.6.0
 	github.com/google/go-github/v45 v45.2.0
 	github.com/iancoleman/strcase v0.2.0
