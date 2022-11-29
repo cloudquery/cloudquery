@@ -21,7 +21,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/cloudfront v1.21.0
 	github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.13.21
 	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.20.3
-	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.21.11
+	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.22.0
 	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.16.4
 	github.com/aws/aws-sdk-go-v2/service/codebuild v1.19.19
 	github.com/aws/aws-sdk-go-v2/service/codepipeline v1.13.19
@@ -46,7 +46,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.17.2
 	github.com/aws/aws-sdk-go-v2/service/emr v1.20.16
 	github.com/aws/aws-sdk-go-v2/service/eventbridge v1.16.20
-	github.com/aws/aws-sdk-go-v2/service/firehose v1.14.22
+	github.com/aws/aws-sdk-go-v2/service/firehose v1.14.23
 	github.com/aws/aws-sdk-go-v2/service/frauddetector v1.20.12
 	github.com/aws/aws-sdk-go-v2/service/fsx v1.25.4
 	github.com/aws/aws-sdk-go-v2/service/glacier v1.13.19
@@ -128,7 +128,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.19 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.3.26 // indirect
 	github.com/aws/aws-sdk-go-v2/service/athena v1.19.1
-	github.com/aws/aws-sdk-go-v2/service/backup v1.17.11
+	github.com/aws/aws-sdk-go-v2/service/backup v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/glue v1.35.0
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.9.10 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.7.19 // indirect
