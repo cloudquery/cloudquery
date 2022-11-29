@@ -76,8 +76,8 @@ github.com/aws/aws-sdk-go-v2/service/athena v1.19.1 h1:mfDR8JFjvjw9BQ9z4H8JVdioy
 github.com/aws/aws-sdk-go-v2/service/athena v1.19.1/go.mod h1:e5HMOK5cxCNAl7x7qlXg018w98r7gGYeoV+8Hn74ZMI=
 github.com/aws/aws-sdk-go-v2/service/autoscaling v1.24.3 h1:VnxU0zK4CNqsy1GiBz/UcWl9J6Qd6YrY34lT+/9Pzsk=
 github.com/aws/aws-sdk-go-v2/service/autoscaling v1.24.3/go.mod h1:1ioJeG7kmYYuqmA8Wsh5AXwjPn9mRKL6F8OOwt/uyBQ=
-github.com/aws/aws-sdk-go-v2/service/backup v1.17.11 h1:BrCYl+uKVNYBEHYSGBgK1mLFUkunZvsBduzNye+y+9w=
-github.com/aws/aws-sdk-go-v2/service/backup v1.17.11/go.mod h1:W9rt/y8Vb/HDsJ9XW4s+fl0mLXecNbn32yQ81uv4OlA=
+github.com/aws/aws-sdk-go-v2/service/backup v1.18.0 h1:pJqREyLFWSKeunO4gfbx4DZGo/DCNfUJA0KknZnSJQ0=
+github.com/aws/aws-sdk-go-v2/service/backup v1.18.0/go.mod h1:W9rt/y8Vb/HDsJ9XW4s+fl0mLXecNbn32yQ81uv4OlA=
 github.com/aws/aws-sdk-go-v2/service/cloudformation v1.24.1 h1:k8/rAveUOcZV8Ex6WiCmvdtTcDtyf0QgvMmVFA9PRJ8=
 github.com/aws/aws-sdk-go-v2/service/cloudformation v1.24.1/go.mod h1:AyrrIfauUrYfHqLrnroijTBBegQow3QIZTaLbQsauNk=
 github.com/aws/aws-sdk-go-v2/service/cloudfront v1.21.0 h1:3bV+nNw0PPxkHvdRWUogUMtikIgIo2bVj48MvxQvoHA=
@@ -86,8 +86,8 @@ github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.13.21 h1:/lZkPTOtsMFJSeSTmAQp
 github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.13.21/go.mod h1:FeoLRLN2+/JHuRKIkMJhPeTFshsieU+M/2TXy6csuMk=
 github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.20.3 h1:syWZB25hdMayklHlAe195ertSget7wBEjExW/t+tfJ0=
 github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.20.3/go.mod h1:G3xZtg7cjsJaJdl1oVkscYXbdDLZBfOHbE1JqcnZxOI=
-github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.21.11 h1:DjQB6Lw3Awtdc1xAig+0tu3NBMszVk/NrkSaKiA5NGE=
-github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.21.11/go.mod h1:b2EPXU2jyxD7StcbEemizK7A5wYYDKhdp6zpSUKUjJ0=
+github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.22.0 h1:avr0tjwsFnAL0Vmg+t0sYLNIlRHH4AGMMn9rTO3Wv7c=
+github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.22.0/go.mod h1:b2EPXU2jyxD7StcbEemizK7A5wYYDKhdp6zpSUKUjJ0=
 github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.16.4 h1:pOFBQy2mdD8qa6QYP2OnJfAvPYpsLgalaz26CKQY6ug=
 github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.16.4/go.mod h1:9feOMWt3rxs46DqBVHco7z1KxRG36bKUqtv306cAtaA=
 github.com/aws/aws-sdk-go-v2/service/codebuild v1.19.19 h1:zJfK4MT/AUswNYWrDUPE/hUmIJxB4wetdId/D72QOXQ=
@@ -116,8 +116,8 @@ github.com/aws/aws-sdk-go-v2/service/ecr v1.17.23 h1:Da25Cw8xI2q9Gr+ekQvpqJpyqR6
 github.com/aws/aws-sdk-go-v2/service/ecr v1.17.23/go.mod h1:kEVGiy2tACP0cegVqx4MrjsgQMSgrtgRq1fSa+Ix6F0=
 github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.13.19 h1:AwWP9a5n9a6kcgpTOfZ2/AeHKdq1Cb+HwgWQ1ADqiZM=
 github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.13.19/go.mod h1:j3mVo8gEwXjgzf9PfORBnYUUQnnjkd4OY6y5JmubV94=
-github.com/aws/aws-sdk-go-v2/service/ecs v1.19.2 h1:ZzBtxW1Q9AVERksNoVbYUQPHuNDGJMB4xPxfF4USKKc=
-github.com/aws/aws-sdk-go-v2/service/ecs v1.19.2/go.mod h1:NpR78BP2STxvF/R1GXLDM4gAEfjz68W/h0nC5b6Jk3s=
+github.com/aws/aws-sdk-go-v2/service/ecs v1.20.0 h1:tFOfeyENzdOM5zKwGXdDsqeVJEjav8YLTb7tDehJ/c0=
+github.com/aws/aws-sdk-go-v2/service/ecs v1.20.0/go.mod h1:NpR78BP2STxvF/R1GXLDM4gAEfjz68W/h0nC5b6Jk3s=
 github.com/aws/aws-sdk-go-v2/service/efs v1.17.19 h1:e9oyZ/TUV8IekYJJ71A5f2G7zshaWiozrweYhva2gD0=
 github.com/aws/aws-sdk-go-v2/service/efs v1.17.19/go.mod h1:DdO6hLx0XiYuj2Tn8VsR8et3BW1aXiv74GfsjHvhN9U=
 github.com/aws/aws-sdk-go-v2/service/eks v1.23.0 h1:roxmtB8AB5b/COvsD75AnswtsQOxqbjjvowmnX8IKDE=
@@ -136,8 +136,8 @@ github.com/aws/aws-sdk-go-v2/service/emr v1.20.16 h1:E7Emd07dj3zvimPXAJHXDocTQ0n
 github.com/aws/aws-sdk-go-v2/service/emr v1.20.16/go.mod h1:uz/j390yhhyjOoxOKyj1VcMh0XXxgwyUU/r/vcPuOzo=
 github.com/aws/aws-sdk-go-v2/service/eventbridge v1.16.20 h1:QaqRFEugMxaju69lACe3IK1KjuuMGu0a08o9x6hEKmk=
 github.com/aws/aws-sdk-go-v2/service/eventbridge v1.16.20/go.mod h1:8g5GmQrg6Q44ap2NIxBb6eCZojS70QhJiv0qsgHVSKo=
-github.com/aws/aws-sdk-go-v2/service/firehose v1.14.22 h1:XQmegBm7AoJp8hlvF6CkgyX+RVuAMP5S7E3XH4HpPPY=
-github.com/aws/aws-sdk-go-v2/service/firehose v1.14.22/go.mod h1:vbq9arSe5Aea0stKmuye07Aw7fWFjG4l4QWjJgGZqbM=
+github.com/aws/aws-sdk-go-v2/service/firehose v1.14.23 h1:a0Df3sMJbEFKz7K8clJBzUOvUDVSdJ1R408uHQjt6eI=
+github.com/aws/aws-sdk-go-v2/service/firehose v1.14.23/go.mod h1:vbq9arSe5Aea0stKmuye07Aw7fWFjG4l4QWjJgGZqbM=
 github.com/aws/aws-sdk-go-v2/service/frauddetector v1.20.12 h1:JD/u+1toJg4r6xs3EVRLwnZpvib6cKl999lfG86t3eM=
 github.com/aws/aws-sdk-go-v2/service/frauddetector v1.20.12/go.mod h1:0ce3mgG0zrYkxN3h8a4eYRPmqyjOUeHrPLrLuNp8Vt0=
 github.com/aws/aws-sdk-go-v2/service/fsx v1.25.4 h1:cqb2+5MxHa+qdNWiu4giFuDdgBlyDzDawiROMYTuzBM=
