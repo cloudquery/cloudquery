@@ -17,7 +17,7 @@ func fetchCrowdscore(ctx context.Context, meta schema.ClientMeta, parent *schema
 		Sort:    &desc,
 	})
 	if err != nil {
-		panic(err)
+		return err
 	}
 	payload := retval.GetPayload()
 	res <- payload
