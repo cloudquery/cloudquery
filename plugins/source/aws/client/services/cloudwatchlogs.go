@@ -17,6 +17,7 @@ type CloudwatchlogsClient interface {
 	DescribeQueryDefinitions(context.Context, *cloudwatchlogs.DescribeQueryDefinitionsInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.DescribeQueryDefinitionsOutput, error)
 	DescribeResourcePolicies(context.Context, *cloudwatchlogs.DescribeResourcePoliciesInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.DescribeResourcePoliciesOutput, error)
 	DescribeSubscriptionFilters(context.Context, *cloudwatchlogs.DescribeSubscriptionFiltersInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.DescribeSubscriptionFiltersOutput, error)
+	GetDataProtectionPolicy(context.Context, *cloudwatchlogs.GetDataProtectionPolicyInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.GetDataProtectionPolicyOutput, error)
 	GetLogEvents(context.Context, *cloudwatchlogs.GetLogEventsInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.GetLogEventsOutput, error)
 	GetLogGroupFields(context.Context, *cloudwatchlogs.GetLogGroupFieldsInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.GetLogGroupFieldsOutput, error)
 	GetLogRecord(context.Context, *cloudwatchlogs.GetLogRecordInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.GetLogRecordOutput, error)
