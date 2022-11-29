@@ -67,25 +67,7 @@ jobs:
 
       - name: Update version file
         if: steps.semver_parser.outputs.prerelease == ''
-        run: 'echo "{ \"latest\": \"${{github.ref_name}}\" }" > ./sites/versions/v2/destination-sqlite.json'
-
-      - name: Update version in example config files
-        if: steps.semver_parser.outputs.prerelease == ''
-        uses: jacobtomlinson/gha-find-replace@657b0d1fe020da9943d1702b576f5d37d43b9c03
-        continue-on-error: true
-        with:
-          include: "plugins/destination/sqlite/docs/**"
-          find: 'version:\s+\"v\d+\.\d+\.\d+\"\s+\#\s+latest version of sqlite plugin'
-          replace: 'version: "${{steps.split.outputs.plugin_version}}" # latest version of sqlite plugin'
-
-      - name: Update version in doc config files
-        if: steps.semver_parser.outputs.prerelease == ''
-        uses: jacobtomlinson/gha-find-replace@657b0d1fe020da9943d1702b576f5d37d43b9c03
-        continue-on-error: true
-        with:
-          include: "website/pages/**"
-          find: 'version:\s+\"v\d+\.\d+\.\d+\"\s+\#\s+latest version of sqlite plugin'
-          replace: 'version: "${{steps.split.outputs.plugin_version}}" # latest version of sqlite plugin'
+        run: 'echo "{ \"latest\": \"${{github.ref_name}}\" }" > ./website/versions/destination-sqlite.json'
 
       - name: Create Pull Request
         if: steps.semver_parser.outputs.prerelease == ''

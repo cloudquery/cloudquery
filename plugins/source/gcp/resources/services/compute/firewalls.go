@@ -125,7 +125,7 @@ func Firewalls() *schema.Table {
 	}
 }
 
-func fetchFirewalls(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
+func fetchFirewalls(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	req := &pb.ListFirewallsRequest{
 		Project: c.ProjectId,

@@ -1,0 +1,82 @@
+---
+title: Sources
+---
+
+import { getLatestVersion } from "../../../../utils/versions";
+
+# Source Plugins
+
+## Official
+
+Documentation, configuration and available tables for every plugin are available in the relevant GitHub repository.
+
+Official source plugins follow [release stages](#source-plugin-release-stages).
+
+| **Name**              | Latest Version | Changelog                           | Tables | Stage |
+|-----------------------|----------------|-------------------------------------|--------|-------|
+| [AWS][aws] | {getLatestVersion("source", "aws")}         | [Changelog][AWS-Changelog]          | [Tables][AWS-Tables]           | GA |
+| [Azure][azure] | {getLatestVersion("source", "azure")}         | [Changelog][Azure-Changelog]        | [Tables][Azure-Tables]         | GA |
+| [GCP][gcp] | {getLatestVersion("source", "gcp")}         | [Changelog][GCP-Changelog]          | [Tables][GCP-Tables]           | GA |
+| [DigitalOcean][digitalocean] | {getLatestVersion("source", "digitalocean")}         | [Changelog][DigitalOcean-Changelog] | [Tables][DigitalOcean-Tables]  | GA |
+| [GitHub][github] | {getLatestVersion("source", "github")}         | [Changelog][GitHub-Changelog]       | [Tables][GitHub-Tables]        | GA |
+| [Heroku][heroku] | {getLatestVersion("source", "heroku")}         | [Changelog][Heroku-Changelog]       | [Tables][Heroku-Tables]        | Preview |
+| [k8s][k8s] | {getLatestVersion("source", "k8s")}         | [Changelog][k8s-Changelog]          | [Tables][k8s-Tables]           | Preview |
+| [Okta][okta] | {getLatestVersion("source", "okta")}        | [Changelog][Okta-Changelog]         | [Tables][Okta-Tables]          | Preview |
+| [Terraform][terraform] | {getLatestVersion("source", "terraform")}         | [Changelog][Terraform-Changelog]    | [Tables][Terraform-Tables]     | Preview |
+| [Cloudflare][cloudflare] | {getLatestVersion("source", "cloudflare")}         | [Changelog][Cloudflare-Changelog]   | [Tables][Cloudflare-Tables]    | Preview |
+
+## Community
+
+| **Name**                                                     |
+|--------------------------------------------------------------|
+| [Yandex](https://github.com/yandex-cloud/cq-provider-yandex) |
+
+## Source Plugin Release Stages
+
+[Official source plugins](#official) go through two release stages: Preview, and GA.
+
+Both Preview and GA plugins follow [semantic versioning](#semantic-versioning).
+The main differences between the two stages are:
+
+1. Preview plugins are still experimental and may have frequent breaking changes.
+2. Preview plugins might get deprecated due to lack of usage.
+3. Long Term Support with community Discord and bug fixes is only guaranteed for GA plugins.
+
+### Semantic Versioning
+
+For version `Major.Minor.Patch`:
+
+- `Major` is incremented when there are breaking changes (e.g. breaking configuration spec structure, column type changes).
+- `Minor` is incremented when we add features in a backwards compatible way.
+- `Patch` is incremented when we fix bugs in a backwards compatible way.
+
+[aws]: ./aws/overview
+[gcp]: ./gcp/overview
+[azure]: ./azure/overview
+[digitalocean]: ./digitalocean/overview
+[github]: ./github/overview
+[heroku]: ./heroku/overview
+[k8s]: ./k8s/overview
+[okta]: ./okta/overview
+[terraform]: ./terraform/overview
+[cloudflare]: ./cloudflare/overview
+[AWS-Changelog]: https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/CHANGELOG.md
+[Azure-Changelog]: https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/CHANGELOG.md
+[GCP-Changelog]: https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/CHANGELOG.md
+[DigitalOcean-Changelog]: https://github.com/cloudquery/cloudquery/blob/main/plugins/source/digitalocean/CHANGELOG.md
+[GitHub-Changelog]: https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/CHANGELOG.md
+[Heroku-Changelog]: https://github.com/cloudquery/cloudquery/blob/main/plugins/source/heroku/CHANGELOG.md
+[k8s-Changelog]: https://github.com/cloudquery/cloudquery/blob/main/plugins/source/k8s/CHANGELOG.md
+[Okta-Changelog]: https://github.com/cloudquery/cloudquery/blob/main/plugins/source/okta/CHANGELOG.md
+[Terraform-Changelog]: https://github.com/cloudquery/cloudquery/blob/main/plugins/source/terraform/CHANGELOG.md
+[Cloudflare-Changelog]: https://github.com/cloudquery/cloudquery/blob/main/plugins/source/cloudflare/CHANGELOG.md
+[AWS-Tables]: https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/README.md
+[Azure-Tables]: https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/README.md
+[GCP-Tables]: https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/README.md
+[DigitalOcean-Tables]: https://github.com/cloudquery/cloudquery/blob/main/plugins/source/digitalocean/docs/tables/README.md
+[GitHub-Tables]: https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/README.md
+[Heroku-Tables]: https://github.com/cloudquery/cloudquery/blob/main/plugins/source/heroku/docs/tables/README.md
+[k8s-Tables]: https://github.com/cloudquery/cloudquery/blob/main/plugins/source/k8s/docs/tables/README.md
+[Okta-Tables]: https://github.com/cloudquery/cloudquery/blob/main/plugins/source/okta/docs/tables/README.md
+[Terraform-Tables]: https://github.com/cloudquery/cloudquery/blob/main/plugins/source/terraform/docs/tables/README.md
+[Cloudflare-Tables]: https://github.com/cloudquery/cloudquery/blob/main/plugins/source/cloudflare/docs/tables/README.md

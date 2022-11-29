@@ -13,13 +13,13 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 ## Introduction
 
-Cloud infrastructure data exploded over the last decade. Some teams using CloudQuery open source now collect data on more than 50 million (!) of their organization's cloud resources on a daily basis. This explosion has created the need to store this data in data warehouses and data lakes for better scalability, analysis and reporting. Today I'm excited to announce the release of our new [Snowflake destination plugin](../docs/recipes/destinations/snowflake), which enables you to achieve this by syncing all supported CloudQuery [source plugins](../docs/plugins/sources) directly to a [Snowflake](https://www.snowflake.com/) database.
+Cloud infrastructure data exploded over the last decade. Some teams using CloudQuery open source now collect data on more than 50 million (!) of their organization's cloud resources on a daily basis. This explosion has created the need to store this data in data warehouses and data lakes for better scalability, analysis and reporting. Today I'm excited to announce the release of our new [Snowflake destination plugin](/docs/recipes/destinations/snowflake), which enables you to achieve this by syncing all supported CloudQuery [source plugins](/docs/plugins/sources/overview) directly to a [Snowflake](https://www.snowflake.com/) database.
 
 ## Use Cases
 
 ### Cloud Infrastructure data lake and data warehouse
 
-Snowflake is already used as a ["Security data lake"](https://www.snowflake.com/en/data-cloud/workloads/cybersecurity/). CloudQuery brings all your cloud [infrastructure configuration data](../docs/plugins/sources) to the same place, consolidating your security and infrastructure data in one place and enabling new insights.
+Snowflake is already used as a ["Security data lake"](https://www.snowflake.com/en/data-cloud/workloads/cybersecurity/). CloudQuery brings all your cloud [infrastructure configuration data](/docs/plugins/sources/overview) to the same place, consolidating your security and infrastructure data in one place and enabling new insights.
 
 ### Historical data
 
@@ -27,7 +27,7 @@ Maintaining historical data is a common use case for data warehouses. By using S
 
 ## Syncing data
 
-Syncing data to snowflake can be done as with any other destination plugin, so check out our [Quickstart](../docs/quickstart) and [Snowflake recipe](../docs/recipes/destinations/snowflake).
+Syncing data to snowflake can be done as with any other destination plugin, so check out our [Quickstart](/docs/quickstart) and [Snowflake recipe](/docs/recipes/destinations/snowflake).
 
 There are two ways to sync data to Snowflake:
 
