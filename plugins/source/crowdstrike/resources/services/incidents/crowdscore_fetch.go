@@ -2,7 +2,6 @@ package incidents
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/cloudquery/cloudquery/plugins/source/crowdstrike/client"
 
@@ -21,8 +20,6 @@ func fetchCrowdscore(ctx context.Context, meta schema.ClientMeta, parent *schema
 		panic(err)
 	}
 	payload := retval.GetPayload()
-	fmt.Printf("As of %s your CrowdScore is %d.\n",
-		payload.Resources[0].Timestamp.String(), *payload.Resources[0].Score)
 	res <- payload
 	return nil
 }
