@@ -31,7 +31,7 @@ func init() {
 	for _, resource := range resources {
 		resource.Service = "serviceusage"
 		resource.MockImports = []string{"cloud.google.com/go/serviceusage/apiv1"}
-		resource.ProtobufImport = "google.golang.org/genproto/googleapis/api/serviceusage/v1"
+		resource.ProtobufImport = "cloud.google.com/go/serviceusage/apiv1/serviceusagepb"
 		resource.Template = "newapi_list"
 		resource.MockTemplate = "newapi_list_grpc_mock"
 		resource.RequestStructFields = `Parent: "projects/" + c.ProjectId,

@@ -52,7 +52,7 @@ func init() {
 		resource.Template = "newapi_list"
 		resource.MockTemplate = "newapi_list_grpc_mock"
 		resource.MockImports = []string{"cloud.google.com/go/billing/apiv1"}
-		resource.ProtobufImport = "google.golang.org/genproto/googleapis/cloud/billing/v1"
+		resource.ProtobufImport = "cloud.google.com/go/billing/apiv1/billingpb"
 	}
 
 	Resources = append(Resources, resources...)

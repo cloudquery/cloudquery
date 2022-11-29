@@ -10,7 +10,7 @@ import (
 	"google.golang.org/grpc"
 	"testing"
 
-	pb "google.golang.org/genproto/googleapis/cloud/domains/v1beta1"
+	pb "cloud.google.com/go/domains/apiv1beta1/domainspb"
 )
 
 func createRegistrations(gsrv *grpc.Server) error {

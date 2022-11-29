@@ -10,7 +10,7 @@ import (
 	"google.golang.org/grpc"
 	"testing"
 
-	pb "google.golang.org/genproto/googleapis/cloud/secretmanager/v1"
+	pb "cloud.google.com/go/secretmanager/apiv1/secretmanagerpb"
 )
 
 func createSecrets(gsrv *grpc.Server) error {

@@ -24,7 +24,7 @@ func init() {
 		resource.Template = "newapi_list"
 		resource.MockTemplate = "newapi_list_grpc_mock"
 		resource.MockImports = []string{"cloud.google.com/go/run/apiv2"}
-		resource.ProtobufImport = "google.golang.org/genproto/googleapis/cloud/run/v2"
+		resource.ProtobufImport = "cloud.google.com/go/run/apiv2/runpb"
 		resource.RequestStructFields = `Parent: "projects/" + c.ProjectId + "locations/-",`
 	}
 
