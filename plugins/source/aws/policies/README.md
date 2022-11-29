@@ -14,7 +14,7 @@ CloudQuery SQL Policies for AWS
 
 You can execute policies with `psql`. For example:
 
-```bash copy
+```bash
 # Set DSN to your PostgreSQL populated by CloudQuery
 export DSN=postgres://postgres:pass@localhost:5432/postgres
 # Execute CIS V1.2.0 Policy

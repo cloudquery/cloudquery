@@ -6,7 +6,7 @@ We recommend using `nvm` to manage npm versions. See [nvm installation instructi
 
 With `nvm` installed, run the following command from within the `website` directory:
 
-```shell copy
+```shell
 nvm use
 ```
 
@@ -14,13 +14,13 @@ nvm use
 
 Next, install dependencies via `yarn`:
 
-```shell copy
+```shell
 yarn install
 ```
 
 And now run the server in development mode:
 
-```shell copy
+```shell
 yarn dev
 ```
 
