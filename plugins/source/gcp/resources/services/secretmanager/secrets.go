@@ -71,7 +71,7 @@ func Secrets() *schema.Table {
 	}
 }
 
-func fetchSecrets(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
+func fetchSecrets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	req := &pb.ListSecretsRequest{
 		Parent: "projects/" + c.ProjectId,

@@ -12,7 +12,6 @@ func ResourceSharePermissions() *schema.Table {
 		Name:        "aws_ram_resource_share_permissions",
 		Description: `https://docs.aws.amazon.com/ram/latest/APIReference/API_ResourceSharePermissionSummary.html`,
 		Resolver:    fetchRamResourceSharePermissions,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("ram"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

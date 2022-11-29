@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBInstance.html
 The primary key for this table is **arn**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
@@ -46,6 +47,7 @@ The primary key for this table is **arn**.
 |db_parameter_groups|JSON|
 |db_security_groups|JSON|
 |db_subnet_group|JSON|
+|db_system_id|String|
 |db_instance_port|Int|
 |dbi_resource_id|String|
 |deletion_protection|Bool|

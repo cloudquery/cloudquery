@@ -40,7 +40,7 @@ func RegistryPolicies() *schema.Table {
 			{
 				Name:     "policy_text",
 				Type:     schema.TypeJSON,
-				Resolver: client.MarshaledJsonResolver("PolicyText"),
+				Resolver: schema.PathResolver("PolicyText"),
 			},
 		},
 	}

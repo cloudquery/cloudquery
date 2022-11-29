@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/redshift"
 	"github.com/aws/aws-sdk-go-v2/service/redshift/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -37,5 +38,11 @@ func resolveEventSubscriptionARN(ctx context.Context, meta schema.ClientMeta, re
 }
 
 func eventSubscriptionARN(cl *client.Client, name string) string {
-	return cl.ARN(client.RedshiftService, fmt.Sprintf("eventsubscription:%s", name))
+	return arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.RedshiftService),
+		Region:    cl.Region,
+		AccountID: cl.AccountID,
+		Resource:  fmt.Sprintf("eventsubscription:%s", name),
+	}.String()
 }

@@ -5,6 +5,7 @@ https://devcenter.heroku.com/articles/platform-api-reference#permission-entity
 The primary key for this table is **id**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

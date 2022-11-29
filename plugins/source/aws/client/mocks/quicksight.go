@@ -1095,6 +1095,46 @@ func (mr *MockQuicksightClientMockRecorder) SearchDashboards(arg0, arg1 interfac
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SearchDashboards", reflect.TypeOf((*MockQuicksightClient)(nil).SearchDashboards), varargs...)
 }
 
+// SearchDataSets mocks base method.
+func (m *MockQuicksightClient) SearchDataSets(arg0 context.Context, arg1 *quicksight.SearchDataSetsInput, arg2 ...func(*quicksight.Options)) (*quicksight.SearchDataSetsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "SearchDataSets", varargs...)
+	ret0, _ := ret[0].(*quicksight.SearchDataSetsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// SearchDataSets indicates an expected call of SearchDataSets.
+func (mr *MockQuicksightClientMockRecorder) SearchDataSets(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SearchDataSets", reflect.TypeOf((*MockQuicksightClient)(nil).SearchDataSets), varargs...)
+}
+
+// SearchDataSources mocks base method.
+func (m *MockQuicksightClient) SearchDataSources(arg0 context.Context, arg1 *quicksight.SearchDataSourcesInput, arg2 ...func(*quicksight.Options)) (*quicksight.SearchDataSourcesOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "SearchDataSources", varargs...)
+	ret0, _ := ret[0].(*quicksight.SearchDataSourcesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// SearchDataSources indicates an expected call of SearchDataSources.
+func (mr *MockQuicksightClientMockRecorder) SearchDataSources(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SearchDataSources", reflect.TypeOf((*MockQuicksightClient)(nil).SearchDataSources), varargs...)
+}
+
 // SearchFolders mocks base method.
 func (m *MockQuicksightClient) SearchFolders(arg0 context.Context, arg1 *quicksight.SearchFoldersInput, arg2 ...func(*quicksight.Options)) (*quicksight.SearchFoldersOutput, error) {
 	m.ctrl.T.Helper()

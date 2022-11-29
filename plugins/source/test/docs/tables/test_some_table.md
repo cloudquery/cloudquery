@@ -5,6 +5,7 @@ Test description
 The primary key for this table is **column1**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

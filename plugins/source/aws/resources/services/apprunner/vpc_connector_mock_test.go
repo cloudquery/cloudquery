@@ -37,5 +37,5 @@ func buildApprunnerVpcConnectorsMock(t *testing.T, ctrl *gomock.Controller) clie
 }
 
 func TestApprunnerVpcConnector(t *testing.T) {
-	client.AwsMockTestHelper(t, VpcConnector(), buildApprunnerVpcConnectorsMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, VpcConnectors(), buildApprunnerVpcConnectorsMock, client.TestOptions{})
 }

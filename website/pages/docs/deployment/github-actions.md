@@ -20,19 +20,19 @@ To set up authentication with AWS from GitHub Actions you can follow the [Config
 
 Under the root of your repository, create a new `cloudquery.yml` file with the following content:
 
-```yaml
+```yaml copy
 kind: source
 spec:
   name: 'aws'
   path: cloudquery/aws
-  version: "v5.1.2" # latest version of aws plugin
+  version: "VERSION_SOURCE_AWS"
   destinations: ['postgresql']
 ---
 kind: destination
 spec:
   name: 'postgresql'
   path: cloudquery/postgresql
-  version: "v1.7.10" # latest version of postgresql plugin
+  version: "VERSION_DESTINATION_POSTGRESQL"
   spec:
     connection_string: ${CQ_DSN} # The CQ_DSN environment variable will be set by GitHub Action workflow
 ```
@@ -45,7 +45,7 @@ First we'll need [to create a GitHub secret](https://docs.github.com/en/actions/
 
 Create a workflow file under `.github/workflows/cloudquery.yml` with the following content, and fill in `<role-arn>` and `<region>` according to the role you created in the prerequisites.
 
-```yaml
+```yaml copy
 name: CloudQuery
 on:
   schedule:
@@ -64,8 +64,10 @@ jobs:
         with:
           role-to-assume: <role-arn> # based on the role you created in the prerequisites
           aws-region: <region> # based on the region you created the role in
-      - uses: cloudquery/setup-cloudquery@v2
+      - uses: cloudquery/setup-cloudquery@v3
         name: Setup CloudQuery
+        with:
+          version: "VERSION_CLI"
       - name: Sync with CloudQuery
         run: cloudquery sync cloudquery.yml --log-console
         env:
@@ -84,12 +86,12 @@ With the [GitHub Actions matrix configuration](https://docs.github.com/en/action
 
 First, we'll need to create a new `cloudquery-regions.yml` configuration file under the root of the repository:
 
-```yaml
+```yaml copy
 kind: source
 spec:
   name: 'aws-REGION_PLACEHOLDER' # when splitting configurations, we need to keep the names unique
   path: cloudquery/aws
-  version: "v5.1.2" # latest version of aws plugin
+  version: "VERSION_SOURCE_AWS"
   destinations: ['postgresql-REGION_PLACEHOLDER']
   spec:
     regions:
@@ -99,14 +101,14 @@ kind: destination
 spec:
   name: 'postgresql-REGION_PLACEHOLDER' # when splitting configurations, we need to keep the names unique
   path: cloudquery/postgresql
-  version: "v1.7.10" # latest version of postgresql plugin
+  version: "VERSION_DESTINATION_POSTGRESQL"
   spec:
     connection_string: ${CQ_DSN} # The CQ_DSN environment variable will be set by GitHub Action workflow
 ```
 
 To do so, create the following workflow file under `.github/workflows/cloudquery-parallel.yml`:
 
-```yaml
+```yaml copy
 name: CloudQuery Parallel
 on:
   schedule:
@@ -133,8 +135,10 @@ jobs:
         with:
           role-to-assume: <role-arn> # based on the role you created in the prerequisites
           aws-region: <region> # based on the region you created the role in
-      - uses: cloudquery/setup-cloudquery@v2
+      - uses: cloudquery/setup-cloudquery@v3
         name: Setup CloudQuery
+        with:
+          version: "VERSION_CLI"
       - name: Sync with CloudQuery
         run: cloudquery sync cloudquery-regions.yml --log-console
         env:

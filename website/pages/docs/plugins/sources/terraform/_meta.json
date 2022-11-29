@@ -1,0 +1,9 @@
+{
+  "overview": "Overview",
+  "tables": {
+    "title": "Tables ↗",
+    "href": "https://github.com/cloudquery/cloudquery/blob/main/plugins/source/terraform/docs/tables/README.md",
+    "newWindow": true,
+    "route": "https://github.com/cloudquery/cloudquery/blob/main/plugins/source/terraform/docs/tables/README.md"
+  }
+}

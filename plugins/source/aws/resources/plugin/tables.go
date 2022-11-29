@@ -4,6 +4,7 @@ package plugin
 
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/accessanalyzer"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/account"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/acm"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/apigateway"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/apigatewayv2"
@@ -53,6 +54,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/inspector"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/inspector2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/iot"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/kafka"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/kinesis"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/kms"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/lambda"
@@ -70,6 +72,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/route53"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/s3"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sagemaker"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/scheduler"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/secretsmanager"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/servicecatalog"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/servicequotas"
@@ -79,6 +82,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sqs"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ssm"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ssoadmin"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/stepfunctions"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/timestream"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/transfer"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/waf"
@@ -92,6 +96,8 @@ import (
 func tables() []*schema.Table {
 	return []*schema.Table{
 		accessanalyzer.Analyzers(),
+		account.AlternateContacts(),
+		account.Contacts(),
 		acm.Certificates(),
 		apigateway.ApiKeys(),
 		apigateway.ClientCertificates(),
@@ -103,12 +109,12 @@ func tables() []*schema.Table {
 		apigatewayv2.DomainNames(),
 		apigatewayv2.VpcLinks(),
 		applicationautoscaling.Policies(),
-		apprunner.AutoScalingConfiguration(),
+		apprunner.AutoScalingConfigurations(),
 		apprunner.Connections(),
 		apprunner.ObservabilityConfigurations(),
 		apprunner.Services(),
-		apprunner.VpcConnector(),
-		apprunner.VpcIngressConnection(),
+		apprunner.VpcConnectors(),
+		apprunner.VpcIngressConnections(),
 		appstream.AppBlocks(),
 		appstream.Applications(),
 		appstream.DirectoryConfigs(),
@@ -134,6 +140,7 @@ func tables() []*schema.Table {
 		cloudhsmv2.Clusters(),
 		cloudhsmv2.Backups(),
 		cloudtrail.Trails(),
+		cloudwatchlogs.ResourcePolicies(),
 		cloudwatchlogs.MetricFilters(),
 		cloudwatchlogs.LogGroups(),
 		cloudwatch.Alarms(),
@@ -144,6 +151,7 @@ func tables() []*schema.Table {
 		cognito.UserPools(),
 		config.ConfigurationRecorders(),
 		config.ConformancePacks(),
+		config.ConfigRules(),
 		dax.Clusters(),
 		directconnect.Connections(),
 		directconnect.Gateways(),
@@ -180,7 +188,7 @@ func tables() []*schema.Table {
 		ec2.NetworkAcls(),
 		ec2.NetworkInterfaces(),
 		ec2.Regions(),
-		ec2.RegionalConfig(),
+		ec2.RegionalConfigs(),
 		ec2.ReservedInstances(),
 		ec2.RouteTables(),
 		ec2.SecurityGroups(),
@@ -288,6 +296,8 @@ func tables() []*schema.Table {
 		iot.ThingTypes(),
 		iot.Things(),
 		iot.TopicRules(),
+		kafka.Clusters(),
+		kafka.Configurations(),
 		kinesis.Streams(),
 		kms.Aliases(),
 		kms.Keys(),
@@ -329,8 +339,8 @@ func tables() []*schema.Table {
 		ram.Principals(),
 		ram.Resources(),
 		ram.ResourceShares(),
+		ram.ResourceShareAssociations(),
 		ram.ResourceShareInvitations(),
-		ram.ResourceSharePermissions(),
 		ram.ResourceTypes(),
 		rds.Certificates(),
 		rds.EngineVersions(),
@@ -358,6 +368,8 @@ func tables() []*schema.Table {
 		sagemaker.Models(),
 		sagemaker.NotebookInstances(),
 		sagemaker.TrainingJobs(),
+		scheduler.ScheduleGroups(),
+		scheduler.Schedules(),
 		secretsmanager.Secrets(),
 		servicecatalog.Portfolios(),
 		servicecatalog.Products(),
@@ -377,7 +389,13 @@ func tables() []*schema.Table {
 		ssm.Documents(),
 		ssm.Instances(),
 		ssm.Parameters(),
+		ssm.ComplianceSummaryItems(),
+		ssm.Associations(),
+		ssm.Inventories(),
+		ssm.InventorySchemas(),
+		ssm.PatchBaselines(),
 		ssoadmin.Instances(),
+		stepfunctions.StateMachines(),
 		timestream.Databases(),
 		transfer.Servers(),
 		wafregional.RateBasedRules(),
@@ -395,7 +413,7 @@ func tables() []*schema.Table {
 		wafv2.WebAcls(),
 		workspaces.Workspaces(),
 		workspaces.Directories(),
-		xray.EncryptionConfig(),
+		xray.EncryptionConfigs(),
 		xray.Groups(),
 		xray.SamplingRules(),
 	}

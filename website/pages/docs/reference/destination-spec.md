@@ -6,12 +6,12 @@ This goes through all the available options for the destination plugin `spec` ob
 
 This example configures the `postgresql` plugin to connect to a PostgreSQL database located at `localhost:5432`.
 
-```yaml
+```yaml copy
 kind: destination
 spec:
   name: "postgresql"
   path: "cloudquery/postgresql"
-  version: "v1.7.10" # latest version of postgresql plugin
+  version: "VERSION_DESTINATION_POSTGRESQL"
 
   spec:
     connection_string: "postgresql://postgres:pass@localhost:5432/postgres?sslmode=disable"
@@ -23,7 +23,7 @@ spec:
 
 (`string`, required)
 
-Name of the plugin. If you have multiple destination plugins, this must be unique. 
+Name of the plugin. If you have multiple destination plugins, this must be unique.
 
 The name field may be used to uniquely identify a particular destination configuration. For example, if you have two configs for the PostgreSQL plugin for syncing different databases, one may be named `db-1` and the other `db-2`. In this case, the `path` option below must be used to specify the download path for the plugin.
 
@@ -65,4 +65,4 @@ Specifies the update method to use when inserting rows. The exact semantics depe
 
 (`object`, optional)
 
-Plugin specific configurations. Visit [destination plugins](/docs/plugins/destinations) documentation for more information.
+Plugin specific configurations. Visit [destination plugins](/docs/plugins/destinations/overview) documentation for more information.

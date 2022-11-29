@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/dms/latest/APIReference/API_ReplicationInstance.html
 The primary key for this table is **arn**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
@@ -24,11 +25,13 @@ The primary key for this table is **arn**.
 |instance_create_time|Timestamp|
 |kms_key_id|String|
 |multi_az|Bool|
+|network_type|String|
 |pending_modified_values|JSON|
 |preferred_maintenance_window|String|
 |publicly_accessible|Bool|
 |replication_instance_class|String|
 |replication_instance_identifier|String|
+|replication_instance_ipv6_addresses|StringArray|
 |replication_instance_private_ip_address|String|
 |replication_instance_private_ip_addresses|StringArray|
 |replication_instance_public_ip_address|String|

@@ -6,6 +6,8 @@ env
 ENV
 aws
 AWS
+Autoscaling
+autoscaling
 hcl
 HCL
 graphql
@@ -129,3 +131,10 @@ skip_tables
 subfolder
 recurse
 CCPA's
+bugfix
+nvm
+npm
+Gandi
+parallelization
+hyperscale
+goroutines

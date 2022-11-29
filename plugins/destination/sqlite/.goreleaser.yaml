@@ -1,5 +1,6 @@
 variables:
   component: destination/sqlite
+  binary: sqlite
 
 project_name: plugins/destination/sqlite
 
@@ -35,3 +36,16 @@ builds:
 # linux arm64 has some issues with cross-compile
       - goos: linux
         goarch: arm64
+
+after:
+  hooks:
+    - cmd: unzip -o {{ .Var.binary }}_darwin_arm64.zip
+      dir: dist
+    - cmd: unzip -o {{ .Var.binary }}_windows_amd64.zip
+      dir: dist
+    - cmd: unzip -o {{ .Var.binary }}_darwin_amd64.zip
+      dir: dist
+    - cmd: unzip -o {{ .Var.binary }}_linux_amd64.zip
+      dir: dist
+    - cmd: plugins/{{ .Var.component }} --version
+      dir: dist

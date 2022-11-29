@@ -44,6 +44,7 @@ jobs:
                            "plugins/source/azure",
                            "plugins/source/cloudflare",
                            "plugins/source/digitalocean",
+                           "plugins/source/gandi",
                            "plugins/source/gcp",
                            "plugins/source/github",
                            "plugins/source/heroku",
@@ -56,6 +57,7 @@ jobs:
                            "plugins/destination/test",
                            "plugins/destination/csv",
                            "plugins/destination/sqlite",
+                           "plugins/destination/snowflake",
                            ].filter(action => matchesFile(action))
             if (actions.length === 0) {
               console.log("No actions to wait for")
