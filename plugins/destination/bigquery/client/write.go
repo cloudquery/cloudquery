@@ -28,6 +28,8 @@ func (i *item) Save() (map[string]bigquery.Value, string, error) {
 
 func (c *Client) writeResource(ctx context.Context, table *schema.Table, resources <-chan []interface{}) error {
 	inserter := c.client.Dataset(c.datasetID).Table(table.Name).Inserter()
+	inserter.IgnoreUnknownValues = true
+	inserter.SkipInvalidRows = false
 	batch := make([]item, 0)
 	for r := range resources {
 		c.logger.Debug().Msg("Got resource")

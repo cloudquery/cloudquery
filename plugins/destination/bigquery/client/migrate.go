@@ -99,7 +99,6 @@ func (c *Client) bigQuerySchemaForTable(table *schema.Table) (bigquery.Schema, e
 			Description: col.Description,
 			Repeated:    repeated,
 			Type:        columnType,
-			Schema:      bigquery.Schema{},
 		})
 	}
 	return s, nil
