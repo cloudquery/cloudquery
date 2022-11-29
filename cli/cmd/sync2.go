@@ -30,14 +30,26 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 	}
 	defer destClients.Close()
 
-	tables, supported, err := getTablesForSpec(ctx, sourceClient, sourceSpec)
+	tables, tablesForSpecSupported, err := getTablesForSpec(ctx, sourceClient, sourceSpec)
 	if err != nil {
 		return fmt.Errorf("failed to get tables for source %s: %w", sourceSpec.Name, err)
 	}
 
 	tableCount := len(tables.FlattenTables())
-	if !noMigrate {
+
+	// Print a count of the tables that will be synced / migrated. This is a little tricky because older
+	// servers don't necessarily support GetTablesForSpec.
+	if !noMigrate && tablesForSpecSupported {
 		fmt.Printf("Source %s will migrate and sync %d tables.\n", sourceSpec.Name, tableCount)
+	} else if tablesForSpecSupported {
+		// only print tableCount if we know that the GetTablesForSpec gRPC call is supported
+		fmt.Printf("Source %s will sync %d tables.\n", sourceSpec.Name, tableCount)
+	} else {
+		// we will migrate all tables, in line with behavior of the CLI before GetTablesForSpec was introduced
+		fmt.Printf("Source %s will migrate %d tables.\n", sourceSpec.Name, tableCount)
+	}
+
+	if !noMigrate {
 		fmt.Println("Starting migration for:", sourceSpec.Name, "->", sourceSpec.Destinations)
 		log.Info().Str("source", sourceSpec.Name).Strs("destinations", sourceSpec.Destinations).Msg("Start migration")
 		migrateStart := time.Now()
@@ -55,10 +67,6 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 			Int("num_tables", len(tables)).
 			Float64("time_took", migrateTimeTook.Seconds()).
 			Msg("End migration")
-	} else if supported {
-		// only print tableCount if we know that the GetTablesForSpec gRPC call is supported (which means the count is correct, and
-		// not a count of all tables)
-		fmt.Printf("Source %s will sync %d tables.\n", sourceSpec.Name, tableCount)
 	}
 
 	resources := make(chan []byte)
