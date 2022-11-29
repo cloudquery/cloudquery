@@ -175,6 +175,26 @@ func (mr *MockOrganizationsClientMockRecorder) DescribePolicy(arg0, arg1 interfa
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribePolicy", reflect.TypeOf((*MockOrganizationsClient)(nil).DescribePolicy), varargs...)
 }
 
+// DescribeResourcePolicy mocks base method.
+func (m *MockOrganizationsClient) DescribeResourcePolicy(arg0 context.Context, arg1 *organizations.DescribeResourcePolicyInput, arg2 ...func(*organizations.Options)) (*organizations.DescribeResourcePolicyOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeResourcePolicy", varargs...)
+	ret0, _ := ret[0].(*organizations.DescribeResourcePolicyOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeResourcePolicy indicates an expected call of DescribeResourcePolicy.
+func (mr *MockOrganizationsClientMockRecorder) DescribeResourcePolicy(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeResourcePolicy", reflect.TypeOf((*MockOrganizationsClient)(nil).DescribeResourcePolicy), varargs...)
+}
+
 // ListAWSServiceAccessForOrganization mocks base method.
 func (m *MockOrganizationsClient) ListAWSServiceAccessForOrganization(arg0 context.Context, arg1 *organizations.ListAWSServiceAccessForOrganizationInput, arg2 ...func(*organizations.Options)) (*organizations.ListAWSServiceAccessForOrganizationOutput, error) {
 	m.ctrl.T.Helper()
