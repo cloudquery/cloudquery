@@ -50,7 +50,6 @@ function getVersions() {
 }
 
 const versions = getVersions();
-console.log(versions);
 
 const replaceMdxCodeVersions = (node) => {
   if (node.type === "text") {
