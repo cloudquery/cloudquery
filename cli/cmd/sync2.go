@@ -39,16 +39,14 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 
 	// Print a count of the tables that will be synced / migrated. This is a little tricky because older
 	// servers don't necessarily support GetTablesForSpec.
-	if !noMigrate && tablesForSpecSupported {
-		fmt.Printf("Source %s will migrate and sync %d tables.\n", sourceSpec.Name, tableCount)
-	} else if tablesForSpecSupported {
-		// only print tableCount if we know that the GetTablesForSpec gRPC call is supported
-		fmt.Printf("Source %s will sync %d tables.\n", sourceSpec.Name, tableCount)
-	} else {
-		// we will migrate all tables, in line with behavior of the CLI before GetTablesForSpec was introduced
-		fmt.Printf("Source %s will migrate %d tables.\n", sourceSpec.Name, tableCount)
+	if tablesForSpecSupported {
+		if noMigrate {
+			fmt.Printf("Source %s will sync %d tables.\n", sourceSpec.Name, tableCount)
+		} else {
+			fmt.Printf("Source %s will migrate and sync %d tables.\n", sourceSpec.Name, tableCount)
+		}
 	}
-
+	
 	if !noMigrate {
 		fmt.Println("Starting migration for:", sourceSpec.Name, "->", sourceSpec.Destinations)
 		log.Info().Str("source", sourceSpec.Name).Strs("destinations", sourceSpec.Destinations).Msg("Start migration")
