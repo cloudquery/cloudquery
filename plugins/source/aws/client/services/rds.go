@@ -9,6 +9,7 @@ import (
 //go:generate mockgen -package=mocks -destination=../mocks/rds.go -source=rds.go RdsClient
 type RdsClient interface {
 	DescribeAccountAttributes(context.Context, *rds.DescribeAccountAttributesInput, ...func(*rds.Options)) (*rds.DescribeAccountAttributesOutput, error)
+	DescribeBlueGreenDeployments(context.Context, *rds.DescribeBlueGreenDeploymentsInput, ...func(*rds.Options)) (*rds.DescribeBlueGreenDeploymentsOutput, error)
 	DescribeCertificates(context.Context, *rds.DescribeCertificatesInput, ...func(*rds.Options)) (*rds.DescribeCertificatesOutput, error)
 	DescribeDBClusterBacktracks(context.Context, *rds.DescribeDBClusterBacktracksInput, ...func(*rds.Options)) (*rds.DescribeDBClusterBacktracksOutput, error)
 	DescribeDBClusterEndpoints(context.Context, *rds.DescribeDBClusterEndpointsInput, ...func(*rds.Options)) (*rds.DescribeDBClusterEndpointsOutput, error)
