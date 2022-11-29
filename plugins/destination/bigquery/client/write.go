@@ -30,14 +30,18 @@ func (c *Client) writeResource(ctx context.Context, table *schema.Table, resourc
 	inserter := c.client.Dataset(c.datasetID).Table(table.Name).Inserter()
 	inserter.IgnoreUnknownValues = true
 	inserter.SkipInvalidRows = false
-	batch := make([]item, 0)
-	for r := range resources {
+	batch := make([]*item, 0)
+	for cols := range resources {
 		c.logger.Debug().Msg("Got resource")
-		saver := item{
+		saver := &item{
 			cols: make(map[string]bigquery.Value, len(table.Columns)),
 		}
-		for i := range r {
-			saver.cols[table.Columns[i].Name] = r[i]
+		for i := range cols {
+			if cols[i] == nil {
+				// save some bandwidth by not sending nil values
+				continue
+			}
+			saver.cols[table.Columns[i].Name] = cols[i]
 		}
 		c.logger.Debug().Interface("cols", saver.cols).Msg("got resource")
 		batch = append(batch, saver)
@@ -51,6 +55,7 @@ func (c *Client) writeResource(ctx context.Context, table *schema.Table, resourc
 				return fmt.Errorf("failed to put item into BigQuery table %s: %w", table.Name, err)
 			}
 			// release resources from timeout context if it finished early
+			batch = nil
 			cancel()
 		}
 	}

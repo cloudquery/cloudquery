@@ -42,8 +42,7 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 			return nil
 		})
 	}
-	eg.Wait()
-	return nil
+	return eg.Wait()
 }
 
 func (c *Client) doesTableExist(ctx context.Context, table string) (bool, error) {

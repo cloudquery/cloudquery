@@ -11,7 +11,8 @@ func TestPlugin(t *testing.T) {
 	p := plugins.NewDestinationPlugin("bigquery", "development", New)
 	plugins.DestinationPluginTestSuiteRunner(t, p,
 		Spec{
-			ConnectionString: os.Getenv("SNOW_TEST_DSN"),
+			ProjectID: os.Getenv("BIGQUERY_PROJECT_ID"),
+			DatasetID: os.Getenv("BIGQUERY_DATASET_ID"),
 		},
 		plugins.DestinationTestSuiteTests{
 			SkipOverwrite: true,
