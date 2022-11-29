@@ -8,7 +8,7 @@ This plugin pulls information from Crowdstrike and loads it into any supported C
 
 ## Authentication
 
-In order to fetch information from CrowdStrike, `cloudquery` needs to be authenticated. A ClientId and secret is required for authentication. Follow [these steps](https://www.crowdstrike.com/blog/tech-center/get-access-falcon-apis/) to set these up. Note that you will also need to enlist the client to have the appropriate scope for what you want to query.
+In order to fetch information from CrowdStrike, `cloudquery` needs to be authenticated. A client id and secret is required for authentication. Follow [these steps](https://www.crowdstrike.com/blog/tech-center/get-access-falcon-apis/) to set these up. Note that you will also need to enlist the client to have the appropriate scope for what you want to query.
 
 ## Configuration
 
