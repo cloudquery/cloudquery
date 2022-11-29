@@ -3,12 +3,13 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"strings"
+	"time"
+
 	"github.com/cloudquery/plugin-sdk/clients"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
-	"strings"
-	"time"
 )
 
 const (
@@ -96,12 +97,15 @@ func migrateConnection(ctx context.Context, cqDir string, sourceSpec specs.Sourc
 	}
 	defer destClients.Close()
 
-	fmt.Println("Starting migration for:", sourceSpec.Name, "->", sourceSpec.Destinations)
-	log.Info().Str("source", sourceSpec.Name).Strs("destinations", sourceSpec.Destinations).Msg("Starting migration")
-	tables, err := sourceClient.GetTables(ctx)
+	tables, _, err := getTablesForSpec(ctx, sourceClient, sourceSpec)
 	if err != nil {
 		return fmt.Errorf("failed to get tables for source %s: %w", sourceSpec.Name, err)
 	}
+	tableCount := len(tables.FlattenTables())
+	fmt.Printf("Source %s will migrate %d tables.\n", sourceSpec.Name, tableCount)
+	fmt.Println("Starting migration for:", sourceSpec.Name, "->", sourceSpec.Destinations)
+	log.Info().Str("source", sourceSpec.Name).Strs("destinations", sourceSpec.Destinations).Msg("Starting migration")
+
 	for i, destinationSpec := range destinationsSpecs {
 		if err := destClients[i].Migrate(ctx, tables); err != nil {
 			return fmt.Errorf("failed to migrate source %s on destination %s : %w", sourceSpec.Name, destinationSpec.Name, err)

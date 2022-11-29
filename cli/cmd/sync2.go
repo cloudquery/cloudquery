@@ -30,15 +30,15 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 	}
 	defer destClients.Close()
 
-	tables, err := sourceClient.GetTablesForSpec(ctx, &sourceSpec)
+	tables, supported, err := getTablesForSpec(ctx, sourceClient, sourceSpec)
 	if err != nil {
 		return fmt.Errorf("failed to get tables for source %s: %w", sourceSpec.Name, err)
 	}
 
-	tableCount := len(schema.Tables(tables).FlattenTables())
-	fmt.Printf("Source %s will sync %d tables.\n", sourceSpec.Name, tableCount)
+	tableCount := len(tables.FlattenTables())
 	if !noMigrate {
-		fmt.Printf("Starting migration for: %s -> %s\n", sourceSpec.Name, sourceSpec.Destinations)
+		fmt.Printf("Source %s will migrate and sync %d tables.\n", sourceSpec.Name, tableCount)
+		fmt.Println("Starting migration for:", sourceSpec.Name, "->", sourceSpec.Destinations)
 		log.Info().Str("source", sourceSpec.Name).Strs("destinations", sourceSpec.Destinations).Msg("Start migration")
 		migrateStart := time.Now()
 
@@ -55,12 +55,16 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 			Int("num_tables", len(tables)).
 			Float64("time_took", migrateTimeTook.Seconds()).
 			Msg("End migration")
+	} else if supported {
+		// only print tableCount if we know that the GetTablesForSpec gRPC call is supported (which means the count is correct, and
+		// not a count of all tables)
+		fmt.Printf("Source %s will sync %d tables.\n", sourceSpec.Name, tableCount)
 	}
 
 	resources := make(chan []byte)
 	g, gctx := errgroup.WithContext(ctx)
 	log.Info().Str("source", sourceSpec.Name).Strs("destinations", sourceSpec.Destinations).Msg("Start fetching resources")
-	fmt.Printf("Starting sync for: %v -> %v\n", sourceSpec.Name, sourceSpec.Destinations)
+	fmt.Println("Starting sync for: ", sourceSpec.Name, "->", sourceSpec.Destinations)
 	g.Go(func() error {
 		defer close(resources)
 		if err := sourceClient.Sync2(gctx, sourceSpec, resources); err != nil {
@@ -147,4 +151,19 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 		}
 	}
 	return nil
+}
+
+// getTablesForSpec first tries the newer GetTablesForSpec call, but if it is not available, falls back to
+// GetTables. The returned `supported` value indicates whether GetTablesForSpec was supported by the server.
+func getTablesForSpec(ctx context.Context, sourceClient *clients.SourceClient, sourceSpec specs.Source) (tables schema.Tables, supported bool, err error) {
+	tables, err = sourceClient.GetTablesForSpec(ctx, &sourceSpec)
+	if err == clients.ErrMethodNotSupported {
+		// the plugin server does not support GetTablesForSpec. Fall back to GetTables.
+		tables, err = sourceClient.GetTables(ctx)
+		return tables, false, err
+	} else if err != nil {
+		// the method is supported, but failed for some other reason
+		return tables, true, err
+	}
+	return tables, true, err
 }
