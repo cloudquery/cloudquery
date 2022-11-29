@@ -53,6 +53,8 @@ cloud.google.com/go/compute/metadata v0.2.1 h1:efOwf5ymceDhK6PKMnnrTHP4pppY5L22m
 cloud.google.com/go/compute/metadata v0.2.1/go.mod h1:jgHgmJd2RKBGzXqF5LR2EZMGxBkeanZ9wwa75XHJgOM=
 cloud.google.com/go/container v1.8.0 h1:wib6oN0XQT4r2M4RFfEz0AdfslEQc7H5SDLCV8EZ/lU=
 cloud.google.com/go/container v1.8.0/go.mod h1:1ZHYR+yKrEeDs/iBoUNgwyjWNo+WaPN8PRhVnWVCcuA=
+cloud.google.com/go/containeranalysis v0.6.0 h1:2824iym832ljKdVpCBnpqm5K94YT/uHTVhNF+dRTXPI=
+cloud.google.com/go/containeranalysis v0.6.0/go.mod h1:HEJoiEIu+lEXM+k7+qLCci0h33lX3ZqoYFdmPcoO7s4=
 cloud.google.com/go/datastore v1.0.0/go.mod h1:LXYbyblFSglQ5pkeyhO+Qmw7ukd3C+pD7TKLgZqpHYE=
 cloud.google.com/go/datastore v1.1.0/go.mod h1:umbIZjpQpHh4hmRpGhH4tLFup+FVzqBi1b3c64qFpCk=
 cloud.google.com/go/domains v0.7.0 h1:pu3JIgC1rswIqi5romW0JgNO6CTUydLYX8zyjiAvO1c=

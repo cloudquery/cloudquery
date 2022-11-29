@@ -30,6 +30,7 @@
 - [gcp_kms_keyrings](gcp_kms_keyrings.md)
   - [gcp_kms_crypto_keys](gcp_kms_crypto_keys.md)
 - [gcp_container_clusters](gcp_container_clusters.md)
+- [gcp_containeranalysis_occurrences](gcp_containeranalysis_occurrences.md)
 - [gcp_logging_metrics](gcp_logging_metrics.md)
 - [gcp_logging_sinks](gcp_logging_sinks.md)
 - [gcp_redis_instances](gcp_redis_instances.md)
