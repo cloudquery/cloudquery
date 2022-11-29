@@ -13,7 +13,7 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 ## Overview
 
-Recently, AWS sent out customer notification emails regarding upcoming changes for EventBridge cross account event bus targets.  In short, Amazon EventBridge today does not require a IAM role when sending events to a cross account event bus target.  
+Recently, AWS sent out customer notification emails regarding upcoming changes for EventBridge cross account event bus targets.  This email was titled `Security posture recommendations for your cross account invocations.` This notification email went to customers who were determined to have one or more impacted resources.
 
 ## EventBridge Change
 
@@ -30,32 +30,11 @@ We recommend ensuring all legacy cross account event bus targets are updated.  T
 * Update all impacted EventBridge Event Buses (Stepping through environments and testing to ensure no adverse impact)
 * Validating that there are no legacy EventBridge Event Buses and they've all been updated to use IAM roles.
 
+For cross account access, scoping permissions and principals in resource policies helps with reducing access and improves security posture.   
+
 ## Customer Query
 
-We would like to thank `jbarney` for sharing and writing the below query.  We're especially happy when our users bring innovation and layer on advanced queries on top of CloudQuery data to provide value to their organizations.
-
-```sql
-SELECT
-  account_id,
-  arn,
-  policy,
-  (regexp_match(policy, '[0-9]{12})),
-  account_id != (regexp_match(policy, '[0-9]{12}))[1] as allows_cross_account
-FROM aws_eventbridge_event_buses
-WHERE policy ~ '[0-9]{12}'
-and account_id != (regexp_match(policy, '[0-9]{12}))[1];
-```
-
-```sql
-SELECT *
-FROM
-(
-	SELECT account_id, name, policy, arn,
-	  regexp_matches(policy, '[0-9]{12}', 'g') as ext_account
-	FROM aws_eventbridge_event_buses
-) data
-WHERE account_id != ext_account[1];
-```
+We would like to thank `jbarney` for sharing their use case and working with us on the below query.  We're especially happy when our users bring innovation and layer advanced queries on top of CloudQuery data to provide value to their organizations.
 
 ```sql
 SELECT *
@@ -67,9 +46,9 @@ FROM
 ) data
 WHERE account_id != ext_account[1];
 ```
+The above query will detect any usage the AWS account reference for cross-account access to Amazon EventBridge Event Buses and will return a table of each occurence of a cross-account reference. If there are multiple accounts referenced in a policy, each account will be a separate row.
 
-The above query will detect any usage the AWS account reference for cross-account access to Amazon EventBridge Event Buses.  
-
+By filtering on the regex `[0-9]{12}:root`, we look for any string that matches part of an AWS account ARN such as `1213412341234:root`.  While we do look through the entire policy, AWS Account arns should only exist in the `Principal` block of statements. 
 
 ## References and Useful Links
 
