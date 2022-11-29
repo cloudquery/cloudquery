@@ -21,7 +21,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/cloudfront v1.21.0
 	github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.13.21
 	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.20.3
-	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.21.11
+	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.22.0
 	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.16.4
 	github.com/aws/aws-sdk-go-v2/service/codebuild v1.19.19
 	github.com/aws/aws-sdk-go-v2/service/codepipeline v1.13.19
@@ -36,8 +36,8 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.72.1
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.17.23
 	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.13.19
-	github.com/aws/aws-sdk-go-v2/service/ecs v1.19.2
-	github.com/aws/aws-sdk-go-v2/service/efs v1.17.19
+	github.com/aws/aws-sdk-go-v2/service/ecs v1.20.0
+	github.com/aws/aws-sdk-go-v2/service/efs v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/eks v1.23.0
 	github.com/aws/aws-sdk-go-v2/service/elasticache v1.24.1
 	github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk v1.14.20
@@ -46,7 +46,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.17.2
 	github.com/aws/aws-sdk-go-v2/service/emr v1.20.16
 	github.com/aws/aws-sdk-go-v2/service/eventbridge v1.16.20
-	github.com/aws/aws-sdk-go-v2/service/firehose v1.14.22
+	github.com/aws/aws-sdk-go-v2/service/firehose v1.14.23
 	github.com/aws/aws-sdk-go-v2/service/frauddetector v1.20.12
 	github.com/aws/aws-sdk-go-v2/service/fsx v1.25.4
 	github.com/aws/aws-sdk-go-v2/service/glacier v1.13.19
@@ -55,7 +55,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/identitystore v1.15.7
 	github.com/aws/aws-sdk-go-v2/service/inspector v1.12.19
 	github.com/aws/aws-sdk-go-v2/service/inspector2 v1.8.3
-	github.com/aws/aws-sdk-go-v2/service/iot v1.31.0
+	github.com/aws/aws-sdk-go-v2/service/iot v1.32.0
 	github.com/aws/aws-sdk-go-v2/service/kafka v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/kinesis v1.15.24
 	github.com/aws/aws-sdk-go-v2/service/kms v1.18.18
@@ -64,11 +64,11 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/mq v1.13.15
 	github.com/aws/aws-sdk-go-v2/service/mwaa v1.13.12
 	github.com/aws/aws-sdk-go-v2/service/neptune v1.18.3
-	github.com/aws/aws-sdk-go-v2/service/organizations v1.16.15
+	github.com/aws/aws-sdk-go-v2/service/organizations v1.17.0
 	github.com/aws/aws-sdk-go-v2/service/qldb v1.14.20
 	github.com/aws/aws-sdk-go-v2/service/quicksight v1.27.0
 	github.com/aws/aws-sdk-go-v2/service/ram v1.16.24
-	github.com/aws/aws-sdk-go-v2/service/rds v1.30.1
+	github.com/aws/aws-sdk-go-v2/service/rds v1.31.0
 	github.com/aws/aws-sdk-go-v2/service/redshift v1.26.16
 	github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.12.21
 	github.com/aws/aws-sdk-go-v2/service/route53 v1.25.0
@@ -128,7 +128,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.19 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.3.26 // indirect
 	github.com/aws/aws-sdk-go-v2/service/athena v1.19.1
-	github.com/aws/aws-sdk-go-v2/service/backup v1.17.11
+	github.com/aws/aws-sdk-go-v2/service/backup v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/glue v1.35.0
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.9.10 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.7.19 // indirect
