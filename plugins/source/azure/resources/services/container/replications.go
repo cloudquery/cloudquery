@@ -5,9 +5,9 @@ package container
 import (
 	"context"
 
-	"github.com/Azure/azure-sdk-for-go/profiles/latest/containerregistry/mgmt/containerregistry"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/yandex-cloud/go-genproto/yandex/cloud/containerregistry/v1"
 )
 
 func replications() *schema.Table {
