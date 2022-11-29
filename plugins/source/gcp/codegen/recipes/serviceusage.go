@@ -2,9 +2,9 @@ package recipes
 
 import (
 	serviceusage "cloud.google.com/go/serviceusage/apiv1"
+	pb "cloud.google.com/go/serviceusage/apiv1/serviceusagepb"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
-	pb "google.golang.org/genproto/googleapis/api/serviceusage/v1"
 )
 
 func init() {

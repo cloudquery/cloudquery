@@ -2,8 +2,8 @@ package recipes
 
 import (
 	resourcemanager "cloud.google.com/go/resourcemanager/apiv3"
+	pb "cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
 	cloudresourcemanager "google.golang.org/api/cloudresourcemanager/v3"
-	pb "google.golang.org/genproto/googleapis/cloud/resourcemanager/v3"
 )
 
 

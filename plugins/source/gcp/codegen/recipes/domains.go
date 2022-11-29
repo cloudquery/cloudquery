@@ -2,7 +2,7 @@ package recipes
 
 import (
 	domains "cloud.google.com/go/domains/apiv1beta1"
-	pb "google.golang.org/genproto/googleapis/cloud/domains/v1beta1"
+	pb "cloud.google.com/go/domains/apiv1beta1/domainspb"
 )
 
 

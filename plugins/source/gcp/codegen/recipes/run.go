@@ -2,7 +2,7 @@ package recipes
 
 import (
 	run "cloud.google.com/go/run/apiv2"
-	pb "google.golang.org/genproto/googleapis/cloud/run/v2"
+	pb "cloud.google.com/go/run/apiv2/runpb"
 )
 
 func init() {

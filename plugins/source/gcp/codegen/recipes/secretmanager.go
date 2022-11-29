@@ -2,9 +2,9 @@ package recipes
 
 import (
 	secretmanager "cloud.google.com/go/secretmanager/apiv1"
+	pb "cloud.google.com/go/secretmanager/apiv1/secretmanagerpb"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
-	pb "google.golang.org/genproto/googleapis/cloud/secretmanager/v1"
 )
 
 

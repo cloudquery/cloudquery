@@ -2,9 +2,9 @@ package recipes
 
 import (
 	redis "cloud.google.com/go/redis/apiv1"
+	pb "cloud.google.com/go/redis/apiv1/redispb"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
-	pb "google.golang.org/genproto/googleapis/cloud/redis/v1"
 )
 
 func init() {

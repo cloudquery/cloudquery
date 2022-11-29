@@ -2,9 +2,9 @@ package recipes
 
 import (
 	billing "cloud.google.com/go/billing/apiv1"
+	pb "cloud.google.com/go/billing/apiv1/billingpb"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
-	pb "google.golang.org/genproto/googleapis/cloud/billing/v1"
 )
 
 

@@ -2,9 +2,9 @@ package recipes
 
 import (
 	monitoring "cloud.google.com/go/monitoring/apiv3/v2"
+	pb "cloud.google.com/go/monitoring/apiv3/v2/monitoringpb"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
-	pb "google.golang.org/genproto/googleapis/monitoring/v3"
 )
 
 
