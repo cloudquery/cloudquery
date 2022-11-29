@@ -12,16 +12,21 @@ import (
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
+    
+"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"
 
-	"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"
 )
+
 
 func TestNetworkRouteTables(t *testing.T) {
 	client.MockTestHelper(t, RouteTables(), createRouteTablesMock)
 }
 
+
+
+
 func createRouteTablesMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockNetworkRouteTablesClient(ctrl)
+		mockClient := mocks.NewMockNetworkRouteTablesClient(ctrl)
 	s := services.Services{
 		Network: services.NetworkClient{
 			RouteTables: mockClient,
@@ -30,11 +35,18 @@ func createRouteTablesMock(t *testing.T, ctrl *gomock.Controller) services.Servi
 
 	data := network.RouteTable{}
 	require.Nil(t, faker.FakeObject(&data))
+	
 
+
+	
+
+	
 	result := network.NewRouteTableListResultPage(network.RouteTableListResult{Value: &[]network.RouteTable{data}}, func(ctx context.Context, result network.RouteTableListResult) (network.RouteTableListResult, error) {
 		return network.RouteTableListResult{}, nil
 	})
+	
 
+	    
 	mockClient.EXPECT().ListAll(gomock.Any()).Return(result, nil)
 	return s
 }

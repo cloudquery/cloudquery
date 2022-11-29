@@ -12,16 +12,21 @@ import (
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
+    
+"github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-03-01/compute"
 
-	"github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-03-01/compute"
 )
+
 
 func TestComputeVirtualMachineScaleSets(t *testing.T) {
 	client.MockTestHelper(t, VirtualMachineScaleSets(), createVirtualMachineScaleSetsMock)
 }
 
+
+
+
 func createVirtualMachineScaleSetsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockComputeVirtualMachineScaleSetsClient(ctrl)
+		mockClient := mocks.NewMockComputeVirtualMachineScaleSetsClient(ctrl)
 	s := services.Services{
 		Compute: services.ComputeClient{
 			VirtualMachineScaleSets: mockClient,
@@ -30,11 +35,20 @@ func createVirtualMachineScaleSetsMock(t *testing.T, ctrl *gomock.Controller) se
 
 	data := compute.VirtualMachineScaleSet{}
 	require.Nil(t, faker.FakeObject(&data))
+	
 
-	result := compute.NewVirtualMachineScaleSetListWithLinkResultPage(compute.VirtualMachineScaleSetListWithLinkResult{Value: &[]compute.VirtualMachineScaleSet{data}}, func(ctx context.Context, result compute.VirtualMachineScaleSetListWithLinkResult) (compute.VirtualMachineScaleSetListWithLinkResult, error) {
+
+	
+
+	
+	
+    result := compute.NewVirtualMachineScaleSetListWithLinkResultPage(compute.VirtualMachineScaleSetListWithLinkResult{Value: &[]compute.VirtualMachineScaleSet{data}}, func(ctx context.Context, result compute.VirtualMachineScaleSetListWithLinkResult) (compute.VirtualMachineScaleSetListWithLinkResult, error) {
 		return compute.VirtualMachineScaleSetListWithLinkResult{}, nil
 	})
+	
+	
 
+	    
 	mockClient.EXPECT().ListAll(gomock.Any()).Return(result, nil)
 	return s
 }

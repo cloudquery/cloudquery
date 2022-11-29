@@ -12,16 +12,21 @@ import (
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
+    
+"github.com/Azure/azure-sdk-for-go/services/authorization/mgmt/2015-07-01/authorization"
 
-	"github.com/Azure/azure-sdk-for-go/services/authorization/mgmt/2015-07-01/authorization"
 )
+
 
 func TestAuthorizationRoleAssignments(t *testing.T) {
 	client.MockTestHelper(t, RoleAssignments(), createRoleAssignmentsMock)
 }
 
+
+
+
 func createRoleAssignmentsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockAuthorizationRoleAssignmentsClient(ctrl)
+		mockClient := mocks.NewMockAuthorizationRoleAssignmentsClient(ctrl)
 	s := services.Services{
 		Authorization: services.AuthorizationClient{
 			RoleAssignments: mockClient,
@@ -30,11 +35,18 @@ func createRoleAssignmentsMock(t *testing.T, ctrl *gomock.Controller) services.S
 
 	data := authorization.RoleAssignment{}
 	require.Nil(t, faker.FakeObject(&data))
+	
 
+
+	
+
+	
 	result := authorization.NewRoleAssignmentListResultPage(authorization.RoleAssignmentListResult{Value: &[]authorization.RoleAssignment{data}}, func(ctx context.Context, result authorization.RoleAssignmentListResult) (authorization.RoleAssignmentListResult, error) {
 		return authorization.RoleAssignmentListResult{}, nil
 	})
+	
 
+	    
 	mockClient.EXPECT().List(gomock.Any(), "").Return(result, nil)
 	return s
 }

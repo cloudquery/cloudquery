@@ -12,16 +12,21 @@ import (
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
+    
+"github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security"
 
-	"github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security"
 )
+
 
 func TestSecurityJitNetworkAccessPolicies(t *testing.T) {
 	client.MockTestHelper(t, JitNetworkAccessPolicies(), createJitNetworkAccessPoliciesMock)
 }
 
+
+
+
 func createJitNetworkAccessPoliciesMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockSecurityJitNetworkAccessPoliciesClient(ctrl)
+		mockClient := mocks.NewMockSecurityJitNetworkAccessPoliciesClient(ctrl)
 	s := services.Services{
 		Security: services.SecurityClient{
 			JitNetworkAccessPolicies: mockClient,
@@ -30,11 +35,20 @@ func createJitNetworkAccessPoliciesMock(t *testing.T, ctrl *gomock.Controller) s
 
 	data := security.JitNetworkAccessPolicy{}
 	require.Nil(t, faker.FakeObject(&data))
+	
 
-	result := security.NewJitNetworkAccessPoliciesListPage(security.JitNetworkAccessPoliciesList{Value: &[]security.JitNetworkAccessPolicy{data}}, func(ctx context.Context, result security.JitNetworkAccessPoliciesList) (security.JitNetworkAccessPoliciesList, error) {
+
+	
+
+	
+	
+    result := security.NewJitNetworkAccessPoliciesListPage(security.JitNetworkAccessPoliciesList{Value: &[]security.JitNetworkAccessPolicy{data}}, func(ctx context.Context, result security.JitNetworkAccessPoliciesList) (security.JitNetworkAccessPoliciesList, error) {
 		return security.JitNetworkAccessPoliciesList{}, nil
 	})
+	
+	
 
+	    
 	mockClient.EXPECT().List(gomock.Any()).Return(result, nil)
 	return s
 }

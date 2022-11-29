@@ -6,17 +6,23 @@ import (
 	"context"
 	"testing"
 
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
+    
+"github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql"
 
-	"github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql"
 )
 
+
+
+
+
 func createServerBlobAuditingPoliciesMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockSQLServerBlobAuditingPoliciesClient(ctrl)
+		mockClient := mocks.NewMockSQLServerBlobAuditingPoliciesClient(ctrl)
 	s := services.Services{
 		SQL: services.SQLClient{
 			ServerBlobAuditingPolicies: mockClient,
@@ -25,11 +31,19 @@ func createServerBlobAuditingPoliciesMock(t *testing.T, ctrl *gomock.Controller)
 
 	data := sql.ServerBlobAuditingPolicy{}
 	require.Nil(t, faker.FakeObject(&data))
+	
 
+
+	
+
+	
 	result := sql.NewServerBlobAuditingPolicyListResultPage(sql.ServerBlobAuditingPolicyListResult{Value: &[]sql.ServerBlobAuditingPolicy{data}}, func(ctx context.Context, result sql.ServerBlobAuditingPolicyListResult) (sql.ServerBlobAuditingPolicyListResult, error) {
 		return sql.ServerBlobAuditingPolicyListResult{}, nil
 	})
+	
 
+	    
+	
 	mockClient.EXPECT().ListByServer(gomock.Any(), "test", "test").Return(result, nil)
 	return s
 }

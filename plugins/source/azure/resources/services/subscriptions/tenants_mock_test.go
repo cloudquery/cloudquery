@@ -12,17 +12,21 @@ import (
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
+    
+"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions"
 )
+
 
 func TestSubscriptionsTenants(t *testing.T) {
 	client.MockTestHelper(t, Tenants(), createTenantsMock)
 }
 
+
+
+
 func createTenantsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockSubscriptionsTenantsClient(ctrl)
+		mockClient := mocks.NewMockSubscriptionsTenantsClient(ctrl)
 	s := services.Services{
 		Subscriptions: services.SubscriptionsClient{
 			Tenants: mockClient,
@@ -31,6 +35,10 @@ func createTenantsMock(t *testing.T, ctrl *gomock.Controller) services.Services 
 
 	data := armsubscriptions.TenantIDDescription{}
 	require.Nil(t, faker.FakeObject(&data))
+	
+
+
+	
 
 	pager := runtime.NewPager(runtime.PagingHandler[armsubscriptions.TenantsClientListResponse]{
 		More: func(page armsubscriptions.TenantsClientListResponse) bool {
@@ -39,12 +47,13 @@ func createTenantsMock(t *testing.T, ctrl *gomock.Controller) services.Services 
 		Fetcher: func(ctx context.Context, page *armsubscriptions.TenantsClientListResponse) (armsubscriptions.TenantsClientListResponse, error) {
 			return armsubscriptions.TenantsClientListResponse{
 				TenantListResult: armsubscriptions.TenantListResult{
-					Value: []*armsubscriptions.TenantIDDescription{&data},
+					Value:    []*armsubscriptions.TenantIDDescription{&data},
 				},
 			}, nil
 		},
 	})
 
+	
 	mockClient.EXPECT().NewListPager(gomock.Any()).Return(
 		pager,
 	)

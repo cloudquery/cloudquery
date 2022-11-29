@@ -12,16 +12,21 @@ import (
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
+    
+"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"
 
-	"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"
 )
+
 
 func TestNetworkExpressRoutePorts(t *testing.T) {
 	client.MockTestHelper(t, ExpressRoutePorts(), createExpressRoutePortsMock)
 }
 
+
+
+
 func createExpressRoutePortsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockNetworkExpressRoutePortsClient(ctrl)
+		mockClient := mocks.NewMockNetworkExpressRoutePortsClient(ctrl)
 	s := services.Services{
 		Network: services.NetworkClient{
 			ExpressRoutePorts: mockClient,
@@ -30,11 +35,18 @@ func createExpressRoutePortsMock(t *testing.T, ctrl *gomock.Controller) services
 
 	data := network.ExpressRoutePort{}
 	require.Nil(t, faker.FakeObject(&data))
+	
 
+
+	
+
+	
 	result := network.NewExpressRoutePortListResultPage(network.ExpressRoutePortListResult{Value: &[]network.ExpressRoutePort{data}}, func(ctx context.Context, result network.ExpressRoutePortListResult) (network.ExpressRoutePortListResult, error) {
 		return network.ExpressRoutePortListResult{}, nil
 	})
+	
 
+	    
 	mockClient.EXPECT().List(gomock.Any()).Return(result, nil)
 	return s
 }

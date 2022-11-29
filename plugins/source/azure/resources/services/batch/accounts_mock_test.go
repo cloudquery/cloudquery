@@ -12,16 +12,21 @@ import (
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
+    
+"github.com/Azure/azure-sdk-for-go/services/batch/mgmt/2021-06-01/batch"
 
-	"github.com/Azure/azure-sdk-for-go/services/batch/mgmt/2021-06-01/batch"
 )
+
 
 func TestBatchAccounts(t *testing.T) {
 	client.MockTestHelper(t, Accounts(), createAccountsMock)
 }
 
+
+
+
 func createAccountsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockBatchAccountsClient(ctrl)
+		mockClient := mocks.NewMockBatchAccountsClient(ctrl)
 	s := services.Services{
 		Batch: services.BatchClient{
 			Accounts: mockClient,
@@ -30,11 +35,18 @@ func createAccountsMock(t *testing.T, ctrl *gomock.Controller) services.Services
 
 	data := batch.Account{}
 	require.Nil(t, faker.FakeObject(&data))
+	
 
+
+	
+
+	
 	result := batch.NewAccountListResultPage(batch.AccountListResult{Value: &[]batch.Account{data}}, func(ctx context.Context, result batch.AccountListResult) (batch.AccountListResult, error) {
 		return batch.AccountListResult{}, nil
 	})
+	
 
+	    
 	mockClient.EXPECT().List(gomock.Any()).Return(result, nil)
 	return s
 }

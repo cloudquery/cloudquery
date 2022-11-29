@@ -3,17 +3,26 @@
 package web
 
 import (
+	"context"
 	"testing"
 
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
+    
+"github.com/Azure/azure-sdk-for-go/services/web/mgmt/2020-12-01/web"
+
 )
 
+
+
+
+
 func createPublishingProfilesMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockWebPublishingProfilesClient(ctrl)
+		mockClient := mocks.NewMockWebPublishingProfilesClient(ctrl)
 	s := services.Services{
 		Web: services.WebClient{
 			PublishingProfiles: mockClient,
@@ -22,9 +31,19 @@ func createPublishingProfilesMock(t *testing.T, ctrl *gomock.Controller) service
 
 	data := services.PublishingProfiles{}
 	require.Nil(t, faker.FakeObject(&data))
+	
 
+
+	
+
+	
+	
 	result := data
+	
+	
 
+	    
+	
 	mockClient.EXPECT().ListPublishingProfiles(gomock.Any(), "test", "test").Return(result, nil)
 	return s
 }

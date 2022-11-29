@@ -3,6 +3,7 @@
 package network
 
 import (
+	"context"
 	"testing"
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
@@ -11,16 +12,21 @@ import (
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
+    
+"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"
 
-	"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"
 )
+
 
 func TestNetworkExpressRouteGateways(t *testing.T) {
 	client.MockTestHelper(t, ExpressRouteGateways(), createExpressRouteGatewaysMock)
 }
 
+
+
+
 func createExpressRouteGatewaysMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockNetworkExpressRouteGatewaysClient(ctrl)
+		mockClient := mocks.NewMockNetworkExpressRouteGatewaysClient(ctrl)
 	s := services.Services{
 		Network: services.NetworkClient{
 			ExpressRouteGateways: mockClient,
@@ -29,9 +35,18 @@ func createExpressRouteGatewaysMock(t *testing.T, ctrl *gomock.Controller) servi
 
 	data := network.ExpressRouteGateway{}
 	require.Nil(t, faker.FakeObject(&data))
+	
 
-	result := network.ExpressRouteGatewayList{Value: &[]network.ExpressRouteGateway{data}}
 
+	
+
+    
+	
+    result := network.ExpressRouteGatewayList{Value: &[]network.ExpressRouteGateway{data}}
+	
+	
+
+	    
 	mockClient.EXPECT().ListBySubscription(gomock.Any()).Return(result, nil)
 	return s
 }

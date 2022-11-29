@@ -3,19 +3,28 @@
 package storage
 
 import (
+	"context"
 	"testing"
 
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
+    
+"github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-01-01/storage"
 
-	"github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-01-01/storage"
+"github.com/tombuildsstuff/giovanni/storage/2020-08-04/blob/accounts"
+
 )
 
+
+
+
+
 func createBlobServicesMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockStorageBlobServicesClient(ctrl)
+		mockClient := mocks.NewMockStorageBlobServicesClient(ctrl)
 	s := services.Services{
 		Storage: services.StorageClient{
 			BlobServices: mockClient,
@@ -24,9 +33,19 @@ func createBlobServicesMock(t *testing.T, ctrl *gomock.Controller) services.Serv
 
 	data := storage.BlobServiceProperties{}
 	require.Nil(t, faker.FakeObject(&data))
+	
 
-	result := storage.BlobServiceItems{Value: &[]storage.BlobServiceProperties{data}}
 
+	
+
+    
+	
+    result := storage.BlobServiceItems{Value: &[]storage.BlobServiceProperties{data}}
+	
+	
+
+	    
+	
 	mockClient.EXPECT().List(gomock.Any(), "test", "test").Return(result, nil)
 	return s
 }

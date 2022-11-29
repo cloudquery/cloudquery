@@ -3,6 +3,7 @@
 package monitor
 
 import (
+	"context"
 	"testing"
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
@@ -11,16 +12,21 @@ import (
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
+    
+"github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2021-07-01-preview/insights"
 
-	"github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2021-07-01-preview/insights"
 )
+
 
 func TestMonitorLogProfiles(t *testing.T) {
 	client.MockTestHelper(t, LogProfiles(), createLogProfilesMock)
 }
 
+
+
+
 func createLogProfilesMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockMonitorLogProfilesClient(ctrl)
+		mockClient := mocks.NewMockMonitorLogProfilesClient(ctrl)
 	s := services.Services{
 		Monitor: services.MonitorClient{
 			LogProfiles: mockClient,
@@ -29,9 +35,18 @@ func createLogProfilesMock(t *testing.T, ctrl *gomock.Controller) services.Servi
 
 	data := insights.LogProfileResource{}
 	require.Nil(t, faker.FakeObject(&data))
+	
 
-	result := insights.LogProfileCollection{Value: &[]insights.LogProfileResource{data}}
 
+	
+
+    
+	
+    result := insights.LogProfileCollection{Value: &[]insights.LogProfileResource{data}}
+	
+	
+
+	    
 	mockClient.EXPECT().List(gomock.Any()).Return(result, nil)
 	return s
 }

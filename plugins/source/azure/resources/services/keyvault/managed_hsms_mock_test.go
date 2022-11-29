@@ -12,16 +12,21 @@ import (
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
+    
+"github.com/Azure/azure-sdk-for-go/services/preview/keyvault/mgmt/2020-04-01-preview/keyvault"
 
-	"github.com/Azure/azure-sdk-for-go/services/preview/keyvault/mgmt/2020-04-01-preview/keyvault"
 )
+
 
 func TestKeyVaultManagedHsms(t *testing.T) {
 	client.MockTestHelper(t, ManagedHsms(), createManagedHsmsMock)
 }
 
+
+
+
 func createManagedHsmsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockKeyVaultManagedHsmsClient(ctrl)
+		mockClient := mocks.NewMockKeyVaultManagedHsmsClient(ctrl)
 	s := services.Services{
 		KeyVault: services.KeyVaultClient{
 			ManagedHsms: mockClient,
@@ -30,11 +35,18 @@ func createManagedHsmsMock(t *testing.T, ctrl *gomock.Controller) services.Servi
 
 	data := keyvault.ManagedHsm{}
 	require.Nil(t, faker.FakeObject(&data))
+	
 
+
+	
+
+	
 	result := keyvault.NewManagedHsmListResultPage(keyvault.ManagedHsmListResult{Value: &[]keyvault.ManagedHsm{data}}, func(ctx context.Context, result keyvault.ManagedHsmListResult) (keyvault.ManagedHsmListResult, error) {
 		return keyvault.ManagedHsmListResult{}, nil
 	})
+	
 
+	    
 	maxResults := int32(100)
 	mockClient.EXPECT().ListBySubscription(gomock.Any(), &maxResults).Return(result, nil)
 	return s

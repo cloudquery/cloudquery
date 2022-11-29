@@ -12,16 +12,21 @@ import (
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
+    
+"github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2020-12-01/redis"
 
-	"github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2020-12-01/redis"
 )
+
 
 func TestRedisCaches(t *testing.T) {
 	client.MockTestHelper(t, Caches(), createCachesMock)
 }
 
+
+
+
 func createCachesMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockRedisCachesClient(ctrl)
+		mockClient := mocks.NewMockRedisCachesClient(ctrl)
 	s := services.Services{
 		Redis: services.RedisClient{
 			Caches: mockClient,
@@ -30,11 +35,20 @@ func createCachesMock(t *testing.T, ctrl *gomock.Controller) services.Services {
 
 	data := redis.ResourceType{}
 	require.Nil(t, faker.FakeObject(&data))
+	
 
-	result := redis.NewListResultPage(redis.ListResult{Value: &[]redis.ResourceType{data}}, func(ctx context.Context, result redis.ListResult) (redis.ListResult, error) {
+
+	
+
+	
+	
+    result := redis.NewListResultPage(redis.ListResult{Value: &[]redis.ResourceType{data}}, func(ctx context.Context, result redis.ListResult) (redis.ListResult, error) {
 		return redis.ListResult{}, nil
 	})
+	
+	
 
+	    
 	mockClient.EXPECT().ListBySubscription(gomock.Any()).Return(result, nil)
 	return s
 }

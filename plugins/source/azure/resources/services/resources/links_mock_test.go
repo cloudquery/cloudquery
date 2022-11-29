@@ -12,16 +12,25 @@ import (
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
+    
+"github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-10-01/resources"
 
-	"github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-09-01/links"
+"github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-09-01/links"
+
+"github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2020-03-01-preview/policy"
+
 )
+
 
 func TestResourcesLinks(t *testing.T) {
 	client.MockTestHelper(t, Links(), createLinksMock)
 }
 
+
+
+
 func createLinksMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockResourcesLinksClient(ctrl)
+		mockClient := mocks.NewMockResourcesLinksClient(ctrl)
 	s := services.Services{
 		Resources: services.ResourcesClient{
 			Links: mockClient,
@@ -30,11 +39,20 @@ func createLinksMock(t *testing.T, ctrl *gomock.Controller) services.Services {
 
 	data := links.ResourceLink{}
 	require.Nil(t, faker.FakeObject(&data))
+	
 
-	result := links.NewResourceLinkResultPage(links.ResourceLinkResult{Value: &[]links.ResourceLink{data}}, func(ctx context.Context, result links.ResourceLinkResult) (links.ResourceLinkResult, error) {
+
+	
+
+	
+	
+    result := links.NewResourceLinkResultPage(links.ResourceLinkResult{Value: &[]links.ResourceLink{data}}, func(ctx context.Context, result links.ResourceLinkResult) (links.ResourceLinkResult, error) {
 		return links.ResourceLinkResult{}, nil
 	})
+	
+	
 
+	    
 	mockClient.EXPECT().ListAtSubscription(gomock.Any(), "").Return(result, nil)
 	return s
 }

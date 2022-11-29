@@ -12,16 +12,21 @@ import (
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
+    
+"github.com/Azure/azure-sdk-for-go/services/frontdoor/mgmt/2020-11-01/frontdoor"
 
-	"github.com/Azure/azure-sdk-for-go/services/frontdoor/mgmt/2020-11-01/frontdoor"
 )
+
 
 func TestFrontDoorDoors(t *testing.T) {
 	client.MockTestHelper(t, Doors(), createDoorsMock)
 }
 
+
+
+
 func createDoorsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockFrontDoorDoorsClient(ctrl)
+		mockClient := mocks.NewMockFrontDoorDoorsClient(ctrl)
 	s := services.Services{
 		FrontDoor: services.FrontDoorClient{
 			Doors: mockClient,
@@ -30,11 +35,20 @@ func createDoorsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
 
 	data := frontdoor.FrontDoor{}
 	require.Nil(t, faker.FakeObject(&data))
+	
 
-	result := frontdoor.NewListResultPage(frontdoor.ListResult{Value: &[]frontdoor.FrontDoor{data}}, func(ctx context.Context, result frontdoor.ListResult) (frontdoor.ListResult, error) {
+
+	
+
+	
+	
+    result := frontdoor.NewListResultPage(frontdoor.ListResult{Value: &[]frontdoor.FrontDoor{data}}, func(ctx context.Context, result frontdoor.ListResult) (frontdoor.ListResult, error) {
 		return frontdoor.ListResult{}, nil
 	})
+	
+	
 
+	    
 	mockClient.EXPECT().List(gomock.Any()).Return(result, nil)
 	return s
 }

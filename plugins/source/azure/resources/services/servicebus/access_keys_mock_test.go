@@ -3,19 +3,26 @@
 package servicebus
 
 import (
+	"context"
 	"testing"
 
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
+    
+"github.com/Azure/azure-sdk-for-go/services/preview/servicebus/mgmt/2021-06-01-preview/servicebus"
 
-	"github.com/Azure/azure-sdk-for-go/services/preview/servicebus/mgmt/2021-06-01-preview/servicebus"
 )
 
+
+
+
+
 func createAccessKeysMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockServicebusAccessKeysClient(ctrl)
+		mockClient := mocks.NewMockServicebusAccessKeysClient(ctrl)
 	s := services.Services{
 		Servicebus: services.ServicebusClient{
 			AccessKeys: mockClient,
@@ -24,9 +31,19 @@ func createAccessKeysMock(t *testing.T, ctrl *gomock.Controller) services.Servic
 
 	data := servicebus.AccessKeys{}
 	require.Nil(t, faker.FakeObject(&data))
+	
 
+
+	
+
+	
+	
 	result := data
+	
+	
 
+	    
+	
 	mockClient.EXPECT().ListKeys(gomock.Any(), "test", "test", "test", "test").Return(result, nil)
 	return s
 }

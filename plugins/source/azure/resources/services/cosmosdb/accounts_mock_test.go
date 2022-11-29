@@ -3,6 +3,7 @@
 package cosmosdb
 
 import (
+	"context"
 	"testing"
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
@@ -11,37 +12,51 @@ import (
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
+    
+"github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2020-04-01-preview/documentdb"
 
-	"github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2020-04-01-preview/documentdb"
 )
+
 
 func TestCosmosDBAccounts(t *testing.T) {
 	client.MockTestHelper(t, Accounts(), createAccountsMock)
 }
 
+
+
+
 func createAccountsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockCosmosDBAccountsClient(ctrl)
+		mockClient := mocks.NewMockCosmosDBAccountsClient(ctrl)
 	s := services.Services{
 		CosmosDB: services.CosmosDBClient{
-			Accounts:         mockClient,
-			MongoDBDatabases: createMongoDBDatabasesMock(t, ctrl).CosmosDB.MongoDBDatabases,
-			SQLDatabases:     createSQLDatabasesMock(t, ctrl).CosmosDB.SQLDatabases,
+			Accounts: mockClient,
+			MongoDBDatabases: createMongoDBDatabasesMock(t,ctrl).CosmosDB.MongoDBDatabases,
+			SQLDatabases: createSQLDatabasesMock(t,ctrl).CosmosDB.SQLDatabases,
 		},
 	}
 
 	data := documentdb.DatabaseAccountGetResults{}
 	require.Nil(t, faker.FakeObject(&data))
-
+	
 	// Ensure name and ID are consistent so we can reference it in other mock
-	name := "test"
+	name :=  "test"
 	data.Name = &name
 
 	// Use correct Azure ID format
-	id := "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	id :=  "/subscriptions/test/resourceGroups/test/providers/test/test/test"
 	data.ID = &id
+	
 
-	result := documentdb.DatabaseAccountsListResult{Value: &[]documentdb.DatabaseAccountGetResults{data}}
 
+	
+
+    
+	
+    result := documentdb.DatabaseAccountsListResult{Value: &[]documentdb.DatabaseAccountGetResults{data}}
+	
+	
+
+	    
 	mockClient.EXPECT().List(gomock.Any()).Return(result, nil)
 	return s
 }

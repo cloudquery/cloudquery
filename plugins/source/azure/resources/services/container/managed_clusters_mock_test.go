@@ -12,16 +12,23 @@ import (
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
+    
+"github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2021-03-01/containerservice"
 
-	"github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2021-03-01/containerservice"
+"github.com/Azure/azure-sdk-for-go/services/containerregistry/mgmt/2019-05-01/containerregistry"
+
 )
+
 
 func TestContainerManagedClusters(t *testing.T) {
 	client.MockTestHelper(t, ManagedClusters(), createManagedClustersMock)
 }
 
+
+
+
 func createManagedClustersMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockContainerManagedClustersClient(ctrl)
+		mockClient := mocks.NewMockContainerManagedClustersClient(ctrl)
 	s := services.Services{
 		Container: services.ContainerClient{
 			ManagedClusters: mockClient,
@@ -30,11 +37,18 @@ func createManagedClustersMock(t *testing.T, ctrl *gomock.Controller) services.S
 
 	data := containerservice.ManagedCluster{}
 	require.Nil(t, faker.FakeObject(&data))
+	
 
+
+	
+
+	
 	result := containerservice.NewManagedClusterListResultPage(containerservice.ManagedClusterListResult{Value: &[]containerservice.ManagedCluster{data}}, func(ctx context.Context, result containerservice.ManagedClusterListResult) (containerservice.ManagedClusterListResult, error) {
 		return containerservice.ManagedClusterListResult{}, nil
 	})
+	
 
+	    
 	mockClient.EXPECT().List(gomock.Any()).Return(result, nil)
 	return s
 }

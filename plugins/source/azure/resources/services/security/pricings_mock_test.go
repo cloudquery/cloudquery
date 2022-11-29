@@ -3,6 +3,7 @@
 package security
 
 import (
+	"context"
 	"testing"
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
@@ -11,16 +12,21 @@ import (
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
+    
+"github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security"
 
-	"github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security"
 )
+
 
 func TestSecurityPricings(t *testing.T) {
 	client.MockTestHelper(t, Pricings(), createPricingsMock)
 }
 
+
+
+
 func createPricingsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockSecurityPricingsClient(ctrl)
+		mockClient := mocks.NewMockSecurityPricingsClient(ctrl)
 	s := services.Services{
 		Security: services.SecurityClient{
 			Pricings: mockClient,
@@ -29,9 +35,18 @@ func createPricingsMock(t *testing.T, ctrl *gomock.Controller) services.Services
 
 	data := security.Pricing{}
 	require.Nil(t, faker.FakeObject(&data))
+	
 
-	result := security.PricingList{Value: &[]security.Pricing{data}}
 
+	
+
+    
+	
+    result := security.PricingList{Value: &[]security.Pricing{data}}
+	
+	
+
+	    
 	mockClient.EXPECT().List(gomock.Any()).Return(result, nil)
 	return s
 }

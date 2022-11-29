@@ -3,19 +3,26 @@
 package web
 
 import (
+	"context"
 	"testing"
 
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
+    
+"github.com/Azure/azure-sdk-for-go/services/web/mgmt/2020-12-01/web"
 
-	"github.com/Azure/azure-sdk-for-go/services/web/mgmt/2020-12-01/web"
 )
 
+
+
+
+
 func createSiteAuthSettingsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockWebSiteAuthSettingsClient(ctrl)
+		mockClient := mocks.NewMockWebSiteAuthSettingsClient(ctrl)
 	s := services.Services{
 		Web: services.WebClient{
 			SiteAuthSettings: mockClient,
@@ -24,9 +31,19 @@ func createSiteAuthSettingsMock(t *testing.T, ctrl *gomock.Controller) services.
 
 	data := web.SiteAuthSettings{}
 	require.Nil(t, faker.FakeObject(&data))
+	
 
+
+	
+
+	
+	
 	result := data
+	
+	
 
+	    
+	
 	mockClient.EXPECT().GetAuthSettings(gomock.Any(), "test", "test").Return(result, nil)
 	return s
 }
