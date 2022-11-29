@@ -66,6 +66,10 @@ The above query will detect any usage the AWS account reference for cross-accoun
 
 By filtering on the regex `[0-9]{12}:root`, we look for any string that matches part of an AWS account resource identifier such as `1213412341234:root`.  While we do look through the entire policy, AWS Account arns should only exist in the `Principal` block of statements. 
 
+## Contact Us
+
+If you have use cases or custom queries and examples from using CloudQuery, we would love to hear from you! Reach out to us on [GitHub](https://github.com/cloudquery/cloudquery) or [Discord](https://cloudquery.io/discord)!
+
 ## References and Useful Links
 
 [AWS: Service Control Policies (SCPs)](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html)
