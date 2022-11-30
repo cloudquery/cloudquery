@@ -32,5 +32,6 @@
   "plugins/destination/sqlite": "1.0.10",
   "plugins/destination/sqlite+FILLER": "0.0.0",
   "plugins/destination/snowflake": "1.0.3",
-  "plugins/destination/snowflake+FILLER": "0.0.0"
+  "plugins/destination/snowflake+FILLER": "0.0.0",
+  "plugins/source/gandi": "1.0.0"
 }
