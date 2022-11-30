@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.7.15](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v1.7.14...plugins-destination-postgresql-v1.7.15) (2022-11-29)
+
+
+### Bug Fixes
+
+* DeleteStale from relational tables as well ([#5143](https://github.com/cloudquery/cloudquery/issues/5143)) ([23aa159](https://github.com/cloudquery/cloudquery/commit/23aa1597a2db275df85c15a52bcd2986f19d9621))
+* **deps:** Update plugin-sdk for postgresql to v1.8.1 ([#5043](https://github.com/cloudquery/cloudquery/issues/5043)) ([abd4d12](https://github.com/cloudquery/cloudquery/commit/abd4d1241a1b9353ecd43d9dabb9847943f392e3))
+* **deps:** Update plugin-sdk for postgresql to v1.9.0 ([#5085](https://github.com/cloudquery/cloudquery/issues/5085)) ([be36fb0](https://github.com/cloudquery/cloudquery/commit/be36fb049c02ff973c31ee61fc7055a5d5a61549))
+
 ## [1.7.14](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v1.7.13...plugins-destination-postgresql-v1.7.14) (2022-11-23)
 
 

@@ -1,5 +1,6 @@
 # Source Plugin: gcp
 ## Tables
+- [gcp_apikeys_keys](gcp_apikeys_keys.md)
 - [gcp_compute_addresses](gcp_compute_addresses.md)
 - [gcp_compute_autoscalers](gcp_compute_autoscalers.md)
 - [gcp_compute_backend_services](gcp_compute_backend_services.md)
@@ -29,6 +30,7 @@
 - [gcp_kms_keyrings](gcp_kms_keyrings.md)
   - [gcp_kms_crypto_keys](gcp_kms_crypto_keys.md)
 - [gcp_container_clusters](gcp_container_clusters.md)
+- [gcp_containeranalysis_occurrences](gcp_containeranalysis_occurrences.md)
 - [gcp_logging_metrics](gcp_logging_metrics.md)
 - [gcp_logging_sinks](gcp_logging_sinks.md)
 - [gcp_redis_instances](gcp_redis_instances.md)
