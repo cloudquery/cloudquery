@@ -7,3 +7,4 @@ pages/plugins/**/*
 public/robots.txt
 public/sitemap.xml
 public/sitemap-0.xml
+scripts/algolia_tables

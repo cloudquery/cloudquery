@@ -49,7 +49,7 @@ const SearchHits = ({ searchState, searchResults }) => {
           key={hit.objectID}
           className="nx-mx-2.5 nx-break-words nx-rounded-md contrast-more:nx-border nx-bg-primary-500/10 nx-text-primary-500 contrast-more:nx-border-primary-500"
         >
-          <Link href={hit.docs_link}>
+          <Link href={`/docs/sources/${hit.source}/overview`}>
             <a
               className="nx-block nx-scroll-m-12 nx-px-2.5 nx-py-2"
               target="_blank"
