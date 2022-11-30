@@ -2,5 +2,6 @@
   "postgresql": "PostgreSQL",
   "csv": "CSV",
   "sqlite": "SQLite",
-  "snowflake": "Snowflake"
+  "snowflake": "Snowflake",
+  "bigquery": "BigQuery"
 }

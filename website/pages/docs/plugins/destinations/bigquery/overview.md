@@ -8,6 +8,9 @@ A batch mode of operation is also being developed to support larger datasets, bu
 
 ## Configuration
 
+See an example configuration for the BigQuery destination under [recipes](/docs/recipes/destinations/bigquery).
+
+The BigQuery plugin supports [all three write modes](/docs/reference/destination-spec#write_mode): `append`, `overwrite` and `overwrite-delete-stale`. However, there are some caveats to be aware of.
 
 
 ## BigQuery Spec
@@ -15,9 +18,12 @@ A batch mode of operation is also being developed to support larger datasets, bu
 This is the top level spec used by the BigQuery destination plugin.
 
 - `project_id` (string) (required)
+
   The id of the project where the destination BigQuery database resides.
 
+
 - `dataset_id` (string) (required)
+
   The id of the BigQuery dataset within the project. This dataset needs to be created before running a sync or migration.
 
 ## Underlying library
