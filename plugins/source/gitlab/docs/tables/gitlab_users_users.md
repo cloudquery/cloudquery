@@ -7,6 +7,7 @@ The primary key for this table is **id**.
 ## Relations
 This table depends on [gitlab_users_group_members](gitlab_users_group_members.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

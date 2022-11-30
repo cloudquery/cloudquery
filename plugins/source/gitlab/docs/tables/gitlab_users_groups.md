@@ -2,9 +2,10 @@
 
 
 
-The primary key for this table is **id**.
+The composite primary key for this table is (**id**, **name**).
 
 ## Relations
+
 The following tables depend on gitlab_users_groups:
   - [gitlab_users_group_members](gitlab_users_group_members.md)
 
@@ -16,7 +17,7 @@ The following tables depend on gitlab_users_groups:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |id (PK)|Int|
-|name|String|
+|name (PK)|String|
 |path|String|
 |description|String|
 |membership_lock|Bool|
