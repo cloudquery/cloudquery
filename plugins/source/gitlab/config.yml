@@ -9,14 +9,14 @@ spec:
   tables: ['*']
   destinations: ["postgresql"]
   spec:
-    token: "glpat-wTnLkQzjmYHvwz941yys"
+    token: "glpat-onchgja97TrNq1xwsnwR"
 ---
 kind: destination
 spec:
   name: postgresql
   path: cloudquery/postgresql
   version: v1.7.9
-  write_mode: append
+  write_mode: overwrite-delete-stale
   spec:
     connection_string: "postgresql://postgres:pass@localhost:5432/postgres?sslmode=disable"
 
