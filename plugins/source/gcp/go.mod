@@ -7,6 +7,7 @@ require (
 	cloud.google.com/go/billing v1.7.0
 	cloud.google.com/go/compute v1.12.1
 	cloud.google.com/go/container v1.8.0
+	cloud.google.com/go/containeranalysis v0.6.0
 	cloud.google.com/go/domains v0.7.0
 	cloud.google.com/go/functions v1.9.0
 	cloud.google.com/go/iam v0.7.0
@@ -19,7 +20,7 @@ require (
 	cloud.google.com/go/secretmanager v1.9.0
 	cloud.google.com/go/serviceusage v1.4.0
 	cloud.google.com/go/storage v1.28.0
-	github.com/cloudquery/plugin-sdk v1.9.0
+	github.com/cloudquery/plugin-sdk v1.10.0
 	github.com/golang/mock v1.6.0
 	github.com/iancoleman/strcase v0.2.0
 	github.com/julienschmidt/httprouter v1.3.0

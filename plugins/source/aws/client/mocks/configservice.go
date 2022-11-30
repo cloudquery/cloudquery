@@ -915,6 +915,26 @@ func (mr *MockConfigserviceClientMockRecorder) GetResourceConfigHistory(arg0, ar
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetResourceConfigHistory", reflect.TypeOf((*MockConfigserviceClient)(nil).GetResourceConfigHistory), varargs...)
 }
 
+// GetResourceEvaluationSummary mocks base method.
+func (m *MockConfigserviceClient) GetResourceEvaluationSummary(arg0 context.Context, arg1 *configservice.GetResourceEvaluationSummaryInput, arg2 ...func(*configservice.Options)) (*configservice.GetResourceEvaluationSummaryOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetResourceEvaluationSummary", varargs...)
+	ret0, _ := ret[0].(*configservice.GetResourceEvaluationSummaryOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetResourceEvaluationSummary indicates an expected call of GetResourceEvaluationSummary.
+func (mr *MockConfigserviceClientMockRecorder) GetResourceEvaluationSummary(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetResourceEvaluationSummary", reflect.TypeOf((*MockConfigserviceClient)(nil).GetResourceEvaluationSummary), varargs...)
+}
+
 // GetStoredQuery mocks base method.
 func (m *MockConfigserviceClient) GetStoredQuery(arg0 context.Context, arg1 *configservice.GetStoredQueryInput, arg2 ...func(*configservice.Options)) (*configservice.GetStoredQueryOutput, error) {
 	m.ctrl.T.Helper()
@@ -993,6 +1013,26 @@ func (mr *MockConfigserviceClientMockRecorder) ListDiscoveredResources(arg0, arg
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListDiscoveredResources", reflect.TypeOf((*MockConfigserviceClient)(nil).ListDiscoveredResources), varargs...)
+}
+
+// ListResourceEvaluations mocks base method.
+func (m *MockConfigserviceClient) ListResourceEvaluations(arg0 context.Context, arg1 *configservice.ListResourceEvaluationsInput, arg2 ...func(*configservice.Options)) (*configservice.ListResourceEvaluationsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListResourceEvaluations", varargs...)
+	ret0, _ := ret[0].(*configservice.ListResourceEvaluationsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListResourceEvaluations indicates an expected call of ListResourceEvaluations.
+func (mr *MockConfigserviceClientMockRecorder) ListResourceEvaluations(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListResourceEvaluations", reflect.TypeOf((*MockConfigserviceClient)(nil).ListResourceEvaluations), varargs...)
 }
 
 // ListStoredQueries mocks base method.
