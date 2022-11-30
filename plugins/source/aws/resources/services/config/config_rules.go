@@ -62,6 +62,11 @@ func ConfigRules() *schema.Table {
 				Resolver: schema.PathResolver("Description"),
 			},
 			{
+				Name:     "evaluation_modes",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("EvaluationModes"),
+			},
+			{
 				Name:     "input_parameters",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("InputParameters"),
