@@ -30,7 +30,7 @@ function isUnreleasedPlugin(key, name) {
   }
   const pluginDir = path.resolve("..", "plugins", key.slice(0, -1), name);
   try {
-    // check that is this a plugin
+    // check that this is a plugin
     fs.accessSync(path.resolve(pluginDir, "go.mod"), fs.constants.F_OK);
   } catch (e) {
     return false;
