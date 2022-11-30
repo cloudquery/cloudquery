@@ -36,10 +36,7 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 					return err
 				}
 			}
-			if err := c.Migrate(ctx, table.Relations); err != nil {
-				return err
-			}
-			return nil
+			return c.Migrate(ctx, table.Relations)
 		})
 	}
 	return eg.Wait()
