@@ -24,7 +24,6 @@ func fetchGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 		if err != nil {
 			return err
 		}
-		// c.Logger().Info().Msgf("Fetched %s users", resp)
 		if len(groups) == 0 {
 			return nil
 		}

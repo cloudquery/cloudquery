@@ -2,8 +2,13 @@ module github.com/cloudquery/cloudquery/plugins/source/gitlab
 
 go 1.19
 
+// replace the sdk with local version
+replace github.com/cloudquery/plugin-sdk => /Users/benbernays/Documents/GitHub/plugin-sdk
+
+
 require (
 	github.com/cloudquery/plugin-sdk v1.5.3
+	github.com/golang/mock v1.6.0
 	github.com/iancoleman/strcase v0.2.0
 	github.com/rs/zerolog v1.28.0
 	github.com/xanzy/go-gitlab v0.74.0

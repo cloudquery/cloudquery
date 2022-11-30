@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/cloudquery/cloudquery/plugins/source/gitlab/client/services"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
@@ -16,8 +17,12 @@ type Client struct {
 	// This is a client that you need to create and initialize in Configure
 	// It will be passed for each resource fetcher.
 	logger zerolog.Logger
-	Gitlab *gitlab.Client
+	Gitlab GitlabServices
 	spec   specs.Source
+}
+type GitlabServices struct {
+	Users  services.UsersClient
+	Groups services.GroupsClient
 }
 
 func (c *Client) Logger() *zerolog.Logger {
@@ -53,11 +58,16 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (sche
 
 	return &Client{
 		logger: logger,
-		Gitlab: c,
-		spec:   s,
+		Gitlab: GitlabServices{
+			Users:  c.Users,
+			Groups: c.Groups,
+		},
+		spec: s,
 	}, nil
 }
 
-// cannot use opts (variable of type gitlab.RequestOptionFunc) as []gitlab.ClientOptionFunc value in argument to gitlab.NewClientcompilerIncompatibleAssign
-// cannot use opts (variable of type gitlab.RequestOptionFunc) as gitlab.ClientOptionFunc value in argument to gitlab.NewClientcompilerIncompatibleAssign
-// cannot use opts (variable of type []gitlab.RequestOptionFunc) as []gitlab.ClientOptionFunc value in argument to gitlab.NewClientcompilerIncompatibleAssign
+func NewGitlabClient(logger zerolog.Logger) Client {
+	return Client{
+		logger: logger,
+	}
+}
