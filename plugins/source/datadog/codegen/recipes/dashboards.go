@@ -13,7 +13,7 @@ func Dashboards() []*Resource {
 			Multiplex:  "client.AccountMultiplex",
 			Struct:     new(datadogV1.DashboardSummaryDefinition),
 			SkipFields: []string{"Id"},
-			ExtraColumns: append(defaultAccountColumns,
+			ExtraColumns: append(defaultAccountColumnsPK,
 				codegen.ColumnDefinition{
 					Name:     "id",
 					Type:     schema.TypeString,

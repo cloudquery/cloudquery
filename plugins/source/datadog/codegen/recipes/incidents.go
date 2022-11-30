@@ -13,7 +13,7 @@ func Incidents() []*Resource {
 			Multiplex:  "client.AccountMultiplex",
 			Struct:     new(datadogV2.IncidentResponseData),
 			SkipFields: []string{"Id"},
-			ExtraColumns: append(defaultAccountColumns,
+			ExtraColumns: append(defaultAccountColumnsPK,
 				codegen.ColumnDefinition{
 					Name:     "id",
 					Type:     schema.TypeString,

@@ -13,7 +13,7 @@ func Hosts() []*Resource {
 			Multiplex:  "client.AccountMultiplex",
 			Struct:     new(datadogV1.Host),
 			SkipFields: []string{"Id"},
-			ExtraColumns: append(defaultAccountColumns,
+			ExtraColumns: append(defaultAccountColumnsPK,
 				codegen.ColumnDefinition{
 					Name:     "id",
 					Type:     schema.TypeInt,

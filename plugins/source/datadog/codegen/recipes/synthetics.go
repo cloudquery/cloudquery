@@ -13,7 +13,7 @@ func Synthetics() []*Resource {
 			Multiplex:  "client.AccountMultiplex",
 			Struct:     new(datadogV1.SyntheticsAPITest),
 			SkipFields: []string{"PublicId"},
-			ExtraColumns: append(defaultAccountColumns, codegen.ColumnDefinition{
+			ExtraColumns: append(defaultAccountColumnsPK, codegen.ColumnDefinition{
 				Name:     "public_id",
 				Type:     schema.TypeString,
 				Resolver: `schema.PathResolver("PublicId")`,

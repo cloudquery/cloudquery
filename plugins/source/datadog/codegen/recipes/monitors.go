@@ -13,7 +13,7 @@ func Monitors() []*Resource {
 			Multiplex:  "client.AccountMultiplex",
 			Struct:     new(datadogV1.Monitor),
 			SkipFields: []string{"Id", "Deleted", "Priority"},
-			ExtraColumns: append(defaultAccountColumns,
+			ExtraColumns: append(defaultAccountColumnsPK,
 				codegen.ColumnDefinition{
 					Name:     "id",
 					Type:     schema.TypeInt,

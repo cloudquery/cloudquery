@@ -17,6 +17,9 @@ func Dashboards() *schema.Table {
 				Name:     "account_name",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveAccountName,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "id",

@@ -13,7 +13,7 @@ func Notebooks() []*Resource {
 			Multiplex:  "client.AccountMultiplex",
 			Struct:     new(datadogV1.NotebooksResponseData),
 			SkipFields: []string{"Id"},
-			ExtraColumns: append(defaultAccountColumns, codegen.ColumnDefinition{
+			ExtraColumns: append(defaultAccountColumnsPK, codegen.ColumnDefinition{
 				Name:     "id",
 				Type:     schema.TypeInt,
 				Resolver: `schema.PathResolver("Id")`,

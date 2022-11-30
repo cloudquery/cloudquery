@@ -13,7 +13,7 @@ func Roles() []*Resource {
 			Multiplex:  "client.AccountMultiplex",
 			Struct:     new(datadogV2.Permission),
 			SkipFields: []string{"Id"},
-			ExtraColumns: append(defaultAccountColumns, codegen.ColumnDefinition{
+			ExtraColumns: append(defaultAccountColumnsPK, codegen.ColumnDefinition{
 				Name:     "id",
 				Type:     schema.TypeString,
 				Resolver: `schema.PathResolver("Id")`,
@@ -26,7 +26,7 @@ func Roles() []*Resource {
 			Multiplex:  "client.AccountMultiplex",
 			Struct:     new(datadogV2.Role),
 			SkipFields: []string{"Id"},
-			ExtraColumns: append(defaultAccountColumns, codegen.ColumnDefinition{
+			ExtraColumns: append(defaultAccountColumnsPK, codegen.ColumnDefinition{
 				Name:     "id",
 				Type:     schema.TypeString,
 				Resolver: `schema.PathResolver("Id")`,

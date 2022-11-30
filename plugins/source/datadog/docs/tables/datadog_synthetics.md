@@ -2,7 +2,7 @@
 
 
 
-The primary key for this table is **public_id**.
+The composite primary key for this table is (**account_name**, **public_id**).
 
 
 ## Columns
@@ -12,7 +12,7 @@ The primary key for this table is **public_id**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|account_name|String|
+|account_name (PK)|String|
 |public_id (PK)|String|
 |config|JSON|
 |locations|StringArray|
