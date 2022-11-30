@@ -39,8 +39,8 @@ function isUnreleasedPlugin(key, name) {
   const changelogPath = path.resolve(pluginDir, "CHANGELOG.md");
   try {
     const changelogContent = fs.readFileSync(changelogPath, "utf8");
-    const nonEmptyChangelog = changelogContent.includes("1.0.0");
-    return !nonEmptyChangelog;
+    const emptyChangelog = !changelogContent.includes("1.0.0");
+    return emptyChangelog;
   } catch (err) {
     // no Changelog, this is new plugin
     return true;
