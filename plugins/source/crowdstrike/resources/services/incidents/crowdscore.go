@@ -12,19 +12,22 @@ func Crowdscore() *schema.Table {
 		Resolver: fetchCrowdscore,
 		Columns: []schema.Column{
 			{
-				Name:     "errors",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Errors"),
+				Name:     "id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ID"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
-				Name:     "meta",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Meta"),
+				Name:     "score",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("Score"),
 			},
 			{
-				Name:     "resources",
+				Name:     "timestamp",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Resources"),
+				Resolver: schema.PathResolver("Timestamp"),
 			},
 		},
 	}

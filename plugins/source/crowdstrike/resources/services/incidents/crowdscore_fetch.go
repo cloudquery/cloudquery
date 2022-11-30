@@ -20,6 +20,7 @@ func fetchCrowdscore(ctx context.Context, meta schema.ClientMeta, parent *schema
 		return err
 	}
 	payload := retval.GetPayload()
-	res <- payload
+	resources := payload.Resources
+	res <- resources
 	return nil
 }

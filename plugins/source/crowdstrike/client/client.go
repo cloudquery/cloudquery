@@ -28,7 +28,7 @@ func (*Client) Logger() *zerolog.Logger {
 	return &log.Logger
 }
 
-func (*Client) ID() string {
+func (c *Client) ID() string {
 	return c.spec.Name
 }
 
