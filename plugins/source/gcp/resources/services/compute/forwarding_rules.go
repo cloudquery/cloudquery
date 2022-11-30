@@ -185,7 +185,7 @@ func ForwardingRules() *schema.Table {
 	}
 }
 
-func fetchForwardingRules(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
+func fetchForwardingRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	req := &pb.AggregatedListForwardingRulesRequest{
 		Project: c.ProjectId,

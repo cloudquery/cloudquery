@@ -3,9 +3,11 @@ package client
 import (
 	"context"
 
+	apikeys "cloud.google.com/go/apikeys/apiv2"
 	billing "cloud.google.com/go/billing/apiv1"
 	compute "cloud.google.com/go/compute/apiv1"
 	container "cloud.google.com/go/container/apiv1"
+	containeranalysis "cloud.google.com/go/containeranalysis/apiv1beta1"
 	domains "cloud.google.com/go/domains/apiv1beta1"
 	functions "cloud.google.com/go/functions/apiv1"
 	kms "cloud.google.com/go/kms/apiv1"
@@ -27,10 +29,12 @@ import (
 type GcpService string
 
 type Services struct {
-	BigqueryService               *bigquery.Service
-	BillingCloudBillingClient     *billing.CloudBillingClient
-	BillingCloudCatalogClient     *billing.CloudCatalogClient
-	FunctionsCloudFunctionsClient *functions.CloudFunctionsClient
+	ApikeysClient                         *apikeys.Client
+	BigqueryService                       *bigquery.Service
+	BillingCloudBillingClient             *billing.CloudBillingClient
+	BillingCloudCatalogClient             *billing.CloudCatalogClient
+	FunctionsCloudFunctionsClient         *functions.CloudFunctionsClient
+	ContaineranalysisGrafeasV1Beta1Client *containeranalysis.GrafeasV1Beta1Client
 
 	ComputeAddressesClient         *compute.AddressesClient
 	ComputeAutoscalersClient       *compute.AutoscalersClient
@@ -77,6 +81,12 @@ func initServices(ctx context.Context, options []option.ClientOption) (*Services
 	options = append(options, option.WithTelemetryDisabled())
 	svcs := Services{}
 	var err error
+
+	svcs.ApikeysClient, err = apikeys.NewClient(ctx, options...)
+	if err != nil {
+		return nil, err
+	}
+
 	svcs.BigqueryService, err = bigquery.NewService(ctx, options...)
 	if err != nil {
 		return nil, err
@@ -91,6 +101,10 @@ func initServices(ctx context.Context, options []option.ClientOption) (*Services
 		return nil, err
 	}
 	svcs.FunctionsCloudFunctionsClient, err = functions.NewCloudFunctionsClient(ctx, options...)
+	if err != nil {
+		return nil, err
+	}
+	svcs.ContaineranalysisGrafeasV1Beta1Client, err = containeranalysis.NewGrafeasV1Beta1Client(ctx, options...)
 	if err != nil {
 		return nil, err
 	}

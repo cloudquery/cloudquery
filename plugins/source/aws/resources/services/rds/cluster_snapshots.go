@@ -68,6 +68,11 @@ func ClusterSnapshots() *schema.Table {
 				Resolver: schema.PathResolver("DBClusterSnapshotIdentifier"),
 			},
 			{
+				Name:     "db_system_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("DBSystemId"),
+			},
+			{
 				Name:     "engine",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Engine"),

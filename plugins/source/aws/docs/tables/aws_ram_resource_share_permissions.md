@@ -7,6 +7,7 @@ The primary key for this table is **arn**.
 ## Relations
 This table depends on [aws_ram_resource_shares](aws_ram_resource_shares.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

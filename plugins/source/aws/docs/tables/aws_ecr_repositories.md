@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_Repository.html
 The primary key for this table is **arn**.
 
 ## Relations
+
 The following tables depend on aws_ecr_repositories:
   - [aws_ecr_repository_images](aws_ecr_repository_images.md)
 

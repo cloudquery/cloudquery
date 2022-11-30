@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/cloudquery/plugin-sdk/clients"
+	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog/log"
 	"github.com/schollz/progressbar/v3"
@@ -29,9 +30,31 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 	}
 	defer destClients.Close()
 
-	tables, err := sourceClient.GetTables(ctx)
+	allTables, err := sourceClient.GetTables(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to get tables for source %s: %w", sourceSpec.Name, err)
+	}
+
+	selectedTables, tablesForSpecSupported, err := getTablesForSpec(ctx, sourceClient, sourceSpec)
+	if err != nil {
+		return fmt.Errorf("failed to get tables for source %s: %w", sourceSpec.Name, err)
+	}
+
+	tableCount := len(selectedTables.FlattenTables())
+
+	// Print a count of the tables that will be synced / migrated. This is a little tricky because older
+	// servers don't necessarily support GetTablesForSpec.
+	if tablesForSpecSupported {
+		word := "tables"
+		if tableCount == 1 {
+			word = "table"
+		}
+		fmt.Printf("Source %s will sync %d %s.\n", sourceSpec.Name, tableCount, word)
+
+		// TODO: add this back once we also use the filtered list for table migrations
+		//else {
+		//	fmt.Printf("Source %s will migrate and sync %d tables.\n", sourceSpec.Name, tableCount)
+		//}
 	}
 
 	if !noMigrate {
@@ -40,7 +63,9 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 		migrateStart := time.Now()
 
 		for i, destinationSpec := range destinationsSpecs {
-			if err := destClients[i].Migrate(ctx, tables); err != nil {
+			// Currently we migrate all tables, but this is subject to change once policies
+			// are adapted to handle non-existent tables in some way.
+			if err := destClients[i].Migrate(ctx, allTables); err != nil {
 				return fmt.Errorf("failed to migrate source %s on destination %s : %w", sourceSpec.Name, destinationSpec.Name, err)
 			}
 		}
@@ -49,7 +74,7 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 		log.Info().
 			Str("source", sourceSpec.Name).
 			Strs("destinations", sourceSpec.Destinations).
-			Int("num_tables", len(tables)).
+			Int("num_tables", len(allTables)).
 			Float64("time_took", migrateTimeTook.Seconds()).
 			Msg("End migration")
 	}
@@ -57,7 +82,7 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 	resources := make(chan []byte)
 	g, gctx := errgroup.WithContext(ctx)
 	log.Info().Str("source", sourceSpec.Name).Strs("destinations", sourceSpec.Destinations).Msg("Start fetching resources")
-	fmt.Println("Starting sync for: ", sourceSpec.Name, "->", sourceSpec.Destinations)
+	fmt.Println("Starting sync for:", sourceSpec.Name, "->", sourceSpec.Destinations)
 	g.Go(func() error {
 		defer close(resources)
 		if err := sourceClient.Sync2(gctx, sourceSpec, resources); err != nil {
@@ -89,7 +114,7 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 		g.Go(func() error {
 			var destFailedWrites uint64
 			var err error
-			if err = destClients[i].Write2(gctx, tables, sourceSpec.Name, syncTime, destSubscriptions[i]); err != nil {
+			if err = destClients[i].Write2(gctx, selectedTables, sourceSpec.Name, syncTime, destSubscriptions[i]); err != nil {
 				return fmt.Errorf("failed to write for %s->%s: %w", sourceSpec.Name, destination, err)
 			}
 			if err := destClients[i].Close(ctx); err != nil {
@@ -144,4 +169,19 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 		}
 	}
 	return nil
+}
+
+// getTablesForSpec first tries the newer GetTablesForSpec call, but if it is not available, falls back to
+// GetTables. The returned `supported` value indicates whether GetTablesForSpec was supported by the server.
+func getTablesForSpec(ctx context.Context, sourceClient *clients.SourceClient, sourceSpec specs.Source) (tables schema.Tables, supported bool, err error) {
+	tables, err = sourceClient.GetTablesForSpec(ctx, &sourceSpec)
+	if clients.IsUnimplemented(err) {
+		// the plugin server does not support GetTablesForSpec. Fall back to GetTables.
+		tables, err = sourceClient.GetTables(ctx)
+		return tables, false, err
+	} else if err != nil {
+		// the method is supported, but failed for some other reason
+		return tables, true, err
+	}
+	return tables, true, err
 }

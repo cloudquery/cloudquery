@@ -1,5 +1,6 @@
 {
   "postgresql": "PostgreSQL",
   "csv": "CSV",
-  "sqlite": "SQLite"
+  "sqlite": "SQLite",
+  "snowflake": "Snowflake"
 }

@@ -115,6 +115,26 @@ func (mr *MockQuicksightClientMockRecorder) DescribeAnalysis(arg0, arg1 interfac
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeAnalysis", reflect.TypeOf((*MockQuicksightClient)(nil).DescribeAnalysis), varargs...)
 }
 
+// DescribeAnalysisDefinition mocks base method.
+func (m *MockQuicksightClient) DescribeAnalysisDefinition(arg0 context.Context, arg1 *quicksight.DescribeAnalysisDefinitionInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeAnalysisDefinitionOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeAnalysisDefinition", varargs...)
+	ret0, _ := ret[0].(*quicksight.DescribeAnalysisDefinitionOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeAnalysisDefinition indicates an expected call of DescribeAnalysisDefinition.
+func (mr *MockQuicksightClientMockRecorder) DescribeAnalysisDefinition(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeAnalysisDefinition", reflect.TypeOf((*MockQuicksightClient)(nil).DescribeAnalysisDefinition), varargs...)
+}
+
 // DescribeAnalysisPermissions mocks base method.
 func (m *MockQuicksightClient) DescribeAnalysisPermissions(arg0 context.Context, arg1 *quicksight.DescribeAnalysisPermissionsInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeAnalysisPermissionsOutput, error) {
 	m.ctrl.T.Helper()
@@ -153,6 +173,26 @@ func (mr *MockQuicksightClientMockRecorder) DescribeDashboard(arg0, arg1 interfa
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeDashboard", reflect.TypeOf((*MockQuicksightClient)(nil).DescribeDashboard), varargs...)
+}
+
+// DescribeDashboardDefinition mocks base method.
+func (m *MockQuicksightClient) DescribeDashboardDefinition(arg0 context.Context, arg1 *quicksight.DescribeDashboardDefinitionInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeDashboardDefinitionOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeDashboardDefinition", varargs...)
+	ret0, _ := ret[0].(*quicksight.DescribeDashboardDefinitionOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeDashboardDefinition indicates an expected call of DescribeDashboardDefinition.
+func (mr *MockQuicksightClientMockRecorder) DescribeDashboardDefinition(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeDashboardDefinition", reflect.TypeOf((*MockQuicksightClient)(nil).DescribeDashboardDefinition), varargs...)
 }
 
 // DescribeDashboardPermissions mocks base method.
@@ -473,6 +513,26 @@ func (mr *MockQuicksightClientMockRecorder) DescribeTemplateAlias(arg0, arg1 int
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeTemplateAlias", reflect.TypeOf((*MockQuicksightClient)(nil).DescribeTemplateAlias), varargs...)
+}
+
+// DescribeTemplateDefinition mocks base method.
+func (m *MockQuicksightClient) DescribeTemplateDefinition(arg0 context.Context, arg1 *quicksight.DescribeTemplateDefinitionInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeTemplateDefinitionOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeTemplateDefinition", varargs...)
+	ret0, _ := ret[0].(*quicksight.DescribeTemplateDefinitionOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeTemplateDefinition indicates an expected call of DescribeTemplateDefinition.
+func (mr *MockQuicksightClientMockRecorder) DescribeTemplateDefinition(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeTemplateDefinition", reflect.TypeOf((*MockQuicksightClient)(nil).DescribeTemplateDefinition), varargs...)
 }
 
 // DescribeTemplatePermissions mocks base method.
@@ -1093,6 +1153,46 @@ func (mr *MockQuicksightClientMockRecorder) SearchDashboards(arg0, arg1 interfac
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SearchDashboards", reflect.TypeOf((*MockQuicksightClient)(nil).SearchDashboards), varargs...)
+}
+
+// SearchDataSets mocks base method.
+func (m *MockQuicksightClient) SearchDataSets(arg0 context.Context, arg1 *quicksight.SearchDataSetsInput, arg2 ...func(*quicksight.Options)) (*quicksight.SearchDataSetsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "SearchDataSets", varargs...)
+	ret0, _ := ret[0].(*quicksight.SearchDataSetsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// SearchDataSets indicates an expected call of SearchDataSets.
+func (mr *MockQuicksightClientMockRecorder) SearchDataSets(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SearchDataSets", reflect.TypeOf((*MockQuicksightClient)(nil).SearchDataSets), varargs...)
+}
+
+// SearchDataSources mocks base method.
+func (m *MockQuicksightClient) SearchDataSources(arg0 context.Context, arg1 *quicksight.SearchDataSourcesInput, arg2 ...func(*quicksight.Options)) (*quicksight.SearchDataSourcesOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "SearchDataSources", varargs...)
+	ret0, _ := ret[0].(*quicksight.SearchDataSourcesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// SearchDataSources indicates an expected call of SearchDataSources.
+func (mr *MockQuicksightClientMockRecorder) SearchDataSources(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SearchDataSources", reflect.TypeOf((*MockQuicksightClient)(nil).SearchDataSources), varargs...)
 }
 
 // SearchFolders mocks base method.

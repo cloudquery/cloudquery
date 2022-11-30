@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_InventoryIte
 The composite primary key for this table is (**account_id**, **region**, **type_name**, **version**).
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

@@ -4,6 +4,7 @@ on:
     tags:
       - "plugins-*-*-v*.*.*"
       - "!plugins-destination-sqlite-v*.*.*"
+      - "!plugins-destination-snowflake-v*.*.*"
 env:
   CGO_ENABLED: 0
 
@@ -72,25 +73,7 @@ jobs:
 
       - name: Update version file
         if: steps.semver_parser.outputs.prerelease == ''
-        run: 'echo "{ \"latest\": \"${{github.ref_name}}\" }" > ./sites/versions/v2/${{steps.split.outputs.plugin_type}}-${{steps.split.outputs.plugin_name}}.json'
-
-      - name: Update version in example config files
-        if: steps.semver_parser.outputs.prerelease == ''
-        uses: jacobtomlinson/gha-find-replace@657b0d1fe020da9943d1702b576f5d37d43b9c03
-        continue-on-error: true
-        with:
-          include: "plugins/${{steps.split.outputs.plugin_type}}/${{steps.split.outputs.plugin_name}}/docs/**"
-          find: 'version:\s+\"v\d+\.\d+\.\d+\"\s+\#\s+latest version of ${{steps.split.outputs.plugin_name}} plugin'
-          replace: 'version: "${{steps.split.outputs.plugin_version}}" # latest version of ${{steps.split.outputs.plugin_name}} plugin'
-
-      - name: Update version in doc config files
-        if: steps.semver_parser.outputs.prerelease == ''
-        uses: jacobtomlinson/gha-find-replace@657b0d1fe020da9943d1702b576f5d37d43b9c03
-        continue-on-error: true
-        with:
-          include: "website/pages/**"
-          find: 'version:\s+\"v\d+\.\d+\.\d+\"\s+\#\s+latest version of ${{steps.split.outputs.plugin_name}} plugin'
-          replace: 'version: "${{steps.split.outputs.plugin_version}}" # latest version of ${{steps.split.outputs.plugin_name}} plugin'
+        run: 'echo "{ \"latest\": \"${{github.ref_name}}\" }" > ./website/versions/${{steps.split.outputs.plugin_type}}-${{steps.split.outputs.plugin_name}}.json'
 
       - name: Create Pull Request
         if: steps.semver_parser.outputs.prerelease == ''

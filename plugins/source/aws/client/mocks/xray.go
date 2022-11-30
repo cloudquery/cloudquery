@@ -335,6 +335,26 @@ func (mr *MockXrayClientMockRecorder) GetTraceSummaries(arg0, arg1 interface{}, 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTraceSummaries", reflect.TypeOf((*MockXrayClient)(nil).GetTraceSummaries), varargs...)
 }
 
+// ListResourcePolicies mocks base method.
+func (m *MockXrayClient) ListResourcePolicies(arg0 context.Context, arg1 *xray.ListResourcePoliciesInput, arg2 ...func(*xray.Options)) (*xray.ListResourcePoliciesOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListResourcePolicies", varargs...)
+	ret0, _ := ret[0].(*xray.ListResourcePoliciesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListResourcePolicies indicates an expected call of ListResourcePolicies.
+func (mr *MockXrayClientMockRecorder) ListResourcePolicies(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListResourcePolicies", reflect.TypeOf((*MockXrayClient)(nil).ListResourcePolicies), varargs...)
+}
+
 // ListTagsForResource mocks base method.
 func (m *MockXrayClient) ListTagsForResource(arg0 context.Context, arg1 *xray.ListTagsForResourceInput, arg2 ...func(*xray.Options)) (*xray.ListTagsForResourceOutput, error) {
 	m.ctrl.T.Helper()

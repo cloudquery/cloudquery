@@ -86,7 +86,7 @@ func Sinks() *schema.Table {
 	}
 }
 
-func fetchSinks(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
+func fetchSinks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	req := &pb.ListSinksRequest{
 		Parent: "projects/" + c.ProjectId,

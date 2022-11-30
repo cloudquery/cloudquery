@@ -1,5 +1,5 @@
 {
-  "environment-variable-substitution": "Environment Variable Substitution",
+  "environment-variable-substitution": "Environment and File Variable Substitution",
   "docker": "Docker",
   "proxy-configuration": "Proxy Configuration",
   "performance-tuning": "Performance Tuning",

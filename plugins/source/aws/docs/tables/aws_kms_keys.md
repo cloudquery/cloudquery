@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/kms/latest/APIReference/API_KeyMetadata.html
 The primary key for this table is **arn**.
 
 ## Relations
+
 The following tables depend on aws_kms_keys:
   - [aws_kms_key_grants](aws_kms_key_grants.md)
 
@@ -43,3 +44,4 @@ The following tables depend on aws_kms_keys:
 |pending_deletion_window_in_days|Int|
 |signing_algorithms|StringArray|
 |valid_to|Timestamp|
+|xks_key_configuration|JSON|

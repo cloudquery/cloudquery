@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBClusterSnapshot.
 The primary key for this table is **arn**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
@@ -22,6 +23,7 @@ The primary key for this table is **arn**.
 |cluster_create_time|Timestamp|
 |db_cluster_identifier|String|
 |db_cluster_snapshot_identifier|String|
+|db_system_id|String|
 |engine|String|
 |engine_mode|String|
 |engine_version|String|

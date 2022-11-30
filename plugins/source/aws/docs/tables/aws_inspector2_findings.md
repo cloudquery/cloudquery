@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/inspector/v2/APIReference/API_Finding.html
 The primary key for this table is **arn**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
@@ -24,6 +25,8 @@ The primary key for this table is **arn**.
 |severity|String|
 |status|String|
 |type|String|
+|exploit_available|String|
+|exploitability_details|JSON|
 |fix_available|String|
 |inspector_score|Float|
 |inspector_score_details|JSON|

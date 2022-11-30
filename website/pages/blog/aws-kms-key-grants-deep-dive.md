@@ -10,7 +10,7 @@ author: jsonkao
 import { BlogHeader } from "../../components/BlogHeader"
 
 <BlogHeader/>
-We recently published a [blog post](https://www.cloudquery.io/blog/aws-encryption-and-multi-account-access) about Encryption in AWS and Multi-Account Access.  As a follow-up to that post, we’re focusing on encryption access in AWS and information on [how CloudQuery can help](https://www.cloudquery.io/docs/plugins/sources) including how to audit access to those encryption keys and the underlying data to help assist with your security and compliance needs.
+We recently published a [blog post](/blog/aws-encryption-and-multi-account-access) about Encryption in AWS and Multi-Account Access.  As a follow-up to that post, we’re focusing on encryption access in AWS and information on [how CloudQuery can help](/docs/plugins/sources/overview) including how to audit access to those encryption keys and the underlying data to help assist with your security and compliance needs.
 
 CloudQuery has released the following updates to encryption resources to aid with Encryption discovery in AWS in addition to our [existing coverage of AWS](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/README.md) and [AWS resources](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/aws/docs/tables):
 
@@ -22,7 +22,7 @@ In this post, we will deep dive on KMS Key Access via KMS Key Grants and best pr
 
 ## KMS Key Access
 
-[KMS Key Access](https://docs.aws.amazon.com/kms/latest/developerguide/control-access.html) is similar to other resource access in AWS and the underlying access system in AWS: AWS Identity and Access Management.  [Typical AWS evaluation of access](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic.html) to a resource is done via AWS’s policy evaluation logic that evaluates the request context, evaluates whether the actions are within a single account or [cross-account](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic-cross-account.html) (between 2 distinct AWS accounts), and evaluating identity-based policies with resource-based policies and other advanced policies such as permission boundaries, Organizationals Service-Control Policies, Session Policies, and more.
+[KMS Key Access](https://docs.aws.amazon.com/kms/latest/developerguide/control-access.html) is similar to other resource access in AWS and the underlying access system in AWS: AWS Identity and Access Management.  [Typical AWS evaluation of access](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic.html) to a resource is done via AWS’s policy evaluation logic that evaluates the request context, evaluates whether the actions are within a single account or [cross-account](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic-cross-account.html) (between 2 distinct AWS accounts), and evaluating identity-based policies with resource-based policies and other advanced policies such as permission boundaries, Organizational Service-Control Policies, Session Policies, and more.
 
 The below image is from AWS's [documentation regarding policy evaluation](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic.html) for evaluating identity-based policies with resource-based policies.
 
@@ -295,10 +295,10 @@ If you have comments, feedback on this post, follow-up topics you’d like to se
 
 [AWS: Grants in AWS KMS](https://docs.aws.amazon.com/kms/latest/developerguide/grants.html)
 
-[AWS: Authentication and access control for AWS KMS](https://docs.aws.amazon.com/kms/latest/developerguide/control-access.html) 
+[AWS: Authentication and access control for AWS KMS](https://docs.aws.amazon.com/kms/latest/developerguide/control-access.html)
 
 [AWS: Logging and monitoring in AWS Key Management Service](https://docs.aws.amazon.com/kms/latest/developerguide/security-logging-monitoring.html)
 
-[CloudQuery: Source Plugins](https://www.cloudquery.io/docs/plugins/sources)
+[CloudQuery: Source Plugins](/docs/plugins/sources/overview)
 
 [CloudQuery: AWS Plugin](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/aws)

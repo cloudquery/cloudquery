@@ -82,6 +82,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sqs"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ssm"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ssoadmin"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/stepfunctions"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/timestream"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/transfer"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/waf"
@@ -139,6 +140,7 @@ func tables() []*schema.Table {
 		cloudhsmv2.Clusters(),
 		cloudhsmv2.Backups(),
 		cloudtrail.Trails(),
+		cloudwatchlogs.ResourcePolicies(),
 		cloudwatchlogs.MetricFilters(),
 		cloudwatchlogs.LogGroups(),
 		cloudwatch.Alarms(),
@@ -393,6 +395,7 @@ func tables() []*schema.Table {
 		ssm.InventorySchemas(),
 		ssm.PatchBaselines(),
 		ssoadmin.Instances(),
+		stepfunctions.StateMachines(),
 		timestream.Databases(),
 		transfer.Servers(),
 		wafregional.RateBasedRules(),

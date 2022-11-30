@@ -131,3 +131,16 @@ skip_tables
 subfolder
 recurse
 CCPA's
+bugfix
+nvm
+npm
+Gandi
+parallelization
+hyperscale
+goroutines
+arn
+arns
+ARN
+ARNs
+SCP
+SCPs

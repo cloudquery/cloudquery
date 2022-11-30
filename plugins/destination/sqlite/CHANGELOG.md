@@ -1,5 +1,29 @@
 # Changelog
 
+## [1.0.10](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v1.0.9...plugins-destination-sqlite-v1.0.10) (2022-11-29)
+
+
+### Bug Fixes
+
+* DeleteStale from relational tables as well ([#5143](https://github.com/cloudquery/cloudquery/issues/5143)) ([23aa159](https://github.com/cloudquery/cloudquery/commit/23aa1597a2db275df85c15a52bcd2986f19d9621))
+* **deps:** Update plugin-sdk for sqlite to v1.8.1 ([#5044](https://github.com/cloudquery/cloudquery/issues/5044)) ([7c085c6](https://github.com/cloudquery/cloudquery/commit/7c085c616e82967be9aecbd8d90ca3400dc89112))
+* **deps:** Update plugin-sdk for sqlite to v1.9.0 ([#5087](https://github.com/cloudquery/cloudquery/issues/5087)) ([9f43e46](https://github.com/cloudquery/cloudquery/commit/9f43e46112ca00b06805c4791e7739aba41af0a6))
+
+## [1.0.9](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v1.0.8...plugins-destination-sqlite-v1.0.9) (2022-11-23)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for sqlite to v1.7.0 ([#4915](https://github.com/cloudquery/cloudquery/issues/4915)) ([6e5268f](https://github.com/cloudquery/cloudquery/commit/6e5268f268ad836f2780c685087b7e362c58591f))
+* **deps:** Update plugin-sdk for sqlite to v1.8.0 ([#4978](https://github.com/cloudquery/cloudquery/issues/4978)) ([e183336](https://github.com/cloudquery/cloudquery/commit/e183336d8b062d4a492cdc4d4a8dba634aaef04a))
+
+## [1.0.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v1.0.7...plugins-destination-sqlite-v1.0.8) (2022-11-21)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for sqlite to v1.6.0 ([#4853](https://github.com/cloudquery/cloudquery/issues/4853)) ([460c6ff](https://github.com/cloudquery/cloudquery/commit/460c6ffddab8aba843d150cafb82825c46597b41))
+
 ## [1.0.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v1.0.6...plugins-destination-sqlite-v1.0.7) (2022-11-16)
 
 
