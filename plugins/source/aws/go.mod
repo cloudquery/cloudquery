@@ -27,18 +27,18 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/codepipeline v1.13.19
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.14.3
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.21.1
-	github.com/aws/aws-sdk-go-v2/service/configservice v1.27.5
+	github.com/aws/aws-sdk-go-v2/service/configservice v1.28.0
 	github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.22.1
 	github.com/aws/aws-sdk-go-v2/service/dax v1.11.19
 	github.com/aws/aws-sdk-go-v2/service/directconnect v1.17.23
 	github.com/aws/aws-sdk-go-v2/service/docdb v1.19.16
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.17.7
-	github.com/aws/aws-sdk-go-v2/service/ec2 v1.72.1
+	github.com/aws/aws-sdk-go-v2/service/ec2 v1.74.0
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.17.23
 	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.13.19
 	github.com/aws/aws-sdk-go-v2/service/ecs v1.20.0
 	github.com/aws/aws-sdk-go-v2/service/efs v1.18.0
-	github.com/aws/aws-sdk-go-v2/service/eks v1.23.0
+	github.com/aws/aws-sdk-go-v2/service/eks v1.24.0
 	github.com/aws/aws-sdk-go-v2/service/elasticache v1.24.1
 	github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk v1.14.20
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.14.23
@@ -46,9 +46,9 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.17.2
 	github.com/aws/aws-sdk-go-v2/service/emr v1.20.16
 	github.com/aws/aws-sdk-go-v2/service/eventbridge v1.16.20
-	github.com/aws/aws-sdk-go-v2/service/firehose v1.14.23
+	github.com/aws/aws-sdk-go-v2/service/firehose v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/frauddetector v1.20.12
-	github.com/aws/aws-sdk-go-v2/service/fsx v1.25.4
+	github.com/aws/aws-sdk-go-v2/service/fsx v1.26.0
 	github.com/aws/aws-sdk-go-v2/service/glacier v1.13.19
 	github.com/aws/aws-sdk-go-v2/service/guardduty v1.16.2
 	github.com/aws/aws-sdk-go-v2/service/iam v1.18.23
@@ -129,7 +129,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.3.26 // indirect
 	github.com/aws/aws-sdk-go-v2/service/athena v1.19.1
 	github.com/aws/aws-sdk-go-v2/service/backup v1.18.0
-	github.com/aws/aws-sdk-go-v2/service/glue v1.35.0
+	github.com/aws/aws-sdk-go-v2/service/glue v1.36.0
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.9.10 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.7.19 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.19 // indirect
