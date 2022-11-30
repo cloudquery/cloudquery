@@ -43,6 +43,7 @@ jobs:
                            "plugins/source/aws",
                            "plugins/source/azure",
                            "plugins/source/cloudflare",
+                           "plugins/source/crowdstrike",
                            "plugins/source/digitalocean",
                            "plugins/source/gandi",
                            "plugins/source/gcp",

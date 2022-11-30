@@ -4,6 +4,8 @@ azure:
   - plugins/source/azure/**/*
 cloudflare:
   - plugins/source/cloudflare/**/*
+crowdstrike:
+  - plugins/source/crowdstrike/**/*
 digitalocean:
   - plugins/source/digitalocean/**/*
 fuzz:
