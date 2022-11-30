@@ -4,6 +4,7 @@
   "azure": "Azure",
   "gcp": "GCP",
   "cloudflare": "Cloudflare",
+  "gandi": "Gandi",
   "digitalocean": "DigitalOcean",
   "github": "GitHub",
   "heroku": "Heroku",
