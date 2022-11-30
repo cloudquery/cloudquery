@@ -15,11 +15,12 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 Recently, AWS sent out customer notification emails regarding upcoming changes for EventBridge cross-account event bus targets.  This email was titled `Security posture recommendations for your cross-account invocations.` This notification email went to customers who were determined to have one or more impacted resources.
 
-In this post, we'll cover how one of our customers, [James Barney](https://www.linkedin.com/in/james-barney/) used CloudQuery to respond to the AWS notification and change with a custom query built on top of CloudQuery's data.
+In this post, we'll cover how one of our users, [James Barney](https://www.linkedin.com/in/james-barney/), used CloudQuery to respond to the AWS notification and change with a custom query built on top of CloudQuery's data.
 
 ## Customer Testimonial
 
-“CloudQuery helped us understand the exact impact that this AWS service change would have for our organization’s 100+ AWS accounts within 5 minutes of receiving the notification. CloudQuery saved us weeks of investigative work and gave us exactly the resource ARNs we needed to alter with this change.” - James Barney
+“CloudQuery helped us understand the exact impact that this AWS service change would have for our organization’s 100+ AWS accounts within 5 minutes of receiving the notification. CloudQuery saved us weeks of investigative work and gave us exactly the resource ARNs we needed to alter with this change.” 
+<div align="right">- James Barney</div>
 
 ## EventBridge Change
 
