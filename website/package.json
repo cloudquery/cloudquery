@@ -4,6 +4,8 @@
   "private": true,
   "description": "CloudQuery website and docs",
   "scripts": {
+    "predev": "node scripts/gen-tables.js",
+    "prebuild": "node scripts/gen-tables.js",
     "dev": "next",
     "start": "next start",
     "build": "next build",

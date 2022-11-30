@@ -2,9 +2,9 @@
 node_modules
 .env
 
-# Plugins pages are auto generated during build
-pages/plugins/**/*
+# Source plugins tables are auto generated during pre-build
+pages/docs/plugins/sources/*/tables.md
 public/robots.txt
 public/sitemap.xml
 public/sitemap-0.xml
-scripts/algolia_tables
+scripts/tables
