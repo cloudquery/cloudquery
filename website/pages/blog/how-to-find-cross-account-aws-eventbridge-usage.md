@@ -1,7 +1,7 @@
 ---
-title: Finding Cross Account AWS EventBridge Usage
+title: Finding Cross-Account AWS EventBridge Usage
 tag: security
-date: 2022/11/29
+date: 2022/11/30
 description: >-
   How a CloudQuery customer wrote custom queries to find cross-account AWS EventBridge Usage.  AWS recently updated security features to help improve security of cross-account AWS EventBridge Event Bus Targets.  Teams can migrate to these new features to increase security and compliance.
 author: jsonkao
@@ -14,6 +14,12 @@ import { BlogHeader } from "../../components/BlogHeader"
 ## Overview
 
 Recently, AWS sent out customer notification emails regarding upcoming changes for EventBridge cross-account event bus targets.  This email was titled `Security posture recommendations for your cross-account invocations.` This notification email went to customers who were determined to have one or more impacted resources.
+
+In this post, we'll cover how one of our customers, [James Barney](https://www.linkedin.com/in/james-barney/) used CloudQuery to respond to the AWS notification and change with a custom query built on top of CloudQuery's data.
+
+## Customer Testimonial
+
+“CloudQuery helped us understand the exact impact that this AWS service change would have for our organization’s 100+ AWS accounts within 5 minutes of receiving the notification. CloudQuery saved us weeks of investigative work and gave us exactly the resource ARNs we needed to alter with this change.” - James Barney
 
 ## EventBridge Change
 
@@ -50,7 +56,7 @@ For cross-account access, scoping permissions and principals in resource policie
 
 ## Customer Query
 
-We would like to thank `jbarney` for sharing their use case and working with us on the below query.  We're especially happy when our users bring innovation and layer advanced queries on top of CloudQuery data to provide value to their organizations.
+We would like to thank [James Barney](https://www.linkedin.com/in/james-barney/) for sharing their use case and working with us on the below query.  We're especially happy when our users bring innovation and layer advanced queries on top of CloudQuery data to provide value to their organizations.
 
 ```sql
 SELECT *
