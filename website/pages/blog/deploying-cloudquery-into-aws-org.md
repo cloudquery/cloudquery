@@ -28,7 +28,7 @@ We will be deploying a single CloudFormation template in an admin account and th
 
 - Admin access to the Root Account of your AWS Organization or an Account that is a Delegated Admin
 
-## Walkthrough
+## Walk-through
 
 ### Step 1: Clone Solution Repository:
 
@@ -77,7 +77,7 @@ where the output should be a string like this:
 
 Once you have the ARN of the role that was created you can test out assuming it by running this CLI command:
 
-``` copy
+```bash copy
 aws sts assume-role \
   --role-arn arn:aws:iam::<REDACTED>:role/cloudquery-ro \
   --role-session-name cloudquery-test
