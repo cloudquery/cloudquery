@@ -1,0 +1,14 @@
+variables:
+  component: source/datadog
+  binary: datadog
+
+project_name: plugins/source/datadog
+
+monorepo:
+  tag_prefix: plugins-source-datadog-
+  dir: plugins/source/datadog
+
+includes:
+  - from_file:
+      # Relative to the directory Go Releaser is run from (which is the root of the repository)
+      path: ./plugins/.goreleaser.yaml
