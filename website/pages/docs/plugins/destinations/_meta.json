@@ -3,5 +3,6 @@
   "postgresql": "PostgreSQL",
   "snowflake": "Snowflake",
   "sqlite": "SQLite",
-  "csv": "CSV"
+  "csv": "CSV",
+  "bigquery": "BigQuery"
 }

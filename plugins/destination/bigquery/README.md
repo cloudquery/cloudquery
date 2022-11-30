@@ -1,3 +1,7 @@
 # CloudQuery BigQuery Destination Plugin
 
-The bigquery plugin helps you sync data to your BigQuery data lake.
+This destination plugin lets you sync data from any CloudQuery source to a BigQuery database.
+
+## Links
+
+- [User Guide](https://cloudquery.io/docs/plugins/destinations/bigquery/overview)
