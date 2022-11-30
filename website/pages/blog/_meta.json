@@ -59,5 +59,6 @@
   "aws-kms-key-grants-deep-dive": "A Deep Dive on AWS KMS Key Grants and Access",
   "product-updates-1": "CloudQuery Product Updates #1",
   "announcing-cloudquery-snowflake-destination": "Announcing the CloudQuery Snowflake Destination Plugin",
-  "building-cloudquery": "Building CloudQuery: High Performance Data Integration Framework in Go"
+  "building-cloudquery": "Building CloudQuery: High Performance Data Integration Framework in Go",
+  "how-to-find-cross-account-eventbridge-usage": "How a Customer Used CloudQuery to find Cross Account AWS EventBridge Usage"
 }

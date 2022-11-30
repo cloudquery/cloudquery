@@ -1,6 +1,6 @@
 # PostgreSQL Destination Plugin Recipes
 
-Full spec options for PostgreSQL destination available [here](https://github.com/cloudquery/cloudquery/tree/main/plugins/destination/postgresql).
+Full spec options for the PostgreSQL destination plugin are available [here](/docs/plugins/destinations/postgresql/overview#postgresql-spec).
 
 Note: Make sure you use environment variable expansion in production instead of committing the credentials to the configuration file directly.
 

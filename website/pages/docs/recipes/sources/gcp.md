@@ -1,6 +1,6 @@
 # GCP Source Plugin Recipes
 
-Full spec options for GCP Source available [here](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/configuration.md).
+Full spec options for the GCP source plugin are available [here](/docs/plugins/sources/gcp/configuration#gcp-spec).
 
 ```yaml copy
 kind: source
