@@ -1,4 +1,4 @@
-package users
+package groups
 
 import (
 	"context"
@@ -8,10 +8,10 @@ import (
 	"github.com/xanzy/go-gitlab"
 )
 
-func fetchGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchGroupMembers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-
-	opt := &gitlab.ListGroupsOptions{
+	group := parent.Item.(*gitlab.Group)
+	opt := &gitlab.ListGroupMembersOptions{
 		ListOptions: gitlab.ListOptions{
 			PerPage: 1000,
 			Page:    0,
@@ -20,15 +20,11 @@ func fetchGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 
 	for {
 		// Get the first page with projects.
-		groups, resp, err := c.Gitlab.Groups.ListGroups(opt)
+		members, resp, err := c.Gitlab.Groups.ListGroupMembers(group.ID, opt)
 		if err != nil {
 			return err
 		}
-		if len(groups) == 0 {
-			return nil
-		}
-		res <- groups
-
+		res <- members
 		// Exit the loop when we've seen all pages.
 		if resp.NextPage == 0 {
 			break

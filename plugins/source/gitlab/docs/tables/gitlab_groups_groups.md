@@ -1,4 +1,4 @@
-# Table: gitlab_users_groups
+# Table: gitlab_groups_groups
 
 
 
@@ -6,8 +6,8 @@ The composite primary key for this table is (**id**, **name**).
 
 ## Relations
 
-The following tables depend on gitlab_users_groups:
-  - [gitlab_users_group_members](gitlab_users_group_members.md)
+The following tables depend on gitlab_groups_groups:
+  - [gitlab_groups_group_members](gitlab_groups_group_members.md)
 
 ## Columns
 | Name          | Type          |

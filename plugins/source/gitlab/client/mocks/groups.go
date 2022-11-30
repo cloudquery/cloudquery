@@ -55,6 +55,27 @@ func (mr *MockGroupsClientMockRecorder) ListGroupMembers(gid, opt interface{}, o
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListGroupMembers", reflect.TypeOf((*MockGroupsClient)(nil).ListGroupMembers), varargs...)
 }
 
+// ListGroupProjects mocks base method.
+func (m *MockGroupsClient) ListGroupProjects(gid interface{}, opt *gitlab.ListGroupProjectsOptions, options ...gitlab.RequestOptionFunc) ([]*gitlab.Project, *gitlab.Response, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{gid, opt}
+	for _, a := range options {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListGroupProjects", varargs...)
+	ret0, _ := ret[0].([]*gitlab.Project)
+	ret1, _ := ret[1].(*gitlab.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ListGroupProjects indicates an expected call of ListGroupProjects.
+func (mr *MockGroupsClientMockRecorder) ListGroupProjects(gid, opt interface{}, options ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{gid, opt}, options...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListGroupProjects", reflect.TypeOf((*MockGroupsClient)(nil).ListGroupProjects), varargs...)
+}
+
 // ListGroups mocks base method.
 func (m *MockGroupsClient) ListGroups(opt *gitlab.ListGroupsOptions, options ...gitlab.RequestOptionFunc) ([]*gitlab.Group, *gitlab.Response, error) {
 	m.ctrl.T.Helper()

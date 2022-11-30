@@ -4,13 +4,13 @@ import (
 	"github.com/xanzy/go-gitlab"
 )
 
-func Users() []*Resource {
+func Releases() []*Resource {
 	resources := []*Resource{
 		{
-			Service:    "users",
-			SubService: "users",
+			Service:    "releases",
+			SubService: "releases",
 			PKColumns:  []string{"id"},
-			Struct:     &gitlab.User{},
+			Struct:     &gitlab.Release{},
 		},
 	}
 

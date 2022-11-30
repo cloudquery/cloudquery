@@ -1,14 +1,12 @@
-# Table: gitlab_users_group_members
+# Table: gitlab_groups_group_members
 
 
 
 The primary key for this table is **id**.
 
 ## Relations
-This table depends on [gitlab_users_groups](gitlab_users_groups.md).
+This table depends on [gitlab_groups_groups](gitlab_groups_groups.md).
 
-The following tables depend on gitlab_users_group_members:
-  - [gitlab_users_users](gitlab_users_users.md)
 
 ## Columns
 | Name          | Type          |

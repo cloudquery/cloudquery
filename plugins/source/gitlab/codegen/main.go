@@ -8,7 +8,8 @@ import (
 
 func main() {
 	var resources []*recipes.Resource
-	resources = append(resources, recipes.Users()...)
+	resources = append(resources, recipes.Groups()...)
+	resources = append(resources, recipes.Projects()...)
 
 	for _, resource := range resources {
 		if err := resource.Generate(); err != nil {

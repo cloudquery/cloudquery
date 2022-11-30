@@ -1,5 +1,5 @@
 # Source Plugin: gitlab
 ## Tables
-- [gitlab_users_groups](gitlab_users_groups.md)
-  - [gitlab_users_group_members](gitlab_users_group_members.md)
-    - [gitlab_users_users](gitlab_users_users.md)
+- [gitlab_groups_groups](gitlab_groups_groups.md)
+  - [gitlab_groups_group_members](gitlab_groups_group_members.md)
+- [gitlab_projects_projects](gitlab_projects_projects.md)

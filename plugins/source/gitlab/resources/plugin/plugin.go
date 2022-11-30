@@ -2,7 +2,8 @@ package plugin
 
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/gitlab/client"
-	"github.com/cloudquery/cloudquery/plugins/source/gitlab/resources/services/users"
+	"github.com/cloudquery/cloudquery/plugins/source/gitlab/resources/services/groups"
+	"github.com/cloudquery/cloudquery/plugins/source/gitlab/resources/services/projects"
 	"github.com/cloudquery/plugin-sdk/plugins"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -16,7 +17,8 @@ func Plugin() *plugins.SourcePlugin {
 		"gitlab",
 		Version,
 		[]*schema.Table{
-			users.Groups(),
+			groups.Groups(),
+			projects.Projects(),
 		},
 		client.Configure,
 	)

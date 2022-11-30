@@ -21,8 +21,9 @@ type Client struct {
 	spec   specs.Source
 }
 type GitlabServices struct {
-	Users  services.UsersClient
-	Groups services.GroupsClient
+	Users    services.UsersClient
+	Groups   services.GroupsClient
+	Projects services.ProjectsClient
 }
 
 func (c *Client) Logger() *zerolog.Logger {
@@ -59,8 +60,9 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (sche
 	return &Client{
 		logger: logger,
 		Gitlab: GitlabServices{
-			Users:  c.Users,
-			Groups: c.Groups,
+			Users:    c.Users,
+			Groups:   c.Groups,
+			Projects: c.Projects,
 		},
 		spec: s,
 	}, nil
