@@ -29,7 +29,7 @@ V1 introduces a new config format that is closely related to the old one, but an
 
 The new config format for source plugins are as follows:
 
-```yaml
+```yaml copy
 kind: source
 spec:
   ## Required. name of the plugin to use
@@ -61,7 +61,7 @@ Check the [source spec documentation](/docs/reference/source-spec) for general l
 
 The new config format for destination plugins (e.g. PostgreSQL) is as follows:
 
-```yaml
+```yaml copy
 kind: destination
 spec:
   ## Required. name of the plugin

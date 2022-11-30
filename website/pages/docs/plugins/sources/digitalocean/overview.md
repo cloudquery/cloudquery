@@ -18,7 +18,7 @@ In order to get started with the DigitalOcean plugin, you need to create a YAML 
 
 The following example sets up the DigitalOcean plugin, and connects it to a postgresql destination:
 
-```yaml
+```yaml copy
 kind: source
 spec:
   # Source spec section
