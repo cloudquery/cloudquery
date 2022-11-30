@@ -1,5 +1,6 @@
 import nextra from 'nextra'
 import * as fs from 'fs';
+import path from 'path';
 
 const reSourcePluginVersion = /VERSION_SOURCE_([a-zA-Z0-9_]+)/;
 const reDestPluginVersion = /VERSION_DESTINATION_([a-zA-Z0-9_]+)/;
@@ -98,5 +99,13 @@ export default withNextra({
         destination: "https://github.com/cloudquery/cloudquery/releases",
       },
     ];
+  },
+  webpack: (config) => {
+    config.cache.buildDependencies = {
+      versions: fs
+        .readdirSync("versions")
+        .map((file) => path.resolve("versions", file)),
+    };
+    return config;
   },
 });
