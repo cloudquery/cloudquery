@@ -155,6 +155,11 @@ func FunctionVersions() *schema.Table {
 				Resolver: schema.PathResolver("SigningProfileVersionArn"),
 			},
 			{
+				Name:     "snap_start",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("SnapStart"),
+			},
+			{
 				Name:     "state",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("State"),
