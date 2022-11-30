@@ -1,7 +1,6 @@
 package recipes
 
 import (
-	"github.com/cloudquery/cloudquery/plugins/source/okta/resources/services/groups/models"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/okta/okta-sdk-golang/v2/okta"
@@ -24,7 +23,7 @@ func Applications() []*Resource {
 			Relations: []string{"ApplicationUsers()", "ApplicationGroupAssignments()"},
 		},
 		{
-			DataStruct: &models.ApplicationUser{},
+			DataStruct: &okta.AppUser{},
 			PKColumns:  []string{"app_id", "id"},
 			SkipFields: []string{"Profile"},
 			ExtraColumns: []codegen.ColumnDefinition{
@@ -41,6 +40,7 @@ func Applications() []*Resource {
 			},
 			Service:               "applications",
 			UnwrapEmbeddedStructs: true,
+			TableName:             "application_users",
 		},
 		{
 			DataStruct: &okta.ApplicationGroupAssignment{},

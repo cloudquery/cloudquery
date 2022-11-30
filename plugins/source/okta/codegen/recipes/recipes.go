@@ -31,9 +31,6 @@ type Resource struct {
 
 	Service string // Required
 
-	SkipServiceInTableName bool // Don't prepend service name to table name
-	SkipParentInTableName  bool // Don't prepend parent name to table name
-
 	// These are inferred with reflection but can be overridden
 	SubService string // Inferred from DataStruct name
 	TableName  string // singular Service + plural SubService
@@ -45,8 +42,7 @@ type Resource struct {
 	ResolverFuncName string // Calculated from TableFuncName
 
 	// Used for generating better table names
-	parent   *Resource
-	children []*Resource
+	parent *Resource
 }
 
 var (
@@ -83,12 +79,9 @@ func (r *Resource) GenerateNames() {
 		// Table names are always in [<singular>...]<plural> format. Add everything in singular form and pluralize the last word later
 
 		const sep = "_"
-		var nParts []string
-		if !r.SkipServiceInTableName {
-			nParts = strings.Split(pluralizeClient.Singular(r.Service), sep)
-		}
+		nParts := strings.Split(pluralizeClient.Singular(r.Service), sep)
 		p := r.parent
-		for !r.SkipParentInTableName && p != nil {
+		for p != nil {
 			nParts = appendNoRepeat(nParts, strings.Split(pluralizeClient.Singular(p.SubService), sep)...)
 			p = p.parent
 		}
@@ -113,18 +106,26 @@ func (r *Resource) GenerateNames() {
 func SetParentChildRelationships(resources []*Resource) error {
 	m := map[string]*Resource{}
 	for _, r := range resources {
-		key := r.Service + "_" + pluralizeClient.Plural(r.SubService)
+		var key string
+		if r.TableName != "" {
+			key = r.TableName
+		} else {
+			key = r.Service + "_" + pluralizeClient.Plural(r.SubService)
+		}
 		//log.Printf("%s.%s => %s", r.Service, r.SubService, key)
 		m[key] = r
 	}
 	for _, r := range resources {
 		for _, ch := range r.Relations {
-			name := strings.TrimPrefix(csr.ToSnake(strings.TrimSuffix(ch, "()")), r.Service+"_"+r.SubService+"_")
+			snakeChild := csr.ToSnake(strings.TrimSuffix(ch, "()"))
+			name := strings.TrimPrefix(snakeChild, r.Service+"_"+r.SubService+"_")
 			v, ok := m[r.Service+"_"+name]
+			if !ok {
+				v, ok = m[name]
+			}
 			if !ok {
 				return fmt.Errorf("child not found for %s.%s: %s missing", r.Service, r.SubService, name)
 			}
-			r.children = append(r.children, v)
 			v.parent = r
 		}
 	}
