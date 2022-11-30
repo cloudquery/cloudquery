@@ -136,3 +136,12 @@ Datadog
 nvm
 npm
 Gandi
+parallelization
+hyperscale
+goroutines
+arn
+arns
+ARN
+ARNs
+SCP
+SCPs

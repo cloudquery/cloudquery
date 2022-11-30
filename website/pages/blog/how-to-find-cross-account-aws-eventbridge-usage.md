@@ -1,0 +1,89 @@
+---
+title: Finding Cross-Account AWS EventBridge Usage
+tag: security
+date: 2022/11/30
+description: >-
+  How a CloudQuery customer wrote custom queries to find cross-account AWS EventBridge Usage.  AWS recently updated security features to help improve security of cross-account AWS EventBridge Event Bus Targets.  Teams can migrate to these new features to increase security and compliance.
+author: jsonkao
+---
+
+import { BlogHeader } from "../../components/BlogHeader"
+
+<BlogHeader/>
+
+## Overview
+
+Recently, AWS sent out customer notification emails regarding upcoming changes for EventBridge cross-account event bus targets.  This email was titled `Security posture recommendations for your cross-account invocations.` This notification email went to customers who were determined to have one or more impacted resources.
+
+In this post, we'll cover how one of our users, [James Barney](https://www.linkedin.com/in/james-barney/), used CloudQuery to respond to the AWS notification and change with a custom query built on top of CloudQuery's data.
+
+## Customer Testimonial
+
+> “CloudQuery helped us understand the exact impact that this AWS service change would have for our organization’s 100+ AWS accounts within 5 minutes of receiving the notification. CloudQuery saved us weeks of investigative work and gave us exactly the resource ARNs we needed to alter with this change.” 
+
+<div align="right">— James Barney</div>
+
+## EventBridge Change
+
+Beginning February 16, 2023, Amazon EventBridge will start requiring IAM roles for all new cross-account event bus targets.
+
+Previously, Amazon EventBridge did not require usage of IAM roles when sending events to cross-account event buses. Other routing use cases including cross-region or within the same account already require IAM roles for event bus to event bus delivery use cases. 
+
+Sample Resource Policy:
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [{
+    "Sid": "AccountExternal",
+    "Effect": "Allow",
+    "Principal": {
+      "AWS": "arn:aws:iam::123412341234:root"
+    },
+    "Action": "events:PutEvents",
+    "Resource": "arn:aws:events:us-east-1:111111111111:event-bus/wheels-on-the-bus"
+  }]
+}
+```
+
+## What this Means
+
+With this notice, AWS provided 90 days for customers to update their infrastructure-as-code templates for any new event bus targets.
+
+We recommend ensuring all legacy cross-account event bus targets are updated.  To do so, we need to do the following:
+* Find all impacted EventBridge Event Buses
+* Update all impacted EventBridge Event Buses (Stepping through environments and testing to ensure no adverse impact)
+* Validating that there are no legacy EventBridge Event Buses and they've all been updated to use IAM roles.
+
+For cross-account access, scoping permissions and principals in resource policies helps with reducing access and improves security posture.   
+
+## Customer Query
+
+We would like to thank [James Barney](https://www.linkedin.com/in/james-barney/) for sharing their use case and working with us on the below query.  We're especially happy when our users bring innovation and layer advanced queries on top of CloudQuery data to provide value to their organizations.
+
+```sql
+SELECT *
+FROM
+(
+	SELECT account_id, name, policy, arn,
+	  regexp_matches(policy, '[0-9]{12}:root', 'g') as ext_account
+	FROM aws_eventbridge_event_buses
+) data
+WHERE account_id != ext_account[1];
+```
+The above query will detect any usage the AWS account reference for cross-account access to Amazon EventBridge Event Buses and will return a table of each occurrence of a cross-account reference. If there are multiple accounts referenced in a policy, each account will be a separate row.
+
+By filtering on the regex `[0-9]{12}:root`, we look for any string that matches part of an AWS account resource identifier such as `1213412341234:root`.  While we do look through the entire policy, AWS account ARNs should only exist in the `Principal` block of statements. 
+
+## Contact Us
+
+If you have use cases or custom queries and examples from using CloudQuery, we would love to hear from you! Reach out to us on [GitHub](https://github.com/cloudquery/cloudquery) or [Discord](https://cloudquery.io/discord)!
+
+## References and Useful Links
+
+[AWS: Service Control Policies (SCPs)](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html)
+
+[AWS: Sending and receiving Amazon EventBridge events between AWS Account](https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-cross-account.html)
+
+[AWS EventBridge API Reference: PutTargets](https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_PutTargets.html)
+
+[CloudQuery: AWS Plugin](https://www.cloudquery.io/docs/plugins/sources/aws/overview)

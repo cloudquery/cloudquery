@@ -1,7 +1,6 @@
 # CSV Destination Plugin Recipes
 
-Full spec options for CSV destination available [here](https://github.com/cloudquery/cloudquery/tree/main/plugins/destination/csv).
-
+Full spec options for the CSV destination plugin are available [here](/docs/plugins/destinations/csv/overview#csv-spec).
 
 ## Basic
 
@@ -12,7 +11,8 @@ kind: destination
 spec:
   name: csv
   path: cloudquery/csv
-  version: "v1.1.12" # latest version of csv plugin
+  version: "VERSION_DESTINATION_CSV"
+  write_mode: "append"
   spec:
     directory: ./output # default to ./cq_csv_output
 ```
