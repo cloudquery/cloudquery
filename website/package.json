@@ -16,7 +16,6 @@
   "license": "MPL-2.0",
   "dependencies": {
     "@heroicons/react": "1.0.6",
-    "algoliasearch": "^4.14.2",
     "copy-to-clipboard": "3.3.3",
     "isomorphic-unfetch": "3.1.0",
     "next": "12.3.3",
@@ -27,8 +26,7 @@
     "prismjs": "1.29.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "react-hot-toast": "2.4.0",
-    "react-instantsearch-dom": "^6.38.1"
+    "react-hot-toast": "2.4.0"
   },
   "devDependencies": {
     "@babel/core": "7.20.2",

@@ -1,5 +1,4 @@
 import { promises as fs } from "fs";
-import algoliasearch from "algoliasearch";
 import path from "path";
 import { fileURLToPath } from "url";
 import { execa } from "execa";
