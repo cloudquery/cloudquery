@@ -38,7 +38,7 @@ CloudQuery key use-cases and features:
 - **Org Support**:
   You used to have to manually create (and maintain) an `account` block for each account in your entire organization. This was difficult for larger organizations where accounts are constantly being added and removed. We now integrate directly with AWS Organizations to find and configure all accounts in your Organization or in specific Organizational Units. Here is an example of a configuration for using the new organizations feature:
 
-  ```yaml
+  ```yaml copy
   kind: source
   spec:
     name: aws-0
@@ -65,7 +65,7 @@ CloudQuery key use-cases and features:
   - On a per account basis you can reference local credentials in your `~/.aws/config` or `~/.aws/credentials` files. Prior to this all accounts sourced their credentials from default credential chain.
     In the example below, `account1` utilizes the default credential provider chain while `account2` sources its credentials from the shared credentials file
 
-  ```yaml
+  ```yaml copy
   kind: source
   spec:
     name: aws-0

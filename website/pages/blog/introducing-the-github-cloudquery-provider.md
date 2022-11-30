@@ -30,7 +30,7 @@ In this tutorial, we will install CloudQuery and use it to fetch GitHub resource
     public_repo
   ```.
 - Create a `cloudquery.yml` file, similar to the following:
-  ```yaml
+  ```yaml copy
   kind: source
   spec:
     name: github

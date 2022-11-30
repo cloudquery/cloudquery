@@ -72,7 +72,7 @@ When using the AWS Console, the console itself will attempt to do some of the st
 
 Once you have the `thumbprint`, that should look something like `15E29108718111E59B3DAD31954647E3C344A231` we can get on to actually creating the Identity provider. The command to create the OpenID Connect Identity provider is as follows:
 
-```bash
+```bash copy
 aws iam create-open-id-connect-provider --url https://token.actions.githubusercontent.com --client-id-list https://github.com/(org name) --thumbprint-list 15E29108718111E59B3DAD31954647E3C344A231
 ```
 
@@ -290,7 +290,7 @@ Now that we have a working OpenID Connect provider within AWS, we need to add th
 
 The relevant blocks look like so:
 
-```yaml
+```yaml copy
 permissions:
   id-token: write
   contents: read # This is required for actions/checkout@v2
@@ -300,7 +300,7 @@ Adding the `permissions` to the job allows the action that gets the credentials 
 
 The next `step` is where the credential retrieving magic actually happens
 
-```yaml
+```yaml copy
     steps:
       […]
       - name: Configure AWS credentials

@@ -51,7 +51,7 @@ The first step in our case is taken care of by CloudQuery ([GitHub](https://gith
 
 Once CloudQuery loads the data into PostgreSQL, you can run the following queries to answer the above questions:
 
-```sql
+```sql copy
 /* All keys with not used in the last 90 days */
 SELECT DISTINCT aws_iam_users.account_id, aws_iam_users.arn, MAX(password_last_used), aws_iam_users.user_name, access_key_id, MAX(last_used) FROM aws_iam_users
     JOIN aws_iam_user_access_keys on aws_iam_users.arn = aws_iam_user_access_keys.user_arn
