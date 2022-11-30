@@ -66,7 +66,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/neptune v1.18.3
 	github.com/aws/aws-sdk-go-v2/service/organizations v1.17.0
 	github.com/aws/aws-sdk-go-v2/service/qldb v1.14.20
-	github.com/aws/aws-sdk-go-v2/service/quicksight v1.27.0
+	github.com/aws/aws-sdk-go-v2/service/quicksight v1.28.0
 	github.com/aws/aws-sdk-go-v2/service/ram v1.16.24
 	github.com/aws/aws-sdk-go-v2/service/rds v1.31.0
 	github.com/aws/aws-sdk-go-v2/service/redshift v1.26.16
