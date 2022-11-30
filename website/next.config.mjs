@@ -42,7 +42,7 @@ function isUnreleasedPlugin(key, name) {
     const nonEmptyChangelog = changelogContent.includes("1.0.0");
     return !nonEmptyChangelog;
   } catch (err) {
-    // no ChangeLog, this is new plugin
+    // no Changelog, this is new plugin
     return true;
   }
 }
