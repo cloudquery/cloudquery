@@ -2,9 +2,9 @@
 
 ## Example
 
-This example syncs from Gandi to a Postgres destination, using API Key authentication. The (top level) source spec section is described in the [Source Spec Reference](https://www.cloudquery.io/docs/reference/source-spec).
+This example syncs from Gandi to a Postgres destination, using API Key authentication. The (top level) source spec section is described in the [Source Spec Reference]/docs/reference/source-spec).
 
-```yml
+```yaml
 kind: source
 # Common source-plugin configuration
 spec:
@@ -37,4 +37,3 @@ This is the (nested) spec used by the Gandi source plugin.
 
 - `timeout_secs` (integer in seconds, optional. Default: 5):
   Timeout for requests against the Gandi API.
-

@@ -5,6 +5,7 @@
   "gcp": "GCP",
   "cloudflare": "Cloudflare",
   "digitalocean": "DigitalOcean",
+  "gandi": "Gandi",
   "github": "GitHub",
   "heroku": "Heroku",
   "k8s": "Kubernetes",
