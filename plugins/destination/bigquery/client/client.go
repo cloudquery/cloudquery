@@ -20,9 +20,6 @@ type Client struct {
 }
 
 func New(_ context.Context, logger zerolog.Logger, destSpec specs.Destination) (plugins.DestinationClient, error) {
-	//if destSpec.WriteMode != specs.WriteModeAppend {
-	//	return nil, fmt.Errorf("bigquery destination only supports append mode")
-	//}
 	c := &Client{
 		logger: logger.With().Str("module", "bq-dest").Logger(),
 	}

@@ -29,6 +29,9 @@
     "plugins/destination/snowflake": {
       "component": "plugins-destination-snowflake"
     },
+    "plugins/destination/bigquery": {
+      "component": "plugins-destination-bigquery"
+    },
     "plugins/destination/test": {
       "component": "plugins-destination-test"
     }
