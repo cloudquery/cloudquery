@@ -19,8 +19,9 @@ In this post, we'll cover how one of our users, [James Barney](https://www.linke
 
 ## Customer Testimonial
 
-“CloudQuery helped us understand the exact impact that this AWS service change would have for our organization’s 100+ AWS accounts within 5 minutes of receiving the notification. CloudQuery saved us weeks of investigative work and gave us exactly the resource ARNs we needed to alter with this change.” 
-<div align="right">- James Barney</div>
+> “CloudQuery helped us understand the exact impact that this AWS service change would have for our organization’s 100+ AWS accounts within 5 minutes of receiving the notification. CloudQuery saved us weeks of investigative work and gave us exactly the resource ARNs we needed to alter with this change.” 
+
+<div align="right">— James Barney</div>
 
 ## EventBridge Change
 
