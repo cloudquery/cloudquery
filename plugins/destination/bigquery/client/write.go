@@ -11,7 +11,10 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
-const batchSize = 1000
+const (
+	batchSize    = 1000
+	writeTimeout = 5 * time.Minute
+)
 
 type worker struct {
 	writeChan chan []interface{}
@@ -49,9 +52,10 @@ func (c *Client) writeResource(ctx context.Context, table *schema.Table, resourc
 			c.logger.Debug().Msg("Writing batch")
 			// we use a context with timeout here, because inserter.Put can retry indefinitely
 			// on retryable errors if not given a context timeout
-			timeoutCtx, cancel := context.WithTimeout(ctx, 5*time.Minute)
+			timeoutCtx, cancel := context.WithTimeout(ctx, writeTimeout)
 			err := inserter.Put(timeoutCtx, batch)
 			if err != nil {
+				cancel()
 				return fmt.Errorf("failed to put item into BigQuery table %s: %w", table.Name, err)
 			}
 			// release resources from timeout context if it finished early
@@ -62,12 +66,12 @@ func (c *Client) writeResource(ctx context.Context, table *schema.Table, resourc
 	if len(batch) > 0 {
 		c.logger.Debug().Msg("Writing final batch")
 		// flush final rows
-		timeoutCtx, cancel := context.WithTimeout(ctx, 5*time.Minute)
+		timeoutCtx, cancel := context.WithTimeout(ctx, writeTimeout)
+		defer cancel()
 		err := inserter.Put(timeoutCtx, batch)
 		if err != nil {
 			return fmt.Errorf("failed to put item into BigQuery table %s: %w", table.Name, err)
 		}
-		cancel()
 	}
 
 	return nil

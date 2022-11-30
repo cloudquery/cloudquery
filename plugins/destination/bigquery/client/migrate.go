@@ -48,7 +48,8 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 func (c *Client) doesTableExist(ctx context.Context, table string) (bool, error) {
 	c.logger.Debug().Str("dataset", c.datasetID).Str("table", table).Msg("Checking existence")
 	tableRef := c.client.Dataset(c.datasetID).Table(table)
-	if md, err := tableRef.Metadata(ctx); err != nil {
+	md, err := tableRef.Metadata(ctx)
+	if err != nil {
 		if e, ok := err.(*googleapi.Error); ok {
 			if e.Code == http.StatusNotFound {
 				return false, nil
@@ -56,31 +57,25 @@ func (c *Client) doesTableExist(ctx context.Context, table string) (bool, error)
 		}
 		c.logger.Error().Err(err).Msg("Got unexpected error while checking table metadata")
 		return false, err
-	} else {
-		c.logger.Debug().Interface("creation_time", md.CreationTime).Msg("Got table metadata")
 	}
+
+	c.logger.Debug().Interface("creation_time", md.CreationTime).Msg("Got table metadata")
 	return true, nil
 }
 
 func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) error {
-	bqSchema, err := c.bigQuerySchemaForTable(table)
-	if err != nil {
-		return fmt.Errorf("failed to create BigQuery schema for table: %w", err)
-	}
+	bqSchema := c.bigQuerySchemaForTable(table)
 	tm := bigquery.TableMetadataToUpdate{
 		Name:        table.Name,
 		Description: table.Description,
 		Schema:      bqSchema,
 	}
-	_, err = c.client.Dataset(c.datasetID).Table(table.Name).Update(ctx, tm, "")
+	_, err := c.client.Dataset(c.datasetID).Table(table.Name).Update(ctx, tm, "")
 	return err
 }
 
 func (c *Client) createTable(ctx context.Context, table *schema.Table) error {
-	bqSchema, err := c.bigQuerySchemaForTable(table)
-	if err != nil {
-		return fmt.Errorf("failed to create BigQuery schema for table: %w", err)
-	}
+	bqSchema := c.bigQuerySchemaForTable(table)
 	tm := bigquery.TableMetadata{
 		Name:        table.Name,
 		Description: table.Description,
@@ -89,7 +84,7 @@ func (c *Client) createTable(ctx context.Context, table *schema.Table) error {
 	return c.client.Dataset(c.datasetID).Table(table.Name).Create(ctx, &tm)
 }
 
-func (c *Client) bigQuerySchemaForTable(table *schema.Table) (bigquery.Schema, error) {
+func (c *Client) bigQuerySchemaForTable(table *schema.Table) bigquery.Schema {
 	s := bigquery.Schema{}
 	for _, col := range table.Columns {
 		columnType, repeated := c.SchemaTypeToBigQuery(col.Type)
@@ -100,5 +95,5 @@ func (c *Client) bigQuerySchemaForTable(table *schema.Table) (bigquery.Schema, e
 			Type:        columnType,
 		})
 	}
-	return s, nil
+	return s
 }
