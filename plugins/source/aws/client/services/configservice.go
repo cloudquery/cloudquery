@@ -52,10 +52,12 @@ type ConfigserviceClient interface {
 	GetOrganizationConformancePackDetailedStatus(context.Context, *configservice.GetOrganizationConformancePackDetailedStatusInput, ...func(*configservice.Options)) (*configservice.GetOrganizationConformancePackDetailedStatusOutput, error)
 	GetOrganizationCustomRulePolicy(context.Context, *configservice.GetOrganizationCustomRulePolicyInput, ...func(*configservice.Options)) (*configservice.GetOrganizationCustomRulePolicyOutput, error)
 	GetResourceConfigHistory(context.Context, *configservice.GetResourceConfigHistoryInput, ...func(*configservice.Options)) (*configservice.GetResourceConfigHistoryOutput, error)
+	GetResourceEvaluationSummary(context.Context, *configservice.GetResourceEvaluationSummaryInput, ...func(*configservice.Options)) (*configservice.GetResourceEvaluationSummaryOutput, error)
 	GetStoredQuery(context.Context, *configservice.GetStoredQueryInput, ...func(*configservice.Options)) (*configservice.GetStoredQueryOutput, error)
 	ListAggregateDiscoveredResources(context.Context, *configservice.ListAggregateDiscoveredResourcesInput, ...func(*configservice.Options)) (*configservice.ListAggregateDiscoveredResourcesOutput, error)
 	ListConformancePackComplianceScores(context.Context, *configservice.ListConformancePackComplianceScoresInput, ...func(*configservice.Options)) (*configservice.ListConformancePackComplianceScoresOutput, error)
 	ListDiscoveredResources(context.Context, *configservice.ListDiscoveredResourcesInput, ...func(*configservice.Options)) (*configservice.ListDiscoveredResourcesOutput, error)
+	ListResourceEvaluations(context.Context, *configservice.ListResourceEvaluationsInput, ...func(*configservice.Options)) (*configservice.ListResourceEvaluationsOutput, error)
 	ListStoredQueries(context.Context, *configservice.ListStoredQueriesInput, ...func(*configservice.Options)) (*configservice.ListStoredQueriesOutput, error)
 	ListTagsForResource(context.Context, *configservice.ListTagsForResourceInput, ...func(*configservice.Options)) (*configservice.ListTagsForResourceOutput, error)
 }
