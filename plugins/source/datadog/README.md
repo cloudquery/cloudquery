@@ -5,4 +5,3 @@ The CloudQuery Datadog plugin extracts your Datadog information and loads it int
 ## Links
 
 - [User Guide](https://cloudquery.io/docs/plugins/sources/datadog/overview)
-- [Contribution Guide](./CONTRIBUTING.md)
