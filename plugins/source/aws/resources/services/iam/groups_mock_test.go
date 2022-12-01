@@ -56,7 +56,6 @@ func buildIamGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().GetGroupPolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&gp, nil)
 
-	iamAccessDetailsMock(t, m)
 	return client.Services{
 		Iam: m,
 	}

@@ -2,6 +2,7 @@ package iam
 
 import (
 	"context"
+
 	"golang.org/x/sync/errgroup"
 
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/iam/models"

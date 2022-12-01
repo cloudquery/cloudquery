@@ -2,6 +2,7 @@ package iam
 
 import (
 	"context"
+
 	"golang.org/x/sync/errgroup"
 
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"

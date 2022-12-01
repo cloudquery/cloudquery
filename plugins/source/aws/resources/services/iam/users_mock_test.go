@@ -90,7 +90,6 @@ func buildIamUsers(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().GetUserPolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&p, nil)
 
-	iamAccessDetailsMock(t, m)
 	return client.Services{
 		Iam: m,
 	}

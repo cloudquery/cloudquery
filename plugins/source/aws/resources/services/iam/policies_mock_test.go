@@ -42,7 +42,6 @@ func buildIamPolicies(t *testing.T, ctrl *gomock.Controller) client.Services {
 			},
 		}, nil)
 
-	iamAccessDetailsMock(t, m)
 	return client.Services{
 		Iam: m,
 	}
