@@ -1,6 +1,6 @@
 # Generate mocks for mock/unit testing 
-.PHONY: generate-mocks
-gen-mocks:
+.PHONY: gen-mocks
+gen-mocks: install-tools
 	go generate ./...
 
 # Test unit
@@ -12,6 +12,12 @@ test:
 .PHONY: install-hooks
 install-hooks:
 	pre-commit install
+
+# Install tools
+.PHONY: install-tools
+install-tools:
+	@echo Installing tools from tools/tool.go
+	@cat tools/tool.go | grep _ | awk -F'"' '{print $$2}' | xargs -tI % go install %
 
 .PHONY: gen-docs
 gen-docs:
