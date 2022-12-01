@@ -1,5 +1,10 @@
 # AWS Source Plugin
 
+import { getLatestVersion } from "../../../../../utils/versions";
+import { Badge } from "../../../../../components/Badge";
+
+<Badge text={"Latest: " + getLatestVersion("source", "aws")}/>
+
 The AWS Source plugin extracts information from many of the supported services by Amazon Web Services (AWS).
 
 ## Authentication

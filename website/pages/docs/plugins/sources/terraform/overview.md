@@ -1,4 +1,9 @@
-# Terraform Plugin
+# Terraform Source Plugin
+
+import { getLatestVersion } from "../../../../../utils/versions";
+import { Badge } from "../../../../../components/Badge";
+
+<Badge text={"Latest: " + getLatestVersion("source", "terraform")}/>
 
 The CloudQuery Terraform plugin extracts terraform state and loads it into any supported CloudQuery destination (e.g. PostgreSQL).
 

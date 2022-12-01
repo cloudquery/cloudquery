@@ -1,4 +1,9 @@
-# Heroku Plugin
+# Heroku Source Plugin
+
+import { getLatestVersion } from "../../../../../utils/versions";
+import { Badge } from "../../../../../components/Badge";
+
+<Badge text={"Latest: " + getLatestVersion("source", "heroku")}/>
 
 The CloudQuery Heroku plugin extracts your Heroku data and loads it into any supported CloudQuery destination (e.g. PostgreSQL).
 

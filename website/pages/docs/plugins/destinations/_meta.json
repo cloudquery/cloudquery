@@ -1,7 +1,7 @@
 {
   "overview": "Overview",
+  "csv": "CSV",
   "postgresql": "PostgreSQL",
   "snowflake": "Snowflake",
-  "sqlite": "SQLite",
-  "csv": "CSV"
+  "sqlite": "SQLite"
 }

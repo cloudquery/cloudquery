@@ -38,6 +38,15 @@ var defaultAccountColumns = []codegen.ColumnDefinition{
 	},
 }
 
+var defaultAccountColumnsPK = []codegen.ColumnDefinition{
+	{
+		Name:     "account_name",
+		Type:     schema.TypeString,
+		Resolver: "client.ResolveAccountName",
+		Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+	},
+}
+
 //go:embed templates/*.go.tpl
 var templatesFS embed.FS
 
