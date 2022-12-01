@@ -1,6 +1,8 @@
 package recipes
 
 import (
+	"github.com/cloudquery/plugin-sdk/codegen"
+	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/xanzy/go-gitlab"
 )
 
@@ -11,6 +13,15 @@ func Users() []*Resource {
 			SubService: "users",
 			PKColumns:  []string{"id"},
 			Struct:     &gitlab.User{},
+			SkipFields: []string{"LastActivityOn"},
+			ExtraColumns: []codegen.ColumnDefinition{
+				{
+					Name:          "last_activity_on",
+					Type:          schema.TypeJSON,
+					Resolver:      `schema.PathResolver("LastActivityOn")`,
+					IgnoreInTests: true,
+				},
+			},
 		},
 	}
 

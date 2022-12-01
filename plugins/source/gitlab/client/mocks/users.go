@@ -54,3 +54,24 @@ func (mr *MockUsersClientMockRecorder) GetUser(user, opt interface{}, options ..
 	varargs := append([]interface{}{user, opt}, options...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUser", reflect.TypeOf((*MockUsersClient)(nil).GetUser), varargs...)
 }
+
+// ListUsers mocks base method.
+func (m *MockUsersClient) ListUsers(opt *gitlab.ListUsersOptions, options ...gitlab.RequestOptionFunc) ([]*gitlab.User, *gitlab.Response, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{opt}
+	for _, a := range options {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListUsers", varargs...)
+	ret0, _ := ret[0].([]*gitlab.User)
+	ret1, _ := ret[1].(*gitlab.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ListUsers indicates an expected call of ListUsers.
+func (mr *MockUsersClientMockRecorder) ListUsers(opt interface{}, options ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{opt}, options...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListUsers", reflect.TypeOf((*MockUsersClient)(nil).ListUsers), varargs...)
+}

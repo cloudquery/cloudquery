@@ -5,3 +5,4 @@
 - [gitlab_projects](gitlab_projects.md)
   - [gitlab_projects_releases](gitlab_projects_releases.md)
 - [gitlab_settings](gitlab_settings.md)
+- [gitlab_users](gitlab_users.md)

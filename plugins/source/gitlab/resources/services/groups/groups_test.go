@@ -10,7 +10,7 @@ import (
 	"github.com/xanzy/go-gitlab"
 )
 
-func buildUsers(t *testing.T, ctrl *gomock.Controller) client.GitlabServices {
+func buildGroups(t *testing.T, ctrl *gomock.Controller) client.GitlabServices {
 	userMock := mocks.NewMockUsersClient(ctrl)
 
 	var user *gitlab.User
@@ -40,6 +40,6 @@ func buildUsers(t *testing.T, ctrl *gomock.Controller) client.GitlabServices {
 	}
 }
 
-func TestStorageBillings(t *testing.T) {
-	client.GitlabMockTestHelper(t, Groups(), buildUsers, client.TestOptions{})
+func TestGroups(t *testing.T) {
+	client.GitlabMockTestHelper(t, Groups(), buildGroups, client.TestOptions{})
 }
