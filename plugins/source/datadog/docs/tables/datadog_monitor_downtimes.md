@@ -7,6 +7,7 @@ The primary key for this table is **_cq_id**.
 ## Relations
 This table depends on [datadog_monitors](datadog_monitors.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
