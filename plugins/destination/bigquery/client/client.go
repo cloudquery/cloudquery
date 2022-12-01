@@ -12,14 +12,19 @@ import (
 
 type Client struct {
 	plugins.DefaultReverseTransformer
-	logger    zerolog.Logger
-	spec      specs.Destination
-	metrics   plugins.DestinationMetrics
-	client    *bigquery.Client
-	datasetID string
+	logger     zerolog.Logger
+	spec       specs.Destination
+	metrics    plugins.DestinationMetrics
+	client     *bigquery.Client
+	pluginSpec Spec
+	projectID  string
+	datasetID  string
 }
 
 func New(_ context.Context, logger zerolog.Logger, destSpec specs.Destination) (plugins.DestinationClient, error) {
+	if destSpec.WriteMode != specs.WriteModeAppend {
+		return nil, fmt.Errorf("bigquery destination only supports append mode")
+	}
 	c := &Client{
 		logger: logger.With().Str("module", "bq-dest").Logger(),
 	}
@@ -37,7 +42,9 @@ func New(_ context.Context, logger zerolog.Logger, destSpec specs.Destination) (
 		return nil, fmt.Errorf("failed to create new BigQuery client: %w", err)
 	}
 	c.client = client
+	c.projectID = spec.ProjectID
 	c.datasetID = spec.DatasetID
+	c.pluginSpec = spec
 	return c, nil
 }
 

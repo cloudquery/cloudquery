@@ -74,11 +74,30 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 func (c *Client) createTable(ctx context.Context, table *schema.Table) error {
 	bqSchema := c.bigQuerySchemaForTable(table)
 	tm := bigquery.TableMetadata{
-		Name:        table.Name,
-		Description: table.Description,
-		Schema:      bqSchema,
+		Name:             table.Name,
+		Location:         "",
+		Description:      table.Description,
+		Schema:           bqSchema,
+		TimePartitioning: c.timePartitioning(),
 	}
 	return c.client.Dataset(c.datasetID).Table(table.Name).Create(ctx, &tm)
+}
+
+func (c *Client) timePartitioning() *bigquery.TimePartitioning {
+	switch c.pluginSpec.TimePartitioning {
+	case TimePartitioningOptionHour:
+		return &bigquery.TimePartitioning{
+			Type:  "HOUR",
+			Field: "_cq_sync_time",
+		}
+	case TimePartitioningOptionDay:
+		return &bigquery.TimePartitioning{
+			Type:  "DAY",
+			Field: "_cq_sync_time",
+		}
+	default:
+		return nil
+	}
 }
 
 func (c *Client) bigQuerySchemaForTable(table *schema.Table) bigquery.Schema {

@@ -13,12 +13,14 @@ import (
 
 const concurrentDeletions = 10
 
-// DeleteStale for BigQuery deletes stale records from previous syncs. However, since BigQuery uses a streaming buffer that
+// DeleteStale for BigQuery deletes stale records from previous syncs. Because BigQuery uses a streaming buffer that
 // stores records for up to 90 minutes and disallows deletions during this time, it is important that syncs using the delete-stale
 // functionality be spaced at least 90 minutes apart. This shouldn't be a problem for most CloudQuery users, who typically
 // run syncs once a day. If more frequent syncs are needed, consider batch-loading from a GCS bucket.
 // See https://stackoverflow.com/questions/43085896/update-or-delete-tables-with-streaming-buffer-in-bigquery for more
 // details and further reading.
+// Note that although this function works, it is not currently used because the BigQuery plugin only supports "append" mode,
+// and it is not possible to overwrite rows in BigQuery. It might be used by other modes in the future.
 func (c *Client) DeleteStale(ctx context.Context, tables schema.Tables, source string, syncTime time.Time) error {
 	eg := errgroup.Group{}
 	eg.SetLimit(concurrentDeletions)
@@ -27,11 +29,13 @@ func (c *Client) DeleteStale(ctx context.Context, tables schema.Tables, source s
 		eg.Go(func() error {
 			var sb strings.Builder
 			sb.WriteString("delete from ")
-			sb.WriteString("`" + c.datasetID + "." + table.Name + "`")
+			sb.WriteString("`" + c.projectID + "." + c.datasetID + "." + table.Name + "`")
 			sb.WriteString(" where ")
 			sb.WriteString(schema.CqSourceNameColumn.Name)
 			sb.WriteString(" = @cq_source_name and ")
 			sb.WriteString(schema.CqSyncTimeColumn.Name)
+			// Potential future improvement: use information about the oldest entry in the streaming buffer
+			// from table metadata to adjust this interval.
 			sb.WriteString(" < TIMESTAMP_SUB(TIMESTAMP(@cq_sync_time), INTERVAL 90 MINUTE)")
 			sql := sb.String()
 			q := c.client.Query(sql)
