@@ -6,14 +6,14 @@ require (
 	github.com/cloudquery/plugin-sdk v1.10.0
 	github.com/google/go-cmp v0.5.9
 	github.com/googleapis/gax-go/v2 v2.7.0
-	github.com/heroku/heroku-go/v5 v5.4.1
+	github.com/heroku/heroku-go/v5 v5.5.0
 	github.com/iancoleman/strcase v0.2.0
 	github.com/jinzhu/inflection v1.0.0
 	github.com/julienschmidt/httprouter v1.3.0
 	github.com/pkg/errors v0.9.1
 	github.com/rs/zerolog v1.28.0
-	google.golang.org/api v0.102.0
-	google.golang.org/grpc v1.50.1
+	google.golang.org/api v0.103.0
+	google.golang.org/grpc v1.51.0
 )
 
 require (
