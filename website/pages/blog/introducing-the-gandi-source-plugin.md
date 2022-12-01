@@ -25,7 +25,7 @@ Below are some real world query examples to get you started.
 
 ## Detect soon to expire domain registrations
 
-If you have more than just one domain, keeping track of which one will expire soon can be a problem. Here's a query to keep an eye on how many days left on each registration.
+If you have more than just one domain, keeping track of which one will expire soon can be a problem. Here's a query to check how many days left on each registration.
 
 ```sql
 select fqdn, dates->>'registry_ends_at' as registry_ends_at, date_trunc('day', (dates->>'registry_ends_at')::timestamp - current_timestamp) as days_left from gandi_domains where ((dates->>'registry_ends_at')::timestamp - interval '90 day') < current_timestamp order by 1;
@@ -78,7 +78,7 @@ yourdomain.com | ns2  | {8.8.4.4}
 
 ## Get domains in Gandi LiveDNS
 
-Using the following query it's possible to check which domains 'live' LiveDNS (and which don't) and get their configured nameservers.
+Using the following query it's possible to check which domains 'live' LiveDNS (and which don't) and get their configured name servers.
 
 ```sql
 select fqdn, current, nameservers from gandi_domain_live_dns order by 1;
