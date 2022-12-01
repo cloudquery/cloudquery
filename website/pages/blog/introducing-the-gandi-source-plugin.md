@@ -5,7 +5,7 @@ date: 2022/12/01
 description: >-
 CloudQuery is an open-source, extensible framework that gives you a
 single-pane-of-glass to your cloud-infrastructure using SQL. Today, we are
-happy to announce the release of the Gandi source plugin CloudQuery.
+happy to announce the release of the Gandi source plugin.
 author: disq
 ---
 
