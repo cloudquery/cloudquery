@@ -1,4 +1,9 @@
-# CloudQuery CSV Destination Plugin
+# CSV Destination Plugin
+
+import { getLatestVersion } from "../../../../../utils/versions";
+import { Badge } from "../../../../../components/Badge";
+
+<Badge text={"Latest: " + getLatestVersion("destination", "csv")}/>
 
 This destination plugin lets you sync data from a CloudQuery source to CSV files.
 
