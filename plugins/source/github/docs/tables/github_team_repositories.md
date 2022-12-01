@@ -61,6 +61,10 @@ This table depends on [github_teams](github_teams.md).
 |allow_forking|Bool|
 |delete_branch_on_merge|Bool|
 |use_squash_pr_title_as_default|Bool|
+|squash_merge_commit_title|String|
+|squash_merge_commit_message|String|
+|merge_commit_title|String|
+|merge_commit_message|String|
 |topics|StringArray|
 |archived|Bool|
 |disabled|Bool|
