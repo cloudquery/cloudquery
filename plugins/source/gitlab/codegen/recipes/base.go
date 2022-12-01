@@ -146,7 +146,7 @@ func (resource *Resource) Generate() error {
 	extraColumns = append(extraColumns, resource.ExtraColumns...)
 
 	resource.Table, err = codegen.NewTableFromStruct(
-		fmt.Sprintf("gitlab_%s_%s", resource.Service, resource.SubService),
+		fmt.Sprintf("gitlab_%s", resource.SubService),
 		resource.Struct,
 		codegen.WithUnwrapAllEmbeddedStructs(),
 		codegen.WithSkipFields(skipFields),
