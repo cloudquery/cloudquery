@@ -144,7 +144,9 @@ jobs:
       - name: Build
         run: go build .
       - name: Setup CloudQuery
-        uses: cloudquery/setup-cloudquery@v2
+        uses: cloudquery/setup-cloudquery@v3
+        with:
+          version: 'v2.0.22'
       - name: Migrate DB
         run: cloudquery migrate test/policy_cq_config.yml
         env:
