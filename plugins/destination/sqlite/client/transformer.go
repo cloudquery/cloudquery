@@ -1,6 +1,10 @@
 package client
 
-import "github.com/cloudquery/plugin-sdk/schema"
+import (
+	"strings"
+
+	"github.com/cloudquery/plugin-sdk/schema"
+)
 
 func (*Client) TransformBool(v *schema.Bool) interface{} {
 	return v.String()
@@ -27,11 +31,11 @@ func (*Client) TransformJSON(v *schema.JSON) interface{} {
 }
 
 func (*Client) TransformText(v *schema.Text) interface{} {
-	return v.String()
+	return stripNulls(v.String())
 }
 
 func (*Client) TransformTextArray(v *schema.TextArray) interface{} {
-	return v.String()
+	return stripNulls(v.String())
 }
 
 func (*Client) TransformTimestamptz(v *schema.Timestamptz) interface{} {
@@ -68,4 +72,8 @@ func (*Client) TransformMacaddr(v *schema.Macaddr) interface{} {
 
 func (*Client) TransformMacaddrArray(v *schema.MacaddrArray) interface{} {
 	return v.String()
+}
+
+func stripNulls(s string) string {
+	return strings.ReplaceAll(s, "\x00", "")
 }
