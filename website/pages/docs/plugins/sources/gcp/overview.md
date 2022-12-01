@@ -1,5 +1,10 @@
 # GCP Source Plugin
 
+import { getLatestVersion } from "../../../../../utils/versions";
+import { Badge } from "../../../../../components/Badge";
+
+<Badge text={"Latest: " + getLatestVersion("source", "gcp")}/>
+
 The GCP Source plugin for CloudQuery extracts configuration from a variety of GCP APIs and loads it into any supported CloudQuery destination (e.g. PostgreSQL).
 
 ## Libraries in Use

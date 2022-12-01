@@ -1,4 +1,9 @@
-# CloudQuery Snowflake Destination Plugin
+# Snowflake Destination Plugin
+
+import { getLatestVersion } from "../../../../../utils/versions";
+import { Badge } from "../../../../../components/Badge";
+
+<Badge text={"Latest: " + getLatestVersion("destination", "snowflake")}/>
 
 The snowflake plugin helps you sync data to your Snowflake data warehouse.
 

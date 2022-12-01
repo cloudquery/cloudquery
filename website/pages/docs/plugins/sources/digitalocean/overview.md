@@ -1,4 +1,9 @@
-# DigitalOcean Plugin
+# DigitalOcean Source Plugin
+
+import { getLatestVersion } from "../../../../../utils/versions";
+import { Badge } from "../../../../../components/Badge";
+
+<Badge text={"Latest: " + getLatestVersion("source", "digitalocean")}/>
 
 The CloudQuery DigitalOcean plugin pulls configuration from DigitalOcean.
 

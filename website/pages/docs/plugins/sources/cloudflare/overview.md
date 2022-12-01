@@ -1,4 +1,9 @@
-# Cloudflare Plugin
+# Cloudflare Source Plugin
+
+import { getLatestVersion } from "../../../../../utils/versions";
+import { Badge } from "../../../../../components/Badge";
+
+<Badge text={"Latest: " + getLatestVersion("source", "cloudflare")}/>
 
 The CloudQuery Cloudflare plugin pulls configuration out of Cloudflare resources.
 

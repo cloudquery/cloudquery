@@ -1,4 +1,9 @@
-# Okta Plugin
+# Okta Source Plugin
+
+import { getLatestVersion } from "../../../../../utils/versions";
+import { Badge } from "../../../../../components/Badge";
+
+<Badge text={"Latest: " + getLatestVersion("source", "okta")}/>
 
 The CloudQuery Okta plugin extracts Okta resources.
 
