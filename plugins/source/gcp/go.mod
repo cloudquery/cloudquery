@@ -16,7 +16,7 @@ require (
 	cloud.google.com/go/monitoring v1.9.0
 	cloud.google.com/go/redis v1.10.0
 	cloud.google.com/go/resourcemanager v1.4.0
-	cloud.google.com/go/run v0.4.0
+	cloud.google.com/go/run v0.107.0
 	cloud.google.com/go/secretmanager v1.9.0
 	cloud.google.com/go/serviceusage v1.4.0
 	cloud.google.com/go/storage v1.28.0
