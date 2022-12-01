@@ -26,7 +26,7 @@ lint:
 gen-docs:
 	rm -rf ./docs/tables/*
 	go run main.go doc ./docs/tables
-	sed  's/\[\(.*\)\](.*)/\1/' docs/tables/README.md > ../../../website/pages/docs/plugins/sources/gcp/tables.md
+	sed 's_(\(.*\))_(https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/\1)_' docs/tables/README.md > ../../../website/pages/docs/plugins/sources/gcp/tables.md
 
 .PHONY: gen-code
 gen-code:
