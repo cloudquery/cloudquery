@@ -98,7 +98,6 @@ const replaceMdxCodeVersions = (node) => {
 const withNextra = nextra({
   theme: "nextra-theme-docs",
   themeConfig: "./theme.config.tsx",
-  unstable_flexsearch: true,
   unstable_staticImage: true,
   mdxOptions: {
     rehypePrettyCodeOptions: {

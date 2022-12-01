@@ -24,7 +24,7 @@ const theme: DocsThemeConfig = {
   getNextSeoProps: () => ({
     titleTemplate: "%s | CloudQuery",
   }),
-  search: {},
+  search: { component: null },
   chat: {
     link: "https://www.cloudquery.io/discord",
   },
