@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/Azure/azure-sdk-for-go v61.6.0+incompatible
-	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.1.4
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.2.0
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.1.0
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions v1.0.0
 	github.com/Azure/go-autorest/autorest v0.11.28
