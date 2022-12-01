@@ -30,7 +30,7 @@ require (
 	github.com/stretchr/testify v1.8.1
 	github.com/thoas/go-funk v0.9.3-0.20221027085339-5573bc209e28
 	google.golang.org/api v0.103.0
-	google.golang.org/genproto v0.0.0-20221111202108-142d8a6fa32e
+	google.golang.org/genproto v0.0.0-20221130183247-a2ec334bae6f
 	google.golang.org/grpc v1.50.1
 	google.golang.org/protobuf v1.28.1
 )
