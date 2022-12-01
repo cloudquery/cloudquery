@@ -25,7 +25,7 @@ Below are some real world query examples to get you started.
 
 ## Detect domain registrations that will expire soon
 
-If you have more than just one domain, keeping track of which one will expire soon can be a problem. Here's a query to check how many days left on each registration.
+If you have more than just one domain, keeping track of which one will expire soon can be a problem. Here's a query to check how many days there are left on each registration:
 
 ```sql
 select fqdn, dates->>'registry_ends_at' as registry_ends_at, date_trunc('day', (dates->>'registry_ends_at')::timestamp - current_timestamp) as days_left from gandi_domains where ((dates->>'registry_ends_at')::timestamp - interval '90 day') < current_timestamp order by 1;
