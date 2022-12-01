@@ -31,7 +31,7 @@ If you have more than just one domain, keeping track of which one will expire so
 select fqdn, dates->>'registry_ends_at' as registry_ends_at, date_trunc('day', (dates->>'registry_ends_at')::timestamp - current_timestamp) as days_left from gandi_domains where ((dates->>'registry_ends_at')::timestamp - interval '90 day') < current_timestamp order by 1;
 ```
 
-This query would output a table of domain names that are going to expire in the next 90 days or less:
+This query would output a table of domain names that are going to expire within the next 90 days:
 
 ```
       fqdn      |   registry_ends_at   | days_left
