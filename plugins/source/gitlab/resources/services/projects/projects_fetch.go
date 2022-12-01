@@ -22,7 +22,6 @@ func fetchProjects(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 			PerPage: 1000,
 			Page:    0,
 		},
-		Visibility: gitlab.Visibility(gitlab.InternalVisibility),
 	}
 
 	for {
