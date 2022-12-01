@@ -4,7 +4,10 @@
 
 The primary key for this table is **id**.
 
+## Relations
 
+The following tables depend on gitlab_projects:
+  - [gitlab_projects_releases](gitlab_projects_releases.md)
 
 ## Columns
 | Name          | Type          |

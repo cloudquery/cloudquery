@@ -11,6 +11,12 @@ func Projects() []*Resource {
 			SubService: "projects",
 			PKColumns:  []string{"id"},
 			Struct:     &gitlab.Project{},
+			Relations:  []string{"ProjectsReleases()"},
+		},
+		{
+			Service:    "projects",
+			SubService: "projects_releases",
+			Struct:     &gitlab.Release{},
 		},
 	}
 

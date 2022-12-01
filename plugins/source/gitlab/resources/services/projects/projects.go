@@ -545,5 +545,9 @@ func Projects() *schema.Table {
 				Resolver: schema.PathResolver("PublicBuilds"),
 			},
 		},
+
+		Relations: []*schema.Table{
+			ProjectsReleases(),
+		},
 	}
 }
