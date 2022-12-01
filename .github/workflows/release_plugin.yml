@@ -27,7 +27,7 @@ jobs:
           echo "plugins_dir=plugins/${plugin_type}/${plugin_name}" >> $GITHUB_OUTPUT
       # Fail if not a valid SemVer string
       - name: Parse semver string
-        uses: booxmedialtd/ws-action-parse-semver@e4a833cf5d612066a210bd9b62d1c3b20be3b325
+        uses: booxmedialtd/ws-action-parse-semver@e81ad80123156d7ddd4f6c8383e63f497f857deb
         id: semver_parser
         with:
           input_string: ${{steps.split.outputs.plugin_version}}

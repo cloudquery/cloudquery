@@ -7,7 +7,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/config v1.18.3
 	github.com/aws/aws-sdk-go-v2/credentials v1.13.3
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.42
-	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.17.3
+	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/account v1.7.11
 	github.com/aws/aws-sdk-go-v2/service/acm v1.16.3
 	github.com/aws/aws-sdk-go-v2/service/apigateway v1.15.25
@@ -35,7 +35,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.17.7
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.74.0
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.17.23
-	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.13.19
+	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.13.20
 	github.com/aws/aws-sdk-go-v2/service/ecs v1.20.0
 	github.com/aws/aws-sdk-go-v2/service/efs v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/eks v1.24.0
@@ -96,7 +96,7 @@ require (
 	github.com/aws/smithy-go v1.13.4
 	github.com/basgys/goxml2json v1.1.0
 	github.com/cloudquery/plugin-sdk v1.10.0
-	github.com/gocarina/gocsv v0.0.0-20220927221512-ad3251f9fa25
+	github.com/gocarina/gocsv v0.0.0-20221105105431-c8ef78125b99
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.9
 	github.com/mitchellh/mapstructure v1.5.0
@@ -127,7 +127,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.25 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.19 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.3.26 // indirect
-	github.com/aws/aws-sdk-go-v2/service/athena v1.19.1
+	github.com/aws/aws-sdk-go-v2/service/athena v1.20.0
 	github.com/aws/aws-sdk-go-v2/service/backup v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/glue v1.37.0
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.9.10 // indirect
