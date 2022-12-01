@@ -2820,8 +2820,6 @@
             "ap-southeast-1": {},
             "ap-southeast-2": {},
             "ca-central-1": {},
-            "dataplane-ap-south-1": {},
-            "dataplane-us-east-2": {},
             "eu-central-1": {},
             "eu-west-1": {},
             "eu-west-2": {},
@@ -4959,6 +4957,11 @@
             "us-west-2": {}
           }
         },
+        "sagemaker-geospatial": {
+          "regions": {
+            "us-west-2": {}
+          }
+        },
         "savingsplans": {
           "regions": {
             "aws-global": {}
@@ -6499,8 +6502,7 @@
         },
         "greengrass": {
           "regions": {
-            "cn-north-1": {},
-            "dataplane-cn-north-1": {}
+            "cn-north-1": {}
           }
         },
         "guardduty": {
