@@ -3,11 +3,9 @@ module github.com/cloudquery/cloudquery/plugins/source/datadog
 go 1.19
 
 require (
-	github.com/DataDog/datadog-api-client-go v1.16.0
 	github.com/DataDog/datadog-api-client-go/v2 v2.5.0
-	github.com/cloudquery/plugin-sdk v1.6.0
+	github.com/cloudquery/plugin-sdk v1.10.0
 	github.com/golang/mock v1.6.0
-	github.com/iancoleman/strcase v0.2.0
 	github.com/pkg/errors v0.9.1
 	github.com/rs/zerolog v1.28.0
 	github.com/thoas/go-funk v0.9.3-0.20221027085339-5573bc209e28
