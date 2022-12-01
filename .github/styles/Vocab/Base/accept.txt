@@ -132,6 +132,7 @@ subfolder
 recurse
 CCPA's
 bugfix
+Datadog
 nvm
 npm
 Gandi

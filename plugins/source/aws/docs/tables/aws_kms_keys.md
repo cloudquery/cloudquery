@@ -44,3 +44,4 @@ The following tables depend on aws_kms_keys:
 |pending_deletion_window_in_days|Int|
 |signing_algorithms|StringArray|
 |valid_to|Timestamp|
+|xks_key_configuration|JSON|

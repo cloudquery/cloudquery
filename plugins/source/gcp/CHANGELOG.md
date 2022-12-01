@@ -5,6 +5,22 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v3.0.5...plugins-source-gcp-v3.1.0) (2022-11-30)
+
+
+### Features
+
+* **gcp:** ApiKeys ([#5031](https://github.com/cloudquery/cloudquery/issues/5031)) ([8e71bf0](https://github.com/cloudquery/cloudquery/commit/8e71bf0b4d8611f27f3d1604aae8c5a1696c3b2a))
+* **gcp:** ContainerAnalysis resources ([#5115](https://github.com/cloudquery/cloudquery/issues/5115)) ([89f4df0](https://github.com/cloudquery/cloudquery/commit/89f4df093ff92b8f14fae80d8fa598f8dfd843f6))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.10.0 ([#5153](https://github.com/cloudquery/cloudquery/issues/5153)) ([ea1f77e](https://github.com/cloudquery/cloudquery/commit/ea1f77e910f430287600e74cedd7d3f4ae79eb18))
+* **deps:** Update plugin-sdk for gcp to v1.8.1 ([#5038](https://github.com/cloudquery/cloudquery/issues/5038)) ([43302c4](https://github.com/cloudquery/cloudquery/commit/43302c410cbdbe03cd8f62b33a819c9509912dbe))
+* **deps:** Update plugin-sdk for gcp to v1.9.0 ([#5080](https://github.com/cloudquery/cloudquery/issues/5080)) ([41e5406](https://github.com/cloudquery/cloudquery/commit/41e5406a074c241e61117995fd1a3b39ceadd5a6))
+* Rename template variable 'r' to more indicative 'parent' ([#5109](https://github.com/cloudquery/cloudquery/issues/5109)) ([70919f8](https://github.com/cloudquery/cloudquery/commit/70919f8ebda38a0188e9dd009d047859c0ce2f19))
+
 ## [3.0.5](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v3.0.4...plugins-source-gcp-v3.0.5) (2022-11-23)
 
 

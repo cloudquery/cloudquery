@@ -25,6 +25,7 @@ The following tables depend on aws_config_config_rules:
 |config_rule_state|String|
 |created_by|String|
 |description|String|
+|evaluation_modes|JSON|
 |input_parameters|String|
 |maximum_execution_frequency|String|
 |scope|JSON|

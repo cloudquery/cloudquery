@@ -12,6 +12,7 @@ spec:
   name: csv
   path: cloudquery/csv
   version: "VERSION_DESTINATION_CSV"
+  write_mode: "append"
   spec:
     directory: ./output # default to ./cq_csv_output
 ```

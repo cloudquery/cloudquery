@@ -1,4 +1,9 @@
-# CloudQuery Azure Source Plugin
+# Azure Source Plugin
+
+import { getLatestVersion } from "../../../../../utils/versions";
+import { Badge } from "../../../../../components/Badge";
+
+<Badge text={"Latest: " + getLatestVersion("source", "azure")}/>
 
 The CloudQuery Azure source plugin extracts information from many of the supported services by Microsoft Azure.
 

@@ -12,6 +12,7 @@ spec:
   name: snowflake
   path: cloudquery/snowflake
   version: "VERSION_DESTINATION_SNOWFLAKE"
+  write_mode: "append"
   spec:
     connection_string: ${SNOWFLAKE_CONNECTION_STRING}
 ```

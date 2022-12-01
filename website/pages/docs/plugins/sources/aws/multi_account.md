@@ -18,7 +18,7 @@ Using AWS Organization:
 
 1. Specify member role name:
 
-```yaml
+```yaml copy
 org:
   member_role_name: OrganizationAccountAccessRole
 ```
@@ -27,14 +27,14 @@ org:
 
    1. Sourcing Credentials from the default credential tool chain:
 
-   ```yaml
+   ```yaml copy
    org:
      member_role_name: OrganizationAccountAccessRole
    ```
 
    2. Sourcing credentials from a named profile in the shared configuration or credentials file
 
-   ```yaml
+   ```yaml copy
    org:
      member_role_name: OrganizationAccountAccessRole
      admin_account:
@@ -43,7 +43,7 @@ org:
 
    3. Assuming a role in admin account using credentials in the shared configuration or credentials file:
 
-   ```yaml
+   ```yaml copy
        org:
          member_role_name: OrganizationAccountAccessRole
          admin_account:
@@ -59,7 +59,7 @@ org:
 
 3. Optional. If the trust policy configured for the member accounts requires different credentials than you configured in the previous step, then you can specify the credentials to use in the `member_trusted_principal` block
 
-```yaml
+```yaml copy
 org:
   member_role_name: OrganizationAccountAccessRole
   admin_account:
@@ -73,7 +73,7 @@ org:
 
 4. Optional. If you want to specify specific Organizational Units to fetch from you can add them to the `organization_units` list.
 
-```yaml
+```yaml copy
 org:
   member_role_name: OrganizationAccountAccessRole
   admin_account:
@@ -99,7 +99,7 @@ org:
 
 CloudQuery can fetch from multiple accounts in parallel by using AssumeRole (You will need to use credentials that can AssumeRole to all other specified accounts). Below is an example configuration:
 
-```yaml
+```yaml copy
 accounts:
   - id: <AccountID_Alias_1>
     role_arn: <YOUR_ROLE_ARN_1>

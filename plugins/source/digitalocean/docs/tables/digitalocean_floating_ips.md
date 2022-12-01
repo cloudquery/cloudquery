@@ -16,3 +16,5 @@ The primary key for this table is **ip**.
 |ip (PK)|String|
 |region|JSON|
 |droplet|JSON|
+|project_id|String|
+|locked|Bool|

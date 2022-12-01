@@ -6,6 +6,7 @@
     "plugins/source/aws": { "component": "plugins-source-aws" },
     "plugins/source/azure": { "component": "plugins-source-azure" },
     "plugins/source/cloudflare": { "component": "plugins-source-cloudflare" },
+    "plugins/source/datadog": { "component": "plugins-source-datadog" },
     "plugins/source/digitalocean": {
       "component": "plugins-source-digitalocean"
     },

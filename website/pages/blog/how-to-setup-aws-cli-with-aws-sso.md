@@ -32,7 +32,7 @@ Similar to the `aws configure` command that creates a new profile in `~/.aws/con
 
 `aws configure sso` will prompt you for:
 
-```bash
+```bash copy
 ep@macbook-pro-73 aws % aws configure sso
 
 # This is the URL that you defined when you setup the AWS
