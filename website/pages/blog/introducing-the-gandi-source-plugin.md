@@ -19,7 +19,7 @@ Gandi is a company providing domain name registration, web hosting and related s
 
 CloudQuery now supports pulling domain and DNS resources from [Gandi](https://gandi.net/) using Gandi's API.
 
-Take a look at our [Configuration](https://www.cloudquery.io/docs/plugins/sources/gandi/configuration) section to configure required credentials for the plugin.
+Take a look at our [Configuration](/docs/plugins/sources/gandi/configuration) section to configure required credentials for the plugin.
 
 Below are some real world query examples to get you started.
 
