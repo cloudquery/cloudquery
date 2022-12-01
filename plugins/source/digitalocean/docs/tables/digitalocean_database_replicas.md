@@ -15,6 +15,7 @@ This table depends on [digitalocean_databases](digitalocean_databases.md).
 |_cq_sync_time|Timestamp|
 |_cq_id (PK)|UUID|
 |_cq_parent_id|UUID|
+|id|String|
 |name|String|
 |connection|JSON|
 |private_connection|JSON|
