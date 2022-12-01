@@ -6,7 +6,7 @@ require (
 	github.com/cloudquery/plugin-sdk v1.10.0
 	github.com/jackc/pgconn v1.13.0
 	github.com/jackc/pgtype v1.12.0
-	github.com/jackc/pgx/v4 v4.17.2
+	github.com/jackc/pgx/v5 v5.1.1
 	github.com/rs/zerolog v1.28.0
 )
 
