@@ -5,6 +5,7 @@
 The primary key for this table is **arn**.
 
 ## Relations
+
 The following tables depend on aws_quicksight_groups:
   - [aws_quicksight_group_members](aws_quicksight_group_members.md)
 

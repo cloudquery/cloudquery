@@ -14,9 +14,9 @@ I am excited to introduce a feature that quietly rolled out today: wildcard matc
 
 ## Before
 
-Before, the config passed to `cloudquery sync` had two options: either specify a wildcard (`*`) to match all tables, or specify a list of tables explicitly. So for example, if we wanted to include all EC2 resources, we would have to write a config like this: 
+Before, the config passed to `cloudquery sync` had two options: either specify a wildcard (`*`) to match all tables, or specify a list of tables explicitly. So for example, if we wanted to include all EC2 resources, we would have to write a config like this:
 
-```yaml
+```yaml copy
 tables:
 - aws_ec2_byoip_cidrs
 - aws_ec2_customer_gateways
@@ -35,14 +35,14 @@ As you can see, this was quite verbose!
 
 Config files now support wildcard matching. This means you can add a wildcard character (`*`) anywhere, and CloudQuery will include all tables that match. We can rewrite the previous EC2 config like this now:
 
-```yaml
+```yaml copy
 tables: 
 - "aws_ec2_*"
 ```
 
 Much easier! This also works in the `skip_tables` field. Let's say we want to include all EC2 tables, but not EBS-related tables. The config for this would now be:
 
-```yaml
+```yaml copy
 tables: 
 - "aws_ec2_*"
 skip_tables:
@@ -53,14 +53,14 @@ skip_tables:
 
 With the same change also came the ability to skip relations. By default, if a table is matched, all of its descendants will also be synced. So for example, this config:
 
-```yaml
+```yaml copy
 tables: 
 - "aws_ec2_transit_gateways"
 ``` 
 
 will populate `aws_ec2_transit_gateways`, as well as all its descendent tables (`aws_ec2_transit_gateway_attachments`, `aws_ec2_transit_gateway_route_tables`, etc). This was always the case. But now, using skip tables, some (or all) of these relations can be individually skipped:
 
-```yaml
+```yaml copy
 tables: 
 - "aws_ec2_transit_gateways"
 skip_tables:
@@ -73,7 +73,7 @@ Since child tables often have many rows and can require thousands API calls to f
 
 Another nice thing about wildcard matching is that you can use it to automatically sync new tables that get added to CloudQuery. Using our example from above, this config:
 
-```yaml
+```yaml copy
 tables: 
 - "aws_ec2_*"
 ```
@@ -88,9 +88,8 @@ Wildcard matching was introduced as a backwards-compatible change, so no config 
  - GCP [v2.4.15](https://github.com/cloudquery/cloudquery/releases/tag/plugins-source-gcp-v2.4.15)
  - Azure: [v1.4.4](https://github.com/cloudquery/cloudquery/releases/tag/plugins-source-azure-v1.4.4)
  
-See [this link](/docs/plugins/sources) for a list of the latest versions of all official source plugins.
+See [this link](/docs/plugins/sources/overview) for a list of the latest versions of all official source plugins.
 
 ## Conclusion
 
 With wildcard matching support, we're hoping to reduce a lot of the boilerplate required to configure tables to sync with CloudQuery. If you have any thoughts or feedback about the feature, please share them as a [GitHub issue](https://github.com/cloudquery/cloudquery) or chat to us on [Discord](https://cloudquery.io/discord)! ❤️
-

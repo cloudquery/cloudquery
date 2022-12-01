@@ -7,6 +7,7 @@ The primary key for this table is **_cq_id**.
 ## Relations
 This table depends on [aws_apprunner_services](aws_apprunner_services.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

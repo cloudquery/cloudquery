@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGateway.html
 The primary key for this table is **arn**.
 
 ## Relations
+
 The following tables depend on aws_ec2_transit_gateways:
   - [aws_ec2_transit_gateway_attachments](aws_ec2_transit_gateway_attachments.md)
   - [aws_ec2_transit_gateway_route_tables](aws_ec2_transit_gateway_route_tables.md)

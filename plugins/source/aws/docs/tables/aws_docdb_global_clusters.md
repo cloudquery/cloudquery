@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/documentdb/latest/developerguide/API_GlobalCluster.h
 The primary key for this table is **arn**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

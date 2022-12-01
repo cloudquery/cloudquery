@@ -74,6 +74,11 @@ func EndpointConfigurations() *schema.Table {
 				Resolver: schema.PathResolver("KmsKeyId"),
 			},
 			{
+				Name:     "shadow_production_variants",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ShadowProductionVariants"),
+			},
+			{
 				Name:     "result_metadata",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("ResultMetadata"),

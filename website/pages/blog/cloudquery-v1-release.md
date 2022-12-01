@@ -52,7 +52,7 @@ A good example is our [GCP](https://github.com/cloudquery/cloudquery/blob/main/p
 
 As data integration platform users build their own views and queries on top, we made the maximum effort not to create backward incompatible changes to schemas when we release new features for our source plugins.
 
-For this New official destination plugins support [auto migrations](/docs/core-concepts/migrations) and [release stages](/docs/plugins/source-plugin-release-stages)
+For this New official destination plugins support [auto migrations](/docs/core-concepts/migrations) and [release stages](/docs/plugins/sources/overview#source-plugin-release-stages)
 
 ## Monorepo
 

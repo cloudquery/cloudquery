@@ -112,6 +112,18 @@
     {
       "source": "/developers/developing-new-provider",
       "destination": "/docs/developers/creating-new-plugin"
+    },
+    {
+      "source": "/docs/plugins/sources",
+      "destination": "/docs/plugins/sources/overview"
+    },
+    {
+      "source": "/docs/plugins/destinations",
+      "destination": "/docs/plugins/destinations/overview"
+    },
+    {
+      "source": "/docs/plugins/source-plugin-release-stages",
+      "destination": "/docs/plugins/sources/overview#source-plugin-release-stages"
     }
   ]
 }

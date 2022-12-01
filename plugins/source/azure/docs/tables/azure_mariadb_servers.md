@@ -5,6 +5,7 @@ https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/mariadb/mgmt/2020-
 The primary key for this table is **id**.
 
 ## Relations
+
 The following tables depend on azure_mariadb_servers:
   - [azure_mariadb_configurations](azure_mariadb_configurations.md)
 

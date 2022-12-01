@@ -1,5 +1,29 @@
 # Changelog
 
+## [1.3.21](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v1.3.20...plugins-source-test-v1.3.21) (2022-11-30)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.10.0 ([#5153](https://github.com/cloudquery/cloudquery/issues/5153)) ([ea1f77e](https://github.com/cloudquery/cloudquery/commit/ea1f77e910f430287600e74cedd7d3f4ae79eb18))
+* **deps:** Update plugin-sdk for test to v1.8.1 ([#5047](https://github.com/cloudquery/cloudquery/issues/5047)) ([7a2a46e](https://github.com/cloudquery/cloudquery/commit/7a2a46ed3df7eea9aea827a01f329f399152813d))
+* **deps:** Update plugin-sdk for test to v1.9.0 ([#5090](https://github.com/cloudquery/cloudquery/issues/5090)) ([5cbb9f9](https://github.com/cloudquery/cloudquery/commit/5cbb9f9809f52e2acfc71af37ceff2455b238026))
+
+## [1.3.20](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v1.3.19...plugins-source-test-v1.3.20) (2022-11-23)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for test to v1.7.0 ([#4918](https://github.com/cloudquery/cloudquery/issues/4918)) ([16f9298](https://github.com/cloudquery/cloudquery/commit/16f9298fa178aad0e7b223004133758efec5398a))
+* **deps:** Update plugin-sdk for test to v1.8.0 ([#4982](https://github.com/cloudquery/cloudquery/issues/4982)) ([0ecb86f](https://github.com/cloudquery/cloudquery/commit/0ecb86f3342d3dce7a1a48db296e0b3cd4bbabbe))
+
+## [1.3.19](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v1.3.18...plugins-source-test-v1.3.19) (2022-11-21)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for test to v1.6.0 ([#4856](https://github.com/cloudquery/cloudquery/issues/4856)) ([f9ae1c8](https://github.com/cloudquery/cloudquery/commit/f9ae1c80bcb5a23512c176b8a3687833be487848))
+
 ## [1.3.18](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v1.3.17...plugins-source-test-v1.3.18) (2022-11-16)
 
 

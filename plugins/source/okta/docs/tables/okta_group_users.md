@@ -7,6 +7,7 @@ The composite primary key for this table is (**group_id**, **id**).
 ## Relations
 This table depends on [okta_groups](okta_groups.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

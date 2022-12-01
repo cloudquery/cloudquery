@@ -7,6 +7,7 @@ The composite primary key for this table is (**database_arn**, **database_table_
 ## Relations
 This table depends on [aws_glue_database_tables](aws_glue_database_tables.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

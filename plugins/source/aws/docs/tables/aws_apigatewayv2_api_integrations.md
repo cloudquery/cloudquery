@@ -6,6 +6,7 @@ The primary key for this table is **_cq_id**.
 
 ## Relations
 This table depends on [aws_apigatewayv2_apis](aws_apigatewayv2_apis.md).
+
 The following tables depend on aws_apigatewayv2_api_integrations:
   - [aws_apigatewayv2_api_integration_responses](aws_apigatewayv2_api_integration_responses.md)
 

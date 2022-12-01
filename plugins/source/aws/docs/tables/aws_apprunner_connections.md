@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/apprunner/latest/api/API_Connection.html
 The primary key for this table is **arn**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

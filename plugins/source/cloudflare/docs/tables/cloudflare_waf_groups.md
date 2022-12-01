@@ -7,6 +7,7 @@ The primary key for this table is **_cq_id**.
 ## Relations
 This table depends on [cloudflare_waf_packages](cloudflare_waf_packages.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

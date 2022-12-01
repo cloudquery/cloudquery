@@ -7,6 +7,7 @@ The primary key for this table is **id**.
 ## Relations
 This table depends on [azure_eventhub_namespaces](azure_eventhub_namespaces.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

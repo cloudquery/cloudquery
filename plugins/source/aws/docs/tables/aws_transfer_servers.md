@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/transfer/latest/userguide/API_DescribedServer.html
 The primary key for this table is **arn**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

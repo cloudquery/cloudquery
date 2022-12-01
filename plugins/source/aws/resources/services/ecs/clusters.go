@@ -83,6 +83,11 @@ func Clusters() *schema.Table {
 				Resolver: schema.PathResolver("RunningTasksCount"),
 			},
 			{
+				Name:     "service_connect_defaults",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ServiceConnectDefaults"),
+			},
+			{
 				Name:     "settings",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Settings"),

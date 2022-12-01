@@ -5,6 +5,7 @@
 The primary key for this table is **id**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
@@ -13,6 +14,8 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |account_id|String|
+|meta|JSON|
+|data|JSON|
 |created_on|Timestamp|
 |modified_on|Timestamp|
 |type|String|
@@ -26,5 +29,3 @@ The primary key for this table is **id**.
 |proxied|Bool|
 |proxiable|Bool|
 |locked|Bool|
-|meta|JSON|
-|data|JSON|

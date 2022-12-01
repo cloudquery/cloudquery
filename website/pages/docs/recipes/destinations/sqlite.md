@@ -1,7 +1,6 @@
 # SQLite Destination Plugin Recipes
 
-Full spec options for CSV destination available [here](https://github.com/cloudquery/cloudquery/tree/main/plugins/destination/csv).
-
+Full spec options for the SQLite destination plugin are available [here](/docs/plugins/destinations/sqlite/overview#sqlite-spec).
 
 ## Basic
 
@@ -12,7 +11,7 @@ kind: destination
 spec:
   name: sqlite
   path: cloudquery/sqlite
-  version: "v1.0.7" # latest version of sqlite plugin
+  version: "VERSION_DESTINATION_SQLITE"
   spec:
     connection_string: ./db.sql
 ```

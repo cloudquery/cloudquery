@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/autoscaling/plans/APIReference/API_ScalingPolicy.htm
 The primary key for this table is **arn**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

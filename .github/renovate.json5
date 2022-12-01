@@ -5,5 +5,9 @@
   ],
   packageRules: [
     { matchManagers: ["npm"], groupName: "Website" },
+    {
+      matchPackageNames: ["github.com/jackc/pgx/v4"],
+      allowedVersions: "<5",
+    },
   ],
 }

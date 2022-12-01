@@ -7,6 +7,7 @@ The composite primary key for this table is (**org**, **id**, **team_id**).
 ## Relations
 This table depends on [github_teams](github_teams.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

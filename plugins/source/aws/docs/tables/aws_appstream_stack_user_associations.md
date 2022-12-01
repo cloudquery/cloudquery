@@ -7,6 +7,7 @@ The composite primary key for this table is (**account_id**, **region**, **stack
 ## Relations
 This table depends on [aws_appstream_stacks](aws_appstream_stacks.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

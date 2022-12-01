@@ -55,6 +55,26 @@ func (mr *MockRdsClientMockRecorder) DescribeAccountAttributes(arg0, arg1 interf
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeAccountAttributes", reflect.TypeOf((*MockRdsClient)(nil).DescribeAccountAttributes), varargs...)
 }
 
+// DescribeBlueGreenDeployments mocks base method.
+func (m *MockRdsClient) DescribeBlueGreenDeployments(arg0 context.Context, arg1 *rds.DescribeBlueGreenDeploymentsInput, arg2 ...func(*rds.Options)) (*rds.DescribeBlueGreenDeploymentsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeBlueGreenDeployments", varargs...)
+	ret0, _ := ret[0].(*rds.DescribeBlueGreenDeploymentsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeBlueGreenDeployments indicates an expected call of DescribeBlueGreenDeployments.
+func (mr *MockRdsClientMockRecorder) DescribeBlueGreenDeployments(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeBlueGreenDeployments", reflect.TypeOf((*MockRdsClient)(nil).DescribeBlueGreenDeployments), varargs...)
+}
+
 // DescribeCertificates mocks base method.
 func (m *MockRdsClient) DescribeCertificates(arg0 context.Context, arg1 *rds.DescribeCertificatesInput, arg2 ...func(*rds.Options)) (*rds.DescribeCertificatesOutput, error) {
 	m.ctrl.T.Helper()

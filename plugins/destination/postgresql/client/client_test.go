@@ -22,9 +22,5 @@ func TestPgPlugin(t *testing.T) {
 			ConnectionString: getTestConnection(),
 			PgxLogLevel:      LogLevelTrace,
 		},
-		plugins.DestinationTestSuiteTests{
-			Overwrite:   true,
-			Append:      true,
-			DeleteStale: true,
-		})
+		plugins.DestinationTestSuiteTests{})
 }

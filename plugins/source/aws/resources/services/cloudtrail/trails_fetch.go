@@ -20,7 +20,7 @@ var groupNameRegex = regexp.MustCompile("arn:[a-zA-Z0-9-]+:logs:[a-z0-9-]+:[0-9]
 func fetchCloudtrailTrails(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Cloudtrail
-	log := meta.(*client.Client).Logger()
+	log := c.Logger()
 	response, err := svc.DescribeTrails(ctx, nil)
 
 	if err != nil {

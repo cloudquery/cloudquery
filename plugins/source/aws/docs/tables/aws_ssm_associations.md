@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_Association.
 The composite primary key for this table is (**account_id**, **region**, **association_id**).
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

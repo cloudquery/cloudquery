@@ -33,7 +33,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           max_timeout: 360
           check_interval: 10
-          environment: 'Preview – cloudquery-web'
+          environment: 'Preview'
 
       - name: Set Vercel URL output
         id: vercel

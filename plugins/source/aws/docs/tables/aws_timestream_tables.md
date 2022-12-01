@@ -7,6 +7,7 @@ The primary key for this table is **arn**.
 ## Relations
 This table depends on [aws_timestream_databases](aws_timestream_databases.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

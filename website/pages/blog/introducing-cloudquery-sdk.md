@@ -7,8 +7,13 @@ author: yevgenypats
 ---
 
 import { BlogHeader } from "../../components/BlogHeader"
+import { Callout } from 'nextra-theme-docs'
 
 <BlogHeader/>
+
+<Callout type="warning">
+`cq-provider-sdk` was deprecated - the current SDK is located at [github.com/cloudquery/plugin-sdk](https://github.com/cloudquery/plugin-sdk).
+</Callout>
 
 Today we are pleased to announce the release of [CloudQuery SDK](https://github.com/cloudquery/cq-provider-sdk)!
 

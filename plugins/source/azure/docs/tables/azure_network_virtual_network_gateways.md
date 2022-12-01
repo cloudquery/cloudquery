@@ -6,6 +6,7 @@ The primary key for this table is **id**.
 
 ## Relations
 This table depends on [azure_network_virtual_networks](azure_network_virtual_networks.md).
+
 The following tables depend on azure_network_virtual_network_gateways:
   - [azure_network_virtual_network_gateway_connections](azure_network_virtual_network_gateway_connections.md)
 

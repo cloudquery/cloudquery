@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/apigateway/latest/api/API_DomainName.html
 The primary key for this table is **_cq_id**.
 
 ## Relations
+
 The following tables depend on aws_apigatewayv2_domain_names:
   - [aws_apigatewayv2_domain_name_rest_api_mappings](aws_apigatewayv2_domain_name_rest_api_mappings.md)
 

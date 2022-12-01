@@ -7,6 +7,7 @@ The composite primary key for this table is (**account_id**, **region**, **confi
 ## Relations
 This table depends on [aws_ses_configuration_sets](aws_ses_configuration_sets.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

@@ -1,6 +1,8 @@
 package client
 
 import (
+	"strings"
+
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/jackc/pgtype"
 )
@@ -54,7 +56,7 @@ func (*Client) TransformJSON(v *schema.JSON) interface{} {
 
 func (*Client) TransformText(v *schema.Text) interface{} {
 	return &pgtype.Text{
-		String: v.Str,
+		String: stripNulls(v.Str),
 		Status: cqStatusToPgStatus[v.Status],
 	}
 }
@@ -62,7 +64,7 @@ func (*Client) TransformText(v *schema.Text) interface{} {
 func (*Client) TransformTextArray(v *schema.TextArray) interface{} {
 	r := pgtype.TextArray{}
 	for _, e := range v.Elements {
-		r.Elements = append(r.Elements, pgtype.Text{String: e.Str, Status: cqStatusToPgStatus[e.Status]})
+		r.Elements = append(r.Elements, pgtype.Text{String: stripNulls(e.Str), Status: cqStatusToPgStatus[e.Status]})
 	}
 	r.Status = cqStatusToPgStatus[v.Status]
 	for _, d := range v.Dimensions {
@@ -180,4 +182,8 @@ func (c *Client) TransformMacaddrArray(v *schema.MacaddrArray) interface{} {
 		r.Dimensions = append(r.Dimensions, pgtype.ArrayDimension{Length: d.Length, LowerBound: d.LowerBound})
 	}
 	return &r
+}
+
+func stripNulls(s string) string {
+	return strings.ReplaceAll(s, "\x00", "")
 }

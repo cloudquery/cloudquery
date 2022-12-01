@@ -7,6 +7,7 @@ The primary key for this table is **_cq_id**.
 ## Relations
 This table depends on [aws_lambda_functions](aws_lambda_functions.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
@@ -42,6 +43,7 @@ This table depends on [aws_lambda_functions](aws_lambda_functions.md).
 |runtime|String|
 |signing_job_arn|String|
 |signing_profile_version_arn|String|
+|snap_start|JSON|
 |state|String|
 |state_reason|String|
 |state_reason_code|String|

@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_Endpoint.html
 The primary key for this table is **arn**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

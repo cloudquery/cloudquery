@@ -7,6 +7,7 @@ The primary key for this table is **_cq_id**.
 ## Relations
 This table depends on [aws_lightsail_instances](aws_lightsail_instances.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

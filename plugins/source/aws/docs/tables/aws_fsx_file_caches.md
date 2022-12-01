@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/fsx/latest/APIReference/API_FileCache.html
 The primary key for this table is **arn**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

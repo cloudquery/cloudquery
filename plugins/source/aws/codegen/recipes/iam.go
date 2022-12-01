@@ -100,6 +100,12 @@ func IAMResources() []*Resource {
 					Type:     schema.TypeTimestamp,
 					Resolver: `timestampPathResolver("PasswordLastUsed")`,
 				},
+				// password_enabled is an alias for the (now deprecated) password_status - https://github.com/cloudquery/cloudquery/issues/3145
+				{
+					Name:     "password_enabled",
+					Type:     schema.TypeString,
+					Resolver: `schema.PathResolver("PasswordStatus")`,
+				},
 			},
 			Relations: []string{},
 		},

@@ -7,6 +7,7 @@ The primary key for this table is **_cq_id**.
 ## Relations
 This table depends on [azure_servicebus_authorization_rules](azure_servicebus_authorization_rules.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

@@ -5,6 +5,7 @@ https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v
 The primary key for this table is **id**.
 
 ## Relations
+
 The following tables depend on azure_sql_servers:
   - [azure_sql_firewall_rules](azure_sql_firewall_rules.md)
   - [azure_sql_databases](azure_sql_databases.md)

@@ -5,6 +5,7 @@
 The composite primary key for this table is (**account_id**, **domain_name**).
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

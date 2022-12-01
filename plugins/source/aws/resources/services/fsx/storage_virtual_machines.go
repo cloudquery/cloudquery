@@ -78,11 +78,6 @@ func StorageVirtualMachines() *schema.Table {
 				Resolver: schema.PathResolver("StorageVirtualMachineId"),
 			},
 			{
-				Name:     "subtype",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Subtype"),
-			},
-			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,
 				Resolver: client.ResolveTags,

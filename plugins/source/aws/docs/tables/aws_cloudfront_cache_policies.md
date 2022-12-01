@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/cloudfront/latest/APIReference/API_CachePolicySummar
 The primary key for this table is **_cq_id**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

@@ -6,7 +6,7 @@
     {
       "source": "/latest/v2/:binary",
       "permanent": false,
-      "destination": "https://github.com/cloudquery/cloudquery/releases/download/cli-v2.0.18/:binary" },
+      "destination": "https://github.com/cloudquery/cloudquery/releases/download/cli-v2.0.21/:binary" },
     {
       "source": "/latest/v1/:binary",
       "permanent": false,

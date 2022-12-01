@@ -132,3 +132,16 @@ subfolder
 recurse
 CCPA's
 bugfix
+Datadog
+nvm
+npm
+Gandi
+parallelization
+hyperscale
+goroutines
+arn
+arns
+ARN
+ARNs
+SCP
+SCPs

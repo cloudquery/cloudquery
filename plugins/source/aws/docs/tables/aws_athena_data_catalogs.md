@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/athena/latest/APIReference/API_DataCatalog.html
 The primary key for this table is **arn**.
 
 ## Relations
+
 The following tables depend on aws_athena_data_catalogs:
   - [aws_athena_data_catalog_databases](aws_athena_data_catalog_databases.md)
 

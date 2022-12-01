@@ -5,6 +5,7 @@
 The composite primary key for this table is (**org**, **id**).
 
 ## Relations
+
 The following tables depend on github_organizations:
   - [github_organization_members](github_organization_members.md)
 
@@ -57,6 +58,13 @@ The following tables depend on github_organizations:
 |members_can_create_pages|Bool|
 |members_can_create_public_pages|Bool|
 |members_can_create_private_pages|Bool|
+|web_commit_signoff_required|Bool|
+|advanced_security_enabled_for_new_repositories|Bool|
+|dependabot_alerts_enabled_for_new_repositories|Bool|
+|dependabot_security_updates_enabled_for_new_repositories|Bool|
+|dependency_graph_enabled_for_new_repositories|Bool|
+|secret_scanning_enabled_for_new_repositories|Bool|
+|secret_scanning_push_protection_enabled_for_new_repositories|Bool|
 |url|String|
 |events_url|String|
 |hooks_url|String|

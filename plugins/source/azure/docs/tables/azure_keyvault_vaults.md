@@ -5,6 +5,7 @@ https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/keyvault/mgmt/2019
 The primary key for this table is **id**.
 
 ## Relations
+
 The following tables depend on azure_keyvault_vaults:
   - [azure_keyvault_keys](azure_keyvault_keys.md)
   - [azure_keyvault_secrets](azure_keyvault_secrets.md)

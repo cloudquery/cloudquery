@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_DocumentDesc
 The primary key for this table is **arn**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

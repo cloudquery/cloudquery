@@ -7,6 +7,7 @@ The primary key for this table is **arn**.
 ## Relations
 This table depends on [aws_autoscaling_groups](aws_autoscaling_groups.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

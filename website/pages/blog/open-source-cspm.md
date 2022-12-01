@@ -47,7 +47,7 @@ CloudQuery policies and rules are implemented in pure SQL and they store results
 
 ```bash
 git clone https://github.com/cloudquery/cloudquery.git
-cd cloudquery/plugins/source/aws/policies_v1
+cd cloudquery/plugins/source/aws/policies
 # change the DSN to your PostgreSQL instance populated by CloudQuery
 psql postgres://postgres:pass@localhost:5432/postgres -f policy.sql
 ```

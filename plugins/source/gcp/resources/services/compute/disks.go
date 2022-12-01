@@ -220,7 +220,7 @@ func Disks() *schema.Table {
 	}
 }
 
-func fetchDisks(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
+func fetchDisks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	req := &pb.AggregatedListDisksRequest{
 		Project: c.ProjectId,
