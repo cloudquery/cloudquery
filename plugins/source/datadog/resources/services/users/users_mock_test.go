@@ -11,7 +11,7 @@ import (
 )
 
 func buildUsersMock(t *testing.T, ctrl *gomock.Controller) client.DatadogServices {
-	m := mocks.NewMockUsersService(ctrl)
+	m := mocks.NewMockUsersAPIClient(ctrl)
 	services := client.DatadogServices{
 		UsersAPI: m,
 	}
