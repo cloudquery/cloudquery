@@ -59,7 +59,6 @@ func Groups() *schema.Table {
 
 		Relations: []*schema.Table{
 			GroupPolicies(),
-			GroupLastAccessedServices(),
 		},
 	}
 }

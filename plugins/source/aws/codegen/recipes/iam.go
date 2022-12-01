@@ -129,7 +129,6 @@ func IAMResources() []*Resource {
 			},
 			Relations: []string{
 				"GroupPolicies()",
-				"GroupLastAccessedServices()",
 			},
 		},
 		{
@@ -220,9 +219,6 @@ func IAMResources() []*Resource {
 					Resolver: `resolveIamPolicyVersionList`,
 				},
 			},
-			Relations: []string{
-				"PolicyLastAccessedServices()",
-			},
 		},
 		{
 			SubService:          "policy_last_accessed_services",
@@ -262,7 +258,6 @@ func IAMResources() []*Resource {
 			},
 			Relations: []string{
 				"RolePolicies()",
-				"RoleLastAccessedServices()",
 			},
 		},
 		{
@@ -357,7 +352,6 @@ func IAMResources() []*Resource {
 				"UserGroups()",
 				"UserAttachedPolicies()",
 				"UserPolicies()",
-				"UserLastAccessedServices()",
 			},
 		},
 		{

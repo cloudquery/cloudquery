@@ -2,6 +2,7 @@ package iam
 
 import (
 	"context"
+	"golang.org/x/sync/errgroup"
 
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -10,10 +11,28 @@ import (
 )
 
 func fetchIamPolicyLastAccessedServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p := parent.Item.(types.ManagedPolicyDetail)
 	c := meta.(*client.Client)
 	svc := c.Services().Iam
-	return fetchIamAccessDetails(ctx, res, svc, *p.Arn)
+	ch := make(chan interface{})
+
+	g, ctx := errgroup.WithContext(ctx)
+	g.Go(func() error {
+		defer close(ch)
+		return fetchIamPolicies(ctx, meta, nil, ch)
+	})
+
+	g.Go(func() error {
+		for i := range ch {
+			policies := i.([]types.ManagedPolicyDetail)
+			for _, r := range policies {
+				if err := fetchIamAccessDetails(ctx, res, svc, *r.Arn); err != nil {
+					return err
+				}
+			}
+		}
+		return nil
+	})
+	return g.Wait()
 }
 
 func policyLastAccessedServicesPreResourceResolver(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {

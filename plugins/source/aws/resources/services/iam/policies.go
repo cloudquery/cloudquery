@@ -91,9 +91,5 @@ func Policies() *schema.Table {
 				Resolver: schema.PathResolver("UpdateDate"),
 			},
 		},
-
-		Relations: []*schema.Table{
-			PolicyLastAccessedServices(),
-		},
 	}
 }
