@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/cloudquery/plugin-sdk v1.10.0
-	github.com/okta/okta-sdk-golang/v2 v2.16.0
+	github.com/okta/okta-sdk-golang/v3 v3.0.1
 	github.com/rs/zerolog v1.28.0
 )
 
