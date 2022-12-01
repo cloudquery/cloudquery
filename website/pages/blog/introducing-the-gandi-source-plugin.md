@@ -23,7 +23,7 @@ Take a look at our [Configuration](/docs/plugins/sources/gandi/configuration) se
 
 Below are some real world query examples to get you started.
 
-## Detect soon to expire domain registrations
+## Detect domain registrations that will expire soon
 
 If you have more than just one domain, keeping track of which one will expire soon can be a problem. Here's a query to check how many days left on each registration.
 
