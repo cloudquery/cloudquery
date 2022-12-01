@@ -21,6 +21,10 @@ jobs:
       run:
         working-directory: ./plugins/destination/bigquery
     steps:
+      # Add "id-token" with the intended permissions.
+      permissions:
+        id-token: 'write' # This required for OIDC
+        contents: 'read' # This is required for actions/checkout@v3
       - uses: actions/checkout@v3
         with:
           fetch-depth: 2
