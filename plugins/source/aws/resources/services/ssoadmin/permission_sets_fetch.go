@@ -24,7 +24,7 @@ func getSsoadminPermissionSetInlinePolicy(ctx context.Context, meta schema.Clien
 		return err
 	}
 
-	return resource.Set(c.Name, response.InlinePolicy)
+	return resource.Set(c.Name, *response.InlinePolicy)
 }
 
 func getSsoadminPermissionSet(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {

@@ -24,7 +24,7 @@ func SSOAdminResources() []*Resource {
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:     "inline_policy",
-					Type:     schema.TypeString,
+					Type:     schema.TypeJSON,
 					Resolver: "getSsoadminPermissionSetInlinePolicy",
 				},
 			},

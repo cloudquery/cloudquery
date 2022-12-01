@@ -17,7 +17,7 @@ func PermissionSets() *schema.Table {
 		Columns: []schema.Column{
 			{
 				Name:     "inline_policy",
-				Type:     schema.TypeString,
+				Type:     schema.TypeJSON,
 				Resolver: getSsoadminPermissionSetInlinePolicy,
 			},
 			{

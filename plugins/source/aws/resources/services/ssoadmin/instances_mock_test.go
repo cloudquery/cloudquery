@@ -16,7 +16,7 @@ func buildInstances(t *testing.T, ctrl *gomock.Controller) client.Services {
 	im := types.InstanceMetadata{}
 	ps := types.PermissionSet{}
 	as := types.AccountAssignment{}
-	ip := ""
+	ip := "{\"key\": \"value\"}"
 	err := faker.FakeObject(&ps)
 	if err != nil {
 		t.Fatal(err)
@@ -26,10 +26,6 @@ func buildInstances(t *testing.T, ctrl *gomock.Controller) client.Services {
 		t.Fatal(err)
 	}
 	err = faker.FakeObject(&im)
-	if err != nil {
-		t.Fatal(err)
-	}
-	err = faker.FakeObject(&ip)
 	if err != nil {
 		t.Fatal(err)
 	}
