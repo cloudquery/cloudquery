@@ -63,7 +63,7 @@ This will return a list of domain names that don't have the automatic snapshots 
 
 ## Get a list of glue records
 
-Glue records are used to solve circular dependencies in the DNS and are crucial to set up correctly and maintain. The following query will list all glue records in your Gandi account.
+Glue records are used to solve circular dependencies in DNS and are crucial to set up correctly and maintain. The following query will list all glue records in your Gandi account.
 
 ```sql
 select fqdn, name, ips from gandi_domain_glue_records order by 1, 2;
