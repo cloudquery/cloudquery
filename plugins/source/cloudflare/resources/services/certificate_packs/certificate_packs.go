@@ -63,6 +63,26 @@ func CertificatePacks() *schema.Table {
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("ValidationErrors"),
 			},
+			{
+				Name:     "validation_method",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ValidationMethod"),
+			},
+			{
+				Name:     "validity_days",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("ValidityDays"),
+			},
+			{
+				Name:     "certificate_authority",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("CertificateAuthority"),
+			},
+			{
+				Name:     "cloudflare_branding",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("CloudflareBranding"),
+			},
 		},
 	}
 }

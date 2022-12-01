@@ -29,6 +29,16 @@ func FloatingIps() *schema.Table {
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Droplet"),
 			},
+			{
+				Name:     "project_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ProjectID"),
+			},
+			{
+				Name:     "locked",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Locked"),
+			},
 		},
 	}
 }
