@@ -8,7 +8,7 @@ require (
 	cloud.google.com/go/compute v1.12.1
 	cloud.google.com/go/container v1.8.0
 	cloud.google.com/go/containeranalysis v0.6.0
-	cloud.google.com/go/domains v0.7.0
+	cloud.google.com/go/domains v0.107.0
 	cloud.google.com/go/functions v1.9.0
 	cloud.google.com/go/iam v0.7.0
 	cloud.google.com/go/kms v1.6.0
