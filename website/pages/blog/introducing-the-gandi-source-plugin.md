@@ -51,7 +51,7 @@ Automatic snapshots is a Gandi LiveDNS feature to ensure you always have a backu
 select d.fqdn from gandi_livedns_domains d left join gandi_livedns_snapshots s on s.fqdn=d.fqdn and s.automatic where s.fqdn is null;
 ```
 
-This will return a list of domain names that don't have the automatic snapshots feature enabled. You can set up on alert on this query and make sure your domain configurations are automatically backed up.
+This will return a list of domain names that don't have the automatic snapshots feature enabled. You can set up an alert on this query and make sure your domain configurations are automatically backed up.
 
 ```
      fqdn
