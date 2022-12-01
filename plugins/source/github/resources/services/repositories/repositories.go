@@ -246,6 +246,26 @@ func Repositories() *schema.Table {
 				Resolver: schema.PathResolver("UseSquashPRTitleAsDefault"),
 			},
 			{
+				Name:     "squash_merge_commit_title",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SquashMergeCommitTitle"),
+			},
+			{
+				Name:     "squash_merge_commit_message",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SquashMergeCommitMessage"),
+			},
+			{
+				Name:     "merge_commit_title",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("MergeCommitTitle"),
+			},
+			{
+				Name:     "merge_commit_message",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("MergeCommitMessage"),
+			},
+			{
 				Name:     "topics",
 				Type:     schema.TypeStringArray,
 				Resolver: schema.PathResolver("Topics"),
