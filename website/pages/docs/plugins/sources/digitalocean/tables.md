@@ -1,0 +1,33 @@
+# Source Plugin: digitalocean
+## Tables
+- digitalocean_accounts
+- digitalocean_cdns
+- digitalocean_billing_history
+- digitalocean_monitoring_alert_policies
+- digitalocean_balances
+- digitalocean_certificates
+- digitalocean_databases
+  - digitalocean_database_firewall_rules
+  - digitalocean_database_replicas
+  - digitalocean_database_backups
+- digitalocean_domains
+  - digitalocean_domain_records
+- digitalocean_domain_records
+- digitalocean_droplets
+  - digitalocean_droplet_neighbors
+- digitalocean_droplet_neighbors
+- digitalocean_firewalls
+- digitalocean_floating_ips
+- digitalocean_images
+- digitalocean_keys
+- digitalocean_projects
+  - digitalocean_project_resources
+- digitalocean_registries
+  - digitalocean_registry_repositories
+- digitalocean_sizes
+- digitalocean_snapshots
+- digitalocean_spaces
+  - digitalocean_space_cors
+- digitalocean_storage_volumes
+- digitalocean_vpcs
+  - digitalocean_vpc_members

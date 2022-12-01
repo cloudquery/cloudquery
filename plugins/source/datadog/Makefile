@@ -23,6 +23,7 @@ install-hooks:
 gen-docs:
 	rm -rf ./docs/tables/*
 	go run main.go doc ./docs/tables
+	sed  's/\[\(.*\)\](.*)/\1/' docs/tables/README.md > ../../../website/pages/docs/plugins/sources/datadog/tables.md
 
 .PHONY: lint
 lint:
