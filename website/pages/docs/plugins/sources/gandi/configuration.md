@@ -30,7 +30,7 @@ This is the (nested) spec used by the Gandi source plugin.
   This is your Gandi Organization ID if you wish to limit the queries to a specific Gandi org.
 
 - `gandi_debug` (bool, optional. Default: false):
-  Enables verbose logging of HTTP calls made by the underlying [go-gandi](https://github.com/go-gandi/go-gandi) library.
+  Enables verbose logging of HTTP calls made by the [underlying library](https://github.com/go-gandi/go-gandi).
 
 - `endpoint_url` (string, optional. Default: `https://api.gandi.net`):
   Endpoint URL to make the API requests to. To use the [Gandi Sandbox](https://api.sandbox.gandi.net/docs/sandbox/) API endpoint, set this to `https://api.sandbox.gandi.net/`.
