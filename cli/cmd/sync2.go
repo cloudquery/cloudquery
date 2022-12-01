@@ -117,6 +117,7 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 			if err = destClients[i].Write2(gctx, selectedTables, sourceSpec.Name, syncTime, destSubscriptions[i]); err != nil {
 				return fmt.Errorf("failed to write for %s->%s: %w", sourceSpec.Name, destination, err)
 			}
+			// call Close on destination client using the outer context, so that it happens even if writes get cancelled
 			if err := destClients[i].Close(ctx); err != nil {
 				return fmt.Errorf("failed to close destination client for %s->%s: %w", sourceSpec.Name, destination, err)
 			}

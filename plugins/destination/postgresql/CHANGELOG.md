@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.7.16](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v1.7.15...plugins-destination-postgresql-v1.7.16) (2022-12-01)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.10.0 ([#5153](https://github.com/cloudquery/cloudquery/issues/5153)) ([ea1f77e](https://github.com/cloudquery/cloudquery/commit/ea1f77e910f430287600e74cedd7d3f4ae79eb18))
+* Handling of NULL bytes in Postgresql Text fields ([#5249](https://github.com/cloudquery/cloudquery/issues/5249)) ([936c311](https://github.com/cloudquery/cloudquery/commit/936c311e6cd5cc76e2c10b2f991e85de6e1fadb4))
+
 ## [1.7.15](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v1.7.14...plugins-destination-postgresql-v1.7.15) (2022-11-29)
 
 
