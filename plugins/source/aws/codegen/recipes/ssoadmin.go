@@ -2,6 +2,8 @@ package recipes
 
 import (
 	types "github.com/aws/aws-sdk-go-v2/service/ssoadmin/types"
+	"github.com/cloudquery/plugin-sdk/codegen"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func SSOAdminResources() []*Resource {
@@ -19,6 +21,13 @@ func SSOAdminResources() []*Resource {
 			Struct:              &types.PermissionSet{},
 			Description:         "https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_PermissionSet.html",
 			PreResourceResolver: "getSsoadminPermissionSet",
+			ExtraColumns: []codegen.ColumnDefinition{
+				{
+					Name:     "inline_policy",
+					Type:     schema.TypeString,
+					Resolver: "getSsoadminPermissionSetInlinePolicy",
+				},
+			},
 			Relations: []string{
 				"AccountAssignments()",
 			},

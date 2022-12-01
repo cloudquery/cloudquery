@@ -16,6 +16,11 @@ func PermissionSets() *schema.Table {
 		Multiplex:           client.ServiceAccountRegionMultiplexer("identitystore"),
 		Columns: []schema.Column{
 			{
+				Name:     "inline_policy",
+				Type:     schema.TypeString,
+				Resolver: getSsoadminPermissionSetInlinePolicy,
+			},
+			{
 				Name:     "created_date",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreatedDate"),

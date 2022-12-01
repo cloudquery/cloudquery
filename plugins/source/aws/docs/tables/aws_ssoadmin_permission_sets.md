@@ -17,6 +17,7 @@ The following tables depend on aws_ssoadmin_permission_sets:
 |_cq_sync_time|Timestamp|
 |_cq_id (PK)|UUID|
 |_cq_parent_id|UUID|
+|inline_policy|String|
 |created_date|Timestamp|
 |description|String|
 |name|String|
