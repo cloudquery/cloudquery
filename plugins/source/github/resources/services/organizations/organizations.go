@@ -231,6 +231,41 @@ func Organizations() *schema.Table {
 				Resolver: schema.PathResolver("MembersCanCreatePrivatePages"),
 			},
 			{
+				Name:     "web_commit_signoff_required",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("WebCommitSignoffRequired"),
+			},
+			{
+				Name:     "advanced_security_enabled_for_new_repositories",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("AdvancedSecurityEnabledForNewRepos"),
+			},
+			{
+				Name:     "dependabot_alerts_enabled_for_new_repositories",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("DependabotAlertsEnabledForNewRepos"),
+			},
+			{
+				Name:     "dependabot_security_updates_enabled_for_new_repositories",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("DependabotSecurityUpdatesEnabledForNewRepos"),
+			},
+			{
+				Name:     "dependency_graph_enabled_for_new_repositories",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("DependencyGraphEnabledForNewRepos"),
+			},
+			{
+				Name:     "secret_scanning_enabled_for_new_repositories",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("SecretScanningEnabledForNewRepos"),
+			},
+			{
+				Name:     "secret_scanning_push_protection_enabled_for_new_repositories",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("SecretScanningPushProtectionEnabledForNewRepos"),
+			},
+			{
 				Name:     "url",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("URL"),
