@@ -1,4 +1,4 @@
-# Table: gitlab_projects_projects
+# Table: gitlab_projects
 
 
 

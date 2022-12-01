@@ -8,7 +8,7 @@ import (
 
 func GroupMembers() *schema.Table {
 	return &schema.Table{
-		Name:     "gitlab_groups_group_members",
+		Name:     "gitlab_group_members",
 		Resolver: fetchGroupMembers,
 		Columns: []schema.Column{
 			{

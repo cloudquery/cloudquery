@@ -8,7 +8,7 @@ import (
 
 func Settings() *schema.Table {
 	return &schema.Table{
-		Name:     "gitlab_settings_settings",
+		Name:     "gitlab_settings",
 		Resolver: fetchSettings,
 		Columns: []schema.Column{
 			{
