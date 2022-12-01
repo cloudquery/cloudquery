@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/cloudquery/plugin-sdk v1.10.0
-	github.com/mattn/go-sqlite3 v1.14.16
+	github.com/mattn/go-sqlite3/v2 v2.0.6
 	github.com/rs/zerolog v1.28.0
 )
 
