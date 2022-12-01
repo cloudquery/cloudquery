@@ -3,7 +3,7 @@
 import { getLatestVersion } from "../../../../../utils/versions";
 import { Badge } from "../../../../../components/Badge";
 
-<Badge text={"Latest: " + getLatestVersion("source", "gandi")}/>
+<Badge text={"Latest: " + getLatestVersion("source", `gandi`)}/>
 
 The CloudQuery Gandi plugin pulls configuration out of Gandi resources and loads it into any supported CloudQuery destination (e.g. PostgreSQL).
 
