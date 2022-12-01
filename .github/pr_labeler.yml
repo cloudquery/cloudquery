@@ -6,6 +6,8 @@ cloudflare:
   - plugins/source/cloudflare/**/*
 digitalocean:
   - plugins/source/digitalocean/**/*
+datadog:
+  - plugins/source/datadog/**/*
 fuzz:
   - plugins/source/fuzz/**/*
 gandi:

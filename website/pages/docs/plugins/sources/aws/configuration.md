@@ -4,7 +4,7 @@
 
 This example connects a single AWS account in one region to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
 
-```yaml
+```yaml copy
 kind: source
 spec:
   # Source spec section
@@ -26,7 +26,7 @@ spec:
 ### AWS Organization Example
 
 
-```yaml
+```yaml copy
 kind: source
 spec:
   name: aws
@@ -65,7 +65,7 @@ Prerequisites for using AWS Org functionality:
 Using AWS Organization:
 1. Specify member role name:
 
-```yaml
+```yaml copy
     org:
       member_role_name: OrganizationAccountAccessRole
 ```
@@ -73,14 +73,14 @@ Using AWS Organization:
 2. Getting credentials that have  the necessary `organizations` permissions:
 
     1. Sourcing Credentials from the default credential tool chain:
-    ```yaml
+    ```yaml copy
         org:
           member_role_name: OrganizationAccountAccessRole
     ```
 
     2. Sourcing credentials from a named profile in the shared configuration or credentials file
 
-    ```yaml
+    ```yaml copy
         org:
           member_role_name: OrganizationAccountAccessRole
           admin_account:
@@ -89,7 +89,7 @@ Using AWS Organization:
 
     3. Assuming a role in admin account using credentials in the shared configuration or credentials file:
 
-    ```yaml
+    ```yaml copy
         org:
           member_role_name: OrganizationAccountAccessRole
           admin_account:
@@ -105,7 +105,7 @@ Using AWS Organization:
 
 3. Optional. If the trust policy configured for the member accounts requires different credentials than you configured in the previous step, then you can specify the credentials to use in the `member_trusted_principal` block 
 
-```yaml
+```yaml copy
     org:
       member_role_name: OrganizationAccountAccessRole
       admin_account:
@@ -119,7 +119,7 @@ Using AWS Organization:
 
 4. Optional. If you want to specify specific Organizational Units to fetch from you can add them to the `organization_units` list. 
 
-```yaml
+```yaml copy
     org:
       member_role_name: OrganizationAccountAccessRole
       admin_account:

@@ -19,7 +19,7 @@ Today, we announce that we raised $15M Series A round led by Tiger Global, with 
 
 ## Story time!
 
-At the time of writing there are more than 300 [services](https://github.com/aws/aws-sdk-go-v2/tree/main/service) in AWS with more than 1400 different APIs. For GCP there are more than 139 [services](https://github.com/googleapis/google-cloud-go) and 200 APIs, Azure with more than 136 [services](https://github.com/Azure/azure-sdk-for-go/tree/main/services) and 600 APIs. This list just keeps growing and I didn’t even include the long tail of infrastructure related companies like Cloudflare, Fastly, GitHub, GitLab, DataDog…
+At the time of writing there are more than 300 [services](https://github.com/aws/aws-sdk-go-v2/tree/main/service) in AWS with more than 1400 different APIs. For GCP there are more than 139 [services](https://github.com/googleapis/google-cloud-go) and 200 APIs, Azure with more than 136 [services](https://github.com/Azure/azure-sdk-for-go/tree/main/services) and 600 APIs. This list just keeps growing and I didn’t even include the long tail of infrastructure related companies like Cloudflare, Fastly, GitHub, GitLab, Datadog…
 
 Getting visibility to those is key to almost any use-case starting from security, compliance, search, cost, infrastructure drift and any others.
 
