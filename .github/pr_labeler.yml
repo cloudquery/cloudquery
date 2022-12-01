@@ -8,6 +8,8 @@ crowdstrike:
   - plugins/source/crowdstrike/**/*
 digitalocean:
   - plugins/source/digitalocean/**/*
+datadog:
+  - plugins/source/datadog/**/*
 fuzz:
   - plugins/source/fuzz/**/*
 gandi:
