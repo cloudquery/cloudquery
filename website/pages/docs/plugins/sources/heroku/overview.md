@@ -7,7 +7,7 @@ The CloudQuery Heroku plugin extracts your Heroku data and loads it into any sup
 The CloudQuery Heroku plugin requires an OAuth token. After creating it, you
 will need to copy the token into your `heroku.yml` file (See example below):
 
-```yaml
+```yaml copy
   ...
   token: <Token HERE>
 ```

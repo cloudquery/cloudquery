@@ -4,7 +4,7 @@
 
 This example connects a Heroku account to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
 
-```yaml
+```yaml copy
 kind: source
 spec: # Common source spec section
   name: heroku
