@@ -11,7 +11,7 @@ In order to fetch information from CrowdStrike, `cloudquery` needs to be authent
 To configure CloudQuery to extract from CrowdStrike, create a `.yml` file in your CloudQuery configuration directory.
 For example, the following configuration will extract information from CrowdStrike, and connect it to a `postgresql` destination plugin
 
-```yml
+```yaml
 kind: source
 spec:
   # Source spec section
