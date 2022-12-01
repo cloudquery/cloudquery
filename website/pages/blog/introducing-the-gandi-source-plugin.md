@@ -45,7 +45,7 @@ You can now put this in a dashboard or set up an alert on it.
 
 ## Make sure all your LiveDNS domains have automatic snapshots
 
-Automatic snapshots is a Gandi LiveDNS feature to ensure you always have a back up to a previous state of the domain configuration. With the following query it's possible to list any domains you manage but which don't have automatic snapshots enabled for some reason.
+Automatic snapshots is a Gandi LiveDNS feature to ensure you always have a backup to a previous state of the domain configuration. With the following query it's possible to list any domains you manage, but which don't have automatic snapshots enabled for some reason.
 
 ```sql
 select d.fqdn from gandi_livedns_domains d left join gandi_livedns_snapshots s on s.fqdn=d.fqdn and s.automatic where s.fqdn is null;
