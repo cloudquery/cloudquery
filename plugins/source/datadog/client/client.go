@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	"github.com/DataDog/datadog-api-client-go/v2/api/datadog"
-	"github.com/DataDog/datadog-api-client-go/v2/api/datadogV2"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/pkg/errors"
@@ -83,11 +82,9 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (sche
 	apiClient := datadog.NewAPIClient(configuration)
 
 	client := Client{
-		logger:   logger,
-		Accounts: cfSpec.Accounts,
-		DDServices: DatadogServices{
-			UsersAPI: datadogV2.NewUsersApi(apiClient),
-		},
+		logger:     logger,
+		Accounts:   cfSpec.Accounts,
+		DDServices: NewDatadogServices(apiClient),
 	}
 
 	// Return the initialized client, and it will be passed to your resources

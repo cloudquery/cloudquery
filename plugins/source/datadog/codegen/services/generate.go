@@ -85,11 +85,13 @@ func shouldInclude(name string) bool {
 }
 
 type serviceInfo struct {
-	Import      string
-	Name        string
-	PackageName string
-	ClientName  string
-	Signatures  []string
+	Import             string
+	Alias              string
+	CreateFunctionName string
+	Name               string
+	PackageName        string
+	ClientName         string
+	Signatures         []string
 }
 
 func getServiceInfo(client interface{}) serviceInfo {
@@ -97,6 +99,7 @@ func getServiceInfo(client interface{}) serviceInfo {
 	t := v.Type()
 	pkgPath := t.Elem().PkgPath()
 	csr := caser.New()
+	alias := pkgPath[strings.LastIndex(pkgPath, "/")+1:]
 	pkgName := csr.ToSnake(t.Elem().Name())
 	name := csr.ToPascal(pkgName)
 	clientName := name + "Client"
@@ -109,11 +112,13 @@ func getServiceInfo(client interface{}) serviceInfo {
 		}
 	}
 	return serviceInfo{
-		Import:      pkgPath,
-		Name:        name,
-		PackageName: pkgName,
-		ClientName:  clientName,
-		Signatures:  signatures,
+		Import:             pkgPath,
+		Alias:              alias,
+		CreateFunctionName: t.Elem().Name(),
+		Name:               name,
+		PackageName:        pkgName,
+		ClientName:         clientName,
+		Signatures:         signatures,
 	}
 }
 

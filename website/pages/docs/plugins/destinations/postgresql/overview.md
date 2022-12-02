@@ -1,4 +1,9 @@
-# CloudQuery PostgreSQL Destination Plugin
+# PostgreSQL Destination Plugin
+
+import { getLatestVersion } from "../../../../../utils/versions";
+import { Badge } from "../../../../../components/Badge";
+
+<Badge text={"Latest: " + getLatestVersion("destination", "postgresql")}/>
 
 This destination plugin lets you sync data from a CloudQuery source to a PostgreSQL compatible database.
 

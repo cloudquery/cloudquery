@@ -13,7 +13,7 @@ func Users() []*Resource {
 			Multiplex:  "client.AccountMultiplex",
 			Struct:     new(datadogV2.User),
 			SkipFields: []string{"Id"},
-			ExtraColumns: append(defaultAccountColumns, codegen.ColumnDefinition{
+			ExtraColumns: append(defaultAccountColumnsPK, codegen.ColumnDefinition{
 				Name:     "id",
 				Type:     schema.TypeString,
 				Resolver: `schema.PathResolver("Id")`,
