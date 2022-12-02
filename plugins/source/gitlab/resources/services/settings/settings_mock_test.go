@@ -10,7 +10,7 @@ import (
 	"github.com/xanzy/go-gitlab"
 )
 
-func buildSettings(t *testing.T, ctrl *gomock.Controller) client.GitlabServices {
+func buildSettings(t *testing.T, ctrl *gomock.Controller) client.Services {
 	settingMock := mocks.NewMockSettingsClient(ctrl)
 
 	var settings *gitlab.Settings
@@ -20,7 +20,7 @@ func buildSettings(t *testing.T, ctrl *gomock.Controller) client.GitlabServices 
 
 	settingMock.EXPECT().GetSettings(gomock.Any()).Return(settings, &gitlab.Response{}, nil)
 
-	return client.GitlabServices{
+	return client.Services{
 		Settings: settingMock,
 	}
 }

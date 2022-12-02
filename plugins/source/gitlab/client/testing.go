@@ -15,7 +15,7 @@ import (
 
 type TestOptions struct{}
 
-func GitlabMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, *gomock.Controller) GitlabServices, _ TestOptions) {
+func GitlabMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, *gomock.Controller) Services, _ TestOptions) {
 	version := "vDev"
 
 	table.IgnoreInTests = false

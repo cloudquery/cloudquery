@@ -10,7 +10,7 @@ import (
 	"github.com/xanzy/go-gitlab"
 )
 
-func buildUsers(t *testing.T, ctrl *gomock.Controller) client.GitlabServices {
+func buildUsers(t *testing.T, ctrl *gomock.Controller) client.Services {
 	userMock := mocks.NewMockUsersClient(ctrl)
 
 	var user *gitlab.User
@@ -20,7 +20,7 @@ func buildUsers(t *testing.T, ctrl *gomock.Controller) client.GitlabServices {
 
 	userMock.EXPECT().ListUsers(gomock.Any(), gomock.Any()).Return([]*gitlab.User{user}, &gitlab.Response{}, nil)
 
-	return client.GitlabServices{
+	return client.Services{
 		Users: userMock,
 	}
 }

@@ -11,7 +11,7 @@ import (
 	"github.com/xanzy/go-gitlab"
 )
 
-func buildProjects(t *testing.T, ctrl *gomock.Controller) client.GitlabServices {
+func buildProjects(t *testing.T, ctrl *gomock.Controller) client.Services {
 	projectsMock := mocks.NewMockProjectsClient(ctrl)
 	releaseMock := mocks.NewMockReleasesClient(ctrl)
 
@@ -43,7 +43,7 @@ func buildProjects(t *testing.T, ctrl *gomock.Controller) client.GitlabServices 
 
 	projectsMock.EXPECT().ListProjects(gomock.Any(), gomock.Any()).Return([]*gitlab.Project{project}, &gitlab.Response{}, nil)
 
-	return client.GitlabServices{
+	return client.Services{
 		Releases: releaseMock,
 		Projects: projectsMock,
 	}

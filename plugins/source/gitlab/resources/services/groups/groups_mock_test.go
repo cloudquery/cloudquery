@@ -11,7 +11,7 @@ import (
 	"github.com/xanzy/go-gitlab"
 )
 
-func buildGroups(t *testing.T, ctrl *gomock.Controller) client.GitlabServices {
+func buildGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
 	groupMock := mocks.NewMockGroupsClient(ctrl)
 
 	var group *gitlab.Group
@@ -30,7 +30,7 @@ func buildGroups(t *testing.T, ctrl *gomock.Controller) client.GitlabServices {
 
 	groupMember.ExpiresAt = &isoTime
 	groupMock.EXPECT().ListGroupMembers(gomock.Any(), gomock.Any()).Return([]*gitlab.GroupMember{groupMember}, &gitlab.Response{}, nil)
-	return client.GitlabServices{
+	return client.Services{
 		Groups: groupMock,
 	}
 }
