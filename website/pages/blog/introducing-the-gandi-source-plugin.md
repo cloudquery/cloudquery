@@ -68,6 +68,9 @@ Glue records are used to solve circular dependencies in DNS and are crucial to s
 ```sql
 select fqdn, name, ips from gandi_domain_glue_records order by 1, 2;
 ```
+
+This will return:
+
 ```
      fqdn       | name |       ips
 ----------------+------+------------------
