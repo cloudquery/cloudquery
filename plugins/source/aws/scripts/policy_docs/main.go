@@ -10,8 +10,10 @@ import (
 	"regexp"
 )
 
-var reInline = regexp.MustCompile(`\\ir (.+)`)
-var reTable = regexp.MustCompile(`(?:from|join)\s+(\w+)`)
+var reInline = regexp.MustCompile(`(?i)\\ir (.+)`)
+var reTable = regexp.MustCompile(`(?i)(?:from|join)\s+(\w+)`)
+var reTitle = regexp.MustCompile(`(?i)\'(.+)\'\s+as\s+title,`)
+var reIsPolicyQuery = regexp.MustCompile(`(?i)insert\s+into\s+aws_policy_results`)
 
 type Index struct {
 	Policies []Policy `json:"policies"`
@@ -43,11 +45,12 @@ type PolicyInfo struct {
 
 type Query struct {
 	Title  string
+	Path   string
 	Tables []string
 }
 
-func getPolicyInfo(policy Policy) (*PolicyInfo, error) {
-	queries, err := extractQueries(policy.Path)
+func getPolicyInfo(dir string, policy Policy) (*PolicyInfo, error) {
+	queries, err := extractQueries(path.Join(dir, policy.Path))
 	if err != nil {
 		return nil, fmt.Errorf("failed to extract queries: %w", err)
 	}
@@ -58,17 +61,45 @@ func getPolicyInfo(policy Policy) (*PolicyInfo, error) {
 }
 
 func extractQueries(sqlPath string) ([]Query, error) {
-	dir := filepath.Dir(sqlPath)
-	content, err := os.ReadFile(sqlPath)
+	b, err := os.ReadFile(sqlPath)
 	if err != nil {
 		return nil, fmt.Errorf("failed to open file %v: %w", sqlPath, err)
 	}
+	content := string(b)
 	var queries []Query
+	tableMatches := reTable.FindAllStringSubmatch(content, -1)
+	isPolicyQuery := reIsPolicyQuery.MatchString(content)
+	if isPolicyQuery && len(tableMatches) > 0 {
+		q := Query{}
+		for _, m := range tableMatches {
+			q.Tables = append(q.Tables, m[1])
+			q.Path = sqlPath
+		}
 
+		titleMatches := reTitle.FindAllStringSubmatch(content, -1)
+		if len(titleMatches) == 0 {
+			log.Printf("WARN: Failed to find title for query in %v", sqlPath)
+		} else if len(titleMatches) >= 1 {
+			q.Title = titleMatches[0][1]
+		}
+		queries = append(queries, q)
+	}
+
+	// recurse to find queries in inlined files
+	dir := filepath.Dir(sqlPath)
+	matches := reInline.FindAllStringSubmatch(content, -1)
+	for _, m := range matches {
+		q, err := extractQueries(path.Join(dir, m[1]))
+		if err != nil {
+			return nil, err
+		}
+		queries = append(queries, q...)
+	}
+	return queries, nil
 }
 
 func main() {
-	if len(os.Args) <= 1 {
+	if len(os.Args) <= 2 {
 		log.Fatalf("Usage: %s <path to policies directory> <output dir>", os.Args[0])
 	}
 	dir := os.Args[1]
@@ -78,8 +109,13 @@ func main() {
 	}
 
 	for _, p := range index.Policies {
-		policyInfo := getPolicyInfo(p)
-		fmt.Println(policyInfo)
+		pi, err := getPolicyInfo(dir, p)
+		if err != nil {
+			log.Fatalf("error reading SQL for policy: %v", err)
+		}
+		fmt.Println(pi.Name, len(pi.Queries))
+		for _, q := range pi.Queries {
+			fmt.Println(q.Title, q.Tables, q.Path)
+		}
 	}
-
 }
