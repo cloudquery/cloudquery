@@ -118,15 +118,7 @@ func (resource *Resource) generate(mock bool) error {
 
 func (resource *Resource) Generate() error {
 	var err error
-	skipFields := []string{
-		"GenerateName",
-		"SelfLink",
-		"CreationTimestamp",
-		"DeletionTimestamp",
-		"ZZZ_DeprecatedClusterName",
-		"ManagedFields",
-		"UID", // Skip UID - but only to re-add it with primary-key options
-	}
+	skipFields := []string{}
 	skipFields = append(skipFields, resource.SkipFields...)
 
 	extraColumns := []codegen.ColumnDefinition{
