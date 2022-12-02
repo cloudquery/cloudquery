@@ -29,7 +29,7 @@ func GitlabMockTestHelper(t *testing.T, table *schema.Table, builder func(*testi
 		return &Client{
 			logger:  l,
 			Gitlab:  builder(t, ctrl),
-			BaseURL: "https://test.customURL.com",
+			BaseURL: "https://test.custom.com",
 		}, nil
 	}
 	p := plugins.NewSourcePlugin(
