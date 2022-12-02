@@ -25,11 +25,6 @@ func getSsoadminPermissionSetInlinePolicy(ctx context.Context, meta schema.Clien
 		return err
 	}
 
-	var inlinePolicy map[string]interface{}
-	err = json.Unmarshal([]byte(*response.InlinePolicy), &inlinePolicy)
-	if err != nil {
-		return err
-	}
 
 	return resource.Set(c.Name, inlinePolicy)
 }
