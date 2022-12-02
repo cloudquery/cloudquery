@@ -1,0 +1,10 @@
+{
+  "policies": [
+    {"name": "AWS CIS V1.2.0", "path": "cis_v1.2.0/policy.sql"},
+    {"name": "AWS PCI DSS v3.2.1", "path": "pci_dss_v3.2.1/policy.sql"},
+    {"name": "AWS Foundational Security Best Practices", "path": "foundational_security/policy.sql"},
+    {"name": "AWS Public Egress", "path": "public_egress/policy.sql"},
+    {"name": "AWS Publicly Available", "path": "publicly_available/policy.sql"},
+    {"name": "AWS Unused Resources", "path": "unused_resources/policy.sql"}
+  ]
+}
