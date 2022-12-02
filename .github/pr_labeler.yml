@@ -34,6 +34,8 @@ csv:
   - plugins/destination/csv/**/*
 snowflake:
   - plugins/destination/snowflake/**/*
+bigquery:
+  - plugins/destination/bigquery/**/*
 website:
   - website/**/*
 cli:
