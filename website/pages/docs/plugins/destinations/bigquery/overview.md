@@ -1,7 +1,10 @@
+# BigQuery Destination Plugin
+
 import { Callout } from 'nextra-theme-docs'
 import { getLatestVersion } from "../../../../../utils/versions";
+import { Badge } from "../../../../../components/Badge";
 
-# BigQuery Destination Plugin
+<Badge text={"Latest: " + getLatestVersion("destination", "bigquery")}/>
 
 The BigQuery plugin helps you sync data to a BigQuery database running on Google Cloud Platform.
 
