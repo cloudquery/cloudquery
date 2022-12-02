@@ -14,7 +14,6 @@ func fetchProjects(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	opt := &gitlab.ListProjectsOptions{
 		ListOptions: gitlab.ListOptions{
 			PerPage: 1000,
-			Page:    0,
 		},
 	}
 	for {

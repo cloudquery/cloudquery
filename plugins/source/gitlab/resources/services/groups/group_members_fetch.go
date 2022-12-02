@@ -14,7 +14,6 @@ func fetchGroupMembers(ctx context.Context, meta schema.ClientMeta, parent *sche
 	opt := &gitlab.ListGroupMembersOptions{
 		ListOptions: gitlab.ListOptions{
 			PerPage: 1000,
-			Page:    0,
 		},
 	}
 

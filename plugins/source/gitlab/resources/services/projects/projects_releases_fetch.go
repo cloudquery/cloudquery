@@ -14,7 +14,6 @@ func fetchProjectsReleases(ctx context.Context, meta schema.ClientMeta, parent *
 	opt := &gitlab.ListReleasesOptions{
 		ListOptions: gitlab.ListOptions{
 			PerPage: 1000,
-			Page:    0,
 		},
 	}
 

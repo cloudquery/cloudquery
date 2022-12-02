@@ -14,7 +14,6 @@ func fetchUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Reso
 	opt := &gitlab.ListUsersOptions{
 		ListOptions: gitlab.ListOptions{
 			PerPage: 1000,
-			Page:    0,
 		},
 	}
 	for {
@@ -23,9 +22,7 @@ func fetchUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Reso
 		if err != nil {
 			return err
 		}
-		if len(users) == 0 {
-			return nil
-		}
+
 		res <- users
 
 		// Exit the loop when we've seen all pages.
