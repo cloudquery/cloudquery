@@ -2,7 +2,6 @@ package ssoadmin
 
 import (
 	"context"
-	"encoding/json"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ssoadmin"
@@ -25,8 +24,7 @@ func getSsoadminPermissionSetInlinePolicy(ctx context.Context, meta schema.Clien
 		return err
 	}
 
-
-	return resource.Set(c.Name, inlinePolicy)
+	return resource.Set(c.Name, response.InlinePolicy)
 }
 
 func getSsoadminPermissionSet(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
