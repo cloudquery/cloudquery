@@ -6,7 +6,7 @@ import { Badge } from "../../../../../components/Badge";
 
 <Badge text={"Latest: " + getLatestVersion("destination", "bigquery")}/>
 
-The BigQuery plugin helps you sync data to a BigQuery database running on Google Cloud Platform.
+The BigQuery plugin syncs data from any CloudQuery source plugin(s) to a BigQuery database running on Google Cloud Platform.
 
 The plugin currently only supports a streaming mode through the legacy streaming API. This is suitable for small- to medium-sized datasets, and will stream the results directly to the BigQuery database. A batch mode of operation is being developed to support larger datasets, but this is not currently supported.
 
