@@ -2,66 +2,13 @@ package client
 
 import (
 	"context"
-	"fmt"
-	"strings"
+	"errors"
 	"time"
 
-	"cloud.google.com/go/bigquery"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"golang.org/x/sync/errgroup"
 )
 
-const concurrentDeletions = 10
-
-// DeleteStale for BigQuery deletes stale records from previous syncs. Because BigQuery uses a streaming buffer that
-// stores records for up to 90 minutes and disallows deletions during this time, it is important that syncs using the delete-stale
-// functionality be spaced at least 90 minutes apart. This shouldn't be a problem for most CloudQuery users, who typically
-// run syncs once a day. If more frequent syncs are needed, consider batch-loading from a GCS bucket.
-// See https://stackoverflow.com/questions/43085896/update-or-delete-tables-with-streaming-buffer-in-bigquery for more
-// details and further reading.
-// Note that although this function works, it is not currently used because the BigQuery plugin only supports "append" mode,
-// and it is not possible to overwrite rows in BigQuery. It might be used by other modes in the future.
-func (c *Client) DeleteStale(ctx context.Context, tables schema.Tables, source string, syncTime time.Time) error {
-	eg := errgroup.Group{}
-	eg.SetLimit(concurrentDeletions)
-	for _, table := range tables {
-		table := table
-		eg.Go(func() error {
-			var sb strings.Builder
-			sb.WriteString("delete from ")
-			sb.WriteString("`" + c.projectID + "." + c.datasetID + "." + table.Name + "`")
-			sb.WriteString(" where ")
-			sb.WriteString(schema.CqSourceNameColumn.Name)
-			sb.WriteString(" = @cq_source_name and ")
-			sb.WriteString(schema.CqSyncTimeColumn.Name)
-			// Potential future improvement: use information about the oldest entry in the streaming buffer
-			// from table metadata to adjust this interval.
-			sb.WriteString(" < TIMESTAMP_SUB(TIMESTAMP(@cq_sync_time), INTERVAL 90 MINUTE)")
-			sql := sb.String()
-			q := c.client.Query(sql)
-			q.Parameters = []bigquery.QueryParameter{
-				{
-					Name:  "cq_source_name",
-					Value: source,
-				},
-				{
-					Name:  "cq_sync_time",
-					Value: syncTime.Format(time.RFC3339),
-				},
-			}
-			job, err := q.Run(ctx)
-			if err != nil {
-				return fmt.Errorf("failed to run query to delete stale entries from table %s: %w", table.Name, err)
-			}
-			js, err := job.Wait(ctx)
-			if err != nil {
-				return fmt.Errorf("failed to wait for job to delete stale entries from table %s: %w", table.Name, err)
-			}
-			if js.Err() != nil {
-				return fmt.Errorf("job failed to delete stale entries from table %s: %w", table.Name, js.Err())
-			}
-			return nil
-		})
-	}
-	return eg.Wait()
+// DeleteStale is not currently implemented for BigQuery, as it only supports "append" write mode.
+func (c *Client) DeleteStale(context.Context, schema.Tables, string, time.Time) error {
+	return errors.New("DeleteStale not implemented")
 }

@@ -70,6 +70,8 @@ func (*Client) createResultsArray(table *schema.Table) []bigquery.Value {
 		case schema.TypeIntArray:
 			var r []int64
 			results = append(results, &r)
+		default:
+			panic(fmt.Sprintf("unsupported type for col %v: %v", col.Name, col.Type))
 		}
 	}
 	return results
@@ -77,7 +79,11 @@ func (*Client) createResultsArray(table *schema.Table) []bigquery.Value {
 
 func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- []interface{}) error {
 	stmt := fmt.Sprintf(readSQL, c.projectID, c.datasetID, table.Name)
-	q := c.client.Query(stmt)
+	client, err := c.bqClient(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to create client: %w", err)
+	}
+	q := client.Query(stmt)
 	q.Parameters = []bigquery.QueryParameter{
 		{
 			Name:  "cq_source_name",

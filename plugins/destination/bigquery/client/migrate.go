@@ -15,36 +15,40 @@ const concurrentMigrations = 10
 
 // Migrate tables. It is the responsibility of the CLI of the client to lock before running migrations.
 func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
-	eg := errgroup.Group{}
+	client, err := c.bqClient(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to create client: %w", err)
+	}
+	eg, gctx := errgroup.WithContext(ctx)
 	eg.SetLimit(concurrentMigrations)
-	for _, table := range tables {
+	for _, table := range tables.FlattenTables() {
 		table := table
 		eg.Go(func() error {
 			c.logger.Debug().Str("table", table.Name).Msg("Migrating table")
-			tableExists, err := c.doesTableExist(ctx, table.Name)
+			tableExists, err := c.doesTableExist(gctx, client, table.Name)
 			if err != nil {
 				return fmt.Errorf("failed to check if table %s exists: %w", table.Name, err)
 			}
 			if tableExists {
 				c.logger.Debug().Str("table", table.Name).Msg("Table exists, auto-migrating")
-				if err := c.autoMigrateTable(ctx, table); err != nil {
+				if err := c.autoMigrateTable(gctx, client, table); err != nil {
 					return err
 				}
 			} else {
 				c.logger.Debug().Str("table", table.Name).Msg("Table doesn't exist, creating")
-				if err := c.createTable(ctx, table); err != nil {
+				if err := c.createTable(gctx, client, table); err != nil {
 					return err
 				}
 			}
-			return c.Migrate(ctx, table.Relations)
+			return nil
 		})
 	}
 	return eg.Wait()
 }
 
-func (c *Client) doesTableExist(ctx context.Context, table string) (bool, error) {
+func (c *Client) doesTableExist(ctx context.Context, client *bigquery.Client, table string) (bool, error) {
 	c.logger.Debug().Str("dataset", c.datasetID).Str("table", table).Msg("Checking existence")
-	tableRef := c.client.Dataset(c.datasetID).Table(table)
+	tableRef := client.Dataset(c.datasetID).Table(table)
 	md, err := tableRef.Metadata(ctx)
 	if err != nil {
 		if e, ok := err.(*googleapi.Error); ok {
@@ -60,18 +64,18 @@ func (c *Client) doesTableExist(ctx context.Context, table string) (bool, error)
 	return true, nil
 }
 
-func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) error {
+func (c *Client) autoMigrateTable(ctx context.Context, client *bigquery.Client, table *schema.Table) error {
 	bqSchema := c.bigQuerySchemaForTable(table)
 	tm := bigquery.TableMetadataToUpdate{
 		Name:        table.Name,
 		Description: table.Description,
 		Schema:      bqSchema,
 	}
-	_, err := c.client.Dataset(c.datasetID).Table(table.Name).Update(ctx, tm, "")
+	_, err := client.Dataset(c.datasetID).Table(table.Name).Update(ctx, tm, "")
 	return err
 }
 
-func (c *Client) createTable(ctx context.Context, table *schema.Table) error {
+func (c *Client) createTable(ctx context.Context, client *bigquery.Client, table *schema.Table) error {
 	bqSchema := c.bigQuerySchemaForTable(table)
 	tm := bigquery.TableMetadata{
 		Name:             table.Name,
@@ -80,7 +84,7 @@ func (c *Client) createTable(ctx context.Context, table *schema.Table) error {
 		Schema:           bqSchema,
 		TimePartitioning: c.timePartitioning(),
 	}
-	return c.client.Dataset(c.datasetID).Table(table.Name).Create(ctx, &tm)
+	return client.Dataset(c.datasetID).Table(table.Name).Create(ctx, &tm)
 }
 
 func (c *Client) timePartitioning() *bigquery.TimePartitioning {

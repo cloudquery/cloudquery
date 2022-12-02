@@ -29,8 +29,8 @@ func (i *item) Save() (map[string]bigquery.Value, string, error) {
 	return i.cols, bigquery.NoDedupeID, nil
 }
 
-func (c *Client) writeResource(ctx context.Context, table *schema.Table, resources <-chan []interface{}) error {
-	inserter := c.client.Dataset(c.datasetID).Table(table.Name).Inserter()
+func (c *Client) writeResource(ctx context.Context, table *schema.Table, client *bigquery.Client, resources <-chan []interface{}) error {
+	inserter := client.Dataset(c.datasetID).Table(table.Name).Inserter()
 	inserter.IgnoreUnknownValues = true
 	inserter.SkipInvalidRows = false
 	batch := make([]*item, 0)
@@ -78,9 +78,12 @@ func (c *Client) writeResource(ctx context.Context, table *schema.Table, resourc
 }
 
 func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *plugins.ClientResource) error {
-	eg := errgroup.Group{}
+	eg, gctx := errgroup.WithContext(ctx)
 	workers := make(map[string]*worker, len(tables))
-
+	client, err := c.bqClient(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to create client: %w", err)
+	}
 	for _, t := range tables.FlattenTables() {
 		t := t
 		writeChan := make(chan []interface{})
@@ -88,7 +91,7 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *pl
 			writeChan: writeChan,
 		}
 		eg.Go(func() error {
-			return c.writeResource(ctx, t, writeChan)
+			return c.writeResource(gctx, t, client, writeChan)
 		})
 	}
 

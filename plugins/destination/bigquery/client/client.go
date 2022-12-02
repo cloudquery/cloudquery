@@ -15,21 +15,20 @@ type Client struct {
 	logger     zerolog.Logger
 	spec       specs.Destination
 	metrics    plugins.DestinationMetrics
-	client     *bigquery.Client
 	pluginSpec Spec
 	projectID  string
 	datasetID  string
 }
 
-func New(_ context.Context, logger zerolog.Logger, destSpec specs.Destination) (plugins.DestinationClient, error) {
+func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination) (plugins.DestinationClient, error) {
 	if destSpec.WriteMode != specs.WriteModeAppend {
 		return nil, fmt.Errorf("bigquery destination only supports append mode")
 	}
 	c := &Client{
 		logger: logger.With().Str("module", "bq-dest").Logger(),
+		spec:   destSpec,
 	}
 	var spec Spec
-	c.spec = destSpec
 	if err := destSpec.UnmarshalSpec(&spec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal bigquery spec: %w", err)
 	}
@@ -37,23 +36,25 @@ func New(_ context.Context, logger zerolog.Logger, destSpec specs.Destination) (
 	if err := spec.Validate(); err != nil {
 		return nil, err
 	}
-	client, err := bigquery.NewClient(context.Background(), spec.ProjectID)
+
+	// create a client to test that we can do it, but new clients will also be instantiated
+	// for queries so that we can use a new context there.
+	client, err := c.bqClient(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create new BigQuery client: %w", err)
 	}
-	c.client = client
+	defer client.Close()
+
 	c.projectID = spec.ProjectID
 	c.datasetID = spec.DatasetID
 	c.pluginSpec = spec
 	return c, nil
 }
 
+func (c *Client) bqClient(ctx context.Context) (*bigquery.Client, error) {
+	return bigquery.NewClient(ctx, c.projectID)
+}
+
 func (c *Client) Close(_ context.Context) error {
-	var err error
-	if c.client == nil {
-		return fmt.Errorf("client already closed or not initialized")
-	}
-	err = c.client.Close()
-	c.client = nil
-	return err
+	return nil
 }
