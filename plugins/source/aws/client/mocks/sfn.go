@@ -75,6 +75,26 @@ func (mr *MockSfnClientMockRecorder) DescribeExecution(arg0, arg1 interface{}, a
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeExecution", reflect.TypeOf((*MockSfnClient)(nil).DescribeExecution), varargs...)
 }
 
+// DescribeMapRun mocks base method.
+func (m *MockSfnClient) DescribeMapRun(arg0 context.Context, arg1 *sfn.DescribeMapRunInput, arg2 ...func(*sfn.Options)) (*sfn.DescribeMapRunOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeMapRun", varargs...)
+	ret0, _ := ret[0].(*sfn.DescribeMapRunOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeMapRun indicates an expected call of DescribeMapRun.
+func (mr *MockSfnClientMockRecorder) DescribeMapRun(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeMapRun", reflect.TypeOf((*MockSfnClient)(nil).DescribeMapRun), varargs...)
+}
+
 // DescribeStateMachine mocks base method.
 func (m *MockSfnClient) DescribeStateMachine(arg0 context.Context, arg1 *sfn.DescribeStateMachineInput, arg2 ...func(*sfn.Options)) (*sfn.DescribeStateMachineOutput, error) {
 	m.ctrl.T.Helper()
@@ -193,6 +213,26 @@ func (mr *MockSfnClientMockRecorder) ListExecutions(arg0, arg1 interface{}, arg2
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListExecutions", reflect.TypeOf((*MockSfnClient)(nil).ListExecutions), varargs...)
+}
+
+// ListMapRuns mocks base method.
+func (m *MockSfnClient) ListMapRuns(arg0 context.Context, arg1 *sfn.ListMapRunsInput, arg2 ...func(*sfn.Options)) (*sfn.ListMapRunsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListMapRuns", varargs...)
+	ret0, _ := ret[0].(*sfn.ListMapRunsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListMapRuns indicates an expected call of ListMapRuns.
+func (mr *MockSfnClientMockRecorder) ListMapRuns(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListMapRuns", reflect.TypeOf((*MockSfnClient)(nil).ListMapRuns), varargs...)
 }
 
 // ListStateMachines mocks base method.
