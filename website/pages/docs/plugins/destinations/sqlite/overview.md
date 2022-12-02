@@ -1,4 +1,9 @@
-# CloudQuery SQLite Destination Plugin
+# SQLite Destination Plugin
+
+import { getLatestVersion } from "../../../../../utils/versions";
+import { Badge } from "../../../../../components/Badge";
+
+<Badge text={"Latest: " + getLatestVersion("destination", "sqlite")}/>
 
 This destination plugin let's you sync data from a CloudQuery source to an SQLite database. This can be useful for local data exploration as no db/service is required.
 
