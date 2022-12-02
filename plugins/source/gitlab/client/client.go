@@ -46,15 +46,16 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (sche
 	gitlabToken, ok := os.LookupEnv("GITLAB_API_TOKEN")
 	if !ok {
 		if gitlabSpec.Token == "" {
-			return nil, errors.New("missing GITLAB_API_TOKEN, either set it as an environment variable or pass it in the configuration")
+			return nil, errors.New("missing GITLAB_API_TOKEN, either set it as an environment variable or pass it in the spec")
 		}
-
 		gitlabToken = gitlabSpec.Token
 	}
+
 	opts := []gitlab.ClientOptionFunc{}
 	if gitlabSpec.BaseURL != "" {
 		opts = append(opts, gitlab.WithBaseURL(gitlabSpec.BaseURL))
 	}
+
 	c, err := gitlab.NewClient(gitlabToken, opts...)
 	if err != nil {
 		return nil, err
@@ -71,10 +72,4 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (sche
 		},
 		spec: s,
 	}, nil
-}
-
-func NewGitlabClient(logger zerolog.Logger) Client {
-	return Client{
-		logger: logger,
-	}
 }

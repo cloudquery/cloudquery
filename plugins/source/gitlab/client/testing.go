@@ -27,8 +27,9 @@ func GitlabMockTestHelper(t *testing.T, table *schema.Table, builder func(*testi
 
 	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source) (schema.ClientMeta, error) {
 		return &Client{
-			logger: l,
-			Gitlab: builder(t, ctrl),
+			logger:  l,
+			Gitlab:  builder(t, ctrl),
+			BaseURL: "https://test.customURL.com",
 		}, nil
 	}
 	p := plugins.NewSourcePlugin(

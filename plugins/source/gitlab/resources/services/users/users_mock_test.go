@@ -25,6 +25,6 @@ func buildUsers(t *testing.T, ctrl *gomock.Controller) client.GitlabServices {
 	}
 }
 
-func TestStorageBillings(t *testing.T) {
+func TestUsers(t *testing.T) {
 	client.GitlabMockTestHelper(t, Users(), buildUsers, client.TestOptions{})
 }
