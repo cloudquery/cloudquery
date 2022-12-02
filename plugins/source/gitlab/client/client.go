@@ -43,12 +43,14 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (sche
 		return nil, fmt.Errorf("failed to unmarshal gitlab spec: %w", err)
 	}
 
-	gitlabToken, ok := os.LookupEnv("GITLAB_API_TOKEN")
-	if !ok {
-		if gitlabSpec.Token == "" {
-			return nil, errors.New("missing GITLAB_API_TOKEN, either set it as an environment variable or pass it in the spec")
+	gitlabToken := gitlabSpec.Token
+	if gitlabToken == "" {
+		gitlabToken, ok := os.LookupEnv("GITLAB_API_TOKEN")
+		if !ok {
+			if gitlabToken == "" {
+				return nil, errors.New("missing GITLAB_API_TOKEN, either set it as an environment variable or pass it in the spec")
+			}
 		}
-		gitlabToken = gitlabSpec.Token
 	}
 
 	opts := []gitlab.ClientOptionFunc{}
