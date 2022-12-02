@@ -69,14 +69,14 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.19.3-release-cache-${{ hashFiles('plugins/destination/sqlite/go.sum') }}
+          key: ${{ runner.os }}-go-1.19.3-release-cache-${{ hashFiles('plugins/destination/bigquery/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.19.3-release-cache-plugins-destination-sqlite
+            ${{ runner.os }}-go-1.19.3-release-cache-plugins-destination-bigquery
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/setup-go@v3
         with:
-          go-version-file: plugins/destination/sqlite/go.mod
+          go-version-file: plugins/destination/bigquery/go.mod
       - name: Install GoReleaser
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: goreleaser/goreleaser-action@v3
@@ -86,6 +86,6 @@ jobs:
           install-only: true
       - name: Run GoReleaser Dry-Run
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        run: goreleaser release --snapshot --rm-dist --skip-validate --skip-publish --skip-sign -f ./plugins/destination/sqlite/.goreleaser.yaml
+        run: goreleaser release --snapshot --rm-dist --skip-validate --skip-publish --skip-sign -f ./plugins/destination/bigquery/.goreleaser.yaml
         env:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
