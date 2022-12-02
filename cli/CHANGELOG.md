@@ -5,6 +5,14 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.23](https://github.com/cloudquery/cloudquery/compare/cli-v2.0.22...cli-v2.0.23) (2022-12-02)
+
+
+### Bug Fixes
+
+* **deps:** Update module google.golang.org/grpc to v1.51.0 ([#5231](https://github.com/cloudquery/cloudquery/issues/5231)) ([2498d05](https://github.com/cloudquery/cloudquery/commit/2498d05cb9f63b31e47ac9cb3e58125bf0e1f4ee))
+* Filter results of getTablesForSpec to top-level tables in CLI ([#5294](https://github.com/cloudquery/cloudquery/issues/5294)) ([768e0c5](https://github.com/cloudquery/cloudquery/commit/768e0c5d2f5e41e162d4fb27cc04a56d148bbbdd))
+
 ## [2.0.22](https://github.com/cloudquery/cloudquery/compare/cli-v2.0.21...cli-v2.0.22) (2022-11-30)
 
 
