@@ -1,5 +1,6 @@
 {
   "overview": "Overview",
+  "bigquery": "BigQuery",
   "csv": "CSV",
   "postgresql": "PostgreSQL",
   "snowflake": "Snowflake",
