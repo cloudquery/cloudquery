@@ -3,13 +3,13 @@ module github.com/cloudquery/cloudquery/plugins/source/digitalocean
 go 1.19
 
 require (
-	github.com/avast/retry-go v3.0.0+incompatible
+	github.com/avast/retry-go/v4 v4.3.1
 	github.com/aws/aws-sdk-go-v2 v1.17.1
 	github.com/aws/aws-sdk-go-v2/config v1.18.3
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.29.4
 	github.com/aws/smithy-go v1.13.4
 	github.com/cloudquery/plugin-sdk v1.10.0
-	github.com/digitalocean/godo v1.81.0
+	github.com/digitalocean/godo v1.91.1
 	github.com/gertd/go-pluralize v0.2.1
 	github.com/golang/mock v1.6.0
 	github.com/iancoleman/strcase v0.2.0
@@ -52,6 +52,7 @@ require (
 	golang.org/x/sync v0.1.0 // indirect
 	golang.org/x/sys v0.2.0 // indirect
 	golang.org/x/text v0.4.0 // indirect
+	golang.org/x/time v0.0.0-20220922220347-f3bd1da661af // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/genproto v0.0.0-20221111202108-142d8a6fa32e // indirect
 	google.golang.org/grpc v1.50.1 // indirect

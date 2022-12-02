@@ -21,3 +21,4 @@ This table depends on [cloudflare_accounts](cloudflare_accounts.md).
 |user|JSON|
 |status|String|
 |roles|JSON|
+|policies|JSON|

@@ -1,7 +1,7 @@
 package recipies
 
 import (
-	"github.com/google/go-github/v45/github"
+	"github.com/google/go-github/v48/github"
 )
 
 func Repositories() []*Resource {

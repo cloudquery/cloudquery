@@ -15,7 +15,7 @@ jobs:
     steps:
       - name: Get changed files
         id: changed-files
-        uses: Ana06/get-changed-files@v2.1.0
+        uses: Ana06/get-changed-files@v2.2.0
         with:
           filter: 'go.mod'
       - uses: actions/github-script@v6

@@ -1,69 +1,99 @@
-import nextra from 'nextra'
-import * as fs from 'fs';
-import path from 'path';
+import nextra from "nextra";
+import * as fs from "fs";
+import path from "path";
 
-const reSourcePluginVersion = /VERSION_SOURCE_([a-zA-Z0-9_]+)/;
-const reDestPluginVersion = /VERSION_DESTINATION_([a-zA-Z0-9_]+)/;
-const reCLI = "VERSION_CLI";
+const patterns = {
+  cli: /VERSION_(CLI)/,
+  sources: /VERSION_SOURCE_([a-zA-Z0-9_]+)/,
+  destinations: /VERSION_DESTINATION_([a-zA-Z0-9_]+)/,
+};
+
+function parseVersion(version) {
+  const parts = version.split("-");
+  if (parts.length === 4) {
+    return parts[3];
+  }
+  return parts[1];
+}
+
+function parseName(name) {
+  const parts = name.split("-");
+  if (parts.length === 2) {
+    return parts[1];
+  }
+  return parts[0];
+}
+
+function isUnreleasedPlugin(key, name) {
+  if (key === "cli") {
+    return false;
+  }
+  const pluginDir = path.resolve("..", "plugins", key.slice(0, -1), name);
+  try {
+    // check that this is a plugin
+    fs.accessSync(path.resolve(pluginDir, "go.mod"), fs.constants.F_OK);
+  } catch (e) {
+    return false;
+  }
+
+  const changelogPath = path.resolve(pluginDir, "CHANGELOG.md");
+  try {
+    const changelogContent = fs.readFileSync(changelogPath, "utf8");
+    const emptyChangelog = !changelogContent.includes("1.0.0");
+    return emptyChangelog;
+  } catch (err) {
+    // no Changelog, this is new plugin
+    return true;
+  }
+}
+
+function getVersionsForPrefix(prefix, files) {
+  return Object.fromEntries(
+    files
+      .filter((file) => file.name.split("-")[0] == prefix)
+      .map((file) => [parseName(file.name), parseVersion(file.latest)])
+  );
+}
 
 function getVersions() {
-  let versions = {
-    sources: {},
-    destinations: {},
-    cli: "",
-  }
-  const dir = fs.opendirSync('./versions')
-  let dirent
-  while ((dirent = dir.readSync()) !== null) {
-    if (dirent.isFile() && dirent.name.startsWith('source-')) {
-      let name = dirent.name.split('-')[1].split('.')[0]
-      let {latest} = JSON.parse(fs.readFileSync('./versions/' + dirent.name, 'utf8'))
-      versions.sources[name] = latest.split('-')[3]
-    } else if (dirent.isFile() && dirent.name.startsWith('destination-')) { 
-      let name = dirent.name.split('-')[1].split('.')[0]
-      let {latest} = JSON.parse(fs.readFileSync('./versions/' + dirent.name, 'utf8'))
-      versions.destinations[name] = latest.split('-')[3]
-    } else if (dirent.isFile() && dirent.name == "cli.json") {
-      versions.cli = JSON.parse(fs.readFileSync('./versions/' + dirent.name, 'utf8')).latest.split('-')[1]
-    }
-  }
-  dir.closeSync()
-  return versions
+  const files = fs
+    .readdirSync("./versions", { withFileTypes: true })
+    .filter((dirent) => dirent.isFile())
+    .map((file) => ({
+      name: path.basename(file.name, path.extname(file.name)),
+      latest: JSON.parse(fs.readFileSync(`./versions/${file.name}`, "utf8"))
+        .latest,
+    }));
+
+  return {
+    cli: getVersionsForPrefix("cli", files),
+    sources: getVersionsForPrefix("source", files),
+    destinations: getVersionsForPrefix("destination", files),
+  };
 }
 
-const versions = getVersions()
+const versions = getVersions();
 
 const replaceMdxCodeVersions = (node) => {
-  if (node.type === 'text') {
-    let match = node.value.match(reSourcePluginVersion)
-    if (match && match.length >= 1) {
-      let version = versions.sources[match[1].toLowerCase()]
-      if (version === undefined) {
-        throw new Error(`Could not find version for source plugin ${match[1]}`)
+  if (node.type === "text") {
+    Object.entries(patterns).forEach(([key, pattern]) => {
+      const match = node.value.match(pattern);
+      if (match && match.length >= 1) {
+        const name = match[1].toLowerCase();
+        const version = versions[key][name];
+        if (version !== undefined || isUnreleasedPlugin(key, name)) {
+          node.value = node.value.replace(pattern, version || "v1.0.0");
+        } else {
+          throw new Error(`Could not find version for ${key} ${name}`);
+        }
       }
-      node.value = node.value.replace(reSourcePluginVersion, version)
-    }
-    match = node.value.match(reDestPluginVersion)
-    if (match && match.length >= 1) {
-      let version = versions.destinations[match[1].toLowerCase()]
-      if (version === undefined) {
-        throw new Error(`Could not find version for destination plugin ${match[1]}`)
-      }
-      node.value = node.value.replace(reDestPluginVersion, version)
-    }
-    if (node.value.includes(reCLI)) {
-      let version = versions.cli
-      if (version === undefined) {
-        throw new Error(`Could not find version for cli ${match}`)
-      }
-      node.value = node.value.replace(reCLI, version)
-    }
+    });
   }
   if (node.children !== undefined) {
-    node.children.map(replaceMdxCodeVersions)
+    node.children.forEach(replaceMdxCodeVersions);
   }
-  return
-}
+  return;
+};
 
 const withNextra = nextra({
   theme: "nextra-theme-docs",
@@ -72,9 +102,9 @@ const withNextra = nextra({
   unstable_staticImage: true,
   mdxOptions: {
     rehypePrettyCodeOptions: {
-      theme: 'nord',
+      theme: "nord",
       onVisitLine: (node) => {
-        replaceMdxCodeVersions(node)
+        replaceMdxCodeVersions(node);
       },
     },
   },
