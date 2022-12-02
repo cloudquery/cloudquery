@@ -55,6 +55,6 @@ func (c *Client) bqClient(ctx context.Context) (*bigquery.Client, error) {
 	return bigquery.NewClient(ctx, c.projectID)
 }
 
-func (c *Client) Close(_ context.Context) error {
+func (*Client) Close(_ context.Context) error {
 	return nil
 }
