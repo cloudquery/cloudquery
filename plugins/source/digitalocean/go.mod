@@ -4,10 +4,10 @@ go 1.19
 
 require (
 	github.com/avast/retry-go/v4 v4.3.1
-	github.com/aws/aws-sdk-go-v2 v1.17.1
+	github.com/aws/aws-sdk-go-v2 v1.17.2
 	github.com/aws/aws-sdk-go-v2/config v1.18.3
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.29.4
-	github.com/aws/smithy-go v1.13.4
+	github.com/aws/smithy-go v1.13.5
 	github.com/cloudquery/plugin-sdk v1.10.0
 	github.com/digitalocean/godo v1.91.1
 	github.com/gertd/go-pluralize v0.2.1
