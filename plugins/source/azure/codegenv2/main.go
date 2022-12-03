@@ -140,6 +140,9 @@ func main() {
 	}
 	rootDir = path.Dir(filename)
 	var resources []*recipes.Resource
+	// resources = append(resources, recipes.AadResources()...)
+	// resources = append(resources, recipes.AddonsResources()...)
+	resources = append(resources, recipes.AdvisorResources()...)
 	resources = append(resources, recipes.BatchResources()...)
 	resources = append(resources, recipes.CDNResources()...)
 	resources = append(resources, recipes.ComputeResources()...)
@@ -151,6 +154,12 @@ func main() {
 	resources = append(resources, recipes.EventHubResources()...)
 	resources = append(resources, recipes.FrontDoorResources()...)
 	resources = append(resources, recipes.KeyVaultResources()...)
+	resources = append(resources, recipes.LogicResources()...)
+	resources = append(resources, recipes.MariaDBResources()...)
+	resources = append(resources, recipes.MySQLResources()...)
+	resources = append(resources, recipes.NetworkResources()...)
+	resources = append(resources, recipes.PostgreSQLResources()...)
+	resources = append(resources, recipes.RedisResources()...)
 	// resources = append(resources, recipes.IotSecurityResources()...)
 	// resources = append(resources, recipes.WorkloadsResources()...)
 

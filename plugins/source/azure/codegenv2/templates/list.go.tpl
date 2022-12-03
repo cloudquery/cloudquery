@@ -24,7 +24,7 @@ func fetch{{.SubService | ToCamel}}(ctx context.Context, meta schema.ClientMeta,
 		if err != nil {
 			return err
 		}
-		res <- p.{{.OutputField}}
+		res <- p.Value
 	}
 	return nil
 }
