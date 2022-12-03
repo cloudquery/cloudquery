@@ -10,11 +10,11 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.18.1
 	github.com/aws/aws-sdk-go-v2/service/account v1.7.12
 	github.com/aws/aws-sdk-go-v2/service/acm v1.16.4
-	github.com/aws/aws-sdk-go-v2/service/apigateway v1.15.25
+	github.com/aws/aws-sdk-go-v2/service/apigateway v1.15.26
 	github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.12.24
-	github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.15.23
+	github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.15.24
 	github.com/aws/aws-sdk-go-v2/service/apprunner v1.15.1
-	github.com/aws/aws-sdk-go-v2/service/appstream v1.18.0
+	github.com/aws/aws-sdk-go-v2/service/appstream v1.18.1
 	github.com/aws/aws-sdk-go-v2/service/appsync v1.16.0
 	github.com/aws/aws-sdk-go-v2/service/autoscaling v1.24.3
 	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.24.2
