@@ -18,7 +18,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/appsync v1.16.0
 	github.com/aws/aws-sdk-go-v2/service/autoscaling v1.24.3
 	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.24.2
-	github.com/aws/aws-sdk-go-v2/service/cloudfront v1.21.0
+	github.com/aws/aws-sdk-go-v2/service/cloudfront v1.21.1
 	github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.13.22
 	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.20.4
 	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.22.1
@@ -128,7 +128,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.20 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.3.27 // indirect
 	github.com/aws/aws-sdk-go-v2/service/athena v1.20.1
-	github.com/aws/aws-sdk-go-v2/service/backup v1.18.0
+	github.com/aws/aws-sdk-go-v2/service/backup v1.18.1
 	github.com/aws/aws-sdk-go-v2/service/glue v1.37.0
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.9.11 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.7.19 // indirect
