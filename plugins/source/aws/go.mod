@@ -20,7 +20,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.24.2
 	github.com/aws/aws-sdk-go-v2/service/cloudfront v1.21.0
 	github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.13.22
-	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.20.3
+	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.20.4
 	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.22.1
 	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.17.0
 	github.com/aws/aws-sdk-go-v2/service/codebuild v1.19.20
