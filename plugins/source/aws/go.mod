@@ -39,7 +39,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/ecs v1.20.1
 	github.com/aws/aws-sdk-go-v2/service/efs v1.18.1
 	github.com/aws/aws-sdk-go-v2/service/eks v1.24.1
-	github.com/aws/aws-sdk-go-v2/service/elasticache v1.24.1
+	github.com/aws/aws-sdk-go-v2/service/elasticache v1.24.2
 	github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk v1.14.21
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.14.24
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.18.27
