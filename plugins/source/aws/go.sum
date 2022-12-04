@@ -56,7 +56,6 @@ github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.20 h1:WW0qSzDWoiWU2FS5Db
 github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.20/go.mod h1:/+6lSiby8TBFpTVXZgKiN/rCfkYXEGvhlM4zCgPpt7w=
 github.com/aws/aws-sdk-go-v2/internal/ini v1.3.27 h1:N2eKFw2S+JWRCtTt0IhIX7uoGGQciD4p6ba+SJv4WEU=
 github.com/aws/aws-sdk-go-v2/internal/ini v1.3.27/go.mod h1:RdwFVc7PBYWY33fa2+8T1mSqQ7ZEK4ILpM0wfioDC3w=
-github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.16/go.mod h1:XH+3h395e3WVdd6T2Z3mPxuI+x/HVtdqVOREkTiyubs=
 github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.17 h1:5tXbMJ7Jq0iG65oiMg6tCLsHkSaO2xLXa2EmZ29vaTA=
 github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.17/go.mod h1:twV0fKMQuqLY4klyFH56aXNq3AFiA5LO0/frTczEOFE=
 github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.18.1 h1:lrueZeVplC08xOhy5t4x6+e9GkKeXPTjpvDQkBm3Fsk=
@@ -139,8 +138,8 @@ github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.17.2 h1:wVWqmbAibjQ
 github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.17.2/go.mod h1:UY0dc/ngkmYkBegXTwQ3kILLtItU8UJuueHHD91vn88=
 github.com/aws/aws-sdk-go-v2/service/emr v1.20.17 h1:l0Bt5LV6O10OWVGdLtziEo82l5Ie+zdSgstUDOLEq/Q=
 github.com/aws/aws-sdk-go-v2/service/emr v1.20.17/go.mod h1:zSZ5CdWwrg5cR1b793aCXBZP/vSFBP2EdZDAmiO3U5o=
-github.com/aws/aws-sdk-go-v2/service/eventbridge v1.16.20 h1:QaqRFEugMxaju69lACe3IK1KjuuMGu0a08o9x6hEKmk=
-github.com/aws/aws-sdk-go-v2/service/eventbridge v1.16.20/go.mod h1:8g5GmQrg6Q44ap2NIxBb6eCZojS70QhJiv0qsgHVSKo=
+github.com/aws/aws-sdk-go-v2/service/eventbridge v1.16.21 h1:O7SrsqeZlS2NE1VwqCjKcyMLtBOi+kyXrOwSDvlNvzI=
+github.com/aws/aws-sdk-go-v2/service/eventbridge v1.16.21/go.mod h1:e7yLCvF0BVXbOf40UXd827jm6A9MQ85yL+rP1ZtiA+M=
 github.com/aws/aws-sdk-go-v2/service/firehose v1.15.1 h1:V+ynrs1hBlalqvgKkm+IKV7lHynAzNYDEZHCtMjIzw8=
 github.com/aws/aws-sdk-go-v2/service/firehose v1.15.1/go.mod h1:W5KSnBbR6CWaJb+oDcVxzm89pXJS+0DpcaSBnCgEB50=
 github.com/aws/aws-sdk-go-v2/service/frauddetector v1.20.12 h1:JD/u+1toJg4r6xs3EVRLwnZpvib6cKl999lfG86t3eM=
