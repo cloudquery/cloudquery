@@ -5,51 +5,39 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/vmwarecloudsimple/
 
 func Armvmwarecloudsimple() []*Resource {
 	resources := []*Resource{
-    
 		{
 			NewFunc: armvmwarecloudsimple.NewDedicatedCloudServicesClient,
 		},
-    
-		{
-			NewFunc: armvmwarecloudsimple.NewVirtualMachinesClient,
-		},
-    
-		{
-			NewFunc: armvmwarecloudsimple.NewDedicatedCloudNodesClient,
-		},
-    
-		{
-			NewFunc: armvmwarecloudsimple.NewUsagesClient,
-		},
-    
-		{
-			NewFunc: armvmwarecloudsimple.NewVirtualMachineTemplatesClient,
-		},
-    
-		{
-			NewFunc: armvmwarecloudsimple.NewCustomizationPoliciesClient,
-		},
-    
-		{
-			NewFunc: armvmwarecloudsimple.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armvmwarecloudsimple.NewPrivateCloudsClient,
-		},
-    
 		{
 			NewFunc: armvmwarecloudsimple.NewResourcePoolsClient,
 		},
-    
 		{
-			NewFunc: armvmwarecloudsimple.NewSKUsAvailabilityClient,
+			NewFunc: armvmwarecloudsimple.NewCustomizationPoliciesClient,
 		},
-    
+		{
+			NewFunc: armvmwarecloudsimple.NewOperationsClient,
+		},
 		{
 			NewFunc: armvmwarecloudsimple.NewVirtualNetworksClient,
 		},
-    
+		{
+			NewFunc: armvmwarecloudsimple.NewPrivateCloudsClient,
+		},
+		{
+			NewFunc: armvmwarecloudsimple.NewVirtualMachineTemplatesClient,
+		},
+		{
+			NewFunc: armvmwarecloudsimple.NewDedicatedCloudNodesClient,
+		},
+		{
+			NewFunc: armvmwarecloudsimple.NewSKUsAvailabilityClient,
+		},
+		{
+			NewFunc: armvmwarecloudsimple.NewUsagesClient,
+		},
+		{
+			NewFunc: armvmwarecloudsimple.NewVirtualMachinesClient,
+		},
 	}
 	return resources
 }

@@ -5,15 +5,12 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/serialconsole/arms
 
 func Armserialconsole() []*Resource {
 	resources := []*Resource{
-    
 		{
 			NewFunc: armserialconsole.NewMicrosoftSerialConsoleClient,
 		},
-    
 		{
 			NewFunc: armserialconsole.NewSerialPortsClient,
 		},
-    
 	}
 	return resources
 }

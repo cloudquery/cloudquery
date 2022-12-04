@@ -5,23 +5,18 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/arma
 
 func Armazurestackhci() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armazurestackhci.NewExtensionsClient,
-		},
-    
 		{
 			NewFunc: armazurestackhci.NewArcSettingsClient,
 		},
-    
-		{
-			NewFunc: armazurestackhci.NewClustersClient,
-		},
-    
 		{
 			NewFunc: armazurestackhci.NewOperationsClient,
 		},
-    
+		{
+			NewFunc: armazurestackhci.NewClustersClient,
+		},
+		{
+			NewFunc: armazurestackhci.NewExtensionsClient,
+		},
 	}
 	return resources
 }

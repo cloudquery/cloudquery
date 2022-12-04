@@ -5,95 +5,66 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsight
 
 func Armoperationalinsights() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armoperationalinsights.NewOperationStatusesClient,
-		},
-    
-		{
-			NewFunc: armoperationalinsights.NewGatewaysClient,
-		},
-    
-		{
-			NewFunc: armoperationalinsights.NewLinkedServicesClient,
-		},
-    
-		{
-			NewFunc: armoperationalinsights.NewSharedKeysClient,
-		},
-    
-		{
-			NewFunc: armoperationalinsights.NewTablesClient,
-		},
-    
-		{
-			NewFunc: armoperationalinsights.NewWorkspacesClient,
-		},
-    
-		{
-			NewFunc: armoperationalinsights.NewDataExportsClient,
-		},
-    
-		{
-			NewFunc: armoperationalinsights.NewLinkedStorageAccountsClient,
-		},
-    
-		{
-			NewFunc: armoperationalinsights.NewQueryPacksClient,
-		},
-    
-		{
-			NewFunc: armoperationalinsights.NewAvailableServiceTiersClient,
-		},
-    
-		{
-			NewFunc: armoperationalinsights.NewIntelligencePacksClient,
-		},
-    
-		{
-			NewFunc: armoperationalinsights.NewManagementGroupsClient,
-		},
-    
-		{
-			NewFunc: armoperationalinsights.NewSavedSearchesClient,
-		},
-    
-		{
-			NewFunc: armoperationalinsights.NewQueriesClient,
-		},
-    
-		{
-			NewFunc: armoperationalinsights.NewStorageInsightConfigsClient,
-		},
-    
-		{
-			NewFunc: armoperationalinsights.NewClustersClient,
-		},
-    
-		{
-			NewFunc: armoperationalinsights.NewDataSourcesClient,
-		},
-    
-		{
-			NewFunc: armoperationalinsights.NewUsagesClient,
-		},
-    
-		{
-			NewFunc: armoperationalinsights.NewWorkspacePurgeClient,
-		},
-    
-		{
-			NewFunc: armoperationalinsights.NewOperationsClient,
-		},
-    
 		{
 			NewFunc: armoperationalinsights.NewSchemaClient,
 		},
-    
+		{
+			NewFunc: armoperationalinsights.NewWorkspacesClient,
+		},
 		{
 			NewFunc: armoperationalinsights.NewDeletedWorkspacesClient,
 		},
-    
+		{
+			NewFunc: armoperationalinsights.NewDataSourcesClient,
+		},
+		{
+			NewFunc: armoperationalinsights.NewGatewaysClient,
+		},
+		{
+			NewFunc: armoperationalinsights.NewIntelligencePacksClient,
+		},
+		{
+			NewFunc: armoperationalinsights.NewLinkedServicesClient,
+		},
+		{
+			NewFunc: armoperationalinsights.NewManagementGroupsClient,
+		},
+		{
+			NewFunc: armoperationalinsights.NewOperationsClient,
+		},
+		{
+			NewFunc: armoperationalinsights.NewAvailableServiceTiersClient,
+		},
+		{
+			NewFunc: armoperationalinsights.NewSavedSearchesClient,
+		},
+		{
+			NewFunc: armoperationalinsights.NewWorkspacePurgeClient,
+		},
+		{
+			NewFunc: armoperationalinsights.NewStorageInsightConfigsClient,
+		},
+		{
+			NewFunc: armoperationalinsights.NewTablesClient,
+		},
+		{
+			NewFunc: armoperationalinsights.NewUsagesClient,
+		},
+		{
+			NewFunc: armoperationalinsights.NewDataExportsClient,
+		},
+		{
+			NewFunc: armoperationalinsights.NewSharedKeysClient,
+		},
+		{
+			NewFunc: armoperationalinsights.NewOperationStatusesClient,
+		},
+		{
+			NewFunc: armoperationalinsights.NewClustersClient,
+		},
+		{
+			NewFunc: armoperationalinsights.NewLinkedStorageAccountsClient,
+		},
 	}
 	return resources
 }

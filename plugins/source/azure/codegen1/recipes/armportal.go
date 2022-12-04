@@ -5,23 +5,18 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/portal/armportal"
 
 func Armportal() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armportal.NewDashboardsClient,
-		},
-    
 		{
 			NewFunc: armportal.NewListTenantConfigurationViolationsClient,
 		},
-    
-		{
-			NewFunc: armportal.NewOperationsClient,
-		},
-    
 		{
 			NewFunc: armportal.NewTenantConfigurationsClient,
 		},
-    
+		{
+			NewFunc: armportal.NewDashboardsClient,
+		},
+		{
+			NewFunc: armportal.NewOperationsClient,
+		},
 	}
 	return resources
 }

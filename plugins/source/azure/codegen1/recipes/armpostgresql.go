@@ -5,79 +5,60 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpost
 
 func Armpostgresql() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armpostgresql.NewCheckNameAvailabilityClient,
-		},
-    
-		{
-			NewFunc: armpostgresql.NewRecoverableServersClient,
-		},
-    
-		{
-			NewFunc: armpostgresql.NewReplicasClient,
-		},
-    
-		{
-			NewFunc: armpostgresql.NewServerParametersClient,
-		},
-    
-		{
-			NewFunc: armpostgresql.NewConfigurationsClient,
-		},
-    
-		{
-			NewFunc: armpostgresql.NewLocationBasedPerformanceTierClient,
-		},
-    
-		{
-			NewFunc: armpostgresql.NewLogFilesClient,
-		},
-    
-		{
-			NewFunc: armpostgresql.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armpostgresql.NewServersClient,
-		},
-    
-		{
-			NewFunc: armpostgresql.NewServerKeysClient,
-		},
-    
-		{
-			NewFunc: armpostgresql.NewDatabasesClient,
-		},
-    
-		{
-			NewFunc: armpostgresql.NewFirewallRulesClient,
-		},
-    
 		{
 			NewFunc: armpostgresql.NewPrivateEndpointConnectionsClient,
 		},
-    
-		{
-			NewFunc: armpostgresql.NewServerAdministratorsClient,
-		},
-    
-		{
-			NewFunc: armpostgresql.NewServerBasedPerformanceTierClient,
-		},
-    
-		{
-			NewFunc: armpostgresql.NewServerSecurityAlertPoliciesClient,
-		},
-    
-		{
-			NewFunc: armpostgresql.NewVirtualNetworkRulesClient,
-		},
-    
 		{
 			NewFunc: armpostgresql.NewPrivateLinkResourcesClient,
 		},
-    
+		{
+			NewFunc: armpostgresql.NewServerAdministratorsClient,
+		},
+		{
+			NewFunc: armpostgresql.NewServerBasedPerformanceTierClient,
+		},
+		{
+			NewFunc: armpostgresql.NewServerParametersClient,
+		},
+		{
+			NewFunc: armpostgresql.NewServerSecurityAlertPoliciesClient,
+		},
+		{
+			NewFunc: armpostgresql.NewVirtualNetworkRulesClient,
+		},
+		{
+			NewFunc: armpostgresql.NewLocationBasedPerformanceTierClient,
+		},
+		{
+			NewFunc: armpostgresql.NewServerKeysClient,
+		},
+		{
+			NewFunc: armpostgresql.NewServersClient,
+		},
+		{
+			NewFunc: armpostgresql.NewDatabasesClient,
+		},
+		{
+			NewFunc: armpostgresql.NewFirewallRulesClient,
+		},
+		{
+			NewFunc: armpostgresql.NewOperationsClient,
+		},
+		{
+			NewFunc: armpostgresql.NewCheckNameAvailabilityClient,
+		},
+		{
+			NewFunc: armpostgresql.NewConfigurationsClient,
+		},
+		{
+			NewFunc: armpostgresql.NewLogFilesClient,
+		},
+		{
+			NewFunc: armpostgresql.NewRecoverableServersClient,
+		},
+		{
+			NewFunc: armpostgresql.NewReplicasClient,
+		},
 	}
 	return resources
 }

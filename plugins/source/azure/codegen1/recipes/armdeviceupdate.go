@@ -5,35 +5,27 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceupdate/armde
 
 func Armdeviceupdate() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armdeviceupdate.NewInstancesClient,
-		},
-    
 		{
 			NewFunc: armdeviceupdate.NewPrivateEndpointConnectionProxiesClient,
 		},
-    
 		{
 			NewFunc: armdeviceupdate.NewPrivateEndpointConnectionsClient,
 		},
-    
 		{
 			NewFunc: armdeviceupdate.NewPrivateLinkResourcesClient,
 		},
-    
 		{
 			NewFunc: armdeviceupdate.NewClient,
 		},
-    
 		{
-			NewFunc: armdeviceupdate.NewOperationsClient,
+			NewFunc: armdeviceupdate.NewInstancesClient,
 		},
-    
 		{
 			NewFunc: armdeviceupdate.NewAccountsClient,
 		},
-    
+		{
+			NewFunc: armdeviceupdate.NewOperationsClient,
+		},
 	}
 	return resources
 }

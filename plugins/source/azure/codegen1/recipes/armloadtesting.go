@@ -5,19 +5,15 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/loadtesting/armloa
 
 func Armloadtesting() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armloadtesting.NewQuotasClient,
-		},
-    
-		{
-			NewFunc: armloadtesting.NewLoadTestsClient,
-		},
-    
 		{
 			NewFunc: armloadtesting.NewOperationsClient,
 		},
-    
+		{
+			NewFunc: armloadtesting.NewLoadTestsClient,
+		},
+		{
+			NewFunc: armloadtesting.NewQuotasClient,
+		},
 	}
 	return resources
 }

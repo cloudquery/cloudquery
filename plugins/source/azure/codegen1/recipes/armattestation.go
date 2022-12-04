@@ -5,19 +5,15 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/attestation/armatt
 
 func Armattestation() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armattestation.NewPrivateEndpointConnectionsClient,
-		},
-    
 		{
 			NewFunc: armattestation.NewOperationsClient,
 		},
-    
+		{
+			NewFunc: armattestation.NewPrivateEndpointConnectionsClient,
+		},
 		{
 			NewFunc: armattestation.NewProvidersClient,
 		},
-    
 	}
 	return resources
 }

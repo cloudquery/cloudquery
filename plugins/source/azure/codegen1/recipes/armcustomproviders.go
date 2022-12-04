@@ -5,19 +5,15 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customproviders/ar
 
 func Armcustomproviders() []*Resource {
 	resources := []*Resource{
-    
 		{
 			NewFunc: armcustomproviders.NewOperationsClient,
 		},
-    
 		{
 			NewFunc: armcustomproviders.NewAssociationsClient,
 		},
-    
 		{
 			NewFunc: armcustomproviders.NewCustomResourceProviderClient,
 		},
-    
 	}
 	return resources
 }

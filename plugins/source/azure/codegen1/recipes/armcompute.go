@@ -5,203 +5,153 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute
 
 func Armcompute() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armcompute.NewRestorePointCollectionsClient,
-		},
-    
-		{
-			NewFunc: armcompute.NewCloudServiceRolesClient,
-		},
-    
-		{
-			NewFunc: armcompute.NewUsageClient,
-		},
-    
-		{
-			NewFunc: armcompute.NewVirtualMachineExtensionsClient,
-		},
-    
-		{
-			NewFunc: armcompute.NewCloudServiceRoleInstancesClient,
-		},
-    
-		{
-			NewFunc: armcompute.NewVirtualMachineScaleSetExtensionsClient,
-		},
-    
-		{
-			NewFunc: armcompute.NewCapacityReservationsClient,
-		},
-    
-		{
-			NewFunc: armcompute.NewDiskEncryptionSetsClient,
-		},
-    
-		{
-			NewFunc: armcompute.NewVirtualMachineExtensionImagesClient,
-		},
-    
-		{
-			NewFunc: armcompute.NewVirtualMachineScaleSetRollingUpgradesClient,
-		},
-    
-		{
-			NewFunc: armcompute.NewGallerySharingProfileClient,
-		},
-    
-		{
-			NewFunc: armcompute.NewSharedGalleryImageVersionsClient,
-		},
-    
-		{
-			NewFunc: armcompute.NewCommunityGalleryImageVersionsClient,
-		},
-    
-		{
-			NewFunc: armcompute.NewVirtualMachineImagesEdgeZoneClient,
-		},
-    
-		{
-			NewFunc: armcompute.NewVirtualMachineScaleSetVMsClient,
-		},
-    
-		{
-			NewFunc: armcompute.NewCommunityGalleriesClient,
-		},
-    
-		{
-			NewFunc: armcompute.NewDiskAccessesClient,
-		},
-    
-		{
-			NewFunc: armcompute.NewResourceSKUsClient,
-		},
-    
 		{
 			NewFunc: armcompute.NewVirtualMachineScaleSetsClient,
 		},
-    
-		{
-			NewFunc: armcompute.NewAvailabilitySetsClient,
-		},
-    
-		{
-			NewFunc: armcompute.NewGalleryApplicationsClient,
-		},
-    
-		{
-			NewFunc: armcompute.NewGalleryImageVersionsClient,
-		},
-    
-		{
-			NewFunc: armcompute.NewSnapshotsClient,
-		},
-    
-		{
-			NewFunc: armcompute.NewVirtualMachineSizesClient,
-		},
-    
-		{
-			NewFunc: armcompute.NewCloudServicesUpdateDomainClient,
-		},
-    
-		{
-			NewFunc: armcompute.NewImagesClient,
-		},
-    
-		{
-			NewFunc: armcompute.NewLogAnalyticsClient,
-		},
-    
-		{
-			NewFunc: armcompute.NewVirtualMachineRunCommandsClient,
-		},
-    
-		{
-			NewFunc: armcompute.NewCommunityGalleryImagesClient,
-		},
-    
-		{
-			NewFunc: armcompute.NewDedicatedHostGroupsClient,
-		},
-    
-		{
-			NewFunc: armcompute.NewGalleryImagesClient,
-		},
-    
 		{
 			NewFunc: armcompute.NewCapacityReservationGroupsClient,
 		},
-    
 		{
-			NewFunc: armcompute.NewGalleriesClient,
+			NewFunc: armcompute.NewCloudServiceRoleInstancesClient,
 		},
-    
 		{
-			NewFunc: armcompute.NewOperationsClient,
+			NewFunc: armcompute.NewDedicatedHostGroupsClient,
 		},
-    
-		{
-			NewFunc: armcompute.NewRestorePointsClient,
-		},
-    
-		{
-			NewFunc: armcompute.NewVirtualMachineImagesClient,
-		},
-    
 		{
 			NewFunc: armcompute.NewDedicatedHostsClient,
 		},
-    
-		{
-			NewFunc: armcompute.NewGalleryApplicationVersionsClient,
-		},
-    
-		{
-			NewFunc: armcompute.NewSharedGalleriesClient,
-		},
-    
-		{
-			NewFunc: armcompute.NewSSHPublicKeysClient,
-		},
-    
-		{
-			NewFunc: armcompute.NewProximityPlacementGroupsClient,
-		},
-    
-		{
-			NewFunc: armcompute.NewVirtualMachinesClient,
-		},
-    
-		{
-			NewFunc: armcompute.NewVirtualMachineScaleSetVMRunCommandsClient,
-		},
-    
-		{
-			NewFunc: armcompute.NewDiskRestorePointClient,
-		},
-    
-		{
-			NewFunc: armcompute.NewVirtualMachineScaleSetVMExtensionsClient,
-		},
-    
-		{
-			NewFunc: armcompute.NewCloudServiceOperatingSystemsClient,
-		},
-    
-		{
-			NewFunc: armcompute.NewCloudServicesClient,
-		},
-    
 		{
 			NewFunc: armcompute.NewDisksClient,
 		},
-    
+		{
+			NewFunc: armcompute.NewImagesClient,
+		},
+		{
+			NewFunc: armcompute.NewSharedGalleryImageVersionsClient,
+		},
+		{
+			NewFunc: armcompute.NewVirtualMachineScaleSetVMRunCommandsClient,
+		},
+		{
+			NewFunc: armcompute.NewAvailabilitySetsClient,
+		},
+		{
+			NewFunc: armcompute.NewCommunityGalleryImagesClient,
+		},
+		{
+			NewFunc: armcompute.NewRestorePointsClient,
+		},
+		{
+			NewFunc: armcompute.NewVirtualMachineExtensionImagesClient,
+		},
+		{
+			NewFunc: armcompute.NewVirtualMachineScaleSetRollingUpgradesClient,
+		},
+		{
+			NewFunc: armcompute.NewCloudServicesUpdateDomainClient,
+		},
+		{
+			NewFunc: armcompute.NewCommunityGalleriesClient,
+		},
+		{
+			NewFunc: armcompute.NewVirtualMachinesClient,
+		},
+		{
+			NewFunc: armcompute.NewCommunityGalleryImageVersionsClient,
+		},
+		{
+			NewFunc: armcompute.NewSharedGalleriesClient,
+		},
+		{
+			NewFunc: armcompute.NewVirtualMachineRunCommandsClient,
+		},
+		{
+			NewFunc: armcompute.NewProximityPlacementGroupsClient,
+		},
+		{
+			NewFunc: armcompute.NewRestorePointCollectionsClient,
+		},
+		{
+			NewFunc: armcompute.NewVirtualMachineExtensionsClient,
+		},
+		{
+			NewFunc: armcompute.NewVirtualMachineSizesClient,
+		},
+		{
+			NewFunc: armcompute.NewDiskEncryptionSetsClient,
+		},
+		{
+			NewFunc: armcompute.NewCloudServiceRolesClient,
+		},
+		{
+			NewFunc: armcompute.NewGalleryApplicationsClient,
+		},
+		{
+			NewFunc: armcompute.NewGalleryImagesClient,
+		},
+		{
+			NewFunc: armcompute.NewSSHPublicKeysClient,
+		},
 		{
 			NewFunc: armcompute.NewSharedGalleryImagesClient,
 		},
-    
+		{
+			NewFunc: armcompute.NewGalleriesClient,
+		},
+		{
+			NewFunc: armcompute.NewLogAnalyticsClient,
+		},
+		{
+			NewFunc: armcompute.NewVirtualMachineScaleSetExtensionsClient,
+		},
+		{
+			NewFunc: armcompute.NewGalleryApplicationVersionsClient,
+		},
+		{
+			NewFunc: armcompute.NewGalleryImageVersionsClient,
+		},
+		{
+			NewFunc: armcompute.NewGallerySharingProfileClient,
+		},
+		{
+			NewFunc: armcompute.NewResourceSKUsClient,
+		},
+		{
+			NewFunc: armcompute.NewDiskAccessesClient,
+		},
+		{
+			NewFunc: armcompute.NewDiskRestorePointClient,
+		},
+		{
+			NewFunc: armcompute.NewCloudServicesClient,
+		},
+		{
+			NewFunc: armcompute.NewUsageClient,
+		},
+		{
+			NewFunc: armcompute.NewSnapshotsClient,
+		},
+		{
+			NewFunc: armcompute.NewVirtualMachineImagesClient,
+		},
+		{
+			NewFunc: armcompute.NewVirtualMachineImagesEdgeZoneClient,
+		},
+		{
+			NewFunc: armcompute.NewVirtualMachineScaleSetVMExtensionsClient,
+		},
+		{
+			NewFunc: armcompute.NewVirtualMachineScaleSetVMsClient,
+		},
+		{
+			NewFunc: armcompute.NewCapacityReservationsClient,
+		},
+		{
+			NewFunc: armcompute.NewOperationsClient,
+		},
+		{
+			NewFunc: armcompute.NewCloudServiceOperatingSystemsClient,
+		},
 	}
 	return resources
 }

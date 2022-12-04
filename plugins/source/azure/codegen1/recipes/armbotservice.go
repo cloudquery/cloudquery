@@ -5,43 +5,33 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbots
 
 func Armbotservice() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armbotservice.NewPrivateEndpointConnectionsClient,
-		},
-    
 		{
 			NewFunc: armbotservice.NewBotConnectionClient,
 		},
-    
-		{
-			NewFunc: armbotservice.NewChannelsClient,
-		},
-    
-		{
-			NewFunc: armbotservice.NewHostSettingsClient,
-		},
-    
-		{
-			NewFunc: armbotservice.NewOperationResultsClient,
-		},
-    
-		{
-			NewFunc: armbotservice.NewOperationsClient,
-		},
-    
 		{
 			NewFunc: armbotservice.NewBotsClient,
 		},
-    
+		{
+			NewFunc: armbotservice.NewOperationResultsClient,
+		},
+		{
+			NewFunc: armbotservice.NewOperationsClient,
+		},
 		{
 			NewFunc: armbotservice.NewPrivateLinkResourcesClient,
 		},
-    
+		{
+			NewFunc: armbotservice.NewChannelsClient,
+		},
 		{
 			NewFunc: armbotservice.NewDirectLineClient,
 		},
-    
+		{
+			NewFunc: armbotservice.NewHostSettingsClient,
+		},
+		{
+			NewFunc: armbotservice.NewPrivateEndpointConnectionsClient,
+		},
 	}
 	return resources
 }

@@ -5,23 +5,18 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sqlvirtualmachine/
 
 func Armsqlvirtualmachine() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armsqlvirtualmachine.NewSQLVirtualMachinesClient,
-		},
-    
-		{
-			NewFunc: armsqlvirtualmachine.NewOperationsClient,
-		},
-    
 		{
 			NewFunc: armsqlvirtualmachine.NewGroupsClient,
 		},
-    
+		{
+			NewFunc: armsqlvirtualmachine.NewSQLVirtualMachinesClient,
+		},
 		{
 			NewFunc: armsqlvirtualmachine.NewAvailabilityGroupListenersClient,
 		},
-    
+		{
+			NewFunc: armsqlvirtualmachine.NewOperationsClient,
+		},
 	}
 	return resources
 }

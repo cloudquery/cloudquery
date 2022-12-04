@@ -5,67 +5,51 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/
 
 func Armcontainerregistry() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armcontainerregistry.NewWebhooksClient,
-		},
-    
-		{
-			NewFunc: armcontainerregistry.NewRegistriesClient,
-		},
-    
-		{
-			NewFunc: armcontainerregistry.NewReplicationsClient,
-		},
-    
-		{
-			NewFunc: armcontainerregistry.NewPrivateEndpointConnectionsClient,
-		},
-    
 		{
 			NewFunc: armcontainerregistry.NewRunsClient,
 		},
-    
-		{
-			NewFunc: armcontainerregistry.NewScopeMapsClient,
-		},
-    
-		{
-			NewFunc: armcontainerregistry.NewAgentPoolsClient,
-		},
-    
-		{
-			NewFunc: armcontainerregistry.NewExportPipelinesClient,
-		},
-    
 		{
 			NewFunc: armcontainerregistry.NewTaskRunsClient,
 		},
-    
-		{
-			NewFunc: armcontainerregistry.NewOperationsClient,
-		},
-    
 		{
 			NewFunc: armcontainerregistry.NewTasksClient,
 		},
-    
 		{
-			NewFunc: armcontainerregistry.NewTokensClient,
+			NewFunc: armcontainerregistry.NewExportPipelinesClient,
 		},
-    
 		{
-			NewFunc: armcontainerregistry.NewConnectedRegistriesClient,
+			NewFunc: armcontainerregistry.NewReplicationsClient,
 		},
-    
 		{
-			NewFunc: armcontainerregistry.NewImportPipelinesClient,
+			NewFunc: armcontainerregistry.NewWebhooksClient,
 		},
-    
+		{
+			NewFunc: armcontainerregistry.NewAgentPoolsClient,
+		},
 		{
 			NewFunc: armcontainerregistry.NewPipelineRunsClient,
 		},
-    
+		{
+			NewFunc: armcontainerregistry.NewPrivateEndpointConnectionsClient,
+		},
+		{
+			NewFunc: armcontainerregistry.NewScopeMapsClient,
+		},
+		{
+			NewFunc: armcontainerregistry.NewTokensClient,
+		},
+		{
+			NewFunc: armcontainerregistry.NewConnectedRegistriesClient,
+		},
+		{
+			NewFunc: armcontainerregistry.NewImportPipelinesClient,
+		},
+		{
+			NewFunc: armcontainerregistry.NewOperationsClient,
+		},
+		{
+			NewFunc: armcontainerregistry.NewRegistriesClient,
+		},
 	}
 	return resources
 }

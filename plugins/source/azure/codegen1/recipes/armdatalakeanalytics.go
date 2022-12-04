@@ -5,35 +5,27 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-analytics
 
 func Armdatalakeanalytics() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armdatalakeanalytics.NewLocationsClient,
-		},
-    
-		{
-			NewFunc: armdatalakeanalytics.NewFirewallRulesClient,
-		},
-    
-		{
-			NewFunc: armdatalakeanalytics.NewAccountsClient,
-		},
-    
-		{
-			NewFunc: armdatalakeanalytics.NewComputePoliciesClient,
-		},
-    
-		{
-			NewFunc: armdatalakeanalytics.NewDataLakeStoreAccountsClient,
-		},
-    
-		{
-			NewFunc: armdatalakeanalytics.NewOperationsClient,
-		},
-    
 		{
 			NewFunc: armdatalakeanalytics.NewStorageAccountsClient,
 		},
-    
+		{
+			NewFunc: armdatalakeanalytics.NewDataLakeStoreAccountsClient,
+		},
+		{
+			NewFunc: armdatalakeanalytics.NewLocationsClient,
+		},
+		{
+			NewFunc: armdatalakeanalytics.NewOperationsClient,
+		},
+		{
+			NewFunc: armdatalakeanalytics.NewAccountsClient,
+		},
+		{
+			NewFunc: armdatalakeanalytics.NewComputePoliciesClient,
+		},
+		{
+			NewFunc: armdatalakeanalytics.NewFirewallRulesClient,
+		},
 	}
 	return resources
 }

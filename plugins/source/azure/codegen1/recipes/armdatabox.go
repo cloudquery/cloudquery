@@ -5,23 +5,18 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox
 
 func Armdatabox() []*Resource {
 	resources := []*Resource{
-    
 		{
 			NewFunc: armdatabox.NewJobsClient,
 		},
-    
 		{
 			NewFunc: armdatabox.NewManagementClient,
 		},
-    
 		{
 			NewFunc: armdatabox.NewOperationsClient,
 		},
-    
 		{
 			NewFunc: armdatabox.NewServiceClient,
 		},
-    
 	}
 	return resources
 }

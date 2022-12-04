@@ -5,39 +5,30 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/signalr/armsignalr
 
 func Armsignalr() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armsignalr.NewPrivateLinkResourcesClient,
-		},
-    
-		{
-			NewFunc: armsignalr.NewUsagesClient,
-		},
-    
-		{
-			NewFunc: armsignalr.NewCustomDomainsClient,
-		},
-    
-		{
-			NewFunc: armsignalr.NewPrivateEndpointConnectionsClient,
-		},
-    
 		{
 			NewFunc: armsignalr.NewClient,
 		},
-    
 		{
 			NewFunc: armsignalr.NewCustomCertificatesClient,
 		},
-    
+		{
+			NewFunc: armsignalr.NewPrivateLinkResourcesClient,
+		},
+		{
+			NewFunc: armsignalr.NewUsagesClient,
+		},
 		{
 			NewFunc: armsignalr.NewOperationsClient,
 		},
-    
+		{
+			NewFunc: armsignalr.NewPrivateEndpointConnectionsClient,
+		},
 		{
 			NewFunc: armsignalr.NewSharedPrivateLinkResourcesClient,
 		},
-    
+		{
+			NewFunc: armsignalr.NewCustomDomainsClient,
+		},
 	}
 	return resources
 }

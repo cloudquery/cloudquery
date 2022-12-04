@@ -5,47 +5,36 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/
 
 func Armcognitiveservices() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armcognitiveservices.NewDeletedAccountsClient,
-		},
-    
-		{
-			NewFunc: armcognitiveservices.NewAccountsClient,
-		},
-    
-		{
-			NewFunc: armcognitiveservices.NewCommitmentPlansClient,
-		},
-    
-		{
-			NewFunc: armcognitiveservices.NewPrivateLinkResourcesClient,
-		},
-    
-		{
-			NewFunc: armcognitiveservices.NewDeploymentsClient,
-		},
-    
-		{
-			NewFunc: armcognitiveservices.NewManagementClient,
-		},
-    
-		{
-			NewFunc: armcognitiveservices.NewPrivateEndpointConnectionsClient,
-		},
-    
-		{
-			NewFunc: armcognitiveservices.NewResourceSKUsClient,
-		},
-    
 		{
 			NewFunc: armcognitiveservices.NewCommitmentTiersClient,
 		},
-    
+		{
+			NewFunc: armcognitiveservices.NewDeploymentsClient,
+		},
+		{
+			NewFunc: armcognitiveservices.NewManagementClient,
+		},
+		{
+			NewFunc: armcognitiveservices.NewPrivateLinkResourcesClient,
+		},
+		{
+			NewFunc: armcognitiveservices.NewAccountsClient,
+		},
+		{
+			NewFunc: armcognitiveservices.NewPrivateEndpointConnectionsClient,
+		},
+		{
+			NewFunc: armcognitiveservices.NewDeletedAccountsClient,
+		},
 		{
 			NewFunc: armcognitiveservices.NewOperationsClient,
 		},
-    
+		{
+			NewFunc: armcognitiveservices.NewResourceSKUsClient,
+		},
+		{
+			NewFunc: armcognitiveservices.NewCommitmentPlansClient,
+		},
 	}
 	return resources
 }

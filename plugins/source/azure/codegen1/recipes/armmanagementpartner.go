@@ -5,19 +5,15 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementpartner/
 
 func Armmanagementpartner() []*Resource {
 	resources := []*Resource{
-    
 		{
 			NewFunc: armmanagementpartner.NewOperationClient,
 		},
-    
 		{
 			NewFunc: armmanagementpartner.NewPartnerClient,
 		},
-    
 		{
 			NewFunc: armmanagementpartner.NewPartnersClient,
 		},
-    
 	}
 	return resources
 }

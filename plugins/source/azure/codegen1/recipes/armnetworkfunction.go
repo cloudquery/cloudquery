@@ -5,27 +5,21 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/ar
 
 func Armnetworkfunction() []*Resource {
 	resources := []*Resource{
-    
 		{
 			NewFunc: armnetworkfunction.NewAzureTrafficCollectorsByResourceGroupClient,
 		},
-    
-		{
-			NewFunc: armnetworkfunction.NewClient,
-		},
-    
-		{
-			NewFunc: armnetworkfunction.NewCollectorPoliciesClient,
-		},
-    
-		{
-			NewFunc: armnetworkfunction.NewAzureTrafficCollectorsClient,
-		},
-    
 		{
 			NewFunc: armnetworkfunction.NewAzureTrafficCollectorsBySubscriptionClient,
 		},
-    
+		{
+			NewFunc: armnetworkfunction.NewClient,
+		},
+		{
+			NewFunc: armnetworkfunction.NewAzureTrafficCollectorsClient,
+		},
+		{
+			NewFunc: armnetworkfunction.NewCollectorPoliciesClient,
+		},
 	}
 	return resources
 }

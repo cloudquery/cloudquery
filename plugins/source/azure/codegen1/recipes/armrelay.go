@@ -5,31 +5,24 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/relay/armrelay"
 
 func Armrelay() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armrelay.NewHybridConnectionsClient,
-		},
-    
-		{
-			NewFunc: armrelay.NewNamespacesClient,
-		},
-    
-		{
-			NewFunc: armrelay.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armrelay.NewPrivateLinkResourcesClient,
-		},
-    
 		{
 			NewFunc: armrelay.NewWCFRelaysClient,
 		},
-    
+		{
+			NewFunc: armrelay.NewHybridConnectionsClient,
+		},
+		{
+			NewFunc: armrelay.NewNamespacesClient,
+		},
+		{
+			NewFunc: armrelay.NewPrivateLinkResourcesClient,
+		},
+		{
+			NewFunc: armrelay.NewOperationsClient,
+		},
 		{
 			NewFunc: armrelay.NewPrivateEndpointConnectionsClient,
 		},
-    
 	}
 	return resources
 }

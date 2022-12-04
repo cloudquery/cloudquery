@@ -5,11 +5,9 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/edgeorderpartner/a
 
 func Armedgeorderpartner() []*Resource {
 	resources := []*Resource{
-    
 		{
 			NewFunc: armedgeorderpartner.NewAPISClient,
 		},
-    
 	}
 	return resources
 }

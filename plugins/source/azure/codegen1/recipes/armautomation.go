@@ -5,191 +5,144 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armauto
 
 func Armautomation() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armautomation.NewDscNodeConfigurationClient,
-		},
-    
-		{
-			NewFunc: armautomation.NewHybridRunbookWorkersClient,
-		},
-    
-		{
-			NewFunc: armautomation.NewJobStreamClient,
-		},
-    
-		{
-			NewFunc: armautomation.NewKeysClient,
-		},
-    
-		{
-			NewFunc: armautomation.NewActivityClient,
-		},
-    
-		{
-			NewFunc: armautomation.NewDeletedAutomationAccountsClient,
-		},
-    
-		{
-			NewFunc: armautomation.NewDscNodeClient,
-		},
-    
-		{
-			NewFunc: armautomation.NewSoftwareUpdateConfigurationMachineRunsClient,
-		},
-    
-		{
-			NewFunc: armautomation.NewTestJobStreamsClient,
-		},
-    
-		{
-			NewFunc: armautomation.NewNodeCountInformationClient,
-		},
-    
-		{
-			NewFunc: armautomation.NewSoftwareUpdateConfigurationsClient,
-		},
-    
-		{
-			NewFunc: armautomation.NewCertificateClient,
-		},
-    
-		{
-			NewFunc: armautomation.NewJobClient,
-		},
-    
-		{
-			NewFunc: armautomation.NewNodeReportsClient,
-		},
-    
-		{
-			NewFunc: armautomation.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armautomation.NewRunbookDraftClient,
-		},
-    
-		{
-			NewFunc: armautomation.NewConnectionTypeClient,
-		},
-    
-		{
-			NewFunc: armautomation.NewJobScheduleClient,
-		},
-    
-		{
-			NewFunc: armautomation.NewModuleClient,
-		},
-    
-		{
-			NewFunc: armautomation.NewDscCompilationJobStreamClient,
-		},
-    
-		{
-			NewFunc: armautomation.NewRunbookClient,
-		},
-    
-		{
-			NewFunc: armautomation.NewSourceControlSyncJobClient,
-		},
-    
-		{
-			NewFunc: armautomation.NewTestJobClient,
-		},
-    
-		{
-			NewFunc: armautomation.NewAccountClient,
-		},
-    
-		{
-			NewFunc: armautomation.NewConnectionClient,
-		},
-    
-		{
-			NewFunc: armautomation.NewWatcherClient,
-		},
-    
-		{
-			NewFunc: armautomation.NewPrivateLinkResourcesClient,
-		},
-    
-		{
-			NewFunc: armautomation.NewPython2PackageClient,
-		},
-    
-		{
-			NewFunc: armautomation.NewScheduleClient,
-		},
-    
-		{
-			NewFunc: armautomation.NewUsagesClient,
-		},
-    
-		{
-			NewFunc: armautomation.NewFieldsClient,
-		},
-    
-		{
-			NewFunc: armautomation.NewPrivateEndpointConnectionsClient,
-		},
-    
-		{
-			NewFunc: armautomation.NewSoftwareUpdateConfigurationRunsClient,
-		},
-    
-		{
-			NewFunc: armautomation.NewSourceControlClient,
-		},
-    
-		{
-			NewFunc: armautomation.NewVariableClient,
-		},
-    
-		{
-			NewFunc: armautomation.NewDscCompilationJobClient,
-		},
-    
-		{
-			NewFunc: armautomation.NewHybridRunbookWorkerGroupClient,
-		},
-    
-		{
-			NewFunc: armautomation.NewLinkedWorkspaceClient,
-		},
-    
-		{
-			NewFunc: armautomation.NewSourceControlSyncJobStreamsClient,
-		},
-    
-		{
-			NewFunc: armautomation.NewStatisticsClient,
-		},
-    
 		{
 			NewFunc: armautomation.NewDscConfigurationClient,
 		},
-    
 		{
-			NewFunc: armautomation.NewObjectDataTypesClient,
+			NewFunc: armautomation.NewNodeReportsClient,
 		},
-    
 		{
-			NewFunc: armautomation.NewWebhookClient,
+			NewFunc: armautomation.NewOperationsClient,
 		},
-    
 		{
-			NewFunc: armautomation.NewAgentRegistrationInformationClient,
+			NewFunc: armautomation.NewSoftwareUpdateConfigurationRunsClient,
 		},
-    
+		{
+			NewFunc: armautomation.NewSoftwareUpdateConfigurationsClient,
+		},
+		{
+			NewFunc: armautomation.NewWatcherClient,
+		},
 		{
 			NewFunc: armautomation.NewClient,
 		},
-    
+		{
+			NewFunc: armautomation.NewHybridRunbookWorkerGroupClient,
+		},
+		{
+			NewFunc: armautomation.NewModuleClient,
+		},
+		{
+			NewFunc: armautomation.NewObjectDataTypesClient,
+		},
+		{
+			NewFunc: armautomation.NewPrivateEndpointConnectionsClient,
+		},
+		{
+			NewFunc: armautomation.NewPython2PackageClient,
+		},
+		{
+			NewFunc: armautomation.NewRunbookDraftClient,
+		},
+		{
+			NewFunc: armautomation.NewFieldsClient,
+		},
+		{
+			NewFunc: armautomation.NewRunbookClient,
+		},
+		{
+			NewFunc: armautomation.NewScheduleClient,
+		},
+		{
+			NewFunc: armautomation.NewDscCompilationJobStreamClient,
+		},
+		{
+			NewFunc: armautomation.NewActivityClient,
+		},
 		{
 			NewFunc: armautomation.NewCredentialClient,
 		},
-    
+		{
+			NewFunc: armautomation.NewDscNodeConfigurationClient,
+		},
+		{
+			NewFunc: armautomation.NewJobScheduleClient,
+		},
+		{
+			NewFunc: armautomation.NewAccountClient,
+		},
+		{
+			NewFunc: armautomation.NewLinkedWorkspaceClient,
+		},
+		{
+			NewFunc: armautomation.NewSoftwareUpdateConfigurationMachineRunsClient,
+		},
+		{
+			NewFunc: armautomation.NewSourceControlSyncJobStreamsClient,
+		},
+		{
+			NewFunc: armautomation.NewVariableClient,
+		},
+		{
+			NewFunc: armautomation.NewDeletedAutomationAccountsClient,
+		},
+		{
+			NewFunc: armautomation.NewCertificateClient,
+		},
+		{
+			NewFunc: armautomation.NewConnectionClient,
+		},
+		{
+			NewFunc: armautomation.NewConnectionTypeClient,
+		},
+		{
+			NewFunc: armautomation.NewDscNodeClient,
+		},
+		{
+			NewFunc: armautomation.NewJobStreamClient,
+		},
+		{
+			NewFunc: armautomation.NewKeysClient,
+		},
+		{
+			NewFunc: armautomation.NewSourceControlSyncJobClient,
+		},
+		{
+			NewFunc: armautomation.NewAgentRegistrationInformationClient,
+		},
+		{
+			NewFunc: armautomation.NewTestJobStreamsClient,
+		},
+		{
+			NewFunc: armautomation.NewNodeCountInformationClient,
+		},
+		{
+			NewFunc: armautomation.NewPrivateLinkResourcesClient,
+		},
+		{
+			NewFunc: armautomation.NewUsagesClient,
+		},
+		{
+			NewFunc: armautomation.NewJobClient,
+		},
+		{
+			NewFunc: armautomation.NewDscCompilationJobClient,
+		},
+		{
+			NewFunc: armautomation.NewHybridRunbookWorkersClient,
+		},
+		{
+			NewFunc: armautomation.NewSourceControlClient,
+		},
+		{
+			NewFunc: armautomation.NewStatisticsClient,
+		},
+		{
+			NewFunc: armautomation.NewTestJobClient,
+		},
+		{
+			NewFunc: armautomation.NewWebhookClient,
+		},
 	}
 	return resources
 }

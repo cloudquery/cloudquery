@@ -5,47 +5,36 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridnetwork/armh
 
 func Armhybridnetwork() []*Resource {
 	resources := []*Resource{
-    
 		{
 			NewFunc: armhybridnetwork.NewDevicesClient,
 		},
-    
-		{
-			NewFunc: armhybridnetwork.NewNetworkFunctionVendorsClient,
-		},
-    
-		{
-			NewFunc: armhybridnetwork.NewVendorsClient,
-		},
-    
-		{
-			NewFunc: armhybridnetwork.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armhybridnetwork.NewRoleInstancesClient,
-		},
-    
-		{
-			NewFunc: armhybridnetwork.NewVendorSKUPreviewClient,
-		},
-    
-		{
-			NewFunc: armhybridnetwork.NewVendorSKUsClient,
-		},
-    
 		{
 			NewFunc: armhybridnetwork.NewNetworkFunctionsClient,
 		},
-    
 		{
-			NewFunc: armhybridnetwork.NewVendorNetworkFunctionsClient,
+			NewFunc: armhybridnetwork.NewOperationsClient,
 		},
-    
+		{
+			NewFunc: armhybridnetwork.NewRoleInstancesClient,
+		},
+		{
+			NewFunc: armhybridnetwork.NewVendorSKUsClient,
+		},
+		{
+			NewFunc: armhybridnetwork.NewNetworkFunctionVendorsClient,
+		},
 		{
 			NewFunc: armhybridnetwork.NewNetworkFunctionVendorSKUsClient,
 		},
-    
+		{
+			NewFunc: armhybridnetwork.NewVendorNetworkFunctionsClient,
+		},
+		{
+			NewFunc: armhybridnetwork.NewVendorsClient,
+		},
+		{
+			NewFunc: armhybridnetwork.NewVendorSKUPreviewClient,
+		},
 	}
 	return resources
 }

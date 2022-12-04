@@ -5,27 +5,21 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/purview/armpurview
 
 func Armpurview() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armpurview.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armpurview.NewPrivateEndpointConnectionsClient,
-		},
-    
-		{
-			NewFunc: armpurview.NewPrivateLinkResourcesClient,
-		},
-    
-		{
-			NewFunc: armpurview.NewDefaultAccountsClient,
-		},
-    
 		{
 			NewFunc: armpurview.NewAccountsClient,
 		},
-    
+		{
+			NewFunc: armpurview.NewDefaultAccountsClient,
+		},
+		{
+			NewFunc: armpurview.NewPrivateEndpointConnectionsClient,
+		},
+		{
+			NewFunc: armpurview.NewOperationsClient,
+		},
+		{
+			NewFunc: armpurview.NewPrivateLinkResourcesClient,
+		},
 	}
 	return resources
 }

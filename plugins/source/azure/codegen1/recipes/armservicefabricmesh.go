@@ -5,47 +5,36 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabricmesh/
 
 func Armservicefabricmesh() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armservicefabricmesh.NewCodePackageClient,
-		},
-    
-		{
-			NewFunc: armservicefabricmesh.NewSecretClient,
-		},
-    
-		{
-			NewFunc: armservicefabricmesh.NewServiceClient,
-		},
-    
-		{
-			NewFunc: armservicefabricmesh.NewVolumeClient,
-		},
-    
-		{
-			NewFunc: armservicefabricmesh.NewGatewayClient,
-		},
-    
 		{
 			NewFunc: armservicefabricmesh.NewOperationsClient,
 		},
-    
+		{
+			NewFunc: armservicefabricmesh.NewSecretClient,
+		},
 		{
 			NewFunc: armservicefabricmesh.NewServiceReplicaClient,
 		},
-    
+		{
+			NewFunc: armservicefabricmesh.NewVolumeClient,
+		},
 		{
 			NewFunc: armservicefabricmesh.NewApplicationClient,
 		},
-    
 		{
 			NewFunc: armservicefabricmesh.NewNetworkClient,
 		},
-    
+		{
+			NewFunc: armservicefabricmesh.NewCodePackageClient,
+		},
+		{
+			NewFunc: armservicefabricmesh.NewGatewayClient,
+		},
 		{
 			NewFunc: armservicefabricmesh.NewSecretValueClient,
 		},
-    
+		{
+			NewFunc: armservicefabricmesh.NewServiceClient,
+		},
 	}
 	return resources
 }

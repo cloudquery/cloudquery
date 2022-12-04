@@ -5,15 +5,12 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridconnectivity
 
 func Armhybridconnectivity() []*Resource {
 	resources := []*Resource{
-    
 		{
 			NewFunc: armhybridconnectivity.NewEndpointsClient,
 		},
-    
 		{
 			NewFunc: armhybridconnectivity.NewOperationsClient,
 		},
-    
 	}
 	return resources
 }

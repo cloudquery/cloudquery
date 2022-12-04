@@ -5,19 +5,15 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dns/armdns"
 
 func Armdns() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armdns.NewZonesClient,
-		},
-    
 		{
 			NewFunc: armdns.NewRecordSetsClient,
 		},
-    
 		{
 			NewFunc: armdns.NewResourceReferenceClient,
 		},
-    
+		{
+			NewFunc: armdns.NewZonesClient,
+		},
 	}
 	return resources
 }

@@ -5,107 +5,81 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devtestlabs/armdev
 
 func Armdevtestlabs() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armdevtestlabs.NewNotificationChannelsClient,
-		},
-    
-		{
-			NewFunc: armdevtestlabs.NewPolicySetsClient,
-		},
-    
-		{
-			NewFunc: armdevtestlabs.NewArmTemplatesClient,
-		},
-    
-		{
-			NewFunc: armdevtestlabs.NewDisksClient,
-		},
-    
-		{
-			NewFunc: armdevtestlabs.NewGlobalSchedulesClient,
-		},
-    
-		{
-			NewFunc: armdevtestlabs.NewSecretsClient,
-		},
-    
-		{
-			NewFunc: armdevtestlabs.NewServiceFabricsClient,
-		},
-    
-		{
-			NewFunc: armdevtestlabs.NewArtifactsClient,
-		},
-    
-		{
-			NewFunc: armdevtestlabs.NewArtifactSourcesClient,
-		},
-    
-		{
-			NewFunc: armdevtestlabs.NewSchedulesClient,
-		},
-    
-		{
-			NewFunc: armdevtestlabs.NewCostsClient,
-		},
-    
-		{
-			NewFunc: armdevtestlabs.NewProviderOperationsClient,
-		},
-    
-		{
-			NewFunc: armdevtestlabs.NewGalleryImagesClient,
-		},
-    
-		{
-			NewFunc: armdevtestlabs.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armdevtestlabs.NewVirtualNetworksClient,
-		},
-    
-		{
-			NewFunc: armdevtestlabs.NewEnvironmentsClient,
-		},
-    
-		{
-			NewFunc: armdevtestlabs.NewFormulasClient,
-		},
-    
-		{
-			NewFunc: armdevtestlabs.NewLabsClient,
-		},
-    
-		{
-			NewFunc: armdevtestlabs.NewPoliciesClient,
-		},
-    
-		{
-			NewFunc: armdevtestlabs.NewVirtualMachineSchedulesClient,
-		},
-    
-		{
-			NewFunc: armdevtestlabs.NewCustomImagesClient,
-		},
-    
-		{
-			NewFunc: armdevtestlabs.NewServiceFabricSchedulesClient,
-		},
-    
-		{
-			NewFunc: armdevtestlabs.NewUsersClient,
-		},
-    
 		{
 			NewFunc: armdevtestlabs.NewServiceRunnersClient,
 		},
-    
+		{
+			NewFunc: armdevtestlabs.NewSchedulesClient,
+		},
+		{
+			NewFunc: armdevtestlabs.NewServiceFabricsClient,
+		},
+		{
+			NewFunc: armdevtestlabs.NewSecretsClient,
+		},
+		{
+			NewFunc: armdevtestlabs.NewProviderOperationsClient,
+		},
+		{
+			NewFunc: armdevtestlabs.NewArtifactSourcesClient,
+		},
+		{
+			NewFunc: armdevtestlabs.NewGalleryImagesClient,
+		},
+		{
+			NewFunc: armdevtestlabs.NewPoliciesClient,
+		},
+		{
+			NewFunc: armdevtestlabs.NewPolicySetsClient,
+		},
+		{
+			NewFunc: armdevtestlabs.NewArmTemplatesClient,
+		},
+		{
+			NewFunc: armdevtestlabs.NewArtifactsClient,
+		},
+		{
+			NewFunc: armdevtestlabs.NewEnvironmentsClient,
+		},
+		{
+			NewFunc: armdevtestlabs.NewGlobalSchedulesClient,
+		},
+		{
+			NewFunc: armdevtestlabs.NewUsersClient,
+		},
+		{
+			NewFunc: armdevtestlabs.NewDisksClient,
+		},
+		{
+			NewFunc: armdevtestlabs.NewNotificationChannelsClient,
+		},
+		{
+			NewFunc: armdevtestlabs.NewOperationsClient,
+		},
+		{
+			NewFunc: armdevtestlabs.NewVirtualMachineSchedulesClient,
+		},
+		{
+			NewFunc: armdevtestlabs.NewLabsClient,
+		},
+		{
+			NewFunc: armdevtestlabs.NewCostsClient,
+		},
+		{
+			NewFunc: armdevtestlabs.NewVirtualNetworksClient,
+		},
 		{
 			NewFunc: armdevtestlabs.NewVirtualMachinesClient,
 		},
-    
+		{
+			NewFunc: armdevtestlabs.NewServiceFabricSchedulesClient,
+		},
+		{
+			NewFunc: armdevtestlabs.NewCustomImagesClient,
+		},
+		{
+			NewFunc: armdevtestlabs.NewFormulasClient,
+		},
 	}
 	return resources
 }

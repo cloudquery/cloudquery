@@ -5,535 +5,390 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork
 
 func Armnetwork() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armnetwork.NewServiceTagInformationClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewVirtualHubsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewCustomIPPrefixesClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewExpressRouteCircuitConnectionsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewExpressRouteCrossConnectionPeeringsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewInterfaceLoadBalancersClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewPeerExpressRouteCircuitConnectionsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewPublicIPPrefixesClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewVirtualNetworkGatewayNatRulesClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewVirtualAppliancesClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewExpressRouteCircuitAuthorizationsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewManagementGroupNetworkManagerConnectionsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewVirtualHubBgpConnectionClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewLoadBalancersClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewVirtualHubRouteTableV2SClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewAdminRuleCollectionsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewConnectivityConfigurationsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewExpressRouteServiceProvidersClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewIPGroupsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewLoadBalancerOutboundRulesClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewAzureFirewallsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewHubRouteTablesClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewInboundSecurityRuleClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewVirtualHubBgpConnectionsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewConfigurationPolicyGroupsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewLocalNetworkGatewaysClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewPrivateDNSZoneGroupsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewVirtualRouterPeeringsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewApplicationGatewayPrivateLinkResourcesClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewLoadBalancerProbesClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewRouteFiltersClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewScopeConnectionsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewAvailableEndpointServicesClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewServiceTagsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewVPNSiteLinksClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewExpressRoutePortsLocationsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewVPNGatewaysClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewConnectionMonitorsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewResourceNavigationLinksClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewStaticMembersClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewVirtualNetworkGatewaysClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewVPNSitesClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewExpressRouteLinksClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewNatGatewaysClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewPrivateEndpointsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewUsagesClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewVirtualRoutersClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewVPNServerConfigurationsAssociatedWithVirtualWanClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewApplicationGatewayPrivateEndpointConnectionsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewAvailableServiceAliasesClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewP2SVPNGatewaysClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewServiceEndpointPoliciesClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewVirtualNetworkGatewayConnectionsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewSecurityAdminConfigurationsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewBastionHostsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewInterfacesClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewLoadBalancerBackendAddressPoolsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewPrivateLinkServicesClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewPublicIPAddressesClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewRouteTablesClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewExpressRouteCrossConnectionsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewVirtualNetworkPeeringsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewVPNLinkConnectionsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewApplicationSecurityGroupsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewInterfaceIPConfigurationsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewRouteMapsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewDdosCustomPoliciesClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewFirewallPolicyIdpsSignaturesOverridesClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewIPAllocationsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewRoutesClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewSecurityRulesClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewVipSwapClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewApplicationGatewayWafDynamicManifestsDefaultClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewAvailableDelegationsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewNatRulesClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewInboundNatRulesClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewLoadBalancerNetworkInterfacesClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewManagersClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewSubscriptionNetworkManagerConnectionsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewPacketCapturesClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewAdminRulesClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewApplicationGatewayWafDynamicManifestsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewAvailableResourceGroupDelegationsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewBgpServiceCommunitiesClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewExpressRouteGatewaysClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewExpressRoutePortAuthorizationsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewFirewallPolicyIdpsSignaturesFilterValuesClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewGroupsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewVirtualNetworkTapsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewApplicationGatewaysClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewAzureFirewallFqdnTagsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewExpressRouteCircuitPeeringsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewExpressRoutePortsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewServiceEndpointPolicyDefinitionsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewRouteFilterRulesClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewDdosProtectionPlansClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewDefaultSecurityRulesClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewExpressRouteCircuitsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewExpressRouteProviderPortsLocationClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewFirewallPoliciesClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewFirewallPolicyRuleCollectionGroupsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewVPNConnectionsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewWebApplicationFirewallPoliciesClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewLoadBalancerFrontendIPConfigurationsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewSubnetsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewAvailablePrivateEndpointTypesClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewInterfaceTapConfigurationsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewManagerCommitsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewVirtualHubIPConfigurationClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewDscpConfigurationClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewExpressRouteConnectionsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewFlowLogsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewLoadBalancerLoadBalancingRulesClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewManagementClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewVirtualApplianceSitesClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewSecurityPartnerProvidersClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewVPNServerConfigurationsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewWatchersClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewFirewallPolicyIdpsSignaturesClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewHubVirtualNetworkConnectionsClient,
-		},
-    
-		{
-			NewFunc: armnetwork.NewSecurityGroupsClient,
-		},
-    
 		{
 			NewFunc: armnetwork.NewVirtualNetworksClient,
 		},
-    
 		{
-			NewFunc: armnetwork.NewServiceAssociationLinksClient,
+			NewFunc: armnetwork.NewVirtualRouterPeeringsClient,
 		},
-    
 		{
-			NewFunc: armnetwork.NewVPNSitesConfigurationClient,
+			NewFunc: armnetwork.NewAdminRulesClient,
 		},
-    
 		{
-			NewFunc: armnetwork.NewWebCategoriesClient,
+			NewFunc: armnetwork.NewAzureFirewallsClient,
 		},
-    
 		{
-			NewFunc: armnetwork.NewManagerDeploymentStatusClient,
+			NewFunc: armnetwork.NewFirewallPolicyIdpsSignaturesFilterValuesClient,
 		},
-    
 		{
-			NewFunc: armnetwork.NewProfilesClient,
+			NewFunc: armnetwork.NewPublicIPPrefixesClient,
 		},
-    
+		{
+			NewFunc: armnetwork.NewConnectionMonitorsClient,
+		},
+		{
+			NewFunc: armnetwork.NewExpressRouteProviderPortsLocationClient,
+		},
+		{
+			NewFunc: armnetwork.NewPrivateEndpointsClient,
+		},
+		{
+			NewFunc: armnetwork.NewConnectivityConfigurationsClient,
+		},
+		{
+			NewFunc: armnetwork.NewResourceNavigationLinksClient,
+		},
 		{
 			NewFunc: armnetwork.NewRoutingIntentClient,
 		},
-    
 		{
-			NewFunc: armnetwork.NewVirtualApplianceSKUsClient,
+			NewFunc: armnetwork.NewVPNSitesClient,
 		},
-    
+		{
+			NewFunc: armnetwork.NewDdosCustomPoliciesClient,
+		},
+		{
+			NewFunc: armnetwork.NewServiceTagsClient,
+		},
+		{
+			NewFunc: armnetwork.NewSubnetsClient,
+		},
+		{
+			NewFunc: armnetwork.NewVirtualRoutersClient,
+		},
+		{
+			NewFunc: armnetwork.NewFlowLogsClient,
+		},
+		{
+			NewFunc: armnetwork.NewSecurityPartnerProvidersClient,
+		},
+		{
+			NewFunc: armnetwork.NewConfigurationPolicyGroupsClient,
+		},
+		{
+			NewFunc: armnetwork.NewExpressRouteCircuitConnectionsClient,
+		},
+		{
+			NewFunc: armnetwork.NewPeerExpressRouteCircuitConnectionsClient,
+		},
+		{
+			NewFunc: armnetwork.NewIPAllocationsClient,
+		},
+		{
+			NewFunc: armnetwork.NewDdosProtectionPlansClient,
+		},
+		{
+			NewFunc: armnetwork.NewPrivateLinkServicesClient,
+		},
+		{
+			NewFunc: armnetwork.NewVPNServerConfigurationsClient,
+		},
+		{
+			NewFunc: armnetwork.NewExpressRouteServiceProvidersClient,
+		},
+		{
+			NewFunc: armnetwork.NewPrivateDNSZoneGroupsClient,
+		},
+		{
+			NewFunc: armnetwork.NewSubscriptionNetworkManagerConnectionsClient,
+		},
+		{
+			NewFunc: armnetwork.NewVirtualHubRouteTableV2SClient,
+		},
+		{
+			NewFunc: armnetwork.NewVirtualNetworkGatewayConnectionsClient,
+		},
+		{
+			NewFunc: armnetwork.NewAvailableEndpointServicesClient,
+		},
+		{
+			NewFunc: armnetwork.NewVPNLinkConnectionsClient,
+		},
+		{
+			NewFunc: armnetwork.NewBastionHostsClient,
+		},
+		{
+			NewFunc: armnetwork.NewProfilesClient,
+		},
+		{
+			NewFunc: armnetwork.NewAvailablePrivateEndpointTypesClient,
+		},
+		{
+			NewFunc: armnetwork.NewVPNSitesConfigurationClient,
+		},
+		{
+			NewFunc: armnetwork.NewSecurityGroupsClient,
+		},
+		{
+			NewFunc: armnetwork.NewDscpConfigurationClient,
+		},
+		{
+			NewFunc: armnetwork.NewFirewallPolicyRuleCollectionGroupsClient,
+		},
+		{
+			NewFunc: armnetwork.NewInboundNatRulesClient,
+		},
+		{
+			NewFunc: armnetwork.NewInterfaceLoadBalancersClient,
+		},
+		{
+			NewFunc: armnetwork.NewInterfacesClient,
+		},
+		{
+			NewFunc: armnetwork.NewExpressRoutePortsClient,
+		},
+		{
+			NewFunc: armnetwork.NewIPGroupsClient,
+		},
+		{
+			NewFunc: armnetwork.NewApplicationGatewayPrivateEndpointConnectionsClient,
+		},
+		{
+			NewFunc: armnetwork.NewRouteTablesClient,
+		},
+		{
+			NewFunc: armnetwork.NewVirtualNetworkGatewayNatRulesClient,
+		},
 		{
 			NewFunc: armnetwork.NewVirtualWansClient,
 		},
-    
+		{
+			NewFunc: armnetwork.NewAvailableDelegationsClient,
+		},
+		{
+			NewFunc: armnetwork.NewExpressRouteCircuitAuthorizationsClient,
+		},
+		{
+			NewFunc: armnetwork.NewManagerDeploymentStatusClient,
+		},
+		{
+			NewFunc: armnetwork.NewP2SVPNGatewaysClient,
+		},
+		{
+			NewFunc: armnetwork.NewVirtualHubBgpConnectionClient,
+		},
+		{
+			NewFunc: armnetwork.NewAvailableResourceGroupDelegationsClient,
+		},
+		{
+			NewFunc: armnetwork.NewFirewallPoliciesClient,
+		},
+		{
+			NewFunc: armnetwork.NewManagementClient,
+		},
+		{
+			NewFunc: armnetwork.NewLoadBalancerOutboundRulesClient,
+		},
+		{
+			NewFunc: armnetwork.NewPublicIPAddressesClient,
+		},
+		{
+			NewFunc: armnetwork.NewAdminRuleCollectionsClient,
+		},
+		{
+			NewFunc: armnetwork.NewExpressRouteConnectionsClient,
+		},
+		{
+			NewFunc: armnetwork.NewExpressRouteLinksClient,
+		},
+		{
+			NewFunc: armnetwork.NewExpressRoutePortAuthorizationsClient,
+		},
+		{
+			NewFunc: armnetwork.NewInterfaceTapConfigurationsClient,
+		},
+		{
+			NewFunc: armnetwork.NewAvailableServiceAliasesClient,
+		},
+		{
+			NewFunc: armnetwork.NewDefaultSecurityRulesClient,
+		},
+		{
+			NewFunc: armnetwork.NewLoadBalancersClient,
+		},
+		{
+			NewFunc: armnetwork.NewLocalNetworkGatewaysClient,
+		},
+		{
+			NewFunc: armnetwork.NewRouteFiltersClient,
+		},
+		{
+			NewFunc: armnetwork.NewOperationsClient,
+		},
+		{
+			NewFunc: armnetwork.NewVirtualHubsClient,
+		},
+		{
+			NewFunc: armnetwork.NewVirtualNetworkPeeringsClient,
+		},
+		{
+			NewFunc: armnetwork.NewLoadBalancerLoadBalancingRulesClient,
+		},
+		{
+			NewFunc: armnetwork.NewLoadBalancerNetworkInterfacesClient,
+		},
+		{
+			NewFunc: armnetwork.NewSecurityRulesClient,
+		},
+		{
+			NewFunc: armnetwork.NewWatchersClient,
+		},
+		{
+			NewFunc: armnetwork.NewApplicationGatewayPrivateLinkResourcesClient,
+		},
+		{
+			NewFunc: armnetwork.NewPacketCapturesClient,
+		},
+		{
+			NewFunc: armnetwork.NewVirtualNetworkGatewaysClient,
+		},
+		{
+			NewFunc: armnetwork.NewVPNGatewaysClient,
+		},
+		{
+			NewFunc: armnetwork.NewExpressRouteCrossConnectionPeeringsClient,
+		},
+		{
+			NewFunc: armnetwork.NewLoadBalancerBackendAddressPoolsClient,
+		},
+		{
+			NewFunc: armnetwork.NewManagerCommitsClient,
+		},
+		{
+			NewFunc: armnetwork.NewServiceTagInformationClient,
+		},
+		{
+			NewFunc: armnetwork.NewApplicationGatewaysClient,
+		},
+		{
+			NewFunc: armnetwork.NewCustomIPPrefixesClient,
+		},
+		{
+			NewFunc: armnetwork.NewGroupsClient,
+		},
+		{
+			NewFunc: armnetwork.NewNatGatewaysClient,
+		},
+		{
+			NewFunc: armnetwork.NewServiceAssociationLinksClient,
+		},
+		{
+			NewFunc: armnetwork.NewFirewallPolicyIdpsSignaturesOverridesClient,
+		},
+		{
+			NewFunc: armnetwork.NewHubVirtualNetworkConnectionsClient,
+		},
+		{
+			NewFunc: armnetwork.NewSecurityAdminConfigurationsClient,
+		},
+		{
+			NewFunc: armnetwork.NewStaticMembersClient,
+		},
+		{
+			NewFunc: armnetwork.NewInboundSecurityRuleClient,
+		},
+		{
+			NewFunc: armnetwork.NewInterfaceIPConfigurationsClient,
+		},
+		{
+			NewFunc: armnetwork.NewLoadBalancerProbesClient,
+		},
+		{
+			NewFunc: armnetwork.NewServiceEndpointPolicyDefinitionsClient,
+		},
+		{
+			NewFunc: armnetwork.NewVPNServerConfigurationsAssociatedWithVirtualWanClient,
+		},
+		{
+			NewFunc: armnetwork.NewApplicationSecurityGroupsClient,
+		},
+		{
+			NewFunc: armnetwork.NewFirewallPolicyIdpsSignaturesClient,
+		},
+		{
+			NewFunc: armnetwork.NewVirtualNetworkTapsClient,
+		},
+		{
+			NewFunc: armnetwork.NewLoadBalancerFrontendIPConfigurationsClient,
+		},
+		{
+			NewFunc: armnetwork.NewNatRulesClient,
+		},
+		{
+			NewFunc: armnetwork.NewUsagesClient,
+		},
+		{
+			NewFunc: armnetwork.NewVirtualAppliancesClient,
+		},
+		{
+			NewFunc: armnetwork.NewVirtualApplianceSKUsClient,
+		},
 		{
 			NewFunc: armnetwork.NewVPNSiteLinkConnectionsClient,
 		},
-    
+		{
+			NewFunc: armnetwork.NewWebCategoriesClient,
+		},
+		{
+			NewFunc: armnetwork.NewExpressRouteCircuitPeeringsClient,
+		},
+		{
+			NewFunc: armnetwork.NewExpressRouteCircuitsClient,
+		},
+		{
+			NewFunc: armnetwork.NewExpressRouteCrossConnectionsClient,
+		},
+		{
+			NewFunc: armnetwork.NewVirtualApplianceSitesClient,
+		},
+		{
+			NewFunc: armnetwork.NewVirtualHubBgpConnectionsClient,
+		},
+		{
+			NewFunc: armnetwork.NewVirtualHubIPConfigurationClient,
+		},
+		{
+			NewFunc: armnetwork.NewVPNConnectionsClient,
+		},
+		{
+			NewFunc: armnetwork.NewWebApplicationFirewallPoliciesClient,
+		},
+		{
+			NewFunc: armnetwork.NewBgpServiceCommunitiesClient,
+		},
+		{
+			NewFunc: armnetwork.NewExpressRoutePortsLocationsClient,
+		},
+		{
+			NewFunc: armnetwork.NewHubRouteTablesClient,
+		},
+		{
+			NewFunc: armnetwork.NewScopeConnectionsClient,
+		},
+		{
+			NewFunc: armnetwork.NewRoutesClient,
+		},
+		{
+			NewFunc: armnetwork.NewServiceEndpointPoliciesClient,
+		},
+		{
+			NewFunc: armnetwork.NewVPNSiteLinksClient,
+		},
+		{
+			NewFunc: armnetwork.NewAzureFirewallFqdnTagsClient,
+		},
+		{
+			NewFunc: armnetwork.NewExpressRouteGatewaysClient,
+		},
+		{
+			NewFunc: armnetwork.NewManagementGroupNetworkManagerConnectionsClient,
+		},
+		{
+			NewFunc: armnetwork.NewManagersClient,
+		},
+		{
+			NewFunc: armnetwork.NewRouteFilterRulesClient,
+		},
 	}
 	return resources
 }

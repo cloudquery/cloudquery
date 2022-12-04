@@ -5,39 +5,30 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armd
 
 func Armdatamigration() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armdatamigration.NewFilesClient,
-		},
-    
 		{
 			NewFunc: armdatamigration.NewServicesClient,
 		},
-    
-		{
-			NewFunc: armdatamigration.NewServiceTasksClient,
-		},
-    
-		{
-			NewFunc: armdatamigration.NewProjectsClient,
-		},
-    
-		{
-			NewFunc: armdatamigration.NewResourceSKUsClient,
-		},
-    
-		{
-			NewFunc: armdatamigration.NewTasksClient,
-		},
-    
 		{
 			NewFunc: armdatamigration.NewUsagesClient,
 		},
-    
+		{
+			NewFunc: armdatamigration.NewResourceSKUsClient,
+		},
+		{
+			NewFunc: armdatamigration.NewServiceTasksClient,
+		},
+		{
+			NewFunc: armdatamigration.NewFilesClient,
+		},
+		{
+			NewFunc: armdatamigration.NewProjectsClient,
+		},
+		{
+			NewFunc: armdatamigration.NewTasksClient,
+		},
 		{
 			NewFunc: armdatamigration.NewOperationsClient,
 		},
-    
 	}
 	return resources
 }

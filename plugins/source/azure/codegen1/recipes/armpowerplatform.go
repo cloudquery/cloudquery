@@ -5,27 +5,21 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerplatform/armp
 
 func Armpowerplatform() []*Resource {
 	resources := []*Resource{
-    
 		{
 			NewFunc: armpowerplatform.NewEnterprisePoliciesClient,
 		},
-    
-		{
-			NewFunc: armpowerplatform.NewPrivateEndpointConnectionsClient,
-		},
-    
-		{
-			NewFunc: armpowerplatform.NewAccountsClient,
-		},
-    
 		{
 			NewFunc: armpowerplatform.NewOperationsClient,
 		},
-    
+		{
+			NewFunc: armpowerplatform.NewPrivateEndpointConnectionsClient,
+		},
 		{
 			NewFunc: armpowerplatform.NewPrivateLinkResourcesClient,
 		},
-    
+		{
+			NewFunc: armpowerplatform.NewAccountsClient,
+		},
 	}
 	return resources
 }

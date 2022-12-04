@@ -5,59 +5,45 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datashare/armdatas
 
 func Armdatashare() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armdatashare.NewAccountsClient,
-		},
-    
-		{
-			NewFunc: armdatashare.NewProviderShareSubscriptionsClient,
-		},
-    
-		{
-			NewFunc: armdatashare.NewConsumerInvitationsClient,
-		},
-    
 		{
 			NewFunc: armdatashare.NewEmailRegistrationsClient,
 		},
-    
 		{
 			NewFunc: armdatashare.NewInvitationsClient,
 		},
-    
-		{
-			NewFunc: armdatashare.NewTriggersClient,
-		},
-    
-		{
-			NewFunc: armdatashare.NewConsumerSourceDataSetsClient,
-		},
-    
-		{
-			NewFunc: armdatashare.NewDataSetMappingsClient,
-		},
-    
-		{
-			NewFunc: armdatashare.NewOperationsClient,
-		},
-    
 		{
 			NewFunc: armdatashare.NewSharesClient,
 		},
-    
 		{
-			NewFunc: armdatashare.NewDataSetsClient,
+			NewFunc: armdatashare.NewConsumerInvitationsClient,
 		},
-    
+		{
+			NewFunc: armdatashare.NewAccountsClient,
+		},
 		{
 			NewFunc: armdatashare.NewShareSubscriptionsClient,
 		},
-    
+		{
+			NewFunc: armdatashare.NewTriggersClient,
+		},
+		{
+			NewFunc: armdatashare.NewConsumerSourceDataSetsClient,
+		},
+		{
+			NewFunc: armdatashare.NewDataSetsClient,
+		},
+		{
+			NewFunc: armdatashare.NewOperationsClient,
+		},
+		{
+			NewFunc: armdatashare.NewProviderShareSubscriptionsClient,
+		},
 		{
 			NewFunc: armdatashare.NewSynchronizationSettingsClient,
 		},
-    
+		{
+			NewFunc: armdatashare.NewDataSetMappingsClient,
+		},
 	}
 	return resources
 }

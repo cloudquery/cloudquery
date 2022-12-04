@@ -5,47 +5,36 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armserv
 
 func Armservicebus() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armservicebus.NewOperationsClient,
-		},
-    
 		{
 			NewFunc: armservicebus.NewPrivateLinkResourcesClient,
 		},
-    
-		{
-			NewFunc: armservicebus.NewQueuesClient,
-		},
-    
-		{
-			NewFunc: armservicebus.NewSubscriptionsClient,
-		},
-    
-		{
-			NewFunc: armservicebus.NewMigrationConfigsClient,
-		},
-    
-		{
-			NewFunc: armservicebus.NewPrivateEndpointConnectionsClient,
-		},
-    
-		{
-			NewFunc: armservicebus.NewRulesClient,
-		},
-    
-		{
-			NewFunc: armservicebus.NewTopicsClient,
-		},
-    
 		{
 			NewFunc: armservicebus.NewDisasterRecoveryConfigsClient,
 		},
-    
+		{
+			NewFunc: armservicebus.NewMigrationConfigsClient,
+		},
+		{
+			NewFunc: armservicebus.NewQueuesClient,
+		},
 		{
 			NewFunc: armservicebus.NewNamespacesClient,
 		},
-    
+		{
+			NewFunc: armservicebus.NewTopicsClient,
+		},
+		{
+			NewFunc: armservicebus.NewOperationsClient,
+		},
+		{
+			NewFunc: armservicebus.NewPrivateEndpointConnectionsClient,
+		},
+		{
+			NewFunc: armservicebus.NewRulesClient,
+		},
+		{
+			NewFunc: armservicebus.NewSubscriptionsClient,
+		},
 	}
 	return resources
 }

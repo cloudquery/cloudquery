@@ -5,35 +5,27 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armh
 
 func Armhybridcompute() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armhybridcompute.NewMachineExtensionsClient,
-		},
-    
-		{
-			NewFunc: armhybridcompute.NewMachinesClient,
-		},
-    
-		{
-			NewFunc: armhybridcompute.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armhybridcompute.NewManagementClient,
-		},
-    
-		{
-			NewFunc: armhybridcompute.NewPrivateEndpointConnectionsClient,
-		},
-    
-		{
-			NewFunc: armhybridcompute.NewPrivateLinkResourcesClient,
-		},
-    
 		{
 			NewFunc: armhybridcompute.NewPrivateLinkScopesClient,
 		},
-    
+		{
+			NewFunc: armhybridcompute.NewManagementClient,
+		},
+		{
+			NewFunc: armhybridcompute.NewOperationsClient,
+		},
+		{
+			NewFunc: armhybridcompute.NewPrivateEndpointConnectionsClient,
+		},
+		{
+			NewFunc: armhybridcompute.NewPrivateLinkResourcesClient,
+		},
+		{
+			NewFunc: armhybridcompute.NewMachineExtensionsClient,
+		},
+		{
+			NewFunc: armhybridcompute.NewMachinesClient,
+		},
 	}
 	return resources
 }

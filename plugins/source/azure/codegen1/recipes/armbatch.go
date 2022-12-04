@@ -5,43 +5,33 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch"
 
 func Armbatch() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armbatch.NewPrivateLinkResourceClient,
-		},
-    
 		{
 			NewFunc: armbatch.NewOperationsClient,
 		},
-    
-		{
-			NewFunc: armbatch.NewLocationClient,
-		},
-    
 		{
 			NewFunc: armbatch.NewPoolClient,
 		},
-    
 		{
 			NewFunc: armbatch.NewApplicationClient,
 		},
-    
-		{
-			NewFunc: armbatch.NewCertificateClient,
-		},
-    
-		{
-			NewFunc: armbatch.NewPrivateEndpointConnectionClient,
-		},
-    
-		{
-			NewFunc: armbatch.NewAccountClient,
-		},
-    
 		{
 			NewFunc: armbatch.NewApplicationPackageClient,
 		},
-    
+		{
+			NewFunc: armbatch.NewAccountClient,
+		},
+		{
+			NewFunc: armbatch.NewLocationClient,
+		},
+		{
+			NewFunc: armbatch.NewPrivateLinkResourceClient,
+		},
+		{
+			NewFunc: armbatch.NewCertificateClient,
+		},
+		{
+			NewFunc: armbatch.NewPrivateEndpointConnectionClient,
+		},
 	}
 	return resources
 }

@@ -5,59 +5,45 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthcareapis/arm
 
 func Armhealthcareapis() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armhealthcareapis.NewOperationResultsClient,
-		},
-    
-		{
-			NewFunc: armhealthcareapis.NewServicesClient,
-		},
-    
-		{
-			NewFunc: armhealthcareapis.NewWorkspacePrivateEndpointConnectionsClient,
-		},
-    
-		{
-			NewFunc: armhealthcareapis.NewFhirDestinationsClient,
-		},
-    
-		{
-			NewFunc: armhealthcareapis.NewFhirServicesClient,
-		},
-    
-		{
-			NewFunc: armhealthcareapis.NewIotConnectorsClient,
-		},
-    
-		{
-			NewFunc: armhealthcareapis.NewPrivateLinkResourcesClient,
-		},
-    
-		{
-			NewFunc: armhealthcareapis.NewWorkspacePrivateLinkResourcesClient,
-		},
-    
 		{
 			NewFunc: armhealthcareapis.NewDicomServicesClient,
 		},
-    
+		{
+			NewFunc: armhealthcareapis.NewFhirServicesClient,
+		},
+		{
+			NewFunc: armhealthcareapis.NewServicesClient,
+		},
+		{
+			NewFunc: armhealthcareapis.NewWorkspacePrivateLinkResourcesClient,
+		},
+		{
+			NewFunc: armhealthcareapis.NewFhirDestinationsClient,
+		},
 		{
 			NewFunc: armhealthcareapis.NewIotConnectorFhirDestinationClient,
 		},
-    
 		{
-			NewFunc: armhealthcareapis.NewWorkspacesClient,
+			NewFunc: armhealthcareapis.NewOperationResultsClient,
 		},
-    
 		{
 			NewFunc: armhealthcareapis.NewOperationsClient,
 		},
-    
+		{
+			NewFunc: armhealthcareapis.NewWorkspacePrivateEndpointConnectionsClient,
+		},
+		{
+			NewFunc: armhealthcareapis.NewWorkspacesClient,
+		},
+		{
+			NewFunc: armhealthcareapis.NewIotConnectorsClient,
+		},
 		{
 			NewFunc: armhealthcareapis.NewPrivateEndpointConnectionsClient,
 		},
-    
+		{
+			NewFunc: armhealthcareapis.NewPrivateLinkResourcesClient,
+		},
 	}
 	return resources
 }

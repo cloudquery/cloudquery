@@ -5,15 +5,12 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsesu/armwind
 
 func Armwindowsesu() []*Resource {
 	resources := []*Resource{
-    
 		{
 			NewFunc: armwindowsesu.NewMultipleActivationKeysClient,
 		},
-    
 		{
 			NewFunc: armwindowsesu.NewOperationsClient,
 		},
-    
 	}
 	return resources
 }

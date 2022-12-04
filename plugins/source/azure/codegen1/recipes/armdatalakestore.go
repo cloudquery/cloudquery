@@ -5,31 +5,24 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-store/arm
 
 func Armdatalakestore() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armdatalakestore.NewTrustedIDProvidersClient,
-		},
-    
-		{
-			NewFunc: armdatalakestore.NewVirtualNetworkRulesClient,
-		},
-    
 		{
 			NewFunc: armdatalakestore.NewLocationsClient,
 		},
-    
 		{
 			NewFunc: armdatalakestore.NewOperationsClient,
 		},
-    
 		{
-			NewFunc: armdatalakestore.NewAccountsClient,
+			NewFunc: armdatalakestore.NewTrustedIDProvidersClient,
 		},
-    
 		{
 			NewFunc: armdatalakestore.NewFirewallRulesClient,
 		},
-    
+		{
+			NewFunc: armdatalakestore.NewVirtualNetworkRulesClient,
+		},
+		{
+			NewFunc: armdatalakestore.NewAccountsClient,
+		},
 	}
 	return resources
 }

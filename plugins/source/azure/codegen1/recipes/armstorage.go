@@ -5,87 +5,66 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage
 
 func Armstorage() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armstorage.NewBlobContainersClient,
-		},
-    
-		{
-			NewFunc: armstorage.NewBlobInventoryPoliciesClient,
-		},
-    
-		{
-			NewFunc: armstorage.NewManagementPoliciesClient,
-		},
-    
-		{
-			NewFunc: armstorage.NewPrivateEndpointConnectionsClient,
-		},
-    
-		{
-			NewFunc: armstorage.NewQueueClient,
-		},
-    
-		{
-			NewFunc: armstorage.NewTableClient,
-		},
-    
 		{
 			NewFunc: armstorage.NewAccountsClient,
 		},
-    
+		{
+			NewFunc: armstorage.NewBlobInventoryPoliciesClient,
+		},
 		{
 			NewFunc: armstorage.NewBlobServicesClient,
 		},
-    
-		{
-			NewFunc: armstorage.NewEncryptionScopesClient,
-		},
-    
-		{
-			NewFunc: armstorage.NewFileServicesClient,
-		},
-    
-		{
-			NewFunc: armstorage.NewFileSharesClient,
-		},
-    
-		{
-			NewFunc: armstorage.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armstorage.NewSKUsClient,
-		},
-    
-		{
-			NewFunc: armstorage.NewUsagesClient,
-		},
-    
-		{
-			NewFunc: armstorage.NewTableServicesClient,
-		},
-    
-		{
-			NewFunc: armstorage.NewDeletedAccountsClient,
-		},
-    
-		{
-			NewFunc: armstorage.NewLocalUsersClient,
-		},
-    
 		{
 			NewFunc: armstorage.NewObjectReplicationPoliciesClient,
 		},
-    
+		{
+			NewFunc: armstorage.NewPrivateEndpointConnectionsClient,
+		},
+		{
+			NewFunc: armstorage.NewQueueClient,
+		},
+		{
+			NewFunc: armstorage.NewSKUsClient,
+		},
+		{
+			NewFunc: armstorage.NewBlobContainersClient,
+		},
+		{
+			NewFunc: armstorage.NewDeletedAccountsClient,
+		},
+		{
+			NewFunc: armstorage.NewFileSharesClient,
+		},
+		{
+			NewFunc: armstorage.NewLocalUsersClient,
+		},
+		{
+			NewFunc: armstorage.NewUsagesClient,
+		},
+		{
+			NewFunc: armstorage.NewEncryptionScopesClient,
+		},
+		{
+			NewFunc: armstorage.NewOperationsClient,
+		},
+		{
+			NewFunc: armstorage.NewTableClient,
+		},
+		{
+			NewFunc: armstorage.NewFileServicesClient,
+		},
+		{
+			NewFunc: armstorage.NewManagementPoliciesClient,
+		},
 		{
 			NewFunc: armstorage.NewPrivateLinkResourcesClient,
 		},
-    
 		{
 			NewFunc: armstorage.NewQueueServicesClient,
 		},
-    
+		{
+			NewFunc: armstorage.NewTableServicesClient,
+		},
 	}
 	return resources
 }

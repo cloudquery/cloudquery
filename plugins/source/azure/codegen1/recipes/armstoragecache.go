@@ -5,39 +5,30 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armst
 
 func Armstoragecache() []*Resource {
 	resources := []*Resource{
-    
 		{
 			NewFunc: armstoragecache.NewStorageTargetClient,
 		},
-    
-		{
-			NewFunc: armstoragecache.NewAscUsagesClient,
-		},
-    
-		{
-			NewFunc: armstoragecache.NewCachesClient,
-		},
-    
-		{
-			NewFunc: armstoragecache.NewSKUsClient,
-		},
-    
-		{
-			NewFunc: armstoragecache.NewStorageTargetsClient,
-		},
-    
 		{
 			NewFunc: armstoragecache.NewUsageModelsClient,
 		},
-    
 		{
 			NewFunc: armstoragecache.NewAscOperationsClient,
 		},
-    
+		{
+			NewFunc: armstoragecache.NewAscUsagesClient,
+		},
 		{
 			NewFunc: armstoragecache.NewOperationsClient,
 		},
-    
+		{
+			NewFunc: armstoragecache.NewSKUsClient,
+		},
+		{
+			NewFunc: armstoragecache.NewCachesClient,
+		},
+		{
+			NewFunc: armstoragecache.NewStorageTargetsClient,
+		},
 	}
 	return resources
 }

@@ -5,23 +5,18 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confluent/armconfl
 
 func Armconfluent() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armconfluent.NewValidationsClient,
-		},
-    
 		{
 			NewFunc: armconfluent.NewMarketplaceAgreementsClient,
 		},
-    
 		{
 			NewFunc: armconfluent.NewOrganizationClient,
 		},
-    
 		{
 			NewFunc: armconfluent.NewOrganizationOperationsClient,
 		},
-    
+		{
+			NewFunc: armconfluent.NewValidationsClient,
+		},
 	}
 	return resources
 }

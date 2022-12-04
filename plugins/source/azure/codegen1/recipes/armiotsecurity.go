@@ -5,39 +5,30 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iotsecurity/armiot
 
 func Armiotsecurity() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armiotsecurity.NewSitesClient,
-		},
-    
 		{
 			NewFunc: armiotsecurity.NewDefenderSettingsClient,
 		},
-    
-		{
-			NewFunc: armiotsecurity.NewDevicesClient,
-		},
-    
-		{
-			NewFunc: armiotsecurity.NewLocationsClient,
-		},
-    
 		{
 			NewFunc: armiotsecurity.NewOperationsClient,
 		},
-    
 		{
 			NewFunc: armiotsecurity.NewDeviceGroupsClient,
 		},
-    
-		{
-			NewFunc: armiotsecurity.NewOnPremiseSensorsClient,
-		},
-    
 		{
 			NewFunc: armiotsecurity.NewSensorsClient,
 		},
-    
+		{
+			NewFunc: armiotsecurity.NewSitesClient,
+		},
+		{
+			NewFunc: armiotsecurity.NewDevicesClient,
+		},
+		{
+			NewFunc: armiotsecurity.NewLocationsClient,
+		},
+		{
+			NewFunc: armiotsecurity.NewOnPremiseSensorsClient,
+		},
 	}
 	return resources
 }

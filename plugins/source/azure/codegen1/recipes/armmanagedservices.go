@@ -5,31 +5,24 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managedservices/ar
 
 func Armmanagedservices() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armmanagedservices.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armmanagedservices.NewOperationsWithScopeClient,
-		},
-    
-		{
-			NewFunc: armmanagedservices.NewRegistrationDefinitionsClient,
-		},
-    
 		{
 			NewFunc: armmanagedservices.NewMarketplaceRegistrationDefinitionsClient,
 		},
-    
 		{
-			NewFunc: armmanagedservices.NewMarketplaceRegistrationDefinitionsWithoutScopeClient,
+			NewFunc: armmanagedservices.NewOperationsClient,
 		},
-    
+		{
+			NewFunc: armmanagedservices.NewOperationsWithScopeClient,
+		},
 		{
 			NewFunc: armmanagedservices.NewRegistrationAssignmentsClient,
 		},
-    
+		{
+			NewFunc: armmanagedservices.NewRegistrationDefinitionsClient,
+		},
+		{
+			NewFunc: armmanagedservices.NewMarketplaceRegistrationDefinitionsWithoutScopeClient,
+		},
 	}
 	return resources
 }

@@ -5,35 +5,27 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsu
 
 func Armsubscription() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armsubscription.NewTenantsClient,
-		},
-    
-		{
-			NewFunc: armsubscription.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armsubscription.NewPolicyClient,
-		},
-    
-		{
-			NewFunc: armsubscription.NewSubscriptionsClient,
-		},
-    
-		{
-			NewFunc: armsubscription.NewAliasClient,
-		},
-    
 		{
 			NewFunc: armsubscription.NewBillingAccountClient,
 		},
-    
 		{
 			NewFunc: armsubscription.NewClient,
 		},
-    
+		{
+			NewFunc: armsubscription.NewSubscriptionsClient,
+		},
+		{
+			NewFunc: armsubscription.NewAliasClient,
+		},
+		{
+			NewFunc: armsubscription.NewTenantsClient,
+		},
+		{
+			NewFunc: armsubscription.NewPolicyClient,
+		},
+		{
+			NewFunc: armsubscription.NewOperationsClient,
+		},
 	}
 	return resources
 }

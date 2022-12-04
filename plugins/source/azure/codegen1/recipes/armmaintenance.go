@@ -5,43 +5,30 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmai
 
 func Armmaintenance() []*Resource {
 	resources := []*Resource{
-    
 		{
 			NewFunc: armmaintenance.NewConfigurationsForResourceGroupClient,
 		},
-    
-		{
-			NewFunc: armmaintenance.NewConfigurationAssignmentsClient,
-		},
-    
-		{
-			NewFunc: armmaintenance.NewConfigurationsClient,
-		},
-    
 		{
 			NewFunc: armmaintenance.NewUpdatesClient,
 		},
-    
 		{
 			NewFunc: armmaintenance.NewApplyUpdateForResourceGroupClient,
 		},
-    
-		{
-			NewFunc: armmaintenance.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armmaintenance.NewConfigurationAssignmentsWithinSubscriptionClient,
-		},
-    
-		{
-			NewFunc: armmaintenance.NewPublicMaintenanceConfigurationsClient,
-		},
-    
 		{
 			NewFunc: armmaintenance.NewApplyUpdatesClient,
 		},
-    
+		{
+			NewFunc: armmaintenance.NewOperationsClient,
+		},
+		{
+			NewFunc: armmaintenance.NewPublicMaintenanceConfigurationsClient,
+		},
+		{
+			NewFunc: armmaintenance.NewConfigurationsClient,
+		},
+		{
+			NewFunc: armmaintenance.NewConfigurationAssignmentsClient,
+		},
 	}
 	return resources
 }

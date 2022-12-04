@@ -5,27 +5,21 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/timeseriesinsights
 
 func Armtimeseriesinsights() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armtimeseriesinsights.NewEventSourcesClient,
-		},
-    
-		{
-			NewFunc: armtimeseriesinsights.NewAccessPoliciesClient,
-		},
-    
 		{
 			NewFunc: armtimeseriesinsights.NewEnvironmentsClient,
 		},
-    
 		{
 			NewFunc: armtimeseriesinsights.NewOperationsClient,
 		},
-    
 		{
 			NewFunc: armtimeseriesinsights.NewReferenceDataSetsClient,
 		},
-    
+		{
+			NewFunc: armtimeseriesinsights.NewAccessPoliciesClient,
+		},
+		{
+			NewFunc: armtimeseriesinsights.NewEventSourcesClient,
+		},
 	}
 	return resources
 }

@@ -5,15 +5,9 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/extendedlocation/a
 
 func Armextendedlocation() []*Resource {
 	resources := []*Resource{
-    
 		{
 			NewFunc: armextendedlocation.NewCustomLocationsClient,
 		},
-    
-		{
-			NewFunc: armextendedlocation.NewResourceSyncRulesClient,
-		},
-    
 	}
 	return resources
 }

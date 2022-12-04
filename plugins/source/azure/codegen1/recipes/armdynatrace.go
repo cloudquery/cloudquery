@@ -5,23 +5,18 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dynatrace/armdynat
 
 func Armdynatrace() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armdynatrace.NewSingleSignOnClient,
-		},
-    
-		{
-			NewFunc: armdynatrace.NewMonitorsClient,
-		},
-    
-		{
-			NewFunc: armdynatrace.NewOperationsClient,
-		},
-    
 		{
 			NewFunc: armdynatrace.NewTagRulesClient,
 		},
-    
+		{
+			NewFunc: armdynatrace.NewMonitorsClient,
+		},
+		{
+			NewFunc: armdynatrace.NewOperationsClient,
+		},
+		{
+			NewFunc: armdynatrace.NewSingleSignOnClient,
+		},
 	}
 	return resources
 }

@@ -5,43 +5,33 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/ar
 
 func Armstreamanalytics() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armstreamanalytics.NewClustersClient,
-		},
-    
-		{
-			NewFunc: armstreamanalytics.NewStreamingJobsClient,
-		},
-    
-		{
-			NewFunc: armstreamanalytics.NewPrivateEndpointsClient,
-		},
-    
-		{
-			NewFunc: armstreamanalytics.NewTransformationsClient,
-		},
-    
-		{
-			NewFunc: armstreamanalytics.NewFunctionsClient,
-		},
-    
-		{
-			NewFunc: armstreamanalytics.NewInputsClient,
-		},
-    
-		{
-			NewFunc: armstreamanalytics.NewOutputsClient,
-		},
-    
-		{
-			NewFunc: armstreamanalytics.NewSubscriptionsClient,
-		},
-    
 		{
 			NewFunc: armstreamanalytics.NewOperationsClient,
 		},
-    
+		{
+			NewFunc: armstreamanalytics.NewStreamingJobsClient,
+		},
+		{
+			NewFunc: armstreamanalytics.NewFunctionsClient,
+		},
+		{
+			NewFunc: armstreamanalytics.NewInputsClient,
+		},
+		{
+			NewFunc: armstreamanalytics.NewPrivateEndpointsClient,
+		},
+		{
+			NewFunc: armstreamanalytics.NewClustersClient,
+		},
+		{
+			NewFunc: armstreamanalytics.NewOutputsClient,
+		},
+		{
+			NewFunc: armstreamanalytics.NewSubscriptionsClient,
+		},
+		{
+			NewFunc: armstreamanalytics.NewTransformationsClient,
+		},
 	}
 	return resources
 }

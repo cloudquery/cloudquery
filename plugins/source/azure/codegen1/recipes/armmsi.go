@@ -5,23 +5,18 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/msi/armmsi"
 
 func Armmsi() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armmsi.NewFederatedIdentityCredentialsClient,
-		},
-    
-		{
-			NewFunc: armmsi.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armmsi.NewSystemAssignedIdentitiesClient,
-		},
-    
 		{
 			NewFunc: armmsi.NewUserAssignedIdentitiesClient,
 		},
-    
+		{
+			NewFunc: armmsi.NewFederatedIdentityCredentialsClient,
+		},
+		{
+			NewFunc: armmsi.NewOperationsClient,
+		},
+		{
+			NewFunc: armmsi.NewSystemAssignedIdentitiesClient,
+		},
 	}
 	return resources
 }

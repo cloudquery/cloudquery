@@ -5,91 +5,69 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling
 
 func Armbilling() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armbilling.NewInstructionsClient,
-		},
-    
-		{
-			NewFunc: armbilling.NewSubscriptionsClient,
-		},
-    
-		{
-			NewFunc: armbilling.NewAgreementsClient,
-		},
-    
-		{
-			NewFunc: armbilling.NewCustomersClient,
-		},
-    
-		{
-			NewFunc: armbilling.NewPropertyClient,
-		},
-    
-		{
-			NewFunc: armbilling.NewRoleDefinitionsClient,
-		},
-    
-		{
-			NewFunc: armbilling.NewTransactionsClient,
-		},
-    
-		{
-			NewFunc: armbilling.NewAvailableBalancesClient,
-		},
-    
-		{
-			NewFunc: armbilling.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armbilling.NewPeriodsClient,
-		},
-    
-		{
-			NewFunc: armbilling.NewAddressClient,
-		},
-    
-		{
-			NewFunc: armbilling.NewInvoiceSectionsClient,
-		},
-    
-		{
-			NewFunc: armbilling.NewPoliciesClient,
-		},
-    
-		{
-			NewFunc: armbilling.NewProductsClient,
-		},
-    
-		{
-			NewFunc: armbilling.NewReservationsClient,
-		},
-    
-		{
-			NewFunc: armbilling.NewEnrollmentAccountsClient,
-		},
-    
-		{
-			NewFunc: armbilling.NewPermissionsClient,
-		},
-    
 		{
 			NewFunc: armbilling.NewProfilesClient,
 		},
-    
 		{
-			NewFunc: armbilling.NewRoleAssignmentsClient,
+			NewFunc: armbilling.NewRoleDefinitionsClient,
 		},
-    
 		{
 			NewFunc: armbilling.NewAccountsClient,
 		},
-    
+		{
+			NewFunc: armbilling.NewAddressClient,
+		},
+		{
+			NewFunc: armbilling.NewTransactionsClient,
+		},
+		{
+			NewFunc: armbilling.NewRoleAssignmentsClient,
+		},
 		{
 			NewFunc: armbilling.NewInvoicesClient,
 		},
-    
+		{
+			NewFunc: armbilling.NewReservationsClient,
+		},
+		{
+			NewFunc: armbilling.NewPoliciesClient,
+		},
+		{
+			NewFunc: armbilling.NewPropertyClient,
+		},
+		{
+			NewFunc: armbilling.NewAvailableBalancesClient,
+		},
+		{
+			NewFunc: armbilling.NewProductsClient,
+		},
+		{
+			NewFunc: armbilling.NewSubscriptionsClient,
+		},
+		{
+			NewFunc: armbilling.NewCustomersClient,
+		},
+		{
+			NewFunc: armbilling.NewInstructionsClient,
+		},
+		{
+			NewFunc: armbilling.NewOperationsClient,
+		},
+		{
+			NewFunc: armbilling.NewPeriodsClient,
+		},
+		{
+			NewFunc: armbilling.NewPermissionsClient,
+		},
+		{
+			NewFunc: armbilling.NewAgreementsClient,
+		},
+		{
+			NewFunc: armbilling.NewEnrollmentAccountsClient,
+		},
+		{
+			NewFunc: armbilling.NewInvoiceSectionsClient,
+		},
 	}
 	return resources
 }

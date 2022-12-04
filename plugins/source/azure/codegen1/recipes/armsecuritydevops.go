@@ -5,47 +5,36 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securitydevops/arm
 
 func Armsecuritydevops() []*Resource {
 	resources := []*Resource{
-    
 		{
 			NewFunc: armsecuritydevops.NewAzureDevOpsOrgClient,
 		},
-    
-		{
-			NewFunc: armsecuritydevops.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armsecuritydevops.NewAzureDevOpsConnectorClient,
-		},
-    
-		{
-			NewFunc: armsecuritydevops.NewAzureDevOpsConnectorStatsClient,
-		},
-    
-		{
-			NewFunc: armsecuritydevops.NewGitHubConnectorStatsClient,
-		},
-    
-		{
-			NewFunc: armsecuritydevops.NewGitHubRepoClient,
-		},
-    
-		{
-			NewFunc: armsecuritydevops.NewAzureDevOpsProjectClient,
-		},
-    
-		{
-			NewFunc: armsecuritydevops.NewAzureDevOpsRepoClient,
-		},
-    
-		{
-			NewFunc: armsecuritydevops.NewGitHubConnectorClient,
-		},
-    
 		{
 			NewFunc: armsecuritydevops.NewGitHubOwnerClient,
 		},
-    
+		{
+			NewFunc: armsecuritydevops.NewOperationsClient,
+		},
+		{
+			NewFunc: armsecuritydevops.NewAzureDevOpsProjectClient,
+		},
+		{
+			NewFunc: armsecuritydevops.NewGitHubConnectorStatsClient,
+		},
+		{
+			NewFunc: armsecuritydevops.NewGitHubRepoClient,
+		},
+		{
+			NewFunc: armsecuritydevops.NewAzureDevOpsConnectorStatsClient,
+		},
+		{
+			NewFunc: armsecuritydevops.NewAzureDevOpsConnectorClient,
+		},
+		{
+			NewFunc: armsecuritydevops.NewAzureDevOpsRepoClient,
+		},
+		{
+			NewFunc: armsecuritydevops.NewGitHubConnectorClient,
+		},
 	}
 	return resources
 }

@@ -5,75 +5,57 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armcon
 
 func Armconsumption() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armconsumption.NewBalancesClient,
-		},
-    
-		{
-			NewFunc: armconsumption.NewReservationRecommendationsClient,
-		},
-    
-		{
-			NewFunc: armconsumption.NewAggregatedCostClient,
-		},
-    
-		{
-			NewFunc: armconsumption.NewBudgetsClient,
-		},
-    
 		{
 			NewFunc: armconsumption.NewCreditsClient,
 		},
-    
-		{
-			NewFunc: armconsumption.NewLotsClient,
-		},
-    
-		{
-			NewFunc: armconsumption.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armconsumption.NewPriceSheetClient,
-		},
-    
-		{
-			NewFunc: armconsumption.NewTagsClient,
-		},
-    
-		{
-			NewFunc: armconsumption.NewChargesClient,
-		},
-    
-		{
-			NewFunc: armconsumption.NewEventsClient,
-		},
-    
-		{
-			NewFunc: armconsumption.NewReservationsDetailsClient,
-		},
-    
-		{
-			NewFunc: armconsumption.NewReservationsSummariesClient,
-		},
-    
 		{
 			NewFunc: armconsumption.NewMarketplacesClient,
 		},
-    
 		{
-			NewFunc: armconsumption.NewReservationRecommendationDetailsClient,
+			NewFunc: armconsumption.NewReservationRecommendationsClient,
 		},
-    
 		{
-			NewFunc: armconsumption.NewReservationTransactionsClient,
+			NewFunc: armconsumption.NewChargesClient,
 		},
-    
 		{
 			NewFunc: armconsumption.NewUsageDetailsClient,
 		},
-    
+		{
+			NewFunc: armconsumption.NewReservationsSummariesClient,
+		},
+		{
+			NewFunc: armconsumption.NewTagsClient,
+		},
+		{
+			NewFunc: armconsumption.NewAggregatedCostClient,
+		},
+		{
+			NewFunc: armconsumption.NewBalancesClient,
+		},
+		{
+			NewFunc: armconsumption.NewReservationRecommendationDetailsClient,
+		},
+		{
+			NewFunc: armconsumption.NewReservationTransactionsClient,
+		},
+		{
+			NewFunc: armconsumption.NewEventsClient,
+		},
+		{
+			NewFunc: armconsumption.NewLotsClient,
+		},
+		{
+			NewFunc: armconsumption.NewOperationsClient,
+		},
+		{
+			NewFunc: armconsumption.NewPriceSheetClient,
+		},
+		{
+			NewFunc: armconsumption.NewReservationsDetailsClient,
+		},
+		{
+			NewFunc: armconsumption.NewBudgetsClient,
+		},
 	}
 	return resources
 }

@@ -5,19 +5,15 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oep/armoep"
 
 func Armoep() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armoep.NewOperationsClient,
-		},
-    
 		{
 			NewFunc: armoep.NewEnergyServicesClient,
 		},
-    
+		{
+			NewFunc: armoep.NewOperationsClient,
+		},
 		{
 			NewFunc: armoep.NewLocationsClient,
 		},
-    
 	}
 	return resources
 }

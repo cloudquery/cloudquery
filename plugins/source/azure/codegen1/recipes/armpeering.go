@@ -5,75 +5,57 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering
 
 func Armpeering() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armpeering.NewServiceCountriesClient,
-		},
-    
-		{
-			NewFunc: armpeering.NewPrefixesClient,
-		},
-    
-		{
-			NewFunc: armpeering.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armpeering.NewServiceLocationsClient,
-		},
-    
-		{
-			NewFunc: armpeering.NewServiceProvidersClient,
-		},
-    
-		{
-			NewFunc: armpeering.NewServicesClient,
-		},
-    
-		{
-			NewFunc: armpeering.NewLookingGlassClient,
-		},
-    
-		{
-			NewFunc: armpeering.NewManagementClient,
-		},
-    
-		{
-			NewFunc: armpeering.NewPeerAsnsClient,
-		},
-    
-		{
-			NewFunc: armpeering.NewPeeringsClient,
-		},
-    
-		{
-			NewFunc: armpeering.NewCdnPeeringPrefixesClient,
-		},
-    
-		{
-			NewFunc: armpeering.NewConnectionMonitorTestsClient,
-		},
-    
 		{
 			NewFunc: armpeering.NewLegacyPeeringsClient,
 		},
-    
 		{
-			NewFunc: armpeering.NewLocationsClient,
+			NewFunc: armpeering.NewPeerAsnsClient,
 		},
-    
 		{
-			NewFunc: armpeering.NewReceivedRoutesClient,
+			NewFunc: armpeering.NewPeeringsClient,
 		},
-    
 		{
 			NewFunc: armpeering.NewRegisteredAsnsClient,
 		},
-    
+		{
+			NewFunc: armpeering.NewServiceProvidersClient,
+		},
+		{
+			NewFunc: armpeering.NewConnectionMonitorTestsClient,
+		},
+		{
+			NewFunc: armpeering.NewPrefixesClient,
+		},
+		{
+			NewFunc: armpeering.NewReceivedRoutesClient,
+		},
 		{
 			NewFunc: armpeering.NewRegisteredPrefixesClient,
 		},
-    
+		{
+			NewFunc: armpeering.NewLocationsClient,
+		},
+		{
+			NewFunc: armpeering.NewLookingGlassClient,
+		},
+		{
+			NewFunc: armpeering.NewServiceCountriesClient,
+		},
+		{
+			NewFunc: armpeering.NewCdnPeeringPrefixesClient,
+		},
+		{
+			NewFunc: armpeering.NewManagementClient,
+		},
+		{
+			NewFunc: armpeering.NewOperationsClient,
+		},
+		{
+			NewFunc: armpeering.NewServiceLocationsClient,
+		},
+		{
+			NewFunc: armpeering.NewServicesClient,
+		},
 	}
 	return resources
 }

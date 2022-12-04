@@ -5,43 +5,33 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvau
 
 func Armkeyvault() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armkeyvault.NewMHSMPrivateEndpointConnectionsClient,
-		},
-    
-		{
-			NewFunc: armkeyvault.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armkeyvault.NewPrivateLinkResourcesClient,
-		},
-    
 		{
 			NewFunc: armkeyvault.NewKeysClient,
 		},
-    
-		{
-			NewFunc: armkeyvault.NewManagedHsmsClient,
-		},
-    
-		{
-			NewFunc: armkeyvault.NewVaultsClient,
-		},
-    
-		{
-			NewFunc: armkeyvault.NewPrivateEndpointConnectionsClient,
-		},
-    
-		{
-			NewFunc: armkeyvault.NewSecretsClient,
-		},
-    
 		{
 			NewFunc: armkeyvault.NewMHSMPrivateLinkResourcesClient,
 		},
-    
+		{
+			NewFunc: armkeyvault.NewOperationsClient,
+		},
+		{
+			NewFunc: armkeyvault.NewPrivateLinkResourcesClient,
+		},
+		{
+			NewFunc: armkeyvault.NewSecretsClient,
+		},
+		{
+			NewFunc: armkeyvault.NewVaultsClient,
+		},
+		{
+			NewFunc: armkeyvault.NewManagedHsmsClient,
+		},
+		{
+			NewFunc: armkeyvault.NewMHSMPrivateEndpointConnectionsClient,
+		},
+		{
+			NewFunc: armkeyvault.NewPrivateEndpointConnectionsClient,
+		},
 	}
 	return resources
 }

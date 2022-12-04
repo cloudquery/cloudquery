@@ -5,31 +5,24 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/saas/armsaas"
 
 func Armsaas() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armsaas.NewApplicationsClient,
-		},
-    
-		{
-			NewFunc: armsaas.NewOperationClient,
-		},
-    
-		{
-			NewFunc: armsaas.NewSubscriptionLevelClient,
-		},
-    
-		{
-			NewFunc: armsaas.NewClient,
-		},
-    
-		{
-			NewFunc: armsaas.NewOperationsClient,
-		},
-    
 		{
 			NewFunc: armsaas.NewResourcesClient,
 		},
-    
+		{
+			NewFunc: armsaas.NewSubscriptionLevelClient,
+		},
+		{
+			NewFunc: armsaas.NewOperationsClient,
+		},
+		{
+			NewFunc: armsaas.NewApplicationsClient,
+		},
+		{
+			NewFunc: armsaas.NewClient,
+		},
+		{
+			NewFunc: armsaas.NewOperationClient,
+		},
 	}
 	return resources
 }

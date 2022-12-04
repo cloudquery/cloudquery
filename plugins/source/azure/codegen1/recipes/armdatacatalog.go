@@ -5,15 +5,12 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datacatalog/armdat
 
 func Armdatacatalog() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armdatacatalog.NewADCOperationsClient,
-		},
-    
 		{
 			NewFunc: armdatacatalog.NewADCCatalogsClient,
 		},
-    
+		{
+			NewFunc: armdatacatalog.NewADCOperationsClient,
+		},
 	}
 	return resources
 }

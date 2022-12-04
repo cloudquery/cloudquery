@@ -5,67 +5,51 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/testbase/armtestba
 
 func Armtestbase() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armtestbase.NewAvailableOSClient,
-		},
-    
-		{
-			NewFunc: armtestbase.NewFlightingRingsClient,
-		},
-    
-		{
-			NewFunc: armtestbase.NewCustomerEventsClient,
-		},
-    
-		{
-			NewFunc: armtestbase.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armtestbase.NewOSUpdatesClient,
-		},
-    
-		{
-			NewFunc: armtestbase.NewSKUsClient,
-		},
-    
-		{
-			NewFunc: armtestbase.NewTestSummariesClient,
-		},
-    
-		{
-			NewFunc: armtestbase.NewAnalysisResultsClient,
-		},
-    
-		{
-			NewFunc: armtestbase.NewTestResultsClient,
-		},
-    
 		{
 			NewFunc: armtestbase.NewTestTypesClient,
 		},
-    
-		{
-			NewFunc: armtestbase.NewFavoriteProcessesClient,
-		},
-    
-		{
-			NewFunc: armtestbase.NewPackagesClient,
-		},
-    
-		{
-			NewFunc: armtestbase.NewEmailEventsClient,
-		},
-    
-		{
-			NewFunc: armtestbase.NewUsageClient,
-		},
-    
 		{
 			NewFunc: armtestbase.NewAccountsClient,
 		},
-    
+		{
+			NewFunc: armtestbase.NewAnalysisResultsClient,
+		},
+		{
+			NewFunc: armtestbase.NewEmailEventsClient,
+		},
+		{
+			NewFunc: armtestbase.NewPackagesClient,
+		},
+		{
+			NewFunc: armtestbase.NewSKUsClient,
+		},
+		{
+			NewFunc: armtestbase.NewUsageClient,
+		},
+		{
+			NewFunc: armtestbase.NewAvailableOSClient,
+		},
+		{
+			NewFunc: armtestbase.NewCustomerEventsClient,
+		},
+		{
+			NewFunc: armtestbase.NewTestSummariesClient,
+		},
+		{
+			NewFunc: armtestbase.NewFavoriteProcessesClient,
+		},
+		{
+			NewFunc: armtestbase.NewFlightingRingsClient,
+		},
+		{
+			NewFunc: armtestbase.NewOperationsClient,
+		},
+		{
+			NewFunc: armtestbase.NewOSUpdatesClient,
+		},
+		{
+			NewFunc: armtestbase.NewTestResultsClient,
+		},
 	}
 	return resources
 }

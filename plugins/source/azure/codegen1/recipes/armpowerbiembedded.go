@@ -5,19 +5,15 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbiembedded/ar
 
 func Armpowerbiembedded() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armpowerbiembedded.NewWorkspacesClient,
-		},
-    
-		{
-			NewFunc: armpowerbiembedded.NewManagementClient,
-		},
-    
 		{
 			NewFunc: armpowerbiembedded.NewWorkspaceCollectionsClient,
 		},
-    
+		{
+			NewFunc: armpowerbiembedded.NewWorkspacesClient,
+		},
+		{
+			NewFunc: armpowerbiembedded.NewManagementClient,
+		},
 	}
 	return resources
 }

@@ -5,19 +5,15 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceprovisioning
 
 func Armdeviceprovisioningservices() []*Resource {
 	resources := []*Resource{
-    
 		{
 			NewFunc: armdeviceprovisioningservices.NewOperationsClient,
 		},
-    
-		{
-			NewFunc: armdeviceprovisioningservices.NewDpsCertificateClient,
-		},
-    
 		{
 			NewFunc: armdeviceprovisioningservices.NewIotDpsResourceClient,
 		},
-    
+		{
+			NewFunc: armdeviceprovisioningservices.NewDpsCertificateClient,
+		},
 	}
 	return resources
 }

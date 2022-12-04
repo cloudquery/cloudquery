@@ -5,51 +5,39 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagesync/armsto
 
 func Armstoragesync() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armstoragesync.NewCloudEndpointsClient,
-		},
-    
-		{
-			NewFunc: armstoragesync.NewServicesClient,
-		},
-    
-		{
-			NewFunc: armstoragesync.NewOperationsClient,
-		},
-    
 		{
 			NewFunc: armstoragesync.NewPrivateEndpointConnectionsClient,
 		},
-    
+		{
+			NewFunc: armstoragesync.NewOperationsClient,
+		},
 		{
 			NewFunc: armstoragesync.NewRegisteredServersClient,
 		},
-    
-		{
-			NewFunc: armstoragesync.NewServerEndpointsClient,
-		},
-    
-		{
-			NewFunc: armstoragesync.NewMicrosoftStorageSyncClient,
-		},
-    
-		{
-			NewFunc: armstoragesync.NewWorkflowsClient,
-		},
-    
-		{
-			NewFunc: armstoragesync.NewOperationStatusClient,
-		},
-    
 		{
 			NewFunc: armstoragesync.NewPrivateLinkResourcesClient,
 		},
-    
+		{
+			NewFunc: armstoragesync.NewServicesClient,
+		},
+		{
+			NewFunc: armstoragesync.NewMicrosoftStorageSyncClient,
+		},
+		{
+			NewFunc: armstoragesync.NewOperationStatusClient,
+		},
+		{
+			NewFunc: armstoragesync.NewServerEndpointsClient,
+		},
 		{
 			NewFunc: armstoragesync.NewSyncGroupsClient,
 		},
-    
+		{
+			NewFunc: armstoragesync.NewWorkflowsClient,
+		},
+		{
+			NewFunc: armstoragesync.NewCloudEndpointsClient,
+		},
 	}
 	return resources
 }

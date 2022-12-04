@@ -5,63 +5,42 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualizat
 
 func Armdesktopvirtualization() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armdesktopvirtualization.NewApplicationGroupsClient,
-		},
-    
-		{
-			NewFunc: armdesktopvirtualization.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armdesktopvirtualization.NewPrivateEndpointConnectionsClient,
-		},
-    
-		{
-			NewFunc: armdesktopvirtualization.NewDesktopsClient,
-		},
-    
-		{
-			NewFunc: armdesktopvirtualization.NewMSIXPackagesClient,
-		},
-    
-		{
-			NewFunc: armdesktopvirtualization.NewScalingPlansClient,
-		},
-    
 		{
 			NewFunc: armdesktopvirtualization.NewStartMenuItemsClient,
 		},
-    
 		{
-			NewFunc: armdesktopvirtualization.NewWorkspacesClient,
+			NewFunc: armdesktopvirtualization.NewOperationsClient,
 		},
-    
-		{
-			NewFunc: armdesktopvirtualization.NewHostPoolsClient,
-		},
-    
-		{
-			NewFunc: armdesktopvirtualization.NewPrivateLinkResourcesClient,
-		},
-    
 		{
 			NewFunc: armdesktopvirtualization.NewApplicationsClient,
 		},
-    
 		{
-			NewFunc: armdesktopvirtualization.NewMsixImagesClient,
+			NewFunc: armdesktopvirtualization.NewDesktopsClient,
 		},
-    
+		{
+			NewFunc: armdesktopvirtualization.NewMSIXPackagesClient,
+		},
+		{
+			NewFunc: armdesktopvirtualization.NewScalingPlansClient,
+		},
+		{
+			NewFunc: armdesktopvirtualization.NewWorkspacesClient,
+		},
 		{
 			NewFunc: armdesktopvirtualization.NewSessionHostsClient,
 		},
-    
+		{
+			NewFunc: armdesktopvirtualization.NewApplicationGroupsClient,
+		},
+		{
+			NewFunc: armdesktopvirtualization.NewMsixImagesClient,
+		},
 		{
 			NewFunc: armdesktopvirtualization.NewUserSessionsClient,
 		},
-    
+		{
+			NewFunc: armdesktopvirtualization.NewHostPoolsClient,
+		},
 	}
 	return resources
 }

@@ -5,115 +5,87 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logic/armlogic"
 
 func Armlogic() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armlogic.NewIntegrationAccountSessionsClient,
-		},
-    
-		{
-			NewFunc: armlogic.NewWorkflowVersionsClient,
-		},
-    
-		{
-			NewFunc: armlogic.NewIntegrationServiceEnvironmentManagedAPIOperationsClient,
-		},
-    
-		{
-			NewFunc: armlogic.NewIntegrationServiceEnvironmentsClient,
-		},
-    
-		{
-			NewFunc: armlogic.NewWorkflowRunActionScopeRepetitionsClient,
-		},
-    
-		{
-			NewFunc: armlogic.NewWorkflowTriggersClient,
-		},
-    
 		{
 			NewFunc: armlogic.NewIntegrationAccountPartnersClient,
 		},
-    
-		{
-			NewFunc: armlogic.NewWorkflowRunActionRepetitionsClient,
-		},
-    
-		{
-			NewFunc: armlogic.NewWorkflowRunActionRepetitionsRequestHistoriesClient,
-		},
-    
-		{
-			NewFunc: armlogic.NewWorkflowRunActionRequestHistoriesClient,
-		},
-    
-		{
-			NewFunc: armlogic.NewWorkflowTriggerHistoriesClient,
-		},
-    
-		{
-			NewFunc: armlogic.NewIntegrationAccountBatchConfigurationsClient,
-		},
-    
-		{
-			NewFunc: armlogic.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armlogic.NewIntegrationServiceEnvironmentNetworkHealthClient,
-		},
-    
-		{
-			NewFunc: armlogic.NewWorkflowVersionTriggersClient,
-		},
-    
-		{
-			NewFunc: armlogic.NewIntegrationAccountMapsClient,
-		},
-    
-		{
-			NewFunc: armlogic.NewIntegrationAccountSchemasClient,
-		},
-    
-		{
-			NewFunc: armlogic.NewIntegrationServiceEnvironmentManagedApisClient,
-		},
-    
-		{
-			NewFunc: armlogic.NewWorkflowRunActionsClient,
-		},
-    
-		{
-			NewFunc: armlogic.NewWorkflowsClient,
-		},
-    
-		{
-			NewFunc: armlogic.NewIntegrationAccountsClient,
-		},
-    
-		{
-			NewFunc: armlogic.NewIntegrationAccountCertificatesClient,
-		},
-    
-		{
-			NewFunc: armlogic.NewIntegrationAccountAgreementsClient,
-		},
-    
-		{
-			NewFunc: armlogic.NewIntegrationAccountAssembliesClient,
-		},
-    
-		{
-			NewFunc: armlogic.NewWorkflowRunsClient,
-		},
-    
 		{
 			NewFunc: armlogic.NewIntegrationServiceEnvironmentSKUsClient,
 		},
-    
+		{
+			NewFunc: armlogic.NewWorkflowRunActionScopeRepetitionsClient,
+		},
+		{
+			NewFunc: armlogic.NewWorkflowsClient,
+		},
+		{
+			NewFunc: armlogic.NewIntegrationAccountAgreementsClient,
+		},
+		{
+			NewFunc: armlogic.NewIntegrationServiceEnvironmentManagedAPIOperationsClient,
+		},
+		{
+			NewFunc: armlogic.NewOperationsClient,
+		},
+		{
+			NewFunc: armlogic.NewWorkflowRunActionRepetitionsRequestHistoriesClient,
+		},
+		{
+			NewFunc: armlogic.NewWorkflowVersionTriggersClient,
+		},
+		{
+			NewFunc: armlogic.NewIntegrationAccountsClient,
+		},
+		{
+			NewFunc: armlogic.NewIntegrationServiceEnvironmentNetworkHealthClient,
+		},
+		{
+			NewFunc: armlogic.NewWorkflowRunActionRequestHistoriesClient,
+		},
+		{
+			NewFunc: armlogic.NewWorkflowRunActionsClient,
+		},
+		{
+			NewFunc: armlogic.NewWorkflowRunActionRepetitionsClient,
+		},
+		{
+			NewFunc: armlogic.NewWorkflowTriggersClient,
+		},
+		{
+			NewFunc: armlogic.NewIntegrationAccountBatchConfigurationsClient,
+		},
+		{
+			NewFunc: armlogic.NewIntegrationAccountSchemasClient,
+		},
+		{
+			NewFunc: armlogic.NewIntegrationServiceEnvironmentsClient,
+		},
+		{
+			NewFunc: armlogic.NewIntegrationAccountMapsClient,
+		},
+		{
+			NewFunc: armlogic.NewIntegrationServiceEnvironmentManagedApisClient,
+		},
+		{
+			NewFunc: armlogic.NewWorkflowVersionsClient,
+		},
 		{
 			NewFunc: armlogic.NewWorkflowRunOperationsClient,
 		},
-    
+		{
+			NewFunc: armlogic.NewWorkflowRunsClient,
+		},
+		{
+			NewFunc: armlogic.NewWorkflowTriggerHistoriesClient,
+		},
+		{
+			NewFunc: armlogic.NewIntegrationAccountAssembliesClient,
+		},
+		{
+			NewFunc: armlogic.NewIntegrationAccountCertificatesClient,
+		},
+		{
+			NewFunc: armlogic.NewIntegrationAccountSessionsClient,
+		},
 	}
 	return resources
 }

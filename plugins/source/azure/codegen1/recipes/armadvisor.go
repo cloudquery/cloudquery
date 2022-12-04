@@ -5,27 +5,21 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/advisor/armadvisor
 
 func Armadvisor() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armadvisor.NewRecommendationsClient,
-		},
-    
-		{
-			NewFunc: armadvisor.NewSuppressionsClient,
-		},
-    
-		{
-			NewFunc: armadvisor.NewConfigurationsClient,
-		},
-    
 		{
 			NewFunc: armadvisor.NewOperationsClient,
 		},
-    
+		{
+			NewFunc: armadvisor.NewConfigurationsClient,
+		},
 		{
 			NewFunc: armadvisor.NewRecommendationMetadataClient,
 		},
-    
+		{
+			NewFunc: armadvisor.NewRecommendationsClient,
+		},
+		{
+			NewFunc: armadvisor.NewSuppressionsClient,
+		},
 	}
 	return resources
 }

@@ -5,23 +5,18 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota"
 
 func Armquota() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armquota.NewOperationClient,
-		},
-    
 		{
 			NewFunc: armquota.NewRequestStatusClient,
 		},
-    
+		{
+			NewFunc: armquota.NewOperationClient,
+		},
 		{
 			NewFunc: armquota.NewUsagesClient,
 		},
-    
 		{
 			NewFunc: armquota.NewClient,
 		},
-    
 	}
 	return resources
 }

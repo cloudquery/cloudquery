@@ -5,247 +5,186 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecuri
 
 func Armsecurity() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armsecurity.NewAlertsClient,
-		},
-    
-		{
-			NewFunc: armsecurity.NewAutomationsClient,
-		},
-    
-		{
-			NewFunc: armsecurity.NewConnectorGovernanceRuleClient,
-		},
-    
-		{
-			NewFunc: armsecurity.NewCustomAssessmentAutomationsClient,
-		},
-    
-		{
-			NewFunc: armsecurity.NewSQLVulnerabilityAssessmentBaselineRulesClient,
-		},
-    
-		{
-			NewFunc: armsecurity.NewAutoProvisioningSettingsClient,
-		},
-    
-		{
-			NewFunc: armsecurity.NewIotSecuritySolutionAnalyticsClient,
-		},
-    
-		{
-			NewFunc: armsecurity.NewIotSecuritySolutionsAnalyticsAggregatedAlertClient,
-		},
-    
-		{
-			NewFunc: armsecurity.NewSubscriptionGovernanceRulesExecuteStatusClient,
-		},
-    
-		{
-			NewFunc: armsecurity.NewTopologyClient,
-		},
-    
-		{
-			NewFunc: armsecurity.NewAdvancedThreatProtectionClient,
-		},
-    
 		{
 			NewFunc: armsecurity.NewApplicationsClient,
 		},
-    
-		{
-			NewFunc: armsecurity.NewConnectorGovernanceRulesClient,
-		},
-    
-		{
-			NewFunc: armsecurity.NewContactsClient,
-		},
-    
-		{
-			NewFunc: armsecurity.NewDeviceSecurityGroupsClient,
-		},
-    
-		{
-			NewFunc: armsecurity.NewAccountConnectorsClient,
-		},
-    
-		{
-			NewFunc: armsecurity.NewConnectorsClient,
-		},
-    
-		{
-			NewFunc: armsecurity.NewGovernanceRulesClient,
-		},
-    
-		{
-			NewFunc: armsecurity.NewSettingsClient,
-		},
-    
-		{
-			NewFunc: armsecurity.NewSQLVulnerabilityAssessmentScanResultsClient,
-		},
-    
-		{
-			NewFunc: armsecurity.NewSQLVulnerabilityAssessmentScansClient,
-		},
-    
-		{
-			NewFunc: armsecurity.NewSecureScoresClient,
-		},
-    
-		{
-			NewFunc: armsecurity.NewIotSecuritySolutionsAnalyticsRecommendationClient,
-		},
-    
-		{
-			NewFunc: armsecurity.NewLocationsClient,
-		},
-    
-		{
-			NewFunc: armsecurity.NewSoftwareInventoriesClient,
-		},
-    
-		{
-			NewFunc: armsecurity.NewSolutionsClient,
-		},
-    
-		{
-			NewFunc: armsecurity.NewAssessmentsClient,
-		},
-    
 		{
 			NewFunc: armsecurity.NewConnectorApplicationClient,
 		},
-    
+		{
+			NewFunc: armsecurity.NewDeviceSecurityGroupsClient,
+		},
+		{
+			NewFunc: armsecurity.NewLocationsClient,
+		},
 		{
 			NewFunc: armsecurity.NewMdeOnboardingsClient,
 		},
-    
-		{
-			NewFunc: armsecurity.NewSolutionsReferenceDataClient,
-		},
-    
-		{
-			NewFunc: armsecurity.NewAdaptiveApplicationControlsClient,
-		},
-    
-		{
-			NewFunc: armsecurity.NewAssessmentsMetadataClient,
-		},
-    
-		{
-			NewFunc: armsecurity.NewRegulatoryComplianceControlsClient,
-		},
-    
-		{
-			NewFunc: armsecurity.NewRegulatoryComplianceStandardsClient,
-		},
-    
-		{
-			NewFunc: armsecurity.NewDiscoveredSecuritySolutionsClient,
-		},
-    
-		{
-			NewFunc: armsecurity.NewExternalSecuritySolutionsClient,
-		},
-    
-		{
-			NewFunc: armsecurity.NewIotSecuritySolutionClient,
-		},
-    
-		{
-			NewFunc: armsecurity.NewTasksClient,
-		},
-    
-		{
-			NewFunc: armsecurity.NewApplicationClient,
-		},
-    
-		{
-			NewFunc: armsecurity.NewConnectorGovernanceRulesExecuteStatusClient,
-		},
-    
-		{
-			NewFunc: armsecurity.NewGovernanceAssignmentsClient,
-		},
-    
-		{
-			NewFunc: armsecurity.NewJitNetworkAccessPoliciesClient,
-		},
-    
-		{
-			NewFunc: armsecurity.NewPricingsClient,
-		},
-    
-		{
-			NewFunc: armsecurity.NewRegulatoryComplianceAssessmentsClient,
-		},
-    
-		{
-			NewFunc: armsecurity.NewAllowedConnectionsClient,
-		},
-    
-		{
-			NewFunc: armsecurity.NewCompliancesClient,
-		},
-    
-		{
-			NewFunc: armsecurity.NewAlertsSuppressionRulesClient,
-		},
-    
-		{
-			NewFunc: armsecurity.NewComplianceResultsClient,
-		},
-    
-		{
-			NewFunc: armsecurity.NewConnectorApplicationsClient,
-		},
-    
-		{
-			NewFunc: armsecurity.NewGovernanceRuleClient,
-		},
-    
-		{
-			NewFunc: armsecurity.NewSecureScoreControlDefinitionsClient,
-		},
-    
 		{
 			NewFunc: armsecurity.NewWorkspaceSettingsClient,
 		},
-    
+		{
+			NewFunc: armsecurity.NewAlertsSuppressionRulesClient,
+		},
+		{
+			NewFunc: armsecurity.NewIotSecuritySolutionAnalyticsClient,
+		},
+		{
+			NewFunc: armsecurity.NewRegulatoryComplianceStandardsClient,
+		},
+		{
+			NewFunc: armsecurity.NewTasksClient,
+		},
+		{
+			NewFunc: armsecurity.NewAutoProvisioningSettingsClient,
+		},
+		{
+			NewFunc: armsecurity.NewCustomAssessmentAutomationsClient,
+		},
 		{
 			NewFunc: armsecurity.NewCustomEntityStoreAssignmentsClient,
 		},
-    
+		{
+			NewFunc: armsecurity.NewSoftwareInventoriesClient,
+		},
+		{
+			NewFunc: armsecurity.NewSQLVulnerabilityAssessmentScansClient,
+		},
+		{
+			NewFunc: armsecurity.NewAdvancedThreatProtectionClient,
+		},
+		{
+			NewFunc: armsecurity.NewConnectorGovernanceRulesClient,
+		},
+		{
+			NewFunc: armsecurity.NewGovernanceRuleClient,
+		},
 		{
 			NewFunc: armsecurity.NewInformationProtectionPoliciesClient,
 		},
-    
+		{
+			NewFunc: armsecurity.NewSettingsClient,
+		},
+		{
+			NewFunc: armsecurity.NewTopologyClient,
+		},
+		{
+			NewFunc: armsecurity.NewAutomationsClient,
+		},
+		{
+			NewFunc: armsecurity.NewJitNetworkAccessPoliciesClient,
+		},
 		{
 			NewFunc: armsecurity.NewOperationsClient,
 		},
-    
+		{
+			NewFunc: armsecurity.NewApplicationClient,
+		},
+		{
+			NewFunc: armsecurity.NewConnectorApplicationsClient,
+		},
 		{
 			NewFunc: armsecurity.NewSubAssessmentsClient,
 		},
-    
 		{
-			NewFunc: armsecurity.NewAdaptiveNetworkHardeningsClient,
+			NewFunc: armsecurity.NewGovernanceRulesClient,
 		},
-    
 		{
-			NewFunc: armsecurity.NewIngestionSettingsClient,
+			NewFunc: armsecurity.NewSQLVulnerabilityAssessmentScanResultsClient,
 		},
-    
 		{
-			NewFunc: armsecurity.NewSecureScoreControlsClient,
+			NewFunc: armsecurity.NewAccountConnectorsClient,
 		},
-    
+		{
+			NewFunc: armsecurity.NewAdaptiveApplicationControlsClient,
+		},
 		{
 			NewFunc: armsecurity.NewServerVulnerabilityAssessmentClient,
 		},
-    
+		{
+			NewFunc: armsecurity.NewAssessmentsClient,
+		},
+		{
+			NewFunc: armsecurity.NewIngestionSettingsClient,
+		},
+		{
+			NewFunc: armsecurity.NewIotSecuritySolutionsAnalyticsRecommendationClient,
+		},
+		{
+			NewFunc: armsecurity.NewRegulatoryComplianceControlsClient,
+		},
+		{
+			NewFunc: armsecurity.NewAllowedConnectionsClient,
+		},
+		{
+			NewFunc: armsecurity.NewDiscoveredSecuritySolutionsClient,
+		},
+		{
+			NewFunc: armsecurity.NewAdaptiveNetworkHardeningsClient,
+		},
+		{
+			NewFunc: armsecurity.NewAlertsClient,
+		},
+		{
+			NewFunc: armsecurity.NewAssessmentsMetadataClient,
+		},
+		{
+			NewFunc: armsecurity.NewSolutionsReferenceDataClient,
+		},
+		{
+			NewFunc: armsecurity.NewExternalSecuritySolutionsClient,
+		},
+		{
+			NewFunc: armsecurity.NewSQLVulnerabilityAssessmentBaselineRulesClient,
+		},
+		{
+			NewFunc: armsecurity.NewGovernanceAssignmentsClient,
+		},
+		{
+			NewFunc: armsecurity.NewConnectorGovernanceRulesExecuteStatusClient,
+		},
+		{
+			NewFunc: armsecurity.NewIotSecuritySolutionClient,
+		},
+		{
+			NewFunc: armsecurity.NewRegulatoryComplianceAssessmentsClient,
+		},
+		{
+			NewFunc: armsecurity.NewSolutionsClient,
+		},
+		{
+			NewFunc: armsecurity.NewCompliancesClient,
+		},
+		{
+			NewFunc: armsecurity.NewConnectorGovernanceRuleClient,
+		},
+		{
+			NewFunc: armsecurity.NewSecureScoresClient,
+		},
+		{
+			NewFunc: armsecurity.NewSubscriptionGovernanceRulesExecuteStatusClient,
+		},
+		{
+			NewFunc: armsecurity.NewComplianceResultsClient,
+		},
+		{
+			NewFunc: armsecurity.NewConnectorsClient,
+		},
+		{
+			NewFunc: armsecurity.NewContactsClient,
+		},
+		{
+			NewFunc: armsecurity.NewIotSecuritySolutionsAnalyticsAggregatedAlertClient,
+		},
+		{
+			NewFunc: armsecurity.NewPricingsClient,
+		},
+		{
+			NewFunc: armsecurity.NewSecureScoreControlDefinitionsClient,
+		},
+		{
+			NewFunc: armsecurity.NewSecureScoreControlsClient,
+		},
 	}
 	return resources
 }

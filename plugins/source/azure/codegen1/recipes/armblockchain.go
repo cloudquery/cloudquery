@@ -5,31 +5,24 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blockchain/armbloc
 
 func Armblockchain() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armblockchain.NewOperationsClient,
-		},
-    
 		{
 			NewFunc: armblockchain.NewMemberOperationResultsClient,
 		},
-    
 		{
 			NewFunc: armblockchain.NewMembersClient,
 		},
-    
 		{
-			NewFunc: armblockchain.NewLocationsClient,
+			NewFunc: armblockchain.NewOperationsClient,
 		},
-    
 		{
 			NewFunc: armblockchain.NewSKUsClient,
 		},
-    
 		{
 			NewFunc: armblockchain.NewTransactionNodesClient,
 		},
-    
+		{
+			NewFunc: armblockchain.NewLocationsClient,
+		},
 	}
 	return resources
 }

@@ -5,15 +5,12 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloadmonitor/ar
 
 func Armworkloadmonitor() []*Resource {
 	resources := []*Resource{
-    
 		{
 			NewFunc: armworkloadmonitor.NewHealthMonitorsClient,
 		},
-    
 		{
 			NewFunc: armworkloadmonitor.NewOperationsClient,
 		},
-    
 	}
 	return resources
 }

@@ -5,35 +5,27 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/education/armeduca
 
 func Armeducation() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armeducation.NewJoinRequestsClient,
-		},
-    
-		{
-			NewFunc: armeducation.NewLabsClient,
-		},
-    
-		{
-			NewFunc: armeducation.NewManagementClient,
-		},
-    
 		{
 			NewFunc: armeducation.NewGrantsClient,
 		},
-    
 		{
-			NewFunc: armeducation.NewStudentLabsClient,
+			NewFunc: armeducation.NewManagementClient,
 		},
-    
-		{
-			NewFunc: armeducation.NewStudentsClient,
-		},
-    
 		{
 			NewFunc: armeducation.NewOperationsClient,
 		},
-    
+		{
+			NewFunc: armeducation.NewStudentsClient,
+		},
+		{
+			NewFunc: armeducation.NewJoinRequestsClient,
+		},
+		{
+			NewFunc: armeducation.NewLabsClient,
+		},
+		{
+			NewFunc: armeducation.NewStudentLabsClient,
+		},
 	}
 	return resources
 }

@@ -5,23 +5,12 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iotcentral/armiotc
 
 func Armiotcentral() []*Resource {
 	resources := []*Resource{
-    
 		{
 			NewFunc: armiotcentral.NewOperationsClient,
 		},
-    
-		{
-			NewFunc: armiotcentral.NewPrivateEndpointConnectionsClient,
-		},
-    
-		{
-			NewFunc: armiotcentral.NewPrivateLinksClient,
-		},
-    
 		{
 			NewFunc: armiotcentral.NewAppsClient,
 		},
-    
 	}
 	return resources
 }

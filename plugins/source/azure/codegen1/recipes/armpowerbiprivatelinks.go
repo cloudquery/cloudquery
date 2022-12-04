@@ -5,35 +5,27 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbiprivatelink
 
 func Armpowerbiprivatelinks() []*Resource {
 	resources := []*Resource{
-    
 		{
 			NewFunc: armpowerbiprivatelinks.NewOperationsClient,
 		},
-    
 		{
 			NewFunc: armpowerbiprivatelinks.NewPowerBIResourcesClient,
 		},
-    
 		{
 			NewFunc: armpowerbiprivatelinks.NewPrivateEndpointConnectionsClient,
 		},
-    
 		{
 			NewFunc: armpowerbiprivatelinks.NewPrivateLinkResourcesClient,
 		},
-    
-		{
-			NewFunc: armpowerbiprivatelinks.NewPrivateLinkServiceResourceOperationResultsClient,
-		},
-    
-		{
-			NewFunc: armpowerbiprivatelinks.NewPrivateLinkServicesClient,
-		},
-    
 		{
 			NewFunc: armpowerbiprivatelinks.NewPrivateLinkServicesForPowerBIClient,
 		},
-    
+		{
+			NewFunc: armpowerbiprivatelinks.NewPrivateLinkServiceResourceOperationResultsClient,
+		},
+		{
+			NewFunc: armpowerbiprivatelinks.NewPrivateLinkServicesClient,
+		},
 	}
 	return resources
 }

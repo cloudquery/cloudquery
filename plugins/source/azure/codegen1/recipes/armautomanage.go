@@ -5,55 +5,42 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automanage/armauto
 
 func Armautomanage() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armautomanage.NewConfigurationProfileHCIAssignmentsClient,
-		},
-    
 		{
 			NewFunc: armautomanage.NewConfigurationProfilesClient,
 		},
-    
-		{
-			NewFunc: armautomanage.NewConfigurationProfilesVersionsClient,
-		},
-    
-		{
-			NewFunc: armautomanage.NewBestPracticesClient,
-		},
-    
-		{
-			NewFunc: armautomanage.NewReportsClient,
-		},
-    
-		{
-			NewFunc: armautomanage.NewBestPracticesVersionsClient,
-		},
-    
-		{
-			NewFunc: armautomanage.NewConfigurationProfileAssignmentsClient,
-		},
-    
-		{
-			NewFunc: armautomanage.NewConfigurationProfileHCRPAssignmentsClient,
-		},
-    
 		{
 			NewFunc: armautomanage.NewHCRPReportsClient,
 		},
-    
+		{
+			NewFunc: armautomanage.NewBestPracticesClient,
+		},
+		{
+			NewFunc: armautomanage.NewReportsClient,
+		},
+		{
+			NewFunc: armautomanage.NewConfigurationProfileAssignmentsClient,
+		},
+		{
+			NewFunc: armautomanage.NewConfigurationProfileHCRPAssignmentsClient,
+		},
 		{
 			NewFunc: armautomanage.NewHCIReportsClient,
 		},
-    
 		{
 			NewFunc: armautomanage.NewOperationsClient,
 		},
-    
 		{
 			NewFunc: armautomanage.NewServicePrincipalsClient,
 		},
-    
+		{
+			NewFunc: armautomanage.NewBestPracticesVersionsClient,
+		},
+		{
+			NewFunc: armautomanage.NewConfigurationProfileHCIAssignmentsClient,
+		},
+		{
+			NewFunc: armautomanage.NewConfigurationProfilesVersionsClient,
+		},
 	}
 	return resources
 }

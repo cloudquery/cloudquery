@@ -5,23 +5,12 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/communication/armc
 
 func Armcommunication() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armcommunication.NewServicesClient,
-		},
-    
-		{
-			NewFunc: armcommunication.NewEmailServicesClient,
-		},
-    
-		{
-			NewFunc: armcommunication.NewDomainsClient,
-		},
-    
 		{
 			NewFunc: armcommunication.NewOperationsClient,
 		},
-    
+		{
+			NewFunc: armcommunication.NewServiceClient,
+		},
 	}
 	return resources
 }

@@ -5,91 +5,63 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armm
 
 func Armmediaservices() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armmediaservices.NewTransformsClient,
-		},
-    
-		{
-			NewFunc: armmediaservices.NewOperationResultsClient,
-		},
-    
-		{
-			NewFunc: armmediaservices.NewTracksClient,
-		},
-    
-		{
-			NewFunc: armmediaservices.NewAssetTrackOperationResultsClient,
-		},
-    
-		{
-			NewFunc: armmediaservices.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armmediaservices.NewStreamingLocatorsClient,
-		},
-    
-		{
-			NewFunc: armmediaservices.NewAccountFiltersClient,
-		},
-    
-		{
-			NewFunc: armmediaservices.NewClient,
-		},
-    
-		{
-			NewFunc: armmediaservices.NewLocationsClient,
-		},
-    
-		{
-			NewFunc: armmediaservices.NewAssetFiltersClient,
-		},
-    
-		{
-			NewFunc: armmediaservices.NewAssetTrackOperationStatusesClient,
-		},
-    
-		{
-			NewFunc: armmediaservices.NewContentKeyPoliciesClient,
-		},
-    
 		{
 			NewFunc: armmediaservices.NewLiveOutputsClient,
 		},
-    
-		{
-			NewFunc: armmediaservices.NewJobsClient,
-		},
-    
-		{
-			NewFunc: armmediaservices.NewLiveEventsClient,
-		},
-    
 		{
 			NewFunc: armmediaservices.NewStreamingEndpointsClient,
 		},
-    
 		{
-			NewFunc: armmediaservices.NewOperationStatusesClient,
+			NewFunc: armmediaservices.NewStreamingLocatorsClient,
 		},
-    
-		{
-			NewFunc: armmediaservices.NewPrivateLinkResourcesClient,
-		},
-    
-		{
-			NewFunc: armmediaservices.NewAssetsClient,
-		},
-    
-		{
-			NewFunc: armmediaservices.NewPrivateEndpointConnectionsClient,
-		},
-    
 		{
 			NewFunc: armmediaservices.NewStreamingPoliciesClient,
 		},
-    
+		{
+			NewFunc: armmediaservices.NewTracksClient,
+		},
+		{
+			NewFunc: armmediaservices.NewLiveEventsClient,
+		},
+		{
+			NewFunc: armmediaservices.NewLocationsClient,
+		},
+		{
+			NewFunc: armmediaservices.NewOperationResultsClient,
+		},
+		{
+			NewFunc: armmediaservices.NewOperationsClient,
+		},
+		{
+			NewFunc: armmediaservices.NewPrivateLinkResourcesClient,
+		},
+		{
+			NewFunc: armmediaservices.NewAssetFiltersClient,
+		},
+		{
+			NewFunc: armmediaservices.NewAssetsClient,
+		},
+		{
+			NewFunc: armmediaservices.NewClient,
+		},
+		{
+			NewFunc: armmediaservices.NewContentKeyPoliciesClient,
+		},
+		{
+			NewFunc: armmediaservices.NewJobsClient,
+		},
+		{
+			NewFunc: armmediaservices.NewOperationStatusesClient,
+		},
+		{
+			NewFunc: armmediaservices.NewPrivateEndpointConnectionsClient,
+		},
+		{
+			NewFunc: armmediaservices.NewAccountFiltersClient,
+		},
+		{
+			NewFunc: armmediaservices.NewTransformsClient,
+		},
 	}
 	return resources
 }

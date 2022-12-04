@@ -5,15 +5,12 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/commerce/armcommer
 
 func Armcommerce() []*Resource {
 	resources := []*Resource{
-    
 		{
 			NewFunc: armcommerce.NewRateCardClient,
 		},
-    
 		{
 			NewFunc: armcommerce.NewUsageAggregatesClient,
 		},
-    
 	}
 	return resources
 }

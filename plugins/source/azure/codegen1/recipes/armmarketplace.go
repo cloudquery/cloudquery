@@ -5,23 +5,18 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplace/armmar
 
 func Armmarketplace() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armmarketplace.NewPrivateStoreCollectionClient,
-		},
-    
-		{
-			NewFunc: armmarketplace.NewPrivateStoreCollectionOfferClient,
-		},
-    
-		{
-			NewFunc: armmarketplace.NewOperationsClient,
-		},
-    
 		{
 			NewFunc: armmarketplace.NewPrivateStoreClient,
 		},
-    
+		{
+			NewFunc: armmarketplace.NewPrivateStoreCollectionClient,
+		},
+		{
+			NewFunc: armmarketplace.NewPrivateStoreCollectionOfferClient,
+		},
+		{
+			NewFunc: armmarketplace.NewOperationsClient,
+		},
 	}
 	return resources
 }

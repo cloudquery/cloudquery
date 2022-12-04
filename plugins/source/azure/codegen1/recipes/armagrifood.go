@@ -5,35 +5,27 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/agrifood/armagrifo
 
 func Armagrifood() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armagrifood.NewPrivateLinkResourcesClient,
-		},
-    
-		{
-			NewFunc: armagrifood.NewFarmBeatsExtensionsClient,
-		},
-    
-		{
-			NewFunc: armagrifood.NewPrivateEndpointConnectionsClient,
-		},
-    
-		{
-			NewFunc: armagrifood.NewExtensionsClient,
-		},
-    
 		{
 			NewFunc: armagrifood.NewFarmBeatsModelsClient,
 		},
-    
+		{
+			NewFunc: armagrifood.NewPrivateLinkResourcesClient,
+		},
+		{
+			NewFunc: armagrifood.NewExtensionsClient,
+		},
+		{
+			NewFunc: armagrifood.NewFarmBeatsExtensionsClient,
+		},
 		{
 			NewFunc: armagrifood.NewLocationsClient,
 		},
-    
 		{
 			NewFunc: armagrifood.NewOperationsClient,
 		},
-    
+		{
+			NewFunc: armagrifood.NewPrivateEndpointConnectionsClient,
+		},
 	}
 	return resources
 }

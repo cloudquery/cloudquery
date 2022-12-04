@@ -5,11 +5,9 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/edgeorder/armedgeo
 
 func Armedgeorder() []*Resource {
 	resources := []*Resource{
-    
 		{
 			NewFunc: armedgeorder.NewManagementClient,
 		},
-    
 	}
 	return resources
 }

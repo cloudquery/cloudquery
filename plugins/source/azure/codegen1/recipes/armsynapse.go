@@ -5,299 +5,225 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse
 
 func Armsynapse() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armsynapse.NewBigDataPoolsClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewIntegrationRuntimeConnectionInfosClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewKustoPoolPrincipalAssignmentsClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewWorkspaceManagedSQLServerVulnerabilityAssessmentsClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewIntegrationRuntimeStatusClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewPrivateEndpointConnectionsPrivateLinkHubClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewPrivateLinkResourcesClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewWorkspaceManagedSQLServerRecoverableSQLPoolsClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewAzureADOnlyAuthenticationsClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewDataMaskingRulesClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewExtendedSQLPoolBlobAuditingPoliciesClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewLibrariesClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewIntegrationRuntimeNodeIPAddressClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewKustoPoolsClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewSQLPoolMaintenanceWindowsClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewSQLPoolRecommendedSensitivityLabelsClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewPrivateLinkHubPrivateLinkResourcesClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewSQLPoolBlobAuditingPoliciesClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewSQLPoolOperationResultsClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewSQLPoolTablesClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewSQLPoolTransparentDataEncryptionsClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewSQLPoolUsagesClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewIntegrationRuntimeMonitoringDataClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewIPFirewallRulesClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewSQLPoolVulnerabilityAssessmentsClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewKeysClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewSparkConfigurationsClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewRestorableDroppedSQLPoolsClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewSQLPoolDataWarehouseUserActivitiesClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewSQLPoolGeoBackupPoliciesClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewSQLPoolWorkloadClassifierClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewSQLPoolWorkloadGroupClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewWorkspaceManagedIdentitySQLControlSettingsClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewWorkspaceManagedSQLServerUsagesClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewSQLPoolRestorePointsClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewWorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewKustoOperationsClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewKustoPoolDatabasePrincipalAssignmentsClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewSparkConfigurationClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewSQLPoolConnectionPoliciesClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewSQLPoolMetadataSyncConfigsClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewWorkspaceManagedSQLServerSecurityAlertPolicyClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewDataMaskingPoliciesClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewSQLPoolOperationsClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewSQLPoolsClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewSQLPoolTableColumnsClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewWorkspaceManagedSQLServerEncryptionProtectorClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewWorkspacesClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewKustoPoolDatabasesClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewSQLPoolMaintenanceWindowOptionsClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewSQLPoolReplicationLinksClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewSQLPoolSecurityAlertPoliciesClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewWorkspaceAADAdminsClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewSQLPoolVulnerabilityAssessmentScansClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewWorkspaceSQLAADAdminsClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewIntegrationRuntimeAuthKeysClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewIntegrationRuntimeNodesClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewKustoPoolChildResourceClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewPrivateLinkHubsClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewSQLPoolSchemasClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewSQLPoolSensitivityLabelsClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewIntegrationRuntimeObjectMetadataClient,
-		},
-    
 		{
 			NewFunc: armsynapse.NewKustoPoolDataConnectionsClient,
 		},
-    
 		{
-			NewFunc: armsynapse.NewLibraryClient,
+			NewFunc: armsynapse.NewIntegrationRuntimeStatusClient,
 		},
-    
-		{
-			NewFunc: armsynapse.NewWorkspaceManagedSQLServerBlobAuditingPoliciesClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewWorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewIntegrationRuntimeCredentialsClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewIntegrationRuntimesClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewKustoPoolAttachedDatabaseConfigurationsClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewPrivateEndpointConnectionsClient,
-		},
-    
-		{
-			NewFunc: armsynapse.NewSQLPoolColumnsClient,
-		},
-    
 		{
 			NewFunc: armsynapse.NewSQLPoolVulnerabilityAssessmentRuleBaselinesClient,
 		},
-    
+		{
+			NewFunc: armsynapse.NewPrivateLinkHubPrivateLinkResourcesClient,
+		},
+		{
+			NewFunc: armsynapse.NewSparkConfigurationClient,
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolColumnsClient,
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolMaintenanceWindowOptionsClient,
+		},
+		{
+			NewFunc: armsynapse.NewIntegrationRuntimeObjectMetadataClient,
+		},
+		{
+			NewFunc: armsynapse.NewPrivateEndpointConnectionsPrivateLinkHubClient,
+		},
+		{
+			NewFunc: armsynapse.NewKustoPoolsClient,
+		},
+		{
+			NewFunc: armsynapse.NewOperationsClient,
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolMetadataSyncConfigsClient,
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolReplicationLinksClient,
+		},
+		{
+			NewFunc: armsynapse.NewWorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient,
+		},
+		{
+			NewFunc: armsynapse.NewKustoPoolDatabasePrincipalAssignmentsClient,
+		},
+		{
+			NewFunc: armsynapse.NewKustoPoolDatabasesClient,
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolOperationResultsClient,
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolTableColumnsClient,
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolUsagesClient,
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolVulnerabilityAssessmentsClient,
+		},
+		{
+			NewFunc: armsynapse.NewWorkspaceManagedSQLServerSecurityAlertPolicyClient,
+		},
+		{
+			NewFunc: armsynapse.NewIntegrationRuntimeNodeIPAddressClient,
+		},
+		{
+			NewFunc: armsynapse.NewKustoPoolChildResourceClient,
+		},
+		{
+			NewFunc: armsynapse.NewPrivateEndpointConnectionsClient,
+		},
+		{
+			NewFunc: armsynapse.NewDataMaskingRulesClient,
+		},
+		{
+			NewFunc: armsynapse.NewKustoOperationsClient,
+		},
+		{
+			NewFunc: armsynapse.NewWorkspaceSQLAADAdminsClient,
+		},
+		{
+			NewFunc: armsynapse.NewIntegrationRuntimesClient,
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolBlobAuditingPoliciesClient,
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolRecommendedSensitivityLabelsClient,
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolSecurityAlertPoliciesClient,
+		},
+		{
+			NewFunc: armsynapse.NewWorkspaceManagedIdentitySQLControlSettingsClient,
+		},
+		{
+			NewFunc: armsynapse.NewWorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClient,
+		},
+		{
+			NewFunc: armsynapse.NewAzureADOnlyAuthenticationsClient,
+		},
+		{
+			NewFunc: armsynapse.NewSparkConfigurationsClient,
+		},
+		{
+			NewFunc: armsynapse.NewIntegrationRuntimeNodesClient,
+		},
+		{
+			NewFunc: armsynapse.NewLibraryClient,
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolConnectionPoliciesClient,
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolMaintenanceWindowsClient,
+		},
+		{
+			NewFunc: armsynapse.NewExtendedSQLPoolBlobAuditingPoliciesClient,
+		},
+		{
+			NewFunc: armsynapse.NewIntegrationRuntimeAuthKeysClient,
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolDataWarehouseUserActivitiesClient,
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolGeoBackupPoliciesClient,
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolsClient,
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolWorkloadClassifierClient,
+		},
+		{
+			NewFunc: armsynapse.NewWorkspaceManagedSQLServerEncryptionProtectorClient,
+		},
+		{
+			NewFunc: armsynapse.NewIntegrationRuntimeMonitoringDataClient,
+		},
+		{
+			NewFunc: armsynapse.NewKeysClient,
+		},
+		{
+			NewFunc: armsynapse.NewPrivateLinkHubsClient,
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolOperationsClient,
+		},
+		{
+			NewFunc: armsynapse.NewWorkspaceAADAdminsClient,
+		},
+		{
+			NewFunc: armsynapse.NewWorkspaceManagedSQLServerRecoverableSQLPoolsClient,
+		},
+		{
+			NewFunc: armsynapse.NewWorkspaceManagedSQLServerUsagesClient,
+		},
+		{
+			NewFunc: armsynapse.NewWorkspaceManagedSQLServerVulnerabilityAssessmentsClient,
+		},
+		{
+			NewFunc: armsynapse.NewIPFirewallRulesClient,
+		},
+		{
+			NewFunc: armsynapse.NewKustoPoolAttachedDatabaseConfigurationsClient,
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolSchemasClient,
+		},
+		{
+			NewFunc: armsynapse.NewWorkspacesClient,
+		},
+		{
+			NewFunc: armsynapse.NewBigDataPoolsClient,
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolRestorePointsClient,
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolVulnerabilityAssessmentScansClient,
+		},
+		{
+			NewFunc: armsynapse.NewWorkspaceManagedSQLServerBlobAuditingPoliciesClient,
+		},
+		{
+			NewFunc: armsynapse.NewDataMaskingPoliciesClient,
+		},
+		{
+			NewFunc: armsynapse.NewIntegrationRuntimeCredentialsClient,
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolTransparentDataEncryptionsClient,
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolSensitivityLabelsClient,
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolTablesClient,
+		},
+		{
+			NewFunc: armsynapse.NewLibrariesClient,
+		},
+		{
+			NewFunc: armsynapse.NewPrivateLinkResourcesClient,
+		},
+		{
+			NewFunc: armsynapse.NewRestorableDroppedSQLPoolsClient,
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolWorkloadGroupClient,
+		},
+		{
+			NewFunc: armsynapse.NewIntegrationRuntimeConnectionInfosClient,
+		},
+		{
+			NewFunc: armsynapse.NewKustoPoolPrincipalAssignmentsClient,
+		},
 	}
 	return resources
 }

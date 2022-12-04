@@ -5,35 +5,27 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logz/armlogz"
 
 func Armlogz() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armlogz.NewSubAccountClient,
-		},
-    
-		{
-			NewFunc: armlogz.NewTagRulesClient,
-		},
-    
 		{
 			NewFunc: armlogz.NewMonitorClient,
 		},
-    
-		{
-			NewFunc: armlogz.NewMonitorsClient,
-		},
-    
-		{
-			NewFunc: armlogz.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armlogz.NewSingleSignOnClient,
-		},
-    
 		{
 			NewFunc: armlogz.NewSubAccountTagRulesClient,
 		},
-    
+		{
+			NewFunc: armlogz.NewTagRulesClient,
+		},
+		{
+			NewFunc: armlogz.NewMonitorsClient,
+		},
+		{
+			NewFunc: armlogz.NewOperationsClient,
+		},
+		{
+			NewFunc: armlogz.NewSingleSignOnClient,
+		},
+		{
+			NewFunc: armlogz.NewSubAccountClient,
+		},
 	}
 	return resources
 }

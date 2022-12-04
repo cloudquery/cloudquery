@@ -5,27 +5,21 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcomplianceautom
 
 func Armappcomplianceautomation() []*Resource {
 	resources := []*Resource{
-    
 		{
 			NewFunc: armappcomplianceautomation.NewReportClient,
 		},
-    
-		{
-			NewFunc: armappcomplianceautomation.NewReportsClient,
-		},
-    
 		{
 			NewFunc: armappcomplianceautomation.NewSnapshotClient,
 		},
-    
-		{
-			NewFunc: armappcomplianceautomation.NewSnapshotsClient,
-		},
-    
 		{
 			NewFunc: armappcomplianceautomation.NewOperationsClient,
 		},
-    
+		{
+			NewFunc: armappcomplianceautomation.NewReportsClient,
+		},
+		{
+			NewFunc: armappcomplianceautomation.NewSnapshotsClient,
+		},
 	}
 	return resources
 }

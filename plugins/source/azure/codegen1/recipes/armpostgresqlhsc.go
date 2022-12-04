@@ -5,31 +5,24 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresqlhsc/armp
 
 func Armpostgresqlhsc() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armpostgresqlhsc.NewServerGroupsClient,
-		},
-    
-		{
-			NewFunc: armpostgresqlhsc.NewServersClient,
-		},
-    
-		{
-			NewFunc: armpostgresqlhsc.NewConfigurationsClient,
-		},
-    
 		{
 			NewFunc: armpostgresqlhsc.NewFirewallRulesClient,
 		},
-    
-		{
-			NewFunc: armpostgresqlhsc.NewOperationsClient,
-		},
-    
 		{
 			NewFunc: armpostgresqlhsc.NewRolesClient,
 		},
-    
+		{
+			NewFunc: armpostgresqlhsc.NewServerGroupsClient,
+		},
+		{
+			NewFunc: armpostgresqlhsc.NewServersClient,
+		},
+		{
+			NewFunc: armpostgresqlhsc.NewOperationsClient,
+		},
+		{
+			NewFunc: armpostgresqlhsc.NewConfigurationsClient,
+		},
 	}
 	return resources
 }

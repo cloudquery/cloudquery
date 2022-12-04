@@ -5,15 +5,12 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridkubernetes/a
 
 func Armhybridkubernetes() []*Resource {
 	resources := []*Resource{
-    
 		{
 			NewFunc: armhybridkubernetes.NewOperationsClient,
 		},
-    
 		{
 			NewFunc: armhybridkubernetes.NewConnectedClusterClient,
 		},
-    
 	}
 	return resources
 }

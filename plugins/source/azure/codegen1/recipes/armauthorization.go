@@ -5,71 +5,51 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/arma
 
 func Armauthorization() []*Resource {
 	resources := []*Resource{
-    
 		{
 			NewFunc: armauthorization.NewRoleEligibilityScheduleInstancesClient,
 		},
-    
-		{
-			NewFunc: armauthorization.NewClassicAdministratorsClient,
-		},
-    
-		{
-			NewFunc: armauthorization.NewRoleDefinitionsClient,
-		},
-    
-		{
-			NewFunc: armauthorization.NewGlobalAdministratorClient,
-		},
-    
-		{
-			NewFunc: armauthorization.NewPermissionsClient,
-		},
-    
-		{
-			NewFunc: armauthorization.NewRoleAssignmentScheduleInstancesClient,
-		},
-    
-		{
-			NewFunc: armauthorization.NewRoleManagementPolicyAssignmentsClient,
-		},
-    
-		{
-			NewFunc: armauthorization.NewDenyAssignmentsClient,
-		},
-    
-		{
-			NewFunc: armauthorization.NewEligibleChildResourcesClient,
-		},
-    
-		{
-			NewFunc: armauthorization.NewRoleAssignmentSchedulesClient,
-		},
-    
-		{
-			NewFunc: armauthorization.NewRoleManagementPoliciesClient,
-		},
-    
-		{
-			NewFunc: armauthorization.NewRoleAssignmentsClient,
-		},
-    
-		{
-			NewFunc: armauthorization.NewRoleAssignmentScheduleRequestsClient,
-		},
-    
-		{
-			NewFunc: armauthorization.NewRoleEligibilityScheduleRequestsClient,
-		},
-    
 		{
 			NewFunc: armauthorization.NewRoleEligibilitySchedulesClient,
 		},
-    
+		{
+			NewFunc: armauthorization.NewEligibleChildResourcesClient,
+		},
+		{
+			NewFunc: armauthorization.NewGlobalAdministratorClient,
+		},
+		{
+			NewFunc: armauthorization.NewRoleAssignmentScheduleRequestsClient,
+		},
+		{
+			NewFunc: armauthorization.NewRoleAssignmentSchedulesClient,
+		},
+		{
+			NewFunc: armauthorization.NewRoleDefinitionsClient,
+		},
+		{
+			NewFunc: armauthorization.NewRoleManagementPoliciesClient,
+		},
+		{
+			NewFunc: armauthorization.NewPermissionsClient,
+		},
+		{
+			NewFunc: armauthorization.NewRoleAssignmentsClient,
+		},
+		{
+			NewFunc: armauthorization.NewRoleEligibilityScheduleRequestsClient,
+		},
+		{
+			NewFunc: armauthorization.NewClassicAdministratorsClient,
+		},
 		{
 			NewFunc: armauthorization.NewProviderOperationsMetadataClient,
 		},
-    
+		{
+			NewFunc: armauthorization.NewRoleAssignmentScheduleInstancesClient,
+		},
+		{
+			NewFunc: armauthorization.NewRoleManagementPolicyAssignmentsClient,
+		},
 	}
 	return resources
 }

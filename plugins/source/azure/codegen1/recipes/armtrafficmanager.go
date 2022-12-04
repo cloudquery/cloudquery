@@ -5,27 +5,21 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/trafficmanager/arm
 
 func Armtrafficmanager() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armtrafficmanager.NewUserMetricsKeysClient,
-		},
-    
 		{
 			NewFunc: armtrafficmanager.NewEndpointsClient,
 		},
-    
-		{
-			NewFunc: armtrafficmanager.NewProfilesClient,
-		},
-    
 		{
 			NewFunc: armtrafficmanager.NewGeographicHierarchiesClient,
 		},
-    
 		{
 			NewFunc: armtrafficmanager.NewHeatMapClient,
 		},
-    
+		{
+			NewFunc: armtrafficmanager.NewProfilesClient,
+		},
+		{
+			NewFunc: armtrafficmanager.NewUserMetricsKeysClient,
+		},
 	}
 	return resources
 }

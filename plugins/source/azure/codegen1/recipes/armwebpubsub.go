@@ -5,43 +5,27 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/webpubsub/armwebpu
 
 func Armwebpubsub() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armwebpubsub.NewHubsClient,
-		},
-    
-		{
-			NewFunc: armwebpubsub.NewPrivateEndpointConnectionsClient,
-		},
-    
-		{
-			NewFunc: armwebpubsub.NewPrivateLinkResourcesClient,
-		},
-    
-		{
-			NewFunc: armwebpubsub.NewUsagesClient,
-		},
-    
-		{
-			NewFunc: armwebpubsub.NewSharedPrivateLinkResourcesClient,
-		},
-    
 		{
 			NewFunc: armwebpubsub.NewClient,
 		},
-    
 		{
-			NewFunc: armwebpubsub.NewCustomDomainsClient,
+			NewFunc: armwebpubsub.NewPrivateEndpointConnectionsClient,
 		},
-    
+		{
+			NewFunc: armwebpubsub.NewUsagesClient,
+		},
+		{
+			NewFunc: armwebpubsub.NewSharedPrivateLinkResourcesClient,
+		},
+		{
+			NewFunc: armwebpubsub.NewHubsClient,
+		},
 		{
 			NewFunc: armwebpubsub.NewOperationsClient,
 		},
-    
 		{
-			NewFunc: armwebpubsub.NewCustomCertificatesClient,
+			NewFunc: armwebpubsub.NewPrivateLinkResourcesClient,
 		},
-    
 	}
 	return resources
 }

@@ -5,51 +5,39 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdins
 
 func Armhdinsight() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armhdinsight.NewVirtualMachinesClient,
-		},
-    
-		{
-			NewFunc: armhdinsight.NewApplicationsClient,
-		},
-    
-		{
-			NewFunc: armhdinsight.NewConfigurationsClient,
-		},
-    
-		{
-			NewFunc: armhdinsight.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armhdinsight.NewLocationsClient,
-		},
-    
-		{
-			NewFunc: armhdinsight.NewPrivateLinkResourcesClient,
-		},
-    
 		{
 			NewFunc: armhdinsight.NewScriptActionsClient,
 		},
-    
 		{
-			NewFunc: armhdinsight.NewScriptExecutionHistoryClient,
+			NewFunc: armhdinsight.NewOperationsClient,
 		},
-    
-		{
-			NewFunc: armhdinsight.NewClustersClient,
-		},
-    
-		{
-			NewFunc: armhdinsight.NewExtensionsClient,
-		},
-    
 		{
 			NewFunc: armhdinsight.NewPrivateEndpointConnectionsClient,
 		},
-    
+		{
+			NewFunc: armhdinsight.NewScriptExecutionHistoryClient,
+		},
+		{
+			NewFunc: armhdinsight.NewClustersClient,
+		},
+		{
+			NewFunc: armhdinsight.NewExtensionsClient,
+		},
+		{
+			NewFunc: armhdinsight.NewLocationsClient,
+		},
+		{
+			NewFunc: armhdinsight.NewPrivateLinkResourcesClient,
+		},
+		{
+			NewFunc: armhdinsight.NewVirtualMachinesClient,
+		},
+		{
+			NewFunc: armhdinsight.NewApplicationsClient,
+		},
+		{
+			NewFunc: armhdinsight.NewConfigurationsClient,
+		},
 	}
 	return resources
 }

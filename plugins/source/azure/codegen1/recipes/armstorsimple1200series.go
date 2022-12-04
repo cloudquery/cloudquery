@@ -5,67 +5,51 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storsimple1200seri
 
 func Armstorsimple1200series() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armstorsimple1200series.NewAccessControlRecordsClient,
-		},
-    
-		{
-			NewFunc: armstorsimple1200series.NewFileSharesClient,
-		},
-    
 		{
 			NewFunc: armstorsimple1200series.NewAvailableProviderOperationsClient,
 		},
-    
-		{
-			NewFunc: armstorsimple1200series.NewAlertsClient,
-		},
-    
-		{
-			NewFunc: armstorsimple1200series.NewBackupsClient,
-		},
-    
 		{
 			NewFunc: armstorsimple1200series.NewDevicesClient,
 		},
-    
-		{
-			NewFunc: armstorsimple1200series.NewJobsClient,
-		},
-    
-		{
-			NewFunc: armstorsimple1200series.NewBackupScheduleGroupsClient,
-		},
-    
-		{
-			NewFunc: armstorsimple1200series.NewChapSettingsClient,
-		},
-    
-		{
-			NewFunc: armstorsimple1200series.NewFileServersClient,
-		},
-    
-		{
-			NewFunc: armstorsimple1200series.NewIscsiDisksClient,
-		},
-    
-		{
-			NewFunc: armstorsimple1200series.NewIscsiServersClient,
-		},
-    
-		{
-			NewFunc: armstorsimple1200series.NewManagersClient,
-		},
-    
 		{
 			NewFunc: armstorsimple1200series.NewStorageAccountCredentialsClient,
 		},
-    
+		{
+			NewFunc: armstorsimple1200series.NewJobsClient,
+		},
+		{
+			NewFunc: armstorsimple1200series.NewAccessControlRecordsClient,
+		},
+		{
+			NewFunc: armstorsimple1200series.NewFileServersClient,
+		},
+		{
+			NewFunc: armstorsimple1200series.NewIscsiServersClient,
+		},
+		{
+			NewFunc: armstorsimple1200series.NewBackupsClient,
+		},
+		{
+			NewFunc: armstorsimple1200series.NewFileSharesClient,
+		},
 		{
 			NewFunc: armstorsimple1200series.NewStorageDomainsClient,
 		},
-    
+		{
+			NewFunc: armstorsimple1200series.NewAlertsClient,
+		},
+		{
+			NewFunc: armstorsimple1200series.NewBackupScheduleGroupsClient,
+		},
+		{
+			NewFunc: armstorsimple1200series.NewChapSettingsClient,
+		},
+		{
+			NewFunc: armstorsimple1200series.NewIscsiDisksClient,
+		},
+		{
+			NewFunc: armstorsimple1200series.NewManagersClient,
+		},
 	}
 	return resources
 }

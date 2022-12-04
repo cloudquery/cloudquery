@@ -5,27 +5,21 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appconfiguration/a
 
 func Armappconfiguration() []*Resource {
 	resources := []*Resource{
-    
 		{
 			NewFunc: armappconfiguration.NewConfigurationStoresClient,
 		},
-    
 		{
 			NewFunc: armappconfiguration.NewKeyValuesClient,
 		},
-    
-		{
-			NewFunc: armappconfiguration.NewPrivateEndpointConnectionsClient,
-		},
-    
 		{
 			NewFunc: armappconfiguration.NewOperationsClient,
 		},
-    
+		{
+			NewFunc: armappconfiguration.NewPrivateEndpointConnectionsClient,
+		},
 		{
 			NewFunc: armappconfiguration.NewPrivateLinkResourcesClient,
 		},
-    
 	}
 	return resources
 }

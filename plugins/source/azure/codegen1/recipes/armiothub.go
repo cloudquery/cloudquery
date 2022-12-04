@@ -5,35 +5,27 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iothub/armiothub"
 
 func Armiothub() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armiothub.NewClient,
-		},
-    
-		{
-			NewFunc: armiothub.NewPrivateLinkResourcesClient,
-		},
-    
-		{
-			NewFunc: armiothub.NewResourceProviderCommonClient,
-		},
-    
-		{
-			NewFunc: armiothub.NewCertificatesClient,
-		},
-    
 		{
 			NewFunc: armiothub.NewOperationsClient,
 		},
-    
+		{
+			NewFunc: armiothub.NewPrivateLinkResourcesClient,
+		},
+		{
+			NewFunc: armiothub.NewClient,
+		},
 		{
 			NewFunc: armiothub.NewPrivateEndpointConnectionsClient,
 		},
-    
+		{
+			NewFunc: armiothub.NewCertificatesClient,
+		},
 		{
 			NewFunc: armiothub.NewResourceClient,
 		},
-    
+		{
+			NewFunc: armiothub.NewResourceProviderCommonClient,
+		},
 	}
 	return resources
 }

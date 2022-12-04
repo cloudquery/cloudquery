@@ -5,19 +5,15 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/fluidrelay/armflui
 
 func Armfluidrelay() []*Resource {
 	resources := []*Resource{
-    
 		{
 			NewFunc: armfluidrelay.NewOperationsClient,
 		},
-    
-		{
-			NewFunc: armfluidrelay.NewServersClient,
-		},
-    
 		{
 			NewFunc: armfluidrelay.NewContainersClient,
 		},
-    
+		{
+			NewFunc: armfluidrelay.NewServersClient,
+		},
 	}
 	return resources
 }

@@ -5,15 +5,12 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/baremetalinfrastru
 
 func Armbaremetalinfrastructure() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armbaremetalinfrastructure.NewOperationsClient,
-		},
-    
 		{
 			NewFunc: armbaremetalinfrastructure.NewAzureBareMetalInstancesClient,
 		},
-    
+		{
+			NewFunc: armbaremetalinfrastructure.NewOperationsClient,
+		},
 	}
 	return resources
 }

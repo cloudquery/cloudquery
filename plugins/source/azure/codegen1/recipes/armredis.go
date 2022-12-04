@@ -5,39 +5,30 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis"
 
 func Armredis() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armredis.NewOperationsClient,
-		},
-    
 		{
 			NewFunc: armredis.NewPatchSchedulesClient,
 		},
-    
-		{
-			NewFunc: armredis.NewPrivateEndpointConnectionsClient,
-		},
-    
-		{
-			NewFunc: armredis.NewAsyncOperationStatusClient,
-		},
-    
-		{
-			NewFunc: armredis.NewFirewallRulesClient,
-		},
-    
 		{
 			NewFunc: armredis.NewLinkedServerClient,
 		},
-    
-		{
-			NewFunc: armredis.NewPrivateLinkResourcesClient,
-		},
-    
 		{
 			NewFunc: armredis.NewClient,
 		},
-    
+		{
+			NewFunc: armredis.NewPrivateEndpointConnectionsClient,
+		},
+		{
+			NewFunc: armredis.NewPrivateLinkResourcesClient,
+		},
+		{
+			NewFunc: armredis.NewFirewallRulesClient,
+		},
+		{
+			NewFunc: armredis.NewOperationsClient,
+		},
+		{
+			NewFunc: armredis.NewAsyncOperationStatusClient,
+		},
 	}
 	return resources
 }

@@ -5,19 +5,15 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devhub/armdevhub"
 
 func Armdevhub() []*Resource {
 	resources := []*Resource{
-    
 		{
 			NewFunc: armdevhub.NewOperationsClient,
 		},
-    
 		{
 			NewFunc: armdevhub.NewDeveloperHubServiceClient,
 		},
-    
 		{
 			NewFunc: armdevhub.NewWorkflowClient,
 		},
-    
 	}
 	return resources
 }

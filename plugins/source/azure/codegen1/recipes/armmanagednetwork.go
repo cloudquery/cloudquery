@@ -5,27 +5,21 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetwork/arm
 
 func Armmanagednetwork() []*Resource {
 	resources := []*Resource{
-    
 		{
 			NewFunc: armmanagednetwork.NewOperationsClient,
 		},
-    
 		{
 			NewFunc: armmanagednetwork.NewPeeringPoliciesClient,
 		},
-    
 		{
 			NewFunc: armmanagednetwork.NewScopeAssignmentsClient,
 		},
-    
 		{
 			NewFunc: armmanagednetwork.NewGroupsClient,
 		},
-    
 		{
 			NewFunc: armmanagednetwork.NewManagedNetworksClient,
 		},
-    
 	}
 	return resources
 }

@@ -1,0 +1,36 @@
+package cmd
+
+import (
+	"fmt"
+	"reflect"
+
+	"github.com/cloudquery/cloudquery/plugins/source/azure/codegen/newfunctions"
+	"github.com/spf13/cobra"
+)
+
+type Resource struct {
+	Service string
+	SubService string
+	ResponseStruct string
+	Client string
+	ListFunc string
+	NewFunc string
+}
+
+var Step1 = &cobra.Command{
+	Use:   "step1",
+	Short: "Generate recipes from NewFunctions via reflection",
+	Args: cobra.ExactArgs(0),
+	RunE: runStep1,
+}
+
+func runStep1(cmd *cobra.Command, args []string) error {
+	var resources []*newfunctions.Resource	
+	resources = append(resources, newfunctions.Armadvisor()...)
+	for _, r := range resources {
+		v := reflect.TypeOf(r.NewFunc)
+		results := v.Out(0)
+		fmt.Println(results.Name())
+	}	
+	return nil
+}

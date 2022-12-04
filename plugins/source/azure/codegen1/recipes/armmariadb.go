@@ -5,103 +5,78 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb
 
 func Armmariadb() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armmariadb.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armmariadb.NewTopQueryStatisticsClient,
-		},
-    
-		{
-			NewFunc: armmariadb.NewLocationBasedRecommendedActionSessionsOperationStatusClient,
-		},
-    
-		{
-			NewFunc: armmariadb.NewPrivateLinkResourcesClient,
-		},
-    
-		{
-			NewFunc: armmariadb.NewQueryTextsClient,
-		},
-    
-		{
-			NewFunc: armmariadb.NewServerSecurityAlertPoliciesClient,
-		},
-    
-		{
-			NewFunc: armmariadb.NewVirtualNetworkRulesClient,
-		},
-    
-		{
-			NewFunc: armmariadb.NewDatabasesClient,
-		},
-    
-		{
-			NewFunc: armmariadb.NewLocationBasedPerformanceTierClient,
-		},
-    
-		{
-			NewFunc: armmariadb.NewPrivateEndpointConnectionsClient,
-		},
-    
-		{
-			NewFunc: armmariadb.NewServersClient,
-		},
-    
-		{
-			NewFunc: armmariadb.NewLogFilesClient,
-		},
-    
-		{
-			NewFunc: armmariadb.NewReplicasClient,
-		},
-    
-		{
-			NewFunc: armmariadb.NewServerParametersClient,
-		},
-    
-		{
-			NewFunc: armmariadb.NewWaitStatisticsClient,
-		},
-    
-		{
-			NewFunc: armmariadb.NewRecommendedActionsClient,
-		},
-    
-		{
-			NewFunc: armmariadb.NewRecoverableServersClient,
-		},
-    
-		{
-			NewFunc: armmariadb.NewServerBasedPerformanceTierClient,
-		},
-    
-		{
-			NewFunc: armmariadb.NewAdvisorsClient,
-		},
-    
-		{
-			NewFunc: armmariadb.NewCheckNameAvailabilityClient,
-		},
-    
-		{
-			NewFunc: armmariadb.NewFirewallRulesClient,
-		},
-    
 		{
 			NewFunc: armmariadb.NewLocationBasedRecommendedActionSessionsResultClient,
 		},
-    
-		{
-			NewFunc: armmariadb.NewConfigurationsClient,
-		},
-    
 		{
 			NewFunc: armmariadb.NewManagementClient,
 		},
-    
+		{
+			NewFunc: armmariadb.NewQueryTextsClient,
+		},
+		{
+			NewFunc: armmariadb.NewCheckNameAvailabilityClient,
+		},
+		{
+			NewFunc: armmariadb.NewConfigurationsClient,
+		},
+		{
+			NewFunc: armmariadb.NewLogFilesClient,
+		},
+		{
+			NewFunc: armmariadb.NewServerBasedPerformanceTierClient,
+		},
+		{
+			NewFunc: armmariadb.NewAdvisorsClient,
+		},
+		{
+			NewFunc: armmariadb.NewPrivateEndpointConnectionsClient,
+		},
+		{
+			NewFunc: armmariadb.NewRecommendedActionsClient,
+		},
+		{
+			NewFunc: armmariadb.NewLocationBasedPerformanceTierClient,
+		},
+		{
+			NewFunc: armmariadb.NewFirewallRulesClient,
+		},
+		{
+			NewFunc: armmariadb.NewLocationBasedRecommendedActionSessionsOperationStatusClient,
+		},
+		{
+			NewFunc: armmariadb.NewOperationsClient,
+		},
+		{
+			NewFunc: armmariadb.NewPrivateLinkResourcesClient,
+		},
+		{
+			NewFunc: armmariadb.NewReplicasClient,
+		},
+		{
+			NewFunc: armmariadb.NewServersClient,
+		},
+		{
+			NewFunc: armmariadb.NewServerSecurityAlertPoliciesClient,
+		},
+		{
+			NewFunc: armmariadb.NewDatabasesClient,
+		},
+		{
+			NewFunc: armmariadb.NewServerParametersClient,
+		},
+		{
+			NewFunc: armmariadb.NewWaitStatisticsClient,
+		},
+		{
+			NewFunc: armmariadb.NewRecoverableServersClient,
+		},
+		{
+			NewFunc: armmariadb.NewTopQueryStatisticsClient,
+		},
+		{
+			NewFunc: armmariadb.NewVirtualNetworkRulesClient,
+		},
 	}
 	return resources
 }

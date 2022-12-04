@@ -5,91 +5,69 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdat
 
 func Armdatafactory() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armdatafactory.NewDataFlowDebugSessionClient,
-		},
-    
-		{
-			NewFunc: armdatafactory.NewExposureControlClient,
-		},
-    
-		{
-			NewFunc: armdatafactory.NewLinkedServicesClient,
-		},
-    
-		{
-			NewFunc: armdatafactory.NewManagedPrivateEndpointsClient,
-		},
-    
-		{
-			NewFunc: armdatafactory.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armdatafactory.NewPipelineRunsClient,
-		},
-    
-		{
-			NewFunc: armdatafactory.NewPrivateEndPointConnectionsClient,
-		},
-    
-		{
-			NewFunc: armdatafactory.NewPrivateLinkResourcesClient,
-		},
-    
-		{
-			NewFunc: armdatafactory.NewDataFlowsClient,
-		},
-    
-		{
-			NewFunc: armdatafactory.NewPrivateEndpointConnectionClient,
-		},
-    
-		{
-			NewFunc: armdatafactory.NewTriggerRunsClient,
-		},
-    
-		{
-			NewFunc: armdatafactory.NewActivityRunsClient,
-		},
-    
 		{
 			NewFunc: armdatafactory.NewDatasetsClient,
 		},
-    
-		{
-			NewFunc: armdatafactory.NewGlobalParametersClient,
-		},
-    
-		{
-			NewFunc: armdatafactory.NewIntegrationRuntimesClient,
-		},
-    
 		{
 			NewFunc: armdatafactory.NewIntegrationRuntimeObjectMetadataClient,
 		},
-    
 		{
-			NewFunc: armdatafactory.NewTriggersClient,
+			NewFunc: armdatafactory.NewLinkedServicesClient,
 		},
-    
 		{
-			NewFunc: armdatafactory.NewFactoriesClient,
+			NewFunc: armdatafactory.NewPrivateLinkResourcesClient,
 		},
-    
 		{
-			NewFunc: armdatafactory.NewIntegrationRuntimeNodesClient,
+			NewFunc: armdatafactory.NewActivityRunsClient,
 		},
-    
 		{
-			NewFunc: armdatafactory.NewManagedVirtualNetworksClient,
+			NewFunc: armdatafactory.NewDataFlowsClient,
 		},
-    
+		{
+			NewFunc: armdatafactory.NewPipelineRunsClient,
+		},
 		{
 			NewFunc: armdatafactory.NewPipelinesClient,
 		},
-    
+		{
+			NewFunc: armdatafactory.NewGlobalParametersClient,
+		},
+		{
+			NewFunc: armdatafactory.NewIntegrationRuntimeNodesClient,
+		},
+		{
+			NewFunc: armdatafactory.NewPrivateEndpointConnectionClient,
+		},
+		{
+			NewFunc: armdatafactory.NewDataFlowDebugSessionClient,
+		},
+		{
+			NewFunc: armdatafactory.NewManagedPrivateEndpointsClient,
+		},
+		{
+			NewFunc: armdatafactory.NewFactoriesClient,
+		},
+		{
+			NewFunc: armdatafactory.NewOperationsClient,
+		},
+		{
+			NewFunc: armdatafactory.NewIntegrationRuntimesClient,
+		},
+		{
+			NewFunc: armdatafactory.NewTriggersClient,
+		},
+		{
+			NewFunc: armdatafactory.NewExposureControlClient,
+		},
+		{
+			NewFunc: armdatafactory.NewManagedVirtualNetworksClient,
+		},
+		{
+			NewFunc: armdatafactory.NewPrivateEndPointConnectionsClient,
+		},
+		{
+			NewFunc: armdatafactory.NewTriggerRunsClient,
+		},
 	}
 	return resources
 }

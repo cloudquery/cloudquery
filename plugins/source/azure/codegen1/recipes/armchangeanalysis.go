@@ -5,19 +5,15 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/changeanalysis/arm
 
 func Armchangeanalysis() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armchangeanalysis.NewChangesClient,
-		},
-    
 		{
 			NewFunc: armchangeanalysis.NewResourceChangesClient,
 		},
-    
 		{
 			NewFunc: armchangeanalysis.NewOperationsClient,
 		},
-    
+		{
+			NewFunc: armchangeanalysis.NewChangesClient,
+		},
 	}
 	return resources
 }

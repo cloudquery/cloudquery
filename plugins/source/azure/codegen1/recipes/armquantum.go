@@ -5,23 +5,18 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quantum/armquantum
 
 func Armquantum() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armquantum.NewWorkspacesClient,
-		},
-    
 		{
 			NewFunc: armquantum.NewOfferingsClient,
 		},
-    
 		{
 			NewFunc: armquantum.NewOperationsClient,
 		},
-    
 		{
 			NewFunc: armquantum.NewWorkspaceClient,
 		},
-    
+		{
+			NewFunc: armquantum.NewWorkspacesClient,
+		},
 	}
 	return resources
 }

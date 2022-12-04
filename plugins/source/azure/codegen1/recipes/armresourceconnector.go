@@ -5,11 +5,9 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourceconnector/
 
 func Armresourceconnector() []*Resource {
 	resources := []*Resource{
-    
 		{
 			NewFunc: armresourceconnector.NewAppliancesClient,
 		},
-    
 	}
 	return resources
 }

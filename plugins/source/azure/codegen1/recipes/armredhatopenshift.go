@@ -5,15 +5,12 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redhatopenshift/ar
 
 func Armredhatopenshift() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armredhatopenshift.NewOperationsClient,
-		},
-    
 		{
 			NewFunc: armredhatopenshift.NewOpenShiftClustersClient,
 		},
-    
+		{
+			NewFunc: armredhatopenshift.NewOperationsClient,
+		},
 	}
 	return resources
 }

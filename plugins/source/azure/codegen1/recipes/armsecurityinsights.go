@@ -5,143 +5,54 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/a
 
 func Armsecurityinsights() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armsecurityinsights.NewAlertRulesClient,
-		},
-    
-		{
-			NewFunc: armsecurityinsights.NewSourceControlsClient,
-		},
-    
-		{
-			NewFunc: armsecurityinsights.NewThreatIntelligenceIndicatorClient,
-		},
-    
-		{
-			NewFunc: armsecurityinsights.NewAutomationRulesClient,
-		},
-    
-		{
-			NewFunc: armsecurityinsights.NewIncidentsClient,
-		},
-    
-		{
-			NewFunc: armsecurityinsights.NewMetadataClient,
-		},
-    
 		{
 			NewFunc: armsecurityinsights.NewSentinelOnboardingStatesClient,
 		},
-    
 		{
 			NewFunc: armsecurityinsights.NewThreatIntelligenceIndicatorsClient,
 		},
-    
-		{
-			NewFunc: armsecurityinsights.NewAlertRuleTemplatesClient,
-		},
-    
-		{
-			NewFunc: armsecurityinsights.NewBookmarksClient,
-		},
-    
-		{
-			NewFunc: armsecurityinsights.NewDomainWhoisClient,
-		},
-    
-		{
-			NewFunc: armsecurityinsights.NewEntityRelationsClient,
-		},
-    
-		{
-			NewFunc: armsecurityinsights.NewWatchlistItemsClient,
-		},
-    
-		{
-			NewFunc: armsecurityinsights.NewWatchlistsClient,
-		},
-    
-		{
-			NewFunc: armsecurityinsights.NewBookmarkRelationsClient,
-		},
-    
-		{
-			NewFunc: armsecurityinsights.NewEntitiesRelationsClient,
-		},
-    
-		{
-			NewFunc: armsecurityinsights.NewFileImportsClient,
-		},
-    
-		{
-			NewFunc: armsecurityinsights.NewIPGeodataClient,
-		},
-    
-		{
-			NewFunc: armsecurityinsights.NewOfficeConsentsClient,
-		},
-    
-		{
-			NewFunc: armsecurityinsights.NewProductSettingsClient,
-		},
-    
-		{
-			NewFunc: armsecurityinsights.NewSecurityMLAnalyticsSettingsClient,
-		},
-    
-		{
-			NewFunc: armsecurityinsights.NewActionsClient,
-		},
-    
-		{
-			NewFunc: armsecurityinsights.NewBookmarkClient,
-		},
-    
-		{
-			NewFunc: armsecurityinsights.NewDataConnectorsCheckRequirementsClient,
-		},
-    
-		{
-			NewFunc: armsecurityinsights.NewEntitiesGetTimelineClient,
-		},
-    
-		{
-			NewFunc: armsecurityinsights.NewEntityQueryTemplatesClient,
-		},
-    
 		{
 			NewFunc: armsecurityinsights.NewIncidentRelationsClient,
 		},
-    
-		{
-			NewFunc: armsecurityinsights.NewSourceControlClient,
-		},
-    
-		{
-			NewFunc: armsecurityinsights.NewThreatIntelligenceIndicatorMetricsClient,
-		},
-    
-		{
-			NewFunc: armsecurityinsights.NewDataConnectorsClient,
-		},
-    
-		{
-			NewFunc: armsecurityinsights.NewEntitiesClient,
-		},
-    
-		{
-			NewFunc: armsecurityinsights.NewEntityQueriesClient,
-		},
-    
 		{
 			NewFunc: armsecurityinsights.NewIncidentCommentsClient,
 		},
-    
 		{
 			NewFunc: armsecurityinsights.NewOperationsClient,
 		},
-    
+		{
+			NewFunc: armsecurityinsights.NewThreatIntelligenceIndicatorMetricsClient,
+		},
+		{
+			NewFunc: armsecurityinsights.NewWatchlistItemsClient,
+		},
+		{
+			NewFunc: armsecurityinsights.NewBookmarksClient,
+		},
+		{
+			NewFunc: armsecurityinsights.NewActionsClient,
+		},
+		{
+			NewFunc: armsecurityinsights.NewAlertRulesClient,
+		},
+		{
+			NewFunc: armsecurityinsights.NewAlertRuleTemplatesClient,
+		},
+		{
+			NewFunc: armsecurityinsights.NewAutomationRulesClient,
+		},
+		{
+			NewFunc: armsecurityinsights.NewThreatIntelligenceIndicatorClient,
+		},
+		{
+			NewFunc: armsecurityinsights.NewWatchlistsClient,
+		},
+		{
+			NewFunc: armsecurityinsights.NewDataConnectorsClient,
+		},
+		{
+			NewFunc: armsecurityinsights.NewIncidentsClient,
+		},
 	}
 	return resources
 }

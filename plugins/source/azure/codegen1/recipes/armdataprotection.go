@@ -5,71 +5,54 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/arm
 
 func Armdataprotection() []*Resource {
 	resources := []*Resource{
-    
 		{
 			NewFunc: armdataprotection.NewClient,
 		},
-    
-		{
-			NewFunc: armdataprotection.NewExportJobsClient,
-		},
-    
-		{
-			NewFunc: armdataprotection.NewOperationStatusBackupVaultContextClient,
-		},
-    
-		{
-			NewFunc: armdataprotection.NewRestorableTimeRangesClient,
-		},
-    
-		{
-			NewFunc: armdataprotection.NewRecoveryPointsClient,
-		},
-    
-		{
-			NewFunc: armdataprotection.NewExportJobsOperationResultClient,
-		},
-    
-		{
-			NewFunc: armdataprotection.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armdataprotection.NewOperationStatusResourceGroupContextClient,
-		},
-    
-		{
-			NewFunc: armdataprotection.NewResourceGuardsClient,
-		},
-    
-		{
-			NewFunc: armdataprotection.NewBackupPoliciesClient,
-		},
-    
-		{
-			NewFunc: armdataprotection.NewBackupVaultOperationResultsClient,
-		},
-    
 		{
 			NewFunc: armdataprotection.NewJobsClient,
 		},
-    
 		{
 			NewFunc: armdataprotection.NewOperationResultClient,
 		},
-    
+		{
+			NewFunc: armdataprotection.NewOperationStatusResourceGroupContextClient,
+		},
+		{
+			NewFunc: armdataprotection.NewBackupPoliciesClient,
+		},
 		{
 			NewFunc: armdataprotection.NewOperationStatusClient,
 		},
-    
+		{
+			NewFunc: armdataprotection.NewResourceGuardsClient,
+		},
+		{
+			NewFunc: armdataprotection.NewOperationsClient,
+		},
+		{
+			NewFunc: armdataprotection.NewOperationStatusBackupVaultContextClient,
+		},
+		{
+			NewFunc: armdataprotection.NewRecoveryPointsClient,
+		},
 		{
 			NewFunc: armdataprotection.NewBackupInstancesClient,
 		},
-    
+		{
+			NewFunc: armdataprotection.NewBackupVaultOperationResultsClient,
+		},
 		{
 			NewFunc: armdataprotection.NewBackupVaultsClient,
 		},
-    
+		{
+			NewFunc: armdataprotection.NewExportJobsClient,
+		},
+		{
+			NewFunc: armdataprotection.NewExportJobsOperationResultClient,
+		},
+		{
+			NewFunc: armdataprotection.NewRestorableTimeRangesClient,
+		},
 	}
 	return resources
 }

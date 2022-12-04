@@ -5,55 +5,42 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/migrate/armmigrate
 
 func Armmigrate() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armmigrate.NewAssessmentsClient,
-		},
-    
-		{
-			NewFunc: armmigrate.NewGroupsClient,
-		},
-    
-		{
-			NewFunc: armmigrate.NewHyperVCollectorsClient,
-		},
-    
-		{
-			NewFunc: armmigrate.NewImportCollectorsClient,
-		},
-    
-		{
-			NewFunc: armmigrate.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armmigrate.NewPrivateLinkResourceClient,
-		},
-    
-		{
-			NewFunc: armmigrate.NewServerCollectorsClient,
-		},
-    
 		{
 			NewFunc: armmigrate.NewAssessedMachinesClient,
 		},
-    
+		{
+			NewFunc: armmigrate.NewGroupsClient,
+		},
+		{
+			NewFunc: armmigrate.NewHyperVCollectorsClient,
+		},
+		{
+			NewFunc: armmigrate.NewImportCollectorsClient,
+		},
+		{
+			NewFunc: armmigrate.NewOperationsClient,
+		},
 		{
 			NewFunc: armmigrate.NewPrivateEndpointConnectionClient,
 		},
-    
 		{
 			NewFunc: armmigrate.NewProjectsClient,
 		},
-    
 		{
 			NewFunc: armmigrate.NewVMwareCollectorsClient,
 		},
-    
+		{
+			NewFunc: armmigrate.NewPrivateLinkResourceClient,
+		},
+		{
+			NewFunc: armmigrate.NewAssessmentsClient,
+		},
 		{
 			NewFunc: armmigrate.NewMachinesClient,
 		},
-    
+		{
+			NewFunc: armmigrate.NewServerCollectorsClient,
+		},
 	}
 	return resources
 }

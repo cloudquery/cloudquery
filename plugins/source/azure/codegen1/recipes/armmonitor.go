@@ -5,123 +5,93 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor
 
 func Armmonitor() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armmonitor.NewMetricDefinitionsClient,
-		},
-    
-		{
-			NewFunc: armmonitor.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armmonitor.NewPrivateLinkResourcesClient,
-		},
-    
-		{
-			NewFunc: armmonitor.NewScheduledQueryRulesClient,
-		},
-    
-		{
-			NewFunc: armmonitor.NewAlertRulesClient,
-		},
-    
-		{
-			NewFunc: armmonitor.NewAutoscaleSettingsClient,
-		},
-    
-		{
-			NewFunc: armmonitor.NewDataCollectionRuleAssociationsClient,
-		},
-    
-		{
-			NewFunc: armmonitor.NewLogProfilesClient,
-		},
-    
-		{
-			NewFunc: armmonitor.NewMetricsClient,
-		},
-    
-		{
-			NewFunc: armmonitor.NewDiagnosticSettingsCategoryClient,
-		},
-    
-		{
-			NewFunc: armmonitor.NewPredictiveMetricClient,
-		},
-    
 		{
 			NewFunc: armmonitor.NewPrivateLinkScopedResourcesClient,
 		},
-    
 		{
-			NewFunc: armmonitor.NewBaselinesClient,
+			NewFunc: armmonitor.NewMetricsClient,
 		},
-    
 		{
-			NewFunc: armmonitor.NewDataCollectionEndpointsClient,
+			NewFunc: armmonitor.NewOperationsClient,
 		},
-    
-		{
-			NewFunc: armmonitor.NewTenantActivityLogsClient,
-		},
-    
-		{
-			NewFunc: armmonitor.NewActivityLogAlertsClient,
-		},
-    
-		{
-			NewFunc: armmonitor.NewEventCategoriesClient,
-		},
-    
-		{
-			NewFunc: armmonitor.NewMetricNamespacesClient,
-		},
-    
-		{
-			NewFunc: armmonitor.NewPrivateLinkScopeOperationStatusClient,
-		},
-    
-		{
-			NewFunc: armmonitor.NewDiagnosticSettingsClient,
-		},
-    
-		{
-			NewFunc: armmonitor.NewPrivateLinkScopesClient,
-		},
-    
-		{
-			NewFunc: armmonitor.NewVMInsightsClient,
-		},
-    
-		{
-			NewFunc: armmonitor.NewMetricAlertsStatusClient,
-		},
-    
-		{
-			NewFunc: armmonitor.NewPrivateEndpointConnectionsClient,
-		},
-    
-		{
-			NewFunc: armmonitor.NewActionGroupsClient,
-		},
-    
-		{
-			NewFunc: armmonitor.NewActivityLogsClient,
-		},
-    
-		{
-			NewFunc: armmonitor.NewAlertRuleIncidentsClient,
-		},
-    
 		{
 			NewFunc: armmonitor.NewMetricAlertsClient,
 		},
-    
+		{
+			NewFunc: armmonitor.NewDataCollectionRuleAssociationsClient,
+		},
+		{
+			NewFunc: armmonitor.NewLogProfilesClient,
+		},
+		{
+			NewFunc: armmonitor.NewPrivateLinkResourcesClient,
+		},
+		{
+			NewFunc: armmonitor.NewActivityLogsClient,
+		},
+		{
+			NewFunc: armmonitor.NewPrivateLinkScopeOperationStatusClient,
+		},
+		{
+			NewFunc: armmonitor.NewMetricNamespacesClient,
+		},
+		{
+			NewFunc: armmonitor.NewPredictiveMetricClient,
+		},
+		{
+			NewFunc: armmonitor.NewScheduledQueryRulesClient,
+		},
+		{
+			NewFunc: armmonitor.NewBaselinesClient,
+		},
+		{
+			NewFunc: armmonitor.NewDiagnosticSettingsCategoryClient,
+		},
+		{
+			NewFunc: armmonitor.NewEventCategoriesClient,
+		},
+		{
+			NewFunc: armmonitor.NewMetricDefinitionsClient,
+		},
+		{
+			NewFunc: armmonitor.NewPrivateLinkScopesClient,
+		},
+		{
+			NewFunc: armmonitor.NewAlertRuleIncidentsClient,
+		},
+		{
+			NewFunc: armmonitor.NewAlertRulesClient,
+		},
+		{
+			NewFunc: armmonitor.NewVMInsightsClient,
+		},
+		{
+			NewFunc: armmonitor.NewActionGroupsClient,
+		},
+		{
+			NewFunc: armmonitor.NewDiagnosticSettingsClient,
+		},
+		{
+			NewFunc: armmonitor.NewDataCollectionEndpointsClient,
+		},
 		{
 			NewFunc: armmonitor.NewDataCollectionRulesClient,
 		},
-    
+		{
+			NewFunc: armmonitor.NewMetricAlertsStatusClient,
+		},
+		{
+			NewFunc: armmonitor.NewPrivateEndpointConnectionsClient,
+		},
+		{
+			NewFunc: armmonitor.NewActivityLogAlertsClient,
+		},
+		{
+			NewFunc: armmonitor.NewAutoscaleSettingsClient,
+		},
+		{
+			NewFunc: armmonitor.NewTenantActivityLogsClient,
+		},
 	}
 	return resources
 }

@@ -5,27 +5,21 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/engagementfabric/a
 
 func Armengagementfabric() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armengagementfabric.NewAccountsClient,
-		},
-    
-		{
-			NewFunc: armengagementfabric.NewOperationsClient,
-		},
-    
 		{
 			NewFunc: armengagementfabric.NewSKUsClient,
 		},
-    
 		{
-			NewFunc: armengagementfabric.NewClient,
+			NewFunc: armengagementfabric.NewAccountsClient,
 		},
-    
 		{
 			NewFunc: armengagementfabric.NewChannelsClient,
 		},
-    
+		{
+			NewFunc: armengagementfabric.NewOperationsClient,
+		},
+		{
+			NewFunc: armengagementfabric.NewClient,
+		},
 	}
 	return resources
 }

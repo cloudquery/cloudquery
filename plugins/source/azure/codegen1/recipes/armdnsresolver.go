@@ -5,31 +5,24 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdns
 
 func Armdnsresolver() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armdnsresolver.NewVirtualNetworkLinksClient,
-		},
-    
 		{
 			NewFunc: armdnsresolver.NewInboundEndpointsClient,
 		},
-    
-		{
-			NewFunc: armdnsresolver.NewDNSForwardingRulesetsClient,
-		},
-    
-		{
-			NewFunc: armdnsresolver.NewDNSResolversClient,
-		},
-    
-		{
-			NewFunc: armdnsresolver.NewForwardingRulesClient,
-		},
-    
 		{
 			NewFunc: armdnsresolver.NewOutboundEndpointsClient,
 		},
-    
+		{
+			NewFunc: armdnsresolver.NewVirtualNetworkLinksClient,
+		},
+		{
+			NewFunc: armdnsresolver.NewDNSForwardingRulesetsClient,
+		},
+		{
+			NewFunc: armdnsresolver.NewDNSResolversClient,
+		},
+		{
+			NewFunc: armdnsresolver.NewForwardingRulesClient,
+		},
 	}
 	return resources
 }

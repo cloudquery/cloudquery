@@ -5,23 +5,18 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/domainservices/arm
 
 func Armdomainservices() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armdomainservices.NewOuContainerClient,
-		},
-    
-		{
-			NewFunc: armdomainservices.NewDomainServiceOperationsClient,
-		},
-    
-		{
-			NewFunc: armdomainservices.NewOuContainerOperationsClient,
-		},
-    
 		{
 			NewFunc: armdomainservices.NewClient,
 		},
-    
+		{
+			NewFunc: armdomainservices.NewDomainServiceOperationsClient,
+		},
+		{
+			NewFunc: armdomainservices.NewOuContainerClient,
+		},
+		{
+			NewFunc: armdomainservices.NewOuContainerOperationsClient,
+		},
 	}
 	return resources
 }

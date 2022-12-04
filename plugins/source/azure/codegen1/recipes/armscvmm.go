@@ -5,39 +5,30 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/scvmm/armscvmm"
 
 func Armscvmm() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armscvmm.NewInventoryItemsClient,
-		},
-    
-		{
-			NewFunc: armscvmm.NewVirtualNetworksClient,
-		},
-    
 		{
 			NewFunc: armscvmm.NewOperationsClient,
 		},
-    
-		{
-			NewFunc: armscvmm.NewVirtualMachineTemplatesClient,
-		},
-    
-		{
-			NewFunc: armscvmm.NewCloudsClient,
-		},
-    
 		{
 			NewFunc: armscvmm.NewVirtualMachinesClient,
 		},
-    
+		{
+			NewFunc: armscvmm.NewVirtualMachineTemplatesClient,
+		},
 		{
 			NewFunc: armscvmm.NewVmmServersClient,
 		},
-    
 		{
 			NewFunc: armscvmm.NewAvailabilitySetsClient,
 		},
-    
+		{
+			NewFunc: armscvmm.NewInventoryItemsClient,
+		},
+		{
+			NewFunc: armscvmm.NewVirtualNetworksClient,
+		},
+		{
+			NewFunc: armscvmm.NewCloudsClient,
+		},
 	}
 	return resources
 }

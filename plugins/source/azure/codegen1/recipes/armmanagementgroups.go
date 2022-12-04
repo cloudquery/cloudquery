@@ -5,31 +5,24 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementgroups/a
 
 func Armmanagementgroups() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armmanagementgroups.NewEntitiesClient,
-		},
-    
 		{
 			NewFunc: armmanagementgroups.NewHierarchySettingsClient,
 		},
-    
 		{
 			NewFunc: armmanagementgroups.NewManagementGroupSubscriptionsClient,
 		},
-    
-		{
-			NewFunc: armmanagementgroups.NewClient,
-		},
-    
 		{
 			NewFunc: armmanagementgroups.NewOperationsClient,
 		},
-    
 		{
 			NewFunc: armmanagementgroups.NewAPIClient,
 		},
-    
+		{
+			NewFunc: armmanagementgroups.NewEntitiesClient,
+		},
+		{
+			NewFunc: armmanagementgroups.NewClient,
+		},
 	}
 	return resources
 }

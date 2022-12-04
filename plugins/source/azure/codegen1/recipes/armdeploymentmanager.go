@@ -5,35 +5,27 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deploymentmanager/
 
 func Armdeploymentmanager() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armdeploymentmanager.NewStepsClient,
-		},
-    
 		{
 			NewFunc: armdeploymentmanager.NewArtifactSourcesClient,
 		},
-    
-		{
-			NewFunc: armdeploymentmanager.NewServiceUnitsClient,
-		},
-    
-		{
-			NewFunc: armdeploymentmanager.NewRolloutsClient,
-		},
-    
-		{
-			NewFunc: armdeploymentmanager.NewServicesClient,
-		},
-    
-		{
-			NewFunc: armdeploymentmanager.NewServiceTopologiesClient,
-		},
-    
 		{
 			NewFunc: armdeploymentmanager.NewOperationsClient,
 		},
-    
+		{
+			NewFunc: armdeploymentmanager.NewServicesClient,
+		},
+		{
+			NewFunc: armdeploymentmanager.NewStepsClient,
+		},
+		{
+			NewFunc: armdeploymentmanager.NewServiceTopologiesClient,
+		},
+		{
+			NewFunc: armdeploymentmanager.NewServiceUnitsClient,
+		},
+		{
+			NewFunc: armdeploymentmanager.NewRolloutsClient,
+		},
 	}
 	return resources
 }

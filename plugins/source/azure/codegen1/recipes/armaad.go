@@ -5,19 +5,15 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/aad/armaad"
 
 func Armaad() []*Resource {
 	resources := []*Resource{
-    
 		{
 			NewFunc: armaad.NewPrivateEndpointConnectionsClient,
 		},
-    
 		{
 			NewFunc: armaad.NewPrivateLinkForAzureAdClient,
 		},
-    
 		{
 			NewFunc: armaad.NewPrivateLinkResourcesClient,
 		},
-    
 	}
 	return resources
 }

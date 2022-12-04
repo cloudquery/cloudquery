@@ -5,59 +5,36 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventh
 
 func Armeventhub() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armeventhub.NewPrivateEndpointConnectionsClient,
-		},
-    
-		{
-			NewFunc: armeventhub.NewPrivateLinkResourcesClient,
-		},
-    
-		{
-			NewFunc: armeventhub.NewSchemaRegistryClient,
-		},
-    
 		{
 			NewFunc: armeventhub.NewNamespacesClient,
 		},
-    
-		{
-			NewFunc: armeventhub.NewConsumerGroupsClient,
-		},
-    
-		{
-			NewFunc: armeventhub.NewConfigurationClient,
-		},
-    
 		{
 			NewFunc: armeventhub.NewEventHubsClient,
 		},
-    
-		{
-			NewFunc: armeventhub.NewNetworkSecurityPerimeterConfigurationClient,
-		},
-    
 		{
 			NewFunc: armeventhub.NewOperationsClient,
 		},
-    
+		{
+			NewFunc: armeventhub.NewPrivateLinkResourcesClient,
+		},
+		{
+			NewFunc: armeventhub.NewSchemaRegistryClient,
+		},
+		{
+			NewFunc: armeventhub.NewConfigurationClient,
+		},
+		{
+			NewFunc: armeventhub.NewPrivateEndpointConnectionsClient,
+		},
 		{
 			NewFunc: armeventhub.NewClustersClient,
 		},
-    
+		{
+			NewFunc: armeventhub.NewConsumerGroupsClient,
+		},
 		{
 			NewFunc: armeventhub.NewDisasterRecoveryConfigsClient,
 		},
-    
-		{
-			NewFunc: armeventhub.NewNetworkSecurityPerimeterConfigurationsClient,
-		},
-    
-		{
-			NewFunc: armeventhub.NewApplicationGroupClient,
-		},
-    
 	}
 	return resources
 }

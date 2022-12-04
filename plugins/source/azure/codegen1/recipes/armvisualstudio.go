@@ -5,23 +5,18 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/visualstudio/armvi
 
 func Armvisualstudio() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armvisualstudio.NewAccountsClient,
-		},
-    
-		{
-			NewFunc: armvisualstudio.NewExtensionsClient,
-		},
-    
-		{
-			NewFunc: armvisualstudio.NewOperationsClient,
-		},
-    
 		{
 			NewFunc: armvisualstudio.NewProjectsClient,
 		},
-    
+		{
+			NewFunc: armvisualstudio.NewAccountsClient,
+		},
+		{
+			NewFunc: armvisualstudio.NewExtensionsClient,
+		},
+		{
+			NewFunc: armvisualstudio.NewOperationsClient,
+		},
 	}
 	return resources
 }

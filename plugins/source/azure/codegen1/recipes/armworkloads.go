@@ -5,51 +5,39 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkl
 
 func Armworkloads() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armworkloads.NewMonitorsClient,
-		},
-    
-		{
-			NewFunc: armworkloads.NewSAPCentralInstancesClient,
-		},
-    
-		{
-			NewFunc: armworkloads.NewPhpWorkloadsClient,
-		},
-    
-		{
-			NewFunc: armworkloads.NewProviderInstancesClient,
-		},
-    
-		{
-			NewFunc: armworkloads.NewSAPApplicationServerInstancesClient,
-		},
-    
-		{
-			NewFunc: armworkloads.NewSAPDatabaseInstancesClient,
-		},
-    
 		{
 			NewFunc: armworkloads.NewClient,
 		},
-    
 		{
-			NewFunc: armworkloads.NewOperationsClient,
+			NewFunc: armworkloads.NewSAPDatabaseInstancesClient,
 		},
-    
 		{
 			NewFunc: armworkloads.NewSAPVirtualInstancesClient,
 		},
-    
-		{
-			NewFunc: armworkloads.NewSKUsClient,
-		},
-    
 		{
 			NewFunc: armworkloads.NewWordpressInstancesClient,
 		},
-    
+		{
+			NewFunc: armworkloads.NewSAPApplicationServerInstancesClient,
+		},
+		{
+			NewFunc: armworkloads.NewSKUsClient,
+		},
+		{
+			NewFunc: armworkloads.NewProviderInstancesClient,
+		},
+		{
+			NewFunc: armworkloads.NewSAPCentralInstancesClient,
+		},
+		{
+			NewFunc: armworkloads.NewMonitorsClient,
+		},
+		{
+			NewFunc: armworkloads.NewOperationsClient,
+		},
+		{
+			NewFunc: armworkloads.NewPhpWorkloadsClient,
+		},
 	}
 	return resources
 }

@@ -5,27 +5,21 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mixedreality/armmi
 
 func Armmixedreality() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armmixedreality.NewObjectAnchorsAccountsClient,
-		},
-    
-		{
-			NewFunc: armmixedreality.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armmixedreality.NewRemoteRenderingAccountsClient,
-		},
-    
 		{
 			NewFunc: armmixedreality.NewClient,
 		},
-    
 		{
 			NewFunc: armmixedreality.NewSpatialAnchorsAccountsClient,
 		},
-    
+		{
+			NewFunc: armmixedreality.NewObjectAnchorsAccountsClient,
+		},
+		{
+			NewFunc: armmixedreality.NewOperationsClient,
+		},
+		{
+			NewFunc: armmixedreality.NewRemoteRenderingAccountsClient,
+		},
 	}
 	return resources
 }

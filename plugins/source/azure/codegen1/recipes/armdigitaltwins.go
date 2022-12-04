@@ -5,31 +5,24 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/digitaltwins/armdi
 
 func Armdigitaltwins() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armdigitaltwins.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armdigitaltwins.NewPrivateEndpointConnectionsClient,
-		},
-    
-		{
-			NewFunc: armdigitaltwins.NewPrivateLinkResourcesClient,
-		},
-    
-		{
-			NewFunc: armdigitaltwins.NewClient,
-		},
-    
-		{
-			NewFunc: armdigitaltwins.NewTimeSeriesDatabaseConnectionsClient,
-		},
-    
 		{
 			NewFunc: armdigitaltwins.NewEndpointClient,
 		},
-    
+		{
+			NewFunc: armdigitaltwins.NewOperationsClient,
+		},
+		{
+			NewFunc: armdigitaltwins.NewPrivateEndpointConnectionsClient,
+		},
+		{
+			NewFunc: armdigitaltwins.NewTimeSeriesDatabaseConnectionsClient,
+		},
+		{
+			NewFunc: armdigitaltwins.NewPrivateLinkResourcesClient,
+		},
+		{
+			NewFunc: armdigitaltwins.NewClient,
+		},
 	}
 	return resources
 }

@@ -5,23 +5,18 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerlockbox/ar
 
 func Armcustomerlockbox() []*Resource {
 	resources := []*Resource{
-    
 		{
 			NewFunc: armcustomerlockbox.NewGetClient,
 		},
-    
 		{
 			NewFunc: armcustomerlockbox.NewOperationsClient,
 		},
-    
 		{
 			NewFunc: armcustomerlockbox.NewPostClient,
 		},
-    
 		{
 			NewFunc: armcustomerlockbox.NewRequestsClient,
 		},
-    
 	}
 	return resources
 }

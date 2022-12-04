@@ -5,15 +5,12 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/scheduler/armsched
 
 func Armscheduler() []*Resource {
 	resources := []*Resource{
-    
 		{
 			NewFunc: armscheduler.NewJobCollectionsClient,
 		},
-    
 		{
 			NewFunc: armscheduler.NewJobsClient,
 		},
-    
 	}
 	return resources
 }

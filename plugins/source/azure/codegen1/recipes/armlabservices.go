@@ -5,47 +5,36 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/labservices/armlab
 
 func Armlabservices() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armlabservices.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armlabservices.NewUsagesClient,
-		},
-    
-		{
-			NewFunc: armlabservices.NewImagesClient,
-		},
-    
-		{
-			NewFunc: armlabservices.NewSKUsClient,
-		},
-    
-		{
-			NewFunc: armlabservices.NewVirtualMachinesClient,
-		},
-    
 		{
 			NewFunc: armlabservices.NewLabsClient,
 		},
-    
-		{
-			NewFunc: armlabservices.NewSchedulesClient,
-		},
-    
-		{
-			NewFunc: armlabservices.NewOperationResultsClient,
-		},
-    
 		{
 			NewFunc: armlabservices.NewUsersClient,
 		},
-    
+		{
+			NewFunc: armlabservices.NewOperationResultsClient,
+		},
+		{
+			NewFunc: armlabservices.NewUsagesClient,
+		},
 		{
 			NewFunc: armlabservices.NewLabPlansClient,
 		},
-    
+		{
+			NewFunc: armlabservices.NewSKUsClient,
+		},
+		{
+			NewFunc: armlabservices.NewImagesClient,
+		},
+		{
+			NewFunc: armlabservices.NewSchedulesClient,
+		},
+		{
+			NewFunc: armlabservices.NewVirtualMachinesClient,
+		},
+		{
+			NewFunc: armlabservices.NewOperationsClient,
+		},
 	}
 	return resources
 }

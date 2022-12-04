@@ -5,39 +5,30 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybriddatamanager/
 
 func Armhybriddatamanager() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armhybriddatamanager.NewDataManagersClient,
-		},
-    
 		{
 			NewFunc: armhybriddatamanager.NewJobsClient,
 		},
-    
-		{
-			NewFunc: armhybriddatamanager.NewPublicKeysClient,
-		},
-    
-		{
-			NewFunc: armhybriddatamanager.NewJobDefinitionsClient,
-		},
-    
-		{
-			NewFunc: armhybriddatamanager.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armhybriddatamanager.NewDataStoreTypesClient,
-		},
-    
 		{
 			NewFunc: armhybriddatamanager.NewDataServicesClient,
 		},
-    
 		{
 			NewFunc: armhybriddatamanager.NewDataStoresClient,
 		},
-    
+		{
+			NewFunc: armhybriddatamanager.NewDataStoreTypesClient,
+		},
+		{
+			NewFunc: armhybriddatamanager.NewPublicKeysClient,
+		},
+		{
+			NewFunc: armhybriddatamanager.NewOperationsClient,
+		},
+		{
+			NewFunc: armhybriddatamanager.NewDataManagersClient,
+		},
+		{
+			NewFunc: armhybriddatamanager.NewJobDefinitionsClient,
+		},
 	}
 	return resources
 }

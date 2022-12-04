@@ -5,27 +5,21 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelas
 
 func Armelasticsan() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armelasticsan.NewSKUsClient,
-		},
-    
 		{
 			NewFunc: armelasticsan.NewElasticSansClient,
 		},
-    
 		{
-			NewFunc: armelasticsan.NewOperationsClient,
+			NewFunc: armelasticsan.NewSKUsClient,
 		},
-    
 		{
 			NewFunc: armelasticsan.NewVolumeGroupsClient,
 		},
-    
 		{
 			NewFunc: armelasticsan.NewVolumesClient,
 		},
-    
+		{
+			NewFunc: armelasticsan.NewOperationsClient,
+		},
 	}
 	return resources
 }

@@ -5,35 +5,27 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/guestconfiguration
 
 func Armguestconfiguration() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armguestconfiguration.NewAssignmentReportsClient,
-		},
-    
-		{
-			NewFunc: armguestconfiguration.NewAssignmentReportsVMSSClient,
-		},
-    
-		{
-			NewFunc: armguestconfiguration.NewAssignmentsVMSSClient,
-		},
-    
-		{
-			NewFunc: armguestconfiguration.NewHCRPAssignmentsClient,
-		},
-    
-		{
-			NewFunc: armguestconfiguration.NewOperationsClient,
-		},
-    
 		{
 			NewFunc: armguestconfiguration.NewHCRPAssignmentReportsClient,
 		},
-    
+		{
+			NewFunc: armguestconfiguration.NewOperationsClient,
+		},
+		{
+			NewFunc: armguestconfiguration.NewAssignmentReportsVMSSClient,
+		},
 		{
 			NewFunc: armguestconfiguration.NewAssignmentsClient,
 		},
-    
+		{
+			NewFunc: armguestconfiguration.NewAssignmentsVMSSClient,
+		},
+		{
+			NewFunc: armguestconfiguration.NewHCRPAssignmentsClient,
+		},
+		{
+			NewFunc: armguestconfiguration.NewAssignmentReportsClient,
+		},
 	}
 	return resources
 }

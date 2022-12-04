@@ -5,75 +5,57 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerinsights/a
 
 func Armcustomerinsights() []*Resource {
 	resources := []*Resource{
-    
 		{
 			NewFunc: armcustomerinsights.NewAuthorizationPoliciesClient,
 		},
-    
-		{
-			NewFunc: armcustomerinsights.NewConnectorMappingsClient,
-		},
-    
-		{
-			NewFunc: armcustomerinsights.NewConnectorsClient,
-		},
-    
-		{
-			NewFunc: armcustomerinsights.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armcustomerinsights.NewViewsClient,
-		},
-    
-		{
-			NewFunc: armcustomerinsights.NewWidgetTypesClient,
-		},
-    
-		{
-			NewFunc: armcustomerinsights.NewInteractionsClient,
-		},
-    
-		{
-			NewFunc: armcustomerinsights.NewRelationshipsClient,
-		},
-    
-		{
-			NewFunc: armcustomerinsights.NewLinksClient,
-		},
-    
-		{
-			NewFunc: armcustomerinsights.NewPredictionsClient,
-		},
-    
-		{
-			NewFunc: armcustomerinsights.NewProfilesClient,
-		},
-    
-		{
-			NewFunc: armcustomerinsights.NewRelationshipLinksClient,
-		},
-    
-		{
-			NewFunc: armcustomerinsights.NewRoleAssignmentsClient,
-		},
-    
-		{
-			NewFunc: armcustomerinsights.NewHubsClient,
-		},
-    
-		{
-			NewFunc: armcustomerinsights.NewImagesClient,
-		},
-    
 		{
 			NewFunc: armcustomerinsights.NewKpiClient,
 		},
-    
+		{
+			NewFunc: armcustomerinsights.NewProfilesClient,
+		},
+		{
+			NewFunc: armcustomerinsights.NewConnectorMappingsClient,
+		},
+		{
+			NewFunc: armcustomerinsights.NewHubsClient,
+		},
+		{
+			NewFunc: armcustomerinsights.NewImagesClient,
+		},
+		{
+			NewFunc: armcustomerinsights.NewRelationshipsClient,
+		},
+		{
+			NewFunc: armcustomerinsights.NewRoleAssignmentsClient,
+		},
+		{
+			NewFunc: armcustomerinsights.NewWidgetTypesClient,
+		},
+		{
+			NewFunc: armcustomerinsights.NewOperationsClient,
+		},
+		{
+			NewFunc: armcustomerinsights.NewPredictionsClient,
+		},
 		{
 			NewFunc: armcustomerinsights.NewRolesClient,
 		},
-    
+		{
+			NewFunc: armcustomerinsights.NewViewsClient,
+		},
+		{
+			NewFunc: armcustomerinsights.NewConnectorsClient,
+		},
+		{
+			NewFunc: armcustomerinsights.NewInteractionsClient,
+		},
+		{
+			NewFunc: armcustomerinsights.NewLinksClient,
+		},
+		{
+			NewFunc: armcustomerinsights.NewRelationshipLinksClient,
+		},
 	}
 	return resources
 }

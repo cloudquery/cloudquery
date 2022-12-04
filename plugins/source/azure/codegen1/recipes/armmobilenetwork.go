@@ -5,59 +5,45 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armm
 
 func Armmobilenetwork() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armmobilenetwork.NewDataNetworksClient,
-		},
-    
-		{
-			NewFunc: armmobilenetwork.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armmobilenetwork.NewPacketCoreDataPlanesClient,
-		},
-    
-		{
-			NewFunc: armmobilenetwork.NewSimGroupsClient,
-		},
-    
-		{
-			NewFunc: armmobilenetwork.NewSitesClient,
-		},
-    
-		{
-			NewFunc: armmobilenetwork.NewAttachedDataNetworksClient,
-		},
-    
-		{
-			NewFunc: armmobilenetwork.NewPacketCoreControlPlaneVersionsClient,
-		},
-    
-		{
-			NewFunc: armmobilenetwork.NewServicesClient,
-		},
-    
-		{
-			NewFunc: armmobilenetwork.NewPacketCoreControlPlanesClient,
-		},
-    
-		{
-			NewFunc: armmobilenetwork.NewSimPoliciesClient,
-		},
-    
-		{
-			NewFunc: armmobilenetwork.NewSimsClient,
-		},
-    
-		{
-			NewFunc: armmobilenetwork.NewSlicesClient,
-		},
-    
 		{
 			NewFunc: armmobilenetwork.NewMobileNetworksClient,
 		},
-    
+		{
+			NewFunc: armmobilenetwork.NewSimPoliciesClient,
+		},
+		{
+			NewFunc: armmobilenetwork.NewSlicesClient,
+		},
+		{
+			NewFunc: armmobilenetwork.NewAttachedDataNetworksClient,
+		},
+		{
+			NewFunc: armmobilenetwork.NewServicesClient,
+		},
+		{
+			NewFunc: armmobilenetwork.NewSitesClient,
+		},
+		{
+			NewFunc: armmobilenetwork.NewPacketCoreControlPlaneVersionsClient,
+		},
+		{
+			NewFunc: armmobilenetwork.NewSimsClient,
+		},
+		{
+			NewFunc: armmobilenetwork.NewSimGroupsClient,
+		},
+		{
+			NewFunc: armmobilenetwork.NewDataNetworksClient,
+		},
+		{
+			NewFunc: armmobilenetwork.NewOperationsClient,
+		},
+		{
+			NewFunc: armmobilenetwork.NewPacketCoreControlPlanesClient,
+		},
+		{
+			NewFunc: armmobilenetwork.NewPacketCoreDataPlanesClient,
+		},
 	}
 	return resources
 }

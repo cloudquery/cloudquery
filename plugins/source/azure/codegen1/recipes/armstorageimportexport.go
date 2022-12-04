@@ -5,23 +5,18 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storageimportexpor
 
 func Armstorageimportexport() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armstorageimportexport.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armstorageimportexport.NewJobsClient,
-		},
-    
 		{
 			NewFunc: armstorageimportexport.NewLocationsClient,
 		},
-    
+		{
+			NewFunc: armstorageimportexport.NewOperationsClient,
+		},
 		{
 			NewFunc: armstorageimportexport.NewBitLockerKeysClient,
 		},
-    
+		{
+			NewFunc: armstorageimportexport.NewJobsClient,
+		},
 	}
 	return resources
 }

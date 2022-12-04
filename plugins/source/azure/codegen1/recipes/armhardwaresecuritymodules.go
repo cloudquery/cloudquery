@@ -5,15 +5,12 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hardwaresecuritymo
 
 func Armhardwaresecuritymodules() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armhardwaresecuritymodules.NewOperationsClient,
-		},
-    
 		{
 			NewFunc: armhardwaresecuritymodules.NewDedicatedHsmClient,
 		},
-    
+		{
+			NewFunc: armhardwaresecuritymodules.NewOperationsClient,
+		},
 	}
 	return resources
 }

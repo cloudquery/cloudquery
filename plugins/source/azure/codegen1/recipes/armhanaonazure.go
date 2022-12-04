@@ -5,19 +5,15 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hanaonazure/armhan
 
 func Armhanaonazure() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armhanaonazure.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armhanaonazure.NewProviderInstancesClient,
-		},
-    
 		{
 			NewFunc: armhanaonazure.NewSapMonitorsClient,
 		},
-    
+		{
+			NewFunc: armhanaonazure.NewOperationsClient,
+		},
+		{
+			NewFunc: armhanaonazure.NewProviderInstancesClient,
+		},
 	}
 	return resources
 }

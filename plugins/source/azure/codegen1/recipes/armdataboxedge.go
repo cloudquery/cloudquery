@@ -5,95 +5,72 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdat
 
 func Armdataboxedge() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armdataboxedge.NewAlertsClient,
-		},
-    
-		{
-			NewFunc: armdataboxedge.NewDiagnosticSettingsClient,
-		},
-    
-		{
-			NewFunc: armdataboxedge.NewMonitoringConfigClient,
-		},
-    
-		{
-			NewFunc: armdataboxedge.NewStorageAccountCredentialsClient,
-		},
-    
-		{
-			NewFunc: armdataboxedge.NewStorageAccountsClient,
-		},
-    
-		{
-			NewFunc: armdataboxedge.NewBandwidthSchedulesClient,
-		},
-    
-		{
-			NewFunc: armdataboxedge.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armdataboxedge.NewTriggersClient,
-		},
-    
-		{
-			NewFunc: armdataboxedge.NewNodesClient,
-		},
-    
-		{
-			NewFunc: armdataboxedge.NewDevicesClient,
-		},
-    
-		{
-			NewFunc: armdataboxedge.NewJobsClient,
-		},
-    
-		{
-			NewFunc: armdataboxedge.NewOperationsStatusClient,
-		},
-    
-		{
-			NewFunc: armdataboxedge.NewRolesClient,
-		},
-    
-		{
-			NewFunc: armdataboxedge.NewAddonsClient,
-		},
-    
-		{
-			NewFunc: armdataboxedge.NewDeviceCapacityInfoClient,
-		},
-    
-		{
-			NewFunc: armdataboxedge.NewSupportPackagesClient,
-		},
-    
-		{
-			NewFunc: armdataboxedge.NewSharesClient,
-		},
-    
-		{
-			NewFunc: armdataboxedge.NewContainersClient,
-		},
-    
-		{
-			NewFunc: armdataboxedge.NewDeviceCapacityCheckClient,
-		},
-    
-		{
-			NewFunc: armdataboxedge.NewOrdersClient,
-		},
-    
-		{
-			NewFunc: armdataboxedge.NewUsersClient,
-		},
-    
 		{
 			NewFunc: armdataboxedge.NewAvailableSKUsClient,
 		},
-    
+		{
+			NewFunc: armdataboxedge.NewDiagnosticSettingsClient,
+		},
+		{
+			NewFunc: armdataboxedge.NewNodesClient,
+		},
+		{
+			NewFunc: armdataboxedge.NewContainersClient,
+		},
+		{
+			NewFunc: armdataboxedge.NewOperationsClient,
+		},
+		{
+			NewFunc: armdataboxedge.NewSharesClient,
+		},
+		{
+			NewFunc: armdataboxedge.NewStorageAccountCredentialsClient,
+		},
+		{
+			NewFunc: armdataboxedge.NewOperationsStatusClient,
+		},
+		{
+			NewFunc: armdataboxedge.NewJobsClient,
+		},
+		{
+			NewFunc: armdataboxedge.NewMonitoringConfigClient,
+		},
+		{
+			NewFunc: armdataboxedge.NewStorageAccountsClient,
+		},
+		{
+			NewFunc: armdataboxedge.NewTriggersClient,
+		},
+		{
+			NewFunc: armdataboxedge.NewSupportPackagesClient,
+		},
+		{
+			NewFunc: armdataboxedge.NewUsersClient,
+		},
+		{
+			NewFunc: armdataboxedge.NewDeviceCapacityCheckClient,
+		},
+		{
+			NewFunc: armdataboxedge.NewOrdersClient,
+		},
+		{
+			NewFunc: armdataboxedge.NewRolesClient,
+		},
+		{
+			NewFunc: armdataboxedge.NewAddonsClient,
+		},
+		{
+			NewFunc: armdataboxedge.NewBandwidthSchedulesClient,
+		},
+		{
+			NewFunc: armdataboxedge.NewAlertsClient,
+		},
+		{
+			NewFunc: armdataboxedge.NewDeviceCapacityInfoClient,
+		},
+		{
+			NewFunc: armdataboxedge.NewDevicesClient,
+		},
 	}
 	return resources
 }

@@ -5,15 +5,12 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicelinker/arms
 
 func Armservicelinker() []*Resource {
 	resources := []*Resource{
-    
 		{
 			NewFunc: armservicelinker.NewLinkerClient,
 		},
-    
 		{
 			NewFunc: armservicelinker.NewOperationsClient,
 		},
-    
 	}
 	return resources
 }

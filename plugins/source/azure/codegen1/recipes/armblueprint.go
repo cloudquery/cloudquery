@@ -5,31 +5,24 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blueprint/armbluep
 
 func Armblueprint() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armblueprint.NewPublishedBlueprintsClient,
-		},
-    
-		{
-			NewFunc: armblueprint.NewArtifactsClient,
-		},
-    
-		{
-			NewFunc: armblueprint.NewAssignmentOperationsClient,
-		},
-    
-		{
-			NewFunc: armblueprint.NewAssignmentsClient,
-		},
-    
 		{
 			NewFunc: armblueprint.NewBlueprintsClient,
 		},
-    
+		{
+			NewFunc: armblueprint.NewArtifactsClient,
+		},
+		{
+			NewFunc: armblueprint.NewAssignmentOperationsClient,
+		},
+		{
+			NewFunc: armblueprint.NewAssignmentsClient,
+		},
 		{
 			NewFunc: armblueprint.NewPublishedArtifactsClient,
 		},
-    
+		{
+			NewFunc: armblueprint.NewPublishedBlueprintsClient,
+		},
 	}
 	return resources
 }

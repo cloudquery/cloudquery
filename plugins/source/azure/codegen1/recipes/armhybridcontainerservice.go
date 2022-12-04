@@ -5,35 +5,27 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcontainerser
 
 func Armhybridcontainerservice() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armhybridcontainerservice.NewAgentPoolClient,
-		},
-    
-		{
-			NewFunc: armhybridcontainerservice.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armhybridcontainerservice.NewProvisionedClustersClient,
-		},
-    
-		{
-			NewFunc: armhybridcontainerservice.NewStorageSpacesClient,
-		},
-    
-		{
-			NewFunc: armhybridcontainerservice.NewClient,
-		},
-    
 		{
 			NewFunc: armhybridcontainerservice.NewHybridIdentityMetadataClient,
 		},
-    
+		{
+			NewFunc: armhybridcontainerservice.NewStorageSpacesClient,
+		},
 		{
 			NewFunc: armhybridcontainerservice.NewVirtualNetworksClient,
 		},
-    
+		{
+			NewFunc: armhybridcontainerservice.NewAgentPoolClient,
+		},
+		{
+			NewFunc: armhybridcontainerservice.NewClient,
+		},
+		{
+			NewFunc: armhybridcontainerservice.NewOperationsClient,
+		},
+		{
+			NewFunc: armhybridcontainerservice.NewProvisionedClustersClient,
+		},
 	}
 	return resources
 }

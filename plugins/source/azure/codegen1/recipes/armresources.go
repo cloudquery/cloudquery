@@ -5,39 +5,30 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresou
 
 func Armresources() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armresources.NewProvidersClient,
-		},
-    
-		{
-			NewFunc: armresources.NewResourceGroupsClient,
-		},
-    
-		{
-			NewFunc: armresources.NewDeploymentsClient,
-		},
-    
 		{
 			NewFunc: armresources.NewDeploymentOperationsClient,
 		},
-    
 		{
-			NewFunc: armresources.NewClient,
+			NewFunc: armresources.NewDeploymentsClient,
 		},
-    
+		{
+			NewFunc: armresources.NewProvidersClient,
+		},
 		{
 			NewFunc: armresources.NewOperationsClient,
 		},
-    
 		{
-			NewFunc: armresources.NewProviderResourceTypesClient,
+			NewFunc: armresources.NewResourceGroupsClient,
 		},
-    
 		{
 			NewFunc: armresources.NewTagsClient,
 		},
-    
+		{
+			NewFunc: armresources.NewClient,
+		},
+		{
+			NewFunc: armresources.NewProviderResourceTypesClient,
+		},
 	}
 	return resources
 }

@@ -5,503 +5,378 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
 
 func Armsql() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armsql.NewJobAgentsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewServerAzureADAdministratorsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewJobStepsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewServerBlobAuditingPoliciesClient,
-		},
-    
-		{
-			NewFunc: armsql.NewDatabaseAdvancedThreatProtectionSettingsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewDataMaskingRulesClient,
-		},
-    
-		{
-			NewFunc: armsql.NewManagedDatabaseQueriesClient,
-		},
-    
-		{
-			NewFunc: armsql.NewManagedDatabaseSensitivityLabelsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewVirtualNetworkRulesClient,
-		},
-    
-		{
-			NewFunc: armsql.NewDatabaseTablesClient,
-		},
-    
-		{
-			NewFunc: armsql.NewDistributedAvailabilityGroupsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewJobVersionsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewManagedInstanceOperationsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewDatabaseColumnsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewDatabaseVulnerabilityAssessmentScansClient,
-		},
-    
-		{
-			NewFunc: armsql.NewExtendedDatabaseBlobAuditingPoliciesClient,
-		},
-    
-		{
-			NewFunc: armsql.NewRecommendedSensitivityLabelsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewRestorePointsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewOutboundFirewallRulesClient,
-		},
-    
-		{
-			NewFunc: armsql.NewServerTrustCertificatesClient,
-		},
-    
-		{
-			NewFunc: armsql.NewServerTrustGroupsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewServerSecurityAlertPoliciesClient,
-		},
-    
-		{
-			NewFunc: armsql.NewServerUsagesClient,
-		},
-    
-		{
-			NewFunc: armsql.NewJobTargetExecutionsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewMaintenanceWindowOptionsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewManagedDatabaseTransparentDataEncryptionClient,
-		},
-    
-		{
-			NewFunc: armsql.NewServerAdvisorsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewManagedDatabaseSecurityAlertPoliciesClient,
-		},
-    
-		{
-			NewFunc: armsql.NewManagedDatabaseSecurityEventsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewServerAutomaticTuningClient,
-		},
-    
-		{
-			NewFunc: armsql.NewServerAzureADOnlyAuthenticationsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewServiceObjectivesClient,
-		},
-    
-		{
-			NewFunc: armsql.NewWorkloadGroupsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewAgentClient,
-		},
-    
-		{
-			NewFunc: armsql.NewDatabasesClient,
-		},
-    
-		{
-			NewFunc: armsql.NewLongTermRetentionManagedInstanceBackupsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewManagedDatabaseRestoreDetailsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewManagedInstanceAzureADOnlyAuthenticationsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewIPv6FirewallRulesClient,
-		},
-    
-		{
-			NewFunc: armsql.NewDatabaseAutomaticTuningClient,
-		},
-    
-		{
-			NewFunc: armsql.NewEndpointCertificatesClient,
-		},
-    
-		{
-			NewFunc: armsql.NewManagedInstanceTdeCertificatesClient,
-		},
-    
-		{
-			NewFunc: armsql.NewSyncGroupsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewJobExecutionsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewManagedDatabaseColumnsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewManagedDatabaseSchemasClient,
-		},
-    
-		{
-			NewFunc: armsql.NewReplicationLinksClient,
-		},
-    
-		{
-			NewFunc: armsql.NewDatabaseVulnerabilityAssessmentRuleBaselinesClient,
-		},
-    
-		{
-			NewFunc: armsql.NewDeletedServersClient,
-		},
-    
-		{
-			NewFunc: armsql.NewInstancePoolsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewManagedInstanceLongTermRetentionPoliciesClient,
-		},
-    
-		{
-			NewFunc: armsql.NewPrivateLinkResourcesClient,
-		},
-    
-		{
-			NewFunc: armsql.NewInstanceFailoverGroupsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewManagedDatabaseVulnerabilityAssessmentRuleBaselinesClient,
-		},
-    
-		{
-			NewFunc: armsql.NewServerAdvancedThreatProtectionSettingsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewServerVulnerabilityAssessmentsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewManagedDatabaseVulnerabilityAssessmentsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewManagedInstanceAdministratorsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewSensitivityLabelsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewSubscriptionUsagesClient,
-		},
-    
-		{
-			NewFunc: armsql.NewElasticPoolsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewJobCredentialsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewManagedBackupShortTermRetentionPoliciesClient,
-		},
-    
-		{
-			NewFunc: armsql.NewManagedServerSecurityAlertPoliciesClient,
-		},
-    
-		{
-			NewFunc: armsql.NewSyncMembersClient,
-		},
-    
-		{
-			NewFunc: armsql.NewJobStepExecutionsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewMaintenanceWindowsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewManagedInstancePrivateEndpointConnectionsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewFirewallRulesClient,
-		},
-    
-		{
-			NewFunc: armsql.NewManagedInstancesClient,
-		},
-    
-		{
-			NewFunc: armsql.NewServerDevOpsAuditSettingsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewServerKeysClient,
-		},
-    
-		{
-			NewFunc: armsql.NewServerOperationsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewLedgerDigestUploadsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewLongTermRetentionBackupsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewManagedDatabasesClient,
-		},
-    
-		{
-			NewFunc: armsql.NewManagedDatabaseVulnerabilityAssessmentScansClient,
-		},
-    
-		{
-			NewFunc: armsql.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewTdeCertificatesClient,
-		},
-    
-		{
-			NewFunc: armsql.NewDatabaseSchemasClient,
-		},
-    
-		{
-			NewFunc: armsql.NewDatabaseVulnerabilityAssessmentsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewManagedDatabaseTablesClient,
-		},
-    
-		{
-			NewFunc: armsql.NewDataMaskingPoliciesClient,
-		},
-    
-		{
-			NewFunc: armsql.NewManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient,
-		},
-    
-		{
-			NewFunc: armsql.NewVirtualClustersClient,
-		},
-    
 		{
 			NewFunc: armsql.NewDataWarehouseUserActivitiesClient,
 		},
-    
 		{
-			NewFunc: armsql.NewElasticPoolDatabaseActivitiesClient,
+			NewFunc: armsql.NewManagedDatabaseTablesClient,
 		},
-    
-		{
-			NewFunc: armsql.NewSyncAgentsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewTimeZonesClient,
-		},
-    
-		{
-			NewFunc: armsql.NewPrivateEndpointConnectionsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewRestorableDroppedManagedDatabasesClient,
-		},
-    
-		{
-			NewFunc: armsql.NewServersClient,
-		},
-    
-		{
-			NewFunc: armsql.NewDatabaseBlobAuditingPoliciesClient,
-		},
-    
-		{
-			NewFunc: armsql.NewDatabaseExtensionsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewDatabaseSecurityAlertPoliciesClient,
-		},
-    
-		{
-			NewFunc: armsql.NewExtendedServerBlobAuditingPoliciesClient,
-		},
-    
-		{
-			NewFunc: armsql.NewLongTermRetentionPoliciesClient,
-		},
-    
-		{
-			NewFunc: armsql.NewJobTargetGroupsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewManagedDatabaseRecommendedSensitivityLabelsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewRecoverableManagedDatabasesClient,
-		},
-    
-		{
-			NewFunc: armsql.NewUsagesClient,
-		},
-    
-		{
-			NewFunc: armsql.NewDatabaseRecommendedActionsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewFailoverGroupsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewManagedInstanceVulnerabilityAssessmentsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewBackupShortTermRetentionPoliciesClient,
-		},
-    
-		{
-			NewFunc: armsql.NewDatabaseUsagesClient,
-		},
-    
-		{
-			NewFunc: armsql.NewManagedInstanceEncryptionProtectorsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewRecoverableDatabasesClient,
-		},
-    
-		{
-			NewFunc: armsql.NewTransparentDataEncryptionsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewElasticPoolActivitiesClient,
-		},
-    
-		{
-			NewFunc: armsql.NewJobsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewServerCommunicationLinksClient,
-		},
-    
-		{
-			NewFunc: armsql.NewWorkloadClassifiersClient,
-		},
-    
-		{
-			NewFunc: armsql.NewCapabilitiesClient,
-		},
-    
-		{
-			NewFunc: armsql.NewDatabaseAdvisorsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewElasticPoolOperationsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewEncryptionProtectorsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewManagedInstanceKeysClient,
-		},
-    
-		{
-			NewFunc: armsql.NewServerDNSAliasesClient,
-		},
-    
-		{
-			NewFunc: armsql.NewDatabaseOperationsClient,
-		},
-    
-		{
-			NewFunc: armsql.NewGeoBackupPoliciesClient,
-		},
-    
 		{
 			NewFunc: armsql.NewManagedInstancePrivateLinkResourcesClient,
 		},
-    
+		{
+			NewFunc: armsql.NewPrivateEndpointConnectionsClient,
+		},
+		{
+			NewFunc: armsql.NewServerAdvancedThreatProtectionSettingsClient,
+		},
+		{
+			NewFunc: armsql.NewServerKeysClient,
+		},
+		{
+			NewFunc: armsql.NewFailoverGroupsClient,
+		},
+		{
+			NewFunc: armsql.NewLongTermRetentionManagedInstanceBackupsClient,
+		},
+		{
+			NewFunc: armsql.NewServerAutomaticTuningClient,
+		},
+		{
+			NewFunc: armsql.NewDatabaseAutomaticTuningClient,
+		},
+		{
+			NewFunc: armsql.NewDatabaseVulnerabilityAssessmentScansClient,
+		},
+		{
+			NewFunc: armsql.NewElasticPoolDatabaseActivitiesClient,
+		},
+		{
+			NewFunc: armsql.NewExtendedServerBlobAuditingPoliciesClient,
+		},
+		{
+			NewFunc: armsql.NewManagedInstanceTdeCertificatesClient,
+		},
+		{
+			NewFunc: armsql.NewManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient,
+		},
+		{
+			NewFunc: armsql.NewWorkloadClassifiersClient,
+		},
+		{
+			NewFunc: armsql.NewServerSecurityAlertPoliciesClient,
+		},
+		{
+			NewFunc: armsql.NewServerTrustCertificatesClient,
+		},
+		{
+			NewFunc: armsql.NewDatabaseVulnerabilityAssessmentsClient,
+		},
+		{
+			NewFunc: armsql.NewSyncAgentsClient,
+		},
+		{
+			NewFunc: armsql.NewSyncMembersClient,
+		},
+		{
+			NewFunc: armsql.NewAgentClient,
+		},
+		{
+			NewFunc: armsql.NewCapabilitiesClient,
+		},
+		{
+			NewFunc: armsql.NewDatabasesClient,
+		},
+		{
+			NewFunc: armsql.NewJobCredentialsClient,
+		},
+		{
+			NewFunc: armsql.NewManagedInstanceLongTermRetentionPoliciesClient,
+		},
+		{
+			NewFunc: armsql.NewServersClient,
+		},
+		{
+			NewFunc: armsql.NewServerTrustGroupsClient,
+		},
+		{
+			NewFunc: armsql.NewMaintenanceWindowOptionsClient,
+		},
+		{
+			NewFunc: armsql.NewReplicationLinksClient,
+		},
+		{
+			NewFunc: armsql.NewManagedInstanceKeysClient,
+		},
+		{
+			NewFunc: armsql.NewGeoBackupPoliciesClient,
+		},
+		{
+			NewFunc: armsql.NewInstanceFailoverGroupsClient,
+		},
+		{
+			NewFunc: armsql.NewServerVulnerabilityAssessmentsClient,
+		},
+		{
+			NewFunc: armsql.NewManagedDatabaseSensitivityLabelsClient,
+		},
+		{
+			NewFunc: armsql.NewDatabaseColumnsClient,
+		},
+		{
+			NewFunc: armsql.NewManagedInstanceOperationsClient,
+		},
+		{
+			NewFunc: armsql.NewManagedServerSecurityAlertPoliciesClient,
+		},
+		{
+			NewFunc: armsql.NewElasticPoolActivitiesClient,
+		},
+		{
+			NewFunc: armsql.NewManagedDatabaseColumnsClient,
+		},
+		{
+			NewFunc: armsql.NewManagedInstanceEncryptionProtectorsClient,
+		},
+		{
+			NewFunc: armsql.NewBackupShortTermRetentionPoliciesClient,
+		},
+		{
+			NewFunc: armsql.NewLongTermRetentionPoliciesClient,
+		},
+		{
+			NewFunc: armsql.NewManagedDatabaseSecurityAlertPoliciesClient,
+		},
+		{
+			NewFunc: armsql.NewOperationsClient,
+		},
+		{
+			NewFunc: armsql.NewRestorePointsClient,
+		},
+		{
+			NewFunc: armsql.NewJobStepExecutionsClient,
+		},
+		{
+			NewFunc: armsql.NewJobStepsClient,
+		},
+		{
+			NewFunc: armsql.NewManagedDatabaseRecommendedSensitivityLabelsClient,
+		},
+		{
+			NewFunc: armsql.NewEncryptionProtectorsClient,
+		},
+		{
+			NewFunc: armsql.NewJobsClient,
+		},
+		{
+			NewFunc: armsql.NewMaintenanceWindowsClient,
+		},
+		{
+			NewFunc: armsql.NewManagedDatabasesClient,
+		},
+		{
+			NewFunc: armsql.NewRecoverableDatabasesClient,
+		},
+		{
+			NewFunc: armsql.NewTdeCertificatesClient,
+		},
 		{
 			NewFunc: armsql.NewRestorableDroppedDatabasesClient,
 		},
-    
+		{
+			NewFunc: armsql.NewServerAzureADAdministratorsClient,
+		},
+		{
+			NewFunc: armsql.NewServerOperationsClient,
+		},
+		{
+			NewFunc: armsql.NewDeletedServersClient,
+		},
+		{
+			NewFunc: armsql.NewJobExecutionsClient,
+		},
+		{
+			NewFunc: armsql.NewManagedDatabaseSecurityEventsClient,
+		},
+		{
+			NewFunc: armsql.NewOutboundFirewallRulesClient,
+		},
+		{
+			NewFunc: armsql.NewDatabaseTablesClient,
+		},
+		{
+			NewFunc: armsql.NewEndpointCertificatesClient,
+		},
+		{
+			NewFunc: armsql.NewManagedDatabaseQueriesClient,
+		},
+		{
+			NewFunc: armsql.NewManagedInstanceAdministratorsClient,
+		},
+		{
+			NewFunc: armsql.NewLongTermRetentionBackupsClient,
+		},
+		{
+			NewFunc: armsql.NewDatabaseOperationsClient,
+		},
+		{
+			NewFunc: armsql.NewManagedBackupShortTermRetentionPoliciesClient,
+		},
+		{
+			NewFunc: armsql.NewRecommendedSensitivityLabelsClient,
+		},
+		{
+			NewFunc: armsql.NewServerCommunicationLinksClient,
+		},
+		{
+			NewFunc: armsql.NewServerDNSAliasesClient,
+		},
+		{
+			NewFunc: armsql.NewDatabaseAdvancedThreatProtectionSettingsClient,
+		},
+		{
+			NewFunc: armsql.NewServerUsagesClient,
+		},
+		{
+			NewFunc: armsql.NewTimeZonesClient,
+		},
+		{
+			NewFunc: armsql.NewDatabaseExtensionsClient,
+		},
+		{
+			NewFunc: armsql.NewFirewallRulesClient,
+		},
+		{
+			NewFunc: armsql.NewIPv6FirewallRulesClient,
+		},
+		{
+			NewFunc: armsql.NewJobTargetGroupsClient,
+		},
+		{
+			NewFunc: armsql.NewManagedInstanceAzureADOnlyAuthenticationsClient,
+		},
+		{
+			NewFunc: armsql.NewServerDevOpsAuditSettingsClient,
+		},
+		{
+			NewFunc: armsql.NewSyncGroupsClient,
+		},
+		{
+			NewFunc: armsql.NewManagedDatabaseTransparentDataEncryptionClient,
+		},
+		{
+			NewFunc: armsql.NewManagedDatabaseVulnerabilityAssessmentRuleBaselinesClient,
+		},
+		{
+			NewFunc: armsql.NewManagedDatabaseVulnerabilityAssessmentScansClient,
+		},
+		{
+			NewFunc: armsql.NewManagedInstancePrivateEndpointConnectionsClient,
+		},
+		{
+			NewFunc: armsql.NewManagedDatabaseVulnerabilityAssessmentsClient,
+		},
+		{
+			NewFunc: armsql.NewSensitivityLabelsClient,
+		},
+		{
+			NewFunc: armsql.NewVirtualClustersClient,
+		},
+		{
+			NewFunc: armsql.NewDataMaskingRulesClient,
+		},
+		{
+			NewFunc: armsql.NewElasticPoolOperationsClient,
+		},
+		{
+			NewFunc: armsql.NewInstancePoolsClient,
+		},
+		{
+			NewFunc: armsql.NewManagedInstancesClient,
+		},
+		{
+			NewFunc: armsql.NewServerAdvisorsClient,
+		},
+		{
+			NewFunc: armsql.NewUsagesClient,
+		},
+		{
+			NewFunc: armsql.NewTransparentDataEncryptionsClient,
+		},
+		{
+			NewFunc: armsql.NewDatabaseAdvisorsClient,
+		},
+		{
+			NewFunc: armsql.NewDatabaseSchemasClient,
+		},
+		{
+			NewFunc: armsql.NewDatabaseSecurityAlertPoliciesClient,
+		},
+		{
+			NewFunc: armsql.NewDatabaseVulnerabilityAssessmentRuleBaselinesClient,
+		},
+		{
+			NewFunc: armsql.NewJobAgentsClient,
+		},
+		{
+			NewFunc: armsql.NewLedgerDigestUploadsClient,
+		},
+		{
+			NewFunc: armsql.NewRestorableDroppedManagedDatabasesClient,
+		},
+		{
+			NewFunc: armsql.NewDatabaseBlobAuditingPoliciesClient,
+		},
+		{
+			NewFunc: armsql.NewDistributedAvailabilityGroupsClient,
+		},
+		{
+			NewFunc: armsql.NewExtendedDatabaseBlobAuditingPoliciesClient,
+		},
+		{
+			NewFunc: armsql.NewJobVersionsClient,
+		},
+		{
+			NewFunc: armsql.NewManagedDatabaseRestoreDetailsClient,
+		},
+		{
+			NewFunc: armsql.NewManagedInstanceVulnerabilityAssessmentsClient,
+		},
+		{
+			NewFunc: armsql.NewServerBlobAuditingPoliciesClient,
+		},
+		{
+			NewFunc: armsql.NewDatabaseRecommendedActionsClient,
+		},
+		{
+			NewFunc: armsql.NewDatabaseUsagesClient,
+		},
+		{
+			NewFunc: armsql.NewManagedDatabaseSchemasClient,
+		},
+		{
+			NewFunc: armsql.NewServiceObjectivesClient,
+		},
+		{
+			NewFunc: armsql.NewPrivateLinkResourcesClient,
+		},
+		{
+			NewFunc: armsql.NewElasticPoolsClient,
+		},
+		{
+			NewFunc: armsql.NewJobTargetExecutionsClient,
+		},
+		{
+			NewFunc: armsql.NewVirtualNetworkRulesClient,
+		},
+		{
+			NewFunc: armsql.NewDataMaskingPoliciesClient,
+		},
+		{
+			NewFunc: armsql.NewRecoverableManagedDatabasesClient,
+		},
 		{
 			NewFunc: armsql.NewServerConnectionPoliciesClient,
 		},
-    
+		{
+			NewFunc: armsql.NewSubscriptionUsagesClient,
+		},
+		{
+			NewFunc: armsql.NewWorkloadGroupsClient,
+		},
+		{
+			NewFunc: armsql.NewServerAzureADOnlyAuthenticationsClient,
+		},
 	}
 	return resources
 }

@@ -5,23 +5,18 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dashboard/armdashb
 
 func Armdashboard() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armdashboard.NewPrivateEndpointConnectionsClient,
-		},
-    
-		{
-			NewFunc: armdashboard.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armdashboard.NewPrivateLinkResourcesClient,
-		},
-    
 		{
 			NewFunc: armdashboard.NewGrafanaClient,
 		},
-    
+		{
+			NewFunc: armdashboard.NewPrivateLinkResourcesClient,
+		},
+		{
+			NewFunc: armdashboard.NewOperationsClient,
+		},
+		{
+			NewFunc: armdashboard.NewPrivateEndpointConnectionsClient,
+		},
 	}
 	return resources
 }

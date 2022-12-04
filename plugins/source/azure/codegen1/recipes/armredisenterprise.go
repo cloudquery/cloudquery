@@ -5,31 +5,24 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/ar
 
 func Armredisenterprise() []*Resource {
 	resources := []*Resource{
-    
 		{
 			NewFunc: armredisenterprise.NewClient,
 		},
-    
-		{
-			NewFunc: armredisenterprise.NewOperationsClient,
-		},
-    
 		{
 			NewFunc: armredisenterprise.NewDatabasesClient,
 		},
-    
+		{
+			NewFunc: armredisenterprise.NewOperationsClient,
+		},
 		{
 			NewFunc: armredisenterprise.NewOperationsStatusClient,
 		},
-    
 		{
 			NewFunc: armredisenterprise.NewPrivateEndpointConnectionsClient,
 		},
-    
 		{
 			NewFunc: armredisenterprise.NewPrivateLinkResourcesClient,
 		},
-    
 	}
 	return resources
 }

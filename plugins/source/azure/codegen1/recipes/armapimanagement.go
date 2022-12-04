@@ -5,311 +5,234 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/arma
 
 func Armapimanagement() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armapimanagement.NewPolicyClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewProductPolicyClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewSubscriptionClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewUserSubscriptionClient,
-		},
-    
 		{
 			NewFunc: armapimanagement.NewAPIClient,
 		},
-    
 		{
-			NewFunc: armapimanagement.NewAPIIssueCommentClient,
+			NewFunc: armapimanagement.NewProductPolicyClient,
 		},
-    
-		{
-			NewFunc: armapimanagement.NewGatewayCertificateAuthorityClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewUserClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewAPITagDescriptionClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewPortalSettingsClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewPrivateEndpointConnectionClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewGatewayAPIClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewProductGroupClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewReportsClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewAPIProductClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewGroupClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewTenantConfigurationClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewAPIIssueClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewAPIOperationPolicyClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewAPIPolicyClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewSignUpSettingsClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewQuotaByPeriodKeysClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewSKUsClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewBackendClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewIssueClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewNotificationClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewAPIReleaseClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewCertificateClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewOperationClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewPortalRevisionClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewUserGroupClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewAPISchemaClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewAuthorizationServerClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewCacheClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewServiceClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewAPIRevisionClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewAPIVersionSetClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewContentTypeClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewAPIExportClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewAPIOperationClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewLoggerClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewProductClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewNamedValueClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewNotificationRecipientUserClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewQuotaByCounterKeysClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewTenantSettingsClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewAPIDiagnosticClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewGroupUserClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewProductAPIClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewSignInSettingsClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewDiagnosticClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewGatewayHostnameConfigurationClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewNotificationRecipientEmailClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewRegionClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewServiceSKUsClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewTagClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewUserConfirmationPasswordClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewDelegationSettingsClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewGlobalSchemaClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewOutboundNetworkDependenciesEndpointsClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewIdentityProviderClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewPolicyDescriptionClient,
-		},
-    
 		{
 			NewFunc: armapimanagement.NewTagResourceClient,
 		},
-    
 		{
-			NewFunc: armapimanagement.NewTenantAccessGitClient,
+			NewFunc: armapimanagement.NewServiceClient,
 		},
-    
 		{
-			NewFunc: armapimanagement.NewUserIdentitiesClient,
+			NewFunc: armapimanagement.NewSKUsClient,
 		},
-    
 		{
-			NewFunc: armapimanagement.NewAPIIssueAttachmentClient,
+			NewFunc: armapimanagement.NewAPIOperationPolicyClient,
 		},
-    
 		{
-			NewFunc: armapimanagement.NewContentItemClient,
+			NewFunc: armapimanagement.NewNotificationRecipientEmailClient,
 		},
-    
+		{
+			NewFunc: armapimanagement.NewPolicyDescriptionClient,
+		},
+		{
+			NewFunc: armapimanagement.NewGatewayCertificateAuthorityClient,
+		},
+		{
+			NewFunc: armapimanagement.NewGroupClient,
+		},
+		{
+			NewFunc: armapimanagement.NewOperationClient,
+		},
+		{
+			NewFunc: armapimanagement.NewAPIRevisionClient,
+		},
 		{
 			NewFunc: armapimanagement.NewEmailTemplateClient,
 		},
-    
-		{
-			NewFunc: armapimanagement.NewOpenIDConnectProviderClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewProductSubscriptionsClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewTenantAccessClient,
-		},
-    
-		{
-			NewFunc: armapimanagement.NewDeletedServicesClient,
-		},
-    
 		{
 			NewFunc: armapimanagement.NewGatewayClient,
 		},
-    
+		{
+			NewFunc: armapimanagement.NewNotificationClient,
+		},
+		{
+			NewFunc: armapimanagement.NewDeletedServicesClient,
+		},
+		{
+			NewFunc: armapimanagement.NewGatewayAPIClient,
+		},
+		{
+			NewFunc: armapimanagement.NewIssueClient,
+		},
+		{
+			NewFunc: armapimanagement.NewNamedValueClient,
+		},
+		{
+			NewFunc: armapimanagement.NewOpenIDConnectProviderClient,
+		},
+		{
+			NewFunc: armapimanagement.NewOutboundNetworkDependenciesEndpointsClient,
+		},
+		{
+			NewFunc: armapimanagement.NewProductGroupClient,
+		},
+		{
+			NewFunc: armapimanagement.NewProductSubscriptionsClient,
+		},
+		{
+			NewFunc: armapimanagement.NewAuthorizationServerClient,
+		},
+		{
+			NewFunc: armapimanagement.NewQuotaByPeriodKeysClient,
+		},
+		{
+			NewFunc: armapimanagement.NewTenantAccessClient,
+		},
+		{
+			NewFunc: armapimanagement.NewPolicyClient,
+		},
+		{
+			NewFunc: armapimanagement.NewReportsClient,
+		},
+		{
+			NewFunc: armapimanagement.NewUserSubscriptionClient,
+		},
+		{
+			NewFunc: armapimanagement.NewAPIIssueCommentClient,
+		},
+		{
+			NewFunc: armapimanagement.NewOperationsClient,
+		},
+		{
+			NewFunc: armapimanagement.NewSubscriptionClient,
+		},
+		{
+			NewFunc: armapimanagement.NewAPIVersionSetClient,
+		},
+		{
+			NewFunc: armapimanagement.NewGroupUserClient,
+		},
+		{
+			NewFunc: armapimanagement.NewPortalSettingsClient,
+		},
+		{
+			NewFunc: armapimanagement.NewUserGroupClient,
+		},
+		{
+			NewFunc: armapimanagement.NewAPIReleaseClient,
+		},
+		{
+			NewFunc: armapimanagement.NewContentTypeClient,
+		},
 		{
 			NewFunc: armapimanagement.NewNetworkStatusClient,
 		},
-    
+		{
+			NewFunc: armapimanagement.NewBackendClient,
+		},
+		{
+			NewFunc: armapimanagement.NewPrivateEndpointConnectionClient,
+		},
+		{
+			NewFunc: armapimanagement.NewUserIdentitiesClient,
+		},
+		{
+			NewFunc: armapimanagement.NewTenantConfigurationClient,
+		},
+		{
+			NewFunc: armapimanagement.NewAPIExportClient,
+		},
+		{
+			NewFunc: armapimanagement.NewContentItemClient,
+		},
+		{
+			NewFunc: armapimanagement.NewSignInSettingsClient,
+		},
+		{
+			NewFunc: armapimanagement.NewDelegationSettingsClient,
+		},
+		{
+			NewFunc: armapimanagement.NewDiagnosticClient,
+		},
+		{
+			NewFunc: armapimanagement.NewTenantSettingsClient,
+		},
+		{
+			NewFunc: armapimanagement.NewAPIIssueAttachmentClient,
+		},
+		{
+			NewFunc: armapimanagement.NewAPIPolicyClient,
+		},
+		{
+			NewFunc: armapimanagement.NewClient,
+		},
+		{
+			NewFunc: armapimanagement.NewProductClient,
+		},
+		{
+			NewFunc: armapimanagement.NewQuotaByCounterKeysClient,
+		},
+		{
+			NewFunc: armapimanagement.NewRegionClient,
+		},
+		{
+			NewFunc: armapimanagement.NewAPIDiagnosticClient,
+		},
+		{
+			NewFunc: armapimanagement.NewAPIIssueClient,
+		},
+		{
+			NewFunc: armapimanagement.NewPortalRevisionClient,
+		},
+		{
+			NewFunc: armapimanagement.NewTagClient,
+		},
+		{
+			NewFunc: armapimanagement.NewAPITagDescriptionClient,
+		},
+		{
+			NewFunc: armapimanagement.NewIdentityProviderClient,
+		},
+		{
+			NewFunc: armapimanagement.NewSignUpSettingsClient,
+		},
+		{
+			NewFunc: armapimanagement.NewGatewayHostnameConfigurationClient,
+		},
+		{
+			NewFunc: armapimanagement.NewNotificationRecipientUserClient,
+		},
+		{
+			NewFunc: armapimanagement.NewProductAPIClient,
+		},
+		{
+			NewFunc: armapimanagement.NewServiceSKUsClient,
+		},
+		{
+			NewFunc: armapimanagement.NewUserConfirmationPasswordClient,
+		},
+		{
+			NewFunc: armapimanagement.NewAPIProductClient,
+		},
+		{
+			NewFunc: armapimanagement.NewCacheClient,
+		},
+		{
+			NewFunc: armapimanagement.NewCertificateClient,
+		},
+		{
+			NewFunc: armapimanagement.NewGlobalSchemaClient,
+		},
+		{
+			NewFunc: armapimanagement.NewUserClient,
+		},
+		{
+			NewFunc: armapimanagement.NewLoggerClient,
+		},
+		{
+			NewFunc: armapimanagement.NewTenantAccessGitClient,
+		},
+		{
+			NewFunc: armapimanagement.NewAPIOperationClient,
+		},
+		{
+			NewFunc: armapimanagement.NewAPISchemaClient,
+		},
 	}
 	return resources
 }

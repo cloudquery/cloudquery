@@ -5,35 +5,27 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/arms
 
 func Armservicefabric() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armservicefabric.NewClustersClient,
-		},
-    
-		{
-			NewFunc: armservicefabric.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armservicefabric.NewApplicationsClient,
-		},
-    
-		{
-			NewFunc: armservicefabric.NewApplicationTypeVersionsClient,
-		},
-    
-		{
-			NewFunc: armservicefabric.NewApplicationTypesClient,
-		},
-    
-		{
-			NewFunc: armservicefabric.NewServicesClient,
-		},
-    
 		{
 			NewFunc: armservicefabric.NewClusterVersionsClient,
 		},
-    
+		{
+			NewFunc: armservicefabric.NewOperationsClient,
+		},
+		{
+			NewFunc: armservicefabric.NewApplicationsClient,
+		},
+		{
+			NewFunc: armservicefabric.NewClustersClient,
+		},
+		{
+			NewFunc: armservicefabric.NewApplicationTypesClient,
+		},
+		{
+			NewFunc: armservicefabric.NewServicesClient,
+		},
+		{
+			NewFunc: armservicefabric.NewApplicationTypeVersionsClient,
+		},
 	}
 	return resources
 }

@@ -5,31 +5,24 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armaz
 
 func Armazurearcdata() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armazurearcdata.NewActiveDirectoryConnectorsClient,
-		},
-    
-		{
-			NewFunc: armazurearcdata.NewPostgresInstancesClient,
-		},
-    
-		{
-			NewFunc: armazurearcdata.NewSQLServerInstancesClient,
-		},
-    
 		{
 			NewFunc: armazurearcdata.NewDataControllersClient,
 		},
-    
+		{
+			NewFunc: armazurearcdata.NewPostgresInstancesClient,
+		},
+		{
+			NewFunc: armazurearcdata.NewSQLServerInstancesClient,
+		},
+		{
+			NewFunc: armazurearcdata.NewActiveDirectoryConnectorsClient,
+		},
 		{
 			NewFunc: armazurearcdata.NewOperationsClient,
 		},
-    
 		{
 			NewFunc: armazurearcdata.NewSQLManagedInstancesClient,
 		},
-    
 	}
 	return resources
 }

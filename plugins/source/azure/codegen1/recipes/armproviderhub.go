@@ -5,39 +5,30 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armpro
 
 func Armproviderhub() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armproviderhub.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armproviderhub.NewResourceTypeRegistrationsClient,
-		},
-    
 		{
 			NewFunc: armproviderhub.NewDefaultRolloutsClient,
 		},
-    
 		{
-			NewFunc: armproviderhub.NewProviderRegistrationsClient,
+			NewFunc: armproviderhub.NewOperationsClient,
 		},
-    
-		{
-			NewFunc: armproviderhub.NewSKUsClient,
-		},
-    
-		{
-			NewFunc: armproviderhub.NewCustomRolloutsClient,
-		},
-    
-		{
-			NewFunc: armproviderhub.NewNotificationRegistrationsClient,
-		},
-    
 		{
 			NewFunc: armproviderhub.NewClient,
 		},
-    
+		{
+			NewFunc: armproviderhub.NewNotificationRegistrationsClient,
+		},
+		{
+			NewFunc: armproviderhub.NewResourceTypeRegistrationsClient,
+		},
+		{
+			NewFunc: armproviderhub.NewCustomRolloutsClient,
+		},
+		{
+			NewFunc: armproviderhub.NewProviderRegistrationsClient,
+		},
+		{
+			NewFunc: armproviderhub.NewSKUsClient,
+		},
 	}
 	return resources
 }

@@ -5,19 +5,15 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maps/armmaps"
 
 func Armmaps() []*Resource {
 	resources := []*Resource{
-    
 		{
 			NewFunc: armmaps.NewAccountsClient,
 		},
-    
 		{
 			NewFunc: armmaps.NewClient,
 		},
-    
 		{
 			NewFunc: armmaps.NewCreatorsClient,
 		},
-    
 	}
 	return resources
 }

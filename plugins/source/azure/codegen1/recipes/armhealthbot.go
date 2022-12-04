@@ -5,15 +5,12 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthbot/armhealt
 
 func Armhealthbot() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armhealthbot.NewOperationsClient,
-		},
-    
 		{
 			NewFunc: armhealthbot.NewBotsClient,
 		},
-    
+		{
+			NewFunc: armhealthbot.NewOperationsClient,
+		},
 	}
 	return resources
 }

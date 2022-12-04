@@ -5,31 +5,24 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos"
 
 func Armchaos() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armchaos.NewCapabilitiesClient,
-		},
-    
-		{
-			NewFunc: armchaos.NewTargetsClient,
-		},
-    
-		{
-			NewFunc: armchaos.NewTargetTypesClient,
-		},
-    
-		{
-			NewFunc: armchaos.NewCapabilityTypesClient,
-		},
-    
 		{
 			NewFunc: armchaos.NewExperimentsClient,
 		},
-    
 		{
 			NewFunc: armchaos.NewOperationsClient,
 		},
-    
+		{
+			NewFunc: armchaos.NewCapabilityTypesClient,
+		},
+		{
+			NewFunc: armchaos.NewTargetsClient,
+		},
+		{
+			NewFunc: armchaos.NewCapabilitiesClient,
+		},
+		{
+			NewFunc: armchaos.NewTargetTypesClient,
+		},
 	}
 	return resources
 }

@@ -5,71 +5,54 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storsimple8000seri
 
 func Armstorsimple8000series() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armstorsimple8000series.NewVolumesClient,
-		},
-    
-		{
-			NewFunc: armstorsimple8000series.NewAccessControlRecordsClient,
-		},
-    
 		{
 			NewFunc: armstorsimple8000series.NewStorageAccountCredentialsClient,
 		},
-    
-		{
-			NewFunc: armstorsimple8000series.NewManagersClient,
-		},
-    
-		{
-			NewFunc: armstorsimple8000series.NewBackupPoliciesClient,
-		},
-    
-		{
-			NewFunc: armstorsimple8000series.NewBackupsClient,
-		},
-    
-		{
-			NewFunc: armstorsimple8000series.NewBackupSchedulesClient,
-		},
-    
-		{
-			NewFunc: armstorsimple8000series.NewJobsClient,
-		},
-    
-		{
-			NewFunc: armstorsimple8000series.NewAlertsClient,
-		},
-    
-		{
-			NewFunc: armstorsimple8000series.NewBandwidthSettingsClient,
-		},
-    
-		{
-			NewFunc: armstorsimple8000series.NewDevicesClient,
-		},
-    
 		{
 			NewFunc: armstorsimple8000series.NewVolumeContainersClient,
 		},
-    
 		{
-			NewFunc: armstorsimple8000series.NewCloudAppliancesClient,
+			NewFunc: armstorsimple8000series.NewManagersClient,
 		},
-    
 		{
-			NewFunc: armstorsimple8000series.NewDeviceSettingsClient,
+			NewFunc: armstorsimple8000series.NewBandwidthSettingsClient,
 		},
-    
 		{
 			NewFunc: armstorsimple8000series.NewHardwareComponentGroupsClient,
 		},
-    
 		{
 			NewFunc: armstorsimple8000series.NewOperationsClient,
 		},
-    
+		{
+			NewFunc: armstorsimple8000series.NewVolumesClient,
+		},
+		{
+			NewFunc: armstorsimple8000series.NewAlertsClient,
+		},
+		{
+			NewFunc: armstorsimple8000series.NewBackupSchedulesClient,
+		},
+		{
+			NewFunc: armstorsimple8000series.NewBackupsClient,
+		},
+		{
+			NewFunc: armstorsimple8000series.NewCloudAppliancesClient,
+		},
+		{
+			NewFunc: armstorsimple8000series.NewDevicesClient,
+		},
+		{
+			NewFunc: armstorsimple8000series.NewDeviceSettingsClient,
+		},
+		{
+			NewFunc: armstorsimple8000series.NewJobsClient,
+		},
+		{
+			NewFunc: armstorsimple8000series.NewAccessControlRecordsClient,
+		},
+		{
+			NewFunc: armstorsimple8000series.NewBackupPoliciesClient,
+		},
 	}
 	return resources
 }

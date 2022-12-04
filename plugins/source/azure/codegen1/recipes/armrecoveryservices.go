@@ -5,43 +5,33 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/a
 
 func Armrecoveryservices() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armrecoveryservices.NewClient,
-		},
-    
-		{
-			NewFunc: armrecoveryservices.NewRegisteredIdentitiesClient,
-		},
-    
-		{
-			NewFunc: armrecoveryservices.NewVaultExtendedInfoClient,
-		},
-    
-		{
-			NewFunc: armrecoveryservices.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armrecoveryservices.NewPrivateLinkResourcesClient,
-		},
-    
-		{
-			NewFunc: armrecoveryservices.NewReplicationUsagesClient,
-		},
-    
-		{
-			NewFunc: armrecoveryservices.NewVaultCertificatesClient,
-		},
-    
-		{
-			NewFunc: armrecoveryservices.NewVaultsClient,
-		},
-    
 		{
 			NewFunc: armrecoveryservices.NewUsagesClient,
 		},
-    
+		{
+			NewFunc: armrecoveryservices.NewClient,
+		},
+		{
+			NewFunc: armrecoveryservices.NewOperationsClient,
+		},
+		{
+			NewFunc: armrecoveryservices.NewPrivateLinkResourcesClient,
+		},
+		{
+			NewFunc: armrecoveryservices.NewVaultCertificatesClient,
+		},
+		{
+			NewFunc: armrecoveryservices.NewVaultsClient,
+		},
+		{
+			NewFunc: armrecoveryservices.NewRegisteredIdentitiesClient,
+		},
+		{
+			NewFunc: armrecoveryservices.NewReplicationUsagesClient,
+		},
+		{
+			NewFunc: armrecoveryservices.NewVaultExtendedInfoClient,
+		},
 	}
 	return resources
 }

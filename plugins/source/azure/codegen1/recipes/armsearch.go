@@ -5,35 +5,27 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch"
 
 func Armsearch() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armsearch.NewAdminKeysClient,
-		},
-    
-		{
-			NewFunc: armsearch.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armsearch.NewSharedPrivateLinkResourcesClient,
-		},
-    
-		{
-			NewFunc: armsearch.NewPrivateEndpointConnectionsClient,
-		},
-    
-		{
-			NewFunc: armsearch.NewPrivateLinkResourcesClient,
-		},
-    
 		{
 			NewFunc: armsearch.NewQueryKeysClient,
 		},
-    
 		{
 			NewFunc: armsearch.NewServicesClient,
 		},
-    
+		{
+			NewFunc: armsearch.NewSharedPrivateLinkResourcesClient,
+		},
+		{
+			NewFunc: armsearch.NewPrivateEndpointConnectionsClient,
+		},
+		{
+			NewFunc: armsearch.NewPrivateLinkResourcesClient,
+		},
+		{
+			NewFunc: armsearch.NewAdminKeysClient,
+		},
+		{
+			NewFunc: armsearch.NewOperationsClient,
+		},
 	}
 	return resources
 }

@@ -5,55 +5,42 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfront
 
 func Armfrontdoor() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armfrontdoor.NewEndpointsClient,
-		},
-    
-		{
-			NewFunc: armfrontdoor.NewManagedRuleSetsClient,
-		},
-    
-		{
-			NewFunc: armfrontdoor.NewPreconfiguredEndpointsClient,
-		},
-    
-		{
-			NewFunc: armfrontdoor.NewNameAvailabilityClient,
-		},
-    
-		{
-			NewFunc: armfrontdoor.NewNetworkExperimentProfilesClient,
-		},
-    
-		{
-			NewFunc: armfrontdoor.NewPoliciesClient,
-		},
-    
-		{
-			NewFunc: armfrontdoor.NewRulesEnginesClient,
-		},
-    
-		{
-			NewFunc: armfrontdoor.NewExperimentsClient,
-		},
-    
-		{
-			NewFunc: armfrontdoor.NewFrontDoorsClient,
-		},
-    
-		{
-			NewFunc: armfrontdoor.NewFrontendEndpointsClient,
-		},
-    
 		{
 			NewFunc: armfrontdoor.NewNameAvailabilityWithSubscriptionClient,
 		},
-    
+		{
+			NewFunc: armfrontdoor.NewRulesEnginesClient,
+		},
+		{
+			NewFunc: armfrontdoor.NewFrontendEndpointsClient,
+		},
+		{
+			NewFunc: armfrontdoor.NewFrontDoorsClient,
+		},
+		{
+			NewFunc: armfrontdoor.NewEndpointsClient,
+		},
+		{
+			NewFunc: armfrontdoor.NewExperimentsClient,
+		},
 		{
 			NewFunc: armfrontdoor.NewReportsClient,
 		},
-    
+		{
+			NewFunc: armfrontdoor.NewManagedRuleSetsClient,
+		},
+		{
+			NewFunc: armfrontdoor.NewNetworkExperimentProfilesClient,
+		},
+		{
+			NewFunc: armfrontdoor.NewPreconfiguredEndpointsClient,
+		},
+		{
+			NewFunc: armfrontdoor.NewNameAvailabilityClient,
+		},
+		{
+			NewFunc: armfrontdoor.NewPoliciesClient,
+		},
 	}
 	return resources
 }

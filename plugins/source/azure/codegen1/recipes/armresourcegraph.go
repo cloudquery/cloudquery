@@ -5,15 +5,12 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcegraph/armr
 
 func Armresourcegraph() []*Resource {
 	resources := []*Resource{
-    
 		{
 			NewFunc: armresourcegraph.NewClient,
 		},
-    
 		{
 			NewFunc: armresourcegraph.NewOperationsClient,
 		},
-    
 	}
 	return resources
 }

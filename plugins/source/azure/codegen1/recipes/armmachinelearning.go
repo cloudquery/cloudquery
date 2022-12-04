@@ -5,115 +5,39 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/ar
 
 func Armmachinelearning() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armmachinelearning.NewBatchEndpointsClient,
-		},
-    
-		{
-			NewFunc: armmachinelearning.NewCodeContainersClient,
-		},
-    
-		{
-			NewFunc: armmachinelearning.NewEnvironmentContainersClient,
-		},
-    
-		{
-			NewFunc: armmachinelearning.NewJobsClient,
-		},
-    
-		{
-			NewFunc: armmachinelearning.NewWorkspaceFeaturesClient,
-		},
-    
-		{
-			NewFunc: armmachinelearning.NewWorkspacesClient,
-		},
-    
-		{
-			NewFunc: armmachinelearning.NewCodeVersionsClient,
-		},
-    
-		{
-			NewFunc: armmachinelearning.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armmachinelearning.NewSchedulesClient,
-		},
-    
-		{
-			NewFunc: armmachinelearning.NewComponentContainersClient,
-		},
-    
-		{
-			NewFunc: armmachinelearning.NewOnlineDeploymentsClient,
-		},
-    
-		{
-			NewFunc: armmachinelearning.NewPrivateLinkResourcesClient,
-		},
-    
-		{
-			NewFunc: armmachinelearning.NewWorkspaceConnectionsClient,
-		},
-    
-		{
-			NewFunc: armmachinelearning.NewDataContainersClient,
-		},
-    
-		{
-			NewFunc: armmachinelearning.NewOnlineEndpointsClient,
-		},
-    
-		{
-			NewFunc: armmachinelearning.NewPrivateEndpointConnectionsClient,
-		},
-    
-		{
-			NewFunc: armmachinelearning.NewComponentVersionsClient,
-		},
-    
 		{
 			NewFunc: armmachinelearning.NewComputeClient,
 		},
-    
 		{
-			NewFunc: armmachinelearning.NewDatastoresClient,
+			NewFunc: armmachinelearning.NewOperationsClient,
 		},
-    
-		{
-			NewFunc: armmachinelearning.NewEnvironmentVersionsClient,
-		},
-    
-		{
-			NewFunc: armmachinelearning.NewModelVersionsClient,
-		},
-    
 		{
 			NewFunc: armmachinelearning.NewQuotasClient,
 		},
-    
 		{
-			NewFunc: armmachinelearning.NewDataVersionsClient,
+			NewFunc: armmachinelearning.NewWorkspacesClient,
 		},
-    
-		{
-			NewFunc: armmachinelearning.NewVirtualMachineSizesClient,
-		},
-    
-		{
-			NewFunc: armmachinelearning.NewBatchDeploymentsClient,
-		},
-    
-		{
-			NewFunc: armmachinelearning.NewModelContainersClient,
-		},
-    
 		{
 			NewFunc: armmachinelearning.NewUsagesClient,
 		},
-    
+		{
+			NewFunc: armmachinelearning.NewWorkspaceConnectionsClient,
+		},
+		{
+			NewFunc: armmachinelearning.NewWorkspaceFeaturesClient,
+		},
+		{
+			NewFunc: armmachinelearning.NewPrivateEndpointConnectionsClient,
+		},
+		{
+			NewFunc: armmachinelearning.NewPrivateLinkResourcesClient,
+		},
+		{
+			NewFunc: armmachinelearning.NewVirtualMachineSizesClient,
+		},
+		{
+			NewFunc: armmachinelearning.NewWorkspaceSKUsClient,
+		},
 	}
 	return resources
 }

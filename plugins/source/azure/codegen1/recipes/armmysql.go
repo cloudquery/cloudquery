@@ -5,111 +5,84 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql"
 
 func Armmysql() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armmysql.NewServersClient,
-		},
-    
-		{
-			NewFunc: armmysql.NewCheckNameAvailabilityClient,
-		},
-    
-		{
-			NewFunc: armmysql.NewLogFilesClient,
-		},
-    
-		{
-			NewFunc: armmysql.NewRecoverableServersClient,
-		},
-    
 		{
 			NewFunc: armmysql.NewServerBasedPerformanceTierClient,
 		},
-    
-		{
-			NewFunc: armmysql.NewServerKeysClient,
-		},
-    
-		{
-			NewFunc: armmysql.NewLocationBasedRecommendedActionSessionsResultClient,
-		},
-    
-		{
-			NewFunc: armmysql.NewServerParametersClient,
-		},
-    
-		{
-			NewFunc: armmysql.NewDatabasesClient,
-		},
-    
-		{
-			NewFunc: armmysql.NewLocationBasedRecommendedActionSessionsOperationStatusClient,
-		},
-    
-		{
-			NewFunc: armmysql.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armmysql.NewTopQueryStatisticsClient,
-		},
-    
 		{
 			NewFunc: armmysql.NewVirtualNetworkRulesClient,
 		},
-    
-		{
-			NewFunc: armmysql.NewFirewallRulesClient,
-		},
-    
-		{
-			NewFunc: armmysql.NewPrivateLinkResourcesClient,
-		},
-    
 		{
 			NewFunc: armmysql.NewReplicasClient,
 		},
-    
 		{
-			NewFunc: armmysql.NewServerAdministratorsClient,
+			NewFunc: armmysql.NewLocationBasedRecommendedActionSessionsOperationStatusClient,
 		},
-    
-		{
-			NewFunc: armmysql.NewAdvisorsClient,
-		},
-    
 		{
 			NewFunc: armmysql.NewPrivateEndpointConnectionsClient,
 		},
-    
-		{
-			NewFunc: armmysql.NewConfigurationsClient,
-		},
-    
 		{
 			NewFunc: armmysql.NewQueryTextsClient,
 		},
-    
-		{
-			NewFunc: armmysql.NewServerSecurityAlertPoliciesClient,
-		},
-    
-		{
-			NewFunc: armmysql.NewWaitStatisticsClient,
-		},
-    
-		{
-			NewFunc: armmysql.NewLocationBasedPerformanceTierClient,
-		},
-    
-		{
-			NewFunc: armmysql.NewManagementClient,
-		},
-    
 		{
 			NewFunc: armmysql.NewRecommendedActionsClient,
 		},
-    
+		{
+			NewFunc: armmysql.NewCheckNameAvailabilityClient,
+		},
+		{
+			NewFunc: armmysql.NewLocationBasedPerformanceTierClient,
+		},
+		{
+			NewFunc: armmysql.NewWaitStatisticsClient,
+		},
+		{
+			NewFunc: armmysql.NewServersClient,
+		},
+		{
+			NewFunc: armmysql.NewServerSecurityAlertPoliciesClient,
+		},
+		{
+			NewFunc: armmysql.NewFirewallRulesClient,
+		},
+		{
+			NewFunc: armmysql.NewLogFilesClient,
+		},
+		{
+			NewFunc: armmysql.NewServerParametersClient,
+		},
+		{
+			NewFunc: armmysql.NewRecoverableServersClient,
+		},
+		{
+			NewFunc: armmysql.NewServerAdministratorsClient,
+		},
+		{
+			NewFunc: armmysql.NewOperationsClient,
+		},
+		{
+			NewFunc: armmysql.NewServerKeysClient,
+		},
+		{
+			NewFunc: armmysql.NewAdvisorsClient,
+		},
+		{
+			NewFunc: armmysql.NewDatabasesClient,
+		},
+		{
+			NewFunc: armmysql.NewLocationBasedRecommendedActionSessionsResultClient,
+		},
+		{
+			NewFunc: armmysql.NewManagementClient,
+		},
+		{
+			NewFunc: armmysql.NewTopQueryStatisticsClient,
+		},
+		{
+			NewFunc: armmysql.NewConfigurationsClient,
+		},
+		{
+			NewFunc: armmysql.NewPrivateLinkResourcesClient,
+		},
 	}
 	return resources
 }

@@ -5,31 +5,24 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databricks/armdata
 
 func Armdatabricks() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armdatabricks.NewOperationsClient,
-		},
-    
-		{
-			NewFunc: armdatabricks.NewWorkspacesClient,
-		},
-    
-		{
-			NewFunc: armdatabricks.NewOutboundNetworkDependenciesEndpointsClient,
-		},
-    
-		{
-			NewFunc: armdatabricks.NewPrivateEndpointConnectionsClient,
-		},
-    
 		{
 			NewFunc: armdatabricks.NewPrivateLinkResourcesClient,
 		},
-    
 		{
 			NewFunc: armdatabricks.NewVNetPeeringClient,
 		},
-    
+		{
+			NewFunc: armdatabricks.NewWorkspacesClient,
+		},
+		{
+			NewFunc: armdatabricks.NewOperationsClient,
+		},
+		{
+			NewFunc: armdatabricks.NewPrivateEndpointConnectionsClient,
+		},
+		{
+			NewFunc: armdatabricks.NewOutboundNetworkDependenciesEndpointsClient,
+		},
 	}
 	return resources
 }

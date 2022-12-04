@@ -5,23 +5,18 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcemover/armr
 
 func Armresourcemover() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armresourcemover.NewOperationsDiscoveryClient,
-		},
-    
-		{
-			NewFunc: armresourcemover.NewUnresolvedDependenciesClient,
-		},
-    
-		{
-			NewFunc: armresourcemover.NewMoveCollectionsClient,
-		},
-    
 		{
 			NewFunc: armresourcemover.NewMoveResourcesClient,
 		},
-    
+		{
+			NewFunc: armresourcemover.NewOperationsDiscoveryClient,
+		},
+		{
+			NewFunc: armresourcemover.NewUnresolvedDependenciesClient,
+		},
+		{
+			NewFunc: armresourcemover.NewMoveCollectionsClient,
+		},
 	}
 	return resources
 }

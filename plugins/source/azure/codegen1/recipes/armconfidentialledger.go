@@ -5,19 +5,15 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confidentialledger
 
 func Armconfidentialledger() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armconfidentialledger.NewLedgerClient,
-		},
-    
-		{
-			NewFunc: armconfidentialledger.NewClient,
-		},
-    
 		{
 			NewFunc: armconfidentialledger.NewOperationsClient,
 		},
-    
+		{
+			NewFunc: armconfidentialledger.NewClient,
+		},
+		{
+			NewFunc: armconfidentialledger.NewLedgerClient,
+		},
 	}
 	return resources
 }

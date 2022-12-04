@@ -5,19 +5,15 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azuredata/armazure
 
 func Armazuredata() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armazuredata.NewSQLServerRegistrationsClient,
-		},
-    
-		{
-			NewFunc: armazuredata.NewSQLServersClient,
-		},
-    
 		{
 			NewFunc: armazuredata.NewOperationsClient,
 		},
-    
+		{
+			NewFunc: armazuredata.NewSQLServerRegistrationsClient,
+		},
+		{
+			NewFunc: armazuredata.NewSQLServersClient,
+		},
 	}
 	return resources
 }

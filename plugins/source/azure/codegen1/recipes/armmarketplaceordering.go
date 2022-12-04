@@ -5,15 +5,12 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplaceorderin
 
 func Armmarketplaceordering() []*Resource {
 	resources := []*Resource{
-    
 		{
 			NewFunc: armmarketplaceordering.NewMarketplaceAgreementsClient,
 		},
-    
 		{
 			NewFunc: armmarketplaceordering.NewOperationsClient,
 		},
-    
 	}
 	return resources
 }

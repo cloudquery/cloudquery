@@ -5,47 +5,36 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armre
 
 func Armreservations() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armreservations.NewQuotaRequestStatusClient,
-		},
-    
-		{
-			NewFunc: armreservations.NewReturnClient,
-		},
-    
-		{
-			NewFunc: armreservations.NewReservationOrderClient,
-		},
-    
-		{
-			NewFunc: armreservations.NewAzureReservationAPIClient,
-		},
-    
-		{
-			NewFunc: armreservations.NewOperationClient,
-		},
-    
-		{
-			NewFunc: armreservations.NewExchangeClient,
-		},
-    
-		{
-			NewFunc: armreservations.NewQuotaClient,
-		},
-    
-		{
-			NewFunc: armreservations.NewReservationClient,
-		},
-    
-		{
-			NewFunc: armreservations.NewCalculateExchangeClient,
-		},
-    
 		{
 			NewFunc: armreservations.NewCalculateRefundClient,
 		},
-    
+		{
+			NewFunc: armreservations.NewCalculateExchangeClient,
+		},
+		{
+			NewFunc: armreservations.NewOperationClient,
+		},
+		{
+			NewFunc: armreservations.NewReturnClient,
+		},
+		{
+			NewFunc: armreservations.NewQuotaClient,
+		},
+		{
+			NewFunc: armreservations.NewReservationClient,
+		},
+		{
+			NewFunc: armreservations.NewAzureReservationAPIClient,
+		},
+		{
+			NewFunc: armreservations.NewExchangeClient,
+		},
+		{
+			NewFunc: armreservations.NewQuotaRequestStatusClient,
+		},
+		{
+			NewFunc: armreservations.NewReservationOrderClient,
+		},
 	}
 	return resources
 }

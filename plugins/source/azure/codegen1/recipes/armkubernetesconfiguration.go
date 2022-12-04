@@ -5,31 +5,24 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kubernetesconfigur
 
 func Armkubernetesconfiguration() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armkubernetesconfiguration.NewExtensionsClient,
-		},
-    
-		{
-			NewFunc: armkubernetesconfiguration.NewOperationStatusClient,
-		},
-    
-		{
-			NewFunc: armkubernetesconfiguration.NewSourceControlConfigurationsClient,
-		},
-    
-		{
-			NewFunc: armkubernetesconfiguration.NewFluxConfigOperationStatusClient,
-		},
-    
 		{
 			NewFunc: armkubernetesconfiguration.NewFluxConfigurationsClient,
 		},
-    
+		{
+			NewFunc: armkubernetesconfiguration.NewOperationStatusClient,
+		},
+		{
+			NewFunc: armkubernetesconfiguration.NewSourceControlConfigurationsClient,
+		},
+		{
+			NewFunc: armkubernetesconfiguration.NewExtensionsClient,
+		},
+		{
+			NewFunc: armkubernetesconfiguration.NewFluxConfigOperationStatusClient,
+		},
 		{
 			NewFunc: armkubernetesconfiguration.NewOperationsClient,
 		},
-    
 	}
 	return resources
 }

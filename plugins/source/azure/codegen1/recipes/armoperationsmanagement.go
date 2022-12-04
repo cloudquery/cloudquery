@@ -5,23 +5,18 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationsmanageme
 
 func Armoperationsmanagement() []*Resource {
 	resources := []*Resource{
-    
 		{
 			NewFunc: armoperationsmanagement.NewManagementConfigurationsClient,
 		},
-    
-		{
-			NewFunc: armoperationsmanagement.NewSolutionsClient,
-		},
-    
-		{
-			NewFunc: armoperationsmanagement.NewManagementAssociationsClient,
-		},
-    
 		{
 			NewFunc: armoperationsmanagement.NewOperationsClient,
 		},
-    
+		{
+			NewFunc: armoperationsmanagement.NewSolutionsClient,
+		},
+		{
+			NewFunc: armoperationsmanagement.NewManagementAssociationsClient,
+		},
 	}
 	return resources
 }

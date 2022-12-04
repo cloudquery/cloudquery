@@ -5,19 +5,15 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devops/armdevops"
 
 func Armdevops() []*Resource {
 	resources := []*Resource{
-    
 		{
 			NewFunc: armdevops.NewOperationsClient,
 		},
-    
 		{
 			NewFunc: armdevops.NewPipelinesClient,
 		},
-    
 		{
 			NewFunc: armdevops.NewPipelineTemplateDefinitionsClient,
 		},
-    
 	}
 	return resources
 }

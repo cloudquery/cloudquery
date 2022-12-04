@@ -5,19 +5,15 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/notificationhubs/a
 
 func Armnotificationhubs() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armnotificationhubs.NewNamespacesClient,
-		},
-    
 		{
 			NewFunc: armnotificationhubs.NewClient,
 		},
-    
+		{
+			NewFunc: armnotificationhubs.NewNamespacesClient,
+		},
 		{
 			NewFunc: armnotificationhubs.NewOperationsClient,
 		},
-    
 	}
 	return resources
 }

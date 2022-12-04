@@ -5,39 +5,30 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/policyinsights/arm
 
 func Armpolicyinsights() []*Resource {
 	resources := []*Resource{
-    
 		{
 			NewFunc: armpolicyinsights.NewAttestationsClient,
 		},
-    
-		{
-			NewFunc: armpolicyinsights.NewPolicyStatesClient,
-		},
-    
-		{
-			NewFunc: armpolicyinsights.NewPolicyTrackedResourcesClient,
-		},
-    
-		{
-			NewFunc: armpolicyinsights.NewRemediationsClient,
-		},
-    
 		{
 			NewFunc: armpolicyinsights.NewOperationsClient,
 		},
-    
+		{
+			NewFunc: armpolicyinsights.NewPolicyTrackedResourcesClient,
+		},
 		{
 			NewFunc: armpolicyinsights.NewPolicyEventsClient,
 		},
-    
 		{
 			NewFunc: armpolicyinsights.NewPolicyMetadataClient,
 		},
-    
 		{
 			NewFunc: armpolicyinsights.NewPolicyRestrictionsClient,
 		},
-    
+		{
+			NewFunc: armpolicyinsights.NewPolicyStatesClient,
+		},
+		{
+			NewFunc: armpolicyinsights.NewRemediationsClient,
+		},
 	}
 	return resources
 }

@@ -5,23 +5,18 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx"
 
 func Armnginx() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armnginx.NewCertificatesClient,
-		},
-    
-		{
-			NewFunc: armnginx.NewConfigurationsClient,
-		},
-    
-		{
-			NewFunc: armnginx.NewDeploymentsClient,
-		},
-    
 		{
 			NewFunc: armnginx.NewOperationsClient,
 		},
-    
+		{
+			NewFunc: armnginx.NewConfigurationsClient,
+		},
+		{
+			NewFunc: armnginx.NewDeploymentsClient,
+		},
+		{
+			NewFunc: armnginx.NewCertificatesClient,
+		},
 	}
 	return resources
 }

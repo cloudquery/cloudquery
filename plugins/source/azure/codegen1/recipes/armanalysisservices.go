@@ -5,15 +5,12 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/analysisservices/a
 
 func Armanalysisservices() []*Resource {
 	resources := []*Resource{
-    
-		{
-			NewFunc: armanalysisservices.NewServersClient,
-		},
-    
 		{
 			NewFunc: armanalysisservices.NewOperationsClient,
 		},
-    
+		{
+			NewFunc: armanalysisservices.NewServersClient,
+		},
 	}
 	return resources
 }
