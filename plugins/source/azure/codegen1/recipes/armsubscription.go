@@ -26,11 +26,11 @@ func Armsubscription() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription",
 		},
 		{
-			NewFunc: armsubscription.NewOperationsClient,
+			NewFunc: armsubscription.NewAliasClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription",
 		},
 		{
-			NewFunc: armsubscription.NewAliasClient,
+			NewFunc: armsubscription.NewOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription",
 		},
 	}

@@ -4,6 +4,7 @@ package armmanagedservices
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managedservices/armmanagedservices"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -44,7 +45,11 @@ func RegistrationAssignment() *schema.Table {
 }
 
 func fetchRegistrationAssignment(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().ArmmanagedservicesRegistrationAssignment
+	cl := meta.(*client.Client)
+	svc, err := armmanagedservices.NewRegistrationAssignmentsClient(cl.Creds, cl.Options)
+	if err != nil {
+		return err
+	}
 	pager := svc.NewListPager(nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)

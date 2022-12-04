@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/saas/armsaas"
 func Armsaas() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armsaas.NewResourcesClient,
+			NewFunc: armsaas.NewOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/saas/armsaas",
 		},
 		{
@@ -14,11 +14,7 @@ func Armsaas() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/saas/armsaas",
 		},
 		{
-			NewFunc: armsaas.NewApplicationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/saas/armsaas",
-		},
-		{
-			NewFunc: armsaas.NewOperationsClient,
+			NewFunc: armsaas.NewClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/saas/armsaas",
 		},
 		{
@@ -26,7 +22,11 @@ func Armsaas() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/saas/armsaas",
 		},
 		{
-			NewFunc: armsaas.NewClient,
+			NewFunc: armsaas.NewResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/saas/armsaas",
+		},
+		{
+			NewFunc: armsaas.NewApplicationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/saas/armsaas",
 		},
 	}

@@ -6,6 +6,14 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdns
 func Armdnsresolver() []Table {
 	tables := []Table{
 		{
+      Name: "dns_forwarding_ruleset",
+      Struct: &armdnsresolver.DNSForwardingRuleset{},
+      ResponseStruct: &armdnsresolver.DNSForwardingRulesetsClientListResponse{},
+      Client: &armdnsresolver.DNSForwardingRulesetsClient{},
+      ListFunc: (&armdnsresolver.DNSForwardingRulesetsClient{}).NewListPager,
+			NewFunc: armdnsresolver.NewDNSForwardingRulesetsClient,
+		},
+		{
       Name: "inbound_endpoint",
       Struct: &armdnsresolver.InboundEndpoint{},
       ResponseStruct: &armdnsresolver.InboundEndpointsClientListResponse{},
@@ -28,14 +36,6 @@ func Armdnsresolver() []Table {
       Client: &armdnsresolver.VirtualNetworkLinksClient{},
       ListFunc: (&armdnsresolver.VirtualNetworkLinksClient{}).NewListPager,
 			NewFunc: armdnsresolver.NewVirtualNetworkLinksClient,
-		},
-		{
-      Name: "dns_forwarding_ruleset",
-      Struct: &armdnsresolver.DNSForwardingRuleset{},
-      ResponseStruct: &armdnsresolver.DNSForwardingRulesetsClientListResponse{},
-      Client: &armdnsresolver.DNSForwardingRulesetsClient{},
-      ListFunc: (&armdnsresolver.DNSForwardingRulesetsClient{}).NewListPager,
-			NewFunc: armdnsresolver.NewDNSForwardingRulesetsClient,
 		},
 		{
       Name: "dns_resolver",

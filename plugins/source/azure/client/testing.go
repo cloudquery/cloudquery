@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/cloudquery/plugin-sdk/plugins"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -27,23 +28,21 @@ func (*MockCreds) GetToken(ctx context.Context, options policy.TokenRequestOptio
 	}, nil
 }
 
-func MockTestHelper(t *testing.T, table *schema.Table, createServices func() (*Services, error)) {
+func MockTestHelper(t *testing.T, table *schema.Table, createServices func() (*arm.ClientOptions, error)) {
 	version := "vDev"
-
 	t.Helper()
-
 	table.IgnoreInTests = false
+	creds := &MockCreds{}
 	l := zerolog.New(zerolog.NewTestWriter(t)).Output(zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro}).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source) (schema.ClientMeta, error) {
-		svc, err := createServices()
+		options, err := createServices()
 		if err != nil {
 			return nil, err
 		}
-		servicesMap := make(map[string]*Services)
-		servicesMap[TestSubscription] = svc
 		c := &Client{
 			logger:        l,
-			services:      servicesMap,
+			Options: options,
+			Creds: creds,
 			subscriptions: []string{TestSubscription},
 		}
 

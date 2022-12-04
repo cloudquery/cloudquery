@@ -6,12 +6,44 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armcon
 func Armconsumption() []Table {
 	tables := []Table{
 		{
+      Name: "budget",
+      Struct: &armconsumption.Budget{},
+      ResponseStruct: &armconsumption.BudgetsClientListResponse{},
+      Client: &armconsumption.BudgetsClient{},
+      ListFunc: (&armconsumption.BudgetsClient{}).NewListPager,
+			NewFunc: armconsumption.NewBudgetsClient,
+		},
+		{
       Name: "marketplace",
       Struct: &armconsumption.Marketplace{},
       ResponseStruct: &armconsumption.MarketplacesClientListResponse{},
       Client: &armconsumption.MarketplacesClient{},
       ListFunc: (&armconsumption.MarketplacesClient{}).NewListPager,
 			NewFunc: armconsumption.NewMarketplacesClient,
+		},
+		{
+      Name: "operation",
+      Struct: &armconsumption.Operation{},
+      ResponseStruct: &armconsumption.OperationsClientListResponse{},
+      Client: &armconsumption.OperationsClient{},
+      ListFunc: (&armconsumption.OperationsClient{}).NewListPager,
+			NewFunc: armconsumption.NewOperationsClient,
+		},
+		// {
+    //   Name: "reservation_recommendation_classification",
+    //   Struct: &armconsumption.ReservationRecommendationClassification{},
+    //   ResponseStruct: &armconsumption.ReservationRecommendationsClientListResponse{},
+    //   Client: &armconsumption.ReservationRecommendationsClient{},
+    //   ListFunc: (&armconsumption.ReservationRecommendationsClient{}).NewListPager,
+		// 	NewFunc: armconsumption.NewReservationRecommendationsClient,
+		// },
+		{
+      Name: "reservation_detail",
+      Struct: &armconsumption.ReservationDetail{},
+      ResponseStruct: &armconsumption.ReservationsDetailsClientListResponse{},
+      Client: &armconsumption.ReservationsDetailsClient{},
+      ListFunc: (&armconsumption.ReservationsDetailsClient{}).NewListPager,
+			NewFunc: armconsumption.NewReservationsDetailsClient,
 		},
 		{
       Name: "reservation_summary",
@@ -29,30 +61,14 @@ func Armconsumption() []Table {
       ListFunc: (&armconsumption.ReservationTransactionsClient{}).NewListPager,
 			NewFunc: armconsumption.NewReservationTransactionsClient,
 		},
-		{
-      Name: "reservation_detail",
-      Struct: &armconsumption.ReservationDetail{},
-      ResponseStruct: &armconsumption.ReservationsDetailsClientListResponse{},
-      Client: &armconsumption.ReservationsDetailsClient{},
-      ListFunc: (&armconsumption.ReservationsDetailsClient{}).NewListPager,
-			NewFunc: armconsumption.NewReservationsDetailsClient,
-		},
-		{
-      Name: "budget",
-      Struct: &armconsumption.Budget{},
-      ResponseStruct: &armconsumption.BudgetsClientListResponse{},
-      Client: &armconsumption.BudgetsClient{},
-      ListFunc: (&armconsumption.BudgetsClient{}).NewListPager,
-			NewFunc: armconsumption.NewBudgetsClient,
-		},
-		{
-      Name: "operation",
-      Struct: &armconsumption.Operation{},
-      ResponseStruct: &armconsumption.OperationsClientListResponse{},
-      Client: &armconsumption.OperationsClient{},
-      ListFunc: (&armconsumption.OperationsClient{}).NewListPager,
-			NewFunc: armconsumption.NewOperationsClient,
-		},
+		// {
+    //   Name: "usage_detail_classification",
+    //   Struct: &armconsumption.UsageDetailClassification{},
+    //   ResponseStruct: &armconsumption.UsageDetailsClientListResponse{},
+    //   Client: &armconsumption.UsageDetailsClient{},
+    //   ListFunc: (&armconsumption.UsageDetailsClient{}).NewListPager,
+		// 	NewFunc: armconsumption.NewUsageDetailsClient,
+		// },
 	}
 
 	for i := range tables {

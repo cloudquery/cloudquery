@@ -4,6 +4,7 @@ package armsecurity
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -39,7 +40,11 @@ func InformationProtectionPolicy() *schema.Table {
 }
 
 func fetchInformationProtectionPolicy(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().ArmsecurityInformationProtectionPolicy
+	cl := meta.(*client.Client)
+	svc, err := armsecurity.NewInformationProtectionPoliciesClient(cl.Creds, cl.Options)
+	if err != nil {
+		return err
+	}
 	pager := svc.NewListPager(nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)

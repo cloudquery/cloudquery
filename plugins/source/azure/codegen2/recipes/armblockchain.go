@@ -6,20 +6,20 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blockchain/armbloc
 func Armblockchain() []Table {
 	tables := []Table{
 		{
-      Name: "member",
-      Struct: &armblockchain.Member{},
-      ResponseStruct: &armblockchain.MembersClientListResponse{},
-      Client: &armblockchain.MembersClient{},
-      ListFunc: (&armblockchain.MembersClient{}).NewListPager,
-			NewFunc: armblockchain.NewMembersClient,
-		},
-		{
       Name: "resource_provider_operation",
       Struct: &armblockchain.ResourceProviderOperation{},
       ResponseStruct: &armblockchain.OperationsClientListResponse{},
       Client: &armblockchain.OperationsClient{},
       ListFunc: (&armblockchain.OperationsClient{}).NewListPager,
 			NewFunc: armblockchain.NewOperationsClient,
+		},
+		{
+      Name: "member",
+      Struct: &armblockchain.Member{},
+      ResponseStruct: &armblockchain.MembersClientListResponse{},
+      Client: &armblockchain.MembersClient{},
+      ListFunc: (&armblockchain.MembersClient{}).NewListPager,
+			NewFunc: armblockchain.NewMembersClient,
 		},
 		{
       Name: "transaction_node",

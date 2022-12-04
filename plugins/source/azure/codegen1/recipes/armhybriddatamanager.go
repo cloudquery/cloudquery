@@ -6,11 +6,15 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybriddatamanager/
 func Armhybriddatamanager() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armhybriddatamanager.NewJobsClient,
+			NewFunc: armhybriddatamanager.NewDataServicesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybriddatamanager/armhybriddatamanager",
 		},
 		{
-			NewFunc: armhybriddatamanager.NewOperationsClient,
+			NewFunc: armhybriddatamanager.NewDataStoreTypesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybriddatamanager/armhybriddatamanager",
+		},
+		{
+			NewFunc: armhybriddatamanager.NewJobsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybriddatamanager/armhybriddatamanager",
 		},
 		{
@@ -26,15 +30,11 @@ func Armhybriddatamanager() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybriddatamanager/armhybriddatamanager",
 		},
 		{
-			NewFunc: armhybriddatamanager.NewDataServicesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybriddatamanager/armhybriddatamanager",
-		},
-		{
-			NewFunc: armhybriddatamanager.NewDataStoreTypesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybriddatamanager/armhybriddatamanager",
-		},
-		{
 			NewFunc: armhybriddatamanager.NewJobDefinitionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybriddatamanager/armhybriddatamanager",
+		},
+		{
+			NewFunc: armhybriddatamanager.NewOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybriddatamanager/armhybriddatamanager",
 		},
 	}

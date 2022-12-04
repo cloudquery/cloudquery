@@ -6,7 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysqlflex
 func Armmysqlflexibleservers() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armmysqlflexibleservers.NewCheckVirtualNetworkSubnetUsageClient,
+			NewFunc: armmysqlflexibleservers.NewBackupsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysqlflexibleservers",
+		},
+		{
+			NewFunc: armmysqlflexibleservers.NewCheckNameAvailabilityClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysqlflexibleservers",
 		},
 		{
@@ -14,7 +18,11 @@ func Armmysqlflexibleservers() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysqlflexibleservers",
 		},
 		{
-			NewFunc: armmysqlflexibleservers.NewReplicasClient,
+			NewFunc: armmysqlflexibleservers.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysqlflexibleservers",
+		},
+		{
+			NewFunc: armmysqlflexibleservers.NewGetPrivateDNSZoneSuffixClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysqlflexibleservers",
 		},
 		{
@@ -22,7 +30,7 @@ func Armmysqlflexibleservers() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysqlflexibleservers",
 		},
 		{
-			NewFunc: armmysqlflexibleservers.NewCheckNameAvailabilityClient,
+			NewFunc: armmysqlflexibleservers.NewCheckVirtualNetworkSubnetUsageClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysqlflexibleservers",
 		},
 		{
@@ -34,19 +42,11 @@ func Armmysqlflexibleservers() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysqlflexibleservers",
 		},
 		{
-			NewFunc: armmysqlflexibleservers.NewBackupsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysqlflexibleservers",
-		},
-		{
-			NewFunc: armmysqlflexibleservers.NewGetPrivateDNSZoneSuffixClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysqlflexibleservers",
-		},
-		{
-			NewFunc: armmysqlflexibleservers.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysqlflexibleservers",
-		},
-		{
 			NewFunc: armmysqlflexibleservers.NewLocationBasedCapabilitiesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysqlflexibleservers",
+		},
+		{
+			NewFunc: armmysqlflexibleservers.NewReplicasClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysqlflexibleservers",
 		},
 	}

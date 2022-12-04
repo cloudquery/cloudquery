@@ -6,22 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datadog/armdatadog
 func Armdatadog() []Table {
 	tables := []Table{
 		{
-      Name: "single_sign_on_resource",
-      Struct: &armdatadog.SingleSignOnResource{},
-      ResponseStruct: &armdatadog.SingleSignOnConfigurationsClientListResponse{},
-      Client: &armdatadog.SingleSignOnConfigurationsClient{},
-      ListFunc: (&armdatadog.SingleSignOnConfigurationsClient{}).NewListPager,
-			NewFunc: armdatadog.NewSingleSignOnConfigurationsClient,
-		},
-		{
-      Name: "agreement_resource",
-      Struct: &armdatadog.AgreementResource{},
-      ResponseStruct: &armdatadog.MarketplaceAgreementsClientListResponse{},
-      Client: &armdatadog.MarketplaceAgreementsClient{},
-      ListFunc: (&armdatadog.MarketplaceAgreementsClient{}).NewListPager,
-			NewFunc: armdatadog.NewMarketplaceAgreementsClient,
-		},
-		{
       Name: "monitor_resource",
       Struct: &armdatadog.MonitorResource{},
       ResponseStruct: &armdatadog.MonitorsClientListResponse{},
@@ -36,6 +20,22 @@ func Armdatadog() []Table {
       Client: &armdatadog.OperationsClient{},
       ListFunc: (&armdatadog.OperationsClient{}).NewListPager,
 			NewFunc: armdatadog.NewOperationsClient,
+		},
+		{
+      Name: "single_sign_on_resource",
+      Struct: &armdatadog.SingleSignOnResource{},
+      ResponseStruct: &armdatadog.SingleSignOnConfigurationsClientListResponse{},
+      Client: &armdatadog.SingleSignOnConfigurationsClient{},
+      ListFunc: (&armdatadog.SingleSignOnConfigurationsClient{}).NewListPager,
+			NewFunc: armdatadog.NewSingleSignOnConfigurationsClient,
+		},
+		{
+      Name: "agreement_resource",
+      Struct: &armdatadog.AgreementResource{},
+      ResponseStruct: &armdatadog.MarketplaceAgreementsClientListResponse{},
+      Client: &armdatadog.MarketplaceAgreementsClient{},
+      ListFunc: (&armdatadog.MarketplaceAgreementsClient{}).NewListPager,
+			NewFunc: armdatadog.NewMarketplaceAgreementsClient,
 		},
 		{
       Name: "monitoring_tag_rules",

@@ -10,6 +10,14 @@ func Armiothub() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iothub/armiothub",
 		},
 		{
+			NewFunc: armiothub.NewResourceClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iothub/armiothub",
+		},
+		{
+			NewFunc: armiothub.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iothub/armiothub",
+		},
+		{
 			NewFunc: armiothub.NewClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iothub/armiothub",
 		},
@@ -19,14 +27,6 @@ func Armiothub() []*Resource {
 		},
 		{
 			NewFunc: armiothub.NewPrivateLinkResourcesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iothub/armiothub",
-		},
-		{
-			NewFunc: armiothub.NewResourceClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iothub/armiothub",
-		},
-		{
-			NewFunc: armiothub.NewOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iothub/armiothub",
 		},
 		{

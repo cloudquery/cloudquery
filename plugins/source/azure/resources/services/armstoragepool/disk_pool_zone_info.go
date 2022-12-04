@@ -4,6 +4,7 @@ package armstoragepool
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagepool/armstoragepool"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -34,7 +35,11 @@ func DiskPoolZoneInfo() *schema.Table {
 }
 
 func fetchDiskPoolZoneInfo(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().ArmstoragepoolDiskPoolZoneInfo
+	cl := meta.(*client.Client)
+	svc, err := armstoragepool.NewDiskPoolZonesClient(cl.SubscriptionId, cl.Creds, cl.Options)
+	if err != nil {
+		return err
+	}
 	pager := svc.NewListPager(nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)

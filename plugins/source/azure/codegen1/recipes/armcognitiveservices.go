@@ -6,19 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/
 func Armcognitiveservices() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armcognitiveservices.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices",
-		},
-		{
-			NewFunc: armcognitiveservices.NewResourceSKUsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices",
-		},
-		{
-			NewFunc: armcognitiveservices.NewAccountsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices",
-		},
-		{
 			NewFunc: armcognitiveservices.NewDeletedAccountsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices",
+		},
+		{
+			NewFunc: armcognitiveservices.NewDeploymentsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices",
 		},
 		{
@@ -34,11 +26,19 @@ func Armcognitiveservices() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices",
 		},
 		{
-			NewFunc: armcognitiveservices.NewDeploymentsClient,
+			NewFunc: armcognitiveservices.NewPrivateEndpointConnectionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices",
 		},
 		{
-			NewFunc: armcognitiveservices.NewPrivateEndpointConnectionsClient,
+			NewFunc: armcognitiveservices.NewAccountsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices",
+		},
+		{
+			NewFunc: armcognitiveservices.NewResourceSKUsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices",
+		},
+		{
+			NewFunc: armcognitiveservices.NewOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices",
 		},
 		{

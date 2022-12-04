@@ -18,13 +18,15 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-func createVirtualRouterPeering() (*client.Services, error) {
+func createVirtualRouterPeering() (*arm.ClientOptions, error) {
 	var item armnetwork.VirtualRouterPeeringsClientListResponse
 	if err := faker.FakeObject(&item); err != nil {
 		return nil, err
 	}
+
 	emptyStr := ""
 	item.NextLink = &emptyStr
+
 	mux := httprouter.New()
 	mux.GET("/*filepath", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		b, err := json.Marshal(&item)
@@ -42,16 +44,10 @@ func createVirtualRouterPeering() (*client.Services, error) {
 		Endpoint: ts.URL,
 		Audience: "test",
 	}
-	svc, err := armnetwork.NewVirtualRouterPeeringsClient(client.TestSubscription, &client.MockCreds{}, &arm.ClientOptions{
+	return &arm.ClientOptions{
 		ClientOptions: azcore.ClientOptions{
 			Transport: ts.Client(),
 		},
-	})
-	if err != nil {
-		return nil, err
-	}
-	return &client.Services{
-		ArmnetworkVirtualRouterPeering: svc,
 	}, nil
 }
 

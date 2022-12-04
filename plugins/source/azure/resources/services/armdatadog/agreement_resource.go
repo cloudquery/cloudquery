@@ -4,6 +4,7 @@ package armdatadog
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datadog/armdatadog"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -44,7 +45,11 @@ func AgreementResource() *schema.Table {
 }
 
 func fetchAgreementResource(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().ArmdatadogAgreementResource
+	cl := meta.(*client.Client)
+	svc, err := armdatadog.NewMarketplaceAgreementsClient(cl.SubscriptionId, cl.Creds, cl.Options)
+	if err != nil {
+		return err
+	}
 	pager := svc.NewListPager(nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)

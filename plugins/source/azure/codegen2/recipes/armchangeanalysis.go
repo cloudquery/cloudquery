@@ -6,20 +6,20 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/changeanalysis/arm
 func Armchangeanalysis() []Table {
 	tables := []Table{
 		{
-      Name: "resource_provider_operation_definition",
-      Struct: &armchangeanalysis.ResourceProviderOperationDefinition{},
-      ResponseStruct: &armchangeanalysis.OperationsClientListResponse{},
-      Client: &armchangeanalysis.OperationsClient{},
-      ListFunc: (&armchangeanalysis.OperationsClient{}).NewListPager,
-			NewFunc: armchangeanalysis.NewOperationsClient,
-		},
-		{
       Name: "change",
       Struct: &armchangeanalysis.Change{},
       ResponseStruct: &armchangeanalysis.ResourceChangesClientListResponse{},
       Client: &armchangeanalysis.ResourceChangesClient{},
       ListFunc: (&armchangeanalysis.ResourceChangesClient{}).NewListPager,
 			NewFunc: armchangeanalysis.NewResourceChangesClient,
+		},
+		{
+      Name: "resource_provider_operation_definition",
+      Struct: &armchangeanalysis.ResourceProviderOperationDefinition{},
+      ResponseStruct: &armchangeanalysis.OperationsClientListResponse{},
+      Client: &armchangeanalysis.OperationsClient{},
+      ListFunc: (&armchangeanalysis.OperationsClient{}).NewListPager,
+			NewFunc: armchangeanalysis.NewOperationsClient,
 		},
 	}
 

@@ -6,11 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsiot/armwind
 func Armwindowsiot() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armwindowsiot.NewOperationsClient,
+			NewFunc: armwindowsiot.NewServicesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsiot/armwindowsiot",
 		},
 		{
-			NewFunc: armwindowsiot.NewServicesClient,
+			NewFunc: armwindowsiot.NewOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsiot/armwindowsiot",
 		},
 	}

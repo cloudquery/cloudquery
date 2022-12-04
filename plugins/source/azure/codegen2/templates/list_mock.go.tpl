@@ -20,14 +20,15 @@ import (
 	{{- end}}
 )
 
-
-func create{{.Name | ToCamel}}() (*client.Services, error) {  
+func create{{.Name | ToCamel}}() (*arm.ClientOptions, error) {  
   var item {{.Service}}.{{.ResponseStructName}}
 	if err := faker.FakeObject(&item); err != nil {
 		return nil, err
 	}
+	{{if .ResponspeStructNextLink}}
 	emptyStr := ""
 	item.NextLink = &emptyStr
+	{{end}}
 	mux := httprouter.New()
 	mux.GET("/*filepath", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		b, err := json.Marshal(&item)
@@ -41,20 +42,14 @@ func create{{.Name | ToCamel}}() (*client.Services, error) {
 		}
 	})
 	ts := httptest.NewServer(mux)
-  	cloud.AzurePublic.Services[cloud.ResourceManager] = cloud.ServiceConfiguration{
+  cloud.AzurePublic.Services[cloud.ResourceManager] = cloud.ServiceConfiguration{
 		Endpoint: ts.URL,
     Audience: "test",
 	}
-  svc, err := {{.Service}}.{{.NewFuncName}}(client.TestSubscription, &client.MockCreds{}, &arm.ClientOptions{
+	return &arm.ClientOptions{
 		ClientOptions: azcore.ClientOptions{
 			Transport: ts.Client(),
 		},
-	})
-	if err != nil {
-		return nil, err
-	}
-	return &client.Services{
-		{{.Service | ToCamel}}{{.Name | ToCamel}}: svc,
 	}, nil
 }
 

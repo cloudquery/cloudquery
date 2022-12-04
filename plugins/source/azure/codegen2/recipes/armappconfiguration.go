@@ -6,20 +6,20 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appconfiguration/a
 func Armappconfiguration() []Table {
 	tables := []Table{
 		{
-      Name: "configuration_store",
-      Struct: &armappconfiguration.ConfigurationStore{},
-      ResponseStruct: &armappconfiguration.ConfigurationStoresClientListResponse{},
-      Client: &armappconfiguration.ConfigurationStoresClient{},
-      ListFunc: (&armappconfiguration.ConfigurationStoresClient{}).NewListPager,
-			NewFunc: armappconfiguration.NewConfigurationStoresClient,
-		},
-		{
       Name: "operation_definition",
       Struct: &armappconfiguration.OperationDefinition{},
       ResponseStruct: &armappconfiguration.OperationsClientListResponse{},
       Client: &armappconfiguration.OperationsClient{},
       ListFunc: (&armappconfiguration.OperationsClient{}).NewListPager,
 			NewFunc: armappconfiguration.NewOperationsClient,
+		},
+		{
+      Name: "configuration_store",
+      Struct: &armappconfiguration.ConfigurationStore{},
+      ResponseStruct: &armappconfiguration.ConfigurationStoresClientListResponse{},
+      Client: &armappconfiguration.ConfigurationStoresClient{},
+      ListFunc: (&armappconfiguration.ConfigurationStoresClient{}).NewListPager,
+			NewFunc: armappconfiguration.NewConfigurationStoresClient,
 		},
 	}
 

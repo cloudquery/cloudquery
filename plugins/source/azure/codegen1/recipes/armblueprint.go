@@ -6,11 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blueprint/armbluep
 func Armblueprint() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armblueprint.NewArtifactsClient,
+			NewFunc: armblueprint.NewPublishedArtifactsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blueprint/armblueprint",
 		},
 		{
-			NewFunc: armblueprint.NewBlueprintsClient,
+			NewFunc: armblueprint.NewPublishedBlueprintsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blueprint/armblueprint",
 		},
 		{
@@ -22,11 +22,11 @@ func Armblueprint() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blueprint/armblueprint",
 		},
 		{
-			NewFunc: armblueprint.NewPublishedArtifactsClient,
+			NewFunc: armblueprint.NewArtifactsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blueprint/armblueprint",
 		},
 		{
-			NewFunc: armblueprint.NewPublishedBlueprintsClient,
+			NewFunc: armblueprint.NewBlueprintsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blueprint/armblueprint",
 		},
 	}

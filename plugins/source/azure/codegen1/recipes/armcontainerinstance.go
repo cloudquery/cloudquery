@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerinstance/
 func Armcontainerinstance() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armcontainerinstance.NewContainersClient,
+			NewFunc: armcontainerinstance.NewContainerGroupsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerinstance/armcontainerinstance",
 		},
 		{
@@ -18,7 +18,7 @@ func Armcontainerinstance() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerinstance/armcontainerinstance",
 		},
 		{
-			NewFunc: armcontainerinstance.NewContainerGroupsClient,
+			NewFunc: armcontainerinstance.NewContainersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerinstance/armcontainerinstance",
 		},
 	}

@@ -10,11 +10,11 @@ func Armnetworkfunction() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction",
 		},
 		{
-			NewFunc: armnetworkfunction.NewClient,
+			NewFunc: armnetworkfunction.NewAzureTrafficCollectorsByResourceGroupClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction",
 		},
 		{
-			NewFunc: armnetworkfunction.NewAzureTrafficCollectorsByResourceGroupClient,
+			NewFunc: armnetworkfunction.NewClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction",
 		},
 		{

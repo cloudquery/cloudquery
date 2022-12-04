@@ -32,13 +32,17 @@ type Table struct {
 	ResponseStruct interface{}
 	// ResponseStructName is reflected name from the ResponseStruct
 	ResponseStructName string
+	// Does responseStruct has NextLink field
+	ResponspeStructNextLink bool
 	// NewFunc
 	NewFunc interface{}
 	// NewFuncName is reflected name from the ResponseStruct
 	NewFuncName string
-	// NewFunc
+	// Does the newfunc get subscription_id as a first parameter
+	NewFuncHasSubscriptionId bool
+	// ListFunc
 	ListFunc interface{}
-	// NewFuncName is reflected name from the ResponseStruct
+	// NewFuncName is reflected name from the ListFunc
 	ListFuncName string
 	// should we use ListAll function
 	ListAll bool
@@ -49,7 +53,7 @@ type Table struct {
 	// Template is the template to use to generate the resource (some services has different template as some services were generated using different original codegen)
 	Template string
 	// imports to add for this resource
-	Imports []string
+	// Imports []string
 	// Multiplex
 	Multiplex *string
 	// ChildTable

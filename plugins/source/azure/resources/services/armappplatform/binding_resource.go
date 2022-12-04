@@ -4,6 +4,7 @@ package armappplatform
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -44,7 +45,11 @@ func BindingResource() *schema.Table {
 }
 
 func fetchBindingResource(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().ArmappplatformBindingResource
+	cl := meta.(*client.Client)
+	svc, err := armappplatform.NewBindingsClient(cl.SubscriptionId, cl.Creds, cl.Options)
+	if err != nil {
+		return err
+	}
 	pager := svc.NewListPager(nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)

@@ -6,28 +6,12 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpost
 func Armpostgresql() []Table {
 	tables := []Table{
 		{
-      Name: "performance_tier_properties",
-      Struct: &armpostgresql.PerformanceTierProperties{},
-      ResponseStruct: &armpostgresql.ServerBasedPerformanceTierClientListResponse{},
-      Client: &armpostgresql.ServerBasedPerformanceTierClient{},
-      ListFunc: (&armpostgresql.ServerBasedPerformanceTierClient{}).NewListPager,
-			NewFunc: armpostgresql.NewServerBasedPerformanceTierClient,
-		},
-		{
       Name: "server_key",
       Struct: &armpostgresql.ServerKey{},
       ResponseStruct: &armpostgresql.ServerKeysClientListResponse{},
       Client: &armpostgresql.ServerKeysClient{},
       ListFunc: (&armpostgresql.ServerKeysClient{}).NewListPager,
 			NewFunc: armpostgresql.NewServerKeysClient,
-		},
-		{
-      Name: "performance_tier_properties",
-      Struct: &armpostgresql.PerformanceTierProperties{},
-      ResponseStruct: &armpostgresql.LocationBasedPerformanceTierClientListResponse{},
-      Client: &armpostgresql.LocationBasedPerformanceTierClient{},
-      ListFunc: (&armpostgresql.LocationBasedPerformanceTierClient{}).NewListPager,
-			NewFunc: armpostgresql.NewLocationBasedPerformanceTierClient,
 		},
 		{
       Name: "server_administrator_resource",
@@ -38,12 +22,28 @@ func Armpostgresql() []Table {
 			NewFunc: armpostgresql.NewServerAdministratorsClient,
 		},
 		{
+      Name: "performance_tier_properties",
+      Struct: &armpostgresql.PerformanceTierProperties{},
+      ResponseStruct: &armpostgresql.ServerBasedPerformanceTierClientListResponse{},
+      Client: &armpostgresql.ServerBasedPerformanceTierClient{},
+      ListFunc: (&armpostgresql.ServerBasedPerformanceTierClient{}).NewListPager,
+			NewFunc: armpostgresql.NewServerBasedPerformanceTierClient,
+		},
+		{
       Name: "server",
       Struct: &armpostgresql.Server{},
       ResponseStruct: &armpostgresql.ServersClientListResponse{},
       Client: &armpostgresql.ServersClient{},
       ListFunc: (&armpostgresql.ServersClient{}).NewListPager,
 			NewFunc: armpostgresql.NewServersClient,
+		},
+		{
+      Name: "performance_tier_properties",
+      Struct: &armpostgresql.PerformanceTierProperties{},
+      ResponseStruct: &armpostgresql.LocationBasedPerformanceTierClientListResponse{},
+      Client: &armpostgresql.LocationBasedPerformanceTierClient{},
+      ListFunc: (&armpostgresql.LocationBasedPerformanceTierClient{}).NewListPager,
+			NewFunc: armpostgresql.NewLocationBasedPerformanceTierClient,
 		},
 	}
 

@@ -6,12 +6,12 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering
 func Armpeering() []Table {
 	tables := []Table{
 		{
-      Name: "service_provider",
-      Struct: &armpeering.ServiceProvider{},
-      ResponseStruct: &armpeering.ServiceProvidersClientListResponse{},
-      Client: &armpeering.ServiceProvidersClient{},
-      ListFunc: (&armpeering.ServiceProvidersClient{}).NewListPager,
-			NewFunc: armpeering.NewServiceProvidersClient,
+      Name: "location",
+      Struct: &armpeering.Location{},
+      ResponseStruct: &armpeering.LocationsClientListResponse{},
+      Client: &armpeering.LocationsClient{},
+      ListFunc: (&armpeering.LocationsClient{}).NewListPager,
+			NewFunc: armpeering.NewLocationsClient,
 		},
 		{
       Name: "operation",
@@ -20,22 +20,6 @@ func Armpeering() []Table {
       Client: &armpeering.OperationsClient{},
       ListFunc: (&armpeering.OperationsClient{}).NewListPager,
 			NewFunc: armpeering.NewOperationsClient,
-		},
-		{
-      Name: "peering",
-      Struct: &armpeering.Peering{},
-      ResponseStruct: &armpeering.LegacyPeeringsClientListResponse{},
-      Client: &armpeering.LegacyPeeringsClient{},
-      ListFunc: (&armpeering.LegacyPeeringsClient{}).NewListPager,
-			NewFunc: armpeering.NewLegacyPeeringsClient,
-		},
-		{
-      Name: "service_country",
-      Struct: &armpeering.ServiceCountry{},
-      ResponseStruct: &armpeering.ServiceCountriesClientListResponse{},
-      Client: &armpeering.ServiceCountriesClient{},
-      ListFunc: (&armpeering.ServiceCountriesClient{}).NewListPager,
-			NewFunc: armpeering.NewServiceCountriesClient,
 		},
 		{
       Name: "service_location",
@@ -54,12 +38,28 @@ func Armpeering() []Table {
 			NewFunc: armpeering.NewCdnPeeringPrefixesClient,
 		},
 		{
-      Name: "location",
-      Struct: &armpeering.Location{},
-      ResponseStruct: &armpeering.LocationsClientListResponse{},
-      Client: &armpeering.LocationsClient{},
-      ListFunc: (&armpeering.LocationsClient{}).NewListPager,
-			NewFunc: armpeering.NewLocationsClient,
+      Name: "service_country",
+      Struct: &armpeering.ServiceCountry{},
+      ResponseStruct: &armpeering.ServiceCountriesClientListResponse{},
+      Client: &armpeering.ServiceCountriesClient{},
+      ListFunc: (&armpeering.ServiceCountriesClient{}).NewListPager,
+			NewFunc: armpeering.NewServiceCountriesClient,
+		},
+		{
+      Name: "service_provider",
+      Struct: &armpeering.ServiceProvider{},
+      ResponseStruct: &armpeering.ServiceProvidersClientListResponse{},
+      Client: &armpeering.ServiceProvidersClient{},
+      ListFunc: (&armpeering.ServiceProvidersClient{}).NewListPager,
+			NewFunc: armpeering.NewServiceProvidersClient,
+		},
+		{
+      Name: "peering",
+      Struct: &armpeering.Peering{},
+      ResponseStruct: &armpeering.LegacyPeeringsClientListResponse{},
+      Client: &armpeering.LegacyPeeringsClient{},
+      ListFunc: (&armpeering.LegacyPeeringsClient{}).NewListPager,
+			NewFunc: armpeering.NewLegacyPeeringsClient,
 		},
 	}
 

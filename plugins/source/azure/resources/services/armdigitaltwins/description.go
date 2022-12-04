@@ -4,6 +4,7 @@ package armdigitaltwins
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/digitaltwins/armdigitaltwins"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -59,7 +60,11 @@ func Description() *schema.Table {
 }
 
 func fetchDescription(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().ArmdigitaltwinsDescription
+	cl := meta.(*client.Client)
+	svc, err := armdigitaltwins.NewClient(cl.SubscriptionId, cl.Creds, cl.Options)
+	if err != nil {
+		return err
+	}
 	pager := svc.NewListPager(nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)

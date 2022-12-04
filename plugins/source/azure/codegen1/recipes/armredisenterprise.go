@@ -6,11 +6,15 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/ar
 func Armredisenterprise() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armredisenterprise.NewOperationsStatusClient,
+			NewFunc: armredisenterprise.NewClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise",
 		},
 		{
-			NewFunc: armredisenterprise.NewPrivateEndpointConnectionsClient,
+			NewFunc: armredisenterprise.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise",
+		},
+		{
+			NewFunc: armredisenterprise.NewOperationsStatusClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise",
 		},
 		{
@@ -18,15 +22,11 @@ func Armredisenterprise() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise",
 		},
 		{
-			NewFunc: armredisenterprise.NewClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise",
-		},
-		{
 			NewFunc: armredisenterprise.NewDatabasesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise",
 		},
 		{
-			NewFunc: armredisenterprise.NewOperationsClient,
+			NewFunc: armredisenterprise.NewPrivateEndpointConnectionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise",
 		},
 	}

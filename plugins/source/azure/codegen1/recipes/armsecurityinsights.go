@@ -6,6 +6,18 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/a
 func Armsecurityinsights() []*Resource {
 	resources := []*Resource{
 		{
+			NewFunc: armsecurityinsights.NewWatchlistsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights",
+		},
+		{
+			NewFunc: armsecurityinsights.NewDataConnectorsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights",
+		},
+		{
+			NewFunc: armsecurityinsights.NewIncidentRelationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights",
+		},
+		{
 			NewFunc: armsecurityinsights.NewSentinelOnboardingStatesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights",
 		},
@@ -14,11 +26,7 @@ func Armsecurityinsights() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights",
 		},
 		{
-			NewFunc: armsecurityinsights.NewWatchlistItemsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights",
-		},
-		{
-			NewFunc: armsecurityinsights.NewWatchlistsClient,
+			NewFunc: armsecurityinsights.NewAlertRulesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights",
 		},
 		{
@@ -26,7 +34,19 @@ func Armsecurityinsights() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights",
 		},
 		{
-			NewFunc: armsecurityinsights.NewIncidentCommentsClient,
+			NewFunc: armsecurityinsights.NewAlertRuleTemplatesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights",
+		},
+		{
+			NewFunc: armsecurityinsights.NewIncidentsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights",
+		},
+		{
+			NewFunc: armsecurityinsights.NewThreatIntelligenceIndicatorClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights",
+		},
+		{
+			NewFunc: armsecurityinsights.NewWatchlistItemsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights",
 		},
 		{
@@ -38,35 +58,15 @@ func Armsecurityinsights() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights",
 		},
 		{
+			NewFunc: armsecurityinsights.NewIncidentCommentsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights",
+		},
+		{
 			NewFunc: armsecurityinsights.NewOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights",
 		},
 		{
-			NewFunc: armsecurityinsights.NewThreatIntelligenceIndicatorClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights",
-		},
-		{
-			NewFunc: armsecurityinsights.NewAlertRuleTemplatesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights",
-		},
-		{
 			NewFunc: armsecurityinsights.NewThreatIntelligenceIndicatorMetricsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights",
-		},
-		{
-			NewFunc: armsecurityinsights.NewIncidentRelationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights",
-		},
-		{
-			NewFunc: armsecurityinsights.NewIncidentsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights",
-		},
-		{
-			NewFunc: armsecurityinsights.NewAlertRulesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights",
-		},
-		{
-			NewFunc: armsecurityinsights.NewDataConnectorsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights",
 		},
 	}

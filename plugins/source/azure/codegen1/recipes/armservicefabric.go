@@ -10,11 +10,15 @@ func Armservicefabric() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/armservicefabric",
 		},
 		{
-			NewFunc: armservicefabric.NewApplicationsClient,
+			NewFunc: armservicefabric.NewOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/armservicefabric",
 		},
 		{
-			NewFunc: armservicefabric.NewServicesClient,
+			NewFunc: armservicefabric.NewClusterVersionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/armservicefabric",
+		},
+		{
+			NewFunc: armservicefabric.NewApplicationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/armservicefabric",
 		},
 		{
@@ -26,11 +30,7 @@ func Armservicefabric() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/armservicefabric",
 		},
 		{
-			NewFunc: armservicefabric.NewClusterVersionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/armservicefabric",
-		},
-		{
-			NewFunc: armservicefabric.NewOperationsClient,
+			NewFunc: armservicefabric.NewServicesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/armservicefabric",
 		},
 	}

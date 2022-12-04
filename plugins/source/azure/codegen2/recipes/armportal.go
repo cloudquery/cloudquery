@@ -6,6 +6,14 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/portal/armportal"
 func Armportal() []Table {
 	tables := []Table{
 		{
+      Name: "configuration",
+      Struct: &armportal.Configuration{},
+      ResponseStruct: &armportal.TenantConfigurationsClientListResponse{},
+      Client: &armportal.TenantConfigurationsClient{},
+      ListFunc: (&armportal.TenantConfigurationsClient{}).NewListPager,
+			NewFunc: armportal.NewTenantConfigurationsClient,
+		},
+		{
       Name: "violation",
       Struct: &armportal.Violation{},
       ResponseStruct: &armportal.ListTenantConfigurationViolationsClientListResponse{},
@@ -20,14 +28,6 @@ func Armportal() []Table {
       Client: &armportal.OperationsClient{},
       ListFunc: (&armportal.OperationsClient{}).NewListPager,
 			NewFunc: armportal.NewOperationsClient,
-		},
-		{
-      Name: "configuration",
-      Struct: &armportal.Configuration{},
-      ResponseStruct: &armportal.TenantConfigurationsClientListResponse{},
-      Client: &armportal.TenantConfigurationsClient{},
-      ListFunc: (&armportal.TenantConfigurationsClient{}).NewListPager,
-			NewFunc: armportal.NewTenantConfigurationsClient,
 		},
 	}
 

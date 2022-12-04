@@ -10,7 +10,7 @@ func Armconfluent() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confluent/armconfluent",
 		},
 		{
-			NewFunc: armconfluent.NewOrganizationClient,
+			NewFunc: armconfluent.NewMarketplaceAgreementsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confluent/armconfluent",
 		},
 		{
@@ -18,7 +18,7 @@ func Armconfluent() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confluent/armconfluent",
 		},
 		{
-			NewFunc: armconfluent.NewMarketplaceAgreementsClient,
+			NewFunc: armconfluent.NewOrganizationClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confluent/armconfluent",
 		},
 	}

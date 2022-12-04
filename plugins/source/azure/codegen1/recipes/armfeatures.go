@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armfeatu
 func Armfeatures() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armfeatures.NewFeatureClient,
+			NewFunc: armfeatures.NewClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armfeatures",
 		},
 		{
@@ -14,7 +14,7 @@ func Armfeatures() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armfeatures",
 		},
 		{
-			NewFunc: armfeatures.NewClient,
+			NewFunc: armfeatures.NewFeatureClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armfeatures",
 		},
 	}

@@ -14,12 +14,12 @@ func Armchaos() []Table {
 			NewFunc: armchaos.NewTargetsClient,
 		},
 		{
-      Name: "target_type",
-      Struct: &armchaos.TargetType{},
-      ResponseStruct: &armchaos.TargetTypesClientListResponse{},
-      Client: &armchaos.TargetTypesClient{},
-      ListFunc: (&armchaos.TargetTypesClient{}).NewListPager,
-			NewFunc: armchaos.NewTargetTypesClient,
+      Name: "capability_type",
+      Struct: &armchaos.CapabilityType{},
+      ResponseStruct: &armchaos.CapabilityTypesClientListResponse{},
+      Client: &armchaos.CapabilityTypesClient{},
+      ListFunc: (&armchaos.CapabilityTypesClient{}).NewListPager,
+			NewFunc: armchaos.NewCapabilityTypesClient,
 		},
 		{
       Name: "experiment",
@@ -30,20 +30,20 @@ func Armchaos() []Table {
 			NewFunc: armchaos.NewExperimentsClient,
 		},
 		{
+      Name: "target_type",
+      Struct: &armchaos.TargetType{},
+      ResponseStruct: &armchaos.TargetTypesClientListResponse{},
+      Client: &armchaos.TargetTypesClient{},
+      ListFunc: (&armchaos.TargetTypesClient{}).NewListPager,
+			NewFunc: armchaos.NewTargetTypesClient,
+		},
+		{
       Name: "capability",
       Struct: &armchaos.Capability{},
       ResponseStruct: &armchaos.CapabilitiesClientListResponse{},
       Client: &armchaos.CapabilitiesClient{},
       ListFunc: (&armchaos.CapabilitiesClient{}).NewListPager,
 			NewFunc: armchaos.NewCapabilitiesClient,
-		},
-		{
-      Name: "capability_type",
-      Struct: &armchaos.CapabilityType{},
-      ResponseStruct: &armchaos.CapabilityTypesClientListResponse{},
-      Client: &armchaos.CapabilityTypesClient{},
-      ListFunc: (&armchaos.CapabilityTypesClient{}).NewListPager,
-			NewFunc: armchaos.NewCapabilityTypesClient,
 		},
 	}
 

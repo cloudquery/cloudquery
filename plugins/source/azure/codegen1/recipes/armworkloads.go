@@ -6,23 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkl
 func Armworkloads() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armworkloads.NewSAPApplicationServerInstancesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads",
-		},
-		{
-			NewFunc: armworkloads.NewWordpressInstancesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads",
-		},
-		{
 			NewFunc: armworkloads.NewPhpWorkloadsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads",
-		},
-		{
-			NewFunc: armworkloads.NewProviderInstancesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads",
-		},
-		{
-			NewFunc: armworkloads.NewSAPCentralInstancesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads",
 		},
 		{
@@ -30,7 +14,15 @@ func Armworkloads() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads",
 		},
 		{
-			NewFunc: armworkloads.NewClient,
+			NewFunc: armworkloads.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads",
+		},
+		{
+			NewFunc: armworkloads.NewSAPCentralInstancesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads",
+		},
+		{
+			NewFunc: armworkloads.NewWordpressInstancesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads",
 		},
 		{
@@ -38,15 +30,23 @@ func Armworkloads() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads",
 		},
 		{
-			NewFunc: armworkloads.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads",
-		},
-		{
-			NewFunc: armworkloads.NewSAPDatabaseInstancesClient,
+			NewFunc: armworkloads.NewProviderInstancesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads",
 		},
 		{
 			NewFunc: armworkloads.NewSAPVirtualInstancesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads",
+		},
+		{
+			NewFunc: armworkloads.NewClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads",
+		},
+		{
+			NewFunc: armworkloads.NewSAPApplicationServerInstancesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads",
+		},
+		{
+			NewFunc: armworkloads.NewSAPDatabaseInstancesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads",
 		},
 	}

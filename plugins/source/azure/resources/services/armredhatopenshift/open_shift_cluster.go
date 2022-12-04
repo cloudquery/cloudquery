@@ -4,6 +4,7 @@ package armredhatopenshift
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redhatopenshift/armredhatopenshift"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -54,7 +55,11 @@ func OpenShiftCluster() *schema.Table {
 }
 
 func fetchOpenShiftCluster(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().ArmredhatopenshiftOpenShiftCluster
+	cl := meta.(*client.Client)
+	svc, err := armredhatopenshift.NewOpenShiftClustersClient(cl.SubscriptionId, cl.Creds, cl.Options)
+	if err != nil {
+		return err
+	}
 	pager := svc.NewListPager(nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)

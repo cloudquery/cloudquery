@@ -6,6 +6,22 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armre
 func Armreservations() []Table {
 	tables := []Table{
 		{
+      Name: "operation_response",
+      Struct: &armreservations.OperationResponse{},
+      ResponseStruct: &armreservations.OperationClientListResponse{},
+      Client: &armreservations.OperationClient{},
+      ListFunc: (&armreservations.OperationClient{}).NewListPager,
+			NewFunc: armreservations.NewOperationClient,
+		},
+		{
+      Name: "current_quota_limit_base",
+      Struct: &armreservations.CurrentQuotaLimitBase{},
+      ResponseStruct: &armreservations.QuotaClientListResponse{},
+      Client: &armreservations.QuotaClient{},
+      ListFunc: (&armreservations.QuotaClient{}).NewListPager,
+			NewFunc: armreservations.NewQuotaClient,
+		},
+		{
       Name: "quota_request_details",
       Struct: &armreservations.QuotaRequestDetails{},
       ResponseStruct: &armreservations.QuotaRequestStatusClientListResponse{},
@@ -22,28 +38,12 @@ func Armreservations() []Table {
 			NewFunc: armreservations.NewReservationClient,
 		},
 		{
-      Name: "operation_response",
-      Struct: &armreservations.OperationResponse{},
-      ResponseStruct: &armreservations.OperationClientListResponse{},
-      Client: &armreservations.OperationClient{},
-      ListFunc: (&armreservations.OperationClient{}).NewListPager,
-			NewFunc: armreservations.NewOperationClient,
-		},
-		{
       Name: "reservation_order_response",
       Struct: &armreservations.ReservationOrderResponse{},
       ResponseStruct: &armreservations.ReservationOrderClientListResponse{},
       Client: &armreservations.ReservationOrderClient{},
       ListFunc: (&armreservations.ReservationOrderClient{}).NewListPager,
 			NewFunc: armreservations.NewReservationOrderClient,
-		},
-		{
-      Name: "current_quota_limit_base",
-      Struct: &armreservations.CurrentQuotaLimitBase{},
-      ResponseStruct: &armreservations.QuotaClientListResponse{},
-      Client: &armreservations.QuotaClient{},
-      ListFunc: (&armreservations.QuotaClient{}).NewListPager,
-			NewFunc: armreservations.NewQuotaClient,
 		},
 	}
 

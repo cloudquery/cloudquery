@@ -4,6 +4,7 @@ package armnetwork
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -49,7 +50,11 @@ func ConnectivityConfiguration() *schema.Table {
 }
 
 func fetchConnectivityConfiguration(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().ArmnetworkConnectivityConfiguration
+	cl := meta.(*client.Client)
+	svc, err := armnetwork.NewConnectivityConfigurationsClient(cl.SubscriptionId, cl.Creds, cl.Options)
+	if err != nil {
+		return err
+	}
 	pager := svc.NewListPager(nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)

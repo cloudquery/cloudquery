@@ -6,6 +6,30 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armst
 func Armstoragecache() []Table {
 	tables := []Table{
 		{
+      Name: "cache",
+      Struct: &armstoragecache.Cache{},
+      ResponseStruct: &armstoragecache.CachesClientListResponse{},
+      Client: &armstoragecache.CachesClient{},
+      ListFunc: (&armstoragecache.CachesClient{}).NewListPager,
+			NewFunc: armstoragecache.NewCachesClient,
+		},
+		{
+      Name: "resource_usage",
+      Struct: &armstoragecache.ResourceUsage{},
+      ResponseStruct: &armstoragecache.AscUsagesClientListResponse{},
+      Client: &armstoragecache.AscUsagesClient{},
+      ListFunc: (&armstoragecache.AscUsagesClient{}).NewListPager,
+			NewFunc: armstoragecache.NewAscUsagesClient,
+		},
+		{
+      Name: "api_operation",
+      Struct: &armstoragecache.APIOperation{},
+      ResponseStruct: &armstoragecache.OperationsClientListResponse{},
+      Client: &armstoragecache.OperationsClient{},
+      ListFunc: (&armstoragecache.OperationsClient{}).NewListPager,
+			NewFunc: armstoragecache.NewOperationsClient,
+		},
+		{
       Name: "resource_sku",
       Struct: &armstoragecache.ResourceSKU{},
       ResponseStruct: &armstoragecache.SKUsClientListResponse{},
@@ -20,30 +44,6 @@ func Armstoragecache() []Table {
       Client: &armstoragecache.UsageModelsClient{},
       ListFunc: (&armstoragecache.UsageModelsClient{}).NewListPager,
 			NewFunc: armstoragecache.NewUsageModelsClient,
-		},
-		{
-      Name: "api_operation",
-      Struct: &armstoragecache.APIOperation{},
-      ResponseStruct: &armstoragecache.OperationsClientListResponse{},
-      Client: &armstoragecache.OperationsClient{},
-      ListFunc: (&armstoragecache.OperationsClient{}).NewListPager,
-			NewFunc: armstoragecache.NewOperationsClient,
-		},
-		{
-      Name: "resource_usage",
-      Struct: &armstoragecache.ResourceUsage{},
-      ResponseStruct: &armstoragecache.AscUsagesClientListResponse{},
-      Client: &armstoragecache.AscUsagesClient{},
-      ListFunc: (&armstoragecache.AscUsagesClient{}).NewListPager,
-			NewFunc: armstoragecache.NewAscUsagesClient,
-		},
-		{
-      Name: "cache",
-      Struct: &armstoragecache.Cache{},
-      ResponseStruct: &armstoragecache.CachesClientListResponse{},
-      Client: &armstoragecache.CachesClient{},
-      ListFunc: (&armstoragecache.CachesClient{}).NewListPager,
-			NewFunc: armstoragecache.NewCachesClient,
 		},
 	}
 

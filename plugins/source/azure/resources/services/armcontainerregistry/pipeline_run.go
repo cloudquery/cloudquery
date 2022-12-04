@@ -4,6 +4,7 @@ package armcontainerregistry
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -44,7 +45,11 @@ func PipelineRun() *schema.Table {
 }
 
 func fetchPipelineRun(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().ArmcontainerregistryPipelineRun
+	cl := meta.(*client.Client)
+	svc, err := armcontainerregistry.NewPipelineRunsClient(cl.SubscriptionId, cl.Creds, cl.Options)
+	if err != nil {
+		return err
+	}
 	pager := svc.NewListPager(nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)

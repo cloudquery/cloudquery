@@ -6,11 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagepool/armsto
 func Armstoragepool() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armstoragepool.NewDiskPoolsClient,
+			NewFunc: armstoragepool.NewDiskPoolZonesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagepool/armstoragepool",
 		},
 		{
-			NewFunc: armstoragepool.NewDiskPoolZonesClient,
+			NewFunc: armstoragepool.NewDiskPoolsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagepool/armstoragepool",
 		},
 		{

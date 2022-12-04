@@ -18,13 +18,15 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-func createTask() (*client.Services, error) {
+func createTask() (*arm.ClientOptions, error) {
 	var item armcontainerregistry.TasksClientListResponse
 	if err := faker.FakeObject(&item); err != nil {
 		return nil, err
 	}
+
 	emptyStr := ""
 	item.NextLink = &emptyStr
+
 	mux := httprouter.New()
 	mux.GET("/*filepath", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		b, err := json.Marshal(&item)
@@ -42,16 +44,10 @@ func createTask() (*client.Services, error) {
 		Endpoint: ts.URL,
 		Audience: "test",
 	}
-	svc, err := armcontainerregistry.NewTasksClient(client.TestSubscription, &client.MockCreds{}, &arm.ClientOptions{
+	return &arm.ClientOptions{
 		ClientOptions: azcore.ClientOptions{
 			Transport: ts.Client(),
 		},
-	})
-	if err != nil {
-		return nil, err
-	}
-	return &client.Services{
-		ArmcontainerregistryTask: svc,
 	}, nil
 }
 

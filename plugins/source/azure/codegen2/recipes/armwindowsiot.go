@@ -6,20 +6,20 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsiot/armwind
 func Armwindowsiot() []Table {
 	tables := []Table{
 		{
-      Name: "operation_entity",
-      Struct: &armwindowsiot.OperationEntity{},
-      ResponseStruct: &armwindowsiot.OperationsClientListResponse{},
-      Client: &armwindowsiot.OperationsClient{},
-      ListFunc: (&armwindowsiot.OperationsClient{}).NewListPager,
-			NewFunc: armwindowsiot.NewOperationsClient,
-		},
-		{
       Name: "device_service",
       Struct: &armwindowsiot.DeviceService{},
       ResponseStruct: &armwindowsiot.ServicesClientListResponse{},
       Client: &armwindowsiot.ServicesClient{},
       ListFunc: (&armwindowsiot.ServicesClient{}).NewListPager,
 			NewFunc: armwindowsiot.NewServicesClient,
+		},
+		{
+      Name: "operation_entity",
+      Struct: &armwindowsiot.OperationEntity{},
+      ResponseStruct: &armwindowsiot.OperationsClientListResponse{},
+      Client: &armwindowsiot.OperationsClient{},
+      ListFunc: (&armwindowsiot.OperationsClient{}).NewListPager,
+			NewFunc: armwindowsiot.NewOperationsClient,
 		},
 	}
 

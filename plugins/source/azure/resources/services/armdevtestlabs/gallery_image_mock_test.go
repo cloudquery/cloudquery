@@ -18,13 +18,15 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-func createGalleryImage() (*client.Services, error) {
+func createGalleryImage() (*arm.ClientOptions, error) {
 	var item armdevtestlabs.GalleryImagesClientListResponse
 	if err := faker.FakeObject(&item); err != nil {
 		return nil, err
 	}
+
 	emptyStr := ""
 	item.NextLink = &emptyStr
+
 	mux := httprouter.New()
 	mux.GET("/*filepath", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		b, err := json.Marshal(&item)
@@ -42,16 +44,10 @@ func createGalleryImage() (*client.Services, error) {
 		Endpoint: ts.URL,
 		Audience: "test",
 	}
-	svc, err := armdevtestlabs.NewGalleryImagesClient(client.TestSubscription, &client.MockCreds{}, &arm.ClientOptions{
+	return &arm.ClientOptions{
 		ClientOptions: azcore.ClientOptions{
 			Transport: ts.Client(),
 		},
-	})
-	if err != nil {
-		return nil, err
-	}
-	return &client.Services{
-		ArmdevtestlabsGalleryImage: svc,
 	}, nil
 }
 

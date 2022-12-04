@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/alertsmanagement/a
 func Armalertsmanagement() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armalertsmanagement.NewAlertProcessingRulesClient,
+			NewFunc: armalertsmanagement.NewOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/alertsmanagement/armalertsmanagement",
 		},
 		{
@@ -14,11 +14,11 @@ func Armalertsmanagement() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/alertsmanagement/armalertsmanagement",
 		},
 		{
-			NewFunc: armalertsmanagement.NewOperationsClient,
+			NewFunc: armalertsmanagement.NewSmartGroupsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/alertsmanagement/armalertsmanagement",
 		},
 		{
-			NewFunc: armalertsmanagement.NewSmartGroupsClient,
+			NewFunc: armalertsmanagement.NewAlertProcessingRulesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/alertsmanagement/armalertsmanagement",
 		},
 	}

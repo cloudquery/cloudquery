@@ -6,11 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armaz
 func Armazurearcdata() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armazurearcdata.NewPostgresInstancesClient,
+			NewFunc: armazurearcdata.NewOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata",
 		},
 		{
-			NewFunc: armazurearcdata.NewSQLServerInstancesClient,
+			NewFunc: armazurearcdata.NewPostgresInstancesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata",
 		},
 		{
@@ -22,7 +22,7 @@ func Armazurearcdata() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata",
 		},
 		{
-			NewFunc: armazurearcdata.NewOperationsClient,
+			NewFunc: armazurearcdata.NewSQLServerInstancesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata",
 		},
 		{

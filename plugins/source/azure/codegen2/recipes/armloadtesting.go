@@ -6,20 +6,20 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/loadtesting/armloa
 func Armloadtesting() []Table {
 	tables := []Table{
 		{
-      Name: "quota_resource",
-      Struct: &armloadtesting.QuotaResource{},
-      ResponseStruct: &armloadtesting.QuotasClientListResponse{},
-      Client: &armloadtesting.QuotasClient{},
-      ListFunc: (&armloadtesting.QuotasClient{}).NewListPager,
-			NewFunc: armloadtesting.NewQuotasClient,
-		},
-		{
       Name: "operation",
       Struct: &armloadtesting.Operation{},
       ResponseStruct: &armloadtesting.OperationsClientListResponse{},
       Client: &armloadtesting.OperationsClient{},
       ListFunc: (&armloadtesting.OperationsClient{}).NewListPager,
 			NewFunc: armloadtesting.NewOperationsClient,
+		},
+		{
+      Name: "quota_resource",
+      Struct: &armloadtesting.QuotaResource{},
+      ResponseStruct: &armloadtesting.QuotasClientListResponse{},
+      Client: &armloadtesting.QuotasClient{},
+      ListFunc: (&armloadtesting.QuotasClient{}).NewListPager,
+			NewFunc: armloadtesting.NewQuotasClient,
 		},
 	}
 

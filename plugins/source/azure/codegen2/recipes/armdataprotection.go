@@ -6,20 +6,20 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/arm
 func Armdataprotection() []Table {
 	tables := []Table{
 		{
-      Name: "client_discovery_value_for_single_api",
-      Struct: &armdataprotection.ClientDiscoveryValueForSingleAPI{},
-      ResponseStruct: &armdataprotection.OperationsClientListResponse{},
-      Client: &armdataprotection.OperationsClient{},
-      ListFunc: (&armdataprotection.OperationsClient{}).NewListPager,
-			NewFunc: armdataprotection.NewOperationsClient,
-		},
-		{
       Name: "azure_backup_recovery_point_resource",
       Struct: &armdataprotection.AzureBackupRecoveryPointResource{},
       ResponseStruct: &armdataprotection.RecoveryPointsClientListResponse{},
       Client: &armdataprotection.RecoveryPointsClient{},
       ListFunc: (&armdataprotection.RecoveryPointsClient{}).NewListPager,
 			NewFunc: armdataprotection.NewRecoveryPointsClient,
+		},
+		{
+      Name: "base_backup_policy_resource",
+      Struct: &armdataprotection.BaseBackupPolicyResource{},
+      ResponseStruct: &armdataprotection.BackupPoliciesClientListResponse{},
+      Client: &armdataprotection.BackupPoliciesClient{},
+      ListFunc: (&armdataprotection.BackupPoliciesClient{}).NewListPager,
+			NewFunc: armdataprotection.NewBackupPoliciesClient,
 		},
 		{
       Name: "azure_backup_job_resource",
@@ -30,12 +30,12 @@ func Armdataprotection() []Table {
 			NewFunc: armdataprotection.NewJobsClient,
 		},
 		{
-      Name: "base_backup_policy_resource",
-      Struct: &armdataprotection.BaseBackupPolicyResource{},
-      ResponseStruct: &armdataprotection.BackupPoliciesClientListResponse{},
-      Client: &armdataprotection.BackupPoliciesClient{},
-      ListFunc: (&armdataprotection.BackupPoliciesClient{}).NewListPager,
-			NewFunc: armdataprotection.NewBackupPoliciesClient,
+      Name: "client_discovery_value_for_single_api",
+      Struct: &armdataprotection.ClientDiscoveryValueForSingleAPI{},
+      ResponseStruct: &armdataprotection.OperationsClientListResponse{},
+      Client: &armdataprotection.OperationsClient{},
+      ListFunc: (&armdataprotection.OperationsClient{}).NewListPager,
+			NewFunc: armdataprotection.NewOperationsClient,
 		},
 		{
       Name: "backup_instance_resource",

@@ -16,6 +16,22 @@ func Armdatamigration() []Table {
 		{
       Name: "project_task",
       Struct: &armdatamigration.ProjectTask{},
+      ResponseStruct: &armdatamigration.ServiceTasksClientListResponse{},
+      Client: &armdatamigration.ServiceTasksClient{},
+      ListFunc: (&armdatamigration.ServiceTasksClient{}).NewListPager,
+			NewFunc: armdatamigration.NewServiceTasksClient,
+		},
+		{
+      Name: "service_operation",
+      Struct: &armdatamigration.ServiceOperation{},
+      ResponseStruct: &armdatamigration.OperationsClientListResponse{},
+      Client: &armdatamigration.OperationsClient{},
+      ListFunc: (&armdatamigration.OperationsClient{}).NewListPager,
+			NewFunc: armdatamigration.NewOperationsClient,
+		},
+		{
+      Name: "project_task",
+      Struct: &armdatamigration.ProjectTask{},
       ResponseStruct: &armdatamigration.TasksClientListResponse{},
       Client: &armdatamigration.TasksClient{},
       ListFunc: (&armdatamigration.TasksClient{}).NewListPager,
@@ -44,22 +60,6 @@ func Armdatamigration() []Table {
       Client: &armdatamigration.ServicesClient{},
       ListFunc: (&armdatamigration.ServicesClient{}).NewListPager,
 			NewFunc: armdatamigration.NewServicesClient,
-		},
-		{
-      Name: "project_task",
-      Struct: &armdatamigration.ProjectTask{},
-      ResponseStruct: &armdatamigration.ServiceTasksClientListResponse{},
-      Client: &armdatamigration.ServiceTasksClient{},
-      ListFunc: (&armdatamigration.ServiceTasksClient{}).NewListPager,
-			NewFunc: armdatamigration.NewServiceTasksClient,
-		},
-		{
-      Name: "service_operation",
-      Struct: &armdatamigration.ServiceOperation{},
-      ResponseStruct: &armdatamigration.OperationsClientListResponse{},
-      Client: &armdatamigration.OperationsClient{},
-      ListFunc: (&armdatamigration.OperationsClient{}).NewListPager,
-			NewFunc: armdatamigration.NewOperationsClient,
 		},
 	}
 

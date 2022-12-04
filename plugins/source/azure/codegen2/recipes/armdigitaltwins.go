@@ -14,6 +14,14 @@ func Armdigitaltwins() []Table {
 			NewFunc: armdigitaltwins.NewTimeSeriesDatabaseConnectionsClient,
 		},
 		{
+      Name: "description",
+      Struct: &armdigitaltwins.Description{},
+      ResponseStruct: &armdigitaltwins.ClientListResponse{},
+      Client: &armdigitaltwins.Client{},
+      ListFunc: (&armdigitaltwins.Client{}).NewListPager,
+			NewFunc: armdigitaltwins.NewClient,
+		},
+		{
       Name: "endpoint_resource",
       Struct: &armdigitaltwins.EndpointResource{},
       ResponseStruct: &armdigitaltwins.EndpointClientListResponse{},
@@ -28,14 +36,6 @@ func Armdigitaltwins() []Table {
       Client: &armdigitaltwins.OperationsClient{},
       ListFunc: (&armdigitaltwins.OperationsClient{}).NewListPager,
 			NewFunc: armdigitaltwins.NewOperationsClient,
-		},
-		{
-      Name: "description",
-      Struct: &armdigitaltwins.Description{},
-      ResponseStruct: &armdigitaltwins.ClientListResponse{},
-      Client: &armdigitaltwins.Client{},
-      ListFunc: (&armdigitaltwins.Client{}).NewListPager,
-			NewFunc: armdigitaltwins.NewClient,
 		},
 	}
 

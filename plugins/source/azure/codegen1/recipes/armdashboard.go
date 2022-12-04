@@ -6,19 +6,19 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dashboard/armdashb
 func Armdashboard() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armdashboard.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dashboard/armdashboard",
-		},
-		{
-			NewFunc: armdashboard.NewPrivateLinkResourcesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dashboard/armdashboard",
-		},
-		{
 			NewFunc: armdashboard.NewGrafanaClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dashboard/armdashboard",
 		},
 		{
+			NewFunc: armdashboard.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dashboard/armdashboard",
+		},
+		{
 			NewFunc: armdashboard.NewPrivateEndpointConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dashboard/armdashboard",
+		},
+		{
+			NewFunc: armdashboard.NewPrivateLinkResourcesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dashboard/armdashboard",
 		},
 	}

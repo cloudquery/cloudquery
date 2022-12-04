@@ -6,19 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfront
 func Armfrontdoor() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armfrontdoor.NewEndpointsClient,
+			NewFunc: armfrontdoor.NewFrontendEndpointsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor",
 		},
 		{
-			NewFunc: armfrontdoor.NewFrontDoorsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor",
-		},
-		{
-			NewFunc: armfrontdoor.NewManagedRuleSetsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor",
-		},
-		{
-			NewFunc: armfrontdoor.NewNameAvailabilityWithSubscriptionClient,
+			NewFunc: armfrontdoor.NewPoliciesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor",
 		},
 		{
@@ -26,23 +18,11 @@ func Armfrontdoor() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor",
 		},
 		{
-			NewFunc: armfrontdoor.NewRulesEnginesClient,
+			NewFunc: armfrontdoor.NewFrontDoorsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor",
 		},
 		{
-			NewFunc: armfrontdoor.NewReportsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor",
-		},
-		{
-			NewFunc: armfrontdoor.NewExperimentsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor",
-		},
-		{
-			NewFunc: armfrontdoor.NewFrontendEndpointsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor",
-		},
-		{
-			NewFunc: armfrontdoor.NewNameAvailabilityClient,
+			NewFunc: armfrontdoor.NewNameAvailabilityWithSubscriptionClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor",
 		},
 		{
@@ -50,7 +30,27 @@ func Armfrontdoor() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor",
 		},
 		{
-			NewFunc: armfrontdoor.NewPoliciesClient,
+			NewFunc: armfrontdoor.NewRulesEnginesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor",
+		},
+		{
+			NewFunc: armfrontdoor.NewExperimentsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor",
+		},
+		{
+			NewFunc: armfrontdoor.NewNameAvailabilityClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor",
+		},
+		{
+			NewFunc: armfrontdoor.NewEndpointsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor",
+		},
+		{
+			NewFunc: armfrontdoor.NewManagedRuleSetsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor",
+		},
+		{
+			NewFunc: armfrontdoor.NewReportsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor",
 		},
 	}

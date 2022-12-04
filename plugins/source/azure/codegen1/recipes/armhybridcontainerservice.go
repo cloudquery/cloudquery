@@ -6,11 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcontainerser
 func Armhybridcontainerservice() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armhybridcontainerservice.NewAgentPoolClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcontainerservice/armhybridcontainerservice",
-		},
-		{
-			NewFunc: armhybridcontainerservice.NewHybridIdentityMetadataClient,
+			NewFunc: armhybridcontainerservice.NewClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcontainerservice/armhybridcontainerservice",
 		},
 		{
@@ -22,11 +18,15 @@ func Armhybridcontainerservice() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcontainerservice/armhybridcontainerservice",
 		},
 		{
-			NewFunc: armhybridcontainerservice.NewClient,
+			NewFunc: armhybridcontainerservice.NewStorageSpacesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcontainerservice/armhybridcontainerservice",
 		},
 		{
-			NewFunc: armhybridcontainerservice.NewStorageSpacesClient,
+			NewFunc: armhybridcontainerservice.NewAgentPoolClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcontainerservice/armhybridcontainerservice",
+		},
+		{
+			NewFunc: armhybridcontainerservice.NewHybridIdentityMetadataClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcontainerservice/armhybridcontainerservice",
 		},
 		{

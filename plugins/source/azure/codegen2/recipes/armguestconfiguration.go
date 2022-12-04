@@ -6,12 +6,12 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/guestconfiguration
 func Armguestconfiguration() []Table {
 	tables := []Table{
 		{
-      Name: "assignment_report",
-      Struct: &armguestconfiguration.AssignmentReport{},
-      ResponseStruct: &armguestconfiguration.AssignmentReportsVMSSClientListResponse{},
-      Client: &armguestconfiguration.AssignmentReportsVMSSClient{},
-      ListFunc: (&armguestconfiguration.AssignmentReportsVMSSClient{}).NewListPager,
-			NewFunc: armguestconfiguration.NewAssignmentReportsVMSSClient,
+      Name: "assignment",
+      Struct: &armguestconfiguration.Assignment{},
+      ResponseStruct: &armguestconfiguration.AssignmentsClientListResponse{},
+      Client: &armguestconfiguration.AssignmentsClient{},
+      ListFunc: (&armguestconfiguration.AssignmentsClient{}).NewListPager,
+			NewFunc: armguestconfiguration.NewAssignmentsClient,
 		},
 		{
       Name: "assignment",
@@ -38,12 +38,12 @@ func Armguestconfiguration() []Table {
 			NewFunc: armguestconfiguration.NewOperationsClient,
 		},
 		{
-      Name: "assignment",
-      Struct: &armguestconfiguration.Assignment{},
-      ResponseStruct: &armguestconfiguration.AssignmentsClientListResponse{},
-      Client: &armguestconfiguration.AssignmentsClient{},
-      ListFunc: (&armguestconfiguration.AssignmentsClient{}).NewListPager,
-			NewFunc: armguestconfiguration.NewAssignmentsClient,
+      Name: "assignment_report",
+      Struct: &armguestconfiguration.AssignmentReport{},
+      ResponseStruct: &armguestconfiguration.AssignmentReportsVMSSClientListResponse{},
+      Client: &armguestconfiguration.AssignmentReportsVMSSClient{},
+      ListFunc: (&armguestconfiguration.AssignmentReportsVMSSClient{}).NewListPager,
+			NewFunc: armguestconfiguration.NewAssignmentReportsVMSSClient,
 		},
 	}
 

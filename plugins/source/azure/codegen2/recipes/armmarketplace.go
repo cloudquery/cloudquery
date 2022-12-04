@@ -6,20 +6,20 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplace/armmar
 func Armmarketplace() []Table {
 	tables := []Table{
 		{
-      Name: "offer",
-      Struct: &armmarketplace.Offer{},
-      ResponseStruct: &armmarketplace.PrivateStoreCollectionOfferClientListResponse{},
-      Client: &armmarketplace.PrivateStoreCollectionOfferClient{},
-      ListFunc: (&armmarketplace.PrivateStoreCollectionOfferClient{}).NewListPager,
-			NewFunc: armmarketplace.NewPrivateStoreCollectionOfferClient,
-		},
-		{
       Name: "private_store",
       Struct: &armmarketplace.PrivateStore{},
       ResponseStruct: &armmarketplace.PrivateStoreClientListResponse{},
       Client: &armmarketplace.PrivateStoreClient{},
       ListFunc: (&armmarketplace.PrivateStoreClient{}).NewListPager,
 			NewFunc: armmarketplace.NewPrivateStoreClient,
+		},
+		{
+      Name: "offer",
+      Struct: &armmarketplace.Offer{},
+      ResponseStruct: &armmarketplace.PrivateStoreCollectionOfferClientListResponse{},
+      Client: &armmarketplace.PrivateStoreCollectionOfferClient{},
+      ListFunc: (&armmarketplace.PrivateStoreCollectionOfferClient{}).NewListPager,
+			NewFunc: armmarketplace.NewPrivateStoreCollectionOfferClient,
 		},
 	}
 

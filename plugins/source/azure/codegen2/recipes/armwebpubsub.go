@@ -6,14 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/webpubsub/armwebpu
 func Armwebpubsub() []Table {
 	tables := []Table{
 		{
-      Name: "private_endpoint_connection",
-      Struct: &armwebpubsub.PrivateEndpointConnection{},
-      ResponseStruct: &armwebpubsub.PrivateEndpointConnectionsClientListResponse{},
-      Client: &armwebpubsub.PrivateEndpointConnectionsClient{},
-      ListFunc: (&armwebpubsub.PrivateEndpointConnectionsClient{}).NewListPager,
-			NewFunc: armwebpubsub.NewPrivateEndpointConnectionsClient,
-		},
-		{
       Name: "hub",
       Struct: &armwebpubsub.Hub{},
       ResponseStruct: &armwebpubsub.HubsClientListResponse{},
@@ -22,20 +14,20 @@ func Armwebpubsub() []Table {
 			NewFunc: armwebpubsub.NewHubsClient,
 		},
 		{
-      Name: "signal_r_service_usage",
-      Struct: &armwebpubsub.SignalRServiceUsage{},
-      ResponseStruct: &armwebpubsub.UsagesClientListResponse{},
-      Client: &armwebpubsub.UsagesClient{},
-      ListFunc: (&armwebpubsub.UsagesClient{}).NewListPager,
-			NewFunc: armwebpubsub.NewUsagesClient,
-		},
-		{
       Name: "operation",
       Struct: &armwebpubsub.Operation{},
       ResponseStruct: &armwebpubsub.OperationsClientListResponse{},
       Client: &armwebpubsub.OperationsClient{},
       ListFunc: (&armwebpubsub.OperationsClient{}).NewListPager,
 			NewFunc: armwebpubsub.NewOperationsClient,
+		},
+		{
+      Name: "private_endpoint_connection",
+      Struct: &armwebpubsub.PrivateEndpointConnection{},
+      ResponseStruct: &armwebpubsub.PrivateEndpointConnectionsClientListResponse{},
+      Client: &armwebpubsub.PrivateEndpointConnectionsClient{},
+      ListFunc: (&armwebpubsub.PrivateEndpointConnectionsClient{}).NewListPager,
+			NewFunc: armwebpubsub.NewPrivateEndpointConnectionsClient,
 		},
 		{
       Name: "private_link_resource",
@@ -52,6 +44,14 @@ func Armwebpubsub() []Table {
       Client: &armwebpubsub.SharedPrivateLinkResourcesClient{},
       ListFunc: (&armwebpubsub.SharedPrivateLinkResourcesClient{}).NewListPager,
 			NewFunc: armwebpubsub.NewSharedPrivateLinkResourcesClient,
+		},
+		{
+      Name: "signal_r_service_usage",
+      Struct: &armwebpubsub.SignalRServiceUsage{},
+      ResponseStruct: &armwebpubsub.UsagesClientListResponse{},
+      Client: &armwebpubsub.UsagesClient{},
+      ListFunc: (&armwebpubsub.UsagesClient{}).NewListPager,
+			NewFunc: armwebpubsub.NewUsagesClient,
 		},
 	}
 

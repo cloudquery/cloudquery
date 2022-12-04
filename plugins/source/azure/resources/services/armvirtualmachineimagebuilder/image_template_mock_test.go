@@ -18,13 +18,15 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-func createImageTemplate() (*client.Services, error) {
+func createImageTemplate() (*arm.ClientOptions, error) {
 	var item armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientListResponse
 	if err := faker.FakeObject(&item); err != nil {
 		return nil, err
 	}
+
 	emptyStr := ""
 	item.NextLink = &emptyStr
+
 	mux := httprouter.New()
 	mux.GET("/*filepath", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		b, err := json.Marshal(&item)
@@ -42,16 +44,10 @@ func createImageTemplate() (*client.Services, error) {
 		Endpoint: ts.URL,
 		Audience: "test",
 	}
-	svc, err := armvirtualmachineimagebuilder.NewVirtualMachineImageTemplatesClient(client.TestSubscription, &client.MockCreds{}, &arm.ClientOptions{
+	return &arm.ClientOptions{
 		ClientOptions: azcore.ClientOptions{
 			Transport: ts.Client(),
 		},
-	})
-	if err != nil {
-		return nil, err
-	}
-	return &client.Services{
-		ArmvirtualmachineimagebuilderImageTemplate: svc,
 	}, nil
 }
 

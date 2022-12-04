@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dynatrace/armdynat
 func Armdynatrace() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armdynatrace.NewOperationsClient,
+			NewFunc: armdynatrace.NewMonitorsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dynatrace/armdynatrace",
 		},
 		{
@@ -18,7 +18,7 @@ func Armdynatrace() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dynatrace/armdynatrace",
 		},
 		{
-			NewFunc: armdynatrace.NewMonitorsClient,
+			NewFunc: armdynatrace.NewOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dynatrace/armdynatrace",
 		},
 	}

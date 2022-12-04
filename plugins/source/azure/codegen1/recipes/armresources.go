@@ -6,7 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresou
 func Armresources() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armresources.NewResourceGroupsClient,
+			NewFunc: armresources.NewDeploymentOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources",
+		},
+		{
+			NewFunc: armresources.NewProviderResourceTypesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources",
 		},
 		{
@@ -22,19 +26,15 @@ func Armresources() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources",
 		},
 		{
-			NewFunc: armresources.NewTagsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources",
-		},
-		{
-			NewFunc: armresources.NewDeploymentOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources",
-		},
-		{
-			NewFunc: armresources.NewProviderResourceTypesClient,
+			NewFunc: armresources.NewResourceGroupsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources",
 		},
 		{
 			NewFunc: armresources.NewProvidersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources",
+		},
+		{
+			NewFunc: armresources.NewTagsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources",
 		},
 	}

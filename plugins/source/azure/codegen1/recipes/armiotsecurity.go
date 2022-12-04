@@ -10,11 +10,7 @@ func Armiotsecurity() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iotsecurity/armiotsecurity",
 		},
 		{
-			NewFunc: armiotsecurity.NewDeviceGroupsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iotsecurity/armiotsecurity",
-		},
-		{
-			NewFunc: armiotsecurity.NewLocationsClient,
+			NewFunc: armiotsecurity.NewOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iotsecurity/armiotsecurity",
 		},
 		{
@@ -22,7 +18,15 @@ func Armiotsecurity() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iotsecurity/armiotsecurity",
 		},
 		{
-			NewFunc: armiotsecurity.NewOperationsClient,
+			NewFunc: armiotsecurity.NewDefenderSettingsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iotsecurity/armiotsecurity",
+		},
+		{
+			NewFunc: armiotsecurity.NewLocationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iotsecurity/armiotsecurity",
+		},
+		{
+			NewFunc: armiotsecurity.NewDeviceGroupsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iotsecurity/armiotsecurity",
 		},
 		{
@@ -31,10 +35,6 @@ func Armiotsecurity() []*Resource {
 		},
 		{
 			NewFunc: armiotsecurity.NewSitesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iotsecurity/armiotsecurity",
-		},
-		{
-			NewFunc: armiotsecurity.NewDefenderSettingsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iotsecurity/armiotsecurity",
 		},
 	}

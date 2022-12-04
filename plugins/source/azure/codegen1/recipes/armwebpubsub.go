@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/webpubsub/armwebpu
 func Armwebpubsub() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armwebpubsub.NewPrivateEndpointConnectionsClient,
+			NewFunc: armwebpubsub.NewHubsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/webpubsub/armwebpubsub",
 		},
 		{
@@ -14,15 +14,11 @@ func Armwebpubsub() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/webpubsub/armwebpubsub",
 		},
 		{
-			NewFunc: armwebpubsub.NewHubsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/webpubsub/armwebpubsub",
-		},
-		{
-			NewFunc: armwebpubsub.NewUsagesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/webpubsub/armwebpubsub",
-		},
-		{
 			NewFunc: armwebpubsub.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/webpubsub/armwebpubsub",
+		},
+		{
+			NewFunc: armwebpubsub.NewPrivateEndpointConnectionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/webpubsub/armwebpubsub",
 		},
 		{
@@ -31,6 +27,10 @@ func Armwebpubsub() []*Resource {
 		},
 		{
 			NewFunc: armwebpubsub.NewSharedPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/webpubsub/armwebpubsub",
+		},
+		{
+			NewFunc: armwebpubsub.NewUsagesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/webpubsub/armwebpubsub",
 		},
 	}

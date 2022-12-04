@@ -10,11 +10,11 @@ func Armmaps() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maps/armmaps",
 		},
 		{
-			NewFunc: armmaps.NewClient,
+			NewFunc: armmaps.NewCreatorsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maps/armmaps",
 		},
 		{
-			NewFunc: armmaps.NewCreatorsClient,
+			NewFunc: armmaps.NewClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maps/armmaps",
 		},
 	}

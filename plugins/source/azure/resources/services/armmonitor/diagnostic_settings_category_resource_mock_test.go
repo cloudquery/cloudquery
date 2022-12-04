@@ -18,13 +18,12 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-func createDiagnosticSettingsCategoryResource() (*client.Services, error) {
+func createDiagnosticSettingsCategoryResource() (*arm.ClientOptions, error) {
 	var item armmonitor.DiagnosticSettingsCategoryClientListResponse
 	if err := faker.FakeObject(&item); err != nil {
 		return nil, err
 	}
-	emptyStr := ""
-	item.NextLink = &emptyStr
+
 	mux := httprouter.New()
 	mux.GET("/*filepath", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		b, err := json.Marshal(&item)
@@ -42,16 +41,10 @@ func createDiagnosticSettingsCategoryResource() (*client.Services, error) {
 		Endpoint: ts.URL,
 		Audience: "test",
 	}
-	svc, err := armmonitor.NewDiagnosticSettingsCategoryClient(client.TestSubscription, &client.MockCreds{}, &arm.ClientOptions{
+	return &arm.ClientOptions{
 		ClientOptions: azcore.ClientOptions{
 			Transport: ts.Client(),
 		},
-	})
-	if err != nil {
-		return nil, err
-	}
-	return &client.Services{
-		ArmmonitorDiagnosticSettingsCategoryResource: svc,
 	}, nil
 }
 

@@ -6,35 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsight
 func Armoperationalinsights() []*Resource {
 	resources := []*Resource{
 		{
+			NewFunc: armoperationalinsights.NewStorageInsightConfigsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights",
+		},
+		{
 			NewFunc: armoperationalinsights.NewUsagesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights",
-		},
-		{
-			NewFunc: armoperationalinsights.NewAvailableServiceTiersClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights",
-		},
-		{
-			NewFunc: armoperationalinsights.NewDataExportsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights",
-		},
-		{
-			NewFunc: armoperationalinsights.NewLinkedStorageAccountsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights",
-		},
-		{
-			NewFunc: armoperationalinsights.NewSavedSearchesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights",
-		},
-		{
-			NewFunc: armoperationalinsights.NewTablesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights",
-		},
-		{
-			NewFunc: armoperationalinsights.NewSharedKeysClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights",
-		},
-		{
-			NewFunc: armoperationalinsights.NewClustersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights",
 		},
 		{
@@ -46,27 +22,11 @@ func Armoperationalinsights() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights",
 		},
 		{
-			NewFunc: armoperationalinsights.NewOperationsClient,
+			NewFunc: armoperationalinsights.NewLinkedServicesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights",
 		},
 		{
-			NewFunc: armoperationalinsights.NewOperationStatusesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights",
-		},
-		{
-			NewFunc: armoperationalinsights.NewStorageInsightConfigsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights",
-		},
-		{
-			NewFunc: armoperationalinsights.NewWorkspacePurgeClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights",
-		},
-		{
-			NewFunc: armoperationalinsights.NewDataSourcesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights",
-		},
-		{
-			NewFunc: armoperationalinsights.NewManagementGroupsClient,
+			NewFunc: armoperationalinsights.NewSavedSearchesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights",
 		},
 		{
@@ -74,7 +34,39 @@ func Armoperationalinsights() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights",
 		},
 		{
-			NewFunc: armoperationalinsights.NewWorkspacesClient,
+			NewFunc: armoperationalinsights.NewSharedKeysClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights",
+		},
+		{
+			NewFunc: armoperationalinsights.NewTablesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights",
+		},
+		{
+			NewFunc: armoperationalinsights.NewClustersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights",
+		},
+		{
+			NewFunc: armoperationalinsights.NewDataExportsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights",
+		},
+		{
+			NewFunc: armoperationalinsights.NewLinkedStorageAccountsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights",
+		},
+		{
+			NewFunc: armoperationalinsights.NewOperationStatusesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights",
+		},
+		{
+			NewFunc: armoperationalinsights.NewWorkspacePurgeClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights",
+		},
+		{
+			NewFunc: armoperationalinsights.NewAvailableServiceTiersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights",
+		},
+		{
+			NewFunc: armoperationalinsights.NewDataSourcesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights",
 		},
 		{
@@ -82,7 +74,15 @@ func Armoperationalinsights() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights",
 		},
 		{
-			NewFunc: armoperationalinsights.NewLinkedServicesClient,
+			NewFunc: armoperationalinsights.NewManagementGroupsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights",
+		},
+		{
+			NewFunc: armoperationalinsights.NewWorkspacesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights",
+		},
+		{
+			NewFunc: armoperationalinsights.NewOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights",
 		},
 	}

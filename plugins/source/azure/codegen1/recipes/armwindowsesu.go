@@ -6,11 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsesu/armwind
 func Armwindowsesu() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armwindowsesu.NewOperationsClient,
+			NewFunc: armwindowsesu.NewMultipleActivationKeysClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsesu/armwindowsesu",
 		},
 		{
-			NewFunc: armwindowsesu.NewMultipleActivationKeysClient,
+			NewFunc: armwindowsesu.NewOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsesu/armwindowsesu",
 		},
 	}

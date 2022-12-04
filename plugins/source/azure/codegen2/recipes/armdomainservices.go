@@ -6,6 +6,22 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/domainservices/arm
 func Armdomainservices() []Table {
 	tables := []Table{
 		{
+      Name: "operation_entity",
+      Struct: &armdomainservices.OperationEntity{},
+      ResponseStruct: &armdomainservices.DomainServiceOperationsClientListResponse{},
+      Client: &armdomainservices.DomainServiceOperationsClient{},
+      ListFunc: (&armdomainservices.DomainServiceOperationsClient{}).NewListPager,
+			NewFunc: armdomainservices.NewDomainServiceOperationsClient,
+		},
+		{
+      Name: "domain_service",
+      Struct: &armdomainservices.DomainService{},
+      ResponseStruct: &armdomainservices.ClientListResponse{},
+      Client: &armdomainservices.Client{},
+      ListFunc: (&armdomainservices.Client{}).NewListPager,
+			NewFunc: armdomainservices.NewClient,
+		},
+		{
       Name: "ou_container",
       Struct: &armdomainservices.OuContainer{},
       ResponseStruct: &armdomainservices.OuContainerClientListResponse{},
@@ -20,22 +36,6 @@ func Armdomainservices() []Table {
       Client: &armdomainservices.OuContainerOperationsClient{},
       ListFunc: (&armdomainservices.OuContainerOperationsClient{}).NewListPager,
 			NewFunc: armdomainservices.NewOuContainerOperationsClient,
-		},
-		{
-      Name: "domain_service",
-      Struct: &armdomainservices.DomainService{},
-      ResponseStruct: &armdomainservices.ClientListResponse{},
-      Client: &armdomainservices.Client{},
-      ListFunc: (&armdomainservices.Client{}).NewListPager,
-			NewFunc: armdomainservices.NewClient,
-		},
-		{
-      Name: "operation_entity",
-      Struct: &armdomainservices.OperationEntity{},
-      ResponseStruct: &armdomainservices.DomainServiceOperationsClientListResponse{},
-      Client: &armdomainservices.DomainServiceOperationsClient{},
-      ListFunc: (&armdomainservices.DomainServiceOperationsClient{}).NewListPager,
-			NewFunc: armdomainservices.NewDomainServiceOperationsClient,
 		},
 	}
 

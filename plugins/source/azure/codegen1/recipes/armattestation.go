@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/attestation/armatt
 func Armattestation() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armattestation.NewPrivateEndpointConnectionsClient,
+			NewFunc: armattestation.NewOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/attestation/armattestation",
 		},
 		{
@@ -14,7 +14,7 @@ func Armattestation() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/attestation/armattestation",
 		},
 		{
-			NewFunc: armattestation.NewOperationsClient,
+			NewFunc: armattestation.NewPrivateEndpointConnectionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/attestation/armattestation",
 		},
 	}

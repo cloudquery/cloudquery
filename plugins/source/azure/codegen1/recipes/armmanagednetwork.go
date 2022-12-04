@@ -6,11 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetwork/arm
 func Armmanagednetwork() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armmanagednetwork.NewScopeAssignmentsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetwork/armmanagednetwork",
-		},
-		{
-			NewFunc: armmanagednetwork.NewGroupsClient,
+			NewFunc: armmanagednetwork.NewOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetwork/armmanagednetwork",
 		},
 		{
@@ -22,7 +18,11 @@ func Armmanagednetwork() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetwork/armmanagednetwork",
 		},
 		{
-			NewFunc: armmanagednetwork.NewOperationsClient,
+			NewFunc: armmanagednetwork.NewScopeAssignmentsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetwork/armmanagednetwork",
+		},
+		{
+			NewFunc: armmanagednetwork.NewGroupsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetwork/armmanagednetwork",
 		},
 	}

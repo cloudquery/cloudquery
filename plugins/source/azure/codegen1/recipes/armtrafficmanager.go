@@ -6,10 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/trafficmanager/arm
 func Armtrafficmanager() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armtrafficmanager.NewGeographicHierarchiesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/trafficmanager/armtrafficmanager",
-		},
-		{
 			NewFunc: armtrafficmanager.NewHeatMapClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/trafficmanager/armtrafficmanager",
 		},
@@ -23,6 +19,10 @@ func Armtrafficmanager() []*Resource {
 		},
 		{
 			NewFunc: armtrafficmanager.NewUserMetricsKeysClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/trafficmanager/armtrafficmanager",
+		},
+		{
+			NewFunc: armtrafficmanager.NewGeographicHierarchiesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/trafficmanager/armtrafficmanager",
 		},
 	}

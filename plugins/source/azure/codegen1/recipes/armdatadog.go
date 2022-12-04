@@ -6,19 +6,19 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datadog/armdatadog
 func Armdatadog() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armdatadog.NewSingleSignOnConfigurationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datadog/armdatadog",
-		},
-		{
-			NewFunc: armdatadog.NewMarketplaceAgreementsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datadog/armdatadog",
-		},
-		{
 			NewFunc: armdatadog.NewMonitorsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datadog/armdatadog",
 		},
 		{
 			NewFunc: armdatadog.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datadog/armdatadog",
+		},
+		{
+			NewFunc: armdatadog.NewSingleSignOnConfigurationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datadog/armdatadog",
+		},
+		{
+			NewFunc: armdatadog.NewMarketplaceAgreementsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datadog/armdatadog",
 		},
 		{

@@ -10,6 +10,18 @@ func Armlogz() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logz/armlogz",
 		},
 		{
+			NewFunc: armlogz.NewSubAccountTagRulesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logz/armlogz",
+		},
+		{
+			NewFunc: armlogz.NewMonitorClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logz/armlogz",
+		},
+		{
+			NewFunc: armlogz.NewMonitorsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logz/armlogz",
+		},
+		{
 			NewFunc: armlogz.NewSingleSignOnClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logz/armlogz",
 		},
@@ -19,18 +31,6 @@ func Armlogz() []*Resource {
 		},
 		{
 			NewFunc: armlogz.NewTagRulesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logz/armlogz",
-		},
-		{
-			NewFunc: armlogz.NewMonitorsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logz/armlogz",
-		},
-		{
-			NewFunc: armlogz.NewSubAccountTagRulesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logz/armlogz",
-		},
-		{
-			NewFunc: armlogz.NewMonitorClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logz/armlogz",
 		},
 	}

@@ -14,20 +14,20 @@ func Armengagementfabric() []Table {
 			NewFunc: armengagementfabric.NewOperationsClient,
 		},
 		{
-      Name: "sku_description",
-      Struct: &armengagementfabric.SKUDescription{},
-      ResponseStruct: &armengagementfabric.SKUsClientListResponse{},
-      Client: &armengagementfabric.SKUsClient{},
-      ListFunc: (&armengagementfabric.SKUsClient{}).NewListPager,
-			NewFunc: armengagementfabric.NewSKUsClient,
-		},
-		{
       Name: "account",
       Struct: &armengagementfabric.Account{},
       ResponseStruct: &armengagementfabric.AccountsClientListResponse{},
       Client: &armengagementfabric.AccountsClient{},
       ListFunc: (&armengagementfabric.AccountsClient{}).NewListPager,
 			NewFunc: armengagementfabric.NewAccountsClient,
+		},
+		{
+      Name: "sku_description",
+      Struct: &armengagementfabric.SKUDescription{},
+      ResponseStruct: &armengagementfabric.SKUsClientListResponse{},
+      Client: &armengagementfabric.SKUsClient{},
+      ListFunc: (&armengagementfabric.SKUsClient{}).NewListPager,
+			NewFunc: armengagementfabric.NewSKUsClient,
 		},
 	}
 

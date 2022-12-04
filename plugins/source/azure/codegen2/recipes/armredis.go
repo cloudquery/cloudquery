@@ -6,20 +6,12 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis"
 func Armredis() []Table {
 	tables := []Table{
 		{
-      Name: "firewall_rule",
-      Struct: &armredis.FirewallRule{},
-      ResponseStruct: &armredis.FirewallRulesClientListResponse{},
-      Client: &armredis.FirewallRulesClient{},
-      ListFunc: (&armredis.FirewallRulesClient{}).NewListPager,
-			NewFunc: armredis.NewFirewallRulesClient,
-		},
-		{
-      Name: "private_endpoint_connection",
-      Struct: &armredis.PrivateEndpointConnection{},
-      ResponseStruct: &armredis.PrivateEndpointConnectionsClientListResponse{},
-      Client: &armredis.PrivateEndpointConnectionsClient{},
-      ListFunc: (&armredis.PrivateEndpointConnectionsClient{}).NewListPager,
-			NewFunc: armredis.NewPrivateEndpointConnectionsClient,
+      Name: "linked_server_with_properties",
+      Struct: &armredis.LinkedServerWithProperties{},
+      ResponseStruct: &armredis.LinkedServerClientListResponse{},
+      Client: &armredis.LinkedServerClient{},
+      ListFunc: (&armredis.LinkedServerClient{}).NewListPager,
+			NewFunc: armredis.NewLinkedServerClient,
 		},
 		{
       Name: "operation",
@@ -30,12 +22,20 @@ func Armredis() []Table {
 			NewFunc: armredis.NewOperationsClient,
 		},
 		{
-      Name: "linked_server_with_properties",
-      Struct: &armredis.LinkedServerWithProperties{},
-      ResponseStruct: &armredis.LinkedServerClientListResponse{},
-      Client: &armredis.LinkedServerClient{},
-      ListFunc: (&armredis.LinkedServerClient{}).NewListPager,
-			NewFunc: armredis.NewLinkedServerClient,
+      Name: "private_endpoint_connection",
+      Struct: &armredis.PrivateEndpointConnection{},
+      ResponseStruct: &armredis.PrivateEndpointConnectionsClientListResponse{},
+      Client: &armredis.PrivateEndpointConnectionsClient{},
+      ListFunc: (&armredis.PrivateEndpointConnectionsClient{}).NewListPager,
+			NewFunc: armredis.NewPrivateEndpointConnectionsClient,
+		},
+		{
+      Name: "firewall_rule",
+      Struct: &armredis.FirewallRule{},
+      ResponseStruct: &armredis.FirewallRulesClientListResponse{},
+      Client: &armredis.FirewallRulesClient{},
+      ListFunc: (&armredis.FirewallRulesClient{}).NewListPager,
+			NewFunc: armredis.NewFirewallRulesClient,
 		},
 	}
 

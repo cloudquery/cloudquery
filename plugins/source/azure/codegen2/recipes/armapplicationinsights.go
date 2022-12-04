@@ -6,6 +6,14 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsight
 func Armapplicationinsights() []Table {
 	tables := []Table{
 		{
+      Name: "web_test",
+      Struct: &armapplicationinsights.WebTest{},
+      ResponseStruct: &armapplicationinsights.WebTestsClientListResponse{},
+      Client: &armapplicationinsights.WebTestsClient{},
+      ListFunc: (&armapplicationinsights.WebTestsClient{}).NewListPager,
+			NewFunc: armapplicationinsights.NewWebTestsClient,
+		},
+		{
       Name: "annotation",
       Struct: &armapplicationinsights.Annotation{},
       ResponseStruct: &armapplicationinsights.AnnotationsClientListResponse{},
@@ -22,6 +30,14 @@ func Armapplicationinsights() []Table {
 			NewFunc: armapplicationinsights.NewAPIKeysClient,
 		},
 		{
+      Name: "component",
+      Struct: &armapplicationinsights.Component{},
+      ResponseStruct: &armapplicationinsights.ComponentsClientListResponse{},
+      Client: &armapplicationinsights.ComponentsClient{},
+      ListFunc: (&armapplicationinsights.ComponentsClient{}).NewListPager,
+			NewFunc: armapplicationinsights.NewComponentsClient,
+		},
+		{
       Name: "component_web_test_location",
       Struct: &armapplicationinsights.ComponentWebTestLocation{},
       ResponseStruct: &armapplicationinsights.WebTestLocationsClientListResponse{},
@@ -30,28 +46,12 @@ func Armapplicationinsights() []Table {
 			NewFunc: armapplicationinsights.NewWebTestLocationsClient,
 		},
 		{
-      Name: "web_test",
-      Struct: &armapplicationinsights.WebTest{},
-      ResponseStruct: &armapplicationinsights.WebTestsClientListResponse{},
-      Client: &armapplicationinsights.WebTestsClient{},
-      ListFunc: (&armapplicationinsights.WebTestsClient{}).NewListPager,
-			NewFunc: armapplicationinsights.NewWebTestsClient,
-		},
-		{
       Name: "work_item_configuration",
       Struct: &armapplicationinsights.WorkItemConfiguration{},
       ResponseStruct: &armapplicationinsights.WorkItemConfigurationsClientListResponse{},
       Client: &armapplicationinsights.WorkItemConfigurationsClient{},
       ListFunc: (&armapplicationinsights.WorkItemConfigurationsClient{}).NewListPager,
 			NewFunc: armapplicationinsights.NewWorkItemConfigurationsClient,
-		},
-		{
-      Name: "component",
-      Struct: &armapplicationinsights.Component{},
-      ResponseStruct: &armapplicationinsights.ComponentsClientListResponse{},
-      Client: &armapplicationinsights.ComponentsClient{},
-      ListFunc: (&armapplicationinsights.ComponentsClient{}).NewListPager,
-			NewFunc: armapplicationinsights.NewComponentsClient,
 		},
 	}
 

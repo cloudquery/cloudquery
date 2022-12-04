@@ -18,13 +18,15 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-func createPeering() (*client.Services, error) {
+func createPeering() (*arm.ClientOptions, error) {
 	var item armpeering.LegacyPeeringsClientListResponse
 	if err := faker.FakeObject(&item); err != nil {
 		return nil, err
 	}
+
 	emptyStr := ""
 	item.NextLink = &emptyStr
+
 	mux := httprouter.New()
 	mux.GET("/*filepath", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		b, err := json.Marshal(&item)
@@ -42,16 +44,10 @@ func createPeering() (*client.Services, error) {
 		Endpoint: ts.URL,
 		Audience: "test",
 	}
-	svc, err := armpeering.NewLegacyPeeringsClient(client.TestSubscription, &client.MockCreds{}, &arm.ClientOptions{
+	return &arm.ClientOptions{
 		ClientOptions: azcore.ClientOptions{
 			Transport: ts.Client(),
 		},
-	})
-	if err != nil {
-		return nil, err
-	}
-	return &client.Services{
-		ArmpeeringPeering: svc,
 	}, nil
 }
 

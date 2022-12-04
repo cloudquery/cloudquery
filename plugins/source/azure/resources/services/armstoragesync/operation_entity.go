@@ -4,6 +4,7 @@ package armstoragesync
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagesync/armstoragesync"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -39,7 +40,11 @@ func OperationEntity() *schema.Table {
 }
 
 func fetchOperationEntity(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().ArmstoragesyncOperationEntity
+	cl := meta.(*client.Client)
+	svc, err := armstoragesync.NewOperationsClient(cl.Creds, cl.Options)
+	if err != nil {
+		return err
+	}
 	pager := svc.NewListPager(nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)

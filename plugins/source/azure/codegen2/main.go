@@ -45,12 +45,39 @@ func main() {
 	}
 	currentDir = path.Dir(currentFilename)
 
-	for _, r := range recipes.Tables {
-		initResource(&r)
-		generateResource(r, false)
-		generateResource(r, true)
+	for i := range recipes.Tables {
+		initResource(&recipes.Tables[i])
+		generateResource(recipes.Tables[i], false)
+		generateResource(recipes.Tables[i], true)
 	}
-	// generateResource()
+	// generateServices(recipes.Tables)
+}
+
+func generateServices(rr []recipes.Table) {
+	tpl, err := template.New("services.go.tpl").Funcs(template.FuncMap{
+		"ToCamel": strcase.ToCamel,
+		"ToLower": strings.ToLower,
+	}).ParseFS(templateFS, "templates/services.go.tpl")
+	if err != nil {
+		log.Fatal(fmt.Errorf("failed to parse services.go.tpl: %w", err))
+	}
+
+	var buff bytes.Buffer
+	if err := tpl.Execute(&buff, rr); err != nil {
+		log.Fatal(fmt.Errorf("failed to execute services template: %w", err))
+	}
+
+	filePath := path.Join(currentDir, "../client/services.go")
+	content := buff.Bytes()
+	formattedContent, err := format.Source(buff.Bytes())
+	if err != nil {
+		fmt.Printf("failed to format code for %s: %v\n", filePath, err)
+	} else {
+		content = formattedContent
+	}
+	if err := os.WriteFile(filePath, content, 0644); err != nil {
+		log.Fatal(fmt.Errorf("failed to write file %s: %w", filePath, err))
+	}
 }
 
 
@@ -62,6 +89,9 @@ func initResource(r *recipes.Table) {
 	if r.NewFunc != nil {
 		path := strings.Split(runtime.FuncForPC(reflect.ValueOf(r.NewFunc).Pointer()).Name(), ".")
 		r.NewFuncName = path[len(path)-1]
+		if reflect.TypeOf(r.NewFunc).In(0).Name() == "string" {
+			r.NewFuncHasSubscriptionId = true
+		}
 	}
 	if r.ListFunc != nil {
 		path := strings.Split(runtime.FuncForPC(reflect.ValueOf(r.ListFunc).Pointer()).Name(), ".")
@@ -70,12 +100,17 @@ func initResource(r *recipes.Table) {
 	}
 	if r.ResponseStruct != nil {
 		r.ResponseStructName = reflect.TypeOf(r.ResponseStruct).Elem().Name()
+		_, r.ResponspeStructNextLink = reflect.TypeOf(r.ResponseStruct).Elem().FieldByName("NextLink")
 	}
 	if r.StructName == "" {
 		r.StructName = reflect.TypeOf(r.Struct).Elem().Name()
 	}
 	if r.MockListStruct == "" {
 		r.MockListStruct = strcase.ToCamel(r.StructName)
+	}
+
+	if r.ImportPath == "" {
+		r.ImportPath = reflect.TypeOf(r.Struct).Elem().PkgPath()
 	}
 
 	if r.MockImports == nil {

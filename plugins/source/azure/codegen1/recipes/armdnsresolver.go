@@ -6,6 +6,10 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdns
 func Armdnsresolver() []*Resource {
 	resources := []*Resource{
 		{
+			NewFunc: armdnsresolver.NewDNSForwardingRulesetsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdnsresolver",
+		},
+		{
 			NewFunc: armdnsresolver.NewInboundEndpointsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdnsresolver",
 		},
@@ -15,10 +19,6 @@ func Armdnsresolver() []*Resource {
 		},
 		{
 			NewFunc: armdnsresolver.NewVirtualNetworkLinksClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdnsresolver",
-		},
-		{
-			NewFunc: armdnsresolver.NewDNSForwardingRulesetsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdnsresolver",
 		},
 		{

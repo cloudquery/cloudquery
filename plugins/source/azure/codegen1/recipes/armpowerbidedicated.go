@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbidedicated/a
 func Armpowerbidedicated() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armpowerbidedicated.NewCapacitiesClient,
+			NewFunc: armpowerbidedicated.NewOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbidedicated/armpowerbidedicated",
 		},
 		{
@@ -14,7 +14,7 @@ func Armpowerbidedicated() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbidedicated/armpowerbidedicated",
 		},
 		{
-			NewFunc: armpowerbidedicated.NewOperationsClient,
+			NewFunc: armpowerbidedicated.NewCapacitiesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbidedicated/armpowerbidedicated",
 		},
 	}

@@ -4,6 +4,7 @@ package armdevtestlabs
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devtestlabs/armdevtestlabs"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -49,7 +50,11 @@ func ServiceFabric() *schema.Table {
 }
 
 func fetchServiceFabric(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().ArmdevtestlabsServiceFabric
+	cl := meta.(*client.Client)
+	svc, err := armdevtestlabs.NewServiceFabricsClient(cl.SubscriptionId, cl.Creds, cl.Options)
+	if err != nil {
+		return err
+	}
 	pager := svc.NewListPager(nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)

@@ -10,15 +10,15 @@ func Armazurestackhci() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci",
 		},
 		{
-			NewFunc: armazurestackhci.NewClustersClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci",
-		},
-		{
 			NewFunc: armazurestackhci.NewExtensionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci",
 		},
 		{
 			NewFunc: armazurestackhci.NewArcSettingsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci",
+		},
+		{
+			NewFunc: armazurestackhci.NewClustersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci",
 		},
 	}

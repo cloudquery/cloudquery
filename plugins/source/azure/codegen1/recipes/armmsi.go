@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/msi/armmsi"
 func Armmsi() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armmsi.NewOperationsClient,
+			NewFunc: armmsi.NewUserAssignedIdentitiesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/msi/armmsi",
 		},
 		{
@@ -14,11 +14,11 @@ func Armmsi() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/msi/armmsi",
 		},
 		{
-			NewFunc: armmsi.NewSystemAssignedIdentitiesClient,
+			NewFunc: armmsi.NewOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/msi/armmsi",
 		},
 		{
-			NewFunc: armmsi.NewUserAssignedIdentitiesClient,
+			NewFunc: armmsi.NewSystemAssignedIdentitiesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/msi/armmsi",
 		},
 	}

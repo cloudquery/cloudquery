@@ -14,14 +14,6 @@ func Armsql() []Table {
 			NewFunc: armsql.NewManagedInstancesClient,
 		},
 		{
-      Name: "operation",
-      Struct: &armsql.Operation{},
-      ResponseStruct: &armsql.OperationsClientListResponse{},
-      Client: &armsql.OperationsClient{},
-      ListFunc: (&armsql.OperationsClient{}).NewListPager,
-			NewFunc: armsql.NewOperationsClient,
-		},
-		{
       Name: "instance_pool",
       Struct: &armsql.InstancePool{},
       ResponseStruct: &armsql.InstancePoolsClientListResponse{},
@@ -38,6 +30,14 @@ func Armsql() []Table {
 			NewFunc: armsql.NewServersClient,
 		},
 		{
+      Name: "virtual_cluster",
+      Struct: &armsql.VirtualCluster{},
+      ResponseStruct: &armsql.VirtualClustersClientListResponse{},
+      Client: &armsql.VirtualClustersClient{},
+      ListFunc: (&armsql.VirtualClustersClient{}).NewListPager,
+			NewFunc: armsql.NewVirtualClustersClient,
+		},
+		{
       Name: "deleted_server",
       Struct: &armsql.DeletedServer{},
       ResponseStruct: &armsql.DeletedServersClientListResponse{},
@@ -46,12 +46,12 @@ func Armsql() []Table {
 			NewFunc: armsql.NewDeletedServersClient,
 		},
 		{
-      Name: "virtual_cluster",
-      Struct: &armsql.VirtualCluster{},
-      ResponseStruct: &armsql.VirtualClustersClientListResponse{},
-      Client: &armsql.VirtualClustersClient{},
-      ListFunc: (&armsql.VirtualClustersClient{}).NewListPager,
-			NewFunc: armsql.NewVirtualClustersClient,
+      Name: "operation",
+      Struct: &armsql.Operation{},
+      ResponseStruct: &armsql.OperationsClientListResponse{},
+      Client: &armsql.OperationsClient{},
+      ListFunc: (&armsql.OperationsClient{}).NewListPager,
+			NewFunc: armsql.NewOperationsClient,
 		},
 	}
 

@@ -18,13 +18,12 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-func createAssignment() (*client.Services, error) {
-	var item armguestconfiguration.AssignmentsClientListResponse
+func createAssignment() (*arm.ClientOptions, error) {
+	var item armguestconfiguration.HCRPAssignmentsClientListResponse
 	if err := faker.FakeObject(&item); err != nil {
 		return nil, err
 	}
-	emptyStr := ""
-	item.NextLink = &emptyStr
+
 	mux := httprouter.New()
 	mux.GET("/*filepath", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		b, err := json.Marshal(&item)
@@ -42,16 +41,10 @@ func createAssignment() (*client.Services, error) {
 		Endpoint: ts.URL,
 		Audience: "test",
 	}
-	svc, err := armguestconfiguration.NewAssignmentsClient(client.TestSubscription, &client.MockCreds{}, &arm.ClientOptions{
+	return &arm.ClientOptions{
 		ClientOptions: azcore.ClientOptions{
 			Transport: ts.Client(),
 		},
-	})
-	if err != nil {
-		return nil, err
-	}
-	return &client.Services{
-		ArmguestconfigurationAssignment: svc,
 	}, nil
 }
 

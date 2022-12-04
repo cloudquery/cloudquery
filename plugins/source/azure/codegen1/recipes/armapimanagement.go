@@ -6,47 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/arma
 func Armapimanagement() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armapimanagement.NewAPIDiagnosticClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewAPIIssueAttachmentClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewAPIProductClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewBackendClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewOutboundNetworkDependenciesEndpointsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewSignUpSettingsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewCertificateClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewOpenIDConnectProviderClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewOperationClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewProductClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewProductSubscriptionsClient,
+			NewFunc: armapimanagement.NewPolicyDescriptionClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
 		},
 		{
@@ -54,7 +14,7 @@ func Armapimanagement() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
 		},
 		{
-			NewFunc: armapimanagement.NewDelegationSettingsClient,
+			NewFunc: armapimanagement.NewUserGroupClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
 		},
 		{
@@ -62,55 +22,7 @@ func Armapimanagement() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
 		},
 		{
-			NewFunc: armapimanagement.NewQuotaByCounterKeysClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewUserClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewAPISchemaClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewAPITagDescriptionClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewNotificationRecipientEmailClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewRegionClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewTagClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewTenantConfigurationClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewTenantSettingsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewAPIExportClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewAPIIssueClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewAPIOperationClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewDeletedServicesClient,
+			NewFunc: armapimanagement.NewOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
 		},
 		{
@@ -118,19 +30,11 @@ func Armapimanagement() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
 		},
 		{
-			NewFunc: armapimanagement.NewPortalRevisionClient,
+			NewFunc: armapimanagement.NewGlobalSchemaClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
 		},
 		{
-			NewFunc: armapimanagement.NewClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewDiagnosticClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewOperationsClient,
+			NewFunc: armapimanagement.NewGroupClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
 		},
 		{
@@ -138,11 +42,95 @@ func Armapimanagement() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
 		},
 		{
-			NewFunc: armapimanagement.NewAPIRevisionClient,
+			NewFunc: armapimanagement.NewRegionClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewSignUpSettingsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewBackendClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewCertificateClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewContentItemClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewSKUsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewTenantAccessClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewUserIdentitiesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewPortalSettingsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewEmailTemplateClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewIssueClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewTagResourceClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewAPIDiagnosticClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewAPITagDescriptionClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewProductGroupClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewOutboundNetworkDependenciesEndpointsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewUserSubscriptionClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewPrivateEndpointConnectionClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
 		},
 		{
 			NewFunc: armapimanagement.NewAPIVersionSetClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewContentTypeClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewGroupUserClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewIdentityProviderClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewNotificationRecipientEmailClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
 		},
 		{
@@ -154,119 +142,11 @@ func Armapimanagement() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
 		},
 		{
-			NewFunc: armapimanagement.NewContentItemClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewIdentityProviderClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewProductAPIClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewAuthorizationServerClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewGlobalSchemaClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewGroupUserClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewIssueClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewTenantAccessClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewAPIIssueCommentClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewAPIPolicyClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewEmailTemplateClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewGatewayAPIClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewNamedValueClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewPolicyDescriptionClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewSubscriptionClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewAPIOperationPolicyClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewContentTypeClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewPrivateEndpointConnectionClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewProductPolicyClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewUserGroupClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewUserIdentitiesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
 			NewFunc: armapimanagement.NewCacheClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
 		},
 		{
-			NewFunc: armapimanagement.NewGatewayCertificateAuthorityClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewGroupClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewNotificationRecipientUserClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewTagResourceClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewUserSubscriptionClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewGatewayHostnameConfigurationClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-		},
-		{
-			NewFunc: armapimanagement.NewNetworkStatusClient,
+			NewFunc: armapimanagement.NewDelegationSettingsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
 		},
 		{
@@ -274,23 +154,39 @@ func Armapimanagement() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
 		},
 		{
-			NewFunc: armapimanagement.NewTenantAccessGitClient,
+			NewFunc: armapimanagement.NewTenantConfigurationClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
 		},
 		{
-			NewFunc: armapimanagement.NewAPIReleaseClient,
+			NewFunc: armapimanagement.NewTenantSettingsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
 		},
 		{
-			NewFunc: armapimanagement.NewProductGroupClient,
+			NewFunc: armapimanagement.NewAPIPolicyClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
 		},
 		{
-			NewFunc: armapimanagement.NewSKUsClient,
+			NewFunc: armapimanagement.NewAPISchemaClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
 		},
 		{
-			NewFunc: armapimanagement.NewUserConfirmationPasswordClient,
+			NewFunc: armapimanagement.NewProductClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewNetworkStatusClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewProductPolicyClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewQuotaByCounterKeysClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewSubscriptionClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
 		},
 		{
@@ -298,7 +194,27 @@ func Armapimanagement() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
 		},
 		{
+			NewFunc: armapimanagement.NewAuthorizationServerClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewDiagnosticClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewTagClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
 			NewFunc: armapimanagement.NewGatewayClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewNamedValueClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewPortalRevisionClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
 		},
 		{
@@ -306,7 +222,91 @@ func Armapimanagement() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
 		},
 		{
-			NewFunc: armapimanagement.NewPortalSettingsClient,
+			NewFunc: armapimanagement.NewNotificationRecipientUserClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewProductAPIClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewUserClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewAPIRevisionClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewDeletedServicesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewGatewayAPIClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewAPIExportClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewAPIIssueAttachmentClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewOpenIDConnectProviderClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewGatewayHostnameConfigurationClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewProductSubscriptionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewAPIIssueClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewAPIOperationPolicyClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewAPIProductClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewAPIReleaseClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewUserConfirmationPasswordClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewOperationClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewTenantAccessGitClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewAPIIssueCommentClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewAPIOperationClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+		},
+		{
+			NewFunc: armapimanagement.NewGatewayCertificateAuthorityClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
 		},
 	}

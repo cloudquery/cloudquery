@@ -6,6 +6,10 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kubernetesconfigur
 func Armkubernetesconfiguration() []*Resource {
 	resources := []*Resource{
 		{
+			NewFunc: armkubernetesconfiguration.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kubernetesconfiguration/armkubernetesconfiguration",
+		},
+		{
 			NewFunc: armkubernetesconfiguration.NewSourceControlConfigurationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kubernetesconfiguration/armkubernetesconfiguration",
 		},
@@ -18,15 +22,11 @@ func Armkubernetesconfiguration() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kubernetesconfiguration/armkubernetesconfiguration",
 		},
 		{
-			NewFunc: armkubernetesconfiguration.NewOperationsClient,
+			NewFunc: armkubernetesconfiguration.NewFluxConfigurationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kubernetesconfiguration/armkubernetesconfiguration",
 		},
 		{
 			NewFunc: armkubernetesconfiguration.NewOperationStatusClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kubernetesconfiguration/armkubernetesconfiguration",
-		},
-		{
-			NewFunc: armkubernetesconfiguration.NewFluxConfigurationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kubernetesconfiguration/armkubernetesconfiguration",
 		},
 	}

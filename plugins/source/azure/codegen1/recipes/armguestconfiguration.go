@@ -6,19 +6,15 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/guestconfiguration
 func Armguestconfiguration() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armguestconfiguration.NewAssignmentReportsClient,
+			NewFunc: armguestconfiguration.NewHCRPAssignmentReportsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/guestconfiguration/armguestconfiguration",
 		},
 		{
-			NewFunc: armguestconfiguration.NewAssignmentReportsVMSSClient,
+			NewFunc: armguestconfiguration.NewAssignmentsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/guestconfiguration/armguestconfiguration",
 		},
 		{
 			NewFunc: armguestconfiguration.NewAssignmentsVMSSClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/guestconfiguration/armguestconfiguration",
-		},
-		{
-			NewFunc: armguestconfiguration.NewHCRPAssignmentReportsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/guestconfiguration/armguestconfiguration",
 		},
 		{
@@ -30,7 +26,11 @@ func Armguestconfiguration() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/guestconfiguration/armguestconfiguration",
 		},
 		{
-			NewFunc: armguestconfiguration.NewAssignmentsClient,
+			NewFunc: armguestconfiguration.NewAssignmentReportsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/guestconfiguration/armguestconfiguration",
+		},
+		{
+			NewFunc: armguestconfiguration.NewAssignmentReportsVMSSClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/guestconfiguration/armguestconfiguration",
 		},
 	}

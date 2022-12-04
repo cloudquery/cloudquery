@@ -6,6 +6,14 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kubernetesconfigur
 func Armkubernetesconfiguration() []Table {
 	tables := []Table{
 		{
+      Name: "resource_provider_operation",
+      Struct: &armkubernetesconfiguration.ResourceProviderOperation{},
+      ResponseStruct: &armkubernetesconfiguration.OperationsClientListResponse{},
+      Client: &armkubernetesconfiguration.OperationsClient{},
+      ListFunc: (&armkubernetesconfiguration.OperationsClient{}).NewListPager,
+			NewFunc: armkubernetesconfiguration.NewOperationsClient,
+		},
+		{
       Name: "source_control_configuration",
       Struct: &armkubernetesconfiguration.SourceControlConfiguration{},
       ResponseStruct: &armkubernetesconfiguration.SourceControlConfigurationsClientListResponse{},
@@ -22,12 +30,12 @@ func Armkubernetesconfiguration() []Table {
 			NewFunc: armkubernetesconfiguration.NewExtensionsClient,
 		},
 		{
-      Name: "resource_provider_operation",
-      Struct: &armkubernetesconfiguration.ResourceProviderOperation{},
-      ResponseStruct: &armkubernetesconfiguration.OperationsClientListResponse{},
-      Client: &armkubernetesconfiguration.OperationsClient{},
-      ListFunc: (&armkubernetesconfiguration.OperationsClient{}).NewListPager,
-			NewFunc: armkubernetesconfiguration.NewOperationsClient,
+      Name: "flux_configuration",
+      Struct: &armkubernetesconfiguration.FluxConfiguration{},
+      ResponseStruct: &armkubernetesconfiguration.FluxConfigurationsClientListResponse{},
+      Client: &armkubernetesconfiguration.FluxConfigurationsClient{},
+      ListFunc: (&armkubernetesconfiguration.FluxConfigurationsClient{}).NewListPager,
+			NewFunc: armkubernetesconfiguration.NewFluxConfigurationsClient,
 		},
 		{
       Name: "operation_status_result",
@@ -36,14 +44,6 @@ func Armkubernetesconfiguration() []Table {
       Client: &armkubernetesconfiguration.OperationStatusClient{},
       ListFunc: (&armkubernetesconfiguration.OperationStatusClient{}).NewListPager,
 			NewFunc: armkubernetesconfiguration.NewOperationStatusClient,
-		},
-		{
-      Name: "flux_configuration",
-      Struct: &armkubernetesconfiguration.FluxConfiguration{},
-      ResponseStruct: &armkubernetesconfiguration.FluxConfigurationsClientListResponse{},
-      Client: &armkubernetesconfiguration.FluxConfigurationsClient{},
-      ListFunc: (&armkubernetesconfiguration.FluxConfigurationsClient{}).NewListPager,
-			NewFunc: armkubernetesconfiguration.NewFluxConfigurationsClient,
 		},
 	}
 

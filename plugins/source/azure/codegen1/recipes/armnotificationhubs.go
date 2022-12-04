@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/notificationhubs/a
 func Armnotificationhubs() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armnotificationhubs.NewOperationsClient,
+			NewFunc: armnotificationhubs.NewNamespacesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/notificationhubs/armnotificationhubs",
 		},
 		{
@@ -14,7 +14,7 @@ func Armnotificationhubs() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/notificationhubs/armnotificationhubs",
 		},
 		{
-			NewFunc: armnotificationhubs.NewNamespacesClient,
+			NewFunc: armnotificationhubs.NewOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/notificationhubs/armnotificationhubs",
 		},
 	}

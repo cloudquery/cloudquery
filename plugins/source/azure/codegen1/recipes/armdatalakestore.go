@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-store/arm
 func Armdatalakestore() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armdatalakestore.NewAccountsClient,
+			NewFunc: armdatalakestore.NewTrustedIDProvidersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-store/armdatalakestore",
 		},
 		{
@@ -22,11 +22,11 @@ func Armdatalakestore() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-store/armdatalakestore",
 		},
 		{
-			NewFunc: armdatalakestore.NewTrustedIDProvidersClient,
+			NewFunc: armdatalakestore.NewVirtualNetworkRulesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-store/armdatalakestore",
 		},
 		{
-			NewFunc: armdatalakestore.NewVirtualNetworkRulesClient,
+			NewFunc: armdatalakestore.NewAccountsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-store/armdatalakestore",
 		},
 	}

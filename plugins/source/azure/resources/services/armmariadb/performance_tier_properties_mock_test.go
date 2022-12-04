@@ -18,13 +18,12 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-func createPerformanceTierProperties() (*client.Services, error) {
-	var item armmariadb.ServerBasedPerformanceTierClientListResponse
+func createPerformanceTierProperties() (*arm.ClientOptions, error) {
+	var item armmariadb.LocationBasedPerformanceTierClientListResponse
 	if err := faker.FakeObject(&item); err != nil {
 		return nil, err
 	}
-	emptyStr := ""
-	item.NextLink = &emptyStr
+
 	mux := httprouter.New()
 	mux.GET("/*filepath", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		b, err := json.Marshal(&item)
@@ -42,16 +41,10 @@ func createPerformanceTierProperties() (*client.Services, error) {
 		Endpoint: ts.URL,
 		Audience: "test",
 	}
-	svc, err := armmariadb.NewServerBasedPerformanceTierClient(client.TestSubscription, &client.MockCreds{}, &arm.ClientOptions{
+	return &arm.ClientOptions{
 		ClientOptions: azcore.ClientOptions{
 			Transport: ts.Client(),
 		},
-	})
-	if err != nil {
-		return nil, err
-	}
-	return &client.Services{
-		ArmmariadbPerformanceTierProperties: svc,
 	}, nil
 }
 

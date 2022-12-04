@@ -6,11 +6,23 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armevent
 func Armeventgrid() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armeventgrid.NewTopicTypesClient,
+			NewFunc: armeventgrid.NewSystemTopicEventSubscriptionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid",
 		},
 		{
-			NewFunc: armeventgrid.NewDomainTopicsClient,
+			NewFunc: armeventgrid.NewTopicsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid",
+		},
+		{
+			NewFunc: armeventgrid.NewPrivateEndpointConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid",
+		},
+		{
+			NewFunc: armeventgrid.NewEventSubscriptionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid",
+		},
+		{
+			NewFunc: armeventgrid.NewExtensionTopicsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid",
 		},
 		{
@@ -22,15 +34,7 @@ func Armeventgrid() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid",
 		},
 		{
-			NewFunc: armeventgrid.NewTopicsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid",
-		},
-		{
-			NewFunc: armeventgrid.NewPrivateLinkResourcesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid",
-		},
-		{
-			NewFunc: armeventgrid.NewSystemTopicEventSubscriptionsClient,
+			NewFunc: armeventgrid.NewTopicTypesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid",
 		},
 		{
@@ -38,15 +42,11 @@ func Armeventgrid() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid",
 		},
 		{
-			NewFunc: armeventgrid.NewEventSubscriptionsClient,
+			NewFunc: armeventgrid.NewDomainTopicsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid",
 		},
 		{
-			NewFunc: armeventgrid.NewPrivateEndpointConnectionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid",
-		},
-		{
-			NewFunc: armeventgrid.NewExtensionTopicsClient,
+			NewFunc: armeventgrid.NewPrivateLinkResourcesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid",
 		},
 	}

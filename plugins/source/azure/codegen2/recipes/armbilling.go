@@ -6,12 +6,12 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling
 func Armbilling() []Table {
 	tables := []Table{
 		{
-      Name: "enrollment_account_summary",
-      Struct: &armbilling.EnrollmentAccountSummary{},
-      ResponseStruct: &armbilling.EnrollmentAccountsClientListResponse{},
-      Client: &armbilling.EnrollmentAccountsClient{},
-      ListFunc: (&armbilling.EnrollmentAccountsClient{}).NewListPager,
-			NewFunc: armbilling.NewEnrollmentAccountsClient,
+      Name: "account",
+      Struct: &armbilling.Account{},
+      ResponseStruct: &armbilling.AccountsClientListResponse{},
+      Client: &armbilling.AccountsClient{},
+      ListFunc: (&armbilling.AccountsClient{}).NewListPager,
+			NewFunc: armbilling.NewAccountsClient,
 		},
 		{
       Name: "period",
@@ -30,12 +30,12 @@ func Armbilling() []Table {
 			NewFunc: armbilling.NewOperationsClient,
 		},
 		{
-      Name: "account",
-      Struct: &armbilling.Account{},
-      ResponseStruct: &armbilling.AccountsClientListResponse{},
-      Client: &armbilling.AccountsClient{},
-      ListFunc: (&armbilling.AccountsClient{}).NewListPager,
-			NewFunc: armbilling.NewAccountsClient,
+      Name: "enrollment_account_summary",
+      Struct: &armbilling.EnrollmentAccountSummary{},
+      ResponseStruct: &armbilling.EnrollmentAccountsClientListResponse{},
+      Client: &armbilling.EnrollmentAccountsClient{},
+      ListFunc: (&armbilling.EnrollmentAccountsClient{}).NewListPager,
+			NewFunc: armbilling.NewEnrollmentAccountsClient,
 		},
 	}
 

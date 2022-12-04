@@ -6,35 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/vmwarecloudsimple/
 func Armvmwarecloudsimple() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armvmwarecloudsimple.NewVirtualMachinesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/vmwarecloudsimple/armvmwarecloudsimple",
-		},
-		{
-			NewFunc: armvmwarecloudsimple.NewPrivateCloudsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/vmwarecloudsimple/armvmwarecloudsimple",
-		},
-		{
-			NewFunc: armvmwarecloudsimple.NewCustomizationPoliciesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/vmwarecloudsimple/armvmwarecloudsimple",
-		},
-		{
 			NewFunc: armvmwarecloudsimple.NewDedicatedCloudNodesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/vmwarecloudsimple/armvmwarecloudsimple",
-		},
-		{
-			NewFunc: armvmwarecloudsimple.NewSKUsAvailabilityClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/vmwarecloudsimple/armvmwarecloudsimple",
-		},
-		{
-			NewFunc: armvmwarecloudsimple.NewVirtualNetworksClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/vmwarecloudsimple/armvmwarecloudsimple",
-		},
-		{
-			NewFunc: armvmwarecloudsimple.NewResourcePoolsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/vmwarecloudsimple/armvmwarecloudsimple",
-		},
-		{
-			NewFunc: armvmwarecloudsimple.NewVirtualMachineTemplatesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/vmwarecloudsimple/armvmwarecloudsimple",
 		},
 		{
@@ -42,11 +14,39 @@ func Armvmwarecloudsimple() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/vmwarecloudsimple/armvmwarecloudsimple",
 		},
 		{
-			NewFunc: armvmwarecloudsimple.NewUsagesClient,
+			NewFunc: armvmwarecloudsimple.NewSKUsAvailabilityClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/vmwarecloudsimple/armvmwarecloudsimple",
 		},
 		{
 			NewFunc: armvmwarecloudsimple.NewDedicatedCloudServicesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/vmwarecloudsimple/armvmwarecloudsimple",
+		},
+		{
+			NewFunc: armvmwarecloudsimple.NewPrivateCloudsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/vmwarecloudsimple/armvmwarecloudsimple",
+		},
+		{
+			NewFunc: armvmwarecloudsimple.NewUsagesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/vmwarecloudsimple/armvmwarecloudsimple",
+		},
+		{
+			NewFunc: armvmwarecloudsimple.NewResourcePoolsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/vmwarecloudsimple/armvmwarecloudsimple",
+		},
+		{
+			NewFunc: armvmwarecloudsimple.NewVirtualMachinesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/vmwarecloudsimple/armvmwarecloudsimple",
+		},
+		{
+			NewFunc: armvmwarecloudsimple.NewCustomizationPoliciesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/vmwarecloudsimple/armvmwarecloudsimple",
+		},
+		{
+			NewFunc: armvmwarecloudsimple.NewVirtualMachineTemplatesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/vmwarecloudsimple/armvmwarecloudsimple",
+		},
+		{
+			NewFunc: armvmwarecloudsimple.NewVirtualNetworksClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/vmwarecloudsimple/armvmwarecloudsimple",
 		},
 	}

@@ -6,10 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appconfiguration/a
 func Armappconfiguration() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armappconfiguration.NewConfigurationStoresClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appconfiguration/armappconfiguration",
-		},
-		{
 			NewFunc: armappconfiguration.NewKeyValuesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appconfiguration/armappconfiguration",
 		},
@@ -23,6 +19,10 @@ func Armappconfiguration() []*Resource {
 		},
 		{
 			NewFunc: armappconfiguration.NewPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appconfiguration/armappconfiguration",
+		},
+		{
+			NewFunc: armappconfiguration.NewConfigurationStoresClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appconfiguration/armappconfiguration",
 		},
 	}

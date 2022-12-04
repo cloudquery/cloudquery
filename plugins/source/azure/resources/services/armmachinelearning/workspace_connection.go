@@ -4,6 +4,7 @@ package armmachinelearning
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -39,7 +40,11 @@ func WorkspaceConnection() *schema.Table {
 }
 
 func fetchWorkspaceConnection(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().ArmmachinelearningWorkspaceConnection
+	cl := meta.(*client.Client)
+	svc, err := armmachinelearning.NewWorkspaceConnectionsClient(cl.SubscriptionId, cl.Creds, cl.Options)
+	if err != nil {
+		return err
+	}
 	pager := svc.NewListPager(nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)

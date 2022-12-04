@@ -6,20 +6,20 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic
 func Armelastic() []Table {
 	tables := []Table{
 		{
-      Name: "vm_resources",
-      Struct: &armelastic.VMResources{},
-      ResponseStruct: &armelastic.VMHostClientListResponse{},
-      Client: &armelastic.VMHostClient{},
-      ListFunc: (&armelastic.VMHostClient{}).NewListPager,
-			NewFunc: armelastic.NewVMHostClient,
-		},
-		{
       Name: "monitoring_tag_rules",
       Struct: &armelastic.MonitoringTagRules{},
       ResponseStruct: &armelastic.TagRulesClientListResponse{},
       Client: &armelastic.TagRulesClient{},
       ListFunc: (&armelastic.TagRulesClient{}).NewListPager,
 			NewFunc: armelastic.NewTagRulesClient,
+		},
+		{
+      Name: "vm_resources",
+      Struct: &armelastic.VMResources{},
+      ResponseStruct: &armelastic.VMHostClientListResponse{},
+      Client: &armelastic.VMHostClient{},
+      ListFunc: (&armelastic.VMHostClient{}).NewListPager,
+			NewFunc: armelastic.NewVMHostClient,
 		},
 		{
       Name: "monitored_resource",

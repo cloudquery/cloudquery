@@ -5,13 +5,21 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blueprint/armbluep
 
 func Armblueprint() []Table {
 	tables := []Table{
+		// {
+    //   Name: "artifact_classification",
+    //   Struct: &armblueprint.ArtifactClassification{},
+    //   ResponseStruct: &armblueprint.PublishedArtifactsClientListResponse{},
+    //   Client: &armblueprint.PublishedArtifactsClient{},
+    //   ListFunc: (&armblueprint.PublishedArtifactsClient{}).NewListPager,
+		// 	NewFunc: armblueprint.NewPublishedArtifactsClient,
+		// },
 		{
-      Name: "blueprint",
-      Struct: &armblueprint.Blueprint{},
-      ResponseStruct: &armblueprint.BlueprintsClientListResponse{},
-      Client: &armblueprint.BlueprintsClient{},
-      ListFunc: (&armblueprint.BlueprintsClient{}).NewListPager,
-			NewFunc: armblueprint.NewBlueprintsClient,
+      Name: "published_blueprint",
+      Struct: &armblueprint.PublishedBlueprint{},
+      ResponseStruct: &armblueprint.PublishedBlueprintsClientListResponse{},
+      Client: &armblueprint.PublishedBlueprintsClient{},
+      ListFunc: (&armblueprint.PublishedBlueprintsClient{}).NewListPager,
+			NewFunc: armblueprint.NewPublishedBlueprintsClient,
 		},
 		{
       Name: "assignment_operation",
@@ -29,13 +37,21 @@ func Armblueprint() []Table {
       ListFunc: (&armblueprint.AssignmentsClient{}).NewListPager,
 			NewFunc: armblueprint.NewAssignmentsClient,
 		},
+		// {
+    //   Name: "artifact_classification",
+    //   Struct: &armblueprint.ArtifactClassification{},
+    //   ResponseStruct: &armblueprint.ArtifactsClientListResponse{},
+    //   Client: &armblueprint.ArtifactsClient{},
+    //   ListFunc: (&armblueprint.ArtifactsClient{}).NewListPager,
+		// 	NewFunc: armblueprint.NewArtifactsClient,
+		// },
 		{
-      Name: "published_blueprint",
-      Struct: &armblueprint.PublishedBlueprint{},
-      ResponseStruct: &armblueprint.PublishedBlueprintsClientListResponse{},
-      Client: &armblueprint.PublishedBlueprintsClient{},
-      ListFunc: (&armblueprint.PublishedBlueprintsClient{}).NewListPager,
-			NewFunc: armblueprint.NewPublishedBlueprintsClient,
+      Name: "blueprint",
+      Struct: &armblueprint.Blueprint{},
+      ResponseStruct: &armblueprint.BlueprintsClientListResponse{},
+      Client: &armblueprint.BlueprintsClient{},
+      ListFunc: (&armblueprint.BlueprintsClient{}).NewListPager,
+			NewFunc: armblueprint.NewBlueprintsClient,
 		},
 	}
 

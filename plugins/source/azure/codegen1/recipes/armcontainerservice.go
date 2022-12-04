@@ -6,6 +6,10 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/a
 func Armcontainerservice() []*Resource {
 	resources := []*Resource{
 		{
+			NewFunc: armcontainerservice.NewMaintenanceConfigurationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice",
+		},
+		{
 			NewFunc: armcontainerservice.NewManagedClustersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice",
 		},
@@ -14,11 +18,7 @@ func Armcontainerservice() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice",
 		},
 		{
-			NewFunc: armcontainerservice.NewAgentPoolsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice",
-		},
-		{
-			NewFunc: armcontainerservice.NewMaintenanceConfigurationsClient,
+			NewFunc: armcontainerservice.NewSnapshotsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice",
 		},
 		{
@@ -30,11 +30,11 @@ func Armcontainerservice() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice",
 		},
 		{
-			NewFunc: armcontainerservice.NewOperationsClient,
+			NewFunc: armcontainerservice.NewAgentPoolsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice",
 		},
 		{
-			NewFunc: armcontainerservice.NewSnapshotsClient,
+			NewFunc: armcontainerservice.NewOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice",
 		},
 	}

@@ -6,20 +6,20 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubsc
 func Armsubscriptions() []Table {
 	tables := []Table{
 		{
-      Name: "tenant_id_description",
-      Struct: &armsubscriptions.TenantIDDescription{},
-      ResponseStruct: &armsubscriptions.TenantsClientListResponse{},
-      Client: &armsubscriptions.TenantsClient{},
-      ListFunc: (&armsubscriptions.TenantsClient{}).NewListPager,
-			NewFunc: armsubscriptions.NewTenantsClient,
-		},
-		{
       Name: "subscription",
       Struct: &armsubscriptions.Subscription{},
       ResponseStruct: &armsubscriptions.ClientListResponse{},
       Client: &armsubscriptions.Client{},
       ListFunc: (&armsubscriptions.Client{}).NewListPager,
 			NewFunc: armsubscriptions.NewClient,
+		},
+		{
+      Name: "tenant_id_description",
+      Struct: &armsubscriptions.TenantIDDescription{},
+      ResponseStruct: &armsubscriptions.TenantsClientListResponse{},
+      Client: &armsubscriptions.TenantsClient{},
+      ListFunc: (&armsubscriptions.TenantsClient{}).NewListPager,
+			NewFunc: armsubscriptions.NewTenantsClient,
 		},
 	}
 

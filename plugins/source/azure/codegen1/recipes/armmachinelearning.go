@@ -14,11 +14,31 @@ func Armmachinelearning() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning",
 		},
 		{
-			NewFunc: armmachinelearning.NewComputeClient,
+			NewFunc: armmachinelearning.NewPrivateEndpointConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning",
+		},
+		{
+			NewFunc: armmachinelearning.NewWorkspaceFeaturesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning",
 		},
 		{
 			NewFunc: armmachinelearning.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning",
+		},
+		{
+			NewFunc: armmachinelearning.NewVirtualMachineSizesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning",
+		},
+		{
+			NewFunc: armmachinelearning.NewWorkspaceConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning",
+		},
+		{
+			NewFunc: armmachinelearning.NewWorkspacesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning",
+		},
+		{
+			NewFunc: armmachinelearning.NewComputeClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning",
 		},
 		{
@@ -27,26 +47,6 @@ func Armmachinelearning() []*Resource {
 		},
 		{
 			NewFunc: armmachinelearning.NewUsagesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning",
-		},
-		{
-			NewFunc: armmachinelearning.NewVirtualMachineSizesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning",
-		},
-		{
-			NewFunc: armmachinelearning.NewWorkspaceFeaturesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning",
-		},
-		{
-			NewFunc: armmachinelearning.NewWorkspacesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning",
-		},
-		{
-			NewFunc: armmachinelearning.NewPrivateEndpointConnectionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning",
-		},
-		{
-			NewFunc: armmachinelearning.NewWorkspaceConnectionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning",
 		},
 	}

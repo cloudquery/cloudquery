@@ -14,12 +14,12 @@ func Armiotsecurity() []Table {
 			NewFunc: armiotsecurity.NewDevicesClient,
 		},
 		{
-      Name: "device_group_model",
-      Struct: &armiotsecurity.DeviceGroupModel{},
-      ResponseStruct: &armiotsecurity.DeviceGroupsClientListResponse{},
-      Client: &armiotsecurity.DeviceGroupsClient{},
-      ListFunc: (&armiotsecurity.DeviceGroupsClient{}).NewListPager,
-			NewFunc: armiotsecurity.NewDeviceGroupsClient,
+      Name: "operation",
+      Struct: &armiotsecurity.Operation{},
+      ResponseStruct: &armiotsecurity.OperationsClientListResponse{},
+      Client: &armiotsecurity.OperationsClient{},
+      ListFunc: (&armiotsecurity.OperationsClient{}).NewListPager,
+			NewFunc: armiotsecurity.NewOperationsClient,
 		},
 		{
       Name: "location_model",
@@ -30,12 +30,12 @@ func Armiotsecurity() []Table {
 			NewFunc: armiotsecurity.NewLocationsClient,
 		},
 		{
-      Name: "operation",
-      Struct: &armiotsecurity.Operation{},
-      ResponseStruct: &armiotsecurity.OperationsClientListResponse{},
-      Client: &armiotsecurity.OperationsClient{},
-      ListFunc: (&armiotsecurity.OperationsClient{}).NewListPager,
-			NewFunc: armiotsecurity.NewOperationsClient,
+      Name: "device_group_model",
+      Struct: &armiotsecurity.DeviceGroupModel{},
+      ResponseStruct: &armiotsecurity.DeviceGroupsClientListResponse{},
+      Client: &armiotsecurity.DeviceGroupsClient{},
+      ListFunc: (&armiotsecurity.DeviceGroupsClient{}).NewListPager,
+			NewFunc: armiotsecurity.NewDeviceGroupsClient,
 		},
 	}
 

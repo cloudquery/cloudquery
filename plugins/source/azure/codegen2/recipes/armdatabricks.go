@@ -6,6 +6,14 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databricks/armdata
 func Armdatabricks() []Table {
 	tables := []Table{
 		{
+      Name: "group_id_information",
+      Struct: &armdatabricks.GroupIDInformation{},
+      ResponseStruct: &armdatabricks.PrivateLinkResourcesClientListResponse{},
+      Client: &armdatabricks.PrivateLinkResourcesClient{},
+      ListFunc: (&armdatabricks.PrivateLinkResourcesClient{}).NewListPager,
+			NewFunc: armdatabricks.NewPrivateLinkResourcesClient,
+		},
+		{
       Name: "operation",
       Struct: &armdatabricks.Operation{},
       ResponseStruct: &armdatabricks.OperationsClientListResponse{},
@@ -20,14 +28,6 @@ func Armdatabricks() []Table {
       Client: &armdatabricks.PrivateEndpointConnectionsClient{},
       ListFunc: (&armdatabricks.PrivateEndpointConnectionsClient{}).NewListPager,
 			NewFunc: armdatabricks.NewPrivateEndpointConnectionsClient,
-		},
-		{
-      Name: "group_id_information",
-      Struct: &armdatabricks.GroupIDInformation{},
-      ResponseStruct: &armdatabricks.PrivateLinkResourcesClientListResponse{},
-      Client: &armdatabricks.PrivateLinkResourcesClient{},
-      ListFunc: (&armdatabricks.PrivateLinkResourcesClient{}).NewListPager,
-			NewFunc: armdatabricks.NewPrivateLinkResourcesClient,
 		},
 	}
 

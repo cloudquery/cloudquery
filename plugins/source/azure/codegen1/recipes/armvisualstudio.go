@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/visualstudio/armvi
 func Armvisualstudio() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armvisualstudio.NewExtensionsClient,
+			NewFunc: armvisualstudio.NewProjectsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/visualstudio/armvisualstudio",
 		},
 		{
@@ -14,7 +14,7 @@ func Armvisualstudio() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/visualstudio/armvisualstudio",
 		},
 		{
-			NewFunc: armvisualstudio.NewProjectsClient,
+			NewFunc: armvisualstudio.NewExtensionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/visualstudio/armvisualstudio",
 		},
 		{

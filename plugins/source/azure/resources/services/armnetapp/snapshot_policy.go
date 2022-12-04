@@ -4,6 +4,7 @@ package armnetapp
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -59,7 +60,11 @@ func SnapshotPolicy() *schema.Table {
 }
 
 func fetchSnapshotPolicy(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().ArmnetappSnapshotPolicy
+	cl := meta.(*client.Client)
+	svc, err := armnetapp.NewSnapshotPoliciesClient(cl.SubscriptionId, cl.Creds, cl.Options)
+	if err != nil {
+		return err
+	}
 	pager := svc.NewListPager(nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)

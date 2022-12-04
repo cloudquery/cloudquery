@@ -6,11 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armlinks
 func Armlinks() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armlinks.NewOperationsClient,
+			NewFunc: armlinks.NewResourceLinksClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armlinks",
 		},
 		{
-			NewFunc: armlinks.NewResourceLinksClient,
+			NewFunc: armlinks.NewOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armlinks",
 		},
 	}

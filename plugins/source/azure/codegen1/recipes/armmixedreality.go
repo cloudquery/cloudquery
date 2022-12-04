@@ -6,11 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mixedreality/armmi
 func Armmixedreality() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armmixedreality.NewSpatialAnchorsAccountsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mixedreality/armmixedreality",
-		},
-		{
-			NewFunc: armmixedreality.NewClient,
+			NewFunc: armmixedreality.NewObjectAnchorsAccountsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mixedreality/armmixedreality",
 		},
 		{
@@ -18,11 +14,15 @@ func Armmixedreality() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mixedreality/armmixedreality",
 		},
 		{
+			NewFunc: armmixedreality.NewClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mixedreality/armmixedreality",
+		},
+		{
 			NewFunc: armmixedreality.NewRemoteRenderingAccountsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mixedreality/armmixedreality",
 		},
 		{
-			NewFunc: armmixedreality.NewObjectAnchorsAccountsClient,
+			NewFunc: armmixedreality.NewSpatialAnchorsAccountsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mixedreality/armmixedreality",
 		},
 	}

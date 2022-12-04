@@ -6,30 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/arma
 func Armappcontainers() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armappcontainers.NewContainerAppsAuthConfigsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers",
-		},
-		{
-			NewFunc: armappcontainers.NewCertificatesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers",
-		},
-		{
-			NewFunc: armappcontainers.NewContainerAppsRevisionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers",
-		},
-		{
-			NewFunc: armappcontainers.NewManagedEnvironmentsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers",
-		},
-		{
-			NewFunc: armappcontainers.NewManagedEnvironmentsStoragesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers",
-		},
-		{
-			NewFunc: armappcontainers.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers",
-		},
-		{
 			NewFunc: armappcontainers.NewContainerAppsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers",
 		},
@@ -38,15 +14,39 @@ func Armappcontainers() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers",
 		},
 		{
-			NewFunc: armappcontainers.NewContainerAppsRevisionReplicasClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers",
-		},
-		{
 			NewFunc: armappcontainers.NewDaprComponentsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers",
 		},
 		{
+			NewFunc: armappcontainers.NewManagedEnvironmentsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers",
+		},
+		{
 			NewFunc: armappcontainers.NewNamespacesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers",
+		},
+		{
+			NewFunc: armappcontainers.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers",
+		},
+		{
+			NewFunc: armappcontainers.NewContainerAppsRevisionReplicasClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers",
+		},
+		{
+			NewFunc: armappcontainers.NewManagedEnvironmentsStoragesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers",
+		},
+		{
+			NewFunc: armappcontainers.NewCertificatesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers",
+		},
+		{
+			NewFunc: armappcontainers.NewContainerAppsAuthConfigsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers",
+		},
+		{
+			NewFunc: armappcontainers.NewContainerAppsRevisionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers",
 		},
 	}

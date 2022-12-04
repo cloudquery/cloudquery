@@ -6,20 +6,20 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerinstance/
 func Armcontainerinstance() []Table {
 	tables := []Table{
 		{
-      Name: "operation",
-      Struct: &armcontainerinstance.Operation{},
-      ResponseStruct: &armcontainerinstance.OperationsClientListResponse{},
-      Client: &armcontainerinstance.OperationsClient{},
-      ListFunc: (&armcontainerinstance.OperationsClient{}).NewListPager,
-			NewFunc: armcontainerinstance.NewOperationsClient,
-		},
-		{
       Name: "container_group",
       Struct: &armcontainerinstance.ContainerGroup{},
       ResponseStruct: &armcontainerinstance.ContainerGroupsClientListResponse{},
       Client: &armcontainerinstance.ContainerGroupsClient{},
       ListFunc: (&armcontainerinstance.ContainerGroupsClient{}).NewListPager,
 			NewFunc: armcontainerinstance.NewContainerGroupsClient,
+		},
+		{
+      Name: "operation",
+      Struct: &armcontainerinstance.Operation{},
+      ResponseStruct: &armcontainerinstance.OperationsClientListResponse{},
+      Client: &armcontainerinstance.OperationsClient{},
+      ListFunc: (&armcontainerinstance.OperationsClient{}).NewListPager,
+			NewFunc: armcontainerinstance.NewOperationsClient,
 		},
 	}
 

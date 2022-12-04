@@ -4,6 +4,7 @@ package armdashboard
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dashboard/armdashboard"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -64,7 +65,11 @@ func ManagedGrafana() *schema.Table {
 }
 
 func fetchManagedGrafana(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().ArmdashboardManagedGrafana
+	cl := meta.(*client.Client)
+	svc, err := armdashboard.NewGrafanaClient(cl.SubscriptionId, cl.Creds, cl.Options)
+	if err != nil {
+		return err
+	}
 	pager := svc.NewListPager(nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)

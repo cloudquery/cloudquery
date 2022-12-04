@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolic
 func Armpolicy() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armpolicy.NewDefinitionsClient,
+			NewFunc: armpolicy.NewSetDefinitionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy",
 		},
 		{
@@ -22,7 +22,7 @@ func Armpolicy() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy",
 		},
 		{
-			NewFunc: armpolicy.NewSetDefinitionsClient,
+			NewFunc: armpolicy.NewDefinitionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy",
 		},
 	}

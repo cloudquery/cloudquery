@@ -6,15 +6,43 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn"
 func Armcdn() []*Resource {
 	resources := []*Resource{
 		{
+			NewFunc: armcdn.NewLogAnalyticsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
+		},
+		{
+			NewFunc: armcdn.NewManagementClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
+		},
+		{
 			NewFunc: armcdn.NewOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
 		},
 		{
-			NewFunc: armcdn.NewRuleSetsClient,
+			NewFunc: armcdn.NewOriginGroupsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
+		},
+		{
+			NewFunc: armcdn.NewSecretsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
 		},
 		{
 			NewFunc: armcdn.NewCustomDomainsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
+		},
+		{
+			NewFunc: armcdn.NewResourceUsageClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
+		},
+		{
+			NewFunc: armcdn.NewAFDCustomDomainsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
+		},
+		{
+			NewFunc: armcdn.NewRulesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
+		},
+		{
+			NewFunc: armcdn.NewProfilesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
 		},
 		{
@@ -26,27 +54,7 @@ func Armcdn() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
 		},
 		{
-			NewFunc: armcdn.NewManagementClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
-		},
-		{
-			NewFunc: armcdn.NewRulesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
-		},
-		{
-			NewFunc: armcdn.NewLogAnalyticsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
-		},
-		{
-			NewFunc: armcdn.NewOriginGroupsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
-		},
-		{
-			NewFunc: armcdn.NewPoliciesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
-		},
-		{
-			NewFunc: armcdn.NewAFDOriginsClient,
+			NewFunc: armcdn.NewRoutesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
 		},
 		{
@@ -54,11 +62,23 @@ func Armcdn() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
 		},
 		{
-			NewFunc: armcdn.NewSecretsClient,
+			NewFunc: armcdn.NewAFDEndpointsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
 		},
 		{
-			NewFunc: armcdn.NewAFDCustomDomainsClient,
+			NewFunc: armcdn.NewAFDOriginsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
+		},
+		{
+			NewFunc: armcdn.NewOriginsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
+		},
+		{
+			NewFunc: armcdn.NewRuleSetsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
+		},
+		{
+			NewFunc: armcdn.NewSecurityPoliciesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
 		},
 		{
@@ -70,31 +90,11 @@ func Armcdn() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
 		},
 		{
-			NewFunc: armcdn.NewResourceUsageClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
-		},
-		{
-			NewFunc: armcdn.NewAFDEndpointsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
-		},
-		{
-			NewFunc: armcdn.NewSecurityPoliciesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
-		},
-		{
-			NewFunc: armcdn.NewProfilesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
-		},
-		{
-			NewFunc: armcdn.NewRoutesClient,
+			NewFunc: armcdn.NewPoliciesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
 		},
 		{
 			NewFunc: armcdn.NewManagedRuleSetsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
-		},
-		{
-			NewFunc: armcdn.NewOriginsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
 		},
 	}

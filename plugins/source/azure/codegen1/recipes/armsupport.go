@@ -6,10 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport
 func Armsupport() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armsupport.NewProblemClassificationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport",
-		},
-		{
 			NewFunc: armsupport.NewServicesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport",
 		},
@@ -18,11 +14,15 @@ func Armsupport() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport",
 		},
 		{
+			NewFunc: armsupport.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport",
+		},
+		{
 			NewFunc: armsupport.NewCommunicationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport",
 		},
 		{
-			NewFunc: armsupport.NewOperationsClient,
+			NewFunc: armsupport.NewProblemClassificationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport",
 		},
 	}

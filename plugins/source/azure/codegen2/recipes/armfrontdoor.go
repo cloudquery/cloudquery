@@ -6,20 +6,12 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfront
 func Armfrontdoor() []Table {
 	tables := []Table{
 		{
-      Name: "front_door",
-      Struct: &armfrontdoor.FrontDoor{},
-      ResponseStruct: &armfrontdoor.FrontDoorsClientListResponse{},
-      Client: &armfrontdoor.FrontDoorsClient{},
-      ListFunc: (&armfrontdoor.FrontDoorsClient{}).NewListPager,
-			NewFunc: armfrontdoor.NewFrontDoorsClient,
-		},
-		{
-      Name: "managed_rule_set_definition",
-      Struct: &armfrontdoor.ManagedRuleSetDefinition{},
-      ResponseStruct: &armfrontdoor.ManagedRuleSetsClientListResponse{},
-      Client: &armfrontdoor.ManagedRuleSetsClient{},
-      ListFunc: (&armfrontdoor.ManagedRuleSetsClient{}).NewListPager,
-			NewFunc: armfrontdoor.NewManagedRuleSetsClient,
+      Name: "web_application_firewall_policy",
+      Struct: &armfrontdoor.WebApplicationFirewallPolicy{},
+      ResponseStruct: &armfrontdoor.PoliciesClientListResponse{},
+      Client: &armfrontdoor.PoliciesClient{},
+      ListFunc: (&armfrontdoor.PoliciesClient{}).NewListPager,
+			NewFunc: armfrontdoor.NewPoliciesClient,
 		},
 		{
       Name: "preconfigured_endpoint",
@@ -30,6 +22,14 @@ func Armfrontdoor() []Table {
 			NewFunc: armfrontdoor.NewPreconfiguredEndpointsClient,
 		},
 		{
+      Name: "front_door",
+      Struct: &armfrontdoor.FrontDoor{},
+      ResponseStruct: &armfrontdoor.FrontDoorsClientListResponse{},
+      Client: &armfrontdoor.FrontDoorsClient{},
+      ListFunc: (&armfrontdoor.FrontDoorsClient{}).NewListPager,
+			NewFunc: armfrontdoor.NewFrontDoorsClient,
+		},
+		{
       Name: "profile",
       Struct: &armfrontdoor.Profile{},
       ResponseStruct: &armfrontdoor.NetworkExperimentProfilesClientListResponse{},
@@ -38,12 +38,12 @@ func Armfrontdoor() []Table {
 			NewFunc: armfrontdoor.NewNetworkExperimentProfilesClient,
 		},
 		{
-      Name: "web_application_firewall_policy",
-      Struct: &armfrontdoor.WebApplicationFirewallPolicy{},
-      ResponseStruct: &armfrontdoor.PoliciesClientListResponse{},
-      Client: &armfrontdoor.PoliciesClient{},
-      ListFunc: (&armfrontdoor.PoliciesClient{}).NewListPager,
-			NewFunc: armfrontdoor.NewPoliciesClient,
+      Name: "managed_rule_set_definition",
+      Struct: &armfrontdoor.ManagedRuleSetDefinition{},
+      ResponseStruct: &armfrontdoor.ManagedRuleSetsClientListResponse{},
+      Client: &armfrontdoor.ManagedRuleSetsClient{},
+      ListFunc: (&armfrontdoor.ManagedRuleSetsClient{}).NewListPager,
+			NewFunc: armfrontdoor.NewManagedRuleSetsClient,
 		},
 	}
 

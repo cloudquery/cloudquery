@@ -6,6 +6,14 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/orbital/armorbital
 func Armorbital() []Table {
 	tables := []Table{
 		{
+      Name: "operation",
+      Struct: &armorbital.Operation{},
+      ResponseStruct: &armorbital.OperationsClientListResponse{},
+      Client: &armorbital.OperationsClient{},
+      ListFunc: (&armorbital.OperationsClient{}).NewListPager,
+			NewFunc: armorbital.NewOperationsClient,
+		},
+		{
       Name: "spacecraft",
       Struct: &armorbital.Spacecraft{},
       ResponseStruct: &armorbital.SpacecraftsClientListResponse{},
@@ -28,14 +36,6 @@ func Armorbital() []Table {
       Client: &armorbital.ContactsClient{},
       ListFunc: (&armorbital.ContactsClient{}).NewListPager,
 			NewFunc: armorbital.NewContactsClient,
-		},
-		{
-      Name: "operation",
-      Struct: &armorbital.Operation{},
-      ResponseStruct: &armorbital.OperationsClientListResponse{},
-      Client: &armorbital.OperationsClient{},
-      ListFunc: (&armorbital.OperationsClient{}).NewListPager,
-			NewFunc: armorbital.NewOperationsClient,
 		},
 	}
 

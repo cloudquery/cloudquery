@@ -6,11 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridconnectivity
 func Armhybridconnectivity() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armhybridconnectivity.NewEndpointsClient,
+			NewFunc: armhybridconnectivity.NewOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridconnectivity/armhybridconnectivity",
 		},
 		{
-			NewFunc: armhybridconnectivity.NewOperationsClient,
+			NewFunc: armhybridconnectivity.NewEndpointsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridconnectivity/armhybridconnectivity",
 		},
 	}

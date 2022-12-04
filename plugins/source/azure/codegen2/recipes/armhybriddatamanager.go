@@ -6,20 +6,20 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybriddatamanager/
 func Armhybriddatamanager() []Table {
 	tables := []Table{
 		{
-      Name: "available_provider_operation",
-      Struct: &armhybriddatamanager.AvailableProviderOperation{},
-      ResponseStruct: &armhybriddatamanager.OperationsClientListResponse{},
-      Client: &armhybriddatamanager.OperationsClient{},
-      ListFunc: (&armhybriddatamanager.OperationsClient{}).NewListPager,
-			NewFunc: armhybriddatamanager.NewOperationsClient,
-		},
-		{
       Name: "data_manager",
       Struct: &armhybriddatamanager.DataManager{},
       ResponseStruct: &armhybriddatamanager.DataManagersClientListResponse{},
       Client: &armhybriddatamanager.DataManagersClient{},
       ListFunc: (&armhybriddatamanager.DataManagersClient{}).NewListPager,
 			NewFunc: armhybriddatamanager.NewDataManagersClient,
+		},
+		{
+      Name: "available_provider_operation",
+      Struct: &armhybriddatamanager.AvailableProviderOperation{},
+      ResponseStruct: &armhybriddatamanager.OperationsClientListResponse{},
+      Client: &armhybriddatamanager.OperationsClient{},
+      ListFunc: (&armhybriddatamanager.OperationsClient{}).NewListPager,
+			NewFunc: armhybriddatamanager.NewOperationsClient,
 		},
 	}
 

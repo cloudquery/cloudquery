@@ -4,6 +4,7 @@ package armdevhub
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devhub/armdevhub"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -54,7 +55,11 @@ func Workflow() *schema.Table {
 }
 
 func fetchWorkflow(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().ArmdevhubWorkflow
+	cl := meta.(*client.Client)
+	svc, err := armdevhub.NewWorkflowClient(cl.SubscriptionId, cl.Creds, cl.Options)
+	if err != nil {
+		return err
+	}
 	pager := svc.NewListPager(nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)

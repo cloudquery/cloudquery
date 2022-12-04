@@ -14,14 +14,6 @@ func Armservicebus() []Table {
 			NewFunc: armservicebus.NewDisasterRecoveryConfigsClient,
 		},
 		{
-      Name: "migration_config_properties",
-      Struct: &armservicebus.MigrationConfigProperties{},
-      ResponseStruct: &armservicebus.MigrationConfigsClientListResponse{},
-      Client: &armservicebus.MigrationConfigsClient{},
-      ListFunc: (&armservicebus.MigrationConfigsClient{}).NewListPager,
-			NewFunc: armservicebus.NewMigrationConfigsClient,
-		},
-		{
       Name: "sb_namespace",
       Struct: &armservicebus.SBNamespace{},
       ResponseStruct: &armservicebus.NamespacesClientListResponse{},
@@ -44,6 +36,14 @@ func Armservicebus() []Table {
       Client: &armservicebus.PrivateEndpointConnectionsClient{},
       ListFunc: (&armservicebus.PrivateEndpointConnectionsClient{}).NewListPager,
 			NewFunc: armservicebus.NewPrivateEndpointConnectionsClient,
+		},
+		{
+      Name: "migration_config_properties",
+      Struct: &armservicebus.MigrationConfigProperties{},
+      ResponseStruct: &armservicebus.MigrationConfigsClientListResponse{},
+      Client: &armservicebus.MigrationConfigsClient{},
+      ListFunc: (&armservicebus.MigrationConfigsClient{}).NewListPager,
+			NewFunc: armservicebus.NewMigrationConfigsClient,
 		},
 	}
 

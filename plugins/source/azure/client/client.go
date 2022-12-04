@@ -8,6 +8,7 @@ import (
 	// Import all autorest modules
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -22,7 +23,9 @@ type Client struct {
 	logger        zerolog.Logger
 	// this is set by table client multiplexer
 	SubscriptionId string
-	services       map[string]*Services
+	Creds 				azcore.TokenCredential
+	Options *arm.ClientOptions
+	// services       map[string]*Services
 }
 
 
@@ -69,18 +72,19 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 		return nil, err
 	}
 
-	servicesMap := make(map[string]*Services)
-	for _, subscriptionId := range subscriptions {
-		subscriptionServices, err := InitServices(subscriptionId, creds)
-		if err != nil {
-			return nil, err
-		}
-		servicesMap[subscriptionId] = &subscriptionServices
-	}
+	// servicesMap := make(map[string]*Services)
+	// for _, subscriptionId := range subscriptions {
+	// 	subscriptionServices, err := InitServices(subscriptionId, creds)
+	// 	if err != nil {
+	// 		return nil, err
+	// 	}
+	// 	servicesMap[subscriptionId] = &subscriptionServices
+	// }
 	return &Client{
 		logger:        logger,
 		subscriptions: subscriptions,
-		services:      servicesMap,
+		// services:      servicesMap,
+		Creds: creds,
 	}, nil
 }
 
@@ -96,12 +100,14 @@ func (c *Client) ID() string {
 func (c Client) withSubscription(subscriptionId string) *Client {
 	return &Client{
 		subscriptions:  c.subscriptions,
-		services:       c.services,
+		// services:       c.services,
 		logger:         c.logger.With().Str("subscription_id", subscriptionId).Logger(),
 		SubscriptionId: subscriptionId,
+		Creds: c.Creds,
+		Options: c.Options,
 	}
 }
 
-func (c Client) Services() *Services {
-	return c.services[c.SubscriptionId]
-}
+// func (c Client) Services() *Services {
+// 	return c.services[c.SubscriptionId]
+// }

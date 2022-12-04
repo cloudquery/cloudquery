@@ -10,19 +10,7 @@ func Armdeploymentmanager() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deploymentmanager/armdeploymentmanager",
 		},
 		{
-			NewFunc: armdeploymentmanager.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deploymentmanager/armdeploymentmanager",
-		},
-		{
 			NewFunc: armdeploymentmanager.NewRolloutsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deploymentmanager/armdeploymentmanager",
-		},
-		{
-			NewFunc: armdeploymentmanager.NewServiceTopologiesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deploymentmanager/armdeploymentmanager",
-		},
-		{
-			NewFunc: armdeploymentmanager.NewStepsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deploymentmanager/armdeploymentmanager",
 		},
 		{
@@ -30,7 +18,19 @@ func Armdeploymentmanager() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deploymentmanager/armdeploymentmanager",
 		},
 		{
+			NewFunc: armdeploymentmanager.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deploymentmanager/armdeploymentmanager",
+		},
+		{
+			NewFunc: armdeploymentmanager.NewServiceTopologiesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deploymentmanager/armdeploymentmanager",
+		},
+		{
 			NewFunc: armdeploymentmanager.NewServiceUnitsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deploymentmanager/armdeploymentmanager",
+		},
+		{
+			NewFunc: armdeploymentmanager.NewStepsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deploymentmanager/armdeploymentmanager",
 		},
 	}

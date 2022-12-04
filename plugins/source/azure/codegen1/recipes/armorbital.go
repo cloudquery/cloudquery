@@ -6,6 +6,10 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/orbital/armorbital
 func Armorbital() []*Resource {
 	resources := []*Resource{
 		{
+			NewFunc: armorbital.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/orbital/armorbital",
+		},
+		{
 			NewFunc: armorbital.NewSpacecraftsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/orbital/armorbital",
 		},
@@ -23,10 +27,6 @@ func Armorbital() []*Resource {
 		},
 		{
 			NewFunc: armorbital.NewOperationsResultsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/orbital/armorbital",
-		},
-		{
-			NewFunc: armorbital.NewOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/orbital/armorbital",
 		},
 	}

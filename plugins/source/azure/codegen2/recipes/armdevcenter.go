@@ -6,14 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevce
 func Armdevcenter() []Table {
 	tables := []Table{
 		{
-      Name: "project_environment_type",
-      Struct: &armdevcenter.ProjectEnvironmentType{},
-      ResponseStruct: &armdevcenter.ProjectEnvironmentTypesClientListResponse{},
-      Client: &armdevcenter.ProjectEnvironmentTypesClient{},
-      ListFunc: (&armdevcenter.ProjectEnvironmentTypesClient{}).NewListPager,
-			NewFunc: armdevcenter.NewProjectEnvironmentTypesClient,
-		},
-		{
       Name: "operation",
       Struct: &armdevcenter.Operation{},
       ResponseStruct: &armdevcenter.OperationsClientListResponse{},
@@ -28,6 +20,14 @@ func Armdevcenter() []Table {
       Client: &armdevcenter.ProjectAllowedEnvironmentTypesClient{},
       ListFunc: (&armdevcenter.ProjectAllowedEnvironmentTypesClient{}).NewListPager,
 			NewFunc: armdevcenter.NewProjectAllowedEnvironmentTypesClient,
+		},
+		{
+      Name: "project_environment_type",
+      Struct: &armdevcenter.ProjectEnvironmentType{},
+      ResponseStruct: &armdevcenter.ProjectEnvironmentTypesClientListResponse{},
+      Client: &armdevcenter.ProjectEnvironmentTypesClient{},
+      ListFunc: (&armdevcenter.ProjectEnvironmentTypesClient{}).NewListPager,
+			NewFunc: armdevcenter.NewProjectEnvironmentTypesClient,
 		},
 	}
 

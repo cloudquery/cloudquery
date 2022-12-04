@@ -6,20 +6,20 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysqlflex
 func Armmysqlflexibleservers() []Table {
 	tables := []Table{
 		{
-      Name: "server",
-      Struct: &armmysqlflexibleservers.Server{},
-      ResponseStruct: &armmysqlflexibleservers.ServersClientListResponse{},
-      Client: &armmysqlflexibleservers.ServersClient{},
-      ListFunc: (&armmysqlflexibleservers.ServersClient{}).NewListPager,
-			NewFunc: armmysqlflexibleservers.NewServersClient,
-		},
-		{
       Name: "operation",
       Struct: &armmysqlflexibleservers.Operation{},
       ResponseStruct: &armmysqlflexibleservers.OperationsClientListResponse{},
       Client: &armmysqlflexibleservers.OperationsClient{},
       ListFunc: (&armmysqlflexibleservers.OperationsClient{}).NewListPager,
 			NewFunc: armmysqlflexibleservers.NewOperationsClient,
+		},
+		{
+      Name: "server",
+      Struct: &armmysqlflexibleservers.Server{},
+      ResponseStruct: &armmysqlflexibleservers.ServersClientListResponse{},
+      Client: &armmysqlflexibleservers.ServersClient{},
+      ListFunc: (&armmysqlflexibleservers.ServersClient{}).NewListPager,
+			NewFunc: armmysqlflexibleservers.NewServersClient,
 		},
 		{
       Name: "capability_properties",

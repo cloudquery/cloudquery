@@ -4,6 +4,7 @@ package armhardwaresecuritymodules
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hardwaresecuritymodules/armhardwaresecuritymodules"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -34,7 +35,11 @@ func DedicatedHsmOperation() *schema.Table {
 }
 
 func fetchDedicatedHsmOperation(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().ArmhardwaresecuritymodulesDedicatedHsmOperation
+	cl := meta.(*client.Client)
+	svc, err := armhardwaresecuritymodules.NewOperationsClient(cl.Creds, cl.Options)
+	if err != nil {
+		return err
+	}
 	pager := svc.NewListPager(nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)

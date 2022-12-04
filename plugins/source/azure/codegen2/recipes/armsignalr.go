@@ -6,36 +6,12 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/signalr/armsignalr
 func Armsignalr() []Table {
 	tables := []Table{
 		{
-      Name: "shared_private_link_resource",
-      Struct: &armsignalr.SharedPrivateLinkResource{},
-      ResponseStruct: &armsignalr.SharedPrivateLinkResourcesClientListResponse{},
-      Client: &armsignalr.SharedPrivateLinkResourcesClient{},
-      ListFunc: (&armsignalr.SharedPrivateLinkResourcesClient{}).NewListPager,
-			NewFunc: armsignalr.NewSharedPrivateLinkResourcesClient,
-		},
-		{
-      Name: "operation",
-      Struct: &armsignalr.Operation{},
-      ResponseStruct: &armsignalr.OperationsClientListResponse{},
-      Client: &armsignalr.OperationsClient{},
-      ListFunc: (&armsignalr.OperationsClient{}).NewListPager,
-			NewFunc: armsignalr.NewOperationsClient,
-		},
-		{
       Name: "private_endpoint_connection",
       Struct: &armsignalr.PrivateEndpointConnection{},
       ResponseStruct: &armsignalr.PrivateEndpointConnectionsClientListResponse{},
       Client: &armsignalr.PrivateEndpointConnectionsClient{},
       ListFunc: (&armsignalr.PrivateEndpointConnectionsClient{}).NewListPager,
 			NewFunc: armsignalr.NewPrivateEndpointConnectionsClient,
-		},
-		{
-      Name: "custom_certificate",
-      Struct: &armsignalr.CustomCertificate{},
-      ResponseStruct: &armsignalr.CustomCertificatesClientListResponse{},
-      Client: &armsignalr.CustomCertificatesClient{},
-      ListFunc: (&armsignalr.CustomCertificatesClient{}).NewListPager,
-			NewFunc: armsignalr.NewCustomCertificatesClient,
 		},
 		{
       Name: "usage",
@@ -46,12 +22,36 @@ func Armsignalr() []Table {
 			NewFunc: armsignalr.NewUsagesClient,
 		},
 		{
+      Name: "operation",
+      Struct: &armsignalr.Operation{},
+      ResponseStruct: &armsignalr.OperationsClientListResponse{},
+      Client: &armsignalr.OperationsClient{},
+      ListFunc: (&armsignalr.OperationsClient{}).NewListPager,
+			NewFunc: armsignalr.NewOperationsClient,
+		},
+		{
+      Name: "shared_private_link_resource",
+      Struct: &armsignalr.SharedPrivateLinkResource{},
+      ResponseStruct: &armsignalr.SharedPrivateLinkResourcesClientListResponse{},
+      Client: &armsignalr.SharedPrivateLinkResourcesClient{},
+      ListFunc: (&armsignalr.SharedPrivateLinkResourcesClient{}).NewListPager,
+			NewFunc: armsignalr.NewSharedPrivateLinkResourcesClient,
+		},
+		{
       Name: "private_link_resource",
       Struct: &armsignalr.PrivateLinkResource{},
       ResponseStruct: &armsignalr.PrivateLinkResourcesClientListResponse{},
       Client: &armsignalr.PrivateLinkResourcesClient{},
       ListFunc: (&armsignalr.PrivateLinkResourcesClient{}).NewListPager,
 			NewFunc: armsignalr.NewPrivateLinkResourcesClient,
+		},
+		{
+      Name: "custom_certificate",
+      Struct: &armsignalr.CustomCertificate{},
+      ResponseStruct: &armsignalr.CustomCertificatesClientListResponse{},
+      Client: &armsignalr.CustomCertificatesClient{},
+      ListFunc: (&armsignalr.CustomCertificatesClient{}).NewListPager,
+			NewFunc: armsignalr.NewCustomCertificatesClient,
 		},
 		{
       Name: "custom_domain",

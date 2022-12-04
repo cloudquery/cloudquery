@@ -6,11 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armcon
 func Armconsumption() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armconsumption.NewAggregatedCostClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
-		},
-		{
-			NewFunc: armconsumption.NewEventsClient,
+			NewFunc: armconsumption.NewBalancesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
 		},
 		{
@@ -18,35 +14,11 @@ func Armconsumption() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
 		},
 		{
-			NewFunc: armconsumption.NewMarketplacesClient,
+			NewFunc: armconsumption.NewTagsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
 		},
 		{
-			NewFunc: armconsumption.NewReservationRecommendationDetailsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
-		},
-		{
-			NewFunc: armconsumption.NewUsageDetailsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
-		},
-		{
-			NewFunc: armconsumption.NewChargesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
-		},
-		{
-			NewFunc: armconsumption.NewReservationsSummariesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
-		},
-		{
-			NewFunc: armconsumption.NewReservationTransactionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
-		},
-		{
-			NewFunc: armconsumption.NewReservationsDetailsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
-		},
-		{
-			NewFunc: armconsumption.NewBalancesClient,
+			NewFunc: armconsumption.NewAggregatedCostClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
 		},
 		{
@@ -54,7 +26,23 @@ func Armconsumption() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
 		},
 		{
+			NewFunc: armconsumption.NewMarketplacesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
+		},
+		{
 			NewFunc: armconsumption.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
+		},
+		{
+			NewFunc: armconsumption.NewReservationRecommendationDetailsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
+		},
+		{
+			NewFunc: armconsumption.NewReservationRecommendationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
+		},
+		{
+			NewFunc: armconsumption.NewChargesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
 		},
 		{
@@ -66,11 +54,23 @@ func Armconsumption() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
 		},
 		{
-			NewFunc: armconsumption.NewReservationRecommendationsClient,
+			NewFunc: armconsumption.NewEventsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
 		},
 		{
-			NewFunc: armconsumption.NewTagsClient,
+			NewFunc: armconsumption.NewReservationsDetailsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
+		},
+		{
+			NewFunc: armconsumption.NewReservationsSummariesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
+		},
+		{
+			NewFunc: armconsumption.NewReservationTransactionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
+		},
+		{
+			NewFunc: armconsumption.NewUsageDetailsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
 		},
 	}

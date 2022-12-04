@@ -14,20 +14,20 @@ func Armrecoveryservices() []Table {
 			NewFunc: armrecoveryservices.NewReplicationUsagesClient,
 		},
 		{
-      Name: "private_link_resource",
-      Struct: &armrecoveryservices.PrivateLinkResource{},
-      ResponseStruct: &armrecoveryservices.PrivateLinkResourcesClientListResponse{},
-      Client: &armrecoveryservices.PrivateLinkResourcesClient{},
-      ListFunc: (&armrecoveryservices.PrivateLinkResourcesClient{}).NewListPager,
-			NewFunc: armrecoveryservices.NewPrivateLinkResourcesClient,
-		},
-		{
       Name: "client_discovery_value_for_single_api",
       Struct: &armrecoveryservices.ClientDiscoveryValueForSingleAPI{},
       ResponseStruct: &armrecoveryservices.OperationsClientListResponse{},
       Client: &armrecoveryservices.OperationsClient{},
       ListFunc: (&armrecoveryservices.OperationsClient{}).NewListPager,
 			NewFunc: armrecoveryservices.NewOperationsClient,
+		},
+		{
+      Name: "private_link_resource",
+      Struct: &armrecoveryservices.PrivateLinkResource{},
+      ResponseStruct: &armrecoveryservices.PrivateLinkResourcesClientListResponse{},
+      Client: &armrecoveryservices.PrivateLinkResourcesClient{},
+      ListFunc: (&armrecoveryservices.PrivateLinkResourcesClient{}).NewListPager,
+			NewFunc: armrecoveryservices.NewPrivateLinkResourcesClient,
 		},
 	}
 

@@ -14,6 +14,14 @@ func Armcontainerservice() []Table {
 			NewFunc: armcontainerservice.NewManagedClustersClient,
 		},
 		{
+      Name: "snapshot",
+      Struct: &armcontainerservice.Snapshot{},
+      ResponseStruct: &armcontainerservice.SnapshotsClientListResponse{},
+      Client: &armcontainerservice.SnapshotsClient{},
+      ListFunc: (&armcontainerservice.SnapshotsClient{}).NewListPager,
+			NewFunc: armcontainerservice.NewSnapshotsClient,
+		},
+		{
       Name: "agent_pool",
       Struct: &armcontainerservice.AgentPool{},
       ResponseStruct: &armcontainerservice.AgentPoolsClientListResponse{},
@@ -28,14 +36,6 @@ func Armcontainerservice() []Table {
       Client: &armcontainerservice.OperationsClient{},
       ListFunc: (&armcontainerservice.OperationsClient{}).NewListPager,
 			NewFunc: armcontainerservice.NewOperationsClient,
-		},
-		{
-      Name: "snapshot",
-      Struct: &armcontainerservice.Snapshot{},
-      ResponseStruct: &armcontainerservice.SnapshotsClientListResponse{},
-      Client: &armcontainerservice.SnapshotsClient{},
-      ListFunc: (&armcontainerservice.SnapshotsClient{}).NewListPager,
-			NewFunc: armcontainerservice.NewSnapshotsClient,
 		},
 	}
 

@@ -6,11 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/virtualmachineimag
 func Armvirtualmachineimagebuilder() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armvirtualmachineimagebuilder.NewOperationsClient,
+			NewFunc: armvirtualmachineimagebuilder.NewVirtualMachineImageTemplatesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/virtualmachineimagebuilder/armvirtualmachineimagebuilder",
 		},
 		{
-			NewFunc: armvirtualmachineimagebuilder.NewVirtualMachineImageTemplatesClient,
+			NewFunc: armvirtualmachineimagebuilder.NewOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/virtualmachineimagebuilder/armvirtualmachineimagebuilder",
 		},
 	}

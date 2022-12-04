@@ -6,20 +6,20 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/msi/armmsi"
 func Armmsi() []Table {
 	tables := []Table{
 		{
-      Name: "operation",
-      Struct: &armmsi.Operation{},
-      ResponseStruct: &armmsi.OperationsClientListResponse{},
-      Client: &armmsi.OperationsClient{},
-      ListFunc: (&armmsi.OperationsClient{}).NewListPager,
-			NewFunc: armmsi.NewOperationsClient,
-		},
-		{
       Name: "federated_identity_credential",
       Struct: &armmsi.FederatedIdentityCredential{},
       ResponseStruct: &armmsi.FederatedIdentityCredentialsClientListResponse{},
       Client: &armmsi.FederatedIdentityCredentialsClient{},
       ListFunc: (&armmsi.FederatedIdentityCredentialsClient{}).NewListPager,
 			NewFunc: armmsi.NewFederatedIdentityCredentialsClient,
+		},
+		{
+      Name: "operation",
+      Struct: &armmsi.Operation{},
+      ResponseStruct: &armmsi.OperationsClientListResponse{},
+      Client: &armmsi.OperationsClient{},
+      ListFunc: (&armmsi.OperationsClient{}).NewListPager,
+			NewFunc: armmsi.NewOperationsClient,
 		},
 	}
 

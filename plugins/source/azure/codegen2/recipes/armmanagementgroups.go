@@ -6,20 +6,20 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementgroups/a
 func Armmanagementgroups() []Table {
 	tables := []Table{
 		{
-      Name: "management_group_info",
-      Struct: &armmanagementgroups.ManagementGroupInfo{},
-      ResponseStruct: &armmanagementgroups.ClientListResponse{},
-      Client: &armmanagementgroups.Client{},
-      ListFunc: (&armmanagementgroups.Client{}).NewListPager,
-			NewFunc: armmanagementgroups.NewClient,
-		},
-		{
       Name: "entity_info",
       Struct: &armmanagementgroups.EntityInfo{},
       ResponseStruct: &armmanagementgroups.EntitiesClientListResponse{},
       Client: &armmanagementgroups.EntitiesClient{},
       ListFunc: (&armmanagementgroups.EntitiesClient{}).NewListPager,
 			NewFunc: armmanagementgroups.NewEntitiesClient,
+		},
+		{
+      Name: "management_group_info",
+      Struct: &armmanagementgroups.ManagementGroupInfo{},
+      ResponseStruct: &armmanagementgroups.ClientListResponse{},
+      Client: &armmanagementgroups.Client{},
+      ListFunc: (&armmanagementgroups.Client{}).NewListPager,
+			NewFunc: armmanagementgroups.NewClient,
 		},
 		{
       Name: "operation",

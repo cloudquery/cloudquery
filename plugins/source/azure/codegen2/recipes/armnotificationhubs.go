@@ -6,12 +6,12 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/notificationhubs/a
 func Armnotificationhubs() []Table {
 	tables := []Table{
 		{
-      Name: "operation",
-      Struct: &armnotificationhubs.Operation{},
-      ResponseStruct: &armnotificationhubs.OperationsClientListResponse{},
-      Client: &armnotificationhubs.OperationsClient{},
-      ListFunc: (&armnotificationhubs.OperationsClient{}).NewListPager,
-			NewFunc: armnotificationhubs.NewOperationsClient,
+      Name: "namespace_resource",
+      Struct: &armnotificationhubs.NamespaceResource{},
+      ResponseStruct: &armnotificationhubs.NamespacesClientListResponse{},
+      Client: &armnotificationhubs.NamespacesClient{},
+      ListFunc: (&armnotificationhubs.NamespacesClient{}).NewListPager,
+			NewFunc: armnotificationhubs.NewNamespacesClient,
 		},
 		{
       Name: "notification_hub_resource",
@@ -22,12 +22,12 @@ func Armnotificationhubs() []Table {
 			NewFunc: armnotificationhubs.NewClient,
 		},
 		{
-      Name: "namespace_resource",
-      Struct: &armnotificationhubs.NamespaceResource{},
-      ResponseStruct: &armnotificationhubs.NamespacesClientListResponse{},
-      Client: &armnotificationhubs.NamespacesClient{},
-      ListFunc: (&armnotificationhubs.NamespacesClient{}).NewListPager,
-			NewFunc: armnotificationhubs.NewNamespacesClient,
+      Name: "operation",
+      Struct: &armnotificationhubs.Operation{},
+      ResponseStruct: &armnotificationhubs.OperationsClientListResponse{},
+      Client: &armnotificationhubs.OperationsClient{},
+      ListFunc: (&armnotificationhubs.OperationsClient{}).NewListPager,
+			NewFunc: armnotificationhubs.NewOperationsClient,
 		},
 	}
 

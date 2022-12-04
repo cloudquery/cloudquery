@@ -6,14 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbots
 func Armbotservice() []Table {
 	tables := []Table{
 		{
-      Name: "private_endpoint_connection",
-      Struct: &armbotservice.PrivateEndpointConnection{},
-      ResponseStruct: &armbotservice.PrivateEndpointConnectionsClientListResponse{},
-      Client: &armbotservice.PrivateEndpointConnectionsClient{},
-      ListFunc: (&armbotservice.PrivateEndpointConnectionsClient{}).NewListPager,
-			NewFunc: armbotservice.NewPrivateEndpointConnectionsClient,
-		},
-		{
       Name: "bot",
       Struct: &armbotservice.Bot{},
       ResponseStruct: &armbotservice.BotsClientListResponse{},
@@ -28,6 +20,14 @@ func Armbotservice() []Table {
       Client: &armbotservice.OperationsClient{},
       ListFunc: (&armbotservice.OperationsClient{}).NewListPager,
 			NewFunc: armbotservice.NewOperationsClient,
+		},
+		{
+      Name: "private_endpoint_connection",
+      Struct: &armbotservice.PrivateEndpointConnection{},
+      ResponseStruct: &armbotservice.PrivateEndpointConnectionsClientListResponse{},
+      Client: &armbotservice.PrivateEndpointConnectionsClient{},
+      ListFunc: (&armbotservice.PrivateEndpointConnectionsClient{}).NewListPager,
+			NewFunc: armbotservice.NewPrivateEndpointConnectionsClient,
 		},
 	}
 

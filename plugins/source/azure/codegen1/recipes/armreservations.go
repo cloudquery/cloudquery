@@ -6,15 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armre
 func Armreservations() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armreservations.NewReturnClient,
+			NewFunc: armreservations.NewOperationClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations",
 		},
 		{
-			NewFunc: armreservations.NewAzureReservationAPIClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations",
-		},
-		{
-			NewFunc: armreservations.NewCalculateExchangeClient,
+			NewFunc: armreservations.NewQuotaClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations",
 		},
 		{
@@ -26,6 +22,14 @@ func Armreservations() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations",
 		},
 		{
+			NewFunc: armreservations.NewReturnClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations",
+		},
+		{
+			NewFunc: armreservations.NewCalculateExchangeClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations",
+		},
+		{
 			NewFunc: armreservations.NewQuotaRequestStatusClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations",
 		},
@@ -34,15 +38,11 @@ func Armreservations() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations",
 		},
 		{
-			NewFunc: armreservations.NewOperationClient,
+			NewFunc: armreservations.NewAzureReservationAPIClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations",
 		},
 		{
 			NewFunc: armreservations.NewReservationOrderClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations",
-		},
-		{
-			NewFunc: armreservations.NewQuotaClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations",
 		},
 	}

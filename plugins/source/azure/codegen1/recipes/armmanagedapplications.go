@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/solutions/armmanag
 func Armmanagedapplications() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armmanagedapplications.NewApplicationDefinitionsClient,
+			NewFunc: armmanagedapplications.NewJitRequestsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/solutions/armmanagedapplications",
 		},
 		{
@@ -14,11 +14,11 @@ func Armmanagedapplications() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/solutions/armmanagedapplications",
 		},
 		{
-			NewFunc: armmanagedapplications.NewJitRequestsClient,
+			NewFunc: armmanagedapplications.NewApplicationClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/solutions/armmanagedapplications",
 		},
 		{
-			NewFunc: armmanagedapplications.NewApplicationClient,
+			NewFunc: armmanagedapplications.NewApplicationDefinitionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/solutions/armmanagedapplications",
 		},
 	}

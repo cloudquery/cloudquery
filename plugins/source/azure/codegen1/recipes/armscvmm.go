@@ -6,6 +6,26 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/scvmm/armscvmm"
 func Armscvmm() []*Resource {
 	resources := []*Resource{
 		{
+			NewFunc: armscvmm.NewVirtualNetworksClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/scvmm/armscvmm",
+		},
+		{
+			NewFunc: armscvmm.NewVirtualMachinesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/scvmm/armscvmm",
+		},
+		{
+			NewFunc: armscvmm.NewInventoryItemsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/scvmm/armscvmm",
+		},
+		{
+			NewFunc: armscvmm.NewCloudsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/scvmm/armscvmm",
+		},
+		{
+			NewFunc: armscvmm.NewVirtualMachineTemplatesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/scvmm/armscvmm",
+		},
+		{
 			NewFunc: armscvmm.NewVmmServersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/scvmm/armscvmm",
 		},
@@ -15,26 +35,6 @@ func Armscvmm() []*Resource {
 		},
 		{
 			NewFunc: armscvmm.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/scvmm/armscvmm",
-		},
-		{
-			NewFunc: armscvmm.NewVirtualMachineTemplatesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/scvmm/armscvmm",
-		},
-		{
-			NewFunc: armscvmm.NewInventoryItemsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/scvmm/armscvmm",
-		},
-		{
-			NewFunc: armscvmm.NewVirtualNetworksClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/scvmm/armscvmm",
-		},
-		{
-			NewFunc: armscvmm.NewCloudsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/scvmm/armscvmm",
-		},
-		{
-			NewFunc: armscvmm.NewVirtualMachinesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/scvmm/armscvmm",
 		},
 	}

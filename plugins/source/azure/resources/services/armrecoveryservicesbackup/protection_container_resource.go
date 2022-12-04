@@ -4,6 +4,7 @@ package armrecoveryservicesbackup
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -49,7 +50,11 @@ func ProtectionContainerResource() *schema.Table {
 }
 
 func fetchProtectionContainerResource(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().ArmrecoveryservicesbackupProtectionContainerResource
+	cl := meta.(*client.Client)
+	svc, err := armrecoveryservicesbackup.NewBackupProtectionContainersClient(cl.SubscriptionId, cl.Creds, cl.Options)
+	if err != nil {
+		return err
+	}
 	pager := svc.NewListPager(nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)

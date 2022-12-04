@@ -6,11 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/addons/armaddons"
 func Armaddons() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armaddons.NewSupportPlanTypesClient,
+			NewFunc: armaddons.NewOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/addons/armaddons",
 		},
 		{
-			NewFunc: armaddons.NewOperationsClient,
+			NewFunc: armaddons.NewSupportPlanTypesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/addons/armaddons",
 		},
 	}

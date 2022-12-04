@@ -6,51 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling
 func Armbilling() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armbilling.NewEnrollmentAccountsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling",
-		},
-		{
-			NewFunc: armbilling.NewPeriodsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling",
-		},
-		{
-			NewFunc: armbilling.NewProfilesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling",
-		},
-		{
-			NewFunc: armbilling.NewReservationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling",
-		},
-		{
-			NewFunc: armbilling.NewAddressClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling",
-		},
-		{
-			NewFunc: armbilling.NewRoleDefinitionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling",
-		},
-		{
-			NewFunc: armbilling.NewTransactionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling",
-		},
-		{
-			NewFunc: armbilling.NewAvailableBalancesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling",
-		},
-		{
-			NewFunc: armbilling.NewPoliciesClient,
+			NewFunc: armbilling.NewInvoicesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling",
 		},
 		{
 			NewFunc: armbilling.NewProductsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling",
-		},
-		{
-			NewFunc: armbilling.NewSubscriptionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling",
-		},
-		{
-			NewFunc: armbilling.NewOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling",
 		},
 		{
@@ -62,23 +22,19 @@ func Armbilling() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling",
 		},
 		{
-			NewFunc: armbilling.NewInvoiceSectionsClient,
+			NewFunc: armbilling.NewPeriodsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling",
 		},
 		{
-			NewFunc: armbilling.NewPermissionsClient,
+			NewFunc: armbilling.NewSubscriptionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling",
 		},
 		{
-			NewFunc: armbilling.NewAgreementsClient,
+			NewFunc: armbilling.NewOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling",
 		},
 		{
-			NewFunc: armbilling.NewInstructionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling",
-		},
-		{
-			NewFunc: armbilling.NewInvoicesClient,
+			NewFunc: armbilling.NewAvailableBalancesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling",
 		},
 		{
@@ -87,6 +43,50 @@ func Armbilling() []*Resource {
 		},
 		{
 			NewFunc: armbilling.NewRoleAssignmentsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling",
+		},
+		{
+			NewFunc: armbilling.NewAddressClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling",
+		},
+		{
+			NewFunc: armbilling.NewInstructionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling",
+		},
+		{
+			NewFunc: armbilling.NewPoliciesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling",
+		},
+		{
+			NewFunc: armbilling.NewTransactionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling",
+		},
+		{
+			NewFunc: armbilling.NewAgreementsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling",
+		},
+		{
+			NewFunc: armbilling.NewInvoiceSectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling",
+		},
+		{
+			NewFunc: armbilling.NewPermissionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling",
+		},
+		{
+			NewFunc: armbilling.NewReservationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling",
+		},
+		{
+			NewFunc: armbilling.NewRoleDefinitionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling",
+		},
+		{
+			NewFunc: armbilling.NewProfilesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling",
+		},
+		{
+			NewFunc: armbilling.NewEnrollmentAccountsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling",
 		},
 	}

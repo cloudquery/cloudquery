@@ -6,11 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blockchain/armbloc
 func Armblockchain() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armblockchain.NewMemberOperationResultsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blockchain/armblockchain",
-		},
-		{
-			NewFunc: armblockchain.NewMembersClient,
+			NewFunc: armblockchain.NewOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blockchain/armblockchain",
 		},
 		{
@@ -18,7 +14,11 @@ func Armblockchain() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blockchain/armblockchain",
 		},
 		{
-			NewFunc: armblockchain.NewOperationsClient,
+			NewFunc: armblockchain.NewMemberOperationResultsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blockchain/armblockchain",
+		},
+		{
+			NewFunc: armblockchain.NewMembersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blockchain/armblockchain",
 		},
 		{

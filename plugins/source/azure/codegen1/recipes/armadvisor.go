@@ -6,11 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/advisor/armadvisor
 func Armadvisor() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armadvisor.NewConfigurationsClient,
+			NewFunc: armadvisor.NewOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/advisor/armadvisor",
 		},
 		{
-			NewFunc: armadvisor.NewRecommendationMetadataClient,
+			NewFunc: armadvisor.NewRecommendationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/advisor/armadvisor",
 		},
 		{
@@ -18,11 +18,11 @@ func Armadvisor() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/advisor/armadvisor",
 		},
 		{
-			NewFunc: armadvisor.NewOperationsClient,
+			NewFunc: armadvisor.NewConfigurationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/advisor/armadvisor",
 		},
 		{
-			NewFunc: armadvisor.NewRecommendationsClient,
+			NewFunc: armadvisor.NewRecommendationMetadataClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/advisor/armadvisor",
 		},
 	}

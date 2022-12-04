@@ -6,20 +6,20 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confluent/armconfl
 func Armconfluent() []Table {
 	tables := []Table{
 		{
-      Name: "operation_result",
-      Struct: &armconfluent.OperationResult{},
-      ResponseStruct: &armconfluent.OrganizationOperationsClientListResponse{},
-      Client: &armconfluent.OrganizationOperationsClient{},
-      ListFunc: (&armconfluent.OrganizationOperationsClient{}).NewListPager,
-			NewFunc: armconfluent.NewOrganizationOperationsClient,
-		},
-		{
       Name: "agreement_resource",
       Struct: &armconfluent.AgreementResource{},
       ResponseStruct: &armconfluent.MarketplaceAgreementsClientListResponse{},
       Client: &armconfluent.MarketplaceAgreementsClient{},
       ListFunc: (&armconfluent.MarketplaceAgreementsClient{}).NewListPager,
 			NewFunc: armconfluent.NewMarketplaceAgreementsClient,
+		},
+		{
+      Name: "operation_result",
+      Struct: &armconfluent.OperationResult{},
+      ResponseStruct: &armconfluent.OrganizationOperationsClientListResponse{},
+      Client: &armconfluent.OrganizationOperationsClient{},
+      ListFunc: (&armconfluent.OrganizationOperationsClient{}).NewListPager,
+			NewFunc: armconfluent.NewOrganizationOperationsClient,
 		},
 	}
 

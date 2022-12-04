@@ -6,9 +6,7 @@ import (
 	"context"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-  {{range .Imports}}
-  "{{.}}"
-  {{end}}
+	"{{.ImportPath}}"
 )
 
 func {{.Name | ToCamel}}() *schema.Table {
@@ -17,7 +15,15 @@ func {{.Name | ToCamel}}() *schema.Table {
 
 {{if not .SkipFetch}}
 func fetch{{.Name | ToCamel}}(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().{{.Service | ToCamel}}{{.Name | ToCamel}}
+	cl := meta.(*client.Client)
+	{{- if .NewFuncHasSubscriptionId}}
+  svc, err := {{.Service}}.{{.NewFuncName}}(cl.SubscriptionId, cl.Creds, cl.Options)
+  {{- else}}
+  svc, err := {{.Service}}.{{.NewFuncName}}(cl.Creds, cl.Options)
+  {{- end}}
+	if err != nil {
+    return err
+  }
   pager := svc.{{.ListFuncName}}(nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)

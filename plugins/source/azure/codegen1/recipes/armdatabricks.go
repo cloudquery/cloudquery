@@ -6,6 +6,14 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databricks/armdata
 func Armdatabricks() []*Resource {
 	resources := []*Resource{
 		{
+			NewFunc: armdatabricks.NewPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databricks/armdatabricks",
+		},
+		{
+			NewFunc: armdatabricks.NewVNetPeeringClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databricks/armdatabricks",
+		},
+		{
 			NewFunc: armdatabricks.NewWorkspacesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databricks/armdatabricks",
 		},
@@ -19,14 +27,6 @@ func Armdatabricks() []*Resource {
 		},
 		{
 			NewFunc: armdatabricks.NewPrivateEndpointConnectionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databricks/armdatabricks",
-		},
-		{
-			NewFunc: armdatabricks.NewPrivateLinkResourcesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databricks/armdatabricks",
-		},
-		{
-			NewFunc: armdatabricks.NewVNetPeeringClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databricks/armdatabricks",
 		},
 	}

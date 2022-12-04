@@ -6,31 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armauto
 func Armautomation() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armautomation.NewSoftwareUpdateConfigurationMachineRunsClient,
+			NewFunc: armautomation.NewSourceControlSyncJobClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
 		},
 		{
-			NewFunc: armautomation.NewLinkedWorkspaceClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
-		},
-		{
-			NewFunc: armautomation.NewNodeCountInformationClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
-		},
-		{
-			NewFunc: armautomation.NewNodeReportsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
-		},
-		{
-			NewFunc: armautomation.NewPython2PackageClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
-		},
-		{
-			NewFunc: armautomation.NewConnectionClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
-		},
-		{
-			NewFunc: armautomation.NewDscNodeConfigurationClient,
+			NewFunc: armautomation.NewCredentialClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
 		},
 		{
@@ -42,15 +22,15 @@ func Armautomation() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
 		},
 		{
+			NewFunc: armautomation.NewDscNodeClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
+		},
+		{
+			NewFunc: armautomation.NewDscNodeConfigurationClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
+		},
+		{
 			NewFunc: armautomation.NewSourceControlSyncJobStreamsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
-		},
-		{
-			NewFunc: armautomation.NewJobClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
-		},
-		{
-			NewFunc: armautomation.NewStatisticsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
 		},
 		{
@@ -62,123 +42,7 @@ func Armautomation() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
 		},
 		{
-			NewFunc: armautomation.NewAgentRegistrationInformationClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
-		},
-		{
-			NewFunc: armautomation.NewClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
-		},
-		{
 			NewFunc: armautomation.NewDscConfigurationClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
-		},
-		{
-			NewFunc: armautomation.NewVariableClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
-		},
-		{
-			NewFunc: armautomation.NewJobScheduleClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
-		},
-		{
-			NewFunc: armautomation.NewModuleClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
-		},
-		{
-			NewFunc: armautomation.NewRunbookClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
-		},
-		{
-			NewFunc: armautomation.NewCertificateClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
-		},
-		{
-			NewFunc: armautomation.NewDscCompilationJobStreamClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
-		},
-		{
-			NewFunc: armautomation.NewHybridRunbookWorkersClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
-		},
-		{
-			NewFunc: armautomation.NewPrivateEndpointConnectionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
-		},
-		{
-			NewFunc: armautomation.NewSoftwareUpdateConfigurationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
-		},
-		{
-			NewFunc: armautomation.NewSourceControlSyncJobClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
-		},
-		{
-			NewFunc: armautomation.NewTestJobClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
-		},
-		{
-			NewFunc: armautomation.NewDeletedAutomationAccountsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
-		},
-		{
-			NewFunc: armautomation.NewDscCompilationJobClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
-		},
-		{
-			NewFunc: armautomation.NewJobStreamClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
-		},
-		{
-			NewFunc: armautomation.NewRunbookDraftClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
-		},
-		{
-			NewFunc: armautomation.NewTestJobStreamsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
-		},
-		{
-			NewFunc: armautomation.NewUsagesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
-		},
-		{
-			NewFunc: armautomation.NewWebhookClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
-		},
-		{
-			NewFunc: armautomation.NewKeysClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
-		},
-		{
-			NewFunc: armautomation.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
-		},
-		{
-			NewFunc: armautomation.NewPrivateLinkResourcesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
-		},
-		{
-			NewFunc: armautomation.NewConnectionTypeClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
-		},
-		{
-			NewFunc: armautomation.NewCredentialClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
-		},
-		{
-			NewFunc: armautomation.NewDscNodeClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
-		},
-		{
-			NewFunc: armautomation.NewFieldsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
-		},
-		{
-			NewFunc: armautomation.NewHybridRunbookWorkerGroupClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
-		},
-		{
-			NewFunc: armautomation.NewScheduleClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
 		},
 		{
@@ -186,7 +50,143 @@ func Armautomation() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
 		},
 		{
+			NewFunc: armautomation.NewTestJobStreamsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
+		},
+		{
+			NewFunc: armautomation.NewConnectionClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
+		},
+		{
+			NewFunc: armautomation.NewScheduleClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
+		},
+		{
+			NewFunc: armautomation.NewNodeReportsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
+		},
+		{
+			NewFunc: armautomation.NewPrivateEndpointConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
+		},
+		{
+			NewFunc: armautomation.NewRunbookClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
+		},
+		{
+			NewFunc: armautomation.NewSoftwareUpdateConfigurationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
+		},
+		{
+			NewFunc: armautomation.NewWebhookClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
+		},
+		{
+			NewFunc: armautomation.NewDeletedAutomationAccountsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
+		},
+		{
+			NewFunc: armautomation.NewJobClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
+		},
+		{
+			NewFunc: armautomation.NewJobStreamClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
+		},
+		{
+			NewFunc: armautomation.NewJobScheduleClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
+		},
+		{
+			NewFunc: armautomation.NewNodeCountInformationClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
+		},
+		{
 			NewFunc: armautomation.NewWatcherClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
+		},
+		{
+			NewFunc: armautomation.NewAgentRegistrationInformationClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
+		},
+		{
+			NewFunc: armautomation.NewCertificateClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
+		},
+		{
+			NewFunc: armautomation.NewFieldsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
+		},
+		{
+			NewFunc: armautomation.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
+		},
+		{
+			NewFunc: armautomation.NewPython2PackageClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
+		},
+		{
+			NewFunc: armautomation.NewSoftwareUpdateConfigurationMachineRunsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
+		},
+		{
+			NewFunc: armautomation.NewVariableClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
+		},
+		{
+			NewFunc: armautomation.NewConnectionTypeClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
+		},
+		{
+			NewFunc: armautomation.NewDscCompilationJobClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
+		},
+		{
+			NewFunc: armautomation.NewLinkedWorkspaceClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
+		},
+		{
+			NewFunc: armautomation.NewHybridRunbookWorkerGroupClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
+		},
+		{
+			NewFunc: armautomation.NewPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
+		},
+		{
+			NewFunc: armautomation.NewHybridRunbookWorkersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
+		},
+		{
+			NewFunc: armautomation.NewKeysClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
+		},
+		{
+			NewFunc: armautomation.NewModuleClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
+		},
+		{
+			NewFunc: armautomation.NewRunbookDraftClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
+		},
+		{
+			NewFunc: armautomation.NewClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
+		},
+		{
+			NewFunc: armautomation.NewDscCompilationJobStreamClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
+		},
+		{
+			NewFunc: armautomation.NewStatisticsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
+		},
+		{
+			NewFunc: armautomation.NewTestJobClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
+		},
+		{
+			NewFunc: armautomation.NewUsagesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
 		},
 	}

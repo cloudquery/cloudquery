@@ -6,20 +6,20 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armpro
 func Armproviderhub() []Table {
 	tables := []Table{
 		{
-      Name: "operations_definition",
-      Struct: &armproviderhub.OperationsDefinition{},
-      ResponseStruct: &armproviderhub.OperationsClientListResponse{},
-      Client: &armproviderhub.OperationsClient{},
-      ListFunc: (&armproviderhub.OperationsClient{}).NewListPager,
-			NewFunc: armproviderhub.NewOperationsClient,
-		},
-		{
       Name: "provider_registration",
       Struct: &armproviderhub.ProviderRegistration{},
       ResponseStruct: &armproviderhub.ProviderRegistrationsClientListResponse{},
       Client: &armproviderhub.ProviderRegistrationsClient{},
       ListFunc: (&armproviderhub.ProviderRegistrationsClient{}).NewListPager,
 			NewFunc: armproviderhub.NewProviderRegistrationsClient,
+		},
+		{
+      Name: "operations_definition",
+      Struct: &armproviderhub.OperationsDefinition{},
+      ResponseStruct: &armproviderhub.OperationsClientListResponse{},
+      Client: &armproviderhub.OperationsClient{},
+      ListFunc: (&armproviderhub.OperationsClient{}).NewListPager,
+			NewFunc: armproviderhub.NewOperationsClient,
 		},
 	}
 

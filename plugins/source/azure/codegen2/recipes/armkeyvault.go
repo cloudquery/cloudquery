@@ -6,14 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvau
 func Armkeyvault() []Table {
 	tables := []Table{
 		{
-      Name: "resource",
-      Struct: &armkeyvault.Resource{},
-      ResponseStruct: &armkeyvault.VaultsClientListResponse{},
-      Client: &armkeyvault.VaultsClient{},
-      ListFunc: (&armkeyvault.VaultsClient{}).NewListPager,
-			NewFunc: armkeyvault.NewVaultsClient,
-		},
-		{
       Name: "operation",
       Struct: &armkeyvault.Operation{},
       ResponseStruct: &armkeyvault.OperationsClientListResponse{},
@@ -22,12 +14,12 @@ func Armkeyvault() []Table {
 			NewFunc: armkeyvault.NewOperationsClient,
 		},
 		{
-      Name: "key",
-      Struct: &armkeyvault.Key{},
-      ResponseStruct: &armkeyvault.KeysClientListResponse{},
-      Client: &armkeyvault.KeysClient{},
-      ListFunc: (&armkeyvault.KeysClient{}).NewListPager,
-			NewFunc: armkeyvault.NewKeysClient,
+      Name: "resource",
+      Struct: &armkeyvault.Resource{},
+      ResponseStruct: &armkeyvault.VaultsClientListResponse{},
+      Client: &armkeyvault.VaultsClient{},
+      ListFunc: (&armkeyvault.VaultsClient{}).NewListPager,
+			NewFunc: armkeyvault.NewVaultsClient,
 		},
 		{
       Name: "secret",
@@ -36,6 +28,14 @@ func Armkeyvault() []Table {
       Client: &armkeyvault.SecretsClient{},
       ListFunc: (&armkeyvault.SecretsClient{}).NewListPager,
 			NewFunc: armkeyvault.NewSecretsClient,
+		},
+		{
+      Name: "key",
+      Struct: &armkeyvault.Key{},
+      ResponseStruct: &armkeyvault.KeysClientListResponse{},
+      Client: &armkeyvault.KeysClient{},
+      ListFunc: (&armkeyvault.KeysClient{}).NewListPager,
+			NewFunc: armkeyvault.NewKeysClient,
 		},
 	}
 

@@ -6,11 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplaceorderin
 func Armmarketplaceordering() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armmarketplaceordering.NewOperationsClient,
+			NewFunc: armmarketplaceordering.NewMarketplaceAgreementsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplaceordering/armmarketplaceordering",
 		},
 		{
-			NewFunc: armmarketplaceordering.NewMarketplaceAgreementsClient,
+			NewFunc: armmarketplaceordering.NewOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplaceordering/armmarketplaceordering",
 		},
 	}

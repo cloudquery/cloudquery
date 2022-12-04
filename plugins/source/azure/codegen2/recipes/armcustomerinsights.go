@@ -6,20 +6,20 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerinsights/a
 func Armcustomerinsights() []Table {
 	tables := []Table{
 		{
-      Name: "operation",
-      Struct: &armcustomerinsights.Operation{},
-      ResponseStruct: &armcustomerinsights.OperationsClientListResponse{},
-      Client: &armcustomerinsights.OperationsClient{},
-      ListFunc: (&armcustomerinsights.OperationsClient{}).NewListPager,
-			NewFunc: armcustomerinsights.NewOperationsClient,
-		},
-		{
       Name: "hub",
       Struct: &armcustomerinsights.Hub{},
       ResponseStruct: &armcustomerinsights.HubsClientListResponse{},
       Client: &armcustomerinsights.HubsClient{},
       ListFunc: (&armcustomerinsights.HubsClient{}).NewListPager,
 			NewFunc: armcustomerinsights.NewHubsClient,
+		},
+		{
+      Name: "operation",
+      Struct: &armcustomerinsights.Operation{},
+      ResponseStruct: &armcustomerinsights.OperationsClientListResponse{},
+      Client: &armcustomerinsights.OperationsClient{},
+      ListFunc: (&armcustomerinsights.OperationsClient{}).NewListPager,
+			NewFunc: armcustomerinsights.NewOperationsClient,
 		},
 	}
 

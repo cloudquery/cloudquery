@@ -6,11 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox
 func Armdatabox() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armdatabox.NewJobsClient,
+			NewFunc: armdatabox.NewManagementClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox",
 		},
 		{
-			NewFunc: armdatabox.NewManagementClient,
+			NewFunc: armdatabox.NewJobsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox",
 		},
 		{

@@ -6,18 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbiprivatelink
 func Armpowerbiprivatelinks() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armpowerbiprivatelinks.NewPrivateLinkServiceResourceOperationResultsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbiprivatelinks/armpowerbiprivatelinks",
-		},
-		{
-			NewFunc: armpowerbiprivatelinks.NewPrivateLinkServicesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbiprivatelinks/armpowerbiprivatelinks",
-		},
-		{
-			NewFunc: armpowerbiprivatelinks.NewPrivateLinkServicesForPowerBIClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbiprivatelinks/armpowerbiprivatelinks",
-		},
-		{
 			NewFunc: armpowerbiprivatelinks.NewPrivateEndpointConnectionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbiprivatelinks/armpowerbiprivatelinks",
 		},
@@ -26,11 +14,23 @@ func Armpowerbiprivatelinks() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbiprivatelinks/armpowerbiprivatelinks",
 		},
 		{
+			NewFunc: armpowerbiprivatelinks.NewPrivateLinkServiceResourceOperationResultsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbiprivatelinks/armpowerbiprivatelinks",
+		},
+		{
+			NewFunc: armpowerbiprivatelinks.NewPrivateLinkServicesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbiprivatelinks/armpowerbiprivatelinks",
+		},
+		{
 			NewFunc: armpowerbiprivatelinks.NewOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbiprivatelinks/armpowerbiprivatelinks",
 		},
 		{
 			NewFunc: armpowerbiprivatelinks.NewPowerBIResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbiprivatelinks/armpowerbiprivatelinks",
+		},
+		{
+			NewFunc: armpowerbiprivatelinks.NewPrivateLinkServicesForPowerBIClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbiprivatelinks/armpowerbiprivatelinks",
 		},
 	}

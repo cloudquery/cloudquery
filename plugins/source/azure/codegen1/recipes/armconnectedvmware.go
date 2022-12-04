@@ -6,23 +6,19 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/ar
 func Armconnectedvmware() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armconnectedvmware.NewVirtualMachineTemplatesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware",
-		},
-		{
-			NewFunc: armconnectedvmware.NewDatastoresClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware",
-		},
-		{
-			NewFunc: armconnectedvmware.NewMachineExtensionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware",
-		},
-		{
-			NewFunc: armconnectedvmware.NewVirtualNetworksClient,
+			NewFunc: armconnectedvmware.NewOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware",
 		},
 		{
 			NewFunc: armconnectedvmware.NewGuestAgentsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware",
+		},
+		{
+			NewFunc: armconnectedvmware.NewHostsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware",
+		},
+		{
+			NewFunc: armconnectedvmware.NewInventoryItemsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware",
 		},
 		{
@@ -34,6 +30,14 @@ func Armconnectedvmware() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware",
 		},
 		{
+			NewFunc: armconnectedvmware.NewVirtualMachineTemplatesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware",
+		},
+		{
+			NewFunc: armconnectedvmware.NewVirtualNetworksClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware",
+		},
+		{
 			NewFunc: armconnectedvmware.NewClustersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware",
 		},
@@ -42,19 +46,15 @@ func Armconnectedvmware() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware",
 		},
 		{
-			NewFunc: armconnectedvmware.NewOperationsClient,
+			NewFunc: armconnectedvmware.NewMachineExtensionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware",
+		},
+		{
+			NewFunc: armconnectedvmware.NewDatastoresClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware",
 		},
 		{
 			NewFunc: armconnectedvmware.NewVCentersClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware",
-		},
-		{
-			NewFunc: armconnectedvmware.NewHostsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware",
-		},
-		{
-			NewFunc: armconnectedvmware.NewInventoryItemsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware",
 		},
 	}

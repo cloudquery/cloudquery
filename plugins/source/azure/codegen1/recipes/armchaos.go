@@ -10,7 +10,7 @@ func Armchaos() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos",
 		},
 		{
-			NewFunc: armchaos.NewTargetTypesClient,
+			NewFunc: armchaos.NewCapabilityTypesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos",
 		},
 		{
@@ -22,11 +22,11 @@ func Armchaos() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos",
 		},
 		{
-			NewFunc: armchaos.NewCapabilitiesClient,
+			NewFunc: armchaos.NewTargetTypesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos",
 		},
 		{
-			NewFunc: armchaos.NewCapabilityTypesClient,
+			NewFunc: armchaos.NewCapabilitiesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos",
 		},
 	}

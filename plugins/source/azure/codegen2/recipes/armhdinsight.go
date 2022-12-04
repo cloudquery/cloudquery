@@ -6,20 +6,20 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdins
 func Armhdinsight() []Table {
 	tables := []Table{
 		{
-      Name: "operation",
-      Struct: &armhdinsight.Operation{},
-      ResponseStruct: &armhdinsight.OperationsClientListResponse{},
-      Client: &armhdinsight.OperationsClient{},
-      ListFunc: (&armhdinsight.OperationsClient{}).NewListPager,
-			NewFunc: armhdinsight.NewOperationsClient,
-		},
-		{
       Name: "cluster",
       Struct: &armhdinsight.Cluster{},
       ResponseStruct: &armhdinsight.ClustersClientListResponse{},
       Client: &armhdinsight.ClustersClient{},
       ListFunc: (&armhdinsight.ClustersClient{}).NewListPager,
 			NewFunc: armhdinsight.NewClustersClient,
+		},
+		{
+      Name: "operation",
+      Struct: &armhdinsight.Operation{},
+      ResponseStruct: &armhdinsight.OperationsClientListResponse{},
+      Client: &armhdinsight.OperationsClient{},
+      ListFunc: (&armhdinsight.OperationsClient{}).NewListPager,
+			NewFunc: armhdinsight.NewOperationsClient,
 		},
 	}
 

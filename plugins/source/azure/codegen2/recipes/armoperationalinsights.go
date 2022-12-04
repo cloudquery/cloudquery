@@ -14,14 +14,6 @@ func Armoperationalinsights() []Table {
 			NewFunc: armoperationalinsights.NewUsagesClient,
 		},
 		{
-      Name: "cluster",
-      Struct: &armoperationalinsights.Cluster{},
-      ResponseStruct: &armoperationalinsights.ClustersClientListResponse{},
-      Client: &armoperationalinsights.ClustersClient{},
-      ListFunc: (&armoperationalinsights.ClustersClient{}).NewListPager,
-			NewFunc: armoperationalinsights.NewClustersClient,
-		},
-		{
       Name: "workspace",
       Struct: &armoperationalinsights.Workspace{},
       ResponseStruct: &armoperationalinsights.DeletedWorkspacesClientListResponse{},
@@ -30,12 +22,12 @@ func Armoperationalinsights() []Table {
 			NewFunc: armoperationalinsights.NewDeletedWorkspacesClient,
 		},
 		{
-      Name: "operation",
-      Struct: &armoperationalinsights.Operation{},
-      ResponseStruct: &armoperationalinsights.OperationsClientListResponse{},
-      Client: &armoperationalinsights.OperationsClient{},
-      ListFunc: (&armoperationalinsights.OperationsClient{}).NewListPager,
-			NewFunc: armoperationalinsights.NewOperationsClient,
+      Name: "cluster",
+      Struct: &armoperationalinsights.Cluster{},
+      ResponseStruct: &armoperationalinsights.ClustersClientListResponse{},
+      Client: &armoperationalinsights.ClustersClient{},
+      ListFunc: (&armoperationalinsights.ClustersClient{}).NewListPager,
+			NewFunc: armoperationalinsights.NewClustersClient,
 		},
 		{
       Name: "management_group",
@@ -52,6 +44,14 @@ func Armoperationalinsights() []Table {
       Client: &armoperationalinsights.WorkspacesClient{},
       ListFunc: (&armoperationalinsights.WorkspacesClient{}).NewListPager,
 			NewFunc: armoperationalinsights.NewWorkspacesClient,
+		},
+		{
+      Name: "operation",
+      Struct: &armoperationalinsights.Operation{},
+      ResponseStruct: &armoperationalinsights.OperationsClientListResponse{},
+      Client: &armoperationalinsights.OperationsClient{},
+      ListFunc: (&armoperationalinsights.OperationsClient{}).NewListPager,
+			NewFunc: armoperationalinsights.NewOperationsClient,
 		},
 	}
 

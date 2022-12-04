@@ -6,11 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota"
 func Armquota() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armquota.NewUsagesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota",
-		},
-		{
-			NewFunc: armquota.NewOperationClient,
+			NewFunc: armquota.NewClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota",
 		},
 		{
@@ -18,7 +14,11 @@ func Armquota() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota",
 		},
 		{
-			NewFunc: armquota.NewClient,
+			NewFunc: armquota.NewUsagesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota",
+		},
+		{
+			NewFunc: armquota.NewOperationClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota",
 		},
 	}

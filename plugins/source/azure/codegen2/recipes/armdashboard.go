@@ -6,22 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dashboard/armdashb
 func Armdashboard() []Table {
 	tables := []Table{
 		{
-      Name: "operation",
-      Struct: &armdashboard.Operation{},
-      ResponseStruct: &armdashboard.OperationsClientListResponse{},
-      Client: &armdashboard.OperationsClient{},
-      ListFunc: (&armdashboard.OperationsClient{}).NewListPager,
-			NewFunc: armdashboard.NewOperationsClient,
-		},
-		{
-      Name: "private_link_resource",
-      Struct: &armdashboard.PrivateLinkResource{},
-      ResponseStruct: &armdashboard.PrivateLinkResourcesClientListResponse{},
-      Client: &armdashboard.PrivateLinkResourcesClient{},
-      ListFunc: (&armdashboard.PrivateLinkResourcesClient{}).NewListPager,
-			NewFunc: armdashboard.NewPrivateLinkResourcesClient,
-		},
-		{
       Name: "managed_grafana",
       Struct: &armdashboard.ManagedGrafana{},
       ResponseStruct: &armdashboard.GrafanaClientListResponse{},
@@ -30,12 +14,28 @@ func Armdashboard() []Table {
 			NewFunc: armdashboard.NewGrafanaClient,
 		},
 		{
+      Name: "operation",
+      Struct: &armdashboard.Operation{},
+      ResponseStruct: &armdashboard.OperationsClientListResponse{},
+      Client: &armdashboard.OperationsClient{},
+      ListFunc: (&armdashboard.OperationsClient{}).NewListPager,
+			NewFunc: armdashboard.NewOperationsClient,
+		},
+		{
       Name: "private_endpoint_connection",
       Struct: &armdashboard.PrivateEndpointConnection{},
       ResponseStruct: &armdashboard.PrivateEndpointConnectionsClientListResponse{},
       Client: &armdashboard.PrivateEndpointConnectionsClient{},
       ListFunc: (&armdashboard.PrivateEndpointConnectionsClient{}).NewListPager,
 			NewFunc: armdashboard.NewPrivateEndpointConnectionsClient,
+		},
+		{
+      Name: "private_link_resource",
+      Struct: &armdashboard.PrivateLinkResource{},
+      ResponseStruct: &armdashboard.PrivateLinkResourcesClientListResponse{},
+      Client: &armdashboard.PrivateLinkResourcesClient{},
+      ListFunc: (&armdashboard.PrivateLinkResourcesClient{}).NewListPager,
+			NewFunc: armdashboard.NewPrivateLinkResourcesClient,
 		},
 	}
 

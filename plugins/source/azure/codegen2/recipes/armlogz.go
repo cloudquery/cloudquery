@@ -14,6 +14,14 @@ func Armlogz() []Table {
 			NewFunc: armlogz.NewOperationsClient,
 		},
 		{
+      Name: "monitoring_tag_rules",
+      Struct: &armlogz.MonitoringTagRules{},
+      ResponseStruct: &armlogz.SubAccountTagRulesClientListResponse{},
+      Client: &armlogz.SubAccountTagRulesClient{},
+      ListFunc: (&armlogz.SubAccountTagRulesClient{}).NewListPager,
+			NewFunc: armlogz.NewSubAccountTagRulesClient,
+		},
+		{
       Name: "single_sign_on_resource",
       Struct: &armlogz.SingleSignOnResource{},
       ResponseStruct: &armlogz.SingleSignOnClientListResponse{},
@@ -36,14 +44,6 @@ func Armlogz() []Table {
       Client: &armlogz.TagRulesClient{},
       ListFunc: (&armlogz.TagRulesClient{}).NewListPager,
 			NewFunc: armlogz.NewTagRulesClient,
-		},
-		{
-      Name: "monitoring_tag_rules",
-      Struct: &armlogz.MonitoringTagRules{},
-      ResponseStruct: &armlogz.SubAccountTagRulesClientListResponse{},
-      Client: &armlogz.SubAccountTagRulesClient{},
-      ListFunc: (&armlogz.SubAccountTagRulesClient{}).NewListPager,
-			NewFunc: armlogz.NewSubAccountTagRulesClient,
 		},
 	}
 

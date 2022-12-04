@@ -6,6 +6,14 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/saas/armsaas"
 func Armsaas() []Table {
 	tables := []Table{
 		{
+      Name: "app_operation",
+      Struct: &armsaas.AppOperation{},
+      ResponseStruct: &armsaas.OperationsClientListResponse{},
+      Client: &armsaas.OperationsClient{},
+      ListFunc: (&armsaas.OperationsClient{}).NewListPager,
+			NewFunc: armsaas.NewOperationsClient,
+		},
+		{
       Name: "resource",
       Struct: &armsaas.Resource{},
       ResponseStruct: &armsaas.ResourcesClientListResponse{},
@@ -20,14 +28,6 @@ func Armsaas() []Table {
       Client: &armsaas.ApplicationsClient{},
       ListFunc: (&armsaas.ApplicationsClient{}).NewListPager,
 			NewFunc: armsaas.NewApplicationsClient,
-		},
-		{
-      Name: "app_operation",
-      Struct: &armsaas.AppOperation{},
-      ResponseStruct: &armsaas.OperationsClientListResponse{},
-      Client: &armsaas.OperationsClient{},
-      ListFunc: (&armsaas.OperationsClient{}).NewListPager,
-			NewFunc: armsaas.NewOperationsClient,
 		},
 	}
 

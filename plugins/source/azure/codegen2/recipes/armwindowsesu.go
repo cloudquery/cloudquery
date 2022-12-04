@@ -6,20 +6,20 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsesu/armwind
 func Armwindowsesu() []Table {
 	tables := []Table{
 		{
-      Name: "operation",
-      Struct: &armwindowsesu.Operation{},
-      ResponseStruct: &armwindowsesu.OperationsClientListResponse{},
-      Client: &armwindowsesu.OperationsClient{},
-      ListFunc: (&armwindowsesu.OperationsClient{}).NewListPager,
-			NewFunc: armwindowsesu.NewOperationsClient,
-		},
-		{
       Name: "multiple_activation_key",
       Struct: &armwindowsesu.MultipleActivationKey{},
       ResponseStruct: &armwindowsesu.MultipleActivationKeysClientListResponse{},
       Client: &armwindowsesu.MultipleActivationKeysClient{},
       ListFunc: (&armwindowsesu.MultipleActivationKeysClient{}).NewListPager,
 			NewFunc: armwindowsesu.NewMultipleActivationKeysClient,
+		},
+		{
+      Name: "operation",
+      Struct: &armwindowsesu.Operation{},
+      ResponseStruct: &armwindowsesu.OperationsClientListResponse{},
+      Client: &armwindowsesu.OperationsClient{},
+      ListFunc: (&armwindowsesu.OperationsClient{}).NewListPager,
+			NewFunc: armwindowsesu.NewOperationsClient,
 		},
 	}
 

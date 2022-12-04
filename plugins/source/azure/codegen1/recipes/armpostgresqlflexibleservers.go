@@ -6,11 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpost
 func Armpostgresqlflexibleservers() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armpostgresqlflexibleservers.NewConfigurationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers",
-		},
-		{
-			NewFunc: armpostgresqlflexibleservers.NewOperationsClient,
+			NewFunc: armpostgresqlflexibleservers.NewCheckNameAvailabilityClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers",
 		},
 		{
@@ -18,7 +14,7 @@ func Armpostgresqlflexibleservers() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers",
 		},
 		{
-			NewFunc: armpostgresqlflexibleservers.NewGetPrivateDNSZoneSuffixClient,
+			NewFunc: armpostgresqlflexibleservers.NewFirewallRulesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers",
 		},
 		{
@@ -26,19 +22,23 @@ func Armpostgresqlflexibleservers() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers",
 		},
 		{
+			NewFunc: armpostgresqlflexibleservers.NewServersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers",
+		},
+		{
 			NewFunc: armpostgresqlflexibleservers.NewVirtualNetworkSubnetUsageClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers",
 		},
 		{
-			NewFunc: armpostgresqlflexibleservers.NewCheckNameAvailabilityClient,
+			NewFunc: armpostgresqlflexibleservers.NewConfigurationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers",
 		},
 		{
-			NewFunc: armpostgresqlflexibleservers.NewFirewallRulesClient,
+			NewFunc: armpostgresqlflexibleservers.NewGetPrivateDNSZoneSuffixClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers",
 		},
 		{
-			NewFunc: armpostgresqlflexibleservers.NewServersClient,
+			NewFunc: armpostgresqlflexibleservers.NewOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers",
 		},
 	}

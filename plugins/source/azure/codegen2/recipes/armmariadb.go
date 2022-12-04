@@ -6,14 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb
 func Armmariadb() []Table {
 	tables := []Table{
 		{
-      Name: "recommendation_action",
-      Struct: &armmariadb.RecommendationAction{},
-      ResponseStruct: &armmariadb.LocationBasedRecommendedActionSessionsResultClientListResponse{},
-      Client: &armmariadb.LocationBasedRecommendedActionSessionsResultClient{},
-      ListFunc: (&armmariadb.LocationBasedRecommendedActionSessionsResultClient{}).NewListPager,
-			NewFunc: armmariadb.NewLocationBasedRecommendedActionSessionsResultClient,
-		},
-		{
       Name: "server",
       Struct: &armmariadb.Server{},
       ResponseStruct: &armmariadb.ServersClientListResponse{},
@@ -24,18 +16,26 @@ func Armmariadb() []Table {
 		{
       Name: "performance_tier_properties",
       Struct: &armmariadb.PerformanceTierProperties{},
+      ResponseStruct: &armmariadb.ServerBasedPerformanceTierClientListResponse{},
+      Client: &armmariadb.ServerBasedPerformanceTierClient{},
+      ListFunc: (&armmariadb.ServerBasedPerformanceTierClient{}).NewListPager,
+			NewFunc: armmariadb.NewServerBasedPerformanceTierClient,
+		},
+		{
+      Name: "performance_tier_properties",
+      Struct: &armmariadb.PerformanceTierProperties{},
       ResponseStruct: &armmariadb.LocationBasedPerformanceTierClientListResponse{},
       Client: &armmariadb.LocationBasedPerformanceTierClient{},
       ListFunc: (&armmariadb.LocationBasedPerformanceTierClient{}).NewListPager,
 			NewFunc: armmariadb.NewLocationBasedPerformanceTierClient,
 		},
 		{
-      Name: "performance_tier_properties",
-      Struct: &armmariadb.PerformanceTierProperties{},
-      ResponseStruct: &armmariadb.ServerBasedPerformanceTierClientListResponse{},
-      Client: &armmariadb.ServerBasedPerformanceTierClient{},
-      ListFunc: (&armmariadb.ServerBasedPerformanceTierClient{}).NewListPager,
-			NewFunc: armmariadb.NewServerBasedPerformanceTierClient,
+      Name: "recommendation_action",
+      Struct: &armmariadb.RecommendationAction{},
+      ResponseStruct: &armmariadb.LocationBasedRecommendedActionSessionsResultClientListResponse{},
+      Client: &armmariadb.LocationBasedRecommendedActionSessionsResultClient{},
+      ListFunc: (&armmariadb.LocationBasedRecommendedActionSessionsResultClient{}).NewListPager,
+			NewFunc: armmariadb.NewLocationBasedRecommendedActionSessionsResultClient,
 		},
 	}
 

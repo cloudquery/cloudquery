@@ -4,6 +4,7 @@ package armsignalr
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/signalr/armsignalr"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -39,7 +40,11 @@ func PrivateLinkResource() *schema.Table {
 }
 
 func fetchPrivateLinkResource(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().ArmsignalrPrivateLinkResource
+	cl := meta.(*client.Client)
+	svc, err := armsignalr.NewPrivateLinkResourcesClient(cl.SubscriptionId, cl.Creds, cl.Options)
+	if err != nil {
+		return err
+	}
 	pager := svc.NewListPager(nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)

@@ -6,14 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dynatrace/armdynat
 func Armdynatrace() []Table {
 	tables := []Table{
 		{
-      Name: "operation",
-      Struct: &armdynatrace.Operation{},
-      ResponseStruct: &armdynatrace.OperationsClientListResponse{},
-      Client: &armdynatrace.OperationsClient{},
-      ListFunc: (&armdynatrace.OperationsClient{}).NewListPager,
-			NewFunc: armdynatrace.NewOperationsClient,
-		},
-		{
       Name: "single_sign_on_resource",
       Struct: &armdynatrace.SingleSignOnResource{},
       ResponseStruct: &armdynatrace.SingleSignOnClientListResponse{},
@@ -28,6 +20,14 @@ func Armdynatrace() []Table {
       Client: &armdynatrace.TagRulesClient{},
       ListFunc: (&armdynatrace.TagRulesClient{}).NewListPager,
 			NewFunc: armdynatrace.NewTagRulesClient,
+		},
+		{
+      Name: "operation",
+      Struct: &armdynatrace.Operation{},
+      ResponseStruct: &armdynatrace.OperationsClientListResponse{},
+      Client: &armdynatrace.OperationsClient{},
+      ListFunc: (&armdynatrace.OperationsClient{}).NewListPager,
+			NewFunc: armdynatrace.NewOperationsClient,
 		},
 	}
 

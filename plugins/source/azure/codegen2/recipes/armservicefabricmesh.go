@@ -6,20 +6,20 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabricmesh/
 func Armservicefabricmesh() []Table {
 	tables := []Table{
 		{
-      Name: "secret_value_resource_description",
-      Struct: &armservicefabricmesh.SecretValueResourceDescription{},
-      ResponseStruct: &armservicefabricmesh.SecretValueClientListResponse{},
-      Client: &armservicefabricmesh.SecretValueClient{},
-      ListFunc: (&armservicefabricmesh.SecretValueClient{}).NewListPager,
-			NewFunc: armservicefabricmesh.NewSecretValueClient,
-		},
-		{
       Name: "service_replica_description",
       Struct: &armservicefabricmesh.ServiceReplicaDescription{},
       ResponseStruct: &armservicefabricmesh.ServiceReplicaClientListResponse{},
       Client: &armservicefabricmesh.ServiceReplicaClient{},
       ListFunc: (&armservicefabricmesh.ServiceReplicaClient{}).NewListPager,
 			NewFunc: armservicefabricmesh.NewServiceReplicaClient,
+		},
+		{
+      Name: "service_resource_description",
+      Struct: &armservicefabricmesh.ServiceResourceDescription{},
+      ResponseStruct: &armservicefabricmesh.ServiceClientListResponse{},
+      Client: &armservicefabricmesh.ServiceClient{},
+      ListFunc: (&armservicefabricmesh.ServiceClient{}).NewListPager,
+			NewFunc: armservicefabricmesh.NewServiceClient,
 		},
 		{
       Name: "operation_result",
@@ -30,12 +30,12 @@ func Armservicefabricmesh() []Table {
 			NewFunc: armservicefabricmesh.NewOperationsClient,
 		},
 		{
-      Name: "service_resource_description",
-      Struct: &armservicefabricmesh.ServiceResourceDescription{},
-      ResponseStruct: &armservicefabricmesh.ServiceClientListResponse{},
-      Client: &armservicefabricmesh.ServiceClient{},
-      ListFunc: (&armservicefabricmesh.ServiceClient{}).NewListPager,
-			NewFunc: armservicefabricmesh.NewServiceClient,
+      Name: "secret_value_resource_description",
+      Struct: &armservicefabricmesh.SecretValueResourceDescription{},
+      ResponseStruct: &armservicefabricmesh.SecretValueClientListResponse{},
+      Client: &armservicefabricmesh.SecretValueClient{},
+      ListFunc: (&armservicefabricmesh.SecretValueClient{}).NewListPager,
+			NewFunc: armservicefabricmesh.NewSecretValueClient,
 		},
 	}
 

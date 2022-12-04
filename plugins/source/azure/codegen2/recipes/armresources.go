@@ -6,12 +6,12 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresou
 func Armresources() []Table {
 	tables := []Table{
 		{
-      Name: "resource_group",
-      Struct: &armresources.ResourceGroup{},
-      ResponseStruct: &armresources.ResourceGroupsClientListResponse{},
-      Client: &armresources.ResourceGroupsClient{},
-      ListFunc: (&armresources.ResourceGroupsClient{}).NewListPager,
-			NewFunc: armresources.NewResourceGroupsClient,
+      Name: "deployment_operation",
+      Struct: &armresources.DeploymentOperation{},
+      ResponseStruct: &armresources.DeploymentOperationsClientListResponse{},
+      Client: &armresources.DeploymentOperationsClient{},
+      ListFunc: (&armresources.DeploymentOperationsClient{}).NewListPager,
+			NewFunc: armresources.NewDeploymentOperationsClient,
 		},
 		{
       Name: "operation",
@@ -30,20 +30,12 @@ func Armresources() []Table {
 			NewFunc: armresources.NewClient,
 		},
 		{
-      Name: "tag_details",
-      Struct: &armresources.TagDetails{},
-      ResponseStruct: &armresources.TagsClientListResponse{},
-      Client: &armresources.TagsClient{},
-      ListFunc: (&armresources.TagsClient{}).NewListPager,
-			NewFunc: armresources.NewTagsClient,
-		},
-		{
-      Name: "deployment_operation",
-      Struct: &armresources.DeploymentOperation{},
-      ResponseStruct: &armresources.DeploymentOperationsClientListResponse{},
-      Client: &armresources.DeploymentOperationsClient{},
-      ListFunc: (&armresources.DeploymentOperationsClient{}).NewListPager,
-			NewFunc: armresources.NewDeploymentOperationsClient,
+      Name: "resource_group",
+      Struct: &armresources.ResourceGroup{},
+      ResponseStruct: &armresources.ResourceGroupsClientListResponse{},
+      Client: &armresources.ResourceGroupsClient{},
+      ListFunc: (&armresources.ResourceGroupsClient{}).NewListPager,
+			NewFunc: armresources.NewResourceGroupsClient,
 		},
 		{
       Name: "provider",
@@ -52,6 +44,14 @@ func Armresources() []Table {
       Client: &armresources.ProvidersClient{},
       ListFunc: (&armresources.ProvidersClient{}).NewListPager,
 			NewFunc: armresources.NewProvidersClient,
+		},
+		{
+      Name: "tag_details",
+      Struct: &armresources.TagDetails{},
+      ResponseStruct: &armresources.TagsClientListResponse{},
+      Client: &armresources.TagsClient{},
+      ListFunc: (&armresources.TagsClient{}).NewListPager,
+			NewFunc: armresources.NewTagsClient,
 		},
 	}
 

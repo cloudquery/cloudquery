@@ -6,20 +6,28 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto"
 func Armkusto() []Table {
 	tables := []Table{
 		{
-      Name: "private_link_resource",
-      Struct: &armkusto.PrivateLinkResource{},
-      ResponseStruct: &armkusto.PrivateLinkResourcesClientListResponse{},
-      Client: &armkusto.PrivateLinkResourcesClient{},
-      ListFunc: (&armkusto.PrivateLinkResourcesClient{}).NewListPager,
-			NewFunc: armkusto.NewPrivateLinkResourcesClient,
-		},
-		{
       Name: "cluster_principal_assignment",
       Struct: &armkusto.ClusterPrincipalAssignment{},
       ResponseStruct: &armkusto.ClusterPrincipalAssignmentsClientListResponse{},
       Client: &armkusto.ClusterPrincipalAssignmentsClient{},
       ListFunc: (&armkusto.ClusterPrincipalAssignmentsClient{}).NewListPager,
 			NewFunc: armkusto.NewClusterPrincipalAssignmentsClient,
+		},
+		{
+      Name: "cluster",
+      Struct: &armkusto.Cluster{},
+      ResponseStruct: &armkusto.ClustersClientListResponse{},
+      Client: &armkusto.ClustersClient{},
+      ListFunc: (&armkusto.ClustersClient{}).NewListPager,
+			NewFunc: armkusto.NewClustersClient,
+		},
+		{
+      Name: "database_principal_assignment",
+      Struct: &armkusto.DatabasePrincipalAssignment{},
+      ResponseStruct: &armkusto.DatabasePrincipalAssignmentsClientListResponse{},
+      Client: &armkusto.DatabasePrincipalAssignmentsClient{},
+      ListFunc: (&armkusto.DatabasePrincipalAssignmentsClient{}).NewListPager,
+			NewFunc: armkusto.NewDatabasePrincipalAssignmentsClient,
 		},
 		{
       Name: "managed_private_endpoint",
@@ -46,20 +54,12 @@ func Armkusto() []Table {
 			NewFunc: armkusto.NewPrivateEndpointConnectionsClient,
 		},
 		{
-      Name: "cluster",
-      Struct: &armkusto.Cluster{},
-      ResponseStruct: &armkusto.ClustersClientListResponse{},
-      Client: &armkusto.ClustersClient{},
-      ListFunc: (&armkusto.ClustersClient{}).NewListPager,
-			NewFunc: armkusto.NewClustersClient,
-		},
-		{
-      Name: "database_principal_assignment",
-      Struct: &armkusto.DatabasePrincipalAssignment{},
-      ResponseStruct: &armkusto.DatabasePrincipalAssignmentsClientListResponse{},
-      Client: &armkusto.DatabasePrincipalAssignmentsClient{},
-      ListFunc: (&armkusto.DatabasePrincipalAssignmentsClient{}).NewListPager,
-			NewFunc: armkusto.NewDatabasePrincipalAssignmentsClient,
+      Name: "private_link_resource",
+      Struct: &armkusto.PrivateLinkResource{},
+      ResponseStruct: &armkusto.PrivateLinkResourcesClientListResponse{},
+      Client: &armkusto.PrivateLinkResourcesClient{},
+      ListFunc: (&armkusto.PrivateLinkResourcesClient{}).NewListPager,
+			NewFunc: armkusto.NewPrivateLinkResourcesClient,
 		},
 	}
 

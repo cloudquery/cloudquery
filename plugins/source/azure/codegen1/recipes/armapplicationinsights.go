@@ -6,6 +6,26 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsight
 func Armapplicationinsights() []*Resource {
 	resources := []*Resource{
 		{
+			NewFunc: armapplicationinsights.NewWebTestsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights",
+		},
+		{
+			NewFunc: armapplicationinsights.NewComponentFeatureCapabilitiesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights",
+		},
+		{
+			NewFunc: armapplicationinsights.NewMyWorkbooksClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights",
+		},
+		{
+			NewFunc: armapplicationinsights.NewComponentQuotaStatusClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights",
+		},
+		{
+			NewFunc: armapplicationinsights.NewProactiveDetectionConfigurationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights",
+		},
+		{
 			NewFunc: armapplicationinsights.NewAnalyticsItemsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights",
 		},
@@ -14,47 +34,7 @@ func Armapplicationinsights() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights",
 		},
 		{
-			NewFunc: armapplicationinsights.NewAPIKeysClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights",
-		},
-		{
 			NewFunc: armapplicationinsights.NewComponentAvailableFeaturesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights",
-		},
-		{
-			NewFunc: armapplicationinsights.NewComponentQuotaStatusClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights",
-		},
-		{
-			NewFunc: armapplicationinsights.NewWebTestLocationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights",
-		},
-		{
-			NewFunc: armapplicationinsights.NewWebTestsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights",
-		},
-		{
-			NewFunc: armapplicationinsights.NewExportConfigurationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights",
-		},
-		{
-			NewFunc: armapplicationinsights.NewFavoritesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights",
-		},
-		{
-			NewFunc: armapplicationinsights.NewProactiveDetectionConfigurationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights",
-		},
-		{
-			NewFunc: armapplicationinsights.NewWorkItemConfigurationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights",
-		},
-		{
-			NewFunc: armapplicationinsights.NewComponentsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights",
-		},
-		{
-			NewFunc: armapplicationinsights.NewComponentFeatureCapabilitiesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights",
 		},
 		{
@@ -62,11 +42,31 @@ func Armapplicationinsights() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights",
 		},
 		{
+			NewFunc: armapplicationinsights.NewAPIKeysClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights",
+		},
+		{
+			NewFunc: armapplicationinsights.NewComponentsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights",
+		},
+		{
+			NewFunc: armapplicationinsights.NewExportConfigurationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights",
+		},
+		{
+			NewFunc: armapplicationinsights.NewWebTestLocationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights",
+		},
+		{
+			NewFunc: armapplicationinsights.NewWorkItemConfigurationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights",
+		},
+		{
 			NewFunc: armapplicationinsights.NewComponentCurrentBillingFeaturesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights",
 		},
 		{
-			NewFunc: armapplicationinsights.NewMyWorkbooksClient,
+			NewFunc: armapplicationinsights.NewFavoritesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights",
 		},
 	}

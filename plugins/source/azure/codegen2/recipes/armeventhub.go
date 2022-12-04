@@ -22,20 +22,20 @@ func Armeventhub() []Table {
 			NewFunc: armeventhub.NewNamespacesClient,
 		},
 		{
-      Name: "private_endpoint_connection",
-      Struct: &armeventhub.PrivateEndpointConnection{},
-      ResponseStruct: &armeventhub.PrivateEndpointConnectionsClientListResponse{},
-      Client: &armeventhub.PrivateEndpointConnectionsClient{},
-      ListFunc: (&armeventhub.PrivateEndpointConnectionsClient{}).NewListPager,
-			NewFunc: armeventhub.NewPrivateEndpointConnectionsClient,
-		},
-		{
       Name: "operation",
       Struct: &armeventhub.Operation{},
       ResponseStruct: &armeventhub.OperationsClientListResponse{},
       Client: &armeventhub.OperationsClient{},
       ListFunc: (&armeventhub.OperationsClient{}).NewListPager,
 			NewFunc: armeventhub.NewOperationsClient,
+		},
+		{
+      Name: "private_endpoint_connection",
+      Struct: &armeventhub.PrivateEndpointConnection{},
+      ResponseStruct: &armeventhub.PrivateEndpointConnectionsClientListResponse{},
+      Client: &armeventhub.PrivateEndpointConnectionsClient{},
+      ListFunc: (&armeventhub.PrivateEndpointConnectionsClient{}).NewListPager,
+			NewFunc: armeventhub.NewPrivateEndpointConnectionsClient,
 		},
 	}
 

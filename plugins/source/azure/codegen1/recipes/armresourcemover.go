@@ -6,15 +6,15 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcemover/armr
 func Armresourcemover() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armresourcemover.NewMoveCollectionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcemover/armresourcemover",
-		},
-		{
 			NewFunc: armresourcemover.NewMoveResourcesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcemover/armresourcemover",
 		},
 		{
 			NewFunc: armresourcemover.NewOperationsDiscoveryClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcemover/armresourcemover",
+		},
+		{
+			NewFunc: armresourcemover.NewMoveCollectionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcemover/armresourcemover",
 		},
 		{

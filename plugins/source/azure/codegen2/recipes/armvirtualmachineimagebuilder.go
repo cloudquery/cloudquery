@@ -6,20 +6,20 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/virtualmachineimag
 func Armvirtualmachineimagebuilder() []Table {
 	tables := []Table{
 		{
-      Name: "operation",
-      Struct: &armvirtualmachineimagebuilder.Operation{},
-      ResponseStruct: &armvirtualmachineimagebuilder.OperationsClientListResponse{},
-      Client: &armvirtualmachineimagebuilder.OperationsClient{},
-      ListFunc: (&armvirtualmachineimagebuilder.OperationsClient{}).NewListPager,
-			NewFunc: armvirtualmachineimagebuilder.NewOperationsClient,
-		},
-		{
       Name: "image_template",
       Struct: &armvirtualmachineimagebuilder.ImageTemplate{},
       ResponseStruct: &armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientListResponse{},
       Client: &armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClient{},
       ListFunc: (&armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClient{}).NewListPager,
 			NewFunc: armvirtualmachineimagebuilder.NewVirtualMachineImageTemplatesClient,
+		},
+		{
+      Name: "operation",
+      Struct: &armvirtualmachineimagebuilder.Operation{},
+      ResponseStruct: &armvirtualmachineimagebuilder.OperationsClientListResponse{},
+      Client: &armvirtualmachineimagebuilder.OperationsClient{},
+      ListFunc: (&armvirtualmachineimagebuilder.OperationsClient{}).NewListPager,
+			NewFunc: armvirtualmachineimagebuilder.NewOperationsClient,
 		},
 	}
 

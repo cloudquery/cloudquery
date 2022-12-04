@@ -6,12 +6,12 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolic
 func Armpolicy() []Table {
 	tables := []Table{
 		{
-      Name: "definition",
-      Struct: &armpolicy.Definition{},
-      ResponseStruct: &armpolicy.DefinitionsClientListResponse{},
-      Client: &armpolicy.DefinitionsClient{},
-      ListFunc: (&armpolicy.DefinitionsClient{}).NewListPager,
-			NewFunc: armpolicy.NewDefinitionsClient,
+      Name: "set_definition",
+      Struct: &armpolicy.SetDefinition{},
+      ResponseStruct: &armpolicy.SetDefinitionsClientListResponse{},
+      Client: &armpolicy.SetDefinitionsClient{},
+      ListFunc: (&armpolicy.SetDefinitionsClient{}).NewListPager,
+			NewFunc: armpolicy.NewSetDefinitionsClient,
 		},
 		{
       Name: "exemption",
@@ -38,12 +38,12 @@ func Armpolicy() []Table {
 			NewFunc: armpolicy.NewDataPolicyManifestsClient,
 		},
 		{
-      Name: "set_definition",
-      Struct: &armpolicy.SetDefinition{},
-      ResponseStruct: &armpolicy.SetDefinitionsClientListResponse{},
-      Client: &armpolicy.SetDefinitionsClient{},
-      ListFunc: (&armpolicy.SetDefinitionsClient{}).NewListPager,
-			NewFunc: armpolicy.NewSetDefinitionsClient,
+      Name: "definition",
+      Struct: &armpolicy.Definition{},
+      ResponseStruct: &armpolicy.DefinitionsClientListResponse{},
+      Client: &armpolicy.DefinitionsClient{},
+      ListFunc: (&armpolicy.DefinitionsClient{}).NewListPager,
+			NewFunc: armpolicy.NewDefinitionsClient,
 		},
 	}
 

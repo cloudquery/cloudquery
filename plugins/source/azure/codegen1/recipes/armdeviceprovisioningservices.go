@@ -6,15 +6,15 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceprovisioning
 func Armdeviceprovisioningservices() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armdeviceprovisioningservices.NewIotDpsResourceClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceprovisioningservices/armdeviceprovisioningservices",
-		},
-		{
 			NewFunc: armdeviceprovisioningservices.NewOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceprovisioningservices/armdeviceprovisioningservices",
 		},
 		{
 			NewFunc: armdeviceprovisioningservices.NewDpsCertificateClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceprovisioningservices/armdeviceprovisioningservices",
+		},
+		{
+			NewFunc: armdeviceprovisioningservices.NewIotDpsResourceClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceprovisioningservices/armdeviceprovisioningservices",
 		},
 	}

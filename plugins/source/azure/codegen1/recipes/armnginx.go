@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx"
 func Armnginx() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armnginx.NewOperationsClient,
+			NewFunc: armnginx.NewConfigurationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx",
 		},
 		{
@@ -14,11 +14,11 @@ func Armnginx() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx",
 		},
 		{
-			NewFunc: armnginx.NewCertificatesClient,
+			NewFunc: armnginx.NewOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx",
 		},
 		{
-			NewFunc: armnginx.NewConfigurationsClient,
+			NewFunc: armnginx.NewCertificatesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx",
 		},
 	}

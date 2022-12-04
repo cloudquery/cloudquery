@@ -6,15 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/engagementfabric/a
 func Armengagementfabric() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armengagementfabric.NewClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/engagementfabric/armengagementfabric",
-		},
-		{
 			NewFunc: armengagementfabric.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/engagementfabric/armengagementfabric",
-		},
-		{
-			NewFunc: armengagementfabric.NewSKUsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/engagementfabric/armengagementfabric",
 		},
 		{
@@ -23,6 +15,14 @@ func Armengagementfabric() []*Resource {
 		},
 		{
 			NewFunc: armengagementfabric.NewChannelsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/engagementfabric/armengagementfabric",
+		},
+		{
+			NewFunc: armengagementfabric.NewClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/engagementfabric/armengagementfabric",
+		},
+		{
+			NewFunc: armengagementfabric.NewSKUsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/engagementfabric/armengagementfabric",
 		},
 	}

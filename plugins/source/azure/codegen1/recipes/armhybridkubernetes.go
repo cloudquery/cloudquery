@@ -6,11 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridkubernetes/a
 func Armhybridkubernetes() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armhybridkubernetes.NewConnectedClusterClient,
+			NewFunc: armhybridkubernetes.NewOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridkubernetes/armhybridkubernetes",
 		},
 		{
-			NewFunc: armhybridkubernetes.NewOperationsClient,
+			NewFunc: armhybridkubernetes.NewConnectedClusterClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridkubernetes/armhybridkubernetes",
 		},
 	}

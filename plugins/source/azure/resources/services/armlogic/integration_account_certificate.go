@@ -4,6 +4,7 @@ package armlogic
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logic/armlogic"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -49,7 +50,11 @@ func IntegrationAccountCertificate() *schema.Table {
 }
 
 func fetchIntegrationAccountCertificate(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().ArmlogicIntegrationAccountCertificate
+	cl := meta.(*client.Client)
+	svc, err := armlogic.NewIntegrationAccountCertificatesClient(cl.SubscriptionId, cl.Creds, cl.Options)
+	if err != nil {
+		return err
+	}
 	pager := svc.NewListPager(nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)

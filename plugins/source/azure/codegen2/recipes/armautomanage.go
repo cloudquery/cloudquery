@@ -6,20 +6,20 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automanage/armauto
 func Armautomanage() []Table {
 	tables := []Table{
 		{
-      Name: "operation",
-      Struct: &armautomanage.Operation{},
-      ResponseStruct: &armautomanage.OperationsClientListResponse{},
-      Client: &armautomanage.OperationsClient{},
-      ListFunc: (&armautomanage.OperationsClient{}).NewListPager,
-			NewFunc: armautomanage.NewOperationsClient,
-		},
-		{
       Name: "configuration_profile_assignment",
       Struct: &armautomanage.ConfigurationProfileAssignment{},
       ResponseStruct: &armautomanage.ConfigurationProfileAssignmentsClientListResponse{},
       Client: &armautomanage.ConfigurationProfileAssignmentsClient{},
       ListFunc: (&armautomanage.ConfigurationProfileAssignmentsClient{}).NewListPager,
 			NewFunc: armautomanage.NewConfigurationProfileAssignmentsClient,
+		},
+		{
+      Name: "operation",
+      Struct: &armautomanage.Operation{},
+      ResponseStruct: &armautomanage.OperationsClientListResponse{},
+      Client: &armautomanage.OperationsClient{},
+      ListFunc: (&armautomanage.OperationsClient{}).NewListPager,
+			NewFunc: armautomanage.NewOperationsClient,
 		},
 	}
 

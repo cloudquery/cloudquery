@@ -6,15 +6,15 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/fluidrelay/armflui
 func Armfluidrelay() []*Resource {
 	resources := []*Resource{
 		{
+			NewFunc: armfluidrelay.NewContainersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/fluidrelay/armfluidrelay",
+		},
+		{
 			NewFunc: armfluidrelay.NewOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/fluidrelay/armfluidrelay",
 		},
 		{
 			NewFunc: armfluidrelay.NewServersClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/fluidrelay/armfluidrelay",
-		},
-		{
-			NewFunc: armfluidrelay.NewContainersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/fluidrelay/armfluidrelay",
 		},
 	}

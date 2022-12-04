@@ -6,20 +6,20 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armaz
 func Armazurearcdata() []Table {
 	tables := []Table{
 		{
+      Name: "operation",
+      Struct: &armazurearcdata.Operation{},
+      ResponseStruct: &armazurearcdata.OperationsClientListResponse{},
+      Client: &armazurearcdata.OperationsClient{},
+      ListFunc: (&armazurearcdata.OperationsClient{}).NewListPager,
+			NewFunc: armazurearcdata.NewOperationsClient,
+		},
+		{
       Name: "postgres_instance",
       Struct: &armazurearcdata.PostgresInstance{},
       ResponseStruct: &armazurearcdata.PostgresInstancesClientListResponse{},
       Client: &armazurearcdata.PostgresInstancesClient{},
       ListFunc: (&armazurearcdata.PostgresInstancesClient{}).NewListPager,
 			NewFunc: armazurearcdata.NewPostgresInstancesClient,
-		},
-		{
-      Name: "sql_server_instance",
-      Struct: &armazurearcdata.SQLServerInstance{},
-      ResponseStruct: &armazurearcdata.SQLServerInstancesClientListResponse{},
-      Client: &armazurearcdata.SQLServerInstancesClient{},
-      ListFunc: (&armazurearcdata.SQLServerInstancesClient{}).NewListPager,
-			NewFunc: armazurearcdata.NewSQLServerInstancesClient,
 		},
 		{
       Name: "active_directory_connector_resource",
@@ -30,12 +30,12 @@ func Armazurearcdata() []Table {
 			NewFunc: armazurearcdata.NewActiveDirectoryConnectorsClient,
 		},
 		{
-      Name: "operation",
-      Struct: &armazurearcdata.Operation{},
-      ResponseStruct: &armazurearcdata.OperationsClientListResponse{},
-      Client: &armazurearcdata.OperationsClient{},
-      ListFunc: (&armazurearcdata.OperationsClient{}).NewListPager,
-			NewFunc: armazurearcdata.NewOperationsClient,
+      Name: "sql_server_instance",
+      Struct: &armazurearcdata.SQLServerInstance{},
+      ResponseStruct: &armazurearcdata.SQLServerInstancesClientListResponse{},
+      Client: &armazurearcdata.SQLServerInstancesClient{},
+      ListFunc: (&armazurearcdata.SQLServerInstancesClient{}).NewListPager,
+			NewFunc: armazurearcdata.NewSQLServerInstancesClient,
 		},
 		{
       Name: "sql_managed_instance",

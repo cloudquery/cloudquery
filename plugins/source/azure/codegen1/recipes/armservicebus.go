@@ -6,11 +6,15 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armserv
 func Armservicebus() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armservicebus.NewQueuesClient,
+			NewFunc: armservicebus.NewDisasterRecoveryConfigsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus",
 		},
 		{
-			NewFunc: armservicebus.NewTopicsClient,
+			NewFunc: armservicebus.NewNamespacesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus",
+		},
+		{
+			NewFunc: armservicebus.NewQueuesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus",
 		},
 		{
@@ -18,15 +22,7 @@ func Armservicebus() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus",
 		},
 		{
-			NewFunc: armservicebus.NewDisasterRecoveryConfigsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus",
-		},
-		{
-			NewFunc: armservicebus.NewMigrationConfigsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus",
-		},
-		{
-			NewFunc: armservicebus.NewNamespacesClient,
+			NewFunc: armservicebus.NewSubscriptionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus",
 		},
 		{
@@ -42,7 +38,11 @@ func Armservicebus() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus",
 		},
 		{
-			NewFunc: armservicebus.NewSubscriptionsClient,
+			NewFunc: armservicebus.NewTopicsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus",
+		},
+		{
+			NewFunc: armservicebus.NewMigrationConfigsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus",
 		},
 	}

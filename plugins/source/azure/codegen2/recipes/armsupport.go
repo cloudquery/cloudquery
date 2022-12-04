@@ -6,14 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport
 func Armsupport() []Table {
 	tables := []Table{
 		{
-      Name: "problem_classification",
-      Struct: &armsupport.ProblemClassification{},
-      ResponseStruct: &armsupport.ProblemClassificationsClientListResponse{},
-      Client: &armsupport.ProblemClassificationsClient{},
-      ListFunc: (&armsupport.ProblemClassificationsClient{}).NewListPager,
-			NewFunc: armsupport.NewProblemClassificationsClient,
-		},
-		{
       Name: "service",
       Struct: &armsupport.Service{},
       ResponseStruct: &armsupport.ServicesClientListResponse{},
@@ -30,6 +22,14 @@ func Armsupport() []Table {
 			NewFunc: armsupport.NewTicketsClient,
 		},
 		{
+      Name: "operation",
+      Struct: &armsupport.Operation{},
+      ResponseStruct: &armsupport.OperationsClientListResponse{},
+      Client: &armsupport.OperationsClient{},
+      ListFunc: (&armsupport.OperationsClient{}).NewListPager,
+			NewFunc: armsupport.NewOperationsClient,
+		},
+		{
       Name: "communication_details",
       Struct: &armsupport.CommunicationDetails{},
       ResponseStruct: &armsupport.CommunicationsClientListResponse{},
@@ -38,12 +38,12 @@ func Armsupport() []Table {
 			NewFunc: armsupport.NewCommunicationsClient,
 		},
 		{
-      Name: "operation",
-      Struct: &armsupport.Operation{},
-      ResponseStruct: &armsupport.OperationsClientListResponse{},
-      Client: &armsupport.OperationsClient{},
-      ListFunc: (&armsupport.OperationsClient{}).NewListPager,
-			NewFunc: armsupport.NewOperationsClient,
+      Name: "problem_classification",
+      Struct: &armsupport.ProblemClassification{},
+      ResponseStruct: &armsupport.ProblemClassificationsClientListResponse{},
+      Client: &armsupport.ProblemClassificationsClient{},
+      ListFunc: (&armsupport.ProblemClassificationsClient{}).NewListPager,
+			NewFunc: armsupport.NewProblemClassificationsClient,
 		},
 	}
 

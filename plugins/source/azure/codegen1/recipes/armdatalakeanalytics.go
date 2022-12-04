@@ -10,10 +10,6 @@ func Armdatalakeanalytics() []*Resource {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-analytics/armdatalakeanalytics",
 		},
 		{
-			NewFunc: armdatalakeanalytics.NewLocationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-analytics/armdatalakeanalytics",
-		},
-		{
 			NewFunc: armdatalakeanalytics.NewComputePoliciesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-analytics/armdatalakeanalytics",
 		},
@@ -27,6 +23,10 @@ func Armdatalakeanalytics() []*Resource {
 		},
 		{
 			NewFunc: armdatalakeanalytics.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-analytics/armdatalakeanalytics",
+		},
+		{
+			NewFunc: armdatalakeanalytics.NewLocationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-analytics/armdatalakeanalytics",
 		},
 		{

@@ -6,14 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/ar
 func Armredisenterprise() []Table {
 	tables := []Table{
 		{
-      Name: "private_endpoint_connection",
-      Struct: &armredisenterprise.PrivateEndpointConnection{},
-      ResponseStruct: &armredisenterprise.PrivateEndpointConnectionsClientListResponse{},
-      Client: &armredisenterprise.PrivateEndpointConnectionsClient{},
-      ListFunc: (&armredisenterprise.PrivateEndpointConnectionsClient{}).NewListPager,
-			NewFunc: armredisenterprise.NewPrivateEndpointConnectionsClient,
-		},
-		{
       Name: "cluster",
       Struct: &armredisenterprise.Cluster{},
       ResponseStruct: &armredisenterprise.ClientListResponse{},
@@ -28,6 +20,14 @@ func Armredisenterprise() []Table {
       Client: &armredisenterprise.OperationsClient{},
       ListFunc: (&armredisenterprise.OperationsClient{}).NewListPager,
 			NewFunc: armredisenterprise.NewOperationsClient,
+		},
+		{
+      Name: "private_endpoint_connection",
+      Struct: &armredisenterprise.PrivateEndpointConnection{},
+      ResponseStruct: &armredisenterprise.PrivateEndpointConnectionsClientListResponse{},
+      Client: &armredisenterprise.PrivateEndpointConnectionsClient{},
+      ListFunc: (&armredisenterprise.PrivateEndpointConnectionsClient{}).NewListPager,
+			NewFunc: armredisenterprise.NewPrivateEndpointConnectionsClient,
 		},
 	}
 

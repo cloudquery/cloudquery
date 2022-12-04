@@ -18,13 +18,12 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-func createBackupPolicy() (*client.Services, error) {
+func createBackupPolicy() (*arm.ClientOptions, error) {
 	var item armnetapp.BackupPoliciesClientListResponse
 	if err := faker.FakeObject(&item); err != nil {
 		return nil, err
 	}
-	emptyStr := ""
-	item.NextLink = &emptyStr
+
 	mux := httprouter.New()
 	mux.GET("/*filepath", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		b, err := json.Marshal(&item)
@@ -42,16 +41,10 @@ func createBackupPolicy() (*client.Services, error) {
 		Endpoint: ts.URL,
 		Audience: "test",
 	}
-	svc, err := armnetapp.NewBackupPoliciesClient(client.TestSubscription, &client.MockCreds{}, &arm.ClientOptions{
+	return &arm.ClientOptions{
 		ClientOptions: azcore.ClientOptions{
 			Transport: ts.Client(),
 		},
-	})
-	if err != nil {
-		return nil, err
-	}
-	return &client.Services{
-		ArmnetappBackupPolicy: svc,
 	}, nil
 }
 
