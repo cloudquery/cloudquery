@@ -38,13 +38,13 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.13.20
 	github.com/aws/aws-sdk-go-v2/service/ecs v1.20.1
 	github.com/aws/aws-sdk-go-v2/service/efs v1.18.0
-	github.com/aws/aws-sdk-go-v2/service/eks v1.24.0
+	github.com/aws/aws-sdk-go-v2/service/eks v1.24.1
 	github.com/aws/aws-sdk-go-v2/service/elasticache v1.24.1
-	github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk v1.14.20
+	github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk v1.14.21
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.14.23
-	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.18.26
+	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.18.27
 	github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.17.2
-	github.com/aws/aws-sdk-go-v2/service/emr v1.20.16
+	github.com/aws/aws-sdk-go-v2/service/emr v1.20.17
 	github.com/aws/aws-sdk-go-v2/service/eventbridge v1.16.20
 	github.com/aws/aws-sdk-go-v2/service/firehose v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/frauddetector v1.20.12
