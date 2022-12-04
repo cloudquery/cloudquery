@@ -1,4 +1,9 @@
-# GitHub Plugin
+# GitHub Source Plugin
+
+import { getLatestVersion } from "../../../../../utils/versions";
+import { Badge } from "../../../../../components/Badge";
+
+<Badge text={"Latest: " + getLatestVersion("source", "github")}/>
 
 The CloudQuery GitHub plugin extracts your GitHub API.
 
