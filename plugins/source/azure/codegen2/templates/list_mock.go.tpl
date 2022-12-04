@@ -15,11 +15,13 @@ import (
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/julienschmidt/httprouter"
-  "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/{{.ImportPath}}"
+	{{- range .MockImports}}
+	"{{.}}"
+	{{- end}}
 )
 
 
-func create{{.SubService | ToCamel}}() (*client.Services, error) {  
+func create{{.Name | ToCamel}}() (*client.Services, error) {  
   var item {{.Service}}.{{.ResponseStructName}}
 	if err := faker.FakeObject(&item); err != nil {
 		return nil, err
@@ -52,12 +54,12 @@ func create{{.SubService | ToCamel}}() (*client.Services, error) {
 		return nil, err
 	}
 	return &client.Services{
-		{{.Service | ToCamel}}{{.SubService | ToCamel}}: svc,
+		{{.Service | ToCamel}}{{.Name | ToCamel}}: svc,
 	}, nil
 }
 
 {{if not .ChildTable}}
-func Test{{.SubService | ToCamel}}(t *testing.T) {
-	client.MockTestHelper(t, {{.SubService | ToCamel}}(), create{{.SubService | ToCamel}})
+func Test{{.Name | ToCamel}}(t *testing.T) {
+	client.MockTestHelper(t, {{.Name | ToCamel}}(), create{{.Name | ToCamel}})
 }
 {{end}}

@@ -48,6 +48,7 @@ func main() {
 	for _, r := range recipes.Tables {
 		initResource(&r)
 		generateResource(r, false)
+		generateResource(r, true)
 	}
 	// generateResource()
 }
