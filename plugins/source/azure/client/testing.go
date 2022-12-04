@@ -6,15 +6,28 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/cloudquery/plugin-sdk/plugins"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
-	"github.com/golang/mock/gomock"
 	"github.com/rs/zerolog"
 )
 
-func MockTestHelper(t *testing.T, table *schema.Table, createServices func(t *testing.T, ctrl *gomock.Controller) services.Services) {
+const TestSubscription = "12345678-1234-1234-1234-123456789000"
+
+type MockCreds struct {
+
+}
+
+func (*MockCreds) GetToken(ctx context.Context, options policy.TokenRequestOptions) (azcore.AccessToken, error) {
+	return azcore.AccessToken{
+		Token: "SomeToken",
+		ExpiresOn: time.Now().Add(time.Hour*24),
+	}, nil
+}
+
+func MockTestHelper(t *testing.T, table *schema.Table, createServices func() (*Services, error)) {
 	version := "vDev"
 
 	t.Helper()
@@ -22,13 +35,16 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(t *te
 	table.IgnoreInTests = false
 	l := zerolog.New(zerolog.NewTestWriter(t)).Output(zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro}).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source) (schema.ClientMeta, error) {
-		svc := createServices(t, gomock.NewController(t))
-		servicesMap := make(map[string]*services.Services)
-		servicesMap["testSubscription"] = &svc
+		svc, err := createServices()
+		if err != nil {
+			return nil, err
+		}
+		servicesMap := make(map[string]*Services)
+		servicesMap[TestSubscription] = svc
 		c := &Client{
 			logger:        l,
 			services:      servicesMap,
-			subscriptions: []string{"testSubscription"},
+			subscriptions: []string{TestSubscription},
 		}
 
 		return c, nil
