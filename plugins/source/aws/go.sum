@@ -107,8 +107,8 @@ github.com/aws/aws-sdk-go-v2/service/configservice v1.28.0 h1:geHY2zZSPf/SS0Ylx4
 github.com/aws/aws-sdk-go-v2/service/configservice v1.28.0/go.mod h1:YRQyy4b5FEc0SCSKOlZU68rzv6xnIWfw5fFkxPr5sgc=
 github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.22.1 h1:jceb7VsHfEIu30M/0/pIWp7YZIv6GN0bXTJ8mYNn5TU=
 github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.22.1/go.mod h1:9vkqDk+MFmcWqby2e00fO9S0OOCbBFvryL8Cnui978w=
-github.com/aws/aws-sdk-go-v2/service/dax v1.11.19 h1:oMqf+cUOpO0ovxHSL4fz11LPRXTgcosampySsUyuneM=
-github.com/aws/aws-sdk-go-v2/service/dax v1.11.19/go.mod h1:J2KFwTpLM6JCqbox0q98hsZbj0oRNhDoKck44uAebyc=
+github.com/aws/aws-sdk-go-v2/service/dax v1.11.20 h1:J3MQ30NpUQqMvDoUlHEhB/smbwRjgCv3LMlPbQb2z4w=
+github.com/aws/aws-sdk-go-v2/service/dax v1.11.20/go.mod h1:zbWvPAeTbgczqVu2FVR94sEmtJJSPKiBn23RKpNmJe0=
 github.com/aws/aws-sdk-go-v2/service/directconnect v1.17.23 h1:zxf2NKg8hMZuqAn6CkzdqcGlw1KgaIJZMkI/MRDhpZY=
 github.com/aws/aws-sdk-go-v2/service/directconnect v1.17.23/go.mod h1:/C+Az9NZjpan7x5ThHq9oKLERD2iIfCswGfbXcbup94=
 github.com/aws/aws-sdk-go-v2/service/docdb v1.19.16 h1:9O2AmmOCSwNyPGHkQ9uAIcipxCVNkrIGqLc3T4ZkcMk=
