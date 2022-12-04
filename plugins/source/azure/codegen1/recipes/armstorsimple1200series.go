@@ -6,50 +6,69 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storsimple1200seri
 func Armstorsimple1200series() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armstorsimple1200series.NewAvailableProviderOperationsClient,
-		},
-		{
-			NewFunc: armstorsimple1200series.NewDevicesClient,
-		},
-		{
-			NewFunc: armstorsimple1200series.NewStorageAccountCredentialsClient,
-		},
-		{
-			NewFunc: armstorsimple1200series.NewJobsClient,
-		},
-		{
 			NewFunc: armstorsimple1200series.NewAccessControlRecordsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storsimple1200series/armstorsimple1200series",
 		},
 		{
-			NewFunc: armstorsimple1200series.NewFileServersClient,
-		},
-		{
-			NewFunc: armstorsimple1200series.NewIscsiServersClient,
+			NewFunc: armstorsimple1200series.NewAvailableProviderOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storsimple1200series/armstorsimple1200series",
 		},
 		{
 			NewFunc: armstorsimple1200series.NewBackupsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storsimple1200series/armstorsimple1200series",
 		},
 		{
-			NewFunc: armstorsimple1200series.NewFileSharesClient,
-		},
-		{
-			NewFunc: armstorsimple1200series.NewStorageDomainsClient,
-		},
-		{
-			NewFunc: armstorsimple1200series.NewAlertsClient,
-		},
-		{
-			NewFunc: armstorsimple1200series.NewBackupScheduleGroupsClient,
-		},
-		{
-			NewFunc: armstorsimple1200series.NewChapSettingsClient,
+			NewFunc: armstorsimple1200series.NewDevicesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storsimple1200series/armstorsimple1200series",
 		},
 		{
 			NewFunc: armstorsimple1200series.NewIscsiDisksClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storsimple1200series/armstorsimple1200series",
+		},
+		{
+			NewFunc: armstorsimple1200series.NewIscsiServersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storsimple1200series/armstorsimple1200series",
 		},
 		{
 			NewFunc: armstorsimple1200series.NewManagersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storsimple1200series/armstorsimple1200series",
+		},
+		{
+			NewFunc: armstorsimple1200series.NewStorageDomainsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storsimple1200series/armstorsimple1200series",
+		},
+		{
+			NewFunc: armstorsimple1200series.NewAlertsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storsimple1200series/armstorsimple1200series",
+		},
+		{
+			NewFunc: armstorsimple1200series.NewBackupScheduleGroupsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storsimple1200series/armstorsimple1200series",
+		},
+		{
+			NewFunc: armstorsimple1200series.NewFileServersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storsimple1200series/armstorsimple1200series",
+		},
+		{
+			NewFunc: armstorsimple1200series.NewStorageAccountCredentialsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storsimple1200series/armstorsimple1200series",
+		},
+		{
+			NewFunc: armstorsimple1200series.NewChapSettingsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storsimple1200series/armstorsimple1200series",
+		},
+		{
+			NewFunc: armstorsimple1200series.NewFileSharesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storsimple1200series/armstorsimple1200series",
+		},
+		{
+			NewFunc: armstorsimple1200series.NewJobsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storsimple1200series/armstorsimple1200series",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armstorsimple1200series())
 }

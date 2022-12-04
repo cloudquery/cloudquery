@@ -7,13 +7,20 @@ func Armpowerbiembedded() []*Resource {
 	resources := []*Resource{
 		{
 			NewFunc: armpowerbiembedded.NewWorkspaceCollectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbiembedded/armpowerbiembedded",
 		},
 		{
 			NewFunc: armpowerbiembedded.NewWorkspacesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbiembedded/armpowerbiembedded",
 		},
 		{
 			NewFunc: armpowerbiembedded.NewManagementClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbiembedded/armpowerbiembedded",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armpowerbiembedded())
 }

@@ -8,8 +8,13 @@ func {{.BaseName | ToCamel}}() []*Resource {
     {{- range .NewFuncs}}
 		{
 			NewFunc: {{$.BaseName}}.{{.}},
+			PkgPath: "{{$.Mod.Path}}",
 		},
     {{- end}}
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, {{.BaseName | ToCamel}}())
 }

@@ -7,13 +7,20 @@ func Armsubscriptions() []*Resource {
 	resources := []*Resource{
 		{
 			NewFunc: armsubscriptions.NewSubscriptionClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions",
 		},
 		{
 			NewFunc: armsubscriptions.NewTenantsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions",
 		},
 		{
 			NewFunc: armsubscriptions.NewClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armsubscriptions())
 }

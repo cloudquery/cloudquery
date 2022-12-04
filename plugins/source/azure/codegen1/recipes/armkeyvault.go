@@ -6,32 +6,45 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvau
 func Armkeyvault() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armkeyvault.NewKeysClient,
-		},
-		{
-			NewFunc: armkeyvault.NewMHSMPrivateLinkResourcesClient,
-		},
-		{
-			NewFunc: armkeyvault.NewOperationsClient,
-		},
-		{
-			NewFunc: armkeyvault.NewPrivateLinkResourcesClient,
-		},
-		{
-			NewFunc: armkeyvault.NewSecretsClient,
-		},
-		{
-			NewFunc: armkeyvault.NewVaultsClient,
-		},
-		{
 			NewFunc: armkeyvault.NewManagedHsmsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault",
 		},
 		{
 			NewFunc: armkeyvault.NewMHSMPrivateEndpointConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault",
+		},
+		{
+			NewFunc: armkeyvault.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault",
+		},
+		{
+			NewFunc: armkeyvault.NewPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault",
+		},
+		{
+			NewFunc: armkeyvault.NewKeysClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault",
+		},
+		{
+			NewFunc: armkeyvault.NewMHSMPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault",
 		},
 		{
 			NewFunc: armkeyvault.NewPrivateEndpointConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault",
+		},
+		{
+			NewFunc: armkeyvault.NewSecretsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault",
+		},
+		{
+			NewFunc: armkeyvault.NewVaultsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armkeyvault())
 }

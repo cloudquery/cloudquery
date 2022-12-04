@@ -7,16 +7,24 @@ func Armdatabox() []*Resource {
 	resources := []*Resource{
 		{
 			NewFunc: armdatabox.NewJobsClient,
-		},
-		{
-			NewFunc: armdatabox.NewManagementClient,
-		},
-		{
-			NewFunc: armdatabox.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox",
 		},
 		{
 			NewFunc: armdatabox.NewServiceClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox",
+		},
+		{
+			NewFunc: armdatabox.NewManagementClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox",
+		},
+		{
+			NewFunc: armdatabox.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armdatabox())
 }

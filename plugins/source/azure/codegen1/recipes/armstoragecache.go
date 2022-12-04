@@ -6,29 +6,41 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armst
 func Armstoragecache() []*Resource {
 	resources := []*Resource{
 		{
+			NewFunc: armstoragecache.NewSKUsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache",
+		},
+		{
 			NewFunc: armstoragecache.NewStorageTargetClient,
-		},
-		{
-			NewFunc: armstoragecache.NewUsageModelsClient,
-		},
-		{
-			NewFunc: armstoragecache.NewAscOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache",
 		},
 		{
 			NewFunc: armstoragecache.NewAscUsagesClient,
-		},
-		{
-			NewFunc: armstoragecache.NewOperationsClient,
-		},
-		{
-			NewFunc: armstoragecache.NewSKUsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache",
 		},
 		{
 			NewFunc: armstoragecache.NewCachesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache",
+		},
+		{
+			NewFunc: armstoragecache.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache",
+		},
+		{
+			NewFunc: armstoragecache.NewUsageModelsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache",
+		},
+		{
+			NewFunc: armstoragecache.NewAscOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache",
 		},
 		{
 			NewFunc: armstoragecache.NewStorageTargetsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armstoragecache())
 }

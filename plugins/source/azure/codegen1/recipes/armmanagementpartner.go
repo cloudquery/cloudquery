@@ -6,14 +6,21 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementpartner/
 func Armmanagementpartner() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armmanagementpartner.NewOperationClient,
+			NewFunc: armmanagementpartner.NewPartnerClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementpartner/armmanagementpartner",
 		},
 		{
-			NewFunc: armmanagementpartner.NewPartnerClient,
+			NewFunc: armmanagementpartner.NewOperationClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementpartner/armmanagementpartner",
 		},
 		{
 			NewFunc: armmanagementpartner.NewPartnersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementpartner/armmanagementpartner",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armmanagementpartner())
 }

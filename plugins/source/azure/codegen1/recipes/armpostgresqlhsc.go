@@ -6,23 +6,33 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresqlhsc/armp
 func Armpostgresqlhsc() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armpostgresqlhsc.NewFirewallRulesClient,
-		},
-		{
-			NewFunc: armpostgresqlhsc.NewRolesClient,
-		},
-		{
-			NewFunc: armpostgresqlhsc.NewServerGroupsClient,
-		},
-		{
-			NewFunc: armpostgresqlhsc.NewServersClient,
+			NewFunc: armpostgresqlhsc.NewConfigurationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresqlhsc/armpostgresqlhsc",
 		},
 		{
 			NewFunc: armpostgresqlhsc.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresqlhsc/armpostgresqlhsc",
 		},
 		{
-			NewFunc: armpostgresqlhsc.NewConfigurationsClient,
+			NewFunc: armpostgresqlhsc.NewRolesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresqlhsc/armpostgresqlhsc",
+		},
+		{
+			NewFunc: armpostgresqlhsc.NewServersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresqlhsc/armpostgresqlhsc",
+		},
+		{
+			NewFunc: armpostgresqlhsc.NewFirewallRulesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresqlhsc/armpostgresqlhsc",
+		},
+		{
+			NewFunc: armpostgresqlhsc.NewServerGroupsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresqlhsc/armpostgresqlhsc",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armpostgresqlhsc())
 }

@@ -6,17 +6,25 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/portal/armportal"
 func Armportal() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armportal.NewListTenantConfigurationViolationsClient,
-		},
-		{
-			NewFunc: armportal.NewTenantConfigurationsClient,
-		},
-		{
 			NewFunc: armportal.NewDashboardsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/portal/armportal",
+		},
+		{
+			NewFunc: armportal.NewListTenantConfigurationViolationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/portal/armportal",
 		},
 		{
 			NewFunc: armportal.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/portal/armportal",
+		},
+		{
+			NewFunc: armportal.NewTenantConfigurationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/portal/armportal",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armportal())
 }

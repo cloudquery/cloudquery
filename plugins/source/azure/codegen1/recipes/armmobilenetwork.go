@@ -6,44 +6,61 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armm
 func Armmobilenetwork() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armmobilenetwork.NewMobileNetworksClient,
-		},
-		{
-			NewFunc: armmobilenetwork.NewSimPoliciesClient,
-		},
-		{
-			NewFunc: armmobilenetwork.NewSlicesClient,
-		},
-		{
-			NewFunc: armmobilenetwork.NewAttachedDataNetworksClient,
-		},
-		{
-			NewFunc: armmobilenetwork.NewServicesClient,
-		},
-		{
-			NewFunc: armmobilenetwork.NewSitesClient,
-		},
-		{
-			NewFunc: armmobilenetwork.NewPacketCoreControlPlaneVersionsClient,
-		},
-		{
-			NewFunc: armmobilenetwork.NewSimsClient,
-		},
-		{
-			NewFunc: armmobilenetwork.NewSimGroupsClient,
-		},
-		{
-			NewFunc: armmobilenetwork.NewDataNetworksClient,
-		},
-		{
-			NewFunc: armmobilenetwork.NewOperationsClient,
-		},
-		{
 			NewFunc: armmobilenetwork.NewPacketCoreControlPlanesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork",
 		},
 		{
 			NewFunc: armmobilenetwork.NewPacketCoreDataPlanesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork",
+		},
+		{
+			NewFunc: armmobilenetwork.NewSimsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork",
+		},
+		{
+			NewFunc: armmobilenetwork.NewMobileNetworksClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork",
+		},
+		{
+			NewFunc: armmobilenetwork.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork",
+		},
+		{
+			NewFunc: armmobilenetwork.NewPacketCoreControlPlaneVersionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork",
+		},
+		{
+			NewFunc: armmobilenetwork.NewServicesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork",
+		},
+		{
+			NewFunc: armmobilenetwork.NewSimPoliciesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork",
+		},
+		{
+			NewFunc: armmobilenetwork.NewAttachedDataNetworksClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork",
+		},
+		{
+			NewFunc: armmobilenetwork.NewSimGroupsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork",
+		},
+		{
+			NewFunc: armmobilenetwork.NewSitesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork",
+		},
+		{
+			NewFunc: armmobilenetwork.NewSlicesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork",
+		},
+		{
+			NewFunc: armmobilenetwork.NewDataNetworksClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armmobilenetwork())
 }

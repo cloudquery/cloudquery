@@ -7,10 +7,16 @@ func Armaddons() []*Resource {
 	resources := []*Resource{
 		{
 			NewFunc: armaddons.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/addons/armaddons",
 		},
 		{
 			NewFunc: armaddons.NewSupportPlanTypesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/addons/armaddons",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armaddons())
 }

@@ -7,10 +7,16 @@ func Armhardwaresecuritymodules() []*Resource {
 	resources := []*Resource{
 		{
 			NewFunc: armhardwaresecuritymodules.NewDedicatedHsmClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hardwaresecuritymodules/armhardwaresecuritymodules",
 		},
 		{
 			NewFunc: armhardwaresecuritymodules.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hardwaresecuritymodules/armhardwaresecuritymodules",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armhardwaresecuritymodules())
 }

@@ -6,17 +6,25 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplace/armmar
 func Armmarketplace() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armmarketplace.NewPrivateStoreClient,
-		},
-		{
-			NewFunc: armmarketplace.NewPrivateStoreCollectionClient,
+			NewFunc: armmarketplace.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplace/armmarketplace",
 		},
 		{
 			NewFunc: armmarketplace.NewPrivateStoreCollectionOfferClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplace/armmarketplace",
 		},
 		{
-			NewFunc: armmarketplace.NewOperationsClient,
+			NewFunc: armmarketplace.NewPrivateStoreClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplace/armmarketplace",
+		},
+		{
+			NewFunc: armmarketplace.NewPrivateStoreCollectionClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplace/armmarketplace",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armmarketplace())
 }

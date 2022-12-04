@@ -7,7 +7,12 @@ func Armedgeorder() []*Resource {
 	resources := []*Resource{
 		{
 			NewFunc: armedgeorder.NewManagementClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/edgeorder/armedgeorder",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armedgeorder())
 }

@@ -6,14 +6,21 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbidedicated/a
 func Armpowerbidedicated() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armpowerbidedicated.NewOperationsClient,
-		},
-		{
 			NewFunc: armpowerbidedicated.NewAutoScaleVCoresClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbidedicated/armpowerbidedicated",
 		},
 		{
 			NewFunc: armpowerbidedicated.NewCapacitiesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbidedicated/armpowerbidedicated",
+		},
+		{
+			NewFunc: armpowerbidedicated.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbidedicated/armpowerbidedicated",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armpowerbidedicated())
 }

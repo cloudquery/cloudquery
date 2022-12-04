@@ -6,11 +6,17 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcehealth/arm
 func Armresourcehealth() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armresourcehealth.NewAvailabilityStatusesClient,
+			NewFunc: armresourcehealth.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcehealth/armresourcehealth",
 		},
 		{
-			NewFunc: armresourcehealth.NewOperationsClient,
+			NewFunc: armresourcehealth.NewAvailabilityStatusesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcehealth/armresourcehealth",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armresourcehealth())
 }

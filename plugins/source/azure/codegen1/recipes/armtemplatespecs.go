@@ -7,10 +7,16 @@ func Armtemplatespecs() []*Resource {
 	resources := []*Resource{
 		{
 			NewFunc: armtemplatespecs.NewTemplateSpecVersionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armtemplatespecs",
 		},
 		{
 			NewFunc: armtemplatespecs.NewClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armtemplatespecs",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armtemplatespecs())
 }

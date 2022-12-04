@@ -6,17 +6,25 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcemover/armr
 func Armresourcemover() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armresourcemover.NewMoveResourcesClient,
-		},
-		{
-			NewFunc: armresourcemover.NewOperationsDiscoveryClient,
+			NewFunc: armresourcemover.NewMoveCollectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcemover/armresourcemover",
 		},
 		{
 			NewFunc: armresourcemover.NewUnresolvedDependenciesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcemover/armresourcemover",
 		},
 		{
-			NewFunc: armresourcemover.NewMoveCollectionsClient,
+			NewFunc: armresourcemover.NewMoveResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcemover/armresourcemover",
+		},
+		{
+			NewFunc: armresourcemover.NewOperationsDiscoveryClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcemover/armresourcemover",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armresourcemover())
 }

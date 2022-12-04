@@ -6,29 +6,41 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/policyinsights/arm
 func Armpolicyinsights() []*Resource {
 	resources := []*Resource{
 		{
+			NewFunc: armpolicyinsights.NewPolicyEventsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/policyinsights/armpolicyinsights",
+		},
+		{
 			NewFunc: armpolicyinsights.NewAttestationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/policyinsights/armpolicyinsights",
 		},
 		{
 			NewFunc: armpolicyinsights.NewOperationsClient,
-		},
-		{
-			NewFunc: armpolicyinsights.NewPolicyTrackedResourcesClient,
-		},
-		{
-			NewFunc: armpolicyinsights.NewPolicyEventsClient,
-		},
-		{
-			NewFunc: armpolicyinsights.NewPolicyMetadataClient,
-		},
-		{
-			NewFunc: armpolicyinsights.NewPolicyRestrictionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/policyinsights/armpolicyinsights",
 		},
 		{
 			NewFunc: armpolicyinsights.NewPolicyStatesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/policyinsights/armpolicyinsights",
+		},
+		{
+			NewFunc: armpolicyinsights.NewPolicyTrackedResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/policyinsights/armpolicyinsights",
+		},
+		{
+			NewFunc: armpolicyinsights.NewPolicyMetadataClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/policyinsights/armpolicyinsights",
+		},
+		{
+			NewFunc: armpolicyinsights.NewPolicyRestrictionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/policyinsights/armpolicyinsights",
 		},
 		{
 			NewFunc: armpolicyinsights.NewRemediationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/policyinsights/armpolicyinsights",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armpolicyinsights())
 }

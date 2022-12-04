@@ -6,80 +6,109 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devtestlabs/armdev
 func Armdevtestlabs() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armdevtestlabs.NewServiceRunnersClient,
-		},
-		{
-			NewFunc: armdevtestlabs.NewSchedulesClient,
-		},
-		{
-			NewFunc: armdevtestlabs.NewServiceFabricsClient,
-		},
-		{
-			NewFunc: armdevtestlabs.NewSecretsClient,
-		},
-		{
-			NewFunc: armdevtestlabs.NewProviderOperationsClient,
-		},
-		{
-			NewFunc: armdevtestlabs.NewArtifactSourcesClient,
-		},
-		{
-			NewFunc: armdevtestlabs.NewGalleryImagesClient,
-		},
-		{
-			NewFunc: armdevtestlabs.NewPoliciesClient,
-		},
-		{
-			NewFunc: armdevtestlabs.NewPolicySetsClient,
-		},
-		{
-			NewFunc: armdevtestlabs.NewArmTemplatesClient,
-		},
-		{
-			NewFunc: armdevtestlabs.NewArtifactsClient,
-		},
-		{
-			NewFunc: armdevtestlabs.NewEnvironmentsClient,
-		},
-		{
-			NewFunc: armdevtestlabs.NewGlobalSchedulesClient,
-		},
-		{
-			NewFunc: armdevtestlabs.NewUsersClient,
-		},
-		{
-			NewFunc: armdevtestlabs.NewDisksClient,
-		},
-		{
-			NewFunc: armdevtestlabs.NewNotificationChannelsClient,
-		},
-		{
-			NewFunc: armdevtestlabs.NewOperationsClient,
-		},
-		{
-			NewFunc: armdevtestlabs.NewVirtualMachineSchedulesClient,
-		},
-		{
-			NewFunc: armdevtestlabs.NewLabsClient,
-		},
-		{
-			NewFunc: armdevtestlabs.NewCostsClient,
-		},
-		{
-			NewFunc: armdevtestlabs.NewVirtualNetworksClient,
-		},
-		{
-			NewFunc: armdevtestlabs.NewVirtualMachinesClient,
-		},
-		{
-			NewFunc: armdevtestlabs.NewServiceFabricSchedulesClient,
-		},
-		{
 			NewFunc: armdevtestlabs.NewCustomImagesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devtestlabs/armdevtestlabs",
 		},
 		{
 			NewFunc: armdevtestlabs.NewFormulasClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devtestlabs/armdevtestlabs",
+		},
+		{
+			NewFunc: armdevtestlabs.NewNotificationChannelsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devtestlabs/armdevtestlabs",
+		},
+		{
+			NewFunc: armdevtestlabs.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devtestlabs/armdevtestlabs",
+		},
+		{
+			NewFunc: armdevtestlabs.NewSchedulesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devtestlabs/armdevtestlabs",
+		},
+		{
+			NewFunc: armdevtestlabs.NewUsersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devtestlabs/armdevtestlabs",
+		},
+		{
+			NewFunc: armdevtestlabs.NewArtifactSourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devtestlabs/armdevtestlabs",
+		},
+		{
+			NewFunc: armdevtestlabs.NewCostsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devtestlabs/armdevtestlabs",
+		},
+		{
+			NewFunc: armdevtestlabs.NewPoliciesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devtestlabs/armdevtestlabs",
+		},
+		{
+			NewFunc: armdevtestlabs.NewServiceRunnersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devtestlabs/armdevtestlabs",
+		},
+		{
+			NewFunc: armdevtestlabs.NewLabsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devtestlabs/armdevtestlabs",
+		},
+		{
+			NewFunc: armdevtestlabs.NewVirtualMachineSchedulesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devtestlabs/armdevtestlabs",
+		},
+		{
+			NewFunc: armdevtestlabs.NewDisksClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devtestlabs/armdevtestlabs",
+		},
+		{
+			NewFunc: armdevtestlabs.NewGalleryImagesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devtestlabs/armdevtestlabs",
+		},
+		{
+			NewFunc: armdevtestlabs.NewGlobalSchedulesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devtestlabs/armdevtestlabs",
+		},
+		{
+			NewFunc: armdevtestlabs.NewPolicySetsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devtestlabs/armdevtestlabs",
+		},
+		{
+			NewFunc: armdevtestlabs.NewSecretsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devtestlabs/armdevtestlabs",
+		},
+		{
+			NewFunc: armdevtestlabs.NewServiceFabricsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devtestlabs/armdevtestlabs",
+		},
+		{
+			NewFunc: armdevtestlabs.NewArtifactsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devtestlabs/armdevtestlabs",
+		},
+		{
+			NewFunc: armdevtestlabs.NewEnvironmentsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devtestlabs/armdevtestlabs",
+		},
+		{
+			NewFunc: armdevtestlabs.NewServiceFabricSchedulesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devtestlabs/armdevtestlabs",
+		},
+		{
+			NewFunc: armdevtestlabs.NewVirtualNetworksClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devtestlabs/armdevtestlabs",
+		},
+		{
+			NewFunc: armdevtestlabs.NewVirtualMachinesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devtestlabs/armdevtestlabs",
+		},
+		{
+			NewFunc: armdevtestlabs.NewArmTemplatesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devtestlabs/armdevtestlabs",
+		},
+		{
+			NewFunc: armdevtestlabs.NewProviderOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devtestlabs/armdevtestlabs",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armdevtestlabs())
 }

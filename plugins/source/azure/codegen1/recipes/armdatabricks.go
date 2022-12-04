@@ -6,23 +6,33 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databricks/armdata
 func Armdatabricks() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armdatabricks.NewPrivateLinkResourcesClient,
-		},
-		{
-			NewFunc: armdatabricks.NewVNetPeeringClient,
-		},
-		{
 			NewFunc: armdatabricks.NewWorkspacesClient,
-		},
-		{
-			NewFunc: armdatabricks.NewOperationsClient,
-		},
-		{
-			NewFunc: armdatabricks.NewPrivateEndpointConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databricks/armdatabricks",
 		},
 		{
 			NewFunc: armdatabricks.NewOutboundNetworkDependenciesEndpointsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databricks/armdatabricks",
+		},
+		{
+			NewFunc: armdatabricks.NewVNetPeeringClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databricks/armdatabricks",
+		},
+		{
+			NewFunc: armdatabricks.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databricks/armdatabricks",
+		},
+		{
+			NewFunc: armdatabricks.NewPrivateEndpointConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databricks/armdatabricks",
+		},
+		{
+			NewFunc: armdatabricks.NewPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databricks/armdatabricks",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armdatabricks())
 }

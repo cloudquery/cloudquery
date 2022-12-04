@@ -7,34 +7,48 @@ func Armlabservices() []*Resource {
 	resources := []*Resource{
 		{
 			NewFunc: armlabservices.NewLabsClient,
-		},
-		{
-			NewFunc: armlabservices.NewUsersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/labservices/armlabservices",
 		},
 		{
 			NewFunc: armlabservices.NewOperationResultsClient,
-		},
-		{
-			NewFunc: armlabservices.NewUsagesClient,
-		},
-		{
-			NewFunc: armlabservices.NewLabPlansClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/labservices/armlabservices",
 		},
 		{
 			NewFunc: armlabservices.NewSKUsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/labservices/armlabservices",
 		},
 		{
-			NewFunc: armlabservices.NewImagesClient,
-		},
-		{
-			NewFunc: armlabservices.NewSchedulesClient,
+			NewFunc: armlabservices.NewUsagesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/labservices/armlabservices",
 		},
 		{
 			NewFunc: armlabservices.NewVirtualMachinesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/labservices/armlabservices",
+		},
+		{
+			NewFunc: armlabservices.NewLabPlansClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/labservices/armlabservices",
 		},
 		{
 			NewFunc: armlabservices.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/labservices/armlabservices",
+		},
+		{
+			NewFunc: armlabservices.NewUsersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/labservices/armlabservices",
+		},
+		{
+			NewFunc: armlabservices.NewImagesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/labservices/armlabservices",
+		},
+		{
+			NewFunc: armlabservices.NewSchedulesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/labservices/armlabservices",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armlabservices())
 }

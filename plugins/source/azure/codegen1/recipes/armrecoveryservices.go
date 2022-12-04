@@ -6,32 +6,45 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/a
 func Armrecoveryservices() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armrecoveryservices.NewUsagesClient,
-		},
-		{
 			NewFunc: armrecoveryservices.NewClient,
-		},
-		{
-			NewFunc: armrecoveryservices.NewOperationsClient,
-		},
-		{
-			NewFunc: armrecoveryservices.NewPrivateLinkResourcesClient,
-		},
-		{
-			NewFunc: armrecoveryservices.NewVaultCertificatesClient,
-		},
-		{
-			NewFunc: armrecoveryservices.NewVaultsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservices",
 		},
 		{
 			NewFunc: armrecoveryservices.NewRegisteredIdentitiesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservices",
+		},
+		{
+			NewFunc: armrecoveryservices.NewUsagesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservices",
+		},
+		{
+			NewFunc: armrecoveryservices.NewVaultCertificatesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservices",
+		},
+		{
+			NewFunc: armrecoveryservices.NewVaultsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservices",
+		},
+		{
+			NewFunc: armrecoveryservices.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservices",
+		},
+		{
+			NewFunc: armrecoveryservices.NewPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservices",
 		},
 		{
 			NewFunc: armrecoveryservices.NewReplicationUsagesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservices",
 		},
 		{
 			NewFunc: armrecoveryservices.NewVaultExtendedInfoClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservices",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armrecoveryservices())
 }

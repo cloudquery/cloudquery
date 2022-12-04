@@ -6,32 +6,45 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/ar
 func Armstreamanalytics() []*Resource {
 	resources := []*Resource{
 		{
+			NewFunc: armstreamanalytics.NewSubscriptionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics",
+		},
+		{
 			NewFunc: armstreamanalytics.NewOperationsClient,
-		},
-		{
-			NewFunc: armstreamanalytics.NewStreamingJobsClient,
-		},
-		{
-			NewFunc: armstreamanalytics.NewFunctionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics",
 		},
 		{
 			NewFunc: armstreamanalytics.NewInputsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics",
 		},
 		{
 			NewFunc: armstreamanalytics.NewPrivateEndpointsClient,
-		},
-		{
-			NewFunc: armstreamanalytics.NewClustersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics",
 		},
 		{
 			NewFunc: armstreamanalytics.NewOutputsClient,
-		},
-		{
-			NewFunc: armstreamanalytics.NewSubscriptionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics",
 		},
 		{
 			NewFunc: armstreamanalytics.NewTransformationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics",
+		},
+		{
+			NewFunc: armstreamanalytics.NewFunctionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics",
+		},
+		{
+			NewFunc: armstreamanalytics.NewStreamingJobsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics",
+		},
+		{
+			NewFunc: armstreamanalytics.NewClustersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armstreamanalytics())
 }

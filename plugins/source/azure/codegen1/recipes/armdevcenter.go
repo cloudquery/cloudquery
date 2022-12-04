@@ -6,59 +6,81 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevce
 func Armdevcenter() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armdevcenter.NewEnvironmentTypesClient,
-		},
-		{
-			NewFunc: armdevcenter.NewImageVersionsClient,
-		},
-		{
-			NewFunc: armdevcenter.NewOperationsClient,
-		},
-		{
-			NewFunc: armdevcenter.NewProjectAllowedEnvironmentTypesClient,
+			NewFunc: armdevcenter.NewGalleriesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter",
 		},
 		{
 			NewFunc: armdevcenter.NewProjectEnvironmentTypesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter",
 		},
 		{
 			NewFunc: armdevcenter.NewProjectsClient,
-		},
-		{
-			NewFunc: armdevcenter.NewCatalogsClient,
-		},
-		{
-			NewFunc: armdevcenter.NewDevCentersClient,
-		},
-		{
-			NewFunc: armdevcenter.NewOperationStatusesClient,
-		},
-		{
-			NewFunc: armdevcenter.NewPoolsClient,
-		},
-		{
-			NewFunc: armdevcenter.NewSKUsClient,
-		},
-		{
-			NewFunc: armdevcenter.NewUsagesClient,
-		},
-		{
-			NewFunc: armdevcenter.NewGalleriesClient,
-		},
-		{
-			NewFunc: armdevcenter.NewSchedulesClient,
-		},
-		{
-			NewFunc: armdevcenter.NewAttachedNetworksClient,
-		},
-		{
-			NewFunc: armdevcenter.NewImagesClient,
-		},
-		{
-			NewFunc: armdevcenter.NewNetworkConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter",
 		},
 		{
 			NewFunc: armdevcenter.NewDevBoxDefinitionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter",
+		},
+		{
+			NewFunc: armdevcenter.NewEnvironmentTypesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter",
+		},
+		{
+			NewFunc: armdevcenter.NewImagesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter",
+		},
+		{
+			NewFunc: armdevcenter.NewImageVersionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter",
+		},
+		{
+			NewFunc: armdevcenter.NewProjectAllowedEnvironmentTypesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter",
+		},
+		{
+			NewFunc: armdevcenter.NewSchedulesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter",
+		},
+		{
+			NewFunc: armdevcenter.NewSKUsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter",
+		},
+		{
+			NewFunc: armdevcenter.NewAttachedNetworksClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter",
+		},
+		{
+			NewFunc: armdevcenter.NewDevCentersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter",
+		},
+		{
+			NewFunc: armdevcenter.NewNetworkConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter",
+		},
+		{
+			NewFunc: armdevcenter.NewPoolsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter",
+		},
+		{
+			NewFunc: armdevcenter.NewUsagesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter",
+		},
+		{
+			NewFunc: armdevcenter.NewCatalogsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter",
+		},
+		{
+			NewFunc: armdevcenter.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter",
+		},
+		{
+			NewFunc: armdevcenter.NewOperationStatusesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armdevcenter())
 }

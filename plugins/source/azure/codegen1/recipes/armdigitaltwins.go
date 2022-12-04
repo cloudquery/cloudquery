@@ -6,23 +6,33 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/digitaltwins/armdi
 func Armdigitaltwins() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armdigitaltwins.NewEndpointClient,
-		},
-		{
-			NewFunc: armdigitaltwins.NewOperationsClient,
-		},
-		{
-			NewFunc: armdigitaltwins.NewPrivateEndpointConnectionsClient,
+			NewFunc: armdigitaltwins.NewPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/digitaltwins/armdigitaltwins",
 		},
 		{
 			NewFunc: armdigitaltwins.NewTimeSeriesDatabaseConnectionsClient,
-		},
-		{
-			NewFunc: armdigitaltwins.NewPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/digitaltwins/armdigitaltwins",
 		},
 		{
 			NewFunc: armdigitaltwins.NewClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/digitaltwins/armdigitaltwins",
+		},
+		{
+			NewFunc: armdigitaltwins.NewEndpointClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/digitaltwins/armdigitaltwins",
+		},
+		{
+			NewFunc: armdigitaltwins.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/digitaltwins/armdigitaltwins",
+		},
+		{
+			NewFunc: armdigitaltwins.NewPrivateEndpointConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/digitaltwins/armdigitaltwins",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armdigitaltwins())
 }

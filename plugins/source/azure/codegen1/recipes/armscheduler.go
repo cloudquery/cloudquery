@@ -7,10 +7,16 @@ func Armscheduler() []*Resource {
 	resources := []*Resource{
 		{
 			NewFunc: armscheduler.NewJobCollectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/scheduler/armscheduler",
 		},
 		{
 			NewFunc: armscheduler.NewJobsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/scheduler/armscheduler",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armscheduler())
 }

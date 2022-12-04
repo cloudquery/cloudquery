@@ -6,23 +6,33 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managedservices/ar
 func Armmanagedservices() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armmanagedservices.NewMarketplaceRegistrationDefinitionsClient,
-		},
-		{
 			NewFunc: armmanagedservices.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managedservices/armmanagedservices",
 		},
 		{
 			NewFunc: armmanagedservices.NewOperationsWithScopeClient,
-		},
-		{
-			NewFunc: armmanagedservices.NewRegistrationAssignmentsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managedservices/armmanagedservices",
 		},
 		{
 			NewFunc: armmanagedservices.NewRegistrationDefinitionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managedservices/armmanagedservices",
 		},
 		{
 			NewFunc: armmanagedservices.NewMarketplaceRegistrationDefinitionsWithoutScopeClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managedservices/armmanagedservices",
+		},
+		{
+			NewFunc: armmanagedservices.NewRegistrationAssignmentsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managedservices/armmanagedservices",
+		},
+		{
+			NewFunc: armmanagedservices.NewMarketplaceRegistrationDefinitionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managedservices/armmanagedservices",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armmanagedservices())
 }

@@ -7,10 +7,16 @@ func Armlocks() []*Resource {
 	resources := []*Resource{
 		{
 			NewFunc: armlocks.NewAuthorizationOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armlocks",
 		},
 		{
 			NewFunc: armlocks.NewManagementLocksClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armlocks",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armlocks())
 }

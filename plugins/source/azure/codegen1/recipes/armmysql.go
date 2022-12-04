@@ -7,82 +7,112 @@ func Armmysql() []*Resource {
 	resources := []*Resource{
 		{
 			NewFunc: armmysql.NewServerBasedPerformanceTierClient,
-		},
-		{
-			NewFunc: armmysql.NewVirtualNetworkRulesClient,
-		},
-		{
-			NewFunc: armmysql.NewReplicasClient,
-		},
-		{
-			NewFunc: armmysql.NewLocationBasedRecommendedActionSessionsOperationStatusClient,
-		},
-		{
-			NewFunc: armmysql.NewPrivateEndpointConnectionsClient,
-		},
-		{
-			NewFunc: armmysql.NewQueryTextsClient,
-		},
-		{
-			NewFunc: armmysql.NewRecommendedActionsClient,
-		},
-		{
-			NewFunc: armmysql.NewCheckNameAvailabilityClient,
-		},
-		{
-			NewFunc: armmysql.NewLocationBasedPerformanceTierClient,
-		},
-		{
-			NewFunc: armmysql.NewWaitStatisticsClient,
-		},
-		{
-			NewFunc: armmysql.NewServersClient,
-		},
-		{
-			NewFunc: armmysql.NewServerSecurityAlertPoliciesClient,
-		},
-		{
-			NewFunc: armmysql.NewFirewallRulesClient,
-		},
-		{
-			NewFunc: armmysql.NewLogFilesClient,
-		},
-		{
-			NewFunc: armmysql.NewServerParametersClient,
-		},
-		{
-			NewFunc: armmysql.NewRecoverableServersClient,
-		},
-		{
-			NewFunc: armmysql.NewServerAdministratorsClient,
-		},
-		{
-			NewFunc: armmysql.NewOperationsClient,
-		},
-		{
-			NewFunc: armmysql.NewServerKeysClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql",
 		},
 		{
 			NewFunc: armmysql.NewAdvisorsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql",
 		},
 		{
 			NewFunc: armmysql.NewDatabasesClient,
-		},
-		{
-			NewFunc: armmysql.NewLocationBasedRecommendedActionSessionsResultClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql",
 		},
 		{
 			NewFunc: armmysql.NewManagementClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql",
+		},
+		{
+			NewFunc: armmysql.NewServerAdministratorsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql",
+		},
+		{
+			NewFunc: armmysql.NewVirtualNetworkRulesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql",
+		},
+		{
+			NewFunc: armmysql.NewCheckNameAvailabilityClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql",
+		},
+		{
+			NewFunc: armmysql.NewReplicasClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql",
+		},
+		{
+			NewFunc: armmysql.NewServerParametersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql",
 		},
 		{
 			NewFunc: armmysql.NewTopQueryStatisticsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql",
+		},
+		{
+			NewFunc: armmysql.NewLocationBasedRecommendedActionSessionsResultClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql",
+		},
+		{
+			NewFunc: armmysql.NewPrivateEndpointConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql",
+		},
+		{
+			NewFunc: armmysql.NewQueryTextsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql",
 		},
 		{
 			NewFunc: armmysql.NewConfigurationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql",
+		},
+		{
+			NewFunc: armmysql.NewServerSecurityAlertPoliciesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql",
+		},
+		{
+			NewFunc: armmysql.NewLocationBasedPerformanceTierClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql",
+		},
+		{
+			NewFunc: armmysql.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql",
+		},
+		{
+			NewFunc: armmysql.NewServerKeysClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql",
+		},
+		{
+			NewFunc: armmysql.NewServersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql",
+		},
+		{
+			NewFunc: armmysql.NewWaitStatisticsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql",
+		},
+		{
+			NewFunc: armmysql.NewLocationBasedRecommendedActionSessionsOperationStatusClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql",
+		},
+		{
+			NewFunc: armmysql.NewLogFilesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql",
+		},
+		{
+			NewFunc: armmysql.NewRecoverableServersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql",
+		},
+		{
+			NewFunc: armmysql.NewFirewallRulesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql",
 		},
 		{
 			NewFunc: armmysql.NewPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql",
+		},
+		{
+			NewFunc: armmysql.NewRecommendedActionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armmysql())
 }

@@ -7,13 +7,20 @@ func Armdevops() []*Resource {
 	resources := []*Resource{
 		{
 			NewFunc: armdevops.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devops/armdevops",
 		},
 		{
 			NewFunc: armdevops.NewPipelinesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devops/armdevops",
 		},
 		{
 			NewFunc: armdevops.NewPipelineTemplateDefinitionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devops/armdevops",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armdevops())
 }

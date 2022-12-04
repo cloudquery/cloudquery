@@ -7,16 +7,24 @@ func Armconfluent() []*Resource {
 	resources := []*Resource{
 		{
 			NewFunc: armconfluent.NewMarketplaceAgreementsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confluent/armconfluent",
 		},
 		{
 			NewFunc: armconfluent.NewOrganizationClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confluent/armconfluent",
 		},
 		{
 			NewFunc: armconfluent.NewOrganizationOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confluent/armconfluent",
 		},
 		{
 			NewFunc: armconfluent.NewValidationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confluent/armconfluent",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armconfluent())
 }

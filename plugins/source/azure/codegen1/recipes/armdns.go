@@ -7,13 +7,20 @@ func Armdns() []*Resource {
 	resources := []*Resource{
 		{
 			NewFunc: armdns.NewRecordSetsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dns/armdns",
 		},
 		{
 			NewFunc: armdns.NewResourceReferenceClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dns/armdns",
 		},
 		{
 			NewFunc: armdns.NewZonesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dns/armdns",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armdns())
 }

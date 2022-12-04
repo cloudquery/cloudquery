@@ -7,10 +7,16 @@ func Armiotcentral() []*Resource {
 	resources := []*Resource{
 		{
 			NewFunc: armiotcentral.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iotcentral/armiotcentral",
 		},
 		{
 			NewFunc: armiotcentral.NewAppsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iotcentral/armiotcentral",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armiotcentral())
 }

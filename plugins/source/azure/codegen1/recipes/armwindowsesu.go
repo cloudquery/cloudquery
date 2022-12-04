@@ -7,10 +7,16 @@ func Armwindowsesu() []*Resource {
 	resources := []*Resource{
 		{
 			NewFunc: armwindowsesu.NewMultipleActivationKeysClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsesu/armwindowsesu",
 		},
 		{
 			NewFunc: armwindowsesu.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsesu/armwindowsesu",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armwindowsesu())
 }

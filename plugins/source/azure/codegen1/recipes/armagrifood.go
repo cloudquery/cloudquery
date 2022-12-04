@@ -6,26 +6,37 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/agrifood/armagrifo
 func Armagrifood() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armagrifood.NewFarmBeatsModelsClient,
+			NewFunc: armagrifood.NewPrivateEndpointConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/agrifood/armagrifood",
 		},
 		{
 			NewFunc: armagrifood.NewPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/agrifood/armagrifood",
 		},
 		{
 			NewFunc: armagrifood.NewExtensionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/agrifood/armagrifood",
 		},
 		{
 			NewFunc: armagrifood.NewFarmBeatsExtensionsClient,
-		},
-		{
-			NewFunc: armagrifood.NewLocationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/agrifood/armagrifood",
 		},
 		{
 			NewFunc: armagrifood.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/agrifood/armagrifood",
 		},
 		{
-			NewFunc: armagrifood.NewPrivateEndpointConnectionsClient,
+			NewFunc: armagrifood.NewFarmBeatsModelsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/agrifood/armagrifood",
+		},
+		{
+			NewFunc: armagrifood.NewLocationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/agrifood/armagrifood",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armagrifood())
 }

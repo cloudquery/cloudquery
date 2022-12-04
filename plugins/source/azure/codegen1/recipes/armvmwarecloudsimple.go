@@ -7,37 +7,52 @@ func Armvmwarecloudsimple() []*Resource {
 	resources := []*Resource{
 		{
 			NewFunc: armvmwarecloudsimple.NewDedicatedCloudServicesClient,
-		},
-		{
-			NewFunc: armvmwarecloudsimple.NewResourcePoolsClient,
-		},
-		{
-			NewFunc: armvmwarecloudsimple.NewCustomizationPoliciesClient,
-		},
-		{
-			NewFunc: armvmwarecloudsimple.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/vmwarecloudsimple/armvmwarecloudsimple",
 		},
 		{
 			NewFunc: armvmwarecloudsimple.NewVirtualNetworksClient,
-		},
-		{
-			NewFunc: armvmwarecloudsimple.NewPrivateCloudsClient,
-		},
-		{
-			NewFunc: armvmwarecloudsimple.NewVirtualMachineTemplatesClient,
-		},
-		{
-			NewFunc: armvmwarecloudsimple.NewDedicatedCloudNodesClient,
-		},
-		{
-			NewFunc: armvmwarecloudsimple.NewSKUsAvailabilityClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/vmwarecloudsimple/armvmwarecloudsimple",
 		},
 		{
 			NewFunc: armvmwarecloudsimple.NewUsagesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/vmwarecloudsimple/armvmwarecloudsimple",
+		},
+		{
+			NewFunc: armvmwarecloudsimple.NewCustomizationPoliciesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/vmwarecloudsimple/armvmwarecloudsimple",
+		},
+		{
+			NewFunc: armvmwarecloudsimple.NewDedicatedCloudNodesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/vmwarecloudsimple/armvmwarecloudsimple",
+		},
+		{
+			NewFunc: armvmwarecloudsimple.NewResourcePoolsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/vmwarecloudsimple/armvmwarecloudsimple",
+		},
+		{
+			NewFunc: armvmwarecloudsimple.NewVirtualMachineTemplatesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/vmwarecloudsimple/armvmwarecloudsimple",
+		},
+		{
+			NewFunc: armvmwarecloudsimple.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/vmwarecloudsimple/armvmwarecloudsimple",
+		},
+		{
+			NewFunc: armvmwarecloudsimple.NewPrivateCloudsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/vmwarecloudsimple/armvmwarecloudsimple",
+		},
+		{
+			NewFunc: armvmwarecloudsimple.NewSKUsAvailabilityClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/vmwarecloudsimple/armvmwarecloudsimple",
 		},
 		{
 			NewFunc: armvmwarecloudsimple.NewVirtualMachinesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/vmwarecloudsimple/armvmwarecloudsimple",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armvmwarecloudsimple())
 }

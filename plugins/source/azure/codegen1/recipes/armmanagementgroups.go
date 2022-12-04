@@ -6,23 +6,33 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementgroups/a
 func Armmanagementgroups() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armmanagementgroups.NewHierarchySettingsClient,
-		},
-		{
 			NewFunc: armmanagementgroups.NewManagementGroupSubscriptionsClient,
-		},
-		{
-			NewFunc: armmanagementgroups.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementgroups/armmanagementgroups",
 		},
 		{
 			NewFunc: armmanagementgroups.NewAPIClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementgroups/armmanagementgroups",
 		},
 		{
-			NewFunc: armmanagementgroups.NewEntitiesClient,
+			NewFunc: armmanagementgroups.NewHierarchySettingsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementgroups/armmanagementgroups",
+		},
+		{
+			NewFunc: armmanagementgroups.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementgroups/armmanagementgroups",
 		},
 		{
 			NewFunc: armmanagementgroups.NewClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementgroups/armmanagementgroups",
+		},
+		{
+			NewFunc: armmanagementgroups.NewEntitiesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementgroups/armmanagementgroups",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armmanagementgroups())
 }

@@ -6,56 +6,77 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armapp
 func Armappplatform() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armappplatform.NewBuildServiceAgentPoolClient,
-		},
-		{
-			NewFunc: armappplatform.NewCustomDomainsClient,
-		},
-		{
-			NewFunc: armappplatform.NewAppsClient,
-		},
-		{
-			NewFunc: armappplatform.NewBuildpackBindingClient,
-		},
-		{
-			NewFunc: armappplatform.NewRuntimeVersionsClient,
-		},
-		{
-			NewFunc: armappplatform.NewBindingsClient,
-		},
-		{
-			NewFunc: armappplatform.NewBuildServiceBuilderClient,
-		},
-		{
-			NewFunc: armappplatform.NewConfigurationServicesClient,
-		},
-		{
-			NewFunc: armappplatform.NewBuildServiceClient,
-		},
-		{
 			NewFunc: armappplatform.NewDeploymentsClient,
-		},
-		{
-			NewFunc: armappplatform.NewMonitoringSettingsClient,
-		},
-		{
-			NewFunc: armappplatform.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform",
 		},
 		{
 			NewFunc: armappplatform.NewServiceRegistriesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform",
 		},
 		{
-			NewFunc: armappplatform.NewServicesClient,
+			NewFunc: armappplatform.NewAppsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform",
 		},
 		{
-			NewFunc: armappplatform.NewCertificatesClient,
-		},
-		{
-			NewFunc: armappplatform.NewConfigServersClient,
+			NewFunc: armappplatform.NewRuntimeVersionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform",
 		},
 		{
 			NewFunc: armappplatform.NewSKUsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform",
+		},
+		{
+			NewFunc: armappplatform.NewCertificatesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform",
+		},
+		{
+			NewFunc: armappplatform.NewBuildpackBindingClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform",
+		},
+		{
+			NewFunc: armappplatform.NewBuildServiceBuilderClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform",
+		},
+		{
+			NewFunc: armappplatform.NewConfigurationServicesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform",
+		},
+		{
+			NewFunc: armappplatform.NewBindingsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform",
+		},
+		{
+			NewFunc: armappplatform.NewBuildServiceClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform",
+		},
+		{
+			NewFunc: armappplatform.NewBuildServiceAgentPoolClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform",
+		},
+		{
+			NewFunc: armappplatform.NewConfigServersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform",
+		},
+		{
+			NewFunc: armappplatform.NewCustomDomainsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform",
+		},
+		{
+			NewFunc: armappplatform.NewMonitoringSettingsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform",
+		},
+		{
+			NewFunc: armappplatform.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform",
+		},
+		{
+			NewFunc: armappplatform.NewServicesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armappplatform())
 }

@@ -7,16 +7,24 @@ func Armdomainservices() []*Resource {
 	resources := []*Resource{
 		{
 			NewFunc: armdomainservices.NewClient,
-		},
-		{
-			NewFunc: armdomainservices.NewDomainServiceOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/domainservices/armdomainservices",
 		},
 		{
 			NewFunc: armdomainservices.NewOuContainerClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/domainservices/armdomainservices",
+		},
+		{
+			NewFunc: armdomainservices.NewDomainServiceOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/domainservices/armdomainservices",
 		},
 		{
 			NewFunc: armdomainservices.NewOuContainerOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/domainservices/armdomainservices",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armdomainservices())
 }

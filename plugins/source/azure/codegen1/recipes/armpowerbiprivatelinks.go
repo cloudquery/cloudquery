@@ -6,26 +6,37 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbiprivatelink
 func Armpowerbiprivatelinks() []*Resource {
 	resources := []*Resource{
 		{
+			NewFunc: armpowerbiprivatelinks.NewPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbiprivatelinks/armpowerbiprivatelinks",
+		},
+		{
 			NewFunc: armpowerbiprivatelinks.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbiprivatelinks/armpowerbiprivatelinks",
 		},
 		{
 			NewFunc: armpowerbiprivatelinks.NewPowerBIResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbiprivatelinks/armpowerbiprivatelinks",
 		},
 		{
 			NewFunc: armpowerbiprivatelinks.NewPrivateEndpointConnectionsClient,
-		},
-		{
-			NewFunc: armpowerbiprivatelinks.NewPrivateLinkResourcesClient,
-		},
-		{
-			NewFunc: armpowerbiprivatelinks.NewPrivateLinkServicesForPowerBIClient,
-		},
-		{
-			NewFunc: armpowerbiprivatelinks.NewPrivateLinkServiceResourceOperationResultsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbiprivatelinks/armpowerbiprivatelinks",
 		},
 		{
 			NewFunc: armpowerbiprivatelinks.NewPrivateLinkServicesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbiprivatelinks/armpowerbiprivatelinks",
+		},
+		{
+			NewFunc: armpowerbiprivatelinks.NewPrivateLinkServiceResourceOperationResultsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbiprivatelinks/armpowerbiprivatelinks",
+		},
+		{
+			NewFunc: armpowerbiprivatelinks.NewPrivateLinkServicesForPowerBIClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbiprivatelinks/armpowerbiprivatelinks",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armpowerbiprivatelinks())
 }

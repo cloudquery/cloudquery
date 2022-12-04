@@ -6,26 +6,37 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/arms
 func Armservicefabric() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armservicefabric.NewClusterVersionsClient,
-		},
-		{
-			NewFunc: armservicefabric.NewOperationsClient,
-		},
-		{
 			NewFunc: armservicefabric.NewApplicationsClient,
-		},
-		{
-			NewFunc: armservicefabric.NewClustersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/armservicefabric",
 		},
 		{
 			NewFunc: armservicefabric.NewApplicationTypesClient,
-		},
-		{
-			NewFunc: armservicefabric.NewServicesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/armservicefabric",
 		},
 		{
 			NewFunc: armservicefabric.NewApplicationTypeVersionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/armservicefabric",
+		},
+		{
+			NewFunc: armservicefabric.NewClustersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/armservicefabric",
+		},
+		{
+			NewFunc: armservicefabric.NewClusterVersionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/armservicefabric",
+		},
+		{
+			NewFunc: armservicefabric.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/armservicefabric",
+		},
+		{
+			NewFunc: armservicefabric.NewServicesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/armservicefabric",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armservicefabric())
 }

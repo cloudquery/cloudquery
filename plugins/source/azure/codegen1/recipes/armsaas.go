@@ -6,23 +6,33 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/saas/armsaas"
 func Armsaas() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armsaas.NewResourcesClient,
-		},
-		{
-			NewFunc: armsaas.NewSubscriptionLevelClient,
-		},
-		{
-			NewFunc: armsaas.NewOperationsClient,
-		},
-		{
-			NewFunc: armsaas.NewApplicationsClient,
-		},
-		{
 			NewFunc: armsaas.NewClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/saas/armsaas",
+		},
+		{
+			NewFunc: armsaas.NewResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/saas/armsaas",
 		},
 		{
 			NewFunc: armsaas.NewOperationClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/saas/armsaas",
+		},
+		{
+			NewFunc: armsaas.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/saas/armsaas",
+		},
+		{
+			NewFunc: armsaas.NewSubscriptionLevelClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/saas/armsaas",
+		},
+		{
+			NewFunc: armsaas.NewApplicationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/saas/armsaas",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armsaas())
 }

@@ -6,86 +6,117 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logic/armlogic"
 func Armlogic() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armlogic.NewIntegrationAccountPartnersClient,
-		},
-		{
-			NewFunc: armlogic.NewIntegrationServiceEnvironmentSKUsClient,
-		},
-		{
-			NewFunc: armlogic.NewWorkflowRunActionScopeRepetitionsClient,
-		},
-		{
-			NewFunc: armlogic.NewWorkflowsClient,
-		},
-		{
-			NewFunc: armlogic.NewIntegrationAccountAgreementsClient,
-		},
-		{
-			NewFunc: armlogic.NewIntegrationServiceEnvironmentManagedAPIOperationsClient,
-		},
-		{
-			NewFunc: armlogic.NewOperationsClient,
-		},
-		{
-			NewFunc: armlogic.NewWorkflowRunActionRepetitionsRequestHistoriesClient,
-		},
-		{
-			NewFunc: armlogic.NewWorkflowVersionTriggersClient,
-		},
-		{
-			NewFunc: armlogic.NewIntegrationAccountsClient,
-		},
-		{
-			NewFunc: armlogic.NewIntegrationServiceEnvironmentNetworkHealthClient,
-		},
-		{
 			NewFunc: armlogic.NewWorkflowRunActionRequestHistoriesClient,
-		},
-		{
-			NewFunc: armlogic.NewWorkflowRunActionsClient,
-		},
-		{
-			NewFunc: armlogic.NewWorkflowRunActionRepetitionsClient,
-		},
-		{
-			NewFunc: armlogic.NewWorkflowTriggersClient,
-		},
-		{
-			NewFunc: armlogic.NewIntegrationAccountBatchConfigurationsClient,
-		},
-		{
-			NewFunc: armlogic.NewIntegrationAccountSchemasClient,
-		},
-		{
-			NewFunc: armlogic.NewIntegrationServiceEnvironmentsClient,
-		},
-		{
-			NewFunc: armlogic.NewIntegrationAccountMapsClient,
-		},
-		{
-			NewFunc: armlogic.NewIntegrationServiceEnvironmentManagedApisClient,
-		},
-		{
-			NewFunc: armlogic.NewWorkflowVersionsClient,
-		},
-		{
-			NewFunc: armlogic.NewWorkflowRunOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logic/armlogic",
 		},
 		{
 			NewFunc: armlogic.NewWorkflowRunsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logic/armlogic",
 		},
 		{
-			NewFunc: armlogic.NewWorkflowTriggerHistoriesClient,
+			NewFunc: armlogic.NewWorkflowVersionTriggersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logic/armlogic",
 		},
 		{
-			NewFunc: armlogic.NewIntegrationAccountAssembliesClient,
+			NewFunc: armlogic.NewIntegrationServiceEnvironmentSKUsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logic/armlogic",
 		},
 		{
-			NewFunc: armlogic.NewIntegrationAccountCertificatesClient,
+			NewFunc: armlogic.NewWorkflowRunActionRepetitionsRequestHistoriesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logic/armlogic",
+		},
+		{
+			NewFunc: armlogic.NewWorkflowTriggersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logic/armlogic",
+		},
+		{
+			NewFunc: armlogic.NewIntegrationAccountMapsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logic/armlogic",
+		},
+		{
+			NewFunc: armlogic.NewIntegrationServiceEnvironmentsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logic/armlogic",
+		},
+		{
+			NewFunc: armlogic.NewIntegrationServiceEnvironmentManagedAPIOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logic/armlogic",
 		},
 		{
 			NewFunc: armlogic.NewIntegrationAccountSessionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logic/armlogic",
+		},
+		{
+			NewFunc: armlogic.NewIntegrationServiceEnvironmentNetworkHealthClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logic/armlogic",
+		},
+		{
+			NewFunc: armlogic.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logic/armlogic",
+		},
+		{
+			NewFunc: armlogic.NewIntegrationAccountAgreementsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logic/armlogic",
+		},
+		{
+			NewFunc: armlogic.NewIntegrationAccountAssembliesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logic/armlogic",
+		},
+		{
+			NewFunc: armlogic.NewWorkflowRunActionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logic/armlogic",
+		},
+		{
+			NewFunc: armlogic.NewWorkflowRunOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logic/armlogic",
+		},
+		{
+			NewFunc: armlogic.NewIntegrationAccountsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logic/armlogic",
+		},
+		{
+			NewFunc: armlogic.NewIntegrationAccountSchemasClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logic/armlogic",
+		},
+		{
+			NewFunc: armlogic.NewWorkflowVersionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logic/armlogic",
+		},
+		{
+			NewFunc: armlogic.NewIntegrationServiceEnvironmentManagedApisClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logic/armlogic",
+		},
+		{
+			NewFunc: armlogic.NewWorkflowTriggerHistoriesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logic/armlogic",
+		},
+		{
+			NewFunc: armlogic.NewWorkflowsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logic/armlogic",
+		},
+		{
+			NewFunc: armlogic.NewIntegrationAccountBatchConfigurationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logic/armlogic",
+		},
+		{
+			NewFunc: armlogic.NewIntegrationAccountPartnersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logic/armlogic",
+		},
+		{
+			NewFunc: armlogic.NewWorkflowRunActionRepetitionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logic/armlogic",
+		},
+		{
+			NewFunc: armlogic.NewWorkflowRunActionScopeRepetitionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logic/armlogic",
+		},
+		{
+			NewFunc: armlogic.NewIntegrationAccountCertificatesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logic/armlogic",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armlogic())
 }

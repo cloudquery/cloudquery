@@ -7,10 +7,16 @@ func Armcommunication() []*Resource {
 	resources := []*Resource{
 		{
 			NewFunc: armcommunication.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/communication/armcommunication",
 		},
 		{
 			NewFunc: armcommunication.NewServiceClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/communication/armcommunication",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armcommunication())
 }

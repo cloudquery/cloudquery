@@ -6,20 +6,29 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/delegatednetwork/a
 func Armdelegatednetwork() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armdelegatednetwork.NewControllerClient,
-		},
-		{
-			NewFunc: armdelegatednetwork.NewOperationsClient,
-		},
-		{
-			NewFunc: armdelegatednetwork.NewClient,
+			NewFunc: armdelegatednetwork.NewOrchestratorInstanceServiceClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/delegatednetwork/armdelegatednetwork",
 		},
 		{
 			NewFunc: armdelegatednetwork.NewDelegatedSubnetServiceClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/delegatednetwork/armdelegatednetwork",
 		},
 		{
-			NewFunc: armdelegatednetwork.NewOrchestratorInstanceServiceClient,
+			NewFunc: armdelegatednetwork.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/delegatednetwork/armdelegatednetwork",
+		},
+		{
+			NewFunc: armdelegatednetwork.NewClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/delegatednetwork/armdelegatednetwork",
+		},
+		{
+			NewFunc: armdelegatednetwork.NewControllerClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/delegatednetwork/armdelegatednetwork",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armdelegatednetwork())
 }

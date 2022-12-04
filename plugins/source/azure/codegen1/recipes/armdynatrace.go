@@ -6,17 +6,25 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dynatrace/armdynat
 func Armdynatrace() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armdynatrace.NewTagRulesClient,
-		},
-		{
-			NewFunc: armdynatrace.NewMonitorsClient,
-		},
-		{
 			NewFunc: armdynatrace.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dynatrace/armdynatrace",
+		},
+		{
+			NewFunc: armdynatrace.NewTagRulesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dynatrace/armdynatrace",
 		},
 		{
 			NewFunc: armdynatrace.NewSingleSignOnClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dynatrace/armdynatrace",
+		},
+		{
+			NewFunc: armdynatrace.NewMonitorsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dynatrace/armdynatrace",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armdynatrace())
 }

@@ -6,44 +6,61 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto"
 func Armkusto() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armkusto.NewDataConnectionsClient,
-		},
-		{
-			NewFunc: armkusto.NewOperationsResultsClient,
-		},
-		{
 			NewFunc: armkusto.NewPrivateEndpointConnectionsClient,
-		},
-		{
-			NewFunc: armkusto.NewClusterPrincipalAssignmentsClient,
-		},
-		{
-			NewFunc: armkusto.NewClustersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto",
 		},
 		{
 			NewFunc: armkusto.NewDatabasePrincipalAssignmentsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto",
 		},
 		{
-			NewFunc: armkusto.NewManagedPrivateEndpointsClient,
+			NewFunc: armkusto.NewOperationsResultsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto",
 		},
 		{
 			NewFunc: armkusto.NewOperationsResultsLocationClient,
-		},
-		{
-			NewFunc: armkusto.NewAttachedDatabaseConfigurationsClient,
-		},
-		{
-			NewFunc: armkusto.NewDatabasesClient,
-		},
-		{
-			NewFunc: armkusto.NewOperationsClient,
-		},
-		{
-			NewFunc: armkusto.NewPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto",
 		},
 		{
 			NewFunc: armkusto.NewScriptsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto",
+		},
+		{
+			NewFunc: armkusto.NewClusterPrincipalAssignmentsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto",
+		},
+		{
+			NewFunc: armkusto.NewDataConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto",
+		},
+		{
+			NewFunc: armkusto.NewDatabasesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto",
+		},
+		{
+			NewFunc: armkusto.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto",
+		},
+		{
+			NewFunc: armkusto.NewPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto",
+		},
+		{
+			NewFunc: armkusto.NewManagedPrivateEndpointsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto",
+		},
+		{
+			NewFunc: armkusto.NewAttachedDatabaseConfigurationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto",
+		},
+		{
+			NewFunc: armkusto.NewClustersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armkusto())
 }

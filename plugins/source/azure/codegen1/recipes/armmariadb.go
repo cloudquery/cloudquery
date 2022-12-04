@@ -6,77 +6,105 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb
 func Armmariadb() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armmariadb.NewLocationBasedRecommendedActionSessionsResultClient,
-		},
-		{
-			NewFunc: armmariadb.NewManagementClient,
-		},
-		{
-			NewFunc: armmariadb.NewQueryTextsClient,
-		},
-		{
-			NewFunc: armmariadb.NewCheckNameAvailabilityClient,
-		},
-		{
-			NewFunc: armmariadb.NewConfigurationsClient,
-		},
-		{
-			NewFunc: armmariadb.NewLogFilesClient,
-		},
-		{
-			NewFunc: armmariadb.NewServerBasedPerformanceTierClient,
-		},
-		{
-			NewFunc: armmariadb.NewAdvisorsClient,
-		},
-		{
-			NewFunc: armmariadb.NewPrivateEndpointConnectionsClient,
-		},
-		{
-			NewFunc: armmariadb.NewRecommendedActionsClient,
-		},
-		{
-			NewFunc: armmariadb.NewLocationBasedPerformanceTierClient,
+			NewFunc: armmariadb.NewServerSecurityAlertPoliciesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb",
 		},
 		{
 			NewFunc: armmariadb.NewFirewallRulesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb",
 		},
 		{
-			NewFunc: armmariadb.NewLocationBasedRecommendedActionSessionsOperationStatusClient,
+			NewFunc: armmariadb.NewLocationBasedPerformanceTierClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb",
 		},
 		{
-			NewFunc: armmariadb.NewOperationsClient,
+			NewFunc: armmariadb.NewPrivateEndpointConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb",
 		},
 		{
-			NewFunc: armmariadb.NewPrivateLinkResourcesClient,
+			NewFunc: armmariadb.NewRecommendedActionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb",
 		},
 		{
 			NewFunc: armmariadb.NewReplicasClient,
-		},
-		{
-			NewFunc: armmariadb.NewServersClient,
-		},
-		{
-			NewFunc: armmariadb.NewServerSecurityAlertPoliciesClient,
-		},
-		{
-			NewFunc: armmariadb.NewDatabasesClient,
-		},
-		{
-			NewFunc: armmariadb.NewServerParametersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb",
 		},
 		{
 			NewFunc: armmariadb.NewWaitStatisticsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb",
 		},
 		{
-			NewFunc: armmariadb.NewRecoverableServersClient,
+			NewFunc: armmariadb.NewCheckNameAvailabilityClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb",
+		},
+		{
+			NewFunc: armmariadb.NewConfigurationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb",
+		},
+		{
+			NewFunc: armmariadb.NewDatabasesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb",
 		},
 		{
 			NewFunc: armmariadb.NewTopQueryStatisticsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb",
+		},
+		{
+			NewFunc: armmariadb.NewServerBasedPerformanceTierClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb",
+		},
+		{
+			NewFunc: armmariadb.NewAdvisorsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb",
+		},
+		{
+			NewFunc: armmariadb.NewLogFilesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb",
+		},
+		{
+			NewFunc: armmariadb.NewManagementClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb",
+		},
+		{
+			NewFunc: armmariadb.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb",
+		},
+		{
+			NewFunc: armmariadb.NewRecoverableServersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb",
+		},
+		{
+			NewFunc: armmariadb.NewLocationBasedRecommendedActionSessionsOperationStatusClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb",
+		},
+		{
+			NewFunc: armmariadb.NewLocationBasedRecommendedActionSessionsResultClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb",
+		},
+		{
+			NewFunc: armmariadb.NewQueryTextsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb",
+		},
+		{
+			NewFunc: armmariadb.NewServersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb",
+		},
+		{
+			NewFunc: armmariadb.NewPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb",
+		},
+		{
+			NewFunc: armmariadb.NewServerParametersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb",
 		},
 		{
 			NewFunc: armmariadb.NewVirtualNetworkRulesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armmariadb())
 }

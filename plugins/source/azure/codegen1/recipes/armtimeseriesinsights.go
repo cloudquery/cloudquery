@@ -6,20 +6,29 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/timeseriesinsights
 func Armtimeseriesinsights() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armtimeseriesinsights.NewEnvironmentsClient,
-		},
-		{
 			NewFunc: armtimeseriesinsights.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/timeseriesinsights/armtimeseriesinsights",
 		},
 		{
 			NewFunc: armtimeseriesinsights.NewReferenceDataSetsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/timeseriesinsights/armtimeseriesinsights",
 		},
 		{
 			NewFunc: armtimeseriesinsights.NewAccessPoliciesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/timeseriesinsights/armtimeseriesinsights",
 		},
 		{
 			NewFunc: armtimeseriesinsights.NewEventSourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/timeseriesinsights/armtimeseriesinsights",
+		},
+		{
+			NewFunc: armtimeseriesinsights.NewEnvironmentsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/timeseriesinsights/armtimeseriesinsights",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armtimeseriesinsights())
 }

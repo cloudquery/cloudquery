@@ -6,20 +6,29 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/engagementfabric/a
 func Armengagementfabric() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armengagementfabric.NewSKUsClient,
-		},
-		{
-			NewFunc: armengagementfabric.NewAccountsClient,
-		},
-		{
-			NewFunc: armengagementfabric.NewChannelsClient,
+			NewFunc: armengagementfabric.NewClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/engagementfabric/armengagementfabric",
 		},
 		{
 			NewFunc: armengagementfabric.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/engagementfabric/armengagementfabric",
 		},
 		{
-			NewFunc: armengagementfabric.NewClient,
+			NewFunc: armengagementfabric.NewSKUsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/engagementfabric/armengagementfabric",
+		},
+		{
+			NewFunc: armengagementfabric.NewAccountsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/engagementfabric/armengagementfabric",
+		},
+		{
+			NewFunc: armengagementfabric.NewChannelsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/engagementfabric/armengagementfabric",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armengagementfabric())
 }

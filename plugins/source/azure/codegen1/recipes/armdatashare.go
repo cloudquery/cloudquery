@@ -6,44 +6,61 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datashare/armdatas
 func Armdatashare() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armdatashare.NewEmailRegistrationsClient,
-		},
-		{
-			NewFunc: armdatashare.NewInvitationsClient,
-		},
-		{
-			NewFunc: armdatashare.NewSharesClient,
-		},
-		{
-			NewFunc: armdatashare.NewConsumerInvitationsClient,
-		},
-		{
-			NewFunc: armdatashare.NewAccountsClient,
-		},
-		{
-			NewFunc: armdatashare.NewShareSubscriptionsClient,
+			NewFunc: armdatashare.NewSynchronizationSettingsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datashare/armdatashare",
 		},
 		{
 			NewFunc: armdatashare.NewTriggersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datashare/armdatashare",
 		},
 		{
-			NewFunc: armdatashare.NewConsumerSourceDataSetsClient,
+			NewFunc: armdatashare.NewConsumerInvitationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datashare/armdatashare",
 		},
 		{
-			NewFunc: armdatashare.NewDataSetsClient,
+			NewFunc: armdatashare.NewEmailRegistrationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datashare/armdatashare",
 		},
 		{
 			NewFunc: armdatashare.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datashare/armdatashare",
 		},
 		{
 			NewFunc: armdatashare.NewProviderShareSubscriptionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datashare/armdatashare",
 		},
 		{
-			NewFunc: armdatashare.NewSynchronizationSettingsClient,
+			NewFunc: armdatashare.NewSharesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datashare/armdatashare",
 		},
 		{
 			NewFunc: armdatashare.NewDataSetMappingsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datashare/armdatashare",
+		},
+		{
+			NewFunc: armdatashare.NewAccountsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datashare/armdatashare",
+		},
+		{
+			NewFunc: armdatashare.NewDataSetsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datashare/armdatashare",
+		},
+		{
+			NewFunc: armdatashare.NewConsumerSourceDataSetsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datashare/armdatashare",
+		},
+		{
+			NewFunc: armdatashare.NewInvitationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datashare/armdatashare",
+		},
+		{
+			NewFunc: armdatashare.NewShareSubscriptionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datashare/armdatashare",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armdatashare())
 }

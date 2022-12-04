@@ -6,20 +6,29 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appconfiguration/a
 func Armappconfiguration() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armappconfiguration.NewConfigurationStoresClient,
+			NewFunc: armappconfiguration.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appconfiguration/armappconfiguration",
 		},
 		{
 			NewFunc: armappconfiguration.NewKeyValuesClient,
-		},
-		{
-			NewFunc: armappconfiguration.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appconfiguration/armappconfiguration",
 		},
 		{
 			NewFunc: armappconfiguration.NewPrivateEndpointConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appconfiguration/armappconfiguration",
 		},
 		{
 			NewFunc: armappconfiguration.NewPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appconfiguration/armappconfiguration",
+		},
+		{
+			NewFunc: armappconfiguration.NewConfigurationStoresClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appconfiguration/armappconfiguration",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armappconfiguration())
 }

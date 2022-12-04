@@ -7,10 +7,16 @@ func Armredhatopenshift() []*Resource {
 	resources := []*Resource{
 		{
 			NewFunc: armredhatopenshift.NewOpenShiftClustersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redhatopenshift/armredhatopenshift",
 		},
 		{
 			NewFunc: armredhatopenshift.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redhatopenshift/armredhatopenshift",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armredhatopenshift())
 }

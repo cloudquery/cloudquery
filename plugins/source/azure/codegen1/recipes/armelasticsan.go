@@ -7,19 +7,28 @@ func Armelasticsan() []*Resource {
 	resources := []*Resource{
 		{
 			NewFunc: armelasticsan.NewElasticSansClient,
-		},
-		{
-			NewFunc: armelasticsan.NewSKUsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelasticsan",
 		},
 		{
 			NewFunc: armelasticsan.NewVolumeGroupsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelasticsan",
 		},
 		{
 			NewFunc: armelasticsan.NewVolumesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelasticsan",
 		},
 		{
 			NewFunc: armelasticsan.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelasticsan",
+		},
+		{
+			NewFunc: armelasticsan.NewSKUsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelasticsan",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armelasticsan())
 }

@@ -6,26 +6,37 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armh
 func Armhybridcompute() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armhybridcompute.NewPrivateLinkScopesClient,
-		},
-		{
-			NewFunc: armhybridcompute.NewManagementClient,
+			NewFunc: armhybridcompute.NewMachineExtensionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute",
 		},
 		{
 			NewFunc: armhybridcompute.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute",
 		},
 		{
 			NewFunc: armhybridcompute.NewPrivateEndpointConnectionsClient,
-		},
-		{
-			NewFunc: armhybridcompute.NewPrivateLinkResourcesClient,
-		},
-		{
-			NewFunc: armhybridcompute.NewMachineExtensionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute",
 		},
 		{
 			NewFunc: armhybridcompute.NewMachinesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute",
+		},
+		{
+			NewFunc: armhybridcompute.NewManagementClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute",
+		},
+		{
+			NewFunc: armhybridcompute.NewPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute",
+		},
+		{
+			NewFunc: armhybridcompute.NewPrivateLinkScopesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armhybridcompute())
 }

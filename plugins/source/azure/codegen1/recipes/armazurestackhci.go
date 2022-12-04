@@ -6,17 +6,25 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/arma
 func Armazurestackhci() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armazurestackhci.NewArcSettingsClient,
-		},
-		{
-			NewFunc: armazurestackhci.NewOperationsClient,
-		},
-		{
 			NewFunc: armazurestackhci.NewClustersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci",
 		},
 		{
 			NewFunc: armazurestackhci.NewExtensionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci",
+		},
+		{
+			NewFunc: armazurestackhci.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci",
+		},
+		{
+			NewFunc: armazurestackhci.NewArcSettingsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armazurestackhci())
 }

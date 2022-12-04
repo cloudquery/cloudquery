@@ -6,47 +6,65 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp"
 func Armnetapp() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armnetapp.NewBackupsClient,
-		},
-		{
-			NewFunc: armnetapp.NewResourceClient,
+			NewFunc: armnetapp.NewSnapshotsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp",
 		},
 		{
 			NewFunc: armnetapp.NewVaultsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp",
 		},
 		{
 			NewFunc: armnetapp.NewBackupPoliciesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp",
 		},
 		{
-			NewFunc: armnetapp.NewResourceQuotaLimitsClient,
-		},
-		{
-			NewFunc: armnetapp.NewSubvolumesClient,
-		},
-		{
-			NewFunc: armnetapp.NewVolumeGroupsClient,
-		},
-		{
-			NewFunc: armnetapp.NewVolumesClient,
-		},
-		{
-			NewFunc: armnetapp.NewAccountBackupsClient,
+			NewFunc: armnetapp.NewBackupsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp",
 		},
 		{
 			NewFunc: armnetapp.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp",
 		},
 		{
-			NewFunc: armnetapp.NewPoolsClient,
+			NewFunc: armnetapp.NewVolumesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp",
 		},
 		{
-			NewFunc: armnetapp.NewSnapshotsClient,
-		},
-		{
-			NewFunc: armnetapp.NewAccountsClient,
+			NewFunc: armnetapp.NewAccountBackupsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp",
 		},
 		{
 			NewFunc: armnetapp.NewSnapshotPoliciesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp",
+		},
+		{
+			NewFunc: armnetapp.NewAccountsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp",
+		},
+		{
+			NewFunc: armnetapp.NewPoolsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp",
+		},
+		{
+			NewFunc: armnetapp.NewResourceClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp",
+		},
+		{
+			NewFunc: armnetapp.NewResourceQuotaLimitsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp",
+		},
+		{
+			NewFunc: armnetapp.NewSubvolumesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp",
+		},
+		{
+			NewFunc: armnetapp.NewVolumeGroupsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armnetapp())
 }

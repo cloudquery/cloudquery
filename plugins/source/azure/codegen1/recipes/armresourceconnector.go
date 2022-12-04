@@ -7,7 +7,12 @@ func Armresourceconnector() []*Resource {
 	resources := []*Resource{
 		{
 			NewFunc: armresourceconnector.NewAppliancesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourceconnector/armresourceconnector",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armresourceconnector())
 }

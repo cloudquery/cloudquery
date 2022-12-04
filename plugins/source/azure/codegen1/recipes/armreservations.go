@@ -7,34 +7,48 @@ func Armreservations() []*Resource {
 	resources := []*Resource{
 		{
 			NewFunc: armreservations.NewCalculateRefundClient,
-		},
-		{
-			NewFunc: armreservations.NewCalculateExchangeClient,
-		},
-		{
-			NewFunc: armreservations.NewOperationClient,
-		},
-		{
-			NewFunc: armreservations.NewReturnClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations",
 		},
 		{
 			NewFunc: armreservations.NewQuotaClient,
-		},
-		{
-			NewFunc: armreservations.NewReservationClient,
-		},
-		{
-			NewFunc: armreservations.NewAzureReservationAPIClient,
-		},
-		{
-			NewFunc: armreservations.NewExchangeClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations",
 		},
 		{
 			NewFunc: armreservations.NewQuotaRequestStatusClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations",
+		},
+		{
+			NewFunc: armreservations.NewAzureReservationAPIClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations",
 		},
 		{
 			NewFunc: armreservations.NewReservationOrderClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations",
+		},
+		{
+			NewFunc: armreservations.NewReturnClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations",
+		},
+		{
+			NewFunc: armreservations.NewExchangeClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations",
+		},
+		{
+			NewFunc: armreservations.NewCalculateExchangeClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations",
+		},
+		{
+			NewFunc: armreservations.NewReservationClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations",
+		},
+		{
+			NewFunc: armreservations.NewOperationClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armreservations())
 }

@@ -6,50 +6,69 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/testbase/armtestba
 func Armtestbase() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armtestbase.NewTestTypesClient,
-		},
-		{
-			NewFunc: armtestbase.NewAccountsClient,
-		},
-		{
-			NewFunc: armtestbase.NewAnalysisResultsClient,
-		},
-		{
-			NewFunc: armtestbase.NewEmailEventsClient,
-		},
-		{
-			NewFunc: armtestbase.NewPackagesClient,
-		},
-		{
-			NewFunc: armtestbase.NewSKUsClient,
-		},
-		{
-			NewFunc: armtestbase.NewUsageClient,
-		},
-		{
 			NewFunc: armtestbase.NewAvailableOSClient,
-		},
-		{
-			NewFunc: armtestbase.NewCustomerEventsClient,
-		},
-		{
-			NewFunc: armtestbase.NewTestSummariesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/testbase/armtestbase",
 		},
 		{
 			NewFunc: armtestbase.NewFavoriteProcessesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/testbase/armtestbase",
 		},
 		{
 			NewFunc: armtestbase.NewFlightingRingsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/testbase/armtestbase",
+		},
+		{
+			NewFunc: armtestbase.NewAccountsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/testbase/armtestbase",
 		},
 		{
 			NewFunc: armtestbase.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/testbase/armtestbase",
+		},
+		{
+			NewFunc: armtestbase.NewTestSummariesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/testbase/armtestbase",
+		},
+		{
+			NewFunc: armtestbase.NewTestTypesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/testbase/armtestbase",
+		},
+		{
+			NewFunc: armtestbase.NewUsageClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/testbase/armtestbase",
+		},
+		{
+			NewFunc: armtestbase.NewAnalysisResultsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/testbase/armtestbase",
+		},
+		{
+			NewFunc: armtestbase.NewEmailEventsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/testbase/armtestbase",
 		},
 		{
 			NewFunc: armtestbase.NewOSUpdatesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/testbase/armtestbase",
+		},
+		{
+			NewFunc: armtestbase.NewPackagesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/testbase/armtestbase",
+		},
+		{
+			NewFunc: armtestbase.NewCustomerEventsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/testbase/armtestbase",
 		},
 		{
 			NewFunc: armtestbase.NewTestResultsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/testbase/armtestbase",
+		},
+		{
+			NewFunc: armtestbase.NewSKUsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/testbase/armtestbase",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armtestbase())
 }

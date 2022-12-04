@@ -6,26 +6,37 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcontainerser
 func Armhybridcontainerservice() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armhybridcontainerservice.NewHybridIdentityMetadataClient,
-		},
-		{
-			NewFunc: armhybridcontainerservice.NewStorageSpacesClient,
-		},
-		{
-			NewFunc: armhybridcontainerservice.NewVirtualNetworksClient,
-		},
-		{
 			NewFunc: armhybridcontainerservice.NewAgentPoolClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcontainerservice/armhybridcontainerservice",
 		},
 		{
 			NewFunc: armhybridcontainerservice.NewClient,
-		},
-		{
-			NewFunc: armhybridcontainerservice.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcontainerservice/armhybridcontainerservice",
 		},
 		{
 			NewFunc: armhybridcontainerservice.NewProvisionedClustersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcontainerservice/armhybridcontainerservice",
+		},
+		{
+			NewFunc: armhybridcontainerservice.NewHybridIdentityMetadataClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcontainerservice/armhybridcontainerservice",
+		},
+		{
+			NewFunc: armhybridcontainerservice.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcontainerservice/armhybridcontainerservice",
+		},
+		{
+			NewFunc: armhybridcontainerservice.NewStorageSpacesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcontainerservice/armhybridcontainerservice",
+		},
+		{
+			NewFunc: armhybridcontainerservice.NewVirtualNetworksClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcontainerservice/armhybridcontainerservice",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armhybridcontainerservice())
 }

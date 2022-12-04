@@ -6,11 +6,17 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/commerce/armcommer
 func Armcommerce() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armcommerce.NewRateCardClient,
+			NewFunc: armcommerce.NewUsageAggregatesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/commerce/armcommerce",
 		},
 		{
-			NewFunc: armcommerce.NewUsageAggregatesClient,
+			NewFunc: armcommerce.NewRateCardClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/commerce/armcommerce",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armcommerce())
 }

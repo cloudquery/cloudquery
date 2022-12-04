@@ -6,29 +6,41 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armd
 func Armdatamigration() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armdatamigration.NewServicesClient,
-		},
-		{
-			NewFunc: armdatamigration.NewUsagesClient,
-		},
-		{
-			NewFunc: armdatamigration.NewResourceSKUsClient,
+			NewFunc: armdatamigration.NewProjectsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration",
 		},
 		{
 			NewFunc: armdatamigration.NewServiceTasksClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration",
 		},
 		{
-			NewFunc: armdatamigration.NewFilesClient,
-		},
-		{
-			NewFunc: armdatamigration.NewProjectsClient,
+			NewFunc: armdatamigration.NewResourceSKUsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration",
 		},
 		{
 			NewFunc: armdatamigration.NewTasksClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration",
+		},
+		{
+			NewFunc: armdatamigration.NewUsagesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration",
+		},
+		{
+			NewFunc: armdatamigration.NewFilesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration",
 		},
 		{
 			NewFunc: armdatamigration.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration",
+		},
+		{
+			NewFunc: armdatamigration.NewServicesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armdatamigration())
 }

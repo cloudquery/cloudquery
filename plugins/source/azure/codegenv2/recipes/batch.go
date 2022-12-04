@@ -13,15 +13,6 @@ func BatchResources() []*Resource {
 			NewFunc: armbatch.NewAccountClient,
 			OutputField: "Value",
 		},
-		// {
-		// 	SubService: "applications",
-		// 	Struct: &armbatch.Application{},
-		// 	ResponseStruct: &armbatch.ApplicationClientListResponse{},
-		// 	Client: &armbatch.ApplicationClient{},
-		// 	ListFunc: (&armbatch.ApplicationClient{}).NewListPager,
-		// 	NewFunc: armbatch.NewApplicationClient,
-		// 	OutputField: "Value",
-		// },
 	}
 
 	for _, r := range resources {

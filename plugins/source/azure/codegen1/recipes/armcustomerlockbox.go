@@ -7,16 +7,24 @@ func Armcustomerlockbox() []*Resource {
 	resources := []*Resource{
 		{
 			NewFunc: armcustomerlockbox.NewGetClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerlockbox/armcustomerlockbox",
 		},
 		{
 			NewFunc: armcustomerlockbox.NewOperationsClient,
-		},
-		{
-			NewFunc: armcustomerlockbox.NewPostClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerlockbox/armcustomerlockbox",
 		},
 		{
 			NewFunc: armcustomerlockbox.NewRequestsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerlockbox/armcustomerlockbox",
+		},
+		{
+			NewFunc: armcustomerlockbox.NewPostClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerlockbox/armcustomerlockbox",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armcustomerlockbox())
 }

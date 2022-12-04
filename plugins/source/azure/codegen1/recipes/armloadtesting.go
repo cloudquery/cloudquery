@@ -6,14 +6,21 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/loadtesting/armloa
 func Armloadtesting() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armloadtesting.NewOperationsClient,
+			NewFunc: armloadtesting.NewLoadTestsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/loadtesting/armloadtesting",
 		},
 		{
-			NewFunc: armloadtesting.NewLoadTestsClient,
+			NewFunc: armloadtesting.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/loadtesting/armloadtesting",
 		},
 		{
 			NewFunc: armloadtesting.NewQuotasClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/loadtesting/armloadtesting",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armloadtesting())
 }

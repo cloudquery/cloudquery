@@ -6,17 +6,25 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quantum/armquantum
 func Armquantum() []*Resource {
 	resources := []*Resource{
 		{
+			NewFunc: armquantum.NewWorkspacesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quantum/armquantum",
+		},
+		{
 			NewFunc: armquantum.NewOfferingsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quantum/armquantum",
 		},
 		{
 			NewFunc: armquantum.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quantum/armquantum",
 		},
 		{
 			NewFunc: armquantum.NewWorkspaceClient,
-		},
-		{
-			NewFunc: armquantum.NewWorkspacesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quantum/armquantum",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armquantum())
 }

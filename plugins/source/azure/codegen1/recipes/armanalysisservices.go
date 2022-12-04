@@ -7,10 +7,16 @@ func Armanalysisservices() []*Resource {
 	resources := []*Resource{
 		{
 			NewFunc: armanalysisservices.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/analysisservices/armanalysisservices",
 		},
 		{
 			NewFunc: armanalysisservices.NewServersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/analysisservices/armanalysisservices",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armanalysisservices())
 }

@@ -6,152 +6,205 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/a
 func Armrecoveryservicesbackup() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armrecoveryservicesbackup.NewProtectionIntentClient,
-		},
-		{
-			NewFunc: armrecoveryservicesbackup.NewProtectionPoliciesClient,
-		},
-		{
-			NewFunc: armrecoveryservicesbackup.NewResourceGuardProxiesClient,
-		},
-		{
-			NewFunc: armrecoveryservicesbackup.NewBackupOperationStatusesClient,
-		},
-		{
-			NewFunc: armrecoveryservicesbackup.NewValidateOperationClient,
+			NewFunc: armrecoveryservicesbackup.NewBackupJobsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
 		},
 		{
 			NewFunc: armrecoveryservicesbackup.NewBackupOperationResultsClient,
-		},
-		{
-			NewFunc: armrecoveryservicesbackup.NewProtectedItemOperationResultsClient,
-		},
-		{
-			NewFunc: armrecoveryservicesbackup.NewRecoveryPointsClient,
-		},
-		{
-			NewFunc: armrecoveryservicesbackup.NewProtectionPolicyOperationResultsClient,
-		},
-		{
-			NewFunc: armrecoveryservicesbackup.NewBackupsClient,
-		},
-		{
-			NewFunc: armrecoveryservicesbackup.NewBMSPrepareDataMoveOperationResultClient,
-		},
-		{
-			NewFunc: armrecoveryservicesbackup.NewFeatureSupportClient,
-		},
-		{
-			NewFunc: armrecoveryservicesbackup.NewJobCancellationsClient,
-		},
-		{
-			NewFunc: armrecoveryservicesbackup.NewBackupResourceVaultConfigsClient,
-		},
-		{
-			NewFunc: armrecoveryservicesbackup.NewItemLevelRecoveryConnectionsClient,
-		},
-		{
-			NewFunc: armrecoveryservicesbackup.NewJobOperationResultsClient,
-		},
-		{
-			NewFunc: armrecoveryservicesbackup.NewBackupEnginesClient,
-		},
-		{
-			NewFunc: armrecoveryservicesbackup.NewBackupStatusClient,
-		},
-		{
-			NewFunc: armrecoveryservicesbackup.NewJobsClient,
-		},
-		{
-			NewFunc: armrecoveryservicesbackup.NewOperationsClient,
-		},
-		{
-			NewFunc: armrecoveryservicesbackup.NewProtectionContainerRefreshOperationResultsClient,
-		},
-		{
-			NewFunc: armrecoveryservicesbackup.NewClient,
-		},
-		{
-			NewFunc: armrecoveryservicesbackup.NewProtectableContainersClient,
-		},
-		{
-			NewFunc: armrecoveryservicesbackup.NewRestoresClient,
-		},
-		{
-			NewFunc: armrecoveryservicesbackup.NewPrivateEndpointConnectionClient,
-		},
-		{
-			NewFunc: armrecoveryservicesbackup.NewBackupProtectionContainersClient,
-		},
-		{
-			NewFunc: armrecoveryservicesbackup.NewValidateOperationResultsClient,
-		},
-		{
-			NewFunc: armrecoveryservicesbackup.NewSecurityPINsClient,
-		},
-		{
-			NewFunc: armrecoveryservicesbackup.NewValidateOperationStatusesClient,
-		},
-		{
-			NewFunc: armrecoveryservicesbackup.NewBackupPoliciesClient,
-		},
-		{
-			NewFunc: armrecoveryservicesbackup.NewJobDetailsClient,
-		},
-		{
-			NewFunc: armrecoveryservicesbackup.NewOperationClient,
-		},
-		{
-			NewFunc: armrecoveryservicesbackup.NewProtectedItemOperationStatusesClient,
-		},
-		{
-			NewFunc: armrecoveryservicesbackup.NewResourceGuardProxyClient,
-		},
-		{
-			NewFunc: armrecoveryservicesbackup.NewBackupResourceEncryptionConfigsClient,
-		},
-		{
-			NewFunc: armrecoveryservicesbackup.NewBackupUsageSummariesClient,
-		},
-		{
-			NewFunc: armrecoveryservicesbackup.NewRecoveryPointsRecommendedForMoveClient,
-		},
-		{
-			NewFunc: armrecoveryservicesbackup.NewBackupProtectedItemsClient,
-		},
-		{
-			NewFunc: armrecoveryservicesbackup.NewBackupProtectionIntentClient,
-		},
-		{
-			NewFunc: armrecoveryservicesbackup.NewBackupWorkloadItemsClient,
-		},
-		{
-			NewFunc: armrecoveryservicesbackup.NewProtectionContainersClient,
-		},
-		{
-			NewFunc: armrecoveryservicesbackup.NewBackupJobsClient,
-		},
-		{
-			NewFunc: armrecoveryservicesbackup.NewBackupProtectableItemsClient,
-		},
-		{
-			NewFunc: armrecoveryservicesbackup.NewProtectedItemsClient,
-		},
-		{
-			NewFunc: armrecoveryservicesbackup.NewProtectionContainerOperationResultsClient,
-		},
-		{
-			NewFunc: armrecoveryservicesbackup.NewBackupResourceStorageConfigsNonCRRClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
 		},
 		{
 			NewFunc: armrecoveryservicesbackup.NewExportJobsOperationResultsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
 		},
 		{
-			NewFunc: armrecoveryservicesbackup.NewPrivateEndpointClient,
+			NewFunc: armrecoveryservicesbackup.NewClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
+		},
+		{
+			NewFunc: armrecoveryservicesbackup.NewJobOperationResultsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
+		},
+		{
+			NewFunc: armrecoveryservicesbackup.NewProtectableContainersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
+		},
+		{
+			NewFunc: armrecoveryservicesbackup.NewBackupResourceEncryptionConfigsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
+		},
+		{
+			NewFunc: armrecoveryservicesbackup.NewBackupWorkloadItemsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
+		},
+		{
+			NewFunc: armrecoveryservicesbackup.NewProtectionPoliciesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
+		},
+		{
+			NewFunc: armrecoveryservicesbackup.NewRestoresClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
+		},
+		{
+			NewFunc: armrecoveryservicesbackup.NewJobCancellationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
+		},
+		{
+			NewFunc: armrecoveryservicesbackup.NewRecoveryPointsRecommendedForMoveClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
+		},
+		{
+			NewFunc: armrecoveryservicesbackup.NewFeatureSupportClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
+		},
+		{
+			NewFunc: armrecoveryservicesbackup.NewProtectedItemOperationResultsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
+		},
+		{
+			NewFunc: armrecoveryservicesbackup.NewRecoveryPointsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
+		},
+		{
+			NewFunc: armrecoveryservicesbackup.NewValidateOperationStatusesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
+		},
+		{
+			NewFunc: armrecoveryservicesbackup.NewBackupsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
+		},
+		{
+			NewFunc: armrecoveryservicesbackup.NewProtectionContainersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
+		},
+		{
+			NewFunc: armrecoveryservicesbackup.NewProtectionPolicyOperationResultsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
+		},
+		{
+			NewFunc: armrecoveryservicesbackup.NewResourceGuardProxiesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
+		},
+		{
+			NewFunc: armrecoveryservicesbackup.NewBackupEnginesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
+		},
+		{
+			NewFunc: armrecoveryservicesbackup.NewBackupResourceStorageConfigsNonCRRClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
+		},
+		{
+			NewFunc: armrecoveryservicesbackup.NewValidateOperationResultsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
+		},
+		{
+			NewFunc: armrecoveryservicesbackup.NewProtectedItemOperationStatusesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
+		},
+		{
+			NewFunc: armrecoveryservicesbackup.NewBackupPoliciesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
+		},
+		{
+			NewFunc: armrecoveryservicesbackup.NewBackupUsageSummariesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
+		},
+		{
+			NewFunc: armrecoveryservicesbackup.NewItemLevelRecoveryConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
+		},
+		{
+			NewFunc: armrecoveryservicesbackup.NewJobDetailsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
+		},
+		{
+			NewFunc: armrecoveryservicesbackup.NewOperationClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
+		},
+		{
+			NewFunc: armrecoveryservicesbackup.NewResourceGuardProxyClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
+		},
+		{
+			NewFunc: armrecoveryservicesbackup.NewValidateOperationClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
+		},
+		{
+			NewFunc: armrecoveryservicesbackup.NewBackupProtectedItemsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
+		},
+		{
+			NewFunc: armrecoveryservicesbackup.NewBackupProtectionContainersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
+		},
+		{
+			NewFunc: armrecoveryservicesbackup.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
+		},
+		{
+			NewFunc: armrecoveryservicesbackup.NewPrivateEndpointConnectionClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
+		},
+		{
+			NewFunc: armrecoveryservicesbackup.NewProtectedItemsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
+		},
+		{
+			NewFunc: armrecoveryservicesbackup.NewProtectionContainerOperationResultsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
+		},
+		{
+			NewFunc: armrecoveryservicesbackup.NewBackupStatusClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
+		},
+		{
+			NewFunc: armrecoveryservicesbackup.NewJobsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
 		},
 		{
 			NewFunc: armrecoveryservicesbackup.NewProtectionPolicyOperationStatusesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
+		},
+		{
+			NewFunc: armrecoveryservicesbackup.NewSecurityPINsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
+		},
+		{
+			NewFunc: armrecoveryservicesbackup.NewBackupResourceVaultConfigsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
+		},
+		{
+			NewFunc: armrecoveryservicesbackup.NewBMSPrepareDataMoveOperationResultClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
+		},
+		{
+			NewFunc: armrecoveryservicesbackup.NewProtectionContainerRefreshOperationResultsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
+		},
+		{
+			NewFunc: armrecoveryservicesbackup.NewBackupProtectableItemsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
+		},
+		{
+			NewFunc: armrecoveryservicesbackup.NewBackupOperationStatusesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
+		},
+		{
+			NewFunc: armrecoveryservicesbackup.NewBackupProtectionIntentClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
+		},
+		{
+			NewFunc: armrecoveryservicesbackup.NewPrivateEndpointClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
+		},
+		{
+			NewFunc: armrecoveryservicesbackup.NewProtectionIntentClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armrecoveryservicesbackup())
 }

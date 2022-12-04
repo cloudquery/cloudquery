@@ -7,10 +7,16 @@ func Armvirtualmachineimagebuilder() []*Resource {
 	resources := []*Resource{
 		{
 			NewFunc: armvirtualmachineimagebuilder.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/virtualmachineimagebuilder/armvirtualmachineimagebuilder",
 		},
 		{
 			NewFunc: armvirtualmachineimagebuilder.NewVirtualMachineImageTemplatesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/virtualmachineimagebuilder/armvirtualmachineimagebuilder",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armvirtualmachineimagebuilder())
 }

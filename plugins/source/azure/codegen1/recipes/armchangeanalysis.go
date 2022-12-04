@@ -7,13 +7,20 @@ func Armchangeanalysis() []*Resource {
 	resources := []*Resource{
 		{
 			NewFunc: armchangeanalysis.NewResourceChangesClient,
-		},
-		{
-			NewFunc: armchangeanalysis.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/changeanalysis/armchangeanalysis",
 		},
 		{
 			NewFunc: armchangeanalysis.NewChangesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/changeanalysis/armchangeanalysis",
+		},
+		{
+			NewFunc: armchangeanalysis.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/changeanalysis/armchangeanalysis",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armchangeanalysis())
 }

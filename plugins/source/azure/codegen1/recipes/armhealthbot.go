@@ -6,11 +6,17 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthbot/armhealt
 func Armhealthbot() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armhealthbot.NewBotsClient,
+			NewFunc: armhealthbot.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthbot/armhealthbot",
 		},
 		{
-			NewFunc: armhealthbot.NewOperationsClient,
+			NewFunc: armhealthbot.NewBotsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthbot/armhealthbot",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armhealthbot())
 }

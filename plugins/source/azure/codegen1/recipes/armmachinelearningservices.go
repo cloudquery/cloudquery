@@ -6,38 +6,53 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearningser
 func Armmachinelearningservices() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armmachinelearningservices.NewWorkspaceFeaturesClient,
-		},
-		{
 			NewFunc: armmachinelearningservices.NewPrivateEndpointConnectionsClient,
-		},
-		{
-			NewFunc: armmachinelearningservices.NewPrivateLinkResourcesClient,
-		},
-		{
-			NewFunc: armmachinelearningservices.NewQuotasClient,
-		},
-		{
-			NewFunc: armmachinelearningservices.NewWorkspaceSKUsClient,
-		},
-		{
-			NewFunc: armmachinelearningservices.NewComputeClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearningservices/armmachinelearningservices",
 		},
 		{
 			NewFunc: armmachinelearningservices.NewUsagesClient,
-		},
-		{
-			NewFunc: armmachinelearningservices.NewVirtualMachineSizesClient,
-		},
-		{
-			NewFunc: armmachinelearningservices.NewWorkspaceConnectionsClient,
-		},
-		{
-			NewFunc: armmachinelearningservices.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearningservices/armmachinelearningservices",
 		},
 		{
 			NewFunc: armmachinelearningservices.NewWorkspacesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearningservices/armmachinelearningservices",
+		},
+		{
+			NewFunc: armmachinelearningservices.NewPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearningservices/armmachinelearningservices",
+		},
+		{
+			NewFunc: armmachinelearningservices.NewQuotasClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearningservices/armmachinelearningservices",
+		},
+		{
+			NewFunc: armmachinelearningservices.NewWorkspaceConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearningservices/armmachinelearningservices",
+		},
+		{
+			NewFunc: armmachinelearningservices.NewVirtualMachineSizesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearningservices/armmachinelearningservices",
+		},
+		{
+			NewFunc: armmachinelearningservices.NewWorkspaceFeaturesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearningservices/armmachinelearningservices",
+		},
+		{
+			NewFunc: armmachinelearningservices.NewComputeClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearningservices/armmachinelearningservices",
+		},
+		{
+			NewFunc: armmachinelearningservices.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearningservices/armmachinelearningservices",
+		},
+		{
+			NewFunc: armmachinelearningservices.NewWorkspaceSKUsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearningservices/armmachinelearningservices",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armmachinelearningservices())
 }

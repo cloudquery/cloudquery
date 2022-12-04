@@ -6,29 +6,41 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis"
 func Armredis() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armredis.NewPatchSchedulesClient,
-		},
-		{
-			NewFunc: armredis.NewLinkedServerClient,
+			NewFunc: armredis.NewPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis",
 		},
 		{
 			NewFunc: armredis.NewClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis",
 		},
 		{
-			NewFunc: armredis.NewPrivateEndpointConnectionsClient,
+			NewFunc: armredis.NewPatchSchedulesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis",
 		},
 		{
-			NewFunc: armredis.NewPrivateLinkResourcesClient,
-		},
-		{
-			NewFunc: armredis.NewFirewallRulesClient,
+			NewFunc: armredis.NewLinkedServerClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis",
 		},
 		{
 			NewFunc: armredis.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis",
 		},
 		{
 			NewFunc: armredis.NewAsyncOperationStatusClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis",
+		},
+		{
+			NewFunc: armredis.NewFirewallRulesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis",
+		},
+		{
+			NewFunc: armredis.NewPrivateEndpointConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armredis())
 }

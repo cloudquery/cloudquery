@@ -7,10 +7,16 @@ func Armserialconsole() []*Resource {
 	resources := []*Resource{
 		{
 			NewFunc: armserialconsole.NewMicrosoftSerialConsoleClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/serialconsole/armserialconsole",
 		},
 		{
 			NewFunc: armserialconsole.NewSerialPortsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/serialconsole/armserialconsole",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armserialconsole())
 }

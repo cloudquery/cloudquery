@@ -6,23 +6,33 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-store/arm
 func Armdatalakestore() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armdatalakestore.NewLocationsClient,
-		},
-		{
-			NewFunc: armdatalakestore.NewOperationsClient,
-		},
-		{
-			NewFunc: armdatalakestore.NewTrustedIDProvidersClient,
+			NewFunc: armdatalakestore.NewAccountsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-store/armdatalakestore",
 		},
 		{
 			NewFunc: armdatalakestore.NewFirewallRulesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-store/armdatalakestore",
+		},
+		{
+			NewFunc: armdatalakestore.NewTrustedIDProvidersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-store/armdatalakestore",
+		},
+		{
+			NewFunc: armdatalakestore.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-store/armdatalakestore",
 		},
 		{
 			NewFunc: armdatalakestore.NewVirtualNetworkRulesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-store/armdatalakestore",
 		},
 		{
-			NewFunc: armdatalakestore.NewAccountsClient,
+			NewFunc: armdatalakestore.NewLocationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-store/armdatalakestore",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armdatalakestore())
 }

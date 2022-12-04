@@ -6,26 +6,37 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/education/armeduca
 func Armeducation() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armeducation.NewGrantsClient,
-		},
-		{
-			NewFunc: armeducation.NewManagementClient,
-		},
-		{
 			NewFunc: armeducation.NewOperationsClient,
-		},
-		{
-			NewFunc: armeducation.NewStudentsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/education/armeducation",
 		},
 		{
 			NewFunc: armeducation.NewJoinRequestsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/education/armeducation",
+		},
+		{
+			NewFunc: armeducation.NewManagementClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/education/armeducation",
+		},
+		{
+			NewFunc: armeducation.NewStudentsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/education/armeducation",
+		},
+		{
+			NewFunc: armeducation.NewGrantsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/education/armeducation",
 		},
 		{
 			NewFunc: armeducation.NewLabsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/education/armeducation",
 		},
 		{
 			NewFunc: armeducation.NewStudentLabsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/education/armeducation",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armeducation())
 }

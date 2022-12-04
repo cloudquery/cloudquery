@@ -7,25 +7,36 @@ func Armlogz() []*Resource {
 	resources := []*Resource{
 		{
 			NewFunc: armlogz.NewMonitorClient,
-		},
-		{
-			NewFunc: armlogz.NewSubAccountTagRulesClient,
-		},
-		{
-			NewFunc: armlogz.NewTagRulesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logz/armlogz",
 		},
 		{
 			NewFunc: armlogz.NewMonitorsClient,
-		},
-		{
-			NewFunc: armlogz.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logz/armlogz",
 		},
 		{
 			NewFunc: armlogz.NewSingleSignOnClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logz/armlogz",
+		},
+		{
+			NewFunc: armlogz.NewSubAccountTagRulesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logz/armlogz",
+		},
+		{
+			NewFunc: armlogz.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logz/armlogz",
 		},
 		{
 			NewFunc: armlogz.NewSubAccountClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logz/armlogz",
+		},
+		{
+			NewFunc: armlogz.NewTagRulesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logz/armlogz",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armlogz())
 }

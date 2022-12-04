@@ -6,29 +6,41 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/a
 func Armcontainerservice() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armcontainerservice.NewPrivateEndpointConnectionsClient,
+			NewFunc: armcontainerservice.NewMaintenanceConfigurationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice",
 		},
 		{
 			NewFunc: armcontainerservice.NewResolvePrivateLinkServiceIDClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice",
 		},
 		{
-			NewFunc: armcontainerservice.NewPrivateLinkResourcesClient,
+			NewFunc: armcontainerservice.NewPrivateEndpointConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice",
 		},
 		{
 			NewFunc: armcontainerservice.NewSnapshotsClient,
-		},
-		{
-			NewFunc: armcontainerservice.NewMaintenanceConfigurationsClient,
-		},
-		{
-			NewFunc: armcontainerservice.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice",
 		},
 		{
 			NewFunc: armcontainerservice.NewAgentPoolsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice",
 		},
 		{
 			NewFunc: armcontainerservice.NewManagedClustersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice",
+		},
+		{
+			NewFunc: armcontainerservice.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice",
+		},
+		{
+			NewFunc: armcontainerservice.NewPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armcontainerservice())
 }

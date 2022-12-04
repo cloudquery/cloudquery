@@ -6,26 +6,37 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsu
 func Armsubscription() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armsubscription.NewBillingAccountClient,
-		},
-		{
-			NewFunc: armsubscription.NewClient,
-		},
-		{
 			NewFunc: armsubscription.NewSubscriptionsClient,
-		},
-		{
-			NewFunc: armsubscription.NewAliasClient,
-		},
-		{
-			NewFunc: armsubscription.NewTenantsClient,
-		},
-		{
-			NewFunc: armsubscription.NewPolicyClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription",
 		},
 		{
 			NewFunc: armsubscription.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription",
+		},
+		{
+			NewFunc: armsubscription.NewPolicyClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription",
+		},
+		{
+			NewFunc: armsubscription.NewAliasClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription",
+		},
+		{
+			NewFunc: armsubscription.NewBillingAccountClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription",
+		},
+		{
+			NewFunc: armsubscription.NewClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription",
+		},
+		{
+			NewFunc: armsubscription.NewTenantsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armsubscription())
 }

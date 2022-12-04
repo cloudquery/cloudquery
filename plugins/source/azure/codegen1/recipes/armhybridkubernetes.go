@@ -7,10 +7,16 @@ func Armhybridkubernetes() []*Resource {
 	resources := []*Resource{
 		{
 			NewFunc: armhybridkubernetes.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridkubernetes/armhybridkubernetes",
 		},
 		{
 			NewFunc: armhybridkubernetes.NewConnectedClusterClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridkubernetes/armhybridkubernetes",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armhybridkubernetes())
 }

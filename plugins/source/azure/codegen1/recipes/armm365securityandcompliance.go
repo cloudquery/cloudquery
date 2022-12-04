@@ -6,68 +6,93 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/m365securityandcom
 func Armm365securityandcompliance() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armm365securityandcompliance.NewPrivateEndpointConnectionsForMIPPolicySyncClient,
-		},
-		{
-			NewFunc: armm365securityandcompliance.NewPrivateEndpointConnectionsAdtAPIClient,
-		},
-		{
-			NewFunc: armm365securityandcompliance.NewPrivateEndpointConnectionsForEDMClient,
-		},
-		{
-			NewFunc: armm365securityandcompliance.NewPrivateLinkResourcesForMIPPolicySyncClient,
-		},
-		{
-			NewFunc: armm365securityandcompliance.NewPrivateLinkResourcesForSCCPowershellClient,
-		},
-		{
-			NewFunc: armm365securityandcompliance.NewPrivateLinkServicesForM365ComplianceCenterClient,
-		},
-		{
-			NewFunc: armm365securityandcompliance.NewPrivateEndpointConnectionsSecClient,
-		},
-		{
-			NewFunc: armm365securityandcompliance.NewPrivateLinkResourcesClient,
-		},
-		{
-			NewFunc: armm365securityandcompliance.NewPrivateLinkResourcesAdtAPIClient,
-		},
-		{
-			NewFunc: armm365securityandcompliance.NewPrivateLinkServicesForEDMUploadClient,
-		},
-		{
-			NewFunc: armm365securityandcompliance.NewPrivateLinkServicesForO365ManagementActivityAPIClient,
-		},
-		{
 			NewFunc: armm365securityandcompliance.NewOperationsClient,
-		},
-		{
-			NewFunc: armm365securityandcompliance.NewPrivateLinkResourcesCompClient,
-		},
-		{
-			NewFunc: armm365securityandcompliance.NewServicesClient,
-		},
-		{
-			NewFunc: armm365securityandcompliance.NewOperationResultsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/m365securityandcompliance/armm365securityandcompliance",
 		},
 		{
 			NewFunc: armm365securityandcompliance.NewPrivateEndpointConnectionsCompClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/m365securityandcompliance/armm365securityandcompliance",
 		},
 		{
-			NewFunc: armm365securityandcompliance.NewPrivateLinkServicesForM365SecurityCenterClient,
-		},
-		{
-			NewFunc: armm365securityandcompliance.NewPrivateEndpointConnectionsForSCCPowershellClient,
-		},
-		{
-			NewFunc: armm365securityandcompliance.NewPrivateLinkResourcesSecClient,
+			NewFunc: armm365securityandcompliance.NewPrivateLinkResourcesForSCCPowershellClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/m365securityandcompliance/armm365securityandcompliance",
 		},
 		{
 			NewFunc: armm365securityandcompliance.NewPrivateLinkServicesForMIPPolicySyncClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/m365securityandcompliance/armm365securityandcompliance",
+		},
+		{
+			NewFunc: armm365securityandcompliance.NewPrivateEndpointConnectionsForMIPPolicySyncClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/m365securityandcompliance/armm365securityandcompliance",
+		},
+		{
+			NewFunc: armm365securityandcompliance.NewPrivateLinkResourcesAdtAPIClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/m365securityandcompliance/armm365securityandcompliance",
+		},
+		{
+			NewFunc: armm365securityandcompliance.NewPrivateLinkServicesForM365ComplianceCenterClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/m365securityandcompliance/armm365securityandcompliance",
+		},
+		{
+			NewFunc: armm365securityandcompliance.NewOperationResultsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/m365securityandcompliance/armm365securityandcompliance",
+		},
+		{
+			NewFunc: armm365securityandcompliance.NewPrivateEndpointConnectionsAdtAPIClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/m365securityandcompliance/armm365securityandcompliance",
+		},
+		{
+			NewFunc: armm365securityandcompliance.NewPrivateLinkServicesForO365ManagementActivityAPIClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/m365securityandcompliance/armm365securityandcompliance",
+		},
+		{
+			NewFunc: armm365securityandcompliance.NewServicesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/m365securityandcompliance/armm365securityandcompliance",
+		},
+		{
+			NewFunc: armm365securityandcompliance.NewPrivateEndpointConnectionsSecClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/m365securityandcompliance/armm365securityandcompliance",
+		},
+		{
+			NewFunc: armm365securityandcompliance.NewPrivateLinkResourcesCompClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/m365securityandcompliance/armm365securityandcompliance",
+		},
+		{
+			NewFunc: armm365securityandcompliance.NewPrivateLinkResourcesForMIPPolicySyncClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/m365securityandcompliance/armm365securityandcompliance",
+		},
+		{
+			NewFunc: armm365securityandcompliance.NewPrivateLinkServicesForEDMUploadClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/m365securityandcompliance/armm365securityandcompliance",
 		},
 		{
 			NewFunc: armm365securityandcompliance.NewPrivateLinkServicesForSCCPowershellClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/m365securityandcompliance/armm365securityandcompliance",
+		},
+		{
+			NewFunc: armm365securityandcompliance.NewPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/m365securityandcompliance/armm365securityandcompliance",
+		},
+		{
+			NewFunc: armm365securityandcompliance.NewPrivateLinkServicesForM365SecurityCenterClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/m365securityandcompliance/armm365securityandcompliance",
+		},
+		{
+			NewFunc: armm365securityandcompliance.NewPrivateEndpointConnectionsForEDMClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/m365securityandcompliance/armm365securityandcompliance",
+		},
+		{
+			NewFunc: armm365securityandcompliance.NewPrivateEndpointConnectionsForSCCPowershellClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/m365securityandcompliance/armm365securityandcompliance",
+		},
+		{
+			NewFunc: armm365securityandcompliance.NewPrivateLinkResourcesSecClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/m365securityandcompliance/armm365securityandcompliance",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armm365securityandcompliance())
 }

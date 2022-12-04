@@ -6,53 +6,73 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storsimple8000seri
 func Armstorsimple8000series() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armstorsimple8000series.NewStorageAccountCredentialsClient,
-		},
-		{
-			NewFunc: armstorsimple8000series.NewVolumeContainersClient,
-		},
-		{
-			NewFunc: armstorsimple8000series.NewManagersClient,
+			NewFunc: armstorsimple8000series.NewBackupPoliciesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storsimple8000series/armstorsimple8000series",
 		},
 		{
 			NewFunc: armstorsimple8000series.NewBandwidthSettingsClient,
-		},
-		{
-			NewFunc: armstorsimple8000series.NewHardwareComponentGroupsClient,
-		},
-		{
-			NewFunc: armstorsimple8000series.NewOperationsClient,
-		},
-		{
-			NewFunc: armstorsimple8000series.NewVolumesClient,
-		},
-		{
-			NewFunc: armstorsimple8000series.NewAlertsClient,
-		},
-		{
-			NewFunc: armstorsimple8000series.NewBackupSchedulesClient,
-		},
-		{
-			NewFunc: armstorsimple8000series.NewBackupsClient,
-		},
-		{
-			NewFunc: armstorsimple8000series.NewCloudAppliancesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storsimple8000series/armstorsimple8000series",
 		},
 		{
 			NewFunc: armstorsimple8000series.NewDevicesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storsimple8000series/armstorsimple8000series",
 		},
 		{
 			NewFunc: armstorsimple8000series.NewDeviceSettingsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storsimple8000series/armstorsimple8000series",
 		},
 		{
-			NewFunc: armstorsimple8000series.NewJobsClient,
+			NewFunc: armstorsimple8000series.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storsimple8000series/armstorsimple8000series",
+		},
+		{
+			NewFunc: armstorsimple8000series.NewVolumeContainersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storsimple8000series/armstorsimple8000series",
 		},
 		{
 			NewFunc: armstorsimple8000series.NewAccessControlRecordsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storsimple8000series/armstorsimple8000series",
 		},
 		{
-			NewFunc: armstorsimple8000series.NewBackupPoliciesClient,
+			NewFunc: armstorsimple8000series.NewBackupsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storsimple8000series/armstorsimple8000series",
+		},
+		{
+			NewFunc: armstorsimple8000series.NewBackupSchedulesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storsimple8000series/armstorsimple8000series",
+		},
+		{
+			NewFunc: armstorsimple8000series.NewHardwareComponentGroupsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storsimple8000series/armstorsimple8000series",
+		},
+		{
+			NewFunc: armstorsimple8000series.NewManagersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storsimple8000series/armstorsimple8000series",
+		},
+		{
+			NewFunc: armstorsimple8000series.NewAlertsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storsimple8000series/armstorsimple8000series",
+		},
+		{
+			NewFunc: armstorsimple8000series.NewCloudAppliancesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storsimple8000series/armstorsimple8000series",
+		},
+		{
+			NewFunc: armstorsimple8000series.NewJobsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storsimple8000series/armstorsimple8000series",
+		},
+		{
+			NewFunc: armstorsimple8000series.NewStorageAccountCredentialsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storsimple8000series/armstorsimple8000series",
+		},
+		{
+			NewFunc: armstorsimple8000series.NewVolumesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storsimple8000series/armstorsimple8000series",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armstorsimple8000series())
 }

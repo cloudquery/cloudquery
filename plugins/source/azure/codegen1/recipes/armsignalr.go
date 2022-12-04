@@ -6,29 +6,41 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/signalr/armsignalr
 func Armsignalr() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armsignalr.NewClient,
-		},
-		{
-			NewFunc: armsignalr.NewCustomCertificatesClient,
+			NewFunc: armsignalr.NewCustomDomainsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/signalr/armsignalr",
 		},
 		{
 			NewFunc: armsignalr.NewPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/signalr/armsignalr",
 		},
 		{
-			NewFunc: armsignalr.NewUsagesClient,
-		},
-		{
-			NewFunc: armsignalr.NewOperationsClient,
-		},
-		{
-			NewFunc: armsignalr.NewPrivateEndpointConnectionsClient,
+			NewFunc: armsignalr.NewClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/signalr/armsignalr",
 		},
 		{
 			NewFunc: armsignalr.NewSharedPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/signalr/armsignalr",
 		},
 		{
-			NewFunc: armsignalr.NewCustomDomainsClient,
+			NewFunc: armsignalr.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/signalr/armsignalr",
+		},
+		{
+			NewFunc: armsignalr.NewPrivateEndpointConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/signalr/armsignalr",
+		},
+		{
+			NewFunc: armsignalr.NewCustomCertificatesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/signalr/armsignalr",
+		},
+		{
+			NewFunc: armsignalr.NewUsagesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/signalr/armsignalr",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armsignalr())
 }

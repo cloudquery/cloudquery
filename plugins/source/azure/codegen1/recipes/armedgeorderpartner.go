@@ -7,7 +7,12 @@ func Armedgeorderpartner() []*Resource {
 	resources := []*Resource{
 		{
 			NewFunc: armedgeorderpartner.NewAPISClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/edgeorderpartner/armedgeorderpartner",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armedgeorderpartner())
 }

@@ -6,32 +6,45 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbots
 func Armbotservice() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armbotservice.NewBotConnectionClient,
-		},
-		{
-			NewFunc: armbotservice.NewBotsClient,
-		},
-		{
-			NewFunc: armbotservice.NewOperationResultsClient,
+			NewFunc: armbotservice.NewChannelsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice",
 		},
 		{
 			NewFunc: armbotservice.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice",
 		},
 		{
 			NewFunc: armbotservice.NewPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice",
 		},
 		{
-			NewFunc: armbotservice.NewChannelsClient,
-		},
-		{
-			NewFunc: armbotservice.NewDirectLineClient,
-		},
-		{
-			NewFunc: armbotservice.NewHostSettingsClient,
+			NewFunc: armbotservice.NewBotsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice",
 		},
 		{
 			NewFunc: armbotservice.NewPrivateEndpointConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice",
+		},
+		{
+			NewFunc: armbotservice.NewBotConnectionClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice",
+		},
+		{
+			NewFunc: armbotservice.NewDirectLineClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice",
+		},
+		{
+			NewFunc: armbotservice.NewHostSettingsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice",
+		},
+		{
+			NewFunc: armbotservice.NewOperationResultsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armbotservice())
 }

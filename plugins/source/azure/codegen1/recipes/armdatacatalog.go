@@ -7,10 +7,16 @@ func Armdatacatalog() []*Resource {
 	resources := []*Resource{
 		{
 			NewFunc: armdatacatalog.NewADCCatalogsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datacatalog/armdatacatalog",
 		},
 		{
 			NewFunc: armdatacatalog.NewADCOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datacatalog/armdatacatalog",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armdatacatalog())
 }

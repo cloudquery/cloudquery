@@ -7,10 +7,16 @@ func Armworkloadmonitor() []*Resource {
 	resources := []*Resource{
 		{
 			NewFunc: armworkloadmonitor.NewHealthMonitorsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloadmonitor/armworkloadmonitor",
 		},
 		{
 			NewFunc: armworkloadmonitor.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloadmonitor/armworkloadmonitor",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armworkloadmonitor())
 }

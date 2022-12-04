@@ -6,68 +6,93 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdat
 func Armdatafactory() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armdatafactory.NewDatasetsClient,
-		},
-		{
-			NewFunc: armdatafactory.NewIntegrationRuntimeObjectMetadataClient,
-		},
-		{
-			NewFunc: armdatafactory.NewLinkedServicesClient,
-		},
-		{
-			NewFunc: armdatafactory.NewPrivateLinkResourcesClient,
-		},
-		{
-			NewFunc: armdatafactory.NewActivityRunsClient,
-		},
-		{
-			NewFunc: armdatafactory.NewDataFlowsClient,
+			NewFunc: armdatafactory.NewIntegrationRuntimeNodesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory",
 		},
 		{
 			NewFunc: armdatafactory.NewPipelineRunsClient,
-		},
-		{
-			NewFunc: armdatafactory.NewPipelinesClient,
-		},
-		{
-			NewFunc: armdatafactory.NewGlobalParametersClient,
-		},
-		{
-			NewFunc: armdatafactory.NewIntegrationRuntimeNodesClient,
-		},
-		{
-			NewFunc: armdatafactory.NewPrivateEndpointConnectionClient,
-		},
-		{
-			NewFunc: armdatafactory.NewDataFlowDebugSessionClient,
-		},
-		{
-			NewFunc: armdatafactory.NewManagedPrivateEndpointsClient,
-		},
-		{
-			NewFunc: armdatafactory.NewFactoriesClient,
-		},
-		{
-			NewFunc: armdatafactory.NewOperationsClient,
-		},
-		{
-			NewFunc: armdatafactory.NewIntegrationRuntimesClient,
-		},
-		{
-			NewFunc: armdatafactory.NewTriggersClient,
-		},
-		{
-			NewFunc: armdatafactory.NewExposureControlClient,
-		},
-		{
-			NewFunc: armdatafactory.NewManagedVirtualNetworksClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory",
 		},
 		{
 			NewFunc: armdatafactory.NewPrivateEndPointConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory",
 		},
 		{
 			NewFunc: armdatafactory.NewTriggerRunsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory",
+		},
+		{
+			NewFunc: armdatafactory.NewExposureControlClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory",
+		},
+		{
+			NewFunc: armdatafactory.NewGlobalParametersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory",
+		},
+		{
+			NewFunc: armdatafactory.NewIntegrationRuntimesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory",
+		},
+		{
+			NewFunc: armdatafactory.NewPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory",
+		},
+		{
+			NewFunc: armdatafactory.NewFactoriesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory",
+		},
+		{
+			NewFunc: armdatafactory.NewLinkedServicesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory",
+		},
+		{
+			NewFunc: armdatafactory.NewPrivateEndpointConnectionClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory",
+		},
+		{
+			NewFunc: armdatafactory.NewTriggersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory",
+		},
+		{
+			NewFunc: armdatafactory.NewDataFlowsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory",
+		},
+		{
+			NewFunc: armdatafactory.NewDatasetsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory",
+		},
+		{
+			NewFunc: armdatafactory.NewIntegrationRuntimeObjectMetadataClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory",
+		},
+		{
+			NewFunc: armdatafactory.NewManagedVirtualNetworksClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory",
+		},
+		{
+			NewFunc: armdatafactory.NewDataFlowDebugSessionClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory",
+		},
+		{
+			NewFunc: armdatafactory.NewManagedPrivateEndpointsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory",
+		},
+		{
+			NewFunc: armdatafactory.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory",
+		},
+		{
+			NewFunc: armdatafactory.NewActivityRunsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory",
+		},
+		{
+			NewFunc: armdatafactory.NewPipelinesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armdatafactory())
 }

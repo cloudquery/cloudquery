@@ -7,70 +7,96 @@ func Armdataboxedge() []*Resource {
 	resources := []*Resource{
 		{
 			NewFunc: armdataboxedge.NewAvailableSKUsClient,
-		},
-		{
-			NewFunc: armdataboxedge.NewDiagnosticSettingsClient,
-		},
-		{
-			NewFunc: armdataboxedge.NewNodesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge",
 		},
 		{
 			NewFunc: armdataboxedge.NewContainersClient,
-		},
-		{
-			NewFunc: armdataboxedge.NewOperationsClient,
-		},
-		{
-			NewFunc: armdataboxedge.NewSharesClient,
-		},
-		{
-			NewFunc: armdataboxedge.NewStorageAccountCredentialsClient,
-		},
-		{
-			NewFunc: armdataboxedge.NewOperationsStatusClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge",
 		},
 		{
 			NewFunc: armdataboxedge.NewJobsClient,
-		},
-		{
-			NewFunc: armdataboxedge.NewMonitoringConfigClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge",
 		},
 		{
 			NewFunc: armdataboxedge.NewStorageAccountsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge",
 		},
 		{
-			NewFunc: armdataboxedge.NewTriggersClient,
+			NewFunc: armdataboxedge.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge",
 		},
 		{
-			NewFunc: armdataboxedge.NewSupportPackagesClient,
+			NewFunc: armdataboxedge.NewOperationsStatusClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge",
 		},
 		{
 			NewFunc: armdataboxedge.NewUsersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge",
 		},
 		{
-			NewFunc: armdataboxedge.NewDeviceCapacityCheckClient,
-		},
-		{
-			NewFunc: armdataboxedge.NewOrdersClient,
-		},
-		{
-			NewFunc: armdataboxedge.NewRolesClient,
+			NewFunc: armdataboxedge.NewTriggersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge",
 		},
 		{
 			NewFunc: armdataboxedge.NewAddonsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge",
 		},
 		{
-			NewFunc: armdataboxedge.NewBandwidthSchedulesClient,
+			NewFunc: armdataboxedge.NewDiagnosticSettingsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge",
 		},
 		{
-			NewFunc: armdataboxedge.NewAlertsClient,
-		},
-		{
-			NewFunc: armdataboxedge.NewDeviceCapacityInfoClient,
+			NewFunc: armdataboxedge.NewOrdersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge",
 		},
 		{
 			NewFunc: armdataboxedge.NewDevicesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge",
+		},
+		{
+			NewFunc: armdataboxedge.NewBandwidthSchedulesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge",
+		},
+		{
+			NewFunc: armdataboxedge.NewDeviceCapacityCheckClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge",
+		},
+		{
+			NewFunc: armdataboxedge.NewNodesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge",
+		},
+		{
+			NewFunc: armdataboxedge.NewSharesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge",
+		},
+		{
+			NewFunc: armdataboxedge.NewStorageAccountCredentialsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge",
+		},
+		{
+			NewFunc: armdataboxedge.NewAlertsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge",
+		},
+		{
+			NewFunc: armdataboxedge.NewDeviceCapacityInfoClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge",
+		},
+		{
+			NewFunc: armdataboxedge.NewMonitoringConfigClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge",
+		},
+		{
+			NewFunc: armdataboxedge.NewSupportPackagesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge",
+		},
+		{
+			NewFunc: armdataboxedge.NewRolesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armdataboxedge())
 }

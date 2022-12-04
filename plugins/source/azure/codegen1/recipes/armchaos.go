@@ -6,23 +6,33 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos"
 func Armchaos() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armchaos.NewExperimentsClient,
-		},
-		{
-			NewFunc: armchaos.NewOperationsClient,
-		},
-		{
-			NewFunc: armchaos.NewCapabilityTypesClient,
-		},
-		{
 			NewFunc: armchaos.NewTargetsClient,
-		},
-		{
-			NewFunc: armchaos.NewCapabilitiesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos",
 		},
 		{
 			NewFunc: armchaos.NewTargetTypesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos",
+		},
+		{
+			NewFunc: armchaos.NewCapabilityTypesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos",
+		},
+		{
+			NewFunc: armchaos.NewCapabilitiesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos",
+		},
+		{
+			NewFunc: armchaos.NewExperimentsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos",
+		},
+		{
+			NewFunc: armchaos.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armchaos())
 }

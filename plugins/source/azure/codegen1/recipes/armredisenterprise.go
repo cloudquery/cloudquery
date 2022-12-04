@@ -6,23 +6,33 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/ar
 func Armredisenterprise() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armredisenterprise.NewClient,
-		},
-		{
 			NewFunc: armredisenterprise.NewDatabasesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise",
 		},
 		{
 			NewFunc: armredisenterprise.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise",
 		},
 		{
 			NewFunc: armredisenterprise.NewOperationsStatusClient,
-		},
-		{
-			NewFunc: armredisenterprise.NewPrivateEndpointConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise",
 		},
 		{
 			NewFunc: armredisenterprise.NewPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise",
+		},
+		{
+			NewFunc: armredisenterprise.NewClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise",
+		},
+		{
+			NewFunc: armredisenterprise.NewPrivateEndpointConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armredisenterprise())
 }

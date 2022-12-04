@@ -6,23 +6,33 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blueprint/armbluep
 func Armblueprint() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armblueprint.NewBlueprintsClient,
-		},
-		{
-			NewFunc: armblueprint.NewArtifactsClient,
-		},
-		{
-			NewFunc: armblueprint.NewAssignmentOperationsClient,
-		},
-		{
 			NewFunc: armblueprint.NewAssignmentsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blueprint/armblueprint",
 		},
 		{
 			NewFunc: armblueprint.NewPublishedArtifactsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blueprint/armblueprint",
+		},
+		{
+			NewFunc: armblueprint.NewAssignmentOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blueprint/armblueprint",
+		},
+		{
+			NewFunc: armblueprint.NewArtifactsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blueprint/armblueprint",
+		},
+		{
+			NewFunc: armblueprint.NewBlueprintsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blueprint/armblueprint",
 		},
 		{
 			NewFunc: armblueprint.NewPublishedBlueprintsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blueprint/armblueprint",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armblueprint())
 }

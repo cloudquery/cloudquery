@@ -7,16 +7,24 @@ func Armstorageimportexport() []*Resource {
 	resources := []*Resource{
 		{
 			NewFunc: armstorageimportexport.NewLocationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storageimportexport/armstorageimportexport",
 		},
 		{
 			NewFunc: armstorageimportexport.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storageimportexport/armstorageimportexport",
 		},
 		{
 			NewFunc: armstorageimportexport.NewBitLockerKeysClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storageimportexport/armstorageimportexport",
 		},
 		{
 			NewFunc: armstorageimportexport.NewJobsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storageimportexport/armstorageimportexport",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armstorageimportexport())
 }

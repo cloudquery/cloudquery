@@ -6,20 +6,29 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/ar
 func Armnetworkfunction() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armnetworkfunction.NewAzureTrafficCollectorsByResourceGroupClient,
-		},
-		{
 			NewFunc: armnetworkfunction.NewAzureTrafficCollectorsBySubscriptionClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction",
 		},
 		{
 			NewFunc: armnetworkfunction.NewClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction",
 		},
 		{
 			NewFunc: armnetworkfunction.NewAzureTrafficCollectorsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction",
 		},
 		{
 			NewFunc: armnetworkfunction.NewCollectorPoliciesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction",
+		},
+		{
+			NewFunc: armnetworkfunction.NewAzureTrafficCollectorsByResourceGroupClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armnetworkfunction())
 }

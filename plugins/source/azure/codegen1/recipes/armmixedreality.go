@@ -7,19 +7,28 @@ func Armmixedreality() []*Resource {
 	resources := []*Resource{
 		{
 			NewFunc: armmixedreality.NewClient,
-		},
-		{
-			NewFunc: armmixedreality.NewSpatialAnchorsAccountsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mixedreality/armmixedreality",
 		},
 		{
 			NewFunc: armmixedreality.NewObjectAnchorsAccountsClient,
-		},
-		{
-			NewFunc: armmixedreality.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mixedreality/armmixedreality",
 		},
 		{
 			NewFunc: armmixedreality.NewRemoteRenderingAccountsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mixedreality/armmixedreality",
+		},
+		{
+			NewFunc: armmixedreality.NewSpatialAnchorsAccountsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mixedreality/armmixedreality",
+		},
+		{
+			NewFunc: armmixedreality.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mixedreality/armmixedreality",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armmixedreality())
 }

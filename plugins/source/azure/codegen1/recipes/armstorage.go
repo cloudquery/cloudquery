@@ -6,65 +6,89 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage
 func Armstorage() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armstorage.NewAccountsClient,
-		},
-		{
-			NewFunc: armstorage.NewBlobInventoryPoliciesClient,
-		},
-		{
-			NewFunc: armstorage.NewBlobServicesClient,
-		},
-		{
-			NewFunc: armstorage.NewObjectReplicationPoliciesClient,
-		},
-		{
-			NewFunc: armstorage.NewPrivateEndpointConnectionsClient,
-		},
-		{
-			NewFunc: armstorage.NewQueueClient,
-		},
-		{
-			NewFunc: armstorage.NewSKUsClient,
-		},
-		{
-			NewFunc: armstorage.NewBlobContainersClient,
-		},
-		{
 			NewFunc: armstorage.NewDeletedAccountsClient,
-		},
-		{
-			NewFunc: armstorage.NewFileSharesClient,
-		},
-		{
-			NewFunc: armstorage.NewLocalUsersClient,
-		},
-		{
-			NewFunc: armstorage.NewUsagesClient,
-		},
-		{
-			NewFunc: armstorage.NewEncryptionScopesClient,
-		},
-		{
-			NewFunc: armstorage.NewOperationsClient,
-		},
-		{
-			NewFunc: armstorage.NewTableClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage",
 		},
 		{
 			NewFunc: armstorage.NewFileServicesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage",
 		},
 		{
-			NewFunc: armstorage.NewManagementPoliciesClient,
+			NewFunc: armstorage.NewLocalUsersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage",
 		},
 		{
 			NewFunc: armstorage.NewPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage",
+		},
+		{
+			NewFunc: armstorage.NewBlobServicesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage",
+		},
+		{
+			NewFunc: armstorage.NewUsagesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage",
+		},
+		{
+			NewFunc: armstorage.NewSKUsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage",
+		},
+		{
+			NewFunc: armstorage.NewEncryptionScopesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage",
+		},
+		{
+			NewFunc: armstorage.NewBlobContainersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage",
+		},
+		{
+			NewFunc: armstorage.NewFileSharesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage",
+		},
+		{
+			NewFunc: armstorage.NewObjectReplicationPoliciesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage",
+		},
+		{
+			NewFunc: armstorage.NewPrivateEndpointConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage",
+		},
+		{
+			NewFunc: armstorage.NewQueueClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage",
 		},
 		{
 			NewFunc: armstorage.NewQueueServicesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage",
+		},
+		{
+			NewFunc: armstorage.NewBlobInventoryPoliciesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage",
+		},
+		{
+			NewFunc: armstorage.NewManagementPoliciesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage",
+		},
+		{
+			NewFunc: armstorage.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage",
+		},
+		{
+			NewFunc: armstorage.NewTableClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage",
 		},
 		{
 			NewFunc: armstorage.NewTableServicesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage",
+		},
+		{
+			NewFunc: armstorage.NewAccountsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armstorage())
 }

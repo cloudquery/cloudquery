@@ -6,74 +6,101 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn"
 func Armcdn() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armcdn.NewManagementClient,
-		},
-		{
-			NewFunc: armcdn.NewRoutesClient,
-		},
-		{
-			NewFunc: armcdn.NewRulesClient,
-		},
-		{
 			NewFunc: armcdn.NewLogAnalyticsClient,
-		},
-		{
-			NewFunc: armcdn.NewManagedRuleSetsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
 		},
 		{
 			NewFunc: armcdn.NewPoliciesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
 		},
 		{
 			NewFunc: armcdn.NewSecretsClient,
-		},
-		{
-			NewFunc: armcdn.NewValidateClient,
-		},
-		{
-			NewFunc: armcdn.NewEdgeNodesClient,
-		},
-		{
-			NewFunc: armcdn.NewOperationsClient,
-		},
-		{
-			NewFunc: armcdn.NewProfilesClient,
-		},
-		{
-			NewFunc: armcdn.NewAFDOriginGroupsClient,
-		},
-		{
-			NewFunc: armcdn.NewEndpointsClient,
-		},
-		{
-			NewFunc: armcdn.NewAFDEndpointsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
 		},
 		{
 			NewFunc: armcdn.NewAFDCustomDomainsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
 		},
 		{
-			NewFunc: armcdn.NewAFDProfilesClient,
+			NewFunc: armcdn.NewAFDOriginGroupsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
 		},
 		{
-			NewFunc: armcdn.NewResourceUsageClient,
-		},
-		{
-			NewFunc: armcdn.NewOriginGroupsClient,
-		},
-		{
-			NewFunc: armcdn.NewOriginsClient,
+			NewFunc: armcdn.NewEdgeNodesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
 		},
 		{
 			NewFunc: armcdn.NewRuleSetsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
 		},
 		{
-			NewFunc: armcdn.NewAFDOriginsClient,
+			NewFunc: armcdn.NewEndpointsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
+		},
+		{
+			NewFunc: armcdn.NewOriginsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
+		},
+		{
+			NewFunc: armcdn.NewOriginGroupsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
+		},
+		{
+			NewFunc: armcdn.NewResourceUsageClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
+		},
+		{
+			NewFunc: armcdn.NewValidateClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
+		},
+		{
+			NewFunc: armcdn.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
+		},
+		{
+			NewFunc: armcdn.NewRulesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
 		},
 		{
 			NewFunc: armcdn.NewCustomDomainsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
+		},
+		{
+			NewFunc: armcdn.NewManagementClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
+		},
+		{
+			NewFunc: armcdn.NewAFDEndpointsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
+		},
+		{
+			NewFunc: armcdn.NewAFDProfilesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
+		},
+		{
+			NewFunc: armcdn.NewProfilesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
 		},
 		{
 			NewFunc: armcdn.NewSecurityPoliciesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
+		},
+		{
+			NewFunc: armcdn.NewRoutesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
+		},
+		{
+			NewFunc: armcdn.NewAFDOriginsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
+		},
+		{
+			NewFunc: armcdn.NewManagedRuleSetsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armcdn())
 }

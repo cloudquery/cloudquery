@@ -6,23 +6,33 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blockchain/armbloc
 func Armblockchain() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armblockchain.NewMemberOperationResultsClient,
-		},
-		{
-			NewFunc: armblockchain.NewMembersClient,
-		},
-		{
-			NewFunc: armblockchain.NewOperationsClient,
-		},
-		{
 			NewFunc: armblockchain.NewSKUsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blockchain/armblockchain",
 		},
 		{
 			NewFunc: armblockchain.NewTransactionNodesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blockchain/armblockchain",
 		},
 		{
 			NewFunc: armblockchain.NewLocationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blockchain/armblockchain",
+		},
+		{
+			NewFunc: armblockchain.NewMemberOperationResultsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blockchain/armblockchain",
+		},
+		{
+			NewFunc: armblockchain.NewMembersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blockchain/armblockchain",
+		},
+		{
+			NewFunc: armblockchain.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blockchain/armblockchain",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armblockchain())
 }

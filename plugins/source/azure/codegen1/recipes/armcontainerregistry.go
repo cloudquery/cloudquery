@@ -6,50 +6,69 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/
 func Armcontainerregistry() []*Resource {
 	resources := []*Resource{
 		{
+			NewFunc: armcontainerregistry.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry",
+		},
+		{
 			NewFunc: armcontainerregistry.NewRunsClient,
-		},
-		{
-			NewFunc: armcontainerregistry.NewTaskRunsClient,
-		},
-		{
-			NewFunc: armcontainerregistry.NewTasksClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry",
 		},
 		{
 			NewFunc: armcontainerregistry.NewExportPipelinesClient,
-		},
-		{
-			NewFunc: armcontainerregistry.NewReplicationsClient,
-		},
-		{
-			NewFunc: armcontainerregistry.NewWebhooksClient,
-		},
-		{
-			NewFunc: armcontainerregistry.NewAgentPoolsClient,
-		},
-		{
-			NewFunc: armcontainerregistry.NewPipelineRunsClient,
-		},
-		{
-			NewFunc: armcontainerregistry.NewPrivateEndpointConnectionsClient,
-		},
-		{
-			NewFunc: armcontainerregistry.NewScopeMapsClient,
-		},
-		{
-			NewFunc: armcontainerregistry.NewTokensClient,
-		},
-		{
-			NewFunc: armcontainerregistry.NewConnectedRegistriesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry",
 		},
 		{
 			NewFunc: armcontainerregistry.NewImportPipelinesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry",
 		},
 		{
-			NewFunc: armcontainerregistry.NewOperationsClient,
+			NewFunc: armcontainerregistry.NewPipelineRunsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry",
+		},
+		{
+			NewFunc: armcontainerregistry.NewAgentPoolsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry",
 		},
 		{
 			NewFunc: armcontainerregistry.NewRegistriesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry",
+		},
+		{
+			NewFunc: armcontainerregistry.NewReplicationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry",
+		},
+		{
+			NewFunc: armcontainerregistry.NewScopeMapsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry",
+		},
+		{
+			NewFunc: armcontainerregistry.NewTasksClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry",
+		},
+		{
+			NewFunc: armcontainerregistry.NewConnectedRegistriesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry",
+		},
+		{
+			NewFunc: armcontainerregistry.NewWebhooksClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry",
+		},
+		{
+			NewFunc: armcontainerregistry.NewTokensClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry",
+		},
+		{
+			NewFunc: armcontainerregistry.NewPrivateEndpointConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry",
+		},
+		{
+			NewFunc: armcontainerregistry.NewTaskRunsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armcontainerregistry())
 }

@@ -6,23 +6,33 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/orbital/armorbital
 func Armorbital() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armorbital.NewAvailableGroundStationsClient,
-		},
-		{
-			NewFunc: armorbital.NewContactsClient,
-		},
-		{
-			NewFunc: armorbital.NewSpacecraftsClient,
+			NewFunc: armorbital.NewContactProfilesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/orbital/armorbital",
 		},
 		{
 			NewFunc: armorbital.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/orbital/armorbital",
+		},
+		{
+			NewFunc: armorbital.NewSpacecraftsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/orbital/armorbital",
+		},
+		{
+			NewFunc: armorbital.NewAvailableGroundStationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/orbital/armorbital",
+		},
+		{
+			NewFunc: armorbital.NewContactsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/orbital/armorbital",
 		},
 		{
 			NewFunc: armorbital.NewOperationsResultsClient,
-		},
-		{
-			NewFunc: armorbital.NewContactProfilesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/orbital/armorbital",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armorbital())
 }

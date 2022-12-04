@@ -7,10 +7,16 @@ func Armmarketplaceordering() []*Resource {
 	resources := []*Resource{
 		{
 			NewFunc: armmarketplaceordering.NewMarketplaceAgreementsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplaceordering/armmarketplaceordering",
 		},
 		{
 			NewFunc: armmarketplaceordering.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplaceordering/armmarketplaceordering",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armmarketplaceordering())
 }

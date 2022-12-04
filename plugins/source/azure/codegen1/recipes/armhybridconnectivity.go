@@ -7,10 +7,16 @@ func Armhybridconnectivity() []*Resource {
 	resources := []*Resource{
 		{
 			NewFunc: armhybridconnectivity.NewEndpointsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridconnectivity/armhybridconnectivity",
 		},
 		{
 			NewFunc: armhybridconnectivity.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridconnectivity/armhybridconnectivity",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armhybridconnectivity())
 }

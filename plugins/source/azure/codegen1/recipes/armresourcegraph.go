@@ -6,11 +6,17 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcegraph/armr
 func Armresourcegraph() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armresourcegraph.NewClient,
+			NewFunc: armresourcegraph.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcegraph/armresourcegraph",
 		},
 		{
-			NewFunc: armresourcegraph.NewOperationsClient,
+			NewFunc: armresourcegraph.NewClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcegraph/armresourcegraph",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armresourcegraph())
 }

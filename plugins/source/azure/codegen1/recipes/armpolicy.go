@@ -6,20 +6,29 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolic
 func Armpolicy() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armpolicy.NewDefinitionsClient,
+			NewFunc: armpolicy.NewAssignmentsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy",
 		},
 		{
-			NewFunc: armpolicy.NewExemptionsClient,
+			NewFunc: armpolicy.NewDefinitionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy",
 		},
 		{
 			NewFunc: armpolicy.NewSetDefinitionsClient,
-		},
-		{
-			NewFunc: armpolicy.NewAssignmentsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy",
 		},
 		{
 			NewFunc: armpolicy.NewDataPolicyManifestsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy",
+		},
+		{
+			NewFunc: armpolicy.NewExemptionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armpolicy())
 }

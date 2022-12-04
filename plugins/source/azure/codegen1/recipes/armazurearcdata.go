@@ -7,22 +7,32 @@ func Armazurearcdata() []*Resource {
 	resources := []*Resource{
 		{
 			NewFunc: armazurearcdata.NewDataControllersClient,
-		},
-		{
-			NewFunc: armazurearcdata.NewPostgresInstancesClient,
-		},
-		{
-			NewFunc: armazurearcdata.NewSQLServerInstancesClient,
-		},
-		{
-			NewFunc: armazurearcdata.NewActiveDirectoryConnectorsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata",
 		},
 		{
 			NewFunc: armazurearcdata.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata",
+		},
+		{
+			NewFunc: armazurearcdata.NewPostgresInstancesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata",
+		},
+		{
+			NewFunc: armazurearcdata.NewActiveDirectoryConnectorsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata",
 		},
 		{
 			NewFunc: armazurearcdata.NewSQLManagedInstancesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata",
+		},
+		{
+			NewFunc: armazurearcdata.NewSQLServerInstancesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armazurearcdata())
 }

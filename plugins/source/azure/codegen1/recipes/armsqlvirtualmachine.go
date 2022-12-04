@@ -6,17 +6,25 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sqlvirtualmachine/
 func Armsqlvirtualmachine() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armsqlvirtualmachine.NewGroupsClient,
-		},
-		{
-			NewFunc: armsqlvirtualmachine.NewSQLVirtualMachinesClient,
-		},
-		{
 			NewFunc: armsqlvirtualmachine.NewAvailabilityGroupListenersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sqlvirtualmachine/armsqlvirtualmachine",
+		},
+		{
+			NewFunc: armsqlvirtualmachine.NewGroupsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sqlvirtualmachine/armsqlvirtualmachine",
 		},
 		{
 			NewFunc: armsqlvirtualmachine.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sqlvirtualmachine/armsqlvirtualmachine",
+		},
+		{
+			NewFunc: armsqlvirtualmachine.NewSQLVirtualMachinesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sqlvirtualmachine/armsqlvirtualmachine",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armsqlvirtualmachine())
 }

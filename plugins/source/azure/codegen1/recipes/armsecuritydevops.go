@@ -6,35 +6,49 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securitydevops/arm
 func Armsecuritydevops() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armsecuritydevops.NewAzureDevOpsOrgClient,
-		},
-		{
 			NewFunc: armsecuritydevops.NewGitHubOwnerClient,
-		},
-		{
-			NewFunc: armsecuritydevops.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securitydevops/armsecuritydevops",
 		},
 		{
 			NewFunc: armsecuritydevops.NewAzureDevOpsProjectClient,
-		},
-		{
-			NewFunc: armsecuritydevops.NewGitHubConnectorStatsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securitydevops/armsecuritydevops",
 		},
 		{
 			NewFunc: armsecuritydevops.NewGitHubRepoClient,
-		},
-		{
-			NewFunc: armsecuritydevops.NewAzureDevOpsConnectorStatsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securitydevops/armsecuritydevops",
 		},
 		{
 			NewFunc: armsecuritydevops.NewAzureDevOpsConnectorClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securitydevops/armsecuritydevops",
 		},
 		{
-			NewFunc: armsecuritydevops.NewAzureDevOpsRepoClient,
+			NewFunc: armsecuritydevops.NewAzureDevOpsOrgClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securitydevops/armsecuritydevops",
 		},
 		{
 			NewFunc: armsecuritydevops.NewGitHubConnectorClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securitydevops/armsecuritydevops",
+		},
+		{
+			NewFunc: armsecuritydevops.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securitydevops/armsecuritydevops",
+		},
+		{
+			NewFunc: armsecuritydevops.NewAzureDevOpsConnectorStatsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securitydevops/armsecuritydevops",
+		},
+		{
+			NewFunc: armsecuritydevops.NewAzureDevOpsRepoClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securitydevops/armsecuritydevops",
+		},
+		{
+			NewFunc: armsecuritydevops.NewGitHubConnectorStatsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securitydevops/armsecuritydevops",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armsecuritydevops())
 }

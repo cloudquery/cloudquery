@@ -7,7 +7,12 @@ func Armdeploymentscripts() []*Resource {
 	resources := []*Resource{
 		{
 			NewFunc: armdeploymentscripts.NewClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeploymentscripts",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armdeploymentscripts())
 }

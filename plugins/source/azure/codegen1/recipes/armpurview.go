@@ -6,20 +6,29 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/purview/armpurview
 func Armpurview() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armpurview.NewAccountsClient,
-		},
-		{
-			NewFunc: armpurview.NewDefaultAccountsClient,
+			NewFunc: armpurview.NewOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/purview/armpurview",
 		},
 		{
 			NewFunc: armpurview.NewPrivateEndpointConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/purview/armpurview",
 		},
 		{
-			NewFunc: armpurview.NewOperationsClient,
+			NewFunc: armpurview.NewAccountsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/purview/armpurview",
+		},
+		{
+			NewFunc: armpurview.NewDefaultAccountsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/purview/armpurview",
 		},
 		{
 			NewFunc: armpurview.NewPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/purview/armpurview",
 		},
 	}
 	return resources
+}
+
+func init() {
+	Resources = append(Resources, Armpurview())
 }
