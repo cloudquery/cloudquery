@@ -7,4 +7,4 @@ select :'execution_time' as execution_time,
        allocation_id     as resource_id,
        'fail'            as status
 from aws_ec2_eips
-where instance_id is null
+where association_id is null
