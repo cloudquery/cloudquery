@@ -75,7 +75,7 @@ jobs:
           edit-mode: replace
       - name: Mark as breaking
         id: breaking
-        if: contains(steps.get-changes.outputs.result, "BREAKING CHANGE")
+        if: contains(steps.get-changes.outputs.result, 'BREAKING CHANGE')
         run: echo "status=true" >> $GITHUB_OUTPUT
   ensure-breaking-changes-released-as-major-bump:
     runs-on: ubuntu-latest
