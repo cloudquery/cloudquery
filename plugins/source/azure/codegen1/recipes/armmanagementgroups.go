@@ -6,28 +6,29 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementgroups/a
 func Armmanagementgroups() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armmanagementgroups.NewEntitiesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementgroups/armmanagementgroups",
-		},
-		{
 			NewFunc: armmanagementgroups.NewAPIClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementgroups/armmanagementgroups",
+			URL: "",
 		},
 		{
 			NewFunc: armmanagementgroups.NewClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementgroups/armmanagementgroups",
+			URL: "/providers/Microsoft.Management/managementGroups",
 		},
 		{
-			NewFunc: armmanagementgroups.NewOperationsClient,
+			NewFunc: armmanagementgroups.NewEntitiesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementgroups/armmanagementgroups",
+			URL: "/providers/Microsoft.Management/getEntities",
 		},
 		{
 			NewFunc: armmanagementgroups.NewHierarchySettingsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementgroups/armmanagementgroups",
+			URL: "/providers/Microsoft.Management/managementGroups/{groupId}/settings",
 		},
 		{
 			NewFunc: armmanagementgroups.NewManagementGroupSubscriptionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementgroups/armmanagementgroups",
+			URL: "",
 		},
 	}
 	return resources

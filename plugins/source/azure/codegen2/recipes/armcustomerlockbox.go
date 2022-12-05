@@ -12,14 +12,7 @@ func Armcustomerlockbox() []Table {
       Client: &armcustomerlockbox.RequestsClient{},
       ListFunc: (&armcustomerlockbox.RequestsClient{}).NewListPager,
 			NewFunc: armcustomerlockbox.NewRequestsClient,
-		},
-		{
-      Name: "operation",
-      Struct: &armcustomerlockbox.Operation{},
-      ResponseStruct: &armcustomerlockbox.OperationsClientListResponse{},
-      Client: &armcustomerlockbox.OperationsClient{},
-      ListFunc: (&armcustomerlockbox.OperationsClient{}).NewListPager,
-			NewFunc: armcustomerlockbox.NewOperationsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.CustomerLockbox/requests",
 		},
 	}
 

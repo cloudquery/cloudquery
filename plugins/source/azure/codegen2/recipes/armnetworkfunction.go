@@ -8,18 +8,20 @@ func Armnetworkfunction() []Table {
 		{
       Name: "azure_traffic_collector",
       Struct: &armnetworkfunction.AzureTrafficCollector{},
-      ResponseStruct: &armnetworkfunction.AzureTrafficCollectorsBySubscriptionClientListResponse{},
-      Client: &armnetworkfunction.AzureTrafficCollectorsBySubscriptionClient{},
-      ListFunc: (&armnetworkfunction.AzureTrafficCollectorsBySubscriptionClient{}).NewListPager,
-			NewFunc: armnetworkfunction.NewAzureTrafficCollectorsBySubscriptionClient,
-		},
-		{
-      Name: "azure_traffic_collector",
-      Struct: &armnetworkfunction.AzureTrafficCollector{},
       ResponseStruct: &armnetworkfunction.AzureTrafficCollectorsByResourceGroupClientListResponse{},
       Client: &armnetworkfunction.AzureTrafficCollectorsByResourceGroupClient{},
       ListFunc: (&armnetworkfunction.AzureTrafficCollectorsByResourceGroupClient{}).NewListPager,
 			NewFunc: armnetworkfunction.NewAzureTrafficCollectorsByResourceGroupClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction/azureTrafficCollectors",
+		},
+		{
+      Name: "azure_traffic_collector",
+      Struct: &armnetworkfunction.AzureTrafficCollector{},
+      ResponseStruct: &armnetworkfunction.AzureTrafficCollectorsBySubscriptionClientListResponse{},
+      Client: &armnetworkfunction.AzureTrafficCollectorsBySubscriptionClient{},
+      ListFunc: (&armnetworkfunction.AzureTrafficCollectorsBySubscriptionClient{}).NewListPager,
+			NewFunc: armnetworkfunction.NewAzureTrafficCollectorsBySubscriptionClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.NetworkFunction/azureTrafficCollectors",
 		},
 		{
       Name: "collector_policy",
@@ -28,6 +30,7 @@ func Armnetworkfunction() []Table {
       Client: &armnetworkfunction.CollectorPoliciesClient{},
       ListFunc: (&armnetworkfunction.CollectorPoliciesClient{}).NewListPager,
 			NewFunc: armnetworkfunction.NewCollectorPoliciesClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction/azureTrafficCollectors/{azureTrafficCollectorName}/collectorPolicies",
 		},
 	}
 

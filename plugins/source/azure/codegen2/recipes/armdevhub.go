@@ -12,6 +12,7 @@ func Armdevhub() []Table {
       Client: &armdevhub.WorkflowClient{},
       ListFunc: (&armdevhub.WorkflowClient{}).NewListPager,
 			NewFunc: armdevhub.NewWorkflowClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DevHub/workflows",
 		},
 	}
 

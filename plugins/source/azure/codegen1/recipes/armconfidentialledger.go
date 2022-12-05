@@ -6,16 +6,14 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confidentialledger
 func Armconfidentialledger() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armconfidentialledger.NewLedgerClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confidentialledger/armconfidentialledger",
-		},
-		{
-			NewFunc: armconfidentialledger.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confidentialledger/armconfidentialledger",
-		},
-		{
 			NewFunc: armconfidentialledger.NewClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confidentialledger/armconfidentialledger",
+			URL: "",
+		},
+		{
+			NewFunc: armconfidentialledger.NewLedgerClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confidentialledger/armconfidentialledger",
+			URL: "",
 		},
 	}
 	return resources

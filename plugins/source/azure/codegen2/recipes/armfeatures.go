@@ -12,6 +12,7 @@ func Armfeatures() []Table {
       Client: &armfeatures.Client{},
       ListFunc: (&armfeatures.Client{}).NewListPager,
 			NewFunc: armfeatures.NewClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Features/providers/{resourceProviderNamespace}/features",
 		},
 	}
 

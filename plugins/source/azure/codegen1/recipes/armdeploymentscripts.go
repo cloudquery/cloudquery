@@ -8,6 +8,7 @@ func Armdeploymentscripts() []*Resource {
 		{
 			NewFunc: armdeploymentscripts.NewClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeploymentscripts",
+			URL: "",
 		},
 	}
 	return resources

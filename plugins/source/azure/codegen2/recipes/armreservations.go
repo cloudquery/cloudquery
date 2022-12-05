@@ -12,6 +12,7 @@ func Armreservations() []Table {
       Client: &armreservations.OperationClient{},
       ListFunc: (&armreservations.OperationClient{}).NewListPager,
 			NewFunc: armreservations.NewOperationClient,
+			URL: "/providers/Microsoft.Capacity/operations",
 		},
 		{
       Name: "current_quota_limit_base",
@@ -20,6 +21,7 @@ func Armreservations() []Table {
       Client: &armreservations.QuotaClient{},
       ListFunc: (&armreservations.QuotaClient{}).NewListPager,
 			NewFunc: armreservations.NewQuotaClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/resourceProviders/{providerId}/locations/{location}/serviceLimits",
 		},
 		{
       Name: "quota_request_details",
@@ -28,6 +30,7 @@ func Armreservations() []Table {
       Client: &armreservations.QuotaRequestStatusClient{},
       ListFunc: (&armreservations.QuotaRequestStatusClient{}).NewListPager,
 			NewFunc: armreservations.NewQuotaRequestStatusClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/resourceProviders/{providerId}/locations/{location}/serviceLimitsRequests",
 		},
 		{
       Name: "reservation_response",
@@ -36,6 +39,7 @@ func Armreservations() []Table {
       Client: &armreservations.ReservationClient{},
       ListFunc: (&armreservations.ReservationClient{}).NewListPager,
 			NewFunc: armreservations.NewReservationClient,
+			URL: "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations",
 		},
 		{
       Name: "reservation_order_response",
@@ -44,6 +48,7 @@ func Armreservations() []Table {
       Client: &armreservations.ReservationOrderClient{},
       ListFunc: (&armreservations.ReservationOrderClient{}).NewListPager,
 			NewFunc: armreservations.NewReservationOrderClient,
+			URL: "/providers/Microsoft.Capacity/reservationOrders",
 		},
 	}
 

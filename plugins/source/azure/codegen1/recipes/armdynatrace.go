@@ -8,18 +8,17 @@ func Armdynatrace() []*Resource {
 		{
 			NewFunc: armdynatrace.NewMonitorsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dynatrace/armdynatrace",
+			URL: "",
 		},
 		{
 			NewFunc: armdynatrace.NewSingleSignOnClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dynatrace/armdynatrace",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/singleSignOnConfigurations",
 		},
 		{
 			NewFunc: armdynatrace.NewTagRulesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dynatrace/armdynatrace",
-		},
-		{
-			NewFunc: armdynatrace.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dynatrace/armdynatrace",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/tagRules",
 		},
 	}
 	return resources

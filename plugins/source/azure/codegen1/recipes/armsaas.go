@@ -6,28 +6,29 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/saas/armsaas"
 func Armsaas() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armsaas.NewOperationsClient,
+			NewFunc: armsaas.NewApplicationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/saas/armsaas",
-		},
-		{
-			NewFunc: armsaas.NewSubscriptionLevelClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/saas/armsaas",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SaaS/applications",
 		},
 		{
 			NewFunc: armsaas.NewClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/saas/armsaas",
+			URL: "",
 		},
 		{
 			NewFunc: armsaas.NewOperationClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/saas/armsaas",
+			URL: "",
 		},
 		{
 			NewFunc: armsaas.NewResourcesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/saas/armsaas",
+			URL: "/providers/Microsoft.SaaS/saasresources",
 		},
 		{
-			NewFunc: armsaas.NewApplicationsClient,
+			NewFunc: armsaas.NewSubscriptionLevelClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/saas/armsaas",
+			URL: "",
 		},
 	}
 	return resources

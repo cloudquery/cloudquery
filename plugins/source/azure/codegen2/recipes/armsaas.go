@@ -6,12 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/saas/armsaas"
 func Armsaas() []Table {
 	tables := []Table{
 		{
-      Name: "app_operation",
-      Struct: &armsaas.AppOperation{},
-      ResponseStruct: &armsaas.OperationsClientListResponse{},
-      Client: &armsaas.OperationsClient{},
-      ListFunc: (&armsaas.OperationsClient{}).NewListPager,
-			NewFunc: armsaas.NewOperationsClient,
+      Name: "app",
+      Struct: &armsaas.App{},
+      ResponseStruct: &armsaas.ApplicationsClientListResponse{},
+      Client: &armsaas.ApplicationsClient{},
+      ListFunc: (&armsaas.ApplicationsClient{}).NewListPager,
+			NewFunc: armsaas.NewApplicationsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SaaS/applications",
 		},
 		{
       Name: "resource",
@@ -20,14 +21,7 @@ func Armsaas() []Table {
       Client: &armsaas.ResourcesClient{},
       ListFunc: (&armsaas.ResourcesClient{}).NewListPager,
 			NewFunc: armsaas.NewResourcesClient,
-		},
-		{
-      Name: "app",
-      Struct: &armsaas.App{},
-      ResponseStruct: &armsaas.ApplicationsClientListResponse{},
-      Client: &armsaas.ApplicationsClient{},
-      ListFunc: (&armsaas.ApplicationsClient{}).NewListPager,
-			NewFunc: armsaas.NewApplicationsClient,
+			URL: "/providers/Microsoft.SaaS/saasresources",
 		},
 	}
 

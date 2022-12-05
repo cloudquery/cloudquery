@@ -6,28 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb
 func Armmariadb() []Table {
 	tables := []Table{
 		{
-      Name: "server",
-      Struct: &armmariadb.Server{},
-      ResponseStruct: &armmariadb.ServersClientListResponse{},
-      Client: &armmariadb.ServersClient{},
-      ListFunc: (&armmariadb.ServersClient{}).NewListPager,
-			NewFunc: armmariadb.NewServersClient,
-		},
-		{
-      Name: "performance_tier_properties",
-      Struct: &armmariadb.PerformanceTierProperties{},
-      ResponseStruct: &armmariadb.ServerBasedPerformanceTierClientListResponse{},
-      Client: &armmariadb.ServerBasedPerformanceTierClient{},
-      ListFunc: (&armmariadb.ServerBasedPerformanceTierClient{}).NewListPager,
-			NewFunc: armmariadb.NewServerBasedPerformanceTierClient,
-		},
-		{
       Name: "performance_tier_properties",
       Struct: &armmariadb.PerformanceTierProperties{},
       ResponseStruct: &armmariadb.LocationBasedPerformanceTierClientListResponse{},
       Client: &armmariadb.LocationBasedPerformanceTierClient{},
       ListFunc: (&armmariadb.LocationBasedPerformanceTierClient{}).NewListPager,
 			NewFunc: armmariadb.NewLocationBasedPerformanceTierClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMariaDB/locations/{locationName}/performanceTiers",
 		},
 		{
       Name: "recommendation_action",
@@ -36,6 +21,25 @@ func Armmariadb() []Table {
       Client: &armmariadb.LocationBasedRecommendedActionSessionsResultClient{},
       ListFunc: (&armmariadb.LocationBasedRecommendedActionSessionsResultClient{}).NewListPager,
 			NewFunc: armmariadb.NewLocationBasedRecommendedActionSessionsResultClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMariaDB/locations/{locationName}/recommendedActionSessionsOperationResults/{operationId}",
+		},
+		{
+      Name: "performance_tier_properties",
+      Struct: &armmariadb.PerformanceTierProperties{},
+      ResponseStruct: &armmariadb.ServerBasedPerformanceTierClientListResponse{},
+      Client: &armmariadb.ServerBasedPerformanceTierClient{},
+      ListFunc: (&armmariadb.ServerBasedPerformanceTierClient{}).NewListPager,
+			NewFunc: armmariadb.NewServerBasedPerformanceTierClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMariaDB/servers/{serverName}/performanceTiers",
+		},
+		{
+      Name: "server",
+      Struct: &armmariadb.Server{},
+      ResponseStruct: &armmariadb.ServersClientListResponse{},
+      Client: &armmariadb.ServersClient{},
+      ListFunc: (&armmariadb.ServersClient{}).NewListPager,
+			NewFunc: armmariadb.NewServersClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMariaDB/servers",
 		},
 	}
 

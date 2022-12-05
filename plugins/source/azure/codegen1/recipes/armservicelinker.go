@@ -6,12 +6,9 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicelinker/arms
 func Armservicelinker() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armservicelinker.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicelinker/armservicelinker",
-		},
-		{
 			NewFunc: armservicelinker.NewLinkerClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicelinker/armservicelinker",
+			URL: "/{resourceUri}/providers/Microsoft.ServiceLinker/linkers",
 		},
 	}
 	return resources

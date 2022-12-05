@@ -12,14 +12,7 @@ func Armdatabox() []Table {
       Client: &armdatabox.JobsClient{},
       ListFunc: (&armdatabox.JobsClient{}).NewListPager,
 			NewFunc: armdatabox.NewJobsClient,
-		},
-		{
-      Name: "operation",
-      Struct: &armdatabox.Operation{},
-      ResponseStruct: &armdatabox.OperationsClientListResponse{},
-      Client: &armdatabox.OperationsClient{},
-      ListFunc: (&armdatabox.OperationsClient{}).NewListPager,
-			NewFunc: armdatabox.NewOperationsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DataBox/jobs",
 		},
 	}
 

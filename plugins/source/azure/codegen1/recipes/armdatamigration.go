@@ -8,34 +8,37 @@ func Armdatamigration() []*Resource {
 		{
 			NewFunc: armdatamigration.NewFilesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration",
-		},
-		{
-			NewFunc: armdatamigration.NewServiceTasksClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration",
-		},
-		{
-			NewFunc: armdatamigration.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration",
-		},
-		{
-			NewFunc: armdatamigration.NewResourceSKUsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration",
-		},
-		{
-			NewFunc: armdatamigration.NewTasksClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration",
-		},
-		{
-			NewFunc: armdatamigration.NewUsagesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/projects/{projectName}/files",
 		},
 		{
 			NewFunc: armdatamigration.NewProjectsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/projects",
+		},
+		{
+			NewFunc: armdatamigration.NewResourceSKUsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration",
+			URL: "",
+		},
+		{
+			NewFunc: armdatamigration.NewServiceTasksClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/serviceTasks",
 		},
 		{
 			NewFunc: armdatamigration.NewServicesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DataMigration/services",
+		},
+		{
+			NewFunc: armdatamigration.NewTasksClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/projects/{projectName}/tasks",
+		},
+		{
+			NewFunc: armdatamigration.NewUsagesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DataMigration/locations/{location}/usages",
 		},
 	}
 	return resources

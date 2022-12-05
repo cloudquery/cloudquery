@@ -6,24 +6,29 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/ar
 func Armnetworkfunction() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armnetworkfunction.NewAzureTrafficCollectorsBySubscriptionClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction",
-		},
-		{
 			NewFunc: armnetworkfunction.NewAzureTrafficCollectorsByResourceGroupClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction/azureTrafficCollectors",
 		},
 		{
-			NewFunc: armnetworkfunction.NewClient,
+			NewFunc: armnetworkfunction.NewAzureTrafficCollectorsBySubscriptionClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction",
-		},
-		{
-			NewFunc: armnetworkfunction.NewCollectorPoliciesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.NetworkFunction/azureTrafficCollectors",
 		},
 		{
 			NewFunc: armnetworkfunction.NewAzureTrafficCollectorsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction",
+			URL: "",
+		},
+		{
+			NewFunc: armnetworkfunction.NewClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction",
+			URL: "",
+		},
+		{
+			NewFunc: armnetworkfunction.NewCollectorPoliciesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction/azureTrafficCollectors/{azureTrafficCollectorName}/collectorPolicies",
 		},
 	}
 	return resources

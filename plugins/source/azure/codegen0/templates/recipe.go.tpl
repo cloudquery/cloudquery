@@ -5,10 +5,11 @@ import "{{.Mod.Path}}"
 
 func {{.BaseName | ToCamel}}() []*Resource {
 	resources := []*Resource{
-    {{- range .NewFuncs}}
+    {{- range $key, $value := .Clients}}
 		{
-			NewFunc: {{$.BaseName}}.{{.}},
+			NewFunc: {{$.BaseName}}.{{$value.NewFuncName}},
 			PkgPath: "{{$.Mod.Path}}",
+			URL: "{{$value.URL}}",
 		},
     {{- end}}
 	}

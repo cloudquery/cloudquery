@@ -12,6 +12,7 @@ func Armchanges() []Table {
       Client: &armchanges.Client{},
       ListFunc: (&armchanges.Client{}).NewListPager,
 			NewFunc: armchanges.NewClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}/providers/Microsoft.Resources/changes",
 		},
 	}
 

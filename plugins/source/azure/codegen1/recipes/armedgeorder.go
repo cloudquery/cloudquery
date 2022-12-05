@@ -8,6 +8,7 @@ func Armedgeorder() []*Resource {
 		{
 			NewFunc: armedgeorder.NewManagementClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/edgeorder/armedgeorder",
+			URL: "",
 		},
 	}
 	return resources

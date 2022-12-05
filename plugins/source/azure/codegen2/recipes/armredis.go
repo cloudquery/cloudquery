@@ -6,20 +6,22 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis"
 func Armredis() []Table {
 	tables := []Table{
 		{
+      Name: "firewall_rule",
+      Struct: &armredis.FirewallRule{},
+      ResponseStruct: &armredis.FirewallRulesClientListResponse{},
+      Client: &armredis.FirewallRulesClient{},
+      ListFunc: (&armredis.FirewallRulesClient{}).NewListPager,
+			NewFunc: armredis.NewFirewallRulesClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/firewallRules",
+		},
+		{
       Name: "linked_server_with_properties",
       Struct: &armredis.LinkedServerWithProperties{},
       ResponseStruct: &armredis.LinkedServerClientListResponse{},
       Client: &armredis.LinkedServerClient{},
       ListFunc: (&armredis.LinkedServerClient{}).NewListPager,
 			NewFunc: armredis.NewLinkedServerClient,
-		},
-		{
-      Name: "operation",
-      Struct: &armredis.Operation{},
-      ResponseStruct: &armredis.OperationsClientListResponse{},
-      Client: &armredis.OperationsClient{},
-      ListFunc: (&armredis.OperationsClient{}).NewListPager,
-			NewFunc: armredis.NewOperationsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}/linkedServers",
 		},
 		{
       Name: "private_endpoint_connection",
@@ -28,14 +30,7 @@ func Armredis() []Table {
       Client: &armredis.PrivateEndpointConnectionsClient{},
       ListFunc: (&armredis.PrivateEndpointConnectionsClient{}).NewListPager,
 			NewFunc: armredis.NewPrivateEndpointConnectionsClient,
-		},
-		{
-      Name: "firewall_rule",
-      Struct: &armredis.FirewallRule{},
-      ResponseStruct: &armredis.FirewallRulesClientListResponse{},
-      Client: &armredis.FirewallRulesClient{},
-      ListFunc: (&armredis.FirewallRulesClient{}).NewListPager,
-			NewFunc: armredis.NewFirewallRulesClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/privateEndpointConnections",
 		},
 	}
 

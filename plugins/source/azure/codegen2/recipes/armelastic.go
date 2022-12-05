@@ -6,28 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic
 func Armelastic() []Table {
 	tables := []Table{
 		{
-      Name: "monitoring_tag_rules",
-      Struct: &armelastic.MonitoringTagRules{},
-      ResponseStruct: &armelastic.TagRulesClientListResponse{},
-      Client: &armelastic.TagRulesClient{},
-      ListFunc: (&armelastic.TagRulesClient{}).NewListPager,
-			NewFunc: armelastic.NewTagRulesClient,
-		},
-		{
-      Name: "vm_resources",
-      Struct: &armelastic.VMResources{},
-      ResponseStruct: &armelastic.VMHostClientListResponse{},
-      Client: &armelastic.VMHostClient{},
-      ListFunc: (&armelastic.VMHostClient{}).NewListPager,
-			NewFunc: armelastic.NewVMHostClient,
-		},
-		{
       Name: "monitored_resource",
       Struct: &armelastic.MonitoredResource{},
       ResponseStruct: &armelastic.MonitoredResourcesClientListResponse{},
       Client: &armelastic.MonitoredResourcesClient{},
       ListFunc: (&armelastic.MonitoredResourcesClient{}).NewListPager,
 			NewFunc: armelastic.NewMonitoredResourcesClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/listMonitoredResources",
 		},
 		{
       Name: "monitor_resource",
@@ -36,14 +21,25 @@ func Armelastic() []Table {
       Client: &armelastic.MonitorsClient{},
       ListFunc: (&armelastic.MonitorsClient{}).NewListPager,
 			NewFunc: armelastic.NewMonitorsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Elastic/monitors",
 		},
 		{
-      Name: "operation_result",
-      Struct: &armelastic.OperationResult{},
-      ResponseStruct: &armelastic.OperationsClientListResponse{},
-      Client: &armelastic.OperationsClient{},
-      ListFunc: (&armelastic.OperationsClient{}).NewListPager,
-			NewFunc: armelastic.NewOperationsClient,
+      Name: "monitoring_tag_rules",
+      Struct: &armelastic.MonitoringTagRules{},
+      ResponseStruct: &armelastic.TagRulesClientListResponse{},
+      Client: &armelastic.TagRulesClient{},
+      ListFunc: (&armelastic.TagRulesClient{}).NewListPager,
+			NewFunc: armelastic.NewTagRulesClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/tagRules",
+		},
+		{
+      Name: "vm_resources",
+      Struct: &armelastic.VMResources{},
+      ResponseStruct: &armelastic.VMHostClientListResponse{},
+      Client: &armelastic.VMHostClient{},
+      ListFunc: (&armelastic.VMHostClient{}).NewListPager,
+			NewFunc: armelastic.NewVMHostClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/listVMHost",
 		},
 	}
 

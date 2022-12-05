@@ -6,128 +6,154 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
 func Armcosmos() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armcosmos.NewNotebookWorkspacesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
-		},
-		{
-			NewFunc: armcosmos.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
-		},
-		{
-			NewFunc: armcosmos.NewTableResourcesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
-		},
-		{
-			NewFunc: armcosmos.NewCollectionPartitionClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
-		},
-		{
-			NewFunc: armcosmos.NewDatabaseAccountRegionClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
-		},
-		{
-			NewFunc: armcosmos.NewCollectionRegionClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
-		},
-		{
-			NewFunc: armcosmos.NewPartitionKeyRangeIDRegionClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
-		},
-		{
-			NewFunc: armcosmos.NewPercentileClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
-		},
-		{
-			NewFunc: armcosmos.NewSQLResourcesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
-		},
-		{
 			NewFunc: armcosmos.NewCassandraClustersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
-		},
-		{
-			NewFunc: armcosmos.NewCassandraResourcesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
-		},
-		{
-			NewFunc: armcosmos.NewMongoDBResourcesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
-		},
-		{
-			NewFunc: armcosmos.NewPartitionKeyRangeIDClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
-		},
-		{
-			NewFunc: armcosmos.NewPercentileTargetClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
-		},
-		{
-			NewFunc: armcosmos.NewRestorableSQLResourcesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
-		},
-		{
-			NewFunc: armcosmos.NewRestorableDatabaseAccountsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
-		},
-		{
-			NewFunc: armcosmos.NewRestorableSQLContainersClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
-		},
-		{
-			NewFunc: armcosmos.NewRestorableSQLDatabasesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
-		},
-		{
-			NewFunc: armcosmos.NewCollectionClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
-		},
-		{
-			NewFunc: armcosmos.NewGremlinResourcesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
-		},
-		{
-			NewFunc: armcosmos.NewPercentileSourceTargetClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
-		},
-		{
-			NewFunc: armcosmos.NewPrivateLinkResourcesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
-		},
-		{
-			NewFunc: armcosmos.NewRestorableMongodbCollectionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
-		},
-		{
-			NewFunc: armcosmos.NewRestorableMongodbResourcesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
-		},
-		{
-			NewFunc: armcosmos.NewCollectionPartitionRegionClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
-		},
-		{
-			NewFunc: armcosmos.NewLocationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
-		},
-		{
-			NewFunc: armcosmos.NewPrivateEndpointConnectionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
+			URL: "",
 		},
 		{
 			NewFunc: armcosmos.NewCassandraDataCentersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/cassandraClusters/{clusterName}/dataCenters",
+		},
+		{
+			NewFunc: armcosmos.NewCassandraResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
+			URL: "",
+		},
+		{
+			NewFunc: armcosmos.NewCollectionClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
+			URL: "",
+		},
+		{
+			NewFunc: armcosmos.NewCollectionPartitionClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
+			URL: "",
+		},
+		{
+			NewFunc: armcosmos.NewCollectionPartitionRegionClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
+			URL: "",
+		},
+		{
+			NewFunc: armcosmos.NewCollectionRegionClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
+			URL: "",
+		},
+		{
+			NewFunc: armcosmos.NewDatabaseAccountRegionClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
+			URL: "",
 		},
 		{
 			NewFunc: armcosmos.NewDatabaseAccountsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
-		},
-		{
-			NewFunc: armcosmos.NewRestorableMongodbDatabasesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/databaseAccounts",
 		},
 		{
 			NewFunc: armcosmos.NewDatabaseClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
+			URL: "",
+		},
+		{
+			NewFunc: armcosmos.NewGremlinResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
+			URL: "",
+		},
+		{
+			NewFunc: armcosmos.NewLocationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations",
+		},
+		{
+			NewFunc: armcosmos.NewMongoDBResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
+			URL: "",
+		},
+		{
+			NewFunc: armcosmos.NewNotebookWorkspacesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
+			URL: "",
+		},
+		{
+			NewFunc: armcosmos.NewPartitionKeyRangeIDClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
+			URL: "",
+		},
+		{
+			NewFunc: armcosmos.NewPartitionKeyRangeIDRegionClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
+			URL: "",
+		},
+		{
+			NewFunc: armcosmos.NewPercentileClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
+			URL: "",
+		},
+		{
+			NewFunc: armcosmos.NewPercentileSourceTargetClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
+			URL: "",
+		},
+		{
+			NewFunc: armcosmos.NewPercentileTargetClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
+			URL: "",
+		},
+		{
+			NewFunc: armcosmos.NewPrivateEndpointConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
+			URL: "",
+		},
+		{
+			NewFunc: armcosmos.NewPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
+			URL: "",
+		},
+		{
+			NewFunc: armcosmos.NewRestorableDatabaseAccountsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/restorableDatabaseAccounts",
+		},
+		{
+			NewFunc: armcosmos.NewRestorableMongodbCollectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{instanceId}/restorableMongodbCollections",
+		},
+		{
+			NewFunc: armcosmos.NewRestorableMongodbDatabasesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{instanceId}/restorableMongodbDatabases",
+		},
+		{
+			NewFunc: armcosmos.NewRestorableMongodbResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{instanceId}/restorableMongodbResources",
+		},
+		{
+			NewFunc: armcosmos.NewRestorableSQLContainersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{instanceId}/restorableSqlContainers",
+		},
+		{
+			NewFunc: armcosmos.NewRestorableSQLDatabasesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{instanceId}/restorableSqlDatabases",
+		},
+		{
+			NewFunc: armcosmos.NewRestorableSQLResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{instanceId}/restorableSqlResources",
+		},
+		{
+			NewFunc: armcosmos.NewSQLResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
+			URL: "",
+		},
+		{
+			NewFunc: armcosmos.NewTableResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
+			URL: "",
 		},
 	}
 	return resources

@@ -5,22 +5,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blueprint/armbluep
 
 func Armblueprint() []Table {
 	tables := []Table{
-		// {
-    //   Name: "artifact_classification",
-    //   Struct: &armblueprint.ArtifactClassification{},
-    //   ResponseStruct: &armblueprint.PublishedArtifactsClientListResponse{},
-    //   Client: &armblueprint.PublishedArtifactsClient{},
-    //   ListFunc: (&armblueprint.PublishedArtifactsClient{}).NewListPager,
-		// 	NewFunc: armblueprint.NewPublishedArtifactsClient,
-		// },
-		{
-      Name: "published_blueprint",
-      Struct: &armblueprint.PublishedBlueprint{},
-      ResponseStruct: &armblueprint.PublishedBlueprintsClientListResponse{},
-      Client: &armblueprint.PublishedBlueprintsClient{},
-      ListFunc: (&armblueprint.PublishedBlueprintsClient{}).NewListPager,
-			NewFunc: armblueprint.NewPublishedBlueprintsClient,
-		},
 		{
       Name: "assignment_operation",
       Struct: &armblueprint.AssignmentOperation{},
@@ -28,6 +12,7 @@ func Armblueprint() []Table {
       Client: &armblueprint.AssignmentOperationsClient{},
       ListFunc: (&armblueprint.AssignmentOperationsClient{}).NewListPager,
 			NewFunc: armblueprint.NewAssignmentOperationsClient,
+			URL: "/{resourceScope}/providers/Microsoft.Blueprint/blueprintAssignments/{assignmentName}/assignmentOperations",
 		},
 		{
       Name: "assignment",
@@ -36,15 +21,8 @@ func Armblueprint() []Table {
       Client: &armblueprint.AssignmentsClient{},
       ListFunc: (&armblueprint.AssignmentsClient{}).NewListPager,
 			NewFunc: armblueprint.NewAssignmentsClient,
+			URL: "/{resourceScope}/providers/Microsoft.Blueprint/blueprintAssignments",
 		},
-		// {
-    //   Name: "artifact_classification",
-    //   Struct: &armblueprint.ArtifactClassification{},
-    //   ResponseStruct: &armblueprint.ArtifactsClientListResponse{},
-    //   Client: &armblueprint.ArtifactsClient{},
-    //   ListFunc: (&armblueprint.ArtifactsClient{}).NewListPager,
-		// 	NewFunc: armblueprint.NewArtifactsClient,
-		// },
 		{
       Name: "blueprint",
       Struct: &armblueprint.Blueprint{},
@@ -52,6 +30,16 @@ func Armblueprint() []Table {
       Client: &armblueprint.BlueprintsClient{},
       ListFunc: (&armblueprint.BlueprintsClient{}).NewListPager,
 			NewFunc: armblueprint.NewBlueprintsClient,
+			URL: "/{resourceScope}/providers/Microsoft.Blueprint/blueprints",
+		},
+		{
+      Name: "published_blueprint",
+      Struct: &armblueprint.PublishedBlueprint{},
+      ResponseStruct: &armblueprint.PublishedBlueprintsClientListResponse{},
+      Client: &armblueprint.PublishedBlueprintsClient{},
+      ListFunc: (&armblueprint.PublishedBlueprintsClient{}).NewListPager,
+			NewFunc: armblueprint.NewPublishedBlueprintsClient,
+			URL: "/{resourceScope}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/versions",
 		},
 	}
 

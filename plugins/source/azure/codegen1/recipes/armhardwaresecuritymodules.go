@@ -8,10 +8,7 @@ func Armhardwaresecuritymodules() []*Resource {
 		{
 			NewFunc: armhardwaresecuritymodules.NewDedicatedHsmClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hardwaresecuritymodules/armhardwaresecuritymodules",
-		},
-		{
-			NewFunc: armhardwaresecuritymodules.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hardwaresecuritymodules/armhardwaresecuritymodules",
+			URL: "",
 		},
 	}
 	return resources

@@ -6,36 +6,39 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresou
 func Armresources() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armresources.NewDeploymentOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources",
-		},
-		{
-			NewFunc: armresources.NewProviderResourceTypesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources",
-		},
-		{
-			NewFunc: armresources.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources",
-		},
-		{
 			NewFunc: armresources.NewClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources",
+			URL: "/subscriptions/{subscriptionId}/resources",
+		},
+		{
+			NewFunc: armresources.NewDeploymentOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources",
+			URL: "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/deployments/{deploymentName}/operations",
 		},
 		{
 			NewFunc: armresources.NewDeploymentsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources",
+			URL: "",
 		},
 		{
-			NewFunc: armresources.NewResourceGroupsClient,
+			NewFunc: armresources.NewProviderResourceTypesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources",
+			URL: "/subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}/resourceTypes",
 		},
 		{
 			NewFunc: armresources.NewProvidersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources",
+			URL: "/subscriptions/{subscriptionId}/providers",
+		},
+		{
+			NewFunc: armresources.NewResourceGroupsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources",
+			URL: "/subscriptions/{subscriptionId}/resourcegroups",
 		},
 		{
 			NewFunc: armresources.NewTagsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources",
+			URL: "/subscriptions/{subscriptionId}/tagNames",
 		},
 	}
 	return resources

@@ -12,14 +12,7 @@ func Armbotservice() []Table {
       Client: &armbotservice.BotsClient{},
       ListFunc: (&armbotservice.BotsClient{}).NewListPager,
 			NewFunc: armbotservice.NewBotsClient,
-		},
-		{
-      Name: "operation_entity",
-      Struct: &armbotservice.OperationEntity{},
-      ResponseStruct: &armbotservice.OperationsClientListResponse{},
-      Client: &armbotservice.OperationsClient{},
-      ListFunc: (&armbotservice.OperationsClient{}).NewListPager,
-			NewFunc: armbotservice.NewOperationsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.BotService/botServices",
 		},
 		{
       Name: "private_endpoint_connection",
@@ -28,6 +21,7 @@ func Armbotservice() []Table {
       Client: &armbotservice.PrivateEndpointConnectionsClient{},
       ListFunc: (&armbotservice.PrivateEndpointConnectionsClient{}).NewListPager,
 			NewFunc: armbotservice.NewPrivateEndpointConnectionsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BotService/botServices/{resourceName}/privateEndpointConnections",
 		},
 	}
 

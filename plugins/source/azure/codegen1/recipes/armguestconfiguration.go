@@ -6,32 +6,34 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/guestconfiguration
 func Armguestconfiguration() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armguestconfiguration.NewHCRPAssignmentReportsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/guestconfiguration/armguestconfiguration",
-		},
-		{
-			NewFunc: armguestconfiguration.NewAssignmentsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/guestconfiguration/armguestconfiguration",
-		},
-		{
-			NewFunc: armguestconfiguration.NewAssignmentsVMSSClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/guestconfiguration/armguestconfiguration",
-		},
-		{
-			NewFunc: armguestconfiguration.NewHCRPAssignmentsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/guestconfiguration/armguestconfiguration",
-		},
-		{
-			NewFunc: armguestconfiguration.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/guestconfiguration/armguestconfiguration",
-		},
-		{
 			NewFunc: armguestconfiguration.NewAssignmentReportsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/guestconfiguration/armguestconfiguration",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments/{guestConfigurationAssignmentName}/reports",
 		},
 		{
 			NewFunc: armguestconfiguration.NewAssignmentReportsVMSSClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/guestconfiguration/armguestconfiguration",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmssName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments/{name}/reports",
+		},
+		{
+			NewFunc: armguestconfiguration.NewAssignmentsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/guestconfiguration/armguestconfiguration",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments",
+		},
+		{
+			NewFunc: armguestconfiguration.NewAssignmentsVMSSClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/guestconfiguration/armguestconfiguration",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmssName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments",
+		},
+		{
+			NewFunc: armguestconfiguration.NewHCRPAssignmentReportsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/guestconfiguration/armguestconfiguration",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments/{guestConfigurationAssignmentName}/reports",
+		},
+		{
+			NewFunc: armguestconfiguration.NewHCRPAssignmentsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/guestconfiguration/armguestconfiguration",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments",
 		},
 	}
 	return resources

@@ -6,28 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kubernetesconfigur
 func Armkubernetesconfiguration() []Table {
 	tables := []Table{
 		{
-      Name: "resource_provider_operation",
-      Struct: &armkubernetesconfiguration.ResourceProviderOperation{},
-      ResponseStruct: &armkubernetesconfiguration.OperationsClientListResponse{},
-      Client: &armkubernetesconfiguration.OperationsClient{},
-      ListFunc: (&armkubernetesconfiguration.OperationsClient{}).NewListPager,
-			NewFunc: armkubernetesconfiguration.NewOperationsClient,
-		},
-		{
-      Name: "source_control_configuration",
-      Struct: &armkubernetesconfiguration.SourceControlConfiguration{},
-      ResponseStruct: &armkubernetesconfiguration.SourceControlConfigurationsClientListResponse{},
-      Client: &armkubernetesconfiguration.SourceControlConfigurationsClient{},
-      ListFunc: (&armkubernetesconfiguration.SourceControlConfigurationsClient{}).NewListPager,
-			NewFunc: armkubernetesconfiguration.NewSourceControlConfigurationsClient,
-		},
-		{
       Name: "extension",
       Struct: &armkubernetesconfiguration.Extension{},
       ResponseStruct: &armkubernetesconfiguration.ExtensionsClientListResponse{},
       Client: &armkubernetesconfiguration.ExtensionsClient{},
       ListFunc: (&armkubernetesconfiguration.ExtensionsClient{}).NewListPager,
 			NewFunc: armkubernetesconfiguration.NewExtensionsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}/{clusterResourceName}/{clusterName}/providers/Microsoft.KubernetesConfiguration/extensions",
 		},
 		{
       Name: "flux_configuration",
@@ -36,6 +21,7 @@ func Armkubernetesconfiguration() []Table {
       Client: &armkubernetesconfiguration.FluxConfigurationsClient{},
       ListFunc: (&armkubernetesconfiguration.FluxConfigurationsClient{}).NewListPager,
 			NewFunc: armkubernetesconfiguration.NewFluxConfigurationsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}/{clusterResourceName}/{clusterName}/providers/Microsoft.KubernetesConfiguration/fluxConfigurations",
 		},
 		{
       Name: "operation_status_result",
@@ -44,6 +30,16 @@ func Armkubernetesconfiguration() []Table {
       Client: &armkubernetesconfiguration.OperationStatusClient{},
       ListFunc: (&armkubernetesconfiguration.OperationStatusClient{}).NewListPager,
 			NewFunc: armkubernetesconfiguration.NewOperationStatusClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}/{clusterResourceName}/{clusterName}/providers/Microsoft.KubernetesConfiguration/operations",
+		},
+		{
+      Name: "source_control_configuration",
+      Struct: &armkubernetesconfiguration.SourceControlConfiguration{},
+      ResponseStruct: &armkubernetesconfiguration.SourceControlConfigurationsClientListResponse{},
+      Client: &armkubernetesconfiguration.SourceControlConfigurationsClient{},
+      ListFunc: (&armkubernetesconfiguration.SourceControlConfigurationsClient{}).NewListPager,
+			NewFunc: armkubernetesconfiguration.NewSourceControlConfigurationsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}/{clusterResourceName}/{clusterName}/providers/Microsoft.KubernetesConfiguration/sourceControlConfigurations",
 		},
 	}
 

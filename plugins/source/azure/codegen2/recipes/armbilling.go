@@ -12,22 +12,7 @@ func Armbilling() []Table {
       Client: &armbilling.AccountsClient{},
       ListFunc: (&armbilling.AccountsClient{}).NewListPager,
 			NewFunc: armbilling.NewAccountsClient,
-		},
-		{
-      Name: "period",
-      Struct: &armbilling.Period{},
-      ResponseStruct: &armbilling.PeriodsClientListResponse{},
-      Client: &armbilling.PeriodsClient{},
-      ListFunc: (&armbilling.PeriodsClient{}).NewListPager,
-			NewFunc: armbilling.NewPeriodsClient,
-		},
-		{
-      Name: "operation",
-      Struct: &armbilling.Operation{},
-      ResponseStruct: &armbilling.OperationsClientListResponse{},
-      Client: &armbilling.OperationsClient{},
-      ListFunc: (&armbilling.OperationsClient{}).NewListPager,
-			NewFunc: armbilling.NewOperationsClient,
+			URL: "/providers/Microsoft.Billing/billingAccounts",
 		},
 		{
       Name: "enrollment_account_summary",
@@ -36,6 +21,16 @@ func Armbilling() []Table {
       Client: &armbilling.EnrollmentAccountsClient{},
       ListFunc: (&armbilling.EnrollmentAccountsClient{}).NewListPager,
 			NewFunc: armbilling.NewEnrollmentAccountsClient,
+			URL: "/providers/Microsoft.Billing/enrollmentAccounts",
+		},
+		{
+      Name: "period",
+      Struct: &armbilling.Period{},
+      ResponseStruct: &armbilling.PeriodsClientListResponse{},
+      Client: &armbilling.PeriodsClient{},
+      ListFunc: (&armbilling.PeriodsClient{}).NewListPager,
+			NewFunc: armbilling.NewPeriodsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Billing/billingPeriods",
 		},
 	}
 

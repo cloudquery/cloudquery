@@ -5,30 +5,24 @@ package armpolicy
 import (
 	"encoding/json"
 	"net/http"
-	"net/http/httptest"
 	"testing"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/faker"
-	"github.com/julienschmidt/httprouter"
+	"github.com/gorilla/mux"
 )
 
-func createSetDefinition() (*arm.ClientOptions, error) {
+func createSetDefinition(router *mux.Router) error {
 	var item armpolicy.SetDefinitionsClientListResponse
 	if err := faker.FakeObject(&item); err != nil {
-		return nil, err
+		return err
 	}
 
 	emptyStr := ""
 	item.NextLink = &emptyStr
 
-	mux := httprouter.New()
-	mux.GET("/*filepath", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	router.HandleFunc("/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions", func(w http.ResponseWriter, r *http.Request) {
 		b, err := json.Marshal(&item)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)
@@ -39,16 +33,7 @@ func createSetDefinition() (*arm.ClientOptions, error) {
 			return
 		}
 	})
-	ts := httptest.NewServer(mux)
-	cloud.AzurePublic.Services[cloud.ResourceManager] = cloud.ServiceConfiguration{
-		Endpoint: ts.URL,
-		Audience: "test",
-	}
-	return &arm.ClientOptions{
-		ClientOptions: azcore.ClientOptions{
-			Transport: ts.Client(),
-		},
-	}, nil
+	return nil
 }
 
 func TestSetDefinition(t *testing.T) {

@@ -6,12 +6,9 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/analysisservices/a
 func Armanalysisservices() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armanalysisservices.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/analysisservices/armanalysisservices",
-		},
-		{
 			NewFunc: armanalysisservices.NewServersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/analysisservices/armanalysisservices",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.AnalysisServices/servers",
 		},
 	}
 	return resources

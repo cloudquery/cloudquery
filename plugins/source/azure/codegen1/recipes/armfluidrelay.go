@@ -8,14 +8,12 @@ func Armfluidrelay() []*Resource {
 		{
 			NewFunc: armfluidrelay.NewContainersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/fluidrelay/armfluidrelay",
-		},
-		{
-			NewFunc: armfluidrelay.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/fluidrelay/armfluidrelay",
+			URL: "",
 		},
 		{
 			NewFunc: armfluidrelay.NewServersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/fluidrelay/armfluidrelay",
+			URL: "",
 		},
 	}
 	return resources

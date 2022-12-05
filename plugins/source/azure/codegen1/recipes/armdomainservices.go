@@ -6,20 +6,24 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/domainservices/arm
 func Armdomainservices() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armdomainservices.NewDomainServiceOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/domainservices/armdomainservices",
-		},
-		{
 			NewFunc: armdomainservices.NewClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/domainservices/armdomainservices",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.AAD/domainServices",
+		},
+		{
+			NewFunc: armdomainservices.NewDomainServiceOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/domainservices/armdomainservices",
+			URL: "/providers/Microsoft.AAD/operations",
 		},
 		{
 			NewFunc: armdomainservices.NewOuContainerClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/domainservices/armdomainservices",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Aad/domainServices/{domainServiceName}/ouContainer",
 		},
 		{
 			NewFunc: armdomainservices.NewOuContainerOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/domainservices/armdomainservices",
+			URL: "/providers/Microsoft.Aad/operations",
 		},
 	}
 	return resources

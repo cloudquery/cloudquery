@@ -12,14 +12,7 @@ func Armchangeanalysis() []Table {
       Client: &armchangeanalysis.ResourceChangesClient{},
       ListFunc: (&armchangeanalysis.ResourceChangesClient{}).NewListPager,
 			NewFunc: armchangeanalysis.NewResourceChangesClient,
-		},
-		{
-      Name: "resource_provider_operation_definition",
-      Struct: &armchangeanalysis.ResourceProviderOperationDefinition{},
-      ResponseStruct: &armchangeanalysis.OperationsClientListResponse{},
-      Client: &armchangeanalysis.OperationsClient{},
-      ListFunc: (&armchangeanalysis.OperationsClient{}).NewListPager,
-			NewFunc: armchangeanalysis.NewOperationsClient,
+			URL: "/{resourceId}/providers/Microsoft.ChangeAnalysis/resourceChanges",
 		},
 	}
 

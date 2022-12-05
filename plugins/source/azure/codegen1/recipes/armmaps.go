@@ -8,14 +8,17 @@ func Armmaps() []*Resource {
 		{
 			NewFunc: armmaps.NewAccountsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maps/armmaps",
-		},
-		{
-			NewFunc: armmaps.NewCreatorsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maps/armmaps",
+			URL: "",
 		},
 		{
 			NewFunc: armmaps.NewClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maps/armmaps",
+			URL: "",
+		},
+		{
+			NewFunc: armmaps.NewCreatorsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maps/armmaps",
+			URL: "",
 		},
 	}
 	return resources

@@ -8,14 +8,17 @@ func Armmanagementpartner() []*Resource {
 		{
 			NewFunc: armmanagementpartner.NewOperationClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementpartner/armmanagementpartner",
+			URL: "/providers/Microsoft.ManagementPartner/operations",
 		},
 		{
 			NewFunc: armmanagementpartner.NewPartnerClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementpartner/armmanagementpartner",
+			URL: "",
 		},
 		{
 			NewFunc: armmanagementpartner.NewPartnersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementpartner/armmanagementpartner",
+			URL: "",
 		},
 	}
 	return resources

@@ -8,18 +8,17 @@ func Armcontainerinstance() []*Resource {
 		{
 			NewFunc: armcontainerinstance.NewContainerGroupsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerinstance/armcontainerinstance",
-		},
-		{
-			NewFunc: armcontainerinstance.NewLocationClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerinstance/armcontainerinstance",
-		},
-		{
-			NewFunc: armcontainerinstance.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerinstance/armcontainerinstance",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/containerGroups",
 		},
 		{
 			NewFunc: armcontainerinstance.NewContainersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerinstance/armcontainerinstance",
+			URL: "",
+		},
+		{
+			NewFunc: armcontainerinstance.NewLocationClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerinstance/armcontainerinstance",
+			URL: "",
 		},
 	}
 	return resources

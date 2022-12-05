@@ -6,68 +6,79 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/arm
 func Armdataprotection() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armdataprotection.NewRecoveryPointsClient,
+			NewFunc: armdataprotection.NewBackupInstancesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection",
-		},
-		{
-			NewFunc: armdataprotection.NewOperationResultClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection",
-		},
-		{
-			NewFunc: armdataprotection.NewOperationStatusBackupVaultContextClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection",
-		},
-		{
-			NewFunc: armdataprotection.NewResourceGuardsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances",
 		},
 		{
 			NewFunc: armdataprotection.NewBackupPoliciesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection",
-		},
-		{
-			NewFunc: armdataprotection.NewClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection",
-		},
-		{
-			NewFunc: armdataprotection.NewRestorableTimeRangesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection",
-		},
-		{
-			NewFunc: armdataprotection.NewJobsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection",
-		},
-		{
-			NewFunc: armdataprotection.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection",
-		},
-		{
-			NewFunc: armdataprotection.NewOperationStatusResourceGroupContextClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupPolicies",
 		},
 		{
 			NewFunc: armdataprotection.NewBackupVaultOperationResultsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection",
+			URL: "",
 		},
 		{
 			NewFunc: armdataprotection.NewBackupVaultsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection",
+			URL: "",
+		},
+		{
+			NewFunc: armdataprotection.NewClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection",
+			URL: "",
 		},
 		{
 			NewFunc: armdataprotection.NewExportJobsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection",
+			URL: "",
 		},
 		{
 			NewFunc: armdataprotection.NewExportJobsOperationResultClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection",
+			URL: "",
 		},
 		{
-			NewFunc: armdataprotection.NewBackupInstancesClient,
+			NewFunc: armdataprotection.NewJobsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupJobs",
+		},
+		{
+			NewFunc: armdataprotection.NewOperationResultClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection",
+			URL: "",
+		},
+		{
+			NewFunc: armdataprotection.NewOperationStatusBackupVaultContextClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection",
+			URL: "",
 		},
 		{
 			NewFunc: armdataprotection.NewOperationStatusClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection",
+			URL: "",
+		},
+		{
+			NewFunc: armdataprotection.NewOperationStatusResourceGroupContextClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection",
+			URL: "",
+		},
+		{
+			NewFunc: armdataprotection.NewRecoveryPointsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/recoveryPoints",
+		},
+		{
+			NewFunc: armdataprotection.NewResourceGuardsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection",
+			URL: "",
+		},
+		{
+			NewFunc: armdataprotection.NewRestorableTimeRangesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection",
+			URL: "",
 		},
 	}
 	return resources

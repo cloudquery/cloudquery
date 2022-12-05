@@ -6,72 +6,84 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering
 func Armpeering() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armpeering.NewLocationsClient,
+			NewFunc: armpeering.NewCdnPeeringPrefixesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering",
-		},
-		{
-			NewFunc: armpeering.NewManagementClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering",
-		},
-		{
-			NewFunc: armpeering.NewReceivedRoutesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/cdnPeeringPrefixes",
 		},
 		{
 			NewFunc: armpeering.NewConnectionMonitorTestsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering",
-		},
-		{
-			NewFunc: armpeering.NewLookingGlassClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering",
-		},
-		{
-			NewFunc: armpeering.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering",
-		},
-		{
-			NewFunc: armpeering.NewPeerAsnsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering",
-		},
-		{
-			NewFunc: armpeering.NewPeeringsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering",
-		},
-		{
-			NewFunc: armpeering.NewPrefixesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering",
-		},
-		{
-			NewFunc: armpeering.NewServiceLocationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering",
-		},
-		{
-			NewFunc: armpeering.NewServicesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering",
-		},
-		{
-			NewFunc: armpeering.NewCdnPeeringPrefixesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering",
-		},
-		{
-			NewFunc: armpeering.NewRegisteredAsnsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering",
-		},
-		{
-			NewFunc: armpeering.NewServiceCountriesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering",
-		},
-		{
-			NewFunc: armpeering.NewServiceProvidersClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering",
+			URL: "",
 		},
 		{
 			NewFunc: armpeering.NewLegacyPeeringsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/legacyPeerings",
+		},
+		{
+			NewFunc: armpeering.NewLocationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peeringLocations",
+		},
+		{
+			NewFunc: armpeering.NewLookingGlassClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering",
+			URL: "",
+		},
+		{
+			NewFunc: armpeering.NewManagementClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering",
+			URL: "",
+		},
+		{
+			NewFunc: armpeering.NewPeerAsnsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering",
+			URL: "",
+		},
+		{
+			NewFunc: armpeering.NewPeeringsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering",
+			URL: "",
+		},
+		{
+			NewFunc: armpeering.NewPrefixesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering",
+			URL: "",
+		},
+		{
+			NewFunc: armpeering.NewReceivedRoutesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering",
+			URL: "",
+		},
+		{
+			NewFunc: armpeering.NewRegisteredAsnsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering",
+			URL: "",
 		},
 		{
 			NewFunc: armpeering.NewRegisteredPrefixesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering",
+			URL: "",
+		},
+		{
+			NewFunc: armpeering.NewServiceCountriesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peeringServiceCountries",
+		},
+		{
+			NewFunc: armpeering.NewServiceLocationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peeringServiceLocations",
+		},
+		{
+			NewFunc: armpeering.NewServiceProvidersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peeringServiceProviders",
+		},
+		{
+			NewFunc: armpeering.NewServicesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering",
+			URL: "",
 		},
 	}
 	return resources

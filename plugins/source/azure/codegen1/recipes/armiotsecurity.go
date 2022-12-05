@@ -6,36 +6,39 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iotsecurity/armiot
 func Armiotsecurity() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armiotsecurity.NewDevicesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iotsecurity/armiotsecurity",
-		},
-		{
-			NewFunc: armiotsecurity.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iotsecurity/armiotsecurity",
-		},
-		{
-			NewFunc: armiotsecurity.NewOnPremiseSensorsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iotsecurity/armiotsecurity",
-		},
-		{
 			NewFunc: armiotsecurity.NewDefenderSettingsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iotsecurity/armiotsecurity",
-		},
-		{
-			NewFunc: armiotsecurity.NewLocationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iotsecurity/armiotsecurity",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.IoTSecurity/defenderSettings",
 		},
 		{
 			NewFunc: armiotsecurity.NewDeviceGroupsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iotsecurity/armiotsecurity",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.IoTSecurity/locations/{iotDefenderLocation}/deviceGroups",
+		},
+		{
+			NewFunc: armiotsecurity.NewDevicesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iotsecurity/armiotsecurity",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.IoTSecurity/locations/{iotDefenderLocation}/deviceGroups/{deviceGroupName}/devices",
+		},
+		{
+			NewFunc: armiotsecurity.NewLocationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iotsecurity/armiotsecurity",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.IoTSecurity/locations",
+		},
+		{
+			NewFunc: armiotsecurity.NewOnPremiseSensorsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iotsecurity/armiotsecurity",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.IoTSecurity/onPremiseSensors",
 		},
 		{
 			NewFunc: armiotsecurity.NewSensorsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iotsecurity/armiotsecurity",
+			URL: "/{scope}/providers/Microsoft.IoTSecurity/sensors",
 		},
 		{
 			NewFunc: armiotsecurity.NewSitesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iotsecurity/armiotsecurity",
+			URL: "/{scope}/providers/Microsoft.IoTSecurity/sites",
 		},
 	}
 	return resources

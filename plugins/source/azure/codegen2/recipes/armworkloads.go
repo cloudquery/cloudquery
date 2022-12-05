@@ -6,44 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkl
 func Armworkloads() []Table {
 	tables := []Table{
 		{
-      Name: "sku_definition",
-      Struct: &armworkloads.SKUDefinition{},
-      ResponseStruct: &armworkloads.SKUsClientListResponse{},
-      Client: &armworkloads.SKUsClient{},
-      ListFunc: (&armworkloads.SKUsClient{}).NewListPager,
-			NewFunc: armworkloads.NewSKUsClient,
-		},
-		{
-      Name: "operation",
-      Struct: &armworkloads.Operation{},
-      ResponseStruct: &armworkloads.OperationsClientListResponse{},
-      Client: &armworkloads.OperationsClient{},
-      ListFunc: (&armworkloads.OperationsClient{}).NewListPager,
-			NewFunc: armworkloads.NewOperationsClient,
-		},
-		{
-      Name: "sap_central_server_instance",
-      Struct: &armworkloads.SAPCentralServerInstance{},
-      ResponseStruct: &armworkloads.SAPCentralInstancesClientListResponse{},
-      Client: &armworkloads.SAPCentralInstancesClient{},
-      ListFunc: (&armworkloads.SAPCentralInstancesClient{}).NewListPager,
-			NewFunc: armworkloads.NewSAPCentralInstancesClient,
-		},
-		{
-      Name: "wordpress_instance_resource",
-      Struct: &armworkloads.WordpressInstanceResource{},
-      ResponseStruct: &armworkloads.WordpressInstancesClientListResponse{},
-      Client: &armworkloads.WordpressInstancesClient{},
-      ListFunc: (&armworkloads.WordpressInstancesClient{}).NewListPager,
-			NewFunc: armworkloads.NewWordpressInstancesClient,
-		},
-		{
       Name: "monitor",
       Struct: &armworkloads.Monitor{},
       ResponseStruct: &armworkloads.MonitorsClientListResponse{},
       Client: &armworkloads.MonitorsClient{},
       ListFunc: (&armworkloads.MonitorsClient{}).NewListPager,
 			NewFunc: armworkloads.NewMonitorsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Workloads/monitors",
 		},
 		{
       Name: "provider_instance",
@@ -52,6 +21,7 @@ func Armworkloads() []Table {
       Client: &armworkloads.ProviderInstancesClient{},
       ListFunc: (&armworkloads.ProviderInstancesClient{}).NewListPager,
 			NewFunc: armworkloads.NewProviderInstancesClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/monitors/{monitorName}/providerInstances",
 		},
 		{
       Name: "sap_application_server_instance",
@@ -60,6 +30,16 @@ func Armworkloads() []Table {
       Client: &armworkloads.SAPApplicationServerInstancesClient{},
       ListFunc: (&armworkloads.SAPApplicationServerInstancesClient{}).NewListPager,
 			NewFunc: armworkloads.NewSAPApplicationServerInstancesClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/applicationInstances",
+		},
+		{
+      Name: "sap_central_server_instance",
+      Struct: &armworkloads.SAPCentralServerInstance{},
+      ResponseStruct: &armworkloads.SAPCentralInstancesClientListResponse{},
+      Client: &armworkloads.SAPCentralInstancesClient{},
+      ListFunc: (&armworkloads.SAPCentralInstancesClient{}).NewListPager,
+			NewFunc: armworkloads.NewSAPCentralInstancesClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/centralInstances",
 		},
 		{
       Name: "sap_database_instance",
@@ -68,6 +48,25 @@ func Armworkloads() []Table {
       Client: &armworkloads.SAPDatabaseInstancesClient{},
       ListFunc: (&armworkloads.SAPDatabaseInstancesClient{}).NewListPager,
 			NewFunc: armworkloads.NewSAPDatabaseInstancesClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/databaseInstances",
+		},
+		{
+      Name: "sku_definition",
+      Struct: &armworkloads.SKUDefinition{},
+      ResponseStruct: &armworkloads.SKUsClientListResponse{},
+      Client: &armworkloads.SKUsClient{},
+      ListFunc: (&armworkloads.SKUsClient{}).NewListPager,
+			NewFunc: armworkloads.NewSKUsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Workloads/skus",
+		},
+		{
+      Name: "wordpress_instance_resource",
+      Struct: &armworkloads.WordpressInstanceResource{},
+      ResponseStruct: &armworkloads.WordpressInstancesClientListResponse{},
+      Client: &armworkloads.WordpressInstancesClient{},
+      ListFunc: (&armworkloads.WordpressInstancesClient{}).NewListPager,
+			NewFunc: armworkloads.NewWordpressInstancesClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/phpWorkloads/{phpWorkloadName}/wordpressInstances",
 		},
 	}
 

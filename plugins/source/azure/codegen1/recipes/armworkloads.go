@@ -6,48 +6,54 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkl
 func Armworkloads() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armworkloads.NewPhpWorkloadsClient,
+			NewFunc: armworkloads.NewClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads",
-		},
-		{
-			NewFunc: armworkloads.NewSKUsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads",
-		},
-		{
-			NewFunc: armworkloads.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads",
-		},
-		{
-			NewFunc: armworkloads.NewSAPCentralInstancesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads",
-		},
-		{
-			NewFunc: armworkloads.NewWordpressInstancesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads",
+			URL: "",
 		},
 		{
 			NewFunc: armworkloads.NewMonitorsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Workloads/monitors",
+		},
+		{
+			NewFunc: armworkloads.NewPhpWorkloadsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads",
+			URL: "",
 		},
 		{
 			NewFunc: armworkloads.NewProviderInstancesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads",
-		},
-		{
-			NewFunc: armworkloads.NewSAPVirtualInstancesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads",
-		},
-		{
-			NewFunc: armworkloads.NewClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/monitors/{monitorName}/providerInstances",
 		},
 		{
 			NewFunc: armworkloads.NewSAPApplicationServerInstancesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/applicationInstances",
+		},
+		{
+			NewFunc: armworkloads.NewSAPCentralInstancesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/centralInstances",
 		},
 		{
 			NewFunc: armworkloads.NewSAPDatabaseInstancesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/databaseInstances",
+		},
+		{
+			NewFunc: armworkloads.NewSAPVirtualInstancesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads",
+			URL: "",
+		},
+		{
+			NewFunc: armworkloads.NewSKUsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Workloads/skus",
+		},
+		{
+			NewFunc: armworkloads.NewWordpressInstancesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/phpWorkloads/{phpWorkloadName}/wordpressInstances",
 		},
 	}
 	return resources

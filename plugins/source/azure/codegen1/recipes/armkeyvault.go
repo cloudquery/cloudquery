@@ -6,40 +6,44 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvau
 func Armkeyvault() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armkeyvault.NewPrivateEndpointConnectionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault",
-		},
-		{
-			NewFunc: armkeyvault.NewPrivateLinkResourcesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault",
-		},
-		{
-			NewFunc: armkeyvault.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault",
-		},
-		{
-			NewFunc: armkeyvault.NewVaultsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault",
-		},
-		{
-			NewFunc: armkeyvault.NewManagedHsmsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault",
-		},
-		{
-			NewFunc: armkeyvault.NewMHSMPrivateLinkResourcesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault",
-		},
-		{
-			NewFunc: armkeyvault.NewSecretsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault",
-		},
-		{
 			NewFunc: armkeyvault.NewKeysClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/keys",
 		},
 		{
 			NewFunc: armkeyvault.NewMHSMPrivateEndpointConnectionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault",
+			URL: "",
+		},
+		{
+			NewFunc: armkeyvault.NewMHSMPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault",
+			URL: "",
+		},
+		{
+			NewFunc: armkeyvault.NewManagedHsmsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault",
+			URL: "",
+		},
+		{
+			NewFunc: armkeyvault.NewPrivateEndpointConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault",
+			URL: "",
+		},
+		{
+			NewFunc: armkeyvault.NewPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault",
+			URL: "",
+		},
+		{
+			NewFunc: armkeyvault.NewSecretsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/secrets",
+		},
+		{
+			NewFunc: armkeyvault.NewVaultsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault",
+			URL: "/subscriptions/{subscriptionId}/resources",
 		},
 	}
 	return resources

@@ -6,20 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/engagementfabric/a
 func Armengagementfabric() []Table {
 	tables := []Table{
 		{
-      Name: "operation",
-      Struct: &armengagementfabric.Operation{},
-      ResponseStruct: &armengagementfabric.OperationsClientListResponse{},
-      Client: &armengagementfabric.OperationsClient{},
-      ListFunc: (&armengagementfabric.OperationsClient{}).NewListPager,
-			NewFunc: armengagementfabric.NewOperationsClient,
-		},
-		{
       Name: "account",
       Struct: &armengagementfabric.Account{},
       ResponseStruct: &armengagementfabric.AccountsClientListResponse{},
       Client: &armengagementfabric.AccountsClient{},
       ListFunc: (&armengagementfabric.AccountsClient{}).NewListPager,
 			NewFunc: armengagementfabric.NewAccountsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.EngagementFabric/Accounts",
 		},
 		{
       Name: "sku_description",
@@ -28,6 +21,7 @@ func Armengagementfabric() []Table {
       Client: &armengagementfabric.SKUsClient{},
       ListFunc: (&armengagementfabric.SKUsClient{}).NewListPager,
 			NewFunc: armengagementfabric.NewSKUsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.EngagementFabric/skus",
 		},
 	}
 

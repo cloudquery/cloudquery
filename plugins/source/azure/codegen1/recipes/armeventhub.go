@@ -6,44 +6,49 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventh
 func Armeventhub() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armeventhub.NewDisasterRecoveryConfigsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub",
-		},
-		{
-			NewFunc: armeventhub.NewNamespacesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub",
-		},
-		{
-			NewFunc: armeventhub.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub",
-		},
-		{
-			NewFunc: armeventhub.NewPrivateEndpointConnectionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub",
-		},
-		{
-			NewFunc: armeventhub.NewPrivateLinkResourcesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub",
-		},
-		{
 			NewFunc: armeventhub.NewClustersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub",
-		},
-		{
-			NewFunc: armeventhub.NewConsumerGroupsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub",
-		},
-		{
-			NewFunc: armeventhub.NewSchemaRegistryClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub",
+			URL: "",
 		},
 		{
 			NewFunc: armeventhub.NewConfigurationClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub",
+			URL: "",
+		},
+		{
+			NewFunc: armeventhub.NewConsumerGroupsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub",
+			URL: "",
+		},
+		{
+			NewFunc: armeventhub.NewDisasterRecoveryConfigsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/disasterRecoveryConfigs",
 		},
 		{
 			NewFunc: armeventhub.NewEventHubsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub",
+			URL: "",
+		},
+		{
+			NewFunc: armeventhub.NewNamespacesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.EventHub/namespaces",
+		},
+		{
+			NewFunc: armeventhub.NewPrivateEndpointConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/privateEndpointConnections",
+		},
+		{
+			NewFunc: armeventhub.NewPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub",
+			URL: "",
+		},
+		{
+			NewFunc: armeventhub.NewSchemaRegistryClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub",
+			URL: "",
 		},
 	}
 	return resources

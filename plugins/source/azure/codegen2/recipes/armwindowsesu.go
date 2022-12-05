@@ -12,14 +12,7 @@ func Armwindowsesu() []Table {
       Client: &armwindowsesu.MultipleActivationKeysClient{},
       ListFunc: (&armwindowsesu.MultipleActivationKeysClient{}).NewListPager,
 			NewFunc: armwindowsesu.NewMultipleActivationKeysClient,
-		},
-		{
-      Name: "operation",
-      Struct: &armwindowsesu.Operation{},
-      ResponseStruct: &armwindowsesu.OperationsClientListResponse{},
-      Client: &armwindowsesu.OperationsClient{},
-      ListFunc: (&armwindowsesu.OperationsClient{}).NewListPager,
-			NewFunc: armwindowsesu.NewOperationsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.WindowsESU/multipleActivationKeys",
 		},
 	}
 

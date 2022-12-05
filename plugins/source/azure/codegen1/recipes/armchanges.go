@@ -8,6 +8,7 @@ func Armchanges() []*Resource {
 		{
 			NewFunc: armchanges.NewClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armchanges",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}/providers/Microsoft.Resources/changes",
 		},
 	}
 	return resources

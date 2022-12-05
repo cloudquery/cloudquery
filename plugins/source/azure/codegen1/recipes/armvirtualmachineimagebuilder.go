@@ -8,10 +8,7 @@ func Armvirtualmachineimagebuilder() []*Resource {
 		{
 			NewFunc: armvirtualmachineimagebuilder.NewVirtualMachineImageTemplatesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/virtualmachineimagebuilder/armvirtualmachineimagebuilder",
-		},
-		{
-			NewFunc: armvirtualmachineimagebuilder.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/virtualmachineimagebuilder/armvirtualmachineimagebuilder",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.VirtualMachineImages/imageTemplates",
 		},
 	}
 	return resources

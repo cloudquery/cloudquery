@@ -6,80 +6,94 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armm
 func Armmediaservices() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armmediaservices.NewPrivateEndpointConnectionsClient,
+			NewFunc: armmediaservices.NewAccountFiltersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices",
-		},
-		{
-			NewFunc: armmediaservices.NewStreamingLocatorsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices",
-		},
-		{
-			NewFunc: armmediaservices.NewContentKeyPoliciesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices",
-		},
-		{
-			NewFunc: armmediaservices.NewJobsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices",
-		},
-		{
-			NewFunc: armmediaservices.NewLiveOutputsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices",
-		},
-		{
-			NewFunc: armmediaservices.NewOperationStatusesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices",
-		},
-		{
-			NewFunc: armmediaservices.NewStreamingPoliciesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices",
-		},
-		{
-			NewFunc: armmediaservices.NewTracksClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/accountFilters",
 		},
 		{
 			NewFunc: armmediaservices.NewAssetFiltersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices",
-		},
-		{
-			NewFunc: armmediaservices.NewClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices",
-		},
-		{
-			NewFunc: armmediaservices.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices",
-		},
-		{
-			NewFunc: armmediaservices.NewLiveEventsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices",
-		},
-		{
-			NewFunc: armmediaservices.NewOperationResultsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices",
-		},
-		{
-			NewFunc: armmediaservices.NewPrivateLinkResourcesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices",
-		},
-		{
-			NewFunc: armmediaservices.NewAccountFiltersClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/assets/{assetName}/assetFilters",
 		},
 		{
 			NewFunc: armmediaservices.NewAssetsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/assets",
+		},
+		{
+			NewFunc: armmediaservices.NewClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices",
+		},
+		{
+			NewFunc: armmediaservices.NewContentKeyPoliciesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/contentKeyPolicies",
+		},
+		{
+			NewFunc: armmediaservices.NewJobsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/transforms/{transformName}/jobs",
+		},
+		{
+			NewFunc: armmediaservices.NewLiveEventsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices/{accountName}/liveEvents",
+		},
+		{
+			NewFunc: armmediaservices.NewLiveOutputsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices/{accountName}/liveEvents/{liveEventName}/liveOutputs",
 		},
 		{
 			NewFunc: armmediaservices.NewLocationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices",
+			URL: "",
+		},
+		{
+			NewFunc: armmediaservices.NewOperationResultsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices",
+			URL: "",
+		},
+		{
+			NewFunc: armmediaservices.NewOperationStatusesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices",
+			URL: "",
+		},
+		{
+			NewFunc: armmediaservices.NewPrivateEndpointConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices/{accountName}/privateEndpointConnections",
+		},
+		{
+			NewFunc: armmediaservices.NewPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices/{accountName}/privateLinkResources",
 		},
 		{
 			NewFunc: armmediaservices.NewStreamingEndpointsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices/{accountName}/streamingEndpoints",
+		},
+		{
+			NewFunc: armmediaservices.NewStreamingLocatorsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/streamingLocators",
+		},
+		{
+			NewFunc: armmediaservices.NewStreamingPoliciesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/streamingPolicies",
+		},
+		{
+			NewFunc: armmediaservices.NewTracksClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/assets/{assetName}/tracks",
 		},
 		{
 			NewFunc: armmediaservices.NewTransformsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/transforms",
 		},
 	}
 	return resources

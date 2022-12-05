@@ -8,22 +8,22 @@ func Armstoragepool() []*Resource {
 		{
 			NewFunc: armstoragepool.NewDiskPoolZonesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagepool/armstoragepool",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.StoragePool/locations/{location}/diskPoolZones",
 		},
 		{
 			NewFunc: armstoragepool.NewDiskPoolsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagepool/armstoragepool",
+			URL: "",
 		},
 		{
 			NewFunc: armstoragepool.NewIscsiTargetsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagepool/armstoragepool",
-		},
-		{
-			NewFunc: armstoragepool.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagepool/armstoragepool",
+			URL: "",
 		},
 		{
 			NewFunc: armstoragepool.NewResourceSKUsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagepool/armstoragepool",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.StoragePool/locations/{location}/skus",
 		},
 	}
 	return resources

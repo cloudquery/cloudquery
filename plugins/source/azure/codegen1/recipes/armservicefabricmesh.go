@@ -6,44 +6,49 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabricmesh/
 func Armservicefabricmesh() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armservicefabricmesh.NewSecretClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabricmesh/armservicefabricmesh",
-		},
-		{
-			NewFunc: armservicefabricmesh.NewNetworkClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabricmesh/armservicefabricmesh",
-		},
-		{
-			NewFunc: armservicefabricmesh.NewServiceReplicaClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabricmesh/armservicefabricmesh",
-		},
-		{
-			NewFunc: armservicefabricmesh.NewServiceClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabricmesh/armservicefabricmesh",
-		},
-		{
-			NewFunc: armservicefabricmesh.NewVolumeClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabricmesh/armservicefabricmesh",
-		},
-		{
 			NewFunc: armservicefabricmesh.NewApplicationClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabricmesh/armservicefabricmesh",
+			URL: "",
 		},
 		{
 			NewFunc: armservicefabricmesh.NewCodePackageClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabricmesh/armservicefabricmesh",
+			URL: "",
 		},
 		{
 			NewFunc: armservicefabricmesh.NewGatewayClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabricmesh/armservicefabricmesh",
+			URL: "",
 		},
 		{
-			NewFunc: armservicefabricmesh.NewOperationsClient,
+			NewFunc: armservicefabricmesh.NewNetworkClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabricmesh/armservicefabricmesh",
+			URL: "",
+		},
+		{
+			NewFunc: armservicefabricmesh.NewSecretClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabricmesh/armservicefabricmesh",
+			URL: "",
 		},
 		{
 			NewFunc: armservicefabricmesh.NewSecretValueClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabricmesh/armservicefabricmesh",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabricMesh/secrets/{secretResourceName}/values",
+		},
+		{
+			NewFunc: armservicefabricmesh.NewServiceClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabricmesh/armservicefabricmesh",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabricMesh/applications/{applicationResourceName}/services",
+		},
+		{
+			NewFunc: armservicefabricmesh.NewServiceReplicaClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabricmesh/armservicefabricmesh",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabricMesh/applications/{applicationResourceName}/services/{serviceResourceName}/replicas",
+		},
+		{
+			NewFunc: armservicefabricmesh.NewVolumeClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabricmesh/armservicefabricmesh",
+			URL: "",
 		},
 	}
 	return resources

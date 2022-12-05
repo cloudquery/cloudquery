@@ -5,30 +5,24 @@ package armnginx
 import (
 	"encoding/json"
 	"net/http"
-	"net/http/httptest"
 	"testing"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/faker"
-	"github.com/julienschmidt/httprouter"
+	"github.com/gorilla/mux"
 )
 
-func createDeployment() (*arm.ClientOptions, error) {
+func createDeployment(router *mux.Router) error {
 	var item armnginx.DeploymentsClientListResponse
 	if err := faker.FakeObject(&item); err != nil {
-		return nil, err
+		return err
 	}
 
 	emptyStr := ""
 	item.NextLink = &emptyStr
 
-	mux := httprouter.New()
-	mux.GET("/*filepath", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	router.HandleFunc("/subscriptions/{subscriptionId}/providers/Nginx.NginxPlus/nginxDeployments", func(w http.ResponseWriter, r *http.Request) {
 		b, err := json.Marshal(&item)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)
@@ -39,16 +33,7 @@ func createDeployment() (*arm.ClientOptions, error) {
 			return
 		}
 	})
-	ts := httptest.NewServer(mux)
-	cloud.AzurePublic.Services[cloud.ResourceManager] = cloud.ServiceConfiguration{
-		Endpoint: ts.URL,
-		Audience: "test",
-	}
-	return &arm.ClientOptions{
-		ClientOptions: azcore.ClientOptions{
-			Transport: ts.Client(),
-		},
-	}, nil
+	return nil
 }
 
 func TestDeployment(t *testing.T) {

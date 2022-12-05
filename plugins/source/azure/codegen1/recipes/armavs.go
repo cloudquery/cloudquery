@@ -8,66 +8,77 @@ func Armavs() []*Resource {
 		{
 			NewFunc: armavs.NewAddonsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs",
-		},
-		{
-			NewFunc: armavs.NewCloudLinksClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs",
-		},
-		{
-			NewFunc: armavs.NewPrivateCloudsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs",
-		},
-		{
-			NewFunc: armavs.NewScriptPackagesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs",
-		},
-		{
-			NewFunc: armavs.NewWorkloadNetworksClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs",
-		},
-		{
-			NewFunc: armavs.NewVirtualMachinesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs",
-		},
-		{
-			NewFunc: armavs.NewClustersClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs",
-		},
-		{
-			NewFunc: armavs.NewPlacementPoliciesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/addons",
 		},
 		{
 			NewFunc: armavs.NewAuthorizationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/authorizations",
+		},
+		{
+			NewFunc: armavs.NewCloudLinksClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/cloudLinks",
+		},
+		{
+			NewFunc: armavs.NewClustersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/clusters",
 		},
 		{
 			NewFunc: armavs.NewDatastoresClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/clusters/{clusterName}/datastores",
 		},
 		{
 			NewFunc: armavs.NewGlobalReachConnectionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs",
-		},
-		{
-			NewFunc: armavs.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs",
-		},
-		{
-			NewFunc: armavs.NewScriptCmdletsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs",
-		},
-		{
-			NewFunc: armavs.NewScriptExecutionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/globalReachConnections",
 		},
 		{
 			NewFunc: armavs.NewHcxEnterpriseSitesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/hcxEnterpriseSites",
 		},
 		{
 			NewFunc: armavs.NewLocationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs",
+			URL: "",
+		},
+		{
+			NewFunc: armavs.NewPlacementPoliciesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/clusters/{clusterName}/placementPolicies",
+		},
+		{
+			NewFunc: armavs.NewPrivateCloudsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds",
+		},
+		{
+			NewFunc: armavs.NewScriptCmdletsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/scriptPackages/{scriptPackageName}/scriptCmdlets",
+		},
+		{
+			NewFunc: armavs.NewScriptExecutionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/scriptExecutions",
+		},
+		{
+			NewFunc: armavs.NewScriptPackagesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/scriptPackages",
+		},
+		{
+			NewFunc: armavs.NewVirtualMachinesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/clusters/{clusterName}/virtualMachines",
+		},
+		{
+			NewFunc: armavs.NewWorkloadNetworksClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks",
 		},
 	}
 	return resources

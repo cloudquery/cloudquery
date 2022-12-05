@@ -6,32 +6,34 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsu
 func Armsubscription() []*Resource {
 	resources := []*Resource{
 		{
+			NewFunc: armsubscription.NewAliasClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription",
+			URL: "/providers/Microsoft.Subscription/aliases",
+		},
+		{
 			NewFunc: armsubscription.NewBillingAccountClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription",
+			URL: "",
 		},
 		{
 			NewFunc: armsubscription.NewClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription",
+			URL: "",
 		},
 		{
 			NewFunc: armsubscription.NewPolicyClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription",
+			URL: "",
 		},
 		{
 			NewFunc: armsubscription.NewSubscriptionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription",
+			URL: "/subscriptions",
 		},
 		{
 			NewFunc: armsubscription.NewTenantsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription",
-		},
-		{
-			NewFunc: armsubscription.NewAliasClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription",
-		},
-		{
-			NewFunc: armsubscription.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription",
+			URL: "/tenants",
 		},
 	}
 	return resources

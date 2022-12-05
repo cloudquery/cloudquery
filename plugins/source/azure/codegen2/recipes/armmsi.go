@@ -12,14 +12,7 @@ func Armmsi() []Table {
       Client: &armmsi.FederatedIdentityCredentialsClient{},
       ListFunc: (&armmsi.FederatedIdentityCredentialsClient{}).NewListPager,
 			NewFunc: armmsi.NewFederatedIdentityCredentialsClient,
-		},
-		{
-      Name: "operation",
-      Struct: &armmsi.Operation{},
-      ResponseStruct: &armmsi.OperationsClientListResponse{},
-      Client: &armmsi.OperationsClient{},
-      ListFunc: (&armmsi.OperationsClient{}).NewListPager,
-			NewFunc: armmsi.NewOperationsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{resourceName}/federatedIdentityCredentials",
 		},
 	}
 

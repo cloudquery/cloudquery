@@ -8,30 +8,32 @@ func Armdatalakeanalytics() []*Resource {
 		{
 			NewFunc: armdatalakeanalytics.NewAccountsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-analytics/armdatalakeanalytics",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DataLakeAnalytics/accounts",
 		},
 		{
 			NewFunc: armdatalakeanalytics.NewComputePoliciesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-analytics/armdatalakeanalytics",
+			URL: "",
 		},
 		{
 			NewFunc: armdatalakeanalytics.NewDataLakeStoreAccountsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-analytics/armdatalakeanalytics",
+			URL: "",
 		},
 		{
 			NewFunc: armdatalakeanalytics.NewFirewallRulesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-analytics/armdatalakeanalytics",
-		},
-		{
-			NewFunc: armdatalakeanalytics.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-analytics/armdatalakeanalytics",
+			URL: "",
 		},
 		{
 			NewFunc: armdatalakeanalytics.NewLocationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-analytics/armdatalakeanalytics",
+			URL: "",
 		},
 		{
 			NewFunc: armdatalakeanalytics.NewStorageAccountsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-analytics/armdatalakeanalytics",
+			URL: "",
 		},
 	}
 	return resources

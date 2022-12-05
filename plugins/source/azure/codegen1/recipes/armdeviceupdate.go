@@ -6,32 +6,34 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceupdate/armde
 func Armdeviceupdate() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armdeviceupdate.NewPrivateEndpointConnectionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceupdate/armdeviceupdate",
-		},
-		{
-			NewFunc: armdeviceupdate.NewPrivateLinkResourcesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceupdate/armdeviceupdate",
-		},
-		{
 			NewFunc: armdeviceupdate.NewAccountsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceupdate/armdeviceupdate",
+			URL: "",
 		},
 		{
 			NewFunc: armdeviceupdate.NewClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceupdate/armdeviceupdate",
-		},
-		{
-			NewFunc: armdeviceupdate.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceupdate/armdeviceupdate",
+			URL: "",
 		},
 		{
 			NewFunc: armdeviceupdate.NewInstancesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceupdate/armdeviceupdate",
+			URL: "",
 		},
 		{
 			NewFunc: armdeviceupdate.NewPrivateEndpointConnectionProxiesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceupdate/armdeviceupdate",
+			URL: "",
+		},
+		{
+			NewFunc: armdeviceupdate.NewPrivateEndpointConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceupdate/armdeviceupdate",
+			URL: "",
+		},
+		{
+			NewFunc: armdeviceupdate.NewPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceupdate/armdeviceupdate",
+			URL: "",
 		},
 	}
 	return resources

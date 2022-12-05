@@ -6,12 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpost
 func Armpostgresql() []Table {
 	tables := []Table{
 		{
-      Name: "server_key",
-      Struct: &armpostgresql.ServerKey{},
-      ResponseStruct: &armpostgresql.ServerKeysClientListResponse{},
-      Client: &armpostgresql.ServerKeysClient{},
-      ListFunc: (&armpostgresql.ServerKeysClient{}).NewListPager,
-			NewFunc: armpostgresql.NewServerKeysClient,
+      Name: "performance_tier_properties",
+      Struct: &armpostgresql.PerformanceTierProperties{},
+      ResponseStruct: &armpostgresql.LocationBasedPerformanceTierClientListResponse{},
+      Client: &armpostgresql.LocationBasedPerformanceTierClient{},
+      ListFunc: (&armpostgresql.LocationBasedPerformanceTierClient{}).NewListPager,
+			NewFunc: armpostgresql.NewLocationBasedPerformanceTierClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/locations/{locationName}/performanceTiers",
 		},
 		{
       Name: "server_administrator_resource",
@@ -20,6 +21,7 @@ func Armpostgresql() []Table {
       Client: &armpostgresql.ServerAdministratorsClient{},
       ListFunc: (&armpostgresql.ServerAdministratorsClient{}).NewListPager,
 			NewFunc: armpostgresql.NewServerAdministratorsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/servers/{serverName}/administrators",
 		},
 		{
       Name: "performance_tier_properties",
@@ -28,6 +30,16 @@ func Armpostgresql() []Table {
       Client: &armpostgresql.ServerBasedPerformanceTierClient{},
       ListFunc: (&armpostgresql.ServerBasedPerformanceTierClient{}).NewListPager,
 			NewFunc: armpostgresql.NewServerBasedPerformanceTierClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/servers/{serverName}/performanceTiers",
+		},
+		{
+      Name: "server_key",
+      Struct: &armpostgresql.ServerKey{},
+      ResponseStruct: &armpostgresql.ServerKeysClientListResponse{},
+      Client: &armpostgresql.ServerKeysClient{},
+      ListFunc: (&armpostgresql.ServerKeysClient{}).NewListPager,
+			NewFunc: armpostgresql.NewServerKeysClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/servers/{serverName}/keys",
 		},
 		{
       Name: "server",
@@ -36,14 +48,7 @@ func Armpostgresql() []Table {
       Client: &armpostgresql.ServersClient{},
       ListFunc: (&armpostgresql.ServersClient{}).NewListPager,
 			NewFunc: armpostgresql.NewServersClient,
-		},
-		{
-      Name: "performance_tier_properties",
-      Struct: &armpostgresql.PerformanceTierProperties{},
-      ResponseStruct: &armpostgresql.LocationBasedPerformanceTierClientListResponse{},
-      Client: &armpostgresql.LocationBasedPerformanceTierClient{},
-      ListFunc: (&armpostgresql.LocationBasedPerformanceTierClient{}).NewListPager,
-			NewFunc: armpostgresql.NewLocationBasedPerformanceTierClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/servers",
 		},
 	}
 

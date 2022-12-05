@@ -6,12 +6,9 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/baremetalinfrastru
 func Armbaremetalinfrastructure() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armbaremetalinfrastructure.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/baremetalinfrastructure/armbaremetalinfrastructure",
-		},
-		{
 			NewFunc: armbaremetalinfrastructure.NewAzureBareMetalInstancesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/baremetalinfrastructure/armbaremetalinfrastructure",
+			URL: "",
 		},
 	}
 	return resources

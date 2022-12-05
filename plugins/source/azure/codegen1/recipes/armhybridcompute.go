@@ -8,30 +8,32 @@ func Armhybridcompute() []*Resource {
 		{
 			NewFunc: armhybridcompute.NewMachineExtensionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/extensions",
 		},
 		{
 			NewFunc: armhybridcompute.NewMachinesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute",
-		},
-		{
-			NewFunc: armhybridcompute.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute",
-		},
-		{
-			NewFunc: armhybridcompute.NewPrivateEndpointConnectionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute",
-		},
-		{
-			NewFunc: armhybridcompute.NewPrivateLinkResourcesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute",
+			URL: "",
 		},
 		{
 			NewFunc: armhybridcompute.NewManagementClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute",
+			URL: "",
+		},
+		{
+			NewFunc: armhybridcompute.NewPrivateEndpointConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute",
+			URL: "",
+		},
+		{
+			NewFunc: armhybridcompute.NewPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute",
+			URL: "",
 		},
 		{
 			NewFunc: armhybridcompute.NewPrivateLinkScopesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.HybridCompute/privateLinkScopes",
 		},
 	}
 	return resources

@@ -12,14 +12,7 @@ func Armrelay() []Table {
       Client: &armrelay.NamespacesClient{},
       ListFunc: (&armrelay.NamespacesClient{}).NewListPager,
 			NewFunc: armrelay.NewNamespacesClient,
-		},
-		{
-      Name: "operation",
-      Struct: &armrelay.Operation{},
-      ResponseStruct: &armrelay.OperationsClientListResponse{},
-      Client: &armrelay.OperationsClient{},
-      ListFunc: (&armrelay.OperationsClient{}).NewListPager,
-			NewFunc: armrelay.NewOperationsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Relay/namespaces",
 		},
 		{
       Name: "private_endpoint_connection",
@@ -28,6 +21,7 @@ func Armrelay() []Table {
       Client: &armrelay.PrivateEndpointConnectionsClient{},
       ListFunc: (&armrelay.PrivateEndpointConnectionsClient{}).NewListPager,
 			NewFunc: armrelay.NewPrivateEndpointConnectionsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/privateEndpointConnections",
 		},
 	}
 

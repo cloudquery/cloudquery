@@ -12,14 +12,7 @@ func Armdashboard() []Table {
       Client: &armdashboard.GrafanaClient{},
       ListFunc: (&armdashboard.GrafanaClient{}).NewListPager,
 			NewFunc: armdashboard.NewGrafanaClient,
-		},
-		{
-      Name: "operation",
-      Struct: &armdashboard.Operation{},
-      ResponseStruct: &armdashboard.OperationsClientListResponse{},
-      Client: &armdashboard.OperationsClient{},
-      ListFunc: (&armdashboard.OperationsClient{}).NewListPager,
-			NewFunc: armdashboard.NewOperationsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Dashboard/grafana",
 		},
 		{
       Name: "private_endpoint_connection",
@@ -28,6 +21,7 @@ func Armdashboard() []Table {
       Client: &armdashboard.PrivateEndpointConnectionsClient{},
       ListFunc: (&armdashboard.PrivateEndpointConnectionsClient{}).NewListPager,
 			NewFunc: armdashboard.NewPrivateEndpointConnectionsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Dashboard/grafana/{workspaceName}/privateEndpointConnections",
 		},
 		{
       Name: "private_link_resource",
@@ -36,6 +30,7 @@ func Armdashboard() []Table {
       Client: &armdashboard.PrivateLinkResourcesClient{},
       ListFunc: (&armdashboard.PrivateLinkResourcesClient{}).NewListPager,
 			NewFunc: armdashboard.NewPrivateLinkResourcesClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Dashboard/grafana/{workspaceName}/privateLinkResources",
 		},
 	}
 

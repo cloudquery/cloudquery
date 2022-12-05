@@ -12,14 +12,7 @@ func Armautomation() []Table {
       Client: &armautomation.AccountClient{},
       ListFunc: (&armautomation.AccountClient{}).NewListPager,
 			NewFunc: armautomation.NewAccountClient,
-		},
-		{
-      Name: "operation",
-      Struct: &armautomation.Operation{},
-      ResponseStruct: &armautomation.OperationsClientListResponse{},
-      Client: &armautomation.OperationsClient{},
-      ListFunc: (&armautomation.OperationsClient{}).NewListPager,
-			NewFunc: armautomation.NewOperationsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Automation/automationAccounts",
 		},
 	}
 

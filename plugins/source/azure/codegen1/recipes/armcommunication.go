@@ -8,10 +8,7 @@ func Armcommunication() []*Resource {
 		{
 			NewFunc: armcommunication.NewServiceClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/communication/armcommunication",
-		},
-		{
-			NewFunc: armcommunication.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/communication/armcommunication",
+			URL: "",
 		},
 	}
 	return resources

@@ -8,10 +8,7 @@ func Armresourcehealth() []*Resource {
 		{
 			NewFunc: armresourcehealth.NewAvailabilityStatusesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcehealth/armresourcehealth",
-		},
-		{
-			NewFunc: armresourcehealth.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcehealth/armresourcehealth",
+			URL: "/{resourceUri}/providers/Microsoft.ResourceHealth/availabilityStatuses",
 		},
 	}
 	return resources

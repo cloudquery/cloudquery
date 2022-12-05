@@ -6,40 +6,44 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbots
 func Armbotservice() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armbotservice.NewPrivateLinkResourcesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice",
-		},
-		{
 			NewFunc: armbotservice.NewBotConnectionClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice",
+			URL: "",
 		},
 		{
 			NewFunc: armbotservice.NewBotsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice",
-		},
-		{
-			NewFunc: armbotservice.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.BotService/botServices",
 		},
 		{
 			NewFunc: armbotservice.NewChannelsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice",
-		},
-		{
-			NewFunc: armbotservice.NewPrivateEndpointConnectionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice",
+			URL: "",
 		},
 		{
 			NewFunc: armbotservice.NewDirectLineClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice",
+			URL: "",
 		},
 		{
 			NewFunc: armbotservice.NewHostSettingsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice",
+			URL: "",
 		},
 		{
 			NewFunc: armbotservice.NewOperationResultsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice",
+			URL: "",
+		},
+		{
+			NewFunc: armbotservice.NewPrivateEndpointConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BotService/botServices/{resourceName}/privateEndpointConnections",
+		},
+		{
+			NewFunc: armbotservice.NewPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice",
+			URL: "",
 		},
 	}
 	return resources

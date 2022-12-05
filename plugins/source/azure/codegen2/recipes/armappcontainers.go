@@ -6,28 +6,22 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/arma
 func Armappcontainers() []Table {
 	tables := []Table{
 		{
-      Name: "dapr_component",
-      Struct: &armappcontainers.DaprComponent{},
-      ResponseStruct: &armappcontainers.DaprComponentsClientListResponse{},
-      Client: &armappcontainers.DaprComponentsClient{},
-      ListFunc: (&armappcontainers.DaprComponentsClient{}).NewListPager,
-			NewFunc: armappcontainers.NewDaprComponentsClient,
-		},
-		{
-      Name: "operation_detail",
-      Struct: &armappcontainers.OperationDetail{},
-      ResponseStruct: &armappcontainers.OperationsClientListResponse{},
-      Client: &armappcontainers.OperationsClient{},
-      ListFunc: (&armappcontainers.OperationsClient{}).NewListPager,
-			NewFunc: armappcontainers.NewOperationsClient,
-		},
-		{
       Name: "certificate",
       Struct: &armappcontainers.Certificate{},
       ResponseStruct: &armappcontainers.CertificatesClientListResponse{},
       Client: &armappcontainers.CertificatesClient{},
       ListFunc: (&armappcontainers.CertificatesClient{}).NewListPager,
 			NewFunc: armappcontainers.NewCertificatesClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/certificates",
+		},
+		{
+      Name: "dapr_component",
+      Struct: &armappcontainers.DaprComponent{},
+      ResponseStruct: &armappcontainers.DaprComponentsClientListResponse{},
+      Client: &armappcontainers.DaprComponentsClient{},
+      ListFunc: (&armappcontainers.DaprComponentsClient{}).NewListPager,
+			NewFunc: armappcontainers.NewDaprComponentsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/daprComponents",
 		},
 	}
 

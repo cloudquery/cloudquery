@@ -6,48 +6,54 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/arm
 func Armcostmanagement() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armcostmanagement.NewForecastClient,
+			NewFunc: armcostmanagement.NewAlertsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement",
-		},
-		{
-			NewFunc: armcostmanagement.NewGenerateDetailedCostReportOperationResultsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement",
-		},
-		{
-			NewFunc: armcostmanagement.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement",
+			URL: "/{scope}/providers/Microsoft.CostManagement/alerts",
 		},
 		{
 			NewFunc: armcostmanagement.NewDimensionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement",
-		},
-		{
-			NewFunc: armcostmanagement.NewQueryClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement",
-		},
-		{
-			NewFunc: armcostmanagement.NewGenerateDetailedCostReportClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement",
-		},
-		{
-			NewFunc: armcostmanagement.NewGenerateDetailedCostReportOperationStatusClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement",
-		},
-		{
-			NewFunc: armcostmanagement.NewGenerateReservationDetailsReportClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement",
-		},
-		{
-			NewFunc: armcostmanagement.NewAlertsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement",
+			URL: "/{scope}/providers/Microsoft.CostManagement/dimensions",
 		},
 		{
 			NewFunc: armcostmanagement.NewExportsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement",
+			URL: "/{scope}/providers/Microsoft.CostManagement/exports",
+		},
+		{
+			NewFunc: armcostmanagement.NewForecastClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement",
+			URL: "",
+		},
+		{
+			NewFunc: armcostmanagement.NewGenerateDetailedCostReportClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement",
+			URL: "",
+		},
+		{
+			NewFunc: armcostmanagement.NewGenerateDetailedCostReportOperationResultsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement",
+			URL: "",
+		},
+		{
+			NewFunc: armcostmanagement.NewGenerateDetailedCostReportOperationStatusClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement",
+			URL: "",
+		},
+		{
+			NewFunc: armcostmanagement.NewGenerateReservationDetailsReportClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement",
+			URL: "",
+		},
+		{
+			NewFunc: armcostmanagement.NewQueryClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement",
+			URL: "",
 		},
 		{
 			NewFunc: armcostmanagement.NewViewsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement",
+			URL: "/providers/Microsoft.CostManagement/views",
 		},
 	}
 	return resources

@@ -6,32 +6,34 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/webpubsub/armwebpu
 func Armwebpubsub() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armwebpubsub.NewHubsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/webpubsub/armwebpubsub",
-		},
-		{
 			NewFunc: armwebpubsub.NewClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/webpubsub/armwebpubsub",
+			URL: "",
 		},
 		{
-			NewFunc: armwebpubsub.NewOperationsClient,
+			NewFunc: armwebpubsub.NewHubsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/webpubsub/armwebpubsub",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/hubs",
 		},
 		{
 			NewFunc: armwebpubsub.NewPrivateEndpointConnectionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/webpubsub/armwebpubsub",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/privateEndpointConnections",
 		},
 		{
 			NewFunc: armwebpubsub.NewPrivateLinkResourcesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/webpubsub/armwebpubsub",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/privateLinkResources",
 		},
 		{
 			NewFunc: armwebpubsub.NewSharedPrivateLinkResourcesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/webpubsub/armwebpubsub",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/sharedPrivateLinkResources",
 		},
 		{
 			NewFunc: armwebpubsub.NewUsagesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/webpubsub/armwebpubsub",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.SignalRService/locations/{location}/usages",
 		},
 	}
 	return resources

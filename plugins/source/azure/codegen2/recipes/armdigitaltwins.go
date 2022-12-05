@@ -6,20 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/digitaltwins/armdi
 func Armdigitaltwins() []Table {
 	tables := []Table{
 		{
-      Name: "time_series_database_connection",
-      Struct: &armdigitaltwins.TimeSeriesDatabaseConnection{},
-      ResponseStruct: &armdigitaltwins.TimeSeriesDatabaseConnectionsClientListResponse{},
-      Client: &armdigitaltwins.TimeSeriesDatabaseConnectionsClient{},
-      ListFunc: (&armdigitaltwins.TimeSeriesDatabaseConnectionsClient{}).NewListPager,
-			NewFunc: armdigitaltwins.NewTimeSeriesDatabaseConnectionsClient,
-		},
-		{
       Name: "description",
       Struct: &armdigitaltwins.Description{},
       ResponseStruct: &armdigitaltwins.ClientListResponse{},
       Client: &armdigitaltwins.Client{},
       ListFunc: (&armdigitaltwins.Client{}).NewListPager,
 			NewFunc: armdigitaltwins.NewClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DigitalTwins/digitalTwinsInstances",
 		},
 		{
       Name: "endpoint_resource",
@@ -28,14 +21,16 @@ func Armdigitaltwins() []Table {
       Client: &armdigitaltwins.EndpointClient{},
       ListFunc: (&armdigitaltwins.EndpointClient{}).NewListPager,
 			NewFunc: armdigitaltwins.NewEndpointClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins/digitalTwinsInstances/{resourceName}/endpoints",
 		},
 		{
-      Name: "operation",
-      Struct: &armdigitaltwins.Operation{},
-      ResponseStruct: &armdigitaltwins.OperationsClientListResponse{},
-      Client: &armdigitaltwins.OperationsClient{},
-      ListFunc: (&armdigitaltwins.OperationsClient{}).NewListPager,
-			NewFunc: armdigitaltwins.NewOperationsClient,
+      Name: "time_series_database_connection",
+      Struct: &armdigitaltwins.TimeSeriesDatabaseConnection{},
+      ResponseStruct: &armdigitaltwins.TimeSeriesDatabaseConnectionsClientListResponse{},
+      Client: &armdigitaltwins.TimeSeriesDatabaseConnectionsClient{},
+      ListFunc: (&armdigitaltwins.TimeSeriesDatabaseConnectionsClient{}).NewListPager,
+			NewFunc: armdigitaltwins.NewTimeSeriesDatabaseConnectionsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins/digitalTwinsInstances/{resourceName}/timeSeriesDatabaseConnections",
 		},
 	}
 

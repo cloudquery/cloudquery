@@ -8,42 +8,47 @@ func Armhybridnetwork() []*Resource {
 		{
 			NewFunc: armhybridnetwork.NewDevicesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridnetwork/armhybridnetwork",
-		},
-		{
-			NewFunc: armhybridnetwork.NewNetworkFunctionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridnetwork/armhybridnetwork",
-		},
-		{
-			NewFunc: armhybridnetwork.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridnetwork/armhybridnetwork",
-		},
-		{
-			NewFunc: armhybridnetwork.NewVendorSKUPreviewClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridnetwork/armhybridnetwork",
+			URL: "",
 		},
 		{
 			NewFunc: armhybridnetwork.NewNetworkFunctionVendorSKUsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridnetwork/armhybridnetwork",
-		},
-		{
-			NewFunc: armhybridnetwork.NewRoleInstancesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridnetwork/armhybridnetwork",
-		},
-		{
-			NewFunc: armhybridnetwork.NewVendorsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridnetwork/armhybridnetwork",
-		},
-		{
-			NewFunc: armhybridnetwork.NewVendorSKUsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridnetwork/armhybridnetwork",
+			URL: "",
 		},
 		{
 			NewFunc: armhybridnetwork.NewNetworkFunctionVendorsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridnetwork/armhybridnetwork",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.HybridNetwork/networkFunctionVendors",
+		},
+		{
+			NewFunc: armhybridnetwork.NewNetworkFunctionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridnetwork/armhybridnetwork",
+			URL: "",
+		},
+		{
+			NewFunc: armhybridnetwork.NewRoleInstancesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridnetwork/armhybridnetwork",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.HybridNetwork/locations/{locationName}/vendors/{vendorName}/networkFunctions/{serviceKey}/roleInstances",
 		},
 		{
 			NewFunc: armhybridnetwork.NewVendorNetworkFunctionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridnetwork/armhybridnetwork",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.HybridNetwork/locations/{locationName}/vendors/{vendorName}/networkFunctions",
+		},
+		{
+			NewFunc: armhybridnetwork.NewVendorSKUPreviewClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridnetwork/armhybridnetwork",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.HybridNetwork/vendors/{vendorName}/vendorSkus/{skuName}/previewSubscriptions",
+		},
+		{
+			NewFunc: armhybridnetwork.NewVendorSKUsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridnetwork/armhybridnetwork",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.HybridNetwork/vendors/{vendorName}/vendorSkus",
+		},
+		{
+			NewFunc: armhybridnetwork.NewVendorsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridnetwork/armhybridnetwork",
+			URL: "",
 		},
 	}
 	return resources

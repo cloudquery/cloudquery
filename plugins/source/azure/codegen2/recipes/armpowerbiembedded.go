@@ -12,6 +12,7 @@ func Armpowerbiembedded() []Table {
       Client: &armpowerbiembedded.WorkspacesClient{},
       ListFunc: (&armpowerbiembedded.WorkspacesClient{}).NewListPager,
 			NewFunc: armpowerbiembedded.NewWorkspacesClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBI/workspaceCollections/{workspaceCollectionName}/workspaces",
 		},
 	}
 

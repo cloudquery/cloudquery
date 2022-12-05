@@ -56,7 +56,7 @@ func Configuration() *schema.Table {
 
 func fetchConfiguration(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
-	svc, err := armmaintenance.NewConfigurationsForResourceGroupClient(cl.SubscriptionId, cl.Creds, cl.Options)
+	svc, err := armmaintenance.NewPublicMaintenanceConfigurationsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {
 		return err
 	}

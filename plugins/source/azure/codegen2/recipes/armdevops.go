@@ -6,20 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devops/armdevops"
 func Armdevops() []Table {
 	tables := []Table{
 		{
-      Name: "operation",
-      Struct: &armdevops.Operation{},
-      ResponseStruct: &armdevops.OperationsClientListResponse{},
-      Client: &armdevops.OperationsClient{},
-      ListFunc: (&armdevops.OperationsClient{}).NewListPager,
-			NewFunc: armdevops.NewOperationsClient,
-		},
-		{
       Name: "pipeline_template_definition",
       Struct: &armdevops.PipelineTemplateDefinition{},
       ResponseStruct: &armdevops.PipelineTemplateDefinitionsClientListResponse{},
       Client: &armdevops.PipelineTemplateDefinitionsClient{},
       ListFunc: (&armdevops.PipelineTemplateDefinitionsClient{}).NewListPager,
 			NewFunc: armdevops.NewPipelineTemplateDefinitionsClient,
+			URL: "/providers/Microsoft.DevOps/pipelineTemplateDefinitions",
 		},
 	}
 

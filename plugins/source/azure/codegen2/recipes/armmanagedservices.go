@@ -6,28 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managedservices/ar
 func Armmanagedservices() []Table {
 	tables := []Table{
 		{
-      Name: "registration_assignment",
-      Struct: &armmanagedservices.RegistrationAssignment{},
-      ResponseStruct: &armmanagedservices.RegistrationAssignmentsClientListResponse{},
-      Client: &armmanagedservices.RegistrationAssignmentsClient{},
-      ListFunc: (&armmanagedservices.RegistrationAssignmentsClient{}).NewListPager,
-			NewFunc: armmanagedservices.NewRegistrationAssignmentsClient,
-		},
-		{
-      Name: "registration_definition",
-      Struct: &armmanagedservices.RegistrationDefinition{},
-      ResponseStruct: &armmanagedservices.RegistrationDefinitionsClientListResponse{},
-      Client: &armmanagedservices.RegistrationDefinitionsClient{},
-      ListFunc: (&armmanagedservices.RegistrationDefinitionsClient{}).NewListPager,
-			NewFunc: armmanagedservices.NewRegistrationDefinitionsClient,
-		},
-		{
       Name: "marketplace_registration_definition",
       Struct: &armmanagedservices.MarketplaceRegistrationDefinition{},
       ResponseStruct: &armmanagedservices.MarketplaceRegistrationDefinitionsClientListResponse{},
       Client: &armmanagedservices.MarketplaceRegistrationDefinitionsClient{},
       ListFunc: (&armmanagedservices.MarketplaceRegistrationDefinitionsClient{}).NewListPager,
 			NewFunc: armmanagedservices.NewMarketplaceRegistrationDefinitionsClient,
+			URL: "/{scope}/providers/Microsoft.ManagedServices/marketplaceRegistrationDefinitions",
 		},
 		{
       Name: "marketplace_registration_definition",
@@ -36,6 +21,25 @@ func Armmanagedservices() []Table {
       Client: &armmanagedservices.MarketplaceRegistrationDefinitionsWithoutScopeClient{},
       ListFunc: (&armmanagedservices.MarketplaceRegistrationDefinitionsWithoutScopeClient{}).NewListPager,
 			NewFunc: armmanagedservices.NewMarketplaceRegistrationDefinitionsWithoutScopeClient,
+			URL: "/providers/Microsoft.ManagedServices/marketplaceRegistrationDefinitions",
+		},
+		{
+      Name: "registration_assignment",
+      Struct: &armmanagedservices.RegistrationAssignment{},
+      ResponseStruct: &armmanagedservices.RegistrationAssignmentsClientListResponse{},
+      Client: &armmanagedservices.RegistrationAssignmentsClient{},
+      ListFunc: (&armmanagedservices.RegistrationAssignmentsClient{}).NewListPager,
+			NewFunc: armmanagedservices.NewRegistrationAssignmentsClient,
+			URL: "/{scope}/providers/Microsoft.ManagedServices/registrationAssignments",
+		},
+		{
+      Name: "registration_definition",
+      Struct: &armmanagedservices.RegistrationDefinition{},
+      ResponseStruct: &armmanagedservices.RegistrationDefinitionsClientListResponse{},
+      Client: &armmanagedservices.RegistrationDefinitionsClient{},
+      ListFunc: (&armmanagedservices.RegistrationDefinitionsClient{}).NewListPager,
+			NewFunc: armmanagedservices.NewRegistrationDefinitionsClient,
+			URL: "/{scope}/providers/Microsoft.ManagedServices/registrationDefinitions",
 		},
 	}
 

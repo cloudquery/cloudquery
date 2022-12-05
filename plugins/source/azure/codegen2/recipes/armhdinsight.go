@@ -12,14 +12,7 @@ func Armhdinsight() []Table {
       Client: &armhdinsight.ClustersClient{},
       ListFunc: (&armhdinsight.ClustersClient{}).NewListPager,
 			NewFunc: armhdinsight.NewClustersClient,
-		},
-		{
-      Name: "operation",
-      Struct: &armhdinsight.Operation{},
-      ResponseStruct: &armhdinsight.OperationsClientListResponse{},
-      Client: &armhdinsight.OperationsClient{},
-      ListFunc: (&armhdinsight.OperationsClient{}).NewListPager,
-			NewFunc: armhdinsight.NewOperationsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.HDInsight/clusters",
 		},
 	}
 

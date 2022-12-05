@@ -6,28 +6,22 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storageimportexpor
 func Armstorageimportexport() []Table {
 	tables := []Table{
 		{
-      Name: "location",
-      Struct: &armstorageimportexport.Location{},
-      ResponseStruct: &armstorageimportexport.LocationsClientListResponse{},
-      Client: &armstorageimportexport.LocationsClient{},
-      ListFunc: (&armstorageimportexport.LocationsClient{}).NewListPager,
-			NewFunc: armstorageimportexport.NewLocationsClient,
-		},
-		{
-      Name: "operation",
-      Struct: &armstorageimportexport.Operation{},
-      ResponseStruct: &armstorageimportexport.OperationsClientListResponse{},
-      Client: &armstorageimportexport.OperationsClient{},
-      ListFunc: (&armstorageimportexport.OperationsClient{}).NewListPager,
-			NewFunc: armstorageimportexport.NewOperationsClient,
-		},
-		{
       Name: "drive_bit_locker_key",
       Struct: &armstorageimportexport.DriveBitLockerKey{},
       ResponseStruct: &armstorageimportexport.BitLockerKeysClientListResponse{},
       Client: &armstorageimportexport.BitLockerKeysClient{},
       ListFunc: (&armstorageimportexport.BitLockerKeysClient{}).NewListPager,
 			NewFunc: armstorageimportexport.NewBitLockerKeysClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ImportExport/jobs/{jobName}/listBitLockerKeys",
+		},
+		{
+      Name: "location",
+      Struct: &armstorageimportexport.Location{},
+      ResponseStruct: &armstorageimportexport.LocationsClientListResponse{},
+      Client: &armstorageimportexport.LocationsClient{},
+      ListFunc: (&armstorageimportexport.LocationsClient{}).NewListPager,
+			NewFunc: armstorageimportexport.NewLocationsClient,
+			URL: "/providers/Microsoft.ImportExport/locations",
 		},
 	}
 

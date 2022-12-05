@@ -12,14 +12,7 @@ func Armstoragepool() []Table {
       Client: &armstoragepool.DiskPoolZonesClient{},
       ListFunc: (&armstoragepool.DiskPoolZonesClient{}).NewListPager,
 			NewFunc: armstoragepool.NewDiskPoolZonesClient,
-		},
-		{
-      Name: "rp_operation",
-      Struct: &armstoragepool.RPOperation{},
-      ResponseStruct: &armstoragepool.OperationsClientListResponse{},
-      Client: &armstoragepool.OperationsClient{},
-      ListFunc: (&armstoragepool.OperationsClient{}).NewListPager,
-			NewFunc: armstoragepool.NewOperationsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.StoragePool/locations/{location}/diskPoolZones",
 		},
 		{
       Name: "resource_sku_info",
@@ -28,6 +21,7 @@ func Armstoragepool() []Table {
       Client: &armstoragepool.ResourceSKUsClient{},
       ListFunc: (&armstoragepool.ResourceSKUsClient{}).NewListPager,
 			NewFunc: armstoragepool.NewResourceSKUsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.StoragePool/locations/{location}/skus",
 		},
 	}
 

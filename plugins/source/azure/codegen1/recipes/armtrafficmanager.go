@@ -6,24 +6,29 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/trafficmanager/arm
 func Armtrafficmanager() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armtrafficmanager.NewHeatMapClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/trafficmanager/armtrafficmanager",
-		},
-		{
-			NewFunc: armtrafficmanager.NewProfilesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/trafficmanager/armtrafficmanager",
-		},
-		{
 			NewFunc: armtrafficmanager.NewEndpointsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/trafficmanager/armtrafficmanager",
-		},
-		{
-			NewFunc: armtrafficmanager.NewUserMetricsKeysClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/trafficmanager/armtrafficmanager",
+			URL: "",
 		},
 		{
 			NewFunc: armtrafficmanager.NewGeographicHierarchiesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/trafficmanager/armtrafficmanager",
+			URL: "",
+		},
+		{
+			NewFunc: armtrafficmanager.NewHeatMapClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/trafficmanager/armtrafficmanager",
+			URL: "",
+		},
+		{
+			NewFunc: armtrafficmanager.NewProfilesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/trafficmanager/armtrafficmanager",
+			URL: "",
+		},
+		{
+			NewFunc: armtrafficmanager.NewUserMetricsKeysClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/trafficmanager/armtrafficmanager",
+			URL: "",
 		},
 	}
 	return resources

@@ -5,30 +5,24 @@ package armeducation
 import (
 	"encoding/json"
 	"net/http"
-	"net/http/httptest"
 	"testing"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/education/armeducation"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/faker"
-	"github.com/julienschmidt/httprouter"
+	"github.com/gorilla/mux"
 )
 
-func createJoinRequestDetails() (*arm.ClientOptions, error) {
+func createJoinRequestDetails(router *mux.Router) error {
 	var item armeducation.JoinRequestsClientListResponse
 	if err := faker.FakeObject(&item); err != nil {
-		return nil, err
+		return err
 	}
 
 	emptyStr := ""
 	item.NextLink = &emptyStr
 
-	mux := httprouter.New()
-	mux.GET("/*filepath", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	router.HandleFunc("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/providers/Microsoft.Education/labs/default/joinRequests", func(w http.ResponseWriter, r *http.Request) {
 		b, err := json.Marshal(&item)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)
@@ -39,16 +33,7 @@ func createJoinRequestDetails() (*arm.ClientOptions, error) {
 			return
 		}
 	})
-	ts := httptest.NewServer(mux)
-	cloud.AzurePublic.Services[cloud.ResourceManager] = cloud.ServiceConfiguration{
-		Endpoint: ts.URL,
-		Audience: "test",
-	}
-	return &arm.ClientOptions{
-		ClientOptions: azcore.ClientOptions{
-			Transport: ts.Client(),
-		},
-	}, nil
+	return nil
 }
 
 func TestJoinRequestDetails(t *testing.T) {

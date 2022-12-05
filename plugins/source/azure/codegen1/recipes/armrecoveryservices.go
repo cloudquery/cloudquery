@@ -6,40 +6,44 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/a
 func Armrecoveryservices() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armrecoveryservices.NewRegisteredIdentitiesClient,
+			NewFunc: armrecoveryservices.NewClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservices",
-		},
-		{
-			NewFunc: armrecoveryservices.NewVaultsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservices",
-		},
-		{
-			NewFunc: armrecoveryservices.NewReplicationUsagesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservices",
-		},
-		{
-			NewFunc: armrecoveryservices.NewUsagesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservices",
-		},
-		{
-			NewFunc: armrecoveryservices.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservices",
+			URL: "",
 		},
 		{
 			NewFunc: armrecoveryservices.NewPrivateLinkResourcesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservices",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/privateLinkResources",
+		},
+		{
+			NewFunc: armrecoveryservices.NewRegisteredIdentitiesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservices",
+			URL: "",
+		},
+		{
+			NewFunc: armrecoveryservices.NewReplicationUsagesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservices",
+			URL: "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/replicationUsages",
+		},
+		{
+			NewFunc: armrecoveryservices.NewUsagesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservices",
+			URL: "",
 		},
 		{
 			NewFunc: armrecoveryservices.NewVaultCertificatesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservices",
+			URL: "",
 		},
 		{
 			NewFunc: armrecoveryservices.NewVaultExtendedInfoClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservices",
+			URL: "",
 		},
 		{
-			NewFunc: armrecoveryservices.NewClient,
+			NewFunc: armrecoveryservices.NewVaultsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservices",
+			URL: "",
 		},
 	}
 	return resources

@@ -8,10 +8,7 @@ func Armredhatopenshift() []*Resource {
 		{
 			NewFunc: armredhatopenshift.NewOpenShiftClustersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redhatopenshift/armredhatopenshift",
-		},
-		{
-			NewFunc: armredhatopenshift.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redhatopenshift/armredhatopenshift",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.RedHatOpenShift/openShiftClusters",
 		},
 	}
 	return resources

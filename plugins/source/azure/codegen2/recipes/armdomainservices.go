@@ -6,20 +6,22 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/domainservices/arm
 func Armdomainservices() []Table {
 	tables := []Table{
 		{
-      Name: "operation_entity",
-      Struct: &armdomainservices.OperationEntity{},
-      ResponseStruct: &armdomainservices.DomainServiceOperationsClientListResponse{},
-      Client: &armdomainservices.DomainServiceOperationsClient{},
-      ListFunc: (&armdomainservices.DomainServiceOperationsClient{}).NewListPager,
-			NewFunc: armdomainservices.NewDomainServiceOperationsClient,
-		},
-		{
       Name: "domain_service",
       Struct: &armdomainservices.DomainService{},
       ResponseStruct: &armdomainservices.ClientListResponse{},
       Client: &armdomainservices.Client{},
       ListFunc: (&armdomainservices.Client{}).NewListPager,
 			NewFunc: armdomainservices.NewClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.AAD/domainServices",
+		},
+		{
+      Name: "operation_entity",
+      Struct: &armdomainservices.OperationEntity{},
+      ResponseStruct: &armdomainservices.DomainServiceOperationsClientListResponse{},
+      Client: &armdomainservices.DomainServiceOperationsClient{},
+      ListFunc: (&armdomainservices.DomainServiceOperationsClient{}).NewListPager,
+			NewFunc: armdomainservices.NewDomainServiceOperationsClient,
+			URL: "/providers/Microsoft.AAD/operations",
 		},
 		{
       Name: "ou_container",
@@ -28,6 +30,7 @@ func Armdomainservices() []Table {
       Client: &armdomainservices.OuContainerClient{},
       ListFunc: (&armdomainservices.OuContainerClient{}).NewListPager,
 			NewFunc: armdomainservices.NewOuContainerClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Aad/domainServices/{domainServiceName}/ouContainer",
 		},
 		{
       Name: "operation_entity",
@@ -36,6 +39,7 @@ func Armdomainservices() []Table {
       Client: &armdomainservices.OuContainerOperationsClient{},
       ListFunc: (&armdomainservices.OuContainerOperationsClient{}).NewListPager,
 			NewFunc: armdomainservices.NewOuContainerOperationsClient,
+			URL: "/providers/Microsoft.Aad/operations",
 		},
 	}
 

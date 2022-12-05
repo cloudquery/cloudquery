@@ -8,18 +8,17 @@ func Armoperationsmanagement() []*Resource {
 		{
 			NewFunc: armoperationsmanagement.NewManagementAssociationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationsmanagement/armoperationsmanagement",
+			URL: "",
 		},
 		{
 			NewFunc: armoperationsmanagement.NewManagementConfigurationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationsmanagement/armoperationsmanagement",
-		},
-		{
-			NewFunc: armoperationsmanagement.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationsmanagement/armoperationsmanagement",
+			URL: "",
 		},
 		{
 			NewFunc: armoperationsmanagement.NewSolutionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationsmanagement/armoperationsmanagement",
+			URL: "",
 		},
 	}
 	return resources

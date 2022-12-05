@@ -6,28 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch"
 func Armbatch() []Table {
 	tables := []Table{
 		{
-      Name: "application_package",
-      Struct: &armbatch.ApplicationPackage{},
-      ResponseStruct: &armbatch.ApplicationPackageClientListResponse{},
-      Client: &armbatch.ApplicationPackageClient{},
-      ListFunc: (&armbatch.ApplicationPackageClient{}).NewListPager,
-			NewFunc: armbatch.NewApplicationPackageClient,
-		},
-		{
       Name: "account",
       Struct: &armbatch.Account{},
       ResponseStruct: &armbatch.AccountClientListResponse{},
       Client: &armbatch.AccountClient{},
       ListFunc: (&armbatch.AccountClient{}).NewListPager,
 			NewFunc: armbatch.NewAccountClient,
-		},
-		{
-      Name: "operation",
-      Struct: &armbatch.Operation{},
-      ResponseStruct: &armbatch.OperationsClientListResponse{},
-      Client: &armbatch.OperationsClient{},
-      ListFunc: (&armbatch.OperationsClient{}).NewListPager,
-			NewFunc: armbatch.NewOperationsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Batch/batchAccounts",
 		},
 		{
       Name: "application",
@@ -36,6 +21,16 @@ func Armbatch() []Table {
       Client: &armbatch.ApplicationClient{},
       ListFunc: (&armbatch.ApplicationClient{}).NewListPager,
 			NewFunc: armbatch.NewApplicationClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications",
+		},
+		{
+      Name: "application_package",
+      Struct: &armbatch.ApplicationPackage{},
+      ResponseStruct: &armbatch.ApplicationPackageClientListResponse{},
+      Client: &armbatch.ApplicationPackageClient{},
+      ListFunc: (&armbatch.ApplicationPackageClient{}).NewListPager,
+			NewFunc: armbatch.NewApplicationPackageClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationName}/versions",
 		},
 	}
 

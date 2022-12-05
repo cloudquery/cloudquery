@@ -6,20 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcomplianceautom
 func Armappcomplianceautomation() []Table {
 	tables := []Table{
 		{
-      Name: "operation",
-      Struct: &armappcomplianceautomation.Operation{},
-      ResponseStruct: &armappcomplianceautomation.OperationsClientListResponse{},
-      Client: &armappcomplianceautomation.OperationsClient{},
-      ListFunc: (&armappcomplianceautomation.OperationsClient{}).NewListPager,
-			NewFunc: armappcomplianceautomation.NewOperationsClient,
-		},
-		{
       Name: "report_resource",
       Struct: &armappcomplianceautomation.ReportResource{},
       ResponseStruct: &armappcomplianceautomation.ReportsClientListResponse{},
       Client: &armappcomplianceautomation.ReportsClient{},
       ListFunc: (&armappcomplianceautomation.ReportsClient{}).NewListPager,
 			NewFunc: armappcomplianceautomation.NewReportsClient,
+			URL: "/providers/Microsoft.AppComplianceAutomation/reports",
 		},
 		{
       Name: "snapshot_resource",
@@ -28,6 +21,7 @@ func Armappcomplianceautomation() []Table {
       Client: &armappcomplianceautomation.SnapshotsClient{},
       ListFunc: (&armappcomplianceautomation.SnapshotsClient{}).NewListPager,
 			NewFunc: armappcomplianceautomation.NewSnapshotsClient,
+			URL: "/providers/Microsoft.AppComplianceAutomation/reports/{reportName}/snapshots",
 		},
 	}
 

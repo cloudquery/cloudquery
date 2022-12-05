@@ -8,10 +8,12 @@ func Armlocks() []*Resource {
 		{
 			NewFunc: armlocks.NewAuthorizationOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armlocks",
+			URL: "/providers/Microsoft.Authorization/operations",
 		},
 		{
 			NewFunc: armlocks.NewManagementLocksClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armlocks",
+			URL: "",
 		},
 	}
 	return resources

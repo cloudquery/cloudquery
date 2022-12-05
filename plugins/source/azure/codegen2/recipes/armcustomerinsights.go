@@ -12,14 +12,7 @@ func Armcustomerinsights() []Table {
       Client: &armcustomerinsights.HubsClient{},
       ListFunc: (&armcustomerinsights.HubsClient{}).NewListPager,
 			NewFunc: armcustomerinsights.NewHubsClient,
-		},
-		{
-      Name: "operation",
-      Struct: &armcustomerinsights.Operation{},
-      ResponseStruct: &armcustomerinsights.OperationsClientListResponse{},
-      Client: &armcustomerinsights.OperationsClient{},
-      ListFunc: (&armcustomerinsights.OperationsClient{}).NewListPager,
-			NewFunc: armcustomerinsights.NewOperationsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.CustomerInsights/hubs",
 		},
 	}
 

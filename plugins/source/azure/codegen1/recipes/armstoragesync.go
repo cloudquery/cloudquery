@@ -6,48 +6,54 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagesync/armsto
 func Armstoragesync() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armstoragesync.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagesync/armstoragesync",
-		},
-		{
-			NewFunc: armstoragesync.NewServicesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagesync/armstoragesync",
-		},
-		{
-			NewFunc: armstoragesync.NewWorkflowsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagesync/armstoragesync",
-		},
-		{
 			NewFunc: armstoragesync.NewCloudEndpointsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagesync/armstoragesync",
-		},
-		{
-			NewFunc: armstoragesync.NewRegisteredServersClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagesync/armstoragesync",
-		},
-		{
-			NewFunc: armstoragesync.NewSyncGroupsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagesync/armstoragesync",
-		},
-		{
-			NewFunc: armstoragesync.NewPrivateEndpointConnectionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagesync/armstoragesync",
-		},
-		{
-			NewFunc: armstoragesync.NewPrivateLinkResourcesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagesync/armstoragesync",
-		},
-		{
-			NewFunc: armstoragesync.NewServerEndpointsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagesync/armstoragesync",
-		},
-		{
-			NewFunc: armstoragesync.NewOperationStatusClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagesync/armstoragesync",
+			URL: "",
 		},
 		{
 			NewFunc: armstoragesync.NewMicrosoftStorageSyncClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagesync/armstoragesync",
+			URL: "",
+		},
+		{
+			NewFunc: armstoragesync.NewOperationStatusClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagesync/armstoragesync",
+			URL: "",
+		},
+		{
+			NewFunc: armstoragesync.NewPrivateEndpointConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagesync/armstoragesync",
+			URL: "",
+		},
+		{
+			NewFunc: armstoragesync.NewPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagesync/armstoragesync",
+			URL: "",
+		},
+		{
+			NewFunc: armstoragesync.NewRegisteredServersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagesync/armstoragesync",
+			URL: "",
+		},
+		{
+			NewFunc: armstoragesync.NewServerEndpointsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagesync/armstoragesync",
+			URL: "",
+		},
+		{
+			NewFunc: armstoragesync.NewServicesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagesync/armstoragesync",
+			URL: "",
+		},
+		{
+			NewFunc: armstoragesync.NewSyncGroupsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagesync/armstoragesync",
+			URL: "",
+		},
+		{
+			NewFunc: armstoragesync.NewWorkflowsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagesync/armstoragesync",
+			URL: "",
 		},
 	}
 	return resources

@@ -8,14 +8,17 @@ func Armaad() []*Resource {
 		{
 			NewFunc: armaad.NewPrivateEndpointConnectionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/aad/armaad",
+			URL: "",
 		},
 		{
 			NewFunc: armaad.NewPrivateLinkForAzureAdClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/aad/armaad",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.aadiam/privateLinkForAzureAd",
 		},
 		{
 			NewFunc: armaad.NewPrivateLinkResourcesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/aad/armaad",
+			URL: "",
 		},
 	}
 	return resources

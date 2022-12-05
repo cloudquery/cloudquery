@@ -12,14 +12,7 @@ func Armquantum() []Table {
       Client: &armquantum.OfferingsClient{},
       ListFunc: (&armquantum.OfferingsClient{}).NewListPager,
 			NewFunc: armquantum.NewOfferingsClient,
-		},
-		{
-      Name: "operation",
-      Struct: &armquantum.Operation{},
-      ResponseStruct: &armquantum.OperationsClientListResponse{},
-      Client: &armquantum.OperationsClient{},
-      ListFunc: (&armquantum.OperationsClient{}).NewListPager,
-			NewFunc: armquantum.NewOperationsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Quantum/locations/{locationName}/offerings",
 		},
 	}
 

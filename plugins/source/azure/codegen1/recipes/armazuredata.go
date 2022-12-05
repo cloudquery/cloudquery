@@ -6,16 +6,14 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azuredata/armazure
 func Armazuredata() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armazuredata.NewSQLServersClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azuredata/armazuredata",
-		},
-		{
-			NewFunc: armazuredata.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azuredata/armazuredata",
-		},
-		{
 			NewFunc: armazuredata.NewSQLServerRegistrationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azuredata/armazuredata",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.AzureData/sqlServerRegistrations",
+		},
+		{
+			NewFunc: armazuredata.NewSQLServersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azuredata/armazuredata",
+			URL: "",
 		},
 	}
 	return resources

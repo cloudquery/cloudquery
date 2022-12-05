@@ -12,14 +12,7 @@ func Armhybridcompute() []Table {
       Client: &armhybridcompute.MachineExtensionsClient{},
       ListFunc: (&armhybridcompute.MachineExtensionsClient{}).NewListPager,
 			NewFunc: armhybridcompute.NewMachineExtensionsClient,
-		},
-		{
-      Name: "operation_value",
-      Struct: &armhybridcompute.OperationValue{},
-      ResponseStruct: &armhybridcompute.OperationsClientListResponse{},
-      Client: &armhybridcompute.OperationsClient{},
-      ListFunc: (&armhybridcompute.OperationsClient{}).NewListPager,
-			NewFunc: armhybridcompute.NewOperationsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/extensions",
 		},
 		{
       Name: "private_link_scope",
@@ -28,6 +21,7 @@ func Armhybridcompute() []Table {
       Client: &armhybridcompute.PrivateLinkScopesClient{},
       ListFunc: (&armhybridcompute.PrivateLinkScopesClient{}).NewListPager,
 			NewFunc: armhybridcompute.NewPrivateLinkScopesClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.HybridCompute/privateLinkScopes",
 		},
 	}
 

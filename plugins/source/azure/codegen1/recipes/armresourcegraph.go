@@ -8,10 +8,7 @@ func Armresourcegraph() []*Resource {
 		{
 			NewFunc: armresourcegraph.NewClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcegraph/armresourcegraph",
-		},
-		{
-			NewFunc: armresourcegraph.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcegraph/armresourcegraph",
+			URL: "",
 		},
 	}
 	return resources

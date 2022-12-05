@@ -6,12 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsight
 func Armoperationalinsights() []Table {
 	tables := []Table{
 		{
-      Name: "usage_metric",
-      Struct: &armoperationalinsights.UsageMetric{},
-      ResponseStruct: &armoperationalinsights.UsagesClientListResponse{},
-      Client: &armoperationalinsights.UsagesClient{},
-      ListFunc: (&armoperationalinsights.UsagesClient{}).NewListPager,
-			NewFunc: armoperationalinsights.NewUsagesClient,
+      Name: "cluster",
+      Struct: &armoperationalinsights.Cluster{},
+      ResponseStruct: &armoperationalinsights.ClustersClientListResponse{},
+      Client: &armoperationalinsights.ClustersClient{},
+      ListFunc: (&armoperationalinsights.ClustersClient{}).NewListPager,
+			NewFunc: armoperationalinsights.NewClustersClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.OperationalInsights/clusters",
 		},
 		{
       Name: "workspace",
@@ -20,14 +21,7 @@ func Armoperationalinsights() []Table {
       Client: &armoperationalinsights.DeletedWorkspacesClient{},
       ListFunc: (&armoperationalinsights.DeletedWorkspacesClient{}).NewListPager,
 			NewFunc: armoperationalinsights.NewDeletedWorkspacesClient,
-		},
-		{
-      Name: "cluster",
-      Struct: &armoperationalinsights.Cluster{},
-      ResponseStruct: &armoperationalinsights.ClustersClientListResponse{},
-      Client: &armoperationalinsights.ClustersClient{},
-      ListFunc: (&armoperationalinsights.ClustersClient{}).NewListPager,
-			NewFunc: armoperationalinsights.NewClustersClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.OperationalInsights/deletedWorkspaces",
 		},
 		{
       Name: "management_group",
@@ -36,6 +30,16 @@ func Armoperationalinsights() []Table {
       Client: &armoperationalinsights.ManagementGroupsClient{},
       ListFunc: (&armoperationalinsights.ManagementGroupsClient{}).NewListPager,
 			NewFunc: armoperationalinsights.NewManagementGroupsClient,
+			URL: "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/managementGroups",
+		},
+		{
+      Name: "usage_metric",
+      Struct: &armoperationalinsights.UsageMetric{},
+      ResponseStruct: &armoperationalinsights.UsagesClientListResponse{},
+      Client: &armoperationalinsights.UsagesClient{},
+      ListFunc: (&armoperationalinsights.UsagesClient{}).NewListPager,
+			NewFunc: armoperationalinsights.NewUsagesClient,
+			URL: "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/usages",
 		},
 		{
       Name: "workspace",
@@ -44,14 +48,7 @@ func Armoperationalinsights() []Table {
       Client: &armoperationalinsights.WorkspacesClient{},
       ListFunc: (&armoperationalinsights.WorkspacesClient{}).NewListPager,
 			NewFunc: armoperationalinsights.NewWorkspacesClient,
-		},
-		{
-      Name: "operation",
-      Struct: &armoperationalinsights.Operation{},
-      ResponseStruct: &armoperationalinsights.OperationsClientListResponse{},
-      Client: &armoperationalinsights.OperationsClient{},
-      ListFunc: (&armoperationalinsights.OperationsClient{}).NewListPager,
-			NewFunc: armoperationalinsights.NewOperationsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.OperationalInsights/workspaces",
 		},
 	}
 

@@ -12,6 +12,7 @@ func Armresourcemover() []Table {
       Client: &armresourcemover.MoveResourcesClient{},
       ListFunc: (&armresourcemover.MoveResourcesClient{}).NewListPager,
 			NewFunc: armresourcemover.NewMoveResourcesClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/moveCollections/{moveCollectionName}/moveResources",
 		},
 	}
 

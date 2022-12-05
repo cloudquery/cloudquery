@@ -6,36 +6,39 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmai
 func Armmaintenance() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armmaintenance.NewPublicMaintenanceConfigurationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance",
-		},
-		{
-			NewFunc: armmaintenance.NewUpdatesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance",
-		},
-		{
 			NewFunc: armmaintenance.NewApplyUpdateForResourceGroupClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance",
-		},
-		{
-			NewFunc: armmaintenance.NewConfigurationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance",
-		},
-		{
-			NewFunc: armmaintenance.NewConfigurationsForResourceGroupClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance",
-		},
-		{
-			NewFunc: armmaintenance.NewConfigurationAssignmentsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance",
-		},
-		{
-			NewFunc: armmaintenance.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maintenance/applyUpdates",
 		},
 		{
 			NewFunc: armmaintenance.NewApplyUpdatesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/applyUpdates",
+		},
+		{
+			NewFunc: armmaintenance.NewConfigurationAssignmentsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance",
+			URL: "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/configurationAssignments",
+		},
+		{
+			NewFunc: armmaintenance.NewConfigurationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/maintenanceConfigurations",
+		},
+		{
+			NewFunc: armmaintenance.NewConfigurationsForResourceGroupClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maintenance/maintenanceConfigurations",
+		},
+		{
+			NewFunc: armmaintenance.NewPublicMaintenanceConfigurationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/publicMaintenanceConfigurations",
+		},
+		{
+			NewFunc: armmaintenance.NewUpdatesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance",
+			URL: "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/updates",
 		},
 	}
 	return resources

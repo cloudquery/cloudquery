@@ -12,6 +12,7 @@ func Armdynatrace() []Table {
       Client: &armdynatrace.SingleSignOnClient{},
       ListFunc: (&armdynatrace.SingleSignOnClient{}).NewListPager,
 			NewFunc: armdynatrace.NewSingleSignOnClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/singleSignOnConfigurations",
 		},
 		{
       Name: "tag_rule",
@@ -20,14 +21,7 @@ func Armdynatrace() []Table {
       Client: &armdynatrace.TagRulesClient{},
       ListFunc: (&armdynatrace.TagRulesClient{}).NewListPager,
 			NewFunc: armdynatrace.NewTagRulesClient,
-		},
-		{
-      Name: "operation",
-      Struct: &armdynatrace.Operation{},
-      ResponseStruct: &armdynatrace.OperationsClientListResponse{},
-      Client: &armdynatrace.OperationsClient{},
-      ListFunc: (&armdynatrace.OperationsClient{}).NewListPager,
-			NewFunc: armdynatrace.NewOperationsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/tagRules",
 		},
 	}
 

@@ -6,20 +6,24 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confluent/armconfl
 func Armconfluent() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armconfluent.NewValidationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confluent/armconfluent",
-		},
-		{
 			NewFunc: armconfluent.NewMarketplaceAgreementsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confluent/armconfluent",
-		},
-		{
-			NewFunc: armconfluent.NewOrganizationOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confluent/armconfluent",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Confluent/agreements",
 		},
 		{
 			NewFunc: armconfluent.NewOrganizationClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confluent/armconfluent",
+			URL: "",
+		},
+		{
+			NewFunc: armconfluent.NewOrganizationOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confluent/armconfluent",
+			URL: "/providers/Microsoft.Confluent/operations",
+		},
+		{
+			NewFunc: armconfluent.NewValidationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confluent/armconfluent",
+			URL: "",
 		},
 	}
 	return resources

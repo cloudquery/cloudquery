@@ -8,14 +8,17 @@ func Armprivatedns() []*Resource {
 		{
 			NewFunc: armprivatedns.NewPrivateZonesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/privatedns/armprivatedns",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/privateDnsZones",
 		},
 		{
 			NewFunc: armprivatedns.NewRecordSetsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/privatedns/armprivatedns",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}/ALL",
 		},
 		{
 			NewFunc: armprivatedns.NewVirtualNetworkLinksClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/privatedns/armprivatedns",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}/virtualNetworkLinks",
 		},
 	}
 	return resources

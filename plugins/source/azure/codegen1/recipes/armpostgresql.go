@@ -6,76 +6,89 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpost
 func Armpostgresql() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armpostgresql.NewPrivateLinkResourcesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql",
-		},
-		{
-			NewFunc: armpostgresql.NewServerKeysClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql",
-		},
-		{
 			NewFunc: armpostgresql.NewCheckNameAvailabilityClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql",
+			URL: "",
 		},
 		{
 			NewFunc: armpostgresql.NewConfigurationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql",
+			URL: "",
 		},
 		{
 			NewFunc: armpostgresql.NewDatabasesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql",
-		},
-		{
-			NewFunc: armpostgresql.NewPrivateEndpointConnectionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql",
-		},
-		{
-			NewFunc: armpostgresql.NewServerAdministratorsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql",
-		},
-		{
-			NewFunc: armpostgresql.NewServerSecurityAlertPoliciesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql",
-		},
-		{
-			NewFunc: armpostgresql.NewVirtualNetworkRulesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql",
+			URL: "",
 		},
 		{
 			NewFunc: armpostgresql.NewFirewallRulesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql",
-		},
-		{
-			NewFunc: armpostgresql.NewReplicasClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql",
-		},
-		{
-			NewFunc: armpostgresql.NewServerBasedPerformanceTierClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql",
-		},
-		{
-			NewFunc: armpostgresql.NewServersClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql",
+			URL: "",
 		},
 		{
 			NewFunc: armpostgresql.NewLocationBasedPerformanceTierClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/locations/{locationName}/performanceTiers",
 		},
 		{
 			NewFunc: armpostgresql.NewLogFilesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql",
+			URL: "",
 		},
 		{
-			NewFunc: armpostgresql.NewOperationsClient,
+			NewFunc: armpostgresql.NewPrivateEndpointConnectionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql",
+			URL: "",
+		},
+		{
+			NewFunc: armpostgresql.NewPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql",
+			URL: "",
 		},
 		{
 			NewFunc: armpostgresql.NewRecoverableServersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql",
+			URL: "",
+		},
+		{
+			NewFunc: armpostgresql.NewReplicasClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql",
+			URL: "",
+		},
+		{
+			NewFunc: armpostgresql.NewServerAdministratorsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/servers/{serverName}/administrators",
+		},
+		{
+			NewFunc: armpostgresql.NewServerBasedPerformanceTierClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/servers/{serverName}/performanceTiers",
+		},
+		{
+			NewFunc: armpostgresql.NewServerKeysClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/servers/{serverName}/keys",
 		},
 		{
 			NewFunc: armpostgresql.NewServerParametersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql",
+			URL: "",
+		},
+		{
+			NewFunc: armpostgresql.NewServerSecurityAlertPoliciesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql",
+			URL: "",
+		},
+		{
+			NewFunc: armpostgresql.NewServersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/servers",
+		},
+		{
+			NewFunc: armpostgresql.NewVirtualNetworkRulesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql",
+			URL: "",
 		},
 	}
 	return resources

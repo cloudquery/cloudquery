@@ -6,32 +6,34 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/education/armeduca
 func Armeducation() []*Resource {
 	resources := []*Resource{
 		{
+			NewFunc: armeducation.NewGrantsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/education/armeducation",
+			URL: "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/providers/Microsoft.Education/grants",
+		},
+		{
 			NewFunc: armeducation.NewJoinRequestsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/education/armeducation",
+			URL: "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/providers/Microsoft.Education/labs/default/joinRequests",
 		},
 		{
 			NewFunc: armeducation.NewLabsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/education/armeducation",
-		},
-		{
-			NewFunc: armeducation.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/education/armeducation",
-		},
-		{
-			NewFunc: armeducation.NewStudentLabsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/education/armeducation",
-		},
-		{
-			NewFunc: armeducation.NewStudentsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/education/armeducation",
-		},
-		{
-			NewFunc: armeducation.NewGrantsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/education/armeducation",
+			URL: "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/providers/Microsoft.Education/labs",
 		},
 		{
 			NewFunc: armeducation.NewManagementClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/education/armeducation",
+			URL: "",
+		},
+		{
+			NewFunc: armeducation.NewStudentLabsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/education/armeducation",
+			URL: "",
+		},
+		{
+			NewFunc: armeducation.NewStudentsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/education/armeducation",
+			URL: "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/providers/Microsoft.Education/labs/default/students",
 		},
 	}
 	return resources

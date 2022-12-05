@@ -12,6 +12,7 @@ func Armsubscription() []Table {
       Client: &armsubscription.SubscriptionsClient{},
       ListFunc: (&armsubscription.SubscriptionsClient{}).NewListPager,
 			NewFunc: armsubscription.NewSubscriptionsClient,
+			URL: "/subscriptions",
 		},
 		{
       Name: "tenant_id_description",
@@ -20,14 +21,7 @@ func Armsubscription() []Table {
       Client: &armsubscription.TenantsClient{},
       ListFunc: (&armsubscription.TenantsClient{}).NewListPager,
 			NewFunc: armsubscription.NewTenantsClient,
-		},
-		{
-      Name: "operation",
-      Struct: &armsubscription.Operation{},
-      ResponseStruct: &armsubscription.OperationsClientListResponse{},
-      Client: &armsubscription.OperationsClient{},
-      ListFunc: (&armsubscription.OperationsClient{}).NewListPager,
-			NewFunc: armsubscription.NewOperationsClient,
+			URL: "/tenants",
 		},
 	}
 

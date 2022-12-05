@@ -12,6 +12,7 @@ func Armscheduler() []Table {
       Client: &armscheduler.JobsClient{},
       ListFunc: (&armscheduler.JobsClient{}).NewListPager,
 			NewFunc: armscheduler.NewJobsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Scheduler/jobCollections/{jobCollectionName}/jobs",
 		},
 	}
 

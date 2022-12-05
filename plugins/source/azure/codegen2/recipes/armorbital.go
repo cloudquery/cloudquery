@@ -6,28 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/orbital/armorbital
 func Armorbital() []Table {
 	tables := []Table{
 		{
-      Name: "operation",
-      Struct: &armorbital.Operation{},
-      ResponseStruct: &armorbital.OperationsClientListResponse{},
-      Client: &armorbital.OperationsClient{},
-      ListFunc: (&armorbital.OperationsClient{}).NewListPager,
-			NewFunc: armorbital.NewOperationsClient,
-		},
-		{
-      Name: "spacecraft",
-      Struct: &armorbital.Spacecraft{},
-      ResponseStruct: &armorbital.SpacecraftsClientListResponse{},
-      Client: &armorbital.SpacecraftsClient{},
-      ListFunc: (&armorbital.SpacecraftsClient{}).NewListPager,
-			NewFunc: armorbital.NewSpacecraftsClient,
-		},
-		{
       Name: "contact_profile",
       Struct: &armorbital.ContactProfile{},
       ResponseStruct: &armorbital.ContactProfilesClientListResponse{},
       Client: &armorbital.ContactProfilesClient{},
       ListFunc: (&armorbital.ContactProfilesClient{}).NewListPager,
 			NewFunc: armorbital.NewContactProfilesClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/contactProfiles",
 		},
 		{
       Name: "contact",
@@ -36,6 +21,16 @@ func Armorbital() []Table {
       Client: &armorbital.ContactsClient{},
       ListFunc: (&armorbital.ContactsClient{}).NewListPager,
 			NewFunc: armorbital.NewContactsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/spacecrafts/{spacecraftName}/contacts",
+		},
+		{
+      Name: "spacecraft",
+      Struct: &armorbital.Spacecraft{},
+      ResponseStruct: &armorbital.SpacecraftsClientListResponse{},
+      Client: &armorbital.SpacecraftsClient{},
+      ListFunc: (&armorbital.SpacecraftsClient{}).NewListPager,
+			NewFunc: armorbital.NewSpacecraftsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/spacecrafts",
 		},
 	}
 

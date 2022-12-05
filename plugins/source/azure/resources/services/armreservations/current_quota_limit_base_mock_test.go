@@ -5,30 +5,24 @@ package armreservations
 import (
 	"encoding/json"
 	"net/http"
-	"net/http/httptest"
 	"testing"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/faker"
-	"github.com/julienschmidt/httprouter"
+	"github.com/gorilla/mux"
 )
 
-func createCurrentQuotaLimitBase() (*arm.ClientOptions, error) {
+func createCurrentQuotaLimitBase(router *mux.Router) error {
 	var item armreservations.QuotaClientListResponse
 	if err := faker.FakeObject(&item); err != nil {
-		return nil, err
+		return err
 	}
 
 	emptyStr := ""
 	item.NextLink = &emptyStr
 
-	mux := httprouter.New()
-	mux.GET("/*filepath", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	router.HandleFunc("/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/resourceProviders/{providerId}/locations/{location}/serviceLimits", func(w http.ResponseWriter, r *http.Request) {
 		b, err := json.Marshal(&item)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)
@@ -39,16 +33,7 @@ func createCurrentQuotaLimitBase() (*arm.ClientOptions, error) {
 			return
 		}
 	})
-	ts := httptest.NewServer(mux)
-	cloud.AzurePublic.Services[cloud.ResourceManager] = cloud.ServiceConfiguration{
-		Endpoint: ts.URL,
-		Audience: "test",
-	}
-	return &arm.ClientOptions{
-		ClientOptions: azcore.ClientOptions{
-			Transport: ts.Client(),
-		},
-	}, nil
+	return nil
 }
 
 func TestCurrentQuotaLimitBase(t *testing.T) {

@@ -6,12 +6,22 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx"
 func Armnginx() []Table {
 	tables := []Table{
 		{
+      Name: "certificate",
+      Struct: &armnginx.Certificate{},
+      ResponseStruct: &armnginx.CertificatesClientListResponse{},
+      Client: &armnginx.CertificatesClient{},
+      ListFunc: (&armnginx.CertificatesClient{}).NewListPager,
+			NewFunc: armnginx.NewCertificatesClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/certificates",
+		},
+		{
       Name: "configuration",
       Struct: &armnginx.Configuration{},
       ResponseStruct: &armnginx.ConfigurationsClientListResponse{},
       Client: &armnginx.ConfigurationsClient{},
       ListFunc: (&armnginx.ConfigurationsClient{}).NewListPager,
 			NewFunc: armnginx.NewConfigurationsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/configurations",
 		},
 		{
       Name: "deployment",
@@ -20,22 +30,7 @@ func Armnginx() []Table {
       Client: &armnginx.DeploymentsClient{},
       ListFunc: (&armnginx.DeploymentsClient{}).NewListPager,
 			NewFunc: armnginx.NewDeploymentsClient,
-		},
-		{
-      Name: "operation_result",
-      Struct: &armnginx.OperationResult{},
-      ResponseStruct: &armnginx.OperationsClientListResponse{},
-      Client: &armnginx.OperationsClient{},
-      ListFunc: (&armnginx.OperationsClient{}).NewListPager,
-			NewFunc: armnginx.NewOperationsClient,
-		},
-		{
-      Name: "certificate",
-      Struct: &armnginx.Certificate{},
-      ResponseStruct: &armnginx.CertificatesClientListResponse{},
-      Client: &armnginx.CertificatesClient{},
-      ListFunc: (&armnginx.CertificatesClient{}).NewListPager,
-			NewFunc: armnginx.NewCertificatesClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Nginx.NginxPlus/nginxDeployments",
 		},
 	}
 

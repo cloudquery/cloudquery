@@ -6,20 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/labservices/armlab
 func Armlabservices() []Table {
 	tables := []Table{
 		{
-      Name: "operation",
-      Struct: &armlabservices.Operation{},
-      ResponseStruct: &armlabservices.OperationsClientListResponse{},
-      Client: &armlabservices.OperationsClient{},
-      ListFunc: (&armlabservices.OperationsClient{}).NewListPager,
-			NewFunc: armlabservices.NewOperationsClient,
-		},
-		{
       Name: "sku_info",
       Struct: &armlabservices.SKUInfo{},
       ResponseStruct: &armlabservices.SKUsClientListResponse{},
       Client: &armlabservices.SKUsClient{},
       ListFunc: (&armlabservices.SKUsClient{}).NewListPager,
 			NewFunc: armlabservices.NewSKUsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.LabServices/skus",
 		},
 	}
 

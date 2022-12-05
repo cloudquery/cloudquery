@@ -12,6 +12,7 @@ func Armconfluent() []Table {
       Client: &armconfluent.MarketplaceAgreementsClient{},
       ListFunc: (&armconfluent.MarketplaceAgreementsClient{}).NewListPager,
 			NewFunc: armconfluent.NewMarketplaceAgreementsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Confluent/agreements",
 		},
 		{
       Name: "operation_result",
@@ -20,6 +21,7 @@ func Armconfluent() []Table {
       Client: &armconfluent.OrganizationOperationsClient{},
       ListFunc: (&armconfluent.OrganizationOperationsClient{}).NewListPager,
 			NewFunc: armconfluent.NewOrganizationOperationsClient,
+			URL: "/providers/Microsoft.Confluent/operations",
 		},
 	}
 

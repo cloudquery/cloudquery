@@ -6,16 +6,19 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbiembedded/ar
 func Armpowerbiembedded() []*Resource {
 	resources := []*Resource{
 		{
+			NewFunc: armpowerbiembedded.NewManagementClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbiembedded/armpowerbiembedded",
+			URL: "",
+		},
+		{
 			NewFunc: armpowerbiembedded.NewWorkspaceCollectionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbiembedded/armpowerbiembedded",
+			URL: "",
 		},
 		{
 			NewFunc: armpowerbiembedded.NewWorkspacesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbiembedded/armpowerbiembedded",
-		},
-		{
-			NewFunc: armpowerbiembedded.NewManagementClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbiembedded/armpowerbiembedded",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBI/workspaceCollections/{workspaceCollectionName}/workspaces",
 		},
 	}
 	return resources

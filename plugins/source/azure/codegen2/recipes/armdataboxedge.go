@@ -6,20 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdat
 func Armdataboxedge() []Table {
 	tables := []Table{
 		{
-      Name: "operation",
-      Struct: &armdataboxedge.Operation{},
-      ResponseStruct: &armdataboxedge.OperationsClientListResponse{},
-      Client: &armdataboxedge.OperationsClient{},
-      ListFunc: (&armdataboxedge.OperationsClient{}).NewListPager,
-			NewFunc: armdataboxedge.NewOperationsClient,
-		},
-		{
       Name: "sku",
       Struct: &armdataboxedge.SKU{},
       ResponseStruct: &armdataboxedge.AvailableSKUsClientListResponse{},
       Client: &armdataboxedge.AvailableSKUsClient{},
       ListFunc: (&armdataboxedge.AvailableSKUsClient{}).NewListPager,
 			NewFunc: armdataboxedge.NewAvailableSKUsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DataBoxEdge/availableSkus",
 		},
 		{
       Name: "monitoring_metric_configuration",
@@ -28,6 +21,7 @@ func Armdataboxedge() []Table {
       Client: &armdataboxedge.MonitoringConfigClient{},
       ListFunc: (&armdataboxedge.MonitoringConfigClient{}).NewListPager,
 			NewFunc: armdataboxedge.NewMonitoringConfigClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/roles/{roleName}/monitoringConfig",
 		},
 	}
 

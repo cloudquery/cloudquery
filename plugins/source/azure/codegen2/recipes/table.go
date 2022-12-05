@@ -80,4 +80,5 @@ type Table struct {
 	ExtraColumns []codegen.ColumnDefinition
 	// NameTransformer custom name transformer for resource
 	NameTransformer func(field reflect.StructField) (string, error)
+	URL string
 }

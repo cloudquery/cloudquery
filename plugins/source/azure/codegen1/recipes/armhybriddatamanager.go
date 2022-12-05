@@ -6,36 +6,39 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybriddatamanager/
 func Armhybriddatamanager() []*Resource {
 	resources := []*Resource{
 		{
+			NewFunc: armhybriddatamanager.NewDataManagersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybriddatamanager/armhybriddatamanager",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.HybridData/dataManagers",
+		},
+		{
 			NewFunc: armhybriddatamanager.NewDataServicesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybriddatamanager/armhybriddatamanager",
+			URL: "",
 		},
 		{
 			NewFunc: armhybriddatamanager.NewDataStoreTypesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybriddatamanager/armhybriddatamanager",
-		},
-		{
-			NewFunc: armhybriddatamanager.NewJobsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybriddatamanager/armhybriddatamanager",
-		},
-		{
-			NewFunc: armhybriddatamanager.NewPublicKeysClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybriddatamanager/armhybriddatamanager",
-		},
-		{
-			NewFunc: armhybriddatamanager.NewDataManagersClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybriddatamanager/armhybriddatamanager",
+			URL: "",
 		},
 		{
 			NewFunc: armhybriddatamanager.NewDataStoresClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybriddatamanager/armhybriddatamanager",
+			URL: "",
 		},
 		{
 			NewFunc: armhybriddatamanager.NewJobDefinitionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybriddatamanager/armhybriddatamanager",
+			URL: "",
 		},
 		{
-			NewFunc: armhybriddatamanager.NewOperationsClient,
+			NewFunc: armhybriddatamanager.NewJobsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybriddatamanager/armhybriddatamanager",
+			URL: "",
+		},
+		{
+			NewFunc: armhybriddatamanager.NewPublicKeysClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybriddatamanager/armhybriddatamanager",
+			URL: "",
 		},
 	}
 	return resources

@@ -6,20 +6,19 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storageimportexpor
 func Armstorageimportexport() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armstorageimportexport.NewLocationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storageimportexport/armstorageimportexport",
-		},
-		{
-			NewFunc: armstorageimportexport.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storageimportexport/armstorageimportexport",
-		},
-		{
 			NewFunc: armstorageimportexport.NewBitLockerKeysClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storageimportexport/armstorageimportexport",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ImportExport/jobs/{jobName}/listBitLockerKeys",
 		},
 		{
 			NewFunc: armstorageimportexport.NewJobsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storageimportexport/armstorageimportexport",
+			URL: "",
+		},
+		{
+			NewFunc: armstorageimportexport.NewLocationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storageimportexport/armstorageimportexport",
+			URL: "/providers/Microsoft.ImportExport/locations",
 		},
 	}
 	return resources

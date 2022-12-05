@@ -6,36 +6,39 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis"
 func Armredis() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armredis.NewClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis",
-		},
-		{
-			NewFunc: armredis.NewLinkedServerClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis",
-		},
-		{
-			NewFunc: armredis.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis",
-		},
-		{
-			NewFunc: armredis.NewPrivateEndpointConnectionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis",
-		},
-		{
 			NewFunc: armredis.NewAsyncOperationStatusClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis",
+			URL: "",
 		},
 		{
-			NewFunc: armredis.NewPatchSchedulesClient,
+			NewFunc: armredis.NewClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis",
+			URL: "",
 		},
 		{
 			NewFunc: armredis.NewFirewallRulesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/firewallRules",
+		},
+		{
+			NewFunc: armredis.NewLinkedServerClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}/linkedServers",
+		},
+		{
+			NewFunc: armredis.NewPatchSchedulesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis",
+			URL: "",
+		},
+		{
+			NewFunc: armredis.NewPrivateEndpointConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/privateEndpointConnections",
 		},
 		{
 			NewFunc: armredis.NewPrivateLinkResourcesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis",
+			URL: "",
 		},
 	}
 	return resources

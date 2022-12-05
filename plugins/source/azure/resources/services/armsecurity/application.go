@@ -41,7 +41,7 @@ func Application() *schema.Table {
 
 func fetchApplication(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
-	svc, err := armsecurity.NewApplicationsClient(cl.SubscriptionId, cl.Creds, cl.Options)
+	svc, err := armsecurity.NewConnectorApplicationsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {
 		return err
 	}

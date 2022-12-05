@@ -12,6 +12,7 @@ func Armlocks() []Table {
       Client: &armlocks.AuthorizationOperationsClient{},
       ListFunc: (&armlocks.AuthorizationOperationsClient{}).NewListPager,
 			NewFunc: armlocks.NewAuthorizationOperationsClient,
+			URL: "/providers/Microsoft.Authorization/operations",
 		},
 	}
 

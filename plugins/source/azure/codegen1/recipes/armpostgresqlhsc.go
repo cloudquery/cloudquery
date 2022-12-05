@@ -6,28 +6,29 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresqlhsc/armp
 func Armpostgresqlhsc() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armpostgresqlhsc.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresqlhsc/armpostgresqlhsc",
-		},
-		{
-			NewFunc: armpostgresqlhsc.NewRolesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresqlhsc/armpostgresqlhsc",
-		},
-		{
-			NewFunc: armpostgresqlhsc.NewServersClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresqlhsc/armpostgresqlhsc",
-		},
-		{
 			NewFunc: armpostgresqlhsc.NewConfigurationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresqlhsc/armpostgresqlhsc",
+			URL: "",
 		},
 		{
 			NewFunc: armpostgresqlhsc.NewFirewallRulesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresqlhsc/armpostgresqlhsc",
+			URL: "",
+		},
+		{
+			NewFunc: armpostgresqlhsc.NewRolesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresqlhsc/armpostgresqlhsc",
+			URL: "",
 		},
 		{
 			NewFunc: armpostgresqlhsc.NewServerGroupsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresqlhsc/armpostgresqlhsc",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DBForPostgreSql/serverGroupsv2",
+		},
+		{
+			NewFunc: armpostgresqlhsc.NewServersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresqlhsc/armpostgresqlhsc",
+			URL: "",
 		},
 	}
 	return resources

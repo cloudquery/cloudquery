@@ -6,28 +6,34 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blueprint/armbluep
 func Armblueprint() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armblueprint.NewPublishedArtifactsClient,
+			NewFunc: armblueprint.NewArtifactsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blueprint/armblueprint",
-		},
-		{
-			NewFunc: armblueprint.NewPublishedBlueprintsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blueprint/armblueprint",
+			URL: "/{resourceScope}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/artifacts",
 		},
 		{
 			NewFunc: armblueprint.NewAssignmentOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blueprint/armblueprint",
+			URL: "/{resourceScope}/providers/Microsoft.Blueprint/blueprintAssignments/{assignmentName}/assignmentOperations",
 		},
 		{
 			NewFunc: armblueprint.NewAssignmentsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blueprint/armblueprint",
-		},
-		{
-			NewFunc: armblueprint.NewArtifactsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blueprint/armblueprint",
+			URL: "/{resourceScope}/providers/Microsoft.Blueprint/blueprintAssignments",
 		},
 		{
 			NewFunc: armblueprint.NewBlueprintsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blueprint/armblueprint",
+			URL: "/{resourceScope}/providers/Microsoft.Blueprint/blueprints",
+		},
+		{
+			NewFunc: armblueprint.NewPublishedArtifactsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blueprint/armblueprint",
+			URL: "/{resourceScope}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/versions/{versionId}/artifacts",
+		},
+		{
+			NewFunc: armblueprint.NewPublishedBlueprintsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blueprint/armblueprint",
+			URL: "/{resourceScope}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/versions",
 		},
 	}
 	return resources

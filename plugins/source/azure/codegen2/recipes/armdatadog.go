@@ -6,20 +6,22 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datadog/armdatadog
 func Armdatadog() []Table {
 	tables := []Table{
 		{
+      Name: "agreement_resource",
+      Struct: &armdatadog.AgreementResource{},
+      ResponseStruct: &armdatadog.MarketplaceAgreementsClientListResponse{},
+      Client: &armdatadog.MarketplaceAgreementsClient{},
+      ListFunc: (&armdatadog.MarketplaceAgreementsClient{}).NewListPager,
+			NewFunc: armdatadog.NewMarketplaceAgreementsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Datadog/agreements",
+		},
+		{
       Name: "monitor_resource",
       Struct: &armdatadog.MonitorResource{},
       ResponseStruct: &armdatadog.MonitorsClientListResponse{},
       Client: &armdatadog.MonitorsClient{},
       ListFunc: (&armdatadog.MonitorsClient{}).NewListPager,
 			NewFunc: armdatadog.NewMonitorsClient,
-		},
-		{
-      Name: "operation_result",
-      Struct: &armdatadog.OperationResult{},
-      ResponseStruct: &armdatadog.OperationsClientListResponse{},
-      Client: &armdatadog.OperationsClient{},
-      ListFunc: (&armdatadog.OperationsClient{}).NewListPager,
-			NewFunc: armdatadog.NewOperationsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Datadog/monitors",
 		},
 		{
       Name: "single_sign_on_resource",
@@ -28,14 +30,7 @@ func Armdatadog() []Table {
       Client: &armdatadog.SingleSignOnConfigurationsClient{},
       ListFunc: (&armdatadog.SingleSignOnConfigurationsClient{}).NewListPager,
 			NewFunc: armdatadog.NewSingleSignOnConfigurationsClient,
-		},
-		{
-      Name: "agreement_resource",
-      Struct: &armdatadog.AgreementResource{},
-      ResponseStruct: &armdatadog.MarketplaceAgreementsClientListResponse{},
-      Client: &armdatadog.MarketplaceAgreementsClient{},
-      ListFunc: (&armdatadog.MarketplaceAgreementsClient{}).NewListPager,
-			NewFunc: armdatadog.NewMarketplaceAgreementsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/singleSignOnConfigurations",
 		},
 		{
       Name: "monitoring_tag_rules",
@@ -44,6 +39,7 @@ func Armdatadog() []Table {
       Client: &armdatadog.TagRulesClient{},
       ListFunc: (&armdatadog.TagRulesClient{}).NewListPager,
 			NewFunc: armdatadog.NewTagRulesClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/tagRules",
 		},
 	}
 

@@ -6,28 +6,29 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos"
 func Armchaos() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armchaos.NewTargetsClient,
+			NewFunc: armchaos.NewCapabilitiesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{parentProviderNamespace}/{parentResourceType}/{parentResourceName}/providers/Microsoft.Chaos/targets/{targetName}/capabilities",
 		},
 		{
 			NewFunc: armchaos.NewCapabilityTypesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Chaos/locations/{locationName}/targetTypes/{targetTypeName}/capabilityTypes",
 		},
 		{
 			NewFunc: armchaos.NewExperimentsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos",
-		},
-		{
-			NewFunc: armchaos.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/experiments",
 		},
 		{
 			NewFunc: armchaos.NewTargetTypesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Chaos/locations/{locationName}/targetTypes",
 		},
 		{
-			NewFunc: armchaos.NewCapabilitiesClient,
+			NewFunc: armchaos.NewTargetsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{parentProviderNamespace}/{parentResourceType}/{parentResourceName}/providers/Microsoft.Chaos/targets",
 		},
 	}
 	return resources

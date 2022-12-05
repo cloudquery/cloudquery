@@ -6,20 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetwork/arm
 func Armmanagednetwork() []Table {
 	tables := []Table{
 		{
-      Name: "operation",
-      Struct: &armmanagednetwork.Operation{},
-      ResponseStruct: &armmanagednetwork.OperationsClientListResponse{},
-      Client: &armmanagednetwork.OperationsClient{},
-      ListFunc: (&armmanagednetwork.OperationsClient{}).NewListPager,
-			NewFunc: armmanagednetwork.NewOperationsClient,
-		},
-		{
       Name: "scope_assignment",
       Struct: &armmanagednetwork.ScopeAssignment{},
       ResponseStruct: &armmanagednetwork.ScopeAssignmentsClientListResponse{},
       Client: &armmanagednetwork.ScopeAssignmentsClient{},
       ListFunc: (&armmanagednetwork.ScopeAssignmentsClient{}).NewListPager,
 			NewFunc: armmanagednetwork.NewScopeAssignmentsClient,
+			URL: "/{scope}/providers/Microsoft.ManagedNetwork/scopeAssignments",
 		},
 	}
 

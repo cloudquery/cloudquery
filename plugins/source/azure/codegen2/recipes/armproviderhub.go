@@ -12,14 +12,7 @@ func Armproviderhub() []Table {
       Client: &armproviderhub.ProviderRegistrationsClient{},
       ListFunc: (&armproviderhub.ProviderRegistrationsClient{}).NewListPager,
 			NewFunc: armproviderhub.NewProviderRegistrationsClient,
-		},
-		{
-      Name: "operations_definition",
-      Struct: &armproviderhub.OperationsDefinition{},
-      ResponseStruct: &armproviderhub.OperationsClientListResponse{},
-      Client: &armproviderhub.OperationsClient{},
-      ListFunc: (&armproviderhub.OperationsClient{}).NewListPager,
-			NewFunc: armproviderhub.NewOperationsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations",
 		},
 	}
 

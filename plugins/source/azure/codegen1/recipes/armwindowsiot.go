@@ -8,10 +8,7 @@ func Armwindowsiot() []*Resource {
 		{
 			NewFunc: armwindowsiot.NewServicesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsiot/armwindowsiot",
-		},
-		{
-			NewFunc: armwindowsiot.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsiot/armwindowsiot",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.WindowsIoT/deviceServices",
 		},
 	}
 	return resources

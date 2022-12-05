@@ -6,48 +6,54 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdins
 func Armhdinsight() []*Resource {
 	resources := []*Resource{
 		{
+			NewFunc: armhdinsight.NewApplicationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsight",
+			URL: "",
+		},
+		{
 			NewFunc: armhdinsight.NewClustersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsight",
-		},
-		{
-			NewFunc: armhdinsight.NewExtensionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsight",
-		},
-		{
-			NewFunc: armhdinsight.NewLocationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsight",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.HDInsight/clusters",
 		},
 		{
 			NewFunc: armhdinsight.NewConfigurationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsight",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/configurations",
 		},
 		{
-			NewFunc: armhdinsight.NewScriptExecutionHistoryClient,
+			NewFunc: armhdinsight.NewExtensionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsight",
+			URL: "",
 		},
 		{
-			NewFunc: armhdinsight.NewApplicationsClient,
+			NewFunc: armhdinsight.NewLocationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsight",
-		},
-		{
-			NewFunc: armhdinsight.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsight",
-		},
-		{
-			NewFunc: armhdinsight.NewScriptActionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsight",
+			URL: "",
 		},
 		{
 			NewFunc: armhdinsight.NewPrivateEndpointConnectionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsight",
+			URL: "",
 		},
 		{
 			NewFunc: armhdinsight.NewPrivateLinkResourcesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsight",
+			URL: "",
+		},
+		{
+			NewFunc: armhdinsight.NewScriptActionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsight",
+			URL: "",
+		},
+		{
+			NewFunc: armhdinsight.NewScriptExecutionHistoryClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsight",
+			URL: "",
 		},
 		{
 			NewFunc: armhdinsight.NewVirtualMachinesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsight",
+			URL: "",
 		},
 	}
 	return resources

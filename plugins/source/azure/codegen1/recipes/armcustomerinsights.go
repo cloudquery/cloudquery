@@ -8,70 +8,82 @@ func Armcustomerinsights() []*Resource {
 		{
 			NewFunc: armcustomerinsights.NewAuthorizationPoliciesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerinsights/armcustomerinsights",
-		},
-		{
-			NewFunc: armcustomerinsights.NewInteractionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerinsights/armcustomerinsights",
-		},
-		{
-			NewFunc: armcustomerinsights.NewProfilesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerinsights/armcustomerinsights",
-		},
-		{
-			NewFunc: armcustomerinsights.NewRoleAssignmentsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerinsights/armcustomerinsights",
-		},
-		{
-			NewFunc: armcustomerinsights.NewWidgetTypesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerinsights/armcustomerinsights",
+			URL: "",
 		},
 		{
 			NewFunc: armcustomerinsights.NewConnectorMappingsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerinsights/armcustomerinsights",
+			URL: "",
 		},
 		{
 			NewFunc: armcustomerinsights.NewConnectorsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerinsights/armcustomerinsights",
+			URL: "",
 		},
 		{
 			NewFunc: armcustomerinsights.NewHubsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerinsights/armcustomerinsights",
-		},
-		{
-			NewFunc: armcustomerinsights.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerinsights/armcustomerinsights",
-		},
-		{
-			NewFunc: armcustomerinsights.NewRolesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerinsights/armcustomerinsights",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.CustomerInsights/hubs",
 		},
 		{
 			NewFunc: armcustomerinsights.NewImagesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerinsights/armcustomerinsights",
+			URL: "",
+		},
+		{
+			NewFunc: armcustomerinsights.NewInteractionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerinsights/armcustomerinsights",
+			URL: "",
 		},
 		{
 			NewFunc: armcustomerinsights.NewKpiClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerinsights/armcustomerinsights",
+			URL: "",
 		},
 		{
 			NewFunc: armcustomerinsights.NewLinksClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerinsights/armcustomerinsights",
+			URL: "",
 		},
 		{
 			NewFunc: armcustomerinsights.NewPredictionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerinsights/armcustomerinsights",
+			URL: "",
+		},
+		{
+			NewFunc: armcustomerinsights.NewProfilesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerinsights/armcustomerinsights",
+			URL: "",
 		},
 		{
 			NewFunc: armcustomerinsights.NewRelationshipLinksClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerinsights/armcustomerinsights",
+			URL: "",
 		},
 		{
 			NewFunc: armcustomerinsights.NewRelationshipsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerinsights/armcustomerinsights",
+			URL: "",
+		},
+		{
+			NewFunc: armcustomerinsights.NewRoleAssignmentsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerinsights/armcustomerinsights",
+			URL: "",
+		},
+		{
+			NewFunc: armcustomerinsights.NewRolesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerinsights/armcustomerinsights",
+			URL: "",
 		},
 		{
 			NewFunc: armcustomerinsights.NewViewsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerinsights/armcustomerinsights",
+			URL: "",
+		},
+		{
+			NewFunc: armcustomerinsights.NewWidgetTypesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerinsights/armcustomerinsights",
+			URL: "",
 		},
 	}
 	return resources

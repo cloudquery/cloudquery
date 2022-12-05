@@ -12,6 +12,7 @@ func Armsqlvirtualmachine() []Table {
       Client: &armsqlvirtualmachine.GroupsClient{},
       ListFunc: (&armsqlvirtualmachine.GroupsClient{}).NewListPager,
 			NewFunc: armsqlvirtualmachine.NewGroupsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups",
 		},
 		{
       Name: "sql_virtual_machine",
@@ -20,14 +21,7 @@ func Armsqlvirtualmachine() []Table {
       Client: &armsqlvirtualmachine.SQLVirtualMachinesClient{},
       ListFunc: (&armsqlvirtualmachine.SQLVirtualMachinesClient{}).NewListPager,
 			NewFunc: armsqlvirtualmachine.NewSQLVirtualMachinesClient,
-		},
-		{
-      Name: "operation",
-      Struct: &armsqlvirtualmachine.Operation{},
-      ResponseStruct: &armsqlvirtualmachine.OperationsClientListResponse{},
-      Client: &armsqlvirtualmachine.OperationsClient{},
-      ListFunc: (&armsqlvirtualmachine.OperationsClient{}).NewListPager,
-			NewFunc: armsqlvirtualmachine.NewOperationsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines",
 		},
 	}
 

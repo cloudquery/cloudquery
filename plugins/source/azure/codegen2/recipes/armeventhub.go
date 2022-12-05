@@ -12,6 +12,7 @@ func Armeventhub() []Table {
       Client: &armeventhub.DisasterRecoveryConfigsClient{},
       ListFunc: (&armeventhub.DisasterRecoveryConfigsClient{}).NewListPager,
 			NewFunc: armeventhub.NewDisasterRecoveryConfigsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/disasterRecoveryConfigs",
 		},
 		{
       Name: "eh_namespace",
@@ -20,14 +21,7 @@ func Armeventhub() []Table {
       Client: &armeventhub.NamespacesClient{},
       ListFunc: (&armeventhub.NamespacesClient{}).NewListPager,
 			NewFunc: armeventhub.NewNamespacesClient,
-		},
-		{
-      Name: "operation",
-      Struct: &armeventhub.Operation{},
-      ResponseStruct: &armeventhub.OperationsClientListResponse{},
-      Client: &armeventhub.OperationsClient{},
-      ListFunc: (&armeventhub.OperationsClient{}).NewListPager,
-			NewFunc: armeventhub.NewOperationsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.EventHub/namespaces",
 		},
 		{
       Name: "private_endpoint_connection",
@@ -36,6 +30,7 @@ func Armeventhub() []Table {
       Client: &armeventhub.PrivateEndpointConnectionsClient{},
       ListFunc: (&armeventhub.PrivateEndpointConnectionsClient{}).NewListPager,
 			NewFunc: armeventhub.NewPrivateEndpointConnectionsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/privateEndpointConnections",
 		},
 	}
 

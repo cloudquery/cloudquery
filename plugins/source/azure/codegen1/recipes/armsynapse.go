@@ -6,296 +6,364 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse
 func Armsynapse() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armsynapse.NewKeysClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewKustoPoolDatabasesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewSQLPoolMetadataSyncConfigsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewSQLPoolRestorePointsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewSQLPoolSchemasClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewSQLPoolSensitivityLabelsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewSQLPoolTableColumnsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewIntegrationRuntimeNodesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewPrivateLinkHubsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewSQLPoolMaintenanceWindowsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewWorkspacesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewSQLPoolGeoBackupPoliciesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewWorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewKustoPoolAttachedDatabaseConfigurationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewKustoOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewKustoPoolsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewPrivateLinkHubPrivateLinkResourcesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewPrivateLinkResourcesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewSQLPoolBlobAuditingPoliciesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewIPFirewallRulesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewIntegrationRuntimeAuthKeysClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewIntegrationRuntimeCredentialsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewSQLPoolReplicationLinksClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewSQLPoolTablesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewSQLPoolWorkloadClassifierClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewWorkspaceManagedIdentitySQLControlSettingsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
 			NewFunc: armsynapse.NewAzureADOnlyAuthenticationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewSQLPoolRecommendedSensitivityLabelsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewSQLPoolTransparentDataEncryptionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewSQLPoolVulnerabilityAssessmentScansClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewDataMaskingRulesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewIntegrationRuntimesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewKustoPoolChildResourceClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewKustoPoolDataConnectionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewSQLPoolsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewSQLPoolUsagesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewWorkspaceAADAdminsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewIntegrationRuntimeConnectionInfosClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewIntegrationRuntimeStatusClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewWorkspaceManagedSQLServerBlobAuditingPoliciesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewDataMaskingPoliciesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewLibrariesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewPrivateEndpointConnectionsPrivateLinkHubClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewSQLPoolOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewWorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewWorkspaceManagedSQLServerUsagesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewKustoPoolPrincipalAssignmentsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewSQLPoolDataWarehouseUserActivitiesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewSQLPoolSecurityAlertPoliciesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewSQLPoolVulnerabilityAssessmentRuleBaselinesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewSQLPoolConnectionPoliciesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewSQLPoolMaintenanceWindowOptionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewRestorableDroppedSQLPoolsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewSQLPoolVulnerabilityAssessmentsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewPrivateEndpointConnectionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewExtendedSQLPoolBlobAuditingPoliciesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewIntegrationRuntimeMonitoringDataClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewIntegrationRuntimeObjectMetadataClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewKustoPoolDatabasePrincipalAssignmentsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewSQLPoolColumnsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-		},
-		{
-			NewFunc: armsynapse.NewSQLPoolOperationResultsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/azureADOnlyAuthentications",
 		},
 		{
 			NewFunc: armsynapse.NewBigDataPoolsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "",
 		},
 		{
-			NewFunc: armsynapse.NewSparkConfigurationClient,
+			NewFunc: armsynapse.NewDataMaskingPoliciesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "",
 		},
 		{
-			NewFunc: armsynapse.NewWorkspaceManagedSQLServerEncryptionProtectorClient,
+			NewFunc: armsynapse.NewDataMaskingRulesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "",
 		},
 		{
-			NewFunc: armsynapse.NewWorkspaceManagedSQLServerVulnerabilityAssessmentsClient,
+			NewFunc: armsynapse.NewExtendedSQLPoolBlobAuditingPoliciesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "",
 		},
 		{
-			NewFunc: armsynapse.NewLibraryClient,
+			NewFunc: armsynapse.NewIPFirewallRulesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "",
 		},
 		{
-			NewFunc: armsynapse.NewSparkConfigurationsClient,
+			NewFunc: armsynapse.NewIntegrationRuntimeAuthKeysClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/listAuthKeys",
 		},
 		{
-			NewFunc: armsynapse.NewWorkspaceManagedSQLServerRecoverableSQLPoolsClient,
+			NewFunc: armsynapse.NewIntegrationRuntimeConnectionInfosClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "",
+		},
+		{
+			NewFunc: armsynapse.NewIntegrationRuntimeCredentialsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "",
+		},
+		{
+			NewFunc: armsynapse.NewIntegrationRuntimeMonitoringDataClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/monitoringData",
 		},
 		{
 			NewFunc: armsynapse.NewIntegrationRuntimeNodeIPAddressClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "",
+		},
+		{
+			NewFunc: armsynapse.NewIntegrationRuntimeNodesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "",
+		},
+		{
+			NewFunc: armsynapse.NewIntegrationRuntimeObjectMetadataClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/getObjectMetadata",
+		},
+		{
+			NewFunc: armsynapse.NewIntegrationRuntimeStatusClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "",
+		},
+		{
+			NewFunc: armsynapse.NewIntegrationRuntimesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "",
+		},
+		{
+			NewFunc: armsynapse.NewKeysClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "",
+		},
+		{
+			NewFunc: armsynapse.NewKustoOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "/providers/Microsoft.Synapse/kustooperations",
+		},
+		{
+			NewFunc: armsynapse.NewKustoPoolAttachedDatabaseConfigurationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "",
+		},
+		{
+			NewFunc: armsynapse.NewKustoPoolChildResourceClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "",
+		},
+		{
+			NewFunc: armsynapse.NewKustoPoolDataConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "",
+		},
+		{
+			NewFunc: armsynapse.NewKustoPoolDatabasePrincipalAssignmentsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/databases/{databaseName}/principalAssignments",
+		},
+		{
+			NewFunc: armsynapse.NewKustoPoolDatabasesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "",
+		},
+		{
+			NewFunc: armsynapse.NewKustoPoolPrincipalAssignmentsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/principalAssignments",
+		},
+		{
+			NewFunc: armsynapse.NewKustoPoolsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "",
+		},
+		{
+			NewFunc: armsynapse.NewLibrariesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "",
+		},
+		{
+			NewFunc: armsynapse.NewLibraryClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "",
+		},
+		{
+			NewFunc: armsynapse.NewPrivateEndpointConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/privateEndpointConnections",
+		},
+		{
+			NewFunc: armsynapse.NewPrivateEndpointConnectionsPrivateLinkHubClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/privateLinkHubs/{privateLinkHubName}/privateEndpointConnections",
+		},
+		{
+			NewFunc: armsynapse.NewPrivateLinkHubPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/privateLinkHubs/{privateLinkHubName}/privateLinkResources",
+		},
+		{
+			NewFunc: armsynapse.NewPrivateLinkHubsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Synapse/privateLinkHubs",
+		},
+		{
+			NewFunc: armsynapse.NewPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/privateLinkResources",
+		},
+		{
+			NewFunc: armsynapse.NewRestorableDroppedSQLPoolsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "",
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolBlobAuditingPoliciesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "",
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolColumnsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "",
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolConnectionPoliciesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "",
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolDataWarehouseUserActivitiesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "",
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolGeoBackupPoliciesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/geoBackupPolicies",
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolMaintenanceWindowOptionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "",
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolMaintenanceWindowsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "",
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolMetadataSyncConfigsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "",
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolOperationResultsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "",
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolOperationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/operations",
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolRecommendedSensitivityLabelsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "",
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolReplicationLinksClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/replicationLinks",
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolRestorePointsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/restorePoints",
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolSchemasClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/schemas",
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolSecurityAlertPoliciesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/securityAlertPolicies",
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolSensitivityLabelsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "",
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolTableColumnsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "",
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolTablesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "",
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolTransparentDataEncryptionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/transparentDataEncryption",
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolUsagesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/usages",
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolVulnerabilityAssessmentRuleBaselinesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "",
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolVulnerabilityAssessmentScansClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/vulnerabilityAssessments/{vulnerabilityAssessmentName}/scans",
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolVulnerabilityAssessmentsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/vulnerabilityAssessments",
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolWorkloadClassifierClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/workloadGroups/{workloadGroupName}/workloadClassifiers",
 		},
 		{
 			NewFunc: armsynapse.NewSQLPoolWorkloadGroupClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/workloadGroups",
+		},
+		{
+			NewFunc: armsynapse.NewSQLPoolsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "",
+		},
+		{
+			NewFunc: armsynapse.NewSparkConfigurationClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "",
+		},
+		{
+			NewFunc: armsynapse.NewSparkConfigurationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "",
+		},
+		{
+			NewFunc: armsynapse.NewWorkspaceAADAdminsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "",
+		},
+		{
+			NewFunc: armsynapse.NewWorkspaceManagedIdentitySQLControlSettingsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "",
+		},
+		{
+			NewFunc: armsynapse.NewWorkspaceManagedSQLServerBlobAuditingPoliciesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "",
+		},
+		{
+			NewFunc: armsynapse.NewWorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/dedicatedSQLminimalTlsSettings",
+		},
+		{
+			NewFunc: armsynapse.NewWorkspaceManagedSQLServerEncryptionProtectorClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/encryptionProtector",
+		},
+		{
+			NewFunc: armsynapse.NewWorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "",
+		},
+		{
+			NewFunc: armsynapse.NewWorkspaceManagedSQLServerRecoverableSQLPoolsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/recoverableSqlPools",
 		},
 		{
 			NewFunc: armsynapse.NewWorkspaceManagedSQLServerSecurityAlertPolicyClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/securityAlertPolicies",
+		},
+		{
+			NewFunc: armsynapse.NewWorkspaceManagedSQLServerUsagesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlUsages",
+		},
+		{
+			NewFunc: armsynapse.NewWorkspaceManagedSQLServerVulnerabilityAssessmentsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/vulnerabilityAssessments",
 		},
 		{
 			NewFunc: armsynapse.NewWorkspaceSQLAADAdminsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "",
+		},
+		{
+			NewFunc: armsynapse.NewWorkspacesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Synapse/workspaces",
 		},
 	}
 	return resources

@@ -41,7 +41,7 @@ func SubscriptionContract() *schema.Table {
 
 func fetchSubscriptionContract(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
-	svc, err := armapimanagement.NewProductSubscriptionsClient(cl.SubscriptionId, cl.Creds, cl.Options)
+	svc, err := armapimanagement.NewUserSubscriptionClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {
 		return err
 	}

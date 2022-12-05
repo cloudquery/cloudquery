@@ -12,6 +12,7 @@ func Armpostgresqlflexibleservers() []Table {
       Client: &armpostgresqlflexibleservers.ServersClient{},
       ListFunc: (&armpostgresqlflexibleservers.ServersClient{}).NewListPager,
 			NewFunc: armpostgresqlflexibleservers.NewServersClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/flexibleServers",
 		},
 	}
 

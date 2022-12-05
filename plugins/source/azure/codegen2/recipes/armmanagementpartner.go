@@ -12,6 +12,7 @@ func Armmanagementpartner() []Table {
       Client: &armmanagementpartner.OperationClient{},
       ListFunc: (&armmanagementpartner.OperationClient{}).NewListPager,
 			NewFunc: armmanagementpartner.NewOperationClient,
+			URL: "/providers/Microsoft.ManagementPartner/operations",
 		},
 	}
 

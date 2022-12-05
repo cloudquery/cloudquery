@@ -6,44 +6,49 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/
 func Armcognitiveservices() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armcognitiveservices.NewDeletedAccountsClient,
+			NewFunc: armcognitiveservices.NewAccountsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices",
-		},
-		{
-			NewFunc: armcognitiveservices.NewDeploymentsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices",
-		},
-		{
-			NewFunc: armcognitiveservices.NewManagementClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/accounts",
 		},
 		{
 			NewFunc: armcognitiveservices.NewCommitmentPlansClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/commitmentPlans",
 		},
 		{
 			NewFunc: armcognitiveservices.NewCommitmentTiersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/locations/{location}/commitmentTiers",
+		},
+		{
+			NewFunc: armcognitiveservices.NewDeletedAccountsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/deletedAccounts",
+		},
+		{
+			NewFunc: armcognitiveservices.NewDeploymentsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/deployments",
+		},
+		{
+			NewFunc: armcognitiveservices.NewManagementClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices",
+			URL: "",
 		},
 		{
 			NewFunc: armcognitiveservices.NewPrivateEndpointConnectionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices",
-		},
-		{
-			NewFunc: armcognitiveservices.NewAccountsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices",
-		},
-		{
-			NewFunc: armcognitiveservices.NewResourceSKUsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices",
-		},
-		{
-			NewFunc: armcognitiveservices.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/privateEndpointConnections",
 		},
 		{
 			NewFunc: armcognitiveservices.NewPrivateLinkResourcesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/privateLinkResources",
+		},
+		{
+			NewFunc: armcognitiveservices.NewResourceSKUsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/skus",
 		},
 	}
 	return resources

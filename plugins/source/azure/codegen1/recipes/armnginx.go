@@ -6,20 +6,19 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx"
 func Armnginx() []*Resource {
 	resources := []*Resource{
 		{
+			NewFunc: armnginx.NewCertificatesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/certificates",
+		},
+		{
 			NewFunc: armnginx.NewConfigurationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/configurations",
 		},
 		{
 			NewFunc: armnginx.NewDeploymentsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx",
-		},
-		{
-			NewFunc: armnginx.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx",
-		},
-		{
-			NewFunc: armnginx.NewCertificatesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx",
+			URL: "/subscriptions/{subscriptionId}/providers/Nginx.NginxPlus/nginxDeployments",
 		},
 	}
 	return resources

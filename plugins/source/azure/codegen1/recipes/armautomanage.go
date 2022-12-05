@@ -6,52 +6,59 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automanage/armauto
 func Armautomanage() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armautomanage.NewConfigurationProfileAssignmentsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automanage/armautomanage",
-		},
-		{
-			NewFunc: armautomanage.NewConfigurationProfileHCRPAssignmentsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automanage/armautomanage",
-		},
-		{
-			NewFunc: armautomanage.NewServicePrincipalsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automanage/armautomanage",
-		},
-		{
 			NewFunc: armautomanage.NewBestPracticesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automanage/armautomanage",
-		},
-		{
-			NewFunc: armautomanage.NewHCRPReportsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automanage/armautomanage",
+			URL: "",
 		},
 		{
 			NewFunc: armautomanage.NewBestPracticesVersionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automanage/armautomanage",
+			URL: "",
 		},
 		{
-			NewFunc: armautomanage.NewConfigurationProfilesClient,
+			NewFunc: armautomanage.NewConfigurationProfileAssignmentsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automanage/armautomanage",
-		},
-		{
-			NewFunc: armautomanage.NewConfigurationProfilesVersionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automanage/armautomanage",
-		},
-		{
-			NewFunc: armautomanage.NewHCIReportsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automanage/armautomanage",
-		},
-		{
-			NewFunc: armautomanage.NewReportsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automanage/armautomanage",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automanage/configurationProfileAssignments",
 		},
 		{
 			NewFunc: armautomanage.NewConfigurationProfileHCIAssignmentsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automanage/armautomanage",
+			URL: "",
 		},
 		{
-			NewFunc: armautomanage.NewOperationsClient,
+			NewFunc: armautomanage.NewConfigurationProfileHCRPAssignmentsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automanage/armautomanage",
+			URL: "",
+		},
+		{
+			NewFunc: armautomanage.NewConfigurationProfilesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automanage/armautomanage",
+			URL: "",
+		},
+		{
+			NewFunc: armautomanage.NewConfigurationProfilesVersionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automanage/armautomanage",
+			URL: "",
+		},
+		{
+			NewFunc: armautomanage.NewHCIReportsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automanage/armautomanage",
+			URL: "",
+		},
+		{
+			NewFunc: armautomanage.NewHCRPReportsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automanage/armautomanage",
+			URL: "",
+		},
+		{
+			NewFunc: armautomanage.NewReportsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automanage/armautomanage",
+			URL: "",
+		},
+		{
+			NewFunc: armautomanage.NewServicePrincipalsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automanage/armautomanage",
+			URL: "",
 		},
 	}
 	return resources

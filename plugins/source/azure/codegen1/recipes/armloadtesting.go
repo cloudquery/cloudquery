@@ -8,14 +8,12 @@ func Armloadtesting() []*Resource {
 		{
 			NewFunc: armloadtesting.NewLoadTestsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/loadtesting/armloadtesting",
-		},
-		{
-			NewFunc: armloadtesting.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/loadtesting/armloadtesting",
+			URL: "",
 		},
 		{
 			NewFunc: armloadtesting.NewQuotasClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/loadtesting/armloadtesting",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.LoadTestService/locations/{location}/quotas",
 		},
 	}
 	return resources

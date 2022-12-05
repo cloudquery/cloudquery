@@ -6,12 +6,22 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/guestconfiguration
 func Armguestconfiguration() []Table {
 	tables := []Table{
 		{
+      Name: "assignment_report",
+      Struct: &armguestconfiguration.AssignmentReport{},
+      ResponseStruct: &armguestconfiguration.AssignmentReportsVMSSClientListResponse{},
+      Client: &armguestconfiguration.AssignmentReportsVMSSClient{},
+      ListFunc: (&armguestconfiguration.AssignmentReportsVMSSClient{}).NewListPager,
+			NewFunc: armguestconfiguration.NewAssignmentReportsVMSSClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmssName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments/{name}/reports",
+		},
+		{
       Name: "assignment",
       Struct: &armguestconfiguration.Assignment{},
       ResponseStruct: &armguestconfiguration.AssignmentsClientListResponse{},
       Client: &armguestconfiguration.AssignmentsClient{},
       ListFunc: (&armguestconfiguration.AssignmentsClient{}).NewListPager,
 			NewFunc: armguestconfiguration.NewAssignmentsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments",
 		},
 		{
       Name: "assignment",
@@ -20,6 +30,7 @@ func Armguestconfiguration() []Table {
       Client: &armguestconfiguration.AssignmentsVMSSClient{},
       ListFunc: (&armguestconfiguration.AssignmentsVMSSClient{}).NewListPager,
 			NewFunc: armguestconfiguration.NewAssignmentsVMSSClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmssName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments",
 		},
 		{
       Name: "assignment",
@@ -28,22 +39,7 @@ func Armguestconfiguration() []Table {
       Client: &armguestconfiguration.HCRPAssignmentsClient{},
       ListFunc: (&armguestconfiguration.HCRPAssignmentsClient{}).NewListPager,
 			NewFunc: armguestconfiguration.NewHCRPAssignmentsClient,
-		},
-		{
-      Name: "operation",
-      Struct: &armguestconfiguration.Operation{},
-      ResponseStruct: &armguestconfiguration.OperationsClientListResponse{},
-      Client: &armguestconfiguration.OperationsClient{},
-      ListFunc: (&armguestconfiguration.OperationsClient{}).NewListPager,
-			NewFunc: armguestconfiguration.NewOperationsClient,
-		},
-		{
-      Name: "assignment_report",
-      Struct: &armguestconfiguration.AssignmentReport{},
-      ResponseStruct: &armguestconfiguration.AssignmentReportsVMSSClientListResponse{},
-      Client: &armguestconfiguration.AssignmentReportsVMSSClient{},
-      ListFunc: (&armguestconfiguration.AssignmentReportsVMSSClient{}).NewListPager,
-			NewFunc: armguestconfiguration.NewAssignmentReportsVMSSClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments",
 		},
 	}
 

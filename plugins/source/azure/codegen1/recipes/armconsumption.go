@@ -6,72 +6,84 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armcon
 func Armconsumption() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armconsumption.NewBalancesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
-		},
-		{
-			NewFunc: armconsumption.NewLotsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
-		},
-		{
-			NewFunc: armconsumption.NewTagsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
-		},
-		{
 			NewFunc: armconsumption.NewAggregatedCostClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
+			URL: "",
+		},
+		{
+			NewFunc: armconsumption.NewBalancesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
+			URL: "",
 		},
 		{
 			NewFunc: armconsumption.NewBudgetsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
-		},
-		{
-			NewFunc: armconsumption.NewMarketplacesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
-		},
-		{
-			NewFunc: armconsumption.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
-		},
-		{
-			NewFunc: armconsumption.NewReservationRecommendationDetailsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
-		},
-		{
-			NewFunc: armconsumption.NewReservationRecommendationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
+			URL: "/{scope}/providers/Microsoft.Consumption/budgets",
 		},
 		{
 			NewFunc: armconsumption.NewChargesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
-		},
-		{
-			NewFunc: armconsumption.NewPriceSheetClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
+			URL: "/{scope}/providers/Microsoft.Consumption/charges",
 		},
 		{
 			NewFunc: armconsumption.NewCreditsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
+			URL: "",
 		},
 		{
 			NewFunc: armconsumption.NewEventsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
+			URL: "",
 		},
 		{
-			NewFunc: armconsumption.NewReservationsDetailsClient,
+			NewFunc: armconsumption.NewLotsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
+			URL: "",
 		},
 		{
-			NewFunc: armconsumption.NewReservationsSummariesClient,
+			NewFunc: armconsumption.NewMarketplacesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
+			URL: "/{scope}/providers/Microsoft.Consumption/marketplaces",
+		},
+		{
+			NewFunc: armconsumption.NewPriceSheetClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
+			URL: "",
+		},
+		{
+			NewFunc: armconsumption.NewReservationRecommendationDetailsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
+			URL: "",
+		},
+		{
+			NewFunc: armconsumption.NewReservationRecommendationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
+			URL: "/{resourceScope}/providers/Microsoft.Consumption/reservationRecommendations",
 		},
 		{
 			NewFunc: armconsumption.NewReservationTransactionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
+			URL: "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/providers/Microsoft.Consumption/reservationTransactions",
+		},
+		{
+			NewFunc: armconsumption.NewReservationsDetailsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
+			URL: "/{resourceScope}/providers/Microsoft.Consumption/reservationDetails",
+		},
+		{
+			NewFunc: armconsumption.NewReservationsSummariesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
+			URL: "/{resourceScope}/providers/Microsoft.Consumption/reservationSummaries",
+		},
+		{
+			NewFunc: armconsumption.NewTagsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
+			URL: "",
 		},
 		{
 			NewFunc: armconsumption.NewUsageDetailsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption",
+			URL: "/{scope}/providers/Microsoft.Consumption/usageDetails",
 		},
 	}
 	return resources

@@ -12,6 +12,7 @@ func Armkusto() []Table {
       Client: &armkusto.ClusterPrincipalAssignmentsClient{},
       ListFunc: (&armkusto.ClusterPrincipalAssignmentsClient{}).NewListPager,
 			NewFunc: armkusto.NewClusterPrincipalAssignmentsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/principalAssignments",
 		},
 		{
       Name: "cluster",
@@ -20,6 +21,7 @@ func Armkusto() []Table {
       Client: &armkusto.ClustersClient{},
       ListFunc: (&armkusto.ClustersClient{}).NewListPager,
 			NewFunc: armkusto.NewClustersClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Kusto/clusters",
 		},
 		{
       Name: "database_principal_assignment",
@@ -28,6 +30,7 @@ func Armkusto() []Table {
       Client: &armkusto.DatabasePrincipalAssignmentsClient{},
       ListFunc: (&armkusto.DatabasePrincipalAssignmentsClient{}).NewListPager,
 			NewFunc: armkusto.NewDatabasePrincipalAssignmentsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/principalAssignments",
 		},
 		{
       Name: "managed_private_endpoint",
@@ -36,14 +39,7 @@ func Armkusto() []Table {
       Client: &armkusto.ManagedPrivateEndpointsClient{},
       ListFunc: (&armkusto.ManagedPrivateEndpointsClient{}).NewListPager,
 			NewFunc: armkusto.NewManagedPrivateEndpointsClient,
-		},
-		{
-      Name: "operation",
-      Struct: &armkusto.Operation{},
-      ResponseStruct: &armkusto.OperationsClientListResponse{},
-      Client: &armkusto.OperationsClient{},
-      ListFunc: (&armkusto.OperationsClient{}).NewListPager,
-			NewFunc: armkusto.NewOperationsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/managedPrivateEndpoints",
 		},
 		{
       Name: "private_endpoint_connection",
@@ -52,6 +48,7 @@ func Armkusto() []Table {
       Client: &armkusto.PrivateEndpointConnectionsClient{},
       ListFunc: (&armkusto.PrivateEndpointConnectionsClient{}).NewListPager,
 			NewFunc: armkusto.NewPrivateEndpointConnectionsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/privateEndpointConnections",
 		},
 		{
       Name: "private_link_resource",
@@ -60,6 +57,7 @@ func Armkusto() []Table {
       Client: &armkusto.PrivateLinkResourcesClient{},
       ListFunc: (&armkusto.PrivateLinkResourcesClient{}).NewListPager,
 			NewFunc: armkusto.NewPrivateLinkResourcesClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/privateLinkResources",
 		},
 	}
 

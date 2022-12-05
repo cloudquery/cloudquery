@@ -6,116 +6,139 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/a
 func Armrecoveryservicessiterecovery() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armrecoveryservicessiterecovery.NewReplicationRecoveryPlansClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
-		},
-		{
-			NewFunc: armrecoveryservicessiterecovery.NewReplicationVaultHealthClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
-		},
-		{
-			NewFunc: armrecoveryservicessiterecovery.NewReplicationAlertSettingsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
-		},
-		{
-			NewFunc: armrecoveryservicessiterecovery.NewReplicationProtectableItemsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
-		},
-		{
-			NewFunc: armrecoveryservicessiterecovery.NewReplicationProtectedItemsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
-		},
-		{
-			NewFunc: armrecoveryservicessiterecovery.NewReplicationvCentersClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
-		},
-		{
-			NewFunc: armrecoveryservicessiterecovery.NewReplicationJobsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
-		},
-		{
-			NewFunc: armrecoveryservicessiterecovery.NewReplicationStorageClassificationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
-		},
-		{
-			NewFunc: armrecoveryservicessiterecovery.NewReplicationAppliancesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
-		},
-		{
-			NewFunc: armrecoveryservicessiterecovery.NewReplicationProtectionContainerMappingsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
-		},
-		{
-			NewFunc: armrecoveryservicessiterecovery.NewReplicationProtectionContainersClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
-		},
-		{
-			NewFunc: armrecoveryservicessiterecovery.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
-		},
-		{
-			NewFunc: armrecoveryservicessiterecovery.NewReplicationEventsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
-		},
-		{
-			NewFunc: armrecoveryservicessiterecovery.NewReplicationLogicalNetworksClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
-		},
-		{
-			NewFunc: armrecoveryservicessiterecovery.NewReplicationProtectionIntentsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
-		},
-		{
 			NewFunc: armrecoveryservicessiterecovery.NewMigrationRecoveryPointsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
-		},
-		{
-			NewFunc: armrecoveryservicessiterecovery.NewReplicationNetworksClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
-		},
-		{
-			NewFunc: armrecoveryservicessiterecovery.NewSupportedOperatingSystemsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
-		},
-		{
-			NewFunc: armrecoveryservicessiterecovery.NewTargetComputeSizesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
+			URL: "",
 		},
 		{
 			NewFunc: armrecoveryservicessiterecovery.NewRecoveryPointsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
+			URL: "",
+		},
+		{
+			NewFunc: armrecoveryservicessiterecovery.NewReplicationAlertSettingsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationAlertSettings",
+		},
+		{
+			NewFunc: armrecoveryservicessiterecovery.NewReplicationAppliancesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationAppliances",
 		},
 		{
 			NewFunc: armrecoveryservicessiterecovery.NewReplicationEligibilityResultsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{virtualMachineName}/providers/Microsoft.RecoveryServices/replicationEligibilityResults",
 		},
 		{
-			NewFunc: armrecoveryservicessiterecovery.NewReplicationRecoveryServicesProvidersClient,
+			NewFunc: armrecoveryservicessiterecovery.NewReplicationEventsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
-		},
-		{
-			NewFunc: armrecoveryservicessiterecovery.NewReplicationPoliciesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
-		},
-		{
-			NewFunc: armrecoveryservicessiterecovery.NewReplicationStorageClassificationMappingsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
-		},
-		{
-			NewFunc: armrecoveryservicessiterecovery.NewReplicationVaultSettingClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationEvents",
 		},
 		{
 			NewFunc: armrecoveryservicessiterecovery.NewReplicationFabricsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics",
+		},
+		{
+			NewFunc: armrecoveryservicessiterecovery.NewReplicationJobsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationJobs",
+		},
+		{
+			NewFunc: armrecoveryservicessiterecovery.NewReplicationLogicalNetworksClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
+			URL: "",
 		},
 		{
 			NewFunc: armrecoveryservicessiterecovery.NewReplicationMigrationItemsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationMigrationItems",
 		},
 		{
 			NewFunc: armrecoveryservicessiterecovery.NewReplicationNetworkMappingsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationNetworkMappings",
+		},
+		{
+			NewFunc: armrecoveryservicessiterecovery.NewReplicationNetworksClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationNetworks",
+		},
+		{
+			NewFunc: armrecoveryservicessiterecovery.NewReplicationPoliciesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationPolicies",
+		},
+		{
+			NewFunc: armrecoveryservicessiterecovery.NewReplicationProtectableItemsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
+			URL: "",
+		},
+		{
+			NewFunc: armrecoveryservicessiterecovery.NewReplicationProtectedItemsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationProtectedItems",
+		},
+		{
+			NewFunc: armrecoveryservicessiterecovery.NewReplicationProtectionContainerMappingsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationProtectionContainerMappings",
+		},
+		{
+			NewFunc: armrecoveryservicessiterecovery.NewReplicationProtectionContainersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationProtectionContainers",
+		},
+		{
+			NewFunc: armrecoveryservicessiterecovery.NewReplicationProtectionIntentsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationProtectionIntents",
+		},
+		{
+			NewFunc: armrecoveryservicessiterecovery.NewReplicationRecoveryPlansClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationRecoveryPlans",
+		},
+		{
+			NewFunc: armrecoveryservicessiterecovery.NewReplicationRecoveryServicesProvidersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationRecoveryServicesProviders",
+		},
+		{
+			NewFunc: armrecoveryservicessiterecovery.NewReplicationStorageClassificationMappingsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationStorageClassificationMappings",
+		},
+		{
+			NewFunc: armrecoveryservicessiterecovery.NewReplicationStorageClassificationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationStorageClassifications",
+		},
+		{
+			NewFunc: armrecoveryservicessiterecovery.NewReplicationVaultHealthClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
+			URL: "",
+		},
+		{
+			NewFunc: armrecoveryservicessiterecovery.NewReplicationVaultSettingClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationVaultSettings",
+		},
+		{
+			NewFunc: armrecoveryservicessiterecovery.NewReplicationvCentersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationvCenters",
+		},
+		{
+			NewFunc: armrecoveryservicessiterecovery.NewSupportedOperatingSystemsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
+			URL: "",
+		},
+		{
+			NewFunc: armrecoveryservicessiterecovery.NewTargetComputeSizesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery",
+			URL: "",
 		},
 	}
 	return resources

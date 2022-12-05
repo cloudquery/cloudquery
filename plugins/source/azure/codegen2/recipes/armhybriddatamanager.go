@@ -12,14 +12,7 @@ func Armhybriddatamanager() []Table {
       Client: &armhybriddatamanager.DataManagersClient{},
       ListFunc: (&armhybriddatamanager.DataManagersClient{}).NewListPager,
 			NewFunc: armhybriddatamanager.NewDataManagersClient,
-		},
-		{
-      Name: "available_provider_operation",
-      Struct: &armhybriddatamanager.AvailableProviderOperation{},
-      ResponseStruct: &armhybriddatamanager.OperationsClientListResponse{},
-      Client: &armhybriddatamanager.OperationsClient{},
-      ListFunc: (&armhybriddatamanager.OperationsClient{}).NewListPager,
-			NewFunc: armhybriddatamanager.NewOperationsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.HybridData/dataManagers",
 		},
 	}
 

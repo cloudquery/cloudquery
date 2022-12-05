@@ -12,6 +12,7 @@ func Armattestation() []Table {
       Client: &armattestation.PrivateEndpointConnectionsClient{},
       ListFunc: (&armattestation.PrivateEndpointConnectionsClient{}).NewListPager,
 			NewFunc: armattestation.NewPrivateEndpointConnectionsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Attestation/attestationProviders/{providerName}/privateEndpointConnections",
 		},
 	}
 

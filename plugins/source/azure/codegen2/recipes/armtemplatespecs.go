@@ -12,6 +12,7 @@ func Armtemplatespecs() []Table {
       Client: &armtemplatespecs.TemplateSpecVersionsClient{},
       ListFunc: (&armtemplatespecs.TemplateSpecVersionsClient{}).NewListPager,
 			NewFunc: armtemplatespecs.NewTemplateSpecVersionsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/templateSpecs/{templateSpecName}/versions",
 		},
 	}
 

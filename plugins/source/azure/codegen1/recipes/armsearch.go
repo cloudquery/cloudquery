@@ -6,32 +6,34 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch"
 func Armsearch() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armsearch.NewServicesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch",
-		},
-		{
-			NewFunc: armsearch.NewSharedPrivateLinkResourcesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch",
-		},
-		{
 			NewFunc: armsearch.NewAdminKeysClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch",
-		},
-		{
-			NewFunc: armsearch.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch",
+			URL: "",
 		},
 		{
 			NewFunc: armsearch.NewPrivateEndpointConnectionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch",
+			URL: "",
 		},
 		{
 			NewFunc: armsearch.NewPrivateLinkResourcesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch",
+			URL: "",
 		},
 		{
 			NewFunc: armsearch.NewQueryKeysClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch",
+			URL: "",
+		},
+		{
+			NewFunc: armsearch.NewServicesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch",
+			URL: "",
+		},
+		{
+			NewFunc: armsearch.NewSharedPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch",
+			URL: "",
 		},
 	}
 	return resources

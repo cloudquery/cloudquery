@@ -8,42 +8,47 @@ func Armservicebus() []*Resource {
 		{
 			NewFunc: armservicebus.NewDisasterRecoveryConfigsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus",
-		},
-		{
-			NewFunc: armservicebus.NewNamespacesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus",
-		},
-		{
-			NewFunc: armservicebus.NewQueuesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus",
-		},
-		{
-			NewFunc: armservicebus.NewRulesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus",
-		},
-		{
-			NewFunc: armservicebus.NewSubscriptionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus",
-		},
-		{
-			NewFunc: armservicebus.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus",
-		},
-		{
-			NewFunc: armservicebus.NewPrivateEndpointConnectionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus",
-		},
-		{
-			NewFunc: armservicebus.NewPrivateLinkResourcesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus",
-		},
-		{
-			NewFunc: armservicebus.NewTopicsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/disasterRecoveryConfigs",
 		},
 		{
 			NewFunc: armservicebus.NewMigrationConfigsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/migrationConfigurations",
+		},
+		{
+			NewFunc: armservicebus.NewNamespacesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ServiceBus/namespaces",
+		},
+		{
+			NewFunc: armservicebus.NewPrivateEndpointConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/privateEndpointConnections",
+		},
+		{
+			NewFunc: armservicebus.NewPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus",
+			URL: "",
+		},
+		{
+			NewFunc: armservicebus.NewQueuesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus",
+			URL: "",
+		},
+		{
+			NewFunc: armservicebus.NewRulesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus",
+			URL: "",
+		},
+		{
+			NewFunc: armservicebus.NewSubscriptionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus",
+			URL: "",
+		},
+		{
+			NewFunc: armservicebus.NewTopicsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus",
+			URL: "",
 		},
 	}
 	return resources

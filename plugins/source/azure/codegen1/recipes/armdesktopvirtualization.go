@@ -6,52 +6,59 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualizat
 func Armdesktopvirtualization() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armdesktopvirtualization.NewMsixImagesClient,
+			NewFunc: armdesktopvirtualization.NewApplicationGroupsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization",
-		},
-		{
-			NewFunc: armdesktopvirtualization.NewScalingPlansClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization",
-		},
-		{
-			NewFunc: armdesktopvirtualization.NewStartMenuItemsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization",
-		},
-		{
-			NewFunc: armdesktopvirtualization.NewHostPoolsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization",
-		},
-		{
-			NewFunc: armdesktopvirtualization.NewDesktopsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization",
-		},
-		{
-			NewFunc: armdesktopvirtualization.NewMSIXPackagesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization",
-		},
-		{
-			NewFunc: armdesktopvirtualization.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization",
-		},
-		{
-			NewFunc: armdesktopvirtualization.NewUserSessionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization",
+			URL: "",
 		},
 		{
 			NewFunc: armdesktopvirtualization.NewApplicationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/applicationGroups/{applicationGroupName}/applications",
+		},
+		{
+			NewFunc: armdesktopvirtualization.NewDesktopsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/applicationGroups/{applicationGroupName}/desktops",
+		},
+		{
+			NewFunc: armdesktopvirtualization.NewHostPoolsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DesktopVirtualization/hostPools",
+		},
+		{
+			NewFunc: armdesktopvirtualization.NewMSIXPackagesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization",
+			URL: "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/msixPackages",
+		},
+		{
+			NewFunc: armdesktopvirtualization.NewMsixImagesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization",
+			URL: "",
+		},
+		{
+			NewFunc: armdesktopvirtualization.NewScalingPlansClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization",
+			URL: "",
 		},
 		{
 			NewFunc: armdesktopvirtualization.NewSessionHostsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/sessionHosts",
+		},
+		{
+			NewFunc: armdesktopvirtualization.NewStartMenuItemsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/applicationGroups/{applicationGroupName}/startMenuItems",
+		},
+		{
+			NewFunc: armdesktopvirtualization.NewUserSessionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/sessionHosts/{sessionHostName}/userSessions",
 		},
 		{
 			NewFunc: armdesktopvirtualization.NewWorkspacesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization",
-		},
-		{
-			NewFunc: armdesktopvirtualization.NewApplicationGroupsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization",
+			URL: "",
 		},
 	}
 	return resources

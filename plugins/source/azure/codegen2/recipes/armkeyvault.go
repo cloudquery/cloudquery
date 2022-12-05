@@ -6,20 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvau
 func Armkeyvault() []Table {
 	tables := []Table{
 		{
-      Name: "operation",
-      Struct: &armkeyvault.Operation{},
-      ResponseStruct: &armkeyvault.OperationsClientListResponse{},
-      Client: &armkeyvault.OperationsClient{},
-      ListFunc: (&armkeyvault.OperationsClient{}).NewListPager,
-			NewFunc: armkeyvault.NewOperationsClient,
-		},
-		{
-      Name: "resource",
-      Struct: &armkeyvault.Resource{},
-      ResponseStruct: &armkeyvault.VaultsClientListResponse{},
-      Client: &armkeyvault.VaultsClient{},
-      ListFunc: (&armkeyvault.VaultsClient{}).NewListPager,
-			NewFunc: armkeyvault.NewVaultsClient,
+      Name: "key",
+      Struct: &armkeyvault.Key{},
+      ResponseStruct: &armkeyvault.KeysClientListResponse{},
+      Client: &armkeyvault.KeysClient{},
+      ListFunc: (&armkeyvault.KeysClient{}).NewListPager,
+			NewFunc: armkeyvault.NewKeysClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/keys",
 		},
 		{
       Name: "secret",
@@ -28,14 +21,16 @@ func Armkeyvault() []Table {
       Client: &armkeyvault.SecretsClient{},
       ListFunc: (&armkeyvault.SecretsClient{}).NewListPager,
 			NewFunc: armkeyvault.NewSecretsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/secrets",
 		},
 		{
-      Name: "key",
-      Struct: &armkeyvault.Key{},
-      ResponseStruct: &armkeyvault.KeysClientListResponse{},
-      Client: &armkeyvault.KeysClient{},
-      ListFunc: (&armkeyvault.KeysClient{}).NewListPager,
-			NewFunc: armkeyvault.NewKeysClient,
+      Name: "resource",
+      Struct: &armkeyvault.Resource{},
+      ResponseStruct: &armkeyvault.VaultsClientListResponse{},
+      Client: &armkeyvault.VaultsClient{},
+      ListFunc: (&armkeyvault.VaultsClient{}).NewListPager,
+			NewFunc: armkeyvault.NewVaultsClient,
+			URL: "/subscriptions/{subscriptionId}/resources",
 		},
 	}
 

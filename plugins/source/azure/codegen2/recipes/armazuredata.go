@@ -6,20 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azuredata/armazure
 func Armazuredata() []Table {
 	tables := []Table{
 		{
-      Name: "operation",
-      Struct: &armazuredata.Operation{},
-      ResponseStruct: &armazuredata.OperationsClientListResponse{},
-      Client: &armazuredata.OperationsClient{},
-      ListFunc: (&armazuredata.OperationsClient{}).NewListPager,
-			NewFunc: armazuredata.NewOperationsClient,
-		},
-		{
       Name: "sql_server_registration",
       Struct: &armazuredata.SQLServerRegistration{},
       ResponseStruct: &armazuredata.SQLServerRegistrationsClientListResponse{},
       Client: &armazuredata.SQLServerRegistrationsClient{},
       ListFunc: (&armazuredata.SQLServerRegistrationsClient{}).NewListPager,
 			NewFunc: armazuredata.NewSQLServerRegistrationsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.AzureData/sqlServerRegistrations",
 		},
 	}
 

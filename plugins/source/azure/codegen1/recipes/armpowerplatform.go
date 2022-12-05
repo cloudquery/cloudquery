@@ -6,24 +6,24 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerplatform/armp
 func Armpowerplatform() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armpowerplatform.NewPrivateLinkResourcesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerplatform/armpowerplatform",
-		},
-		{
 			NewFunc: armpowerplatform.NewAccountsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerplatform/armpowerplatform",
+			URL: "",
 		},
 		{
 			NewFunc: armpowerplatform.NewEnterprisePoliciesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerplatform/armpowerplatform",
-		},
-		{
-			NewFunc: armpowerplatform.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerplatform/armpowerplatform",
+			URL: "",
 		},
 		{
 			NewFunc: armpowerplatform.NewPrivateEndpointConnectionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerplatform/armpowerplatform",
+			URL: "",
+		},
+		{
+			NewFunc: armpowerplatform.NewPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerplatform/armpowerplatform",
+			URL: "",
 		},
 	}
 	return resources

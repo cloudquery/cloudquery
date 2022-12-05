@@ -8,18 +8,17 @@ func Armsqlvirtualmachine() []*Resource {
 		{
 			NewFunc: armsqlvirtualmachine.NewAvailabilityGroupListenersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sqlvirtualmachine/armsqlvirtualmachine",
+			URL: "",
 		},
 		{
 			NewFunc: armsqlvirtualmachine.NewGroupsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sqlvirtualmachine/armsqlvirtualmachine",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups",
 		},
 		{
 			NewFunc: armsqlvirtualmachine.NewSQLVirtualMachinesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sqlvirtualmachine/armsqlvirtualmachine",
-		},
-		{
-			NewFunc: armsqlvirtualmachine.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sqlvirtualmachine/armsqlvirtualmachine",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines",
 		},
 	}
 	return resources

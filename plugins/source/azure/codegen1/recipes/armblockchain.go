@@ -6,28 +6,29 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blockchain/armbloc
 func Armblockchain() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armblockchain.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blockchain/armblockchain",
-		},
-		{
 			NewFunc: armblockchain.NewLocationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blockchain/armblockchain",
+			URL: "",
 		},
 		{
 			NewFunc: armblockchain.NewMemberOperationResultsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blockchain/armblockchain",
+			URL: "",
 		},
 		{
 			NewFunc: armblockchain.NewMembersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blockchain/armblockchain",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Blockchain/blockchainMembers",
 		},
 		{
 			NewFunc: armblockchain.NewSKUsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blockchain/armblockchain",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Blockchain/skus",
 		},
 		{
 			NewFunc: armblockchain.NewTransactionNodesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blockchain/armblockchain",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Blockchain/blockchainMembers/{blockchainMemberName}/transactionNodes",
 		},
 	}
 	return resources

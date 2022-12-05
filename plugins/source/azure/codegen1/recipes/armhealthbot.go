@@ -6,12 +6,9 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthbot/armhealt
 func Armhealthbot() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armhealthbot.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthbot/armhealthbot",
-		},
-		{
 			NewFunc: armhealthbot.NewBotsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthbot/armhealthbot",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.HealthBot/healthBots",
 		},
 	}
 	return resources

@@ -6,28 +6,29 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managedservices/ar
 func Armmanagedservices() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armmanagedservices.NewRegistrationAssignmentsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managedservices/armmanagedservices",
-		},
-		{
-			NewFunc: armmanagedservices.NewRegistrationDefinitionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managedservices/armmanagedservices",
-		},
-		{
 			NewFunc: armmanagedservices.NewMarketplaceRegistrationDefinitionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managedservices/armmanagedservices",
+			URL: "/{scope}/providers/Microsoft.ManagedServices/marketplaceRegistrationDefinitions",
 		},
 		{
 			NewFunc: armmanagedservices.NewMarketplaceRegistrationDefinitionsWithoutScopeClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managedservices/armmanagedservices",
-		},
-		{
-			NewFunc: armmanagedservices.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managedservices/armmanagedservices",
+			URL: "/providers/Microsoft.ManagedServices/marketplaceRegistrationDefinitions",
 		},
 		{
 			NewFunc: armmanagedservices.NewOperationsWithScopeClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managedservices/armmanagedservices",
+			URL: "/{scope}/providers/Microsoft.ManagedServices/operations",
+		},
+		{
+			NewFunc: armmanagedservices.NewRegistrationAssignmentsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managedservices/armmanagedservices",
+			URL: "/{scope}/providers/Microsoft.ManagedServices/registrationAssignments",
+		},
+		{
+			NewFunc: armmanagedservices.NewRegistrationDefinitionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managedservices/armmanagedservices",
+			URL: "/{scope}/providers/Microsoft.ManagedServices/registrationDefinitions",
 		},
 	}
 	return resources

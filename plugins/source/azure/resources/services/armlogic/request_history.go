@@ -51,7 +51,7 @@ func RequestHistory() *schema.Table {
 
 func fetchRequestHistory(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
-	svc, err := armlogic.NewWorkflowRunActionRepetitionsRequestHistoriesClient(cl.SubscriptionId, cl.Creds, cl.Options)
+	svc, err := armlogic.NewWorkflowRunActionRequestHistoriesClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {
 		return err
 	}

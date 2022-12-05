@@ -6,24 +6,24 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/timeseriesinsights
 func Armtimeseriesinsights() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armtimeseriesinsights.NewEnvironmentsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/timeseriesinsights/armtimeseriesinsights",
-		},
-		{
 			NewFunc: armtimeseriesinsights.NewAccessPoliciesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/timeseriesinsights/armtimeseriesinsights",
+			URL: "",
+		},
+		{
+			NewFunc: armtimeseriesinsights.NewEnvironmentsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/timeseriesinsights/armtimeseriesinsights",
+			URL: "",
 		},
 		{
 			NewFunc: armtimeseriesinsights.NewEventSourcesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/timeseriesinsights/armtimeseriesinsights",
-		},
-		{
-			NewFunc: armtimeseriesinsights.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/timeseriesinsights/armtimeseriesinsights",
+			URL: "",
 		},
 		{
 			NewFunc: armtimeseriesinsights.NewReferenceDataSetsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/timeseriesinsights/armtimeseriesinsights",
+			URL: "",
 		},
 	}
 	return resources

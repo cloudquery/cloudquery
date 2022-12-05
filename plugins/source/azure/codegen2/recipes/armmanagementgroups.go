@@ -6,28 +6,22 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementgroups/a
 func Armmanagementgroups() []Table {
 	tables := []Table{
 		{
-      Name: "entity_info",
-      Struct: &armmanagementgroups.EntityInfo{},
-      ResponseStruct: &armmanagementgroups.EntitiesClientListResponse{},
-      Client: &armmanagementgroups.EntitiesClient{},
-      ListFunc: (&armmanagementgroups.EntitiesClient{}).NewListPager,
-			NewFunc: armmanagementgroups.NewEntitiesClient,
-		},
-		{
       Name: "management_group_info",
       Struct: &armmanagementgroups.ManagementGroupInfo{},
       ResponseStruct: &armmanagementgroups.ClientListResponse{},
       Client: &armmanagementgroups.Client{},
       ListFunc: (&armmanagementgroups.Client{}).NewListPager,
 			NewFunc: armmanagementgroups.NewClient,
+			URL: "/providers/Microsoft.Management/managementGroups",
 		},
 		{
-      Name: "operation",
-      Struct: &armmanagementgroups.Operation{},
-      ResponseStruct: &armmanagementgroups.OperationsClientListResponse{},
-      Client: &armmanagementgroups.OperationsClient{},
-      ListFunc: (&armmanagementgroups.OperationsClient{}).NewListPager,
-			NewFunc: armmanagementgroups.NewOperationsClient,
+      Name: "entity_info",
+      Struct: &armmanagementgroups.EntityInfo{},
+      ResponseStruct: &armmanagementgroups.EntitiesClientListResponse{},
+      Client: &armmanagementgroups.EntitiesClient{},
+      ListFunc: (&armmanagementgroups.EntitiesClient{}).NewListPager,
+			NewFunc: armmanagementgroups.NewEntitiesClient,
+			URL: "/providers/Microsoft.Management/getEntities",
 		},
 	}
 

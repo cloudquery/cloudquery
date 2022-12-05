@@ -6,36 +6,39 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/policyinsights/arm
 func Armpolicyinsights() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armpolicyinsights.NewPolicyEventsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/policyinsights/armpolicyinsights",
-		},
-		{
 			NewFunc: armpolicyinsights.NewAttestationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/policyinsights/armpolicyinsights",
+			URL: "",
 		},
 		{
-			NewFunc: armpolicyinsights.NewOperationsClient,
+			NewFunc: armpolicyinsights.NewPolicyEventsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/policyinsights/armpolicyinsights",
-		},
-		{
-			NewFunc: armpolicyinsights.NewPolicyStatesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/policyinsights/armpolicyinsights",
-		},
-		{
-			NewFunc: armpolicyinsights.NewPolicyTrackedResourcesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/policyinsights/armpolicyinsights",
+			URL: "",
 		},
 		{
 			NewFunc: armpolicyinsights.NewPolicyMetadataClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/policyinsights/armpolicyinsights",
+			URL: "/providers/Microsoft.PolicyInsights/policyMetadata",
 		},
 		{
 			NewFunc: armpolicyinsights.NewPolicyRestrictionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/policyinsights/armpolicyinsights",
+			URL: "",
+		},
+		{
+			NewFunc: armpolicyinsights.NewPolicyStatesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/policyinsights/armpolicyinsights",
+			URL: "",
+		},
+		{
+			NewFunc: armpolicyinsights.NewPolicyTrackedResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/policyinsights/armpolicyinsights",
+			URL: "",
 		},
 		{
 			NewFunc: armpolicyinsights.NewRemediationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/policyinsights/armpolicyinsights",
+			URL: "",
 		},
 	}
 	return resources

@@ -6,20 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridnetwork/armh
 func Armhybridnetwork() []Table {
 	tables := []Table{
 		{
-      Name: "operation",
-      Struct: &armhybridnetwork.Operation{},
-      ResponseStruct: &armhybridnetwork.OperationsClientListResponse{},
-      Client: &armhybridnetwork.OperationsClient{},
-      ListFunc: (&armhybridnetwork.OperationsClient{}).NewListPager,
-			NewFunc: armhybridnetwork.NewOperationsClient,
-		},
-		{
-      Name: "preview_subscription",
-      Struct: &armhybridnetwork.PreviewSubscription{},
-      ResponseStruct: &armhybridnetwork.VendorSKUPreviewClientListResponse{},
-      Client: &armhybridnetwork.VendorSKUPreviewClient{},
-      ListFunc: (&armhybridnetwork.VendorSKUPreviewClient{}).NewListPager,
-			NewFunc: armhybridnetwork.NewVendorSKUPreviewClient,
+      Name: "network_function_vendor",
+      Struct: &armhybridnetwork.NetworkFunctionVendor{},
+      ResponseStruct: &armhybridnetwork.NetworkFunctionVendorsClientListResponse{},
+      Client: &armhybridnetwork.NetworkFunctionVendorsClient{},
+      ListFunc: (&armhybridnetwork.NetworkFunctionVendorsClient{}).NewListPager,
+			NewFunc: armhybridnetwork.NewNetworkFunctionVendorsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.HybridNetwork/networkFunctionVendors",
 		},
 		{
       Name: "role_instance",
@@ -28,22 +21,7 @@ func Armhybridnetwork() []Table {
       Client: &armhybridnetwork.RoleInstancesClient{},
       ListFunc: (&armhybridnetwork.RoleInstancesClient{}).NewListPager,
 			NewFunc: armhybridnetwork.NewRoleInstancesClient,
-		},
-		{
-      Name: "vendor_sku",
-      Struct: &armhybridnetwork.VendorSKU{},
-      ResponseStruct: &armhybridnetwork.VendorSKUsClientListResponse{},
-      Client: &armhybridnetwork.VendorSKUsClient{},
-      ListFunc: (&armhybridnetwork.VendorSKUsClient{}).NewListPager,
-			NewFunc: armhybridnetwork.NewVendorSKUsClient,
-		},
-		{
-      Name: "network_function_vendor",
-      Struct: &armhybridnetwork.NetworkFunctionVendor{},
-      ResponseStruct: &armhybridnetwork.NetworkFunctionVendorsClientListResponse{},
-      Client: &armhybridnetwork.NetworkFunctionVendorsClient{},
-      ListFunc: (&armhybridnetwork.NetworkFunctionVendorsClient{}).NewListPager,
-			NewFunc: armhybridnetwork.NewNetworkFunctionVendorsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.HybridNetwork/locations/{locationName}/vendors/{vendorName}/networkFunctions/{serviceKey}/roleInstances",
 		},
 		{
       Name: "vendor_network_function",
@@ -52,6 +30,25 @@ func Armhybridnetwork() []Table {
       Client: &armhybridnetwork.VendorNetworkFunctionsClient{},
       ListFunc: (&armhybridnetwork.VendorNetworkFunctionsClient{}).NewListPager,
 			NewFunc: armhybridnetwork.NewVendorNetworkFunctionsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.HybridNetwork/locations/{locationName}/vendors/{vendorName}/networkFunctions",
+		},
+		{
+      Name: "preview_subscription",
+      Struct: &armhybridnetwork.PreviewSubscription{},
+      ResponseStruct: &armhybridnetwork.VendorSKUPreviewClientListResponse{},
+      Client: &armhybridnetwork.VendorSKUPreviewClient{},
+      ListFunc: (&armhybridnetwork.VendorSKUPreviewClient{}).NewListPager,
+			NewFunc: armhybridnetwork.NewVendorSKUPreviewClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.HybridNetwork/vendors/{vendorName}/vendorSkus/{skuName}/previewSubscriptions",
+		},
+		{
+      Name: "vendor_sku",
+      Struct: &armhybridnetwork.VendorSKU{},
+      ResponseStruct: &armhybridnetwork.VendorSKUsClientListResponse{},
+      Client: &armhybridnetwork.VendorSKUsClient{},
+      ListFunc: (&armhybridnetwork.VendorSKUsClient{}).NewListPager,
+			NewFunc: armhybridnetwork.NewVendorSKUsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.HybridNetwork/vendors/{vendorName}/vendorSkus",
 		},
 	}
 

@@ -6,32 +6,34 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcontainerser
 func Armhybridcontainerservice() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armhybridcontainerservice.NewClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcontainerservice/armhybridcontainerservice",
-		},
-		{
-			NewFunc: armhybridcontainerservice.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcontainerservice/armhybridcontainerservice",
-		},
-		{
-			NewFunc: armhybridcontainerservice.NewProvisionedClustersClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcontainerservice/armhybridcontainerservice",
-		},
-		{
-			NewFunc: armhybridcontainerservice.NewStorageSpacesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcontainerservice/armhybridcontainerservice",
-		},
-		{
 			NewFunc: armhybridcontainerservice.NewAgentPoolClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcontainerservice/armhybridcontainerservice",
+			URL: "",
+		},
+		{
+			NewFunc: armhybridcontainerservice.NewClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcontainerservice/armhybridcontainerservice",
+			URL: "",
 		},
 		{
 			NewFunc: armhybridcontainerservice.NewHybridIdentityMetadataClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcontainerservice/armhybridcontainerservice",
+			URL: "",
+		},
+		{
+			NewFunc: armhybridcontainerservice.NewProvisionedClustersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcontainerservice/armhybridcontainerservice",
+			URL: "",
+		},
+		{
+			NewFunc: armhybridcontainerservice.NewStorageSpacesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcontainerservice/armhybridcontainerservice",
+			URL: "",
 		},
 		{
 			NewFunc: armhybridcontainerservice.NewVirtualNetworksClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcontainerservice/armhybridcontainerservice",
+			URL: "",
 		},
 	}
 	return resources

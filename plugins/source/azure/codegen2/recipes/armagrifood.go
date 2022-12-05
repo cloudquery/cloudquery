@@ -6,20 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/agrifood/armagrifo
 func Armagrifood() []Table {
 	tables := []Table{
 		{
-      Name: "operation",
-      Struct: &armagrifood.Operation{},
-      ResponseStruct: &armagrifood.OperationsClientListResponse{},
-      Client: &armagrifood.OperationsClient{},
-      ListFunc: (&armagrifood.OperationsClient{}).NewListPager,
-			NewFunc: armagrifood.NewOperationsClient,
-		},
-		{
       Name: "farm_beats_extension",
       Struct: &armagrifood.FarmBeatsExtension{},
       ResponseStruct: &armagrifood.FarmBeatsExtensionsClientListResponse{},
       Client: &armagrifood.FarmBeatsExtensionsClient{},
       ListFunc: (&armagrifood.FarmBeatsExtensionsClient{}).NewListPager,
 			NewFunc: armagrifood.NewFarmBeatsExtensionsClient,
+			URL: "/providers/Microsoft.AgFoodPlatform/farmBeatsExtensionDefinitions",
 		},
 	}
 

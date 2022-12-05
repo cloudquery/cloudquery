@@ -6,12 +6,14 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/commerce/armcommer
 func Armcommerce() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armcommerce.NewUsageAggregatesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/commerce/armcommerce",
-		},
-		{
 			NewFunc: armcommerce.NewRateCardClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/commerce/armcommerce",
+			URL: "",
+		},
+		{
+			NewFunc: armcommerce.NewUsageAggregatesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/commerce/armcommerce",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Commerce/UsageAggregates",
 		},
 	}
 	return resources

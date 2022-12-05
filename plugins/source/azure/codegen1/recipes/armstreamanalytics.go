@@ -8,38 +8,42 @@ func Armstreamanalytics() []*Resource {
 		{
 			NewFunc: armstreamanalytics.NewClustersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics",
+			URL: "",
 		},
 		{
 			NewFunc: armstreamanalytics.NewFunctionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics",
-		},
-		{
-			NewFunc: armstreamanalytics.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics",
-		},
-		{
-			NewFunc: armstreamanalytics.NewStreamingJobsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics",
-		},
-		{
-			NewFunc: armstreamanalytics.NewSubscriptionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics",
+			URL: "",
 		},
 		{
 			NewFunc: armstreamanalytics.NewInputsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics",
-		},
-		{
-			NewFunc: armstreamanalytics.NewTransformationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics",
+			URL: "",
 		},
 		{
 			NewFunc: armstreamanalytics.NewOutputsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics",
+			URL: "",
 		},
 		{
 			NewFunc: armstreamanalytics.NewPrivateEndpointsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics",
+			URL: "",
+		},
+		{
+			NewFunc: armstreamanalytics.NewStreamingJobsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.StreamAnalytics/streamingjobs",
+		},
+		{
+			NewFunc: armstreamanalytics.NewSubscriptionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics",
+			URL: "",
+		},
+		{
+			NewFunc: armstreamanalytics.NewTransformationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics",
+			URL: "",
 		},
 	}
 	return resources

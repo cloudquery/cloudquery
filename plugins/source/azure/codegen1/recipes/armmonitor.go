@@ -8,118 +8,142 @@ func Armmonitor() []*Resource {
 		{
 			NewFunc: armmonitor.NewActionGroupsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
-		},
-		{
-			NewFunc: armmonitor.NewAlertRuleIncidentsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
-		},
-		{
-			NewFunc: armmonitor.NewAlertRulesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
-		},
-		{
-			NewFunc: armmonitor.NewDataCollectionEndpointsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
-		},
-		{
-			NewFunc: armmonitor.NewMetricsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
-		},
-		{
-			NewFunc: armmonitor.NewPrivateLinkScopedResourcesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
-		},
-		{
-			NewFunc: armmonitor.NewDiagnosticSettingsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
-		},
-		{
-			NewFunc: armmonitor.NewDiagnosticSettingsCategoryClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
-		},
-		{
-			NewFunc: armmonitor.NewPrivateLinkScopesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
-		},
-		{
-			NewFunc: armmonitor.NewPredictiveMetricClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
-		},
-		{
-			NewFunc: armmonitor.NewActivityLogsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
-		},
-		{
-			NewFunc: armmonitor.NewPrivateLinkScopeOperationStatusClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
-		},
-		{
-			NewFunc: armmonitor.NewBaselinesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
-		},
-		{
-			NewFunc: armmonitor.NewMetricDefinitionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
-		},
-		{
-			NewFunc: armmonitor.NewPrivateLinkResourcesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
-		},
-		{
-			NewFunc: armmonitor.NewTenantActivityLogsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
-		},
-		{
-			NewFunc: armmonitor.NewDataCollectionRuleAssociationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
-		},
-		{
-			NewFunc: armmonitor.NewEventCategoriesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
-		},
-		{
-			NewFunc: armmonitor.NewMetricAlertsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
-		},
-		{
-			NewFunc: armmonitor.NewMetricNamespacesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
-		},
-		{
-			NewFunc: armmonitor.NewPrivateEndpointConnectionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
-		},
-		{
-			NewFunc: armmonitor.NewVMInsightsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
+			URL: "",
 		},
 		{
 			NewFunc: armmonitor.NewActivityLogAlertsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
+			URL: "",
+		},
+		{
+			NewFunc: armmonitor.NewActivityLogsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/eventtypes/management/values",
+		},
+		{
+			NewFunc: armmonitor.NewAlertRuleIncidentsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
+			URL: "",
+		},
+		{
+			NewFunc: armmonitor.NewAlertRulesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
+			URL: "",
 		},
 		{
 			NewFunc: armmonitor.NewAutoscaleSettingsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
+			URL: "",
 		},
 		{
-			NewFunc: armmonitor.NewScheduledQueryRulesClient,
+			NewFunc: armmonitor.NewBaselinesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
+			URL: "/{resourceUri}/providers/Microsoft.Insights/metricBaselines",
+		},
+		{
+			NewFunc: armmonitor.NewDataCollectionEndpointsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
+			URL: "",
+		},
+		{
+			NewFunc: armmonitor.NewDataCollectionRuleAssociationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
+			URL: "",
 		},
 		{
 			NewFunc: armmonitor.NewDataCollectionRulesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
+			URL: "",
+		},
+		{
+			NewFunc: armmonitor.NewDiagnosticSettingsCategoryClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
+			URL: "/{resourceUri}/providers/Microsoft.Insights/diagnosticSettingsCategories",
+		},
+		{
+			NewFunc: armmonitor.NewDiagnosticSettingsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
+			URL: "/{resourceUri}/providers/Microsoft.Insights/diagnosticSettings",
+		},
+		{
+			NewFunc: armmonitor.NewEventCategoriesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
+			URL: "/providers/Microsoft.Insights/eventcategories",
 		},
 		{
 			NewFunc: armmonitor.NewLogProfilesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/logprofiles",
+		},
+		{
+			NewFunc: armmonitor.NewMetricAlertsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
+			URL: "",
 		},
 		{
 			NewFunc: armmonitor.NewMetricAlertsStatusClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/metricAlerts/{ruleName}/status",
 		},
 		{
-			NewFunc: armmonitor.NewOperationsClient,
+			NewFunc: armmonitor.NewMetricDefinitionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
+			URL: "/{resourceUri}/providers/Microsoft.Insights/metricDefinitions",
+		},
+		{
+			NewFunc: armmonitor.NewMetricNamespacesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
+			URL: "/{resourceUri}/providers/microsoft.insights/metricNamespaces",
+		},
+		{
+			NewFunc: armmonitor.NewMetricsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
+			URL: "/{resourceUri}/providers/Microsoft.Insights/metrics",
+		},
+		{
+			NewFunc: armmonitor.NewPredictiveMetricClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
+			URL: "",
+		},
+		{
+			NewFunc: armmonitor.NewPrivateEndpointConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
+			URL: "",
+		},
+		{
+			NewFunc: armmonitor.NewPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
+			URL: "",
+		},
+		{
+			NewFunc: armmonitor.NewPrivateLinkScopeOperationStatusClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
+			URL: "",
+		},
+		{
+			NewFunc: armmonitor.NewPrivateLinkScopedResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
+			URL: "",
+		},
+		{
+			NewFunc: armmonitor.NewPrivateLinkScopesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
+			URL: "/subscriptions/{subscriptionId}/providers/microsoft.insights/privateLinkScopes",
+		},
+		{
+			NewFunc: armmonitor.NewScheduledQueryRulesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
+			URL: "",
+		},
+		{
+			NewFunc: armmonitor.NewTenantActivityLogsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
+			URL: "/providers/Microsoft.Insights/eventtypes/management/values",
+		},
+		{
+			NewFunc: armmonitor.NewVMInsightsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
+			URL: "",
 		},
 	}
 	return resources

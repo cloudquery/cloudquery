@@ -6,16 +6,14 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/changeanalysis/arm
 func Armchangeanalysis() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armchangeanalysis.NewResourceChangesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/changeanalysis/armchangeanalysis",
-		},
-		{
-			NewFunc: armchangeanalysis.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/changeanalysis/armchangeanalysis",
-		},
-		{
 			NewFunc: armchangeanalysis.NewChangesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/changeanalysis/armchangeanalysis",
+			URL: "",
+		},
+		{
+			NewFunc: armchangeanalysis.NewResourceChangesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/changeanalysis/armchangeanalysis",
+			URL: "/{resourceId}/providers/Microsoft.ChangeAnalysis/resourceChanges",
 		},
 	}
 	return resources

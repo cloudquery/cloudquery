@@ -6,80 +6,94 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic
 func Armelastic() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armelastic.NewDetachTrafficFilterClient,
+			NewFunc: armelastic.NewAllTrafficFiltersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic",
-		},
-		{
-			NewFunc: armelastic.NewMonitorClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic",
-		},
-		{
-			NewFunc: armelastic.NewTagRulesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/listAllTrafficFilters",
 		},
 		{
 			NewFunc: armelastic.NewAssociateTrafficFilterClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic",
+			URL: "",
 		},
 		{
 			NewFunc: armelastic.NewCreateAndAssociateIPFilterClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic",
-		},
-		{
-			NewFunc: armelastic.NewDetachAndDeleteTrafficFilterClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic",
-		},
-		{
-			NewFunc: armelastic.NewVMCollectionClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic",
-		},
-		{
-			NewFunc: armelastic.NewTrafficFiltersClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic",
-		},
-		{
-			NewFunc: armelastic.NewAllTrafficFiltersClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic",
+			URL: "",
 		},
 		{
 			NewFunc: armelastic.NewCreateAndAssociatePLFilterClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic",
+			URL: "",
 		},
 		{
 			NewFunc: armelastic.NewDeploymentInfoClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/listDeploymentInfo",
+		},
+		{
+			NewFunc: armelastic.NewDetachAndDeleteTrafficFilterClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic",
+			URL: "",
+		},
+		{
+			NewFunc: armelastic.NewDetachTrafficFilterClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic",
+			URL: "",
 		},
 		{
 			NewFunc: armelastic.NewExternalUserClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic",
-		},
-		{
-			NewFunc: armelastic.NewVMIngestionClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic",
-		},
-		{
-			NewFunc: armelastic.NewUpgradableVersionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic",
-		},
-		{
-			NewFunc: armelastic.NewVMHostClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic",
+			URL: "",
 		},
 		{
 			NewFunc: armelastic.NewListAssociatedTrafficFiltersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/listAssociatedTrafficFilters",
+		},
+		{
+			NewFunc: armelastic.NewMonitorClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic",
+			URL: "",
 		},
 		{
 			NewFunc: armelastic.NewMonitoredResourcesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/listMonitoredResources",
 		},
 		{
 			NewFunc: armelastic.NewMonitorsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Elastic/monitors",
 		},
 		{
-			NewFunc: armelastic.NewOperationsClient,
+			NewFunc: armelastic.NewTagRulesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/tagRules",
+		},
+		{
+			NewFunc: armelastic.NewTrafficFiltersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic",
+			URL: "",
+		},
+		{
+			NewFunc: armelastic.NewUpgradableVersionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic",
+			URL: "",
+		},
+		{
+			NewFunc: armelastic.NewVMCollectionClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic",
+			URL: "",
+		},
+		{
+			NewFunc: armelastic.NewVMHostClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/listVMHost",
+		},
+		{
+			NewFunc: armelastic.NewVMIngestionClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic",
+			URL: "",
 		},
 	}
 	return resources

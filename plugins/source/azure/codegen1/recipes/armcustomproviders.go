@@ -6,16 +6,14 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customproviders/ar
 func Armcustomproviders() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armcustomproviders.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customproviders/armcustomproviders",
-		},
-		{
 			NewFunc: armcustomproviders.NewAssociationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customproviders/armcustomproviders",
+			URL: "",
 		},
 		{
 			NewFunc: armcustomproviders.NewCustomResourceProviderClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customproviders/armcustomproviders",
+			URL: "",
 		},
 	}
 	return resources

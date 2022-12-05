@@ -8,14 +8,17 @@ func Armdns() []*Resource {
 		{
 			NewFunc: armdns.NewRecordSetsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dns/armdns",
+			URL: "",
 		},
 		{
 			NewFunc: armdns.NewResourceReferenceClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dns/armdns",
+			URL: "",
 		},
 		{
 			NewFunc: armdns.NewZonesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dns/armdns",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/dnszones",
 		},
 	}
 	return resources

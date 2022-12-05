@@ -6,12 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsight
 func Armapplicationinsights() []Table {
 	tables := []Table{
 		{
-      Name: "web_test",
-      Struct: &armapplicationinsights.WebTest{},
-      ResponseStruct: &armapplicationinsights.WebTestsClientListResponse{},
-      Client: &armapplicationinsights.WebTestsClient{},
-      ListFunc: (&armapplicationinsights.WebTestsClient{}).NewListPager,
-			NewFunc: armapplicationinsights.NewWebTestsClient,
+      Name: "component_api_key",
+      Struct: &armapplicationinsights.ComponentAPIKey{},
+      ResponseStruct: &armapplicationinsights.APIKeysClientListResponse{},
+      Client: &armapplicationinsights.APIKeysClient{},
+      ListFunc: (&armapplicationinsights.APIKeysClient{}).NewListPager,
+			NewFunc: armapplicationinsights.NewAPIKeysClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/ApiKeys",
 		},
 		{
       Name: "annotation",
@@ -20,14 +21,7 @@ func Armapplicationinsights() []Table {
       Client: &armapplicationinsights.AnnotationsClient{},
       ListFunc: (&armapplicationinsights.AnnotationsClient{}).NewListPager,
 			NewFunc: armapplicationinsights.NewAnnotationsClient,
-		},
-		{
-      Name: "component_api_key",
-      Struct: &armapplicationinsights.ComponentAPIKey{},
-      ResponseStruct: &armapplicationinsights.APIKeysClientListResponse{},
-      Client: &armapplicationinsights.APIKeysClient{},
-      ListFunc: (&armapplicationinsights.APIKeysClient{}).NewListPager,
-			NewFunc: armapplicationinsights.NewAPIKeysClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/Annotations",
 		},
 		{
       Name: "component",
@@ -36,6 +30,7 @@ func Armapplicationinsights() []Table {
       Client: &armapplicationinsights.ComponentsClient{},
       ListFunc: (&armapplicationinsights.ComponentsClient{}).NewListPager,
 			NewFunc: armapplicationinsights.NewComponentsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/components",
 		},
 		{
       Name: "component_web_test_location",
@@ -44,6 +39,16 @@ func Armapplicationinsights() []Table {
       Client: &armapplicationinsights.WebTestLocationsClient{},
       ListFunc: (&armapplicationinsights.WebTestLocationsClient{}).NewListPager,
 			NewFunc: armapplicationinsights.NewWebTestLocationsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/syntheticmonitorlocations",
+		},
+		{
+      Name: "web_test",
+      Struct: &armapplicationinsights.WebTest{},
+      ResponseStruct: &armapplicationinsights.WebTestsClientListResponse{},
+      Client: &armapplicationinsights.WebTestsClient{},
+      ListFunc: (&armapplicationinsights.WebTestsClient{}).NewListPager,
+			NewFunc: armapplicationinsights.NewWebTestsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/webtests",
 		},
 		{
       Name: "work_item_configuration",
@@ -52,6 +57,7 @@ func Armapplicationinsights() []Table {
       Client: &armapplicationinsights.WorkItemConfigurationsClient{},
       ListFunc: (&armapplicationinsights.WorkItemConfigurationsClient{}).NewListPager,
 			NewFunc: armapplicationinsights.NewWorkItemConfigurationsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/WorkItemConfigs",
 		},
 	}
 

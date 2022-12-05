@@ -6,16 +6,14 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbidedicated/a
 func Armpowerbidedicated() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armpowerbidedicated.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbidedicated/armpowerbidedicated",
-		},
-		{
 			NewFunc: armpowerbidedicated.NewAutoScaleVCoresClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbidedicated/armpowerbidedicated",
+			URL: "",
 		},
 		{
 			NewFunc: armpowerbidedicated.NewCapacitiesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbidedicated/armpowerbidedicated",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.PowerBIDedicated/capacities",
 		},
 	}
 	return resources

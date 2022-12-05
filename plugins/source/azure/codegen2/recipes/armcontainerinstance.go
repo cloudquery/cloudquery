@@ -12,14 +12,7 @@ func Armcontainerinstance() []Table {
       Client: &armcontainerinstance.ContainerGroupsClient{},
       ListFunc: (&armcontainerinstance.ContainerGroupsClient{}).NewListPager,
 			NewFunc: armcontainerinstance.NewContainerGroupsClient,
-		},
-		{
-      Name: "operation",
-      Struct: &armcontainerinstance.Operation{},
-      ResponseStruct: &armcontainerinstance.OperationsClientListResponse{},
-      Client: &armcontainerinstance.OperationsClient{},
-      ListFunc: (&armcontainerinstance.OperationsClient{}).NewListPager,
-			NewFunc: armcontainerinstance.NewOperationsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/containerGroups",
 		},
 	}
 

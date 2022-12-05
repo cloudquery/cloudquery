@@ -8,6 +8,7 @@ func Armresourceconnector() []*Resource {
 		{
 			NewFunc: armresourceconnector.NewAppliancesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourceconnector/armresourceconnector",
+			URL: "",
 		},
 	}
 	return resources

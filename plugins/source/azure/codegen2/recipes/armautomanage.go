@@ -12,14 +12,7 @@ func Armautomanage() []Table {
       Client: &armautomanage.ConfigurationProfileAssignmentsClient{},
       ListFunc: (&armautomanage.ConfigurationProfileAssignmentsClient{}).NewListPager,
 			NewFunc: armautomanage.NewConfigurationProfileAssignmentsClient,
-		},
-		{
-      Name: "operation",
-      Struct: &armautomanage.Operation{},
-      ResponseStruct: &armautomanage.OperationsClientListResponse{},
-      Client: &armautomanage.OperationsClient{},
-      ListFunc: (&armautomanage.OperationsClient{}).NewListPager,
-			NewFunc: armautomanage.NewOperationsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automanage/configurationProfileAssignments",
 		},
 	}
 

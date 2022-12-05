@@ -8,30 +8,32 @@ func Armiothub() []*Resource {
 		{
 			NewFunc: armiothub.NewCertificatesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iothub/armiothub",
-		},
-		{
-			NewFunc: armiothub.NewResourceClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iothub/armiothub",
-		},
-		{
-			NewFunc: armiothub.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iothub/armiothub",
+			URL: "",
 		},
 		{
 			NewFunc: armiothub.NewClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iothub/armiothub",
+			URL: "",
 		},
 		{
 			NewFunc: armiothub.NewPrivateEndpointConnectionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iothub/armiothub",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/iotHubs/{resourceName}/privateEndpointConnections",
 		},
 		{
 			NewFunc: armiothub.NewPrivateLinkResourcesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iothub/armiothub",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/iotHubs/{resourceName}/privateLinkResources",
+		},
+		{
+			NewFunc: armiothub.NewResourceClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iothub/armiothub",
+			URL: "",
 		},
 		{
 			NewFunc: armiothub.NewResourceProviderCommonClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iothub/armiothub",
+			URL: "",
 		},
 	}
 	return resources

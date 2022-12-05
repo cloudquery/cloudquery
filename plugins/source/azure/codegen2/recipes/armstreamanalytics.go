@@ -6,20 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/ar
 func Armstreamanalytics() []Table {
 	tables := []Table{
 		{
-      Name: "operation",
-      Struct: &armstreamanalytics.Operation{},
-      ResponseStruct: &armstreamanalytics.OperationsClientListResponse{},
-      Client: &armstreamanalytics.OperationsClient{},
-      ListFunc: (&armstreamanalytics.OperationsClient{}).NewListPager,
-			NewFunc: armstreamanalytics.NewOperationsClient,
-		},
-		{
       Name: "streaming_job",
       Struct: &armstreamanalytics.StreamingJob{},
       ResponseStruct: &armstreamanalytics.StreamingJobsClientListResponse{},
       Client: &armstreamanalytics.StreamingJobsClient{},
       ListFunc: (&armstreamanalytics.StreamingJobsClient{}).NewListPager,
 			NewFunc: armstreamanalytics.NewStreamingJobsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.StreamAnalytics/streamingjobs",
 		},
 	}
 

@@ -6,32 +6,34 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/arms
 func Armservicefabric() []*Resource {
 	resources := []*Resource{
 		{
+			NewFunc: armservicefabric.NewApplicationTypeVersionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/armservicefabric",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applicationTypes/{applicationTypeName}/versions",
+		},
+		{
 			NewFunc: armservicefabric.NewApplicationTypesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/armservicefabric",
-		},
-		{
-			NewFunc: armservicefabric.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/armservicefabric",
-		},
-		{
-			NewFunc: armservicefabric.NewClusterVersionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/armservicefabric",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applicationTypes",
 		},
 		{
 			NewFunc: armservicefabric.NewApplicationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/armservicefabric",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applications",
 		},
 		{
-			NewFunc: armservicefabric.NewApplicationTypeVersionsClient,
+			NewFunc: armservicefabric.NewClusterVersionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/armservicefabric",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ServiceFabric/locations/{location}/clusterVersions",
 		},
 		{
 			NewFunc: armservicefabric.NewClustersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/armservicefabric",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ServiceFabric/clusters",
 		},
 		{
 			NewFunc: armservicefabric.NewServicesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/armservicefabric",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applications/{applicationName}/services",
 		},
 	}
 	return resources

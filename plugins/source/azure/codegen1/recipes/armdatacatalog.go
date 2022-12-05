@@ -8,10 +8,12 @@ func Armdatacatalog() []*Resource {
 		{
 			NewFunc: armdatacatalog.NewADCCatalogsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datacatalog/armdatacatalog",
+			URL: "",
 		},
 		{
 			NewFunc: armdatacatalog.NewADCOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datacatalog/armdatacatalog",
+			URL: "/providers/Microsoft.DataCatalog/operations",
 		},
 	}
 	return resources

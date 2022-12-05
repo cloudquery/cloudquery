@@ -6,52 +6,59 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/migrate/armmigrate
 func Armmigrate() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armmigrate.NewOperationsClient,
+			NewFunc: armmigrate.NewAssessedMachinesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/migrate/armmigrate",
-		},
-		{
-			NewFunc: armmigrate.NewGroupsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/migrate/armmigrate",
-		},
-		{
-			NewFunc: armmigrate.NewMachinesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/migrate/armmigrate",
-		},
-		{
-			NewFunc: armmigrate.NewPrivateEndpointConnectionClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/migrate/armmigrate",
-		},
-		{
-			NewFunc: armmigrate.NewPrivateLinkResourceClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/migrate/armmigrate",
+			URL: "",
 		},
 		{
 			NewFunc: armmigrate.NewAssessmentsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/migrate/armmigrate",
+			URL: "",
 		},
 		{
-			NewFunc: armmigrate.NewImportCollectorsClient,
+			NewFunc: armmigrate.NewGroupsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/migrate/armmigrate",
+			URL: "",
 		},
 		{
 			NewFunc: armmigrate.NewHyperVCollectorsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/migrate/armmigrate",
+			URL: "",
 		},
 		{
-			NewFunc: armmigrate.NewServerCollectorsClient,
+			NewFunc: armmigrate.NewImportCollectorsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/migrate/armmigrate",
+			URL: "",
 		},
 		{
-			NewFunc: armmigrate.NewAssessedMachinesClient,
+			NewFunc: armmigrate.NewMachinesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/migrate/armmigrate",
+			URL: "",
+		},
+		{
+			NewFunc: armmigrate.NewPrivateEndpointConnectionClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/migrate/armmigrate",
+			URL: "",
+		},
+		{
+			NewFunc: armmigrate.NewPrivateLinkResourceClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/migrate/armmigrate",
+			URL: "",
 		},
 		{
 			NewFunc: armmigrate.NewProjectsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/migrate/armmigrate",
+			URL: "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Migrate/assessmentProjects",
+		},
+		{
+			NewFunc: armmigrate.NewServerCollectorsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/migrate/armmigrate",
+			URL: "",
 		},
 		{
 			NewFunc: armmigrate.NewVMwareCollectorsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/migrate/armmigrate",
+			URL: "",
 		},
 	}
 	return resources

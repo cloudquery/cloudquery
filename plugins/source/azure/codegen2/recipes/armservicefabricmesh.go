@@ -6,12 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabricmesh/
 func Armservicefabricmesh() []Table {
 	tables := []Table{
 		{
-      Name: "service_replica_description",
-      Struct: &armservicefabricmesh.ServiceReplicaDescription{},
-      ResponseStruct: &armservicefabricmesh.ServiceReplicaClientListResponse{},
-      Client: &armservicefabricmesh.ServiceReplicaClient{},
-      ListFunc: (&armservicefabricmesh.ServiceReplicaClient{}).NewListPager,
-			NewFunc: armservicefabricmesh.NewServiceReplicaClient,
+      Name: "secret_value_resource_description",
+      Struct: &armservicefabricmesh.SecretValueResourceDescription{},
+      ResponseStruct: &armservicefabricmesh.SecretValueClientListResponse{},
+      Client: &armservicefabricmesh.SecretValueClient{},
+      ListFunc: (&armservicefabricmesh.SecretValueClient{}).NewListPager,
+			NewFunc: armservicefabricmesh.NewSecretValueClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabricMesh/secrets/{secretResourceName}/values",
 		},
 		{
       Name: "service_resource_description",
@@ -20,22 +21,16 @@ func Armservicefabricmesh() []Table {
       Client: &armservicefabricmesh.ServiceClient{},
       ListFunc: (&armservicefabricmesh.ServiceClient{}).NewListPager,
 			NewFunc: armservicefabricmesh.NewServiceClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabricMesh/applications/{applicationResourceName}/services",
 		},
 		{
-      Name: "operation_result",
-      Struct: &armservicefabricmesh.OperationResult{},
-      ResponseStruct: &armservicefabricmesh.OperationsClientListResponse{},
-      Client: &armservicefabricmesh.OperationsClient{},
-      ListFunc: (&armservicefabricmesh.OperationsClient{}).NewListPager,
-			NewFunc: armservicefabricmesh.NewOperationsClient,
-		},
-		{
-      Name: "secret_value_resource_description",
-      Struct: &armservicefabricmesh.SecretValueResourceDescription{},
-      ResponseStruct: &armservicefabricmesh.SecretValueClientListResponse{},
-      Client: &armservicefabricmesh.SecretValueClient{},
-      ListFunc: (&armservicefabricmesh.SecretValueClient{}).NewListPager,
-			NewFunc: armservicefabricmesh.NewSecretValueClient,
+      Name: "service_replica_description",
+      Struct: &armservicefabricmesh.ServiceReplicaDescription{},
+      ResponseStruct: &armservicefabricmesh.ServiceReplicaClientListResponse{},
+      Client: &armservicefabricmesh.ServiceReplicaClient{},
+      ListFunc: (&armservicefabricmesh.ServiceReplicaClient{}).NewListPager,
+			NewFunc: armservicefabricmesh.NewServiceReplicaClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabricMesh/applications/{applicationResourceName}/services/{serviceResourceName}/replicas",
 		},
 	}
 

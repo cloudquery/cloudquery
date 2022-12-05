@@ -6,12 +6,22 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/a
 func Armcontainerservice() []Table {
 	tables := []Table{
 		{
+      Name: "agent_pool",
+      Struct: &armcontainerservice.AgentPool{},
+      ResponseStruct: &armcontainerservice.AgentPoolsClientListResponse{},
+      Client: &armcontainerservice.AgentPoolsClient{},
+      ListFunc: (&armcontainerservice.AgentPoolsClient{}).NewListPager,
+			NewFunc: armcontainerservice.NewAgentPoolsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools",
+		},
+		{
       Name: "managed_cluster",
       Struct: &armcontainerservice.ManagedCluster{},
       ResponseStruct: &armcontainerservice.ManagedClustersClientListResponse{},
       Client: &armcontainerservice.ManagedClustersClient{},
       ListFunc: (&armcontainerservice.ManagedClustersClient{}).NewListPager,
 			NewFunc: armcontainerservice.NewManagedClustersClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/managedClusters",
 		},
 		{
       Name: "snapshot",
@@ -20,22 +30,7 @@ func Armcontainerservice() []Table {
       Client: &armcontainerservice.SnapshotsClient{},
       ListFunc: (&armcontainerservice.SnapshotsClient{}).NewListPager,
 			NewFunc: armcontainerservice.NewSnapshotsClient,
-		},
-		{
-      Name: "agent_pool",
-      Struct: &armcontainerservice.AgentPool{},
-      ResponseStruct: &armcontainerservice.AgentPoolsClientListResponse{},
-      Client: &armcontainerservice.AgentPoolsClient{},
-      ListFunc: (&armcontainerservice.AgentPoolsClient{}).NewListPager,
-			NewFunc: armcontainerservice.NewAgentPoolsClient,
-		},
-		{
-      Name: "operation_value",
-      Struct: &armcontainerservice.OperationValue{},
-      ResponseStruct: &armcontainerservice.OperationsClientListResponse{},
-      Client: &armcontainerservice.OperationsClient{},
-      ListFunc: (&armcontainerservice.OperationsClient{}).NewListPager,
-			NewFunc: armcontainerservice.NewOperationsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/snapshots",
 		},
 	}
 

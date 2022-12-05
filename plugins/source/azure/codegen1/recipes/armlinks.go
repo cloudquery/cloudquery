@@ -8,10 +8,7 @@ func Armlinks() []*Resource {
 		{
 			NewFunc: armlinks.NewResourceLinksClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armlinks",
-		},
-		{
-			NewFunc: armlinks.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armlinks",
+			URL: "",
 		},
 	}
 	return resources

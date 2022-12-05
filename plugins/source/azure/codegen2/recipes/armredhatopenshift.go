@@ -12,14 +12,7 @@ func Armredhatopenshift() []Table {
       Client: &armredhatopenshift.OpenShiftClustersClient{},
       ListFunc: (&armredhatopenshift.OpenShiftClustersClient{}).NewListPager,
 			NewFunc: armredhatopenshift.NewOpenShiftClustersClient,
-		},
-		{
-      Name: "operation",
-      Struct: &armredhatopenshift.Operation{},
-      ResponseStruct: &armredhatopenshift.OperationsClientListResponse{},
-      Client: &armredhatopenshift.OperationsClient{},
-      ListFunc: (&armredhatopenshift.OperationsClient{}).NewListPager,
-			NewFunc: armredhatopenshift.NewOperationsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.RedHatOpenShift/openShiftClusters",
 		},
 	}
 

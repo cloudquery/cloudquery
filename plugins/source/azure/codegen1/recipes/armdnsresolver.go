@@ -8,26 +8,32 @@ func Armdnsresolver() []*Resource {
 		{
 			NewFunc: armdnsresolver.NewDNSForwardingRulesetsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdnsresolver",
-		},
-		{
-			NewFunc: armdnsresolver.NewInboundEndpointsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdnsresolver",
-		},
-		{
-			NewFunc: armdnsresolver.NewOutboundEndpointsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdnsresolver",
-		},
-		{
-			NewFunc: armdnsresolver.NewVirtualNetworkLinksClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdnsresolver",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/dnsForwardingRulesets",
 		},
 		{
 			NewFunc: armdnsresolver.NewDNSResolversClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdnsresolver",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/dnsResolvers",
 		},
 		{
 			NewFunc: armdnsresolver.NewForwardingRulesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdnsresolver",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsForwardingRulesets/{dnsForwardingRulesetName}/forwardingRules",
+		},
+		{
+			NewFunc: armdnsresolver.NewInboundEndpointsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdnsresolver",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolvers/{dnsResolverName}/inboundEndpoints",
+		},
+		{
+			NewFunc: armdnsresolver.NewOutboundEndpointsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdnsresolver",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolvers/{dnsResolverName}/outboundEndpoints",
+		},
+		{
+			NewFunc: armdnsresolver.NewVirtualNetworkLinksClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdnsresolver",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsForwardingRulesets/{dnsForwardingRulesetName}/virtualNetworkLinks",
 		},
 	}
 	return resources

@@ -6,28 +6,22 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/a
 func Armrecoveryservices() []Table {
 	tables := []Table{
 		{
-      Name: "replication_usage",
-      Struct: &armrecoveryservices.ReplicationUsage{},
-      ResponseStruct: &armrecoveryservices.ReplicationUsagesClientListResponse{},
-      Client: &armrecoveryservices.ReplicationUsagesClient{},
-      ListFunc: (&armrecoveryservices.ReplicationUsagesClient{}).NewListPager,
-			NewFunc: armrecoveryservices.NewReplicationUsagesClient,
-		},
-		{
-      Name: "client_discovery_value_for_single_api",
-      Struct: &armrecoveryservices.ClientDiscoveryValueForSingleAPI{},
-      ResponseStruct: &armrecoveryservices.OperationsClientListResponse{},
-      Client: &armrecoveryservices.OperationsClient{},
-      ListFunc: (&armrecoveryservices.OperationsClient{}).NewListPager,
-			NewFunc: armrecoveryservices.NewOperationsClient,
-		},
-		{
       Name: "private_link_resource",
       Struct: &armrecoveryservices.PrivateLinkResource{},
       ResponseStruct: &armrecoveryservices.PrivateLinkResourcesClientListResponse{},
       Client: &armrecoveryservices.PrivateLinkResourcesClient{},
       ListFunc: (&armrecoveryservices.PrivateLinkResourcesClient{}).NewListPager,
 			NewFunc: armrecoveryservices.NewPrivateLinkResourcesClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/privateLinkResources",
+		},
+		{
+      Name: "replication_usage",
+      Struct: &armrecoveryservices.ReplicationUsage{},
+      ResponseStruct: &armrecoveryservices.ReplicationUsagesClientListResponse{},
+      Client: &armrecoveryservices.ReplicationUsagesClient{},
+      ListFunc: (&armrecoveryservices.ReplicationUsagesClient{}).NewListPager,
+			NewFunc: armrecoveryservices.NewReplicationUsagesClient,
+			URL: "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/replicationUsages",
 		},
 	}
 

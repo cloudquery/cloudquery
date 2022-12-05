@@ -12,14 +12,7 @@ func Armdatafactory() []Table {
       Client: &armdatafactory.FactoriesClient{},
       ListFunc: (&armdatafactory.FactoriesClient{}).NewListPager,
 			NewFunc: armdatafactory.NewFactoriesClient,
-		},
-		{
-      Name: "operation",
-      Struct: &armdatafactory.Operation{},
-      ResponseStruct: &armdatafactory.OperationsClientListResponse{},
-      Client: &armdatafactory.OperationsClient{},
-      ListFunc: (&armdatafactory.OperationsClient{}).NewListPager,
-			NewFunc: armdatafactory.NewOperationsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DataFactory/factories",
 		},
 	}
 

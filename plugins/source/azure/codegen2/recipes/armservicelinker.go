@@ -6,20 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicelinker/arms
 func Armservicelinker() []Table {
 	tables := []Table{
 		{
-      Name: "operation",
-      Struct: &armservicelinker.Operation{},
-      ResponseStruct: &armservicelinker.OperationsClientListResponse{},
-      Client: &armservicelinker.OperationsClient{},
-      ListFunc: (&armservicelinker.OperationsClient{}).NewListPager,
-			NewFunc: armservicelinker.NewOperationsClient,
-		},
-		{
       Name: "linker_resource",
       Struct: &armservicelinker.LinkerResource{},
       ResponseStruct: &armservicelinker.LinkerClientListResponse{},
       Client: &armservicelinker.LinkerClient{},
       ListFunc: (&armservicelinker.LinkerClient{}).NewListPager,
 			NewFunc: armservicelinker.NewLinkerClient,
+			URL: "/{resourceUri}/providers/Microsoft.ServiceLinker/linkers",
 		},
 	}
 

@@ -6,28 +6,29 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armaz
 func Armazurearcdata() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armazurearcdata.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata",
-		},
-		{
-			NewFunc: armazurearcdata.NewPostgresInstancesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata",
-		},
-		{
 			NewFunc: armazurearcdata.NewActiveDirectoryConnectorsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/dataControllers/{dataControllerName}/activeDirectoryConnectors",
 		},
 		{
 			NewFunc: armazurearcdata.NewDataControllersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata",
+			URL: "",
 		},
 		{
-			NewFunc: armazurearcdata.NewSQLServerInstancesClient,
+			NewFunc: armazurearcdata.NewPostgresInstancesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/postgresInstances",
 		},
 		{
 			NewFunc: armazurearcdata.NewSQLManagedInstancesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/sqlManagedInstances",
+		},
+		{
+			NewFunc: armazurearcdata.NewSQLServerInstancesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/sqlServerInstances",
 		},
 	}
 	return resources

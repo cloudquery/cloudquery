@@ -6,24 +6,24 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelas
 func Armelasticsan() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armelasticsan.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelasticsan",
-		},
-		{
-			NewFunc: armelasticsan.NewVolumeGroupsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelasticsan",
-		},
-		{
-			NewFunc: armelasticsan.NewVolumesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelasticsan",
-		},
-		{
 			NewFunc: armelasticsan.NewElasticSansClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelasticsan",
+			URL: "",
 		},
 		{
 			NewFunc: armelasticsan.NewSKUsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelasticsan",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ElasticSan/skus",
+		},
+		{
+			NewFunc: armelasticsan.NewVolumeGroupsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelasticsan",
+			URL: "",
+		},
+		{
+			NewFunc: armelasticsan.NewVolumesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelasticsan",
+			URL: "",
 		},
 	}
 	return resources

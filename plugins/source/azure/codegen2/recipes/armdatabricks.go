@@ -6,28 +6,22 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databricks/armdata
 func Armdatabricks() []Table {
 	tables := []Table{
 		{
-      Name: "group_id_information",
-      Struct: &armdatabricks.GroupIDInformation{},
-      ResponseStruct: &armdatabricks.PrivateLinkResourcesClientListResponse{},
-      Client: &armdatabricks.PrivateLinkResourcesClient{},
-      ListFunc: (&armdatabricks.PrivateLinkResourcesClient{}).NewListPager,
-			NewFunc: armdatabricks.NewPrivateLinkResourcesClient,
-		},
-		{
-      Name: "operation",
-      Struct: &armdatabricks.Operation{},
-      ResponseStruct: &armdatabricks.OperationsClientListResponse{},
-      Client: &armdatabricks.OperationsClient{},
-      ListFunc: (&armdatabricks.OperationsClient{}).NewListPager,
-			NewFunc: armdatabricks.NewOperationsClient,
-		},
-		{
       Name: "private_endpoint_connection",
       Struct: &armdatabricks.PrivateEndpointConnection{},
       ResponseStruct: &armdatabricks.PrivateEndpointConnectionsClientListResponse{},
       Client: &armdatabricks.PrivateEndpointConnectionsClient{},
       ListFunc: (&armdatabricks.PrivateEndpointConnectionsClient{}).NewListPager,
 			NewFunc: armdatabricks.NewPrivateEndpointConnectionsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/workspaces/{workspaceName}/privateEndpointConnections",
+		},
+		{
+      Name: "group_id_information",
+      Struct: &armdatabricks.GroupIDInformation{},
+      ResponseStruct: &armdatabricks.PrivateLinkResourcesClientListResponse{},
+      Client: &armdatabricks.PrivateLinkResourcesClient{},
+      ListFunc: (&armdatabricks.PrivateLinkResourcesClient{}).NewListPager,
+			NewFunc: armdatabricks.NewPrivateLinkResourcesClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/workspaces/{workspaceName}/privateLinkResources",
 		},
 	}
 

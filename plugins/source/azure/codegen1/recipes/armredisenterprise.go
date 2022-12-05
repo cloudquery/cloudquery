@@ -8,26 +8,27 @@ func Armredisenterprise() []*Resource {
 		{
 			NewFunc: armredisenterprise.NewClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise",
-		},
-		{
-			NewFunc: armredisenterprise.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise",
-		},
-		{
-			NewFunc: armredisenterprise.NewOperationsStatusClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise",
-		},
-		{
-			NewFunc: armredisenterprise.NewPrivateLinkResourcesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Cache/redisEnterprise",
 		},
 		{
 			NewFunc: armredisenterprise.NewDatabasesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise",
+			URL: "",
+		},
+		{
+			NewFunc: armredisenterprise.NewOperationsStatusClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise",
+			URL: "",
 		},
 		{
 			NewFunc: armredisenterprise.NewPrivateEndpointConnectionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/privateEndpointConnections",
+		},
+		{
+			NewFunc: armredisenterprise.NewPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise",
+			URL: "",
 		},
 	}
 	return resources

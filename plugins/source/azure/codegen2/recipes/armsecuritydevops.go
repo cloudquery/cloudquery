@@ -6,28 +6,22 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securitydevops/arm
 func Armsecuritydevops() []Table {
 	tables := []Table{
 		{
-      Name: "azure_dev_ops_project",
-      Struct: &armsecuritydevops.AzureDevOpsProject{},
-      ResponseStruct: &armsecuritydevops.AzureDevOpsProjectClientListResponse{},
-      Client: &armsecuritydevops.AzureDevOpsProjectClient{},
-      ListFunc: (&armsecuritydevops.AzureDevOpsProjectClient{}).NewListPager,
-			NewFunc: armsecuritydevops.NewAzureDevOpsProjectClient,
-		},
-		{
       Name: "azure_dev_ops_org",
       Struct: &armsecuritydevops.AzureDevOpsOrg{},
       ResponseStruct: &armsecuritydevops.AzureDevOpsOrgClientListResponse{},
       Client: &armsecuritydevops.AzureDevOpsOrgClient{},
       ListFunc: (&armsecuritydevops.AzureDevOpsOrgClient{}).NewListPager,
 			NewFunc: armsecuritydevops.NewAzureDevOpsOrgClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecurityDevOps/azureDevOpsConnectors/{azureDevOpsConnectorName}/orgs",
 		},
 		{
-      Name: "operation",
-      Struct: &armsecuritydevops.Operation{},
-      ResponseStruct: &armsecuritydevops.OperationsClientListResponse{},
-      Client: &armsecuritydevops.OperationsClient{},
-      ListFunc: (&armsecuritydevops.OperationsClient{}).NewListPager,
-			NewFunc: armsecuritydevops.NewOperationsClient,
+      Name: "azure_dev_ops_project",
+      Struct: &armsecuritydevops.AzureDevOpsProject{},
+      ResponseStruct: &armsecuritydevops.AzureDevOpsProjectClientListResponse{},
+      Client: &armsecuritydevops.AzureDevOpsProjectClient{},
+      ListFunc: (&armsecuritydevops.AzureDevOpsProjectClient{}).NewListPager,
+			NewFunc: armsecuritydevops.NewAzureDevOpsProjectClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecurityDevOps/azureDevOpsConnectors/{azureDevOpsConnectorName}/orgs/{azureDevOpsOrgName}/projects",
 		},
 		{
       Name: "azure_dev_ops_repo",
@@ -36,6 +30,7 @@ func Armsecuritydevops() []Table {
       Client: &armsecuritydevops.AzureDevOpsRepoClient{},
       ListFunc: (&armsecuritydevops.AzureDevOpsRepoClient{}).NewListPager,
 			NewFunc: armsecuritydevops.NewAzureDevOpsRepoClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecurityDevOps/azureDevOpsConnectors/{azureDevOpsConnectorName}/orgs/{azureDevOpsOrgName}/projects/{azureDevOpsProjectName}/repos",
 		},
 		{
       Name: "git_hub_owner",
@@ -44,6 +39,7 @@ func Armsecuritydevops() []Table {
       Client: &armsecuritydevops.GitHubOwnerClient{},
       ListFunc: (&armsecuritydevops.GitHubOwnerClient{}).NewListPager,
 			NewFunc: armsecuritydevops.NewGitHubOwnerClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecurityDevOps/gitHubConnectors/{gitHubConnectorName}/owners",
 		},
 		{
       Name: "git_hub_repo",
@@ -52,6 +48,7 @@ func Armsecuritydevops() []Table {
       Client: &armsecuritydevops.GitHubRepoClient{},
       ListFunc: (&armsecuritydevops.GitHubRepoClient{}).NewListPager,
 			NewFunc: armsecuritydevops.NewGitHubRepoClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecurityDevOps/gitHubConnectors/{gitHubConnectorName}/owners/{gitHubOwnerName}/repos",
 		},
 	}
 

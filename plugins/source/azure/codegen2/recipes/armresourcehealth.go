@@ -12,6 +12,7 @@ func Armresourcehealth() []Table {
       Client: &armresourcehealth.AvailabilityStatusesClient{},
       ListFunc: (&armresourcehealth.AvailabilityStatusesClient{}).NewListPager,
 			NewFunc: armresourcehealth.NewAvailabilityStatusesClient,
+			URL: "/{resourceUri}/providers/Microsoft.ResourceHealth/availabilityStatuses",
 		},
 	}
 

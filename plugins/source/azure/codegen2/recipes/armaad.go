@@ -12,6 +12,7 @@ func Armaad() []Table {
       Client: &armaad.PrivateLinkForAzureAdClient{},
       ListFunc: (&armaad.PrivateLinkForAzureAdClient{}).NewListPager,
 			NewFunc: armaad.NewPrivateLinkForAzureAdClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.aadiam/privateLinkForAzureAd",
 		},
 	}
 

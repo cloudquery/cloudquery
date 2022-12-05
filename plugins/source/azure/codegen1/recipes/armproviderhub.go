@@ -6,36 +6,39 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armpro
 func Armproviderhub() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armproviderhub.NewProviderRegistrationsClient,
+			NewFunc: armproviderhub.NewClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub",
+			URL: "",
 		},
 		{
 			NewFunc: armproviderhub.NewCustomRolloutsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub",
+			URL: "",
 		},
 		{
 			NewFunc: armproviderhub.NewDefaultRolloutsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub",
+			URL: "",
 		},
 		{
 			NewFunc: armproviderhub.NewNotificationRegistrationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub",
+			URL: "",
+		},
+		{
+			NewFunc: armproviderhub.NewProviderRegistrationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations",
 		},
 		{
 			NewFunc: armproviderhub.NewResourceTypeRegistrationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub",
+			URL: "",
 		},
 		{
 			NewFunc: armproviderhub.NewSKUsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub",
-		},
-		{
-			NewFunc: armproviderhub.NewClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub",
-		},
-		{
-			NewFunc: armproviderhub.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub",
+			URL: "",
 		},
 	}
 	return resources

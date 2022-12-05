@@ -6,12 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/advisor/armadvisor
 func Armadvisor() []Table {
 	tables := []Table{
 		{
-      Name: "operation_entity",
-      Struct: &armadvisor.OperationEntity{},
-      ResponseStruct: &armadvisor.OperationsClientListResponse{},
-      Client: &armadvisor.OperationsClient{},
-      ListFunc: (&armadvisor.OperationsClient{}).NewListPager,
-			NewFunc: armadvisor.NewOperationsClient,
+      Name: "metadata_entity",
+      Struct: &armadvisor.MetadataEntity{},
+      ResponseStruct: &armadvisor.RecommendationMetadataClientListResponse{},
+      Client: &armadvisor.RecommendationMetadataClient{},
+      ListFunc: (&armadvisor.RecommendationMetadataClient{}).NewListPager,
+			NewFunc: armadvisor.NewRecommendationMetadataClient,
+			URL: "/providers/Microsoft.Advisor/metadata",
 		},
 		{
       Name: "resource_recommendation_base",
@@ -20,6 +21,7 @@ func Armadvisor() []Table {
       Client: &armadvisor.RecommendationsClient{},
       ListFunc: (&armadvisor.RecommendationsClient{}).NewListPager,
 			NewFunc: armadvisor.NewRecommendationsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/recommendations",
 		},
 		{
       Name: "suppression_contract",
@@ -28,14 +30,7 @@ func Armadvisor() []Table {
       Client: &armadvisor.SuppressionsClient{},
       ListFunc: (&armadvisor.SuppressionsClient{}).NewListPager,
 			NewFunc: armadvisor.NewSuppressionsClient,
-		},
-		{
-      Name: "metadata_entity",
-      Struct: &armadvisor.MetadataEntity{},
-      ResponseStruct: &armadvisor.RecommendationMetadataClientListResponse{},
-      Client: &armadvisor.RecommendationMetadataClient{},
-      ListFunc: (&armadvisor.RecommendationMetadataClient{}).NewListPager,
-			NewFunc: armadvisor.NewRecommendationMetadataClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/suppressions",
 		},
 	}
 

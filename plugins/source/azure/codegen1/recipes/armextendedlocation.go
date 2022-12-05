@@ -8,6 +8,7 @@ func Armextendedlocation() []*Resource {
 		{
 			NewFunc: armextendedlocation.NewCustomLocationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/extendedlocation/armextendedlocation",
+			URL: "",
 		},
 	}
 	return resources

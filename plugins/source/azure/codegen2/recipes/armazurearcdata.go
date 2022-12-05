@@ -6,12 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armaz
 func Armazurearcdata() []Table {
 	tables := []Table{
 		{
-      Name: "operation",
-      Struct: &armazurearcdata.Operation{},
-      ResponseStruct: &armazurearcdata.OperationsClientListResponse{},
-      Client: &armazurearcdata.OperationsClient{},
-      ListFunc: (&armazurearcdata.OperationsClient{}).NewListPager,
-			NewFunc: armazurearcdata.NewOperationsClient,
+      Name: "active_directory_connector_resource",
+      Struct: &armazurearcdata.ActiveDirectoryConnectorResource{},
+      ResponseStruct: &armazurearcdata.ActiveDirectoryConnectorsClientListResponse{},
+      Client: &armazurearcdata.ActiveDirectoryConnectorsClient{},
+      ListFunc: (&armazurearcdata.ActiveDirectoryConnectorsClient{}).NewListPager,
+			NewFunc: armazurearcdata.NewActiveDirectoryConnectorsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/dataControllers/{dataControllerName}/activeDirectoryConnectors",
 		},
 		{
       Name: "postgres_instance",
@@ -20,22 +21,7 @@ func Armazurearcdata() []Table {
       Client: &armazurearcdata.PostgresInstancesClient{},
       ListFunc: (&armazurearcdata.PostgresInstancesClient{}).NewListPager,
 			NewFunc: armazurearcdata.NewPostgresInstancesClient,
-		},
-		{
-      Name: "active_directory_connector_resource",
-      Struct: &armazurearcdata.ActiveDirectoryConnectorResource{},
-      ResponseStruct: &armazurearcdata.ActiveDirectoryConnectorsClientListResponse{},
-      Client: &armazurearcdata.ActiveDirectoryConnectorsClient{},
-      ListFunc: (&armazurearcdata.ActiveDirectoryConnectorsClient{}).NewListPager,
-			NewFunc: armazurearcdata.NewActiveDirectoryConnectorsClient,
-		},
-		{
-      Name: "sql_server_instance",
-      Struct: &armazurearcdata.SQLServerInstance{},
-      ResponseStruct: &armazurearcdata.SQLServerInstancesClientListResponse{},
-      Client: &armazurearcdata.SQLServerInstancesClient{},
-      ListFunc: (&armazurearcdata.SQLServerInstancesClient{}).NewListPager,
-			NewFunc: armazurearcdata.NewSQLServerInstancesClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/postgresInstances",
 		},
 		{
       Name: "sql_managed_instance",
@@ -44,6 +30,16 @@ func Armazurearcdata() []Table {
       Client: &armazurearcdata.SQLManagedInstancesClient{},
       ListFunc: (&armazurearcdata.SQLManagedInstancesClient{}).NewListPager,
 			NewFunc: armazurearcdata.NewSQLManagedInstancesClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/sqlManagedInstances",
+		},
+		{
+      Name: "sql_server_instance",
+      Struct: &armazurearcdata.SQLServerInstance{},
+      ResponseStruct: &armazurearcdata.SQLServerInstancesClientListResponse{},
+      Client: &armazurearcdata.SQLServerInstancesClient{},
+      ListFunc: (&armazurearcdata.SQLServerInstancesClient{}).NewListPager,
+			NewFunc: armazurearcdata.NewSQLServerInstancesClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/sqlServerInstances",
 		},
 	}
 

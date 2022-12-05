@@ -6,20 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/analysisservices/a
 func Armanalysisservices() []Table {
 	tables := []Table{
 		{
-      Name: "operation",
-      Struct: &armanalysisservices.Operation{},
-      ResponseStruct: &armanalysisservices.OperationsClientListResponse{},
-      Client: &armanalysisservices.OperationsClient{},
-      ListFunc: (&armanalysisservices.OperationsClient{}).NewListPager,
-			NewFunc: armanalysisservices.NewOperationsClient,
-		},
-		{
       Name: "server",
       Struct: &armanalysisservices.Server{},
       ResponseStruct: &armanalysisservices.ServersClientListResponse{},
       Client: &armanalysisservices.ServersClient{},
       ListFunc: (&armanalysisservices.ServersClient{}).NewListPager,
 			NewFunc: armanalysisservices.NewServersClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.AnalysisServices/servers",
 		},
 	}
 

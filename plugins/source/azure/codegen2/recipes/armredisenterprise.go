@@ -12,14 +12,7 @@ func Armredisenterprise() []Table {
       Client: &armredisenterprise.Client{},
       ListFunc: (&armredisenterprise.Client{}).NewListPager,
 			NewFunc: armredisenterprise.NewClient,
-		},
-		{
-      Name: "operation",
-      Struct: &armredisenterprise.Operation{},
-      ResponseStruct: &armredisenterprise.OperationsClientListResponse{},
-      Client: &armredisenterprise.OperationsClient{},
-      ListFunc: (&armredisenterprise.OperationsClient{}).NewListPager,
-			NewFunc: armredisenterprise.NewOperationsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Cache/redisEnterprise",
 		},
 		{
       Name: "private_endpoint_connection",
@@ -28,6 +21,7 @@ func Armredisenterprise() []Table {
       Client: &armredisenterprise.PrivateEndpointConnectionsClient{},
       ListFunc: (&armredisenterprise.PrivateEndpointConnectionsClient{}).NewListPager,
 			NewFunc: armredisenterprise.NewPrivateEndpointConnectionsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/privateEndpointConnections",
 		},
 	}
 

@@ -8,14 +8,17 @@ func Armfeatures() []*Resource {
 		{
 			NewFunc: armfeatures.NewClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armfeatures",
-		},
-		{
-			NewFunc: armfeatures.NewSubscriptionFeatureRegistrationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armfeatures",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Features/providers/{resourceProviderNamespace}/features",
 		},
 		{
 			NewFunc: armfeatures.NewFeatureClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armfeatures",
+			URL: "",
+		},
+		{
+			NewFunc: armfeatures.NewSubscriptionFeatureRegistrationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armfeatures",
+			URL: "",
 		},
 	}
 	return resources

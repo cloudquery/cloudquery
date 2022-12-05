@@ -6,20 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armevent
 func Armeventgrid() []Table {
 	tables := []Table{
 		{
-      Name: "operation",
-      Struct: &armeventgrid.Operation{},
-      ResponseStruct: &armeventgrid.OperationsClientListResponse{},
-      Client: &armeventgrid.OperationsClient{},
-      ListFunc: (&armeventgrid.OperationsClient{}).NewListPager,
-			NewFunc: armeventgrid.NewOperationsClient,
-		},
-		{
       Name: "topic_type_info",
       Struct: &armeventgrid.TopicTypeInfo{},
       ResponseStruct: &armeventgrid.TopicTypesClientListResponse{},
       Client: &armeventgrid.TopicTypesClient{},
       ListFunc: (&armeventgrid.TopicTypesClient{}).NewListPager,
 			NewFunc: armeventgrid.NewTopicTypesClient,
+			URL: "/providers/Microsoft.EventGrid/topicTypes",
 		},
 	}
 

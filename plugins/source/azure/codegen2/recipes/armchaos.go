@@ -6,12 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos"
 func Armchaos() []Table {
 	tables := []Table{
 		{
-      Name: "target",
-      Struct: &armchaos.Target{},
-      ResponseStruct: &armchaos.TargetsClientListResponse{},
-      Client: &armchaos.TargetsClient{},
-      ListFunc: (&armchaos.TargetsClient{}).NewListPager,
-			NewFunc: armchaos.NewTargetsClient,
+      Name: "capability",
+      Struct: &armchaos.Capability{},
+      ResponseStruct: &armchaos.CapabilitiesClientListResponse{},
+      Client: &armchaos.CapabilitiesClient{},
+      ListFunc: (&armchaos.CapabilitiesClient{}).NewListPager,
+			NewFunc: armchaos.NewCapabilitiesClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{parentProviderNamespace}/{parentResourceType}/{parentResourceName}/providers/Microsoft.Chaos/targets/{targetName}/capabilities",
 		},
 		{
       Name: "capability_type",
@@ -20,6 +21,7 @@ func Armchaos() []Table {
       Client: &armchaos.CapabilityTypesClient{},
       ListFunc: (&armchaos.CapabilityTypesClient{}).NewListPager,
 			NewFunc: armchaos.NewCapabilityTypesClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Chaos/locations/{locationName}/targetTypes/{targetTypeName}/capabilityTypes",
 		},
 		{
       Name: "experiment",
@@ -28,6 +30,7 @@ func Armchaos() []Table {
       Client: &armchaos.ExperimentsClient{},
       ListFunc: (&armchaos.ExperimentsClient{}).NewListPager,
 			NewFunc: armchaos.NewExperimentsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/experiments",
 		},
 		{
       Name: "target_type",
@@ -36,14 +39,16 @@ func Armchaos() []Table {
       Client: &armchaos.TargetTypesClient{},
       ListFunc: (&armchaos.TargetTypesClient{}).NewListPager,
 			NewFunc: armchaos.NewTargetTypesClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Chaos/locations/{locationName}/targetTypes",
 		},
 		{
-      Name: "capability",
-      Struct: &armchaos.Capability{},
-      ResponseStruct: &armchaos.CapabilitiesClientListResponse{},
-      Client: &armchaos.CapabilitiesClient{},
-      ListFunc: (&armchaos.CapabilitiesClient{}).NewListPager,
-			NewFunc: armchaos.NewCapabilitiesClient,
+      Name: "target",
+      Struct: &armchaos.Target{},
+      ResponseStruct: &armchaos.TargetsClientListResponse{},
+      Client: &armchaos.TargetsClient{},
+      ListFunc: (&armchaos.TargetsClient{}).NewListPager,
+			NewFunc: armchaos.NewTargetsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{parentProviderNamespace}/{parentResourceType}/{parentResourceName}/providers/Microsoft.Chaos/targets",
 		},
 	}
 

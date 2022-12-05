@@ -12,6 +12,7 @@ func Armcommerce() []Table {
       Client: &armcommerce.UsageAggregatesClient{},
       ListFunc: (&armcommerce.UsageAggregatesClient{}).NewListPager,
 			NewFunc: armcommerce.NewUsageAggregatesClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Commerce/UsageAggregates",
 		},
 	}
 

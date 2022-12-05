@@ -61,7 +61,7 @@ func Interface() *schema.Table {
 
 func fetchInterface(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
-	svc, err := armnetwork.NewInterfacesClient(cl.SubscriptionId, cl.Creds, cl.Options)
+	svc, err := armnetwork.NewLoadBalancerNetworkInterfacesClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {
 		return err
 	}

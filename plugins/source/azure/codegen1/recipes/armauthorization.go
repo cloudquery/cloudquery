@@ -6,64 +6,79 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/arma
 func Armauthorization() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armauthorization.NewRoleAssignmentsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization",
-		},
-		{
-			NewFunc: armauthorization.NewRoleAssignmentSchedulesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization",
-		},
-		{
-			NewFunc: armauthorization.NewRoleEligibilityScheduleRequestsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization",
-		},
-		{
-			NewFunc: armauthorization.NewRoleManagementPoliciesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization",
-		},
-		{
-			NewFunc: armauthorization.NewRoleManagementPolicyAssignmentsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization",
-		},
-		{
 			NewFunc: armauthorization.NewClassicAdministratorsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/classicAdministrators",
 		},
 		{
 			NewFunc: armauthorization.NewEligibleChildResourcesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization",
-		},
-		{
-			NewFunc: armauthorization.NewRoleDefinitionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization",
-		},
-		{
-			NewFunc: armauthorization.NewRoleEligibilityScheduleInstancesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization",
-		},
-		{
-			NewFunc: armauthorization.NewRoleAssignmentScheduleInstancesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization",
-		},
-		{
-			NewFunc: armauthorization.NewRoleEligibilitySchedulesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization",
+			URL: "",
 		},
 		{
 			NewFunc: armauthorization.NewGlobalAdministratorClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization",
+			URL: "",
 		},
 		{
 			NewFunc: armauthorization.NewPermissionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization",
+			URL: "",
 		},
 		{
 			NewFunc: armauthorization.NewProviderOperationsMetadataClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization",
+			URL: "/providers/Microsoft.Authorization/providerOperations",
+		},
+		{
+			NewFunc: armauthorization.NewRoleAssignmentScheduleInstancesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization",
+			URL: "",
 		},
 		{
 			NewFunc: armauthorization.NewRoleAssignmentScheduleRequestsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization",
+			URL: "",
+		},
+		{
+			NewFunc: armauthorization.NewRoleAssignmentSchedulesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization",
+			URL: "",
+		},
+		{
+			NewFunc: armauthorization.NewRoleAssignmentsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/roleAssignments",
+		},
+		{
+			NewFunc: armauthorization.NewRoleDefinitionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization",
+			URL: "/{scope}/providers/Microsoft.Authorization/roleDefinitions",
+		},
+		{
+			NewFunc: armauthorization.NewRoleEligibilityScheduleInstancesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization",
+			URL: "",
+		},
+		{
+			NewFunc: armauthorization.NewRoleEligibilityScheduleRequestsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization",
+			URL: "",
+		},
+		{
+			NewFunc: armauthorization.NewRoleEligibilitySchedulesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization",
+			URL: "",
+		},
+		{
+			NewFunc: armauthorization.NewRoleManagementPoliciesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization",
+			URL: "",
+		},
+		{
+			NewFunc: armauthorization.NewRoleManagementPolicyAssignmentsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization",
+			URL: "",
 		},
 	}
 	return resources

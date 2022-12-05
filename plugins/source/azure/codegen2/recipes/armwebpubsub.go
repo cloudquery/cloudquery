@@ -12,14 +12,7 @@ func Armwebpubsub() []Table {
       Client: &armwebpubsub.HubsClient{},
       ListFunc: (&armwebpubsub.HubsClient{}).NewListPager,
 			NewFunc: armwebpubsub.NewHubsClient,
-		},
-		{
-      Name: "operation",
-      Struct: &armwebpubsub.Operation{},
-      ResponseStruct: &armwebpubsub.OperationsClientListResponse{},
-      Client: &armwebpubsub.OperationsClient{},
-      ListFunc: (&armwebpubsub.OperationsClient{}).NewListPager,
-			NewFunc: armwebpubsub.NewOperationsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/hubs",
 		},
 		{
       Name: "private_endpoint_connection",
@@ -28,6 +21,7 @@ func Armwebpubsub() []Table {
       Client: &armwebpubsub.PrivateEndpointConnectionsClient{},
       ListFunc: (&armwebpubsub.PrivateEndpointConnectionsClient{}).NewListPager,
 			NewFunc: armwebpubsub.NewPrivateEndpointConnectionsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/privateEndpointConnections",
 		},
 		{
       Name: "private_link_resource",
@@ -36,6 +30,7 @@ func Armwebpubsub() []Table {
       Client: &armwebpubsub.PrivateLinkResourcesClient{},
       ListFunc: (&armwebpubsub.PrivateLinkResourcesClient{}).NewListPager,
 			NewFunc: armwebpubsub.NewPrivateLinkResourcesClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/privateLinkResources",
 		},
 		{
       Name: "shared_private_link_resource",
@@ -44,6 +39,7 @@ func Armwebpubsub() []Table {
       Client: &armwebpubsub.SharedPrivateLinkResourcesClient{},
       ListFunc: (&armwebpubsub.SharedPrivateLinkResourcesClient{}).NewListPager,
 			NewFunc: armwebpubsub.NewSharedPrivateLinkResourcesClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/sharedPrivateLinkResources",
 		},
 		{
       Name: "signal_r_service_usage",
@@ -52,6 +48,7 @@ func Armwebpubsub() []Table {
       Client: &armwebpubsub.UsagesClient{},
       ListFunc: (&armwebpubsub.UsagesClient{}).NewListPager,
 			NewFunc: armwebpubsub.NewUsagesClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.SignalRService/locations/{location}/usages",
 		},
 	}
 

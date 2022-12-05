@@ -6,36 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfront
 func Armfrontdoor() []Table {
 	tables := []Table{
 		{
-      Name: "web_application_firewall_policy",
-      Struct: &armfrontdoor.WebApplicationFirewallPolicy{},
-      ResponseStruct: &armfrontdoor.PoliciesClientListResponse{},
-      Client: &armfrontdoor.PoliciesClient{},
-      ListFunc: (&armfrontdoor.PoliciesClient{}).NewListPager,
-			NewFunc: armfrontdoor.NewPoliciesClient,
-		},
-		{
-      Name: "preconfigured_endpoint",
-      Struct: &armfrontdoor.PreconfiguredEndpoint{},
-      ResponseStruct: &armfrontdoor.PreconfiguredEndpointsClientListResponse{},
-      Client: &armfrontdoor.PreconfiguredEndpointsClient{},
-      ListFunc: (&armfrontdoor.PreconfiguredEndpointsClient{}).NewListPager,
-			NewFunc: armfrontdoor.NewPreconfiguredEndpointsClient,
-		},
-		{
       Name: "front_door",
       Struct: &armfrontdoor.FrontDoor{},
       ResponseStruct: &armfrontdoor.FrontDoorsClientListResponse{},
       Client: &armfrontdoor.FrontDoorsClient{},
       ListFunc: (&armfrontdoor.FrontDoorsClient{}).NewListPager,
 			NewFunc: armfrontdoor.NewFrontDoorsClient,
-		},
-		{
-      Name: "profile",
-      Struct: &armfrontdoor.Profile{},
-      ResponseStruct: &armfrontdoor.NetworkExperimentProfilesClientListResponse{},
-      Client: &armfrontdoor.NetworkExperimentProfilesClient{},
-      ListFunc: (&armfrontdoor.NetworkExperimentProfilesClient{}).NewListPager,
-			NewFunc: armfrontdoor.NewNetworkExperimentProfilesClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/frontDoors",
 		},
 		{
       Name: "managed_rule_set_definition",
@@ -44,6 +21,34 @@ func Armfrontdoor() []Table {
       Client: &armfrontdoor.ManagedRuleSetsClient{},
       ListFunc: (&armfrontdoor.ManagedRuleSetsClient{}).NewListPager,
 			NewFunc: armfrontdoor.NewManagedRuleSetsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/FrontDoorWebApplicationFirewallManagedRuleSets",
+		},
+		{
+      Name: "profile",
+      Struct: &armfrontdoor.Profile{},
+      ResponseStruct: &armfrontdoor.NetworkExperimentProfilesClientListResponse{},
+      Client: &armfrontdoor.NetworkExperimentProfilesClient{},
+      ListFunc: (&armfrontdoor.NetworkExperimentProfilesClient{}).NewListPager,
+			NewFunc: armfrontdoor.NewNetworkExperimentProfilesClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/NetworkExperimentProfiles",
+		},
+		{
+      Name: "web_application_firewall_policy",
+      Struct: &armfrontdoor.WebApplicationFirewallPolicy{},
+      ResponseStruct: &armfrontdoor.PoliciesClientListResponse{},
+      Client: &armfrontdoor.PoliciesClient{},
+      ListFunc: (&armfrontdoor.PoliciesClient{}).NewListPager,
+			NewFunc: armfrontdoor.NewPoliciesClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoorWebApplicationFirewallPolicies",
+		},
+		{
+      Name: "preconfigured_endpoint",
+      Struct: &armfrontdoor.PreconfiguredEndpoint{},
+      ResponseStruct: &armfrontdoor.PreconfiguredEndpointsClientListResponse{},
+      Client: &armfrontdoor.PreconfiguredEndpointsClient{},
+      ListFunc: (&armfrontdoor.PreconfiguredEndpointsClient{}).NewListPager,
+			NewFunc: armfrontdoor.NewPreconfiguredEndpointsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/NetworkExperimentProfiles/{profileName}/PreconfiguredEndpoints",
 		},
 	}
 

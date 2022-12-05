@@ -6,20 +6,22 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iotsecurity/armiot
 func Armiotsecurity() []Table {
 	tables := []Table{
 		{
+      Name: "device_group_model",
+      Struct: &armiotsecurity.DeviceGroupModel{},
+      ResponseStruct: &armiotsecurity.DeviceGroupsClientListResponse{},
+      Client: &armiotsecurity.DeviceGroupsClient{},
+      ListFunc: (&armiotsecurity.DeviceGroupsClient{}).NewListPager,
+			NewFunc: armiotsecurity.NewDeviceGroupsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.IoTSecurity/locations/{iotDefenderLocation}/deviceGroups",
+		},
+		{
       Name: "device_model",
       Struct: &armiotsecurity.DeviceModel{},
       ResponseStruct: &armiotsecurity.DevicesClientListResponse{},
       Client: &armiotsecurity.DevicesClient{},
       ListFunc: (&armiotsecurity.DevicesClient{}).NewListPager,
 			NewFunc: armiotsecurity.NewDevicesClient,
-		},
-		{
-      Name: "operation",
-      Struct: &armiotsecurity.Operation{},
-      ResponseStruct: &armiotsecurity.OperationsClientListResponse{},
-      Client: &armiotsecurity.OperationsClient{},
-      ListFunc: (&armiotsecurity.OperationsClient{}).NewListPager,
-			NewFunc: armiotsecurity.NewOperationsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.IoTSecurity/locations/{iotDefenderLocation}/deviceGroups/{deviceGroupName}/devices",
 		},
 		{
       Name: "location_model",
@@ -28,14 +30,7 @@ func Armiotsecurity() []Table {
       Client: &armiotsecurity.LocationsClient{},
       ListFunc: (&armiotsecurity.LocationsClient{}).NewListPager,
 			NewFunc: armiotsecurity.NewLocationsClient,
-		},
-		{
-      Name: "device_group_model",
-      Struct: &armiotsecurity.DeviceGroupModel{},
-      ResponseStruct: &armiotsecurity.DeviceGroupsClientListResponse{},
-      Client: &armiotsecurity.DeviceGroupsClient{},
-      ListFunc: (&armiotsecurity.DeviceGroupsClient{}).NewListPager,
-			NewFunc: armiotsecurity.NewDeviceGroupsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.IoTSecurity/locations",
 		},
 	}
 

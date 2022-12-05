@@ -6,12 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysqlflex
 func Armmysqlflexibleservers() []Table {
 	tables := []Table{
 		{
-      Name: "operation",
-      Struct: &armmysqlflexibleservers.Operation{},
-      ResponseStruct: &armmysqlflexibleservers.OperationsClientListResponse{},
-      Client: &armmysqlflexibleservers.OperationsClient{},
-      ListFunc: (&armmysqlflexibleservers.OperationsClient{}).NewListPager,
-			NewFunc: armmysqlflexibleservers.NewOperationsClient,
+      Name: "capability_properties",
+      Struct: &armmysqlflexibleservers.CapabilityProperties{},
+      ResponseStruct: &armmysqlflexibleservers.LocationBasedCapabilitiesClientListResponse{},
+      Client: &armmysqlflexibleservers.LocationBasedCapabilitiesClient{},
+      ListFunc: (&armmysqlflexibleservers.LocationBasedCapabilitiesClient{}).NewListPager,
+			NewFunc: armmysqlflexibleservers.NewLocationBasedCapabilitiesClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/locations/{locationName}/capabilities",
 		},
 		{
       Name: "server",
@@ -20,14 +21,7 @@ func Armmysqlflexibleservers() []Table {
       Client: &armmysqlflexibleservers.ServersClient{},
       ListFunc: (&armmysqlflexibleservers.ServersClient{}).NewListPager,
 			NewFunc: armmysqlflexibleservers.NewServersClient,
-		},
-		{
-      Name: "capability_properties",
-      Struct: &armmysqlflexibleservers.CapabilityProperties{},
-      ResponseStruct: &armmysqlflexibleservers.LocationBasedCapabilitiesClientListResponse{},
-      Client: &armmysqlflexibleservers.LocationBasedCapabilitiesClient{},
-      ListFunc: (&armmysqlflexibleservers.LocationBasedCapabilitiesClient{}).NewListPager,
-			NewFunc: armmysqlflexibleservers.NewLocationBasedCapabilitiesClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/flexibleServers",
 		},
 	}
 

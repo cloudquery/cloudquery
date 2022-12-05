@@ -6,44 +6,54 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armre
 func Armreservations() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armreservations.NewOperationClient,
+			NewFunc: armreservations.NewAzureReservationAPIClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations",
-		},
-		{
-			NewFunc: armreservations.NewQuotaClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations",
-		},
-		{
-			NewFunc: armreservations.NewCalculateRefundClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations",
-		},
-		{
-			NewFunc: armreservations.NewExchangeClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations",
-		},
-		{
-			NewFunc: armreservations.NewReturnClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations",
+			URL: "",
 		},
 		{
 			NewFunc: armreservations.NewCalculateExchangeClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations",
+			URL: "",
+		},
+		{
+			NewFunc: armreservations.NewCalculateRefundClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations",
+			URL: "",
+		},
+		{
+			NewFunc: armreservations.NewExchangeClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations",
+			URL: "",
+		},
+		{
+			NewFunc: armreservations.NewOperationClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations",
+			URL: "/providers/Microsoft.Capacity/operations",
+		},
+		{
+			NewFunc: armreservations.NewQuotaClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/resourceProviders/{providerId}/locations/{location}/serviceLimits",
 		},
 		{
 			NewFunc: armreservations.NewQuotaRequestStatusClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/resourceProviders/{providerId}/locations/{location}/serviceLimitsRequests",
 		},
 		{
 			NewFunc: armreservations.NewReservationClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations",
-		},
-		{
-			NewFunc: armreservations.NewAzureReservationAPIClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations",
+			URL: "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations",
 		},
 		{
 			NewFunc: armreservations.NewReservationOrderClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations",
+			URL: "/providers/Microsoft.Capacity/reservationOrders",
+		},
+		{
+			NewFunc: armreservations.NewReturnClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations",
+			URL: "",
 		},
 	}
 	return resources

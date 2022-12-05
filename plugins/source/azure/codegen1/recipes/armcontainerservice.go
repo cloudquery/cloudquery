@@ -6,36 +6,39 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/a
 func Armcontainerservice() []*Resource {
 	resources := []*Resource{
 		{
+			NewFunc: armcontainerservice.NewAgentPoolsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools",
+		},
+		{
 			NewFunc: armcontainerservice.NewMaintenanceConfigurationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice",
+			URL: "",
 		},
 		{
 			NewFunc: armcontainerservice.NewManagedClustersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice",
-		},
-		{
-			NewFunc: armcontainerservice.NewResolvePrivateLinkServiceIDClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice",
-		},
-		{
-			NewFunc: armcontainerservice.NewSnapshotsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/managedClusters",
 		},
 		{
 			NewFunc: armcontainerservice.NewPrivateEndpointConnectionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/privateEndpointConnections",
 		},
 		{
 			NewFunc: armcontainerservice.NewPrivateLinkResourcesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/privateLinkResources",
 		},
 		{
-			NewFunc: armcontainerservice.NewAgentPoolsClient,
+			NewFunc: armcontainerservice.NewResolvePrivateLinkServiceIDClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice",
+			URL: "",
 		},
 		{
-			NewFunc: armcontainerservice.NewOperationsClient,
+			NewFunc: armcontainerservice.NewSnapshotsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/snapshots",
 		},
 	}
 	return resources

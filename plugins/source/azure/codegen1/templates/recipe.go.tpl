@@ -13,6 +13,7 @@ func {{.BaseImport | ToCamel}}() []Table {
       Client: &{{$.BaseImport}}.{{.Client}}{},
       ListFunc: (&{{$.BaseImport}}.{{.Client}}{}).{{.ListFunc}},
 			NewFunc: {{$.BaseImport}}.{{.NewFunc}},
+			URL: "{{.URL}}",
 		},
     {{- end}}
 	}

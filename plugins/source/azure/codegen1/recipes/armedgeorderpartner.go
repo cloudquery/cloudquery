@@ -8,6 +8,7 @@ func Armedgeorderpartner() []*Resource {
 		{
 			NewFunc: armedgeorderpartner.NewAPISClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/edgeorderpartner/armedgeorderpartner",
+			URL: "",
 		},
 	}
 	return resources

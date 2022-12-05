@@ -35,6 +35,7 @@ type Table struct {
 	Client string
 	ListFunc string
 	NewFunc string
+	URL string
 }
 
 type Recipe struct {
@@ -107,6 +108,7 @@ func main() {
 				Client: clientName,
 				ListFunc: "NewListPager",
 				NewFunc: "New" + clientName,
+				URL: table.URL,
 			})
 		}
 

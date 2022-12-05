@@ -6,12 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/arm
 func Armdataprotection() []Table {
 	tables := []Table{
 		{
-      Name: "azure_backup_recovery_point_resource",
-      Struct: &armdataprotection.AzureBackupRecoveryPointResource{},
-      ResponseStruct: &armdataprotection.RecoveryPointsClientListResponse{},
-      Client: &armdataprotection.RecoveryPointsClient{},
-      ListFunc: (&armdataprotection.RecoveryPointsClient{}).NewListPager,
-			NewFunc: armdataprotection.NewRecoveryPointsClient,
+      Name: "backup_instance_resource",
+      Struct: &armdataprotection.BackupInstanceResource{},
+      ResponseStruct: &armdataprotection.BackupInstancesClientListResponse{},
+      Client: &armdataprotection.BackupInstancesClient{},
+      ListFunc: (&armdataprotection.BackupInstancesClient{}).NewListPager,
+			NewFunc: armdataprotection.NewBackupInstancesClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances",
 		},
 		{
       Name: "base_backup_policy_resource",
@@ -20,6 +21,7 @@ func Armdataprotection() []Table {
       Client: &armdataprotection.BackupPoliciesClient{},
       ListFunc: (&armdataprotection.BackupPoliciesClient{}).NewListPager,
 			NewFunc: armdataprotection.NewBackupPoliciesClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupPolicies",
 		},
 		{
       Name: "azure_backup_job_resource",
@@ -28,22 +30,16 @@ func Armdataprotection() []Table {
       Client: &armdataprotection.JobsClient{},
       ListFunc: (&armdataprotection.JobsClient{}).NewListPager,
 			NewFunc: armdataprotection.NewJobsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupJobs",
 		},
 		{
-      Name: "client_discovery_value_for_single_api",
-      Struct: &armdataprotection.ClientDiscoveryValueForSingleAPI{},
-      ResponseStruct: &armdataprotection.OperationsClientListResponse{},
-      Client: &armdataprotection.OperationsClient{},
-      ListFunc: (&armdataprotection.OperationsClient{}).NewListPager,
-			NewFunc: armdataprotection.NewOperationsClient,
-		},
-		{
-      Name: "backup_instance_resource",
-      Struct: &armdataprotection.BackupInstanceResource{},
-      ResponseStruct: &armdataprotection.BackupInstancesClientListResponse{},
-      Client: &armdataprotection.BackupInstancesClient{},
-      ListFunc: (&armdataprotection.BackupInstancesClient{}).NewListPager,
-			NewFunc: armdataprotection.NewBackupInstancesClient,
+      Name: "azure_backup_recovery_point_resource",
+      Struct: &armdataprotection.AzureBackupRecoveryPointResource{},
+      ResponseStruct: &armdataprotection.RecoveryPointsClientListResponse{},
+      Client: &armdataprotection.RecoveryPointsClient{},
+      ListFunc: (&armdataprotection.RecoveryPointsClient{}).NewListPager,
+			NewFunc: armdataprotection.NewRecoveryPointsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/recoveryPoints",
 		},
 	}
 

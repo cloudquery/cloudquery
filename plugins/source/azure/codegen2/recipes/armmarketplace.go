@@ -12,6 +12,7 @@ func Armmarketplace() []Table {
       Client: &armmarketplace.PrivateStoreClient{},
       ListFunc: (&armmarketplace.PrivateStoreClient{}).NewListPager,
 			NewFunc: armmarketplace.NewPrivateStoreClient,
+			URL: "/providers/Microsoft.Marketplace/privateStores",
 		},
 		{
       Name: "offer",
@@ -20,6 +21,7 @@ func Armmarketplace() []Table {
       Client: &armmarketplace.PrivateStoreCollectionOfferClient{},
       ListFunc: (&armmarketplace.PrivateStoreCollectionOfferClient{}).NewListPager,
 			NewFunc: armmarketplace.NewPrivateStoreCollectionOfferClient,
+			URL: "/providers/Microsoft.Marketplace/privateStores/{privateStoreId}/collections/{collectionId}/offers",
 		},
 	}
 

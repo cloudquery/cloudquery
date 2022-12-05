@@ -12,6 +12,7 @@ func Armpolicyinsights() []Table {
       Client: &armpolicyinsights.PolicyMetadataClient{},
       ListFunc: (&armpolicyinsights.PolicyMetadataClient{}).NewListPager,
 			NewFunc: armpolicyinsights.NewPolicyMetadataClient,
+			URL: "/providers/Microsoft.PolicyInsights/policyMetadata",
 		},
 	}
 

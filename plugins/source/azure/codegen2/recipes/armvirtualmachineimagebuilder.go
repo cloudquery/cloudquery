@@ -12,14 +12,7 @@ func Armvirtualmachineimagebuilder() []Table {
       Client: &armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClient{},
       ListFunc: (&armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClient{}).NewListPager,
 			NewFunc: armvirtualmachineimagebuilder.NewVirtualMachineImageTemplatesClient,
-		},
-		{
-      Name: "operation",
-      Struct: &armvirtualmachineimagebuilder.Operation{},
-      ResponseStruct: &armvirtualmachineimagebuilder.OperationsClientListResponse{},
-      Client: &armvirtualmachineimagebuilder.OperationsClient{},
-      ListFunc: (&armvirtualmachineimagebuilder.OperationsClient{}).NewListPager,
-			NewFunc: armvirtualmachineimagebuilder.NewOperationsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.VirtualMachineImages/imageTemplates",
 		},
 	}
 

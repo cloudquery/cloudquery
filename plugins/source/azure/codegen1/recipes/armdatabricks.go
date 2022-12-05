@@ -6,28 +6,29 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databricks/armdata
 func Armdatabricks() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armdatabricks.NewPrivateLinkResourcesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databricks/armdatabricks",
-		},
-		{
-			NewFunc: armdatabricks.NewVNetPeeringClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databricks/armdatabricks",
-		},
-		{
-			NewFunc: armdatabricks.NewWorkspacesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databricks/armdatabricks",
-		},
-		{
-			NewFunc: armdatabricks.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databricks/armdatabricks",
-		},
-		{
 			NewFunc: armdatabricks.NewOutboundNetworkDependenciesEndpointsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databricks/armdatabricks",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/workspaces/{workspaceName}/outboundNetworkDependenciesEndpoints",
 		},
 		{
 			NewFunc: armdatabricks.NewPrivateEndpointConnectionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databricks/armdatabricks",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/workspaces/{workspaceName}/privateEndpointConnections",
+		},
+		{
+			NewFunc: armdatabricks.NewPrivateLinkResourcesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databricks/armdatabricks",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/workspaces/{workspaceName}/privateLinkResources",
+		},
+		{
+			NewFunc: armdatabricks.NewVNetPeeringClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databricks/armdatabricks",
+			URL: "",
+		},
+		{
+			NewFunc: armdatabricks.NewWorkspacesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databricks/armdatabricks",
+			URL: "",
 		},
 	}
 	return resources

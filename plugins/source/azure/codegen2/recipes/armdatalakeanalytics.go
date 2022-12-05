@@ -12,6 +12,7 @@ func Armdatalakeanalytics() []Table {
       Client: &armdatalakeanalytics.AccountsClient{},
       ListFunc: (&armdatalakeanalytics.AccountsClient{}).NewListPager,
 			NewFunc: armdatalakeanalytics.NewAccountsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DataLakeAnalytics/accounts",
 		},
 	}
 

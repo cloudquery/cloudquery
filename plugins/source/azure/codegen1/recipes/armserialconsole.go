@@ -6,12 +6,14 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/serialconsole/arms
 func Armserialconsole() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armserialconsole.NewSerialPortsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/serialconsole/armserialconsole",
-		},
-		{
 			NewFunc: armserialconsole.NewMicrosoftSerialConsoleClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/serialconsole/armserialconsole",
+			URL: "",
+		},
+		{
+			NewFunc: armserialconsole.NewSerialPortsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/serialconsole/armserialconsole",
+			URL: "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourceType}/{parentResource}/providers/Microsoft.SerialConsole/serialPorts",
 		},
 	}
 	return resources

@@ -8,10 +8,7 @@ func Armmarketplaceordering() []*Resource {
 		{
 			NewFunc: armmarketplaceordering.NewMarketplaceAgreementsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplaceordering/armmarketplaceordering",
-		},
-		{
-			NewFunc: armmarketplaceordering.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplaceordering/armmarketplaceordering",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.MarketplaceOrdering/agreements",
 		},
 	}
 	return resources

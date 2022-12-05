@@ -6,24 +6,24 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcomplianceautom
 func Armappcomplianceautomation() []*Resource {
 	resources := []*Resource{
 		{
-			NewFunc: armappcomplianceautomation.NewSnapshotClient,
+			NewFunc: armappcomplianceautomation.NewReportClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcomplianceautomation/armappcomplianceautomation",
-		},
-		{
-			NewFunc: armappcomplianceautomation.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcomplianceautomation/armappcomplianceautomation",
+			URL: "",
 		},
 		{
 			NewFunc: armappcomplianceautomation.NewReportsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcomplianceautomation/armappcomplianceautomation",
+			URL: "/providers/Microsoft.AppComplianceAutomation/reports",
 		},
 		{
-			NewFunc: armappcomplianceautomation.NewReportClient,
+			NewFunc: armappcomplianceautomation.NewSnapshotClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcomplianceautomation/armappcomplianceautomation",
+			URL: "",
 		},
 		{
 			NewFunc: armappcomplianceautomation.NewSnapshotsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcomplianceautomation/armappcomplianceautomation",
+			URL: "/providers/Microsoft.AppComplianceAutomation/reports/{reportName}/snapshots",
 		},
 	}
 	return resources

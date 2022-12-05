@@ -6,20 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridconnectivity
 func Armhybridconnectivity() []Table {
 	tables := []Table{
 		{
-      Name: "operation",
-      Struct: &armhybridconnectivity.Operation{},
-      ResponseStruct: &armhybridconnectivity.OperationsClientListResponse{},
-      Client: &armhybridconnectivity.OperationsClient{},
-      ListFunc: (&armhybridconnectivity.OperationsClient{}).NewListPager,
-			NewFunc: armhybridconnectivity.NewOperationsClient,
-		},
-		{
       Name: "endpoint_resource",
       Struct: &armhybridconnectivity.EndpointResource{},
       ResponseStruct: &armhybridconnectivity.EndpointsClientListResponse{},
       Client: &armhybridconnectivity.EndpointsClient{},
       ListFunc: (&armhybridconnectivity.EndpointsClient{}).NewListPager,
 			NewFunc: armhybridconnectivity.NewEndpointsClient,
+			URL: "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints",
 		},
 	}
 

@@ -8,18 +8,22 @@ func Armquota() []*Resource {
 		{
 			NewFunc: armquota.NewClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota",
-		},
-		{
-			NewFunc: armquota.NewRequestStatusClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota",
-		},
-		{
-			NewFunc: armquota.NewUsagesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota",
+			URL: "/{scope}/providers/Microsoft.Quota/quotas",
 		},
 		{
 			NewFunc: armquota.NewOperationClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota",
+			URL: "/providers/Microsoft.Quota/operations",
+		},
+		{
+			NewFunc: armquota.NewRequestStatusClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota",
+			URL: "/{scope}/providers/Microsoft.Quota/quotaRequests",
+		},
+		{
+			NewFunc: armquota.NewUsagesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota",
+			URL: "/{scope}/providers/Microsoft.Quota/usages",
 		},
 	}
 	return resources

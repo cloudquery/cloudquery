@@ -12,6 +12,7 @@ func Armprivatedns() []Table {
       Client: &armprivatedns.PrivateZonesClient{},
       ListFunc: (&armprivatedns.PrivateZonesClient{}).NewListPager,
 			NewFunc: armprivatedns.NewPrivateZonesClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/privateDnsZones",
 		},
 		{
       Name: "record_set",
@@ -20,6 +21,7 @@ func Armprivatedns() []Table {
       Client: &armprivatedns.RecordSetsClient{},
       ListFunc: (&armprivatedns.RecordSetsClient{}).NewListPager,
 			NewFunc: armprivatedns.NewRecordSetsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}/ALL",
 		},
 		{
       Name: "virtual_network_link",
@@ -28,6 +30,7 @@ func Armprivatedns() []Table {
       Client: &armprivatedns.VirtualNetworkLinksClient{},
       ListFunc: (&armprivatedns.VirtualNetworkLinksClient{}).NewListPager,
 			NewFunc: armprivatedns.NewVirtualNetworkLinksClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}/virtualNetworkLinks",
 		},
 	}
 

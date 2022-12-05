@@ -8,18 +8,17 @@ func Armcustomerlockbox() []*Resource {
 		{
 			NewFunc: armcustomerlockbox.NewGetClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerlockbox/armcustomerlockbox",
+			URL: "",
 		},
 		{
 			NewFunc: armcustomerlockbox.NewPostClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerlockbox/armcustomerlockbox",
+			URL: "",
 		},
 		{
 			NewFunc: armcustomerlockbox.NewRequestsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerlockbox/armcustomerlockbox",
-		},
-		{
-			NewFunc: armcustomerlockbox.NewOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerlockbox/armcustomerlockbox",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.CustomerLockbox/requests",
 		},
 	}
 	return resources

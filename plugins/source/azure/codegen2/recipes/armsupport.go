@@ -6,36 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport
 func Armsupport() []Table {
 	tables := []Table{
 		{
-      Name: "service",
-      Struct: &armsupport.Service{},
-      ResponseStruct: &armsupport.ServicesClientListResponse{},
-      Client: &armsupport.ServicesClient{},
-      ListFunc: (&armsupport.ServicesClient{}).NewListPager,
-			NewFunc: armsupport.NewServicesClient,
-		},
-		{
-      Name: "ticket_details",
-      Struct: &armsupport.TicketDetails{},
-      ResponseStruct: &armsupport.TicketsClientListResponse{},
-      Client: &armsupport.TicketsClient{},
-      ListFunc: (&armsupport.TicketsClient{}).NewListPager,
-			NewFunc: armsupport.NewTicketsClient,
-		},
-		{
-      Name: "operation",
-      Struct: &armsupport.Operation{},
-      ResponseStruct: &armsupport.OperationsClientListResponse{},
-      Client: &armsupport.OperationsClient{},
-      ListFunc: (&armsupport.OperationsClient{}).NewListPager,
-			NewFunc: armsupport.NewOperationsClient,
-		},
-		{
       Name: "communication_details",
       Struct: &armsupport.CommunicationDetails{},
       ResponseStruct: &armsupport.CommunicationsClientListResponse{},
       Client: &armsupport.CommunicationsClient{},
       ListFunc: (&armsupport.CommunicationsClient{}).NewListPager,
 			NewFunc: armsupport.NewCommunicationsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Support/supportTickets/{supportTicketName}/communications",
 		},
 		{
       Name: "problem_classification",
@@ -44,6 +21,25 @@ func Armsupport() []Table {
       Client: &armsupport.ProblemClassificationsClient{},
       ListFunc: (&armsupport.ProblemClassificationsClient{}).NewListPager,
 			NewFunc: armsupport.NewProblemClassificationsClient,
+			URL: "/providers/Microsoft.Support/services/{serviceName}/problemClassifications",
+		},
+		{
+      Name: "service",
+      Struct: &armsupport.Service{},
+      ResponseStruct: &armsupport.ServicesClientListResponse{},
+      Client: &armsupport.ServicesClient{},
+      ListFunc: (&armsupport.ServicesClient{}).NewListPager,
+			NewFunc: armsupport.NewServicesClient,
+			URL: "/providers/Microsoft.Support/services",
+		},
+		{
+      Name: "ticket_details",
+      Struct: &armsupport.TicketDetails{},
+      ResponseStruct: &armsupport.TicketsClientListResponse{},
+      Client: &armsupport.TicketsClient{},
+      ListFunc: (&armsupport.TicketsClient{}).NewListPager,
+			NewFunc: armsupport.NewTicketsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Support/supportTickets",
 		},
 	}
 

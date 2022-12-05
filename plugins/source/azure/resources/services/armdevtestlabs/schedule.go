@@ -51,7 +51,7 @@ func Schedule() *schema.Table {
 
 func fetchSchedule(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
-	svc, err := armdevtestlabs.NewSchedulesClient(cl.SubscriptionId, cl.Creds, cl.Options)
+	svc, err := armdevtestlabs.NewVirtualMachineSchedulesClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {
 		return err
 	}

@@ -12,14 +12,7 @@ func Armwindowsiot() []Table {
       Client: &armwindowsiot.ServicesClient{},
       ListFunc: (&armwindowsiot.ServicesClient{}).NewListPager,
 			NewFunc: armwindowsiot.NewServicesClient,
-		},
-		{
-      Name: "operation_entity",
-      Struct: &armwindowsiot.OperationEntity{},
-      ResponseStruct: &armwindowsiot.OperationsClientListResponse{},
-      Client: &armwindowsiot.OperationsClient{},
-      ListFunc: (&armwindowsiot.OperationsClient{}).NewListPager,
-			NewFunc: armwindowsiot.NewOperationsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.WindowsIoT/deviceServices",
 		},
 	}
 

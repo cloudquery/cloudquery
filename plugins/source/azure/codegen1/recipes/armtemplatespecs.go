@@ -8,10 +8,12 @@ func Armtemplatespecs() []*Resource {
 		{
 			NewFunc: armtemplatespecs.NewClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armtemplatespecs",
+			URL: "",
 		},
 		{
 			NewFunc: armtemplatespecs.NewTemplateSpecVersionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armtemplatespecs",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/templateSpecs/{templateSpecName}/versions",
 		},
 	}
 	return resources
