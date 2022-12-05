@@ -1,0 +1,166 @@
+diff --git a/plugins/source/azure/docs/tables/azure_web_functions.md b/plugins/source/azure/docs/tables/azure_appservice_functions.md
+similarity index 68%
+rename from plugins/source/azure/docs/tables/azure_web_functions.md
+rename to plugins/source/azure/docs/tables/azure_appservice_functions.md
+index d7f914df9ba7..2df5f85bb059 100644
+--- a/plugins/source/azure/docs/tables/azure_web_functions.md
++++ b/plugins/source/azure/docs/tables/azure_appservice_functions.md
+@@ -1,11 +1,11 @@
+-# Table: azure_web_functions
++# Table: azure_appservice_functions
+ 
+-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/web/mgmt/2020-12-01/web#FunctionEnvelope
++https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v2#FunctionEnvelope
+ 
+ The primary key for this table is **id**.
+ 
+ ## Relations
+-This table depends on [azure_web_apps](azure_web_apps.md).
++This table depends on [azure_appservice_sites](azure_appservice_sites.md).
+ 
+ 
+ ## Columns
+@@ -16,20 +16,20 @@ This table depends on [azure_web_apps](azure_web_apps.md).
+ |_cq_id|UUID|
+ |_cq_parent_id|UUID|
+ |subscription_id|String|
+-|web_app_id|String|
+-|function_app_id|String|
+-|script_root_path_href|String|
+-|script_href|String|
++|kind|String|
+ |config_href|String|
+-|test_data_href|String|
+-|secrets_file_href|String|
+-|href|String|
+ |files|JSON|
+-|test_data|String|
++|function_app_id|String|
++|href|String|
+ |invoke_url_template|String|
+-|language|String|
+ |is_disabled|Bool|
++|language|String|
++|script_href|String|
++|script_root_path_href|String|
++|secrets_file_href|String|
++|test_data|String|
++|test_data_href|String|
+ |id (PK)|String|
+ |name|String|
+-|kind|String|
+-|type|String|
+\ No newline at end of file
++|type|String|
++|site_id|String|
+\ No newline at end of file
+diff --git a/plugins/source/azure/docs/tables/azure_subscription_locations.md b/plugins/source/azure/docs/tables/azure_subscription_locations.md
+new file mode 100644
+index 000000000000..8c0ca422814d
+--- /dev/null
++++ b/plugins/source/azure/docs/tables/azure_subscription_locations.md
+@@ -0,0 +1,21 @@
++# Table: azure_subscription_locations
++
++https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription#Location
++
++The primary key for this table is **id**.
++
++
++
++## Columns
++| Name          | Type          |
++| ------------- | ------------- |
++|_cq_source_name|String|
++|_cq_sync_time|Timestamp|
++|_cq_id|UUID|
++|_cq_parent_id|UUID|
++|display_name|String|
++|id (PK)|String|
++|latitude|String|
++|longitude|String|
++|name|String|
++|subscription_id|String|
+\ No newline at end of file
+diff --git a/plugins/source/azure/docs/tables/azure_resources_links.md b/plugins/source/azure/docs/tables/azure_subscription_tenants.md
+similarity index 51%
+rename from plugins/source/azure/docs/tables/azure_resources_links.md
+rename to plugins/source/azure/docs/tables/azure_subscription_tenants.md
+index 2f9536700c7e..f6e157344585 100644
+--- a/plugins/source/azure/docs/tables/azure_resources_links.md
++++ b/plugins/source/azure/docs/tables/azure_subscription_tenants.md
+@@ -1,6 +1,6 @@
+-# Table: azure_resources_links
++# Table: azure_subscription_tenants
+ 
+-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-09-01/links#ResourceLink
++https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription#TenantIDDescription
+ 
+ The primary key for this table is **id**.
+ 
+@@ -15,7 +15,4 @@ The primary key for this table is **id**.
+ |_cq_parent_id|UUID|
+ |subscription_id|String|
+ |id (PK)|String|
+-|name|String|
+-|properties_source_id|String|
+-|properties_target_id|String|
+-|properties_notes|String|
+\ No newline at end of file
++|tenant_id|String|
+\ No newline at end of file
+diff --git a/plugins/source/azure/docs/tables/azure_subscriptions.md b/plugins/source/azure/docs/tables/azure_subscriptions.md
+index 095118ed07c7..2939b06b9fb6 100644
+--- a/plugins/source/azure/docs/tables/azure_subscriptions.md
++++ b/plugins/source/azure/docs/tables/azure_subscriptions.md
+@@ -1,6 +1,6 @@
+ # Table: azure_subscriptions
+ 
+-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions#Subscription
++https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription#Subscription
+ 
+ The primary key for this table is **id**.
+ 
+@@ -14,10 +14,8 @@ The primary key for this table is **id**.
+ |_cq_id|UUID|
+ |_cq_parent_id|UUID|
+ |authorization_source|String|
+-|managed_by_tenants|JSON|
+ |subscription_policies|JSON|
+-|tags|JSON|
+ |display_name|String|
+ |id (PK)|String|
+ |state|String|
+-|tenant_id|String|
+\ No newline at end of file
++|subscription_id|String|
+\ No newline at end of file
+diff --git a/plugins/source/azure/docs/tables/azure_web_publishing_profiles.md b/plugins/source/azure/docs/tables/azure_web_publishing_profiles.md
+deleted file mode 100644
+index a7bd86adc1a4..000000000000
+--- a/plugins/source/azure/docs/tables/azure_web_publishing_profiles.md
++++ /dev/null
+@@ -1,22 +0,0 @@
+-# Table: azure_web_publishing_profiles
+-
+-https://pkg.go.dev/github.com/cloudquery/cloudquery/plugins/source/azure/client/services#PublishingProfile
+-
+-The primary key for this table is **_cq_id**.
+-
+-## Relations
+-This table depends on [azure_web_apps](azure_web_apps.md).
+-
+-
+-## Columns
+-| Name          | Type          |
+-| ------------- | ------------- |
+-|_cq_source_name|String|
+-|_cq_sync_time|Timestamp|
+-|_cq_id (PK)|UUID|
+-|_cq_parent_id|UUID|
+-|subscription_id|String|
+-|web_app_id|String|
+-|publish_url|String|
+-|user_name|String|
+-|user_pwd|String|
+\ No newline at end of file
