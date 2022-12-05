@@ -12,7 +12,7 @@ func fetchInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		output, err := c.Services.SqlService.Instances.List(c.ProjectId).PageToken(nextPageToken).Do()
+		output, err := c.Services.SqlService.Instances.List(c.ProjectId).MaxResults(1000).PageToken(nextPageToken).Do()
 		if err != nil {
 			return errors.WithStack(err)
 		}
