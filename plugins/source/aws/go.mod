@@ -65,7 +65,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/mwaa v1.13.13
 	github.com/aws/aws-sdk-go-v2/service/neptune v1.18.4
 	github.com/aws/aws-sdk-go-v2/service/organizations v1.17.1
-	github.com/aws/aws-sdk-go-v2/service/qldb v1.14.20
+	github.com/aws/aws-sdk-go-v2/service/qldb v1.14.21
 	github.com/aws/aws-sdk-go-v2/service/quicksight v1.28.1
 	github.com/aws/aws-sdk-go-v2/service/ram v1.16.24
 	github.com/aws/aws-sdk-go-v2/service/rds v1.31.1
