@@ -148,12 +148,12 @@ github.com/aws/aws-sdk-go-v2/service/fsx v1.26.1 h1:ZTEvcljzKwTk8Rf1XZd+SDq472DP
 github.com/aws/aws-sdk-go-v2/service/fsx v1.26.1/go.mod h1:H5MgZZRlh3OStnTmRnuN2MvORodgYGe+vqu7WpvMgB4=
 github.com/aws/aws-sdk-go-v2/service/glacier v1.13.20 h1:eJo7jUe/93VOZGNVwNivniwH2Uv4q1LX0kPVCJ8jCPs=
 github.com/aws/aws-sdk-go-v2/service/glacier v1.13.20/go.mod h1:23vmB9WUQxz2t/4HaFlxBXRLq5YXCjfrYcRQrMxaF2I=
-github.com/aws/aws-sdk-go-v2/service/glue v1.37.0 h1:7ahyJcG4iOJOeyGhnsuq0oD1OeNIrBbL0b1EOrLV19Y=
-github.com/aws/aws-sdk-go-v2/service/glue v1.37.0/go.mod h1:kgD6fBlQEkhJlffBbS8SGYtpjboavr9e8B1ZouD84pY=
+github.com/aws/aws-sdk-go-v2/service/glue v1.37.1 h1:Rfs7ZYn9tl/97miu3igPqil+NixAVxXt6JsVQvJPInU=
+github.com/aws/aws-sdk-go-v2/service/glue v1.37.1/go.mod h1:1Nfauq/Z/FS2ptg2rHjDQHkPt1AoflguRQ9AoBumYr0=
 github.com/aws/aws-sdk-go-v2/service/guardduty v1.16.2 h1:vFH3aWKRKpFmW3Gr3i4PmzSHLAqfPiiieFgBmuquX2w=
 github.com/aws/aws-sdk-go-v2/service/guardduty v1.16.2/go.mod h1:bJBlstzVX8emi2VkkOy5IEVSXLY3pB5LMaj3cGlMPWs=
-github.com/aws/aws-sdk-go-v2/service/iam v1.18.23 h1:HOtW30EkfQevdv++mKguMyn8/agh1z2VuBGR4Hou/u8=
-github.com/aws/aws-sdk-go-v2/service/iam v1.18.23/go.mod h1:yQ92mKfw/Gg5AvgxGmfdufKEyVoa9RNBsdnB9j5Gzkk=
+github.com/aws/aws-sdk-go-v2/service/iam v1.18.24 h1:BFn0cIQxNzbOLGU62Wa3R93vZWLgpPveviRvy/dOFtE=
+github.com/aws/aws-sdk-go-v2/service/iam v1.18.24/go.mod h1:zLk41FZN1dZaTK6b0fSEbL4aO/Lvf1ihBXoT+BupDeA=
 github.com/aws/aws-sdk-go-v2/service/identitystore v1.15.7 h1:wPcLSASxXmZtaGYGvpPoxaJsoJ2XFuASu2e04zYdEpY=
 github.com/aws/aws-sdk-go-v2/service/identitystore v1.15.7/go.mod h1:hqreYwh+eLBjjuXEqMP2SnInT+D3D+xLN+LcsuV3kBM=
 github.com/aws/aws-sdk-go-v2/service/inspector v1.12.20 h1:fEW6ZAJMvga3unKf4NuU4GMK0suzgRfwGKwEshcQ9i8=
