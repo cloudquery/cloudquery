@@ -51,16 +51,16 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/fsx v1.26.1
 	github.com/aws/aws-sdk-go-v2/service/glacier v1.13.20
 	github.com/aws/aws-sdk-go-v2/service/guardduty v1.16.2
-	github.com/aws/aws-sdk-go-v2/service/iam v1.18.23
+	github.com/aws/aws-sdk-go-v2/service/iam v1.18.24
 	github.com/aws/aws-sdk-go-v2/service/identitystore v1.15.7
-	github.com/aws/aws-sdk-go-v2/service/inspector v1.12.19
+	github.com/aws/aws-sdk-go-v2/service/inspector v1.12.20
 	github.com/aws/aws-sdk-go-v2/service/inspector2 v1.9.0
-	github.com/aws/aws-sdk-go-v2/service/iot v1.32.0
+	github.com/aws/aws-sdk-go-v2/service/iot v1.32.1
 	github.com/aws/aws-sdk-go-v2/service/kafka v1.18.0
-	github.com/aws/aws-sdk-go-v2/service/kinesis v1.15.24
+	github.com/aws/aws-sdk-go-v2/service/kinesis v1.15.25
 	github.com/aws/aws-sdk-go-v2/service/kms v1.19.0
 	github.com/aws/aws-sdk-go-v2/service/lambda v1.26.0
-	github.com/aws/aws-sdk-go-v2/service/lightsail v1.24.0
+	github.com/aws/aws-sdk-go-v2/service/lightsail v1.24.1
 	github.com/aws/aws-sdk-go-v2/service/mq v1.13.15
 	github.com/aws/aws-sdk-go-v2/service/mwaa v1.13.13
 	github.com/aws/aws-sdk-go-v2/service/neptune v1.18.3
@@ -129,7 +129,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.3.27 // indirect
 	github.com/aws/aws-sdk-go-v2/service/athena v1.20.1
 	github.com/aws/aws-sdk-go-v2/service/backup v1.18.1
-	github.com/aws/aws-sdk-go-v2/service/glue v1.37.0
+	github.com/aws/aws-sdk-go-v2/service/glue v1.37.1
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.9.11 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.7.20 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.20 // indirect
