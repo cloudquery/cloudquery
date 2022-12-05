@@ -1,0 +1,68 @@
+name: Summarize changes to source plugins docs
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  doc-changes:
+    defaults:
+      run:
+        working-directory: scripts/table_diff
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Get PR diff
+        run: |
+          curl -L ${{ github.event.pull_request.diff_url }} > pr.diff
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: scripts/table_diff/go.mod
+          cache: true
+          cache-dependency-path: scripts/table_diff/go.sum
+      - name: Generate docs changes file
+        run: |
+          go run main.go pr.diff changes.json
+      - uses: actions/github-script@v6
+        name: Get doc changes string
+        id: get-changes
+        with:
+          result-encoding: string
+          script: |
+            const { promises: fs } = require('fs')
+            const changes = JSON.parse(await fs.readFile('scripts/table_diff/changes.json', 'utf8'))
+            if (changes.length === 0) {
+              console.log('No changes to docs')
+              return ""
+            }
+            const changesList = changes.map(change => {
+              const { breaking, text } = change
+              if (breaking) {
+                return `- :warning: BREAKING CHANGE: ${text}`
+              }
+              return `- ${text}`
+            }).join('\n')
+            return changesList
+      - name: Find Comment
+        uses: peter-evans/find-comment@v2
+        if: steps.get-changes.outputs.result != ''
+        id: find-comment
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: '### This PR has the following changes to source plugin(s) tables:'
+      - name: Create or update comment
+        uses: peter-evans/create-or-update-comment@v2
+        if: steps.get-changes.outputs.result != ''
+        with:
+          comment-id: ${{ steps.find-comment.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ### This PR has the following changes to source plugin(s) tables:
+
+            ${{steps.get-changes.outputs.result}}
+          edit-mode: replace
