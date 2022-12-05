@@ -1,9 +1,9 @@
 insert into azure_policy_results
 SELECT
-  :'execution_time',
-  :'framework',
-  :'check_id',
-  'Auto provisioning of the Log Analytics agent should be enabled on your subscription',
+  :'execution_time' as execution_time,
+  :'framework' as framework,
+  :'check_id' as check_id,
+  'Auto provisioning of the Log Analytics agent should be enabled on your subscription' as title,
   azure_subscriptions.id AS subscription_id,
 	azure_security_auto_provisioning_settings._cq_id,
   case

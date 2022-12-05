@@ -1,8 +1,8 @@
 insert into aws_policy_results
-select :'execution_time',
-       :'framework',
-       :'check_id',
-       'Ensure credentials unused for 45 days or greater are disabled (Automated)',
+select :'execution_time' as execution_time,
+       :'framework' as framework,
+       :'check_id' as check_id,
+       'Ensure credentials unused for 45 days or greater are disabled (Automated)' as title,
        split_part(r.arn, ':', 5) as account_id,
        r.arn,
        case

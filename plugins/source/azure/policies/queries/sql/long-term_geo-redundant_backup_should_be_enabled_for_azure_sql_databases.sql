@@ -1,9 +1,9 @@
 insert into azure_policy_results
 SELECT
-  :'execution_time',
-  :'framework',
-  :'check_id',
-  'Long-term geo-redundant backup should be enabled for Azure SQL Databases',
+  :'execution_time' as execution_time,
+  :'framework' as framework,
+  :'check_id' as check_id,
+  'Long-term geo-redundant backup should be enabled for Azure SQL Databases' as title,
   asd.subscription_id,
   rp.id,
   case

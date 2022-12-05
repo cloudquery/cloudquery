@@ -1,8 +1,8 @@
 insert into aws_policy_results
 select
-  :'execution_time',
-  :'framework',
-  :'check_id',
+  :'execution_time' as execution_time,
+  :'framework' as framework,
+  :'check_id' as check_id,
   'Ensure IAM password policy requires at least one lowercase letter' as title,
   account_id,
   account_id,

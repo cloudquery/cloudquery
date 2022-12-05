@@ -3,7 +3,7 @@ select
     :'execution_time' as execution_time,
     :'framework' as framework,
     :'check_id' as check_id,
-    '' as title, -- TODO FIXME
+    'S3 buckets with replication rules should be enabled' as title,
     aws_s3_buckets.account_id,
     aws_s3_buckets.arn as resource_id,
     case when
