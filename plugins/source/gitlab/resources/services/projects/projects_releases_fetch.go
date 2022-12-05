@@ -19,7 +19,7 @@ func fetchProjectsReleases(ctx context.Context, meta schema.ClientMeta, parent *
 
 	for {
 		// Get the first page with projects.
-		members, resp, err := c.Gitlab.Releases.ListReleases(project.ID, opt)
+		members, resp, err := c.Gitlab.Releases.ListReleases(project.ID, opt, gitlab.WithContext(ctx))
 		if err != nil {
 			return err
 		}

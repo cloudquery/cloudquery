@@ -5,6 +5,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/gitlab/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/xanzy/go-gitlab"
 )
 
 func fetchSettings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
@@ -13,7 +14,7 @@ func fetchSettings(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 		c.Logger().Warn().Msg("not supported for GitLab SaaS, skipping...")
 		return nil
 	}
-	setting, _, err := c.Gitlab.Settings.GetSettings(nil)
+	setting, _, err := c.Gitlab.Settings.GetSettings(gitlab.WithContext(ctx))
 	if err != nil {
 		return err
 	}
