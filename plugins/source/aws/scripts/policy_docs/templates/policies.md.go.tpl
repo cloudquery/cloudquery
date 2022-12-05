@@ -1,6 +1,6 @@
 # Policies and Compliance Frameworks
 
-CloudQuery SQL Policies for AWS. See the [Readme on Github](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/aws/policies) for installation instructions.
+CloudQuery SQL Policies for AWS. See the [readme on GitHub](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/aws/policies) for installation instructions.
 
 {{- range .}}
 ## {{ .Name }}
