@@ -1,5 +1,10 @@
 # K8s Source Plugin
 
+import { getLatestVersion } from "../../../../../utils/versions";
+import { Badge } from "../../../../../components/Badge";
+
+<Badge text={"Latest: " + getLatestVersion("source", "k8s")}/>
+
 The K8s Source plugin for CloudQuery extracts configuration from a variety of K8s APIs.
 
 ## Libraries in Use

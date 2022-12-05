@@ -1,4 +1,9 @@
-# Okta Plugin
+# Okta Source Plugin
+
+import { getLatestVersion } from "../../../../../utils/versions";
+import { Badge } from "../../../../../components/Badge";
+
+<Badge text={"Latest: " + getLatestVersion("source", "okta")}/>
 
 The CloudQuery Okta plugin extracts Okta resources.
 
@@ -12,7 +17,7 @@ In order to get started with the Okta plugin, you need to create a YAML file in 
 
 The following example sets up the Okta plugin, and connects it to a postgresql destination:
 
-```yaml
+```yaml copy
 kind: source
 spec:
   # Source spec section

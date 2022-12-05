@@ -1,4 +1,9 @@
-# GitHub Plugin
+# GitHub Source Plugin
+
+import { getLatestVersion } from "../../../../../utils/versions";
+import { Badge } from "../../../../../components/Badge";
+
+<Badge text={"Latest: " + getLatestVersion("source", "github")}/>
 
 The CloudQuery GitHub plugin extracts your GitHub API.
 
@@ -14,7 +19,7 @@ so, following the principle of least privilege, it's recommended to grant it rea
 To configure CloudQuery to extract from github, create a `.yml` file in your CloudQuery configuration directory.
 For example, the following configuration will extract information from the `cloudquery` organization, and connect it to a `postgresql` destination plugin
 
-```yaml
+```yaml copy
 kind: source
 spec:
   # Source spec section

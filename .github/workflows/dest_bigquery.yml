@@ -1,0 +1,91 @@
+name: Destination Plugin BigQuery Workflow
+
+on:
+  pull_request:
+    paths:
+      - "plugins/destination/bigquery/**"
+      - ".github/workflows/dest_bigquery.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "plugins/destination/bigquery/**"
+      - ".github/workflows/dest_bigquery.yml"
+
+jobs:
+  plugins-destination-bigquery:
+    timeout-minutes: 10
+    name: "plugins/destination/bigquery"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./plugins/destination/bigquery
+      # Add "id-token" with the intended permissions.
+    permissions:
+      id-token: 'write' # This required for OIDC
+      contents: 'read' # This is required for actions/checkout@v3
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - name: Authenticate to Google Cloud
+        uses: 'google-github-actions/auth@v0'
+        with:
+          workload_identity_provider: 'projects/151868820337/locations/global/workloadIdentityPools/integration-test-pool/providers/integration-test-provider'
+          service_account: 'integration-service-account@cq-integration-tests.iam.gserviceaccount.com'
+      - name: Set up Cloud SDK
+        uses: 'google-github-actions/setup-gcloud@v0.6.0'
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: plugins/destination/bigquery/go.mod
+          cache: true
+          cache-dependency-path: plugins/destination/bigquery/go.sum
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v3
+        with:
+          version: v1.50.1
+          working-directory: plugins/destination/bigquery
+          args: "--config ../../.golangci.yml"
+      - name: Get dependencies
+        run: go get -t -d ./...
+      - name: Build
+        run: go build .
+      - name: Test
+        run: make test
+        env:
+          BIGQUERY_PROJECT_ID: ${{ secrets.BIGQUERY_TEST_PROJECT_ID }}
+          BIGQUERY_DATASET_ID: ${{ secrets.BIGQUERY_TEST_DATASET_ID }}
+  validate-release:
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-1.19.3-release-cache-${{ hashFiles('plugins/destination/bigquery/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-1.19.3-release-cache-plugins-destination-bigquery
+      - name: Set up Go
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: plugins/destination/bigquery/go.mod
+      - name: Install GoReleaser
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        uses: goreleaser/goreleaser-action@v3
+        with:
+          distribution: goreleaser-pro
+          version: latest
+          install-only: true
+      - name: Run GoReleaser Dry-Run
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        run: goreleaser release --snapshot --rm-dist --skip-validate --skip-publish --skip-sign -f ./plugins/destination/bigquery/.goreleaser.yaml
+        env:
+          GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}

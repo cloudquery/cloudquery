@@ -1,0 +1,14 @@
+variables:
+  component: destination/bigquery
+  binary: bigquery
+
+project_name: plugins/destination/bigquery
+
+monorepo:
+  tag_prefix: plugins-destination-bigquery-
+  dir: plugins/destination/bigquery
+
+includes:
+  - from_file:
+      # Relative to the directory Go Releaser is run from (which is the root of the repository)
+      path: ./plugins/.goreleaser.yaml

@@ -39,6 +39,9 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 	if err != nil {
 		return fmt.Errorf("failed to get tables for source %s: %w", sourceSpec.Name, err)
 	}
+	// make sure selectedTables only includes top-level tables; we don't want a flattened list
+	// (a bug in early versions of GetTablesForSpec returned a flattened list)
+	selectedTables = topLevelTables(allTables, selectedTables)
 
 	tableCount := len(selectedTables.FlattenTables())
 
@@ -117,6 +120,7 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 			if err = destClients[i].Write2(gctx, selectedTables, sourceSpec.Name, syncTime, destSubscriptions[i]); err != nil {
 				return fmt.Errorf("failed to write for %s->%s: %w", sourceSpec.Name, destination, err)
 			}
+			// call Close on destination client using the outer context, so that it happens even if writes get cancelled
 			if err := destClients[i].Close(ctx); err != nil {
 				return fmt.Errorf("failed to close destination client for %s->%s: %w", sourceSpec.Name, destination, err)
 			}
@@ -184,4 +188,17 @@ func getTablesForSpec(ctx context.Context, sourceClient *clients.SourceClient, s
 		return tables, true, err
 	}
 	return tables, true, err
+}
+
+// returns only the top-level tables in the given tables list, i.e. tables
+// with no parents
+func topLevelTables(allTables, tables schema.Tables) schema.Tables {
+	var top schema.Tables
+	for _, t := range tables {
+		if allTables.GetTopLevel(t.Name) == nil {
+			continue
+		}
+		top = append(top, t)
+	}
+	return top
 }
