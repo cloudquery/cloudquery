@@ -19,7 +19,7 @@ func isPluginTableDocFile(file *gitdiff.File) bool {
 	if file.IsBinary {
 		return false
 	}
-	// Skip the README as we have everything we need from that tables files
+	// Skip the README as we have everything we need from the tables files
 	if strings.HasSuffix(file.OldName, "README.md") || strings.HasSuffix(file.NewName, "README.md") {
 		return false
 	}
