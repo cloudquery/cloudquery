@@ -156,7 +156,7 @@ func main() {
 	for _, p := range index.Policies {
 		pi, err := getPolicyInfo(prefix, dir, p)
 		if err != nil {
-			log.Fatalf("error reading index: %v", err)
+			log.Fatalf("error reading policy info: %v", err)
 		}
 		info = append(info, pi)
 	}
