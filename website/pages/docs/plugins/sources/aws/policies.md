@@ -1,6 +1,6 @@
 # Policies and Compliance Frameworks
 
-CloudQuery SQL Policies for AWS. See the [Readme on Github](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/aws/policies) for installation instructions.
+CloudQuery SQL Policies for AWS. See the [readme on GitHub](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/aws/policies) for installation instructions.
 ## AWS CIS V1.2.0
 
 ### Requirements
@@ -45,7 +45,7 @@ AWS CIS V1.2.0 performs the following checks:
   - CloudTrail trails should be integrated with CloudWatch Logs
   - Ensure S3 bucket access logging is enabled on the CloudTrail S3 bucket
   - CloudTrail should have encryption at rest enabled
-  - Ensure rotation for customer created CMKs is enabled (Scored)
+  - Ensure rotation for customer created custom master keys is enabled (Scored)
   - VPC flow logging should be enabled in all VPCs
   - Ensure a log metric filter and alarm exist for Management Console sign-in without MFA (Scored)
   - Ensure a log metric filter and alarm exist for usage of "root" account (Score)
@@ -140,7 +140,7 @@ AWS PCI DSS v3.2.1 performs the following checks:
   - Ensure MFA is enabled for all IAM users that have a console password (Scored)
   - Ensure credentials unused for 90 days or greater are disabled (Scored)
   - Password policies for IAM users should have strong configurations
-  - Ensure rotation for customer created CMKs is enabled (Scored)
+  - Ensure rotation for customer created custom master keys is enabled (Scored)
   - Lambda functions should prohibit public access
   - Lambda functions should be in a VPC
   - RDS snapshots should be private
@@ -310,7 +310,7 @@ AWS Foundational Security Best Practices performs the following checks:
   - Classic Load Balancers should have connection draining enabled
   - Classic Load Balancers with HTTPS/SSL listeners should use a predefined security policy that has strong configuration
   - Application Load Balancer should be configured to redirect all HTTP requests to HTTPS
-  - EMR clusters should not have public ip addresses
+  - EMR clusters should not have public IP addresses
   - GuardDuty should be enabled
   - IAM policies should not allow full ''*'' administrative privileges
   - IAM users should not have IAM policies attached
@@ -411,7 +411,7 @@ tables:
 AWS Publicly Available performs the following checks:
   - Find all API Gateway instances that are publicly accessible
   - Find all API Gateway V2 instances (HTTP and Webhook) that are publicly accessible
-  - Find all Cloudfront distributions
+  - Find all CloudFront distributions
   - Find all instances with a public IP address
   - Find all Classic ELBs that are Internet Facing
   - Find all ELB V2s that are Internet Facing
@@ -467,7 +467,7 @@ AWS Unused Resources performs the following checks:
   - Unused API Gateway API key
   - Vaults with no recovery points
   - Disabled CloudFront distribution
-  - Disabled Cloudwatch alarm
+  - Disabled CloudWatch alarm
   - Direct Connect connections in "down" state
   - Direct Connect LAGs with no connections
   - DynamoDB table with no items
