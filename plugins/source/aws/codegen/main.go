@@ -1,12 +1,15 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 
+	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/partitions"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/recipes"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/services"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/tables"
+	"golang.org/x/sync/errgroup"
 )
 
 func generateResources() ([]*recipes.Resource, error) {
@@ -103,18 +106,21 @@ func generateResources() ([]*recipes.Resource, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to set parent-child relationships: %w", err)
 	}
+
+	grp, _ := errgroup.WithContext(context.Background())
 	for _, resource := range resources {
-		if err := resource.Generate(); err != nil {
-			return nil, err
-		}
+		grp.Go(resource.Generate)
 	}
 
-	return resources, nil
+	return resources, grp.Wait()
 }
 
 func main() {
-	err := services.Generate()
-	if err != nil {
+	if err := services.Generate(); err != nil {
+		log.Fatal(err)
+	}
+
+	if err := partitions.Generate(); err != nil {
 		log.Fatal(err)
 	}
 

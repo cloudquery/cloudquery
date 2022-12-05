@@ -131,6 +131,13 @@ func awsResolverTransformer(f reflect.StructField, path string) (string, error) 
 }
 
 func (r *Resource) Generate() error {
+	name := fmt.Sprintf("aws_%s_%s", r.Service, r.SubService)
+	if r.Name != "" {
+		name = r.Name
+	}
+
+	fmt.Println(name)
+
 	_, filename, _, ok := runtime.Caller(0)
 	if !ok {
 		return fmt.Errorf("failed to get caller information")
@@ -155,10 +162,6 @@ func (r *Resource) Generate() error {
 	}
 	if r.NameTransformer != nil {
 		opts = append(opts, codegen.WithNameTransformer(r.NameTransformer))
-	}
-	name := fmt.Sprintf("aws_%s_%s", r.Service, r.SubService)
-	if r.Name != "" {
-		name = r.Name
 	}
 
 	// All table names must be plural

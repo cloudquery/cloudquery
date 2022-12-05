@@ -13,7 +13,7 @@ import (
 	"strings"
 	"text/template"
 
-	caser "github.com/cloudquery/plugin-sdk/caser"
+	"github.com/cloudquery/plugin-sdk/caser"
 )
 
 //go:embed templates/*.go.tpl
@@ -120,6 +120,8 @@ func getServiceInfo(client interface{}) serviceInfo {
 
 // Generate generates a services.go file and individual service files from the clients defined in clients.go
 func Generate() error {
+	fmt.Println("Generate services")
+
 	services := make([]serviceInfo, 0)
 	for _, client := range clients {
 		services = append(services, getServiceInfo(client))
