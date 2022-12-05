@@ -56,7 +56,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/inspector v1.12.20
 	github.com/aws/aws-sdk-go-v2/service/inspector2 v1.9.0
 	github.com/aws/aws-sdk-go-v2/service/iot v1.32.1
-	github.com/aws/aws-sdk-go-v2/service/kafka v1.18.0
+	github.com/aws/aws-sdk-go-v2/service/kafka v1.18.1
 	github.com/aws/aws-sdk-go-v2/service/kinesis v1.15.25
 	github.com/aws/aws-sdk-go-v2/service/kms v1.19.0
 	github.com/aws/aws-sdk-go-v2/service/lambda v1.26.0
