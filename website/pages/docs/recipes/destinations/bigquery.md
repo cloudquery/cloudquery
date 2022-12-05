@@ -10,7 +10,7 @@ spec:
   name: bigquery
   path: cloudquery/bigquery
   version: "VERSION_DESTINATION_BIGQUERY"
-  write_mode: "overwrite-delete-stale"
+  write_mode: "append"
   spec:
     project_id: ${PROJECT_ID}
     dataset_id: ${DATASET_ID}
