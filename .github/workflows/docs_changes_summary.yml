@@ -1,7 +1,8 @@
 name: Summarize changes to source plugins docs
 
 on:
-  pull_request:
+  # Using pull_request_target works on forked PRs too. This is safe since we don't checkout the PR code (we only use the diff)
+  pull_request_target:
     branches:
       - main
 
@@ -48,7 +49,7 @@ jobs:
             }).join('\n')
             return changesList
       - name: Find Comment
-        uses: peter-evans/find-comment@v2
+        uses: peter-evans/find-comment@f4499a714d59013c74a08789b48abe4b704364a0
         if: steps.get-changes.outputs.result != ''
         id: find-comment
         with:
@@ -56,7 +57,7 @@ jobs:
           comment-author: 'github-actions[bot]'
           body-includes: '### This PR has the following changes to source plugin(s) tables:'
       - name: Create or update comment
-        uses: peter-evans/create-or-update-comment@v2
+        uses: peter-evans/create-or-update-comment@5adcb0bb0f9fb3f95ef05400558bdb3f329ee808
         if: steps.get-changes.outputs.result != ''
         with:
           comment-id: ${{ steps.find-comment.outputs.comment-id }}
