@@ -1,9 +1,9 @@
 insert into azure_policy_results
 SELECT
-  :'execution_time',
-  :'framework',
-  :'check_id',
-  'Auditing on SQL server should be enabled',
+  :'execution_time' as execution_time,
+  :'framework' as framework,
+  :'check_id' as check_id,
+  'Auditing on SQL server should be enabled' as title,
   azure_subscriptions.id,
 	azure_subscriptions.display_name AS subscription_name,
 	case

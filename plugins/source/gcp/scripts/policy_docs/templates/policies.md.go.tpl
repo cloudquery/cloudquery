@@ -2,7 +2,7 @@
 
 Policies are a set of standard SQL queries that can be run to check the security and compliance of your cloud resources against best practice frameworks.
 
-This page documents the available CloudQuery SQL Policies for AWS. See the [readme on GitHub](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/aws/policies) for installation instructions.
+This page documents the available CloudQuery SQL Policies for GCP. See the [readme on GitHub](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/gcp/policies) for installation instructions.
 
 {{- range .}}
 ## {{ .Name }}

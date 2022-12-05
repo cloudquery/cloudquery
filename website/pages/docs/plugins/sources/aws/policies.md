@@ -1,6 +1,8 @@
 # Policies and Compliance Frameworks
 
-CloudQuery SQL Policies for AWS. See the [readme on GitHub](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/aws/policies) for installation instructions.
+Policies are a set of standard SQL queries that can be run to check the security and compliance of your cloud resources against best practice frameworks.
+
+This page documents the available CloudQuery SQL Policies for AWS. See the [readme on GitHub](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/aws/policies) for installation instructions.
 ## AWS CIS V1.2.0
 
 ### Requirements
@@ -16,7 +18,6 @@ tables:
   - aws_iam_credential_reports
   - aws_iam_password_policies
   - aws_iam_user_access_keys
-  - aws_iam_user_attached_policies
   - aws_iam_users
   - aws_iam_virtual_mfa_devices
   - aws_kms_keys
@@ -39,7 +40,6 @@ AWS CIS V1.2.0 performs the following checks:
   - Ensure no root account access key exists (Scored)
   - Ensure MFA is enabled for the "root" account
   - Ensure hardware MFA is enabled for the "root" account (Scored)
-  - IAM users should not have IAM policies attached
   - Ensure CloudTrail is enabled in all regions
   - Ensure CloudTrail log file validation is enabled
   - CloudTrail trails should be integrated with CloudWatch Logs
@@ -48,20 +48,6 @@ AWS CIS V1.2.0 performs the following checks:
   - Ensure rotation for customer created custom master keys is enabled (Scored)
   - VPC flow logging should be enabled in all VPCs
   - Ensure a log metric filter and alarm exist for Management Console sign-in without MFA (Scored)
-  - Ensure a log metric filter and alarm exist for usage of "root" account (Score)
-  - Ensure a log metric filter and alarm exist for IAM policy changes (Score)
-  - Ensure a log metric filter and alarm exist for CloudTrail configuration changes (Scored)
-  - Ensure a log metric filter and alarm exist for AWS Management Console authentication failures (Scored)
-  - Ensure a log metric filter and alarm exist for disabling or scheduled deletion of customer created CMKs (Scored)
-  - Ensure a log metric filter and alarm exist for S3 bucket policy changes (Scored)
-  - Ensure a log metric filter and alarm exist for AWS Config configuration changes (Scored)
-  - Ensure a log metric filter and alarm exist for security group changes (Scored)
-  - Ensure a log metric filter and alarm exist for changes to Network Access Control Lists (NACL) (Scored)
-  - Ensure a log metric filter and alarm exist for changes to network gateways (Scored)
-  - Ensure a log metric filter and alarm exist for route table changes (Scored)
-  - Ensure a log metric filter and alarm exist for VPC changes (Scored)
-  - Ensure no security groups allow ingress from 0.0.0.0/0 to port 22 (Scored)
-  - Ensure no security groups allow ingress from 0.0.0.0/0 to port 3389 (Scored)
   - The VPC default security group should not allow inbound and outbound traffic
 ## AWS PCI DSS v3.2.1
 
@@ -126,7 +112,6 @@ AWS PCI DSS v3.2.1 performs the following checks:
   - Amazon EBS snapshots should not be public, determined by the ability to be restorable by anyone
   - The VPC default security group should not allow inbound and outbound traffic
   - Unused EC2 EIPs should be removed
-  - Ensure no security groups allow ingress from 0.0.0.0/0 to port 22 (Scored)
   - VPC flow logging should be enabled in all VPCs
   - Application Load Balancer should be configured to redirect all HTTP requests to HTTPS
   - Elasticsearch domains should be in a VPC
@@ -253,9 +238,6 @@ AWS Foundational Security Best Practices performs the following checks:
   - certificate has less than 30 days to be renewed
   - API Gateway REST and WebSocket API logging should be enabled
   - API Gateway REST API stages should be configured to use SSL certificates for backend authentication
-  - API Gateway REST API stages should have AWS X-Ray tracing enabled
-  - API Gateway should be associated with an AWS WAF web ACL
-  - API Gateway REST API cache data should be encrypted at rest
   - Auto Scaling groups associated with a load balancer should use health checks
   - AWS Config should be enabled
   - CloudFront distributions should have a default root object configured
@@ -286,8 +268,6 @@ AWS Foundational Security Best Practices performs the following checks:
   - EC2 subnets should not automatically assign public IP addresses
   - Unused network access control lists should be removed
   - EC2 instances should not use multiple ENIs
-  - Aggregates rules of security groups with ports and IPs including ipv6
-  - Security groups should not allow unrestricted access to ports with high risk
   - Amazon ECS task definitions should have secure networking modes and user definitions
   - Amazon ECS services should not have public IP addresses assigned to them automatically
   - Amazon EFS should be configured to encrypt file data at rest using AWS KMS
@@ -360,7 +340,6 @@ AWS Foundational Security Best Practices performs the following checks:
   - S3 buckets should have server-side encryption enabled
   - S3 buckets should deny non-HTTPS requests
   - Amazon S3 permissions granted to other AWS accounts in bucket policies should be restricted
-  - S3 Block Public Access setting should be enabled
   - Amazon SageMaker notebook instances should not have direct internet access
   - Secrets Manager secrets should have automatic rotation enabled
   - Secrets Manager secrets configured with automatic rotation should rotate successfully
