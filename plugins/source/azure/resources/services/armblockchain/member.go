@@ -13,7 +13,7 @@ func Member() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armblockchain_member",
 		Resolver:  fetchMember,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "location",
@@ -60,7 +60,7 @@ func fetchMember(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

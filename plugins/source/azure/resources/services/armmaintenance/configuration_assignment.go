@@ -13,7 +13,7 @@ func ConfigurationAssignment() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armmaintenance_configuration_assignment",
 		Resolver:  fetchConfigurationAssignment,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "location",
@@ -55,7 +55,7 @@ func fetchConfigurationAssignment(ctx context.Context, meta schema.ClientMeta, p
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

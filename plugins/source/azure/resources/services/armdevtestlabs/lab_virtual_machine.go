@@ -13,7 +13,7 @@ func LabVirtualMachine() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armdevtestlabs_lab_virtual_machine",
 		Resolver:  fetchLabVirtualMachine,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "properties",
@@ -55,7 +55,7 @@ func fetchLabVirtualMachine(ctx context.Context, meta schema.ClientMeta, parent 
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

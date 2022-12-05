@@ -13,7 +13,7 @@ func DiskPoolZoneInfo() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armstoragepool_disk_pool_zone_info",
 		Resolver:  fetchDiskPoolZoneInfo,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "additional_capabilities",
@@ -40,7 +40,7 @@ func fetchDiskPoolZoneInfo(ctx context.Context, meta schema.ClientMeta, parent *
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

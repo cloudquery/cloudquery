@@ -13,7 +13,7 @@ func ProjectTask() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armdatamigration_project_task",
 		Resolver:  fetchProjectTask,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "etag",
@@ -50,7 +50,7 @@ func fetchProjectTask(ctx context.Context, meta schema.ClientMeta, parent *schem
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

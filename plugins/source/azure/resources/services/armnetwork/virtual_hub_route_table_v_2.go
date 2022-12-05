@@ -13,7 +13,7 @@ func VirtualHubRouteTableV2() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armnetwork_virtual_hub_route_table_v_2",
 		Resolver:  fetchVirtualHubRouteTableV2,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "id",
@@ -45,7 +45,7 @@ func fetchVirtualHubRouteTableV2(ctx context.Context, meta schema.ClientMeta, pa
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

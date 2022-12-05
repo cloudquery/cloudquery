@@ -13,7 +13,7 @@ func PrivateCloud() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armvmwarecloudsimple_private_cloud",
 		Resolver:  fetchPrivateCloud,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "id",
@@ -50,7 +50,7 @@ func fetchPrivateCloud(ctx context.Context, meta schema.ClientMeta, parent *sche
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

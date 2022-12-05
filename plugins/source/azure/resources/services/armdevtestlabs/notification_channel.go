@@ -13,7 +13,7 @@ func NotificationChannel() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armdevtestlabs_notification_channel",
 		Resolver:  fetchNotificationChannel,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "properties",
@@ -55,7 +55,7 @@ func fetchNotificationChannel(ctx context.Context, meta schema.ClientMeta, paren
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

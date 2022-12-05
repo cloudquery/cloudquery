@@ -13,7 +13,7 @@ func FrontendIpConfiguration() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armnetwork_frontend_ip_configuration",
 		Resolver:  fetchFrontendIpConfiguration,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "id",
@@ -55,7 +55,7 @@ func fetchFrontendIpConfiguration(ctx context.Context, meta schema.ClientMeta, p
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

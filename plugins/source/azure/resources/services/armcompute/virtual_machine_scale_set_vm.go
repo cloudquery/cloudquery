@@ -13,7 +13,7 @@ func VirtualMachineScaleSetVm() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armcompute_virtual_machine_scale_set_vm",
 		Resolver:  fetchVirtualMachineScaleSetVm,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "location",
@@ -85,7 +85,7 @@ func fetchVirtualMachineScaleSetVm(ctx context.Context, meta schema.ClientMeta, 
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

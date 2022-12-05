@@ -13,7 +13,7 @@ func MetricDefinition() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armmonitor_metric_definition",
 		Resolver:  fetchMetricDefinition,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "category",
@@ -90,7 +90,7 @@ func fetchMetricDefinition(ctx context.Context, meta schema.ClientMeta, parent *
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

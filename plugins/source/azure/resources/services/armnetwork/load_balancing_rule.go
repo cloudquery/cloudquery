@@ -13,7 +13,7 @@ func LoadBalancingRule() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armnetwork_load_balancing_rule",
 		Resolver:  fetchLoadBalancingRule,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "id",
@@ -50,7 +50,7 @@ func fetchLoadBalancingRule(ctx context.Context, meta schema.ClientMeta, parent 
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

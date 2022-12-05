@@ -13,7 +13,7 @@ func JobResource() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armrecoveryservicesbackup_job_resource",
 		Resolver:  fetchJobResource,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "e_tag",
@@ -55,7 +55,7 @@ func fetchJobResource(ctx context.Context, meta schema.ClientMeta, parent *schem
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

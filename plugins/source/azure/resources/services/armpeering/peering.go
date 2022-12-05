@@ -13,7 +13,7 @@ func Peering() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armpeering_peering",
 		Resolver:  fetchPeering,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "kind",
@@ -65,7 +65,7 @@ func fetchPeering(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

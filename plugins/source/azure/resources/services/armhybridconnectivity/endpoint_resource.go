@@ -13,7 +13,7 @@ func EndpointResource() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armhybridconnectivity_endpoint_resource",
 		Resolver:  fetchEndpointResource,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "properties",
@@ -50,7 +50,7 @@ func fetchEndpointResource(ctx context.Context, meta schema.ClientMeta, parent *
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

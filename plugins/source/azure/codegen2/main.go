@@ -50,14 +50,13 @@ func main() {
 		generateResource(recipes.Tables[i], false)
 		generateResource(recipes.Tables[i], true)
 	}
-	// generateServices(recipes.Tables)
+	generateTables(recipes.Tables)
 }
 
-func generateServices(rr []recipes.Table) {
-	tpl, err := template.New("services.go.tpl").Funcs(template.FuncMap{
+func generateTables(rr []recipes.Table) {
+	tpl, err := template.New("tables.go.tpl").Funcs(template.FuncMap{
 		"ToCamel": strcase.ToCamel,
-		"ToLower": strings.ToLower,
-	}).ParseFS(templateFS, "templates/services.go.tpl")
+	}).ParseFS(templateFS, "templates/tables.go.tpl")
 	if err != nil {
 		log.Fatal(fmt.Errorf("failed to parse services.go.tpl: %w", err))
 	}
@@ -67,7 +66,7 @@ func generateServices(rr []recipes.Table) {
 		log.Fatal(fmt.Errorf("failed to execute services template: %w", err))
 	}
 
-	filePath := path.Join(currentDir, "../client/services.go")
+	filePath := path.Join(currentDir, "../resources/plugin/tables.go")
 	content := buff.Bytes()
 	formattedContent, err := format.Source(buff.Bytes())
 	if err != nil {
@@ -97,6 +96,9 @@ func initResource(r *recipes.Table) {
 		path := strings.Split(runtime.FuncForPC(reflect.ValueOf(r.ListFunc).Pointer()).Name(), ".")
 		r.ListFuncName = path[len(path)-1]
 		r.ListFuncName = strings.TrimSuffix(r.ListFuncName, "-fm")
+		if reflect.TypeOf(r.ListFunc).In(0).Name() == "string" {
+			r.ListFuncHasSubscriptionId = true
+		}
 	}
 	if r.ResponseStruct != nil {
 		r.ResponseStructName = reflect.TypeOf(r.ResponseStruct).Elem().Name()
@@ -175,7 +177,12 @@ func initResource(r *recipes.Table) {
 
 	if r.Multiplex == nil {
 		if !r.ChildTable {
-			r.Table.Multiplex = "client.SubscriptionMultiplex"
+			if r.ListFuncHasSubscriptionId {
+				r.Table.Multiplex = "client.SubscriptionResourceGroupMultiplex"
+			} else {
+				r.Table.Multiplex = "client.SubscriptionMultiplex"
+			}
+			
 		}
 	} else {
 		r.Table.Multiplex = *r.Multiplex

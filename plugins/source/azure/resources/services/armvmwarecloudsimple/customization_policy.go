@@ -13,7 +13,7 @@ func CustomizationPolicy() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armvmwarecloudsimple_customization_policy",
 		Resolver:  fetchCustomizationPolicy,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "id",
@@ -50,7 +50,7 @@ func fetchCustomizationPolicy(ctx context.Context, meta schema.ClientMeta, paren
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

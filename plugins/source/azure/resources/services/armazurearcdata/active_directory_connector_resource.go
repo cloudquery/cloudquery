@@ -13,7 +13,7 @@ func ActiveDirectoryConnectorResource() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armazurearcdata_active_directory_connector_resource",
 		Resolver:  fetchActiveDirectoryConnectorResource,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "properties",
@@ -50,7 +50,7 @@ func fetchActiveDirectoryConnectorResource(ctx context.Context, meta schema.Clie
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

@@ -13,7 +13,7 @@ func ComponentApiKey() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armapplicationinsights_component_api_key",
 		Resolver:  fetchComponentApiKey,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "created_date",
@@ -55,7 +55,7 @@ func fetchComponentApiKey(ctx context.Context, meta schema.ClientMeta, parent *s
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

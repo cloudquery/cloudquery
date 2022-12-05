@@ -13,7 +13,7 @@ func RecordSet() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armprivatedns_record_set",
 		Resolver:  fetchRecordSet,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "etag",
@@ -50,7 +50,7 @@ func fetchRecordSet(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

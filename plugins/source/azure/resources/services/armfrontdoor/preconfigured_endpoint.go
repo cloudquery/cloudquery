@@ -13,7 +13,7 @@ func PreconfiguredEndpoint() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armfrontdoor_preconfigured_endpoint",
 		Resolver:  fetchPreconfiguredEndpoint,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "location",
@@ -55,7 +55,7 @@ func fetchPreconfiguredEndpoint(ctx context.Context, meta schema.ClientMeta, par
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

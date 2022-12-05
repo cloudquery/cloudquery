@@ -13,7 +13,7 @@ func ApplicationGatewayPrivateEndpointConnection() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armnetwork_application_gateway_private_endpoint_connection",
 		Resolver:  fetchApplicationGatewayPrivateEndpointConnection,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "id",
@@ -50,7 +50,7 @@ func fetchApplicationGatewayPrivateEndpointConnection(ctx context.Context, meta 
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

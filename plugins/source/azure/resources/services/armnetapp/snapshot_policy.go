@@ -13,7 +13,7 @@ func SnapshotPolicy() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armnetapp_snapshot_policy",
 		Resolver:  fetchSnapshotPolicy,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "location",
@@ -65,7 +65,7 @@ func fetchSnapshotPolicy(ctx context.Context, meta schema.ClientMeta, parent *sc
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

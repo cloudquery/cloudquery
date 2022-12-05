@@ -6,26 +6,25 @@ import (
 	"fmt"
 
 	// Import all autorest modules
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
 )
 
-
-
 type Client struct {
 	subscriptions []string
 	logger        zerolog.Logger
+	resourceGroups map[string][]*armresources.GenericResourceExpanded
 	// this is set by table client multiplexer
 	SubscriptionId string
+	ResourceGroup string
 	Creds 				azcore.TokenCredential
-	Options *arm.ClientOptions
-	// services       map[string]*Services
+	Options 			*arm.ClientOptions
 }
 
 
@@ -71,19 +70,29 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 	if err != nil {
 		return nil, err
 	}
-
-	// servicesMap := make(map[string]*Services)
-	// for _, subscriptionId := range subscriptions {
-	// 	subscriptionServices, err := InitServices(subscriptionId, creds)
-	// 	if err != nil {
-	// 		return nil, err
-	// 	}
-	// 	servicesMap[subscriptionId] = &subscriptionServices
-	// }
+	resourceGroups := make(map[string][]*armresources.GenericResourceExpanded, len(subscriptions))
+	fiilter := "$filter=Microsoft.Resources/resourceGroups"
+	for _, sub := range subscriptions {
+		cl, err := armresources.NewClient(sub, creds, nil)
+		if err != nil {
+			return nil, err
+		}
+		pager := cl.NewListPager(&armresources.ClientListOptions{
+			Filter: &fiilter,
+		})
+		for pager.More() {
+			page, err := pager.NextPage(ctx)
+			if err != nil {
+				return nil, err
+			}
+			resourceGroups[sub] = append(resourceGroups[sub], page.Value...)
+		}
+	}
+	
 	return &Client{
 		logger:        logger,
 		subscriptions: subscriptions,
-		// services:      servicesMap,
+		resourceGroups: resourceGroups,
 		Creds: creds,
 	}, nil
 }
@@ -100,7 +109,6 @@ func (c *Client) ID() string {
 func (c Client) withSubscription(subscriptionId string) *Client {
 	return &Client{
 		subscriptions:  c.subscriptions,
-		// services:       c.services,
 		logger:         c.logger.With().Str("subscription_id", subscriptionId).Logger(),
 		SubscriptionId: subscriptionId,
 		Creds: c.Creds,
@@ -108,6 +116,15 @@ func (c Client) withSubscription(subscriptionId string) *Client {
 	}
 }
 
-// func (c Client) Services() *Services {
-// 	return c.services[c.SubscriptionId]
-// }
+// withSubscription allows multiplexer to create a new client with given subscriptionId
+func (c Client) withResourceGroup(name string) *Client {
+	return &Client{
+		subscriptions:  c.subscriptions,
+		logger:         c.logger.With().Str("resource_group", name).Logger(),
+		SubscriptionId: c.SubscriptionId,
+		ResourceGroup: 	name,
+		Creds: c.Creds,
+		Options: c.Options,
+	}
+}
+

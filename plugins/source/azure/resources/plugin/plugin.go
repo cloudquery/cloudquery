@@ -15,8 +15,7 @@ func Plugin() *plugins.SourcePlugin {
 	return plugins.NewSourcePlugin(
 		"gcp",
 		Version,
-		nil,
-		// allTables,
+		generatedTables(),
 		client.New,
 	)
 }

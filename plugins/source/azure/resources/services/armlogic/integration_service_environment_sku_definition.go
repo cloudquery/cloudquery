@@ -13,7 +13,7 @@ func IntegrationServiceEnvironmentSkuDefinition() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armlogic_integration_service_environment_sku_definition",
 		Resolver:  fetchIntegrationServiceEnvironmentSkuDefinition,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "capacity",
@@ -40,7 +40,7 @@ func fetchIntegrationServiceEnvironmentSkuDefinition(ctx context.Context, meta s
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

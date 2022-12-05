@@ -13,7 +13,7 @@ func ScriptPackage() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armavs_script_package",
 		Resolver:  fetchScriptPackage,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "properties",
@@ -45,7 +45,7 @@ func fetchScriptPackage(ctx context.Context, meta schema.ClientMeta, parent *sch
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

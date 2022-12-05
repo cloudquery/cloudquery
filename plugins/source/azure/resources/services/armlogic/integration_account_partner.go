@@ -13,7 +13,7 @@ func IntegrationAccountPartner() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armlogic_integration_account_partner",
 		Resolver:  fetchIntegrationAccountPartner,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "properties",
@@ -55,7 +55,7 @@ func fetchIntegrationAccountPartner(ctx context.Context, meta schema.ClientMeta,
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

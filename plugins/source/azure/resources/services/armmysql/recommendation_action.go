@@ -13,7 +13,7 @@ func RecommendationAction() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armmysql_recommendation_action",
 		Resolver:  fetchRecommendationAction,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "properties",
@@ -45,7 +45,7 @@ func fetchRecommendationAction(ctx context.Context, meta schema.ClientMeta, pare
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/cloudquery/plugin-sdk/plugins"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
@@ -21,6 +22,7 @@ import (
 )
 
 const TestSubscription = "12345678-1234-1234-1234-123456789000"
+var testResourceGroup = "test-resource-group"
 
 type MockCreds struct {
 
@@ -84,6 +86,13 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 			},
 			Creds: creds,
 			subscriptions: []string{TestSubscription},
+			resourceGroups: map[string][]*armresources.GenericResourceExpanded{
+				TestSubscription: {
+					{
+						Name: &testResourceGroup,
+					},
+				},
+			},
 		}
 
 		return c, nil

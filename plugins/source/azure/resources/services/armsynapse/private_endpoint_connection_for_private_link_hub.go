@@ -13,7 +13,7 @@ func PrivateEndpointConnectionForPrivateLinkHub() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armsynapse_private_endpoint_connection_for_private_link_hub",
 		Resolver:  fetchPrivateEndpointConnectionForPrivateLinkHub,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "id",
@@ -45,7 +45,7 @@ func fetchPrivateEndpointConnectionForPrivateLinkHub(ctx context.Context, meta s
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

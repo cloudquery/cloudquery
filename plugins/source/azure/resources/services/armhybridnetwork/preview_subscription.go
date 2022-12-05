@@ -13,7 +13,7 @@ func PreviewSubscription() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armhybridnetwork_preview_subscription",
 		Resolver:  fetchPreviewSubscription,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "properties",
@@ -50,7 +50,7 @@ func fetchPreviewSubscription(ctx context.Context, meta schema.ClientMeta, paren
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

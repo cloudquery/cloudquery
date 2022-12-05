@@ -13,7 +13,7 @@ func LinkedServerWithProperties() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armredis_linked_server_with_properties",
 		Resolver:  fetchLinkedServerWithProperties,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "properties",
@@ -45,7 +45,7 @@ func fetchLinkedServerWithProperties(ctx context.Context, meta schema.ClientMeta
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

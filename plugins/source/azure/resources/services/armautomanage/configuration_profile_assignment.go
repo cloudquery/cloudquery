@@ -13,7 +13,7 @@ func ConfigurationProfileAssignment() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armautomanage_configuration_profile_assignment",
 		Resolver:  fetchConfigurationProfileAssignment,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "properties",
@@ -55,7 +55,7 @@ func fetchConfigurationProfileAssignment(ctx context.Context, meta schema.Client
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

@@ -13,7 +13,7 @@ func RegulatoryComplianceAssessment() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armsecurity_regulatory_compliance_assessment",
 		Resolver:  fetchRegulatoryComplianceAssessment,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "properties",
@@ -45,7 +45,7 @@ func fetchRegulatoryComplianceAssessment(ctx context.Context, meta schema.Client
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

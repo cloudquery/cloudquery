@@ -13,7 +13,7 @@ func SapCentralServerInstance() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armworkloads_sap_central_server_instance",
 		Resolver:  fetchSapCentralServerInstance,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "location",
@@ -60,7 +60,7 @@ func fetchSapCentralServerInstance(ctx context.Context, meta schema.ClientMeta, 
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

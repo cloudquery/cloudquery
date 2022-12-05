@@ -13,7 +13,7 @@ func Relation() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armsecurityinsights_relation",
 		Resolver:  fetchRelation,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "etag",
@@ -55,7 +55,7 @@ func fetchRelation(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

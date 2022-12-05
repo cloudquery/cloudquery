@@ -13,7 +13,7 @@ func PublicIpAddress() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armnetwork_public_ip_address",
 		Resolver:  fetchPublicIpAddress,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "extended_location",
@@ -75,7 +75,7 @@ func fetchPublicIpAddress(ctx context.Context, meta schema.ClientMeta, parent *s
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

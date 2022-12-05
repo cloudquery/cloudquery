@@ -13,7 +13,7 @@ func Budget() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armconsumption_budget",
 		Resolver:  fetchBudget,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "e_tag",
@@ -50,7 +50,7 @@ func fetchBudget(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

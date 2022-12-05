@@ -13,7 +13,7 @@ func WorkflowRunActionRepetitionDefinition() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armlogic_workflow_run_action_repetition_definition",
 		Resolver:  fetchWorkflowRunActionRepetitionDefinition,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "properties",
@@ -55,7 +55,7 @@ func fetchWorkflowRunActionRepetitionDefinition(ctx context.Context, meta schema
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

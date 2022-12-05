@@ -13,7 +13,7 @@ func ProtectableContainerResource() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armrecoveryservicesbackup_protectable_container_resource",
 		Resolver:  fetchProtectableContainerResource,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "e_tag",
@@ -55,7 +55,7 @@ func fetchProtectableContainerResource(ctx context.Context, meta schema.ClientMe
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

@@ -13,7 +13,7 @@ func RestorePointCollection() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armcompute_restore_point_collection",
 		Resolver:  fetchRestorePointCollection,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "location",
@@ -55,7 +55,7 @@ func fetchRestorePointCollection(ctx context.Context, meta schema.ClientMeta, pa
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

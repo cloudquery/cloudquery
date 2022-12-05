@@ -44,6 +44,8 @@ type Table struct {
 	ListFunc interface{}
 	// NewFuncName is reflected name from the ListFunc
 	ListFuncName string
+	// Does the ListFunc get subscription_id as a first parameter
+	ListFuncHasSubscriptionId bool
 	// should we use ListAll function
 	ListAll bool
 	// OutputField is field where the result is located in the output struct

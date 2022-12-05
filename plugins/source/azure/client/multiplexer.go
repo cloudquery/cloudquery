@@ -22,3 +22,14 @@ func SubscriptionMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
 	}
 	return c
 }
+
+func SubscriptionResourceGroupMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
+	client := meta.(*Client)
+	var c = make([]schema.ClientMeta, 0)
+	for _, subId := range client.subscriptions {
+		for _, rg := range client.resourceGroups[subId] {
+			c = append(c, client.withSubscription(subId).withResourceGroup(*rg.Name))
+		}
+	}
+	return c
+}

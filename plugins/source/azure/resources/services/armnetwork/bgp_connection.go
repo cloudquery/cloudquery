@@ -13,7 +13,7 @@ func BgpConnection() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armnetwork_bgp_connection",
 		Resolver:  fetchBgpConnection,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "id",
@@ -50,7 +50,7 @@ func fetchBgpConnection(ctx context.Context, meta schema.ClientMeta, parent *sch
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

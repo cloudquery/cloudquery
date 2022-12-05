@@ -13,7 +13,7 @@ func SignalRServiceUsage() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armwebpubsub_signal_r_service_usage",
 		Resolver:  fetchSignalRServiceUsage,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "current_value",
@@ -50,7 +50,7 @@ func fetchSignalRServiceUsage(ctx context.Context, meta schema.ClientMeta, paren
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

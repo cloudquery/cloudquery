@@ -13,7 +13,7 @@ func ServiceReplicaDescription() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armservicefabricmesh_service_replica_description",
 		Resolver:  fetchServiceReplicaDescription,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "code_packages",
@@ -50,7 +50,7 @@ func fetchServiceReplicaDescription(ctx context.Context, meta schema.ClientMeta,
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

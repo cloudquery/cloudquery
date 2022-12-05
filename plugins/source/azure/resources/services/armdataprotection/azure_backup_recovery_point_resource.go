@@ -13,7 +13,7 @@ func AzureBackupRecoveryPointResource() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armdataprotection_azure_backup_recovery_point_resource",
 		Resolver:  fetchAzureBackupRecoveryPointResource,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "id",
@@ -45,7 +45,7 @@ func fetchAzureBackupRecoveryPointResource(ctx context.Context, meta schema.Clie
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

@@ -13,7 +13,7 @@ func ChangeResourceResult() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armchanges_change_resource_result",
 		Resolver:  fetchChangeResourceResult,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "properties",
@@ -45,7 +45,7 @@ func fetchChangeResourceResult(ctx context.Context, meta schema.ClientMeta, pare
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

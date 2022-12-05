@@ -13,7 +13,7 @@ func Assignment() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armblueprint_assignment",
 		Resolver:  fetchAssignment,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "identity",
@@ -55,7 +55,7 @@ func fetchAssignment(ctx context.Context, meta schema.ClientMeta, parent *schema
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

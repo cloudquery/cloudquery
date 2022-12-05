@@ -13,7 +13,7 @@ func AnalysisResultSingletonResource() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armtestbase_analysis_result_singleton_resource",
 		Resolver:  fetchAnalysisResultSingletonResource,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "id",
@@ -45,7 +45,7 @@ func fetchAnalysisResultSingletonResource(ctx context.Context, meta schema.Clien
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

@@ -13,7 +13,7 @@ func BuildServiceAgentPoolResource() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armappplatform_build_service_agent_pool_resource",
 		Resolver:  fetchBuildServiceAgentPoolResource,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "properties",
@@ -50,7 +50,7 @@ func fetchBuildServiceAgentPoolResource(ctx context.Context, meta schema.ClientM
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

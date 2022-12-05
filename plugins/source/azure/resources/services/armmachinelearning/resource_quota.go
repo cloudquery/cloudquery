@@ -13,7 +13,7 @@ func ResourceQuota() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armmachinelearning_resource_quota",
 		Resolver:  fetchResourceQuota,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "aml_workspace_location",
@@ -55,7 +55,7 @@ func fetchResourceQuota(ctx context.Context, meta schema.ClientMeta, parent *sch
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

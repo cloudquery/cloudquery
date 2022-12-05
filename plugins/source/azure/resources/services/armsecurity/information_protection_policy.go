@@ -13,7 +13,7 @@ func InformationProtectionPolicy() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armsecurity_information_protection_policy",
 		Resolver:  fetchInformationProtectionPolicy,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "properties",
@@ -45,7 +45,7 @@ func fetchInformationProtectionPolicy(ctx context.Context, meta schema.ClientMet
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {
