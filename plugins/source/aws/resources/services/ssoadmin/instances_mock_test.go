@@ -16,6 +16,7 @@ func buildInstances(t *testing.T, ctrl *gomock.Controller) client.Services {
 	im := types.InstanceMetadata{}
 	ps := types.PermissionSet{}
 	as := types.AccountAssignment{}
+	ip := `{"key": "value"}`
 	err := faker.FakeObject(&ps)
 	if err != nil {
 		t.Fatal(err)
@@ -47,6 +48,11 @@ func buildInstances(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mSSOAdmin.EXPECT().ListAccountAssignments(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&ssoadmin.ListAccountAssignmentsOutput{
 			AccountAssignments: []types.AccountAssignment{as},
+		}, nil)
+
+	mSSOAdmin.EXPECT().GetInlinePolicyForPermissionSet(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&ssoadmin.GetInlinePolicyForPermissionSetOutput{
+			InlinePolicy: &ip,
 		}, nil)
 
 	return client.Services{
