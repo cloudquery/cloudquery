@@ -128,7 +128,7 @@ func extractQueries(prefix, sqlPath string) ([]Query, error) {
 
 		titleMatches := reTitle.FindAllStringSubmatch(content, -1)
 		if len(titleMatches) == 0 {
-			log.Printf("WARN: Failed to find title for query in %v", sqlPath)
+			return nil, fmt.Errorf("failed to find title for query in %v", sqlPath)
 		} else if len(titleMatches) >= 1 {
 			q.Title = titleMatches[0][1]
 		}
