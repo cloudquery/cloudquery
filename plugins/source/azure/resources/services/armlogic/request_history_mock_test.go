@@ -14,7 +14,7 @@ import (
 )
 
 func createRequestHistory(router *mux.Router) error {
-	var item armlogic.WorkflowRunActionRequestHistoriesClientListResponse
+	var item armlogic.WorkflowRunActionRepetitionsRequestHistoriesClientListResponse
 	if err := faker.FakeObject(&item); err != nil {
 		return err
 	}
@@ -22,7 +22,7 @@ func createRequestHistory(router *mux.Router) error {
 	emptyStr := ""
 	item.NextLink = &emptyStr
 
-	router.HandleFunc("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/runs/{runName}/actions/{actionName}/requestHistories", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/runs/{runName}/actions/{actionName}/repetitions/{repetitionName}/requestHistories", func(w http.ResponseWriter, r *http.Request) {
 		b, err := json.Marshal(&item)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)

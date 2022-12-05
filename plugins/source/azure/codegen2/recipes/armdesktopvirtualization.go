@@ -6,13 +6,22 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualizat
 func Armdesktopvirtualization() []Table {
 	tables := []Table{
 		{
-      Name: "application",
-      Struct: &armdesktopvirtualization.Application{},
-      ResponseStruct: &armdesktopvirtualization.ApplicationsClientListResponse{},
-      Client: &armdesktopvirtualization.ApplicationsClient{},
-      ListFunc: (&armdesktopvirtualization.ApplicationsClient{}).NewListPager,
-			NewFunc: armdesktopvirtualization.NewApplicationsClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/applicationGroups/{applicationGroupName}/applications",
+      Name: "session_host",
+      Struct: &armdesktopvirtualization.SessionHost{},
+      ResponseStruct: &armdesktopvirtualization.SessionHostsClientListResponse{},
+      Client: &armdesktopvirtualization.SessionHostsClient{},
+      ListFunc: (&armdesktopvirtualization.SessionHostsClient{}).NewListPager,
+			NewFunc: armdesktopvirtualization.NewSessionHostsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/sessionHosts",
+		},
+		{
+      Name: "user_session",
+      Struct: &armdesktopvirtualization.UserSession{},
+      ResponseStruct: &armdesktopvirtualization.UserSessionsClientListResponse{},
+      Client: &armdesktopvirtualization.UserSessionsClient{},
+      ListFunc: (&armdesktopvirtualization.UserSessionsClient{}).NewListPager,
+			NewFunc: armdesktopvirtualization.NewUserSessionsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/sessionHosts/{sessionHostName}/userSessions",
 		},
 		{
       Name: "host_pool",
@@ -24,6 +33,15 @@ func Armdesktopvirtualization() []Table {
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DesktopVirtualization/hostPools",
 		},
 		{
+      Name: "application",
+      Struct: &armdesktopvirtualization.Application{},
+      ResponseStruct: &armdesktopvirtualization.ApplicationsClientListResponse{},
+      Client: &armdesktopvirtualization.ApplicationsClient{},
+      ListFunc: (&armdesktopvirtualization.ApplicationsClient{}).NewListPager,
+			NewFunc: armdesktopvirtualization.NewApplicationsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/applicationGroups/{applicationGroupName}/applications",
+		},
+		{
       Name: "msix_package",
       Struct: &armdesktopvirtualization.MSIXPackage{},
       ResponseStruct: &armdesktopvirtualization.MSIXPackagesClientListResponse{},
@@ -33,15 +51,6 @@ func Armdesktopvirtualization() []Table {
 			URL: "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/msixPackages",
 		},
 		{
-      Name: "session_host",
-      Struct: &armdesktopvirtualization.SessionHost{},
-      ResponseStruct: &armdesktopvirtualization.SessionHostsClientListResponse{},
-      Client: &armdesktopvirtualization.SessionHostsClient{},
-      ListFunc: (&armdesktopvirtualization.SessionHostsClient{}).NewListPager,
-			NewFunc: armdesktopvirtualization.NewSessionHostsClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/sessionHosts",
-		},
-		{
       Name: "start_menu_item",
       Struct: &armdesktopvirtualization.StartMenuItem{},
       ResponseStruct: &armdesktopvirtualization.StartMenuItemsClientListResponse{},
@@ -49,15 +58,6 @@ func Armdesktopvirtualization() []Table {
       ListFunc: (&armdesktopvirtualization.StartMenuItemsClient{}).NewListPager,
 			NewFunc: armdesktopvirtualization.NewStartMenuItemsClient,
 			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/applicationGroups/{applicationGroupName}/startMenuItems",
-		},
-		{
-      Name: "user_session",
-      Struct: &armdesktopvirtualization.UserSession{},
-      ResponseStruct: &armdesktopvirtualization.UserSessionsClientListResponse{},
-      Client: &armdesktopvirtualization.UserSessionsClient{},
-      ListFunc: (&armdesktopvirtualization.UserSessionsClient{}).NewListPager,
-			NewFunc: armdesktopvirtualization.NewUserSessionsClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/sessionHosts/{sessionHostName}/userSessions",
 		},
 	}
 

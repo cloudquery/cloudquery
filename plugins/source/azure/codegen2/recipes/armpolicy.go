@@ -6,15 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolic
 func Armpolicy() []Table {
 	tables := []Table{
 		{
-      Name: "assignment",
-      Struct: &armpolicy.Assignment{},
-      ResponseStruct: &armpolicy.AssignmentsClientListResponse{},
-      Client: &armpolicy.AssignmentsClient{},
-      ListFunc: (&armpolicy.AssignmentsClient{}).NewListPager,
-			NewFunc: armpolicy.NewAssignmentsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyAssignments",
-		},
-		{
       Name: "data_policy_manifest",
       Struct: &armpolicy.DataPolicyManifest{},
       ResponseStruct: &armpolicy.DataPolicyManifestsClientListResponse{},
@@ -40,6 +31,15 @@ func Armpolicy() []Table {
       ListFunc: (&armpolicy.ExemptionsClient{}).NewListPager,
 			NewFunc: armpolicy.NewExemptionsClient,
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyExemptions",
+		},
+		{
+      Name: "assignment",
+      Struct: &armpolicy.Assignment{},
+      ResponseStruct: &armpolicy.AssignmentsClientListResponse{},
+      Client: &armpolicy.AssignmentsClient{},
+      ListFunc: (&armpolicy.AssignmentsClient{}).NewListPager,
+			NewFunc: armpolicy.NewAssignmentsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyAssignments",
 		},
 		{
       Name: "set_definition",

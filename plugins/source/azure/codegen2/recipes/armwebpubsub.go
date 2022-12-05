@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/webpubsub/armwebpu
 func Armwebpubsub() []Table {
 	tables := []Table{
 		{
-      Name: "hub",
-      Struct: &armwebpubsub.Hub{},
-      ResponseStruct: &armwebpubsub.HubsClientListResponse{},
-      Client: &armwebpubsub.HubsClient{},
-      ListFunc: (&armwebpubsub.HubsClient{}).NewListPager,
-			NewFunc: armwebpubsub.NewHubsClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/hubs",
+      Name: "shared_private_link_resource",
+      Struct: &armwebpubsub.SharedPrivateLinkResource{},
+      ResponseStruct: &armwebpubsub.SharedPrivateLinkResourcesClientListResponse{},
+      Client: &armwebpubsub.SharedPrivateLinkResourcesClient{},
+      ListFunc: (&armwebpubsub.SharedPrivateLinkResourcesClient{}).NewListPager,
+			NewFunc: armwebpubsub.NewSharedPrivateLinkResourcesClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/sharedPrivateLinkResources",
 		},
 		{
       Name: "private_endpoint_connection",
@@ -33,15 +33,6 @@ func Armwebpubsub() []Table {
 			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/privateLinkResources",
 		},
 		{
-      Name: "shared_private_link_resource",
-      Struct: &armwebpubsub.SharedPrivateLinkResource{},
-      ResponseStruct: &armwebpubsub.SharedPrivateLinkResourcesClientListResponse{},
-      Client: &armwebpubsub.SharedPrivateLinkResourcesClient{},
-      ListFunc: (&armwebpubsub.SharedPrivateLinkResourcesClient{}).NewListPager,
-			NewFunc: armwebpubsub.NewSharedPrivateLinkResourcesClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/sharedPrivateLinkResources",
-		},
-		{
       Name: "signal_r_service_usage",
       Struct: &armwebpubsub.SignalRServiceUsage{},
       ResponseStruct: &armwebpubsub.UsagesClientListResponse{},
@@ -49,6 +40,15 @@ func Armwebpubsub() []Table {
       ListFunc: (&armwebpubsub.UsagesClient{}).NewListPager,
 			NewFunc: armwebpubsub.NewUsagesClient,
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.SignalRService/locations/{location}/usages",
+		},
+		{
+      Name: "hub",
+      Struct: &armwebpubsub.Hub{},
+      ResponseStruct: &armwebpubsub.HubsClientListResponse{},
+      Client: &armwebpubsub.HubsClient{},
+      ListFunc: (&armwebpubsub.HubsClient{}).NewListPager,
+			NewFunc: armwebpubsub.NewHubsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/hubs",
 		},
 	}
 

@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managedservices/ar
 func Armmanagedservices() []Table {
 	tables := []Table{
 		{
-      Name: "marketplace_registration_definition",
-      Struct: &armmanagedservices.MarketplaceRegistrationDefinition{},
-      ResponseStruct: &armmanagedservices.MarketplaceRegistrationDefinitionsClientListResponse{},
-      Client: &armmanagedservices.MarketplaceRegistrationDefinitionsClient{},
-      ListFunc: (&armmanagedservices.MarketplaceRegistrationDefinitionsClient{}).NewListPager,
-			NewFunc: armmanagedservices.NewMarketplaceRegistrationDefinitionsClient,
-			URL: "/{scope}/providers/Microsoft.ManagedServices/marketplaceRegistrationDefinitions",
+      Name: "registration_definition",
+      Struct: &armmanagedservices.RegistrationDefinition{},
+      ResponseStruct: &armmanagedservices.RegistrationDefinitionsClientListResponse{},
+      Client: &armmanagedservices.RegistrationDefinitionsClient{},
+      ListFunc: (&armmanagedservices.RegistrationDefinitionsClient{}).NewListPager,
+			NewFunc: armmanagedservices.NewRegistrationDefinitionsClient,
+			URL: "/{scope}/providers/Microsoft.ManagedServices/registrationDefinitions",
 		},
 		{
       Name: "marketplace_registration_definition",
@@ -33,13 +33,13 @@ func Armmanagedservices() []Table {
 			URL: "/{scope}/providers/Microsoft.ManagedServices/registrationAssignments",
 		},
 		{
-      Name: "registration_definition",
-      Struct: &armmanagedservices.RegistrationDefinition{},
-      ResponseStruct: &armmanagedservices.RegistrationDefinitionsClientListResponse{},
-      Client: &armmanagedservices.RegistrationDefinitionsClient{},
-      ListFunc: (&armmanagedservices.RegistrationDefinitionsClient{}).NewListPager,
-			NewFunc: armmanagedservices.NewRegistrationDefinitionsClient,
-			URL: "/{scope}/providers/Microsoft.ManagedServices/registrationDefinitions",
+      Name: "marketplace_registration_definition",
+      Struct: &armmanagedservices.MarketplaceRegistrationDefinition{},
+      ResponseStruct: &armmanagedservices.MarketplaceRegistrationDefinitionsClientListResponse{},
+      Client: &armmanagedservices.MarketplaceRegistrationDefinitionsClient{},
+      ListFunc: (&armmanagedservices.MarketplaceRegistrationDefinitionsClient{}).NewListPager,
+			NewFunc: armmanagedservices.NewMarketplaceRegistrationDefinitionsClient,
+			URL: "/{scope}/providers/Microsoft.ManagedServices/marketplaceRegistrationDefinitions",
 		},
 	}
 

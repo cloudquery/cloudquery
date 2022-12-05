@@ -6,6 +6,24 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkl
 func Armworkloads() []Table {
 	tables := []Table{
 		{
+      Name: "sap_database_instance",
+      Struct: &armworkloads.SAPDatabaseInstance{},
+      ResponseStruct: &armworkloads.SAPDatabaseInstancesClientListResponse{},
+      Client: &armworkloads.SAPDatabaseInstancesClient{},
+      ListFunc: (&armworkloads.SAPDatabaseInstancesClient{}).NewListPager,
+			NewFunc: armworkloads.NewSAPDatabaseInstancesClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/databaseInstances",
+		},
+		{
+      Name: "wordpress_instance_resource",
+      Struct: &armworkloads.WordpressInstanceResource{},
+      ResponseStruct: &armworkloads.WordpressInstancesClientListResponse{},
+      Client: &armworkloads.WordpressInstancesClient{},
+      ListFunc: (&armworkloads.WordpressInstancesClient{}).NewListPager,
+			NewFunc: armworkloads.NewWordpressInstancesClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/phpWorkloads/{phpWorkloadName}/wordpressInstances",
+		},
+		{
       Name: "monitor",
       Struct: &armworkloads.Monitor{},
       ResponseStruct: &armworkloads.MonitorsClientListResponse{},
@@ -42,15 +60,6 @@ func Armworkloads() []Table {
 			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/centralInstances",
 		},
 		{
-      Name: "sap_database_instance",
-      Struct: &armworkloads.SAPDatabaseInstance{},
-      ResponseStruct: &armworkloads.SAPDatabaseInstancesClientListResponse{},
-      Client: &armworkloads.SAPDatabaseInstancesClient{},
-      ListFunc: (&armworkloads.SAPDatabaseInstancesClient{}).NewListPager,
-			NewFunc: armworkloads.NewSAPDatabaseInstancesClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/databaseInstances",
-		},
-		{
       Name: "sku_definition",
       Struct: &armworkloads.SKUDefinition{},
       ResponseStruct: &armworkloads.SKUsClientListResponse{},
@@ -58,15 +67,6 @@ func Armworkloads() []Table {
       ListFunc: (&armworkloads.SKUsClient{}).NewListPager,
 			NewFunc: armworkloads.NewSKUsClient,
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Workloads/skus",
-		},
-		{
-      Name: "wordpress_instance_resource",
-      Struct: &armworkloads.WordpressInstanceResource{},
-      ResponseStruct: &armworkloads.WordpressInstancesClientListResponse{},
-      Client: &armworkloads.WordpressInstancesClient{},
-      ListFunc: (&armworkloads.WordpressInstancesClient{}).NewListPager,
-			NewFunc: armworkloads.NewWordpressInstancesClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/phpWorkloads/{phpWorkloadName}/wordpressInstances",
 		},
 	}
 

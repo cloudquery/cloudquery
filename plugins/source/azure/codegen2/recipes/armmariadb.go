@@ -6,15 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb
 func Armmariadb() []Table {
 	tables := []Table{
 		{
-      Name: "performance_tier_properties",
-      Struct: &armmariadb.PerformanceTierProperties{},
-      ResponseStruct: &armmariadb.LocationBasedPerformanceTierClientListResponse{},
-      Client: &armmariadb.LocationBasedPerformanceTierClient{},
-      ListFunc: (&armmariadb.LocationBasedPerformanceTierClient{}).NewListPager,
-			NewFunc: armmariadb.NewLocationBasedPerformanceTierClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMariaDB/locations/{locationName}/performanceTiers",
-		},
-		{
       Name: "recommendation_action",
       Struct: &armmariadb.RecommendationAction{},
       ResponseStruct: &armmariadb.LocationBasedRecommendedActionSessionsResultClientListResponse{},
@@ -22,6 +13,15 @@ func Armmariadb() []Table {
       ListFunc: (&armmariadb.LocationBasedRecommendedActionSessionsResultClient{}).NewListPager,
 			NewFunc: armmariadb.NewLocationBasedRecommendedActionSessionsResultClient,
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMariaDB/locations/{locationName}/recommendedActionSessionsOperationResults/{operationId}",
+		},
+		{
+      Name: "performance_tier_properties",
+      Struct: &armmariadb.PerformanceTierProperties{},
+      ResponseStruct: &armmariadb.LocationBasedPerformanceTierClientListResponse{},
+      Client: &armmariadb.LocationBasedPerformanceTierClient{},
+      ListFunc: (&armmariadb.LocationBasedPerformanceTierClient{}).NewListPager,
+			NewFunc: armmariadb.NewLocationBasedPerformanceTierClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMariaDB/locations/{locationName}/performanceTiers",
 		},
 		{
       Name: "performance_tier_properties",

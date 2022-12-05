@@ -46,7 +46,7 @@ func AvailableDelegation() *schema.Table {
 
 func fetchAvailableDelegation(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
-	svc, err := armnetwork.NewAvailableResourceGroupDelegationsClient(cl.SubscriptionId, cl.Creds, cl.Options)
+	svc, err := armnetwork.NewAvailableDelegationsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {
 		return err
 	}

@@ -6,15 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armcon
 func Armconsumption() []Table {
 	tables := []Table{
 		{
-      Name: "budget",
-      Struct: &armconsumption.Budget{},
-      ResponseStruct: &armconsumption.BudgetsClientListResponse{},
-      Client: &armconsumption.BudgetsClient{},
-      ListFunc: (&armconsumption.BudgetsClient{}).NewListPager,
-			NewFunc: armconsumption.NewBudgetsClient,
-			URL: "/{scope}/providers/Microsoft.Consumption/budgets",
-		},
-		{
       Name: "marketplace",
       Struct: &armconsumption.Marketplace{},
       ResponseStruct: &armconsumption.MarketplacesClientListResponse{},
@@ -22,15 +13,6 @@ func Armconsumption() []Table {
       ListFunc: (&armconsumption.MarketplacesClient{}).NewListPager,
 			NewFunc: armconsumption.NewMarketplacesClient,
 			URL: "/{scope}/providers/Microsoft.Consumption/marketplaces",
-		},
-		{
-      Name: "reservation_transaction",
-      Struct: &armconsumption.ReservationTransaction{},
-      ResponseStruct: &armconsumption.ReservationTransactionsClientListResponse{},
-      Client: &armconsumption.ReservationTransactionsClient{},
-      ListFunc: (&armconsumption.ReservationTransactionsClient{}).NewListPager,
-			NewFunc: armconsumption.NewReservationTransactionsClient,
-			URL: "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/providers/Microsoft.Consumption/reservationTransactions",
 		},
 		{
       Name: "reservation_detail",
@@ -42,6 +24,15 @@ func Armconsumption() []Table {
 			URL: "/{resourceScope}/providers/Microsoft.Consumption/reservationDetails",
 		},
 		{
+      Name: "reservation_transaction",
+      Struct: &armconsumption.ReservationTransaction{},
+      ResponseStruct: &armconsumption.ReservationTransactionsClientListResponse{},
+      Client: &armconsumption.ReservationTransactionsClient{},
+      ListFunc: (&armconsumption.ReservationTransactionsClient{}).NewListPager,
+			NewFunc: armconsumption.NewReservationTransactionsClient,
+			URL: "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/providers/Microsoft.Consumption/reservationTransactions",
+		},
+		{
       Name: "reservation_summary",
       Struct: &armconsumption.ReservationSummary{},
       ResponseStruct: &armconsumption.ReservationsSummariesClientListResponse{},
@@ -49,6 +40,15 @@ func Armconsumption() []Table {
       ListFunc: (&armconsumption.ReservationsSummariesClient{}).NewListPager,
 			NewFunc: armconsumption.NewReservationsSummariesClient,
 			URL: "/{resourceScope}/providers/Microsoft.Consumption/reservationSummaries",
+		},
+		{
+      Name: "budget",
+      Struct: &armconsumption.Budget{},
+      ResponseStruct: &armconsumption.BudgetsClientListResponse{},
+      Client: &armconsumption.BudgetsClient{},
+      ListFunc: (&armconsumption.BudgetsClient{}).NewListPager,
+			NewFunc: armconsumption.NewBudgetsClient,
+			URL: "/{scope}/providers/Microsoft.Consumption/budgets",
 		},
 	}
 

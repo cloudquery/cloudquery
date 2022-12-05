@@ -6,15 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresou
 func Armresources() []Table {
 	tables := []Table{
 		{
-      Name: "generic_resource_expanded",
-      Struct: &armresources.GenericResourceExpanded{},
-      ResponseStruct: &armresources.ClientListResponse{},
-      Client: &armresources.Client{},
-      ListFunc: (&armresources.Client{}).NewListPager,
-			NewFunc: armresources.NewClient,
-			URL: "/subscriptions/{subscriptionId}/resources",
-		},
-		{
       Name: "deployment_operation",
       Struct: &armresources.DeploymentOperation{},
       ResponseStruct: &armresources.DeploymentOperationsClientListResponse{},
@@ -24,15 +15,6 @@ func Armresources() []Table {
 			URL: "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/deployments/{deploymentName}/operations",
 		},
 		{
-      Name: "provider",
-      Struct: &armresources.Provider{},
-      ResponseStruct: &armresources.ProvidersClientListResponse{},
-      Client: &armresources.ProvidersClient{},
-      ListFunc: (&armresources.ProvidersClient{}).NewListPager,
-			NewFunc: armresources.NewProvidersClient,
-			URL: "/subscriptions/{subscriptionId}/providers",
-		},
-		{
       Name: "resource_group",
       Struct: &armresources.ResourceGroup{},
       ResponseStruct: &armresources.ResourceGroupsClientListResponse{},
@@ -40,6 +22,15 @@ func Armresources() []Table {
       ListFunc: (&armresources.ResourceGroupsClient{}).NewListPager,
 			NewFunc: armresources.NewResourceGroupsClient,
 			URL: "/subscriptions/{subscriptionId}/resourcegroups",
+		},
+		{
+      Name: "provider",
+      Struct: &armresources.Provider{},
+      ResponseStruct: &armresources.ProvidersClientListResponse{},
+      Client: &armresources.ProvidersClient{},
+      ListFunc: (&armresources.ProvidersClient{}).NewListPager,
+			NewFunc: armresources.NewProvidersClient,
+			URL: "/subscriptions/{subscriptionId}/providers",
 		},
 		{
       Name: "tag_details",

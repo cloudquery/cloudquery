@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armst
 func Armstoragecache() []Table {
 	tables := []Table{
 		{
-      Name: "resource_usage",
-      Struct: &armstoragecache.ResourceUsage{},
-      ResponseStruct: &armstoragecache.AscUsagesClientListResponse{},
-      Client: &armstoragecache.AscUsagesClient{},
-      ListFunc: (&armstoragecache.AscUsagesClient{}).NewListPager,
-			NewFunc: armstoragecache.NewAscUsagesClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.StorageCache/locations/{location}/usages",
+      Name: "resource_sku",
+      Struct: &armstoragecache.ResourceSKU{},
+      ResponseStruct: &armstoragecache.SKUsClientListResponse{},
+      Client: &armstoragecache.SKUsClient{},
+      ListFunc: (&armstoragecache.SKUsClient{}).NewListPager,
+			NewFunc: armstoragecache.NewSKUsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.StorageCache/skus",
 		},
 		{
       Name: "cache",
@@ -24,13 +24,13 @@ func Armstoragecache() []Table {
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.StorageCache/caches",
 		},
 		{
-      Name: "resource_sku",
-      Struct: &armstoragecache.ResourceSKU{},
-      ResponseStruct: &armstoragecache.SKUsClientListResponse{},
-      Client: &armstoragecache.SKUsClient{},
-      ListFunc: (&armstoragecache.SKUsClient{}).NewListPager,
-			NewFunc: armstoragecache.NewSKUsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.StorageCache/skus",
+      Name: "resource_usage",
+      Struct: &armstoragecache.ResourceUsage{},
+      ResponseStruct: &armstoragecache.AscUsagesClientListResponse{},
+      Client: &armstoragecache.AscUsagesClient{},
+      ListFunc: (&armstoragecache.AscUsagesClient{}).NewListPager,
+			NewFunc: armstoragecache.NewAscUsagesClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.StorageCache/locations/{location}/usages",
 		},
 		{
       Name: "usage_model",

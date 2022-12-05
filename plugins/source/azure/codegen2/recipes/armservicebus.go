@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armserv
 func Armservicebus() []Table {
 	tables := []Table{
 		{
-      Name: "arm_disaster_recovery",
-      Struct: &armservicebus.ArmDisasterRecovery{},
-      ResponseStruct: &armservicebus.DisasterRecoveryConfigsClientListResponse{},
-      Client: &armservicebus.DisasterRecoveryConfigsClient{},
-      ListFunc: (&armservicebus.DisasterRecoveryConfigsClient{}).NewListPager,
-			NewFunc: armservicebus.NewDisasterRecoveryConfigsClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/disasterRecoveryConfigs",
+      Name: "private_endpoint_connection",
+      Struct: &armservicebus.PrivateEndpointConnection{},
+      ResponseStruct: &armservicebus.PrivateEndpointConnectionsClientListResponse{},
+      Client: &armservicebus.PrivateEndpointConnectionsClient{},
+      ListFunc: (&armservicebus.PrivateEndpointConnectionsClient{}).NewListPager,
+			NewFunc: armservicebus.NewPrivateEndpointConnectionsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/privateEndpointConnections",
 		},
 		{
       Name: "migration_config_properties",
@@ -33,13 +33,13 @@ func Armservicebus() []Table {
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ServiceBus/namespaces",
 		},
 		{
-      Name: "private_endpoint_connection",
-      Struct: &armservicebus.PrivateEndpointConnection{},
-      ResponseStruct: &armservicebus.PrivateEndpointConnectionsClientListResponse{},
-      Client: &armservicebus.PrivateEndpointConnectionsClient{},
-      ListFunc: (&armservicebus.PrivateEndpointConnectionsClient{}).NewListPager,
-			NewFunc: armservicebus.NewPrivateEndpointConnectionsClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/privateEndpointConnections",
+      Name: "arm_disaster_recovery",
+      Struct: &armservicebus.ArmDisasterRecovery{},
+      ResponseStruct: &armservicebus.DisasterRecoveryConfigsClientListResponse{},
+      Client: &armservicebus.DisasterRecoveryConfigsClient{},
+      ListFunc: (&armservicebus.DisasterRecoveryConfigsClient{}).NewListPager,
+			NewFunc: armservicebus.NewDisasterRecoveryConfigsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/disasterRecoveryConfigs",
 		},
 	}
 

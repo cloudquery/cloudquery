@@ -6,15 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevce
 func Armdevcenter() []Table {
 	tables := []Table{
 		{
-      Name: "allowed_environment_type",
-      Struct: &armdevcenter.AllowedEnvironmentType{},
-      ResponseStruct: &armdevcenter.ProjectAllowedEnvironmentTypesClientListResponse{},
-      Client: &armdevcenter.ProjectAllowedEnvironmentTypesClient{},
-      ListFunc: (&armdevcenter.ProjectAllowedEnvironmentTypesClient{}).NewListPager,
-			NewFunc: armdevcenter.NewProjectAllowedEnvironmentTypesClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/allowedEnvironmentTypes",
-		},
-		{
       Name: "project_environment_type",
       Struct: &armdevcenter.ProjectEnvironmentType{},
       ResponseStruct: &armdevcenter.ProjectEnvironmentTypesClientListResponse{},
@@ -22,6 +13,15 @@ func Armdevcenter() []Table {
       ListFunc: (&armdevcenter.ProjectEnvironmentTypesClient{}).NewListPager,
 			NewFunc: armdevcenter.NewProjectEnvironmentTypesClient,
 			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/environmentTypes",
+		},
+		{
+      Name: "allowed_environment_type",
+      Struct: &armdevcenter.AllowedEnvironmentType{},
+      ResponseStruct: &armdevcenter.ProjectAllowedEnvironmentTypesClientListResponse{},
+      Client: &armdevcenter.ProjectAllowedEnvironmentTypesClient{},
+      ListFunc: (&armdevcenter.ProjectAllowedEnvironmentTypesClient{}).NewListPager,
+			NewFunc: armdevcenter.NewProjectAllowedEnvironmentTypesClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/allowedEnvironmentTypes",
 		},
 	}
 

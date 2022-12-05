@@ -6,15 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/relay/armrelay"
 func Armrelay() []Table {
 	tables := []Table{
 		{
-      Name: "namespace",
-      Struct: &armrelay.Namespace{},
-      ResponseStruct: &armrelay.NamespacesClientListResponse{},
-      Client: &armrelay.NamespacesClient{},
-      ListFunc: (&armrelay.NamespacesClient{}).NewListPager,
-			NewFunc: armrelay.NewNamespacesClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Relay/namespaces",
-		},
-		{
       Name: "private_endpoint_connection",
       Struct: &armrelay.PrivateEndpointConnection{},
       ResponseStruct: &armrelay.PrivateEndpointConnectionsClientListResponse{},
@@ -22,6 +13,15 @@ func Armrelay() []Table {
       ListFunc: (&armrelay.PrivateEndpointConnectionsClient{}).NewListPager,
 			NewFunc: armrelay.NewPrivateEndpointConnectionsClient,
 			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/privateEndpointConnections",
+		},
+		{
+      Name: "namespace",
+      Struct: &armrelay.Namespace{},
+      ResponseStruct: &armrelay.NamespacesClientListResponse{},
+      Client: &armrelay.NamespacesClient{},
+      ListFunc: (&armrelay.NamespacesClient{}).NewListPager,
+			NewFunc: armrelay.NewNamespacesClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Relay/namespaces",
 		},
 	}
 

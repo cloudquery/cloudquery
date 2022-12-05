@@ -6,6 +6,15 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/privatedns/armpriv
 func Armprivatedns() []Table {
 	tables := []Table{
 		{
+      Name: "virtual_network_link",
+      Struct: &armprivatedns.VirtualNetworkLink{},
+      ResponseStruct: &armprivatedns.VirtualNetworkLinksClientListResponse{},
+      Client: &armprivatedns.VirtualNetworkLinksClient{},
+      ListFunc: (&armprivatedns.VirtualNetworkLinksClient{}).NewListPager,
+			NewFunc: armprivatedns.NewVirtualNetworkLinksClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}/virtualNetworkLinks",
+		},
+		{
       Name: "private_zone",
       Struct: &armprivatedns.PrivateZone{},
       ResponseStruct: &armprivatedns.PrivateZonesClientListResponse{},
@@ -22,15 +31,6 @@ func Armprivatedns() []Table {
       ListFunc: (&armprivatedns.RecordSetsClient{}).NewListPager,
 			NewFunc: armprivatedns.NewRecordSetsClient,
 			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}/ALL",
-		},
-		{
-      Name: "virtual_network_link",
-      Struct: &armprivatedns.VirtualNetworkLink{},
-      ResponseStruct: &armprivatedns.VirtualNetworkLinksClientListResponse{},
-      Client: &armprivatedns.VirtualNetworkLinksClient{},
-      ListFunc: (&armprivatedns.VirtualNetworkLinksClient{}).NewListPager,
-			NewFunc: armprivatedns.NewVirtualNetworkLinksClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}/virtualNetworkLinks",
 		},
 	}
 

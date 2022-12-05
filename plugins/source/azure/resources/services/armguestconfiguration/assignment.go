@@ -51,7 +51,7 @@ func Assignment() *schema.Table {
 
 func fetchAssignment(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
-	svc, err := armguestconfiguration.NewHCRPAssignmentsClient(cl.SubscriptionId, cl.Creds, cl.Options)
+	svc, err := armguestconfiguration.NewAssignmentsVMSSClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {
 		return err
 	}

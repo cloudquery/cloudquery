@@ -6,24 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blueprint/armbluep
 func Armblueprint() []Table {
 	tables := []Table{
 		{
-      Name: "assignment_operation",
-      Struct: &armblueprint.AssignmentOperation{},
-      ResponseStruct: &armblueprint.AssignmentOperationsClientListResponse{},
-      Client: &armblueprint.AssignmentOperationsClient{},
-      ListFunc: (&armblueprint.AssignmentOperationsClient{}).NewListPager,
-			NewFunc: armblueprint.NewAssignmentOperationsClient,
-			URL: "/{resourceScope}/providers/Microsoft.Blueprint/blueprintAssignments/{assignmentName}/assignmentOperations",
-		},
-		{
-      Name: "assignment",
-      Struct: &armblueprint.Assignment{},
-      ResponseStruct: &armblueprint.AssignmentsClientListResponse{},
-      Client: &armblueprint.AssignmentsClient{},
-      ListFunc: (&armblueprint.AssignmentsClient{}).NewListPager,
-			NewFunc: armblueprint.NewAssignmentsClient,
-			URL: "/{resourceScope}/providers/Microsoft.Blueprint/blueprintAssignments",
-		},
-		{
       Name: "blueprint",
       Struct: &armblueprint.Blueprint{},
       ResponseStruct: &armblueprint.BlueprintsClientListResponse{},
@@ -40,6 +22,24 @@ func Armblueprint() []Table {
       ListFunc: (&armblueprint.PublishedBlueprintsClient{}).NewListPager,
 			NewFunc: armblueprint.NewPublishedBlueprintsClient,
 			URL: "/{resourceScope}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/versions",
+		},
+		{
+      Name: "assignment_operation",
+      Struct: &armblueprint.AssignmentOperation{},
+      ResponseStruct: &armblueprint.AssignmentOperationsClientListResponse{},
+      Client: &armblueprint.AssignmentOperationsClient{},
+      ListFunc: (&armblueprint.AssignmentOperationsClient{}).NewListPager,
+			NewFunc: armblueprint.NewAssignmentOperationsClient,
+			URL: "/{resourceScope}/providers/Microsoft.Blueprint/blueprintAssignments/{assignmentName}/assignmentOperations",
+		},
+		{
+      Name: "assignment",
+      Struct: &armblueprint.Assignment{},
+      ResponseStruct: &armblueprint.AssignmentsClientListResponse{},
+      Client: &armblueprint.AssignmentsClient{},
+      ListFunc: (&armblueprint.AssignmentsClient{}).NewListPager,
+			NewFunc: armblueprint.NewAssignmentsClient,
+			URL: "/{resourceScope}/providers/Microsoft.Blueprint/blueprintAssignments",
 		},
 	}
 

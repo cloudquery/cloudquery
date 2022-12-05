@@ -6,15 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/notificationhubs/a
 func Armnotificationhubs() []Table {
 	tables := []Table{
 		{
-      Name: "notification_hub_resource",
-      Struct: &armnotificationhubs.NotificationHubResource{},
-      ResponseStruct: &armnotificationhubs.ClientListResponse{},
-      Client: &armnotificationhubs.Client{},
-      ListFunc: (&armnotificationhubs.Client{}).NewListPager,
-			NewFunc: armnotificationhubs.NewClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces/{namespaceName}/notificationHubs",
-		},
-		{
       Name: "namespace_resource",
       Struct: &armnotificationhubs.NamespaceResource{},
       ResponseStruct: &armnotificationhubs.NamespacesClientListResponse{},

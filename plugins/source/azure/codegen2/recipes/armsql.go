@@ -6,6 +6,15 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
 func Armsql() []Table {
 	tables := []Table{
 		{
+      Name: "virtual_cluster",
+      Struct: &armsql.VirtualCluster{},
+      ResponseStruct: &armsql.VirtualClustersClientListResponse{},
+      Client: &armsql.VirtualClustersClient{},
+      ListFunc: (&armsql.VirtualClustersClient{}).NewListPager,
+			NewFunc: armsql.NewVirtualClustersClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/virtualClusters",
+		},
+		{
       Name: "deleted_server",
       Struct: &armsql.DeletedServer{},
       ResponseStruct: &armsql.DeletedServersClientListResponse{},
@@ -13,24 +22,6 @@ func Armsql() []Table {
       ListFunc: (&armsql.DeletedServersClient{}).NewListPager,
 			NewFunc: armsql.NewDeletedServersClient,
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/deletedServers",
-		},
-		{
-      Name: "instance_pool",
-      Struct: &armsql.InstancePool{},
-      ResponseStruct: &armsql.InstancePoolsClientListResponse{},
-      Client: &armsql.InstancePoolsClient{},
-      ListFunc: (&armsql.InstancePoolsClient{}).NewListPager,
-			NewFunc: armsql.NewInstancePoolsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/instancePools",
-		},
-		{
-      Name: "managed_instance",
-      Struct: &armsql.ManagedInstance{},
-      ResponseStruct: &armsql.ManagedInstancesClientListResponse{},
-      Client: &armsql.ManagedInstancesClient{},
-      ListFunc: (&armsql.ManagedInstancesClient{}).NewListPager,
-			NewFunc: armsql.NewManagedInstancesClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/managedInstances",
 		},
 		{
       Name: "server",
@@ -42,13 +33,22 @@ func Armsql() []Table {
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/servers",
 		},
 		{
-      Name: "virtual_cluster",
-      Struct: &armsql.VirtualCluster{},
-      ResponseStruct: &armsql.VirtualClustersClientListResponse{},
-      Client: &armsql.VirtualClustersClient{},
-      ListFunc: (&armsql.VirtualClustersClient{}).NewListPager,
-			NewFunc: armsql.NewVirtualClustersClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/virtualClusters",
+      Name: "managed_instance",
+      Struct: &armsql.ManagedInstance{},
+      ResponseStruct: &armsql.ManagedInstancesClientListResponse{},
+      Client: &armsql.ManagedInstancesClient{},
+      ListFunc: (&armsql.ManagedInstancesClient{}).NewListPager,
+			NewFunc: armsql.NewManagedInstancesClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/managedInstances",
+		},
+		{
+      Name: "instance_pool",
+      Struct: &armsql.InstancePool{},
+      ResponseStruct: &armsql.InstancePoolsClientListResponse{},
+      Client: &armsql.InstancePoolsClient{},
+      ListFunc: (&armsql.InstancePoolsClient{}).NewListPager,
+			NewFunc: armsql.NewInstancePoolsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/instancePools",
 		},
 	}
 

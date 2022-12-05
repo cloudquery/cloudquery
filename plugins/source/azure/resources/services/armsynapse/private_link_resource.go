@@ -41,7 +41,7 @@ func PrivateLinkResource() *schema.Table {
 
 func fetchPrivateLinkResource(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
-	svc, err := armsynapse.NewPrivateLinkResourcesClient(cl.SubscriptionId, cl.Creds, cl.Options)
+	svc, err := armsynapse.NewPrivateLinkHubPrivateLinkResourcesClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {
 		return err
 	}

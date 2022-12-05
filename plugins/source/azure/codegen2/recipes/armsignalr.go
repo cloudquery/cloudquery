@@ -6,24 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/signalr/armsignalr
 func Armsignalr() []Table {
 	tables := []Table{
 		{
-      Name: "custom_certificate",
-      Struct: &armsignalr.CustomCertificate{},
-      ResponseStruct: &armsignalr.CustomCertificatesClientListResponse{},
-      Client: &armsignalr.CustomCertificatesClient{},
-      ListFunc: (&armsignalr.CustomCertificatesClient{}).NewListPager,
-			NewFunc: armsignalr.NewCustomCertificatesClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/customCertificates",
-		},
-		{
-      Name: "custom_domain",
-      Struct: &armsignalr.CustomDomain{},
-      ResponseStruct: &armsignalr.CustomDomainsClientListResponse{},
-      Client: &armsignalr.CustomDomainsClient{},
-      ListFunc: (&armsignalr.CustomDomainsClient{}).NewListPager,
-			NewFunc: armsignalr.NewCustomDomainsClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/customDomains",
-		},
-		{
       Name: "private_endpoint_connection",
       Struct: &armsignalr.PrivateEndpointConnection{},
       ResponseStruct: &armsignalr.PrivateEndpointConnectionsClientListResponse{},
@@ -51,6 +33,15 @@ func Armsignalr() []Table {
 			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/sharedPrivateLinkResources",
 		},
 		{
+      Name: "custom_certificate",
+      Struct: &armsignalr.CustomCertificate{},
+      ResponseStruct: &armsignalr.CustomCertificatesClientListResponse{},
+      Client: &armsignalr.CustomCertificatesClient{},
+      ListFunc: (&armsignalr.CustomCertificatesClient{}).NewListPager,
+			NewFunc: armsignalr.NewCustomCertificatesClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/customCertificates",
+		},
+		{
       Name: "usage",
       Struct: &armsignalr.Usage{},
       ResponseStruct: &armsignalr.UsagesClientListResponse{},
@@ -58,6 +49,15 @@ func Armsignalr() []Table {
       ListFunc: (&armsignalr.UsagesClient{}).NewListPager,
 			NewFunc: armsignalr.NewUsagesClient,
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.SignalRService/locations/{location}/usages",
+		},
+		{
+      Name: "custom_domain",
+      Struct: &armsignalr.CustomDomain{},
+      ResponseStruct: &armsignalr.CustomDomainsClientListResponse{},
+      Client: &armsignalr.CustomDomainsClient{},
+      ListFunc: (&armsignalr.CustomDomainsClient{}).NewListPager,
+			NewFunc: armsignalr.NewCustomDomainsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/customDomains",
 		},
 	}
 

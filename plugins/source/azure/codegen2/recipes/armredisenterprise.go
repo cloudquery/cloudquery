@@ -6,15 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/ar
 func Armredisenterprise() []Table {
 	tables := []Table{
 		{
-      Name: "cluster",
-      Struct: &armredisenterprise.Cluster{},
-      ResponseStruct: &armredisenterprise.ClientListResponse{},
-      Client: &armredisenterprise.Client{},
-      ListFunc: (&armredisenterprise.Client{}).NewListPager,
-			NewFunc: armredisenterprise.NewClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Cache/redisEnterprise",
-		},
-		{
       Name: "private_endpoint_connection",
       Struct: &armredisenterprise.PrivateEndpointConnection{},
       ResponseStruct: &armredisenterprise.PrivateEndpointConnectionsClientListResponse{},

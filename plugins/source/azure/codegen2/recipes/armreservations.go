@@ -6,13 +6,22 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armre
 func Armreservations() []Table {
 	tables := []Table{
 		{
-      Name: "operation_response",
-      Struct: &armreservations.OperationResponse{},
-      ResponseStruct: &armreservations.OperationClientListResponse{},
-      Client: &armreservations.OperationClient{},
-      ListFunc: (&armreservations.OperationClient{}).NewListPager,
-			NewFunc: armreservations.NewOperationClient,
-			URL: "/providers/Microsoft.Capacity/operations",
+      Name: "quota_request_details",
+      Struct: &armreservations.QuotaRequestDetails{},
+      ResponseStruct: &armreservations.QuotaRequestStatusClientListResponse{},
+      Client: &armreservations.QuotaRequestStatusClient{},
+      ListFunc: (&armreservations.QuotaRequestStatusClient{}).NewListPager,
+			NewFunc: armreservations.NewQuotaRequestStatusClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/resourceProviders/{providerId}/locations/{location}/serviceLimitsRequests",
+		},
+		{
+      Name: "reservation_order_response",
+      Struct: &armreservations.ReservationOrderResponse{},
+      ResponseStruct: &armreservations.ReservationOrderClientListResponse{},
+      Client: &armreservations.ReservationOrderClient{},
+      ListFunc: (&armreservations.ReservationOrderClient{}).NewListPager,
+			NewFunc: armreservations.NewReservationOrderClient,
+			URL: "/providers/Microsoft.Capacity/reservationOrders",
 		},
 		{
       Name: "current_quota_limit_base",
@@ -24,13 +33,13 @@ func Armreservations() []Table {
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/resourceProviders/{providerId}/locations/{location}/serviceLimits",
 		},
 		{
-      Name: "quota_request_details",
-      Struct: &armreservations.QuotaRequestDetails{},
-      ResponseStruct: &armreservations.QuotaRequestStatusClientListResponse{},
-      Client: &armreservations.QuotaRequestStatusClient{},
-      ListFunc: (&armreservations.QuotaRequestStatusClient{}).NewListPager,
-			NewFunc: armreservations.NewQuotaRequestStatusClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/resourceProviders/{providerId}/locations/{location}/serviceLimitsRequests",
+      Name: "operation_response",
+      Struct: &armreservations.OperationResponse{},
+      ResponseStruct: &armreservations.OperationClientListResponse{},
+      Client: &armreservations.OperationClient{},
+      ListFunc: (&armreservations.OperationClient{}).NewListPager,
+			NewFunc: armreservations.NewOperationClient,
+			URL: "/providers/Microsoft.Capacity/operations",
 		},
 		{
       Name: "reservation_response",
@@ -40,15 +49,6 @@ func Armreservations() []Table {
       ListFunc: (&armreservations.ReservationClient{}).NewListPager,
 			NewFunc: armreservations.NewReservationClient,
 			URL: "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations",
-		},
-		{
-      Name: "reservation_order_response",
-      Struct: &armreservations.ReservationOrderResponse{},
-      ResponseStruct: &armreservations.ReservationOrderClientListResponse{},
-      Client: &armreservations.ReservationOrderClient{},
-      ListFunc: (&armreservations.ReservationOrderClient{}).NewListPager,
-			NewFunc: armreservations.NewReservationOrderClient,
-			URL: "/providers/Microsoft.Capacity/reservationOrders",
 		},
 	}
 

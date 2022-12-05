@@ -6,15 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/digitaltwins/armdi
 func Armdigitaltwins() []Table {
 	tables := []Table{
 		{
-      Name: "description",
-      Struct: &armdigitaltwins.Description{},
-      ResponseStruct: &armdigitaltwins.ClientListResponse{},
-      Client: &armdigitaltwins.Client{},
-      ListFunc: (&armdigitaltwins.Client{}).NewListPager,
-			NewFunc: armdigitaltwins.NewClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DigitalTwins/digitalTwinsInstances",
-		},
-		{
       Name: "endpoint_resource",
       Struct: &armdigitaltwins.EndpointResource{},
       ResponseStruct: &armdigitaltwins.EndpointClientListResponse{},

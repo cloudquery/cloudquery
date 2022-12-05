@@ -6,6 +6,15 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn"
 func Armcdn() []Table {
 	tables := []Table{
 		{
+      Name: "resource_usage",
+      Struct: &armcdn.ResourceUsage{},
+      ResponseStruct: &armcdn.ResourceUsageClientListResponse{},
+      Client: &armcdn.ResourceUsageClient{},
+      ListFunc: (&armcdn.ResourceUsageClient{}).NewListPager,
+			NewFunc: armcdn.NewResourceUsageClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/checkResourceUsage",
+		},
+		{
       Name: "edge_node",
       Struct: &armcdn.EdgeNode{},
       ResponseStruct: &armcdn.EdgeNodesClientListResponse{},
@@ -13,15 +22,6 @@ func Armcdn() []Table {
       ListFunc: (&armcdn.EdgeNodesClient{}).NewListPager,
 			NewFunc: armcdn.NewEdgeNodesClient,
 			URL: "/providers/Microsoft.Cdn/edgenodes",
-		},
-		{
-      Name: "managed_rule_set_definition",
-      Struct: &armcdn.ManagedRuleSetDefinition{},
-      ResponseStruct: &armcdn.ManagedRuleSetsClientListResponse{},
-      Client: &armcdn.ManagedRuleSetsClient{},
-      ListFunc: (&armcdn.ManagedRuleSetsClient{}).NewListPager,
-			NewFunc: armcdn.NewManagedRuleSetsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/cdnWebApplicationFirewallManagedRuleSets",
 		},
 		{
       Name: "web_application_firewall_policy",
@@ -33,6 +33,15 @@ func Armcdn() []Table {
 			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/cdnWebApplicationFirewallPolicies",
 		},
 		{
+      Name: "managed_rule_set_definition",
+      Struct: &armcdn.ManagedRuleSetDefinition{},
+      ResponseStruct: &armcdn.ManagedRuleSetsClientListResponse{},
+      Client: &armcdn.ManagedRuleSetsClient{},
+      ListFunc: (&armcdn.ManagedRuleSetsClient{}).NewListPager,
+			NewFunc: armcdn.NewManagedRuleSetsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/cdnWebApplicationFirewallManagedRuleSets",
+		},
+		{
       Name: "profile",
       Struct: &armcdn.Profile{},
       ResponseStruct: &armcdn.ProfilesClientListResponse{},
@@ -40,15 +49,6 @@ func Armcdn() []Table {
       ListFunc: (&armcdn.ProfilesClient{}).NewListPager,
 			NewFunc: armcdn.NewProfilesClient,
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/profiles",
-		},
-		{
-      Name: "resource_usage",
-      Struct: &armcdn.ResourceUsage{},
-      ResponseStruct: &armcdn.ResourceUsageClientListResponse{},
-      Client: &armcdn.ResourceUsageClient{},
-      ListFunc: (&armcdn.ResourceUsageClient{}).NewListPager,
-			NewFunc: armcdn.NewResourceUsageClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/checkResourceUsage",
 		},
 	}
 

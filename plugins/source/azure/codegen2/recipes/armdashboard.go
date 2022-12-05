@@ -6,15 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dashboard/armdashb
 func Armdashboard() []Table {
 	tables := []Table{
 		{
-      Name: "managed_grafana",
-      Struct: &armdashboard.ManagedGrafana{},
-      ResponseStruct: &armdashboard.GrafanaClientListResponse{},
-      Client: &armdashboard.GrafanaClient{},
-      ListFunc: (&armdashboard.GrafanaClient{}).NewListPager,
-			NewFunc: armdashboard.NewGrafanaClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Dashboard/grafana",
-		},
-		{
       Name: "private_endpoint_connection",
       Struct: &armdashboard.PrivateEndpointConnection{},
       ResponseStruct: &armdashboard.PrivateEndpointConnectionsClientListResponse{},
@@ -22,6 +13,15 @@ func Armdashboard() []Table {
       ListFunc: (&armdashboard.PrivateEndpointConnectionsClient{}).NewListPager,
 			NewFunc: armdashboard.NewPrivateEndpointConnectionsClient,
 			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Dashboard/grafana/{workspaceName}/privateEndpointConnections",
+		},
+		{
+      Name: "managed_grafana",
+      Struct: &armdashboard.ManagedGrafana{},
+      ResponseStruct: &armdashboard.GrafanaClientListResponse{},
+      Client: &armdashboard.GrafanaClient{},
+      ListFunc: (&armdashboard.GrafanaClient{}).NewListPager,
+			NewFunc: armdashboard.NewGrafanaClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Dashboard/grafana",
 		},
 		{
       Name: "private_link_resource",

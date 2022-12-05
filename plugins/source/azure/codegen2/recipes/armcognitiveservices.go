@@ -24,13 +24,13 @@ func Armcognitiveservices() []Table {
 			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/commitmentPlans",
 		},
 		{
-      Name: "commitment_tier",
-      Struct: &armcognitiveservices.CommitmentTier{},
-      ResponseStruct: &armcognitiveservices.CommitmentTiersClientListResponse{},
-      Client: &armcognitiveservices.CommitmentTiersClient{},
-      ListFunc: (&armcognitiveservices.CommitmentTiersClient{}).NewListPager,
-			NewFunc: armcognitiveservices.NewCommitmentTiersClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/locations/{location}/commitmentTiers",
+      Name: "resource_sku",
+      Struct: &armcognitiveservices.ResourceSKU{},
+      ResponseStruct: &armcognitiveservices.ResourceSKUsClientListResponse{},
+      Client: &armcognitiveservices.ResourceSKUsClient{},
+      ListFunc: (&armcognitiveservices.ResourceSKUsClient{}).NewListPager,
+			NewFunc: armcognitiveservices.NewResourceSKUsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/skus",
 		},
 		{
       Name: "account",
@@ -42,6 +42,15 @@ func Armcognitiveservices() []Table {
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/deletedAccounts",
 		},
 		{
+      Name: "commitment_tier",
+      Struct: &armcognitiveservices.CommitmentTier{},
+      ResponseStruct: &armcognitiveservices.CommitmentTiersClientListResponse{},
+      Client: &armcognitiveservices.CommitmentTiersClient{},
+      ListFunc: (&armcognitiveservices.CommitmentTiersClient{}).NewListPager,
+			NewFunc: armcognitiveservices.NewCommitmentTiersClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/locations/{location}/commitmentTiers",
+		},
+		{
       Name: "deployment",
       Struct: &armcognitiveservices.Deployment{},
       ResponseStruct: &armcognitiveservices.DeploymentsClientListResponse{},
@@ -49,15 +58,6 @@ func Armcognitiveservices() []Table {
       ListFunc: (&armcognitiveservices.DeploymentsClient{}).NewListPager,
 			NewFunc: armcognitiveservices.NewDeploymentsClient,
 			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/deployments",
-		},
-		{
-      Name: "resource_sku",
-      Struct: &armcognitiveservices.ResourceSKU{},
-      ResponseStruct: &armcognitiveservices.ResourceSKUsClientListResponse{},
-      Client: &armcognitiveservices.ResourceSKUsClient{},
-      ListFunc: (&armcognitiveservices.ResourceSKUsClient{}).NewListPager,
-			NewFunc: armcognitiveservices.NewResourceSKUsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/skus",
 		},
 	}
 

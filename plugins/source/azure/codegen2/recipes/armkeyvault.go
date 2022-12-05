@@ -6,6 +6,15 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvau
 func Armkeyvault() []Table {
 	tables := []Table{
 		{
+      Name: "resource",
+      Struct: &armkeyvault.Resource{},
+      ResponseStruct: &armkeyvault.VaultsClientListResponse{},
+      Client: &armkeyvault.VaultsClient{},
+      ListFunc: (&armkeyvault.VaultsClient{}).NewListPager,
+			NewFunc: armkeyvault.NewVaultsClient,
+			URL: "/subscriptions/{subscriptionId}/resources",
+		},
+		{
       Name: "key",
       Struct: &armkeyvault.Key{},
       ResponseStruct: &armkeyvault.KeysClientListResponse{},
@@ -22,15 +31,6 @@ func Armkeyvault() []Table {
       ListFunc: (&armkeyvault.SecretsClient{}).NewListPager,
 			NewFunc: armkeyvault.NewSecretsClient,
 			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/secrets",
-		},
-		{
-      Name: "resource",
-      Struct: &armkeyvault.Resource{},
-      ResponseStruct: &armkeyvault.VaultsClientListResponse{},
-      Client: &armkeyvault.VaultsClient{},
-      ListFunc: (&armkeyvault.VaultsClient{}).NewListPager,
-			NewFunc: armkeyvault.NewVaultsClient,
-			URL: "/subscriptions/{subscriptionId}/resources",
 		},
 	}
 

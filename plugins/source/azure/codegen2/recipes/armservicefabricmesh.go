@@ -6,6 +6,15 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabricmesh/
 func Armservicefabricmesh() []Table {
 	tables := []Table{
 		{
+      Name: "service_replica_description",
+      Struct: &armservicefabricmesh.ServiceReplicaDescription{},
+      ResponseStruct: &armservicefabricmesh.ServiceReplicaClientListResponse{},
+      Client: &armservicefabricmesh.ServiceReplicaClient{},
+      ListFunc: (&armservicefabricmesh.ServiceReplicaClient{}).NewListPager,
+			NewFunc: armservicefabricmesh.NewServiceReplicaClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabricMesh/applications/{applicationResourceName}/services/{serviceResourceName}/replicas",
+		},
+		{
       Name: "secret_value_resource_description",
       Struct: &armservicefabricmesh.SecretValueResourceDescription{},
       ResponseStruct: &armservicefabricmesh.SecretValueClientListResponse{},
@@ -22,15 +31,6 @@ func Armservicefabricmesh() []Table {
       ListFunc: (&armservicefabricmesh.ServiceClient{}).NewListPager,
 			NewFunc: armservicefabricmesh.NewServiceClient,
 			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabricMesh/applications/{applicationResourceName}/services",
-		},
-		{
-      Name: "service_replica_description",
-      Struct: &armservicefabricmesh.ServiceReplicaDescription{},
-      ResponseStruct: &armservicefabricmesh.ServiceReplicaClientListResponse{},
-      Client: &armservicefabricmesh.ServiceReplicaClient{},
-      ListFunc: (&armservicefabricmesh.ServiceReplicaClient{}).NewListPager,
-			NewFunc: armservicefabricmesh.NewServiceReplicaClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabricMesh/applications/{applicationResourceName}/services/{serviceResourceName}/replicas",
 		},
 	}
 

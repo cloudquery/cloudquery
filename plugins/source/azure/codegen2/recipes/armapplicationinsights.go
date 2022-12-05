@@ -6,15 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsight
 func Armapplicationinsights() []Table {
 	tables := []Table{
 		{
-      Name: "component_api_key",
-      Struct: &armapplicationinsights.ComponentAPIKey{},
-      ResponseStruct: &armapplicationinsights.APIKeysClientListResponse{},
-      Client: &armapplicationinsights.APIKeysClient{},
-      ListFunc: (&armapplicationinsights.APIKeysClient{}).NewListPager,
-			NewFunc: armapplicationinsights.NewAPIKeysClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/ApiKeys",
-		},
-		{
       Name: "annotation",
       Struct: &armapplicationinsights.Annotation{},
       ResponseStruct: &armapplicationinsights.AnnotationsClientListResponse{},
@@ -58,6 +49,15 @@ func Armapplicationinsights() []Table {
       ListFunc: (&armapplicationinsights.WorkItemConfigurationsClient{}).NewListPager,
 			NewFunc: armapplicationinsights.NewWorkItemConfigurationsClient,
 			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/WorkItemConfigs",
+		},
+		{
+      Name: "component_api_key",
+      Struct: &armapplicationinsights.ComponentAPIKey{},
+      ResponseStruct: &armapplicationinsights.APIKeysClientListResponse{},
+      Client: &armapplicationinsights.APIKeysClient{},
+      ListFunc: (&armapplicationinsights.APIKeysClient{}).NewListPager,
+			NewFunc: armapplicationinsights.NewAPIKeysClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/ApiKeys",
 		},
 	}
 

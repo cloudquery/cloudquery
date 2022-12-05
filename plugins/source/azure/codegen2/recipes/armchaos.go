@@ -6,6 +6,24 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos"
 func Armchaos() []Table {
 	tables := []Table{
 		{
+      Name: "target_type",
+      Struct: &armchaos.TargetType{},
+      ResponseStruct: &armchaos.TargetTypesClientListResponse{},
+      Client: &armchaos.TargetTypesClient{},
+      ListFunc: (&armchaos.TargetTypesClient{}).NewListPager,
+			NewFunc: armchaos.NewTargetTypesClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Chaos/locations/{locationName}/targetTypes",
+		},
+		{
+      Name: "target",
+      Struct: &armchaos.Target{},
+      ResponseStruct: &armchaos.TargetsClientListResponse{},
+      Client: &armchaos.TargetsClient{},
+      ListFunc: (&armchaos.TargetsClient{}).NewListPager,
+			NewFunc: armchaos.NewTargetsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{parentProviderNamespace}/{parentResourceType}/{parentResourceName}/providers/Microsoft.Chaos/targets",
+		},
+		{
       Name: "capability",
       Struct: &armchaos.Capability{},
       ResponseStruct: &armchaos.CapabilitiesClientListResponse{},
@@ -31,24 +49,6 @@ func Armchaos() []Table {
       ListFunc: (&armchaos.ExperimentsClient{}).NewListPager,
 			NewFunc: armchaos.NewExperimentsClient,
 			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/experiments",
-		},
-		{
-      Name: "target_type",
-      Struct: &armchaos.TargetType{},
-      ResponseStruct: &armchaos.TargetTypesClientListResponse{},
-      Client: &armchaos.TargetTypesClient{},
-      ListFunc: (&armchaos.TargetTypesClient{}).NewListPager,
-			NewFunc: armchaos.NewTargetTypesClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Chaos/locations/{locationName}/targetTypes",
-		},
-		{
-      Name: "target",
-      Struct: &armchaos.Target{},
-      ResponseStruct: &armchaos.TargetsClientListResponse{},
-      Client: &armchaos.TargetsClient{},
-      ListFunc: (&armchaos.TargetsClient{}).NewListPager,
-			NewFunc: armchaos.NewTargetsClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{parentProviderNamespace}/{parentResourceType}/{parentResourceName}/providers/Microsoft.Chaos/targets",
 		},
 	}
 

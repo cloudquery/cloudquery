@@ -6,24 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering
 func Armpeering() []Table {
 	tables := []Table{
 		{
-      Name: "cdn_peering_prefix",
-      Struct: &armpeering.CdnPeeringPrefix{},
-      ResponseStruct: &armpeering.CdnPeeringPrefixesClientListResponse{},
-      Client: &armpeering.CdnPeeringPrefixesClient{},
-      ListFunc: (&armpeering.CdnPeeringPrefixesClient{}).NewListPager,
-			NewFunc: armpeering.NewCdnPeeringPrefixesClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/cdnPeeringPrefixes",
-		},
-		{
-      Name: "peering",
-      Struct: &armpeering.Peering{},
-      ResponseStruct: &armpeering.LegacyPeeringsClientListResponse{},
-      Client: &armpeering.LegacyPeeringsClient{},
-      ListFunc: (&armpeering.LegacyPeeringsClient{}).NewListPager,
-			NewFunc: armpeering.NewLegacyPeeringsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/legacyPeerings",
-		},
-		{
       Name: "location",
       Struct: &armpeering.Location{},
       ResponseStruct: &armpeering.LocationsClientListResponse{},
@@ -31,15 +13,6 @@ func Armpeering() []Table {
       ListFunc: (&armpeering.LocationsClient{}).NewListPager,
 			NewFunc: armpeering.NewLocationsClient,
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peeringLocations",
-		},
-		{
-      Name: "service_country",
-      Struct: &armpeering.ServiceCountry{},
-      ResponseStruct: &armpeering.ServiceCountriesClientListResponse{},
-      Client: &armpeering.ServiceCountriesClient{},
-      ListFunc: (&armpeering.ServiceCountriesClient{}).NewListPager,
-			NewFunc: armpeering.NewServiceCountriesClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peeringServiceCountries",
 		},
 		{
       Name: "service_location",
@@ -58,6 +31,33 @@ func Armpeering() []Table {
       ListFunc: (&armpeering.ServiceProvidersClient{}).NewListPager,
 			NewFunc: armpeering.NewServiceProvidersClient,
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peeringServiceProviders",
+		},
+		{
+      Name: "service_country",
+      Struct: &armpeering.ServiceCountry{},
+      ResponseStruct: &armpeering.ServiceCountriesClientListResponse{},
+      Client: &armpeering.ServiceCountriesClient{},
+      ListFunc: (&armpeering.ServiceCountriesClient{}).NewListPager,
+			NewFunc: armpeering.NewServiceCountriesClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peeringServiceCountries",
+		},
+		{
+      Name: "cdn_peering_prefix",
+      Struct: &armpeering.CdnPeeringPrefix{},
+      ResponseStruct: &armpeering.CdnPeeringPrefixesClientListResponse{},
+      Client: &armpeering.CdnPeeringPrefixesClient{},
+      ListFunc: (&armpeering.CdnPeeringPrefixesClient{}).NewListPager,
+			NewFunc: armpeering.NewCdnPeeringPrefixesClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/cdnPeeringPrefixes",
+		},
+		{
+      Name: "peering",
+      Struct: &armpeering.Peering{},
+      ResponseStruct: &armpeering.LegacyPeeringsClientListResponse{},
+      Client: &armpeering.LegacyPeeringsClient{},
+      ListFunc: (&armpeering.LegacyPeeringsClient{}).NewListPager,
+			NewFunc: armpeering.NewLegacyPeeringsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/legacyPeerings",
 		},
 	}
 

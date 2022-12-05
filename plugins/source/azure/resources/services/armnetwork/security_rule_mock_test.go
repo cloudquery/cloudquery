@@ -14,7 +14,7 @@ import (
 )
 
 func createSecurityRule(router *mux.Router) error {
-	var item armnetwork.SecurityRulesClientListResponse
+	var item armnetwork.DefaultSecurityRulesClientListResponse
 	if err := faker.FakeObject(&item); err != nil {
 		return err
 	}
@@ -22,7 +22,7 @@ func createSecurityRule(router *mux.Router) error {
 	emptyStr := ""
 	item.NextLink = &emptyStr
 
-	router.HandleFunc("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups/{networkSecurityGroupName}/securityRules", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups/{networkSecurityGroupName}/defaultSecurityRules", func(w http.ResponseWriter, r *http.Request) {
 		b, err := json.Marshal(&item)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)

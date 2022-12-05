@@ -6,15 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventh
 func Armeventhub() []Table {
 	tables := []Table{
 		{
-      Name: "arm_disaster_recovery",
-      Struct: &armeventhub.ArmDisasterRecovery{},
-      ResponseStruct: &armeventhub.DisasterRecoveryConfigsClientListResponse{},
-      Client: &armeventhub.DisasterRecoveryConfigsClient{},
-      ListFunc: (&armeventhub.DisasterRecoveryConfigsClient{}).NewListPager,
-			NewFunc: armeventhub.NewDisasterRecoveryConfigsClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/disasterRecoveryConfigs",
-		},
-		{
       Name: "eh_namespace",
       Struct: &armeventhub.EHNamespace{},
       ResponseStruct: &armeventhub.NamespacesClientListResponse{},
@@ -31,6 +22,15 @@ func Armeventhub() []Table {
       ListFunc: (&armeventhub.PrivateEndpointConnectionsClient{}).NewListPager,
 			NewFunc: armeventhub.NewPrivateEndpointConnectionsClient,
 			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/privateEndpointConnections",
+		},
+		{
+      Name: "arm_disaster_recovery",
+      Struct: &armeventhub.ArmDisasterRecovery{},
+      ResponseStruct: &armeventhub.DisasterRecoveryConfigsClientListResponse{},
+      Client: &armeventhub.DisasterRecoveryConfigsClient{},
+      ListFunc: (&armeventhub.DisasterRecoveryConfigsClient{}).NewListPager,
+			NewFunc: armeventhub.NewDisasterRecoveryConfigsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/disasterRecoveryConfigs",
 		},
 	}
 

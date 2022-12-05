@@ -6,15 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dynatrace/armdynat
 func Armdynatrace() []Table {
 	tables := []Table{
 		{
-      Name: "single_sign_on_resource",
-      Struct: &armdynatrace.SingleSignOnResource{},
-      ResponseStruct: &armdynatrace.SingleSignOnClientListResponse{},
-      Client: &armdynatrace.SingleSignOnClient{},
-      ListFunc: (&armdynatrace.SingleSignOnClient{}).NewListPager,
-			NewFunc: armdynatrace.NewSingleSignOnClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/singleSignOnConfigurations",
-		},
-		{
       Name: "tag_rule",
       Struct: &armdynatrace.TagRule{},
       ResponseStruct: &armdynatrace.TagRulesClientListResponse{},
@@ -22,6 +13,15 @@ func Armdynatrace() []Table {
       ListFunc: (&armdynatrace.TagRulesClient{}).NewListPager,
 			NewFunc: armdynatrace.NewTagRulesClient,
 			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/tagRules",
+		},
+		{
+      Name: "single_sign_on_resource",
+      Struct: &armdynatrace.SingleSignOnResource{},
+      ResponseStruct: &armdynatrace.SingleSignOnClientListResponse{},
+      Client: &armdynatrace.SingleSignOnClient{},
+      ListFunc: (&armdynatrace.SingleSignOnClient{}).NewListPager,
+			NewFunc: armdynatrace.NewSingleSignOnClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/singleSignOnConfigurations",
 		},
 	}
 

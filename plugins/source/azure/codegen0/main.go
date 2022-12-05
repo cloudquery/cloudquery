@@ -4,9 +4,6 @@ import (
 	"bytes"
 	"embed"
 	"fmt"
-	"go/ast"
-	"go/parser"
-	"go/token"
 	"log"
 	"os"
 	"path"
@@ -14,26 +11,7 @@ import (
 	"strings"
 	"text/template"
 
-	"golang.org/x/mod/modfile"
-	"golang.org/x/mod/module"
-)
-
-type ClientInfo struct {
-	NewFuncName string
-	URL string
-}
-
-// create cobra subcommand
-type goPackage struct {
-	Mod module.Version
-	// NewFuncs []string
-	Clients map[string]*ClientInfo
-	BaseName string
-}
-
-const (
-	pkgGoDevURL = "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk"
-	cacheDir = "/Users/yevgenyp/go/pkg/mod"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/codegen0/internal/azparser"
 )
 
 //go:embed templates/*.go.tpl
@@ -44,8 +22,12 @@ var (
 	currentDir string
 )
 
-var clientToSkip = map[string]bool{
-	"NewOperationsClient": true,
+// Module is a struct that contains all the information needed to generate
+// cloudquery code for a given Azure SDK package.
+type Module struct {
+	Tables []*azparser.Table
+	Import string
+	BaseName string
 }
 
 func main() {
@@ -56,120 +38,48 @@ func main() {
 	}
 	currentDir = path.Dir(currentFilename)
 	
-	res, err := findAllAzureSdkSubPackages()
+	armModules, err := azparser.GetArmModules(path.Join(currentDir, "../go.mod"))
 	if err != nil {
 		log.Fatal(err)
 	}
-	for _, subPackage := range res {
-		set := token.NewFileSet()
-		pkgPath := path.Join(cacheDir, subPackage.Mod.String())
-		// thats because azure had to be special with uppercase
-		pkgPath = strings.Replace(pkgPath, "A", "!A", 1)
-		packs, err := parser.ParseDir(set, pkgPath, nil, 0)
+	for _, armModule := range armModules {
+		tables, err := azparser.CreateTablesFromPackage(armModule)
 		if err != nil {
-				os.Exit(1)
+			log.Fatal(err)
 		}
-		for _, pack := range packs {
-				for _, f := range pack.Files {
-						for _, d := range f.Decls {
-								if fn, isFn := d.(*ast.FuncDecl); isFn {
-										if clientToSkip[fn.Name.Name] {
-											continue
-										}
-										if strings.HasPrefix(fn.Name.Name, "New") && strings.HasSuffix(fn.Name.Name, "Client") {
-											// subPackage.NewFuncs = append(subPackage.NewFuncs, fn.Name.Name)
-											// fmt.Println(strings.TrimPrefix(fn.Name.Name, "New"))
-											subPackage.Clients[strings.TrimPrefix(fn.Name.Name, "New")] = &ClientInfo{
-												NewFuncName: fn.Name.Name,
-											}
-										}
-								}
-
-						}
-				}
+		if len(tables) == 0 {
+			continue
 		}
-		for _, pack := range packs {
-			for _, f := range pack.Files {
-					for _, d := range f.Decls {
-							if fn, isFn := d.(*ast.FuncDecl); isFn {
-								if fn.Name.Name == "listCreateRequest" {
-									clientName := fn.Recv.List[0].Type.(*ast.StarExpr).X.(*ast.Ident).Name
-									if _, ok := subPackage.Clients[clientName]; ok {
-										urlPath := getUrl(fn)
-										subPackage.Clients[clientName].URL = urlPath
-									}
-								}
-							}
-					}
-			}
+		importPath := strings.Split(armModule, "@")[0]
+		mod := &Module{
+			Tables: tables,
+			Import: importPath,
+			BaseName: path.Base(importPath),
 		}
-
-		generateRecipes(subPackage)
+		if err := generatePackage(armModule, mod); err != nil {
+			log.Fatal(err)
+		}
 	}
 }
 
-func getUrl(fn *ast.FuncDecl) string {
-	for _, stmt := range fn.Body.List {
-		if expr, ok := stmt.(*ast.AssignStmt); ok {
-			if len(expr.Lhs) == 1 && len(expr.Rhs) == 1 {
-				if lhs, ok := expr.Lhs[0].(*ast.Ident); ok {
-					if lhs.Name == "urlPath" {
-						if rhs, ok := expr.Rhs[0].(*ast.BasicLit); ok {
-							return strings.Replace(rhs.Value, "\"", "", -1)
-						}
-					}
-				}
-			}
-		}
-	}
-	return ""
-}
-
-
-func generateRecipes(s goPackage) {
-	tpl, err := template.New("recipe.go.tpl").Funcs(template.FuncMap{
+func generatePackage(pkg string, mod *Module) error {
+	tpl, err := template.New("package.go.tpl").Funcs(template.FuncMap{
 		"ToCamel": strings.Title,
-	}).ParseFS(templateFS, "templates/recipe.go.tpl")
+	}).ParseFS(templateFS, "templates/package.go.tpl")
 	if err != nil {
-		log.Fatal(fmt.Errorf("failed to parse recipe.go.tpl: %w", err))
+		return fmt.Errorf("failed to parse package.go.tpl: %w", err)
 	}
 
 	var buff bytes.Buffer
-	if err := tpl.Execute(&buff, s); err != nil {
-		log.Fatal(fmt.Errorf("failed to execute recipe template: %w", err))
+	if err := tpl.Execute(&buff, mod); err != nil {
+		return fmt.Errorf("failed to execute package template: %w", err)
 	}
-	baseName := path.Base(s.Mod.Path)
-	filePath := path.Join(currentDir, "../codegen1/recipes", baseName+".go")
+	filePath := path.Join(currentDir, "../codegen1/packages", mod.BaseName+".go")
 	if err := os.WriteFile(filePath, buff.Bytes(), 0644); err != nil {
-		log.Fatal(fmt.Errorf("failed to write file %s: %w", filePath, err))
+		return fmt.Errorf("failed to write file %s: %w", filePath, err)
 	}
+	return nil
 }
 
 
-func findAllAzureSdkSubPackages() ([]goPackage, error) {
-	// Open the go.mod file.
-	var packages []goPackage
-	content, err := os.ReadFile(path.Join(currentDir, "../go.mod"))
-	if err != nil {
-			return nil, err
-	}
-	// Parse the go.mod file.
-	// modfile
-	mod, err := modfile.Parse("go.mod", content, nil)
-	if err != nil {
-			return nil, err
-	}
-
-	for _, req := range mod.Require {
-		if strings.HasPrefix(req.Mod.Path, "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager") {
-			packages = append(packages, goPackage{
-				Mod: req.Mod,
-				BaseName: path.Base(req.Mod.Path),
-				Clients: make(map[string]*ClientInfo),
-			})
-		}
-}
-
-return packages, nil
-}
 

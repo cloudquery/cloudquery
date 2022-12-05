@@ -6,6 +6,15 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logz/armlogz"
 func Armlogz() []Table {
 	tables := []Table{
 		{
+      Name: "monitoring_tag_rules",
+      Struct: &armlogz.MonitoringTagRules{},
+      ResponseStruct: &armlogz.TagRulesClientListResponse{},
+      Client: &armlogz.TagRulesClient{},
+      ListFunc: (&armlogz.TagRulesClient{}).NewListPager,
+			NewFunc: armlogz.NewTagRulesClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors/{monitorName}/tagRules",
+		},
+		{
       Name: "single_sign_on_resource",
       Struct: &armlogz.SingleSignOnResource{},
       ResponseStruct: &armlogz.SingleSignOnClientListResponse{},
@@ -31,15 +40,6 @@ func Armlogz() []Table {
       ListFunc: (&armlogz.SubAccountTagRulesClient{}).NewListPager,
 			NewFunc: armlogz.NewSubAccountTagRulesClient,
 			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors/{monitorName}/accounts/{subAccountName}/tagRules",
-		},
-		{
-      Name: "monitoring_tag_rules",
-      Struct: &armlogz.MonitoringTagRules{},
-      ResponseStruct: &armlogz.TagRulesClientListResponse{},
-      Client: &armlogz.TagRulesClient{},
-      ListFunc: (&armlogz.TagRulesClient{}).NewListPager,
-			NewFunc: armlogz.NewTagRulesClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors/{monitorName}/tagRules",
 		},
 	}
 

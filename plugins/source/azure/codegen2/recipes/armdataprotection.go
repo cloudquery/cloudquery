@@ -6,6 +6,15 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/arm
 func Armdataprotection() []Table {
 	tables := []Table{
 		{
+      Name: "azure_backup_job_resource",
+      Struct: &armdataprotection.AzureBackupJobResource{},
+      ResponseStruct: &armdataprotection.JobsClientListResponse{},
+      Client: &armdataprotection.JobsClient{},
+      ListFunc: (&armdataprotection.JobsClient{}).NewListPager,
+			NewFunc: armdataprotection.NewJobsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupJobs",
+		},
+		{
       Name: "backup_instance_resource",
       Struct: &armdataprotection.BackupInstanceResource{},
       ResponseStruct: &armdataprotection.BackupInstancesClientListResponse{},
@@ -22,15 +31,6 @@ func Armdataprotection() []Table {
       ListFunc: (&armdataprotection.BackupPoliciesClient{}).NewListPager,
 			NewFunc: armdataprotection.NewBackupPoliciesClient,
 			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupPolicies",
-		},
-		{
-      Name: "azure_backup_job_resource",
-      Struct: &armdataprotection.AzureBackupJobResource{},
-      ResponseStruct: &armdataprotection.JobsClientListResponse{},
-      Client: &armdataprotection.JobsClient{},
-      ListFunc: (&armdataprotection.JobsClient{}).NewListPager,
-			NewFunc: armdataprotection.NewJobsClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupJobs",
 		},
 		{
       Name: "azure_backup_recovery_point_resource",

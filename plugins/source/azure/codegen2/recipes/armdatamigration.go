@@ -6,15 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armd
 func Armdatamigration() []Table {
 	tables := []Table{
 		{
-      Name: "project_file",
-      Struct: &armdatamigration.ProjectFile{},
-      ResponseStruct: &armdatamigration.FilesClientListResponse{},
-      Client: &armdatamigration.FilesClient{},
-      ListFunc: (&armdatamigration.FilesClient{}).NewListPager,
-			NewFunc: armdatamigration.NewFilesClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/projects/{projectName}/files",
-		},
-		{
       Name: "project",
       Struct: &armdatamigration.Project{},
       ResponseStruct: &armdatamigration.ProjectsClientListResponse{},
@@ -24,13 +15,31 @@ func Armdatamigration() []Table {
 			URL: "/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/projects",
 		},
 		{
+      Name: "quota",
+      Struct: &armdatamigration.Quota{},
+      ResponseStruct: &armdatamigration.UsagesClientListResponse{},
+      Client: &armdatamigration.UsagesClient{},
+      ListFunc: (&armdatamigration.UsagesClient{}).NewListPager,
+			NewFunc: armdatamigration.NewUsagesClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DataMigration/locations/{location}/usages",
+		},
+		{
       Name: "project_task",
       Struct: &armdatamigration.ProjectTask{},
-      ResponseStruct: &armdatamigration.ServiceTasksClientListResponse{},
-      Client: &armdatamigration.ServiceTasksClient{},
-      ListFunc: (&armdatamigration.ServiceTasksClient{}).NewListPager,
-			NewFunc: armdatamigration.NewServiceTasksClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/serviceTasks",
+      ResponseStruct: &armdatamigration.TasksClientListResponse{},
+      Client: &armdatamigration.TasksClient{},
+      ListFunc: (&armdatamigration.TasksClient{}).NewListPager,
+			NewFunc: armdatamigration.NewTasksClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/projects/{projectName}/tasks",
+		},
+		{
+      Name: "project_file",
+      Struct: &armdatamigration.ProjectFile{},
+      ResponseStruct: &armdatamigration.FilesClientListResponse{},
+      Client: &armdatamigration.FilesClient{},
+      ListFunc: (&armdatamigration.FilesClient{}).NewListPager,
+			NewFunc: armdatamigration.NewFilesClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/projects/{projectName}/files",
 		},
 		{
       Name: "service",
@@ -44,20 +53,11 @@ func Armdatamigration() []Table {
 		{
       Name: "project_task",
       Struct: &armdatamigration.ProjectTask{},
-      ResponseStruct: &armdatamigration.TasksClientListResponse{},
-      Client: &armdatamigration.TasksClient{},
-      ListFunc: (&armdatamigration.TasksClient{}).NewListPager,
-			NewFunc: armdatamigration.NewTasksClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/projects/{projectName}/tasks",
-		},
-		{
-      Name: "quota",
-      Struct: &armdatamigration.Quota{},
-      ResponseStruct: &armdatamigration.UsagesClientListResponse{},
-      Client: &armdatamigration.UsagesClient{},
-      ListFunc: (&armdatamigration.UsagesClient{}).NewListPager,
-			NewFunc: armdatamigration.NewUsagesClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DataMigration/locations/{location}/usages",
+      ResponseStruct: &armdatamigration.ServiceTasksClientListResponse{},
+      Client: &armdatamigration.ServiceTasksClient{},
+      ListFunc: (&armdatamigration.ServiceTasksClient{}).NewListPager,
+			NewFunc: armdatamigration.NewServiceTasksClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/serviceTasks",
 		},
 	}
 

@@ -6,15 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/vmwarecloudsimple/
 func Armvmwarecloudsimple() []Table {
 	tables := []Table{
 		{
-      Name: "customization_policy",
-      Struct: &armvmwarecloudsimple.CustomizationPolicy{},
-      ResponseStruct: &armvmwarecloudsimple.CustomizationPoliciesClientListResponse{},
-      Client: &armvmwarecloudsimple.CustomizationPoliciesClient{},
-      ListFunc: (&armvmwarecloudsimple.CustomizationPoliciesClient{}).NewListPager,
-			NewFunc: armvmwarecloudsimple.NewCustomizationPoliciesClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.VMwareCloudSimple/locations/{regionId}/privateClouds/{pcName}/customizationPolicies",
-		},
-		{
       Name: "private_cloud",
       Struct: &armvmwarecloudsimple.PrivateCloud{},
       ResponseStruct: &armvmwarecloudsimple.PrivateCloudsClientListResponse{},
@@ -33,6 +24,33 @@ func Armvmwarecloudsimple() []Table {
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.VMwareCloudSimple/locations/{regionId}/privateClouds/{pcName}/resourcePools",
 		},
 		{
+      Name: "virtual_network",
+      Struct: &armvmwarecloudsimple.VirtualNetwork{},
+      ResponseStruct: &armvmwarecloudsimple.VirtualNetworksClientListResponse{},
+      Client: &armvmwarecloudsimple.VirtualNetworksClient{},
+      ListFunc: (&armvmwarecloudsimple.VirtualNetworksClient{}).NewListPager,
+			NewFunc: armvmwarecloudsimple.NewVirtualNetworksClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.VMwareCloudSimple/locations/{regionId}/privateClouds/{pcName}/virtualNetworks",
+		},
+		{
+      Name: "customization_policy",
+      Struct: &armvmwarecloudsimple.CustomizationPolicy{},
+      ResponseStruct: &armvmwarecloudsimple.CustomizationPoliciesClientListResponse{},
+      Client: &armvmwarecloudsimple.CustomizationPoliciesClient{},
+      ListFunc: (&armvmwarecloudsimple.CustomizationPoliciesClient{}).NewListPager,
+			NewFunc: armvmwarecloudsimple.NewCustomizationPoliciesClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.VMwareCloudSimple/locations/{regionId}/privateClouds/{pcName}/customizationPolicies",
+		},
+		{
+      Name: "virtual_machine_template",
+      Struct: &armvmwarecloudsimple.VirtualMachineTemplate{},
+      ResponseStruct: &armvmwarecloudsimple.VirtualMachineTemplatesClientListResponse{},
+      Client: &armvmwarecloudsimple.VirtualMachineTemplatesClient{},
+      ListFunc: (&armvmwarecloudsimple.VirtualMachineTemplatesClient{}).NewListPager,
+			NewFunc: armvmwarecloudsimple.NewVirtualMachineTemplatesClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.VMwareCloudSimple/locations/{regionId}/privateClouds/{pcName}/virtualMachineTemplates",
+		},
+		{
       Name: "sku_availability",
       Struct: &armvmwarecloudsimple.SKUAvailability{},
       ResponseStruct: &armvmwarecloudsimple.SKUsAvailabilityClientListResponse{},
@@ -49,24 +67,6 @@ func Armvmwarecloudsimple() []Table {
       ListFunc: (&armvmwarecloudsimple.UsagesClient{}).NewListPager,
 			NewFunc: armvmwarecloudsimple.NewUsagesClient,
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.VMwareCloudSimple/locations/{regionId}/usages",
-		},
-		{
-      Name: "virtual_machine_template",
-      Struct: &armvmwarecloudsimple.VirtualMachineTemplate{},
-      ResponseStruct: &armvmwarecloudsimple.VirtualMachineTemplatesClientListResponse{},
-      Client: &armvmwarecloudsimple.VirtualMachineTemplatesClient{},
-      ListFunc: (&armvmwarecloudsimple.VirtualMachineTemplatesClient{}).NewListPager,
-			NewFunc: armvmwarecloudsimple.NewVirtualMachineTemplatesClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.VMwareCloudSimple/locations/{regionId}/privateClouds/{pcName}/virtualMachineTemplates",
-		},
-		{
-      Name: "virtual_network",
-      Struct: &armvmwarecloudsimple.VirtualNetwork{},
-      ResponseStruct: &armvmwarecloudsimple.VirtualNetworksClientListResponse{},
-      Client: &armvmwarecloudsimple.VirtualNetworksClient{},
-      ListFunc: (&armvmwarecloudsimple.VirtualNetworksClient{}).NewListPager,
-			NewFunc: armvmwarecloudsimple.NewVirtualNetworksClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.VMwareCloudSimple/locations/{regionId}/privateClouds/{pcName}/virtualNetworks",
 		},
 	}
 

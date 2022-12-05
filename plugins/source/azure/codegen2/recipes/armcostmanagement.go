@@ -6,15 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/arm
 func Armcostmanagement() []Table {
 	tables := []Table{
 		{
-      Name: "dimension",
-      Struct: &armcostmanagement.Dimension{},
-      ResponseStruct: &armcostmanagement.DimensionsClientListResponse{},
-      Client: &armcostmanagement.DimensionsClient{},
-      ListFunc: (&armcostmanagement.DimensionsClient{}).NewListPager,
-			NewFunc: armcostmanagement.NewDimensionsClient,
-			URL: "/{scope}/providers/Microsoft.CostManagement/dimensions",
-		},
-		{
       Name: "view",
       Struct: &armcostmanagement.View{},
       ResponseStruct: &armcostmanagement.ViewsClientListResponse{},
@@ -22,6 +13,15 @@ func Armcostmanagement() []Table {
       ListFunc: (&armcostmanagement.ViewsClient{}).NewListPager,
 			NewFunc: armcostmanagement.NewViewsClient,
 			URL: "/providers/Microsoft.CostManagement/views",
+		},
+		{
+      Name: "dimension",
+      Struct: &armcostmanagement.Dimension{},
+      ResponseStruct: &armcostmanagement.DimensionsClientListResponse{},
+      Client: &armcostmanagement.DimensionsClient{},
+      ListFunc: (&armcostmanagement.DimensionsClient{}).NewListPager,
+			NewFunc: armcostmanagement.NewDimensionsClient,
+			URL: "/{scope}/providers/Microsoft.CostManagement/dimensions",
 		},
 	}
 

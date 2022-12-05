@@ -6,6 +6,15 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql"
 func Armmysql() []Table {
 	tables := []Table{
 		{
+      Name: "server",
+      Struct: &armmysql.Server{},
+      ResponseStruct: &armmysql.ServersClientListResponse{},
+      Client: &armmysql.ServersClient{},
+      ListFunc: (&armmysql.ServersClient{}).NewListPager,
+			NewFunc: armmysql.NewServersClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/servers",
+		},
+		{
       Name: "performance_tier_properties",
       Struct: &armmysql.PerformanceTierProperties{},
       ResponseStruct: &armmysql.LocationBasedPerformanceTierClientListResponse{},
@@ -13,15 +22,6 @@ func Armmysql() []Table {
       ListFunc: (&armmysql.LocationBasedPerformanceTierClient{}).NewListPager,
 			NewFunc: armmysql.NewLocationBasedPerformanceTierClient,
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/locations/{locationName}/performanceTiers",
-		},
-		{
-      Name: "recommendation_action",
-      Struct: &armmysql.RecommendationAction{},
-      ResponseStruct: &armmysql.LocationBasedRecommendedActionSessionsResultClientListResponse{},
-      Client: &armmysql.LocationBasedRecommendedActionSessionsResultClient{},
-      ListFunc: (&armmysql.LocationBasedRecommendedActionSessionsResultClient{}).NewListPager,
-			NewFunc: armmysql.NewLocationBasedRecommendedActionSessionsResultClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/locations/{locationName}/recommendedActionSessionsOperationResults/{operationId}",
 		},
 		{
       Name: "server_administrator_resource",
@@ -33,15 +33,6 @@ func Armmysql() []Table {
 			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers/{serverName}/administrators",
 		},
 		{
-      Name: "performance_tier_properties",
-      Struct: &armmysql.PerformanceTierProperties{},
-      ResponseStruct: &armmysql.ServerBasedPerformanceTierClientListResponse{},
-      Client: &armmysql.ServerBasedPerformanceTierClient{},
-      ListFunc: (&armmysql.ServerBasedPerformanceTierClient{}).NewListPager,
-			NewFunc: armmysql.NewServerBasedPerformanceTierClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers/{serverName}/performanceTiers",
-		},
-		{
       Name: "server_key",
       Struct: &armmysql.ServerKey{},
       ResponseStruct: &armmysql.ServerKeysClientListResponse{},
@@ -51,13 +42,22 @@ func Armmysql() []Table {
 			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers/{serverName}/keys",
 		},
 		{
-      Name: "server",
-      Struct: &armmysql.Server{},
-      ResponseStruct: &armmysql.ServersClientListResponse{},
-      Client: &armmysql.ServersClient{},
-      ListFunc: (&armmysql.ServersClient{}).NewListPager,
-			NewFunc: armmysql.NewServersClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/servers",
+      Name: "recommendation_action",
+      Struct: &armmysql.RecommendationAction{},
+      ResponseStruct: &armmysql.LocationBasedRecommendedActionSessionsResultClientListResponse{},
+      Client: &armmysql.LocationBasedRecommendedActionSessionsResultClient{},
+      ListFunc: (&armmysql.LocationBasedRecommendedActionSessionsResultClient{}).NewListPager,
+			NewFunc: armmysql.NewLocationBasedRecommendedActionSessionsResultClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/locations/{locationName}/recommendedActionSessionsOperationResults/{operationId}",
+		},
+		{
+      Name: "performance_tier_properties",
+      Struct: &armmysql.PerformanceTierProperties{},
+      ResponseStruct: &armmysql.ServerBasedPerformanceTierClientListResponse{},
+      Client: &armmysql.ServerBasedPerformanceTierClient{},
+      ListFunc: (&armmysql.ServerBasedPerformanceTierClient{}).NewListPager,
+			NewFunc: armmysql.NewServerBasedPerformanceTierClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers/{serverName}/performanceTiers",
 		},
 	}
 

@@ -6,15 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/education/armeduca
 func Armeducation() []Table {
 	tables := []Table{
 		{
-      Name: "grant_details",
-      Struct: &armeducation.GrantDetails{},
-      ResponseStruct: &armeducation.GrantsClientListResponse{},
-      Client: &armeducation.GrantsClient{},
-      ListFunc: (&armeducation.GrantsClient{}).NewListPager,
-			NewFunc: armeducation.NewGrantsClient,
-			URL: "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/providers/Microsoft.Education/grants",
-		},
-		{
       Name: "join_request_details",
       Struct: &armeducation.JoinRequestDetails{},
       ResponseStruct: &armeducation.JoinRequestsClientListResponse{},
@@ -31,6 +22,15 @@ func Armeducation() []Table {
       ListFunc: (&armeducation.LabsClient{}).NewListPager,
 			NewFunc: armeducation.NewLabsClient,
 			URL: "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/providers/Microsoft.Education/labs",
+		},
+		{
+      Name: "grant_details",
+      Struct: &armeducation.GrantDetails{},
+      ResponseStruct: &armeducation.GrantsClientListResponse{},
+      Client: &armeducation.GrantsClient{},
+      ListFunc: (&armeducation.GrantsClient{}).NewListPager,
+			NewFunc: armeducation.NewGrantsClient,
+			URL: "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/providers/Microsoft.Education/grants",
 		},
 		{
       Name: "student_details",

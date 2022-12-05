@@ -6,6 +6,15 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kubernetesconfigur
 func Armkubernetesconfiguration() []Table {
 	tables := []Table{
 		{
+      Name: "source_control_configuration",
+      Struct: &armkubernetesconfiguration.SourceControlConfiguration{},
+      ResponseStruct: &armkubernetesconfiguration.SourceControlConfigurationsClientListResponse{},
+      Client: &armkubernetesconfiguration.SourceControlConfigurationsClient{},
+      ListFunc: (&armkubernetesconfiguration.SourceControlConfigurationsClient{}).NewListPager,
+			NewFunc: armkubernetesconfiguration.NewSourceControlConfigurationsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}/{clusterResourceName}/{clusterName}/providers/Microsoft.KubernetesConfiguration/sourceControlConfigurations",
+		},
+		{
       Name: "extension",
       Struct: &armkubernetesconfiguration.Extension{},
       ResponseStruct: &armkubernetesconfiguration.ExtensionsClientListResponse{},
@@ -31,15 +40,6 @@ func Armkubernetesconfiguration() []Table {
       ListFunc: (&armkubernetesconfiguration.OperationStatusClient{}).NewListPager,
 			NewFunc: armkubernetesconfiguration.NewOperationStatusClient,
 			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}/{clusterResourceName}/{clusterName}/providers/Microsoft.KubernetesConfiguration/operations",
-		},
-		{
-      Name: "source_control_configuration",
-      Struct: &armkubernetesconfiguration.SourceControlConfiguration{},
-      ResponseStruct: &armkubernetesconfiguration.SourceControlConfigurationsClientListResponse{},
-      Client: &armkubernetesconfiguration.SourceControlConfigurationsClient{},
-      ListFunc: (&armkubernetesconfiguration.SourceControlConfigurationsClient{}).NewListPager,
-			NewFunc: armkubernetesconfiguration.NewSourceControlConfigurationsClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}/{clusterResourceName}/{clusterName}/providers/Microsoft.KubernetesConfiguration/sourceControlConfigurations",
 		},
 	}
 

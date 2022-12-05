@@ -14,12 +14,12 @@ import (
 )
 
 func createDatabaseRestoreResource(router *mux.Router) error {
-	var item armcosmos.RestorableSQLResourcesClientListResponse
+	var item armcosmos.RestorableMongodbResourcesClientListResponse
 	if err := faker.FakeObject(&item); err != nil {
 		return err
 	}
 
-	router.HandleFunc("/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{instanceId}/restorableSqlResources", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{instanceId}/restorableMongodbResources", func(w http.ResponseWriter, r *http.Request) {
 		b, err := json.Marshal(&item)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)

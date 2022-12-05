@@ -46,7 +46,7 @@ func ProjectTask() *schema.Table {
 
 func fetchProjectTask(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
-	svc, err := armdatamigration.NewTasksClient(cl.SubscriptionId, cl.Creds, cl.Options)
+	svc, err := armdatamigration.NewServiceTasksClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {
 		return err
 	}

@@ -6,6 +6,15 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iotsecurity/armiot
 func Armiotsecurity() []Table {
 	tables := []Table{
 		{
+      Name: "location_model",
+      Struct: &armiotsecurity.LocationModel{},
+      ResponseStruct: &armiotsecurity.LocationsClientListResponse{},
+      Client: &armiotsecurity.LocationsClient{},
+      ListFunc: (&armiotsecurity.LocationsClient{}).NewListPager,
+			NewFunc: armiotsecurity.NewLocationsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.IoTSecurity/locations",
+		},
+		{
       Name: "device_group_model",
       Struct: &armiotsecurity.DeviceGroupModel{},
       ResponseStruct: &armiotsecurity.DeviceGroupsClientListResponse{},
@@ -22,15 +31,6 @@ func Armiotsecurity() []Table {
       ListFunc: (&armiotsecurity.DevicesClient{}).NewListPager,
 			NewFunc: armiotsecurity.NewDevicesClient,
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.IoTSecurity/locations/{iotDefenderLocation}/deviceGroups/{deviceGroupName}/devices",
-		},
-		{
-      Name: "location_model",
-      Struct: &armiotsecurity.LocationModel{},
-      ResponseStruct: &armiotsecurity.LocationsClientListResponse{},
-      Client: &armiotsecurity.LocationsClient{},
-      ListFunc: (&armiotsecurity.LocationsClient{}).NewListPager,
-			NewFunc: armiotsecurity.NewLocationsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.IoTSecurity/locations",
 		},
 	}
 

@@ -6,15 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagepool/armsto
 func Armstoragepool() []Table {
 	tables := []Table{
 		{
-      Name: "disk_pool_zone_info",
-      Struct: &armstoragepool.DiskPoolZoneInfo{},
-      ResponseStruct: &armstoragepool.DiskPoolZonesClientListResponse{},
-      Client: &armstoragepool.DiskPoolZonesClient{},
-      ListFunc: (&armstoragepool.DiskPoolZonesClient{}).NewListPager,
-			NewFunc: armstoragepool.NewDiskPoolZonesClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.StoragePool/locations/{location}/diskPoolZones",
-		},
-		{
       Name: "resource_sku_info",
       Struct: &armstoragepool.ResourceSKUInfo{},
       ResponseStruct: &armstoragepool.ResourceSKUsClientListResponse{},
@@ -22,6 +13,15 @@ func Armstoragepool() []Table {
       ListFunc: (&armstoragepool.ResourceSKUsClient{}).NewListPager,
 			NewFunc: armstoragepool.NewResourceSKUsClient,
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.StoragePool/locations/{location}/skus",
+		},
+		{
+      Name: "disk_pool_zone_info",
+      Struct: &armstoragepool.DiskPoolZoneInfo{},
+      ResponseStruct: &armstoragepool.DiskPoolZonesClientListResponse{},
+      Client: &armstoragepool.DiskPoolZonesClient{},
+      ListFunc: (&armstoragepool.DiskPoolZonesClient{}).NewListPager,
+			NewFunc: armstoragepool.NewDiskPoolZonesClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.StoragePool/locations/{location}/diskPoolZones",
 		},
 	}
 

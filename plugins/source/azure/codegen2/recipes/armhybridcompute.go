@@ -6,15 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armh
 func Armhybridcompute() []Table {
 	tables := []Table{
 		{
-      Name: "machine_extension",
-      Struct: &armhybridcompute.MachineExtension{},
-      ResponseStruct: &armhybridcompute.MachineExtensionsClientListResponse{},
-      Client: &armhybridcompute.MachineExtensionsClient{},
-      ListFunc: (&armhybridcompute.MachineExtensionsClient{}).NewListPager,
-			NewFunc: armhybridcompute.NewMachineExtensionsClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/extensions",
-		},
-		{
       Name: "private_link_scope",
       Struct: &armhybridcompute.PrivateLinkScope{},
       ResponseStruct: &armhybridcompute.PrivateLinkScopesClientListResponse{},
@@ -22,6 +13,15 @@ func Armhybridcompute() []Table {
       ListFunc: (&armhybridcompute.PrivateLinkScopesClient{}).NewListPager,
 			NewFunc: armhybridcompute.NewPrivateLinkScopesClient,
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.HybridCompute/privateLinkScopes",
+		},
+		{
+      Name: "machine_extension",
+      Struct: &armhybridcompute.MachineExtension{},
+      ResponseStruct: &armhybridcompute.MachineExtensionsClientListResponse{},
+      Client: &armhybridcompute.MachineExtensionsClient{},
+      ListFunc: (&armhybridcompute.MachineExtensionsClient{}).NewListPager,
+			NewFunc: armhybridcompute.NewMachineExtensionsClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/extensions",
 		},
 	}
 

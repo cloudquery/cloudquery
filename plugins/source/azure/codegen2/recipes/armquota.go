@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota"
 func Armquota() []Table {
 	tables := []Table{
 		{
-      Name: "current_quota_limit_base",
-      Struct: &armquota.CurrentQuotaLimitBase{},
-      ResponseStruct: &armquota.ClientListResponse{},
-      Client: &armquota.Client{},
-      ListFunc: (&armquota.Client{}).NewListPager,
-			NewFunc: armquota.NewClient,
-			URL: "/{scope}/providers/Microsoft.Quota/quotas",
+      Name: "current_usages_base",
+      Struct: &armquota.CurrentUsagesBase{},
+      ResponseStruct: &armquota.UsagesClientListResponse{},
+      Client: &armquota.UsagesClient{},
+      ListFunc: (&armquota.UsagesClient{}).NewListPager,
+			NewFunc: armquota.NewUsagesClient,
+			URL: "/{scope}/providers/Microsoft.Quota/usages",
 		},
 		{
       Name: "operation_response",
@@ -31,15 +31,6 @@ func Armquota() []Table {
       ListFunc: (&armquota.RequestStatusClient{}).NewListPager,
 			NewFunc: armquota.NewRequestStatusClient,
 			URL: "/{scope}/providers/Microsoft.Quota/quotaRequests",
-		},
-		{
-      Name: "current_usages_base",
-      Struct: &armquota.CurrentUsagesBase{},
-      ResponseStruct: &armquota.UsagesClientListResponse{},
-      Client: &armquota.UsagesClient{},
-      ListFunc: (&armquota.UsagesClient{}).NewListPager,
-			NewFunc: armquota.NewUsagesClient,
-			URL: "/{scope}/providers/Microsoft.Quota/usages",
 		},
 	}
 

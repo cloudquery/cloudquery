@@ -6,15 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis"
 func Armredis() []Table {
 	tables := []Table{
 		{
-      Name: "firewall_rule",
-      Struct: &armredis.FirewallRule{},
-      ResponseStruct: &armredis.FirewallRulesClientListResponse{},
-      Client: &armredis.FirewallRulesClient{},
-      ListFunc: (&armredis.FirewallRulesClient{}).NewListPager,
-			NewFunc: armredis.NewFirewallRulesClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/firewallRules",
-		},
-		{
       Name: "linked_server_with_properties",
       Struct: &armredis.LinkedServerWithProperties{},
       ResponseStruct: &armredis.LinkedServerClientListResponse{},
@@ -31,6 +22,15 @@ func Armredis() []Table {
       ListFunc: (&armredis.PrivateEndpointConnectionsClient{}).NewListPager,
 			NewFunc: armredis.NewPrivateEndpointConnectionsClient,
 			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/privateEndpointConnections",
+		},
+		{
+      Name: "firewall_rule",
+      Struct: &armredis.FirewallRule{},
+      ResponseStruct: &armredis.FirewallRulesClientListResponse{},
+      Client: &armredis.FirewallRulesClient{},
+      ListFunc: (&armredis.FirewallRulesClient{}).NewListPager,
+			NewFunc: armredis.NewFirewallRulesClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/firewallRules",
 		},
 	}
 

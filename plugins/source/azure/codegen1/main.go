@@ -15,7 +15,7 @@ import (
 
 	"github.com/iancoleman/strcase"
 
-	"github.com/cloudquery/cloudquery/plugins/source/azure/codegen1/recipes"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/codegen1/packages"
 )
 
 var (
@@ -71,7 +71,7 @@ func main() {
 	currentDir = path.Dir(currentFilename)
 	
 	// var rr []Recipe
-	for _, r := range recipes.Resources {
+	for _, r := range packages.Tables {
 		if len(r) == 0 {
 			continue
 		}
