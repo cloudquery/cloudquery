@@ -39,4 +39,4 @@ Once data is synced you can start querying either with the native BigQuery inter
 
 ## Summary
 
-This is the first BigQuery destination plugin release. More improvements are coming, and I'd love to hear your use-cases and ideas on how to leverage it. Feel free to open an issue on [GitHub](https://github.com/cloudquery/cloudquery) or join our [Discord](https://cloudquery.io/discord) to share your ideas.
+This is the first BigQuery destination plugin release. More improvements are coming, and I'd love to hear your use cases and ideas on how to leverage it. Feel free to open an issue on [GitHub](https://github.com/cloudquery/cloudquery) or join our [Discord](https://cloudquery.io/discord) to share your ideas.
