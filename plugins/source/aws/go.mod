@@ -62,7 +62,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/lambda v1.26.0
 	github.com/aws/aws-sdk-go-v2/service/lightsail v1.24.1
 	github.com/aws/aws-sdk-go-v2/service/mq v1.13.15
-	github.com/aws/aws-sdk-go-v2/service/mwaa v1.13.12
+	github.com/aws/aws-sdk-go-v2/service/mwaa v1.13.13
 	github.com/aws/aws-sdk-go-v2/service/neptune v1.18.3
 	github.com/aws/aws-sdk-go-v2/service/organizations v1.17.0
 	github.com/aws/aws-sdk-go-v2/service/qldb v1.14.20
