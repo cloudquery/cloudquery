@@ -107,7 +107,7 @@ jobs:
               if (!isBreaking) {
                 const titleParts = title.split(":");
                 const expectedTitle = `${titleParts[0]}!:${titleParts[1]}`;
-                throw new Error(`PR title does not contain breaking change, please update the title to '${expectedTitle}'`);
+                throw new Error(`PR title does not contain a breaking change, please update the title to '${expectedTitle}'`);
               }
             } catch (e) {
               throw new Error(`PR title does not follow conventional commits format. Error: ${e}`);
