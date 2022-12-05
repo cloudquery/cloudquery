@@ -1,7 +1,7 @@
 # Overview
 
 This section describes how CloudQuery is dealing with schema changes in plugins.
-The overall idea is to not to have breaking changes but rather always add columns because it is common for users to build views on top which we don't want to break. Those migration tactics are usually implemented in the destination plugins as source plugins are database agnostic and just send back JSON objects.
+The overall idea is to not have breaking changes, but rather always add columns, because it is common for users to build views on top which we don't want to break. Those migration tactics are usually implemented in the destination plugins as source plugins are database agnostic and just send back JSON objects.
 
 ## Addition
 

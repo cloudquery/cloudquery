@@ -1,0 +1,5 @@
+{
+  "policies": [
+    {"name": "GCP CIS v1.2.0", "path": "cis_v1.2.0/policy.sql"}
+  ]
+}

@@ -1,9 +1,9 @@
 insert into azure_policy_results
 SELECT
-  :'execution_time',
-  :'framework',
-  :'check_id',
-  'Ensure that "Automatic provisioning of monitoring agent" is set to "On" (Automated)',
+  :'execution_time' as execution_time,
+  :'framework' as framework,
+  :'check_id' as check_id,
+  'Ensure that "Automatic provisioning of monitoring agent" is set to "On" (Automated)' as title,
   subscription_id,
   id,
   case

@@ -1,8 +1,8 @@
 insert into aws_policy_results
-select :'execution_time',
-       :'framework',
-       :'check_id',
-       'Ensure there is only one active access key available for any single IAM user (Automated)',
+select :'execution_time' as execution_time,
+       :'framework' as framework,
+       :'check_id' as check_id,
+       'Ensure there is only one active access key available for any single IAM user (Automated)' as title,
        account_id,
        user_arn,
        case

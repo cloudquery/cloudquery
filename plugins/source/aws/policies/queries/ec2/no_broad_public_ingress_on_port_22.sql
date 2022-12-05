@@ -1,10 +1,10 @@
 -- uses view which uses aws_security_group_ingress_rules.sql query
 insert into aws_policy_results
 select
-  :'execution_time',
-  :'framework',
-  :'check_id',
-  'Ensure no security groups allow ingress from 0.0.0.0/0 to port 22 (Scored)',
+  :'execution_time' as execution_time,
+  :'framework' as framework,
+  :'check_id' as check_id,
+  'Ensure no security groups allow ingress from 0.0.0.0/0 to port 22 (Scored)' as title,
   account_id,
   arn,
   case when

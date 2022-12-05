@@ -3,15 +3,15 @@ select
     :'execution_time' as execution_time,
     :'framework' as framework,
     :'check_id' as check_id,
-    '' as title, -- TODO FIXME
+    'S3 buckets should deny non-HTTPS requests' as title,
     account_id,
     arn as resource_id,
-    'fail' as status -- TODO FIXME
+    'fail' as status
 from
     aws_s3_buckets
 where
     arn not in (
-        -- Find all buckets that have a bucket policy that denies non SSL requests
+        -- Find all buckets that have a bucket policy that denies non-SSL requests
         select arn
         from (select aws_s3_buckets.arn,
                      statements,
