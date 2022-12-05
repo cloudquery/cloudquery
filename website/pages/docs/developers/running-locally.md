@@ -12,7 +12,7 @@ You can run a plugin locally yourself and tell the CLI to connect to it, or you 
 
 Set the `registry` in the spec file to be `local`. `path` then becomes file path to the local binary:
 
-```yaml
+```yaml copy
 kind: source
 spec:
   name: "cloudwidgets"
@@ -42,7 +42,7 @@ If you are running multiple plugins this way simultaneously, you will need to sp
 
 After the plugin is running, you can tell the CLI to connect to it by setting the `registry` to `grpc` and the `path` to the listen address of the plugin:
 
-```yaml
+```yaml copy
 kind: source
 spec:
   name: "cloudwidgets"

@@ -6,6 +6,8 @@ cloudflare:
   - plugins/source/cloudflare/**/*
 digitalocean:
   - plugins/source/digitalocean/**/*
+datadog:
+  - plugins/source/datadog/**/*
 fuzz:
   - plugins/source/fuzz/**/*
 gandi:
@@ -30,6 +32,8 @@ csv:
   - plugins/destination/csv/**/*
 snowflake:
   - plugins/destination/snowflake/**/*
+bigquery:
+  - plugins/destination/bigquery/**/*
 website:
   - website/**/*
 cli:

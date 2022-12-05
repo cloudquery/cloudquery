@@ -16,7 +16,7 @@ jobs:
       - name: Vale
         uses: errata-ai/vale-action@v2
         with:
-          vale_flags: "--glob=!{website/pages/blog/podcast-software-engineer-daily.md,*CHANGELOG.md,*/docs/tables/*,.github/styles/proselint/README.md,**/v1-migration.md}"
+          vale_flags: "--glob=!{website/pages/blog/podcast-software-engineer-daily.md,*CHANGELOG.md,*/docs/tables/*,.github/styles/proselint/README.md,**/v1-migration.md,website/pages/docs/plugins/sources/*/tables.md,website/pages/docs/plugins/sources/*/policies.md}"
           filter_mode: nofilter
           fail_on_error: true
         env:

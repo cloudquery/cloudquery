@@ -41,6 +41,11 @@ func AccountMembers() *schema.Table {
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Roles"),
 			},
+			{
+				Name:     "policies",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Policies"),
+			},
 		},
 	}
 }

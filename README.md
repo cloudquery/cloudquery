@@ -2,7 +2,7 @@
 <h1 align="center"><img alt="cloudquery logo" width=75% src="https://github.com/cloudquery/cloudquery/raw/main/cli/docs/images/logo.png"/></h1>
 <!-- markdownlint-enable MD033 -->
 
-CloudQuery is an [open-source](https://github.com/cloudquery/cloudquery),
+CloudQuery is an open-source,
 high-performance data integration platform for security and infrastructure teams.
 
 CloudQuery extracts, transforms, and loads configuration from cloud APIs to

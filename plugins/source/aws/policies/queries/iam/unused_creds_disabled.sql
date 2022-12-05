@@ -1,9 +1,9 @@
 insert into aws_policy_results
 select
-  :'execution_time',
-  :'framework',
-  :'check_id',
-  'Ensure credentials unused for 90 days or greater are disabled (Scored)',
+  :'execution_time' as execution_time,
+  :'framework' as framework,
+  :'check_id' as check_id,
+  'Ensure credentials unused for 90 days or greater are disabled (Scored)' as title,
   split_part(r.arn, ':', 5) as account_id,
   r.arn,
   case when

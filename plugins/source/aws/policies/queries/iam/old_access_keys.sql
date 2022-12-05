@@ -1,9 +1,9 @@
 insert into aws_policy_results
 select
-  :'execution_time',
-  :'framework',
-  :'check_id',
-  'Ensure access keys are rotated every 90 days or less',
+  :'execution_time' as execution_time,
+  :'framework' as framework,
+  :'check_id' as check_id,
+  'Ensure access keys are rotated every 90 days or less' as title,
   account_id,
   user_arn,
   case when

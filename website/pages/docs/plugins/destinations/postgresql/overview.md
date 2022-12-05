@@ -1,11 +1,16 @@
-# CloudQuery PostgreSQL Destination Plugin
+# PostgreSQL Destination Plugin
+
+import { getLatestVersion } from "../../../../../utils/versions";
+import { Badge } from "../../../../../components/Badge";
+
+<Badge text={"Latest: " + getLatestVersion("destination", "postgresql")}/>
 
 This destination plugin lets you sync data from a CloudQuery source to a PostgreSQL compatible database.
 
 Supported database versions:
 
-- PostgreSQL > v10
-- CockroachDB > v20.2
+- PostgreSQL >= v10
+- CockroachDB >= v20.2
 
 ## Configuration
 
@@ -13,12 +18,12 @@ Supported database versions:
 
 This example configures a Postgresql destination, located at `localhost:5432`. The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
 
-```yaml
+```yaml copy
 kind: destination
 spec:
   name: "postgresql"
-  registry: github
-  path: "postgresql"
+  registry: "github"
+  path: "cloudquery/postgresql"
   version: "VERSION_DESTINATION_POSTGRESQL"
 
   spec:

@@ -14,7 +14,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Get changed files
         id: changed-files
-        uses: Ana06/get-changed-files@v2.1.0
+        uses: Ana06/get-changed-files@v2.2.0
       - uses: actions/github-script@v6
         env:
           FILES: ${{ steps.changed-files.outputs.all }}
@@ -44,6 +44,7 @@ jobs:
                            "plugins/source/azure",
                            "plugins/source/cloudflare",
                            "plugins/source/digitalocean",
+                           "plugins/source/datadog",
                            "plugins/source/gandi",
                            "plugins/source/gcp",
                            "plugins/source/github",
@@ -58,6 +59,7 @@ jobs:
                            "plugins/destination/csv",
                            "plugins/destination/sqlite",
                            "plugins/destination/snowflake",
+                           "plugins/destination/bigquery",
                            ].filter(action => matchesFile(action))
             if (actions.length === 0) {
               console.log("No actions to wait for")

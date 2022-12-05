@@ -10,6 +10,23 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
+func getSsoadminPermissionSetInlinePolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	svc := meta.(*client.Client).Services().Ssoadmin
+	permissionSetARN := resource.Item.(*types.PermissionSet).PermissionSetArn
+	instanceARN := resource.Parent.Item.(types.InstanceMetadata).InstanceArn
+	config := ssoadmin.GetInlinePolicyForPermissionSetInput{
+		InstanceArn:      instanceARN,
+		PermissionSetArn: permissionSetARN,
+	}
+
+	response, err := svc.GetInlinePolicyForPermissionSet(ctx, &config)
+	if err != nil {
+		return err
+	}
+
+	return resource.Set(c.Name, response.InlinePolicy)
+}
+
 func getSsoadminPermissionSet(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	svc := meta.(*client.Client).Services().Ssoadmin
 	permission_set_arn := resource.Item.(string)

@@ -71,6 +71,12 @@ const CLOUDQUERY_TEAM = {
     twitterUsername: "candiduslynx",
     image_url: "/images/people/alex.png",
   },
+  kemal: {
+    name: "Kemal Hadimli",
+    url: "https://www.linkedin.com/in/kemalh/",
+    twitterUsername: "disq",
+    image_url: "/images/people/kemal.jpg",
+  },
 };
 
 export type Author = keyof typeof CLOUDQUERY_TEAM;

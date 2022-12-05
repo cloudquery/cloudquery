@@ -13,49 +13,13 @@ on:
       - ".github/workflows/dest_csv.yml"
 
 jobs:
-  resolve-runner:
-    timeout-minutes: 5
-    runs-on: ubuntu-latest
-    outputs:
-      runner: ${{ steps.resolve.outputs.runner }}
-    steps:
-      - name: Check if should use large runner
-        id: large-runner
-        # We want to speed runs on the main branch which prime the cache
-        # We allow large runners only in this case to prevent forks from abusing them (it's enforced via runner groups access rules)
-        # IF YOU WANT TO USE A LARGE RUNNER YOU NEED TO ADD THE WORKFLOW TO THE `CloudQuery releases` GROUP IN https://github.com/organizations/cloudquery/settings/actions/runner-groups
-        if: github.event_name == 'push'
-        run: |
-          echo "runner=cloudquery-release-runner" >> $GITHUB_OUTPUT
-      - name: Resolve runner
-        id: resolve
-        run: |
-          RUNNER=${{ steps.large-runner.outputs.runner }}
-          echo "runner=${RUNNER:-"ubuntu-latest"}" >> $GITHUB_OUTPUT
   plugins-destination-csv:
     timeout-minutes: 30
     name: "plugins/destination/csv"
-    needs: [resolve-runner]
-    runs-on: ${{ needs.resolve-runner.outputs.runner }}
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./plugins/destination/csv
-    services:
-      # Label used to access the service container
-      postgres:
-        image: postgres:10
-        env:
-          POSTGRES_PASSWORD: pass
-          POSTGRES_USER: postgres
-          POSTGRES_DB: postgres
-        ports:
-          - 5432:5432
-        # Set health checks to wait until postgres has started
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
     steps:
       - uses: actions/checkout@v3
         with:
@@ -80,8 +44,7 @@ jobs:
         run: make test
   validate-release:
     timeout-minutes: 30
-    needs: [resolve-runner]
-    runs-on: ${{ needs.resolve-runner.outputs.runner }}
+    runs-on: ubuntu-latest
     env:
       CGO_ENABLED: 0
     steps:

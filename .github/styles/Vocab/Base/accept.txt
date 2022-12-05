@@ -132,6 +132,7 @@ subfolder
 recurse
 CCPA's
 bugfix
+Datadog
 nvm
 npm
 Gandi
@@ -144,3 +145,12 @@ ARN
 ARNs
 SCP
 SCPs
+failover
+ENI
+ENIs
+runtime
+runtimes
+ELB
+ELBs
+CMK
+CMKs

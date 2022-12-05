@@ -5,19 +5,20 @@ go 1.19
 require (
 	github.com/cloudquery/plugin-sdk v1.10.0
 	github.com/google/go-cmp v0.5.9
-	github.com/googleapis/gax-go/v2 v2.4.0
-	github.com/heroku/heroku-go/v5 v5.4.1
+	github.com/googleapis/gax-go/v2 v2.7.0
+	github.com/heroku/heroku-go/v5 v5.5.0
 	github.com/iancoleman/strcase v0.2.0
 	github.com/jinzhu/inflection v1.0.0
 	github.com/julienschmidt/httprouter v1.3.0
 	github.com/pkg/errors v0.9.1
 	github.com/rs/zerolog v1.28.0
-	google.golang.org/api v0.90.0
-	google.golang.org/grpc v1.50.1
+	google.golang.org/api v0.103.0
+	google.golang.org/grpc v1.51.0
 )
 
 require (
-	cloud.google.com/go/compute v1.7.0 // indirect
+	cloud.google.com/go/compute v1.12.1 // indirect
+	cloud.google.com/go/compute/metadata v0.2.1 // indirect
 	github.com/cenkalti/backoff v2.2.1+incompatible // indirect
 	github.com/getsentry/sentry-go v0.15.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
@@ -37,7 +38,7 @@ require (
 	github.com/thoas/go-funk v0.9.2 // indirect
 	golang.org/x/exp v0.0.0-20221111204811-129d8d6c17ab // indirect
 	golang.org/x/net v0.2.0 // indirect
-	golang.org/x/oauth2 v0.0.0-20220718184931-c8730f7fcb92 // indirect
+	golang.org/x/oauth2 v0.0.0-20221014153046-6fdb5e3db783 // indirect
 	golang.org/x/sync v0.1.0 // indirect
 	golang.org/x/sys v0.2.0 // indirect
 	golang.org/x/text v0.4.0 // indirect

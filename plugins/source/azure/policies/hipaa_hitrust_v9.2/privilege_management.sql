@@ -1,11 +1,11 @@
 \echo "Executing Privilege Management Checks"
 \set check_id '11180_01c3system_6_01_c'
-\ir ../queries/compute/virtual_machines_without_jit_network_access_\set check_id.sql
+\echo "Management ports of virtual machines should be protected with just-in-time network access control"
+\ir ../queries/compute/virtual_machines_without_jit_network_access_policy.sql
 
 \set check_id '1143_01c1system_123_01_c'
 \echo "Management ports should be closed on your virtual machines"
 \ir ../queries/network/security_groups_with_open_management_ports.sql
-
 
 \set check_id '1144_01c1system_4_01_c'
 \echo "A maximum of 3 owners should be designated for your subscription"
