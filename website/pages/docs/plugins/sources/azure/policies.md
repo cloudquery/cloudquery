@@ -109,6 +109,7 @@ tables:
   - azure_monitor_activity_log_alerts
   - azure_monitor_diagnostic_settings
   - azure_monitor_log_profiles
+  - azure_monitor_resources
   - azure_mysql_servers
   - azure_network_interfaces
   - azure_network_security_groups

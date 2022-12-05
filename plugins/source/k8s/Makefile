@@ -24,7 +24,9 @@ gen-docs:
 	rm -rf ./docs/tables/*
 	go run main.go doc ./docs/tables
 	sed 's_(\(.*\))_(https://github.com/cloudquery/cloudquery/blob/main/plugins/source/k8s/docs/tables/\1)_' docs/tables/README.md > ../../../website/pages/docs/plugins/sources/k8s/tables.md
-	go run scripts/policy_docs/main.go k8s policies ../../../website/pages/docs/plugins/sources/k8s/policies.md
+	go run main.go doc --format json docs
+	go run scripts/policy_docs/main.go k8s policies ../../../website/pages/docs/plugins/sources/k8s/policies.md docs/__tables.json
+	rm docs/__tables.json
 
 .PHONY: lint
 lint:

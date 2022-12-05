@@ -70,6 +70,7 @@ tables:
   - aws_ec2_vpcs
   - aws_elasticsearch_domains
   - aws_elbv2_listeners
+  - aws_elbv2_load_balancers
   - aws_guardduty_detectors
   - aws_iam_accounts
   - aws_iam_credential_reports

@@ -47,14 +47,28 @@ func readIndex(dir string) (*Index, error) {
 type PolicyInfo struct {
 	Name    string
 	Queries []Query
+	Tables  []string
+}
+
+func newPolicyInfo(name string, queries []Query, allTables []Table) *PolicyInfo {
+	pi := &PolicyInfo{
+		Name:    name,
+		Queries: removeDuplicates(queries),
+	}
+	pi.setTables(allTables)
+	return pi
 }
 
 // Tables returns the unique set of tables needed to run all queries
-func (pi PolicyInfo) Tables() []string {
+func (pi *PolicyInfo) setTables(allTables Tables) {
 	t := map[string]struct{}{}
 	for _, q := range pi.Queries {
 		for _, table := range q.Tables {
 			t[table] = struct{}{}
+			ancestors := allTables.FindAncestors(table)
+			for _, a := range ancestors {
+				t[a.Name] = struct{}{}
+			}
 		}
 	}
 	var final []string
@@ -62,7 +76,7 @@ func (pi PolicyInfo) Tables() []string {
 		final = append(final, k)
 	}
 	sort.Strings(final)
-	return final
+	pi.Tables = final
 }
 
 type Query struct {
@@ -84,15 +98,12 @@ func removeDuplicates(queries []Query) []Query {
 	return clean
 }
 
-func getPolicyInfo(prefix, dir string, policy Policy) (*PolicyInfo, error) {
+func getPolicyInfo(prefix string, tables Tables, dir string, policy Policy) (*PolicyInfo, error) {
 	queries, err := extractQueries(prefix, path.Join(dir, policy.Path))
 	if err != nil {
 		return nil, fmt.Errorf("failed to extract queries: %w", err)
 	}
-	return &PolicyInfo{
-		Name:    policy.Name,
-		Queries: removeDuplicates(queries),
-	}, nil
+	return newPolicyInfo(policy.Name, removeDuplicates(queries), tables), nil
 }
 
 func extractQueries(prefix, sqlPath string) ([]Query, error) {
@@ -153,21 +164,57 @@ func writePolicyDocs(info []*PolicyInfo, outputPath string) error {
 	return nil
 }
 
+type Table struct {
+	Name      string `json:"name"`
+	Relations Tables `json:"relations"`
+}
+
+type Tables []Table
+
+// FindAncestors returns the list of ancestors for a given table, if any.
+func (tt Tables) FindAncestors(name string) []Table {
+	for _, t := range tt {
+		if t.Name == name {
+			return []Table{}
+		}
+		r := t.Relations.FindAncestors(name)
+		if r != nil {
+			return append([]Table{t}, r...)
+		}
+	}
+	return nil
+}
+
+func readTablesJSON(filepath string) ([]Table, error) {
+	b, err := os.ReadFile(filepath)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read json file: %w", err)
+	}
+	var tables []Table
+	err = json.Unmarshal(b, &tables)
+	return tables, err
+}
+
 func main() {
-	if len(os.Args) <= 3 {
-		log.Fatalf("Usage: %s <table prefix> <path to policies directory> <output filename>", os.Args[0])
+	if len(os.Args) <= 4 {
+		log.Fatalf("Usage: %s <table prefix> <path to policies directory> <output filename> <path to __tables.json>", os.Args[0])
 	}
 	prefix := os.Args[1]
 	dir := os.Args[2]
 	out := os.Args[3]
+	tablesPath := os.Args[4]
 	index, err := readIndex(dir)
 	if err != nil {
 		log.Fatalf("error reading index: %v", err)
 	}
+	tables, err := readTablesJSON(tablesPath)
+	if err != nil {
+		log.Fatalf("error reading tables JSON: %v", err)
+	}
 
 	var info []*PolicyInfo
 	for _, p := range index.Policies {
-		pi, err := getPolicyInfo(prefix, dir, p)
+		pi, err := getPolicyInfo(prefix, tables, dir, p)
 		if err != nil {
 			log.Fatalf("error reading policy info: %v", err)
 		}
