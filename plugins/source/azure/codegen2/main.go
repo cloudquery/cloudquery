@@ -17,14 +17,15 @@ import (
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/iancoleman/strcase"
-	"google.golang.org/protobuf/reflect/protoreflect"
-	"google.golang.org/protobuf/types/known/durationpb"
-	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 //go:embed templates/*.go.tpl
 var templateFS embed.FS
 
+var templateFuncs = template.FuncMap{
+	"ToCamel": strcase.ToCamel,
+	"ToLower": strings.ToLower,
+}
 
 var (
 	currentFilename string
@@ -46,45 +47,53 @@ func main() {
 	currentDir = path.Dir(currentFilename)
 
 	for i := range recipes.Tables {
-		initResource(&recipes.Tables[i])
-		generateResource(recipes.Tables[i], false)
-		generateResource(recipes.Tables[i], true)
+		if err := initResource(&recipes.Tables[i]); err != nil {
+			log.Fatal(err)
+		}
+		if err := generateResource(recipes.Tables[i], false); err != nil {
+			log.Fatal(err)
+		}
+		if err := generateResource(recipes.Tables[i], true); err != nil {
+			log.Fatal(err)
+		}
 	}
-	generateTables(recipes.Tables)
+	if err := generateTables(recipes.Tables); err != nil {
+		log.Fatal(err)
+	}
 }
 
-func generateTables(rr []recipes.Table) {
-	tpl, err := template.New("tables.go.tpl").Funcs(template.FuncMap{
-		"ToCamel": strcase.ToCamel,
-	}).ParseFS(templateFS, "templates/tables.go.tpl")
+func generateTables(rr []recipes.Table) error {
+	tpl, err := template.New("tables.go.tpl").Funcs(templateFuncs).ParseFS(templateFS, "templates/tables.go.tpl")
 	if err != nil {
-		log.Fatal(fmt.Errorf("failed to parse services.go.tpl: %w", err))
+		return fmt.Errorf("failed to parse services.go.tpl: %w", err)
 	}
 
 	var buff bytes.Buffer
 	if err := tpl.Execute(&buff, rr); err != nil {
-		log.Fatal(fmt.Errorf("failed to execute services template: %w", err))
+		return fmt.Errorf("failed to execute services template: %w", err)
 	}
 
 	filePath := path.Join(currentDir, "../resources/plugin/tables.go")
 	content := buff.Bytes()
 	formattedContent, err := format.Source(buff.Bytes())
-	if err != nil {
-		fmt.Printf("failed to format code for %s: %v\n", filePath, err)
-	} else {
-		content = formattedContent
+  if err != nil {
+  	fmt.Printf("failed to format code for %s: %v\n", filePath, err)
+  } else {
+    content = formattedContent
 	}
 	if err := os.WriteFile(filePath, content, 0644); err != nil {
-		log.Fatal(fmt.Errorf("failed to write file %s: %w", filePath, err))
+		return fmt.Errorf("failed to write file %s: %w", filePath, err)
 	}
+	return nil
 }
 
 
-func initResource(r *recipes.Table) {
+func initResource(r *recipes.Table) error {
 	var err error
 	if r.Client != nil {
 		r.ClientName = reflect.TypeOf(r.Client).Elem().Name()
 	}
+	r.PackageName = strings.TrimPrefix(r.Service, "arm")
 	if r.NewFunc != nil {
 		path := strings.Split(runtime.FuncForPC(reflect.ValueOf(r.NewFunc).Pointer()).Name(), ".")
 		r.NewFuncName = path[len(path)-1]
@@ -115,10 +124,6 @@ func initResource(r *recipes.Table) {
 		r.ImportPath = reflect.TypeOf(r.Struct).Elem().PkgPath()
 	}
 
-	if r.MockImports == nil {
-		r.MockImports = []string{reflect.TypeOf(r.Struct).Elem().PkgPath()}
-	}
-
 	for _, f := range r.ExtraColumns {
 		r.SkipFields = append(r.SkipFields, strcase.ToCamel(f.Name))
 	}
@@ -132,47 +137,15 @@ func initResource(r *recipes.Table) {
 	opts := []codegen.TableOption{
 		codegen.WithSkipFields(r.SkipFields),
 		codegen.WithExtraColumns(extraColumns),
-		codegen.WithTypeTransformer(func(field reflect.StructField) (schema.ValueType, error) {
-			switch reflect.New(field.Type).Elem().Interface().(type) {
-			case *timestamppb.Timestamp,
-				timestamppb.Timestamp:
-				return schema.TypeTimestamp, nil
-			case *durationpb.Duration,
-				durationpb.Duration:
-				return schema.TypeInt, nil
-			case protoreflect.Enum:
-				return schema.TypeString, nil
-			default:
-				return schema.TypeInvalid, nil
-			}
-		}),
-		// codegen.WithResolverTransformer(func(field reflect.StructField, path string) (string, error) {
-		// 	switch reflect.New(field.Type).Elem().Interface().(type) {
-		// 	case *timestamppb.Timestamp,
-		// 		timestamppb.Timestamp:
-		// 		return `client.ResolveProtoTimestamp("` + path + `")`, nil
-		// 	case *durationpb.Duration,
-		// 		durationpb.Duration:
-		// 		return `client.ResolveProtoDuration("` + path + `")`, nil
-		// 	case protoreflect.Enum:
-		// 		return `client.ResolveProtoEnum("` + path + `")`, nil
-		// 	default:
-		// 		return "", nil
-		// 	}
-		// }),
-	}
-
-	if r.NameTransformer != nil {
-		opts = append(opts, codegen.WithNameTransformer(r.NameTransformer))
 	}
 
 	r.Table, err = codegen.NewTableFromStruct(
-		fmt.Sprintf("azure_%s_%s", r.Service, r.Name),
+		fmt.Sprintf("azure_%s_%s", r.PackageName, r.Name),
 		r.Struct,
 		opts...,
 	)
 	if err != nil {
-		log.Fatal(fmt.Errorf("failed to create table for %s: %w", r.StructName, err))
+		return fmt.Errorf("failed to create table for %s: %w", r.StructName, err)
 	}
 
 	if r.Multiplex == nil {
@@ -194,10 +167,10 @@ func initResource(r *recipes.Table) {
 	if r.Relations != nil {
 		r.Table.Relations = r.Relations
 	}
-
+	return nil
 }
 
-func generateResource(r recipes.Table, mock bool) {
+func generateResource(r recipes.Table, mock bool) error {
 	mainTemplate := r.Template + ".go.tpl"
 	if mock {
 		if r.MockTemplate == "" {
@@ -206,39 +179,42 @@ func generateResource(r recipes.Table, mock bool) {
 			mainTemplate = r.MockTemplate + ".go.tpl"
 		}
 	}
-	tpl, err := template.New(mainTemplate).Funcs(template.FuncMap{
-		"ToCamel": strcase.ToCamel,
-		"ToLower": strings.ToLower,
-	}).ParseFS(templateFS, "templates/"+mainTemplate)
+	tpl, err := template.New(mainTemplate).Funcs(templateFuncs).ParseFS(templateFS, "templates/"+mainTemplate)
 	if err != nil {
-		log.Fatal(fmt.Errorf("failed to parse templates: %w", err))
+		return fmt.Errorf("failed to parse templates: %w", err)
 	}
 	tpl, err = tpl.ParseFS(codegen.TemplatesFS, "templates/*.go.tpl")
 	if err != nil {
-		log.Fatal(fmt.Errorf("failed to parse sdk template: %w", err))
+		return fmt.Errorf("failed to parse sdk template: %w", err)
 	}
 	var buff bytes.Buffer
 	if err := tpl.Execute(&buff, r); err != nil {
-		log.Fatal(fmt.Errorf("failed to execute template: %w", err))
+		return fmt.Errorf("failed to execute template: %w", err)
 	}
-	filePath := path.Join(currentDir, "../resources/services", r.Service)
+	
+	filePath := path.Join(currentDir, "../resources/services", r.PackageName)
 	if err := os.MkdirAll(filePath, os.ModePerm); err != nil {
-		log.Fatal(err)
+		return err
 	}
 	if mock {
 		filePath = path.Join(filePath, r.Name+"_mock_test.go")
 	} else {
-		filePath = path.Join(filePath, r.Name+".go")
+		name := r.Name
+		if strings.HasSuffix(name, "_test") {
+			name = name + "_not"
+		}
+		filePath = path.Join(filePath, name+".go")
 	}
 
 	content := buff.Bytes()
 	formattedContent, err := format.Source(buff.Bytes())
-	if err != nil {
-		log.Printf("failed to format %s\n", filePath)
-	} else {
-		content = formattedContent
+  if err != nil {
+  	fmt.Printf("failed to format code for %s: %v\n", filePath, err)
+  } else {
+    content = formattedContent
 	}
 	if err := os.WriteFile(filePath, content, 0644); err != nil {
-		log.Fatal(fmt.Errorf("failed to write file %s: %w", filePath, err))
+		return fmt.Errorf("failed to write file %s: %w", filePath, err)
 	}
+	return nil
 }

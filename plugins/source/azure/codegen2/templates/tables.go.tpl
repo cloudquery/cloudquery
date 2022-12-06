@@ -5,7 +5,7 @@ import (
   "github.com/cloudquery/plugin-sdk/schema"  
   {{- range .}}
   {{- if not .ChildTable}}
-  "github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/{{.Service}}"
+  "github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/{{.PackageName}}"
   {{- end}}
   {{- end}}
 )
@@ -14,7 +14,7 @@ func generatedTables() []*schema.Table {
   return []*schema.Table{
     {{- range .}}
     {{- if not .ChildTable}}
-    {{.Service}}.{{.Name | ToCamel}}(),
+    {{.PackageName}}.{{.Name | ToCamel}}(),
     {{- end}}
     {{- end}}
   }

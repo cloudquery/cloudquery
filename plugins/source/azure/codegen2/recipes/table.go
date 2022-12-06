@@ -1,8 +1,6 @@
 package recipes
 
 import (
-	"reflect"
-
 	"github.com/cloudquery/plugin-sdk/codegen"
 )
 
@@ -19,10 +17,11 @@ type Table struct {
 	Struct interface{}
 	// StructName is the name of the Struct because it can't be inferred by reflection
 	StructName string
+	// ImportPath need for each table
 	ImportPath string
-	// Service is the name of the gcp service the struct/api is residing
+	// Service is the name of the azure service the struct/api is residing
 	Service string
-	// Name is the name of the gcp subservice the struct/api is residing (gcp is split into service.subservice.list)
+	// Name is the name of the azure subservice the struct/api is residing (gcp is split into service.subservice.list)
 	Name string
 	// NewFunction
 	Client interface{}
@@ -48,8 +47,6 @@ type Table struct {
 	ListFuncHasSubscriptionId bool
 	// should we use ListAll function
 	ListAll bool
-	// OutputField is field where the result is located in the output struct
-	OutputField string
 	// Relations is list of relations functions
 	Relations []string
 	// Template is the template to use to generate the resource (some services has different template as some services were generated using different original codegen)
@@ -66,21 +63,15 @@ type Table struct {
 	SkipMock bool
 	// Pass to MockTemplate
 	MockTemplate string
-	// MockPostFaker is a code snippet that runs post faker
-	MockPostFaker string
 	// MockListStruct is the name of the struct that will be used in the mock template
 	MockListStruct string
 	// MockImports imports used in mock tests
-	MockImports []string
-	// ProtobufImport path to protobuf struct for this resource/service
-	ProtobufImport string
+	// MockImports []string
 	// Don't generate fetch
 	SkipFetch bool
 	// SkipFields fields in go struct to skip when generating the table from the go struct
 	SkipFields []string
 	// ExtraColumns override, override generated columns
 	ExtraColumns []codegen.ColumnDefinition
-	// NameTransformer custom name transformer for resource
-	NameTransformer func(field reflect.StructField) (string, error)
 	URL string
 }
