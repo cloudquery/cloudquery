@@ -15,24 +15,6 @@ func Armpolicy() []Table {
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyDefinitions",
 		},
 		{
-      Name: "exemption",
-      Struct: &armpolicy.Exemption{},
-      ResponseStruct: &armpolicy.ExemptionsClientListResponse{},
-      Client: &armpolicy.ExemptionsClient{},
-      ListFunc: (&armpolicy.ExemptionsClient{}).NewListPager,
-			NewFunc: armpolicy.NewExemptionsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyExemptions",
-		},
-		{
-      Name: "assignment",
-      Struct: &armpolicy.Assignment{},
-      ResponseStruct: &armpolicy.AssignmentsClientListResponse{},
-      Client: &armpolicy.AssignmentsClient{},
-      ListFunc: (&armpolicy.AssignmentsClient{}).NewListPager,
-			NewFunc: armpolicy.NewAssignmentsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyAssignments",
-		},
-		{
       Name: "data_policy_manifest",
       Struct: &armpolicy.DataPolicyManifest{},
       ResponseStruct: &armpolicy.DataPolicyManifestsClientListResponse{},
@@ -42,6 +24,15 @@ func Armpolicy() []Table {
 			URL: "/providers/Microsoft.Authorization/dataPolicyManifests",
 		},
 		{
+      Name: "exemption",
+      Struct: &armpolicy.Exemption{},
+      ResponseStruct: &armpolicy.ExemptionsClientListResponse{},
+      Client: &armpolicy.ExemptionsClient{},
+      ListFunc: (&armpolicy.ExemptionsClient{}).NewListPager,
+			NewFunc: armpolicy.NewExemptionsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyExemptions",
+		},
+		{
       Name: "set_definition",
       Struct: &armpolicy.SetDefinition{},
       ResponseStruct: &armpolicy.SetDefinitionsClientListResponse{},
@@ -49,6 +40,15 @@ func Armpolicy() []Table {
       ListFunc: (&armpolicy.SetDefinitionsClient{}).NewListPager,
 			NewFunc: armpolicy.NewSetDefinitionsClient,
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions",
+		},
+		{
+      Name: "assignment",
+      Struct: &armpolicy.Assignment{},
+      ResponseStruct: &armpolicy.AssignmentsClientListResponse{},
+      Client: &armpolicy.AssignmentsClient{},
+      ListFunc: (&armpolicy.AssignmentsClient{}).NewListPager,
+			NewFunc: armpolicy.NewAssignmentsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyAssignments",
 		},
 	}
 

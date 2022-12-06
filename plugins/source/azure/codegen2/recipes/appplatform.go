@@ -6,15 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armapp
 func Armappplatform() []Table {
 	tables := []Table{
 		{
-      Name: "service_resource",
-      Struct: &armappplatform.ServiceResource{},
-      ResponseStruct: &armappplatform.ServicesClientListResponse{},
-      Client: &armappplatform.ServicesClient{},
-      ListFunc: (&armappplatform.ServicesClient{}).NewListPager,
-			NewFunc: armappplatform.NewServicesClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring",
-		},
-		{
       Name: "resource_sku",
       Struct: &armappplatform.ResourceSKU{},
       ResponseStruct: &armappplatform.SKUsClientListResponse{},
@@ -22,6 +13,15 @@ func Armappplatform() []Table {
       ListFunc: (&armappplatform.SKUsClient{}).NewListPager,
 			NewFunc: armappplatform.NewSKUsClient,
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.AppPlatform/skus",
+		},
+		{
+      Name: "service_resource",
+      Struct: &armappplatform.ServiceResource{},
+      ResponseStruct: &armappplatform.ServicesClientListResponse{},
+      Client: &armappplatform.ServicesClient{},
+      ListFunc: (&armappplatform.ServicesClient{}).NewListPager,
+			NewFunc: armappplatform.NewServicesClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring",
 		},
 	}
 

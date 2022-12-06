@@ -6,24 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfront
 func Armfrontdoor() []Table {
 	tables := []Table{
 		{
-      Name: "front_door",
-      Struct: &armfrontdoor.FrontDoor{},
-      ResponseStruct: &armfrontdoor.FrontDoorsClientListResponse{},
-      Client: &armfrontdoor.FrontDoorsClient{},
-      ListFunc: (&armfrontdoor.FrontDoorsClient{}).NewListPager,
-			NewFunc: armfrontdoor.NewFrontDoorsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/frontDoors",
-		},
-		{
-      Name: "web_application_firewall_policy",
-      Struct: &armfrontdoor.WebApplicationFirewallPolicy{},
-      ResponseStruct: &armfrontdoor.PoliciesClientListResponse{},
-      Client: &armfrontdoor.PoliciesClient{},
-      ListFunc: (&armfrontdoor.PoliciesClient{}).NewListPager,
-			NewFunc: armfrontdoor.NewPoliciesClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoorWebApplicationFirewallPolicies",
-		},
-		{
       Name: "managed_rule_set_definition",
       Struct: &armfrontdoor.ManagedRuleSetDefinition{},
       ResponseStruct: &armfrontdoor.ManagedRuleSetsClientListResponse{},
@@ -40,6 +22,24 @@ func Armfrontdoor() []Table {
       ListFunc: (&armfrontdoor.NetworkExperimentProfilesClient{}).NewListPager,
 			NewFunc: armfrontdoor.NewNetworkExperimentProfilesClient,
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/NetworkExperimentProfiles",
+		},
+		{
+      Name: "front_door",
+      Struct: &armfrontdoor.FrontDoor{},
+      ResponseStruct: &armfrontdoor.FrontDoorsClientListResponse{},
+      Client: &armfrontdoor.FrontDoorsClient{},
+      ListFunc: (&armfrontdoor.FrontDoorsClient{}).NewListPager,
+			NewFunc: armfrontdoor.NewFrontDoorsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/frontDoors",
+		},
+		{
+      Name: "web_application_firewall_policy",
+      Struct: &armfrontdoor.WebApplicationFirewallPolicy{},
+      ResponseStruct: &armfrontdoor.PoliciesClientListResponse{},
+      Client: &armfrontdoor.PoliciesClient{},
+      ListFunc: (&armfrontdoor.PoliciesClient{}).NewListPager,
+			NewFunc: armfrontdoor.NewPoliciesClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoorWebApplicationFirewallPolicies",
 		},
 	}
 

@@ -6,15 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkl
 func Armworkloads() []Table {
 	tables := []Table{
 		{
-      Name: "monitor",
-      Struct: &armworkloads.Monitor{},
-      ResponseStruct: &armworkloads.MonitorsClientListResponse{},
-      Client: &armworkloads.MonitorsClient{},
-      ListFunc: (&armworkloads.MonitorsClient{}).NewListPager,
-			NewFunc: armworkloads.NewMonitorsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Workloads/monitors",
-		},
-		{
       Name: "sku_definition",
       Struct: &armworkloads.SKUDefinition{},
       ResponseStruct: &armworkloads.SKUsClientListResponse{},
@@ -22,6 +13,15 @@ func Armworkloads() []Table {
       ListFunc: (&armworkloads.SKUsClient{}).NewListPager,
 			NewFunc: armworkloads.NewSKUsClient,
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Workloads/skus",
+		},
+		{
+      Name: "monitor",
+      Struct: &armworkloads.Monitor{},
+      ResponseStruct: &armworkloads.MonitorsClientListResponse{},
+      Client: &armworkloads.MonitorsClient{},
+      ListFunc: (&armworkloads.MonitorsClient{}).NewListPager,
+			NewFunc: armworkloads.NewMonitorsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Workloads/monitors",
 		},
 	}
 

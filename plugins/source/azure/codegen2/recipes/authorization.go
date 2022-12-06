@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/arma
 func Armauthorization() []Table {
 	tables := []Table{
 		{
-      Name: "classic_administrator",
-      Struct: &armauthorization.ClassicAdministrator{},
-      ResponseStruct: &armauthorization.ClassicAdministratorsClientListResponse{},
-      Client: &armauthorization.ClassicAdministratorsClient{},
-      ListFunc: (&armauthorization.ClassicAdministratorsClient{}).NewListPager,
-			NewFunc: armauthorization.NewClassicAdministratorsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/classicAdministrators",
+      Name: "role_assignment",
+      Struct: &armauthorization.RoleAssignment{},
+      ResponseStruct: &armauthorization.RoleAssignmentsClientListResponse{},
+      Client: &armauthorization.RoleAssignmentsClient{},
+      ListFunc: (&armauthorization.RoleAssignmentsClient{}).NewListPager,
+			NewFunc: armauthorization.NewRoleAssignmentsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/roleAssignments",
 		},
 		{
       Name: "provider_operations_metadata",
@@ -24,13 +24,13 @@ func Armauthorization() []Table {
 			URL: "/providers/Microsoft.Authorization/providerOperations",
 		},
 		{
-      Name: "role_assignment",
-      Struct: &armauthorization.RoleAssignment{},
-      ResponseStruct: &armauthorization.RoleAssignmentsClientListResponse{},
-      Client: &armauthorization.RoleAssignmentsClient{},
-      ListFunc: (&armauthorization.RoleAssignmentsClient{}).NewListPager,
-			NewFunc: armauthorization.NewRoleAssignmentsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/roleAssignments",
+      Name: "classic_administrator",
+      Struct: &armauthorization.ClassicAdministrator{},
+      ResponseStruct: &armauthorization.ClassicAdministratorsClientListResponse{},
+      Client: &armauthorization.ClassicAdministratorsClient{},
+      ListFunc: (&armauthorization.ClassicAdministratorsClient{}).NewListPager,
+			NewFunc: armauthorization.NewClassicAdministratorsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/classicAdministrators",
 		},
 	}
 

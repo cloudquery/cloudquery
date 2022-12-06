@@ -6,15 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armre
 func Armreservations() []Table {
 	tables := []Table{
 		{
-      Name: "operation_response",
-      Struct: &armreservations.OperationResponse{},
-      ResponseStruct: &armreservations.OperationClientListResponse{},
-      Client: &armreservations.OperationClient{},
-      ListFunc: (&armreservations.OperationClient{}).NewListPager,
-			NewFunc: armreservations.NewOperationClient,
-			URL: "/providers/Microsoft.Capacity/operations",
-		},
-		{
       Name: "reservation_order_response",
       Struct: &armreservations.ReservationOrderResponse{},
       ResponseStruct: &armreservations.ReservationOrderClientListResponse{},
@@ -22,6 +13,15 @@ func Armreservations() []Table {
       ListFunc: (&armreservations.ReservationOrderClient{}).NewListPager,
 			NewFunc: armreservations.NewReservationOrderClient,
 			URL: "/providers/Microsoft.Capacity/reservationOrders",
+		},
+		{
+      Name: "operation_response",
+      Struct: &armreservations.OperationResponse{},
+      ResponseStruct: &armreservations.OperationClientListResponse{},
+      Client: &armreservations.OperationClient{},
+      ListFunc: (&armreservations.OperationClient{}).NewListPager,
+			NewFunc: armreservations.NewOperationClient,
+			URL: "/providers/Microsoft.Capacity/operations",
 		},
 	}
 

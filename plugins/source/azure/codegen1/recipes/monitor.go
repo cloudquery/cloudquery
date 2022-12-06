@@ -6,24 +6,24 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor
 func Armmonitor() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armmonitor.NewTenantActivityLogsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
-			URL: "/providers/Microsoft.Insights/eventtypes/management/values",
-		},
-		{
-			NewFunc: armmonitor.NewLogProfilesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/logprofiles",
-		},
-		{
 			NewFunc: armmonitor.NewPrivateLinkScopesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
 			URL: "/subscriptions/{subscriptionId}/providers/microsoft.insights/privateLinkScopes",
 		},
 		{
+			NewFunc: armmonitor.NewTenantActivityLogsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
+			URL: "/providers/Microsoft.Insights/eventtypes/management/values",
+		},
+		{
 			NewFunc: armmonitor.NewEventCategoriesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
 			URL: "/providers/Microsoft.Insights/eventcategories",
+		},
+		{
+			NewFunc: armmonitor.NewLogProfilesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/logprofiles",
 		},
 	}
 	return tables

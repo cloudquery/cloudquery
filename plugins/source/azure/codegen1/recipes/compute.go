@@ -6,34 +6,14 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute
 func Armcompute() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armcompute.NewImagesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/images",
-		},
-		{
-			NewFunc: armcompute.NewSnapshotsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/snapshots",
-		},
-		{
-			NewFunc: armcompute.NewDisksClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/disks",
-		},
-		{
 			NewFunc: armcompute.NewDiskAccessesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute",
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/diskAccesses",
 		},
 		{
-			NewFunc: armcompute.NewVirtualMachineScaleSetsClient,
+			NewFunc: armcompute.NewImagesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets",
-		},
-		{
-			NewFunc: armcompute.NewAvailabilitySetsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/images",
 		},
 		{
 			NewFunc: armcompute.NewVirtualMachinesClient,
@@ -46,9 +26,29 @@ func Armcompute() []*Table {
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/diskEncryptionSets",
 		},
 		{
+			NewFunc: armcompute.NewRestorePointCollectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/restorePointCollections",
+		},
+		{
 			NewFunc: armcompute.NewGalleriesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute",
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/galleries",
+		},
+		{
+			NewFunc: armcompute.NewSnapshotsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/snapshots",
+		},
+		{
+			NewFunc: armcompute.NewAvailabilitySetsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets",
+		},
+		{
+			NewFunc: armcompute.NewVirtualMachineScaleSetsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets",
 		},
 		{
 			NewFunc: armcompute.NewCloudServicesClient,
@@ -56,9 +56,9 @@ func Armcompute() []*Table {
 			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices",
 		},
 		{
-			NewFunc: armcompute.NewRestorePointCollectionsClient,
+			NewFunc: armcompute.NewDisksClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/restorePointCollections",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/disks",
 		},
 		{
 			NewFunc: armcompute.NewResourceSKUsClient,

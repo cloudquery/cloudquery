@@ -6,6 +6,15 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsight
 func Armoperationalinsights() []Table {
 	tables := []Table{
 		{
+      Name: "cluster",
+      Struct: &armoperationalinsights.Cluster{},
+      ResponseStruct: &armoperationalinsights.ClustersClientListResponse{},
+      Client: &armoperationalinsights.ClustersClient{},
+      ListFunc: (&armoperationalinsights.ClustersClient{}).NewListPager,
+			NewFunc: armoperationalinsights.NewClustersClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.OperationalInsights/clusters",
+		},
+		{
       Name: "workspace",
       Struct: &armoperationalinsights.Workspace{},
       ResponseStruct: &armoperationalinsights.WorkspacesClientListResponse{},
@@ -22,15 +31,6 @@ func Armoperationalinsights() []Table {
       ListFunc: (&armoperationalinsights.DeletedWorkspacesClient{}).NewListPager,
 			NewFunc: armoperationalinsights.NewDeletedWorkspacesClient,
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.OperationalInsights/deletedWorkspaces",
-		},
-		{
-      Name: "cluster",
-      Struct: &armoperationalinsights.Cluster{},
-      ResponseStruct: &armoperationalinsights.ClustersClientListResponse{},
-      Client: &armoperationalinsights.ClustersClient{},
-      ListFunc: (&armoperationalinsights.ClustersClient{}).NewListPager,
-			NewFunc: armoperationalinsights.NewClustersClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.OperationalInsights/clusters",
 		},
 	}
 

@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armaz
 func Armazurearcdata() []Table {
 	tables := []Table{
 		{
-      Name: "sql_server_instance",
-      Struct: &armazurearcdata.SQLServerInstance{},
-      ResponseStruct: &armazurearcdata.SQLServerInstancesClientListResponse{},
-      Client: &armazurearcdata.SQLServerInstancesClient{},
-      ListFunc: (&armazurearcdata.SQLServerInstancesClient{}).NewListPager,
-			NewFunc: armazurearcdata.NewSQLServerInstancesClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/sqlServerInstances",
+      Name: "postgres_instance",
+      Struct: &armazurearcdata.PostgresInstance{},
+      ResponseStruct: &armazurearcdata.PostgresInstancesClientListResponse{},
+      Client: &armazurearcdata.PostgresInstancesClient{},
+      ListFunc: (&armazurearcdata.PostgresInstancesClient{}).NewListPager,
+			NewFunc: armazurearcdata.NewPostgresInstancesClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/postgresInstances",
 		},
 		{
       Name: "sql_managed_instance",
@@ -24,13 +24,13 @@ func Armazurearcdata() []Table {
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/sqlManagedInstances",
 		},
 		{
-      Name: "postgres_instance",
-      Struct: &armazurearcdata.PostgresInstance{},
-      ResponseStruct: &armazurearcdata.PostgresInstancesClientListResponse{},
-      Client: &armazurearcdata.PostgresInstancesClient{},
-      ListFunc: (&armazurearcdata.PostgresInstancesClient{}).NewListPager,
-			NewFunc: armazurearcdata.NewPostgresInstancesClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/postgresInstances",
+      Name: "sql_server_instance",
+      Struct: &armazurearcdata.SQLServerInstance{},
+      ResponseStruct: &armazurearcdata.SQLServerInstancesClientListResponse{},
+      Client: &armazurearcdata.SQLServerInstancesClient{},
+      ListFunc: (&armazurearcdata.SQLServerInstancesClient{}).NewListPager,
+			NewFunc: armazurearcdata.NewSQLServerInstancesClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/sqlServerInstances",
 		},
 	}
 

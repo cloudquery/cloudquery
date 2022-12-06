@@ -6,19 +6,19 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmai
 func Armmaintenance() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armmaintenance.NewConfigurationsForResourceGroupClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maintenance/maintenanceConfigurations",
-		},
-		{
-			NewFunc: armmaintenance.NewApplyUpdateForResourceGroupClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maintenance/applyUpdates",
-		},
-		{
 			NewFunc: armmaintenance.NewPublicMaintenanceConfigurationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance",
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/publicMaintenanceConfigurations",
+		},
+		{
+			NewFunc: armmaintenance.NewApplyUpdatesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/applyUpdates",
+		},
+		{
+			NewFunc: armmaintenance.NewConfigurationsForResourceGroupClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maintenance/maintenanceConfigurations",
 		},
 		{
 			NewFunc: armmaintenance.NewConfigurationsClient,
@@ -26,9 +26,9 @@ func Armmaintenance() []*Table {
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/maintenanceConfigurations",
 		},
 		{
-			NewFunc: armmaintenance.NewApplyUpdatesClient,
+			NewFunc: armmaintenance.NewApplyUpdateForResourceGroupClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/applyUpdates",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maintenance/applyUpdates",
 		},
 	}
 	return tables

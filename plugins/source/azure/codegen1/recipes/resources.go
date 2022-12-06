@@ -6,14 +6,14 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresou
 func Armresources() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armresources.NewTagsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources",
-			URL: "/subscriptions/{subscriptionId}/tagNames",
-		},
-		{
 			NewFunc: armresources.NewProvidersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources",
 			URL: "/subscriptions/{subscriptionId}/providers",
+		},
+		{
+			NewFunc: armresources.NewTagsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources",
+			URL: "/subscriptions/{subscriptionId}/tagNames",
 		},
 		{
 			NewFunc: armresources.NewResourceGroupsClient,

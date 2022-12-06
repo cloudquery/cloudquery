@@ -6,15 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datadog/armdatadog
 func Armdatadog() []Table {
 	tables := []Table{
 		{
-      Name: "monitor_resource",
-      Struct: &armdatadog.MonitorResource{},
-      ResponseStruct: &armdatadog.MonitorsClientListResponse{},
-      Client: &armdatadog.MonitorsClient{},
-      ListFunc: (&armdatadog.MonitorsClient{}).NewListPager,
-			NewFunc: armdatadog.NewMonitorsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Datadog/monitors",
-		},
-		{
       Name: "agreement_resource",
       Struct: &armdatadog.AgreementResource{},
       ResponseStruct: &armdatadog.MarketplaceAgreementsClientListResponse{},
@@ -22,6 +13,15 @@ func Armdatadog() []Table {
       ListFunc: (&armdatadog.MarketplaceAgreementsClient{}).NewListPager,
 			NewFunc: armdatadog.NewMarketplaceAgreementsClient,
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Datadog/agreements",
+		},
+		{
+      Name: "monitor_resource",
+      Struct: &armdatadog.MonitorResource{},
+      ResponseStruct: &armdatadog.MonitorsClientListResponse{},
+      Client: &armdatadog.MonitorsClient{},
+      ListFunc: (&armdatadog.MonitorsClient{}).NewListPager,
+			NewFunc: armdatadog.NewMonitorsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Datadog/monitors",
 		},
 	}
 

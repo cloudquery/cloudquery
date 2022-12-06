@@ -6,15 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn"
 func Armcdn() []Table {
 	tables := []Table{
 		{
-      Name: "web_application_firewall_policy",
-      Struct: &armcdn.WebApplicationFirewallPolicy{},
-      ResponseStruct: &armcdn.PoliciesClientListResponse{},
-      Client: &armcdn.PoliciesClient{},
-      ListFunc: (&armcdn.PoliciesClient{}).NewListPager,
-			NewFunc: armcdn.NewPoliciesClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/cdnWebApplicationFirewallPolicies",
-		},
-		{
       Name: "resource_usage",
       Struct: &armcdn.ResourceUsage{},
       ResponseStruct: &armcdn.ResourceUsageClientListResponse{},
@@ -33,15 +24,6 @@ func Armcdn() []Table {
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/cdnWebApplicationFirewallManagedRuleSets",
 		},
 		{
-      Name: "edge_node",
-      Struct: &armcdn.EdgeNode{},
-      ResponseStruct: &armcdn.EdgeNodesClientListResponse{},
-      Client: &armcdn.EdgeNodesClient{},
-      ListFunc: (&armcdn.EdgeNodesClient{}).NewListPager,
-			NewFunc: armcdn.NewEdgeNodesClient,
-			URL: "/providers/Microsoft.Cdn/edgenodes",
-		},
-		{
       Name: "profile",
       Struct: &armcdn.Profile{},
       ResponseStruct: &armcdn.ProfilesClientListResponse{},
@@ -49,6 +31,24 @@ func Armcdn() []Table {
       ListFunc: (&armcdn.ProfilesClient{}).NewListPager,
 			NewFunc: armcdn.NewProfilesClient,
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/profiles",
+		},
+		{
+      Name: "web_application_firewall_policy",
+      Struct: &armcdn.WebApplicationFirewallPolicy{},
+      ResponseStruct: &armcdn.PoliciesClientListResponse{},
+      Client: &armcdn.PoliciesClient{},
+      ListFunc: (&armcdn.PoliciesClient{}).NewListPager,
+			NewFunc: armcdn.NewPoliciesClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/cdnWebApplicationFirewallPolicies",
+		},
+		{
+      Name: "edge_node",
+      Struct: &armcdn.EdgeNode{},
+      ResponseStruct: &armcdn.EdgeNodesClientListResponse{},
+      Client: &armcdn.EdgeNodesClient{},
+      ListFunc: (&armcdn.EdgeNodesClient{}).NewListPager,
+			NewFunc: armcdn.NewEdgeNodesClient,
+			URL: "/providers/Microsoft.Cdn/edgenodes",
 		},
 	}
 

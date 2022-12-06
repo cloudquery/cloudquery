@@ -6,9 +6,9 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armaz
 func Armazurearcdata() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armazurearcdata.NewSQLServerInstancesClient,
+			NewFunc: armazurearcdata.NewPostgresInstancesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/sqlServerInstances",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/postgresInstances",
 		},
 		{
 			NewFunc: armazurearcdata.NewSQLManagedInstancesClient,
@@ -16,9 +16,9 @@ func Armazurearcdata() []*Table {
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/sqlManagedInstances",
 		},
 		{
-			NewFunc: armazurearcdata.NewPostgresInstancesClient,
+			NewFunc: armazurearcdata.NewSQLServerInstancesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/postgresInstances",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/sqlServerInstances",
 		},
 	}
 	return tables

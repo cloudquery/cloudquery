@@ -6,6 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering
 func Armpeering() []*Table {
 	tables := []*Table{
 		{
+			NewFunc: armpeering.NewServiceCountriesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peeringServiceCountries",
+		},
+		{
 			NewFunc: armpeering.NewServiceProvidersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering",
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peeringServiceProviders",
@@ -14,11 +19,6 @@ func Armpeering() []*Table {
 			NewFunc: armpeering.NewServiceLocationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering",
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peeringServiceLocations",
-		},
-		{
-			NewFunc: armpeering.NewServiceCountriesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peeringServiceCountries",
 		},
 	}
 	return tables
