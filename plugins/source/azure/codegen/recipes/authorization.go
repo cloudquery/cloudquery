@@ -7,7 +7,7 @@ import (
 )
 
 func Authorization() []Resource {
-	var resourcesByTemplates = []byTemplates{
+	resourcesByTemplates := []byTemplates{
 		{
 			templates: []template{
 				{

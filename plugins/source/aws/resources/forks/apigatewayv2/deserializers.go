@@ -28,8 +28,7 @@ func SwapGetDomainNamesOperationDeserializer(stack *middleware.Stack) error {
 	return err
 }
 
-type awsRestjson1_deserializeOpGetDomainNames struct {
-}
+type awsRestjson1_deserializeOpGetDomainNames struct{}
 
 func (*awsRestjson1_deserializeOpGetDomainNames) ID() string {
 	return "OperationDeserializer"
@@ -210,7 +209,6 @@ func awsRestjson1_deserializeErrorBadRequestException(response *smithyhttp.Respo
 	}
 
 	err := awsRestjson1_deserializeDocumentBadRequestException(&output, shape)
-
 	if err != nil {
 		var snapshot bytes.Buffer
 		io.Copy(&snapshot, ringBuffer)
@@ -246,7 +244,6 @@ func awsRestjson1_deserializeErrorNotFoundException(response *smithyhttp.Respons
 	}
 
 	err := awsRestjson1_deserializeDocumentNotFoundException(&output, shape)
-
 	if err != nil {
 		var snapshot bytes.Buffer
 		io.Copy(&snapshot, ringBuffer)
@@ -282,7 +279,6 @@ func awsRestjson1_deserializeErrorTooManyRequestsException(response *smithyhttp.
 	}
 
 	err := awsRestjson1_deserializeDocumentTooManyRequestsException(&output, shape)
-
 	if err != nil {
 		var snapshot bytes.Buffer
 		io.Copy(&snapshot, ringBuffer)

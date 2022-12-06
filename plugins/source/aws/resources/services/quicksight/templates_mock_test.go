@@ -30,6 +30,7 @@ func buildTemplatesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 		Quicksight: m,
 	}
 }
+
 func TestQuicksightTemplates(t *testing.T) {
 	client.AwsMockTestHelper(t, Templates(), buildTemplatesMock, client.TestOptions{})
 }

@@ -5,7 +5,7 @@ import (
 )
 
 func ServiceBus() []Resource {
-	var ruleRelations = []resourceDefinition{
+	ruleRelations := []resourceDefinition{
 		{
 			azureStruct:        &servicebus.AccessKeys{},
 			listFunction:       "ListKeys",
@@ -18,7 +18,8 @@ func ServiceBus() []Resource {
 				`resourceDetails, err := client.ParseResourceID(*rule.ID)
 			if err != nil {
 				return err
-			}`},
+			}`,
+			},
 			listHandler: `if err != nil {
 				return err
 			}
@@ -28,7 +29,7 @@ func ServiceBus() []Resource {
 			mockListResult:           mockDirectResponse,
 		},
 	}
-	var topicRelations = []resourceDefinition{
+	topicRelations := []resourceDefinition{
 		{
 			azureStruct:        &servicebus.SBAuthorizationRule{},
 			listFunction:       "ListAuthorizationRules",
@@ -40,13 +41,14 @@ func ServiceBus() []Resource {
 				`resourceDetails, err := client.ParseResourceID(*topic.ID)
 			if err != nil {
 				return err
-			}`},
+			}`,
+			},
 			relations:                ruleRelations,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
 		},
 	}
-	var namespaceRelations = []resourceDefinition{
+	namespaceRelations := []resourceDefinition{
 		{
 			azureStruct:        &servicebus.SBTopic{},
 			listFunction:       "ListByNamespace",
@@ -61,7 +63,7 @@ func ServiceBus() []Resource {
 			mockListFunctionArgs:     []string{`"test"`, `"test"`, `nil`, `nil`},
 		},
 	}
-	var resourcesByTemplates = []byTemplates{
+	resourcesByTemplates := []byTemplates{
 		{
 			templates: []template{
 				{

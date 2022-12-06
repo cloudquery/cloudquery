@@ -93,7 +93,7 @@ func generateTable(basedir string, r recipes.Resource) {
 	}
 
 	pkgPath := path.Join(basedir, r.Service)
-	if err := os.Mkdir(pkgPath, 0755); err != nil && !os.IsExist(err) {
+	if err := os.Mkdir(pkgPath, 0o755); err != nil && !os.IsExist(err) {
 		log.Fatal(err)
 	}
 
@@ -103,7 +103,7 @@ func generateTable(basedir string, r recipes.Resource) {
 		fmt.Println(buff.String())
 		log.Fatal(fmt.Errorf("failed to format code for %s: %w", filePath, err))
 	}
-	if err := os.WriteFile(filePath, content, 0644); err != nil {
+	if err := os.WriteFile(filePath, content, 0o644); err != nil {
 		log.Fatal(fmt.Errorf("failed to write file %s: %w", filePath, err))
 	}
 }

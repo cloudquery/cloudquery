@@ -113,7 +113,7 @@ func (resource *Resource) generate(mock bool) error {
 		content = formattedContent
 	}
 
-	if err := os.WriteFile(filePath, content, 0644); err != nil {
+	if err := os.WriteFile(filePath, content, 0o644); err != nil {
 		return fmt.Errorf("failed to write file %s: %w", filePath, err)
 	}
 	return nil
@@ -245,9 +245,8 @@ func GeneratePlugin(resources []*Resource) error {
 		content = formattedContent
 	}
 
-	if err := os.WriteFile(filePath, content, 0644); err != nil {
+	if err := os.WriteFile(filePath, content, 0o644); err != nil {
 		return fmt.Errorf("failed to write file %s: %w", filePath, err)
 	}
 	return nil
 }
-

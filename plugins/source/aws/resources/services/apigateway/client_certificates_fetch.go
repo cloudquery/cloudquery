@@ -25,6 +25,7 @@ func fetchApigatewayClientCertificates(ctx context.Context, meta schema.ClientMe
 	}
 	return nil
 }
+
 func resolveApigatewayClientCertificateArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	cert := resource.Item.(types.ClientCertificate)

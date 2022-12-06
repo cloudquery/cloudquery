@@ -6,7 +6,7 @@ import (
 )
 
 func Logic() []Resource {
-	var workflowRelations = []resourceDefinition{
+	workflowRelations := []resourceDefinition{
 		{
 			azureStruct:              &insights.DiagnosticSettingsResource{},
 			listFunction:             "List",
@@ -19,7 +19,7 @@ func Logic() []Resource {
 			mockListResult:           "DiagnosticSettingsResourceCollection",
 		},
 	}
-	var resourcesByTemplates = []byTemplates{
+	resourcesByTemplates := []byTemplates{
 		{
 			templates: []template{
 				{

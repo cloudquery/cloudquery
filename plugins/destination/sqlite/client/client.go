@@ -2,13 +2,12 @@ package client
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 
 	"github.com/cloudquery/plugin-sdk/plugins"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
-
-	"database/sql"
 
 	// Import sqlite3 driver
 	_ "github.com/mattn/go-sqlite3"

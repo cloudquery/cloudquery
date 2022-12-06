@@ -5,7 +5,7 @@ import (
 )
 
 func CDN() []Resource {
-	var ruleSetRelations = []resourceDefinition{
+	ruleSetRelations := []resourceDefinition{
 		{
 			azureStruct:  &cdn.Rule{},
 			listFunction: "ListByRuleSet",
@@ -19,7 +19,7 @@ func CDN() []Resource {
 			mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
 		},
 	}
-	var endpointRelations = []resourceDefinition{
+	endpointRelations := []resourceDefinition{
 		{
 			azureStruct:  &cdn.CustomDomain{},
 			listFunction: "ListByEndpoint",
@@ -45,7 +45,7 @@ func CDN() []Resource {
 			mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
 		},
 	}
-	var profileRelations = []resourceDefinition{
+	profileRelations := []resourceDefinition{
 		{
 			azureStruct:  &cdn.Endpoint{},
 			listFunction: "ListByProfile",
@@ -86,7 +86,7 @@ func CDN() []Resource {
 		},
 	}
 
-	var topLevelResources = []resourceDefinition{
+	topLevelResources := []resourceDefinition{
 		{
 			azureStruct:  &cdn.Profile{},
 			listFunction: "List",
@@ -94,7 +94,7 @@ func CDN() []Resource {
 		},
 	}
 
-	var resourcesByTemplates = []byTemplates{
+	resourcesByTemplates := []byTemplates{
 		{
 			templates: []template{
 				{

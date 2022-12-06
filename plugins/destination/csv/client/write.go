@@ -33,7 +33,7 @@ func (c *Client) startWrite(tables schema.Tables) error {
 	for _, t := range tables {
 		if c.writers[t.Name] == nil {
 			filePath := path.Join(c.csvSpec.Directory, t.Name+".csv")
-			f, err := os.OpenFile(filePath, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
+			f, err := os.OpenFile(filePath, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0o600)
 			if err != nil {
 				c.logger.Error().Err(err).Str("table", t.Name).Msgf("failed to open file %s", filePath)
 				c.metrics.Errors++

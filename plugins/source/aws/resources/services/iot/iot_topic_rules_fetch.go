@@ -41,6 +41,7 @@ func fetchIotTopicRules(ctx context.Context, meta schema.ClientMeta, parent *sch
 	}
 	return nil
 }
+
 func ResolveIotTopicRuleTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.GetTopicRuleOutput)
 	cl := meta.(*client.Client)
@@ -52,7 +53,6 @@ func ResolveIotTopicRuleTags(ctx context.Context, meta schema.ClientMeta, resour
 
 	for {
 		response, err := svc.ListTagsForResource(ctx, &input)
-
 		if err != nil {
 			return err
 		}

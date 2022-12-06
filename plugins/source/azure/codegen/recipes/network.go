@@ -5,7 +5,7 @@ import (
 )
 
 func Network() []Resource {
-	var watcherRelations = []resourceDefinition{
+	watcherRelations := []resourceDefinition{
 		{
 			azureStruct:      &network.FlowLog{},
 			listFunction:     "List",
@@ -18,7 +18,7 @@ func Network() []Resource {
 			mockListFunctionArgs:     []string{`"test"`, `"test"`},
 		},
 	}
-	var gatewayRelations = []resourceDefinition{
+	gatewayRelations := []resourceDefinition{
 		{
 			azureStruct:      &network.VirtualNetworkGatewayConnectionListEntity{},
 			listFunction:     "ListConnections",
@@ -33,7 +33,7 @@ func Network() []Resource {
 			mockListResult:           "VirtualNetworkGatewayListConnectionsResult",
 		},
 	}
-	var networkRelations = []resourceDefinition{
+	networkRelations := []resourceDefinition{
 		{
 			azureStruct:      &network.VirtualNetworkGateway{},
 			listFunction:     "List",
@@ -47,7 +47,7 @@ func Network() []Resource {
 			mockListFunctionArgs:     []string{`"test"`},
 		},
 	}
-	var resourcesByTemplates = []byTemplates{
+	resourcesByTemplates := []byTemplates{
 		{
 			templates: []template{
 				{

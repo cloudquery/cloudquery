@@ -28,6 +28,7 @@ func buildRamResourcesMock(t *testing.T, ctrl *gomock.Controller) client.Service
 		Ram: m,
 	}
 }
+
 func TestRamResources(t *testing.T) {
 	client.AwsMockTestHelper(t, Resources(), buildRamResourcesMock, client.TestOptions{})
 }

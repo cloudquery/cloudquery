@@ -9,7 +9,7 @@ import (
 )
 
 func Monitor() []Resource {
-	var resourceRelation = []resourceDefinition{
+	resourceRelation := []resourceDefinition{
 		{
 			azureStruct:        &insights.DiagnosticSettingsResource{},
 			listFunction:       "List",
@@ -49,7 +49,7 @@ func Monitor() []Resource {
 			mockListResult:           "DiagnosticSettingsResourceCollection",
 		},
 	}
-	var resourcesByTemplates = []byTemplates{
+	resourcesByTemplates := []byTemplates{
 		{
 			templates: []template{
 				{
@@ -120,7 +120,8 @@ func Monitor() []Resource {
 						"const fetchWindow = 24 * time.Hour",
 						"now := time.Now().UTC()",
 						"past := now.Add(-fetchWindow)",
-						`filter := fmt.Sprintf("eventTimestamp ge '%s' and eventTimestamp le '%s'", past.Format(time.RFC3339Nano), now.Format(time.RFC3339Nano))`},
+						`filter := fmt.Sprintf("eventTimestamp ge '%s' and eventTimestamp le '%s'", past.Format(time.RFC3339Nano), now.Format(time.RFC3339Nano))`,
+					},
 					subServiceOverride: "ActivityLogs",
 					mockHelpers: []string{`
 					type regexMatcher struct {

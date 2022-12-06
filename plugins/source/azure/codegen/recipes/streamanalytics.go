@@ -5,7 +5,7 @@ import (
 )
 
 func StreamAnalytics() []Resource {
-	var resourcesByTemplates = []byTemplates{
+	resourcesByTemplates := []byTemplates{
 		{
 			templates: []template{
 				{

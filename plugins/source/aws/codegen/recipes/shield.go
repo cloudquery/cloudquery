@@ -8,7 +8,6 @@ import (
 
 func ShieldResources() []*Resource {
 	resources := []*Resource{
-
 		{
 			SubService:          "attacks",
 			Struct:              &types.AttackDetail{},

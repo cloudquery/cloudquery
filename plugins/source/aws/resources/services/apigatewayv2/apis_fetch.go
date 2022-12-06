@@ -21,6 +21,7 @@ func resolveApiArn() schema.ColumnResolver {
 		return []string{apiIDPart, *resource.Item.(types.Api).ApiId}, nil
 	})
 }
+
 func resolveApiAuthorizerArn() schema.ColumnResolver {
 	return client.ResolveARNWithRegion(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
 		r := resource.Item.(types.Authorizer)
@@ -28,6 +29,7 @@ func resolveApiAuthorizerArn() schema.ColumnResolver {
 		return []string{apiIDPart, *p.ApiId, "authorizers", *r.AuthorizerId}, nil
 	})
 }
+
 func resolveApiDeploymentArn() schema.ColumnResolver {
 	return client.ResolveARNWithRegion(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
 		r := resource.Item.(types.Deployment)
@@ -35,6 +37,7 @@ func resolveApiDeploymentArn() schema.ColumnResolver {
 		return []string{apiIDPart, *p.ApiId, "deployments", *r.DeploymentId}, nil
 	})
 }
+
 func resolveApiIntegrationArn() schema.ColumnResolver {
 	return client.ResolveARNWithRegion(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
 		r := resource.Item.(types.Integration)
@@ -42,6 +45,7 @@ func resolveApiIntegrationArn() schema.ColumnResolver {
 		return []string{apiIDPart, *p.ApiId, apiIntegrationIDPart, *r.IntegrationId}, nil
 	})
 }
+
 func resolveApiIntegrationResponseArn() schema.ColumnResolver {
 	return client.ResolveARNWithRegion(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
 		r := resource.Item.(types.IntegrationResponse)
@@ -50,6 +54,7 @@ func resolveApiIntegrationResponseArn() schema.ColumnResolver {
 		return []string{apiIDPart, *api.ApiId, apiIntegrationIDPart, *i.IntegrationId, "integrationresponses", *r.IntegrationResponseId}, nil
 	})
 }
+
 func resolveApiModelArn() schema.ColumnResolver {
 	return client.ResolveARNWithRegion(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
 		r := resource.Item.(types.Model)
@@ -57,6 +62,7 @@ func resolveApiModelArn() schema.ColumnResolver {
 		return []string{apiIDPart, *p.ApiId, "models", *r.ModelId}, nil
 	})
 }
+
 func resolveApiRouteArn() schema.ColumnResolver {
 	return client.ResolveARNWithRegion(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
 		r := resource.Item.(types.Route)
@@ -64,6 +70,7 @@ func resolveApiRouteArn() schema.ColumnResolver {
 		return []string{apiIDPart, *p.ApiId, apiRouteIDPart, *r.RouteId}, nil
 	})
 }
+
 func resolveApiRouteResponseArn() schema.ColumnResolver {
 	return client.ResolveARNWithRegion(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
 		r := resource.Item.(types.RouteResponse)
@@ -72,6 +79,7 @@ func resolveApiRouteResponseArn() schema.ColumnResolver {
 		return []string{apiIDPart, *api.ApiId, apiRouteIDPart, *route.RouteId, "routeresponses", *r.RouteResponseId}, nil
 	})
 }
+
 func resolveApiStageArn() schema.ColumnResolver {
 	return client.ResolveARNWithRegion(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
 		r := resource.Item.(types.Stage)
@@ -79,18 +87,19 @@ func resolveApiStageArn() schema.ColumnResolver {
 		return []string{apiIDPart, *p.ApiId, "stages", *r.StageName}, nil
 	})
 }
+
 func resolveVpcLinkArn() schema.ColumnResolver {
 	return client.ResolveARNWithRegion(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
 		return []string{"vpclinks", *resource.Item.(types.VpcLink).VpcLinkId}, nil
 	})
 }
+
 func fetchApigatewayv2Apis(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config apigatewayv2.GetApisInput
 	c := meta.(*client.Client)
 	svc := c.Services().Apigatewayv2
 	for {
 		response, err := svc.GetApis(ctx, &config)
-
 		if err != nil {
 			return err
 		}
@@ -102,6 +111,7 @@ func fetchApigatewayv2Apis(ctx context.Context, meta schema.ClientMeta, parent *
 	}
 	return nil
 }
+
 func fetchApigatewayv2ApiAuthorizers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.Api)
 	config := apigatewayv2.GetAuthorizersInput{
@@ -111,7 +121,6 @@ func fetchApigatewayv2ApiAuthorizers(ctx context.Context, meta schema.ClientMeta
 	svc := c.Services().Apigatewayv2
 	for {
 		response, err := svc.GetAuthorizers(ctx, &config)
-
 		if err != nil {
 			return err
 		}
@@ -123,6 +132,7 @@ func fetchApigatewayv2ApiAuthorizers(ctx context.Context, meta schema.ClientMeta
 	}
 	return nil
 }
+
 func fetchApigatewayv2ApiDeployments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.Api)
 	config := apigatewayv2.GetDeploymentsInput{
@@ -132,7 +142,6 @@ func fetchApigatewayv2ApiDeployments(ctx context.Context, meta schema.ClientMeta
 	svc := c.Services().Apigatewayv2
 	for {
 		response, err := svc.GetDeployments(ctx, &config)
-
 		if err != nil {
 			return err
 		}
@@ -144,6 +153,7 @@ func fetchApigatewayv2ApiDeployments(ctx context.Context, meta schema.ClientMeta
 	}
 	return nil
 }
+
 func fetchApigatewayv2ApiIntegrations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.Api)
 	config := apigatewayv2.GetIntegrationsInput{
@@ -153,7 +163,6 @@ func fetchApigatewayv2ApiIntegrations(ctx context.Context, meta schema.ClientMet
 	svc := c.Services().Apigatewayv2
 	for {
 		response, err := svc.GetIntegrations(ctx, &config)
-
 		if err != nil {
 			return err
 		}
@@ -165,6 +174,7 @@ func fetchApigatewayv2ApiIntegrations(ctx context.Context, meta schema.ClientMet
 	}
 	return nil
 }
+
 func fetchApigatewayv2ApiIntegrationResponses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.Integration)
 	p := parent.Parent.Item.(types.Api)
@@ -176,7 +186,6 @@ func fetchApigatewayv2ApiIntegrationResponses(ctx context.Context, meta schema.C
 	svc := c.Services().Apigatewayv2
 	for {
 		response, err := svc.GetIntegrationResponses(ctx, &config)
-
 		if err != nil {
 			return err
 		}
@@ -188,6 +197,7 @@ func fetchApigatewayv2ApiIntegrationResponses(ctx context.Context, meta schema.C
 	}
 	return nil
 }
+
 func fetchApigatewayv2ApiModels(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.Api)
 	config := apigatewayv2.GetModelsInput{
@@ -197,7 +207,6 @@ func fetchApigatewayv2ApiModels(ctx context.Context, meta schema.ClientMeta, par
 	svc := c.Services().Apigatewayv2
 	for {
 		response, err := svc.GetModels(ctx, &config)
-
 		if err != nil {
 			return err
 		}
@@ -209,6 +218,7 @@ func fetchApigatewayv2ApiModels(ctx context.Context, meta schema.ClientMeta, par
 	}
 	return nil
 }
+
 func resolveApigatewayv2apiModelModelTemplate(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.Model)
 	p := resource.Parent.Item.(types.Api)
@@ -225,6 +235,7 @@ func resolveApigatewayv2apiModelModelTemplate(ctx context.Context, meta schema.C
 	}
 	return resource.Set(c.Name, response.Value)
 }
+
 func fetchApigatewayv2ApiRoutes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.Api)
 	config := apigatewayv2.GetRoutesInput{
@@ -234,7 +245,6 @@ func fetchApigatewayv2ApiRoutes(ctx context.Context, meta schema.ClientMeta, par
 	svc := c.Services().Apigatewayv2
 	for {
 		response, err := svc.GetRoutes(ctx, &config)
-
 		if err != nil {
 			return err
 		}
@@ -246,6 +256,7 @@ func fetchApigatewayv2ApiRoutes(ctx context.Context, meta schema.ClientMeta, par
 	}
 	return nil
 }
+
 func fetchApigatewayv2ApiRouteResponses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.Route)
 	p := parent.Parent.Item.(types.Api)
@@ -257,7 +268,6 @@ func fetchApigatewayv2ApiRouteResponses(ctx context.Context, meta schema.ClientM
 	svc := c.Services().Apigatewayv2
 	for {
 		response, err := svc.GetRouteResponses(ctx, &config)
-
 		if err != nil {
 			return err
 		}
@@ -269,6 +279,7 @@ func fetchApigatewayv2ApiRouteResponses(ctx context.Context, meta schema.ClientM
 	}
 	return nil
 }
+
 func fetchApigatewayv2ApiStages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.Api)
 	config := apigatewayv2.GetStagesInput{
@@ -278,7 +289,6 @@ func fetchApigatewayv2ApiStages(ctx context.Context, meta schema.ClientMeta, par
 	svc := c.Services().Apigatewayv2
 	for {
 		response, err := svc.GetStages(ctx, &config)
-
 		if err != nil {
 			return err
 		}

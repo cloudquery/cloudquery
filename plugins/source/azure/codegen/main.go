@@ -110,10 +110,10 @@ func getContent(t string, destination string, r any) []byte {
 }
 
 func writeContent(destination string, content []byte) {
-	if err := os.MkdirAll(path.Dir(destination), 0755); err != nil {
+	if err := os.MkdirAll(path.Dir(destination), 0o755); err != nil {
 		log.Fatal(fmt.Errorf("failed to create directory for file %s: %w", destination, err))
 	}
-	if err := os.WriteFile(destination, content, 0644); err != nil {
+	if err := os.WriteFile(destination, content, 0o644); err != nil {
 		log.Fatal(fmt.Errorf("failed to write file %s: %w", destination, err))
 	}
 }

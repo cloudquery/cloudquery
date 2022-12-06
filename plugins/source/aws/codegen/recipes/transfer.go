@@ -8,7 +8,6 @@ import (
 
 func TransferResources() []*Resource {
 	resources := []*Resource{
-
 		{
 			SubService:          "servers",
 			Struct:              &types.DescribedServer{},

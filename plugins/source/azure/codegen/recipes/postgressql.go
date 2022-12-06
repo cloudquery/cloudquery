@@ -5,7 +5,7 @@ import (
 )
 
 func PostgresSQL() []Resource {
-	var serverRelations = []resourceDefinition{
+	serverRelations := []resourceDefinition{
 		{
 			azureStruct:      &postgresql.Configuration{},
 			listFunction:     "ListByServer",
@@ -31,7 +31,7 @@ func PostgresSQL() []Resource {
 			mockListFunctionArgs:     []string{`"test"`, `"test"`},
 		},
 	}
-	var resourcesByTemplates = []byTemplates{
+	resourcesByTemplates := []byTemplates{
 		{
 			templates: []template{
 				{

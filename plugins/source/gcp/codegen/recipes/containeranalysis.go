@@ -8,7 +8,7 @@ import (
 )
 
 func ContainerAnalysisResources() []*Resource {
-	var resources = []*Resource{
+	resources := []*Resource{
 		{
 			SubService: "occurrences",
 			Struct:     &grafeaspb.Occurrence{},

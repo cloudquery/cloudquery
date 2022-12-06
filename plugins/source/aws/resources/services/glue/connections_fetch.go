@@ -30,6 +30,7 @@ func fetchGlueConnections(ctx context.Context, meta schema.ClientMeta, parent *s
 	}
 	return nil
 }
+
 func resolveGlueConnectionArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	r := resource.Item.(types.Connection)

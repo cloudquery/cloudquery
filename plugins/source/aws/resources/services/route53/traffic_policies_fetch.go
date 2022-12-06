@@ -29,6 +29,7 @@ func fetchRoute53TrafficPolicies(ctx context.Context, meta schema.ClientMeta, pa
 	}
 	return nil
 }
+
 func fetchRoute53TrafficPolicyVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.TrafficPolicySummary)
 	config := route53.ListTrafficPolicyVersionsInput{Id: r.Id}
@@ -46,6 +47,7 @@ func fetchRoute53TrafficPolicyVersions(ctx context.Context, meta schema.ClientMe
 	}
 	return nil
 }
+
 func resolveTrafficPolicyArn() schema.ColumnResolver {
 	return client.ResolveARNGlobal(client.Route53Service, func(resource *schema.Resource) ([]string, error) {
 		return []string{"trafficpolicy", *resource.Item.(types.TrafficPolicySummary).Id}, nil

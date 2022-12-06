@@ -10,9 +10,7 @@ import (
 	"github.com/bluekeyes/go-gitdiff/gitdiff"
 )
 
-var (
-	columnRegex = regexp.MustCompile(`^\|(?P<name>.*)\|(?P<dataType>.*)\|`)
-)
+var columnRegex = regexp.MustCompile(`^\|(?P<name>.*)\|(?P<dataType>.*)\|`)
 
 type change struct {
 	Text     string `json:"text"`

@@ -5,7 +5,7 @@ import (
 )
 
 func MySQL() []Resource {
-	var serverRelations = []resourceDefinition{
+	serverRelations := []resourceDefinition{
 		{
 			azureStruct:      &mysql.Configuration{},
 			listFunction:     "ListByServer",
@@ -19,7 +19,7 @@ func MySQL() []Resource {
 			mockListFunctionArgs:     []string{`"test"`, `"test"`},
 		},
 	}
-	var resourcesByTemplates = []byTemplates{
+	resourcesByTemplates := []byTemplates{
 		{
 			templates: []template{
 				{

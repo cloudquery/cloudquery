@@ -7,7 +7,7 @@ import (
 )
 
 func Compute() []Resource {
-	var virtualMachineRelations = []resourceDefinition{
+	virtualMachineRelations := []resourceDefinition{
 		{
 			azureStruct:  &compute.VirtualMachineInstanceView{},
 			listFunction: "InstanceView",
@@ -43,7 +43,7 @@ func Compute() []Resource {
 			mockListResult:           "VirtualMachineExtensionsListResult",
 		},
 	}
-	var resourcesByTemplates = []byTemplates{
+	resourcesByTemplates := []byTemplates{
 		{
 			templates: []template{
 				{

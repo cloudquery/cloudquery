@@ -6,7 +6,7 @@ import (
 )
 
 func Container() []Resource {
-	var registryRelations = []resourceDefinition{
+	registryRelations := []resourceDefinition{
 		{
 			azureStruct:  &containerregistry.Replication{},
 			listFunction: "List",
@@ -20,7 +20,7 @@ func Container() []Resource {
 			mockListFunctionArgs:     []string{`"test"`, `"test"`},
 		},
 	}
-	var resourcesByTemplates = []byTemplates{
+	resourcesByTemplates := []byTemplates{
 		{
 			templates: []template{
 				{

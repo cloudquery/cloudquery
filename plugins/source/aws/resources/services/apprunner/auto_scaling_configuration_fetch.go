@@ -22,6 +22,7 @@ func fetchApprunnerAutoScalingConfigurations(ctx context.Context, meta schema.Cl
 	}
 	return nil
 }
+
 func getAutoScalingConfiguration(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Apprunner

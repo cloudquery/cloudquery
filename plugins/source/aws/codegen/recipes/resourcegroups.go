@@ -11,7 +11,6 @@ import (
 
 func ResourceGroupsResources() []*Resource {
 	resources := []*Resource{
-
 		{
 			SubService:          "resource_groups",
 			Struct:              &models.ResourceGroupWrapper{},

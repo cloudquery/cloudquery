@@ -5,7 +5,7 @@ import (
 )
 
 func SQL() []Resource {
-	var sqlDatabaseRelations = []resourceDefinition{
+	sqlDatabaseRelations := []resourceDefinition{
 		{
 			azureStruct:      &sql.DatabaseBlobAuditingPolicy{},
 			listFunction:     "ListByDatabase",
@@ -16,7 +16,8 @@ func SQL() []Resource {
 				`resourceDetails, err := client.ParseResourceID(*database.ID)
 			if err != nil {
 				return err
-			}`},
+			}`,
+			},
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
 		},
@@ -30,7 +31,8 @@ func SQL() []Resource {
 				`resourceDetails, err := client.ParseResourceID(*database.ID)
 			if err != nil {
 				return err
-			}`},
+			}`,
+			},
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
 		},
@@ -44,7 +46,8 @@ func SQL() []Resource {
 				`resourceDetails, err := client.ParseResourceID(*database.ID)
 			if err != nil {
 				return err
-			}`},
+			}`,
+			},
 			subServiceOverride:       "DatabaseVulnerabilityAssessmentScans",
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
@@ -59,7 +62,8 @@ func SQL() []Resource {
 				`resourceDetails, err := client.ParseResourceID(*database.ID)
 			if err != nil {
 				return err
-			}`},
+			}`,
+			},
 			listHandler: `if err != nil {
 				return err
 			}
@@ -79,7 +83,8 @@ func SQL() []Resource {
 				`resourceDetails, err := client.ParseResourceID(*database.ID)
 			if err != nil {
 				return err
-			}`},
+			}`,
+			},
 			listHandler: `if err != nil {
 				return err
 			}
@@ -99,7 +104,8 @@ func SQL() []Resource {
 				`resourceDetails, err := client.ParseResourceID(*database.ID)
 			if err != nil {
 				return err
-			}`},
+			}`,
+			},
 			listHandler: `if err != nil {
 				return err
 			}
@@ -110,7 +116,7 @@ func SQL() []Resource {
 		},
 	}
 
-	var firewallRuleResource = resourceDefinition{
+	firewallRuleResource := resourceDefinition{
 		azureStruct:      &sql.FirewallRule{},
 		listFunction:     "ListByServer",
 		listFunctionArgs: []string{"resourceDetails.ResourceGroup", "*server.Name"},
@@ -119,12 +125,13 @@ func SQL() []Resource {
 			`resourceDetails, err := client.ParseResourceID(*server.ID)
 			if err != nil {
 				return err
-			}`},
+			}`,
+		},
 		listHandler:              valueHandler,
 		mockListFunctionArgsInit: []string{""},
 		mockListFunctionArgs:     []string{`"test"`, `"test"`},
 	}
-	var sqlServerRelations = []resourceDefinition{
+	sqlServerRelations := []resourceDefinition{
 		firewallRuleResource,
 		{
 			azureStruct:      &sql.Database{},
@@ -135,7 +142,8 @@ func SQL() []Resource {
 				`resourceDetails, err := client.ParseResourceID(*server.ID)
 			if err != nil {
 				return err
-			}`},
+			}`,
+			},
 			relations:                sqlDatabaseRelations,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`},
@@ -149,7 +157,8 @@ func SQL() []Resource {
 				`resourceDetails, err := client.ParseResourceID(*server.ID)
 			if err != nil {
 				return err
-			}`},
+			}`,
+			},
 			listHandler: `if err != nil {
 				return err
 			}
@@ -167,7 +176,8 @@ func SQL() []Resource {
 				`resourceDetails, err := client.ParseResourceID(*server.ID)
 			if err != nil {
 				return err
-			}`},
+			}`,
+			},
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`},
 		},
@@ -180,7 +190,8 @@ func SQL() []Resource {
 				`resourceDetails, err := client.ParseResourceID(*server.ID)
 			if err != nil {
 				return err
-			}`},
+			}`,
+			},
 			subServiceOverride:       "ServerAdmins",
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`},
@@ -195,7 +206,8 @@ func SQL() []Resource {
 				`resourceDetails, err := client.ParseResourceID(*server.ID)
 			if err != nil {
 				return err
-			}`},
+			}`,
+			},
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`},
 		},
@@ -208,7 +220,8 @@ func SQL() []Resource {
 				`resourceDetails, err := client.ParseResourceID(*server.ID)
 			if err != nil {
 				return err
-			}`},
+			}`,
+			},
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`},
 			mockListResult:           "ServerDevOpsAuditSettingsListResult",
@@ -222,7 +235,8 @@ func SQL() []Resource {
 				`resourceDetails, err := client.ParseResourceID(*server.ID)
 			if err != nil {
 				return err
-			}`},
+			}`,
+			},
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`},
 		},
@@ -235,14 +249,15 @@ func SQL() []Resource {
 				`resourceDetails, err := client.ParseResourceID(*server.ID)
 			if err != nil {
 				return err
-			}`},
+			}`,
+			},
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`},
 			mockListResult:           "LogicalServerSecurityAlertPolicyListResult",
 		},
 	}
 
-	var managedDatabaseRelations = []resourceDefinition{
+	managedDatabaseRelations := []resourceDefinition{
 		{
 			azureStruct:      &sql.DatabaseVulnerabilityAssessment{},
 			listFunction:     "ListByDatabase",
@@ -253,7 +268,8 @@ func SQL() []Resource {
 				`resourceDetails, err := client.ParseResourceID(*database.ID)
 			if err != nil {
 				return err
-			}`},
+			}`,
+			},
 			subServiceOverride:       "ManagedDatabaseVulnerabilityAssessments",
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
@@ -268,14 +284,15 @@ func SQL() []Resource {
 				`resourceDetails, err := client.ParseResourceID(*database.ID)
 			if err != nil {
 				return err
-			}`},
+			}`,
+			},
 			subServiceOverride:       "ManagedDatabaseVulnerabilityAssessmentScans",
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
 		},
 	}
 
-	var managedInstanceRelations = []resourceDefinition{
+	managedInstanceRelations := []resourceDefinition{
 		{
 			azureStruct:      &sql.ManagedDatabase{},
 			listFunction:     "ListByInstance",
@@ -297,7 +314,8 @@ func SQL() []Resource {
 				`resourceDetails, err := client.ParseResourceID(*instance.ID)
 			if err != nil {
 				return err
-			}`},
+			}`,
+			},
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`},
 		},
@@ -310,13 +328,14 @@ func SQL() []Resource {
 				`resourceDetails, err := client.ParseResourceID(*instance.ID)
 			if err != nil {
 				return err
-			}`},
+			}`,
+			},
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`},
 		},
 	}
 
-	var topLevelResources = []resourceDefinition{
+	topLevelResources := []resourceDefinition{
 		{
 			azureStruct:  &sql.Server{},
 			listFunction: "List",
@@ -326,9 +345,10 @@ func SQL() []Resource {
 			azureStruct:  &sql.ManagedInstance{},
 			listFunction: "List",
 			relations:    managedInstanceRelations,
-		}}
+		},
+	}
 
-	var resourcesByTemplates = []byTemplates{
+	resourcesByTemplates := []byTemplates{
 		{
 			templates: []template{
 				{

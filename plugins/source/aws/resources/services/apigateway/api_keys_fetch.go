@@ -28,6 +28,7 @@ func fetchApigatewayApiKeys(ctx context.Context, meta schema.ClientMeta, parent 
 	}
 	return nil
 }
+
 func resolveApigatewayAPIKeyArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	ak := resource.Item.(types.ApiKey)

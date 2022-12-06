@@ -30,6 +30,7 @@ func buildUsersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 		Quicksight: m,
 	}
 }
+
 func TestQuicksightUsers(t *testing.T) {
 	client.AwsMockTestHelper(t, Users(), buildUsersMock, client.TestOptions{})
 }

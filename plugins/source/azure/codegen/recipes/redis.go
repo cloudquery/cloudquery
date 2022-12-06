@@ -5,7 +5,7 @@ import (
 )
 
 func Redis() []Resource {
-	var resourcesByTemplates = []byTemplates{
+	resourcesByTemplates := []byTemplates{
 		{
 			templates: []template{
 				{

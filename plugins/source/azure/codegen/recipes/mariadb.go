@@ -3,7 +3,7 @@ package recipes
 import "github.com/Azure/azure-sdk-for-go/services/mariadb/mgmt/2020-01-01/mariadb"
 
 func MariaDB() []Resource {
-	var serverRelations = []resourceDefinition{
+	serverRelations := []resourceDefinition{
 		{
 			azureStruct:      &mariadb.Configuration{},
 			listFunction:     "ListByServer",
@@ -17,7 +17,7 @@ func MariaDB() []Resource {
 			mockListFunctionArgs:     []string{`"test"`, `"test"`},
 		},
 	}
-	var resourcesByTemplates = []byTemplates{
+	resourcesByTemplates := []byTemplates{
 		{
 			templates: []template{
 				{

@@ -33,6 +33,7 @@ func fetchElbv2Listeners(ctx context.Context, meta schema.ClientMeta, parent *sc
 	}
 	return nil
 }
+
 func resolveElbv2listenerTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	region := meta.(*client.Client).Region
 	svc := meta.(*client.Client).Services().Elasticloadbalancingv2
@@ -59,6 +60,7 @@ func resolveElbv2listenerTags(ctx context.Context, meta schema.ClientMeta, resou
 
 	return resource.Set(c.Name, tags)
 }
+
 func fetchElbv2ListenerCertificates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	region := c.Region

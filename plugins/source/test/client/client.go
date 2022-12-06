@@ -9,8 +9,7 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-type TestClient struct {
-}
+type TestClient struct{}
 
 func (*TestClient) Logger() *zerolog.Logger {
 	return &log.Logger

@@ -48,7 +48,7 @@ func (c *Client) migrate(tables schema.Tables) error {
 				return err
 			}
 		} else if errors.Is(err, os.ErrNotExist) {
-			f, err := os.OpenFile(filePath, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
+			f, err := os.OpenFile(filePath, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0o600)
 			if err != nil {
 				return err
 			}

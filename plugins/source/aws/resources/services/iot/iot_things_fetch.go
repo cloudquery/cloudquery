@@ -30,6 +30,7 @@ func fetchIotThings(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	}
 	return nil
 }
+
 func ResolveIotThingPrincipals(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(types.ThingAttribute)
 	cl := meta.(*client.Client)
@@ -42,7 +43,6 @@ func ResolveIotThingPrincipals(ctx context.Context, meta schema.ClientMeta, reso
 
 	for {
 		response, err := svc.ListThingPrincipals(ctx, &input)
-
 		if err != nil {
 			return err
 		}

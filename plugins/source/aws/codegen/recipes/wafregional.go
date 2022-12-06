@@ -8,7 +8,6 @@ import (
 
 func WAFRegionalResources() []*Resource {
 	resources := []*Resource{
-
 		{
 			SubService:  "rate_based_rules",
 			Struct:      &types.RateBasedRule{},

@@ -19,6 +19,7 @@ const (
 func (r LogLevel) String() string {
 	return [...]string{"error", "warn", "info", "debug", "trace"}[r]
 }
+
 func (r LogLevel) MarshalJSON() ([]byte, error) {
 	buffer := bytes.NewBufferString(`"`)
 	buffer.WriteString(r.String())

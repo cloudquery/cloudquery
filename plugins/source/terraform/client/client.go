@@ -43,7 +43,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (sche
 		return nil, errors.New("no backends were provided")
 	}
 
-	var backends = make(map[string]*TerraformBackend)
+	backends := make(map[string]*TerraformBackend)
 	for _, config := range tfSpec.Backends {
 		config := config
 

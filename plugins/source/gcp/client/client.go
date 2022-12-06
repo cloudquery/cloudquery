@@ -167,9 +167,7 @@ func logProjectIds(logger *zerolog.Logger, projectIds []string) {
 
 // getProjectsV1 requires the `resourcemanager.projects.get` permission to list projects
 func getProjectsV1(ctx context.Context, options ...option.ClientOption) ([]string, error) {
-	var (
-		projects []string
-	)
+	var projects []string
 	service, err := crmv1.NewService(ctx, options...)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create cloudresourcemanager service: %w", err)
@@ -198,9 +196,7 @@ func getProjectsV1(ctx context.Context, options ...option.ClientOption) ([]strin
 }
 
 func getProjectsV1WithFilter(ctx context.Context, filter string, options ...option.ClientOption) ([]string, error) {
-	var (
-		projects []string
-	)
+	var projects []string
 	service, err := crmv1.NewService(ctx, options...)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create cloudresourcemanager service: %w", err)

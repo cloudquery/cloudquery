@@ -42,6 +42,7 @@ func fetchIotJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 	}
 	return nil
 }
+
 func ResolveIotJobTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*types.Job)
 	cl := meta.(*client.Client)
@@ -53,7 +54,6 @@ func ResolveIotJobTags(ctx context.Context, meta schema.ClientMeta, resource *sc
 
 	for {
 		response, err := svc.ListTagsForResource(ctx, &input)
-
 		if err != nil {
 			return err
 		}

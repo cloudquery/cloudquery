@@ -41,6 +41,7 @@ func fetchIotPolicies(ctx context.Context, meta schema.ClientMeta, parent *schem
 	}
 	return nil
 }
+
 func ResolveIotPolicyTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.GetPolicyOutput)
 	cl := meta.(*client.Client)
@@ -52,7 +53,6 @@ func ResolveIotPolicyTags(ctx context.Context, meta schema.ClientMeta, resource 
 
 	for {
 		response, err := svc.ListTagsForResource(ctx, &input)
-
 		if err != nil {
 			return err
 		}

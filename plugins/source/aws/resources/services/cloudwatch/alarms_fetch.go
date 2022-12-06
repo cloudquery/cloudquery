@@ -16,7 +16,6 @@ func fetchCloudwatchAlarms(ctx context.Context, meta schema.ClientMeta, parent *
 	svc := c.Services().Cloudwatch
 	for {
 		response, err := svc.DescribeAlarms(ctx, &config)
-
 		if err != nil {
 			return err
 		}
@@ -28,6 +27,7 @@ func fetchCloudwatchAlarms(ctx context.Context, meta schema.ClientMeta, parent *
 	}
 	return nil
 }
+
 func resolveCloudwatchAlarmDimensions(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	alarm := resource.Item.(types.MetricAlarm)
 	dimensions := make(map[string]*string)

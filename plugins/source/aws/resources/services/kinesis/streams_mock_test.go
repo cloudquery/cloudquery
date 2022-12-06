@@ -42,7 +42,8 @@ func buildKinesisStreams(t *testing.T, ctrl *gomock.Controller) client.Services 
 		StreamDescriptionSummary: &types.StreamDescriptionSummary{
 			EnhancedMonitoring: []types.EnhancedMetrics{{
 				ShardLevelMetrics: []types.MetricsName{types.MetricsNameAll},
-			}}},
+			}},
+		},
 	}
 	customKinesisClient := customKinesisClient{}
 	err = faker.FakeObject(&customKinesisClient)

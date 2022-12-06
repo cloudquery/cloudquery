@@ -76,6 +76,7 @@ func resolveRuleGroupTags(ctx context.Context, meta schema.ClientMeta, resource 
 	}
 	return resource.Set(c.Name, outputTags)
 }
+
 func resolveWafv2ruleGroupPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	ruleGroup := resource.Item.(*types.RuleGroup)
 

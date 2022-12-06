@@ -19,7 +19,7 @@ func createRegistry(t *testing.T, ctrl *gomock.Controller) client.Services {
 	}
 	m.EXPECT().Get(gomock.Any()).Return(&data, nil, nil)
 
-	//add children mocks
+	// add children mocks
 	createRepositories(t, m)
 
 	return client.Services{

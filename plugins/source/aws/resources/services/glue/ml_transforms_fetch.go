@@ -29,11 +29,13 @@ func fetchGlueMlTransforms(ctx context.Context, meta schema.ClientMeta, parent *
 	}
 	return nil
 }
+
 func resolveGlueMlTransformArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	r := resource.Item.(types.MLTransform)
 	return resource.Set(c.Name, mlTransformARN(cl, &r))
 }
+
 func resolveGlueMlTransformTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Glue
@@ -49,6 +51,7 @@ func resolveGlueMlTransformTags(ctx context.Context, meta schema.ClientMeta, res
 	}
 	return resource.Set(c.Name, result.Tags)
 }
+
 func resolveMlTransformsSchema(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.MLTransform)
 	j := make(map[string]string)
@@ -57,6 +60,7 @@ func resolveMlTransformsSchema(ctx context.Context, meta schema.ClientMeta, reso
 	}
 	return resource.Set(c.Name, j)
 }
+
 func fetchGlueMlTransformTaskRuns(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.MLTransform)
 	cl := meta.(*client.Client)

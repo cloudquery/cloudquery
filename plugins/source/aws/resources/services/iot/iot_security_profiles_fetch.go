@@ -41,6 +41,7 @@ func fetchIotSecurityProfiles(ctx context.Context, meta schema.ClientMeta, paren
 	}
 	return nil
 }
+
 func ResolveIotSecurityProfileTargets(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.DescribeSecurityProfileOutput)
 	cl := meta.(*client.Client)
@@ -68,6 +69,7 @@ func ResolveIotSecurityProfileTargets(ctx context.Context, meta schema.ClientMet
 	}
 	return resource.Set(c.Name, targets)
 }
+
 func ResolveIotSecurityProfileTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.DescribeSecurityProfileOutput)
 	cl := meta.(*client.Client)
@@ -79,7 +81,6 @@ func ResolveIotSecurityProfileTags(ctx context.Context, meta schema.ClientMeta, 
 
 	for {
 		response, err := svc.ListTagsForResource(ctx, &input)
-
 		if err != nil {
 			return err
 		}

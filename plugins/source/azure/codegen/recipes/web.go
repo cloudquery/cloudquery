@@ -6,7 +6,7 @@ import (
 )
 
 func Web() []Resource {
-	var authSettingsResource = resourceDefinition{
+	authSettingsResource := resourceDefinition{
 		azureStruct:          &web.SiteAuthSettings{},
 		listFunction:         "GetAuthSettings",
 		listFunctionArgsInit: []string{"site := parent.Item.(web.Site)"},
@@ -20,7 +20,7 @@ func Web() []Resource {
 		mockListResult:           mockDirectResponse,
 	}
 
-	var authSettingsV2Resource = resourceDefinition{
+	authSettingsV2Resource := resourceDefinition{
 		azureStruct:          &web.SiteAuthSettingsV2{},
 		listFunction:         "GetAuthSettingsV2",
 		listFunctionArgsInit: []string{"site := parent.Item.(web.Site)"},
@@ -35,7 +35,7 @@ func Web() []Resource {
 		subServiceOverride:       "SiteAuthSettingsV2",
 	}
 
-	var vnetInfoResource = resourceDefinition{
+	vnetInfoResource := resourceDefinition{
 		azureStruct:  &web.VnetInfo{},
 		listFunction: "GetVnetConnection",
 		listFunctionArgsInit: []string{"site := parent.Item.(web.Site)", `if site.SiteConfig == nil || site.SiteConfig.VnetName == nil { 
@@ -52,7 +52,7 @@ func Web() []Resource {
 		mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
 		mockListResult:           mockDirectResponse,
 	}
-	var publishingProfileResource = resourceDefinition{
+	publishingProfileResource := resourceDefinition{
 		azureStruct:          &services.PublishingProfile{},
 		listFunction:         `ListPublishingProfiles`,
 		listFunctionArgsInit: []string{"site := parent.Item.(web.Site)"},
@@ -68,7 +68,8 @@ func Web() []Resource {
 		mockDefinitionType:       "PublishingProfiles",
 	}
 
-	var functionsResource = resourceDefinition{azureStruct: &web.FunctionEnvelope{},
+	functionsResource := resourceDefinition{
+		azureStruct:              &web.FunctionEnvelope{},
 		listFunction:             `ListFunctions`,
 		listFunctionArgsInit:     []string{"site := parent.Item.(web.Site)"},
 		listFunctionArgs:         []string{"*site.ResourceGroup", "*site.Name"},
@@ -78,7 +79,7 @@ func Web() []Resource {
 		subServiceOverride:       "Functions",
 	}
 
-	var appRelations = []resourceDefinition{
+	appRelations := []resourceDefinition{
 		authSettingsResource,
 		vnetInfoResource,
 		publishingProfileResource,
@@ -86,7 +87,7 @@ func Web() []Resource {
 		functionsResource,
 	}
 
-	var resourcesByTemplates = []byTemplates{
+	resourcesByTemplates := []byTemplates{
 		{
 			templates: []template{
 				{

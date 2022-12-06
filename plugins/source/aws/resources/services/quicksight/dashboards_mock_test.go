@@ -30,6 +30,7 @@ func buildDashboardsMock(t *testing.T, ctrl *gomock.Controller) client.Services 
 		Quicksight: m,
 	}
 }
+
 func TestQuicksightDashboards(t *testing.T) {
 	client.AwsMockTestHelper(t, Dashboards(), buildDashboardsMock, client.TestOptions{})
 }

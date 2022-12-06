@@ -29,10 +29,12 @@ func fetchGlueDatabases(ctx context.Context, meta schema.ClientMeta, parent *sch
 	}
 	return nil
 }
+
 func resolveGlueDatabaseArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	return resource.Set(c.Name, databaseARN(cl, aws.ToString(resource.Item.(types.Database).Name)))
 }
+
 func resolveGlueDatabaseTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Glue
@@ -46,6 +48,7 @@ func resolveGlueDatabaseTags(ctx context.Context, meta schema.ClientMeta, resour
 	}
 	return resource.Set(c.Name, response.Tags)
 }
+
 func fetchGlueDatabaseTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.Database)
 	cl := meta.(*client.Client)
@@ -66,6 +69,7 @@ func fetchGlueDatabaseTables(ctx context.Context, meta schema.ClientMeta, parent
 	}
 	return nil
 }
+
 func fetchGlueDatabaseTableIndexes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Glue

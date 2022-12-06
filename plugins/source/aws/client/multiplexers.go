@@ -25,7 +25,7 @@ func getRegion(regionalMap map[string]*Services) string {
 }
 
 func AccountMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
-	var l = make([]schema.ClientMeta, 0)
+	l := make([]schema.ClientMeta, 0)
 	client := meta.(*Client)
 	for partition := range client.ServicesManager.services {
 		for accountID := range client.ServicesManager.services[partition] {
@@ -43,7 +43,7 @@ func AccountMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
 
 func ServiceAccountRegionMultiplexer(service string) func(meta schema.ClientMeta) []schema.ClientMeta {
 	return func(meta schema.ClientMeta) []schema.ClientMeta {
-		var l = make([]schema.ClientMeta, 0)
+		l := make([]schema.ClientMeta, 0)
 		client := meta.(*Client)
 		for partition := range client.ServicesManager.services {
 			for accountID := range client.ServicesManager.services[partition] {
@@ -62,7 +62,7 @@ func ServiceAccountRegionMultiplexer(service string) func(meta schema.ClientMeta
 
 func ServiceAccountRegionNamespaceMultiplexer(service string) func(meta schema.ClientMeta) []schema.ClientMeta {
 	return func(meta schema.ClientMeta) []schema.ClientMeta {
-		var l = make([]schema.ClientMeta, 0)
+		l := make([]schema.ClientMeta, 0)
 		client := meta.(*Client)
 		for partition := range client.ServicesManager.services {
 			for accountID := range client.ServicesManager.services[partition] {
@@ -83,7 +83,7 @@ func ServiceAccountRegionNamespaceMultiplexer(service string) func(meta schema.C
 
 func ServiceAccountRegionScopeMultiplexer(service string) func(meta schema.ClientMeta) []schema.ClientMeta {
 	return func(meta schema.ClientMeta) []schema.ClientMeta {
-		var l = make([]schema.ClientMeta, 0)
+		l := make([]schema.ClientMeta, 0)
 		client := meta.(*Client)
 		for partition := range client.ServicesManager.services {
 			for accountID := range client.ServicesManager.services[partition] {

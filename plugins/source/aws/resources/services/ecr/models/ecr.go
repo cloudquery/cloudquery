@@ -5,7 +5,6 @@ import (
 )
 
 type ImageScanWrapper struct {
-
 	// The tag used for the image.
 	ImageTag    *string
 	ImageDigest *string

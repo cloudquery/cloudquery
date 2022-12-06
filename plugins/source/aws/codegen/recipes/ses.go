@@ -10,7 +10,6 @@ import (
 
 func SESResources() []*Resource {
 	resources := []*Resource{
-
 		{
 			SubService:          "templates",
 			Struct:              &models.Template{},

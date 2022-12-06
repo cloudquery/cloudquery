@@ -37,6 +37,7 @@ func buildGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 		Quicksight: m,
 	}
 }
+
 func TestQuicksightGroups(t *testing.T) {
 	client.AwsMockTestHelper(t, Groups(), buildGroupsMock, client.TestOptions{})
 }

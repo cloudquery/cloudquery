@@ -55,6 +55,7 @@ func resolveQldbLedgerTags(ctx context.Context, meta schema.ClientMeta, resource
 	}
 	return resource.Set(c.Name, response.Tags)
 }
+
 func fetchQldbLedgerJournalKinesisStreams(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	ledger := parent.Item.(*qldb.DescribeLedgerOutput)
 	cl := meta.(*client.Client)

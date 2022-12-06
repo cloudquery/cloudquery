@@ -6,7 +6,7 @@ import (
 )
 
 func Datalake() []Resource {
-	var resourcesByTemplates = []byTemplates{
+	resourcesByTemplates := []byTemplates{
 		{
 			templates: []template{
 				{

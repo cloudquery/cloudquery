@@ -3,7 +3,7 @@ package client
 import "github.com/cloudquery/plugin-sdk/schema"
 
 func AccountMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
-	var l = make([]schema.ClientMeta, 0)
+	l := make([]schema.ClientMeta, 0)
 	client := meta.(*Client)
 	for _, accountZones := range client.accountsZones {
 		l = append(l, client.withAccountID(accountZones.AccountId))
@@ -12,7 +12,7 @@ func AccountMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
 }
 
 func ZoneMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
-	var l = make([]schema.ClientMeta, 0)
+	l := make([]schema.ClientMeta, 0)
 	client := meta.(*Client)
 	for _, accountZones := range client.accountsZones {
 		for _, zone := range accountZones.Zones {

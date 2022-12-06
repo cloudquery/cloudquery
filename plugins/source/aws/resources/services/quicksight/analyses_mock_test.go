@@ -36,6 +36,7 @@ func buildAnalysesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 		Quicksight: m,
 	}
 }
+
 func TestQuicksightAnalyses(t *testing.T) {
 	client.AwsMockTestHelper(t, Analyses(), buildAnalysesMock, client.TestOptions{})
 }

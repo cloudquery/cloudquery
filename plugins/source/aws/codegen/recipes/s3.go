@@ -12,7 +12,6 @@ import (
 
 func S3Resources() []*Resource {
 	resources := []*Resource{
-
 		{
 			SubService: "accounts",
 			Struct:     &models.PublicAccessBlockConfigurationWrapper{},

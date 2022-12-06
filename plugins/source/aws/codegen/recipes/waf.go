@@ -8,7 +8,6 @@ import (
 
 func WAFResources() []*Resource {
 	resources := []*Resource{
-
 		{
 			SubService:  "rule_groups",
 			Struct:      &types.RuleGroupSummary{},

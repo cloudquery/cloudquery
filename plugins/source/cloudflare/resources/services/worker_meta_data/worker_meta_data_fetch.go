@@ -19,6 +19,7 @@ func fetchWorkerMetaData(ctx context.Context, meta schema.ClientMeta, parent *sc
 
 	return nil
 }
+
 func fetchWorkerCronTriggers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client)
 	accountId := svc.AccountId
@@ -32,6 +33,7 @@ func fetchWorkerCronTriggers(ctx context.Context, meta schema.ClientMeta, parent
 
 	return nil
 }
+
 func fetchWorkersSecrets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client)
 	script := parent.Item.(cloudflare.WorkerMetaData)

@@ -5,7 +5,7 @@ import (
 )
 
 func FrontDoor() []Resource {
-	var resourcesByTemplates = []byTemplates{
+	resourcesByTemplates := []byTemplates{
 		{
 			templates: []template{
 				{

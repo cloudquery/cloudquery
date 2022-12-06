@@ -31,6 +31,7 @@ func fetchShieldProtectionGroups(ctx context.Context, meta schema.ClientMeta, pa
 	}
 	return nil
 }
+
 func resolveShieldProtectionGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.ProtectionGroup)
 	cli := meta.(*client.Client)

@@ -13,7 +13,6 @@ import (
 
 func Route53Resources() []*Resource {
 	resources := []*Resource{
-
 		{
 			SubService:  "delegation_sets",
 			Struct:      &types.DelegationSet{},

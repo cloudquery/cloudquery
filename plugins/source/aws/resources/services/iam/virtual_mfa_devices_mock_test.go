@@ -27,6 +27,7 @@ func buildIamVirtualMfaDevices(t *testing.T, ctrl *gomock.Controller) client.Ser
 		Iam: m,
 	}
 }
+
 func TestIAMVirtualMfaDevices(t *testing.T) {
 	client.AwsMockTestHelper(t, VirtualMfaDevices(), buildIamVirtualMfaDevices, client.TestOptions{})
 }

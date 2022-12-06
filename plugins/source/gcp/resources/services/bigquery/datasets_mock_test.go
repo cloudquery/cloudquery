@@ -88,10 +88,11 @@ func createBigqueryDatasets() (*client.Services, error) {
 		TableId: id,
 	}
 	schema := bigquery.TableSchema{
-		Fields: []*bigquery.TableFieldSchema{{
-			Name: "test",
-			Type: "test",
-		},
+		Fields: []*bigquery.TableFieldSchema{
+			{
+				Name: "test",
+				Type: "test",
+			},
 		},
 	}
 	table.Schema = &schema

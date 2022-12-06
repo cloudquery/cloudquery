@@ -117,7 +117,7 @@ var (
 )
 
 func AllResources() []Resource {
-	var resources = []Resource{}
+	resources := []Resource{}
 	resources = append(resources, Authorization()...)
 	resources = append(resources, Batch()...)
 	resources = append(resources, CDN()...)

@@ -55,6 +55,7 @@ func resolveAthenaDataCatalogArn(ctx context.Context, meta schema.ClientMeta, re
 	dc := resource.Item.(types.DataCatalog)
 	return resource.Set(c.Name, createDataCatalogArn(cl, *dc.Name))
 }
+
 func resolveAthenaDataCatalogTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Athena
@@ -78,6 +79,7 @@ func resolveAthenaDataCatalogTags(ctx context.Context, meta schema.ClientMeta, r
 	}
 	return resource.Set(c.Name, tags)
 }
+
 func fetchAthenaDataCatalogDatabases(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Athena
@@ -98,6 +100,7 @@ func fetchAthenaDataCatalogDatabases(ctx context.Context, meta schema.ClientMeta
 	}
 	return nil
 }
+
 func fetchAthenaDataCatalogDatabaseTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Athena

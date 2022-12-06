@@ -26,7 +26,7 @@ func buildElasticacheParameterGroups(t *testing.T, ctrl *gomock.Controller) clie
 		t.Fatal(err)
 	}
 
-	//expectedInput := elasticache.DescribeCacheParametersInput{
+	// expectedInput := elasticache.DescribeCacheParametersInput{
 	//	CacheParameterGroupName: parameterGroupsOutput.CacheParameterGroups[0].CacheParameterGroupName}
 
 	mockElasticache.EXPECT().DescribeCacheParameterGroups(gomock.Any(), gomock.Any(), gomock.Any()).Return(&parameterGroupsOutput, nil)

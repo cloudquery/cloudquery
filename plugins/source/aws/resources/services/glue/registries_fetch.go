@@ -27,6 +27,7 @@ func fetchGlueRegistries(ctx context.Context, meta schema.ClientMeta, parent *sc
 	}
 	return nil
 }
+
 func resolveGlueRegistryTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Glue
@@ -42,6 +43,7 @@ func resolveGlueRegistryTags(ctx context.Context, meta schema.ClientMeta, resour
 	}
 	return resource.Set(c.Name, result.Tags)
 }
+
 func fetchGlueRegistrySchemas(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.RegistryListItem)
 	cl := meta.(*client.Client)

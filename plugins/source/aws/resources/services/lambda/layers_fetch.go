@@ -29,6 +29,7 @@ func fetchLambdaLayers(ctx context.Context, meta schema.ClientMeta, parent *sche
 	}
 	return nil
 }
+
 func fetchLambdaLayerVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(types.LayersListItem)
 	svc := meta.(*client.Client).Services().Lambda
@@ -49,6 +50,7 @@ func fetchLambdaLayerVersions(ctx context.Context, meta schema.ClientMeta, paren
 	}
 	return nil
 }
+
 func fetchLambdaLayerVersionPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(types.LayerVersionsListItem)
 

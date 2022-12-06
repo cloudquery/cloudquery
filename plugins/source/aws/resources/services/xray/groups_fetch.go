@@ -20,6 +20,7 @@ func fetchXrayGroups(ctx context.Context, meta schema.ClientMeta, parent *schema
 	}
 	return nil
 }
+
 func resolveXrayGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	group := resource.Item.(types.GroupSummary)
 	cl := meta.(*client.Client)

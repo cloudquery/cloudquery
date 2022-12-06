@@ -5,7 +5,7 @@ import (
 )
 
 func EventHub() []Resource {
-	var namespaceRelations = []resourceDefinition{
+	namespaceRelations := []resourceDefinition{
 		{
 			azureStruct:  &eventhub.NetworkRuleSet{},
 			listFunction: "GetNetworkRuleSet",
@@ -24,7 +24,7 @@ func EventHub() []Resource {
 			mockListResult:           mockDirectResponse,
 		},
 	}
-	var resourcesByTemplates = []byTemplates{
+	resourcesByTemplates := []byTemplates{
 		{
 			templates: []template{
 				{

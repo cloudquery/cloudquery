@@ -98,9 +98,11 @@ func buildNeptuneDBSubnetGroups(t *testing.T, ctrl *gomock.Controller) client.Se
 func TestNeptuneInstances(t *testing.T) {
 	client.AwsMockTestHelper(t, Instances(), buildNeptuneDBInstances, client.TestOptions{})
 }
+
 func TestNeptuneClusters(t *testing.T) {
 	client.AwsMockTestHelper(t, Clusters(), buildNeptuneDBClusters, client.TestOptions{})
 }
+
 func TestNeptuneSubnetGroups(t *testing.T) {
 	client.AwsMockTestHelper(t, SubnetGroups(), buildNeptuneDBSubnetGroups, client.TestOptions{})
 }

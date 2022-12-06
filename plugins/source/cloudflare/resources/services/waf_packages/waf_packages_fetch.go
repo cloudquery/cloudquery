@@ -20,6 +20,7 @@ func fetchWAFPackages(ctx context.Context, meta schema.ClientMeta, parent *schem
 
 	return nil
 }
+
 func fetchWAFGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client)
 	zoneId := svc.ZoneId
@@ -33,6 +34,7 @@ func fetchWAFGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.
 
 	return nil
 }
+
 func fetchWAFRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client)
 	zoneId := svc.ZoneId

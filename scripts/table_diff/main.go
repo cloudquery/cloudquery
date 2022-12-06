@@ -1,19 +1,18 @@
 package main
 
 import (
-	"cloudquery/tablesdiff/changes"
 	"encoding/json"
 	"log"
 	"os"
 	"regexp"
 	"strings"
 
+	"cloudquery/tablesdiff/changes"
+
 	"github.com/bluekeyes/go-gitdiff/gitdiff"
 )
 
-var (
-	sourcePluginDocsRegex = regexp.MustCompile(`^plugins/source/.*?/docs/tables/.*\.md$`)
-)
+var sourcePluginDocsRegex = regexp.MustCompile(`^plugins/source/.*?/docs/tables/.*\.md$`)
 
 func isPluginTableDocFile(file *gitdiff.File) bool {
 	if file.IsBinary {
@@ -64,5 +63,5 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	os.WriteFile(outFile, out, 0644)
+	os.WriteFile(outFile, out, 0o644)
 }

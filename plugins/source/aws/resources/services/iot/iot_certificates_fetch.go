@@ -42,6 +42,7 @@ func fetchIotCertificates(ctx context.Context, meta schema.ClientMeta, parent *s
 	}
 	return nil
 }
+
 func ResolveIotCertificatePolicies(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*types.CertificateDescription)
 	cl := meta.(*client.Client)

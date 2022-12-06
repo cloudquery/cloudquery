@@ -27,6 +27,7 @@ func fetchOrganizationsAccounts(ctx context.Context, meta schema.ClientMeta, _ *
 	}
 	return nil
 }
+
 func resolveAccountTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
 	cl := meta.(*client.Client)
 	account := resource.Item.(types.Account)

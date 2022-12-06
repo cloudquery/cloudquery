@@ -37,7 +37,6 @@ func fetchApigatewayv2DomainNames(ctx context.Context, meta schema.ClientMeta, _
 			// NOTE: Swapping OperationDeserializer until this is fixed: https://github.com/aws/aws-sdk-go-v2/issues/1282
 			options.APIOptions = append(options.APIOptions, apigatewayv2fix.SwapGetDomainNamesOperationDeserializer)
 		})
-
 		if err != nil {
 			return err
 		}
@@ -59,7 +58,6 @@ func fetchApigatewayv2DomainNameRestApiMappings(ctx context.Context, meta schema
 	svc := c.Services().Apigatewayv2
 	for {
 		response, err := svc.GetApiMappings(ctx, &config)
-
 		if err != nil {
 			return err
 		}

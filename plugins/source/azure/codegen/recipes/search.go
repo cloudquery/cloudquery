@@ -5,7 +5,7 @@ import (
 )
 
 func Search() []Resource {
-	var resourcesByTemplates = []byTemplates{
+	resourcesByTemplates := []byTemplates{
 		{
 			templates: []template{
 				{

@@ -30,6 +30,7 @@ func fetchAccounts(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	}
 	return nil
 }
+
 func fetchAccountMembers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client)
 	account := parent.Item.(cloudflare.Account)

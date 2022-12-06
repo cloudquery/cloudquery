@@ -59,7 +59,7 @@ func isBlobSupported(account *storage.Account) bool {
 }`
 
 func Storage() []Resource {
-	var listContainerResource = resourceDefinition{
+	listContainerResource := resourceDefinition{
 		azureStruct:  &storage.ListContainerItem{},
 		listFunction: "List",
 		listFunctionArgsInit: []string{`account := parent.Item.(storage.Account)
@@ -77,7 +77,7 @@ func Storage() []Resource {
 		mockListFunctionArgs:     []string{`"test"`, `"test"`, `""`, `""`, `gomock.Any()`},
 		mockListResult:           "ListContainerItems",
 	}
-	var blobPropertiesResource = resourceDefinition{
+	blobPropertiesResource := resourceDefinition{
 		azureStruct:  &storage.BlobServiceProperties{},
 		listFunction: "List",
 		listFunctionArgsInit: []string{`account := parent.Item.(storage.Account)
@@ -97,9 +97,9 @@ func Storage() []Resource {
 		mockListResult:           "BlobServiceItems",
 	}
 
-	var accountRelations = []resourceDefinition{listContainerResource, blobPropertiesResource}
+	accountRelations := []resourceDefinition{listContainerResource, blobPropertiesResource}
 
-	var resourcesByTemplates = []byTemplates{
+	resourcesByTemplates := []byTemplates{
 		{
 			templates: []template{
 				{

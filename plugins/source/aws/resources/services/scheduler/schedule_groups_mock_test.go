@@ -34,6 +34,7 @@ func buildSchedulerScheduleGroupsMock(t *testing.T, ctrl *gomock.Controller) cli
 		Scheduler: m,
 	}
 }
+
 func TestSchedulerSchedulerGroups(t *testing.T) {
 	client.AwsMockTestHelper(t, ScheduleGroups(), buildSchedulerScheduleGroupsMock, client.TestOptions{})
 }

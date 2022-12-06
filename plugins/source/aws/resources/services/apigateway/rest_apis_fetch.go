@@ -25,6 +25,7 @@ func fetchApigatewayRestApis(ctx context.Context, meta schema.ClientMeta, parent
 	}
 	return nil
 }
+
 func resolveApigatewayRestAPIArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	rapi := resource.Item.(types.RestApi)
@@ -36,6 +37,7 @@ func resolveApigatewayRestAPIArn(ctx context.Context, meta schema.ClientMeta, re
 		Resource:  fmt.Sprintf("/restapis/%s", aws.ToString(rapi.Id)),
 	}.String())
 }
+
 func fetchApigatewayRestApiAuthorizers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.RestApi)
 	c := meta.(*client.Client)
@@ -57,6 +59,7 @@ func fetchApigatewayRestApiAuthorizers(ctx context.Context, meta schema.ClientMe
 	}
 	return nil
 }
+
 func resolveApigatewayRestAPIAuthorizerArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	auth := resource.Item.(types.Authorizer)
@@ -69,6 +72,7 @@ func resolveApigatewayRestAPIAuthorizerArn(ctx context.Context, meta schema.Clie
 		Resource:  fmt.Sprintf("/restapis/%s/authorizers/%s", aws.ToString(rapi.Id), aws.ToString(auth.Id)),
 	}.String())
 }
+
 func fetchApigatewayRestApiDeployments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.RestApi)
 	c := meta.(*client.Client)
@@ -86,6 +90,7 @@ func fetchApigatewayRestApiDeployments(ctx context.Context, meta schema.ClientMe
 	}
 	return nil
 }
+
 func resolveApigatewayRestAPIDeploymentArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	d := resource.Item.(types.Deployment)
@@ -98,6 +103,7 @@ func resolveApigatewayRestAPIDeploymentArn(ctx context.Context, meta schema.Clie
 		Resource:  fmt.Sprintf("/restapis/%s/deployments/%s", aws.ToString(rapi.Id), aws.ToString(d.Id)),
 	}.String())
 }
+
 func fetchApigatewayRestApiDocumentationParts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.RestApi)
 	c := meta.(*client.Client)
@@ -119,6 +125,7 @@ func fetchApigatewayRestApiDocumentationParts(ctx context.Context, meta schema.C
 	}
 	return nil
 }
+
 func resolveApigatewayRestAPIDocumentationPartArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	d := resource.Item.(types.DocumentationPart)
@@ -131,6 +138,7 @@ func resolveApigatewayRestAPIDocumentationPartArn(ctx context.Context, meta sche
 		Resource:  fmt.Sprintf("/restapis/%s/documentation/parts/%s", aws.ToString(rapi.Id), aws.ToString(d.Id)),
 	}.String())
 }
+
 func fetchApigatewayRestApiDocumentationVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.RestApi)
 	c := meta.(*client.Client)
@@ -152,6 +160,7 @@ func fetchApigatewayRestApiDocumentationVersions(ctx context.Context, meta schem
 	}
 	return nil
 }
+
 func resolveApigatewayRestAPIDocumentationVersionArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	v := resource.Item.(types.DocumentationVersion)
@@ -164,6 +173,7 @@ func resolveApigatewayRestAPIDocumentationVersionArn(ctx context.Context, meta s
 		Resource:  fmt.Sprintf("/restapis/%s/documentation/versions/%s", aws.ToString(rapi.Id), aws.ToString(v.Version)),
 	}.String())
 }
+
 func fetchApigatewayRestApiGatewayResponses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.RestApi)
 	c := meta.(*client.Client)
@@ -185,6 +195,7 @@ func fetchApigatewayRestApiGatewayResponses(ctx context.Context, meta schema.Cli
 	}
 	return nil
 }
+
 func resolveApigatewayRestAPIGatewayResponseArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	r := resource.Item.(types.GatewayResponse)
@@ -197,6 +208,7 @@ func resolveApigatewayRestAPIGatewayResponseArn(ctx context.Context, meta schema
 		Resource:  fmt.Sprintf("/restapis/%s/gatewayresponses/%s", aws.ToString(rapi.Id), string(r.ResponseType)),
 	}.String())
 }
+
 func fetchApigatewayRestApiModels(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.RestApi)
 	c := meta.(*client.Client)
@@ -214,6 +226,7 @@ func fetchApigatewayRestApiModels(ctx context.Context, meta schema.ClientMeta, p
 	}
 	return nil
 }
+
 func resolveApigatewayRestAPIModelArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	m := resource.Item.(types.Model)
@@ -226,6 +239,7 @@ func resolveApigatewayRestAPIModelArn(ctx context.Context, meta schema.ClientMet
 		Resource:  fmt.Sprintf("/restapis/%s/models/%s", aws.ToString(rapi.Id), aws.ToString(m.Name)),
 	}.String())
 }
+
 func resolveApigatewayRestAPIModelModelTemplate(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.Model)
 	api := resource.Parent.Item.(types.RestApi)
@@ -257,6 +271,7 @@ func resolveApigatewayRestAPIModelModelTemplate(ctx context.Context, meta schema
 	}
 	return resource.Set(c.Name, response.Value)
 }
+
 func fetchApigatewayRestApiRequestValidators(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.RestApi)
 	c := meta.(*client.Client)
@@ -278,6 +293,7 @@ func fetchApigatewayRestApiRequestValidators(ctx context.Context, meta schema.Cl
 	}
 	return nil
 }
+
 func resolveApigatewayRestAPIRequestValidatorArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	r := resource.Item.(types.RequestValidator)
@@ -290,6 +306,7 @@ func resolveApigatewayRestAPIRequestValidatorArn(ctx context.Context, meta schem
 		Resource:  fmt.Sprintf("/restapis/%s/requestvalidators/%s", aws.ToString(rapi.Id), aws.ToString(r.Id)),
 	}.String())
 }
+
 func fetchApigatewayRestApiResources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.RestApi)
 	c := meta.(*client.Client)
@@ -307,6 +324,7 @@ func fetchApigatewayRestApiResources(ctx context.Context, meta schema.ClientMeta
 	}
 	return nil
 }
+
 func resolveApigatewayRestAPIResourceArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	r := resource.Item.(types.Resource)
@@ -319,6 +337,7 @@ func resolveApigatewayRestAPIResourceArn(ctx context.Context, meta schema.Client
 		Resource:  fmt.Sprintf("/restapis/%s/resources/%s", aws.ToString(rapi.Id), aws.ToString(r.Id)),
 	}.String())
 }
+
 func fetchApigatewayRestApiStages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.RestApi)
 	c := meta.(*client.Client)
@@ -336,6 +355,7 @@ func fetchApigatewayRestApiStages(ctx context.Context, meta schema.ClientMeta, p
 
 	return nil
 }
+
 func resolveApigatewayRestAPIStageArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	s := resource.Item.(types.Stage)

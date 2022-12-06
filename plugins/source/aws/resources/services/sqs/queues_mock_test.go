@@ -13,7 +13,7 @@ import (
 func buildSQSQueues(t *testing.T, ctrl *gomock.Controller) client.Services {
 	sqsMock := mocks.NewMockSqsClient(ctrl)
 
-	var queueURL = "https://url1"
+	queueURL := "https://url1"
 	sqsMock.EXPECT().ListQueues(
 		gomock.Any(),
 		&sqs.ListQueuesInput{},

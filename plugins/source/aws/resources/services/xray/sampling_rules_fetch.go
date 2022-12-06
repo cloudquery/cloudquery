@@ -20,6 +20,7 @@ func fetchXraySamplingRules(ctx context.Context, meta schema.ClientMeta, parent 
 	}
 	return nil
 }
+
 func resolveXraySamplingRuleTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	sr := resource.Item.(types.SamplingRuleRecord)
 	cl := meta.(*client.Client)

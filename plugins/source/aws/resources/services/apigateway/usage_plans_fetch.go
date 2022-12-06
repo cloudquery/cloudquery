@@ -25,6 +25,7 @@ func fetchApigatewayUsagePlans(ctx context.Context, meta schema.ClientMeta, pare
 	}
 	return nil
 }
+
 func resolveApigatewayUsagePlanArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	up := resource.Item.(types.UsagePlan)
@@ -36,6 +37,7 @@ func resolveApigatewayUsagePlanArn(ctx context.Context, meta schema.ClientMeta, 
 		Resource:  fmt.Sprintf("/usageplans/%s", aws.ToString(up.Id)),
 	}.String())
 }
+
 func fetchApigatewayUsagePlanKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.UsagePlan)
 	c := meta.(*client.Client)
@@ -50,6 +52,7 @@ func fetchApigatewayUsagePlanKeys(ctx context.Context, meta schema.ClientMeta, p
 	}
 	return nil
 }
+
 func resolveApigatewayUsagePlanKeyArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	up := resource.Parent.Item.(types.UsagePlan)

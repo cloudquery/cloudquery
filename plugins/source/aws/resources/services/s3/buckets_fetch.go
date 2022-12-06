@@ -152,6 +152,7 @@ func fetchS3BucketGrants(ctx context.Context, meta schema.ClientMeta, parent *sc
 	res <- aclOutput.Grants
 	return nil
 }
+
 func fetchS3BucketCorsRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(*models.WrappedBucket)
 	c := meta.(*client.Client)
@@ -174,6 +175,7 @@ func fetchS3BucketCorsRules(ctx context.Context, meta schema.ClientMeta, parent 
 	}
 	return nil
 }
+
 func fetchS3BucketEncryptionRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(*models.WrappedBucket)
 	c := meta.(*client.Client)
@@ -310,7 +312,6 @@ func resolveBucketReplication(ctx context.Context, meta schema.ClientMeta, resou
 	replicationOutput, err := svc.GetBucketReplication(ctx, &s3.GetBucketReplicationInput{Bucket: resource.Name}, func(options *s3.Options) {
 		options.Region = bucketRegion
 	})
-
 	if err != nil {
 		// If we received any error other than ReplicationConfigurationNotFoundError, we return and error
 		if client.IsAWSError(err, "ReplicationConfigurationNotFoundError") {
@@ -363,7 +364,6 @@ func resolveBucketOwnershipControls(ctx context.Context, meta schema.ClientMeta,
 	getBucketOwnershipControlOutput, err := svc.GetBucketOwnershipControls(ctx, &s3.GetBucketOwnershipControlsInput{Bucket: resource.Name}, func(options *s3.Options) {
 		options.Region = bucketRegion
 	})
-
 	if err != nil {
 		// If buckets ownership controls are not set it will return an error instead of empty result
 		if client.IsAWSError(err, "OwnershipControlsNotFoundError") {

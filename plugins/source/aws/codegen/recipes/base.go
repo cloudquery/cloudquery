@@ -235,7 +235,7 @@ func (r *Resource) generateSchema(dir string) error {
 	} else {
 		content = formattedContent
 	}
-	if err := os.WriteFile(filePath, content, 0644); err != nil {
+	if err := os.WriteFile(filePath, content, 0o644); err != nil {
 		return fmt.Errorf("failed to write file %s: %w", filePath, err)
 	}
 
@@ -266,7 +266,7 @@ func (r *Resource) generateResolver(dir string) error {
 		content = formattedContent
 	}
 
-	if err := os.WriteFile(filePath, content, 0644); err != nil {
+	if err := os.WriteFile(filePath, content, 0o644); err != nil {
 		return fmt.Errorf("failed to write file %s: %w", filePath, err)
 	}
 
@@ -297,7 +297,7 @@ func (r *Resource) generateMockTest(dir string) error {
 		content = formattedContent
 	}
 
-	if err := os.WriteFile(filePath, content, 0644); err != nil {
+	if err := os.WriteFile(filePath, content, 0o644); err != nil {
 		return fmt.Errorf("failed to write file %s: %w", filePath, err)
 	}
 

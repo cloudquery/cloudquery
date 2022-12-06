@@ -36,6 +36,7 @@ func buildFoldersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 		Quicksight: m,
 	}
 }
+
 func TestQuicksightFolders(t *testing.T) {
 	client.AwsMockTestHelper(t, Folders(), buildFoldersMock, client.TestOptions{})
 }

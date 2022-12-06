@@ -116,7 +116,7 @@ func generateResource(r recipes.Resource, mock bool) {
 		fmt.Println(buff.String())
 		log.Fatal(fmt.Errorf("failed to format code for %s: %w", filePath, err))
 	}
-	if err := os.WriteFile(filePath, content, 0644); err != nil {
+	if err := os.WriteFile(filePath, content, 0o644); err != nil {
 		log.Fatal(fmt.Errorf("failed to write file %s: %w", filePath, err))
 	}
 }

@@ -38,7 +38,6 @@ func resolveEbsSnapshotAttribute(ctx context.Context, meta schema.ClientMeta, re
 		Attribute:  types.SnapshotAttributeNameCreateVolumePermission,
 		SnapshotId: r.SnapshotId,
 	})
-
 	if err != nil {
 		return err
 	}

@@ -22,7 +22,6 @@ func fetchCloudtrailTrails(ctx context.Context, meta schema.ClientMeta, parent *
 	svc := c.Services().Cloudtrail
 	log := c.Logger()
 	response, err := svc.DescribeTrails(ctx, nil)
-
 	if err != nil {
 		return err
 	}

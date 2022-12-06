@@ -32,10 +32,12 @@ func fetchGlueDevEndpoints(ctx context.Context, meta schema.ClientMeta, parent *
 	}
 	return nil
 }
+
 func resolveGlueDevEndpointArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	return resource.Set(c.Name, devEndpointARN(cl, aws.ToString(resource.Item.(types.DevEndpoint).EndpointName)))
 }
+
 func resolveGlueDevEndpointTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Glue

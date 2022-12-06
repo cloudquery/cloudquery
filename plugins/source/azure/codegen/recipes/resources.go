@@ -7,7 +7,7 @@ import (
 )
 
 func Resources() []Resource {
-	var resourcesByTemplates = []byTemplates{
+	resourcesByTemplates := []byTemplates{
 		{
 			templates: []template{
 				{

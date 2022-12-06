@@ -17,7 +17,6 @@ func fetchElasticacheParameterGroups(ctx context.Context, meta schema.ClientMeta
 
 	for {
 		describeCacheParameterGroupsOutput, err := svc.DescribeCacheParameterGroups(ctx, &describeCacheParameterGroupsInput)
-
 		if err != nil {
 			return err
 		}

@@ -8,7 +8,6 @@ import (
 
 func SNSResources() []*Resource {
 	resources := []*Resource{
-
 		{
 			SubService:          "subscriptions",
 			Struct:              &models.Subscription{},

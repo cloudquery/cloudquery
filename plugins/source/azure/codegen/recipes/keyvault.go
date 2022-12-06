@@ -7,7 +7,7 @@ import (
 )
 
 func KeyValue() []Resource {
-	var vaultRelations = []resourceDefinition{
+	vaultRelations := []resourceDefinition{
 		{
 			azureStruct:              &keyvault71.KeyItem{},
 			listFunction:             "GetKeys",
@@ -29,7 +29,7 @@ func KeyValue() []Resource {
 			mockListResult:           "SecretListResult",
 		},
 	}
-	var resourcesByTemplates = []byTemplates{
+	resourcesByTemplates := []byTemplates{
 		{
 			templates: []template{
 				{

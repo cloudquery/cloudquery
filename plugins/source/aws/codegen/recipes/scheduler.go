@@ -18,7 +18,6 @@ func SchedulerResources() []*Resource {
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
-
 					{
 						Name:     "tags",
 						Type:     schema.TypeJSON,
@@ -35,7 +34,6 @@ func SchedulerResources() []*Resource {
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
-
 					{
 						Name:     "tags",
 						Type:     schema.TypeJSON,

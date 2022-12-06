@@ -81,7 +81,7 @@ func saveToJsonFile(data *client.SupportedServiceRegionsData, filePath string) e
 	if err != nil {
 		return err
 	}
-	return os.WriteFile(filePath, b, 0644)
+	return os.WriteFile(filePath, b, 0o644)
 }
 
 func partitionRegionServiceGenerator() error {

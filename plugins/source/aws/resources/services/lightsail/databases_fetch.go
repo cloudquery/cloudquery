@@ -30,6 +30,7 @@ func fetchLightsailDatabases(ctx context.Context, meta schema.ClientMeta, parent
 	}
 	return nil
 }
+
 func fetchLightsailDatabaseParameters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.RelationalDatabase)
 	input := lightsail.GetRelationalDatabaseParametersInput{
@@ -50,11 +51,12 @@ func fetchLightsailDatabaseParameters(ctx context.Context, meta schema.ClientMet
 	}
 	return nil
 }
+
 func fetchLightsailDatabaseEvents(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.RelationalDatabase)
 	input := lightsail.GetRelationalDatabaseEventsInput{
 		RelationalDatabaseName: r.Name,
-		DurationInMinutes:      aws.Int32(20160), //two weeks
+		DurationInMinutes:      aws.Int32(20160), // two weeks
 	}
 	c := meta.(*client.Client)
 	svc := c.Services().Lightsail
@@ -71,6 +73,7 @@ func fetchLightsailDatabaseEvents(ctx context.Context, meta schema.ClientMeta, p
 	}
 	return nil
 }
+
 func fetchLightsailDatabaseLogEvents(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.RelationalDatabase)
 	input := lightsail.GetRelationalDatabaseLogStreamsInput{
@@ -83,7 +86,7 @@ func fetchLightsailDatabaseLogEvents(ctx context.Context, meta schema.ClientMeta
 		return err
 	}
 	endTime := time.Now()
-	startTime := endTime.Add(-time.Hour * 24 * 14) //two weeks
+	startTime := endTime.Add(-time.Hour * 24 * 14) // two weeks
 	errs, ctx := errgroup.WithContext(ctx)
 	errs.SetLimit(MaxGoroutines)
 	for _, s := range streams.LogStreams {

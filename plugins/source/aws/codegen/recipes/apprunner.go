@@ -30,13 +30,15 @@ func ApprunnerResources() []*Resource {
 						Resolver: `resolveApprunnerTags("AutoScalingConfigurationArn")`,
 					},
 				}...),
-		}, {
+		},
+		{
 			SubService:   "custom_domains",
 			Struct:       &types.CustomDomain{},
 			Description:  "https://docs.aws.amazon.com/apprunner/latest/api/API_CustomDomain.html",
 			Multiplex:    "",
 			ExtraColumns: defaultRegionalColumns,
-		}, {
+		},
+		{
 			SubService:  "connections",
 			Struct:      &types.ConnectionSummary{},
 			Description: "https://docs.aws.amazon.com/apprunner/latest/api/API_Connection.html",
@@ -57,7 +59,8 @@ func ApprunnerResources() []*Resource {
 						Resolver: `resolveApprunnerTags("ConnectionArn")`,
 					},
 				}...),
-		}, {
+		},
+		{
 			SubService:          "observability_configurations",
 			Struct:              &types.ObservabilityConfiguration{},
 			Description:         "https://docs.aws.amazon.com/apprunner/latest/api/API_ObservabilityConfiguration.html",
@@ -79,13 +82,15 @@ func ApprunnerResources() []*Resource {
 						Resolver: `resolveApprunnerTags("ObservabilityConfigurationArn")`,
 					},
 				}...),
-		}, {
+		},
+		{
 			SubService:   "operations",
 			Struct:       &types.OperationSummary{},
 			Description:  "https://docs.aws.amazon.com/apprunner/latest/api/API_OperationSummary.html",
 			Multiplex:    "",
 			ExtraColumns: defaultRegionalColumns,
-		}, {
+		},
+		{
 			SubService:          "services",
 			Struct:              &types.Service{},
 			Description:         "https://docs.aws.amazon.com/apprunner/latest/api/API_Service.html",
@@ -109,7 +114,8 @@ func ApprunnerResources() []*Resource {
 				}...),
 			Relations: []string{
 				"Operations()",
-				"CustomDomains()"},
+				"CustomDomains()",
+			},
 		},
 		{
 			SubService:  "vpc_connectors",
@@ -132,7 +138,8 @@ func ApprunnerResources() []*Resource {
 						Resolver: `resolveApprunnerTags("VpcConnectorArn")`,
 					},
 				}...),
-		}, {
+		},
+		{
 			SubService: "vpc_ingress_connections",
 			Struct:     &types.VpcIngressConnection{},
 			Description: `https://docs.aws.amazon.com/apprunner/latest/api/API_VpcIngressConnection.html

@@ -8,7 +8,6 @@ import (
 
 func RedshiftResources() []*Resource {
 	resources := []*Resource{
-
 		{
 			SubService:  "clusters",
 			Struct:      &types.Cluster{},

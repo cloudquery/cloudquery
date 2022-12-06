@@ -29,10 +29,12 @@ func fetchGlueJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	}
 	return nil
 }
+
 func resolveGlueJobArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	return resource.Set(c.Name, jobARN(cl, aws.ToString(resource.Item.(types.Job).Name)))
 }
+
 func resolveGlueJobTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Glue
@@ -47,6 +49,7 @@ func resolveGlueJobTags(ctx context.Context, meta schema.ClientMeta, resource *s
 	}
 	return resource.Set(c.Name, result.Tags)
 }
+
 func fetchGlueJobRuns(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Glue

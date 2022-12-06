@@ -15,7 +15,7 @@ func fetchKafkaClusterOperations(ctx context.Context, meta schema.ClientMeta, pa
 		return nil
 	}
 
-	var input = getListClusterOperationsInput(parent)
+	input := getListClusterOperationsInput(parent)
 	c := meta.(*client.Client)
 	svc := c.Services().Kafka
 	for {

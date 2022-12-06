@@ -5,7 +5,7 @@ import (
 )
 
 func CosmosDB() []Resource {
-	var accountRelations = []resourceDefinition{
+	accountRelations := []resourceDefinition{
 		{
 			azureStruct:        &documentdb.MongoDBDatabaseGetResults{},
 			listFunction:       "ListMongoDBDatabases",
@@ -37,7 +37,7 @@ func CosmosDB() []Resource {
 			mockListResult:           "SQLDatabaseListResult",
 		},
 	}
-	var resourcesByTemplates = []byTemplates{
+	resourcesByTemplates := []byTemplates{
 		{
 			templates: []template{
 				{

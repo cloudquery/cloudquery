@@ -5,7 +5,7 @@ import (
 )
 
 func IotHub() []Resource {
-	var resourcesByTemplates = []byTemplates{
+	resourcesByTemplates := []byTemplates{
 		{
 			templates: []template{
 				{

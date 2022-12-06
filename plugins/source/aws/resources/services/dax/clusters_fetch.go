@@ -31,6 +31,7 @@ func fetchDaxClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 
 	return nil
 }
+
 func resolveClusterTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cluster := resource.Item.(types.Cluster)
 

@@ -34,7 +34,7 @@ func buildIamGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
 			AttachedPolicies: []iamTypes.AttachedPolicy{p},
 		}, nil)
 
-	//list policies
+	// list policies
 	var l []string
 	err = faker.FakeObject(&l)
 	if err != nil {
@@ -45,7 +45,7 @@ func buildIamGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
 			PolicyNames: l,
 		}, nil)
 
-	//get policy
+	// get policy
 	gp := iam.GetGroupPolicyOutput{}
 	err = faker.FakeObject(&gp)
 	if err != nil {

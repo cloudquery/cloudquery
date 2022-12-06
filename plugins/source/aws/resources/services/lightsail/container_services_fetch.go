@@ -20,6 +20,7 @@ func fetchLightsailContainerServices(ctx context.Context, meta schema.ClientMeta
 	res <- response.ContainerServices
 	return nil
 }
+
 func fetchLightsailContainerServiceDeployments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.ContainerService)
 	input := lightsail.GetContainerServiceDeploymentsInput{
@@ -34,6 +35,7 @@ func fetchLightsailContainerServiceDeployments(ctx context.Context, meta schema.
 	res <- deployments.Deployments
 	return nil
 }
+
 func fetchLightsailContainerServiceImages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.ContainerService)
 	input := lightsail.GetContainerImagesInput{

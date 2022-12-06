@@ -44,7 +44,7 @@ type Resource struct {
 	TableFuncName    string // Calculated from TableName
 	ResolverFuncName string // Calculated from TableFuncName
 
-	//used for generating better table names
+	// used for generating better table names
 	parent   *Resource
 	children []*Resource
 }

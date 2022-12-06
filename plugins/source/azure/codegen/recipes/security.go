@@ -7,7 +7,7 @@ import (
 )
 
 func Security() []Resource {
-	var resourcesByTemplates = []byTemplates{
+	resourcesByTemplates := []byTemplates{
 		{
 			templates: []template{
 				{

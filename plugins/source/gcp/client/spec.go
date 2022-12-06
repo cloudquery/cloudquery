@@ -10,7 +10,7 @@ type Spec struct {
 }
 
 func (spec *Spec) setDefaults() {
-	var defaultRecursionDepth = 100
+	defaultRecursionDepth := 100
 	if spec.FolderRecursionDepth == nil {
 		spec.FolderRecursionDepth = &defaultRecursionDepth
 	}

@@ -29,6 +29,7 @@ func fetchWafv2ManagedRuleGroups(ctx context.Context, meta schema.ClientMeta, pa
 	}
 	return nil
 }
+
 func resolveManageRuleGroupProperties(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, col schema.Column) error {
 	managedRuleGroupSum := resource.Item.(types.ManagedRuleGroupSummary)
 

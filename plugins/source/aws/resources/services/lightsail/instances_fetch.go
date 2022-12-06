@@ -28,6 +28,7 @@ func fetchLightsailInstances(ctx context.Context, meta schema.ClientMeta, parent
 	}
 	return nil
 }
+
 func resolveLightsailInstanceAccessDetails(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.Instance)
 	cli := meta.(*client.Client)
@@ -39,6 +40,7 @@ func resolveLightsailInstanceAccessDetails(ctx context.Context, meta schema.Clie
 	}
 	return resource.Set(c.Name, output.AccessDetails)
 }
+
 func fetchLightsailInstancePortStates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.Instance)
 	cli := meta.(*client.Client)

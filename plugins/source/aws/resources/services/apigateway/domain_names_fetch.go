@@ -25,6 +25,7 @@ func fetchApigatewayDomainNames(ctx context.Context, meta schema.ClientMeta, par
 	}
 	return nil
 }
+
 func resolveApigatewayDomainNameArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	domain := resource.Item.(types.DomainName)
@@ -36,6 +37,7 @@ func resolveApigatewayDomainNameArn(ctx context.Context, meta schema.ClientMeta,
 		Resource:  fmt.Sprintf("/domainnames/%s", aws.ToString(domain.DomainName)),
 	}.String())
 }
+
 func fetchApigatewayDomainNameBasePathMappings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.DomainName)
 	c := meta.(*client.Client)
@@ -50,6 +52,7 @@ func fetchApigatewayDomainNameBasePathMappings(ctx context.Context, meta schema.
 	}
 	return nil
 }
+
 func resolveApigatewayDomainNameBasePathMappingArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	domain := resource.Parent.Item.(types.DomainName)

@@ -5,7 +5,7 @@ import (
 )
 
 func Subscriptions() []Resource {
-	var resourcesByTemplates = []byTemplates{
+	resourcesByTemplates := []byTemplates{
 		{
 			templates: []template{
 				{

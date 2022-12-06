@@ -16,7 +16,7 @@ func SingleSubscriptionMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
 
 func SubscriptionMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
 	client := meta.(*Client)
-	var c = make([]schema.ClientMeta, len(client.subscriptions))
+	c := make([]schema.ClientMeta, len(client.subscriptions))
 	for i, subId := range client.subscriptions {
 		c[i] = client.withSubscription(subId)
 	}

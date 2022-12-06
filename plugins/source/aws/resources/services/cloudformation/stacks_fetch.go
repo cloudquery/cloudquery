@@ -27,6 +27,7 @@ func fetchCloudformationStacks(ctx context.Context, meta schema.ClientMeta, _ *s
 	}
 	return nil
 }
+
 func fetchCloudformationStackResources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	stack := parent.Item.(types.Stack)
 	config := cloudformation.ListStackResourcesInput{

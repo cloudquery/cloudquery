@@ -81,7 +81,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (sche
 		return nil, err
 	}
 
-	var accountsZones = make(AccountZones)
+	accountsZones := make(AccountZones)
 
 	// Get available accounts
 	accounts, _, err := clientApi.Accounts(ctx, cloudflare.AccountsListParams{})

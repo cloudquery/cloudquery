@@ -28,6 +28,7 @@ func buildRamPrincipalsMock(t *testing.T, ctrl *gomock.Controller) client.Servic
 		Ram: m,
 	}
 }
+
 func TestRamPrincipals(t *testing.T) {
 	client.AwsMockTestHelper(t, Principals(), buildRamPrincipalsMock, client.TestOptions{})
 }

@@ -27,6 +27,7 @@ func fetchLightsailLoadBalancers(ctx context.Context, meta schema.ClientMeta, pa
 	}
 	return nil
 }
+
 func fetchLightsailLoadBalancerTlsCertificates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.LoadBalancer)
 	input := lightsail.GetLoadBalancerTlsCertificatesInput{

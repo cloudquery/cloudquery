@@ -27,6 +27,7 @@ func fetchLightsailBuckets(ctx context.Context, meta schema.ClientMeta, parent *
 	}
 	return nil
 }
+
 func fetchLightsailBucketAccessKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.Bucket)
 	cl := meta.(*client.Client)

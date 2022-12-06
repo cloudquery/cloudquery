@@ -29,7 +29,7 @@ func WorkerMetaDataResources() []*Resource {
 			Service:                "worker_meta_data",
 			SkipServiceInTableName: true,
 			SkipParentInTableName:  true,
-			//TableName: "worker_cron_triggers",
+			// TableName: "worker_cron_triggers",
 		},
 		{
 			DataStruct: &cloudflare.WorkersSecret{},
@@ -43,7 +43,7 @@ func WorkerMetaDataResources() []*Resource {
 			Service:                "worker_meta_data",
 			SkipServiceInTableName: true,
 			SkipParentInTableName:  true,
-			//TableName: "workers_secrets",
+			// TableName: "workers_secrets",
 		},
 	}
 }

@@ -27,6 +27,7 @@ func fetchRdsClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 	}
 	return nil
 }
+
 func resolveRdsClusterTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.DBCluster)
 	tags := map[string]*string{}

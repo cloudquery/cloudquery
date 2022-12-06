@@ -160,7 +160,6 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 		awscfg.WithCredentialsProvider(SpacesCredentialsProvider{doSpec.SpacesAccessKey, doSpec.SpacesAccessKeyId}),
 		awscfg.WithEndpointResolverWithOptions(SpacesEndpointResolver{}),
 	)
-
 	if err != nil {
 		return nil, errors.WithStack(err)
 	}

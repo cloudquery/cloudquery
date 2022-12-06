@@ -25,6 +25,7 @@ func buildRoute53DelegationSetsMock(t *testing.T, ctrl *gomock.Controller) clien
 		Route53: m,
 	}
 }
+
 func TestRoute53DelegationSets(t *testing.T) {
 	client.AwsMockTestHelper(t, DelegationSets(), buildRoute53DelegationSetsMock, client.TestOptions{})
 }

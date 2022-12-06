@@ -8,7 +8,6 @@ import (
 
 func SagemakerResources() []*Resource {
 	resources := []*Resource{
-
 		{
 			SubService:          "endpoint_configurations",
 			Struct:              &sagemaker.DescribeEndpointConfigOutput{},

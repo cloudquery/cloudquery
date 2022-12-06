@@ -2,8 +2,7 @@ package client
 
 import "context"
 
-type NoRateLimiter struct {
-}
+type NoRateLimiter struct{}
 
 func (*NoRateLimiter) GetToken(ctx context.Context, cost uint) (func() error, error) {
 	return func() error {

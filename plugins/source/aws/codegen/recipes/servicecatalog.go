@@ -49,7 +49,8 @@ func ServiceCatalogResources() []*Resource {
 						Resolver: `resolveProductTags`,
 					},
 				}...),
-		}, {
+		},
+		{
 			SubService:  "provisioned_products",
 			Struct:      &types.ProvisionedProductAttribute{},
 			Description: "https://docs.aws.amazon.com/servicecatalog/latest/dg/API_ProvisionedProductAttribute.html",

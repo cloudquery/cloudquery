@@ -86,7 +86,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (pl
 	}
 	c.csvSpec.SetDefaults()
 
-	if err := os.MkdirAll(c.csvSpec.Directory, 0755); err != nil {
+	if err := os.MkdirAll(c.csvSpec.Directory, 0o755); err != nil {
 		return nil, fmt.Errorf("failed to create directory: %w", err)
 	}
 

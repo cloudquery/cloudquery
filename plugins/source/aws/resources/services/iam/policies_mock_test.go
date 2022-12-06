@@ -29,7 +29,7 @@ func buildIamPolicies(t *testing.T, ctrl *gomock.Controller) client.Services {
 			Policies: []iamTypes.ManagedPolicyDetail{g},
 		}, nil)
 
-	//get tags
+	// get tags
 	tag := iamTypes.Tag{}
 	err = faker.FakeObject(&tag)
 	if err != nil {

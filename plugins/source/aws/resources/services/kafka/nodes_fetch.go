@@ -19,7 +19,7 @@ func fetchKafkaNodes(ctx context.Context, meta schema.ClientMeta, parent *schema
 		return nil
 	}
 
-	var input = getListNodesInput(parent)
+	input := getListNodesInput(parent)
 	c := meta.(*client.Client)
 	svc := c.Services().Kafka
 	for {

@@ -30,6 +30,7 @@ func buildDataSourcesMock(t *testing.T, ctrl *gomock.Controller) client.Services
 		Quicksight: m,
 	}
 }
+
 func TestQuicksightDataSources(t *testing.T) {
 	client.AwsMockTestHelper(t, DataSources(), buildDataSourcesMock, client.TestOptions{})
 }

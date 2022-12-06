@@ -27,10 +27,12 @@ func fetchEventbridgeEventBuses(ctx context.Context, meta schema.ClientMeta, par
 	}
 	return nil
 }
+
 func resolveEventbridgeEventBusTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	eventBusArn := resource.Item.(types.EventBus).Arn
 	return resolveEventBridgeTags(ctx, meta, resource, c, *eventBusArn)
 }
+
 func fetchEventbridgeEventBusRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(types.EventBus)
 	input := eventbridge.ListRulesInput{
@@ -51,6 +53,7 @@ func fetchEventbridgeEventBusRules(ctx context.Context, meta schema.ClientMeta, 
 	}
 	return nil
 }
+
 func resolveEventbridgeEventBusRuleTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	eventBusArn := resource.Item.(types.Rule).Arn
 	return resolveEventBridgeTags(ctx, meta, resource, c, *eventBusArn)

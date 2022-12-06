@@ -26,6 +26,7 @@ func fetchIamGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	}
 	return nil
 }
+
 func resolveIamGroupPolicies(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.Group)
 	svc := meta.(*client.Client).Services().Iam

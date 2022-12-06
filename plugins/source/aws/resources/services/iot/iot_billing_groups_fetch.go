@@ -40,6 +40,7 @@ func fetchIotBillingGroups(ctx context.Context, meta schema.ClientMeta, parent *
 	}
 	return nil
 }
+
 func resolveIotBillingGroupThingsInGroup(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.DescribeBillingGroupOutput)
 	cl := meta.(*client.Client)
@@ -65,6 +66,7 @@ func resolveIotBillingGroupThingsInGroup(ctx context.Context, meta schema.Client
 	}
 	return resource.Set(c.Name, things)
 }
+
 func resolveIotBillingGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.DescribeBillingGroupOutput)
 	cl := meta.(*client.Client)
@@ -76,7 +78,6 @@ func resolveIotBillingGroupTags(ctx context.Context, meta schema.ClientMeta, res
 
 	for {
 		response, err := svc.ListTagsForResource(ctx, &input)
-
 		if err != nil {
 			return err
 		}

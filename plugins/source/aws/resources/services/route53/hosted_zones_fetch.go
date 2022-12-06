@@ -75,6 +75,7 @@ func fetchRoute53HostedZones(ctx context.Context, meta schema.ClientMeta, parent
 	}
 	return nil
 }
+
 func fetchRoute53HostedZoneQueryLoggingConfigs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(*models.Route53HostedZoneWrapper)
 	svc := meta.(*client.Client).Services().Route53
@@ -92,6 +93,7 @@ func fetchRoute53HostedZoneQueryLoggingConfigs(ctx context.Context, meta schema.
 	}
 	return nil
 }
+
 func fetchRoute53HostedZoneResourceRecordSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(*models.Route53HostedZoneWrapper)
 	svc := meta.(*client.Client).Services().Route53
@@ -114,6 +116,7 @@ func fetchRoute53HostedZoneResourceRecordSets(ctx context.Context, meta schema.C
 
 	return nil
 }
+
 func fetchRoute53HostedZoneTrafficPolicyInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(*models.Route53HostedZoneWrapper)
 	config := route53.ListTrafficPolicyInstancesByHostedZoneInput{HostedZoneId: r.Id}
@@ -140,6 +143,7 @@ func getRoute53tagsByResourceID(id string, set []types.ResourceTagSet) []types.T
 	}
 	return nil
 }
+
 func resolveRoute53HostedZoneArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	hz := resource.Item.(*models.Route53HostedZoneWrapper)
@@ -151,6 +155,7 @@ func resolveRoute53HostedZoneArn(_ context.Context, meta schema.ClientMeta, reso
 		Resource:  fmt.Sprintf("hostedzone/%s", aws.ToString(hz.Id)),
 	}.String())
 }
+
 func resolveRoute53HostedZoneQueryLoggingConfigsArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	ql := resource.Item.(types.QueryLoggingConfig)
@@ -162,6 +167,7 @@ func resolveRoute53HostedZoneQueryLoggingConfigsArn(_ context.Context, meta sche
 		Resource:  fmt.Sprintf("queryloggingconfig/%s", aws.ToString(ql.Id)),
 	}.String())
 }
+
 func resolveRoute53HostedZoneTrafficPolicyInstancesArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	tp := resource.Item.(types.TrafficPolicyInstance)

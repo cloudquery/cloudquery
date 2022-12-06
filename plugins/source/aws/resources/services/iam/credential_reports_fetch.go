@@ -60,6 +60,7 @@ func fetchIamCredentialReports(ctx context.Context, meta schema.ClientMeta, _ *s
 		}
 	}
 }
+
 func timestampPathResolver(path string) schema.ColumnResolver {
 	return func(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
 		t := funk.Get(r.Item, path, funk.WithAllowZero())

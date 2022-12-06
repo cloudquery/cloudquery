@@ -200,7 +200,8 @@ func ElastiCacheResources() []*Resource {
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
 				}...),
-		}, {
+		},
+		{
 			SubService:  "subnet_groups",
 			Struct:      &types.CacheSubnetGroup{},
 			Description: "https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_CacheSubnetGroup.html",

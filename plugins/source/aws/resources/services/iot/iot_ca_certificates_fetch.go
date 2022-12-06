@@ -40,6 +40,7 @@ func fetchIotCaCertificates(ctx context.Context, meta schema.ClientMeta, parent 
 	}
 	return nil
 }
+
 func ResolveIotCaCertificateCertificates(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*types.CACertificateDescription)
 	cl := meta.(*client.Client)

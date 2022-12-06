@@ -15,7 +15,6 @@ func fetchApigatewayv2VpcLinks(ctx context.Context, meta schema.ClientMeta, pare
 	svc := c.Services().Apigatewayv2
 	for {
 		response, err := svc.GetVpcLinks(ctx, &config)
-
 		if err != nil {
 			return err
 		}
