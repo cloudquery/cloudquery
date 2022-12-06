@@ -104,11 +104,12 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *pl
 
 	for _, t := range tables.FlattenTables() {
 		t := t
+		writeChan := make(chan []interface{})
 		workers[t.Name] = &worker{
-			writeChan: make(chan []interface{}),
+			writeChan: writeChan,
 		}
 		eg.Go(func() error {
-			return c.writeResource(ctx, t, workers[t.Name].writeChan)
+			return c.writeResource(ctx, t, writeChan)
 		})
 	}
 
