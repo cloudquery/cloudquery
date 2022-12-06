@@ -13,7 +13,7 @@ func ReservationOrderResponse() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_reservations_reservation_order_response",
 		Resolver:  fetchReservationOrderResponse,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Capacity"),
 		Columns: []schema.Column{
 			{
 				Name:     "etag",

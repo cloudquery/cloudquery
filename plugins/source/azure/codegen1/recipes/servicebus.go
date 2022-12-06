@@ -6,9 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armserv
 func Armservicebus() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armservicebus.NewNamespacesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.ServiceBus/namespaces",
+			NewFunc:   armservicebus.NewNamespacesClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.ServiceBus/namespaces",
+			Namespace: "Microsoft.ServiceBus",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.ServiceBus")`,
 		},
 	}
 	return tables

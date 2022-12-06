@@ -13,7 +13,7 @@ func AssessmentMetadataResponse() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_security_assessment_metadata_response",
 		Resolver:  fetchAssessmentMetadataResponse,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Security"),
 		Columns: []schema.Column{
 			{
 				Name:     "properties",

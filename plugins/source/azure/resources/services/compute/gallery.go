@@ -13,7 +13,7 @@ func Gallery() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_compute_gallery",
 		Resolver:  fetchGallery,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Compute"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

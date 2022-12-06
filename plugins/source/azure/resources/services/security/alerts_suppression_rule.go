@@ -13,7 +13,7 @@ func AlertsSuppressionRule() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_security_alerts_suppression_rule",
 		Resolver:  fetchAlertsSuppressionRule,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Security"),
 		Columns: []schema.Column{
 			{
 				Name:     "properties",

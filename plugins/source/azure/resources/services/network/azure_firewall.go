@@ -13,7 +13,7 @@ func AzureFirewall() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_azure_firewall",
 		Resolver:  fetchAzureFirewall,
-		Multiplex: client.SubscriptionResourceGroupMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.Network"),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

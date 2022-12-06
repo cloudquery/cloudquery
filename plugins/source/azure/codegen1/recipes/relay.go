@@ -6,9 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/relay/armrelay"
 func Armrelay() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armrelay.NewNamespacesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/relay/armrelay",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Relay/namespaces",
+			NewFunc:   armrelay.NewNamespacesClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/relay/armrelay",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Relay/namespaces",
+			Namespace: "Microsoft.Relay",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Relay")`,
 		},
 	}
 	return tables

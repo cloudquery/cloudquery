@@ -13,7 +13,7 @@ func ReportResource() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_appcomplianceautomation_report_resource",
 		Resolver:  fetchReportResource,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.AppComplianceAutomation"),
 		Columns: []schema.Column{
 			{
 				Name:     "properties",

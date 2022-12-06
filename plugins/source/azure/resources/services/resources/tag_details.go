@@ -13,7 +13,7 @@ func TagDetails() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_resources_tag_details",
 		Resolver:  fetchTagDetails,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(""),
 		Columns: []schema.Column{
 			{
 				Name:     "count",

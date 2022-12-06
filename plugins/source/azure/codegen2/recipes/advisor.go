@@ -13,6 +13,7 @@ func Armadvisor() []Table {
 			ListFunc:       (&armadvisor.RecommendationsClient{}).NewListPager,
 			NewFunc:        armadvisor.NewRecommendationsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/recommendations",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Advisor")`,
 		},
 		{
 			Name:           "metadata_entity",
@@ -22,6 +23,7 @@ func Armadvisor() []Table {
 			ListFunc:       (&armadvisor.RecommendationMetadataClient{}).NewListPager,
 			NewFunc:        armadvisor.NewRecommendationMetadataClient,
 			URL:            "/providers/Microsoft.Advisor/metadata",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Advisor")`,
 		},
 		{
 			Name:           "suppression_contract",
@@ -31,6 +33,7 @@ func Armadvisor() []Table {
 			ListFunc:       (&armadvisor.SuppressionsClient{}).NewListPager,
 			NewFunc:        armadvisor.NewSuppressionsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/suppressions",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Advisor")`,
 		},
 	}
 

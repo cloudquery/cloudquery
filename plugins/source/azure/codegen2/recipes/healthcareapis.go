@@ -13,6 +13,7 @@ func Armhealthcareapis() []Table {
 			ListFunc:       (&armhealthcareapis.ServicesClient{}).NewListPager,
 			NewFunc:        armhealthcareapis.NewServicesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.HealthcareApis/services",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.HealthcareApis")`,
 		},
 	}
 

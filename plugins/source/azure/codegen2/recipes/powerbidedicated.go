@@ -13,6 +13,7 @@ func Armpowerbidedicated() []Table {
 			ListFunc:       (&armpowerbidedicated.CapacitiesClient{}).NewListPager,
 			NewFunc:        armpowerbidedicated.NewCapacitiesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.PowerBIDedicated/capacities",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.PowerBIDedicated")`,
 		},
 	}
 

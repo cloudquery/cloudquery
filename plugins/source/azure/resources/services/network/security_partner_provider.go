@@ -13,7 +13,7 @@ func SecurityPartnerProvider() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_security_partner_provider",
 		Resolver:  fetchSecurityPartnerProvider,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Network"),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

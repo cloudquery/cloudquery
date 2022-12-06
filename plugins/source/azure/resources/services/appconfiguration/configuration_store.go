@@ -13,7 +13,7 @@ func ConfigurationStore() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_appconfiguration_configuration_store",
 		Resolver:  fetchConfigurationStore,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.AppConfiguration"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

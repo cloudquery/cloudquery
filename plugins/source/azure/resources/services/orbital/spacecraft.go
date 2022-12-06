@@ -13,7 +13,7 @@ func Spacecraft() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_orbital_spacecraft",
 		Resolver:  fetchSpacecraft,
-		Multiplex: client.SubscriptionResourceGroupMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.Orbital"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

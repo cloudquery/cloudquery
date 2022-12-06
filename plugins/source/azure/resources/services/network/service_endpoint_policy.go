@@ -13,7 +13,7 @@ func ServiceEndpointPolicy() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_service_endpoint_policy",
 		Resolver:  fetchServiceEndpointPolicy,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Network"),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

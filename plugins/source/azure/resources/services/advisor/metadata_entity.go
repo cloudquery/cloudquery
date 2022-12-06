@@ -13,7 +13,7 @@ func MetadataEntity() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_advisor_metadata_entity",
 		Resolver:  fetchMetadataEntity,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Advisor"),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

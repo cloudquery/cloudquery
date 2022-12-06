@@ -13,6 +13,7 @@ func Armstreamanalytics() []Table {
 			ListFunc:       (&armstreamanalytics.StreamingJobsClient{}).NewListPager,
 			NewFunc:        armstreamanalytics.NewStreamingJobsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.StreamAnalytics/streamingjobs",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.StreamAnalytics")`,
 		},
 	}
 

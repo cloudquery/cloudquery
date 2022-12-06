@@ -13,7 +13,7 @@ func LocalNetworkGateway() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_local_network_gateway",
 		Resolver:  fetchLocalNetworkGateway,
-		Multiplex: client.SubscriptionResourceGroupMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.Network"),
 		Columns: []schema.Column{
 			{
 				Name:     "properties",

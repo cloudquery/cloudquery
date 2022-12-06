@@ -13,7 +13,7 @@ func PrivateZone() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_privatedns_private_zone",
 		Resolver:  fetchPrivateZone,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Network"),
 		Columns: []schema.Column{
 			{
 				Name:     "etag",

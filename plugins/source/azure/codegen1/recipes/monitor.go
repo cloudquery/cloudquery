@@ -6,24 +6,32 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor
 func Armmonitor() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armmonitor.NewPrivateLinkScopesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
-			URL:     "/subscriptions/{subscriptionId}/providers/microsoft.insights/privateLinkScopes",
+			NewFunc:   armmonitor.NewTenantActivityLogsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
+			URL:       "/providers/Microsoft.Insights/eventtypes/management/values",
+			Namespace: "Microsoft.Insights",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Insights")`,
 		},
 		{
-			NewFunc: armmonitor.NewLogProfilesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/logprofiles",
+			NewFunc:   armmonitor.NewLogProfilesClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/logprofiles",
+			Namespace: "Microsoft.Insights",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Insights")`,
 		},
 		{
-			NewFunc: armmonitor.NewTenantActivityLogsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
-			URL:     "/providers/Microsoft.Insights/eventtypes/management/values",
+			NewFunc:   armmonitor.NewEventCategoriesClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
+			URL:       "/providers/Microsoft.Insights/eventcategories",
+			Namespace: "Microsoft.Insights",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Insights")`,
 		},
 		{
-			NewFunc: armmonitor.NewEventCategoriesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
-			URL:     "/providers/Microsoft.Insights/eventcategories",
+			NewFunc:   armmonitor.NewPrivateLinkScopesClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
+			URL:       "/subscriptions/{subscriptionId}/providers/microsoft.insights/privateLinkScopes",
+			Namespace: "microsoft.insights",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("microsoft.insights")`,
 		},
 	}
 	return tables

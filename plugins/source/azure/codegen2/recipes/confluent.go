@@ -13,6 +13,7 @@ func Armconfluent() []Table {
 			ListFunc:       (&armconfluent.MarketplaceAgreementsClient{}).NewListPager,
 			NewFunc:        armconfluent.NewMarketplaceAgreementsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Confluent/agreements",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Confluent")`,
 		},
 	}
 

@@ -6,9 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbots
 func Armbotservice() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armbotservice.NewBotsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.BotService/botServices",
+			NewFunc:   armbotservice.NewBotsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.BotService/botServices",
+			Namespace: "Microsoft.BotService",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.BotService")`,
 		},
 	}
 	return tables

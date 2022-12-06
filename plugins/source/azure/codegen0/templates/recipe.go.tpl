@@ -10,6 +10,8 @@ func {{.BaseName | ToCamel}}() []*Table {
 			NewFunc: {{$.BaseName}}.{{.NewFuncName}},
 			PkgPath: "{{$.Import}}",
 			URL: "{{.URL}}",
+			Namespace: "{{.Namespace}}",
+			Multiplex: `{{.Multiplex}}`,
 		},
     {{- end}}
 	}

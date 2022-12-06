@@ -13,6 +13,7 @@ func Armwindowsesu() []Table {
 			ListFunc:       (&armwindowsesu.MultipleActivationKeysClient{}).NewListPager,
 			NewFunc:        armwindowsesu.NewMultipleActivationKeysClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.WindowsESU/multipleActivationKeys",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.WindowsESU")`,
 		},
 	}
 

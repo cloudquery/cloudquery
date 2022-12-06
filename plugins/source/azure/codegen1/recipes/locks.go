@@ -6,9 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armlocks
 func Armlocks() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armlocks.NewAuthorizationOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armlocks",
-			URL:     "/providers/Microsoft.Authorization/operations",
+			NewFunc:   armlocks.NewAuthorizationOperationsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armlocks",
+			URL:       "/providers/Microsoft.Authorization/operations",
+			Namespace: "Microsoft.Authorization",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Authorization")`,
 		},
 	}
 	return tables

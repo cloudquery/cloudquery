@@ -13,6 +13,7 @@ func Armeventhub() []Table {
 			ListFunc:       (&armeventhub.NamespacesClient{}).NewListPager,
 			NewFunc:        armeventhub.NewNamespacesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.EventHub/namespaces",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.EventHub")`,
 		},
 	}
 

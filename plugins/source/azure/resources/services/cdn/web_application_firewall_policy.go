@@ -13,7 +13,7 @@ func WebApplicationFirewallPolicy() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_cdn_web_application_firewall_policy",
 		Resolver:  fetchWebApplicationFirewallPolicy,
-		Multiplex: client.SubscriptionResourceGroupMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.Cdn"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

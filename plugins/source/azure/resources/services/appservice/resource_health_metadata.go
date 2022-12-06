@@ -13,7 +13,7 @@ func ResourceHealthMetadata() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_appservice_resource_health_metadata",
 		Resolver:  fetchResourceHealthMetadata,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Web"),
 		Columns: []schema.Column{
 			{
 				Name:     "kind",

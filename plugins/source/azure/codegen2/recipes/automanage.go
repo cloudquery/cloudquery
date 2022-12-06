@@ -13,6 +13,7 @@ func Armautomanage() []Table {
 			ListFunc:       (&armautomanage.ConfigurationProfileAssignmentsClient{}).NewListPager,
 			NewFunc:        armautomanage.NewConfigurationProfileAssignmentsClient,
 			URL:            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automanage/configurationProfileAssignments",
+			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.Automanage")`,
 		},
 	}
 

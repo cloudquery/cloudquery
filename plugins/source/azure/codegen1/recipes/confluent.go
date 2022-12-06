@@ -6,14 +6,18 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confluent/armconfl
 func Armconfluent() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armconfluent.NewMarketplaceAgreementsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confluent/armconfluent",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Confluent/agreements",
+			NewFunc:   armconfluent.NewMarketplaceAgreementsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confluent/armconfluent",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Confluent/agreements",
+			Namespace: "Microsoft.Confluent",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Confluent")`,
 		},
 		{
-			NewFunc: armconfluent.NewOrganizationOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confluent/armconfluent",
-			URL:     "/providers/Microsoft.Confluent/operations",
+			NewFunc:   armconfluent.NewOrganizationOperationsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confluent/armconfluent",
+			URL:       "/providers/Microsoft.Confluent/operations",
+			Namespace: "Microsoft.Confluent",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Confluent")`,
 		},
 	}
 	return tables

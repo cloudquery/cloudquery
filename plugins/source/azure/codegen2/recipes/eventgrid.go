@@ -13,6 +13,7 @@ func Armeventgrid() []Table {
 			ListFunc:       (&armeventgrid.TopicTypesClient{}).NewListPager,
 			NewFunc:        armeventgrid.NewTopicTypesClient,
 			URL:            "/providers/Microsoft.EventGrid/topicTypes",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.EventGrid")`,
 		},
 	}
 

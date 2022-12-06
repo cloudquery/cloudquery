@@ -6,15 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn"
 func Armcdn() []Table {
 	tables := []Table{
 		{
-			Name:           "edge_node",
-			Struct:         &armcdn.EdgeNode{},
-			ResponseStruct: &armcdn.EdgeNodesClientListResponse{},
-			Client:         &armcdn.EdgeNodesClient{},
-			ListFunc:       (&armcdn.EdgeNodesClient{}).NewListPager,
-			NewFunc:        armcdn.NewEdgeNodesClient,
-			URL:            "/providers/Microsoft.Cdn/edgenodes",
-		},
-		{
 			Name:           "profile",
 			Struct:         &armcdn.Profile{},
 			ResponseStruct: &armcdn.ProfilesClientListResponse{},
@@ -22,15 +13,17 @@ func Armcdn() []Table {
 			ListFunc:       (&armcdn.ProfilesClient{}).NewListPager,
 			NewFunc:        armcdn.NewProfilesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/profiles",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Cdn")`,
 		},
 		{
-			Name:           "web_application_firewall_policy",
-			Struct:         &armcdn.WebApplicationFirewallPolicy{},
-			ResponseStruct: &armcdn.PoliciesClientListResponse{},
-			Client:         &armcdn.PoliciesClient{},
-			ListFunc:       (&armcdn.PoliciesClient{}).NewListPager,
-			NewFunc:        armcdn.NewPoliciesClient,
-			URL:            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/cdnWebApplicationFirewallPolicies",
+			Name:           "edge_node",
+			Struct:         &armcdn.EdgeNode{},
+			ResponseStruct: &armcdn.EdgeNodesClientListResponse{},
+			Client:         &armcdn.EdgeNodesClient{},
+			ListFunc:       (&armcdn.EdgeNodesClient{}).NewListPager,
+			NewFunc:        armcdn.NewEdgeNodesClient,
+			URL:            "/providers/Microsoft.Cdn/edgenodes",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Cdn")`,
 		},
 		{
 			Name:           "managed_rule_set_definition",
@@ -40,6 +33,17 @@ func Armcdn() []Table {
 			ListFunc:       (&armcdn.ManagedRuleSetsClient{}).NewListPager,
 			NewFunc:        armcdn.NewManagedRuleSetsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/cdnWebApplicationFirewallManagedRuleSets",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Cdn")`,
+		},
+		{
+			Name:           "web_application_firewall_policy",
+			Struct:         &armcdn.WebApplicationFirewallPolicy{},
+			ResponseStruct: &armcdn.PoliciesClientListResponse{},
+			Client:         &armcdn.PoliciesClient{},
+			ListFunc:       (&armcdn.PoliciesClient{}).NewListPager,
+			NewFunc:        armcdn.NewPoliciesClient,
+			URL:            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/cdnWebApplicationFirewallPolicies",
+			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.Cdn")`,
 		},
 	}
 

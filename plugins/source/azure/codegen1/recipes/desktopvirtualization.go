@@ -6,9 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualizat
 func Armdesktopvirtualization() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armdesktopvirtualization.NewHostPoolsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.DesktopVirtualization/hostPools",
+			NewFunc:   armdesktopvirtualization.NewHostPoolsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.DesktopVirtualization/hostPools",
+			Namespace: "Microsoft.DesktopVirtualization",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DesktopVirtualization")`,
 		},
 	}
 	return tables

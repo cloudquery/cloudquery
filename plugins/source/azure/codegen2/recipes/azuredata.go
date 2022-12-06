@@ -13,6 +13,7 @@ func Armazuredata() []Table {
 			ListFunc:       (&armazuredata.SQLServerRegistrationsClient{}).NewListPager,
 			NewFunc:        armazuredata.NewSQLServerRegistrationsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.AzureData/sqlServerRegistrations",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.AzureData")`,
 		},
 	}
 

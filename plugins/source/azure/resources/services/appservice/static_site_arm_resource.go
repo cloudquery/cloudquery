@@ -13,7 +13,7 @@ func StaticSiteArmResource() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_appservice_static_site_arm_resource",
 		Resolver:  fetchStaticSiteArmResource,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Web"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

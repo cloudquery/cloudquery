@@ -13,7 +13,7 @@ func Configuration() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_portal_configuration",
 		Resolver:  fetchConfiguration,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Portal"),
 		Columns: []schema.Column{
 			{
 				Name:     "properties",

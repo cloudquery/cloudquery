@@ -13,7 +13,7 @@ func WorkspaceSetting() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_security_workspace_setting",
 		Resolver:  fetchWorkspaceSetting,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Security"),
 		Columns: []schema.Column{
 			{
 				Name:     "properties",

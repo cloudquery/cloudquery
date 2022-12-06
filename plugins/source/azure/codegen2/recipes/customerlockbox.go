@@ -13,6 +13,7 @@ func Armcustomerlockbox() []Table {
 			ListFunc:       (&armcustomerlockbox.RequestsClient{}).NewListPager,
 			NewFunc:        armcustomerlockbox.NewRequestsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.CustomerLockbox/requests",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.CustomerLockbox")`,
 		},
 	}
 

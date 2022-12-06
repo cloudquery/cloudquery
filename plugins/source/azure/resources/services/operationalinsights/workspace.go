@@ -13,7 +13,7 @@ func Workspace() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_operationalinsights_workspace",
 		Resolver:  fetchWorkspace,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.OperationalInsights"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",
@@ -59,7 +59,7 @@ func Workspace() *schema.Table {
 
 func fetchWorkspace(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
-	svc, err := armoperationalinsights.NewDeletedWorkspacesClient(cl.SubscriptionId, cl.Creds, cl.Options)
+	svc, err := armoperationalinsights.NewWorkspacesClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {
 		return err
 	}

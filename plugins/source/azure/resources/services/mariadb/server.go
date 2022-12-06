@@ -13,7 +13,7 @@ func Server() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_mariadb_server",
 		Resolver:  fetchServer,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DBforMariaDB"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

@@ -13,7 +13,7 @@ func SuppressionContract() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_advisor_suppression_contract",
 		Resolver:  fetchSuppressionContract,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Advisor"),
 		Columns: []schema.Column{
 			{
 				Name:     "properties",

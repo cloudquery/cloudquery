@@ -13,6 +13,7 @@ func Armreservations() []Table {
 			ListFunc:       (&armreservations.ReservationOrderClient{}).NewListPager,
 			NewFunc:        armreservations.NewReservationOrderClient,
 			URL:            "/providers/Microsoft.Capacity/reservationOrders",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Capacity")`,
 		},
 	}
 

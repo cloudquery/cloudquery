@@ -13,7 +13,7 @@ func RestorePointCollection() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_compute_restore_point_collection",
 		Resolver:  fetchRestorePointCollection,
-		Multiplex: client.SubscriptionResourceGroupMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.Compute"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

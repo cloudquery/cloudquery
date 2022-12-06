@@ -13,7 +13,7 @@ func ConfigurationProfileAssignment() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_automanage_configuration_profile_assignment",
 		Resolver:  fetchConfigurationProfileAssignment,
-		Multiplex: client.SubscriptionResourceGroupMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.Automanage"),
 		Columns: []schema.Column{
 			{
 				Name:     "properties",

@@ -13,7 +13,7 @@ func Period() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_billing_period",
 		Resolver:  fetchPeriod,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Billing"),
 		Columns: []schema.Column{
 			{
 				Name:     "properties",

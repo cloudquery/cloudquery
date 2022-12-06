@@ -13,7 +13,7 @@ func TenantIdDescription() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_subscription_tenant_id_description",
 		Resolver:  fetchTenantIdDescription,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(""),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

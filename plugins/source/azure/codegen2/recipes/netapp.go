@@ -13,6 +13,7 @@ func Armnetapp() []Table {
 			ListFunc:       (&armnetapp.AccountsClient{}).NewListPager,
 			NewFunc:        armnetapp.NewAccountsClient,
 			URL:            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts",
+			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.NetApp")`,
 		},
 	}
 

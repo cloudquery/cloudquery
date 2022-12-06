@@ -13,7 +13,7 @@ func LockboxRequestResponse() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_customerlockbox_lockbox_request_response",
 		Resolver:  fetchLockboxRequestResponse,
-		Multiplex: client.SubscriptionResourceGroupMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.CustomerLockbox"),
 		Columns: []schema.Column{
 			{
 				Name:     "properties",

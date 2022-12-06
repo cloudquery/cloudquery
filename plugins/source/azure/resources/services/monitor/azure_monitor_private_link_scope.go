@@ -13,7 +13,7 @@ func AzureMonitorPrivateLinkScope() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_monitor_azure_monitor_private_link_scope",
 		Resolver:  fetchAzureMonitorPrivateLinkScope,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("microsoft.insights"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

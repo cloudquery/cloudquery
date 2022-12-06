@@ -13,7 +13,7 @@ func LogProfileResource() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_monitor_log_profile_resource",
 		Resolver:  fetchLogProfileResource,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Insights"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

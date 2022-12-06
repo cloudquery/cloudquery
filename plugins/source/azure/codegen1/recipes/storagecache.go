@@ -6,19 +6,25 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armst
 func Armstoragecache() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armstoragecache.NewUsageModelsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.StorageCache/usageModels",
+			NewFunc:   armstoragecache.NewSKUsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.StorageCache/skus",
+			Namespace: "Microsoft.StorageCache",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.StorageCache")`,
 		},
 		{
-			NewFunc: armstoragecache.NewCachesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.StorageCache/caches",
+			NewFunc:   armstoragecache.NewCachesClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.StorageCache/caches",
+			Namespace: "Microsoft.StorageCache",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.StorageCache")`,
 		},
 		{
-			NewFunc: armstoragecache.NewSKUsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.StorageCache/skus",
+			NewFunc:   armstoragecache.NewUsageModelsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.StorageCache/usageModels",
+			Namespace: "Microsoft.StorageCache",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.StorageCache")`,
 		},
 	}
 	return tables

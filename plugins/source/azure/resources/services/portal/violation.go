@@ -13,7 +13,7 @@ func Violation() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_portal_violation",
 		Resolver:  fetchViolation,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Portal"),
 		Columns: []schema.Column{
 			{
 				Name:     "error_message",

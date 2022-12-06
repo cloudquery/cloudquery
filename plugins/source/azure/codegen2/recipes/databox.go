@@ -13,6 +13,7 @@ func Armdatabox() []Table {
 			ListFunc:       (&armdatabox.JobsClient{}).NewListPager,
 			NewFunc:        armdatabox.NewJobsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DataBox/jobs",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DataBox")`,
 		},
 	}
 

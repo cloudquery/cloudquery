@@ -13,7 +13,7 @@ func Cluster() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_kusto_cluster",
 		Resolver:  fetchCluster,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Kusto"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

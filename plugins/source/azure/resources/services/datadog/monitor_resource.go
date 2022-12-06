@@ -13,7 +13,7 @@ func MonitorResource() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_datadog_monitor_resource",
 		Resolver:  fetchMonitorResource,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Datadog"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

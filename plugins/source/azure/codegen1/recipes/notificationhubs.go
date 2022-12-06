@@ -6,9 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/notificationhubs/a
 func Armnotificationhubs() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armnotificationhubs.NewNamespacesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/notificationhubs/armnotificationhubs",
-			URL:     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces",
+			NewFunc:   armnotificationhubs.NewNamespacesClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/notificationhubs/armnotificationhubs",
+			URL:       "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces",
+			Namespace: "Microsoft.NotificationHubs",
+			Multiplex: `client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.NotificationHubs")`,
 		},
 	}
 	return tables

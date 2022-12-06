@@ -13,7 +13,7 @@ func ManagedInstance() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_sql_managed_instance",
 		Resolver:  fetchManagedInstance,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Sql"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

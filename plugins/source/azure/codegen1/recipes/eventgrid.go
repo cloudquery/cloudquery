@@ -6,9 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armevent
 func Armeventgrid() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armeventgrid.NewTopicTypesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid",
-			URL:     "/providers/Microsoft.EventGrid/topicTypes",
+			NewFunc:   armeventgrid.NewTopicTypesClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid",
+			URL:       "/providers/Microsoft.EventGrid/topicTypes",
+			Namespace: "Microsoft.EventGrid",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.EventGrid")`,
 		},
 	}
 	return tables

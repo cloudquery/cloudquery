@@ -13,7 +13,7 @@ func SapMonitor() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_hanaonazure_sap_monitor",
 		Resolver:  fetchSapMonitor,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.HanaOnAzure"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

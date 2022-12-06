@@ -13,7 +13,7 @@ func Image() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_compute_image",
 		Resolver:  fetchImage,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Compute"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

@@ -13,7 +13,7 @@ func AllowedConnectionsResource() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_security_allowed_connections_resource",
 		Resolver:  fetchAllowedConnectionsResource,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Security"),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

@@ -13,7 +13,7 @@ func EventData() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_monitor_event_data",
 		Resolver:  fetchEventData,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Insights"),
 		Columns: []schema.Column{
 			{
 				Name:     "authorization",

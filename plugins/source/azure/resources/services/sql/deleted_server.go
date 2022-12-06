@@ -13,7 +13,7 @@ func DeletedServer() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_sql_deleted_server",
 		Resolver:  fetchDeletedServer,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Sql"),
 		Columns: []schema.Column{
 			{
 				Name:     "properties",

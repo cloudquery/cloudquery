@@ -13,7 +13,7 @@ func Account() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_batch_account",
 		Resolver:  fetchAccount,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Batch"),
 		Columns: []schema.Column{
 			{
 				Name:     "identity",

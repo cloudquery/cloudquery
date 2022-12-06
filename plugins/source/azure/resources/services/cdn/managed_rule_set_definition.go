@@ -13,7 +13,7 @@ func ManagedRuleSetDefinition() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_cdn_managed_rule_set_definition",
 		Resolver:  fetchManagedRuleSetDefinition,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Cdn"),
 		Columns: []schema.Column{
 			{
 				Name:     "properties",

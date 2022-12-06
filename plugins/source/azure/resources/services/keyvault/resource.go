@@ -13,7 +13,7 @@ func Resource() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_keyvault_resource",
 		Resolver:  fetchResource,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(""),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

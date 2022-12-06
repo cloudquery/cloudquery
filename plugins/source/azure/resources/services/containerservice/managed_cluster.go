@@ -13,7 +13,7 @@ func ManagedCluster() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_containerservice_managed_cluster",
 		Resolver:  fetchManagedCluster,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.ContainerService"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

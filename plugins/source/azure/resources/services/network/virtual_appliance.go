@@ -13,7 +13,7 @@ func VirtualAppliance() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_virtual_appliance",
 		Resolver:  fetchVirtualAppliance,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Network"),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

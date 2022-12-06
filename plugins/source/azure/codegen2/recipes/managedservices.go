@@ -13,6 +13,7 @@ func Armmanagedservices() []Table {
 			ListFunc:       (&armmanagedservices.MarketplaceRegistrationDefinitionsWithoutScopeClient{}).NewListPager,
 			NewFunc:        armmanagedservices.NewMarketplaceRegistrationDefinitionsWithoutScopeClient,
 			URL:            "/providers/Microsoft.ManagedServices/marketplaceRegistrationDefinitions",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.ManagedServices")`,
 		},
 	}
 

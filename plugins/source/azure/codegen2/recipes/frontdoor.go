@@ -6,15 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfront
 func Armfrontdoor() []Table {
 	tables := []Table{
 		{
-			Name:           "web_application_firewall_policy",
-			Struct:         &armfrontdoor.WebApplicationFirewallPolicy{},
-			ResponseStruct: &armfrontdoor.PoliciesClientListResponse{},
-			Client:         &armfrontdoor.PoliciesClient{},
-			ListFunc:       (&armfrontdoor.PoliciesClient{}).NewListPager,
-			NewFunc:        armfrontdoor.NewPoliciesClient,
-			URL:            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoorWebApplicationFirewallPolicies",
-		},
-		{
 			Name:           "profile",
 			Struct:         &armfrontdoor.Profile{},
 			ResponseStruct: &armfrontdoor.NetworkExperimentProfilesClientListResponse{},
@@ -22,6 +13,7 @@ func Armfrontdoor() []Table {
 			ListFunc:       (&armfrontdoor.NetworkExperimentProfilesClient{}).NewListPager,
 			NewFunc:        armfrontdoor.NewNetworkExperimentProfilesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/NetworkExperimentProfiles",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Network")`,
 		},
 		{
 			Name:           "front_door",
@@ -31,6 +23,17 @@ func Armfrontdoor() []Table {
 			ListFunc:       (&armfrontdoor.FrontDoorsClient{}).NewListPager,
 			NewFunc:        armfrontdoor.NewFrontDoorsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/frontDoors",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Network")`,
+		},
+		{
+			Name:           "web_application_firewall_policy",
+			Struct:         &armfrontdoor.WebApplicationFirewallPolicy{},
+			ResponseStruct: &armfrontdoor.PoliciesClientListResponse{},
+			Client:         &armfrontdoor.PoliciesClient{},
+			ListFunc:       (&armfrontdoor.PoliciesClient{}).NewListPager,
+			NewFunc:        armfrontdoor.NewPoliciesClient,
+			URL:            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoorWebApplicationFirewallPolicies",
+			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.Network")`,
 		},
 		{
 			Name:           "managed_rule_set_definition",
@@ -40,6 +43,7 @@ func Armfrontdoor() []Table {
 			ListFunc:       (&armfrontdoor.ManagedRuleSetsClient{}).NewListPager,
 			NewFunc:        armfrontdoor.NewManagedRuleSetsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/FrontDoorWebApplicationFirewallManagedRuleSets",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Network")`,
 		},
 	}
 

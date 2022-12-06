@@ -13,7 +13,7 @@ func DedicatedCapacity() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_powerbidedicated_dedicated_capacity",
 		Resolver:  fetchDedicatedCapacity,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.PowerBIDedicated"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

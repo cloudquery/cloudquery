@@ -13,7 +13,7 @@ func AccountBasic() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_datalakestore_account_basic",
 		Resolver:  fetchAccountBasic,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DataLakeStore"),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

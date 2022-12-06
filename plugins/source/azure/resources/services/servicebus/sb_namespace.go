@@ -13,7 +13,7 @@ func SbNamespace() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_servicebus_sb_namespace",
 		Resolver:  fetchSbNamespace,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.ServiceBus"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

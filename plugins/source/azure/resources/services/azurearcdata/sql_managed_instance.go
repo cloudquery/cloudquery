@@ -13,7 +13,7 @@ func SqlManagedInstance() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_azurearcdata_sql_managed_instance",
 		Resolver:  fetchSqlManagedInstance,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.AzureArcData"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

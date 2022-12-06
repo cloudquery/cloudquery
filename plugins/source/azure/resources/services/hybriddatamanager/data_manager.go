@@ -13,7 +13,7 @@ func DataManager() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_hybriddatamanager_data_manager",
 		Resolver:  fetchDataManager,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.HybridData"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

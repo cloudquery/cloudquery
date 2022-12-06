@@ -13,7 +13,7 @@ func EdgeNode() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_cdn_edge_node",
 		Resolver:  fetchEdgeNode,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Cdn"),
 		Columns: []schema.Column{
 			{
 				Name:     "properties",

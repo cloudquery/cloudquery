@@ -13,6 +13,7 @@ func Armdevops() []Table {
 			ListFunc:       (&armdevops.PipelineTemplateDefinitionsClient{}).NewListPager,
 			NewFunc:        armdevops.NewPipelineTemplateDefinitionsClient,
 			URL:            "/providers/Microsoft.DevOps/pipelineTemplateDefinitions",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DevOps")`,
 		},
 	}
 

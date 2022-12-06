@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"strings"
 
 	// Import all autorest modules
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -19,6 +20,7 @@ import (
 type Client struct {
 	subscriptions  []string
 	logger         zerolog.Logger
+	registeredNamespace map[string]map[string]bool
 	resourceGroups map[string][]*armresources.GenericResourceExpanded
 	// this is set by table client multiplexer
 	SubscriptionId string
@@ -42,7 +44,7 @@ func getSubscriptions(spec *Spec, creds azcore.TokenCredential) ([]string, error
 				return nil, err
 			}
 			for _, sub := range page.Value {
-				subscriptions = append(subscriptions, *sub.ID)
+				subscriptions = append(subscriptions, strings.TrimPrefix(*sub.ID, "/subscriptions/"))
 			}
 		}
 	}
@@ -69,22 +71,49 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 	if err != nil {
 		return nil, err
 	}
+	
 	resourceGroups := make(map[string][]*armresources.GenericResourceExpanded, len(subscriptions))
-	fiilter := "$filter=Microsoft.Resources/resourceGroups"
-	for _, sub := range subscriptions {
-		cl, err := armresources.NewClient(sub, creds, nil)
+	filter := "resourceType eq 'Microsoft.Resources/resourceGroups'"
+	registeredNamespace := make(map[string]map[string]bool, len(subscriptions))
+	for _, subID := range subscriptions {
+		registeredNamespace[subID] = make(map[string]bool)
+		// fmt.Println("sub", sub)
+		cl, err := armresources.NewClient(subID, creds, nil)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("failed to create resource group client: %w", err)
 		}
 		pager := cl.NewListPager(&armresources.ClientListOptions{
-			Filter: &fiilter,
+			Filter: &filter,
 		})
 		for pager.More() {
 			page, err := pager.NextPage(ctx)
 			if err != nil {
-				return nil, err
+				return nil, fmt.Errorf("failed to list resource groups: %w", err)
 			}
-			resourceGroups[sub] = append(resourceGroups[sub], page.Value...)
+			if len(page.Value) == 0 {
+				continue
+			}
+			resourceGroups[subID] = append(resourceGroups[subID], page.Value...)
+		}
+
+		providerClient, err := armresources.NewProvidersClient(subID, creds, nil)
+		if err != nil {
+			return nil, fmt.Errorf("failed to create provider client: %w", err)
+		}
+		providerPager := providerClient.NewListPager(nil)
+		for providerPager.More() {
+			providerPage, err := providerPager.NextPage(ctx)
+			if err != nil {
+				return nil, fmt.Errorf("failed to list providers: %w", err)
+			}
+			if len(providerPage.Value) == 0 {
+				continue
+			}
+			for _, p := range providerPage.Value {
+				if p.RegistrationState != nil && *p.RegistrationState == "Registered" {
+					registeredNamespace[subID][*p.Namespace] = true
+				}
+			}
 		}
 	}
 

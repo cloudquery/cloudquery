@@ -6,9 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerlockbox/ar
 func Armcustomerlockbox() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armcustomerlockbox.NewRequestsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerlockbox/armcustomerlockbox",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.CustomerLockbox/requests",
+			NewFunc:   armcustomerlockbox.NewRequestsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerlockbox/armcustomerlockbox",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.CustomerLockbox/requests",
+			Namespace: "Microsoft.CustomerLockbox",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.CustomerLockbox")`,
 		},
 	}
 	return tables

@@ -13,7 +13,7 @@ func ExpressRouteServiceProvider() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_express_route_service_provider",
 		Resolver:  fetchExpressRouteServiceProvider,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Network"),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

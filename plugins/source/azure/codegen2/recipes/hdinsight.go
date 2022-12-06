@@ -13,6 +13,7 @@ func Armhdinsight() []Table {
 			ListFunc:       (&armhdinsight.ClustersClient{}).NewListPager,
 			NewFunc:        armhdinsight.NewClustersClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.HDInsight/clusters",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.HDInsight")`,
 		},
 	}
 

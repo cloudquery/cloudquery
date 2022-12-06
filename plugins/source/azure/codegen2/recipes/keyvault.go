@@ -13,6 +13,7 @@ func Armkeyvault() []Table {
 			ListFunc:       (&armkeyvault.VaultsClient{}).NewListPager,
 			NewFunc:        armkeyvault.NewVaultsClient,
 			URL:            "/subscriptions/{subscriptionId}/resources",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("")`,
 		},
 	}
 

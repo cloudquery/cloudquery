@@ -6,9 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelas
 func Armelasticsan() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armelasticsan.NewSKUsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelasticsan",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.ElasticSan/skus",
+			NewFunc:   armelasticsan.NewSKUsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelasticsan",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.ElasticSan/skus",
+			Namespace: "Microsoft.ElasticSan",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.ElasticSan")`,
 		},
 	}
 	return tables

@@ -13,7 +13,7 @@ func TicketDetails() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_support_ticket_details",
 		Resolver:  fetchTicketDetails,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Support"),
 		Columns: []schema.Column{
 			{
 				Name:     "properties",

@@ -13,7 +13,7 @@ func PrivateCloud() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_avs_private_cloud",
 		Resolver:  fetchPrivateCloud,
-		Multiplex: client.SubscriptionResourceGroupMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.AVS"),
 		Columns: []schema.Column{
 			{
 				Name:     "sku",

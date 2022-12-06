@@ -5,13 +5,13 @@ import (
 	"embed"
 	"fmt"
 	"go/format"
-	"html/template"
 	"log"
 	"os"
 	"path"
 	"reflect"
 	"runtime"
 	"strings"
+	"text/template"
 
 	"github.com/iancoleman/strcase"
 
@@ -34,6 +34,7 @@ type Table struct {
 	ListFunc       string
 	NewFunc        string
 	URL            string
+	Multiplex    string
 }
 
 type Recipe struct {
@@ -157,6 +158,7 @@ func ConvertTableV1ToV2(t *recipes.Table) (*Table, error) {
 		ListFunc:       "NewListPager",
 		NewFunc:        "New" + clientName,
 		URL:            t.URL,
+		Multiplex:    	t.Multiplex,
 	}, nil
 }
 

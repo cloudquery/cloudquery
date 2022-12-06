@@ -13,7 +13,7 @@ func Application() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_security_application",
 		Resolver:  fetchApplication,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Security"),
 		Columns: []schema.Column{
 			{
 				Name:     "properties",

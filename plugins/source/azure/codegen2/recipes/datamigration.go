@@ -13,6 +13,7 @@ func Armdatamigration() []Table {
 			ListFunc:       (&armdatamigration.ServicesClient{}).NewListPager,
 			NewFunc:        armdatamigration.NewServicesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DataMigration/services",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DataMigration")`,
 		},
 	}
 

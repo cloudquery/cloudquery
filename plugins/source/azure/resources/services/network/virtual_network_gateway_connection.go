@@ -13,7 +13,7 @@ func VirtualNetworkGatewayConnection() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_virtual_network_gateway_connection",
 		Resolver:  fetchVirtualNetworkGatewayConnection,
-		Multiplex: client.SubscriptionResourceGroupMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.Network"),
 		Columns: []schema.Column{
 			{
 				Name:     "properties",

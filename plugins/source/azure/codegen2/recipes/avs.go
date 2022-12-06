@@ -13,6 +13,7 @@ func Armavs() []Table {
 			ListFunc:       (&armavs.PrivateCloudsClient{}).NewListPager,
 			NewFunc:        armavs.NewPrivateCloudsClient,
 			URL:            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds",
+			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.AVS")`,
 		},
 	}
 

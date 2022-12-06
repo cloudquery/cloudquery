@@ -13,7 +13,7 @@ func RouteFilter() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_route_filter",
 		Resolver:  fetchRouteFilter,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Network"),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

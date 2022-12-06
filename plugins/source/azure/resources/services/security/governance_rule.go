@@ -13,7 +13,7 @@ func GovernanceRule() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_security_governance_rule",
 		Resolver:  fetchGovernanceRule,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Security"),
 		Columns: []schema.Column{
 			{
 				Name:     "properties",

@@ -13,6 +13,7 @@ func Armdns() []Table {
 			ListFunc:       (&armdns.ZonesClient{}).NewListPager,
 			NewFunc:        armdns.NewZonesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/dnszones",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Network")`,
 		},
 	}
 

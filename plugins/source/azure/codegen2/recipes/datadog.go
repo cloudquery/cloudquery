@@ -6,15 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datadog/armdatadog
 func Armdatadog() []Table {
 	tables := []Table{
 		{
-			Name:           "agreement_resource",
-			Struct:         &armdatadog.AgreementResource{},
-			ResponseStruct: &armdatadog.MarketplaceAgreementsClientListResponse{},
-			Client:         &armdatadog.MarketplaceAgreementsClient{},
-			ListFunc:       (&armdatadog.MarketplaceAgreementsClient{}).NewListPager,
-			NewFunc:        armdatadog.NewMarketplaceAgreementsClient,
-			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Datadog/agreements",
-		},
-		{
 			Name:           "monitor_resource",
 			Struct:         &armdatadog.MonitorResource{},
 			ResponseStruct: &armdatadog.MonitorsClientListResponse{},
@@ -22,6 +13,17 @@ func Armdatadog() []Table {
 			ListFunc:       (&armdatadog.MonitorsClient{}).NewListPager,
 			NewFunc:        armdatadog.NewMonitorsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Datadog/monitors",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Datadog")`,
+		},
+		{
+			Name:           "agreement_resource",
+			Struct:         &armdatadog.AgreementResource{},
+			ResponseStruct: &armdatadog.MarketplaceAgreementsClientListResponse{},
+			Client:         &armdatadog.MarketplaceAgreementsClient{},
+			ListFunc:       (&armdatadog.MarketplaceAgreementsClient{}).NewListPager,
+			NewFunc:        armdatadog.NewMarketplaceAgreementsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Datadog/agreements",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Datadog")`,
 		},
 	}
 

@@ -6,9 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventh
 func Armeventhub() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armeventhub.NewNamespacesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.EventHub/namespaces",
+			NewFunc:   armeventhub.NewNamespacesClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.EventHub/namespaces",
+			Namespace: "Microsoft.EventHub",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.EventHub")`,
 		},
 	}
 	return tables

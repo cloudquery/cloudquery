@@ -13,7 +13,7 @@ func PrivateStore() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_marketplace_private_store",
 		Resolver:  fetchPrivateStore,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Marketplace"),
 		Columns: []schema.Column{
 			{
 				Name:     "properties",

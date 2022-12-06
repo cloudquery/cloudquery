@@ -13,7 +13,7 @@ func PipelineTemplateDefinition() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_devops_pipeline_template_definition",
 		Resolver:  fetchPipelineTemplateDefinition,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DevOps"),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

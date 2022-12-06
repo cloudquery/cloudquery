@@ -13,6 +13,7 @@ func Armsupport() []Table {
 			ListFunc:       (&armsupport.TicketsClient{}).NewListPager,
 			NewFunc:        armsupport.NewTicketsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Support/supportTickets",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Support")`,
 		},
 		{
 			Name:           "service",
@@ -22,6 +23,7 @@ func Armsupport() []Table {
 			ListFunc:       (&armsupport.ServicesClient{}).NewListPager,
 			NewFunc:        armsupport.NewServicesClient,
 			URL:            "/providers/Microsoft.Support/services",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Support")`,
 		},
 	}
 

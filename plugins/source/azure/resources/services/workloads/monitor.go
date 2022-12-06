@@ -13,7 +13,7 @@ func Monitor() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_workloads_monitor",
 		Resolver:  fetchMonitor,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Workloads"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

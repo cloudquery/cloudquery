@@ -13,7 +13,7 @@ func AscLocation() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_security_asc_location",
 		Resolver:  fetchAscLocation,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Security"),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

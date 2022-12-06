@@ -13,7 +13,7 @@ func PrivateLinkScope() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_hybridcompute_private_link_scope",
 		Resolver:  fetchPrivateLinkScope,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.HybridCompute"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

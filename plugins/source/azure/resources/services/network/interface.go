@@ -13,7 +13,7 @@ func Interface() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_interface",
 		Resolver:  fetchInterface,
-		Multiplex: client.SubscriptionResourceGroupMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.Network"),
 		Columns: []schema.Column{
 			{
 				Name:     "extended_location",

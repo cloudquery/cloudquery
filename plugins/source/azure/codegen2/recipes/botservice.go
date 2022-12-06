@@ -13,6 +13,7 @@ func Armbotservice() []Table {
 			ListFunc:       (&armbotservice.BotsClient{}).NewListPager,
 			NewFunc:        armbotservice.NewBotsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.BotService/botServices",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.BotService")`,
 		},
 	}
 

@@ -13,7 +13,7 @@ func DeviceService() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_windowsiot_device_service",
 		Resolver:  fetchDeviceService,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.WindowsIoT"),
 		Columns: []schema.Column{
 			{
 				Name:     "etag",

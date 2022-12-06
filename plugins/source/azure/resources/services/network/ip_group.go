@@ -13,7 +13,7 @@ func IpGroup() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_ip_group",
 		Resolver:  fetchIpGroup,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Network"),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

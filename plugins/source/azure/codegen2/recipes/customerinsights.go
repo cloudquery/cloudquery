@@ -13,6 +13,7 @@ func Armcustomerinsights() []Table {
 			ListFunc:       (&armcustomerinsights.HubsClient{}).NewListPager,
 			NewFunc:        armcustomerinsights.NewHubsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.CustomerInsights/hubs",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.CustomerInsights")`,
 		},
 	}
 

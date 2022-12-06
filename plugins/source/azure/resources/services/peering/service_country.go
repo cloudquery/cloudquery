@@ -13,7 +13,7 @@ func ServiceCountry() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_peering_service_country",
 		Resolver:  fetchServiceCountry,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Peering"),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

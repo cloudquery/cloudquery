@@ -6,9 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerinstance/
 func Armcontainerinstance() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armcontainerinstance.NewContainerGroupsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerinstance/armcontainerinstance",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/containerGroups",
+			NewFunc:   armcontainerinstance.NewContainerGroupsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerinstance/armcontainerinstance",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/containerGroups",
+			Namespace: "Microsoft.ContainerInstance",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.ContainerInstance")`,
 		},
 	}
 	return tables

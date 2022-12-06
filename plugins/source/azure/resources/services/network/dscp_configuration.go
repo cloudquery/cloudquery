@@ -13,7 +13,7 @@ func DscpConfiguration() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_dscp_configuration",
 		Resolver:  fetchDscpConfiguration,
-		Multiplex: client.SubscriptionResourceGroupMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.Network"),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

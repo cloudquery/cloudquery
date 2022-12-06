@@ -6,9 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb
 func Armmariadb() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armmariadb.NewServersClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMariaDB/servers",
+			NewFunc:   armmariadb.NewServersClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMariaDB/servers",
+			Namespace: "Microsoft.DBforMariaDB",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DBforMariaDB")`,
 		},
 	}
 	return tables

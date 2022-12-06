@@ -13,7 +13,7 @@ func IpAllocation() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_ip_allocation",
 		Resolver:  fetchIpAllocation,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Network"),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

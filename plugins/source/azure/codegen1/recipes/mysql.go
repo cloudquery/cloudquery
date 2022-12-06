@@ -6,9 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql"
 func Armmysql() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armmysql.NewServersClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/servers",
+			NewFunc:   armmysql.NewServersClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/servers",
+			Namespace: "Microsoft.DBforMySQL",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DBforMySQL")`,
 		},
 	}
 	return tables

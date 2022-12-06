@@ -13,7 +13,7 @@ func PostgresInstance() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_azurearcdata_postgres_instance",
 		Resolver:  fetchPostgresInstance,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.AzureArcData"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

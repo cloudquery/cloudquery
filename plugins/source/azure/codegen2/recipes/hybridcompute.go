@@ -13,6 +13,7 @@ func Armhybridcompute() []Table {
 			ListFunc:       (&armhybridcompute.PrivateLinkScopesClient{}).NewListPager,
 			NewFunc:        armhybridcompute.NewPrivateLinkScopesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.HybridCompute/privateLinkScopes",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.HybridCompute")`,
 		},
 	}
 

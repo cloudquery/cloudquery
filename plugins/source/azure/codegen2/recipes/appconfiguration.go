@@ -13,6 +13,7 @@ func Armappconfiguration() []Table {
 			ListFunc:       (&armappconfiguration.ConfigurationStoresClient{}).NewListPager,
 			NewFunc:        armappconfiguration.NewConfigurationStoresClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.AppConfiguration/configurationStores",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.AppConfiguration")`,
 		},
 	}
 

@@ -13,7 +13,7 @@ func Account() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_netapp_account",
 		Resolver:  fetchAccount,
-		Multiplex: client.SubscriptionResourceGroupMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.NetApp"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

@@ -13,6 +13,7 @@ func Armsubscriptions() []Table {
 			ListFunc:       (&armsubscriptions.TenantsClient{}).NewListPager,
 			NewFunc:        armsubscriptions.NewTenantsClient,
 			URL:            "/tenants",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("")`,
 		},
 	}
 

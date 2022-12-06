@@ -13,7 +13,7 @@ func PrivateLinkService() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_private_link_service",
 		Resolver:  fetchPrivateLinkService,
-		Multiplex: client.SubscriptionResourceGroupMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.Network"),
 		Columns: []schema.Column{
 			{
 				Name:     "extended_location",

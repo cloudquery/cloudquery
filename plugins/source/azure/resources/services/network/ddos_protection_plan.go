@@ -13,7 +13,7 @@ func DdosProtectionPlan() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_ddos_protection_plan",
 		Resolver:  fetchDdosProtectionPlan,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Network"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

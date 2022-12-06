@@ -13,7 +13,7 @@ func Configuration() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_maintenance_configuration",
 		Resolver:  fetchConfiguration,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.Maintenance"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",
@@ -59,11 +59,11 @@ func Configuration() *schema.Table {
 
 func fetchConfiguration(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
-	svc, err := armmaintenance.NewConfigurationsClient(cl.SubscriptionId, cl.Creds, cl.Options)
+	svc, err := armmaintenance.NewConfigurationsForResourceGroupClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

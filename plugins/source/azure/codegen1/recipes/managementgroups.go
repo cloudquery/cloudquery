@@ -6,9 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementgroups/a
 func Armmanagementgroups() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armmanagementgroups.NewEntitiesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementgroups/armmanagementgroups",
-			URL:     "/providers/Microsoft.Management/getEntities",
+			NewFunc:   armmanagementgroups.NewEntitiesClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementgroups/armmanagementgroups",
+			URL:       "/providers/Microsoft.Management/getEntities",
+			Namespace: "Microsoft.Management",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Management")`,
 		},
 	}
 	return tables

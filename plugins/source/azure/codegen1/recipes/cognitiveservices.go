@@ -6,19 +6,25 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/
 func Armcognitiveservices() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armcognitiveservices.NewDeletedAccountsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/deletedAccounts",
+			NewFunc:   armcognitiveservices.NewResourceSKUsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/skus",
+			Namespace: "Microsoft.CognitiveServices",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.CognitiveServices")`,
 		},
 		{
-			NewFunc: armcognitiveservices.NewResourceSKUsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/skus",
+			NewFunc:   armcognitiveservices.NewAccountsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/accounts",
+			Namespace: "Microsoft.CognitiveServices",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.CognitiveServices")`,
 		},
 		{
-			NewFunc: armcognitiveservices.NewAccountsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/accounts",
+			NewFunc:   armcognitiveservices.NewDeletedAccountsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/deletedAccounts",
+			Namespace: "Microsoft.CognitiveServices",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.CognitiveServices")`,
 		},
 	}
 	return tables

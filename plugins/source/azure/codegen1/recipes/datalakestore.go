@@ -6,9 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-store/arm
 func Armdatalakestore() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armdatalakestore.NewAccountsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-store/armdatalakestore",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.DataLakeStore/accounts",
+			NewFunc:   armdatalakestore.NewAccountsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-store/armdatalakestore",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.DataLakeStore/accounts",
+			Namespace: "Microsoft.DataLakeStore",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DataLakeStore")`,
 		},
 	}
 	return tables

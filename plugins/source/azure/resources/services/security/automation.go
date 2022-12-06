@@ -13,7 +13,7 @@ func Automation() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_security_automation",
 		Resolver:  fetchAutomation,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Security"),
 		Columns: []schema.Column{
 			{
 				Name:     "etag",

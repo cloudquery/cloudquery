@@ -13,6 +13,7 @@ func Armnginx() []Table {
 			ListFunc:       (&armnginx.DeploymentsClient{}).NewListPager,
 			NewFunc:        armnginx.NewDeploymentsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Nginx.NginxPlus/nginxDeployments",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Nginx.NginxPlus")`,
 		},
 	}
 

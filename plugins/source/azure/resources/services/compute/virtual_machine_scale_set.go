@@ -13,7 +13,7 @@ func VirtualMachineScaleSet() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_compute_virtual_machine_scale_set",
 		Resolver:  fetchVirtualMachineScaleSet,
-		Multiplex: client.SubscriptionResourceGroupMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.Compute"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

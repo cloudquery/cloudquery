@@ -13,7 +13,7 @@ func AgreementResource() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_datadog_agreement_resource",
 		Resolver:  fetchAgreementResource,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Datadog"),
 		Columns: []schema.Column{
 			{
 				Name:     "properties",

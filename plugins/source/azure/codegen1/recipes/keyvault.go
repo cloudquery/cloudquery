@@ -6,9 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvau
 func Armkeyvault() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armkeyvault.NewVaultsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault",
-			URL:     "/subscriptions/{subscriptionId}/resources",
+			NewFunc:   armkeyvault.NewVaultsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault",
+			URL:       "/subscriptions/{subscriptionId}/resources",
+			Namespace: "",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("")`,
 		},
 	}
 	return tables

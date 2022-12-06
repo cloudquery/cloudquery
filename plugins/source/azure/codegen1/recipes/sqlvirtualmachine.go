@@ -6,14 +6,18 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sqlvirtualmachine/
 func Armsqlvirtualmachine() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armsqlvirtualmachine.NewGroupsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sqlvirtualmachine/armsqlvirtualmachine",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups",
+			NewFunc:   armsqlvirtualmachine.NewGroupsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sqlvirtualmachine/armsqlvirtualmachine",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups",
+			Namespace: "Microsoft.SqlVirtualMachine",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.SqlVirtualMachine")`,
 		},
 		{
-			NewFunc: armsqlvirtualmachine.NewSQLVirtualMachinesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sqlvirtualmachine/armsqlvirtualmachine",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines",
+			NewFunc:   armsqlvirtualmachine.NewSQLVirtualMachinesClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sqlvirtualmachine/armsqlvirtualmachine",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines",
+			Namespace: "Microsoft.SqlVirtualMachine",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.SqlVirtualMachine")`,
 		},
 	}
 	return tables

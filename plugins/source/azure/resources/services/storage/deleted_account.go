@@ -13,7 +13,7 @@ func DeletedAccount() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_storage_deleted_account",
 		Resolver:  fetchDeletedAccount,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Storage"),
 		Columns: []schema.Column{
 			{
 				Name:     "properties",

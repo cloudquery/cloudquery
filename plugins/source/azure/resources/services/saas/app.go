@@ -13,7 +13,7 @@ func App() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_saas_app",
 		Resolver:  fetchApp,
-		Multiplex: client.SubscriptionResourceGroupMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.SaaS"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

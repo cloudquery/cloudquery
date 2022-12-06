@@ -6,9 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresqlhsc/armp
 func Armpostgresqlhsc() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armpostgresqlhsc.NewServerGroupsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresqlhsc/armpostgresqlhsc",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.DBForPostgreSql/serverGroupsv2",
+			NewFunc:   armpostgresqlhsc.NewServerGroupsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresqlhsc/armpostgresqlhsc",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.DBForPostgreSql/serverGroupsv2",
+			Namespace: "Microsoft.DBForPostgreSql",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DBForPostgreSql")`,
 		},
 	}
 	return tables

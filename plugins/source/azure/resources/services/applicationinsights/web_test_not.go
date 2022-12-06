@@ -13,7 +13,7 @@ func WebTest() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_applicationinsights_web_test",
 		Resolver:  fetchWebTest,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Insights"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

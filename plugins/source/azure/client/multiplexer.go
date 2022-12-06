@@ -14,6 +14,34 @@ func SingleSubscriptionMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
 	}
 }
 
+func SubscriptionMultiplexRegisteredNamespace(namespace string) func(schema.ClientMeta) []schema.ClientMeta {
+	return func(meta schema.ClientMeta) []schema.ClientMeta {
+		client := meta.(*Client)
+		var c = make([]schema.ClientMeta, 0)
+		for _, subId := range client.subscriptions {
+			if _, ok := client.registeredNamespace[subId][namespace]; ok {
+				c = append(c, client.withSubscription(subId))
+			}
+		}
+		return c
+	}
+}
+
+func SubscriptionResourceGroupMultiplexRegisteredNamespace(namespace string) func(schema.ClientMeta) []schema.ClientMeta {
+	return func(meta schema.ClientMeta) []schema.ClientMeta {
+		client := meta.(*Client)
+		var c = make([]schema.ClientMeta, 0)
+		for _, subId := range client.subscriptions {
+			for _, rg := range client.resourceGroups[subId] {
+				if _, ok := client.registeredNamespace[subId][namespace]; ok {
+					c = append(c, client.withSubscription(subId).withResourceGroup(*rg.Name))
+				}
+			}
+		}
+		return c
+	}
+}
+
 func SubscriptionMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
 	client := meta.(*Client)
 	var c = make([]schema.ClientMeta, len(client.subscriptions))

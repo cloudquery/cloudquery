@@ -6,14 +6,18 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/portal/armportal"
 func Armportal() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armportal.NewListTenantConfigurationViolationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/portal/armportal",
-			URL:     "/providers/Microsoft.Portal/listTenantConfigurationViolations",
+			NewFunc:   armportal.NewListTenantConfigurationViolationsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/portal/armportal",
+			URL:       "/providers/Microsoft.Portal/listTenantConfigurationViolations",
+			Namespace: "Microsoft.Portal",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Portal")`,
 		},
 		{
-			NewFunc: armportal.NewTenantConfigurationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/portal/armportal",
-			URL:     "/providers/Microsoft.Portal/tenantConfigurations",
+			NewFunc:   armportal.NewTenantConfigurationsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/portal/armportal",
+			URL:       "/providers/Microsoft.Portal/tenantConfigurations",
+			Namespace: "Microsoft.Portal",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Portal")`,
 		},
 	}
 	return tables

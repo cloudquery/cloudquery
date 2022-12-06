@@ -6,9 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dashboard/armdashb
 func Armdashboard() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armdashboard.NewGrafanaClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dashboard/armdashboard",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Dashboard/grafana",
+			NewFunc:   armdashboard.NewGrafanaClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dashboard/armdashboard",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Dashboard/grafana",
+			Namespace: "Microsoft.Dashboard",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Dashboard")`,
 		},
 	}
 	return tables

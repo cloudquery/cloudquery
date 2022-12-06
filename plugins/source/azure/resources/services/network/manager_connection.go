@@ -13,7 +13,7 @@ func ManagerConnection() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_manager_connection",
 		Resolver:  fetchManagerConnection,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Network"),
 		Columns: []schema.Column{
 			{
 				Name:     "properties",

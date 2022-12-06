@@ -6,9 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/testbase/armtestba
 func Armtestbase() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armtestbase.NewSKUsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/testbase/armtestbase",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.TestBase/skus",
+			NewFunc:   armtestbase.NewSKUsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/testbase/armtestbase",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.TestBase/skus",
+			Namespace: "Microsoft.TestBase",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.TestBase")`,
 		},
 	}
 	return tables

@@ -13,7 +13,7 @@ func ServerGroup() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_postgresqlhsc_server_group",
 		Resolver:  fetchServerGroup,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DBForPostgreSql"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

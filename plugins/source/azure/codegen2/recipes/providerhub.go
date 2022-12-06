@@ -13,6 +13,7 @@ func Armproviderhub() []Table {
 			ListFunc:       (&armproviderhub.ProviderRegistrationsClient{}).NewListPager,
 			NewFunc:        armproviderhub.NewProviderRegistrationsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.ProviderHub")`,
 		},
 	}
 

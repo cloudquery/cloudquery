@@ -13,6 +13,7 @@ func Armsqlvirtualmachine() []Table {
 			ListFunc:       (&armsqlvirtualmachine.GroupsClient{}).NewListPager,
 			NewFunc:        armsqlvirtualmachine.NewGroupsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.SqlVirtualMachine")`,
 		},
 		{
 			Name:           "sql_virtual_machine",
@@ -22,6 +23,7 @@ func Armsqlvirtualmachine() []Table {
 			ListFunc:       (&armsqlvirtualmachine.SQLVirtualMachinesClient{}).NewListPager,
 			NewFunc:        armsqlvirtualmachine.NewSQLVirtualMachinesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.SqlVirtualMachine")`,
 		},
 	}
 

@@ -13,6 +13,7 @@ func Armwindowsiot() []Table {
 			ListFunc:       (&armwindowsiot.ServicesClient{}).NewListPager,
 			NewFunc:        armwindowsiot.NewServicesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.WindowsIoT/deviceServices",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.WindowsIoT")`,
 		},
 	}
 

@@ -6,9 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devhub/armdevhub"
 func Armdevhub() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armdevhub.NewWorkflowClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devhub/armdevhub",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.DevHub/workflows",
+			NewFunc:   armdevhub.NewWorkflowClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devhub/armdevhub",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.DevHub/workflows",
+			Namespace: "Microsoft.DevHub",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DevHub")`,
 		},
 	}
 	return tables

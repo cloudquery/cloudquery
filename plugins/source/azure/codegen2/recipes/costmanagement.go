@@ -13,6 +13,7 @@ func Armcostmanagement() []Table {
 			ListFunc:       (&armcostmanagement.ViewsClient{}).NewListPager,
 			NewFunc:        armcostmanagement.NewViewsClient,
 			URL:            "/providers/Microsoft.CostManagement/views",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.CostManagement")`,
 		},
 	}
 

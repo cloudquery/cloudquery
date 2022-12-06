@@ -13,6 +13,7 @@ func Armdesktopvirtualization() []Table {
 			ListFunc:       (&armdesktopvirtualization.HostPoolsClient{}).NewListPager,
 			NewFunc:        armdesktopvirtualization.NewHostPoolsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DesktopVirtualization/hostPools",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DesktopVirtualization")`,
 		},
 	}
 

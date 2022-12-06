@@ -13,7 +13,7 @@ func SecureScoreItem() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_security_secure_score_item",
 		Resolver:  fetchSecureScoreItem,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Security"),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

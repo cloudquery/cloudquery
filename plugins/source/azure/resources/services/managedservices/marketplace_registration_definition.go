@@ -13,7 +13,7 @@ func MarketplaceRegistrationDefinition() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_managedservices_marketplace_registration_definition",
 		Resolver:  fetchMarketplaceRegistrationDefinition,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.ManagedServices"),
 		Columns: []schema.Column{
 			{
 				Name:     "plan",

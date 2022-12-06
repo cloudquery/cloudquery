@@ -13,7 +13,7 @@ func Site() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_appservice_site",
 		Resolver:  fetchSite,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Web"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

@@ -13,7 +13,7 @@ func Provider() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_resources_provider",
 		Resolver:  fetchProvider,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(""),
 		Columns: []schema.Column{
 			{
 				Name:     "namespace",

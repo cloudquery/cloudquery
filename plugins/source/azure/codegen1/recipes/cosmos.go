@@ -6,19 +6,25 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
 func Armcosmos() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armcosmos.NewDatabaseAccountsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/databaseAccounts",
+			NewFunc:   armcosmos.NewLocationsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations",
+			Namespace: "Microsoft.DocumentDB",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DocumentDB")`,
 		},
 		{
-			NewFunc: armcosmos.NewLocationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations",
+			NewFunc:   armcosmos.NewDatabaseAccountsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/databaseAccounts",
+			Namespace: "Microsoft.DocumentDB",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DocumentDB")`,
 		},
 		{
-			NewFunc: armcosmos.NewRestorableDatabaseAccountsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/restorableDatabaseAccounts",
+			NewFunc:   armcosmos.NewRestorableDatabaseAccountsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/restorableDatabaseAccounts",
+			Namespace: "Microsoft.DocumentDB",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DocumentDB")`,
 		},
 	}
 	return tables

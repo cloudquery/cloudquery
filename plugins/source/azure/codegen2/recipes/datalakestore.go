@@ -13,6 +13,7 @@ func Armdatalakestore() []Table {
 			ListFunc:       (&armdatalakestore.AccountsClient{}).NewListPager,
 			NewFunc:        armdatalakestore.NewAccountsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DataLakeStore/accounts",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DataLakeStore")`,
 		},
 	}
 

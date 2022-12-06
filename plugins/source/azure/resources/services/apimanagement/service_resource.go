@@ -13,7 +13,7 @@ func ServiceResource() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_apimanagement_service_resource",
 		Resolver:  fetchServiceResource,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.ApiManagement"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

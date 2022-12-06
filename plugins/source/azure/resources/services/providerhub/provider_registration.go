@@ -13,7 +13,7 @@ func ProviderRegistration() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_providerhub_provider_registration",
 		Resolver:  fetchProviderRegistration,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.ProviderHub"),
 		Columns: []schema.Column{
 			{
 				Name:     "properties",

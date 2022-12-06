@@ -13,6 +13,7 @@ func Armmigrate() []Table {
 			ListFunc:       (&armmigrate.ProjectsClient{}).NewListPager,
 			NewFunc:        armmigrate.NewProjectsClient,
 			URL:            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Migrate/assessmentProjects",
+			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.Migrate")`,
 		},
 	}
 

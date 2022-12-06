@@ -13,7 +13,7 @@ func DeletedSite() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_appservice_deleted_site",
 		Resolver:  fetchDeletedSite,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Web"),
 		Columns: []schema.Column{
 			{
 				Name:     "kind",

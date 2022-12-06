@@ -13,7 +13,7 @@ func EntityInfo() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_managementgroups_entity_info",
 		Resolver:  fetchEntityInfo,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Management"),
 		Columns: []schema.Column{
 			{
 				Name:     "properties",

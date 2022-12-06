@@ -13,6 +13,7 @@ func Armnotificationhubs() []Table {
 			ListFunc:       (&armnotificationhubs.NamespacesClient{}).NewListPager,
 			NewFunc:        armnotificationhubs.NewNamespacesClient,
 			URL:            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces",
+			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.NotificationHubs")`,
 		},
 	}
 

@@ -13,7 +13,7 @@ func Cluster() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_hdinsight_cluster",
 		Resolver:  fetchCluster,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.HDInsight"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

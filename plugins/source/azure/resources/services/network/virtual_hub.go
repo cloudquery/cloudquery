@@ -13,7 +13,7 @@ func VirtualHub() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_virtual_hub",
 		Resolver:  fetchVirtualHub,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Network"),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

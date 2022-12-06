@@ -13,7 +13,7 @@ func View() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_costmanagement_view",
 		Resolver:  fetchView,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.CostManagement"),
 		Columns: []schema.Column{
 			{
 				Name:     "e_tag",

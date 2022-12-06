@@ -13,7 +13,7 @@ func Subscription() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_subscription_subscription",
 		Resolver:  fetchSubscription,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(""),
 		Columns: []schema.Column{
 			{
 				Name:     "authorization_source",

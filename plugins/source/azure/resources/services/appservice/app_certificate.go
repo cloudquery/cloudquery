@@ -13,7 +13,7 @@ func AppCertificate() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_appservice_app_certificate",
 		Resolver:  fetchAppCertificate,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Web"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

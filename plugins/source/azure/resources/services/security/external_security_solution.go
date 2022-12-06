@@ -13,7 +13,7 @@ func ExternalSecuritySolution() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_security_external_security_solution",
 		Resolver:  fetchExternalSecuritySolution,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Security"),
 		Columns: []schema.Column{
 			{
 				Name:     "kind",

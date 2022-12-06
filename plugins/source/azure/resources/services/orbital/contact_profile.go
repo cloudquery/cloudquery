@@ -13,7 +13,7 @@ func ContactProfile() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_orbital_contact_profile",
 		Resolver:  fetchContactProfile,
-		Multiplex: client.SubscriptionResourceGroupMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.Orbital"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

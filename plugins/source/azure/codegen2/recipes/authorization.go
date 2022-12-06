@@ -13,6 +13,7 @@ func Armauthorization() []Table {
 			ListFunc:       (&armauthorization.RoleAssignmentsClient{}).NewListPager,
 			NewFunc:        armauthorization.NewRoleAssignmentsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/roleAssignments",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Authorization")`,
 		},
 		{
 			Name:           "provider_operations_metadata",
@@ -22,6 +23,7 @@ func Armauthorization() []Table {
 			ListFunc:       (&armauthorization.ProviderOperationsMetadataClient{}).NewListPager,
 			NewFunc:        armauthorization.NewProviderOperationsMetadataClient,
 			URL:            "/providers/Microsoft.Authorization/providerOperations",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Authorization")`,
 		},
 		{
 			Name:           "classic_administrator",
@@ -31,6 +33,7 @@ func Armauthorization() []Table {
 			ListFunc:       (&armauthorization.ClassicAdministratorsClient{}).NewListPager,
 			NewFunc:        armauthorization.NewClassicAdministratorsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/classicAdministrators",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Authorization")`,
 		},
 	}
 

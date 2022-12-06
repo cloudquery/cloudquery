@@ -6,14 +6,18 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/a
 func Armcontainerservice() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armcontainerservice.NewManagedClustersClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/managedClusters",
+			NewFunc:   armcontainerservice.NewSnapshotsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/snapshots",
+			Namespace: "Microsoft.ContainerService",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.ContainerService")`,
 		},
 		{
-			NewFunc: armcontainerservice.NewSnapshotsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/snapshots",
+			NewFunc:   armcontainerservice.NewManagedClustersClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/managedClusters",
+			Namespace: "Microsoft.ContainerService",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.ContainerService")`,
 		},
 	}
 	return tables

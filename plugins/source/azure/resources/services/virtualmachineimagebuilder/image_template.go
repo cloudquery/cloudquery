@@ -13,7 +13,7 @@ func ImageTemplate() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_virtualmachineimagebuilder_image_template",
 		Resolver:  fetchImageTemplate,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.VirtualMachineImages"),
 		Columns: []schema.Column{
 			{
 				Name:     "identity",

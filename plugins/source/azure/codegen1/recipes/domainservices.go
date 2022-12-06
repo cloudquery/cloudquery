@@ -6,14 +6,18 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/domainservices/arm
 func Armdomainservices() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armdomainservices.NewDomainServiceOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/domainservices/armdomainservices",
-			URL:     "/providers/Microsoft.AAD/operations",
+			NewFunc:   armdomainservices.NewOuContainerOperationsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/domainservices/armdomainservices",
+			URL:       "/providers/Microsoft.Aad/operations",
+			Namespace: "Microsoft.Aad",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Aad")`,
 		},
 		{
-			NewFunc: armdomainservices.NewOuContainerOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/domainservices/armdomainservices",
-			URL:     "/providers/Microsoft.Aad/operations",
+			NewFunc:   armdomainservices.NewDomainServiceOperationsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/domainservices/armdomainservices",
+			URL:       "/providers/Microsoft.AAD/operations",
+			Namespace: "Microsoft.AAD",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.AAD")`,
 		},
 	}
 	return tables

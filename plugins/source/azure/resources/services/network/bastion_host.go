@@ -13,7 +13,7 @@ func BastionHost() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_bastion_host",
 		Resolver:  fetchBastionHost,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Network"),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

@@ -13,7 +13,7 @@ func OpenShiftCluster() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_redhatopenshift_open_shift_cluster",
 		Resolver:  fetchOpenShiftCluster,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.RedHatOpenShift"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

@@ -13,6 +13,7 @@ func Armcontainerregistry() []Table {
 			ListFunc:       (&armcontainerregistry.RegistriesClient{}).NewListPager,
 			NewFunc:        armcontainerregistry.NewRegistriesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerRegistry/registries",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.ContainerRegistry")`,
 		},
 	}
 

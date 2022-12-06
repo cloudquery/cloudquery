@@ -13,6 +13,7 @@ func Armautomation() []Table {
 			ListFunc:       (&armautomation.AccountClient{}).NewListPager,
 			NewFunc:        armautomation.NewAccountClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Automation/automationAccounts",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Automation")`,
 		},
 	}
 

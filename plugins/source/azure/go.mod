@@ -124,6 +124,8 @@ require (
 	golang.org/x/mod v0.6.0
 )
 
+replace github.com/cloudquery/plugin-sdk => ../../../../plugin-sdk-split
+
 require github.com/kylelemons/godebug v1.1.0 // indirect
 
 require (

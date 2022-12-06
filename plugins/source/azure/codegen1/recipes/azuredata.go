@@ -6,9 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azuredata/armazure
 func Armazuredata() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armazuredata.NewSQLServerRegistrationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azuredata/armazuredata",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.AzureData/sqlServerRegistrations",
+			NewFunc:   armazuredata.NewSQLServerRegistrationsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azuredata/armazuredata",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.AzureData/sqlServerRegistrations",
+			Namespace: "Microsoft.AzureData",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.AzureData")`,
 		},
 	}
 	return tables

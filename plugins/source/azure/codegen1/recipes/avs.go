@@ -6,9 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs"
 func Armavs() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armavs.NewPrivateCloudsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs",
-			URL:     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds",
+			NewFunc:   armavs.NewPrivateCloudsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs",
+			URL:       "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds",
+			Namespace: "Microsoft.AVS",
+			Multiplex: `client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.AVS")`,
 		},
 	}
 	return tables

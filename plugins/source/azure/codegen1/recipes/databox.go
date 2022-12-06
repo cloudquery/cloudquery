@@ -6,9 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox
 func Armdatabox() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armdatabox.NewJobsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.DataBox/jobs",
+			NewFunc:   armdatabox.NewJobsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.DataBox/jobs",
+			Namespace: "Microsoft.DataBox",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DataBox")`,
 		},
 	}
 	return tables

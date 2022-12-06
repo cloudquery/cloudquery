@@ -13,7 +13,7 @@ func PrivateLinkPolicy() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_aad_private_link_policy",
 		Resolver:  fetchPrivateLinkPolicy,
-		Multiplex: client.SubscriptionResourceGroupMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplexRegisteredNamespace("microsoft.aadiam"),
 		Columns: []schema.Column{
 			{
 				Name:     "all_tenants",

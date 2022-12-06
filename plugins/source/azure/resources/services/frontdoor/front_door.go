@@ -13,7 +13,7 @@ func FrontDoor() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_frontdoor_front_door",
 		Resolver:  fetchFrontDoor,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Network"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

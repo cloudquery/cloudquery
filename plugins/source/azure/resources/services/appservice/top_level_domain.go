@@ -13,7 +13,7 @@ func TopLevelDomain() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_appservice_top_level_domain",
 		Resolver:  fetchTopLevelDomain,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DomainRegistration"),
 		Columns: []schema.Column{
 			{
 				Name:     "kind",

@@ -13,6 +13,7 @@ func Armredhatopenshift() []Table {
 			ListFunc:       (&armredhatopenshift.OpenShiftClustersClient{}).NewListPager,
 			NewFunc:        armredhatopenshift.NewOpenShiftClustersClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.RedHatOpenShift/openShiftClusters",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.RedHatOpenShift")`,
 		},
 	}
 

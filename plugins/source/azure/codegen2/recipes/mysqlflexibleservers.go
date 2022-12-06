@@ -13,6 +13,7 @@ func Armmysqlflexibleservers() []Table {
 			ListFunc:       (&armmysqlflexibleservers.ServersClient{}).NewListPager,
 			NewFunc:        armmysqlflexibleservers.NewServersClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/flexibleServers",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DBforMySQL")`,
 		},
 	}
 

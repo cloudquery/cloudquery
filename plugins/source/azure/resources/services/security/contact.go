@@ -13,7 +13,7 @@ func Contact() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_security_contact",
 		Resolver:  fetchContact,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Security"),
 		Columns: []schema.Column{
 			{
 				Name:     "properties",

@@ -6,9 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appconfiguration/a
 func Armappconfiguration() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armappconfiguration.NewConfigurationStoresClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appconfiguration/armappconfiguration",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.AppConfiguration/configurationStores",
+			NewFunc:   armappconfiguration.NewConfigurationStoresClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appconfiguration/armappconfiguration",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.AppConfiguration/configurationStores",
+			Namespace: "Microsoft.AppConfiguration",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.AppConfiguration")`,
 		},
 	}
 	return tables

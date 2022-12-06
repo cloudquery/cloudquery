@@ -6,9 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdins
 func Armhdinsight() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armhdinsight.NewClustersClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsight",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.HDInsight/clusters",
+			NewFunc:   armhdinsight.NewClustersClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsight",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.HDInsight/clusters",
+			Namespace: "Microsoft.HDInsight",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.HDInsight")`,
 		},
 	}
 	return tables

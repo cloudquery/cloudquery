@@ -54,7 +54,7 @@ type Table struct {
 	// imports to add for this resource
 	// Imports []string
 	// Multiplex
-	Multiplex *string
+	Multiplex string
 	// ChildTable
 	ChildTable bool
 	// FakerFieldsToIgnore is a list of fields to ignore when generating faker data

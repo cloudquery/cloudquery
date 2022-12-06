@@ -6,14 +6,18 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/orbital/armorbital
 func Armorbital() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armorbital.NewContactProfilesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/orbital/armorbital",
-			URL:     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/contactProfiles",
+			NewFunc:   armorbital.NewContactProfilesClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/orbital/armorbital",
+			URL:       "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/contactProfiles",
+			Namespace: "Microsoft.Orbital",
+			Multiplex: `client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.Orbital")`,
 		},
 		{
-			NewFunc: armorbital.NewSpacecraftsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/orbital/armorbital",
-			URL:     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/spacecrafts",
+			NewFunc:   armorbital.NewSpacecraftsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/orbital/armorbital",
+			URL:       "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/spacecrafts",
+			Namespace: "Microsoft.Orbital",
+			Multiplex: `client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.Orbital")`,
 		},
 	}
 	return tables

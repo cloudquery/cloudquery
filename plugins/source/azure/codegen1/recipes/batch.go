@@ -6,9 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch"
 func Armbatch() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armbatch.NewAccountClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Batch/batchAccounts",
+			NewFunc:   armbatch.NewAccountClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Batch/batchAccounts",
+			Namespace: "Microsoft.Batch",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Batch")`,
 		},
 	}
 	return tables

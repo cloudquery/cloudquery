@@ -13,7 +13,7 @@ func Cluster() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_operationalinsights_cluster",
 		Resolver:  fetchCluster,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.OperationalInsights"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

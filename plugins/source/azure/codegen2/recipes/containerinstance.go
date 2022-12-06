@@ -13,6 +13,7 @@ func Armcontainerinstance() []Table {
 			ListFunc:       (&armcontainerinstance.ContainerGroupsClient{}).NewListPager,
 			NewFunc:        armcontainerinstance.NewContainerGroupsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/containerGroups",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.ContainerInstance")`,
 		},
 	}
 

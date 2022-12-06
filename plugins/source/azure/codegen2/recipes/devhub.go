@@ -13,6 +13,7 @@ func Armdevhub() []Table {
 			ListFunc:       (&armdevhub.WorkflowClient{}).NewListPager,
 			NewFunc:        armdevhub.NewWorkflowClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DevHub/workflows",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DevHub")`,
 		},
 	}
 

@@ -13,7 +13,7 @@ func ManagedGrafana() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_dashboard_managed_grafana",
 		Resolver:  fetchManagedGrafana,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Dashboard"),
 		Columns: []schema.Column{
 			{
 				Name:     "identity",

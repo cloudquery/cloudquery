@@ -6,15 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling
 func Armbilling() []Table {
 	tables := []Table{
 		{
-			Name:           "account",
-			Struct:         &armbilling.Account{},
-			ResponseStruct: &armbilling.AccountsClientListResponse{},
-			Client:         &armbilling.AccountsClient{},
-			ListFunc:       (&armbilling.AccountsClient{}).NewListPager,
-			NewFunc:        armbilling.NewAccountsClient,
-			URL:            "/providers/Microsoft.Billing/billingAccounts",
-		},
-		{
 			Name:           "period",
 			Struct:         &armbilling.Period{},
 			ResponseStruct: &armbilling.PeriodsClientListResponse{},
@@ -22,6 +13,7 @@ func Armbilling() []Table {
 			ListFunc:       (&armbilling.PeriodsClient{}).NewListPager,
 			NewFunc:        armbilling.NewPeriodsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Billing/billingPeriods",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Billing")`,
 		},
 		{
 			Name:           "enrollment_account_summary",
@@ -31,6 +23,17 @@ func Armbilling() []Table {
 			ListFunc:       (&armbilling.EnrollmentAccountsClient{}).NewListPager,
 			NewFunc:        armbilling.NewEnrollmentAccountsClient,
 			URL:            "/providers/Microsoft.Billing/enrollmentAccounts",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Billing")`,
+		},
+		{
+			Name:           "account",
+			Struct:         &armbilling.Account{},
+			ResponseStruct: &armbilling.AccountsClientListResponse{},
+			Client:         &armbilling.AccountsClient{},
+			ListFunc:       (&armbilling.AccountsClient{}).NewListPager,
+			NewFunc:        armbilling.NewAccountsClient,
+			URL:            "/providers/Microsoft.Billing/billingAccounts",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Billing")`,
 		},
 	}
 

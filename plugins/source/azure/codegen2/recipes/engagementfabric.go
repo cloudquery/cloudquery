@@ -13,6 +13,7 @@ func Armengagementfabric() []Table {
 			ListFunc:       (&armengagementfabric.AccountsClient{}).NewListPager,
 			NewFunc:        armengagementfabric.NewAccountsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.EngagementFabric/Accounts",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.EngagementFabric")`,
 		},
 	}
 

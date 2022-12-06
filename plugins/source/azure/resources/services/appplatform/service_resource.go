@@ -13,7 +13,7 @@ func ServiceResource() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_appplatform_service_resource",
 		Resolver:  fetchServiceResource,
-		Multiplex: client.SubscriptionResourceGroupMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.AppPlatform"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

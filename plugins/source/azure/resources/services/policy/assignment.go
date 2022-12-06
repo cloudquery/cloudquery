@@ -13,7 +13,7 @@ func Assignment() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_policy_assignment",
 		Resolver:  fetchAssignment,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Authorization"),
 		Columns: []schema.Column{
 			{
 				Name:     "identity",

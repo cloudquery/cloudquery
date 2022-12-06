@@ -13,7 +13,7 @@ func ResourceGroup() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_resources_resource_group",
 		Resolver:  fetchResourceGroup,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(""),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

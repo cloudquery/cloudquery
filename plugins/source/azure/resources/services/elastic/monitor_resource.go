@@ -13,7 +13,7 @@ func MonitorResource() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_elastic_monitor_resource",
 		Resolver:  fetchMonitorResource,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Elastic"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

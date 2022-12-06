@@ -6,9 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp"
 func Armnetapp() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armnetapp.NewAccountsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp",
-			URL:     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts",
+			NewFunc:   armnetapp.NewAccountsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp",
+			URL:       "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts",
+			Namespace: "Microsoft.NetApp",
+			Multiplex: `client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.NetApp")`,
 		},
 	}
 	return tables

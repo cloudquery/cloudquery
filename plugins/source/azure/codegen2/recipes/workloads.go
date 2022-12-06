@@ -13,6 +13,7 @@ func Armworkloads() []Table {
 			ListFunc:       (&armworkloads.MonitorsClient{}).NewListPager,
 			NewFunc:        armworkloads.NewMonitorsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Workloads/monitors",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Workloads")`,
 		},
 	}
 

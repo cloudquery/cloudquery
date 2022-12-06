@@ -13,7 +13,7 @@ func IngestionSetting() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_security_ingestion_setting",
 		Resolver:  fetchIngestionSetting,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Security"),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

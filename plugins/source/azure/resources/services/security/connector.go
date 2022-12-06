@@ -13,7 +13,7 @@ func Connector() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_security_connector",
 		Resolver:  fetchConnector,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Security"),
 		Columns: []schema.Column{
 			{
 				Name:     "etag",

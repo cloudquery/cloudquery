@@ -6,15 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse
 func Armsynapse() []Table {
 	tables := []Table{
 		{
-			Name:           "private_link_hub",
-			Struct:         &armsynapse.PrivateLinkHub{},
-			ResponseStruct: &armsynapse.PrivateLinkHubsClientListResponse{},
-			Client:         &armsynapse.PrivateLinkHubsClient{},
-			ListFunc:       (&armsynapse.PrivateLinkHubsClient{}).NewListPager,
-			NewFunc:        armsynapse.NewPrivateLinkHubsClient,
-			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Synapse/privateLinkHubs",
-		},
-		{
 			Name:           "workspace",
 			Struct:         &armsynapse.Workspace{},
 			ResponseStruct: &armsynapse.WorkspacesClientListResponse{},
@@ -22,6 +13,17 @@ func Armsynapse() []Table {
 			ListFunc:       (&armsynapse.WorkspacesClient{}).NewListPager,
 			NewFunc:        armsynapse.NewWorkspacesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Synapse/workspaces",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Synapse")`,
+		},
+		{
+			Name:           "private_link_hub",
+			Struct:         &armsynapse.PrivateLinkHub{},
+			ResponseStruct: &armsynapse.PrivateLinkHubsClientListResponse{},
+			Client:         &armsynapse.PrivateLinkHubsClient{},
+			ListFunc:       (&armsynapse.PrivateLinkHubsClient{}).NewListPager,
+			NewFunc:        armsynapse.NewPrivateLinkHubsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Synapse/privateLinkHubs",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Synapse")`,
 		},
 	}
 

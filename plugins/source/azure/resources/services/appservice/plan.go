@@ -13,7 +13,7 @@ func Plan() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_appservice_plan",
 		Resolver:  fetchPlan,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Web"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

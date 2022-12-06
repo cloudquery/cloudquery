@@ -13,6 +13,7 @@ func Armportal() []Table {
 			ListFunc:       (&armportal.ListTenantConfigurationViolationsClient{}).NewListPager,
 			NewFunc:        armportal.NewListTenantConfigurationViolationsClient,
 			URL:            "/providers/Microsoft.Portal/listTenantConfigurationViolations",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Portal")`,
 		},
 		{
 			Name:           "configuration",
@@ -22,6 +23,7 @@ func Armportal() []Table {
 			ListFunc:       (&armportal.TenantConfigurationsClient{}).NewListPager,
 			NewFunc:        armportal.NewTenantConfigurationsClient,
 			URL:            "/providers/Microsoft.Portal/tenantConfigurations",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Portal")`,
 		},
 	}
 

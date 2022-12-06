@@ -13,7 +13,7 @@ func JobResource() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_databox_job_resource",
 		Resolver:  fetchJobResource,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DataBox"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

@@ -13,6 +13,7 @@ func Armelastic() []Table {
 			ListFunc:       (&armelastic.MonitorsClient{}).NewListPager,
 			NewFunc:        armelastic.NewMonitorsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Elastic/monitors",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Elastic")`,
 		},
 	}
 

@@ -6,6 +6,16 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armaz
 func Armazurearcdata() []Table {
 	tables := []Table{
 		{
+			Name:           "postgres_instance",
+			Struct:         &armazurearcdata.PostgresInstance{},
+			ResponseStruct: &armazurearcdata.PostgresInstancesClientListResponse{},
+			Client:         &armazurearcdata.PostgresInstancesClient{},
+			ListFunc:       (&armazurearcdata.PostgresInstancesClient{}).NewListPager,
+			NewFunc:        armazurearcdata.NewPostgresInstancesClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/postgresInstances",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.AzureArcData")`,
+		},
+		{
 			Name:           "sql_managed_instance",
 			Struct:         &armazurearcdata.SQLManagedInstance{},
 			ResponseStruct: &armazurearcdata.SQLManagedInstancesClientListResponse{},
@@ -13,6 +23,7 @@ func Armazurearcdata() []Table {
 			ListFunc:       (&armazurearcdata.SQLManagedInstancesClient{}).NewListPager,
 			NewFunc:        armazurearcdata.NewSQLManagedInstancesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/sqlManagedInstances",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.AzureArcData")`,
 		},
 		{
 			Name:           "sql_server_instance",
@@ -22,15 +33,7 @@ func Armazurearcdata() []Table {
 			ListFunc:       (&armazurearcdata.SQLServerInstancesClient{}).NewListPager,
 			NewFunc:        armazurearcdata.NewSQLServerInstancesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/sqlServerInstances",
-		},
-		{
-			Name:           "postgres_instance",
-			Struct:         &armazurearcdata.PostgresInstance{},
-			ResponseStruct: &armazurearcdata.PostgresInstancesClientListResponse{},
-			Client:         &armazurearcdata.PostgresInstancesClient{},
-			ListFunc:       (&armazurearcdata.PostgresInstancesClient{}).NewListPager,
-			NewFunc:        armazurearcdata.NewPostgresInstancesClient,
-			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/postgresInstances",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.AzureArcData")`,
 		},
 	}
 

@@ -13,7 +13,7 @@ func Service() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_datamigration_service",
 		Resolver:  fetchService,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DataMigration"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

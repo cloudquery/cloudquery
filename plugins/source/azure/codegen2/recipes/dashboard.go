@@ -13,6 +13,7 @@ func Armdashboard() []Table {
 			ListFunc:       (&armdashboard.GrafanaClient{}).NewListPager,
 			NewFunc:        armdashboard.NewGrafanaClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Dashboard/grafana",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Dashboard")`,
 		},
 	}
 

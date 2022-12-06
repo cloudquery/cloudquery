@@ -13,7 +13,7 @@ func RestorableDatabaseAccountGetResult() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_cosmos_restorable_database_account_get_result",
 		Resolver:  fetchRestorableDatabaseAccountGetResult,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DocumentDB"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

@@ -13,7 +13,7 @@ func Account() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_billing_account",
 		Resolver:  fetchAccount,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Billing"),
 		Columns: []schema.Column{
 			{
 				Name:     "properties",

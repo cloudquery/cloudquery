@@ -13,7 +13,7 @@ func VpnGateway() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_vpn_gateway",
 		Resolver:  fetchVpnGateway,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Network"),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

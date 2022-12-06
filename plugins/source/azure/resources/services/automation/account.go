@@ -13,7 +13,7 @@ func Account() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_automation_account",
 		Resolver:  fetchAccount,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Automation"),
 		Columns: []schema.Column{
 			{
 				Name:     "etag",

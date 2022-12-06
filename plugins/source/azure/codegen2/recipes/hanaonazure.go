@@ -13,6 +13,7 @@ func Armhanaonazure() []Table {
 			ListFunc:       (&armhanaonazure.SapMonitorsClient{}).NewListPager,
 			NewFunc:        armhanaonazure.NewSapMonitorsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.HanaOnAzure/sapMonitors",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.HanaOnAzure")`,
 		},
 	}
 

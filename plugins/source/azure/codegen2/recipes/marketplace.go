@@ -13,6 +13,7 @@ func Armmarketplace() []Table {
 			ListFunc:       (&armmarketplace.PrivateStoreClient{}).NewListPager,
 			NewFunc:        armmarketplace.NewPrivateStoreClient,
 			URL:            "/providers/Microsoft.Marketplace/privateStores",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Marketplace")`,
 		},
 	}
 

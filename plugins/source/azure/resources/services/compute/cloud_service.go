@@ -13,7 +13,7 @@ func CloudService() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_compute_cloud_service",
 		Resolver:  fetchCloudService,
-		Multiplex: client.SubscriptionResourceGroupMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.Compute"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

@@ -13,6 +13,7 @@ func Armanalysisservices() []Table {
 			ListFunc:       (&armanalysisservices.ServersClient{}).NewListPager,
 			NewFunc:        armanalysisservices.NewServersClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.AnalysisServices/servers",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.AnalysisServices")`,
 		},
 	}
 

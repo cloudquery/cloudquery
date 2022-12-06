@@ -13,7 +13,7 @@ func Account() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_cognitiveservices_account",
 		Resolver:  fetchAccount,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.CognitiveServices"),
 		Columns: []schema.Column{
 			{
 				Name:     "identity",
@@ -79,7 +79,7 @@ func Account() *schema.Table {
 
 func fetchAccount(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
-	svc, err := armcognitiveservices.NewAccountsClient(cl.SubscriptionId, cl.Creds, cl.Options)
+	svc, err := armcognitiveservices.NewDeletedAccountsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {
 		return err
 	}

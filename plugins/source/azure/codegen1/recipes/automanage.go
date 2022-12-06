@@ -6,9 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automanage/armauto
 func Armautomanage() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armautomanage.NewConfigurationProfileAssignmentsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automanage/armautomanage",
-			URL:     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automanage/configurationProfileAssignments",
+			NewFunc:   armautomanage.NewConfigurationProfileAssignmentsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automanage/armautomanage",
+			URL:       "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automanage/configurationProfileAssignments",
+			Namespace: "Microsoft.Automanage",
+			Multiplex: `client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.Automanage")`,
 		},
 	}
 	return tables

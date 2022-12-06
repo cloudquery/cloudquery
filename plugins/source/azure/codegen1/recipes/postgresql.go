@@ -6,9 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpost
 func Armpostgresql() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armpostgresql.NewServersClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/servers",
+			NewFunc:   armpostgresql.NewServersClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/servers",
+			Namespace: "Microsoft.DBforPostgreSQL",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DBforPostgreSQL")`,
 		},
 	}
 	return tables

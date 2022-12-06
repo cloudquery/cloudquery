@@ -6,9 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthcareapis/arm
 func Armhealthcareapis() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armhealthcareapis.NewServicesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthcareapis/armhealthcareapis",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.HealthcareApis/services",
+			NewFunc:   armhealthcareapis.NewServicesClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthcareapis/armhealthcareapis",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.HealthcareApis/services",
+			Namespace: "Microsoft.HealthcareApis",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.HealthcareApis")`,
 		},
 	}
 	return tables

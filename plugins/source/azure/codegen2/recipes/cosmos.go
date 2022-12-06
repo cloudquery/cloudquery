@@ -6,15 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
 func Armcosmos() []Table {
 	tables := []Table{
 		{
-			Name:           "database_account_get_results",
-			Struct:         &armcosmos.DatabaseAccountGetResults{},
-			ResponseStruct: &armcosmos.DatabaseAccountsClientListResponse{},
-			Client:         &armcosmos.DatabaseAccountsClient{},
-			ListFunc:       (&armcosmos.DatabaseAccountsClient{}).NewListPager,
-			NewFunc:        armcosmos.NewDatabaseAccountsClient,
-			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/databaseAccounts",
-		},
-		{
 			Name:           "location_get_result",
 			Struct:         &armcosmos.LocationGetResult{},
 			ResponseStruct: &armcosmos.LocationsClientListResponse{},
@@ -22,6 +13,17 @@ func Armcosmos() []Table {
 			ListFunc:       (&armcosmos.LocationsClient{}).NewListPager,
 			NewFunc:        armcosmos.NewLocationsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DocumentDB")`,
+		},
+		{
+			Name:           "database_account_get_results",
+			Struct:         &armcosmos.DatabaseAccountGetResults{},
+			ResponseStruct: &armcosmos.DatabaseAccountsClientListResponse{},
+			Client:         &armcosmos.DatabaseAccountsClient{},
+			ListFunc:       (&armcosmos.DatabaseAccountsClient{}).NewListPager,
+			NewFunc:        armcosmos.NewDatabaseAccountsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/databaseAccounts",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DocumentDB")`,
 		},
 		{
 			Name:           "restorable_database_account_get_result",
@@ -31,6 +33,7 @@ func Armcosmos() []Table {
 			ListFunc:       (&armcosmos.RestorableDatabaseAccountsClient{}).NewListPager,
 			NewFunc:        armcosmos.NewRestorableDatabaseAccountsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/restorableDatabaseAccounts",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DocumentDB")`,
 		},
 	}
 

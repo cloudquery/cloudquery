@@ -13,7 +13,7 @@ func ClassicAdministrator() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_authorization_classic_administrator",
 		Resolver:  fetchClassicAdministrator,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Authorization"),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

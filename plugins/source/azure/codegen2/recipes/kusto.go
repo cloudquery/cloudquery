@@ -13,6 +13,7 @@ func Armkusto() []Table {
 			ListFunc:       (&armkusto.ClustersClient{}).NewListPager,
 			NewFunc:        armkusto.NewClustersClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Kusto/clusters",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Kusto")`,
 		},
 	}
 

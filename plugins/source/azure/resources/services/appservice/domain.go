@@ -13,7 +13,7 @@ func Domain() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_appservice_domain",
 		Resolver:  fetchDomain,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DomainRegistration"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

@@ -6,19 +6,25 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresou
 func Armresources() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armresources.NewTagsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources",
-			URL:     "/subscriptions/{subscriptionId}/tagNames",
+			NewFunc:   armresources.NewTagsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources",
+			URL:       "/subscriptions/{subscriptionId}/tagNames",
+			Namespace: "",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("")`,
 		},
 		{
-			NewFunc: armresources.NewProvidersClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources",
-			URL:     "/subscriptions/{subscriptionId}/providers",
+			NewFunc:   armresources.NewProvidersClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources",
+			URL:       "/subscriptions/{subscriptionId}/providers",
+			Namespace: "",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("")`,
 		},
 		{
-			NewFunc: armresources.NewResourceGroupsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources",
-			URL:     "/subscriptions/{subscriptionId}/resourcegroups",
+			NewFunc:   armresources.NewResourceGroupsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources",
+			URL:       "/subscriptions/{subscriptionId}/resourcegroups",
+			Namespace: "",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("")`,
 		},
 	}
 	return tables

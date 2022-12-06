@@ -13,7 +13,7 @@ func ApplyUpdate() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_maintenance_apply_update",
 		Resolver:  fetchApplyUpdate,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Maintenance"),
 		Columns: []schema.Column{
 			{
 				Name:     "properties",

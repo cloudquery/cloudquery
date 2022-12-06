@@ -13,7 +13,7 @@ func Recommendation() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_appservice_recommendation",
 		Resolver:  fetchRecommendation,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Web"),
 		Columns: []schema.Column{
 			{
 				Name:     "kind",

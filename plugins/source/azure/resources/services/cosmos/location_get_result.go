@@ -13,7 +13,7 @@ func LocationGetResult() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_cosmos_location_get_result",
 		Resolver:  fetchLocationGetResult,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DocumentDB"),
 		Columns: []schema.Column{
 			{
 				Name:     "properties",

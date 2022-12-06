@@ -13,7 +13,7 @@ func Account() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_storage_account",
 		Resolver:  fetchAccount,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Storage"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

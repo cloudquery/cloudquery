@@ -13,6 +13,7 @@ func Armvirtualmachineimagebuilder() []Table {
 			ListFunc:       (&armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClient{}).NewListPager,
 			NewFunc:        armvirtualmachineimagebuilder.NewVirtualMachineImageTemplatesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.VirtualMachineImages/imageTemplates",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.VirtualMachineImages")`,
 		},
 	}
 

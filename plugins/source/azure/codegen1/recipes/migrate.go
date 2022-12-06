@@ -6,9 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/migrate/armmigrate
 func Armmigrate() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armmigrate.NewProjectsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/migrate/armmigrate",
-			URL:     "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Migrate/assessmentProjects",
+			NewFunc:   armmigrate.NewProjectsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/migrate/armmigrate",
+			URL:       "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Migrate/assessmentProjects",
+			Namespace: "Microsoft.Migrate",
+			Multiplex: `client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.Migrate")`,
 		},
 	}
 	return tables

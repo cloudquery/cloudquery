@@ -6,19 +6,25 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armaz
 func Armazurearcdata() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armazurearcdata.NewSQLManagedInstancesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/sqlManagedInstances",
+			NewFunc:   armazurearcdata.NewPostgresInstancesClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/postgresInstances",
+			Namespace: "Microsoft.AzureArcData",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.AzureArcData")`,
 		},
 		{
-			NewFunc: armazurearcdata.NewSQLServerInstancesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/sqlServerInstances",
+			NewFunc:   armazurearcdata.NewSQLManagedInstancesClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/sqlManagedInstances",
+			Namespace: "Microsoft.AzureArcData",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.AzureArcData")`,
 		},
 		{
-			NewFunc: armazurearcdata.NewPostgresInstancesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/postgresInstances",
+			NewFunc:   armazurearcdata.NewSQLServerInstancesClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/sqlServerInstances",
+			Namespace: "Microsoft.AzureArcData",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.AzureArcData")`,
 		},
 	}
 	return tables

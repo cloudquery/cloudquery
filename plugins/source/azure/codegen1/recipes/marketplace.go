@@ -6,9 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplace/armmar
 func Armmarketplace() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armmarketplace.NewPrivateStoreClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplace/armmarketplace",
-			URL:     "/providers/Microsoft.Marketplace/privateStores",
+			NewFunc:   armmarketplace.NewPrivateStoreClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplace/armmarketplace",
+			URL:       "/providers/Microsoft.Marketplace/privateStores",
+			Namespace: "Microsoft.Marketplace",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Marketplace")`,
 		},
 	}
 	return tables

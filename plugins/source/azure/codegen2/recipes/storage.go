@@ -13,6 +13,7 @@ func Armstorage() []Table {
 			ListFunc:       (&armstorage.DeletedAccountsClient{}).NewListPager,
 			NewFunc:        armstorage.NewDeletedAccountsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Storage/deletedAccounts",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Storage")`,
 		},
 		{
 			Name:           "account",
@@ -22,6 +23,7 @@ func Armstorage() []Table {
 			ListFunc:       (&armstorage.AccountsClient{}).NewListPager,
 			NewFunc:        armstorage.NewAccountsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Storage/storageAccounts",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Storage")`,
 		},
 	}
 

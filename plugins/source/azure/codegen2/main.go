@@ -143,19 +143,7 @@ func initResource(r *recipes.Table) error {
 	if err != nil {
 		return fmt.Errorf("failed to create table for %s: %w", r.StructName, err)
 	}
-
-	if r.Multiplex == nil {
-		if !r.ChildTable {
-			if r.ListFuncHasSubscriptionId {
-				r.Table.Multiplex = "client.SubscriptionResourceGroupMultiplex"
-			} else {
-				r.Table.Multiplex = "client.SubscriptionMultiplex"
-			}
-
-		}
-	} else {
-		r.Table.Multiplex = *r.Multiplex
-	}
+	r.Table.Multiplex = r.Multiplex
 	r.Table.Resolver = "fetch" + strcase.ToCamel(r.Name)
 	if r.PreResourceResolver != "" {
 		r.Table.PreResourceResolver = r.PreResourceResolver

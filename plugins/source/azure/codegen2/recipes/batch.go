@@ -13,6 +13,7 @@ func Armbatch() []Table {
 			ListFunc:       (&armbatch.AccountClient{}).NewListPager,
 			NewFunc:        armbatch.NewAccountClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Batch/batchAccounts",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Batch")`,
 		},
 	}
 

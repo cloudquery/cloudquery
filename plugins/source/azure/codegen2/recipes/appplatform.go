@@ -13,6 +13,7 @@ func Armappplatform() []Table {
 			ListFunc:       (&armappplatform.ServicesClient{}).NewListPager,
 			NewFunc:        armappplatform.NewServicesClient,
 			URL:            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring",
+			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.AppPlatform")`,
 		},
 	}
 

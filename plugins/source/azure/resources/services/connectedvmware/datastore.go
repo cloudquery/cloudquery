@@ -13,7 +13,7 @@ func Datastore() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_connectedvmware_datastore",
 		Resolver:  fetchDatastore,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.ConnectedVMwarevSphere"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

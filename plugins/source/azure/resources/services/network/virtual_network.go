@@ -13,7 +13,7 @@ func VirtualNetwork() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_virtual_network",
 		Resolver:  fetchVirtualNetwork,
-		Multiplex: client.SubscriptionResourceGroupMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.Network"),
 		Columns: []schema.Column{
 			{
 				Name:     "extended_location",

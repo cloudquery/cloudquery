@@ -13,7 +13,7 @@ func InstancePool() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_sql_instance_pool",
 		Resolver:  fetchInstancePool,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Sql"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

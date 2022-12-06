@@ -6,10 +6,13 @@ type Table struct {
 	NewFuncName string
 	// Rest URL parsed for specific API
 	URL string
+	// Namespace Parsed from the URL
+	Namespace string
 	// Does the client has standard NewListPager which we currently support autogeneration for
 	HasListPager bool
 	// param names for NewListPager
 	NewListPagerParams []string
 	// param names for NewXClient function
 	NewClientParams []string
+	Multiplex string
 }

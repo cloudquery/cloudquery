@@ -6,9 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/virtualmachineimag
 func Armvirtualmachineimagebuilder() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armvirtualmachineimagebuilder.NewVirtualMachineImageTemplatesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/virtualmachineimagebuilder/armvirtualmachineimagebuilder",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.VirtualMachineImages/imageTemplates",
+			NewFunc:   armvirtualmachineimagebuilder.NewVirtualMachineImageTemplatesClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/virtualmachineimagebuilder/armvirtualmachineimagebuilder",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.VirtualMachineImages/imageTemplates",
+			Namespace: "Microsoft.VirtualMachineImages",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.VirtualMachineImages")`,
 		},
 	}
 	return tables

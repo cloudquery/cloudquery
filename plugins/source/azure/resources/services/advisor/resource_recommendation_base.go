@@ -13,7 +13,7 @@ func ResourceRecommendationBase() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_advisor_resource_recommendation_base",
 		Resolver:  fetchResourceRecommendationBase,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Advisor"),
 		Columns: []schema.Column{
 			{
 				Name:     "properties",

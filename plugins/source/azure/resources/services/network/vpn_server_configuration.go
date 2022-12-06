@@ -13,7 +13,7 @@ func VpnServerConfiguration() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_vpn_server_configuration",
 		Resolver:  fetchVpnServerConfiguration,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Network"),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

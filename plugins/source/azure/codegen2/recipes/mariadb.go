@@ -13,6 +13,7 @@ func Armmariadb() []Table {
 			ListFunc:       (&armmariadb.ServersClient{}).NewListPager,
 			NewFunc:        armmariadb.NewServersClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMariaDB/servers",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DBforMariaDB")`,
 		},
 	}
 

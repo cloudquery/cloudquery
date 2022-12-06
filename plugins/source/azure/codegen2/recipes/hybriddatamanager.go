@@ -13,6 +13,7 @@ func Armhybriddatamanager() []Table {
 			ListFunc:       (&armhybriddatamanager.DataManagersClient{}).NewListPager,
 			NewFunc:        armhybriddatamanager.NewDataManagersClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.HybridData/dataManagers",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.HybridData")`,
 		},
 	}
 

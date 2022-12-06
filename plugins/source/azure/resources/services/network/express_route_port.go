@@ -13,7 +13,7 @@ func ExpressRoutePort() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_express_route_port",
 		Resolver:  fetchExpressRoutePort,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Network"),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

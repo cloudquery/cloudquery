@@ -13,7 +13,7 @@ func Cache() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_storagecache_cache",
 		Resolver:  fetchCache,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.StorageCache"),
 		Columns: []schema.Column{
 			{
 				Name:     "identity",

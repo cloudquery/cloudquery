@@ -13,7 +13,7 @@ func RegulatoryComplianceStandard() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_security_regulatory_compliance_standard",
 		Resolver:  fetchRegulatoryComplianceStandard,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Security"),
 		Columns: []schema.Column{
 			{
 				Name:     "properties",

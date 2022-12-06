@@ -13,7 +13,7 @@ func TopicTypeInfo() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_eventgrid_topic_type_info",
 		Resolver:  fetchTopicTypeInfo,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.EventGrid"),
 		Columns: []schema.Column{
 			{
 				Name:     "properties",

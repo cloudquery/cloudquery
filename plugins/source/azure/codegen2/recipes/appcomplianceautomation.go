@@ -13,6 +13,7 @@ func Armappcomplianceautomation() []Table {
 			ListFunc:       (&armappcomplianceautomation.ReportsClient{}).NewListPager,
 			NewFunc:        armappcomplianceautomation.NewReportsClient,
 			URL:            "/providers/Microsoft.AppComplianceAutomation/reports",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.AppComplianceAutomation")`,
 		},
 	}
 

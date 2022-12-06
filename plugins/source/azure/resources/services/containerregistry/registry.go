@@ -13,7 +13,7 @@ func Registry() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_containerregistry_registry",
 		Resolver:  fetchRegistry,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.ContainerRegistry"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

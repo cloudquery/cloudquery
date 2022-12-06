@@ -13,7 +13,7 @@ func VpnSite() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_vpn_site",
 		Resolver:  fetchVpnSite,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Network"),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

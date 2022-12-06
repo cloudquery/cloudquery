@@ -13,7 +13,7 @@ func DatabaseAccountGetResults() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_cosmos_database_account_get_results",
 		Resolver:  fetchDatabaseAccountGetResults,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DocumentDB"),
 		Columns: []schema.Column{
 			{
 				Name:     "identity",

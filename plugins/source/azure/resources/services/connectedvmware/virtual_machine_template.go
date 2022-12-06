@@ -13,7 +13,7 @@ func VirtualMachineTemplate() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_connectedvmware_virtual_machine_template",
 		Resolver:  fetchVirtualMachineTemplate,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.ConnectedVMwarevSphere"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

@@ -13,6 +13,7 @@ func Armpostgresqlhsc() []Table {
 			ListFunc:       (&armpostgresqlhsc.ServerGroupsClient{}).NewListPager,
 			NewFunc:        armpostgresqlhsc.NewServerGroupsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DBForPostgreSql/serverGroupsv2",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DBForPostgreSql")`,
 		},
 	}
 

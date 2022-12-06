@@ -6,9 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsiot/armwind
 func Armwindowsiot() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armwindowsiot.NewServicesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsiot/armwindowsiot",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.WindowsIoT/deviceServices",
+			NewFunc:   armwindowsiot.NewServicesClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsiot/armwindowsiot",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.WindowsIoT/deviceServices",
+			Namespace: "Microsoft.WindowsIoT",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.WindowsIoT")`,
 		},
 	}
 	return tables

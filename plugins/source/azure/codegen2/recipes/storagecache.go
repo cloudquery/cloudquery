@@ -13,6 +13,7 @@ func Armstoragecache() []Table {
 			ListFunc:       (&armstoragecache.CachesClient{}).NewListPager,
 			NewFunc:        armstoragecache.NewCachesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.StorageCache/caches",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.StorageCache")`,
 		},
 	}
 

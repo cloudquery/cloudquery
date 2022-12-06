@@ -13,6 +13,7 @@ func Armprivatedns() []Table {
 			ListFunc:       (&armprivatedns.PrivateZonesClient{}).NewListPager,
 			NewFunc:        armprivatedns.NewPrivateZonesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/privateDnsZones",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Network")`,
 		},
 	}
 

@@ -13,7 +13,7 @@ func NamespaceResource() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_notificationhubs_namespace_resource",
 		Resolver:  fetchNamespaceResource,
-		Multiplex: client.SubscriptionResourceGroupMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.NotificationHubs"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

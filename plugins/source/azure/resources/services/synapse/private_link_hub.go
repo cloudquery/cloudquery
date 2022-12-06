@@ -13,7 +13,7 @@ func PrivateLinkHub() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_synapse_private_link_hub",
 		Resolver:  fetchPrivateLinkHub,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Synapse"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

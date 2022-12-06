@@ -13,6 +13,7 @@ func Armorbital() []Table {
 			ListFunc:       (&armorbital.ContactProfilesClient{}).NewListPager,
 			NewFunc:        armorbital.NewContactProfilesClient,
 			URL:            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/contactProfiles",
+			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.Orbital")`,
 		},
 		{
 			Name:           "spacecraft",
@@ -22,6 +23,7 @@ func Armorbital() []Table {
 			ListFunc:       (&armorbital.SpacecraftsClient{}).NewListPager,
 			NewFunc:        armorbital.NewSpacecraftsClient,
 			URL:            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/spacecrafts",
+			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.Orbital")`,
 		},
 	}
 

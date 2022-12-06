@@ -13,7 +13,7 @@ func Cluster() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_connectedvmware_cluster",
 		Resolver:  fetchCluster,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.ConnectedVMwarevSphere"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

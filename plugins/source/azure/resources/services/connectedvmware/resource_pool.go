@@ -13,7 +13,7 @@ func ResourcePool() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_connectedvmware_resource_pool",
 		Resolver:  fetchResourcePool,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.ConnectedVMwarevSphere"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

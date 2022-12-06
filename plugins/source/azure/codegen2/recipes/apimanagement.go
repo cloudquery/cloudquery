@@ -13,6 +13,7 @@ func Armapimanagement() []Table {
 			ListFunc:       (&armapimanagement.ServiceClient{}).NewListPager,
 			NewFunc:        armapimanagement.NewServiceClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ApiManagement/service",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.ApiManagement")`,
 		},
 	}
 

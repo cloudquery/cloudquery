@@ -13,6 +13,7 @@ func Armservicebus() []Table {
 			ListFunc:       (&armservicebus.NamespacesClient{}).NewListPager,
 			NewFunc:        armservicebus.NewNamespacesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ServiceBus/namespaces",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.ServiceBus")`,
 		},
 	}
 

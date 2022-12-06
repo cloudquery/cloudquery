@@ -13,7 +13,7 @@ func Deployment() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_nginx_deployment",
 		Resolver:  fetchDeployment,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Nginx.NginxPlus"),
 		Columns: []schema.Column{
 			{
 				Name:     "identity",

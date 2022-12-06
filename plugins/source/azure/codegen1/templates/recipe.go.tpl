@@ -14,6 +14,7 @@ func {{.BaseImport | ToCamel}}() []Table {
       ListFunc: (&{{$.BaseImport}}.{{.Client}}{}).{{.ListFunc}},
 			NewFunc: {{$.BaseImport}}.{{.NewFunc}},
 			URL: "{{.URL}}",
+			Multiplex: `{{.Multiplex}}`,
 		},
     {{- end}}
 	}

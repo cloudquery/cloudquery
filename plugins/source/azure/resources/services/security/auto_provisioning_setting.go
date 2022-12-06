@@ -13,7 +13,7 @@ func AutoProvisioningSetting() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_security_auto_provisioning_setting",
 		Resolver:  fetchAutoProvisioningSetting,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Security"),
 		Columns: []schema.Column{
 			{
 				Name:     "properties",

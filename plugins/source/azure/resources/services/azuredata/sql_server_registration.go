@@ -13,7 +13,7 @@ func SqlServerRegistration() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_azuredata_sql_server_registration",
 		Resolver:  fetchSqlServerRegistration,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.AzureData"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

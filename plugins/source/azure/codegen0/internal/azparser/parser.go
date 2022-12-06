@@ -23,6 +23,8 @@ const (
 var reNewClient = regexp.MustCompile(`New[a-zA-Z]+Client`)
 var reListCreateRequest = regexp.MustCompile(`listCreateRequest`)
 var reNewListPager = regexp.MustCompile(`NewListPager`)
+var reNamespaceFromURL = regexp.MustCompile(`/providers/([a-zA-Z\.]+)/`)
+
 var supportedNewListPagerParams = [][]string{
 	{"options"},
 	{"resourceGroupName", "options"},
@@ -150,6 +152,10 @@ func CreateTablesFromPackage(pkg string) ([]*Table, error) {
 		if azURL == "" {
 			return nil, fmt.Errorf("could not find url for %s", fn.name)
 		}
+		namespaceMatches := reNamespaceFromURL.FindStringSubmatch(azURL)
+		if len(namespaceMatches) == 2 {
+			tables[fn.receiver].Namespace = namespaceMatches[1]
+		}
 		tables[fn.receiver].URL = azURL
 	}
 
@@ -171,6 +177,11 @@ func CreateTablesFromPackage(pkg string) ([]*Table, error) {
 		// not NewListPager struct and more than 3 params
 		if t.URL == "" || !t.HasListPager || !isArrayExist(supportedNewListPagerParams, t.NewListPagerParams) {
 			continue
+		}
+		if compareStrArrays(supportedNewListPagerParams[1], t.NewListPagerParams) {
+			t.Multiplex = fmt.Sprintf("client.SubscriptionResourceGroupMultiplexRegisteredNamespace(\"%s\")", t.Namespace)
+		} else {
+			t.Multiplex = fmt.Sprintf("client.SubscriptionMultiplexRegisteredNamespace(\"%s\")", t.Namespace)
 		}
 		result = append(result, t)
 	}

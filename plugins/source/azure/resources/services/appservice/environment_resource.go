@@ -13,7 +13,7 @@ func EnvironmentResource() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_appservice_environment_resource",
 		Resolver:  fetchEnvironmentResource,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Web"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

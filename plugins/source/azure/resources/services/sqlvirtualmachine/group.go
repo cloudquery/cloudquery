@@ -13,7 +13,7 @@ func Group() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_sqlvirtualmachine_group",
 		Resolver:  fetchGroup,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.SqlVirtualMachine"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

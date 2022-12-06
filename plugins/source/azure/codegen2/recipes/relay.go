@@ -13,6 +13,7 @@ func Armrelay() []Table {
 			ListFunc:       (&armrelay.NamespacesClient{}).NewListPager,
 			NewFunc:        armrelay.NewNamespacesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Relay/namespaces",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Relay")`,
 		},
 	}
 

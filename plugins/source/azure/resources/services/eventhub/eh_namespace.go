@@ -13,7 +13,7 @@ func EhNamespace() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_eventhub_eh_namespace",
 		Resolver:  fetchEhNamespace,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.EventHub"),
 		Columns: []schema.Column{
 			{
 				Name:     "identity",

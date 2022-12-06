@@ -6,9 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysqlflex
 func Armmysqlflexibleservers() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armmysqlflexibleservers.NewServersClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysqlflexibleservers",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/flexibleServers",
+			NewFunc:   armmysqlflexibleservers.NewServersClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysqlflexibleservers",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/flexibleServers",
+			Namespace: "Microsoft.DBforMySQL",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DBforMySQL")`,
 		},
 	}
 	return tables

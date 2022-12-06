@@ -13,7 +13,7 @@ func Profile() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_frontdoor_profile",
 		Resolver:  fetchProfile,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Network"),
 		Columns: []schema.Column{
 			{
 				Name:     "etag",

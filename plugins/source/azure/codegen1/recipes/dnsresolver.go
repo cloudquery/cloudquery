@@ -6,14 +6,18 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdns
 func Armdnsresolver() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armdnsresolver.NewDNSResolversClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdnsresolver",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Network/dnsResolvers",
+			NewFunc:   armdnsresolver.NewDNSForwardingRulesetsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdnsresolver",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Network/dnsForwardingRulesets",
+			Namespace: "Microsoft.Network",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Network")`,
 		},
 		{
-			NewFunc: armdnsresolver.NewDNSForwardingRulesetsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdnsresolver",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Network/dnsForwardingRulesets",
+			NewFunc:   armdnsresolver.NewDNSResolversClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdnsresolver",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Network/dnsResolvers",
+			Namespace: "Microsoft.Network",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Network")`,
 		},
 	}
 	return tables

@@ -13,7 +13,7 @@ func Namespace() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_relay_namespace",
 		Resolver:  fetchNamespace,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Relay"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

@@ -13,6 +13,7 @@ func Armpostgresql() []Table {
 			ListFunc:       (&armpostgresql.ServersClient{}).NewListPager,
 			NewFunc:        armpostgresql.NewServersClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/servers",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DBforPostgreSQL")`,
 		},
 	}
 

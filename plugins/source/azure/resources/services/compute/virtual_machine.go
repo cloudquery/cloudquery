@@ -13,7 +13,7 @@ func VirtualMachine() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_compute_virtual_machine",
 		Resolver:  fetchVirtualMachine,
-		Multiplex: client.SubscriptionResourceGroupMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.Compute"),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

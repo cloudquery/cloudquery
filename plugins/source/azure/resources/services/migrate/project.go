@@ -13,7 +13,7 @@ func Project() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_migrate_project",
 		Resolver:  fetchProject,
-		Multiplex: client.SubscriptionResourceGroupMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.Migrate"),
 		Columns: []schema.Column{
 			{
 				Name:     "e_tag",

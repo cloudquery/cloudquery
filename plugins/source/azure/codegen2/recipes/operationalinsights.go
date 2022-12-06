@@ -8,20 +8,22 @@ func Armoperationalinsights() []Table {
 		{
 			Name:           "workspace",
 			Struct:         &armoperationalinsights.Workspace{},
-			ResponseStruct: &armoperationalinsights.WorkspacesClientListResponse{},
-			Client:         &armoperationalinsights.WorkspacesClient{},
-			ListFunc:       (&armoperationalinsights.WorkspacesClient{}).NewListPager,
-			NewFunc:        armoperationalinsights.NewWorkspacesClient,
-			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.OperationalInsights/workspaces",
-		},
-		{
-			Name:           "workspace",
-			Struct:         &armoperationalinsights.Workspace{},
 			ResponseStruct: &armoperationalinsights.DeletedWorkspacesClientListResponse{},
 			Client:         &armoperationalinsights.DeletedWorkspacesClient{},
 			ListFunc:       (&armoperationalinsights.DeletedWorkspacesClient{}).NewListPager,
 			NewFunc:        armoperationalinsights.NewDeletedWorkspacesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.OperationalInsights/deletedWorkspaces",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.OperationalInsights")`,
+		},
+		{
+			Name:           "workspace",
+			Struct:         &armoperationalinsights.Workspace{},
+			ResponseStruct: &armoperationalinsights.WorkspacesClientListResponse{},
+			Client:         &armoperationalinsights.WorkspacesClient{},
+			ListFunc:       (&armoperationalinsights.WorkspacesClient{}).NewListPager,
+			NewFunc:        armoperationalinsights.NewWorkspacesClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.OperationalInsights/workspaces",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.OperationalInsights")`,
 		},
 		{
 			Name:           "cluster",
@@ -31,6 +33,7 @@ func Armoperationalinsights() []Table {
 			ListFunc:       (&armoperationalinsights.ClustersClient{}).NewListPager,
 			NewFunc:        armoperationalinsights.NewClustersClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.OperationalInsights/clusters",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.OperationalInsights")`,
 		},
 	}
 

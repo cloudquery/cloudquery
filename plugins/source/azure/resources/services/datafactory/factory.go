@@ -13,7 +13,7 @@ func Factory() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_datafactory_factory",
 		Resolver:  fetchFactory,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DataFactory"),
 		Columns: []schema.Column{
 			{
 				Name:     "additional_properties",

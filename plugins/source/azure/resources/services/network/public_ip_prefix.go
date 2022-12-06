@@ -13,7 +13,7 @@ func PublicIpPrefix() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_public_ip_prefix",
 		Resolver:  fetchPublicIpPrefix,
-		Multiplex: client.SubscriptionResourceGroupMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.Network"),
 		Columns: []schema.Column{
 			{
 				Name:     "extended_location",

@@ -6,19 +6,25 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/arma
 func Armauthorization() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armauthorization.NewRoleAssignmentsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/roleAssignments",
+			NewFunc:   armauthorization.NewRoleAssignmentsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/roleAssignments",
+			Namespace: "Microsoft.Authorization",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Authorization")`,
 		},
 		{
-			NewFunc: armauthorization.NewProviderOperationsMetadataClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization",
-			URL:     "/providers/Microsoft.Authorization/providerOperations",
+			NewFunc:   armauthorization.NewProviderOperationsMetadataClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization",
+			URL:       "/providers/Microsoft.Authorization/providerOperations",
+			Namespace: "Microsoft.Authorization",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Authorization")`,
 		},
 		{
-			NewFunc: armauthorization.NewClassicAdministratorsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization",
-			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/classicAdministrators",
+			NewFunc:   armauthorization.NewClassicAdministratorsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/classicAdministrators",
+			Namespace: "Microsoft.Authorization",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Authorization")`,
 		},
 	}
 	return tables

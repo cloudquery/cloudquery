@@ -13,6 +13,7 @@ func Armmanagementgroups() []Table {
 			ListFunc:       (&armmanagementgroups.EntitiesClient{}).NewListPager,
 			NewFunc:        armmanagementgroups.NewEntitiesClient,
 			URL:            "/providers/Microsoft.Management/getEntities",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Management")`,
 		},
 	}
 

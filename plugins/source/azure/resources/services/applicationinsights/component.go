@@ -13,7 +13,7 @@ func Component() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_applicationinsights_component",
 		Resolver:  fetchComponent,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Insights"),
 		Columns: []schema.Column{
 			{
 				Name:     "kind",

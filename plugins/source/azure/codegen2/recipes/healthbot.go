@@ -13,6 +13,7 @@ func Armhealthbot() []Table {
 			ListFunc:       (&armhealthbot.BotsClient{}).NewListPager,
 			NewFunc:        armhealthbot.NewBotsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.HealthBot/healthBots",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.HealthBot")`,
 		},
 	}
 
