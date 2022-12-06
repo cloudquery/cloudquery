@@ -27,7 +27,7 @@ type Client struct {
 	Options        *arm.ClientOptions
 }
 
-func getSubscriptions(logger *zerolog.Logger, spec *Spec, creds azcore.TokenCredential) ([]string, error) {
+func getSubscriptions(spec *Spec, creds azcore.TokenCredential) ([]string, error) {
 	subscriptions := make([]string, 0)
 	if len(spec.Subscriptions) == 0 {
 		ctx := context.Background()
@@ -65,7 +65,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 		return nil, err
 	}
 
-	subscriptions, err := getSubscriptions(&logger, &spec, creds)
+	subscriptions, err := getSubscriptions(&spec, creds)
 	if err != nil {
 		return nil, err
 	}
