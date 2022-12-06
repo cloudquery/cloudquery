@@ -2,7 +2,7 @@
 
 A CloudQuery sync fetches data from cloud accounts (sources) and writes it to one or more destinations. 
 A sync requires at least one source- and one destination configuration. 
-Configuration files are specified in yaml format and can be either split across multiple files or combined.
+Configuration files are specified in YAML format and can be either split across multiple files or combined.
 
 ## Example using multiple files
 
