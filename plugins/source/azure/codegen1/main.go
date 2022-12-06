@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"embed"
 	"fmt"
+	"go/format"
 	"html/template"
 	"log"
 	"os"
@@ -19,28 +20,27 @@ import (
 
 var (
 	currentFilename string
-	currentDir string
+	currentDir      string
 )
 
 //go:embed templates/*.go.tpl
 var templateFS embed.FS
 
 type Table struct {
-	Name string
-	Struct string
+	Name           string
+	Struct         string
 	ResponseStruct string
-	Client string
-	ListFunc string
-	NewFunc string
-	URL string
+	Client         string
+	ListFunc       string
+	NewFunc        string
+	URL            string
 }
 
 type Recipe struct {
-	PkgPath string
+	PkgPath    string
 	BaseImport string
-	Tables []*Table
+	Tables     []*Table
 }
-
 
 func main() {
 	var ok bool
@@ -49,7 +49,7 @@ func main() {
 		log.Fatal("Failed to get caller information")
 	}
 	currentDir = path.Dir(currentFilename)
-	
+
 	// var rr []Recipe
 	for _, tt := range recipes.Tables {
 		if len(tt) == 0 {
@@ -77,7 +77,7 @@ func main() {
 				log.Fatal(err)
 			}
 		}
-	}	
+	}
 }
 
 // this uses reflection to find the struct type inside Value field in an azure
@@ -124,7 +124,7 @@ func ConvertTableV1ToV2(t *recipes.Table) (*Table, error) {
 	if !ok {
 		return nil, fmt.Errorf("failed to find Value field for %s", responseStruct.Type.Elem().String())
 	}
-	
+
 	structName, err := getStructNameFromResponseStruct(st.Type)
 	if err != nil {
 		return nil, err
@@ -136,13 +136,13 @@ func ConvertTableV1ToV2(t *recipes.Table) (*Table, error) {
 	responseStructName := strings.Split(responseStruct.Type.String(), ".")[1]
 	clientName := strings.Split(v.Out(0).String(), ".")[1]
 	return &Table{
-		Name: strcase.ToSnake(structName),
-		Struct: structName,
+		Name:           strcase.ToSnake(structName),
+		Struct:         structName,
 		ResponseStruct: responseStructName,
-		Client: clientName,
-		ListFunc: "NewListPager",
-		NewFunc: "New" + clientName,
-		URL: t.URL,
+		Client:         clientName,
+		ListFunc:       "NewListPager",
+		NewFunc:        "New" + clientName,
+		URL:            t.URL,
 	}, nil
 }
 
@@ -160,7 +160,15 @@ func generateRecipes(s Recipe) error {
 	}
 	baseName := strings.TrimPrefix(s.BaseImport, "arm")
 	filePath := path.Join(currentDir, "../codegen2/recipes", baseName+".go")
-	if err := os.WriteFile(filePath, buff.Bytes(), 0644); err != nil {
+
+	content := buff.Bytes()
+	formattedContent, err := format.Source(content)
+	if err != nil {
+		fmt.Printf("failed to format code for %s: %v\n", filePath, err)
+	} else {
+		content = formattedContent
+	}
+	if err := os.WriteFile(filePath, content, 0644); err != nil {
 		return fmt.Errorf("failed to write file %s: %w", filePath, err)
 	}
 

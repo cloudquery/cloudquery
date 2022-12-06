@@ -8,7 +8,7 @@ func Armlocks() []*Table {
 		{
 			NewFunc: armlocks.NewAuthorizationOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armlocks",
-			URL: "/providers/Microsoft.Authorization/operations",
+			URL:     "/providers/Microsoft.Authorization/operations",
 		},
 	}
 	return tables

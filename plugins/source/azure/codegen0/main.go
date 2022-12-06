@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"embed"
 	"fmt"
+	"go/format"
 	"log"
 	"os"
 	"path"
@@ -19,14 +20,14 @@ var templateFS embed.FS
 
 var (
 	currentFilename string
-	currentDir string
+	currentDir      string
 )
 
 // Module is a struct that contains all the information needed to generate
 // cloudquery code for a given Azure SDK package.
 type Recipe struct {
-	Tables []*azparser.Table
-	Import string
+	Tables   []*azparser.Table
+	Import   string
 	BaseName string
 }
 
@@ -37,7 +38,7 @@ func main() {
 		log.Fatal("Failed to get caller information")
 	}
 	currentDir = path.Dir(currentFilename)
-	
+
 	armModules, err := azparser.GetArmModules(path.Join(currentDir, "../go.mod"))
 	if err != nil {
 		log.Fatal(err)
@@ -52,8 +53,8 @@ func main() {
 		}
 		importPath := strings.Split(armModule, "@")[0]
 		mod := &Recipe{
-			Tables: tables,
-			Import: importPath,
+			Tables:   tables,
+			Import:   importPath,
 			BaseName: path.Base(importPath),
 		}
 		if err := generatePackage(armModule, mod); err != nil {
@@ -76,11 +77,15 @@ func generatePackage(pkg string, mod *Recipe) error {
 	}
 	basename := strings.TrimPrefix(mod.BaseName, "arm")
 	filePath := path.Join(currentDir, "../codegen1/recipes", basename+".go")
-	if err := os.WriteFile(filePath, buff.Bytes(), 0644); err != nil {
+	content := buff.Bytes()
+	formattedContent, err := format.Source(content)
+	if err != nil {
+		fmt.Printf("failed to format code for %s: %v\n", filePath, err)
+	} else {
+		content = formattedContent
+	}
+	if err := os.WriteFile(filePath, content, 0644); err != nil {
 		return fmt.Errorf("failed to write file %s: %w", filePath, err)
 	}
 	return nil
 }
-
-
-

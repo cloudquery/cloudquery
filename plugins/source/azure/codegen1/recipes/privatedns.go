@@ -8,7 +8,7 @@ func Armprivatedns() []*Table {
 		{
 			NewFunc: armprivatedns.NewPrivateZonesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/privatedns/armprivatedns",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/privateDnsZones",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Network/privateDnsZones",
 		},
 	}
 	return tables

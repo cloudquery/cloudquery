@@ -8,7 +8,7 @@ func Armcontainerregistry() []*Table {
 		{
 			NewFunc: armcontainerregistry.NewRegistriesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerRegistry/registries",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerRegistry/registries",
 		},
 	}
 	return tables

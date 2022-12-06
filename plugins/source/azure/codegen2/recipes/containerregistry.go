@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/
 func Armcontainerregistry() []Table {
 	tables := []Table{
 		{
-      Name: "registry",
-      Struct: &armcontainerregistry.Registry{},
-      ResponseStruct: &armcontainerregistry.RegistriesClientListResponse{},
-      Client: &armcontainerregistry.RegistriesClient{},
-      ListFunc: (&armcontainerregistry.RegistriesClient{}).NewListPager,
-			NewFunc: armcontainerregistry.NewRegistriesClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerRegistry/registries",
+			Name:           "registry",
+			Struct:         &armcontainerregistry.Registry{},
+			ResponseStruct: &armcontainerregistry.RegistriesClientListResponse{},
+			Client:         &armcontainerregistry.RegistriesClient{},
+			ListFunc:       (&armcontainerregistry.RegistriesClient{}).NewListPager,
+			NewFunc:        armcontainerregistry.NewRegistriesClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerRegistry/registries",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armcontainerregistry() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armcontainerregistry()...)
+	Tables = append(Tables, Armcontainerregistry()...)
 }

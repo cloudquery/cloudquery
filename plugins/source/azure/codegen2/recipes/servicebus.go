@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armserv
 func Armservicebus() []Table {
 	tables := []Table{
 		{
-      Name: "sb_namespace",
-      Struct: &armservicebus.SBNamespace{},
-      ResponseStruct: &armservicebus.NamespacesClientListResponse{},
-      Client: &armservicebus.NamespacesClient{},
-      ListFunc: (&armservicebus.NamespacesClient{}).NewListPager,
-			NewFunc: armservicebus.NewNamespacesClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ServiceBus/namespaces",
+			Name:           "sb_namespace",
+			Struct:         &armservicebus.SBNamespace{},
+			ResponseStruct: &armservicebus.NamespacesClientListResponse{},
+			Client:         &armservicebus.NamespacesClient{},
+			ListFunc:       (&armservicebus.NamespacesClient{}).NewListPager,
+			NewFunc:        armservicebus.NewNamespacesClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ServiceBus/namespaces",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armservicebus() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armservicebus()...)
+	Tables = append(Tables, Armservicebus()...)
 }

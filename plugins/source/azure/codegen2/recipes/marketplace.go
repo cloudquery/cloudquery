@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplace/armmar
 func Armmarketplace() []Table {
 	tables := []Table{
 		{
-      Name: "private_store",
-      Struct: &armmarketplace.PrivateStore{},
-      ResponseStruct: &armmarketplace.PrivateStoreClientListResponse{},
-      Client: &armmarketplace.PrivateStoreClient{},
-      ListFunc: (&armmarketplace.PrivateStoreClient{}).NewListPager,
-			NewFunc: armmarketplace.NewPrivateStoreClient,
-			URL: "/providers/Microsoft.Marketplace/privateStores",
+			Name:           "private_store",
+			Struct:         &armmarketplace.PrivateStore{},
+			ResponseStruct: &armmarketplace.PrivateStoreClientListResponse{},
+			Client:         &armmarketplace.PrivateStoreClient{},
+			ListFunc:       (&armmarketplace.PrivateStoreClient{}).NewListPager,
+			NewFunc:        armmarketplace.NewPrivateStoreClient,
+			URL:            "/providers/Microsoft.Marketplace/privateStores",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armmarketplace() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armmarketplace()...)
+	Tables = append(Tables, Armmarketplace()...)
 }

@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/virtualmachineimag
 func Armvirtualmachineimagebuilder() []Table {
 	tables := []Table{
 		{
-      Name: "image_template",
-      Struct: &armvirtualmachineimagebuilder.ImageTemplate{},
-      ResponseStruct: &armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientListResponse{},
-      Client: &armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClient{},
-      ListFunc: (&armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClient{}).NewListPager,
-			NewFunc: armvirtualmachineimagebuilder.NewVirtualMachineImageTemplatesClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.VirtualMachineImages/imageTemplates",
+			Name:           "image_template",
+			Struct:         &armvirtualmachineimagebuilder.ImageTemplate{},
+			ResponseStruct: &armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientListResponse{},
+			Client:         &armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClient{},
+			ListFunc:       (&armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClient{}).NewListPager,
+			NewFunc:        armvirtualmachineimagebuilder.NewVirtualMachineImageTemplatesClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.VirtualMachineImages/imageTemplates",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armvirtualmachineimagebuilder() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armvirtualmachineimagebuilder()...)
+	Tables = append(Tables, Armvirtualmachineimagebuilder()...)
 }

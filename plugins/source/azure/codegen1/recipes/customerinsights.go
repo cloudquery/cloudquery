@@ -8,7 +8,7 @@ func Armcustomerinsights() []*Table {
 		{
 			NewFunc: armcustomerinsights.NewHubsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerinsights/armcustomerinsights",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.CustomerInsights/hubs",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.CustomerInsights/hubs",
 		},
 	}
 	return tables

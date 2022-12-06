@@ -6,22 +6,22 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/domainservices/arm
 func Armdomainservices() []Table {
 	tables := []Table{
 		{
-      Name: "operation_entity",
-      Struct: &armdomainservices.OperationEntity{},
-      ResponseStruct: &armdomainservices.DomainServiceOperationsClientListResponse{},
-      Client: &armdomainservices.DomainServiceOperationsClient{},
-      ListFunc: (&armdomainservices.DomainServiceOperationsClient{}).NewListPager,
-			NewFunc: armdomainservices.NewDomainServiceOperationsClient,
-			URL: "/providers/Microsoft.AAD/operations",
+			Name:           "operation_entity",
+			Struct:         &armdomainservices.OperationEntity{},
+			ResponseStruct: &armdomainservices.DomainServiceOperationsClientListResponse{},
+			Client:         &armdomainservices.DomainServiceOperationsClient{},
+			ListFunc:       (&armdomainservices.DomainServiceOperationsClient{}).NewListPager,
+			NewFunc:        armdomainservices.NewDomainServiceOperationsClient,
+			URL:            "/providers/Microsoft.AAD/operations",
 		},
 		{
-      Name: "operation_entity",
-      Struct: &armdomainservices.OperationEntity{},
-      ResponseStruct: &armdomainservices.OuContainerOperationsClientListResponse{},
-      Client: &armdomainservices.OuContainerOperationsClient{},
-      ListFunc: (&armdomainservices.OuContainerOperationsClient{}).NewListPager,
-			NewFunc: armdomainservices.NewOuContainerOperationsClient,
-			URL: "/providers/Microsoft.Aad/operations",
+			Name:           "operation_entity",
+			Struct:         &armdomainservices.OperationEntity{},
+			ResponseStruct: &armdomainservices.OuContainerOperationsClientListResponse{},
+			Client:         &armdomainservices.OuContainerOperationsClient{},
+			ListFunc:       (&armdomainservices.OuContainerOperationsClient{}).NewListPager,
+			NewFunc:        armdomainservices.NewOuContainerOperationsClient,
+			URL:            "/providers/Microsoft.Aad/operations",
 		},
 	}
 
@@ -33,5 +33,5 @@ func Armdomainservices() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armdomainservices()...)
+	Tables = append(Tables, Armdomainservices()...)
 }

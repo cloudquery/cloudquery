@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic
 func Armelastic() []Table {
 	tables := []Table{
 		{
-      Name: "monitor_resource",
-      Struct: &armelastic.MonitorResource{},
-      ResponseStruct: &armelastic.MonitorsClientListResponse{},
-      Client: &armelastic.MonitorsClient{},
-      ListFunc: (&armelastic.MonitorsClient{}).NewListPager,
-			NewFunc: armelastic.NewMonitorsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Elastic/monitors",
+			Name:           "monitor_resource",
+			Struct:         &armelastic.MonitorResource{},
+			ResponseStruct: &armelastic.MonitorsClientListResponse{},
+			Client:         &armelastic.MonitorsClient{},
+			ListFunc:       (&armelastic.MonitorsClient{}).NewListPager,
+			NewFunc:        armelastic.NewMonitorsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Elastic/monitors",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armelastic() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armelastic()...)
+	Tables = append(Tables, Armelastic()...)
 }

@@ -8,7 +8,7 @@ func Armhanaonazure() []*Table {
 		{
 			NewFunc: armhanaonazure.NewSapMonitorsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hanaonazure/armhanaonazure",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.HanaOnAzure/sapMonitors",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.HanaOnAzure/sapMonitors",
 		},
 	}
 	return tables

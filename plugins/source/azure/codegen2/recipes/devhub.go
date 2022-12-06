@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devhub/armdevhub"
 func Armdevhub() []Table {
 	tables := []Table{
 		{
-      Name: "workflow",
-      Struct: &armdevhub.Workflow{},
-      ResponseStruct: &armdevhub.WorkflowClientListResponse{},
-      Client: &armdevhub.WorkflowClient{},
-      ListFunc: (&armdevhub.WorkflowClient{}).NewListPager,
-			NewFunc: armdevhub.NewWorkflowClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DevHub/workflows",
+			Name:           "workflow",
+			Struct:         &armdevhub.Workflow{},
+			ResponseStruct: &armdevhub.WorkflowClientListResponse{},
+			Client:         &armdevhub.WorkflowClient{},
+			ListFunc:       (&armdevhub.WorkflowClient{}).NewListPager,
+			NewFunc:        armdevhub.NewWorkflowClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DevHub/workflows",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armdevhub() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armdevhub()...)
+	Tables = append(Tables, Armdevhub()...)
 }

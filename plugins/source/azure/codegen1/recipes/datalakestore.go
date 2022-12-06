@@ -8,7 +8,7 @@ func Armdatalakestore() []*Table {
 		{
 			NewFunc: armdatalakestore.NewAccountsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-store/armdatalakestore",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DataLakeStore/accounts",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.DataLakeStore/accounts",
 		},
 	}
 	return tables

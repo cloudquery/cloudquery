@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp"
 func Armnetapp() []Table {
 	tables := []Table{
 		{
-      Name: "account",
-      Struct: &armnetapp.Account{},
-      ResponseStruct: &armnetapp.AccountsClientListResponse{},
-      Client: &armnetapp.AccountsClient{},
-      ListFunc: (&armnetapp.AccountsClient{}).NewListPager,
-			NewFunc: armnetapp.NewAccountsClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts",
+			Name:           "account",
+			Struct:         &armnetapp.Account{},
+			ResponseStruct: &armnetapp.AccountsClientListResponse{},
+			Client:         &armnetapp.AccountsClient{},
+			ListFunc:       (&armnetapp.AccountsClient{}).NewListPager,
+			NewFunc:        armnetapp.NewAccountsClient,
+			URL:            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armnetapp() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armnetapp()...)
+	Tables = append(Tables, Armnetapp()...)
 }

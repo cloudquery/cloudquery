@@ -6,22 +6,22 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confluent/armconfl
 func Armconfluent() []Table {
 	tables := []Table{
 		{
-      Name: "agreement_resource",
-      Struct: &armconfluent.AgreementResource{},
-      ResponseStruct: &armconfluent.MarketplaceAgreementsClientListResponse{},
-      Client: &armconfluent.MarketplaceAgreementsClient{},
-      ListFunc: (&armconfluent.MarketplaceAgreementsClient{}).NewListPager,
-			NewFunc: armconfluent.NewMarketplaceAgreementsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Confluent/agreements",
+			Name:           "agreement_resource",
+			Struct:         &armconfluent.AgreementResource{},
+			ResponseStruct: &armconfluent.MarketplaceAgreementsClientListResponse{},
+			Client:         &armconfluent.MarketplaceAgreementsClient{},
+			ListFunc:       (&armconfluent.MarketplaceAgreementsClient{}).NewListPager,
+			NewFunc:        armconfluent.NewMarketplaceAgreementsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Confluent/agreements",
 		},
 		{
-      Name: "operation_result",
-      Struct: &armconfluent.OperationResult{},
-      ResponseStruct: &armconfluent.OrganizationOperationsClientListResponse{},
-      Client: &armconfluent.OrganizationOperationsClient{},
-      ListFunc: (&armconfluent.OrganizationOperationsClient{}).NewListPager,
-			NewFunc: armconfluent.NewOrganizationOperationsClient,
-			URL: "/providers/Microsoft.Confluent/operations",
+			Name:           "operation_result",
+			Struct:         &armconfluent.OperationResult{},
+			ResponseStruct: &armconfluent.OrganizationOperationsClientListResponse{},
+			Client:         &armconfluent.OrganizationOperationsClient{},
+			ListFunc:       (&armconfluent.OrganizationOperationsClient{}).NewListPager,
+			NewFunc:        armconfluent.NewOrganizationOperationsClient,
+			URL:            "/providers/Microsoft.Confluent/operations",
 		},
 	}
 
@@ -33,5 +33,5 @@ func Armconfluent() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armconfluent()...)
+	Tables = append(Tables, Armconfluent()...)
 }

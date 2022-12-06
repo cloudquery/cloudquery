@@ -8,7 +8,7 @@ func Armwindowsiot() []*Table {
 		{
 			NewFunc: armwindowsiot.NewServicesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsiot/armwindowsiot",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.WindowsIoT/deviceServices",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.WindowsIoT/deviceServices",
 		},
 	}
 	return tables

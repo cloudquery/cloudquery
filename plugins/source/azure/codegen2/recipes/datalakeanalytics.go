@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-analytics
 func Armdatalakeanalytics() []Table {
 	tables := []Table{
 		{
-      Name: "account_basic",
-      Struct: &armdatalakeanalytics.AccountBasic{},
-      ResponseStruct: &armdatalakeanalytics.AccountsClientListResponse{},
-      Client: &armdatalakeanalytics.AccountsClient{},
-      ListFunc: (&armdatalakeanalytics.AccountsClient{}).NewListPager,
-			NewFunc: armdatalakeanalytics.NewAccountsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DataLakeAnalytics/accounts",
+			Name:           "account_basic",
+			Struct:         &armdatalakeanalytics.AccountBasic{},
+			ResponseStruct: &armdatalakeanalytics.AccountsClientListResponse{},
+			Client:         &armdatalakeanalytics.AccountsClient{},
+			ListFunc:       (&armdatalakeanalytics.AccountsClient{}).NewListPager,
+			NewFunc:        armdatalakeanalytics.NewAccountsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DataLakeAnalytics/accounts",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armdatalakeanalytics() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armdatalakeanalytics()...)
+	Tables = append(Tables, Armdatalakeanalytics()...)
 }

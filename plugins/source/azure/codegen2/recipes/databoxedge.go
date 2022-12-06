@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdat
 func Armdataboxedge() []Table {
 	tables := []Table{
 		{
-      Name: "sku",
-      Struct: &armdataboxedge.SKU{},
-      ResponseStruct: &armdataboxedge.AvailableSKUsClientListResponse{},
-      Client: &armdataboxedge.AvailableSKUsClient{},
-      ListFunc: (&armdataboxedge.AvailableSKUsClient{}).NewListPager,
-			NewFunc: armdataboxedge.NewAvailableSKUsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DataBoxEdge/availableSkus",
+			Name:           "sku",
+			Struct:         &armdataboxedge.SKU{},
+			ResponseStruct: &armdataboxedge.AvailableSKUsClientListResponse{},
+			Client:         &armdataboxedge.AvailableSKUsClient{},
+			ListFunc:       (&armdataboxedge.AvailableSKUsClient{}).NewListPager,
+			NewFunc:        armdataboxedge.NewAvailableSKUsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DataBoxEdge/availableSkus",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armdataboxedge() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armdataboxedge()...)
+	Tables = append(Tables, Armdataboxedge()...)
 }

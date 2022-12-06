@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelas
 func Armelasticsan() []Table {
 	tables := []Table{
 		{
-      Name: "sku_information",
-      Struct: &armelasticsan.SKUInformation{},
-      ResponseStruct: &armelasticsan.SKUsClientListResponse{},
-      Client: &armelasticsan.SKUsClient{},
-      ListFunc: (&armelasticsan.SKUsClient{}).NewListPager,
-			NewFunc: armelasticsan.NewSKUsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ElasticSan/skus",
+			Name:           "sku_information",
+			Struct:         &armelasticsan.SKUInformation{},
+			ResponseStruct: &armelasticsan.SKUsClientListResponse{},
+			Client:         &armelasticsan.SKUsClient{},
+			ListFunc:       (&armelasticsan.SKUsClient{}).NewListPager,
+			NewFunc:        armelasticsan.NewSKUsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ElasticSan/skus",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armelasticsan() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armelasticsan()...)
+	Tables = append(Tables, Armelasticsan()...)
 }

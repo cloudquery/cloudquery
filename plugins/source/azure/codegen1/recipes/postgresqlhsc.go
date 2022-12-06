@@ -8,7 +8,7 @@ func Armpostgresqlhsc() []*Table {
 		{
 			NewFunc: armpostgresqlhsc.NewServerGroupsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresqlhsc/armpostgresqlhsc",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DBForPostgreSql/serverGroupsv2",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.DBForPostgreSql/serverGroupsv2",
 		},
 	}
 	return tables

@@ -6,31 +6,31 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
 func Armcosmos() []Table {
 	tables := []Table{
 		{
-      Name: "location_get_result",
-      Struct: &armcosmos.LocationGetResult{},
-      ResponseStruct: &armcosmos.LocationsClientListResponse{},
-      Client: &armcosmos.LocationsClient{},
-      ListFunc: (&armcosmos.LocationsClient{}).NewListPager,
-			NewFunc: armcosmos.NewLocationsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations",
+			Name:           "database_account_get_results",
+			Struct:         &armcosmos.DatabaseAccountGetResults{},
+			ResponseStruct: &armcosmos.DatabaseAccountsClientListResponse{},
+			Client:         &armcosmos.DatabaseAccountsClient{},
+			ListFunc:       (&armcosmos.DatabaseAccountsClient{}).NewListPager,
+			NewFunc:        armcosmos.NewDatabaseAccountsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/databaseAccounts",
 		},
 		{
-      Name: "database_account_get_results",
-      Struct: &armcosmos.DatabaseAccountGetResults{},
-      ResponseStruct: &armcosmos.DatabaseAccountsClientListResponse{},
-      Client: &armcosmos.DatabaseAccountsClient{},
-      ListFunc: (&armcosmos.DatabaseAccountsClient{}).NewListPager,
-			NewFunc: armcosmos.NewDatabaseAccountsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/databaseAccounts",
+			Name:           "location_get_result",
+			Struct:         &armcosmos.LocationGetResult{},
+			ResponseStruct: &armcosmos.LocationsClientListResponse{},
+			Client:         &armcosmos.LocationsClient{},
+			ListFunc:       (&armcosmos.LocationsClient{}).NewListPager,
+			NewFunc:        armcosmos.NewLocationsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations",
 		},
 		{
-      Name: "restorable_database_account_get_result",
-      Struct: &armcosmos.RestorableDatabaseAccountGetResult{},
-      ResponseStruct: &armcosmos.RestorableDatabaseAccountsClientListResponse{},
-      Client: &armcosmos.RestorableDatabaseAccountsClient{},
-      ListFunc: (&armcosmos.RestorableDatabaseAccountsClient{}).NewListPager,
-			NewFunc: armcosmos.NewRestorableDatabaseAccountsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/restorableDatabaseAccounts",
+			Name:           "restorable_database_account_get_result",
+			Struct:         &armcosmos.RestorableDatabaseAccountGetResult{},
+			ResponseStruct: &armcosmos.RestorableDatabaseAccountsClientListResponse{},
+			Client:         &armcosmos.RestorableDatabaseAccountsClient{},
+			ListFunc:       (&armcosmos.RestorableDatabaseAccountsClient{}).NewListPager,
+			NewFunc:        armcosmos.NewRestorableDatabaseAccountsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/restorableDatabaseAccounts",
 		},
 	}
 
@@ -42,5 +42,5 @@ func Armcosmos() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armcosmos()...)
+	Tables = append(Tables, Armcosmos()...)
 }

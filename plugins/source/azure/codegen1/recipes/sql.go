@@ -6,29 +6,29 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
 func Armsql() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armsql.NewInstancePoolsClient,
+			NewFunc: armsql.NewDeletedServersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/instancePools",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/deletedServers",
 		},
 		{
 			NewFunc: armsql.NewManagedInstancesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/managedInstances",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/managedInstances",
 		},
 		{
 			NewFunc: armsql.NewVirtualClustersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/virtualClusters",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/virtualClusters",
+		},
+		{
+			NewFunc: armsql.NewInstancePoolsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/instancePools",
 		},
 		{
 			NewFunc: armsql.NewServersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/servers",
-		},
-		{
-			NewFunc: armsql.NewDeletedServersClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/deletedServers",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/servers",
 		},
 	}
 	return tables

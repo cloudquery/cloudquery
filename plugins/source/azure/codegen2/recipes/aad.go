@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/aad/armaad"
 func Armaad() []Table {
 	tables := []Table{
 		{
-      Name: "private_link_policy",
-      Struct: &armaad.PrivateLinkPolicy{},
-      ResponseStruct: &armaad.PrivateLinkForAzureAdClientListResponse{},
-      Client: &armaad.PrivateLinkForAzureAdClient{},
-      ListFunc: (&armaad.PrivateLinkForAzureAdClient{}).NewListPager,
-			NewFunc: armaad.NewPrivateLinkForAzureAdClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.aadiam/privateLinkForAzureAd",
+			Name:           "private_link_policy",
+			Struct:         &armaad.PrivateLinkPolicy{},
+			ResponseStruct: &armaad.PrivateLinkForAzureAdClientListResponse{},
+			Client:         &armaad.PrivateLinkForAzureAdClient{},
+			ListFunc:       (&armaad.PrivateLinkForAzureAdClient{}).NewListPager,
+			NewFunc:        armaad.NewPrivateLinkForAzureAdClient,
+			URL:            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.aadiam/privateLinkForAzureAd",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armaad() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armaad()...)
+	Tables = append(Tables, Armaad()...)
 }

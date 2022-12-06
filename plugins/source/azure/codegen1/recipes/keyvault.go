@@ -8,7 +8,7 @@ func Armkeyvault() []*Table {
 		{
 			NewFunc: armkeyvault.NewVaultsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault",
-			URL: "/subscriptions/{subscriptionId}/resources",
+			URL:     "/subscriptions/{subscriptionId}/resources",
 		},
 	}
 	return tables

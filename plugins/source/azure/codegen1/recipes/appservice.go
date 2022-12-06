@@ -6,59 +6,59 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armapps
 func Armappservice() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armappservice.NewResourceHealthMetadataClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Web/resourceHealthMetadata",
-		},
-		{
-			NewFunc: armappservice.NewCertificateOrdersClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.CertificateRegistration/certificateOrders",
-		},
-		{
-			NewFunc: armappservice.NewCertificatesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Web/certificates",
-		},
-		{
 			NewFunc: armappservice.NewDomainsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/domains",
-		},
-		{
-			NewFunc: armappservice.NewDeletedWebAppsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Web/deletedSites",
-		},
-		{
-			NewFunc: armappservice.NewEnvironmentsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Web/hostingEnvironments",
-		},
-		{
-			NewFunc: armappservice.NewRecommendationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Web/recommendations",
-		},
-		{
-			NewFunc: armappservice.NewStaticSitesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Web/staticSites",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/domains",
 		},
 		{
 			NewFunc: armappservice.NewTopLevelDomainsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/topLevelDomains",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/topLevelDomains",
+		},
+		{
+			NewFunc: armappservice.NewResourceHealthMetadataClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Web/resourceHealthMetadata",
+		},
+		{
+			NewFunc: armappservice.NewCertificateOrdersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.CertificateRegistration/certificateOrders",
+		},
+		{
+			NewFunc: armappservice.NewStaticSitesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Web/staticSites",
+		},
+		{
+			NewFunc: armappservice.NewEnvironmentsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Web/hostingEnvironments",
 		},
 		{
 			NewFunc: armappservice.NewPlansClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Web/serverfarms",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Web/serverfarms",
+		},
+		{
+			NewFunc: armappservice.NewCertificatesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Web/certificates",
+		},
+		{
+			NewFunc: armappservice.NewDeletedWebAppsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Web/deletedSites",
+		},
+		{
+			NewFunc: armappservice.NewRecommendationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Web/recommendations",
 		},
 		{
 			NewFunc: armappservice.NewWebAppsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Web/sites",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Web/sites",
 		},
 	}
 	return tables

@@ -6,31 +6,31 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armaz
 func Armazurearcdata() []Table {
 	tables := []Table{
 		{
-      Name: "sql_server_instance",
-      Struct: &armazurearcdata.SQLServerInstance{},
-      ResponseStruct: &armazurearcdata.SQLServerInstancesClientListResponse{},
-      Client: &armazurearcdata.SQLServerInstancesClient{},
-      ListFunc: (&armazurearcdata.SQLServerInstancesClient{}).NewListPager,
-			NewFunc: armazurearcdata.NewSQLServerInstancesClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/sqlServerInstances",
+			Name:           "sql_managed_instance",
+			Struct:         &armazurearcdata.SQLManagedInstance{},
+			ResponseStruct: &armazurearcdata.SQLManagedInstancesClientListResponse{},
+			Client:         &armazurearcdata.SQLManagedInstancesClient{},
+			ListFunc:       (&armazurearcdata.SQLManagedInstancesClient{}).NewListPager,
+			NewFunc:        armazurearcdata.NewSQLManagedInstancesClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/sqlManagedInstances",
 		},
 		{
-      Name: "postgres_instance",
-      Struct: &armazurearcdata.PostgresInstance{},
-      ResponseStruct: &armazurearcdata.PostgresInstancesClientListResponse{},
-      Client: &armazurearcdata.PostgresInstancesClient{},
-      ListFunc: (&armazurearcdata.PostgresInstancesClient{}).NewListPager,
-			NewFunc: armazurearcdata.NewPostgresInstancesClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/postgresInstances",
+			Name:           "sql_server_instance",
+			Struct:         &armazurearcdata.SQLServerInstance{},
+			ResponseStruct: &armazurearcdata.SQLServerInstancesClientListResponse{},
+			Client:         &armazurearcdata.SQLServerInstancesClient{},
+			ListFunc:       (&armazurearcdata.SQLServerInstancesClient{}).NewListPager,
+			NewFunc:        armazurearcdata.NewSQLServerInstancesClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/sqlServerInstances",
 		},
 		{
-      Name: "sql_managed_instance",
-      Struct: &armazurearcdata.SQLManagedInstance{},
-      ResponseStruct: &armazurearcdata.SQLManagedInstancesClientListResponse{},
-      Client: &armazurearcdata.SQLManagedInstancesClient{},
-      ListFunc: (&armazurearcdata.SQLManagedInstancesClient{}).NewListPager,
-			NewFunc: armazurearcdata.NewSQLManagedInstancesClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/sqlManagedInstances",
+			Name:           "postgres_instance",
+			Struct:         &armazurearcdata.PostgresInstance{},
+			ResponseStruct: &armazurearcdata.PostgresInstancesClientListResponse{},
+			Client:         &armazurearcdata.PostgresInstancesClient{},
+			ListFunc:       (&armazurearcdata.PostgresInstancesClient{}).NewListPager,
+			NewFunc:        armazurearcdata.NewPostgresInstancesClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/postgresInstances",
 		},
 	}
 
@@ -42,5 +42,5 @@ func Armazurearcdata() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armazurearcdata()...)
+	Tables = append(Tables, Armazurearcdata()...)
 }

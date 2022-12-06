@@ -8,7 +8,7 @@ func Armtestbase() []*Table {
 		{
 			NewFunc: armtestbase.NewSKUsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/testbase/armtestbase",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.TestBase/skus",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.TestBase/skus",
 		},
 	}
 	return tables

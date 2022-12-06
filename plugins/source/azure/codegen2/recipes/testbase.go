@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/testbase/armtestba
 func Armtestbase() []Table {
 	tables := []Table{
 		{
-      Name: "account_sku",
-      Struct: &armtestbase.AccountSKU{},
-      ResponseStruct: &armtestbase.SKUsClientListResponse{},
-      Client: &armtestbase.SKUsClient{},
-      ListFunc: (&armtestbase.SKUsClient{}).NewListPager,
-			NewFunc: armtestbase.NewSKUsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.TestBase/skus",
+			Name:           "account_sku",
+			Struct:         &armtestbase.AccountSKU{},
+			ResponseStruct: &armtestbase.SKUsClientListResponse{},
+			Client:         &armtestbase.SKUsClient{},
+			ListFunc:       (&armtestbase.SKUsClient{}).NewListPager,
+			NewFunc:        armtestbase.NewSKUsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.TestBase/skus",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armtestbase() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armtestbase()...)
+	Tables = append(Tables, Armtestbase()...)
 }

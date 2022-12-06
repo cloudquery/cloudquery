@@ -8,17 +8,17 @@ func Armresources() []*Table {
 		{
 			NewFunc: armresources.NewTagsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources",
-			URL: "/subscriptions/{subscriptionId}/tagNames",
+			URL:     "/subscriptions/{subscriptionId}/tagNames",
 		},
 		{
 			NewFunc: armresources.NewProvidersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources",
-			URL: "/subscriptions/{subscriptionId}/providers",
+			URL:     "/subscriptions/{subscriptionId}/providers",
 		},
 		{
 			NewFunc: armresources.NewResourceGroupsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources",
-			URL: "/subscriptions/{subscriptionId}/resourcegroups",
+			URL:     "/subscriptions/{subscriptionId}/resourcegroups",
 		},
 	}
 	return tables

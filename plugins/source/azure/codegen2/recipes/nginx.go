@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx"
 func Armnginx() []Table {
 	tables := []Table{
 		{
-      Name: "deployment",
-      Struct: &armnginx.Deployment{},
-      ResponseStruct: &armnginx.DeploymentsClientListResponse{},
-      Client: &armnginx.DeploymentsClient{},
-      ListFunc: (&armnginx.DeploymentsClient{}).NewListPager,
-			NewFunc: armnginx.NewDeploymentsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Nginx.NginxPlus/nginxDeployments",
+			Name:           "deployment",
+			Struct:         &armnginx.Deployment{},
+			ResponseStruct: &armnginx.DeploymentsClientListResponse{},
+			Client:         &armnginx.DeploymentsClient{},
+			ListFunc:       (&armnginx.DeploymentsClient{}).NewListPager,
+			NewFunc:        armnginx.NewDeploymentsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Nginx.NginxPlus/nginxDeployments",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armnginx() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armnginx()...)
+	Tables = append(Tables, Armnginx()...)
 }

@@ -8,7 +8,7 @@ func Armeventhub() []*Table {
 		{
 			NewFunc: armeventhub.NewNamespacesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.EventHub/namespaces",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.EventHub/namespaces",
 		},
 	}
 	return tables

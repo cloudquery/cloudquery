@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armauto
 func Armautomation() []Table {
 	tables := []Table{
 		{
-      Name: "account",
-      Struct: &armautomation.Account{},
-      ResponseStruct: &armautomation.AccountClientListResponse{},
-      Client: &armautomation.AccountClient{},
-      ListFunc: (&armautomation.AccountClient{}).NewListPager,
-			NewFunc: armautomation.NewAccountClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Automation/automationAccounts",
+			Name:           "account",
+			Struct:         &armautomation.Account{},
+			ResponseStruct: &armautomation.AccountClientListResponse{},
+			Client:         &armautomation.AccountClient{},
+			ListFunc:       (&armautomation.AccountClient{}).NewListPager,
+			NewFunc:        armautomation.NewAccountClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Automation/automationAccounts",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armautomation() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armautomation()...)
+	Tables = append(Tables, Armautomation()...)
 }

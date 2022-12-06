@@ -8,7 +8,7 @@ func Armelastic() []*Table {
 		{
 			NewFunc: armelastic.NewMonitorsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Elastic/monitors",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Elastic/monitors",
 		},
 	}
 	return tables

@@ -6,29 +6,29 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn"
 func Armcdn() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armcdn.NewResourceUsageClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/checkResourceUsage",
-		},
-		{
 			NewFunc: armcdn.NewEdgeNodesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
-			URL: "/providers/Microsoft.Cdn/edgenodes",
+			URL:     "/providers/Microsoft.Cdn/edgenodes",
 		},
 		{
 			NewFunc: armcdn.NewProfilesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/profiles",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/profiles",
 		},
 		{
 			NewFunc: armcdn.NewPoliciesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/cdnWebApplicationFirewallPolicies",
+			URL:     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/cdnWebApplicationFirewallPolicies",
 		},
 		{
 			NewFunc: armcdn.NewManagedRuleSetsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/cdnWebApplicationFirewallManagedRuleSets",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/cdnWebApplicationFirewallManagedRuleSets",
+		},
+		{
+			NewFunc: armcdn.NewResourceUsageClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/checkResourceUsage",
 		},
 	}
 	return tables

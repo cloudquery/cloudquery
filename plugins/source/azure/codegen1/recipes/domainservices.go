@@ -8,12 +8,12 @@ func Armdomainservices() []*Table {
 		{
 			NewFunc: armdomainservices.NewDomainServiceOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/domainservices/armdomainservices",
-			URL: "/providers/Microsoft.AAD/operations",
+			URL:     "/providers/Microsoft.AAD/operations",
 		},
 		{
 			NewFunc: armdomainservices.NewOuContainerOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/domainservices/armdomainservices",
-			URL: "/providers/Microsoft.Aad/operations",
+			URL:     "/providers/Microsoft.Aad/operations",
 		},
 	}
 	return tables

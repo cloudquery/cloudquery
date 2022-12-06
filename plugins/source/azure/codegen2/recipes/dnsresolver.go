@@ -6,22 +6,22 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdns
 func Armdnsresolver() []Table {
 	tables := []Table{
 		{
-      Name: "dns_resolver",
-      Struct: &armdnsresolver.DNSResolver{},
-      ResponseStruct: &armdnsresolver.DNSResolversClientListResponse{},
-      Client: &armdnsresolver.DNSResolversClient{},
-      ListFunc: (&armdnsresolver.DNSResolversClient{}).NewListPager,
-			NewFunc: armdnsresolver.NewDNSResolversClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/dnsResolvers",
+			Name:           "dns_resolver",
+			Struct:         &armdnsresolver.DNSResolver{},
+			ResponseStruct: &armdnsresolver.DNSResolversClientListResponse{},
+			Client:         &armdnsresolver.DNSResolversClient{},
+			ListFunc:       (&armdnsresolver.DNSResolversClient{}).NewListPager,
+			NewFunc:        armdnsresolver.NewDNSResolversClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/dnsResolvers",
 		},
 		{
-      Name: "dns_forwarding_ruleset",
-      Struct: &armdnsresolver.DNSForwardingRuleset{},
-      ResponseStruct: &armdnsresolver.DNSForwardingRulesetsClientListResponse{},
-      Client: &armdnsresolver.DNSForwardingRulesetsClient{},
-      ListFunc: (&armdnsresolver.DNSForwardingRulesetsClient{}).NewListPager,
-			NewFunc: armdnsresolver.NewDNSForwardingRulesetsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/dnsForwardingRulesets",
+			Name:           "dns_forwarding_ruleset",
+			Struct:         &armdnsresolver.DNSForwardingRuleset{},
+			ResponseStruct: &armdnsresolver.DNSForwardingRulesetsClientListResponse{},
+			Client:         &armdnsresolver.DNSForwardingRulesetsClient{},
+			ListFunc:       (&armdnsresolver.DNSForwardingRulesetsClient{}).NewListPager,
+			NewFunc:        armdnsresolver.NewDNSForwardingRulesetsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/dnsForwardingRulesets",
 		},
 	}
 
@@ -33,5 +33,5 @@ func Armdnsresolver() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armdnsresolver()...)
+	Tables = append(Tables, Armdnsresolver()...)
 }

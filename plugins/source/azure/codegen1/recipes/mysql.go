@@ -8,7 +8,7 @@ func Armmysql() []*Table {
 		{
 			NewFunc: armmysql.NewServersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/servers",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/servers",
 		},
 	}
 	return tables

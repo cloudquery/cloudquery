@@ -13,5 +13,3 @@ type Table struct {
 	// param names for NewXClient function
 	NewClientParams []string
 }
-
-

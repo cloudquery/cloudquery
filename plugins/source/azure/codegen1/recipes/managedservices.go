@@ -8,7 +8,7 @@ func Armmanagedservices() []*Table {
 		{
 			NewFunc: armmanagedservices.NewMarketplaceRegistrationDefinitionsWithoutScopeClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managedservices/armmanagedservices",
-			URL: "/providers/Microsoft.ManagedServices/marketplaceRegistrationDefinitions",
+			URL:     "/providers/Microsoft.ManagedServices/marketplaceRegistrationDefinitions",
 		},
 	}
 	return tables

@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automanage/armauto
 func Armautomanage() []Table {
 	tables := []Table{
 		{
-      Name: "configuration_profile_assignment",
-      Struct: &armautomanage.ConfigurationProfileAssignment{},
-      ResponseStruct: &armautomanage.ConfigurationProfileAssignmentsClientListResponse{},
-      Client: &armautomanage.ConfigurationProfileAssignmentsClient{},
-      ListFunc: (&armautomanage.ConfigurationProfileAssignmentsClient{}).NewListPager,
-			NewFunc: armautomanage.NewConfigurationProfileAssignmentsClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automanage/configurationProfileAssignments",
+			Name:           "configuration_profile_assignment",
+			Struct:         &armautomanage.ConfigurationProfileAssignment{},
+			ResponseStruct: &armautomanage.ConfigurationProfileAssignmentsClientListResponse{},
+			Client:         &armautomanage.ConfigurationProfileAssignmentsClient{},
+			ListFunc:       (&armautomanage.ConfigurationProfileAssignmentsClient{}).NewListPager,
+			NewFunc:        armautomanage.NewConfigurationProfileAssignmentsClient,
+			URL:            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automanage/configurationProfileAssignments",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armautomanage() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armautomanage()...)
+	Tables = append(Tables, Armautomanage()...)
 }

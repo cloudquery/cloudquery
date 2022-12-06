@@ -6,22 +6,22 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sqlvirtualmachine/
 func Armsqlvirtualmachine() []Table {
 	tables := []Table{
 		{
-      Name: "group",
-      Struct: &armsqlvirtualmachine.Group{},
-      ResponseStruct: &armsqlvirtualmachine.GroupsClientListResponse{},
-      Client: &armsqlvirtualmachine.GroupsClient{},
-      ListFunc: (&armsqlvirtualmachine.GroupsClient{}).NewListPager,
-			NewFunc: armsqlvirtualmachine.NewGroupsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups",
+			Name:           "group",
+			Struct:         &armsqlvirtualmachine.Group{},
+			ResponseStruct: &armsqlvirtualmachine.GroupsClientListResponse{},
+			Client:         &armsqlvirtualmachine.GroupsClient{},
+			ListFunc:       (&armsqlvirtualmachine.GroupsClient{}).NewListPager,
+			NewFunc:        armsqlvirtualmachine.NewGroupsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups",
 		},
 		{
-      Name: "sql_virtual_machine",
-      Struct: &armsqlvirtualmachine.SQLVirtualMachine{},
-      ResponseStruct: &armsqlvirtualmachine.SQLVirtualMachinesClientListResponse{},
-      Client: &armsqlvirtualmachine.SQLVirtualMachinesClient{},
-      ListFunc: (&armsqlvirtualmachine.SQLVirtualMachinesClient{}).NewListPager,
-			NewFunc: armsqlvirtualmachine.NewSQLVirtualMachinesClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines",
+			Name:           "sql_virtual_machine",
+			Struct:         &armsqlvirtualmachine.SQLVirtualMachine{},
+			ResponseStruct: &armsqlvirtualmachine.SQLVirtualMachinesClientListResponse{},
+			Client:         &armsqlvirtualmachine.SQLVirtualMachinesClient{},
+			ListFunc:       (&armsqlvirtualmachine.SQLVirtualMachinesClient{}).NewListPager,
+			NewFunc:        armsqlvirtualmachine.NewSQLVirtualMachinesClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines",
 		},
 	}
 
@@ -33,5 +33,5 @@ func Armsqlvirtualmachine() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armsqlvirtualmachine()...)
+	Tables = append(Tables, Armsqlvirtualmachine()...)
 }

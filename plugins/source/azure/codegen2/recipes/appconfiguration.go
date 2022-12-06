@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appconfiguration/a
 func Armappconfiguration() []Table {
 	tables := []Table{
 		{
-      Name: "configuration_store",
-      Struct: &armappconfiguration.ConfigurationStore{},
-      ResponseStruct: &armappconfiguration.ConfigurationStoresClientListResponse{},
-      Client: &armappconfiguration.ConfigurationStoresClient{},
-      ListFunc: (&armappconfiguration.ConfigurationStoresClient{}).NewListPager,
-			NewFunc: armappconfiguration.NewConfigurationStoresClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.AppConfiguration/configurationStores",
+			Name:           "configuration_store",
+			Struct:         &armappconfiguration.ConfigurationStore{},
+			ResponseStruct: &armappconfiguration.ConfigurationStoresClientListResponse{},
+			Client:         &armappconfiguration.ConfigurationStoresClient{},
+			ListFunc:       (&armappconfiguration.ConfigurationStoresClient{}).NewListPager,
+			NewFunc:        armappconfiguration.NewConfigurationStoresClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.AppConfiguration/configurationStores",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armappconfiguration() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armappconfiguration()...)
+	Tables = append(Tables, Armappconfiguration()...)
 }

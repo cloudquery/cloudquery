@@ -6,14 +6,14 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/engagementfabric/a
 func Armengagementfabric() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armengagementfabric.NewAccountsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/engagementfabric/armengagementfabric",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.EngagementFabric/Accounts",
-		},
-		{
 			NewFunc: armengagementfabric.NewSKUsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/engagementfabric/armengagementfabric",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.EngagementFabric/skus",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.EngagementFabric/skus",
+		},
+		{
+			NewFunc: armengagementfabric.NewAccountsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/engagementfabric/armengagementfabric",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.EngagementFabric/Accounts",
 		},
 	}
 	return tables

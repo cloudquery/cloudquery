@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualizat
 func Armdesktopvirtualization() []Table {
 	tables := []Table{
 		{
-      Name: "host_pool",
-      Struct: &armdesktopvirtualization.HostPool{},
-      ResponseStruct: &armdesktopvirtualization.HostPoolsClientListResponse{},
-      Client: &armdesktopvirtualization.HostPoolsClient{},
-      ListFunc: (&armdesktopvirtualization.HostPoolsClient{}).NewListPager,
-			NewFunc: armdesktopvirtualization.NewHostPoolsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DesktopVirtualization/hostPools",
+			Name:           "host_pool",
+			Struct:         &armdesktopvirtualization.HostPool{},
+			ResponseStruct: &armdesktopvirtualization.HostPoolsClientListResponse{},
+			Client:         &armdesktopvirtualization.HostPoolsClient{},
+			ListFunc:       (&armdesktopvirtualization.HostPoolsClient{}).NewListPager,
+			NewFunc:        armdesktopvirtualization.NewHostPoolsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DesktopVirtualization/hostPools",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armdesktopvirtualization() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armdesktopvirtualization()...)
+	Tables = append(Tables, Armdesktopvirtualization()...)
 }

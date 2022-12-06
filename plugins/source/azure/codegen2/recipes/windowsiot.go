@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsiot/armwind
 func Armwindowsiot() []Table {
 	tables := []Table{
 		{
-      Name: "device_service",
-      Struct: &armwindowsiot.DeviceService{},
-      ResponseStruct: &armwindowsiot.ServicesClientListResponse{},
-      Client: &armwindowsiot.ServicesClient{},
-      ListFunc: (&armwindowsiot.ServicesClient{}).NewListPager,
-			NewFunc: armwindowsiot.NewServicesClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.WindowsIoT/deviceServices",
+			Name:           "device_service",
+			Struct:         &armwindowsiot.DeviceService{},
+			ResponseStruct: &armwindowsiot.ServicesClientListResponse{},
+			Client:         &armwindowsiot.ServicesClient{},
+			ListFunc:       (&armwindowsiot.ServicesClient{}).NewListPager,
+			NewFunc:        armwindowsiot.NewServicesClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.WindowsIoT/deviceServices",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armwindowsiot() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armwindowsiot()...)
+	Tables = append(Tables, Armwindowsiot()...)
 }

@@ -8,7 +8,7 @@ func Armmanagementpartner() []*Table {
 		{
 			NewFunc: armmanagementpartner.NewOperationClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementpartner/armmanagementpartner",
-			URL: "/providers/Microsoft.ManagementPartner/operations",
+			URL:     "/providers/Microsoft.ManagementPartner/operations",
 		},
 	}
 	return tables

@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/labservices/armlab
 func Armlabservices() []Table {
 	tables := []Table{
 		{
-      Name: "sku_info",
-      Struct: &armlabservices.SKUInfo{},
-      ResponseStruct: &armlabservices.SKUsClientListResponse{},
-      Client: &armlabservices.SKUsClient{},
-      ListFunc: (&armlabservices.SKUsClient{}).NewListPager,
-			NewFunc: armlabservices.NewSKUsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.LabServices/skus",
+			Name:           "sku_info",
+			Struct:         &armlabservices.SKUInfo{},
+			ResponseStruct: &armlabservices.SKUsClientListResponse{},
+			Client:         &armlabservices.SKUsClient{},
+			ListFunc:       (&armlabservices.SKUsClient{}).NewListPager,
+			NewFunc:        armlabservices.NewSKUsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.LabServices/skus",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armlabservices() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armlabservices()...)
+	Tables = append(Tables, Armlabservices()...)
 }

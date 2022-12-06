@@ -6,40 +6,40 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfront
 func Armfrontdoor() []Table {
 	tables := []Table{
 		{
-      Name: "managed_rule_set_definition",
-      Struct: &armfrontdoor.ManagedRuleSetDefinition{},
-      ResponseStruct: &armfrontdoor.ManagedRuleSetsClientListResponse{},
-      Client: &armfrontdoor.ManagedRuleSetsClient{},
-      ListFunc: (&armfrontdoor.ManagedRuleSetsClient{}).NewListPager,
-			NewFunc: armfrontdoor.NewManagedRuleSetsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/FrontDoorWebApplicationFirewallManagedRuleSets",
+			Name:           "web_application_firewall_policy",
+			Struct:         &armfrontdoor.WebApplicationFirewallPolicy{},
+			ResponseStruct: &armfrontdoor.PoliciesClientListResponse{},
+			Client:         &armfrontdoor.PoliciesClient{},
+			ListFunc:       (&armfrontdoor.PoliciesClient{}).NewListPager,
+			NewFunc:        armfrontdoor.NewPoliciesClient,
+			URL:            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoorWebApplicationFirewallPolicies",
 		},
 		{
-      Name: "profile",
-      Struct: &armfrontdoor.Profile{},
-      ResponseStruct: &armfrontdoor.NetworkExperimentProfilesClientListResponse{},
-      Client: &armfrontdoor.NetworkExperimentProfilesClient{},
-      ListFunc: (&armfrontdoor.NetworkExperimentProfilesClient{}).NewListPager,
-			NewFunc: armfrontdoor.NewNetworkExperimentProfilesClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/NetworkExperimentProfiles",
+			Name:           "profile",
+			Struct:         &armfrontdoor.Profile{},
+			ResponseStruct: &armfrontdoor.NetworkExperimentProfilesClientListResponse{},
+			Client:         &armfrontdoor.NetworkExperimentProfilesClient{},
+			ListFunc:       (&armfrontdoor.NetworkExperimentProfilesClient{}).NewListPager,
+			NewFunc:        armfrontdoor.NewNetworkExperimentProfilesClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/NetworkExperimentProfiles",
 		},
 		{
-      Name: "web_application_firewall_policy",
-      Struct: &armfrontdoor.WebApplicationFirewallPolicy{},
-      ResponseStruct: &armfrontdoor.PoliciesClientListResponse{},
-      Client: &armfrontdoor.PoliciesClient{},
-      ListFunc: (&armfrontdoor.PoliciesClient{}).NewListPager,
-			NewFunc: armfrontdoor.NewPoliciesClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoorWebApplicationFirewallPolicies",
+			Name:           "front_door",
+			Struct:         &armfrontdoor.FrontDoor{},
+			ResponseStruct: &armfrontdoor.FrontDoorsClientListResponse{},
+			Client:         &armfrontdoor.FrontDoorsClient{},
+			ListFunc:       (&armfrontdoor.FrontDoorsClient{}).NewListPager,
+			NewFunc:        armfrontdoor.NewFrontDoorsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/frontDoors",
 		},
 		{
-      Name: "front_door",
-      Struct: &armfrontdoor.FrontDoor{},
-      ResponseStruct: &armfrontdoor.FrontDoorsClientListResponse{},
-      Client: &armfrontdoor.FrontDoorsClient{},
-      ListFunc: (&armfrontdoor.FrontDoorsClient{}).NewListPager,
-			NewFunc: armfrontdoor.NewFrontDoorsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/frontDoors",
+			Name:           "managed_rule_set_definition",
+			Struct:         &armfrontdoor.ManagedRuleSetDefinition{},
+			ResponseStruct: &armfrontdoor.ManagedRuleSetsClientListResponse{},
+			Client:         &armfrontdoor.ManagedRuleSetsClient{},
+			ListFunc:       (&armfrontdoor.ManagedRuleSetsClient{}).NewListPager,
+			NewFunc:        armfrontdoor.NewManagedRuleSetsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/FrontDoorWebApplicationFirewallManagedRuleSets",
 		},
 	}
 
@@ -51,5 +51,5 @@ func Armfrontdoor() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armfrontdoor()...)
+	Tables = append(Tables, Armfrontdoor()...)
 }

@@ -8,7 +8,7 @@ func Armhealthbot() []*Table {
 		{
 			NewFunc: armhealthbot.NewBotsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthbot/armhealthbot",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.HealthBot/healthBots",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.HealthBot/healthBots",
 		},
 	}
 	return tables

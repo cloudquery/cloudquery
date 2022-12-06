@@ -8,7 +8,7 @@ func Armaad() []*Table {
 		{
 			NewFunc: armaad.NewPrivateLinkForAzureAdClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/aad/armaad",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.aadiam/privateLinkForAzureAd",
+			URL:     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.aadiam/privateLinkForAzureAd",
 		},
 	}
 	return tables

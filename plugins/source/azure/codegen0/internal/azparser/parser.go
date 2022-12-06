@@ -35,9 +35,9 @@ var supportedNewClientParams = [][]string{
 }
 
 type function struct {
-	receiver string
-	name     string
-	ast 		*ast.FuncDecl
+	receiver   string
+	name       string
+	ast        *ast.FuncDecl
 	paramNames []string
 }
 
@@ -79,7 +79,6 @@ func isArrayExist(arr [][]string, item []string) bool {
 	return false
 }
 
-
 func getParamNames(fn *ast.FieldList) []string {
 	var params []string
 	for _, p := range fn.List {
@@ -95,23 +94,23 @@ func findFunctions(pkgs map[string]*ast.Package, re *regexp.Regexp) []function {
 	var funcs []function
 	for _, pack := range pkgs {
 		for _, f := range pack.Files {
-				for _, d := range f.Decls {
-						if fn, isFn := d.(*ast.FuncDecl); isFn {
-							if re.MatchString(fn.Name.Name) {
-								fun := function{
-									name: fn.Name.Name,
-									ast: fn,
-								}								
-								// if function is a method extract receiver name
-								if fn.Recv != nil && len(fn.Recv.List) == 1 {
-									receiver := fn.Recv.List[0].Type.(*ast.StarExpr).X.(*ast.Ident).Name
-									fun.receiver = receiver
-								}
-								fun.paramNames = getParamNames(fn.Type.Params)
-								funcs = append(funcs, fun)
-							}
+			for _, d := range f.Decls {
+				if fn, isFn := d.(*ast.FuncDecl); isFn {
+					if re.MatchString(fn.Name.Name) {
+						fun := function{
+							name: fn.Name.Name,
+							ast:  fn,
 						}
+						// if function is a method extract receiver name
+						if fn.Recv != nil && len(fn.Recv.List) == 1 {
+							receiver := fn.Recv.List[0].Type.(*ast.StarExpr).X.(*ast.Ident).Name
+							fun.receiver = receiver
+						}
+						fun.paramNames = getParamNames(fn.Type.Params)
+						funcs = append(funcs, fun)
+					}
 				}
+			}
 		}
 	}
 	return funcs
@@ -127,7 +126,7 @@ func CreateTablesFromPackage(pkg string) ([]*Table, error) {
 	pkgPath = strings.Replace(pkgPath, "A", "!A", 1)
 	pkgs, err := parser.ParseDir(set, pkgPath, nil, 0)
 	if err != nil {
-			return nil, err
+		return nil, err
 	}
 	newXClientFuncstions := findFunctions(pkgs, reNewClient)
 	for _, fn := range newXClientFuncstions {

@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch"
 func Armbatch() []Table {
 	tables := []Table{
 		{
-      Name: "account",
-      Struct: &armbatch.Account{},
-      ResponseStruct: &armbatch.AccountClientListResponse{},
-      Client: &armbatch.AccountClient{},
-      ListFunc: (&armbatch.AccountClient{}).NewListPager,
-			NewFunc: armbatch.NewAccountClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Batch/batchAccounts",
+			Name:           "account",
+			Struct:         &armbatch.Account{},
+			ResponseStruct: &armbatch.AccountClientListResponse{},
+			Client:         &armbatch.AccountClient{},
+			ListFunc:       (&armbatch.AccountClient{}).NewListPager,
+			NewFunc:        armbatch.NewAccountClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Batch/batchAccounts",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armbatch() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armbatch()...)
+	Tables = append(Tables, Armbatch()...)
 }

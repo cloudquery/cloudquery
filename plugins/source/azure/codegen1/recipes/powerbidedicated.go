@@ -8,7 +8,7 @@ func Armpowerbidedicated() []*Table {
 		{
 			NewFunc: armpowerbidedicated.NewCapacitiesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbidedicated/armpowerbidedicated",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.PowerBIDedicated/capacities",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.PowerBIDedicated/capacities",
 		},
 	}
 	return tables

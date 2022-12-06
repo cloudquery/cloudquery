@@ -8,7 +8,7 @@ func Armmigrate() []*Table {
 		{
 			NewFunc: armmigrate.NewProjectsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/migrate/armmigrate",
-			URL: "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Migrate/assessmentProjects",
+			URL:     "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Migrate/assessmentProjects",
 		},
 	}
 	return tables

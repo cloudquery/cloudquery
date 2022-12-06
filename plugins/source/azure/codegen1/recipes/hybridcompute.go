@@ -8,7 +8,7 @@ func Armhybridcompute() []*Table {
 		{
 			NewFunc: armhybridcompute.NewPrivateLinkScopesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.HybridCompute/privateLinkScopes",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.HybridCompute/privateLinkScopes",
 		},
 	}
 	return tables

@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsesu/armwind
 func Armwindowsesu() []Table {
 	tables := []Table{
 		{
-      Name: "multiple_activation_key",
-      Struct: &armwindowsesu.MultipleActivationKey{},
-      ResponseStruct: &armwindowsesu.MultipleActivationKeysClientListResponse{},
-      Client: &armwindowsesu.MultipleActivationKeysClient{},
-      ListFunc: (&armwindowsesu.MultipleActivationKeysClient{}).NewListPager,
-			NewFunc: armwindowsesu.NewMultipleActivationKeysClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.WindowsESU/multipleActivationKeys",
+			Name:           "multiple_activation_key",
+			Struct:         &armwindowsesu.MultipleActivationKey{},
+			ResponseStruct: &armwindowsesu.MultipleActivationKeysClientListResponse{},
+			Client:         &armwindowsesu.MultipleActivationKeysClient{},
+			ListFunc:       (&armwindowsesu.MultipleActivationKeysClient{}).NewListPager,
+			NewFunc:        armwindowsesu.NewMultipleActivationKeysClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.WindowsESU/multipleActivationKeys",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armwindowsesu() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armwindowsesu()...)
+	Tables = append(Tables, Armwindowsesu()...)
 }

@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armlocks
 func Armlocks() []Table {
 	tables := []Table{
 		{
-      Name: "operation",
-      Struct: &armlocks.Operation{},
-      ResponseStruct: &armlocks.AuthorizationOperationsClientListResponse{},
-      Client: &armlocks.AuthorizationOperationsClient{},
-      ListFunc: (&armlocks.AuthorizationOperationsClient{}).NewListPager,
-			NewFunc: armlocks.NewAuthorizationOperationsClient,
-			URL: "/providers/Microsoft.Authorization/operations",
+			Name:           "operation",
+			Struct:         &armlocks.Operation{},
+			ResponseStruct: &armlocks.AuthorizationOperationsClientListResponse{},
+			Client:         &armlocks.AuthorizationOperationsClient{},
+			ListFunc:       (&armlocks.AuthorizationOperationsClient{}).NewListPager,
+			NewFunc:        armlocks.NewAuthorizationOperationsClient,
+			URL:            "/providers/Microsoft.Authorization/operations",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armlocks() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armlocks()...)
+	Tables = append(Tables, Armlocks()...)
 }

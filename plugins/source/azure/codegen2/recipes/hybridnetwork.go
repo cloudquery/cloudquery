@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridnetwork/armh
 func Armhybridnetwork() []Table {
 	tables := []Table{
 		{
-      Name: "network_function_vendor",
-      Struct: &armhybridnetwork.NetworkFunctionVendor{},
-      ResponseStruct: &armhybridnetwork.NetworkFunctionVendorsClientListResponse{},
-      Client: &armhybridnetwork.NetworkFunctionVendorsClient{},
-      ListFunc: (&armhybridnetwork.NetworkFunctionVendorsClient{}).NewListPager,
-			NewFunc: armhybridnetwork.NewNetworkFunctionVendorsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.HybridNetwork/networkFunctionVendors",
+			Name:           "network_function_vendor",
+			Struct:         &armhybridnetwork.NetworkFunctionVendor{},
+			ResponseStruct: &armhybridnetwork.NetworkFunctionVendorsClientListResponse{},
+			Client:         &armhybridnetwork.NetworkFunctionVendorsClient{},
+			ListFunc:       (&armhybridnetwork.NetworkFunctionVendorsClient{}).NewListPager,
+			NewFunc:        armhybridnetwork.NewNetworkFunctionVendorsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.HybridNetwork/networkFunctionVendors",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armhybridnetwork() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armhybridnetwork()...)
+	Tables = append(Tables, Armhybridnetwork()...)
 }

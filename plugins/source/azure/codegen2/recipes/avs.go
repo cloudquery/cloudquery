@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs"
 func Armavs() []Table {
 	tables := []Table{
 		{
-      Name: "private_cloud",
-      Struct: &armavs.PrivateCloud{},
-      ResponseStruct: &armavs.PrivateCloudsClientListResponse{},
-      Client: &armavs.PrivateCloudsClient{},
-      ListFunc: (&armavs.PrivateCloudsClient{}).NewListPager,
-			NewFunc: armavs.NewPrivateCloudsClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds",
+			Name:           "private_cloud",
+			Struct:         &armavs.PrivateCloud{},
+			ResponseStruct: &armavs.PrivateCloudsClientListResponse{},
+			Client:         &armavs.PrivateCloudsClient{},
+			ListFunc:       (&armavs.PrivateCloudsClient{}).NewListPager,
+			NewFunc:        armavs.NewPrivateCloudsClient,
+			URL:            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armavs() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armavs()...)
+	Tables = append(Tables, Armavs()...)
 }

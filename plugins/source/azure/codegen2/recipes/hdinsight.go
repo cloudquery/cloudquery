@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdins
 func Armhdinsight() []Table {
 	tables := []Table{
 		{
-      Name: "cluster",
-      Struct: &armhdinsight.Cluster{},
-      ResponseStruct: &armhdinsight.ClustersClientListResponse{},
-      Client: &armhdinsight.ClustersClient{},
-      ListFunc: (&armhdinsight.ClustersClient{}).NewListPager,
-			NewFunc: armhdinsight.NewClustersClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.HDInsight/clusters",
+			Name:           "cluster",
+			Struct:         &armhdinsight.Cluster{},
+			ResponseStruct: &armhdinsight.ClustersClientListResponse{},
+			Client:         &armhdinsight.ClustersClient{},
+			ListFunc:       (&armhdinsight.ClustersClient{}).NewListPager,
+			NewFunc:        armhdinsight.NewClustersClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.HDInsight/clusters",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armhdinsight() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armhdinsight()...)
+	Tables = append(Tables, Armhdinsight()...)
 }

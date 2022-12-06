@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managedservices/ar
 func Armmanagedservices() []Table {
 	tables := []Table{
 		{
-      Name: "marketplace_registration_definition",
-      Struct: &armmanagedservices.MarketplaceRegistrationDefinition{},
-      ResponseStruct: &armmanagedservices.MarketplaceRegistrationDefinitionsWithoutScopeClientListResponse{},
-      Client: &armmanagedservices.MarketplaceRegistrationDefinitionsWithoutScopeClient{},
-      ListFunc: (&armmanagedservices.MarketplaceRegistrationDefinitionsWithoutScopeClient{}).NewListPager,
-			NewFunc: armmanagedservices.NewMarketplaceRegistrationDefinitionsWithoutScopeClient,
-			URL: "/providers/Microsoft.ManagedServices/marketplaceRegistrationDefinitions",
+			Name:           "marketplace_registration_definition",
+			Struct:         &armmanagedservices.MarketplaceRegistrationDefinition{},
+			ResponseStruct: &armmanagedservices.MarketplaceRegistrationDefinitionsWithoutScopeClientListResponse{},
+			Client:         &armmanagedservices.MarketplaceRegistrationDefinitionsWithoutScopeClient{},
+			ListFunc:       (&armmanagedservices.MarketplaceRegistrationDefinitionsWithoutScopeClient{}).NewListPager,
+			NewFunc:        armmanagedservices.NewMarketplaceRegistrationDefinitionsWithoutScopeClient,
+			URL:            "/providers/Microsoft.ManagedServices/marketplaceRegistrationDefinitions",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armmanagedservices() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armmanagedservices()...)
+	Tables = append(Tables, Armmanagedservices()...)
 }

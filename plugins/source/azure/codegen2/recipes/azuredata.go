@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azuredata/armazure
 func Armazuredata() []Table {
 	tables := []Table{
 		{
-      Name: "sql_server_registration",
-      Struct: &armazuredata.SQLServerRegistration{},
-      ResponseStruct: &armazuredata.SQLServerRegistrationsClientListResponse{},
-      Client: &armazuredata.SQLServerRegistrationsClient{},
-      ListFunc: (&armazuredata.SQLServerRegistrationsClient{}).NewListPager,
-			NewFunc: armazuredata.NewSQLServerRegistrationsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.AzureData/sqlServerRegistrations",
+			Name:           "sql_server_registration",
+			Struct:         &armazuredata.SQLServerRegistration{},
+			ResponseStruct: &armazuredata.SQLServerRegistrationsClientListResponse{},
+			Client:         &armazuredata.SQLServerRegistrationsClient{},
+			ListFunc:       (&armazuredata.SQLServerRegistrationsClient{}).NewListPager,
+			NewFunc:        armazuredata.NewSQLServerRegistrationsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.AzureData/sqlServerRegistrations",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armazuredata() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armazuredata()...)
+	Tables = append(Tables, Armazuredata()...)
 }

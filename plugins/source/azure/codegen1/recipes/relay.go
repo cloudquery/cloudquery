@@ -8,7 +8,7 @@ func Armrelay() []*Table {
 		{
 			NewFunc: armrelay.NewNamespacesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/relay/armrelay",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Relay/namespaces",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Relay/namespaces",
 		},
 	}
 	return tables

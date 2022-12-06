@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/ar
 func Armmachinelearning() []Table {
 	tables := []Table{
 		{
-      Name: "workspace_sku",
-      Struct: &armmachinelearning.WorkspaceSKU{},
-      ResponseStruct: &armmachinelearning.WorkspaceSKUsClientListResponse{},
-      Client: &armmachinelearning.WorkspaceSKUsClient{},
-      ListFunc: (&armmachinelearning.WorkspaceSKUsClient{}).NewListPager,
-			NewFunc: armmachinelearning.NewWorkspaceSKUsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.MachineLearningServices/workspaces/skus",
+			Name:           "workspace_sku",
+			Struct:         &armmachinelearning.WorkspaceSKU{},
+			ResponseStruct: &armmachinelearning.WorkspaceSKUsClientListResponse{},
+			Client:         &armmachinelearning.WorkspaceSKUsClient{},
+			ListFunc:       (&armmachinelearning.WorkspaceSKUsClient{}).NewListPager,
+			NewFunc:        armmachinelearning.NewWorkspaceSKUsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.MachineLearningServices/workspaces/skus",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armmachinelearning() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armmachinelearning()...)
+	Tables = append(Tables, Armmachinelearning()...)
 }

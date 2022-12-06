@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota"
 func Armquota() []Table {
 	tables := []Table{
 		{
-      Name: "operation_response",
-      Struct: &armquota.OperationResponse{},
-      ResponseStruct: &armquota.OperationClientListResponse{},
-      Client: &armquota.OperationClient{},
-      ListFunc: (&armquota.OperationClient{}).NewListPager,
-			NewFunc: armquota.NewOperationClient,
-			URL: "/providers/Microsoft.Quota/operations",
+			Name:           "operation_response",
+			Struct:         &armquota.OperationResponse{},
+			ResponseStruct: &armquota.OperationClientListResponse{},
+			Client:         &armquota.OperationClient{},
+			ListFunc:       (&armquota.OperationClient{}).NewListPager,
+			NewFunc:        armquota.NewOperationClient,
+			URL:            "/providers/Microsoft.Quota/operations",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armquota() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armquota()...)
+	Tables = append(Tables, Armquota()...)
 }

@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armd
 func Armdatamigration() []Table {
 	tables := []Table{
 		{
-      Name: "service",
-      Struct: &armdatamigration.Service{},
-      ResponseStruct: &armdatamigration.ServicesClientListResponse{},
-      Client: &armdatamigration.ServicesClient{},
-      ListFunc: (&armdatamigration.ServicesClient{}).NewListPager,
-			NewFunc: armdatamigration.NewServicesClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DataMigration/services",
+			Name:           "service",
+			Struct:         &armdatamigration.Service{},
+			ResponseStruct: &armdatamigration.ServicesClientListResponse{},
+			Client:         &armdatamigration.ServicesClient{},
+			ListFunc:       (&armdatamigration.ServicesClient{}).NewListPager,
+			NewFunc:        armdatamigration.NewServicesClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DataMigration/services",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armdatamigration() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armdatamigration()...)
+	Tables = append(Tables, Armdatamigration()...)
 }

@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql"
 func Armmysql() []Table {
 	tables := []Table{
 		{
-      Name: "server",
-      Struct: &armmysql.Server{},
-      ResponseStruct: &armmysql.ServersClientListResponse{},
-      Client: &armmysql.ServersClient{},
-      ListFunc: (&armmysql.ServersClient{}).NewListPager,
-			NewFunc: armmysql.NewServersClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/servers",
+			Name:           "server",
+			Struct:         &armmysql.Server{},
+			ResponseStruct: &armmysql.ServersClientListResponse{},
+			Client:         &armmysql.ServersClient{},
+			ListFunc:       (&armmysql.ServersClient{}).NewListPager,
+			NewFunc:        armmysql.NewServersClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/servers",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armmysql() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armmysql()...)
+	Tables = append(Tables, Armmysql()...)
 }

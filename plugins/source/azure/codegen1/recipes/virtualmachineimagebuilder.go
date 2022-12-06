@@ -8,7 +8,7 @@ func Armvirtualmachineimagebuilder() []*Table {
 		{
 			NewFunc: armvirtualmachineimagebuilder.NewVirtualMachineImageTemplatesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/virtualmachineimagebuilder/armvirtualmachineimagebuilder",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.VirtualMachineImages/imageTemplates",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.VirtualMachineImages/imageTemplates",
 		},
 	}
 	return tables

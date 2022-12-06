@@ -8,7 +8,7 @@ func Armdevhub() []*Table {
 		{
 			NewFunc: armdevhub.NewWorkflowClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devhub/armdevhub",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DevHub/workflows",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.DevHub/workflows",
 		},
 	}
 	return tables

@@ -8,7 +8,7 @@ func Armpostgresqlflexibleservers() []*Table {
 		{
 			NewFunc: armpostgresqlflexibleservers.NewServersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/flexibleServers",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/flexibleServers",
 		},
 	}
 	return tables

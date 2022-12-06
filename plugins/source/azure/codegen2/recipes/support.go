@@ -6,22 +6,22 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport
 func Armsupport() []Table {
 	tables := []Table{
 		{
-      Name: "service",
-      Struct: &armsupport.Service{},
-      ResponseStruct: &armsupport.ServicesClientListResponse{},
-      Client: &armsupport.ServicesClient{},
-      ListFunc: (&armsupport.ServicesClient{}).NewListPager,
-			NewFunc: armsupport.NewServicesClient,
-			URL: "/providers/Microsoft.Support/services",
+			Name:           "ticket_details",
+			Struct:         &armsupport.TicketDetails{},
+			ResponseStruct: &armsupport.TicketsClientListResponse{},
+			Client:         &armsupport.TicketsClient{},
+			ListFunc:       (&armsupport.TicketsClient{}).NewListPager,
+			NewFunc:        armsupport.NewTicketsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Support/supportTickets",
 		},
 		{
-      Name: "ticket_details",
-      Struct: &armsupport.TicketDetails{},
-      ResponseStruct: &armsupport.TicketsClientListResponse{},
-      Client: &armsupport.TicketsClient{},
-      ListFunc: (&armsupport.TicketsClient{}).NewListPager,
-			NewFunc: armsupport.NewTicketsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Support/supportTickets",
+			Name:           "service",
+			Struct:         &armsupport.Service{},
+			ResponseStruct: &armsupport.ServicesClientListResponse{},
+			Client:         &armsupport.ServicesClient{},
+			ListFunc:       (&armsupport.ServicesClient{}).NewListPager,
+			NewFunc:        armsupport.NewServicesClient,
+			URL:            "/providers/Microsoft.Support/services",
 		},
 	}
 
@@ -33,5 +33,5 @@ func Armsupport() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armsupport()...)
+	Tables = append(Tables, Armsupport()...)
 }

@@ -8,7 +8,7 @@ func Armelasticsan() []*Table {
 		{
 			NewFunc: armelasticsan.NewSKUsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelasticsan",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ElasticSan/skus",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.ElasticSan/skus",
 		},
 	}
 	return tables

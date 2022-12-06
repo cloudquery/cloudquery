@@ -8,12 +8,12 @@ func Armportal() []*Table {
 		{
 			NewFunc: armportal.NewListTenantConfigurationViolationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/portal/armportal",
-			URL: "/providers/Microsoft.Portal/listTenantConfigurationViolations",
+			URL:     "/providers/Microsoft.Portal/listTenantConfigurationViolations",
 		},
 		{
 			NewFunc: armportal.NewTenantConfigurationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/portal/armportal",
-			URL: "/providers/Microsoft.Portal/tenantConfigurations",
+			URL:     "/providers/Microsoft.Portal/tenantConfigurations",
 		},
 	}
 	return tables

@@ -8,12 +8,12 @@ func Armdnsresolver() []*Table {
 		{
 			NewFunc: armdnsresolver.NewDNSResolversClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdnsresolver",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/dnsResolvers",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Network/dnsResolvers",
 		},
 		{
 			NewFunc: armdnsresolver.NewDNSForwardingRulesetsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdnsresolver",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/dnsForwardingRulesets",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Network/dnsForwardingRulesets",
 		},
 	}
 	return tables

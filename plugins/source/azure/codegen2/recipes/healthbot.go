@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthbot/armhealt
 func Armhealthbot() []Table {
 	tables := []Table{
 		{
-      Name: "health_bot",
-      Struct: &armhealthbot.HealthBot{},
-      ResponseStruct: &armhealthbot.BotsClientListResponse{},
-      Client: &armhealthbot.BotsClient{},
-      ListFunc: (&armhealthbot.BotsClient{}).NewListPager,
-			NewFunc: armhealthbot.NewBotsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.HealthBot/healthBots",
+			Name:           "health_bot",
+			Struct:         &armhealthbot.HealthBot{},
+			ResponseStruct: &armhealthbot.BotsClientListResponse{},
+			Client:         &armhealthbot.BotsClient{},
+			ListFunc:       (&armhealthbot.BotsClient{}).NewListPager,
+			NewFunc:        armhealthbot.NewBotsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.HealthBot/healthBots",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armhealthbot() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armhealthbot()...)
+	Tables = append(Tables, Armhealthbot()...)
 }

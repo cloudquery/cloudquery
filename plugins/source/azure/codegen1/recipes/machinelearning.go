@@ -8,7 +8,7 @@ func Armmachinelearning() []*Table {
 		{
 			NewFunc: armmachinelearning.NewWorkspaceSKUsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.MachineLearningServices/workspaces/skus",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.MachineLearningServices/workspaces/skus",
 		},
 	}
 	return tables

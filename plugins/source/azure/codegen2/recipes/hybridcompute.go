@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armh
 func Armhybridcompute() []Table {
 	tables := []Table{
 		{
-      Name: "private_link_scope",
-      Struct: &armhybridcompute.PrivateLinkScope{},
-      ResponseStruct: &armhybridcompute.PrivateLinkScopesClientListResponse{},
-      Client: &armhybridcompute.PrivateLinkScopesClient{},
-      ListFunc: (&armhybridcompute.PrivateLinkScopesClient{}).NewListPager,
-			NewFunc: armhybridcompute.NewPrivateLinkScopesClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.HybridCompute/privateLinkScopes",
+			Name:           "private_link_scope",
+			Struct:         &armhybridcompute.PrivateLinkScope{},
+			ResponseStruct: &armhybridcompute.PrivateLinkScopesClientListResponse{},
+			Client:         &armhybridcompute.PrivateLinkScopesClient{},
+			ListFunc:       (&armhybridcompute.PrivateLinkScopesClient{}).NewListPager,
+			NewFunc:        armhybridcompute.NewPrivateLinkScopesClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.HybridCompute/privateLinkScopes",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armhybridcompute() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armhybridcompute()...)
+	Tables = append(Tables, Armhybridcompute()...)
 }

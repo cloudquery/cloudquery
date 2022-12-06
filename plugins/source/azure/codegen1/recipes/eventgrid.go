@@ -8,7 +8,7 @@ func Armeventgrid() []*Table {
 		{
 			NewFunc: armeventgrid.NewTopicTypesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid",
-			URL: "/providers/Microsoft.EventGrid/topicTypes",
+			URL:     "/providers/Microsoft.EventGrid/topicTypes",
 		},
 	}
 	return tables

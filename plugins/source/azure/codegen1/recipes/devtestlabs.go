@@ -8,7 +8,7 @@ func Armdevtestlabs() []*Table {
 		{
 			NewFunc: armdevtestlabs.NewProviderOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devtestlabs/armdevtestlabs",
-			URL: "/providers/Microsoft.DevTestLab/operations",
+			URL:     "/providers/Microsoft.DevTestLab/operations",
 		},
 	}
 	return tables

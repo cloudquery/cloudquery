@@ -8,7 +8,7 @@ func Armcontainerinstance() []*Table {
 		{
 			NewFunc: armcontainerinstance.NewContainerGroupsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerinstance/armcontainerinstance",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/containerGroups",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/containerGroups",
 		},
 	}
 	return tables

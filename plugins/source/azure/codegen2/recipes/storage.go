@@ -6,31 +6,31 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage
 func Armstorage() []Table {
 	tables := []Table{
 		{
-      Name: "account",
-      Struct: &armstorage.Account{},
-      ResponseStruct: &armstorage.AccountsClientListResponse{},
-      Client: &armstorage.AccountsClient{},
-      ListFunc: (&armstorage.AccountsClient{}).NewListPager,
-			NewFunc: armstorage.NewAccountsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Storage/storageAccounts",
+			Name:           "deleted_account",
+			Struct:         &armstorage.DeletedAccount{},
+			ResponseStruct: &armstorage.DeletedAccountsClientListResponse{},
+			Client:         &armstorage.DeletedAccountsClient{},
+			ListFunc:       (&armstorage.DeletedAccountsClient{}).NewListPager,
+			NewFunc:        armstorage.NewDeletedAccountsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Storage/deletedAccounts",
 		},
 		{
-      Name: "sku_information",
-      Struct: &armstorage.SKUInformation{},
-      ResponseStruct: &armstorage.SKUsClientListResponse{},
-      Client: &armstorage.SKUsClient{},
-      ListFunc: (&armstorage.SKUsClient{}).NewListPager,
-			NewFunc: armstorage.NewSKUsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Storage/skus",
+			Name:           "sku_information",
+			Struct:         &armstorage.SKUInformation{},
+			ResponseStruct: &armstorage.SKUsClientListResponse{},
+			Client:         &armstorage.SKUsClient{},
+			ListFunc:       (&armstorage.SKUsClient{}).NewListPager,
+			NewFunc:        armstorage.NewSKUsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Storage/skus",
 		},
 		{
-      Name: "deleted_account",
-      Struct: &armstorage.DeletedAccount{},
-      ResponseStruct: &armstorage.DeletedAccountsClientListResponse{},
-      Client: &armstorage.DeletedAccountsClient{},
-      ListFunc: (&armstorage.DeletedAccountsClient{}).NewListPager,
-			NewFunc: armstorage.NewDeletedAccountsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Storage/deletedAccounts",
+			Name:           "account",
+			Struct:         &armstorage.Account{},
+			ResponseStruct: &armstorage.AccountsClientListResponse{},
+			Client:         &armstorage.AccountsClient{},
+			ListFunc:       (&armstorage.AccountsClient{}).NewListPager,
+			NewFunc:        armstorage.NewAccountsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Storage/storageAccounts",
 		},
 	}
 
@@ -42,5 +42,5 @@ func Armstorage() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armstorage()...)
+	Tables = append(Tables, Armstorage()...)
 }

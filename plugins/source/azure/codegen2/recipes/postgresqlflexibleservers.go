@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpost
 func Armpostgresqlflexibleservers() []Table {
 	tables := []Table{
 		{
-      Name: "server",
-      Struct: &armpostgresqlflexibleservers.Server{},
-      ResponseStruct: &armpostgresqlflexibleservers.ServersClientListResponse{},
-      Client: &armpostgresqlflexibleservers.ServersClient{},
-      ListFunc: (&armpostgresqlflexibleservers.ServersClient{}).NewListPager,
-			NewFunc: armpostgresqlflexibleservers.NewServersClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/flexibleServers",
+			Name:           "server",
+			Struct:         &armpostgresqlflexibleservers.Server{},
+			ResponseStruct: &armpostgresqlflexibleservers.ServersClientListResponse{},
+			Client:         &armpostgresqlflexibleservers.ServersClient{},
+			ListFunc:       (&armpostgresqlflexibleservers.ServersClient{}).NewListPager,
+			NewFunc:        armpostgresqlflexibleservers.NewServersClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/flexibleServers",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armpostgresqlflexibleservers() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armpostgresqlflexibleservers()...)
+	Tables = append(Tables, Armpostgresqlflexibleservers()...)
 }

@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerlockbox/ar
 func Armcustomerlockbox() []Table {
 	tables := []Table{
 		{
-      Name: "lockbox_request_response",
-      Struct: &armcustomerlockbox.LockboxRequestResponse{},
-      ResponseStruct: &armcustomerlockbox.RequestsClientListResponse{},
-      Client: &armcustomerlockbox.RequestsClient{},
-      ListFunc: (&armcustomerlockbox.RequestsClient{}).NewListPager,
-			NewFunc: armcustomerlockbox.NewRequestsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.CustomerLockbox/requests",
+			Name:           "lockbox_request_response",
+			Struct:         &armcustomerlockbox.LockboxRequestResponse{},
+			ResponseStruct: &armcustomerlockbox.RequestsClientListResponse{},
+			Client:         &armcustomerlockbox.RequestsClient{},
+			ListFunc:       (&armcustomerlockbox.RequestsClient{}).NewListPager,
+			NewFunc:        armcustomerlockbox.NewRequestsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.CustomerLockbox/requests",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armcustomerlockbox() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armcustomerlockbox()...)
+	Tables = append(Tables, Armcustomerlockbox()...)
 }

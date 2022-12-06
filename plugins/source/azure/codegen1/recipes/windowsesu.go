@@ -8,7 +8,7 @@ func Armwindowsesu() []*Table {
 		{
 			NewFunc: armwindowsesu.NewMultipleActivationKeysClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsesu/armwindowsesu",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.WindowsESU/multipleActivationKeys",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.WindowsESU/multipleActivationKeys",
 		},
 	}
 	return tables

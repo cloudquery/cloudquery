@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerinsights/a
 func Armcustomerinsights() []Table {
 	tables := []Table{
 		{
-      Name: "hub",
-      Struct: &armcustomerinsights.Hub{},
-      ResponseStruct: &armcustomerinsights.HubsClientListResponse{},
-      Client: &armcustomerinsights.HubsClient{},
-      ListFunc: (&armcustomerinsights.HubsClient{}).NewListPager,
-			NewFunc: armcustomerinsights.NewHubsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.CustomerInsights/hubs",
+			Name:           "hub",
+			Struct:         &armcustomerinsights.Hub{},
+			ResponseStruct: &armcustomerinsights.HubsClientListResponse{},
+			Client:         &armcustomerinsights.HubsClient{},
+			ListFunc:       (&armcustomerinsights.HubsClient{}).NewListPager,
+			NewFunc:        armcustomerinsights.NewHubsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.CustomerInsights/hubs",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armcustomerinsights() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armcustomerinsights()...)
+	Tables = append(Tables, Armcustomerinsights()...)
 }

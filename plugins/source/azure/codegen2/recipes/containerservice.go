@@ -6,22 +6,22 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/a
 func Armcontainerservice() []Table {
 	tables := []Table{
 		{
-      Name: "managed_cluster",
-      Struct: &armcontainerservice.ManagedCluster{},
-      ResponseStruct: &armcontainerservice.ManagedClustersClientListResponse{},
-      Client: &armcontainerservice.ManagedClustersClient{},
-      ListFunc: (&armcontainerservice.ManagedClustersClient{}).NewListPager,
-			NewFunc: armcontainerservice.NewManagedClustersClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/managedClusters",
+			Name:           "managed_cluster",
+			Struct:         &armcontainerservice.ManagedCluster{},
+			ResponseStruct: &armcontainerservice.ManagedClustersClientListResponse{},
+			Client:         &armcontainerservice.ManagedClustersClient{},
+			ListFunc:       (&armcontainerservice.ManagedClustersClient{}).NewListPager,
+			NewFunc:        armcontainerservice.NewManagedClustersClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/managedClusters",
 		},
 		{
-      Name: "snapshot",
-      Struct: &armcontainerservice.Snapshot{},
-      ResponseStruct: &armcontainerservice.SnapshotsClientListResponse{},
-      Client: &armcontainerservice.SnapshotsClient{},
-      ListFunc: (&armcontainerservice.SnapshotsClient{}).NewListPager,
-			NewFunc: armcontainerservice.NewSnapshotsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/snapshots",
+			Name:           "snapshot",
+			Struct:         &armcontainerservice.Snapshot{},
+			ResponseStruct: &armcontainerservice.SnapshotsClientListResponse{},
+			Client:         &armcontainerservice.SnapshotsClient{},
+			ListFunc:       (&armcontainerservice.SnapshotsClient{}).NewListPager,
+			NewFunc:        armcontainerservice.NewSnapshotsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/snapshots",
 		},
 	}
 
@@ -33,5 +33,5 @@ func Armcontainerservice() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armcontainerservice()...)
+	Tables = append(Tables, Armcontainerservice()...)
 }

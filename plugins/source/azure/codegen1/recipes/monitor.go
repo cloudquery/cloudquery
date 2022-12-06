@@ -8,22 +8,22 @@ func Armmonitor() []*Table {
 		{
 			NewFunc: armmonitor.NewPrivateLinkScopesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
-			URL: "/subscriptions/{subscriptionId}/providers/microsoft.insights/privateLinkScopes",
-		},
-		{
-			NewFunc: armmonitor.NewEventCategoriesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
-			URL: "/providers/Microsoft.Insights/eventcategories",
+			URL:     "/subscriptions/{subscriptionId}/providers/microsoft.insights/privateLinkScopes",
 		},
 		{
 			NewFunc: armmonitor.NewLogProfilesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/logprofiles",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/logprofiles",
 		},
 		{
 			NewFunc: armmonitor.NewTenantActivityLogsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
-			URL: "/providers/Microsoft.Insights/eventtypes/management/values",
+			URL:     "/providers/Microsoft.Insights/eventtypes/management/values",
+		},
+		{
+			NewFunc: armmonitor.NewEventCategoriesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
+			URL:     "/providers/Microsoft.Insights/eventcategories",
 		},
 	}
 	return tables

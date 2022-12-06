@@ -8,7 +8,7 @@ func Armnginx() []*Table {
 		{
 			NewFunc: armnginx.NewDeploymentsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx",
-			URL: "/subscriptions/{subscriptionId}/providers/Nginx.NginxPlus/nginxDeployments",
+			URL:     "/subscriptions/{subscriptionId}/providers/Nginx.NginxPlus/nginxDeployments",
 		},
 	}
 	return tables

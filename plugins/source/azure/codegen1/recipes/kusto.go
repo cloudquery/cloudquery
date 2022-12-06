@@ -8,7 +8,7 @@ func Armkusto() []*Table {
 		{
 			NewFunc: armkusto.NewClustersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Kusto/clusters",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Kusto/clusters",
 		},
 	}
 	return tables

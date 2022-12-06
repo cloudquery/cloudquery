@@ -8,7 +8,7 @@ func Armautomanage() []*Table {
 		{
 			NewFunc: armautomanage.NewConfigurationProfileAssignmentsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automanage/armautomanage",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automanage/configurationProfileAssignments",
+			URL:     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automanage/configurationProfileAssignments",
 		},
 	}
 	return tables

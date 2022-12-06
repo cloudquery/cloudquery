@@ -8,7 +8,7 @@ func Armstreamanalytics() []*Table {
 		{
 			NewFunc: armstreamanalytics.NewStreamingJobsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.StreamAnalytics/streamingjobs",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.StreamAnalytics/streamingjobs",
 		},
 	}
 	return tables

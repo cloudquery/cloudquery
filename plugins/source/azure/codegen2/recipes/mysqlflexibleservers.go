@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysqlflex
 func Armmysqlflexibleservers() []Table {
 	tables := []Table{
 		{
-      Name: "server",
-      Struct: &armmysqlflexibleservers.Server{},
-      ResponseStruct: &armmysqlflexibleservers.ServersClientListResponse{},
-      Client: &armmysqlflexibleservers.ServersClient{},
-      ListFunc: (&armmysqlflexibleservers.ServersClient{}).NewListPager,
-			NewFunc: armmysqlflexibleservers.NewServersClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/flexibleServers",
+			Name:           "server",
+			Struct:         &armmysqlflexibleservers.Server{},
+			ResponseStruct: &armmysqlflexibleservers.ServersClientListResponse{},
+			Client:         &armmysqlflexibleservers.ServersClient{},
+			ListFunc:       (&armmysqlflexibleservers.ServersClient{}).NewListPager,
+			NewFunc:        armmysqlflexibleservers.NewServersClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/flexibleServers",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armmysqlflexibleservers() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armmysqlflexibleservers()...)
+	Tables = append(Tables, Armmysqlflexibleservers()...)
 }

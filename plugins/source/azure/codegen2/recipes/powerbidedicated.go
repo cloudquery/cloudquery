@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbidedicated/a
 func Armpowerbidedicated() []Table {
 	tables := []Table{
 		{
-      Name: "dedicated_capacity",
-      Struct: &armpowerbidedicated.DedicatedCapacity{},
-      ResponseStruct: &armpowerbidedicated.CapacitiesClientListResponse{},
-      Client: &armpowerbidedicated.CapacitiesClient{},
-      ListFunc: (&armpowerbidedicated.CapacitiesClient{}).NewListPager,
-			NewFunc: armpowerbidedicated.NewCapacitiesClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.PowerBIDedicated/capacities",
+			Name:           "dedicated_capacity",
+			Struct:         &armpowerbidedicated.DedicatedCapacity{},
+			ResponseStruct: &armpowerbidedicated.CapacitiesClientListResponse{},
+			Client:         &armpowerbidedicated.CapacitiesClient{},
+			ListFunc:       (&armpowerbidedicated.CapacitiesClient{}).NewListPager,
+			NewFunc:        armpowerbidedicated.NewCapacitiesClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.PowerBIDedicated/capacities",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armpowerbidedicated() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armpowerbidedicated()...)
+	Tables = append(Tables, Armpowerbidedicated()...)
 }

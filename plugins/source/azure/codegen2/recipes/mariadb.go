@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb
 func Armmariadb() []Table {
 	tables := []Table{
 		{
-      Name: "server",
-      Struct: &armmariadb.Server{},
-      ResponseStruct: &armmariadb.ServersClientListResponse{},
-      Client: &armmariadb.ServersClient{},
-      ListFunc: (&armmariadb.ServersClient{}).NewListPager,
-			NewFunc: armmariadb.NewServersClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMariaDB/servers",
+			Name:           "server",
+			Struct:         &armmariadb.Server{},
+			ResponseStruct: &armmariadb.ServersClientListResponse{},
+			Client:         &armmariadb.ServersClient{},
+			ListFunc:       (&armmariadb.ServersClient{}).NewListPager,
+			NewFunc:        armmariadb.NewServersClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMariaDB/servers",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armmariadb() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armmariadb()...)
+	Tables = append(Tables, Armmariadb()...)
 }

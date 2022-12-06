@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dns/armdns"
 func Armdns() []Table {
 	tables := []Table{
 		{
-      Name: "zone",
-      Struct: &armdns.Zone{},
-      ResponseStruct: &armdns.ZonesClientListResponse{},
-      Client: &armdns.ZonesClient{},
-      ListFunc: (&armdns.ZonesClient{}).NewListPager,
-			NewFunc: armdns.NewZonesClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/dnszones",
+			Name:           "zone",
+			Struct:         &armdns.Zone{},
+			ResponseStruct: &armdns.ZonesClientListResponse{},
+			Client:         &armdns.ZonesClient{},
+			ListFunc:       (&armdns.ZonesClient{}).NewListPager,
+			NewFunc:        armdns.NewZonesClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/dnszones",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armdns() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armdns()...)
+	Tables = append(Tables, Armdns()...)
 }

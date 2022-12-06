@@ -15,13 +15,13 @@ func GetArmModules(gomodPath string) ([]string, error) {
 	var modules []string
 	content, err := os.ReadFile(gomodPath)
 	if err != nil {
-			return nil, err
+		return nil, err
 	}
 	// Parse the go.mod file.
 	// modfile
 	mod, err := modfile.Parse("go.mod", content, nil)
 	if err != nil {
-			return nil, err
+		return nil, err
 	}
 
 	for _, req := range mod.Require {

@@ -8,7 +8,7 @@ func Armdatabox() []*Table {
 		{
 			NewFunc: armdatabox.NewJobsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DataBox/jobs",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.DataBox/jobs",
 		},
 	}
 	return tables

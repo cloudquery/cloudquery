@@ -8,7 +8,7 @@ func Armmarketplace() []*Table {
 		{
 			NewFunc: armmarketplace.NewPrivateStoreClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplace/armmarketplace",
-			URL: "/providers/Microsoft.Marketplace/privateStores",
+			URL:     "/providers/Microsoft.Marketplace/privateStores",
 		},
 	}
 	return tables

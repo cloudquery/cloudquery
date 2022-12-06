@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerinstance/
 func Armcontainerinstance() []Table {
 	tables := []Table{
 		{
-      Name: "container_group",
-      Struct: &armcontainerinstance.ContainerGroup{},
-      ResponseStruct: &armcontainerinstance.ContainerGroupsClientListResponse{},
-      Client: &armcontainerinstance.ContainerGroupsClient{},
-      ListFunc: (&armcontainerinstance.ContainerGroupsClient{}).NewListPager,
-			NewFunc: armcontainerinstance.NewContainerGroupsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/containerGroups",
+			Name:           "container_group",
+			Struct:         &armcontainerinstance.ContainerGroup{},
+			ResponseStruct: &armcontainerinstance.ContainerGroupsClientListResponse{},
+			Client:         &armcontainerinstance.ContainerGroupsClient{},
+			ListFunc:       (&armcontainerinstance.ContainerGroupsClient{}).NewListPager,
+			NewFunc:        armcontainerinstance.NewContainerGroupsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/containerGroups",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armcontainerinstance() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armcontainerinstance()...)
+	Tables = append(Tables, Armcontainerinstance()...)
 }

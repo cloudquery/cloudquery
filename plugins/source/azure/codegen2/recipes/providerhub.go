@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armpro
 func Armproviderhub() []Table {
 	tables := []Table{
 		{
-      Name: "provider_registration",
-      Struct: &armproviderhub.ProviderRegistration{},
-      ResponseStruct: &armproviderhub.ProviderRegistrationsClientListResponse{},
-      Client: &armproviderhub.ProviderRegistrationsClient{},
-      ListFunc: (&armproviderhub.ProviderRegistrationsClient{}).NewListPager,
-			NewFunc: armproviderhub.NewProviderRegistrationsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations",
+			Name:           "provider_registration",
+			Struct:         &armproviderhub.ProviderRegistration{},
+			ResponseStruct: &armproviderhub.ProviderRegistrationsClientListResponse{},
+			Client:         &armproviderhub.ProviderRegistrationsClient{},
+			ListFunc:       (&armproviderhub.ProviderRegistrationsClient{}).NewListPager,
+			NewFunc:        armproviderhub.NewProviderRegistrationsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armproviderhub() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armproviderhub()...)
+	Tables = append(Tables, Armproviderhub()...)
 }

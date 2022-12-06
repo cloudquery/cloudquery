@@ -8,7 +8,7 @@ func Armservicebus() []*Table {
 		{
 			NewFunc: armservicebus.NewNamespacesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ServiceBus/namespaces",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.ServiceBus/namespaces",
 		},
 	}
 	return tables

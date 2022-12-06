@@ -8,7 +8,7 @@ func Armdatafactory() []*Table {
 		{
 			NewFunc: armdatafactory.NewFactoriesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DataFactory/factories",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.DataFactory/factories",
 		},
 	}
 	return tables

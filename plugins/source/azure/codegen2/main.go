@@ -29,7 +29,7 @@ var templateFuncs = template.FuncMap{
 
 var (
 	currentFilename string
-	currentDir string
+	currentDir      string
 )
 
 var SubscriptionIdColumn = codegen.ColumnDefinition{
@@ -76,17 +76,16 @@ func generateTables(rr []recipes.Table) error {
 	filePath := path.Join(currentDir, "../resources/plugin/tables.go")
 	content := buff.Bytes()
 	formattedContent, err := format.Source(buff.Bytes())
-  if err != nil {
-  	fmt.Printf("failed to format code for %s: %v\n", filePath, err)
-  } else {
-    content = formattedContent
+	if err != nil {
+		fmt.Printf("failed to format code for %s: %v\n", filePath, err)
+	} else {
+		content = formattedContent
 	}
 	if err := os.WriteFile(filePath, content, 0644); err != nil {
 		return fmt.Errorf("failed to write file %s: %w", filePath, err)
 	}
 	return nil
 }
-
 
 func initResource(r *recipes.Table) error {
 	var err error
@@ -155,7 +154,7 @@ func initResource(r *recipes.Table) error {
 			} else {
 				r.Table.Multiplex = "client.SubscriptionMultiplex"
 			}
-			
+
 		}
 	} else {
 		r.Table.Multiplex = *r.Multiplex
@@ -191,7 +190,7 @@ func generateResource(r recipes.Table, mock bool) error {
 	if err := tpl.Execute(&buff, r); err != nil {
 		return fmt.Errorf("failed to execute template: %w", err)
 	}
-	
+
 	filePath := path.Join(currentDir, "../resources/services", r.PackageName)
 	if err := os.MkdirAll(filePath, os.ModePerm); err != nil {
 		return err
@@ -208,10 +207,10 @@ func generateResource(r recipes.Table, mock bool) error {
 
 	content := buff.Bytes()
 	formattedContent, err := format.Source(buff.Bytes())
-  if err != nil {
-  	fmt.Printf("failed to format code for %s: %v\n", filePath, err)
-  } else {
-    content = formattedContent
+	if err != nil {
+		fmt.Printf("failed to format code for %s: %v\n", filePath, err)
+	} else {
+		content = formattedContent
 	}
 	if err := os.WriteFile(filePath, content, 0644); err != nil {
 		return fmt.Errorf("failed to write file %s: %w", filePath, err)

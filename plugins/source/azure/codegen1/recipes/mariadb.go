@@ -8,7 +8,7 @@ func Armmariadb() []*Table {
 		{
 			NewFunc: armmariadb.NewServersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMariaDB/servers",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMariaDB/servers",
 		},
 	}
 	return tables

@@ -8,7 +8,7 @@ func Armanalysisservices() []*Table {
 		{
 			NewFunc: armanalysisservices.NewServersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/analysisservices/armanalysisservices",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.AnalysisServices/servers",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.AnalysisServices/servers",
 		},
 	}
 	return tables

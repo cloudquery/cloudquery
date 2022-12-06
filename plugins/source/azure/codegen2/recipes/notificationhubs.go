@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/notificationhubs/a
 func Armnotificationhubs() []Table {
 	tables := []Table{
 		{
-      Name: "namespace_resource",
-      Struct: &armnotificationhubs.NamespaceResource{},
-      ResponseStruct: &armnotificationhubs.NamespacesClientListResponse{},
-      Client: &armnotificationhubs.NamespacesClient{},
-      ListFunc: (&armnotificationhubs.NamespacesClient{}).NewListPager,
-			NewFunc: armnotificationhubs.NewNamespacesClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces",
+			Name:           "namespace_resource",
+			Struct:         &armnotificationhubs.NamespaceResource{},
+			ResponseStruct: &armnotificationhubs.NamespacesClientListResponse{},
+			Client:         &armnotificationhubs.NamespacesClient{},
+			ListFunc:       (&armnotificationhubs.NamespacesClient{}).NewListPager,
+			NewFunc:        armnotificationhubs.NewNamespacesClient,
+			URL:            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armnotificationhubs() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armnotificationhubs()...)
+	Tables = append(Tables, Armnotificationhubs()...)
 }

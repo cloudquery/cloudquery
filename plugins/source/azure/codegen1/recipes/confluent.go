@@ -8,12 +8,12 @@ func Armconfluent() []*Table {
 		{
 			NewFunc: armconfluent.NewMarketplaceAgreementsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confluent/armconfluent",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Confluent/agreements",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Confluent/agreements",
 		},
 		{
 			NewFunc: armconfluent.NewOrganizationOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confluent/armconfluent",
-			URL: "/providers/Microsoft.Confluent/operations",
+			URL:     "/providers/Microsoft.Confluent/operations",
 		},
 	}
 	return tables

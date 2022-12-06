@@ -6,22 +6,22 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsu
 func Armsubscription() []Table {
 	tables := []Table{
 		{
-      Name: "subscription",
-      Struct: &armsubscription.Subscription{},
-      ResponseStruct: &armsubscription.SubscriptionsClientListResponse{},
-      Client: &armsubscription.SubscriptionsClient{},
-      ListFunc: (&armsubscription.SubscriptionsClient{}).NewListPager,
-			NewFunc: armsubscription.NewSubscriptionsClient,
-			URL: "/subscriptions",
+			Name:           "subscription",
+			Struct:         &armsubscription.Subscription{},
+			ResponseStruct: &armsubscription.SubscriptionsClientListResponse{},
+			Client:         &armsubscription.SubscriptionsClient{},
+			ListFunc:       (&armsubscription.SubscriptionsClient{}).NewListPager,
+			NewFunc:        armsubscription.NewSubscriptionsClient,
+			URL:            "/subscriptions",
 		},
 		{
-      Name: "tenant_id_description",
-      Struct: &armsubscription.TenantIDDescription{},
-      ResponseStruct: &armsubscription.TenantsClientListResponse{},
-      Client: &armsubscription.TenantsClient{},
-      ListFunc: (&armsubscription.TenantsClient{}).NewListPager,
-			NewFunc: armsubscription.NewTenantsClient,
-			URL: "/tenants",
+			Name:           "tenant_id_description",
+			Struct:         &armsubscription.TenantIDDescription{},
+			ResponseStruct: &armsubscription.TenantsClientListResponse{},
+			Client:         &armsubscription.TenantsClient{},
+			ListFunc:       (&armsubscription.TenantsClient{}).NewListPager,
+			NewFunc:        armsubscription.NewTenantsClient,
+			URL:            "/tenants",
 		},
 	}
 
@@ -33,5 +33,5 @@ func Armsubscription() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armsubscription()...)
+	Tables = append(Tables, Armsubscription()...)
 }

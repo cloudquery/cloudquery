@@ -8,7 +8,7 @@ func Armhybriddatamanager() []*Table {
 		{
 			NewFunc: armhybriddatamanager.NewDataManagersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybriddatamanager/armhybriddatamanager",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.HybridData/dataManagers",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.HybridData/dataManagers",
 		},
 	}
 	return tables

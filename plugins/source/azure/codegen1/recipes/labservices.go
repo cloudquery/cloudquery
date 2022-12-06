@@ -8,7 +8,7 @@ func Armlabservices() []*Table {
 		{
 			NewFunc: armlabservices.NewSKUsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/labservices/armlabservices",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.LabServices/skus",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.LabServices/skus",
 		},
 	}
 	return tables

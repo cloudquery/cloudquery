@@ -8,7 +8,7 @@ func Armappcomplianceautomation() []*Table {
 		{
 			NewFunc: armappcomplianceautomation.NewReportsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcomplianceautomation/armappcomplianceautomation",
-			URL: "/providers/Microsoft.AppComplianceAutomation/reports",
+			URL:     "/providers/Microsoft.AppComplianceAutomation/reports",
 		},
 	}
 	return tables

@@ -6,22 +6,22 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/arma
 func Armapimanagement() []Table {
 	tables := []Table{
 		{
-      Name: "service_resource",
-      Struct: &armapimanagement.ServiceResource{},
-      ResponseStruct: &armapimanagement.ServiceClientListResponse{},
-      Client: &armapimanagement.ServiceClient{},
-      ListFunc: (&armapimanagement.ServiceClient{}).NewListPager,
-			NewFunc: armapimanagement.NewServiceClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ApiManagement/service",
+			Name:           "service_resource",
+			Struct:         &armapimanagement.ServiceResource{},
+			ResponseStruct: &armapimanagement.ServiceClientListResponse{},
+			Client:         &armapimanagement.ServiceClient{},
+			ListFunc:       (&armapimanagement.ServiceClient{}).NewListPager,
+			NewFunc:        armapimanagement.NewServiceClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ApiManagement/service",
 		},
 		{
-      Name: "sku",
-      Struct: &armapimanagement.SKU{},
-      ResponseStruct: &armapimanagement.SKUsClientListResponse{},
-      Client: &armapimanagement.SKUsClient{},
-      ListFunc: (&armapimanagement.SKUsClient{}).NewListPager,
-			NewFunc: armapimanagement.NewSKUsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ApiManagement/skus",
+			Name:           "sku",
+			Struct:         &armapimanagement.SKU{},
+			ResponseStruct: &armapimanagement.SKUsClientListResponse{},
+			Client:         &armapimanagement.SKUsClient{},
+			ListFunc:       (&armapimanagement.SKUsClient{}).NewListPager,
+			NewFunc:        armapimanagement.NewSKUsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ApiManagement/skus",
 		},
 	}
 
@@ -33,5 +33,5 @@ func Armapimanagement() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armapimanagement()...)
+	Tables = append(Tables, Armapimanagement()...)
 }

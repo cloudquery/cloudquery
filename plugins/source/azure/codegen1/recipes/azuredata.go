@@ -8,7 +8,7 @@ func Armazuredata() []*Table {
 		{
 			NewFunc: armazuredata.NewSQLServerRegistrationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azuredata/armazuredata",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.AzureData/sqlServerRegistrations",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.AzureData/sqlServerRegistrations",
 		},
 	}
 	return tables

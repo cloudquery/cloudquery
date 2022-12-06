@@ -6,22 +6,22 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/portal/armportal"
 func Armportal() []Table {
 	tables := []Table{
 		{
-      Name: "violation",
-      Struct: &armportal.Violation{},
-      ResponseStruct: &armportal.ListTenantConfigurationViolationsClientListResponse{},
-      Client: &armportal.ListTenantConfigurationViolationsClient{},
-      ListFunc: (&armportal.ListTenantConfigurationViolationsClient{}).NewListPager,
-			NewFunc: armportal.NewListTenantConfigurationViolationsClient,
-			URL: "/providers/Microsoft.Portal/listTenantConfigurationViolations",
+			Name:           "violation",
+			Struct:         &armportal.Violation{},
+			ResponseStruct: &armportal.ListTenantConfigurationViolationsClientListResponse{},
+			Client:         &armportal.ListTenantConfigurationViolationsClient{},
+			ListFunc:       (&armportal.ListTenantConfigurationViolationsClient{}).NewListPager,
+			NewFunc:        armportal.NewListTenantConfigurationViolationsClient,
+			URL:            "/providers/Microsoft.Portal/listTenantConfigurationViolations",
 		},
 		{
-      Name: "configuration",
-      Struct: &armportal.Configuration{},
-      ResponseStruct: &armportal.TenantConfigurationsClientListResponse{},
-      Client: &armportal.TenantConfigurationsClient{},
-      ListFunc: (&armportal.TenantConfigurationsClient{}).NewListPager,
-			NewFunc: armportal.NewTenantConfigurationsClient,
-			URL: "/providers/Microsoft.Portal/tenantConfigurations",
+			Name:           "configuration",
+			Struct:         &armportal.Configuration{},
+			ResponseStruct: &armportal.TenantConfigurationsClientListResponse{},
+			Client:         &armportal.TenantConfigurationsClient{},
+			ListFunc:       (&armportal.TenantConfigurationsClient{}).NewListPager,
+			NewFunc:        armportal.NewTenantConfigurationsClient,
+			URL:            "/providers/Microsoft.Portal/tenantConfigurations",
 		},
 	}
 
@@ -33,5 +33,5 @@ func Armportal() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armportal()...)
+	Tables = append(Tables, Armportal()...)
 }

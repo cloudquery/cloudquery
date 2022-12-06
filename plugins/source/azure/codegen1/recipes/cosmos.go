@@ -6,19 +6,19 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
 func Armcosmos() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armcosmos.NewLocationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations",
-		},
-		{
 			NewFunc: armcosmos.NewDatabaseAccountsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/databaseAccounts",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/databaseAccounts",
+		},
+		{
+			NewFunc: armcosmos.NewLocationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations",
 		},
 		{
 			NewFunc: armcosmos.NewRestorableDatabaseAccountsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/restorableDatabaseAccounts",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/restorableDatabaseAccounts",
 		},
 	}
 	return tables

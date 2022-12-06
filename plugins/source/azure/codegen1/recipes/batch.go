@@ -8,7 +8,7 @@ func Armbatch() []*Table {
 		{
 			NewFunc: armbatch.NewAccountClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Batch/batchAccounts",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Batch/batchAccounts",
 		},
 	}
 	return tables

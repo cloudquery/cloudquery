@@ -8,7 +8,7 @@ func Armdatamigration() []*Table {
 		{
 			NewFunc: armdatamigration.NewServicesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DataMigration/services",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.DataMigration/services",
 		},
 	}
 	return tables

@@ -73,5 +73,5 @@ type Table struct {
 	SkipFields []string
 	// ExtraColumns override, override generated columns
 	ExtraColumns []codegen.ColumnDefinition
-	URL string
+	URL          string
 }

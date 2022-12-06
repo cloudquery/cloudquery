@@ -8,7 +8,7 @@ func Armdataboxedge() []*Table {
 		{
 			NewFunc: armdataboxedge.NewAvailableSKUsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DataBoxEdge/availableSkus",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.DataBoxEdge/availableSkus",
 		},
 	}
 	return tables

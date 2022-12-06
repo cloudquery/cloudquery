@@ -8,7 +8,7 @@ func Armhybridnetwork() []*Table {
 		{
 			NewFunc: armhybridnetwork.NewNetworkFunctionVendorsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridnetwork/armhybridnetwork",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.HybridNetwork/networkFunctionVendors",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.HybridNetwork/networkFunctionVendors",
 		},
 	}
 	return tables

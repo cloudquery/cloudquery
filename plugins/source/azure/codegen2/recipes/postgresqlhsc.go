@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresqlhsc/armp
 func Armpostgresqlhsc() []Table {
 	tables := []Table{
 		{
-      Name: "server_group",
-      Struct: &armpostgresqlhsc.ServerGroup{},
-      ResponseStruct: &armpostgresqlhsc.ServerGroupsClientListResponse{},
-      Client: &armpostgresqlhsc.ServerGroupsClient{},
-      ListFunc: (&armpostgresqlhsc.ServerGroupsClient{}).NewListPager,
-			NewFunc: armpostgresqlhsc.NewServerGroupsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DBForPostgreSql/serverGroupsv2",
+			Name:           "server_group",
+			Struct:         &armpostgresqlhsc.ServerGroup{},
+			ResponseStruct: &armpostgresqlhsc.ServerGroupsClientListResponse{},
+			Client:         &armpostgresqlhsc.ServerGroupsClient{},
+			ListFunc:       (&armpostgresqlhsc.ServerGroupsClient{}).NewListPager,
+			NewFunc:        armpostgresqlhsc.NewServerGroupsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DBForPostgreSql/serverGroupsv2",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armpostgresqlhsc() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armpostgresqlhsc()...)
+	Tables = append(Tables, Armpostgresqlhsc()...)
 }

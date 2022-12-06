@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/migrate/armmigrate
 func Armmigrate() []Table {
 	tables := []Table{
 		{
-      Name: "project",
-      Struct: &armmigrate.Project{},
-      ResponseStruct: &armmigrate.ProjectsClientListResponse{},
-      Client: &armmigrate.ProjectsClient{},
-      ListFunc: (&armmigrate.ProjectsClient{}).NewListPager,
-			NewFunc: armmigrate.NewProjectsClient,
-			URL: "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Migrate/assessmentProjects",
+			Name:           "project",
+			Struct:         &armmigrate.Project{},
+			ResponseStruct: &armmigrate.ProjectsClientListResponse{},
+			Client:         &armmigrate.ProjectsClient{},
+			ListFunc:       (&armmigrate.ProjectsClient{}).NewListPager,
+			NewFunc:        armmigrate.NewProjectsClient,
+			URL:            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Migrate/assessmentProjects",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armmigrate() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armmigrate()...)
+	Tables = append(Tables, Armmigrate()...)
 }

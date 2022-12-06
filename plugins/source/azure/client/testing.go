@@ -22,36 +22,36 @@ import (
 )
 
 const TestSubscription = "12345678-1234-1234-1234-123456789000"
+
 var testResourceGroup = "test-resource-group"
 
 type MockCreds struct {
-
 }
 
 func (*MockCreds) GetToken(ctx context.Context, options policy.TokenRequestOptions) (azcore.AccessToken, error) {
 	return azcore.AccessToken{
-		Token: "SomeToken",
-		ExpiresOn: time.Now().Add(time.Hour*24),
+		Token:     "SomeToken",
+		ExpiresOn: time.Now().Add(time.Hour * 24),
 	}, nil
 }
 
 type MockHttpClient struct {
 	rootURL string
-	scheme string
-	host string
-	client *http.Client
+	scheme  string
+	host    string
+	client  *http.Client
 }
 
-func NewMockHttpClient(cl *http.Client, rootURL string) *MockHttpClient {	
+func NewMockHttpClient(cl *http.Client, rootURL string) *MockHttpClient {
 	u, err := url.Parse(rootURL)
 	if err != nil {
-			panic(err)
+		panic(err)
 	}
 	return &MockHttpClient{
-		client: cl,
+		client:  cl,
 		rootURL: rootURL,
-		scheme: u.Scheme,
-		host: u.Host,
+		scheme:  u.Scheme,
+		host:    u.Host,
 	}
 }
 
@@ -61,7 +61,7 @@ func (c *MockHttpClient) Do(req *http.Request) (*http.Response, error) {
 	return c.client.Do(req)
 }
 
-func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.Router) (error)) {
+func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.Router) error) {
 	version := "vDev"
 	t.Helper()
 	table.IgnoreInTests = false
@@ -78,13 +78,13 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 			return nil, err
 		}
 		c := &Client{
-			logger:        l,
+			logger: l,
 			Options: &arm.ClientOptions{
 				ClientOptions: policy.ClientOptions{
 					Transport: mockClient,
 				},
 			},
-			Creds: creds,
+			Creds:         creds,
 			subscriptions: []string{TestSubscription},
 			resourceGroups: map[string][]*armresources.GenericResourceExpanded{
 				TestSubscription: {

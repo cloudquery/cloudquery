@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devtestlabs/armdev
 func Armdevtestlabs() []Table {
 	tables := []Table{
 		{
-      Name: "operation_metadata",
-      Struct: &armdevtestlabs.OperationMetadata{},
-      ResponseStruct: &armdevtestlabs.ProviderOperationsClientListResponse{},
-      Client: &armdevtestlabs.ProviderOperationsClient{},
-      ListFunc: (&armdevtestlabs.ProviderOperationsClient{}).NewListPager,
-			NewFunc: armdevtestlabs.NewProviderOperationsClient,
-			URL: "/providers/Microsoft.DevTestLab/operations",
+			Name:           "operation_metadata",
+			Struct:         &armdevtestlabs.OperationMetadata{},
+			ResponseStruct: &armdevtestlabs.ProviderOperationsClientListResponse{},
+			Client:         &armdevtestlabs.ProviderOperationsClient{},
+			ListFunc:       (&armdevtestlabs.ProviderOperationsClient{}).NewListPager,
+			NewFunc:        armdevtestlabs.NewProviderOperationsClient,
+			URL:            "/providers/Microsoft.DevTestLab/operations",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armdevtestlabs() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armdevtestlabs()...)
+	Tables = append(Tables, Armdevtestlabs()...)
 }

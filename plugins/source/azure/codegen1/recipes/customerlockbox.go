@@ -8,7 +8,7 @@ func Armcustomerlockbox() []*Table {
 		{
 			NewFunc: armcustomerlockbox.NewRequestsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerlockbox/armcustomerlockbox",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.CustomerLockbox/requests",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.CustomerLockbox/requests",
 		},
 	}
 	return tables

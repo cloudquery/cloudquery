@@ -8,7 +8,7 @@ func Armhealthcareapis() []*Table {
 		{
 			NewFunc: armhealthcareapis.NewServicesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthcareapis/armhealthcareapis",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.HealthcareApis/services",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.HealthcareApis/services",
 		},
 	}
 	return tables

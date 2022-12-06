@@ -6,19 +6,19 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/advisor/armadvisor
 func Armadvisor() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armadvisor.NewRecommendationMetadataClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/advisor/armadvisor",
-			URL: "/providers/Microsoft.Advisor/metadata",
-		},
-		{
 			NewFunc: armadvisor.NewRecommendationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/advisor/armadvisor",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/recommendations",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/recommendations",
+		},
+		{
+			NewFunc: armadvisor.NewRecommendationMetadataClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/advisor/armadvisor",
+			URL:     "/providers/Microsoft.Advisor/metadata",
 		},
 		{
 			NewFunc: armadvisor.NewSuppressionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/advisor/armadvisor",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/suppressions",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/suppressions",
 		},
 	}
 	return tables

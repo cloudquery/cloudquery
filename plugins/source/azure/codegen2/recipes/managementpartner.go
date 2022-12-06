@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementpartner/
 func Armmanagementpartner() []Table {
 	tables := []Table{
 		{
-      Name: "operation_response",
-      Struct: &armmanagementpartner.OperationResponse{},
-      ResponseStruct: &armmanagementpartner.OperationClientListResponse{},
-      Client: &armmanagementpartner.OperationClient{},
-      ListFunc: (&armmanagementpartner.OperationClient{}).NewListPager,
-			NewFunc: armmanagementpartner.NewOperationClient,
-			URL: "/providers/Microsoft.ManagementPartner/operations",
+			Name:           "operation_response",
+			Struct:         &armmanagementpartner.OperationResponse{},
+			ResponseStruct: &armmanagementpartner.OperationClientListResponse{},
+			Client:         &armmanagementpartner.OperationClient{},
+			ListFunc:       (&armmanagementpartner.OperationClient{}).NewListPager,
+			NewFunc:        armmanagementpartner.NewOperationClient,
+			URL:            "/providers/Microsoft.ManagementPartner/operations",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armmanagementpartner() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armmanagementpartner()...)
+	Tables = append(Tables, Armmanagementpartner()...)
 }

@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcomplianceautom
 func Armappcomplianceautomation() []Table {
 	tables := []Table{
 		{
-      Name: "report_resource",
-      Struct: &armappcomplianceautomation.ReportResource{},
-      ResponseStruct: &armappcomplianceautomation.ReportsClientListResponse{},
-      Client: &armappcomplianceautomation.ReportsClient{},
-      ListFunc: (&armappcomplianceautomation.ReportsClient{}).NewListPager,
-			NewFunc: armappcomplianceautomation.NewReportsClient,
-			URL: "/providers/Microsoft.AppComplianceAutomation/reports",
+			Name:           "report_resource",
+			Struct:         &armappcomplianceautomation.ReportResource{},
+			ResponseStruct: &armappcomplianceautomation.ReportsClientListResponse{},
+			Client:         &armappcomplianceautomation.ReportsClient{},
+			ListFunc:       (&armappcomplianceautomation.ReportsClient{}).NewListPager,
+			NewFunc:        armappcomplianceautomation.NewReportsClient,
+			URL:            "/providers/Microsoft.AppComplianceAutomation/reports",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armappcomplianceautomation() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armappcomplianceautomation()...)
+	Tables = append(Tables, Armappcomplianceautomation()...)
 }

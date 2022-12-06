@@ -6,229 +6,229 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork
 func Armnetwork() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armnetwork.NewExpressRouteCrossConnectionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/expressRouteCrossConnections",
-		},
-		{
-			NewFunc: armnetwork.NewExpressRouteServiceProvidersClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/expressRouteServiceProviders",
-		},
-		{
-			NewFunc: armnetwork.NewRouteFiltersClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/routeFilters",
-		},
-		{
-			NewFunc: armnetwork.NewVPNSitesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/vpnSites",
-		},
-		{
-			NewFunc: armnetwork.NewVPNGatewaysClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/vpnGateways",
-		},
-		{
-			NewFunc: armnetwork.NewVPNServerConfigurationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/vpnServerConfigurations",
-		},
-		{
-			NewFunc: armnetwork.NewLocalNetworkGatewaysClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/localNetworkGateways",
-		},
-		{
-			NewFunc: armnetwork.NewVirtualNetworksClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks",
-		},
-		{
-			NewFunc: armnetwork.NewExpressRoutePortsLocationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/ExpressRoutePortsLocations",
-		},
-		{
-			NewFunc: armnetwork.NewFirewallPoliciesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/firewallPolicies",
-		},
-		{
-			NewFunc: armnetwork.NewExpressRouteCircuitsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits",
-		},
-		{
-			NewFunc: armnetwork.NewManagersClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers",
-		},
-		{
-			NewFunc: armnetwork.NewIPGroupsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/ipGroups",
-		},
-		{
-			NewFunc: armnetwork.NewPublicIPPrefixesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPPrefixes",
-		},
-		{
-			NewFunc: armnetwork.NewBgpServiceCommunitiesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/bgpServiceCommunities",
-		},
-		{
-			NewFunc: armnetwork.NewNatGatewaysClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/natGateways",
-		},
-		{
-			NewFunc: armnetwork.NewVirtualRoutersClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/virtualRouters",
-		},
-		{
-			NewFunc: armnetwork.NewRouteTablesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeTables",
-		},
-		{
-			NewFunc: armnetwork.NewBastionHostsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/bastionHosts",
-		},
-		{
-			NewFunc: armnetwork.NewServiceEndpointPoliciesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/ServiceEndpointPolicies",
-		},
-		{
-			NewFunc: armnetwork.NewVirtualHubsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/virtualHubs",
-		},
-		{
-			NewFunc: armnetwork.NewIPAllocationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/IpAllocations",
-		},
-		{
-			NewFunc: armnetwork.NewSecurityGroupsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups",
-		},
-		{
-			NewFunc: armnetwork.NewSecurityPartnerProvidersClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/securityPartnerProviders",
-		},
-		{
-			NewFunc: armnetwork.NewVirtualAppliancesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkVirtualAppliances",
-		},
-		{
-			NewFunc: armnetwork.NewVirtualWansClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/virtualWans",
-		},
-		{
-			NewFunc: armnetwork.NewWebApplicationFirewallPoliciesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies",
-		},
-		{
-			NewFunc: armnetwork.NewAzureFirewallsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/azureFirewalls",
-		},
-		{
-			NewFunc: armnetwork.NewWatchersClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers",
-		},
-		{
-			NewFunc: armnetwork.NewLoadBalancersClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers",
-		},
-		{
-			NewFunc: armnetwork.NewApplicationSecurityGroupsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationSecurityGroups",
-		},
-		{
-			NewFunc: armnetwork.NewProfilesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkProfiles",
-		},
-		{
-			NewFunc: armnetwork.NewPrivateEndpointsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateEndpoints",
-		},
-		{
-			NewFunc: armnetwork.NewInterfacesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkInterfaces",
-		},
-		{
-			NewFunc: armnetwork.NewSubscriptionNetworkManagerConnectionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkManagerConnections",
-		},
-		{
-			NewFunc: armnetwork.NewDdosProtectionPlansClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/ddosProtectionPlans",
-		},
-		{
-			NewFunc: armnetwork.NewVirtualApplianceSKUsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkVirtualApplianceSkus",
-		},
-		{
-			NewFunc: armnetwork.NewVirtualNetworkGatewayConnectionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/connections",
-		},
-		{
-			NewFunc: armnetwork.NewExpressRoutePortsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/ExpressRoutePorts",
-		},
-		{
-			NewFunc: armnetwork.NewDscpConfigurationClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dscpConfigurations",
-		},
-		{
 			NewFunc: armnetwork.NewPrivateLinkServicesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateLinkServices",
-		},
-		{
-			NewFunc: armnetwork.NewVirtualNetworkGatewaysClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworkGateways",
+			URL:     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateLinkServices",
 		},
 		{
 			NewFunc: armnetwork.NewApplicationGatewaysClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways",
+			URL:     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways",
 		},
 		{
-			NewFunc: armnetwork.NewCustomIPPrefixesClient,
+			NewFunc: armnetwork.NewBastionHostsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/customIpPrefixes",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Network/bastionHosts",
+		},
+		{
+			NewFunc: armnetwork.NewExpressRouteCrossConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Network/expressRouteCrossConnections",
+		},
+		{
+			NewFunc: armnetwork.NewVirtualNetworksClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
+			URL:     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks",
+		},
+		{
+			NewFunc: armnetwork.NewProfilesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
+			URL:     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkProfiles",
+		},
+		{
+			NewFunc: armnetwork.NewServiceEndpointPoliciesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Network/ServiceEndpointPolicies",
+		},
+		{
+			NewFunc: armnetwork.NewRouteFiltersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Network/routeFilters",
+		},
+		{
+			NewFunc: armnetwork.NewNatGatewaysClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
+			URL:     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/natGateways",
+		},
+		{
+			NewFunc: armnetwork.NewVirtualRoutersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Network/virtualRouters",
+		},
+		{
+			NewFunc: armnetwork.NewLocalNetworkGatewaysClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
+			URL:     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/localNetworkGateways",
 		},
 		{
 			NewFunc: armnetwork.NewPublicIPAddressesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPAddresses",
+			URL:     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPAddresses",
+		},
+		{
+			NewFunc: armnetwork.NewVirtualHubsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Network/virtualHubs",
+		},
+		{
+			NewFunc: armnetwork.NewVirtualAppliancesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkVirtualAppliances",
+		},
+		{
+			NewFunc: armnetwork.NewRouteTablesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
+			URL:     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeTables",
+		},
+		{
+			NewFunc: armnetwork.NewApplicationSecurityGroupsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
+			URL:     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationSecurityGroups",
+		},
+		{
+			NewFunc: armnetwork.NewPublicIPPrefixesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
+			URL:     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPPrefixes",
+		},
+		{
+			NewFunc: armnetwork.NewIPAllocationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Network/IpAllocations",
+		},
+		{
+			NewFunc: armnetwork.NewWatchersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
+			URL:     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers",
+		},
+		{
+			NewFunc: armnetwork.NewManagersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
+			URL:     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers",
+		},
+		{
+			NewFunc: armnetwork.NewWebApplicationFirewallPoliciesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
+			URL:     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies",
+		},
+		{
+			NewFunc: armnetwork.NewAzureFirewallsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
+			URL:     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/azureFirewalls",
+		},
+		{
+			NewFunc: armnetwork.NewExpressRoutePortsLocationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Network/ExpressRoutePortsLocations",
+		},
+		{
+			NewFunc: armnetwork.NewPrivateEndpointsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
+			URL:     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateEndpoints",
+		},
+		{
+			NewFunc: armnetwork.NewInterfacesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
+			URL:     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkInterfaces",
+		},
+		{
+			NewFunc: armnetwork.NewSubscriptionNetworkManagerConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkManagerConnections",
+		},
+		{
+			NewFunc: armnetwork.NewVirtualApplianceSKUsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkVirtualApplianceSkus",
+		},
+		{
+			NewFunc: armnetwork.NewLoadBalancersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
+			URL:     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers",
+		},
+		{
+			NewFunc: armnetwork.NewVirtualNetworkGatewayConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
+			URL:     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/connections",
+		},
+		{
+			NewFunc: armnetwork.NewFirewallPoliciesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
+			URL:     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/firewallPolicies",
+		},
+		{
+			NewFunc: armnetwork.NewVirtualNetworkGatewaysClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
+			URL:     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworkGateways",
+		},
+		{
+			NewFunc: armnetwork.NewBgpServiceCommunitiesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Network/bgpServiceCommunities",
+		},
+		{
+			NewFunc: armnetwork.NewIPGroupsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Network/ipGroups",
+		},
+		{
+			NewFunc: armnetwork.NewVPNGatewaysClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Network/vpnGateways",
+		},
+		{
+			NewFunc: armnetwork.NewCustomIPPrefixesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
+			URL:     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/customIpPrefixes",
+		},
+		{
+			NewFunc: armnetwork.NewSecurityGroupsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
+			URL:     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups",
+		},
+		{
+			NewFunc: armnetwork.NewExpressRoutePortsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Network/ExpressRoutePorts",
+		},
+		{
+			NewFunc: armnetwork.NewDscpConfigurationClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
+			URL:     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dscpConfigurations",
+		},
+		{
+			NewFunc: armnetwork.NewVirtualWansClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Network/virtualWans",
+		},
+		{
+			NewFunc: armnetwork.NewVPNServerConfigurationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Network/vpnServerConfigurations",
+		},
+		{
+			NewFunc: armnetwork.NewExpressRouteServiceProvidersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Network/expressRouteServiceProviders",
+		},
+		{
+			NewFunc: armnetwork.NewExpressRouteCircuitsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
+			URL:     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits",
+		},
+		{
+			NewFunc: armnetwork.NewDdosProtectionPlansClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Network/ddosProtectionPlans",
+		},
+		{
+			NewFunc: armnetwork.NewVPNSitesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Network/vpnSites",
+		},
+		{
+			NewFunc: armnetwork.NewSecurityPartnerProvidersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Network/securityPartnerProviders",
 		},
 	}
 	return tables

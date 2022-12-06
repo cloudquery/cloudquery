@@ -17,16 +17,15 @@ import (
 )
 
 type Client struct {
-	subscriptions []string
-	logger        zerolog.Logger
+	subscriptions  []string
+	logger         zerolog.Logger
 	resourceGroups map[string][]*armresources.GenericResourceExpanded
 	// this is set by table client multiplexer
 	SubscriptionId string
-	ResourceGroup string
-	Creds 				azcore.TokenCredential
-	Options 			*arm.ClientOptions
+	ResourceGroup  string
+	Creds          azcore.TokenCredential
+	Options        *arm.ClientOptions
 }
-
 
 func getSubscriptions(logger *zerolog.Logger, spec *Spec, creds azcore.TokenCredential) ([]string, error) {
 	subscriptions := make([]string, 0)
@@ -88,12 +87,12 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 			resourceGroups[sub] = append(resourceGroups[sub], page.Value...)
 		}
 	}
-	
+
 	return &Client{
-		logger:        logger,
-		subscriptions: subscriptions,
+		logger:         logger,
+		subscriptions:  subscriptions,
 		resourceGroups: resourceGroups,
-		Creds: creds,
+		Creds:          creds,
 	}, nil
 }
 
@@ -111,8 +110,8 @@ func (c Client) withSubscription(subscriptionId string) *Client {
 		subscriptions:  c.subscriptions,
 		logger:         c.logger.With().Str("subscription_id", subscriptionId).Logger(),
 		SubscriptionId: subscriptionId,
-		Creds: c.Creds,
-		Options: c.Options,
+		Creds:          c.Creds,
+		Options:        c.Options,
 	}
 }
 
@@ -122,9 +121,8 @@ func (c Client) withResourceGroup(name string) *Client {
 		subscriptions:  c.subscriptions,
 		logger:         c.logger.With().Str("resource_group", name).Logger(),
 		SubscriptionId: c.SubscriptionId,
-		ResourceGroup: 	name,
-		Creds: c.Creds,
-		Options: c.Options,
+		ResourceGroup:  name,
+		Creds:          c.Creds,
+		Options:        c.Options,
 	}
 }
-

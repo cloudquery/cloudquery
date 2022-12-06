@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventh
 func Armeventhub() []Table {
 	tables := []Table{
 		{
-      Name: "eh_namespace",
-      Struct: &armeventhub.EHNamespace{},
-      ResponseStruct: &armeventhub.NamespacesClientListResponse{},
-      Client: &armeventhub.NamespacesClient{},
-      ListFunc: (&armeventhub.NamespacesClient{}).NewListPager,
-			NewFunc: armeventhub.NewNamespacesClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.EventHub/namespaces",
+			Name:           "eh_namespace",
+			Struct:         &armeventhub.EHNamespace{},
+			ResponseStruct: &armeventhub.NamespacesClientListResponse{},
+			Client:         &armeventhub.NamespacesClient{},
+			ListFunc:       (&armeventhub.NamespacesClient{}).NewListPager,
+			NewFunc:        armeventhub.NewNamespacesClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.EventHub/namespaces",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armeventhub() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armeventhub()...)
+	Tables = append(Tables, Armeventhub()...)
 }

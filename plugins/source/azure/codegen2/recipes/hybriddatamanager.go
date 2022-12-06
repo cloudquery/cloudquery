@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybriddatamanager/
 func Armhybriddatamanager() []Table {
 	tables := []Table{
 		{
-      Name: "data_manager",
-      Struct: &armhybriddatamanager.DataManager{},
-      ResponseStruct: &armhybriddatamanager.DataManagersClientListResponse{},
-      Client: &armhybriddatamanager.DataManagersClient{},
-      ListFunc: (&armhybriddatamanager.DataManagersClient{}).NewListPager,
-			NewFunc: armhybriddatamanager.NewDataManagersClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.HybridData/dataManagers",
+			Name:           "data_manager",
+			Struct:         &armhybriddatamanager.DataManager{},
+			ResponseStruct: &armhybriddatamanager.DataManagersClientListResponse{},
+			Client:         &armhybriddatamanager.DataManagersClient{},
+			ListFunc:       (&armhybriddatamanager.DataManagersClient{}).NewListPager,
+			NewFunc:        armhybriddatamanager.NewDataManagersClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.HybridData/dataManagers",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armhybriddatamanager() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armhybriddatamanager()...)
+	Tables = append(Tables, Armhybriddatamanager()...)
 }

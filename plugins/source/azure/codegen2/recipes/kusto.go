@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto"
 func Armkusto() []Table {
 	tables := []Table{
 		{
-      Name: "cluster",
-      Struct: &armkusto.Cluster{},
-      ResponseStruct: &armkusto.ClustersClientListResponse{},
-      Client: &armkusto.ClustersClient{},
-      ListFunc: (&armkusto.ClustersClient{}).NewListPager,
-			NewFunc: armkusto.NewClustersClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Kusto/clusters",
+			Name:           "cluster",
+			Struct:         &armkusto.Cluster{},
+			ResponseStruct: &armkusto.ClustersClientListResponse{},
+			Client:         &armkusto.ClustersClient{},
+			ListFunc:       (&armkusto.ClustersClient{}).NewListPager,
+			NewFunc:        armkusto.NewClustersClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Kusto/clusters",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armkusto() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armkusto()...)
+	Tables = append(Tables, Armkusto()...)
 }

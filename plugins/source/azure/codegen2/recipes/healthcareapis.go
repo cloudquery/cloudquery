@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthcareapis/arm
 func Armhealthcareapis() []Table {
 	tables := []Table{
 		{
-      Name: "services_description",
-      Struct: &armhealthcareapis.ServicesDescription{},
-      ResponseStruct: &armhealthcareapis.ServicesClientListResponse{},
-      Client: &armhealthcareapis.ServicesClient{},
-      ListFunc: (&armhealthcareapis.ServicesClient{}).NewListPager,
-			NewFunc: armhealthcareapis.NewServicesClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.HealthcareApis/services",
+			Name:           "services_description",
+			Struct:         &armhealthcareapis.ServicesDescription{},
+			ResponseStruct: &armhealthcareapis.ServicesClientListResponse{},
+			Client:         &armhealthcareapis.ServicesClient{},
+			ListFunc:       (&armhealthcareapis.ServicesClient{}).NewListPager,
+			NewFunc:        armhealthcareapis.NewServicesClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.HealthcareApis/services",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armhealthcareapis() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armhealthcareapis()...)
+	Tables = append(Tables, Armhealthcareapis()...)
 }

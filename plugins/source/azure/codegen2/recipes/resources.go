@@ -6,31 +6,31 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresou
 func Armresources() []Table {
 	tables := []Table{
 		{
-      Name: "tag_details",
-      Struct: &armresources.TagDetails{},
-      ResponseStruct: &armresources.TagsClientListResponse{},
-      Client: &armresources.TagsClient{},
-      ListFunc: (&armresources.TagsClient{}).NewListPager,
-			NewFunc: armresources.NewTagsClient,
-			URL: "/subscriptions/{subscriptionId}/tagNames",
+			Name:           "tag_details",
+			Struct:         &armresources.TagDetails{},
+			ResponseStruct: &armresources.TagsClientListResponse{},
+			Client:         &armresources.TagsClient{},
+			ListFunc:       (&armresources.TagsClient{}).NewListPager,
+			NewFunc:        armresources.NewTagsClient,
+			URL:            "/subscriptions/{subscriptionId}/tagNames",
 		},
 		{
-      Name: "provider",
-      Struct: &armresources.Provider{},
-      ResponseStruct: &armresources.ProvidersClientListResponse{},
-      Client: &armresources.ProvidersClient{},
-      ListFunc: (&armresources.ProvidersClient{}).NewListPager,
-			NewFunc: armresources.NewProvidersClient,
-			URL: "/subscriptions/{subscriptionId}/providers",
+			Name:           "provider",
+			Struct:         &armresources.Provider{},
+			ResponseStruct: &armresources.ProvidersClientListResponse{},
+			Client:         &armresources.ProvidersClient{},
+			ListFunc:       (&armresources.ProvidersClient{}).NewListPager,
+			NewFunc:        armresources.NewProvidersClient,
+			URL:            "/subscriptions/{subscriptionId}/providers",
 		},
 		{
-      Name: "resource_group",
-      Struct: &armresources.ResourceGroup{},
-      ResponseStruct: &armresources.ResourceGroupsClientListResponse{},
-      Client: &armresources.ResourceGroupsClient{},
-      ListFunc: (&armresources.ResourceGroupsClient{}).NewListPager,
-			NewFunc: armresources.NewResourceGroupsClient,
-			URL: "/subscriptions/{subscriptionId}/resourcegroups",
+			Name:           "resource_group",
+			Struct:         &armresources.ResourceGroup{},
+			ResponseStruct: &armresources.ResourceGroupsClientListResponse{},
+			Client:         &armresources.ResourceGroupsClient{},
+			ListFunc:       (&armresources.ResourceGroupsClient{}).NewListPager,
+			NewFunc:        armresources.NewResourceGroupsClient,
+			URL:            "/subscriptions/{subscriptionId}/resourcegroups",
 		},
 	}
 
@@ -42,5 +42,5 @@ func Armresources() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armresources()...)
+	Tables = append(Tables, Armresources()...)
 }

@@ -6,14 +6,14 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsight
 func Armapplicationinsights() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armapplicationinsights.NewWebTestsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/webtests",
-		},
-		{
 			NewFunc: armapplicationinsights.NewComponentsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/components",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/components",
+		},
+		{
+			NewFunc: armapplicationinsights.NewWebTestsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/webtests",
 		},
 	}
 	return tables

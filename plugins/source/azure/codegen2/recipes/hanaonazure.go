@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hanaonazure/armhan
 func Armhanaonazure() []Table {
 	tables := []Table{
 		{
-      Name: "sap_monitor",
-      Struct: &armhanaonazure.SapMonitor{},
-      ResponseStruct: &armhanaonazure.SapMonitorsClientListResponse{},
-      Client: &armhanaonazure.SapMonitorsClient{},
-      ListFunc: (&armhanaonazure.SapMonitorsClient{}).NewListPager,
-			NewFunc: armhanaonazure.NewSapMonitorsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.HanaOnAzure/sapMonitors",
+			Name:           "sap_monitor",
+			Struct:         &armhanaonazure.SapMonitor{},
+			ResponseStruct: &armhanaonazure.SapMonitorsClientListResponse{},
+			Client:         &armhanaonazure.SapMonitorsClient{},
+			ListFunc:       (&armhanaonazure.SapMonitorsClient{}).NewListPager,
+			NewFunc:        armhanaonazure.NewSapMonitorsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.HanaOnAzure/sapMonitors",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armhanaonazure() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armhanaonazure()...)
+	Tables = append(Tables, Armhanaonazure()...)
 }

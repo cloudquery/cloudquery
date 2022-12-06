@@ -6,22 +6,22 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/orbital/armorbital
 func Armorbital() []Table {
 	tables := []Table{
 		{
-      Name: "spacecraft",
-      Struct: &armorbital.Spacecraft{},
-      ResponseStruct: &armorbital.SpacecraftsClientListResponse{},
-      Client: &armorbital.SpacecraftsClient{},
-      ListFunc: (&armorbital.SpacecraftsClient{}).NewListPager,
-			NewFunc: armorbital.NewSpacecraftsClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/spacecrafts",
+			Name:           "contact_profile",
+			Struct:         &armorbital.ContactProfile{},
+			ResponseStruct: &armorbital.ContactProfilesClientListResponse{},
+			Client:         &armorbital.ContactProfilesClient{},
+			ListFunc:       (&armorbital.ContactProfilesClient{}).NewListPager,
+			NewFunc:        armorbital.NewContactProfilesClient,
+			URL:            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/contactProfiles",
 		},
 		{
-      Name: "contact_profile",
-      Struct: &armorbital.ContactProfile{},
-      ResponseStruct: &armorbital.ContactProfilesClientListResponse{},
-      Client: &armorbital.ContactProfilesClient{},
-      ListFunc: (&armorbital.ContactProfilesClient{}).NewListPager,
-			NewFunc: armorbital.NewContactProfilesClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/contactProfiles",
+			Name:           "spacecraft",
+			Struct:         &armorbital.Spacecraft{},
+			ResponseStruct: &armorbital.SpacecraftsClientListResponse{},
+			Client:         &armorbital.SpacecraftsClient{},
+			ListFunc:       (&armorbital.SpacecraftsClient{}).NewListPager,
+			NewFunc:        armorbital.NewSpacecraftsClient,
+			URL:            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/spacecrafts",
 		},
 	}
 
@@ -33,5 +33,5 @@ func Armorbital() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armorbital()...)
+	Tables = append(Tables, Armorbital()...)
 }

@@ -8,7 +8,7 @@ func Armdevops() []*Table {
 		{
 			NewFunc: armdevops.NewPipelineTemplateDefinitionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devops/armdevops",
-			URL: "/providers/Microsoft.DevOps/pipelineTemplateDefinitions",
+			URL:     "/providers/Microsoft.DevOps/pipelineTemplateDefinitions",
 		},
 	}
 	return tables

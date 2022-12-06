@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/arm
 func Armcostmanagement() []Table {
 	tables := []Table{
 		{
-      Name: "view",
-      Struct: &armcostmanagement.View{},
-      ResponseStruct: &armcostmanagement.ViewsClientListResponse{},
-      Client: &armcostmanagement.ViewsClient{},
-      ListFunc: (&armcostmanagement.ViewsClient{}).NewListPager,
-			NewFunc: armcostmanagement.NewViewsClient,
-			URL: "/providers/Microsoft.CostManagement/views",
+			Name:           "view",
+			Struct:         &armcostmanagement.View{},
+			ResponseStruct: &armcostmanagement.ViewsClientListResponse{},
+			Client:         &armcostmanagement.ViewsClient{},
+			ListFunc:       (&armcostmanagement.ViewsClient{}).NewListPager,
+			NewFunc:        armcostmanagement.NewViewsClient,
+			URL:            "/providers/Microsoft.CostManagement/views",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armcostmanagement() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armcostmanagement()...)
+	Tables = append(Tables, Armcostmanagement()...)
 }

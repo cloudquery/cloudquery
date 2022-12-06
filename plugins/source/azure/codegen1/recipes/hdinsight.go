@@ -8,7 +8,7 @@ func Armhdinsight() []*Table {
 		{
 			NewFunc: armhdinsight.NewClustersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsight",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.HDInsight/clusters",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.HDInsight/clusters",
 		},
 	}
 	return tables

@@ -6,22 +6,22 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/saas/armsaas"
 func Armsaas() []Table {
 	tables := []Table{
 		{
-      Name: "app",
-      Struct: &armsaas.App{},
-      ResponseStruct: &armsaas.ApplicationsClientListResponse{},
-      Client: &armsaas.ApplicationsClient{},
-      ListFunc: (&armsaas.ApplicationsClient{}).NewListPager,
-			NewFunc: armsaas.NewApplicationsClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SaaS/applications",
+			Name:           "resource",
+			Struct:         &armsaas.Resource{},
+			ResponseStruct: &armsaas.ResourcesClientListResponse{},
+			Client:         &armsaas.ResourcesClient{},
+			ListFunc:       (&armsaas.ResourcesClient{}).NewListPager,
+			NewFunc:        armsaas.NewResourcesClient,
+			URL:            "/providers/Microsoft.SaaS/saasresources",
 		},
 		{
-      Name: "resource",
-      Struct: &armsaas.Resource{},
-      ResponseStruct: &armsaas.ResourcesClientListResponse{},
-      Client: &armsaas.ResourcesClient{},
-      ListFunc: (&armsaas.ResourcesClient{}).NewListPager,
-			NewFunc: armsaas.NewResourcesClient,
-			URL: "/providers/Microsoft.SaaS/saasresources",
+			Name:           "app",
+			Struct:         &armsaas.App{},
+			ResponseStruct: &armsaas.ApplicationsClientListResponse{},
+			Client:         &armsaas.ApplicationsClient{},
+			ListFunc:       (&armsaas.ApplicationsClient{}).NewListPager,
+			NewFunc:        armsaas.NewApplicationsClient,
+			URL:            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SaaS/applications",
 		},
 	}
 
@@ -33,5 +33,5 @@ func Armsaas() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armsaas()...)
+	Tables = append(Tables, Armsaas()...)
 }

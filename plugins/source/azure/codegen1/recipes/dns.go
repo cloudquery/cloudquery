@@ -8,7 +8,7 @@ func Armdns() []*Table {
 		{
 			NewFunc: armdns.NewZonesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dns/armdns",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/dnszones",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Network/dnszones",
 		},
 	}
 	return tables

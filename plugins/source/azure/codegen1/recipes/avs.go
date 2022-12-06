@@ -8,7 +8,7 @@ func Armavs() []*Table {
 		{
 			NewFunc: armavs.NewPrivateCloudsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds",
+			URL:     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds",
 		},
 	}
 	return tables

@@ -8,7 +8,7 @@ func Armproviderhub() []*Table {
 		{
 			NewFunc: armproviderhub.NewProviderRegistrationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations",
 		},
 	}
 	return tables

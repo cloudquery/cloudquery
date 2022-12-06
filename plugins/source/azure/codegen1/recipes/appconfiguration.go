@@ -8,7 +8,7 @@ func Armappconfiguration() []*Table {
 		{
 			NewFunc: armappconfiguration.NewConfigurationStoresClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appconfiguration/armappconfiguration",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.AppConfiguration/configurationStores",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.AppConfiguration/configurationStores",
 		},
 	}
 	return tables

@@ -8,7 +8,7 @@ func Armdashboard() []*Table {
 		{
 			NewFunc: armdashboard.NewGrafanaClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dashboard/armdashboard",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Dashboard/grafana",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Dashboard/grafana",
 		},
 	}
 	return tables

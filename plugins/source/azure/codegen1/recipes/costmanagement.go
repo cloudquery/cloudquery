@@ -8,7 +8,7 @@ func Armcostmanagement() []*Table {
 		{
 			NewFunc: armcostmanagement.NewViewsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement",
-			URL: "/providers/Microsoft.CostManagement/views",
+			URL:     "/providers/Microsoft.CostManagement/views",
 		},
 	}
 	return tables

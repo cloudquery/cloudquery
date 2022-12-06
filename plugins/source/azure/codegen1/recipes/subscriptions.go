@@ -8,7 +8,7 @@ func Armsubscriptions() []*Table {
 		{
 			NewFunc: armsubscriptions.NewTenantsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions",
-			URL: "/tenants",
+			URL:     "/tenants",
 		},
 	}
 	return tables

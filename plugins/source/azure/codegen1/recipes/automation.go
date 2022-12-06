@@ -8,7 +8,7 @@ func Armautomation() []*Table {
 		{
 			NewFunc: armautomation.NewAccountClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Automation/automationAccounts",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.Automation/automationAccounts",
 		},
 	}
 	return tables

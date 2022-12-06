@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdat
 func Armdatafactory() []Table {
 	tables := []Table{
 		{
-      Name: "factory",
-      Struct: &armdatafactory.Factory{},
-      ResponseStruct: &armdatafactory.FactoriesClientListResponse{},
-      Client: &armdatafactory.FactoriesClient{},
-      ListFunc: (&armdatafactory.FactoriesClient{}).NewListPager,
-			NewFunc: armdatafactory.NewFactoriesClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DataFactory/factories",
+			Name:           "factory",
+			Struct:         &armdatafactory.Factory{},
+			ResponseStruct: &armdatafactory.FactoriesClientListResponse{},
+			Client:         &armdatafactory.FactoriesClient{},
+			ListFunc:       (&armdatafactory.FactoriesClient{}).NewListPager,
+			NewFunc:        armdatafactory.NewFactoriesClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DataFactory/factories",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armdatafactory() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armdatafactory()...)
+	Tables = append(Tables, Armdatafactory()...)
 }

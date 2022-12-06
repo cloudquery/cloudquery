@@ -8,7 +8,7 @@ func Armmanagementgroups() []*Table {
 		{
 			NewFunc: armmanagementgroups.NewEntitiesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementgroups/armmanagementgroups",
-			URL: "/providers/Microsoft.Management/getEntities",
+			URL:     "/providers/Microsoft.Management/getEntities",
 		},
 	}
 	return tables

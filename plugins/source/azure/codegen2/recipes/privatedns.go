@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/privatedns/armpriv
 func Armprivatedns() []Table {
 	tables := []Table{
 		{
-      Name: "private_zone",
-      Struct: &armprivatedns.PrivateZone{},
-      ResponseStruct: &armprivatedns.PrivateZonesClientListResponse{},
-      Client: &armprivatedns.PrivateZonesClient{},
-      ListFunc: (&armprivatedns.PrivateZonesClient{}).NewListPager,
-			NewFunc: armprivatedns.NewPrivateZonesClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/privateDnsZones",
+			Name:           "private_zone",
+			Struct:         &armprivatedns.PrivateZone{},
+			ResponseStruct: &armprivatedns.PrivateZonesClientListResponse{},
+			Client:         &armprivatedns.PrivateZonesClient{},
+			ListFunc:       (&armprivatedns.PrivateZonesClient{}).NewListPager,
+			NewFunc:        armprivatedns.NewPrivateZonesClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/privateDnsZones",
 		},
 	}
 
@@ -24,5 +24,5 @@ func Armprivatedns() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armprivatedns()...)
+	Tables = append(Tables, Armprivatedns()...)
 }

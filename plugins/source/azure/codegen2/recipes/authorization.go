@@ -6,31 +6,31 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/arma
 func Armauthorization() []Table {
 	tables := []Table{
 		{
-      Name: "classic_administrator",
-      Struct: &armauthorization.ClassicAdministrator{},
-      ResponseStruct: &armauthorization.ClassicAdministratorsClientListResponse{},
-      Client: &armauthorization.ClassicAdministratorsClient{},
-      ListFunc: (&armauthorization.ClassicAdministratorsClient{}).NewListPager,
-			NewFunc: armauthorization.NewClassicAdministratorsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/classicAdministrators",
+			Name:           "role_assignment",
+			Struct:         &armauthorization.RoleAssignment{},
+			ResponseStruct: &armauthorization.RoleAssignmentsClientListResponse{},
+			Client:         &armauthorization.RoleAssignmentsClient{},
+			ListFunc:       (&armauthorization.RoleAssignmentsClient{}).NewListPager,
+			NewFunc:        armauthorization.NewRoleAssignmentsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/roleAssignments",
 		},
 		{
-      Name: "role_assignment",
-      Struct: &armauthorization.RoleAssignment{},
-      ResponseStruct: &armauthorization.RoleAssignmentsClientListResponse{},
-      Client: &armauthorization.RoleAssignmentsClient{},
-      ListFunc: (&armauthorization.RoleAssignmentsClient{}).NewListPager,
-			NewFunc: armauthorization.NewRoleAssignmentsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/roleAssignments",
+			Name:           "provider_operations_metadata",
+			Struct:         &armauthorization.ProviderOperationsMetadata{},
+			ResponseStruct: &armauthorization.ProviderOperationsMetadataClientListResponse{},
+			Client:         &armauthorization.ProviderOperationsMetadataClient{},
+			ListFunc:       (&armauthorization.ProviderOperationsMetadataClient{}).NewListPager,
+			NewFunc:        armauthorization.NewProviderOperationsMetadataClient,
+			URL:            "/providers/Microsoft.Authorization/providerOperations",
 		},
 		{
-      Name: "provider_operations_metadata",
-      Struct: &armauthorization.ProviderOperationsMetadata{},
-      ResponseStruct: &armauthorization.ProviderOperationsMetadataClientListResponse{},
-      Client: &armauthorization.ProviderOperationsMetadataClient{},
-      ListFunc: (&armauthorization.ProviderOperationsMetadataClient{}).NewListPager,
-			NewFunc: armauthorization.NewProviderOperationsMetadataClient,
-			URL: "/providers/Microsoft.Authorization/providerOperations",
+			Name:           "classic_administrator",
+			Struct:         &armauthorization.ClassicAdministrator{},
+			ResponseStruct: &armauthorization.ClassicAdministratorsClientListResponse{},
+			Client:         &armauthorization.ClassicAdministratorsClient{},
+			ListFunc:       (&armauthorization.ClassicAdministratorsClient{}).NewListPager,
+			NewFunc:        armauthorization.NewClassicAdministratorsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/classicAdministrators",
 		},
 	}
 
@@ -42,5 +42,5 @@ func Armauthorization() []Table {
 }
 
 func init() {
-  Tables = append(Tables, Armauthorization()...)
+	Tables = append(Tables, Armauthorization()...)
 }

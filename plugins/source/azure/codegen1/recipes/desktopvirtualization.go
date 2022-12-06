@@ -8,7 +8,7 @@ func Armdesktopvirtualization() []*Table {
 		{
 			NewFunc: armdesktopvirtualization.NewHostPoolsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DesktopVirtualization/hostPools",
+			URL:     "/subscriptions/{subscriptionId}/providers/Microsoft.DesktopVirtualization/hostPools",
 		},
 	}
 	return tables
