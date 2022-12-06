@@ -31,7 +31,7 @@
   "plugins/destination/csv+FILLER": "0.0.0",
   "plugins/destination/sqlite": "1.0.11",
   "plugins/destination/sqlite+FILLER": "0.0.0",
-  "plugins/destination/snowflake": "1.0.3",
+  "plugins/destination/snowflake": "1.0.4",
   "plugins/destination/snowflake+FILLER": "0.0.0",
   "plugins/source/gandi": "1.0.0",
   "plugins/source/datadog": "1.0.0",
