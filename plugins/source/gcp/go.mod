@@ -20,7 +20,7 @@ require (
 	cloud.google.com/go/secretmanager v1.9.0
 	cloud.google.com/go/serviceusage v1.4.0
 	cloud.google.com/go/storage v1.28.0
-	github.com/cloudquery/plugin-sdk v1.10.0
+	github.com/cloudquery/plugin-sdk v1.11.0
 	github.com/golang/mock v1.6.0
 	github.com/iancoleman/strcase v0.2.0
 	github.com/julienschmidt/httprouter v1.3.0
@@ -57,7 +57,7 @@ require (
 	github.com/spf13/cobra v1.6.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	go.opencensus.io v0.24.0 // indirect
-	golang.org/x/exp v0.0.0-20221111204811-129d8d6c17ab // indirect
+	golang.org/x/exp v0.0.0-20221126150942-6ab00d035af9 // indirect
 	golang.org/x/mod v0.6.0 // indirect
 	golang.org/x/net v0.2.0 // indirect
 	golang.org/x/oauth2 v0.2.0 // indirect
