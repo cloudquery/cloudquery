@@ -41,8 +41,6 @@ github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/aad/armaad v1.0.0 h1:sDf8R
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/aad/armaad v1.0.0/go.mod h1:fX89+WwkVtH5oNnZV6OdGpz2ELD7ohX4mgh7Y4c0Vn8=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/advisor/armadvisor v1.0.0 h1:ERsafDBaNDDqWkymL+O79nqZPYyKFpnLbpRZgzWrN8g=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/advisor/armadvisor v1.0.0/go.mod h1:LLZFwp34+rh7+ygg+kV+tFBKRVW852DaW1yqq8lDYuE=
-github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/agrifood/armagrifood v0.7.0 h1:6NN5J13WGhekm/CGtcmG99BghwwYgNAg8W3nGB0a2lU=
-github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/agrifood/armagrifood v0.7.0/go.mod h1:mO1G5vpYmqZauoOWocn3p6RsbWzbSuQN3Wtcq1rqV1c=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/analysisservices/armanalysisservices v1.0.0 h1:FXYrO1Qkb/MfetviXV6nm85iHVKMM/HLUIGw8w8xWmQ=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/analysisservices/armanalysisservices v1.0.0/go.mod h1:OiZIyT8XphXMeSz+tPCQ11mFt84C87Dwn6TNirGsckc=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement v1.0.0 h1:Ai3+BE11JvwQ2PxLGNKAfMNSceYXjeijReLJiCouO6o=
@@ -73,14 +71,10 @@ github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch v1.1.0 h1:C
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch v1.1.0/go.mod h1:Jz7smLNU1YcKJg3U89KhubAGZ6o5/bgW83TRg1/gK/k=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling v0.5.0 h1:56uDxdVnsG1H8pdPT6LO1XQwnmK/pJWIEJmZ3lnUoGs=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling v0.5.0/go.mod h1:SVC7G8wADwhr0Bn3tdl29h8eswfhz/jvC8jJETiWcnY=
-github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blockchain/armblockchain v0.5.0 h1:9KlR56HdM1qin8oH5zKiRbWxC9TWM2K9KGjoPDENRsU=
-github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blockchain/armblockchain v0.5.0/go.mod h1:AZnp4BFJlf9HBGgNBmYbZqoEEW6rvkeSQOBzkcMxGA0=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice v0.5.0 h1:v2TuEnO4GzivkMXMWM2szyHwi7tWGQ6V8WG07UJfjv8=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice v0.5.0/go.mod h1:9I3Ckw/UPxF2tuJ4scHISF8Rgi16lkRFrCimkJhUFIY=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn v1.0.0 h1:mZYozuxvzO83ZtKST8TYGqvj++a3ehiworh8zuxfxOo=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn v1.0.0/go.mod h1:9HKN4ZiYtjIYAEsr76ecdVsMO7DdUzOGo6tgu3Olf5w=
-github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos v0.5.0 h1:hNBE1xzaszwXqfqe6g89/Y9xJepF9L2b+Y3pquDAUdY=
-github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos v0.5.0/go.mod h1:5gKWYxI7JoxDlQ2DO4f8JwJXDkAiZtnKRjWDOKXdBlU=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices v1.2.0 h1:FszWbnkWCl8qO4FU7io9DPTNNGix5kyc5EKqJmPy71k=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices v1.2.0/go.mod h1:VKkzyWyKOxfIuDfw2hy56cdp8eRAXt/h9xqo5eCr1yE=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute v1.0.0 h1:/Di3vB4sNeQ+7A8efjUVENvyB945Wruvstucqp7ZArg=
