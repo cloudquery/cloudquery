@@ -134,7 +134,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.7.20 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.20 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.13.20 // indirect
-	github.com/aws/aws-sdk-go-v2/service/shield v1.17.11
+	github.com/aws/aws-sdk-go-v2/service/shield v1.17.12
 	github.com/aws/aws-sdk-go-v2/service/sso v1.11.26 // indirect
 	github.com/aws/aws-sdk-go-v2/service/transfer v1.25.0
 	github.com/aws/aws-sdk-go-v2/service/wafregional v1.12.21
