@@ -20,6 +20,22 @@ Streaming is not available for the [Google Cloud free tier](https://cloud.google
 2. Create a BigQuery dataset that will contain the tables synced by CloudQuery. CloudQuery will automatically create the tables as part of a migration run on the first `sync`.
 3. Ensure that you have write access to the dataset. See [Required Permissions](https://cloud.google.com/bigquery/docs/streaming-data-into-bigquery) for details.
 
+## Example config
+
+The following config reads the values for `project_id` and `dataset_id` from environment variables:
+
+```
+kind: destination
+spec:
+  name: bigquery
+  path: cloudquery/bigquery
+  version: "VERSION_DESTINATION_BIGQUERY"
+  write_mode: "append"
+  spec:
+    project_id: ${PROJECT_ID}
+    dataset_id: ${DATASET_ID}
+```
+
 ## Authentication
 
 The GCP plugin authenticates using your [Application Default Credentials](https://cloud.google.com/sdk/gcloud/reference/auth/application-default). Available options are all the same options described [here](https://cloud.google.com/docs/authentication/provide-credentials-adc) in detail:
