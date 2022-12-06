@@ -5,6 +5,7 @@ https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2020-09-0
 The primary key for this table is **id**.
 
 ## Relations
+
 The following tables depend on azure_cdn_profiles:
   - [azure_cdn_endpoints](azure_cdn_endpoints.md)
   - [azure_cdn_rule_sets](azure_cdn_rule_sets.md)

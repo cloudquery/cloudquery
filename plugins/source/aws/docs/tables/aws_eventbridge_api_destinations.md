@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_ApiDestination.h
 The primary key for this table is **arn**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

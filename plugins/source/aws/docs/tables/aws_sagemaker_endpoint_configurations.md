@@ -5,6 +5,7 @@
 The primary key for this table is **arn**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
@@ -23,4 +24,5 @@ The primary key for this table is **arn**.
 |data_capture_config|JSON|
 |explainer_config|JSON|
 |kms_key_id|String|
+|shadow_production_variants|JSON|
 |result_metadata|JSON|

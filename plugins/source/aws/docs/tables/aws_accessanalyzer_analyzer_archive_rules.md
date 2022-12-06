@@ -7,6 +7,7 @@ The primary key for this table is **_cq_id**.
 ## Relations
 This table depends on [aws_accessanalyzer_analyzers](aws_accessanalyzer_analyzers.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

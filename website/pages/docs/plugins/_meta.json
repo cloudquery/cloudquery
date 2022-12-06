@@ -1,5 +1,5 @@
 {
-  "sources": "Source Plugins",
-  "destinations": "Destination Plugins",
-  "source-plugin-release-stages": "Source Plugin Release Stages"
+  "overview": "Overview",
+  "sources": "Sources",
+  "destinations": "Destinations"
 }

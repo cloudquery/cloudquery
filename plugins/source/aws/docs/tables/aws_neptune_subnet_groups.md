@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/neptune/latest/userguide/api-subnets.html#DescribeDB
 The primary key for this table is **arn**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

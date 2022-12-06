@@ -7,6 +7,7 @@ The primary key for this table is **id**.
 ## Relations
 This table depends on [azure_compute_virtual_machines](azure_compute_virtual_machines.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

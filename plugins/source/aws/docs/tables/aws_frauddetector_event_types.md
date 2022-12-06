@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/frauddetector/latest/api/API_EventType.html
 The primary key for this table is **arn**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

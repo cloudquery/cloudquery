@@ -7,6 +7,7 @@ The primary key for this table is **_cq_id**.
 ## Relations
 This table depends on [aws_apigateway_domain_names](aws_apigateway_domain_names.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

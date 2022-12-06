@@ -1,5 +1,35 @@
 # Changelog
 
+## [1.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-okta-v1.3.14...plugins-source-okta-v1.4.0) (2022-12-06)
+
+
+### Features
+
+* **website:** Add plugins tables ([#5259](https://github.com/cloudquery/cloudquery/issues/5259)) ([c336f4e](https://github.com/cloudquery/cloudquery/commit/c336f4e25e192ffdd4c211d4a35b67b71d01d1f8))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.11.0 ([#5416](https://github.com/cloudquery/cloudquery/issues/5416)) ([2e7ca35](https://github.com/cloudquery/cloudquery/commit/2e7ca35922fdb14fd717f582aaaa9693dae2ef4c))
+* **deps:** Update module github.com/okta/okta-sdk-golang/v2 to v2.16.0 ([#5228](https://github.com/cloudquery/cloudquery/issues/5228)) ([271515b](https://github.com/cloudquery/cloudquery/commit/271515bebc6b015e37d1c47b67b762c975f9a213))
+
+## [1.3.14](https://github.com/cloudquery/cloudquery/compare/plugins-source-okta-v1.3.13...plugins-source-okta-v1.3.14) (2022-11-30)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.10.0 ([#5153](https://github.com/cloudquery/cloudquery/issues/5153)) ([ea1f77e](https://github.com/cloudquery/cloudquery/commit/ea1f77e910f430287600e74cedd7d3f4ae79eb18))
+* **deps:** Update plugin-sdk for okta to v1.8.1 ([#5042](https://github.com/cloudquery/cloudquery/issues/5042)) ([764e04b](https://github.com/cloudquery/cloudquery/commit/764e04b36875486ee4a93122b4dbeba6600da161))
+* **deps:** Update plugin-sdk for okta to v1.9.0 ([#5084](https://github.com/cloudquery/cloudquery/issues/5084)) ([7cd1e3d](https://github.com/cloudquery/cloudquery/commit/7cd1e3d8abd65c6ec395fffac272e46c721487ac))
+
+## [1.3.13](https://github.com/cloudquery/cloudquery/compare/plugins-source-okta-v1.3.12...plugins-source-okta-v1.3.13) (2022-11-23)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for okta to v1.7.0 ([#4913](https://github.com/cloudquery/cloudquery/issues/4913)) ([5030a7c](https://github.com/cloudquery/cloudquery/commit/5030a7c2e2520ae58b224ff8bc96064d20365c61))
+* **deps:** Update plugin-sdk for okta to v1.8.0 ([#4976](https://github.com/cloudquery/cloudquery/issues/4976)) ([388fab4](https://github.com/cloudquery/cloudquery/commit/388fab440bb0e81050ec795cae35668fc4a4bf61))
+
 ## [1.3.12](https://github.com/cloudquery/cloudquery/compare/plugins-source-okta-v1.3.11...plugins-source-okta-v1.3.12) (2022-11-21)
 
 

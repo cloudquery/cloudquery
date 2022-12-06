@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/firehose/latest/APIReference/API_DeliveryStreamDescr
 The primary key for this table is **arn**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

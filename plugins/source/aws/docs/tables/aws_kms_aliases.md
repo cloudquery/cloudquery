@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/kms/latest/APIReference/API_AliasListEntry.html
 The primary key for this table is **arn**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

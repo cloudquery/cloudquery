@@ -17,7 +17,7 @@ func {{.SubService | ToCamel}}() *schema.Table {
     return &schema.Table{{template "table.go.tpl" .Table}}
 }
 
-func fetch{{.SubService | ToCamel}}(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
+func fetch{{.SubService | ToCamel}}(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {

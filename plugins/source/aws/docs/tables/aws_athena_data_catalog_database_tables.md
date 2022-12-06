@@ -7,6 +7,7 @@ The composite primary key for this table is (**data_catalog_arn**, **data_catalo
 ## Relations
 This table depends on [aws_athena_data_catalog_databases](aws_athena_data_catalog_databases.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

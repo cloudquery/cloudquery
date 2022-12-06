@@ -7,6 +7,7 @@ The composite primary key for this table is (**app_id**, **id**).
 ## Relations
 This table depends on [okta_applications](okta_applications.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

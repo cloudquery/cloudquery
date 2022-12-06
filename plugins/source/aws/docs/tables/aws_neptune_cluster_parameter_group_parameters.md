@@ -7,6 +7,7 @@ The primary key for this table is **_cq_id**.
 ## Relations
 This table depends on [aws_neptune_cluster_parameter_groups](aws_neptune_cluster_parameter_groups.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

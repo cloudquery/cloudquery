@@ -5,6 +5,7 @@ https://devcenter.heroku.com/articles/platform-api-reference#add-on-config
 The primary key for this table is **_cq_id**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

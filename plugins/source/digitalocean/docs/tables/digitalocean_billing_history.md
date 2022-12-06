@@ -5,6 +5,7 @@
 The primary key for this table is **invoice_id**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

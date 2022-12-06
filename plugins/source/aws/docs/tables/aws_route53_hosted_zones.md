@@ -5,6 +5,7 @@
 The primary key for this table is **arn**.
 
 ## Relations
+
 The following tables depend on aws_route53_hosted_zones:
   - [aws_route53_hosted_zone_query_logging_configs](aws_route53_hosted_zone_query_logging_configs.md)
   - [aws_route53_hosted_zone_resource_record_sets](aws_route53_hosted_zone_resource_record_sets.md)

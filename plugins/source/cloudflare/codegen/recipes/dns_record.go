@@ -6,17 +6,16 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func DNSRecordResources() []Resource {
-	return []Resource{
+func DNSRecordResources() []*Resource {
+	return []*Resource{
 		{
-			DefaultColumns: []codegen.ColumnDefinition{AccountIDColumn}, // ZoneIDColumn is already in the response
-			Multiplex:      "client.ZoneMultiplex",
+			Multiplex: "client.ZoneMultiplex",
 
-			CFStruct:   &cloudflare.DNSRecord{},
-			PrimaryKey: "id",
-			Template:   "resource_manual",
+			DataStruct: &cloudflare.DNSRecord{},
+			PKColumns:  []string{"id"},
 			SkipFields: []string{"Meta", "Data"},
 			ExtraColumns: []codegen.ColumnDefinition{
+				AccountIDColumn, // ZoneIDColumn is already in the response
 				{
 					Name:        "meta",
 					Description: "Extra Cloudflare-specific information about the record.",
@@ -28,11 +27,7 @@ func DNSRecordResources() []Resource {
 					Type:        schema.TypeJSON,
 				},
 			},
-			TableName:        "cloudflare_dns_records",
-			TableFuncName:    "DNSRecords",
-			Filename:         "dns_records.go",
-			Package:          "dns_records",
-			ResolverFuncName: "fetchDNSRecords",
+			Service: "dns_records",
 		},
 	}
 }

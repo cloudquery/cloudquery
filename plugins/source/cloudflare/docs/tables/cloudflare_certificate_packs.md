@@ -5,6 +5,7 @@
 The primary key for this table is **id**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
@@ -21,3 +22,7 @@ The primary key for this table is **id**.
 |primary_certificate|String|
 |validation_records|JSON|
 |validation_errors|JSON|
+|validation_method|String|
+|validity_days|Int|
+|certificate_authority|String|
+|cloudflare_branding|Bool|

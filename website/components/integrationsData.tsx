@@ -59,5 +59,6 @@ export const INTEGRATIONS = [
     name: "Yandex Cloud",
     logo: <YandexCloudLogo />,
     id: "yandexcloud",
+    href: "https://github.com/yandex-cloud/cq-source-yandex",
   },
 ];

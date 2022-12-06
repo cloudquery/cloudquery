@@ -64,7 +64,7 @@ Repeat 1-4 for each account you want to access from.
 
 Login into your account where you want to assume role from and go to iam→policies and click Create Policy. Paste the following policy in the `JSON` tab
 
-```sql
+```sql copy
 {
     "Version": "2012-10-17",
     "Statement": [

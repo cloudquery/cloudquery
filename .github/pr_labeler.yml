@@ -6,8 +6,12 @@ cloudflare:
   - plugins/source/cloudflare/**/*
 digitalocean:
   - plugins/source/digitalocean/**/*
+datadog:
+  - plugins/source/datadog/**/*
 fuzz:
   - plugins/source/fuzz/**/*
+gandi:
+  - plugins/source/gandi/**/*
 gcp:
   - plugins/source/gcp/**/*
 github:
@@ -26,6 +30,10 @@ sqlite:
   - plugins/destination/sqlite/**/*
 csv:
   - plugins/destination/csv/**/*
+snowflake:
+  - plugins/destination/snowflake/**/*
+bigquery:
+  - plugins/destination/bigquery/**/*
 website:
   - website/**/*
 cli:

@@ -6,6 +6,7 @@ The composite primary key for this table is (**database_arn**, **name**).
 
 ## Relations
 This table depends on [aws_glue_databases](aws_glue_databases.md).
+
 The following tables depend on aws_glue_database_tables:
   - [aws_glue_database_table_indexes](aws_glue_database_table_indexes.md)
 

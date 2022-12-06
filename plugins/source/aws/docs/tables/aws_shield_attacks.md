@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/waf/latest/DDOSAPIReference/API_AttackDetail.html
 The primary key for this table is **id**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

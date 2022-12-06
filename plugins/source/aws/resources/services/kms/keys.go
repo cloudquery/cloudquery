@@ -158,6 +158,11 @@ func Keys() *schema.Table {
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("ValidTo"),
 			},
+			{
+				Name:     "xks_key_configuration",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("XksKeyConfiguration"),
+			},
 		},
 
 		Relations: []*schema.Table{

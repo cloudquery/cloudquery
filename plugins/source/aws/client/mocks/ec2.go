@@ -155,6 +155,26 @@ func (mr *MockEc2ClientMockRecorder) DescribeAvailabilityZones(arg0, arg1 interf
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeAvailabilityZones", reflect.TypeOf((*MockEc2Client)(nil).DescribeAvailabilityZones), varargs...)
 }
 
+// DescribeAwsNetworkPerformanceMetricSubscriptions mocks base method.
+func (m *MockEc2Client) DescribeAwsNetworkPerformanceMetricSubscriptions(arg0 context.Context, arg1 *ec2.DescribeAwsNetworkPerformanceMetricSubscriptionsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeAwsNetworkPerformanceMetricSubscriptionsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeAwsNetworkPerformanceMetricSubscriptions", varargs...)
+	ret0, _ := ret[0].(*ec2.DescribeAwsNetworkPerformanceMetricSubscriptionsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeAwsNetworkPerformanceMetricSubscriptions indicates an expected call of DescribeAwsNetworkPerformanceMetricSubscriptions.
+func (mr *MockEc2ClientMockRecorder) DescribeAwsNetworkPerformanceMetricSubscriptions(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeAwsNetworkPerformanceMetricSubscriptions", reflect.TypeOf((*MockEc2Client)(nil).DescribeAwsNetworkPerformanceMetricSubscriptions), varargs...)
+}
+
 // DescribeBundleTasks mocks base method.
 func (m *MockEc2Client) DescribeBundleTasks(arg0 context.Context, arg1 *ec2.DescribeBundleTasksInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeBundleTasksOutput, error) {
 	m.ctrl.T.Helper()
@@ -2415,6 +2435,106 @@ func (mr *MockEc2ClientMockRecorder) DescribeTrunkInterfaceAssociations(arg0, ar
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeTrunkInterfaceAssociations", reflect.TypeOf((*MockEc2Client)(nil).DescribeTrunkInterfaceAssociations), varargs...)
 }
 
+// DescribeVerifiedAccessEndpoints mocks base method.
+func (m *MockEc2Client) DescribeVerifiedAccessEndpoints(arg0 context.Context, arg1 *ec2.DescribeVerifiedAccessEndpointsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeVerifiedAccessEndpointsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeVerifiedAccessEndpoints", varargs...)
+	ret0, _ := ret[0].(*ec2.DescribeVerifiedAccessEndpointsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeVerifiedAccessEndpoints indicates an expected call of DescribeVerifiedAccessEndpoints.
+func (mr *MockEc2ClientMockRecorder) DescribeVerifiedAccessEndpoints(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeVerifiedAccessEndpoints", reflect.TypeOf((*MockEc2Client)(nil).DescribeVerifiedAccessEndpoints), varargs...)
+}
+
+// DescribeVerifiedAccessGroups mocks base method.
+func (m *MockEc2Client) DescribeVerifiedAccessGroups(arg0 context.Context, arg1 *ec2.DescribeVerifiedAccessGroupsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeVerifiedAccessGroupsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeVerifiedAccessGroups", varargs...)
+	ret0, _ := ret[0].(*ec2.DescribeVerifiedAccessGroupsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeVerifiedAccessGroups indicates an expected call of DescribeVerifiedAccessGroups.
+func (mr *MockEc2ClientMockRecorder) DescribeVerifiedAccessGroups(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeVerifiedAccessGroups", reflect.TypeOf((*MockEc2Client)(nil).DescribeVerifiedAccessGroups), varargs...)
+}
+
+// DescribeVerifiedAccessInstanceLoggingConfigurations mocks base method.
+func (m *MockEc2Client) DescribeVerifiedAccessInstanceLoggingConfigurations(arg0 context.Context, arg1 *ec2.DescribeVerifiedAccessInstanceLoggingConfigurationsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeVerifiedAccessInstanceLoggingConfigurationsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeVerifiedAccessInstanceLoggingConfigurations", varargs...)
+	ret0, _ := ret[0].(*ec2.DescribeVerifiedAccessInstanceLoggingConfigurationsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeVerifiedAccessInstanceLoggingConfigurations indicates an expected call of DescribeVerifiedAccessInstanceLoggingConfigurations.
+func (mr *MockEc2ClientMockRecorder) DescribeVerifiedAccessInstanceLoggingConfigurations(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeVerifiedAccessInstanceLoggingConfigurations", reflect.TypeOf((*MockEc2Client)(nil).DescribeVerifiedAccessInstanceLoggingConfigurations), varargs...)
+}
+
+// DescribeVerifiedAccessInstances mocks base method.
+func (m *MockEc2Client) DescribeVerifiedAccessInstances(arg0 context.Context, arg1 *ec2.DescribeVerifiedAccessInstancesInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeVerifiedAccessInstancesOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeVerifiedAccessInstances", varargs...)
+	ret0, _ := ret[0].(*ec2.DescribeVerifiedAccessInstancesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeVerifiedAccessInstances indicates an expected call of DescribeVerifiedAccessInstances.
+func (mr *MockEc2ClientMockRecorder) DescribeVerifiedAccessInstances(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeVerifiedAccessInstances", reflect.TypeOf((*MockEc2Client)(nil).DescribeVerifiedAccessInstances), varargs...)
+}
+
+// DescribeVerifiedAccessTrustProviders mocks base method.
+func (m *MockEc2Client) DescribeVerifiedAccessTrustProviders(arg0 context.Context, arg1 *ec2.DescribeVerifiedAccessTrustProvidersInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeVerifiedAccessTrustProvidersOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeVerifiedAccessTrustProviders", varargs...)
+	ret0, _ := ret[0].(*ec2.DescribeVerifiedAccessTrustProvidersOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeVerifiedAccessTrustProviders indicates an expected call of DescribeVerifiedAccessTrustProviders.
+func (mr *MockEc2ClientMockRecorder) DescribeVerifiedAccessTrustProviders(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeVerifiedAccessTrustProviders", reflect.TypeOf((*MockEc2Client)(nil).DescribeVerifiedAccessTrustProviders), varargs...)
+}
+
 // DescribeVolumeAttribute mocks base method.
 func (m *MockEc2Client) DescribeVolumeAttribute(arg0 context.Context, arg1 *ec2.DescribeVolumeAttributeInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeVolumeAttributeOutput, error) {
 	m.ctrl.T.Helper()
@@ -2793,6 +2913,26 @@ func (mr *MockEc2ClientMockRecorder) GetAssociatedIpv6PoolCidrs(arg0, arg1 inter
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAssociatedIpv6PoolCidrs", reflect.TypeOf((*MockEc2Client)(nil).GetAssociatedIpv6PoolCidrs), varargs...)
+}
+
+// GetAwsNetworkPerformanceData mocks base method.
+func (m *MockEc2Client) GetAwsNetworkPerformanceData(arg0 context.Context, arg1 *ec2.GetAwsNetworkPerformanceDataInput, arg2 ...func(*ec2.Options)) (*ec2.GetAwsNetworkPerformanceDataOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetAwsNetworkPerformanceData", varargs...)
+	ret0, _ := ret[0].(*ec2.GetAwsNetworkPerformanceDataOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetAwsNetworkPerformanceData indicates an expected call of GetAwsNetworkPerformanceData.
+func (mr *MockEc2ClientMockRecorder) GetAwsNetworkPerformanceData(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAwsNetworkPerformanceData", reflect.TypeOf((*MockEc2Client)(nil).GetAwsNetworkPerformanceData), varargs...)
 }
 
 // GetCapacityReservationUsage mocks base method.
@@ -3453,6 +3593,46 @@ func (mr *MockEc2ClientMockRecorder) GetTransitGatewayRouteTablePropagations(arg
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTransitGatewayRouteTablePropagations", reflect.TypeOf((*MockEc2Client)(nil).GetTransitGatewayRouteTablePropagations), varargs...)
+}
+
+// GetVerifiedAccessEndpointPolicy mocks base method.
+func (m *MockEc2Client) GetVerifiedAccessEndpointPolicy(arg0 context.Context, arg1 *ec2.GetVerifiedAccessEndpointPolicyInput, arg2 ...func(*ec2.Options)) (*ec2.GetVerifiedAccessEndpointPolicyOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetVerifiedAccessEndpointPolicy", varargs...)
+	ret0, _ := ret[0].(*ec2.GetVerifiedAccessEndpointPolicyOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetVerifiedAccessEndpointPolicy indicates an expected call of GetVerifiedAccessEndpointPolicy.
+func (mr *MockEc2ClientMockRecorder) GetVerifiedAccessEndpointPolicy(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVerifiedAccessEndpointPolicy", reflect.TypeOf((*MockEc2Client)(nil).GetVerifiedAccessEndpointPolicy), varargs...)
+}
+
+// GetVerifiedAccessGroupPolicy mocks base method.
+func (m *MockEc2Client) GetVerifiedAccessGroupPolicy(arg0 context.Context, arg1 *ec2.GetVerifiedAccessGroupPolicyInput, arg2 ...func(*ec2.Options)) (*ec2.GetVerifiedAccessGroupPolicyOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetVerifiedAccessGroupPolicy", varargs...)
+	ret0, _ := ret[0].(*ec2.GetVerifiedAccessGroupPolicyOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetVerifiedAccessGroupPolicy indicates an expected call of GetVerifiedAccessGroupPolicy.
+func (mr *MockEc2ClientMockRecorder) GetVerifiedAccessGroupPolicy(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVerifiedAccessGroupPolicy", reflect.TypeOf((*MockEc2Client)(nil).GetVerifiedAccessGroupPolicy), varargs...)
 }
 
 // GetVpnConnectionDeviceSampleConfiguration mocks base method.

@@ -5,6 +5,7 @@ https://devcenter.heroku.com/articles/platform-api-reference#buildpack-installat
 The primary key for this table is **_cq_id**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

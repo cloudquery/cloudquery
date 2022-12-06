@@ -13,20 +13,14 @@ import (
 	"text/template"
 
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/codegen/recipes"
-	sdkgen "github.com/cloudquery/plugin-sdk/codegen"
+	"github.com/cloudquery/plugin-sdk/codegen"
 )
 
 //go:embed templates/*.go.tpl
 var templatesFS embed.FS
 
 func main() {
-	_, filename, _, ok := runtime.Caller(0)
-	if !ok {
-		log.Fatal("Failed to get caller information")
-	}
-	codegenDir := path.Join(path.Dir(filename), "..", "resources", "services")
-
-	var resources []recipes.Resource
+	var resources []*recipes.Resource
 	resources = append(resources, recipes.AccessGroupResources()...)
 	resources = append(resources, recipes.AccountResources()...)
 	resources = append(resources, recipes.CertificatePackResources()...)
@@ -39,15 +33,40 @@ func main() {
 	resources = append(resources, recipes.ZoneResources()...)
 
 	for _, r := range resources {
-		generateTable(codegenDir, r)
+		r.Infer()
+	}
+	if err := recipes.SetParentChildRelationships(resources); err != nil {
+		log.Fatal(err)
+	}
+	for _, r := range resources {
+		r.GenerateNames()
+
+		_, filename, _, ok := runtime.Caller(0)
+		if !ok {
+			log.Fatal("Failed to get caller information")
+		}
+		codegenDir := path.Join(path.Dir(filename), "..", "resources", "services")
+
+		generateTable(codegenDir, *r)
 	}
 }
 
 func generateTable(basedir string, r recipes.Resource) {
 	var err error
 
+	r.TableName = "cloudflare_" + r.TableName
+
 	log.Println("Generating table", r.TableName)
-	r.Table, err = sdkgen.NewTableFromStruct(r.TableName, r.CFStruct, sdkgen.WithSkipFields(r.SkipFields))
+	opts := []codegen.TableOption{
+		codegen.WithSkipFields(r.SkipFields),
+		codegen.WithExtraColumns(r.ExtraColumns),
+		codegen.WithPKColumns(r.PKColumns...),
+	}
+	if r.UnwrapEmbeddedStructs {
+		opts = append(opts, codegen.WithUnwrapAllEmbeddedStructs())
+	}
+	r.Table, err = codegen.NewTableFromStruct(r.TableName, r.DataStruct, opts...)
+
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -56,17 +75,11 @@ func generateTable(basedir string, r recipes.Resource) {
 	r.Table.Multiplex = r.Multiplex
 	r.ImportClient = strings.HasPrefix(r.Multiplex, "client.")
 	r.Table.Relations = r.Relations
+	r.Table.PreResourceResolver = r.PreResourceResolver
+	r.Table.PostResourceResolver = r.PostResourceResolver
 
-	r.Table.Columns = append(append(r.DefaultColumns, r.Table.Columns...), r.ExtraColumns...)
-	for i := range r.Table.Columns {
-		if r.RenameColumns != nil && r.RenameColumns[r.Table.Columns[i].Name] != "" {
-			r.Table.Columns[i].Name = r.RenameColumns[r.Table.Columns[i].Name]
-		}
-
-		if r.Table.Columns[i].Name == r.PrimaryKey {
-			r.Table.Columns[i].Options.PrimaryKey = true
-		}
-		if strings.HasPrefix(r.Table.Resolver, "client.") {
+	for _, c := range r.Table.Columns {
+		if strings.HasPrefix(c.Resolver, "client.") {
 			r.ImportClient = true
 		}
 	}
@@ -74,9 +87,9 @@ func generateTable(basedir string, r recipes.Resource) {
 	mainTemplate := r.Template + ".go.tpl"
 	tpl, err := template.New(mainTemplate).ParseFS(templatesFS, "templates/"+mainTemplate)
 	if err != nil {
-		log.Fatal(fmt.Errorf("failed to parse cf templates: %w", err))
+		log.Fatal(fmt.Errorf("failed to parse templates: %w", err))
 	}
-	tpl, err = tpl.ParseFS(sdkgen.TemplatesFS, "templates/*.go.tpl")
+	tpl, err = tpl.ParseFS(codegen.TemplatesFS, "templates/*.go.tpl")
 	if err != nil {
 		log.Fatal(fmt.Errorf("failed to parse recipes template: %w", err))
 	}
@@ -85,7 +98,7 @@ func generateTable(basedir string, r recipes.Resource) {
 		log.Fatal(fmt.Errorf("failed to execute template: %w", err))
 	}
 
-	pkgPath := path.Join(basedir, r.Package)
+	pkgPath := path.Join(basedir, r.Service)
 	if err := os.Mkdir(pkgPath, 0755); err != nil && !os.IsExist(err) {
 		log.Fatal(err)
 	}

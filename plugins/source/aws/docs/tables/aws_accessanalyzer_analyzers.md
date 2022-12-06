@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/access-analyzer/latest/APIReference/API_AnalyzerSumm
 The primary key for this table is **arn**.
 
 ## Relations
+
 The following tables depend on aws_accessanalyzer_analyzers:
   - [aws_accessanalyzer_analyzer_findings](aws_accessanalyzer_analyzer_findings.md)
   - [aws_accessanalyzer_analyzer_archive_rules](aws_accessanalyzer_analyzer_archive_rules.md)

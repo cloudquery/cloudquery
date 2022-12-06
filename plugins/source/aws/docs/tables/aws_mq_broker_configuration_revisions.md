@@ -7,6 +7,7 @@ The primary key for this table is **_cq_id**.
 ## Relations
 This table depends on [aws_mq_broker_configurations](aws_mq_broker_configurations.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

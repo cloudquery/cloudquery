@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_TableDescript
 The primary key for this table is **arn**.
 
 ## Relations
+
 The following tables depend on aws_dynamodb_tables:
   - [aws_dynamodb_table_replica_auto_scalings](aws_dynamodb_table_replica_auto_scalings.md)
   - [aws_dynamodb_table_continuous_backups](aws_dynamodb_table_continuous_backups.md)

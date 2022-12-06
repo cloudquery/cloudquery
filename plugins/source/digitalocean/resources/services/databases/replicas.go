@@ -12,6 +12,11 @@ func Replicas() *schema.Table {
 		Resolver: fetchDatabasesReplicas,
 		Columns: []schema.Column{
 			{
+				Name:     "id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ID"),
+			},
+			{
 				Name:     "name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Name"),

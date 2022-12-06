@@ -6,6 +6,7 @@ The primary key for this table is **id**.
 
 ## Relations
 This table depends on [azure_sql_managed_instances](azure_sql_managed_instances.md).
+
 The following tables depend on azure_sql_managed_databases:
   - [azure_sql_managed_database_vulnerability_assessments](azure_sql_managed_database_vulnerability_assessments.md)
   - [azure_sql_managed_database_vulnerability_assessment_scans](azure_sql_managed_database_vulnerability_assessment_scans.md)

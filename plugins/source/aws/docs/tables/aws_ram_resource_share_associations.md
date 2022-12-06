@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/ram/latest/APIReference/API_ResourceShareAssociation
 The composite primary key for this table is (**associated_entity**, **resource_share_arn**).
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

@@ -7,6 +7,7 @@ The primary key for this table is **_cq_id**.
 ## Relations
 This table depends on [aws_elbv2_target_groups](aws_elbv2_target_groups.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

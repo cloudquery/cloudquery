@@ -93,6 +93,13 @@ var ProjectIdColumn = codegen.ColumnDefinition{
 	Resolver: "client.ResolveProject",
 }
 
+var ProjectIdColumnPk = codegen.ColumnDefinition{
+	Name:     "project_id",
+	Type:     schema.TypeString,
+	Resolver: "client.ResolveProject",
+	Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+}
+
 func CreateReplaceTransformer(replace map[string]string) func(field reflect.StructField) (string, error) {
 	return func(field reflect.StructField) (string, error) {
 		name, err := codegen.DefaultNameTransformer(field)

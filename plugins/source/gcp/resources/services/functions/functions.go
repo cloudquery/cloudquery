@@ -168,7 +168,7 @@ func Functions() *schema.Table {
 	}
 }
 
-func fetchFunctions(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
+func fetchFunctions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	req := &pb.ListFunctionsRequest{
 		Parent: "projects/" + c.ProjectId + "/locations/-",

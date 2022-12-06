@@ -112,6 +112,34 @@
     {
       "source": "/developers/developing-new-provider",
       "destination": "/docs/developers/creating-new-plugin"
+    },
+    {
+      "source": "/docs/plugins/sources",
+      "destination": "/docs/plugins/sources/overview"
+    },
+    {
+      "source": "/docs/plugins/destinations",
+      "destination": "/docs/plugins/destinations/overview"
+    },
+    {
+      "source": "/docs/plugins/source-plugin-release-stages",
+      "destination": "/docs/plugins/sources/overview#source-plugin-release-stages"
+    },
+    {
+      "source": "/docs/recipes/sources/:plugin",
+      "destination": "/docs/plugins/sources/:plugin/configuration"
+    },
+    {
+      "source": "/docs/recipes/destinations/:plugin",
+      "destination": "/docs/plugins/destinations/:plugin/overview"
+    },
+    {
+      "source": "/docs/recipes/overview",
+      "destination": "/docs/core-concepts/configuration"
+    },
+    {
+      "source": "/docs/core-concepts/migrations",
+      "destination": "/docs/advanced-topics/migrations"
     }
   ]
 }

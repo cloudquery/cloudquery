@@ -7,6 +7,7 @@ The primary key for this table is **arn**.
 ## Relations
 This table depends on [aws_docdb_clusters](aws_docdb_clusters.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

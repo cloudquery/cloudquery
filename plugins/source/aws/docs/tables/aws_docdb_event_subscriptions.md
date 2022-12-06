@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/documentdb/latest/developerguide/API_EventSubscripti
 The primary key for this table is **_cq_id**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

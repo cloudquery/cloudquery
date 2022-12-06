@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/appstream2/latest/APIReference/API_Stack.html
 The primary key for this table is **arn**.
 
 ## Relations
+
 The following tables depend on aws_appstream_stacks:
   - [aws_appstream_stack_entitlements](aws_appstream_stack_entitlements.md)
   - [aws_appstream_stack_user_associations](aws_appstream_stack_user_associations.md)

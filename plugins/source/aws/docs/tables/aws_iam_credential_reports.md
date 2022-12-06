@@ -5,6 +5,7 @@
 The composite primary key for this table is (**arn**, **user_creation_time**).
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

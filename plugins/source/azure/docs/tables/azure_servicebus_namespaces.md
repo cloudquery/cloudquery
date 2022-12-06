@@ -5,6 +5,7 @@ https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/servicebus
 The primary key for this table is **id**.
 
 ## Relations
+
 The following tables depend on azure_servicebus_namespaces:
   - [azure_servicebus_topics](azure_servicebus_topics.md)
 

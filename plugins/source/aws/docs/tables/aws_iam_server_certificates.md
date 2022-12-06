@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServerCertificateMetadat
 The composite primary key for this table is (**account_id**, **id**).
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

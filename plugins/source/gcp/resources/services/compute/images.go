@@ -190,7 +190,7 @@ func Images() *schema.Table {
 	}
 }
 
-func fetchImages(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
+func fetchImages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	req := &pb.ListImagesRequest{
 		Project: c.ProjectId,

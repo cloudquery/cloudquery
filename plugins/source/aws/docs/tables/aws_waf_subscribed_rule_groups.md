@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/waf/latest/APIReference/API_waf_SubscribedRuleGroupS
 The composite primary key for this table is (**account_id**, **rule_group_id**).
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

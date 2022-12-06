@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/apigateway/latest/api/API_RestApi.html
 The primary key for this table is **arn**.
 
 ## Relations
+
 The following tables depend on aws_apigateway_rest_apis:
   - [aws_apigateway_rest_api_authorizers](aws_apigateway_rest_api_authorizers.md)
   - [aws_apigateway_rest_api_deployments](aws_apigateway_rest_api_deployments.md)

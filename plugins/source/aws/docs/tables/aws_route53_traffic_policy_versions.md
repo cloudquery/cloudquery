@@ -7,6 +7,7 @@ The composite primary key for this table is (**traffic_policy_arn**, **id**, **v
 ## Relations
 This table depends on [aws_route53_traffic_policies](aws_route53_traffic_policies.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

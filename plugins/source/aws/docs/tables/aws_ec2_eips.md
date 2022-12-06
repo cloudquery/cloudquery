@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Address.html
 The primary key for this table is **_cq_id**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

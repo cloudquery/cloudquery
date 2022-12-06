@@ -7,6 +7,7 @@ The primary key for this table is **_cq_id**.
 ## Relations
 This table depends on [gcp_bigquery_datasets](gcp_bigquery_datasets.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

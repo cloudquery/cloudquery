@@ -1,0 +1,16 @@
+# Source Plugin: github
+## Tables
+- [github_billing_action](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_billing_action.md)
+- [github_billing_storage](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_billing_storage.md)
+- [github_billing_package](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_billing_package.md)
+- [github_external_groups](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_external_groups.md)
+- [github_issues](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_issues.md)
+- [github_hooks](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_hooks.md)
+  - [github_hook_deliveries](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_hook_deliveries.md)
+- [github_installations](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_installations.md)
+- [github_organizations](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_organizations.md)
+  - [github_organization_members](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_organization_members.md)
+- [github_repositories](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_repositories.md)
+- [github_teams](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_teams.md)
+  - [github_team_members](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_team_members.md)
+  - [github_team_repositories](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_team_repositories.md)

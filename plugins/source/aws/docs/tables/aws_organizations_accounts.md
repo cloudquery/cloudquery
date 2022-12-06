@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/organizations/latest/APIReference/API_Account.html
 The primary key for this table is **arn**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

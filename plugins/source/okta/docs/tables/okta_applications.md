@@ -5,6 +5,7 @@
 The primary key for this table is **id**.
 
 ## Relations
+
 The following tables depend on okta_applications:
   - [okta_application_users](okta_application_users.md)
   - [okta_application_group_assignments](okta_application_group_assignments.md)

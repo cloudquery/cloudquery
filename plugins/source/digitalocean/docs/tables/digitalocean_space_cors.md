@@ -7,6 +7,7 @@ The primary key for this table is **_cq_id**.
 ## Relations
 This table depends on [digitalocean_spaces](digitalocean_spaces.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

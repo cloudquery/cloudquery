@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBClusterParameter
 The primary key for this table is **arn**.
 
 ## Relations
+
 The following tables depend on aws_rds_cluster_parameter_groups:
   - [aws_rds_cluster_parameter_group_parameters](aws_rds_cluster_parameter_group_parameters.md)
 

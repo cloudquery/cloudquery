@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_RelationalDat
 The primary key for this table is **arn**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

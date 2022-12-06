@@ -31,9 +31,11 @@ jobs:
         id: preview-deployment
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          max_timeout: 360
+          # The action waits half of `max_timeout`. TODO: Change to 600 when https://github.com/patrickedqvist/wait-for-vercel-preview/pull/34 is released
+          max_timeout: 1200
           check_interval: 10
-          environment: 'Preview – cloudquery-web'
+          environment: 'Preview'
+          allow_inactive: true
 
       - name: Set Vercel URL output
         id: vercel

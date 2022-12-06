@@ -7,6 +7,7 @@ The composite primary key for this table is (**application_arn**, **fleet_name**
 ## Relations
 This table depends on [aws_appstream_applications](aws_appstream_applications.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

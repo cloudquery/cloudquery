@@ -23,7 +23,7 @@ As always, before we create this view, you should check out our [quickstart guid
 
 After our AWS provider is set up and we executed our sync, run the following SQL in your database. This statement creates a view that extracts and transform each row in our `aws` tables with an `arn` column into a `aws_resource` form, and unites all of them rows into our singular view.
 
-```sql
+```sql copy
 DROP VIEW IF EXISTS aws_resources;
 
 DO $$
@@ -69,7 +69,7 @@ Up to date version of this query can be [found here](https://github.com/cloudque
 
 ### Run the following query to view all your AWS resources:
 
-```sql
+```sql copy
 select * from aws_resources limit 100;
 ```
 
@@ -79,7 +79,7 @@ select * from aws_resources limit 100;
 
 ### What resources don’t have tags?
 
-```sql
+```sql copy
 select * from aws_resources where tags = '{}';
 ```
 
@@ -87,7 +87,7 @@ select * from aws_resources where tags = '{}';
 
 ### What resources don’t have any of these tags?
 
-```sql
+```sql copy
 select * from aws_resources where not tags ?| array['name', 'version'];
 ```
 
@@ -97,7 +97,7 @@ We can easily invert this or make sure that `all` of these tags exist with the `
 
 ### What resources of Type Z in service X exist in Region Y?
 
-```sql
+```sql copy
 SELECT * FROM aws_resources WHERE region LIKE 'us-east%'
 AND service = 'ec2' AND (type = 'instance' OR type = 'network-interface');
 ```
@@ -108,7 +108,7 @@ Here we can easily query all resources in the `ec2` service from the `us-east` r
 
 ### Join To existing tables
 
-```sql
+```sql copy
 SELECT instance_type, aws_resources.id, aws_resources.arn, launch_time,
 	public_ip_address, private_ip_address, state_name, vpc_id FROM aws_resources
 INNER JOIN aws_ec2_instances ON aws_resources.cq_id = aws_ec2_instances.cq_id
@@ -121,7 +121,7 @@ in this case, `launch_time`, `public_ip_address`, `vpc_id` etc’.
 
 ### Count total distinct resources by ARN
 
-```sql
+```sql copy
 select count(distinct arn) as distinct_resources, count(*) as total from aws_resources
 ```
 

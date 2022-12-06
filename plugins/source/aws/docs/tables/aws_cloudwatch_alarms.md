@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_MetricAlarm
 The primary key for this table is **arn**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

@@ -5,6 +5,42 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v3.0.4...plugins-source-digitalocean-v3.1.0) (2022-12-06)
+
+
+### Features
+
+* **website:** Add plugins tables ([#5259](https://github.com/cloudquery/cloudquery/issues/5259)) ([c336f4e](https://github.com/cloudquery/cloudquery/commit/c336f4e25e192ffdd4c211d4a35b67b71d01d1f8))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/avast/retry-go to v4 ([#5242](https://github.com/cloudquery/cloudquery/issues/5242)) ([f3769ed](https://github.com/cloudquery/cloudquery/commit/f3769ede1c302ed6d218cc75c020ee254d8fb230))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2 to v1.17.2 ([#5297](https://github.com/cloudquery/cloudquery/issues/5297)) ([001999e](https://github.com/cloudquery/cloudquery/commit/001999ee890f7ec11d3d422c3a130346f5fb6491))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/config to v1.18.4 ([#5298](https://github.com/cloudquery/cloudquery/issues/5298)) ([550558b](https://github.com/cloudquery/cloudquery/commit/550558b69fba25cfc5cb7767c6039aa1715b3564))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/s3 to v1.29.5 ([#5380](https://github.com/cloudquery/cloudquery/issues/5380)) ([3e3eb6b](https://github.com/cloudquery/cloudquery/commit/3e3eb6b33fbefa86632e1b63156ae76f4ae72db3))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.11.0 ([#5416](https://github.com/cloudquery/cloudquery/issues/5416)) ([2e7ca35](https://github.com/cloudquery/cloudquery/commit/2e7ca35922fdb14fd717f582aaaa9693dae2ef4c))
+* **deps:** Update module github.com/digitalocean/godo to v1.91.1 ([#5224](https://github.com/cloudquery/cloudquery/issues/5224)) ([4862538](https://github.com/cloudquery/cloudquery/commit/486253852c5ae29c52f9178018f7b1ca930d4b34))
+
+## [3.0.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v3.0.3...plugins-source-digitalocean-v3.0.4) (2022-11-30)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/s3 to v1.29.4 ([#5018](https://github.com/cloudquery/cloudquery/issues/5018)) ([37d9aa5](https://github.com/cloudquery/cloudquery/commit/37d9aa5e3d3b0fd619060f3d88f60ebda0612535))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.10.0 ([#5153](https://github.com/cloudquery/cloudquery/issues/5153)) ([ea1f77e](https://github.com/cloudquery/cloudquery/commit/ea1f77e910f430287600e74cedd7d3f4ae79eb18))
+* **deps:** Update plugin-sdk for digitalocean to v1.8.1 ([#5037](https://github.com/cloudquery/cloudquery/issues/5037)) ([acc8961](https://github.com/cloudquery/cloudquery/commit/acc896115392b7a3d742a7b23ef5700f2d6e543b))
+* **deps:** Update plugin-sdk for digitalocean to v1.9.0 ([#5079](https://github.com/cloudquery/cloudquery/issues/5079)) ([a851acc](https://github.com/cloudquery/cloudquery/commit/a851acc362d478ae5521d21cb2e93a4bf30af336))
+
+## [3.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v3.0.2...plugins-source-digitalocean-v3.0.3) (2022-11-23)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/config to v1.18.3 ([#4943](https://github.com/cloudquery/cloudquery/issues/4943)) ([e4aaf3f](https://github.com/cloudquery/cloudquery/commit/e4aaf3f0976a0836301b5de70a8e933c7abb5365))
+* **deps:** Update plugin-sdk for digitalocean to v1.7.0 ([#4908](https://github.com/cloudquery/cloudquery/issues/4908)) ([d78f127](https://github.com/cloudquery/cloudquery/commit/d78f1271801a2c1894d2d530306dac85efaf2abe))
+* **deps:** Update plugin-sdk for digitalocean to v1.8.0 ([#4971](https://github.com/cloudquery/cloudquery/issues/4971)) ([1af8cae](https://github.com/cloudquery/cloudquery/commit/1af8cae144893ff1ceca1d5d9e7f9e8c7de620c4))
+
 ## [3.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v3.0.1...plugins-source-digitalocean-v3.0.2) (2022-11-21)
 
 

@@ -28,12 +28,14 @@ var gcpTemplatesFS embed.FS
 var resources []*recipes.Resource
 
 func main() {
+	resources = append(resources, recipes.ApiKeysResources()...)
 	resources = append(resources, recipes.ComputeResources()...)
 	resources = append(resources, recipes.DnsResources()...)
 	resources = append(resources, recipes.DomainsResources()...)
 	resources = append(resources, recipes.IamResources()...)
 	resources = append(resources, recipes.KmsResources()...)
 	resources = append(resources, recipes.ContainerResources()...)
+	resources = append(resources, recipes.ContainerAnalysisResources()...)
 	resources = append(resources, recipes.LoggingResources()...)
 	resources = append(resources, recipes.RedisResources()...)
 	resources = append(resources, recipes.MonitoringResources()...)

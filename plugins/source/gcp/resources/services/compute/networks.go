@@ -120,7 +120,7 @@ func Networks() *schema.Table {
 	}
 }
 
-func fetchNetworks(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
+func fetchNetworks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	req := &pb.ListNetworksRequest{
 		Project: c.ProjectId,

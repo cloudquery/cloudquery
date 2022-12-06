@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBSnapshot.html
 The primary key for this table is **arn**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

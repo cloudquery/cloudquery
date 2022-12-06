@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/eks/latest/APIReference/API_Cluster.html
 The primary key for this table is **arn**.
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

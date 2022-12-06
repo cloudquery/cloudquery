@@ -7,6 +7,7 @@ The primary key for this table is **_cq_id**.
 ## Relations
 This table depends on [cloudflare_accounts](cloudflare_accounts.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
@@ -20,3 +21,4 @@ This table depends on [cloudflare_accounts](cloudflare_accounts.md).
 |user|JSON|
 |status|String|
 |roles|JSON|
+|policies|JSON|

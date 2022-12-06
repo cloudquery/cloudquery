@@ -7,6 +7,7 @@ The composite primary key for this table is (**account_id**, **region**, **kb_id
 ## Relations
 This table depends on [aws_ssm_instances](aws_ssm_instances.md).
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |

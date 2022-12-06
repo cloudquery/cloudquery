@@ -41,7 +41,7 @@ Names should not contain dashes or underscores. So for example, if you are devel
 
 Official plugins, in contrast, are contained in the [CloudQuery repository](https://github.com/cloudquery/cloudquery/tree/main/plugins). By convention, they can be imported using a special path `cloudquery/<name>`, e.g.:
 
-```yaml
+```yaml copy
 kind: source
 spec:
   path: cloudquery/aws

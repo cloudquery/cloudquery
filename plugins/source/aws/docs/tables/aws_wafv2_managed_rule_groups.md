@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/waf/latest/APIReference/API_ManagedRuleGroupSummary.
 The composite primary key for this table is (**account_id**, **region**, **scope**).
 
 
+
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
