@@ -5,7 +5,6 @@ import (
 	"embed"
 	"fmt"
 	"go/format"
-	"io"
 	"os"
 	"path"
 	"reflect"
@@ -14,21 +13,24 @@ import (
 	"text/template"
 
 	"github.com/cloudquery/plugin-sdk/caser"
+	"github.com/slack-go/slack"
 )
 
 //go:embed templates/*.go.tpl
 var templatesFS embed.FS
 
+// these clients will be used to generate interfaces
+var clients = []interface{}{
+	&slack.Client{},
+}
+
 // these method name prefixes will be part of the generated client interface
 var acceptedPrefixes = []string{
-	"List", "Get", "Describe", "Search", "BatchGet",
+	"List", "Get", "Describe", "Search", "Find",
 }
 
 // these methods will be included despite not starting with an accepted prefix
-var exceptions = []string{
-	"QuerySchemaVersionMetadata",
-	"GenerateCredentialReport",
-}
+var exceptions = []string{}
 
 // Adapted from https://stackoverflow.com/a/54129236
 func signature(name string, f interface{}) string {
@@ -137,8 +139,7 @@ func Generate() error {
 	}
 
 	var buff bytes.Buffer
-	all := append(services, customClients...)
-	if err := servicesTpl.Execute(&buff, all); err != nil {
+	if err := servicesTpl.Execute(&buff, services); err != nil {
 		return fmt.Errorf("failed to execute template: %w", err)
 	}
 	filePath := path.Join(path.Dir(filename), "../../client/services.go")
@@ -162,33 +163,7 @@ func Generate() error {
 		}
 	}
 
-	for _, custom := range customClients {
-		src := path.Join(path.Dir(filename), "custom", custom.PackageName+".go")
-		dst := path.Join(path.Dir(filename), "../../client/services/"+custom.PackageName+".go")
-		err := copyCustomFile(src, dst)
-		if err != nil {
-			return err
-		}
-	}
-
 	return nil
-}
-
-func copyCustomFile(src, dst string) error {
-	source, err := os.Open(src)
-	if err != nil {
-		return err
-	}
-	defer source.Close()
-
-	destination, err := os.Create(dst)
-	if err != nil {
-		return err
-	}
-	defer destination.Close()
-
-	_, err = io.Copy(destination, source)
-	return err
 }
 
 func formatAndWriteFile(filePath string, buff bytes.Buffer) error {

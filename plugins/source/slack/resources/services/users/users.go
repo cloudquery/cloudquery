@@ -8,8 +8,8 @@ import (
 
 func Users() *schema.Table {
 	return &schema.Table{
-		Name:     "slack_users_users",
-		Resolver: fetchUsersUsers,
+		Name:     "slack_users",
+		Resolver: fetchUsers,
 		Columns: []schema.Column{
 			{
 				Name:     "id",
@@ -139,6 +139,10 @@ func Users() *schema.Table {
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Enterprise"),
 			},
+		},
+
+		Relations: []*schema.Table{
+			UserPresences(),
 		},
 	}
 }

@@ -6,6 +6,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func {{.SubService | ToCamel}}() *schema.Table {
+func {{.TableFuncName}}() *schema.Table {
     return &schema.Table{{template "table.go.tpl" .Table}}
 }
