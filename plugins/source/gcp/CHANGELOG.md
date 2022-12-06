@@ -5,6 +5,22 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v3.1.0...plugins-source-gcp-v3.2.0) (2022-12-06)
+
+
+### Features
+
+* **gcp:** Increase PageSize for ServiceUsage ([#5386](https://github.com/cloudquery/cloudquery/issues/5386)) ([dec5ca7](https://github.com/cloudquery/cloudquery/commit/dec5ca7bd00e4e6bdcf5ae54c78d543997f14c00))
+* **gcp:** More PageSize increases ([#5388](https://github.com/cloudquery/cloudquery/issues/5388)) ([090dba7](https://github.com/cloudquery/cloudquery/commit/090dba7c9561b0fa625c780c197986aa8cf02dcb))
+* **website:** Add plugins tables ([#5259](https://github.com/cloudquery/cloudquery/issues/5259)) ([c336f4e](https://github.com/cloudquery/cloudquery/commit/c336f4e25e192ffdd4c211d4a35b67b71d01d1f8))
+
+
+### Bug Fixes
+
+* **deps:** Update google.golang.org/genproto digest to a2ec334 ([#5201](https://github.com/cloudquery/cloudquery/issues/5201)) ([6e88887](https://github.com/cloudquery/cloudquery/commit/6e888877f377d53c790ac862d6b6c70ac0361629))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.11.0 ([#5416](https://github.com/cloudquery/cloudquery/issues/5416)) ([2e7ca35](https://github.com/cloudquery/cloudquery/commit/2e7ca35922fdb14fd717f582aaaa9693dae2ef4c))
+* **deps:** Update module google.golang.org/grpc to v1.51.0 ([#5231](https://github.com/cloudquery/cloudquery/issues/5231)) ([2498d05](https://github.com/cloudquery/cloudquery/commit/2498d05cb9f63b31e47ac9cb3e58125bf0e1f4ee))
+
 ## [3.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v3.0.5...plugins-source-gcp-v3.1.0) (2022-11-30)
 
 
