@@ -34,6 +34,7 @@ jobs:
           max_timeout: 360
           check_interval: 10
           environment: 'Preview'
+          allow_inactive: true
 
       - name: Set Vercel URL output
         id: vercel
