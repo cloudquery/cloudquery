@@ -37,8 +37,7 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 
 	tableCount := len(selectedTables.FlattenTables())
 
-	// Print a count of the tables that will be synced / migrated. This is a little tricky because older
-	// servers don't necessarily support GetTablesForSpec.
+	// Print a count of the tables that will be synced / migrated.
 	if tablesForSpecSupported {
 		word := "tables"
 		if tableCount == 1 {

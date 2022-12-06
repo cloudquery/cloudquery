@@ -103,8 +103,7 @@ func migrateConnection(ctx context.Context, cqDir string, sourceSpec specs.Sourc
 	}
 	tableCount := len(selectedTables.FlattenTables())
 
-	// Print a count of the tables that will be migrated. This is a little tricky because older
-	// servers don't necessarily support GetTablesForSpec.
+	// Print a count of the tables that will be migrated.
 	if tablesForSpecSupported {
 		word := "tables"
 		if tableCount == 1 {
