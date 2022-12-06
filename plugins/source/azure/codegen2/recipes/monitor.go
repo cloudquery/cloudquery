@@ -32,15 +32,6 @@ func Armmonitor() []Table {
 			NewFunc:        armmonitor.NewTenantActivityLogsClient,
 			URL:            "/providers/Microsoft.Insights/eventtypes/management/values",
 		},
-		{
-			Name:           "localizable_string",
-			Struct:         &armmonitor.LocalizableString{},
-			ResponseStruct: &armmonitor.EventCategoriesClientListResponse{},
-			Client:         &armmonitor.EventCategoriesClient{},
-			ListFunc:       (&armmonitor.EventCategoriesClient{}).NewListPager,
-			NewFunc:        armmonitor.NewEventCategoriesClient,
-			URL:            "/providers/Microsoft.Insights/eventcategories",
-		},
 	}
 
 	for i := range tables {

@@ -14,15 +14,6 @@ func Armapimanagement() []Table {
 			NewFunc:        armapimanagement.NewServiceClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ApiManagement/service",
 		},
-		{
-			Name:           "sku",
-			Struct:         &armapimanagement.SKU{},
-			ResponseStruct: &armapimanagement.SKUsClientListResponse{},
-			Client:         &armapimanagement.SKUsClient{},
-			ListFunc:       (&armapimanagement.SKUsClient{}).NewListPager,
-			NewFunc:        armapimanagement.NewSKUsClient,
-			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ApiManagement/skus",
-		},
 	}
 
 	for i := range tables {

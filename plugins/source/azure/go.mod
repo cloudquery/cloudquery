@@ -116,13 +116,12 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsesu/armwindowsesu v0.5.0
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsiot/armwindowsiot v1.0.0
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads v0.2.0
-	github.com/cloudquery/plugin-sdk v1.10.0
+	github.com/cloudquery/plugin-sdk v1.11.0
 	github.com/golang/mock v1.6.0
 	github.com/gorilla/mux v1.8.0
 	github.com/iancoleman/strcase v0.2.0
 	github.com/rs/zerolog v1.28.0
 	golang.org/x/mod v0.6.0
-	google.golang.org/protobuf v1.28.1
 )
 
 require github.com/kylelemons/godebug v1.1.0 // indirect
@@ -153,6 +152,7 @@ require (
 	golang.org/x/text v0.5.0 // indirect
 	golang.org/x/tools v0.2.0 // indirect
 	google.golang.org/genproto v0.0.0-20221111202108-142d8a6fa32e // indirect
-	google.golang.org/grpc v1.50.1 // indirect
+	google.golang.org/grpc v1.51.0 // indirect
+	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )

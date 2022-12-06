@@ -15,15 +15,6 @@ func Armcognitiveservices() []Table {
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/deletedAccounts",
 		},
 		{
-			Name:           "resource_sku",
-			Struct:         &armcognitiveservices.ResourceSKU{},
-			ResponseStruct: &armcognitiveservices.ResourceSKUsClientListResponse{},
-			Client:         &armcognitiveservices.ResourceSKUsClient{},
-			ListFunc:       (&armcognitiveservices.ResourceSKUsClient{}).NewListPager,
-			NewFunc:        armcognitiveservices.NewResourceSKUsClient,
-			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/skus",
-		},
-		{
 			Name:           "account",
 			Struct:         &armcognitiveservices.Account{},
 			ResponseStruct: &armcognitiveservices.AccountsClientListResponse{},

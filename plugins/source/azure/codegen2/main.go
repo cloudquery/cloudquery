@@ -123,19 +123,16 @@ func initResource(r *recipes.Table) error {
 		r.ImportPath = reflect.TypeOf(r.Struct).Elem().PkgPath()
 	}
 
+	// r.ExtraColumns = append([]codegen.ColumnDefinition{SubscriptionIdColumn}, r.ExtraColumns...)
+
 	for _, f := range r.ExtraColumns {
 		r.SkipFields = append(r.SkipFields, strcase.ToCamel(f.Name))
 	}
 
-	extraColumns := r.ExtraColumns
-	// extraColumns = append([]codegen.ColumnDefinition{SubscriptionIdColumn}, extraColumns...)
-	// if needsProjectIDColumn(r) {
-	// 	extraColumns = append([]codegen.ColumnDefinition{recipes.ProjectIdColumn}, extraColumns...)
-	// }
-
 	opts := []codegen.TableOption{
 		codegen.WithSkipFields(r.SkipFields),
-		codegen.WithExtraColumns(extraColumns),
+		codegen.WithExtraColumns(r.ExtraColumns),
+		codegen.WithPKColumns("id"),
 	}
 
 	r.Table, err = codegen.NewTableFromStruct(

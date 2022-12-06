@@ -104,15 +104,6 @@ func Armcompute() []Table {
 			NewFunc:        armcompute.NewDiskAccessesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/diskAccesses",
 		},
-		{
-			Name:           "resource_sku",
-			Struct:         &armcompute.ResourceSKU{},
-			ResponseStruct: &armcompute.ResourceSKUsClientListResponse{},
-			Client:         &armcompute.ResourceSKUsClient{},
-			ListFunc:       (&armcompute.ResourceSKUsClient{}).NewListPager,
-			NewFunc:        armcompute.NewResourceSKUsClient,
-			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/skus",
-		},
 	}
 
 	for i := range tables {

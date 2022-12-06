@@ -41,15 +41,6 @@ func Armcdn() []Table {
 			NewFunc:        armcdn.NewManagedRuleSetsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/cdnWebApplicationFirewallManagedRuleSets",
 		},
-		{
-			Name:           "resource_usage",
-			Struct:         &armcdn.ResourceUsage{},
-			ResponseStruct: &armcdn.ResourceUsageClientListResponse{},
-			Client:         &armcdn.ResourceUsageClient{},
-			ListFunc:       (&armcdn.ResourceUsageClient{}).NewListPager,
-			NewFunc:        armcdn.NewResourceUsageClient,
-			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/checkResourceUsage",
-		},
 	}
 
 	for i := range tables {

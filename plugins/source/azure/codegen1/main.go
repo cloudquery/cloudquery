@@ -80,32 +80,41 @@ func main() {
 	}
 }
 
+func structHasField(typ reflect.Type, fieldName string) bool {
+	for i := 0; i < typ.NumField(); i++ {
+		if typ.Field(i).Name == fieldName {
+			return true
+		}
+	}
+	return false
+}
+
 // this uses reflection to find the struct type inside Value field in an azure
 // responseStruct returned from NewListPager and any other pager
-func getStructNameFromResponseStruct(valueFieldType reflect.Type) (string, error) {
-	var name string
+func getStructTypeFromResponseStruct(valueFieldType reflect.Type) (reflect.Type, error) {
+	var typ reflect.Type
 	var err error
 
 	switch valueFieldType.Kind() {
 	case reflect.Struct:
-		name = valueFieldType.Name()
+		typ = valueFieldType
 	case reflect.Ptr:
-		name, err = getStructNameFromResponseStruct(valueFieldType.Elem())
+		typ, err = getStructTypeFromResponseStruct(valueFieldType.Elem())
 		if err != nil {
-			return "", err
+			return nil, err
 		}
 	case reflect.Slice:
-		name, err = getStructNameFromResponseStruct(valueFieldType.Elem())
+		typ, err = getStructTypeFromResponseStruct(valueFieldType.Elem())
 		if err != nil {
-			return "", err
+			return nil, err
 		}
 	case reflect.Interface:
 		// this is currently unsupported so we skip this
-		return "", nil
+		return nil, nil
 	default:
-		return "", fmt.Errorf("failed to find struct name for %s", valueFieldType.String())
+		return nil, fmt.Errorf("failed to find struct name for %s", valueFieldType.String())
 	}
-	return name, nil
+	return typ, nil
 }
 
 func ConvertTableV1ToV2(t *recipes.Table) (*Table, error) {
@@ -125,14 +134,19 @@ func ConvertTableV1ToV2(t *recipes.Table) (*Table, error) {
 		return nil, fmt.Errorf("failed to find Value field for %s", responseStruct.Type.Elem().String())
 	}
 
-	structName, err := getStructNameFromResponseStruct(st.Type)
+	structTyp, err := getStructTypeFromResponseStruct(st.Type)
 	if err != nil {
 		return nil, err
 	}
-	if structName == "" {
+	if structTyp == nil {
 		log.Printf("skipping %s as generating interface value fields is not supported yet", st.Type)
 		return nil, nil
 	}
+	if !structHasField(structTyp, "ID") {
+		log.Printf("skipping %s as it does not have ID field", structTyp.String())
+		return nil, nil
+	}
+	structName := structTyp.Name()
 	responseStructName := strings.Split(responseStruct.Type.String(), ".")[1]
 	clientName := strings.Split(v.Out(0).String(), ".")[1]
 	return &Table{

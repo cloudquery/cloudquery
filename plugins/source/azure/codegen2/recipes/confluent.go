@@ -14,15 +14,6 @@ func Armconfluent() []Table {
 			NewFunc:        armconfluent.NewMarketplaceAgreementsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Confluent/agreements",
 		},
-		{
-			Name:           "operation_result",
-			Struct:         &armconfluent.OperationResult{},
-			ResponseStruct: &armconfluent.OrganizationOperationsClientListResponse{},
-			Client:         &armconfluent.OrganizationOperationsClient{},
-			ListFunc:       (&armconfluent.OrganizationOperationsClient{}).NewListPager,
-			NewFunc:        armconfluent.NewOrganizationOperationsClient,
-			URL:            "/providers/Microsoft.Confluent/operations",
-		},
 	}
 
 	for i := range tables {

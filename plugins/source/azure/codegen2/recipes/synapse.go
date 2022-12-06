@@ -23,15 +23,6 @@ func Armsynapse() []Table {
 			NewFunc:        armsynapse.NewWorkspacesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Synapse/workspaces",
 		},
-		{
-			Name:           "operation",
-			Struct:         &armsynapse.Operation{},
-			ResponseStruct: &armsynapse.KustoOperationsClientListResponse{},
-			Client:         &armsynapse.KustoOperationsClient{},
-			ListFunc:       (&armsynapse.KustoOperationsClient{}).NewListPager,
-			NewFunc:        armsynapse.NewKustoOperationsClient,
-			URL:            "/providers/Microsoft.Synapse/kustooperations",
-		},
 	}
 
 	for i := range tables {

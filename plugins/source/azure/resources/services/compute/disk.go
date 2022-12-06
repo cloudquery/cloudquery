@@ -49,6 +49,9 @@ func Disk() *schema.Table {
 				Name:     "id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ID"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "managed_by",

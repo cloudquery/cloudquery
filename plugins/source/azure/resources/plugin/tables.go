@@ -34,7 +34,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/customerlockbox"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/dashboard"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/databox"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/databoxedge"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/datadog"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/datafactory"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/datalakeanalytics"
@@ -43,12 +42,9 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/desktopvirtualization"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/devhub"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/devops"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/devtestlabs"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/dns"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/dnsresolver"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/domainservices"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/elastic"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/elasticsan"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/engagementfabric"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/eventgrid"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/eventhub"
@@ -59,16 +55,11 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/healthcareapis"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/hybridcompute"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/hybriddatamanager"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/hybridnetwork"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/keyvault"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/kusto"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/labservices"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/locks"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/machinelearning"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/maintenance"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/managedservices"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/managementgroups"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/managementpartner"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/mariadb"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/marketplace"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/migrate"
@@ -91,7 +82,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/powerbidedicated"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/privatedns"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/providerhub"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/quota"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/redhatopenshift"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/relay"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/reservations"
@@ -108,7 +98,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/subscriptions"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/support"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/synapse"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/testbase"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/virtualmachineimagebuilder"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/windowsesu"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/windowsiot"
@@ -124,12 +113,10 @@ func generatedTables() []*schema.Table {
 		advisor.SuppressionContract(),
 		analysisservices.Server(),
 		apimanagement.ServiceResource(),
-		apimanagement.Sku(),
 		appcomplianceautomation.ReportResource(),
 		appconfiguration.ConfigurationStore(),
 		applicationinsights.Component(),
 		applicationinsights.WebTest(),
-		appplatform.ResourceSku(),
 		appplatform.ServiceResource(),
 		appservice.Domain(),
 		appservice.TopLevelDomain(),
@@ -161,9 +148,7 @@ func generatedTables() []*schema.Table {
 		cdn.Profile(),
 		cdn.WebApplicationFirewallPolicy(),
 		cdn.ManagedRuleSetDefinition(),
-		cdn.ResourceUsage(),
 		cognitiveservices.Account(),
-		cognitiveservices.ResourceSku(),
 		cognitiveservices.Account(),
 		compute.CloudService(),
 		compute.AvailabilitySet(),
@@ -176,9 +161,7 @@ func generatedTables() []*schema.Table {
 		compute.VirtualMachine(),
 		compute.Image(),
 		compute.DiskAccess(),
-		compute.ResourceSku(),
 		confluent.AgreementResource(),
-		confluent.OperationResult(),
 		connectedvmware.VirtualMachine(),
 		connectedvmware.Cluster(),
 		connectedvmware.VirtualNetwork(),
@@ -199,7 +182,6 @@ func generatedTables() []*schema.Table {
 		customerlockbox.LockboxRequestResponse(),
 		dashboard.ManagedGrafana(),
 		databox.JobResource(),
-		databoxedge.Sku(),
 		datadog.AgreementResource(),
 		datadog.MonitorResource(),
 		datafactory.Factory(),
@@ -209,15 +191,10 @@ func generatedTables() []*schema.Table {
 		desktopvirtualization.HostPool(),
 		devhub.Workflow(),
 		devops.PipelineTemplateDefinition(),
-		devtestlabs.OperationMetadata(),
 		dns.Zone(),
 		dnsresolver.DnsResolver(),
 		dnsresolver.DnsForwardingRuleset(),
-		domainservices.OperationEntity(),
-		domainservices.OperationEntity(),
 		elastic.MonitorResource(),
-		elasticsan.SkuInformation(),
-		engagementfabric.SkuDescription(),
 		engagementfabric.Account(),
 		eventgrid.TopicTypeInfo(),
 		eventhub.EhNamespace(),
@@ -231,12 +208,8 @@ func generatedTables() []*schema.Table {
 		healthcareapis.ServicesDescription(),
 		hybridcompute.PrivateLinkScope(),
 		hybriddatamanager.DataManager(),
-		hybridnetwork.NetworkFunctionVendor(),
 		keyvault.Resource(),
 		kusto.Cluster(),
-		labservices.SkuInfo(),
-		locks.Operation(),
-		machinelearning.WorkspaceSku(),
 		maintenance.Configuration(),
 		maintenance.ApplyUpdate(),
 		maintenance.ApplyUpdate(),
@@ -244,14 +217,12 @@ func generatedTables() []*schema.Table {
 		maintenance.Configuration(),
 		managedservices.MarketplaceRegistrationDefinition(),
 		managementgroups.EntityInfo(),
-		managementpartner.OperationResponse(),
 		mariadb.Server(),
 		marketplace.PrivateStore(),
 		migrate.Project(),
 		monitor.AzureMonitorPrivateLinkScope(),
 		monitor.LogProfileResource(),
 		monitor.EventData(),
-		monitor.LocalizableString(),
 		mysql.Server(),
 		mysqlflexibleservers.Server(),
 		netapp.Account(),
@@ -325,10 +296,8 @@ func generatedTables() []*schema.Table {
 		powerbidedicated.DedicatedCapacity(),
 		privatedns.PrivateZone(),
 		providerhub.ProviderRegistration(),
-		quota.OperationResponse(),
 		redhatopenshift.OpenShiftCluster(),
 		relay.Namespace(),
-		reservations.OperationResponse(),
 		reservations.ReservationOrderResponse(),
 		resources.TagDetails(),
 		resources.Provider(),
@@ -368,11 +337,8 @@ func generatedTables() []*schema.Table {
 		sqlvirtualmachine.Group(),
 		sqlvirtualmachine.SqlVirtualMachine(),
 		storage.DeletedAccount(),
-		storage.SkuInformation(),
 		storage.Account(),
-		storagecache.UsageModel(),
 		storagecache.Cache(),
-		storagecache.ResourceSku(),
 		streamanalytics.StreamingJob(),
 		subscription.Subscription(),
 		subscription.TenantIdDescription(),
@@ -381,12 +347,9 @@ func generatedTables() []*schema.Table {
 		support.Service(),
 		synapse.PrivateLinkHub(),
 		synapse.Workspace(),
-		synapse.Operation(),
-		testbase.AccountSku(),
 		virtualmachineimagebuilder.ImageTemplate(),
 		windowsesu.MultipleActivationKey(),
 		windowsiot.DeviceService(),
-		workloads.SkuDefinition(),
 		workloads.Monitor(),
 	}
 }

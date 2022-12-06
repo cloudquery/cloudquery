@@ -6,15 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/engagementfabric/a
 func Armengagementfabric() []Table {
 	tables := []Table{
 		{
-			Name:           "sku_description",
-			Struct:         &armengagementfabric.SKUDescription{},
-			ResponseStruct: &armengagementfabric.SKUsClientListResponse{},
-			Client:         &armengagementfabric.SKUsClient{},
-			ListFunc:       (&armengagementfabric.SKUsClient{}).NewListPager,
-			NewFunc:        armengagementfabric.NewSKUsClient,
-			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.EngagementFabric/skus",
-		},
-		{
 			Name:           "account",
 			Struct:         &armengagementfabric.Account{},
 			ResponseStruct: &armengagementfabric.AccountsClientListResponse{},

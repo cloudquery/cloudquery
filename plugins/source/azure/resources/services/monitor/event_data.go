@@ -69,6 +69,9 @@ func EventData() *schema.Table {
 				Name:     "id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ID"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "level",
