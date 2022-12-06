@@ -37,7 +37,8 @@ func ServiceusageResources() []*Resource {
 		resource.ProtobufImport = "google.golang.org/genproto/googleapis/api/serviceusage/v1"
 		resource.Template = "newapi_list"
 		resource.MockTemplate = "newapi_list_grpc_mock"
-		resource.RequestStructFields = `Parent: "projects/" + c.ProjectId,`
+		resource.RequestStructFields = `Parent: "projects/" + c.ProjectId,
+		PageSize: 200,`
 	}
 
 	return resources
