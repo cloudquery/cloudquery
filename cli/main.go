@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/signal"
 	"runtime/debug"
+	"time"
 
 	"github.com/cloudquery/cloudquery/cli/cmd"
 	"github.com/getsentry/sentry-go"
@@ -41,6 +42,7 @@ func main() {
 		if err != nil {
 			originalMessage := fmt.Sprintf("panic: %v\n\n%s", err, string(debug.Stack()))
 			sentry.CurrentHub().CaptureMessage(originalMessage)
+			_ = sentry.Flush(5 * time.Second)
 			panic(err)
 		}
 
