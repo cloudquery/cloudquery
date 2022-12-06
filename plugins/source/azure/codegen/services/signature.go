@@ -73,9 +73,9 @@ func isAllowedFunc(sig string) bool {
 func getConstructorCall(constructor any) string {
 	fn := reflect.TypeOf(constructor)
 	// 3 possible params
-	//subscriptionID string
-	//credentials    azcore.TokenCredential
-	//options        *arm.ClientOptions
+	// subscriptionID string
+	// credentials    azcore.TokenCredential
+	// options        *arm.ClientOptions
 	var params []string
 	for i := 0; i < fn.NumIn(); i++ {
 		switch tp := reflect.New(fn.In(i)).Interface().(type) {

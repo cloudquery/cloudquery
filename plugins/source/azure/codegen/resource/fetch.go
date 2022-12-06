@@ -237,7 +237,6 @@ func (r *Resource) generateFetch(dir string) error {
 		"ToLower":      strings.ToLower,
 		"ToLowerCamel": strcase.ToLowerCamel,
 	}).ParseFS(templatesFS, "templates/*.go.tpl")
-
 	if err != nil {
 		return fmt.Errorf("failed to parse templates: %w", err)
 	}

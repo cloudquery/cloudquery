@@ -17,9 +17,11 @@ import (
 //go:embed templates/*.go.tpl
 var templatesFS embed.FS
 
-var reInline = regexp.MustCompile(`(?im)^\\ir (.+)`)
-var reTable = regexp.MustCompile(`(?i)(?:from|join)\s+(\w+)`)
-var reTitle = regexp.MustCompile(`(?i)\:'check_id'(?:\s+as\s+check_id\s*)?,\s+'(.+)'(?:\s+as\s+title\s*)?,`)
+var (
+	reInline = regexp.MustCompile(`(?im)^\\ir (.+)`)
+	reTable  = regexp.MustCompile(`(?i)(?:from|join)\s+(\w+)`)
+	reTitle  = regexp.MustCompile(`(?i)\:'check_id'(?:\s+as\s+check_id\s*)?,\s+'(.+)'(?:\s+as\s+title\s*)?,`)
+)
 
 type Index struct {
 	Policies []Policy `json:"policies"`

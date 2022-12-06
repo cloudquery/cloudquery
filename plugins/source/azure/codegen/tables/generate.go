@@ -43,7 +43,7 @@ func Generate(resources []*resource.Resource) error {
 	} else {
 		content = formattedContent
 	}
-	if err := os.WriteFile(filePath, content, 0644); err != nil {
+	if err := os.WriteFile(filePath, content, 0o644); err != nil {
 		return fmt.Errorf("failed to write file %s: %w", filePath, err)
 	}
 

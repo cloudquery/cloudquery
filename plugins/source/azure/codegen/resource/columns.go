@@ -8,14 +8,12 @@ import (
 	"github.com/gertd/go-pluralize"
 )
 
-var (
-	SubscriptionIDCol = codegen.ColumnDefinition{
-		Name:        "subscription_id",
-		Type:        schema.TypeString,
-		Resolver:    "client.SubscriptionIDResolver",
-		Description: "Azure subscription ID",
-	}
-)
+var SubscriptionIDCol = codegen.ColumnDefinition{
+	Name:        "subscription_id",
+	Type:        schema.TypeString,
+	Resolver:    "client.SubscriptionIDResolver",
+	Description: "Azure subscription ID",
+}
 
 func (r *Resource) propagateColumns() {
 	namePresent := make(map[string]bool)
