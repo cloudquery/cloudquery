@@ -30,34 +30,24 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 	}
 	defer destClients.Close()
 
-	allTables, err := sourceClient.GetTables(ctx)
-	if err != nil {
-		return fmt.Errorf("failed to get tables for source %s: %w", sourceSpec.Name, err)
-	}
-
 	selectedTables, tablesForSpecSupported, err := getTablesForSpec(ctx, sourceClient, sourceSpec)
 	if err != nil {
 		return fmt.Errorf("failed to get tables for source %s: %w", sourceSpec.Name, err)
 	}
-	// make sure selectedTables only includes top-level tables; we don't want a flattened list
-	// (a bug in early versions of GetTablesForSpec returned a flattened list)
-	selectedTables = topLevelTables(allTables, selectedTables)
 
 	tableCount := len(selectedTables.FlattenTables())
 
-	// Print a count of the tables that will be synced / migrated. This is a little tricky because older
-	// servers don't necessarily support GetTablesForSpec.
+	// Print a count of the tables that will be synced / migrated.
 	if tablesForSpecSupported {
 		word := "tables"
 		if tableCount == 1 {
 			word = "table"
 		}
-		fmt.Printf("Source %s will sync %d %s.\n", sourceSpec.Name, tableCount, word)
-
-		// TODO: add this back once we also use the filtered list for table migrations
-		//else {
-		//	fmt.Printf("Source %s will migrate and sync %d tables.\n", sourceSpec.Name, tableCount)
-		//}
+		if noMigrate {
+			fmt.Printf("Source %s will sync %d %s.\n", sourceSpec.Name, tableCount, word)
+		} else {
+			fmt.Printf("Source %s will migrate and sync %d %s.\n", sourceSpec.Name, tableCount, word)
+		}
 	}
 
 	if !noMigrate {
@@ -68,7 +58,7 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 		for i, destinationSpec := range destinationsSpecs {
 			// Currently we migrate all tables, but this is subject to change once policies
 			// are adapted to handle non-existent tables in some way.
-			if err := destClients[i].Migrate(ctx, allTables); err != nil {
+			if err := destClients[i].Migrate(ctx, selectedTables); err != nil {
 				return fmt.Errorf("failed to migrate source %s on destination %s : %w", sourceSpec.Name, destinationSpec.Name, err)
 			}
 		}
@@ -77,7 +67,7 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 		log.Info().
 			Str("source", sourceSpec.Name).
 			Strs("destinations", sourceSpec.Destinations).
-			Int("num_tables", len(allTables)).
+			Int("num_tables", tableCount).
 			Float64("time_took", migrateTimeTook.Seconds()).
 			Msg("End migration")
 	}
@@ -187,6 +177,15 @@ func getTablesForSpec(ctx context.Context, sourceClient *clients.SourceClient, s
 		// the method is supported, but failed for some other reason
 		return tables, true, err
 	}
+
+	allTables, err := sourceClient.GetTables(ctx)
+	if err != nil {
+		return tables, true, fmt.Errorf("failed to get all tables for source %s: %w", sourceSpec.Name, err)
+	}
+
+	// make sure selected tables only includes top-level tables; we don't want a flattened list
+	// (a bug in early versions of GetTablesForSpec returned a flattened list)
+	tables = topLevelTables(allTables, tables)
 	return tables, true, err
 }
 
