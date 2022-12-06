@@ -36,6 +36,8 @@ spec:
     dataset_id: ${DATASET_ID}
 ```
 
+Note that the BigQuery plugin only supports the `append` write mode.
+
 ## Authentication
 
 The GCP plugin authenticates using your [Application Default Credentials](https://cloud.google.com/sdk/gcloud/reference/auth/application-default). Available options are all the same options described [here](https://cloud.google.com/docs/authentication/provide-credentials-adc) in detail:
@@ -60,12 +62,6 @@ On-premises or another cloud provider
 
 - The suggested way is to use [Workload identity federation](https://cloud.google.com/iam/docs/workload-identity-federation)
 - If not available you can always use service account keys and export the location of the key via `GOOGLE_APPLICATION_CREDENTIALS`. (**Not recommended as long-lived keys are a security risk**)
-
-## Configuration
-
-See an example configuration for the BigQuery destination under [recipes](/docs/recipes/destinations/bigquery).
-
-Note that the BigQuery plugin only supports the `append` write mode.
 
 ## BigQuery Spec
 
