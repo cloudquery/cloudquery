@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v1.2.19...plugins-source-github-v1.3.0) (2022-12-06)
+
+
+### Features
+
+* **website:** Add plugins tables ([#5259](https://github.com/cloudquery/cloudquery/issues/5259)) ([c336f4e](https://github.com/cloudquery/cloudquery/commit/c336f4e25e192ffdd4c211d4a35b67b71d01d1f8))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.11.0 ([#5416](https://github.com/cloudquery/cloudquery/issues/5416)) ([2e7ca35](https://github.com/cloudquery/cloudquery/commit/2e7ca35922fdb14fd717f582aaaa9693dae2ef4c))
+* **deps:** Update module github.com/google/go-github/v45 to v48 ([#5243](https://github.com/cloudquery/cloudquery/issues/5243)) ([0a2c74a](https://github.com/cloudquery/cloudquery/commit/0a2c74a9d2f586a0ff8d4b0ce786d2ee22445f74))
+* **deps:** Update module golang.org/x/oauth2 to v0.2.0 ([#5229](https://github.com/cloudquery/cloudquery/issues/5229)) ([7fed2bd](https://github.com/cloudquery/cloudquery/commit/7fed2bdbf229109e1bc6560eb8e94d2ad5ae03d9))
+
 ## [1.2.19](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v1.2.18...plugins-source-github-v1.2.19) (2022-11-30)
 
 
