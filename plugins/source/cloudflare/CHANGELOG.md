@@ -5,6 +5,19 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-cloudflare-v2.2.21...plugins-source-cloudflare-v2.3.0) (2022-12-06)
+
+
+### Features
+
+* **website:** Add plugins tables ([#5259](https://github.com/cloudquery/cloudquery/issues/5259)) ([c336f4e](https://github.com/cloudquery/cloudquery/commit/c336f4e25e192ffdd4c211d4a35b67b71d01d1f8))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudflare/cloudflare-go to v0.55.0 ([#5223](https://github.com/cloudquery/cloudquery/issues/5223)) ([026f2cf](https://github.com/cloudquery/cloudquery/commit/026f2cfebec7ca5ec167ff273e65a5addb8d80d9))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.11.0 ([#5416](https://github.com/cloudquery/cloudquery/issues/5416)) ([2e7ca35](https://github.com/cloudquery/cloudquery/commit/2e7ca35922fdb14fd717f582aaaa9693dae2ef4c))
+
 ## [2.2.21](https://github.com/cloudquery/cloudquery/compare/plugins-source-cloudflare-v2.2.20...plugins-source-cloudflare-v2.2.21) (2022-11-30)
 
 

@@ -1,5 +1,21 @@
 # Changelog
 
+## [3.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-heroku-v3.0.10...plugins-source-heroku-v3.1.0) (2022-12-06)
+
+
+### Features
+
+* **website:** Add plugins tables ([#5259](https://github.com/cloudquery/cloudquery/issues/5259)) ([c336f4e](https://github.com/cloudquery/cloudquery/commit/c336f4e25e192ffdd4c211d4a35b67b71d01d1f8))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.11.0 ([#5416](https://github.com/cloudquery/cloudquery/issues/5416)) ([2e7ca35](https://github.com/cloudquery/cloudquery/commit/2e7ca35922fdb14fd717f582aaaa9693dae2ef4c))
+* **deps:** Update module github.com/googleapis/gax-go/v2 to v2.7.0 ([#5226](https://github.com/cloudquery/cloudquery/issues/5226)) ([829ec97](https://github.com/cloudquery/cloudquery/commit/829ec97b03d6b0895a5913900e66e082f1cb31e5))
+* **deps:** Update module github.com/heroku/heroku-go/v5 to v5.5.0 ([#5227](https://github.com/cloudquery/cloudquery/issues/5227)) ([080765d](https://github.com/cloudquery/cloudquery/commit/080765d84f7992cba68c3357022b0932ca128fb8))
+* **deps:** Update module google.golang.org/api to v0.103.0 ([#5230](https://github.com/cloudquery/cloudquery/issues/5230)) ([8f7de97](https://github.com/cloudquery/cloudquery/commit/8f7de97f865e06012d91cfe135af71a0d876540d))
+* **deps:** Update module google.golang.org/grpc to v1.51.0 ([#5231](https://github.com/cloudquery/cloudquery/issues/5231)) ([2498d05](https://github.com/cloudquery/cloudquery/commit/2498d05cb9f63b31e47ac9cb3e58125bf0e1f4ee))
+
 ## [3.0.10](https://github.com/cloudquery/cloudquery/compare/plugins-source-heroku-v3.0.9...plugins-source-heroku-v3.0.10) (2022-11-30)
 
 
