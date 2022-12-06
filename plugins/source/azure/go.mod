@@ -10,7 +10,7 @@ require (
 	github.com/Azure/go-autorest/autorest v0.11.28
 	github.com/Azure/go-autorest/autorest/azure/auth v0.5.11
 	github.com/Azure/go-autorest/autorest/date v0.3.0
-	github.com/cloudquery/plugin-sdk v1.10.0
+	github.com/cloudquery/plugin-sdk v1.11.0
 	github.com/gertd/go-pluralize v0.2.1
 	github.com/gofrs/uuid v4.3.1+incompatible
 	github.com/golang/mock v1.6.0
@@ -63,7 +63,7 @@ require (
 	golang.org/x/text v0.4.0 // indirect
 	golang.org/x/tools v0.2.0 // indirect
 	google.golang.org/genproto v0.0.0-20221111202108-142d8a6fa32e // indirect
-	google.golang.org/grpc v1.50.1 // indirect
+	google.golang.org/grpc v1.51.0 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
