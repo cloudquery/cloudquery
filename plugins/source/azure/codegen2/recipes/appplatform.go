@@ -6,33 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armapp
 func Armappplatform() []Table {
 	tables := []Table{
 		{
-      Name: "service_registry_resource",
-      Struct: &armappplatform.ServiceRegistryResource{},
-      ResponseStruct: &armappplatform.ServiceRegistriesClientListResponse{},
-      Client: &armappplatform.ServiceRegistriesClient{},
-      ListFunc: (&armappplatform.ServiceRegistriesClient{}).NewListPager,
-			NewFunc: armappplatform.NewServiceRegistriesClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/serviceRegistries",
-		},
-		{
-      Name: "resource_sku",
-      Struct: &armappplatform.ResourceSKU{},
-      ResponseStruct: &armappplatform.SKUsClientListResponse{},
-      Client: &armappplatform.SKUsClient{},
-      ListFunc: (&armappplatform.SKUsClient{}).NewListPager,
-			NewFunc: armappplatform.NewSKUsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.AppPlatform/skus",
-		},
-		{
-      Name: "app_resource",
-      Struct: &armappplatform.AppResource{},
-      ResponseStruct: &armappplatform.AppsClientListResponse{},
-      Client: &armappplatform.AppsClient{},
-      ListFunc: (&armappplatform.AppsClient{}).NewListPager,
-			NewFunc: armappplatform.NewAppsClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps",
-		},
-		{
       Name: "service_resource",
       Struct: &armappplatform.ServiceResource{},
       ResponseStruct: &armappplatform.ServicesClientListResponse{},
@@ -42,22 +15,13 @@ func Armappplatform() []Table {
 			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring",
 		},
 		{
-      Name: "configuration_service_resource",
-      Struct: &armappplatform.ConfigurationServiceResource{},
-      ResponseStruct: &armappplatform.ConfigurationServicesClientListResponse{},
-      Client: &armappplatform.ConfigurationServicesClient{},
-      ListFunc: (&armappplatform.ConfigurationServicesClient{}).NewListPager,
-			NewFunc: armappplatform.NewConfigurationServicesClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/configurationServices",
-		},
-		{
-      Name: "certificate_resource",
-      Struct: &armappplatform.CertificateResource{},
-      ResponseStruct: &armappplatform.CertificatesClientListResponse{},
-      Client: &armappplatform.CertificatesClient{},
-      ListFunc: (&armappplatform.CertificatesClient{}).NewListPager,
-			NewFunc: armappplatform.NewCertificatesClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/certificates",
+      Name: "resource_sku",
+      Struct: &armappplatform.ResourceSKU{},
+      ResponseStruct: &armappplatform.SKUsClientListResponse{},
+      Client: &armappplatform.SKUsClient{},
+      ListFunc: (&armappplatform.SKUsClient{}).NewListPager,
+			NewFunc: armappplatform.NewSKUsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.AppPlatform/skus",
 		},
 	}
 

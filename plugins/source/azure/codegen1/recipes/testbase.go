@@ -6,34 +6,9 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/testbase/armtestba
 func Armtestbase() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armtestbase.NewTestSummariesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/testbase/armtestbase",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TestBase/testBaseAccounts/{testBaseAccountName}/testSummaries",
-		},
-		{
-			NewFunc: armtestbase.NewUsageClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/testbase/armtestbase",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TestBase/testBaseAccounts/{testBaseAccountName}/usages",
-		},
-		{
 			NewFunc: armtestbase.NewSKUsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/testbase/armtestbase",
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.TestBase/skus",
-		},
-		{
-			NewFunc: armtestbase.NewTestTypesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/testbase/armtestbase",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TestBase/testBaseAccounts/{testBaseAccountName}/testTypes",
-		},
-		{
-			NewFunc: armtestbase.NewFlightingRingsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/testbase/armtestbase",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TestBase/testBaseAccounts/{testBaseAccountName}/flightingRings",
-		},
-		{
-			NewFunc: armtestbase.NewEmailEventsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/testbase/armtestbase",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TestBase/testBaseAccounts/{testBaseAccountName}/emailEvents",
 		},
 	}
 	return tables

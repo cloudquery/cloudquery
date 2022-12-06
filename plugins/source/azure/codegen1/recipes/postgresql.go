@@ -6,26 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpost
 func Armpostgresql() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armpostgresql.NewServerKeysClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/servers/{serverName}/keys",
-		},
-		{
-			NewFunc: armpostgresql.NewLocationBasedPerformanceTierClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/locations/{locationName}/performanceTiers",
-		},
-		{
-			NewFunc: armpostgresql.NewServerBasedPerformanceTierClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/servers/{serverName}/performanceTiers",
-		},
-		{
-			NewFunc: armpostgresql.NewServerAdministratorsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/servers/{serverName}/administrators",
-		},
-		{
 			NewFunc: armpostgresql.NewServersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql",
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/servers",

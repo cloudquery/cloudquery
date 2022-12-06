@@ -10,11 +10,6 @@ func Armblockchain() []*Table {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blockchain/armblockchain",
 			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Blockchain/blockchainMembers",
 		},
-		{
-			NewFunc: armblockchain.NewTransactionNodesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blockchain/armblockchain",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Blockchain/blockchainMembers/{blockchainMemberName}/transactionNodes",
-		},
 	}
 	return tables
 }

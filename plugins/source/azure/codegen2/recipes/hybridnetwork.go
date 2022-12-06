@@ -6,15 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridnetwork/armh
 func Armhybridnetwork() []Table {
 	tables := []Table{
 		{
-      Name: "vendor_network_function",
-      Struct: &armhybridnetwork.VendorNetworkFunction{},
-      ResponseStruct: &armhybridnetwork.VendorNetworkFunctionsClientListResponse{},
-      Client: &armhybridnetwork.VendorNetworkFunctionsClient{},
-      ListFunc: (&armhybridnetwork.VendorNetworkFunctionsClient{}).NewListPager,
-			NewFunc: armhybridnetwork.NewVendorNetworkFunctionsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.HybridNetwork/locations/{locationName}/vendors/{vendorName}/networkFunctions",
-		},
-		{
       Name: "network_function_vendor",
       Struct: &armhybridnetwork.NetworkFunctionVendor{},
       ResponseStruct: &armhybridnetwork.NetworkFunctionVendorsClientListResponse{},
@@ -22,24 +13,6 @@ func Armhybridnetwork() []Table {
       ListFunc: (&armhybridnetwork.NetworkFunctionVendorsClient{}).NewListPager,
 			NewFunc: armhybridnetwork.NewNetworkFunctionVendorsClient,
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.HybridNetwork/networkFunctionVendors",
-		},
-		{
-      Name: "preview_subscription",
-      Struct: &armhybridnetwork.PreviewSubscription{},
-      ResponseStruct: &armhybridnetwork.VendorSKUPreviewClientListResponse{},
-      Client: &armhybridnetwork.VendorSKUPreviewClient{},
-      ListFunc: (&armhybridnetwork.VendorSKUPreviewClient{}).NewListPager,
-			NewFunc: armhybridnetwork.NewVendorSKUPreviewClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.HybridNetwork/vendors/{vendorName}/vendorSkus/{skuName}/previewSubscriptions",
-		},
-		{
-      Name: "vendor_sku",
-      Struct: &armhybridnetwork.VendorSKU{},
-      ResponseStruct: &armhybridnetwork.VendorSKUsClientListResponse{},
-      Client: &armhybridnetwork.VendorSKUsClient{},
-      ListFunc: (&armhybridnetwork.VendorSKUsClient{}).NewListPager,
-			NewFunc: armhybridnetwork.NewVendorSKUsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.HybridNetwork/vendors/{vendorName}/vendorSkus",
 		},
 	}
 

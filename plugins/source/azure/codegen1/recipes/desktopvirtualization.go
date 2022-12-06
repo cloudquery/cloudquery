@@ -6,29 +6,9 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualizat
 func Armdesktopvirtualization() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armdesktopvirtualization.NewApplicationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/applicationGroups/{applicationGroupName}/applications",
-		},
-		{
-			NewFunc: armdesktopvirtualization.NewStartMenuItemsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/applicationGroups/{applicationGroupName}/startMenuItems",
-		},
-		{
-			NewFunc: armdesktopvirtualization.NewSessionHostsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/sessionHosts",
-		},
-		{
 			NewFunc: armdesktopvirtualization.NewHostPoolsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization",
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DesktopVirtualization/hostPools",
-		},
-		{
-			NewFunc: armdesktopvirtualization.NewMSIXPackagesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization",
-			URL: "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/msixPackages",
 		},
 	}
 	return tables

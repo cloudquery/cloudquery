@@ -6,16 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos"
 func Armchaos() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armchaos.NewTargetTypesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Chaos/locations/{locationName}/targetTypes",
-		},
-		{
-			NewFunc: armchaos.NewCapabilityTypesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Chaos/locations/{locationName}/targetTypes/{targetTypeName}/capabilityTypes",
-		},
-		{
 			NewFunc: armchaos.NewExperimentsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos",
 			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/experiments",

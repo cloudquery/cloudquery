@@ -23,12 +23,22 @@ const (
 var reNewClient = regexp.MustCompile(`New[a-zA-Z]+Client`)
 var reListCreateRequest = regexp.MustCompile(`listCreateRequest`)
 var reNewListPager = regexp.MustCompile(`NewListPager`)
+var supportedNewListPagerParams = [][]string{
+	{"options"},
+	{"resourceGroupName", "options"},
+	{"subscriptionID", "options"},
+}
+
+var supportedNewClientParams = [][]string{
+	{"credential", "options"},
+	{"subscriptionID", "credential", "options"},
+}
 
 type function struct {
 	receiver string
 	name     string
 	ast 		*ast.FuncDecl
-	params int
+	paramNames []string
 }
 
 func parseURLFromFunc(fn *ast.FuncDecl) string {
@@ -48,6 +58,38 @@ func parseURLFromFunc(fn *ast.FuncDecl) string {
 	return ""
 }
 
+func compareStrArrays(a, b []string) bool {
+	if len(a) != len(b) {
+		return false
+	}
+	for i := range a {
+		if a[i] != b[i] {
+			return false
+		}
+	}
+	return true
+}
+
+func isArrayExist(arr [][]string, item []string) bool {
+	for _, a := range arr {
+		if compareStrArrays(a, item) {
+			return true
+		}
+	}
+	return false
+}
+
+
+func getParamNames(fn *ast.FieldList) []string {
+	var params []string
+	for _, p := range fn.List {
+		for _, name := range p.Names {
+			params = append(params, name.Name)
+		}
+	}
+	return params
+}
+
 // returns reciever and method name that matches re
 func findFunctions(pkgs map[string]*ast.Package, re *regexp.Regexp) []function {
 	var funcs []function
@@ -65,7 +107,7 @@ func findFunctions(pkgs map[string]*ast.Package, re *regexp.Regexp) []function {
 									receiver := fn.Recv.List[0].Type.(*ast.StarExpr).X.(*ast.Ident).Name
 									fun.receiver = receiver
 								}
-								fun.params = len(fn.Type.Params.List)
+								fun.paramNames = getParamNames(fn.Type.Params)
 								funcs = append(funcs, fun)
 							}
 						}
@@ -89,7 +131,7 @@ func CreateTablesFromPackage(pkg string) ([]*Table, error) {
 	}
 	newXClientFuncstions := findFunctions(pkgs, reNewClient)
 	for _, fn := range newXClientFuncstions {
-		if newFuncsToSkip[fn.name] {
+		if newFuncsToSkip[fn.name] || !isArrayExist(supportedNewClientParams, fn.paramNames) {
 			continue
 		}
 		tables[strings.TrimPrefix(fn.name, "New")] = &Table{
@@ -121,14 +163,14 @@ func CreateTablesFromPackage(pkg string) ([]*Table, error) {
 			continue
 		}
 		tables[fn.receiver].HasListPager = true
-		tables[fn.receiver].HasListPagerParams = fn.params
+		tables[fn.receiver].NewListPagerParams = fn.paramNames
 	}
 
 	var result []*Table
 	for _, t := range tables {
 		// skip tables witout URL (or at least that we didn't find one)
 		// not NewListPager struct and more than 3 params
-		if t.URL == "" || !t.HasListPager || t.HasListPagerParams > 3{
+		if t.URL == "" || !t.HasListPager || !isArrayExist(supportedNewListPagerParams, t.NewListPagerParams) {
 			continue
 		}
 		result = append(result, t)

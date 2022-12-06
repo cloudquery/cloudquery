@@ -6,34 +6,14 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armapp
 func Armappplatform() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armappplatform.NewServiceRegistriesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/serviceRegistries",
-		},
-		{
-			NewFunc: armappplatform.NewSKUsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.AppPlatform/skus",
-		},
-		{
-			NewFunc: armappplatform.NewAppsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps",
-		},
-		{
 			NewFunc: armappplatform.NewServicesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform",
 			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring",
 		},
 		{
-			NewFunc: armappplatform.NewConfigurationServicesClient,
+			NewFunc: armappplatform.NewSKUsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/configurationServices",
-		},
-		{
-			NewFunc: armappplatform.NewCertificatesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/certificates",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.AppPlatform/skus",
 		},
 	}
 	return tables

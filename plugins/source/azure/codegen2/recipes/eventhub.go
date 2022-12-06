@@ -14,24 +14,6 @@ func Armeventhub() []Table {
 			NewFunc: armeventhub.NewNamespacesClient,
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.EventHub/namespaces",
 		},
-		{
-      Name: "arm_disaster_recovery",
-      Struct: &armeventhub.ArmDisasterRecovery{},
-      ResponseStruct: &armeventhub.DisasterRecoveryConfigsClientListResponse{},
-      Client: &armeventhub.DisasterRecoveryConfigsClient{},
-      ListFunc: (&armeventhub.DisasterRecoveryConfigsClient{}).NewListPager,
-			NewFunc: armeventhub.NewDisasterRecoveryConfigsClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/disasterRecoveryConfigs",
-		},
-		{
-      Name: "private_endpoint_connection",
-      Struct: &armeventhub.PrivateEndpointConnection{},
-      ResponseStruct: &armeventhub.PrivateEndpointConnectionsClientListResponse{},
-      Client: &armeventhub.PrivateEndpointConnectionsClient{},
-      ListFunc: (&armeventhub.PrivateEndpointConnectionsClient{}).NewListPager,
-			NewFunc: armeventhub.NewPrivateEndpointConnectionsClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/privateEndpointConnections",
-		},
 	}
 
 	for i := range tables {

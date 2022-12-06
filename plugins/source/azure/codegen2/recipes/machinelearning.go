@@ -6,24 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/ar
 func Armmachinelearning() []Table {
 	tables := []Table{
 		{
-      Name: "aml_user_feature",
-      Struct: &armmachinelearning.AmlUserFeature{},
-      ResponseStruct: &armmachinelearning.WorkspaceFeaturesClientListResponse{},
-      Client: &armmachinelearning.WorkspaceFeaturesClient{},
-      ListFunc: (&armmachinelearning.WorkspaceFeaturesClient{}).NewListPager,
-			NewFunc: armmachinelearning.NewWorkspaceFeaturesClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/features",
-		},
-		{
-      Name: "usage",
-      Struct: &armmachinelearning.Usage{},
-      ResponseStruct: &armmachinelearning.UsagesClientListResponse{},
-      Client: &armmachinelearning.UsagesClient{},
-      ListFunc: (&armmachinelearning.UsagesClient{}).NewListPager,
-			NewFunc: armmachinelearning.NewUsagesClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.MachineLearningServices/locations/{location}/usages",
-		},
-		{
       Name: "workspace_sku",
       Struct: &armmachinelearning.WorkspaceSKU{},
       ResponseStruct: &armmachinelearning.WorkspaceSKUsClientListResponse{},
@@ -31,42 +13,6 @@ func Armmachinelearning() []Table {
       ListFunc: (&armmachinelearning.WorkspaceSKUsClient{}).NewListPager,
 			NewFunc: armmachinelearning.NewWorkspaceSKUsClient,
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.MachineLearningServices/workspaces/skus",
-		},
-		{
-      Name: "compute_resource",
-      Struct: &armmachinelearning.ComputeResource{},
-      ResponseStruct: &armmachinelearning.ComputeClientListResponse{},
-      Client: &armmachinelearning.ComputeClient{},
-      ListFunc: (&armmachinelearning.ComputeClient{}).NewListPager,
-			NewFunc: armmachinelearning.NewComputeClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes",
-		},
-		{
-      Name: "private_endpoint_connection",
-      Struct: &armmachinelearning.PrivateEndpointConnection{},
-      ResponseStruct: &armmachinelearning.PrivateEndpointConnectionsClientListResponse{},
-      Client: &armmachinelearning.PrivateEndpointConnectionsClient{},
-      ListFunc: (&armmachinelearning.PrivateEndpointConnectionsClient{}).NewListPager,
-			NewFunc: armmachinelearning.NewPrivateEndpointConnectionsClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/privateEndpointConnections",
-		},
-		{
-      Name: "resource_quota",
-      Struct: &armmachinelearning.ResourceQuota{},
-      ResponseStruct: &armmachinelearning.QuotasClientListResponse{},
-      Client: &armmachinelearning.QuotasClient{},
-      ListFunc: (&armmachinelearning.QuotasClient{}).NewListPager,
-			NewFunc: armmachinelearning.NewQuotasClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.MachineLearningServices/locations/{location}/quotas",
-		},
-		{
-      Name: "workspace_connection",
-      Struct: &armmachinelearning.WorkspaceConnection{},
-      ResponseStruct: &armmachinelearning.WorkspaceConnectionsClientListResponse{},
-      Client: &armmachinelearning.WorkspaceConnectionsClient{},
-      ListFunc: (&armmachinelearning.WorkspaceConnectionsClient{}).NewListPager,
-			NewFunc: armmachinelearning.NewWorkspaceConnectionsClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections",
 		},
 	}
 

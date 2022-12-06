@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn"
 func Armcdn() []Table {
 	tables := []Table{
 		{
-      Name: "profile",
-      Struct: &armcdn.Profile{},
-      ResponseStruct: &armcdn.ProfilesClientListResponse{},
-      Client: &armcdn.ProfilesClient{},
-      ListFunc: (&armcdn.ProfilesClient{}).NewListPager,
-			NewFunc: armcdn.NewProfilesClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/profiles",
+      Name: "web_application_firewall_policy",
+      Struct: &armcdn.WebApplicationFirewallPolicy{},
+      ResponseStruct: &armcdn.PoliciesClientListResponse{},
+      Client: &armcdn.PoliciesClient{},
+      ListFunc: (&armcdn.PoliciesClient{}).NewListPager,
+			NewFunc: armcdn.NewPoliciesClient,
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/cdnWebApplicationFirewallPolicies",
 		},
 		{
       Name: "resource_usage",
@@ -42,13 +42,13 @@ func Armcdn() []Table {
 			URL: "/providers/Microsoft.Cdn/edgenodes",
 		},
 		{
-      Name: "web_application_firewall_policy",
-      Struct: &armcdn.WebApplicationFirewallPolicy{},
-      ResponseStruct: &armcdn.PoliciesClientListResponse{},
-      Client: &armcdn.PoliciesClient{},
-      ListFunc: (&armcdn.PoliciesClient{}).NewListPager,
-			NewFunc: armcdn.NewPoliciesClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/cdnWebApplicationFirewallPolicies",
+      Name: "profile",
+      Struct: &armcdn.Profile{},
+      ResponseStruct: &armcdn.ProfilesClientListResponse{},
+      Client: &armcdn.ProfilesClient{},
+      ListFunc: (&armcdn.ProfilesClient{}).NewListPager,
+			NewFunc: armcdn.NewProfilesClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/profiles",
 		},
 	}
 

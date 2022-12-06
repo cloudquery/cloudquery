@@ -6,11 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armh
 func Armhybridcompute() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armhybridcompute.NewMachineExtensionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/extensions",
-		},
-		{
 			NewFunc: armhybridcompute.NewPrivateLinkScopesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute",
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.HybridCompute/privateLinkScopes",

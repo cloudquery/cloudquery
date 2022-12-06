@@ -6,15 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsight
 func Armapplicationinsights() []Table {
 	tables := []Table{
 		{
-      Name: "component_web_test_location",
-      Struct: &armapplicationinsights.ComponentWebTestLocation{},
-      ResponseStruct: &armapplicationinsights.WebTestLocationsClientListResponse{},
-      Client: &armapplicationinsights.WebTestLocationsClient{},
-      ListFunc: (&armapplicationinsights.WebTestLocationsClient{}).NewListPager,
-			NewFunc: armapplicationinsights.NewWebTestLocationsClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/syntheticmonitorlocations",
-		},
-		{
       Name: "web_test",
       Struct: &armapplicationinsights.WebTest{},
       ResponseStruct: &armapplicationinsights.WebTestsClientListResponse{},
@@ -22,24 +13,6 @@ func Armapplicationinsights() []Table {
       ListFunc: (&armapplicationinsights.WebTestsClient{}).NewListPager,
 			NewFunc: armapplicationinsights.NewWebTestsClient,
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/webtests",
-		},
-		{
-      Name: "component_api_key",
-      Struct: &armapplicationinsights.ComponentAPIKey{},
-      ResponseStruct: &armapplicationinsights.APIKeysClientListResponse{},
-      Client: &armapplicationinsights.APIKeysClient{},
-      ListFunc: (&armapplicationinsights.APIKeysClient{}).NewListPager,
-			NewFunc: armapplicationinsights.NewAPIKeysClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/ApiKeys",
-		},
-		{
-      Name: "work_item_configuration",
-      Struct: &armapplicationinsights.WorkItemConfiguration{},
-      ResponseStruct: &armapplicationinsights.WorkItemConfigurationsClientListResponse{},
-      Client: &armapplicationinsights.WorkItemConfigurationsClient{},
-      ListFunc: (&armapplicationinsights.WorkItemConfigurationsClient{}).NewListPager,
-			NewFunc: armapplicationinsights.NewWorkItemConfigurationsClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/WorkItemConfigs",
 		},
 		{
       Name: "component",

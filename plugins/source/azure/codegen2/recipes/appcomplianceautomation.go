@@ -14,15 +14,6 @@ func Armappcomplianceautomation() []Table {
 			NewFunc: armappcomplianceautomation.NewReportsClient,
 			URL: "/providers/Microsoft.AppComplianceAutomation/reports",
 		},
-		{
-      Name: "snapshot_resource",
-      Struct: &armappcomplianceautomation.SnapshotResource{},
-      ResponseStruct: &armappcomplianceautomation.SnapshotsClientListResponse{},
-      Client: &armappcomplianceautomation.SnapshotsClient{},
-      ListFunc: (&armappcomplianceautomation.SnapshotsClient{}).NewListPager,
-			NewFunc: armappcomplianceautomation.NewSnapshotsClient,
-			URL: "/providers/Microsoft.AppComplianceAutomation/reports/{reportName}/snapshots",
-		},
 	}
 
 	for i := range tables {

@@ -15,11 +15,6 @@ func Armorbital() []*Table {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/orbital/armorbital",
 			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/contactProfiles",
 		},
-		{
-			NewFunc: armorbital.NewContactsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/orbital/armorbital",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/spacecrafts/{spacecraftName}/contacts",
-		},
 	}
 	return tables
 }

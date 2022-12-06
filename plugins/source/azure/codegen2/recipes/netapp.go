@@ -6,15 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp"
 func Armnetapp() []Table {
 	tables := []Table{
 		{
-      Name: "vault",
-      Struct: &armnetapp.Vault{},
-      ResponseStruct: &armnetapp.VaultsClientListResponse{},
-      Client: &armnetapp.VaultsClient{},
-      ListFunc: (&armnetapp.VaultsClient{}).NewListPager,
-			NewFunc: armnetapp.NewVaultsClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/vaults",
-		},
-		{
       Name: "account",
       Struct: &armnetapp.Account{},
       ResponseStruct: &armnetapp.AccountsClientListResponse{},
@@ -22,51 +13,6 @@ func Armnetapp() []Table {
       ListFunc: (&armnetapp.AccountsClient{}).NewListPager,
 			NewFunc: armnetapp.NewAccountsClient,
 			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts",
-		},
-		{
-      Name: "snapshot_policy",
-      Struct: &armnetapp.SnapshotPolicy{},
-      ResponseStruct: &armnetapp.SnapshotPoliciesClientListResponse{},
-      Client: &armnetapp.SnapshotPoliciesClient{},
-      ListFunc: (&armnetapp.SnapshotPoliciesClient{}).NewListPager,
-			NewFunc: armnetapp.NewSnapshotPoliciesClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/snapshotPolicies",
-		},
-		{
-      Name: "capacity_pool",
-      Struct: &armnetapp.CapacityPool{},
-      ResponseStruct: &armnetapp.PoolsClientListResponse{},
-      Client: &armnetapp.PoolsClient{},
-      ListFunc: (&armnetapp.PoolsClient{}).NewListPager,
-			NewFunc: armnetapp.NewPoolsClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools",
-		},
-		{
-      Name: "subscription_quota_item",
-      Struct: &armnetapp.SubscriptionQuotaItem{},
-      ResponseStruct: &armnetapp.ResourceQuotaLimitsClientListResponse{},
-      Client: &armnetapp.ResourceQuotaLimitsClient{},
-      ListFunc: (&armnetapp.ResourceQuotaLimitsClient{}).NewListPager,
-			NewFunc: armnetapp.NewResourceQuotaLimitsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/quotaLimits",
-		},
-		{
-      Name: "backup_policy",
-      Struct: &armnetapp.BackupPolicy{},
-      ResponseStruct: &armnetapp.BackupPoliciesClientListResponse{},
-      Client: &armnetapp.BackupPoliciesClient{},
-      ListFunc: (&armnetapp.BackupPoliciesClient{}).NewListPager,
-			NewFunc: armnetapp.NewBackupPoliciesClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupPolicies",
-		},
-		{
-      Name: "backup",
-      Struct: &armnetapp.Backup{},
-      ResponseStruct: &armnetapp.AccountBackupsClientListResponse{},
-      Client: &armnetapp.AccountBackupsClient{},
-      ListFunc: (&armnetapp.AccountBackupsClient{}).NewListPager,
-			NewFunc: armnetapp.NewAccountBackupsClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/accountBackups",
 		},
 	}
 

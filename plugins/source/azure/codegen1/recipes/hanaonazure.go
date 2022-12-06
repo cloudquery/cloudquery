@@ -6,11 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hanaonazure/armhan
 func Armhanaonazure() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armhanaonazure.NewProviderInstancesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hanaonazure/armhanaonazure",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/sapMonitors/{sapMonitorName}/providerInstances",
-		},
-		{
 			NewFunc: armhanaonazure.NewSapMonitorsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hanaonazure/armhanaonazure",
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.HanaOnAzure/sapMonitors",

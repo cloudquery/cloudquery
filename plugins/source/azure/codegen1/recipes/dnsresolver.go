@@ -6,21 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdns
 func Armdnsresolver() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armdnsresolver.NewInboundEndpointsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdnsresolver",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolvers/{dnsResolverName}/inboundEndpoints",
-		},
-		{
-			NewFunc: armdnsresolver.NewOutboundEndpointsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdnsresolver",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolvers/{dnsResolverName}/outboundEndpoints",
-		},
-		{
-			NewFunc: armdnsresolver.NewVirtualNetworkLinksClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdnsresolver",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsForwardingRulesets/{dnsForwardingRulesetName}/virtualNetworkLinks",
-		},
-		{
 			NewFunc: armdnsresolver.NewDNSForwardingRulesetsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdnsresolver",
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/dnsForwardingRulesets",
@@ -29,11 +14,6 @@ func Armdnsresolver() []*Table {
 			NewFunc: armdnsresolver.NewDNSResolversClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdnsresolver",
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/dnsResolvers",
-		},
-		{
-			NewFunc: armdnsresolver.NewForwardingRulesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdnsresolver",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsForwardingRulesets/{dnsForwardingRulesetName}/forwardingRules",
 		},
 	}
 	return tables

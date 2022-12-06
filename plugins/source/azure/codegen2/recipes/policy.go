@@ -6,15 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolic
 func Armpolicy() []Table {
 	tables := []Table{
 		{
-      Name: "set_definition",
-      Struct: &armpolicy.SetDefinition{},
-      ResponseStruct: &armpolicy.SetDefinitionsClientListResponse{},
-      Client: &armpolicy.SetDefinitionsClient{},
-      ListFunc: (&armpolicy.SetDefinitionsClient{}).NewListPager,
-			NewFunc: armpolicy.NewSetDefinitionsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions",
-		},
-		{
       Name: "definition",
       Struct: &armpolicy.Definition{},
       ResponseStruct: &armpolicy.DefinitionsClientListResponse{},
@@ -22,6 +13,15 @@ func Armpolicy() []Table {
       ListFunc: (&armpolicy.DefinitionsClient{}).NewListPager,
 			NewFunc: armpolicy.NewDefinitionsClient,
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyDefinitions",
+		},
+		{
+      Name: "exemption",
+      Struct: &armpolicy.Exemption{},
+      ResponseStruct: &armpolicy.ExemptionsClientListResponse{},
+      Client: &armpolicy.ExemptionsClient{},
+      ListFunc: (&armpolicy.ExemptionsClient{}).NewListPager,
+			NewFunc: armpolicy.NewExemptionsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyExemptions",
 		},
 		{
       Name: "assignment",
@@ -42,13 +42,13 @@ func Armpolicy() []Table {
 			URL: "/providers/Microsoft.Authorization/dataPolicyManifests",
 		},
 		{
-      Name: "exemption",
-      Struct: &armpolicy.Exemption{},
-      ResponseStruct: &armpolicy.ExemptionsClientListResponse{},
-      Client: &armpolicy.ExemptionsClient{},
-      ListFunc: (&armpolicy.ExemptionsClient{}).NewListPager,
-			NewFunc: armpolicy.NewExemptionsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyExemptions",
+      Name: "set_definition",
+      Struct: &armpolicy.SetDefinition{},
+      ResponseStruct: &armpolicy.SetDefinitionsClientListResponse{},
+      Client: &armpolicy.SetDefinitionsClient{},
+      ListFunc: (&armpolicy.SetDefinitionsClient{}).NewListPager,
+			NewFunc: armpolicy.NewSetDefinitionsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions",
 		},
 	}
 

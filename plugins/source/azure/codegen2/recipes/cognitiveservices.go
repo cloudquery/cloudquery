@@ -6,15 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/
 func Armcognitiveservices() []Table {
 	tables := []Table{
 		{
-      Name: "commitment_tier",
-      Struct: &armcognitiveservices.CommitmentTier{},
-      ResponseStruct: &armcognitiveservices.CommitmentTiersClientListResponse{},
-      Client: &armcognitiveservices.CommitmentTiersClient{},
-      ListFunc: (&armcognitiveservices.CommitmentTiersClient{}).NewListPager,
-			NewFunc: armcognitiveservices.NewCommitmentTiersClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/locations/{location}/commitmentTiers",
-		},
-		{
       Name: "account",
       Struct: &armcognitiveservices.Account{},
       ResponseStruct: &armcognitiveservices.DeletedAccountsClientListResponse{},
@@ -31,24 +22,6 @@ func Armcognitiveservices() []Table {
       ListFunc: (&armcognitiveservices.ResourceSKUsClient{}).NewListPager,
 			NewFunc: armcognitiveservices.NewResourceSKUsClient,
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/skus",
-		},
-		{
-      Name: "commitment_plan",
-      Struct: &armcognitiveservices.CommitmentPlan{},
-      ResponseStruct: &armcognitiveservices.CommitmentPlansClientListResponse{},
-      Client: &armcognitiveservices.CommitmentPlansClient{},
-      ListFunc: (&armcognitiveservices.CommitmentPlansClient{}).NewListPager,
-			NewFunc: armcognitiveservices.NewCommitmentPlansClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/commitmentPlans",
-		},
-		{
-      Name: "deployment",
-      Struct: &armcognitiveservices.Deployment{},
-      ResponseStruct: &armcognitiveservices.DeploymentsClientListResponse{},
-      Client: &armcognitiveservices.DeploymentsClient{},
-      ListFunc: (&armcognitiveservices.DeploymentsClient{}).NewListPager,
-			NewFunc: armcognitiveservices.NewDeploymentsClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/deployments",
 		},
 		{
       Name: "account",

@@ -11,21 +11,6 @@ func Armpeering() []*Table {
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peeringServiceProviders",
 		},
 		{
-			NewFunc: armpeering.NewCdnPeeringPrefixesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/cdnPeeringPrefixes",
-		},
-		{
-			NewFunc: armpeering.NewLegacyPeeringsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/legacyPeerings",
-		},
-		{
-			NewFunc: armpeering.NewLocationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peeringLocations",
-		},
-		{
 			NewFunc: armpeering.NewServiceLocationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering",
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peeringServiceLocations",

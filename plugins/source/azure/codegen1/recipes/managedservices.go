@@ -6,24 +6,9 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managedservices/ar
 func Armmanagedservices() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armmanagedservices.NewMarketplaceRegistrationDefinitionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managedservices/armmanagedservices",
-			URL: "/{scope}/providers/Microsoft.ManagedServices/marketplaceRegistrationDefinitions",
-		},
-		{
 			NewFunc: armmanagedservices.NewMarketplaceRegistrationDefinitionsWithoutScopeClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managedservices/armmanagedservices",
 			URL: "/providers/Microsoft.ManagedServices/marketplaceRegistrationDefinitions",
-		},
-		{
-			NewFunc: armmanagedservices.NewRegistrationAssignmentsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managedservices/armmanagedservices",
-			URL: "/{scope}/providers/Microsoft.ManagedServices/registrationAssignments",
-		},
-		{
-			NewFunc: armmanagedservices.NewRegistrationDefinitionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managedservices/armmanagedservices",
-			URL: "/{scope}/providers/Microsoft.ManagedServices/registrationDefinitions",
 		},
 	}
 	return tables

@@ -6,14 +6,14 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolic
 func Armpolicy() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armpolicy.NewSetDefinitionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions",
-		},
-		{
 			NewFunc: armpolicy.NewDefinitionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy",
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyDefinitions",
+		},
+		{
+			NewFunc: armpolicy.NewExemptionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyExemptions",
 		},
 		{
 			NewFunc: armpolicy.NewAssignmentsClient,
@@ -26,9 +26,9 @@ func Armpolicy() []*Table {
 			URL: "/providers/Microsoft.Authorization/dataPolicyManifests",
 		},
 		{
-			NewFunc: armpolicy.NewExemptionsClient,
+			NewFunc: armpolicy.NewSetDefinitionsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyExemptions",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions",
 		},
 	}
 	return tables

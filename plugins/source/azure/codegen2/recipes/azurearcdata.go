@@ -6,15 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armaz
 func Armazurearcdata() []Table {
 	tables := []Table{
 		{
-      Name: "sql_managed_instance",
-      Struct: &armazurearcdata.SQLManagedInstance{},
-      ResponseStruct: &armazurearcdata.SQLManagedInstancesClientListResponse{},
-      Client: &armazurearcdata.SQLManagedInstancesClient{},
-      ListFunc: (&armazurearcdata.SQLManagedInstancesClient{}).NewListPager,
-			NewFunc: armazurearcdata.NewSQLManagedInstancesClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/sqlManagedInstances",
-		},
-		{
       Name: "sql_server_instance",
       Struct: &armazurearcdata.SQLServerInstance{},
       ResponseStruct: &armazurearcdata.SQLServerInstancesClientListResponse{},
@@ -24,6 +15,15 @@ func Armazurearcdata() []Table {
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/sqlServerInstances",
 		},
 		{
+      Name: "sql_managed_instance",
+      Struct: &armazurearcdata.SQLManagedInstance{},
+      ResponseStruct: &armazurearcdata.SQLManagedInstancesClientListResponse{},
+      Client: &armazurearcdata.SQLManagedInstancesClient{},
+      ListFunc: (&armazurearcdata.SQLManagedInstancesClient{}).NewListPager,
+			NewFunc: armazurearcdata.NewSQLManagedInstancesClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/sqlManagedInstances",
+		},
+		{
       Name: "postgres_instance",
       Struct: &armazurearcdata.PostgresInstance{},
       ResponseStruct: &armazurearcdata.PostgresInstancesClientListResponse{},
@@ -31,15 +31,6 @@ func Armazurearcdata() []Table {
       ListFunc: (&armazurearcdata.PostgresInstancesClient{}).NewListPager,
 			NewFunc: armazurearcdata.NewPostgresInstancesClient,
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/postgresInstances",
-		},
-		{
-      Name: "active_directory_connector_resource",
-      Struct: &armazurearcdata.ActiveDirectoryConnectorResource{},
-      ResponseStruct: &armazurearcdata.ActiveDirectoryConnectorsClientListResponse{},
-      Client: &armazurearcdata.ActiveDirectoryConnectorsClient{},
-      ListFunc: (&armazurearcdata.ActiveDirectoryConnectorsClient{}).NewListPager,
-			NewFunc: armazurearcdata.NewActiveDirectoryConnectorsClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/dataControllers/{dataControllerName}/activeDirectoryConnectors",
 		},
 	}
 

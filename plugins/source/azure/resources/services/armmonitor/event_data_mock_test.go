@@ -14,7 +14,7 @@ import (
 )
 
 func createEventData(router *mux.Router) error {
-	var item armmonitor.ActivityLogsClientListResponse
+	var item armmonitor.TenantActivityLogsClientListResponse
 	if err := faker.FakeObject(&item); err != nil {
 		return err
 	}
@@ -22,7 +22,7 @@ func createEventData(router *mux.Router) error {
 	emptyStr := ""
 	item.NextLink = &emptyStr
 
-	router.HandleFunc("/subscriptions/{subscriptionId}/providers/Microsoft.Insights/eventtypes/management/values", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/providers/Microsoft.Insights/eventtypes/management/values", func(w http.ResponseWriter, r *http.Request) {
 		b, err := json.Marshal(&item)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)

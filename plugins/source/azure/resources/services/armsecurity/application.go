@@ -13,7 +13,7 @@ func Application() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armsecurity_application",
 		Resolver:  fetchApplication,
-		Multiplex: client.SubscriptionResourceGroupMultiplex,
+		Multiplex: client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "properties",
@@ -41,11 +41,11 @@ func Application() *schema.Table {
 
 func fetchApplication(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
-	svc, err := armsecurity.NewConnectorApplicationsClient(cl.SubscriptionId, cl.Creds, cl.Options)
+	svc, err := armsecurity.NewApplicationsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(cl.ResourceGroup, nil)
+	pager := svc.NewListPager(nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

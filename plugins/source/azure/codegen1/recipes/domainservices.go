@@ -6,19 +6,14 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/domainservices/arm
 func Armdomainservices() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armdomainservices.NewOuContainerOperationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/domainservices/armdomainservices",
-			URL: "/providers/Microsoft.Aad/operations",
-		},
-		{
 			NewFunc: armdomainservices.NewDomainServiceOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/domainservices/armdomainservices",
 			URL: "/providers/Microsoft.AAD/operations",
 		},
 		{
-			NewFunc: armdomainservices.NewOuContainerClient,
+			NewFunc: armdomainservices.NewOuContainerOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/domainservices/armdomainservices",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Aad/domainServices/{domainServiceName}/ouContainer",
+			URL: "/providers/Microsoft.Aad/operations",
 		},
 	}
 	return tables

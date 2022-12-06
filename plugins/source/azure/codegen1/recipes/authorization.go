@@ -6,16 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/arma
 func Armauthorization() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armauthorization.NewRoleDefinitionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization",
-			URL: "/{scope}/providers/Microsoft.Authorization/roleDefinitions",
-		},
-		{
-			NewFunc: armauthorization.NewRoleAssignmentsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/roleAssignments",
-		},
-		{
 			NewFunc: armauthorization.NewClassicAdministratorsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization",
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/classicAdministrators",
@@ -24,6 +14,11 @@ func Armauthorization() []*Table {
 			NewFunc: armauthorization.NewProviderOperationsMetadataClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization",
 			URL: "/providers/Microsoft.Authorization/providerOperations",
+		},
+		{
+			NewFunc: armauthorization.NewRoleAssignmentsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/roleAssignments",
 		},
 	}
 	return tables

@@ -6,42 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpost
 func Armpostgresql() []Table {
 	tables := []Table{
 		{
-      Name: "server_key",
-      Struct: &armpostgresql.ServerKey{},
-      ResponseStruct: &armpostgresql.ServerKeysClientListResponse{},
-      Client: &armpostgresql.ServerKeysClient{},
-      ListFunc: (&armpostgresql.ServerKeysClient{}).NewListPager,
-			NewFunc: armpostgresql.NewServerKeysClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/servers/{serverName}/keys",
-		},
-		{
-      Name: "performance_tier_properties",
-      Struct: &armpostgresql.PerformanceTierProperties{},
-      ResponseStruct: &armpostgresql.LocationBasedPerformanceTierClientListResponse{},
-      Client: &armpostgresql.LocationBasedPerformanceTierClient{},
-      ListFunc: (&armpostgresql.LocationBasedPerformanceTierClient{}).NewListPager,
-			NewFunc: armpostgresql.NewLocationBasedPerformanceTierClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/locations/{locationName}/performanceTiers",
-		},
-		{
-      Name: "performance_tier_properties",
-      Struct: &armpostgresql.PerformanceTierProperties{},
-      ResponseStruct: &armpostgresql.ServerBasedPerformanceTierClientListResponse{},
-      Client: &armpostgresql.ServerBasedPerformanceTierClient{},
-      ListFunc: (&armpostgresql.ServerBasedPerformanceTierClient{}).NewListPager,
-			NewFunc: armpostgresql.NewServerBasedPerformanceTierClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/servers/{serverName}/performanceTiers",
-		},
-		{
-      Name: "server_administrator_resource",
-      Struct: &armpostgresql.ServerAdministratorResource{},
-      ResponseStruct: &armpostgresql.ServerAdministratorsClientListResponse{},
-      Client: &armpostgresql.ServerAdministratorsClient{},
-      ListFunc: (&armpostgresql.ServerAdministratorsClient{}).NewListPager,
-			NewFunc: armpostgresql.NewServerAdministratorsClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/servers/{serverName}/administrators",
-		},
-		{
       Name: "server",
       Struct: &armpostgresql.Server{},
       ResponseStruct: &armpostgresql.ServersClientListResponse{},

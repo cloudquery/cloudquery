@@ -15,11 +15,6 @@ func Armreservations() []*Table {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations",
 			URL: "/providers/Microsoft.Capacity/reservationOrders",
 		},
-		{
-			NewFunc: armreservations.NewReservationClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations",
-			URL: "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations",
-		},
 	}
 	return tables
 }

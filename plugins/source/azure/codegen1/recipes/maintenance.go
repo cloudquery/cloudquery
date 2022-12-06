@@ -6,16 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmai
 func Armmaintenance() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armmaintenance.NewApplyUpdatesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/applyUpdates",
-		},
-		{
-			NewFunc: armmaintenance.NewConfigurationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/maintenanceConfigurations",
-		},
-		{
 			NewFunc: armmaintenance.NewConfigurationsForResourceGroupClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance",
 			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maintenance/maintenanceConfigurations",
@@ -29,6 +19,16 @@ func Armmaintenance() []*Table {
 			NewFunc: armmaintenance.NewPublicMaintenanceConfigurationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance",
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/publicMaintenanceConfigurations",
+		},
+		{
+			NewFunc: armmaintenance.NewConfigurationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/maintenanceConfigurations",
+		},
+		{
+			NewFunc: armmaintenance.NewApplyUpdatesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/applyUpdates",
 		},
 	}
 	return tables

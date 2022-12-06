@@ -6,24 +6,9 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridnetwork/armh
 func Armhybridnetwork() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armhybridnetwork.NewVendorNetworkFunctionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridnetwork/armhybridnetwork",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.HybridNetwork/locations/{locationName}/vendors/{vendorName}/networkFunctions",
-		},
-		{
 			NewFunc: armhybridnetwork.NewNetworkFunctionVendorsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridnetwork/armhybridnetwork",
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.HybridNetwork/networkFunctionVendors",
-		},
-		{
-			NewFunc: armhybridnetwork.NewVendorSKUPreviewClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridnetwork/armhybridnetwork",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.HybridNetwork/vendors/{vendorName}/vendorSkus/{skuName}/previewSubscriptions",
-		},
-		{
-			NewFunc: armhybridnetwork.NewVendorSKUsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridnetwork/armhybridnetwork",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.HybridNetwork/vendors/{vendorName}/vendorSkus",
 		},
 	}
 	return tables

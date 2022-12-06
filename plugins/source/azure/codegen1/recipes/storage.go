@@ -6,14 +6,9 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage
 func Armstorage() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armstorage.NewFileSharesClient,
+			NewFunc: armstorage.NewDeletedAccountsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/fileServices/default/shares",
-		},
-		{
-			NewFunc: armstorage.NewEncryptionScopesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/encryptionScopes",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Storage/deletedAccounts",
 		},
 		{
 			NewFunc: armstorage.NewSKUsClient,
@@ -21,54 +16,9 @@ func Armstorage() []*Table {
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Storage/skus",
 		},
 		{
-			NewFunc: armstorage.NewQueueClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/queueServices/default/queues",
-		},
-		{
 			NewFunc: armstorage.NewAccountsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage",
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Storage/storageAccounts",
-		},
-		{
-			NewFunc: armstorage.NewDeletedAccountsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Storage/deletedAccounts",
-		},
-		{
-			NewFunc: armstorage.NewBlobContainersClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers",
-		},
-		{
-			NewFunc: armstorage.NewBlobInventoryPoliciesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/inventoryPolicies",
-		},
-		{
-			NewFunc: armstorage.NewTableClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/tableServices/default/tables",
-		},
-		{
-			NewFunc: armstorage.NewLocalUsersClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/localUsers",
-		},
-		{
-			NewFunc: armstorage.NewPrivateEndpointConnectionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/privateEndpointConnections",
-		},
-		{
-			NewFunc: armstorage.NewObjectReplicationPoliciesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/objectReplicationPolicies",
-		},
-		{
-			NewFunc: armstorage.NewBlobServicesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices",
 		},
 	}
 	return tables

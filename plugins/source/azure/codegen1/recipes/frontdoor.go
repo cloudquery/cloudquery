@@ -6,19 +6,14 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfront
 func Armfrontdoor() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armfrontdoor.NewNetworkExperimentProfilesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/NetworkExperimentProfiles",
-		},
-		{
-			NewFunc: armfrontdoor.NewPreconfiguredEndpointsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/NetworkExperimentProfiles/{profileName}/PreconfiguredEndpoints",
-		},
-		{
 			NewFunc: armfrontdoor.NewFrontDoorsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor",
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/frontDoors",
+		},
+		{
+			NewFunc: armfrontdoor.NewPoliciesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoorWebApplicationFirewallPolicies",
 		},
 		{
 			NewFunc: armfrontdoor.NewManagedRuleSetsClient,
@@ -26,9 +21,9 @@ func Armfrontdoor() []*Table {
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/FrontDoorWebApplicationFirewallManagedRuleSets",
 		},
 		{
-			NewFunc: armfrontdoor.NewPoliciesClient,
+			NewFunc: armfrontdoor.NewNetworkExperimentProfilesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoorWebApplicationFirewallPolicies",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/NetworkExperimentProfiles",
 		},
 	}
 	return tables

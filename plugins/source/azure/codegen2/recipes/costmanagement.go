@@ -14,15 +14,6 @@ func Armcostmanagement() []Table {
 			NewFunc: armcostmanagement.NewViewsClient,
 			URL: "/providers/Microsoft.CostManagement/views",
 		},
-		{
-      Name: "dimension",
-      Struct: &armcostmanagement.Dimension{},
-      ResponseStruct: &armcostmanagement.DimensionsClientListResponse{},
-      Client: &armcostmanagement.DimensionsClient{},
-      ListFunc: (&armcostmanagement.DimensionsClient{}).NewListPager,
-			NewFunc: armcostmanagement.NewDimensionsClient,
-			URL: "/{scope}/providers/Microsoft.CostManagement/dimensions",
-		},
 	}
 
 	for i := range tables {

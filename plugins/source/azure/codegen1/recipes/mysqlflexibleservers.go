@@ -10,11 +10,6 @@ func Armmysqlflexibleservers() []*Table {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysqlflexibleservers",
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/flexibleServers",
 		},
-		{
-			NewFunc: armmysqlflexibleservers.NewLocationBasedCapabilitiesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysqlflexibleservers",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/locations/{locationName}/capabilities",
-		},
 	}
 	return tables
 }

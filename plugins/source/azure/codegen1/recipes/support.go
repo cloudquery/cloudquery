@@ -15,16 +15,6 @@ func Armsupport() []*Table {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport",
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Support/supportTickets",
 		},
-		{
-			NewFunc: armsupport.NewCommunicationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Support/supportTickets/{supportTicketName}/communications",
-		},
-		{
-			NewFunc: armsupport.NewProblemClassificationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport",
-			URL: "/providers/Microsoft.Support/services/{serviceName}/problemClassifications",
-		},
 	}
 	return tables
 }

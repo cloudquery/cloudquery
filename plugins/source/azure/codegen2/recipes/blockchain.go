@@ -14,15 +14,6 @@ func Armblockchain() []Table {
 			NewFunc: armblockchain.NewMembersClient,
 			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Blockchain/blockchainMembers",
 		},
-		{
-      Name: "transaction_node",
-      Struct: &armblockchain.TransactionNode{},
-      ResponseStruct: &armblockchain.TransactionNodesClientListResponse{},
-      Client: &armblockchain.TransactionNodesClient{},
-      ListFunc: (&armblockchain.TransactionNodesClient{}).NewListPager,
-			NewFunc: armblockchain.NewTransactionNodesClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Blockchain/blockchainMembers/{blockchainMemberName}/transactionNodes",
-		},
 	}
 
 	for i := range tables {

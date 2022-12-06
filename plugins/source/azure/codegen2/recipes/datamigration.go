@@ -14,33 +14,6 @@ func Armdatamigration() []Table {
 			NewFunc: armdatamigration.NewServicesClient,
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DataMigration/services",
 		},
-		{
-      Name: "project",
-      Struct: &armdatamigration.Project{},
-      ResponseStruct: &armdatamigration.ProjectsClientListResponse{},
-      Client: &armdatamigration.ProjectsClient{},
-      ListFunc: (&armdatamigration.ProjectsClient{}).NewListPager,
-			NewFunc: armdatamigration.NewProjectsClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/projects",
-		},
-		{
-      Name: "project_task",
-      Struct: &armdatamigration.ProjectTask{},
-      ResponseStruct: &armdatamigration.ServiceTasksClientListResponse{},
-      Client: &armdatamigration.ServiceTasksClient{},
-      ListFunc: (&armdatamigration.ServiceTasksClient{}).NewListPager,
-			NewFunc: armdatamigration.NewServiceTasksClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/serviceTasks",
-		},
-		{
-      Name: "quota",
-      Struct: &armdatamigration.Quota{},
-      ResponseStruct: &armdatamigration.UsagesClientListResponse{},
-      Client: &armdatamigration.UsagesClient{},
-      ListFunc: (&armdatamigration.UsagesClient{}).NewListPager,
-			NewFunc: armdatamigration.NewUsagesClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DataMigration/locations/{location}/usages",
-		},
 	}
 
 	for i := range tables {

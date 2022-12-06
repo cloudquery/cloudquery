@@ -14,24 +14,6 @@ func Armquota() []Table {
 			NewFunc: armquota.NewOperationClient,
 			URL: "/providers/Microsoft.Quota/operations",
 		},
-		{
-      Name: "current_usages_base",
-      Struct: &armquota.CurrentUsagesBase{},
-      ResponseStruct: &armquota.UsagesClientListResponse{},
-      Client: &armquota.UsagesClient{},
-      ListFunc: (&armquota.UsagesClient{}).NewListPager,
-			NewFunc: armquota.NewUsagesClient,
-			URL: "/{scope}/providers/Microsoft.Quota/usages",
-		},
-		{
-      Name: "request_details",
-      Struct: &armquota.RequestDetails{},
-      ResponseStruct: &armquota.RequestStatusClientListResponse{},
-      Client: &armquota.RequestStatusClient{},
-      ListFunc: (&armquota.RequestStatusClient{}).NewListPager,
-			NewFunc: armquota.NewRequestStatusClient,
-			URL: "/{scope}/providers/Microsoft.Quota/quotaRequests",
-		},
 	}
 
 	for i := range tables {

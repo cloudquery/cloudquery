@@ -10,31 +10,6 @@ func Armmysql() []*Table {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql",
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/servers",
 		},
-		{
-			NewFunc: armmysql.NewServerAdministratorsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers/{serverName}/administrators",
-		},
-		{
-			NewFunc: armmysql.NewServerBasedPerformanceTierClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers/{serverName}/performanceTiers",
-		},
-		{
-			NewFunc: armmysql.NewLocationBasedRecommendedActionSessionsResultClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/locations/{locationName}/recommendedActionSessionsOperationResults/{operationId}",
-		},
-		{
-			NewFunc: armmysql.NewServerKeysClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers/{serverName}/keys",
-		},
-		{
-			NewFunc: armmysql.NewLocationBasedPerformanceTierClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/locations/{locationName}/performanceTiers",
-		},
 	}
 	return tables
 }

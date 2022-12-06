@@ -14,15 +14,6 @@ func Armmysqlflexibleservers() []Table {
 			NewFunc: armmysqlflexibleservers.NewServersClient,
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/flexibleServers",
 		},
-		{
-      Name: "capability_properties",
-      Struct: &armmysqlflexibleservers.CapabilityProperties{},
-      ResponseStruct: &armmysqlflexibleservers.LocationBasedCapabilitiesClientListResponse{},
-      Client: &armmysqlflexibleservers.LocationBasedCapabilitiesClient{},
-      ListFunc: (&armmysqlflexibleservers.LocationBasedCapabilitiesClient{}).NewListPager,
-			NewFunc: armmysqlflexibleservers.NewLocationBasedCapabilitiesClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/locations/{locationName}/capabilities",
-		},
 	}
 
 	for i := range tables {

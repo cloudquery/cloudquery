@@ -6,19 +6,14 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/arma
 func Armapimanagement() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armapimanagement.NewSKUsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ApiManagement/skus",
-		},
-		{
-			NewFunc: armapimanagement.NewSubscriptionClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/subscriptions",
-		},
-		{
 			NewFunc: armapimanagement.NewServiceClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ApiManagement/service",
+		},
+		{
+			NewFunc: armapimanagement.NewSKUsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ApiManagement/skus",
 		},
 	}
 	return tables

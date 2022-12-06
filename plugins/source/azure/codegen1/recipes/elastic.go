@@ -6,24 +6,9 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic
 func Armelastic() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armelastic.NewVMHostClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/listVMHost",
-		},
-		{
 			NewFunc: armelastic.NewMonitorsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic",
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Elastic/monitors",
-		},
-		{
-			NewFunc: armelastic.NewTagRulesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/tagRules",
-		},
-		{
-			NewFunc: armelastic.NewMonitoredResourcesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/listMonitoredResources",
 		},
 	}
 	return tables

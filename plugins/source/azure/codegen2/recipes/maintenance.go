@@ -6,24 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmai
 func Armmaintenance() []Table {
 	tables := []Table{
 		{
-      Name: "apply_update",
-      Struct: &armmaintenance.ApplyUpdate{},
-      ResponseStruct: &armmaintenance.ApplyUpdatesClientListResponse{},
-      Client: &armmaintenance.ApplyUpdatesClient{},
-      ListFunc: (&armmaintenance.ApplyUpdatesClient{}).NewListPager,
-			NewFunc: armmaintenance.NewApplyUpdatesClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/applyUpdates",
-		},
-		{
-      Name: "configuration",
-      Struct: &armmaintenance.Configuration{},
-      ResponseStruct: &armmaintenance.ConfigurationsClientListResponse{},
-      Client: &armmaintenance.ConfigurationsClient{},
-      ListFunc: (&armmaintenance.ConfigurationsClient{}).NewListPager,
-			NewFunc: armmaintenance.NewConfigurationsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/maintenanceConfigurations",
-		},
-		{
       Name: "configuration",
       Struct: &armmaintenance.Configuration{},
       ResponseStruct: &armmaintenance.ConfigurationsForResourceGroupClientListResponse{},
@@ -49,6 +31,24 @@ func Armmaintenance() []Table {
       ListFunc: (&armmaintenance.PublicMaintenanceConfigurationsClient{}).NewListPager,
 			NewFunc: armmaintenance.NewPublicMaintenanceConfigurationsClient,
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/publicMaintenanceConfigurations",
+		},
+		{
+      Name: "configuration",
+      Struct: &armmaintenance.Configuration{},
+      ResponseStruct: &armmaintenance.ConfigurationsClientListResponse{},
+      Client: &armmaintenance.ConfigurationsClient{},
+      ListFunc: (&armmaintenance.ConfigurationsClient{}).NewListPager,
+			NewFunc: armmaintenance.NewConfigurationsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/maintenanceConfigurations",
+		},
+		{
+      Name: "apply_update",
+      Struct: &armmaintenance.ApplyUpdate{},
+      ResponseStruct: &armmaintenance.ApplyUpdatesClientListResponse{},
+      Client: &armmaintenance.ApplyUpdatesClient{},
+      ListFunc: (&armmaintenance.ApplyUpdatesClient{}).NewListPager,
+			NewFunc: armmaintenance.NewApplyUpdatesClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/applyUpdates",
 		},
 	}
 

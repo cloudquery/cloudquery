@@ -6,11 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armst
 func Armstoragecache() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armstoragecache.NewSKUsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.StorageCache/skus",
-		},
-		{
 			NewFunc: armstoragecache.NewUsageModelsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache",
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.StorageCache/usageModels",
@@ -21,9 +16,9 @@ func Armstoragecache() []*Table {
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.StorageCache/caches",
 		},
 		{
-			NewFunc: armstoragecache.NewAscUsagesClient,
+			NewFunc: armstoragecache.NewSKUsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.StorageCache/locations/{location}/usages",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.StorageCache/skus",
 		},
 	}
 	return tables

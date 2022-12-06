@@ -6,19 +6,9 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/privatedns/armpriv
 func Armprivatedns() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armprivatedns.NewVirtualNetworkLinksClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/privatedns/armprivatedns",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}/virtualNetworkLinks",
-		},
-		{
 			NewFunc: armprivatedns.NewPrivateZonesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/privatedns/armprivatedns",
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/privateDnsZones",
-		},
-		{
-			NewFunc: armprivatedns.NewRecordSetsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/privatedns/armprivatedns",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}/ALL",
 		},
 	}
 	return tables

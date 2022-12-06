@@ -6,39 +6,14 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkl
 func Armworkloads() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armworkloads.NewWordpressInstancesClient,
+			NewFunc: armworkloads.NewMonitorsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/phpWorkloads/{phpWorkloadName}/wordpressInstances",
-		},
-		{
-			NewFunc: armworkloads.NewSAPApplicationServerInstancesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/applicationInstances",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Workloads/monitors",
 		},
 		{
 			NewFunc: armworkloads.NewSKUsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads",
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Workloads/skus",
-		},
-		{
-			NewFunc: armworkloads.NewProviderInstancesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/monitors/{monitorName}/providerInstances",
-		},
-		{
-			NewFunc: armworkloads.NewSAPCentralInstancesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/centralInstances",
-		},
-		{
-			NewFunc: armworkloads.NewSAPDatabaseInstancesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/databaseInstances",
-		},
-		{
-			NewFunc: armworkloads.NewMonitorsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Workloads/monitors",
 		},
 	}
 	return tables

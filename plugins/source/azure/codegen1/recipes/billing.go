@@ -6,9 +6,9 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling
 func Armbilling() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armbilling.NewPeriodsClient,
+			NewFunc: armbilling.NewEnrollmentAccountsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Billing/billingPeriods",
+			URL: "/providers/Microsoft.Billing/enrollmentAccounts",
 		},
 		{
 			NewFunc: armbilling.NewAccountsClient,
@@ -16,9 +16,9 @@ func Armbilling() []*Table {
 			URL: "/providers/Microsoft.Billing/billingAccounts",
 		},
 		{
-			NewFunc: armbilling.NewEnrollmentAccountsClient,
+			NewFunc: armbilling.NewPeriodsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling",
-			URL: "/providers/Microsoft.Billing/enrollmentAccounts",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Billing/billingPeriods",
 		},
 	}
 	return tables

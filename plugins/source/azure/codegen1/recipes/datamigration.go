@@ -10,21 +10,6 @@ func Armdatamigration() []*Table {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration",
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DataMigration/services",
 		},
-		{
-			NewFunc: armdatamigration.NewProjectsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/projects",
-		},
-		{
-			NewFunc: armdatamigration.NewServiceTasksClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/serviceTasks",
-		},
-		{
-			NewFunc: armdatamigration.NewUsagesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DataMigration/locations/{location}/usages",
-		},
 	}
 	return tables
 }

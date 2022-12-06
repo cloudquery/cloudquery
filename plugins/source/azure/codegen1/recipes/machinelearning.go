@@ -6,39 +6,9 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/ar
 func Armmachinelearning() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armmachinelearning.NewWorkspaceFeaturesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/features",
-		},
-		{
-			NewFunc: armmachinelearning.NewUsagesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.MachineLearningServices/locations/{location}/usages",
-		},
-		{
 			NewFunc: armmachinelearning.NewWorkspaceSKUsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning",
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.MachineLearningServices/workspaces/skus",
-		},
-		{
-			NewFunc: armmachinelearning.NewComputeClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes",
-		},
-		{
-			NewFunc: armmachinelearning.NewPrivateEndpointConnectionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/privateEndpointConnections",
-		},
-		{
-			NewFunc: armmachinelearning.NewQuotasClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.MachineLearningServices/locations/{location}/quotas",
-		},
-		{
-			NewFunc: armmachinelearning.NewWorkspaceConnectionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections",
 		},
 	}
 	return tables

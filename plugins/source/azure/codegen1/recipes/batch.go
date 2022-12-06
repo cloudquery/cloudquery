@@ -10,11 +10,6 @@ func Armbatch() []*Table {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch",
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Batch/batchAccounts",
 		},
-		{
-			NewFunc: armbatch.NewApplicationClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications",
-		},
 	}
 	return tables
 }

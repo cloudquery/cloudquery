@@ -6,24 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos"
 func Armchaos() []Table {
 	tables := []Table{
 		{
-      Name: "target_type",
-      Struct: &armchaos.TargetType{},
-      ResponseStruct: &armchaos.TargetTypesClientListResponse{},
-      Client: &armchaos.TargetTypesClient{},
-      ListFunc: (&armchaos.TargetTypesClient{}).NewListPager,
-			NewFunc: armchaos.NewTargetTypesClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Chaos/locations/{locationName}/targetTypes",
-		},
-		{
-      Name: "capability_type",
-      Struct: &armchaos.CapabilityType{},
-      ResponseStruct: &armchaos.CapabilityTypesClientListResponse{},
-      Client: &armchaos.CapabilityTypesClient{},
-      ListFunc: (&armchaos.CapabilityTypesClient{}).NewListPager,
-			NewFunc: armchaos.NewCapabilityTypesClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Chaos/locations/{locationName}/targetTypes/{targetTypeName}/capabilityTypes",
-		},
-		{
       Name: "experiment",
       Struct: &armchaos.Experiment{},
       ResponseStruct: &armchaos.ExperimentsClientListResponse{},

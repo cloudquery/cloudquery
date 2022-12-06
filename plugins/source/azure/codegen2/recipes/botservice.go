@@ -14,15 +14,6 @@ func Armbotservice() []Table {
 			NewFunc: armbotservice.NewBotsClient,
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.BotService/botServices",
 		},
-		{
-      Name: "private_endpoint_connection",
-      Struct: &armbotservice.PrivateEndpointConnection{},
-      ResponseStruct: &armbotservice.PrivateEndpointConnectionsClientListResponse{},
-      Client: &armbotservice.PrivateEndpointConnectionsClient{},
-      ListFunc: (&armbotservice.PrivateEndpointConnectionsClient{}).NewListPager,
-			NewFunc: armbotservice.NewPrivateEndpointConnectionsClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BotService/botServices/{resourceName}/privateEndpointConnections",
-		},
 	}
 
 	for i := range tables {

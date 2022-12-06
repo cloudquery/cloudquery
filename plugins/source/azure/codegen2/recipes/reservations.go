@@ -23,15 +23,6 @@ func Armreservations() []Table {
 			NewFunc: armreservations.NewReservationOrderClient,
 			URL: "/providers/Microsoft.Capacity/reservationOrders",
 		},
-		{
-      Name: "reservation_response",
-      Struct: &armreservations.ReservationResponse{},
-      ResponseStruct: &armreservations.ReservationClientListResponse{},
-      Client: &armreservations.ReservationClient{},
-      ListFunc: (&armreservations.ReservationClient{}).NewListPager,
-			NewFunc: armreservations.NewReservationClient,
-			URL: "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations",
-		},
 	}
 
 	for i := range tables {

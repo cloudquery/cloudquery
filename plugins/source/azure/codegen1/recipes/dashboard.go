@@ -6,19 +6,9 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dashboard/armdashb
 func Armdashboard() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armdashboard.NewPrivateLinkResourcesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dashboard/armdashboard",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Dashboard/grafana/{workspaceName}/privateLinkResources",
-		},
-		{
 			NewFunc: armdashboard.NewGrafanaClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dashboard/armdashboard",
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Dashboard/grafana",
-		},
-		{
-			NewFunc: armdashboard.NewPrivateEndpointConnectionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dashboard/armdashboard",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Dashboard/grafana/{workspaceName}/privateEndpointConnections",
 		},
 	}
 	return tables

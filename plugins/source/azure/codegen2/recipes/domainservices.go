@@ -8,15 +8,6 @@ func Armdomainservices() []Table {
 		{
       Name: "operation_entity",
       Struct: &armdomainservices.OperationEntity{},
-      ResponseStruct: &armdomainservices.OuContainerOperationsClientListResponse{},
-      Client: &armdomainservices.OuContainerOperationsClient{},
-      ListFunc: (&armdomainservices.OuContainerOperationsClient{}).NewListPager,
-			NewFunc: armdomainservices.NewOuContainerOperationsClient,
-			URL: "/providers/Microsoft.Aad/operations",
-		},
-		{
-      Name: "operation_entity",
-      Struct: &armdomainservices.OperationEntity{},
       ResponseStruct: &armdomainservices.DomainServiceOperationsClientListResponse{},
       Client: &armdomainservices.DomainServiceOperationsClient{},
       ListFunc: (&armdomainservices.DomainServiceOperationsClient{}).NewListPager,
@@ -24,13 +15,13 @@ func Armdomainservices() []Table {
 			URL: "/providers/Microsoft.AAD/operations",
 		},
 		{
-      Name: "ou_container",
-      Struct: &armdomainservices.OuContainer{},
-      ResponseStruct: &armdomainservices.OuContainerClientListResponse{},
-      Client: &armdomainservices.OuContainerClient{},
-      ListFunc: (&armdomainservices.OuContainerClient{}).NewListPager,
-			NewFunc: armdomainservices.NewOuContainerClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Aad/domainServices/{domainServiceName}/ouContainer",
+      Name: "operation_entity",
+      Struct: &armdomainservices.OperationEntity{},
+      ResponseStruct: &armdomainservices.OuContainerOperationsClientListResponse{},
+      Client: &armdomainservices.OuContainerOperationsClient{},
+      ListFunc: (&armdomainservices.OuContainerOperationsClient{}).NewListPager,
+			NewFunc: armdomainservices.NewOuContainerOperationsClient,
+			URL: "/providers/Microsoft.Aad/operations",
 		},
 	}
 

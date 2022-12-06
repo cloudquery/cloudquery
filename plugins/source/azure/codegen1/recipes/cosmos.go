@@ -6,24 +6,9 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
 func Armcosmos() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armcosmos.NewRestorableSQLResourcesClient,
+			NewFunc: armcosmos.NewRestorableDatabaseAccountsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{instanceId}/restorableSqlResources",
-		},
-		{
-			NewFunc: armcosmos.NewRestorableMongodbResourcesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{instanceId}/restorableMongodbResources",
-		},
-		{
-			NewFunc: armcosmos.NewRestorableSQLContainersClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{instanceId}/restorableSqlContainers",
-		},
-		{
-			NewFunc: armcosmos.NewRestorableSQLDatabasesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{instanceId}/restorableSqlDatabases",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/restorableDatabaseAccounts",
 		},
 		{
 			NewFunc: armcosmos.NewDatabaseAccountsClient,
@@ -34,26 +19,6 @@ func Armcosmos() []*Table {
 			NewFunc: armcosmos.NewLocationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations",
-		},
-		{
-			NewFunc: armcosmos.NewRestorableMongodbCollectionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{instanceId}/restorableMongodbCollections",
-		},
-		{
-			NewFunc: armcosmos.NewRestorableMongodbDatabasesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{instanceId}/restorableMongodbDatabases",
-		},
-		{
-			NewFunc: armcosmos.NewCassandraDataCentersClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/cassandraClusters/{clusterName}/dataCenters",
-		},
-		{
-			NewFunc: armcosmos.NewRestorableDatabaseAccountsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/restorableDatabaseAccounts",
 		},
 	}
 	return tables

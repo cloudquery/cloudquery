@@ -6,33 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armserv
 func Armservicebus() []Table {
 	tables := []Table{
 		{
-      Name: "arm_disaster_recovery",
-      Struct: &armservicebus.ArmDisasterRecovery{},
-      ResponseStruct: &armservicebus.DisasterRecoveryConfigsClientListResponse{},
-      Client: &armservicebus.DisasterRecoveryConfigsClient{},
-      ListFunc: (&armservicebus.DisasterRecoveryConfigsClient{}).NewListPager,
-			NewFunc: armservicebus.NewDisasterRecoveryConfigsClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/disasterRecoveryConfigs",
-		},
-		{
-      Name: "private_endpoint_connection",
-      Struct: &armservicebus.PrivateEndpointConnection{},
-      ResponseStruct: &armservicebus.PrivateEndpointConnectionsClientListResponse{},
-      Client: &armservicebus.PrivateEndpointConnectionsClient{},
-      ListFunc: (&armservicebus.PrivateEndpointConnectionsClient{}).NewListPager,
-			NewFunc: armservicebus.NewPrivateEndpointConnectionsClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/privateEndpointConnections",
-		},
-		{
-      Name: "migration_config_properties",
-      Struct: &armservicebus.MigrationConfigProperties{},
-      ResponseStruct: &armservicebus.MigrationConfigsClientListResponse{},
-      Client: &armservicebus.MigrationConfigsClient{},
-      ListFunc: (&armservicebus.MigrationConfigsClient{}).NewListPager,
-			NewFunc: armservicebus.NewMigrationConfigsClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/migrationConfigurations",
-		},
-		{
       Name: "sb_namespace",
       Struct: &armservicebus.SBNamespace{},
       ResponseStruct: &armservicebus.NamespacesClientListResponse{},

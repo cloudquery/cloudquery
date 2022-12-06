@@ -6,24 +6,9 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb
 func Armmariadb() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armmariadb.NewServerBasedPerformanceTierClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMariaDB/servers/{serverName}/performanceTiers",
-		},
-		{
-			NewFunc: armmariadb.NewLocationBasedPerformanceTierClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMariaDB/locations/{locationName}/performanceTiers",
-		},
-		{
 			NewFunc: armmariadb.NewServersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb",
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMariaDB/servers",
-		},
-		{
-			NewFunc: armmariadb.NewLocationBasedRecommendedActionSessionsResultClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMariaDB/locations/{locationName}/recommendedActionSessionsOperationResults/{operationId}",
 		},
 	}
 	return tables

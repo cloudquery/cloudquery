@@ -6,15 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
 func Armsql() []Table {
 	tables := []Table{
 		{
-      Name: "server",
-      Struct: &armsql.Server{},
-      ResponseStruct: &armsql.ServersClientListResponse{},
-      Client: &armsql.ServersClient{},
-      ListFunc: (&armsql.ServersClient{}).NewListPager,
-			NewFunc: armsql.NewServersClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/servers",
-		},
-		{
       Name: "virtual_cluster",
       Struct: &armsql.VirtualCluster{},
       ResponseStruct: &armsql.VirtualClustersClientListResponse{},
@@ -22,6 +13,24 @@ func Armsql() []Table {
       ListFunc: (&armsql.VirtualClustersClient{}).NewListPager,
 			NewFunc: armsql.NewVirtualClustersClient,
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/virtualClusters",
+		},
+		{
+      Name: "managed_instance",
+      Struct: &armsql.ManagedInstance{},
+      ResponseStruct: &armsql.ManagedInstancesClientListResponse{},
+      Client: &armsql.ManagedInstancesClient{},
+      ListFunc: (&armsql.ManagedInstancesClient{}).NewListPager,
+			NewFunc: armsql.NewManagedInstancesClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/managedInstances",
+		},
+		{
+      Name: "server",
+      Struct: &armsql.Server{},
+      ResponseStruct: &armsql.ServersClientListResponse{},
+      Client: &armsql.ServersClient{},
+      ListFunc: (&armsql.ServersClient{}).NewListPager,
+			NewFunc: armsql.NewServersClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/servers",
 		},
 		{
       Name: "instance_pool",
@@ -40,15 +49,6 @@ func Armsql() []Table {
       ListFunc: (&armsql.DeletedServersClient{}).NewListPager,
 			NewFunc: armsql.NewDeletedServersClient,
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/deletedServers",
-		},
-		{
-      Name: "managed_instance",
-      Struct: &armsql.ManagedInstance{},
-      ResponseStruct: &armsql.ManagedInstancesClientListResponse{},
-      Client: &armsql.ManagedInstancesClient{},
-      ListFunc: (&armsql.ManagedInstancesClient{}).NewListPager,
-			NewFunc: armsql.NewManagedInstancesClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/managedInstances",
 		},
 	}
 

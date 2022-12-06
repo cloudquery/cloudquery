@@ -6,6 +6,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsight
 func Armoperationalinsights() []*Table {
 	tables := []*Table{
 		{
+			NewFunc: armoperationalinsights.NewWorkspacesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.OperationalInsights/workspaces",
+		},
+		{
 			NewFunc: armoperationalinsights.NewDeletedWorkspacesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights",
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.OperationalInsights/deletedWorkspaces",
@@ -14,21 +19,6 @@ func Armoperationalinsights() []*Table {
 			NewFunc: armoperationalinsights.NewClustersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights",
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.OperationalInsights/clusters",
-		},
-		{
-			NewFunc: armoperationalinsights.NewWorkspacesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.OperationalInsights/workspaces",
-		},
-		{
-			NewFunc: armoperationalinsights.NewUsagesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights",
-			URL: "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/usages",
-		},
-		{
-			NewFunc: armoperationalinsights.NewManagementGroupsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights",
-			URL: "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/managementGroups",
 		},
 	}
 	return tables

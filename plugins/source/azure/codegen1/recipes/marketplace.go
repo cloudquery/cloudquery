@@ -10,11 +10,6 @@ func Armmarketplace() []*Table {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplace/armmarketplace",
 			URL: "/providers/Microsoft.Marketplace/privateStores",
 		},
-		{
-			NewFunc: armmarketplace.NewPrivateStoreCollectionOfferClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplace/armmarketplace",
-			URL: "/providers/Microsoft.Marketplace/privateStores/{privateStoreId}/collections/{collectionId}/offers",
-		},
 	}
 	return tables
 }

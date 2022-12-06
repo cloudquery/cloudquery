@@ -23,24 +23,6 @@ func Armsupport() []Table {
 			NewFunc: armsupport.NewTicketsClient,
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Support/supportTickets",
 		},
-		{
-      Name: "communication_details",
-      Struct: &armsupport.CommunicationDetails{},
-      ResponseStruct: &armsupport.CommunicationsClientListResponse{},
-      Client: &armsupport.CommunicationsClient{},
-      ListFunc: (&armsupport.CommunicationsClient{}).NewListPager,
-			NewFunc: armsupport.NewCommunicationsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Support/supportTickets/{supportTicketName}/communications",
-		},
-		{
-      Name: "problem_classification",
-      Struct: &armsupport.ProblemClassification{},
-      ResponseStruct: &armsupport.ProblemClassificationsClientListResponse{},
-      Client: &armsupport.ProblemClassificationsClient{},
-      ListFunc: (&armsupport.ProblemClassificationsClient{}).NewListPager,
-			NewFunc: armsupport.NewProblemClassificationsClient,
-			URL: "/providers/Microsoft.Support/services/{serviceName}/problemClassifications",
-		},
 	}
 
 	for i := range tables {

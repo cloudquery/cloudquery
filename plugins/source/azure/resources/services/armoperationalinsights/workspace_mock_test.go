@@ -14,12 +14,12 @@ import (
 )
 
 func createWorkspace(router *mux.Router) error {
-	var item armoperationalinsights.WorkspacesClientListResponse
+	var item armoperationalinsights.DeletedWorkspacesClientListResponse
 	if err := faker.FakeObject(&item); err != nil {
 		return err
 	}
 
-	router.HandleFunc("/subscriptions/{subscriptionId}/providers/Microsoft.OperationalInsights/workspaces", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/subscriptions/{subscriptionId}/providers/Microsoft.OperationalInsights/deletedWorkspaces", func(w http.ResponseWriter, r *http.Request) {
 		b, err := json.Marshal(&item)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)

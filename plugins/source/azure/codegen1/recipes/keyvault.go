@@ -6,19 +6,9 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvau
 func Armkeyvault() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armkeyvault.NewSecretsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/secrets",
-		},
-		{
 			NewFunc: armkeyvault.NewVaultsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault",
 			URL: "/subscriptions/{subscriptionId}/resources",
-		},
-		{
-			NewFunc: armkeyvault.NewKeysClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/keys",
 		},
 	}
 	return tables

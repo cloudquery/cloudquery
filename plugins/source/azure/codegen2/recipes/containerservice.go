@@ -6,15 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/a
 func Armcontainerservice() []Table {
 	tables := []Table{
 		{
-      Name: "managed_cluster",
-      Struct: &armcontainerservice.ManagedCluster{},
-      ResponseStruct: &armcontainerservice.ManagedClustersClientListResponse{},
-      Client: &armcontainerservice.ManagedClustersClient{},
-      ListFunc: (&armcontainerservice.ManagedClustersClient{}).NewListPager,
-			NewFunc: armcontainerservice.NewManagedClustersClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/managedClusters",
-		},
-		{
       Name: "snapshot",
       Struct: &armcontainerservice.Snapshot{},
       ResponseStruct: &armcontainerservice.SnapshotsClientListResponse{},
@@ -24,13 +15,13 @@ func Armcontainerservice() []Table {
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/snapshots",
 		},
 		{
-      Name: "agent_pool",
-      Struct: &armcontainerservice.AgentPool{},
-      ResponseStruct: &armcontainerservice.AgentPoolsClientListResponse{},
-      Client: &armcontainerservice.AgentPoolsClient{},
-      ListFunc: (&armcontainerservice.AgentPoolsClient{}).NewListPager,
-			NewFunc: armcontainerservice.NewAgentPoolsClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools",
+      Name: "managed_cluster",
+      Struct: &armcontainerservice.ManagedCluster{},
+      ResponseStruct: &armcontainerservice.ManagedClustersClientListResponse{},
+      Client: &armcontainerservice.ManagedClustersClient{},
+      ListFunc: (&armcontainerservice.ManagedClustersClient{}).NewListPager,
+			NewFunc: armcontainerservice.NewManagedClustersClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/managedClusters",
 		},
 	}
 

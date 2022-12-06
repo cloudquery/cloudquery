@@ -14,15 +14,6 @@ func Armbatch() []Table {
 			NewFunc: armbatch.NewAccountClient,
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Batch/batchAccounts",
 		},
-		{
-      Name: "application",
-      Struct: &armbatch.Application{},
-      ResponseStruct: &armbatch.ApplicationClientListResponse{},
-      Client: &armbatch.ApplicationClient{},
-      ListFunc: (&armbatch.ApplicationClient{}).NewListPager,
-			NewFunc: armbatch.NewApplicationClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications",
-		},
 	}
 
 	for i := range tables {

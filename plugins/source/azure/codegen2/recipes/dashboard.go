@@ -6,15 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dashboard/armdashb
 func Armdashboard() []Table {
 	tables := []Table{
 		{
-      Name: "private_link_resource",
-      Struct: &armdashboard.PrivateLinkResource{},
-      ResponseStruct: &armdashboard.PrivateLinkResourcesClientListResponse{},
-      Client: &armdashboard.PrivateLinkResourcesClient{},
-      ListFunc: (&armdashboard.PrivateLinkResourcesClient{}).NewListPager,
-			NewFunc: armdashboard.NewPrivateLinkResourcesClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Dashboard/grafana/{workspaceName}/privateLinkResources",
-		},
-		{
       Name: "managed_grafana",
       Struct: &armdashboard.ManagedGrafana{},
       ResponseStruct: &armdashboard.GrafanaClientListResponse{},
@@ -22,15 +13,6 @@ func Armdashboard() []Table {
       ListFunc: (&armdashboard.GrafanaClient{}).NewListPager,
 			NewFunc: armdashboard.NewGrafanaClient,
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Dashboard/grafana",
-		},
-		{
-      Name: "private_endpoint_connection",
-      Struct: &armdashboard.PrivateEndpointConnection{},
-      ResponseStruct: &armdashboard.PrivateEndpointConnectionsClientListResponse{},
-      Client: &armdashboard.PrivateEndpointConnectionsClient{},
-      ListFunc: (&armdashboard.PrivateEndpointConnectionsClient{}).NewListPager,
-			NewFunc: armdashboard.NewPrivateEndpointConnectionsClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Dashboard/grafana/{workspaceName}/privateEndpointConnections",
 		},
 	}
 

@@ -14,12 +14,12 @@ import (
 )
 
 func createApplyUpdate(router *mux.Router) error {
-	var item armmaintenance.ApplyUpdateForResourceGroupClientListResponse
+	var item armmaintenance.ApplyUpdatesClientListResponse
 	if err := faker.FakeObject(&item); err != nil {
 		return err
 	}
 
-	router.HandleFunc("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maintenance/applyUpdates", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/applyUpdates", func(w http.ResponseWriter, r *http.Request) {
 		b, err := json.Marshal(&item)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)

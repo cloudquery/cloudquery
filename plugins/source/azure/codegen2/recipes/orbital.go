@@ -23,15 +23,6 @@ func Armorbital() []Table {
 			NewFunc: armorbital.NewContactProfilesClient,
 			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/contactProfiles",
 		},
-		{
-      Name: "contact",
-      Struct: &armorbital.Contact{},
-      ResponseStruct: &armorbital.ContactsClientListResponse{},
-      Client: &armorbital.ContactsClient{},
-      ListFunc: (&armorbital.ContactsClient{}).NewListPager,
-			NewFunc: armorbital.NewContactsClient,
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/spacecrafts/{spacecraftName}/contacts",
-		},
 	}
 
 	for i := range tables {

@@ -10,11 +10,6 @@ func Armbotservice() []*Table {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice",
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.BotService/botServices",
 		},
-		{
-			NewFunc: armbotservice.NewPrivateEndpointConnectionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BotService/botServices/{resourceName}/privateEndpointConnections",
-		},
 	}
 	return tables
 }

@@ -14,15 +14,6 @@ func Armmarketplace() []Table {
 			NewFunc: armmarketplace.NewPrivateStoreClient,
 			URL: "/providers/Microsoft.Marketplace/privateStores",
 		},
-		{
-      Name: "offer",
-      Struct: &armmarketplace.Offer{},
-      ResponseStruct: &armmarketplace.PrivateStoreCollectionOfferClientListResponse{},
-      Client: &armmarketplace.PrivateStoreCollectionOfferClient{},
-      ListFunc: (&armmarketplace.PrivateStoreCollectionOfferClient{}).NewListPager,
-			NewFunc: armmarketplace.NewPrivateStoreCollectionOfferClient,
-			URL: "/providers/Microsoft.Marketplace/privateStores/{privateStoreId}/collections/{collectionId}/offers",
-		},
 	}
 
 	for i := range tables {

@@ -6,24 +6,14 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datadog/armdatadog
 func Armdatadog() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armdatadog.NewSingleSignOnConfigurationsClient,
+			NewFunc: armdatadog.NewMonitorsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datadog/armdatadog",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/singleSignOnConfigurations",
-		},
-		{
-			NewFunc: armdatadog.NewTagRulesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datadog/armdatadog",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/tagRules",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Datadog/monitors",
 		},
 		{
 			NewFunc: armdatadog.NewMarketplaceAgreementsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datadog/armdatadog",
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Datadog/agreements",
-		},
-		{
-			NewFunc: armdatadog.NewMonitorsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datadog/armdatadog",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Datadog/monitors",
 		},
 	}
 	return tables

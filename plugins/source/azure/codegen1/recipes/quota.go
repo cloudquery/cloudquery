@@ -10,16 +10,6 @@ func Armquota() []*Table {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota",
 			URL: "/providers/Microsoft.Quota/operations",
 		},
-		{
-			NewFunc: armquota.NewUsagesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota",
-			URL: "/{scope}/providers/Microsoft.Quota/usages",
-		},
-		{
-			NewFunc: armquota.NewRequestStatusClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota",
-			URL: "/{scope}/providers/Microsoft.Quota/quotaRequests",
-		},
 	}
 	return tables
 }

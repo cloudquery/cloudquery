@@ -14,7 +14,7 @@ import (
 )
 
 func createOperationEntity(router *mux.Router) error {
-	var item armdomainservices.DomainServiceOperationsClientListResponse
+	var item armdomainservices.OuContainerOperationsClientListResponse
 	if err := faker.FakeObject(&item); err != nil {
 		return err
 	}
@@ -22,7 +22,7 @@ func createOperationEntity(router *mux.Router) error {
 	emptyStr := ""
 	item.NextLink = &emptyStr
 
-	router.HandleFunc("/providers/Microsoft.AAD/operations", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/providers/Microsoft.Aad/operations", func(w http.ResponseWriter, r *http.Request) {
 		b, err := json.Marshal(&item)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)

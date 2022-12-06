@@ -6,9 +6,9 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn"
 func Armcdn() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armcdn.NewProfilesClient,
+			NewFunc: armcdn.NewPoliciesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/profiles",
+			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/cdnWebApplicationFirewallPolicies",
 		},
 		{
 			NewFunc: armcdn.NewResourceUsageClient,
@@ -26,9 +26,9 @@ func Armcdn() []*Table {
 			URL: "/providers/Microsoft.Cdn/edgenodes",
 		},
 		{
-			NewFunc: armcdn.NewPoliciesClient,
+			NewFunc: armcdn.NewProfilesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/cdnWebApplicationFirewallPolicies",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/profiles",
 		},
 	}
 	return tables

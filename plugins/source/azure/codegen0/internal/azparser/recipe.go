@@ -8,8 +8,10 @@ type Table struct {
 	URL string
 	// Does the client has standard NewListPager which we currently support autogeneration for
 	HasListPager bool
-	// number of params for NewListPager
-	HasListPagerParams int
+	// param names for NewListPager
+	NewListPagerParams []string
+	// param names for NewXClient function
+	NewClientParams []string
 }
 
 

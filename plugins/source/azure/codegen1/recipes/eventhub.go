@@ -10,16 +10,6 @@ func Armeventhub() []*Table {
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub",
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.EventHub/namespaces",
 		},
-		{
-			NewFunc: armeventhub.NewDisasterRecoveryConfigsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/disasterRecoveryConfigs",
-		},
-		{
-			NewFunc: armeventhub.NewPrivateEndpointConnectionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub",
-			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/privateEndpointConnections",
-		},
 	}
 	return tables
 }
