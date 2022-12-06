@@ -34,6 +34,6 @@
   "plugins/destination/snowflake": "1.0.3",
   "plugins/destination/snowflake+FILLER": "0.0.0",
   "plugins/source/gandi": "1.0.0",
-  "plugins/source/datadog": "1.0.0",
+  "plugins/source/datadog": "1.0.1",
   "plugins/destination/bigquery": "1.0.0"
 }
