@@ -74,17 +74,17 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/route53 v1.25.1
 	github.com/aws/aws-sdk-go-v2/service/route53domains v1.12.20
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.29.5
-	github.com/aws/aws-sdk-go-v2/service/s3control v1.28.0
+	github.com/aws/aws-sdk-go-v2/service/s3control v1.28.1
 	github.com/aws/aws-sdk-go-v2/service/sagemaker v1.56.0
-	github.com/aws/aws-sdk-go-v2/service/scheduler v1.0.1
+	github.com/aws/aws-sdk-go-v2/service/scheduler v1.0.2
 	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.16.8
-	github.com/aws/aws-sdk-go-v2/service/servicecatalog v1.15.0
+	github.com/aws/aws-sdk-go-v2/service/servicecatalog v1.15.1
 	github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.15.0
-	github.com/aws/aws-sdk-go-v2/service/servicequotas v1.13.20
+	github.com/aws/aws-sdk-go-v2/service/servicequotas v1.13.21
 	github.com/aws/aws-sdk-go-v2/service/sesv2 v1.15.1
-	github.com/aws/aws-sdk-go-v2/service/sfn v1.16.0
+	github.com/aws/aws-sdk-go-v2/service/sfn v1.16.1
 	github.com/aws/aws-sdk-go-v2/service/sns v1.18.6
-	github.com/aws/aws-sdk-go-v2/service/sqs v1.19.15
+	github.com/aws/aws-sdk-go-v2/service/sqs v1.19.16
 	github.com/aws/aws-sdk-go-v2/service/ssm v1.33.1
 	github.com/aws/aws-sdk-go-v2/service/ssoadmin v1.15.14
 	github.com/aws/aws-sdk-go-v2/service/sts v1.17.6
