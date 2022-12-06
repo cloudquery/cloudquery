@@ -14,7 +14,6 @@ import (
 )
 
 type Client struct {
-	plugins.DefaultReverseTransformer
 	conn                *pgxpool.Pool
 	logger              zerolog.Logger
 	spec                specs.Destination

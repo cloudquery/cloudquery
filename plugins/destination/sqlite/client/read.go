@@ -77,8 +77,9 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 	if err != nil {
 		return err
 	}
-	values := c.createResultsArray(table)
+
 	for rows.Next() {
+		values := c.createResultsArray(table)
 		if err := rows.Scan(values...); err != nil {
 			return fmt.Errorf("failed to read from table %s: %w", table.Name, err)
 		}

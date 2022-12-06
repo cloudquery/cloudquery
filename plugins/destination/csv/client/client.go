@@ -40,7 +40,6 @@ type closeMsg struct {
 }
 
 type Client struct {
-	plugins.DefaultReverseTransformer
 	logger  zerolog.Logger
 	spec    specs.Destination
 	csvSpec Spec

@@ -8,6 +8,7 @@ import (
 )
 
 func TestPlugin(t *testing.T) {
+	t.Skip("Skipping until fixed: https://github.com/cloudquery/cloudquery/issues/5248")
 	p := plugins.NewDestinationPlugin("snowflake", "development", New)
 	plugins.DestinationPluginTestSuiteRunner(t, p,
 		Spec{

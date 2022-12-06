@@ -15,7 +15,6 @@ import (
 )
 
 type Client struct {
-	plugins.DefaultReverseTransformer
 	db      *sql.DB
 	logger  zerolog.Logger
 	spec    specs.Destination

@@ -11,7 +11,7 @@ func (*Client) TransformBool(v *schema.Bool) interface{} {
 }
 
 func (*Client) TransformBytea(v *schema.Bytea) interface{} {
-	return v.String()
+	return v.Bytes
 }
 
 func (*Client) TransformFloat8(v *schema.Float8) interface{} {
