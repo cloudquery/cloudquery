@@ -16,14 +16,14 @@ func Armfrontdoor() []*Table {
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/NetworkExperimentProfiles",
 		},
 		{
-			NewFunc: armfrontdoor.NewFrontDoorsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/frontDoors",
-		},
-		{
 			NewFunc: armfrontdoor.NewPoliciesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor",
 			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoorWebApplicationFirewallPolicies",
+		},
+		{
+			NewFunc: armfrontdoor.NewFrontDoorsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/frontDoors",
 		},
 	}
 	return tables

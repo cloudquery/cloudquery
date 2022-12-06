@@ -146,20 +146,20 @@ func initResource(r *recipes.Table) {
 				return schema.TypeInvalid, nil
 			}
 		}),
-		codegen.WithResolverTransformer(func(field reflect.StructField, path string) (string, error) {
-			switch reflect.New(field.Type).Elem().Interface().(type) {
-			case *timestamppb.Timestamp,
-				timestamppb.Timestamp:
-				return `client.ResolveProtoTimestamp("` + path + `")`, nil
-			case *durationpb.Duration,
-				durationpb.Duration:
-				return `client.ResolveProtoDuration("` + path + `")`, nil
-			case protoreflect.Enum:
-				return `client.ResolveProtoEnum("` + path + `")`, nil
-			default:
-				return "", nil
-			}
-		}),
+		// codegen.WithResolverTransformer(func(field reflect.StructField, path string) (string, error) {
+		// 	switch reflect.New(field.Type).Elem().Interface().(type) {
+		// 	case *timestamppb.Timestamp,
+		// 		timestamppb.Timestamp:
+		// 		return `client.ResolveProtoTimestamp("` + path + `")`, nil
+		// 	case *durationpb.Duration,
+		// 		durationpb.Duration:
+		// 		return `client.ResolveProtoDuration("` + path + `")`, nil
+		// 	case protoreflect.Enum:
+		// 		return `client.ResolveProtoEnum("` + path + `")`, nil
+		// 	default:
+		// 		return "", nil
+		// 	}
+		// }),
 	}
 
 	if r.NameTransformer != nil {

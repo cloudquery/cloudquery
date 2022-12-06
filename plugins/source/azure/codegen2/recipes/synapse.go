@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse
 func Armsynapse() []Table {
 	tables := []Table{
 		{
-      Name: "workspace",
-      Struct: &armsynapse.Workspace{},
-      ResponseStruct: &armsynapse.WorkspacesClientListResponse{},
-      Client: &armsynapse.WorkspacesClient{},
-      ListFunc: (&armsynapse.WorkspacesClient{}).NewListPager,
-			NewFunc: armsynapse.NewWorkspacesClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Synapse/workspaces",
+      Name: "operation",
+      Struct: &armsynapse.Operation{},
+      ResponseStruct: &armsynapse.KustoOperationsClientListResponse{},
+      Client: &armsynapse.KustoOperationsClient{},
+      ListFunc: (&armsynapse.KustoOperationsClient{}).NewListPager,
+			NewFunc: armsynapse.NewKustoOperationsClient,
+			URL: "/providers/Microsoft.Synapse/kustooperations",
 		},
 		{
       Name: "private_link_hub",
@@ -24,13 +24,13 @@ func Armsynapse() []Table {
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Synapse/privateLinkHubs",
 		},
 		{
-      Name: "operation",
-      Struct: &armsynapse.Operation{},
-      ResponseStruct: &armsynapse.KustoOperationsClientListResponse{},
-      Client: &armsynapse.KustoOperationsClient{},
-      ListFunc: (&armsynapse.KustoOperationsClient{}).NewListPager,
-			NewFunc: armsynapse.NewKustoOperationsClient,
-			URL: "/providers/Microsoft.Synapse/kustooperations",
+      Name: "workspace",
+      Struct: &armsynapse.Workspace{},
+      ResponseStruct: &armsynapse.WorkspacesClientListResponse{},
+      Client: &armsynapse.WorkspacesClient{},
+      ListFunc: (&armsynapse.WorkspacesClient{}).NewListPager,
+			NewFunc: armsynapse.NewWorkspacesClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Synapse/workspaces",
 		},
 	}
 

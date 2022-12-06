@@ -27,6 +27,4 @@ content=$(curl -s https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk)
 
 # Use grep to search for a string that matches a regular expression
 # and exclude a list of predefined strings
-grep -oE "$packages_re" <<< "$content" | grep -v -E "$bad_packages_re" | xargs go get -u
-
-# go mod tidy
+grep -oE "$packages_re" <<< "$content" | grep -v -E "$bad_packages_re" | grep -v -E "$not_relevant_packages_re" | xargs go get -u

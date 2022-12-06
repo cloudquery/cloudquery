@@ -6,6 +6,15 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/advisor/armadvisor
 func Armadvisor() []Table {
 	tables := []Table{
 		{
+      Name: "metadata_entity",
+      Struct: &armadvisor.MetadataEntity{},
+      ResponseStruct: &armadvisor.RecommendationMetadataClientListResponse{},
+      Client: &armadvisor.RecommendationMetadataClient{},
+      ListFunc: (&armadvisor.RecommendationMetadataClient{}).NewListPager,
+			NewFunc: armadvisor.NewRecommendationMetadataClient,
+			URL: "/providers/Microsoft.Advisor/metadata",
+		},
+		{
       Name: "resource_recommendation_base",
       Struct: &armadvisor.ResourceRecommendationBase{},
       ResponseStruct: &armadvisor.RecommendationsClientListResponse{},
@@ -22,15 +31,6 @@ func Armadvisor() []Table {
       ListFunc: (&armadvisor.SuppressionsClient{}).NewListPager,
 			NewFunc: armadvisor.NewSuppressionsClient,
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/suppressions",
-		},
-		{
-      Name: "metadata_entity",
-      Struct: &armadvisor.MetadataEntity{},
-      ResponseStruct: &armadvisor.RecommendationMetadataClientListResponse{},
-      Client: &armadvisor.RecommendationMetadataClient{},
-      ListFunc: (&armadvisor.RecommendationMetadataClient{}).NewListPager,
-			NewFunc: armadvisor.NewRecommendationMetadataClient,
-			URL: "/providers/Microsoft.Advisor/metadata",
 		},
 	}
 

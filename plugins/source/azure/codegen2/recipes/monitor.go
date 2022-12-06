@@ -15,15 +15,6 @@ func Armmonitor() []Table {
 			URL: "/subscriptions/{subscriptionId}/providers/microsoft.insights/privateLinkScopes",
 		},
 		{
-      Name: "event_data",
-      Struct: &armmonitor.EventData{},
-      ResponseStruct: &armmonitor.TenantActivityLogsClientListResponse{},
-      Client: &armmonitor.TenantActivityLogsClient{},
-      ListFunc: (&armmonitor.TenantActivityLogsClient{}).NewListPager,
-			NewFunc: armmonitor.NewTenantActivityLogsClient,
-			URL: "/providers/Microsoft.Insights/eventtypes/management/values",
-		},
-		{
       Name: "localizable_string",
       Struct: &armmonitor.LocalizableString{},
       ResponseStruct: &armmonitor.EventCategoriesClientListResponse{},
@@ -40,6 +31,15 @@ func Armmonitor() []Table {
       ListFunc: (&armmonitor.LogProfilesClient{}).NewListPager,
 			NewFunc: armmonitor.NewLogProfilesClient,
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/logprofiles",
+		},
+		{
+      Name: "event_data",
+      Struct: &armmonitor.EventData{},
+      ResponseStruct: &armmonitor.TenantActivityLogsClientListResponse{},
+      Client: &armmonitor.TenantActivityLogsClient{},
+      ListFunc: (&armmonitor.TenantActivityLogsClient{}).NewListPager,
+			NewFunc: armmonitor.NewTenantActivityLogsClient,
+			URL: "/providers/Microsoft.Insights/eventtypes/management/values",
 		},
 	}
 

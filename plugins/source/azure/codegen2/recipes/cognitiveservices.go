@@ -6,15 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/
 func Armcognitiveservices() []Table {
 	tables := []Table{
 		{
-      Name: "resource_sku",
-      Struct: &armcognitiveservices.ResourceSKU{},
-      ResponseStruct: &armcognitiveservices.ResourceSKUsClientListResponse{},
-      Client: &armcognitiveservices.ResourceSKUsClient{},
-      ListFunc: (&armcognitiveservices.ResourceSKUsClient{}).NewListPager,
-			NewFunc: armcognitiveservices.NewResourceSKUsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/skus",
-		},
-		{
       Name: "account",
       Struct: &armcognitiveservices.Account{},
       ResponseStruct: &armcognitiveservices.DeletedAccountsClientListResponse{},
@@ -22,6 +13,15 @@ func Armcognitiveservices() []Table {
       ListFunc: (&armcognitiveservices.DeletedAccountsClient{}).NewListPager,
 			NewFunc: armcognitiveservices.NewDeletedAccountsClient,
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/deletedAccounts",
+		},
+		{
+      Name: "resource_sku",
+      Struct: &armcognitiveservices.ResourceSKU{},
+      ResponseStruct: &armcognitiveservices.ResourceSKUsClientListResponse{},
+      Client: &armcognitiveservices.ResourceSKUsClient{},
+      ListFunc: (&armcognitiveservices.ResourceSKUsClient{}).NewListPager,
+			NewFunc: armcognitiveservices.NewResourceSKUsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/skus",
 		},
 		{
       Name: "account",

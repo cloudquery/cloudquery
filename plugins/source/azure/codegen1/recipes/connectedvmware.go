@@ -6,6 +6,31 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/ar
 func Armconnectedvmware() []*Table {
 	tables := []*Table{
 		{
+			NewFunc: armconnectedvmware.NewDatastoresClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedVMwarevSphere/datastores",
+		},
+		{
+			NewFunc: armconnectedvmware.NewClustersClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedVMwarevSphere/clusters",
+		},
+		{
+			NewFunc: armconnectedvmware.NewResourcePoolsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedVMwarevSphere/resourcePools",
+		},
+		{
+			NewFunc: armconnectedvmware.NewVirtualMachinesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedVMwarevSphere/virtualMachines",
+		},
+		{
+			NewFunc: armconnectedvmware.NewVirtualMachineTemplatesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedVMwarevSphere/virtualMachineTemplates",
+		},
+		{
 			NewFunc: armconnectedvmware.NewVCentersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware",
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedVMwarevSphere/vcenters",
@@ -19,31 +44,6 @@ func Armconnectedvmware() []*Table {
 			NewFunc: armconnectedvmware.NewHostsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware",
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedVMwarevSphere/hosts",
-		},
-		{
-			NewFunc: armconnectedvmware.NewVirtualMachinesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedVMwarevSphere/virtualMachines",
-		},
-		{
-			NewFunc: armconnectedvmware.NewDatastoresClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedVMwarevSphere/datastores",
-		},
-		{
-			NewFunc: armconnectedvmware.NewClustersClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedVMwarevSphere/clusters",
-		},
-		{
-			NewFunc: armconnectedvmware.NewVirtualMachineTemplatesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedVMwarevSphere/virtualMachineTemplates",
-		},
-		{
-			NewFunc: armconnectedvmware.NewResourcePoolsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedVMwarevSphere/resourcePools",
 		},
 	}
 	return tables

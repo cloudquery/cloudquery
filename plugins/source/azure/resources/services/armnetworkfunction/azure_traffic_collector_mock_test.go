@@ -14,7 +14,7 @@ import (
 )
 
 func createAzureTrafficCollector(router *mux.Router) error {
-	var item armnetworkfunction.AzureTrafficCollectorsByResourceGroupClientListResponse
+	var item armnetworkfunction.AzureTrafficCollectorsBySubscriptionClientListResponse
 	if err := faker.FakeObject(&item); err != nil {
 		return err
 	}
@@ -22,7 +22,7 @@ func createAzureTrafficCollector(router *mux.Router) error {
 	emptyStr := ""
 	item.NextLink = &emptyStr
 
-	router.HandleFunc("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction/azureTrafficCollectors", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/subscriptions/{subscriptionId}/providers/Microsoft.NetworkFunction/azureTrafficCollectors", func(w http.ResponseWriter, r *http.Request) {
 		b, err := json.Marshal(&item)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)

@@ -6,9 +6,9 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse
 func Armsynapse() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armsynapse.NewWorkspacesClient,
+			NewFunc: armsynapse.NewKustoOperationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Synapse/workspaces",
+			URL: "/providers/Microsoft.Synapse/kustooperations",
 		},
 		{
 			NewFunc: armsynapse.NewPrivateLinkHubsClient,
@@ -16,9 +16,9 @@ func Armsynapse() []*Table {
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Synapse/privateLinkHubs",
 		},
 		{
-			NewFunc: armsynapse.NewKustoOperationsClient,
+			NewFunc: armsynapse.NewWorkspacesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-			URL: "/providers/Microsoft.Synapse/kustooperations",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Synapse/workspaces",
 		},
 	}
 	return tables

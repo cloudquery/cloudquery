@@ -24,15 +24,6 @@ func Armfrontdoor() []Table {
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/NetworkExperimentProfiles",
 		},
 		{
-      Name: "front_door",
-      Struct: &armfrontdoor.FrontDoor{},
-      ResponseStruct: &armfrontdoor.FrontDoorsClientListResponse{},
-      Client: &armfrontdoor.FrontDoorsClient{},
-      ListFunc: (&armfrontdoor.FrontDoorsClient{}).NewListPager,
-			NewFunc: armfrontdoor.NewFrontDoorsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/frontDoors",
-		},
-		{
       Name: "web_application_firewall_policy",
       Struct: &armfrontdoor.WebApplicationFirewallPolicy{},
       ResponseStruct: &armfrontdoor.PoliciesClientListResponse{},
@@ -40,6 +31,15 @@ func Armfrontdoor() []Table {
       ListFunc: (&armfrontdoor.PoliciesClient{}).NewListPager,
 			NewFunc: armfrontdoor.NewPoliciesClient,
 			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoorWebApplicationFirewallPolicies",
+		},
+		{
+      Name: "front_door",
+      Struct: &armfrontdoor.FrontDoor{},
+      ResponseStruct: &armfrontdoor.FrontDoorsClientListResponse{},
+      Client: &armfrontdoor.FrontDoorsClient{},
+      ListFunc: (&armfrontdoor.FrontDoorsClient{}).NewListPager,
+			NewFunc: armfrontdoor.NewFrontDoorsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Network/frontDoors",
 		},
 	}
 

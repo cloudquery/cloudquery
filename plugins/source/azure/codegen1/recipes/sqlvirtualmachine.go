@@ -6,14 +6,14 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sqlvirtualmachine/
 func Armsqlvirtualmachine() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armsqlvirtualmachine.NewSQLVirtualMachinesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sqlvirtualmachine/armsqlvirtualmachine",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines",
-		},
-		{
 			NewFunc: armsqlvirtualmachine.NewGroupsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sqlvirtualmachine/armsqlvirtualmachine",
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups",
+		},
+		{
+			NewFunc: armsqlvirtualmachine.NewSQLVirtualMachinesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sqlvirtualmachine/armsqlvirtualmachine",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines",
 		},
 	}
 	return tables

@@ -11,9 +11,9 @@ func Armcdn() []*Table {
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/checkResourceUsage",
 		},
 		{
-			NewFunc: armcdn.NewManagedRuleSetsClient,
+			NewFunc: armcdn.NewEdgeNodesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/cdnWebApplicationFirewallManagedRuleSets",
+			URL: "/providers/Microsoft.Cdn/edgenodes",
 		},
 		{
 			NewFunc: armcdn.NewProfilesClient,
@@ -26,9 +26,9 @@ func Armcdn() []*Table {
 			URL: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/cdnWebApplicationFirewallPolicies",
 		},
 		{
-			NewFunc: armcdn.NewEdgeNodesClient,
+			NewFunc: armcdn.NewManagedRuleSetsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
-			URL: "/providers/Microsoft.Cdn/edgenodes",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/cdnWebApplicationFirewallManagedRuleSets",
 		},
 	}
 	return tables

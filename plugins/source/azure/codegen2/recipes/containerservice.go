@@ -6,15 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/a
 func Armcontainerservice() []Table {
 	tables := []Table{
 		{
-      Name: "snapshot",
-      Struct: &armcontainerservice.Snapshot{},
-      ResponseStruct: &armcontainerservice.SnapshotsClientListResponse{},
-      Client: &armcontainerservice.SnapshotsClient{},
-      ListFunc: (&armcontainerservice.SnapshotsClient{}).NewListPager,
-			NewFunc: armcontainerservice.NewSnapshotsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/snapshots",
-		},
-		{
       Name: "managed_cluster",
       Struct: &armcontainerservice.ManagedCluster{},
       ResponseStruct: &armcontainerservice.ManagedClustersClientListResponse{},
@@ -22,6 +13,15 @@ func Armcontainerservice() []Table {
       ListFunc: (&armcontainerservice.ManagedClustersClient{}).NewListPager,
 			NewFunc: armcontainerservice.NewManagedClustersClient,
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/managedClusters",
+		},
+		{
+      Name: "snapshot",
+      Struct: &armcontainerservice.Snapshot{},
+      ResponseStruct: &armcontainerservice.SnapshotsClientListResponse{},
+      Client: &armcontainerservice.SnapshotsClient{},
+      ListFunc: (&armcontainerservice.SnapshotsClient{}).NewListPager,
+			NewFunc: armcontainerservice.NewSnapshotsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/snapshots",
 		},
 	}
 

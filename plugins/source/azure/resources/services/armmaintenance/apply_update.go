@@ -13,7 +13,7 @@ func ApplyUpdate() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armmaintenance_apply_update",
 		Resolver:  fetchApplyUpdate,
-		Multiplex: client.SubscriptionResourceGroupMultiplex,
+		Multiplex: client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "properties",
@@ -46,11 +46,11 @@ func ApplyUpdate() *schema.Table {
 
 func fetchApplyUpdate(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
-	svc, err := armmaintenance.NewApplyUpdateForResourceGroupClient(cl.SubscriptionId, cl.Creds, cl.Options)
+	svc, err := armmaintenance.NewApplyUpdatesClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(cl.ResourceGroup, nil)
+	pager := svc.NewListPager(nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

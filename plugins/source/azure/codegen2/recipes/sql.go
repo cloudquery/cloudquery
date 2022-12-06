@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
 func Armsql() []Table {
 	tables := []Table{
 		{
-      Name: "deleted_server",
-      Struct: &armsql.DeletedServer{},
-      ResponseStruct: &armsql.DeletedServersClientListResponse{},
-      Client: &armsql.DeletedServersClient{},
-      ListFunc: (&armsql.DeletedServersClient{}).NewListPager,
-			NewFunc: armsql.NewDeletedServersClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/deletedServers",
+      Name: "instance_pool",
+      Struct: &armsql.InstancePool{},
+      ResponseStruct: &armsql.InstancePoolsClientListResponse{},
+      Client: &armsql.InstancePoolsClient{},
+      ListFunc: (&armsql.InstancePoolsClient{}).NewListPager,
+			NewFunc: armsql.NewInstancePoolsClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/instancePools",
 		},
 		{
       Name: "managed_instance",
@@ -42,13 +42,13 @@ func Armsql() []Table {
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/servers",
 		},
 		{
-      Name: "instance_pool",
-      Struct: &armsql.InstancePool{},
-      ResponseStruct: &armsql.InstancePoolsClientListResponse{},
-      Client: &armsql.InstancePoolsClient{},
-      ListFunc: (&armsql.InstancePoolsClient{}).NewListPager,
-			NewFunc: armsql.NewInstancePoolsClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/instancePools",
+      Name: "deleted_server",
+      Struct: &armsql.DeletedServer{},
+      ResponseStruct: &armsql.DeletedServersClientListResponse{},
+      Client: &armsql.DeletedServersClient{},
+      ListFunc: (&armsql.DeletedServersClient{}).NewListPager,
+			NewFunc: armsql.NewDeletedServersClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/deletedServers",
 		},
 	}
 

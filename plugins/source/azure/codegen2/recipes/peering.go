@@ -6,15 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering
 func Armpeering() []Table {
 	tables := []Table{
 		{
-      Name: "service_country",
-      Struct: &armpeering.ServiceCountry{},
-      ResponseStruct: &armpeering.ServiceCountriesClientListResponse{},
-      Client: &armpeering.ServiceCountriesClient{},
-      ListFunc: (&armpeering.ServiceCountriesClient{}).NewListPager,
-			NewFunc: armpeering.NewServiceCountriesClient,
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peeringServiceCountries",
-		},
-		{
       Name: "service_provider",
       Struct: &armpeering.ServiceProvider{},
       ResponseStruct: &armpeering.ServiceProvidersClientListResponse{},
@@ -22,6 +13,15 @@ func Armpeering() []Table {
       ListFunc: (&armpeering.ServiceProvidersClient{}).NewListPager,
 			NewFunc: armpeering.NewServiceProvidersClient,
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peeringServiceProviders",
+		},
+		{
+      Name: "service_country",
+      Struct: &armpeering.ServiceCountry{},
+      ResponseStruct: &armpeering.ServiceCountriesClientListResponse{},
+      Client: &armpeering.ServiceCountriesClient{},
+      ListFunc: (&armpeering.ServiceCountriesClient{}).NewListPager,
+			NewFunc: armpeering.NewServiceCountriesClient,
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peeringServiceCountries",
 		},
 		{
       Name: "service_location",

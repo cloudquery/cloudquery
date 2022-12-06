@@ -6,9 +6,9 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
 func Armsql() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armsql.NewDeletedServersClient,
+			NewFunc: armsql.NewInstancePoolsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/deletedServers",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/instancePools",
 		},
 		{
 			NewFunc: armsql.NewManagedInstancesClient,
@@ -26,9 +26,9 @@ func Armsql() []*Table {
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/servers",
 		},
 		{
-			NewFunc: armsql.NewInstancePoolsClient,
+			NewFunc: armsql.NewDeletedServersClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/instancePools",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/deletedServers",
 		},
 	}
 	return tables

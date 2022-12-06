@@ -11,14 +11,14 @@ func Armoperationalinsights() []*Table {
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.OperationalInsights/clusters",
 		},
 		{
-			NewFunc: armoperationalinsights.NewWorkspacesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.OperationalInsights/workspaces",
-		},
-		{
 			NewFunc: armoperationalinsights.NewDeletedWorkspacesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights",
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.OperationalInsights/deletedWorkspaces",
+		},
+		{
+			NewFunc: armoperationalinsights.NewWorkspacesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.OperationalInsights/workspaces",
 		},
 	}
 	return tables

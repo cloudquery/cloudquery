@@ -6,24 +6,9 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecuri
 func Armsecurity() []*Table {
 	tables := []*Table{
 		{
-			NewFunc: armsecurity.NewAllowedConnectionsClient,
+			NewFunc: armsecurity.NewAutomationsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Security/allowedConnections",
-		},
-		{
-			NewFunc: armsecurity.NewSettingsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Security/settings",
-		},
-		{
-			NewFunc: armsecurity.NewJitNetworkAccessPoliciesClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Security/jitNetworkAccessPolicies",
-		},
-		{
-			NewFunc: armsecurity.NewIngestionSettingsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Security/ingestionSettings",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Security/automations",
 		},
 		{
 			NewFunc: armsecurity.NewWorkspaceSettingsClient,
@@ -31,14 +16,9 @@ func Armsecurity() []*Table {
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Security/workspaceSettings",
 		},
 		{
-			NewFunc: armsecurity.NewDiscoveredSecuritySolutionsClient,
+			NewFunc: armsecurity.NewSecureScoresClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Security/discoveredSecuritySolutions",
-		},
-		{
-			NewFunc: armsecurity.NewSecureScoreControlDefinitionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity",
-			URL: "/providers/Microsoft.Security/secureScoreControlDefinitions",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Security/secureScores",
 		},
 		{
 			NewFunc: armsecurity.NewTasksClient,
@@ -46,69 +26,9 @@ func Armsecurity() []*Table {
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Security/tasks",
 		},
 		{
-			NewFunc: armsecurity.NewAutomationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Security/automations",
-		},
-		{
-			NewFunc: armsecurity.NewSecureScoresClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Security/secureScores",
-		},
-		{
 			NewFunc: armsecurity.NewRegulatoryComplianceStandardsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity",
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Security/regulatoryComplianceStandards",
-		},
-		{
-			NewFunc: armsecurity.NewTopologyClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Security/topologies",
-		},
-		{
-			NewFunc: armsecurity.NewContactsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Security/securityContacts",
-		},
-		{
-			NewFunc: armsecurity.NewConnectorsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Security/securityConnectors",
-		},
-		{
-			NewFunc: armsecurity.NewAccountConnectorsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Security/connectors",
-		},
-		{
-			NewFunc: armsecurity.NewAutoProvisioningSettingsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Security/autoProvisioningSettings",
-		},
-		{
-			NewFunc: armsecurity.NewSolutionsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Security/securitySolutions",
-		},
-		{
-			NewFunc: armsecurity.NewApplicationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Security/applications",
-		},
-		{
-			NewFunc: armsecurity.NewLocationsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations",
-		},
-		{
-			NewFunc: armsecurity.NewAlertsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Security/alerts",
-		},
-		{
-			NewFunc: armsecurity.NewSecureScoreControlsClient,
-			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Security/secureScoreControls",
 		},
 		{
 			NewFunc: armsecurity.NewAssessmentsMetadataClient,
@@ -116,9 +36,69 @@ func Armsecurity() []*Table {
 			URL: "/providers/Microsoft.Security/assessmentMetadata",
 		},
 		{
+			NewFunc: armsecurity.NewAutoProvisioningSettingsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Security/autoProvisioningSettings",
+		},
+		{
+			NewFunc: armsecurity.NewContactsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Security/securityContacts",
+		},
+		{
+			NewFunc: armsecurity.NewLocationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations",
+		},
+		{
+			NewFunc: armsecurity.NewAccountConnectorsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Security/connectors",
+		},
+		{
+			NewFunc: armsecurity.NewSolutionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Security/securitySolutions",
+		},
+		{
+			NewFunc: armsecurity.NewJitNetworkAccessPoliciesClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Security/jitNetworkAccessPolicies",
+		},
+		{
+			NewFunc: armsecurity.NewApplicationsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Security/applications",
+		},
+		{
+			NewFunc: armsecurity.NewTopologyClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Security/topologies",
+		},
+		{
+			NewFunc: armsecurity.NewSecureScoreControlsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Security/secureScoreControls",
+		},
+		{
+			NewFunc: armsecurity.NewDiscoveredSecuritySolutionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Security/discoveredSecuritySolutions",
+		},
+		{
 			NewFunc: armsecurity.NewAlertsSuppressionRulesClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity",
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Security/alertsSuppressionRules",
+		},
+		{
+			NewFunc: armsecurity.NewExternalSecuritySolutionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Security/externalSecuritySolutions",
+		},
+		{
+			NewFunc: armsecurity.NewSettingsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Security/settings",
 		},
 		{
 			NewFunc: armsecurity.NewGovernanceRuleClient,
@@ -126,9 +106,29 @@ func Armsecurity() []*Table {
 			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Security/governanceRules",
 		},
 		{
-			NewFunc: armsecurity.NewExternalSecuritySolutionsClient,
+			NewFunc: armsecurity.NewConnectorsClient,
 			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity",
-			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Security/externalSecuritySolutions",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Security/securityConnectors",
+		},
+		{
+			NewFunc: armsecurity.NewAllowedConnectionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Security/allowedConnections",
+		},
+		{
+			NewFunc: armsecurity.NewAlertsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Security/alerts",
+		},
+		{
+			NewFunc: armsecurity.NewIngestionSettingsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity",
+			URL: "/subscriptions/{subscriptionId}/providers/Microsoft.Security/ingestionSettings",
+		},
+		{
+			NewFunc: armsecurity.NewSecureScoreControlDefinitionsClient,
+			PkgPath: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity",
+			URL: "/providers/Microsoft.Security/secureScoreControlDefinitions",
 		},
 	}
 	return tables
