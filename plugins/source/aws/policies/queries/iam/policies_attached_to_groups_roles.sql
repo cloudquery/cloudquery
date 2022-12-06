@@ -1,9 +1,9 @@
 insert into aws_policy_results
 select distinct
-    :'execution_time'::timestamp,
-    :'framework',
-    :'check_id',
-    'IAM users should not have IAM policies attached',
+    :'execution_time'::timestamp as execution_time,
+    :'framework' as framework,
+    :'check_id' as check_id,
+    'IAM users should not have IAM policies attached' as title,
     aws_iam_users.account_id,
     arn AS resource_id,
     case when

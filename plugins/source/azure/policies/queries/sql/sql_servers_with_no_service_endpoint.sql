@@ -11,10 +11,10 @@ WITH subs AS (
                            AND subs.provisioning_state = 'Succeeded')
 insert into azure_policy_results
 SELECT
-  :'execution_time',
-  :'framework',
-  :'check_id',
-  'SQL Server should use a virtual network service endpoint',
+  :'execution_time' as execution_time,
+  :'framework' as framework,
+  :'check_id' as check_id,
+  'SQL Server should use a virtual network service endpoint' as title,
   subscription_id,
   id,
   case

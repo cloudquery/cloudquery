@@ -1,9 +1,9 @@
 insert into azure_policy_results
 SELECT
-  :'execution_time',
-  :'framework',
-  :'check_id',
-  'Ensure that "Data encryption" is set to "On" on a SQL Database (Automated)',
+  :'execution_time' as execution_time,
+  :'framework' as framework,
+  :'check_id' as check_id,
+  'Ensure that "Data encryption" is set to "On" on a SQL Database (Automated)' as title,
   s.subscription_id,
   asd.id AS database_id,
   case

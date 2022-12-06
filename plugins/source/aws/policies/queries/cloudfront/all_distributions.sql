@@ -3,7 +3,7 @@ select
     :'execution_time' as execution_time,
     :'framework' as framework,
     :'check_id' as check_id,
-    'Find all Cloudfront distributions' AS title,
+    'Find all CloudFront distributions' AS title,
     account_id,
     arn as resource_id,
     'fail' as status

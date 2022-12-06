@@ -6,10 +6,10 @@ WITH ad_admins_count AS ( SELECT ass._cq_id, count(*) AS admins_count
 )
 insert into azure_policy_results
 SELECT
-  :'execution_time',
-  :'framework',
-  :'check_id',
-  'Ensure that Azure Active Directory Admin is configured (Automated)',
+  :'execution_time' as execution_time,
+  :'framework' as framework,
+  :'check_id' as check_id,
+  'Ensure that Azure Active Directory Admin is configured (Automated)' as title,
   s.subscription_id,
   s.id,
   case

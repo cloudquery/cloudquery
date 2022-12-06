@@ -12,7 +12,7 @@ func fetchRoles(ctx context.Context, meta schema.ClientMeta, r *schema.Resource,
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		output, err := c.Services.Iam.Roles.List().PageToken(nextPageToken).Do()
+		output, err := c.Services.Iam.Roles.List().PageSize(1000).PageToken(nextPageToken).Do()
 		if err != nil {
 			return errors.WithStack(err)
 		}
