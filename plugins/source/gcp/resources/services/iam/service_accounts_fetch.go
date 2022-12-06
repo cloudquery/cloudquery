@@ -12,7 +12,7 @@ func fetchServiceAccounts(ctx context.Context, meta schema.ClientMeta, r *schema
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		output, err := c.Services.Iam.Projects.ServiceAccounts.List("projects/" + c.ProjectId).PageToken(nextPageToken).Do()
+		output, err := c.Services.Iam.Projects.ServiceAccounts.List("projects/" + c.ProjectId).PageToken(nextPageToken).PageSize(100).Do()
 		if err != nil {
 			return errors.WithStack(err)
 		}
