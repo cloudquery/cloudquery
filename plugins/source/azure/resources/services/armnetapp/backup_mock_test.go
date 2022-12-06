@@ -14,12 +14,12 @@ import (
 )
 
 func createBackup(router *mux.Router) error {
-	var item armnetapp.BackupsClientListResponse
+	var item armnetapp.AccountBackupsClientListResponse
 	if err := faker.FakeObject(&item); err != nil {
 		return err
 	}
 
-	router.HandleFunc("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/backups", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/accountBackups", func(w http.ResponseWriter, r *http.Request) {
 		b, err := json.Marshal(&item)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)

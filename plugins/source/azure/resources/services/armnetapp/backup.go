@@ -46,7 +46,7 @@ func Backup() *schema.Table {
 
 func fetchBackup(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
-	svc, err := armnetapp.NewBackupsClient(cl.SubscriptionId, cl.Creds, cl.Options)
+	svc, err := armnetapp.NewAccountBackupsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {
 		return err
 	}

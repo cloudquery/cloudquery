@@ -46,7 +46,7 @@ func SecurityRule() *schema.Table {
 
 func fetchSecurityRule(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
-	svc, err := armnetwork.NewDefaultSecurityRulesClient(cl.SubscriptionId, cl.Creds, cl.Options)
+	svc, err := armnetwork.NewSecurityRulesClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {
 		return err
 	}

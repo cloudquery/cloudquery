@@ -13,7 +13,7 @@ func EventData() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_armmonitor_event_data",
 		Resolver:  fetchEventData,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SubscriptionResourceGroupMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "authorization",
@@ -141,11 +141,11 @@ func EventData() *schema.Table {
 
 func fetchEventData(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
-	svc, err := armmonitor.NewTenantActivityLogsClient(cl.Creds, cl.Options)
+	svc, err := armmonitor.NewActivityLogsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

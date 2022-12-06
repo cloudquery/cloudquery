@@ -24,7 +24,7 @@ var (
 
 // Module is a struct that contains all the information needed to generate
 // cloudquery code for a given Azure SDK package.
-type Module struct {
+type Recipe struct {
 	Tables []*azparser.Table
 	Import string
 	BaseName string
@@ -51,7 +51,7 @@ func main() {
 			continue
 		}
 		importPath := strings.Split(armModule, "@")[0]
-		mod := &Module{
+		mod := &Recipe{
 			Tables: tables,
 			Import: importPath,
 			BaseName: path.Base(importPath),
@@ -62,19 +62,20 @@ func main() {
 	}
 }
 
-func generatePackage(pkg string, mod *Module) error {
-	tpl, err := template.New("package.go.tpl").Funcs(template.FuncMap{
+func generatePackage(pkg string, mod *Recipe) error {
+	tpl, err := template.New("recipe.go.tpl").Funcs(template.FuncMap{
 		"ToCamel": strings.Title,
-	}).ParseFS(templateFS, "templates/package.go.tpl")
+	}).ParseFS(templateFS, "templates/recipe.go.tpl")
 	if err != nil {
-		return fmt.Errorf("failed to parse package.go.tpl: %w", err)
+		return fmt.Errorf("failed to parse recipe.go.tpl: %w", err)
 	}
 
 	var buff bytes.Buffer
 	if err := tpl.Execute(&buff, mod); err != nil {
-		return fmt.Errorf("failed to execute package template: %w", err)
+		return fmt.Errorf("failed to execute recipe template: %w", err)
 	}
-	filePath := path.Join(currentDir, "../codegen1/packages", mod.BaseName+".go")
+	basename := strings.TrimPrefix(mod.BaseName, "arm")
+	filePath := path.Join(currentDir, "../codegen1/recipes", basename+".go")
 	if err := os.WriteFile(filePath, buff.Bytes(), 0644); err != nil {
 		return fmt.Errorf("failed to write file %s: %w", filePath, err)
 	}

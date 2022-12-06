@@ -22,11 +22,13 @@ const (
 
 var reNewClient = regexp.MustCompile(`New[a-zA-Z]+Client`)
 var reListCreateRequest = regexp.MustCompile(`listCreateRequest`)
+var reNewListPager = regexp.MustCompile(`NewListPager`)
 
 type function struct {
 	receiver string
 	name     string
 	ast 		*ast.FuncDecl
+	params int
 }
 
 func parseURLFromFunc(fn *ast.FuncDecl) string {
@@ -57,12 +59,13 @@ func findFunctions(pkgs map[string]*ast.Package, re *regexp.Regexp) []function {
 								fun := function{
 									name: fn.Name.Name,
 									ast: fn,
-								}
+								}								
 								// if function is a method extract receiver name
 								if fn.Recv != nil && len(fn.Recv.List) == 1 {
 									receiver := fn.Recv.List[0].Type.(*ast.StarExpr).X.(*ast.Ident).Name
 									fun.receiver = receiver
 								}
+								fun.params = len(fn.Type.Params.List)
 								funcs = append(funcs, fun)
 							}
 						}
@@ -108,9 +111,24 @@ func CreateTablesFromPackage(pkg string) ([]*Table, error) {
 		}
 		tables[fn.receiver].URL = azURL
 	}
+
+	listNewPagerMethods := findFunctions(pkgs, reNewListPager)
+	for _, fn := range listNewPagerMethods {
+		if fn.receiver == "" {
+			continue
+		}
+		if _, ok := tables[fn.receiver]; !ok {
+			continue
+		}
+		tables[fn.receiver].HasListPager = true
+		tables[fn.receiver].HasListPagerParams = fn.params
+	}
+
 	var result []*Table
 	for _, t := range tables {
-		if t.URL == "" {
+		// skip tables witout URL (or at least that we didn't find one)
+		// not NewListPager struct and more than 3 params
+		if t.URL == "" || !t.HasListPager || t.HasListPagerParams > 3{
 			continue
 		}
 		result = append(result, t)

@@ -14,12 +14,12 @@ import (
 )
 
 func createPerformanceTierProperties(router *mux.Router) error {
-	var item armmariadb.ServerBasedPerformanceTierClientListResponse
+	var item armmariadb.LocationBasedPerformanceTierClientListResponse
 	if err := faker.FakeObject(&item); err != nil {
 		return err
 	}
 
-	router.HandleFunc("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMariaDB/servers/{serverName}/performanceTiers", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/subscriptions/{subscriptionId}/providers/Microsoft.DBforMariaDB/locations/{locationName}/performanceTiers", func(w http.ResponseWriter, r *http.Request) {
 		b, err := json.Marshal(&item)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)

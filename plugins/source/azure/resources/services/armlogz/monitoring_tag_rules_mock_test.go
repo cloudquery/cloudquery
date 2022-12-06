@@ -14,7 +14,7 @@ import (
 )
 
 func createMonitoringTagRules(router *mux.Router) error {
-	var item armlogz.SubAccountTagRulesClientListResponse
+	var item armlogz.TagRulesClientListResponse
 	if err := faker.FakeObject(&item); err != nil {
 		return err
 	}
@@ -22,7 +22,7 @@ func createMonitoringTagRules(router *mux.Router) error {
 	emptyStr := ""
 	item.NextLink = &emptyStr
 
-	router.HandleFunc("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors/{monitorName}/accounts/{subAccountName}/tagRules", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors/{monitorName}/tagRules", func(w http.ResponseWriter, r *http.Request) {
 		b, err := json.Marshal(&item)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)

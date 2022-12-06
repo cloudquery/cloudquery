@@ -14,7 +14,7 @@ import (
 )
 
 func createMarketplaceRegistrationDefinition(router *mux.Router) error {
-	var item armmanagedservices.MarketplaceRegistrationDefinitionsClientListResponse
+	var item armmanagedservices.MarketplaceRegistrationDefinitionsWithoutScopeClientListResponse
 	if err := faker.FakeObject(&item); err != nil {
 		return err
 	}
@@ -22,7 +22,7 @@ func createMarketplaceRegistrationDefinition(router *mux.Router) error {
 	emptyStr := ""
 	item.NextLink = &emptyStr
 
-	router.HandleFunc("/{scope}/providers/Microsoft.ManagedServices/marketplaceRegistrationDefinitions", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/providers/Microsoft.ManagedServices/marketplaceRegistrationDefinitions", func(w http.ResponseWriter, r *http.Request) {
 		b, err := json.Marshal(&item)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)

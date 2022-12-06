@@ -6,6 +6,10 @@ type Table struct {
 	NewFuncName string
 	// Rest URL parsed for specific API
 	URL string
+	// Does the client has standard NewListPager which we currently support autogeneration for
+	HasListPager bool
+	// number of params for NewListPager
+	HasListPagerParams int
 }
 
 
