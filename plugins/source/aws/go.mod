@@ -85,7 +85,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sfn v1.16.1
 	github.com/aws/aws-sdk-go-v2/service/sns v1.18.6
 	github.com/aws/aws-sdk-go-v2/service/sqs v1.19.16
-	github.com/aws/aws-sdk-go-v2/service/ssm v1.33.1
+	github.com/aws/aws-sdk-go-v2/service/ssm v1.33.2
 	github.com/aws/aws-sdk-go-v2/service/ssoadmin v1.15.14
 	github.com/aws/aws-sdk-go-v2/service/sts v1.17.6
 	github.com/aws/aws-sdk-go-v2/service/timestreamwrite v1.14.7
@@ -136,7 +136,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.13.20 // indirect
 	github.com/aws/aws-sdk-go-v2/service/shield v1.17.12
 	github.com/aws/aws-sdk-go-v2/service/sso v1.11.26 // indirect
-	github.com/aws/aws-sdk-go-v2/service/transfer v1.25.0
+	github.com/aws/aws-sdk-go-v2/service/transfer v1.25.1
 	github.com/aws/aws-sdk-go-v2/service/wafregional v1.12.21
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
