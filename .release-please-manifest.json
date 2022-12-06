@@ -15,7 +15,7 @@
   "plugins/source/github+FILLER": "0.0.0",
   "plugins/source/heroku": "3.0.10",
   "plugins/source/heroku+FILLER": "0.0.0",
-  "plugins/source/k8s": "2.4.4",
+  "plugins/source/k8s": "2.5.0",
   "plugins/source/k8s+FILLER": "0.0.0",
   "plugins/source/okta": "1.3.14",
   "plugins/source/okta+FILLER": "0.0.0",
