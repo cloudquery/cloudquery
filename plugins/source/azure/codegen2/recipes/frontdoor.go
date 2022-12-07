@@ -16,16 +16,6 @@ func Armfrontdoor() []Table {
 			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.Network")`,
 		},
 		{
-			Name:           "managed_rule_sets",
-			Struct:         &armfrontdoor.ManagedRuleSetDefinition{},
-			ResponseStruct: &armfrontdoor.ManagedRuleSetsClientListResponse{},
-			Client:         &armfrontdoor.ManagedRuleSetsClient{},
-			ListFunc:       (&armfrontdoor.ManagedRuleSetsClient{}).NewListPager,
-			NewFunc:        armfrontdoor.NewManagedRuleSetsClient,
-			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/FrontDoorWebApplicationFirewallManagedRuleSets",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Network")`,
-		},
-		{
 			Name:           "front_doors",
 			Struct:         &armfrontdoor.FrontDoor{},
 			ResponseStruct: &armfrontdoor.FrontDoorsClientListResponse{},
@@ -33,6 +23,16 @@ func Armfrontdoor() []Table {
 			ListFunc:       (&armfrontdoor.FrontDoorsClient{}).NewListPager,
 			NewFunc:        armfrontdoor.NewFrontDoorsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/frontDoors",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Network")`,
+		},
+		{
+			Name:           "managed_rule_sets",
+			Struct:         &armfrontdoor.ManagedRuleSetDefinition{},
+			ResponseStruct: &armfrontdoor.ManagedRuleSetsClientListResponse{},
+			Client:         &armfrontdoor.ManagedRuleSetsClient{},
+			ListFunc:       (&armfrontdoor.ManagedRuleSetsClient{}).NewListPager,
+			NewFunc:        armfrontdoor.NewManagedRuleSetsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/FrontDoorWebApplicationFirewallManagedRuleSets",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Network")`,
 		},
 		{

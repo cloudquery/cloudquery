@@ -16,16 +16,6 @@ func Armresources() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("")`,
 		},
 		{
-			Name:           "tags",
-			Struct:         &armresources.TagDetails{},
-			ResponseStruct: &armresources.TagsClientListResponse{},
-			Client:         &armresources.TagsClient{},
-			ListFunc:       (&armresources.TagsClient{}).NewListPager,
-			NewFunc:        armresources.NewTagsClient,
-			URL:            "/subscriptions/{subscriptionId}/tagNames",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("")`,
-		},
-		{
 			Name:           "resource_groups",
 			Struct:         &armresources.ResourceGroup{},
 			ResponseStruct: &armresources.ResourceGroupsClientListResponse{},
@@ -33,6 +23,16 @@ func Armresources() []Table {
 			ListFunc:       (&armresources.ResourceGroupsClient{}).NewListPager,
 			NewFunc:        armresources.NewResourceGroupsClient,
 			URL:            "/subscriptions/{subscriptionId}/resourcegroups",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("")`,
+		},
+		{
+			Name:           "tags",
+			Struct:         &armresources.TagDetails{},
+			ResponseStruct: &armresources.TagsClientListResponse{},
+			Client:         &armresources.TagsClient{},
+			ListFunc:       (&armresources.TagsClient{}).NewListPager,
+			NewFunc:        armresources.NewTagsClient,
+			URL:            "/subscriptions/{subscriptionId}/tagNames",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("")`,
 		},
 	}

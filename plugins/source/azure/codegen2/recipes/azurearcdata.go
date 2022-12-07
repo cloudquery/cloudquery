@@ -6,16 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armaz
 func Armazurearcdata() []Table {
 	tables := []Table{
 		{
-			Name:           "sql_managed_instances",
-			Struct:         &armazurearcdata.SQLManagedInstance{},
-			ResponseStruct: &armazurearcdata.SQLManagedInstancesClientListResponse{},
-			Client:         &armazurearcdata.SQLManagedInstancesClient{},
-			ListFunc:       (&armazurearcdata.SQLManagedInstancesClient{}).NewListPager,
-			NewFunc:        armazurearcdata.NewSQLManagedInstancesClient,
-			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/sqlManagedInstances",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.AzureArcData")`,
-		},
-		{
 			Name:           "sql_server_instances",
 			Struct:         &armazurearcdata.SQLServerInstance{},
 			ResponseStruct: &armazurearcdata.SQLServerInstancesClientListResponse{},
@@ -33,6 +23,16 @@ func Armazurearcdata() []Table {
 			ListFunc:       (&armazurearcdata.PostgresInstancesClient{}).NewListPager,
 			NewFunc:        armazurearcdata.NewPostgresInstancesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/postgresInstances",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.AzureArcData")`,
+		},
+		{
+			Name:           "sql_managed_instances",
+			Struct:         &armazurearcdata.SQLManagedInstance{},
+			ResponseStruct: &armazurearcdata.SQLManagedInstancesClientListResponse{},
+			Client:         &armazurearcdata.SQLManagedInstancesClient{},
+			ListFunc:       (&armazurearcdata.SQLManagedInstancesClient{}).NewListPager,
+			NewFunc:        armazurearcdata.NewSQLManagedInstancesClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/sqlManagedInstances",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.AzureArcData")`,
 		},
 	}

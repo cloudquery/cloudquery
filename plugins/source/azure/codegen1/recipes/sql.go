@@ -6,16 +6,16 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
 func Armsql() []*Table {
 	tables := []*Table{
 		{
-			NewFunc:   armsql.NewManagedInstancesClient,
+			NewFunc:   armsql.NewServersClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/managedInstances",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/servers",
 			Namespace: "Microsoft.Sql",
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Sql")`,
 		},
 		{
-			NewFunc:   armsql.NewVirtualClustersClient,
+			NewFunc:   armsql.NewManagedInstancesClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/virtualClusters",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/managedInstances",
 			Namespace: "Microsoft.Sql",
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Sql")`,
 		},
@@ -27,9 +27,9 @@ func Armsql() []*Table {
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Sql")`,
 		},
 		{
-			NewFunc:   armsql.NewServersClient,
+			NewFunc:   armsql.NewVirtualClustersClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/servers",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/virtualClusters",
 			Namespace: "Microsoft.Sql",
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Sql")`,
 		},

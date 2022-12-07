@@ -6,16 +6,16 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/engagementfabric/a
 func Armengagementfabric() []*Table {
 	tables := []*Table{
 		{
-			NewFunc:   armengagementfabric.NewAccountsClient,
+			NewFunc:   armengagementfabric.NewSKUsClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/engagementfabric/armengagementfabric",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.EngagementFabric/Accounts",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.EngagementFabric/skus",
 			Namespace: "Microsoft.EngagementFabric",
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.EngagementFabric")`,
 		},
 		{
-			NewFunc:   armengagementfabric.NewSKUsClient,
+			NewFunc:   armengagementfabric.NewAccountsClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/engagementfabric/armengagementfabric",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.EngagementFabric/skus",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.EngagementFabric/Accounts",
 			Namespace: "Microsoft.EngagementFabric",
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.EngagementFabric")`,
 		},

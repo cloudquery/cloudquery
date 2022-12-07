@@ -16,16 +16,6 @@ func Armcosmos() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DocumentDB")`,
 		},
 		{
-			Name:           "database_accounts",
-			Struct:         &armcosmos.DatabaseAccountGetResults{},
-			ResponseStruct: &armcosmos.DatabaseAccountsClientListResponse{},
-			Client:         &armcosmos.DatabaseAccountsClient{},
-			ListFunc:       (&armcosmos.DatabaseAccountsClient{}).NewListPager,
-			NewFunc:        armcosmos.NewDatabaseAccountsClient,
-			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/databaseAccounts",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DocumentDB")`,
-		},
-		{
 			Name:           "locations",
 			Struct:         &armcosmos.LocationGetResult{},
 			ResponseStruct: &armcosmos.LocationsClientListResponse{},
@@ -33,6 +23,16 @@ func Armcosmos() []Table {
 			ListFunc:       (&armcosmos.LocationsClient{}).NewListPager,
 			NewFunc:        armcosmos.NewLocationsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DocumentDB")`,
+		},
+		{
+			Name:           "database_accounts",
+			Struct:         &armcosmos.DatabaseAccountGetResults{},
+			ResponseStruct: &armcosmos.DatabaseAccountsClientListResponse{},
+			Client:         &armcosmos.DatabaseAccountsClient{},
+			ListFunc:       (&armcosmos.DatabaseAccountsClient{}).NewListPager,
+			NewFunc:        armcosmos.NewDatabaseAccountsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/databaseAccounts",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DocumentDB")`,
 		},
 	}

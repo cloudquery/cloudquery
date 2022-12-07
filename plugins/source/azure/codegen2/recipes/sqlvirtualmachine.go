@@ -6,16 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sqlvirtualmachine/
 func Armsqlvirtualmachine() []Table {
 	tables := []Table{
 		{
-			Name:           "groups",
-			Struct:         &armsqlvirtualmachine.Group{},
-			ResponseStruct: &armsqlvirtualmachine.GroupsClientListResponse{},
-			Client:         &armsqlvirtualmachine.GroupsClient{},
-			ListFunc:       (&armsqlvirtualmachine.GroupsClient{}).NewListPager,
-			NewFunc:        armsqlvirtualmachine.NewGroupsClient,
-			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.SqlVirtualMachine")`,
-		},
-		{
 			Name:           "sql_virtual_machines",
 			Struct:         &armsqlvirtualmachine.SQLVirtualMachine{},
 			ResponseStruct: &armsqlvirtualmachine.SQLVirtualMachinesClientListResponse{},
@@ -23,6 +13,16 @@ func Armsqlvirtualmachine() []Table {
 			ListFunc:       (&armsqlvirtualmachine.SQLVirtualMachinesClient{}).NewListPager,
 			NewFunc:        armsqlvirtualmachine.NewSQLVirtualMachinesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.SqlVirtualMachine")`,
+		},
+		{
+			Name:           "groups",
+			Struct:         &armsqlvirtualmachine.Group{},
+			ResponseStruct: &armsqlvirtualmachine.GroupsClientListResponse{},
+			Client:         &armsqlvirtualmachine.GroupsClient{},
+			ListFunc:       (&armsqlvirtualmachine.GroupsClient{}).NewListPager,
+			NewFunc:        armsqlvirtualmachine.NewGroupsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.SqlVirtualMachine")`,
 		},
 	}

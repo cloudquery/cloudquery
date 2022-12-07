@@ -16,16 +16,6 @@ func Armadvisor() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Advisor")`,
 		},
 		{
-			Name:           "suppressions",
-			Struct:         &armadvisor.SuppressionContract{},
-			ResponseStruct: &armadvisor.SuppressionsClientListResponse{},
-			Client:         &armadvisor.SuppressionsClient{},
-			ListFunc:       (&armadvisor.SuppressionsClient{}).NewListPager,
-			NewFunc:        armadvisor.NewSuppressionsClient,
-			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/suppressions",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Advisor")`,
-		},
-		{
 			Name:           "recommendations",
 			Struct:         &armadvisor.ResourceRecommendationBase{},
 			ResponseStruct: &armadvisor.RecommendationsClientListResponse{},
@@ -33,6 +23,16 @@ func Armadvisor() []Table {
 			ListFunc:       (&armadvisor.RecommendationsClient{}).NewListPager,
 			NewFunc:        armadvisor.NewRecommendationsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/recommendations",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Advisor")`,
+		},
+		{
+			Name:           "suppressions",
+			Struct:         &armadvisor.SuppressionContract{},
+			ResponseStruct: &armadvisor.SuppressionsClientListResponse{},
+			Client:         &armadvisor.SuppressionsClient{},
+			ListFunc:       (&armadvisor.SuppressionsClient{}).NewListPager,
+			NewFunc:        armadvisor.NewSuppressionsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/suppressions",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Advisor")`,
 		},
 	}

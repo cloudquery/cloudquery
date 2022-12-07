@@ -6,16 +6,16 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport
 func Armsupport() []*Table {
 	tables := []*Table{
 		{
-			NewFunc:   armsupport.NewTicketsClient,
+			NewFunc:   armsupport.NewServicesClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Support/supportTickets",
+			URL:       "/providers/Microsoft.Support/services",
 			Namespace: "Microsoft.Support",
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Support")`,
 		},
 		{
-			NewFunc:   armsupport.NewServicesClient,
+			NewFunc:   armsupport.NewTicketsClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport",
-			URL:       "/providers/Microsoft.Support/services",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Support/supportTickets",
 			Namespace: "Microsoft.Support",
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Support")`,
 		},

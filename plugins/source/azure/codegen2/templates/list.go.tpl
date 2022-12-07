@@ -24,8 +24,8 @@ func fetch{{.Name | ToCamel}}(ctx context.Context, meta schema.ClientMeta, paren
 	if err != nil {
     return err
   }
-	{{- if .ListFuncHasSubscriptionId}}
-	pager := svc.{{.ListFuncName}}(cl.SubscriptionId, nil)
+	{{- if .ListFuncHasResourceGroupName}}
+	pager := svc.{{.ListFuncName}}(cl.ResourceGroup, nil)
 	{{- else }}
 	pager := svc.{{.ListFuncName}}(nil)
 	{{- end }}

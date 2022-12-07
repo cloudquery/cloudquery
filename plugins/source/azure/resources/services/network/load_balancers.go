@@ -73,7 +73,7 @@ func fetchLoadBalancers(ctx context.Context, meta schema.ClientMeta, parent *sch
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(cl.SubscriptionId, nil)
+	pager := svc.NewListPager(cl.ResourceGroup, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

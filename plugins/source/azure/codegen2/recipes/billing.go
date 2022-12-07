@@ -6,16 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling
 func Armbilling() []Table {
 	tables := []Table{
 		{
-			Name:           "periods",
-			Struct:         &armbilling.Period{},
-			ResponseStruct: &armbilling.PeriodsClientListResponse{},
-			Client:         &armbilling.PeriodsClient{},
-			ListFunc:       (&armbilling.PeriodsClient{}).NewListPager,
-			NewFunc:        armbilling.NewPeriodsClient,
-			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Billing/billingPeriods",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Billing")`,
-		},
-		{
 			Name:           "accounts",
 			Struct:         &armbilling.Account{},
 			ResponseStruct: &armbilling.AccountsClientListResponse{},
@@ -23,6 +13,16 @@ func Armbilling() []Table {
 			ListFunc:       (&armbilling.AccountsClient{}).NewListPager,
 			NewFunc:        armbilling.NewAccountsClient,
 			URL:            "/providers/Microsoft.Billing/billingAccounts",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Billing")`,
+		},
+		{
+			Name:           "periods",
+			Struct:         &armbilling.Period{},
+			ResponseStruct: &armbilling.PeriodsClientListResponse{},
+			Client:         &armbilling.PeriodsClient{},
+			ListFunc:       (&armbilling.PeriodsClient{}).NewListPager,
+			NewFunc:        armbilling.NewPeriodsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Billing/billingPeriods",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Billing")`,
 		},
 		{

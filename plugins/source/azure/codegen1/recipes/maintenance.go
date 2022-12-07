@@ -6,16 +6,16 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmai
 func Armmaintenance() []*Table {
 	tables := []*Table{
 		{
-			NewFunc:   armmaintenance.NewPublicMaintenanceConfigurationsClient,
+			NewFunc:   armmaintenance.NewConfigurationsClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/publicMaintenanceConfigurations",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/maintenanceConfigurations",
 			Namespace: "Microsoft.Maintenance",
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Maintenance")`,
 		},
 		{
-			NewFunc:   armmaintenance.NewConfigurationsClient,
+			NewFunc:   armmaintenance.NewPublicMaintenanceConfigurationsClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/maintenanceConfigurations",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/publicMaintenanceConfigurations",
 			Namespace: "Microsoft.Maintenance",
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Maintenance")`,
 		},

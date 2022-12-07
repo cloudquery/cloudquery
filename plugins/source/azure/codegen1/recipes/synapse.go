@@ -6,6 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse
 func Armsynapse() []*Table {
 	tables := []*Table{
 		{
+			NewFunc:   armsynapse.NewPrivateLinkHubsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Synapse/privateLinkHubs",
+			Namespace: "Microsoft.Synapse",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Synapse")`,
+		},
+		{
 			NewFunc:   armsynapse.NewWorkspacesClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
 			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Synapse/workspaces",
@@ -16,13 +23,6 @@ func Armsynapse() []*Table {
 			NewFunc:   armsynapse.NewKustoOperationsClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
 			URL:       "/providers/Microsoft.Synapse/kustooperations",
-			Namespace: "Microsoft.Synapse",
-			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Synapse")`,
-		},
-		{
-			NewFunc:   armsynapse.NewPrivateLinkHubsClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Synapse/privateLinkHubs",
 			Namespace: "Microsoft.Synapse",
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Synapse")`,
 		},

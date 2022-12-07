@@ -6,16 +6,16 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/
 func Armcognitiveservices() []*Table {
 	tables := []*Table{
 		{
-			NewFunc:   armcognitiveservices.NewAccountsClient,
+			NewFunc:   armcognitiveservices.NewResourceSKUsClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/accounts",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/skus",
 			Namespace: "Microsoft.CognitiveServices",
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.CognitiveServices")`,
 		},
 		{
-			NewFunc:   armcognitiveservices.NewResourceSKUsClient,
+			NewFunc:   armcognitiveservices.NewAccountsClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/skus",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/accounts",
 			Namespace: "Microsoft.CognitiveServices",
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.CognitiveServices")`,
 		},

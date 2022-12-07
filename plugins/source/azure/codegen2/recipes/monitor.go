@@ -6,16 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor
 func Armmonitor() []Table {
 	tables := []Table{
 		{
-			Name:           "tenant_activity_logs",
-			Struct:         &armmonitor.EventData{},
-			ResponseStruct: &armmonitor.TenantActivityLogsClientListResponse{},
-			Client:         &armmonitor.TenantActivityLogsClient{},
-			ListFunc:       (&armmonitor.TenantActivityLogsClient{}).NewListPager,
-			NewFunc:        armmonitor.NewTenantActivityLogsClient,
-			URL:            "/providers/Microsoft.Insights/eventtypes/management/values",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Insights")`,
-		},
-		{
 			Name:           "log_profiles",
 			Struct:         &armmonitor.LogProfileResource{},
 			ResponseStruct: &armmonitor.LogProfilesClientListResponse{},
@@ -23,6 +13,16 @@ func Armmonitor() []Table {
 			ListFunc:       (&armmonitor.LogProfilesClient{}).NewListPager,
 			NewFunc:        armmonitor.NewLogProfilesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/logprofiles",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Insights")`,
+		},
+		{
+			Name:           "tenant_activity_logs",
+			Struct:         &armmonitor.EventData{},
+			ResponseStruct: &armmonitor.TenantActivityLogsClientListResponse{},
+			Client:         &armmonitor.TenantActivityLogsClient{},
+			ListFunc:       (&armmonitor.TenantActivityLogsClient{}).NewListPager,
+			NewFunc:        armmonitor.NewTenantActivityLogsClient,
+			URL:            "/providers/Microsoft.Insights/eventtypes/management/values",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Insights")`,
 		},
 		{

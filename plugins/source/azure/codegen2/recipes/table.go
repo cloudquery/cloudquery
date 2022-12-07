@@ -44,7 +44,7 @@ type Table struct {
 	// NewFuncName is reflected name from the ListFunc
 	ListFuncName string
 	// Does the ListFunc get subscription_id as a first parameter
-	ListFuncHasSubscriptionId bool
+	ListFuncHasResourceGroupName bool
 	// should we use ListAll function
 	ListAll bool
 	// Relations is list of relations functions

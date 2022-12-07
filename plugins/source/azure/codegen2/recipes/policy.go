@@ -6,6 +6,16 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolic
 func Armpolicy() []Table {
 	tables := []Table{
 		{
+			Name:           "set_definitions",
+			Struct:         &armpolicy.SetDefinition{},
+			ResponseStruct: &armpolicy.SetDefinitionsClientListResponse{},
+			Client:         &armpolicy.SetDefinitionsClient{},
+			ListFunc:       (&armpolicy.SetDefinitionsClient{}).NewListPager,
+			NewFunc:        armpolicy.NewSetDefinitionsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Authorization")`,
+		},
+		{
 			Name:           "assignments",
 			Struct:         &armpolicy.Assignment{},
 			ResponseStruct: &armpolicy.AssignmentsClientListResponse{},
@@ -13,6 +23,16 @@ func Armpolicy() []Table {
 			ListFunc:       (&armpolicy.AssignmentsClient{}).NewListPager,
 			NewFunc:        armpolicy.NewAssignmentsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyAssignments",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Authorization")`,
+		},
+		{
+			Name:           "definitions",
+			Struct:         &armpolicy.Definition{},
+			ResponseStruct: &armpolicy.DefinitionsClientListResponse{},
+			Client:         &armpolicy.DefinitionsClient{},
+			ListFunc:       (&armpolicy.DefinitionsClient{}).NewListPager,
+			NewFunc:        armpolicy.NewDefinitionsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyDefinitions",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Authorization")`,
 		},
 		{
@@ -33,26 +53,6 @@ func Armpolicy() []Table {
 			ListFunc:       (&armpolicy.ExemptionsClient{}).NewListPager,
 			NewFunc:        armpolicy.NewExemptionsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyExemptions",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Authorization")`,
-		},
-		{
-			Name:           "definitions",
-			Struct:         &armpolicy.Definition{},
-			ResponseStruct: &armpolicy.DefinitionsClientListResponse{},
-			Client:         &armpolicy.DefinitionsClient{},
-			ListFunc:       (&armpolicy.DefinitionsClient{}).NewListPager,
-			NewFunc:        armpolicy.NewDefinitionsClient,
-			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyDefinitions",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Authorization")`,
-		},
-		{
-			Name:           "set_definitions",
-			Struct:         &armpolicy.SetDefinition{},
-			ResponseStruct: &armpolicy.SetDefinitionsClientListResponse{},
-			Client:         &armpolicy.SetDefinitionsClient{},
-			ListFunc:       (&armpolicy.SetDefinitionsClient{}).NewListPager,
-			NewFunc:        armpolicy.NewSetDefinitionsClient,
-			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Authorization")`,
 		},
 	}

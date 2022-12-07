@@ -6,6 +6,16 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/arma
 func Armauthorization() []Table {
 	tables := []Table{
 		{
+			Name:           "provider_operations_metadata",
+			Struct:         &armauthorization.ProviderOperationsMetadata{},
+			ResponseStruct: &armauthorization.ProviderOperationsMetadataClientListResponse{},
+			Client:         &armauthorization.ProviderOperationsMetadataClient{},
+			ListFunc:       (&armauthorization.ProviderOperationsMetadataClient{}).NewListPager,
+			NewFunc:        armauthorization.NewProviderOperationsMetadataClient,
+			URL:            "/providers/Microsoft.Authorization/providerOperations",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Authorization")`,
+		},
+		{
 			Name:           "role_assignments",
 			Struct:         &armauthorization.RoleAssignment{},
 			ResponseStruct: &armauthorization.RoleAssignmentsClientListResponse{},
@@ -23,16 +33,6 @@ func Armauthorization() []Table {
 			ListFunc:       (&armauthorization.ClassicAdministratorsClient{}).NewListPager,
 			NewFunc:        armauthorization.NewClassicAdministratorsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/classicAdministrators",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Authorization")`,
-		},
-		{
-			Name:           "provider_operations_metadata",
-			Struct:         &armauthorization.ProviderOperationsMetadata{},
-			ResponseStruct: &armauthorization.ProviderOperationsMetadataClientListResponse{},
-			Client:         &armauthorization.ProviderOperationsMetadataClient{},
-			ListFunc:       (&armauthorization.ProviderOperationsMetadataClient{}).NewListPager,
-			NewFunc:        armauthorization.NewProviderOperationsMetadataClient,
-			URL:            "/providers/Microsoft.Authorization/providerOperations",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Authorization")`,
 		},
 	}

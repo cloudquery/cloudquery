@@ -6,6 +6,16 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
 func Armsql() []Table {
 	tables := []Table{
 		{
+			Name:           "servers",
+			Struct:         &armsql.Server{},
+			ResponseStruct: &armsql.ServersClientListResponse{},
+			Client:         &armsql.ServersClient{},
+			ListFunc:       (&armsql.ServersClient{}).NewListPager,
+			NewFunc:        armsql.NewServersClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/servers",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Sql")`,
+		},
+		{
 			Name:           "managed_instances",
 			Struct:         &armsql.ManagedInstance{},
 			ResponseStruct: &armsql.ManagedInstancesClientListResponse{},
@@ -13,16 +23,6 @@ func Armsql() []Table {
 			ListFunc:       (&armsql.ManagedInstancesClient{}).NewListPager,
 			NewFunc:        armsql.NewManagedInstancesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/managedInstances",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Sql")`,
-		},
-		{
-			Name:           "virtual_clusters",
-			Struct:         &armsql.VirtualCluster{},
-			ResponseStruct: &armsql.VirtualClustersClientListResponse{},
-			Client:         &armsql.VirtualClustersClient{},
-			ListFunc:       (&armsql.VirtualClustersClient{}).NewListPager,
-			NewFunc:        armsql.NewVirtualClustersClient,
-			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/virtualClusters",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Sql")`,
 		},
 		{
@@ -36,13 +36,13 @@ func Armsql() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Sql")`,
 		},
 		{
-			Name:           "servers",
-			Struct:         &armsql.Server{},
-			ResponseStruct: &armsql.ServersClientListResponse{},
-			Client:         &armsql.ServersClient{},
-			ListFunc:       (&armsql.ServersClient{}).NewListPager,
-			NewFunc:        armsql.NewServersClient,
-			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/servers",
+			Name:           "virtual_clusters",
+			Struct:         &armsql.VirtualCluster{},
+			ResponseStruct: &armsql.VirtualClustersClientListResponse{},
+			Client:         &armsql.VirtualClustersClient{},
+			ListFunc:       (&armsql.VirtualClustersClient{}).NewListPager,
+			NewFunc:        armsql.NewVirtualClustersClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/virtualClusters",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Sql")`,
 		},
 	}

@@ -6,16 +6,16 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armre
 func Armreservations() []*Table {
 	tables := []*Table{
 		{
-			NewFunc:   armreservations.NewReservationOrderClient,
+			NewFunc:   armreservations.NewOperationClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations",
-			URL:       "/providers/Microsoft.Capacity/reservationOrders",
+			URL:       "/providers/Microsoft.Capacity/operations",
 			Namespace: "Microsoft.Capacity",
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Capacity")`,
 		},
 		{
-			NewFunc:   armreservations.NewOperationClient,
+			NewFunc:   armreservations.NewReservationOrderClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations",
-			URL:       "/providers/Microsoft.Capacity/operations",
+			URL:       "/providers/Microsoft.Capacity/reservationOrders",
 			Namespace: "Microsoft.Capacity",
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Capacity")`,
 		},

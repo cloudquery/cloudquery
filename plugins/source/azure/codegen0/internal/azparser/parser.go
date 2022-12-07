@@ -53,10 +53,13 @@ var reListCreateRequest = regexp.MustCompile(`listCreateRequest`)
 var reNewListPager = regexp.MustCompile(`NewListPager`)
 var reNamespaceFromURL = regexp.MustCompile(`/providers/([a-zA-Z\.]+)/`)
 
+var newListPagerResourceGroupParams = []string{
+	"resourceGroupName", "options",
+}
+
 var supportedNewListPagerParams = [][]string{
 	{"options"},
-	{"resourceGroupName", "options"},
-	{"subscriptionID", "options"},
+	newListPagerResourceGroupParams,
 }
 
 var supportedNewClientParams = [][]string{
@@ -206,7 +209,8 @@ func CreateTablesFromPackage(pkg string) ([]*Table, error) {
 		if t.URL == "" || !t.HasListPager || !isArrayExist(supportedNewListPagerParams, t.NewListPagerParams) {
 			continue
 		}
-		if compareStrArrays(supportedNewListPagerParams[1], t.NewListPagerParams) {
+
+		if compareStrArrays(newListPagerResourceGroupParams, t.NewListPagerParams) {
 			t.Multiplex = fmt.Sprintf("client.SubscriptionResourceGroupMultiplexRegisteredNamespace(\"%s\")", t.Namespace)
 		} else {
 			t.Multiplex = fmt.Sprintf("client.SubscriptionMultiplexRegisteredNamespace(\"%s\")", t.Namespace)

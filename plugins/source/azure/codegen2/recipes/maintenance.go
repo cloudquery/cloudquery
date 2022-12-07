@@ -6,16 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmai
 func Armmaintenance() []Table {
 	tables := []Table{
 		{
-			Name:           "public_maintenance_configurations",
-			Struct:         &armmaintenance.Configuration{},
-			ResponseStruct: &armmaintenance.PublicMaintenanceConfigurationsClientListResponse{},
-			Client:         &armmaintenance.PublicMaintenanceConfigurationsClient{},
-			ListFunc:       (&armmaintenance.PublicMaintenanceConfigurationsClient{}).NewListPager,
-			NewFunc:        armmaintenance.NewPublicMaintenanceConfigurationsClient,
-			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/publicMaintenanceConfigurations",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Maintenance")`,
-		},
-		{
 			Name:           "configurations",
 			Struct:         &armmaintenance.Configuration{},
 			ResponseStruct: &armmaintenance.ConfigurationsClientListResponse{},
@@ -23,6 +13,16 @@ func Armmaintenance() []Table {
 			ListFunc:       (&armmaintenance.ConfigurationsClient{}).NewListPager,
 			NewFunc:        armmaintenance.NewConfigurationsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/maintenanceConfigurations",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Maintenance")`,
+		},
+		{
+			Name:           "public_maintenance_configurations",
+			Struct:         &armmaintenance.Configuration{},
+			ResponseStruct: &armmaintenance.PublicMaintenanceConfigurationsClientListResponse{},
+			Client:         &armmaintenance.PublicMaintenanceConfigurationsClient{},
+			ListFunc:       (&armmaintenance.PublicMaintenanceConfigurationsClient{}).NewListPager,
+			NewFunc:        armmaintenance.NewPublicMaintenanceConfigurationsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/publicMaintenanceConfigurations",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Maintenance")`,
 		},
 	}

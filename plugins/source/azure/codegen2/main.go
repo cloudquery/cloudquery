@@ -104,8 +104,8 @@ func initResource(r *recipes.Table) error {
 		path := strings.Split(runtime.FuncForPC(reflect.ValueOf(r.ListFunc).Pointer()).Name(), ".")
 		r.ListFuncName = path[len(path)-1]
 		r.ListFuncName = strings.TrimSuffix(r.ListFuncName, "-fm")
-		if reflect.TypeOf(r.ListFunc).In(0).Name() == "string" {
-			r.ListFuncHasSubscriptionId = true
+		if strings.Contains(r.Multiplex, "SubscriptionResourceGroupMultiplexRegisteredNamespace") && reflect.TypeOf(r.ListFunc).In(0).Name() == "string" {
+			r.ListFuncHasResourceGroupName = true
 		}
 	}
 	if r.ResponseStruct != nil {

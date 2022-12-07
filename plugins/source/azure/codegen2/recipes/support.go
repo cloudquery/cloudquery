@@ -6,16 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport
 func Armsupport() []Table {
 	tables := []Table{
 		{
-			Name:           "tickets",
-			Struct:         &armsupport.TicketDetails{},
-			ResponseStruct: &armsupport.TicketsClientListResponse{},
-			Client:         &armsupport.TicketsClient{},
-			ListFunc:       (&armsupport.TicketsClient{}).NewListPager,
-			NewFunc:        armsupport.NewTicketsClient,
-			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Support/supportTickets",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Support")`,
-		},
-		{
 			Name:           "services",
 			Struct:         &armsupport.Service{},
 			ResponseStruct: &armsupport.ServicesClientListResponse{},
@@ -23,6 +13,16 @@ func Armsupport() []Table {
 			ListFunc:       (&armsupport.ServicesClient{}).NewListPager,
 			NewFunc:        armsupport.NewServicesClient,
 			URL:            "/providers/Microsoft.Support/services",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Support")`,
+		},
+		{
+			Name:           "tickets",
+			Struct:         &armsupport.TicketDetails{},
+			ResponseStruct: &armsupport.TicketsClientListResponse{},
+			Client:         &armsupport.TicketsClient{},
+			ListFunc:       (&armsupport.TicketsClient{}).NewListPager,
+			NewFunc:        armsupport.NewTicketsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Support/supportTickets",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Support")`,
 		},
 	}

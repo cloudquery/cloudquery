@@ -22,7 +22,7 @@ type Client struct {
 	logger              zerolog.Logger
 	registeredNamespace map[string]map[string]bool
 	resourceGroups      map[string][]*armresources.GenericResourceExpanded
-	debugMode bool
+	debugMode           bool
 	// this is set by table client multiplexer
 	SubscriptionId string
 	ResourceGroup  string

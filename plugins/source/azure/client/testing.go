@@ -78,7 +78,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 			return nil, err
 		}
 		c := &Client{
-			logger: l,
+			logger:    l,
 			debugMode: true,
 			Options: &arm.ClientOptions{
 				ClientOptions: policy.ClientOptions{
