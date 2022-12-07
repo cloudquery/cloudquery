@@ -1,7 +1,0 @@
-{
-  "postgresql": "PostgreSQL",
-  "csv": "CSV",
-  "sqlite": "SQLite",
-  "snowflake": "Snowflake",
-  "bigquery": "BigQuery"
-}
