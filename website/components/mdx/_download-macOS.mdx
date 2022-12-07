@@ -1,3 +1,4 @@
+import { Callout } from 'nextra-theme-docs'
 import { Tabs, Tab } from '../Tabs'
 
 <Tabs options={['Homebrew', 'Precompiled Binaries (amd64)', 'Precompiled Binaries (arm64)']}>
@@ -8,6 +9,9 @@ brew install cloudquery/tap/cloudquery
 
 # After initial install you can upgrade the version via:
 # brew upgrade cloudquery
+
+# To install a specific version use:
+# brew install cloudquery/tap/cloudquery@VERSION_CLI_TRIMMED
 ```
 
 </Tab>
@@ -15,7 +19,7 @@ brew install cloudquery/tap/cloudquery
 <Tab>
 
 ```bash copy
-curl -L https://github.com/cloudquery/cloudquery/releases/download/VERSION_CLI/cloudquery_darwin_amd64 -o cloudquery
+curl -L https://github.com/cloudquery/cloudquery/releases/download/VERSION_CLI_FULL/cloudquery_darwin_amd64 -o cloudquery
 chmod a+x cloudquery
 ```
 
@@ -24,7 +28,7 @@ chmod a+x cloudquery
 <Tab>
 
 ```bash copy
-curl -L https://github.com/cloudquery/cloudquery/releases/download/VERSION_CLI/cloudquery_darwin_arm64 -o cloudquery
+curl -L https://github.com/cloudquery/cloudquery/releases/download/VERSION_CLI_FULL/cloudquery_darwin_arm64 -o cloudquery
 chmod a+x cloudquery
 ```
 

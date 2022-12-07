@@ -3,7 +3,8 @@ import * as fs from "fs";
 import path from "path";
 
 const patterns = {
-  cli: /VERSION_(CLI)/,
+  cli_full: /VERSION_(CLI_FULL)/,
+  cli_trimmed: /VERSION_(CLI_TRIMMED)/,
   sources: /VERSION_SOURCE_([a-zA-Z0-9_]+)/,
   destinations: /VERSION_DESTINATION_([a-zA-Z0-9_]+)/,
 };
@@ -55,6 +56,10 @@ function getVersionsForPrefix(prefix, files) {
   );
 }
 
+function removeVersionPrefix(version) {
+  return version.slice(1);
+}
+
 function getVersions() {
   const files = fs
     .readdirSync("./versions", { withFileTypes: true })
@@ -65,8 +70,14 @@ function getVersions() {
         .latest,
     }));
 
+  const { cli } = getVersionsForPrefix("cli", files);
   return {
-    cli: getVersionsForPrefix("cli", files),
+    cli_full: {
+      cli_full: cli,
+    },
+    cli_trimmed: {
+      cli_trimmed: removeVersionPrefix(cli),
+    },
     sources: getVersionsForPrefix("source", files),
     destinations: getVersionsForPrefix("destination", files),
   };
