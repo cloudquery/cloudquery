@@ -6,16 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsight
 func Armapplicationinsights() []Table {
 	tables := []Table{
 		{
-			Name:           "web_tests",
-			Struct:         &armapplicationinsights.WebTest{},
-			ResponseStruct: &armapplicationinsights.WebTestsClientListResponse{},
-			Client:         &armapplicationinsights.WebTestsClient{},
-			ListFunc:       (&armapplicationinsights.WebTestsClient{}).NewListPager,
-			NewFunc:        armapplicationinsights.NewWebTestsClient,
-			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/webtests",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Insights")`,
-		},
-		{
 			Name:           "components",
 			Struct:         &armapplicationinsights.Component{},
 			ResponseStruct: &armapplicationinsights.ComponentsClientListResponse{},
@@ -23,6 +13,16 @@ func Armapplicationinsights() []Table {
 			ListFunc:       (&armapplicationinsights.ComponentsClient{}).NewListPager,
 			NewFunc:        armapplicationinsights.NewComponentsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/components",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Insights")`,
+		},
+		{
+			Name:           "web_tests",
+			Struct:         &armapplicationinsights.WebTest{},
+			ResponseStruct: &armapplicationinsights.WebTestsClientListResponse{},
+			Client:         &armapplicationinsights.WebTestsClient{},
+			ListFunc:       (&armapplicationinsights.WebTestsClient{}).NewListPager,
+			NewFunc:        armapplicationinsights.NewWebTestsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/webtests",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Insights")`,
 		},
 	}

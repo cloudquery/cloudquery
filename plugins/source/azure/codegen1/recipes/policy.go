@@ -6,23 +6,9 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolic
 func Armpolicy() []*Table {
 	tables := []*Table{
 		{
-			NewFunc:   armpolicy.NewSetDefinitionsClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions",
-			Namespace: "Microsoft.Authorization",
-			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Authorization")`,
-		},
-		{
 			NewFunc:   armpolicy.NewAssignmentsClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy",
 			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyAssignments",
-			Namespace: "Microsoft.Authorization",
-			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Authorization")`,
-		},
-		{
-			NewFunc:   armpolicy.NewDefinitionsClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyDefinitions",
 			Namespace: "Microsoft.Authorization",
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Authorization")`,
 		},
@@ -34,9 +20,23 @@ func Armpolicy() []*Table {
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Authorization")`,
 		},
 		{
+			NewFunc:   armpolicy.NewDefinitionsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyDefinitions",
+			Namespace: "Microsoft.Authorization",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Authorization")`,
+		},
+		{
 			NewFunc:   armpolicy.NewExemptionsClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy",
 			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyExemptions",
+			Namespace: "Microsoft.Authorization",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Authorization")`,
+		},
+		{
+			NewFunc:   armpolicy.NewSetDefinitionsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions",
 			Namespace: "Microsoft.Authorization",
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Authorization")`,
 		},

@@ -16,16 +16,6 @@ func Armmonitor() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Insights")`,
 		},
 		{
-			Name:           "tenant_activity_logs",
-			Struct:         &armmonitor.EventData{},
-			ResponseStruct: &armmonitor.TenantActivityLogsClientListResponse{},
-			Client:         &armmonitor.TenantActivityLogsClient{},
-			ListFunc:       (&armmonitor.TenantActivityLogsClient{}).NewListPager,
-			NewFunc:        armmonitor.NewTenantActivityLogsClient,
-			URL:            "/providers/Microsoft.Insights/eventtypes/management/values",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Insights")`,
-		},
-		{
 			Name:           "private_link_scopes",
 			Struct:         &armmonitor.AzureMonitorPrivateLinkScope{},
 			ResponseStruct: &armmonitor.PrivateLinkScopesClientListResponse{},
@@ -34,6 +24,16 @@ func Armmonitor() []Table {
 			NewFunc:        armmonitor.NewPrivateLinkScopesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/microsoft.insights/privateLinkScopes",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("microsoft.insights")`,
+		},
+		{
+			Name:           "tenant_activity_logs",
+			Struct:         &armmonitor.EventData{},
+			ResponseStruct: &armmonitor.TenantActivityLogsClientListResponse{},
+			Client:         &armmonitor.TenantActivityLogsClient{},
+			ListFunc:       (&armmonitor.TenantActivityLogsClient{}).NewListPager,
+			NewFunc:        armmonitor.NewTenantActivityLogsClient,
+			URL:            "/providers/Microsoft.Insights/eventtypes/management/values",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Insights")`,
 		},
 	}
 

@@ -6,16 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering
 func Armpeering() []Table {
 	tables := []Table{
 		{
-			Name:           "service_locations",
-			Struct:         &armpeering.ServiceLocation{},
-			ResponseStruct: &armpeering.ServiceLocationsClientListResponse{},
-			Client:         &armpeering.ServiceLocationsClient{},
-			ListFunc:       (&armpeering.ServiceLocationsClient{}).NewListPager,
-			NewFunc:        armpeering.NewServiceLocationsClient,
-			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peeringServiceLocations",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Peering")`,
-		},
-		{
 			Name:           "service_countries",
 			Struct:         &armpeering.ServiceCountry{},
 			ResponseStruct: &armpeering.ServiceCountriesClientListResponse{},
@@ -23,6 +13,16 @@ func Armpeering() []Table {
 			ListFunc:       (&armpeering.ServiceCountriesClient{}).NewListPager,
 			NewFunc:        armpeering.NewServiceCountriesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peeringServiceCountries",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Peering")`,
+		},
+		{
+			Name:           "service_locations",
+			Struct:         &armpeering.ServiceLocation{},
+			ResponseStruct: &armpeering.ServiceLocationsClientListResponse{},
+			Client:         &armpeering.ServiceLocationsClient{},
+			ListFunc:       (&armpeering.ServiceLocationsClient{}).NewListPager,
+			NewFunc:        armpeering.NewServiceLocationsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peeringServiceLocations",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Peering")`,
 		},
 		{

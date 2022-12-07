@@ -6,6 +6,16 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn"
 func Armcdn() []Table {
 	tables := []Table{
 		{
+			Name:           "edge_nodes",
+			Struct:         &armcdn.EdgeNode{},
+			ResponseStruct: &armcdn.EdgeNodesClientListResponse{},
+			Client:         &armcdn.EdgeNodesClient{},
+			ListFunc:       (&armcdn.EdgeNodesClient{}).NewListPager,
+			NewFunc:        armcdn.NewEdgeNodesClient,
+			URL:            "/providers/Microsoft.Cdn/edgenodes",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Cdn")`,
+		},
+		{
 			Name:           "managed_rule_sets",
 			Struct:         &armcdn.ManagedRuleSetDefinition{},
 			ResponseStruct: &armcdn.ManagedRuleSetsClientListResponse{},
@@ -33,16 +43,6 @@ func Armcdn() []Table {
 			ListFunc:       (&armcdn.ProfilesClient{}).NewListPager,
 			NewFunc:        armcdn.NewProfilesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/profiles",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Cdn")`,
-		},
-		{
-			Name:           "edge_nodes",
-			Struct:         &armcdn.EdgeNode{},
-			ResponseStruct: &armcdn.EdgeNodesClientListResponse{},
-			Client:         &armcdn.EdgeNodesClient{},
-			ListFunc:       (&armcdn.EdgeNodesClient{}).NewListPager,
-			NewFunc:        armcdn.NewEdgeNodesClient,
-			URL:            "/providers/Microsoft.Cdn/edgenodes",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Cdn")`,
 		},
 	}

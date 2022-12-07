@@ -6,16 +6,16 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkl
 func Armworkloads() []*Table {
 	tables := []*Table{
 		{
-			NewFunc:   armworkloads.NewSKUsClient,
+			NewFunc:   armworkloads.NewMonitorsClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Workloads/skus",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Workloads/monitors",
 			Namespace: "Microsoft.Workloads",
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Workloads")`,
 		},
 		{
-			NewFunc:   armworkloads.NewMonitorsClient,
+			NewFunc:   armworkloads.NewSKUsClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Workloads/monitors",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Workloads/skus",
 			Namespace: "Microsoft.Workloads",
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Workloads")`,
 		},

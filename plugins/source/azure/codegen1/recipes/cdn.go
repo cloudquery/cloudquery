@@ -6,6 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn"
 func Armcdn() []*Table {
 	tables := []*Table{
 		{
+			NewFunc:   armcdn.NewEdgeNodesClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
+			URL:       "/providers/Microsoft.Cdn/edgenodes",
+			Namespace: "Microsoft.Cdn",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Cdn")`,
+		},
+		{
 			NewFunc:   armcdn.NewManagedRuleSetsClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
 			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/cdnWebApplicationFirewallManagedRuleSets",
@@ -20,13 +27,6 @@ func Armcdn() []*Table {
 			Multiplex: `client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.Cdn")`,
 		},
 		{
-			NewFunc:   armcdn.NewResourceUsageClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/checkResourceUsage",
-			Namespace: "Microsoft.Cdn",
-			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Cdn")`,
-		},
-		{
 			NewFunc:   armcdn.NewProfilesClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
 			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/profiles",
@@ -34,9 +34,9 @@ func Armcdn() []*Table {
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Cdn")`,
 		},
 		{
-			NewFunc:   armcdn.NewEdgeNodesClient,
+			NewFunc:   armcdn.NewResourceUsageClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
-			URL:       "/providers/Microsoft.Cdn/edgenodes",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/checkResourceUsage",
 			Namespace: "Microsoft.Cdn",
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Cdn")`,
 		},

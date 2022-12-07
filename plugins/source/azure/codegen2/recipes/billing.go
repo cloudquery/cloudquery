@@ -16,16 +16,6 @@ func Armbilling() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Billing")`,
 		},
 		{
-			Name:           "periods",
-			Struct:         &armbilling.Period{},
-			ResponseStruct: &armbilling.PeriodsClientListResponse{},
-			Client:         &armbilling.PeriodsClient{},
-			ListFunc:       (&armbilling.PeriodsClient{}).NewListPager,
-			NewFunc:        armbilling.NewPeriodsClient,
-			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Billing/billingPeriods",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Billing")`,
-		},
-		{
 			Name:           "enrollment_accounts",
 			Struct:         &armbilling.EnrollmentAccountSummary{},
 			ResponseStruct: &armbilling.EnrollmentAccountsClientListResponse{},
@@ -33,6 +23,16 @@ func Armbilling() []Table {
 			ListFunc:       (&armbilling.EnrollmentAccountsClient{}).NewListPager,
 			NewFunc:        armbilling.NewEnrollmentAccountsClient,
 			URL:            "/providers/Microsoft.Billing/enrollmentAccounts",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Billing")`,
+		},
+		{
+			Name:           "periods",
+			Struct:         &armbilling.Period{},
+			ResponseStruct: &armbilling.PeriodsClientListResponse{},
+			Client:         &armbilling.PeriodsClient{},
+			ListFunc:       (&armbilling.PeriodsClient{}).NewListPager,
+			NewFunc:        armbilling.NewPeriodsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Billing/billingPeriods",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Billing")`,
 		},
 	}

@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
 func Armsql() []Table {
 	tables := []Table{
 		{
-			Name:           "servers",
-			Struct:         &armsql.Server{},
-			ResponseStruct: &armsql.ServersClientListResponse{},
-			Client:         &armsql.ServersClient{},
-			ListFunc:       (&armsql.ServersClient{}).NewListPager,
-			NewFunc:        armsql.NewServersClient,
-			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/servers",
+			Name:           "instance_pools",
+			Struct:         &armsql.InstancePool{},
+			ResponseStruct: &armsql.InstancePoolsClientListResponse{},
+			Client:         &armsql.InstancePoolsClient{},
+			ListFunc:       (&armsql.InstancePoolsClient{}).NewListPager,
+			NewFunc:        armsql.NewInstancePoolsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/instancePools",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Sql")`,
 		},
 		{
@@ -26,13 +26,13 @@ func Armsql() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Sql")`,
 		},
 		{
-			Name:           "instance_pools",
-			Struct:         &armsql.InstancePool{},
-			ResponseStruct: &armsql.InstancePoolsClientListResponse{},
-			Client:         &armsql.InstancePoolsClient{},
-			ListFunc:       (&armsql.InstancePoolsClient{}).NewListPager,
-			NewFunc:        armsql.NewInstancePoolsClient,
-			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/instancePools",
+			Name:           "servers",
+			Struct:         &armsql.Server{},
+			ResponseStruct: &armsql.ServersClientListResponse{},
+			Client:         &armsql.ServersClient{},
+			ListFunc:       (&armsql.ServersClient{}).NewListPager,
+			NewFunc:        armsql.NewServersClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/servers",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Sql")`,
 		},
 		{

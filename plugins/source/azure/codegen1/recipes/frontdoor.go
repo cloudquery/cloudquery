@@ -6,13 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfront
 func Armfrontdoor() []*Table {
 	tables := []*Table{
 		{
-			NewFunc:   armfrontdoor.NewPoliciesClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor",
-			URL:       "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoorWebApplicationFirewallPolicies",
-			Namespace: "Microsoft.Network",
-			Multiplex: `client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.Network")`,
-		},
-		{
 			NewFunc:   armfrontdoor.NewFrontDoorsClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor",
 			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Network/frontDoors",
@@ -32,6 +25,13 @@ func Armfrontdoor() []*Table {
 			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Network/NetworkExperimentProfiles",
 			Namespace: "Microsoft.Network",
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Network")`,
+		},
+		{
+			NewFunc:   armfrontdoor.NewPoliciesClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor",
+			URL:       "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoorWebApplicationFirewallPolicies",
+			Namespace: "Microsoft.Network",
+			Multiplex: `client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.Network")`,
 		},
 	}
 	return tables

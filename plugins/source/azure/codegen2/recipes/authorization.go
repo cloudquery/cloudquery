@@ -6,6 +6,16 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/arma
 func Armauthorization() []Table {
 	tables := []Table{
 		{
+			Name:           "classic_administrators",
+			Struct:         &armauthorization.ClassicAdministrator{},
+			ResponseStruct: &armauthorization.ClassicAdministratorsClientListResponse{},
+			Client:         &armauthorization.ClassicAdministratorsClient{},
+			ListFunc:       (&armauthorization.ClassicAdministratorsClient{}).NewListPager,
+			NewFunc:        armauthorization.NewClassicAdministratorsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/classicAdministrators",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Authorization")`,
+		},
+		{
 			Name:           "provider_operations_metadata",
 			Struct:         &armauthorization.ProviderOperationsMetadata{},
 			ResponseStruct: &armauthorization.ProviderOperationsMetadataClientListResponse{},
@@ -23,16 +33,6 @@ func Armauthorization() []Table {
 			ListFunc:       (&armauthorization.RoleAssignmentsClient{}).NewListPager,
 			NewFunc:        armauthorization.NewRoleAssignmentsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/roleAssignments",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Authorization")`,
-		},
-		{
-			Name:           "classic_administrators",
-			Struct:         &armauthorization.ClassicAdministrator{},
-			ResponseStruct: &armauthorization.ClassicAdministratorsClientListResponse{},
-			Client:         &armauthorization.ClassicAdministratorsClient{},
-			ListFunc:       (&armauthorization.ClassicAdministratorsClient{}).NewListPager,
-			NewFunc:        armauthorization.NewClassicAdministratorsClient,
-			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/classicAdministrators",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Authorization")`,
 		},
 	}

@@ -7,6 +7,7 @@ import (
 	"go/token"
 	"path"
 	"regexp"
+	"sort"
 	"strings"
 )
 
@@ -217,5 +218,8 @@ func CreateTablesFromPackage(pkg string) ([]*Table, error) {
 		}
 		result = append(result, t)
 	}
+	sort.Slice(result, func(i, j int) bool {
+		return result[i].NewFuncName < result[j].NewFuncName
+	})
 	return result, nil
 }

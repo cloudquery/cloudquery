@@ -6,9 +6,9 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
 func Armsql() []*Table {
 	tables := []*Table{
 		{
-			NewFunc:   armsql.NewServersClient,
+			NewFunc:   armsql.NewInstancePoolsClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/servers",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/instancePools",
 			Namespace: "Microsoft.Sql",
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Sql")`,
 		},
@@ -20,9 +20,9 @@ func Armsql() []*Table {
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Sql")`,
 		},
 		{
-			NewFunc:   armsql.NewInstancePoolsClient,
+			NewFunc:   armsql.NewServersClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/instancePools",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/servers",
 			Namespace: "Microsoft.Sql",
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Sql")`,
 		},

@@ -130,6 +130,95 @@ require github.com/kylelemons/godebug v1.1.0 // indirect
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.1.1 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/addons/armaddons v0.1.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/alertsmanagement/armalertsmanagement v0.7.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/attestation/armattestation v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/baremetalinfrastructure/armbaremetalinfrastructure v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blueprint/armblueprint v0.5.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/changeanalysis/armchangeanalysis v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/commerce/armcommerce v0.1.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/communication/armcommunication v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confidentialledger/armconfidentialledger v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customproviders/armcustomproviders v0.5.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databricks/armdatabricks v0.6.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datacatalog/armdatacatalog v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datashare/armdatashare v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/delegatednetwork/armdelegatednetwork v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deploymentmanager/armdeploymentmanager v0.4.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter v0.3.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceprovisioningservices/armdeviceprovisioningservices v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceupdate/armdeviceupdate v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/digitaltwins/armdigitaltwins v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dynatrace/armdynatrace v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/edgeorder/armedgeorder v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/edgeorderpartner/armedgeorderpartner v0.5.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/education/armeducation v0.2.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/extendedlocation/armextendedlocation v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/fluidrelay/armfluidrelay v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/guestconfiguration/armguestconfiguration v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hardwaresecuritymodules/armhardwaresecuritymodules v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridconnectivity/armhybridconnectivity v0.5.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcontainerservice/armhybridcontainerservice v0.1.1 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridkubernetes/armhybridkubernetes v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iotcentral/armiotcentral v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iothub/armiothub v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iotsecurity/armiotsecurity v0.5.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kubernetesconfiguration/armkubernetesconfiguration v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/loadtesting/armloadtesting v0.1.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logic/armlogic v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logz/armlogz v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetwork/armmanagednetwork v0.1.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maps/armmaps v0.5.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplaceordering/armmarketplaceordering v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mixedreality/armmixedreality v0.5.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork v0.6.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/msi/armmsi v0.7.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oep/armoep v0.4.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationsmanagement/armoperationsmanagement v0.6.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/policyinsights/armpolicyinsights v0.6.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbiembedded/armpowerbiembedded v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbiprivatelinks/armpowerbiprivatelinks v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerplatform/armpowerplatform v0.1.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/purview/armpurview v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quantum/armquantum v0.5.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservices v1.1.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourceconnector/armresourceconnector v0.2.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcegraph/armresourcegraph v0.6.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcehealth/armresourcehealth v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcemover/armresourcemover v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armchanges v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeploymentscripts v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armfeatures v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armlinks v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armmanagedapplications v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armtemplatespecs v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/scheduler/armscheduler v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/scvmm/armscvmm v0.2.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securitydevops/armsecuritydevops v0.1.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/serialconsole/armserialconsole v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/armservicefabric v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabricmesh/armservicefabricmesh v0.5.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicelinker/armservicelinker v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/signalr/armsignalr v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/solutions/armmanagedapplications v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storageimportexport/armstorageimportexport v0.5.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagepool/armstoragepool v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagesync/armstoragesync v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/timeseriesinsights/armtimeseriesinsights v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/trafficmanager/armtrafficmanager v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/visualstudio/armvisualstudio v0.4.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/vmwarecloudsimple/armvmwarecloudsimple v1.0.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/webpubsub/armwebpubsub v1.0.0 // indirect
 	github.com/AzureAD/microsoft-authentication-library-for-go v0.7.0 // indirect
 	github.com/getsentry/sentry-go v0.15.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
@@ -148,7 +237,7 @@ require (
 	github.com/thoas/go-funk v0.9.2 // indirect
 	golang.org/x/crypto v0.1.0 // indirect
 	golang.org/x/exp v0.0.0-20221126150942-6ab00d035af9 // indirect
-	golang.org/x/net v0.3.0 // indirect
+	golang.org/x/net v0.4.0 // indirect
 	golang.org/x/sync v0.1.0 // indirect
 	golang.org/x/sys v0.3.0 // indirect
 	golang.org/x/text v0.5.0 // indirect

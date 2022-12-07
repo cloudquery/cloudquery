@@ -6,16 +6,16 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsight
 func Armoperationalinsights() []*Table {
 	tables := []*Table{
 		{
-			NewFunc:   armoperationalinsights.NewWorkspacesClient,
+			NewFunc:   armoperationalinsights.NewClustersClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.OperationalInsights/workspaces",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.OperationalInsights/clusters",
 			Namespace: "Microsoft.OperationalInsights",
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.OperationalInsights")`,
 		},
 		{
-			NewFunc:   armoperationalinsights.NewClustersClient,
+			NewFunc:   armoperationalinsights.NewWorkspacesClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.OperationalInsights/clusters",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.OperationalInsights/workspaces",
 			Namespace: "Microsoft.OperationalInsights",
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.OperationalInsights")`,
 		},

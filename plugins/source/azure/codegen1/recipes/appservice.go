@@ -6,13 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armapps
 func Armappservice() []*Table {
 	tables := []*Table{
 		{
-			NewFunc:   armappservice.NewResourceHealthMetadataClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Web/resourceHealthMetadata",
-			Namespace: "Microsoft.Web",
-			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Web")`,
-		},
-		{
 			NewFunc:   armappservice.NewCertificateOrdersClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice",
 			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.CertificateRegistration/certificateOrders",
@@ -20,9 +13,30 @@ func Armappservice() []*Table {
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.CertificateRegistration")`,
 		},
 		{
+			NewFunc:   armappservice.NewCertificatesClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Web/certificates",
+			Namespace: "Microsoft.Web",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Web")`,
+		},
+		{
 			NewFunc:   armappservice.NewDeletedWebAppsClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice",
 			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Web/deletedSites",
+			Namespace: "Microsoft.Web",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Web")`,
+		},
+		{
+			NewFunc:   armappservice.NewDomainsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/domains",
+			Namespace: "Microsoft.DomainRegistration",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DomainRegistration")`,
+		},
+		{
+			NewFunc:   armappservice.NewEnvironmentsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Web/hostingEnvironments",
 			Namespace: "Microsoft.Web",
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Web")`,
 		},
@@ -34,18 +48,18 @@ func Armappservice() []*Table {
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Web")`,
 		},
 		{
-			NewFunc:   armappservice.NewEnvironmentsClient,
+			NewFunc:   armappservice.NewRecommendationsClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Web/hostingEnvironments",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Web/recommendations",
 			Namespace: "Microsoft.Web",
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Web")`,
 		},
 		{
-			NewFunc:   armappservice.NewDomainsClient,
+			NewFunc:   armappservice.NewResourceHealthMetadataClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/domains",
-			Namespace: "Microsoft.DomainRegistration",
-			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DomainRegistration")`,
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Web/resourceHealthMetadata",
+			Namespace: "Microsoft.Web",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Web")`,
 		},
 		{
 			NewFunc:   armappservice.NewStaticSitesClient,
@@ -60,20 +74,6 @@ func Armappservice() []*Table {
 			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/topLevelDomains",
 			Namespace: "Microsoft.DomainRegistration",
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DomainRegistration")`,
-		},
-		{
-			NewFunc:   armappservice.NewCertificatesClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Web/certificates",
-			Namespace: "Microsoft.Web",
-			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Web")`,
-		},
-		{
-			NewFunc:   armappservice.NewRecommendationsClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Web/recommendations",
-			Namespace: "Microsoft.Web",
-			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Web")`,
 		},
 		{
 			NewFunc:   armappservice.NewWebAppsClient,

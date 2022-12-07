@@ -6,13 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
 func Armcosmos() []Table {
 	tables := []Table{
 		{
-			Name:           "restorable_database_accounts",
-			Struct:         &armcosmos.RestorableDatabaseAccountGetResult{},
-			ResponseStruct: &armcosmos.RestorableDatabaseAccountsClientListResponse{},
-			Client:         &armcosmos.RestorableDatabaseAccountsClient{},
-			ListFunc:       (&armcosmos.RestorableDatabaseAccountsClient{}).NewListPager,
-			NewFunc:        armcosmos.NewRestorableDatabaseAccountsClient,
-			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/restorableDatabaseAccounts",
+			Name:           "database_accounts",
+			Struct:         &armcosmos.DatabaseAccountGetResults{},
+			ResponseStruct: &armcosmos.DatabaseAccountsClientListResponse{},
+			Client:         &armcosmos.DatabaseAccountsClient{},
+			ListFunc:       (&armcosmos.DatabaseAccountsClient{}).NewListPager,
+			NewFunc:        armcosmos.NewDatabaseAccountsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/databaseAccounts",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DocumentDB")`,
 		},
 		{
@@ -26,13 +26,13 @@ func Armcosmos() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DocumentDB")`,
 		},
 		{
-			Name:           "database_accounts",
-			Struct:         &armcosmos.DatabaseAccountGetResults{},
-			ResponseStruct: &armcosmos.DatabaseAccountsClientListResponse{},
-			Client:         &armcosmos.DatabaseAccountsClient{},
-			ListFunc:       (&armcosmos.DatabaseAccountsClient{}).NewListPager,
-			NewFunc:        armcosmos.NewDatabaseAccountsClient,
-			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/databaseAccounts",
+			Name:           "restorable_database_accounts",
+			Struct:         &armcosmos.RestorableDatabaseAccountGetResult{},
+			ResponseStruct: &armcosmos.RestorableDatabaseAccountsClientListResponse{},
+			Client:         &armcosmos.RestorableDatabaseAccountsClient{},
+			ListFunc:       (&armcosmos.RestorableDatabaseAccountsClient{}).NewListPager,
+			NewFunc:        armcosmos.NewRestorableDatabaseAccountsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/restorableDatabaseAccounts",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DocumentDB")`,
 		},
 	}
