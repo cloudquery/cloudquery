@@ -4,6 +4,21 @@
 
 This plugin uses code-generation heavily to speed up development and take advantage of the [Azure SDK](https://github.com/Azure/azure-sdk-for-go) which is in itself auto-generate (for the most part).
 
+There are two steps of autogeneration:
+
+### Discovery and autogenerating recipes
+
+The first problem with generating all azure tables is even discovering which packages are available and then generating the recipes under `codegen2/`. For this we use a multi-stage discovery and generation process which for the most part should run periodically to update code but developer would rarely change that.
+
+Process:
+
+1) `scripts/update_azure_subpackages.sh` will curl `https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk` and update `go.mod` with all relevant subpackages and download those modules locally.
+2) `codegen0` will then parse the source code using go `ast` to find all root `NewXClients` which provides `NewListPager` function and will generate all recipes for `codegen1/recipes/*`.
+3) This intermideiate step is used because not everything is easily available when parsing the ast so we need to be able to reflect some of the types and then generate the final recipes to be located under `codegen2/recipes/*`
+
+### Generating the actual tables
+
+To generate the actual tables take a look at the recipes under `codegen2/recipes/*` and add your own based on other recipes.
 
 
 ## General Tips

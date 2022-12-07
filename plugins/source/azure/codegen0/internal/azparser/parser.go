@@ -1,10 +1,12 @@
 package azparser
 
 import (
+	"errors"
 	"fmt"
 	"go/ast"
 	"go/parser"
 	"go/token"
+	"os"
 	"path"
 	"regexp"
 	"sort"
@@ -44,10 +46,6 @@ var newFuncsToSkip = map[string]bool{
 	// Seems like a buggy resource that always returns a marshal error. maybe will be fixed in future Azure SDK
 	"NewContactsClient": true,
 }
-
-const (
-	cacheDir = "/Users/yevgenyp/go/pkg/mod"
-)
 
 var reNewClient = regexp.MustCompile(`New[a-zA-Z]+Client`)
 var reListCreateRequest = regexp.MustCompile(`listCreateRequest`)
@@ -152,6 +150,11 @@ func findFunctions(pkgs map[string]*ast.Package, re *regexp.Regexp) []function {
 
 // Get a package in format of github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/xxx/yy@v0.1.1
 func CreateTablesFromPackage(pkg string) ([]*Table, error) {
+	goPath := os.Getenv("GOPATH")
+	if goPath == "" {
+		return nil, errors.New("GOPATH is not set")
+	}
+	cacheDir := goPath + "/pkg/mod"
 	// this maps client name to tables
 	tables := make(map[string]*Table)
 	set := token.NewFileSet()
