@@ -27,7 +27,11 @@ func main() {
 	}
 
 	var resources []*recipes.Resource
+	resources = append(resources, recipes.AccessLogResources()...)
 	resources = append(resources, recipes.UserResources()...)
+	resources = append(resources, recipes.GroupResources()...)
+	resources = append(resources, recipes.ConversationResources()...)
+	resources = append(resources, recipes.EmojiResources()...)
 
 	for _, r := range resources {
 		r.Infer()

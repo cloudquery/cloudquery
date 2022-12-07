@@ -132,19 +132,6 @@ func Generate() error {
 		return fmt.Errorf("failed to get caller information")
 	}
 
-	// write services.go file
-	servicesTpl, err := template.New("services.go.tpl").ParseFS(templatesFS, "templates/services.go.tpl")
-	if err != nil {
-		return err
-	}
-
-	var buff bytes.Buffer
-	if err := servicesTpl.Execute(&buff, services); err != nil {
-		return fmt.Errorf("failed to execute template: %w", err)
-	}
-	filePath := path.Join(path.Dir(filename), "../../client/services.go")
-	formatAndWriteFile(filePath, buff)
-
 	// write individual service files
 	serviceTpl, err := template.New("service.go.tpl").ParseFS(templatesFS, "templates/service.go.tpl")
 	if err != nil {
@@ -152,7 +139,7 @@ func Generate() error {
 	}
 
 	for _, service := range services {
-		buff = bytes.Buffer{}
+		buff := bytes.Buffer{}
 		if err := serviceTpl.Execute(&buff, service); err != nil {
 			return fmt.Errorf("failed to execute template: %w", err)
 		}

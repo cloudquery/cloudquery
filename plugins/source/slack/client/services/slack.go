@@ -4,6 +4,7 @@ package services
 import (
 	"context"
 	"github.com/slack-go/slack"
+	"io"
 )
 
 //go:generate mockgen -package=mocks -destination=../mocks/slack.go -source=slack.go SlackClient

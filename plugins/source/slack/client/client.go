@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/cloudquery/cloudquery/plugins/source/slack/client/services"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
@@ -11,9 +12,11 @@ import (
 )
 
 type Client struct {
-	logger zerolog.Logger
-	spec   specs.Source
-	Slack  *slack.Client
+	logger     zerolog.Logger
+	spec       specs.Source
+	Slack      services.SlackClient
+	AllTeamIDs []string
+	TeamID     string
 }
 
 func (c *Client) Logger() *zerolog.Logger {
@@ -24,9 +27,19 @@ func (c *Client) ID() string {
 	return c.spec.Name
 }
 
-func New(ctx context.Context, logger zerolog.Logger, spec specs.Source) (schema.ClientMeta, error) {
+func (c *Client) withTeamID(teamID string) schema.ClientMeta {
+	return &Client{
+		logger:     c.logger.With().Str("team_id", teamID).Logger(),
+		AllTeamIDs: c.AllTeamIDs,
+		spec:       c.spec,
+		Slack:      c.Slack,
+		TeamID:     teamID,
+	}
+}
+
+func Configure(_ context.Context, logger zerolog.Logger, s specs.Source) (schema.ClientMeta, error) {
 	var config Spec
-	err := spec.UnmarshalSpec(&config)
+	err := s.UnmarshalSpec(&config)
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
 	}
@@ -35,9 +48,10 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Source) (schema.
 		opts = append(opts, slack.OptionDebug(true))
 	}
 	client := slack.New(config.Token, opts...)
+	client.Teams()
 	return &Client{
 		logger: logger,
-		spec:   spec,
+		spec:   s,
 		Slack:  client,
 	}, nil
 }

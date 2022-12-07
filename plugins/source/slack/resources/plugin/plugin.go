@@ -14,6 +14,6 @@ func Plugin() *plugins.SourcePlugin {
 		"slack",
 		Version,
 		tables(),
-		client.New,
+		client.Configure,
 	)
 }
