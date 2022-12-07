@@ -4,7 +4,7 @@
 
 This example connects a single GCP project to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
 
-```yaml copy
+```yaml
 kind: source
 spec:
   # Source spec section
@@ -50,7 +50,7 @@ This is the (nested) spec used by GCP Source Plugin
 
 ## GCP + Kubernetes (GKE)
 
-```yaml copy
+```yaml
 kind: source
 spec:
   name: gcp
