@@ -55,6 +55,9 @@ func (*fakeFoldersServer) ListFolders(context.Context, *pb.ListFoldersRequest) (
 	if err := faker.FakeObject(&resp); err != nil {
 		return nil, fmt.Errorf("failed to fake data: %w", err)
 	}
+	for _, f := range resp.Folders {
+		f.Parent = "organizations/123"
+	}
 	resp.NextPageToken = ""
 	return &resp, nil
 }

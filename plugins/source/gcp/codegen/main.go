@@ -68,6 +68,10 @@ func generatePlugin(rr []*recipes.Resource) {
 }
 
 func needsProjectIDColumn(r recipes.Resource) bool {
+	if r.Multiplex == &recipes.OrgMultiplex {
+		return false
+	}
+
 	for _, c := range r.ExtraColumns {
 		if c.Name == "project_id" {
 			return false

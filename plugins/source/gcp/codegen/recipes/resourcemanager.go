@@ -2,8 +2,12 @@ package recipes
 
 import (
 	pb "cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
+	"github.com/cloudquery/plugin-sdk/codegen"
+	"github.com/cloudquery/plugin-sdk/schema"
 	cloudresourcemanager "google.golang.org/api/cloudresourcemanager/v3"
 )
+
+var OrgMultiplex = "client.OrgMultiplex"
 
 func init() {
 	resources := []*Resource{
@@ -12,6 +16,14 @@ func init() {
 			Struct:     &pb.Folder{},
 			SkipFetch:  true,
 			SkipMock:   true,
+			Multiplex:  &OrgMultiplex,
+			ExtraColumns: []codegen.ColumnDefinition{
+				{
+					Name:     "organization_id",
+					Type:     schema.TypeString,
+					Resolver: "resolveOrganizationId",
+				},
+			},
 		},
 		{
 			SubService: "projects",

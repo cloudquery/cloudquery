@@ -11,12 +11,12 @@ func Folders() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_resourcemanager_folders",
 		Resolver:  fetchFolders,
-		Multiplex: client.ProjectMultiplex,
+		Multiplex: client.OrgMultiplex,
 		Columns: []schema.Column{
 			{
-				Name:     "project_id",
+				Name:     "organization_id",
 				Type:     schema.TypeString,
-				Resolver: client.ResolveProject,
+				Resolver: resolveOrganizationId,
 			},
 			{
 				Name:     "name",

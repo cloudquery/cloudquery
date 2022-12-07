@@ -54,9 +54,8 @@ func MockTestGrpcHelper(t *testing.T, table *schema.Table, createService func(*g
 			option.WithGRPCDialOption(grpc.WithTransportCredentials(insecure.NewCredentials())),
 		}
 		c := &Client{
-			// plugin: p,
-			logger: logger,
-			// logger:   t.Log(),
+			logger:        logger,
+			ctx:           ctx,
 			ClientOptions: clientOptions,
 			projects:      []string{"testProject"},
 		}
@@ -111,9 +110,8 @@ func MockTestRestHelper(t *testing.T, table *schema.Table, createService func(*h
 			option.WithoutAuthentication(),
 		}
 		c := &Client{
-			// plugin: p,
-			logger: logger,
-			// logger:   t.Log(),
+			logger:        logger,
+			ctx:           ctx,
 			ClientOptions: clientOptions,
 			projects:      []string{"testProject"},
 		}

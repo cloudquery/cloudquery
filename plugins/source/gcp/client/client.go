@@ -31,6 +31,9 @@ type Client struct {
 	ProjectId string
 	// Logger
 	logger zerolog.Logger
+
+	// This is used if we don't have a context in the call
+	ctx context.Context
 }
 
 //revive:disable:modifies-value-receiver
@@ -64,6 +67,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 	var err error
 	c := Client{
 		logger: logger,
+		ctx:    ctx,
 	}
 	var gcpSpec Spec
 	if err := s.UnmarshalSpec(&gcpSpec); err != nil {
