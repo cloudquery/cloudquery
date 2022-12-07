@@ -70,7 +70,6 @@ func (r *Resource) propagateTable() error {
 		codegen.WithPKColumns(r.PKColumns...),
 		codegen.WithUnwrapStructFields(append(r.UnwrapStructFields, "Properties")),
 		codegen.WithUnwrapAllEmbeddedStructs(),
-		codegen.WithTypeTransformer(fixStringArray),
 	}
 
 	if err := r.checkName(); err != nil {
