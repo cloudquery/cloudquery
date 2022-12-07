@@ -29,7 +29,7 @@ V1 introduces a new config format that is closely related to the old one, but an
 
 The new config format for source plugins are as follows:
 
-```yaml copy
+```yaml
 kind: source
 spec:
   ## Required. name of the plugin to use
@@ -61,7 +61,7 @@ Check the [source spec documentation](/docs/reference/source-spec) for general l
 
 The new config format for destination plugins (e.g. PostgreSQL) is as follows:
 
-```yaml copy
+```yaml
 kind: destination
 spec:
   ## Required. name of the plugin
@@ -132,7 +132,7 @@ See `cloudquery sync --help` for more details, or check our [online reference](/
 
 The `sync` command supports loading config from files or directories, and you may choose to combine multiple source- and destination- configs in a single file using `---` on its own line to separate different sections. For example:
 
-```
+```yaml
 kind: source
 spec:
     name: "aws"
