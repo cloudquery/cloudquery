@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [7.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v7.3.0...plugins-source-aws-v7.3.1) (2022-12-07)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/cognitoidentity to v1.14.5 ([#5454](https://github.com/cloudquery/cloudquery/issues/5454)) ([b671f08](https://github.com/cloudquery/cloudquery/commit/b671f08ec6c3f86255fecbad0db707c28ff2044e))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/rds to v1.33.0 ([#5455](https://github.com/cloudquery/cloudquery/issues/5455)) ([00331c2](https://github.com/cloudquery/cloudquery/commit/00331c22be15fc27d0c908444381b75923f90571))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.11.1 ([#5458](https://github.com/cloudquery/cloudquery/issues/5458)) ([58b7432](https://github.com/cloudquery/cloudquery/commit/58b74321cd253c9a843c8c103f324abb93952195))
+* Update endpoints ([#5453](https://github.com/cloudquery/cloudquery/issues/5453)) ([6f610fd](https://github.com/cloudquery/cloudquery/commit/6f610fd91f6d85a8c64aca2a442701644178c8ad))
+
 ## [7.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v7.2.3...plugins-source-aws-v7.3.0) (2022-12-06)
 
 
