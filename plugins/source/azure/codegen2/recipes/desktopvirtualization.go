@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualizat
 func Armdesktopvirtualization() []Table {
 	tables := []Table{
 		{
-			Name:           "host_pool",
+			Name:           "host_pools",
 			Struct:         &armdesktopvirtualization.HostPool{},
 			ResponseStruct: &armdesktopvirtualization.HostPoolsClientListResponse{},
 			Client:         &armdesktopvirtualization.HostPoolsClient{},

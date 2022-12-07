@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hanaonazure/armhan
 func Armhanaonazure() []Table {
 	tables := []Table{
 		{
-			Name:           "sap_monitor",
+			Name:           "sap_monitors",
 			Struct:         &armhanaonazure.SapMonitor{},
 			ResponseStruct: &armhanaonazure.SapMonitorsClientListResponse{},
 			Client:         &armhanaonazure.SapMonitorsClient{},

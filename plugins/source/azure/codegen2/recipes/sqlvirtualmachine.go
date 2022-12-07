@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sqlvirtualmachine/
 func Armsqlvirtualmachine() []Table {
 	tables := []Table{
 		{
-			Name:           "group",
+			Name:           "groups",
 			Struct:         &armsqlvirtualmachine.Group{},
 			ResponseStruct: &armsqlvirtualmachine.GroupsClientListResponse{},
 			Client:         &armsqlvirtualmachine.GroupsClient{},
@@ -16,7 +16,7 @@ func Armsqlvirtualmachine() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.SqlVirtualMachine")`,
 		},
 		{
-			Name:           "sql_virtual_machine",
+			Name:           "sql_virtual_machines",
 			Struct:         &armsqlvirtualmachine.SQLVirtualMachine{},
 			ResponseStruct: &armsqlvirtualmachine.SQLVirtualMachinesClientListResponse{},
 			Client:         &armsqlvirtualmachine.SQLVirtualMachinesClient{},

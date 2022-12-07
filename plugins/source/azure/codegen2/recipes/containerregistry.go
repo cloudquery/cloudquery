@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/
 func Armcontainerregistry() []Table {
 	tables := []Table{
 		{
-			Name:           "registry",
+			Name:           "registries",
 			Struct:         &armcontainerregistry.Registry{},
 			ResponseStruct: &armcontainerregistry.RegistriesClientListResponse{},
 			Client:         &armcontainerregistry.RegistriesClient{},

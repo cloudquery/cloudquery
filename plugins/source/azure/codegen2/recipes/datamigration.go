@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armd
 func Armdatamigration() []Table {
 	tables := []Table{
 		{
-			Name:           "service",
+			Name:           "services",
 			Struct:         &armdatamigration.Service{},
 			ResponseStruct: &armdatamigration.ServicesClientListResponse{},
 			Client:         &armdatamigration.ServicesClient{},

@@ -6,17 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage
 func Armstorage() []Table {
 	tables := []Table{
 		{
-			Name:           "deleted_account",
-			Struct:         &armstorage.DeletedAccount{},
-			ResponseStruct: &armstorage.DeletedAccountsClientListResponse{},
-			Client:         &armstorage.DeletedAccountsClient{},
-			ListFunc:       (&armstorage.DeletedAccountsClient{}).NewListPager,
-			NewFunc:        armstorage.NewDeletedAccountsClient,
-			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Storage/deletedAccounts",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Storage")`,
-		},
-		{
-			Name:           "account",
+			Name:           "accounts",
 			Struct:         &armstorage.Account{},
 			ResponseStruct: &armstorage.AccountsClientListResponse{},
 			Client:         &armstorage.AccountsClient{},

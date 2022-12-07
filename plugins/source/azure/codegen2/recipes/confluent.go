@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confluent/armconfl
 func Armconfluent() []Table {
 	tables := []Table{
 		{
-			Name:           "agreement_resource",
+			Name:           "marketplace_agreements",
 			Struct:         &armconfluent.AgreementResource{},
 			ResponseStruct: &armconfluent.MarketplaceAgreementsClientListResponse{},
 			Client:         &armconfluent.MarketplaceAgreementsClient{},

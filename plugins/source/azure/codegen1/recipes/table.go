@@ -1,9 +1,9 @@
 package recipes
 
 type Table struct {
-	NewFunc interface{}
-	PkgPath string
-	URL     string
+	NewFunc   interface{}
+	PkgPath   string
+	URL       string
 	Namespace string
 	Multiplex string
 }

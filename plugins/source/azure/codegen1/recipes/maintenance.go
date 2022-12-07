@@ -19,27 +19,6 @@ func Armmaintenance() []*Table {
 			Namespace: "Microsoft.Maintenance",
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Maintenance")`,
 		},
-		{
-			NewFunc:   armmaintenance.NewApplyUpdateForResourceGroupClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance",
-			URL:       "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maintenance/applyUpdates",
-			Namespace: "Microsoft.Maintenance",
-			Multiplex: `client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.Maintenance")`,
-		},
-		{
-			NewFunc:   armmaintenance.NewApplyUpdatesClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/applyUpdates",
-			Namespace: "Microsoft.Maintenance",
-			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Maintenance")`,
-		},
-		{
-			NewFunc:   armmaintenance.NewConfigurationsForResourceGroupClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance",
-			URL:       "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maintenance/maintenanceConfigurations",
-			Namespace: "Microsoft.Maintenance",
-			Multiplex: `client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.Maintenance")`,
-		},
 	}
 	return tables
 }

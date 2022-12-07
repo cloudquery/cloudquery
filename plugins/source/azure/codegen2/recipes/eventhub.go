@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventh
 func Armeventhub() []Table {
 	tables := []Table{
 		{
-			Name:           "eh_namespace",
+			Name:           "namespaces",
 			Struct:         &armeventhub.EHNamespace{},
 			ResponseStruct: &armeventhub.NamespacesClientListResponse{},
 			Client:         &armeventhub.NamespacesClient{},

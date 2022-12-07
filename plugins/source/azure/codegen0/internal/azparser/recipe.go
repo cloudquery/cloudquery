@@ -14,5 +14,5 @@ type Table struct {
 	NewListPagerParams []string
 	// param names for NewXClient function
 	NewClientParams []string
-	Multiplex string
+	Multiplex       string
 }

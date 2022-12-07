@@ -6,17 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresou
 func Armresources() []Table {
 	tables := []Table{
 		{
-			Name:           "tag_details",
-			Struct:         &armresources.TagDetails{},
-			ResponseStruct: &armresources.TagsClientListResponse{},
-			Client:         &armresources.TagsClient{},
-			ListFunc:       (&armresources.TagsClient{}).NewListPager,
-			NewFunc:        armresources.NewTagsClient,
-			URL:            "/subscriptions/{subscriptionId}/tagNames",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("")`,
-		},
-		{
-			Name:           "provider",
+			Name:           "providers",
 			Struct:         &armresources.Provider{},
 			ResponseStruct: &armresources.ProvidersClientListResponse{},
 			Client:         &armresources.ProvidersClient{},
@@ -26,7 +16,17 @@ func Armresources() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("")`,
 		},
 		{
-			Name:           "resource_group",
+			Name:           "tags",
+			Struct:         &armresources.TagDetails{},
+			ResponseStruct: &armresources.TagsClientListResponse{},
+			Client:         &armresources.TagsClient{},
+			ListFunc:       (&armresources.TagsClient{}).NewListPager,
+			NewFunc:        armresources.NewTagsClient,
+			URL:            "/subscriptions/{subscriptionId}/tagNames",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("")`,
+		},
+		{
+			Name:           "resource_groups",
 			Struct:         &armresources.ResourceGroup{},
 			ResponseStruct: &armresources.ResourceGroupsClientListResponse{},
 			Client:         &armresources.ResourceGroupsClient{},

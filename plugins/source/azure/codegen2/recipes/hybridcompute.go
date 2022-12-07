@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armh
 func Armhybridcompute() []Table {
 	tables := []Table{
 		{
-			Name:           "private_link_scope",
+			Name:           "private_link_scopes",
 			Struct:         &armhybridcompute.PrivateLinkScope{},
 			ResponseStruct: &armhybridcompute.PrivateLinkScopesClientListResponse{},
 			Client:         &armhybridcompute.PrivateLinkScopesClient{},

@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dashboard/armdashb
 func Armdashboard() []Table {
 	tables := []Table{
 		{
-			Name:           "managed_grafana",
+			Name:           "grafana",
 			Struct:         &armdashboard.ManagedGrafana{},
 			ResponseStruct: &armdashboard.GrafanaClientListResponse{},
 			Client:         &armdashboard.GrafanaClient{},

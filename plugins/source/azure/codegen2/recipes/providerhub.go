@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armpro
 func Armproviderhub() []Table {
 	tables := []Table{
 		{
-			Name:           "provider_registration",
+			Name:           "provider_registrations",
 			Struct:         &armproviderhub.ProviderRegistration{},
 			ResponseStruct: &armproviderhub.ProviderRegistrationsClientListResponse{},
 			Client:         &armproviderhub.ProviderRegistrationsClient{},

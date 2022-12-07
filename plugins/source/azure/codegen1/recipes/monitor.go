@@ -6,6 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor
 func Armmonitor() []*Table {
 	tables := []*Table{
 		{
+			NewFunc:   armmonitor.NewEventCategoriesClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
+			URL:       "/providers/Microsoft.Insights/eventcategories",
+			Namespace: "Microsoft.Insights",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Insights")`,
+		},
+		{
 			NewFunc:   armmonitor.NewTenantActivityLogsClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
 			URL:       "/providers/Microsoft.Insights/eventtypes/management/values",
@@ -16,13 +23,6 @@ func Armmonitor() []*Table {
 			NewFunc:   armmonitor.NewLogProfilesClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
 			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/logprofiles",
-			Namespace: "Microsoft.Insights",
-			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Insights")`,
-		},
-		{
-			NewFunc:   armmonitor.NewEventCategoriesClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor",
-			URL:       "/providers/Microsoft.Insights/eventcategories",
 			Namespace: "Microsoft.Insights",
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Insights")`,
 		},

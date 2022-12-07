@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/engagementfabric/a
 func Armengagementfabric() []Table {
 	tables := []Table{
 		{
-			Name:           "account",
+			Name:           "accounts",
 			Struct:         &armengagementfabric.Account{},
 			ResponseStruct: &armengagementfabric.AccountsClientListResponse{},
 			Client:         &armengagementfabric.AccountsClient{},

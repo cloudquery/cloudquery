@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armapp
 func Armappplatform() []Table {
 	tables := []Table{
 		{
-			Name:           "service_resource",
+			Name:           "services",
 			Struct:         &armappplatform.ServiceResource{},
 			ResponseStruct: &armappplatform.ServicesClientListResponse{},
 			Client:         &armappplatform.ServicesClient{},

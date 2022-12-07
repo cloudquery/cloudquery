@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azuredata/armazure
 func Armazuredata() []Table {
 	tables := []Table{
 		{
-			Name:           "sql_server_registration",
+			Name:           "sql_server_registrations",
 			Struct:         &armazuredata.SQLServerRegistration{},
 			ResponseStruct: &armazuredata.SQLServerRegistrationsClientListResponse{},
 			Client:         &armazuredata.SQLServerRegistrationsClient{},

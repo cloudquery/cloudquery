@@ -1,6 +1,8 @@
 package client
 
-import "github.com/cloudquery/plugin-sdk/schema"
+import (
+	"github.com/cloudquery/plugin-sdk/schema"
+)
 
 // SingleSubscriptionMultiplex can be used in cases where any single subscription would do. This can reduce the number
 // of API calls.
@@ -19,6 +21,10 @@ func SubscriptionMultiplexRegisteredNamespace(namespace string) func(schema.Clie
 		client := meta.(*Client)
 		var c = make([]schema.ClientMeta, 0)
 		for _, subId := range client.subscriptions {
+			if client.debugMode {
+				c = append(c, client.withSubscription(subId))
+				continue
+			}
 			if _, ok := client.registeredNamespace[subId][namespace]; ok {
 				c = append(c, client.withSubscription(subId))
 			}
@@ -33,6 +39,10 @@ func SubscriptionResourceGroupMultiplexRegisteredNamespace(namespace string) fun
 		var c = make([]schema.ClientMeta, 0)
 		for _, subId := range client.subscriptions {
 			for _, rg := range client.resourceGroups[subId] {
+				if client.debugMode {
+					c = append(c, client.withSubscription(subId).withResourceGroup(*rg.Name))
+					continue
+				}
 				if _, ok := client.registeredNamespace[subId][namespace]; ok {
 					c = append(c, client.withSubscription(subId).withResourceGroup(*rg.Name))
 				}

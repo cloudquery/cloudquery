@@ -6,23 +6,23 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/orbital/armorbital
 func Armorbital() []Table {
 	tables := []Table{
 		{
-			Name:           "contact_profile",
-			Struct:         &armorbital.ContactProfile{},
-			ResponseStruct: &armorbital.ContactProfilesClientListResponse{},
-			Client:         &armorbital.ContactProfilesClient{},
-			ListFunc:       (&armorbital.ContactProfilesClient{}).NewListPager,
-			NewFunc:        armorbital.NewContactProfilesClient,
-			URL:            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/contactProfiles",
-			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.Orbital")`,
-		},
-		{
-			Name:           "spacecraft",
+			Name:           "spacecrafts",
 			Struct:         &armorbital.Spacecraft{},
 			ResponseStruct: &armorbital.SpacecraftsClientListResponse{},
 			Client:         &armorbital.SpacecraftsClient{},
 			ListFunc:       (&armorbital.SpacecraftsClient{}).NewListPager,
 			NewFunc:        armorbital.NewSpacecraftsClient,
 			URL:            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/spacecrafts",
+			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.Orbital")`,
+		},
+		{
+			Name:           "contact_profiles",
+			Struct:         &armorbital.ContactProfile{},
+			ResponseStruct: &armorbital.ContactProfilesClientListResponse{},
+			Client:         &armorbital.ContactProfilesClient{},
+			ListFunc:       (&armorbital.ContactProfilesClient{}).NewListPager,
+			NewFunc:        armorbital.NewContactProfilesClient,
+			URL:            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/contactProfiles",
 			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.Orbital")`,
 		},
 	}

@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devops/armdevops"
 func Armdevops() []Table {
 	tables := []Table{
 		{
-			Name:           "pipeline_template_definition",
+			Name:           "pipeline_template_definitions",
 			Struct:         &armdevops.PipelineTemplateDefinition{},
 			ResponseStruct: &armdevops.PipelineTemplateDefinitionsClientListResponse{},
 			Client:         &armdevops.PipelineTemplateDefinitionsClient{},

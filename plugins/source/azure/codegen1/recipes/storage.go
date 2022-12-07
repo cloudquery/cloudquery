@@ -6,23 +6,16 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage
 func Armstorage() []*Table {
 	tables := []*Table{
 		{
-			NewFunc:   armstorage.NewSKUsClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Storage/skus",
-			Namespace: "Microsoft.Storage",
-			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Storage")`,
-		},
-		{
-			NewFunc:   armstorage.NewDeletedAccountsClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Storage/deletedAccounts",
-			Namespace: "Microsoft.Storage",
-			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Storage")`,
-		},
-		{
 			NewFunc:   armstorage.NewAccountsClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage",
 			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Storage/storageAccounts",
+			Namespace: "Microsoft.Storage",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Storage")`,
+		},
+		{
+			NewFunc:   armstorage.NewSKUsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Storage/skus",
 			Namespace: "Microsoft.Storage",
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Storage")`,
 		},

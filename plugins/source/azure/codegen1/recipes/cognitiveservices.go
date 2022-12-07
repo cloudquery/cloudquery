@@ -6,13 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/
 func Armcognitiveservices() []*Table {
 	tables := []*Table{
 		{
-			NewFunc:   armcognitiveservices.NewResourceSKUsClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/skus",
-			Namespace: "Microsoft.CognitiveServices",
-			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.CognitiveServices")`,
-		},
-		{
 			NewFunc:   armcognitiveservices.NewAccountsClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices",
 			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/accounts",
@@ -20,9 +13,9 @@ func Armcognitiveservices() []*Table {
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.CognitiveServices")`,
 		},
 		{
-			NewFunc:   armcognitiveservices.NewDeletedAccountsClient,
+			NewFunc:   armcognitiveservices.NewResourceSKUsClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/deletedAccounts",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/skus",
 			Namespace: "Microsoft.CognitiveServices",
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.CognitiveServices")`,
 		},

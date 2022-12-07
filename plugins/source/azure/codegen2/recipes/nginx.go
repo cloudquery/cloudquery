@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx"
 func Armnginx() []Table {
 	tables := []Table{
 		{
-			Name:           "deployment",
+			Name:           "deployments",
 			Struct:         &armnginx.Deployment{},
 			ResponseStruct: &armnginx.DeploymentsClientListResponse{},
 			Client:         &armnginx.DeploymentsClient{},

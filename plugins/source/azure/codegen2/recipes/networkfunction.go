@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/ar
 func Armnetworkfunction() []Table {
 	tables := []Table{
 		{
-			Name:           "azure_traffic_collector",
+			Name:           "azure_traffic_collectors_by_subscription",
 			Struct:         &armnetworkfunction.AzureTrafficCollector{},
 			ResponseStruct: &armnetworkfunction.AzureTrafficCollectorsBySubscriptionClientListResponse{},
 			Client:         &armnetworkfunction.AzureTrafficCollectorsBySubscriptionClient{},
@@ -14,16 +14,6 @@ func Armnetworkfunction() []Table {
 			NewFunc:        armnetworkfunction.NewAzureTrafficCollectorsBySubscriptionClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.NetworkFunction/azureTrafficCollectors",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.NetworkFunction")`,
-		},
-		{
-			Name:           "azure_traffic_collector",
-			Struct:         &armnetworkfunction.AzureTrafficCollector{},
-			ResponseStruct: &armnetworkfunction.AzureTrafficCollectorsByResourceGroupClientListResponse{},
-			Client:         &armnetworkfunction.AzureTrafficCollectorsByResourceGroupClient{},
-			ListFunc:       (&armnetworkfunction.AzureTrafficCollectorsByResourceGroupClient{}).NewListPager,
-			NewFunc:        armnetworkfunction.NewAzureTrafficCollectorsByResourceGroupClient,
-			URL:            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction/azureTrafficCollectors",
-			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.NetworkFunction")`,
 		},
 	}
 

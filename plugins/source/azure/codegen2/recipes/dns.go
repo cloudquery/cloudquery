@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dns/armdns"
 func Armdns() []Table {
 	tables := []Table{
 		{
-			Name:           "zone",
+			Name:           "zones",
 			Struct:         &armdns.Zone{},
 			ResponseStruct: &armdns.ZonesClientListResponse{},
 			Client:         &armdns.ZonesClient{},

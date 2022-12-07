@@ -6,9 +6,9 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
 func Armcosmos() []*Table {
 	tables := []*Table{
 		{
-			NewFunc:   armcosmos.NewLocationsClient,
+			NewFunc:   armcosmos.NewRestorableDatabaseAccountsClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/restorableDatabaseAccounts",
 			Namespace: "Microsoft.DocumentDB",
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DocumentDB")`,
 		},
@@ -20,9 +20,9 @@ func Armcosmos() []*Table {
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DocumentDB")`,
 		},
 		{
-			NewFunc:   armcosmos.NewRestorableDatabaseAccountsClient,
+			NewFunc:   armcosmos.NewLocationsClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/restorableDatabaseAccounts",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations",
 			Namespace: "Microsoft.DocumentDB",
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.DocumentDB")`,
 		},

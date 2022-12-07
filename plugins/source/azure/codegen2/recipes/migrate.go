@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/migrate/armmigrate
 func Armmigrate() []Table {
 	tables := []Table{
 		{
-			Name:           "project",
+			Name:           "projects",
 			Struct:         &armmigrate.Project{},
 			ResponseStruct: &armmigrate.ProjectsClientListResponse{},
 			Client:         &armmigrate.ProjectsClient{},

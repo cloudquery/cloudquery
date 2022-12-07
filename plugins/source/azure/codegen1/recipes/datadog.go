@@ -6,16 +6,16 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datadog/armdatadog
 func Armdatadog() []*Table {
 	tables := []*Table{
 		{
-			NewFunc:   armdatadog.NewMonitorsClient,
+			NewFunc:   armdatadog.NewMarketplaceAgreementsClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datadog/armdatadog",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Datadog/monitors",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Datadog/agreements",
 			Namespace: "Microsoft.Datadog",
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Datadog")`,
 		},
 		{
-			NewFunc:   armdatadog.NewMarketplaceAgreementsClient,
+			NewFunc:   armdatadog.NewMonitorsClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datadog/armdatadog",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Datadog/agreements",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Datadog/monitors",
 			Namespace: "Microsoft.Datadog",
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Datadog")`,
 		},

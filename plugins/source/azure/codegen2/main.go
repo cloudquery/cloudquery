@@ -134,9 +134,12 @@ func initResource(r *recipes.Table) error {
 		codegen.WithExtraColumns(r.ExtraColumns),
 		codegen.WithPKColumns("id"),
 	}
-
+	tableName := fmt.Sprintf("azure_%s_%s", r.PackageName, r.Name)
+	if len(tableName) > 63 {
+		panic(fmt.Sprintf("table name %s is too long", tableName))
+	}
 	r.Table, err = codegen.NewTableFromStruct(
-		fmt.Sprintf("azure_%s_%s", r.PackageName, r.Name),
+		tableName,
 		r.Struct,
 		opts...,
 	)

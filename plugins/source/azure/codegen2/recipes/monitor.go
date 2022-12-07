@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor
 func Armmonitor() []Table {
 	tables := []Table{
 		{
-			Name:           "event_data",
+			Name:           "tenant_activity_logs",
 			Struct:         &armmonitor.EventData{},
 			ResponseStruct: &armmonitor.TenantActivityLogsClientListResponse{},
 			Client:         &armmonitor.TenantActivityLogsClient{},
@@ -16,7 +16,7 @@ func Armmonitor() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Insights")`,
 		},
 		{
-			Name:           "log_profile_resource",
+			Name:           "log_profiles",
 			Struct:         &armmonitor.LogProfileResource{},
 			ResponseStruct: &armmonitor.LogProfilesClientListResponse{},
 			Client:         &armmonitor.LogProfilesClient{},
@@ -26,7 +26,7 @@ func Armmonitor() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Insights")`,
 		},
 		{
-			Name:           "azure_monitor_private_link_scope",
+			Name:           "private_link_scopes",
 			Struct:         &armmonitor.AzureMonitorPrivateLinkScope{},
 			ResponseStruct: &armmonitor.PrivateLinkScopesClientListResponse{},
 			Client:         &armmonitor.PrivateLinkScopesClient{},

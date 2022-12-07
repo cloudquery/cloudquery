@@ -6,6 +6,27 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/ar
 func Armconnectedvmware() []*Table {
 	tables := []*Table{
 		{
+			NewFunc:   armconnectedvmware.NewResourcePoolsClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedVMwarevSphere/resourcePools",
+			Namespace: "Microsoft.ConnectedVMwarevSphere",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.ConnectedVMwarevSphere")`,
+		},
+		{
+			NewFunc:   armconnectedvmware.NewVCentersClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedVMwarevSphere/vcenters",
+			Namespace: "Microsoft.ConnectedVMwarevSphere",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.ConnectedVMwarevSphere")`,
+		},
+		{
+			NewFunc:   armconnectedvmware.NewVirtualNetworksClient,
+			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedVMwarevSphere/virtualNetworks",
+			Namespace: "Microsoft.ConnectedVMwarevSphere",
+			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.ConnectedVMwarevSphere")`,
+		},
+		{
 			NewFunc:   armconnectedvmware.NewVirtualMachinesClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware",
 			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedVMwarevSphere/virtualMachines",
@@ -20,16 +41,9 @@ func Armconnectedvmware() []*Table {
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.ConnectedVMwarevSphere")`,
 		},
 		{
-			NewFunc:   armconnectedvmware.NewDatastoresClient,
+			NewFunc:   armconnectedvmware.NewClustersClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedVMwarevSphere/datastores",
-			Namespace: "Microsoft.ConnectedVMwarevSphere",
-			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.ConnectedVMwarevSphere")`,
-		},
-		{
-			NewFunc:   armconnectedvmware.NewVirtualNetworksClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedVMwarevSphere/virtualNetworks",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedVMwarevSphere/clusters",
 			Namespace: "Microsoft.ConnectedVMwarevSphere",
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.ConnectedVMwarevSphere")`,
 		},
@@ -41,23 +55,9 @@ func Armconnectedvmware() []*Table {
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.ConnectedVMwarevSphere")`,
 		},
 		{
-			NewFunc:   armconnectedvmware.NewClustersClient,
+			NewFunc:   armconnectedvmware.NewDatastoresClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedVMwarevSphere/clusters",
-			Namespace: "Microsoft.ConnectedVMwarevSphere",
-			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.ConnectedVMwarevSphere")`,
-		},
-		{
-			NewFunc:   armconnectedvmware.NewVCentersClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedVMwarevSphere/vcenters",
-			Namespace: "Microsoft.ConnectedVMwarevSphere",
-			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.ConnectedVMwarevSphere")`,
-		},
-		{
-			NewFunc:   armconnectedvmware.NewResourcePoolsClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedVMwarevSphere/resourcePools",
+			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedVMwarevSphere/datastores",
 			Namespace: "Microsoft.ConnectedVMwarevSphere",
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.ConnectedVMwarevSphere")`,
 		},

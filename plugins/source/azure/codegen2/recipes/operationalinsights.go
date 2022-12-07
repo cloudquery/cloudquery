@@ -6,17 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsight
 func Armoperationalinsights() []Table {
 	tables := []Table{
 		{
-			Name:           "workspace",
-			Struct:         &armoperationalinsights.Workspace{},
-			ResponseStruct: &armoperationalinsights.DeletedWorkspacesClientListResponse{},
-			Client:         &armoperationalinsights.DeletedWorkspacesClient{},
-			ListFunc:       (&armoperationalinsights.DeletedWorkspacesClient{}).NewListPager,
-			NewFunc:        armoperationalinsights.NewDeletedWorkspacesClient,
-			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.OperationalInsights/deletedWorkspaces",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.OperationalInsights")`,
-		},
-		{
-			Name:           "workspace",
+			Name:           "workspaces",
 			Struct:         &armoperationalinsights.Workspace{},
 			ResponseStruct: &armoperationalinsights.WorkspacesClientListResponse{},
 			Client:         &armoperationalinsights.WorkspacesClient{},
@@ -26,7 +16,7 @@ func Armoperationalinsights() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.OperationalInsights")`,
 		},
 		{
-			Name:           "cluster",
+			Name:           "clusters",
 			Struct:         &armoperationalinsights.Cluster{},
 			ResponseStruct: &armoperationalinsights.ClustersClientListResponse{},
 			Client:         &armoperationalinsights.ClustersClient{},

@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdns
 func Armdnsresolver() []Table {
 	tables := []Table{
 		{
-			Name:           "dns_forwarding_ruleset",
+			Name:           "dns_forwarding_rulesets",
 			Struct:         &armdnsresolver.DNSForwardingRuleset{},
 			ResponseStruct: &armdnsresolver.DNSForwardingRulesetsClientListResponse{},
 			Client:         &armdnsresolver.DNSForwardingRulesetsClient{},
@@ -16,7 +16,7 @@ func Armdnsresolver() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Network")`,
 		},
 		{
-			Name:           "dns_resolver",
+			Name:           "dns_resolvers",
 			Struct:         &armdnsresolver.DNSResolver{},
 			ResponseStruct: &armdnsresolver.DNSResolversClientListResponse{},
 			Client:         &armdnsresolver.DNSResolversClient{},

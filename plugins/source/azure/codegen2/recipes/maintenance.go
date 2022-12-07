@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmai
 func Armmaintenance() []Table {
 	tables := []Table{
 		{
-			Name:           "configuration",
+			Name:           "public_maintenance_configurations",
 			Struct:         &armmaintenance.Configuration{},
 			ResponseStruct: &armmaintenance.PublicMaintenanceConfigurationsClientListResponse{},
 			Client:         &armmaintenance.PublicMaintenanceConfigurationsClient{},
@@ -16,7 +16,7 @@ func Armmaintenance() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Maintenance")`,
 		},
 		{
-			Name:           "configuration",
+			Name:           "configurations",
 			Struct:         &armmaintenance.Configuration{},
 			ResponseStruct: &armmaintenance.ConfigurationsClientListResponse{},
 			Client:         &armmaintenance.ConfigurationsClient{},
@@ -24,36 +24,6 @@ func Armmaintenance() []Table {
 			NewFunc:        armmaintenance.NewConfigurationsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/maintenanceConfigurations",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Maintenance")`,
-		},
-		{
-			Name:           "apply_update",
-			Struct:         &armmaintenance.ApplyUpdate{},
-			ResponseStruct: &armmaintenance.ApplyUpdateForResourceGroupClientListResponse{},
-			Client:         &armmaintenance.ApplyUpdateForResourceGroupClient{},
-			ListFunc:       (&armmaintenance.ApplyUpdateForResourceGroupClient{}).NewListPager,
-			NewFunc:        armmaintenance.NewApplyUpdateForResourceGroupClient,
-			URL:            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maintenance/applyUpdates",
-			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.Maintenance")`,
-		},
-		{
-			Name:           "apply_update",
-			Struct:         &armmaintenance.ApplyUpdate{},
-			ResponseStruct: &armmaintenance.ApplyUpdatesClientListResponse{},
-			Client:         &armmaintenance.ApplyUpdatesClient{},
-			ListFunc:       (&armmaintenance.ApplyUpdatesClient{}).NewListPager,
-			NewFunc:        armmaintenance.NewApplyUpdatesClient,
-			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/applyUpdates",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Maintenance")`,
-		},
-		{
-			Name:           "configuration",
-			Struct:         &armmaintenance.Configuration{},
-			ResponseStruct: &armmaintenance.ConfigurationsForResourceGroupClientListResponse{},
-			Client:         &armmaintenance.ConfigurationsForResourceGroupClient{},
-			ListFunc:       (&armmaintenance.ConfigurationsForResourceGroupClient{}).NewListPager,
-			NewFunc:        armmaintenance.NewConfigurationsForResourceGroupClient,
-			URL:            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maintenance/maintenanceConfigurations",
-			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace("Microsoft.Maintenance")`,
 		},
 	}
 

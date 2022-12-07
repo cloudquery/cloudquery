@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthbot/armhealt
 func Armhealthbot() []Table {
 	tables := []Table{
 		{
-			Name:           "health_bot",
+			Name:           "bots",
 			Struct:         &armhealthbot.HealthBot{},
 			ResponseStruct: &armhealthbot.BotsClientListResponse{},
 			Client:         &armhealthbot.BotsClient{},

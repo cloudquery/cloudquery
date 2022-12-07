@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs"
 func Armavs() []Table {
 	tables := []Table{
 		{
-			Name:           "private_cloud",
+			Name:           "private_clouds",
 			Struct:         &armavs.PrivateCloud{},
 			ResponseStruct: &armavs.PrivateCloudsClientListResponse{},
 			Client:         &armavs.PrivateCloudsClient{},

@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementgroups/a
 func Armmanagementgroups() []Table {
 	tables := []Table{
 		{
-			Name:           "entity_info",
+			Name:           "entities",
 			Struct:         &armmanagementgroups.EntityInfo{},
 			ResponseStruct: &armmanagementgroups.EntitiesClientListResponse{},
 			Client:         &armmanagementgroups.EntitiesClient{},

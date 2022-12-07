@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/aad/armaad"
 func Armaad() []Table {
 	tables := []Table{
 		{
-			Name:           "private_link_policy",
+			Name:           "private_link_for_azure_ad",
 			Struct:         &armaad.PrivateLinkPolicy{},
 			ResponseStruct: &armaad.PrivateLinkForAzureAdClientListResponse{},
 			Client:         &armaad.PrivateLinkForAzureAdClient{},

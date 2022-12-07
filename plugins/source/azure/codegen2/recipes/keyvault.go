@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvau
 func Armkeyvault() []Table {
 	tables := []Table{
 		{
-			Name:           "resource",
+			Name:           "vaults",
 			Struct:         &armkeyvault.Resource{},
 			ResponseStruct: &armkeyvault.VaultsClientListResponse{},
 			Client:         &armkeyvault.VaultsClient{},

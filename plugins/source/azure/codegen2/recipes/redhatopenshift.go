@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redhatopenshift/ar
 func Armredhatopenshift() []Table {
 	tables := []Table{
 		{
-			Name:           "open_shift_cluster",
+			Name:           "open_shift_clusters",
 			Struct:         &armredhatopenshift.OpenShiftCluster{},
 			ResponseStruct: &armredhatopenshift.OpenShiftClustersClientListResponse{},
 			Client:         &armredhatopenshift.OpenShiftClustersClient{},

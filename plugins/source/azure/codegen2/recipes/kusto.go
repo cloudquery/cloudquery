@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto"
 func Armkusto() []Table {
 	tables := []Table{
 		{
-			Name:           "cluster",
+			Name:           "clusters",
 			Struct:         &armkusto.Cluster{},
 			ResponseStruct: &armkusto.ClustersClientListResponse{},
 			Client:         &armkusto.ClustersClient{},

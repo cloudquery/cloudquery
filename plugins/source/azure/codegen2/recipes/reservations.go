@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armre
 func Armreservations() []Table {
 	tables := []Table{
 		{
-			Name:           "reservation_order_response",
+			Name:           "reservation_order",
 			Struct:         &armreservations.ReservationOrderResponse{},
 			ResponseStruct: &armreservations.ReservationOrderClientListResponse{},
 			Client:         &armreservations.ReservationOrderClient{},

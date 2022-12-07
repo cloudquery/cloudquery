@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse
 func Armsynapse() []Table {
 	tables := []Table{
 		{
-			Name:           "workspace",
+			Name:           "workspaces",
 			Struct:         &armsynapse.Workspace{},
 			ResponseStruct: &armsynapse.WorkspacesClientListResponse{},
 			Client:         &armsynapse.WorkspacesClient{},
@@ -16,7 +16,7 @@ func Armsynapse() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Synapse")`,
 		},
 		{
-			Name:           "private_link_hub",
+			Name:           "private_link_hubs",
 			Struct:         &armsynapse.PrivateLinkHub{},
 			ResponseStruct: &armsynapse.PrivateLinkHubsClientListResponse{},
 			Client:         &armsynapse.PrivateLinkHubsClient{},

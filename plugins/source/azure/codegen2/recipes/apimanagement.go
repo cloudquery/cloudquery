@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/arma
 func Armapimanagement() []Table {
 	tables := []Table{
 		{
-			Name:           "service_resource",
+			Name:           "service",
 			Struct:         &armapimanagement.ServiceResource{},
 			ResponseStruct: &armapimanagement.ServiceClientListResponse{},
 			Client:         &armapimanagement.ServiceClient{},

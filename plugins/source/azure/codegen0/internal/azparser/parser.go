@@ -13,7 +13,35 @@ import (
 var newFuncsToSkip = map[string]bool{
 	// We are skipping operationsClient as this just list all operations available and it is quite static
 	// so don't think it's of anyuse and we can always enable it later
-	"NewOperationsClient": true,
+	"NewOperationsClient":      true,
+	"NewDeletedAccountsClient": true,
+	// We are getting this data already from NewConfigurationsClient across the whole subscription
+	"NewConfigurationsForResourceGroupClient": true,
+	// We are getting this data already from NewApplyUpdate across the whole subscription
+	"NewApplyUpdateForResourceGroupClient": true,
+	// Looks like this is a buggy resource. Im always getting marshal error from the Azure SDK.
+	// Just skipping this for now
+	"NewAccountConnectorsClient": true,
+	// Seems like another buggy resource
+	"NewDeletedServersClient": true,
+	// Too long table name we will handle this with manually written receipe
+	"NewMarketplaceRegistrationDefinitionsWithoutScopeClient": true,
+	// Too long table name we will handle this with manually written receipe
+	"NewVirtualMachineImageTemplatesClient": true,
+	// This is already fetched by subscription level
+	"NewAzureTrafficCollectorsByResourceGroupClient": true,
+	// Seems like a resource that always return an error. Skipping for now
+	"NewExpressRouteCrossConnectionsClient": true,
+	// Seems like a buggy resource that always returns error. maybe will be fixed in future Azure SDK
+	"NewDeletedWorkspacesClient": true,
+	// Seems like a buggy resource that always returns a marshal error. maybe will be fixed in future Azure SDK
+	"NewIngestionSettingsClient": true,
+	// Seems like a buggy resource that always returns a marshal error. maybe will be fixed in future Azure SDK
+	"NewVirtualApplianceSKUsClient": true,
+	// Seems not implemented
+	"NewApplyUpdatesClient": true,
+	// Seems like a buggy resource that always returns a marshal error. maybe will be fixed in future Azure SDK
+	"NewContactsClient": true,
 }
 
 const (

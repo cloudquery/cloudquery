@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthcareapis/arm
 func Armhealthcareapis() []Table {
 	tables := []Table{
 		{
-			Name:           "services_description",
+			Name:           "services",
 			Struct:         &armhealthcareapis.ServicesDescription{},
 			ResponseStruct: &armhealthcareapis.ServicesClientListResponse{},
 			Client:         &armhealthcareapis.ServicesClient{},

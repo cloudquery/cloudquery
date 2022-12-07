@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsesu/armwind
 func Armwindowsesu() []Table {
 	tables := []Table{
 		{
-			Name:           "multiple_activation_key",
+			Name:           "multiple_activation_keys",
 			Struct:         &armwindowsesu.MultipleActivationKey{},
 			ResponseStruct: &armwindowsesu.MultipleActivationKeysClientListResponse{},
 			Client:         &armwindowsesu.MultipleActivationKeysClient{},

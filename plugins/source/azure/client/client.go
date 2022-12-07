@@ -18,10 +18,11 @@ import (
 )
 
 type Client struct {
-	subscriptions  []string
-	logger         zerolog.Logger
+	subscriptions       []string
+	logger              zerolog.Logger
 	registeredNamespace map[string]map[string]bool
-	resourceGroups map[string][]*armresources.GenericResourceExpanded
+	resourceGroups      map[string][]*armresources.GenericResourceExpanded
+	debugMode bool
 	// this is set by table client multiplexer
 	SubscriptionId string
 	ResourceGroup  string
@@ -71,7 +72,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 	if err != nil {
 		return nil, err
 	}
-	
+
 	resourceGroups := make(map[string][]*armresources.GenericResourceExpanded, len(subscriptions))
 	filter := "resourceType eq 'Microsoft.Resources/resourceGroups'"
 	registeredNamespace := make(map[string]map[string]bool, len(subscriptions))
@@ -118,10 +119,11 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 	}
 
 	return &Client{
-		logger:         logger,
-		subscriptions:  subscriptions,
-		resourceGroups: resourceGroups,
-		Creds:          creds,
+		logger:              logger,
+		registeredNamespace: registeredNamespace,
+		subscriptions:       subscriptions,
+		resourceGroups:      resourceGroups,
+		Creds:               creds,
 	}, nil
 }
 

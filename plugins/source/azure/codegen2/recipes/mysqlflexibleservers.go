@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysqlflex
 func Armmysqlflexibleservers() []Table {
 	tables := []Table{
 		{
-			Name:           "server",
+			Name:           "servers",
 			Struct:         &armmysqlflexibleservers.Server{},
 			ResponseStruct: &armmysqlflexibleservers.ServersClientListResponse{},
 			Client:         &armmysqlflexibleservers.ServersClient{},

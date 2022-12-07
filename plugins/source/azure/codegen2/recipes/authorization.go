@@ -6,13 +6,23 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/arma
 func Armauthorization() []Table {
 	tables := []Table{
 		{
-			Name:           "role_assignment",
+			Name:           "role_assignments",
 			Struct:         &armauthorization.RoleAssignment{},
 			ResponseStruct: &armauthorization.RoleAssignmentsClientListResponse{},
 			Client:         &armauthorization.RoleAssignmentsClient{},
 			ListFunc:       (&armauthorization.RoleAssignmentsClient{}).NewListPager,
 			NewFunc:        armauthorization.NewRoleAssignmentsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/roleAssignments",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Authorization")`,
+		},
+		{
+			Name:           "classic_administrators",
+			Struct:         &armauthorization.ClassicAdministrator{},
+			ResponseStruct: &armauthorization.ClassicAdministratorsClientListResponse{},
+			Client:         &armauthorization.ClassicAdministratorsClient{},
+			ListFunc:       (&armauthorization.ClassicAdministratorsClient{}).NewListPager,
+			NewFunc:        armauthorization.NewClassicAdministratorsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/classicAdministrators",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Authorization")`,
 		},
 		{
@@ -23,16 +33,6 @@ func Armauthorization() []Table {
 			ListFunc:       (&armauthorization.ProviderOperationsMetadataClient{}).NewListPager,
 			NewFunc:        armauthorization.NewProviderOperationsMetadataClient,
 			URL:            "/providers/Microsoft.Authorization/providerOperations",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Authorization")`,
-		},
-		{
-			Name:           "classic_administrator",
-			Struct:         &armauthorization.ClassicAdministrator{},
-			ResponseStruct: &armauthorization.ClassicAdministratorsClientListResponse{},
-			Client:         &armauthorization.ClassicAdministratorsClient{},
-			ListFunc:       (&armauthorization.ClassicAdministratorsClient{}).NewListPager,
-			NewFunc:        armauthorization.NewClassicAdministratorsClient,
-			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/classicAdministrators",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Authorization")`,
 		},
 	}

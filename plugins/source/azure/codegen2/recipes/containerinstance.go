@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerinstance/
 func Armcontainerinstance() []Table {
 	tables := []Table{
 		{
-			Name:           "container_group",
+			Name:           "container_groups",
 			Struct:         &armcontainerinstance.ContainerGroup{},
 			ResponseStruct: &armcontainerinstance.ContainerGroupsClientListResponse{},
 			Client:         &armcontainerinstance.ContainerGroupsClient{},

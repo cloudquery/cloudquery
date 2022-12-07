@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpost
 func Armpostgresql() []Table {
 	tables := []Table{
 		{
-			Name:           "server",
+			Name:           "servers",
 			Struct:         &armpostgresql.Server{},
 			ResponseStruct: &armpostgresql.ServersClientListResponse{},
 			Client:         &armpostgresql.ServersClient{},

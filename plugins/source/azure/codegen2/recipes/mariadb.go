@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb
 func Armmariadb() []Table {
 	tables := []Table{
 		{
-			Name:           "server",
+			Name:           "servers",
 			Struct:         &armmariadb.Server{},
 			ResponseStruct: &armmariadb.ServersClientListResponse{},
 			Client:         &armmariadb.ServersClient{},

@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdat
 func Armdatafactory() []Table {
 	tables := []Table{
 		{
-			Name:           "factory",
+			Name:           "factories",
 			Struct:         &armdatafactory.Factory{},
 			ResponseStruct: &armdatafactory.FactoriesClientListResponse{},
 			Client:         &armdatafactory.FactoriesClient{},

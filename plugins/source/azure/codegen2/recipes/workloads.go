@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkl
 func Armworkloads() []Table {
 	tables := []Table{
 		{
-			Name:           "monitor",
+			Name:           "monitors",
 			Struct:         &armworkloads.Monitor{},
 			ResponseStruct: &armworkloads.MonitorsClientListResponse{},
 			Client:         &armworkloads.MonitorsClient{},

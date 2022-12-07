@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql"
 func Armmysql() []Table {
 	tables := []Table{
 		{
-			Name:           "server",
+			Name:           "servers",
 			Struct:         &armmysql.Server{},
 			ResponseStruct: &armmysql.ServersClientListResponse{},
 			Client:         &armmysql.ServersClient{},

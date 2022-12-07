@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerinsights/a
 func Armcustomerinsights() []Table {
 	tables := []Table{
 		{
-			Name:           "hub",
+			Name:           "hubs",
 			Struct:         &armcustomerinsights.Hub{},
 			ResponseStruct: &armcustomerinsights.HubsClientListResponse{},
 			Client:         &armcustomerinsights.HubsClient{},

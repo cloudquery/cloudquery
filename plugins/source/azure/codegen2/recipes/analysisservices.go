@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/analysisservices/a
 func Armanalysisservices() []Table {
 	tables := []Table{
 		{
-			Name:           "server",
+			Name:           "servers",
 			Struct:         &armanalysisservices.Server{},
 			ResponseStruct: &armanalysisservices.ServersClientListResponse{},
 			Client:         &armanalysisservices.ServersClient{},

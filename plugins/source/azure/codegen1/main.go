@@ -34,7 +34,7 @@ type Table struct {
 	ListFunc       string
 	NewFunc        string
 	URL            string
-	Multiplex    string
+	Multiplex      string
 }
 
 type Recipe struct {
@@ -118,6 +118,10 @@ func getStructTypeFromResponseStruct(valueFieldType reflect.Type) (reflect.Type,
 	return typ, nil
 }
 
+func clientNameToTableName(clientName string) string {
+	return strcase.ToSnake(strings.TrimSuffix(strings.TrimPrefix(clientName, "New"), "Client"))
+}
+
 func ConvertTableV1ToV2(t *recipes.Table) (*Table, error) {
 	v := reflect.TypeOf(t.NewFunc)
 	clientType := v.Out(0)
@@ -151,14 +155,14 @@ func ConvertTableV1ToV2(t *recipes.Table) (*Table, error) {
 	responseStructName := strings.Split(responseStruct.Type.String(), ".")[1]
 	clientName := strings.Split(v.Out(0).String(), ".")[1]
 	return &Table{
-		Name:           strcase.ToSnake(structName),
+		Name:           clientNameToTableName(clientName),
 		Struct:         structName,
 		ResponseStruct: responseStructName,
 		Client:         clientName,
 		ListFunc:       "NewListPager",
 		NewFunc:        "New" + clientName,
 		URL:            t.URL,
-		Multiplex:    	t.Multiplex,
+		Multiplex:      t.Multiplex,
 	}, nil
 }
 

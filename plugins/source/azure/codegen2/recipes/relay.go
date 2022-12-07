@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/relay/armrelay"
 func Armrelay() []Table {
 	tables := []Table{
 		{
-			Name:           "namespace",
+			Name:           "namespaces",
 			Struct:         &armrelay.Namespace{},
 			ResponseStruct: &armrelay.NamespacesClientListResponse{},
 			Client:         &armrelay.NamespacesClient{},

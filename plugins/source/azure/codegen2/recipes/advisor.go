@@ -6,17 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/advisor/armadvisor
 func Armadvisor() []Table {
 	tables := []Table{
 		{
-			Name:           "resource_recommendation_base",
-			Struct:         &armadvisor.ResourceRecommendationBase{},
-			ResponseStruct: &armadvisor.RecommendationsClientListResponse{},
-			Client:         &armadvisor.RecommendationsClient{},
-			ListFunc:       (&armadvisor.RecommendationsClient{}).NewListPager,
-			NewFunc:        armadvisor.NewRecommendationsClient,
-			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/recommendations",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Advisor")`,
-		},
-		{
-			Name:           "metadata_entity",
+			Name:           "recommendation_metadata",
 			Struct:         &armadvisor.MetadataEntity{},
 			ResponseStruct: &armadvisor.RecommendationMetadataClientListResponse{},
 			Client:         &armadvisor.RecommendationMetadataClient{},
@@ -26,13 +16,23 @@ func Armadvisor() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Advisor")`,
 		},
 		{
-			Name:           "suppression_contract",
+			Name:           "suppressions",
 			Struct:         &armadvisor.SuppressionContract{},
 			ResponseStruct: &armadvisor.SuppressionsClientListResponse{},
 			Client:         &armadvisor.SuppressionsClient{},
 			ListFunc:       (&armadvisor.SuppressionsClient{}).NewListPager,
 			NewFunc:        armadvisor.NewSuppressionsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/suppressions",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Advisor")`,
+		},
+		{
+			Name:           "recommendations",
+			Struct:         &armadvisor.ResourceRecommendationBase{},
+			ResponseStruct: &armadvisor.RecommendationsClientListResponse{},
+			Client:         &armadvisor.RecommendationsClient{},
+			ListFunc:       (&armadvisor.RecommendationsClient{}).NewListPager,
+			NewFunc:        armadvisor.NewRecommendationsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/recommendations",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Advisor")`,
 		},
 	}

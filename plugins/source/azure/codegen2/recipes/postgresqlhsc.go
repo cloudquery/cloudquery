@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresqlhsc/armp
 func Armpostgresqlhsc() []Table {
 	tables := []Table{
 		{
-			Name:           "server_group",
+			Name:           "server_groups",
 			Struct:         &armpostgresqlhsc.ServerGroup{},
 			ResponseStruct: &armpostgresqlhsc.ServerGroupsClientListResponse{},
 			Client:         &armpostgresqlhsc.ServerGroupsClient{},

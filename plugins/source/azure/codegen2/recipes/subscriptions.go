@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubsc
 func Armsubscriptions() []Table {
 	tables := []Table{
 		{
-			Name:           "tenant_id_description",
+			Name:           "tenants",
 			Struct:         &armsubscriptions.TenantIDDescription{},
 			ResponseStruct: &armsubscriptions.TenantsClientListResponse{},
 			Client:         &armsubscriptions.TenantsClient{},

@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic
 func Armelastic() []Table {
 	tables := []Table{
 		{
-			Name:           "monitor_resource",
+			Name:           "monitors",
 			Struct:         &armelastic.MonitorResource{},
 			ResponseStruct: &armelastic.MonitorsClientListResponse{},
 			Client:         &armelastic.MonitorsClient{},

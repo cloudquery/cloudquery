@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-store/arm
 func Armdatalakestore() []Table {
 	tables := []Table{
 		{
-			Name:           "account_basic",
+			Name:           "accounts",
 			Struct:         &armdatalakestore.AccountBasic{},
 			ResponseStruct: &armdatalakestore.AccountsClientListResponse{},
 			Client:         &armdatalakestore.AccountsClient{},

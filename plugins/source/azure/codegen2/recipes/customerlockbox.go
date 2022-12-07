@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerlockbox/ar
 func Armcustomerlockbox() []Table {
 	tables := []Table{
 		{
-			Name:           "lockbox_request_response",
+			Name:           "requests",
 			Struct:         &armcustomerlockbox.LockboxRequestResponse{},
 			ResponseStruct: &armcustomerlockbox.RequestsClientListResponse{},
 			Client:         &armcustomerlockbox.RequestsClient{},

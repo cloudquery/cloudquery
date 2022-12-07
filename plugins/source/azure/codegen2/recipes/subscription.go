@@ -6,23 +6,23 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsu
 func Armsubscription() []Table {
 	tables := []Table{
 		{
-			Name:           "tenant_id_description",
-			Struct:         &armsubscription.TenantIDDescription{},
-			ResponseStruct: &armsubscription.TenantsClientListResponse{},
-			Client:         &armsubscription.TenantsClient{},
-			ListFunc:       (&armsubscription.TenantsClient{}).NewListPager,
-			NewFunc:        armsubscription.NewTenantsClient,
-			URL:            "/tenants",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("")`,
-		},
-		{
-			Name:           "subscription",
+			Name:           "subscriptions",
 			Struct:         &armsubscription.Subscription{},
 			ResponseStruct: &armsubscription.SubscriptionsClientListResponse{},
 			Client:         &armsubscription.SubscriptionsClient{},
 			ListFunc:       (&armsubscription.SubscriptionsClient{}).NewListPager,
 			NewFunc:        armsubscription.NewSubscriptionsClient,
 			URL:            "/subscriptions",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("")`,
+		},
+		{
+			Name:           "tenants",
+			Struct:         &armsubscription.TenantIDDescription{},
+			ResponseStruct: &armsubscription.TenantsClientListResponse{},
+			Client:         &armsubscription.TenantsClient{},
+			ListFunc:       (&armsubscription.TenantsClient{}).NewListPager,
+			NewFunc:        armsubscription.NewTenantsClient,
+			URL:            "/tenants",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("")`,
 		},
 	}

@@ -6,16 +6,16 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsu
 func Armsubscription() []*Table {
 	tables := []*Table{
 		{
-			NewFunc:   armsubscription.NewTenantsClient,
+			NewFunc:   armsubscription.NewSubscriptionsClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription",
-			URL:       "/tenants",
+			URL:       "/subscriptions",
 			Namespace: "",
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("")`,
 		},
 		{
-			NewFunc:   armsubscription.NewSubscriptionsClient,
+			NewFunc:   armsubscription.NewTenantsClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription",
-			URL:       "/subscriptions",
+			URL:       "/tenants",
 			Namespace: "",
 			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace("")`,
 		},

@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling
 func Armbilling() []Table {
 	tables := []Table{
 		{
-			Name:           "period",
+			Name:           "periods",
 			Struct:         &armbilling.Period{},
 			ResponseStruct: &armbilling.PeriodsClientListResponse{},
 			Client:         &armbilling.PeriodsClient{},
@@ -16,23 +16,23 @@ func Armbilling() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Billing")`,
 		},
 		{
-			Name:           "enrollment_account_summary",
-			Struct:         &armbilling.EnrollmentAccountSummary{},
-			ResponseStruct: &armbilling.EnrollmentAccountsClientListResponse{},
-			Client:         &armbilling.EnrollmentAccountsClient{},
-			ListFunc:       (&armbilling.EnrollmentAccountsClient{}).NewListPager,
-			NewFunc:        armbilling.NewEnrollmentAccountsClient,
-			URL:            "/providers/Microsoft.Billing/enrollmentAccounts",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Billing")`,
-		},
-		{
-			Name:           "account",
+			Name:           "accounts",
 			Struct:         &armbilling.Account{},
 			ResponseStruct: &armbilling.AccountsClientListResponse{},
 			Client:         &armbilling.AccountsClient{},
 			ListFunc:       (&armbilling.AccountsClient{}).NewListPager,
 			NewFunc:        armbilling.NewAccountsClient,
 			URL:            "/providers/Microsoft.Billing/billingAccounts",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Billing")`,
+		},
+		{
+			Name:           "enrollment_accounts",
+			Struct:         &armbilling.EnrollmentAccountSummary{},
+			ResponseStruct: &armbilling.EnrollmentAccountsClientListResponse{},
+			Client:         &armbilling.EnrollmentAccountsClient{},
+			ListFunc:       (&armbilling.EnrollmentAccountsClient{}).NewListPager,
+			NewFunc:        armbilling.NewEnrollmentAccountsClient,
+			URL:            "/providers/Microsoft.Billing/enrollmentAccounts",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace("Microsoft.Billing")`,
 		},
 	}

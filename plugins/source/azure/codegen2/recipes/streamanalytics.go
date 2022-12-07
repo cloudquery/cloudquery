@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/ar
 func Armstreamanalytics() []Table {
 	tables := []Table{
 		{
-			Name:           "streaming_job",
+			Name:           "streaming_jobs",
 			Struct:         &armstreamanalytics.StreamingJob{},
 			ResponseStruct: &armstreamanalytics.StreamingJobsClientListResponse{},
 			Client:         &armstreamanalytics.StreamingJobsClient{},

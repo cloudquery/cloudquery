@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbidedicated/a
 func Armpowerbidedicated() []Table {
 	tables := []Table{
 		{
-			Name:           "dedicated_capacity",
+			Name:           "capacities",
 			Struct:         &armpowerbidedicated.DedicatedCapacity{},
 			ResponseStruct: &armpowerbidedicated.CapacitiesClientListResponse{},
 			Client:         &armpowerbidedicated.CapacitiesClient{},

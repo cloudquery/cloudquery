@@ -6,7 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appconfiguration/a
 func Armappconfiguration() []Table {
 	tables := []Table{
 		{
-			Name:           "configuration_store",
+			Name:           "configuration_stores",
 			Struct:         &armappconfiguration.ConfigurationStore{},
 			ResponseStruct: &armappconfiguration.ConfigurationStoresClientListResponse{},
 			Client:         &armappconfiguration.ConfigurationStoresClient{},
