@@ -33,6 +33,9 @@ jobs:
           RUNNER=${{ steps.large-runner.outputs.runner }}
           echo "runner=${RUNNER:-"ubuntu-latest"}" >> $GITHUB_OUTPUT
   plugins-source-aws:
+    permissions:
+      id-token: write
+      contents: read
     timeout-minutes: 45
     name: "plugins/source/aws"
     needs: [resolve-runner]
