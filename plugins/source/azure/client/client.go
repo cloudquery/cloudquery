@@ -149,7 +149,7 @@ func (c Client) withSubscription(subscriptionId string) *Client {
 	}
 }
 
-// withSubscription allows multiplexer to create a new client with given subscriptionId
+// withResourceGroup allows multiplexer to create a new client with given resource group name
 func (c Client) withResourceGroup(name string) *Client {
 	return &Client{
 		subscriptions:  c.subscriptions,
