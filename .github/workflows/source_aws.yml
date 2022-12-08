@@ -36,6 +36,9 @@ jobs:
     timeout-minutes: 45
     name: "plugins/source/aws"
     needs: [resolve-runner]
+    permissions:
+      id-token: write
+      contents: read
     runs-on: ${{ needs.resolve-runner.outputs.runner }}
     defaults:
       run:
@@ -68,6 +71,21 @@ jobs:
       - name: Fail if generation updated files
         if: github.event_name == 'pull_request'
         run: test "$(git status -s | wc -l)" -eq 0
+      # Sanity integration test, only for release PRs
+      - name: Setup CloudQuery
+        if: startsWith(github.head_ref, 'release-please--branches--main--components')
+        uses: cloudquery/setup-cloudquery@v3
+        with:
+          version: 'v2.0.22'
+      - name: Configure AWS credentials
+        if: startsWith(github.head_ref, 'release-please--branches--main--components')
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::615713231484:role/cq-playground-aws-github-action
+          aws-region: us-east-1
+      - name: Run sync
+        if: startsWith(github.head_ref, 'release-please--branches--main--components')
+        run: cloudquery sync test/sanity.yml --log-console
   validate-release:
     timeout-minutes: 45
     needs: [resolve-runner]
@@ -149,3 +167,5 @@ jobs:
         run: cd policies && psql -h localhost -p 5432 -U postgres -d postgres -w -f ./policy.sql
         env:
           PGPASSWORD: pass
+
+      
