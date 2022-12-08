@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	resourcemanagerv3 "cloud.google.com/go/resourcemanager/apiv3"
+	resourcemanager "cloud.google.com/go/resourcemanager/apiv3"
 	"cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
@@ -20,8 +20,9 @@ const maxProjectIdsToLog int = 100
 type Client struct {
 	// plugin   *plugins.SourcePlugin
 	projects []string
+	ClientOptions []option.ClientOption
 	// All gcp services initialized by client
-	Services *Services
+	// Services *Services
 	// this is set by table client multiplexer
 	ProjectId string
 	// Logger
@@ -83,13 +84,17 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 		options = append(options, option.WithCredentialsJSON(serviceAccountKeyJSON))
 	}
 
-	c.Services, err = initServices(context.Background(), options)
-	if err != nil {
-		return nil, err
-	}
-
 	if len(gcpSpec.ProjectFilter) > 0 && len(gcpSpec.FolderIDs) > 0 {
 		return nil, fmt.Errorf("project_filter and folder_ids are mutually exclusive")
+	}
+
+	projectsClient, err := resourcemanager.NewProjectsClient(ctx, options...)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create projects client: %w", err)
+	}
+	foldersClient, err := resourcemanager.NewFoldersClient(ctx, options...)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create folders client: %w", err)
 	}
 
 	switch {
@@ -105,7 +110,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 
 		for _, parentFolder := range gcpSpec.FolderIDs {
 			c.logger.Info().Msg("Listing folders...")
-			childFolders, err := listFolders(ctx, c.Services.ResourcemanagerFoldersClient, parentFolder, *gcpSpec.FolderRecursionDepth)
+			childFolders, err := listFolders(ctx, foldersClient, parentFolder, *gcpSpec.FolderRecursionDepth)
 			if err != nil {
 				return nil, fmt.Errorf("failed to list folders: %w", err)
 			}
@@ -115,7 +120,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 		logFolderIds(&c.logger, folderIds)
 
 		c.logger.Info().Msg("listing folder projects...")
-		folderProjects, err := listProjectsInFolders(ctx, c.Services.ResourcemanagerProjectsClient, folderIds)
+		folderProjects, err := listProjectsInFolders(ctx, projectsClient, folderIds)
 		projects = setUnion(projects, folderProjects)
 		if err != nil {
 			return nil, fmt.Errorf("failed to list projects: %w", err)
@@ -228,7 +233,7 @@ func getProjectsV1WithFilter(ctx context.Context, filter string, options ...opti
 
 // listFolders recursively lists the folders in the 'parent' folder. Includes the 'parent' folder itself.
 // recursionDepth is the depth of folders to recurse - where 0 means not to recurse any folders.
-func listFolders(ctx context.Context, folderClient *resourcemanagerv3.FoldersClient, parent string, recursionDepth int) ([]string, error) {
+func listFolders(ctx context.Context, folderClient *resourcemanager.FoldersClient, parent string, recursionDepth int) ([]string, error) {
 	folders := []string{
 		parent,
 	}
@@ -262,7 +267,7 @@ func listFolders(ctx context.Context, folderClient *resourcemanagerv3.FoldersCli
 	return folders, nil
 }
 
-func listProjectsInFolders(ctx context.Context, projectClient *resourcemanagerv3.ProjectsClient, folders []string) ([]string, error) {
+func listProjectsInFolders(ctx context.Context, projectClient *resourcemanager.ProjectsClient, folders []string) ([]string, error) {
 	var projects []string
 	for _, folder := range folders {
 		it := projectClient.ListProjects(ctx, &resourcemanagerpb.ListProjectsRequest{

@@ -3,10 +3,10 @@ package resourcemanager
 import (
 	"context"
 
+	resourcemanager "cloud.google.com/go/resourcemanager/apiv3"
 	"cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
-	"github.com/pkg/errors"
 )
 
 func fetchProjects(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
@@ -14,9 +14,13 @@ func fetchProjects(ctx context.Context, meta schema.ClientMeta, r *schema.Resour
 	req := &resourcemanagerpb.GetProjectRequest{
 		Name: "projects/" + c.ProjectId,
 	}
-	output, err := c.Services.ResourcemanagerProjectsClient.GetProject(ctx, req)
+	projectsClient, err := resourcemanager.NewProjectsClient(ctx, c.ClientOptions...)
 	if err != nil {
-		return errors.WithStack(err)
+		return err
+	}
+	output, err := projectsClient.GetProject(ctx, req)
+	if err != nil {
+		return err
 	}
 	res <- output
 	return nil

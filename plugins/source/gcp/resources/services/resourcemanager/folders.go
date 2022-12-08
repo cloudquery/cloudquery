@@ -4,13 +4,14 @@ package resourcemanager
 
 import (
 	"context"
-	"github.com/pkg/errors"
 	"google.golang.org/api/iterator"
 
 	pb "google.golang.org/genproto/googleapis/cloud/resourcemanager/v3"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
+
+	"cloud.google.com/go/resourcemanager/apiv3"
 )
 
 func Folders() *schema.Table {
@@ -71,14 +72,18 @@ func Folders() *schema.Table {
 func fetchFolders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	req := &pb.ListFoldersRequest{}
-	it := c.Services.ResourcemanagerFoldersClient.ListFolders(ctx, req)
+	gcpClient, err := resourcemanager.NewFoldersClient(ctx, c.ClientOptions...)
+	if err != nil {
+		return err
+	}
+	it := gcpClient.ListFolders(ctx, req)
 	for {
 		resp, err := it.Next()
 		if err == iterator.Done {
 			break
 		}
 		if err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 
 		res <- resp

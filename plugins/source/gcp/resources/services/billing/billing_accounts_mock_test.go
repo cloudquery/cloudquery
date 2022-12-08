@@ -8,45 +8,15 @@ import (
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
-	"net"
 	"testing"
 
-	"cloud.google.com/go/billing/apiv1"
-
 	pb "google.golang.org/genproto/googleapis/cloud/billing/v1"
-
-	"google.golang.org/api/option"
 )
 
-func createBillingAccounts() (*client.Services, error) {
+func createBillingAccounts(gsrv *grpc.Server) error {
 	fakeServer := &fakeBillingAccountsServer{}
-	l, err := net.Listen("tcp", "localhost:0")
-	if err != nil {
-		return nil, fmt.Errorf("failed to listen: %w", err)
-	}
-	gsrv := grpc.NewServer()
 	pb.RegisterCloudBillingServer(gsrv, fakeServer)
-	fakeServerAddr := l.Addr().String()
-	go func() {
-		if err := gsrv.Serve(l); err != nil {
-			panic(err)
-		}
-	}()
-
-	// Create a client.
-	svc, err := billing.NewCloudBillingClient(context.Background(),
-		option.WithEndpoint(fakeServerAddr),
-		option.WithoutAuthentication(),
-		option.WithGRPCDialOption(grpc.WithTransportCredentials(insecure.NewCredentials())),
-	)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create grpc client: %w", err)
-	}
-
-	return &client.Services{
-		BillingCloudBillingClient: svc,
-	}, nil
+	return nil
 }
 
 type fakeBillingAccountsServer struct {
@@ -63,5 +33,5 @@ func (f *fakeBillingAccountsServer) ListBillingAccounts(context.Context, *pb.Lis
 }
 
 func TestBillingAccounts(t *testing.T) {
-	client.MockTestHelper(t, BillingAccounts(), createBillingAccounts, client.TestOptions{})
+	client.MockTestGrpcHelper(t, BillingAccounts(), createBillingAccounts, client.TestOptions{})
 }

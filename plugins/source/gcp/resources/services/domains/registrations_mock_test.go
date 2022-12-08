@@ -8,45 +8,15 @@ import (
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
-	"net"
 	"testing"
 
-	"cloud.google.com/go/domains/apiv1beta1"
-
 	pb "google.golang.org/genproto/googleapis/cloud/domains/v1beta1"
-
-	"google.golang.org/api/option"
 )
 
-func createRegistrations() (*client.Services, error) {
+func createRegistrations(gsrv *grpc.Server) error {
 	fakeServer := &fakeRegistrationsServer{}
-	l, err := net.Listen("tcp", "localhost:0")
-	if err != nil {
-		return nil, fmt.Errorf("failed to listen: %w", err)
-	}
-	gsrv := grpc.NewServer()
 	pb.RegisterDomainsServer(gsrv, fakeServer)
-	fakeServerAddr := l.Addr().String()
-	go func() {
-		if err := gsrv.Serve(l); err != nil {
-			panic(err)
-		}
-	}()
-
-	// Create a client.
-	svc, err := domains.NewClient(context.Background(),
-		option.WithEndpoint(fakeServerAddr),
-		option.WithoutAuthentication(),
-		option.WithGRPCDialOption(grpc.WithTransportCredentials(insecure.NewCredentials())),
-	)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create grpc client: %w", err)
-	}
-
-	return &client.Services{
-		DomainsClient: svc,
-	}, nil
+	return nil
 }
 
 type fakeRegistrationsServer struct {
@@ -63,5 +33,5 @@ func (f *fakeRegistrationsServer) ListRegistrations(context.Context, *pb.ListReg
 }
 
 func TestRegistrations(t *testing.T) {
-	client.MockTestHelper(t, Registrations(), createRegistrations, client.TestOptions{})
+	client.MockTestGrpcHelper(t, Registrations(), createRegistrations, client.TestOptions{})
 }

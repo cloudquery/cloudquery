@@ -4,10 +4,10 @@ package compute
 
 import (
 	"context"
-	"github.com/pkg/errors"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
+	compute "cloud.google.com/go/compute/apiv1"
 
 	pb "google.golang.org/genproto/googleapis/cloud/compute/v1"
 )
@@ -99,9 +99,13 @@ func fetchProjects(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	req := &pb.GetProjectRequest{
 		Project: c.ProjectId,
 	}
-	resp, err := c.Services.ComputeProjectsClient.Get(ctx, req)
+	projectsClient, err := compute.NewProjectsRESTClient(ctx, c.ClientOptions...)
 	if err != nil {
-		return errors.WithStack(err)
+		return err
+	}
+	resp, err := projectsClient.Get(ctx, req)
+	if err != nil {
+		return err
 	}
 	res <- resp
 	return nil

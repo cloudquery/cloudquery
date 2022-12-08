@@ -4,13 +4,14 @@ package containeranalysis
 
 import (
 	"context"
-	"github.com/pkg/errors"
 	"google.golang.org/api/iterator"
 
 	pb "cloud.google.com/go/containeranalysis/apiv1beta1/grafeas/grafeaspb"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
+
+	"cloud.google.com/go/containeranalysis/apiv1beta1"
 )
 
 func Occurrences() *schema.Table {
@@ -71,14 +72,18 @@ func fetchOccurrences(ctx context.Context, meta schema.ClientMeta, parent *schem
 	req := &pb.ListOccurrencesRequest{
 		Parent: "projects/" + c.ProjectId,
 	}
-	it := c.Services.ContaineranalysisGrafeasV1Beta1Client.ListOccurrences(ctx, req)
+	gcpClient, err := containeranalysis.NewGrafeasV1Beta1Client(ctx, c.ClientOptions...)
+	if err != nil {
+		return err
+	}
+	it := gcpClient.ListOccurrences(ctx, req)
 	for {
 		resp, err := it.Next()
 		if err == iterator.Done {
 			break
 		}
 		if err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 
 		res <- resp
