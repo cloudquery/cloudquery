@@ -17,7 +17,7 @@ There are two ways to sync data to Snowflake:
 
 This example sets the connection string to a value read from the `SNOWFLAKE_CONNECTION_STRING` environment variable:
 
-```yaml copy
+```yaml
 kind: destination
 spec:
   name: snowflake

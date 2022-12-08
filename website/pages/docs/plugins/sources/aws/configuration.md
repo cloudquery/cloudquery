@@ -4,7 +4,7 @@
 
 This example connects a single AWS account in one region to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
 
-```yaml copy
+```yaml
 kind: source
 spec:
   # Source spec section
@@ -27,7 +27,7 @@ spec:
 
 Some tables document the parameters and options available to your AWS accounts and don't correspond to real resources. If you don't need these tables, the time it takes to sync can be reduced by skipping these tables: 
 
-```yaml copy
+```yaml
 kind: source
 spec:
   name: aws
@@ -58,7 +58,7 @@ spec:
 ## AWS Organization Example
 
 
-```yaml copy
+```yaml
 kind: source
 spec:
   name: aws

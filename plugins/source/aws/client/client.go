@@ -27,9 +27,6 @@ import (
 type Client struct {
 	// Those are already normalized values after configure and this is why we don't want to hold
 	// config directly.
-	logLevel        *string
-	maxRetries      int
-	maxBackoff      int
 	ServicesManager ServicesManager
 	logger          zerolog.Logger
 	// this is set by table clientList
@@ -146,9 +143,6 @@ func (c *Client) Services() *Services {
 func (c *Client) withPartitionAccountIDAndRegion(partition, accountID, region string) *Client {
 	return &Client{
 		Partition:            partition,
-		logLevel:             c.logLevel,
-		maxRetries:           c.maxRetries,
-		maxBackoff:           c.maxBackoff,
 		ServicesManager:      c.ServicesManager,
 		logger:               c.logger.With().Str("account_id", accountID).Str("region", region).Logger(),
 		AccountID:            accountID,
@@ -161,9 +155,6 @@ func (c *Client) withPartitionAccountIDAndRegion(partition, accountID, region st
 func (c *Client) withPartitionAccountIDRegionAndNamespace(partition, accountID, region, namespace string) *Client {
 	return &Client{
 		Partition:            partition,
-		logLevel:             c.logLevel,
-		maxRetries:           c.maxRetries,
-		maxBackoff:           c.maxBackoff,
 		ServicesManager:      c.ServicesManager,
 		logger:               c.logger.With().Str("account_id", accountID).Str("region", region).Str("autoscaling_namespace", namespace).Logger(),
 		AccountID:            accountID,
@@ -176,9 +167,6 @@ func (c *Client) withPartitionAccountIDRegionAndNamespace(partition, accountID, 
 func (c *Client) withPartitionAccountIDRegionAndScope(partition, accountID, region string, scope wafv2types.Scope) *Client {
 	return &Client{
 		Partition:            partition,
-		logLevel:             c.logLevel,
-		maxRetries:           c.maxRetries,
-		maxBackoff:           c.maxBackoff,
 		ServicesManager:      c.ServicesManager,
 		logger:               c.logger.With().Str("account_id", accountID).Str("region", region).Str("waf_scope", string(scope)).Logger(),
 		AccountID:            accountID,
