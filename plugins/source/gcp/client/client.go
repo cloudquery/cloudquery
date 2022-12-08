@@ -19,7 +19,7 @@ const maxProjectIdsToLog int = 100
 
 type Client struct {
 	// plugin   *plugins.SourcePlugin
-	projects []string
+	projects      []string
 	ClientOptions []option.ClientOption
 	// All gcp services initialized by client
 	// Services *Services

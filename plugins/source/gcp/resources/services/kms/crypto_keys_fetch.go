@@ -17,7 +17,7 @@ func fetchCryptoKeys(ctx context.Context, meta schema.ClientMeta, parent *schema
 	if err != nil {
 		return err
 	}
-	
+
 	it := kmsClient.ListCryptoKeys(ctx, &kmspb.ListCryptoKeysRequest{Parent: p.Name})
 	for {
 		key, err := it.Next()

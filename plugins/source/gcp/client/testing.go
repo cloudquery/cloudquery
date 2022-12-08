@@ -14,6 +14,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/julienschmidt/httprouter"
 	"github.com/rs/zerolog"
+	"golang.org/x/sync/errgroup"
 	"google.golang.org/api/option"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -23,51 +24,7 @@ type TestOptions struct {
 	SkipEmptyJsonB bool
 }
 
-func MockTestHelper(t *testing.T, table *schema.Table, createService func() (*Services, error), options TestOptions) {
-	version := "vDev"
-	t.Helper()
-
-	table.IgnoreInTests = false
-
-	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source) (schema.ClientMeta, error) {
-		// svc, err := createService()
-		// if err != nil {
-		// 	return nil, fmt.Errorf("failed to createService: %w", err)
-		// }
-		var gcpSpec Spec
-		if err := spec.UnmarshalSpec(&gcpSpec); err != nil {
-			return nil, fmt.Errorf("failed to unmarshal gcp spec: %w", err)
-		}
-		c := &Client{
-			logger: logger,
-			projects: []string{"testProject"},
-		}
-
-		return c, nil
-	}
-	l := zerolog.New(zerolog.NewTestWriter(t)).Output(
-		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
-	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
-
-	p := plugins.NewSourcePlugin(
-		table.Name,
-		version,
-		[]*schema.Table{
-			table,
-		},
-		newTestExecutionClient)
-	p.SetLogger(l)
-	plugins.TestSourcePluginSync(t, p, specs.Source{
-		Name:         "dev",
-		Path:         "cloudquery/dev",
-		Version:      version,
-		Tables:       []string{table.Name},
-		Destinations: []string{"mock-destination"},
-	})
-}
-
-
-func MockTestGrpcHelper(t *testing.T, table *schema.Table, createService func(*grpc.Server) (error), options TestOptions) {
+func MockTestGrpcHelper(t *testing.T, table *schema.Table, createService func(*grpc.Server) error, options TestOptions) {
 	version := "vDev"
 	t.Helper()
 
@@ -78,14 +35,15 @@ func MockTestGrpcHelper(t *testing.T, table *schema.Table, createService func(*g
 		t.Fatalf("failed to listen: %v", err)
 	}
 	defer gsrv.Stop()
+	eg := &errgroup.Group{}
 	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source) (schema.ClientMeta, error) {
 		err := createService(gsrv)
 		if err != nil {
 			return nil, fmt.Errorf("failed to createService: %w", err)
 		}
-		go func() {
-			gsrv.Serve(listener)
-		}()
+		eg.Go(func() error {
+			return gsrv.Serve(listener)
+		})
 		var gcpSpec Spec
 		if err := spec.UnmarshalSpec(&gcpSpec); err != nil {
 			return nil, fmt.Errorf("failed to unmarshal gcp spec: %w", err)
@@ -100,7 +58,7 @@ func MockTestGrpcHelper(t *testing.T, table *schema.Table, createService func(*g
 			logger: logger,
 			// logger:   t.Log(),
 			ClientOptions: clientOptions,
-			projects: []string{"testProject"},
+			projects:      []string{"testProject"},
 		}
 
 		return c, nil
@@ -124,10 +82,13 @@ func MockTestGrpcHelper(t *testing.T, table *schema.Table, createService func(*g
 		Tables:       []string{table.Name},
 		Destinations: []string{"mock-destination"},
 	})
+	gsrv.Stop()
+	if err := eg.Wait(); err != nil {
+		t.Fatalf("failed to serve: %v", err)
+	}
 }
 
-
-func MockTestRestHelper(t *testing.T, table *schema.Table, createService func(*httprouter.Router) (error), options TestOptions) {
+func MockTestRestHelper(t *testing.T, table *schema.Table, createService func(*httprouter.Router) error, options TestOptions) {
 	version := "vDev"
 	t.Helper()
 
@@ -154,7 +115,7 @@ func MockTestRestHelper(t *testing.T, table *schema.Table, createService func(*h
 			logger: logger,
 			// logger:   t.Log(),
 			ClientOptions: clientOptions,
-			projects: []string{"testProject"},
+			projects:      []string{"testProject"},
 		}
 
 		return c, nil
@@ -179,4 +140,3 @@ func MockTestRestHelper(t *testing.T, table *schema.Table, createService func(*h
 		Destinations: []string{"mock-destination"},
 	})
 }
-

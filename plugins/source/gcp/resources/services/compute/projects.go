@@ -3,13 +3,8 @@
 package compute
 
 import (
-	"context"
-
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
-	compute "cloud.google.com/go/compute/apiv1"
-
-	pb "google.golang.org/genproto/googleapis/cloud/compute/v1"
 )
 
 func Projects() *schema.Table {
@@ -92,21 +87,4 @@ func Projects() *schema.Table {
 			},
 		},
 	}
-}
-
-func fetchProjects(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	c := meta.(*client.Client)
-	req := &pb.GetProjectRequest{
-		Project: c.ProjectId,
-	}
-	projectsClient, err := compute.NewProjectsRESTClient(ctx, c.ClientOptions...)
-	if err != nil {
-		return err
-	}
-	resp, err := projectsClient.Get(ctx, req)
-	if err != nil {
-		return err
-	}
-	res <- resp
-	return nil
 }
