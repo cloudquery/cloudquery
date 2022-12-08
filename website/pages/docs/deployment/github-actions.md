@@ -67,7 +67,7 @@ jobs:
       - uses: cloudquery/setup-cloudquery@v3
         name: Setup CloudQuery
         with:
-          version: "VERSION_CLI"
+          version: "vVERSION_CLI"
       - name: Sync with CloudQuery
         run: cloudquery sync cloudquery.yml --log-console
         env:
@@ -138,7 +138,7 @@ jobs:
       - uses: cloudquery/setup-cloudquery@v3
         name: Setup CloudQuery
         with:
-          version: "VERSION_CLI"
+          version: "vVERSION_CLI"
       - name: Sync with CloudQuery
         run: cloudquery sync cloudquery-regions.yml --log-console
         env:
