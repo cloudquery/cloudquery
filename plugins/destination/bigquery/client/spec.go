@@ -1,6 +1,7 @@
 package client
 
 import (
+	"encoding/json"
 	"fmt"
 )
 
@@ -28,9 +29,10 @@ func (t TimePartitioningOption) Validate() error {
 }
 
 type Spec struct {
-	ProjectID        string                 `json:"project_id"`
-	DatasetID        string                 `json:"dataset_id"`
-	TimePartitioning TimePartitioningOption `json:"time_partitioning"`
+	ProjectID             string                 `json:"project_id"`
+	DatasetID             string                 `json:"dataset_id"`
+	TimePartitioning      TimePartitioningOption `json:"time_partitioning"`
+	ServiceAccountKeyJSON string                 `json:"service_account_key_json"`
 }
 
 func (s *Spec) SetDefaults() {
@@ -48,6 +50,20 @@ func (s *Spec) Validate() error {
 	}
 	if err := s.TimePartitioning.Validate(); err != nil {
 		return fmt.Errorf("time_partitioning: %w", err)
+	}
+	if len(s.ServiceAccountKeyJSON) > 0 {
+		if err := isValidJson(s.ServiceAccountKeyJSON); err != nil {
+			return fmt.Errorf("invalid json for service_account_key_json: %w", err)
+		}
+	}
+	return nil
+}
+
+func isValidJson(content string) error {
+	var v map[string]interface{}
+	err := json.Unmarshal([]byte(content), &v)
+	if err != nil {
+		return err
 	}
 	return nil
 }

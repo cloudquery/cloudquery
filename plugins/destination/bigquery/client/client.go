@@ -8,6 +8,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/plugins"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
+	"google.golang.org/api/option"
 )
 
 type Client struct {
@@ -30,7 +31,7 @@ func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination)
 	}
 	var spec Spec
 	if err := destSpec.UnmarshalSpec(&spec); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal bigquery spec: %w", err)
+		return nil, fmt.Errorf("failed to unmarshal BigQuery spec: %w", err)
 	}
 	spec.SetDefaults()
 	if err := spec.Validate(); err != nil {
@@ -48,11 +49,17 @@ func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination)
 	c.projectID = spec.ProjectID
 	c.datasetID = spec.DatasetID
 	c.pluginSpec = spec
+
 	return c, nil
 }
 
 func (c *Client) bqClient(ctx context.Context) (*bigquery.Client, error) {
-	return bigquery.NewClient(ctx, c.projectID)
+	opts := []option.ClientOption{option.WithRequestReason("CloudQuery BigQuery destination")}
+	if len(c.pluginSpec.ServiceAccountKeyJSON) != 0 {
+		opts = append(opts, option.WithCredentialsJSON([]byte(c.pluginSpec.ServiceAccountKeyJSON)))
+	}
+
+	return bigquery.NewClient(ctx, c.projectID, opts...)
 }
 
 func (*Client) Close(_ context.Context) error {

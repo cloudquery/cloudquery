@@ -29,7 +29,7 @@ This is the (nested) spec used by GCP Source Plugin
 
 - `service_account_key_json` (string) (default: empty).
 
-  GCP service account key content. Using service accounts is not recommended, but if it is used it is better to use env variable expansion
+  GCP service account key content. Using service accounts is not recommended, but if it is used it is better to use [environment or file variable substitution](/docs/advanced-topics/environment-variable-substitution).
 
 - `folder_ids` ([]string) (default: empty).
   
