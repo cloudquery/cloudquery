@@ -18,7 +18,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/appsync v1.17.0
 	github.com/aws/aws-sdk-go-v2/service/autoscaling v1.24.4
 	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.24.2
-	github.com/aws/aws-sdk-go-v2/service/cloudfront v1.21.1
+	github.com/aws/aws-sdk-go-v2/service/cloudfront v1.22.0
 	github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.13.22
 	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.20.4
 	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.22.1
@@ -26,7 +26,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/codebuild v1.19.20
 	github.com/aws/aws-sdk-go-v2/service/codepipeline v1.13.20
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.14.5
-	github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.21.2
+	github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.21.3
 	github.com/aws/aws-sdk-go-v2/service/configservice v1.28.1
 	github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.22.2
 	github.com/aws/aws-sdk-go-v2/service/dax v1.11.20
@@ -58,7 +58,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/iot v1.32.1
 	github.com/aws/aws-sdk-go-v2/service/kafka v1.18.1
 	github.com/aws/aws-sdk-go-v2/service/kinesis v1.15.25
-	github.com/aws/aws-sdk-go-v2/service/kms v1.19.1
+	github.com/aws/aws-sdk-go-v2/service/kms v1.19.2
 	github.com/aws/aws-sdk-go-v2/service/lambda v1.26.1
 	github.com/aws/aws-sdk-go-v2/service/lightsail v1.24.1
 	github.com/aws/aws-sdk-go-v2/service/mq v1.13.16

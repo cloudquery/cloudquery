@@ -80,8 +80,8 @@ github.com/aws/aws-sdk-go-v2/service/backup v1.18.1 h1:+6D6Ho79E81GAciotLwKhprqO
 github.com/aws/aws-sdk-go-v2/service/backup v1.18.1/go.mod h1:99nE1HsSY0XcJE9Tp4O7xqrHq4bl5XRywtnQx0ke4eM=
 github.com/aws/aws-sdk-go-v2/service/cloudformation v1.24.2 h1:syvrRFIkQouPnVtRU3w8n4vTBqzPex7GWVw4Lzo2kHc=
 github.com/aws/aws-sdk-go-v2/service/cloudformation v1.24.2/go.mod h1:ElzDL0Fch+7qLBqVW0zEs3eddg9UjPWcMgu3WY0wCYw=
-github.com/aws/aws-sdk-go-v2/service/cloudfront v1.21.1 h1:Wrr/3coGpyN+CRRPBGkIzC8joFROkxHNqDorVdlbB3Y=
-github.com/aws/aws-sdk-go-v2/service/cloudfront v1.21.1/go.mod h1:P1i7h3JQxZnwVevXDQXtxfaWKA9z1BCV6vegzZcMcmE=
+github.com/aws/aws-sdk-go-v2/service/cloudfront v1.22.0 h1:8jxLM+HU1qJ85Ir+awmHboATg8+h/up06mNFcA4Dafw=
+github.com/aws/aws-sdk-go-v2/service/cloudfront v1.22.0/go.mod h1:P1i7h3JQxZnwVevXDQXtxfaWKA9z1BCV6vegzZcMcmE=
 github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.13.22 h1:EroOv7kgbckBGvLE4JPAEXNqswgjGhxEB6WFhnY06pA=
 github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.13.22/go.mod h1:0kgcY0oKtp92tUL+ggHZMMWmXisMIO5qwQNQ12qzHuI=
 github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.20.4 h1:oSnjrEeZ2fnvTERLBsW4MoVmx6pa7s11npKh7k9nIyo=
@@ -96,8 +96,8 @@ github.com/aws/aws-sdk-go-v2/service/codepipeline v1.13.20 h1:N56YZ7TvulFUoMX4Tx
 github.com/aws/aws-sdk-go-v2/service/codepipeline v1.13.20/go.mod h1:hFbHdto4polpAtqw+DEO8f+n+5XnDHxUmyVzi4Jag+Y=
 github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.14.5 h1:l84xOWiE0xo5HytvWEgOIzJy6EOTvz7bOLu3N7qWirc=
 github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.14.5/go.mod h1:hRzUl5ZvjoEnqbq4EIJgpGJt2/xdkTPDBPX9vcaMyoc=
-github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.21.2 h1:I7v6XUtuQUIPnxeT2me7657VTt3QmKylqeJ7SPtvEIk=
-github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.21.2/go.mod h1:cXq/aQRwML5WXL0RHg3aaqTJ01h9PI7DQCiEgg8HAs4=
+github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.21.3 h1:aFvgoMiO4Rv9bh8vgXg/Ditt4JaDFxgsmNXMTtrrsjg=
+github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.21.3/go.mod h1:cXq/aQRwML5WXL0RHg3aaqTJ01h9PI7DQCiEgg8HAs4=
 github.com/aws/aws-sdk-go-v2/service/configservice v1.28.1 h1:u88CL1QpSwOJUajMk3CHViDm+10REipyWaQjD4/oFf8=
 github.com/aws/aws-sdk-go-v2/service/configservice v1.28.1/go.mod h1:Td+kTMqUYlHswUYgX5wsNHiQKqlFMx0h48QyjSJUNWQ=
 github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.22.2 h1:0C2L0fpFdC2a/kKC43531/DQPwFpH2kChaDHdvJWUNU=
@@ -172,8 +172,8 @@ github.com/aws/aws-sdk-go-v2/service/kafka v1.18.1 h1:kzYiqc/lh2/BI2xO1XweucEcyH
 github.com/aws/aws-sdk-go-v2/service/kafka v1.18.1/go.mod h1:Vgj2LPRkzJg04uTVgQrx1iugrIjFc9egQfRl8hOfSko=
 github.com/aws/aws-sdk-go-v2/service/kinesis v1.15.25 h1:6DT0bTV7gVgCinN6XjWNGJHojGZ65JpN0CoZDTeJyos=
 github.com/aws/aws-sdk-go-v2/service/kinesis v1.15.25/go.mod h1:lRJF/JfhlE1sC/H7yuYJv72h1VyJKLGkF6ksnrAG2io=
-github.com/aws/aws-sdk-go-v2/service/kms v1.19.1 h1:ZZ+N0I7XDBYbaNr8OD69zelEsi7G1tUpFYdg5OKbPBA=
-github.com/aws/aws-sdk-go-v2/service/kms v1.19.1/go.mod h1:XH60PhgtbXDXFBzJ2auE6bpIELxAYTnoVFFwPtG8JwY=
+github.com/aws/aws-sdk-go-v2/service/kms v1.19.2 h1:pgOVfu7E6zBddKGks4TvL4YuFsL/oTpiWDIzs4WPLjY=
+github.com/aws/aws-sdk-go-v2/service/kms v1.19.2/go.mod h1:XH60PhgtbXDXFBzJ2auE6bpIELxAYTnoVFFwPtG8JwY=
 github.com/aws/aws-sdk-go-v2/service/lambda v1.26.1 h1:1LP0sLzqOTCvpyYBX67HBHpMt0xkfWnpOmUbQpZOk18=
 github.com/aws/aws-sdk-go-v2/service/lambda v1.26.1/go.mod h1:sjXAAvcyrm8CDfXxkchfrSkV41hscinr+5/+o2Jg1s0=
 github.com/aws/aws-sdk-go-v2/service/lightsail v1.24.1 h1:GveUNMp1QLwcYgbPpTF+JZDKlMgpqsE2MWH8kQu1Zi8=
