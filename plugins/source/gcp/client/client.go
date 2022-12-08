@@ -4,15 +4,18 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"time"
 
 	resourcemanager "cloud.google.com/go/resourcemanager/apiv3"
 	"cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/googleapis/gax-go/v2"
 	"github.com/rs/zerolog"
 	crmv1 "google.golang.org/api/cloudresourcemanager/v1"
 	"google.golang.org/api/iterator"
 	"google.golang.org/api/option"
+	"google.golang.org/grpc/codes"
 )
 
 const maxProjectIdsToLog int = 100
@@ -20,6 +23,7 @@ const maxProjectIdsToLog int = 100
 type Client struct {
 	projects      []string
 	ClientOptions []option.ClientOption
+	CallOptions   []gax.CallOption
 	// this is set by table client multiplexer
 	ProjectId string
 	// Logger
@@ -67,11 +71,20 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 	}
 
 	gcpSpec.setDefaults()
-
 	projects := gcpSpec.ProjectIDs
+	if gcpSpec.BackoffRetries > 0 {
+		c.CallOptions = append(c.CallOptions, gax.WithRetry(func() gax.Retryer {
+			return &Retrier{
+				backoff: gax.Backoff{
+					Max: time.Duration(gcpSpec.BackoffDelay) * time.Second,
+				},
+				maxRetries: gcpSpec.BackoffRetries,
+				codes:      []codes.Code{codes.ResourceExhausted},
+			}
+		}))
+	}
 
 	serviceAccountKeyJSON := []byte(gcpSpec.ServiceAccountKeyJSON)
-
 	// Add a fake request reason because it is not possible to pass nil options
 	options := []option.ClientOption{option.WithRequestReason("cloudquery resource fetch")}
 	if len(serviceAccountKeyJSON) != 0 {
