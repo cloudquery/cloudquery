@@ -85,7 +85,7 @@ jobs:
           aws-region: us-east-1
       - name: Run sync
         if: startsWith(github.head_ref, 'release-please--branches--main--components')
-        run: cloudquery sync test/sanity.yml
+        run: cloudquery sync test/sanity.yml --log-console
   validate-release:
     timeout-minutes: 45
     needs: [resolve-runner]
