@@ -36,6 +36,9 @@ jobs:
     timeout-minutes: 45
     name: "plugins/source/aws"
     needs: [resolve-runner]
+    permissions:
+      id-token: write
+      contents: read
     runs-on: ${{ needs.resolve-runner.outputs.runner }}
     defaults:
       run:
