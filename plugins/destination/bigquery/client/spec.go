@@ -51,8 +51,10 @@ func (s *Spec) Validate() error {
 	if err := s.TimePartitioning.Validate(); err != nil {
 		return fmt.Errorf("time_partitioning: %w", err)
 	}
-	if err := isValidJson(s.ServiceAccountKeyJSON); err != nil {
-		return fmt.Errorf("invalid json for service_account_key_json: %w", err)
+	if len(s.ServiceAccountKeyJSON) > 0 {
+		if err := isValidJson(s.ServiceAccountKeyJSON); err != nil {
+			return fmt.Errorf("invalid json for service_account_key_json: %w", err)
+		}
 	}
 	return nil
 }
