@@ -77,16 +77,22 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 		if err != nil {
 			return nil, err
 		}
+		registeredNamespaces := make(map[string]map[string]bool)
+		registeredNamespaces[TestSubscription] = make(map[string]bool)
+		for _, namespace := range allNamespaces {
+			registeredNamespaces[TestSubscription][namespace] = true
+		}
+
 		c := &Client{
-			logger:    l,
-			debugMode: true,
+			logger: l,
 			Options: &arm.ClientOptions{
 				ClientOptions: policy.ClientOptions{
 					Transport: mockClient,
 				},
 			},
-			Creds:         creds,
-			subscriptions: []string{TestSubscription},
+			registeredNamespaces: registeredNamespaces,
+			Creds:                creds,
+			subscriptions:        []string{TestSubscription},
 			resourceGroups: map[string][]*armresources.GenericResourceExpanded{
 				TestSubscription: {
 					{

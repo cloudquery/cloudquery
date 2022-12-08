@@ -13,38 +13,70 @@ import (
 	"strings"
 )
 
-var newFuncsToSkip = map[string]bool{
+// TODO: Skip NewKeyVault but also do this per package as otherwise I think we might be
+// skipping more than we want as clients are named the same across packages
+
+//
+
+// github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources
+var packagesToSkip = map[string]bool{
+	// This is a special API and we create those recipes manually
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources": true,
+	// this can be written manually and potentially we can also get it from armresources
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription": true,
+	// this can be written manually and potentially we can also get it from armresources
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions": true,
+}
+
+var newGlobalFuncsToSkip = map[string]bool{
 	// We are skipping operationsClient as this just list all operations available and it is quite static
 	// so don't think it's of anyuse and we can always enable it later
-	"NewOperationsClient":      true,
-	"NewDeletedAccountsClient": true,
-	// We are getting this data already from NewConfigurationsClient across the whole subscription
-	"NewConfigurationsForResourceGroupClient": true,
-	// We are getting this data already from NewApplyUpdate across the whole subscription
-	"NewApplyUpdateForResourceGroupClient": true,
-	// Looks like this is a buggy resource. Im always getting marshal error from the Azure SDK.
-	// Just skipping this for now
-	"NewAccountConnectorsClient": true,
-	// Seems like another buggy resource
-	"NewDeletedServersClient": true,
-	// Too long table name we will handle this with manually written receipe
-	"NewMarketplaceRegistrationDefinitionsWithoutScopeClient": true,
-	// Too long table name we will handle this with manually written receipe
-	"NewVirtualMachineImageTemplatesClient": true,
-	// This is already fetched by subscription level
-	"NewAzureTrafficCollectorsByResourceGroupClient": true,
-	// Seems like a resource that always return an error. Skipping for now
-	"NewExpressRouteCrossConnectionsClient": true,
-	// Seems like a buggy resource that always returns error. maybe will be fixed in future Azure SDK
-	"NewDeletedWorkspacesClient": true,
-	// Seems like a buggy resource that always returns a marshal error. maybe will be fixed in future Azure SDK
-	"NewIngestionSettingsClient": true,
-	// Seems like a buggy resource that always returns a marshal error. maybe will be fixed in future Azure SDK
-	"NewVirtualApplianceSKUsClient": true,
-	// Seems not implemented
-	"NewApplyUpdatesClient": true,
-	// Seems like a buggy resource that always returns a marshal error. maybe will be fixed in future Azure SDK
-	"NewContactsClient": true,
+	"NewOperationsClient": true,
+}
+
+var newFuncToSkipPerPackage = map[string]map[string]bool{
+	// We are skipping this because we already get this info via
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault": {
+		"NewVaultsClient": true,
+	},
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork": {
+		// Seems like a buggy resource that always returns a marshal error. maybe will be fixed in future Azure SDK
+		"NewVirtualApplianceSKUsClient": true,
+		// Seems like a resource that always return an error. Skipping for now
+		"NewExpressRouteCrossConnectionsClient": true,
+	},
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance": {
+		// We are getting this data already from NewConfigurationsClient across the whole subscription
+		"NewConfigurationsForResourceGroupClient": true,
+		// We are getting this data already from NewApplyUpdate across the whole subscription
+		"NewApplyUpdateForResourceGroupClient": true,
+		// Seems not implemented
+		"NewApplyUpdatesClient": true,
+	},
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity": {
+		// Seems like a buggy resource that always returns a marshal error. maybe will be fixed in future Azure SDK
+		"NewIngestionSettingsClient": true,
+		// Seems like a buggy resource that always returns a marshal error. maybe will be fixed in future Azure SDK
+		"NewContactsClient": true,
+		// Seems like another buggy resource
+		"NewDeletedServersClient": true,
+		// Looks like this is a buggy resource. Im always getting marshal error from the Azure SDK.
+		// Just skipping this for now
+		"NewAccountConnectorsClient": true,
+	},
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservice": {
+		"NewDeletedAccountsClient": true,
+	},
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction": {
+		// Too long table name we will handle this with manually written receipe
+		"NewMarketplaceRegistrationDefinitionsWithoutScopeClient": true,
+		// This is already fetched by subscription level
+		"NewAzureTrafficCollectorsByResourceGroupClient": true,
+	},
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights": {
+		// Seems like a buggy resource that always returns error. maybe will be fixed in future Azure SDK
+		"NewDeletedWorkspacesClient": true,
+	},
 }
 
 var reNewClient = regexp.MustCompile(`New[a-zA-Z]+Client`)
@@ -154,6 +186,10 @@ func CreateTablesFromPackage(pkg string) ([]*Table, error) {
 	if goPath == "" {
 		return nil, errors.New("GOPATH is not set")
 	}
+	pkgWithoutVersion := strings.Split(pkg, "@")[0]
+	if packagesToSkip[pkgWithoutVersion] {
+		return nil, nil
+	}
 	cacheDir := goPath + "/pkg/mod"
 	// this maps client name to tables
 	tables := make(map[string]*Table)
@@ -167,8 +203,13 @@ func CreateTablesFromPackage(pkg string) ([]*Table, error) {
 	}
 	newXClientFuncstions := findFunctions(pkgs, reNewClient)
 	for _, fn := range newXClientFuncstions {
-		if newFuncsToSkip[fn.name] || !isArrayExist(supportedNewClientParams, fn.paramNames) {
+		if newGlobalFuncsToSkip[fn.name] || !isArrayExist(supportedNewClientParams, fn.paramNames) {
 			continue
+		}
+		if _, ok := newFuncToSkipPerPackage[pkgWithoutVersion]; ok {
+			if newFuncToSkipPerPackage[pkgWithoutVersion][fn.name] {
+				continue
+			}
 		}
 		tables[strings.TrimPrefix(fn.name, "New")] = &Table{
 			NewFuncName: fn.name,
@@ -215,9 +256,9 @@ func CreateTablesFromPackage(pkg string) ([]*Table, error) {
 		}
 
 		if compareStrArrays(newListPagerResourceGroupParams, t.NewListPagerParams) {
-			t.Multiplex = fmt.Sprintf("client.SubscriptionResourceGroupMultiplexRegisteredNamespace(\"%s\")", t.Namespace)
+			t.Multiplex = fmt.Sprintf("client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.Namespace%s)", strings.ReplaceAll(t.Namespace, ".", "_"))
 		} else {
-			t.Multiplex = fmt.Sprintf("client.SubscriptionMultiplexRegisteredNamespace(\"%s\")", t.Namespace)
+			t.Multiplex = fmt.Sprintf("client.SubscriptionMultiplexRegisteredNamespace(client.Namespace%s)", strings.ReplaceAll(t.Namespace, ".", "_"))
 		}
 		result = append(result, t)
 	}

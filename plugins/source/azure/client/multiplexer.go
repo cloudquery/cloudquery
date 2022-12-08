@@ -21,11 +21,7 @@ func SubscriptionMultiplexRegisteredNamespace(namespace string) func(schema.Clie
 		client := meta.(*Client)
 		var c = make([]schema.ClientMeta, 0)
 		for _, subId := range client.subscriptions {
-			if client.debugMode {
-				c = append(c, client.withSubscription(subId))
-				continue
-			}
-			if _, ok := client.registeredNamespace[subId][namespace]; ok {
+			if _, ok := client.registeredNamespaces[subId][namespace]; ok {
 				c = append(c, client.withSubscription(subId))
 			}
 		}
@@ -39,11 +35,7 @@ func SubscriptionResourceGroupMultiplexRegisteredNamespace(namespace string) fun
 		var c = make([]schema.ClientMeta, 0)
 		for _, subId := range client.subscriptions {
 			for _, rg := range client.resourceGroups[subId] {
-				if client.debugMode {
-					c = append(c, client.withSubscription(subId).withResourceGroup(*rg.Name))
-					continue
-				}
-				if _, ok := client.registeredNamespace[subId][namespace]; ok {
+				if _, ok := client.registeredNamespaces[subId][namespace]; ok {
 					c = append(c, client.withSubscription(subId).withResourceGroup(*rg.Name))
 				}
 			}

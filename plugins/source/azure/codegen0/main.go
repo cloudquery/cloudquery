@@ -43,6 +43,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	namespaces := make(map[string]string, 0)
 	for _, armModule := range armModules {
 		tables, err := azparser.CreateTablesFromPackage(armModule)
 		if err != nil {
@@ -60,6 +61,15 @@ func main() {
 		if err := generatePackage(armModule, mod); err != nil {
 			log.Fatal(err)
 		}
+		for _, table := range tables {
+			if table.Namespace == "" {
+				panic(fmt.Sprintf("table %s has no namespace %s %s", table.NewFuncName, table.URL, importPath))
+			}
+			namespaces[strings.ReplaceAll(table.Namespace, ".", "_")] = table.Namespace
+		}
+	}
+	if err := generateNamespaces(namespaces); err != nil {
+		log.Fatal(err)
 	}
 }
 
@@ -77,6 +87,32 @@ func generatePackage(pkg string, mod *Recipe) error {
 	}
 	basename := strings.TrimPrefix(mod.BaseName, "arm")
 	filePath := path.Join(currentDir, "../codegen1/recipes", basename+".go")
+	content := buff.Bytes()
+	formattedContent, err := format.Source(content)
+	if err != nil {
+		fmt.Printf("failed to format code for %s: %v\n", filePath, err)
+	} else {
+		content = formattedContent
+	}
+	if err := os.WriteFile(filePath, content, 0644); err != nil {
+		return fmt.Errorf("failed to write file %s: %w", filePath, err)
+	}
+	return nil
+}
+
+func generateNamespaces(namespaces map[string]string) error {
+	tpl, err := template.New("namespaces.go.tpl").Funcs(template.FuncMap{
+		"ToCamel": strings.Title,
+	}).ParseFS(templateFS, "templates/namespaces.go.tpl")
+	if err != nil {
+		return fmt.Errorf("failed to parse recipe.go.tpl: %w", err)
+	}
+
+	var buff bytes.Buffer
+	if err := tpl.Execute(&buff, namespaces); err != nil {
+		return fmt.Errorf("failed to execute recipe template: %w", err)
+	}
+	filePath := path.Join(currentDir, "../client/namespaces.go")
 	content := buff.Bytes()
 	formattedContent, err := format.Source(content)
 	if err != nil {
