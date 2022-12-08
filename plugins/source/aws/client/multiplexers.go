@@ -1,7 +1,7 @@
 package client
 
 import (
-	"math/rand"
+	"sort"
 
 	wafv2types "github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -20,8 +20,8 @@ func getRegion(regionalMap map[string]*Services) string {
 	for i := range regionalMap {
 		regions = append(regions, i)
 	}
-	randomIndex := rand.Intn(len(regions))
-	return regions[randomIndex]
+	sort.Strings(regions)
+	return regions[0]
 }
 
 func AccountMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
