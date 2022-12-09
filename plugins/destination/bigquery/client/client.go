@@ -52,7 +52,6 @@ func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination)
 func (c *Client) bqClient(ctx context.Context) (*bigquery.Client, error) {
 	opts := []option.ClientOption{option.WithRequestReason("CloudQuery BigQuery destination")}
 	if len(c.pluginSpec.ServiceAccountKeyJSON) != 0 {
-		c.logger.Info().Msg("Using service account key JSON")
 		opts = append(opts, option.WithCredentialsJSON([]byte(c.pluginSpec.ServiceAccountKeyJSON)))
 	}
 	client, err := bigquery.NewClient(ctx, c.pluginSpec.ProjectID, opts...)
