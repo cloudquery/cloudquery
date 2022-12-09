@@ -17,8 +17,6 @@ type Client struct {
 	spec       specs.Destination
 	metrics    plugins.DestinationMetrics
 	pluginSpec Spec
-	projectID  string
-	datasetID  string
 }
 
 func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination) (plugins.DestinationClient, error) {
@@ -38,6 +36,8 @@ func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination)
 		return nil, err
 	}
 
+	c.pluginSpec = spec
+
 	// create a client to test that we can do it, but new clients will also be instantiated
 	// for queries so that we can use a new context there.
 	client, err := c.bqClient(ctx)
@@ -46,20 +46,23 @@ func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination)
 	}
 	defer client.Close()
 
-	c.projectID = spec.ProjectID
-	c.datasetID = spec.DatasetID
-	c.pluginSpec = spec
-
 	return c, nil
 }
 
 func (c *Client) bqClient(ctx context.Context) (*bigquery.Client, error) {
 	opts := []option.ClientOption{option.WithRequestReason("CloudQuery BigQuery destination")}
 	if len(c.pluginSpec.ServiceAccountKeyJSON) != 0 {
+		c.logger.Info().Msg("Using service account key JSON")
 		opts = append(opts, option.WithCredentialsJSON([]byte(c.pluginSpec.ServiceAccountKeyJSON)))
 	}
-
-	return bigquery.NewClient(ctx, c.projectID, opts...)
+	client, err := bigquery.NewClient(ctx, c.pluginSpec.ProjectID, opts...)
+	if err != nil {
+		return nil, err
+	}
+	if c.pluginSpec.DatasetLocation != "" {
+		client.Location = c.pluginSpec.DatasetLocation
+	}
+	return client, nil
 }
 
 func (*Client) Close(_ context.Context) error {
