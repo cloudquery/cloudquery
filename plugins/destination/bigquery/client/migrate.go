@@ -47,8 +47,8 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 }
 
 func (c *Client) doesTableExist(ctx context.Context, client *bigquery.Client, table string) (bool, error) {
-	c.logger.Debug().Str("dataset", c.datasetID).Str("table", table).Msg("Checking existence")
-	tableRef := client.Dataset(c.datasetID).Table(table)
+	c.logger.Debug().Str("dataset", c.pluginSpec.DatasetID).Str("table", table).Msg("Checking existence")
+	tableRef := client.Dataset(c.pluginSpec.DatasetID).Table(table)
 	md, err := tableRef.Metadata(ctx)
 	if err != nil {
 		if e, ok := err.(*googleapi.Error); ok {
@@ -71,7 +71,7 @@ func (c *Client) autoMigrateTable(ctx context.Context, client *bigquery.Client, 
 		Description: table.Description,
 		Schema:      bqSchema,
 	}
-	_, err := client.Dataset(c.datasetID).Table(table.Name).Update(ctx, tm, "")
+	_, err := client.Dataset(c.pluginSpec.DatasetID).Table(table.Name).Update(ctx, tm, "")
 	return err
 }
 
@@ -84,7 +84,7 @@ func (c *Client) createTable(ctx context.Context, client *bigquery.Client, table
 		Schema:           bqSchema,
 		TimePartitioning: c.timePartitioning(),
 	}
-	return client.Dataset(c.datasetID).Table(table.Name).Create(ctx, &tm)
+	return client.Dataset(c.pluginSpec.DatasetID).Table(table.Name).Create(ctx, &tm)
 }
 
 func (c *Client) timePartitioning() *bigquery.TimePartitioning {

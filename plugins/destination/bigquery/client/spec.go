@@ -31,6 +31,7 @@ func (t TimePartitioningOption) Validate() error {
 type Spec struct {
 	ProjectID             string                 `json:"project_id"`
 	DatasetID             string                 `json:"dataset_id"`
+	DatasetLocation       string                 `json:"dataset_location"`
 	TimePartitioning      TimePartitioningOption `json:"time_partitioning"`
 	ServiceAccountKeyJSON string                 `json:"service_account_key_json"`
 }
