@@ -3,13 +3,15 @@
 package conversations
 
 import (
+	"github.com/cloudquery/cloudquery/plugins/source/slack/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Conversations() *schema.Table {
 	return &schema.Table{
-		Name:     "slack_conversations",
-		Resolver: fetchConversations,
+		Name:      "slack_conversations",
+		Resolver:  fetchConversations,
+		Multiplex: client.TeamMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "id",
@@ -33,11 +35,6 @@ func Conversations() *schema.Table {
 				Name:     "last_read",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("LastRead"),
-			},
-			{
-				Name:     "latest",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Latest"),
 			},
 			{
 				Name:     "unread_count",
@@ -113,6 +110,56 @@ func Conversations() *schema.Table {
 				Name:     "user",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("User"),
+			},
+			{
+				Name:     "name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Name"),
+			},
+			{
+				Name:     "creator",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Creator"),
+			},
+			{
+				Name:     "is_archived",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("IsArchived"),
+			},
+			{
+				Name:     "members",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("Members"),
+			},
+			{
+				Name:     "topic",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Topic"),
+			},
+			{
+				Name:     "purpose",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Purpose"),
+			},
+			{
+				Name:     "is_channel",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("IsChannel"),
+			},
+			{
+				Name:     "is_general",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("IsGeneral"),
+			},
+			{
+				Name:     "is_member",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("IsMember"),
+			},
+			{
+				Name:     "locale",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Locale"),
 			},
 		},
 	}

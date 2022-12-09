@@ -3,13 +3,16 @@
 package plugin
 
 import (
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/cloudquery/plugins/source/slack/resources/services/access_logs"
+	"github.com/cloudquery/cloudquery/plugins/source/slack/resources/services/conversations"
 	"github.com/cloudquery/cloudquery/plugins/source/slack/resources/services/users"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func tables() []*schema.Table {
 	return []*schema.Table{
-        users.Users(),
-		users.UserPresences(),
+		access_logs.Logins(),
+		users.Users(),
+		conversations.Conversations(),
 	}
 }

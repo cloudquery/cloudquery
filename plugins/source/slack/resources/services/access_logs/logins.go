@@ -3,13 +3,15 @@
 package access_logs
 
 import (
+	"github.com/cloudquery/cloudquery/plugins/source/slack/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Logins() *schema.Table {
 	return &schema.Table{
-		Name:     "slack_logins",
-		Resolver: fetchLogins,
+		Name:      "slack_logins",
+		Resolver:  fetchLogins,
+		Multiplex: client.TeamMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "user_id",

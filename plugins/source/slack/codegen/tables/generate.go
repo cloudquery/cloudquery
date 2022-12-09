@@ -12,17 +12,13 @@ import (
 	"text/template"
 
 	"github.com/cloudquery/cloudquery/plugins/source/slack/codegen/recipes"
-	"github.com/cloudquery/plugin-sdk/caser"
 )
 
 //go:embed templates/*.go.tpl
 var templatesFS embed.FS
 
 func Generate(resources []*recipes.Resource) error {
-	csr := caser.New()
-	tpl, err := template.New("tables.go.tpl").Funcs(template.FuncMap{
-		"ToCamel": csr.ToPascal,
-	}).ParseFS(templatesFS, "templates/tables.go.tpl")
+	tpl, err := template.New("tables.go.tpl").ParseFS(templatesFS, "templates/tables.go.tpl")
 	if err != nil {
 		return err
 	}
@@ -54,7 +50,6 @@ func Generate(resources []*recipes.Resource) error {
 }
 
 func removeChildResources(resources []*recipes.Resource) []*recipes.Resource {
-	csr := caser.New()
 	filtered := make([]*recipes.Resource, 0)
 	relations := map[string]bool{}
 	for _, r := range resources {
@@ -63,7 +58,7 @@ func removeChildResources(resources []*recipes.Resource) []*recipes.Resource {
 		}
 	}
 	for _, r := range resources {
-		funcName := r.Service + "." + csr.ToPascal(r.SubService)
+		funcName := r.Service + "." + r.TableFuncName
 		if relations[funcName] {
 			continue
 		}

@@ -12,6 +12,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/golang/mock/gomock"
 	"github.com/rs/zerolog"
+	"github.com/slack-go/slack"
 )
 
 type TestOptions struct{}
@@ -28,6 +29,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, 
 		return &Client{
 			logger: l,
 			Slack:  builder(t, ctrl),
+			Teams:  []slack.Team{{ID: "test_team"}},
 		}, nil
 	}
 	p := plugins.NewSourcePlugin(

@@ -13,6 +13,8 @@ func AccessLogResources() []*Resource {
 	}
 	for _, r := range resources {
 		r.Service = "access_logs"
+		r.Multiplex = `client.TeamMultiplex`
+		r.ImportClient = true
 	}
 	return resources
 }

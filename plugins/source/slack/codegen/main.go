@@ -14,6 +14,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/slack/codegen/recipes"
 	"github.com/cloudquery/cloudquery/plugins/source/slack/codegen/services"
+	"github.com/cloudquery/cloudquery/plugins/source/slack/codegen/tables"
 	"github.com/cloudquery/plugin-sdk/codegen"
 )
 
@@ -29,9 +30,7 @@ func main() {
 	var resources []*recipes.Resource
 	resources = append(resources, recipes.AccessLogResources()...)
 	resources = append(resources, recipes.UserResources()...)
-	resources = append(resources, recipes.GroupResources()...)
 	resources = append(resources, recipes.ConversationResources()...)
-	resources = append(resources, recipes.EmojiResources()...)
 
 	for _, r := range resources {
 		r.Infer()
@@ -46,6 +45,11 @@ func main() {
 		codegenDir := path.Join(path.Dir(filename), "..", "resources", "services")
 
 		generateTable(codegenDir, *r)
+	}
+
+	err = tables.Generate(resources)
+	if err != nil {
+		log.Fatal(err)
 	}
 }
 

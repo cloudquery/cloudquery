@@ -29,6 +29,11 @@ var acceptedPrefixes = []string{
 	"List", "Get", "Describe", "Search", "Find",
 }
 
+// these method name suffixes will be part of the generated client interface
+var acceptedSuffixes = []string{
+	"Context",
+}
+
 // these methods will be included despite not starting with an accepted prefix
 var exceptions = []string{}
 
@@ -73,13 +78,29 @@ func signature(name string, f interface{}) string {
 }
 
 func shouldInclude(name string) bool {
+	if hasPrefix(name) && hasSuffix(name) {
+		return true
+	}
+	for _, e := range exceptions {
+		if name == e {
+			return true
+		}
+	}
+	return false
+}
+
+func hasPrefix(name string) bool {
 	for _, t := range acceptedPrefixes {
 		if strings.HasPrefix(name, t) {
 			return true
 		}
 	}
-	for _, e := range exceptions {
-		if name == e {
+	return false
+}
+
+func hasSuffix(name string) bool {
+	for _, t := range acceptedSuffixes {
+		if strings.HasSuffix(name, t) {
 			return true
 		}
 	}

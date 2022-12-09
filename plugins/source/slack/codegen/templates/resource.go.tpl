@@ -4,6 +4,9 @@ package {{.Service}}
 
 import (
 	"github.com/cloudquery/plugin-sdk/schema"
+	{{- if .ImportClient }}
+	"github.com/cloudquery/cloudquery/plugins/source/slack/client"
+	{{- end }}
 )
 
 func {{.TableFuncName}}() *schema.Table {

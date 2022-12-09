@@ -12,7 +12,7 @@ import (
 func tables() []*schema.Table {
 	return []*schema.Table{
     {{- range $resource := . }}
-        {{ $resource.Service }}.{{ $resource.SubService | ToCamel }}(),
+        {{ $resource.Service }}.{{ $resource.TableFuncName }}(),
     {{- end }}
 	}
 }
