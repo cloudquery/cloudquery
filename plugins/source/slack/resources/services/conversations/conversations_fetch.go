@@ -16,9 +16,8 @@ func fetchConversations(ctx context.Context, meta schema.ClientMeta, _ *schema.R
 		Types:  []string{"public_channel", "private_channel", "mpim", "im"},
 		Limit:  1000,
 	}
-	slackClient := meta.(*client.Client).Slack
 	for {
-		conversations, nextCursor, err := slackClient.GetConversationsContext(ctx, params)
+		conversations, nextCursor, err := c.Slack.GetConversationsContext(ctx, params)
 		c.Logger().Debug().Err(err).Interface("conversations", conversations).Str("next_cursor", nextCursor).Msg("Got conversations")
 		if err != nil {
 			return err

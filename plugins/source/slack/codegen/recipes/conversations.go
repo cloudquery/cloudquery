@@ -2,14 +2,68 @@ package recipes
 
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/slack/resources/services/conversations/models"
+	"github.com/cloudquery/plugin-sdk/codegen"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/slack-go/slack"
 )
 
 func ConversationResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "conversations",
-			DataStruct: &models.Conversation{},
-			PKColumns:  []string{"id"},
+			SubService:  "conversations",
+			Description: "https://api.slack.com/methods/conversations.list",
+			DataStruct:  &models.Conversation{},
+			PKColumns:   []string{"team_id", "id"},
+			Relations: []string{
+				`ConversationHistories()`,
+			},
+			ExtraColumns: []codegen.ColumnDefinition{TeamIDColumn},
+		},
+		{
+			SubService:  "conversation_histories",
+			Description: "https://api.slack.com/methods/conversations.history",
+			DataStruct:  &slack.Msg{},
+			PKColumns:   []string{"team_id", "channel_id", "ts"},
+			SkipFields:  []string{"Team", "Blocks", "Replies"},
+			ExtraColumns: []codegen.ColumnDefinition{
+				{
+					Name:     "channel_id",
+					Type:     schema.TypeString,
+					Resolver: `schema.ParentColumnResolver("id")`,
+				},
+				{
+					Name:     "team_id",
+					Type:     schema.TypeString,
+					Resolver: `schema.ParentColumnResolver("team_id")`,
+				},
+			},
+			Relations: []string{
+				`ConversationReplies()`,
+			},
+		},
+		{
+			SubService:  "conversation_replies",
+			Description: "https://api.slack.com/methods/conversations.replies",
+			DataStruct:  &slack.Msg{},
+			SkipFields:  []string{"Team", "Blocks"},
+			PKColumns:   []string{"team_id", "channel_id", "ts"},
+			ExtraColumns: []codegen.ColumnDefinition{
+				{
+					Name:     "conversation_history_ts",
+					Type:     schema.TypeString,
+					Resolver: `schema.ParentColumnResolver("ts")`,
+				},
+				{
+					Name:     "team_id",
+					Type:     schema.TypeString,
+					Resolver: `schema.ParentColumnResolver("team_id")`,
+				},
+				{
+					Name:     "channel_id",
+					Type:     schema.TypeString,
+					Resolver: `schema.ParentColumnResolver("channel_id")`,
+				},
+			},
 		},
 	}
 	for _, r := range resources {

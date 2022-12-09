@@ -72,6 +72,7 @@ func generateTable(basedir string, r recipes.Resource) {
 		log.Fatal(err)
 	}
 
+	r.Table.Description = r.Description
 	r.Table.Resolver = r.ResolverFuncName
 	r.Table.Multiplex = r.Multiplex
 	r.ImportClient = strings.HasPrefix(r.Multiplex, "client.")

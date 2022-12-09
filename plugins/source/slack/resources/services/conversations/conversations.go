@@ -9,10 +9,16 @@ import (
 
 func Conversations() *schema.Table {
 	return &schema.Table{
-		Name:      "slack_conversations",
-		Resolver:  fetchConversations,
-		Multiplex: client.TeamMultiplex,
+		Name:        "slack_conversations",
+		Description: `https://api.slack.com/methods/conversations.list`,
+		Resolver:    fetchConversations,
+		Multiplex:   client.TeamMultiplex,
 		Columns: []schema.Column{
+			{
+				Name:     "team_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveTeamID,
+			},
 			{
 				Name:     "id",
 				Type:     schema.TypeString,
@@ -161,6 +167,10 @@ func Conversations() *schema.Table {
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Locale"),
 			},
+		},
+
+		Relations: []*schema.Table{
+			ConversationHistories(),
 		},
 	}
 }

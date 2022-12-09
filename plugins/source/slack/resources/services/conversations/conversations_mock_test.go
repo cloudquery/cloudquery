@@ -13,13 +13,19 @@ import (
 
 func buildConversationsMock(t *testing.T, ctrl *gomock.Controller) services.SlackClient {
 	m := mocks.NewMockSlackClient(ctrl)
+
+	buildConversationHistoriesMock(t, m)
+	buildConversationRepliesMock(t, m)
+
 	d := make([]slack.Channel, 0, 1)
 	err := faker.FakeObject(&d)
 	if err != nil {
 		t.Fatal(err)
 	}
+	
 	m.EXPECT().GetConversationsContext(gomock.Any(), gomock.Any()).Times(1).Return(d, "cursor1", nil)
 	m.EXPECT().GetConversationsContext(gomock.Any(), gomock.Any()).Times(1).Return(d, "", nil)
+
 	return m
 }
 

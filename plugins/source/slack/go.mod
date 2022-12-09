@@ -40,3 +40,4 @@ require (
 )
 
 replace github.com/slack-go/slack v0.11.4 => /Users/hermanschaaf/code/slack // TODO: remove this once https://github.com/slack-go/slack/pull/1119 is merged
+replace github.com/cloudquery/plugin-sdk v1.11.0 => /Users/hermanschaaf/code/cloudquery/plugin-sdk

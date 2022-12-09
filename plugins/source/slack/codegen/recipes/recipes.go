@@ -12,7 +12,8 @@ import (
 )
 
 type Resource struct {
-	Service string
+	Service     string
+	Description string
 	// Table is the table definition that will be used to generate the cloudquery table
 	Table *codegen.TableDefinition
 	// DataStruct that will be used to generate the cloudquery table
@@ -46,11 +47,10 @@ type Resource struct {
 }
 
 var (
-	SharingIDColumn = codegen.ColumnDefinition{
-		Name:        "sharing_id",
-		Description: "The Sharing ID of the resource.",
-		Type:        schema.TypeString,
-		Resolver:    "client.ResolveSharingID",
+	TeamIDColumn = codegen.ColumnDefinition{
+		Name:     "team_id",
+		Type:     schema.TypeString,
+		Resolver: "client.ResolveTeamID",
 	}
 
 	pluralizeClient *pluralize.Client
@@ -63,30 +63,11 @@ func init() {
 		pluralizeClient.AddUncountableRule(s)
 	}
 
-	csr = caser.New(
-		caser.WithCustomInitialisms(map[string]bool{
-			"DNS":     true,
-			"DNSSec":  true,
-			"LiveDNS": true,
-			//"Simplehosting": true,
-			//"Vhost":         true,
-		}),
-		caser.WithCustomExceptions(map[string]string{
-			"dnssec":  "DNSSec",
-			"livedns": "LiveDNS",
-			"vhost":   "Vhost",
-		}),
-	)
-}
-
-func enforceAbbrevations(word string) string {
-	word = strings.ReplaceAll(word, "live_dns", "livedns")
-	word = strings.ReplaceAll(word, "dns_sec", "dnssec")
-	return word
+	csr = caser.New()
 }
 
 func toSnake(word string) string {
-	return enforceAbbrevations(csr.ToSnake(word))
+	return csr.ToSnake(word)
 }
 
 func (r *Resource) Infer() {
