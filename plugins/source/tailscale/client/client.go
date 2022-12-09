@@ -1,16 +1,12 @@
 package client
 
-import (
-	"github.com/tailscale/tailscale-client-go/tailscale"
-)
-
 type Client struct {
 	Tailnet string
 	APIKey  string
-	Clients map[string]*tailscale.Client
+	Clients map[string]Interface
 }
 
-func (c *Client) WithTailNet(tailnet string) *Client {
+func (c *Client) WithTailnet(tailnet string) *Client {
 	client := *c
 	client.Tailnet = tailnet
 	return &client
