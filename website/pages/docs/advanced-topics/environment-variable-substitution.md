@@ -30,3 +30,15 @@ spec:
 ```
 
 Local path `./path/to/secret/file` will be read and replaced with the contents of the file before processing.
+
+## JSON Files
+
+If the file or environment variable being substituted in contains JSON, it should be imported inside single quotes:
+
+```yaml copy
+kind: "destination"
+spec:
+  name: "bigquery"
+  spec:
+    service_account_key_json: '${file:./path/to/secret/file.json}'
+```

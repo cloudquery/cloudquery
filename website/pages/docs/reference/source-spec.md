@@ -2,13 +2,13 @@
 
 Following are available options for the top level source plugin `spec` object.
 
-Note: For configuring individual plugins, please refer to the configuration section from the relevant plugins from [here](/docs/plugins/sources/overview). (e.g. [AWS plugin configuration](/docs/plugins/sources/aws/configuration)). Also check out our [recipes](/docs/recipes/overview) for common configuration examples.
+Note: For configuring individual plugins, please refer to the configuration section from the relevant plugins from [here](/docs/plugins/sources/overview). (e.g. [AWS plugin configuration](/docs/plugins/sources/aws/configuration)).
 
 ## Example
 
 This example configures the AWS plugin, and connects is to a `postgresql` destination:
 
-```yaml copy
+```yaml
 kind: source
 spec:
   name: "aws"

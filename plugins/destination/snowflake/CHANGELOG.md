@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.0.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v1.0.4...plugins-destination-snowflake-v1.0.5) (2022-12-07)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.11.1 ([#5458](https://github.com/cloudquery/cloudquery/issues/5458)) ([58b7432](https://github.com/cloudquery/cloudquery/commit/58b74321cd253c9a843c8c103f324abb93952195))
+* Prevent concurrent map read & write in snowflake write function ([#5452](https://github.com/cloudquery/cloudquery/issues/5452)) ([a6a74de](https://github.com/cloudquery/cloudquery/commit/a6a74de6c69ee6b91ed2892af59904380f7d0621))
+
+## [1.0.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v1.0.3...plugins-destination-snowflake-v1.0.4) (2022-12-06)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.10.0 ([#5153](https://github.com/cloudquery/cloudquery/issues/5153)) ([ea1f77e](https://github.com/cloudquery/cloudquery/commit/ea1f77e910f430287600e74cedd7d3f4ae79eb18))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.11.0 ([#5416](https://github.com/cloudquery/cloudquery/issues/5416)) ([2e7ca35](https://github.com/cloudquery/cloudquery/commit/2e7ca35922fdb14fd717f582aaaa9693dae2ef4c))
+
 ## [1.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v1.0.2...plugins-destination-snowflake-v1.0.3) (2022-11-29)
 
 

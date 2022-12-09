@@ -41,3 +41,21 @@ brews:
       (zsh_completion/"_cloudquery").write output
       output = Utils.safe_popen_read("#{bin}/cloudquery", "completion", "fish")
       (fish_completion/"cloudquery.fish").write output
+  -
+    ids:
+      - homebrew
+    name: cloudquery@{{.Version}}
+    tap:
+      owner: cloudquery
+      name: homebrew-tap
+    url_template: "https://github.com/cloudquery/cloudquery/releases/download/{{ .PrefixedTag }}/{{ .ArtifactName }}"
+    homepage: "https://cloudquery.io"
+    description: "Easily monitor and ask questions about your infrastructure."
+    install: |-
+      bin.install "cloudquery"
+      output = Utils.safe_popen_read("#{bin}/cloudquery", "completion", "bash")
+      (bash_completion/"cloudquery").write output
+      output = Utils.safe_popen_read("#{bin}/cloudquery", "completion", "zsh")
+      (zsh_completion/"_cloudquery").write output
+      output = Utils.safe_popen_read("#{bin}/cloudquery", "completion", "fish")
+      (fish_completion/"cloudquery.fish").write output

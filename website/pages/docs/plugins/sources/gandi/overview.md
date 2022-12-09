@@ -13,7 +13,7 @@ In order to fetch information from Gandi, `cloudquery` needs to be authenticated
 
 ## Query Examples
 
-### Get list of domains which will expire in 90 days
+### Detect domain registrations that will expire soon
 
 ```sql
 select fqdn, dates->>'registry_ends_at' as registry_ends_at, date_trunc('day', (dates->>'registry_ends_at')::timestamp - current_timestamp) as days_left from gandi_domains where ((dates->>'registry_ends_at')::timestamp - interval '90 day') < current_timestamp order by 1;
@@ -25,7 +25,7 @@ select fqdn, dates->>'registry_ends_at' as registry_ends_at, date_trunc('day', (
 select fqdn, current, nameservers from gandi_domain_live_dns order by 1;
 ```
 
-### Get list of domain glue records
+### Get a list of glue records
 
 ```sql
 select fqdn, name, ips from gandi_domain_glue_records order by 1, 2;

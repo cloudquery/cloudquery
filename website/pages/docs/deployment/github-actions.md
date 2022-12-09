@@ -20,7 +20,7 @@ To set up authentication with AWS from GitHub Actions you can follow the [Config
 
 Under the root of your repository, create a new `cloudquery.yml` file with the following content:
 
-```yaml copy
+```yaml
 kind: source
 spec:
   name: 'aws'
@@ -45,7 +45,7 @@ First we'll need [to create a GitHub secret](https://docs.github.com/en/actions/
 
 Create a workflow file under `.github/workflows/cloudquery.yml` with the following content, and fill in `<role-arn>` and `<region>` according to the role you created in the prerequisites.
 
-```yaml copy
+```yaml
 name: CloudQuery
 on:
   schedule:
@@ -67,7 +67,7 @@ jobs:
       - uses: cloudquery/setup-cloudquery@v3
         name: Setup CloudQuery
         with:
-          version: "VERSION_CLI"
+          version: "vVERSION_CLI"
       - name: Sync with CloudQuery
         run: cloudquery sync cloudquery.yml --log-console
         env:
@@ -86,7 +86,7 @@ With the [GitHub Actions matrix configuration](https://docs.github.com/en/action
 
 First, we'll need to create a new `cloudquery-regions.yml` configuration file under the root of the repository:
 
-```yaml copy
+```yaml
 kind: source
 spec:
   name: 'aws-REGION_PLACEHOLDER' # when splitting configurations, we need to keep the names unique
@@ -108,7 +108,7 @@ spec:
 
 To do so, create the following workflow file under `.github/workflows/cloudquery-parallel.yml`:
 
-```yaml copy
+```yaml
 name: CloudQuery Parallel
 on:
   schedule:
@@ -138,7 +138,7 @@ jobs:
       - uses: cloudquery/setup-cloudquery@v3
         name: Setup CloudQuery
         with:
-          version: "VERSION_CLI"
+          version: "vVERSION_CLI"
       - name: Sync with CloudQuery
         run: cloudquery sync cloudquery-regions.yml --log-console
         env:

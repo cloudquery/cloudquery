@@ -17,7 +17,7 @@ SQLite is all the rage these days, and for a good reason. It is an embedded data
 
 Today I'm excited to announce the release of our new SQLite destination plugin, so you can now sync all supported CloudQuery [source plugins](/docs/plugins/sources/overview) to a [SQLite](https://www.sqlite.org/index.html) database.
 
-Checkout [our docs](/docs/recipes/destinations/sqlite) to see how to configure the SQLite destination plugin.
+Check out [our docs](/docs/plugins/destinations/sqlite/overview) to see how to configure the SQLite destination plugin.
 
 ## Use Cases
 
@@ -25,7 +25,7 @@ SQLite use-cases in data integration are infinite, but I'd like to share a few i
 
 ### Local data exploration
 
-If you don't want to run a database or docker, running SQLite as destination will be super performant similar to our [CSV destination plugin](/docs/recipes/destinations/csv) but with the ability to do complex queries and store everything in one file.
+If you don't want to run a database or docker, running SQLite as destination will be super performant similar to our [CSV destination plugin](/docs/plugins/destinations/csv/overview) but with the ability to do complex queries and store everything in one file.
 
 ### Scaling ETL workloads
 

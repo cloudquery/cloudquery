@@ -186,15 +186,15 @@ var computeResourcesList = []*Resource{
 		ResponseStruct: &pb.TargetSslProxyList{},
 		ListFunction:   (&compute.TargetSslProxiesClient{}).List,
 	},
-}
-
-var computeResourcesGet = []*Resource{
 	{
-		SubService:    "projects",
-		Struct:        &pb.Project{},
-		NewFunction:   compute.NewProjectsRESTClient,
-		RequestStruct: &pb.GetProjectRequest{},
-		ListFunction:  (&compute.ProjectsClient{}).Get,
+		SubService:     "projects",
+		Struct:         &pb.Project{},
+		NewFunction:    compute.NewProjectsRESTClient,
+		RequestStruct:  &pb.GetProjectRequest{},
+		ResponseStruct: &pb.Project{},
+		ListFunction:   (&compute.ProjectsClient{}).Get,
+		SkipFetch:      true,
+		SkipMock:       true,
 	},
 }
 
@@ -208,13 +208,8 @@ func ComputeResources() []*Resource {
 		resource.Template = "newapi_list"
 		resource.MockTemplate = "newapi_list_rest_mock"
 	}
-	for _, resource := range computeResourcesGet {
-		resource.Template = "newapi_get"
-		resource.MockTemplate = "newapi_get_rest_mock"
-	}
 	resources := computeResourcesAggList
 	resources = append(resources, computeResourcesList...)
-	resources = append(resources, computeResourcesGet...)
 
 	// add all shared properties
 	for _, resource := range resources {

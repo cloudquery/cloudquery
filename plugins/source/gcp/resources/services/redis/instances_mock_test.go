@@ -8,45 +8,15 @@ import (
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
-	"net"
 	"testing"
 
-	"cloud.google.com/go/redis/apiv1"
-
 	pb "google.golang.org/genproto/googleapis/cloud/redis/v1"
-
-	"google.golang.org/api/option"
 )
 
-func createInstances() (*client.Services, error) {
+func createInstances(gsrv *grpc.Server) error {
 	fakeServer := &fakeInstancesServer{}
-	l, err := net.Listen("tcp", "localhost:0")
-	if err != nil {
-		return nil, fmt.Errorf("failed to listen: %w", err)
-	}
-	gsrv := grpc.NewServer()
 	pb.RegisterCloudRedisServer(gsrv, fakeServer)
-	fakeServerAddr := l.Addr().String()
-	go func() {
-		if err := gsrv.Serve(l); err != nil {
-			panic(err)
-		}
-	}()
-
-	// Create a client.
-	svc, err := redis.NewCloudRedisClient(context.Background(),
-		option.WithEndpoint(fakeServerAddr),
-		option.WithoutAuthentication(),
-		option.WithGRPCDialOption(grpc.WithTransportCredentials(insecure.NewCredentials())),
-	)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create grpc client: %w", err)
-	}
-
-	return &client.Services{
-		RedisCloudRedisClient: svc,
-	}, nil
+	return nil
 }
 
 type fakeInstancesServer struct {
@@ -63,5 +33,5 @@ func (f *fakeInstancesServer) ListInstances(context.Context, *pb.ListInstancesRe
 }
 
 func TestInstances(t *testing.T) {
-	client.MockTestHelper(t, Instances(), createInstances, client.TestOptions{})
+	client.MockTestGrpcHelper(t, Instances(), createInstances, client.TestOptions{})
 }

@@ -4,13 +4,14 @@ package compute
 
 import (
 	"context"
-	"github.com/pkg/errors"
 	"google.golang.org/api/iterator"
 
 	pb "google.golang.org/genproto/googleapis/cloud/compute/v1"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
+
+	"cloud.google.com/go/compute/apiv1"
 )
 
 func Autoscalers() *schema.Table {
@@ -105,14 +106,18 @@ func fetchAutoscalers(ctx context.Context, meta schema.ClientMeta, parent *schem
 	req := &pb.AggregatedListAutoscalersRequest{
 		Project: c.ProjectId,
 	}
-	it := c.Services.ComputeAutoscalersClient.AggregatedList(ctx, req)
+	gcpClient, err := compute.NewAutoscalersRESTClient(ctx, c.ClientOptions...)
+	if err != nil {
+		return err
+	}
+	it := gcpClient.AggregatedList(ctx, req)
 	for {
 		resp, err := it.Next()
 		if err == iterator.Done {
 			break
 		}
 		if err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 
 		res <- resp.Value.Autoscalers

@@ -8,45 +8,15 @@ import (
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
-	"net"
 	"testing"
 
-	"cloud.google.com/go/serviceusage/apiv1"
-
 	pb "google.golang.org/genproto/googleapis/api/serviceusage/v1"
-
-	"google.golang.org/api/option"
 )
 
-func createServices() (*client.Services, error) {
+func createServices(gsrv *grpc.Server) error {
 	fakeServer := &fakeServicesServer{}
-	l, err := net.Listen("tcp", "localhost:0")
-	if err != nil {
-		return nil, fmt.Errorf("failed to listen: %w", err)
-	}
-	gsrv := grpc.NewServer()
 	pb.RegisterServiceUsageServer(gsrv, fakeServer)
-	fakeServerAddr := l.Addr().String()
-	go func() {
-		if err := gsrv.Serve(l); err != nil {
-			panic(err)
-		}
-	}()
-
-	// Create a client.
-	svc, err := serviceusage.NewClient(context.Background(),
-		option.WithEndpoint(fakeServerAddr),
-		option.WithoutAuthentication(),
-		option.WithGRPCDialOption(grpc.WithTransportCredentials(insecure.NewCredentials())),
-	)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create grpc client: %w", err)
-	}
-
-	return &client.Services{
-		ServiceusageClient: svc,
-	}, nil
+	return nil
 }
 
 type fakeServicesServer struct {
@@ -63,5 +33,5 @@ func (f *fakeServicesServer) ListServices(context.Context, *pb.ListServicesReque
 }
 
 func TestServices(t *testing.T) {
-	client.MockTestHelper(t, Services(), createServices, client.TestOptions{})
+	client.MockTestGrpcHelper(t, Services(), createServices, client.TestOptions{})
 }

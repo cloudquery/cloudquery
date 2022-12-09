@@ -9,6 +9,7 @@ import (
 //go:generate mockgen -package=mocks -destination=../mocks/eks.go -source=eks.go EksClient
 type EksClient interface {
 	DescribeAddon(context.Context, *eks.DescribeAddonInput, ...func(*eks.Options)) (*eks.DescribeAddonOutput, error)
+	DescribeAddonConfiguration(context.Context, *eks.DescribeAddonConfigurationInput, ...func(*eks.Options)) (*eks.DescribeAddonConfigurationOutput, error)
 	DescribeAddonVersions(context.Context, *eks.DescribeAddonVersionsInput, ...func(*eks.Options)) (*eks.DescribeAddonVersionsOutput, error)
 	DescribeCluster(context.Context, *eks.DescribeClusterInput, ...func(*eks.Options)) (*eks.DescribeClusterOutput, error)
 	DescribeFargateProfile(context.Context, *eks.DescribeFargateProfileInput, ...func(*eks.Options)) (*eks.DescribeFargateProfileOutput, error)

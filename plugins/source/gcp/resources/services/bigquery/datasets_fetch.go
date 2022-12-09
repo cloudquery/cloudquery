@@ -12,8 +12,12 @@ import (
 func fetchDatasets(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
+	bigqueryService, err := bigquery.NewService(ctx, c.ClientOptions...)
+	if err != nil {
+		return err
+	}
 	for {
-		output, err := c.Services.BigqueryService.Datasets.List(c.ProjectId).PageToken(nextPageToken).Do()
+		output, err := bigqueryService.Datasets.List(c.ProjectId).PageToken(nextPageToken).Do()
 		if err != nil {
 			return errors.WithStack(err)
 		}
@@ -30,7 +34,11 @@ func fetchDatasets(ctx context.Context, meta schema.ClientMeta, r *schema.Resour
 func datasetGet(ctx context.Context, meta schema.ClientMeta, r *schema.Resource) error {
 	c := meta.(*client.Client)
 	datasetListDataset := r.Item.(*bigquery.DatasetListDatasets)
-	item, err := c.Services.BigqueryService.Datasets.Get(c.ProjectId, datasetListDataset.DatasetReference.DatasetId).Do()
+	bigqueryService, err := bigquery.NewService(ctx, c.ClientOptions...)
+	if err != nil {
+		return err
+	}
+	item, err := bigqueryService.Datasets.Get(c.ProjectId, datasetListDataset.DatasetReference.DatasetId).Do()
 	if err != nil {
 		return errors.WithStack(err)
 	}

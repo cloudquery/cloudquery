@@ -20,6 +20,24 @@ Streaming is not available for the [Google Cloud free tier](https://cloud.google
 2. Create a BigQuery dataset that will contain the tables synced by CloudQuery. CloudQuery will automatically create the tables as part of a migration run on the first `sync`.
 3. Ensure that you have write access to the dataset. See [Required Permissions](https://cloud.google.com/bigquery/docs/streaming-data-into-bigquery) for details.
 
+## Example config
+
+The following config reads the values for `project_id` and `dataset_id` from environment variables:
+
+```yaml
+kind: destination
+spec:
+  name: bigquery
+  path: cloudquery/bigquery
+  version: "VERSION_DESTINATION_BIGQUERY"
+  write_mode: "append"
+  spec:
+    project_id: ${PROJECT_ID}
+    dataset_id: ${DATASET_ID}
+```
+
+Note that the BigQuery plugin only supports the `append` write mode.
+
 ## Authentication
 
 The GCP plugin authenticates using your [Application Default Credentials](https://cloud.google.com/sdk/gcloud/reference/auth/application-default). Available options are all the same options described [here](https://cloud.google.com/docs/authentication/provide-credentials-adc) in detail:
@@ -45,12 +63,6 @@ On-premises or another cloud provider
 - The suggested way is to use [Workload identity federation](https://cloud.google.com/iam/docs/workload-identity-federation)
 - If not available you can always use service account keys and export the location of the key via `GOOGLE_APPLICATION_CREDENTIALS`. (**Not recommended as long-lived keys are a security risk**)
 
-## Configuration
-
-See an example configuration for the BigQuery destination under [recipes](/docs/recipes/destinations/bigquery).
-
-Note that the BigQuery plugin only supports the `append` write mode.
-
 ## BigQuery Spec
 
 This is the top-level spec used by the BigQuery destination plugin.
@@ -68,6 +80,11 @@ This is the top-level spec used by the BigQuery destination plugin.
 - `time_partitioning` (string) (options: `none`, `hour`, `day`) (default: `none`)
 
   The time partitioning to use when creating tables. The partition time column used will always be `_cq_sync_time` so that all rows for a sync run will be partitioned on the hour/day the sync started.
+
+- `service_account_key_json` (string) (default: empty).
+
+  GCP service account key content. This allows for using different service accounts for the GCP source and BigQuery destination. If using service account keys, it is best to use [environment or file variable substitution](/docs/advanced-topics/environment-variable-substitution).
+
 
 ## Underlying library
 
