@@ -28,7 +28,6 @@ func main() {
 	}
 
 	var resources []*recipes.Resource
-	resources = append(resources, recipes.AccessLogResources()...)
 	resources = append(resources, recipes.UserResources()...)
 	resources = append(resources, recipes.ConversationResources()...)
 
