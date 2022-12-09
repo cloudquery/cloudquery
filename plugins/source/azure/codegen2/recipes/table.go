@@ -45,33 +45,20 @@ type Table struct {
 	ListFuncName string
 	// Does the ListFunc get subscription_id as a first parameter
 	ListFuncHasResourceGroupName bool
-	// should we use ListAll function
-	ListAll bool
 	// Relations is list of relations functions
-	Relations []string
+	Relations []*Table
 	// Template is the template to use to generate the resource (some services has different template as some services were generated using different original codegen)
 	Template string
-	// imports to add for this resource
-	// Imports []string
 	// Multiplex
 	Multiplex string
 	// ChildTable
 	ChildTable bool
-	// FakerFieldsToIgnore is a list of fields to ignore when generating faker data
-	FakerFieldsToIgnore []string
 	// SkipMock is used to skip the mock generation for this resource
 	SkipMock bool
-	// Pass to MockTemplate
-	MockTemplate string
-	// MockListStruct is the name of the struct that will be used in the mock template
-	MockListStruct string
-	// MockImports imports used in mock tests
-	// MockImports []string
 	// Don't generate fetch
 	SkipFetch bool
 	// SkipFields fields in go struct to skip when generating the table from the go struct
 	SkipFields []string
-	// ExtraColumns override, override generated columns
-	ExtraColumns []codegen.ColumnDefinition
+	// URL is the rest endpoint. This is used by mock tests
 	URL          string
 }

@@ -35,16 +35,16 @@ func Armcdn() []Table {
 			URL:            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/cdnWebApplicationFirewallPolicies",
 			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Cdn)`,
 		},
-		{
-			Name:           "profiles",
-			Struct:         &armcdn.Profile{},
-			ResponseStruct: &armcdn.ProfilesClientListResponse{},
-			Client:         &armcdn.ProfilesClient{},
-			ListFunc:       (&armcdn.ProfilesClient{}).NewListPager,
-			NewFunc:        armcdn.NewProfilesClient,
-			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/profiles",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Cdn)`,
-		},
+		// {
+		// 	Name:           "profiles",
+		// 	Struct:         &armcdn.Profile{},
+		// 	ResponseStruct: &armcdn.ProfilesClientListResponse{},
+		// 	Client:         &armcdn.ProfilesClient{},
+		// 	ListFunc:       (&armcdn.ProfilesClient{}).NewListPager,
+		// 	NewFunc:        armcdn.NewProfilesClient,
+		// 	URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/profiles",
+		// 	Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Cdn)`,
+		// },
 	}
 
 	for i := range tables {

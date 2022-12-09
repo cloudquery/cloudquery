@@ -47,13 +47,13 @@ func main() {
 	currentDir = path.Dir(currentFilename)
 
 	for i := range recipes.Tables {
-		if err := initResource(&recipes.Tables[i]); err != nil {
+		if err := initTable(&recipes.Tables[i]); err != nil {
 			log.Fatal(err)
 		}
-		if err := generateResource(recipes.Tables[i], false); err != nil {
+		if err := generateTable(recipes.Tables[i]); err != nil {
 			log.Fatal(err)
 		}
-		if err := generateResource(recipes.Tables[i], true); err != nil {
+		if err := generateTableMock(recipes.Tables[i]); err != nil {
 			log.Fatal(err)
 		}
 	}
@@ -87,7 +87,7 @@ func generateTables(rr []recipes.Table) error {
 	return nil
 }
 
-func initResource(r *recipes.Table) error {
+func initTable(r *recipes.Table) error {
 	var err error
 	if r.Client != nil {
 		r.ClientName = reflect.TypeOf(r.Client).Elem().Name()
@@ -115,23 +115,13 @@ func initResource(r *recipes.Table) error {
 	if r.StructName == "" {
 		r.StructName = reflect.TypeOf(r.Struct).Elem().Name()
 	}
-	if r.MockListStruct == "" {
-		r.MockListStruct = strcase.ToCamel(r.StructName)
-	}
 
 	if r.ImportPath == "" {
 		r.ImportPath = reflect.TypeOf(r.Struct).Elem().PkgPath()
 	}
 
-	// r.ExtraColumns = append([]codegen.ColumnDefinition{SubscriptionIdColumn}, r.ExtraColumns...)
-
-	for _, f := range r.ExtraColumns {
-		r.SkipFields = append(r.SkipFields, strcase.ToCamel(f.Name))
-	}
-
 	opts := []codegen.TableOption{
 		codegen.WithSkipFields(r.SkipFields),
-		codegen.WithExtraColumns(r.ExtraColumns),
 		codegen.WithPKColumns("id"),
 	}
 	tableName := fmt.Sprintf("azure_%s_%s", r.PackageName, r.Name)
@@ -152,21 +142,15 @@ func initResource(r *recipes.Table) error {
 		r.Table.PreResourceResolver = r.PreResourceResolver
 	}
 	if r.Relations != nil {
-		r.Table.Relations = r.Relations
+		for _, relation := range r.Relations {
+			r.Table.Relations = append(r.Table.Relations, strcase.ToCamel(relation.Name))
+		}
 	}
 	return nil
 }
 
-func generateResource(r recipes.Table, mock bool) error {
-	mainTemplate := r.Template + ".go.tpl"
-	if mock {
-		if r.MockTemplate == "" {
-			mainTemplate = r.Template + "_mock.go.tpl"
-		} else {
-			mainTemplate = r.MockTemplate + ".go.tpl"
-		}
-	}
-	tpl, err := template.New(mainTemplate).Funcs(templateFuncs).ParseFS(templateFS, "templates/"+mainTemplate)
+func generateTable(r recipes.Table) error {
+	tpl, err := template.New("list.go.tpl").Funcs(templateFuncs).ParseFS(templateFS, "templates/*.go.tpl")
 	if err != nil {
 		return fmt.Errorf("failed to parse templates: %w", err)
 	}
@@ -183,15 +167,41 @@ func generateResource(r recipes.Table, mock bool) error {
 	if err := os.MkdirAll(filePath, os.ModePerm); err != nil {
 		return err
 	}
-	if mock {
-		filePath = path.Join(filePath, r.Name+"_mock_test.go")
-	} else {
-		name := r.Name
+	name := r.Name
 		if strings.HasSuffix(name, "_test") {
 			name = name + "_not"
 		}
 		filePath = path.Join(filePath, name+".go")
+
+	content := buff.Bytes()
+	formattedContent, err := format.Source(buff.Bytes())
+	if err != nil {
+		fmt.Printf("failed to format code for %s: %v\n", filePath, err)
+	} else {
+		content = formattedContent
 	}
+	if err := os.WriteFile(filePath, content, 0644); err != nil {
+		return fmt.Errorf("failed to write file %s: %w", filePath, err)
+	}
+	return nil
+}
+
+
+func generateTableMock(r recipes.Table) error {
+	tpl, err := template.New("list_mock.go.tpl").Funcs(templateFuncs).ParseFS(templateFS, "templates/*.go.tpl")
+	if err != nil {
+		return fmt.Errorf("failed to parse templates: %w", err)
+	}
+	var buff bytes.Buffer
+	if err := tpl.Execute(&buff, r); err != nil {
+		return fmt.Errorf("failed to execute template: %w", err)
+	}
+
+	filePath := path.Join(currentDir, "../resources/services", r.PackageName)
+	if err := os.MkdirAll(filePath, os.ModePerm); err != nil {
+		return err
+	}
+	filePath = path.Join(filePath, r.Name+"_mock_test.go")
 
 	content := buff.Bytes()
 	formattedContent, err := format.Source(buff.Bytes())

@@ -125,6 +125,7 @@ func generatedTables() []*schema.Table {
 		authorization.ClassicAdministrators(),
 		authorization.ProviderOperationsMetadata(),
 		authorization.RoleAssignments(),
+		authorization.RoleDefinitions(),
 		automanage.ConfigurationProfileAssignments(),
 		automation.Account(),
 		avs.PrivateClouds(),

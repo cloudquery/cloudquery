@@ -2,27 +2,19 @@
 package cdn
 
 import (
-	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func Profiles() *schema.Table {
+func Endpoints() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_cdn_profiles",
-		Resolver:  fetchProfiles,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Cdn),
+		Name:     "azure_cdn_endpoints",
+		Resolver: fetchEndpoints,
 		Columns: []schema.Column{
 			{
 				Name:     "location",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Location"),
-			},
-			{
-				Name:     "sku",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("SKU"),
 			},
 			{
 				Name:     "properties",
@@ -43,11 +35,6 @@ func Profiles() *schema.Table {
 				},
 			},
 			{
-				Name:     "kind",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Kind"),
-			},
-			{
 				Name:     "name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Name"),
@@ -63,26 +50,5 @@ func Profiles() *schema.Table {
 				Resolver: schema.PathResolver("Type"),
 			},
 		},
-
-		Relations: []*schema.Table{
-			Endpoints,
-		},
 	}
-}
-
-func fetchProfiles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	cl := meta.(*client.Client)
-	svc, err := armcdn.NewProfilesClient(cl.SubscriptionId, cl.Creds, cl.Options)
-	if err != nil {
-		return err
-	}
-	pager := svc.NewListPager(nil)
-	for pager.More() {
-		p, err := pager.NextPage(ctx)
-		if err != nil {
-			return err
-		}
-		res <- p.Value
-	}
-	return nil
 }

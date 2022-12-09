@@ -2,10 +2,12 @@
 package {{.PackageName}}
 
 import (
+	{{- if not .SkipFetch}}
 	"context"
+	"{{.ImportPath}}"
+	{{- end}}
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"{{.ImportPath}}"
 )
 
 func {{.Name | ToCamel}}() *schema.Table {
