@@ -7,6 +7,7 @@ import (
 	"github.com/pkg/errors"
 	"google.golang.org/api/iterator"
 
+	resourcemanager "cloud.google.com/go/resourcemanager/apiv3"
 	pb "cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
@@ -15,7 +16,17 @@ import (
 func fetchFolders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 
-	o, err := c.Services.ResourcemanagerProjectsClient.GetProject(ctx, &pb.GetProjectRequest{Name: "projects/" + c.ProjectId})
+	pClient, err := resourcemanager.NewProjectsClient(ctx, c.ClientOptions...)
+	if err != nil {
+		return errors.WithStack(err)
+	}
+
+	fClient, err := resourcemanager.NewFoldersClient(ctx, c.ClientOptions...)
+	if err != nil {
+		return errors.WithStack(err)
+	}
+
+	o, err := pClient.GetProject(ctx, &pb.GetProjectRequest{Name: "projects/" + c.ProjectId})
 	if err != nil {
 		return errors.WithStack(err)
 	}
@@ -23,7 +34,7 @@ func fetchFolders(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 	req := &pb.ListFoldersRequest{
 		Parent: o.Parent,
 	}
-	it := c.Services.ResourcemanagerFoldersClient.ListFolders(ctx, req)
+	it := fClient.ListFolders(ctx, req)
 	for {
 		resp, err := it.Next()
 		if err == iterator.Done {

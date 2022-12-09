@@ -1,6 +1,7 @@
 package client
 
 import (
+	resourcemanager "cloud.google.com/go/resourcemanager/apiv3"
 	"cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -18,15 +19,21 @@ func ProjectMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
 func OrgMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
 	client := meta.(*Client)
 
+	projectsClient, err := resourcemanager.NewProjectsClient(client.ctx, client.ClientOptions...)
+	if err != nil {
+		client.Logger().Error().Err(err).Msg("OrgMultiplex: Failed to create ProjectsClient")
+		return []schema.ClientMeta{client}
+	}
+
 	dupes := map[string]struct{}{}
 
 	l := make([]schema.ClientMeta, 0, len(client.projects))
 	for _, projectId := range client.projects {
-		resp, err := client.Services.ResourcemanagerProjectsClient.GetProject(client.ctx, &resourcemanagerpb.GetProjectRequest{
+		resp, err := projectsClient.GetProject(client.ctx, &resourcemanagerpb.GetProjectRequest{
 			Name: "projects/" + projectId,
 		})
 		if err != nil {
-			client.Logger().Warn().Err(err).Str("project_id", projectId).Msg("OrgMultiplex: Failed to get project info")
+			client.Logger().Error().Err(err).Str("project_id", projectId).Msg("OrgMultiplex: Failed to get project info")
 			continue
 		}
 
