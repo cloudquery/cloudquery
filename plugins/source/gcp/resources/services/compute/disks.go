@@ -4,13 +4,14 @@ package compute
 
 import (
 	"context"
-	"github.com/pkg/errors"
 	"google.golang.org/api/iterator"
 
 	pb "google.golang.org/genproto/googleapis/cloud/compute/v1"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
+
+	"cloud.google.com/go/compute/apiv1"
 )
 
 func Disks() *schema.Table {
@@ -225,14 +226,18 @@ func fetchDisks(ctx context.Context, meta schema.ClientMeta, parent *schema.Reso
 	req := &pb.AggregatedListDisksRequest{
 		Project: c.ProjectId,
 	}
-	it := c.Services.ComputeDisksClient.AggregatedList(ctx, req)
+	gcpClient, err := compute.NewDisksRESTClient(ctx, c.ClientOptions...)
+	if err != nil {
+		return err
+	}
+	it := gcpClient.AggregatedList(ctx, req)
 	for {
 		resp, err := it.Next()
 		if err == iterator.Done {
 			break
 		}
 		if err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 
 		res <- resp.Value.Disks

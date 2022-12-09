@@ -3,10 +3,8 @@
 package dns
 
 import (
-	"context"
 	"encoding/json"
 	"net/http"
-	"net/http/httptest"
 	"testing"
 
 	"github.com/cloudquery/plugin-sdk/faker"
@@ -14,21 +12,18 @@ import (
 	"github.com/julienschmidt/httprouter"
 
 	"google.golang.org/api/dns/v1"
-
-	"google.golang.org/api/option"
 )
 
 type MockPoliciesResult struct {
 	Policies []*dns.Policy `json:"policies,omitempty"`
 }
 
-func createPolicies() (*client.Services, error) {
+func createPolicies(mux *httprouter.Router) error {
 	var item dns.Policy
 	if err := faker.FakeObject(&item); err != nil {
-		return nil, err
+		return err
 	}
 
-	mux := httprouter.New()
 	mux.GET("/*filepath", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		resp := &MockPoliciesResult{
 			Policies: []*dns.Policy{&item},
@@ -43,16 +38,9 @@ func createPolicies() (*client.Services, error) {
 			return
 		}
 	})
-	ts := httptest.NewServer(mux)
-	svc, err := dns.NewService(context.Background(), option.WithoutAuthentication(), option.WithEndpoint(ts.URL))
-	if err != nil {
-		return nil, err
-	}
-	return &client.Services{
-		Dns: svc,
-	}, nil
+	return nil
 }
 
 func TestPolicies(t *testing.T) {
-	client.MockTestHelper(t, Policies(), createPolicies, client.TestOptions{})
+	client.MockTestRestHelper(t, Policies(), createPolicies, client.TestOptions{})
 }

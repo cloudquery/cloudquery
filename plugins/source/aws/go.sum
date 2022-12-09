@@ -72,8 +72,8 @@ github.com/aws/aws-sdk-go-v2/service/appstream v1.18.1 h1:mjWRHfnhKczPJFlQ4AVNIz
 github.com/aws/aws-sdk-go-v2/service/appstream v1.18.1/go.mod h1:GiY19kPm2MtS7H8gymDUHehruj7GjaWWGDjcnAE+9YE=
 github.com/aws/aws-sdk-go-v2/service/appsync v1.17.0 h1:9xlrbu0ROYsS0/6365LiMXAsv7ri5alUJkBoXec39/0=
 github.com/aws/aws-sdk-go-v2/service/appsync v1.17.0/go.mod h1:YVpSXTvlH7dzqD7N2B/sUtRPTYl/gd0ZGbmSVJoHfDA=
-github.com/aws/aws-sdk-go-v2/service/athena v1.20.1 h1:2Gpme7cgkm4CK2cQCd1t379NfPuBuLOkV8LxBH+66GE=
-github.com/aws/aws-sdk-go-v2/service/athena v1.20.1/go.mod h1:W+JdcCDJNU70E3XhlFqgOGzBL7r5aaqAmOIlAMwCUR0=
+github.com/aws/aws-sdk-go-v2/service/athena v1.20.2 h1:77aZNI/Hh7ITrxDEGQy+fZOCj9JpehKpzj1jKb0YmXg=
+github.com/aws/aws-sdk-go-v2/service/athena v1.20.2/go.mod h1:W+JdcCDJNU70E3XhlFqgOGzBL7r5aaqAmOIlAMwCUR0=
 github.com/aws/aws-sdk-go-v2/service/autoscaling v1.24.4 h1:UFY/jik4/RIejnc4Qfi+AxYAs/ZIoLlKVIt7s/iqQR4=
 github.com/aws/aws-sdk-go-v2/service/autoscaling v1.24.4/go.mod h1:uPC6MoUg0E5P19+yoXB//OnQGMUApXmu8Z2Gqo+h/bk=
 github.com/aws/aws-sdk-go-v2/service/backup v1.18.1 h1:+6D6Ho79E81GAciotLwKhprqOzfytWOed5NAyx7Y8XY=

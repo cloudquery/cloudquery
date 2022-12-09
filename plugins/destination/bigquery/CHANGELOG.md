@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v1.1.0...plugins-destination-bigquery-v1.1.1) (2022-12-09)
+
+
+### Bug Fixes
+
+* Fix BigQuery JSON credential loading and allow users to set dataset location in config ([#5527](https://github.com/cloudquery/cloudquery/issues/5527)) ([446e486](https://github.com/cloudquery/cloudquery/commit/446e48648ea7d6e4136e10bec8e260a5efa76c0b))
+
 ## [1.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v1.0.1...plugins-destination-bigquery-v1.1.0) (2022-12-08)
 
 
