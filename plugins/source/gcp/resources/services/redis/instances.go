@@ -18,7 +18,7 @@ func Instances() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_redis_instances",
 		Resolver:  fetchInstances,
-		Multiplex: client.ProjectMultiplex,
+		Multiplex: client.ProjectMultiplex("redis.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

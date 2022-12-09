@@ -236,6 +236,8 @@ func ComputeResources() []*Resource {
 				},
 			}
 		}
+		resource.ServiceDNS = "compute.googleapis.com"
+
 	}
 
 	return resources

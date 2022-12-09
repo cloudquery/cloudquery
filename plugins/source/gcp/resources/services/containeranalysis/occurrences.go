@@ -18,7 +18,7 @@ func Occurrences() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_containeranalysis_occurrences",
 		Resolver:  fetchOccurrences,
-		Multiplex: client.ProjectMultiplex,
+		Multiplex: client.ProjectMultiplex("containeranalysis.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

@@ -12,7 +12,7 @@ func Datasets() *schema.Table {
 		Name:                "gcp_bigquery_datasets",
 		Resolver:            fetchDatasets,
 		PreResourceResolver: datasetGet,
-		Multiplex:           client.ProjectMultiplex,
+		Multiplex:           client.ProjectMultiplex("bigquery.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

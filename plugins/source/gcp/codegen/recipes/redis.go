@@ -40,6 +40,7 @@ func RedisResources() []*Resource {
 		resource.MockTemplate = "newapi_list_grpc_mock"
 		resource.RequestStructFields = `Parent: "projects/" + c.ProjectId + "/locations/-",`
 		// resource.OutputField = strcase.ToCamel(resource.SubService)
+		resource.ServiceDNS = "redis.googleapis.com"
 	}
 
 	return resources

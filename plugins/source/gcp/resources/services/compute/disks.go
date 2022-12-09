@@ -18,7 +18,7 @@ func Disks() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_compute_disks",
 		Resolver:  fetchDisks,
-		Multiplex: client.ProjectMultiplex,
+		Multiplex: client.ProjectMultiplex("compute.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

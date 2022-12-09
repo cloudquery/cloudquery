@@ -18,7 +18,7 @@ func Interconnects() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_compute_interconnects",
 		Resolver:  fetchInterconnects,
-		Multiplex: client.ProjectMultiplex,
+		Multiplex: client.ProjectMultiplex("compute.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

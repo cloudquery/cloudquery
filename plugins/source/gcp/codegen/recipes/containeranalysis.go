@@ -40,6 +40,7 @@ func ContainerAnalysisResources() []*Resource {
 		resource.MockTemplate = "newapi_list_grpc_mock"
 		resource.RegisterServer = grafeaspb.RegisterGrafeasV1Beta1Server
 		resource.UnimplementedServer = &grafeaspb.UnimplementedGrafeasV1Beta1Server{}
+		resource.ServiceDNS = "containeranalysis.googleapis.com"
 	}
 
 	return resources

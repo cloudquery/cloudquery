@@ -11,7 +11,7 @@ func ManagedZones() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_dns_managed_zones",
 		Resolver:  fetchManagedZones,
-		Multiplex: client.ProjectMultiplex,
+		Multiplex: client.ProjectMultiplex("dns.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

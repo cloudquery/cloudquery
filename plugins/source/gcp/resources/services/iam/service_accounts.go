@@ -11,7 +11,7 @@ func ServiceAccounts() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_iam_service_accounts",
 		Resolver:  fetchServiceAccounts,
-		Multiplex: client.ProjectMultiplex,
+		Multiplex: client.ProjectMultiplex("iam.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

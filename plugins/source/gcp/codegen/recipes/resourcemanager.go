@@ -42,6 +42,7 @@ func ResourceManagerResources() []*Resource {
 		resource.ProtobufImport = "google.golang.org/genproto/googleapis/cloud/resourcemanager/v3"
 		resource.Template = "newapi_list"
 		resource.MockTemplate = "newapi_list_grpc_mock"
+		resource.ServiceDNS = "cloudresourcemanager.googleapis.com"
 	}
 
 	return resources

@@ -11,7 +11,7 @@ func ServiceAccountKeys() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_iam_service_account_keys",
 		Resolver:  fetchServiceAccountKeys,
-		Multiplex: client.ProjectMultiplex,
+		Multiplex: client.ProjectMultiplex("iam.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

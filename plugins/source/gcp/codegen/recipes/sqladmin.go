@@ -31,6 +31,7 @@ func SqlResources() []*Resource {
 	for _, resource := range resources {
 		resource.Service = "sql"
 		resource.Template = "newapi_list"
+		resource.ServiceDNS = "sqladmin.googleapis.com"
 	}
 
 	return resources

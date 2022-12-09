@@ -18,7 +18,7 @@ func Services() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_billing_services",
 		Resolver:  fetchServices,
-		Multiplex: client.ProjectMultiplex,
+		Multiplex: client.ProjectMultiplex("cloudbilling.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

@@ -29,6 +29,7 @@ func RunResources() []*Resource {
 		resource.MockImports = []string{"cloud.google.com/go/run/apiv2"}
 		resource.ProtobufImport = "google.golang.org/genproto/googleapis/cloud/run/v2"
 		resource.RequestStructFields = `Parent: "projects/" + c.ProjectId + "locations/-",`
+		resource.ServiceDNS = "run.googleapis.com"
 	}
 
 	return resources

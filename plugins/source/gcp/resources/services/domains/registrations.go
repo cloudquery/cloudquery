@@ -20,7 +20,7 @@ func Registrations() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_domains_registrations",
 		Resolver:  fetchRegistrations,
-		Multiplex: client.ProjectMultiplex,
+		Multiplex: client.ProjectMultiplex("domains.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

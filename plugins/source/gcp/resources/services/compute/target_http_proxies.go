@@ -18,7 +18,7 @@ func TargetHttpProxies() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_compute_target_http_proxies",
 		Resolver:  fetchTargetHttpProxies,
-		Multiplex: client.ProjectMultiplex,
+		Multiplex: client.ProjectMultiplex("compute.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

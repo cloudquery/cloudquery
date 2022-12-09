@@ -11,7 +11,7 @@ func Projects() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_resourcemanager_projects",
 		Resolver:  fetchProjects,
-		Multiplex: client.ProjectMultiplex,
+		Multiplex: client.ProjectMultiplex("cloudresourcemanager.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

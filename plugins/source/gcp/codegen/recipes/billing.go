@@ -54,6 +54,7 @@ func BillingResources() []*Resource {
 		resource.MockTemplate = "newapi_list_grpc_mock"
 		resource.MockImports = []string{"cloud.google.com/go/billing/apiv1"}
 		resource.ProtobufImport = "google.golang.org/genproto/googleapis/cloud/billing/v1"
+		resource.ServiceDNS = "cloudbilling.googleapis.com"
 	}
 
 	return resources

@@ -18,7 +18,7 @@ func Subnetworks() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_compute_subnetworks",
 		Resolver:  fetchSubnetworks,
-		Multiplex: client.ProjectMultiplex,
+		Multiplex: client.ProjectMultiplex("compute.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

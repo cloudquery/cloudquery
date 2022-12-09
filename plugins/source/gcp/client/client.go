@@ -4,15 +4,23 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"sync"
+	"time"
 
 	resourcemanager "cloud.google.com/go/resourcemanager/apiv3"
 	"cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
+	serviceusage "cloud.google.com/go/serviceusage/apiv1"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/googleapis/gax-go/v2"
 	"github.com/rs/zerolog"
+	"golang.org/x/sync/errgroup"
+	"golang.org/x/sync/semaphore"
 	crmv1 "google.golang.org/api/cloudresourcemanager/v1"
 	"google.golang.org/api/iterator"
 	"google.golang.org/api/option"
+	pb "google.golang.org/genproto/googleapis/api/serviceusage/v1"
+	"google.golang.org/grpc/codes"
 )
 
 const maxProjectIdsToLog int = 100
@@ -21,10 +29,32 @@ type Client struct {
 	projects      []string
 	ClientOptions []option.ClientOption
 	// this is set by table client multiplexer
-	ProjectId string
+	ProjectId       string
+	EnabledServices map[string]map[GcpService]bool
 	// Logger
 	logger zerolog.Logger
 }
+
+type GcpService string
+
+const (
+	BigQueryService             GcpService = "bigquery.googleapis.com"
+	CloudBillingService         GcpService = "cloudbilling.googleapis.com"
+	CloudFunctionsService       GcpService = "cloudfunctions.googleapis.com"
+	CloudKmsService             GcpService = "cloudkms.googleapis.com"
+	CloudResourceManagerService GcpService = "cloudresourcemanager.googleapis.com"
+	ComputeService              GcpService = "compute.googleapis.com"
+	DnsService                  GcpService = "dns.googleapis.com"
+	DomainsService              GcpService = "domains.googleapis.com"
+	IamService                  GcpService = "iam.googleapis.com"
+	KubernetesService           GcpService = "container.googleapis.com"
+	LoggingService              GcpService = "logging.googleapis.com"
+	MonitoringService           GcpService = "monitoring.googleapis.com"
+	SqlAdminService             GcpService = "sqladmin.googleapis.com"
+	StorageService              GcpService = "storage-api.googleapis.com"
+	ContainerAnalysisService    GcpService = "containeranalysis.googleapis.com"
+	RediService                 GcpService = "redis.googleapis.com"
+)
 
 //revive:disable:modifies-value-receiver
 
@@ -57,7 +87,8 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 	var err error
 
 	c := Client{
-		logger: logger,
+		logger:          logger,
+		EnabledServices: map[string]map[GcpService]bool{},
 		// plugin: p,
 	}
 	// providerConfig := config.(*Config)
@@ -67,11 +98,20 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 	}
 
 	gcpSpec.setDefaults()
-
 	projects := gcpSpec.ProjectIDs
+	if gcpSpec.BackoffRetries > 0 {
+		c.CallOptions = append(c.CallOptions, gax.WithRetry(func() gax.Retryer {
+			return &Retrier{
+				backoff: gax.Backoff{
+					Max: time.Duration(gcpSpec.BackoffDelay) * time.Second,
+				},
+				maxRetries: gcpSpec.BackoffRetries,
+				codes:      []codes.Code{codes.ResourceExhausted},
+			}
+		}))
+	}
 
 	serviceAccountKeyJSON := []byte(gcpSpec.ServiceAccountKeyJSON)
-
 	// Add a fake request reason because it is not possible to pass nil options
 	options := []option.ClientOption{option.WithRequestReason("cloudquery resource fetch")}
 	if len(serviceAccountKeyJSON) != 0 {
@@ -142,6 +182,12 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 	c.projects = projects
 	if len(projects) == 1 {
 		c.ProjectId = projects[0]
+	}
+	if gcpSpec.EnabledServicesOnly {
+		if err := c.configureEnabledServices(); err != nil {
+			// TODO: log why we failed to grab enabled services
+			return nil, err
+		}
 	}
 
 	return &c, nil
@@ -304,4 +350,56 @@ func setUnion(a []string, b []string) []string {
 		union = append(union, s)
 	}
 	return union
+}
+
+func (c *Client) configureEnabledServices() error {
+	var esLock sync.Mutex
+	g, ctx := errgroup.WithContext(context.Background())
+	maxGoroutines := 10
+	goroutinesSem := semaphore.NewWeighted(int64(maxGoroutines))
+	for _, p := range c.projects {
+		project := p
+		if err := goroutinesSem.Acquire(ctx, 1); err != nil {
+			return err
+		}
+		g.Go(func() error {
+			defer goroutinesSem.Release(1)
+			cl := c.withProject(project)
+			svc, err := cl.fetchEnabledServices(ctx)
+			esLock.Lock()
+			c.EnabledServices[project] = svc
+			esLock.Unlock()
+			return err
+		})
+	}
+	return g.Wait()
+}
+
+func (c *Client) fetchEnabledServices(ctx context.Context) (map[GcpService]bool, error) {
+	enabled := make(map[GcpService]bool)
+	req := &pb.ListServicesRequest{
+		Parent:   "projects/" + c.ProjectId,
+		PageSize: 200,
+		Filter:   "state:ENABLED",
+	}
+	gcpClient, err := serviceusage.NewClient(ctx, c.ClientOptions...)
+	if err != nil {
+		return nil, err
+	}
+	it := gcpClient.ListServices(ctx, req, c.CallOptions...)
+	for {
+		resp, err := it.Next()
+		if err == iterator.Done {
+			break
+		}
+		if err != nil {
+			return nil, err
+		}
+
+		item := resp.GetConfig()
+		serviceName := GcpService(item.Name)
+
+		enabled[serviceName] = true
+	}
+	return enabled, nil
 }

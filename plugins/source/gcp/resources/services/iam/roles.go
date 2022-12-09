@@ -11,7 +11,7 @@ func Roles() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_iam_roles",
 		Resolver:  fetchRoles,
-		Multiplex: client.ProjectMultiplex,
+		Multiplex: client.ProjectMultiplex("iam.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

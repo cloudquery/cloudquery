@@ -18,7 +18,7 @@ func Secrets() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_secretmanager_secrets",
 		Resolver:  fetchSecrets,
-		Multiplex: client.ProjectMultiplex,
+		Multiplex: client.ProjectMultiplex("secretmanager.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

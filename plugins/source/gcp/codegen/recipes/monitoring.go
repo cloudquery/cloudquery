@@ -39,6 +39,7 @@ func MonitoringResources() []*Resource {
 		resource.Template = "newapi_list"
 		resource.MockTemplate = "newapi_list_grpc_mock"
 		resource.RequestStructFields = `Name: "projects/" + c.ProjectId,`
+		resource.ServiceDNS = "monitoring.googleapis.com"
 	}
 
 	return resources

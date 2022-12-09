@@ -18,7 +18,7 @@ func BackendServices() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_compute_backend_services",
 		Resolver:  fetchBackendServices,
-		Multiplex: client.ProjectMultiplex,
+		Multiplex: client.ProjectMultiplex("compute.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

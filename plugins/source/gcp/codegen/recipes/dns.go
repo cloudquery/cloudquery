@@ -49,6 +49,7 @@ func DnsResources() []*Resource {
 		resource.Template = "newapi_list"
 		resource.MockTemplate = "resource_list_mock"
 		resource.OutputField = strcase.ToCamel(resource.SubService)
+		resource.ServiceDNS = "dns.googleapis.com"
 	}
 
 	return resources

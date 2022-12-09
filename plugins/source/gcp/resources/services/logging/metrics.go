@@ -18,7 +18,7 @@ func Metrics() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_logging_metrics",
 		Resolver:  fetchMetrics,
-		Multiplex: client.ProjectMultiplex,
+		Multiplex: client.ProjectMultiplex("logging.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

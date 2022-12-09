@@ -18,7 +18,7 @@ func ForwardingRules() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_compute_forwarding_rules",
 		Resolver:  fetchForwardingRules,
-		Multiplex: client.ProjectMultiplex,
+		Multiplex: client.ProjectMultiplex("compute.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

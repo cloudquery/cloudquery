@@ -11,7 +11,7 @@ func Clusters() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_container_clusters",
 		Resolver:  fetchClusters,
-		Multiplex: client.ProjectMultiplex,
+		Multiplex: client.ProjectMultiplex("compute"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

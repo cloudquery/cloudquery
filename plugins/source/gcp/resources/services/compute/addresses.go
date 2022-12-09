@@ -18,7 +18,7 @@ func Addresses() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_compute_addresses",
 		Resolver:  fetchAddresses,
-		Multiplex: client.ProjectMultiplex,
+		Multiplex: client.ProjectMultiplex("compute.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

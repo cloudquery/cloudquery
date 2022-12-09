@@ -18,7 +18,7 @@ func Folders() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_resourcemanager_folders",
 		Resolver:  fetchFolders,
-		Multiplex: client.ProjectMultiplex,
+		Multiplex: client.ProjectMultiplex("cloudresourcemanager.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

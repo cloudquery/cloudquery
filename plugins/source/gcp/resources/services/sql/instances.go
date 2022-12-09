@@ -11,7 +11,7 @@ func Instances() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_sql_instances",
 		Resolver:  fetchInstances,
-		Multiplex: client.ProjectMultiplex,
+		Multiplex: client.ProjectMultiplex("sqladmin.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

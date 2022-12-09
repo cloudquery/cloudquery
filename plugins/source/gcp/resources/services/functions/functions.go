@@ -18,7 +18,7 @@ func Functions() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_functions_functions",
 		Resolver:  fetchFunctions,
-		Multiplex: client.ProjectMultiplex,
+		Multiplex: client.ProjectMultiplex("cloudfunctions.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
