@@ -14,8 +14,9 @@ var templatesFS embed.FS
 
 func parse(name string) (*template.Template, error) {
 	tpl, err := template.New(name+".go.tpl").Funcs(template.FuncMap{
-		"ToCamel": strcase.ToCamel,
-		"ToLower": strings.ToLower,
+		"ToCamel":      strcase.ToCamel,
+		"ToLower":      strings.ToLower,
+		"ToLowerCamel": strcase.ToLowerCamel,
 	}).ParseFS(templatesFS, "templates/*.go.tpl")
 	if err != nil {
 		return nil, err
