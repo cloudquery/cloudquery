@@ -8,7 +8,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func fetchRoleDefinitions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
 	svc, err := armauthorization.NewRoleDefinitionsClient(cl.Creds, cl.Options)

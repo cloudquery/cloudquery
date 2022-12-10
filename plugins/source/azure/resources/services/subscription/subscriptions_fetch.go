@@ -28,7 +28,4 @@ func fetchSubscriptions(ctx context.Context, meta schema.ClientMeta, parent *sch
 		res <- p.Value
 	}
 	return nil
-
-	
-	return nil
 }

@@ -6,7 +6,7 @@ func ArmcdnE() []Table {
 	tables := []Table{
 		{
 			Name:           "profiles",
-			Service: 				"armcdn",
+			Service:        "armcdn",
 			Struct:         &armcdn.Profile{},
 			ResponseStruct: &armcdn.ProfilesClientListResponse{},
 			Client:         &armcdn.ProfilesClient{},
@@ -17,14 +17,14 @@ func ArmcdnE() []Table {
 			Relations: []*Table{
 				{
 					Name:           "endpoints",
-					Service: 				"armcdn",
+					Service:        "armcdn",
 					Struct:         &armcdn.Endpoint{},
 					ResponseStruct: &armcdn.EndpointsClientListByProfileResponse{},
 					Client:         &armcdn.EndpointsClient{},
 					ListFunc:       (&armcdn.EndpointsClient{}).NewListByProfilePager,
 					NewFunc:        armcdn.NewEndpointsClient,
 					URL:            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints",
-					SkipFetch: 		true,
+					SkipFetch:      true,
 				},
 			},
 		},

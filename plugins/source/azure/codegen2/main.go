@@ -140,7 +140,7 @@ func initTable(parent *recipes.Table, r *recipes.Table) error {
 	}
 	if r.Relations != nil {
 		for _, relation := range r.Relations {
-			r.Table.Relations = append(r.Table.Relations, strcase.ToCamel(relation.Name) + "()")
+			r.Table.Relations = append(r.Table.Relations, strcase.ToCamel(relation.Name)+"()")
 			initTable(r, relation)
 		}
 	}
@@ -166,10 +166,10 @@ func generateTable(parent *recipes.Table, r *recipes.Table) error {
 		return err
 	}
 	name := r.Name
-		if strings.HasSuffix(name, "_test") {
-			name = name + "_not"
-		}
-		filePath = path.Join(filePath, name+".go")
+	if strings.HasSuffix(name, "_test") {
+		name = name + "_not"
+	}
+	filePath = path.Join(filePath, name+".go")
 
 	content := buff.Bytes()
 	formattedContent, err := format.Source(buff.Bytes())
@@ -194,7 +194,6 @@ func generateTable(parent *recipes.Table, r *recipes.Table) error {
 	}
 	return nil
 }
-
 
 func generateTableMock(r *recipes.Table) error {
 	tpl, err := template.New("list_mock.go.tpl").Funcs(templateFuncs).ParseFS(templateFS, "templates/*.go.tpl")

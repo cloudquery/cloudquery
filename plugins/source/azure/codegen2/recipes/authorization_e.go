@@ -13,7 +13,7 @@ func ArmauthorizationE() []Table {
 			NewFunc:        armauthorization.NewRoleDefinitionsClient,
 			URL:            "/{scope}/providers/Microsoft.Authorization/roleDefinitions",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Authorization)`,
-			SkipFetch: 			true,
+			SkipFetch:      true,
 		},
 	}
 	for i := range tables {

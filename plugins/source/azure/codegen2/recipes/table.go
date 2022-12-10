@@ -58,5 +58,5 @@ type Table struct {
 	// SkipFields fields in go struct to skip when generating the table from the go struct
 	SkipFields []string
 	// URL is the rest endpoint. This is used by mock tests
-	URL          string
+	URL string
 }
