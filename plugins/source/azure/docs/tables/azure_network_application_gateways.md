@@ -18,7 +18,7 @@ The primary key for this table is **id**.
 |location|String|
 |properties|JSON|
 |tags|JSON|
-|zones|JSON|
+|zones|StringArray|
 |etag|String|
 |name|String|
 |type|String|

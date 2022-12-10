@@ -19,7 +19,7 @@ The primary key for this table is **id**.
 |plan|JSON|
 |properties|JSON|
 |tags|JSON|
-|zones|JSON|
+|zones|StringArray|
 |id (PK)|String|
 |name|String|
 |resources|JSON|

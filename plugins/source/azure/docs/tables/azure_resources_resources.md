@@ -1,4 +1,4 @@
-# Table: azure_network_custom_ip_prefixes
+# Table: azure_resources_resources
 
 
 
@@ -14,11 +14,16 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |extended_location|JSON|
-|id (PK)|String|
+|identity|JSON|
+|kind|String|
 |location|String|
-|properties|JSON|
+|managed_by|String|
+|plan|JSON|
+|sku|JSON|
 |tags|JSON|
-|zones|StringArray|
-|etag|String|
+|changed_time|Timestamp|
+|created_time|Timestamp|
+|id (PK)|String|
 |name|String|
+|provisioning_state|String|
 |type|String|

@@ -20,6 +20,6 @@ The primary key for this table is **id**.
 |resource_name|String|
 |subscription_id|String|
 |tags|JSON|
-|tenants|JSON|
+|tenants|StringArray|
 |id (PK)|String|
 |type|String|

@@ -1,9 +1,11 @@
-# Table: azure_keyvault_vaults
+# Table: azure_cdn_endpoints
 
 
 
 The primary key for this table is **id**.
 
+## Relations
+This table depends on [azure_cdn_profiles](azure_cdn_profiles.md).
 
 
 ## Columns
@@ -13,8 +15,10 @@ The primary key for this table is **id**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|id (PK)|String|
 |location|String|
-|name|String|
+|properties|JSON|
 |tags|JSON|
+|id (PK)|String|
+|name|String|
+|system_data|JSON|
 |type|String|

@@ -22,4 +22,4 @@ The primary key for this table is **id**.
 |id (PK)|String|
 |name|String|
 |type|String|
-|zones|JSON|
+|zones|StringArray|

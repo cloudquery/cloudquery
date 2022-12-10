@@ -4,7 +4,11 @@
 
 The primary key for this table is **id**.
 
+## Relations
 
+The following tables depend on azure_cosmos_database_accounts:
+  - [azure_cosmos_mongo_db_databases](azure_cosmos_mongo_db_databases.md)
+  - [azure_cosmos_sql_databases](azure_cosmos_sql_databases.md)
 
 ## Columns
 | Name          | Type          |

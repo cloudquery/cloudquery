@@ -1,9 +1,11 @@
-# Table: azure_resources_resource_groups
+# Table: azure_cosmos_mongo_db_databases
 
 
 
 The primary key for this table is **id**.
 
+## Relations
+This table depends on [azure_cosmos_database_accounts](azure_cosmos_database_accounts.md).
 
 
 ## Columns
@@ -14,7 +16,6 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |location|String|
-|managed_by|String|
 |properties|JSON|
 |tags|JSON|
 |id (PK)|String|

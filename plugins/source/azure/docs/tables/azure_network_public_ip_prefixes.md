@@ -19,7 +19,7 @@ The primary key for this table is **id**.
 |properties|JSON|
 |sku|JSON|
 |tags|JSON|
-|zones|JSON|
+|zones|StringArray|
 |etag|String|
 |name|String|
 |type|String|

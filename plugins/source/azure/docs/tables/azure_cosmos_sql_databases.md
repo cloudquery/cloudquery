@@ -1,9 +1,11 @@
-# Table: azure_resources_providers
+# Table: azure_cosmos_sql_databases
 
 
 
 The primary key for this table is **id**.
 
+## Relations
+This table depends on [azure_cosmos_database_accounts](azure_cosmos_database_accounts.md).
 
 
 ## Columns
@@ -13,9 +15,9 @@ The primary key for this table is **id**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|namespace|String|
-|provider_authorization_consent_state|String|
+|location|String|
+|properties|JSON|
+|tags|JSON|
 |id (PK)|String|
-|registration_policy|String|
-|registration_state|String|
-|resource_types|JSON|
+|name|String|
+|type|String|

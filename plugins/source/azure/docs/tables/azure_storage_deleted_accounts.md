@@ -1,4 +1,4 @@
-# Table: azure_managementgroups_entities
+# Table: azure_storage_deleted_accounts
 
 
 

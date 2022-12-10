@@ -18,9 +18,9 @@ The primary key for this table is **id**.
 |properties|JSON|
 |sku|JSON|
 |tags|JSON|
-|zones|JSON|
+|zones|StringArray|
 |id (PK)|String|
 |managed_by|String|
-|managed_by_extended|JSON|
+|managed_by_extended|StringArray|
 |name|String|
 |type|String|

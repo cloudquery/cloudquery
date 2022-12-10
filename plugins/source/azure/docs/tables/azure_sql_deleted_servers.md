@@ -1,4 +1,4 @@
-# Table: azure_network_custom_ip_prefixes
+# Table: azure_sql_deleted_servers
 
 
 
@@ -13,12 +13,7 @@ The primary key for this table is **id**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|extended_location|JSON|
-|id (PK)|String|
-|location|String|
 |properties|JSON|
-|tags|JSON|
-|zones|StringArray|
-|etag|String|
+|id (PK)|String|
 |name|String|
 |type|String|

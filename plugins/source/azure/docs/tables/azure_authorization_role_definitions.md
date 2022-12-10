@@ -1,4 +1,4 @@
-# Table: azure_resources_tags
+# Table: azure_authorization_role_definitions
 
 
 
@@ -13,7 +13,7 @@ The primary key for this table is **id**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|count|JSON|
-|tag_name|String|
-|values|JSON|
+|properties|JSON|
 |id (PK)|String|
+|name|String|
+|type|String|
