@@ -13,20 +13,8 @@ import (
 	"strings"
 )
 
-// TODO: Skip NewKeyVault but also do this per package as otherwise I think we might be
-// skipping more than we want as clients are named the same across packages
-
-//
-
 // github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources
-var packagesToSkip = map[string]bool{
-	// This is a special API and we create those recipes manually
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources": true,
-	// this can be written manually and potentially we can also get it from armresources
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription": true,
-	// this can be written manually and potentially we can also get it from armresources
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions": true,
-}
+
 
 var newGlobalFuncsToSkip = map[string]bool{
 	// We are skipping operationsClient as this just list all operations available and it is quite static

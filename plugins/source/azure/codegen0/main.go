@@ -7,6 +7,7 @@ import (
 	"go/format"
 	"log"
 	"os"
+	"os/exec"
 	"path"
 	"runtime"
 	"strings"
@@ -38,6 +39,23 @@ func main() {
 		log.Fatal("Failed to get caller information")
 	}
 	currentDir = path.Dir(currentFilename)
+	var skipGoGet bool
+	if len(os.Args) > 1 && os.Args[1] == "--skip-go-get" {
+		skipGoGet = true
+	}
+
+	if !skipGoGet {
+		packagesToGoGet, err := azparser.DiscoverSubpackages()
+		if err != nil {
+			log.Fatal(err)
+		}
+		for _, pkg := range packagesToGoGet {
+			fmt.Println("go get -u", pkg)
+			if err := exec.Command("go", "get", "-u", pkg).Run(); err != nil {
+				log.Fatal(err)
+			}
+		}
+	}
 
 	armModules, err := azparser.GetArmModules(path.Join(currentDir, "../go.mod"))
 	if err != nil {

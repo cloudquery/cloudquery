@@ -25,7 +25,7 @@ func GetArmModules(gomodPath string) ([]string, error) {
 	}
 
 	for _, req := range mod.Require {
-		if strings.HasPrefix(req.Mod.Path, azureResourceManagerRootPackage) {
+		if strings.HasPrefix(req.Mod.Path, azureResourceManagerRootPackage) && !packagesToSkip[req.Mod.Path] {
 			modules = append(modules, req.Mod.String())
 		}
 	}

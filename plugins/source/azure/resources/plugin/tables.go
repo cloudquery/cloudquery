@@ -56,7 +56,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/hybriddatamanager"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/kusto"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/maintenance"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/managementgroups"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/mariadb"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/marketplace"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/migrate"
@@ -206,7 +205,6 @@ func generatedTables() []*schema.Table {
 		kusto.Clusters(),
 		maintenance.Configurations(),
 		maintenance.PublicMaintenanceConfigurations(),
-		managementgroups.Entities(),
 		mariadb.Servers(),
 		marketplace.PrivateStore(),
 		migrate.Projects(),
