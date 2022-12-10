@@ -39,5 +39,5 @@ gen: codegen2 gen-docs
 	echo "Done"
 
 .PHONY: pregen
-gen: codegen1 codegen2
+pregen: codegen1 codegen2
 	echo "Done"
