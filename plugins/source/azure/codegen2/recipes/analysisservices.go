@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/analysisservices/a
 func Armanalysisservices() []Table {
 	tables := []Table{
 		{
+			Service:        "armanalysisservices",
 			Name:           "servers",
 			Struct:         &armanalysisservices.Server{},
 			ResponseStruct: &armanalysisservices.ServersClientListResponse{},
@@ -17,10 +18,6 @@ func Armanalysisservices() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armanalysisservices"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

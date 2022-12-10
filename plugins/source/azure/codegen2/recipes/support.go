@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport
 func Armsupport() []Table {
 	tables := []Table{
 		{
+			Service:        "armsupport",
 			Name:           "services",
 			Struct:         &armsupport.Service{},
 			ResponseStruct: &armsupport.ServicesClientListResponse{},
@@ -16,6 +17,7 @@ func Armsupport() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Support)`,
 		},
 		{
+			Service:        "armsupport",
 			Name:           "tickets",
 			Struct:         &armsupport.TicketDetails{},
 			ResponseStruct: &armsupport.TicketsClientListResponse{},
@@ -27,10 +29,6 @@ func Armsupport() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armsupport"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

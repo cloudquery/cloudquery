@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/
 func Armcontainerregistry() []Table {
 	tables := []Table{
 		{
+			Service:        "armcontainerregistry",
 			Name:           "registries",
 			Struct:         &armcontainerregistry.Registry{},
 			ResponseStruct: &armcontainerregistry.RegistriesClientListResponse{},
@@ -17,10 +18,6 @@ func Armcontainerregistry() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armcontainerregistry"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

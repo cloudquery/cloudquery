@@ -63,6 +63,11 @@ func DatabaseAccounts() *schema.Table {
 				Resolver: schema.PathResolver("Type"),
 			},
 		},
+
+		Relations: []*schema.Table{
+			MongoDbDatabases(),
+			SqlDatabases(),
+		},
 	}
 }
 

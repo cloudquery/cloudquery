@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx"
 func Armnginx() []Table {
 	tables := []Table{
 		{
+			Service:        "armnginx",
 			Name:           "deployments",
 			Struct:         &armnginx.Deployment{},
 			ResponseStruct: &armnginx.DeploymentsClientListResponse{},
@@ -17,10 +18,6 @@ func Armnginx() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armnginx"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

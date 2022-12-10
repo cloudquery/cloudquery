@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventh
 func Armeventhub() []Table {
 	tables := []Table{
 		{
+			Service:        "armeventhub",
 			Name:           "namespaces",
 			Struct:         &armeventhub.EHNamespace{},
 			ResponseStruct: &armeventhub.NamespacesClientListResponse{},
@@ -17,10 +18,6 @@ func Armeventhub() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armeventhub"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

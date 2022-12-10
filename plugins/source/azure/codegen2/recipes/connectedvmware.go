@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/ar
 func Armconnectedvmware() []Table {
 	tables := []Table{
 		{
+			Service:        "armconnectedvmware",
 			Name:           "clusters",
 			Struct:         &armconnectedvmware.Cluster{},
 			ResponseStruct: &armconnectedvmware.ClustersClientListResponse{},
@@ -16,6 +17,7 @@ func Armconnectedvmware() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ConnectedVMwarevSphere)`,
 		},
 		{
+			Service:        "armconnectedvmware",
 			Name:           "datastores",
 			Struct:         &armconnectedvmware.Datastore{},
 			ResponseStruct: &armconnectedvmware.DatastoresClientListResponse{},
@@ -26,6 +28,7 @@ func Armconnectedvmware() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ConnectedVMwarevSphere)`,
 		},
 		{
+			Service:        "armconnectedvmware",
 			Name:           "hosts",
 			Struct:         &armconnectedvmware.Host{},
 			ResponseStruct: &armconnectedvmware.HostsClientListResponse{},
@@ -36,6 +39,7 @@ func Armconnectedvmware() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ConnectedVMwarevSphere)`,
 		},
 		{
+			Service:        "armconnectedvmware",
 			Name:           "resource_pools",
 			Struct:         &armconnectedvmware.ResourcePool{},
 			ResponseStruct: &armconnectedvmware.ResourcePoolsClientListResponse{},
@@ -46,6 +50,7 @@ func Armconnectedvmware() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ConnectedVMwarevSphere)`,
 		},
 		{
+			Service:        "armconnectedvmware",
 			Name:           "v_centers",
 			Struct:         &armconnectedvmware.VCenter{},
 			ResponseStruct: &armconnectedvmware.VCentersClientListResponse{},
@@ -56,6 +61,7 @@ func Armconnectedvmware() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ConnectedVMwarevSphere)`,
 		},
 		{
+			Service:        "armconnectedvmware",
 			Name:           "virtual_machine_templates",
 			Struct:         &armconnectedvmware.VirtualMachineTemplate{},
 			ResponseStruct: &armconnectedvmware.VirtualMachineTemplatesClientListResponse{},
@@ -66,6 +72,7 @@ func Armconnectedvmware() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ConnectedVMwarevSphere)`,
 		},
 		{
+			Service:        "armconnectedvmware",
 			Name:           "virtual_machines",
 			Struct:         &armconnectedvmware.VirtualMachine{},
 			ResponseStruct: &armconnectedvmware.VirtualMachinesClientListResponse{},
@@ -76,6 +83,7 @@ func Armconnectedvmware() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ConnectedVMwarevSphere)`,
 		},
 		{
+			Service:        "armconnectedvmware",
 			Name:           "virtual_networks",
 			Struct:         &armconnectedvmware.VirtualNetwork{},
 			ResponseStruct: &armconnectedvmware.VirtualNetworksClientListResponse{},
@@ -87,10 +95,6 @@ func Armconnectedvmware() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armconnectedvmware"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

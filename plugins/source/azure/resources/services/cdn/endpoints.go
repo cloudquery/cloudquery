@@ -2,7 +2,6 @@
 package cdn
 
 import (
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 

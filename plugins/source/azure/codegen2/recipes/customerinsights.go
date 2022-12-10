@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerinsights/a
 func Armcustomerinsights() []Table {
 	tables := []Table{
 		{
+			Service:        "armcustomerinsights",
 			Name:           "hubs",
 			Struct:         &armcustomerinsights.Hub{},
 			ResponseStruct: &armcustomerinsights.HubsClientListResponse{},
@@ -17,10 +18,6 @@ func Armcustomerinsights() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armcustomerinsights"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

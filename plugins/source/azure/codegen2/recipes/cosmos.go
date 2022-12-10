@@ -6,16 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
 func Armcosmos() []Table {
 	tables := []Table{
 		{
-			Name:           "database_accounts",
-			Struct:         &armcosmos.DatabaseAccountGetResults{},
-			ResponseStruct: &armcosmos.DatabaseAccountsClientListResponse{},
-			Client:         &armcosmos.DatabaseAccountsClient{},
-			ListFunc:       (&armcosmos.DatabaseAccountsClient{}).NewListPager,
-			NewFunc:        armcosmos.NewDatabaseAccountsClient,
-			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/databaseAccounts",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DocumentDB)`,
-		},
-		{
+			Service:        "armcosmos",
 			Name:           "locations",
 			Struct:         &armcosmos.LocationGetResult{},
 			ResponseStruct: &armcosmos.LocationsClientListResponse{},
@@ -26,6 +17,7 @@ func Armcosmos() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DocumentDB)`,
 		},
 		{
+			Service:        "armcosmos",
 			Name:           "restorable_database_accounts",
 			Struct:         &armcosmos.RestorableDatabaseAccountGetResult{},
 			ResponseStruct: &armcosmos.RestorableDatabaseAccountsClientListResponse{},
@@ -37,10 +29,6 @@ func Armcosmos() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armcosmos"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

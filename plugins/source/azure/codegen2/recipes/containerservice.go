@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/a
 func Armcontainerservice() []Table {
 	tables := []Table{
 		{
+			Service:        "armcontainerservice",
 			Name:           "managed_clusters",
 			Struct:         &armcontainerservice.ManagedCluster{},
 			ResponseStruct: &armcontainerservice.ManagedClustersClientListResponse{},
@@ -16,6 +17,7 @@ func Armcontainerservice() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ContainerService)`,
 		},
 		{
+			Service:        "armcontainerservice",
 			Name:           "snapshots",
 			Struct:         &armcontainerservice.Snapshot{},
 			ResponseStruct: &armcontainerservice.SnapshotsClientListResponse{},
@@ -27,10 +29,6 @@ func Armcontainerservice() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armcontainerservice"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

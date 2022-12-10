@@ -7,6 +7,7 @@ func {{.BaseImport | ToCamel}}() []Table {
 	tables := []Table{
     {{- range .Tables}}
 		{
+			Service: "{{$.BaseImport}}",
       Name: "{{.Name}}",
       Struct: &{{$.BaseImport}}.{{.Struct}}{},
       ResponseStruct: &{{$.BaseImport}}.{{.ResponseStruct}}{},
@@ -19,10 +20,6 @@ func {{.BaseImport | ToCamel}}() []Table {
     {{- end}}
 	}
 
-	for i := range tables {
-		tables[i].Service = "{{.BaseImport}}"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

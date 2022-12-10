@@ -4,10 +4,13 @@ package {{.PackageName}}
 import (
 	"encoding/json"
 	"net/http"
+
+	{{- if not .ChildTable}}
 	"testing"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
+	{{- end}}
 
 	"github.com/cloudquery/plugin-sdk/faker"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/gorilla/mux"
 	"{{.ImportPath}}"
 )
@@ -32,6 +35,10 @@ func create{{.Name | ToCamel}}(router *mux.Router) (error) {
 			return
 		}
 	})
+
+	{{- range .Relations}}
+		create{{.Name | ToCamel}}(router)
+	{{- end}}
 	return nil
 }
 

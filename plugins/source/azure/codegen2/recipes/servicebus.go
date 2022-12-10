@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armserv
 func Armservicebus() []Table {
 	tables := []Table{
 		{
+			Service:        "armservicebus",
 			Name:           "namespaces",
 			Struct:         &armservicebus.SBNamespace{},
 			ResponseStruct: &armservicebus.NamespacesClientListResponse{},
@@ -17,10 +18,6 @@ func Armservicebus() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armservicebus"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

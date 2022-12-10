@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confluent/armconfl
 func Armconfluent() []Table {
 	tables := []Table{
 		{
+			Service:        "armconfluent",
 			Name:           "marketplace_agreements",
 			Struct:         &armconfluent.AgreementResource{},
 			ResponseStruct: &armconfluent.MarketplaceAgreementsClientListResponse{},
@@ -17,10 +18,6 @@ func Armconfluent() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armconfluent"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

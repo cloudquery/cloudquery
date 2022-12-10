@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/engagementfabric/a
 func Armengagementfabric() []Table {
 	tables := []Table{
 		{
+			Service:        "armengagementfabric",
 			Name:           "accounts",
 			Struct:         &armengagementfabric.Account{},
 			ResponseStruct: &armengagementfabric.AccountsClientListResponse{},
@@ -17,10 +18,6 @@ func Armengagementfabric() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armengagementfabric"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

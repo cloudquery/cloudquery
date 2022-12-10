@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdat
 func Armdatafactory() []Table {
 	tables := []Table{
 		{
+			Service:        "armdatafactory",
 			Name:           "factories",
 			Struct:         &armdatafactory.Factory{},
 			ResponseStruct: &armdatafactory.FactoriesClientListResponse{},
@@ -17,10 +18,6 @@ func Armdatafactory() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armdatafactory"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azuredata/armazure
 func Armazuredata() []Table {
 	tables := []Table{
 		{
+			Service:        "armazuredata",
 			Name:           "sql_server_registrations",
 			Struct:         &armazuredata.SQLServerRegistration{},
 			ResponseStruct: &armazuredata.SQLServerRegistrationsClientListResponse{},
@@ -17,10 +18,6 @@ func Armazuredata() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armazuredata"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

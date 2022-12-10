@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armh
 func Armhybridcompute() []Table {
 	tables := []Table{
 		{
+			Service:        "armhybridcompute",
 			Name:           "private_link_scopes",
 			Struct:         &armhybridcompute.PrivateLinkScope{},
 			ResponseStruct: &armhybridcompute.PrivateLinkScopesClientListResponse{},
@@ -17,10 +18,6 @@ func Armhybridcompute() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armhybridcompute"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

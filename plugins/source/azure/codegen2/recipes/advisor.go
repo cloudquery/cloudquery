@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/advisor/armadvisor
 func Armadvisor() []Table {
 	tables := []Table{
 		{
+			Service:        "armadvisor",
 			Name:           "recommendation_metadata",
 			Struct:         &armadvisor.MetadataEntity{},
 			ResponseStruct: &armadvisor.RecommendationMetadataClientListResponse{},
@@ -16,6 +17,7 @@ func Armadvisor() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Advisor)`,
 		},
 		{
+			Service:        "armadvisor",
 			Name:           "recommendations",
 			Struct:         &armadvisor.ResourceRecommendationBase{},
 			ResponseStruct: &armadvisor.RecommendationsClientListResponse{},
@@ -26,6 +28,7 @@ func Armadvisor() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Advisor)`,
 		},
 		{
+			Service:        "armadvisor",
 			Name:           "suppressions",
 			Struct:         &armadvisor.SuppressionContract{},
 			ResponseStruct: &armadvisor.SuppressionsClientListResponse{},
@@ -37,10 +40,6 @@ func Armadvisor() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armadvisor"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

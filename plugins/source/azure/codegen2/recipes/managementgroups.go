@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementgroups/a
 func Armmanagementgroups() []Table {
 	tables := []Table{
 		{
+			Service:        "armmanagementgroups",
 			Name:           "entities",
 			Struct:         &armmanagementgroups.EntityInfo{},
 			ResponseStruct: &armmanagementgroups.EntitiesClientListResponse{},
@@ -17,10 +18,6 @@ func Armmanagementgroups() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armmanagementgroups"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

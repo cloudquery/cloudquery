@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcomplianceautom
 func Armappcomplianceautomation() []Table {
 	tables := []Table{
 		{
+			Service:        "armappcomplianceautomation",
 			Name:           "reports",
 			Struct:         &armappcomplianceautomation.ReportResource{},
 			ResponseStruct: &armappcomplianceautomation.ReportsClientListResponse{},
@@ -17,10 +18,6 @@ func Armappcomplianceautomation() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armappcomplianceautomation"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

@@ -15,10 +15,7 @@ func fetchEndpoints(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	if err != nil {
 		return err
 	}
-	resource, err := client.ParseResourceID(*item.ID)
-	if err != nil {
-		return err
-	}
+	resource := client.ParseResourceID(*item.ID)
 	pager := svc.NewListByProfilePager(resource.ResourceGroup, *item.Name, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)

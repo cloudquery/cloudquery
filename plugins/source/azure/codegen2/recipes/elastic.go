@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic
 func Armelastic() []Table {
 	tables := []Table{
 		{
+			Service:        "armelastic",
 			Name:           "monitors",
 			Struct:         &armelastic.MonitorResource{},
 			ResponseStruct: &armelastic.MonitorsClientListResponse{},
@@ -17,10 +18,6 @@ func Armelastic() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armelastic"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

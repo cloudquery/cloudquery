@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armd
 func Armdatamigration() []Table {
 	tables := []Table{
 		{
+			Service:        "armdatamigration",
 			Name:           "services",
 			Struct:         &armdatamigration.Service{},
 			ResponseStruct: &armdatamigration.ServicesClientListResponse{},
@@ -17,10 +18,6 @@ func Armdatamigration() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armdatamigration"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

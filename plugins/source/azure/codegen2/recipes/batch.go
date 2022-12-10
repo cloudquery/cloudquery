@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch"
 func Armbatch() []Table {
 	tables := []Table{
 		{
+			Service:        "armbatch",
 			Name:           "account",
 			Struct:         &armbatch.Account{},
 			ResponseStruct: &armbatch.AccountClientListResponse{},
@@ -17,10 +18,6 @@ func Armbatch() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armbatch"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

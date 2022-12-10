@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerinstance/
 func Armcontainerinstance() []Table {
 	tables := []Table{
 		{
+			Service:        "armcontainerinstance",
 			Name:           "container_groups",
 			Struct:         &armcontainerinstance.ContainerGroup{},
 			ResponseStruct: &armcontainerinstance.ContainerGroupsClientListResponse{},
@@ -17,10 +18,6 @@ func Armcontainerinstance() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armcontainerinstance"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/ar
 func Armnetworkfunction() []Table {
 	tables := []Table{
 		{
+			Service:        "armnetworkfunction",
 			Name:           "azure_traffic_collectors_by_subscription",
 			Struct:         &armnetworkfunction.AzureTrafficCollector{},
 			ResponseStruct: &armnetworkfunction.AzureTrafficCollectorsBySubscriptionClientListResponse{},
@@ -17,10 +18,6 @@ func Armnetworkfunction() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armnetworkfunction"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

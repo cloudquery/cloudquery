@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/privatedns/armpriv
 func Armprivatedns() []Table {
 	tables := []Table{
 		{
+			Service:        "armprivatedns",
 			Name:           "private_zones",
 			Struct:         &armprivatedns.PrivateZone{},
 			ResponseStruct: &armprivatedns.PrivateZonesClientListResponse{},
@@ -17,10 +18,6 @@ func Armprivatedns() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armprivatedns"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

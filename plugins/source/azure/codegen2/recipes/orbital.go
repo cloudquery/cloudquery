@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/orbital/armorbital
 func Armorbital() []Table {
 	tables := []Table{
 		{
+			Service:        "armorbital",
 			Name:           "contact_profiles",
 			Struct:         &armorbital.ContactProfile{},
 			ResponseStruct: &armorbital.ContactProfilesClientListResponse{},
@@ -16,6 +17,7 @@ func Armorbital() []Table {
 			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Orbital)`,
 		},
 		{
+			Service:        "armorbital",
 			Name:           "spacecrafts",
 			Struct:         &armorbital.Spacecraft{},
 			ResponseStruct: &armorbital.SpacecraftsClientListResponse{},
@@ -27,10 +29,6 @@ func Armorbital() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armorbital"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

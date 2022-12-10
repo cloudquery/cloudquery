@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage
 func Armstorage() []Table {
 	tables := []Table{
 		{
+			Service:        "armstorage",
 			Name:           "accounts",
 			Struct:         &armstorage.Account{},
 			ResponseStruct: &armstorage.AccountsClientListResponse{},
@@ -16,6 +17,7 @@ func Armstorage() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Storage)`,
 		},
 		{
+			Service:        "armstorage",
 			Name:           "deleted_accounts",
 			Struct:         &armstorage.DeletedAccount{},
 			ResponseStruct: &armstorage.DeletedAccountsClientListResponse{},
@@ -27,10 +29,6 @@ func Armstorage() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armstorage"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

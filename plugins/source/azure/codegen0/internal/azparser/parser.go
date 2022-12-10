@@ -35,9 +35,16 @@ var newGlobalFuncsToSkip = map[string]bool{
 }
 
 var newFuncToSkipPerPackage = map[string]map[string]bool{
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos": {
+		"NewDatabaseAccountsClient": true,
+	},
 	// We are skipping this because we already get this info via
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault": {
 		"NewVaultsClient": true,
+	},
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn": {
+		// we skip this because we moved this to manually generated recipes as it has childs
+		"NewProfilesClient": true,
 	},
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork": {
 		// Seems like a buggy resource that always returns a marshal error. maybe will be fixed in future Azure SDK

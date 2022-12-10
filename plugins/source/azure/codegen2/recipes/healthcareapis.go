@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthcareapis/arm
 func Armhealthcareapis() []Table {
 	tables := []Table{
 		{
+			Service:        "armhealthcareapis",
 			Name:           "services",
 			Struct:         &armhealthcareapis.ServicesDescription{},
 			ResponseStruct: &armhealthcareapis.ServicesClientListResponse{},
@@ -17,10 +18,6 @@ func Armhealthcareapis() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armhealthcareapis"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

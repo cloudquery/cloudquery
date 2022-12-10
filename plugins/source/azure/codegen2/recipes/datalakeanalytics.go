@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-analytics
 func Armdatalakeanalytics() []Table {
 	tables := []Table{
 		{
+			Service:        "armdatalakeanalytics",
 			Name:           "accounts",
 			Struct:         &armdatalakeanalytics.AccountBasic{},
 			ResponseStruct: &armdatalakeanalytics.AccountsClientListResponse{},
@@ -17,10 +18,6 @@ func Armdatalakeanalytics() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armdatalakeanalytics"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

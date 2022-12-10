@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor
 func Armmonitor() []Table {
 	tables := []Table{
 		{
+			Service:        "armmonitor",
 			Name:           "log_profiles",
 			Struct:         &armmonitor.LogProfileResource{},
 			ResponseStruct: &armmonitor.LogProfilesClientListResponse{},
@@ -16,6 +17,7 @@ func Armmonitor() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Insights)`,
 		},
 		{
+			Service:        "armmonitor",
 			Name:           "private_link_scopes",
 			Struct:         &armmonitor.AzureMonitorPrivateLinkScope{},
 			ResponseStruct: &armmonitor.PrivateLinkScopesClientListResponse{},
@@ -26,6 +28,7 @@ func Armmonitor() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_insights)`,
 		},
 		{
+			Service:        "armmonitor",
 			Name:           "tenant_activity_logs",
 			Struct:         &armmonitor.EventData{},
 			ResponseStruct: &armmonitor.TenantActivityLogsClientListResponse{},
@@ -37,10 +40,6 @@ func Armmonitor() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armmonitor"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redhatopenshift/ar
 func Armredhatopenshift() []Table {
 	tables := []Table{
 		{
+			Service:        "armredhatopenshift",
 			Name:           "open_shift_clusters",
 			Struct:         &armredhatopenshift.OpenShiftCluster{},
 			ResponseStruct: &armredhatopenshift.OpenShiftClustersClientListResponse{},
@@ -17,10 +18,6 @@ func Armredhatopenshift() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armredhatopenshift"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

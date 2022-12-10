@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
 func Armsql() []Table {
 	tables := []Table{
 		{
+			Service:        "armsql",
 			Name:           "deleted_servers",
 			Struct:         &armsql.DeletedServer{},
 			ResponseStruct: &armsql.DeletedServersClientListResponse{},
@@ -16,6 +17,7 @@ func Armsql() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Sql)`,
 		},
 		{
+			Service:        "armsql",
 			Name:           "instance_pools",
 			Struct:         &armsql.InstancePool{},
 			ResponseStruct: &armsql.InstancePoolsClientListResponse{},
@@ -26,6 +28,7 @@ func Armsql() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Sql)`,
 		},
 		{
+			Service:        "armsql",
 			Name:           "managed_instances",
 			Struct:         &armsql.ManagedInstance{},
 			ResponseStruct: &armsql.ManagedInstancesClientListResponse{},
@@ -36,6 +39,7 @@ func Armsql() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Sql)`,
 		},
 		{
+			Service:        "armsql",
 			Name:           "servers",
 			Struct:         &armsql.Server{},
 			ResponseStruct: &armsql.ServersClientListResponse{},
@@ -46,6 +50,7 @@ func Armsql() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Sql)`,
 		},
 		{
+			Service:        "armsql",
 			Name:           "virtual_clusters",
 			Struct:         &armsql.VirtualCluster{},
 			ResponseStruct: &armsql.VirtualClustersClientListResponse{},
@@ -57,10 +62,6 @@ func Armsql() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armsql"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

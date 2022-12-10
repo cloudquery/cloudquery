@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/arma
 func Armauthorization() []Table {
 	tables := []Table{
 		{
+			Service:        "armauthorization",
 			Name:           "classic_administrators",
 			Struct:         &armauthorization.ClassicAdministrator{},
 			ResponseStruct: &armauthorization.ClassicAdministratorsClientListResponse{},
@@ -16,6 +17,7 @@ func Armauthorization() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Authorization)`,
 		},
 		{
+			Service:        "armauthorization",
 			Name:           "provider_operations_metadata",
 			Struct:         &armauthorization.ProviderOperationsMetadata{},
 			ResponseStruct: &armauthorization.ProviderOperationsMetadataClientListResponse{},
@@ -26,6 +28,7 @@ func Armauthorization() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Authorization)`,
 		},
 		{
+			Service:        "armauthorization",
 			Name:           "role_assignments",
 			Struct:         &armauthorization.RoleAssignment{},
 			ResponseStruct: &armauthorization.RoleAssignmentsClientListResponse{},
@@ -37,10 +40,6 @@ func Armauthorization() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armauthorization"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

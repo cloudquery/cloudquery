@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devhub/armdevhub"
 func Armdevhub() []Table {
 	tables := []Table{
 		{
+			Service:        "armdevhub",
 			Name:           "workflow",
 			Struct:         &armdevhub.Workflow{},
 			ResponseStruct: &armdevhub.WorkflowClientListResponse{},
@@ -17,10 +18,6 @@ func Armdevhub() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armdevhub"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devops/armdevops"
 func Armdevops() []Table {
 	tables := []Table{
 		{
+			Service:        "armdevops",
 			Name:           "pipeline_template_definitions",
 			Struct:         &armdevops.PipelineTemplateDefinition{},
 			ResponseStruct: &armdevops.PipelineTemplateDefinitionsClientListResponse{},
@@ -17,10 +18,6 @@ func Armdevops() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armdevops"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

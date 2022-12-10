@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automanage/armauto
 func Armautomanage() []Table {
 	tables := []Table{
 		{
+			Service:        "armautomanage",
 			Name:           "configuration_profile_assignments",
 			Struct:         &armautomanage.ConfigurationProfileAssignment{},
 			ResponseStruct: &armautomanage.ConfigurationProfileAssignmentsClientListResponse{},
@@ -17,10 +18,6 @@ func Armautomanage() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armautomanage"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

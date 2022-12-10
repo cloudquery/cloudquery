@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql"
 func Armmysql() []Table {
 	tables := []Table{
 		{
+			Service:        "armmysql",
 			Name:           "servers",
 			Struct:         &armmysql.Server{},
 			ResponseStruct: &armmysql.ServersClientListResponse{},
@@ -17,10 +18,6 @@ func Armmysql() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armmysql"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolic
 func Armpolicy() []Table {
 	tables := []Table{
 		{
+			Service:        "armpolicy",
 			Name:           "assignments",
 			Struct:         &armpolicy.Assignment{},
 			ResponseStruct: &armpolicy.AssignmentsClientListResponse{},
@@ -16,6 +17,7 @@ func Armpolicy() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Authorization)`,
 		},
 		{
+			Service:        "armpolicy",
 			Name:           "data_policy_manifests",
 			Struct:         &armpolicy.DataPolicyManifest{},
 			ResponseStruct: &armpolicy.DataPolicyManifestsClientListResponse{},
@@ -26,6 +28,7 @@ func Armpolicy() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Authorization)`,
 		},
 		{
+			Service:        "armpolicy",
 			Name:           "definitions",
 			Struct:         &armpolicy.Definition{},
 			ResponseStruct: &armpolicy.DefinitionsClientListResponse{},
@@ -36,6 +39,7 @@ func Armpolicy() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Authorization)`,
 		},
 		{
+			Service:        "armpolicy",
 			Name:           "exemptions",
 			Struct:         &armpolicy.Exemption{},
 			ResponseStruct: &armpolicy.ExemptionsClientListResponse{},
@@ -46,6 +50,7 @@ func Armpolicy() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Authorization)`,
 		},
 		{
+			Service:        "armpolicy",
 			Name:           "set_definitions",
 			Struct:         &armpolicy.SetDefinition{},
 			ResponseStruct: &armpolicy.SetDefinitionsClientListResponse{},
@@ -57,10 +62,6 @@ func Armpolicy() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armpolicy"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/notificationhubs/a
 func Armnotificationhubs() []Table {
 	tables := []Table{
 		{
+			Service:        "armnotificationhubs",
 			Name:           "namespaces",
 			Struct:         &armnotificationhubs.NamespaceResource{},
 			ResponseStruct: &armnotificationhubs.NamespacesClientListResponse{},
@@ -17,10 +18,6 @@ func Armnotificationhubs() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armnotificationhubs"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

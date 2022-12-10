@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armpro
 func Armproviderhub() []Table {
 	tables := []Table{
 		{
+			Service:        "armproviderhub",
 			Name:           "provider_registrations",
 			Struct:         &armproviderhub.ProviderRegistration{},
 			ResponseStruct: &armproviderhub.ProviderRegistrationsClientListResponse{},
@@ -17,10 +18,6 @@ func Armproviderhub() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armproviderhub"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

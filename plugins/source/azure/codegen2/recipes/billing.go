@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling
 func Armbilling() []Table {
 	tables := []Table{
 		{
+			Service:        "armbilling",
 			Name:           "accounts",
 			Struct:         &armbilling.Account{},
 			ResponseStruct: &armbilling.AccountsClientListResponse{},
@@ -16,6 +17,7 @@ func Armbilling() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Billing)`,
 		},
 		{
+			Service:        "armbilling",
 			Name:           "enrollment_accounts",
 			Struct:         &armbilling.EnrollmentAccountSummary{},
 			ResponseStruct: &armbilling.EnrollmentAccountsClientListResponse{},
@@ -26,6 +28,7 @@ func Armbilling() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Billing)`,
 		},
 		{
+			Service:        "armbilling",
 			Name:           "periods",
 			Struct:         &armbilling.Period{},
 			ResponseStruct: &armbilling.PeriodsClientListResponse{},
@@ -37,10 +40,6 @@ func Armbilling() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armbilling"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

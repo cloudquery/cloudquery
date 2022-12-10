@@ -27,13 +27,6 @@ func Armcdn() []*Table {
 			Multiplex: `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Cdn)`,
 		},
 		{
-			NewFunc:   armcdn.NewProfilesClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/profiles",
-			Namespace: "Microsoft.Cdn",
-			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Cdn)`,
-		},
-		{
 			NewFunc:   armcdn.NewResourceUsageClient,
 			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn",
 			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/checkResourceUsage",

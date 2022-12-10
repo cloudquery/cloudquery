@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dns/armdns"
 func Armdns() []Table {
 	tables := []Table{
 		{
+			Service:        "armdns",
 			Name:           "zones",
 			Struct:         &armdns.Zone{},
 			ResponseStruct: &armdns.ZonesClientListResponse{},
@@ -17,10 +18,6 @@ func Armdns() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armdns"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

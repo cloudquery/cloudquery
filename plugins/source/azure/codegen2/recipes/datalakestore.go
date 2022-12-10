@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-store/arm
 func Armdatalakestore() []Table {
 	tables := []Table{
 		{
+			Service:        "armdatalakestore",
 			Name:           "accounts",
 			Struct:         &armdatalakestore.AccountBasic{},
 			ResponseStruct: &armdatalakestore.AccountsClientListResponse{},
@@ -17,10 +18,6 @@ func Armdatalakestore() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armdatalakestore"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

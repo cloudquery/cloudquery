@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armapp
 func Armappplatform() []Table {
 	tables := []Table{
 		{
+			Service:        "armappplatform",
 			Name:           "services",
 			Struct:         &armappplatform.ServiceResource{},
 			ResponseStruct: &armappplatform.ServicesClientListResponse{},
@@ -17,10 +18,6 @@ func Armappplatform() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armappplatform"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

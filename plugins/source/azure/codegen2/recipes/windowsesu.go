@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsesu/armwind
 func Armwindowsesu() []Table {
 	tables := []Table{
 		{
+			Service:        "armwindowsesu",
 			Name:           "multiple_activation_keys",
 			Struct:         &armwindowsesu.MultipleActivationKey{},
 			ResponseStruct: &armwindowsesu.MultipleActivationKeysClientListResponse{},
@@ -17,10 +18,6 @@ func Armwindowsesu() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armwindowsesu"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

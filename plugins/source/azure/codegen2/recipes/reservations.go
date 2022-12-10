@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armre
 func Armreservations() []Table {
 	tables := []Table{
 		{
+			Service:        "armreservations",
 			Name:           "reservation_order",
 			Struct:         &armreservations.ReservationOrderResponse{},
 			ResponseStruct: &armreservations.ReservationOrderClientListResponse{},
@@ -17,10 +18,6 @@ func Armreservations() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armreservations"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

@@ -47,13 +47,10 @@ func main() {
 	currentDir = path.Dir(currentFilename)
 
 	for i := range recipes.Tables {
-		if err := initTable(&recipes.Tables[i]); err != nil {
+		if err := initTable(nil, &recipes.Tables[i]); err != nil {
 			log.Fatal(err)
 		}
-		if err := generateTable(recipes.Tables[i]); err != nil {
-			log.Fatal(err)
-		}
-		if err := generateTableMock(recipes.Tables[i]); err != nil {
+		if err := generateTable(nil, &recipes.Tables[i]); err != nil {
 			log.Fatal(err)
 		}
 	}
@@ -87,7 +84,7 @@ func generateTables(rr []recipes.Table) error {
 	return nil
 }
 
-func initTable(r *recipes.Table) error {
+func initTable(parent *recipes.Table, r *recipes.Table) error {
 	var err error
 	if r.Client != nil {
 		r.ClientName = reflect.TypeOf(r.Client).Elem().Name()
@@ -143,13 +140,14 @@ func initTable(r *recipes.Table) error {
 	}
 	if r.Relations != nil {
 		for _, relation := range r.Relations {
-			r.Table.Relations = append(r.Table.Relations, strcase.ToCamel(relation.Name))
+			r.Table.Relations = append(r.Table.Relations, strcase.ToCamel(relation.Name) + "()")
+			initTable(r, relation)
 		}
 	}
 	return nil
 }
 
-func generateTable(r recipes.Table) error {
+func generateTable(parent *recipes.Table, r *recipes.Table) error {
 	tpl, err := template.New("list.go.tpl").Funcs(templateFuncs).ParseFS(templateFS, "templates/*.go.tpl")
 	if err != nil {
 		return fmt.Errorf("failed to parse templates: %w", err)
@@ -160,7 +158,7 @@ func generateTable(r recipes.Table) error {
 	}
 	var buff bytes.Buffer
 	if err := tpl.Execute(&buff, r); err != nil {
-		return fmt.Errorf("failed to execute template: %w", err)
+		return fmt.Errorf("failed to execute template for %s: %w", r.Table.Name, err)
 	}
 
 	filePath := path.Join(currentDir, "../resources/services", r.PackageName)
@@ -183,11 +181,22 @@ func generateTable(r recipes.Table) error {
 	if err := os.WriteFile(filePath, content, 0644); err != nil {
 		return fmt.Errorf("failed to write file %s: %w", filePath, err)
 	}
+	if !r.SkipMock {
+		if err := generateTableMock(r); err != nil {
+			return err
+		}
+	}
+	for _, relation := range r.Relations {
+		relation.ChildTable = true
+		if err := generateTable(r, relation); err != nil {
+			return err
+		}
+	}
 	return nil
 }
 
 
-func generateTableMock(r recipes.Table) error {
+func generateTableMock(r *recipes.Table) error {
 	tpl, err := template.New("list_mock.go.tpl").Funcs(templateFuncs).ParseFS(templateFS, "templates/*.go.tpl")
 	if err != nil {
 		return fmt.Errorf("failed to parse templates: %w", err)

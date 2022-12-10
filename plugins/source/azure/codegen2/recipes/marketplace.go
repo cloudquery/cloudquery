@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplace/armmar
 func Armmarketplace() []Table {
 	tables := []Table{
 		{
+			Service:        "armmarketplace",
 			Name:           "private_store",
 			Struct:         &armmarketplace.PrivateStore{},
 			ResponseStruct: &armmarketplace.PrivateStoreClientListResponse{},
@@ -17,10 +18,6 @@ func Armmarketplace() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armmarketplace"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

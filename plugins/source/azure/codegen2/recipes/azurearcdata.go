@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armaz
 func Armazurearcdata() []Table {
 	tables := []Table{
 		{
+			Service:        "armazurearcdata",
 			Name:           "postgres_instances",
 			Struct:         &armazurearcdata.PostgresInstance{},
 			ResponseStruct: &armazurearcdata.PostgresInstancesClientListResponse{},
@@ -16,6 +17,7 @@ func Armazurearcdata() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_AzureArcData)`,
 		},
 		{
+			Service:        "armazurearcdata",
 			Name:           "sql_managed_instances",
 			Struct:         &armazurearcdata.SQLManagedInstance{},
 			ResponseStruct: &armazurearcdata.SQLManagedInstancesClientListResponse{},
@@ -26,6 +28,7 @@ func Armazurearcdata() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_AzureArcData)`,
 		},
 		{
+			Service:        "armazurearcdata",
 			Name:           "sql_server_instances",
 			Struct:         &armazurearcdata.SQLServerInstance{},
 			ResponseStruct: &armazurearcdata.SQLServerInstancesClientListResponse{},
@@ -37,10 +40,6 @@ func Armazurearcdata() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armazurearcdata"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

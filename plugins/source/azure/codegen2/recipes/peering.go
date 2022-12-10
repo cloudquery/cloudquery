@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering
 func Armpeering() []Table {
 	tables := []Table{
 		{
+			Service:        "armpeering",
 			Name:           "service_countries",
 			Struct:         &armpeering.ServiceCountry{},
 			ResponseStruct: &armpeering.ServiceCountriesClientListResponse{},
@@ -16,6 +17,7 @@ func Armpeering() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Peering)`,
 		},
 		{
+			Service:        "armpeering",
 			Name:           "service_locations",
 			Struct:         &armpeering.ServiceLocation{},
 			ResponseStruct: &armpeering.ServiceLocationsClientListResponse{},
@@ -26,6 +28,7 @@ func Armpeering() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Peering)`,
 		},
 		{
+			Service:        "armpeering",
 			Name:           "service_providers",
 			Struct:         &armpeering.ServiceProvider{},
 			ResponseStruct: &armpeering.ServiceProvidersClientListResponse{},
@@ -37,10 +40,6 @@ func Armpeering() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armpeering"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

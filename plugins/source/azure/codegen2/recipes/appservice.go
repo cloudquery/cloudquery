@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armapps
 func Armappservice() []Table {
 	tables := []Table{
 		{
+			Service:        "armappservice",
 			Name:           "certificate_orders",
 			Struct:         &armappservice.CertificateOrder{},
 			ResponseStruct: &armappservice.CertificateOrdersClientListResponse{},
@@ -16,6 +17,7 @@ func Armappservice() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_CertificateRegistration)`,
 		},
 		{
+			Service:        "armappservice",
 			Name:           "certificates",
 			Struct:         &armappservice.AppCertificate{},
 			ResponseStruct: &armappservice.CertificatesClientListResponse{},
@@ -26,6 +28,7 @@ func Armappservice() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Web)`,
 		},
 		{
+			Service:        "armappservice",
 			Name:           "deleted_web_apps",
 			Struct:         &armappservice.DeletedSite{},
 			ResponseStruct: &armappservice.DeletedWebAppsClientListResponse{},
@@ -36,6 +39,7 @@ func Armappservice() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Web)`,
 		},
 		{
+			Service:        "armappservice",
 			Name:           "domains",
 			Struct:         &armappservice.Domain{},
 			ResponseStruct: &armappservice.DomainsClientListResponse{},
@@ -46,6 +50,7 @@ func Armappservice() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DomainRegistration)`,
 		},
 		{
+			Service:        "armappservice",
 			Name:           "environments",
 			Struct:         &armappservice.EnvironmentResource{},
 			ResponseStruct: &armappservice.EnvironmentsClientListResponse{},
@@ -56,6 +61,7 @@ func Armappservice() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Web)`,
 		},
 		{
+			Service:        "armappservice",
 			Name:           "plans",
 			Struct:         &armappservice.Plan{},
 			ResponseStruct: &armappservice.PlansClientListResponse{},
@@ -66,6 +72,7 @@ func Armappservice() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Web)`,
 		},
 		{
+			Service:        "armappservice",
 			Name:           "recommendations",
 			Struct:         &armappservice.Recommendation{},
 			ResponseStruct: &armappservice.RecommendationsClientListResponse{},
@@ -76,6 +83,7 @@ func Armappservice() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Web)`,
 		},
 		{
+			Service:        "armappservice",
 			Name:           "resource_health_metadata",
 			Struct:         &armappservice.ResourceHealthMetadata{},
 			ResponseStruct: &armappservice.ResourceHealthMetadataClientListResponse{},
@@ -86,6 +94,7 @@ func Armappservice() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Web)`,
 		},
 		{
+			Service:        "armappservice",
 			Name:           "static_sites",
 			Struct:         &armappservice.StaticSiteARMResource{},
 			ResponseStruct: &armappservice.StaticSitesClientListResponse{},
@@ -96,6 +105,7 @@ func Armappservice() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Web)`,
 		},
 		{
+			Service:        "armappservice",
 			Name:           "top_level_domains",
 			Struct:         &armappservice.TopLevelDomain{},
 			ResponseStruct: &armappservice.TopLevelDomainsClientListResponse{},
@@ -106,6 +116,7 @@ func Armappservice() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DomainRegistration)`,
 		},
 		{
+			Service:        "armappservice",
 			Name:           "web_apps",
 			Struct:         &armappservice.Site{},
 			ResponseStruct: &armappservice.WebAppsClientListResponse{},
@@ -117,10 +128,6 @@ func Armappservice() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armappservice"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

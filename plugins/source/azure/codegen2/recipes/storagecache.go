@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armst
 func Armstoragecache() []Table {
 	tables := []Table{
 		{
+			Service:        "armstoragecache",
 			Name:           "caches",
 			Struct:         &armstoragecache.Cache{},
 			ResponseStruct: &armstoragecache.CachesClientListResponse{},
@@ -17,10 +18,6 @@ func Armstoragecache() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armstoragecache"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

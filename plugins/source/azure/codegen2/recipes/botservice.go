@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbots
 func Armbotservice() []Table {
 	tables := []Table{
 		{
+			Service:        "armbotservice",
 			Name:           "bots",
 			Struct:         &armbotservice.Bot{},
 			ResponseStruct: &armbotservice.BotsClientListResponse{},
@@ -17,10 +18,6 @@ func Armbotservice() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armbotservice"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsight
 func Armapplicationinsights() []Table {
 	tables := []Table{
 		{
+			Service:        "armapplicationinsights",
 			Name:           "components",
 			Struct:         &armapplicationinsights.Component{},
 			ResponseStruct: &armapplicationinsights.ComponentsClientListResponse{},
@@ -16,6 +17,7 @@ func Armapplicationinsights() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Insights)`,
 		},
 		{
+			Service:        "armapplicationinsights",
 			Name:           "web_tests",
 			Struct:         &armapplicationinsights.WebTest{},
 			ResponseStruct: &armapplicationinsights.WebTestsClientListResponse{},
@@ -27,10 +29,6 @@ func Armapplicationinsights() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armapplicationinsights"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

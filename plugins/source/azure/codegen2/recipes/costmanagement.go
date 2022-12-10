@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/arm
 func Armcostmanagement() []Table {
 	tables := []Table{
 		{
+			Service:        "armcostmanagement",
 			Name:           "views",
 			Struct:         &armcostmanagement.View{},
 			ResponseStruct: &armcostmanagement.ViewsClientListResponse{},
@@ -17,10 +18,6 @@ func Armcostmanagement() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armcostmanagement"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

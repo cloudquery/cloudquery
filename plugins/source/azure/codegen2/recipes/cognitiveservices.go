@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/
 func Armcognitiveservices() []Table {
 	tables := []Table{
 		{
+			Service:        "armcognitiveservices",
 			Name:           "accounts",
 			Struct:         &armcognitiveservices.Account{},
 			ResponseStruct: &armcognitiveservices.AccountsClientListResponse{},
@@ -16,6 +17,7 @@ func Armcognitiveservices() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_CognitiveServices)`,
 		},
 		{
+			Service:        "armcognitiveservices",
 			Name:           "deleted_accounts",
 			Struct:         &armcognitiveservices.Account{},
 			ResponseStruct: &armcognitiveservices.DeletedAccountsClientListResponse{},
@@ -27,10 +29,6 @@ func Armcognitiveservices() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armcognitiveservices"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

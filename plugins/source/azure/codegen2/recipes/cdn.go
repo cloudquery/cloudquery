@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn"
 func Armcdn() []Table {
 	tables := []Table{
 		{
+			Service:        "armcdn",
 			Name:           "edge_nodes",
 			Struct:         &armcdn.EdgeNode{},
 			ResponseStruct: &armcdn.EdgeNodesClientListResponse{},
@@ -16,6 +17,7 @@ func Armcdn() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Cdn)`,
 		},
 		{
+			Service:        "armcdn",
 			Name:           "managed_rule_sets",
 			Struct:         &armcdn.ManagedRuleSetDefinition{},
 			ResponseStruct: &armcdn.ManagedRuleSetsClientListResponse{},
@@ -26,6 +28,7 @@ func Armcdn() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Cdn)`,
 		},
 		{
+			Service:        "armcdn",
 			Name:           "policies",
 			Struct:         &armcdn.WebApplicationFirewallPolicy{},
 			ResponseStruct: &armcdn.PoliciesClientListResponse{},
@@ -35,22 +38,8 @@ func Armcdn() []Table {
 			URL:            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/cdnWebApplicationFirewallPolicies",
 			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Cdn)`,
 		},
-		// {
-		// 	Name:           "profiles",
-		// 	Struct:         &armcdn.Profile{},
-		// 	ResponseStruct: &armcdn.ProfilesClientListResponse{},
-		// 	Client:         &armcdn.ProfilesClient{},
-		// 	ListFunc:       (&armcdn.ProfilesClient{}).NewListPager,
-		// 	NewFunc:        armcdn.NewProfilesClient,
-		// 	URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/profiles",
-		// 	Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Cdn)`,
-		// },
 	}
 
-	for i := range tables {
-		tables[i].Service = "armcdn"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/portal/armportal"
 func Armportal() []Table {
 	tables := []Table{
 		{
+			Service:        "armportal",
 			Name:           "list_tenant_configuration_violations",
 			Struct:         &armportal.Violation{},
 			ResponseStruct: &armportal.ListTenantConfigurationViolationsClientListResponse{},
@@ -16,6 +17,7 @@ func Armportal() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Portal)`,
 		},
 		{
+			Service:        "armportal",
 			Name:           "tenant_configurations",
 			Struct:         &armportal.Configuration{},
 			ResponseStruct: &armportal.TenantConfigurationsClientListResponse{},
@@ -27,10 +29,6 @@ func Armportal() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armportal"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

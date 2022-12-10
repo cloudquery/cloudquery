@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/migrate/armmigrate
 func Armmigrate() []Table {
 	tables := []Table{
 		{
+			Service:        "armmigrate",
 			Name:           "projects",
 			Struct:         &armmigrate.Project{},
 			ResponseStruct: &armmigrate.ProjectsClientListResponse{},
@@ -17,10 +18,6 @@ func Armmigrate() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armmigrate"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

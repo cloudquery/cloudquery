@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsight
 func Armoperationalinsights() []Table {
 	tables := []Table{
 		{
+			Service:        "armoperationalinsights",
 			Name:           "clusters",
 			Struct:         &armoperationalinsights.Cluster{},
 			ResponseStruct: &armoperationalinsights.ClustersClientListResponse{},
@@ -16,6 +17,7 @@ func Armoperationalinsights() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_OperationalInsights)`,
 		},
 		{
+			Service:        "armoperationalinsights",
 			Name:           "workspaces",
 			Struct:         &armoperationalinsights.Workspace{},
 			ResponseStruct: &armoperationalinsights.WorkspacesClientListResponse{},
@@ -27,10 +29,6 @@ func Armoperationalinsights() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armoperationalinsights"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

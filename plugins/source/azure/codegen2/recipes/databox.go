@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox
 func Armdatabox() []Table {
 	tables := []Table{
 		{
+			Service:        "armdatabox",
 			Name:           "jobs",
 			Struct:         &armdatabox.JobResource{},
 			ResponseStruct: &armdatabox.JobsClientListResponse{},
@@ -17,10 +18,6 @@ func Armdatabox() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armdatabox"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

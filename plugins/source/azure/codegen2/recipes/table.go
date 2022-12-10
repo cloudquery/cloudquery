@@ -47,8 +47,6 @@ type Table struct {
 	ListFuncHasResourceGroupName bool
 	// Relations is list of relations functions
 	Relations []*Table
-	// Template is the template to use to generate the resource (some services has different template as some services were generated using different original codegen)
-	Template string
 	// Multiplex
 	Multiplex string
 	// ChildTable

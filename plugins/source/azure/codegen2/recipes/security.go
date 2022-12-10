@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecuri
 func Armsecurity() []Table {
 	tables := []Table{
 		{
+			Service:        "armsecurity",
 			Name:           "alerts",
 			Struct:         &armsecurity.Alert{},
 			ResponseStruct: &armsecurity.AlertsClientListResponse{},
@@ -16,6 +17,7 @@ func Armsecurity() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security)`,
 		},
 		{
+			Service:        "armsecurity",
 			Name:           "alerts_suppression_rules",
 			Struct:         &armsecurity.AlertsSuppressionRule{},
 			ResponseStruct: &armsecurity.AlertsSuppressionRulesClientListResponse{},
@@ -26,6 +28,7 @@ func Armsecurity() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security)`,
 		},
 		{
+			Service:        "armsecurity",
 			Name:           "allowed_connections",
 			Struct:         &armsecurity.AllowedConnectionsResource{},
 			ResponseStruct: &armsecurity.AllowedConnectionsClientListResponse{},
@@ -36,6 +39,7 @@ func Armsecurity() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security)`,
 		},
 		{
+			Service:        "armsecurity",
 			Name:           "applications",
 			Struct:         &armsecurity.Application{},
 			ResponseStruct: &armsecurity.ApplicationsClientListResponse{},
@@ -46,6 +50,7 @@ func Armsecurity() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security)`,
 		},
 		{
+			Service:        "armsecurity",
 			Name:           "assessments_metadata",
 			Struct:         &armsecurity.AssessmentMetadataResponse{},
 			ResponseStruct: &armsecurity.AssessmentsMetadataClientListResponse{},
@@ -56,6 +61,7 @@ func Armsecurity() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security)`,
 		},
 		{
+			Service:        "armsecurity",
 			Name:           "auto_provisioning_settings",
 			Struct:         &armsecurity.AutoProvisioningSetting{},
 			ResponseStruct: &armsecurity.AutoProvisioningSettingsClientListResponse{},
@@ -66,6 +72,7 @@ func Armsecurity() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security)`,
 		},
 		{
+			Service:        "armsecurity",
 			Name:           "automations",
 			Struct:         &armsecurity.Automation{},
 			ResponseStruct: &armsecurity.AutomationsClientListResponse{},
@@ -76,6 +83,7 @@ func Armsecurity() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security)`,
 		},
 		{
+			Service:        "armsecurity",
 			Name:           "connectors",
 			Struct:         &armsecurity.Connector{},
 			ResponseStruct: &armsecurity.ConnectorsClientListResponse{},
@@ -86,6 +94,7 @@ func Armsecurity() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security)`,
 		},
 		{
+			Service:        "armsecurity",
 			Name:           "discovered_security_solutions",
 			Struct:         &armsecurity.DiscoveredSecuritySolution{},
 			ResponseStruct: &armsecurity.DiscoveredSecuritySolutionsClientListResponse{},
@@ -96,6 +105,7 @@ func Armsecurity() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security)`,
 		},
 		{
+			Service:        "armsecurity",
 			Name:           "external_security_solutions",
 			Struct:         &armsecurity.ExternalSecuritySolution{},
 			ResponseStruct: &armsecurity.ExternalSecuritySolutionsClientListResponse{},
@@ -106,6 +116,7 @@ func Armsecurity() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security)`,
 		},
 		{
+			Service:        "armsecurity",
 			Name:           "governance_rule",
 			Struct:         &armsecurity.GovernanceRule{},
 			ResponseStruct: &armsecurity.GovernanceRuleClientListResponse{},
@@ -116,6 +127,7 @@ func Armsecurity() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security)`,
 		},
 		{
+			Service:        "armsecurity",
 			Name:           "jit_network_access_policies",
 			Struct:         &armsecurity.JitNetworkAccessPolicy{},
 			ResponseStruct: &armsecurity.JitNetworkAccessPoliciesClientListResponse{},
@@ -126,6 +138,7 @@ func Armsecurity() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security)`,
 		},
 		{
+			Service:        "armsecurity",
 			Name:           "locations",
 			Struct:         &armsecurity.AscLocation{},
 			ResponseStruct: &armsecurity.LocationsClientListResponse{},
@@ -136,6 +149,7 @@ func Armsecurity() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security)`,
 		},
 		{
+			Service:        "armsecurity",
 			Name:           "regulatory_compliance_standards",
 			Struct:         &armsecurity.RegulatoryComplianceStandard{},
 			ResponseStruct: &armsecurity.RegulatoryComplianceStandardsClientListResponse{},
@@ -146,6 +160,7 @@ func Armsecurity() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security)`,
 		},
 		{
+			Service:        "armsecurity",
 			Name:           "secure_score_control_definitions",
 			Struct:         &armsecurity.SecureScoreControlDefinitionItem{},
 			ResponseStruct: &armsecurity.SecureScoreControlDefinitionsClientListResponse{},
@@ -156,6 +171,7 @@ func Armsecurity() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security)`,
 		},
 		{
+			Service:        "armsecurity",
 			Name:           "secure_score_controls",
 			Struct:         &armsecurity.SecureScoreControlDetails{},
 			ResponseStruct: &armsecurity.SecureScoreControlsClientListResponse{},
@@ -166,6 +182,7 @@ func Armsecurity() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security)`,
 		},
 		{
+			Service:        "armsecurity",
 			Name:           "secure_scores",
 			Struct:         &armsecurity.SecureScoreItem{},
 			ResponseStruct: &armsecurity.SecureScoresClientListResponse{},
@@ -176,6 +193,7 @@ func Armsecurity() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security)`,
 		},
 		{
+			Service:        "armsecurity",
 			Name:           "solutions",
 			Struct:         &armsecurity.Solution{},
 			ResponseStruct: &armsecurity.SolutionsClientListResponse{},
@@ -186,6 +204,7 @@ func Armsecurity() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security)`,
 		},
 		{
+			Service:        "armsecurity",
 			Name:           "tasks",
 			Struct:         &armsecurity.Task{},
 			ResponseStruct: &armsecurity.TasksClientListResponse{},
@@ -196,6 +215,7 @@ func Armsecurity() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security)`,
 		},
 		{
+			Service:        "armsecurity",
 			Name:           "topology",
 			Struct:         &armsecurity.TopologyResource{},
 			ResponseStruct: &armsecurity.TopologyClientListResponse{},
@@ -206,6 +226,7 @@ func Armsecurity() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security)`,
 		},
 		{
+			Service:        "armsecurity",
 			Name:           "workspace_settings",
 			Struct:         &armsecurity.WorkspaceSetting{},
 			ResponseStruct: &armsecurity.WorkspaceSettingsClientListResponse{},
@@ -217,10 +238,6 @@ func Armsecurity() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armsecurity"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

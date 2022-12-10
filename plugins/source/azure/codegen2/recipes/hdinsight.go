@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdins
 func Armhdinsight() []Table {
 	tables := []Table{
 		{
+			Service:        "armhdinsight",
 			Name:           "clusters",
 			Struct:         &armhdinsight.Cluster{},
 			ResponseStruct: &armhdinsight.ClustersClientListResponse{},
@@ -17,10 +18,6 @@ func Armhdinsight() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armhdinsight"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

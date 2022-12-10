@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp"
 func Armnetapp() []Table {
 	tables := []Table{
 		{
+			Service:        "armnetapp",
 			Name:           "accounts",
 			Struct:         &armnetapp.Account{},
 			ResponseStruct: &armnetapp.AccountsClientListResponse{},
@@ -17,10 +18,6 @@ func Armnetapp() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armnetapp"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

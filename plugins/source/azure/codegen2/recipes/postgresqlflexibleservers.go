@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpost
 func Armpostgresqlflexibleservers() []Table {
 	tables := []Table{
 		{
+			Service:        "armpostgresqlflexibleservers",
 			Name:           "servers",
 			Struct:         &armpostgresqlflexibleservers.Server{},
 			ResponseStruct: &armpostgresqlflexibleservers.ServersClientListResponse{},
@@ -17,10 +18,6 @@ func Armpostgresqlflexibleservers() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armpostgresqlflexibleservers"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

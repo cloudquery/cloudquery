@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto"
 func Armkusto() []Table {
 	tables := []Table{
 		{
+			Service:        "armkusto",
 			Name:           "clusters",
 			Struct:         &armkusto.Cluster{},
 			ResponseStruct: &armkusto.ClustersClientListResponse{},
@@ -17,10 +18,6 @@ func Armkusto() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armkusto"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork
 func Armnetwork() []Table {
 	tables := []Table{
 		{
+			Service:        "armnetwork",
 			Name:           "application_gateways",
 			Struct:         &armnetwork.ApplicationGateway{},
 			ResponseStruct: &armnetwork.ApplicationGatewaysClientListResponse{},
@@ -16,6 +17,7 @@ func Armnetwork() []Table {
 			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 		{
+			Service:        "armnetwork",
 			Name:           "application_security_groups",
 			Struct:         &armnetwork.ApplicationSecurityGroup{},
 			ResponseStruct: &armnetwork.ApplicationSecurityGroupsClientListResponse{},
@@ -26,6 +28,7 @@ func Armnetwork() []Table {
 			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 		{
+			Service:        "armnetwork",
 			Name:           "azure_firewalls",
 			Struct:         &armnetwork.AzureFirewall{},
 			ResponseStruct: &armnetwork.AzureFirewallsClientListResponse{},
@@ -36,6 +39,7 @@ func Armnetwork() []Table {
 			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 		{
+			Service:        "armnetwork",
 			Name:           "bastion_hosts",
 			Struct:         &armnetwork.BastionHost{},
 			ResponseStruct: &armnetwork.BastionHostsClientListResponse{},
@@ -46,6 +50,7 @@ func Armnetwork() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 		{
+			Service:        "armnetwork",
 			Name:           "bgp_service_communities",
 			Struct:         &armnetwork.BgpServiceCommunity{},
 			ResponseStruct: &armnetwork.BgpServiceCommunitiesClientListResponse{},
@@ -56,6 +61,7 @@ func Armnetwork() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 		{
+			Service:        "armnetwork",
 			Name:           "custom_ip_prefixes",
 			Struct:         &armnetwork.CustomIPPrefix{},
 			ResponseStruct: &armnetwork.CustomIPPrefixesClientListResponse{},
@@ -66,6 +72,7 @@ func Armnetwork() []Table {
 			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 		{
+			Service:        "armnetwork",
 			Name:           "ddos_protection_plans",
 			Struct:         &armnetwork.DdosProtectionPlan{},
 			ResponseStruct: &armnetwork.DdosProtectionPlansClientListResponse{},
@@ -76,6 +83,7 @@ func Armnetwork() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 		{
+			Service:        "armnetwork",
 			Name:           "dscp_configuration",
 			Struct:         &armnetwork.DscpConfiguration{},
 			ResponseStruct: &armnetwork.DscpConfigurationClientListResponse{},
@@ -86,6 +94,7 @@ func Armnetwork() []Table {
 			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 		{
+			Service:        "armnetwork",
 			Name:           "express_route_circuits",
 			Struct:         &armnetwork.ExpressRouteCircuit{},
 			ResponseStruct: &armnetwork.ExpressRouteCircuitsClientListResponse{},
@@ -96,6 +105,7 @@ func Armnetwork() []Table {
 			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 		{
+			Service:        "armnetwork",
 			Name:           "express_route_ports",
 			Struct:         &armnetwork.ExpressRoutePort{},
 			ResponseStruct: &armnetwork.ExpressRoutePortsClientListResponse{},
@@ -106,6 +116,7 @@ func Armnetwork() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 		{
+			Service:        "armnetwork",
 			Name:           "express_route_ports_locations",
 			Struct:         &armnetwork.ExpressRoutePortsLocation{},
 			ResponseStruct: &armnetwork.ExpressRoutePortsLocationsClientListResponse{},
@@ -116,6 +127,7 @@ func Armnetwork() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 		{
+			Service:        "armnetwork",
 			Name:           "express_route_service_providers",
 			Struct:         &armnetwork.ExpressRouteServiceProvider{},
 			ResponseStruct: &armnetwork.ExpressRouteServiceProvidersClientListResponse{},
@@ -126,6 +138,7 @@ func Armnetwork() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 		{
+			Service:        "armnetwork",
 			Name:           "firewall_policies",
 			Struct:         &armnetwork.FirewallPolicy{},
 			ResponseStruct: &armnetwork.FirewallPoliciesClientListResponse{},
@@ -136,6 +149,7 @@ func Armnetwork() []Table {
 			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 		{
+			Service:        "armnetwork",
 			Name:           "ip_allocations",
 			Struct:         &armnetwork.IPAllocation{},
 			ResponseStruct: &armnetwork.IPAllocationsClientListResponse{},
@@ -146,6 +160,7 @@ func Armnetwork() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 		{
+			Service:        "armnetwork",
 			Name:           "ip_groups",
 			Struct:         &armnetwork.IPGroup{},
 			ResponseStruct: &armnetwork.IPGroupsClientListResponse{},
@@ -156,6 +171,7 @@ func Armnetwork() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 		{
+			Service:        "armnetwork",
 			Name:           "interfaces",
 			Struct:         &armnetwork.Interface{},
 			ResponseStruct: &armnetwork.InterfacesClientListResponse{},
@@ -166,6 +182,7 @@ func Armnetwork() []Table {
 			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 		{
+			Service:        "armnetwork",
 			Name:           "load_balancers",
 			Struct:         &armnetwork.LoadBalancer{},
 			ResponseStruct: &armnetwork.LoadBalancersClientListResponse{},
@@ -176,6 +193,7 @@ func Armnetwork() []Table {
 			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 		{
+			Service:        "armnetwork",
 			Name:           "local_network_gateways",
 			Struct:         &armnetwork.LocalNetworkGateway{},
 			ResponseStruct: &armnetwork.LocalNetworkGatewaysClientListResponse{},
@@ -186,6 +204,7 @@ func Armnetwork() []Table {
 			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 		{
+			Service:        "armnetwork",
 			Name:           "managers",
 			Struct:         &armnetwork.Manager{},
 			ResponseStruct: &armnetwork.ManagersClientListResponse{},
@@ -196,6 +215,7 @@ func Armnetwork() []Table {
 			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 		{
+			Service:        "armnetwork",
 			Name:           "nat_gateways",
 			Struct:         &armnetwork.NatGateway{},
 			ResponseStruct: &armnetwork.NatGatewaysClientListResponse{},
@@ -206,6 +226,7 @@ func Armnetwork() []Table {
 			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 		{
+			Service:        "armnetwork",
 			Name:           "private_endpoints",
 			Struct:         &armnetwork.PrivateEndpoint{},
 			ResponseStruct: &armnetwork.PrivateEndpointsClientListResponse{},
@@ -216,6 +237,7 @@ func Armnetwork() []Table {
 			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 		{
+			Service:        "armnetwork",
 			Name:           "private_link_services",
 			Struct:         &armnetwork.PrivateLinkService{},
 			ResponseStruct: &armnetwork.PrivateLinkServicesClientListResponse{},
@@ -226,6 +248,7 @@ func Armnetwork() []Table {
 			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 		{
+			Service:        "armnetwork",
 			Name:           "profiles",
 			Struct:         &armnetwork.Profile{},
 			ResponseStruct: &armnetwork.ProfilesClientListResponse{},
@@ -236,6 +259,7 @@ func Armnetwork() []Table {
 			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 		{
+			Service:        "armnetwork",
 			Name:           "public_ip_addresses",
 			Struct:         &armnetwork.PublicIPAddress{},
 			ResponseStruct: &armnetwork.PublicIPAddressesClientListResponse{},
@@ -246,6 +270,7 @@ func Armnetwork() []Table {
 			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 		{
+			Service:        "armnetwork",
 			Name:           "public_ip_prefixes",
 			Struct:         &armnetwork.PublicIPPrefix{},
 			ResponseStruct: &armnetwork.PublicIPPrefixesClientListResponse{},
@@ -256,6 +281,7 @@ func Armnetwork() []Table {
 			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 		{
+			Service:        "armnetwork",
 			Name:           "route_filters",
 			Struct:         &armnetwork.RouteFilter{},
 			ResponseStruct: &armnetwork.RouteFiltersClientListResponse{},
@@ -266,6 +292,7 @@ func Armnetwork() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 		{
+			Service:        "armnetwork",
 			Name:           "route_tables",
 			Struct:         &armnetwork.RouteTable{},
 			ResponseStruct: &armnetwork.RouteTablesClientListResponse{},
@@ -276,6 +303,7 @@ func Armnetwork() []Table {
 			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 		{
+			Service:        "armnetwork",
 			Name:           "security_groups",
 			Struct:         &armnetwork.SecurityGroup{},
 			ResponseStruct: &armnetwork.SecurityGroupsClientListResponse{},
@@ -286,6 +314,7 @@ func Armnetwork() []Table {
 			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 		{
+			Service:        "armnetwork",
 			Name:           "security_partner_providers",
 			Struct:         &armnetwork.SecurityPartnerProvider{},
 			ResponseStruct: &armnetwork.SecurityPartnerProvidersClientListResponse{},
@@ -296,6 +325,7 @@ func Armnetwork() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 		{
+			Service:        "armnetwork",
 			Name:           "service_endpoint_policies",
 			Struct:         &armnetwork.ServiceEndpointPolicy{},
 			ResponseStruct: &armnetwork.ServiceEndpointPoliciesClientListResponse{},
@@ -306,6 +336,7 @@ func Armnetwork() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 		{
+			Service:        "armnetwork",
 			Name:           "subscription_network_manager_connections",
 			Struct:         &armnetwork.ManagerConnection{},
 			ResponseStruct: &armnetwork.SubscriptionNetworkManagerConnectionsClientListResponse{},
@@ -316,6 +347,7 @@ func Armnetwork() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 		{
+			Service:        "armnetwork",
 			Name:           "vpn_gateways",
 			Struct:         &armnetwork.VPNGateway{},
 			ResponseStruct: &armnetwork.VPNGatewaysClientListResponse{},
@@ -326,6 +358,7 @@ func Armnetwork() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 		{
+			Service:        "armnetwork",
 			Name:           "vpn_server_configurations",
 			Struct:         &armnetwork.VPNServerConfiguration{},
 			ResponseStruct: &armnetwork.VPNServerConfigurationsClientListResponse{},
@@ -336,6 +369,7 @@ func Armnetwork() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 		{
+			Service:        "armnetwork",
 			Name:           "vpn_sites",
 			Struct:         &armnetwork.VPNSite{},
 			ResponseStruct: &armnetwork.VPNSitesClientListResponse{},
@@ -346,6 +380,7 @@ func Armnetwork() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 		{
+			Service:        "armnetwork",
 			Name:           "virtual_appliances",
 			Struct:         &armnetwork.VirtualAppliance{},
 			ResponseStruct: &armnetwork.VirtualAppliancesClientListResponse{},
@@ -356,6 +391,7 @@ func Armnetwork() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 		{
+			Service:        "armnetwork",
 			Name:           "virtual_hubs",
 			Struct:         &armnetwork.VirtualHub{},
 			ResponseStruct: &armnetwork.VirtualHubsClientListResponse{},
@@ -366,6 +402,7 @@ func Armnetwork() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 		{
+			Service:        "armnetwork",
 			Name:           "virtual_network_gateway_connections",
 			Struct:         &armnetwork.VirtualNetworkGatewayConnection{},
 			ResponseStruct: &armnetwork.VirtualNetworkGatewayConnectionsClientListResponse{},
@@ -376,6 +413,7 @@ func Armnetwork() []Table {
 			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 		{
+			Service:        "armnetwork",
 			Name:           "virtual_network_gateways",
 			Struct:         &armnetwork.VirtualNetworkGateway{},
 			ResponseStruct: &armnetwork.VirtualNetworkGatewaysClientListResponse{},
@@ -386,6 +424,7 @@ func Armnetwork() []Table {
 			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 		{
+			Service:        "armnetwork",
 			Name:           "virtual_networks",
 			Struct:         &armnetwork.VirtualNetwork{},
 			ResponseStruct: &armnetwork.VirtualNetworksClientListResponse{},
@@ -396,6 +435,7 @@ func Armnetwork() []Table {
 			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 		{
+			Service:        "armnetwork",
 			Name:           "virtual_routers",
 			Struct:         &armnetwork.VirtualRouter{},
 			ResponseStruct: &armnetwork.VirtualRoutersClientListResponse{},
@@ -406,6 +446,7 @@ func Armnetwork() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 		{
+			Service:        "armnetwork",
 			Name:           "virtual_wans",
 			Struct:         &armnetwork.VirtualWAN{},
 			ResponseStruct: &armnetwork.VirtualWansClientListResponse{},
@@ -416,6 +457,7 @@ func Armnetwork() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 		{
+			Service:        "armnetwork",
 			Name:           "watchers",
 			Struct:         &armnetwork.Watcher{},
 			ResponseStruct: &armnetwork.WatchersClientListResponse{},
@@ -426,6 +468,7 @@ func Armnetwork() []Table {
 			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 		{
+			Service:        "armnetwork",
 			Name:           "web_application_firewall_policies",
 			Struct:         &armnetwork.WebApplicationFirewallPolicy{},
 			ResponseStruct: &armnetwork.WebApplicationFirewallPoliciesClientListResponse{},
@@ -437,10 +480,6 @@ func Armnetwork() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armnetwork"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hanaonazure/armhan
 func Armhanaonazure() []Table {
 	tables := []Table{
 		{
+			Service:        "armhanaonazure",
 			Name:           "sap_monitors",
 			Struct:         &armhanaonazure.SapMonitor{},
 			ResponseStruct: &armhanaonazure.SapMonitorsClientListResponse{},
@@ -17,10 +18,6 @@ func Armhanaonazure() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armhanaonazure"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

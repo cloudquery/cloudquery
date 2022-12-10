@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armevent
 func Armeventgrid() []Table {
 	tables := []Table{
 		{
+			Service:        "armeventgrid",
 			Name:           "topic_types",
 			Struct:         &armeventgrid.TopicTypeInfo{},
 			ResponseStruct: &armeventgrid.TopicTypesClientListResponse{},
@@ -17,10 +18,6 @@ func Armeventgrid() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armeventgrid"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

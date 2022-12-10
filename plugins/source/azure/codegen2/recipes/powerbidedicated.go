@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbidedicated/a
 func Armpowerbidedicated() []Table {
 	tables := []Table{
 		{
+			Service:        "armpowerbidedicated",
 			Name:           "capacities",
 			Struct:         &armpowerbidedicated.DedicatedCapacity{},
 			ResponseStruct: &armpowerbidedicated.CapacitiesClientListResponse{},
@@ -17,10 +18,6 @@ func Armpowerbidedicated() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armpowerbidedicated"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

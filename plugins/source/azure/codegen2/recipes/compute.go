@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute
 func Armcompute() []Table {
 	tables := []Table{
 		{
+			Service:        "armcompute",
 			Name:           "availability_sets",
 			Struct:         &armcompute.AvailabilitySet{},
 			ResponseStruct: &armcompute.AvailabilitySetsClientListResponse{},
@@ -16,6 +17,7 @@ func Armcompute() []Table {
 			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Compute)`,
 		},
 		{
+			Service:        "armcompute",
 			Name:           "cloud_services",
 			Struct:         &armcompute.CloudService{},
 			ResponseStruct: &armcompute.CloudServicesClientListResponse{},
@@ -26,6 +28,7 @@ func Armcompute() []Table {
 			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Compute)`,
 		},
 		{
+			Service:        "armcompute",
 			Name:           "disk_accesses",
 			Struct:         &armcompute.DiskAccess{},
 			ResponseStruct: &armcompute.DiskAccessesClientListResponse{},
@@ -36,6 +39,7 @@ func Armcompute() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Compute)`,
 		},
 		{
+			Service:        "armcompute",
 			Name:           "disk_encryption_sets",
 			Struct:         &armcompute.DiskEncryptionSet{},
 			ResponseStruct: &armcompute.DiskEncryptionSetsClientListResponse{},
@@ -46,6 +50,7 @@ func Armcompute() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Compute)`,
 		},
 		{
+			Service:        "armcompute",
 			Name:           "disks",
 			Struct:         &armcompute.Disk{},
 			ResponseStruct: &armcompute.DisksClientListResponse{},
@@ -56,6 +61,7 @@ func Armcompute() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Compute)`,
 		},
 		{
+			Service:        "armcompute",
 			Name:           "galleries",
 			Struct:         &armcompute.Gallery{},
 			ResponseStruct: &armcompute.GalleriesClientListResponse{},
@@ -66,6 +72,7 @@ func Armcompute() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Compute)`,
 		},
 		{
+			Service:        "armcompute",
 			Name:           "images",
 			Struct:         &armcompute.Image{},
 			ResponseStruct: &armcompute.ImagesClientListResponse{},
@@ -76,6 +83,7 @@ func Armcompute() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Compute)`,
 		},
 		{
+			Service:        "armcompute",
 			Name:           "restore_point_collections",
 			Struct:         &armcompute.RestorePointCollection{},
 			ResponseStruct: &armcompute.RestorePointCollectionsClientListResponse{},
@@ -86,6 +94,7 @@ func Armcompute() []Table {
 			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Compute)`,
 		},
 		{
+			Service:        "armcompute",
 			Name:           "snapshots",
 			Struct:         &armcompute.Snapshot{},
 			ResponseStruct: &armcompute.SnapshotsClientListResponse{},
@@ -96,6 +105,7 @@ func Armcompute() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Compute)`,
 		},
 		{
+			Service:        "armcompute",
 			Name:           "virtual_machine_scale_sets",
 			Struct:         &armcompute.VirtualMachineScaleSet{},
 			ResponseStruct: &armcompute.VirtualMachineScaleSetsClientListResponse{},
@@ -106,6 +116,7 @@ func Armcompute() []Table {
 			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Compute)`,
 		},
 		{
+			Service:        "armcompute",
 			Name:           "virtual_machines",
 			Struct:         &armcompute.VirtualMachine{},
 			ResponseStruct: &armcompute.VirtualMachinesClientListResponse{},
@@ -117,10 +128,6 @@ func Armcompute() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armcompute"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

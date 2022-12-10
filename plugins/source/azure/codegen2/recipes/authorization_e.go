@@ -18,7 +18,6 @@ func ArmauthorizationE() []Table {
 	}
 	for i := range tables {
 		tables[i].Service = "armauthorization"
-		tables[i].Template = "list"
 	}
 	return tables
 }

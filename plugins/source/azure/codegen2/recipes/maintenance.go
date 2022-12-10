@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmai
 func Armmaintenance() []Table {
 	tables := []Table{
 		{
+			Service:        "armmaintenance",
 			Name:           "configurations",
 			Struct:         &armmaintenance.Configuration{},
 			ResponseStruct: &armmaintenance.ConfigurationsClientListResponse{},
@@ -16,6 +17,7 @@ func Armmaintenance() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Maintenance)`,
 		},
 		{
+			Service:        "armmaintenance",
 			Name:           "public_maintenance_configurations",
 			Struct:         &armmaintenance.Configuration{},
 			ResponseStruct: &armmaintenance.PublicMaintenanceConfigurationsClientListResponse{},
@@ -27,10 +29,6 @@ func Armmaintenance() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armmaintenance"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

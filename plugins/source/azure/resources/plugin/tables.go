@@ -90,6 +90,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/storage"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/storagecache"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/streamanalytics"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/subscription"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/support"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/synapse"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/windowsesu"
@@ -168,9 +169,9 @@ func generatedTables() []*schema.Table {
 		containerregistry.Registries(),
 		containerservice.ManagedClusters(),
 		containerservice.Snapshots(),
-		cosmos.DatabaseAccounts(),
 		cosmos.Locations(),
 		cosmos.RestorableDatabaseAccounts(),
+		cosmos.DatabaseAccounts(),
 		costmanagement.Views(),
 		customerinsights.Hubs(),
 		dashboard.Grafana(),
@@ -318,6 +319,8 @@ func generatedTables() []*schema.Table {
 		storage.DeletedAccounts(),
 		storagecache.Caches(),
 		streamanalytics.StreamingJobs(),
+		subscription.Subscriptions(),
+		subscription.Tenants(),
 		support.Services(),
 		support.Tickets(),
 		synapse.PrivateLinkHubs(),

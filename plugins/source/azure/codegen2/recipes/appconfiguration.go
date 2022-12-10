@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appconfiguration/a
 func Armappconfiguration() []Table {
 	tables := []Table{
 		{
+			Service:        "armappconfiguration",
 			Name:           "configuration_stores",
 			Struct:         &armappconfiguration.ConfigurationStore{},
 			ResponseStruct: &armappconfiguration.ConfigurationStoresClientListResponse{},
@@ -17,10 +18,6 @@ func Armappconfiguration() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armappconfiguration"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

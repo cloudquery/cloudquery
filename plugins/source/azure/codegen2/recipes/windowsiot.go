@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsiot/armwind
 func Armwindowsiot() []Table {
 	tables := []Table{
 		{
+			Service:        "armwindowsiot",
 			Name:           "services",
 			Struct:         &armwindowsiot.DeviceService{},
 			ResponseStruct: &armwindowsiot.ServicesClientListResponse{},
@@ -17,10 +18,6 @@ func Armwindowsiot() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armwindowsiot"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

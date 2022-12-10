@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/arma
 func Armapimanagement() []Table {
 	tables := []Table{
 		{
+			Service:        "armapimanagement",
 			Name:           "service",
 			Struct:         &armapimanagement.ServiceResource{},
 			ResponseStruct: &armapimanagement.ServiceClientListResponse{},
@@ -17,10 +18,6 @@ func Armapimanagement() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armapimanagement"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

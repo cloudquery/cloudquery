@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresqlhsc/armp
 func Armpostgresqlhsc() []Table {
 	tables := []Table{
 		{
+			Service:        "armpostgresqlhsc",
 			Name:           "server_groups",
 			Struct:         &armpostgresqlhsc.ServerGroup{},
 			ResponseStruct: &armpostgresqlhsc.ServerGroupsClientListResponse{},
@@ -17,10 +18,6 @@ func Armpostgresqlhsc() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armpostgresqlhsc"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

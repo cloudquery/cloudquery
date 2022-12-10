@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dashboard/armdashb
 func Armdashboard() []Table {
 	tables := []Table{
 		{
+			Service:        "armdashboard",
 			Name:           "grafana",
 			Struct:         &armdashboard.ManagedGrafana{},
 			ResponseStruct: &armdashboard.GrafanaClientListResponse{},
@@ -17,10 +18,6 @@ func Armdashboard() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armdashboard"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysqlflex
 func Armmysqlflexibleservers() []Table {
 	tables := []Table{
 		{
+			Service:        "armmysqlflexibleservers",
 			Name:           "servers",
 			Struct:         &armmysqlflexibleservers.Server{},
 			ResponseStruct: &armmysqlflexibleservers.ServersClientListResponse{},
@@ -17,10 +18,6 @@ func Armmysqlflexibleservers() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armmysqlflexibleservers"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkl
 func Armworkloads() []Table {
 	tables := []Table{
 		{
+			Service:        "armworkloads",
 			Name:           "monitors",
 			Struct:         &armworkloads.Monitor{},
 			ResponseStruct: &armworkloads.MonitorsClientListResponse{},
@@ -17,10 +18,6 @@ func Armworkloads() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armworkloads"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

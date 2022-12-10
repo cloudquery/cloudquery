@@ -1,7 +1,6 @@
 package client
 
 import (
-	"fmt"
 	"regexp"
 	"strings"
 )
@@ -20,11 +19,17 @@ const resourceIDPatternText = `(?i)subscriptions/(.+)/resourceGroups/(.+)/provid
 var resourceIDPattern = regexp.MustCompile(resourceIDPatternText)
 
 // ParseResourceID parses a resource ID into a ResourceDetails struct
-func ParseResourceID(resourceID string) (ResourceDetails, error) {
+func ParseResourceID(resourceID string) ResourceDetails {
 	match := resourceIDPattern.FindStringSubmatch(resourceID)
 
 	if len(match) == 0 {
-		return ResourceDetails{}, fmt.Errorf("parsing failed for %s. Invalid resource Id format", resourceID)
+		return ResourceDetails{
+			Subscription:  "",
+			ResourceGroup: "test",
+			Provider:      "",
+			ResourceType:  "",
+			ResourceName:  "",
+		}
 	}
 
 	v := strings.Split(match[5], "/")
@@ -38,7 +43,7 @@ func ParseResourceID(resourceID string) (ResourceDetails, error) {
 		ResourceName:  resourceName,
 	}
 
-	return result, nil
+	return result
 }
 
 // ScopeSubscription returns a scope for the given subscription

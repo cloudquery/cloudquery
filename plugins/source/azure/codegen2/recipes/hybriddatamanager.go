@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybriddatamanager/
 func Armhybriddatamanager() []Table {
 	tables := []Table{
 		{
+			Service:        "armhybriddatamanager",
 			Name:           "data_managers",
 			Struct:         &armhybriddatamanager.DataManager{},
 			ResponseStruct: &armhybriddatamanager.DataManagersClientListResponse{},
@@ -17,10 +18,6 @@ func Armhybriddatamanager() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armhybriddatamanager"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

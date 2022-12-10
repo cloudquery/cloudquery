@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/saas/armsaas"
 func Armsaas() []Table {
 	tables := []Table{
 		{
+			Service:        "armsaas",
 			Name:           "applications",
 			Struct:         &armsaas.App{},
 			ResponseStruct: &armsaas.ApplicationsClientListResponse{},
@@ -16,6 +17,7 @@ func Armsaas() []Table {
 			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_SaaS)`,
 		},
 		{
+			Service:        "armsaas",
 			Name:           "resources",
 			Struct:         &armsaas.Resource{},
 			ResponseStruct: &armsaas.ResourcesClientListResponse{},
@@ -27,10 +29,6 @@ func Armsaas() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armsaas"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

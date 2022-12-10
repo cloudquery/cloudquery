@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualizat
 func Armdesktopvirtualization() []Table {
 	tables := []Table{
 		{
+			Service:        "armdesktopvirtualization",
 			Name:           "host_pools",
 			Struct:         &armdesktopvirtualization.HostPool{},
 			ResponseStruct: &armdesktopvirtualization.HostPoolsClientListResponse{},
@@ -17,10 +18,6 @@ func Armdesktopvirtualization() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armdesktopvirtualization"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/aad/armaad"
 func Armaad() []Table {
 	tables := []Table{
 		{
+			Service:        "armaad",
 			Name:           "private_link_for_azure_ad",
 			Struct:         &armaad.PrivateLinkPolicy{},
 			ResponseStruct: &armaad.PrivateLinkForAzureAdClientListResponse{},
@@ -17,10 +18,6 @@ func Armaad() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armaad"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

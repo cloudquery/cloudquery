@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfront
 func Armfrontdoor() []Table {
 	tables := []Table{
 		{
+			Service:        "armfrontdoor",
 			Name:           "front_doors",
 			Struct:         &armfrontdoor.FrontDoor{},
 			ResponseStruct: &armfrontdoor.FrontDoorsClientListResponse{},
@@ -16,6 +17,7 @@ func Armfrontdoor() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 		{
+			Service:        "armfrontdoor",
 			Name:           "managed_rule_sets",
 			Struct:         &armfrontdoor.ManagedRuleSetDefinition{},
 			ResponseStruct: &armfrontdoor.ManagedRuleSetsClientListResponse{},
@@ -26,6 +28,7 @@ func Armfrontdoor() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 		{
+			Service:        "armfrontdoor",
 			Name:           "network_experiment_profiles",
 			Struct:         &armfrontdoor.Profile{},
 			ResponseStruct: &armfrontdoor.NetworkExperimentProfilesClientListResponse{},
@@ -36,6 +39,7 @@ func Armfrontdoor() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 		{
+			Service:        "armfrontdoor",
 			Name:           "policies",
 			Struct:         &armfrontdoor.WebApplicationFirewallPolicy{},
 			ResponseStruct: &armfrontdoor.PoliciesClientListResponse{},
@@ -47,10 +51,6 @@ func Armfrontdoor() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armfrontdoor"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

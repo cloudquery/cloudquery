@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armauto
 func Armautomation() []Table {
 	tables := []Table{
 		{
+			Service:        "armautomation",
 			Name:           "account",
 			Struct:         &armautomation.Account{},
 			ResponseStruct: &armautomation.AccountClientListResponse{},
@@ -17,10 +18,6 @@ func Armautomation() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armautomation"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 

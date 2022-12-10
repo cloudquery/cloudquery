@@ -6,6 +6,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datadog/armdatadog
 func Armdatadog() []Table {
 	tables := []Table{
 		{
+			Service:        "armdatadog",
 			Name:           "marketplace_agreements",
 			Struct:         &armdatadog.AgreementResource{},
 			ResponseStruct: &armdatadog.MarketplaceAgreementsClientListResponse{},
@@ -16,6 +17,7 @@ func Armdatadog() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Datadog)`,
 		},
 		{
+			Service:        "armdatadog",
 			Name:           "monitors",
 			Struct:         &armdatadog.MonitorResource{},
 			ResponseStruct: &armdatadog.MonitorsClientListResponse{},
@@ -27,10 +29,6 @@ func Armdatadog() []Table {
 		},
 	}
 
-	for i := range tables {
-		tables[i].Service = "armdatadog"
-		tables[i].Template = "list"
-	}
 	return tables
 }
 
