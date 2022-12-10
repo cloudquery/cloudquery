@@ -47,11 +47,61 @@ func (c *Client) discoverSubscriptions(ctx context.Context) error {
 			return err
 		}
 		for _, sub := range page.Value {
-			c.subscriptions = append(c.subscriptions, strings.TrimPrefix(*sub.ID, "/subscriptions/"))
+			if *sub.State == "Enabled" {
+				c.subscriptions = append(c.subscriptions, strings.TrimPrefix(*sub.ID, "/subscriptions/"))
+				c.SubscriptionsObjects = append(c.SubscriptionsObjects, sub)
+			}
 		}
-		c.SubscriptionsObjects = append(c.SubscriptionsObjects, page.Value...)
 	}
 
+	return nil
+}
+
+func (c *Client) disocverResourceGroups(ctx context.Context) error {
+	c.resourceGroups = make(map[string][]*armresources.GenericResourceExpanded, len(c.subscriptions))
+	filter := "resourceType eq 'Microsoft.Resources/resourceGroups'"
+	c.registeredNamespaces = make(map[string]map[string]bool, len(c.subscriptions))
+
+	for _, subID := range c.subscriptions {
+		c.registeredNamespaces[subID] = make(map[string]bool)
+		cl, err := armresources.NewClient(subID, c.Creds, nil)
+		if err != nil {
+			return fmt.Errorf("failed to create resource group client: %w", err)
+		}
+		pager := cl.NewListPager(&armresources.ClientListOptions{
+			Filter: &filter,
+		})
+		for pager.More() {
+			page, err := pager.NextPage(ctx)
+			if err != nil {
+				return fmt.Errorf("failed to list resource groups: %w", err)
+			}
+			if len(page.Value) == 0 {
+				continue
+			}
+			c.resourceGroups[subID] = append(c.resourceGroups[subID], page.Value...)
+		}
+
+		providerClient, err := armresources.NewProvidersClient(subID, c.Creds, nil)
+		if err != nil {
+			return fmt.Errorf("failed to create provider client: %w", err)
+		}
+		providerPager := providerClient.NewListPager(nil)
+		for providerPager.More() {
+			providerPage, err := providerPager.NextPage(ctx)
+			if err != nil {
+				return fmt.Errorf("failed to list providers: %w", err)
+			}
+			if len(providerPage.Value) == 0 {
+				continue
+			}
+			for _, p := range providerPage.Value {
+				if p.RegistrationState != nil && *p.RegistrationState == "Registered" {
+					c.registeredNamespaces[subID][*p.Namespace] = true
+				}
+			}
+		}
+	}
 	return nil
 }
 
@@ -65,10 +115,6 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 	c := &Client{
 		logger:        logger,
 		subscriptions: spec.Subscriptions,
-		// registeredNamespaces: registeredNamespaces,
-		// subscriptions:        subscriptions,
-		// resourceGroups:       resourceGroups,
-		// Creds:                creds,
 	}
 
 	c.Creds, err = azidentity.NewDefaultAzureCredential(nil)
@@ -88,49 +134,8 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 		return nil, fmt.Errorf("no subscriptions found")
 	}
 
-	c.resourceGroups = make(map[string][]*armresources.GenericResourceExpanded, len(c.subscriptions))
-	filter := "resourceType eq 'Microsoft.Resources/resourceGroups'"
-	c.registeredNamespaces = make(map[string]map[string]bool, len(c.subscriptions))
-	for _, subID := range c.subscriptions {
-		c.registeredNamespaces[subID] = make(map[string]bool)
-		// fmt.Println("sub", sub)
-		cl, err := armresources.NewClient(subID, c.Creds, nil)
-		if err != nil {
-			return nil, fmt.Errorf("failed to create resource group client: %w", err)
-		}
-		pager := cl.NewListPager(&armresources.ClientListOptions{
-			Filter: &filter,
-		})
-		for pager.More() {
-			page, err := pager.NextPage(ctx)
-			if err != nil {
-				return nil, fmt.Errorf("failed to list resource groups: %w", err)
-			}
-			if len(page.Value) == 0 {
-				continue
-			}
-			c.resourceGroups[subID] = append(c.resourceGroups[subID], page.Value...)
-		}
-
-		providerClient, err := armresources.NewProvidersClient(subID, c.Creds, nil)
-		if err != nil {
-			return nil, fmt.Errorf("failed to create provider client: %w", err)
-		}
-		providerPager := providerClient.NewListPager(nil)
-		for providerPager.More() {
-			providerPage, err := providerPager.NextPage(ctx)
-			if err != nil {
-				return nil, fmt.Errorf("failed to list providers: %w", err)
-			}
-			if len(providerPage.Value) == 0 {
-				continue
-			}
-			for _, p := range providerPage.Value {
-				if p.RegistrationState != nil && *p.RegistrationState == "Registered" {
-					c.registeredNamespaces[subID][*p.Namespace] = true
-				}
-			}
-		}
+	if err := c.disocverResourceGroups(ctx); err != nil {
+		return nil, err
 	}
 
 	return c, nil
