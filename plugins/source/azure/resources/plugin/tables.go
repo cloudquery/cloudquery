@@ -82,6 +82,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/redhatopenshift"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/relay"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/reservations"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/resources"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/saas"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/security"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/servicebus"
@@ -284,6 +285,7 @@ func generatedTables() []*schema.Table {
 		redhatopenshift.OpenShiftClusters(),
 		relay.Namespaces(),
 		reservations.ReservationOrder(),
+		resources.Resources(),
 		saas.Applications(),
 		saas.Resources(),
 		security.Alerts(),
