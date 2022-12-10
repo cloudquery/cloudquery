@@ -64,6 +64,7 @@ func (c *MockHttpClient) Do(req *http.Request) (*http.Response, error) {
 func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.Router) error) {
 	version := "vDev"
 	t.Helper()
+	debug = true
 	table.IgnoreInTests = false
 	creds := &MockCreds{}
 	router := mux.NewRouter()

@@ -15,8 +15,11 @@ func fetchSqlDatabases(ctx context.Context, meta schema.ClientMeta, parent *sche
 		return err
 	}
 	item := parent.Item.(*armcosmos.DatabaseAccountGetResults)
-	resource := client.ParseResourceID(*item.ID)
-	pager := svc.NewListSQLDatabasesPager(resource.ResourceGroup, *item.Name, nil)
+	group, err := client.ParseResourceGroup(*item.ID)
+	if err != nil {
+		return err
+	}
+	pager := svc.NewListSQLDatabasesPager(group, *item.Name, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

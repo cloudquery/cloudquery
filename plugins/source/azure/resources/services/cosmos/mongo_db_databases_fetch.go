@@ -15,8 +15,11 @@ func fetchMongoDbDatabases(ctx context.Context, meta schema.ClientMeta, parent *
 		return err
 	}
 	item := parent.Item.(*armcosmos.DatabaseAccountGetResults)
-	resource := client.ParseResourceID(*item.ID)
-	pager := svc.NewListMongoDBDatabasesPager(resource.ResourceGroup, *item.Name, nil)
+	group, err := client.ParseResourceGroup(*item.ID)
+	if err != nil {
+		return err
+	}
+	pager := svc.NewListMongoDBDatabasesPager(group, *item.Name, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {
