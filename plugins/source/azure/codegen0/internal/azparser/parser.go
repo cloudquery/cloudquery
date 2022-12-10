@@ -15,7 +15,6 @@ import (
 
 // github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources
 
-
 var newGlobalFuncsToSkip = map[string]bool{
 	// We are skipping operationsClient as this just list all operations available and it is quite static
 	// so don't think it's of anyuse and we can always enable it later

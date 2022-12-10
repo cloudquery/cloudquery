@@ -22,4 +22,3 @@ func ParseResourceGroup(resourceID string) (string, error) {
 	}
 	return match[2], nil
 }
-

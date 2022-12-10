@@ -17,23 +17,23 @@ var packagesToSkip = map[string]bool{
 	// seems something is not right with that package
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementgroups/armmanagementgroups": true,
 	// skipping for now
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managedservices/armmanagedservices": true,
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managedservices/armmanagedservices":                       true,
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/virtualmachineimagebuilder/armvirtualmachineimagebuilder": true,
 
 	// deprecated packages
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsight/armsecurityinsight": true,
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/web/armweb" : true,
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/loadtestservice/armloadtestservice": true,
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsans/armelasticsans": true,
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/videoanalyzer/armvideoanalyzer": true,
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsight/armsecurityinsight":                 true,
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/web/armweb":                                         true,
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/loadtestservice/armloadtestservice":                 true,
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsans/armelasticsans":                         true,
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/videoanalyzer/armvideoanalyzer":                     true,
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearningservices/armmachinelearningservices": true,
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloadmonitor/armworkloadmonitor": true,
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsight": true,
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloadmonitor/armworkloadmonitor":                 true,
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsight":                true,
 
 	// not relevant packages
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blockchain/armblockchain": true,
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/agrifood/armagrifood": true,
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos": true,
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/agrifood/armagrifood":     true,
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos":           true,
 }
 
 var subpackageRe = regexp.MustCompile(`github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/[a-z-]+/[a-z]+`)
@@ -47,7 +47,7 @@ func DiscoverSubpackages() ([]string, error) {
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		 log.Fatalln(err)
+		log.Fatalln(err)
 	}
 
 	matches := subpackageRe.FindAllString(string(body), -1)
