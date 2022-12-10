@@ -35,6 +35,9 @@ codegen2:
 	go run codegen2/main.go
 
 .PHONY: gen
-gen: codegen0 codegen1 codegen2 gen-docs
+gen: codegen2 gen-docs
 	echo "Done"
 
+.PHONY: pregen
+gen: codegen1 codegen2
+	echo "Done"
