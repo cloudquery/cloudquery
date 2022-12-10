@@ -29,6 +29,8 @@ type Client struct {
 	projects      []string
 	ClientOptions []option.ClientOption
 	// this is set by table client multiplexer
+
+	CallOptions     []gax.CallOption
 	ProjectId       string
 	EnabledServices map[string]map[GcpService]bool
 	// Logger
