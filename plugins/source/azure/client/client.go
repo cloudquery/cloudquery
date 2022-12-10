@@ -63,7 +63,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 	}
 
 	c := &Client{
-		logger: logger,
+		logger:        logger,
 		subscriptions: spec.Subscriptions,
 		// registeredNamespaces: registeredNamespaces,
 		// subscriptions:        subscriptions,
@@ -87,7 +87,6 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 	if len(c.subscriptions) == 0 {
 		return nil, fmt.Errorf("no subscriptions found")
 	}
-
 
 	c.resourceGroups = make(map[string][]*armresources.GenericResourceExpanded, len(c.subscriptions))
 	filter := "resourceType eq 'Microsoft.Resources/resourceGroups'"
