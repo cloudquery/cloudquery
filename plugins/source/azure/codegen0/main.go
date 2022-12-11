@@ -49,11 +49,14 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		for _, pkg := range packagesToGoGet {
-			fmt.Println("go get -u", pkg)
-			if err := exec.Command("go", "get", "-u", pkg).Run(); err != nil {
-				log.Fatal(err)
-			}
+                fmt.Printf("go getting %d packages\n", len(packagesToGoGet))
+		args := []string{"get", "-u"}
+		args = append(args, packagesToGoGet...)
+		cmd := exec.Command("go", args...)
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+		if err := cmd.Run(); err != nil {
+			log.Fatal(err)
 		}
 	}
 
