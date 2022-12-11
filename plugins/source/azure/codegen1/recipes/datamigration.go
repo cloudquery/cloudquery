@@ -6,11 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armd
 func Armdatamigration() []*Table {
 	tables := []*Table{
 		{
-			NewFunc:   armdatamigration.NewServicesClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.DataMigration/services",
-			Namespace: "Microsoft.DataMigration",
-			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DataMigration)`,
+			NewFunc:        armdatamigration.NewServicesClient,
+			PkgPath:        "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration",
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DataMigration/services",
+			Namespace:      "Microsoft.DataMigration",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DataMigration)`,
+			Pager:          `NewListPager`,
+			ResponseStruct: "ServicesClientListResponse",
 		},
 	}
 	return tables

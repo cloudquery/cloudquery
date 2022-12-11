@@ -12,7 +12,7 @@ func VirtualMachines() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_compute_virtual_machines",
 		Resolver:  fetchVirtualMachines,
-		Multiplex: client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Compute),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Compute),
 		Columns: []schema.Column{
 			{
 				Name:     "location",
@@ -82,7 +82,7 @@ func fetchVirtualMachines(ctx context.Context, meta schema.ClientMeta, parent *s
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(cl.ResourceGroup, nil)
+	pager := svc.NewListAllPager(nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

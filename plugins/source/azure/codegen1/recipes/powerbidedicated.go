@@ -6,11 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbidedicated/a
 func Armpowerbidedicated() []*Table {
 	tables := []*Table{
 		{
-			NewFunc:   armpowerbidedicated.NewCapacitiesClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbidedicated/armpowerbidedicated",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.PowerBIDedicated/capacities",
-			Namespace: "Microsoft.PowerBIDedicated",
-			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_PowerBIDedicated)`,
+			NewFunc:        armpowerbidedicated.NewCapacitiesClient,
+			PkgPath:        "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbidedicated/armpowerbidedicated",
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.PowerBIDedicated/capacities",
+			Namespace:      "Microsoft.PowerBIDedicated",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_PowerBIDedicated)`,
+			Pager:          `NewListPager`,
+			ResponseStruct: "CapacitiesClientListResponse",
 		},
 	}
 	return tables

@@ -6,11 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armpro
 func Armproviderhub() []*Table {
 	tables := []*Table{
 		{
-			NewFunc:   armproviderhub.NewProviderRegistrationsClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations",
-			Namespace: "Microsoft.ProviderHub",
-			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ProviderHub)`,
+			NewFunc:        armproviderhub.NewProviderRegistrationsClient,
+			PkgPath:        "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub",
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations",
+			Namespace:      "Microsoft.ProviderHub",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ProviderHub)`,
+			Pager:          `NewListPager`,
+			ResponseStruct: "ProviderRegistrationsClientListResponse",
 		},
 	}
 	return tables

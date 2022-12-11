@@ -12,7 +12,7 @@ func VirtualMachineScaleSets() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_compute_virtual_machine_scale_sets",
 		Resolver:  fetchVirtualMachineScaleSets,
-		Multiplex: client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Compute),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Compute),
 		Columns: []schema.Column{
 			{
 				Name:     "location",
@@ -82,7 +82,7 @@ func fetchVirtualMachineScaleSets(ctx context.Context, meta schema.ClientMeta, p
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(cl.ResourceGroup, nil)
+	pager := svc.NewListAllPager(nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

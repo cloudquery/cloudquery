@@ -4,14 +4,14 @@ package azparser
 type Table struct {
 	// name of the function that creates a new azure client
 	NewFuncName string
-	// Rest URL parsed for specific API
-	URL string
 	// Namespace Parsed from the URL
 	Namespace string
-	// Does the client has standard NewListPager which we currently support autogeneration for
-	HasListPager bool
-	// param names for NewListPager
-	NewListPagerParams []string
+	// Pager name to use
+	Pager string
+	// ResponseStruct
+	ResponseStruct string
+	// URL is the one set by NewListAll or NewList, depending on which one is available
+	URL string
 	// param names for NewXClient function
 	NewClientParams []string
 	Multiplex       string

@@ -2,19 +2,15 @@
 package plugin
 
 import (
-	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/aad"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/advisor"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/analysisservices"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/apimanagement"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/appcomplianceautomation"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/appconfiguration"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/applicationinsights"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/appplatform"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/appservice"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/authorization"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/automanage"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/automation"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/avs"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/azurearcdata"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/azuredata"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/batch"
@@ -58,17 +54,14 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/maintenance"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/mariadb"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/marketplace"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/migrate"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/monitor"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/mysql"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/mysqlflexibleservers"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/netapp"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/network"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/networkfunction"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/nginx"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/notificationhubs"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/operationalinsights"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/orbital"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/peering"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/policy"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/portal"
@@ -101,7 +94,6 @@ import (
 
 func generatedTables() []*schema.Table {
 	return []*schema.Table{
-		aad.PrivateLinkForAzureAd(),
 		advisor.RecommendationMetadata(),
 		advisor.Recommendations(),
 		advisor.Suppressions(),
@@ -111,7 +103,6 @@ func generatedTables() []*schema.Table {
 		appconfiguration.ConfigurationStores(),
 		applicationinsights.Components(),
 		applicationinsights.WebTests(),
-		appplatform.Services(),
 		appservice.CertificateOrders(),
 		appservice.Certificates(),
 		appservice.DeletedWebApps(),
@@ -127,9 +118,7 @@ func generatedTables() []*schema.Table {
 		authorization.ProviderOperationsMetadata(),
 		authorization.RoleAssignments(),
 		authorization.RoleDefinitions(),
-		automanage.ConfigurationProfileAssignments(),
 		automation.Account(),
-		avs.PrivateClouds(),
 		azurearcdata.PostgresInstances(),
 		azurearcdata.SqlManagedInstances(),
 		azurearcdata.SqlServerInstances(),
@@ -141,11 +130,9 @@ func generatedTables() []*schema.Table {
 		botservice.Bots(),
 		cdn.EdgeNodes(),
 		cdn.ManagedRuleSets(),
-		cdn.Policies(),
 		cdn.Profiles(),
 		cognitiveservices.Accounts(),
 		cognitiveservices.DeletedAccounts(),
-		compute.AvailabilitySets(),
 		compute.CloudServices(),
 		compute.DiskAccesses(),
 		compute.DiskEncryptionSets(),
@@ -195,7 +182,6 @@ func generatedTables() []*schema.Table {
 		frontdoor.FrontDoors(),
 		frontdoor.ManagedRuleSets(),
 		frontdoor.NetworkExperimentProfiles(),
-		frontdoor.Policies(),
 		hanaonazure.SapMonitors(),
 		hdinsight.Clusters(),
 		healthbot.Bots(),
@@ -207,15 +193,14 @@ func generatedTables() []*schema.Table {
 		maintenance.PublicMaintenanceConfigurations(),
 		mariadb.Servers(),
 		marketplace.PrivateStore(),
-		migrate.Projects(),
 		monitor.LogProfiles(),
 		monitor.PrivateLinkScopes(),
 		monitor.TenantActivityLogs(),
 		mysql.Servers(),
 		mysqlflexibleservers.Servers(),
-		netapp.Accounts(),
 		network.ApplicationGateways(),
 		network.ApplicationSecurityGroups(),
+		network.AzureFirewallFqdnTags(),
 		network.AzureFirewalls(),
 		network.BastionHosts(),
 		network.BgpServiceCommunities(),
@@ -231,11 +216,7 @@ func generatedTables() []*schema.Table {
 		network.IpGroups(),
 		network.Interfaces(),
 		network.LoadBalancers(),
-		network.LocalNetworkGateways(),
-		network.Managers(),
 		network.NatGateways(),
-		network.PrivateEndpoints(),
-		network.PrivateLinkServices(),
 		network.Profiles(),
 		network.PublicIpAddresses(),
 		network.PublicIpPrefixes(),
@@ -250,8 +231,7 @@ func generatedTables() []*schema.Table {
 		network.VpnSites(),
 		network.VirtualAppliances(),
 		network.VirtualHubs(),
-		network.VirtualNetworkGatewayConnections(),
-		network.VirtualNetworkGateways(),
+		network.VirtualNetworkTaps(),
 		network.VirtualNetworks(),
 		network.VirtualRouters(),
 		network.VirtualWans(),
@@ -262,8 +242,6 @@ func generatedTables() []*schema.Table {
 		notificationhubs.Namespaces(),
 		operationalinsights.Clusters(),
 		operationalinsights.Workspaces(),
-		orbital.ContactProfiles(),
-		orbital.Spacecrafts(),
 		peering.ServiceCountries(),
 		peering.ServiceLocations(),
 		peering.ServiceProviders(),
@@ -282,9 +260,9 @@ func generatedTables() []*schema.Table {
 		providerhub.ProviderRegistrations(),
 		redhatopenshift.OpenShiftClusters(),
 		relay.Namespaces(),
+		reservations.Reservation(),
 		reservations.ReservationOrder(),
 		resources.Resources(),
-		saas.Applications(),
 		saas.Resources(),
 		security.Alerts(),
 		security.AlertsSuppressionRules(),

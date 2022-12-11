@@ -6,11 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devtestlabs/armdev
 func Armdevtestlabs() []*Table {
 	tables := []*Table{
 		{
-			NewFunc:   armdevtestlabs.NewProviderOperationsClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devtestlabs/armdevtestlabs",
-			URL:       "/providers/Microsoft.DevTestLab/operations",
-			Namespace: "Microsoft.DevTestLab",
-			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DevTestLab)`,
+			NewFunc:        armdevtestlabs.NewProviderOperationsClient,
+			PkgPath:        "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devtestlabs/armdevtestlabs",
+			URL:            "/providers/Microsoft.DevTestLab/operations",
+			Namespace:      "Microsoft.DevTestLab",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DevTestLab)`,
+			Pager:          `NewListPager`,
+			ResponseStruct: "ProviderOperationsClientListResponse",
 		},
 	}
 	return tables

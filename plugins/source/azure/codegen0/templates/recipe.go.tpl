@@ -12,6 +12,8 @@ func {{.BaseName | ToCamel}}() []*Table {
 			URL: "{{.URL}}",
 			Namespace: "{{.Namespace}}",
 			Multiplex: `{{.Multiplex}}`,
+			Pager: `{{.Pager}}`,
+			ResponseStruct: "{{.ResponseStruct}}",
 		},
     {{- end}}
 	}

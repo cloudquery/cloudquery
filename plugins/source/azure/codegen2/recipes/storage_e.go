@@ -16,8 +16,8 @@ func init() {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Storage)`,
 			Relations: []*Table{
 				{
-					Service: 				"armstorage",
-					Name: 					"tables",
+					Service:        "armstorage",
+					Name:           "tables",
 					Struct:         &armstorage.Table{},
 					ResponseStruct: &armstorage.TableClientListResponse{},
 					Client:         &armstorage.AccountsClient{},

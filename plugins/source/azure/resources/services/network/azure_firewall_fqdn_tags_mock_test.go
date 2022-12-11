@@ -12,8 +12,8 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func createLocalNetworkGateways(router *mux.Router) error {
-	var item armnetwork.LocalNetworkGatewaysClientListResponse
+func createAzureFirewallFqdnTags(router *mux.Router) error {
+	var item armnetwork.AzureFirewallFqdnTagsClientListAllResponse
 	if err := faker.FakeObject(&item); err != nil {
 		return err
 	}
@@ -21,7 +21,7 @@ func createLocalNetworkGateways(router *mux.Router) error {
 	emptyStr := ""
 	item.NextLink = &emptyStr
 
-	router.HandleFunc("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/localNetworkGateways", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/subscriptions/{subscriptionId}/providers/Microsoft.Network/azureFirewallFqdnTags", func(w http.ResponseWriter, r *http.Request) {
 		b, err := json.Marshal(&item)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)
@@ -35,6 +35,6 @@ func createLocalNetworkGateways(router *mux.Router) error {
 	return nil
 }
 
-func TestLocalNetworkGateways(t *testing.T) {
-	client.MockTestHelper(t, LocalNetworkGateways(), createLocalNetworkGateways)
+func TestAzureFirewallFqdnTags(t *testing.T) {
+	client.MockTestHelper(t, AzureFirewallFqdnTags(), createAzureFirewallFqdnTags)
 }

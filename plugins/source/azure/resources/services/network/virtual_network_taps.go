@@ -8,17 +8,12 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func PrivateLinkServices() *schema.Table {
+func VirtualNetworkTaps() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_network_private_link_services",
-		Resolver:  fetchPrivateLinkServices,
-		Multiplex: client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network),
+		Name:      "azure_network_virtual_network_taps",
+		Resolver:  fetchVirtualNetworkTaps,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network),
 		Columns: []schema.Column{
-			{
-				Name:     "extended_location",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ExtendedLocation"),
-			},
 			{
 				Name:     "id",
 				Type:     schema.TypeString,
@@ -61,13 +56,13 @@ func PrivateLinkServices() *schema.Table {
 	}
 }
 
-func fetchPrivateLinkServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchVirtualNetworkTaps(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
-	svc, err := armnetwork.NewPrivateLinkServicesClient(cl.SubscriptionId, cl.Creds, cl.Options)
+	svc, err := armnetwork.NewVirtualNetworkTapsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(cl.ResourceGroup, nil)
+	pager := svc.NewListAllPager(nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

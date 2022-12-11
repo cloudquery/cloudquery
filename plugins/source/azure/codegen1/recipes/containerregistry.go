@@ -6,11 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/
 func Armcontainerregistry() []*Table {
 	tables := []*Table{
 		{
-			NewFunc:   armcontainerregistry.NewRegistriesClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerRegistry/registries",
-			Namespace: "Microsoft.ContainerRegistry",
-			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ContainerRegistry)`,
+			NewFunc:        armcontainerregistry.NewRegistriesClient,
+			PkgPath:        "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry",
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerRegistry/registries",
+			Namespace:      "Microsoft.ContainerRegistry",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ContainerRegistry)`,
+			Pager:          `NewListPager`,
+			ResponseStruct: "RegistriesClientListResponse",
 		},
 	}
 	return tables

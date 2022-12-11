@@ -12,7 +12,7 @@ func ApplicationGateways() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_application_gateways",
 		Resolver:  fetchApplicationGateways,
-		Multiplex: client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network),
 		Columns: []schema.Column{
 			{
 				Name:     "id",
@@ -72,7 +72,7 @@ func fetchApplicationGateways(ctx context.Context, meta schema.ClientMeta, paren
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(cl.ResourceGroup, nil)
+	pager := svc.NewListAllPager(nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

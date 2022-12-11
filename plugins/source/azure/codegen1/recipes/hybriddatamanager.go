@@ -6,11 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybriddatamanager/
 func Armhybriddatamanager() []*Table {
 	tables := []*Table{
 		{
-			NewFunc:   armhybriddatamanager.NewDataManagersClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybriddatamanager/armhybriddatamanager",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.HybridData/dataManagers",
-			Namespace: "Microsoft.HybridData",
-			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_HybridData)`,
+			NewFunc:        armhybriddatamanager.NewDataManagersClient,
+			PkgPath:        "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybriddatamanager/armhybriddatamanager",
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.HybridData/dataManagers",
+			Namespace:      "Microsoft.HybridData",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_HybridData)`,
+			Pager:          `NewListPager`,
+			ResponseStruct: "DataManagersClientListResponse",
 		},
 	}
 	return tables

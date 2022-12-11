@@ -6,11 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpost
 func Armpostgresqlflexibleservers() []*Table {
 	tables := []*Table{
 		{
-			NewFunc:   armpostgresqlflexibleservers.NewServersClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/flexibleServers",
-			Namespace: "Microsoft.DBforPostgreSQL",
-			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DBforPostgreSQL)`,
+			NewFunc:        armpostgresqlflexibleservers.NewServersClient,
+			PkgPath:        "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers",
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/flexibleServers",
+			Namespace:      "Microsoft.DBforPostgreSQL",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DBforPostgreSQL)`,
+			Pager:          `NewListPager`,
+			ResponseStruct: "ServersClientListResponse",
 		},
 	}
 	return tables

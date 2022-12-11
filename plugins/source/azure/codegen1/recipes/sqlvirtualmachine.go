@@ -6,18 +6,22 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sqlvirtualmachine/
 func Armsqlvirtualmachine() []*Table {
 	tables := []*Table{
 		{
-			NewFunc:   armsqlvirtualmachine.NewGroupsClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sqlvirtualmachine/armsqlvirtualmachine",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups",
-			Namespace: "Microsoft.SqlVirtualMachine",
-			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_SqlVirtualMachine)`,
+			NewFunc:        armsqlvirtualmachine.NewGroupsClient,
+			PkgPath:        "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sqlvirtualmachine/armsqlvirtualmachine",
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups",
+			Namespace:      "Microsoft.SqlVirtualMachine",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_SqlVirtualMachine)`,
+			Pager:          `NewListPager`,
+			ResponseStruct: "GroupsClientListResponse",
 		},
 		{
-			NewFunc:   armsqlvirtualmachine.NewSQLVirtualMachinesClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sqlvirtualmachine/armsqlvirtualmachine",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines",
-			Namespace: "Microsoft.SqlVirtualMachine",
-			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_SqlVirtualMachine)`,
+			NewFunc:        armsqlvirtualmachine.NewSQLVirtualMachinesClient,
+			PkgPath:        "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sqlvirtualmachine/armsqlvirtualmachine",
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines",
+			Namespace:      "Microsoft.SqlVirtualMachine",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_SqlVirtualMachine)`,
+			Pager:          `NewListPager`,
+			ResponseStruct: "SQLVirtualMachinesClientListResponse",
 		},
 	}
 	return tables

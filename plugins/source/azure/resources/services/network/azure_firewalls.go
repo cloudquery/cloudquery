@@ -12,7 +12,7 @@ func AzureFirewalls() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_azure_firewalls",
 		Resolver:  fetchAzureFirewalls,
-		Multiplex: client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network),
 		Columns: []schema.Column{
 			{
 				Name:     "id",
@@ -67,7 +67,7 @@ func fetchAzureFirewalls(ctx context.Context, meta schema.ClientMeta, parent *sc
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(cl.ResourceGroup, nil)
+	pager := svc.NewListAllPager(nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

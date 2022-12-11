@@ -12,7 +12,7 @@ func Namespaces() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_notificationhubs_namespaces",
 		Resolver:  fetchNamespaces,
-		Multiplex: client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_NotificationHubs),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_NotificationHubs),
 		Columns: []schema.Column{
 			{
 				Name:     "location",
@@ -62,7 +62,7 @@ func fetchNamespaces(ctx context.Context, meta schema.ClientMeta, parent *schema
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(cl.ResourceGroup, nil)
+	pager := svc.NewListAllPager(nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

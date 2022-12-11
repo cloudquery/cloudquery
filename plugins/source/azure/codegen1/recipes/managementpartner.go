@@ -6,11 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementpartner/
 func Armmanagementpartner() []*Table {
 	tables := []*Table{
 		{
-			NewFunc:   armmanagementpartner.NewOperationClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementpartner/armmanagementpartner",
-			URL:       "/providers/Microsoft.ManagementPartner/operations",
-			Namespace: "Microsoft.ManagementPartner",
-			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ManagementPartner)`,
+			NewFunc:        armmanagementpartner.NewOperationClient,
+			PkgPath:        "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementpartner/armmanagementpartner",
+			URL:            "/providers/Microsoft.ManagementPartner/operations",
+			Namespace:      "Microsoft.ManagementPartner",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ManagementPartner)`,
+			Pager:          `NewListPager`,
+			ResponseStruct: "OperationClientListResponse",
 		},
 	}
 	return tables

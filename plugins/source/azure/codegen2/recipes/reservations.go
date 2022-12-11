@@ -7,6 +7,17 @@ func init() {
 	tables := []Table{
 		{
 			Service:        "armreservations",
+			Name:           "reservation",
+			Struct:         &armreservations.ReservationResponse{},
+			ResponseStruct: &armreservations.ReservationClientListAllResponse{},
+			Client:         &armreservations.ReservationClient{},
+			ListFunc:       (&armreservations.ReservationClient{}).NewListAllPager,
+			NewFunc:        armreservations.NewReservationClient,
+			URL:            "/providers/Microsoft.Capacity/reservations",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Capacity)`,
+		},
+		{
+			Service:        "armreservations",
 			Name:           "reservation_order",
 			Struct:         &armreservations.ReservationOrderResponse{},
 			ResponseStruct: &armreservations.ReservationOrderClientListResponse{},

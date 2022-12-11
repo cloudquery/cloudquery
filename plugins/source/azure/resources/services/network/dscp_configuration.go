@@ -12,7 +12,7 @@ func DscpConfiguration() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_dscp_configuration",
 		Resolver:  fetchDscpConfiguration,
-		Multiplex: client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network),
 		Columns: []schema.Column{
 			{
 				Name:     "id",
@@ -62,7 +62,7 @@ func fetchDscpConfiguration(ctx context.Context, meta schema.ClientMeta, parent 
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(cl.ResourceGroup, nil)
+	pager := svc.NewListAllPager(nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

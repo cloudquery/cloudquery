@@ -6,18 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armapp
 func Armappplatform() []*Table {
 	tables := []*Table{
 		{
-			NewFunc:   armappplatform.NewSKUsClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.AppPlatform/skus",
-			Namespace: "Microsoft.AppPlatform",
-			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_AppPlatform)`,
-		},
-		{
-			NewFunc:   armappplatform.NewServicesClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform",
-			URL:       "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring",
-			Namespace: "Microsoft.AppPlatform",
-			Multiplex: `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_AppPlatform)`,
+			NewFunc:        armappplatform.NewSKUsClient,
+			PkgPath:        "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform",
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.AppPlatform/skus",
+			Namespace:      "Microsoft.AppPlatform",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_AppPlatform)`,
+			Pager:          `NewListPager`,
+			ResponseStruct: "SKUsClientListResponse",
 		},
 	}
 	return tables

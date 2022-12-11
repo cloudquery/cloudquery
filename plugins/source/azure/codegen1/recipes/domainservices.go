@@ -6,18 +6,22 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/domainservices/arm
 func Armdomainservices() []*Table {
 	tables := []*Table{
 		{
-			NewFunc:   armdomainservices.NewDomainServiceOperationsClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/domainservices/armdomainservices",
-			URL:       "/providers/Microsoft.AAD/operations",
-			Namespace: "Microsoft.AAD",
-			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_AAD)`,
+			NewFunc:        armdomainservices.NewDomainServiceOperationsClient,
+			PkgPath:        "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/domainservices/armdomainservices",
+			URL:            "/providers/Microsoft.AAD/operations",
+			Namespace:      "Microsoft.AAD",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_AAD)`,
+			Pager:          `NewListPager`,
+			ResponseStruct: "DomainServiceOperationsClientListResponse",
 		},
 		{
-			NewFunc:   armdomainservices.NewOuContainerOperationsClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/domainservices/armdomainservices",
-			URL:       "/providers/Microsoft.Aad/operations",
-			Namespace: "Microsoft.Aad",
-			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Aad)`,
+			NewFunc:        armdomainservices.NewOuContainerOperationsClient,
+			PkgPath:        "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/domainservices/armdomainservices",
+			URL:            "/providers/Microsoft.Aad/operations",
+			Namespace:      "Microsoft.Aad",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Aad)`,
+			Pager:          `NewListPager`,
+			ResponseStruct: "OuContainerOperationsClientListResponse",
 		},
 	}
 	return tables

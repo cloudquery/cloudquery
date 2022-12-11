@@ -6,11 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsesu/armwind
 func Armwindowsesu() []*Table {
 	tables := []*Table{
 		{
-			NewFunc:   armwindowsesu.NewMultipleActivationKeysClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsesu/armwindowsesu",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.WindowsESU/multipleActivationKeys",
-			Namespace: "Microsoft.WindowsESU",
-			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_WindowsESU)`,
+			NewFunc:        armwindowsesu.NewMultipleActivationKeysClient,
+			PkgPath:        "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsesu/armwindowsesu",
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.WindowsESU/multipleActivationKeys",
+			Namespace:      "Microsoft.WindowsESU",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_WindowsESU)`,
+			Pager:          `NewListPager`,
+			ResponseStruct: "MultipleActivationKeysClientListResponse",
 		},
 	}
 	return tables

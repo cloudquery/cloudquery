@@ -125,10 +125,12 @@ func clientNameToTableName(clientName string) string {
 func ConvertTableV1ToV2(t *recipes.Table) (*Table, error) {
 	v := reflect.TypeOf(t.NewFunc)
 	clientType := v.Out(0)
-	newListPagerMethod, ok := clientType.MethodByName("NewListPager")
+	pagerName := t.Pager
+	newListPagerMethod, ok := clientType.MethodByName(pagerName)
 	if !ok {
 		return nil, fmt.Errorf("failed to find NewListPager method for %s", clientType.String())
 	}
+
 	responseStruct, ok := newListPagerMethod.Type.Out(0).Elem().FieldByName("current")
 	if !ok {
 		return nil, fmt.Errorf("failed to find current field for %s", newListPagerMethod.Type.Out(0).Elem().String())
@@ -159,7 +161,7 @@ func ConvertTableV1ToV2(t *recipes.Table) (*Table, error) {
 		Struct:         structName,
 		ResponseStruct: responseStructName,
 		Client:         clientName,
-		ListFunc:       "NewListPager",
+		ListFunc:       pagerName,
 		NewFunc:        "New" + clientName,
 		URL:            t.URL,
 		Multiplex:      t.Multiplex,

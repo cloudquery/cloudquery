@@ -6,11 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redhatopenshift/ar
 func Armredhatopenshift() []*Table {
 	tables := []*Table{
 		{
-			NewFunc:   armredhatopenshift.NewOpenShiftClustersClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redhatopenshift/armredhatopenshift",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.RedHatOpenShift/openShiftClusters",
-			Namespace: "Microsoft.RedHatOpenShift",
-			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_RedHatOpenShift)`,
+			NewFunc:        armredhatopenshift.NewOpenShiftClustersClient,
+			PkgPath:        "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redhatopenshift/armredhatopenshift",
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.RedHatOpenShift/openShiftClusters",
+			Namespace:      "Microsoft.RedHatOpenShift",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_RedHatOpenShift)`,
+			Pager:          `NewListPager`,
+			ResponseStruct: "OpenShiftClustersClientListResponse",
 		},
 	}
 	return tables

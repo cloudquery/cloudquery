@@ -12,7 +12,7 @@ func Interfaces() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_interfaces",
 		Resolver:  fetchInterfaces,
-		Multiplex: client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network),
 		Columns: []schema.Column{
 			{
 				Name:     "extended_location",
@@ -67,7 +67,7 @@ func fetchInterfaces(ctx context.Context, meta schema.ClientMeta, parent *schema
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(cl.ResourceGroup, nil)
+	pager := svc.NewListAllPager(nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

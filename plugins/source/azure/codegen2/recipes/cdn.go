@@ -27,17 +27,6 @@ func init() {
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/cdnWebApplicationFirewallManagedRuleSets",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Cdn)`,
 		},
-		{
-			Service:        "armcdn",
-			Name:           "policies",
-			Struct:         &armcdn.WebApplicationFirewallPolicy{},
-			ResponseStruct: &armcdn.PoliciesClientListResponse{},
-			Client:         &armcdn.PoliciesClient{},
-			ListFunc:       (&armcdn.PoliciesClient{}).NewListPager,
-			NewFunc:        armcdn.NewPoliciesClient,
-			URL:            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/cdnWebApplicationFirewallPolicies",
-			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Cdn)`,
-		},
 	}
 	Tables = append(Tables, tables...)
 }

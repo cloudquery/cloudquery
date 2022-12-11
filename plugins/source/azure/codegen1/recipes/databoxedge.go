@@ -6,11 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdat
 func Armdataboxedge() []*Table {
 	tables := []*Table{
 		{
-			NewFunc:   armdataboxedge.NewAvailableSKUsClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.DataBoxEdge/availableSkus",
-			Namespace: "Microsoft.DataBoxEdge",
-			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DataBoxEdge)`,
+			NewFunc:        armdataboxedge.NewAvailableSKUsClient,
+			PkgPath:        "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge",
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DataBoxEdge/availableSkus",
+			Namespace:      "Microsoft.DataBoxEdge",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DataBoxEdge)`,
+			Pager:          `NewListPager`,
+			ResponseStruct: "AvailableSKUsClientListResponse",
 		},
 	}
 	return tables

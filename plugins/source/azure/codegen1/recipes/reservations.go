@@ -6,18 +6,31 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armre
 func Armreservations() []*Table {
 	tables := []*Table{
 		{
-			NewFunc:   armreservations.NewOperationClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations",
-			URL:       "/providers/Microsoft.Capacity/operations",
-			Namespace: "Microsoft.Capacity",
-			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Capacity)`,
+			NewFunc:        armreservations.NewOperationClient,
+			PkgPath:        "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations",
+			URL:            "/providers/Microsoft.Capacity/operations",
+			Namespace:      "Microsoft.Capacity",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Capacity)`,
+			Pager:          `NewListPager`,
+			ResponseStruct: "OperationClientListResponse",
 		},
 		{
-			NewFunc:   armreservations.NewReservationOrderClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations",
-			URL:       "/providers/Microsoft.Capacity/reservationOrders",
-			Namespace: "Microsoft.Capacity",
-			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Capacity)`,
+			NewFunc:        armreservations.NewReservationClient,
+			PkgPath:        "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations",
+			URL:            "/providers/Microsoft.Capacity/reservations",
+			Namespace:      "Microsoft.Capacity",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Capacity)`,
+			Pager:          `NewListAllPager`,
+			ResponseStruct: "ReservationClientListAllResponse",
+		},
+		{
+			NewFunc:        armreservations.NewReservationOrderClient,
+			PkgPath:        "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations",
+			URL:            "/providers/Microsoft.Capacity/reservationOrders",
+			Namespace:      "Microsoft.Capacity",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Capacity)`,
+			Pager:          `NewListPager`,
+			ResponseStruct: "ReservationOrderClientListResponse",
 		},
 	}
 	return tables

@@ -6,11 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerinsights/a
 func Armcustomerinsights() []*Table {
 	tables := []*Table{
 		{
-			NewFunc:   armcustomerinsights.NewHubsClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerinsights/armcustomerinsights",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.CustomerInsights/hubs",
-			Namespace: "Microsoft.CustomerInsights",
-			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_CustomerInsights)`,
+			NewFunc:        armcustomerinsights.NewHubsClient,
+			PkgPath:        "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerinsights/armcustomerinsights",
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.CustomerInsights/hubs",
+			Namespace:      "Microsoft.CustomerInsights",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_CustomerInsights)`,
+			Pager:          `NewListPager`,
+			ResponseStruct: "HubsClientListResponse",
 		},
 	}
 	return tables

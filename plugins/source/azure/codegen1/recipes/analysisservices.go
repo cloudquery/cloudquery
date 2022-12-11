@@ -6,11 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/analysisservices/a
 func Armanalysisservices() []*Table {
 	tables := []*Table{
 		{
-			NewFunc:   armanalysisservices.NewServersClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/analysisservices/armanalysisservices",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.AnalysisServices/servers",
-			Namespace: "Microsoft.AnalysisServices",
-			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_AnalysisServices)`,
+			NewFunc:        armanalysisservices.NewServersClient,
+			PkgPath:        "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/analysisservices/armanalysisservices",
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.AnalysisServices/servers",
+			Namespace:      "Microsoft.AnalysisServices",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_AnalysisServices)`,
+			Pager:          `NewListPager`,
+			ResponseStruct: "ServersClientListResponse",
 		},
 	}
 	return tables

@@ -9,12 +9,12 @@ func init() {
 			Service:        "armnotificationhubs",
 			Name:           "namespaces",
 			Struct:         &armnotificationhubs.NamespaceResource{},
-			ResponseStruct: &armnotificationhubs.NamespacesClientListResponse{},
+			ResponseStruct: &armnotificationhubs.NamespacesClientListAllResponse{},
 			Client:         &armnotificationhubs.NamespacesClient{},
-			ListFunc:       (&armnotificationhubs.NamespacesClient{}).NewListPager,
+			ListFunc:       (&armnotificationhubs.NamespacesClient{}).NewListAllPager,
 			NewFunc:        armnotificationhubs.NewNamespacesClient,
-			URL:            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces",
-			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_NotificationHubs)`,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.NotificationHubs/namespaces",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_NotificationHubs)`,
 		},
 	}
 	Tables = append(Tables, tables...)

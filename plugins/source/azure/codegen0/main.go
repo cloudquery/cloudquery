@@ -39,12 +39,12 @@ func main() {
 		log.Fatal("Failed to get caller information")
 	}
 	currentDir = path.Dir(currentFilename)
-	var skipGoGet bool
-	if len(os.Args) > 1 && os.Args[1] == "--skip-go-get" {
-		skipGoGet = true
+	var updateGoMod bool
+	if len(os.Args) > 1 && os.Args[1] == "--update-go-mod" {
+		updateGoMod = true
 	}
 
-	if !skipGoGet {
+	if updateGoMod {
 		packagesToGoGet, err := azparser.DiscoverSubpackages()
 		if err != nil {
 			log.Fatal(err)

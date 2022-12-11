@@ -6,11 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/labservices/armlab
 func Armlabservices() []*Table {
 	tables := []*Table{
 		{
-			NewFunc:   armlabservices.NewSKUsClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/labservices/armlabservices",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.LabServices/skus",
-			Namespace: "Microsoft.LabServices",
-			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_LabServices)`,
+			NewFunc:        armlabservices.NewSKUsClient,
+			PkgPath:        "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/labservices/armlabservices",
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.LabServices/skus",
+			Namespace:      "Microsoft.LabServices",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_LabServices)`,
+			Pager:          `NewListPager`,
+			ResponseStruct: "SKUsClientListResponse",
 		},
 	}
 	return tables

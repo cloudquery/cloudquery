@@ -6,11 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/ar
 func Armstreamanalytics() []*Table {
 	tables := []*Table{
 		{
-			NewFunc:   armstreamanalytics.NewStreamingJobsClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.StreamAnalytics/streamingjobs",
-			Namespace: "Microsoft.StreamAnalytics",
-			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_StreamAnalytics)`,
+			NewFunc:        armstreamanalytics.NewStreamingJobsClient,
+			PkgPath:        "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics",
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.StreamAnalytics/streamingjobs",
+			Namespace:      "Microsoft.StreamAnalytics",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_StreamAnalytics)`,
+			Pager:          `NewListPager`,
+			ResponseStruct: "StreamingJobsClientListResponse",
 		},
 	}
 	return tables

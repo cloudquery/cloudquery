@@ -6,11 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota"
 func Armquota() []*Table {
 	tables := []*Table{
 		{
-			NewFunc:   armquota.NewOperationClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota",
-			URL:       "/providers/Microsoft.Quota/operations",
-			Namespace: "Microsoft.Quota",
-			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Quota)`,
+			NewFunc:        armquota.NewOperationClient,
+			PkgPath:        "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota",
+			URL:            "/providers/Microsoft.Quota/operations",
+			Namespace:      "Microsoft.Quota",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Quota)`,
+			Pager:          `NewListPager`,
+			ResponseStruct: "OperationClientListResponse",
 		},
 	}
 	return tables

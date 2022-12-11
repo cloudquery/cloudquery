@@ -13,7 +13,7 @@ import (
 )
 
 func createRestorePointCollections(router *mux.Router) error {
-	var item armcompute.RestorePointCollectionsClientListResponse
+	var item armcompute.RestorePointCollectionsClientListAllResponse
 	if err := faker.FakeObject(&item); err != nil {
 		return err
 	}
@@ -21,7 +21,7 @@ func createRestorePointCollections(router *mux.Router) error {
 	emptyStr := ""
 	item.NextLink = &emptyStr
 
-	router.HandleFunc("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/restorePointCollections", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/restorePointCollections", func(w http.ResponseWriter, r *http.Request) {
 		b, err := json.Marshal(&item)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)

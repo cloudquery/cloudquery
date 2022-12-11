@@ -1,12 +1,12 @@
 package azparser
 
 import (
-	"errors"
 	"fmt"
 	"go/ast"
 	"go/parser"
 	"go/token"
 	"os"
+	"os/exec"
 	"path"
 	"regexp"
 	"sort"
@@ -78,17 +78,12 @@ var newFuncToSkipPerPackage = map[string]map[string]bool{
 }
 
 var reNewClient = regexp.MustCompile(`New[a-zA-Z]+Client`)
-var reListCreateRequest = regexp.MustCompile(`listCreateRequest`)
-var reNewListPager = regexp.MustCompile(`NewListPager`)
+var reListRequest = regexp.MustCompile(`listCreateRequest|listAllCreateRequest|listBySubscriptionCreateRequest`)
+var rePager = regexp.MustCompile(`NewListPager|NewListAllPager|NewListBySubscriptionPager`)
 var reNamespaceFromURL = regexp.MustCompile(`/providers/([a-zA-Z\.]+)/`)
 
-var newListPagerResourceGroupParams = []string{
-	"resourceGroupName", "options",
-}
-
-var supportedNewListPagerParams = [][]string{
+var supportedPagerParams = [][]string{
 	{"options"},
-	newListPagerResourceGroupParams,
 }
 
 var supportedNewClientParams = [][]string{
@@ -97,10 +92,16 @@ var supportedNewClientParams = [][]string{
 }
 
 type function struct {
-	receiver   string
-	name       string
-	ast        *ast.FuncDecl
-	paramNames []string
+	receiver    string
+	name        string
+	ast         *ast.FuncDecl
+	paramNames  []string
+	returnTypes []string
+}
+
+type structAST struct {
+	name string
+	ast  *ast.StructType
 }
 
 func parseURLFromFunc(fn *ast.FuncDecl) string {
@@ -151,9 +152,25 @@ func getParamNames(fn *ast.FieldList) []string {
 	return params
 }
 
+func getReturnTypes(fn *ast.FieldList) []string {
+	var params []string
+	for _, p := range fn.List {
+		if ident, ok := p.Type.(*ast.Ident); ok {
+			params = append(params, ident.Name)
+		} else if star, ok := p.Type.(*ast.StarExpr); ok {
+			if index, ok := star.X.(*ast.IndexExpr); ok {
+				if ident, ok := index.Index.(*ast.Ident); ok {
+					params = append(params, ident.Name)
+				}
+			}
+		}
+	}
+	return params
+}
+
 // returns reciever and method name that matches re
-func findFunctions(pkgs map[string]*ast.Package, re *regexp.Regexp) []function {
-	var funcs []function
+func findFunctions(pkgs map[string]*ast.Package, re *regexp.Regexp) map[string]*function {
+	var funcs map[string]*function = make(map[string]*function)
 	for _, pack := range pkgs {
 		for _, f := range pack.Files {
 			for _, d := range f.Decls {
@@ -169,7 +186,14 @@ func findFunctions(pkgs map[string]*ast.Package, re *regexp.Regexp) []function {
 							fun.receiver = receiver
 						}
 						fun.paramNames = getParamNames(fn.Type.Params)
-						funcs = append(funcs, fun)
+						if fn.Type != nil && fn.Type.Results != nil {
+							fun.returnTypes = getReturnTypes(fn.Type.Results)
+						}
+						if fun.receiver != "" {
+							funcs[fun.receiver+"."+fun.name] = &fun
+						} else {
+							funcs[fun.name] = &fun
+						}
 					}
 				}
 			}
@@ -182,7 +206,11 @@ func findFunctions(pkgs map[string]*ast.Package, re *regexp.Regexp) []function {
 func CreateTablesFromPackage(pkg string) ([]*Table, error) {
 	goPath := os.Getenv("GOPATH")
 	if goPath == "" {
-		return nil, errors.New("GOPATH is not set")
+		output, err := exec.Command("go", "env", "GOPATH").Output()
+		if err != nil {
+			return nil, err
+		}
+		goPath = strings.TrimSpace(string(output))
 	}
 	pkgWithoutVersion := strings.Split(pkg, "@")[0]
 	if packagesToSkip[pkgWithoutVersion] {
@@ -213,51 +241,62 @@ func CreateTablesFromPackage(pkg string) ([]*Table, error) {
 			NewFuncName: fn.name,
 		}
 	}
-
-	listMethods := findFunctions(pkgs, reListCreateRequest)
-	for _, fn := range listMethods {
-		if fn.receiver == "" {
-			continue
-		}
-		if _, ok := tables[fn.receiver]; !ok {
-			continue
-		}
-		azURL := parseURLFromFunc(fn.ast)
-		if azURL == "" {
-			return nil, fmt.Errorf("could not find url for %s", fn.name)
-		}
-		namespaceMatches := reNamespaceFromURL.FindStringSubmatch(azURL)
-		if len(namespaceMatches) == 2 {
-			tables[fn.receiver].Namespace = namespaceMatches[1]
-		}
-		tables[fn.receiver].URL = azURL
-	}
-
-	listNewPagerMethods := findFunctions(pkgs, reNewListPager)
-	for _, fn := range listNewPagerMethods {
-		if fn.receiver == "" {
-			continue
-		}
-		if _, ok := tables[fn.receiver]; !ok {
-			continue
-		}
-		tables[fn.receiver].HasListPager = true
-		tables[fn.receiver].NewListPagerParams = fn.paramNames
-	}
+	listMethods := findFunctions(pkgs, reListRequest)
+	pagerMethods := findFunctions(pkgs, rePager)
 
 	var result []*Table
-	for _, t := range tables {
-		// skip tables witout URL (or at least that we didn't find one)
-		// not NewListPager struct and more than 3 params
-		if t.URL == "" || !t.HasListPager || !isArrayExist(supportedNewListPagerParams, t.NewListPagerParams) {
+	for client, t := range tables {
+		var pagerMethod *function
+		var listMethod *function
+		if pagerMethods[client+".NewListAllPager"] != nil {
+			if listMethods[client+".listAllCreateRequest"] != nil {
+				pagerMethod = pagerMethods[client+".NewListAllPager"]
+				t.Pager = "NewListAllPager"
+				listMethod = listMethods[client+".listAllCreateRequest"]
+			} else {
+				// this permutation is not supported by codegen
+				continue
+			}
+		} else if pagerMethods[client+".NewListPager"] != nil {
+			if listMethods[client+".listCreateRequest"] != nil {
+				pagerMethod = pagerMethods[client+".NewListPager"]
+				t.Pager = "NewListPager"
+				listMethod = listMethods[client+".listCreateRequest"]
+			} else {
+				// this permutation is not supported by codegen
+				continue
+			}
+		} else if pagerMethods[client+".listBySubscriptionCreateRequest"] != nil {
+			if listMethods[client+".listBySubscriptionCreateRequest"] != nil {
+				pagerMethod = pagerMethods[client+".listBySubscriptionCreateRequest"]
+				t.Pager = "listBySubscriptionCreateRequest"
+				listMethod = listMethods[client+".listBySubscriptionCreateRequest"]
+			} else {
+				// this permutation is not supported by codegen
+				continue
+			}
+		} else {
+			// this permutation is not supported by codegen
 			continue
 		}
 
-		if compareStrArrays(newListPagerResourceGroupParams, t.NewListPagerParams) {
-			t.Multiplex = fmt.Sprintf("client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.Namespace%s)", strings.ReplaceAll(t.Namespace, ".", "_"))
-		} else {
-			t.Multiplex = fmt.Sprintf("client.SubscriptionMultiplexRegisteredNamespace(client.Namespace%s)", strings.ReplaceAll(t.Namespace, ".", "_"))
+		if !isArrayExist(supportedPagerParams, pagerMethod.paramNames) {
+			continue
 		}
+		azURL := parseURLFromFunc(listMethod.ast)
+		if azURL == "" {
+			continue
+		}
+		t.URL = azURL
+		t.ResponseStruct = pagerMethod.returnTypes[0]
+		namespaceMatches := reNamespaceFromURL.FindStringSubmatch(azURL)
+		if len(namespaceMatches) == 2 {
+			t.Namespace = namespaceMatches[1]
+			t.Multiplex = fmt.Sprintf("client.SubscriptionMultiplexRegisteredNamespace(client.Namespace%s)", strings.ReplaceAll(t.Namespace, ".", "_"))
+		} else {
+			t.Multiplex = "client.SubscriptionMultiplex"
+		}
+
 		result = append(result, t)
 	}
 	sort.Slice(result, func(i, j int) bool {

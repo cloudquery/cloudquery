@@ -6,11 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthbot/armhealt
 func Armhealthbot() []*Table {
 	tables := []*Table{
 		{
-			NewFunc:   armhealthbot.NewBotsClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthbot/armhealthbot",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.HealthBot/healthBots",
-			Namespace: "Microsoft.HealthBot",
-			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_HealthBot)`,
+			NewFunc:        armhealthbot.NewBotsClient,
+			PkgPath:        "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthbot/armhealthbot",
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.HealthBot/healthBots",
+			Namespace:      "Microsoft.HealthBot",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_HealthBot)`,
+			Pager:          `NewListPager`,
+			ResponseStruct: "BotsClientListResponse",
 		},
 	}
 	return tables

@@ -6,11 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devops/armdevops"
 func Armdevops() []*Table {
 	tables := []*Table{
 		{
-			NewFunc:   armdevops.NewPipelineTemplateDefinitionsClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devops/armdevops",
-			URL:       "/providers/Microsoft.DevOps/pipelineTemplateDefinitions",
-			Namespace: "Microsoft.DevOps",
-			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DevOps)`,
+			NewFunc:        armdevops.NewPipelineTemplateDefinitionsClient,
+			PkgPath:        "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devops/armdevops",
+			URL:            "/providers/Microsoft.DevOps/pipelineTemplateDefinitions",
+			Namespace:      "Microsoft.DevOps",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DevOps)`,
+			Pager:          `NewListPager`,
+			ResponseStruct: "PipelineTemplateDefinitionsClientListResponse",
 		},
 	}
 	return tables

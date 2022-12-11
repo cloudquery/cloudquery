@@ -12,7 +12,7 @@ func LoadBalancers() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_load_balancers",
 		Resolver:  fetchLoadBalancers,
-		Multiplex: client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network),
 		Columns: []schema.Column{
 			{
 				Name:     "extended_location",
@@ -72,7 +72,7 @@ func fetchLoadBalancers(ctx context.Context, meta schema.ClientMeta, parent *sch
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(cl.ResourceGroup, nil)
+	pager := svc.NewListAllPager(nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

@@ -7,17 +7,6 @@ func init() {
 	tables := []Table{
 		{
 			Service:        "armsaas",
-			Name:           "applications",
-			Struct:         &armsaas.App{},
-			ResponseStruct: &armsaas.ApplicationsClientListResponse{},
-			Client:         &armsaas.ApplicationsClient{},
-			ListFunc:       (&armsaas.ApplicationsClient{}).NewListPager,
-			NewFunc:        armsaas.NewApplicationsClient,
-			URL:            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SaaS/applications",
-			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_SaaS)`,
-		},
-		{
-			Service:        "armsaas",
 			Name:           "resources",
 			Struct:         &armsaas.Resource{},
 			ResponseStruct: &armsaas.ResourcesClientListResponse{},

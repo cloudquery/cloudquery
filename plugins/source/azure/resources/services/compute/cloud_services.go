@@ -12,7 +12,7 @@ func CloudServices() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_compute_cloud_services",
 		Resolver:  fetchCloudServices,
-		Multiplex: client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Compute),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Compute),
 		Columns: []schema.Column{
 			{
 				Name:     "location",
@@ -57,7 +57,7 @@ func fetchCloudServices(ctx context.Context, meta schema.ClientMeta, parent *sch
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(cl.ResourceGroup, nil)
+	pager := svc.NewListAllPager(nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

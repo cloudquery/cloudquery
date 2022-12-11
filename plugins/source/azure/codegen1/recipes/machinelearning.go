@@ -6,11 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/ar
 func Armmachinelearning() []*Table {
 	tables := []*Table{
 		{
-			NewFunc:   armmachinelearning.NewWorkspaceSKUsClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.MachineLearningServices/workspaces/skus",
-			Namespace: "Microsoft.MachineLearningServices",
-			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_MachineLearningServices)`,
+			NewFunc:        armmachinelearning.NewWorkspaceSKUsClient,
+			PkgPath:        "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning",
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.MachineLearningServices/workspaces/skus",
+			Namespace:      "Microsoft.MachineLearningServices",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_MachineLearningServices)`,
+			Pager:          `NewListPager`,
+			ResponseStruct: "WorkspaceSKUsClientListResponse",
 		},
 	}
 	return tables

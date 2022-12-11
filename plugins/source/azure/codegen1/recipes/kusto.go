@@ -6,11 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto"
 func Armkusto() []*Table {
 	tables := []*Table{
 		{
-			NewFunc:   armkusto.NewClustersClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto",
-			URL:       "/subscriptions/{subscriptionId}/providers/Microsoft.Kusto/clusters",
-			Namespace: "Microsoft.Kusto",
-			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Kusto)`,
+			NewFunc:        armkusto.NewClustersClient,
+			PkgPath:        "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto",
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Kusto/clusters",
+			Namespace:      "Microsoft.Kusto",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Kusto)`,
+			Pager:          `NewListPager`,
+			ResponseStruct: "ClustersClientListResponse",
 		},
 	}
 	return tables

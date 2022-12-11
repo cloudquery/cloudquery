@@ -6,11 +6,13 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcomplianceautom
 func Armappcomplianceautomation() []*Table {
 	tables := []*Table{
 		{
-			NewFunc:   armappcomplianceautomation.NewReportsClient,
-			PkgPath:   "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcomplianceautomation/armappcomplianceautomation",
-			URL:       "/providers/Microsoft.AppComplianceAutomation/reports",
-			Namespace: "Microsoft.AppComplianceAutomation",
-			Multiplex: `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_AppComplianceAutomation)`,
+			NewFunc:        armappcomplianceautomation.NewReportsClient,
+			PkgPath:        "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcomplianceautomation/armappcomplianceautomation",
+			URL:            "/providers/Microsoft.AppComplianceAutomation/reports",
+			Namespace:      "Microsoft.AppComplianceAutomation",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_AppComplianceAutomation)`,
+			Pager:          `NewListPager`,
+			ResponseStruct: "ReportsClientListResponse",
 		},
 	}
 	return tables

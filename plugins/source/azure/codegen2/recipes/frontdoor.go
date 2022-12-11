@@ -38,17 +38,6 @@ func init() {
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/NetworkExperimentProfiles",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
-		{
-			Service:        "armfrontdoor",
-			Name:           "policies",
-			Struct:         &armfrontdoor.WebApplicationFirewallPolicy{},
-			ResponseStruct: &armfrontdoor.PoliciesClientListResponse{},
-			Client:         &armfrontdoor.PoliciesClient{},
-			ListFunc:       (&armfrontdoor.PoliciesClient{}).NewListPager,
-			NewFunc:        armfrontdoor.NewPoliciesClient,
-			URL:            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoorWebApplicationFirewallPolicies",
-			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
-		},
 	}
 	Tables = append(Tables, tables...)
 }

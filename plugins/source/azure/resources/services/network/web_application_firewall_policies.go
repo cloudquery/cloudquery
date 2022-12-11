@@ -12,7 +12,7 @@ func WebApplicationFirewallPolicies() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_web_application_firewall_policies",
 		Resolver:  fetchWebApplicationFirewallPolicies,
-		Multiplex: client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network),
 		Columns: []schema.Column{
 			{
 				Name:     "id",
@@ -62,7 +62,7 @@ func fetchWebApplicationFirewallPolicies(ctx context.Context, meta schema.Client
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(cl.ResourceGroup, nil)
+	pager := svc.NewListAllPager(nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {
