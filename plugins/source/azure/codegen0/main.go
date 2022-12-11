@@ -49,7 +49,7 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-                fmt.Printf("go getting %d packages\n", len(packagesToGoGet))
+		fmt.Printf("go getting %d packages\n", len(packagesToGoGet))
 		args := []string{"get", "-u"}
 		args = append(args, packagesToGoGet...)
 		cmd := exec.Command("go", args...)
