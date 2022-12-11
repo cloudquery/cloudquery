@@ -1,4 +1,4 @@
-# Table: azure_network_virtual_network_gateways
+# Table: azure_reservations_reservation
 
 
 
@@ -13,11 +13,13 @@ The primary key for this table is **id**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|properties|JSON|
-|extended_location|JSON|
-|id (PK)|String|
+|subscription_id|String|
+|etag|Int|
+|kind|String|
 |location|String|
-|tags|JSON|
-|etag|String|
+|properties|JSON|
+|sku|JSON|
+|id (PK)|String|
 |name|String|
+|system_data|JSON|
 |type|String|

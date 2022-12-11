@@ -159,15 +159,3 @@ func (c Client) withSubscription(subscriptionId string) *Client {
 		Options:        c.Options,
 	}
 }
-
-// withResourceGroup allows multiplexer to create a new client with given resource group name
-func (c Client) withResourceGroup(name string) *Client {
-	return &Client{
-		subscriptions:  c.subscriptions,
-		logger:         c.logger.With().Str("resource_group", name).Logger(),
-		SubscriptionId: c.SubscriptionId,
-		ResourceGroup:  name,
-		Creds:          c.Creds,
-		Options:        c.Options,
-	}
-}

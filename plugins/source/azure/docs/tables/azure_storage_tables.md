@@ -1,9 +1,11 @@
-# Table: azure_aad_private_link_for_azure_ad
+# Table: azure_storage_tables
 
 
 
 The primary key for this table is **id**.
 
+## Relations
+This table depends on [azure_storage_accounts](azure_storage_accounts.md).
 
 
 ## Columns
@@ -13,13 +15,7 @@ The primary key for this table is **id**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|all_tenants|Bool|
-|name|String|
-|owner_tenant_id|String|
-|resource_group|String|
-|resource_name|String|
-|subscription_id|String|
-|tags|JSON|
-|tenants|StringArray|
+|properties|JSON|
 |id (PK)|String|
+|name|String|
 |type|String|

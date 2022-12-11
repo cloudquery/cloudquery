@@ -1,4 +1,4 @@
-# Table: azure_saas_applications
+# Table: azure_network_azure_firewall_fqdn_tags
 
 
 
@@ -13,9 +13,11 @@ The primary key for this table is **id**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
+|subscription_id|String|
+|id (PK)|String|
 |location|String|
-|name|String|
 |properties|JSON|
 |tags|JSON|
+|etag|String|
+|name|String|
 |type|String|
-|id (PK)|String|

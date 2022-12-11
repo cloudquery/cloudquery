@@ -4,7 +4,10 @@
 
 The primary key for this table is **id**.
 
+## Relations
 
+The following tables depend on azure_storage_accounts:
+  - [azure_storage_tables](azure_storage_tables.md)
 
 ## Columns
 | Name          | Type          |
