@@ -15,6 +15,11 @@ func Caches() *schema.Table {
 		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_StorageCache),
 		Columns: []schema.Column{
 			{
+				Name:     "subscription_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAzureSubscription,
+			},
+			{
 				Name:     "identity",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Identity"),

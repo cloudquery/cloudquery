@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armconnectedvmware.NewClustersClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedVMwarevSphere/clusters",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ConnectedVMwarevSphere)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armconnectedvmware",
@@ -26,6 +27,7 @@ func init() {
 			NewFunc:        armconnectedvmware.NewDatastoresClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedVMwarevSphere/datastores",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ConnectedVMwarevSphere)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armconnectedvmware",
@@ -37,6 +39,7 @@ func init() {
 			NewFunc:        armconnectedvmware.NewHostsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedVMwarevSphere/hosts",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ConnectedVMwarevSphere)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armconnectedvmware",
@@ -48,6 +51,7 @@ func init() {
 			NewFunc:        armconnectedvmware.NewResourcePoolsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedVMwarevSphere/resourcePools",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ConnectedVMwarevSphere)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armconnectedvmware",
@@ -59,6 +63,7 @@ func init() {
 			NewFunc:        armconnectedvmware.NewVCentersClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedVMwarevSphere/vcenters",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ConnectedVMwarevSphere)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armconnectedvmware",
@@ -70,6 +75,7 @@ func init() {
 			NewFunc:        armconnectedvmware.NewVirtualMachineTemplatesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedVMwarevSphere/virtualMachineTemplates",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ConnectedVMwarevSphere)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armconnectedvmware",
@@ -81,6 +87,7 @@ func init() {
 			NewFunc:        armconnectedvmware.NewVirtualMachinesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedVMwarevSphere/virtualMachines",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ConnectedVMwarevSphere)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armconnectedvmware",
@@ -92,6 +99,7 @@ func init() {
 			NewFunc:        armconnectedvmware.NewVirtualNetworksClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedVMwarevSphere/virtualNetworks",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ConnectedVMwarevSphere)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

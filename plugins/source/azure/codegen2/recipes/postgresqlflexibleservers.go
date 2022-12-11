@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armpostgresqlflexibleservers.NewServersClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/flexibleServers",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DBforPostgreSQL)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

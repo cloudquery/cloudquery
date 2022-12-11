@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armnetworkfunction.NewAzureTrafficCollectorsBySubscriptionClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.NetworkFunction/azureTrafficCollectors",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_NetworkFunction)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

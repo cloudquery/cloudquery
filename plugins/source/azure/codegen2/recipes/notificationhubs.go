@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armnotificationhubs.NewNamespacesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.NotificationHubs/namespaces",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_NotificationHubs)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

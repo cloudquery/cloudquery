@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armworkloads.NewMonitorsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Workloads/monitors",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Workloads)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

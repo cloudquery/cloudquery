@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armhealthbot.NewBotsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.HealthBot/healthBots",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_HealthBot)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

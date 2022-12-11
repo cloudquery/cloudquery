@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armapimanagement.NewServiceClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ApiManagement/service",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ApiManagement)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armcustomerinsights.NewHubsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.CustomerInsights/hubs",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_CustomerInsights)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

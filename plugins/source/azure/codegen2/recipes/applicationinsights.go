@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armapplicationinsights.NewComponentsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/components",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Insights)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armapplicationinsights",
@@ -26,6 +27,7 @@ func init() {
 			NewFunc:        armapplicationinsights.NewWebTestsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/webtests",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Insights)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

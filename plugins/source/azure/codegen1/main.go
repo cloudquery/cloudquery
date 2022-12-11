@@ -35,6 +35,7 @@ type Table struct {
 	NewFunc        string
 	URL            string
 	Multiplex      string
+	ExtraColumns   string
 }
 
 type Recipe struct {
@@ -153,6 +154,10 @@ func ConvertTableV1ToV2(t *recipes.Table) (*Table, error) {
 		log.Printf("skipping %s as it does not have ID field", structTyp.String())
 		return nil, nil
 	}
+	extraColumns := "DefaultExtraColumns"
+	if structHasField(structTyp, "SubscriptionID") {
+		extraColumns = ""
+	}
 	structName := structTyp.Name()
 	responseStructName := strings.Split(responseStruct.Type.String(), ".")[1]
 	clientName := strings.Split(v.Out(0).String(), ".")[1]
@@ -165,6 +170,7 @@ func ConvertTableV1ToV2(t *recipes.Table) (*Table, error) {
 		NewFunc:        "New" + clientName,
 		URL:            t.URL,
 		Multiplex:      t.Multiplex,
+		ExtraColumns:   extraColumns,
 	}, nil
 }
 

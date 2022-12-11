@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armreservations.NewReservationClient,
 			URL:            "/providers/Microsoft.Capacity/reservations",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Capacity)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armreservations",
@@ -26,6 +27,7 @@ func init() {
 			NewFunc:        armreservations.NewReservationOrderClient,
 			URL:            "/providers/Microsoft.Capacity/reservationOrders",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Capacity)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

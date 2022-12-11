@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armdashboard.NewGrafanaClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Dashboard/grafana",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Dashboard)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

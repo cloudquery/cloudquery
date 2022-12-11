@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armwindowsesu.NewMultipleActivationKeysClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.WindowsESU/multipleActivationKeys",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_WindowsESU)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armhdinsight.NewClustersClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.HDInsight/clusters",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_HDInsight)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

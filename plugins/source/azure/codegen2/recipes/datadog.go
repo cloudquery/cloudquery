@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armdatadog.NewMarketplaceAgreementsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Datadog/agreements",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Datadog)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armdatadog",
@@ -26,6 +27,7 @@ func init() {
 			NewFunc:        armdatadog.NewMonitorsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Datadog/monitors",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Datadog)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

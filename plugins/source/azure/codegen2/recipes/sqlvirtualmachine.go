@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armsqlvirtualmachine.NewGroupsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_SqlVirtualMachine)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armsqlvirtualmachine",
@@ -26,6 +27,7 @@ func init() {
 			NewFunc:        armsqlvirtualmachine.NewSQLVirtualMachinesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_SqlVirtualMachine)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

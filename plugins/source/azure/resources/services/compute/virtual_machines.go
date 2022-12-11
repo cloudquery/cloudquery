@@ -15,6 +15,11 @@ func VirtualMachines() *schema.Table {
 		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Compute),
 		Columns: []schema.Column{
 			{
+				Name:     "subscription_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAzureSubscription,
+			},
+			{
 				Name:     "location",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Location"),

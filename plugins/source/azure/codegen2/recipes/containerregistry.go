@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armcontainerregistry.NewRegistriesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerRegistry/registries",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ContainerRegistry)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

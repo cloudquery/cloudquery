@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armprivatedns.NewPrivateZonesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/privateDnsZones",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

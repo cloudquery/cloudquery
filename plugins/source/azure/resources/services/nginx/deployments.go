@@ -15,6 +15,11 @@ func Deployments() *schema.Table {
 		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceNginx_NginxPlus),
 		Columns: []schema.Column{
 			{
+				Name:     "subscription_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAzureSubscription,
+			},
+			{
 				Name:     "identity",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Identity"),

@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armbilling.NewAccountsClient,
 			URL:            "/providers/Microsoft.Billing/billingAccounts",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Billing)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armbilling",
@@ -26,6 +27,7 @@ func init() {
 			NewFunc:        armbilling.NewEnrollmentAccountsClient,
 			URL:            "/providers/Microsoft.Billing/enrollmentAccounts",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Billing)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armbilling",
@@ -37,6 +39,7 @@ func init() {
 			NewFunc:        armbilling.NewPeriodsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Billing/billingPeriods",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Billing)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

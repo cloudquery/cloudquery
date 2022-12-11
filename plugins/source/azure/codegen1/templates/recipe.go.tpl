@@ -16,6 +16,9 @@ func init() {
 			NewFunc: {{$.BaseImport}}.{{.NewFunc}},
 			URL: "{{.URL}}",
 			Multiplex: `{{.Multiplex}}`,
+      {{- if .ExtraColumns}}
+      ExtraColumns: {{.ExtraColumns}},
+      {{- end }}
 		},
     {{- end}}
 	}

@@ -15,6 +15,11 @@ func ServiceProviders() *schema.Table {
 		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Peering),
 		Columns: []schema.Column{
 			{
+				Name:     "subscription_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAzureSubscription,
+			},
+			{
 				Name:     "properties",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Properties"),

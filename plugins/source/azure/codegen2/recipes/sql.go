@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armsql.NewDeletedServersClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/deletedServers",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Sql)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armsql",
@@ -26,6 +27,7 @@ func init() {
 			NewFunc:        armsql.NewInstancePoolsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/instancePools",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Sql)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armsql",
@@ -37,6 +39,7 @@ func init() {
 			NewFunc:        armsql.NewManagedInstancesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/managedInstances",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Sql)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armsql",
@@ -48,6 +51,7 @@ func init() {
 			NewFunc:        armsql.NewServersClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/servers",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Sql)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armsql",
@@ -59,6 +63,7 @@ func init() {
 			NewFunc:        armsql.NewVirtualClustersClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/virtualClusters",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Sql)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

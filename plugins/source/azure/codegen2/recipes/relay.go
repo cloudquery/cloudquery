@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armrelay.NewNamespacesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Relay/namespaces",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Relay)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

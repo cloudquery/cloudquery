@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armcognitiveservices.NewAccountsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/accounts",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_CognitiveServices)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armcognitiveservices",
@@ -26,6 +27,7 @@ func init() {
 			NewFunc:        armcognitiveservices.NewDeletedAccountsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/deletedAccounts",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_CognitiveServices)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

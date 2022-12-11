@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armdatafactory.NewFactoriesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DataFactory/factories",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DataFactory)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armdatamigration.NewServicesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DataMigration/services",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DataMigration)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

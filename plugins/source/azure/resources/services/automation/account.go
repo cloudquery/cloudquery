@@ -15,6 +15,11 @@ func Account() *schema.Table {
 		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Automation),
 		Columns: []schema.Column{
 			{
+				Name:     "subscription_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAzureSubscription,
+			},
+			{
 				Name:     "etag",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Etag"),

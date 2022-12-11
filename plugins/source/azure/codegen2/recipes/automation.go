@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armautomation.NewAccountClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Automation/automationAccounts",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Automation)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

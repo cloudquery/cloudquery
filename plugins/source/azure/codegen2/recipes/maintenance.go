@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armmaintenance.NewConfigurationsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/maintenanceConfigurations",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Maintenance)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armmaintenance",
@@ -26,6 +27,7 @@ func init() {
 			NewFunc:        armmaintenance.NewPublicMaintenanceConfigurationsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/publicMaintenanceConfigurations",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Maintenance)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

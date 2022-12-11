@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armdns.NewZonesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/dnszones",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

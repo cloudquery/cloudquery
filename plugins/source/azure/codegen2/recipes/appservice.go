@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armappservice.NewCertificateOrdersClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.CertificateRegistration/certificateOrders",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_CertificateRegistration)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armappservice",
@@ -26,6 +27,7 @@ func init() {
 			NewFunc:        armappservice.NewCertificatesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Web/certificates",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Web)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armappservice",
@@ -37,6 +39,7 @@ func init() {
 			NewFunc:        armappservice.NewDeletedWebAppsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Web/deletedSites",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Web)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armappservice",
@@ -48,6 +51,7 @@ func init() {
 			NewFunc:        armappservice.NewDomainsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/domains",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DomainRegistration)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armappservice",
@@ -59,6 +63,7 @@ func init() {
 			NewFunc:        armappservice.NewEnvironmentsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Web/hostingEnvironments",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Web)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armappservice",
@@ -70,6 +75,7 @@ func init() {
 			NewFunc:        armappservice.NewPlansClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Web/serverfarms",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Web)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armappservice",
@@ -81,6 +87,7 @@ func init() {
 			NewFunc:        armappservice.NewRecommendationsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Web/recommendations",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Web)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armappservice",
@@ -92,6 +99,7 @@ func init() {
 			NewFunc:        armappservice.NewResourceHealthMetadataClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Web/resourceHealthMetadata",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Web)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armappservice",
@@ -103,6 +111,7 @@ func init() {
 			NewFunc:        armappservice.NewStaticSitesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Web/staticSites",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Web)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armappservice",
@@ -114,6 +123,7 @@ func init() {
 			NewFunc:        armappservice.NewTopLevelDomainsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/topLevelDomains",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DomainRegistration)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armappservice",
@@ -125,6 +135,7 @@ func init() {
 			NewFunc:        armappservice.NewWebAppsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Web/sites",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Web)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

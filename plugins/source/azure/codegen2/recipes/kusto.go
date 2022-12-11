@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armkusto.NewClustersClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Kusto/clusters",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Kusto)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

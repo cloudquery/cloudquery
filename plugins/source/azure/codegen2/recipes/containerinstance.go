@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armcontainerinstance.NewContainerGroupsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/containerGroups",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ContainerInstance)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

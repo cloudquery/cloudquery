@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armcosmos.NewLocationsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DocumentDB)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armcosmos",
@@ -26,6 +27,7 @@ func init() {
 			NewFunc:        armcosmos.NewRestorableDatabaseAccountsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/restorableDatabaseAccounts",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DocumentDB)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armhybridcompute.NewPrivateLinkScopesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.HybridCompute/privateLinkScopes",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_HybridCompute)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

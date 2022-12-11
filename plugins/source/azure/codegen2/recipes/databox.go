@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armdatabox.NewJobsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DataBox/jobs",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DataBox)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

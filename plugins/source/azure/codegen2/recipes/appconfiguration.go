@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armappconfiguration.NewConfigurationStoresClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.AppConfiguration/configurationStores",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_AppConfiguration)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

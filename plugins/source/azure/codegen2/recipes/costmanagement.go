@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armcostmanagement.NewViewsClient,
 			URL:            "/providers/Microsoft.CostManagement/views",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_CostManagement)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

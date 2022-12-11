@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armpolicy.NewAssignmentsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyAssignments",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Authorization)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armpolicy",
@@ -26,6 +27,7 @@ func init() {
 			NewFunc:        armpolicy.NewDataPolicyManifestsClient,
 			URL:            "/providers/Microsoft.Authorization/dataPolicyManifests",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Authorization)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armpolicy",
@@ -37,6 +39,7 @@ func init() {
 			NewFunc:        armpolicy.NewDefinitionsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyDefinitions",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Authorization)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armpolicy",
@@ -48,6 +51,7 @@ func init() {
 			NewFunc:        armpolicy.NewExemptionsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyExemptions",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Authorization)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armpolicy",
@@ -59,6 +63,7 @@ func init() {
 			NewFunc:        armpolicy.NewSetDefinitionsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Authorization)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

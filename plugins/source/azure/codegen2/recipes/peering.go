@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armpeering.NewServiceCountriesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peeringServiceCountries",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Peering)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armpeering",
@@ -26,6 +27,7 @@ func init() {
 			NewFunc:        armpeering.NewServiceLocationsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peeringServiceLocations",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Peering)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armpeering",
@@ -37,6 +39,7 @@ func init() {
 			NewFunc:        armpeering.NewServiceProvidersClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peeringServiceProviders",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Peering)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

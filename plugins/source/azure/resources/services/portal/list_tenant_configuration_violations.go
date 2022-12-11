@@ -15,6 +15,11 @@ func ListTenantConfigurationViolations() *schema.Table {
 		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Portal),
 		Columns: []schema.Column{
 			{
+				Name:     "subscription_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAzureSubscription,
+			},
+			{
 				Name:     "error_message",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ErrorMessage"),

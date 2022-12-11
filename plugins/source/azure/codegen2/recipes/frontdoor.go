@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armfrontdoor.NewFrontDoorsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/frontDoors",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armfrontdoor",
@@ -26,6 +27,7 @@ func init() {
 			NewFunc:        armfrontdoor.NewManagedRuleSetsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/FrontDoorWebApplicationFirewallManagedRuleSets",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armfrontdoor",
@@ -37,6 +39,7 @@ func init() {
 			NewFunc:        armfrontdoor.NewNetworkExperimentProfilesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/NetworkExperimentProfiles",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

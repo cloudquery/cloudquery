@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armcontainerservice.NewManagedClustersClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/managedClusters",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ContainerService)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armcontainerservice",
@@ -26,6 +27,7 @@ func init() {
 			NewFunc:        armcontainerservice.NewSnapshotsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/snapshots",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ContainerService)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

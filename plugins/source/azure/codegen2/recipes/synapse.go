@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armsynapse.NewPrivateLinkHubsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Synapse/privateLinkHubs",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Synapse)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armsynapse",
@@ -26,6 +27,7 @@ func init() {
 			NewFunc:        armsynapse.NewWorkspacesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Synapse/workspaces",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Synapse)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

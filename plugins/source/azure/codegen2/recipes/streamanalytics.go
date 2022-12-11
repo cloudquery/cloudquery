@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armstreamanalytics.NewStreamingJobsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.StreamAnalytics/streamingjobs",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_StreamAnalytics)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

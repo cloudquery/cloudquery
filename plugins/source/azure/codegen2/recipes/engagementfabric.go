@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armengagementfabric.NewAccountsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.EngagementFabric/Accounts",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_EngagementFabric)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armappcomplianceautomation.NewReportsClient,
 			URL:            "/providers/Microsoft.AppComplianceAutomation/reports",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_AppComplianceAutomation)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

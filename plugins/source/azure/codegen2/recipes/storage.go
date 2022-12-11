@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armstorage.NewDeletedAccountsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Storage/deletedAccounts",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Storage)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armsupport.NewServicesClient,
 			URL:            "/providers/Microsoft.Support/services",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Support)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armsupport",
@@ -26,6 +27,7 @@ func init() {
 			NewFunc:        armsupport.NewTicketsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Support/supportTickets",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Support)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

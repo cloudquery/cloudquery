@@ -101,9 +101,6 @@ func initTable(parent *recipes.Table, r *recipes.Table) error {
 		path := strings.Split(runtime.FuncForPC(reflect.ValueOf(r.ListFunc).Pointer()).Name(), ".")
 		r.ListFuncName = path[len(path)-1]
 		r.ListFuncName = strings.TrimSuffix(r.ListFuncName, "-fm")
-		if strings.Contains(r.Multiplex, "SubscriptionResourceGroupMultiplexRegisteredNamespace") && reflect.TypeOf(r.ListFunc).In(0).Name() == "string" {
-			r.ListFuncHasResourceGroupName = true
-		}
 	}
 	if r.ResponseStruct != nil {
 		r.ResponseStructName = reflect.TypeOf(r.ResponseStruct).Elem().Name()
@@ -119,6 +116,7 @@ func initTable(parent *recipes.Table, r *recipes.Table) error {
 
 	opts := []codegen.TableOption{
 		codegen.WithSkipFields(r.SkipFields),
+		codegen.WithExtraColumns(r.ExtraColumns),
 		codegen.WithPKColumns("id"),
 	}
 	tableName := fmt.Sprintf("azure_%s_%s", r.PackageName, r.Name)

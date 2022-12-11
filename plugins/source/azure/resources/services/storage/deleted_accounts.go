@@ -15,6 +15,11 @@ func DeletedAccounts() *schema.Table {
 		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Storage),
 		Columns: []schema.Column{
 			{
+				Name:     "subscription_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAzureSubscription,
+			},
+			{
 				Name:     "properties",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Properties"),

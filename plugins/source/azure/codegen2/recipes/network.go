@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armnetwork.NewApplicationGatewaysClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/applicationGateways",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armnetwork",
@@ -26,6 +27,7 @@ func init() {
 			NewFunc:        armnetwork.NewApplicationSecurityGroupsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/applicationSecurityGroups",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armnetwork",
@@ -37,6 +39,7 @@ func init() {
 			NewFunc:        armnetwork.NewAzureFirewallFqdnTagsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/azureFirewallFqdnTags",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armnetwork",
@@ -48,6 +51,7 @@ func init() {
 			NewFunc:        armnetwork.NewAzureFirewallsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/azureFirewalls",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armnetwork",
@@ -59,6 +63,7 @@ func init() {
 			NewFunc:        armnetwork.NewBastionHostsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/bastionHosts",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armnetwork",
@@ -70,6 +75,7 @@ func init() {
 			NewFunc:        armnetwork.NewBgpServiceCommunitiesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/bgpServiceCommunities",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armnetwork",
@@ -81,6 +87,7 @@ func init() {
 			NewFunc:        armnetwork.NewCustomIPPrefixesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/customIpPrefixes",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armnetwork",
@@ -92,6 +99,7 @@ func init() {
 			NewFunc:        armnetwork.NewDdosProtectionPlansClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/ddosProtectionPlans",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armnetwork",
@@ -103,6 +111,7 @@ func init() {
 			NewFunc:        armnetwork.NewDscpConfigurationClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/dscpConfigurations",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armnetwork",
@@ -114,6 +123,7 @@ func init() {
 			NewFunc:        armnetwork.NewExpressRouteCircuitsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/expressRouteCircuits",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armnetwork",
@@ -125,6 +135,7 @@ func init() {
 			NewFunc:        armnetwork.NewExpressRoutePortsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/ExpressRoutePorts",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armnetwork",
@@ -136,6 +147,7 @@ func init() {
 			NewFunc:        armnetwork.NewExpressRoutePortsLocationsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/ExpressRoutePortsLocations",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armnetwork",
@@ -147,6 +159,7 @@ func init() {
 			NewFunc:        armnetwork.NewExpressRouteServiceProvidersClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/expressRouteServiceProviders",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armnetwork",
@@ -158,6 +171,7 @@ func init() {
 			NewFunc:        armnetwork.NewFirewallPoliciesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/firewallPolicies",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armnetwork",
@@ -169,6 +183,7 @@ func init() {
 			NewFunc:        armnetwork.NewIPAllocationsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/IpAllocations",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armnetwork",
@@ -180,6 +195,7 @@ func init() {
 			NewFunc:        armnetwork.NewIPGroupsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/ipGroups",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armnetwork",
@@ -191,6 +207,7 @@ func init() {
 			NewFunc:        armnetwork.NewInterfacesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkInterfaces",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armnetwork",
@@ -202,6 +219,7 @@ func init() {
 			NewFunc:        armnetwork.NewLoadBalancersClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/loadBalancers",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armnetwork",
@@ -213,6 +231,7 @@ func init() {
 			NewFunc:        armnetwork.NewNatGatewaysClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/natGateways",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armnetwork",
@@ -224,6 +243,7 @@ func init() {
 			NewFunc:        armnetwork.NewProfilesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkProfiles",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armnetwork",
@@ -235,6 +255,7 @@ func init() {
 			NewFunc:        armnetwork.NewPublicIPAddressesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/publicIPAddresses",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armnetwork",
@@ -246,6 +267,7 @@ func init() {
 			NewFunc:        armnetwork.NewPublicIPPrefixesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/publicIPPrefixes",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armnetwork",
@@ -257,6 +279,7 @@ func init() {
 			NewFunc:        armnetwork.NewRouteFiltersClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/routeFilters",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armnetwork",
@@ -268,6 +291,7 @@ func init() {
 			NewFunc:        armnetwork.NewRouteTablesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/routeTables",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armnetwork",
@@ -279,6 +303,7 @@ func init() {
 			NewFunc:        armnetwork.NewSecurityGroupsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkSecurityGroups",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armnetwork",
@@ -290,6 +315,7 @@ func init() {
 			NewFunc:        armnetwork.NewSecurityPartnerProvidersClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/securityPartnerProviders",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armnetwork",
@@ -301,6 +327,7 @@ func init() {
 			NewFunc:        armnetwork.NewServiceEndpointPoliciesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/ServiceEndpointPolicies",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armnetwork",
@@ -312,6 +339,7 @@ func init() {
 			NewFunc:        armnetwork.NewSubscriptionNetworkManagerConnectionsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkManagerConnections",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armnetwork",
@@ -323,6 +351,7 @@ func init() {
 			NewFunc:        armnetwork.NewVPNGatewaysClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/vpnGateways",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armnetwork",
@@ -334,6 +363,7 @@ func init() {
 			NewFunc:        armnetwork.NewVPNServerConfigurationsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/vpnServerConfigurations",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armnetwork",
@@ -345,6 +375,7 @@ func init() {
 			NewFunc:        armnetwork.NewVPNSitesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/vpnSites",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armnetwork",
@@ -356,6 +387,7 @@ func init() {
 			NewFunc:        armnetwork.NewVirtualAppliancesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkVirtualAppliances",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armnetwork",
@@ -367,6 +399,7 @@ func init() {
 			NewFunc:        armnetwork.NewVirtualHubsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/virtualHubs",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armnetwork",
@@ -378,6 +411,7 @@ func init() {
 			NewFunc:        armnetwork.NewVirtualNetworkTapsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/virtualNetworkTaps",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armnetwork",
@@ -389,6 +423,7 @@ func init() {
 			NewFunc:        armnetwork.NewVirtualNetworksClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/virtualNetworks",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armnetwork",
@@ -400,6 +435,7 @@ func init() {
 			NewFunc:        armnetwork.NewVirtualRoutersClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/virtualRouters",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armnetwork",
@@ -411,6 +447,7 @@ func init() {
 			NewFunc:        armnetwork.NewVirtualWansClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/virtualWans",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armnetwork",
@@ -422,6 +459,7 @@ func init() {
 			NewFunc:        armnetwork.NewWatchersClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkWatchers",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armnetwork",
@@ -433,6 +471,7 @@ func init() {
 			NewFunc:        armnetwork.NewWebApplicationFirewallPoliciesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

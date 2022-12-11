@@ -2,7 +2,18 @@ package recipes
 
 import (
 	"github.com/cloudquery/plugin-sdk/codegen"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
+
+var SubscriptionIdColumn = codegen.ColumnDefinition{
+	Name:     "subscription_id",
+	Type:     schema.TypeString,
+	Resolver: "client.ResolveAzureSubscription",
+}
+
+var DefaultExtraColumns = []codegen.ColumnDefinition{
+	SubscriptionIdColumn,
+}
 
 var Tables []Table
 
@@ -44,7 +55,7 @@ type Table struct {
 	// NewFuncName is reflected name from the ListFunc
 	ListFuncName string
 	// Does the ListFunc get subscription_id as a first parameter
-	ListFuncHasResourceGroupName bool
+	// ListFuncHasResourceGroupName bool
 	// Relations is list of relations functions
 	Relations []*Table
 	// Multiplex
@@ -58,5 +69,6 @@ type Table struct {
 	// SkipFields fields in go struct to skip when generating the table from the go struct
 	SkipFields []string
 	// URL is the rest endpoint. This is used by mock tests
-	URL string
+	URL          string
+	ExtraColumns []codegen.ColumnDefinition
 }

@@ -33,11 +33,7 @@ func fetch{{.Name | ToCamel}}(ctx context.Context, meta schema.ClientMeta, paren
 	if err != nil {
     return err
   }
-	{{- if .ListFuncHasResourceGroupName}}
-	pager := svc.{{.ListFuncName}}(cl.ResourceGroup, nil)
-	{{- else }}
 	pager := svc.{{.ListFuncName}}(nil)
-	{{- end }}
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

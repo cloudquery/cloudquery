@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armmysqlflexibleservers.NewServersClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/flexibleServers",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DBforMySQL)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

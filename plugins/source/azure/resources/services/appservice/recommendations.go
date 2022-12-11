@@ -15,6 +15,11 @@ func Recommendations() *schema.Table {
 		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Web),
 		Columns: []schema.Column{
 			{
+				Name:     "subscription_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAzureSubscription,
+			},
+			{
 				Name:     "kind",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Kind"),

@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armeventgrid.NewTopicTypesClient,
 			URL:            "/providers/Microsoft.EventGrid/topicTypes",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_EventGrid)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

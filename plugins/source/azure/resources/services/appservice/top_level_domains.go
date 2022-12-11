@@ -15,6 +15,11 @@ func TopLevelDomains() *schema.Table {
 		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DomainRegistration),
 		Columns: []schema.Column{
 			{
+				Name:     "subscription_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAzureSubscription,
+			},
+			{
 				Name:     "kind",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Kind"),

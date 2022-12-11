@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armhanaonazure.NewSapMonitorsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.HanaOnAzure/sapMonitors",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_HanaOnAzure)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

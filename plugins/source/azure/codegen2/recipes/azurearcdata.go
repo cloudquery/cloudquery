@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armazurearcdata.NewPostgresInstancesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/postgresInstances",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_AzureArcData)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armazurearcdata",
@@ -26,6 +27,7 @@ func init() {
 			NewFunc:        armazurearcdata.NewSQLManagedInstancesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/sqlManagedInstances",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_AzureArcData)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armazurearcdata",
@@ -37,6 +39,7 @@ func init() {
 			NewFunc:        armazurearcdata.NewSQLServerInstancesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/sqlServerInstances",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_AzureArcData)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

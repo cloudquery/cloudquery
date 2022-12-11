@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armhybriddatamanager.NewDataManagersClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.HybridData/dataManagers",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_HybridData)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

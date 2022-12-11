@@ -15,6 +15,11 @@ func Factories() *schema.Table {
 		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DataFactory),
 		Columns: []schema.Column{
 			{
+				Name:     "subscription_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAzureSubscription,
+			},
+			{
 				Name:     "additional_properties",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("AdditionalProperties"),

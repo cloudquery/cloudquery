@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armmonitor.NewLogProfilesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/logprofiles",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Insights)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armmonitor",
@@ -26,6 +27,7 @@ func init() {
 			NewFunc:        armmonitor.NewPrivateLinkScopesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/microsoft.insights/privateLinkScopes",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_insights)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armmonitor",

@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armbotservice.NewBotsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.BotService/botServices",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_BotService)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armportal.NewListTenantConfigurationViolationsClient,
 			URL:            "/providers/Microsoft.Portal/listTenantConfigurationViolations",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Portal)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armportal",
@@ -26,6 +27,7 @@ func init() {
 			NewFunc:        armportal.NewTenantConfigurationsClient,
 			URL:            "/providers/Microsoft.Portal/tenantConfigurations",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Portal)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

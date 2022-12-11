@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armdevhub.NewWorkflowClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DevHub/workflows",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DevHub)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armstoragecache.NewCachesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.StorageCache/caches",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_StorageCache)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

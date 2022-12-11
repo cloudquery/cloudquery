@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armazuredata.NewSQLServerRegistrationsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.AzureData/sqlServerRegistrations",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_AzureData)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

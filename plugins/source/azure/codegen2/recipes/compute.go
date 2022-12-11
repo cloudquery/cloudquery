@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armcompute.NewCloudServicesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/cloudServices",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Compute)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armcompute",
@@ -26,6 +27,7 @@ func init() {
 			NewFunc:        armcompute.NewDiskAccessesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/diskAccesses",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Compute)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armcompute",
@@ -37,6 +39,7 @@ func init() {
 			NewFunc:        armcompute.NewDiskEncryptionSetsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/diskEncryptionSets",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Compute)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armcompute",
@@ -48,6 +51,7 @@ func init() {
 			NewFunc:        armcompute.NewDisksClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/disks",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Compute)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armcompute",
@@ -59,6 +63,7 @@ func init() {
 			NewFunc:        armcompute.NewGalleriesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/galleries",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Compute)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armcompute",
@@ -70,6 +75,7 @@ func init() {
 			NewFunc:        armcompute.NewImagesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/images",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Compute)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armcompute",
@@ -81,6 +87,7 @@ func init() {
 			NewFunc:        armcompute.NewRestorePointCollectionsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/restorePointCollections",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Compute)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armcompute",
@@ -92,6 +99,7 @@ func init() {
 			NewFunc:        armcompute.NewSnapshotsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/snapshots",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Compute)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armcompute",
@@ -103,6 +111,7 @@ func init() {
 			NewFunc:        armcompute.NewVirtualMachineScaleSetsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/virtualMachineScaleSets",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Compute)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armcompute",
@@ -114,6 +123,7 @@ func init() {
 			NewFunc:        armcompute.NewVirtualMachinesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/virtualMachines",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Compute)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

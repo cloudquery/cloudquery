@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armdatalakestore.NewAccountsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DataLakeStore/accounts",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DataLakeStore)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

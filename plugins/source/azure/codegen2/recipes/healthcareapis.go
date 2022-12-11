@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armhealthcareapis.NewServicesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.HealthcareApis/services",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_HealthcareApis)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

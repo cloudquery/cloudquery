@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armcdn.NewEdgeNodesClient,
 			URL:            "/providers/Microsoft.Cdn/edgenodes",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Cdn)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armcdn",
@@ -26,6 +27,7 @@ func init() {
 			NewFunc:        armcdn.NewManagedRuleSetsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/cdnWebApplicationFirewallManagedRuleSets",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Cdn)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

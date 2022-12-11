@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armservicebus.NewNamespacesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ServiceBus/namespaces",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ServiceBus)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

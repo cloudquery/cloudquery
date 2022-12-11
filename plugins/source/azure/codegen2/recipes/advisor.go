@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armadvisor.NewRecommendationMetadataClient,
 			URL:            "/providers/Microsoft.Advisor/metadata",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Advisor)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armadvisor",
@@ -26,6 +27,7 @@ func init() {
 			NewFunc:        armadvisor.NewRecommendationsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/recommendations",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Advisor)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armadvisor",
@@ -37,6 +39,7 @@ func init() {
 			NewFunc:        armadvisor.NewSuppressionsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/suppressions",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Advisor)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armsaas.NewResourcesClient,
 			URL:            "/providers/Microsoft.SaaS/saasresources",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_SaaS)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

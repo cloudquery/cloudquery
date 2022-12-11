@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armmarketplace.NewPrivateStoreClient,
 			URL:            "/providers/Microsoft.Marketplace/privateStores",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Marketplace)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

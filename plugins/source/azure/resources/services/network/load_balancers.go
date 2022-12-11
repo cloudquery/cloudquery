@@ -15,6 +15,11 @@ func LoadBalancers() *schema.Table {
 		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network),
 		Columns: []schema.Column{
 			{
+				Name:     "subscription_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAzureSubscription,
+			},
+			{
 				Name:     "extended_location",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("ExtendedLocation"),

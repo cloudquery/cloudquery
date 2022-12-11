@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armanalysisservices.NewServersClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.AnalysisServices/servers",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_AnalysisServices)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

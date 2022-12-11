@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armwindowsiot.NewServicesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.WindowsIoT/deviceServices",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_WindowsIoT)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

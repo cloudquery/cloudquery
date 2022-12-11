@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armnginx.NewDeploymentsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Nginx.NginxPlus/nginxDeployments",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceNginx_NginxPlus)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

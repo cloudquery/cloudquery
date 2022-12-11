@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armbatch.NewAccountClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Batch/batchAccounts",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Batch)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

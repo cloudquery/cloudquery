@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armdevops.NewPipelineTemplateDefinitionsClient,
 			URL:            "/providers/Microsoft.DevOps/pipelineTemplateDefinitions",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DevOps)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armdnsresolver.NewDNSForwardingRulesetsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/dnsForwardingRulesets",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armdnsresolver",
@@ -26,6 +27,7 @@ func init() {
 			NewFunc:        armdnsresolver.NewDNSResolversClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/dnsResolvers",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

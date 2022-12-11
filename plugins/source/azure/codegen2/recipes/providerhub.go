@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armproviderhub.NewProviderRegistrationsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ProviderHub)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)

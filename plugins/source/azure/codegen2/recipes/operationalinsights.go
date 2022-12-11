@@ -15,6 +15,7 @@ func init() {
 			NewFunc:        armoperationalinsights.NewClustersClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.OperationalInsights/clusters",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_OperationalInsights)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
 			Service:        "armoperationalinsights",
@@ -26,6 +27,7 @@ func init() {
 			NewFunc:        armoperationalinsights.NewWorkspacesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.OperationalInsights/workspaces",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_OperationalInsights)`,
+			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
 	Tables = append(Tables, tables...)
