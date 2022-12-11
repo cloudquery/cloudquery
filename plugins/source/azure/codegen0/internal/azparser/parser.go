@@ -71,6 +71,10 @@ var newFuncToSkipPerPackage = map[string]map[string]bool{
 		// Seems like a buggy resource that always returns error. maybe will be fixed in future Azure SDK
 		"NewDeletedWorkspacesClient": true,
 	},
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage": {
+		// we migrated this to manual written client as it has childs
+		"NewAccountsClient": true,
+	},
 }
 
 var reNewClient = regexp.MustCompile(`New[a-zA-Z]+Client`)

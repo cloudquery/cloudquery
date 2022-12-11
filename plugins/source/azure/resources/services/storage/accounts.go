@@ -68,6 +68,10 @@ func Accounts() *schema.Table {
 				Resolver: schema.PathResolver("Type"),
 			},
 		},
+
+		Relations: []*schema.Table{
+			Tables(),
+		},
 	}
 }
 

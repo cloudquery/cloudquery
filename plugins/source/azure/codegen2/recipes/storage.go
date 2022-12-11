@@ -7,17 +7,6 @@ func init() {
 	tables := []Table{
 		{
 			Service:        "armstorage",
-			Name:           "accounts",
-			Struct:         &armstorage.Account{},
-			ResponseStruct: &armstorage.AccountsClientListResponse{},
-			Client:         &armstorage.AccountsClient{},
-			ListFunc:       (&armstorage.AccountsClient{}).NewListPager,
-			NewFunc:        armstorage.NewAccountsClient,
-			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Storage/storageAccounts",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Storage)`,
-		},
-		{
-			Service:        "armstorage",
 			Name:           "deleted_accounts",
 			Struct:         &armstorage.DeletedAccount{},
 			ResponseStruct: &armstorage.DeletedAccountsClientListResponse{},
