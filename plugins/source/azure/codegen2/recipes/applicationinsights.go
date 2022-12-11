@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights"
 
-func Armapplicationinsights() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armapplicationinsights",
@@ -28,10 +28,5 @@ func Armapplicationinsights() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Insights)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armapplicationinsights()...)
+	Tables = append(Tables, tables...)
 }

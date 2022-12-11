@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redhatopenshift/armredhatopenshift"
 
-func Armredhatopenshift() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armredhatopenshift",
@@ -17,10 +17,5 @@ func Armredhatopenshift() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_RedHatOpenShift)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armredhatopenshift()...)
+	Tables = append(Tables, tables...)
 }

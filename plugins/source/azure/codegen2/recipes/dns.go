@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dns/armdns"
 
-func Armdns() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armdns",
@@ -17,10 +17,5 @@ func Armdns() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armdns()...)
+	Tables = append(Tables, tables...)
 }

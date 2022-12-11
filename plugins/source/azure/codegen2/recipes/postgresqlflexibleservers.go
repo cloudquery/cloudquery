@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers"
 
-func Armpostgresqlflexibleservers() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armpostgresqlflexibleservers",
@@ -17,10 +17,5 @@ func Armpostgresqlflexibleservers() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DBforPostgreSQL)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armpostgresqlflexibleservers()...)
+	Tables = append(Tables, tables...)
 }

@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub"
 
-func Armeventhub() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armeventhub",
@@ -17,10 +17,5 @@ func Armeventhub() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_EventHub)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armeventhub()...)
+	Tables = append(Tables, tables...)
 }

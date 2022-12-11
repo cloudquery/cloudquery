@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox"
 
-func Armdatabox() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armdatabox",
@@ -17,10 +17,5 @@ func Armdatabox() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DataBox)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armdatabox()...)
+	Tables = append(Tables, tables...)
 }

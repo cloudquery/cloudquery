@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/notificationhubs/armnotificationhubs"
 
-func Armnotificationhubs() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armnotificationhubs",
@@ -17,10 +17,5 @@ func Armnotificationhubs() []Table {
 			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_NotificationHubs)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armnotificationhubs()...)
+	Tables = append(Tables, tables...)
 }

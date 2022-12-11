@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/relay/armrelay"
 
-func Armrelay() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armrelay",
@@ -17,10 +17,5 @@ func Armrelay() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Relay)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armrelay()...)
+	Tables = append(Tables, tables...)
 }

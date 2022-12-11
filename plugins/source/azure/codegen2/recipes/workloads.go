@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads"
 
-func Armworkloads() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armworkloads",
@@ -17,10 +17,5 @@ func Armworkloads() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Workloads)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armworkloads()...)
+	Tables = append(Tables, tables...)
 }

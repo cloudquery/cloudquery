@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs"
 
-func Armavs() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armavs",
@@ -17,10 +17,5 @@ func Armavs() []Table {
 			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_AVS)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armavs()...)
+	Tables = append(Tables, tables...)
 }

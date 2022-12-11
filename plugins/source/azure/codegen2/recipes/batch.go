@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch"
 
-func Armbatch() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armbatch",
@@ -17,10 +17,5 @@ func Armbatch() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Batch)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armbatch()...)
+	Tables = append(Tables, tables...)
 }

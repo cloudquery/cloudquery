@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcomplianceautomation/armappcomplianceautomation"
 
-func Armappcomplianceautomation() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armappcomplianceautomation",
@@ -17,10 +17,5 @@ func Armappcomplianceautomation() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_AppComplianceAutomation)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armappcomplianceautomation()...)
+	Tables = append(Tables, tables...)
 }

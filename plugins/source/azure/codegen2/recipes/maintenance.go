@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance"
 
-func Armmaintenance() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armmaintenance",
@@ -28,10 +28,5 @@ func Armmaintenance() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Maintenance)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armmaintenance()...)
+	Tables = append(Tables, tables...)
 }

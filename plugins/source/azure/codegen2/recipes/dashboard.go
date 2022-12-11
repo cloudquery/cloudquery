@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dashboard/armdashboard"
 
-func Armdashboard() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armdashboard",
@@ -17,10 +17,5 @@ func Armdashboard() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Dashboard)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armdashboard()...)
+	Tables = append(Tables, tables...)
 }

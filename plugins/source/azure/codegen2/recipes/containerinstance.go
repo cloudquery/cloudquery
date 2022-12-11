@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerinstance/armcontainerinstance"
 
-func Armcontainerinstance() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armcontainerinstance",
@@ -17,10 +17,5 @@ func Armcontainerinstance() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ContainerInstance)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armcontainerinstance()...)
+	Tables = append(Tables, tables...)
 }

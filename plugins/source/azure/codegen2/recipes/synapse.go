@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse"
 
-func Armsynapse() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armsynapse",
@@ -28,10 +28,5 @@ func Armsynapse() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Synapse)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armsynapse()...)
+	Tables = append(Tables, tables...)
 }

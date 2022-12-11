@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
 
-func Armstorage() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armstorage",
@@ -28,10 +28,5 @@ func Armstorage() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Storage)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armstorage()...)
+	Tables = append(Tables, tables...)
 }

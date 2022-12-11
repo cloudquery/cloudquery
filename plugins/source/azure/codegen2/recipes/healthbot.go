@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthbot/armhealthbot"
 
-func Armhealthbot() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armhealthbot",
@@ -17,10 +17,5 @@ func Armhealthbot() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_HealthBot)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armhealthbot()...)
+	Tables = append(Tables, tables...)
 }

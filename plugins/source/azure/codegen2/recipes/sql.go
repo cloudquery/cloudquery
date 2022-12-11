@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
 
-func Armsql() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armsql",
@@ -61,10 +61,5 @@ func Armsql() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Sql)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armsql()...)
+	Tables = append(Tables, tables...)
 }

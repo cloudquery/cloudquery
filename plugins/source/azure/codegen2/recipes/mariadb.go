@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb"
 
-func Armmariadb() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armmariadb",
@@ -17,10 +17,5 @@ func Armmariadb() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DBforMariaDB)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armmariadb()...)
+	Tables = append(Tables, tables...)
 }

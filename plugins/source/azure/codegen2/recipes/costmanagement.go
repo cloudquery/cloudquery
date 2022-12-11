@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement"
 
-func Armcostmanagement() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armcostmanagement",
@@ -17,10 +17,5 @@ func Armcostmanagement() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_CostManagement)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armcostmanagement()...)
+	Tables = append(Tables, tables...)
 }

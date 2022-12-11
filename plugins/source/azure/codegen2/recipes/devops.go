@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devops/armdevops"
 
-func Armdevops() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armdevops",
@@ -17,10 +17,5 @@ func Armdevops() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DevOps)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armdevops()...)
+	Tables = append(Tables, tables...)
 }

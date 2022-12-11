@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering"
 
-func Armpeering() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armpeering",
@@ -39,10 +39,5 @@ func Armpeering() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Peering)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armpeering()...)
+	Tables = append(Tables, tables...)
 }

@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor"
 
-func Armfrontdoor() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armfrontdoor",
@@ -50,10 +50,5 @@ func Armfrontdoor() []Table {
 			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armfrontdoor()...)
+	Tables = append(Tables, tables...)
 }

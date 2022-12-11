@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/migrate/armmigrate"
 
-func Armmigrate() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armmigrate",
@@ -17,10 +17,5 @@ func Armmigrate() []Table {
 			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Migrate)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armmigrate()...)
+	Tables = append(Tables, tables...)
 }

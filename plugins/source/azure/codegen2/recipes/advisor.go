@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/advisor/armadvisor"
 
-func Armadvisor() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armadvisor",
@@ -39,10 +39,5 @@ func Armadvisor() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Advisor)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armadvisor()...)
+	Tables = append(Tables, tables...)
 }

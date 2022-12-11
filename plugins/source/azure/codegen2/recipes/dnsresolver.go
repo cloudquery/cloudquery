@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdnsresolver"
 
-func Armdnsresolver() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armdnsresolver",
@@ -28,10 +28,5 @@ func Armdnsresolver() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armdnsresolver()...)
+	Tables = append(Tables, tables...)
 }

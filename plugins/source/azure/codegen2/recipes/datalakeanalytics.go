@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-analytics/armdatalakeanalytics"
 
-func Armdatalakeanalytics() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armdatalakeanalytics",
@@ -17,10 +17,5 @@ func Armdatalakeanalytics() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DataLakeAnalytics)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armdatalakeanalytics()...)
+	Tables = append(Tables, tables...)
 }

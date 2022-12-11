@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration"
 
-func Armdatamigration() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armdatamigration",
@@ -17,10 +17,5 @@ func Armdatamigration() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DataMigration)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armdatamigration()...)
+	Tables = append(Tables, tables...)
 }

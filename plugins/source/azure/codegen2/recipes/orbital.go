@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/orbital/armorbital"
 
-func Armorbital() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armorbital",
@@ -28,10 +28,5 @@ func Armorbital() []Table {
 			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Orbital)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armorbital()...)
+	Tables = append(Tables, tables...)
 }

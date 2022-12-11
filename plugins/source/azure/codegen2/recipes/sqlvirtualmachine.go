@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sqlvirtualmachine/armsqlvirtualmachine"
 
-func Armsqlvirtualmachine() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armsqlvirtualmachine",
@@ -28,10 +28,5 @@ func Armsqlvirtualmachine() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_SqlVirtualMachine)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armsqlvirtualmachine()...)
+	Tables = append(Tables, tables...)
 }

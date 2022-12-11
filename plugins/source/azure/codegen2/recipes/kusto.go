@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto"
 
-func Armkusto() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armkusto",
@@ -17,10 +17,5 @@ func Armkusto() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Kusto)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armkusto()...)
+	Tables = append(Tables, tables...)
 }

@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/saas/armsaas"
 
-func Armsaas() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armsaas",
@@ -28,10 +28,5 @@ func Armsaas() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_SaaS)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armsaas()...)
+	Tables = append(Tables, tables...)
 }

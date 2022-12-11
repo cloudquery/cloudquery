@@ -3,7 +3,7 @@ package recipes
 
 import "{{.PkgPath}}"
 
-func {{.BaseImport | ToCamel}}() []Table {
+func init() {
 	tables := []Table{
     {{- range .Tables}}
 		{
@@ -19,10 +19,5 @@ func {{.BaseImport | ToCamel}}() []Table {
 		},
     {{- end}}
 	}
-
-	return tables
-}
-
-func init() {
-  Tables = append(Tables, {{.BaseImport | ToCamel}}()...)
+  Tables = append(Tables, tables...)
 }

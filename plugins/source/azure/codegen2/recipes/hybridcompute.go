@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute"
 
-func Armhybridcompute() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armhybridcompute",
@@ -17,10 +17,5 @@ func Armhybridcompute() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_HybridCompute)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armhybridcompute()...)
+	Tables = append(Tables, tables...)
 }

@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/portal/armportal"
 
-func Armportal() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armportal",
@@ -28,10 +28,5 @@ func Armportal() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Portal)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armportal()...)
+	Tables = append(Tables, tables...)
 }

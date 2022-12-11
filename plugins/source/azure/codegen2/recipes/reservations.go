@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations"
 
-func Armreservations() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armreservations",
@@ -17,10 +17,5 @@ func Armreservations() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Capacity)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armreservations()...)
+	Tables = append(Tables, tables...)
 }

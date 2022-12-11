@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic"
 
-func Armelastic() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armelastic",
@@ -17,10 +17,5 @@ func Armelastic() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Elastic)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armelastic()...)
+	Tables = append(Tables, tables...)
 }

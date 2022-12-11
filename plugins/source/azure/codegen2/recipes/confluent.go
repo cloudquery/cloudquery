@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confluent/armconfluent"
 
-func Armconfluent() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armconfluent",
@@ -17,10 +17,5 @@ func Armconfluent() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Confluent)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armconfluent()...)
+	Tables = append(Tables, tables...)
 }

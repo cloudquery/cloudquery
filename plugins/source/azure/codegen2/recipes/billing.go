@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
 
-func Armbilling() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armbilling",
@@ -39,10 +39,5 @@ func Armbilling() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Billing)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armbilling()...)
+	Tables = append(Tables, tables...)
 }

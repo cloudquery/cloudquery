@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices"
 
-func Armcognitiveservices() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armcognitiveservices",
@@ -28,10 +28,5 @@ func Armcognitiveservices() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_CognitiveServices)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armcognitiveservices()...)
+	Tables = append(Tables, tables...)
 }

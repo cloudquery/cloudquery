@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization"
 
-func Armauthorization() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armauthorization",
@@ -39,10 +39,5 @@ func Armauthorization() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Authorization)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armauthorization()...)
+	Tables = append(Tables, tables...)
 }

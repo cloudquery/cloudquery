@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus"
 
-func Armservicebus() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armservicebus",
@@ -17,10 +17,5 @@ func Armservicebus() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ServiceBus)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armservicebus()...)
+	Tables = append(Tables, tables...)
 }

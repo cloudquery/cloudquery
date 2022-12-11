@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsight"
 
-func Armhdinsight() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armhdinsight",
@@ -17,10 +17,5 @@ func Armhdinsight() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_HDInsight)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armhdinsight()...)
+	Tables = append(Tables, tables...)
 }

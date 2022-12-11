@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice"
 
-func Armappservice() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armappservice",
@@ -127,10 +127,5 @@ func Armappservice() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Web)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armappservice()...)
+	Tables = append(Tables, tables...)
 }

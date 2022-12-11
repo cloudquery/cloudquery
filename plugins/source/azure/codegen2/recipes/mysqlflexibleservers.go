@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysqlflexibleservers"
 
-func Armmysqlflexibleservers() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armmysqlflexibleservers",
@@ -17,10 +17,5 @@ func Armmysqlflexibleservers() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DBforMySQL)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armmysqlflexibleservers()...)
+	Tables = append(Tables, tables...)
 }

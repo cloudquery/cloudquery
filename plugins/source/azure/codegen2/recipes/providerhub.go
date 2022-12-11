@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub"
 
-func Armproviderhub() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armproviderhub",
@@ -17,10 +17,5 @@ func Armproviderhub() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ProviderHub)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armproviderhub()...)
+	Tables = append(Tables, tables...)
 }

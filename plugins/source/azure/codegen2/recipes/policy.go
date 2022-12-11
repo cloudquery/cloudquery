@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy"
 
-func Armpolicy() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armpolicy",
@@ -61,10 +61,5 @@ func Armpolicy() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Authorization)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armpolicy()...)
+	Tables = append(Tables, tables...)
 }

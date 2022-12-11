@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation"
 
-func Armautomation() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armautomation",
@@ -17,10 +17,5 @@ func Armautomation() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Automation)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armautomation()...)
+	Tables = append(Tables, tables...)
 }

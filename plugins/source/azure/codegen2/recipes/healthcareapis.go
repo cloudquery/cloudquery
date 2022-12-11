@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthcareapis/armhealthcareapis"
 
-func Armhealthcareapis() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armhealthcareapis",
@@ -17,10 +17,5 @@ func Armhealthcareapis() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_HealthcareApis)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armhealthcareapis()...)
+	Tables = append(Tables, tables...)
 }

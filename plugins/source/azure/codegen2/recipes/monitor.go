@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor"
 
-func Armmonitor() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armmonitor",
@@ -39,10 +39,5 @@ func Armmonitor() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Insights)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armmonitor()...)
+	Tables = append(Tables, tables...)
 }

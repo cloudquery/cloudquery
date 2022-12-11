@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement"
 
-func Armapimanagement() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armapimanagement",
@@ -17,10 +17,5 @@ func Armapimanagement() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ApiManagement)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armapimanagement()...)
+	Tables = append(Tables, tables...)
 }

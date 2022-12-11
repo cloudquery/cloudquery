@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/aad/armaad"
 
-func Armaad() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armaad",
@@ -17,10 +17,5 @@ func Armaad() []Table {
 			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.Namespacemicrosoft_aadiam)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armaad()...)
+	Tables = append(Tables, tables...)
 }

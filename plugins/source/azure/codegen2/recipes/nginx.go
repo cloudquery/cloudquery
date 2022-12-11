@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx"
 
-func Armnginx() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armnginx",
@@ -17,10 +17,5 @@ func Armnginx() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceNginx_NginxPlus)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armnginx()...)
+	Tables = append(Tables, tables...)
 }

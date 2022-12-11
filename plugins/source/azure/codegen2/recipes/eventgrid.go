@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid"
 
-func Armeventgrid() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armeventgrid",
@@ -17,10 +17,5 @@ func Armeventgrid() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_EventGrid)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armeventgrid()...)
+	Tables = append(Tables, tables...)
 }

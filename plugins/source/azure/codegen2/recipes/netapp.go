@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp"
 
-func Armnetapp() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armnetapp",
@@ -17,10 +17,5 @@ func Armnetapp() []Table {
 			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_NetApp)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armnetapp()...)
+	Tables = append(Tables, tables...)
 }

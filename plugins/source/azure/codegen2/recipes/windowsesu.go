@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsesu/armwindowsesu"
 
-func Armwindowsesu() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armwindowsesu",
@@ -17,10 +17,5 @@ func Armwindowsesu() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_WindowsESU)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armwindowsesu()...)
+	Tables = append(Tables, tables...)
 }

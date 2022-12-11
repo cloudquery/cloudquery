@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn"
 
-func Armcdn() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armcdn",
@@ -39,10 +39,5 @@ func Armcdn() []Table {
 			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Cdn)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armcdn()...)
+	Tables = append(Tables, tables...)
 }

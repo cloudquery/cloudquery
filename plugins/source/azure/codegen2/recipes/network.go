@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
 
-func Armnetwork() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armnetwork",
@@ -479,10 +479,5 @@ func Armnetwork() []Table {
 			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armnetwork()...)
+	Tables = append(Tables, tables...)
 }

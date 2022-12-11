@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresqlhsc/armpostgresqlhsc"
 
-func Armpostgresqlhsc() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armpostgresqlhsc",
@@ -17,10 +17,5 @@ func Armpostgresqlhsc() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DBForPostgreSql)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armpostgresqlhsc()...)
+	Tables = append(Tables, tables...)
 }

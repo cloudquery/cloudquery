@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybriddatamanager/armhybriddatamanager"
 
-func Armhybriddatamanager() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armhybriddatamanager",
@@ -17,10 +17,5 @@ func Armhybriddatamanager() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_HybridData)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armhybriddatamanager()...)
+	Tables = append(Tables, tables...)
 }

@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
 
-func Armcosmos() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armcosmos",
@@ -28,10 +28,5 @@ func Armcosmos() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DocumentDB)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armcosmos()...)
+	Tables = append(Tables, tables...)
 }

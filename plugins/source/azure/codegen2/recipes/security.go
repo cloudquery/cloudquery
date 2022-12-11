@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity"
 
-func Armsecurity() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armsecurity",
@@ -237,10 +237,5 @@ func Armsecurity() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armsecurity()...)
+	Tables = append(Tables, tables...)
 }

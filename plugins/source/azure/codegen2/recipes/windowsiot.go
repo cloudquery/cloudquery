@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsiot/armwindowsiot"
 
-func Armwindowsiot() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armwindowsiot",
@@ -17,10 +17,5 @@ func Armwindowsiot() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_WindowsIoT)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armwindowsiot()...)
+	Tables = append(Tables, tables...)
 }

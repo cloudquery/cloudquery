@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice"
 
-func Armbotservice() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armbotservice",
@@ -17,10 +17,5 @@ func Armbotservice() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_BotService)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armbotservice()...)
+	Tables = append(Tables, tables...)
 }

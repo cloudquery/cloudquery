@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automanage/armautomanage"
 
-func Armautomanage() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armautomanage",
@@ -17,10 +17,5 @@ func Armautomanage() []Table {
 			Multiplex:      `client.SubscriptionResourceGroupMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Automanage)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armautomanage()...)
+	Tables = append(Tables, tables...)
 }

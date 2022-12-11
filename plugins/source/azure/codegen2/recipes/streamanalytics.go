@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics"
 
-func Armstreamanalytics() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armstreamanalytics",
@@ -17,10 +17,5 @@ func Armstreamanalytics() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_StreamAnalytics)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armstreamanalytics()...)
+	Tables = append(Tables, tables...)
 }

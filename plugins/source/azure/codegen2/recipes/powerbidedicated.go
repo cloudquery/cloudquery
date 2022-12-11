@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbidedicated/armpowerbidedicated"
 
-func Armpowerbidedicated() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armpowerbidedicated",
@@ -17,10 +17,5 @@ func Armpowerbidedicated() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_PowerBIDedicated)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armpowerbidedicated()...)
+	Tables = append(Tables, tables...)
 }

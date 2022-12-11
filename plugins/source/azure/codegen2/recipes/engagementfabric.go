@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/engagementfabric/armengagementfabric"
 
-func Armengagementfabric() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armengagementfabric",
@@ -17,10 +17,5 @@ func Armengagementfabric() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_EngagementFabric)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armengagementfabric()...)
+	Tables = append(Tables, tables...)
 }

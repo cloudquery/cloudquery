@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory"
 
-func Armdatafactory() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armdatafactory",
@@ -17,10 +17,5 @@ func Armdatafactory() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DataFactory)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armdatafactory()...)
+	Tables = append(Tables, tables...)
 }

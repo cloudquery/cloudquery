@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata"
 
-func Armazurearcdata() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armazurearcdata",
@@ -39,10 +39,5 @@ func Armazurearcdata() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_AzureArcData)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armazurearcdata()...)
+	Tables = append(Tables, tables...)
 }

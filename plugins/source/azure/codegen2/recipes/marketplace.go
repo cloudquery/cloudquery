@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplace/armmarketplace"
 
-func Armmarketplace() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armmarketplace",
@@ -17,10 +17,5 @@ func Armmarketplace() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Marketplace)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armmarketplace()...)
+	Tables = append(Tables, tables...)
 }

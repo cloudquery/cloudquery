@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql"
 
-func Armpostgresql() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armpostgresql",
@@ -17,10 +17,5 @@ func Armpostgresql() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DBforPostgreSQL)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armpostgresql()...)
+	Tables = append(Tables, tables...)
 }

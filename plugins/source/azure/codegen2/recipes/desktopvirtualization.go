@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization"
 
-func Armdesktopvirtualization() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armdesktopvirtualization",
@@ -17,10 +17,5 @@ func Armdesktopvirtualization() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DesktopVirtualization)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armdesktopvirtualization()...)
+	Tables = append(Tables, tables...)
 }

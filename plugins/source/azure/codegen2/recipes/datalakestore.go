@@ -3,7 +3,7 @@ package recipes
 
 import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-store/armdatalakestore"
 
-func Armdatalakestore() []Table {
+func init() {
 	tables := []Table{
 		{
 			Service:        "armdatalakestore",
@@ -17,10 +17,5 @@ func Armdatalakestore() []Table {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DataLakeStore)`,
 		},
 	}
-
-	return tables
-}
-
-func init() {
-	Tables = append(Tables, Armdatalakestore()...)
+	Tables = append(Tables, tables...)
 }
