@@ -3,10 +3,8 @@
 package {{.Service}}
 
 import (
-	"context"
 	"encoding/json"
 	"net/http"
-	"net/http/httptest"
 	"testing"
 
 	"github.com/cloudquery/plugin-sdk/faker"
@@ -15,20 +13,18 @@ import (
 	{{range .MockImports}}
   "{{.}}"
   {{end}}
-	"google.golang.org/api/option"
 )
 
 type Mock{{.SubService | ToCamel}}Result struct {
   {{.OutputField}} []*{{.Service}}.{{.StructName}} `json:"{{.OutputField | ToLower}},omitempty"`
 }
 
-func create{{.SubService | ToCamel}}() (*client.Services, error) {
+func create{{.SubService | ToCamel}}(mux *httprouter.Router) error {
 	var item {{.Service}}.{{.StructName}}
 	if err := faker.FakeObject(&item); err != nil {
-		return nil, err
+		return err
 	}
   {{.MockPostFaker}}
-	mux := httprouter.New()
 	mux.GET("/*filepath", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		resp := &Mock{{.SubService | ToCamel}}Result{
 			{{.OutputField}}: []*{{.Service}}.{{.StructName}}{&item},
@@ -43,16 +39,9 @@ func create{{.SubService | ToCamel}}() (*client.Services, error) {
 			return
 		}
 	})
-	ts := httptest.NewServer(mux)
-	svc, err := {{.Service}}.NewService(context.Background(), option.WithoutAuthentication(), option.WithEndpoint(ts.URL))
-	if err != nil {
-		return nil, err
-	}
-	return &client.Services{
-		{{.Service|ToCamel}}: svc,
-	}, nil
+	return nil
 }
 
 func Test{{.SubService | ToCamel}}(t *testing.T) {
-	client.MockTestHelper(t, {{.SubService | ToCamel}}(), create{{.SubService | ToCamel}}, client.TestOptions{})
+	client.MockTestRestHelper(t, {{.SubService | ToCamel}}(), create{{.SubService | ToCamel}}, client.TestOptions{})
 }

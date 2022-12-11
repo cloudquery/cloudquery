@@ -30,7 +30,7 @@ func (i *item) Save() (map[string]bigquery.Value, string, error) {
 }
 
 func (c *Client) writeResource(ctx context.Context, table *schema.Table, client *bigquery.Client, resources <-chan []interface{}) error {
-	inserter := client.Dataset(c.datasetID).Table(table.Name).Inserter()
+	inserter := client.Dataset(c.pluginSpec.DatasetID).Table(table.Name).Inserter()
 	inserter.IgnoreUnknownValues = true
 	inserter.SkipInvalidRows = false
 	batch := make([]*item, 0)

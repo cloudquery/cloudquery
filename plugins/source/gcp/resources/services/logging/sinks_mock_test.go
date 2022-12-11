@@ -8,45 +8,15 @@ import (
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
-	"net"
 	"testing"
 
-	"cloud.google.com/go/logging/apiv2"
-
 	pb "google.golang.org/genproto/googleapis/logging/v2"
-
-	"google.golang.org/api/option"
 )
 
-func createSinks() (*client.Services, error) {
+func createSinks(gsrv *grpc.Server) error {
 	fakeServer := &fakeSinksServer{}
-	l, err := net.Listen("tcp", "localhost:0")
-	if err != nil {
-		return nil, fmt.Errorf("failed to listen: %w", err)
-	}
-	gsrv := grpc.NewServer()
 	pb.RegisterConfigServiceV2Server(gsrv, fakeServer)
-	fakeServerAddr := l.Addr().String()
-	go func() {
-		if err := gsrv.Serve(l); err != nil {
-			panic(err)
-		}
-	}()
-
-	// Create a client.
-	svc, err := logging.NewConfigClient(context.Background(),
-		option.WithEndpoint(fakeServerAddr),
-		option.WithoutAuthentication(),
-		option.WithGRPCDialOption(grpc.WithTransportCredentials(insecure.NewCredentials())),
-	)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create grpc client: %w", err)
-	}
-
-	return &client.Services{
-		LoggingConfigClient: svc,
-	}, nil
+	return nil
 }
 
 type fakeSinksServer struct {
@@ -63,5 +33,5 @@ func (f *fakeSinksServer) ListSinks(context.Context, *pb.ListSinksRequest) (*pb.
 }
 
 func TestSinks(t *testing.T) {
-	client.MockTestHelper(t, Sinks(), createSinks, client.TestOptions{})
+	client.MockTestGrpcHelper(t, Sinks(), createSinks, client.TestOptions{})
 }

@@ -1,27 +1,23 @@
 package sql
 
 import (
-	"context"
 	"encoding/json"
 	"net/http"
-	"net/http/httptest"
 	"testing"
 
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/julienschmidt/httprouter"
-	"google.golang.org/api/option"
 	sql "google.golang.org/api/sqladmin/v1beta4"
 )
 
-func createInstances() (*client.Services, error) {
+func createInstances(mux *httprouter.Router) error {
 	var item sql.InstancesListResponse
 	if err := faker.FakeObject(&item); err != nil {
-		return nil, err
+		return err
 	}
 	item.NextPageToken = ""
 
-	mux := httprouter.New()
 	mux.GET("/*filepath", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		b, err := json.Marshal(item)
 		if err != nil {
@@ -33,16 +29,9 @@ func createInstances() (*client.Services, error) {
 			return
 		}
 	})
-	ts := httptest.NewServer(mux)
-	svc, err := sql.NewService(context.Background(), option.WithoutAuthentication(), option.WithEndpoint(ts.URL))
-	if err != nil {
-		return nil, err
-	}
-	return &client.Services{
-		SqlService: svc,
-	}, nil
+	return nil
 }
 
 func TestInstances(t *testing.T) {
-	client.MockTestHelper(t, Instances(), createInstances, client.TestOptions{})
+	client.MockTestRestHelper(t, Instances(), createInstances, client.TestOptions{})
 }

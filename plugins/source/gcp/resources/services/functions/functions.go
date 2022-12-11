@@ -4,13 +4,14 @@ package functions
 
 import (
 	"context"
-	"github.com/pkg/errors"
 	"google.golang.org/api/iterator"
 
 	pb "google.golang.org/genproto/googleapis/cloud/functions/v1"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
+
+	"cloud.google.com/go/functions/apiv1"
 )
 
 func Functions() *schema.Table {
@@ -173,14 +174,18 @@ func fetchFunctions(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	req := &pb.ListFunctionsRequest{
 		Parent: "projects/" + c.ProjectId + "/locations/-",
 	}
-	it := c.Services.FunctionsCloudFunctionsClient.ListFunctions(ctx, req)
+	gcpClient, err := functions.NewCloudFunctionsClient(ctx, c.ClientOptions...)
+	if err != nil {
+		return err
+	}
+	it := gcpClient.ListFunctions(ctx, req)
 	for {
 		resp, err := it.Next()
 		if err == iterator.Done {
 			break
 		}
 		if err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 
 		res <- resp

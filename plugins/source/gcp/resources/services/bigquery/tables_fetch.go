@@ -12,10 +12,14 @@ import (
 func fetchTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
+	bigqueryService, err := bigquery.NewService(ctx, c.ClientOptions...)
+	if err != nil {
+		return err
+	}
 	for {
-		output, err := c.Services.BigqueryService.Tables.List(c.ProjectId, parent.Item.(*bigquery.Dataset).DatasetReference.DatasetId).PageToken(nextPageToken).Do()
+		output, err := bigqueryService.Tables.List(c.ProjectId, parent.Item.(*bigquery.Dataset).DatasetReference.DatasetId).PageToken(nextPageToken).Do()
 		if err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 		res <- output.Tables
 
@@ -29,7 +33,11 @@ func fetchTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 
 func tableGet(ctx context.Context, meta schema.ClientMeta, r *schema.Resource) error {
 	c := meta.(*client.Client)
-	item, err := c.Services.BigqueryService.Tables.Get(c.ProjectId, r.Parent.Item.(*bigquery.Dataset).DatasetReference.DatasetId, r.Item.(*bigquery.TableListTables).TableReference.TableId).Do()
+	bigqueryService, err := bigquery.NewService(ctx, c.ClientOptions...)
+	if err != nil {
+		return err
+	}
+	item, err := bigqueryService.Tables.Get(c.ProjectId, r.Parent.Item.(*bigquery.Dataset).DatasetReference.DatasetId, r.Item.(*bigquery.TableListTables).TableReference.TableId).Do()
 	if err != nil {
 		return errors.WithStack(err)
 	}
