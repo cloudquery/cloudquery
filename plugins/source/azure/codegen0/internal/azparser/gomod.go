@@ -17,8 +17,6 @@ func GetArmModules(gomodPath string) ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	// Parse the go.mod file.
-	// modfile
 	mod, err := modfile.Parse("go.mod", content, nil)
 	if err != nil {
 		return nil, err
