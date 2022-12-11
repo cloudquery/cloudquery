@@ -5,7 +5,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func SqlDatabases() *schema.Table {
+func sql_databases() *schema.Table {
 	return &schema.Table{
 		Name:     "azure_cosmos_sql_databases",
 		Resolver: fetchSqlDatabases,

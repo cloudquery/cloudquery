@@ -12,9 +12,15 @@ import (
 	{{- end}}
 )
 
+{{- if not .ChildTable}}
 func {{.Name | ToCamel}}() *schema.Table {
     return &schema.Table{{template "table.go.tpl" .Table}}
 }
+{{- else }}
+func {{.Name}}() *schema.Table {
+    return &schema.Table{{template "table.go.tpl" .Table}}
+}
+{{- end}}
 
 {{if not .SkipFetch}}
 func fetch{{.Name | ToCamel}}(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {

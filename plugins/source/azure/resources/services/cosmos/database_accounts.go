@@ -65,8 +65,8 @@ func DatabaseAccounts() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			MongoDbDatabases(),
-			SqlDatabases(),
+			mongo_db_databases(),
+			sql_databases(),
 		},
 	}
 }

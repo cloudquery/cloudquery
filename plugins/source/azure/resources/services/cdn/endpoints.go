@@ -5,7 +5,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func Endpoints() *schema.Table {
+func endpoints() *schema.Table {
 	return &schema.Table{
 		Name:     "azure_cdn_endpoints",
 		Resolver: fetchEndpoints,

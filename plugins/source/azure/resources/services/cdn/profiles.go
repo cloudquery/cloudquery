@@ -65,7 +65,7 @@ func Profiles() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			Endpoints(),
+			endpoints(),
 		},
 	}
 }

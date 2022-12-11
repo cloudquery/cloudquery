@@ -5,7 +5,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func MongoDbDatabases() *schema.Table {
+func mongo_db_databases() *schema.Table {
 	return &schema.Table{
 		Name:     "azure_cosmos_mongo_db_databases",
 		Resolver: fetchMongoDbDatabases,

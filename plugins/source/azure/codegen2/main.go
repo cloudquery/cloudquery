@@ -140,7 +140,7 @@ func initTable(parent *recipes.Table, r *recipes.Table) error {
 	}
 	if r.Relations != nil {
 		for _, relation := range r.Relations {
-			r.Table.Relations = append(r.Table.Relations, strcase.ToCamel(relation.Name)+"()")
+			r.Table.Relations = append(r.Table.Relations, relation.Name+"()")
 			initTable(r, relation)
 		}
 	}
