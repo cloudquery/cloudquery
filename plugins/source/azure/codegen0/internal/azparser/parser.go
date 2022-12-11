@@ -17,7 +17,7 @@ import (
 
 var newGlobalFuncsToSkip = map[string]bool{
 	// We are skipping operationsClient as this just list all operations available and it is quite static
-	// so don't think it's of anyuse and we can always enable it later
+	// so don't think it's of any use and we can always enable it later
 	"NewOperationsClient": true,
 }
 
