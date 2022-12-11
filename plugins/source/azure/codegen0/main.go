@@ -14,6 +14,7 @@ import (
 	"text/template"
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/codegen0/internal/azparser"
+	"github.com/iancoleman/strcase"
 )
 
 //go:embed templates/*.go.tpl
@@ -96,7 +97,7 @@ func main() {
 
 func generatePackage(pkg string, mod *Recipe) error {
 	tpl, err := template.New("recipe.go.tpl").Funcs(template.FuncMap{
-		"ToCamel": strings.Title,
+		"ToCamel": strcase.ToCamel,
 	}).ParseFS(templateFS, "templates/recipe.go.tpl")
 	if err != nil {
 		return fmt.Errorf("failed to parse recipe.go.tpl: %w", err)
@@ -123,7 +124,7 @@ func generatePackage(pkg string, mod *Recipe) error {
 
 func generateNamespaces(namespaces map[string]string) error {
 	tpl, err := template.New("namespaces.go.tpl").Funcs(template.FuncMap{
-		"ToCamel": strings.Title,
+		"ToCamel": strcase.ToCamel,
 	}).ParseFS(templateFS, "templates/namespaces.go.tpl")
 	if err != nil {
 		return fmt.Errorf("failed to parse recipe.go.tpl: %w", err)

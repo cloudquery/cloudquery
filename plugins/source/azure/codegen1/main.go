@@ -170,7 +170,7 @@ func ConvertTableV1ToV2(t *recipes.Table) (*Table, error) {
 
 func generateRecipes(s Recipe) error {
 	tpl, err := template.New("recipe.go.tpl").Funcs(template.FuncMap{
-		"ToCamel": strings.Title,
+		"ToCamel": strcase.ToCamel,
 	}).ParseFS(templateFS, "templates/recipe.go.tpl")
 	if err != nil {
 		return fmt.Errorf("failed to parse recipe.go.tpl: %w", err)
