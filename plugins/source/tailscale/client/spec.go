@@ -19,19 +19,19 @@ type Spec struct {
 }
 
 const (
-	TAILSCALE_API_KEY = "TAILSCALE_API_KEY"
-	TAILSCALE_TAILNET = "TAILSCALE_TAILNET"
+	EnvTailscaleApiKey  = "TAILSCALE_API_KEY"
+	EnvTailscaleTailnet = "TAILSCALE_TAILNET"
 )
 
 func (s *Spec) getClient() (*tailscale.Client, error) {
 	if len(s.APIKey) == 0 {
-		s.APIKey = os.Getenv(TAILSCALE_API_KEY)
+		s.APIKey = os.Getenv(EnvTailscaleApiKey)
 		if len(s.APIKey) == 0 {
 			return nil, fmt.Errorf("missing API key")
 		}
 	}
 	if len(s.Tailnet) == 0 {
-		s.Tailnet = os.Getenv(TAILSCALE_TAILNET)
+		s.Tailnet = os.Getenv(EnvTailscaleTailnet)
 		if len(s.Tailnet) == 0 {
 			return nil, fmt.Errorf("missing tailnet")
 		}
