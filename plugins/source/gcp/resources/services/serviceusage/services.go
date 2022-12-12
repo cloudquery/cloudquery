@@ -4,13 +4,14 @@ package serviceusage
 
 import (
 	"context"
-	"github.com/pkg/errors"
 	"google.golang.org/api/iterator"
 
 	pb "google.golang.org/genproto/googleapis/api/serviceusage/v1"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
+
+	"cloud.google.com/go/serviceusage/apiv1"
 )
 
 func Services() *schema.Table {
@@ -53,16 +54,21 @@ func Services() *schema.Table {
 func fetchServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	req := &pb.ListServicesRequest{
-		Parent: "projects/" + c.ProjectId,
+		Parent:   "projects/" + c.ProjectId,
+		PageSize: 200,
 	}
-	it := c.Services.ServiceusageClient.ListServices(ctx, req)
+	gcpClient, err := serviceusage.NewClient(ctx, c.ClientOptions...)
+	if err != nil {
+		return err
+	}
+	it := gcpClient.ListServices(ctx, req)
 	for {
 		resp, err := it.Next()
 		if err == iterator.Done {
 			break
 		}
 		if err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 
 		res <- resp

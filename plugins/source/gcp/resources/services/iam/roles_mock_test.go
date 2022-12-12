@@ -3,10 +3,8 @@
 package iam
 
 import (
-	"context"
 	"encoding/json"
 	"net/http"
-	"net/http/httptest"
 	"testing"
 
 	"github.com/cloudquery/plugin-sdk/faker"
@@ -14,21 +12,18 @@ import (
 	"github.com/julienschmidt/httprouter"
 
 	"google.golang.org/api/iam/v1"
-
-	"google.golang.org/api/option"
 )
 
 type MockRolesResult struct {
 	Roles []*iam.Role `json:"roles,omitempty"`
 }
 
-func createRoles() (*client.Services, error) {
+func createRoles(mux *httprouter.Router) error {
 	var item iam.Role
 	if err := faker.FakeObject(&item); err != nil {
-		return nil, err
+		return err
 	}
 
-	mux := httprouter.New()
 	mux.GET("/*filepath", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		resp := &MockRolesResult{
 			Roles: []*iam.Role{&item},
@@ -43,16 +38,9 @@ func createRoles() (*client.Services, error) {
 			return
 		}
 	})
-	ts := httptest.NewServer(mux)
-	svc, err := iam.NewService(context.Background(), option.WithoutAuthentication(), option.WithEndpoint(ts.URL))
-	if err != nil {
-		return nil, err
-	}
-	return &client.Services{
-		Iam: svc,
-	}, nil
+	return nil
 }
 
 func TestRoles(t *testing.T) {
-	client.MockTestHelper(t, Roles(), createRoles, client.TestOptions{})
+	client.MockTestRestHelper(t, Roles(), createRoles, client.TestOptions{})
 }

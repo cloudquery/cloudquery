@@ -1,10 +1,8 @@
 package iam
 
 import (
-	"context"
 	"encoding/json"
 	"net/http"
-	"net/http/httptest"
 	"testing"
 	"time"
 
@@ -13,17 +11,14 @@ import (
 	"github.com/julienschmidt/httprouter"
 
 	"google.golang.org/api/iam/v1"
-
-	"google.golang.org/api/option"
 )
 
-func createServiceAccounts() (*client.Services, error) {
+func createServiceAccounts(mux *httprouter.Router) error {
 	var item iam.ServiceAccount
 	if err := faker.FakeObject(&item); err != nil {
-		return nil, err
+		return err
 	}
 	item.Name = "test"
-	mux := httprouter.New()
 	mux.GET("/v1/projects/testProject/serviceAccounts", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		resp := &iam.ListServiceAccountsResponse{
 			Accounts: []*iam.ServiceAccount{&item},
@@ -41,7 +36,7 @@ func createServiceAccounts() (*client.Services, error) {
 
 	var key iam.ServiceAccountKey
 	if err := faker.FakeObject(&key); err != nil {
-		return nil, err
+		return err
 	}
 	key.ValidAfterTime = time.Now().Format(time.RFC3339)
 	key.ValidBeforeTime = time.Now().Format(time.RFC3339)
@@ -60,16 +55,9 @@ func createServiceAccounts() (*client.Services, error) {
 		}
 	})
 
-	ts := httptest.NewServer(mux)
-	svc, err := iam.NewService(context.Background(), option.WithoutAuthentication(), option.WithEndpoint(ts.URL))
-	if err != nil {
-		return nil, err
-	}
-	return &client.Services{
-		Iam: svc,
-	}, nil
+	return nil
 }
 
 func TestServiceAccounts(t *testing.T) {
-	client.MockTestHelper(t, ServiceAccounts(), createServiceAccounts, client.TestOptions{})
+	client.MockTestRestHelper(t, ServiceAccounts(), createServiceAccounts, client.TestOptions{})
 }

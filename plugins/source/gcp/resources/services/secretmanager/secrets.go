@@ -4,13 +4,14 @@ package secretmanager
 
 import (
 	"context"
-	"github.com/pkg/errors"
 	"google.golang.org/api/iterator"
 
 	pb "google.golang.org/genproto/googleapis/cloud/secretmanager/v1"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
+
+	"cloud.google.com/go/secretmanager/apiv1"
 )
 
 func Secrets() *schema.Table {
@@ -76,14 +77,18 @@ func fetchSecrets(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 	req := &pb.ListSecretsRequest{
 		Parent: "projects/" + c.ProjectId,
 	}
-	it := c.Services.SecretmanagerClient.ListSecrets(ctx, req)
+	gcpClient, err := secretmanager.NewClient(ctx, c.ClientOptions...)
+	if err != nil {
+		return err
+	}
+	it := gcpClient.ListSecrets(ctx, req)
 	for {
 		resp, err := it.Next()
 		if err == iterator.Done {
 			break
 		}
 		if err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 
 		res <- resp

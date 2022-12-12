@@ -41,8 +41,7 @@ func getFunction(ctx context.Context, meta schema.ClientMeta, resource *schema.R
 		FunctionName: f.FunctionName,
 	})
 	if err != nil {
-		if c.IsNotFoundError(err) || c.IsAccessDeniedError(err) {
-			c.Logger().Warn().Err(err).Msg("Failed to get function")
+		if c.IsNotFoundError(err) {
 			resource.Item = &lambda.GetFunctionOutput{
 				Configuration: &f,
 			}

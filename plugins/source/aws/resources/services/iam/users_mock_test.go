@@ -39,6 +39,12 @@ func buildIamUsers(t *testing.T, ctrl *gomock.Controller) client.Services {
 		t.Fatal(err)
 	}
 
+	sshPublicKey := iamTypes.SSHPublicKeyMetadata{}
+	err = faker.FakeObject(&sshPublicKey)
+	if err != nil {
+		t.Fatal(err)
+	}
+
 	var tags []iamTypes.Tag
 	err = faker.FakeObject(&tags)
 	if err != nil {
@@ -89,6 +95,11 @@ func buildIamUsers(t *testing.T, ctrl *gomock.Controller) client.Services {
 	p.PolicyDocument = &document
 	m.EXPECT().GetUserPolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&p, nil)
+
+	m.EXPECT().ListSSHPublicKeys(gomock.Any(), gomock.Any()).Return(
+		&iam.ListSSHPublicKeysOutput{
+			SSHPublicKeys: []iamTypes.SSHPublicKeyMetadata{sshPublicKey},
+		}, nil)
 
 	return client.Services{
 		Iam: m,

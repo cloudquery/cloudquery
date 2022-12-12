@@ -3,6 +3,7 @@ package resourcemanager
 import (
 	"context"
 
+	resourcemanager "cloud.google.com/go/resourcemanager/apiv3"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/pkg/errors"
@@ -11,8 +12,11 @@ import (
 
 func fetchProjectPolicies(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-
-	output, err := c.Services.ResourcemanagerProjectsClient.GetIamPolicy(
+	projectsClient, err := resourcemanager.NewProjectsClient(ctx, c.ClientOptions...)
+	if err != nil {
+		return err
+	}
+	output, err := projectsClient.GetIamPolicy(
 		ctx,
 		&iampb.GetIamPolicyRequest{
 			Resource: "projects/" + c.ProjectId,
