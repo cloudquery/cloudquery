@@ -29,10 +29,3 @@ spec:
     base_url: <Instance_Url>
 ```
 
-## Example
-
-You can reduce alert fatigue by narrowing alerts down from GitLab using fuzzy matching.
-
-```sql
--- select * from GitLab_____ where resources like ('%filter_here%');
-```
