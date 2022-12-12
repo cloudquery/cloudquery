@@ -31,7 +31,7 @@ func OrgMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
 	for _, projectId := range client.projects {
 		resp, err := projectsClient.GetProject(client.ctx, &resourcemanagerpb.GetProjectRequest{
 			Name: "projects/" + projectId,
-		})
+		}, client.CallOptions...)
 		if err != nil {
 			client.Logger().Error().Err(err).Str("project_id", projectId).Msg("OrgMultiplex: Failed to get project info")
 			continue
