@@ -15,7 +15,7 @@ The composite primary key for this table is (**org**, **id**).
 |_cq_parent_id|UUID|
 |org (PK)|String|
 |id (PK)|Int|
-|contents|JSON|
+|contents|String|
 |node_id|String|
 |name|String|
 |path|String|

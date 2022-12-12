@@ -18,7 +18,7 @@ func Actions() []*Resource {
 			ExtraColumns: append(orgColumns, idColumn,
 				codegen.ColumnDefinition{
 					Name:     "contents",
-					Type:     schema.TypeJSON,
+					Type:     schema.TypeString,
 					Resolver: `resolveContents`,
 				},
 			),

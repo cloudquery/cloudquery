@@ -32,7 +32,7 @@ func Workflows() *schema.Table {
 			},
 			{
 				Name:     "contents",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeString,
 				Resolver: resolveContents,
 			},
 			{
