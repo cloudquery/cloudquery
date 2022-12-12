@@ -63,6 +63,10 @@ func Servers() *schema.Table {
 				Resolver: schema.PathResolver("Type"),
 			},
 		},
+
+		Relations: []*schema.Table{
+			server_configurations(),
+		},
 	}
 }
 
