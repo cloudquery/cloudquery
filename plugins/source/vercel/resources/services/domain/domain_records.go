@@ -3,13 +3,15 @@
 package domain
 
 import (
+	"github.com/cloudquery/cloudquery/plugins/source/vercel/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func DomainRecords() *schema.Table {
 	return &schema.Table{
-		Name:     "vercel_domain_records",
-		Resolver: fetchDomainRecords,
+		Name:      "vercel_domain_records",
+		Resolver:  fetchDomainRecords,
+		Multiplex: client.TeamMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "domain_name",

@@ -33,7 +33,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, 
 		}
 
 		services := builder(t, ctrl)
-		c := New(logger, spec, veSpec, services)
+		c := New(logger, spec, veSpec, services, nil)
 		return &c, nil
 	}
 

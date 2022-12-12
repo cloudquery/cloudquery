@@ -54,32 +54,7 @@ var (
 
 func init() {
 	pluralizeClient = pluralize.NewClient()
-	//for _, s := range []string{"livedns", "simplehosting"} {
-	//	pluralizeClient.AddUncountableRule(s)
-	//}
-
-	csr = caser.New(
-		caser.WithCustomInitialisms(map[string]bool{
-			//"DNS":     true,
-			//"DNSSec":  true,
-			//"LiveDNS": true,
-		}),
-		caser.WithCustomExceptions(map[string]string{
-			//"dnssec":  "DNSSec",
-			//"livedns": "LiveDNS",
-			//"vhost":   "Vhost",
-		}),
-	)
-}
-
-func enforceAbbrevations(word string) string {
-	//word = strings.ReplaceAll(word, "live_dns", "livedns")
-	//word = strings.ReplaceAll(word, "dns_sec", "dnssec")
-	return word
-}
-
-func toSnake(word string) string {
-	return enforceAbbrevations(csr.ToSnake(word))
+	csr = caser.New()
 }
 
 func (r *Resource) Infer() {

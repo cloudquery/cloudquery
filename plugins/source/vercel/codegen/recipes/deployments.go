@@ -11,12 +11,14 @@ func DeploymentResources() []*Resource {
 		{
 			DataStruct: &vercel.Deployment{},
 			Service:    "deployment",
+			Multiplex:  "client.TeamMultiplex",
 			PKColumns:  []string{"uid"},
 			Relations:  []string{"DeploymentChecks()"},
 		},
 		{
 			DataStruct: &vercel.DeploymentCheck{},
 			Service:    "deployment",
+			Multiplex:  "client.TeamMultiplex",
 			PKColumns:  []string{"deployment_id", "id"},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{

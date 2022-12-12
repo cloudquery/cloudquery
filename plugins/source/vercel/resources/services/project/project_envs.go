@@ -3,13 +3,15 @@
 package project
 
 import (
+	"github.com/cloudquery/cloudquery/plugins/source/vercel/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func ProjectEnvs() *schema.Table {
 	return &schema.Table{
-		Name:     "vercel_project_envs",
-		Resolver: fetchProjectEnvs,
+		Name:      "vercel_project_envs",
+		Resolver:  fetchProjectEnvs,
+		Multiplex: client.TeamMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

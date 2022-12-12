@@ -11,12 +11,14 @@ func ProjectResources() []*Resource {
 		{
 			DataStruct: &vercel.Project{},
 			Service:    "project",
+			Multiplex:  "client.TeamMultiplex",
 			PKColumns:  []string{"id"},
 			Relations:  []string{"ProjectEnvs()"},
 		},
 		{
 			DataStruct: &vercel.ProjectEnv{},
 			Service:    "project",
+			Multiplex:  "client.TeamMultiplex",
 			PKColumns:  []string{"project_id", "id"},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{

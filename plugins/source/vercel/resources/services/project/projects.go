@@ -3,13 +3,15 @@
 package project
 
 import (
+	"github.com/cloudquery/cloudquery/plugins/source/vercel/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Projects() *schema.Table {
 	return &schema.Table{
-		Name:     "vercel_projects",
-		Resolver: fetchProjects,
+		Name:      "vercel_projects",
+		Resolver:  fetchProjects,
+		Multiplex: client.TeamMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

@@ -3,13 +3,15 @@
 package deployment
 
 import (
+	"github.com/cloudquery/cloudquery/plugins/source/vercel/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func DeploymentChecks() *schema.Table {
 	return &schema.Table{
-		Name:     "vercel_deployment_checks",
-		Resolver: fetchDeploymentChecks,
+		Name:      "vercel_deployment_checks",
+		Resolver:  fetchDeploymentChecks,
+		Multiplex: client.TeamMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "deployment_id",

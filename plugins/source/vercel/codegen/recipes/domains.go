@@ -11,12 +11,14 @@ func DomainResources() []*Resource {
 		{
 			DataStruct: &vercel.Domain{},
 			Service:    "domain",
+			Multiplex:  "client.TeamMultiplex",
 			PKColumns:  []string{"id"},
 			Relations:  []string{"DomainRecords()"},
 		},
 		{
 			DataStruct: &vercel.DomainRecord{},
 			Service:    "domain",
+			Multiplex:  "client.TeamMultiplex",
 			PKColumns:  []string{"domain_name", "id"},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
