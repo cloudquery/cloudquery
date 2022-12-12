@@ -7,46 +7,45 @@ import (
 	pb "google.golang.org/genproto/googleapis/cloud/billing/v1"
 )
 
-var billingResources = []*Resource{
-	{
-		SubService:          "billing_accounts",
-		Struct:              &pb.BillingAccount{},
-		NewFunction:         billing.NewCloudBillingClient,
-		RequestStruct:       &pb.ListBillingAccountsRequest{},
-		ResponseStruct:      &pb.ListBillingAccountsResponse{},
-		ListFunction:        (&billing.CloudBillingClient{}).ListBillingAccounts,
-		RegisterServer:      pb.RegisterCloudBillingServer,
-		UnimplementedServer: &pb.UnimplementedCloudBillingServer{},
-		ExtraColumns: []codegen.ColumnDefinition{
-			{
-				Name:    "name",
-				Type:    schema.TypeString,
-				Options: schema.ColumnCreationOptions{PrimaryKey: true},
-			},
-		},
-	},
-	{
-		SubService:          "services",
-		Struct:              &pb.Service{},
-		NewFunction:         billing.NewCloudCatalogClient,
-		RequestStruct:       &pb.ListServicesRequest{},
-		ResponseStruct:      &pb.ListServicesResponse{},
-		ListFunction:        (&billing.CloudCatalogClient{}).ListServices,
-		RegisterServer:      pb.RegisterCloudCatalogServer,
-		UnimplementedServer: &pb.UnimplementedCloudCatalogServer{},
-		ExtraColumns: []codegen.ColumnDefinition{
-			{
-				Name:    "name",
-				Type:    schema.TypeString,
-				Options: schema.ColumnCreationOptions{PrimaryKey: true},
-			},
-		},
-	},
-}
 
-func BillingResources() []*Resource {
-	var resources []*Resource
-	resources = append(resources, billingResources...)
+
+func init() {
+	resources := []*Resource{
+		{
+			SubService:          "billing_accounts",
+			Struct:              &pb.BillingAccount{},
+			NewFunction:         billing.NewCloudBillingClient,
+			RequestStruct:       &pb.ListBillingAccountsRequest{},
+			ResponseStruct:      &pb.ListBillingAccountsResponse{},
+			ListFunction:        (&billing.CloudBillingClient{}).ListBillingAccounts,
+			RegisterServer:      pb.RegisterCloudBillingServer,
+			UnimplementedServer: &pb.UnimplementedCloudBillingServer{},
+			ExtraColumns: []codegen.ColumnDefinition{
+				{
+					Name:    "name",
+					Type:    schema.TypeString,
+					Options: schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+			},
+		},
+		{
+			SubService:          "services",
+			Struct:              &pb.Service{},
+			NewFunction:         billing.NewCloudCatalogClient,
+			RequestStruct:       &pb.ListServicesRequest{},
+			ResponseStruct:      &pb.ListServicesResponse{},
+			ListFunction:        (&billing.CloudCatalogClient{}).ListServices,
+			RegisterServer:      pb.RegisterCloudCatalogServer,
+			UnimplementedServer: &pb.UnimplementedCloudCatalogServer{},
+			ExtraColumns: []codegen.ColumnDefinition{
+				{
+					Name:    "name",
+					Type:    schema.TypeString,
+					Options: schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+			},
+		},
+	}
 
 	for _, resource := range resources {
 		resource.Service = "billing"
@@ -56,5 +55,5 @@ func BillingResources() []*Resource {
 		resource.ProtobufImport = "google.golang.org/genproto/googleapis/cloud/billing/v1"
 	}
 
-	return resources
+	Resources = append(Resources, resources...)
 }
