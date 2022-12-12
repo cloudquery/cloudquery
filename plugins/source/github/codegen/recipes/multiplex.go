@@ -1,4 +1,4 @@
-package recipies
+package recipes
 
 const (
 	orgMultiplex = `client.OrgMultiplex`
