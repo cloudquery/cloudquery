@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"time"
 
 	"cloud.google.com/go/bigquery"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -34,18 +35,19 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 				if err := c.autoMigrateTable(gctx, client, table); err != nil {
 					return err
 				}
+				c.waitForSchemaToMatch(gctx, client, table)
 			} else {
 				c.logger.Debug().Str("table", table.Name).Msg("Table doesn't exist, creating")
 				if err := c.createTable(gctx, client, table); err != nil {
 					return err
 				}
+				c.waitForTableToExist(gctx, client, table)
 			}
 			return nil
 		})
 	}
 	return eg.Wait()
 }
-
 func (c *Client) doesTableExist(ctx context.Context, client *bigquery.Client, table string) (bool, error) {
 	c.logger.Debug().Str("dataset", c.pluginSpec.DatasetID).Str("table", table).Msg("Checking existence")
 	tableRef := client.Dataset(c.pluginSpec.DatasetID).Table(table)
@@ -62,6 +64,53 @@ func (c *Client) doesTableExist(ctx context.Context, client *bigquery.Client, ta
 
 	c.logger.Debug().Interface("creation_time", md.CreationTime).Msg("Got table metadata")
 	return true, nil
+}
+
+// wait until we can confirm that table now exists to avoid issues if writes are done
+// immediately after the migration
+func (c *Client) waitForTableToExist(ctx context.Context, client *bigquery.Client, table *schema.Table) error {
+	c.logger.Debug().Str("table", table.Name).Msg("Waiting for table to be created")
+	for i := 0; i < 20; i++ {
+		tableExists, err := c.doesTableExist(ctx, client, table.Name)
+		if err != nil {
+			return err
+		}
+		if tableExists {
+			c.logger.Debug().Str("table", table.Name).Msg("Table created")
+			return nil
+		}
+		c.logger.Debug().Str("table", table.Name).Int("i", i).Msg("Waiting for table to be created")
+		time.Sleep(6 * time.Second)
+	}
+	return fmt.Errorf("failed to confirm table creation for %v within timeout period", table.Name)
+}
+
+// wait until we can confirm that schema now matches, to avoid issues if writes are done
+// immediately after the migration
+func (c *Client) waitForSchemaToMatch(ctx context.Context, client *bigquery.Client, table *schema.Table) error {
+	c.logger.Debug().Str("table", table.Name).Msg("Waiting for schemas to match")
+	wantSchema := c.bigQuerySchemaForTable(table)
+	want, err := wantSchema.ToJSONFields()
+	if err != nil {
+		fmt.Errorf("failed to convert schema to JSON: %v", err)
+	}
+	for i := 0; i < 20; i++ {
+		md, err := client.Dataset(c.pluginSpec.DatasetID).Table(table.Name).Metadata(ctx)
+		if err != nil {
+			return err
+		}
+		got, err := md.Schema.ToJSONFields()
+		if err != nil {
+			fmt.Errorf("failed to convert schema to JSON: %v", err)
+		}
+		if string(got) == string(want) {
+			c.logger.Debug().Str("table", table.Name).Msg("Schemas matched")
+			return nil
+		}
+		c.logger.Debug().Str("table", table.Name).Int("i", i).Msg("Waiting for schemas to match")
+		time.Sleep(6 * time.Second)
+	}
+	return fmt.Errorf("failed to confirm schema update for %v within timeout period", table.Name)
 }
 
 func (c *Client) autoMigrateTable(ctx context.Context, client *bigquery.Client, table *schema.Table) error {
