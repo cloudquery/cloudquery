@@ -6,7 +6,7 @@ import (
 
 func TestTailscale(t *testing.T) {
 	// Note: this test is simple, but serves as a smoke test.
-	// The AWS() call below also catches duplicate columns and other issues
+	// The Tailscale() call below also catches duplicate columns and other issues
 	// that may have been missed if mock tests are incomplete.
 	p := Tailscale()
 	name := p.Name()
