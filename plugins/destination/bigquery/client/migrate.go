@@ -12,7 +12,11 @@ import (
 	"google.golang.org/api/googleapi"
 )
 
-const concurrentMigrations = 10
+const (
+	concurrentMigrations = 10
+	checkTableFrequency  = 6 * time.Second
+	maxTableChecks       = 20
+)
 
 // Migrate tables. It is the responsibility of the CLI of the client to lock before running migrations.
 func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
@@ -70,7 +74,7 @@ func (c *Client) doesTableExist(ctx context.Context, client *bigquery.Client, ta
 // immediately after the migration
 func (c *Client) waitForTableToExist(ctx context.Context, client *bigquery.Client, table *schema.Table) error {
 	c.logger.Debug().Str("table", table.Name).Msg("Waiting for table to be created")
-	for i := 0; i < 20; i++ {
+	for i := 0; i < maxTableChecks; i++ {
 		tableExists, err := c.doesTableExist(ctx, client, table.Name)
 		if err != nil {
 			return err
@@ -80,7 +84,7 @@ func (c *Client) waitForTableToExist(ctx context.Context, client *bigquery.Clien
 			return nil
 		}
 		c.logger.Debug().Str("table", table.Name).Int("i", i).Msg("Waiting for table to be created")
-		time.Sleep(6 * time.Second)
+		time.Sleep(checkTableFrequency)
 	}
 	return fmt.Errorf("failed to confirm table creation for %v within timeout period", table.Name)
 }
@@ -94,7 +98,7 @@ func (c *Client) waitForSchemaToMatch(ctx context.Context, client *bigquery.Clie
 	if err != nil {
 		fmt.Errorf("failed to convert schema to JSON: %v", err)
 	}
-	for i := 0; i < 20; i++ {
+	for i := 0; i < maxTableChecks; i++ {
 		md, err := client.Dataset(c.pluginSpec.DatasetID).Table(table.Name).Metadata(ctx)
 		if err != nil {
 			return err
@@ -108,7 +112,7 @@ func (c *Client) waitForSchemaToMatch(ctx context.Context, client *bigquery.Clie
 			return nil
 		}
 		c.logger.Debug().Str("table", table.Name).Int("i", i).Msg("Waiting for schemas to match")
-		time.Sleep(6 * time.Second)
+		time.Sleep(checkTableFrequency)
 	}
 	return fmt.Errorf("failed to confirm schema update for %v within timeout period", table.Name)
 }
