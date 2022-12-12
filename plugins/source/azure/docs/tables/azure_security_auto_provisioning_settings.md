@@ -1,6 +1,6 @@
 # Table: azure_security_auto_provisioning_settings
 
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security#AutoProvisioningSetting
+
 
 The primary key for this table is **id**.
 
@@ -14,7 +14,7 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|auto_provision|String|
+|properties|JSON|
 |id (PK)|String|
 |name|String|
 |type|String|

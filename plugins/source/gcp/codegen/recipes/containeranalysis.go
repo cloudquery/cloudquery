@@ -7,8 +7,8 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func ContainerAnalysisResources() []*Resource {
-	var resources = []*Resource{
+func init(){
+	resources := []*Resource{
 		{
 			SubService: "occurrences",
 			Struct:     &grafeaspb.Occurrence{},
@@ -43,5 +43,5 @@ func ContainerAnalysisResources() []*Resource {
 		resource.ServiceDNS = "containeranalysis.googleapis.com"
 	}
 
-	return resources
+	Resources = append(Resources, resources...)
 }

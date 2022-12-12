@@ -25,37 +25,17 @@ import (
 //go:embed templates/*.go.tpl
 var gcpTemplatesFS embed.FS
 
-var resources []*recipes.Resource
+
 
 func main() {
-	resources = append(resources, recipes.ApiKeysResources()...)
-	resources = append(resources, recipes.ComputeResources()...)
-	resources = append(resources, recipes.DnsResources()...)
-	resources = append(resources, recipes.DomainsResources()...)
-	resources = append(resources, recipes.IamResources()...)
-	resources = append(resources, recipes.KmsResources()...)
-	resources = append(resources, recipes.ContainerResources()...)
-	resources = append(resources, recipes.ContainerAnalysisResources()...)
-	resources = append(resources, recipes.LoggingResources()...)
-	resources = append(resources, recipes.RedisResources()...)
-	resources = append(resources, recipes.MonitoringResources()...)
-	resources = append(resources, recipes.SecretManagerResources()...)
-	resources = append(resources, recipes.ServiceusageResources()...)
-	resources = append(resources, recipes.SqlResources()...)
-	resources = append(resources, recipes.StorageResources()...)
-	resources = append(resources, recipes.BigqueryResources()...)
-	resources = append(resources, recipes.BillingResources()...)
-	resources = append(resources, recipes.ResourceManagerResources()...)
-	resources = append(resources, recipes.FunctionsResources()...)
-	resources = append(resources, recipes.RunResources()...)
 
-	for _, r := range resources {
+	for _, r := range recipes.Resources {
 		generateResource(*r, false)
 		if !r.SkipMock {
 			generateResource(*r, true)
 		}
 	}
-	generatePlugin(resources)
+	generatePlugin(recipes.Resources)
 }
 
 func generatePlugin(rr []*recipes.Resource) {

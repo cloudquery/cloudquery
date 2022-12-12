@@ -76,7 +76,7 @@ func fetchFolders(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 	if err != nil {
 		return err
 	}
-	it := gcpClient.ListFolders(ctx, req)
+	it := gcpClient.ListFolders(ctx, req, c.CallOptions...)
 	for {
 		resp, err := it.Next()
 		if err == iterator.Done {

@@ -94,7 +94,7 @@ func fetchKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resou
 	if err != nil {
 		return err
 	}
-	it := gcpClient.ListKeys(ctx, req)
+	it := gcpClient.ListKeys(ctx, req, c.CallOptions...)
 	for {
 		resp, err := it.Next()
 		if err == iterator.Done {

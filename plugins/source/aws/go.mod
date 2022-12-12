@@ -16,13 +16,13 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/apprunner v1.15.1
 	github.com/aws/aws-sdk-go-v2/service/appstream v1.18.1
 	github.com/aws/aws-sdk-go-v2/service/appsync v1.17.0
-	github.com/aws/aws-sdk-go-v2/service/autoscaling v1.24.4
+	github.com/aws/aws-sdk-go-v2/service/autoscaling v1.25.0
 	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.24.2
 	github.com/aws/aws-sdk-go-v2/service/cloudfront v1.22.0
 	github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.13.22
 	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.20.4
 	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.22.1
-	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.17.1
+	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.17.2
 	github.com/aws/aws-sdk-go-v2/service/codebuild v1.19.20
 	github.com/aws/aws-sdk-go-v2/service/codepipeline v1.13.20
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.14.5
@@ -95,7 +95,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/xray v1.15.2
 	github.com/aws/smithy-go v1.13.5
 	github.com/basgys/goxml2json v1.1.0
-	github.com/cloudquery/plugin-sdk v1.11.2
+	github.com/cloudquery/plugin-sdk v1.12.0
 	github.com/gocarina/gocsv v0.0.0-20221105105431-c8ef78125b99
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.9

@@ -7,29 +7,28 @@ import (
 	pb "google.golang.org/genproto/googleapis/api/serviceusage/v1"
 )
 
-var serviceusageResources = []*Resource{
-	{
-		SubService:          "services",
-		Struct:              &pb.Service{},
-		NewFunction:         serviceusage.NewClient,
-		RequestStruct:       &pb.ListServicesRequest{},
-		ResponseStruct:      &pb.ListServicesResponse{},
-		RegisterServer:      pb.RegisterServiceUsageServer,
-		ListFunction:        (&pb.UnimplementedServiceUsageServer{}).ListServices,
-		UnimplementedServer: &pb.UnimplementedServiceUsageServer{},
-		ExtraColumns: []codegen.ColumnDefinition{
-			{
-				Name:    "name",
-				Type:    schema.TypeString,
-				Options: schema.ColumnCreationOptions{PrimaryKey: true},
+
+
+func init() {
+	resources := []*Resource{
+		{
+			SubService:          "services",
+			Struct:              &pb.Service{},
+			NewFunction:         serviceusage.NewClient,
+			RequestStruct:       &pb.ListServicesRequest{},
+			ResponseStruct:      &pb.ListServicesResponse{},
+			RegisterServer:      pb.RegisterServiceUsageServer,
+			ListFunction:        (&pb.UnimplementedServiceUsageServer{}).ListServices,
+			UnimplementedServer: &pb.UnimplementedServiceUsageServer{},
+			ExtraColumns: []codegen.ColumnDefinition{
+				{
+					Name:    "name",
+					Type:    schema.TypeString,
+					Options: schema.ColumnCreationOptions{PrimaryKey: true},
+				},
 			},
 		},
-	},
-}
-
-func ServiceusageResources() []*Resource {
-	var resources []*Resource
-	resources = append(resources, serviceusageResources...)
+	}
 
 	for _, resource := range resources {
 		resource.Service = "serviceusage"
@@ -43,5 +42,5 @@ func ServiceusageResources() []*Resource {
 		resource.ServiceDNS = "serviceusage.googleapis.com"
 	}
 
-	return resources
+	Resources = append(Resources, resources...)
 }

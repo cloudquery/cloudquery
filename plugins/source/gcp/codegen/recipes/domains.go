@@ -5,24 +5,21 @@ import (
 	pb "google.golang.org/genproto/googleapis/cloud/domains/v1beta1"
 )
 
-var domainsResources = []*Resource{
-	{
-		SubService:          "registrations",
-		Struct:              &pb.Registration{},
-		NewFunction:         domains.NewClient,
-		RequestStruct:       &pb.ListRegistrationsRequest{},
-		ResponseStruct:      &pb.ListRegistrationsResponse{},
-		RegisterServer:      pb.RegisterDomainsServer,
-		ListFunction:        (&pb.UnimplementedDomainsServer{}).ListRegistrations,
-		UnimplementedServer: &pb.UnimplementedDomainsServer{},
-		RequestStructFields: `Parent: fmt.Sprintf("projects/%s/locations/-", c.ProjectId),`,
-		Imports:             []string{"fmt"},
-	},
-}
-
-func DomainsResources() []*Resource {
-	var resources []*Resource
-	resources = append(resources, domainsResources...)
+func init() {
+	resources := []*Resource{
+		{
+			SubService:          "registrations",
+			Struct:              &pb.Registration{},
+			NewFunction:         domains.NewClient,
+			RequestStruct:       &pb.ListRegistrationsRequest{},
+			ResponseStruct:      &pb.ListRegistrationsResponse{},
+			RegisterServer:      pb.RegisterDomainsServer,
+			ListFunction:        (&pb.UnimplementedDomainsServer{}).ListRegistrations,
+			UnimplementedServer: &pb.UnimplementedDomainsServer{},
+			RequestStructFields: `Parent: fmt.Sprintf("projects/%s/locations/-", c.ProjectId),`,
+			Imports:             []string{"fmt"},
+		},
+	}
 
 	for _, resource := range resources {
 		resource.Service = "domains"
@@ -34,5 +31,5 @@ func DomainsResources() []*Resource {
 		resource.ServiceDNS = "domains.googleapis.com"
 	}
 
-	return resources
+	Resources = append(Resources, resources...)
 }

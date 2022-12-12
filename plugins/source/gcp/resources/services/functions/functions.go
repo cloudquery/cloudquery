@@ -178,7 +178,7 @@ func fetchFunctions(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	if err != nil {
 		return err
 	}
-	it := gcpClient.ListFunctions(ctx, req)
+	it := gcpClient.ListFunctions(ctx, req, c.CallOptions...)
 	for {
 		resp, err := it.Next()
 		if err == iterator.Done {

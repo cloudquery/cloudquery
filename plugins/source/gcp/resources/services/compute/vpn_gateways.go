@@ -100,7 +100,7 @@ func fetchVpnGateways(ctx context.Context, meta schema.ClientMeta, parent *schem
 	if err != nil {
 		return err
 	}
-	it := gcpClient.AggregatedList(ctx, req)
+	it := gcpClient.AggregatedList(ctx, req, c.CallOptions...)
 	for {
 		resp, err := it.Next()
 		if err == iterator.Done {

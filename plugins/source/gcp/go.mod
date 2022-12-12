@@ -20,7 +20,7 @@ require (
 	cloud.google.com/go/secretmanager v1.9.0
 	cloud.google.com/go/serviceusage v1.4.0
 	cloud.google.com/go/storage v1.28.0
-	github.com/cloudquery/plugin-sdk v1.11.2
+	github.com/cloudquery/plugin-sdk v1.12.0
 	github.com/golang/mock v1.6.0
 	github.com/googleapis/gax-go/v2 v2.7.0
 	github.com/iancoleman/strcase v0.2.0
