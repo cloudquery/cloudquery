@@ -16,7 +16,7 @@ install-hooks:
 
 .PHONY: lint
 lint:
-	@golangci-lint run --timeout 10m --verbose
+	golangci-lint run --config ../../.golangci.yml
 
 .PHONY: gen-docs
 gen-docs:
