@@ -45,6 +45,8 @@ jobs:
       - name: gen
         if: github.event_name == 'pull_request'
         run: make gen
+      - name: Cleanup after build
+        run: rm ./tailscale
       - name: Fail if generation updated files
         if: github.event_name == 'pull_request'
         run: test "$(git status -s | wc -l)" -eq 0
