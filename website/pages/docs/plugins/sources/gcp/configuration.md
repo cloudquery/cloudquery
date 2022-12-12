@@ -48,6 +48,12 @@ This is the (nested) spec used by GCP Source Plugin
   set `project_filter` to `name:how-*`. Another example is: `"name:how-* OR name:test-*"`. For syntax and example queries refer to API Reference [here](https://cloud.google.com/resource-manager/reference/rest/v1/projects/list#google.cloudresourcemanager.v1.Projects.ListProjects).
   Mutually exclusive with `folder_ids`.
 
+- `backoff_delay` (string) (default: 30s).
+  If specified APIs will be retried with exponential backoff if they are rate limited. This is the max delay between retries.
+
+- `backoff_retries` (int) (default: 0).
+  If specified APIs will be retried with exponential backoff if they are rate limited. This is the max number of retries.
+
 ## GCP + Kubernetes (GKE)
 
 ```yaml

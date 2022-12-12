@@ -191,7 +191,7 @@ func fetchInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	if err != nil {
 		return err
 	}
-	it := gcpClient.ListInstances(ctx, req)
+	it := gcpClient.ListInstances(ctx, req, c.CallOptions...)
 	for {
 		resp, err := it.Next()
 		if err == iterator.Done {

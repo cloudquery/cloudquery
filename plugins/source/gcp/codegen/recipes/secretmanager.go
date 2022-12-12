@@ -7,31 +7,30 @@ import (
 	pb "google.golang.org/genproto/googleapis/cloud/secretmanager/v1"
 )
 
-var secretmanagerResources = []*Resource{
-	{
-		SubService:          "secrets",
-		Struct:              &pb.Secret{},
-		NewFunction:         secretmanager.NewClient,
-		RequestStruct:       &pb.ListSecretsRequest{},
-		ResponseStruct:      &pb.ListSecretsResponse{},
-		RegisterServer:      pb.RegisterSecretManagerServiceServer,
-		ListFunction:        (&pb.UnimplementedSecretManagerServiceServer{}).ListSecrets,
-		UnimplementedServer: &pb.UnimplementedSecretManagerServiceServer{},
-		ExtraColumns: []codegen.ColumnDefinition{
-			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-				Resolver: `schema.PathResolver("Name")`,
-			},
-		},
-		SkipFields: []string{"Expiration"},
-	},
-}
 
-func SecretManagerResources() []*Resource {
-	var resources []*Resource
-	resources = append(resources, secretmanagerResources...)
+
+func init() {
+	resources := []*Resource{
+		{
+			SubService:          "secrets",
+			Struct:              &pb.Secret{},
+			NewFunction:         secretmanager.NewClient,
+			RequestStruct:       &pb.ListSecretsRequest{},
+			ResponseStruct:      &pb.ListSecretsResponse{},
+			RegisterServer:      pb.RegisterSecretManagerServiceServer,
+			ListFunction:        (&pb.UnimplementedSecretManagerServiceServer{}).ListSecrets,
+			UnimplementedServer: &pb.UnimplementedSecretManagerServiceServer{},
+			ExtraColumns: []codegen.ColumnDefinition{
+				{
+					Name:     "name",
+					Type:     schema.TypeString,
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					Resolver: `schema.PathResolver("Name")`,
+				},
+			},
+			SkipFields: []string{"Expiration"},
+		},
+	}
 
 	for _, resource := range resources {
 		resource.Service = "secretmanager"
@@ -42,5 +41,5 @@ func SecretManagerResources() []*Resource {
 		resource.RequestStructFields = `Parent: "projects/" + c.ProjectId,`
 	}
 
-	return resources
+	Resources = append(Resources, resources...)
 }
