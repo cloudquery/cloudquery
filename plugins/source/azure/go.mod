@@ -59,6 +59,7 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute v1.0.0
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybriddatamanager/armhybriddatamanager v1.0.0
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridnetwork/armhybridnetwork v1.0.0
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault v1.0.0
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto v1.1.0
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/labservices/armlabservices v1.0.0
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning v1.0.0
