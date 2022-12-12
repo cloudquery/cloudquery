@@ -1,4 +1,4 @@
-package recipies
+package recipes
 
 import (
 	"github.com/google/go-github/v48/github"

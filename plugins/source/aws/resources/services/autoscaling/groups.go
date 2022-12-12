@@ -188,6 +188,11 @@ func Groups() *schema.Table {
 				Resolver: schema.PathResolver("TerminationPolicies"),
 			},
 			{
+				Name:     "traffic_sources",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("TrafficSources"),
+			},
+			{
 				Name:     "vpc_zone_identifier",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("VPCZoneIdentifier"),

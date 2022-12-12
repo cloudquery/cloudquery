@@ -1,6 +1,7 @@
 package plugin
 
 import (
+	"github.com/cloudquery/cloudquery/plugins/source/github/resources/services/actions"
 	"github.com/cloudquery/cloudquery/plugins/source/github/resources/services/billing"
 	"github.com/cloudquery/cloudquery/plugins/source/github/resources/services/external"
 	"github.com/cloudquery/cloudquery/plugins/source/github/resources/services/hooks"
@@ -14,6 +15,7 @@ import (
 
 func Tables() []*schema.Table {
 	return []*schema.Table{
+		actions.Workflows(),
 		billing.Action(),
 		billing.Storage(),
 		billing.Package(),

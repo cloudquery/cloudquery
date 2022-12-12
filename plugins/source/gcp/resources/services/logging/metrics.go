@@ -96,7 +96,7 @@ func fetchMetrics(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 	if err != nil {
 		return err
 	}
-	it := gcpClient.ListLogMetrics(ctx, req)
+	it := gcpClient.ListLogMetrics(ctx, req, c.CallOptions...)
 	for {
 		resp, err := it.Next()
 		if err == iterator.Done {

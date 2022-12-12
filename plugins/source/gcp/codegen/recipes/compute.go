@@ -198,7 +198,7 @@ var computeResourcesList = []*Resource{
 	},
 }
 
-func ComputeResources() []*Resource {
+func init() {
 	for _, resource := range computeResourcesList {
 		resource.Template = "newapi_list"
 		resource.MockTemplate = "newapi_list_rest_mock"
@@ -238,5 +238,5 @@ func ComputeResources() []*Resource {
 		}
 	}
 
-	return resources
+	Resources = append(Resources, resources...)
 }

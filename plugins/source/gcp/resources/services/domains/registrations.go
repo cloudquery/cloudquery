@@ -100,7 +100,7 @@ func fetchRegistrations(ctx context.Context, meta schema.ClientMeta, parent *sch
 	if err != nil {
 		return err
 	}
-	it := gcpClient.ListRegistrations(ctx, req)
+	it := gcpClient.ListRegistrations(ctx, req, c.CallOptions...)
 	for {
 		resp, err := it.Next()
 		if err == iterator.Done {

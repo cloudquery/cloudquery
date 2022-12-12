@@ -96,7 +96,7 @@ func fetchSinks(ctx context.Context, meta schema.ClientMeta, parent *schema.Reso
 	if err != nil {
 		return err
 	}
-	it := gcpClient.ListSinks(ctx, req)
+	it := gcpClient.ListSinks(ctx, req, c.CallOptions...)
 	for {
 		resp, err := it.Next()
 		if err == iterator.Done {
