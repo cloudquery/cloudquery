@@ -38,7 +38,8 @@ func ServiceusageResources() []*Resource {
 		resource.Template = "newapi_list"
 		resource.MockTemplate = "newapi_list_grpc_mock"
 		resource.RequestStructFields = `Parent: "projects/" + c.ProjectId,
-		PageSize: 200,`
+		PageSize: 200,
+		Filter: "state:ENABLED",`
 		resource.ServiceDNS = "serviceusage.googleapis.com"
 	}
 
