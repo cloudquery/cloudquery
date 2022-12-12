@@ -96,7 +96,7 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *pl
 	}
 
 	done := false
-	for {
+	for !done {
 		select {
 		case r, ok := <-res:
 			if !ok {
@@ -106,9 +106,6 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *pl
 			workers[r.TableName].writeChan <- r.Data
 		case <-gctx.Done():
 			done = true
-		}
-		if done {
-			break
 		}
 	}
 	for _, w := range workers {
