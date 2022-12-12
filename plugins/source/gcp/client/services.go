@@ -1,74 +1,63 @@
 package client
 
-type GcpService string
-
-const (
-	APIKeysService                   GcpService = "apikeys.googleapis.com"
-	AppEngineService                 GcpService = "appengine.googleapis.com"
-	ArtifactRegistryService          GcpService = "artifactregistry.googleapis.com"
-	BigQueryDataTransferService      GcpService = "bigquerydatatransfer.googleapis.com"
-	BigQueryMigrationService         GcpService = "bigquerymigration.googleapis.com"
-	BigQueryService                  GcpService = "bigquery.googleapis.com"
-	BigQueryStorageService           GcpService = "bigquerystorage.googleapis.com"
-	CloudBillingService              GcpService = "cloudbilling.googleapis.com"
-	CloudBuildService                GcpService = "cloudbuild.googleapis.com"
-	CloudDatastoreService            GcpService = "datastore.googleapis.com"
-	CloudDebuggerService             GcpService = "clouddebugger.googleapis.com"
-	CloudDeploymentManagerService    GcpService = "deploymentmanager.googleapis.com"
-	CloudDNSService                  GcpService = "dns.googleapis.com"
-	CloudDomainsService              GcpService = "domains.googleapis.com"
-	CloudFirestoreService            GcpService = "firestore.googleapis.com"
-	CloudFunctionsService            GcpService = "cloudfunctions.googleapis.com"
-	CloudIAPService                  GcpService = "iap.googleapis.com"
-	CloudKmsService                  GcpService = "cloudkms.googleapis.com"
-	CloudKMSService                  GcpService = "cloudkms.googleapis.com"
-	CloudLoggingService              GcpService = "logging.googleapis.com"
-	CloudMessaging                   GcpService = "googlecloudmessaging.googleapis.com"
-	CloudMonitoringService           GcpService = "monitoring.googleapis.com"
-	CloudOSLoginService              GcpService = "oslogin.googleapis.com"
-	CloudPubSubService               GcpService = "pubsub.googleapis.com"
-	CloudResourceManagerService      GcpService = "cloudresourcemanager.googleapis.com"
-	CloudRunService                  GcpService = "run.googleapis.com"
-	CloudRuntimeConfigurationService GcpService = "runtimeconfig.googleapis.com"
-	CloudSchedulerService            GcpService = "cloudscheduler.googleapis.com"
-	CloudSQLAdminService             GcpService = "sqladmin.googleapis.com"
-	CloudSQLService                  GcpService = "sql-component.googleapis.com"
-	CloudStorageService              GcpService = "storage.googleapis.com"
-	CloudTestingAPI                  GcpService = "testing.googleapis.com"
-	CloudTraceService                GcpService = "cloudtrace.googleapis.com"
-	ComputeEngineService             GcpService = "compute.googleapis.com"
-	ComputeService                   GcpService = "compute.googleapis.com"
-	ContainerAnalysisService         GcpService = "containeranalysis.googleapis.com"
-	ContainerFileSystemService       GcpService = "containerfilesystem.googleapis.com"
-	ContainerRegistryService         GcpService = "containerregistry.googleapis.com"
-	ContainerScanningService         GcpService = "containerscanning.googleapis.com"
-	DnsService                       GcpService = "dns.googleapis.com"
-	DomainsService                   GcpService = "domains.googleapis.com"
-	FirebaseCloudMessagingService    GcpService = "fcm.googleapis.com"
-	FirebaseDynamicLinksService      GcpService = "firebasedynamiclinks.googleapis.com"
-	FirebaseHostingService           GcpService = "firebasehosting.googleapis.com"
-	FirebaseInstallationsService     GcpService = "firebaseinstallations.googleapis.com"
-	FirebaseManagementService        GcpService = "firebase.googleapis.com"
-	FirebaseRemoteConfigService      GcpService = "firebaseremoteconfig.googleapis.com"
-	FirebaseRulesService             GcpService = "firebaserules.googleapis.com"
-	GoogleCloudAPIService            GcpService = "cloudapis.googleapis.com"
-	IAMCredentialsService            GcpService = "iamcredentials.googleapis.com"
-	IamService                       GcpService = "iam.googleapis.com"
-	IAMService                       GcpService = "iam.googleapis.com"
-	IdentityToolkitService           GcpService = "identitytoolkit.googleapis.com"
-	KubernetesEngineService          GcpService = "container.googleapis.com"
-	KubernetesService                GcpService = "container.googleapis.com"
-	LoggingService                   GcpService = "logging.googleapis.com"
-	LookerStudioService              GcpService = "datastudio.googleapis.com"
-	MonitoringService                GcpService = "monitoring.googleapis.com"
-	NetworkManagementService         GcpService = "networkmanagement.googleapis.com"
-	OnDemandScanningService          GcpService = "ondemandscanning.googleapis.com"
-	RediService                      GcpService = "redis.googleapis.com"
-	SecretManagerService             GcpService = "secretmanager.googleapis.com"
-	ServiceManagementService         GcpService = "servicemanagement.googleapis.com"
-	ServiceNetworkingService         GcpService = "servicenetworking.googleapis.com"
-	ServiceUsageService              GcpService = "serviceusage.googleapis.com"
-	SqlAdminService                  GcpService = "sqladmin.googleapis.com"
-	StorageService                   GcpService = "storage-api.googleapis.com"
-	TokenServiceService              GcpService = "securetoken.googleapis.com"
-)
+var GcpServices = map[string]bool{
+	"apikeys.googleapis.com":               true,
+	"appengine.googleapis.com":             true,
+	"artifactregistry.googleapis.com":      true,
+	"bigquery.googleapis.com":              true,
+	"bigquerydatatransfer.googleapis.com":  true,
+	"bigquerymigration.googleapis.com":     true,
+	"bigquerystorage.googleapis.com":       true,
+	"cloudapis.googleapis.com":             true,
+	"cloudbilling.googleapis.com":          true,
+	"cloudbuild.googleapis.com":            true,
+	"clouddebugger.googleapis.com":         true,
+	"cloudfunctions.googleapis.com":        true,
+	"cloudkms.googleapis.com":              true,
+	"cloudresourcemanager.googleapis.com":  true,
+	"cloudscheduler.googleapis.com":        true,
+	"cloudtrace.googleapis.com":            true,
+	"compute.googleapis.com":               true,
+	"container.googleapis.com":             true,
+	"containeranalysis.googleapis.com":     true,
+	"containerfilesystem.googleapis.com":   true,
+	"containerregistry.googleapis.com":     true,
+	"containerscanning.googleapis.com":     true,
+	"datastore.googleapis.com":             true,
+	"datastudio.googleapis.com":            true,
+	"deploymentmanager.googleapis.com":     true,
+	"dns.googleapis.com":                   true,
+	"domains.googleapis.com":               true,
+	"fcm.googleapis.com":                   true,
+	"firebase.googleapis.com":              true,
+	"firebasedynamiclinks.googleapis.com":  true,
+	"firebasehosting.googleapis.com":       true,
+	"firebaseinstallations.googleapis.com": true,
+	"firebaseremoteconfig.googleapis.com":  true,
+	"firebaserules.googleapis.com":         true,
+	"firestore.googleapis.com":             true,
+	"googlecloudmessaging.googleapis.com":  true,
+	"iam.googleapis.com":                   true,
+	"iamcredentials.googleapis.com":        true,
+	"iap.googleapis.com":                   true,
+	"identitytoolkit.googleapis.com":       true,
+	"logging.googleapis.com":               true,
+	"monitoring.googleapis.com":            true,
+	"networkmanagement.googleapis.com":     true,
+	"ondemandscanning.googleapis.com":      true,
+	"oslogin.googleapis.com":               true,
+	"pubsub.googleapis.com":                true,
+	"redis.googleapis.com":                 true,
+	"run.googleapis.com":                   true,
+	"runtimeconfig.googleapis.com":         true,
+	"secretmanager.googleapis.com":         true,
+	"securetoken.googleapis.com":           true,
+	"servicemanagement.googleapis.com":     true,
+	"servicenetworking.googleapis.com":     true,
+	"serviceusage.googleapis.com":          true,
+	"sql-component.googleapis.com":         true,
+	"sqladmin.googleapis.com":              true,
+	"storage-api.googleapis.com":           true,
+	"storage.googleapis.com":               true,
+	"testing.googleapis.com":               true,
+}

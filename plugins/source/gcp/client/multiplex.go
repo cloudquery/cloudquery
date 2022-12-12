@@ -4,7 +4,11 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func ProjectMultiplex(enabledService GcpService) func(schema.ClientMeta) []schema.ClientMeta {
+func ProjectMultiplex(enabledService string) func(schema.ClientMeta) []schema.ClientMeta {
+	if _, ok := GcpServices[enabledService]; !ok {
+		panic("unknown service: " + enabledService)
+	}
+
 	return func(meta schema.ClientMeta) []schema.ClientMeta {
 		cl := meta.(*Client)
 		// preallocate all clients just in case

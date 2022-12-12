@@ -35,7 +35,7 @@ type Client struct {
 	// this is set by table client multiplexer
 	CallOptions     []gax.CallOption
 	ProjectId       string
-	EnabledServices map[string]map[GcpService]bool
+	EnabledServices map[string]map[string]bool
 	// Logger
 	logger zerolog.Logger
 }
@@ -71,7 +71,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 	var err error
 	c := Client{
 		logger:          logger,
-		EnabledServices: map[string]map[GcpService]bool{},
+		EnabledServices: map[string]map[string]bool{},
 		// plugin: p,
 	}
 	var gcpSpec Spec
@@ -368,8 +368,8 @@ func (c *Client) configureEnabledServices() error {
 	return g.Wait()
 }
 
-func (c *Client) fetchEnabledServices(ctx context.Context) (map[GcpService]bool, error) {
-	enabled := make(map[GcpService]bool)
+func (c *Client) fetchEnabledServices(ctx context.Context) (map[string]bool, error) {
+	enabled := make(map[string]bool)
 	req := &pb.ListServicesRequest{
 		Parent:   "projects/" + c.ProjectId,
 		PageSize: 200,
@@ -388,11 +388,7 @@ func (c *Client) fetchEnabledServices(ctx context.Context) (map[GcpService]bool,
 		if err != nil {
 			return nil, err
 		}
-
-		item := resp.GetConfig()
-		serviceName := GcpService(item.Name)
-
-		enabled[serviceName] = true
+		enabled[resp.GetConfig().Name] = true
 	}
 	return enabled, nil
 }
