@@ -5,9 +5,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/plugins"
 )
 
-var (
-	Version = "Development"
-)
+var Version = "Development"
 
 func Tailscale() *plugins.SourcePlugin {
 	return plugins.NewSourcePlugin(

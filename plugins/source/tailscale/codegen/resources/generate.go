@@ -27,6 +27,7 @@ func Generate(ctx context.Context) error {
 
 	return tables(resources)
 }
+
 func (r *Resource) generate() error {
 	r.sanitize()
 	_, filename, _, ok := runtime.Caller(0)
