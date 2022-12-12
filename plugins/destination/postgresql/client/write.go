@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"strings"
 	"sync/atomic"
@@ -18,6 +19,14 @@ var cqStatusToPgStatus = map[schema.Status]pgtype.Status{
 	schema.Null:      pgtype.Null,
 	schema.Undefined: pgtype.Null,
 	schema.Present:   pgtype.Present,
+}
+
+type pgErrorWrap struct {
+	*pgconn.PgError
+}
+
+func (p *pgErrorWrap) Error() string {
+	return p.PgError.Error() + " (Table: " + p.PgError.TableName + ")"
 }
 
 func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *plugins.ClientResource) error {
@@ -39,12 +48,13 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *pl
 		if batch.Len() >= c.batchSize {
 			br := c.conn.SendBatch(ctx, batch)
 			if err := br.Close(); err != nil {
-				if _, ok := err.(*pgconn.PgError); !ok {
+				var pgErr *pgconn.PgError
+				if !errors.As(err, &pgErr) {
 					// not recoverable error
 					return fmt.Errorf("failed to execute batch: %w", err)
 				}
 				atomic.AddUint64(&c.metrics.Errors, 1)
-				c.logger.Error().Err(err).Msgf("failed to execute batch with pgerror")
+				c.logger.Error().Err(&pgErrorWrap{PgError: pgErr}).Msg("failed to execute batch with pgerror")
 			}
 			atomic.AddUint64(&c.metrics.Writes, uint64(c.batchSize))
 			batch = &pgx.Batch{}
@@ -54,11 +64,12 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *pl
 	if batch.Len() > 0 {
 		br := c.conn.SendBatch(ctx, batch)
 		if err := br.Close(); err != nil {
-			if _, ok := err.(*pgconn.PgError); !ok {
+			var pgErr *pgconn.PgError
+			if !errors.As(err, &pgErr) {
 				// no recoverable error
 				return fmt.Errorf("failed to execute batch: %w", err)
 			}
-			c.logger.Error().Err(err).Msgf("failed to execute batch with pgerror")
+			c.logger.Error().Err(&pgErrorWrap{PgError: pgErr}).Msg("failed to execute batch with pgerror")
 		}
 		atomic.AddUint64(&c.metrics.Writes, uint64(c.batchSize))
 	}
