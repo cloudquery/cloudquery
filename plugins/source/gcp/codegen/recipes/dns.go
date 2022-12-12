@@ -7,40 +7,39 @@ import (
 	"google.golang.org/api/dns/v1"
 )
 
-var dnsResources = []*Resource{
-	{
-		SubService:   "policies",
-		Struct:       &dns.Policy{},
-		NewFunction:  dns.NewService,
-		ListFunction: (&dns.PoliciesService{}).List,
-		ExtraColumns: []codegen.ColumnDefinition{
-			{
-				Name:     "id",
-				Type:     schema.TypeInt,
-				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-				Resolver: `schema.PathResolver("Id")`,
-			},
-		},
-	},
-	{
-		SubService:   "managed_zones",
-		Struct:       &dns.ManagedZone{},
-		NewFunction:  dns.NewManagedZoneOperationsService,
-		ListFunction: (&dns.ManagedZonesService{}).List,
-		ExtraColumns: []codegen.ColumnDefinition{
-			{
-				Name:     "id",
-				Type:     schema.TypeInt,
-				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-				Resolver: `schema.PathResolver("Id")`,
-			},
-		},
-	},
-}
 
-func DnsResources() []*Resource {
-	var resources []*Resource
-	resources = append(resources, dnsResources...)
+
+func init() {
+	resources := []*Resource{
+		{
+			SubService:   "policies",
+			Struct:       &dns.Policy{},
+			NewFunction:  dns.NewService,
+			ListFunction: (&dns.PoliciesService{}).List,
+			ExtraColumns: []codegen.ColumnDefinition{
+				{
+					Name:     "id",
+					Type:     schema.TypeInt,
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					Resolver: `schema.PathResolver("Id")`,
+				},
+			},
+		},
+		{
+			SubService:   "managed_zones",
+			Struct:       &dns.ManagedZone{},
+			NewFunction:  dns.NewManagedZoneOperationsService,
+			ListFunction: (&dns.ManagedZonesService{}).List,
+			ExtraColumns: []codegen.ColumnDefinition{
+				{
+					Name:     "id",
+					Type:     schema.TypeInt,
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					Resolver: `schema.PathResolver("Id")`,
+				},
+			},
+		},
+	}
 
 	for _, resource := range resources {
 		resource.Service = "dns"
@@ -51,5 +50,5 @@ func DnsResources() []*Resource {
 		resource.OutputField = strcase.ToCamel(resource.SubService)
 	}
 
-	return resources
+	Resources = append(Resources, resources...)
 }

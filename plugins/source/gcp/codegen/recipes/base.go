@@ -8,6 +8,8 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
+var Resources []*Resource
+
 type Resource struct {
 	// PackageName name is the packgename in the source plugin this resource is located
 	PackageName string
@@ -63,8 +65,6 @@ type Resource struct {
 	Multiplex *string
 	// ChildTable
 	ChildTable bool
-	// FakerFieldsToIgnore is a list of fields to ignore when generating faker data
-	FakerFieldsToIgnore []string
 	// SkipMock is used to skip the mock generation for this resource
 	SkipMock bool
 	// Pass to MockTemplate
