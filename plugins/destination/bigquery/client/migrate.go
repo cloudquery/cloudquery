@@ -39,13 +39,19 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 				if err := c.autoMigrateTable(gctx, client, table); err != nil {
 					return err
 				}
-				c.waitForSchemaToMatch(gctx, client, table)
+				err = c.waitForSchemaToMatch(gctx, client, table)
+				if err != nil {
+					return err
+				}
 			} else {
 				c.logger.Debug().Str("table", table.Name).Msg("Table doesn't exist, creating")
 				if err := c.createTable(gctx, client, table); err != nil {
 					return err
 				}
-				c.waitForTableToExist(gctx, client, table)
+				err = c.waitForTableToExist(gctx, client, table)
+				if err != nil {
+					return err
+				}
 			}
 			return nil
 		})
@@ -96,7 +102,7 @@ func (c *Client) waitForSchemaToMatch(ctx context.Context, client *bigquery.Clie
 	wantSchema := c.bigQuerySchemaForTable(table)
 	want, err := wantSchema.ToJSONFields()
 	if err != nil {
-		fmt.Errorf("failed to convert schema to JSON: %v", err)
+		return fmt.Errorf("failed to convert schema to JSON: %v", err)
 	}
 	for i := 0; i < maxTableChecks; i++ {
 		md, err := client.Dataset(c.pluginSpec.DatasetID).Table(table.Name).Metadata(ctx)
@@ -105,7 +111,7 @@ func (c *Client) waitForSchemaToMatch(ctx context.Context, client *bigquery.Clie
 		}
 		got, err := md.Schema.ToJSONFields()
 		if err != nil {
-			fmt.Errorf("failed to convert schema to JSON: %v", err)
+			return fmt.Errorf("failed to convert schema to JSON: %v", err)
 		}
 		if string(got) == string(want) {
 			c.logger.Debug().Str("table", table.Name).Msg("Schemas matched")
