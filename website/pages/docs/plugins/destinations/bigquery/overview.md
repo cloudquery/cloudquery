@@ -74,12 +74,18 @@ This is the top-level spec used by the BigQuery destination plugin.
 
 - `dataset_id` (string) (required)
 
-  The id of the BigQuery dataset within the project. This dataset needs to be created before running a sync or migration.
+  The name of the BigQuery dataset within the project, e.g. `my_dataset`. This dataset needs to be created before running a sync or migration.
+
+
+- `dataset_location` (string) (optional)
+
+  The data location of the BigQuery dataset. If set, will be used as the default location for job operations. Pro-tip: this can solve "dataset not found" issues for newly created datasets.
 
 
 - `time_partitioning` (string) (options: `none`, `hour`, `day`) (default: `none`)
 
   The time partitioning to use when creating tables. The partition time column used will always be `_cq_sync_time` so that all rows for a sync run will be partitioned on the hour/day the sync started.
+
 
 - `service_account_key_json` (string) (default: empty).
 

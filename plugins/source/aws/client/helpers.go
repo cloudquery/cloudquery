@@ -305,15 +305,6 @@ func isNotFoundError(err error) bool {
 	return false
 }
 
-// IsAccessDeniedError checks if api error should be classified as a permissions issue
-func (c *Client) IsAccessDeniedError(err error) bool {
-	if isAccessDeniedError(err) {
-		c.logger.Warn().Err(err).Msg("API returned an Access Denied error, ignoring it and continuing...")
-		return true
-	}
-	return false
-}
-
 func isAccessDeniedError(err error) bool {
 	var ae smithy.APIError
 	if !errors.As(err, &ae) {
