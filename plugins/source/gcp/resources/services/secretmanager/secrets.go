@@ -81,7 +81,7 @@ func fetchSecrets(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 	if err != nil {
 		return err
 	}
-	it := gcpClient.ListSecrets(ctx, req)
+	it := gcpClient.ListSecrets(ctx, req, c.CallOptions...)
 	for {
 		resp, err := it.Next()
 		if err == iterator.Done {
