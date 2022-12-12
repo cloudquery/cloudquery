@@ -5,16 +5,20 @@ import (
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
-	"github.com/pkg/errors"
+	sql "google.golang.org/api/sqladmin/v1beta4"
 )
 
 func fetchInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
+	sqlClient, err := sql.NewService(ctx, c.ClientOptions...)
+	if err != nil {
+		return err
+	}
 	for {
-		output, err := c.Services.SqlService.Instances.List(c.ProjectId).PageToken(nextPageToken).Do()
+		output, err := sqlClient.Instances.List(c.ProjectId).MaxResults(1000).PageToken(nextPageToken).Do()
 		if err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 		res <- output.Items
 		if output.NextPageToken == "" {

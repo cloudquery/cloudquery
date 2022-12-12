@@ -4,13 +4,14 @@ package monitoring
 
 import (
 	"context"
-	"github.com/pkg/errors"
 	"google.golang.org/api/iterator"
 
 	pb "google.golang.org/genproto/googleapis/monitoring/v3"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
+
+	"cloud.google.com/go/monitoring/apiv3/v2"
 )
 
 func AlertPolicies() *schema.Table {
@@ -95,14 +96,18 @@ func fetchAlertPolicies(ctx context.Context, meta schema.ClientMeta, parent *sch
 	req := &pb.ListAlertPoliciesRequest{
 		Name: "projects/" + c.ProjectId,
 	}
-	it := c.Services.MonitoringAlertPolicyClient.ListAlertPolicies(ctx, req)
+	gcpClient, err := monitoring.NewAlertPolicyClient(ctx, c.ClientOptions...)
+	if err != nil {
+		return err
+	}
+	it := gcpClient.ListAlertPolicies(ctx, req, c.CallOptions...)
 	for {
 		resp, err := it.Next()
 		if err == iterator.Done {
 			break
 		}
 		if err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 
 		res <- resp

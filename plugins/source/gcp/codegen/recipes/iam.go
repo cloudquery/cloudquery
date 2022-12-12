@@ -7,62 +7,61 @@ import (
 	"google.golang.org/api/iam/v1"
 )
 
-var iamResources = []*Resource{
-	{
-		SubService: "roles",
-		Struct:     &iam.Role{},
-		ExtraColumns: []codegen.ColumnDefinition{
-			{
-				Name:     "project_id",
-				Type:     schema.TypeString,
-				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-				Resolver: "client.ResolveProject",
-			},
-			{
-				Name:    "name",
-				Type:    schema.TypeString,
-				Options: schema.ColumnCreationOptions{PrimaryKey: true},
-			},
-		},
-	},
-	{
-		SubService:  "service_accounts",
-		Struct:      &iam.ServiceAccount{},
-		OutputField: "Accounts",
-		ExtraColumns: []codegen.ColumnDefinition{
-			{
-				Name:     "unique_id",
-				Type:     schema.TypeString,
-				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-				Resolver: `schema.PathResolver("UniqueId")`,
-			},
-		},
-		SkipFields:      []string{"ProjectId"},
-		NameTransformer: CreateReplaceTransformer(map[string]string{"oauth_2": "oauth2"}),
-		Relations:       []string{"ServiceAccountKeys()"},
-		SkipMock:        true,
-	},
-	{
-		SubService:  "service_account_keys",
-		Struct:      &iam.ServiceAccountKey{},
-		ChildTable:  true,
-		OutputField: "AccountKeys",
-		ExtraColumns: []codegen.ColumnDefinition{
-			{
-				Name:     "service_account_unique_id",
-				Type:     schema.TypeString,
-				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-				Resolver: `schema.ParentColumnResolver("unique_id")`,
-			},
-		},
-		SkipFields: []string{"ProjectId", "PrivateKeyData"},
-		SkipMock:   true,
-	},
-}
 
-func IamResources() []*Resource {
-	var resources []*Resource
-	resources = append(resources, iamResources...)
+
+func init() {
+	resources := []*Resource{
+		{
+			SubService: "roles",
+			Struct:     &iam.Role{},
+			ExtraColumns: []codegen.ColumnDefinition{
+				{
+					Name:     "project_id",
+					Type:     schema.TypeString,
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					Resolver: "client.ResolveProject",
+				},
+				{
+					Name:    "name",
+					Type:    schema.TypeString,
+					Options: schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+			},
+		},
+		{
+			SubService:  "service_accounts",
+			Struct:      &iam.ServiceAccount{},
+			OutputField: "Accounts",
+			ExtraColumns: []codegen.ColumnDefinition{
+				{
+					Name:     "unique_id",
+					Type:     schema.TypeString,
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					Resolver: `schema.PathResolver("UniqueId")`,
+				},
+			},
+			SkipFields:      []string{"ProjectId"},
+			NameTransformer: CreateReplaceTransformer(map[string]string{"oauth_2": "oauth2"}),
+			Relations:       []string{"ServiceAccountKeys()"},
+			SkipMock:        true,
+		},
+		{
+			SubService:  "service_account_keys",
+			Struct:      &iam.ServiceAccountKey{},
+			ChildTable:  true,
+			OutputField: "AccountKeys",
+			ExtraColumns: []codegen.ColumnDefinition{
+				{
+					Name:     "service_account_unique_id",
+					Type:     schema.TypeString,
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					Resolver: `schema.ParentColumnResolver("unique_id")`,
+				},
+			},
+			SkipFields: []string{"ProjectId", "PrivateKeyData", "PrivateKeyType"},
+			SkipMock:   true,
+		},
+	}
 
 	for _, resource := range resources {
 		resource.Service = "iam"
@@ -75,5 +74,5 @@ func IamResources() []*Resource {
 		}
 	}
 
-	return resources
+	Resources = append(Resources, resources...)
 }

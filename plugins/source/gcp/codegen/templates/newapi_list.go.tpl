@@ -6,13 +6,17 @@ import (
 	{{if not .SkipFetch}}
 	"context"
 	"google.golang.org/api/iterator"
-	"github.com/pkg/errors"
 	{{if .ProtobufImport}}
   pb "{{.ProtobufImport}}"
   {{end}}
 	{{end}}
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
+	{{if not .SkipFetch}}
+	{{range .MockImports}}
+  "{{.}}"
+  {{end}}
+	{{end}}
   {{range .Imports}}
   "{{.}}"
   {{end}}
@@ -28,14 +32,18 @@ func fetch{{.SubService | ToCamel}}(ctx context.Context, meta schema.ClientMeta,
 	req := &pb.{{.RequestStructName}}{
 		{{if .RequestStructFields}}{{.RequestStructFields}}{{end}}
 	}
-  it := c.Services.{{.Service | ToCamel}}{{.ClientName}}.{{.ListFunctionName}}(ctx, req)
+	gcpClient, err := {{.Service}}.{{.NewFunctionName}}(ctx, c.ClientOptions...)
+	if err != nil {
+		return err
+	}
+  it := gcpClient.{{.ListFunctionName}}(ctx, req, c.CallOptions...)
 	for {
     resp, err := it.Next()
     if err == iterator.Done {
             break
     }
     if err != nil {
-      return errors.WithStack(err)
+      return err
     }
 		{{if .OutputField}}
 			res <- resp.{{.OutputField}}

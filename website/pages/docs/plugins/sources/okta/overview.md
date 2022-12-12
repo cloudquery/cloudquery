@@ -17,7 +17,7 @@ In order to get started with the Okta plugin, you need to create a YAML file in 
 
 The following example sets up the Okta plugin, and connects it to a postgresql destination:
 
-```yaml copy
+```yaml
 kind: source
 spec:
   # Source spec section

@@ -4,13 +4,14 @@ package run
 
 import (
 	"context"
-	"github.com/pkg/errors"
 	"google.golang.org/api/iterator"
 
 	pb "google.golang.org/genproto/googleapis/cloud/run/v2"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
+
+	"cloud.google.com/go/run/apiv2"
 )
 
 func Services() *schema.Table {
@@ -173,14 +174,18 @@ func fetchServices(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	req := &pb.ListServicesRequest{
 		Parent: "projects/" + c.ProjectId + "locations/-",
 	}
-	it := c.Services.RunServicesClient.ListServices(ctx, req)
+	gcpClient, err := run.NewServicesClient(ctx, c.ClientOptions...)
+	if err != nil {
+		return err
+	}
+	it := gcpClient.ListServices(ctx, req, c.CallOptions...)
 	for {
 		resp, err := it.Next()
 		if err == iterator.Done {
 			break
 		}
 		if err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 
 		res <- resp

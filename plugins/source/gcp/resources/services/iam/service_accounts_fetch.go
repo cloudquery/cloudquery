@@ -5,16 +5,20 @@ import (
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
-	"github.com/pkg/errors"
+	"google.golang.org/api/iam/v1"
 )
 
 func fetchServiceAccounts(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
+	iamClient, err := iam.NewService(ctx, c.ClientOptions...)
+	if err != nil {
+		return err
+	}
 	for {
-		output, err := c.Services.Iam.Projects.ServiceAccounts.List("projects/" + c.ProjectId).PageToken(nextPageToken).Do()
+		output, err := iamClient.Projects.ServiceAccounts.List("projects/" + c.ProjectId).PageToken(nextPageToken).PageSize(100).Do()
 		if err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 		res <- output.Accounts
 

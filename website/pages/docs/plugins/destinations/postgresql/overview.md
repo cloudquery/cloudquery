@@ -2,6 +2,7 @@
 
 import { getLatestVersion } from "../../../../../utils/versions";
 import { Badge } from "../../../../../components/Badge";
+import { Callout } from 'nextra-theme-docs'
 
 <Badge text={"Latest: " + getLatestVersion("destination", "postgresql")}/>
 
@@ -18,7 +19,7 @@ Supported database versions:
 
 This example configures a Postgresql destination, located at `localhost:5432`. The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
 
-```yaml copy
+```yaml
 kind: destination
 spec:
   name: "postgresql"
@@ -29,6 +30,10 @@ spec:
   spec:
     connection_string: "postgresql://postgres:pass@localhost:5432/postgres?sslmode=disable"
 ```
+
+<Callout type="info">
+Make sure you use environment variable expansion in production instead of committing the credentials to the configuration file directly.
+</Callout>
 
 ### PostgreSQL Spec
 
@@ -53,3 +58,23 @@ This is the (nested) spec used by the PostgreSQL destination Plugin.
 - `batch_size` (int, optional. Default: 1000)
 
   Number of rows to insert in a single batch.
+
+
+Note: Make sure you use environment variable expansion in production instead of committing the credentials to the configuration file directly.
+
+### Verbose logging for debug
+
+The PostgreSQL destination can be run in debug mode.
+
+Note: This will use [`pgx`](https://github.com/jackc/pgx) built-in logging and might output data/sensitive information to logs so make sure to not use it in production but only for debugging.
+
+```yaml
+kind: destination
+spec:
+  name: postgresql
+  path: cloudquery/postgresql
+  version: "VERSION_DESTINATION_POSTGRESQL"
+  spec:
+    connection_string: ${PG_CONNECTION_STRING}
+    pgx_log_level: debug # Available: error, warn, info, debug, trace. Default: "error"
+```

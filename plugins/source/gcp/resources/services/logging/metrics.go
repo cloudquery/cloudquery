@@ -4,13 +4,14 @@ package logging
 
 import (
 	"context"
-	"github.com/pkg/errors"
 	"google.golang.org/api/iterator"
 
 	pb "google.golang.org/genproto/googleapis/logging/v2"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
+
+	"cloud.google.com/go/logging/apiv2"
 )
 
 func Metrics() *schema.Table {
@@ -91,14 +92,18 @@ func fetchMetrics(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 	req := &pb.ListLogMetricsRequest{
 		Parent: "projects/" + c.ProjectId,
 	}
-	it := c.Services.LoggingMetricsClient.ListLogMetrics(ctx, req)
+	gcpClient, err := logging.NewMetricsClient(ctx, c.ClientOptions...)
+	if err != nil {
+		return err
+	}
+	it := gcpClient.ListLogMetrics(ctx, req, c.CallOptions...)
 	for {
 		resp, err := it.Next()
 		if err == iterator.Done {
 			break
 		}
 		if err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 
 		res <- resp

@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"time"
 
 	"cloud.google.com/go/bigquery"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -11,7 +12,11 @@ import (
 	"google.golang.org/api/googleapi"
 )
 
-const concurrentMigrations = 10
+const (
+	concurrentMigrations = 10
+	checkTableFrequency  = 6 * time.Second
+	maxTableChecks       = 20
+)
 
 // Migrate tables. It is the responsibility of the CLI of the client to lock before running migrations.
 func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
@@ -34,9 +39,17 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 				if err := c.autoMigrateTable(gctx, client, table); err != nil {
 					return err
 				}
+				err = c.waitForSchemaToMatch(gctx, client, table)
+				if err != nil {
+					return err
+				}
 			} else {
 				c.logger.Debug().Str("table", table.Name).Msg("Table doesn't exist, creating")
 				if err := c.createTable(gctx, client, table); err != nil {
+					return err
+				}
+				err = c.waitForTableToExist(gctx, client, table)
+				if err != nil {
 					return err
 				}
 			}
@@ -45,10 +58,9 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 	}
 	return eg.Wait()
 }
-
 func (c *Client) doesTableExist(ctx context.Context, client *bigquery.Client, table string) (bool, error) {
-	c.logger.Debug().Str("dataset", c.datasetID).Str("table", table).Msg("Checking existence")
-	tableRef := client.Dataset(c.datasetID).Table(table)
+	c.logger.Debug().Str("dataset", c.pluginSpec.DatasetID).Str("table", table).Msg("Checking existence")
+	tableRef := client.Dataset(c.pluginSpec.DatasetID).Table(table)
 	md, err := tableRef.Metadata(ctx)
 	if err != nil {
 		if e, ok := err.(*googleapi.Error); ok {
@@ -64,6 +76,53 @@ func (c *Client) doesTableExist(ctx context.Context, client *bigquery.Client, ta
 	return true, nil
 }
 
+// wait until we can confirm that table now exists to avoid issues if writes are done
+// immediately after the migration
+func (c *Client) waitForTableToExist(ctx context.Context, client *bigquery.Client, table *schema.Table) error {
+	c.logger.Debug().Str("table", table.Name).Msg("Waiting for table to be created")
+	for i := 0; i < maxTableChecks; i++ {
+		tableExists, err := c.doesTableExist(ctx, client, table.Name)
+		if err != nil {
+			return err
+		}
+		if tableExists {
+			c.logger.Debug().Str("table", table.Name).Msg("Table created")
+			return nil
+		}
+		c.logger.Debug().Str("table", table.Name).Int("i", i).Msg("Waiting for table to be created")
+		time.Sleep(checkTableFrequency)
+	}
+	return fmt.Errorf("failed to confirm table creation for %v within timeout period", table.Name)
+}
+
+// wait until we can confirm that schema now matches, to avoid issues if writes are done
+// immediately after the migration
+func (c *Client) waitForSchemaToMatch(ctx context.Context, client *bigquery.Client, table *schema.Table) error {
+	c.logger.Debug().Str("table", table.Name).Msg("Waiting for schemas to match")
+	wantSchema := c.bigQuerySchemaForTable(table)
+	want, err := wantSchema.ToJSONFields()
+	if err != nil {
+		return fmt.Errorf("failed to convert schema to JSON: %v", err)
+	}
+	for i := 0; i < maxTableChecks; i++ {
+		md, err := client.Dataset(c.pluginSpec.DatasetID).Table(table.Name).Metadata(ctx)
+		if err != nil {
+			return err
+		}
+		got, err := md.Schema.ToJSONFields()
+		if err != nil {
+			return fmt.Errorf("failed to convert schema to JSON: %v", err)
+		}
+		if string(got) == string(want) {
+			c.logger.Debug().Str("table", table.Name).Msg("Schemas matched")
+			return nil
+		}
+		c.logger.Debug().Str("table", table.Name).Int("i", i).Msg("Waiting for schemas to match")
+		time.Sleep(checkTableFrequency)
+	}
+	return fmt.Errorf("failed to confirm schema update for %v within timeout period", table.Name)
+}
+
 func (c *Client) autoMigrateTable(ctx context.Context, client *bigquery.Client, table *schema.Table) error {
 	bqSchema := c.bigQuerySchemaForTable(table)
 	tm := bigquery.TableMetadataToUpdate{
@@ -71,7 +130,7 @@ func (c *Client) autoMigrateTable(ctx context.Context, client *bigquery.Client, 
 		Description: table.Description,
 		Schema:      bqSchema,
 	}
-	_, err := client.Dataset(c.datasetID).Table(table.Name).Update(ctx, tm, "")
+	_, err := client.Dataset(c.pluginSpec.DatasetID).Table(table.Name).Update(ctx, tm, "")
 	return err
 }
 
@@ -84,7 +143,7 @@ func (c *Client) createTable(ctx context.Context, client *bigquery.Client, table
 		Schema:           bqSchema,
 		TimePartitioning: c.timePartitioning(),
 	}
-	return client.Dataset(c.datasetID).Table(table.Name).Create(ctx, &tm)
+	return client.Dataset(c.pluginSpec.DatasetID).Table(table.Name).Create(ctx, &tm)
 }
 
 func (c *Client) timePartitioning() *bigquery.TimePartitioning {

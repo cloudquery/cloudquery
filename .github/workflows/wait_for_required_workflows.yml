@@ -43,6 +43,7 @@ jobs:
                            "plugins/source/aws",
                            "plugins/source/azure",
                            "plugins/source/cloudflare",
+                           "plugins/source/crowdstrike",
                            "plugins/source/digitalocean",
                            "plugins/source/datadog",
                            "plugins/source/gandi",
@@ -77,8 +78,8 @@ jobs:
               actions = ["cli (ubuntu-latest)", "cli (windows-latest)", "cli (macos-latest)", ...actions]
             }
 
-            // Enforce policy tests for AWS,GCP,Azure and K8s plugins
-            const pluginsWithPolicyTests = ["plugins/source/aws", "plugins/source/gcp", "plugins/source/azure", "plugins/source/k8s"]
+            // Enforce policy tests for AWS,GCP and K8s plugins
+            const pluginsWithPolicyTests = ["plugins/source/aws", "plugins/source/gcp", "plugins/source/k8s"]
             for (const plugin of pluginsWithPolicyTests) {
               if (actions.includes(plugin)) {
                 actions = [...actions, 'test-policies']

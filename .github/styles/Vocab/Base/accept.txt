@@ -136,11 +136,12 @@ Datadog
 nvm
 npm
 Gandi
+CrowdStrike
+crowdstrike
 parallelization
 hyperscale
 goroutines
 arn
-arns
 ARN
 ARNs
 SCP
@@ -154,3 +155,4 @@ ELB
 ELBs
 CMK
 CMKs
+serverless

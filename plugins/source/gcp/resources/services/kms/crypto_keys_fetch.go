@@ -3,25 +3,29 @@ package kms
 import (
 	"context"
 
+	kms "cloud.google.com/go/kms/apiv1"
 	"cloud.google.com/go/kms/apiv1/kmspb"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
-	"github.com/pkg/errors"
 	"google.golang.org/api/iterator"
 )
 
 func fetchCryptoKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	p := parent.Item.(*kmspb.KeyRing)
+	kmsClient, err := kms.NewKeyManagementClient(ctx, c.ClientOptions...)
+	if err != nil {
+		return err
+	}
 
-	it := c.Services.KmsKeyManagementClient.ListCryptoKeys(ctx, &kmspb.ListCryptoKeysRequest{Parent: p.Name})
+	it := kmsClient.ListCryptoKeys(ctx, &kmspb.ListCryptoKeysRequest{Parent: p.Name})
 	for {
 		key, err := it.Next()
 		if err == iterator.Done {
 			break
 		}
 		if err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 		res <- key
 	}

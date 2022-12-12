@@ -4,13 +4,14 @@ package redis
 
 import (
 	"context"
-	"github.com/pkg/errors"
 	"google.golang.org/api/iterator"
 
 	pb "google.golang.org/genproto/googleapis/cloud/redis/v1"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
+
+	"cloud.google.com/go/redis/apiv1"
 )
 
 func Instances() *schema.Table {
@@ -186,14 +187,18 @@ func fetchInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	req := &pb.ListInstancesRequest{
 		Parent: "projects/" + c.ProjectId + "/locations/-",
 	}
-	it := c.Services.RedisCloudRedisClient.ListInstances(ctx, req)
+	gcpClient, err := redis.NewCloudRedisClient(ctx, c.ClientOptions...)
+	if err != nil {
+		return err
+	}
+	it := gcpClient.ListInstances(ctx, req, c.CallOptions...)
 	for {
 		resp, err := it.Next()
 		if err == iterator.Done {
 			break
 		}
 		if err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 
 		res <- resp

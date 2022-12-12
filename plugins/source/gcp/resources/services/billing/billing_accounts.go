@@ -4,13 +4,14 @@ package billing
 
 import (
 	"context"
-	"github.com/pkg/errors"
 	"google.golang.org/api/iterator"
 
 	pb "google.golang.org/genproto/googleapis/cloud/billing/v1"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
+
+	"cloud.google.com/go/billing/apiv1"
 )
 
 func BillingAccounts() *schema.Table {
@@ -53,14 +54,18 @@ func BillingAccounts() *schema.Table {
 func fetchBillingAccounts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	req := &pb.ListBillingAccountsRequest{}
-	it := c.Services.BillingCloudBillingClient.ListBillingAccounts(ctx, req)
+	gcpClient, err := billing.NewCloudBillingClient(ctx, c.ClientOptions...)
+	if err != nil {
+		return err
+	}
+	it := gcpClient.ListBillingAccounts(ctx, req, c.CallOptions...)
 	for {
 		resp, err := it.Next()
 		if err == iterator.Done {
 			break
 		}
 		if err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 
 		res <- resp

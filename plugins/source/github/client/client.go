@@ -65,6 +65,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (sche
 	return &Client{
 		logger: logger,
 		Github: GithubServices{
+			Actions:       c.Actions,
 			Teams:         c.Teams,
 			Billing:       c.Billing,
 			Repositories:  c.Repositories,
