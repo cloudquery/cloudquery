@@ -91,7 +91,7 @@ func (c *Client) writeResource(ctx context.Context, table *schema.Table, resourc
 }
 
 func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *plugins.ClientResource) error {
-	eg := errgroup.Group{}
+	eg, gctx := errgroup.WithContext(ctx)
 	workers := make(map[string]*worker, len(tables))
 
 	if _, err := c.db.ExecContext(ctx, createOrReplaceFileFormat); err != nil {
@@ -109,12 +109,22 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *pl
 			writeChan: writeChan,
 		}
 		eg.Go(func() error {
-			return c.writeResource(ctx, t, writeChan)
+			return c.writeResource(gctx, t, writeChan)
 		})
 	}
 
-	for r := range res {
-		workers[r.TableName].writeChan <- r.Data
+	done := false
+	for !done {
+		select {
+		case r, ok := <-res:
+			if !ok {
+				done = true
+				break
+			}
+			workers[r.TableName].writeChan <- r.Data
+		case <-gctx.Done():
+			done = true
+		}
 	}
 	for _, w := range workers {
 		close(w.writeChan)
