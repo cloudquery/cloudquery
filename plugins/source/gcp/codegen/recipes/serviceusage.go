@@ -7,8 +7,6 @@ import (
 	pb "google.golang.org/genproto/googleapis/api/serviceusage/v1"
 )
 
-
-
 func init() {
 	resources := []*Resource{
 		{
