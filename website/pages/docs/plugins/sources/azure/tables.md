@@ -202,7 +202,6 @@
 - [azure_sql_virtual_clusters](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_sql_virtual_clusters.md)
 - [azure_sqlvirtualmachine_groups](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_sqlvirtualmachine_groups.md)
 - [azure_sqlvirtualmachine_sql_virtual_machines](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_sqlvirtualmachine_sql_virtual_machines.md)
-- [azure_storage_deleted_accounts](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_storage_deleted_accounts.md)
 - [azure_storage_accounts](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_storage_accounts.md)
   - [azure_storage_tables](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_storage_tables.md)
 - [azure_storagecache_caches](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_storagecache_caches.md)
