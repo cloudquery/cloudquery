@@ -14,7 +14,7 @@ import (
 	"github.com/rs/zerolog"
 )
 
-func MockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, *gomock.Controller) *ServiceClient) {
+func MockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, *gomock.Controller) VercelServices) {
 	version := "vDev"
 
 	t.Helper()

@@ -2,39 +2,30 @@ package team
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/cloudquery/cloudquery/plugins/source/vercel/client"
-	"github.com/cloudquery/cloudquery/plugins/source/vercel/resources/services/team/model"
+	"github.com/cloudquery/cloudquery/plugins/source/vercel/internal/vercel"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func fetchTeamMembers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	cl := meta.(*client.Client)
-	team := parent.Item.(model.Team)
-	u := fmt.Sprintf(model.TeamMembersURL, team.ID)
+	team := parent.Item.(vercel.Team)
 
-	var until *int64
+	cl := meta.(*client.Client)
+
+	var pg vercel.Paginator
 
 	for {
-		var (
-			list struct {
-				TeamMembers []model.TeamMember     `json:"members"`
-				Pagination  client.VercelPaginator `json:"pagination"`
-			}
-		)
-
-		err := cl.Services.Request(ctx, u, until, &list)
+		list, p, err := cl.Services.ListTeamMembers(ctx, team.ID, &pg)
 		if err != nil {
 			return err
 		}
-		res <- list.TeamMembers
+		res <- list
 
-		if list.Pagination.Next == nil {
+		if p.Next == nil {
 			break
 		}
-
-		until = list.Pagination.Next
+		pg.Next = p.Next
 	}
 	return nil
 }

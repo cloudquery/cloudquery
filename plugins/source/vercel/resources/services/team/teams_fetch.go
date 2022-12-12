@@ -4,34 +4,26 @@ import (
 	"context"
 
 	"github.com/cloudquery/cloudquery/plugins/source/vercel/client"
-	"github.com/cloudquery/cloudquery/plugins/source/vercel/resources/services/team/model"
+	"github.com/cloudquery/cloudquery/plugins/source/vercel/internal/vercel"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func fetchTeams(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
 
-	var until *int64
+	var pg vercel.Paginator
 
 	for {
-		var (
-			list struct {
-				Teams      []model.Team           `json:"teams"`
-				Pagination client.VercelPaginator `json:"pagination"`
-			}
-		)
-
-		err := cl.Services.Request(ctx, model.TeamsURL, until, &list)
+		list, p, err := cl.Services.ListTeams(ctx, &pg)
 		if err != nil {
 			return err
 		}
-		res <- list.Teams
+		res <- list
 
-		if list.Pagination.Next == nil {
+		if p.Next == nil {
 			break
 		}
-
-		until = list.Pagination.Next
+		pg.Next = p.Next
 	}
 	return nil
 }

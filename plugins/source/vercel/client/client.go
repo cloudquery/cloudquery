@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/cloudquery/cloudquery/plugins/source/vercel/internal/vercel"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
@@ -18,10 +19,10 @@ type Client struct {
 	sourceSpec specs.Source
 	veSpec     Spec
 
-	Services *ServiceClient
+	Services VercelServices
 }
 
-func New(logger zerolog.Logger, sourceSpec specs.Source, veSpec Spec, services *ServiceClient) Client {
+func New(logger zerolog.Logger, sourceSpec specs.Source, veSpec Spec, services VercelServices) Client {
 	return Client{
 		logger:     logger,
 		sourceSpec: sourceSpec,
@@ -53,7 +54,7 @@ func Configure(_ context.Context, logger zerolog.Logger, s specs.Source) (schema
 	return &cl, nil
 }
 
-func getServiceClient(spec *Spec) (*ServiceClient, error) {
+func getServiceClient(spec *Spec) (*vercel.Client, error) {
 	if spec.AccessToken == "" {
 		return nil, errors.New("no access token provided")
 	}
@@ -64,13 +65,11 @@ func getServiceClient(spec *Spec) (*ServiceClient, error) {
 		spec.Timeout = 5
 	}
 
-	return &ServiceClient{
-		Client: http.Client{
-			Timeout: time.Duration(spec.Timeout) * time.Second,
-		},
-
-		baseURL: spec.EndpointURL,
-		token:   spec.AccessToken,
-		teamID:  spec.TeamID,
-	}, nil
+	return vercel.New(http.Client{
+		Timeout: time.Duration(spec.Timeout) * time.Second,
+	},
+		spec.EndpointURL,
+		spec.AccessToken,
+		spec.TeamID,
+	), nil
 }

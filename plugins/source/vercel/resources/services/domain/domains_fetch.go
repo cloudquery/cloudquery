@@ -4,34 +4,26 @@ import (
 	"context"
 
 	"github.com/cloudquery/cloudquery/plugins/source/vercel/client"
-	"github.com/cloudquery/cloudquery/plugins/source/vercel/resources/services/domain/model"
+	"github.com/cloudquery/cloudquery/plugins/source/vercel/internal/vercel"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func fetchDomains(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
 
-	var until *int64
+	var pg vercel.Paginator
 
 	for {
-		var (
-			list struct {
-				Domains    []model.Domain         `json:"domains"`
-				Pagination client.VercelPaginator `json:"pagination"`
-			}
-		)
-
-		err := cl.Services.Request(ctx, model.DomainsURL, until, &list)
+		list, p, err := cl.Services.ListDomains(ctx, &pg)
 		if err != nil {
 			return err
 		}
-		res <- list.Domains
+		res <- list
 
-		if list.Pagination.Next == nil {
+		if p.Next == nil {
 			break
 		}
-
-		until = list.Pagination.Next
+		pg.Next = p.Next
 	}
 	return nil
 }

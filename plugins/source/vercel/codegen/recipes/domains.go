@@ -1,7 +1,7 @@
 package recipes
 
 import (
-	"github.com/cloudquery/cloudquery/plugins/source/vercel/resources/services/domain/model"
+	"github.com/cloudquery/cloudquery/plugins/source/vercel/internal/vercel"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -9,13 +9,13 @@ import (
 func DomainResources() []*Resource {
 	return []*Resource{
 		{
-			DataStruct: &model.Domain{},
+			DataStruct: &vercel.Domain{},
 			Service:    "domain",
 			PKColumns:  []string{"id"},
 			Relations:  []string{"DomainRecords()"},
 		},
 		{
-			DataStruct: &model.DomainRecord{},
+			DataStruct: &vercel.DomainRecord{},
 			Service:    "domain",
 			PKColumns:  []string{"domain_name", "id"},
 			ExtraColumns: []codegen.ColumnDefinition{

@@ -14,7 +14,7 @@ import (
 	"text/template"
 
 	"github.com/cloudquery/cloudquery/plugins/source/vercel/codegen/recipes"
-	"github.com/cloudquery/cloudquery/plugins/source/vercel/resources/model"
+	"github.com/cloudquery/cloudquery/plugins/source/vercel/internal/vercel"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -47,7 +47,7 @@ func main() {
 }
 
 func milliTimeTransformer(field reflect.StructField) (schema.ValueType, error) {
-	milliTime := model.MilliTime{}
+	milliTime := vercel.MilliTime{}
 	switch field.Type {
 	case reflect.TypeOf(milliTime), reflect.TypeOf(&milliTime):
 		return schema.TypeTimestamp, nil

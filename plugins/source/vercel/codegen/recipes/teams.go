@@ -1,7 +1,7 @@
 package recipes
 
 import (
-	"github.com/cloudquery/cloudquery/plugins/source/vercel/resources/services/team/model"
+	"github.com/cloudquery/cloudquery/plugins/source/vercel/internal/vercel"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -9,13 +9,13 @@ import (
 func TeamResources() []*Resource {
 	return []*Resource{
 		{
-			DataStruct: &model.Team{},
+			DataStruct: &vercel.Team{},
 			Service:    "team",
 			PKColumns:  []string{"id"},
 			Relations:  []string{"TeamMembers()"},
 		},
 		{
-			DataStruct: &model.TeamMember{},
+			DataStruct: &vercel.TeamMember{},
 			Service:    "team",
 			PKColumns:  []string{"team_id", "uid"},
 			ExtraColumns: []codegen.ColumnDefinition{
