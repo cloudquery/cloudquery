@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/vercel/internal/vercel"
@@ -38,7 +39,11 @@ func (c *Client) Logger() *zerolog.Logger {
 }
 
 func (c *Client) ID() string {
-	return c.sourceSpec.Name + "_" + c.TeamID
+	n := []string{c.sourceSpec.Name}
+	if c.TeamID != "" {
+		n = append(n, c.TeamID)
+	}
+	return strings.Join(n, "_")
 }
 
 func (c *Client) WithTeamID(teamID string) schema.ClientMeta {

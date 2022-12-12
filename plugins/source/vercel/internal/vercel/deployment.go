@@ -13,7 +13,7 @@ const (
 type Deployment struct {
 	UID                 string      `json:"uid"`
 	Name                string      `json:"name"`
-	URL                 string      `json:"url"`
+	URL                 *string     `json:"url,omitempty"`
 	Source              *string     `json:"source,omitempty"`
 	State               *string     `json:"state,omitempty"`
 	Type                string      `json:"type"`

@@ -13,6 +13,8 @@ spec:
   version: "v1.0.0" # latest version of vercel plugin
   tables: ["*"]
   destinations: ["postgresql"]
+  skip_tables:
+    - vercel_deployment_checks
 
   # Vercel specific configuration
   spec:
@@ -20,6 +22,7 @@ spec:
     team_ids:
       - "<YOUR_OPTIONAL_TEAM_ID_HERE>"
       - "<ANOTHER_OPTIONAL_TEAM_ID_HERE>"
+
 ```
 
 ## Vercel Spec

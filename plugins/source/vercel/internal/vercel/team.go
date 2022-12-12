@@ -16,7 +16,7 @@ type Team struct {
 	Name      *string   `json:"name"`
 	Avatar    *string   `json:"avatar"`
 	CreatedAt MilliTime `json:"createdAt"`
-	// not included (dupe): Created                 time.Time        `json:"created"`
+	// duplicate: Created                 time.Time        `json:"created"`
 
 	Membership              interface{}   `json:"membership"`
 	EnablePreviewFeedback   interface{}   `json:"enablePreviewFeedback"`
