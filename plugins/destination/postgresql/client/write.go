@@ -21,14 +21,6 @@ var cqStatusToPgStatus = map[schema.Status]pgtype.Status{
 	schema.Present:   pgtype.Present,
 }
 
-type pgErrorWrap struct {
-	*pgconn.PgError
-}
-
-func (p *pgErrorWrap) Error() string {
-	return p.PgError.Error() + " (Table: " + p.PgError.TableName + ")"
-}
-
 func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *plugins.ClientResource) error {
 	var sql string
 	batch := &pgx.Batch{}
@@ -54,7 +46,7 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *pl
 					return fmt.Errorf("failed to execute batch: %w", err)
 				}
 				atomic.AddUint64(&c.metrics.Errors, 1)
-				c.logger.Error().Err(&pgErrorWrap{PgError: pgErr}).Msg("failed to execute batch with pgerror")
+				c.logger.Error().Err(pgErr).Str("table", pgErr.TableName).Msg("failed to execute batch with pgerror")
 			}
 			atomic.AddUint64(&c.metrics.Writes, uint64(c.batchSize))
 			batch = &pgx.Batch{}
@@ -69,7 +61,7 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *pl
 				// no recoverable error
 				return fmt.Errorf("failed to execute batch: %w", err)
 			}
-			c.logger.Error().Err(&pgErrorWrap{PgError: pgErr}).Msg("failed to execute batch with pgerror")
+			c.logger.Error().Err(pgErr).Str("table", pgErr.TableName).Msg("failed to execute batch with pgerror")
 		}
 		atomic.AddUint64(&c.metrics.Writes, uint64(c.batchSize))
 	}
