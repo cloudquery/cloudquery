@@ -58,8 +58,8 @@ type DomainRecord struct {
 
 func (v *Client) ListDomains(ctx context.Context, pag *Paginator) ([]Domain, *Paginator, error) {
 	var list struct {
-		Domains    []Domain   `json:"domains"`
-		Pagination *Paginator `json:"pagination"`
+		Domains    []Domain  `json:"domains"`
+		Pagination Paginator `json:"pagination"`
 	}
 
 	var until *int64
@@ -71,7 +71,7 @@ func (v *Client) ListDomains(ctx context.Context, pag *Paginator) ([]Domain, *Pa
 	if err != nil {
 		return nil, nil, err
 	}
-	return list.Domains, list.Pagination, nil
+	return list.Domains, &list.Pagination, nil
 }
 
 func (v *Client) ListDomainRecords(ctx context.Context, domainName string, pag *Paginator) ([]DomainRecord, *Paginator, error) {
@@ -79,7 +79,7 @@ func (v *Client) ListDomainRecords(ctx context.Context, domainName string, pag *
 
 	var list struct {
 		Records    []DomainRecord `json:"records"`
-		Pagination *Paginator     `json:"pagination"`
+		Pagination Paginator      `json:"pagination"`
 	}
 
 	var until *int64
@@ -91,5 +91,5 @@ func (v *Client) ListDomainRecords(ctx context.Context, domainName string, pag *
 	if err != nil {
 		return nil, nil, err
 	}
-	return list.Records, list.Pagination, nil
+	return list.Records, &list.Pagination, nil
 }

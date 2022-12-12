@@ -61,8 +61,8 @@ type MemberSubAccount struct {
 
 func (v *Client) ListTeams(ctx context.Context, pag *Paginator) ([]Team, *Paginator, error) {
 	var list struct {
-		Teams      []Team     `json:"teams"`
-		Pagination *Paginator `json:"pagination"`
+		Teams      []Team    `json:"teams"`
+		Pagination Paginator `json:"pagination"`
 	}
 
 	var until *int64
@@ -74,7 +74,7 @@ func (v *Client) ListTeams(ctx context.Context, pag *Paginator) ([]Team, *Pagina
 	if err != nil {
 		return nil, nil, err
 	}
-	return list.Teams, list.Pagination, nil
+	return list.Teams, &list.Pagination, nil
 }
 
 func (v *Client) ListTeamMembers(ctx context.Context, teamID string, pag *Paginator) ([]TeamMember, *Paginator, error) {
@@ -82,7 +82,7 @@ func (v *Client) ListTeamMembers(ctx context.Context, teamID string, pag *Pagina
 
 	var list struct {
 		TeamMembers []TeamMember `json:"members"`
-		Pagination  *Paginator   `json:"pagination"`
+		Pagination  Paginator    `json:"pagination"`
 	}
 
 	var until *int64
@@ -94,5 +94,5 @@ func (v *Client) ListTeamMembers(ctx context.Context, teamID string, pag *Pagina
 	if err != nil {
 		return nil, nil, err
 	}
-	return list.TeamMembers, list.Pagination, nil
+	return list.TeamMembers, &list.Pagination, nil
 }

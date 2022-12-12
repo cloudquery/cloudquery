@@ -35,6 +35,38 @@ func (m *MockVercelServices) EXPECT() *MockVercelServicesMockRecorder {
 	return m.recorder
 }
 
+// ListDeploymentChecks mocks base method.
+func (m *MockVercelServices) ListDeploymentChecks(arg0 context.Context, arg1 string, arg2 *vercel.Paginator) ([]vercel.DeploymentCheck, *vercel.Paginator, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListDeploymentChecks", arg0, arg1, arg2)
+	ret0, _ := ret[0].([]vercel.DeploymentCheck)
+	ret1, _ := ret[1].(*vercel.Paginator)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ListDeploymentChecks indicates an expected call of ListDeploymentChecks.
+func (mr *MockVercelServicesMockRecorder) ListDeploymentChecks(arg0, arg1, arg2 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListDeploymentChecks", reflect.TypeOf((*MockVercelServices)(nil).ListDeploymentChecks), arg0, arg1, arg2)
+}
+
+// ListDeployments mocks base method.
+func (m *MockVercelServices) ListDeployments(arg0 context.Context, arg1 *vercel.Paginator) ([]vercel.Deployment, *vercel.Paginator, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListDeployments", arg0, arg1)
+	ret0, _ := ret[0].([]vercel.Deployment)
+	ret1, _ := ret[1].(*vercel.Paginator)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ListDeployments indicates an expected call of ListDeployments.
+func (mr *MockVercelServicesMockRecorder) ListDeployments(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListDeployments", reflect.TypeOf((*MockVercelServices)(nil).ListDeployments), arg0, arg1)
+}
+
 // ListDomainRecords mocks base method.
 func (m *MockVercelServices) ListDomainRecords(arg0 context.Context, arg1 string, arg2 *vercel.Paginator) ([]vercel.DomainRecord, *vercel.Paginator, error) {
 	m.ctrl.T.Helper()
@@ -65,6 +97,38 @@ func (m *MockVercelServices) ListDomains(arg0 context.Context, arg1 *vercel.Pagi
 func (mr *MockVercelServicesMockRecorder) ListDomains(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListDomains", reflect.TypeOf((*MockVercelServices)(nil).ListDomains), arg0, arg1)
+}
+
+// ListProjectEnvs mocks base method.
+func (m *MockVercelServices) ListProjectEnvs(arg0 context.Context, arg1 string, arg2 *vercel.Paginator) ([]vercel.ProjectEnv, *vercel.Paginator, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListProjectEnvs", arg0, arg1, arg2)
+	ret0, _ := ret[0].([]vercel.ProjectEnv)
+	ret1, _ := ret[1].(*vercel.Paginator)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ListProjectEnvs indicates an expected call of ListProjectEnvs.
+func (mr *MockVercelServicesMockRecorder) ListProjectEnvs(arg0, arg1, arg2 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListProjectEnvs", reflect.TypeOf((*MockVercelServices)(nil).ListProjectEnvs), arg0, arg1, arg2)
+}
+
+// ListProjects mocks base method.
+func (m *MockVercelServices) ListProjects(arg0 context.Context, arg1 *vercel.Paginator) ([]vercel.Project, *vercel.Paginator, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListProjects", arg0, arg1)
+	ret0, _ := ret[0].([]vercel.Project)
+	ret1, _ := ret[1].(*vercel.Paginator)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ListProjects indicates an expected call of ListProjects.
+func (mr *MockVercelServicesMockRecorder) ListProjects(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListProjects", reflect.TypeOf((*MockVercelServices)(nil).ListProjects), arg0, arg1)
 }
 
 // ListTeamMembers mocks base method.

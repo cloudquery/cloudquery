@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
+	"time"
 )
 
 type Client struct {
@@ -40,7 +41,7 @@ func (v *Client) Request(ctx context.Context, path string, until *int64, fill in
 	defer body.Close()
 
 	b, _ := io.ReadAll(body)
-	fmt.Println(string(b))
+	fmt.Println(path, "\n", string(b), "\n")
 	return json.Unmarshal(b, &fill)
 	//return json.NewDecoder(body).Decode(&fill)
 }
@@ -68,8 +69,22 @@ func (v *Client) request(ctx context.Context, path string, until *int64) (io.Rea
 	}
 
 	if res.StatusCode != http.StatusOK {
-		res.Body.Close()
-		return nil, fmt.Errorf("request failed: %s", res.Status)
+		defer res.Body.Close()
+
+		if res.StatusCode == http.StatusTooManyRequests {
+			val := res.Header.Get("X-Ratelimit-Reset")
+			if val != "" {
+				t, err := strconv.ParseInt(val, 10, 64)
+				if err == nil && t > 0 {
+					ts := time.Unix(t, 0)
+					val = ts.Format(time.RFC3339) + fmt.Sprintf(" (in %s)", time.Until(ts).Round(time.Second))
+				}
+
+				return nil, fmt.Errorf("request to %s failed: %s. Ratelimit will reset at: %s", path, res.Status, val)
+			}
+		}
+
+		return nil, fmt.Errorf("request to %s failed: %s", path, res.Status)
 	}
 
 	return res.Body, nil
