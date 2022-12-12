@@ -13,26 +13,26 @@ In order to fetch information from Gitlab, `cloudquery` needs to be authenticate
 ## Configuration
 
 To configure CloudQuery to extract from Gitlab, create a `.yml` file in your CloudQuery configuration directory.
-For example, the following configuration will extract information from CrowdStrike, and connect it to a `postgresql` destination plugin
+For example, the following configuration will extract information from Gitlab, and connect it to a `postgresql` destination plugin
 
 ```yaml
 kind: source
 spec:
   # Source spec section
-  name: crowdstrike
-  path: cloudquery/crowdstrike
-  version: "0.0.1" # latest version of crowdstrike plugin
+  name: gitlab
+  path: cloudquery/gitlab
+  version: "0.0.1" # latest version of gitlab plugin
   tables: ["*"]
   destinations: ["postgresql"]
   spec:
-    client_id: <CLIENT_ID>
-    client_secret: <CLIENT_SECRET>
+    token: <Personal_Access_Token>
+    base_url: <Instance_Url>
 ```
 
 ## Example
 
-You can reduce alert fatigue by narrowing alerts down from CrowdStrike using fuzzy matching.
+You can reduce alert fatigue by narrowing alerts down from gitlab using fuzzy matching.
 
 ```sql
-select * from crowdstrike_alerts_query where resources like ('%filter_here%');
+-- select * from gitlab_____ where resources like ('%filter_here%');
 ```
