@@ -11,6 +11,6 @@ func TestTailscale(t *testing.T) {
 	p := Tailscale()
 	name := p.Name()
 	if name != "tailscale" {
-		t.Errorf("Name() = %q, want %q", name, "aws")
+		t.Errorf("Name() = %q, want %q", name, "tailscale")
 	}
 }
