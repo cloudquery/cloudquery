@@ -3,17 +3,15 @@ package cdn
 
 import (
 	"encoding/json"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"net/http"
-	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/gorilla/mux"
 )
 
-func createProfiles(router *mux.Router) error {
-	var item armcdn.ProfilesClientListResponse
+func createSecurityPolicies(router *mux.Router) error {
+	var item armcdn.SecurityPoliciesClientListByProfileResponse
 	if err := faker.FakeObject(&item); err != nil {
 		return err
 	}
@@ -21,7 +19,7 @@ func createProfiles(router *mux.Router) error {
 	emptyStr := ""
 	item.NextLink = &emptyStr
 
-	router.HandleFunc("/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/profiles", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/securityPolicies", func(w http.ResponseWriter, r *http.Request) {
 		b, err := json.Marshal(&item)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)
@@ -32,12 +30,5 @@ func createProfiles(router *mux.Router) error {
 			return
 		}
 	})
-	createEndpoints(router)
-	createRuleSets(router)
-	createSecurityPolicies(router)
 	return nil
-}
-
-func TestProfiles(t *testing.T) {
-	client.MockTestHelper(t, Profiles(), createProfiles)
 }

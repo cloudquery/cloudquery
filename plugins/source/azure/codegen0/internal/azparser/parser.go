@@ -22,6 +22,13 @@ var newGlobalFuncsToSkip = map[string]bool{
 }
 
 var newFuncToSkipPerPackage = map[string]map[string]bool{
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb": {
+		// we migrated this to manual written client as it has childs
+		"NewServersClient": true,
+	},
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql": {
+		"NewServersClient": true,
+	},
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos": {
 		"NewDatabaseAccountsClient": true,
 	},
