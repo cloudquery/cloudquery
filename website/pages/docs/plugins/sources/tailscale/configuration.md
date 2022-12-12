@@ -28,4 +28,4 @@ This is the (nested) spec used by the Tailscale source plugin.
   An API key to access Tailscale resources. This can be obtained from [Tailscale Keys Settings Page](https://login.tailscale.com/admin/settings/keys).
 
 - `tailnet`  (string, required. Default: `TAILSCALE_TAILNET` environment variable):
-  This is your Tailscale Tailnet name (also known as organization name).
+  This is your Tailscale tailnet name (also known as organization name).
