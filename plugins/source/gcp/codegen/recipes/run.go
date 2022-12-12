@@ -5,22 +5,19 @@ import (
 	pb "google.golang.org/genproto/googleapis/cloud/run/v2"
 )
 
-var runResources = []*Resource{
-	{
-		SubService:          "services",
-		Struct:              &pb.Service{},
-		NewFunction:         run.NewServicesClient,
-		RequestStruct:       &pb.ListServicesRequest{},
-		ResponseStruct:      &pb.ListServicesResponse{},
-		RegisterServer:      pb.RegisterServicesServer,
-		ListFunction:        (&pb.UnimplementedServicesServer{}).ListServices,
-		UnimplementedServer: &pb.UnimplementedServicesServer{},
-	},
-}
-
-func RunResources() []*Resource {
-	var resources []*Resource
-	resources = append(resources, runResources...)
+func init() {
+	resources := []*Resource{
+		{
+			SubService:          "services",
+			Struct:              &pb.Service{},
+			NewFunction:         run.NewServicesClient,
+			RequestStruct:       &pb.ListServicesRequest{},
+			ResponseStruct:      &pb.ListServicesResponse{},
+			RegisterServer:      pb.RegisterServicesServer,
+			ListFunction:        (&pb.UnimplementedServicesServer{}).ListServices,
+			UnimplementedServer: &pb.UnimplementedServicesServer{},
+		},
+	}
 
 	for _, resource := range resources {
 		resource.Service = "run"
@@ -31,5 +28,5 @@ func RunResources() []*Resource {
 		resource.RequestStructFields = `Parent: "projects/" + c.ProjectId + "locations/-",`
 	}
 
-	return resources
+	Resources = append(Resources, resources...)
 }

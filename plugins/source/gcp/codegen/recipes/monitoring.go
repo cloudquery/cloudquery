@@ -7,30 +7,28 @@ import (
 	pb "google.golang.org/genproto/googleapis/monitoring/v3"
 )
 
-var monitoringResources = []*Resource{
-	{
-		SubService:          "alert_policies",
-		Struct:              &pb.AlertPolicy{},
-		NewFunction:         monitoring.NewAlertPolicyClient,
-		RequestStruct:       &pb.ListAlertPoliciesRequest{},
-		ResponseStruct:      &pb.ListAlertPoliciesResponse{},
-		RegisterServer:      pb.RegisterAlertPolicyServiceServer,
-		ListFunction:        (&pb.UnimplementedAlertPolicyServiceServer{}).ListAlertPolicies,
-		UnimplementedServer: &pb.UnimplementedAlertPolicyServiceServer{},
-		ExtraColumns: []codegen.ColumnDefinition{
-			{
-				Name:    "name",
-				Type:    schema.TypeString,
-				Options: schema.ColumnCreationOptions{PrimaryKey: true},
+
+
+func init() {
+	resources :=  []*Resource{
+		{
+			SubService:          "alert_policies",
+			Struct:              &pb.AlertPolicy{},
+			NewFunction:         monitoring.NewAlertPolicyClient,
+			RequestStruct:       &pb.ListAlertPoliciesRequest{},
+			ResponseStruct:      &pb.ListAlertPoliciesResponse{},
+			RegisterServer:      pb.RegisterAlertPolicyServiceServer,
+			ListFunction:        (&pb.UnimplementedAlertPolicyServiceServer{}).ListAlertPolicies,
+			UnimplementedServer: &pb.UnimplementedAlertPolicyServiceServer{},
+			ExtraColumns: []codegen.ColumnDefinition{
+				{
+					Name:    "name",
+					Type:    schema.TypeString,
+					Options: schema.ColumnCreationOptions{PrimaryKey: true},
+				},
 			},
 		},
-		FakerFieldsToIgnore: []string{"Condition"},
-	},
-}
-
-func MonitoringResources() []*Resource {
-	var resources []*Resource
-	resources = append(resources, monitoringResources...)
+	}
 
 	for _, resource := range resources {
 		resource.Service = "monitoring"
@@ -41,5 +39,5 @@ func MonitoringResources() []*Resource {
 		resource.RequestStructFields = `Name: "projects/" + c.ProjectId,`
 	}
 
-	return resources
+	Resources = append(Resources, resources...)
 }
