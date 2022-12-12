@@ -66,6 +66,8 @@ func Profiles() *schema.Table {
 
 		Relations: []*schema.Table{
 			endpoints(),
+			rule_sets(),
+			security_policies(),
 		},
 	}
 }
