@@ -37,7 +37,7 @@ jobs:
               return contents.includes(`name: "${action}"`)
             }
             const matchesFile = (action) => {
-              return files.some(file => file.startsWith(action) || matchesWorkflow(file, action))
+              return files.some(file => file.startsWith(`${action}/`) || matchesWorkflow(file, action))
             }
             let actions = ["cli",
                            "plugins/source/aws",
