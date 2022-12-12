@@ -13,7 +13,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/julienschmidt/httprouter"
 	"github.com/rs/zerolog"
-	"github.com/tailscale/tailscale-client-go/tailscale"
 )
 
 func MockTestHelper(t *testing.T, table *schema.Table, createService func(*httprouter.Router) error) {
@@ -24,6 +23,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createService func(*httpr
 	mux := httprouter.New()
 	ts := httptest.NewUnstartedServer(mux)
 	defer ts.Close()
+
 	newTestExecutionClient := func(_ context.Context, logger zerolog.Logger, _ specs.Source) (schema.ClientMeta, error) {
 		err := createService(mux)
 		if err != nil {
@@ -32,11 +32,9 @@ func MockTestHelper(t *testing.T, table *schema.Table, createService func(*httpr
 		ts.Start()
 
 		tsClient, err := (&Spec{
-			APIKey:  "test-key",
-			Tailnet: "test-tailnet",
-			options: []tailscale.ClientOption{
-				tailscale.WithBaseURL(ts.URL),
-			},
+			APIKey:      "test-key",
+			Tailnet:     "test-tailnet",
+			EndpointURL: ts.URL,
 		}).getClient()
 		if err != nil {
 			return nil, fmt.Errorf("failed to create client: %w", err)
@@ -50,6 +48,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createService func(*httpr
 
 		return c, nil
 	}
+
 	l := zerolog.New(zerolog.NewTestWriter(t)).Output(
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
@@ -62,6 +61,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createService func(*httpr
 		},
 		newTestExecutionClient)
 	p.SetLogger(l)
+
 	plugins.TestSourcePluginSync(t, p, specs.Source{
 		Name:         "dev",
 		Path:         "cloudquery/dev",

@@ -14,8 +14,8 @@ type Spec struct {
 	// Tailnet can be set via spec or via "TAILSCALE_TAILNET" environment variable
 	Tailnet string `json:"tailnet,omitempty"`
 
-	// options are used for testing purposes
-	options []tailscale.ClientOption
+	// EndpointURL is optional parameter to override the API URL for tailscale.Client.
+	EndpointURL string `json:"endpoint_url,omitempty"`
 }
 
 const (
@@ -37,5 +37,10 @@ func (s *Spec) getClient() (*tailscale.Client, error) {
 		}
 	}
 
-	return tailscale.NewClient(s.APIKey, s.Tailnet, s.options...)
+	var options []tailscale.ClientOption
+	if len(s.EndpointURL) > 0 {
+		options = append(options, tailscale.WithBaseURL(s.EndpointURL))
+	}
+
+	return tailscale.NewClient(s.APIKey, s.Tailnet, options...)
 }
