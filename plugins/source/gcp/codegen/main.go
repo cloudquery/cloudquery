@@ -25,8 +25,6 @@ import (
 //go:embed templates/*.go.tpl
 var gcpTemplatesFS embed.FS
 
-
-
 func main() {
 
 	for _, r := range recipes.Resources {
@@ -179,6 +177,7 @@ func generateResource(r recipes.Resource, mock bool) {
 		log.Fatal(fmt.Errorf("failed to create table for %s: %w", r.StructName, err))
 	}
 	if r.Multiplex == nil {
+
 		r.Table.Multiplex = "client.ProjectMultiplex(\"" + r.ServiceDNS + "\")"
 	} else {
 		r.Table.Multiplex = *r.Multiplex

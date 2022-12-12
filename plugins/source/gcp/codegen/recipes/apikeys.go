@@ -7,7 +7,6 @@ import (
 	pb "google.golang.org/genproto/googleapis/api/apikeys/v2"
 )
 
-
 func init() {
 	resources := []*Resource{
 		{
@@ -23,7 +22,7 @@ func init() {
 					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 				},
 			},
-	
+
 			ListFunction:        (&apikeys.Client{}).ListKeys,
 			RequestStruct:       &pb.ListKeysRequest{},
 			ResponseStruct:      &pb.ListKeysResponse{},
@@ -41,6 +40,7 @@ func init() {
 		resource.NewFunction = apikeys.NewClient
 		resource.RegisterServer = pb.RegisterApiKeysServer
 		resource.UnimplementedServer = &pb.UnimplementedApiKeysServer{}
+		resource.ServiceDNS = "apikeys.googleapis.com"
 	}
 
 	Resources = append(Resources, resources...)

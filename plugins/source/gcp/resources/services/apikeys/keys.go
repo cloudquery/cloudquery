@@ -18,7 +18,7 @@ func Keys() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_apikeys_keys",
 		Resolver:  fetchKeys,
-		Multiplex: client.ProjectMultiplex(""),
+		Multiplex: client.ProjectMultiplex("apikeys.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

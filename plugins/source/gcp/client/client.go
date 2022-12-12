@@ -10,52 +10,35 @@ import (
 	resourcemanager "cloud.google.com/go/resourcemanager/apiv3"
 	"cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
 	serviceusage "cloud.google.com/go/serviceusage/apiv1"
+	pb "cloud.google.com/go/serviceusage/apiv1/serviceusagepb"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/googleapis/gax-go/v2"
 	grpczerolog "github.com/grpc-ecosystem/go-grpc-middleware/providers/zerolog/v2"
+	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/logging"
 	"github.com/rs/zerolog"
 	"golang.org/x/sync/errgroup"
+	"golang.org/x/sync/semaphore"
 	crmv1 "google.golang.org/api/cloudresourcemanager/v1"
 	"google.golang.org/api/iterator"
 	"google.golang.org/api/option"
-	pb "google.golang.org/genproto/googleapis/api/serviceusage/v1"
+
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
+)
 
+const maxProjectIdsToLog int = 100
 
+type Client struct {
 	projects      []string
 	ClientOptions []option.ClientOption
-	CallOptions   []gax.CallOption
 	// this is set by table client multiplexer
-
 	CallOptions     []gax.CallOption
 	ProjectId       string
 	EnabledServices map[string]map[GcpService]bool
 	// Logger
 	logger zerolog.Logger
 }
-
-type GcpService string
-
-const (
-	BigQueryService             GcpService = "bigquery.googleapis.com"
-	CloudBillingService         GcpService = "cloudbilling.googleapis.com"
-	CloudFunctionsService       GcpService = "cloudfunctions.googleapis.com"
-	CloudKmsService             GcpService = "cloudkms.googleapis.com"
-	CloudResourceManagerService GcpService = "cloudresourcemanager.googleapis.com"
-	ComputeService              GcpService = "compute.googleapis.com"
-	DnsService                  GcpService = "dns.googleapis.com"
-	DomainsService              GcpService = "domains.googleapis.com"
-	IamService                  GcpService = "iam.googleapis.com"
-	KubernetesService           GcpService = "container.googleapis.com"
-	LoggingService              GcpService = "logging.googleapis.com"
-	MonitoringService           GcpService = "monitoring.googleapis.com"
-	SqlAdminService             GcpService = "sqladmin.googleapis.com"
-	StorageService              GcpService = "storage-api.googleapis.com"
-	ContainerAnalysisService    GcpService = "containeranalysis.googleapis.com"
-	RediService                 GcpService = "redis.googleapis.com"
-)
 
 //revive:disable:modifies-value-receiver
 
