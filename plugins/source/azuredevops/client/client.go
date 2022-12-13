@@ -12,8 +12,8 @@ import (
 )
 
 type Client struct {
-	logger     zerolog.Logger
-	Connection *azuredevops.Connection
+	logger zerolog.Logger
+	*azuredevops.Connection
 }
 
 func (*Client) Logger() *zerolog.Logger {
