@@ -1,3 +1,7 @@
-# CloudQuery source test plugin
+# Slack Source Plugin
 
-This source plugin is used in various testing scenarios mainly in our CLI code, such as downloading, running and so on.
+The Slack Source plugin for CloudQuery extracts configuration from a variety of Slack APIs and loads it into any supported CloudQuery destination (e.g. PostgreSQL).
+
+## Links
+
+- [User Guide](https://docs.cloudquery.io/docs/plugins/sources/slack/overview)
