@@ -146,6 +146,8 @@ github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybriddatamanager/armhybri
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridnetwork/armhybridnetwork v1.0.0 h1:cnroedbF9/kjx/+iaRIPNS+3dJetrxlFtJarKQRcvQ8=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridnetwork/armhybridnetwork v1.0.0/go.mod h1:zR/avSSCtAIUUhd9RhcpU23rxyTVhNnNb1QaN7Uf8Zw=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal v1.0.0 h1:lMW1lD/17LUA5z1XTURo7LcVG2ICBPlyMHjIUrcFZNQ=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault v1.0.0 h1:Jc2KcpCDMu7wJfkrzn7fs/53QMDXH78GuqnH4HOd7zs=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault v1.0.0/go.mod h1:PFVgFsclKzPqYRT/BiwpfUN22cab0C7FlgXR3iWpwMo=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto v1.1.0 h1:0wECNgkDj/xFPXXOM9umr6+PJ9jzHCIIsIagkcueaFg=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto v1.1.0/go.mod h1:2+xLw3wnpvSce83gQnAu42MVl3/tiSGcWtEuWe1nhbo=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/labservices/armlabservices v1.0.0 h1:uIjbZwtaWCNPCAu7EVlWKVokAS/+owCbv94sFF1QJyE=
