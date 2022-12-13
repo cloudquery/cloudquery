@@ -76,7 +76,7 @@ func fetchOccurrences(ctx context.Context, meta schema.ClientMeta, parent *schem
 	if err != nil {
 		return err
 	}
-	it := gcpClient.ListOccurrences(ctx, req)
+	it := gcpClient.ListOccurrences(ctx, req, c.CallOptions...)
 	for {
 		resp, err := it.Next()
 		if err == iterator.Done {

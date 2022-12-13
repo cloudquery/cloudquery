@@ -36,7 +36,7 @@ func fetch{{.SubService | ToCamel}}(ctx context.Context, meta schema.ClientMeta,
 	if err != nil {
 		return err
 	}
-  it := gcpClient.{{.ListFunctionName}}(ctx, req)
+  it := gcpClient.{{.ListFunctionName}}(ctx, req, c.CallOptions...)
 	for {
     resp, err := it.Next()
     if err == iterator.Done {

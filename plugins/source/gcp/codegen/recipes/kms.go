@@ -8,35 +8,32 @@ import (
 
 var emptyString = ""
 
-var kmsResources = []*Resource{
-	{
-		SubService: "crypto_keys",
-		Struct:     &kmspb.CryptoKey{},
-		Multiplex:  &emptyString,
-		ChildTable: true,
-		SkipMock:   true,
-		SkipFetch:  true,
-		SkipFields: []string{"RotationSchedule"},
-		ExtraColumns: codegen.ColumnDefinitions{
-			{
-				Name:     "rotation_period",
-				Type:     schema.TypeInt,
-				Resolver: "resolveRotationPeriod",
+func init() {
+	resources := []*Resource{
+		{
+			SubService: "crypto_keys",
+			Struct:     &kmspb.CryptoKey{},
+			Multiplex:  &emptyString,
+			ChildTable: true,
+			SkipMock:   true,
+			SkipFetch:  true,
+			SkipFields: []string{"RotationSchedule"},
+			ExtraColumns: codegen.ColumnDefinitions{
+				{
+					Name:     "rotation_period",
+					Type:     schema.TypeInt,
+					Resolver: "resolveRotationPeriod",
+				},
 			},
 		},
-	},
-	{
-		SubService: "keyrings",
-		Struct:     &kmspb.KeyRing{},
-		Relations:  []string{"CryptoKeys()"},
-		SkipFetch:  true,
-		SkipMock:   true,
-	},
-}
-
-func KmsResources() []*Resource {
-	var resources []*Resource
-	resources = append(resources, kmsResources...)
+		{
+			SubService: "keyrings",
+			Struct:     &kmspb.KeyRing{},
+			Relations:  []string{"CryptoKeys()"},
+			SkipFetch:  true,
+			SkipMock:   true,
+		},
+	}
 
 	for _, resource := range resources {
 		resource.Service = "kms"
@@ -46,5 +43,5 @@ func KmsResources() []*Resource {
 		resource.MockTemplate = "newapi_list_grpc_mock"
 	}
 
-	return resources
+	Resources = append(Resources, resources...)
 }

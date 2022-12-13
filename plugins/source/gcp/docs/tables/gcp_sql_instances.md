@@ -4,7 +4,10 @@
 
 The primary key for this table is **self_link**.
 
+## Relations
 
+The following tables depend on gcp_sql_instances:
+  - [gcp_sql_users](gcp_sql_users.md)
 
 ## Columns
 | Name          | Type          |

@@ -5,25 +5,23 @@ import (
 	"cloud.google.com/go/functions/apiv1/functionspb"
 )
 
-var functionsResources = []*Resource{
-	{
-		SubService:          "functions",
-		Struct:              &functionspb.CloudFunction{},
-		NewFunction:         functions.NewCloudFunctionsClient,
-		RequestStruct:       &functionspb.ListFunctionsRequest{},
-		ResponseStruct:      &functionspb.ListFunctionsResponse{},
-		RegisterServer:      functionspb.RegisterCloudFunctionsServiceServer,
-		ListFunction:        (&functionspb.UnimplementedCloudFunctionsServiceServer{}).ListFunctions,
-		RequestStructFields: `Parent: "projects/" + c.ProjectId + "/locations/-",`,
-		UnimplementedServer: &functionspb.UnimplementedCloudFunctionsServiceServer{},
-		FakerFieldsToIgnore: []string{"SourceCode", "Trigger"},
-		SkipFields:          []string{"SourceCode", "Trigger"},
-	},
-}
 
-func FunctionsResources() []*Resource {
-	var resources []*Resource
-	resources = append(resources, functionsResources...)
+
+func init() {
+	resources := []*Resource{
+		{
+			SubService:          "functions",
+			Struct:              &functionspb.CloudFunction{},
+			NewFunction:         functions.NewCloudFunctionsClient,
+			RequestStruct:       &functionspb.ListFunctionsRequest{},
+			ResponseStruct:      &functionspb.ListFunctionsResponse{},
+			RegisterServer:      functionspb.RegisterCloudFunctionsServiceServer,
+			ListFunction:        (&functionspb.UnimplementedCloudFunctionsServiceServer{}).ListFunctions,
+			RequestStructFields: `Parent: "projects/" + c.ProjectId + "/locations/-",`,
+			UnimplementedServer: &functionspb.UnimplementedCloudFunctionsServiceServer{},
+			SkipFields:          []string{"SourceCode", "Trigger"},
+		},
+	}
 
 	for _, resource := range resources {
 		resource.Service = "functions"
@@ -33,5 +31,5 @@ func FunctionsResources() []*Resource {
 		resource.ProtobufImport = "google.golang.org/genproto/googleapis/cloud/functions/v1"
 	}
 
-	return resources
+	Resources = append(Resources, resources...)
 }

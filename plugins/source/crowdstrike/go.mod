@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/crowdstrike
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v1.5.3
+	github.com/cloudquery/plugin-sdk v1.12.2
 	github.com/crowdstrike/gofalcon v0.2.30
 	github.com/go-openapi/runtime v0.24.2
 	github.com/golang/mock v1.6.0
@@ -45,7 +45,7 @@ require (
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/thoas/go-funk v0.9.2 // indirect
 	go.mongodb.org/mongo-driver v1.11.0 // indirect
-	golang.org/x/exp v0.0.0-20221111204811-129d8d6c17ab // indirect
+	golang.org/x/exp v0.0.0-20221126150942-6ab00d035af9 // indirect
 	golang.org/x/net v0.2.0 // indirect
 	golang.org/x/oauth2 v0.0.0-20220822191816-0ebed06d0094 // indirect
 	golang.org/x/sync v0.1.0 // indirect
@@ -53,7 +53,7 @@ require (
 	golang.org/x/text v0.4.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/genproto v0.0.0-20221111202108-142d8a6fa32e // indirect
-	google.golang.org/grpc v1.50.1 // indirect
+	google.golang.org/grpc v1.51.0 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect

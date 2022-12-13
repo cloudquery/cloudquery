@@ -202,5 +202,9 @@ func Instances() *schema.Table {
 				Resolver: schema.PathResolver("SuspensionReason"),
 			},
 		},
+
+		Relations: []*schema.Table{
+			Users(),
+		},
 	}
 }

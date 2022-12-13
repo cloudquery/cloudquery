@@ -6,6 +6,31 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [7.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v7.3.2...plugins-source-aws-v7.4.0) (2022-12-13)
+
+
+### Features
+
+* Add more cases where DateTime types in CSV responses of AWS IAM… ([#5526](https://github.com/cloudquery/cloudquery/issues/5526)) ([a43bf39](https://github.com/cloudquery/cloudquery/commit/a43bf39f0ad12b93786518a7f304aa254febe5ce))
+* **aws:** Add IAM SSH Public Keys ([#5538](https://github.com/cloudquery/cloudquery/issues/5538)) ([5bd2b4d](https://github.com/cloudquery/cloudquery/commit/5bd2b4d09f975bf06f5f35b0b601534dc95e4eb8))
+
+
+### Bug Fixes
+
+* **aws-functions:** Return error in case of access denied ([#5537](https://github.com/cloudquery/cloudquery/issues/5537)) ([1fe79d3](https://github.com/cloudquery/cloudquery/commit/1fe79d38c1d877031e4ef95e289616c8b24d449e))
+* **aws:** Deterministic Multiplexer ([#5513](https://github.com/cloudquery/cloudquery/issues/5513)) ([eaf6e99](https://github.com/cloudquery/cloudquery/commit/eaf6e99b53deffe681d5d03d9753023f95c1d485))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/appstream to v1.18.2 ([#5566](https://github.com/cloudquery/cloudquery/issues/5566)) ([e7b7c24](https://github.com/cloudquery/cloudquery/commit/e7b7c24cb7bde369ca1bbe568d94a2a024b7d80b))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/athena to v1.20.2 ([#5523](https://github.com/cloudquery/cloudquery/issues/5523)) ([9385a69](https://github.com/cloudquery/cloudquery/commit/9385a69ad93b6221ced9c21c299d5fe7153306ad))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/autoscaling to v1.25.0 ([#5524](https://github.com/cloudquery/cloudquery/issues/5524)) ([5009a35](https://github.com/cloudquery/cloudquery/commit/5009a3584ec51c2d5cc87fd0efc3f8517078b41e))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs to v1.17.2 ([#5535](https://github.com/cloudquery/cloudquery/issues/5535)) ([2ce06fc](https://github.com/cloudquery/cloudquery/commit/2ce06fc3f47e8842ba5a1c7b44a87c49564a24ca))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/ec2 to v1.76.0 ([#5569](https://github.com/cloudquery/cloudquery/issues/5569)) ([979a780](https://github.com/cloudquery/cloudquery/commit/979a780d030e9a36d4ecd605b492a5a0c4e90cbd))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/mq to v1.13.17 ([#5567](https://github.com/cloudquery/cloudquery/issues/5567)) ([6075e71](https://github.com/cloudquery/cloudquery/commit/6075e7149d3779a488afe794f61f26fae91ad436))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/rds to v1.34.0 ([#5570](https://github.com/cloudquery/cloudquery/issues/5570)) ([8fd69ba](https://github.com/cloudquery/cloudquery/commit/8fd69ba50d7cef86b3f87ff40537d408b7ede96f))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/wafv2 to v1.23.3 ([#5568](https://github.com/cloudquery/cloudquery/issues/5568)) ([1782f00](https://github.com/cloudquery/cloudquery/commit/1782f00b045758864cc47408d624b9aeac93a714))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.12.0 ([#5539](https://github.com/cloudquery/cloudquery/issues/5539)) ([fb71293](https://github.com/cloudquery/cloudquery/commit/fb71293d5cfe1b2ef32ba83d604ac3c48e662bce))
+* Update endpoints ([#5520](https://github.com/cloudquery/cloudquery/issues/5520)) ([88a88a7](https://github.com/cloudquery/cloudquery/commit/88a88a71dc69c88f4706c1ad31e69d0ecf9be332))
+* Update endpoints ([#5565](https://github.com/cloudquery/cloudquery/issues/5565)) ([6b8c15d](https://github.com/cloudquery/cloudquery/commit/6b8c15dfd351c31f1fa79344faad5937c3b3bf69))
+
 ## [7.3.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v7.3.1...plugins-source-aws-v7.3.2) (2022-12-08)
 
 

@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v1.3.0...plugins-source-github-v1.4.0) (2022-12-13)
+
+
+### Features
+
+* Add GH Workflow support ([#3195](https://github.com/cloudquery/cloudquery/issues/3195)) ([098ac50](https://github.com/cloudquery/cloudquery/commit/098ac501ab7104876e1625d1d30e2213a3542551))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.11.1 ([#5458](https://github.com/cloudquery/cloudquery/issues/5458)) ([58b7432](https://github.com/cloudquery/cloudquery/commit/58b74321cd253c9a843c8c103f324abb93952195))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.11.2 ([#5497](https://github.com/cloudquery/cloudquery/issues/5497)) ([c1876cf](https://github.com/cloudquery/cloudquery/commit/c1876cf793b43d825a25fb3c9ba4996e4b09964f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.12.0 ([#5539](https://github.com/cloudquery/cloudquery/issues/5539)) ([fb71293](https://github.com/cloudquery/cloudquery/commit/fb71293d5cfe1b2ef32ba83d604ac3c48e662bce))
+
 ## [1.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v1.2.19...plugins-source-github-v1.3.0) (2022-12-06)
 
 

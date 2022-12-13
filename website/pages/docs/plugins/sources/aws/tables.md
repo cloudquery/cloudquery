@@ -271,6 +271,7 @@
   - [aws_iam_user_groups](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_iam_user_groups.md)
   - [aws_iam_user_attached_policies](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_iam_user_attached_policies.md)
   - [aws_iam_user_policies](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_iam_user_policies.md)
+  - [aws_iam_ssh_public_keys](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_iam_ssh_public_keys.md)
 - [aws_iam_virtual_mfa_devices](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_iam_virtual_mfa_devices.md)
 - [aws_identitystore_groups](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_identitystore_groups.md)
   - [aws_identitystore_group_memberships](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_identitystore_group_memberships.md)
