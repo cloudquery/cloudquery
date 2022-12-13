@@ -5,7 +5,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/azuredevops/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/microsoft/azure-devops-go-api/azuredevops/core"
+	"github.com/microsoft/azure-devops-go-api/azuredevops/v6/core"
 )
 
 func Projects() *schema.Table {

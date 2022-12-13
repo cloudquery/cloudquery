@@ -6,7 +6,7 @@ import (
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
-	"github.com/microsoft/azure-devops-go-api/azuredevops"
+	"github.com/microsoft/azure-devops-go-api/azuredevops/v6"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )
