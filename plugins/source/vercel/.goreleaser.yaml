@@ -1,12 +1,12 @@
 variables:
-  component: source/gandi
-  binary: gandi
+  component: source/vercel
+  binary: vercel
 
-project_name: plugins/source/gandi
+project_name: plugins/source/vercel
 
 monorepo:
-  tag_prefix: plugins-source-gandi-
-  dir: plugins/source/gandi
+  tag_prefix: plugins-source-vercel-
+  dir: plugins/source/vercel
 
 includes:
   - from_file:
