@@ -6,15 +6,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage
 func Armstorage() []*Table {
 	tables := []*Table{
 		{
-			NewFunc:        armstorage.NewDeletedAccountsClient,
-			PkgPath:        "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage",
-			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Storage/deletedAccounts",
-			Namespace:      "Microsoft.Storage",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Storage)`,
-			Pager:          `NewListPager`,
-			ResponseStruct: "DeletedAccountsClientListResponse",
-		},
-		{
 			NewFunc:        armstorage.NewSKUsClient,
 			PkgPath:        "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage",
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Storage/skus",
