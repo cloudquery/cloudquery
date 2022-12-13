@@ -29,18 +29,21 @@ func fetchProjects(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 		return err
 	}
 
-	stateFilter := &core.ProjectStateValues.All
-	projects, err := coreClient.GetProjects(ctx, core.GetProjectsArgs{StateFilter: stateFilter})
-	if err != nil {
-		return err
-	}
-	res <- projects.Value
-	for projects.ContinuationToken != "" {
-		projects, err = coreClient.GetProjects(ctx, core.GetProjectsArgs{StateFilter: stateFilter, ContinuationToken: &projects.ContinuationToken})
+	input := core.GetProjectsArgs{StateFilter: &core.ProjectStateValues.All}
+	for {
+		projects, err := coreClient.GetProjects(ctx, input)
 		if err != nil {
 			return err
 		}
+
 		res <- projects.Value
+
+		if len(projects.ContinuationToken) == 0 {
+			break
+		}
+
+		input.ContinuationToken = &projects.ContinuationToken
 	}
+
 	return nil
 }
