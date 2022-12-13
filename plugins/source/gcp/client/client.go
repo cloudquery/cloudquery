@@ -180,13 +180,11 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 
 	c.projects = projects
 
-	if len(c.orgs) == 0 {
-		c.orgs, err = getOrganizations(ctx, c.ClientOptions...)
-		if err != nil {
-			c.logger.Err(err).Msg("failed to get organizations")
-		}
-		c.logger.Info().Interface("orgs", c.orgs).Msg("Retrieved organizations")
+	c.orgs, err = getOrganizations(ctx, c.ClientOptions...)
+	if err != nil {
+		c.logger.Err(err).Msg("failed to get organizations")
 	}
+	c.logger.Info().Interface("orgs", c.orgs).Msg("Retrieved organizations")
 
 	if len(projects) == 1 {
 		c.ProjectId = projects[0]
