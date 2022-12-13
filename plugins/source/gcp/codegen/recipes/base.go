@@ -80,8 +80,8 @@ type Resource struct {
 	// Don't generate fetch
 	SkipFetch bool
 	// SkipFields fields in go struct to skip when generating the table from the go struct
-	SkipFields []string
-	// ExtraColumns override, override generated columns
+	SkipFields   []string
+	PrimaryKeys  []string
 	ExtraColumns []codegen.ColumnDefinition
 	// NameTransformer custom name transformer for resource
 	NameTransformer func(field reflect.StructField) (string, error)
@@ -91,13 +91,6 @@ var ProjectIdColumn = codegen.ColumnDefinition{
 	Name:     "project_id",
 	Type:     schema.TypeString,
 	Resolver: "client.ResolveProject",
-}
-
-var ProjectIdColumnPk = codegen.ColumnDefinition{
-	Name:     "project_id",
-	Type:     schema.TypeString,
-	Resolver: "client.ResolveProject",
-	Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 }
 
 func CreateReplaceTransformer(replace map[string]string) func(field reflect.StructField) (string, error) {

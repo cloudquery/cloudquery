@@ -22,22 +22,6 @@ func Users() *schema.Table {
 				},
 			},
 			{
-				Name:     "instance",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Instance"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
 				Name:     "dual_password_type",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("DualPasswordType"),
@@ -53,9 +37,25 @@ func Users() *schema.Table {
 				Resolver: schema.PathResolver("Host"),
 			},
 			{
+				Name:     "instance",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Instance"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
 				Name:     "kind",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Kind"),
+			},
+			{
+				Name:     "name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Name"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "password",

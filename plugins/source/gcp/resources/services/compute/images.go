@@ -26,13 +26,6 @@ func Images() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
-				Name: "self_link",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
 				Name:     "architecture",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Architecture"),
@@ -121,6 +114,14 @@ func Images() *schema.Table {
 				Name:     "satisfies_pzs",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("SatisfiesPzs"),
+			},
+			{
+				Name:     "self_link",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SelfLink"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "shielded_instance_initial_state",

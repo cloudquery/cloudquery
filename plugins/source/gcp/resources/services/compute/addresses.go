@@ -26,13 +26,6 @@ func Addresses() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
-				Name: "self_link",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
 				Name:     "address",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Address"),
@@ -101,6 +94,14 @@ func Addresses() *schema.Table {
 				Name:     "region",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Region"),
+			},
+			{
+				Name:     "self_link",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SelfLink"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "status",

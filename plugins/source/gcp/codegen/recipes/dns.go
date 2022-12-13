@@ -1,13 +1,9 @@
 package recipes
 
 import (
-	"github.com/cloudquery/plugin-sdk/codegen"
-	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/iancoleman/strcase"
 	"google.golang.org/api/dns/v1"
 )
-
-
 
 func init() {
 	resources := []*Resource{
@@ -16,28 +12,14 @@ func init() {
 			Struct:       &dns.Policy{},
 			NewFunction:  dns.NewService,
 			ListFunction: (&dns.PoliciesService{}).List,
-			ExtraColumns: []codegen.ColumnDefinition{
-				{
-					Name:     "id",
-					Type:     schema.TypeInt,
-					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					Resolver: `schema.PathResolver("Id")`,
-				},
-			},
+			PrimaryKeys:  []string{"id"},
 		},
 		{
 			SubService:   "managed_zones",
 			Struct:       &dns.ManagedZone{},
 			NewFunction:  dns.NewManagedZoneOperationsService,
 			ListFunction: (&dns.ManagedZonesService{}).List,
-			ExtraColumns: []codegen.ColumnDefinition{
-				{
-					Name:     "id",
-					Type:     schema.TypeInt,
-					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					Resolver: `schema.PathResolver("Id")`,
-				},
-			},
+			PrimaryKeys:  []string{"id"},
 		},
 	}
 

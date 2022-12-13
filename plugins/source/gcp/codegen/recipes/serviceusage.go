@@ -3,8 +3,6 @@ package recipes
 import (
 	serviceusage "cloud.google.com/go/serviceusage/apiv1"
 	pb "cloud.google.com/go/serviceusage/apiv1/serviceusagepb"
-	"github.com/cloudquery/plugin-sdk/codegen"
-	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func init() {
@@ -18,13 +16,7 @@ func init() {
 			RegisterServer:      pb.RegisterServiceUsageServer,
 			ListFunction:        (&pb.UnimplementedServiceUsageServer{}).ListServices,
 			UnimplementedServer: &pb.UnimplementedServiceUsageServer{},
-			ExtraColumns: []codegen.ColumnDefinition{
-				{
-					Name:    "name",
-					Type:    schema.TypeString,
-					Options: schema.ColumnCreationOptions{PrimaryKey: true},
-				},
-			},
+			PrimaryKeys:         []string{"name"},
 		},
 	}
 

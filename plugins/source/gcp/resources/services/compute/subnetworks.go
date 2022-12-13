@@ -26,13 +26,6 @@ func Subnetworks() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
-				Name: "self_link",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
 				Name:     "creation_timestamp",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("CreationTimestamp"),
@@ -136,6 +129,14 @@ func Subnetworks() *schema.Table {
 				Name:     "secondary_ip_ranges",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("SecondaryIpRanges"),
+			},
+			{
+				Name:     "self_link",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SelfLink"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "stack_type",

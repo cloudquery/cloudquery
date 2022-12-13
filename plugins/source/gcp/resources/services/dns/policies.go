@@ -19,14 +19,6 @@ func Policies() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
-				Name:     "id",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("Id"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
 				Name:     "alternative_name_server_config",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("AlternativeNameServerConfig"),
@@ -45,6 +37,14 @@ func Policies() *schema.Table {
 				Name:     "enable_logging",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("EnableLogging"),
+			},
+			{
+				Name:     "id",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("Id"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "kind",

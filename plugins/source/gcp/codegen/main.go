@@ -25,8 +25,6 @@ import (
 //go:embed templates/*.go.tpl
 var gcpTemplatesFS embed.FS
 
-
-
 func main() {
 
 	for _, r := range recipes.Resources {
@@ -72,11 +70,6 @@ func needsProjectIDColumn(r recipes.Resource) bool {
 		return false
 	}
 
-	for _, c := range r.ExtraColumns {
-		if c.Name == "project_id" {
-			return false
-		}
-	}
 	return true
 }
 
@@ -128,13 +121,9 @@ func generateResource(r recipes.Resource, mock bool) {
 		r.MockImports = []string{reflect.TypeOf(r.Struct).Elem().PkgPath()}
 	}
 
-	for _, f := range r.ExtraColumns {
-		r.SkipFields = append(r.SkipFields, strcase.ToCamel(f.Name))
-	}
-
 	extraColumns := r.ExtraColumns
 	if needsProjectIDColumn(r) {
-		extraColumns = append([]codegen.ColumnDefinition{recipes.ProjectIdColumn}, extraColumns...)
+		extraColumns = append([]codegen.ColumnDefinition{recipes.ProjectIdColumn}, r.ExtraColumns...)
 	}
 
 	opts := []codegen.TableOption{
@@ -187,6 +176,15 @@ func generateResource(r recipes.Resource, mock bool) {
 	} else {
 		r.Table.Multiplex = *r.Multiplex
 	}
+
+	for _, f := range r.PrimaryKeys {
+		for i := range r.Table.Columns {
+			if r.Table.Columns[i].Name == f {
+				r.Table.Columns[i].Options.PrimaryKey = true
+			}
+		}
+	}
+
 	r.Table.Resolver = "fetch" + strcase.ToCamel(r.SubService)
 	if r.PreResourceResolver != "" {
 		r.Table.PreResourceResolver = r.PreResourceResolver
