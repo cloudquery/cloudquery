@@ -12,7 +12,7 @@ import (
 )
 
 type Client struct {
-	hc      http.Client
+	hc      HTTPDoer
 	baseURL string
 	token   string
 	teamID  string
@@ -24,13 +24,23 @@ type Paginator struct {
 	Prev  *int64 `json:"prev"`
 }
 
-func New(hc http.Client, baseURL, token, teamID string) *Client {
+type HTTPDoer interface {
+	Do(req *http.Request) (*http.Response, error)
+}
+
+func New(hc HTTPDoer, baseURL, token, teamID string) *Client {
 	return &Client{
 		hc:      hc,
 		baseURL: baseURL,
 		token:   token,
 		teamID:  teamID,
 	}
+}
+
+func (v *Client) WithTeamID(teamID string) *Client {
+	vv := *v
+	vv.teamID = teamID
+	return &vv
 }
 
 func (v *Client) Request(ctx context.Context, path string, until *int64, fill interface{}) error {

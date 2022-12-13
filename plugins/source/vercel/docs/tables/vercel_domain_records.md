@@ -24,8 +24,6 @@ This table depends on [vercel_domains](vercel_domains.md).
 |mx_priority|Int|
 |priority|Int|
 |creator|String|
-|created|Timestamp|
-|updated|Timestamp|
 |created_at|Timestamp|
 |updated_at|Timestamp|
 |ttl|Int|

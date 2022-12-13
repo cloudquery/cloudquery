@@ -41,19 +41,19 @@ type Domain struct {
 }
 
 type DomainRecord struct {
-	ID         string     `json:"id"`
-	Slug       string     `json:"slug"`
-	Name       string     `json:"name"`
-	Type       string     `json:"type"`
-	Value      string     `json:"value"`
-	MxPriority *int64     `json:"mxPriority"`
-	Priority   *int64     `json:"priority"`
-	Creator    string     `json:"creator"`
-	Created    *MilliTime `json:"created"`
-	Updated    *MilliTime `json:"updated"`
-	CreatedAt  *MilliTime `json:"createdAt"`
-	UpdatedAt  *MilliTime `json:"updatedAt"`
-	TTL        int64      `json:"ttl"` // undocumented
+	ID         string `json:"id"`
+	Slug       string `json:"slug"`
+	Name       string `json:"name"`
+	Type       string `json:"type"`
+	Value      string `json:"value"`
+	MxPriority *int64 `json:"mxPriority"`
+	Priority   *int64 `json:"priority"`
+	Creator    string `json:"creator"`
+	// duplicate: Created    *MilliTime `json:"created"`
+	// duplicate: Updated    *MilliTime `json:"updated"`
+	CreatedAt *MilliTime `json:"createdAt"`
+	UpdatedAt *MilliTime `json:"updatedAt"`
+	TTL       int64      `json:"ttl"` // undocumented
 }
 
 func (v *Client) ListDomains(ctx context.Context, pag *Paginator) ([]Domain, *Paginator, error) {

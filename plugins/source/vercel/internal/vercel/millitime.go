@@ -11,10 +11,16 @@ func (t *MilliTime) MarshalJSON() ([]byte, error) {
 	if t == nil || time.Time(*t).IsZero() {
 		return []byte("null"), nil
 	}
-	return time.Time(*t).MarshalJSON()
+	u := time.Time(*t).UnixMilli()
+	return []byte(strconv.FormatInt(u, 10)), nil
 }
 
 func (t *MilliTime) UnmarshalJSON(data []byte) error {
+	if string(data) == "null" {
+		t = nil
+		return nil
+	}
+
 	millis, err := strconv.ParseInt(string(data), 10, 64)
 	if err != nil {
 		return err

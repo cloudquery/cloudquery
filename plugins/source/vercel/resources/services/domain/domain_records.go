@@ -65,16 +65,6 @@ func DomainRecords() *schema.Table {
 				Resolver: schema.PathResolver("Creator"),
 			},
 			{
-				Name:     "created",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("Created"),
-			},
-			{
-				Name:     "updated",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("Updated"),
-			},
-			{
 				Name:     "created_at",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreatedAt"),

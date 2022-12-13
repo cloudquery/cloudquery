@@ -21,10 +21,10 @@ type Client struct {
 
 	TeamID   string
 	TeamIDs  []string
-	Services VercelServices
+	Services *vercel.Client
 }
 
-func New(logger zerolog.Logger, sourceSpec specs.Source, veSpec Spec, services VercelServices, teamIDs []string) Client {
+func New(logger zerolog.Logger, sourceSpec specs.Source, veSpec Spec, services *vercel.Client, teamIDs []string) Client {
 	return Client{
 		logger:     logger,
 		sourceSpec: sourceSpec,
@@ -47,15 +47,13 @@ func (c *Client) ID() string {
 }
 
 func (c *Client) WithTeamID(teamID string) schema.ClientMeta {
-	s, _ := getServiceClient(&c.veSpec, teamID) // This won't error as at this point we've already verified the spec
-
 	return &Client{
 		logger:     c.logger.With().Str("team_id", teamID).Logger(),
 		sourceSpec: c.sourceSpec,
 		veSpec:     c.veSpec,
 		TeamID:     teamID,
 		TeamIDs:    c.TeamIDs,
-		Services:   s,
+		Services:   c.Services.WithTeamID(teamID),
 	}
 }
 
@@ -91,7 +89,7 @@ func getServiceClient(spec *Spec, teamID string) (*vercel.Client, error) {
 		spec.Timeout = 5
 	}
 
-	return vercel.New(http.Client{
+	return vercel.New(&http.Client{
 		Timeout: time.Duration(spec.Timeout) * time.Second,
 	},
 		spec.EndpointURL,
