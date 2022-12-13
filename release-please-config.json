@@ -18,6 +18,7 @@
     "plugins/source/heroku": { "component": "plugins-source-heroku" },
     "plugins/source/k8s": { "component": "plugins-source-k8s" },
     "plugins/source/okta": { "component": "plugins-source-okta" },
+    "plugins/source/tailscale": { "component": "plugins-source-tailscale" },
     "plugins/source/test": { "component": "plugins-source-test" },
     "plugins/source/terraform": { "component": "plugins-source-terraform" },
     "plugins/destination/postgresql": {
