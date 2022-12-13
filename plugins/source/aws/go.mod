@@ -14,7 +14,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.12.24
 	github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.15.24
 	github.com/aws/aws-sdk-go-v2/service/apprunner v1.15.1
-	github.com/aws/aws-sdk-go-v2/service/appstream v1.18.1
+	github.com/aws/aws-sdk-go-v2/service/appstream v1.18.2
 	github.com/aws/aws-sdk-go-v2/service/appsync v1.17.0
 	github.com/aws/aws-sdk-go-v2/service/autoscaling v1.25.0
 	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.24.2
@@ -61,7 +61,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/kms v1.19.2
 	github.com/aws/aws-sdk-go-v2/service/lambda v1.26.1
 	github.com/aws/aws-sdk-go-v2/service/lightsail v1.24.1
-	github.com/aws/aws-sdk-go-v2/service/mq v1.13.16
+	github.com/aws/aws-sdk-go-v2/service/mq v1.13.17
 	github.com/aws/aws-sdk-go-v2/service/mwaa v1.13.13
 	github.com/aws/aws-sdk-go-v2/service/neptune v1.18.4
 	github.com/aws/aws-sdk-go-v2/service/organizations v1.17.1
