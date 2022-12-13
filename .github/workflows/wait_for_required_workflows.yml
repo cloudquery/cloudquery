@@ -53,6 +53,7 @@ jobs:
                            "plugins/source/heroku",
                            "plugins/source/k8s",
                            "plugins/source/okta",
+                           "plugins/source/tailscale",
                            "plugins/source/terraform",
                            "plugins/source/test",
                            
