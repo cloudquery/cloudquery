@@ -206,7 +206,6 @@
 - [azure_sql_virtual_clusters](azure_sql_virtual_clusters.md)
 - [azure_sqlvirtualmachine_groups](azure_sqlvirtualmachine_groups.md)
 - [azure_sqlvirtualmachine_sql_virtual_machines](azure_sqlvirtualmachine_sql_virtual_machines.md)
-- [azure_storage_deleted_accounts](azure_storage_deleted_accounts.md)
 - [azure_storage_accounts](azure_storage_accounts.md)
   - [azure_storage_tables](azure_storage_tables.md)
 - [azure_storagecache_caches](azure_storagecache_caches.md)
