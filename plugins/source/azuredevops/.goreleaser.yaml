@@ -1,0 +1,14 @@
+variables:
+  component: source/azuredevops
+  binary: azuredevops
+
+project_name: plugins/source/azuredevops
+
+monorepo:
+  tag_prefix: plugins-source-azuredevops-
+  dir: plugins/source/azuredevops
+
+includes:
+  - from_file:
+      # Relative to the directory Go Releaser is run from (which is the root of the repository)
+      path: ./plugins/.goreleaser.yaml
