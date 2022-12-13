@@ -122,9 +122,9 @@ accounts:
 - `default_region` **(Optional)** - this sets the Default Region for the AWS SDK. If you are assuming a role in a partition other than the AWS commercial region, it is important that this attribute is set
 - `regions` **(Optional)** - Limit fetching resources within this specific account to only these regions. This will override any regions specified in the provider block. You can specify all regions by using the `*` character as the only argument in the array
 
-### Assume Role with MFA
+### User Credentials with MFA
 
-In order to assume role with MFA, you need to request temporary credentials using STS "get-session-token".
+In order to leverage IAM User credentials with MFA, the STS "get-session-token" command may be used with the IAM User's long-term security credentials (Access Key and Secret Access Key).  For more information, see [here](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sts/get-session-token.html).
 
 ```bash
 aws sts get-session-token --serial-number <YOUR_MFA_SERIAL_NUMBER> --token-code <YOUR_MFA_TOKEN_CODE> --duration-seconds 3600

@@ -4,7 +4,10 @@
 
 The primary key for this table is **id**.
 
+## Relations
 
+The following tables depend on azure_mysql_servers:
+  - [azure_mysql_server_configurations](azure_mysql_server_configurations.md)
 
 ## Columns
 | Name          | Type          |
