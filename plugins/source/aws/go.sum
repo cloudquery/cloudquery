@@ -68,8 +68,8 @@ github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.15.24 h1:CpF3ROR/
 github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.15.24/go.mod h1:u2qIQ6OLpTJVtjcLAbgBiProB+WMdGLwhqquWjFqaH0=
 github.com/aws/aws-sdk-go-v2/service/apprunner v1.15.1 h1:q9a4L+/3yvJ112etOlushKlSbtfhZnXXiajHfYUrANM=
 github.com/aws/aws-sdk-go-v2/service/apprunner v1.15.1/go.mod h1:49fDZa5SXc4Z4NFLyxPcISPp/eJEpyN6wRxP1DlvboI=
-github.com/aws/aws-sdk-go-v2/service/appstream v1.18.1 h1:mjWRHfnhKczPJFlQ4AVNIzJASKrr0PPHGIb1apW1Q2M=
-github.com/aws/aws-sdk-go-v2/service/appstream v1.18.1/go.mod h1:GiY19kPm2MtS7H8gymDUHehruj7GjaWWGDjcnAE+9YE=
+github.com/aws/aws-sdk-go-v2/service/appstream v1.18.2 h1:3vZtniM2Piew69aqRjTrhU4O1RjriewtVVLhKENoDGk=
+github.com/aws/aws-sdk-go-v2/service/appstream v1.18.2/go.mod h1:GiY19kPm2MtS7H8gymDUHehruj7GjaWWGDjcnAE+9YE=
 github.com/aws/aws-sdk-go-v2/service/appsync v1.17.0 h1:9xlrbu0ROYsS0/6365LiMXAsv7ri5alUJkBoXec39/0=
 github.com/aws/aws-sdk-go-v2/service/appsync v1.17.0/go.mod h1:YVpSXTvlH7dzqD7N2B/sUtRPTYl/gd0ZGbmSVJoHfDA=
 github.com/aws/aws-sdk-go-v2/service/athena v1.20.2 h1:77aZNI/Hh7ITrxDEGQy+fZOCj9JpehKpzj1jKb0YmXg=
@@ -178,8 +178,8 @@ github.com/aws/aws-sdk-go-v2/service/lambda v1.26.1 h1:1LP0sLzqOTCvpyYBX67HBHpMt
 github.com/aws/aws-sdk-go-v2/service/lambda v1.26.1/go.mod h1:sjXAAvcyrm8CDfXxkchfrSkV41hscinr+5/+o2Jg1s0=
 github.com/aws/aws-sdk-go-v2/service/lightsail v1.24.1 h1:GveUNMp1QLwcYgbPpTF+JZDKlMgpqsE2MWH8kQu1Zi8=
 github.com/aws/aws-sdk-go-v2/service/lightsail v1.24.1/go.mod h1:KXWkJDBLKf9y1WDXxlnjggggq9W0lP7F1ufcAehqVVM=
-github.com/aws/aws-sdk-go-v2/service/mq v1.13.16 h1:YwXWQHsAyqsj3xfjEGnUZNjj5jsxuXVShtDWmLEyEF4=
-github.com/aws/aws-sdk-go-v2/service/mq v1.13.16/go.mod h1:+NhpunrjTkstAV5s+H+nJH3WwhXHQtKrRm+EfNcAm6I=
+github.com/aws/aws-sdk-go-v2/service/mq v1.13.17 h1:N4bcgIsTAakz7d5IzYo8tZx7yijlGd9RwMcpHJgp/T8=
+github.com/aws/aws-sdk-go-v2/service/mq v1.13.17/go.mod h1:+NhpunrjTkstAV5s+H+nJH3WwhXHQtKrRm+EfNcAm6I=
 github.com/aws/aws-sdk-go-v2/service/mwaa v1.13.13 h1:7MdUIn/7bmLdiyjPgpxfTfrwEsUiPyBUlUChzDsDeNY=
 github.com/aws/aws-sdk-go-v2/service/mwaa v1.13.13/go.mod h1:Zw5kdFxVDigjH2wGCJk9n9n2O6ECCXNnI4syrp+iYME=
 github.com/aws/aws-sdk-go-v2/service/neptune v1.18.4 h1:MG+2LDD8KBeUneB8KHjvWCnbwpKG/Wzi+SinoBM9SL8=
@@ -246,8 +246,8 @@ github.com/aws/aws-sdk-go-v2/service/waf v1.11.20 h1:8bB9SPjP+cYZoCBeWLusWzDFnuv
 github.com/aws/aws-sdk-go-v2/service/waf v1.11.20/go.mod h1:JziM/TxuCOLUdARUAoysfro9D4qwrsIAcOX2HX7D+HY=
 github.com/aws/aws-sdk-go-v2/service/wafregional v1.12.21 h1:+/TC4t3+URemTncF+N9mDkOF4cJ4g++Ju5CIm8oevTw=
 github.com/aws/aws-sdk-go-v2/service/wafregional v1.12.21/go.mod h1:hK6vsBfg2+oW0BUfycqmFBiMYz2yMcO1ARxkcVbeHzc=
-github.com/aws/aws-sdk-go-v2/service/wafv2 v1.23.2 h1:ODSRPCGIk2Ht72kSODabipPyIaMTF0wKdq+oaTNlrhs=
-github.com/aws/aws-sdk-go-v2/service/wafv2 v1.23.2/go.mod h1:wn1x+aGg8NR/aWqLnosE8pU9Ry11UkO7KgvoWORiiR0=
+github.com/aws/aws-sdk-go-v2/service/wafv2 v1.23.3 h1:XP3qjML/5i6g8B7spte7AS1zMgaoutbTrl5GzXFEuJQ=
+github.com/aws/aws-sdk-go-v2/service/wafv2 v1.23.3/go.mod h1:wn1x+aGg8NR/aWqLnosE8pU9Ry11UkO7KgvoWORiiR0=
 github.com/aws/aws-sdk-go-v2/service/workspaces v1.27.1 h1:dUQUCKsdPUhMutZWfyUVB3MPbY4pql14/1VkCPdMyCQ=
 github.com/aws/aws-sdk-go-v2/service/workspaces v1.27.1/go.mod h1:dh2ESuWEj2cjIs6sQQa78XitRZHcrb77GMUIuKtabYE=
 github.com/aws/aws-sdk-go-v2/service/xray v1.15.2 h1:D8qIabJcj/YsSur1p19ukCJv6MydgU7+VYB3aclKq6U=
