@@ -70,7 +70,7 @@ jobs:
         run: make gen
       - name: Fail if generation updated files
         if: github.event_name == 'pull_request'
-        run: test "$(git status -s | wc -l)" -eq 0
+        run: test "$(git status -s | wc -l)" -eq 0 || (git status -s; exit 1)
       # Sanity integration test, only for release PRs
       - name: Setup CloudQuery
         if: startsWith(github.head_ref, 'release-please--branches--main--components')
