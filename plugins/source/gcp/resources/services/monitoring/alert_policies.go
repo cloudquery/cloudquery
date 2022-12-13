@@ -100,7 +100,7 @@ func fetchAlertPolicies(ctx context.Context, meta schema.ClientMeta, parent *sch
 	if err != nil {
 		return err
 	}
-	it := gcpClient.ListAlertPolicies(ctx, req)
+	it := gcpClient.ListAlertPolicies(ctx, req, c.CallOptions...)
 	for {
 		resp, err := it.Next()
 		if err == iterator.Done {

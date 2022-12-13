@@ -33,6 +33,8 @@ func createProfiles(router *mux.Router) error {
 		}
 	})
 	createEndpoints(router)
+	createRuleSets(router)
+	createSecurityPolicies(router)
 	return nil
 }
 

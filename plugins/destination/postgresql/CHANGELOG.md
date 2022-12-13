@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.8.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v1.7.17...plugins-destination-postgresql-v1.8.0) (2022-12-13)
+
+
+### Features
+
+* **postgres:** Log table name with pg errors ([#5552](https://github.com/cloudquery/cloudquery/issues/5552)) ([ee90823](https://github.com/cloudquery/cloudquery/commit/ee908236d2d24cd31b51c59f8d16e62e2fb64c61))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.11.1 ([#5458](https://github.com/cloudquery/cloudquery/issues/5458)) ([58b7432](https://github.com/cloudquery/cloudquery/commit/58b74321cd253c9a843c8c103f324abb93952195))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.11.2 ([#5497](https://github.com/cloudquery/cloudquery/issues/5497)) ([c1876cf](https://github.com/cloudquery/cloudquery/commit/c1876cf793b43d825a25fb3c9ba4996e4b09964f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.12.0 ([#5539](https://github.com/cloudquery/cloudquery/issues/5539)) ([fb71293](https://github.com/cloudquery/cloudquery/commit/fb71293d5cfe1b2ef32ba83d604ac3c48e662bce))
+
 ## [1.7.17](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v1.7.16...plugins-destination-postgresql-v1.7.17) (2022-12-06)
 
 

@@ -8,6 +8,8 @@ import (
 )
 
 var packagesToSkip = map[string]bool{
+	// Manually generated recipes
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault": true,
 	// This is a special API and we create those recipes manually
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources": true,
 	// this can be written manually and potentially we can also get it from armresources

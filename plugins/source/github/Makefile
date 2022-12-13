@@ -1,7 +1,9 @@
 # Generate mocks for mock/unit testing
-.PHONY: generate-mocks
-generate-mocks:
-	go generate ./client/services/...
+.PHONY: gen-mocks
+gen-mocks:
+	go install github.com/golang/mock/mockgen@v1.6.0
+	rm -rf ./client/mocks/*
+	go generate ./client/...
 
 # Test unit
 .PHONY: test
@@ -13,11 +15,6 @@ test:
 install-tools:
 	@echo Installing tools from tools/tool.go
 	@cat tools/tool.go | grep _ | awk -F'"' '{print $$2}' | xargs -tI % go install %
-
-# Install pre-commit hooks. This requires pre-commit to be installed (https://pre-commit.com/)
-.PHONY: install-hooks
-install-hooks:
-	pre-commit install
 
 .PHONY: gen-docs
 gen-docs:
@@ -35,4 +32,4 @@ gen-code:
 
 # All gen targets
 .PHONY: gen
-gen: gen-code gen-docs
+gen: gen-code gen-mocks gen-docs
