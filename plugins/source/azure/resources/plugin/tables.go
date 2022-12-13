@@ -297,7 +297,6 @@ func generatedTables() []*schema.Table {
 		sql.VirtualClusters(),
 		sqlvirtualmachine.Groups(),
 		sqlvirtualmachine.SqlVirtualMachines(),
-		storage.DeletedAccounts(),
 		storage.Accounts(),
 		storagecache.Caches(),
 		streamanalytics.StreamingJobs(),
