@@ -12,14 +12,14 @@ import (
 )
 
 func createInstances(mux *httprouter.Router) error {
-	var item sql.InstancesListResponse
-	if err := faker.FakeObject(&item); err != nil {
+	var instanceResponse sql.InstancesListResponse
+	if err := faker.FakeObject(&instanceResponse); err != nil {
 		return err
 	}
-	item.NextPageToken = ""
+	instanceResponse.NextPageToken = ""
 
-	mux.GET("/*filepath", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-		b, err := json.Marshal(item)
+	mux.GET("/sql/v1beta4/projects/testProject/instances", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+		b, err := json.Marshal(instanceResponse)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)
 			return
@@ -29,6 +29,25 @@ func createInstances(mux *httprouter.Router) error {
 			return
 		}
 	})
+
+	var usersResponse sql.UsersListResponse
+	if err := faker.FakeObject(&usersResponse); err != nil {
+		return err
+	}
+	usersResponse.NextPageToken = ""
+
+	mux.GET("/sql/v1beta4/projects/testProject/instances/test string/users", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+		b, err := json.Marshal(&usersResponse)
+		if err != nil {
+			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)
+			return
+		}
+		if _, err := w.Write(b); err != nil {
+			http.Error(w, "failed to write", http.StatusBadRequest)
+			return
+		}
+	})
+
 	return nil
 }
 
