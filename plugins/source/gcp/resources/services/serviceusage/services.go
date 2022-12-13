@@ -56,6 +56,7 @@ func fetchServices(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	req := &pb.ListServicesRequest{
 		Parent:   "projects/" + c.ProjectId,
 		PageSize: 200,
+		Filter:   "state:ENABLED",
 	}
 	gcpClient, err := serviceusage.NewClient(ctx, c.ClientOptions...)
 	if err != nil {
