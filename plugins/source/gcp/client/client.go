@@ -167,9 +167,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 			return nil, fmt.Errorf("failed to list projects: %w", err)
 		}
 		for _, p := range folderProjects {
-			for _, f := range folderIds {
-				projectFolders[p] = append(projectFolders[p], f)
-			}
+			projectFolders[p] = append(projectFolders[p], folderIds...)
 		}
 
 	case len(gcpSpec.ProjectFilter) > 0:
