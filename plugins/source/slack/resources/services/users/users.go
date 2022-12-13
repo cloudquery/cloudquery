@@ -8,8 +8,9 @@ import (
 
 func Users() *schema.Table {
 	return &schema.Table{
-		Name:     "slack_users",
-		Resolver: fetchUsers,
+		Name:        "slack_users",
+		Description: `https://api.slack.com/methods/users.list`,
+		Resolver:    fetchUsers,
 		Columns: []schema.Column{
 			{
 				Name:     "id",

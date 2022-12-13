@@ -9,15 +9,17 @@ import (
 func UserResources() []*Resource {
 	resources := []*Resource{
 		{
-			DataStruct: &slack.User{},
-			PKColumns:  []string{"id"},
+			DataStruct:  &slack.User{},
+			Description: "https://api.slack.com/methods/users.list",
+			PKColumns:   []string{"id"},
 			Relations: []string{
 				`UserPresences()`,
 			},
 		},
 		{
-			PKColumns:  []string{"user_id"},
-			DataStruct: &slack.UserPresence{},
+			PKColumns:   []string{"user_id"},
+			DataStruct:  &slack.UserPresence{},
+			Description: "https://api.slack.com/methods/users.getPresence",
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:     "user_id",

@@ -37,3 +37,8 @@ type Conversation struct {
 	// TODO support pending_shared
 	// TODO support previous_names
 }
+
+type ConversationMember struct {
+	UserID    string `json:"user_id"`
+	ChannelID string `json:"channel_id"`
+}

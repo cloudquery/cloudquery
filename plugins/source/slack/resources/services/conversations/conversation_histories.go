@@ -18,11 +18,17 @@ func ConversationHistories() *schema.Table {
 				Name:     "channel_id",
 				Type:     schema.TypeString,
 				Resolver: schema.ParentColumnResolver("id"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "team_id",
 				Type:     schema.TypeString,
 				Resolver: schema.ParentColumnResolver("team_id"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "client_msg_id",

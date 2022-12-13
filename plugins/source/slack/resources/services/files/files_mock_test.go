@@ -1,4 +1,4 @@
-package access_logs
+package files
 
 import (
 	"testing"
@@ -11,31 +11,30 @@ import (
 	"github.com/slack-go/slack"
 )
 
-func buildLoginsMock(t *testing.T, ctrl *gomock.Controller) services.SlackClient {
+func buildFilesMock(t *testing.T, ctrl *gomock.Controller) services.SlackClient {
 	m := mocks.NewMockSlackClient(ctrl)
-	d := make([]slack.Login, 0, 1)
+	d := make([]slack.File, 0, 1)
 	err := faker.FakeObject(&d)
 	if err != nil {
 		t.Fatal(err)
 	}
-	p1 := &slack.Paging{
-		Count: 1000,
-		Total: 1000,
+	p := &slack.Paging{
+		Count: 1,
+		Total: 2,
 		Page:  1,
 		Pages: 2,
 	}
+	m.EXPECT().GetFilesContext(gomock.Any(), gomock.Any()).Times(1).Return(d, p, nil)
 	p2 := &slack.Paging{
-		Count: 1000,
-		Total: 20,
+		Count: 1,
+		Total: 2,
 		Page:  2,
 		Pages: 2,
 	}
-	m.EXPECT().GetAccessLogsContext(gomock.Any(), gomock.Any()).Times(1).Return(d, p1, nil)
-	m.EXPECT().GetAccessLogsContext(gomock.Any(), gomock.Any()).Times(1).Return(d, p2, nil)
-
+	m.EXPECT().GetFilesContext(gomock.Any(), gomock.Any()).Times(1).Return(d, p2, nil)
 	return m
 }
 
-func TestLogins(t *testing.T) {
-	client.MockTestHelper(t, Logins(), buildLoginsMock, client.TestOptions{})
+func TestFiles(t *testing.T) {
+	client.MockTestHelper(t, Files(), buildFilesMock, client.TestOptions{})
 }

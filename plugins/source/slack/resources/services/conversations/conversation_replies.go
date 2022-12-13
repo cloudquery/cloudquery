@@ -23,11 +23,17 @@ func ConversationReplies() *schema.Table {
 				Name:     "team_id",
 				Type:     schema.TypeString,
 				Resolver: schema.ParentColumnResolver("team_id"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "channel_id",
 				Type:     schema.TypeString,
 				Resolver: schema.ParentColumnResolver("channel_id"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "client_msg_id",

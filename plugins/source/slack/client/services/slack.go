@@ -52,7 +52,4 @@ type SlackClient interface {
 	ListRemoteFilesContext(context.Context, slack.ListRemoteFilesParameters) ([]slack.RemoteFile, error)
 	ListStarsContext(context.Context, slack.StarsParameters) ([]slack.Item, *slack.Paging, error)
 	ListTeamsContext(context.Context, slack.ListTeamsParameters) ([]slack.Team, string, error)
-	SearchContext(context.Context, string, slack.SearchParameters) (*slack.SearchMessages, *slack.SearchFiles, error)
-	SearchFilesContext(context.Context, string, slack.SearchParameters) (*slack.SearchFiles, error)
-	SearchMessagesContext(context.Context, string, slack.SearchParameters) (*slack.SearchMessages, error)
 }

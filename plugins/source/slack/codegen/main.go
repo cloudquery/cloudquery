@@ -28,8 +28,10 @@ func main() {
 	}
 
 	var resources []*recipes.Resource
-	resources = append(resources, recipes.UserResources()...)
 	resources = append(resources, recipes.ConversationResources()...)
+	resources = append(resources, recipes.FileResources()...)
+	resources = append(resources, recipes.TeamResources()...)
+	resources = append(resources, recipes.UserResources()...)
 
 	for _, r := range resources {
 		r.Infer()

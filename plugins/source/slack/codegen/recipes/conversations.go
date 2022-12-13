@@ -13,10 +13,30 @@ func ConversationResources() []*Resource {
 			SubService:  "conversations",
 			Description: "https://api.slack.com/methods/conversations.list",
 			DataStruct:  &models.Conversation{},
-			PKColumns:   []string{"team_id", "id"},
-			Relations: []string{
-				`ConversationHistories()`,
+			SkipFields: []string{
+				"Members", // part of model, but not returned by API
 			},
+			PKColumns: []string{"team_id", "id"},
+			Relations: []string{
+				`ConversationBookmarks()`,
+				`ConversationHistories()`,
+				`ConversationMembers()`,
+			},
+			ExtraColumns: []codegen.ColumnDefinition{TeamIDColumn},
+		},
+		{
+			SubService:   "conversation_members",
+			Description:  "https://api.slack.com/methods/conversations.members",
+			DataStruct:   &models.ConversationMember{},
+			PKColumns:    []string{"team_id", "channel_id", "user_id"},
+			Relations:    []string{},
+			ExtraColumns: []codegen.ColumnDefinition{TeamIDColumn},
+		},
+		{
+			SubService:   "conversation_bookmarks",
+			Description:  "https://api.slack.com/methods/bookmarks.list",
+			DataStruct:   &slack.Bookmark{},
+			PKColumns:    []string{"team_id", "channel_id", "id"},
 			ExtraColumns: []codegen.ColumnDefinition{TeamIDColumn},
 		},
 		{

@@ -18,6 +18,9 @@ func Conversations() *schema.Table {
 				Name:     "team_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveTeamID,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "id",
@@ -133,11 +136,6 @@ func Conversations() *schema.Table {
 				Resolver: schema.PathResolver("IsArchived"),
 			},
 			{
-				Name:     "members",
-				Type:     schema.TypeStringArray,
-				Resolver: schema.PathResolver("Members"),
-			},
-			{
 				Name:     "topic",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Topic"),
@@ -170,7 +168,9 @@ func Conversations() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
+			ConversationBookmarks(),
 			ConversationHistories(),
+			ConversationMembers(),
 		},
 	}
 }

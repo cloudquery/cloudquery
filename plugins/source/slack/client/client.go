@@ -17,6 +17,7 @@ type Client struct {
 	Slack  services.SlackClient
 	Teams  []slack.Team
 	TeamID string
+	BotID  string
 }
 
 func (c *Client) Logger() *zerolog.Logger {

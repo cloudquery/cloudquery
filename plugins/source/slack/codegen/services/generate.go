@@ -26,7 +26,7 @@ var clients = []interface{}{
 
 // these method name prefixes will be part of the generated client interface
 var acceptedPrefixes = []string{
-	"List", "Get", "Describe", "Search", "Find",
+	"List", "Get",
 }
 
 // these method name suffixes will be part of the generated client interface

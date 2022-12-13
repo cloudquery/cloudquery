@@ -8,8 +8,9 @@ import (
 
 func UserPresences() *schema.Table {
 	return &schema.Table{
-		Name:     "slack_user_presences",
-		Resolver: fetchUserPresences,
+		Name:        "slack_user_presences",
+		Description: `https://api.slack.com/methods/users.getPresence`,
+		Resolver:    fetchUserPresences,
 		Columns: []schema.Column{
 			{
 				Name:     "user_id",

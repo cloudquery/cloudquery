@@ -10,26 +10,35 @@ import (
 
 func fetchConversationHistories(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	params := &slack.GetConversationHistoryParameters{
-		ChannelID:          parent.Item.(slack.Channel).ID,
-		Limit:              1000,
-		IncludeAllMetadata: true,
+	f := func() error {
+		channel := parent.Item.(slack.Channel)
+		params := &slack.GetConversationHistoryParameters{
+			ChannelID:          channel.ID,
+			Limit:              1000,
+			IncludeAllMetadata: true,
+		}
+		for {
+			resp, err := c.Slack.GetConversationHistoryContext(ctx, params)
+			if err != nil {
+				if isNotInChannel(err) {
+					// we do not expect to fetch conversation histories from channels the bot is not
+					// added to
+					return nil
+				}
+				return err
+			}
+			if resp.Err() != nil {
+				return resp.Err()
+			}
+			for _, m := range resp.Messages {
+				res <- m.Msg
+			}
+			if !resp.HasMore {
+				break
+			}
+			params.Cursor = resp.ResponseMetaData.NextCursor
+		}
+		return nil
 	}
-	for {
-		resp, err := c.Slack.GetConversationHistoryContext(ctx, params)
-		if err != nil {
-			return err
-		}
-		if resp.Err() != nil {
-			return resp.Err()
-		}
-		for _, m := range resp.Messages {
-			res <- m.Msg
-		}
-		if !resp.HasMore {
-			break
-		}
-		params.Cursor = resp.ResponseMetaData.NextCursor
-	}
-	return nil
+	return c.RetryOnRateLimitError("slack_conversation_histories", f)
 }
