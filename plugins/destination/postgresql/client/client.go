@@ -100,7 +100,12 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (pl
 	if err != nil {
 		return nil, fmt.Errorf("failed to get current database: %w", err)
 	}
-	c.currentSchemaName = "public"
+
+	c.currentSchemaName, err = c.currentSchema(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get current schema: %w", err)
+	}
+
 	c.pgType, err = c.getPgType(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get database type: %w", err)
@@ -127,6 +132,15 @@ func (c *Client) currentDatabase(ctx context.Context) (string, error) {
 		return "", err
 	}
 	return db, nil
+}
+
+func (c *Client) currentSchema(ctx context.Context) (string, error) {
+	var schema string
+	err := c.conn.QueryRow(ctx, "select current_schema()").Scan(&schema)
+	if err != nil {
+		return "", err
+	}
+	return schema, nil
 }
 
 func (c *Client) getPgType(ctx context.Context) (pgType, error) {
