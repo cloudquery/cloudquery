@@ -11,5 +11,6 @@
   "heroku": "Heroku",
   "k8s": "Kubernetes",
   "okta": "Okta",
+  "slack": "Slack",
   "terraform": "Terraform"
 }
