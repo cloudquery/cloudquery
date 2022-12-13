@@ -55,7 +55,6 @@ func MockTestGrpcHelper(t *testing.T, table *schema.Table, createService func(*g
 		}
 		c := &Client{
 			logger:        logger,
-			ctx:           ctx,
 			ClientOptions: clientOptions,
 			projects:      []string{"testProject"},
 		}
@@ -111,7 +110,6 @@ func MockTestRestHelper(t *testing.T, table *schema.Table, createService func(*h
 		}
 		c := &Client{
 			logger:        logger,
-			ctx:           ctx,
 			ClientOptions: clientOptions,
 			projects:      []string{"testProject"},
 		}
