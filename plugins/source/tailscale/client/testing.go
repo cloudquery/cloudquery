@@ -41,9 +41,9 @@ func MockTestHelper(t *testing.T, table *schema.Table, createService func(*httpr
 		}
 
 		c := &Client{
-			logger:    logger,
-			tailnet:   "test",
-			Interface: tsClient,
+			Client:  tsClient,
+			logger:  logger,
+			tailnet: "test",
 		}
 
 		return c, nil

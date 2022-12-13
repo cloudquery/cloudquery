@@ -7,10 +7,11 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
+	"github.com/tailscale/tailscale-client-go/tailscale"
 )
 
 type Client struct {
-	Interface
+	*tailscale.Client
 	tailnet string
 	logger  zerolog.Logger
 }
@@ -37,8 +38,8 @@ func Configure(_ context.Context, logger zerolog.Logger, spec specs.Source) (sch
 		return nil, fmt.Errorf("failed to create Tailscale client: %w", err)
 	}
 	return &Client{
-		Interface: client,
-		tailnet:   tsSpec.Tailnet,
-		logger:    logger,
+		Client:  client,
+		tailnet: tsSpec.Tailnet,
+		logger:  logger,
 	}, nil
 }
