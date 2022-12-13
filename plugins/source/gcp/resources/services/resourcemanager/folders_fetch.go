@@ -16,23 +16,13 @@ import (
 func fetchFolders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 
-	pClient, err := resourcemanager.NewProjectsClient(ctx, c.ClientOptions...)
-	if err != nil {
-		return errors.WithStack(err)
-	}
-
 	fClient, err := resourcemanager.NewFoldersClient(ctx, c.ClientOptions...)
 	if err != nil {
 		return errors.WithStack(err)
 	}
 
-	o, err := pClient.GetProject(ctx, &pb.GetProjectRequest{Name: "projects/" + c.ProjectId})
-	if err != nil {
-		return errors.WithStack(err)
-	}
-
 	req := &pb.ListFoldersRequest{
-		Parent: o.Parent,
+		Parent: "organizations/" + c.OrgId,
 	}
 	it := fClient.ListFolders(ctx, req)
 	for {

@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"strings"
 	"time"
 
 	resourcemanager "cloud.google.com/go/resourcemanager/apiv3"
@@ -14,6 +15,7 @@ import (
 	grpczerolog "github.com/grpc-ecosystem/go-grpc-middleware/providers/zerolog/v2"
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/logging"
 	"github.com/rs/zerolog"
+	"github.com/thoas/go-funk"
 	crmv1 "google.golang.org/api/cloudresourcemanager/v1"
 	"google.golang.org/api/iterator"
 	"google.golang.org/api/option"
@@ -24,11 +26,14 @@ import (
 const maxProjectIdsToLog int = 100
 
 type Client struct {
-	projects      []string
+	projects []string
+	orgs     []string
+
 	ClientOptions []option.ClientOption
 	CallOptions   []gax.CallOption
 	// this is set by table client multiplexer
 	ProjectId string
+	OrgId     string
 	// Logger
 	logger zerolog.Logger
 
@@ -38,11 +43,19 @@ type Client struct {
 
 //revive:disable:modifies-value-receiver
 
-// withProject allows multiplexer to create a new client with given subscriptionId
+// withProject allows multiplexer to create a new client with given projectId
 func (c *Client) withProject(project string) *Client {
 	newClient := *c
 	newClient.logger = c.logger.With().Str("project_id", project).Logger()
 	newClient.ProjectId = project
+	return &newClient
+}
+
+// withOrg allows multiplexer to create a new client with given organizationId
+func (c *Client) withOrg(org string) *Client {
+	newClient := *c
+	newClient.logger = c.logger.With().Str("org_id", org).Logger()
+	newClient.OrgId = org
 	return &newClient
 }
 
@@ -56,6 +69,9 @@ func isValidJson(content []byte) error {
 }
 
 func (c *Client) ID() string {
+	if c.OrgId != "" {
+		return "org:" + c.OrgId
+	}
 	return c.ProjectId
 }
 
@@ -122,13 +138,17 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 		return nil, fmt.Errorf("failed to create folders client: %w", err)
 	}
 
+	projectsAndParents := make(map[string]string) // project -> parent
+	projectFolders := make(map[string][]string)   // project -> folders
+
 	switch {
 	case len(projects) == 0 && len(gcpSpec.FolderIDs) == 0 && len(gcpSpec.ProjectFilter) == 0:
 		c.logger.Info().Msg("No project_ids, folder_ids, or project_filter specified - assuming all active projects")
-		projects, err = getProjectsV1(ctx, c.ClientOptions...)
+		projectsAndParents, err = getProjectsV1(ctx, c.ClientOptions...)
 		if err != nil {
 			return nil, fmt.Errorf("failed to get projects: %w", err)
 		}
+		projects = funk.Keys(projectsAndParents).([]string)
 
 	case len(gcpSpec.FolderIDs) > 0:
 		var folderIds []string
@@ -150,14 +170,20 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 		if err != nil {
 			return nil, fmt.Errorf("failed to list projects: %w", err)
 		}
+		for _, p := range folderProjects {
+			for _, f := range folderIds {
+				projectFolders[p] = append(projectFolders[p], f)
+			}
+		}
 
 	case len(gcpSpec.ProjectFilter) > 0:
 		c.logger.Info().Msg("Listing projects with filter...")
-		projectsWithFilter, err := getProjectsV1WithFilter(ctx, gcpSpec.ProjectFilter, c.ClientOptions...)
+		projectsAndParents, err = getProjectsV1WithFilter(ctx, gcpSpec.ProjectFilter, c.ClientOptions...)
 		if err != nil {
 			return nil, fmt.Errorf("failed to get projects with filter: %w", err)
 		}
 
+		projectsWithFilter := funk.Keys(projectsAndParents).([]string)
 		projects = setUnion(projects, projectsWithFilter)
 	}
 
@@ -167,9 +193,70 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 		return nil, fmt.Errorf("no active projects")
 	}
 
+	// get list of orgs
+	projectVsOrg, projectVsFolder := siftProjectParents(projectsAndParents) // each project has one parent, either a folder or an org
+	for p, f := range projectVsFolder {
+		projectFolders[p] = append(projectFolders[p], f)
+	}
+
+	orgs := funk.Values(projectVsOrg).([]string)
+
+	folderVsOrg := make(map[string]string)
+	for p, f := range projectVsFolder {
+		// do we have info about this folder's org already?
+		if o := folderVsOrg[f]; o != "" {
+			c.Logger().Debug().Str("project_id", p).Str("org_id", o).Msg("already have the org from previous data")
+			orgs = append(orgs, o)
+			continue
+		}
+		if o := projectVsOrg[p]; o != "" {
+			c.Logger().Debug().Str("project_id", p).Str("org_id", o).Msg("already have the org")
+			continue
+		}
+
+		// if our folder is in the same list as other folders, check them for org first
+		var otherFolders []string
+		for _, sameOrgFolderList := range projectFolders {
+			if funk.Contains(sameOrgFolderList, f) {
+				otherFolders = append(otherFolders, sameOrgFolderList...)
+			}
+		}
+		// get the org for this folder
+		found := false
+		for _, otherFolder := range otherFolders {
+			if o := folderVsOrg[otherFolder]; o != "" {
+				folderVsOrg[f] = o
+				c.Logger().Debug().Str("project_id", p).Str("org_id", o).Str("folder_id", otherFolder).Msg("already have the org from previous folder")
+				orgs = append(orgs, o)
+				found = true
+				break
+			}
+		}
+		if found {
+			continue
+		}
+
+		c.Logger().Debug().Str("project_id", p).Msg("querying project org")
+		o, folders, err := getOrganization(ctx, p, c.ClientOptions...)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get organization of project %s: %w", p, err)
+		}
+		if o == "" {
+			c.Logger().Warn().Str("project_id", p).Msg("could not get projects organization")
+			continue
+		}
+		orgs = append(orgs, o)
+		for _, f := range folders {
+			folderVsOrg[f] = o
+		}
+	}
+
 	c.projects = projects
+	c.orgs = funk.UniqString(orgs)
+
 	if len(projects) == 1 {
 		c.ProjectId = projects[0]
+		c.OrgId = projectVsOrg[c.ProjectId]
 	}
 
 	return &c, nil
@@ -196,10 +283,9 @@ func logProjectIds(logger *zerolog.Logger, projectIds []string) {
 }
 
 // getProjectsV1 requires the `resourcemanager.projects.get` permission to list projects
-func getProjectsV1(ctx context.Context, options ...option.ClientOption) ([]string, error) {
-	var (
-		projects []string
-	)
+func getProjectsV1(ctx context.Context, options ...option.ClientOption) (map[string]string, error) {
+	projects := make(map[string]string)
+
 	service, err := crmv1.NewService(ctx, options...)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create cloudresourcemanager service: %w", err)
@@ -212,7 +298,11 @@ func getProjectsV1(ctx context.Context, options ...option.ClientOption) ([]strin
 			return nil, err
 		}
 		for _, project := range output.Projects {
-			projects = append(projects, project.ProjectId)
+			if project.Parent != nil {
+				projects[project.ProjectId] = project.Parent.Type + "/" + project.Parent.Id
+			} else {
+				projects[project.ProjectId] = ""
+			}
 		}
 		if output.NextPageToken == "" {
 			break
@@ -227,10 +317,9 @@ func getProjectsV1(ctx context.Context, options ...option.ClientOption) ([]strin
 	return projects, nil
 }
 
-func getProjectsV1WithFilter(ctx context.Context, filter string, options ...option.ClientOption) ([]string, error) {
-	var (
-		projects []string
-	)
+func getProjectsV1WithFilter(ctx context.Context, filter string, options ...option.ClientOption) (map[string]string, error) {
+	projects := make(map[string]string)
+
 	service, err := crmv1.NewService(ctx, options...)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create cloudresourcemanager service: %w", err)
@@ -243,8 +332,13 @@ func getProjectsV1WithFilter(ctx context.Context, filter string, options ...opti
 			return nil, err
 		}
 		for _, project := range output.Projects {
-			if project.LifecycleState == "ACTIVE" {
-				projects = append(projects, project.ProjectId)
+			if project.LifecycleState != "ACTIVE" {
+				continue
+			}
+			if project.Parent != nil {
+				projects[project.ProjectId] = project.Parent.Type + "/" + project.Parent.Id
+			} else {
+				projects[project.ProjectId] = ""
 			}
 		}
 		if output.NextPageToken == "" {
@@ -318,6 +412,34 @@ func listProjectsInFolders(ctx context.Context, projectClient *resourcemanager.P
 	return projects, nil
 }
 
+func getOrganization(ctx context.Context, projectId string, options ...option.ClientOption) (string, []string, error) {
+	service, err := crmv1.NewService(ctx, options...)
+	if err != nil {
+		return "", nil, fmt.Errorf("failed to create cloudresourcemanager service: %w", err)
+	}
+
+	ac, err := service.Projects.GetAncestry(projectId, &crmv1.GetAncestryRequest{}).Context(ctx).Do()
+	if err != nil {
+		return "", nil, err
+	}
+
+	org := ""
+	folders := make([]string, 0, len(ac.Ancestor))
+	for _, a := range ac.Ancestor {
+		if a == nil || a.ResourceId == nil {
+			continue
+		}
+		switch a.ResourceId.Type {
+		case "organization":
+			org = a.ResourceId.Id
+		case "folder":
+			folders = append(folders, a.ResourceId.Id)
+		}
+	}
+
+	return org, folders, nil
+}
+
 func setUnion(a []string, b []string) []string {
 	set := make(map[string]struct{}, len(a)+len(b)) // alloc max
 	for _, s := range a {
@@ -332,4 +454,20 @@ func setUnion(a []string, b []string) []string {
 		union = append(union, s)
 	}
 	return union
+}
+
+func siftProjectParents(projectsAndParents map[string]string) (map[string]string, map[string]string) {
+	orgs := make(map[string]string)
+	folders := make(map[string]string)
+	for project, parent := range projectsAndParents {
+		if strings.HasPrefix(parent, "organization/") {
+			orgs[project] = strings.TrimPrefix(parent, "organization/")
+			continue
+		}
+
+		if strings.HasPrefix(parent, "folder/") {
+			folders[project] = strings.TrimPrefix(parent, "folder/")
+		}
+	}
+	return orgs, folders
 }
