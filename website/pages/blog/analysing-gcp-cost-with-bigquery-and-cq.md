@@ -38,7 +38,7 @@ spec:
   destinations: ["bigquery"]
   spec:
     # GCP Spec section described below
-    project_ids: ["cq-playground"]
+    project_ids: ["<project-id>"]
 ---
 kind: destination
 spec:
