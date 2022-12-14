@@ -26,11 +26,12 @@ func init() {
 			},
 		},
 		{
-			SubService: "projects",
-			Struct:     &pb.Project{},
-			SkipFetch:  true,
-			SkipMock:   true,
-			SkipFields: []string{"ProjectId"},
+			SubService:  "projects",
+			Struct:      &pb.Project{},
+			SkipFetch:   true,
+			SkipMock:    true,
+			SkipFields:  []string{"ProjectId"},
+			PrimaryKeys: []string{"project_id", "name"},
 		},
 		{
 			SubService: "project_policies",
