@@ -60,7 +60,7 @@ You can see all CloudQuery tables prefix with `gcp_` and two GCP billing table p
 
 ## Correlating Billing Data with CloudQuery Data
 
-Now let's dive into a real world examples.
+Now let's dive into some examples.
 
 ### Cost of unattached disks
 
