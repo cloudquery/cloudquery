@@ -27,7 +27,7 @@ spec:
 
 ## Vercel Spec
 
-This is the (nested) spec used by the Vercel source plugin.
+This is the (nested) spec used by the Vercel source plugin:
 
 - `access_token` (string, required):
   An access token for your Vercel account. Get yours from [Vercel's Account Tokens Page](https://vercel.com/account/tokens).
