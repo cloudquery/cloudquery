@@ -1,3 +1,3 @@
 # CloudQuery Vercel Source Plugin Configuration Reference
 
-Moved to [http://cloudquery.io/docs/plugins/sources/vercel/configuration](http://cloudquery.io/docs/plugins/sources/vercel/configuration)
+Moved to [https://cloudquery.io/docs/plugins/sources/vercel/configuration](https://cloudquery.io/docs/plugins/sources/vercel/configuration)
