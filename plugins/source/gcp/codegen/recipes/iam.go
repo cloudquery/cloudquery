@@ -13,6 +13,7 @@ func init() {
 			SubService:  "roles",
 			Struct:      &iam.Role{},
 			PrimaryKeys: []string{ProjectIdColumn.Name, "name"},
+			Description: "https://cloud.google.com/iam/docs/reference/rest/v1/roles#Role",
 		},
 		{
 			SubService:      "service_accounts",
@@ -23,6 +24,7 @@ func init() {
 			NameTransformer: CreateReplaceTransformer(map[string]string{"oauth_2": "oauth2"}),
 			Relations:       []string{"ServiceAccountKeys()"},
 			SkipMock:        true,
+			Description:     "https://cloud.google.com/iam/docs/reference/rest/v1/projects.serviceAccounts#ServiceAccount",
 		},
 		{
 			SubService:  "service_account_keys",
@@ -37,8 +39,9 @@ func init() {
 					Resolver: `schema.ParentColumnResolver("unique_id")`,
 				},
 			},
-			SkipFields: []string{"ProjectId", "PrivateKeyData", "PrivateKeyType"},
-			SkipMock:   true,
+			SkipFields:  []string{"ProjectId", "PrivateKeyData", "PrivateKeyType"},
+			SkipMock:    true,
+			Description: "https://cloud.google.com/iam/docs/reference/rest/v1/projects.serviceAccounts.keys#ServiceAccountKey",
 		},
 	}
 

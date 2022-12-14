@@ -1,6 +1,6 @@
 # Table: gcp_kms_keyrings
 
-
+https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings#KeyRing
 
 The primary key for this table is **_cq_id**.
 

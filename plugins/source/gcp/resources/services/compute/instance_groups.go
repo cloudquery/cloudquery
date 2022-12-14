@@ -16,9 +16,10 @@ import (
 
 func InstanceGroups() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_compute_instance_groups",
-		Resolver:  fetchInstanceGroups,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_compute_instance_groups",
+		Description: `https://cloud.google.com/compute/docs/reference/rest/v1/instanceGroups#InstanceGroup`,
+		Resolver:    fetchInstanceGroups,
+		Multiplex:   client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

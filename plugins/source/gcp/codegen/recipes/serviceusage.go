@@ -17,6 +17,7 @@ func init() {
 			ListFunction:        (&pb.UnimplementedServiceUsageServer{}).ListServices,
 			UnimplementedServer: &pb.UnimplementedServiceUsageServer{},
 			PrimaryKeys:         []string{"name"},
+			Description:         "https://cloud.google.com/service-usage/docs/reference/rest/v1/services#Service",
 		},
 	}
 

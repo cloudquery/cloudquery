@@ -181,6 +181,8 @@ func generateResource(r recipes.Resource, mock bool) {
 		}
 	}
 
+	r.Table.Description = r.Description
+
 	r.Table.Resolver = "fetch" + strcase.ToCamel(r.SubService)
 	if r.PreResourceResolver != "" {
 		r.Table.PreResourceResolver = r.PreResourceResolver

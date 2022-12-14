@@ -16,9 +16,10 @@ import (
 
 func ForwardingRules() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_compute_forwarding_rules",
-		Resolver:  fetchForwardingRules,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_compute_forwarding_rules",
+		Description: `https://cloud.google.com/compute/docs/reference/rest/v1/forwardingRules#ForwardingRule`,
+		Resolver:    fetchForwardingRules,
+		Multiplex:   client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

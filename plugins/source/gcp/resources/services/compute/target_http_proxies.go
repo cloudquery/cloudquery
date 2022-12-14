@@ -16,9 +16,10 @@ import (
 
 func TargetHttpProxies() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_compute_target_http_proxies",
-		Resolver:  fetchTargetHttpProxies,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_compute_target_http_proxies",
+		Description: `https://cloud.google.com/compute/docs/reference/rest/v1/targetHttpProxies#TargetHttpProxy`,
+		Resolver:    fetchTargetHttpProxies,
+		Multiplex:   client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

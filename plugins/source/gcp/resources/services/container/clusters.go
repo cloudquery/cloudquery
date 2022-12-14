@@ -9,9 +9,10 @@ import (
 
 func Clusters() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_container_clusters",
-		Resolver:  fetchClusters,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_container_clusters",
+		Description: `https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.locations.clusters#Cluster`,
+		Resolver:    fetchClusters,
+		Multiplex:   client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

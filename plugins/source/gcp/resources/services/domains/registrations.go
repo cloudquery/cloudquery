@@ -18,9 +18,10 @@ import (
 
 func Registrations() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_domains_registrations",
-		Resolver:  fetchRegistrations,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_domains_registrations",
+		Description: `https://cloud.google.com/domains/docs/reference/rest/v1beta1/projects.locations.registrations#Registration`,
+		Resolver:    fetchRegistrations,
+		Multiplex:   client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

@@ -24,6 +24,7 @@ func init() {
 					Resolver: "resolveOrganizationId",
 				},
 			},
+			Description: "https://cloud.google.com/resource-manager/reference/rest/v3/folders#Folder",
 		},
 		{
 			SubService:  "projects",
@@ -32,12 +33,14 @@ func init() {
 			SkipMock:    true,
 			SkipFields:  []string{"ProjectId"},
 			PrimaryKeys: []string{"project_id", "name"},
+			Description: "https://cloud.google.com/resource-manager/reference/rest/v3/projects#Project",
 		},
 		{
-			SubService: "project_policies",
-			Struct:     &cloudresourcemanager.Policy{},
-			SkipFetch:  true,
-			SkipMock:   true,
+			SubService:  "project_policies",
+			Struct:      &cloudresourcemanager.Policy{},
+			SkipFetch:   true,
+			SkipMock:    true,
+			Description: "https://cloud.google.com/resource-manager/reference/rest/Shared.Types/Policy",
 		},
 	}
 

@@ -16,9 +16,10 @@ import (
 
 func Addresses() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_compute_addresses",
-		Resolver:  fetchAddresses,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_compute_addresses",
+		Description: `https://cloud.google.com/compute/docs/reference/rest/v1/addresses#Address`,
+		Resolver:    fetchAddresses,
+		Multiplex:   client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

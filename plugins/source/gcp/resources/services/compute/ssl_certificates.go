@@ -16,9 +16,10 @@ import (
 
 func SslCertificates() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_compute_ssl_certificates",
-		Resolver:  fetchSslCertificates,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_compute_ssl_certificates",
+		Description: `https://cloud.google.com/compute/docs/reference/rest/v1/sslCertificates#SslCertificate`,
+		Resolver:    fetchSslCertificates,
+		Multiplex:   client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

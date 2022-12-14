@@ -1,6 +1,6 @@
 # Table: gcp_logging_metrics
 
-
+https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.metrics#LogMetric
 
 The primary key for this table is **name**.
 

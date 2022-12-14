@@ -11,6 +11,7 @@ import (
 var Resources []*Resource
 
 type Resource struct {
+	Description string
 	// PackageName name is the packgename in the source plugin this resource is located
 	PackageName string
 	// Sets PreResourceResolver

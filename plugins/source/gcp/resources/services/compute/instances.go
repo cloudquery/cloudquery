@@ -16,9 +16,10 @@ import (
 
 func Instances() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_compute_instances",
-		Resolver:  fetchInstances,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_compute_instances",
+		Description: `https://cloud.google.com/compute/docs/reference/rest/v1/instances#Instance`,
+		Resolver:    fetchInstances,
+		Multiplex:   client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

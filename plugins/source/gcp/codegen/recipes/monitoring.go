@@ -17,6 +17,7 @@ func init() {
 			ListFunction:        (&pb.UnimplementedAlertPolicyServiceServer{}).ListAlertPolicies,
 			UnimplementedServer: &pb.UnimplementedAlertPolicyServiceServer{},
 			PrimaryKeys:         []string{"name"},
+			Description:         "https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.alertPolicies#AlertPolicy",
 		},
 	}
 

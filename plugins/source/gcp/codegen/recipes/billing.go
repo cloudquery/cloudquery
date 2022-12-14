@@ -17,6 +17,7 @@ func init() {
 			RegisterServer:      pb.RegisterCloudBillingServer,
 			UnimplementedServer: &pb.UnimplementedCloudBillingServer{},
 			PrimaryKeys:         []string{"name"},
+			Description:         "https://cloud.google.com/billing/docs/reference/rest/v1/billingAccounts#BillingAccount",
 		},
 		{
 			SubService:          "services",
@@ -28,6 +29,7 @@ func init() {
 			RegisterServer:      pb.RegisterCloudCatalogServer,
 			UnimplementedServer: &pb.UnimplementedCloudCatalogServer{},
 			PrimaryKeys:         []string{"name"},
+			Description:         "https://cloud.google.com/billing/docs/reference/rest/v1/services/list#Service",
 		},
 	}
 
