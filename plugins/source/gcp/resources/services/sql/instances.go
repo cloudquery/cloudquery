@@ -19,14 +19,6 @@ func Instances() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
-				Name:     "self_link",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("SelfLink"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
 				Name:     "available_maintenance_versions",
 				Type:     schema.TypeStringArray,
 				Resolver: schema.PathResolver("AvailableMaintenanceVersions"),
@@ -177,6 +169,14 @@ func Instances() *schema.Table {
 				Resolver: schema.PathResolver("SecondaryGceZone"),
 			},
 			{
+				Name:     "self_link",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SelfLink"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
 				Name:     "server_ca_cert",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("ServerCaCert"),
@@ -201,6 +201,10 @@ func Instances() *schema.Table {
 				Type:     schema.TypeStringArray,
 				Resolver: schema.PathResolver("SuspensionReason"),
 			},
+		},
+
+		Relations: []*schema.Table{
+			Users(),
 		},
 	}
 }

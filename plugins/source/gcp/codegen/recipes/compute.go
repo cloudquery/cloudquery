@@ -6,8 +6,6 @@ import (
 	"strings"
 
 	compute "cloud.google.com/go/compute/apiv1"
-	"github.com/cloudquery/plugin-sdk/codegen"
-	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/iancoleman/strcase"
 	pb "google.golang.org/genproto/googleapis/cloud/compute/v1"
 )
@@ -227,14 +225,8 @@ func init() {
 		}
 		resource.MockImports = []string{"cloud.google.com/go/compute/apiv1"}
 		resource.ProtobufImport = "google.golang.org/genproto/googleapis/cloud/compute/v1"
-		if resource.ExtraColumns == nil {
-			resource.ExtraColumns = []codegen.ColumnDefinition{
-				{
-					Name:    "self_link",
-					Type:    schema.TypeString,
-					Options: schema.ColumnCreationOptions{PrimaryKey: true},
-				},
-			}
+		if resource.PrimaryKeys == nil {
+			resource.PrimaryKeys = []string{"self_link"}
 		}
 	}
 

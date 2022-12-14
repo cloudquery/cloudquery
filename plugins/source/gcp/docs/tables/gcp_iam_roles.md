@@ -14,10 +14,10 @@ The composite primary key for this table is (**project_id**, **name**).
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |project_id (PK)|String|
-|name (PK)|String|
 |deleted|Bool|
 |description|String|
 |etag|String|
 |included_permissions|StringArray|
+|name (PK)|String|
 |stage|String|
 |title|String|

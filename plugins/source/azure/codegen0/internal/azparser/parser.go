@@ -80,7 +80,8 @@ var newFuncToSkipPerPackage = map[string]map[string]bool{
 	},
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage": {
 		// we migrated this to manual written client as it has childs
-		"NewAccountsClient": true,
+		"NewAccountsClient":        true,
+		"NewDeletedAccountsClient": true,
 	},
 }
 

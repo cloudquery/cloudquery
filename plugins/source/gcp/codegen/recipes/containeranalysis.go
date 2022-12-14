@@ -3,25 +3,14 @@ package recipes
 import (
 	containeranalysis "cloud.google.com/go/containeranalysis/apiv1beta1"
 	grafeaspb "cloud.google.com/go/containeranalysis/apiv1beta1/grafeas/grafeaspb"
-	"github.com/cloudquery/plugin-sdk/codegen"
-	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func init(){
+func init() {
 	resources := []*Resource{
 		{
-			SubService: "occurrences",
-			Struct:     &grafeaspb.Occurrence{},
-			SkipFields: []string{"Name"},
-			ExtraColumns: []codegen.ColumnDefinition{
-				ProjectIdColumn,
-				{
-					Name:     "name",
-					Type:     schema.TypeString,
-					Resolver: `schema.PathResolver("Name")`,
-					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-				},
-			},
+			SubService:          "occurrences",
+			Struct:              &grafeaspb.Occurrence{},
+			PrimaryKeys:         []string{"name"},
 			Template:            "newapi_list",
 			ListFunction:        (&containeranalysis.GrafeasV1Beta1Client{}).ListOccurrences,
 			RequestStruct:       &grafeaspb.ListOccurrencesRequest{},

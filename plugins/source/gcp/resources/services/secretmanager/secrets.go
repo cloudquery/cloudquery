@@ -6,7 +6,7 @@ import (
 	"context"
 	"google.golang.org/api/iterator"
 
-	pb "google.golang.org/genproto/googleapis/cloud/secretmanager/v1"
+	pb "cloud.google.com/go/secretmanager/apiv1/secretmanagerpb"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"

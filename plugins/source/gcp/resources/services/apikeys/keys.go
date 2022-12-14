@@ -29,17 +29,17 @@ func Keys() *schema.Table {
 				},
 			},
 			{
+				Name:     "name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Name"),
+			},
+			{
 				Name:     "uid",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Uid"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
-			},
-			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
 			},
 			{
 				Name:     "display_name",

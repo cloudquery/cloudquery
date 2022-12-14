@@ -2,15 +2,11 @@ package recipes
 
 import (
 	monitoring "cloud.google.com/go/monitoring/apiv3/v2"
-	"github.com/cloudquery/plugin-sdk/codegen"
-	"github.com/cloudquery/plugin-sdk/schema"
-	pb "google.golang.org/genproto/googleapis/monitoring/v3"
+	pb "cloud.google.com/go/monitoring/apiv3/v2/monitoringpb"
 )
 
-
-
 func init() {
-	resources :=  []*Resource{
+	resources := []*Resource{
 		{
 			SubService:          "alert_policies",
 			Struct:              &pb.AlertPolicy{},
@@ -20,20 +16,14 @@ func init() {
 			RegisterServer:      pb.RegisterAlertPolicyServiceServer,
 			ListFunction:        (&pb.UnimplementedAlertPolicyServiceServer{}).ListAlertPolicies,
 			UnimplementedServer: &pb.UnimplementedAlertPolicyServiceServer{},
-			ExtraColumns: []codegen.ColumnDefinition{
-				{
-					Name:    "name",
-					Type:    schema.TypeString,
-					Options: schema.ColumnCreationOptions{PrimaryKey: true},
-				},
-			},
+			PrimaryKeys:         []string{"name"},
 		},
 	}
 
 	for _, resource := range resources {
 		resource.Service = "monitoring"
 		resource.MockImports = []string{"cloud.google.com/go/monitoring/apiv3/v2"}
-		resource.ProtobufImport = "google.golang.org/genproto/googleapis/monitoring/v3"
+		resource.ProtobufImport = "cloud.google.com/go/monitoring/apiv3/v2/monitoringpb"
 		resource.Template = "newapi_list"
 		resource.MockTemplate = "newapi_list_grpc_mock"
 		resource.RequestStructFields = `Name: "projects/" + c.ProjectId,`

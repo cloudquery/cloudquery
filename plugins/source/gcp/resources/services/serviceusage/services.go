@@ -6,7 +6,7 @@ import (
 	"context"
 	"google.golang.org/api/iterator"
 
-	pb "google.golang.org/genproto/googleapis/api/serviceusage/v1"
+	pb "cloud.google.com/go/serviceusage/apiv1/serviceusagepb"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
@@ -26,8 +26,9 @@ func Services() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
-				Name: "name",
-				Type: schema.TypeString,
+				Name:     "name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Name"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
@@ -56,6 +57,7 @@ func fetchServices(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	req := &pb.ListServicesRequest{
 		Parent:   "projects/" + c.ProjectId,
 		PageSize: 200,
+		Filter:   "state:ENABLED",
 	}
 	gcpClient, err := serviceusage.NewClient(ctx, c.ClientOptions...)
 	if err != nil {

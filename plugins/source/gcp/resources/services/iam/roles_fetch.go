@@ -17,7 +17,7 @@ func fetchRoles(ctx context.Context, meta schema.ClientMeta, r *schema.Resource,
 		return err
 	}
 	for {
-		output, err := iamClient.Roles.List().PageSize(1000).PageToken(nextPageToken).Do()
+		output, err := iamClient.Projects.Roles.List(c.ProjectId).PageSize(1000).PageToken(nextPageToken).Do()
 		if err != nil {
 			return errors.WithStack(err)
 		}

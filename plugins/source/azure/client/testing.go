@@ -83,7 +83,6 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 		for _, namespace := range allNamespaces {
 			registeredNamespaces[TestSubscription][namespace] = true
 		}
-
 		c := &Client{
 			logger: l,
 			Options: &arm.ClientOptions{

@@ -6,7 +6,7 @@ import (
 	"context"
 	"google.golang.org/api/iterator"
 
-	pb "google.golang.org/genproto/googleapis/monitoring/v3"
+	pb "cloud.google.com/go/monitoring/apiv3/v2/monitoringpb"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
@@ -26,8 +26,9 @@ func AlertPolicies() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
-				Name: "name",
-				Type: schema.TypeString,
+				Name:     "name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Name"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},

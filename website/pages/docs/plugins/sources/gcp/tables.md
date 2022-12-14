@@ -47,5 +47,6 @@
 - [gcp_secretmanager_secrets](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_secretmanager_secrets.md)
 - [gcp_serviceusage_services](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_serviceusage_services.md)
 - [gcp_sql_instances](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_sql_instances.md)
+  - [gcp_sql_users](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_sql_users.md)
 - [gcp_storage_buckets](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_storage_buckets.md)
   - [gcp_storage_bucket_policies](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_storage_bucket_policies.md)

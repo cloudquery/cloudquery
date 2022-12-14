@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v1.1.1...plugins-destination-bigquery-v1.1.2) (2022-12-13)
+
+
+### Bug Fixes
+
+* BigQuery destination: wait for table migrations to complete ([#5544](https://github.com/cloudquery/cloudquery/issues/5544)) ([712ee39](https://github.com/cloudquery/cloudquery/commit/712ee399368a629e0d86809d117e081321567480))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.12.0 ([#5539](https://github.com/cloudquery/cloudquery/issues/5539)) ([fb71293](https://github.com/cloudquery/cloudquery/commit/fb71293d5cfe1b2ef32ba83d604ac3c48e662bce))
+* Fix deadlock in BigQuery destination if error occurs during write ([#5550](https://github.com/cloudquery/cloudquery/issues/5550)) ([e087095](https://github.com/cloudquery/cloudquery/commit/e087095f3f4c32401ca4b7d18e8599b6f589924f))
+
 ## [1.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v1.1.0...plugins-destination-bigquery-v1.1.1) (2022-12-09)
 
 

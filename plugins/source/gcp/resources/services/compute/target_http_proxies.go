@@ -26,13 +26,6 @@ func TargetHttpProxies() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
-				Name: "self_link",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
 				Name:     "creation_timestamp",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("CreationTimestamp"),
@@ -71,6 +64,14 @@ func TargetHttpProxies() *schema.Table {
 				Name:     "region",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Region"),
+			},
+			{
+				Name:     "self_link",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SelfLink"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "url_map",

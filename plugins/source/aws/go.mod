@@ -14,13 +14,13 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.12.24
 	github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.15.24
 	github.com/aws/aws-sdk-go-v2/service/apprunner v1.15.1
-	github.com/aws/aws-sdk-go-v2/service/appstream v1.18.1
+	github.com/aws/aws-sdk-go-v2/service/appstream v1.18.2
 	github.com/aws/aws-sdk-go-v2/service/appsync v1.17.0
 	github.com/aws/aws-sdk-go-v2/service/autoscaling v1.25.0
 	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.24.2
 	github.com/aws/aws-sdk-go-v2/service/cloudfront v1.22.0
 	github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.13.22
-	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.20.4
+	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.21.0
 	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.22.1
 	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.17.2
 	github.com/aws/aws-sdk-go-v2/service/codebuild v1.19.20
@@ -33,7 +33,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/directconnect v1.17.24
 	github.com/aws/aws-sdk-go-v2/service/docdb v1.19.17
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.17.8
-	github.com/aws/aws-sdk-go-v2/service/ec2 v1.75.0
+	github.com/aws/aws-sdk-go-v2/service/ec2 v1.76.0
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.17.24
 	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.13.21
 	github.com/aws/aws-sdk-go-v2/service/ecs v1.20.1
@@ -50,7 +50,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/frauddetector v1.20.13
 	github.com/aws/aws-sdk-go-v2/service/fsx v1.26.1
 	github.com/aws/aws-sdk-go-v2/service/glacier v1.13.20
-	github.com/aws/aws-sdk-go-v2/service/guardduty v1.16.3
+	github.com/aws/aws-sdk-go-v2/service/guardduty v1.16.4
 	github.com/aws/aws-sdk-go-v2/service/iam v1.18.24
 	github.com/aws/aws-sdk-go-v2/service/identitystore v1.15.8
 	github.com/aws/aws-sdk-go-v2/service/inspector v1.12.20
@@ -61,14 +61,14 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/kms v1.19.2
 	github.com/aws/aws-sdk-go-v2/service/lambda v1.26.1
 	github.com/aws/aws-sdk-go-v2/service/lightsail v1.24.1
-	github.com/aws/aws-sdk-go-v2/service/mq v1.13.16
+	github.com/aws/aws-sdk-go-v2/service/mq v1.13.17
 	github.com/aws/aws-sdk-go-v2/service/mwaa v1.13.13
 	github.com/aws/aws-sdk-go-v2/service/neptune v1.18.4
 	github.com/aws/aws-sdk-go-v2/service/organizations v1.17.1
 	github.com/aws/aws-sdk-go-v2/service/qldb v1.14.21
 	github.com/aws/aws-sdk-go-v2/service/quicksight v1.28.1
 	github.com/aws/aws-sdk-go-v2/service/ram v1.16.25
-	github.com/aws/aws-sdk-go-v2/service/rds v1.33.0
+	github.com/aws/aws-sdk-go-v2/service/rds v1.35.0
 	github.com/aws/aws-sdk-go-v2/service/redshift v1.26.17
 	github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.12.22
 	github.com/aws/aws-sdk-go-v2/service/route53 v1.25.1
@@ -90,12 +90,12 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sts v1.17.6
 	github.com/aws/aws-sdk-go-v2/service/timestreamwrite v1.14.7
 	github.com/aws/aws-sdk-go-v2/service/waf v1.11.20
-	github.com/aws/aws-sdk-go-v2/service/wafv2 v1.23.2
+	github.com/aws/aws-sdk-go-v2/service/wafv2 v1.23.3
 	github.com/aws/aws-sdk-go-v2/service/workspaces v1.27.1
 	github.com/aws/aws-sdk-go-v2/service/xray v1.15.2
 	github.com/aws/smithy-go v1.13.5
 	github.com/basgys/goxml2json v1.1.0
-	github.com/cloudquery/plugin-sdk v1.12.0
+	github.com/cloudquery/plugin-sdk v1.12.2
 	github.com/gocarina/gocsv v0.0.0-20221105105431-c8ef78125b99
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.9

@@ -26,13 +26,6 @@ func Autoscalers() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
-				Name: "self_link",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
 				Name:     "autoscaling_policy",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("AutoscalingPolicy"),
@@ -76,6 +69,14 @@ func Autoscalers() *schema.Table {
 				Name:     "scaling_schedule_status",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("ScalingScheduleStatus"),
+			},
+			{
+				Name:     "self_link",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SelfLink"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "status",
