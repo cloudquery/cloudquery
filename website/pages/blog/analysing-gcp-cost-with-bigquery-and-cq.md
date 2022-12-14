@@ -16,7 +16,7 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 Last week we just announced our [BigQuery destination](/blog/announcing-cloudquery-bigquery-destination) and already saw some interesting use-cases around cost we wanted to share!
 
-Exporting [GCP billing data to BigQuery](https://cloud.google.com/billing/docs/how-to/export-data-bigquery) is a powerful way to analyse your GCP cost. However, sometimes it is not enough to just have the billing data in BigQuery. You also need to correlate it with your cloud infrastructure data. This tutorial will show how to correlate between GCP billing data and CloudQuery data with BigQuery to optimise cost.
+Exporting [GCP billing data to BigQuery](https://cloud.google.com/billing/docs/how-to/export-data-bigquery) is a powerful way to analyse your GCP cost. However, sometimes it is not enough to have the billing data in BigQuery. You also need to correlate it with your cloud infrastructure data. This tutorial will show how to correlate between GCP billing data and CloudQuery data with BigQuery to optimize cost.
 
 ## Prerequisites
 
