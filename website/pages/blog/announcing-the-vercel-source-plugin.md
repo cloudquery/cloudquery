@@ -13,9 +13,9 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 <BlogHeader/>
 
-CloudQuery is an open-source, extendable framework that gives you a single-pane-of-glass to your cloud-infrastructure using SQL. Today, we are happy to announce the release of the Gandi source plugin for CloudQuery.
+CloudQuery is an open-source, extendable framework that gives you a single-pane-of-glass to your cloud-infrastructure. Today, we are happy to announce the release of the Vercel source plugin for CloudQuery.
 
-Vercel is the platform for frontend developers, providing the speed and reliability innovators need to create at the moment of inspiration.
+If you're not familiar with the Vercel platform, we recommend you visit their [homepage](https://vercel.com/).
 
 CloudQuery now supports pulling resources from [Vercel](https://vercel.com/) using Vercel's API.
 
@@ -41,7 +41,8 @@ This query would output a table of domain names that are going to expire within 
 (2 rows)
 ```
 
-You can now put this in a dashboard or set up an alert on it.
+Vercel also provides an [auto-renewal facility](https://vercel.com/docs/concepts/projects/domains/renew-a-domain) which will automatically renew your domain registration when it's about to expire.
+
 
 ## Get all Vercel team members
 
