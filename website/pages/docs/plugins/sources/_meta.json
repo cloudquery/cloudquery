@@ -11,5 +11,6 @@
   "heroku": "Heroku",
   "k8s": "Kubernetes",
   "okta": "Okta",
-  "terraform": "Terraform"
+  "terraform": "Terraform",
+  "vercel": "Vercel",
 }
