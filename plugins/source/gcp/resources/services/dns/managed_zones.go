@@ -9,9 +9,10 @@ import (
 
 func ManagedZones() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_dns_managed_zones",
-		Resolver:  fetchManagedZones,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_dns_managed_zones",
+		Description: `https://cloud.google.com/dns/docs/reference/v1/managedZones#resource`,
+		Resolver:    fetchManagedZones,
+		Multiplex:   client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

@@ -17,6 +17,7 @@ func init() {
 			UnimplementedServer: &pb.UnimplementedCloudRedisServer{},
 			ListFunction:        (&pb.UnimplementedCloudRedisServer{}).ListInstances,
 			PrimaryKeys:         []string{"name"},
+			Description:         "https://cloud.google.com/memorystore/docs/redis/reference/rest/v1/projects.locations.instances#Instance",
 		},
 	}
 

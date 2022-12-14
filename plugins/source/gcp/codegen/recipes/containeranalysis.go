@@ -16,6 +16,7 @@ func init() {
 			RequestStruct:       &grafeaspb.ListOccurrencesRequest{},
 			ResponseStruct:      &grafeaspb.ListOccurrencesResponse{},
 			RequestStructFields: `Parent: "projects/" + c.ProjectId,`,
+			Description:         "https://cloud.google.com/container-analysis/docs/reference/rest/v1beta1/projects.occurrences#Occurrence",
 		},
 	}
 

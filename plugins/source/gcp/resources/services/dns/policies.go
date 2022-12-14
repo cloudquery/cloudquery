@@ -9,9 +9,10 @@ import (
 
 func Policies() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_dns_policies",
-		Resolver:  fetchPolicies,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_dns_policies",
+		Description: `https://cloud.google.com/dns/docs/reference/v1/policies#resource`,
+		Resolver:    fetchPolicies,
+		Multiplex:   client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

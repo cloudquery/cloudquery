@@ -16,9 +16,10 @@ import (
 
 func Functions() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_functions_functions",
-		Resolver:  fetchFunctions,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_functions_functions",
+		Description: `https://cloud.google.com/functions/docs/reference/rest/v1/projects.locations.functions#CloudFunction`,
+		Resolver:    fetchFunctions,
+		Multiplex:   client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

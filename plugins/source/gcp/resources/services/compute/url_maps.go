@@ -16,9 +16,10 @@ import (
 
 func UrlMaps() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_compute_url_maps",
-		Resolver:  fetchUrlMaps,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_compute_url_maps",
+		Description: `https://cloud.google.com/compute/docs/reference/rest/v1/urlMaps#UrlMap`,
+		Resolver:    fetchUrlMaps,
+		Multiplex:   client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

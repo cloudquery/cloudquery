@@ -1,6 +1,6 @@
 # Table: gcp_compute_disk_types
 
-
+https://cloud.google.com/compute/docs/reference/rest/v1/diskTypes#DiskType
 
 The primary key for this table is **self_link**.
 

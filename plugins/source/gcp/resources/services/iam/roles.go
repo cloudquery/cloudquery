@@ -9,9 +9,10 @@ import (
 
 func Roles() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_iam_roles",
-		Resolver:  fetchRoles,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_iam_roles",
+		Description: `https://cloud.google.com/iam/docs/reference/rest/v1/roles#Role`,
+		Resolver:    fetchRoles,
+		Multiplex:   client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

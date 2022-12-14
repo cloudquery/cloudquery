@@ -1,6 +1,6 @@
 # Table: gcp_resourcemanager_projects
 
-
+https://cloud.google.com/resource-manager/reference/rest/v3/projects#Project
 
 The primary key for this table is **_cq_id**.
 

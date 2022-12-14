@@ -5,7 +5,6 @@ import (
 	pb "cloud.google.com/go/domains/apiv1beta1/domainspb"
 )
 
-
 func init() {
 	resources := []*Resource{
 		{
@@ -19,6 +18,7 @@ func init() {
 			UnimplementedServer: &pb.UnimplementedDomainsServer{},
 			RequestStructFields: `Parent: fmt.Sprintf("projects/%s/locations/-", c.ProjectId),`,
 			Imports:             []string{"fmt"},
+			Description:         "https://cloud.google.com/domains/docs/reference/rest/v1beta1/projects.locations.registrations#Registration",
 		},
 	}
 

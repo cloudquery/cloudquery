@@ -16,9 +16,10 @@ import (
 
 func Services() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_billing_services",
-		Resolver:  fetchServices,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_billing_services",
+		Description: `https://cloud.google.com/billing/docs/reference/rest/v1/services/list#Service`,
+		Resolver:    fetchServices,
+		Multiplex:   client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

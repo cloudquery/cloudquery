@@ -13,6 +13,7 @@ func init() {
 			NewFunction:  dns.NewService,
 			ListFunction: (&dns.PoliciesService{}).List,
 			PrimaryKeys:  []string{"id"},
+			Description:  "https://cloud.google.com/dns/docs/reference/v1/policies#resource",
 		},
 		{
 			SubService:   "managed_zones",
@@ -20,6 +21,7 @@ func init() {
 			NewFunction:  dns.NewManagedZoneOperationsService,
 			ListFunction: (&dns.ManagedZonesService{}).List,
 			PrimaryKeys:  []string{"id"},
+			Description:  "https://cloud.google.com/dns/docs/reference/v1/managedZones#resource",
 		},
 	}
 
