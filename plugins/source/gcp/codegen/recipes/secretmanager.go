@@ -3,11 +3,7 @@ package recipes
 import (
 	secretmanager "cloud.google.com/go/secretmanager/apiv1"
 	pb "cloud.google.com/go/secretmanager/apiv1/secretmanagerpb"
-	"github.com/cloudquery/plugin-sdk/codegen"
-	"github.com/cloudquery/plugin-sdk/schema"
 )
-
-
 
 func init() {
 	resources := []*Resource{
@@ -20,15 +16,8 @@ func init() {
 			RegisterServer:      pb.RegisterSecretManagerServiceServer,
 			ListFunction:        (&pb.UnimplementedSecretManagerServiceServer{}).ListSecrets,
 			UnimplementedServer: &pb.UnimplementedSecretManagerServiceServer{},
-			ExtraColumns: []codegen.ColumnDefinition{
-				{
-					Name:     "name",
-					Type:     schema.TypeString,
-					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					Resolver: `schema.PathResolver("Name")`,
-				},
-			},
-			SkipFields: []string{"Expiration"},
+			PrimaryKeys:         []string{"name"},
+			SkipFields:          []string{"Expiration"},
 		},
 	}
 

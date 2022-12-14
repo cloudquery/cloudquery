@@ -22,13 +22,6 @@ func Roles() *schema.Table {
 				},
 			},
 			{
-				Name: "name",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
 				Name:     "deleted",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("Deleted"),
@@ -47,6 +40,14 @@ func Roles() *schema.Table {
 				Name:     "included_permissions",
 				Type:     schema.TypeStringArray,
 				Resolver: schema.PathResolver("IncludedPermissions"),
+			},
+			{
+				Name:     "name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Name"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "stage",

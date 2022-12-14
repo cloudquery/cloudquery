@@ -3,8 +3,6 @@ package recipes
 import (
 	redis "cloud.google.com/go/redis/apiv1"
 	pb "cloud.google.com/go/redis/apiv1/redispb"
-	"github.com/cloudquery/plugin-sdk/codegen"
-	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func init() {
@@ -18,14 +16,7 @@ func init() {
 			RegisterServer:      pb.RegisterCloudRedisServer,
 			UnimplementedServer: &pb.UnimplementedCloudRedisServer{},
 			ListFunction:        (&pb.UnimplementedCloudRedisServer{}).ListInstances,
-			ExtraColumns: []codegen.ColumnDefinition{
-				{
-					Name:     "name",
-					Type:     schema.TypeString,
-					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					Resolver: `schema.PathResolver("Name")`,
-				},
-			},
+			PrimaryKeys:         []string{"name"},
 		},
 	}
 

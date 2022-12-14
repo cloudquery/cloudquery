@@ -17,7 +17,6 @@ func init() {
 			ChildTable: true,
 			SkipMock:   true,
 			SkipFetch:  true,
-			SkipFields: []string{"RotationSchedule"},
 			ExtraColumns: codegen.ColumnDefinitions{
 				{
 					Name:     "rotation_period",

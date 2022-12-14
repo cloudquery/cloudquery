@@ -3,11 +3,7 @@ package recipes
 import (
 	billing "cloud.google.com/go/billing/apiv1"
 	pb "cloud.google.com/go/billing/apiv1/billingpb"
-	"github.com/cloudquery/plugin-sdk/codegen"
-	"github.com/cloudquery/plugin-sdk/schema"
 )
-
-
 
 func init() {
 	resources := []*Resource{
@@ -20,13 +16,7 @@ func init() {
 			ListFunction:        (&billing.CloudBillingClient{}).ListBillingAccounts,
 			RegisterServer:      pb.RegisterCloudBillingServer,
 			UnimplementedServer: &pb.UnimplementedCloudBillingServer{},
-			ExtraColumns: []codegen.ColumnDefinition{
-				{
-					Name:    "name",
-					Type:    schema.TypeString,
-					Options: schema.ColumnCreationOptions{PrimaryKey: true},
-				},
-			},
+			PrimaryKeys:         []string{"name"},
 		},
 		{
 			SubService:          "services",
@@ -37,13 +27,7 @@ func init() {
 			ListFunction:        (&billing.CloudCatalogClient{}).ListServices,
 			RegisterServer:      pb.RegisterCloudCatalogServer,
 			UnimplementedServer: &pb.UnimplementedCloudCatalogServer{},
-			ExtraColumns: []codegen.ColumnDefinition{
-				{
-					Name:    "name",
-					Type:    schema.TypeString,
-					Options: schema.ColumnCreationOptions{PrimaryKey: true},
-				},
-			},
+			PrimaryKeys:         []string{"name"},
 		},
 	}
 

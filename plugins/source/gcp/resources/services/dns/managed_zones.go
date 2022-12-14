@@ -19,14 +19,6 @@ func ManagedZones() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
-				Name:     "id",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("Id"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
 				Name:     "cloud_logging_config",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("CloudLoggingConfig"),
@@ -55,6 +47,14 @@ func ManagedZones() *schema.Table {
 				Name:     "forwarding_config",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("ForwardingConfig"),
+			},
+			{
+				Name:     "id",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("Id"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "kind",

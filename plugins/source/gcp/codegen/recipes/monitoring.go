@@ -3,14 +3,10 @@ package recipes
 import (
 	monitoring "cloud.google.com/go/monitoring/apiv3/v2"
 	pb "cloud.google.com/go/monitoring/apiv3/v2/monitoringpb"
-	"github.com/cloudquery/plugin-sdk/codegen"
-	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
-
 func init() {
-	resources :=  []*Resource{
+	resources := []*Resource{
 		{
 			SubService:          "alert_policies",
 			Struct:              &pb.AlertPolicy{},
@@ -20,13 +16,7 @@ func init() {
 			RegisterServer:      pb.RegisterAlertPolicyServiceServer,
 			ListFunction:        (&pb.UnimplementedAlertPolicyServiceServer{}).ListAlertPolicies,
 			UnimplementedServer: &pb.UnimplementedAlertPolicyServiceServer{},
-			ExtraColumns: []codegen.ColumnDefinition{
-				{
-					Name:    "name",
-					Type:    schema.TypeString,
-					Options: schema.ColumnCreationOptions{PrimaryKey: true},
-				},
-			},
+			PrimaryKeys:         []string{"name"},
 		},
 	}
 
