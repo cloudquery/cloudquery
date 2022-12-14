@@ -16,9 +16,10 @@ import (
 
 func VpnGateways() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_compute_vpn_gateways",
-		Resolver:  fetchVpnGateways,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_compute_vpn_gateways",
+		Description: `https://cloud.google.com/compute/docs/reference/rest/v1/vpnGateways#VpnGateway`,
+		Resolver:    fetchVpnGateways,
+		Multiplex:   client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

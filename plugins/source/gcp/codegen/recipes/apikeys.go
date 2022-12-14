@@ -15,6 +15,7 @@ func init() {
 			RequestStruct:       &pb.ListKeysRequest{},
 			ResponseStruct:      &pb.ListKeysResponse{},
 			RequestStructFields: `Parent: "projects/" + c.ProjectId + "/locations/global",`,
+			Description:         "https://cloud.google.com/api-keys/docs/reference/rest/v2/projects.locations.keys#Key",
 		},
 	}
 

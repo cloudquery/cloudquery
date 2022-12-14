@@ -9,9 +9,10 @@ import (
 
 func Folders() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_resourcemanager_folders",
-		Resolver:  fetchFolders,
-		Multiplex: client.OrgMultiplex,
+		Name:        "gcp_resourcemanager_folders",
+		Description: `https://cloud.google.com/resource-manager/reference/rest/v3/folders#Folder`,
+		Resolver:    fetchFolders,
+		Multiplex:   client.OrgMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "organization_id",

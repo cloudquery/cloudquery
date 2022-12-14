@@ -1,6 +1,8 @@
 export const getLatestVersion = (type, name) => {
-  const {
-    latest: version,
-  } = require(`../versions/${type}-${name}.json`);
-  return version.split("-")[3];
+  try {
+    const { latest: version } = require(`../versions/${type}-${name}.json`);
+    return version.split("-")[3];
+  } catch (e) {
+    return "Unpublished";
+  }
 };

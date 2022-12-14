@@ -1,6 +1,6 @@
 # Table: gcp_compute_autoscalers
 
-
+https://cloud.google.com/compute/docs/reference/rest/v1/autoscalers#Autoscaler
 
 The primary key for this table is **self_link**.
 

@@ -1,6 +1,6 @@
 # Table: gcp_compute_ssl_certificates
 
-
+https://cloud.google.com/compute/docs/reference/rest/v1/sslCertificates#SslCertificate
 
 The primary key for this table is **self_link**.
 

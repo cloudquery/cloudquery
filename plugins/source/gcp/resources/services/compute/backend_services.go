@@ -16,9 +16,10 @@ import (
 
 func BackendServices() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_compute_backend_services",
-		Resolver:  fetchBackendServices,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_compute_backend_services",
+		Description: `https://cloud.google.com/compute/docs/reference/rest/v1/backendServices#BackendService`,
+		Resolver:    fetchBackendServices,
+		Multiplex:   client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
