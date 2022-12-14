@@ -84,8 +84,8 @@ github.com/aws/aws-sdk-go-v2/service/cloudfront v1.22.0 h1:8jxLM+HU1qJ85Ir+awmHb
 github.com/aws/aws-sdk-go-v2/service/cloudfront v1.22.0/go.mod h1:P1i7h3JQxZnwVevXDQXtxfaWKA9z1BCV6vegzZcMcmE=
 github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.13.22 h1:EroOv7kgbckBGvLE4JPAEXNqswgjGhxEB6WFhnY06pA=
 github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.13.22/go.mod h1:0kgcY0oKtp92tUL+ggHZMMWmXisMIO5qwQNQ12qzHuI=
-github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.20.4 h1:oSnjrEeZ2fnvTERLBsW4MoVmx6pa7s11npKh7k9nIyo=
-github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.20.4/go.mod h1:yyEuVBXpQE/3dSFCq4Cg1Ltf04pQXnqbOrVc4gxdFKQ=
+github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.21.0 h1:tcTwzjQTo2i9+4TkiDwnDuL0iGsx4b/xJ4OBPIUC5TU=
+github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.21.0/go.mod h1:yyEuVBXpQE/3dSFCq4Cg1Ltf04pQXnqbOrVc4gxdFKQ=
 github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.22.1 h1:X5wW/v/Lk++7ZKIee9wCs1uT4ENIJyuancNe5hHY7rg=
 github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.22.1/go.mod h1:HL0nIKWDYBdEhBDS4bldwL3NWi2++f8l1n+mQnTrr9Q=
 github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.17.2 h1:el1mwupyl89Do5sHfVt7KErp9eiMF6XT7LHDqF53GZQ=
@@ -146,8 +146,8 @@ github.com/aws/aws-sdk-go-v2/service/glacier v1.13.20 h1:eJo7jUe/93VOZGNVwNivniw
 github.com/aws/aws-sdk-go-v2/service/glacier v1.13.20/go.mod h1:23vmB9WUQxz2t/4HaFlxBXRLq5YXCjfrYcRQrMxaF2I=
 github.com/aws/aws-sdk-go-v2/service/glue v1.37.1 h1:Rfs7ZYn9tl/97miu3igPqil+NixAVxXt6JsVQvJPInU=
 github.com/aws/aws-sdk-go-v2/service/glue v1.37.1/go.mod h1:1Nfauq/Z/FS2ptg2rHjDQHkPt1AoflguRQ9AoBumYr0=
-github.com/aws/aws-sdk-go-v2/service/guardduty v1.16.3 h1:txuJhrHoyEb0VC9O8z+ZOo/ITCDMXU641MVQvSB2hso=
-github.com/aws/aws-sdk-go-v2/service/guardduty v1.16.3/go.mod h1:OsoFNbV+qgyhNknBfwuOfdyJkjIZl0oTtqjmfSmb9Qw=
+github.com/aws/aws-sdk-go-v2/service/guardduty v1.16.4 h1:M82gFClPa9d/QDJmRyZRrydlsczJOlwrXYgESOoU3vE=
+github.com/aws/aws-sdk-go-v2/service/guardduty v1.16.4/go.mod h1:OsoFNbV+qgyhNknBfwuOfdyJkjIZl0oTtqjmfSmb9Qw=
 github.com/aws/aws-sdk-go-v2/service/iam v1.18.24 h1:BFn0cIQxNzbOLGU62Wa3R93vZWLgpPveviRvy/dOFtE=
 github.com/aws/aws-sdk-go-v2/service/iam v1.18.24/go.mod h1:zLk41FZN1dZaTK6b0fSEbL4aO/Lvf1ihBXoT+BupDeA=
 github.com/aws/aws-sdk-go-v2/service/identitystore v1.15.8 h1:HCU6HS1/EjV5/YxvJn/R8YThc9Gsuqwav1XgFIn1rOk=
