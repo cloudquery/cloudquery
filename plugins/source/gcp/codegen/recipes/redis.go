@@ -2,9 +2,9 @@ package recipes
 
 import (
 	redis "cloud.google.com/go/redis/apiv1"
+	pb "cloud.google.com/go/redis/apiv1/redispb"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
-	pb "google.golang.org/genproto/googleapis/cloud/redis/v1"
 )
 
 func init() {
@@ -32,7 +32,7 @@ func init() {
 	for _, resource := range resources {
 		resource.Service = "redis"
 		resource.MockImports = []string{"cloud.google.com/go/redis/apiv1"}
-		resource.ProtobufImport = "google.golang.org/genproto/googleapis/cloud/redis/v1"
+		resource.ProtobufImport = "cloud.google.com/go/redis/apiv1/redispb"
 		resource.Template = "newapi_list"
 		resource.MockTemplate = "newapi_list_grpc_mock"
 		resource.RequestStructFields = `Parent: "projects/" + c.ProjectId + "/locations/-",`

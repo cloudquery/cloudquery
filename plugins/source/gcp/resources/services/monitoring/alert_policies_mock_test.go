@@ -10,7 +10,7 @@ import (
 	"google.golang.org/grpc"
 	"testing"
 
-	pb "google.golang.org/genproto/googleapis/monitoring/v3"
+	pb "cloud.google.com/go/monitoring/apiv3/v2/monitoringpb"
 )
 
 func createAlertPolicies(gsrv *grpc.Server) error {
