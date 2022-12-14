@@ -52,7 +52,7 @@ You can now put this in a dashboard or set up an alert on it.
 ## Make sure all your devices have enabled key expiry
 
 To secure your infrastructure it's a good idea to make device keys expire.
-Here's a query tp check for devices that have disabled key expiry.
+Here's a query to check for devices that have disabled key expiry.
 
 ```sql
 select dev.id, dev.user
