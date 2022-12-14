@@ -9,9 +9,10 @@ import (
 
 func Users() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_sql_users",
-		Resolver:  fetchUsers,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_sql_users",
+		Description: `https://cloud.google.com/sql/docs/mysql/admin-api/rest/v1beta4/users#User`,
+		Resolver:    fetchUsers,
+		Multiplex:   client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

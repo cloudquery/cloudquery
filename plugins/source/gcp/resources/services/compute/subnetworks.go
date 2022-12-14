@@ -16,9 +16,10 @@ import (
 
 func Subnetworks() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_compute_subnetworks",
-		Resolver:  fetchSubnetworks,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_compute_subnetworks",
+		Description: `https://cloud.google.com/compute/docs/reference/rest/v1/subnetworks#Subnetwork`,
+		Resolver:    fetchSubnetworks,
+		Multiplex:   client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

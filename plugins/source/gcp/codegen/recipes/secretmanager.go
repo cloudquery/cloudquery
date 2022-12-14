@@ -18,6 +18,7 @@ func init() {
 			UnimplementedServer: &pb.UnimplementedSecretManagerServiceServer{},
 			PrimaryKeys:         []string{"name"},
 			SkipFields:          []string{"Expiration"},
+			Description:         "https://cloud.google.com/secret-manager/docs/reference/rest/v1/projects.secrets#Secret",
 		},
 	}
 

@@ -13,6 +13,7 @@ func init() {
 			SkipMock:        true,
 			PrimaryKeys:     []string{"self_link"},
 			NameTransformer: CreateReplaceTransformer(map[string]string{"ipv_4": "ipv4"}),
+			Description:     "https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.locations.clusters#Cluster",
 		},
 	}
 

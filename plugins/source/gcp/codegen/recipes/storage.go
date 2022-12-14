@@ -17,6 +17,7 @@ func init() {
 			NameTransformer: CreateReplaceTransformer(map[string]string{"c_o_r_s": "cors", "r_p_o": "rpo"}),
 			PrimaryKeys:     []string{"name"},
 			Relations:       []string{"BucketPolicies()"},
+			Description:     "https://cloud.google.com/storage/docs/json_api/v1/buckets#resource",
 		},
 		{
 			SubService: "bucket_policies",
@@ -32,6 +33,7 @@ func init() {
 					Resolver: `schema.ParentColumnResolver("name")`,
 				},
 			},
+			Description: "https://cloud.google.com/iam/docs/reference/rest/v1/Policy",
 		},
 	}
 
