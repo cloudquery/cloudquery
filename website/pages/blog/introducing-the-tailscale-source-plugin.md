@@ -13,11 +13,10 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 <BlogHeader/>
 
-CloudQuery is an open-source, extendable framework that gives you a single-pane-of-glass to your cloud-infrastructure using SQL. Today, we are happy to announce the release of the Tailscale source plugin for CloudQuery.
+CloudQuery is an open-source, extendable framework that gives you a single-pane-of-glass to your cloud-infrastructure using SQL.
+Today, we are happy to announce the release of the Tailscale source plugin for CloudQuery.
 
-Tailscale is a company that provides open-source software defined mesh virtual private network (VPN) software and a web-based management service.
-Tailscale also provides a zero config mesh VPN service under the same name.
-
+[Tailscale](https://tailscale.com/) is a company that provides open-source software defined mesh virtual private network (VPN) software and a web-based management service.
 
 CloudQuery now supports pulling ACL, Device and DNS resources from [Tailscale](https://tailscale.com/) using Tailscale API.
 
