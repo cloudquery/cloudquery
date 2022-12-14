@@ -5,6 +5,18 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v5.0.0...plugins-source-gcp-v5.1.0) (2022-12-14)
+
+
+### Features
+
+* **gcp:** Add descriptions to tables (link to rest API) ([#5644](https://github.com/cloudquery/cloudquery/issues/5644)) ([8f3bb23](https://github.com/cloudquery/cloudquery/commit/8f3bb2325592a0bba5956da5e9f4d0c708ae5adc))
+
+
+### Bug Fixes
+
+* **gcp-resources:** Set primary keys for `gcp_resourcemanager_projects` ([#5636](https://github.com/cloudquery/cloudquery/issues/5636)) ([b8467d0](https://github.com/cloudquery/cloudquery/commit/b8467d0122f0a664237fdf5bd4eb92aadb1490e1))
+
 ## [5.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v4.0.0...plugins-source-gcp-v5.0.0) (2022-12-14)
 
 
