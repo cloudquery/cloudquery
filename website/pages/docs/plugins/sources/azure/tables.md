@@ -52,6 +52,7 @@
 - [azure_compute_snapshots](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_compute_snapshots.md)
 - [azure_compute_virtual_machine_scale_sets](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_compute_virtual_machine_scale_sets.md)
 - [azure_compute_virtual_machines](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_compute_virtual_machines.md)
+- [azure_compute_skus](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_compute_skus.md)
 - [azure_confluent_marketplace_agreements](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_confluent_marketplace_agreements.md)
 - [azure_connectedvmware_clusters](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_connectedvmware_clusters.md)
 - [azure_connectedvmware_datastores](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_connectedvmware_datastores.md)
