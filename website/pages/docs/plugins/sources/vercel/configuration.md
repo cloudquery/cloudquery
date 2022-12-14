@@ -4,7 +4,7 @@
 
 This example syncs from Vercel to a Postgres destination, using API Key authentication. The (top level) source spec section is described in the [Source Spec Reference](https://www.cloudquery.io/docs/reference/source-spec).
 
-```yml
+```yaml
 kind: source
 # Common source-plugin configuration
 spec:
