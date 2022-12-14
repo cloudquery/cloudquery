@@ -19,7 +19,7 @@ In order to fetch information from Vercel, `cloudquery` needs to be authenticate
 select name, expires_at, date_trunc('day', expires_at - current_timestamp) as days_left from vercel_domains where (expires_at - interval '90 day') < current_timestamp order by 1;
 ```
 
-### Get all nameservers in Vercel domains
+### Get all name servers in Vercel domains
 
 ```sql
 select name, intended_nameservers, custom_nameservers, nameservers from vercel_domains order by 1;
