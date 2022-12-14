@@ -68,7 +68,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/qldb v1.14.21
 	github.com/aws/aws-sdk-go-v2/service/quicksight v1.28.1
 	github.com/aws/aws-sdk-go-v2/service/ram v1.16.25
-	github.com/aws/aws-sdk-go-v2/service/rds v1.34.0
+	github.com/aws/aws-sdk-go-v2/service/rds v1.35.0
 	github.com/aws/aws-sdk-go-v2/service/redshift v1.26.17
 	github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.12.22
 	github.com/aws/aws-sdk-go-v2/service/route53 v1.25.1
