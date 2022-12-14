@@ -47,7 +47,7 @@ spec:
   version: "VERSION_DESTINATION_BIGQUERY"
   write_mode: "append"
   spec:
-    project_id: cq-playground
+    project_id: "<project-id>"
     dataset_id: costdata
 ```
 
