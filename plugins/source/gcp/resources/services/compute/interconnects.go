@@ -26,13 +26,6 @@ func Interconnects() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
-				Name: "self_link",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
 				Name:     "admin_enabled",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("AdminEnabled"),
@@ -136,6 +129,14 @@ func Interconnects() *schema.Table {
 				Name:     "satisfies_pzs",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("SatisfiesPzs"),
+			},
+			{
+				Name:     "self_link",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SelfLink"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "state",

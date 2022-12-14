@@ -7,43 +7,24 @@ import (
 	"google.golang.org/api/iam/v1"
 )
 
-
-
 func init() {
 	resources := []*Resource{
 		{
-			SubService: "roles",
-			Struct:     &iam.Role{},
-			ExtraColumns: []codegen.ColumnDefinition{
-				{
-					Name:     "project_id",
-					Type:     schema.TypeString,
-					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					Resolver: "client.ResolveProject",
-				},
-				{
-					Name:    "name",
-					Type:    schema.TypeString,
-					Options: schema.ColumnCreationOptions{PrimaryKey: true},
-				},
-			},
+			SubService:  "roles",
+			Struct:      &iam.Role{},
+			PrimaryKeys: []string{ProjectIdColumn.Name, "name"},
+			Description: "https://cloud.google.com/iam/docs/reference/rest/v1/roles#Role",
 		},
 		{
-			SubService:  "service_accounts",
-			Struct:      &iam.ServiceAccount{},
-			OutputField: "Accounts",
-			ExtraColumns: []codegen.ColumnDefinition{
-				{
-					Name:     "unique_id",
-					Type:     schema.TypeString,
-					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					Resolver: `schema.PathResolver("UniqueId")`,
-				},
-			},
+			SubService:      "service_accounts",
+			Struct:          &iam.ServiceAccount{},
+			OutputField:     "Accounts",
+			PrimaryKeys:     []string{"unique_id"},
 			SkipFields:      []string{"ProjectId"},
 			NameTransformer: CreateReplaceTransformer(map[string]string{"oauth_2": "oauth2"}),
 			Relations:       []string{"ServiceAccountKeys()"},
 			SkipMock:        true,
+			Description:     "https://cloud.google.com/iam/docs/reference/rest/v1/projects.serviceAccounts#ServiceAccount",
 		},
 		{
 			SubService:  "service_account_keys",
@@ -58,8 +39,9 @@ func init() {
 					Resolver: `schema.ParentColumnResolver("unique_id")`,
 				},
 			},
-			SkipFields: []string{"ProjectId", "PrivateKeyData", "PrivateKeyType"},
-			SkipMock:   true,
+			SkipFields:  []string{"ProjectId", "PrivateKeyData", "PrivateKeyType"},
+			SkipMock:    true,
+			Description: "https://cloud.google.com/iam/docs/reference/rest/v1/projects.serviceAccounts.keys#ServiceAccountKey",
 		},
 	}
 

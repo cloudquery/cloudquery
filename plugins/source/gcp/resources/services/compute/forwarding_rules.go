@@ -16,21 +16,15 @@ import (
 
 func ForwardingRules() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_compute_forwarding_rules",
-		Resolver:  fetchForwardingRules,
-		Multiplex: client.ProjectMultiplex("compute.googleapis.com"),
+		Name:        "gcp_compute_forwarding_rules",
+		Description: `https://cloud.google.com/compute/docs/reference/rest/v1/forwardingRules#ForwardingRule`,
+		Resolver:    fetchForwardingRules,
+		Multiplex:   client.ProjectMultiplex("compute.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
-			},
-			{
-				Name: "self_link",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
 				Name:     "ip_address",
@@ -156,6 +150,14 @@ func ForwardingRules() *schema.Table {
 				Name:     "region",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Region"),
+			},
+			{
+				Name:     "self_link",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SelfLink"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "service_directory_registrations",

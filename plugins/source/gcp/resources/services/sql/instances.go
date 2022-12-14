@@ -9,22 +9,15 @@ import (
 
 func Instances() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_sql_instances",
-		Resolver:  fetchInstances,
-		Multiplex: client.ProjectMultiplex("sqladmin.googleapis.com"),
+		Name:        "gcp_sql_instances",
+		Description: `https://cloud.google.com/sql/docs/mysql/admin-api/rest/v1beta4/instances#DatabaseInstance`,
+		Resolver:    fetchInstances,
+		Multiplex:   client.ProjectMultiplex("sqladmin.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
-			},
-			{
-				Name:     "self_link",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("SelfLink"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
 				Name:     "available_maintenance_versions",
@@ -177,6 +170,14 @@ func Instances() *schema.Table {
 				Resolver: schema.PathResolver("SecondaryGceZone"),
 			},
 			{
+				Name:     "self_link",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SelfLink"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
 				Name:     "server_ca_cert",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("ServerCaCert"),
@@ -201,6 +202,10 @@ func Instances() *schema.Table {
 				Type:     schema.TypeStringArray,
 				Resolver: schema.PathResolver("SuspensionReason"),
 			},
+		},
+
+		Relations: []*schema.Table{
+			Users(),
 		},
 	}
 }

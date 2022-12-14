@@ -4,7 +4,6 @@ import (
 	bigquery "google.golang.org/api/bigquery/v2"
 )
 
-
 func init() {
 	resources := []*Resource{
 		{
@@ -15,6 +14,7 @@ func init() {
 			Multiplex:           &emptyString,
 			ChildTable:          true,
 			SkipMock:            true,
+			Description:         "https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#Table",
 		},
 		{
 			SubService:          "datasets",
@@ -23,6 +23,7 @@ func init() {
 			PreResourceResolver: "datasetGet",
 			Relations:           []string{"Tables()"},
 			SkipMock:            true,
+			Description:         "https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets#Dataset",
 		},
 	}
 

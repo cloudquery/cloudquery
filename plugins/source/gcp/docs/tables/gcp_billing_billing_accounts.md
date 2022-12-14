@@ -1,6 +1,6 @@
 # Table: gcp_billing_billing_accounts
 
-
+https://cloud.google.com/billing/docs/reference/rest/v1/billingAccounts#BillingAccount
 
 The primary key for this table is **name**.
 

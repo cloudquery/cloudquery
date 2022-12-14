@@ -156,3 +156,5 @@ ELBs
 CMK
 CMKs
 serverless
+tailnet
+Vercel

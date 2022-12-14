@@ -16,21 +16,15 @@ import (
 
 func VpnGateways() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_compute_vpn_gateways",
-		Resolver:  fetchVpnGateways,
-		Multiplex: client.ProjectMultiplex("compute.googleapis.com"),
+		Name:        "gcp_compute_vpn_gateways",
+		Description: `https://cloud.google.com/compute/docs/reference/rest/v1/vpnGateways#VpnGateway`,
+		Resolver:    fetchVpnGateways,
+		Multiplex:   client.ProjectMultiplex("compute.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
-			},
-			{
-				Name: "self_link",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
 				Name:     "creation_timestamp",
@@ -76,6 +70,14 @@ func VpnGateways() *schema.Table {
 				Name:     "region",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Region"),
+			},
+			{
+				Name:     "self_link",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SelfLink"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "stack_type",

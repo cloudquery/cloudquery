@@ -16,21 +16,15 @@ import (
 
 func BackendServices() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_compute_backend_services",
-		Resolver:  fetchBackendServices,
-		Multiplex: client.ProjectMultiplex("compute.googleapis.com"),
+		Name:        "gcp_compute_backend_services",
+		Description: `https://cloud.google.com/compute/docs/reference/rest/v1/backendServices#BackendService`,
+		Resolver:    fetchBackendServices,
+		Multiplex:   client.ProjectMultiplex("compute.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
-			},
-			{
-				Name: "self_link",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
 				Name:     "affinity_cookie_ttl_sec",
@@ -201,6 +195,14 @@ func BackendServices() *schema.Table {
 				Name:     "security_settings",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("SecuritySettings"),
+			},
+			{
+				Name:     "self_link",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SelfLink"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "service_bindings",

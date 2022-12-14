@@ -16,21 +16,15 @@ import (
 
 func SslCertificates() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_compute_ssl_certificates",
-		Resolver:  fetchSslCertificates,
-		Multiplex: client.ProjectMultiplex("compute.googleapis.com"),
+		Name:        "gcp_compute_ssl_certificates",
+		Description: `https://cloud.google.com/compute/docs/reference/rest/v1/sslCertificates#SslCertificate`,
+		Resolver:    fetchSslCertificates,
+		Multiplex:   client.ProjectMultiplex("compute.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
-			},
-			{
-				Name: "self_link",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
 				Name:     "certificate",
@@ -81,6 +75,14 @@ func SslCertificates() *schema.Table {
 				Name:     "region",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Region"),
+			},
+			{
+				Name:     "self_link",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SelfLink"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "self_managed",

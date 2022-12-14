@@ -16,21 +16,15 @@ import (
 
 func Instances() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_compute_instances",
-		Resolver:  fetchInstances,
-		Multiplex: client.ProjectMultiplex("compute.googleapis.com"),
+		Name:        "gcp_compute_instances",
+		Description: `https://cloud.google.com/compute/docs/reference/rest/v1/instances#Instance`,
+		Resolver:    fetchInstances,
+		Multiplex:   client.ProjectMultiplex("compute.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
-			},
-			{
-				Name: "self_link",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
 				Name:     "advanced_machine_features",
@@ -196,6 +190,14 @@ func Instances() *schema.Table {
 				Name:     "scheduling",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Scheduling"),
+			},
+			{
+				Name:     "self_link",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SelfLink"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "service_accounts",

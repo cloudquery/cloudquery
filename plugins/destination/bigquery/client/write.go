@@ -95,8 +95,18 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *pl
 		})
 	}
 
-	for r := range res {
-		workers[r.TableName].writeChan <- r.Data
+	done := false
+	for !done {
+		select {
+		case r, ok := <-res:
+			if !ok {
+				done = true
+				break
+			}
+			workers[r.TableName].writeChan <- r.Data
+		case <-gctx.Done():
+			done = true
+		}
 	}
 	for _, w := range workers {
 		close(w.writeChan)

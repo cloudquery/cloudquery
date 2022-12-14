@@ -16,9 +16,10 @@ import (
 
 func Occurrences() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_containeranalysis_occurrences",
-		Resolver:  fetchOccurrences,
-		Multiplex: client.ProjectMultiplex("containeranalysis.googleapis.com"),
+		Name:        "gcp_containeranalysis_occurrences",
+		Description: `https://cloud.google.com/container-analysis/docs/reference/rest/v1beta1/projects.occurrences#Occurrence`,
+		Resolver:    fetchOccurrences,
+		Multiplex:   client.ProjectMultiplex("containeranalysis.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

@@ -16,9 +16,10 @@ import (
 
 func Sinks() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_logging_sinks",
-		Resolver:  fetchSinks,
-		Multiplex: client.ProjectMultiplex("logging.googleapis.com"),
+		Name:        "gcp_logging_sinks",
+		Description: `https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks#LogSink`,
+		Resolver:    fetchSinks,
+		Multiplex:   client.ProjectMultiplex("logging.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

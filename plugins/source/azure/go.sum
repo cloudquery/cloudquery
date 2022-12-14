@@ -146,6 +146,8 @@ github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybriddatamanager/armhybri
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridnetwork/armhybridnetwork v1.0.0 h1:cnroedbF9/kjx/+iaRIPNS+3dJetrxlFtJarKQRcvQ8=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridnetwork/armhybridnetwork v1.0.0/go.mod h1:zR/avSSCtAIUUhd9RhcpU23rxyTVhNnNb1QaN7Uf8Zw=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal v1.0.0 h1:lMW1lD/17LUA5z1XTURo7LcVG2ICBPlyMHjIUrcFZNQ=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault v1.0.0 h1:Jc2KcpCDMu7wJfkrzn7fs/53QMDXH78GuqnH4HOd7zs=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault v1.0.0/go.mod h1:PFVgFsclKzPqYRT/BiwpfUN22cab0C7FlgXR3iWpwMo=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto v1.1.0 h1:0wECNgkDj/xFPXXOM9umr6+PJ9jzHCIIsIagkcueaFg=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto v1.1.0/go.mod h1:2+xLw3wnpvSce83gQnAu42MVl3/tiSGcWtEuWe1nhbo=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/labservices/armlabservices v1.0.0 h1:uIjbZwtaWCNPCAu7EVlWKVokAS/+owCbv94sFF1QJyE=
@@ -247,8 +249,8 @@ github.com/chzyer/logex v1.1.10/go.mod h1:+Ywpsq7O8HXn0nuIou7OrIPyXbp3wmkHB+jjWR
 github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e/go.mod h1:nSuG5e5PlCu98SY8svDHJxuZscDgtXS6KTTbou5AhLI=
 github.com/chzyer/test v0.0.0-20180213035817-a1ea475d72b1/go.mod h1:Q3SI9o4m/ZMnBNeIyt5eFwwo7qiLfzFZmjNmxjkiQlU=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
-github.com/cloudquery/plugin-sdk v1.12.0 h1:DfQO6F7nzAVKHNZGV3moAB/2BhIK+1jimVYgWykoXjQ=
-github.com/cloudquery/plugin-sdk v1.12.0/go.mod h1:PKne4lmvDFCEbTAS8EQzPohkXchwi/7NSvu77l07hCg=
+github.com/cloudquery/plugin-sdk v1.12.4 h1:P3RePUrpp3TqNIfMttOXxFYwqpzXLdnQKFVcHAbp96c=
+github.com/cloudquery/plugin-sdk v1.12.4/go.mod h1:PKne4lmvDFCEbTAS8EQzPohkXchwi/7NSvu77l07hCg=
 github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGXZJjfX53e64911xZQV5JYwmTeXPW+k8Sc=
 github.com/cncf/udpa/go v0.0.0-20201120205902-5459f2c99403/go.mod h1:WmhPx2Nbnhtbo57+VJT5O0JRkEi1Wbu0z5j0R8u5Hbk=
 github.com/coreos/go-systemd v0.0.0-20190321100706-95778dfbb74e/go.mod h1:F5haX7vjVVG0kc13fIWeqUViNPyEJxv/OmvnBo0Yme4=

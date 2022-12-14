@@ -26,13 +26,6 @@ func Networks() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
-				Name: "self_link",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
 				Name:     "ipv4_range",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("IPv4Range"),
@@ -106,6 +99,14 @@ func Networks() *schema.Table {
 				Name:     "routing_config",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("RoutingConfig"),
+			},
+			{
+				Name:     "self_link",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SelfLink"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "self_link_with_id",

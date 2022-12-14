@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"strings"
 	"sync"
 	"time"
 
@@ -30,23 +31,34 @@ import (
 const maxProjectIdsToLog int = 100
 
 type Client struct {
-	projects      []string
+	projects []string
+	orgs     []string
+
 	ClientOptions []option.ClientOption
 	// this is set by table client multiplexer
 	CallOptions     []gax.CallOption
-	ProjectId       string
 	EnabledServices map[string]map[string]bool
+	ProjectId       string
+	OrgId           string
 	// Logger
 	logger zerolog.Logger
 }
 
 //revive:disable:modifies-value-receiver
 
-// withProject allows multiplexer to create a new client with given subscriptionId
+// withProject allows multiplexer to create a new client with given projectId
 func (c *Client) withProject(project string) *Client {
 	newClient := *c
 	newClient.logger = c.logger.With().Str("project_id", project).Logger()
 	newClient.ProjectId = project
+	return &newClient
+}
+
+// withOrg allows multiplexer to create a new client with given organizationId
+func (c *Client) withOrg(org string) *Client {
+	newClient := *c
+	newClient.logger = c.logger.With().Str("org_id", org).Logger()
+	newClient.OrgId = org
 	return &newClient
 }
 
@@ -60,6 +72,9 @@ func isValidJson(content []byte) error {
 }
 
 func (c *Client) ID() string {
+	if c.OrgId != "" {
+		return "org:" + c.OrgId
+	}
 	return c.ProjectId
 }
 
@@ -173,6 +188,13 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 	}
 
 	c.projects = projects
+
+	c.orgs, err = getOrganizations(ctx, c.ClientOptions...)
+	if err != nil {
+		c.logger.Err(err).Msg("failed to get organizations")
+	}
+	c.logger.Info().Interface("orgs", c.orgs).Msg("Retrieved organizations")
+
 	if len(projects) == 1 {
 		c.ProjectId = projects[0]
 	}
@@ -208,9 +230,8 @@ func logProjectIds(logger *zerolog.Logger, projectIds []string) {
 
 // getProjectsV1 requires the `resourcemanager.projects.get` permission to list projects
 func getProjectsV1(ctx context.Context, options ...option.ClientOption) ([]string, error) {
-	var (
-		projects []string
-	)
+	var projects []string
+
 	service, err := crmv1.NewService(ctx, options...)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create cloudresourcemanager service: %w", err)
@@ -239,9 +260,8 @@ func getProjectsV1(ctx context.Context, options ...option.ClientOption) ([]strin
 }
 
 func getProjectsV1WithFilter(ctx context.Context, filter string, options ...option.ClientOption) ([]string, error) {
-	var (
-		projects []string
-	)
+	var projects []string
+
 	service, err := crmv1.NewService(ctx, options...)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create cloudresourcemanager service: %w", err)
@@ -254,9 +274,10 @@ func getProjectsV1WithFilter(ctx context.Context, filter string, options ...opti
 			return nil, err
 		}
 		for _, project := range output.Projects {
-			if project.LifecycleState == "ACTIVE" {
-				projects = append(projects, project.ProjectId)
+			if project.LifecycleState != "ACTIVE" {
+				continue
 			}
+			projects = append(projects, project.ProjectId)
 		}
 		if output.NextPageToken == "" {
 			break
@@ -327,6 +348,25 @@ func listProjectsInFolders(ctx context.Context, projectClient *resourcemanager.P
 	}
 
 	return projects, nil
+}
+
+func getOrganizations(ctx context.Context, options ...option.ClientOption) ([]string, error) {
+	service, err := crmv1.NewService(ctx, options...)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create cloudresourcemanager service: %w", err)
+	}
+
+	var orgs []string
+	if err := service.Organizations.Search(&crmv1.SearchOrganizationsRequest{}).Context(ctx).Pages(ctx, func(page *crmv1.SearchOrganizationsResponse) error {
+		for _, org := range page.Organizations {
+			orgs = append(orgs, strings.TrimPrefix(org.Name, "organizations/"))
+		}
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return setUnion(nil, orgs), nil
 }
 
 func setUnion(a []string, b []string) []string {

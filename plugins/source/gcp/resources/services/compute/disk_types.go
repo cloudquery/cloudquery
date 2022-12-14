@@ -16,21 +16,15 @@ import (
 
 func DiskTypes() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_compute_disk_types",
-		Resolver:  fetchDiskTypes,
-		Multiplex: client.ProjectMultiplex("compute.googleapis.com"),
+		Name:        "gcp_compute_disk_types",
+		Description: `https://cloud.google.com/compute/docs/reference/rest/v1/diskTypes#DiskType`,
+		Resolver:    fetchDiskTypes,
+		Multiplex:   client.ProjectMultiplex("compute.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
-			},
-			{
-				Name: "self_link",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
 				Name:     "creation_timestamp",
@@ -71,6 +65,14 @@ func DiskTypes() *schema.Table {
 				Name:     "region",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Region"),
+			},
+			{
+				Name:     "self_link",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SelfLink"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "valid_disk_size",

@@ -9,9 +9,10 @@ import (
 
 func BucketPolicies() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_storage_bucket_policies",
-		Resolver:  fetchBucketPolicies,
-		Multiplex: client.ProjectMultiplex("storage.googleapis.com"),
+		Name:        "gcp_storage_bucket_policies",
+		Description: `https://cloud.google.com/iam/docs/reference/rest/v1/Policy`,
+		Resolver:    fetchBucketPolicies,
+		Multiplex:   client.ProjectMultiplex("storage.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

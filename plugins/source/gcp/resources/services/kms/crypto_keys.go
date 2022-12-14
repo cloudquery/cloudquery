@@ -9,8 +9,9 @@ import (
 
 func CryptoKeys() *schema.Table {
 	return &schema.Table{
-		Name:     "gcp_kms_crypto_keys",
-		Resolver: fetchCryptoKeys,
+		Name:        "gcp_kms_crypto_keys",
+		Description: `https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys#CryptoKey`,
+		Resolver:    fetchCryptoKeys,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
