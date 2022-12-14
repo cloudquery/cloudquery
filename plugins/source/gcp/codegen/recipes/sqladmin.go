@@ -6,9 +6,7 @@ import (
 	sqladmin "google.golang.org/api/sqladmin/v1beta4"
 )
 
-
-
-func init(){
+func init() {
 	resources := []*Resource{
 		{
 			SubService: "instances",
@@ -24,6 +22,34 @@ func init(){
 				},
 			},
 			NameTransformer: CreateReplaceTransformer(map[string]string{"ipv_6": "ipv6"}),
+			Relations:       []string{"Users()"},
+		},
+		{
+			SubService: "users",
+			Struct:     &sqladmin.User{},
+			SkipMock:   true,
+			SkipFetch:  true,
+			ChildTable: true,
+			ExtraColumns: []codegen.ColumnDefinition{
+				{
+					Name:     "project_id",
+					Type:     schema.TypeString,
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					Resolver: "client.ResolveProject",
+				},
+				{
+					Name:     "instance",
+					Type:     schema.TypeString,
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					Resolver: `schema.PathResolver("Instance")`,
+				},
+				{
+					Name:     "name",
+					Type:     schema.TypeString,
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					Resolver: `schema.PathResolver("Name")`,
+				},
+			},
 		},
 	}
 

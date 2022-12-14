@@ -1,9 +1,11 @@
-# Table: azure_storage_deleted_accounts
+# Table: azure_keyvault_keyvault_keys
 
 
 
 The primary key for this table is **id**.
 
+## Relations
+This table depends on [azure_keyvault_keyvault](azure_keyvault_keyvault.md).
 
 
 ## Columns
@@ -13,8 +15,9 @@ The primary key for this table is **id**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|subscription_id|String|
 |properties|JSON|
 |id (PK)|String|
+|location|String|
 |name|String|
+|tags|JSON|
 |type|String|
