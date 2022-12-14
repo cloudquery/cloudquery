@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/cloudquery/plugin-sdk v1.11.2
 	github.com/gertd/go-pluralize v0.2.1
-	github.com/golang/mock v1.6.0
+	github.com/gorilla/mux v1.8.0
 	github.com/rs/zerolog v1.28.0
 )
 
@@ -14,7 +14,6 @@ require (
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/uuid v1.3.0 // indirect
-	github.com/gorilla/mux v1.8.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/providers/zerolog/v2 v2.0.0-rc.3 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.0-rc.3 // indirect
 	github.com/inconshreveable/mousetrap v1.0.1 // indirect
