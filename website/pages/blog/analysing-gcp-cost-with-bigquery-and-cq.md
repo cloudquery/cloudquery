@@ -26,7 +26,7 @@ Exporting [GCP billing data to BigQuery](https://cloud.google.com/billing/docs/h
 
 ## Syncing data
 
-First, we need to sync our GCP data with CloudQuery to the same BigQuery dataset we synced out billing data to. To do that we will use the following CloudQuery config file (For full config reference, checkout the [GCP Source Plugin](https://www.cloudquery.io/docs/plugins/sources/gcp/overview) and [BigQuery Destination Plugin](https://www.cloudquery.io/docs/plugins/destinations/bigquery/overview)):
+First, we need to sync our GCP data with CloudQuery to the same BigQuery dataset we synced our billing data to. To do that we will use the following CloudQuery configuration file (For full config reference, checkout the [GCP Source Plugin](https://www.cloudquery.io/docs/plugins/sources/gcp/overview) and [BigQuery Destination Plugin](https://www.cloudquery.io/docs/plugins/destinations/bigquery/overview)):
 
 ```yaml
 kind: source
