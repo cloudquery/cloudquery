@@ -66,11 +66,7 @@ func generatePlugin(rr []*recipes.Resource) {
 }
 
 func needsProjectIDColumn(r recipes.Resource) bool {
-	if r.Multiplex == &recipes.OrgMultiplex {
-		return false
-	}
-
-	return true
+	return r.Multiplex != &recipes.OrgMultiplex
 }
 
 func generateResource(r recipes.Resource, mock bool) {
