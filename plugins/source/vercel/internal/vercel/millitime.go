@@ -17,7 +17,8 @@ func (t *MilliTime) MarshalJSON() ([]byte, error) {
 
 func (t *MilliTime) UnmarshalJSON(data []byte) error {
 	if string(data) == "null" {
-		t = nil
+		tt := MilliTime(time.Time{})
+		*t = tt
 		return nil
 	}
 
