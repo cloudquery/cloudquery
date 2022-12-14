@@ -18,6 +18,8 @@ func buildResourcePolicies(t *testing.T, ctrl *gomock.Controller) client.Service
 	if err != nil {
 		t.Fatal(err)
 	}
+	policyDocument := "{}"
+	rp.PolicyDocument = &policyDocument
 	m.EXPECT().DescribeResourcePolicies(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&cloudwatchlogs.DescribeResourcePoliciesOutput{
 			ResourcePolicies: []types.ResourcePolicy{rp},
