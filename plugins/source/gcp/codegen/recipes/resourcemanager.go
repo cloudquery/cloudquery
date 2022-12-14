@@ -32,6 +32,7 @@ func init() {
 			SkipFetch:   true,
 			SkipMock:    true,
 			SkipFields:  []string{"ProjectId"},
+			PrimaryKeys: []string{"project_id", "name"},
 			Description: "https://cloud.google.com/resource-manager/reference/rest/v3/projects#Project",
 		},
 		{
