@@ -1,6 +1,6 @@
 # Table: gcp_dns_policies
 
-
+https://cloud.google.com/dns/docs/reference/v1/policies#resource
 
 The primary key for this table is **id**.
 

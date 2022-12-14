@@ -16,9 +16,10 @@ import (
 
 func DiskTypes() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_compute_disk_types",
-		Resolver:  fetchDiskTypes,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_compute_disk_types",
+		Description: `https://cloud.google.com/compute/docs/reference/rest/v1/diskTypes#DiskType`,
+		Resolver:    fetchDiskTypes,
+		Multiplex:   client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

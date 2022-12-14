@@ -16,9 +16,10 @@ import (
 
 func Secrets() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_secretmanager_secrets",
-		Resolver:  fetchSecrets,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_secretmanager_secrets",
+		Description: `https://cloud.google.com/secret-manager/docs/reference/rest/v1/projects.secrets#Secret`,
+		Resolver:    fetchSecrets,
+		Multiplex:   client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

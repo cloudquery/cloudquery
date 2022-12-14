@@ -5,8 +5,6 @@ import (
 	"cloud.google.com/go/functions/apiv1/functionspb"
 )
 
-
-
 func init() {
 	resources := []*Resource{
 		{
@@ -20,6 +18,7 @@ func init() {
 			RequestStructFields: `Parent: "projects/" + c.ProjectId + "/locations/-",`,
 			UnimplementedServer: &functionspb.UnimplementedCloudFunctionsServiceServer{},
 			SkipFields:          []string{"SourceCode", "Trigger"},
+			Description:         "https://cloud.google.com/functions/docs/reference/rest/v1/projects.locations.functions#CloudFunction",
 		},
 	}
 

@@ -14,6 +14,7 @@ func init() {
 			PrimaryKeys:     []string{"self_link"},
 			NameTransformer: CreateReplaceTransformer(map[string]string{"ipv_6": "ipv6"}),
 			Relations:       []string{"Users()"},
+			Description:     "https://cloud.google.com/sql/docs/mysql/admin-api/rest/v1beta4/instances#DatabaseInstance",
 		},
 		{
 			SubService:  "users",
@@ -22,6 +23,7 @@ func init() {
 			SkipFetch:   true,
 			ChildTable:  true,
 			PrimaryKeys: []string{ProjectIdColumn.Name, "instance", "name"},
+			Description: "https://cloud.google.com/sql/docs/mysql/admin-api/rest/v1beta4/users#User",
 		},
 	}
 

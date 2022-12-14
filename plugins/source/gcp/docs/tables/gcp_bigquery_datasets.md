@@ -1,6 +1,6 @@
 # Table: gcp_bigquery_datasets
 
-
+https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets#Dataset
 
 The primary key for this table is **_cq_id**.
 

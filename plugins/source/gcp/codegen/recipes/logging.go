@@ -17,6 +17,7 @@ func init() {
 			ListFunction:        (&pb.UnimplementedMetricsServiceV2Server{}).ListLogMetrics,
 			UnimplementedServer: &pb.UnimplementedMetricsServiceV2Server{},
 			PrimaryKeys:         []string{"name"},
+			Description:         "https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.metrics#LogMetric",
 		},
 		{
 			SubService:          "sinks",
@@ -29,6 +30,7 @@ func init() {
 			UnimplementedServer: &pb.UnimplementedConfigServiceV2Server{},
 			PrimaryKeys:         []string{"name"},
 			SkipFields:          []string{"Options"},
+			Description:         "https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks#LogSink",
 		},
 	}
 

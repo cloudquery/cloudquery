@@ -10,6 +10,7 @@ import (
 func Datasets() *schema.Table {
 	return &schema.Table{
 		Name:                "gcp_bigquery_datasets",
+		Description:         `https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets#Dataset`,
 		Resolver:            fetchDatasets,
 		PreResourceResolver: datasetGet,
 		Multiplex:           client.ProjectMultiplex,

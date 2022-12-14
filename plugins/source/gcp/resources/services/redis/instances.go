@@ -16,9 +16,10 @@ import (
 
 func Instances() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_redis_instances",
-		Resolver:  fetchInstances,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_redis_instances",
+		Description: `https://cloud.google.com/memorystore/docs/redis/reference/rest/v1/projects.locations.instances#Instance`,
+		Resolver:    fetchInstances,
+		Multiplex:   client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

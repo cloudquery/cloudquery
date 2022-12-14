@@ -16,9 +16,10 @@ import (
 
 func Autoscalers() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_compute_autoscalers",
-		Resolver:  fetchAutoscalers,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_compute_autoscalers",
+		Description: `https://cloud.google.com/compute/docs/reference/rest/v1/autoscalers#Autoscaler`,
+		Resolver:    fetchAutoscalers,
+		Multiplex:   client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

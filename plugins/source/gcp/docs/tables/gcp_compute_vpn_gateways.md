@@ -1,6 +1,6 @@
 # Table: gcp_compute_vpn_gateways
 
-
+https://cloud.google.com/compute/docs/reference/rest/v1/vpnGateways#VpnGateway
 
 The primary key for this table is **self_link**.
 

@@ -16,9 +16,10 @@ import (
 
 func Services() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_run_services",
-		Resolver:  fetchServices,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_run_services",
+		Description: `https://cloud.google.com/run/docs/reference/rest/v2/projects.locations.services#Service`,
+		Resolver:    fetchServices,
+		Multiplex:   client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
