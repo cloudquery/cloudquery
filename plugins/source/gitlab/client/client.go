@@ -45,12 +45,10 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (sche
 
 	gitlabToken := gitlabSpec.Token
 	if gitlabToken == "" {
-		gitlabToken, ok := os.LookupEnv("GITLAB_API_TOKEN")
-		if !ok {
-			if gitlabToken == "" {
-				return nil, errors.New("missing GITLAB_API_TOKEN, either set it as an environment variable or pass it in the spec")
-			}
-		}
+		gitlabToken, _ = os.LookupEnv("GITLAB_API_TOKEN")
+	}
+	if gitlabToken == "" {
+		return nil, errors.New("missing GITLAB_API_TOKEN, either set it as an environment variable or pass it in the spec")
 	}
 
 	opts := []gitlab.ClientOptionFunc{}
