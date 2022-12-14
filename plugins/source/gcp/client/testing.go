@@ -57,6 +57,7 @@ func MockTestGrpcHelper(t *testing.T, table *schema.Table, createService func(*g
 			logger:        logger,
 			ClientOptions: clientOptions,
 			projects:      []string{"testProject"},
+			orgs:          []string{"testOrg"},
 		}
 
 		return c, nil
@@ -112,6 +113,7 @@ func MockTestRestHelper(t *testing.T, table *schema.Table, createService func(*h
 			logger:        logger,
 			ClientOptions: clientOptions,
 			projects:      []string{"testProject"},
+			orgs:          []string{"testOrg"},
 		}
 
 		return c, nil
