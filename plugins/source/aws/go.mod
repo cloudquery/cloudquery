@@ -20,7 +20,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.24.2
 	github.com/aws/aws-sdk-go-v2/service/cloudfront v1.22.0
 	github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.13.22
-	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.20.4
+	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.21.0
 	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.22.1
 	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.17.2
 	github.com/aws/aws-sdk-go-v2/service/codebuild v1.19.20
@@ -50,7 +50,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/frauddetector v1.20.13
 	github.com/aws/aws-sdk-go-v2/service/fsx v1.26.1
 	github.com/aws/aws-sdk-go-v2/service/glacier v1.13.20
-	github.com/aws/aws-sdk-go-v2/service/guardduty v1.16.3
+	github.com/aws/aws-sdk-go-v2/service/guardduty v1.16.4
 	github.com/aws/aws-sdk-go-v2/service/iam v1.18.24
 	github.com/aws/aws-sdk-go-v2/service/identitystore v1.15.8
 	github.com/aws/aws-sdk-go-v2/service/inspector v1.12.20
@@ -68,7 +68,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/qldb v1.14.21
 	github.com/aws/aws-sdk-go-v2/service/quicksight v1.28.1
 	github.com/aws/aws-sdk-go-v2/service/ram v1.16.25
-	github.com/aws/aws-sdk-go-v2/service/rds v1.34.0
+	github.com/aws/aws-sdk-go-v2/service/rds v1.35.0
 	github.com/aws/aws-sdk-go-v2/service/redshift v1.26.17
 	github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.12.22
 	github.com/aws/aws-sdk-go-v2/service/route53 v1.25.1
