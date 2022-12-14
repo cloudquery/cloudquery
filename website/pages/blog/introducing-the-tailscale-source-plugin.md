@@ -26,7 +26,9 @@ Below are some real world query examples to get you started.
 
 ## Detect not yet authorized devices
 
-If you have added some devices but didn't authorize them you will not be able to connecto them to your [tailnet](https://tailscale.com/kb/1136/tailnet/). It's a good idea to keep your inventory clean, as Tailscale limits the amount of devices. Here's a query to check for unauthorized devices:
+If you have added some devices but didn't authorize them you will not be able to connect them to your [tailnet](https://tailscale.com/kb/1136/tailnet/).
+It's a good idea to keep your inventory clean, as Tailscale limits the amount of devices.
+Here's a query to check for unauthorized devices:
 
 ```sql
 select dev.id, dev.user
@@ -70,4 +72,6 @@ This query would output a table of device IDs and corresponding users for device
 
 ## What's next
 
-We are going to continue expanding the Tailscale source plugin, adding support for more resources. Interested in seeing another plugin? Check out [Creating a New Plugin](/docs/developers/creating-new-plugin) and/or open an issue on our [GitHub](https://github.com/cloudquery/cloudquery).
+We are going to continue expanding the Tailscale source plugin, adding support for more resources.
+Interested in seeing another plugin?
+Check out [Creating a New Plugin](/docs/developers/creating-new-plugin) and/or open an issue on our [GitHub](https://github.com/cloudquery/cloudquery).
