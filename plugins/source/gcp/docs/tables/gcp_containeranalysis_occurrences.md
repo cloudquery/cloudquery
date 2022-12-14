@@ -1,6 +1,6 @@
 # Table: gcp_containeranalysis_occurrences
 
-
+https://cloud.google.com/container-analysis/docs/reference/rest/v1beta1/projects.occurrences#Occurrence
 
 The primary key for this table is **name**.
 

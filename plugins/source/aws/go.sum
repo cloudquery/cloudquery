@@ -84,8 +84,8 @@ github.com/aws/aws-sdk-go-v2/service/cloudfront v1.22.0 h1:8jxLM+HU1qJ85Ir+awmHb
 github.com/aws/aws-sdk-go-v2/service/cloudfront v1.22.0/go.mod h1:P1i7h3JQxZnwVevXDQXtxfaWKA9z1BCV6vegzZcMcmE=
 github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.13.22 h1:EroOv7kgbckBGvLE4JPAEXNqswgjGhxEB6WFhnY06pA=
 github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.13.22/go.mod h1:0kgcY0oKtp92tUL+ggHZMMWmXisMIO5qwQNQ12qzHuI=
-github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.20.4 h1:oSnjrEeZ2fnvTERLBsW4MoVmx6pa7s11npKh7k9nIyo=
-github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.20.4/go.mod h1:yyEuVBXpQE/3dSFCq4Cg1Ltf04pQXnqbOrVc4gxdFKQ=
+github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.21.0 h1:tcTwzjQTo2i9+4TkiDwnDuL0iGsx4b/xJ4OBPIUC5TU=
+github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.21.0/go.mod h1:yyEuVBXpQE/3dSFCq4Cg1Ltf04pQXnqbOrVc4gxdFKQ=
 github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.22.1 h1:X5wW/v/Lk++7ZKIee9wCs1uT4ENIJyuancNe5hHY7rg=
 github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.22.1/go.mod h1:HL0nIKWDYBdEhBDS4bldwL3NWi2++f8l1n+mQnTrr9Q=
 github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.17.2 h1:el1mwupyl89Do5sHfVt7KErp9eiMF6XT7LHDqF53GZQ=
@@ -146,8 +146,8 @@ github.com/aws/aws-sdk-go-v2/service/glacier v1.13.20 h1:eJo7jUe/93VOZGNVwNivniw
 github.com/aws/aws-sdk-go-v2/service/glacier v1.13.20/go.mod h1:23vmB9WUQxz2t/4HaFlxBXRLq5YXCjfrYcRQrMxaF2I=
 github.com/aws/aws-sdk-go-v2/service/glue v1.37.1 h1:Rfs7ZYn9tl/97miu3igPqil+NixAVxXt6JsVQvJPInU=
 github.com/aws/aws-sdk-go-v2/service/glue v1.37.1/go.mod h1:1Nfauq/Z/FS2ptg2rHjDQHkPt1AoflguRQ9AoBumYr0=
-github.com/aws/aws-sdk-go-v2/service/guardduty v1.16.3 h1:txuJhrHoyEb0VC9O8z+ZOo/ITCDMXU641MVQvSB2hso=
-github.com/aws/aws-sdk-go-v2/service/guardduty v1.16.3/go.mod h1:OsoFNbV+qgyhNknBfwuOfdyJkjIZl0oTtqjmfSmb9Qw=
+github.com/aws/aws-sdk-go-v2/service/guardduty v1.16.4 h1:M82gFClPa9d/QDJmRyZRrydlsczJOlwrXYgESOoU3vE=
+github.com/aws/aws-sdk-go-v2/service/guardduty v1.16.4/go.mod h1:OsoFNbV+qgyhNknBfwuOfdyJkjIZl0oTtqjmfSmb9Qw=
 github.com/aws/aws-sdk-go-v2/service/iam v1.18.24 h1:BFn0cIQxNzbOLGU62Wa3R93vZWLgpPveviRvy/dOFtE=
 github.com/aws/aws-sdk-go-v2/service/iam v1.18.24/go.mod h1:zLk41FZN1dZaTK6b0fSEbL4aO/Lvf1ihBXoT+BupDeA=
 github.com/aws/aws-sdk-go-v2/service/identitystore v1.15.8 h1:HCU6HS1/EjV5/YxvJn/R8YThc9Gsuqwav1XgFIn1rOk=
@@ -192,8 +192,8 @@ github.com/aws/aws-sdk-go-v2/service/quicksight v1.28.1 h1:LwE67JPbJbgkdulf+kq3Y
 github.com/aws/aws-sdk-go-v2/service/quicksight v1.28.1/go.mod h1:DxatEKKDPKklBDFvalXsXwSWWuvhd5VNYV5R8EPbQ3w=
 github.com/aws/aws-sdk-go-v2/service/ram v1.16.25 h1:3kFX1gL8YOdmR2ChXTXavDzEUSfrhJTAMwxNfz6E7tw=
 github.com/aws/aws-sdk-go-v2/service/ram v1.16.25/go.mod h1:XKA7wWKv20k8U0NF3sAjNGyK7/vhAqu9rwmd2bjyCkk=
-github.com/aws/aws-sdk-go-v2/service/rds v1.34.0 h1:7GOGxSHfNymxt/lP1B/bGr/CF4teQa2QYzb1Q5hEsG8=
-github.com/aws/aws-sdk-go-v2/service/rds v1.34.0/go.mod h1:5jVelkTas49nnuhUjA09TV5OAECLeXl8UvkGA24gOmU=
+github.com/aws/aws-sdk-go-v2/service/rds v1.35.0 h1:S583sAvE4bAtZYJyDWwSmcx2TG093Kreum+uIQ7V8ic=
+github.com/aws/aws-sdk-go-v2/service/rds v1.35.0/go.mod h1:5jVelkTas49nnuhUjA09TV5OAECLeXl8UvkGA24gOmU=
 github.com/aws/aws-sdk-go-v2/service/redshift v1.26.17 h1:QqjXi1YMzvOq1QS3Nc+X1cMjLEPx8jbcio6HwoxcC+A=
 github.com/aws/aws-sdk-go-v2/service/redshift v1.26.17/go.mod h1:D9RG9/qdConhXN9wWFsV3njqLki71pU4iKiVo+BPHOw=
 github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.12.22 h1:UV7d8ay2PM0YvIZ1SAqmoN3vEJrCV8aelaDsehCx0Y8=
@@ -264,8 +264,8 @@ github.com/chzyer/logex v1.1.10/go.mod h1:+Ywpsq7O8HXn0nuIou7OrIPyXbp3wmkHB+jjWR
 github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e/go.mod h1:nSuG5e5PlCu98SY8svDHJxuZscDgtXS6KTTbou5AhLI=
 github.com/chzyer/test v0.0.0-20180213035817-a1ea475d72b1/go.mod h1:Q3SI9o4m/ZMnBNeIyt5eFwwo7qiLfzFZmjNmxjkiQlU=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
-github.com/cloudquery/plugin-sdk v1.12.2 h1:SOlGSKqKIT8DFsVxpslcbsFFOv9/qStjpckGzSsy6Z0=
-github.com/cloudquery/plugin-sdk v1.12.2/go.mod h1:PKne4lmvDFCEbTAS8EQzPohkXchwi/7NSvu77l07hCg=
+github.com/cloudquery/plugin-sdk v1.12.3 h1:/HmL/gVBRzK4Cud5o6zBjVm2P59OwLJFfybrXJdpn+Y=
+github.com/cloudquery/plugin-sdk v1.12.3/go.mod h1:PKne4lmvDFCEbTAS8EQzPohkXchwi/7NSvu77l07hCg=
 github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGXZJjfX53e64911xZQV5JYwmTeXPW+k8Sc=
 github.com/cncf/udpa/go v0.0.0-20201120205902-5459f2c99403/go.mod h1:WmhPx2Nbnhtbo57+VJT5O0JRkEi1Wbu0z5j0R8u5Hbk=
 github.com/coreos/go-systemd v0.0.0-20190321100706-95778dfbb74e/go.mod h1:F5haX7vjVVG0kc13fIWeqUViNPyEJxv/OmvnBo0Yme4=

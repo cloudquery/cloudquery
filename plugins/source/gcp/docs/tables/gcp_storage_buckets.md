@@ -1,6 +1,6 @@
 # Table: gcp_storage_buckets
 
-
+https://cloud.google.com/storage/docs/json_api/v1/buckets#resource
 
 The primary key for this table is **name**.
 

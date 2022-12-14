@@ -10,7 +10,7 @@ import (
 	"google.golang.org/grpc"
 	"testing"
 
-	pb "google.golang.org/genproto/googleapis/api/serviceusage/v1"
+	pb "cloud.google.com/go/serviceusage/apiv1/serviceusagepb"
 )
 
 func createServices(gsrv *grpc.Server) error {

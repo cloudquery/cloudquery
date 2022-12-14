@@ -6,8 +6,6 @@ import (
 	"strings"
 
 	compute "cloud.google.com/go/compute/apiv1"
-	"github.com/cloudquery/plugin-sdk/codegen"
-	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/iancoleman/strcase"
 	pb "google.golang.org/genproto/googleapis/cloud/compute/v1"
 )
@@ -21,6 +19,7 @@ var computeResourcesAggList = []*Resource{
 		ResponseStruct: &pb.AddressAggregatedList{},
 		ListFunction:   (&compute.AddressesClient{}).AggregatedList,
 		OutputField:    "Value.Addresses",
+		Description:    "https://cloud.google.com/compute/docs/reference/rest/v1/addresses#Address",
 	},
 	{
 		SubService:     "autoscalers",
@@ -30,6 +29,7 @@ var computeResourcesAggList = []*Resource{
 		ResponseStruct: &pb.AutoscalerAggregatedList{},
 		ListFunction:   (&compute.AutoscalersClient{}).AggregatedList,
 		OutputField:    "Value.Autoscalers",
+		Description:    "https://cloud.google.com/compute/docs/reference/rest/v1/autoscalers#Autoscaler",
 	},
 	{
 		SubService:      "backend_services",
@@ -40,6 +40,7 @@ var computeResourcesAggList = []*Resource{
 		ListFunction:    (&compute.BackendServicesClient{}).AggregatedList,
 		OutputField:     "Value.BackendServices",
 		NameTransformer: CreateReplaceTransformer(map[string]string{"c_d_n": "cdn"}),
+		Description:     "https://cloud.google.com/compute/docs/reference/rest/v1/backendServices#BackendService",
 	},
 	{
 		SubService:     "disk_types",
@@ -49,6 +50,7 @@ var computeResourcesAggList = []*Resource{
 		ResponseStruct: &pb.DiskTypeAggregatedList{},
 		ListFunction:   (&compute.DiskTypesClient{}).AggregatedList,
 		OutputField:    "Value.DiskTypes",
+		Description:    "https://cloud.google.com/compute/docs/reference/rest/v1/diskTypes#DiskType",
 	},
 	{
 		SubService:     "disks",
@@ -58,6 +60,7 @@ var computeResourcesAggList = []*Resource{
 		ResponseStruct: &pb.DiskAggregatedList{},
 		ListFunction:   (&compute.DisksClient{}).AggregatedList,
 		OutputField:    "Value.Disks",
+		Description:    "https://cloud.google.com/compute/docs/reference/rest/v1/disks#Disk",
 	},
 	{
 		SubService:      "forwarding_rules",
@@ -68,6 +71,7 @@ var computeResourcesAggList = []*Resource{
 		ListFunction:    (&compute.ForwardingRulesClient{}).AggregatedList,
 		OutputField:     "Value.ForwardingRules",
 		NameTransformer: CreateReplaceTransformer(map[string]string{"i_p_": "ip_"}),
+		Description:     "https://cloud.google.com/compute/docs/reference/rest/v1/forwardingRules#ForwardingRule",
 	},
 	{
 		SubService:      "instances",
@@ -78,6 +82,7 @@ var computeResourcesAggList = []*Resource{
 		ListFunction:    (&compute.InstancesClient{}).AggregatedList,
 		OutputField:     "Value.Instances",
 		NameTransformer: CreateReplaceTransformer(map[string]string{"ipv_6": "ipv6"}),
+		Description:     "https://cloud.google.com/compute/docs/reference/rest/v1/instances#Instance",
 	},
 	{
 		SubService:     "ssl_certificates",
@@ -87,6 +92,7 @@ var computeResourcesAggList = []*Resource{
 		ResponseStruct: &pb.SslCertificateAggregatedList{},
 		ListFunction:   (&compute.SslCertificatesClient{}).AggregatedList,
 		OutputField:    "Value.SslCertificates",
+		Description:    "https://cloud.google.com/compute/docs/reference/rest/v1/sslCertificates#SslCertificate",
 	},
 	{
 		SubService:      "subnetworks",
@@ -97,6 +103,7 @@ var computeResourcesAggList = []*Resource{
 		ListFunction:    (&compute.SubnetworksClient{}).AggregatedList,
 		OutputField:     "Value.Subnetworks",
 		NameTransformer: CreateReplaceTransformer(map[string]string{"ipv_6": "ipv6", "i_pv_4": "ipv4"}),
+		Description:     "https://cloud.google.com/compute/docs/reference/rest/v1/subnetworks#Subnetwork",
 	},
 	{
 		SubService:     "target_http_proxies",
@@ -106,6 +113,7 @@ var computeResourcesAggList = []*Resource{
 		ResponseStruct: &pb.TargetHttpProxyAggregatedList{},
 		ListFunction:   (&compute.TargetHttpProxiesClient{}).AggregatedList,
 		OutputField:    "Value.TargetHttpProxies",
+		Description:    "https://cloud.google.com/compute/docs/reference/rest/v1/targetHttpProxies#TargetHttpProxy",
 	},
 	{
 		SubService:     "url_maps",
@@ -115,6 +123,7 @@ var computeResourcesAggList = []*Resource{
 		ResponseStruct: &pb.UrlMapsAggregatedList{},
 		ListFunction:   (&compute.UrlMapsClient{}).AggregatedList,
 		OutputField:    "Value.UrlMaps",
+		Description:    "https://cloud.google.com/compute/docs/reference/rest/v1/urlMaps#UrlMap",
 	},
 	{
 		SubService:     "vpn_gateways",
@@ -124,6 +133,7 @@ var computeResourcesAggList = []*Resource{
 		ResponseStruct: &pb.VpnGatewayAggregatedList{},
 		ListFunction:   (&compute.VpnGatewaysClient{}).AggregatedList,
 		OutputField:    "Value.VpnGateways",
+		Description:    "https://cloud.google.com/compute/docs/reference/rest/v1/vpnGateways#VpnGateway",
 	},
 	{
 		SubService:     "instance_groups",
@@ -133,6 +143,7 @@ var computeResourcesAggList = []*Resource{
 		ResponseStruct: &pb.InstanceGroupAggregatedList{},
 		ListFunction:   (&compute.InstanceGroupsClient{}).AggregatedList,
 		OutputField:    "Value.InstanceGroups",
+		Description:    "https://cloud.google.com/compute/docs/reference/rest/v1/instanceGroups#InstanceGroup",
 	},
 }
 
@@ -227,14 +238,8 @@ func init() {
 		}
 		resource.MockImports = []string{"cloud.google.com/go/compute/apiv1"}
 		resource.ProtobufImport = "google.golang.org/genproto/googleapis/cloud/compute/v1"
-		if resource.ExtraColumns == nil {
-			resource.ExtraColumns = []codegen.ColumnDefinition{
-				{
-					Name:    "self_link",
-					Type:    schema.TypeString,
-					Options: schema.ColumnCreationOptions{PrimaryKey: true},
-				},
-			}
+		if resource.PrimaryKeys == nil {
+			resource.PrimaryKeys = []string{"self_link"}
 		}
 	}
 
