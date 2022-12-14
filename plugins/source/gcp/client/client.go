@@ -89,7 +89,6 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 	c := Client{
 		logger:          logger,
 		EnabledServices: map[string]map[string]bool{},
-		// plugin: p,
 	}
 	var gcpSpec Spec
 	if err := s.UnmarshalSpec(&gcpSpec); err != nil {
