@@ -5,6 +5,25 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v4.0.0...plugins-source-gcp-v5.0.0) (2022-12-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* **gcp:** Table `gcp_resourcemanager_folders` `project_id` column was removed, and `organization_id` added
+
+### Features
+
+* **codegen:** Add PrimaryKeys field to codegen ([#5623](https://github.com/cloudquery/cloudquery/issues/5623)) ([1980d16](https://github.com/cloudquery/cloudquery/commit/1980d1625dbcdedc142b50e96878e566dcf542de))
+* **gcp:** Add SQL users ([#5622](https://github.com/cloudquery/cloudquery/issues/5622)) ([cf00c37](https://github.com/cloudquery/cloudquery/commit/cf00c370d8c160b2d006fb8892e765a98c973f34))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.12.2 ([#5583](https://github.com/cloudquery/cloudquery/issues/5583)) ([d721c4e](https://github.com/cloudquery/cloudquery/commit/d721c4e06b8a97b5373215aca0e4ed64942ac489))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.12.3 ([#5639](https://github.com/cloudquery/cloudquery/issues/5639)) ([6452d0e](https://github.com/cloudquery/cloudquery/commit/6452d0ed5a44abad9d7530af6e79cde6504d0c4c))
+* **gcp:** ResourceManager folders listing (add OrgMultiplexing) ([9dfc991](https://github.com/cloudquery/cloudquery/commit/9dfc9915b35bba7662ff15919ceba6e065eda7c3))
+
 ## [4.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v3.2.0...plugins-source-gcp-v4.0.0) (2022-12-13)
 
 
