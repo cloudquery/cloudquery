@@ -52,6 +52,7 @@
 - [azure_compute_snapshots](azure_compute_snapshots.md)
 - [azure_compute_virtual_machine_scale_sets](azure_compute_virtual_machine_scale_sets.md)
 - [azure_compute_virtual_machines](azure_compute_virtual_machines.md)
+- [azure_compute_skus](azure_compute_skus.md)
 - [azure_confluent_marketplace_agreements](azure_confluent_marketplace_agreements.md)
 - [azure_connectedvmware_clusters](azure_connectedvmware_clusters.md)
 - [azure_connectedvmware_datastores](azure_connectedvmware_datastores.md)
