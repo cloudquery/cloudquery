@@ -49,7 +49,6 @@ func init() {
 			SubService:  "deny_policies",
 			SkipMock:    true,
 			Struct:      &iamv2Beta.GoogleIamV2betaPolicy{},
-			MockImports: []string{"google.golang.org/api/iam/v2beta"},
 			Description: "https://cloud.google.com/iam/docs/reference/rest/v2beta/policies#Policy",
 		},
 	}
