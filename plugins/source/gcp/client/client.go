@@ -35,11 +35,13 @@ type Client struct {
 	orgs     []string
 
 	ClientOptions []option.ClientOption
-	// this is set by table client multiplexer
-	CallOptions     []gax.CallOption
+	CallOptions   []gax.CallOption
+
 	EnabledServices map[string]map[string]bool
-	ProjectId       string
-	OrgId           string
+	// this is set by table client project multiplexer
+	ProjectId string
+	// this is set by table client Org multiplexer
+	OrgId string
 	// Logger
 	logger zerolog.Logger
 }
