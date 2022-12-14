@@ -21,7 +21,7 @@ CloudQuery now supports pulling resources from [Vercel](https://vercel.com/) usi
 
 Take a look at our [Configuration](/docs/plugins/sources/vercel/configuration) section to configure required credentials for the plugin.
 
-Below are some real world query examples to get you started.
+Below are some query examples to get you started.
 
 ## Detect domain registrations that will expire soon
 
