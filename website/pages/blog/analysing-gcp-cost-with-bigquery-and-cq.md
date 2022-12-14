@@ -1,5 +1,5 @@
 ---
-title: Analysing GCP Cost with BigQuery and CloudQuery
+title: Harnessing the Power of BigQuery and CloudQuery for Google Cloud Cost Optimization
 tag: tutorial
 date: 2022/12/15
 description: >-
