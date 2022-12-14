@@ -13,21 +13,22 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 <BlogHeader/>
 
-CloudQuery is an open-source, extendable framework that gives you a single-pane-of-glass to your cloud-infrastructure using SQL.
+CloudQuery is an open source high performance data integration platform designed for security and infrastructure teams.
 Today, we are happy to announce the release of the Tailscale source plugin for CloudQuery.
 
-[Tailscale](https://tailscale.com/) is a company that provides open-source software defined mesh virtual private network (VPN) software and a web-based management service.
+Tailscale provides zero-config VPN software and a web-based management service.
+To learn more about Tailscale visit their [homepage](https://tailscale.com/).
 
 CloudQuery now supports pulling ACL, Device and DNS resources from [Tailscale](https://tailscale.com/) using Tailscale API.
 
 Take a look at our [Configuration](/docs/plugins/sources/tailscale/configuration) section to configure required credentials for the plugin.
 
-Below are some real world query examples to get you started.
+Below are some query examples to get you started.
 
-## Detect not yet authorized devices
+## Detect unauthorized devices
 
-If you have added some devices but didn't authorize them you will not be able to connect them to your [tailnet](https://tailscale.com/kb/1136/tailnet/).
-It's a good idea to keep your inventory clean, as Tailscale limits the amount of devices.
+If you have added some devices but haven't authorized them you will not be able to connect them to your [tailnet](https://tailscale.com/kb/1136/tailnet/).
+It's best practice to keep your inventory clean, as Tailscale limits the amount of devices.
 Here's a query to check for unauthorized devices:
 
 ```sql
