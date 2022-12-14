@@ -10,7 +10,7 @@ kind: source
 spec:
   name: vercel
   path: cloudquery/vercel
-  version: "v1.0.0" # latest version of vercel plugin
+  version: "VERSION_SOURCE_VERCEL"
   tables: ["*"]
   destinations: ["postgresql"]
   skip_tables:
