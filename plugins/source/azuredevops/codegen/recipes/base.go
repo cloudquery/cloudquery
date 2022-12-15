@@ -28,6 +28,27 @@ type Resource struct {
 	Table      *codegen.TableDefinition
 }
 
+func writeTemplateContentToFile(dir string, filePath string, buff bytes.Buffer) error {
+	outputPath := path.Join(dir, "../..", filePath)
+	outputDir := path.Dir(outputPath)
+	if err := os.MkdirAll(outputDir, os.ModePerm); err != nil {
+		return fmt.Errorf("failed to create directory %s: %w", outputDir, err)
+	}
+
+	content := buff.Bytes()
+	formattedContent, err := format.Source(content)
+	if err != nil {
+		fmt.Printf("failed to format source: %s: %v\n", filePath, err)
+	} else {
+		content = formattedContent
+	}
+
+	if err := os.WriteFile(outputPath, content, 0644); err != nil {
+		return fmt.Errorf("failed to write file %s: %w", filePath, err)
+	}
+	return nil
+}
+
 func renderTemplate(name string, filePath string, data interface{}) error {
 	_, filename, _, ok := runtime.Caller(0)
 	if !ok {
@@ -48,24 +69,8 @@ func renderTemplate(name string, filePath string, data interface{}) error {
 	if err := tpl.Execute(&buff, data); err != nil {
 		return fmt.Errorf("failed to execute template: %w", err)
 	}
-	outputPath := path.Join(dir, "../..", filePath)
-	outputDir := path.Dir(outputPath)
-	if err := os.MkdirAll(outputDir, os.ModePerm); err != nil {
-		return fmt.Errorf("failed to create directory %s: %w", outputDir, err)
-	}
 
-	content := buff.Bytes()
-	formattedContent, err := format.Source(buff.Bytes())
-	if err != nil {
-		fmt.Printf("failed to format source: %s: %v\n", outputPath, err)
-	} else {
-		content = formattedContent
-	}
-
-	if err := os.WriteFile(filePath, content, 0644); err != nil {
-		return fmt.Errorf("failed to write file %s: %w", outputPath, err)
-	}
-	return nil
+	return writeTemplateContentToFile(dir, filePath, buff)
 }
 
 func (resource *Resource) generate() error {
