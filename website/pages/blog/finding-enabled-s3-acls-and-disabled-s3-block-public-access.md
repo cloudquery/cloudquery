@@ -62,7 +62,7 @@ To check for this setting on accounts in CloudQuery, we can use the following qu
 
 ```sql
 SELECT * 
-fROM aws_s3_accounts 
+FROM aws_s3_accounts 
 WHERE block_public_acls is false 
 or block_public_policy is false 
 or ignore_public_acls is false 
