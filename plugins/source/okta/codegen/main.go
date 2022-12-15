@@ -8,12 +8,15 @@ import (
 	"log"
 	"os"
 	"path"
+	"reflect"
 	"runtime"
 	"strings"
 	"text/template"
 
 	"github.com/cloudquery/cloudquery/plugins/source/okta/codegen/recipes"
 	"github.com/cloudquery/plugin-sdk/codegen"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/okta/okta-sdk-golang/v3/okta"
 )
 
 //go:embed templates/*.go.tpl
@@ -44,6 +47,25 @@ func main() {
 	}
 }
 
+func nullableTimeTransformer(field reflect.StructField) (schema.ValueType, error) {
+	nt := okta.NullableTime{}
+	switch field.Type {
+	case reflect.TypeOf(nt), reflect.TypeOf(&nt):
+		return schema.TypeTimestamp, nil
+	default:
+		return schema.TypeInvalid, nil
+	}
+}
+
+func nullableTimeResolverTransformer(field reflect.StructField, path string) (string, error) {
+	switch reflect.New(field.Type).Elem().Interface().(type) {
+	case *okta.NullableTime, okta.NullableTime:
+		return `client.ResolveNullableTime("` + path + `")`, nil
+	default:
+		return "", nil
+	}
+}
+
 func generateTable(basedir string, r recipes.Resource) {
 	var err error
 
@@ -54,6 +76,8 @@ func generateTable(basedir string, r recipes.Resource) {
 		codegen.WithSkipFields(r.SkipFields),
 		codegen.WithExtraColumns(r.ExtraColumns),
 		codegen.WithPKColumns(r.PKColumns...),
+		codegen.WithTypeTransformer(nullableTimeTransformer),
+		codegen.WithResolverTransformer(nullableTimeResolverTransformer),
 	}
 	if r.UnwrapEmbeddedStructs {
 		opts = append(opts, codegen.WithUnwrapAllEmbeddedStructs())

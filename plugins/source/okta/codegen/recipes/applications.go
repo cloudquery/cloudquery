@@ -3,7 +3,7 @@ package recipes
 import (
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/okta/okta-sdk-golang/v2/okta"
+	"github.com/okta/okta-sdk-golang/v3/okta"
 )
 
 func Applications() []*Resource {

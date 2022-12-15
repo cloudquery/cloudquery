@@ -22,3 +22,6 @@ The primary key for this table is **id**.
 |status_changed|Timestamp|
 |transitioning_to_status|String|
 |type|JSON|
+|_embedded|JSON|
+|_links|JSON|
+|additional_properties|JSON|

@@ -19,3 +19,6 @@ This table depends on [okta_applications](okta_applications.md).
 |id (PK)|String|
 |last_updated|Timestamp|
 |priority|Int|
+|_embedded|JSON|
+|_links|JSON|
+|additional_properties|JSON|

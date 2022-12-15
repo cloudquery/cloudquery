@@ -27,11 +27,6 @@ func Applications() *schema.Table {
 				Resolver: schema.PathResolver("Created"),
 			},
 			{
-				Name:     "credentials",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Credentials"),
-			},
-			{
 				Name:     "features",
 				Type:     schema.TypeStringArray,
 				Resolver: schema.PathResolver("Features"),
@@ -60,16 +55,6 @@ func Applications() *schema.Table {
 				Resolver: schema.PathResolver("Licensing"),
 			},
 			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
-			},
-			{
-				Name:     "settings",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Settings"),
-			},
-			{
 				Name:     "sign_on_mode",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("SignOnMode"),
@@ -83,6 +68,21 @@ func Applications() *schema.Table {
 				Name:     "visibility",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Visibility"),
+			},
+			{
+				Name:     "_embedded",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Embedded"),
+			},
+			{
+				Name:     "_links",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Links"),
+			},
+			{
+				Name:     "additional_properties",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("AdditionalProperties"),
 			},
 		},
 

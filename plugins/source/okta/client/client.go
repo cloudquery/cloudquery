@@ -8,8 +8,9 @@ import (
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
-	"github.com/okta/okta-sdk-golang/v2/okta"
+	"github.com/okta/okta-sdk-golang/v3/okta"
 	"github.com/rs/zerolog"
+	"github.com/thoas/go-funk"
 )
 
 type Client struct {
@@ -45,7 +46,7 @@ func New(logger zerolog.Logger, s specs.Source, services Services) *Client {
 	}
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.ClientMeta, error) {
+func Configure(_ context.Context, logger zerolog.Logger, s specs.Source) (schema.ClientMeta, error) {
 	oktaSpec := &Spec{}
 	if err := s.UnmarshalSpec(oktaSpec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal okta spec: %w", err)
@@ -64,14 +65,33 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (sche
 		return nil, errors.New(`failed to configure provider, please set your okta "domain" in okta.yml`)
 	}
 
-	_, c, err := okta.NewClient(context.Background(), okta.WithOrgUrl(oktaSpec.Domain), okta.WithToken(oktaToken), okta.WithCache(true))
-	if err != nil {
-		return nil, err
-	}
+	cf := okta.NewConfiguration(
+		okta.WithOrgUrl(oktaSpec.Domain),
+		okta.WithToken(oktaToken),
+		okta.WithCache(true),
+	)
+	c := okta.NewAPIClient(cf)
 
 	return New(logger, s, Services{
-		Applications: c.Application,
-		Groups:       c.Group,
-		Users:        c.User,
+		Applications: c.ApplicationApi,
+		Groups:       c.GroupApi,
+		Users:        c.UserApi,
 	}), nil
+}
+
+func ResolveNullableTime(path string) schema.ColumnResolver {
+	return func(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+		data := funk.Get(resource.Item, path)
+		if data == nil {
+			return nil
+		}
+		ts, ok := data.(okta.NullableTime)
+		if !ok {
+			return fmt.Errorf("unexpected type, want \"okta.NullableTime\", have \"%T\"", data)
+		}
+		if !ts.IsSet() {
+			return resource.Set(c.Name, nil)
+		}
+		return resource.Set(c.Name, ts.Get())
+	}
 }

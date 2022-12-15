@@ -1,18 +1,7 @@
-# Generate mocks for mock/unit testing 
-.PHONY: gen-mocks
-gen-mocks:
-	go generate ./client/...
-
 # Test unit
 .PHONY: test
 test:
 	go test -timeout 3m ./...
-
-# Install tools
-.PHONY: install-tools
-install-tools:
-	@echo Installing tools from tools/tool.go
-	@cat tools/tool.go | grep _ | awk -F'"' '{print $$2}' | xargs -tI % go install %
 
 .PHONY: lint
 lint:

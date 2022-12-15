@@ -49,6 +49,21 @@ func Groups() *schema.Table {
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Type"),
 			},
+			{
+				Name:     "_embedded",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Embedded"),
+			},
+			{
+				Name:     "_links",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Links"),
+			},
+			{
+				Name:     "additional_properties",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("AdditionalProperties"),
+			},
 		},
 
 		Relations: []*schema.Table{

@@ -1,7 +1,7 @@
 package recipes
 
 import (
-	"github.com/okta/okta-sdk-golang/v2/okta"
+	"github.com/okta/okta-sdk-golang/v3/okta"
 )
 
 func Users() []*Resource {

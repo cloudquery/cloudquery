@@ -42,6 +42,21 @@ func ApplicationGroupAssignments() *schema.Table {
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("Priority"),
 			},
+			{
+				Name:     "_embedded",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Embedded"),
+			},
+			{
+				Name:     "_links",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Links"),
+			},
+			{
+				Name:     "additional_properties",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("AdditionalProperties"),
+			},
 		},
 	}
 }

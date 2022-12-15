@@ -3,6 +3,7 @@
 package users
 
 import (
+	"github.com/cloudquery/cloudquery/plugins/source/okta/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -14,7 +15,7 @@ func Users() *schema.Table {
 			{
 				Name:     "activated",
 				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("Activated"),
+				Resolver: client.ResolveNullableTime("Activated"),
 			},
 			{
 				Name:     "created",
@@ -37,7 +38,7 @@ func Users() *schema.Table {
 			{
 				Name:     "last_login",
 				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("LastLogin"),
+				Resolver: client.ResolveNullableTime("LastLogin"),
 			},
 			{
 				Name:     "last_updated",
@@ -47,7 +48,7 @@ func Users() *schema.Table {
 			{
 				Name:     "password_changed",
 				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("PasswordChanged"),
+				Resolver: client.ResolveNullableTime("PasswordChanged"),
 			},
 			{
 				Name:     "profile",
@@ -62,7 +63,7 @@ func Users() *schema.Table {
 			{
 				Name:     "status_changed",
 				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("StatusChanged"),
+				Resolver: client.ResolveNullableTime("StatusChanged"),
 			},
 			{
 				Name:     "transitioning_to_status",
@@ -73,6 +74,21 @@ func Users() *schema.Table {
 				Name:     "type",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Type"),
+			},
+			{
+				Name:     "_embedded",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Embedded"),
+			},
+			{
+				Name:     "_links",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Links"),
+			},
+			{
+				Name:     "additional_properties",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("AdditionalProperties"),
 			},
 		},
 	}

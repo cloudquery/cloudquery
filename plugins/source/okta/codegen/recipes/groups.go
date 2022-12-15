@@ -4,7 +4,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/okta/resources/services/groups/models"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/okta/okta-sdk-golang/v2/okta"
+	"github.com/okta/okta-sdk-golang/v3/okta"
 )
 
 func Groups() []*Resource {

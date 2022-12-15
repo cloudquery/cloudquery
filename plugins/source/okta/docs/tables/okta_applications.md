@@ -19,14 +19,14 @@ The following tables depend on okta_applications:
 |profile|JSON|
 |accessibility|JSON|
 |created|Timestamp|
-|credentials|JSON|
 |features|StringArray|
 |id (PK)|String|
 |label|String|
 |last_updated|Timestamp|
 |licensing|JSON|
-|name|String|
-|settings|JSON|
 |sign_on_mode|String|
 |status|String|
 |visibility|JSON|
+|_embedded|JSON|
+|_links|JSON|
+|additional_properties|JSON|

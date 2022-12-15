@@ -27,3 +27,6 @@ This table depends on [okta_applications](okta_applications.md).
 |status|String|
 |status_changed|Timestamp|
 |sync_state|String|
+|_embedded|JSON|
+|_links|JSON|
+|additional_properties|JSON|

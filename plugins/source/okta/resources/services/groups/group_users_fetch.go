@@ -6,15 +6,16 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/okta/client"
 	"github.com/cloudquery/cloudquery/plugins/source/okta/resources/services/groups/models"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/okta/okta-sdk-golang/v2/okta"
-	"github.com/okta/okta-sdk-golang/v2/okta/query"
+	"github.com/okta/okta-sdk-golang/v3/okta"
 )
 
 func fetchGroupUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
-	grp := parent.Item.(*okta.Group)
+	grp := parent.Item.(okta.Group)
 
-	items, resp, err := cl.Services.Groups.ListGroupUsers(ctx, grp.Id, query.NewQueryParams(query.WithLimit(200), query.WithAfter("")))
+	req := cl.Services.Groups.ListGroupUsers(ctx, *grp.Id).Limit(200)
+
+	items, resp, err := cl.Services.Groups.ListGroupUsersExecute(req)
 	if err != nil {
 		return err
 	}
@@ -25,8 +26,8 @@ func fetchGroupUsers(ctx context.Context, meta schema.ClientMeta, parent *schema
 	res <- convertGroupUsers(items)
 
 	for resp != nil && resp.HasNextPage() {
-		var nextItems []*okta.User
-		resp, err = resp.Next(ctx, &nextItems)
+		var nextItems []okta.User
+		resp, err = resp.Next(&nextItems)
 		if err != nil {
 			return err
 		}
@@ -35,11 +36,11 @@ func fetchGroupUsers(ctx context.Context, meta schema.ClientMeta, parent *schema
 	return nil
 }
 
-func convertGroupUsers(list []*okta.User) []*models.GroupUser {
-	res := make([]*models.GroupUser, len(list))
+func convertGroupUsers(list []okta.User) []models.GroupUser {
+	res := make([]models.GroupUser, len(list))
 	for i := range list {
-		res[i] = &models.GroupUser{
-			Id: list[i].Id,
+		res[i] = models.GroupUser{
+			Id: *list[i].Id,
 		}
 	}
 	return res
