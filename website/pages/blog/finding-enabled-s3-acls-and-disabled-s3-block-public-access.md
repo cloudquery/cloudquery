@@ -119,5 +119,5 @@ If you have comments or questions about S3 security or using CloudQuery, we woul
 
 [AWS News Blog: Amazon S3 Block Public Access](https://aws.amazon.com/blogs/aws/amazon-s3-block-public-access-another-layer-of-protection-for-your-accounts-and-buckets/) 
 
-[AWS S3: Controlling ownership of objects and disabling ACLs for your bucket](https://www.notion.so/S3-Default-Security-Settings-fccf5796981b419a8a593430765e8097)
+[AWS S3: Controlling ownership of objects and disabling ACLs for your bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/about-object-ownership.html)
 
