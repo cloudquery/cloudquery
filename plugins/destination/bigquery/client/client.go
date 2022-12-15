@@ -16,6 +16,7 @@ type Client struct {
 	logger     zerolog.Logger
 	spec       specs.Destination
 	metrics    plugins.DestinationMetrics
+	batchSize  int
 	pluginSpec Spec
 }
 
@@ -37,7 +38,7 @@ func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination)
 	}
 
 	c.pluginSpec = spec
-
+	c.batchSize = spec.BatchSize
 	// create a client to test that we can do it, but new clients will also be instantiated
 	// for queries so that we can use a new context there.
 	client, err := c.bqClient(ctx)
