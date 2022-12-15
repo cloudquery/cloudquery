@@ -21,7 +21,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/cloudfront v1.22.0
 	github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.13.22
 	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.21.0
-	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.22.1
+	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.23.0
 	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.17.2
 	github.com/aws/aws-sdk-go-v2/service/codebuild v1.19.20
 	github.com/aws/aws-sdk-go-v2/service/codepipeline v1.13.20
@@ -58,7 +58,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/iot v1.32.1
 	github.com/aws/aws-sdk-go-v2/service/kafka v1.18.1
 	github.com/aws/aws-sdk-go-v2/service/kinesis v1.15.25
-	github.com/aws/aws-sdk-go-v2/service/kms v1.19.2
+	github.com/aws/aws-sdk-go-v2/service/kms v1.19.3
 	github.com/aws/aws-sdk-go-v2/service/lambda v1.26.1
 	github.com/aws/aws-sdk-go-v2/service/lightsail v1.24.1
 	github.com/aws/aws-sdk-go-v2/service/mq v1.13.17
@@ -95,7 +95,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/xray v1.15.2
 	github.com/aws/smithy-go v1.13.5
 	github.com/basgys/goxml2json v1.1.0
-	github.com/cloudquery/plugin-sdk v1.12.3
+	github.com/cloudquery/plugin-sdk v1.12.5
 	github.com/gocarina/gocsv v0.0.0-20221105105431-c8ef78125b99
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.9

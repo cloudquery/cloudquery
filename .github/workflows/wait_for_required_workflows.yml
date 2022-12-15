@@ -56,6 +56,7 @@ jobs:
                            "plugins/source/tailscale",
                            "plugins/source/terraform",
                            "plugins/source/test",
+                           "plugins/source/vercel",
                            
                            "plugins/destination/postgresql",
                            "plugins/destination/test",

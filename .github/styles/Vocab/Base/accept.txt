@@ -90,6 +90,8 @@ SRE
 SREs
 API
 APIs
+ACL
+ACLs
 NACL
 NACLs
 CSPM
@@ -158,3 +160,5 @@ CMKs
 serverless
 GitLab
 tailnet
+tailnet
+Vercel

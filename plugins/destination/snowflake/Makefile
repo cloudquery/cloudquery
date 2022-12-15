@@ -8,7 +8,7 @@ test:
 
 .PHONY: lint
 lint:
-	@golangci-lint run --config ../../.golangci.yml --timeout 10m --verbose
+	golangci-lint run --config ../../.golangci.yml
 
 .PHONY: release-dry-run
 release-dry-run:

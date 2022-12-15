@@ -1,5 +1,5 @@
 ---
-title: Introducing The Gandi Source Plugin
+title: Introducing the Gandi Source Plugin
 tag: announcement
 date: 2022/12/01
 description: >-
@@ -21,7 +21,7 @@ CloudQuery now supports pulling domain and DNS resources from [Gandi](https://ga
 
 Take a look at our [Configuration](/docs/plugins/sources/gandi/configuration) section to configure required credentials for the plugin.
 
-Below are some real world query examples to get you started.
+Below are some query examples to get you started.
 
 ## Detect domain registrations that will expire soon
 
