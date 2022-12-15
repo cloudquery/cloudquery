@@ -127,6 +127,8 @@ SDK
 serverless
 Severability
 skip_tables
+snyk
+Snyk
 SRE
 SREs
 Steampipe
