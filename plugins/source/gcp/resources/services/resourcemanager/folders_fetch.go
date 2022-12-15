@@ -4,7 +4,6 @@ import (
 	"context"
 	"strings"
 
-	"github.com/pkg/errors"
 	"google.golang.org/api/iterator"
 
 	resourcemanager "cloud.google.com/go/resourcemanager/apiv3"
@@ -18,7 +17,7 @@ func fetchFolders(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 
 	fClient, err := resourcemanager.NewFoldersClient(ctx, c.ClientOptions...)
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 
 	req := &pb.ListFoldersRequest{
@@ -31,7 +30,7 @@ func fetchFolders(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 			break
 		}
 		if err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 
 		res <- resp
