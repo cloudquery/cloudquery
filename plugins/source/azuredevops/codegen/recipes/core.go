@@ -8,7 +8,7 @@ func init() {
 	resources := []*Resource{
 		{
 			SubService: "projects",
-			Struct:     core.TeamProjectReference{},
+			Struct:     &core.TeamProjectReference{},
 		},
 	}
 
