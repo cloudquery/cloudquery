@@ -1,7 +1,7 @@
 ---
 title: Introducing The Tailscale Source Plugin
 tag: announcement
-date: 2022/12/14
+date: 2022/12/15
 description: >-
   CloudQuery is an open-source, extensible framework that gives you a
   single-pane-of-glass to your cloud-infrastructure using SQL. Today, we are
