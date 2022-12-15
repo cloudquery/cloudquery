@@ -15,6 +15,14 @@ func Organizations() *schema.Table {
 		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{
 			{
+				Name:     "account_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
 				Name:     "arn",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Arn"),

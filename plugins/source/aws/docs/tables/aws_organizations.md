@@ -2,7 +2,7 @@
 
 https://docs.aws.amazon.com/organizations/latest/APIReference/API_Organization.html
 
-The primary key for this table is **arn**.
+The composite primary key for this table is (**account_id**, **arn**).
 
 
 
@@ -13,6 +13,7 @@ The primary key for this table is **arn**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
+|account_id (PK)|String|
 |arn (PK)|String|
 |feature_set|String|
 |id|String|
