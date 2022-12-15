@@ -4,7 +4,7 @@ import (
 	"github.com/microsoft/azure-devops-go-api/azuredevops/v6/core"
 )
 
-func Core() []*Resource {
+func init() {
 	resources := []*Resource{
 		{
 			SubService: "projects",
@@ -16,5 +16,5 @@ func Core() []*Resource {
 		resource.Service = "core"
 	}
 
-	return resources
+	Resources = append(Resources, resources...)
 }

@@ -7,15 +7,12 @@ import (
 )
 
 func main() {
-	var resources []*recipes.Resource
-	resources = append(resources, recipes.Core()...)
-
-	for _, resource := range resources {
+	for _, resource := range recipes.Resources {
 		if err := resource.Generate(); err != nil {
 			log.Fatal(err)
 		}
 	}
-	if err := recipes.GenerateTablesList(resources); err != nil {
+	if err := recipes.GenerateTablesList(recipes.Resources); err != nil {
 		log.Fatal(err)
 	}
 }

@@ -19,6 +19,7 @@ import (
 
 //go:embed templates/*.go.tpl
 var templatesFS embed.FS
+var Resources []*Resource
 
 type Resource struct {
 	Service    string
