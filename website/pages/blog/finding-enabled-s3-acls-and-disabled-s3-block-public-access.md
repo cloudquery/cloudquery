@@ -11,7 +11,7 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 <BlogHeader/>
 
-# Overview
+## Overview
 
 AWS recently [published a blog](https://aws.amazon.com/blogs/aws/heads-up-amazon-s3-security-changes-are-coming-in-april-of-2023/) regarding upcoming S3 security changes coming in April 2023.
 
@@ -26,11 +26,11 @@ This behavior is already default for console and will be default for buckets cre
 
 AWS recommends a deliberate and thoughtful approach to creating new buckets that rely on public buckets or ACLs.  We additionally recommend for customers to standardize existing buckets and settings if possible to enforce S3 Block Public Access on all buckets that do not need to be public and to disable ACLs and utilize IAM as a standard method of managing access to S3.
 
-# Finding Disabled Block Public Access and Enabled ACLs
+## Finding Disabled Block Public Access and Enabled ACLs
 
-## S3 Block Public Access
+### S3 Block Public Access
 
-### S3 Bucket Block Public Access Settings
+#### S3 Bucket Block Public Access Settings
 
 CloudQuery tables: [aws_s3_buckets](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_s3_buckets.md) 
 
@@ -52,7 +52,7 @@ or ignore_public_acls is false
 or restrict_public_buckets is false;
 ```
 
-### Account Level Block Public Access Settings
+#### Account Level Block Public Access Settings
 
 CloudQuery tables: [aws_s3_accounts](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_s3_accounts.md)
 
@@ -69,9 +69,9 @@ or ignore_public_acls is false
 or restrict_public_buckets is false;
 ```
 
-## S3 Access Control Lists (ACLs)
+### S3 Access Control Lists (ACLs)
 
-### Object Ownership Settings
+#### Object Ownership Settings
 
 CloudQuery tables: [aws_s3_buckets](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_s3_buckets.md) and [aws_s3_bucket_grants](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_s3_bucket_grants.md)
 
@@ -91,7 +91,7 @@ WHERE ownership_controls && '{"BucketOwnerPreferred", "ObjectWriter"}'
 
 Note: there seems to be an issue with buckets created via Console with ObjectWriter Object Ownership Settings where the setting doesn’t show up.  We’re following up with AWS on this discrepancy.
 
-### S3 Grants
+#### S3 Grants
 
 To look for Grants that are associated with S3 buckets with enabled ACLs (without disabled ACLs), we will cross reference our S3 buckets from the above query and 
 
@@ -103,7 +103,11 @@ LEFT JOIN aws_s3_buckets
 WHERE ownership_controls && '{"BucketOwnerPreferred", "ObjectWriter"}';
 ```
 
-# References
+## Contact Us
+
+If you have comments or questions about S3 security or using CloudQuery, we would love to hear from you! Reach out to us on [GitHub](https://github.com/cloudquery/cloudquery) or [Discord](https://cloudquery.io/discord)!
+
+## References
 
 [CloudQuery: AWS Source Plugin](https://www.cloudquery.io/docs/plugins/sources/aws/overview)
 
@@ -117,6 +121,3 @@ WHERE ownership_controls && '{"BucketOwnerPreferred", "ObjectWriter"}';
 
 [AWS S3: Controlling ownership of objects and disabling ACLs for your bucket](https://www.notion.so/S3-Default-Security-Settings-fccf5796981b419a8a593430765e8097)
 
-## Contact Us
-
-If you have use cases or custom queries and examples from using CloudQuery, we would love to hear from you! Reach out to us on [GitHub](https://github.com/cloudquery/cloudquery) or [Discord](https://cloudquery.io/discord)!
