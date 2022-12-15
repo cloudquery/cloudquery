@@ -1,5 +1,5 @@
 ---
-title: Announcing The Vercel Source Plugin
+title: Announcing the Vercel Source Plugin
 tag: announcement
 date: 2022/12/14
 description: >-
