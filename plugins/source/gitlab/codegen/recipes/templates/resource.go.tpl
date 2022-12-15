@@ -4,6 +4,7 @@ package {{.Service}}
 
 import (
 	"github.com/cloudquery/plugin-sdk/schema"
+    "github.com/cloudquery/cloudquery/plugins/source/gitlab/client"
 )
 
 func {{.SubService | ToCamel}}() *schema.Table {

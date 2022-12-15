@@ -9,14 +9,13 @@ func Groups() []*Resource {
 		{
 			Service:    "groups",
 			SubService: "groups",
-			PKColumns:  []string{"id", "name"},
+			PKColumns:  []string{"base_url", "id", "name"},
 			Struct:     &gitlab.Group{},
 			Relations:  []string{"GroupMembers()"},
 		},
 		{
 			Service:    "groups",
 			SubService: "group_members",
-			PKColumns:  []string{"id"},
 			Struct:     &gitlab.GroupMember{},
 		},
 	}

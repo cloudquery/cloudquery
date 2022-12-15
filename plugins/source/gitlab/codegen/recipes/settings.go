@@ -9,7 +9,7 @@ func Settings() []*Resource {
 		{
 			Service:    "settings",
 			SubService: "settings",
-			PKColumns:  []string{"id"},
+			PKColumns:  []string{"base_url", "id"},
 			Struct:     &gitlab.Settings{},
 		},
 	}

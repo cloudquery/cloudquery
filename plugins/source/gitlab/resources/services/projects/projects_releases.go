@@ -3,6 +3,7 @@
 package projects
 
 import (
+	"github.com/cloudquery/cloudquery/plugins/source/gitlab/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -11,6 +12,11 @@ func ProjectsReleases() *schema.Table {
 		Name:     "gitlab_projects_releases",
 		Resolver: fetchProjectsReleases,
 		Columns: []schema.Column{
+			{
+				Name:     "base_url",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveURL,
+			},
 			{
 				Name:     "tag_name",
 				Type:     schema.TypeString,

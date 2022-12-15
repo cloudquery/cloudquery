@@ -13,6 +13,7 @@ import (
 	"text/template"
 
 	"github.com/cloudquery/plugin-sdk/codegen"
+	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/iancoleman/strcase"
 )
 
@@ -122,11 +123,11 @@ func (resource *Resource) Generate() error {
 	skipFields = append(skipFields, resource.SkipFields...)
 
 	extraColumns := []codegen.ColumnDefinition{
-		// {
-		// 	Name:     "context",
-		// 	Type:     schema.TypeString,
-		// 	Resolver: `client.ResolveContext`,
-		// },
+		{
+			Name:     "base_url",
+			Type:     schema.TypeString,
+			Resolver: `client.ResolveURL`,
+		},
 		// {
 		// 	Name:     "uid",
 		// 	Type:     schema.TypeString,

@@ -3,6 +3,7 @@
 package groups
 
 import (
+	"github.com/cloudquery/cloudquery/plugins/source/gitlab/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -11,6 +12,14 @@ func Groups() *schema.Table {
 		Name:     "gitlab_groups",
 		Resolver: fetchGroups,
 		Columns: []schema.Column{
+			{
+				Name:     "base_url",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveURL,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
 			{
 				Name:     "id",
 				Type:     schema.TypeInt,

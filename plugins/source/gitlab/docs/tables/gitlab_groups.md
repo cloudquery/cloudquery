@@ -2,7 +2,7 @@
 
 
 
-The composite primary key for this table is (**id**, **name**).
+The composite primary key for this table is (**base_url**, **id**, **name**).
 
 ## Relations
 
@@ -16,6 +16,7 @@ The following tables depend on gitlab_groups:
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
+|base_url (PK)|String|
 |id (PK)|Int|
 |name (PK)|String|
 |path|String|

@@ -2,7 +2,7 @@
 
 
 
-The primary key for this table is **id**.
+The composite primary key for this table is (**base_url**, **id**).
 
 ## Relations
 
@@ -16,6 +16,7 @@ The following tables depend on gitlab_projects:
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
+|base_url (PK)|String|
 |id (PK)|Int|
 |description|String|
 |default_branch|String|

@@ -3,6 +3,7 @@
 package users
 
 import (
+	"github.com/cloudquery/cloudquery/plugins/source/gitlab/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -11,6 +12,14 @@ func Users() *schema.Table {
 		Name:     "gitlab_users",
 		Resolver: fetchUsers,
 		Columns: []schema.Column{
+			{
+				Name:     "base_url",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveURL,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
 			{
 				Name:          "last_activity_on",
 				Type:          schema.TypeJSON,

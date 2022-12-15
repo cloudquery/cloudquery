@@ -15,6 +15,7 @@ This table depends on [gitlab_projects](gitlab_projects.md).
 |_cq_sync_time|Timestamp|
 |_cq_id (PK)|UUID|
 |_cq_parent_id|UUID|
+|base_url|String|
 |tag_name|String|
 |name|String|
 |description|String|

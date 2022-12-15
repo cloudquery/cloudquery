@@ -11,7 +11,7 @@ func Users() []*Resource {
 		{
 			Service:    "users",
 			SubService: "users",
-			PKColumns:  []string{"id"},
+			PKColumns:  []string{"base_url", "id"},
 			Struct:     &gitlab.User{},
 			SkipFields: []string{"LastActivityOn"},
 			ExtraColumns: []codegen.ColumnDefinition{

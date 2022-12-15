@@ -3,6 +3,7 @@
 package groups
 
 import (
+	"github.com/cloudquery/cloudquery/plugins/source/gitlab/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -12,12 +13,14 @@ func GroupMembers() *schema.Table {
 		Resolver: fetchGroupMembers,
 		Columns: []schema.Column{
 			{
+				Name:     "base_url",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveURL,
+			},
+			{
 				Name:     "id",
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
 				Name:     "username",
