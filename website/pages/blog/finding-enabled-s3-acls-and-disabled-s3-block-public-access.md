@@ -81,26 +81,39 @@ There are 3 different settings for object ownership:
 - Bucket owner preferred (ACLs enabled)
 - Object writer (ACLs enabled)
 
-To check for buckets with enabled ACLs (without disabled ACLs), we will look for bucket owner preferred and object writer settings.
+To check for buckets with enabled ACLs (without disabled ACLs), we will look for bucket owner preferred, object writer settings, and empty values for object ownership.  The empty values for object ownership currently correlate to object writer.
 
 ```sql
 SELECT * 
 FROM aws_s3_buckets 
-WHERE ownership_controls && '{"BucketOwnerPreferred", "ObjectWriter"}'
+WHERE ownership_controls &&'{"BucketOwnerPreferred", "ObjectWriter"}' 
+or ownership_controls is NULL;
 ```
 
-Note: there seems to be an issue with buckets created via Console with ObjectWriter Object Ownership Settings where the setting doesn’t show up.  We’re following up with AWS on this discrepancy.
+Note: Buckets created via Console with ObjectWriter Object Ownership Settings and Buckets created via CLI without Object Ownership Setting specified will result in an empty ownership_controls field.  This seems to be a default setting and we're following up with AWS on this discrepancy.
 
-#### S3 Grants
+```
+aws s3api create-bucket --bucket test-json-bucket  --profile myprofile --region us-east-1
+ 
+{
+    "Location": "/test-json-bucket"
+}
+jkao@Jasons-MacBook-Pro ~ % aws s3api get-bucket-ownership-controls --bucket test-json-bucket --profile myprofile
 
-To look for Grants that are associated with S3 buckets with enabled ACLs (without disabled ACLs), we will cross reference our S3 buckets from the above query and 
+An error occurred (OwnershipControlsNotFoundError) when calling the GetBucketOwnershipControls operation: The bucket ownership controls were not found
+```
+
+#### S3 Grants (ACLs)
+
+To look for grants within resource ACLs that are associated with S3 buckets with enabled ACLs (without disabled ACLs), we will cross reference our S3 buckets from the above query with S3 grants.
 
 ```sql
 SELECT * 
 FROM aws_s3_bucket_grants 
 LEFT JOIN aws_s3_buckets 
 	on aws_s3_bucket_grants.bucket_arn = aws_s3_buckets.arn 
-WHERE ownership_controls && '{"BucketOwnerPreferred", "ObjectWriter"}';
+WHERE ownership_controls && '{"BucketOwnerPreferred", "ObjectWriter"}'
+or ownership_controls is NULL;
 ```
 
 ## Contact Us
