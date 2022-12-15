@@ -1,38 +1,54 @@
 package groups
 
 import (
+	"encoding/json"
+	"fmt"
+	"net/http"
 	"testing"
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/gitlab/client"
-	"github.com/cloudquery/cloudquery/plugins/source/gitlab/client/mocks"
 	"github.com/cloudquery/plugin-sdk/faker"
-	"github.com/golang/mock/gomock"
+	"github.com/julienschmidt/httprouter"
 	"github.com/xanzy/go-gitlab"
 )
 
-func buildGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
-	groupMock := mocks.NewMockGroupsClient(ctrl)
+func buildGroups(mux *httprouter.Router) error {
 
 	var group *gitlab.Group
 	if err := faker.FakeObject(&group, faker.WithMaxDepth(10)); err != nil {
-		t.Fatal(err)
+		return err
 	}
 
 	isoTime := gitlab.ISOTime(time.Now())
 	group.MarkedForDeletionOn = &isoTime
-	groupMock.EXPECT().ListGroups(gomock.Any(), gomock.Any()).Return([]*gitlab.Group{group}, &gitlab.Response{}, nil)
+
+	groupResp, err := json.Marshal([]*gitlab.Group{group})
+	if err != nil {
+		return err
+	}
+
+	mux.GET("/api/v4/groups", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+		fmt.Fprint(w, string(groupResp))
+	},
+	)
 
 	var groupMember *gitlab.GroupMember
 	if err := faker.FakeObject(&groupMember, faker.WithMaxDepth(12)); err != nil {
-		t.Fatal(err)
+		return err
 	}
 
 	groupMember.ExpiresAt = &isoTime
-	groupMock.EXPECT().ListGroupMembers(gomock.Any(), gomock.Any()).Return([]*gitlab.GroupMember{groupMember}, &gitlab.Response{}, nil)
-	return client.Services{
-		Groups: groupMock,
+	groupMembers, err := json.Marshal([]*gitlab.GroupMember{groupMember})
+	if err != nil {
+		return err
 	}
+
+	mux.GET("/api/v4/groups/:group/members",
+		func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+			fmt.Fprint(w, string(groupMembers))
+		})
+	return nil
 }
 
 func TestGroups(t *testing.T) {

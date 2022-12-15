@@ -1,30 +1,37 @@
 package users
 
 import (
+	"encoding/json"
+	"fmt"
+	"net/http"
 	"testing"
 
 	"github.com/cloudquery/cloudquery/plugins/source/gitlab/client"
-	"github.com/cloudquery/cloudquery/plugins/source/gitlab/client/mocks"
 	"github.com/cloudquery/plugin-sdk/faker"
-	"github.com/golang/mock/gomock"
+	"github.com/julienschmidt/httprouter"
 	"github.com/xanzy/go-gitlab"
 )
 
-func buildUsers(t *testing.T, ctrl *gomock.Controller) client.Services {
-	userMock := mocks.NewMockUsersClient(ctrl)
-
+func buildUsers(mux *httprouter.Router) error {
 	var user *gitlab.User
 	if err := faker.FakeObject(&user, faker.WithMaxDepth(25)); err != nil {
-		t.Fatal(err)
+		return err
 	}
 
-	userMock.EXPECT().ListUsers(gomock.Any(), gomock.Any()).Return([]*gitlab.User{user}, &gitlab.Response{}, nil)
-
-	return client.Services{
-		Users: userMock,
+	userResp, err := json.Marshal([]*gitlab.User{user})
+	if err != nil {
+		return err
 	}
+
+	mux.GET("/api/v4/users", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+		fmt.Fprint(w, string(userResp))
+	},
+	)
+
+	return nil
+
 }
 
-func TestUsers(t *testing.T) {
+func TestGroups(t *testing.T) {
 	client.GitlabMockTestHelper(t, Users(), buildUsers, client.TestOptions{})
 }
