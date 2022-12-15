@@ -110,15 +110,6 @@ func NewAwsClient(logger zerolog.Logger) Client {
 	}
 }
 
-func (s ServicesPartitionAccountRegionMap) Accounts() []string {
-	accounts := make([]string, 0)
-	for partitions := range s {
-		for account := range s[partitions] {
-			accounts = append(accounts, account)
-		}
-	}
-	return accounts
-}
 func (c *Client) Logger() *zerolog.Logger {
 	return &c.logger
 }

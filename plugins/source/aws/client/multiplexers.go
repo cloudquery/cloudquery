@@ -25,7 +25,7 @@ func getRegion(regionalMap map[string]*Services) string {
 }
 
 func AccountMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
-	var l = make([]schema.ClientMeta, 0)
+	l := make([]schema.ClientMeta, 0)
 	client := meta.(*Client)
 	for partition := range client.ServicesManager.services {
 		for accountID := range client.ServicesManager.services[partition] {
@@ -37,6 +37,22 @@ func AccountMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
 			}
 			l = append(l, client.withPartitionAccountIDAndRegion(partition, accountID, region))
 		}
+	}
+	return l
+}
+
+func PartitionMultiplexer(meta schema.ClientMeta) []schema.ClientMeta {
+	// start with AccountMultiplex and then filter by partition
+	acc := AccountMultiplex(meta)
+	l := make([]schema.ClientMeta, 0)
+	partitions := make(map[string]struct{})
+	for _, a := range acc {
+		ac := a.(*Client)
+		if _, ok := partitions[ac.Partition]; ok {
+			continue
+		}
+		partitions[ac.Partition] = struct{}{}
+		l = append(l, ac)
 	}
 	return l
 }
