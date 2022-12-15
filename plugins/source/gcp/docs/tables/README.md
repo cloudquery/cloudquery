@@ -47,5 +47,6 @@
 - [gcp_secretmanager_secrets](gcp_secretmanager_secrets.md)
 - [gcp_serviceusage_services](gcp_serviceusage_services.md)
 - [gcp_sql_instances](gcp_sql_instances.md)
+  - [gcp_sql_users](gcp_sql_users.md)
 - [gcp_storage_buckets](gcp_storage_buckets.md)
   - [gcp_storage_bucket_policies](gcp_storage_bucket_policies.md)

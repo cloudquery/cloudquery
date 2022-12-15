@@ -5,7 +5,6 @@ import (
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
-	"github.com/pkg/errors"
 	"google.golang.org/api/iam/v1"
 )
 
@@ -19,7 +18,7 @@ func fetchRoles(ctx context.Context, meta schema.ClientMeta, r *schema.Resource,
 	for {
 		output, err := iamClient.Projects.Roles.List(c.ProjectId).PageSize(1000).PageToken(nextPageToken).Do()
 		if err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 		res <- output.Roles
 

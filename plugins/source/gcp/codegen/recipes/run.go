@@ -2,7 +2,7 @@ package recipes
 
 import (
 	run "cloud.google.com/go/run/apiv2"
-	pb "google.golang.org/genproto/googleapis/cloud/run/v2"
+	pb "cloud.google.com/go/run/apiv2/runpb"
 )
 
 func init() {
@@ -16,6 +16,7 @@ func init() {
 			RegisterServer:      pb.RegisterServicesServer,
 			ListFunction:        (&pb.UnimplementedServicesServer{}).ListServices,
 			UnimplementedServer: &pb.UnimplementedServicesServer{},
+			Description:         "https://cloud.google.com/run/docs/reference/rest/v2/projects.locations.services#Service",
 		},
 	}
 
@@ -24,7 +25,7 @@ func init() {
 		resource.Template = "newapi_list"
 		resource.MockTemplate = "newapi_list_grpc_mock"
 		resource.MockImports = []string{"cloud.google.com/go/run/apiv2"}
-		resource.ProtobufImport = "google.golang.org/genproto/googleapis/cloud/run/v2"
+		resource.ProtobufImport = "cloud.google.com/go/run/apiv2/runpb"
 		resource.RequestStructFields = `Parent: "projects/" + c.ProjectId + "locations/-",`
 	}
 

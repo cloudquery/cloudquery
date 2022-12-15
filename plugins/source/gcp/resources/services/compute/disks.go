@@ -16,21 +16,15 @@ import (
 
 func Disks() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_compute_disks",
-		Resolver:  fetchDisks,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_compute_disks",
+		Description: `https://cloud.google.com/compute/docs/reference/rest/v1/disks#Disk`,
+		Resolver:    fetchDisks,
+		Multiplex:   client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
-			},
-			{
-				Name: "self_link",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
 				Name:     "architecture",
@@ -146,6 +140,14 @@ func Disks() *schema.Table {
 				Name:     "satisfies_pzs",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("SatisfiesPzs"),
+			},
+			{
+				Name:     "self_link",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SelfLink"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "size_gb",

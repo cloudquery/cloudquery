@@ -1,6 +1,6 @@
 # Table: gcp_compute_url_maps
 
-
+https://cloud.google.com/compute/docs/reference/rest/v1/urlMaps#UrlMap
 
 The primary key for this table is **self_link**.
 
@@ -14,7 +14,6 @@ The primary key for this table is **self_link**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |project_id|String|
-|self_link (PK)|String|
 |creation_timestamp|String|
 |default_route_action|JSON|
 |default_service|String|
@@ -28,4 +27,5 @@ The primary key for this table is **self_link**.
 |name|String|
 |path_matchers|JSON|
 |region|String|
+|self_link (PK)|String|
 |tests|JSON|

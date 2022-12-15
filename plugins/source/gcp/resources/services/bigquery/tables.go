@@ -10,6 +10,7 @@ import (
 func Tables() *schema.Table {
 	return &schema.Table{
 		Name:                "gcp_bigquery_tables",
+		Description:         `https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#Table`,
 		Resolver:            fetchTables,
 		PreResourceResolver: tableGet,
 		Columns: []schema.Column{

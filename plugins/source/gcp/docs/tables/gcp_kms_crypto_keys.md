@@ -1,6 +1,6 @@
 # Table: gcp_kms_crypto_keys
 
-
+https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys#CryptoKey
 
 The primary key for this table is **_cq_id**.
 

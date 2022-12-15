@@ -3,27 +3,21 @@
 package resourcemanager
 
 import (
-	"context"
-	"google.golang.org/api/iterator"
-
-	pb "google.golang.org/genproto/googleapis/cloud/resourcemanager/v3"
-
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
-
-	"cloud.google.com/go/resourcemanager/apiv3"
 )
 
 func Folders() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_resourcemanager_folders",
-		Resolver:  fetchFolders,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_resourcemanager_folders",
+		Description: `https://cloud.google.com/resource-manager/reference/rest/v3/folders#Folder`,
+		Resolver:    fetchFolders,
+		Multiplex:   client.OrgMultiplex,
 		Columns: []schema.Column{
 			{
-				Name:     "project_id",
+				Name:     "organization_id",
 				Type:     schema.TypeString,
-				Resolver: client.ResolveProject,
+				Resolver: resolveOrganizationId,
 			},
 			{
 				Name:     "name",
@@ -67,27 +61,4 @@ func Folders() *schema.Table {
 			},
 		},
 	}
-}
-
-func fetchFolders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	c := meta.(*client.Client)
-	req := &pb.ListFoldersRequest{}
-	gcpClient, err := resourcemanager.NewFoldersClient(ctx, c.ClientOptions...)
-	if err != nil {
-		return err
-	}
-	it := gcpClient.ListFolders(ctx, req, c.CallOptions...)
-	for {
-		resp, err := it.Next()
-		if err == iterator.Done {
-			break
-		}
-		if err != nil {
-			return err
-		}
-
-		res <- resp
-
-	}
-	return nil
 }

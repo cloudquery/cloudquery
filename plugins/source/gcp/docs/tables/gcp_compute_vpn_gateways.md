@@ -1,6 +1,6 @@
 # Table: gcp_compute_vpn_gateways
 
-
+https://cloud.google.com/compute/docs/reference/rest/v1/vpnGateways#VpnGateway
 
 The primary key for this table is **self_link**.
 
@@ -14,7 +14,6 @@ The primary key for this table is **self_link**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |project_id|String|
-|self_link (PK)|String|
 |creation_timestamp|String|
 |description|String|
 |id|Int|
@@ -24,5 +23,6 @@ The primary key for this table is **self_link**.
 |name|String|
 |network|String|
 |region|String|
+|self_link (PK)|String|
 |stack_type|String|
 |vpn_interfaces|JSON|

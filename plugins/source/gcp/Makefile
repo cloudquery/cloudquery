@@ -1,7 +1,7 @@
 # Generate mocks for mock/unit testing 
-.PHONY: generate-mocks
-generate-mocks:
-	go generate ./client/services/...
+.PHONY: gen-mocks
+gen-mocks:
+	go generate ./client/...
 
 .PHONY: test
 test:
@@ -15,7 +15,7 @@ install-tools:
 
 .PHONY: lint
 lint:
-	@golangci-lint run --timeout 10m --verbose
+	golangci-lint run --config ../../.golangci.yml
 
 .PHONY: gen-docs
 gen-docs:
