@@ -5,7 +5,6 @@ import (
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
-	"github.com/pkg/errors"
 	"google.golang.org/api/dns/v1"
 )
 
@@ -19,7 +18,7 @@ func fetchManagedZones(ctx context.Context, meta schema.ClientMeta, r *schema.Re
 	for {
 		output, err := dnsClient.ManagedZones.List(c.ProjectId).PageToken(nextPageToken).Do()
 		if err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 		res <- output.ManagedZones
 
