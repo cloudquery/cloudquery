@@ -144,6 +144,7 @@ func generatedTables() []*schema.Table {
 		compute.Snapshots(),
 		compute.VirtualMachineScaleSets(),
 		compute.VirtualMachines(),
+		compute.Skus(),
 		confluent.MarketplaceAgreements(),
 		connectedvmware.Clusters(),
 		connectedvmware.Datastores(),

@@ -22,7 +22,7 @@ gen-docs:
 
 .PHONY: lint
 lint:
-	golangci-lint run
+	golangci-lint run --config ../../.golangci.yml
 
 # All gen targets
 .PHONY: gen

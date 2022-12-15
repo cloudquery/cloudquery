@@ -16,21 +16,15 @@ import (
 
 func TargetHttpProxies() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_compute_target_http_proxies",
-		Resolver:  fetchTargetHttpProxies,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_compute_target_http_proxies",
+		Description: `https://cloud.google.com/compute/docs/reference/rest/v1/targetHttpProxies#TargetHttpProxy`,
+		Resolver:    fetchTargetHttpProxies,
+		Multiplex:   client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
-			},
-			{
-				Name: "self_link",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
 				Name:     "creation_timestamp",
@@ -71,6 +65,14 @@ func TargetHttpProxies() *schema.Table {
 				Name:     "region",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Region"),
+			},
+			{
+				Name:     "self_link",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SelfLink"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "url_map",

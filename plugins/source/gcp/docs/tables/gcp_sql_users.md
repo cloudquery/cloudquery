@@ -1,6 +1,6 @@
 # Table: gcp_sql_users
 
-
+https://cloud.google.com/sql/docs/mysql/admin-api/rest/v1beta4/users#User
 
 The composite primary key for this table is (**project_id**, **instance**, **name**).
 
@@ -16,12 +16,12 @@ This table depends on [gcp_sql_instances](gcp_sql_instances.md).
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |project_id (PK)|String|
-|instance (PK)|String|
-|name (PK)|String|
 |dual_password_type|String|
 |etag|String|
 |host|String|
+|instance (PK)|String|
 |kind|String|
+|name (PK)|String|
 |password|String|
 |password_policy|JSON|
 |project|String|

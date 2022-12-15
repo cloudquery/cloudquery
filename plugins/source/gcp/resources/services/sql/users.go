@@ -9,30 +9,15 @@ import (
 
 func Users() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_sql_users",
-		Resolver:  fetchUsers,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_sql_users",
+		Description: `https://cloud.google.com/sql/docs/mysql/admin-api/rest/v1beta4/users#User`,
+		Resolver:    fetchUsers,
+		Multiplex:   client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "instance",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Instance"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
@@ -53,9 +38,25 @@ func Users() *schema.Table {
 				Resolver: schema.PathResolver("Host"),
 			},
 			{
+				Name:     "instance",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Instance"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
 				Name:     "kind",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Kind"),
+			},
+			{
+				Name:     "name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Name"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "password",

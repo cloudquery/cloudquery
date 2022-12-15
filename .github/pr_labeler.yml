@@ -28,6 +28,8 @@ okta:
   - plugins/source/okta/**/*
 terraform:
   - plugins/source/terraform/**/*
+vercel:
+  - plugins/source/vercel/**/*
 postgresql:
   - plugins/destination/postgresql/**/*
 sqlite:
