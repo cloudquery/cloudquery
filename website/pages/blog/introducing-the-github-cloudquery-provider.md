@@ -1,5 +1,5 @@
 ---
-title: Introducing The GitHub CloudQuery Provider
+title: Introducing the GitHub CloudQuery Provider
 tag: announcement
 date: 2022/08/08
 description: >-

@@ -3,7 +3,9 @@ module github.com/cloudquery/cloudquery/plugins/source/azuredevops
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v1.12.3
+	github.com/cloudquery/plugin-sdk v1.12.5
+        github.com/google/uuid v1.3.0
+	github.com/iancoleman/strcase v0.2.0
 	github.com/microsoft/azure-devops-go-api/azuredevops/v6 v6.0.1
 	github.com/rs/zerolog v1.28.0
 )
@@ -12,7 +14,6 @@ require (
 	github.com/getsentry/sentry-go v0.15.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
-	github.com/google/uuid v1.3.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/providers/zerolog/v2 v2.0.0-rc.3 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.0-rc.3 // indirect
 	github.com/inconshreveable/mousetrap v1.0.1 // indirect
@@ -22,6 +23,7 @@ require (
 	github.com/spf13/cobra v1.6.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/thoas/go-funk v0.9.2 // indirect
+	golang.org/x/exp v0.0.0-20221126150942-6ab00d035af9 // indirect
 	golang.org/x/net v0.2.0 // indirect
 	golang.org/x/sync v0.1.0 // indirect
 	golang.org/x/sys v0.2.0 // indirect
