@@ -64,5 +64,6 @@
   "introducing-the-gandi-source-plugin": "Introducing The Gandi Source Plugin",
   "announcing-cloudquery-bigquery-destination": "Announcing the CloudQuery BigQuery Destination Plugin",
   "analysing-gcp-cost-with-bigquery-and-cq": "Analysing GCP Cost with BigQuery and CloudQuery",
-  "introducing-the-tailscale-source-plugin": "Introducing The Tailscale Source Plugin"
+  "introducing-the-tailscale-source-plugin": "Introducing The Tailscale Source Plugin",
+  "announcing-the-vercel-source-plugin": "Announcing the Vercel Source Plugin"
 }
