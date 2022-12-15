@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
+	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/gitlab/client"
 	"github.com/cloudquery/plugin-sdk/faker"
@@ -18,6 +19,8 @@ func buildUsers(mux *httprouter.Router) error {
 		return err
 	}
 
+	isoTime := gitlab.ISOTime(time.Now())
+	user.LastActivityOn = &isoTime
 	userResp, err := json.Marshal([]*gitlab.User{user})
 	if err != nil {
 		return err
