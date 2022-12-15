@@ -14,9 +14,6 @@ func fetchOrganizationsOrganizations(ctx context.Context, meta schema.ClientMeta
 	if err != nil {
 		return err
 	}
-	if o == nil || o.Organization == nil {
-		return nil
-	}
 
 	res <- o.Organization
 	return nil
