@@ -13,8 +13,9 @@
   "troubleshooting": "Troubleshooting",
   "support": "Support",
   "changelog": {
-    "title": "Changelog",
+    "title": "Changelog ↗",
     "href": "https://github.com/cloudquery/cloudquery/blob/main/cli/CHANGELOG.md",
-    "newWindow": true
+    "newWindow": true,
+    "route": "https://github.com/cloudquery/cloudquery/blob/main/cli/CHANGELOG.md"
   }
 }
