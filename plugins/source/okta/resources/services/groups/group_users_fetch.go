@@ -13,9 +13,9 @@ func fetchGroupUsers(ctx context.Context, meta schema.ClientMeta, parent *schema
 	cl := meta.(*client.Client)
 	grp := parent.Item.(okta.Group)
 
-	req := cl.Services.Groups.ListGroupUsers(ctx, *grp.Id).Limit(200)
+	req := cl.Okta.GroupApi.ListGroupUsers(ctx, *grp.Id).Limit(200)
 
-	items, resp, err := cl.Services.Groups.ListGroupUsersExecute(req)
+	items, resp, err := cl.Okta.GroupApi.ListGroupUsersExecute(req)
 	if err != nil {
 		return err
 	}

@@ -15,7 +15,6 @@ This table depends on [okta_applications](okta_applications.md).
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |app_id (PK)|String|
-|profile|JSON|
 |created|Timestamp|
 |credentials|JSON|
 |external_id|String|
@@ -23,6 +22,7 @@ This table depends on [okta_applications](okta_applications.md).
 |last_sync|Timestamp|
 |last_updated|Timestamp|
 |password_changed|Timestamp|
+|profile|JSON|
 |scope|String|
 |status|String|
 |status_changed|Timestamp|

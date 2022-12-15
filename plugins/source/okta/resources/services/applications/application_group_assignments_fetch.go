@@ -12,8 +12,8 @@ func fetchApplicationGroupAssignments(ctx context.Context, meta schema.ClientMet
 	cl := meta.(*client.Client)
 	app := parent.Item.(*okta.Application)
 
-	req := cl.Services.Applications.ListApplicationGroupAssignments(ctx, *app.Id).Limit(200)
-	items, resp, err := cl.Services.Applications.ListApplicationGroupAssignmentsExecute(req)
+	req := cl.Okta.ApplicationApi.ListApplicationGroupAssignments(ctx, *app.Id).Limit(200)
+	items, resp, err := cl.Okta.ApplicationApi.ListApplicationGroupAssignmentsExecute(req)
 	if err != nil {
 		return err
 	}

@@ -15,10 +15,10 @@ This table depends on [okta_applications](okta_applications.md).
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |app_id (PK)|String|
-|profile|JSON|
 |id (PK)|String|
 |last_updated|Timestamp|
 |priority|Int|
+|profile|JSON|
 |_embedded|JSON|
 |_links|JSON|
 |additional_properties|JSON|

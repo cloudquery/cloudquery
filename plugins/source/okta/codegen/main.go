@@ -47,7 +47,7 @@ func main() {
 	}
 }
 
-func nullableTimeTransformer(field reflect.StructField) (schema.ValueType, error) {
+func oktaTypeTransformer(field reflect.StructField) (schema.ValueType, error) {
 	nt := okta.NullableTime{}
 	switch field.Type {
 	case reflect.TypeOf(nt), reflect.TypeOf(&nt):
@@ -57,7 +57,7 @@ func nullableTimeTransformer(field reflect.StructField) (schema.ValueType, error
 	}
 }
 
-func nullableTimeResolverTransformer(field reflect.StructField, path string) (string, error) {
+func oktaResolverTransformer(field reflect.StructField, path string) (string, error) {
 	switch reflect.New(field.Type).Elem().Interface().(type) {
 	case *okta.NullableTime, okta.NullableTime:
 		return `client.ResolveNullableTime("` + path + `")`, nil
@@ -76,8 +76,8 @@ func generateTable(basedir string, r recipes.Resource) {
 		codegen.WithSkipFields(r.SkipFields),
 		codegen.WithExtraColumns(r.ExtraColumns),
 		codegen.WithPKColumns(r.PKColumns...),
-		codegen.WithTypeTransformer(nullableTimeTransformer),
-		codegen.WithResolverTransformer(nullableTimeResolverTransformer),
+		codegen.WithTypeTransformer(oktaTypeTransformer),
+		codegen.WithResolverTransformer(oktaResolverTransformer),
 	}
 	if r.UnwrapEmbeddedStructs {
 		opts = append(opts, codegen.WithUnwrapAllEmbeddedStructs())

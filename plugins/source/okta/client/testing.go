@@ -11,10 +11,11 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/golang/mock/gomock"
+	"github.com/okta/okta-sdk-golang/v3/okta"
 	"github.com/rs/zerolog"
 )
 
-func MockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, *gomock.Controller) Services) {
+func MockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, *gomock.Controller) *okta.APIClient) {
 	version := "vDev"
 
 	t.Helper()

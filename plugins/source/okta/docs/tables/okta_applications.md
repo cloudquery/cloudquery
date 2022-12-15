@@ -16,7 +16,6 @@ The following tables depend on okta_applications:
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|profile|JSON|
 |accessibility|JSON|
 |created|Timestamp|
 |features|StringArray|
@@ -24,6 +23,7 @@ The following tables depend on okta_applications:
 |label|String|
 |last_updated|Timestamp|
 |licensing|JSON|
+|profile|JSON|
 |sign_on_mode|String|
 |status|String|
 |visibility|JSON|

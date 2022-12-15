@@ -11,8 +11,8 @@ import (
 func fetchApplications(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
 
-	req := cl.Services.Applications.ListApplications(ctx).Limit(200)
-	items, resp, err := cl.Services.Applications.ListApplicationsExecute(req)
+	req := cl.Okta.ApplicationApi.ListApplications(ctx).Limit(200)
+	items, resp, err := cl.Okta.ApplicationApi.ListApplicationsExecute(req)
 	if err != nil {
 		return err
 	}

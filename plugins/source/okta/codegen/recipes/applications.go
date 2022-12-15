@@ -12,30 +12,16 @@ func Applications() []*Resource {
 			DataStruct: &okta.Application{},
 			PKColumns:  []string{"id"},
 			Service:    "applications",
-			SkipFields: []string{"Profile"},
-			ExtraColumns: []codegen.ColumnDefinition{
-				{
-					Name:     "profile",
-					Type:     schema.TypeJSON,
-					Resolver: `schema.PathResolver("Profile")`,
-				},
-			},
-			Relations: []string{"ApplicationUsers()", "ApplicationGroupAssignments()"},
+			Relations:  []string{"ApplicationUsers()", "ApplicationGroupAssignments()"},
 		},
 		{
 			DataStruct: &okta.AppUser{},
 			PKColumns:  []string{"app_id", "id"},
-			SkipFields: []string{"Profile"},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:     "app_id",
 					Type:     schema.TypeString,
 					Resolver: `schema.ParentColumnResolver("id")`,
-				},
-				{
-					Name:     "profile",
-					Type:     schema.TypeJSON,
-					Resolver: `schema.PathResolver("Profile")`,
 				},
 			},
 			Service:               "applications",
@@ -45,17 +31,11 @@ func Applications() []*Resource {
 		{
 			DataStruct: &okta.ApplicationGroupAssignment{},
 			PKColumns:  []string{"app_id", "id"},
-			SkipFields: []string{"Profile"},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:     "app_id",
 					Type:     schema.TypeString,
 					Resolver: `schema.ParentColumnResolver("id")`,
-				},
-				{
-					Name:     "profile",
-					Type:     schema.TypeJSON,
-					Resolver: `schema.PathResolver("Profile")`,
 				},
 			},
 			Service: "applications",

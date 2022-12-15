@@ -11,8 +11,8 @@ import (
 func fetchGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
 
-	req := cl.Services.Groups.ListGroups(ctx).Limit(200)
-	items, resp, err := cl.Services.Groups.ListGroupsExecute(req)
+	req := cl.Okta.GroupApi.ListGroups(ctx).Limit(200)
+	items, resp, err := cl.Okta.GroupApi.ListGroupsExecute(req)
 	if err != nil {
 		return err
 	}

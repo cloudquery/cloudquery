@@ -19,13 +19,7 @@ type Client struct {
 	logger zerolog.Logger
 	spec   specs.Source
 
-	Services Services
-}
-
-type Services struct {
-	Applications ApplicationService
-	Groups       GroupService
-	Users        UserService
+	Okta *okta.APIClient
 }
 
 const exampleDomain = "https://<CHANGE_THIS_TO_YOUR_OKTA_DOMAIN>.okta.com"
@@ -38,11 +32,11 @@ func (c *Client) ID() string {
 	return c.spec.Name
 }
 
-func New(logger zerolog.Logger, s specs.Source, services Services) *Client {
+func New(logger zerolog.Logger, s specs.Source, okt *okta.APIClient) *Client {
 	return &Client{
-		logger:   logger,
-		spec:     s,
-		Services: services,
+		logger: logger,
+		spec:   s,
+		Okta:   okt,
 	}
 }
 
@@ -72,11 +66,7 @@ func Configure(_ context.Context, logger zerolog.Logger, s specs.Source) (schema
 	)
 	c := okta.NewAPIClient(cf)
 
-	return New(logger, s, Services{
-		Applications: c.ApplicationApi,
-		Groups:       c.GroupApi,
-		Users:        c.UserApi,
-	}), nil
+	return New(logger, s, c), nil
 }
 
 func ResolveNullableTime(path string) schema.ColumnResolver {
