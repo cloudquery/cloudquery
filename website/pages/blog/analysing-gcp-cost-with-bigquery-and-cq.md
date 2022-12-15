@@ -1,0 +1,110 @@
+---
+title: Harnessing the Power of BigQuery and CloudQuery for Google Cloud Cost Optimization
+tag: tutorial
+date: 2022/12/15
+description: >-
+  This tutorial will show how to correlate between GCP billing data and CloudQuery
+  data with BigQuery to optimise cost.
+author: yevgenypats
+---
+
+import { BlogHeader } from "../../components/BlogHeader"
+
+<BlogHeader/>
+
+## Introduction
+
+Last week we just announced our [BigQuery destination](/blog/announcing-cloudquery-bigquery-destination) and already saw some interesting use cases around cost we want to share, and also thank our great [community helping with ideas for this blog](https://discord.com/channels/872925471417962546/974029056070795284/1052337892439097474)!
+
+Exporting [GCP billing data to BigQuery](https://cloud.google.com/billing/docs/how-to/export-data-bigquery) is a powerful way to analyse your GCP cost. However, sometimes it is not enough to have the billing data in BigQuery. You also need to correlate it with your cloud infrastructure data. This tutorial will show how to correlate between GCP billing data and CloudQuery data with BigQuery to optimize cost.
+
+## Prerequisites
+
+- [GCP Billing Export to BigQuery](https://cloud.google.com/billing/docs/how-to/export-data-bigquery) is enabled
+- [GCP Source Plugin](https://www.cloudquery.io/docs/plugins/sources/gcp/overview)
+- [BigQuery Destination Plugin](https://www.cloudquery.io/docs/plugins/destinations/bigquery/overview)
+
+## Syncing data
+
+First, we need to sync our GCP data with CloudQuery to the same BigQuery dataset we synced our billing data to. To do that we will use the following CloudQuery configuration file (For full config reference, checkout the [GCP Source Plugin](https://www.cloudquery.io/docs/plugins/sources/gcp/overview) and [BigQuery Destination Plugin](https://www.cloudquery.io/docs/plugins/destinations/bigquery/overview)):
+
+```yaml
+kind: source
+spec:
+  # Source spec section
+  name: "gcp"
+  path: "cloudquery/gcp"
+  version: "VERSION_SOURCE_GCP"
+  destinations: ["bigquery"]
+  spec:
+    # GCP Spec section described below
+    project_ids: ["<project-id>"]
+---
+kind: destination
+spec:
+  name: bigquery
+  path: cloudquery/bigquery
+  version: "VERSION_DESTINATION_BIGQUERY"
+  write_mode: "append"
+  spec:
+    project_id: "<project-id>"
+    dataset_id: costdata
+```
+
+Once the data is synced we will see something like the below in the BigQuery UI:
+
+![BigQuery UI](/images/blog/analysing-gcp-cost-with-bigquery-and-cq/bigquery_billing.png)
+
+You can see all CloudQuery tables prefix with `gcp_` and two GCP billing table prefixed with `gcp_billing_export` and `gcp_billing_export_resource`. In our case the interesting one is `gcp_billing_export_resource` which contains the billing data for each resource so we can join with CloudQuery data easily.
+
+
+## Correlating Billing Data with CloudQuery Data
+
+Now let's dive into some examples.
+
+### Cost of unattached disks
+
+Let's say we want to find all unattached disks and figure out how much they cost.
+
+First let's find all unattached disks by query all disks with `users` field is null (which per [gcp documentation](https://cloud.google.com/compute/docs/reference/rest/v1/disks/get) is the case for unattached disks):
+
+
+```sql
+select * from gcp_compute_disks where users is null
+```
+
+Now let's join with the GCP billing data.
+
+```sql
+SELECT sum(cost) FROM `cq-playground.costdata.gcp_billing_export_resource_v1_0183D4_4E0A4D_60E401` gcp_billing_export_resource 
+  join `cq-playground.costdata.gcp_compute_disks` gcp_compute_disks on 
+  gcp_billing_export_resource.resource.name = gcp_compute_disks.name 
+WHERE DATE(_PARTITIONTIME) = "2022-12-14" and gcp_compute_disks.users is null
+```
+
+This query should give us total of all costs of unattached disks for a specific date, so we don't scan the whole historical table. We can also run this on a date range. 
+
+### Cost of instances by architecture
+
+Let's say we are running an experiment of migrating our workloads to different architecture and we want to compare costs. This can be easily done by the following queries.
+
+
+Calculate cost for `Intel Broadwell` CPU:
+
+```sql
+SELECT sum(cost) FROM `cq-playground.costdata.gcp_billing_export_resource_v1_0183D4_4E0A4D_60E401` gcp_billing_export_resource 
+  join `cq-playground.costdata.gcp_compute_instances` gcp_compute_instances on gcp_billing_export_resource.resource.name = gcp_compute_instances.name 
+
+WHERE DATE(_PARTITIONTIME) = "2022-12-14" and gcp_compute_instances.cpu_platform = "Intel Broadwell"
+```
+
+And you can run the same by replacing `Intel Broadwell` with `AMD Rome` and/or any other architecture.
+
+## Summary
+
+In this short blog post we just shared a sample of what you can do by combining cost data with your infrastructure state/metadata synced by CloudQuery to BigQuery. The number of use cases around cost (aka "FinOps" :) ) is really infinite and it all depends on what you are trying to achieve and optimize for. CloudQuery with BigQuery is a powerful tool for analysis which ensures cheap storage and fast querying on large amount of data.
+
+We hope you enjoyed this tutorial and found it useful. If you have any questions or feedback, please reach out to us on [Discord](https://discord.gg/8qZ7Y4Z) or [Twitter](https://twitter.com/cloudqueryio).
+
+
+

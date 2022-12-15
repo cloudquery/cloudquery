@@ -28,7 +28,7 @@ select name, intended_nameservers, custom_nameservers, nameservers from vercel_d
 ### Get all Vercel team members
 
 ```sql
-select t.name, u.username, u.name, u.role from vercel_teams t join vercel_team_members u on u.team_id=t.id order by 1, 2;
+select t.name AS team, u.username, u.name, u.role from vercel_teams t join vercel_team_members u on u.team_id=t.id order by 1, 2;
 ```
 
 ### Get all Vercel projects
