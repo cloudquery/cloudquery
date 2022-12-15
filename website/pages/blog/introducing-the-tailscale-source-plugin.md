@@ -1,5 +1,5 @@
 ---
-title: Introducing The Tailscale Source Plugin
+title: Introducing the Tailscale Source Plugin
 tag: announcement
 date: 2022/12/15
 description: >-

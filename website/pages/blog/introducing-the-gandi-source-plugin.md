@@ -1,5 +1,5 @@
 ---
-title: Introducing The Gandi Source Plugin
+title: Introducing the Gandi Source Plugin
 tag: announcement
 date: 2022/12/01
 description: >-
