@@ -41,22 +41,6 @@ func AccountMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
 	return l
 }
 
-func PartitionMultiplexer(meta schema.ClientMeta) []schema.ClientMeta {
-	// start with AccountMultiplex and then filter by partition
-	acc := AccountMultiplex(meta)
-	l := make([]schema.ClientMeta, 0)
-	partitions := make(map[string]struct{})
-	for _, a := range acc {
-		ac := a.(*Client)
-		if _, ok := partitions[ac.Partition]; ok {
-			continue
-		}
-		partitions[ac.Partition] = struct{}{}
-		l = append(l, ac)
-	}
-	return l
-}
-
 func ServiceAccountRegionMultiplexer(service string) func(meta schema.ClientMeta) []schema.ClientMeta {
 	return func(meta schema.ClientMeta) []schema.ClientMeta {
 		var l = make([]schema.ClientMeta, 0)

@@ -37,7 +37,7 @@ func OrganizationsResources() []*Resource {
 			Description: "https://docs.aws.amazon.com/organizations/latest/APIReference/API_Organization.html",
 			SkipFields:  []string{"AvailablePolicyTypes"}, // deprecated and misleading field according to docs
 			PKColumns:   []string{"arn"},
-			Multiplex:   `client.PartitionMultiplexer`,
+			Multiplex:   `client.AccountMultiplex`,
 		},
 	}
 

@@ -12,7 +12,7 @@ func Organizations() *schema.Table {
 		Name:        "aws_organizations",
 		Description: `https://docs.aws.amazon.com/organizations/latest/APIReference/API_Organization.html`,
 		Resolver:    fetchOrganizationsOrganizations,
-		Multiplex:   client.PartitionMultiplexer,
+		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "arn",
