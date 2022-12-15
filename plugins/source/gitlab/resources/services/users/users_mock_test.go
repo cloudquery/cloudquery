@@ -32,7 +32,6 @@ func buildUsers(mux *httprouter.Router) error {
 	)
 
 	return nil
-
 }
 
 func TestGroups(t *testing.T) {

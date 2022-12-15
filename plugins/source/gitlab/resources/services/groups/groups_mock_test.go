@@ -14,7 +14,6 @@ import (
 )
 
 func buildGroups(mux *httprouter.Router) error {
-
 	var group *gitlab.Group
 	if err := faker.FakeObject(&group, faker.WithMaxDepth(10)); err != nil {
 		return err

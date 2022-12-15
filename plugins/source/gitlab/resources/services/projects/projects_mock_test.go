@@ -14,7 +14,6 @@ import (
 )
 
 func buildProjects(mux *httprouter.Router) error {
-
 	var project *gitlab.Project
 	if err := faker.FakeObject(&project); err != nil {
 		return err

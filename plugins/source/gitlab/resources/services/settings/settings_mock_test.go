@@ -13,7 +13,6 @@ import (
 )
 
 func buildSettings(mux *httprouter.Router) error {
-
 	var settings gitlab.Settings
 	if err := faker.FakeObject(&settings); err != nil {
 		return err
