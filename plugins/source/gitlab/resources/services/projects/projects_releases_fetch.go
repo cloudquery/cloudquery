@@ -35,3 +35,7 @@ func fetchProjectsReleases(ctx context.Context, meta schema.ClientMeta, parent *
 
 	return nil
 }
+
+func resolveProjectID(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	return resource.Set("project_id", resource.Parent.Item.(*gitlab.Project).ID)
+}

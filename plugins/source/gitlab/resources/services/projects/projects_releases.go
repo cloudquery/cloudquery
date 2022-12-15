@@ -16,6 +16,17 @@ func ProjectsReleases() *schema.Table {
 				Name:     "base_url",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveURL,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "project_id",
+				Type:     schema.TypeInt,
+				Resolver: resolveProjectID,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "tag_name",
@@ -41,6 +52,9 @@ func ProjectsReleases() *schema.Table {
 				Name:     "created_at",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreatedAt"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "released_at",

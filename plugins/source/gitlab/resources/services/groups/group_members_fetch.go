@@ -35,3 +35,7 @@ func fetchGroupMembers(ctx context.Context, meta schema.ClientMeta, parent *sche
 
 	return nil
 }
+
+func resolveGroupID(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	return resource.Set("group_id", resource.Parent.Item.(*gitlab.Group).ID)
+}

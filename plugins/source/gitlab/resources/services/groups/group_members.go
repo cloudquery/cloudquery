@@ -16,11 +16,25 @@ func GroupMembers() *schema.Table {
 				Name:     "base_url",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveURL,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "group_id",
+				Type:     schema.TypeInt,
+				Resolver: resolveGroupID,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "id",
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("ID"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "username",

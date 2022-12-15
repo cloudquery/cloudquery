@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/gitlab
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v1.12.0
+	github.com/cloudquery/plugin-sdk v1.12.5
 	github.com/golang/mock v1.6.0
 	github.com/iancoleman/strcase v0.2.0
 	github.com/julienschmidt/httprouter v1.3.0
@@ -12,8 +12,11 @@ require (
 )
 
 require (
+	github.com/cloudquery/cq-provider-sdk v0.14.7 // indirect
+	github.com/fatih/color v1.13.0 // indirect
 	github.com/getsentry/sentry-go v0.15.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
+	github.com/gofrs/uuid v4.2.0+incompatible // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/google/uuid v1.3.0 // indirect
@@ -25,6 +28,8 @@ require (
 	github.com/inconshreveable/mousetrap v1.0.1 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.16 // indirect
+	github.com/mitchellh/hashstructure/v2 v2.0.2 // indirect
+	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/cobra v1.6.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect

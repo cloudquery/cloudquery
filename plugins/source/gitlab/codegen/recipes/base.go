@@ -25,16 +25,16 @@ type Resource struct {
 	SubService     string
 	ServicePath    string
 	GlobalResource bool
-	ServiceFunc    interface{}
-	ResourceFunc   interface{}
+	ServiceFunc    any
+	ResourceFunc   any
 	// ServiceFuncName     string
 	// ResourceFuncName    string
 	PKColumns           []string
 	ResourcePath        string
 	ImportPath          string
-	SubServiceInterface interface{}
-	ResourceInterface   interface{}
-	Struct              interface{}
+	SubServiceInterface any
+	ResourceInterface   any
+	Struct              any
 	StructName          string
 	Multiplex           string // By default, there is no multiplex
 	Table               *codegen.TableDefinition
@@ -43,20 +43,7 @@ type Resource struct {
 	Relations           []string
 }
 
-func getFunctionName(i interface{}) string {
-	s := runtime.FuncForPC(reflect.ValueOf(i).Pointer()).Name()
-	return s[strings.LastIndex(s, ".")+1:]
-}
-
-func getPackagePath(myvar interface{}) string {
-	if t := reflect.TypeOf(myvar); t.Kind() == reflect.Ptr {
-		return t.Elem().PkgPath()
-	} else {
-		return t.PkgPath()
-	}
-}
-
-func getType(myvar interface{}) string {
+func getType(myvar any) string {
 	if t := reflect.TypeOf(myvar); t.Kind() == reflect.Ptr {
 		return t.Elem().Name()
 	} else {
@@ -165,10 +152,6 @@ func (resource *Resource) Generate() error {
 	if err := resource.generate(false); err != nil {
 		return err
 	}
-
-	// if err := resource.generate(true); err != nil {
-	// 	return err
-	// }
 
 	return nil
 }

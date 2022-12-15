@@ -1,6 +1,8 @@
 package recipes
 
 import (
+	"github.com/cloudquery/plugin-sdk/codegen"
+	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/xanzy/go-gitlab"
 )
 
@@ -17,6 +19,14 @@ func Groups() []*Resource {
 			Service:    "groups",
 			SubService: "group_members",
 			Struct:     &gitlab.GroupMember{},
+			PKColumns:  []string{"base_url", "group_id", "id"},
+			ExtraColumns: []codegen.ColumnDefinition{
+				{
+					Name:     "group_id",
+					Type:     schema.TypeInt,
+					Resolver: `resolveGroupID`,
+				},
+			},
 		},
 	}
 

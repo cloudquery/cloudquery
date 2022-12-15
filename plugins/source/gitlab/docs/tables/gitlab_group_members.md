@@ -2,7 +2,7 @@
 
 
 
-The primary key for this table is **_cq_id**.
+The composite primary key for this table is (**base_url**, **group_id**, **id**).
 
 ## Relations
 This table depends on [gitlab_groups](gitlab_groups.md).
@@ -13,10 +13,11 @@ This table depends on [gitlab_groups](gitlab_groups.md).
 | ------------- | ------------- |
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
+|_cq_id|UUID|
 |_cq_parent_id|UUID|
-|base_url|String|
-|id|Int|
+|base_url (PK)|String|
+|group_id (PK)|Int|
+|id (PK)|Int|
 |username|String|
 |name|String|
 |state|String|
