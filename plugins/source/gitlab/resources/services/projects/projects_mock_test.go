@@ -1,30 +1,23 @@
 package projects
 
 import (
+	"encoding/json"
+	"fmt"
+	"net/http"
 	"testing"
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/gitlab/client"
-	"github.com/cloudquery/cloudquery/plugins/source/gitlab/client/mocks"
 	"github.com/cloudquery/plugin-sdk/faker"
-	"github.com/golang/mock/gomock"
+	"github.com/julienschmidt/httprouter"
 	"github.com/xanzy/go-gitlab"
 )
 
-func buildProjects(t *testing.T, ctrl *gomock.Controller) client.Services {
-	projectsMock := mocks.NewMockProjectsClient(ctrl)
-	releaseMock := mocks.NewMockReleasesClient(ctrl)
-
-	var release *gitlab.Release
-	if err := faker.FakeObject(&release); err != nil {
-		t.Fatal(err)
-	}
-
-	releaseMock.EXPECT().ListReleases(gomock.Any(), gomock.Any()).Return([]*gitlab.Release{release}, &gitlab.Response{}, nil)
+func buildProjects(mux *httprouter.Router) error {
 
 	var project *gitlab.Project
 	if err := faker.FakeObject(&project); err != nil {
-		t.Fatal(err)
+		return err
 	}
 
 	project.Permissions = &gitlab.Permissions{
@@ -41,12 +34,27 @@ func buildProjects(t *testing.T, ctrl *gomock.Controller) client.Services {
 	isoTime := gitlab.ISOTime(time.Now())
 	project.MarkedForDeletionAt = &isoTime
 
-	projectsMock.EXPECT().ListProjects(gomock.Any(), gomock.Any()).Return([]*gitlab.Project{project}, &gitlab.Response{}, nil)
-
-	return client.Services{
-		Releases: releaseMock,
-		Projects: projectsMock,
+	projectsResp, err := json.Marshal([]*gitlab.Project{project})
+	if err != nil {
+		return err
 	}
+
+	mux.GET("/api/v4/projects", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+		fmt.Fprint(w, string(projectsResp))
+	})
+
+	var release *gitlab.Release
+	if err := faker.FakeObject(&release); err != nil {
+		return err
+	}
+	releaseResp, err := json.Marshal([]*gitlab.Release{release})
+	if err != nil {
+		return err
+	}
+	mux.GET("/api/v4/projects/:projectId/releases", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+		fmt.Fprint(w, string(releaseResp))
+	})
+	return nil
 }
 
 func TestProjects(t *testing.T) {

@@ -25,7 +25,7 @@ spec:
   tables: ["*"]
   destinations: ["postgresql"]
   spec:
-    token: <Personal_Access_Token>
-    base_url: <Instance_Url>
+    token: <PERSONAL_ACCESS_TOKEN>
+    base_url: <INSTANCE_URL>
 ```
 

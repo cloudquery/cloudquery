@@ -1,28 +1,31 @@
 package settings
 
 import (
+	"encoding/json"
+	"fmt"
+	"net/http"
 	"testing"
 
 	"github.com/cloudquery/cloudquery/plugins/source/gitlab/client"
-	"github.com/cloudquery/cloudquery/plugins/source/gitlab/client/mocks"
 	"github.com/cloudquery/plugin-sdk/faker"
-	"github.com/golang/mock/gomock"
+	"github.com/julienschmidt/httprouter"
 	"github.com/xanzy/go-gitlab"
 )
 
-func buildSettings(t *testing.T, ctrl *gomock.Controller) client.Services {
-	settingMock := mocks.NewMockSettingsClient(ctrl)
+func buildSettings(mux *httprouter.Router) error {
 
-	var settings *gitlab.Settings
+	var settings gitlab.Settings
 	if err := faker.FakeObject(&settings); err != nil {
-		t.Fatal(err)
+		return err
 	}
-
-	settingMock.EXPECT().GetSettings(gomock.Any()).Return(settings, &gitlab.Response{}, nil)
-
-	return client.Services{
-		Settings: settingMock,
+	resp, err := json.Marshal(settings)
+	if err != nil {
+		return err
 	}
+	mux.GET("/api/v4/application/settings", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+		fmt.Fprint(w, string(resp))
+	})
+	return nil
 }
 
 func TestSettings(t *testing.T) {

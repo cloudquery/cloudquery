@@ -63,13 +63,18 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (sche
 
 	return &Client{
 		logger: logger,
-		Gitlab: Services{
-			Users:    c.Users,
-			Groups:   c.Groups,
-			Projects: c.Projects,
-			Settings: c.Settings,
-			Releases: c.Releases,
-		},
-		spec: s,
+		Gitlab: NewServices(c),
+		spec:   s,
 	}, nil
+}
+
+// Take gitlab.Client as an argument and return an initialized Services struct
+func NewServices(c *gitlab.Client) Services {
+	return Services{
+		Users:    c.Users,
+		Groups:   c.Groups,
+		Projects: c.Projects,
+		Settings: c.Settings,
+		Releases: c.Releases,
+	}
 }
