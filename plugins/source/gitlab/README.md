@@ -21,7 +21,7 @@ spec:
   # Source spec section
   name: gitlab
   path: cloudquery/gitlab
-  version: "0.0.1" # latest version of GitLab plugin
+  version: "VERSION_SOURCE_GITLAB" # latest version of GitLab plugin
   tables: ["*"]
   destinations: ["postgresql"]
   spec:
