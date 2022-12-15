@@ -11,8 +11,8 @@ import (
 func fetchUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
 
-	req := cl.Okta.UserApi.ListUsers(ctx).Limit(200)
-	users, resp, err := cl.Okta.UserApi.ListUsersExecute(req)
+	req := cl.UserApi.ListUsers(ctx).Limit(200)
+	users, resp, err := cl.UserApi.ListUsersExecute(req)
 	if err != nil {
 		return err
 	}

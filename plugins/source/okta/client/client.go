@@ -19,7 +19,7 @@ type Client struct {
 	logger zerolog.Logger
 	spec   specs.Source
 
-	Okta *okta.APIClient
+	*okta.APIClient
 }
 
 const exampleDomain = "https://<CHANGE_THIS_TO_YOUR_OKTA_DOMAIN>.okta.com"
@@ -34,9 +34,10 @@ func (c *Client) ID() string {
 
 func New(logger zerolog.Logger, s specs.Source, okt *okta.APIClient) *Client {
 	return &Client{
+		APIClient: okt,
+
 		logger: logger,
 		spec:   s,
-		Okta:   okt,
 	}
 }
 
