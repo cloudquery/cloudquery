@@ -14,7 +14,7 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 ## Introduction
 
-Last week we just announced our [BigQuery destination](/blog/announcing-cloudquery-bigquery-destination) and already saw some interesting use-cases around cost we wanted to share and also thank our great [community helping with ideas for this blog](https://discord.com/channels/872925471417962546/974029056070795284/1052337892439097474)!
+Last week we just announced our [BigQuery destination](/blog/announcing-cloudquery-bigquery-destination) and already saw some interesting use cases around cost we want to share, and also thank our great [community helping with ideas for this blog](https://discord.com/channels/872925471417962546/974029056070795284/1052337892439097474)!
 
 Exporting [GCP billing data to BigQuery](https://cloud.google.com/billing/docs/how-to/export-data-bigquery) is a powerful way to analyse your GCP cost. However, sometimes it is not enough to have the billing data in BigQuery. You also need to correlate it with your cloud infrastructure data. This tutorial will show how to correlate between GCP billing data and CloudQuery data with BigQuery to optimize cost.
 
@@ -102,7 +102,7 @@ And you can run the same by replacing `Intel Broadwell` with `AMD Rome` and/or a
 
 ## Summary
 
-In this short blog post we just shared a sample of what you can do by combining cost data with your infrastructure state/metadata fetched by CloudQuery to BigQuery. The number of use-cases around cost (aka "FinOps" :) ) is really infinite and all depends on what you are trying to achieve and optimise for. CloudQuery with BigQuery is a power tools for analysis which ensures cheap storage and fast querying on large amount of data.
+In this short blog post we just shared a sample of what you can do by combining cost data with your infrastructure state/metadata synced by CloudQuery to BigQuery. The number of use cases around cost (aka "FinOps" :) ) is really infinite and it all depends on what you are trying to achieve and optimize for. CloudQuery with BigQuery is a powerful tool for analysis which ensures cheap storage and fast querying on large amount of data.
 
 We hope you enjoyed this tutorial and found it useful. If you have any questions or feedback, please reach out to us on [Discord](https://discord.gg/8qZ7Y4Z) or [Twitter](https://twitter.com/cloudqueryio).
 
