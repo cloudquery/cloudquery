@@ -50,7 +50,7 @@ func getAllKmsLocations(ctx context.Context, c *client.Client, kmsClient *kms.Ke
 			break
 		}
 		if err != nil {
-			return nil, errors.WithStack(err)
+			return nil, err
 		}
 		locations = append(locations, resp)
 	}
