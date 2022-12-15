@@ -98,7 +98,8 @@ aws s3api create-bucket --bucket test-json-bucket  --profile myprofile --region 
 {
     "Location": "/test-json-bucket"
 }
-jkao@Jasons-MacBook-Pro ~ % aws s3api get-bucket-ownership-controls --bucket test-json-bucket --profile myprofile
+
+aws s3api get-bucket-ownership-controls --bucket test-json-bucket --profile myprofile
 
 An error occurred (OwnershipControlsNotFoundError) when calling the GetBucketOwnershipControls operation: The bucket ownership controls were not found
 ```
