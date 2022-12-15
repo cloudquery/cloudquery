@@ -52,7 +52,7 @@ The following tables depend on gitlab_projects:
 |import_status|String|
 |import_error|String|
 |permissions|JSON|
-|marked_for_deletion_at|JSON|
+|marked_for_deletion_at|Timestamp|
 |empty_repo|Bool|
 |archived|Bool|
 |avatar_url|String|

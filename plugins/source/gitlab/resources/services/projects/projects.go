@@ -200,7 +200,7 @@ func Projects() *schema.Table {
 			},
 			{
 				Name:     "marked_for_deletion_at",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("MarkedForDeletionAt"),
 			},
 			{

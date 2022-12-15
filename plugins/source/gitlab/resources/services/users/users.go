@@ -24,6 +24,7 @@ func Users() *schema.Table {
 				Name:          "last_activity_on",
 				Type:          schema.TypeJSON,
 				Resolver:      schema.PathResolver("LastActivityOn"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:     "id",

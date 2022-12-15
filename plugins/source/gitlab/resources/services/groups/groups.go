@@ -213,7 +213,7 @@ func Groups() *schema.Table {
 			},
 			{
 				Name:     "marked_for_deletion_on",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("MarkedForDeletionOn"),
 			},
 			{

@@ -68,7 +68,7 @@ func GroupMembers() *schema.Table {
 			},
 			{
 				Name:     "expires_at",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("ExpiresAt"),
 			},
 			{

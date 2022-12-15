@@ -15,6 +15,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/iancoleman/strcase"
+	"github.com/xanzy/go-gitlab"
 )
 
 //go:embed templates/*.go.tpl
@@ -134,6 +135,8 @@ func (resource *Resource) Generate() error {
 		codegen.WithUnwrapStructFields([]string{"Spec", "Status"}),
 		codegen.WithTypeTransformer(codegen.DefaultTypeTransformer),
 		codegen.WithPKColumns(resource.PKColumns...),
+		codegen.WithTypeTransformer(timestampTransformer),
+		// codegen.WithResolverTransformer(gitlabTimestampResolverTransformer),
 	)
 
 	if err != nil {
@@ -197,4 +200,14 @@ func GeneratePlugin(resources []*Resource) error {
 		return fmt.Errorf("failed to write file %s: %w", filePath, err)
 	}
 	return nil
+}
+
+func timestampTransformer(field reflect.StructField) (schema.ValueType, error) {
+	timestamp := gitlab.ISOTime{}
+	switch field.Type {
+	case reflect.TypeOf(timestamp), reflect.TypeOf(&timestamp):
+		return schema.TypeTimestamp, nil
+	default:
+		return schema.TypeInvalid, nil
+	}
 }
