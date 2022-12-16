@@ -11,16 +11,16 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/account v1.7.12
 	github.com/aws/aws-sdk-go-v2/service/acm v1.16.5
 	github.com/aws/aws-sdk-go-v2/service/apigateway v1.15.26
-	github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.12.24
+	github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.12.25
 	github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.15.24
-	github.com/aws/aws-sdk-go-v2/service/apprunner v1.15.1
+	github.com/aws/aws-sdk-go-v2/service/apprunner v1.15.2
 	github.com/aws/aws-sdk-go-v2/service/appstream v1.18.2
-	github.com/aws/aws-sdk-go-v2/service/appsync v1.17.0
+	github.com/aws/aws-sdk-go-v2/service/appsync v1.17.1
 	github.com/aws/aws-sdk-go-v2/service/autoscaling v1.25.0
 	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.24.2
-	github.com/aws/aws-sdk-go-v2/service/cloudfront v1.22.0
+	github.com/aws/aws-sdk-go-v2/service/cloudfront v1.22.1
 	github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.13.22
-	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.21.0
+	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.21.1
 	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.23.0
 	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.17.2
 	github.com/aws/aws-sdk-go-v2/service/codebuild v1.19.20
@@ -128,7 +128,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.21 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.3.28 // indirect
 	github.com/aws/aws-sdk-go-v2/service/athena v1.20.2
-	github.com/aws/aws-sdk-go-v2/service/backup v1.18.1
+	github.com/aws/aws-sdk-go-v2/service/backup v1.18.2
 	github.com/aws/aws-sdk-go-v2/service/glue v1.37.1
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.9.11 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.7.20 // indirect
