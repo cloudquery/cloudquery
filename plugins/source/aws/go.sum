@@ -39,8 +39,9 @@ github.com/aws/aws-sdk-go-v2 v1.17.3 h1:shN7NlnVzvDUgPQ+1rLMSxY8OWRNDRYtiqe0p/Pg
 github.com/aws/aws-sdk-go-v2 v1.17.3/go.mod h1:uzbQtefpm44goOPmdKyAlXSNcwlRgF3ePWVW6EtJvvw=
 github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.10 h1:dK82zF6kkPeCo8J1e+tGx4JdvDIQzj7ygIoLg8WMuGs=
 github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.10/go.mod h1:VeTZetY5KRJLuD/7fkQXMU6Mw7H5m/KP2J5Iy9osMno=
-github.com/aws/aws-sdk-go-v2/config v1.18.4 h1:VZKhr3uAADXHStS/Gf9xSYVmmaluTUfkc0dcbPiDsKE=
 github.com/aws/aws-sdk-go-v2/config v1.18.4/go.mod h1:EZxMPLSdGAZ3eAmkqXfYbRppZJTzFTkv8VyEzJhKko4=
+github.com/aws/aws-sdk-go-v2/config v1.18.5 h1:teGdDCAT3gX99FIKNt6HsvLaeOVdCFiCQDlH8UV6Xvg=
+github.com/aws/aws-sdk-go-v2/config v1.18.5/go.mod h1:0g4tGVHeUTxekZIkO5Glw2AemETlmnkQvFqkdv3HBAA=
 github.com/aws/aws-sdk-go-v2/credentials v1.13.4/go.mod h1:/Cj5w9LRsNTLSwexsohwDME32OzJ6U81Zs33zr2ZWOM=
 github.com/aws/aws-sdk-go-v2/credentials v1.13.5 h1:vrPwnKCdQlUyxXDZtPpb6Hc3GbTndqaGtEOwm/lF5tI=
 github.com/aws/aws-sdk-go-v2/credentials v1.13.5/go.mod h1:sS/NgdbdkQ6XhVkGY/yEmNwxzpRVxLT3Ns+42W37p6g=
@@ -55,8 +56,9 @@ github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.27/go.mod h1:a1/UpzeyBB
 github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.20/go.mod h1:/+6lSiby8TBFpTVXZgKiN/rCfkYXEGvhlM4zCgPpt7w=
 github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.21 h1:5NbbMrIzmUn/TXFqAle6mgrH5m9cOvMLRGL7pnG8tRE=
 github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.21/go.mod h1:+Gxn8jYn5k9ebfHEqlhrMirFjSW0v0C9fI+KN5vk2kE=
-github.com/aws/aws-sdk-go-v2/internal/ini v1.3.27 h1:N2eKFw2S+JWRCtTt0IhIX7uoGGQciD4p6ba+SJv4WEU=
 github.com/aws/aws-sdk-go-v2/internal/ini v1.3.27/go.mod h1:RdwFVc7PBYWY33fa2+8T1mSqQ7ZEK4ILpM0wfioDC3w=
+github.com/aws/aws-sdk-go-v2/internal/ini v1.3.28 h1:KeTxcGdNnQudb46oOl4d90f2I33DF/c6q3RnZAmvQdQ=
+github.com/aws/aws-sdk-go-v2/internal/ini v1.3.28/go.mod h1:yRZVr/iT0AqyHeep00SZ4YfBAKojXz08w3XMBscdi0c=
 github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.17 h1:5tXbMJ7Jq0iG65oiMg6tCLsHkSaO2xLXa2EmZ29vaTA=
 github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.17/go.mod h1:twV0fKMQuqLY4klyFH56aXNq3AFiA5LO0/frTczEOFE=
 github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.18.1 h1:lrueZeVplC08xOhy5t4x6+e9GkKeXPTjpvDQkBm3Fsk=

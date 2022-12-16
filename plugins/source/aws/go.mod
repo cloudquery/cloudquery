@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/aws/aws-sdk-go-v2 v1.17.3
-	github.com/aws/aws-sdk-go-v2/config v1.18.4
+	github.com/aws/aws-sdk-go-v2/config v1.18.5
 	github.com/aws/aws-sdk-go-v2/credentials v1.13.5
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.43
 	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.18.1
@@ -126,7 +126,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.12.21 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.27 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.21 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/ini v1.3.27 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/ini v1.3.28 // indirect
 	github.com/aws/aws-sdk-go-v2/service/athena v1.20.2
 	github.com/aws/aws-sdk-go-v2/service/backup v1.18.1
 	github.com/aws/aws-sdk-go-v2/service/glue v1.37.1
