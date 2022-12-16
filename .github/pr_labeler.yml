@@ -20,6 +20,8 @@ gcp:
   - plugins/source/gcp/**/*
 github:
   - plugins/source/github/**/*
+gitlab:
+  - plugins/source/gitlab/**/*
 k8s:
   - plugins/source/k8s/**/*
 heroku:
