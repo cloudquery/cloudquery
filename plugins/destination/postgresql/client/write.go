@@ -19,7 +19,6 @@ var cqStatusToPgStatus = map[schema.Status]pgtype.Status{
 	schema.Present:   pgtype.Present,
 }
 
-
 // Postgres best performance for CQ per our benchmark is achieved with batch that includes different tables
 // given we can't predict how many objects will be in each table.
 // This is why if we encounter an error we can't know which object/table caused and related the error to the object
@@ -39,8 +38,8 @@ func (c *Client) findErrorInBatch(ctx context.Context, items []*batchItem) error
 }
 
 type batchItem struct {
-	table string
-	sql     string
+	table     string
+	sql       string
 	arguments []interface{}
 }
 
@@ -48,7 +47,7 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *pl
 	var sql string
 	batch := &pgx.Batch{}
 	batchItems := make([]*batchItem, 0, c.batchSize)
-	// resources := 
+	// resources :=
 
 	for r := range res {
 		table := tables.Get(r.TableName)
@@ -61,8 +60,8 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *pl
 			sql = c.upsert(table)
 		}
 		batchItems = append(batchItems, &batchItem{
-			table: r.TableName,
-			sql: sql,
+			table:     r.TableName,
+			sql:       sql,
 			arguments: r.Data,
 		})
 		batch.Queue(sql, r.Data...)
@@ -71,10 +70,8 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *pl
 			if batchErr := br.Close(); batchErr != nil {
 				if err := c.findErrorInBatch(ctx, batchItems); err != nil {
 					return err
-				} else {
-					// this should never happen
-					return fmt.Errorf("failed to execute batch and was unable to pinpoint table: %w", batchErr)
 				}
+				return fmt.Errorf("failed to execute batch and was unable to pinpoint table: %w", batchErr)
 			}
 			atomic.AddUint64(&c.metrics.Writes, uint64(c.batchSize))
 			batch = &pgx.Batch{}
@@ -88,10 +85,9 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *pl
 			if batchErr := br.Close(); batchErr != nil {
 				if err := c.findErrorInBatch(ctx, batchItems); err != nil {
 					return err
-				} else {
-					// this should never happen
-					return fmt.Errorf("failed to execute batch and was unable to pinpoint table: %w", batchErr)
 				}
+				// this should never happen
+				return fmt.Errorf("failed to execute batch and was unable to pinpoint table: %w", batchErr)
 			}
 		}
 		atomic.AddUint64(&c.metrics.Writes, uint64(batch.Len()))
