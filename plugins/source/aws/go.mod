@@ -23,13 +23,13 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.21.1
 	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.23.1
 	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.17.3
-	github.com/aws/aws-sdk-go-v2/service/codebuild v1.19.20
+	github.com/aws/aws-sdk-go-v2/service/codebuild v1.19.21
 	github.com/aws/aws-sdk-go-v2/service/codepipeline v1.13.21
-	github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.14.5
+	github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.14.6
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.21.4
-	github.com/aws/aws-sdk-go-v2/service/configservice v1.28.1
+	github.com/aws/aws-sdk-go-v2/service/configservice v1.28.2
 	github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.22.3
-	github.com/aws/aws-sdk-go-v2/service/dax v1.11.20
+	github.com/aws/aws-sdk-go-v2/service/dax v1.11.21
 	github.com/aws/aws-sdk-go-v2/service/directconnect v1.17.25
 	github.com/aws/aws-sdk-go-v2/service/docdb v1.19.18
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.17.9
@@ -37,13 +37,13 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.17.24
 	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.13.22
 	github.com/aws/aws-sdk-go-v2/service/ecs v1.20.1
-	github.com/aws/aws-sdk-go-v2/service/efs v1.18.1
+	github.com/aws/aws-sdk-go-v2/service/efs v1.18.3
 	github.com/aws/aws-sdk-go-v2/service/eks v1.25.0
-	github.com/aws/aws-sdk-go-v2/service/elasticache v1.24.2
+	github.com/aws/aws-sdk-go-v2/service/elasticache v1.24.3
 	github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk v1.14.21
-	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.14.24
+	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.14.25
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.18.27
-	github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.17.3
+	github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.17.4
 	github.com/aws/aws-sdk-go-v2/service/emr v1.20.17
 	github.com/aws/aws-sdk-go-v2/service/eventbridge v1.16.21
 	github.com/aws/aws-sdk-go-v2/service/firehose v1.15.1
