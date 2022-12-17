@@ -32,7 +32,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/dax v1.11.20
 	github.com/aws/aws-sdk-go-v2/service/directconnect v1.17.25
 	github.com/aws/aws-sdk-go-v2/service/docdb v1.19.17
-	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.17.8
+	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.17.9
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.76.0
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.17.24
 	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.13.21
@@ -131,7 +131,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/backup v1.18.2
 	github.com/aws/aws-sdk-go-v2/service/glue v1.37.1
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.9.11 // indirect
-	github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.7.20 // indirect
+	github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.7.21 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.21 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.13.21 // indirect
 	github.com/aws/aws-sdk-go-v2/service/shield v1.17.12
