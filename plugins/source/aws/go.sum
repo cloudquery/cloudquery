@@ -98,12 +98,12 @@ github.com/aws/aws-sdk-go-v2/service/codebuild v1.19.21 h1:UQ6xFsV/IyOg+0on4vsna
 github.com/aws/aws-sdk-go-v2/service/codebuild v1.19.21/go.mod h1:8qcyoqQjYm4jOQApmG43LtHG9ZehKXyCzAq2n+B/v2s=
 github.com/aws/aws-sdk-go-v2/service/codepipeline v1.13.21 h1:yqd0C0Zrgu8y9CeDW3YUyELa5BH8e8Q5FBERzxRCWGQ=
 github.com/aws/aws-sdk-go-v2/service/codepipeline v1.13.21/go.mod h1:CZzLW6TnEwqFDs9BcgSVB7lbUe4KGuspzmMHGAwBTow=
-github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.14.5 h1:l84xOWiE0xo5HytvWEgOIzJy6EOTvz7bOLu3N7qWirc=
-github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.14.5/go.mod h1:hRzUl5ZvjoEnqbq4EIJgpGJt2/xdkTPDBPX9vcaMyoc=
+github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.14.6 h1:Xh64I0AGrji+nE8otxK6J4d1us9aHk7tYutn70yuVS4=
+github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.14.6/go.mod h1:Aih6A0KgGM80Igtyh4HZeKAaH7uuHpK0peQU1Z5+T4U=
 github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.21.4 h1:swyj/SiBWn1wu8MHk4xQ7rw0wXSUrr144xQDEYkCDdc=
 github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.21.4/go.mod h1:ptcvvcDMc0lkuPjU6NFgSgptt6WeARIADRPsUJMDGLU=
-github.com/aws/aws-sdk-go-v2/service/configservice v1.28.1 h1:u88CL1QpSwOJUajMk3CHViDm+10REipyWaQjD4/oFf8=
-github.com/aws/aws-sdk-go-v2/service/configservice v1.28.1/go.mod h1:Td+kTMqUYlHswUYgX5wsNHiQKqlFMx0h48QyjSJUNWQ=
+github.com/aws/aws-sdk-go-v2/service/configservice v1.28.2 h1:h1r/OjBFVeoQM6ykIg1WbuSeiVf4qUQfWcdCmZ1W+Bs=
+github.com/aws/aws-sdk-go-v2/service/configservice v1.28.2/go.mod h1:Ff8A1VXTt1C8H99/YJDAINMO6Pqkv0aypgZdTVqy1dc=
 github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.22.3 h1:nGKPtKOw5sp7/SXJY0oK8VEoBC9S8H1E6TQon9jaPOk=
 github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.22.3/go.mod h1:pOl6OyO4afJ52vesM08ugFIMaIj/GLcHq7jNPcvUNTI=
 github.com/aws/aws-sdk-go-v2/service/dax v1.11.20 h1:J3MQ30NpUQqMvDoUlHEhB/smbwRjgCv3LMlPbQb2z4w=
@@ -130,8 +130,8 @@ github.com/aws/aws-sdk-go-v2/service/elasticache v1.24.3 h1:WOyHP1f5tMqTyrE6bySy
 github.com/aws/aws-sdk-go-v2/service/elasticache v1.24.3/go.mod h1:gnN6CtMag9be9XGXsMenh084NcSy5pO0hriEYz/TERk=
 github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk v1.14.21 h1:1oeseU6hoD2Gn5wwwVd00biFATXUG5i9xB3dLhmc8Mc=
 github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk v1.14.21/go.mod h1:+KZXtmdwFYJ5S3/zL85VemhlcvI6mHb/E8WXbMXnuZY=
-github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.14.24 h1:jeukT3rQ4KQYXlOmc8dfJHXMKLPxmD9RClhKjvo2vyk=
-github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.14.24/go.mod h1:QKI2x7OUX82Z4n5LqPsQE25iF2lLfj3M+lDj9JZRVkU=
+github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.14.25 h1:Iy28SRz2KfiGFtlj/HmLM5QPE+8K9I3bQPFx8Fo59OI=
+github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.14.25/go.mod h1:3OUv9SlYvymsCF3I5NftITc1+B09cF5lg4IsZgQQy1U=
 github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.18.27 h1:wxij3U3NcK5Ku/VURBqR1r7Ip+kLsmfZd0b7BlqCKyk=
 github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.18.27/go.mod h1:vxihO/POqPi4jNKVRG+pIaPdNUhqCGlcFRBYL6aJF4c=
 github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.17.4 h1:Ax1F+gXewXHPN2qMBV5RS04fYIJ9nggReQc1tvXR0mU=
