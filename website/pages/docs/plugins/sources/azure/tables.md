@@ -214,6 +214,7 @@
 - [azure_sqlvirtualmachine_sql_virtual_machines](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_sqlvirtualmachine_sql_virtual_machines.md)
 - [azure_storage_accounts](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_storage_accounts.md)
   - [azure_storage_tables](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_storage_tables.md)
+  - [azure_storage_containers](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_storage_containers.md)
 - [azure_storagecache_caches](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_storagecache_caches.md)
 - [azure_streamanalytics_streaming_jobs](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_streamanalytics_streaming_jobs.md)
 - [azure_subscription_subscriptions](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_subscription_subscriptions.md)

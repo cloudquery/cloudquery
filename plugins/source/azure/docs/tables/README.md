@@ -214,6 +214,7 @@
 - [azure_sqlvirtualmachine_sql_virtual_machines](azure_sqlvirtualmachine_sql_virtual_machines.md)
 - [azure_storage_accounts](azure_storage_accounts.md)
   - [azure_storage_tables](azure_storage_tables.md)
+  - [azure_storage_containers](azure_storage_containers.md)
 - [azure_storagecache_caches](azure_storagecache_caches.md)
 - [azure_streamanalytics_streaming_jobs](azure_streamanalytics_streaming_jobs.md)
 - [azure_subscription_subscriptions](azure_subscription_subscriptions.md)
