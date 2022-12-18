@@ -17,7 +17,7 @@ func ProjectMultiplex(enabledService string) func(schema.ClientMeta) []schema.Cl
 			// This map can only be empty if user has not opted into `EnabledServicesOnly` via the spec
 			if len(cl.EnabledServices) == 0 {
 				l = append(l, cl.withProject(projectId))
-			} else if cl.EnabledServices[projectId] != nil && cl.EnabledServices[projectId][enabledService] {
+			} else if cl.EnabledServices[projectId] != nil && cl.EnabledServices[projectId][enabledService] != nil {
 				l = append(l, cl.withProject(projectId))
 			}
 		}
