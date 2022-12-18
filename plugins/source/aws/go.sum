@@ -166,7 +166,6 @@ github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.1.22/go.mod h1:Od+GU5+
 github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.7.20/go.mod h1:lxM5qubwGNX29Qy+xTFG8G0r2Mj/TmyC+h3hS/7E4V8=
 github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.7.21 h1:UYhcXvg66FBsZKRpXtNc4w+2rwaTHzST/zhpQBxzhPo=
 github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.7.21/go.mod h1:NXJls8x8f9zVSaf+EKKoonqaahWK69MUWm6w6ob0FHs=
-github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.20/go.mod h1:Xs52xaLBqDEKRcAfX/hgjmD3YQ7c/W+BEyfamlO/W2E=
 github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.21 h1:5C6XgTViSb0bunmU57b3CT+MhxULqHH2721FVA+/kDM=
 github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.21/go.mod h1:lRToEJsn+DRA9lW4O9L9+/3hjTkUzlzyzHqn8MTds5k=
 github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.13.20/go.mod h1:1XpDcReIEOHsjwNToDKhIAO3qwLo1BnfbtSqWJa8j7g=
@@ -198,8 +197,8 @@ github.com/aws/aws-sdk-go-v2/service/quicksight v1.28.3 h1:oOITThfr01t8r/v/RzRuH
 github.com/aws/aws-sdk-go-v2/service/quicksight v1.28.3/go.mod h1:wvJpr20R/imRPZsRJMkxCYV5zquGzJbASqARtCbiKKE=
 github.com/aws/aws-sdk-go-v2/service/ram v1.16.26 h1:N6sleYzj/LBqeTk53KPGA6+chMQj5m4txIavGZtPmtQ=
 github.com/aws/aws-sdk-go-v2/service/ram v1.16.26/go.mod h1:hKHJTTpBpOG9+TPPnRjsvXsPytZFmXX0FRDEMiBOcek=
-github.com/aws/aws-sdk-go-v2/service/rds v1.35.0 h1:S583sAvE4bAtZYJyDWwSmcx2TG093Kreum+uIQ7V8ic=
-github.com/aws/aws-sdk-go-v2/service/rds v1.35.0/go.mod h1:5jVelkTas49nnuhUjA09TV5OAECLeXl8UvkGA24gOmU=
+github.com/aws/aws-sdk-go-v2/service/rds v1.35.1 h1:FntkAuYRMN5Mi7fxtxZm4508i4SLCCmp7lfPeUpZ16w=
+github.com/aws/aws-sdk-go-v2/service/rds v1.35.1/go.mod h1:Ume9NHqT871hUdxIRojWtWsPFyCswQmSjHHhyGot7v0=
 github.com/aws/aws-sdk-go-v2/service/redshift v1.26.17 h1:QqjXi1YMzvOq1QS3Nc+X1cMjLEPx8jbcio6HwoxcC+A=
 github.com/aws/aws-sdk-go-v2/service/redshift v1.26.17/go.mod h1:D9RG9/qdConhXN9wWFsV3njqLki71pU4iKiVo+BPHOw=
 github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.12.22 h1:UV7d8ay2PM0YvIZ1SAqmoN3vEJrCV8aelaDsehCx0Y8=
