@@ -12,7 +12,7 @@ func Domains() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_appservice_domains",
 		Resolver:  fetchDomains,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_domainregistration),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_appservice_domains", client.Namespacemicrosoft_domainregistration),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

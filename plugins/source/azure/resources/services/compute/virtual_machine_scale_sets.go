@@ -12,7 +12,7 @@ func VirtualMachineScaleSets() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_compute_virtual_machine_scale_sets",
 		Resolver:  fetchVirtualMachineScaleSets,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_compute),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_compute_virtual_machine_scale_sets", client.Namespacemicrosoft_compute),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

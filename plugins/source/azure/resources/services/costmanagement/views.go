@@ -12,7 +12,7 @@ func Views() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_costmanagement_views",
 		Resolver:  fetchViews,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_costmanagement),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_costmanagement_views", client.Namespacemicrosoft_costmanagement),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

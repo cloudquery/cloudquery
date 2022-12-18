@@ -12,7 +12,7 @@ func SqlVirtualMachines() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_sqlvirtualmachine_sql_virtual_machines",
 		Resolver:  fetchSqlVirtualMachines,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_sqlvirtualmachine),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_sqlvirtualmachine_sql_virtual_machines", client.Namespacemicrosoft_sqlvirtualmachine),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

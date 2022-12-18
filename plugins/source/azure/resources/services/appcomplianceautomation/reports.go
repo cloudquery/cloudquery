@@ -12,7 +12,7 @@ func Reports() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_appcomplianceautomation_reports",
 		Resolver:  fetchReports,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_appcomplianceautomation),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_appcomplianceautomation_reports", client.Namespacemicrosoft_appcomplianceautomation),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

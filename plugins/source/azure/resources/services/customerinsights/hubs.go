@@ -12,7 +12,7 @@ func Hubs() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_customerinsights_hubs",
 		Resolver:  fetchHubs,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_customerinsights),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_customerinsights_hubs", client.Namespacemicrosoft_customerinsights),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

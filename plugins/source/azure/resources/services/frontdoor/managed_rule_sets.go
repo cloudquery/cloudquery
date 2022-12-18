@@ -12,7 +12,7 @@ func ManagedRuleSets() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_frontdoor_managed_rule_sets",
 		Resolver:  fetchManagedRuleSets,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_network),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_frontdoor_managed_rule_sets", client.Namespacemicrosoft_network),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

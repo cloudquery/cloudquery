@@ -12,7 +12,7 @@ func PrivateLinkScopes() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_hybridcompute_private_link_scopes",
 		Resolver:  fetchPrivateLinkScopes,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_hybridcompute),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_hybridcompute_private_link_scopes", client.Namespacemicrosoft_hybridcompute),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

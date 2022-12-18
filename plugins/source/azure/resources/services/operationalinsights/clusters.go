@@ -12,7 +12,7 @@ func Clusters() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_operationalinsights_clusters",
 		Resolver:  fetchClusters,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_operationalinsights),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_operationalinsights_clusters", client.Namespacemicrosoft_operationalinsights),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

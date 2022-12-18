@@ -12,7 +12,7 @@ func Factories() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_datafactory_factories",
 		Resolver:  fetchFactories,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_datafactory),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_datafactory_factories", client.Namespacemicrosoft_datafactory),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

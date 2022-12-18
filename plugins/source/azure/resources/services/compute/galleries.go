@@ -12,7 +12,7 @@ func Galleries() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_compute_galleries",
 		Resolver:  fetchGalleries,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_compute),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_compute_galleries", client.Namespacemicrosoft_compute),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

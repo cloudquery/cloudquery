@@ -137,7 +137,9 @@ func initTable(parent *recipes.Table, r *recipes.Table) error {
 	if err != nil {
 		return fmt.Errorf("failed to create table for %s: %w", r.StructName, err)
 	}
-	r.Table.Multiplex = r.Multiplex
+	// Add table name to `SubscriptionMultiplexRegisteredNamespace` if needed
+	r.Table.Multiplex = strings.Replace(r.Multiplex, "client.SubscriptionMultiplexRegisteredNamespace(", "client.SubscriptionMultiplexRegisteredNamespace("+`"`+r.Table.Name+`",`, 1)
+
 	r.Table.Resolver = "fetch" + strcase.ToCamel(r.Name)
 	if r.PreResourceResolver != "" {
 		r.Table.PreResourceResolver = r.PreResourceResolver

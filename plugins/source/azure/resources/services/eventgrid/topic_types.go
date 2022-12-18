@@ -12,7 +12,7 @@ func TopicTypes() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_eventgrid_topic_types",
 		Resolver:  fetchTopicTypes,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_eventgrid),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_eventgrid_topic_types", client.Namespacemicrosoft_eventgrid),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

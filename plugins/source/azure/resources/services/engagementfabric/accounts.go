@@ -12,7 +12,7 @@ func Accounts() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_engagementfabric_accounts",
 		Resolver:  fetchAccounts,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_engagementfabric),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_engagementfabric_accounts", client.Namespacemicrosoft_engagementfabric),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

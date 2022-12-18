@@ -12,7 +12,7 @@ func MarketplaceAgreements() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_confluent_marketplace_agreements",
 		Resolver:  fetchMarketplaceAgreements,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_confluent),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_confluent_marketplace_agreements", client.Namespacemicrosoft_confluent),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

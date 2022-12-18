@@ -12,7 +12,7 @@ func ProviderOperationsMetadata() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_authorization_provider_operations_metadata",
 		Resolver:  fetchProviderOperationsMetadata,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_authorization),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_authorization_provider_operations_metadata", client.Namespacemicrosoft_authorization),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

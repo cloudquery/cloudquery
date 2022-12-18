@@ -12,7 +12,7 @@ func ExpressRoutePortsLocations() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_express_route_ports_locations",
 		Resolver:  fetchExpressRoutePortsLocations,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_network),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_network_express_route_ports_locations", client.Namespacemicrosoft_network),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

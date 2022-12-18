@@ -12,7 +12,7 @@ func Snapshots() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_containerservice_snapshots",
 		Resolver:  fetchSnapshots,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_containerservice),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_containerservice_snapshots", client.Namespacemicrosoft_containerservice),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

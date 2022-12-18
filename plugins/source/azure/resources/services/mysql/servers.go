@@ -12,7 +12,7 @@ func Servers() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_mysql_servers",
 		Resolver:  fetchServers,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_dbformysql),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_mysql_servers", client.Namespacemicrosoft_dbformysql),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

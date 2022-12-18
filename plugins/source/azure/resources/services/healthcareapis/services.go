@@ -12,7 +12,7 @@ func Services() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_healthcareapis_services",
 		Resolver:  fetchServices,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_healthcareapis),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_healthcareapis_services", client.Namespacemicrosoft_healthcareapis),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

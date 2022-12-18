@@ -12,7 +12,7 @@ func Accounts() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_datalakestore_accounts",
 		Resolver:  fetchAccounts,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_datalakestore),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_datalakestore_accounts", client.Namespacemicrosoft_datalakestore),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

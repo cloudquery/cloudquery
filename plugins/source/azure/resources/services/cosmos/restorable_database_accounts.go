@@ -12,7 +12,7 @@ func RestorableDatabaseAccounts() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_cosmos_restorable_database_accounts",
 		Resolver:  fetchRestorableDatabaseAccounts,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_documentdb),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_cosmos_restorable_database_accounts", client.Namespacemicrosoft_documentdb),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

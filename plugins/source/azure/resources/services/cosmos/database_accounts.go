@@ -12,7 +12,7 @@ func DatabaseAccounts() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_cosmos_database_accounts",
 		Resolver:  fetchDatabaseAccounts,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_documentdb),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_cosmos_database_accounts", client.Namespacemicrosoft_documentdb),
 		Columns: []schema.Column{
 			{
 				Name:     "identity",

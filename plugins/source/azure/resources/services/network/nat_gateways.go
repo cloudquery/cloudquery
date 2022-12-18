@@ -12,7 +12,7 @@ func NatGateways() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_nat_gateways",
 		Resolver:  fetchNatGateways,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_network),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_network_nat_gateways", client.Namespacemicrosoft_network),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

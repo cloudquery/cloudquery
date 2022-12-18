@@ -12,7 +12,7 @@ func JitNetworkAccessPolicies() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_security_jit_network_access_policies",
 		Resolver:  fetchJitNetworkAccessPolicies,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_security),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_security_jit_network_access_policies", client.Namespacemicrosoft_security),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

@@ -12,7 +12,7 @@ func TenantConfigurations() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_portal_tenant_configurations",
 		Resolver:  fetchTenantConfigurations,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_portal),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_portal_tenant_configurations", client.Namespacemicrosoft_portal),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

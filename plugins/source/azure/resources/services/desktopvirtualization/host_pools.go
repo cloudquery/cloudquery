@@ -12,7 +12,7 @@ func HostPools() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_desktopvirtualization_host_pools",
 		Resolver:  fetchHostPools,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_desktopvirtualization),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_desktopvirtualization_host_pools", client.Namespacemicrosoft_desktopvirtualization),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

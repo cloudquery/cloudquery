@@ -12,7 +12,7 @@ func Exemptions() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_policy_exemptions",
 		Resolver:  fetchExemptions,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_authorization),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_policy_exemptions", client.Namespacemicrosoft_authorization),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

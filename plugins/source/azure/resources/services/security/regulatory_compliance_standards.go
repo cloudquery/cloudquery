@@ -12,7 +12,7 @@ func RegulatoryComplianceStandards() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_security_regulatory_compliance_standards",
 		Resolver:  fetchRegulatoryComplianceStandards,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_security),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_security_regulatory_compliance_standards", client.Namespacemicrosoft_security),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

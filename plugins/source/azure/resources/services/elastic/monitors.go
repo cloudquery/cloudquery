@@ -12,7 +12,7 @@ func Monitors() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_elastic_monitors",
 		Resolver:  fetchMonitors,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_elastic),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_elastic_monitors", client.Namespacemicrosoft_elastic),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

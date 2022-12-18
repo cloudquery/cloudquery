@@ -12,7 +12,7 @@ func MarketplaceAgreements() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_datadog_marketplace_agreements",
 		Resolver:  fetchMarketplaceAgreements,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_datadog),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_datadog_marketplace_agreements", client.Namespacemicrosoft_datadog),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

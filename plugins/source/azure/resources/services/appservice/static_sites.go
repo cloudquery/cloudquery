@@ -12,7 +12,7 @@ func StaticSites() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_appservice_static_sites",
 		Resolver:  fetchStaticSites,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_web),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_appservice_static_sites", client.Namespacemicrosoft_web),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

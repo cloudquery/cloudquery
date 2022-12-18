@@ -12,7 +12,7 @@ func Reservation() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_reservations_reservation",
 		Resolver:  fetchReservation,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_capacity),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_reservations_reservation", client.Namespacemicrosoft_capacity),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

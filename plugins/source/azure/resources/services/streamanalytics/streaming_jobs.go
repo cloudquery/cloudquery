@@ -12,7 +12,7 @@ func StreamingJobs() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_streamanalytics_streaming_jobs",
 		Resolver:  fetchStreamingJobs,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_streamanalytics),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_streamanalytics_streaming_jobs", client.Namespacemicrosoft_streamanalytics),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

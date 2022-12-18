@@ -12,7 +12,7 @@ func Workspaces() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_operationalinsights_workspaces",
 		Resolver:  fetchWorkspaces,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_operationalinsights),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_operationalinsights_workspaces", client.Namespacemicrosoft_operationalinsights),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

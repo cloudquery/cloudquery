@@ -12,7 +12,7 @@ func Hosts() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_connectedvmware_hosts",
 		Resolver:  fetchHosts,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_connectedvmwarevsphere),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_connectedvmware_hosts", client.Namespacemicrosoft_connectedvmwarevsphere),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

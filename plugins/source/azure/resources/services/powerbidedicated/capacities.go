@@ -12,7 +12,7 @@ func Capacities() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_powerbidedicated_capacities",
 		Resolver:  fetchCapacities,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_powerbidedicated),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_powerbidedicated_capacities", client.Namespacemicrosoft_powerbidedicated),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

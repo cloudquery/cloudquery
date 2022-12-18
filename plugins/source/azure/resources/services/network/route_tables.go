@@ -12,7 +12,7 @@ func RouteTables() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_route_tables",
 		Resolver:  fetchRouteTables,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_network),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_network_route_tables", client.Namespacemicrosoft_network),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

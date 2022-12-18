@@ -12,7 +12,7 @@ func SqlServerInstances() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_azurearcdata_sql_server_instances",
 		Resolver:  fetchSqlServerInstances,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_azurearcdata),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_azurearcdata_sql_server_instances", client.Namespacemicrosoft_azurearcdata),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
