@@ -65,6 +65,12 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	allNamespaces, err := azparser.GetAllNamespaces()
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	namespaces := make(map[string]string, 0)
 	for _, armModule := range armModules {
 		tables, err := azparser.CreateTablesFromPackage(armModule)
@@ -87,9 +93,14 @@ func main() {
 			if table.Namespace == "" {
 				panic(fmt.Sprintf("table %s has no namespace %s %s", table.NewFuncName, table.URL, importPath))
 			}
+			if !allNamespaces[table.Namespace] {
+				fmt.Printf("namespace %s not supported for URL %s and module %s\n", table.Namespace, table.URL, armModule)
+				continue
+			}
 			namespaces[strings.ReplaceAll(table.Namespace, ".", "_")] = table.Namespace
 		}
 	}
+
 	if err := generateNamespaces(namespaces); err != nil {
 		log.Fatal(err)
 	}

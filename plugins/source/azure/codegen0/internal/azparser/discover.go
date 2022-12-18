@@ -1,6 +1,8 @@
 package azparser
 
 import (
+	_ "embed"
+	"encoding/json"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -40,6 +42,11 @@ var packagesToSkip = map[string]bool{
 
 var subpackageRe = regexp.MustCompile(`github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/[a-z-]+/[a-z]+`)
 
+// Generated via `az provider list | jq '[.[] | {"key":.namespace,"value":true}] | from_entries' > codegen0/internal/azparser/data/namespaces.json`
+//
+//go:embed data/namespaces.json
+var namespacesJSON []byte
+
 func DiscoverSubpackages() ([]string, error) {
 	var subpackages = make([]string, 0)
 	resp, err := http.Get("https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk")
@@ -60,4 +67,15 @@ func DiscoverSubpackages() ([]string, error) {
 	}
 
 	return subpackages, nil
+}
+
+func GetAllNamespaces() (map[string]bool, error) {
+	namespaces := make(map[string]bool)
+
+	err := json.Unmarshal(namespacesJSON, &namespaces)
+	if err != nil {
+		return nil, err
+	}
+
+	return namespaces, nil
 }
