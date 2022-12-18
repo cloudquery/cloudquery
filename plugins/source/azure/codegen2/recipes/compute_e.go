@@ -18,7 +18,7 @@ func init() {
 			NewFunc:        armcompute.NewResourceSKUsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/skus",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Compute)`,
-			ExtraColumns:   []codegen.ColumnDefinition{
+			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:     "id",
 					Type:     schema.TypeString,
