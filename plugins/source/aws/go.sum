@@ -184,8 +184,8 @@ github.com/aws/aws-sdk-go-v2/service/lambda v1.26.2 h1:N7YZeA5IlmhuRhoUtlWwuciRM
 github.com/aws/aws-sdk-go-v2/service/lambda v1.26.2/go.mod h1:swAeO/+tSUbMwB9EF2miaCxPDSQwzRjfnRsYaNwbeRk=
 github.com/aws/aws-sdk-go-v2/service/lightsail v1.24.1 h1:GveUNMp1QLwcYgbPpTF+JZDKlMgpqsE2MWH8kQu1Zi8=
 github.com/aws/aws-sdk-go-v2/service/lightsail v1.24.1/go.mod h1:KXWkJDBLKf9y1WDXxlnjggggq9W0lP7F1ufcAehqVVM=
-github.com/aws/aws-sdk-go-v2/service/mq v1.13.17 h1:N4bcgIsTAakz7d5IzYo8tZx7yijlGd9RwMcpHJgp/T8=
-github.com/aws/aws-sdk-go-v2/service/mq v1.13.17/go.mod h1:+NhpunrjTkstAV5s+H+nJH3WwhXHQtKrRm+EfNcAm6I=
+github.com/aws/aws-sdk-go-v2/service/mq v1.13.18 h1:tH4kxJT0HUGVmLmOvrC0/cGjpDC2g7vlueGF/xxBO9E=
+github.com/aws/aws-sdk-go-v2/service/mq v1.13.18/go.mod h1:zVok6IADzEtpRaHw5ZMh0GhBDCczGJRstMuvIxmhKag=
 github.com/aws/aws-sdk-go-v2/service/mwaa v1.13.13 h1:7MdUIn/7bmLdiyjPgpxfTfrwEsUiPyBUlUChzDsDeNY=
 github.com/aws/aws-sdk-go-v2/service/mwaa v1.13.13/go.mod h1:Zw5kdFxVDigjH2wGCJk9n9n2O6ECCXNnI4syrp+iYME=
 github.com/aws/aws-sdk-go-v2/service/neptune v1.18.4 h1:MG+2LDD8KBeUneB8KHjvWCnbwpKG/Wzi+SinoBM9SL8=
