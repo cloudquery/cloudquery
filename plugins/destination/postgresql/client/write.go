@@ -29,30 +29,16 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *pl
 		} else {
 			sql = c.upsert(table)
 		}
-
-		if batch.Len() == c.batchSize - 1 {
-			r.Data[0] = 1
-		}
-
-		queuedQuery := batch.Queue(sql, r.Data...)
-		queuedQuery.Exec(func(ct pgconn.CommandTag) error {
-			panic("what is this?")
-			return nil
-		})
+		batch.Queue(sql, r.Data...)
 		if batch.Len() >= c.batchSize {
 			br := c.conn.SendBatch(ctx, batch)
-			// _, err := br.Exec()
-			// if err != nil {
-			// 	panic(err)
-			// }
 			if err := br.Close(); err != nil {
 				var pgErr *pgconn.PgError
 				if !errors.As(err, &pgErr) {
 					// not recoverable error
 					return fmt.Errorf("failed to execute batch: %w", err)
 				}
-				atomic.AddUint64(&c.metrics.Errors, 1)
-				c.logger.Error().Err(pgErr).Str("table", pgErr.TableName).Msg("failed to execute batch with pgerror")
+				return fmt.Errorf("failed to execute batch with pgerror on table %s: %w", pgErr.TableName, err)
 			}
 			atomic.AddUint64(&c.metrics.Writes, uint64(c.batchSize))
 			batch = &pgx.Batch{}
@@ -64,10 +50,10 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *pl
 		if err := br.Close(); err != nil {
 			var pgErr *pgconn.PgError
 			if !errors.As(err, &pgErr) {
-				// no recoverable error
+				// not recoverable error
 				return fmt.Errorf("failed to execute batch: %w", err)
 			}
-			c.logger.Error().Err(pgErr).Str("table", pgErr.TableName).Msg("failed to execute batch with pgerror")
+			return fmt.Errorf("failed to execute batch with pgerror on table %s: %w", pgErr.TableName, err)
 		}
 		atomic.AddUint64(&c.metrics.Writes, uint64(c.batchSize))
 	}
