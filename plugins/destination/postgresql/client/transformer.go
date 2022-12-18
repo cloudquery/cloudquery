@@ -10,7 +10,7 @@ import (
 
 func (*Client) TransformBool(v *schema.Bool) interface{} {
 	return &pgtype.Bool{
-		Bool:   v.Bool,
+		Bool:  v.Bool,
 		Valid: v.Status == schema.Present,
 	}
 }
@@ -21,14 +21,14 @@ func (*Client) TransformBytea(v *schema.Bytea) interface{} {
 
 func (*Client) TransformFloat8(v *schema.Float8) interface{} {
 	return &pgtype.Float8{
-		Float64:  v.Float,
-		Valid: v.Status == schema.Present,
+		Float64: v.Float,
+		Valid:   v.Status == schema.Present,
 	}
 }
 
 func (*Client) TransformInt8(v *schema.Int8) interface{} {
 	return &pgtype.Int8{
-		Int64:    v.Int,
+		Int64: v.Int,
 		Valid: v.Status == schema.Present,
 	}
 }
@@ -52,7 +52,7 @@ func (*Client) TransformJSON(v *schema.JSON) interface{} {
 func (*Client) TransformText(v *schema.Text) interface{} {
 	return &pgtype.Text{
 		String: stripNulls(v.Str),
-		Valid: v.Status == schema.Present,
+		Valid:  v.Status == schema.Present,
 	}
 }
 
@@ -70,14 +70,14 @@ func (*Client) TransformTextArray(v *schema.TextArray) interface{} {
 
 func (*Client) TransformTimestamptz(v *schema.Timestamptz) interface{} {
 	return &pgtype.Timestamptz{
-		Time:   v.Time,
+		Time:  v.Time,
 		Valid: v.Status == schema.Present,
 	}
 }
 
 func (*Client) TransformUUID(v *schema.UUID) interface{} {
 	return pgtype.UUID{
-		Bytes:  v.Bytes,
+		Bytes: v.Bytes,
 		Valid: v.Status == schema.Present,
 	}
 }
@@ -98,7 +98,7 @@ func (*Client) TransformCIDR(v *schema.CIDR) interface{} {
 	return v.IPNet
 }
 
-func (c *Client) TransformCIDRArray(v *schema.CIDRArray) interface{} {
+func (*Client) TransformCIDRArray(v *schema.CIDRArray) interface{} {
 	r := pgtype.Array[*net.IPNet]{}
 	for _, e := range v.Elements {
 		r.Elements = append(r.Elements, e.IPNet)
@@ -126,7 +126,7 @@ func (*Client) TransformInetArray(v *schema.InetArray) interface{} {
 	return &r
 }
 
-func (c *Client) TransformMacaddr(v *schema.Macaddr) interface{} {
+func (*Client) TransformMacaddr(v *schema.Macaddr) interface{} {
 	return v.Addr
 }
 

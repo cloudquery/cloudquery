@@ -86,14 +86,13 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (pl
 	pgxConfig.AfterConnect = func(ctx context.Context, conn *pgx.Conn) error {
 		return nil
 	}
-	
+
 	pgxConfig.ConnConfig.Tracer = &tracelog.TraceLog{
-		Logger: pgx_zero_log.NewLogger(c.logger),
+		Logger:   pgx_zero_log.NewLogger(c.logger),
 		LogLevel: logLevel,
 	}
 	// maybe expose this to the user?
 	pgxConfig.ConnConfig.RuntimeParams["timezone"] = "UTC"
-	pgxConfig.ConnConfig.DefaultQueryExecMode = pgx.QueryExecModeDescribeExec
 	c.conn, err = pgxpool.NewWithConfig(ctx, pgxConfig)
 	if err != nil {
 		return nil, fmt.Errorf("failed to connect to postgresql: %w", err)
