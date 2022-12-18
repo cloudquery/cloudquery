@@ -52,7 +52,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/glacier v1.13.20
 	github.com/aws/aws-sdk-go-v2/service/guardduty v1.16.6
 	github.com/aws/aws-sdk-go-v2/service/iam v1.18.24
-	github.com/aws/aws-sdk-go-v2/service/identitystore v1.15.8
+	github.com/aws/aws-sdk-go-v2/service/identitystore v1.15.9
 	github.com/aws/aws-sdk-go-v2/service/inspector v1.12.20
 	github.com/aws/aws-sdk-go-v2/service/inspector2 v1.9.1
 	github.com/aws/aws-sdk-go-v2/service/iot v1.32.1
