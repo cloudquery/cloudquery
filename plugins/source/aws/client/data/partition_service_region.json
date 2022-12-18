@@ -2252,6 +2252,7 @@
             "ap-southeast-3": {},
             "ca-central-1": {},
             "eu-central-1": {},
+            "eu-central-2": {},
             "eu-north-1": {},
             "eu-south-1": {},
             "eu-west-1": {},
@@ -2268,6 +2269,7 @@
             "fips-ap-southeast-3": {},
             "fips-ca-central-1": {},
             "fips-eu-central-1": {},
+            "fips-eu-central-2": {},
             "fips-eu-north-1": {},
             "fips-eu-south-1": {},
             "fips-eu-west-1": {},
@@ -4490,8 +4492,10 @@
             "api": {},
             "ca-central-1": {},
             "eu-central-1": {},
+            "eu-north-1": {},
             "eu-west-1": {},
             "eu-west-2": {},
+            "eu-west-3": {},
             "sa-east-1": {},
             "us-east-1": {},
             "us-east-2": {},
@@ -5310,6 +5314,7 @@
             "eu-west-1": {},
             "eu-west-2": {},
             "eu-west-3": {},
+            "me-central-1": {},
             "me-south-1": {},
             "sa-east-1": {},
             "us-east-1": {},
@@ -6430,6 +6435,12 @@
           }
         },
         "databrew": {
+          "regions": {
+            "cn-north-1": {},
+            "cn-northwest-1": {}
+          }
+        },
+        "datasync": {
           "regions": {
             "cn-north-1": {},
             "cn-northwest-1": {}
@@ -8262,6 +8273,7 @@
         },
         "metrics.sagemaker": {
           "regions": {
+            "us-gov-east-1": {},
             "us-gov-west-1": {}
           }
         },
