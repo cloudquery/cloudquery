@@ -58,13 +58,13 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/iot v1.32.2
 	github.com/aws/aws-sdk-go-v2/service/kafka v1.18.2
 	github.com/aws/aws-sdk-go-v2/service/kinesis v1.15.25
-	github.com/aws/aws-sdk-go-v2/service/kms v1.19.3
+	github.com/aws/aws-sdk-go-v2/service/kms v1.19.4
 	github.com/aws/aws-sdk-go-v2/service/lambda v1.26.2
 	github.com/aws/aws-sdk-go-v2/service/lightsail v1.24.1
 	github.com/aws/aws-sdk-go-v2/service/mq v1.13.18
 	github.com/aws/aws-sdk-go-v2/service/mwaa v1.13.13
 	github.com/aws/aws-sdk-go-v2/service/neptune v1.18.5
-	github.com/aws/aws-sdk-go-v2/service/organizations v1.17.1
+	github.com/aws/aws-sdk-go-v2/service/organizations v1.17.2
 	github.com/aws/aws-sdk-go-v2/service/qldb v1.14.22
 	github.com/aws/aws-sdk-go-v2/service/quicksight v1.28.3
 	github.com/aws/aws-sdk-go-v2/service/ram v1.16.26
