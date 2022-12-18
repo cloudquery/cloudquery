@@ -47,15 +47,15 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/emr v1.20.18
 	github.com/aws/aws-sdk-go-v2/service/eventbridge v1.16.22
 	github.com/aws/aws-sdk-go-v2/service/firehose v1.15.2
-	github.com/aws/aws-sdk-go-v2/service/frauddetector v1.20.13
+	github.com/aws/aws-sdk-go-v2/service/frauddetector v1.20.14
 	github.com/aws/aws-sdk-go-v2/service/fsx v1.26.2
-	github.com/aws/aws-sdk-go-v2/service/glacier v1.13.20
+	github.com/aws/aws-sdk-go-v2/service/glacier v1.13.21
 	github.com/aws/aws-sdk-go-v2/service/guardduty v1.16.6
-	github.com/aws/aws-sdk-go-v2/service/iam v1.18.24
+	github.com/aws/aws-sdk-go-v2/service/iam v1.18.25
 	github.com/aws/aws-sdk-go-v2/service/identitystore v1.15.9
-	github.com/aws/aws-sdk-go-v2/service/inspector v1.12.20
+	github.com/aws/aws-sdk-go-v2/service/inspector v1.12.21
 	github.com/aws/aws-sdk-go-v2/service/inspector2 v1.9.2
-	github.com/aws/aws-sdk-go-v2/service/iot v1.32.1
+	github.com/aws/aws-sdk-go-v2/service/iot v1.32.2
 	github.com/aws/aws-sdk-go-v2/service/kafka v1.18.2
 	github.com/aws/aws-sdk-go-v2/service/kinesis v1.15.25
 	github.com/aws/aws-sdk-go-v2/service/kms v1.19.4
@@ -65,9 +65,9 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/mwaa v1.13.13
 	github.com/aws/aws-sdk-go-v2/service/neptune v1.18.5
 	github.com/aws/aws-sdk-go-v2/service/organizations v1.17.1
-	github.com/aws/aws-sdk-go-v2/service/qldb v1.14.21
+	github.com/aws/aws-sdk-go-v2/service/qldb v1.14.22
 	github.com/aws/aws-sdk-go-v2/service/quicksight v1.28.1
-	github.com/aws/aws-sdk-go-v2/service/ram v1.16.25
+	github.com/aws/aws-sdk-go-v2/service/ram v1.16.26
 	github.com/aws/aws-sdk-go-v2/service/rds v1.35.0
 	github.com/aws/aws-sdk-go-v2/service/redshift v1.26.17
 	github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.12.22
