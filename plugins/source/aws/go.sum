@@ -143,8 +143,8 @@ github.com/aws/aws-sdk-go-v2/service/firehose v1.15.2 h1:LmYCmH3DedyWegzA5U86QMI
 github.com/aws/aws-sdk-go-v2/service/firehose v1.15.2/go.mod h1:+GELYqaH2ElEY/zq8DFfk0y9IN/0/EnrYoTU5d8QbVU=
 github.com/aws/aws-sdk-go-v2/service/frauddetector v1.20.13 h1:DKIKzHDGlFLWSncOtuTO4AInrXxmb3PRebIAESy2Otk=
 github.com/aws/aws-sdk-go-v2/service/frauddetector v1.20.13/go.mod h1:yJylRkqIAJ06MFlEvtklK9U6TaO/AnP5ZWVToPeUOvk=
-github.com/aws/aws-sdk-go-v2/service/fsx v1.26.1 h1:ZTEvcljzKwTk8Rf1XZd+SDq472DPdm23GqczComnUpQ=
-github.com/aws/aws-sdk-go-v2/service/fsx v1.26.1/go.mod h1:H5MgZZRlh3OStnTmRnuN2MvORodgYGe+vqu7WpvMgB4=
+github.com/aws/aws-sdk-go-v2/service/fsx v1.26.2 h1:iUZTibCisFQgKmpw98Z+Gdvg+TTmsefZszawTElc2MA=
+github.com/aws/aws-sdk-go-v2/service/fsx v1.26.2/go.mod h1:EEV2x8JcEn905TMiRMp1S1WjpnUTUxwpKxzjLJYwBZY=
 github.com/aws/aws-sdk-go-v2/service/glacier v1.13.20 h1:eJo7jUe/93VOZGNVwNivniwH2Uv4q1LX0kPVCJ8jCPs=
 github.com/aws/aws-sdk-go-v2/service/glacier v1.13.20/go.mod h1:23vmB9WUQxz2t/4HaFlxBXRLq5YXCjfrYcRQrMxaF2I=
 github.com/aws/aws-sdk-go-v2/service/glue v1.37.1 h1:Rfs7ZYn9tl/97miu3igPqil+NixAVxXt6JsVQvJPInU=
