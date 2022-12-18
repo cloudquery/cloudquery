@@ -47,7 +47,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/emr v1.20.18
 	github.com/aws/aws-sdk-go-v2/service/eventbridge v1.16.22
 	github.com/aws/aws-sdk-go-v2/service/firehose v1.15.2
-	github.com/aws/aws-sdk-go-v2/service/frauddetector v1.20.13
+	github.com/aws/aws-sdk-go-v2/service/frauddetector v1.20.14
 	github.com/aws/aws-sdk-go-v2/service/fsx v1.26.2
 	github.com/aws/aws-sdk-go-v2/service/glacier v1.13.21
 	github.com/aws/aws-sdk-go-v2/service/guardduty v1.16.6
@@ -56,14 +56,14 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/inspector v1.12.20
 	github.com/aws/aws-sdk-go-v2/service/inspector2 v1.9.2
 	github.com/aws/aws-sdk-go-v2/service/iot v1.32.1
-	github.com/aws/aws-sdk-go-v2/service/kafka v1.18.1
+	github.com/aws/aws-sdk-go-v2/service/kafka v1.18.2
 	github.com/aws/aws-sdk-go-v2/service/kinesis v1.15.25
 	github.com/aws/aws-sdk-go-v2/service/kms v1.19.3
-	github.com/aws/aws-sdk-go-v2/service/lambda v1.26.1
+	github.com/aws/aws-sdk-go-v2/service/lambda v1.26.2
 	github.com/aws/aws-sdk-go-v2/service/lightsail v1.24.1
-	github.com/aws/aws-sdk-go-v2/service/mq v1.13.17
+	github.com/aws/aws-sdk-go-v2/service/mq v1.13.18
 	github.com/aws/aws-sdk-go-v2/service/mwaa v1.13.13
-	github.com/aws/aws-sdk-go-v2/service/neptune v1.18.4
+	github.com/aws/aws-sdk-go-v2/service/neptune v1.18.5
 	github.com/aws/aws-sdk-go-v2/service/organizations v1.17.1
 	github.com/aws/aws-sdk-go-v2/service/qldb v1.14.21
 	github.com/aws/aws-sdk-go-v2/service/quicksight v1.28.1
