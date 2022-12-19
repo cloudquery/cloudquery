@@ -48,6 +48,7 @@ func generateResources() ([]*recipes.Resource, error) {
 	resources = append(resources, recipes.ElastiCacheResources()...)
 	resources = append(resources, recipes.ElasticbeanstalkResources()...)
 	resources = append(resources, recipes.ElasticsearchResources()...)
+	resources = append(resources, recipes.ElastictranscoderResources()...)
 	resources = append(resources, recipes.ELBv1Resources()...)
 	resources = append(resources, recipes.ELBv2Resources()...)
 	resources = append(resources, recipes.EMRResources()...)
