@@ -4,9 +4,8 @@ https://cloud.google.com/api-keys/docs/reference/rest/v2/projects.locations.keys
 
 The composite primary key for this table is (**project_id**, **uid**).
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

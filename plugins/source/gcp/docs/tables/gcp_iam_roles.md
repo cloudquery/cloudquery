@@ -4,9 +4,8 @@ https://cloud.google.com/iam/docs/reference/rest/v1/roles#Role
 
 The composite primary key for this table is (**project_id**, **name**).
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

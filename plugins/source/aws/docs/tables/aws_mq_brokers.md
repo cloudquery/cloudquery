@@ -11,6 +11,7 @@ The following tables depend on aws_mq_brokers:
   - [aws_mq_broker_users](aws_mq_broker_users.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

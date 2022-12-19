@@ -11,6 +11,7 @@ The following tables depend on aws_kafka_clusters:
   - [aws_kafka_cluster_operations](aws_kafka_cluster_operations.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

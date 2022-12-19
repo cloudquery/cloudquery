@@ -4,9 +4,8 @@ https://docs.aws.amazon.com/acm/latest/APIReference/API_CertificateDetail.html
 
 The primary key for this table is **arn**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

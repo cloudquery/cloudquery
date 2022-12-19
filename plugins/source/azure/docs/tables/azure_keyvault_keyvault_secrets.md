@@ -1,14 +1,13 @@
 # Table: azure_keyvault_keyvault_secrets
 
-
-
 The primary key for this table is **id**.
 
 ## Relations
+
 This table depends on [azure_keyvault_keyvault](azure_keyvault_keyvault.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

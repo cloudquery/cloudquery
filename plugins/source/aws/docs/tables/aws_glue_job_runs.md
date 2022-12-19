@@ -1,14 +1,13 @@
 # Table: aws_glue_job_runs
 
-
-
 The primary key for this table is **_cq_id**.
 
 ## Relations
+
 This table depends on [aws_glue_jobs](aws_glue_jobs.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

@@ -4,9 +4,8 @@ https://cloud.google.com/dns/docs/reference/v1/policies#resource
 
 The primary key for this table is **id**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

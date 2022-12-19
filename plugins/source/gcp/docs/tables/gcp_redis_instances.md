@@ -4,9 +4,8 @@ https://cloud.google.com/memorystore/docs/redis/reference/rest/v1/projects.locat
 
 The primary key for this table is **name**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

@@ -5,10 +5,11 @@ Terraform resource instances
 The primary key for this table is **_cq_id**.
 
 ## Relations
+
 This table depends on [tf_resources](tf_resources.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

@@ -1,12 +1,9 @@
 # Table: github_installations
 
-
-
 The composite primary key for this table is (**org**, **id**).
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

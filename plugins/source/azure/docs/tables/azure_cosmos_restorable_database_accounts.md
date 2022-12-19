@@ -1,12 +1,9 @@
 # Table: azure_cosmos_restorable_database_accounts
 
-
-
 The primary key for this table is **id**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

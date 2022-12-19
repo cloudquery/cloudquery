@@ -1,14 +1,13 @@
 # Table: aws_mq_broker_users
 
-
-
 The primary key for this table is **_cq_id**.
 
 ## Relations
+
 This table depends on [aws_mq_brokers](aws_mq_brokers.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

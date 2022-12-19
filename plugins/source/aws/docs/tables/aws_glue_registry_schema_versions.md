@@ -1,14 +1,13 @@
 # Table: aws_glue_registry_schema_versions
 
-
-
 The primary key for this table is **_cq_id**.
 
 ## Relations
+
 This table depends on [aws_glue_registry_schemas](aws_glue_registry_schemas.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

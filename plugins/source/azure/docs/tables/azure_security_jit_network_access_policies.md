@@ -1,12 +1,9 @@
 # Table: azure_security_jit_network_access_policies
 
-
-
 The primary key for this table is **id**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

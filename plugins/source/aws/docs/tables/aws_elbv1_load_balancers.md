@@ -10,6 +10,7 @@ The following tables depend on aws_elbv1_load_balancers:
   - [aws_elbv1_load_balancer_policies](aws_elbv1_load_balancer_policies.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

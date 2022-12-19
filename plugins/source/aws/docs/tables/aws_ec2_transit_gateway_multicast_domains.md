@@ -5,10 +5,11 @@ https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGatewayMultica
 The primary key for this table is **_cq_id**.
 
 ## Relations
+
 This table depends on [aws_ec2_transit_gateways](aws_ec2_transit_gateways.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

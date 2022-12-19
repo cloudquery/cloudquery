@@ -4,9 +4,8 @@ https://docs.aws.amazon.com/iot/latest/apireference/API_ThingTypeDefinition.html
 
 The primary key for this table is **arn**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

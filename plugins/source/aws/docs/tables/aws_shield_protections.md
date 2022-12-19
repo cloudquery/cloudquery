@@ -4,9 +4,8 @@ https://docs.aws.amazon.com/waf/latest/DDOSAPIReference/API_Protection.html
 
 The primary key for this table is **arn**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
