@@ -25,37 +25,15 @@ import (
 //go:embed templates/*.go.tpl
 var gcpTemplatesFS embed.FS
 
-var resources []*recipes.Resource
-
 func main() {
-	resources = append(resources, recipes.ApiKeysResources()...)
-	resources = append(resources, recipes.ComputeResources()...)
-	resources = append(resources, recipes.DnsResources()...)
-	resources = append(resources, recipes.DomainsResources()...)
-	resources = append(resources, recipes.IamResources()...)
-	resources = append(resources, recipes.KmsResources()...)
-	resources = append(resources, recipes.ContainerResources()...)
-	resources = append(resources, recipes.ContainerAnalysisResources()...)
-	resources = append(resources, recipes.LoggingResources()...)
-	resources = append(resources, recipes.RedisResources()...)
-	resources = append(resources, recipes.MonitoringResources()...)
-	resources = append(resources, recipes.SecretManagerResources()...)
-	resources = append(resources, recipes.ServiceusageResources()...)
-	resources = append(resources, recipes.SqlResources()...)
-	resources = append(resources, recipes.StorageResources()...)
-	resources = append(resources, recipes.BigqueryResources()...)
-	resources = append(resources, recipes.BillingResources()...)
-	resources = append(resources, recipes.ResourceManagerResources()...)
-	resources = append(resources, recipes.FunctionsResources()...)
-	resources = append(resources, recipes.RunResources()...)
 
-	for _, r := range resources {
+	for _, r := range recipes.Resources {
 		generateResource(*r, false)
 		if !r.SkipMock {
 			generateResource(*r, true)
 		}
 	}
-	generatePlugin(resources)
+	generatePlugin(recipes.Resources)
 }
 
 func generatePlugin(rr []*recipes.Resource) {
@@ -88,12 +66,7 @@ func generatePlugin(rr []*recipes.Resource) {
 }
 
 func needsProjectIDColumn(r recipes.Resource) bool {
-	for _, c := range r.ExtraColumns {
-		if c.Name == "project_id" {
-			return false
-		}
-	}
-	return true
+	return r.Multiplex != &recipes.OrgMultiplex
 }
 
 func generateResource(r recipes.Resource, mock bool) {
@@ -144,13 +117,9 @@ func generateResource(r recipes.Resource, mock bool) {
 		r.MockImports = []string{reflect.TypeOf(r.Struct).Elem().PkgPath()}
 	}
 
-	for _, f := range r.ExtraColumns {
-		r.SkipFields = append(r.SkipFields, strcase.ToCamel(f.Name))
-	}
-
 	extraColumns := r.ExtraColumns
 	if needsProjectIDColumn(r) {
-		extraColumns = append([]codegen.ColumnDefinition{recipes.ProjectIdColumn}, extraColumns...)
+		extraColumns = append([]codegen.ColumnDefinition{recipes.ProjectIdColumn}, r.ExtraColumns...)
 	}
 
 	opts := []codegen.TableOption{
@@ -203,6 +172,17 @@ func generateResource(r recipes.Resource, mock bool) {
 	} else {
 		r.Table.Multiplex = *r.Multiplex
 	}
+
+	for _, f := range r.PrimaryKeys {
+		for i := range r.Table.Columns {
+			if r.Table.Columns[i].Name == f {
+				r.Table.Columns[i].Options.PrimaryKey = true
+			}
+		}
+	}
+
+	r.Table.Description = r.Description
+
 	r.Table.Resolver = "fetch" + strcase.ToCamel(r.SubService)
 	if r.PreResourceResolver != "" {
 		r.Table.PreResourceResolver = r.PreResourceResolver

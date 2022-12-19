@@ -5,6 +5,68 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v5.1.0...plugins-source-gcp-v5.1.1) (2022-12-14)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.12.4 ([#5649](https://github.com/cloudquery/cloudquery/issues/5649)) ([b4aa889](https://github.com/cloudquery/cloudquery/commit/b4aa889e396db3b0887d1684e4bc07da6050af43))
+
+## [5.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v5.0.0...plugins-source-gcp-v5.1.0) (2022-12-14)
+
+
+### Features
+
+* **gcp:** Add descriptions to tables (link to rest API) ([#5644](https://github.com/cloudquery/cloudquery/issues/5644)) ([8f3bb23](https://github.com/cloudquery/cloudquery/commit/8f3bb2325592a0bba5956da5e9f4d0c708ae5adc))
+
+
+### Bug Fixes
+
+* **gcp-resources:** Set primary keys for `gcp_resourcemanager_projects` ([#5636](https://github.com/cloudquery/cloudquery/issues/5636)) ([b8467d0](https://github.com/cloudquery/cloudquery/commit/b8467d0122f0a664237fdf5bd4eb92aadb1490e1))
+
+## [5.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v4.0.0...plugins-source-gcp-v5.0.0) (2022-12-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* **gcp:** Table `gcp_resourcemanager_folders` `project_id` column was removed, and `organization_id` added
+
+### Features
+
+* **codegen:** Add PrimaryKeys field to codegen ([#5623](https://github.com/cloudquery/cloudquery/issues/5623)) ([1980d16](https://github.com/cloudquery/cloudquery/commit/1980d1625dbcdedc142b50e96878e566dcf542de))
+* **gcp:** Add SQL users ([#5622](https://github.com/cloudquery/cloudquery/issues/5622)) ([cf00c37](https://github.com/cloudquery/cloudquery/commit/cf00c370d8c160b2d006fb8892e765a98c973f34))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.12.2 ([#5583](https://github.com/cloudquery/cloudquery/issues/5583)) ([d721c4e](https://github.com/cloudquery/cloudquery/commit/d721c4e06b8a97b5373215aca0e4ed64942ac489))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.12.3 ([#5639](https://github.com/cloudquery/cloudquery/issues/5639)) ([6452d0e](https://github.com/cloudquery/cloudquery/commit/6452d0ed5a44abad9d7530af6e79cde6504d0c4c))
+* **gcp:** ResourceManager folders listing (add OrgMultiplexing) ([9dfc991](https://github.com/cloudquery/cloudquery/commit/9dfc9915b35bba7662ff15919ceba6e065eda7c3))
+
+## [4.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v3.2.0...plugins-source-gcp-v4.0.0) (2022-12-13)
+
+
+### ⚠ BREAKING CHANGES
+
+* **gcp:** Only list enabled Services ([#5557](https://github.com/cloudquery/cloudquery/issues/5557))
+* **gcp:** Only List Project Roles ([#5556](https://github.com/cloudquery/cloudquery/issues/5556))
+* **gcp:** `private_key_type` column was removed from the `gcp_iam_service_account_keys` table as it was always populated with `nil`. If you were using it in one of your queries, you can safely remove it.
+
+### Features
+
+* **gcp:** Add retrier ([#5522](https://github.com/cloudquery/cloudquery/issues/5522)) ([bf8c212](https://github.com/cloudquery/cloudquery/commit/bf8c212c3778db759aa64293e7ebb1ee5dac65b1)), closes [#5514](https://github.com/cloudquery/cloudquery/issues/5514)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.11.1 ([#5458](https://github.com/cloudquery/cloudquery/issues/5458)) ([58b7432](https://github.com/cloudquery/cloudquery/commit/58b74321cd253c9a843c8c103f324abb93952195))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.11.2 ([#5497](https://github.com/cloudquery/cloudquery/issues/5497)) ([c1876cf](https://github.com/cloudquery/cloudquery/commit/c1876cf793b43d825a25fb3c9ba4996e4b09964f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.12.0 ([#5539](https://github.com/cloudquery/cloudquery/issues/5539)) ([fb71293](https://github.com/cloudquery/cloudquery/commit/fb71293d5cfe1b2ef32ba83d604ac3c48e662bce))
+* **gcp:** Fix context to work when syncing ([#5512](https://github.com/cloudquery/cloudquery/issues/5512)) ([81c8075](https://github.com/cloudquery/cloudquery/commit/81c80759fe078a50005016744a607ed9607e35e5))
+* **gcp:** Only list enabled Services ([#5557](https://github.com/cloudquery/cloudquery/issues/5557)) ([5310bef](https://github.com/cloudquery/cloudquery/commit/5310bef3a047723a4153488ef067b05a003a5884))
+* **gcp:** Only List Project Roles ([#5556](https://github.com/cloudquery/cloudquery/issues/5556)) ([51acb48](https://github.com/cloudquery/cloudquery/commit/51acb48a3c74c2f478de260bf20d015dc38acee7))
+* **gcp:** Remove `private_key_type` column from `gcp_iam_service_account_keys` ([1371928](https://github.com/cloudquery/cloudquery/commit/13719284794641b2d74bd1dd78d125fca9f3b379))
+
 ## [3.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v3.1.0...plugins-source-gcp-v3.2.0) (2022-12-06)
 
 

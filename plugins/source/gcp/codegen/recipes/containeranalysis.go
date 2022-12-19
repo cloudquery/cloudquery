@@ -3,30 +3,20 @@ package recipes
 import (
 	containeranalysis "cloud.google.com/go/containeranalysis/apiv1beta1"
 	grafeaspb "cloud.google.com/go/containeranalysis/apiv1beta1/grafeas/grafeaspb"
-	"github.com/cloudquery/plugin-sdk/codegen"
-	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func ContainerAnalysisResources() []*Resource {
-	var resources = []*Resource{
+func init() {
+	resources := []*Resource{
 		{
-			SubService: "occurrences",
-			Struct:     &grafeaspb.Occurrence{},
-			SkipFields: []string{"Name"},
-			ExtraColumns: []codegen.ColumnDefinition{
-				ProjectIdColumn,
-				{
-					Name:     "name",
-					Type:     schema.TypeString,
-					Resolver: `schema.PathResolver("Name")`,
-					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-				},
-			},
+			SubService:          "occurrences",
+			Struct:              &grafeaspb.Occurrence{},
+			PrimaryKeys:         []string{"name"},
 			Template:            "newapi_list",
 			ListFunction:        (&containeranalysis.GrafeasV1Beta1Client{}).ListOccurrences,
 			RequestStruct:       &grafeaspb.ListOccurrencesRequest{},
 			ResponseStruct:      &grafeaspb.ListOccurrencesResponse{},
 			RequestStructFields: `Parent: "projects/" + c.ProjectId,`,
+			Description:         "https://cloud.google.com/container-analysis/docs/reference/rest/v1beta1/projects.occurrences#Occurrence",
 		},
 	}
 
@@ -42,5 +32,5 @@ func ContainerAnalysisResources() []*Resource {
 		resource.UnimplementedServer = &grafeaspb.UnimplementedGrafeasV1Beta1Server{}
 	}
 
-	return resources
+	Resources = append(Resources, resources...)
 }

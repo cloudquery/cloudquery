@@ -16,21 +16,15 @@ import (
 
 func Instances() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_compute_instances",
-		Resolver:  fetchInstances,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_compute_instances",
+		Description: `https://cloud.google.com/compute/docs/reference/rest/v1/instances#Instance`,
+		Resolver:    fetchInstances,
+		Multiplex:   client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
-			},
-			{
-				Name: "self_link",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
 				Name:     "advanced_machine_features",
@@ -198,6 +192,14 @@ func Instances() *schema.Table {
 				Resolver: schema.PathResolver("Scheduling"),
 			},
 			{
+				Name:     "self_link",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SelfLink"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
 				Name:     "service_accounts",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("ServiceAccounts"),
@@ -260,7 +262,7 @@ func fetchInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	if err != nil {
 		return err
 	}
-	it := gcpClient.AggregatedList(ctx, req)
+	it := gcpClient.AggregatedList(ctx, req, c.CallOptions...)
 	for {
 		resp, err := it.Next()
 		if err == iterator.Done {

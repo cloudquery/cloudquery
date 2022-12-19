@@ -2,34 +2,23 @@ package recipes
 
 import (
 	apikeys "cloud.google.com/go/apikeys/apiv2"
-	"github.com/cloudquery/plugin-sdk/codegen"
-	"github.com/cloudquery/plugin-sdk/schema"
 	pb "google.golang.org/genproto/googleapis/api/apikeys/v2"
 )
 
-var resources = []*Resource{
-	{
-		SubService: "keys",
-		Struct:     &pb.Key{},
-		SkipFields: []string{"Uid"},
-		ExtraColumns: []codegen.ColumnDefinition{
-			ProjectIdColumnPk,
-			{
-				Name:     "uid",
-				Type:     schema.TypeString,
-				Resolver: `schema.PathResolver("Uid")`,
-				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-			},
+func init() {
+	resources := []*Resource{
+		{
+			SubService:          "keys",
+			Struct:              &pb.Key{},
+			PrimaryKeys:         []string{ProjectIdColumn.Name, "uid"},
+			ListFunction:        (&apikeys.Client{}).ListKeys,
+			RequestStruct:       &pb.ListKeysRequest{},
+			ResponseStruct:      &pb.ListKeysResponse{},
+			RequestStructFields: `Parent: "projects/" + c.ProjectId + "/locations/global",`,
+			Description:         "https://cloud.google.com/api-keys/docs/reference/rest/v2/projects.locations.keys#Key",
 		},
+	}
 
-		ListFunction:        (&apikeys.Client{}).ListKeys,
-		RequestStruct:       &pb.ListKeysRequest{},
-		ResponseStruct:      &pb.ListKeysResponse{},
-		RequestStructFields: `Parent: "projects/" + c.ProjectId + "/locations/global",`,
-	},
-}
-
-func ApiKeysResources() []*Resource {
 	for _, resource := range resources {
 		resource.Service = "apikeys"
 		resource.Template = "newapi_list"
@@ -42,5 +31,5 @@ func ApiKeysResources() []*Resource {
 		resource.UnimplementedServer = &pb.UnimplementedApiKeysServer{}
 	}
 
-	return resources
+	Resources = append(Resources, resources...)
 }

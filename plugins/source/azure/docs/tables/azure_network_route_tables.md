@@ -1,6 +1,6 @@
 # Table: azure_network_route_tables
 
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network#RouteTable
+
 
 The primary key for this table is **id**.
 
@@ -14,14 +14,10 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|routes|JSON|
-|subnets|JSON|
-|disable_bgp_route_propagation|Bool|
-|provisioning_state|String|
-|resource_guid|String|
-|etag|String|
 |id (PK)|String|
+|location|String|
+|properties|JSON|
+|tags|JSON|
+|etag|String|
 |name|String|
 |type|String|
-|location|String|
-|tags|JSON|

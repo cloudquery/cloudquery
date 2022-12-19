@@ -415,6 +415,26 @@ func (mr *MockAutoscalingClientMockRecorder) DescribeTerminationPolicyTypes(arg0
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeTerminationPolicyTypes", reflect.TypeOf((*MockAutoscalingClient)(nil).DescribeTerminationPolicyTypes), varargs...)
 }
 
+// DescribeTrafficSources mocks base method.
+func (m *MockAutoscalingClient) DescribeTrafficSources(arg0 context.Context, arg1 *autoscaling.DescribeTrafficSourcesInput, arg2 ...func(*autoscaling.Options)) (*autoscaling.DescribeTrafficSourcesOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeTrafficSources", varargs...)
+	ret0, _ := ret[0].(*autoscaling.DescribeTrafficSourcesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeTrafficSources indicates an expected call of DescribeTrafficSources.
+func (mr *MockAutoscalingClientMockRecorder) DescribeTrafficSources(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeTrafficSources", reflect.TypeOf((*MockAutoscalingClient)(nil).DescribeTrafficSources), varargs...)
+}
+
 // DescribeWarmPool mocks base method.
 func (m *MockAutoscalingClient) DescribeWarmPool(arg0 context.Context, arg1 *autoscaling.DescribeWarmPoolInput, arg2 ...func(*autoscaling.Options)) (*autoscaling.DescribeWarmPoolOutput, error) {
 	m.ctrl.T.Helper()

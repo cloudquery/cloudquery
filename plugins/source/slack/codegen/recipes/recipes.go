@@ -103,9 +103,10 @@ func tableNameForResource(r *Resource) string {
 		p = p.parent
 	}
 	nParts = append(nParts, pluralizeClient.Plural(r.SubService))
-	if l := len(nParts); l == 1 {
+	switch len(nParts) {
+	case 1:
 		nParts[0] = pluralizeClient.Plural(nParts[0])
-	} else if l == 0 {
+	case 0:
 		log.Fatalf("Could not generate table name for %s.%s", r.Service, r.SubService)
 	}
 	return strings.Join(nParts, "_")

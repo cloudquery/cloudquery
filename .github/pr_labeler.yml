@@ -2,6 +2,8 @@ aws:
   - plugins/source/aws/**/*
 azure:
   - plugins/source/azure/**/*
+azuredevops:
+  - plugins/source/azuredevops/**/*
 cloudflare:
   - plugins/source/cloudflare/**/*
 crowdstrike:
@@ -26,6 +28,8 @@ okta:
   - plugins/source/okta/**/*
 terraform:
   - plugins/source/terraform/**/*
+vercel:
+  - plugins/source/vercel/**/*
 postgresql:
   - plugins/destination/postgresql/**/*
 sqlite:

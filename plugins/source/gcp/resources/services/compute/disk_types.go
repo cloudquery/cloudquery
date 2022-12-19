@@ -16,21 +16,15 @@ import (
 
 func DiskTypes() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_compute_disk_types",
-		Resolver:  fetchDiskTypes,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_compute_disk_types",
+		Description: `https://cloud.google.com/compute/docs/reference/rest/v1/diskTypes#DiskType`,
+		Resolver:    fetchDiskTypes,
+		Multiplex:   client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
-			},
-			{
-				Name: "self_link",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
 				Name:     "creation_timestamp",
@@ -73,6 +67,14 @@ func DiskTypes() *schema.Table {
 				Resolver: schema.PathResolver("Region"),
 			},
 			{
+				Name:     "self_link",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SelfLink"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
 				Name:     "valid_disk_size",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ValidDiskSize"),
@@ -95,7 +97,7 @@ func fetchDiskTypes(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	if err != nil {
 		return err
 	}
-	it := gcpClient.AggregatedList(ctx, req)
+	it := gcpClient.AggregatedList(ctx, req, c.CallOptions...)
 	for {
 		resp, err := it.Next()
 		if err == iterator.Done {

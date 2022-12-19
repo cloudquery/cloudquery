@@ -271,6 +271,7 @@
   - [aws_iam_user_groups](aws_iam_user_groups.md)
   - [aws_iam_user_attached_policies](aws_iam_user_attached_policies.md)
   - [aws_iam_user_policies](aws_iam_user_policies.md)
+  - [aws_iam_ssh_public_keys](aws_iam_ssh_public_keys.md)
 - [aws_iam_virtual_mfa_devices](aws_iam_virtual_mfa_devices.md)
 - [aws_identitystore_groups](aws_identitystore_groups.md)
   - [aws_identitystore_group_memberships](aws_identitystore_group_memberships.md)

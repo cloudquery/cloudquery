@@ -16,9 +16,10 @@ import (
 
 func Keys() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_apikeys_keys",
-		Resolver:  fetchKeys,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_apikeys_keys",
+		Description: `https://cloud.google.com/api-keys/docs/reference/rest/v2/projects.locations.keys#Key`,
+		Resolver:    fetchKeys,
+		Multiplex:   client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
@@ -29,17 +30,17 @@ func Keys() *schema.Table {
 				},
 			},
 			{
+				Name:     "name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Name"),
+			},
+			{
 				Name:     "uid",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Uid"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
-			},
-			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
 			},
 			{
 				Name:     "display_name",
@@ -94,7 +95,7 @@ func fetchKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resou
 	if err != nil {
 		return err
 	}
-	it := gcpClient.ListKeys(ctx, req)
+	it := gcpClient.ListKeys(ctx, req, c.CallOptions...)
 	for {
 		resp, err := it.Next()
 		if err == iterator.Done {

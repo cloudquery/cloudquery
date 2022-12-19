@@ -8,7 +8,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
+var Resources []*Resource
+
 type Resource struct {
+	Description string
 	// PackageName name is the packgename in the source plugin this resource is located
 	PackageName string
 	// Sets PreResourceResolver
@@ -63,8 +66,6 @@ type Resource struct {
 	Multiplex *string
 	// ChildTable
 	ChildTable bool
-	// FakerFieldsToIgnore is a list of fields to ignore when generating faker data
-	FakerFieldsToIgnore []string
 	// SkipMock is used to skip the mock generation for this resource
 	SkipMock bool
 	// Pass to MockTemplate
@@ -80,8 +81,8 @@ type Resource struct {
 	// Don't generate fetch
 	SkipFetch bool
 	// SkipFields fields in go struct to skip when generating the table from the go struct
-	SkipFields []string
-	// ExtraColumns override, override generated columns
+	SkipFields   []string
+	PrimaryKeys  []string
 	ExtraColumns []codegen.ColumnDefinition
 	// NameTransformer custom name transformer for resource
 	NameTransformer func(field reflect.StructField) (string, error)
@@ -91,13 +92,6 @@ var ProjectIdColumn = codegen.ColumnDefinition{
 	Name:     "project_id",
 	Type:     schema.TypeString,
 	Resolver: "client.ResolveProject",
-}
-
-var ProjectIdColumnPk = codegen.ColumnDefinition{
-	Name:     "project_id",
-	Type:     schema.TypeString,
-	Resolver: "client.ResolveProject",
-	Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 }
 
 func CreateReplaceTransformer(replace map[string]string) func(field reflect.StructField) (string, error) {

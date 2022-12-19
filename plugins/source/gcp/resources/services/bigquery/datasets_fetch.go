@@ -5,7 +5,6 @@ import (
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
-	"github.com/pkg/errors"
 	"google.golang.org/api/bigquery/v2"
 )
 
@@ -19,7 +18,7 @@ func fetchDatasets(ctx context.Context, meta schema.ClientMeta, r *schema.Resour
 	for {
 		output, err := bigqueryService.Datasets.List(c.ProjectId).PageToken(nextPageToken).Do()
 		if err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 		res <- output.Datasets
 
@@ -40,7 +39,7 @@ func datasetGet(ctx context.Context, meta schema.ClientMeta, r *schema.Resource)
 	}
 	item, err := bigqueryService.Datasets.Get(c.ProjectId, datasetListDataset.DatasetReference.DatasetId).Do()
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 	r.SetItem(item)
 	return nil

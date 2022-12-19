@@ -7,62 +7,43 @@ import (
 	"google.golang.org/api/iam/v1"
 )
 
-var iamResources = []*Resource{
-	{
-		SubService: "roles",
-		Struct:     &iam.Role{},
-		ExtraColumns: []codegen.ColumnDefinition{
-			{
-				Name:     "project_id",
-				Type:     schema.TypeString,
-				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-				Resolver: "client.ResolveProject",
-			},
-			{
-				Name:    "name",
-				Type:    schema.TypeString,
-				Options: schema.ColumnCreationOptions{PrimaryKey: true},
-			},
+func init() {
+	resources := []*Resource{
+		{
+			SubService:  "roles",
+			Struct:      &iam.Role{},
+			PrimaryKeys: []string{ProjectIdColumn.Name, "name"},
+			Description: "https://cloud.google.com/iam/docs/reference/rest/v1/roles#Role",
 		},
-	},
-	{
-		SubService:  "service_accounts",
-		Struct:      &iam.ServiceAccount{},
-		OutputField: "Accounts",
-		ExtraColumns: []codegen.ColumnDefinition{
-			{
-				Name:     "unique_id",
-				Type:     schema.TypeString,
-				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-				Resolver: `schema.PathResolver("UniqueId")`,
-			},
+		{
+			SubService:      "service_accounts",
+			Struct:          &iam.ServiceAccount{},
+			OutputField:     "Accounts",
+			PrimaryKeys:     []string{"unique_id"},
+			SkipFields:      []string{"ProjectId"},
+			NameTransformer: CreateReplaceTransformer(map[string]string{"oauth_2": "oauth2"}),
+			Relations:       []string{"ServiceAccountKeys()"},
+			SkipMock:        true,
+			Description:     "https://cloud.google.com/iam/docs/reference/rest/v1/projects.serviceAccounts#ServiceAccount",
 		},
-		SkipFields:      []string{"ProjectId"},
-		NameTransformer: CreateReplaceTransformer(map[string]string{"oauth_2": "oauth2"}),
-		Relations:       []string{"ServiceAccountKeys()"},
-		SkipMock:        true,
-	},
-	{
-		SubService:  "service_account_keys",
-		Struct:      &iam.ServiceAccountKey{},
-		ChildTable:  true,
-		OutputField: "AccountKeys",
-		ExtraColumns: []codegen.ColumnDefinition{
-			{
-				Name:     "service_account_unique_id",
-				Type:     schema.TypeString,
-				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-				Resolver: `schema.ParentColumnResolver("unique_id")`,
+		{
+			SubService:  "service_account_keys",
+			Struct:      &iam.ServiceAccountKey{},
+			ChildTable:  true,
+			OutputField: "AccountKeys",
+			ExtraColumns: []codegen.ColumnDefinition{
+				{
+					Name:     "service_account_unique_id",
+					Type:     schema.TypeString,
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					Resolver: `schema.ParentColumnResolver("unique_id")`,
+				},
 			},
+			SkipFields:  []string{"ProjectId", "PrivateKeyData", "PrivateKeyType"},
+			SkipMock:    true,
+			Description: "https://cloud.google.com/iam/docs/reference/rest/v1/projects.serviceAccounts.keys#ServiceAccountKey",
 		},
-		SkipFields: []string{"ProjectId", "PrivateKeyData", "PrivateKeyType"},
-		SkipMock:   true,
-	},
-}
-
-func IamResources() []*Resource {
-	var resources []*Resource
-	resources = append(resources, iamResources...)
+	}
 
 	for _, resource := range resources {
 		resource.Service = "iam"
@@ -75,5 +56,5 @@ func IamResources() []*Resource {
 		}
 	}
 
-	return resources
+	Resources = append(Resources, resources...)
 }

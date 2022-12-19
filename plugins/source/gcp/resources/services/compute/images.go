@@ -26,13 +26,6 @@ func Images() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
-				Name: "self_link",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
 				Name:     "architecture",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Architecture"),
@@ -123,6 +116,14 @@ func Images() *schema.Table {
 				Resolver: schema.PathResolver("SatisfiesPzs"),
 			},
 			{
+				Name:     "self_link",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SelfLink"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
 				Name:     "shielded_instance_initial_state",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("ShieldedInstanceInitialState"),
@@ -200,7 +201,7 @@ func fetchImages(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 	if err != nil {
 		return err
 	}
-	it := gcpClient.List(ctx, req)
+	it := gcpClient.List(ctx, req, c.CallOptions...)
 	for {
 		resp, err := it.Next()
 		if err == iterator.Done {

@@ -16,21 +16,15 @@ import (
 
 func BackendServices() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_compute_backend_services",
-		Resolver:  fetchBackendServices,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_compute_backend_services",
+		Description: `https://cloud.google.com/compute/docs/reference/rest/v1/backendServices#BackendService`,
+		Resolver:    fetchBackendServices,
+		Multiplex:   client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
-			},
-			{
-				Name: "self_link",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
 				Name:     "affinity_cookie_ttl_sec",
@@ -203,6 +197,14 @@ func BackendServices() *schema.Table {
 				Resolver: schema.PathResolver("SecuritySettings"),
 			},
 			{
+				Name:     "self_link",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SelfLink"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
 				Name:     "service_bindings",
 				Type:     schema.TypeStringArray,
 				Resolver: schema.PathResolver("ServiceBindings"),
@@ -235,7 +237,7 @@ func fetchBackendServices(ctx context.Context, meta schema.ClientMeta, parent *s
 	if err != nil {
 		return err
 	}
-	it := gcpClient.AggregatedList(ctx, req)
+	it := gcpClient.AggregatedList(ctx, req, c.CallOptions...)
 	for {
 		resp, err := it.Next()
 		if err == iterator.Done {

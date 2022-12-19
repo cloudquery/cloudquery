@@ -48,7 +48,7 @@ func (c *Client) writeResource(ctx context.Context, table *schema.Table, client 
 		}
 		c.logger.Debug().Interface("cols", saver.cols).Msg("got resource")
 		batch = append(batch, saver)
-		if len(batch) >= batchSize {
+		if len(batch) >= c.batchSize {
 			c.logger.Debug().Msg("Writing batch")
 			// we use a context with timeout here, because inserter.Put can retry indefinitely
 			// on retryable errors if not given a context timeout
@@ -95,8 +95,18 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *pl
 		})
 	}
 
-	for r := range res {
-		workers[r.TableName].writeChan <- r.Data
+	done := false
+	for !done {
+		select {
+		case r, ok := <-res:
+			if !ok {
+				done = true
+				break
+			}
+			workers[r.TableName].writeChan <- r.Data
+		case <-gctx.Done():
+			done = true
+		}
 	}
 	for _, w := range workers {
 		close(w.writeChan)

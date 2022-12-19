@@ -37,11 +37,12 @@ jobs:
               return contents.includes(`name: "${action}"`)
             }
             const matchesFile = (action) => {
-              return files.some(file => file.startsWith(action) || matchesWorkflow(file, action))
+              return files.some(file => file.startsWith(`${action}/`) || matchesWorkflow(file, action))
             }
             let actions = ["cli",
                            "plugins/source/aws",
                            "plugins/source/azure",
+                           "plugins/source/azuredevops",
                            "plugins/source/cloudflare",
                            "plugins/source/crowdstrike",
                            "plugins/source/digitalocean",
@@ -52,8 +53,10 @@ jobs:
                            "plugins/source/heroku",
                            "plugins/source/k8s",
                            "plugins/source/okta",
+                           "plugins/source/tailscale",
                            "plugins/source/terraform",
                            "plugins/source/test",
+                           "plugins/source/vercel",
                            
                            "plugins/destination/postgresql",
                            "plugins/destination/test",
@@ -78,8 +81,8 @@ jobs:
               actions = ["cli (ubuntu-latest)", "cli (windows-latest)", "cli (macos-latest)", ...actions]
             }
 
-            // Enforce policy tests for AWS,GCP,Azure and K8s plugins
-            const pluginsWithPolicyTests = ["plugins/source/aws", "plugins/source/gcp", "plugins/source/azure", "plugins/source/k8s"]
+            // Enforce policy tests for AWS,GCP and K8s plugins
+            const pluginsWithPolicyTests = ["plugins/source/aws", "plugins/source/gcp", "plugins/source/k8s"]
             for (const plugin of pluginsWithPolicyTests) {
               if (actions.includes(plugin)) {
                 actions = [...actions, 'test-policies']

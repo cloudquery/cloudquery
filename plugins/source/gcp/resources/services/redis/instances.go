@@ -6,7 +6,7 @@ import (
 	"context"
 	"google.golang.org/api/iterator"
 
-	pb "google.golang.org/genproto/googleapis/cloud/redis/v1"
+	pb "cloud.google.com/go/redis/apiv1/redispb"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
@@ -16,9 +16,10 @@ import (
 
 func Instances() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_redis_instances",
-		Resolver:  fetchInstances,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_redis_instances",
+		Description: `https://cloud.google.com/memorystore/docs/redis/reference/rest/v1/projects.locations.instances#Instance`,
+		Resolver:    fetchInstances,
+		Multiplex:   client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
@@ -191,7 +192,7 @@ func fetchInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	if err != nil {
 		return err
 	}
-	it := gcpClient.ListInstances(ctx, req)
+	it := gcpClient.ListInstances(ctx, req, c.CallOptions...)
 	for {
 		resp, err := it.Next()
 		if err == iterator.Done {

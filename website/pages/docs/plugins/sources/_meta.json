@@ -12,5 +12,6 @@
   "k8s": "Kubernetes",
   "okta": "Okta",
   "slack": "Slack",
-  "terraform": "Terraform"
+  "terraform": "Terraform",
+  "vercel": "Vercel"
 }

@@ -26,13 +26,6 @@ func SslPolicies() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
-				Name: "self_link",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
 				Name:     "creation_timestamp",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("CreationTimestamp"),
@@ -88,6 +81,14 @@ func SslPolicies() *schema.Table {
 				Resolver: schema.PathResolver("Region"),
 			},
 			{
+				Name:     "self_link",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SelfLink"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
 				Name:     "warnings",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Warnings"),
@@ -105,7 +106,7 @@ func fetchSslPolicies(ctx context.Context, meta schema.ClientMeta, parent *schem
 	if err != nil {
 		return err
 	}
-	it := gcpClient.List(ctx, req)
+	it := gcpClient.List(ctx, req, c.CallOptions...)
 	for {
 		resp, err := it.Next()
 		if err == iterator.Done {

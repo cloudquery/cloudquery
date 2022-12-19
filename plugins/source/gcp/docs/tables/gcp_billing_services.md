@@ -1,6 +1,6 @@
 # Table: gcp_billing_services
 
-
+https://cloud.google.com/billing/docs/reference/rest/v1/services/list#Service
 
 The primary key for this table is **name**.
 

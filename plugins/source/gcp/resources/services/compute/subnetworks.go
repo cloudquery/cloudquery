@@ -16,21 +16,15 @@ import (
 
 func Subnetworks() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_compute_subnetworks",
-		Resolver:  fetchSubnetworks,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_compute_subnetworks",
+		Description: `https://cloud.google.com/compute/docs/reference/rest/v1/subnetworks#Subnetwork`,
+		Resolver:    fetchSubnetworks,
+		Multiplex:   client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
-			},
-			{
-				Name: "self_link",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
 				Name:     "creation_timestamp",
@@ -138,6 +132,14 @@ func Subnetworks() *schema.Table {
 				Resolver: schema.PathResolver("SecondaryIpRanges"),
 			},
 			{
+				Name:     "self_link",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SelfLink"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
 				Name:     "stack_type",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("StackType"),
@@ -160,7 +162,7 @@ func fetchSubnetworks(ctx context.Context, meta schema.ClientMeta, parent *schem
 	if err != nil {
 		return err
 	}
-	it := gcpClient.AggregatedList(ctx, req)
+	it := gcpClient.AggregatedList(ctx, req, c.CallOptions...)
 	for {
 		resp, err := it.Next()
 		if err == iterator.Done {
