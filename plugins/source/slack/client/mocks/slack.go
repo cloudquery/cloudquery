@@ -129,18 +129,18 @@ func (mr *MockSlackClientMockRecorder) GetConversationHistoryContext(arg0, arg1 
 }
 
 // GetConversationInfoContext mocks base method.
-func (m *MockSlackClient) GetConversationInfoContext(arg0 context.Context, arg1 string, arg2 bool) (*slack.Channel, error) {
+func (m *MockSlackClient) GetConversationInfoContext(arg0 context.Context, arg1 *slack.GetConversationInfoInput) (*slack.Channel, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetConversationInfoContext", arg0, arg1, arg2)
+	ret := m.ctrl.Call(m, "GetConversationInfoContext", arg0, arg1)
 	ret0, _ := ret[0].(*slack.Channel)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // GetConversationInfoContext indicates an expected call of GetConversationInfoContext.
-func (mr *MockSlackClientMockRecorder) GetConversationInfoContext(arg0, arg1, arg2 interface{}) *gomock.Call {
+func (mr *MockSlackClientMockRecorder) GetConversationInfoContext(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetConversationInfoContext", reflect.TypeOf((*MockSlackClient)(nil).GetConversationInfoContext), arg0, arg1, arg2)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetConversationInfoContext", reflect.TypeOf((*MockSlackClient)(nil).GetConversationInfoContext), arg0, arg1)
 }
 
 // GetConversationRepliesContext mocks base method.
@@ -284,6 +284,21 @@ func (mr *MockSlackClientMockRecorder) GetFilesContext(arg0, arg1 interface{}) *
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetFilesContext", reflect.TypeOf((*MockSlackClient)(nil).GetFilesContext), arg0, arg1)
 }
 
+// GetOtherTeamInfoContext mocks base method.
+func (m *MockSlackClient) GetOtherTeamInfoContext(arg0 context.Context, arg1 string) (*slack.TeamInfo, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetOtherTeamInfoContext", arg0, arg1)
+	ret0, _ := ret[0].(*slack.TeamInfo)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetOtherTeamInfoContext indicates an expected call of GetOtherTeamInfoContext.
+func (mr *MockSlackClientMockRecorder) GetOtherTeamInfoContext(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetOtherTeamInfoContext", reflect.TypeOf((*MockSlackClient)(nil).GetOtherTeamInfoContext), arg0, arg1)
+}
+
 // GetPermalinkContext mocks base method.
 func (m *MockSlackClient) GetPermalinkContext(arg0 context.Context, arg1 *slack.PermalinkParameters) (string, error) {
 	m.ctrl.T.Helper()
@@ -374,6 +389,21 @@ func (m *MockSlackClient) GetTeamInfoContext(arg0 context.Context) (*slack.TeamI
 func (mr *MockSlackClientMockRecorder) GetTeamInfoContext(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTeamInfoContext", reflect.TypeOf((*MockSlackClient)(nil).GetTeamInfoContext), arg0)
+}
+
+// GetTeamProfileContext mocks base method.
+func (m *MockSlackClient) GetTeamProfileContext(arg0 context.Context) (*slack.TeamProfile, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetTeamProfileContext", arg0)
+	ret0, _ := ret[0].(*slack.TeamProfile)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetTeamProfileContext indicates an expected call of GetTeamProfileContext.
+func (mr *MockSlackClientMockRecorder) GetTeamProfileContext(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTeamProfileContext", reflect.TypeOf((*MockSlackClient)(nil).GetTeamProfileContext), arg0)
 }
 
 // GetUserByEmailContext mocks base method.

@@ -40,5 +40,5 @@ func fetchConversationHistories(ctx context.Context, meta schema.ClientMeta, par
 		}
 		return nil
 	}
-	return c.RetryOnRateLimitError("slack_conversation_histories", f)
+	return c.RetryOnError("slack_conversation_histories", f)
 }

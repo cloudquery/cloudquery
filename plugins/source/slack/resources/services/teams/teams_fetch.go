@@ -17,5 +17,5 @@ func fetchTeams(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource,
 		res <- teams
 		return nil
 	}
-	return c.RetryOnRateLimitError("slack_teams", f)
+	return c.RetryOnError("slack_teams", f)
 }

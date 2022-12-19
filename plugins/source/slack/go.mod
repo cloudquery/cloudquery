@@ -7,7 +7,7 @@ require (
 	github.com/gertd/go-pluralize v0.2.1
 	github.com/golang/mock v1.6.0
 	github.com/rs/zerolog v1.28.0
-	github.com/slack-go/slack v0.11.4
+	github.com/slack-go/slack v0.12.0
 )
 
 require (
@@ -37,7 +37,3 @@ require (
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
-
-replace github.com/slack-go/slack v0.11.4 => /Users/hermanschaaf/code/slack // TODO: remove this once https://github.com/slack-go/slack/pull/1119 is merged
-
-replace github.com/cloudquery/plugin-sdk v1.11.0 => /Users/hermanschaaf/code/cloudquery/plugin-sdk

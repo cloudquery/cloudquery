@@ -2,17 +2,29 @@ package client
 
 import (
 	"math/rand"
+	"net/http"
+	"strings"
 	"time"
 
 	"github.com/slack-go/slack"
 )
 
-// RetryOnRateLimitError will run the given resolver function and retry on rate limit exceeded errors
-// after waiting the specified amount of time.
-func (c *Client) RetryOnRateLimitError(tableName string, f func() error) error {
+const maxRetries = 3
+
+// RetryOnError will run the given resolver function and retry on rate limit exceeded errors
+// or other retryable errors (like internal server errors) after waiting some amount of time.
+func (c *Client) RetryOnError(tableName string, f func() error) error {
+	retries := 0
 	for err := f(); err != nil; err = f() {
 		rateLimitedErr, ok := err.(*slack.RateLimitedError)
-		if !ok {
+		if !ok && isRetryable(err) && retries < maxRetries {
+			randFloat64 := rand.Float64()
+			retryAfter := time.Duration(randFloat64 * float64(1*time.Second))
+			time.Sleep(retryAfter)
+			retries++
+			c.logger.Info().Str("table", tableName).Msgf("Got retryable error (%v), retrying in %.2fs", err, retryAfter.Seconds())
+			continue
+		} else if !ok {
 			return err
 		}
 		randFloat64 := rand.Float64()
@@ -23,4 +35,15 @@ func (c *Client) RetryOnRateLimitError(tableName string, f func() error) error {
 		continue
 	}
 	return nil
+}
+
+func isRetryable(err error) bool {
+	switch {
+	case strings.Contains(err.Error(), http.StatusText(http.StatusInternalServerError)):
+		return true
+	case strings.Contains(err.Error(), http.StatusText(http.StatusServiceUnavailable)):
+		return true
+	default:
+		return false
+	}
 }

@@ -17,5 +17,5 @@ func fetchUsers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource,
 		res <- users
 		return nil
 	}
-	return c.RetryOnRateLimitError("slack_users", f)
+	return c.RetryOnError("slack_users", f)
 }

@@ -19,5 +19,5 @@ func fetchUserPresences(ctx context.Context, meta schema.ClientMeta, parent *sch
 		res <- identities
 		return nil
 	}
-	return c.RetryOnRateLimitError("slack_user_presences", f)
+	return c.RetryOnError("slack_user_presences", f)
 }

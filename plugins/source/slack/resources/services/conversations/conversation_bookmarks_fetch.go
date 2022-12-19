@@ -5,12 +5,13 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/slack/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/slack-go/slack"
 )
 
 func fetchConversationBookmarks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	f := func() error {
-		channelID := parent.Get("id").String()
+		channelID := parent.Item.(slack.Channel).ID
 		bookmarks, err := c.Slack.ListBookmarksContext(ctx, channelID)
 		if err != nil {
 			if isNotInChannel(err) {
@@ -23,5 +24,5 @@ func fetchConversationBookmarks(ctx context.Context, meta schema.ClientMeta, par
 		res <- bookmarks
 		return nil
 	}
-	return c.RetryOnRateLimitError("slack_conversation_bookmarks", f)
+	return c.RetryOnError("slack_conversation_bookmarks", f)
 }

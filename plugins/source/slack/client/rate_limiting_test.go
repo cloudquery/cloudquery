@@ -19,26 +19,26 @@ func TestRetryOnRateLimitError(t *testing.T) {
 	}
 
 	t.Run("no_error", func(t *testing.T) {
-		got := c.RetryOnRateLimitError("table_name", func() error {
+		got := c.RetryOnError("table_name", func() error {
 			return nil
 		})
 		if got != nil {
-			t.Errorf("RetryOnRateLimitError returned error: %v, want nil", got)
+			t.Errorf("RetryOnError returned error: %v, want nil", got)
 		}
 	})
 
 	t.Run("with_error", func(t *testing.T) {
-		got := c.RetryOnRateLimitError("table_name", func() error {
+		got := c.RetryOnError("table_name", func() error {
 			return errors.New("test error")
 		})
 		if got == nil || got.Error() != "test error" {
-			t.Errorf("RetryOnRateLimitError returned error: %v, want %v", got, "test error")
+			t.Errorf("RetryOnError returned error: %v, want %v", got, "test error")
 		}
 	})
 
 	t.Run("with_slack_error", func(t *testing.T) {
 		calls := 0
-		got := c.RetryOnRateLimitError("table_name", func() error {
+		got := c.RetryOnError("table_name", func() error {
 			if calls == 0 {
 				calls++
 				return &slack.RateLimitedError{
@@ -48,7 +48,7 @@ func TestRetryOnRateLimitError(t *testing.T) {
 			return nil
 		})
 		if got != nil {
-			t.Errorf("RetryOnRateLimitError returned error: %v, want nil", got)
+			t.Errorf("RetryOnError returned error: %v, want nil", got)
 		}
 	})
 }
