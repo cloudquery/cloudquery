@@ -12,7 +12,7 @@ func ListTenantConfigurationViolations() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_portal_list_tenant_configuration_violations",
 		Resolver:  fetchListTenantConfigurationViolations,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Portal),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_portal),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

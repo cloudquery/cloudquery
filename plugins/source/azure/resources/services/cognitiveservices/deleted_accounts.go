@@ -12,7 +12,7 @@ func DeletedAccounts() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_cognitiveservices_deleted_accounts",
 		Resolver:  fetchDeletedAccounts,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_CognitiveServices),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_cognitiveservices),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

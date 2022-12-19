@@ -12,7 +12,7 @@ func SecureScoreControls() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_security_secure_score_controls",
 		Resolver:  fetchSecureScoreControls,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_security),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

@@ -4,9 +4,8 @@ https://cloud.google.com/resource-manager/reference/rest/v3/projects#Project
 
 The composite primary key for this table is (**project_id**, **name**).
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

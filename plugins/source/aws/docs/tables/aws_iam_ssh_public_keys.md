@@ -5,10 +5,11 @@ https://docs.aws.amazon.com/IAM/latest/APIReference/API_SSHPublicKeyMetadata.htm
 The primary key for this table is **ssh_public_key_id**.
 
 ## Relations
+
 This table depends on [aws_iam_users](aws_iam_users.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

@@ -33,6 +33,7 @@ func createAccounts(router *mux.Router) error {
 		}
 	})
 	createTables(router)
+	createContainers(router)
 	return nil
 }
 

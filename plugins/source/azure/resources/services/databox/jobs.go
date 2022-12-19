@@ -12,7 +12,7 @@ func Jobs() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_databox_jobs",
 		Resolver:  fetchJobs,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DataBox),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_databox),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

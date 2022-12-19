@@ -1,5 +1,7 @@
 # Source Plugin: k8s
+
 ## Tables
+
 - [k8s_discovery_endpoint_slices](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/k8s/docs/tables/k8s_discovery_endpoint_slices.md)
 - [k8s_admissionregistration_mutating_webhook_configurations](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/k8s/docs/tables/k8s_admissionregistration_mutating_webhook_configurations.md)
 - [k8s_admissionregistration_validating_webhook_configurations](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/k8s/docs/tables/k8s_admissionregistration_validating_webhook_configurations.md)

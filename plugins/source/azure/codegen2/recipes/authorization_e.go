@@ -12,7 +12,7 @@ func ArmauthorizationE() []Table {
 			ListFunc:       (&armauthorization.RoleDefinitionsClient{}).NewListPager,
 			NewFunc:        armauthorization.NewRoleDefinitionsClient,
 			URL:            "/{scope}/providers/Microsoft.Authorization/roleDefinitions",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Authorization)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_authorization)`,
 			SkipFetch:      true,
 		},
 	}

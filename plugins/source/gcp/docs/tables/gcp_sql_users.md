@@ -5,10 +5,11 @@ https://cloud.google.com/sql/docs/mysql/admin-api/rest/v1beta4/users#User
 The composite primary key for this table is (**project_id**, **instance**, **name**).
 
 ## Relations
+
 This table depends on [gcp_sql_instances](gcp_sql_instances.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

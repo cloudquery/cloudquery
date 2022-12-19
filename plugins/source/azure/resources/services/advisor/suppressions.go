@@ -12,7 +12,7 @@ func Suppressions() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_advisor_suppressions",
 		Resolver:  fetchSuppressions,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Advisor),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_advisor),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

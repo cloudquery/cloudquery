@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armwindowsiot.ServicesClient{}).NewListPager,
 			NewFunc:        armwindowsiot.NewServicesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.WindowsIoT/deviceServices",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_WindowsIoT)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_windowsiot)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

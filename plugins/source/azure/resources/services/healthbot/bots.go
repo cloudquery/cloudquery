@@ -12,7 +12,7 @@ func Bots() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_healthbot_bots",
 		Resolver:  fetchBots,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_HealthBot),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_healthbot),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

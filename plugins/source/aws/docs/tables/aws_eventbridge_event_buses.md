@@ -10,6 +10,7 @@ The following tables depend on aws_eventbridge_event_buses:
   - [aws_eventbridge_event_bus_rules](aws_eventbridge_event_bus_rules.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

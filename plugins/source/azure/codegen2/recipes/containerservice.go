@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armcontainerservice.ManagedClustersClient{}).NewListPager,
 			NewFunc:        armcontainerservice.NewManagedClustersClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/managedClusters",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ContainerService)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_containerservice)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -26,7 +26,7 @@ func init() {
 			ListFunc:       (&armcontainerservice.SnapshotsClient{}).NewListPager,
 			NewFunc:        armcontainerservice.NewSnapshotsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/snapshots",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ContainerService)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_containerservice)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

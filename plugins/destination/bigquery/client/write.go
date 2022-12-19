@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"cloud.google.com/go/bigquery"
-	"github.com/cloudquery/plugin-sdk/plugins"
+	"github.com/cloudquery/plugin-sdk/plugins/destination"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"golang.org/x/sync/errgroup"
 )
@@ -48,7 +48,7 @@ func (c *Client) writeResource(ctx context.Context, table *schema.Table, client 
 		}
 		c.logger.Debug().Interface("cols", saver.cols).Msg("got resource")
 		batch = append(batch, saver)
-		if len(batch) >= batchSize {
+		if len(batch) >= c.batchSize {
 			c.logger.Debug().Msg("Writing batch")
 			// we use a context with timeout here, because inserter.Put can retry indefinitely
 			// on retryable errors if not given a context timeout
@@ -77,7 +77,7 @@ func (c *Client) writeResource(ctx context.Context, table *schema.Table, client 
 	return nil
 }
 
-func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *plugins.ClientResource) error {
+func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *destination.ClientResource) error {
 	eg, gctx := errgroup.WithContext(ctx)
 	workers := make(map[string]*worker, len(tables))
 	client, err := c.bqClient(ctx)

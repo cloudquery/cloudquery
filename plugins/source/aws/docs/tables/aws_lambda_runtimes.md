@@ -1,12 +1,9 @@
 # Table: aws_lambda_runtimes
 
-
-
 The primary key for this table is **name**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

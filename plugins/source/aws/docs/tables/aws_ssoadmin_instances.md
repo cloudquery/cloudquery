@@ -10,6 +10,7 @@ The following tables depend on aws_ssoadmin_instances:
   - [aws_ssoadmin_permission_sets](aws_ssoadmin_permission_sets.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

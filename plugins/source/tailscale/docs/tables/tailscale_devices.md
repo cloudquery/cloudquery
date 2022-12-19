@@ -10,6 +10,7 @@ The following tables depend on tailscale_devices:
   - [tailscale_device_routes](tailscale_device_routes.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

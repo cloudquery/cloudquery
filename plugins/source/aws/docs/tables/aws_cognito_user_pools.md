@@ -10,6 +10,7 @@ The following tables depend on aws_cognito_user_pools:
   - [aws_cognito_user_pool_identity_providers](aws_cognito_user_pool_identity_providers.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

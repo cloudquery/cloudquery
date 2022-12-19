@@ -1,12 +1,9 @@
 # Table: azure_security_alerts_suppression_rules
 
-
-
 The primary key for this table is **id**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

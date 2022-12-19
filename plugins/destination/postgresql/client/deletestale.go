@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/jackc/pgx/v4"
+	"github.com/jackc/pgx/v5"
 )
 
 func (c *Client) DeleteStale(ctx context.Context, tables schema.Tables, source string, syncTime time.Time) error {

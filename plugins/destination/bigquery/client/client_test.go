@@ -4,18 +4,18 @@ import (
 	"os"
 	"testing"
 
-	"github.com/cloudquery/plugin-sdk/plugins"
+	"github.com/cloudquery/plugin-sdk/plugins/destination"
 )
 
 func TestPlugin(t *testing.T) {
-	p := plugins.NewDestinationPlugin("bigquery", "development", New)
-	plugins.DestinationPluginTestSuiteRunner(t, p,
+	p := destination.NewPlugin("bigquery", "development", New)
+	destination.PluginTestSuiteRunner(t, p,
 		Spec{
 			ProjectID:        os.Getenv("BIGQUERY_PROJECT_ID"),
 			DatasetID:        os.Getenv("BIGQUERY_DATASET_ID"),
 			TimePartitioning: "none",
 		},
-		plugins.DestinationTestSuiteTests{
+		destination.TestSuiteTests{
 			SkipOverwrite: true,
 		})
 }

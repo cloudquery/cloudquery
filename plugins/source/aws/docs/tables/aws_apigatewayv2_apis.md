@@ -15,6 +15,7 @@ The following tables depend on aws_apigatewayv2_apis:
   - [aws_apigatewayv2_api_stages](aws_apigatewayv2_api_stages.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

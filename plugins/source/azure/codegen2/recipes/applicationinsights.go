@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armapplicationinsights.ComponentsClient{}).NewListPager,
 			NewFunc:        armapplicationinsights.NewComponentsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/components",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Insights)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_insights)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -26,7 +26,7 @@ func init() {
 			ListFunc:       (&armapplicationinsights.WebTestsClient{}).NewListPager,
 			NewFunc:        armapplicationinsights.NewWebTestsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/webtests",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Insights)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_insights)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

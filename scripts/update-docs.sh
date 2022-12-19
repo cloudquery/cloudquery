@@ -5,5 +5,5 @@ for plugin in $PLUGIN_DIRS; do
 	fi
 	echo "Updating docs for $plugin"
 
-	(cd "plugins/source/$plugin" && rm -rf docs/tables/*.md && go run main.go doc docs/tables)
+	(cd "plugins/source/$plugin" && make gen-docs)
 done

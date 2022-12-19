@@ -1,14 +1,13 @@
 # Table: github_hook_deliveries
 
-
-
 The composite primary key for this table is (**org**, **id**, **hook_id**).
 
 ## Relations
+
 This table depends on [github_hooks](github_hooks.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

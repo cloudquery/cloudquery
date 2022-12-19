@@ -10,6 +10,7 @@ The following tables depend on aws_cloudformation_stacks:
   - [aws_cloudformation_stack_resources](aws_cloudformation_stack_resources.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

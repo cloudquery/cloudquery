@@ -78,6 +78,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalog"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry"
 	"github.com/aws/aws-sdk-go-v2/service/servicequotas"
+	"github.com/aws/aws-sdk-go-v2/service/ses"
 	"github.com/aws/aws-sdk-go-v2/service/sesv2"
 	"github.com/aws/aws-sdk-go-v2/service/sfn"
 	"github.com/aws/aws-sdk-go-v2/service/shield"
@@ -172,6 +173,7 @@ var clients = []interface{}{
 	&servicecatalog.Client{},
 	&servicecatalogappregistry.Client{},
 	&servicequotas.Client{},
+	&ses.Client{},
 	&sesv2.Client{},
 	&sfn.Client{},
 	&shield.Client{},

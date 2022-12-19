@@ -1,14 +1,13 @@
 # Table: aws_lambda_layer_version_policies
 
-
-
 The primary key for this table is **_cq_id**.
 
 ## Relations
+
 This table depends on [aws_lambda_layer_versions](aws_lambda_layer_versions.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

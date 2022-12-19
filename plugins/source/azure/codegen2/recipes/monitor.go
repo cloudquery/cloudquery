@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armmonitor.LogProfilesClient{}).NewListPager,
 			NewFunc:        armmonitor.NewLogProfilesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/logprofiles",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Insights)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_insights)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -38,7 +38,7 @@ func init() {
 			ListFunc:       (&armmonitor.TenantActivityLogsClient{}).NewListPager,
 			NewFunc:        armmonitor.NewTenantActivityLogsClient,
 			URL:            "/providers/Microsoft.Insights/eventtypes/management/values",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Insights)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_insights)`,
 		},
 	}
 	Tables = append(Tables, tables...)

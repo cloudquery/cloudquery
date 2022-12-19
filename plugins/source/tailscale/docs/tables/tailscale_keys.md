@@ -4,9 +4,8 @@ https://pkg.go.dev/github.com/tailscale/tailscale-client-go/tailscale#Key
 
 The primary key for this table is **tailnet**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

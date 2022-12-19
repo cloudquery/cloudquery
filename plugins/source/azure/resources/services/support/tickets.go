@@ -12,7 +12,7 @@ func Tickets() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_support_tickets",
 		Resolver:  fetchTickets,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Support),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_support),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

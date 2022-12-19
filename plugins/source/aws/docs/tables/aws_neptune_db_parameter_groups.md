@@ -10,6 +10,7 @@ The following tables depend on aws_neptune_db_parameter_groups:
   - [aws_neptune_db_parameter_group_db_parameters](aws_neptune_db_parameter_group_db_parameters.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

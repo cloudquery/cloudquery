@@ -10,6 +10,7 @@ The following tables depend on aws_config_conformance_packs:
   - [aws_config_conformance_pack_rule_compliances](aws_config_conformance_pack_rule_compliances.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

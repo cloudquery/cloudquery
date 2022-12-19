@@ -11,6 +11,7 @@ The following tables depend on aws_dynamodb_tables:
   - [aws_dynamodb_table_continuous_backups](aws_dynamodb_table_continuous_backups.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

@@ -4,9 +4,8 @@ https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBSubnetGroup.html
 
 The primary key for this table is **arn**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

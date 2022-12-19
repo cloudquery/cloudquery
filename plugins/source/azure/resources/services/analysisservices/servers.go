@@ -12,7 +12,7 @@ func Servers() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_analysisservices_servers",
 		Resolver:  fetchServers,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_AnalysisServices),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_analysisservices),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

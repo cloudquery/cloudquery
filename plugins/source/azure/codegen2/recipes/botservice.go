@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armbotservice.BotsClient{}).NewListPager,
 			NewFunc:        armbotservice.NewBotsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.BotService/botServices",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_BotService)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_botservice)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

@@ -1,12 +1,9 @@
 # Table: k8s_apps_deployments
 
-
-
 The primary key for this table is **uid**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armazuredata.SQLServerRegistrationsClient{}).NewListPager,
 			NewFunc:        armazuredata.NewSQLServerRegistrationsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.AzureData/sqlServerRegistrations",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_AzureData)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_azuredata)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
