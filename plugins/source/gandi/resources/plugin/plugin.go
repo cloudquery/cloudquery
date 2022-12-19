@@ -6,7 +6,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/gandi/resources/services/domains"
 	"github.com/cloudquery/cloudquery/plugins/source/gandi/resources/services/livedns"
 	"github.com/cloudquery/cloudquery/plugins/source/gandi/resources/services/simplehosting"
-	"github.com/cloudquery/plugin-sdk/plugins"
+	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -14,8 +14,8 @@ var (
 	Version = "development"
 )
 
-func Plugin() *plugins.SourcePlugin {
-	return plugins.NewSourcePlugin(
+func Plugin() *source.Plugin {
+	return source.NewPlugin(
 		"gandi",
 		Version,
 		[]*schema.Table{
