@@ -168,7 +168,6 @@ github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.7.21 h1:UYhc
 github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.7.21/go.mod h1:NXJls8x8f9zVSaf+EKKoonqaahWK69MUWm6w6ob0FHs=
 github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.21 h1:5C6XgTViSb0bunmU57b3CT+MhxULqHH2721FVA+/kDM=
 github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.21/go.mod h1:lRToEJsn+DRA9lW4O9L9+/3hjTkUzlzyzHqn8MTds5k=
-github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.13.20/go.mod h1:1XpDcReIEOHsjwNToDKhIAO3qwLo1BnfbtSqWJa8j7g=
 github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.13.21 h1:vY5siRXvW5TrOKm2qKEf9tliBfdLxdfy0i02LOcmqUo=
 github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.13.21/go.mod h1:WZvNXT1XuH8dnJM0HvOlvk+RNn7NbAPvA/ACO0QarSc=
 github.com/aws/aws-sdk-go-v2/service/iot v1.32.2 h1:5FAxV/9KFnLVhg7iP4A0w2AnnFpUwGg/Y6fn9u7YIKI=
@@ -209,8 +208,8 @@ github.com/aws/aws-sdk-go-v2/service/route53domains v1.12.20 h1:5qy9kNG2eRPvSNt0
 github.com/aws/aws-sdk-go-v2/service/route53domains v1.12.20/go.mod h1:zppLYIoEY8J6bAi7xUbnOuSO8eowUqWaAuSlxZeY2Io=
 github.com/aws/aws-sdk-go-v2/service/s3 v1.29.6 h1:W8pLcSn6Uy0eXgDBUUl8M8Kxv7JCoP68ZKTD04OXLEA=
 github.com/aws/aws-sdk-go-v2/service/s3 v1.29.6/go.mod h1:L2l2/q76teehcW7YEsgsDjqdsDTERJeX3nOMIFlgGUE=
-github.com/aws/aws-sdk-go-v2/service/s3control v1.28.1 h1:lS1k7j50hqBybjgnZQN6F6/kbLq2CRu40pZIC1Bzg6c=
-github.com/aws/aws-sdk-go-v2/service/s3control v1.28.1/go.mod h1:W8rTPAGGPL94NOzocUIhTm4H8LK9hCk3eZF2cxow3d4=
+github.com/aws/aws-sdk-go-v2/service/s3control v1.28.2 h1:HILTJewyveEWszPKAN3C3gALrs2x13tCIN3BZZrUgkE=
+github.com/aws/aws-sdk-go-v2/service/s3control v1.28.2/go.mod h1:4DfdtJVYJj82pZdBoOwyA87ocrDYfQgAgbW6e17Xr2U=
 github.com/aws/aws-sdk-go-v2/service/sagemaker v1.56.1 h1:02KYHCzWHvf/KB13mBCydC4kRRkt8WGvU4PjS+g7qn4=
 github.com/aws/aws-sdk-go-v2/service/sagemaker v1.56.1/go.mod h1:PWYQPNFLuuH54Zb1LxbDFpCnH2p8aHDVMJnJLwwjXEY=
 github.com/aws/aws-sdk-go-v2/service/scheduler v1.0.2 h1:BRHhj3BffiRpLsXoYax9H2aTst42sRirwctS3TO8WzE=
