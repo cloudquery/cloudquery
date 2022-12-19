@@ -1,4 +1,4 @@
-# Vercel Source Plugin
+# GitLab Source Plugin
 
 import { getLatestVersion } from "../../../../../utils/versions";
 import { Badge } from "../../../../../components/Badge";
