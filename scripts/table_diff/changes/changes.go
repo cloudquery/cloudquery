@@ -84,14 +84,14 @@ func getColumnChanges(file *gitdiff.File, table string) (changes []change) {
 
 			if addedColumn.pk && !deletedColumn.pk {
 				changes = append(changes, change{
-					Text:     fmt.Sprintf("Table %s: column primary key %s added", backtickStrings(table, deletedName)...),
+					Text:     fmt.Sprintf("Table %s: primary key constraint added to column %s", backtickStrings(table, deletedName)...),
 					Breaking: false,
 				})
 			}
 
 			if !addedColumn.pk && deletedColumn.pk {
 				changes = append(changes, change{
-					Text:     fmt.Sprintf("Table %s: column primary key %s removed", backtickStrings(table, deletedName)...),
+					Text:     fmt.Sprintf("Table %s: primary key constraint removed from column %s", backtickStrings(table, deletedName)...),
 					Breaking: false,
 				})
 			}
@@ -104,8 +104,12 @@ func getColumnChanges(file *gitdiff.File, table string) (changes []change) {
 	}
 	for addedName, addedColumn := range addedColumns {
 		if _, ok := deletedColumns[addedName]; !ok {
+			name := addedName
+			if addedColumn.pk {
+				name = fmt.Sprintf("%s (PK)", name)
+			}
 			changes = append(changes, change{
-				Text:     fmt.Sprintf("Table %s: column added with name %s and type %s", backtickStrings(table, addedName, addedColumn.dataType)...),
+				Text:     fmt.Sprintf("Table %s: column added with name %s and type %s", backtickStrings(table, name, addedColumn.dataType)...),
 				Breaking: false,
 			})
 		}
