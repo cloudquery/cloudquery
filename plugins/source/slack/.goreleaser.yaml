@@ -1,12 +1,12 @@
 variables:
-  component: source/test
-  binary: test
+  component: source/slack
+  binary: slack
 
-project_name: plugins/source/test
+project_name: plugins/source/slack
 
 monorepo:
-  tag_prefix: plugins-source-test-
-  dir: plugins/source/test
+  tag_prefix: plugins-source-slack-
+  dir: plugins/source/slack
 
 includes:
   - from_file:
