@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armhybriddatamanager.DataManagersClient{}).NewListPager,
 			NewFunc:        armhybriddatamanager.NewDataManagersClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.HybridData/dataManagers",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_HybridData)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_hybriddata)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

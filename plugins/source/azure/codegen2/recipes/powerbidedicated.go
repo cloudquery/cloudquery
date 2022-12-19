@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armpowerbidedicated.CapacitiesClient{}).NewListPager,
 			NewFunc:        armpowerbidedicated.NewCapacitiesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.PowerBIDedicated/capacities",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_PowerBIDedicated)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_powerbidedicated)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

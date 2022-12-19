@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armkusto.ClustersClient{}).NewListPager,
 			NewFunc:        armkusto.NewClustersClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Kusto/clusters",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Kusto)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_kusto)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

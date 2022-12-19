@@ -15,7 +15,7 @@ func init() {
 			ListFunc:       (&armkeyvault.ManagedHsmsClient{}).NewListBySubscriptionPager,
 			NewFunc:        armkeyvault.NewManagedHsmsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/managedHSMs",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_KeyVault)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_keyvault)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{

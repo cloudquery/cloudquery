@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armdatalakestore.AccountsClient{}).NewListPager,
 			NewFunc:        armdatalakestore.NewAccountsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DataLakeStore/accounts",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DataLakeStore)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_datalakestore)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

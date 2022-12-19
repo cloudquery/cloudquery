@@ -13,7 +13,7 @@ func init() {
 			ListFunc:       (&armnetwork.ExpressRouteGatewaysClient{}).ListBySubscription,
 			NewFunc:        armnetwork.NewExpressRouteGatewaysClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/expressRouteGateways",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_network)`,
 			ExtraColumns:   DefaultExtraColumns,
 			SkipFetch:      true,
 		},

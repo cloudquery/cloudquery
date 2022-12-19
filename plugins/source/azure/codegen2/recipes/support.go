@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armsupport.ServicesClient{}).NewListPager,
 			NewFunc:        armsupport.NewServicesClient,
 			URL:            "/providers/Microsoft.Support/services",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Support)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_support)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -26,7 +26,7 @@ func init() {
 			ListFunc:       (&armsupport.TicketsClient{}).NewListPager,
 			NewFunc:        armsupport.NewTicketsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Support/supportTickets",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Support)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_support)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armappconfiguration.ConfigurationStoresClient{}).NewListPager,
 			NewFunc:        armappconfiguration.NewConfigurationStoresClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.AppConfiguration/configurationStores",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_AppConfiguration)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_appconfiguration)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

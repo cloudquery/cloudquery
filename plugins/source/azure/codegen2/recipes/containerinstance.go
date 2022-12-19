@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armcontainerinstance.ContainerGroupsClient{}).NewListPager,
 			NewFunc:        armcontainerinstance.NewContainerGroupsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/containerGroups",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ContainerInstance)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_containerinstance)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

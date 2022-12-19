@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armapimanagement.ServiceClient{}).NewListPager,
 			NewFunc:        armapimanagement.NewServiceClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ApiManagement/service",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ApiManagement)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_apimanagement)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

@@ -12,7 +12,7 @@ func DiskAccesses() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_compute_disk_accesses",
 		Resolver:  fetchDiskAccesses,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Compute),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_compute),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

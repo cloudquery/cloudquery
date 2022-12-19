@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armhybridcompute.PrivateLinkScopesClient{}).NewListPager,
 			NewFunc:        armhybridcompute.NewPrivateLinkScopesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.HybridCompute/privateLinkScopes",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_HybridCompute)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_hybridcompute)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
