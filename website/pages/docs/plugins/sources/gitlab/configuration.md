@@ -29,4 +29,4 @@ This is the (nested) spec used by the GitLab source plugin:
   An access token for your GitLab server. Instructions on how to generate an access token [here](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html#create-a-personal-access-token).
 
 - `base_url` (string, required):
-  URL for your Gitlab server.
+  URL for your GitLab server.
