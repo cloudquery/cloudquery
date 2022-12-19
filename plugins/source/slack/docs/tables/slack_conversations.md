@@ -12,6 +12,7 @@ The following tables depend on slack_conversations:
   - [slack_conversation_members](slack_conversation_members.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

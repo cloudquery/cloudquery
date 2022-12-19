@@ -4,9 +4,8 @@ https://api.slack.com/methods/files.list
 
 The composite primary key for this table is (**team_id**, **id**).
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

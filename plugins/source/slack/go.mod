@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/slack
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v1.11.0
+	github.com/cloudquery/plugin-sdk v1.12.6
 	github.com/gertd/go-pluralize v0.2.1
 	github.com/golang/mock v1.6.0
 	github.com/rs/zerolog v1.28.0

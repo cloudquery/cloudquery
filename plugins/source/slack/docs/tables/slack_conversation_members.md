@@ -5,10 +5,11 @@ https://api.slack.com/methods/conversations.members
 The composite primary key for this table is (**team_id**, **user_id**, **channel_id**).
 
 ## Relations
+
 This table depends on [slack_conversations](slack_conversations.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

@@ -5,12 +5,14 @@ https://api.slack.com/methods/conversations.history
 The composite primary key for this table is (**channel_id**, **team_id**, **ts**).
 
 ## Relations
+
 This table depends on [slack_conversations](slack_conversations.md).
 
 The following tables depend on slack_conversation_histories:
   - [slack_conversation_replies](slack_conversation_replies.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

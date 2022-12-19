@@ -1,5 +1,7 @@
 # Source Plugin: slack
+
 ## Tables
+
 - [slack_conversations](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/slack/docs/tables/slack_conversations.md)
   - [slack_conversation_bookmarks](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/slack/docs/tables/slack_conversation_bookmarks.md)
   - [slack_conversation_histories](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/slack/docs/tables/slack_conversation_histories.md)

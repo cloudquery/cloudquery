@@ -5,10 +5,11 @@ https://api.slack.com/methods/users.getPresence
 The primary key for this table is **user_id**.
 
 ## Relations
+
 This table depends on [slack_users](slack_users.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

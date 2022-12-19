@@ -10,6 +10,7 @@ The following tables depend on slack_users:
   - [slack_user_presences](slack_user_presences.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
