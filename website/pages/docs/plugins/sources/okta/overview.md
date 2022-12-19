@@ -76,7 +76,7 @@ from
 where status = 'ACTIVE';
 ```
 
-### List active Okta applications, ordered by number of users
+### List active Okta applications, ordered by number of users
 
 ```
 select 
