@@ -1,6 +1,6 @@
 # Table: aws_elasticsearch_domains
 
-The composite primary key for this table is (**account_id**, **region**, **id**).
+The primary key for this table is **arn**.
 
 ## Columns
 
@@ -10,11 +10,11 @@ The composite primary key for this table is (**account_id**, **region**, **id**)
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|account_id (PK)|String|
-|region (PK)|String|
+|account_id|String|
+|region|String|
 |tags|JSON|
-|id (PK)|String|
-|arn|String|
+|arn (PK)|String|
+|domain_id|String|
 |domain_name|String|
 |elasticsearch_cluster_config|JSON|
 |access_policies|String|
