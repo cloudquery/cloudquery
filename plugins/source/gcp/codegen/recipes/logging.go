@@ -2,7 +2,7 @@ package recipes
 
 import (
 	logging "cloud.google.com/go/logging/apiv2"
-	pb "google.golang.org/genproto/googleapis/logging/v2"
+	pb "cloud.google.com/go/logging/apiv2/loggingpb"
 )
 
 func init() {
