@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armdatadog.MarketplaceAgreementsClient{}).NewListPager,
 			NewFunc:        armdatadog.NewMarketplaceAgreementsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Datadog/agreements",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Datadog)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_datadog)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -26,7 +26,7 @@ func init() {
 			ListFunc:       (&armdatadog.MonitorsClient{}).NewListPager,
 			NewFunc:        armdatadog.NewMonitorsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Datadog/monitors",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Datadog)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_datadog)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

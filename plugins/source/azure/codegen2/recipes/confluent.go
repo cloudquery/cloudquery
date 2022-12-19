@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armconfluent.MarketplaceAgreementsClient{}).NewListPager,
 			NewFunc:        armconfluent.NewMarketplaceAgreementsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Confluent/agreements",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Confluent)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_confluent)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

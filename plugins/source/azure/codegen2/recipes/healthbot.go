@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armhealthbot.BotsClient{}).NewListPager,
 			NewFunc:        armhealthbot.NewBotsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.HealthBot/healthBots",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_HealthBot)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_healthbot)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

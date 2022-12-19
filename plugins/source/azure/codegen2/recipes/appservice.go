@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armappservice.CertificateOrdersClient{}).NewListPager,
 			NewFunc:        armappservice.NewCertificateOrdersClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.CertificateRegistration/certificateOrders",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_CertificateRegistration)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_certificateregistration)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -26,7 +26,7 @@ func init() {
 			ListFunc:       (&armappservice.CertificatesClient{}).NewListPager,
 			NewFunc:        armappservice.NewCertificatesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Web/certificates",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Web)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_web)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -38,7 +38,7 @@ func init() {
 			ListFunc:       (&armappservice.DeletedWebAppsClient{}).NewListPager,
 			NewFunc:        armappservice.NewDeletedWebAppsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Web/deletedSites",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Web)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_web)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -50,7 +50,7 @@ func init() {
 			ListFunc:       (&armappservice.DomainsClient{}).NewListPager,
 			NewFunc:        armappservice.NewDomainsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/domains",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DomainRegistration)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_domainregistration)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -62,7 +62,7 @@ func init() {
 			ListFunc:       (&armappservice.EnvironmentsClient{}).NewListPager,
 			NewFunc:        armappservice.NewEnvironmentsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Web/hostingEnvironments",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Web)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_web)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -74,7 +74,7 @@ func init() {
 			ListFunc:       (&armappservice.PlansClient{}).NewListPager,
 			NewFunc:        armappservice.NewPlansClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Web/serverfarms",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Web)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_web)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -86,7 +86,7 @@ func init() {
 			ListFunc:       (&armappservice.RecommendationsClient{}).NewListPager,
 			NewFunc:        armappservice.NewRecommendationsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Web/recommendations",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Web)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_web)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -98,7 +98,7 @@ func init() {
 			ListFunc:       (&armappservice.ResourceHealthMetadataClient{}).NewListPager,
 			NewFunc:        armappservice.NewResourceHealthMetadataClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Web/resourceHealthMetadata",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Web)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_web)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -110,7 +110,7 @@ func init() {
 			ListFunc:       (&armappservice.StaticSitesClient{}).NewListPager,
 			NewFunc:        armappservice.NewStaticSitesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Web/staticSites",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Web)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_web)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -122,7 +122,7 @@ func init() {
 			ListFunc:       (&armappservice.TopLevelDomainsClient{}).NewListPager,
 			NewFunc:        armappservice.NewTopLevelDomainsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/topLevelDomains",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DomainRegistration)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_domainregistration)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -134,7 +134,7 @@ func init() {
 			ListFunc:       (&armappservice.WebAppsClient{}).NewListPager,
 			NewFunc:        armappservice.NewWebAppsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Web/sites",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Web)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_web)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

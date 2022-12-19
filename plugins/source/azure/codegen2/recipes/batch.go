@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armbatch.AccountClient{}).NewListPager,
 			NewFunc:        armbatch.NewAccountClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Batch/batchAccounts",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Batch)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_batch)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

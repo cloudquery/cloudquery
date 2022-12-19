@@ -12,7 +12,7 @@ func VirtualClusters() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_sql_virtual_clusters",
 		Resolver:  fetchVirtualClusters,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Sql),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_sql),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

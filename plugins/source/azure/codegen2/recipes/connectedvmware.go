@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armconnectedvmware.ClustersClient{}).NewListPager,
 			NewFunc:        armconnectedvmware.NewClustersClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedVMwarevSphere/clusters",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ConnectedVMwarevSphere)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_connectedvmwarevsphere)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -26,7 +26,7 @@ func init() {
 			ListFunc:       (&armconnectedvmware.DatastoresClient{}).NewListPager,
 			NewFunc:        armconnectedvmware.NewDatastoresClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedVMwarevSphere/datastores",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ConnectedVMwarevSphere)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_connectedvmwarevsphere)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -38,7 +38,7 @@ func init() {
 			ListFunc:       (&armconnectedvmware.HostsClient{}).NewListPager,
 			NewFunc:        armconnectedvmware.NewHostsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedVMwarevSphere/hosts",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ConnectedVMwarevSphere)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_connectedvmwarevsphere)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -50,7 +50,7 @@ func init() {
 			ListFunc:       (&armconnectedvmware.ResourcePoolsClient{}).NewListPager,
 			NewFunc:        armconnectedvmware.NewResourcePoolsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedVMwarevSphere/resourcePools",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ConnectedVMwarevSphere)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_connectedvmwarevsphere)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -62,7 +62,7 @@ func init() {
 			ListFunc:       (&armconnectedvmware.VCentersClient{}).NewListPager,
 			NewFunc:        armconnectedvmware.NewVCentersClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedVMwarevSphere/vcenters",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ConnectedVMwarevSphere)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_connectedvmwarevsphere)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -74,7 +74,7 @@ func init() {
 			ListFunc:       (&armconnectedvmware.VirtualMachineTemplatesClient{}).NewListPager,
 			NewFunc:        armconnectedvmware.NewVirtualMachineTemplatesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedVMwarevSphere/virtualMachineTemplates",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ConnectedVMwarevSphere)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_connectedvmwarevsphere)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -86,7 +86,7 @@ func init() {
 			ListFunc:       (&armconnectedvmware.VirtualMachinesClient{}).NewListPager,
 			NewFunc:        armconnectedvmware.NewVirtualMachinesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedVMwarevSphere/virtualMachines",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ConnectedVMwarevSphere)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_connectedvmwarevsphere)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -98,7 +98,7 @@ func init() {
 			ListFunc:       (&armconnectedvmware.VirtualNetworksClient{}).NewListPager,
 			NewFunc:        armconnectedvmware.NewVirtualNetworksClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedVMwarevSphere/virtualNetworks",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ConnectedVMwarevSphere)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_connectedvmwarevsphere)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

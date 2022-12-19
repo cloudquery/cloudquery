@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armcustomerinsights.HubsClient{}).NewListPager,
 			NewFunc:        armcustomerinsights.NewHubsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.CustomerInsights/hubs",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_CustomerInsights)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_customerinsights)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armhealthcareapis.ServicesClient{}).NewListPager,
 			NewFunc:        armhealthcareapis.NewServicesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.HealthcareApis/services",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_HealthcareApis)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_healthcareapis)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

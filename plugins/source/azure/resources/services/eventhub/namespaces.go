@@ -12,7 +12,7 @@ func Namespaces() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_eventhub_namespaces",
 		Resolver:  fetchNamespaces,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_EventHub),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_eventhub),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

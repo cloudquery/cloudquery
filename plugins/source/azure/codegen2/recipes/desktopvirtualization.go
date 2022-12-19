@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armdesktopvirtualization.HostPoolsClient{}).NewListPager,
 			NewFunc:        armdesktopvirtualization.NewHostPoolsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DesktopVirtualization/hostPools",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DesktopVirtualization)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_desktopvirtualization)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

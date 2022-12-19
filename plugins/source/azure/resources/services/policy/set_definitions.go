@@ -12,7 +12,7 @@ func SetDefinitions() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_policy_set_definitions",
 		Resolver:  fetchSetDefinitions,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Authorization),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_authorization),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

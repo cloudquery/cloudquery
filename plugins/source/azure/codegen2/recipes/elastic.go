@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armelastic.MonitorsClient{}).NewListPager,
 			NewFunc:        armelastic.NewMonitorsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Elastic/monitors",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Elastic)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_elastic)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armmarketplace.PrivateStoreClient{}).NewListPager,
 			NewFunc:        armmarketplace.NewPrivateStoreClient,
 			URL:            "/providers/Microsoft.Marketplace/privateStores",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Marketplace)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_marketplace)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}
