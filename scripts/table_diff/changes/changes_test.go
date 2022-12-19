@@ -31,15 +31,18 @@ func Test_parseColumnChange(t *testing.T) {
 		args         args
 		wantName     string
 		wantDataType string
+		wantPk       bool
 	}{
 		{name: "Should parse name and data type when change is a column", args: args{line: "|name|String|"}, wantName: "name", wantDataType: "String"},
+		{name: "Should parse name, pk and data type when a column is a primary key", args: args{line: "|name (PK)|String|"}, wantName: "name", wantDataType: "String", wantPk: true},
 		{name: "Should return empty strings when change is not a column", args: args{line: "# Table: azure_appservice_site_auth_settings"}, wantName: "", wantDataType: ""},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			gotName, gotDataType := parseColumnChange(tt.args.line)
+			gotName, gotDataType, pk := parseColumnChange(tt.args.line)
 			require.Equal(t, tt.wantName, gotName)
 			require.Equal(t, tt.wantDataType, gotDataType)
+			require.Equal(t, tt.wantPk, pk)
 		})
 	}
 }
@@ -157,6 +160,24 @@ func Test_getChanges(t *testing.T) {
 				},
 			},
 			wantErr: false,
+		},
+		{
+			name:         "Should handle PK changes",
+			diffDataFile: "testdata/pr_5636_diff.txt",
+			wantChanges: []change{
+				{
+					Text:     "Table `gcp_resourcemanager_projects`: column primary key `_cq_id` removed",
+					Breaking: false,
+				},
+				{
+					Text:     "Table `gcp_resourcemanager_projects`: column primary key `name` added",
+					Breaking: false,
+				},
+				{
+					Text:     "Table `gcp_resourcemanager_projects`: column primary key `project_id` added",
+					Breaking: false,
+				},
+			},
 		},
 	}
 	for _, tt := range tests {

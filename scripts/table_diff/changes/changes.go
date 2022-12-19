@@ -19,6 +19,11 @@ type change struct {
 	Breaking bool   `json:"breaking"`
 }
 
+type column struct {
+	dataType string
+	pk       bool
+}
+
 func backtickStrings(strings ...string) []interface{} {
 	backticked := make([]interface{}, len(strings))
 	for i, s := range strings {
@@ -27,10 +32,10 @@ func backtickStrings(strings ...string) []interface{} {
 	return backticked
 }
 
-func parseColumnChange(line string) (name string, dataType string) {
+func parseColumnChange(line string) (name string, dataType string, pk bool) {
 	match := columnRegex.FindStringSubmatch(line)
 	if match == nil {
-		return "", ""
+		return "", "", false
 	}
 	result := make(map[string]string)
 	for i, name := range columnRegex.SubexpNames() {
@@ -38,36 +43,55 @@ func parseColumnChange(line string) (name string, dataType string) {
 			result[name] = match[i]
 		}
 	}
-	return result["name"], result["dataType"]
+	cleanName := strings.TrimSuffix(result["name"], " (PK)")
+	return cleanName, result["dataType"], result["name"] != cleanName
 }
 
 func getColumnChanges(file *gitdiff.File, table string) (changes []change) {
-	addedColumns := make(map[string]string)
-	deletedColumns := make(map[string]string)
+	addedColumns := make(map[string]column)
+	deletedColumns := make(map[string]column)
 	for _, fragment := range file.TextFragments {
 		for _, line := range fragment.Lines {
-			name, dataType := parseColumnChange(line.Line)
+			name, dataType, pk := parseColumnChange(line.Line)
 			if name == "" || dataType == "" {
 				continue
 			}
+			column := column{dataType: dataType, pk: pk}
 			switch line.Op {
 			case gitdiff.OpAdd:
-				addedColumns[name] = dataType
+				addedColumns[name] = column
 			case gitdiff.OpDelete:
-				deletedColumns[name] = dataType
+				deletedColumns[name] = column
 			}
 		}
 	}
-	for deletedName, deletedDataType := range deletedColumns {
-		if addedDataType, ok := addedColumns[deletedName]; ok {
-			if addedDataType != deletedDataType {
-				changes = append(changes, change{
-					Text:     fmt.Sprintf("Table %s: column type changed from %s to %s for %s", backtickStrings(table, deletedDataType, addedDataType, deletedName)...),
-					Breaking: true,
-				})
-			} else {
+	for deletedName, deletedColumn := range deletedColumns {
+		if addedColumn, ok := addedColumns[deletedName]; ok {
+			if deletedColumn.dataType == addedColumn.dataType && deletedColumn.pk == addedColumn.pk {
 				changes = append(changes, change{
 					Text:     fmt.Sprintf("Table %s: column order changed for %s", backtickStrings(table, deletedName)...),
+					Breaking: false,
+				})
+				continue
+			}
+
+			if addedColumn.dataType != deletedColumn.dataType {
+				changes = append(changes, change{
+					Text:     fmt.Sprintf("Table %s: column type changed from %s to %s for %s", backtickStrings(table, deletedColumn.dataType, addedColumn.dataType, deletedName)...),
+					Breaking: false,
+				})
+			}
+
+			if addedColumn.pk && !deletedColumn.pk {
+				changes = append(changes, change{
+					Text:     fmt.Sprintf("Table %s: column primary key %s added", backtickStrings(table, deletedName)...),
+					Breaking: false,
+				})
+			}
+
+			if !addedColumn.pk && deletedColumn.pk {
+				changes = append(changes, change{
+					Text:     fmt.Sprintf("Table %s: column primary key %s removed", backtickStrings(table, deletedName)...),
 					Breaking: false,
 				})
 			}
@@ -78,10 +102,10 @@ func getColumnChanges(file *gitdiff.File, table string) (changes []change) {
 			})
 		}
 	}
-	for addedName, addedDataType := range addedColumns {
+	for addedName, addedColumn := range addedColumns {
 		if _, ok := deletedColumns[addedName]; !ok {
 			changes = append(changes, change{
-				Text:     fmt.Sprintf("Table %s: column added with name %s and type %s", backtickStrings(table, addedName, addedDataType)...),
+				Text:     fmt.Sprintf("Table %s: column added with name %s and type %s", backtickStrings(table, addedName, addedColumn.dataType)...),
 				Breaking: false,
 			})
 		}
