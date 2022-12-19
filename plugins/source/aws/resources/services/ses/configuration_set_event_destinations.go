@@ -39,17 +39,17 @@ func ConfigurationSetEventDestinations() *schema.Table {
 				},
 			},
 			{
+				Name:     "matching_event_types",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("MatchingEventTypes"),
+			},
+			{
 				Name:     "name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Name"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
-			},
-			{
-				Name:     "matching_event_types",
-				Type:     schema.TypeStringArray,
-				Resolver: schema.PathResolver("MatchingEventTypes"),
 			},
 			{
 				Name:     "cloud_watch_destination",
