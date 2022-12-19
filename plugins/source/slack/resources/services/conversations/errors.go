@@ -6,8 +6,5 @@ import "strings"
 // access to the channel because it's not added to it. We don't consider this
 // an error.
 func isNotInChannel(err error) bool {
-	if strings.Contains(err.Error(), "not_in_channel") {
-		return true
-	}
-	return false
+	return strings.Contains(err.Error(), "not_in_channel")
 }
