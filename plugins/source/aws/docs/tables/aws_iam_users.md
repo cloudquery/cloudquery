@@ -14,6 +14,7 @@ The following tables depend on aws_iam_users:
   - [aws_iam_ssh_public_keys](aws_iam_ssh_public_keys.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

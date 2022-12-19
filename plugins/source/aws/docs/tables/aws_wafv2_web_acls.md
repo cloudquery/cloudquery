@@ -1,12 +1,9 @@
 # Table: aws_wafv2_web_acls
 
-
-
 The primary key for this table is **arn**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

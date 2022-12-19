@@ -1,7 +1,5 @@
 # Table: vercel_domains
 
-
-
 The primary key for this table is **id**.
 
 ## Relations
@@ -10,6 +8,7 @@ The following tables depend on vercel_domains:
   - [vercel_domain_records](vercel_domain_records.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

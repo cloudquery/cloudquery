@@ -7,7 +7,7 @@ import (
   {{- range .}}
   "github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/{{.Service}}"
   {{- end}}
-	"github.com/cloudquery/plugin-sdk/plugins"
+	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -16,7 +16,7 @@ var (
 )
 
 func Plugin() *plugins.SourcePlugin {
-	return plugins.NewSourcePlugin(
+	return source.NewPlugin(
 		"k8s",
 		Version,
 		[]*schema.Table{

@@ -5,10 +5,11 @@ https://docs.aws.amazon.com/directconnect/latest/APIReference/API_DirectConnectG
 The primary key for this table is **_cq_id**.
 
 ## Relations
+
 This table depends on [aws_directconnect_gateways](aws_directconnect_gateways.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

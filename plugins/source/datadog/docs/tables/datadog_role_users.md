@@ -1,14 +1,13 @@
 # Table: datadog_role_users
 
-
-
 The primary key for this table is **_cq_id**.
 
 ## Relations
+
 This table depends on [datadog_roles](datadog_roles.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

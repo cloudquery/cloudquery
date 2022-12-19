@@ -1,7 +1,5 @@
 # Table: cloudflare_worker_meta_data
 
-
-
 The primary key for this table is **id**.
 
 ## Relations
@@ -11,6 +9,7 @@ The following tables depend on cloudflare_worker_meta_data:
   - [cloudflare_workers_secrets](cloudflare_workers_secrets.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

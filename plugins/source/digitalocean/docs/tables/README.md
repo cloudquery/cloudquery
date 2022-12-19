@@ -1,5 +1,7 @@
 # Source Plugin: digitalocean
+
 ## Tables
+
 - [digitalocean_accounts](digitalocean_accounts.md)
 - [digitalocean_cdns](digitalocean_cdns.md)
 - [digitalocean_billing_history](digitalocean_billing_history.md)

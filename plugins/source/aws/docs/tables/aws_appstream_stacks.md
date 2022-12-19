@@ -11,6 +11,7 @@ The following tables depend on aws_appstream_stacks:
   - [aws_appstream_stack_user_associations](aws_appstream_stack_user_associations.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

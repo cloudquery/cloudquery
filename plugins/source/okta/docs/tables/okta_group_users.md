@@ -1,14 +1,13 @@
 # Table: okta_group_users
 
-
-
 The composite primary key for this table is (**group_id**, **id**).
 
 ## Relations
+
 This table depends on [okta_groups](okta_groups.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

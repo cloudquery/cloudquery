@@ -4,9 +4,8 @@ https://cloud.google.com/functions/docs/reference/rest/v1/projects.locations.fun
 
 The primary key for this table is **_cq_id**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

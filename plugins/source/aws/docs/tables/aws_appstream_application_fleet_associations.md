@@ -5,10 +5,11 @@ https://docs.aws.amazon.com/appstream2/latest/APIReference/API_ApplicationFleetA
 The composite primary key for this table is (**application_arn**, **fleet_name**).
 
 ## Relations
+
 This table depends on [aws_appstream_applications](aws_appstream_applications.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

@@ -1,7 +1,5 @@
 # Table: github_hooks
 
-
-
 The composite primary key for this table is (**org**, **id**).
 
 ## Relations
@@ -10,6 +8,7 @@ The following tables depend on github_hooks:
   - [github_hook_deliveries](github_hook_deliveries.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

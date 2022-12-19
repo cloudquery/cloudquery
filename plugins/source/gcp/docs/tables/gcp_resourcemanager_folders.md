@@ -4,9 +4,8 @@ https://cloud.google.com/resource-manager/reference/rest/v3/folders#Folder
 
 The primary key for this table is **_cq_id**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

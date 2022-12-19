@@ -10,6 +10,7 @@ The following tables depend on aws_kms_keys:
   - [aws_kms_key_grants](aws_kms_key_grants.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

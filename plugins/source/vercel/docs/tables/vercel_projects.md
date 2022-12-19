@@ -1,7 +1,5 @@
 # Table: vercel_projects
 
-
-
 The primary key for this table is **id**.
 
 ## Relations
@@ -10,6 +8,7 @@ The following tables depend on vercel_projects:
   - [vercel_project_envs](vercel_project_envs.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

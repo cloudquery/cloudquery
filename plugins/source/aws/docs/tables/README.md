@@ -1,5 +1,7 @@
 # Source Plugin: aws
+
 ## Tables
+
 - [aws_accessanalyzer_analyzers](aws_accessanalyzer_analyzers.md)
   - [aws_accessanalyzer_analyzer_findings](aws_accessanalyzer_analyzer_findings.md)
   - [aws_accessanalyzer_analyzer_archive_rules](aws_accessanalyzer_analyzer_archive_rules.md)

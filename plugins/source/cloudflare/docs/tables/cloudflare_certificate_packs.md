@@ -1,12 +1,9 @@
 # Table: cloudflare_certificate_packs
 
-
-
 The primary key for this table is **id**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

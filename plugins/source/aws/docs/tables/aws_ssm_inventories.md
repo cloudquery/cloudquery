@@ -4,9 +4,8 @@ https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_InventoryRes
 
 The composite primary key for this table is (**account_id**, **region**, **id**).
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

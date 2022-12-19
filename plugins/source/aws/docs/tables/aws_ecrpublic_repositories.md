@@ -10,6 +10,7 @@ The following tables depend on aws_ecrpublic_repositories:
   - [aws_ecrpublic_repository_images](aws_ecrpublic_repository_images.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

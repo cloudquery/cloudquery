@@ -1,14 +1,13 @@
 # Table: gandi_livedns_domain_snapshots
 
-
-
 The composite primary key for this table is (**fqdn**, **id**).
 
 ## Relations
+
 This table depends on [gandi_livedns_domains](gandi_livedns_domains.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

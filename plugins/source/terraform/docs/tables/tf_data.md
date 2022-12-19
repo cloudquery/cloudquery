@@ -10,6 +10,7 @@ The following tables depend on tf_data:
   - [tf_resources](tf_resources.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

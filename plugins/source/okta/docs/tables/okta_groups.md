@@ -1,7 +1,5 @@
 # Table: okta_groups
 
-
-
 The primary key for this table is **id**.
 
 ## Relations
@@ -10,6 +8,7 @@ The following tables depend on okta_groups:
   - [okta_group_users](okta_group_users.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
