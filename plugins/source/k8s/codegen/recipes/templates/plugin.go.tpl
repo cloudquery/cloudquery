@@ -15,7 +15,7 @@ var (
 	Version = "development"
 )
 
-func Plugin() *plugins.SourcePlugin {
+func Plugin() *source.Plugin {
 	return source.NewPlugin(
 		"k8s",
 		Version,

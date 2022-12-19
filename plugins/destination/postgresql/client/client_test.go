@@ -16,7 +16,7 @@ func getTestConnection() string {
 }
 
 func TestPgPlugin(t *testing.T) {
-	p := destination.NewDestinationPlugin("postgresql", "development", New)
+	p := destination.NewPlugin("postgresql", "development", New)
 	destination.PluginTestSuiteRunner(t, p,
 		Spec{
 			ConnectionString: getTestConnection(),

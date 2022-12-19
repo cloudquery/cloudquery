@@ -12,6 +12,6 @@ const (
 )
 
 func main() {
-	p := destination.NewDestinationPlugin("sqlite", plugin.Version, client.New)
+	p := destination.NewPlugin("sqlite", plugin.Version, client.New)
 	serve.Destination(p, serve.WithDestinationSentryDSN(sentryDSN))
 }
