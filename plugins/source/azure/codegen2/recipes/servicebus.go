@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armservicebus.NamespacesClient{}).NewListPager,
 			NewFunc:        armservicebus.NewNamespacesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ServiceBus/namespaces",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ServiceBus)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_servicebus)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armnotificationhubs.NamespacesClient{}).NewListAllPager,
 			NewFunc:        armnotificationhubs.NewNamespacesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.NotificationHubs/namespaces",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_NotificationHubs)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_notificationhubs)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

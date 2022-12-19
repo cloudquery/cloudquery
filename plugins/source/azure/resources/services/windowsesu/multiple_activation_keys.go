@@ -12,7 +12,7 @@ func MultipleActivationKeys() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_windowsesu_multiple_activation_keys",
 		Resolver:  fetchMultipleActivationKeys,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_WindowsESU),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_windowsesu),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

@@ -12,7 +12,7 @@ func AzureTrafficCollectorsBySubscription() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_networkfunction_azure_traffic_collectors_by_subscription",
 		Resolver:  fetchAzureTrafficCollectorsBySubscription,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_NetworkFunction),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_networkfunction),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

@@ -10,7 +10,7 @@ func RoleDefinitions() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_authorization_role_definitions",
 		Resolver:  fetchRoleDefinitions,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Authorization),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_authorization),
 		Columns: []schema.Column{
 			{
 				Name:     "properties",

@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armcostmanagement.ViewsClient{}).NewListPager,
 			NewFunc:        armcostmanagement.NewViewsClient,
 			URL:            "/providers/Microsoft.CostManagement/views",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_CostManagement)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_costmanagement)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

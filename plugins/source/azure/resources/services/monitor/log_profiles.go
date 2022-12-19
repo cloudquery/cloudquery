@@ -12,7 +12,7 @@ func LogProfiles() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_monitor_log_profiles",
 		Resolver:  fetchLogProfiles,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Insights),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_insights),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

@@ -12,7 +12,7 @@ func VCenters() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_connectedvmware_v_centers",
 		Resolver:  fetchVCenters,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ConnectedVMwarevSphere),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_connectedvmwarevsphere),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

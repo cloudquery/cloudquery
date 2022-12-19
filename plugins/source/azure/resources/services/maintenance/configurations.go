@@ -12,7 +12,7 @@ func Configurations() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_maintenance_configurations",
 		Resolver:  fetchConfigurations,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Maintenance),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_maintenance),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

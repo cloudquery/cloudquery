@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armwindowsesu.MultipleActivationKeysClient{}).NewListPager,
 			NewFunc:        armwindowsesu.NewMultipleActivationKeysClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.WindowsESU/multipleActivationKeys",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_WindowsESU)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_windowsesu)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

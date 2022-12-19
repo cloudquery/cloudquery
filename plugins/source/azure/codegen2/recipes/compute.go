@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armcompute.CloudServicesClient{}).NewListAllPager,
 			NewFunc:        armcompute.NewCloudServicesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/cloudServices",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Compute)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_compute)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -26,7 +26,7 @@ func init() {
 			ListFunc:       (&armcompute.DiskAccessesClient{}).NewListPager,
 			NewFunc:        armcompute.NewDiskAccessesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/diskAccesses",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Compute)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_compute)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -38,7 +38,7 @@ func init() {
 			ListFunc:       (&armcompute.DiskEncryptionSetsClient{}).NewListPager,
 			NewFunc:        armcompute.NewDiskEncryptionSetsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/diskEncryptionSets",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Compute)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_compute)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -50,7 +50,7 @@ func init() {
 			ListFunc:       (&armcompute.DisksClient{}).NewListPager,
 			NewFunc:        armcompute.NewDisksClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/disks",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Compute)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_compute)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -62,7 +62,7 @@ func init() {
 			ListFunc:       (&armcompute.GalleriesClient{}).NewListPager,
 			NewFunc:        armcompute.NewGalleriesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/galleries",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Compute)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_compute)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -74,7 +74,7 @@ func init() {
 			ListFunc:       (&armcompute.ImagesClient{}).NewListPager,
 			NewFunc:        armcompute.NewImagesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/images",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Compute)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_compute)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -86,7 +86,7 @@ func init() {
 			ListFunc:       (&armcompute.RestorePointCollectionsClient{}).NewListAllPager,
 			NewFunc:        armcompute.NewRestorePointCollectionsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/restorePointCollections",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Compute)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_compute)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -98,7 +98,7 @@ func init() {
 			ListFunc:       (&armcompute.SnapshotsClient{}).NewListPager,
 			NewFunc:        armcompute.NewSnapshotsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/snapshots",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Compute)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_compute)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -110,7 +110,7 @@ func init() {
 			ListFunc:       (&armcompute.VirtualMachineScaleSetsClient{}).NewListAllPager,
 			NewFunc:        armcompute.NewVirtualMachineScaleSetsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/virtualMachineScaleSets",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Compute)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_compute)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -122,7 +122,7 @@ func init() {
 			ListFunc:       (&armcompute.VirtualMachinesClient{}).NewListAllPager,
 			NewFunc:        armcompute.NewVirtualMachinesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/virtualMachines",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Compute)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_compute)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

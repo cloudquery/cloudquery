@@ -10,7 +10,7 @@ func ExpressRouteGateways() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_express_route_gateways",
 		Resolver:  fetchExpressRouteGateways,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_network),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armauthorization.ClassicAdministratorsClient{}).NewListPager,
 			NewFunc:        armauthorization.NewClassicAdministratorsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/classicAdministrators",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Authorization)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_authorization)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -26,7 +26,7 @@ func init() {
 			ListFunc:       (&armauthorization.ProviderOperationsMetadataClient{}).NewListPager,
 			NewFunc:        armauthorization.NewProviderOperationsMetadataClient,
 			URL:            "/providers/Microsoft.Authorization/providerOperations",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Authorization)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_authorization)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -38,7 +38,7 @@ func init() {
 			ListFunc:       (&armauthorization.RoleAssignmentsClient{}).NewListPager,
 			NewFunc:        armauthorization.NewRoleAssignmentsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/roleAssignments",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Authorization)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_authorization)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

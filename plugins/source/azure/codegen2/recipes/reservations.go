@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armreservations.ReservationClient{}).NewListAllPager,
 			NewFunc:        armreservations.NewReservationClient,
 			URL:            "/providers/Microsoft.Capacity/reservations",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Capacity)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_capacity)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -26,7 +26,7 @@ func init() {
 			ListFunc:       (&armreservations.ReservationOrderClient{}).NewListPager,
 			NewFunc:        armreservations.NewReservationOrderClient,
 			URL:            "/providers/Microsoft.Capacity/reservationOrders",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Capacity)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_capacity)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

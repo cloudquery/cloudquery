@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armnetworkfunction.AzureTrafficCollectorsBySubscriptionClient{}).NewListPager,
 			NewFunc:        armnetworkfunction.NewAzureTrafficCollectorsBySubscriptionClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.NetworkFunction/azureTrafficCollectors",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_NetworkFunction)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_networkfunction)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

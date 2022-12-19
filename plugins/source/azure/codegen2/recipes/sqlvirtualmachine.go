@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armsqlvirtualmachine.GroupsClient{}).NewListPager,
 			NewFunc:        armsqlvirtualmachine.NewGroupsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_SqlVirtualMachine)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_sqlvirtualmachine)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -26,7 +26,7 @@ func init() {
 			ListFunc:       (&armsqlvirtualmachine.SQLVirtualMachinesClient{}).NewListPager,
 			NewFunc:        armsqlvirtualmachine.NewSQLVirtualMachinesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_SqlVirtualMachine)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_sqlvirtualmachine)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armbilling.AccountsClient{}).NewListPager,
 			NewFunc:        armbilling.NewAccountsClient,
 			URL:            "/providers/Microsoft.Billing/billingAccounts",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Billing)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_billing)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -26,7 +26,7 @@ func init() {
 			ListFunc:       (&armbilling.EnrollmentAccountsClient{}).NewListPager,
 			NewFunc:        armbilling.NewEnrollmentAccountsClient,
 			URL:            "/providers/Microsoft.Billing/enrollmentAccounts",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Billing)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_billing)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -38,7 +38,7 @@ func init() {
 			ListFunc:       (&armbilling.PeriodsClient{}).NewListPager,
 			NewFunc:        armbilling.NewPeriodsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Billing/billingPeriods",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Billing)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_billing)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

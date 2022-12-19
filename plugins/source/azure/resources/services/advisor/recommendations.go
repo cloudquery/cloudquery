@@ -12,7 +12,7 @@ func Recommendations() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_advisor_recommendations",
 		Resolver:  fetchRecommendations,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Advisor),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_advisor),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

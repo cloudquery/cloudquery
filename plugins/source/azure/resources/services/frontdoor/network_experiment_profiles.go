@@ -12,7 +12,7 @@ func NetworkExperimentProfiles() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_frontdoor_network_experiment_profiles",
 		Resolver:  fetchNetworkExperimentProfiles,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_network),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
