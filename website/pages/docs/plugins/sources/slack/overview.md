@@ -25,7 +25,7 @@ Once installed into the workspace, go to **Install App** (under **Settings**) an
 
 Set up a CloudQuery source config. See [Configuration](/docs/plugins/sources/slack/configuration) for an example and available options.
 
-If this is your first time running CloudQuery, check out the [Quickstart](/docs/quickstart) for help on setting up a destination and running your first sync. 
+If this is your first time running CloudQuery, check out the [Quickstart](/docs/quickstart) page for help on setting up a destination and running your first sync. 
 
 That's it, happy querying!
 
@@ -35,7 +35,7 @@ The Slack source plugin supports syncing of message histories, but **only for ch
 
 ## Example Queries
 
-### List all active (undeleted) users in the Slack workspace
+### List all active users in the Slack workspace
 
 ```sql
 select id, name from slack_users where deleted is not true;
