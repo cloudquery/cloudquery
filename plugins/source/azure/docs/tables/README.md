@@ -205,7 +205,6 @@
 - [azure_security_topology](azure_security_topology.md)
 - [azure_security_workspace_settings](azure_security_workspace_settings.md)
 - [azure_servicebus_namespaces](azure_servicebus_namespaces.md)
-- [azure_sql_deleted_servers](azure_sql_deleted_servers.md)
 - [azure_sql_instance_pools](azure_sql_instance_pools.md)
 - [azure_sql_managed_instances](azure_sql_managed_instances.md)
 - [azure_sql_servers](azure_sql_servers.md)
