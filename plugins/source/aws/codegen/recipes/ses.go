@@ -1,6 +1,7 @@
 package recipes
 
 import (
+	"github.com/aws/aws-sdk-go-v2/service/ses"
 	"github.com/aws/aws-sdk-go-v2/service/sesv2"
 	"github.com/aws/aws-sdk-go-v2/service/sesv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ses/models"
@@ -10,6 +11,26 @@ import (
 
 func SESResources() []*Resource {
 	resources := []*Resource{
+		{
+			SubService:  "active_receipt_rule_sets",
+			Struct:      &ses.DescribeActiveReceiptRuleSetOutput{},
+			Description: `https://docs.aws.amazon.com/ses/latest/APIReference/API_DescribeActiveReceiptRuleSet.html`,
+			SkipFields:  []string{"Metadata", "ResultMetadata"},
+			ExtraColumns: append(
+				defaultRegionalColumnsPK,
+				codegen.ColumnDefinition{
+					Name:     "name",
+					Type:     schema.TypeString,
+					Resolver: `schema.PathResolver("Metadata.Name")`,
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+				codegen.ColumnDefinition{
+					Name:     "created_timestamp",
+					Type:     schema.TypeTimestamp,
+					Resolver: `schema.PathResolver("Metadata.CreatedTimestamp")`,
+				},
+			),
+		},
 		{
 			SubService:          "configuration_sets",
 			Struct:              &sesv2.GetConfigurationSetOutput{},
@@ -53,9 +74,24 @@ func SESResources() []*Resource {
 			PKColumns:           []string{"name"},
 			SkipFields:          []string{"ResultMetadata"},
 			ExtraColumns:        defaultRegionalColumnsPK,
-			NameTransformer: CreateReplaceTransformer(map[string]string{
-				"contact_list_name": "name",
-			}),
+			NameTransformer:     CreateReplaceTransformer(map[string]string{"contact_list_name": "name"}),
+		},
+		{
+			SubService:          "custom_verification_email_templates",
+			Struct:              &sesv2.GetCustomVerificationEmailTemplateOutput{},
+			Description:         "https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_GetCustomVerificationEmailTemplate.html",
+			PreResourceResolver: "getCustomVerificationEmailTemplate",
+			SkipFields:          []string{"ResultMetadata"},
+			ExtraColumns: append(
+				defaultRegionalColumns,
+				codegen.ColumnDefinition{
+					Name:     "arn",
+					Type:     schema.TypeString,
+					Resolver: "resolveCustomVerificationEmailTemplateArn",
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+			),
+			NameTransformer: CreateReplaceTransformer(map[string]string{"template_": ""}),
 		},
 		{
 			SubService:            "identities",
