@@ -42,7 +42,7 @@ func TestClient(t *testing.T) {
 }
 
 func TestPlugin(t *testing.T) {
-	p := destination.NewDestinationPlugin("csv", "development", New)
+	p := destination.NewPlugin("csv", "development", New)
 
 	destination.PluginTestSuiteRunner(t, p,
 		Spec{

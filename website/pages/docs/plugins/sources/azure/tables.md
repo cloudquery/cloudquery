@@ -1,5 +1,7 @@
 # Source Plugin: azure
+
 ## Tables
+
 - [azure_advisor_recommendation_metadata](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_advisor_recommendation_metadata.md)
 - [azure_advisor_recommendations](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_advisor_recommendations.md)
 - [azure_advisor_suppressions](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_advisor_suppressions.md)

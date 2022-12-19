@@ -8,7 +8,7 @@ import (
 )
 
 func TestPlugin(t *testing.T) {
-	p := destination.NewDestinationPlugin("snowflake", "development", New)
+	p := destination.NewPlugin("snowflake", "development", New)
 	destination.PluginTestSuiteRunner(t, p,
 		Spec{
 			ConnectionString: os.Getenv("SNOW_TEST_DSN"),
