@@ -163,7 +163,6 @@ github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.9.11 h1:y2+VQzC
 github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.9.11/go.mod h1:iV4q2hsqtNECrfmlXyord9u4zyuFEJX9eLgLpSPzWA8=
 github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.1.22 h1:kv5vRAl00tozRxSnI0IszPWGXsJOyA7hmEUHFYqsyvw=
 github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.1.22/go.mod h1:Od+GU5+Yx41gryN/ZGZzAJMZ9R1yn6lgA0fD5Lo5SkQ=
-github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.7.20/go.mod h1:lxM5qubwGNX29Qy+xTFG8G0r2Mj/TmyC+h3hS/7E4V8=
 github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.7.21 h1:UYhcXvg66FBsZKRpXtNc4w+2rwaTHzST/zhpQBxzhPo=
 github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.7.21/go.mod h1:NXJls8x8f9zVSaf+EKKoonqaahWK69MUWm6w6ob0FHs=
 github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.21 h1:5C6XgTViSb0bunmU57b3CT+MhxULqHH2721FVA+/kDM=
@@ -242,8 +241,8 @@ github.com/aws/aws-sdk-go-v2/service/ssooidc v1.13.10 h1:tGOUUjINuqI8sD6pn+Ku0/f
 github.com/aws/aws-sdk-go-v2/service/ssooidc v1.13.10/go.mod h1:TZSH7xLO7+phDtViY/KUp9WGCJMQkLJ/VpgkTFd5gh8=
 github.com/aws/aws-sdk-go-v2/service/sts v1.17.7 h1:9Mtq1KM6nD8/+HStvWcvYnixJ5N85DX+P+OY3kI3W2k=
 github.com/aws/aws-sdk-go-v2/service/sts v1.17.7/go.mod h1:+lGbb3+1ugwKrNTWcf2RT05Xmp543B06zDFTwiTLp7I=
-github.com/aws/aws-sdk-go-v2/service/timestreamwrite v1.14.7 h1:awaIs32OshSTmnFEGfvZfaF+7gaXLZsR1YGw+Gv1x64=
-github.com/aws/aws-sdk-go-v2/service/timestreamwrite v1.14.7/go.mod h1:qmiwCzZ4rkR1kUJtsLlWhtStobMRIL00N8OBK0PkgwI=
+github.com/aws/aws-sdk-go-v2/service/timestreamwrite v1.14.8 h1:1FPvcg1m3K7bip7WLscELLF4RKZR0Ys1iUbomhtDYJY=
+github.com/aws/aws-sdk-go-v2/service/timestreamwrite v1.14.8/go.mod h1:CrQFb3Pn8vnj3GDpjKlv9ANunOJx75Km6JkP6pxc2b8=
 github.com/aws/aws-sdk-go-v2/service/transfer v1.25.1 h1:jv3nPzG+8M/s6jNZPIKAf8g6gOR3OIGTkVo5bSCaIzI=
 github.com/aws/aws-sdk-go-v2/service/transfer v1.25.1/go.mod h1:oIF91lPCokcTOEf32gsTwHxHlSaxcuwLX5BOWc9YZhI=
 github.com/aws/aws-sdk-go-v2/service/waf v1.11.20 h1:8bB9SPjP+cYZoCBeWLusWzDFnuv6MG4/SewWuiVOCq0=
