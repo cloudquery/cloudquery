@@ -4,4 +4,4 @@ The Slack Source plugin for CloudQuery extracts configuration from a variety of 
 
 ## Links
 
-- [User Guide](https://docs.cloudquery.io/docs/plugins/sources/slack/overview)
+- [User Guide](https://www.cloudquery.io/docs/plugins/sources/slack/overview)
