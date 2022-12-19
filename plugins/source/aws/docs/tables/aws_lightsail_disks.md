@@ -10,6 +10,7 @@ The following tables depend on aws_lightsail_disks:
   - [aws_lightsail_disk_snapshots](aws_lightsail_disk_snapshots.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

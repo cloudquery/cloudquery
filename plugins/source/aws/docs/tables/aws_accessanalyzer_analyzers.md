@@ -11,6 +11,7 @@ The following tables depend on aws_accessanalyzer_analyzers:
   - [aws_accessanalyzer_analyzer_archive_rules](aws_accessanalyzer_analyzer_archive_rules.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

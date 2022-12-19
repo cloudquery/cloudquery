@@ -1,14 +1,13 @@
 # Table: aws_glue_database_table_indexes
 
-
-
 The composite primary key for this table is (**database_arn**, **database_table_name**, **index_name**).
 
 ## Relations
+
 This table depends on [aws_glue_database_tables](aws_glue_database_tables.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

@@ -1,7 +1,5 @@
 # Table: aws_glue_ml_transforms
 
-
-
 The primary key for this table is **arn**.
 
 ## Relations
@@ -10,6 +8,7 @@ The following tables depend on aws_glue_ml_transforms:
   - [aws_glue_ml_transform_task_runs](aws_glue_ml_transform_task_runs.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

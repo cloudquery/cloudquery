@@ -5,10 +5,11 @@ https://pkg.go.dev/github.com/tailscale/tailscale-client-go/tailscale#DeviceRout
 The composite primary key for this table is (**tailnet**, **device_id**).
 
 ## Relations
+
 This table depends on [tailscale_devices](tailscale_devices.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

@@ -5,10 +5,11 @@ https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_ContainerServ
 The primary key for this table is **_cq_id**.
 
 ## Relations
+
 This table depends on [aws_lightsail_container_services](aws_lightsail_container_services.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

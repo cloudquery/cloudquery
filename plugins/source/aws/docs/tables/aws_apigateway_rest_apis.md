@@ -18,6 +18,7 @@ The following tables depend on aws_apigateway_rest_apis:
   - [aws_apigateway_rest_api_stages](aws_apigateway_rest_api_stages.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

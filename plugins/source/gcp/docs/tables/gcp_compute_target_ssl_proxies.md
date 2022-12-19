@@ -1,12 +1,9 @@
 # Table: gcp_compute_target_ssl_proxies
 
-
-
 The primary key for this table is **self_link**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

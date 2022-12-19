@@ -1,12 +1,9 @@
 # Table: github_external_groups
 
-
-
 The composite primary key for this table is (**org**, **group_id**).
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

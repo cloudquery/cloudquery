@@ -4,9 +4,8 @@ https://cloud.google.com/compute/docs/reference/rest/v1/backendServices#BackendS
 
 The primary key for this table is **self_link**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

@@ -1,12 +1,9 @@
 # Table: azure_connectedvmware_virtual_machines
 
-
-
 The primary key for this table is **id**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

@@ -10,6 +10,7 @@ The following tables depend on aws_ses_configuration_sets:
   - [aws_ses_configuration_set_event_destinations](aws_ses_configuration_set_event_destinations.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

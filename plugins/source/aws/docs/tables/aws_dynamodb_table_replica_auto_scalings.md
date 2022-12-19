@@ -5,10 +5,11 @@ https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_ReplicaAutoSc
 The primary key for this table is **_cq_id**.
 
 ## Relations
+
 This table depends on [aws_dynamodb_tables](aws_dynamodb_tables.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

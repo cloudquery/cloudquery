@@ -10,6 +10,7 @@ The following tables depend on aws_appstream_applications:
   - [aws_appstream_application_fleet_associations](aws_appstream_application_fleet_associations.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

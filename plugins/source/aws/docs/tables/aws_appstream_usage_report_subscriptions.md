@@ -4,9 +4,8 @@ https://docs.aws.amazon.com/appstream2/latest/APIReference/API_UsageReportSubscr
 
 The composite primary key for this table is (**account_id**, **region**, **s3_bucket_name**).
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

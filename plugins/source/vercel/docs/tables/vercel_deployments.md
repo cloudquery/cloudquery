@@ -1,7 +1,5 @@
 # Table: vercel_deployments
 
-
-
 The primary key for this table is **uid**.
 
 ## Relations
@@ -10,6 +8,7 @@ The following tables depend on vercel_deployments:
   - [vercel_deployment_checks](vercel_deployment_checks.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

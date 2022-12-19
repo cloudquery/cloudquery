@@ -1,12 +1,9 @@
 # Table: aws_route53_domains
 
-
-
 The composite primary key for this table is (**account_id**, **domain_name**).
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
