@@ -8,5 +8,5 @@ import (
 )
 
 func main() {
-	serve.Destination(destination.NewDestinationPlugin("test", plugin.Version, client.New))
+	serve.Destination(destination.NewPlugin("test", plugin.Version, client.New))
 }

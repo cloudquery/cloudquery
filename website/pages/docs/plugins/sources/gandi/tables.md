@@ -1,5 +1,7 @@
 # Source Plugin: gandi
+
 ## Tables
+
 - [gandi_certificates](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gandi/docs/tables/gandi_certificates.md)
 - [gandi_certificate_packages](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gandi/docs/tables/gandi_certificate_packages.md)
 - [gandi_domains](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gandi/docs/tables/gandi_domains.md)

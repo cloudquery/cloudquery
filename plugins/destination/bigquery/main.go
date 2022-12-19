@@ -12,6 +12,6 @@ const (
 )
 
 func main() {
-	p := destination.NewDestinationPlugin("bigquery", plugin.Version, client.New)
+	p := destination.NewPlugin("bigquery", plugin.Version, client.New)
 	serve.Destination(p, serve.WithDestinationSentryDSN(sentryDSN))
 }
