@@ -203,8 +203,8 @@ github.com/aws/aws-sdk-go-v2/service/redshift v1.26.17 h1:QqjXi1YMzvOq1QS3Nc+X1c
 github.com/aws/aws-sdk-go-v2/service/redshift v1.26.17/go.mod h1:D9RG9/qdConhXN9wWFsV3njqLki71pU4iKiVo+BPHOw=
 github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.12.22 h1:UV7d8ay2PM0YvIZ1SAqmoN3vEJrCV8aelaDsehCx0Y8=
 github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.12.22/go.mod h1:ZXic+Rh7eCmJF/iBVzH5EBGtlo1aqnaNbpL82yafOCI=
-github.com/aws/aws-sdk-go-v2/service/route53 v1.25.1 h1:Lo3ArBb59dPfQAdPKrDFMJtpUZONvhghe9XZzJU3STQ=
-github.com/aws/aws-sdk-go-v2/service/route53 v1.25.1/go.mod h1:Q6Mz8qAJKjDfWExTomBSVk7BivLwvh9GYOEgaPASWDc=
+github.com/aws/aws-sdk-go-v2/service/route53 v1.25.2 h1:MNL6bLDcwOGL9j+ANiejLYn/cBSku1m+pLWXri/FFF4=
+github.com/aws/aws-sdk-go-v2/service/route53 v1.25.2/go.mod h1:4SAHuLdh4v7pA2F6HdhUUgiLUDA6J89KWr7xAYCDiyc=
 github.com/aws/aws-sdk-go-v2/service/route53domains v1.12.20 h1:5qy9kNG2eRPvSNt0p7VnbfMGuWsnP17SyOqjX+BGMoo=
 github.com/aws/aws-sdk-go-v2/service/route53domains v1.12.20/go.mod h1:zppLYIoEY8J6bAi7xUbnOuSO8eowUqWaAuSlxZeY2Io=
 github.com/aws/aws-sdk-go-v2/service/s3 v1.29.6 h1:W8pLcSn6Uy0eXgDBUUl8M8Kxv7JCoP68ZKTD04OXLEA=
