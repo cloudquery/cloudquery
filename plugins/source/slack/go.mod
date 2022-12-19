@@ -5,8 +5,7 @@ go 1.19
 require (
 	github.com/cloudquery/plugin-sdk v1.11.0
 	github.com/gertd/go-pluralize v0.2.1
-	github.com/golang/mock v1.4.4
-	github.com/julienschmidt/httprouter v1.3.0
+	github.com/golang/mock v1.6.0
 	github.com/rs/zerolog v1.28.0
 	github.com/slack-go/slack v0.11.4
 )
@@ -40,4 +39,5 @@ require (
 )
 
 replace github.com/slack-go/slack v0.11.4 => /Users/hermanschaaf/code/slack // TODO: remove this once https://github.com/slack-go/slack/pull/1119 is merged
+
 replace github.com/cloudquery/plugin-sdk v1.11.0 => /Users/hermanschaaf/code/cloudquery/plugin-sdk
