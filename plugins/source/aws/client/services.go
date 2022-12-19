@@ -42,6 +42,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing"
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2"
 	"github.com/aws/aws-sdk-go-v2/service/elasticsearchservice"
+	"github.com/aws/aws-sdk-go-v2/service/elastictranscoder"
 	"github.com/aws/aws-sdk-go-v2/service/emr"
 	"github.com/aws/aws-sdk-go-v2/service/eventbridge"
 	"github.com/aws/aws-sdk-go-v2/service/firehose"
@@ -142,6 +143,7 @@ func initServices(region string, c aws.Config) Services {
 		Elasticloadbalancing:      elasticloadbalancing.NewFromConfig(awsCfg),
 		Elasticloadbalancingv2:    elasticloadbalancingv2.NewFromConfig(awsCfg),
 		Elasticsearchservice:      elasticsearchservice.NewFromConfig(awsCfg),
+		Elastictranscoder:         elastictranscoder.NewFromConfig(awsCfg),
 		Emr:                       emr.NewFromConfig(awsCfg),
 		Eventbridge:               eventbridge.NewFromConfig(awsCfg),
 		Firehose:                  firehose.NewFromConfig(awsCfg),
@@ -239,6 +241,7 @@ type Services struct {
 	Elasticloadbalancing      services.ElasticloadbalancingClient
 	Elasticloadbalancingv2    services.Elasticloadbalancingv2Client
 	Elasticsearchservice      services.ElasticsearchserviceClient
+	Elastictranscoder         services.ElastictranscoderClient
 	Emr                       services.EmrClient
 	Eventbridge               services.EventbridgeClient
 	Firehose                  services.FirehoseClient

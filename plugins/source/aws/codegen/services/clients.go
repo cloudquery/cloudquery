@@ -40,6 +40,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing"
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2"
 	"github.com/aws/aws-sdk-go-v2/service/elasticsearchservice"
+	"github.com/aws/aws-sdk-go-v2/service/elastictranscoder"
 	"github.com/aws/aws-sdk-go-v2/service/emr"
 	"github.com/aws/aws-sdk-go-v2/service/eventbridge"
 	"github.com/aws/aws-sdk-go-v2/service/firehose"
@@ -135,6 +136,7 @@ var clients = []interface{}{
 	&elasticloadbalancing.Client{},
 	&elasticloadbalancingv2.Client{},
 	&elasticsearchservice.Client{},
+	&elastictranscoder.Client{},
 	&emr.Client{},
 	&eventbridge.Client{},
 	&firehose.Client{},
