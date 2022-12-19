@@ -78,7 +78,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sagemaker v1.56.1
 	github.com/aws/aws-sdk-go-v2/service/scheduler v1.0.2
 	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.16.9
-	github.com/aws/aws-sdk-go-v2/service/servicecatalog v1.15.1
+	github.com/aws/aws-sdk-go-v2/service/servicecatalog v1.15.2
 	github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.15.1
 	github.com/aws/aws-sdk-go-v2/service/servicequotas v1.13.21
 	github.com/aws/aws-sdk-go-v2/service/sesv2 v1.15.2
