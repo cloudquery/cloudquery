@@ -19,8 +19,8 @@ Hey everyone! Our monthly round-up of CloudQuery product and roadmap updates is 
 
 We've added two new destinations to CQ supporting two of the most popular data warehouses!
 
-* [Snowflake](https://www.cloudquery.io/blog/announcing-cloudquery-snowflake-destination).
-* [BigQuery](https://www.cloudquery.io/blog/announcing-cloudquery-bigquery-destination).
+* [Snowflake](https://www.cloudquery.io/blog/announcing-cloudquery-snowflake-destination)
+* [BigQuery](https://www.cloudquery.io/blog/announcing-cloudquery-bigquery-destination)
 
 ## Sources
 
@@ -28,13 +28,13 @@ We've added two new destinations to CQ supporting two of the most popular data w
 
 We've added 3 new source plugins to CQ to cover the long tail of infrastructure apps!
 
-* [Gandi](https://www.cloudquery.io/blog/introducing-the-gandi-source-plugin).
-* [Tailscale](https://www.cloudquery.io/blog/introducing-the-tailscale-source-plugin).
-* [Vercel](https://www.cloudquery.io/blog/announcing-the-vercel-source-plugin).
+* [Gandi](https://www.cloudquery.io/blog/introducing-the-gandi-source-plugin)
+* [Tailscale](https://www.cloudquery.io/blog/introducing-the-tailscale-source-plugin)
+* [Vercel](https://www.cloudquery.io/blog/announcing-the-vercel-source-plugin)
 
 ### AWS
 
-* Add more new resources and bugfixes such as [Config Rules](https://github.com/cloudquery/cloudquery/issues/4730), [Step Functions](https://github.com/cloudquery/cloudquery/pull/4832), [IAM SSH Public Keys](https://github.com/cloudquery/cloudquery/pull/5538).
+* Add more new resources and bugfixes such as [Config Rules](https://github.com/cloudquery/cloudquery/issues/4730), [Step Functions](https://github.com/cloudquery/cloudquery/pull/4832), [IAM SSH Public Keys](https://github.com/cloudquery/cloudquery/pull/5538)
 
 See [full changelog](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/CHANGELOG.md).
 
@@ -57,7 +57,7 @@ See full [changelog](https://github.com/cloudquery/cloudquery/blob/main/plugins/
 
 ### Security
 
-- [Finding Cross-Account AWS EventBridge Usage (customer story)](https://www.cloudquery.io/blog/how-to-find-cross-account-aws-eventbridge-usage).
+- [Finding Cross-Account AWS EventBridge Usage (customer story)](https://www.cloudquery.io/blog/how-to-find-cross-account-aws-eventbridge-usage)
 - [S3 Security Settings for Enabling S3 Blog Public Access and Disabling ACLs](https://www.cloudquery.io/blog/finding-enabled-s3-acls-and-disabled-s3-block-public-access)
 
 ### FinOps
