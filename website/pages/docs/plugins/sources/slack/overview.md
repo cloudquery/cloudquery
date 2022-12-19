@@ -59,10 +59,10 @@ select title, link from slack_conversation_bookmarks;
 ```
 
 
-### List all uploaded files
+### List URLs to all uploaded files
 
 ```sql
-select title, link from slack_conversation_bookmarks;
+select title, url_private from slack_files;
 ```
 
 ### List all external files

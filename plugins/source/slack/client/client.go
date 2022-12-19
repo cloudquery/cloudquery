@@ -3,12 +3,18 @@ package client
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/slack/client/services"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
 	"github.com/slack-go/slack"
+)
+
+const (
+	defaultMaxRetries = 3
+	defaultBackoff    = 1 * time.Second
 )
 
 type Client struct {
@@ -18,6 +24,9 @@ type Client struct {
 	Teams  []slack.Team
 	TeamID string
 	BotID  string
+
+	maxRetries int
+	backoff    time.Duration // backoff duration between retries (jitter will be added)
 }
 
 func (c *Client) Logger() *zerolog.Logger {
@@ -30,11 +39,13 @@ func (c *Client) ID() string {
 
 func (c *Client) withTeamID(teamID string) schema.ClientMeta {
 	return &Client{
-		logger: c.logger.With().Str("team_id", teamID).Logger(),
-		Teams:  c.Teams,
-		spec:   c.spec,
-		Slack:  c.Slack,
-		TeamID: teamID,
+		logger:     c.logger.With().Str("team_id", teamID).Logger(),
+		Teams:      c.Teams,
+		spec:       c.spec,
+		Slack:      c.Slack,
+		TeamID:     teamID,
+		maxRetries: c.maxRetries,
+		backoff:    c.backoff,
 	}
 }
 
@@ -55,10 +66,12 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (sche
 	}
 	logger.Debug().Int("num_teams", len(teams)).Msg("got teams")
 	return &Client{
-		logger: logger,
-		spec:   s,
-		Slack:  client,
-		Teams:  teams,
+		logger:     logger,
+		spec:       s,
+		Slack:      client,
+		Teams:      teams,
+		maxRetries: defaultMaxRetries,
+		backoff:    defaultBackoff,
 	}, nil
 }
 

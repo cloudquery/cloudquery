@@ -12,7 +12,7 @@ import (
 func fetchConversationMembers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	f := func() error {
-		channelID := parent.Get("id").String()
+		channelID := parent.Item.(slack.Channel).ID
 		params := &slack.GetUsersInConversationParameters{
 			ChannelID: channelID,
 			Limit:     1000,
