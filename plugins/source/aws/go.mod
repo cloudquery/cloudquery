@@ -80,15 +80,15 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.16.9
 	github.com/aws/aws-sdk-go-v2/service/servicecatalog v1.15.2
 	github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.15.1
-	github.com/aws/aws-sdk-go-v2/service/servicequotas v1.13.21
+	github.com/aws/aws-sdk-go-v2/service/servicequotas v1.13.23
 	github.com/aws/aws-sdk-go-v2/service/sesv2 v1.15.2
-	github.com/aws/aws-sdk-go-v2/service/sfn v1.16.1
+	github.com/aws/aws-sdk-go-v2/service/sfn v1.16.2
 	github.com/aws/aws-sdk-go-v2/service/sns v1.18.7
-	github.com/aws/aws-sdk-go-v2/service/sqs v1.19.16
+	github.com/aws/aws-sdk-go-v2/service/sqs v1.19.17
 	github.com/aws/aws-sdk-go-v2/service/ssm v1.33.2
-	github.com/aws/aws-sdk-go-v2/service/ssoadmin v1.15.14
+	github.com/aws/aws-sdk-go-v2/service/ssoadmin v1.15.15
 	github.com/aws/aws-sdk-go-v2/service/sts v1.17.7
-	github.com/aws/aws-sdk-go-v2/service/timestreamwrite v1.14.7
+	github.com/aws/aws-sdk-go-v2/service/timestreamwrite v1.14.8
 	github.com/aws/aws-sdk-go-v2/service/waf v1.11.20
 	github.com/aws/aws-sdk-go-v2/service/wafv2 v1.23.3
 	github.com/aws/aws-sdk-go-v2/service/workspaces v1.27.1
