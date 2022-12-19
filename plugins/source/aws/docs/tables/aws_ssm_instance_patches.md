@@ -5,10 +5,11 @@ https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_PatchComplia
 The composite primary key for this table is (**account_id**, **region**, **kb_id**).
 
 ## Relations
+
 This table depends on [aws_ssm_instances](aws_ssm_instances.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

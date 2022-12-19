@@ -13,7 +13,7 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/vercel/internal/vercel"
-	"github.com/cloudquery/plugin-sdk/plugins"
+	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/gorilla/mux"
@@ -89,7 +89,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 		return &c, nil
 	}
 
-	p := plugins.NewSourcePlugin(
+	p := source.NewPlugin(
 		table.Name,
 		version,
 		[]*schema.Table{
@@ -98,7 +98,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 		newTestExecutionClient,
 	)
 	p.SetLogger(logger)
-	plugins.TestSourcePluginSync(t, p, specs.Source{
+	source.TestPluginSync(t, p, specs.Source{
 		Name:         "dev",
 		Path:         "cloudquery/dev",
 		Version:      version,

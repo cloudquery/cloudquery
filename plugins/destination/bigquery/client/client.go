@@ -5,22 +5,22 @@ import (
 	"fmt"
 
 	"cloud.google.com/go/bigquery"
-	"github.com/cloudquery/plugin-sdk/plugins"
+	"github.com/cloudquery/plugin-sdk/plugins/destination"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
 	"google.golang.org/api/option"
 )
 
 type Client struct {
-	plugins.DefaultReverseTransformer
+	destination.DefaultReverseTransformer
 	logger     zerolog.Logger
 	spec       specs.Destination
-	metrics    plugins.DestinationMetrics
+	metrics    destination.Metrics
 	batchSize  int
 	pluginSpec Spec
 }
 
-func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination) (plugins.DestinationClient, error) {
+func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination) (destination.Client, error) {
 	if destSpec.WriteMode != specs.WriteModeAppend {
 		return nil, fmt.Errorf("bigquery destination only supports append mode")
 	}

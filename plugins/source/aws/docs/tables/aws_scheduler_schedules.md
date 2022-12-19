@@ -4,9 +4,8 @@ https://docs.aws.amazon.com/scheduler/latest/APIReference/API_GetScheduleOutput.
 
 The primary key for this table is **arn**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

@@ -1,12 +1,9 @@
 # Table: aws_glue_datacatalog_encryption_settings
 
-
-
 The primary key for this table is **account_id**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

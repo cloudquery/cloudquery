@@ -1,12 +1,9 @@
 # Table: azure_monitor_tenant_activity_logs
 
-
-
 The primary key for this table is **id**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

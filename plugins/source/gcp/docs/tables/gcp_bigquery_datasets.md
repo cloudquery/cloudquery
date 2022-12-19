@@ -10,6 +10,7 @@ The following tables depend on gcp_bigquery_datasets:
   - [gcp_bigquery_tables](gcp_bigquery_tables.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

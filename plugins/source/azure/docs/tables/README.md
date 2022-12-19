@@ -1,5 +1,7 @@
 # Source Plugin: azure
+
 ## Tables
+
 - [azure_advisor_recommendation_metadata](azure_advisor_recommendation_metadata.md)
 - [azure_advisor_recommendations](azure_advisor_recommendations.md)
 - [azure_advisor_suppressions](azure_advisor_suppressions.md)

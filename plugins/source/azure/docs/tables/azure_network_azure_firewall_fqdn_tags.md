@@ -1,12 +1,9 @@
 # Table: azure_network_azure_firewall_fqdn_tags
 
-
-
 The primary key for this table is **id**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

@@ -10,6 +10,7 @@ The following tables depend on aws_iam_groups:
   - [aws_iam_group_policies](aws_iam_group_policies.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

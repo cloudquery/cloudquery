@@ -1,14 +1,13 @@
 # Table: github_organization_members
 
-
-
 The composite primary key for this table is (**org**, **id**).
 
 ## Relations
+
 This table depends on [github_organizations](github_organizations.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

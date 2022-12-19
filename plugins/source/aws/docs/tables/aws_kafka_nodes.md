@@ -5,10 +5,11 @@ https://docs.aws.amazon.com/msk/1.0/apireference/clusters-clusterarn-nodes.html#
 The primary key for this table is **arn**.
 
 ## Relations
+
 This table depends on [aws_kafka_clusters](aws_kafka_clusters.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

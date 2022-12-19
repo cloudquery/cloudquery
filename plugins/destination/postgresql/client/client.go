@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/plugins"
+	"github.com/cloudquery/plugin-sdk/plugins/destination"
 	"github.com/cloudquery/plugin-sdk/specs"
 
 	pgx_zero_log "github.com/jackc/pgx-zerolog"
@@ -16,14 +16,14 @@ import (
 )
 
 type Client struct {
-	plugins.DefaultReverseTransformer
+	destination.DefaultReverseTransformer
 	conn                *pgxpool.Pool
 	logger              zerolog.Logger
 	spec                specs.Destination
 	currentDatabaseName string
 	currentSchemaName   string
 	pgType              pgType
-	metrics             plugins.DestinationMetrics
+	metrics             destination.Metrics
 	batchSize           int
 }
 
@@ -63,7 +63,7 @@ const (
 	pgTypeCockroachDB
 )
 
-func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (plugins.DestinationClient, error) {
+func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (destination.Client, error) {
 	c := &Client{
 		logger: logger.With().Str("module", "pg-dest").Logger(),
 	}

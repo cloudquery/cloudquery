@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cloudquery/plugin-sdk/plugins"
+	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/golang/mock/gomock"
@@ -30,7 +30,7 @@ func DatadogMockTestHelper(t *testing.T, table *schema.Table, builder func(*test
 			Accounts:   []Account{{Name: "test", APIKey: "test", AppKey: "test"}},
 		}, nil
 	}
-	p := plugins.NewSourcePlugin(
+	p := source.NewPlugin(
 		table.Name,
 		version,
 		[]*schema.Table{
@@ -38,7 +38,7 @@ func DatadogMockTestHelper(t *testing.T, table *schema.Table, builder func(*test
 		},
 		newTestExecutionClient)
 	p.SetLogger(l)
-	plugins.TestSourcePluginSync(t, p, specs.Source{
+	source.TestPluginSync(t, p, specs.Source{
 		Name:         "dev",
 		Path:         "cloudquery/dev",
 		Version:      version,

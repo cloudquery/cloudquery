@@ -11,6 +11,7 @@ The following tables depend on aws_lightsail_container_services:
   - [aws_lightsail_container_service_images](aws_lightsail_container_service_images.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

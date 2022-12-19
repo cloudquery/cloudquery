@@ -1,12 +1,9 @@
 # Table: aws_glacier_data_retrieval_policies
 
-
-
 The composite primary key for this table is (**account_id**, **region**).
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

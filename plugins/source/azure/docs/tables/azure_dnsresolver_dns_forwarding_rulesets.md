@@ -1,12 +1,9 @@
 # Table: azure_dnsresolver_dns_forwarding_rulesets
 
-
-
 The primary key for this table is **id**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

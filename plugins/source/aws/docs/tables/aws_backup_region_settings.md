@@ -4,9 +4,8 @@ https://docs.aws.amazon.com/aws-backup/latest/devguide/API_DescribeRegionSetting
 
 The composite primary key for this table is (**account_id**, **region**).
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

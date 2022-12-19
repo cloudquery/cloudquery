@@ -1,14 +1,13 @@
 # Table: vercel_project_envs
 
-
-
 The composite primary key for this table is (**project_id**, **id**).
 
 ## Relations
+
 This table depends on [vercel_projects](vercel_projects.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

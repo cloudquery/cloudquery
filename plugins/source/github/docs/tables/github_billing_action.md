@@ -1,12 +1,9 @@
 # Table: github_billing_action
 
-
-
 The primary key for this table is **org**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

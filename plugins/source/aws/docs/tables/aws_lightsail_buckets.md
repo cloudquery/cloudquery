@@ -10,6 +10,7 @@ The following tables depend on aws_lightsail_buckets:
   - [aws_lightsail_bucket_access_keys](aws_lightsail_bucket_access_keys.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

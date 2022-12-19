@@ -1,5 +1,7 @@
 # Source Plugin: aws
+
 ## Tables
+
 - [aws_accessanalyzer_analyzers](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_accessanalyzer_analyzers.md)
   - [aws_accessanalyzer_analyzer_findings](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_accessanalyzer_analyzer_findings.md)
   - [aws_accessanalyzer_analyzer_archive_rules](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_accessanalyzer_analyzer_archive_rules.md)
