@@ -4,9 +4,8 @@ https://cloud.google.com/iam/docs/reference/rest/v2beta/policies#Policy
 
 The primary key for this table is **_cq_id**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
