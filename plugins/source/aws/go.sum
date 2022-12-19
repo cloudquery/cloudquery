@@ -247,8 +247,8 @@ github.com/aws/aws-sdk-go-v2/service/transfer v1.25.1 h1:jv3nPzG+8M/s6jNZPIKAf8g
 github.com/aws/aws-sdk-go-v2/service/transfer v1.25.1/go.mod h1:oIF91lPCokcTOEf32gsTwHxHlSaxcuwLX5BOWc9YZhI=
 github.com/aws/aws-sdk-go-v2/service/waf v1.11.20 h1:8bB9SPjP+cYZoCBeWLusWzDFnuv6MG4/SewWuiVOCq0=
 github.com/aws/aws-sdk-go-v2/service/waf v1.11.20/go.mod h1:JziM/TxuCOLUdARUAoysfro9D4qwrsIAcOX2HX7D+HY=
-github.com/aws/aws-sdk-go-v2/service/wafregional v1.12.21 h1:+/TC4t3+URemTncF+N9mDkOF4cJ4g++Ju5CIm8oevTw=
-github.com/aws/aws-sdk-go-v2/service/wafregional v1.12.21/go.mod h1:hK6vsBfg2+oW0BUfycqmFBiMYz2yMcO1ARxkcVbeHzc=
+github.com/aws/aws-sdk-go-v2/service/wafregional v1.12.22 h1:KBjYyYqdS9F4g7NxMZ6yhFkHO/eaZUs03r/pHv9nlQE=
+github.com/aws/aws-sdk-go-v2/service/wafregional v1.12.22/go.mod h1:oCfqX0qay7HrOqf6viIlSqBV1CykdyArfznKg2j2utA=
 github.com/aws/aws-sdk-go-v2/service/wafv2 v1.23.3 h1:XP3qjML/5i6g8B7spte7AS1zMgaoutbTrl5GzXFEuJQ=
 github.com/aws/aws-sdk-go-v2/service/wafv2 v1.23.3/go.mod h1:wn1x+aGg8NR/aWqLnosE8pU9Ry11UkO7KgvoWORiiR0=
 github.com/aws/aws-sdk-go-v2/service/workspaces v1.27.1 h1:dUQUCKsdPUhMutZWfyUVB3MPbY4pql14/1VkCPdMyCQ=
