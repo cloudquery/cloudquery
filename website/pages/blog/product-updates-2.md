@@ -47,7 +47,7 @@ Starting Azure `v2.0.0` we've migrated to new Azure API and auto-generated 90% o
 * [APIKeys](https://github.com/cloudquery/cloudquery/pull/5031)
 * [ContainerAnalysis](https://github.com/cloudquery/cloudquery/pull/5115)
 
-See full [changelog](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/CHANGELOG.md)
+See full [changelog](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/CHANGELOG.md)
 
 ## Other notable blogs and use-cases
 

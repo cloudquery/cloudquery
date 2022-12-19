@@ -166,15 +166,15 @@ func Test_getChanges(t *testing.T) {
 			diffDataFile: "testdata/pr_5636_diff.txt",
 			wantChanges: []change{
 				{
-					Text:     "Table `gcp_resourcemanager_projects`: column primary key `_cq_id` removed",
+					Text:     "Table `gcp_resourcemanager_projects`: primary key constraint added to column `name`",
 					Breaking: false,
 				},
 				{
-					Text:     "Table `gcp_resourcemanager_projects`: column primary key `name` added",
+					Text:     "Table `gcp_resourcemanager_projects`: primary key constraint added to column `project_id`",
 					Breaking: false,
 				},
 				{
-					Text:     "Table `gcp_resourcemanager_projects`: column primary key `project_id` added",
+					Text:     "Table `gcp_resourcemanager_projects`: primary key constraint removed from column `_cq_id`",
 					Breaking: false,
 				},
 			},
