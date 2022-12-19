@@ -1,8 +1,6 @@
 package client
 
 import (
-	"encoding/hex"
-
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -10,8 +8,8 @@ func (*Client) TransformBool(v *schema.Bool) any {
 	return v.Bool
 }
 
-func (*Client) TransformBytea(v *schema.Bytea) any {
-	return hex.EncodeToString(v.Bytes)
+func (*Client) TransformBytea(v *schema.Bytea) interface{} {
+	return v.Bytes
 }
 
 func (*Client) TransformFloat8(v *schema.Float8) any {
