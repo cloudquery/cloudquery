@@ -27,7 +27,7 @@ func Templates() *schema.Table {
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,
-				Resolver: resolveSesTemplateArn,
+				Resolver: resolveTemplateArn,
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},

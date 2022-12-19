@@ -44,6 +44,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.14.25
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.18.28
 	github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.17.4
+	github.com/aws/aws-sdk-go-v2/service/elastictranscoder v1.13.21
 	github.com/aws/aws-sdk-go-v2/service/emr v1.20.18
 	github.com/aws/aws-sdk-go-v2/service/eventbridge v1.16.22
 	github.com/aws/aws-sdk-go-v2/service/firehose v1.15.2
@@ -81,6 +82,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/servicecatalog v1.15.2
 	github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.15.2
 	github.com/aws/aws-sdk-go-v2/service/servicequotas v1.13.23
+	github.com/aws/aws-sdk-go-v2/service/ses v1.14.23
 	github.com/aws/aws-sdk-go-v2/service/sesv2 v1.15.3
 	github.com/aws/aws-sdk-go-v2/service/sfn v1.16.2
 	github.com/aws/aws-sdk-go-v2/service/sns v1.18.8
