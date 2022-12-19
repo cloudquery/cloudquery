@@ -55,6 +55,12 @@ func Services() *schema.Table {
 
 func fetchServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
+	if len(c.EnabledServices) > 0{
+		for _,svc := range c.EnabledServices[c.ProjectId] {
+			res <- svc.(*pb.Service)
+		}
+		return nil
+	}
 	req := &pb.ListServicesRequest{
 		Parent:   "projects/" + c.ProjectId,
 		PageSize: 200,
