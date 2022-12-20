@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/services"
+	"github.com/thoas/go-funk"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
@@ -86,7 +87,7 @@ func loadAccounts(ctx context.Context, awsConfig *Spec, accountsApi services.Org
 // Get Accounts for specific Organizational Units
 func getOUAccounts(ctx context.Context, accountsApi services.OrganizationsClient, ous []string, ousSkip []string) ([]orgTypes.Account, error) {
 	var rawAccounts []orgTypes.Account
-	var AllOus []orgTypes.Child
+	var allOus []orgTypes.Child
 	for _, ou := range ous {
 		ouPaginator := organizations.NewListChildrenPaginator(accountsApi, &organizations.ListChildrenInput{
 			ChildType: orgTypes.ChildTypeOrganizationalUnit,
@@ -97,13 +98,13 @@ func getOUAccounts(ctx context.Context, accountsApi services.OrganizationsClient
 			if err != nil {
 				return nil, err
 			}
-			AllOus = append(AllOus, output.Children...)
+			allOus = append(allOus, output.Children...)
 		}
 	}
 
-	for _, ou := range AllOus {
+	for _, ou := range allOus {
 		// Skip any OUs that user has asked to skip
-		if stringInSlice(*ou.Id, ousSkip) {
+		if funk.ContainsString(ousSkip, *ou.Id) {
 			continue
 		}
 		accountsPaginator := organizations.NewListAccountsForParentPaginator(accountsApi, &organizations.ListAccountsForParentInput{
@@ -132,13 +133,4 @@ func getAllAccounts(ctx context.Context, accountsApi services.OrganizationsClien
 		rawAccounts = append(rawAccounts, output.Accounts...)
 	}
 	return rawAccounts, nil
-}
-
-func stringInSlice(a string, list []string) bool {
-	for _, b := range list {
-		if b == a {
-			return true
-		}
-	}
-	return false
 }
