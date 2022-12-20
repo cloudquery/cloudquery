@@ -18,10 +18,10 @@ CloudQuery is an open-source, extendable framework that gives you a single-pane-
 Slack is a popular communication tool used by many organizations. With the CloudQuery Slack source plugin, you can now load Slack workspace data into Postgres, Snowflake, BigQuery, SQLite, or any other destination supported by CloudQuery. 
 
 As part of its initial release, the Slack plugin supports pulling data for the following Slack resources:
- - users into the [`slack_users`](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/slack/docs/tables/slack_users.md) and [slack_user_presences](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/slack/docs/tables/slack_user_presences.md) tables,
+ - users into the [`slack_users`](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/slack/docs/tables/slack_users.md) and [`slack_user_presences`](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/slack/docs/tables/slack_user_presences.md) tables,
  - teams into the [`slack_teams`](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/slack/docs/tables/slack_teams.md) table,
  - channels into the [`slack_conversations`](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/slack/docs/tables/slack_conversations.md) table,
- - messages into the [`slack_conversation_histories`](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/slack/docs/tables/slack_conversation_histories.md) and [slack_conversation_replies](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/slack/docs/tables/slack_conversation_replies.md) tables,
+ - messages into the [`slack_conversation_histories`](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/slack/docs/tables/slack_conversation_histories.md) and [`slack_conversation_replies`](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/slack/docs/tables/slack_conversation_replies.md) tables,
  - files into the [`slack_files`](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/slack/docs/tables/slack_teams.md) table
 
 Let's look at a two use cases for the Slack plugin: one serious, one fun. 
