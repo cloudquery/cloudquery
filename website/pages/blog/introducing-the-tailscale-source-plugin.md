@@ -40,7 +40,7 @@ order by id;
 
 This query would output a table of device IDs and corresponding users for unauthorized devices:
 
-```
+```bash
         id         |       user             
 -------------------+------------------
  12345678901234567 | user@example.com
@@ -51,7 +51,7 @@ You can now put this in a dashboard or set up an alert on it.
 
 ## Make sure all your devices have enabled key expiry
 
-To secure your infrastructure it's a good idea to make device keys expire.
+To keep your infrastructure secure it's best practice to make device keys expire.
 Here's a query to check for devices that have disabled key expiry.
 
 ```sql
@@ -63,7 +63,7 @@ order by id;
 
 This query would output a table of device IDs and corresponding users for devices that have key expiry disabled:
 
-```
+```bash
         id         |       user             
 -------------------+------------------
  12345678901234567 | user@example.com
