@@ -21,7 +21,8 @@ jobs:
           fail_on_error: true
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-  runs-on: ubuntu-latest
+  lint-structure:
+    runs-on: ubuntu-latest
     steps:
       - name: Git checkout
         uses: actions/checkout@v3
