@@ -121,4 +121,6 @@ To get started syncing Slack data, see the [Slack source plugin documentation](/
 
 ## What's next
 
-The Slack API comes with some strict [rate limits](https://api.slack.com/docs/rate-limits) that mean syncing messages from channels with a long history can take a long time. We are going to continue expanding the Slack source plugin, adding support for more resources. If you are interested in a specific Slack resource, feel free to raise an [issue on GitHub](https://github.com/cloudquery/cloudquery/issues). Or if you need some help to get started, join us over on [Discord](https://www.cloudquery.io/discord), we'd love to help.
+The Slack API comes with some strict [rate limits](https://api.slack.com/docs/rate-limits) that mean syncing messages from channels with a long history can take a long time. We are [thinking about ways to address this](https://github.com/cloudquery/cloudquery/issues/5809), please upvote or comment on the Github issue if you are interested!
+
+We are also going to continue expanding the Slack source plugin, adding support for more resources as they become available in the Slack API. If you are interested in a specific Slack resource, feel free to raise an [issue on GitHub](https://github.com/cloudquery/cloudquery/issues). Or if you need some help to get started, join us over on [Discord](https://www.cloudquery.io/discord), we'd love to help.
