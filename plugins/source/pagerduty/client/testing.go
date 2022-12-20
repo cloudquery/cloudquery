@@ -24,12 +24,12 @@ import (
 type MockHttpClient struct {
 	// A map from request path to response object()
 	// e.g. "/users" -> []User
-	mockResponses map[string]interface{}
+	mockResponses map[string]any
 }
 
-func (mockHttpClient *MockHttpClient) AddMockResponse(url string, object interface{}) {
+func (mockHttpClient *MockHttpClient) AddMockResponse(url string, object any) {
 	if mockHttpClient.mockResponses == nil {
-		mockHttpClient.mockResponses = make(map[string]interface{})
+		mockHttpClient.mockResponses = make(map[string]any)
 	}
 
 	mockHttpClient.mockResponses[url] = object
@@ -99,7 +99,7 @@ func (mockHttpClient *MockHttpClient) Do(req *http.Request) (*http.Response, err
 // Mostly copy-paste from the `plugin-sdk` faker.
 // Receives an interface that is a pointer to a struct, and only looks at fields one level deep.
 // Pionter-to-pointer structs are supported.
-func FakeStringTimestamps(ptrObj interface{}) error {
+func FakeStringTimestamps(ptrObj any) error {
 	timestampFieldNames := []string{
 		"CreateAt", "CreatedAt", "DeletedAt", "LastStatusChangeAt", "StartTime", "EndTime", "LastIncidentTimestamp",
 	}
