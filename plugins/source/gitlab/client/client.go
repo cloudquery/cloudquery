@@ -2,7 +2,6 @@ package client
 
 import (
 	"context"
-	"errors"
 	"fmt"
 
 	"github.com/cloudquery/cloudquery/plugins/source/gitlab/client/services"
@@ -41,10 +40,8 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (sche
 	if err := s.UnmarshalSpec(gitlabSpec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal gitlab spec: %w", err)
 	}
-
-	gitlabToken := gitlabSpec.Token
-	if gitlabToken == "" {
-		return nil, errors.New("missing GitLab API token in configuration file")
+	if err := gitlabSpec.Validate(); err != nil {
+		return nil, err
 	}
 
 	opts := []gitlab.ClientOptionFunc{}
@@ -52,7 +49,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (sche
 		opts = append(opts, gitlab.WithBaseURL(gitlabSpec.BaseURL))
 	}
 
-	c, err := gitlab.NewClient(gitlabToken, opts...)
+	c, err := gitlab.NewClient(gitlabSpec.Token, opts...)
 	if err != nil {
 		return nil, err
 	}
