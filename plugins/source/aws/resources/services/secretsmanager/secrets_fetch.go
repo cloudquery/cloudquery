@@ -11,7 +11,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchSecretsmanagerSecrets(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchSecretsmanagerSecrets(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Secretsmanager
 	cfg := secretsmanager.ListSecretsInput{}
@@ -63,7 +63,7 @@ func fetchSecretsmanagerSecretPolicy(ctx context.Context, meta schema.ClientMeta
 		return nil
 	}
 
-	v := map[string]interface{}{}
+	v := map[string]any{}
 	err = json.Unmarshal([]byte(*response.ResourcePolicy), &v)
 	if err != nil {
 		return err

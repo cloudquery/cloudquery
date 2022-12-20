@@ -15,7 +15,7 @@ type Route53HealthCheckWrapper struct {
 	Tags map[string]string
 }
 
-func fetchRoute53HealthChecks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchRoute53HealthChecks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config route53.ListHealthChecksInput
 	c := meta.(*client.Client)
 	svc := c.Services().Route53

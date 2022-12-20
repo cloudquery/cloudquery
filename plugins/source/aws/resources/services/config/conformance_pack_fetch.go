@@ -12,7 +12,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchConfigConformancePacks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchConfigConformancePacks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	config := configservice.DescribeConformancePacksInput{}
 	var ae smithy.APIError
@@ -36,7 +36,7 @@ func fetchConfigConformancePacks(ctx context.Context, meta schema.ClientMeta, pa
 	return nil
 }
 
-func fetchConfigConformancePackRuleCompliances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchConfigConformancePackRuleCompliances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	conformancePackDetail := parent.Item.(types.ConformancePackDetail)
 	c := meta.(*client.Client)
 	cs := c.Services().Configservice

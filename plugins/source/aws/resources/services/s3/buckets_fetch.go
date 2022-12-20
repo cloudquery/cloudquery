@@ -30,7 +30,7 @@ func listBucketRegion(cl *client.Client) string {
 	}
 }
 
-func fetchS3Buckets(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchS3Buckets(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().S3
 	response, err := svc.ListBuckets(ctx, nil, func(options *s3.Options) {
@@ -71,7 +71,7 @@ func fetchS3Buckets(ctx context.Context, meta schema.ClientMeta, _ *schema.Resou
 	return nil
 }
 
-func fetchS3BucketsWorker(ctx context.Context, meta schema.ClientMeta, buckets <-chan types.Bucket, errs chan<- error, res chan<- interface{}, wg *sync.WaitGroup) {
+func fetchS3BucketsWorker(ctx context.Context, meta schema.ClientMeta, buckets <-chan types.Bucket, errs chan<- error, res chan<- any, wg *sync.WaitGroup) {
 	defer wg.Done()
 	cl := meta.(*client.Client)
 	for bucket := range buckets {
@@ -133,7 +133,7 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, res
 	return resolveBucketOwnershipControls(ctx, meta, resource, resource.Region)
 }
 
-func fetchS3BucketGrants(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchS3BucketGrants(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(*models.WrappedBucket)
 	svc := meta.(*client.Client).Services().S3
 	region := parent.Get("region").(*schema.Text)
@@ -152,7 +152,7 @@ func fetchS3BucketGrants(ctx context.Context, meta schema.ClientMeta, parent *sc
 	res <- aclOutput.Grants
 	return nil
 }
-func fetchS3BucketCorsRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchS3BucketCorsRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(*models.WrappedBucket)
 	c := meta.(*client.Client)
 	svc := c.Services().S3
@@ -174,7 +174,7 @@ func fetchS3BucketCorsRules(ctx context.Context, meta schema.ClientMeta, parent 
 	}
 	return nil
 }
-func fetchS3BucketEncryptionRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchS3BucketEncryptionRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(*models.WrappedBucket)
 	c := meta.(*client.Client)
 	svc := c.Services().S3
@@ -195,7 +195,7 @@ func fetchS3BucketEncryptionRules(ctx context.Context, meta schema.ClientMeta, p
 	return nil
 }
 
-func fetchS3BucketLifecycles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchS3BucketLifecycles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(*models.WrappedBucket)
 	c := meta.(*client.Client)
 	svc := c.Services().S3
@@ -255,7 +255,7 @@ func resolveBucketPolicy(ctx context.Context, meta schema.ClientMeta, resource *
 	if policyOutput == nil || policyOutput.Policy == nil {
 		return nil
 	}
-	var p map[string]interface{}
+	var p map[string]any
 	err = json.Unmarshal([]byte(*policyOutput.Policy), &p)
 	if err != nil {
 		return fmt.Errorf("failed to unmarshal JSON policy: %v", err)
