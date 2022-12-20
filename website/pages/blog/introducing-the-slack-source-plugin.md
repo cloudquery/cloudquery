@@ -33,7 +33,7 @@ Let's look at a two use cases for the Slack plugin: one serious, one fun.
 It's important to make sure that your Slack workspace is secure and that you have visibility into who has access to your workspace. The Slack source plugin can help you with this task. With our data loaded into Postgres, we can start by writing a query to find out who has access to our workspace:
 
 ```sql
-select name, profile->>'email' as email from slack_users;
+select name, profile->>'email' as email from slack_users
 ```
 
 Now, let's filter this list down to users who don't have a company email address (in our case `@cloudquery.io`), and check whether these users are properly restricted:
@@ -49,7 +49,7 @@ select
  where
      not deleted
      and not is_bot
-     and not name = 'slackbot';
+     and not name = 'slackbot'
      and profile->>'email' not like '%cloudquery.io' 
 ```
 
@@ -66,7 +66,7 @@ where
     ou.id is null 
     and not su.is_bot 
     and not name = 'slackbot'
-    and not su.deleted;
+    and not su.deleted
 ```
 
 The output of the above query will show us all Slack users who don't have an active Okta account, and therefore shouldn't have access to our Slack workspace.
@@ -98,7 +98,7 @@ select
 from slack_conversation_histories h 
     join slack_conversation_replies r on h.ts = r.conversation_history_ts 
     join slack_users u on u.id = h.user 
-group by u.name order by count desc;
+group by u.name order by count desc
 ```
 
 We can even break this down by day, week, or month to graph how active users are over time:
