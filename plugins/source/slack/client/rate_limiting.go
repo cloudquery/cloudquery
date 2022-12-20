@@ -31,7 +31,6 @@ func (c *Client) RetryOnError(tableName string, f func() error) error {
 			c.logger.Info().Str("table", tableName).Msgf("Got retryable error (%v), retrying in %.2fs (%d/%d)", err, retryAfter.Seconds(), retries, c.maxRetries)
 			time.Sleep(retryAfter)
 		}
-		continue
 	}
 	return nil
 }
