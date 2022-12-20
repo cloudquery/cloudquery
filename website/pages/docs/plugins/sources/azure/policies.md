@@ -1,3 +1,11 @@
+import { Callout } from 'nextra-theme-docs'
+
+<Callout type="warning">
+
+The Azure policies are currently supported by the v1 version of the plugin. Please 👍 [this issue](https://github.com/cloudquery/cloudquery/issues/5830) if you'd like us to prioritize the v2 version.
+
+</Callout>
+
 # Policies and Compliance Frameworks
 
 Policies are a set of standard SQL queries that can be run to check the security and compliance of your cloud resources against best practice frameworks.
@@ -8,7 +16,7 @@ This page documents the available CloudQuery SQL Policies for Azure. See the [re
 ### Requirements
 Azure CIS v1.3.0 requires the following tables to be synced before the policy is executed:
 
-```
+```yaml
 tables:
   - azure_compute_disks
   - azure_compute_virtual_machines
@@ -87,7 +95,7 @@ Azure CIS v1.3.0 performs the following checks:
 ### Requirements
 Azure HIPAA HITRUST v9.2 requires the following tables to be synced before the policy is executed:
 
-```
+```yaml
 tables:
   - azure_authorization_role_assignments
   - azure_authorization_role_definitions
