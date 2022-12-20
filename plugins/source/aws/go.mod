@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/aws/aws-sdk-go-v2 v1.17.3
 	github.com/aws/aws-sdk-go-v2/config v1.18.6
-	github.com/aws/aws-sdk-go-v2/credentials v1.13.6
+	github.com/aws/aws-sdk-go-v2/credentials v1.13.7
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.45
 	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.18.2
 	github.com/aws/aws-sdk-go-v2/service/account v1.7.13
@@ -137,7 +137,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.21 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.13.21 // indirect
 	github.com/aws/aws-sdk-go-v2/service/shield v1.17.13
-	github.com/aws/aws-sdk-go-v2/service/sso v1.11.27 // indirect
+	github.com/aws/aws-sdk-go-v2/service/sso v1.11.28 // indirect
 	github.com/aws/aws-sdk-go-v2/service/transfer v1.25.2
 	github.com/aws/aws-sdk-go-v2/service/wafregional v1.12.22
 	github.com/davecgh/go-spew v1.1.1 // indirect
