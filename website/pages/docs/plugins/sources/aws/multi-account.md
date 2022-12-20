@@ -1,0 +1,149 @@
+# Multi Account Configuration Tutorial
+
+## AWS Organizations
+
+The plugin supports discovery of AWS Accounts via AWS Organizations. This means that as Accounts get added or removed from your organization, it will be able to handle new or removed accounts without any configuration changes.
+
+```yaml
+kind: source
+spec:
+  name: aws
+  registry: github
+  path: cloudquery/aws
+  version: "VERSION_SOURCE_AWS"
+  tables: ['*']
+  destinations: ["postgresql"]
+  spec:
+    aws_debug: false
+    org:
+      admin_account:
+        local_profile: "<NAMED_PROFILE>"
+      member_role_name: OrganizationAccountAccessRole
+    regions:
+      - '*'
+  ```
+
+Prerequisites for using AWS Org functionality:
+
+1. Have a role (or user) in an Admin account with the following access:
+
+  - `organizations:ListAccounts`
+  - `organizations:ListAccountsForParent`
+  - `organizations:ListChildren`
+
+2. Have a role in each member account that has a trust policy with a single principal. The default profile name is `OrganizationAccountAccessRole`. More information can be found [here](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html#orgs_manage_accounts_create-cross-account-role), including how to create the role if it doesn't already exist in your account.
+
+Configuring AWS Organization:
+
+1. It is always necessary to specify a member role name:
+
+   ```yaml copy
+       org:
+         member_role_name: OrganizationAccountAccessRole
+   ```
+
+2. Sourcing credentials that have the necessary `organizations` permissions can be done in any of the following ways:
+
+    1. Source credentials from the default credential tool chain:
+       ```yaml copy
+           org:
+             member_role_name: OrganizationAccountAccessRole
+       ```
+
+    2. Source credentials from a named profile in the shared configuration or credentials file
+       ```yaml copy
+           org:
+             member_role_name: OrganizationAccountAccessRole
+             admin_account:
+               local_profile: <Named-Profile>
+       ```
+
+    3. Assume a role in admin account using credentials in the shared configuration or credentials file:
+
+       ```yaml copy
+           org:
+             member_role_name: OrganizationAccountAccessRole
+             admin_account:
+               local_profile: <Named-Profile>
+               role_arn: arn:aws:iam::<ACCOUNT_ID>:role/<ROLE_NAME>
+               
+               # Optional. Specify the name of the session 
+               # role_session_name: ""
+   
+               # Optional. Specify the ExternalID if required for trust policy 
+               # external_id: ""
+       ```
+
+3. Optional. If the trust policy configured for the member accounts requires different credentials than you configured in the previous step, then you can specify the credentials to use in the `member_trusted_principal` block: 
+
+   ```yaml copy
+       org:
+         member_role_name: OrganizationAccountAccessRole
+         admin_account:
+           local_profile: <Named-Profile-Admin>
+         member_trusted_principal:
+           local_profile: <Named-Profile-Member>
+         organization_units:
+           - ou-<ID-1>
+           - ou-<ID-2>
+   ```
+
+4. Optional. If you want to specify specific Organizational Units to fetch from you can add them to the `organization_units` list. 
+
+   ```yaml copy
+       org:
+         member_role_name: OrganizationAccountAccessRole
+         admin_account:
+           local_profile: <Named-Profile-Admin>
+         organization_units:
+           - ou-<ID-1>
+           - ou-<ID-2>
+   ```
+
+import { Callout } from 'nextra-theme-docs'
+
+<Callout type="info">
+Note that if you specify an OU, CloudQuery will not traverse child OUs
+</Callout>
+
+### Arguments for Org block
+
+See [AWS org configuration](/docs/plugins/sources/aws/configuration#org) for more information on all the arguments in the `org` block.
+
+## Multi Account: Specific Accounts
+
+CloudQuery can fetch from multiple accounts in parallel by using AssumeRole (You will need to use credentials that can AssumeRole to all other specified accounts). Below is an example configuration:
+
+```yaml copy
+accounts:
+  - id: <AccountID_Alias_1>
+    role_arn: <YOUR_ROLE_ARN_1>
+    # Optional. Local Profile is the named profile in your shared configuration file (usually `~/.aws/config`) that you want to use for this specific account
+    local_profile: <NAMED_PROFILE>
+    # Optional. Specify the Role Session name
+    role_session_name: ""
+  - id: <AccountID_Alias_2>
+    local_profile: provider
+    # Optional. Role ARN we want to assume when accessing this account
+    role_arn: <YOUR_ROLE_ARN_2>
+```
+
+### Arguments for Accounts block
+
+See [AWS accounts configuration](/docs/plugins/sources/aws/configuration#accounts) for more information on all the arguments in the `accounts` block.
+
+### User Credentials with MFA
+
+In order to leverage IAM User credentials with MFA, the STS "get-session-token" command may be used with the IAM User's long-term security credentials (Access Key and Secret Access Key).  For more information, see [here](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sts/get-session-token.html).
+
+```bash
+aws sts get-session-token --serial-number <YOUR_MFA_SERIAL_NUMBER> --token-code <YOUR_MFA_TOKEN_CODE> --duration-seconds 3600
+```
+
+Then export the temporary credentials to your environment variables.
+
+```bash
+export AWS_ACCESS_KEY_ID=<YOUR_ACCESS_KEY_ID>
+export AWS_SECRET_ACCESS_KEY=<YOUR_SECRET_ACCESS_KEY>
+export AWS_SESSION_TOKEN=<YOUR_SESSION_TOKEN>
+```
