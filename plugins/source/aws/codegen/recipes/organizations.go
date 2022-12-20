@@ -30,6 +30,16 @@ func OrganizationsResources() []*Resource {
 					},
 				}...),
 		},
+		{
+			SubService:   "organizations",
+			Name:         "aws_organizations",
+			Struct:       &types.Organization{},
+			Description:  "https://docs.aws.amazon.com/organizations/latest/APIReference/API_Organization.html",
+			SkipFields:   []string{"AvailablePolicyTypes"}, // deprecated and misleading field according to docs
+			PKColumns:    []string{"account_id", "arn"},
+			Multiplex:    `client.AccountMultiplex`,
+			ExtraColumns: defaultAccountColumns,
+		},
 	}
 
 	for _, r := range resources {
