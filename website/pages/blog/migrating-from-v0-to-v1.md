@@ -95,13 +95,13 @@ Users of CloudQuery v0 would be familiar with the main commands `init` and `fetc
 
 The previous `init` command also generated a full list of tables to fetch. In v1, you can fetch all tables by using a wildcard entry:
 
-```
+```yaml
 tables: ["*"]
 ```
 
 in the source configuration file. This can also be combined with the `skip_tables` option to fetch all tables except some subset:
 
-```
+```yaml
 tables: ["*"]
 skip_tables: ["aws_accessanalyzer_analyzers", "aws_acm_certificates"]
 ```
