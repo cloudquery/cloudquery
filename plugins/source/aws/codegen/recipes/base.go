@@ -10,7 +10,6 @@ import (
 	"path"
 	"reflect"
 	"regexp"
-	"runtime"
 	"strings"
 	"text/template"
 
@@ -24,24 +23,7 @@ import (
 )
 
 type Resource struct {
-	// Name overrides the table name: used only in rare cases for backwards-compatibility.
-	Name                  string
-	Service               string
-	SubService            string
-	Struct                any
-	SkipFields            []string
-	Description           string
-	ExtraColumns          []codegen.ColumnDefinition
-	PKColumns             []string
-	Table                 *codegen.TableDefinition
-	Multiplex             string
-	PreResourceResolver   string
-	PostResourceResolver  string
-	Relations             []string
-	UnwrapEmbeddedStructs bool
-
-	// NameTransformer custom name transformer for resource
-	NameTransformer func(field reflect.StructField) (string, error)
+	codegen.TableDefinition
 
 	// Used for generating the resolver and mock tests.
 	// --------------------------------
@@ -63,7 +45,6 @@ type Resource struct {
 }
 
 //go:embed templates/resolver_and_mock_test/*/*.go.tpl
-//go:embed templates/*.go.tpl
 var templatesFS embed.FS
 
 var defaultAccountColumns = []codegen.ColumnDefinition{
@@ -130,71 +111,21 @@ func awsResolverTransformer(f reflect.StructField, path string) (string, error) 
 	return codegen.DefaultResolverTransformer(f, path)
 }
 
-func (r *Resource) Generate() error {
-	_, filename, _, ok := runtime.Caller(0)
-	if !ok {
-		return fmt.Errorf("failed to get caller information")
-	}
+func (r *Resource) SetResourceDefaults() {
+	r.PluginName = "aws"
 
-	dir := path.Dir(filename)
-	dir = path.Join(dir, "../../resources/services", r.Service)
+	if r.NameTransformer == nil {
+		r.NameTransformer = awsNameTransformer
+	}
+	if r.ResolverTransformer == nil {
+		r.ResolverTransformer = awsResolverTransformer
+	}
+}
+
+func (r *Resource) GenerateResolverAndMockTest(dir string) error {
+	dir = path.Join(dir, r.Service)
 	if err := os.MkdirAll(dir, os.ModePerm); err != nil {
 		return fmt.Errorf("failed to create directory %s: %w", dir, err)
-	}
-
-	var err error
-	opts := []codegen.TableOption{
-		codegen.WithSkipFields(r.SkipFields),
-		codegen.WithExtraColumns(r.ExtraColumns),
-		codegen.WithPKColumns(r.PKColumns...),
-		codegen.WithNameTransformer(awsNameTransformer),
-		codegen.WithResolverTransformer(awsResolverTransformer),
-	}
-	if r.UnwrapEmbeddedStructs {
-		opts = append(opts, codegen.WithUnwrapAllEmbeddedStructs())
-	}
-	if r.NameTransformer != nil {
-		opts = append(opts, codegen.WithNameTransformer(r.NameTransformer))
-	}
-	name := fmt.Sprintf("aws_%s_%s", r.Service, r.SubService)
-	if r.Name != "" {
-		name = r.Name
-	}
-
-	// All table names must be plural
-	if !strings.HasSuffix(name, "s") {
-		return fmt.Errorf("invalid table name: %s. must be plural", name)
-	}
-
-	r.Table, err = codegen.NewTableFromStruct(
-		name,
-		r.Struct,
-		opts...,
-	)
-	if err != nil {
-		return fmt.Errorf("error generating %s: %w", name, err)
-	}
-	r.Table.Description = r.Description
-	r.Table.Resolver = "fetch" + strcase.ToCamel(r.Service) + strcase.ToCamel(r.SubService)
-	if r.Multiplex != "" {
-		r.Table.Multiplex = r.Multiplex
-		err = validateServiceMultiplex(r.Multiplex)
-		if err != nil {
-			return err
-		}
-	}
-	if r.PreResourceResolver != "" {
-		r.Table.PreResourceResolver = r.PreResourceResolver
-	}
-	if r.PostResourceResolver != "" {
-		r.Table.PostResourceResolver = r.PostResourceResolver
-	}
-	if r.Relations != nil {
-		r.Table.Relations = r.Relations
-	}
-
-	if err := r.generateSchema(dir); err != nil {
-		return err
 	}
 
 	if r.ShouldGenerateResolverAndMockTest {
@@ -204,39 +135,6 @@ func (r *Resource) Generate() error {
 		if err := r.generateMockTest(dir); err != nil {
 			return err
 		}
-	}
-
-	return nil
-}
-
-func (r *Resource) generateSchema(dir string) error {
-	tpl, err := template.New("resource.go.tpl").Funcs(template.FuncMap{
-		"ToCamel": strcase.ToCamel,
-		"ToLower": strings.ToLower,
-	}).ParseFS(templatesFS, "templates/resource.go.tpl")
-	if err != nil {
-		return fmt.Errorf("failed to parse templates: %w", err)
-	}
-	tpl, err = tpl.ParseFS(codegen.TemplatesFS, "templates/*.go.tpl")
-	if err != nil {
-		return fmt.Errorf("failed to parse sdk template: %w", err)
-	}
-
-	var buff bytes.Buffer
-	if err := tpl.Execute(&buff, r); err != nil {
-		return fmt.Errorf("failed to execute template: %w", err)
-	}
-
-	filePath := path.Join(dir, r.SubService+".go")
-	content := buff.Bytes()
-	formattedContent, err := format.Source(buff.Bytes())
-	if err != nil {
-		fmt.Printf("failed to format source: %s: %v\n", filePath, err)
-	} else {
-		content = formattedContent
-	}
-	if err := os.WriteFile(filePath, content, 0644); err != nil {
-		return fmt.Errorf("failed to write file %s: %w", filePath, err)
 	}
 
 	return nil
@@ -321,6 +219,31 @@ func SetParentChildRelationships(resources []*Resource) error {
 			r.children = append(r.children, v)
 			v.parent = r
 		}
+	}
+	return nil
+}
+
+func (resource *Resource) ValidateServiceMultiplex() error {
+	multiplexerCall := resource.Multiplex
+	re := regexp.MustCompile(`\"(.*?)\"`)
+	// Find the value of the service parameter
+	submatchAll := re.FindStringSubmatch(multiplexerCall)
+	if len(submatchAll) != 2 {
+		return nil
+	}
+
+	t := client.ReadSupportedServiceRegions()
+	services := make(map[string]bool)
+
+	for _, partition := range t.Partitions {
+		for service := range partition.Services {
+			if _, ok := services[service]; !ok {
+				services[service] = true
+			}
+		}
+	}
+	if _, ok := services[submatchAll[1]]; !ok {
+		return fmt.Errorf("invalid partition: %s", submatchAll[1])
 	}
 	return nil
 }
@@ -423,28 +346,4 @@ func CreateReplaceTransformer(replace map[string]string) func(field reflect.Stru
 		}
 		return name, nil
 	}
-}
-
-func validateServiceMultiplex(multiplexerCall string) error {
-	re := regexp.MustCompile(`\"(.*?)\"`)
-	// Find the value of the service parameter
-	submatchAll := re.FindStringSubmatch(multiplexerCall)
-	if len(submatchAll) != 2 {
-		return nil
-	}
-
-	t := client.ReadSupportedServiceRegions()
-	services := make(map[string]bool)
-
-	for _, partition := range t.Partitions {
-		for service := range partition.Services {
-			if _, ok := services[service]; !ok {
-				services[service] = true
-			}
-		}
-	}
-	if _, ok := services[submatchAll[1]]; !ok {
-		return fmt.Errorf("invalid partition: %s", submatchAll[1])
-	}
-	return nil
 }

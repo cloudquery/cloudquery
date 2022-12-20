@@ -3,11 +3,13 @@ package main
 import (
 	"fmt"
 	"log"
+	"path"
+	"runtime"
+	"sync"
 
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/recipes"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/services"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/tables"
-	"golang.org/x/sync/errgroup"
 )
 
 func generateResources() ([]*recipes.Resource, error) {
@@ -106,12 +108,42 @@ func generateResources() ([]*recipes.Resource, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to set parent-child relationships: %w", err)
 	}
-	grp := new(errgroup.Group)
-	for _, resource := range resources {
-		grp.Go(resource.Generate)
+	grp := new(sync.WaitGroup)
+
+	resourceDir, err := resourceDirectory()
+	if err != nil {
+		return nil, err
 	}
 
-	return resources, grp.Wait()
+	for _, resource := range resources {
+		resource.SetResourceDefaults()
+		if err := resource.ValidateServiceMultiplex(); err != nil {
+			return nil, err
+		}
+
+		grp.Add(2)
+
+		// Needed because https://eli.thegreenplace.net/2019/go-internals-capturing-loop-variables-in-closures/
+		go func(resource *recipes.Resource) {
+			defer grp.Done()
+			err := resource.GenerateSchema(resourceDir)
+			if err != nil {
+				log.Fatal(err)
+			}
+		}(resource)
+
+		go func(resource *recipes.Resource) {
+			defer grp.Done()
+			err := resource.GenerateResolverAndMockTest(resourceDir)
+			if err != nil {
+				log.Fatal(err)
+			}
+		}(resource)
+	}
+
+	grp.Wait()
+
+	return resources, nil
 }
 
 func main() {
@@ -129,4 +161,14 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+func resourceDirectory() (string, error) {
+	_, filename, _, ok := runtime.Caller(0)
+	if !ok {
+		return "", fmt.Errorf("failed to get caller information")
+	}
+
+	dir := path.Dir(filename)
+	return path.Join(dir, "../resources/services"), nil
 }
