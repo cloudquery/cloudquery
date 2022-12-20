@@ -4,9 +4,8 @@ https://docs.aws.amazon.com/organizations/latest/APIReference/API_Organization.h
 
 The composite primary key for this table is (**account_id**, **arn**).
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
