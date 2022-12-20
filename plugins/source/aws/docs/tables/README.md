@@ -8,6 +8,8 @@
 - [aws_account_alternate_contacts](aws_account_alternate_contacts.md)
 - [aws_account_contacts](aws_account_contacts.md)
 - [aws_acm_certificates](aws_acm_certificates.md)
+- [aws_amp_workspaces](aws_amp_workspaces.md)
+  - [aws_amp_rule_groups_namespaces](aws_amp_rule_groups_namespaces.md)
 - [aws_apigateway_api_keys](aws_apigateway_api_keys.md)
 - [aws_apigateway_client_certificates](aws_apigateway_client_certificates.md)
 - [aws_apigateway_domain_names](aws_apigateway_domain_names.md)
