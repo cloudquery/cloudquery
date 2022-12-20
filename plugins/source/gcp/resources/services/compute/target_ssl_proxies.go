@@ -18,7 +18,7 @@ func TargetSslProxies() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_compute_target_ssl_proxies",
 		Resolver:  fetchTargetSslProxies,
-		Multiplex: client.ProjectMultiplex("compute.googleapis.com"),
+		Multiplex: client.ProjectMultiplexEnabledServices("compute.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

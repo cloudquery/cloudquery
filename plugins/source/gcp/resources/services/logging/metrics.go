@@ -19,7 +19,7 @@ func Metrics() *schema.Table {
 		Name:        "gcp_logging_metrics",
 		Description: `https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.metrics#LogMetric`,
 		Resolver:    fetchMetrics,
-		Multiplex:   client.ProjectMultiplex("logging.googleapis.com"),
+		Multiplex:   client.ProjectMultiplexEnabledServices("logging.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

@@ -19,7 +19,7 @@ func Instances() *schema.Table {
 		Name:        "gcp_compute_instances",
 		Description: `https://cloud.google.com/compute/docs/reference/rest/v1/instances#Instance`,
 		Resolver:    fetchInstances,
-		Multiplex:   client.ProjectMultiplex("compute.googleapis.com"),
+		Multiplex:   client.ProjectMultiplexEnabledServices("compute.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

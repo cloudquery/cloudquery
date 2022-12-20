@@ -4,7 +4,17 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func ProjectMultiplex(enabledService string) func(schema.ClientMeta) []schema.ClientMeta {
+func ProjectMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
+	client := meta.(*Client)
+
+	l := make([]schema.ClientMeta, len(client.projects))
+	for i, projectId := range client.projects {
+		l[i] = client.withProject(projectId)
+	}
+	return l
+}
+
+func ProjectMultiplexEnabledServices(enabledService string) func(schema.ClientMeta) []schema.ClientMeta {
 	if _, ok := GcpServices[enabledService]; !ok {
 		panic("unknown service: " + enabledService)
 	}

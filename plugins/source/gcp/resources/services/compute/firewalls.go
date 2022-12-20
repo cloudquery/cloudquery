@@ -18,7 +18,7 @@ func Firewalls() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_compute_firewalls",
 		Resolver:  fetchFirewalls,
-		Multiplex: client.ProjectMultiplex("compute.googleapis.com"),
+		Multiplex: client.ProjectMultiplexEnabledServices("compute.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

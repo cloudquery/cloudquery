@@ -172,7 +172,7 @@ func generateResource(r recipes.Resource, mock bool) {
 		if _, ok := client.GcpServices[r.ServiceDNS]; !ok {
 			panic("unknown service DNS: " + r.ServiceDNS)
 		}
-		r.Table.Multiplex = "client.ProjectMultiplex(\"" + r.ServiceDNS + "\")"
+		r.Table.Multiplex = "client.ProjectMultiplexEnabledServices(\"" + r.ServiceDNS + "\")"
 	} else {
 		r.Table.Multiplex = *r.Multiplex
 	}

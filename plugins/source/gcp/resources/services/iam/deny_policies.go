@@ -12,7 +12,7 @@ func DenyPolicies() *schema.Table {
 		Name:        "gcp_iam_deny_policies",
 		Description: `https://cloud.google.com/iam/docs/reference/rest/v2beta/policies#Policy`,
 		Resolver:    fetchDenyPolicies,
-		Multiplex:   client.ProjectMultiplex,
+		Multiplex:   client.ProjectMultiplexEnabledServices("iam.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

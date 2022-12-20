@@ -5,6 +5,8 @@ import (
 	pb "cloud.google.com/go/billing/apiv1/billingpb"
 )
 
+var ProjectMultiplex = "client.ProjectMultiplex"
+
 func init() {
 	resources := []*Resource{
 		{
@@ -30,6 +32,7 @@ func init() {
 			UnimplementedServer: &pb.UnimplementedCloudCatalogServer{},
 			PrimaryKeys:         []string{"name"},
 			Description:         "https://cloud.google.com/billing/docs/reference/rest/v1/services/list#Service",
+			Multiplex:           &ProjectMultiplex,
 		},
 	}
 

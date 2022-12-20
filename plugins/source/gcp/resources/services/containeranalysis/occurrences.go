@@ -19,7 +19,7 @@ func Occurrences() *schema.Table {
 		Name:        "gcp_containeranalysis_occurrences",
 		Description: `https://cloud.google.com/container-analysis/docs/reference/rest/v1beta1/projects.occurrences#Occurrence`,
 		Resolver:    fetchOccurrences,
-		Multiplex:   client.ProjectMultiplex("containeranalysis.googleapis.com"),
+		Multiplex:   client.ProjectMultiplexEnabledServices("containeranalysis.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

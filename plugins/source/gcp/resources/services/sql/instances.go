@@ -12,7 +12,7 @@ func Instances() *schema.Table {
 		Name:        "gcp_sql_instances",
 		Description: `https://cloud.google.com/sql/docs/mysql/admin-api/rest/v1beta4/instances#DatabaseInstance`,
 		Resolver:    fetchInstances,
-		Multiplex:   client.ProjectMultiplex("sqladmin.googleapis.com"),
+		Multiplex:   client.ProjectMultiplexEnabledServices("sqladmin.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

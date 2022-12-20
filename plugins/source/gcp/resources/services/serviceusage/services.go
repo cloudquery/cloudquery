@@ -12,7 +12,7 @@ func Services() *schema.Table {
 		Name:        "gcp_serviceusage_services",
 		Description: `https://cloud.google.com/service-usage/docs/reference/rest/v1/services#Service`,
 		Resolver:    fetchServices,
-		Multiplex:   client.ProjectMultiplex("serviceusage.googleapis.com"),
+		Multiplex:   client.ProjectMultiplexEnabledServices("serviceusage.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

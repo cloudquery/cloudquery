@@ -12,7 +12,7 @@ func Policies() *schema.Table {
 		Name:        "gcp_dns_policies",
 		Description: `https://cloud.google.com/dns/docs/reference/v1/policies#resource`,
 		Resolver:    fetchPolicies,
-		Multiplex:   client.ProjectMultiplex("dns.googleapis.com"),
+		Multiplex:   client.ProjectMultiplexEnabledServices("dns.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

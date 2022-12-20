@@ -19,7 +19,7 @@ func ForwardingRules() *schema.Table {
 		Name:        "gcp_compute_forwarding_rules",
 		Description: `https://cloud.google.com/compute/docs/reference/rest/v1/forwardingRules#ForwardingRule`,
 		Resolver:    fetchForwardingRules,
-		Multiplex:   client.ProjectMultiplex("compute.googleapis.com"),
+		Multiplex:   client.ProjectMultiplexEnabledServices("compute.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
