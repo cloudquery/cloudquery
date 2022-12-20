@@ -9,7 +9,7 @@ import (
 	"github.com/okta/okta-sdk-golang/v3/okta"
 )
 
-func fetchGroupUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchGroupUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	grp := parent.Item.(okta.Group)
 
