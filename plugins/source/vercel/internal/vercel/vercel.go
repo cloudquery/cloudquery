@@ -43,7 +43,7 @@ func (v *Client) WithTeamID(teamID string) *Client {
 	return &vv
 }
 
-func (v *Client) Request(ctx context.Context, path string, until *int64, fill interface{}) error {
+func (v *Client) Request(ctx context.Context, path string, until *int64, fill any) error {
 	body, err := v.request(ctx, path, until)
 	if err != nil {
 		return err
