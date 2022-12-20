@@ -12,7 +12,9 @@ import (
 func fetchElasticsearchDomains(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	svc := meta.(*client.Client).Services().Elasticsearchservice
 
-	out, err := svc.DescribeElasticsearchDomains(ctx, nil)
+	out, err := svc.DescribeElasticsearchDomains(ctx,
+		&elasticsearchservice.DescribeElasticsearchDomainsInput{DomainNames: []string{}},
+	)
 	if err != nil {
 		return err
 	}

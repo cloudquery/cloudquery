@@ -32,6 +32,10 @@ func fetchElasticsearchVpcEndpoints(ctx context.Context, meta schema.ClientMeta,
 		listInput.NextToken = out.NextToken
 	}
 
+	if len(vpcEndpointIDs) == 0 {
+		return nil
+	}
+
 	return describeVPCEndpoints(ctx, svc, res, vpcEndpointIDs)
 }
 
