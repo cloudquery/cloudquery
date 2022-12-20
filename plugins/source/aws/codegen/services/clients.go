@@ -40,6 +40,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing"
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2"
 	"github.com/aws/aws-sdk-go-v2/service/elasticsearchservice"
+	"github.com/aws/aws-sdk-go-v2/service/elastictranscoder"
 	"github.com/aws/aws-sdk-go-v2/service/emr"
 	"github.com/aws/aws-sdk-go-v2/service/eventbridge"
 	"github.com/aws/aws-sdk-go-v2/service/firehose"
@@ -78,6 +79,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalog"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry"
 	"github.com/aws/aws-sdk-go-v2/service/servicequotas"
+	"github.com/aws/aws-sdk-go-v2/service/ses"
 	"github.com/aws/aws-sdk-go-v2/service/sesv2"
 	"github.com/aws/aws-sdk-go-v2/service/sfn"
 	"github.com/aws/aws-sdk-go-v2/service/shield"
@@ -134,6 +136,7 @@ var clients = []interface{}{
 	&elasticloadbalancing.Client{},
 	&elasticloadbalancingv2.Client{},
 	&elasticsearchservice.Client{},
+	&elastictranscoder.Client{},
 	&emr.Client{},
 	&eventbridge.Client{},
 	&firehose.Client{},
@@ -172,6 +175,7 @@ var clients = []interface{}{
 	&servicecatalog.Client{},
 	&servicecatalogappregistry.Client{},
 	&servicequotas.Client{},
+	&ses.Client{},
 	&sesv2.Client{},
 	&sfn.Client{},
 	&shield.Client{},

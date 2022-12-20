@@ -4,9 +4,8 @@ https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_PatchBaselin
 
 The composite primary key for this table is (**account_id**, **region**, **baseline_id**).
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

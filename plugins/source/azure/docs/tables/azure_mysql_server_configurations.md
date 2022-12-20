@@ -1,14 +1,13 @@
 # Table: azure_mysql_server_configurations
 
-
-
 The primary key for this table is **id**.
 
 ## Relations
+
 This table depends on [azure_mysql_servers](azure_mysql_servers.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

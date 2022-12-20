@@ -1,5 +1,7 @@
 # Source Plugin: github
+
 ## Tables
+
 - [github_workflows](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_workflows.md)
 - [github_billing_action](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_billing_action.md)
 - [github_billing_storage](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_billing_storage.md)

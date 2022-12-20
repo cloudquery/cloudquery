@@ -4,9 +4,8 @@ https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ReservedInstances.htm
 
 The primary key for this table is **arn**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

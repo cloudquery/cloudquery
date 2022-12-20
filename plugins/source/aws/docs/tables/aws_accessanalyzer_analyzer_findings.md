@@ -5,10 +5,11 @@ https://docs.aws.amazon.com/access-analyzer/latest/APIReference/API_FindingSumma
 The primary key for this table is **arn**.
 
 ## Relations
+
 This table depends on [aws_accessanalyzer_analyzers](aws_accessanalyzer_analyzers.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

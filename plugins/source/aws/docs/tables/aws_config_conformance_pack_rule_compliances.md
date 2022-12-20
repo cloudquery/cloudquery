@@ -1,14 +1,13 @@
 # Table: aws_config_conformance_pack_rule_compliances
 
-
-
 The primary key for this table is **_cq_id**.
 
 ## Relations
+
 This table depends on [aws_config_conformance_packs](aws_config_conformance_packs.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

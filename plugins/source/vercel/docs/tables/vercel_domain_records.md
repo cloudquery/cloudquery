@@ -1,14 +1,13 @@
 # Table: vercel_domain_records
 
-
-
 The composite primary key for this table is (**domain_name**, **id**).
 
 ## Relations
+
 This table depends on [vercel_domains](vercel_domains.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

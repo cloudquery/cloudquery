@@ -4,9 +4,8 @@ https://docs.aws.amazon.com/apigateway/latest/api/API_VpcLink.html
 
 The primary key for this table is **_cq_id**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

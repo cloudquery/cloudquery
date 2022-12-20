@@ -1,12 +1,9 @@
 # Table: azure_containerservice_managed_clusters
 
-
-
 The primary key for this table is **id**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

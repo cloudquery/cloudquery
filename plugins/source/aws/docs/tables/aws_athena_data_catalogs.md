@@ -10,6 +10,7 @@ The following tables depend on aws_athena_data_catalogs:
   - [aws_athena_data_catalog_databases](aws_athena_data_catalog_databases.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

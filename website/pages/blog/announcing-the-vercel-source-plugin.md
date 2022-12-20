@@ -33,7 +33,7 @@ select name, expires_at, date_trunc('day', expires_at - current_timestamp) as da
 
 This query would output a table of domain names that are going to expire within the next 90 days:
 
-```
+```bash
       name      |   expires_at         | days_left
 ----------------+----------------------+-----------
  yourdomain.co  | 2023-01-28T08:09:41Z | 44 days
@@ -54,7 +54,7 @@ select t.name AS team, u.username, u.name, u.role from vercel_teams t join verce
 
 This will return list of users per team and their role:
 
-```
+```bash
    name   |   username   | name         |  role
 ------------+--------------+------------+--------
  yourteam | user1        | User Name    | MEMBER

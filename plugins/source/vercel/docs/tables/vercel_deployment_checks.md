@@ -1,14 +1,13 @@
 # Table: vercel_deployment_checks
 
-
-
 The composite primary key for this table is (**deployment_id**, **id**).
 
 ## Relations
+
 This table depends on [vercel_deployments](vercel_deployments.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

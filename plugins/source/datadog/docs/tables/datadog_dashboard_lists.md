@@ -1,12 +1,9 @@
 # Table: datadog_dashboard_lists
 
-
-
 The composite primary key for this table is (**account_name**, **id**).
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

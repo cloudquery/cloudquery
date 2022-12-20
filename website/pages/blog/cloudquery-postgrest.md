@@ -42,7 +42,7 @@ Full full details, checkout [PostgREST](https://postgrest.org/en/stable/tutorial
 
 To run it locally, all you need is the following `cq.conf` file as input for PostgREST (adjust the PG URL accordingly):
 
-```
+```ini
 db-uri = "postgres://postgres:pass@localhost:5432/postgres"
 db-schemas = "public"
 db-anon-role = "postgres"

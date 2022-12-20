@@ -4,9 +4,8 @@ https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.alertPolicies#Al
 
 The primary key for this table is **name**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

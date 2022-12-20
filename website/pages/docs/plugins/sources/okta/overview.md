@@ -37,3 +37,56 @@ spec:
 
 - `domain` (Required) - Specify the Okta domain you are fetching from. [Visit this link](https://developer.okta.com/docs/guides/find-your-domain/findorg/) to find your Okta domain
 - `token` (Optional) - Okta Token to access the API. You can set this with an `OKTA_API_TOKEN` environment variable
+
+## Example Queries
+
+### List all users in Okta
+
+```sql
+select 
+  id,
+  profile->>'firstName' as first_name,
+  profile->>'lastName' as last_name,
+  profile->>'email' as email,
+  status
+from okta_users;
+```
+
+### List all active users
+
+```sql
+select
+  id,
+  profile->>'firstName' as first_name,
+  profile->>'lastName' as last_name,
+  profile->>'email' as email,
+  status from okta_users
+where
+  status = 'ACTIVE';
+```
+
+### List active Okta applications
+
+```sql
+select
+  id,
+  name
+from
+  okta_applications
+where status = 'ACTIVE';
+```
+
+### List active Okta applications, ordered by number of users
+
+```sql
+select 
+  a.id,
+  a.name,
+  a.status,
+  count(u) 
+from okta_applications a 
+  left join okta_application_users u 
+    on u.app_id = a.id 
+group by a.id, a.name
+order by count desc;
+```

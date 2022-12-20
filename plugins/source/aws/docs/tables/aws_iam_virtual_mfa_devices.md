@@ -4,9 +4,8 @@ https://docs.aws.amazon.com/IAM/latest/APIReference/API_VirtualMFADevice.html
 
 The primary key for this table is **serial_number**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

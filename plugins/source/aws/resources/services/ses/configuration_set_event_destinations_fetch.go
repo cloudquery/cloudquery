@@ -14,12 +14,16 @@ func fetchSesConfigurationSetEventDestinations(ctx context.Context, meta schema.
 
 	s := parent.Item.(*sesv2.GetConfigurationSetOutput)
 
-	output, err := svc.GetConfigurationSetEventDestinations(ctx, &sesv2.GetConfigurationSetEventDestinationsInput{
-		ConfigurationSetName: s.ConfigurationSetName,
-	})
+	output, err := svc.GetConfigurationSetEventDestinations(ctx,
+		&sesv2.GetConfigurationSetEventDestinationsInput{
+			ConfigurationSetName: s.ConfigurationSetName,
+		},
+	)
 	if err != nil {
 		return err
 	}
+
 	res <- output.EventDestinations
+
 	return nil
 }

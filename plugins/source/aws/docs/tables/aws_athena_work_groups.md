@@ -12,6 +12,7 @@ The following tables depend on aws_athena_work_groups:
   - [aws_athena_work_group_named_queries](aws_athena_work_group_named_queries.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

@@ -1,12 +1,9 @@
 # Table: digitalocean_droplet_neighbors
 
-
-
 The primary key for this table is **neighbor_id**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

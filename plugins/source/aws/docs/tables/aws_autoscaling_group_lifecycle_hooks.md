@@ -5,10 +5,11 @@ https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_LifecycleHook.html
 The primary key for this table is **_cq_id**.
 
 ## Relations
+
 This table depends on [aws_autoscaling_groups](aws_autoscaling_groups.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

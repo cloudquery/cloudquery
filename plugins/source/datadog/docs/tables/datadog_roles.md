@@ -1,7 +1,5 @@
 # Table: datadog_roles
 
-
-
 The composite primary key for this table is (**account_name**, **id**).
 
 ## Relations
@@ -11,6 +9,7 @@ The following tables depend on datadog_roles:
   - [datadog_role_users](datadog_role_users.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

@@ -10,6 +10,7 @@ The following tables depend on aws_route53_traffic_policies:
   - [aws_route53_traffic_policy_versions](aws_route53_traffic_policy_versions.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

@@ -1,5 +1,7 @@
 # Source Plugin: datadog
+
 ## Tables
+
 - [datadog_dashboard_lists](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/datadog/docs/tables/datadog_dashboard_lists.md)
 - [datadog_dashboards](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/datadog/docs/tables/datadog_dashboards.md)
 - [datadog_downtimes](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/datadog/docs/tables/datadog_downtimes.md)

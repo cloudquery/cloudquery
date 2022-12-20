@@ -11,33 +11,15 @@ func ElasticsearchResources() []*Resource {
 		{
 			SubService:          "domains",
 			Struct:              &types.ElasticsearchDomainStatus{},
-			SkipFields:          []string{"DomainId"},
 			PreResourceResolver: "getDomain",
-			ExtraColumns: []codegen.ColumnDefinition{
-				{
-					Name:     "account_id",
-					Type:     schema.TypeString,
-					Resolver: `client.ResolveAWSAccount`,
-					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-				},
-				{
-					Name:     "region",
-					Type:     schema.TypeString,
-					Resolver: `client.ResolveAWSRegion`,
-					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-				},
-				{
+			PKColumns:           []string{"arn"},
+			ExtraColumns: append(defaultRegionalColumns,
+				codegen.ColumnDefinition{
 					Name:     "tags",
 					Type:     schema.TypeJSON,
-					Resolver: `resolveElasticsearchDomainTags`,
+					Resolver: `resolveTags`,
 				},
-				{
-					Name:     "id",
-					Type:     schema.TypeString,
-					Resolver: `schema.PathResolver("DomainId")`,
-					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-				},
-			},
+			),
 		},
 	}
 

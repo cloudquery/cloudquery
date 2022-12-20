@@ -5,10 +5,11 @@ https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_EventDestination.html
 The composite primary key for this table is (**account_id**, **region**, **configuration_set_name**, **name**).
 
 ## Relations
+
 This table depends on [aws_ses_configuration_sets](aws_ses_configuration_sets.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -18,8 +19,8 @@ This table depends on [aws_ses_configuration_sets](aws_ses_configuration_sets.md
 |account_id (PK)|String|
 |region (PK)|String|
 |configuration_set_name (PK)|String|
-|name (PK)|String|
 |matching_event_types|StringArray|
+|name (PK)|String|
 |cloud_watch_destination|JSON|
 |enabled|Bool|
 |kinesis_firehose_destination|JSON|
