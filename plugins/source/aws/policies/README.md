@@ -25,7 +25,7 @@ This will create all the results in `aws_policy_results` table which you can que
 
 You can also output it into CSV or HTML with the following built-in `psql` commands:
 
-```
+```bash
 # Set DSN to your PostgreSQL populated by CloudQuery
 export DSN=postgres://postgres:pass@localhost:5432/postgres
 # default tabular output
