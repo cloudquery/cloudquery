@@ -140,6 +140,10 @@
     {
       "source": "/docs/core-concepts/migrations",
       "destination": "/docs/advanced-topics/migrations"
+    },
+    {
+      "source": "/docs/plugins/sources/aws/multi_account",
+      "destination": "/docs/plugins/sources/aws/multi-account"
     }
   ]
 }
