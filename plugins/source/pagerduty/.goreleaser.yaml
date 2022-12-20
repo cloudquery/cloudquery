@@ -1,0 +1,14 @@
+variables:
+  component: source/pagerduty
+  binary: pagerduty
+
+project_name: plugins/source/pagerduty
+
+monorepo:
+  tag_prefix: plugins-source-pagerduty-
+  dir: plugins/source/pagerduty
+
+includes:
+  - from_file:
+      # Relative to the directory Go Releaser is run from (which is the root of the repository)
+      path: ./plugins/.goreleaser.yaml
