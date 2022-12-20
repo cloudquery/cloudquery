@@ -25,7 +25,7 @@ func getRegion(regionalMap map[string]*Services) string {
 }
 
 func AccountMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
-	var l = make([]schema.ClientMeta, 0)
+	l := make([]schema.ClientMeta, 0)
 	client := meta.(*Client)
 	for partition := range client.ServicesManager.services {
 		for accountID := range client.ServicesManager.services[partition] {
