@@ -8,7 +8,7 @@ This page documents the available CloudQuery SQL Policies for GCP. See the [read
 ### Requirements
 GCP CIS v1.2.0 requires the following tables to be synced before the policy is executed:
 
-```
+```yaml
 tables:
   - gcp_bigquery_dataset_accesses
   - gcp_bigquery_dataset_tables
