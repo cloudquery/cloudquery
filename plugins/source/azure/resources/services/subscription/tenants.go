@@ -31,7 +31,7 @@ func Tenants() *schema.Table {
 	}
 }
 
-func fetchTenants(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchTenants(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armsubscription.NewTenantsClient(cl.Creds, cl.Options)
 	if err != nil {

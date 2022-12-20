@@ -10,7 +10,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchCognitoUserPools(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchCognitoUserPools(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Cognitoidentityprovider
 	params := cognitoidentityprovider.ListUserPoolsInput{
@@ -46,7 +46,7 @@ func getUserPool(ctx context.Context, meta schema.ClientMeta, resource *schema.R
 	return nil
 }
 
-func fetchCognitoUserPoolIdentityProviders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchCognitoUserPoolIdentityProviders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	pool := parent.Item.(*types.UserPoolType)
 	c := meta.(*client.Client)
 	svc := c.Services().Cognitoidentityprovider

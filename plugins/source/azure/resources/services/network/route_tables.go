@@ -61,7 +61,7 @@ func RouteTables() *schema.Table {
 	}
 }
 
-func fetchRouteTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchRouteTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armnetwork.NewRouteTablesClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

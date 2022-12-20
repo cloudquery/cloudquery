@@ -44,7 +44,7 @@ func getSsoadminPermissionSet(ctx context.Context, meta schema.ClientMeta, resou
 	return nil
 }
 
-func fetchSsoadminPermissionSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchSsoadminPermissionSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Ssoadmin
 	instance_arn := parent.Item.(types.InstanceMetadata).InstanceArn

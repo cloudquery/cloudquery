@@ -61,7 +61,7 @@ func VirtualNetworkTaps() *schema.Table {
 	}
 }
 
-func fetchVirtualNetworkTaps(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchVirtualNetworkTaps(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armnetwork.NewVirtualNetworkTapsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

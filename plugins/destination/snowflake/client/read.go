@@ -12,8 +12,8 @@ const (
 	readSQL = "SELECT * FROM %s WHERE \"_cq_source_name\" = ?"
 )
 
-func (*Client) createResultsArray(table *schema.Table) []interface{} {
-	results := make([]interface{}, 0, len(table.Columns))
+func (*Client) createResultsArray(table *schema.Table) []any {
+	results := make([]any, 0, len(table.Columns))
 	for _, col := range table.Columns {
 		switch col.Type {
 		case schema.TypeBool:
@@ -72,7 +72,7 @@ func (*Client) createResultsArray(table *schema.Table) []interface{} {
 	return results
 }
 
-func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- []interface{}) error {
+func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- []any) error {
 	stmt := fmt.Sprintf(readSQL, table.Name)
 	rows, err := c.db.Query(stmt, sourceName)
 	if err != nil {

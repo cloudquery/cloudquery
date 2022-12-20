@@ -13,7 +13,7 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
-func fetchLightsailDatabases(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchLightsailDatabases(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input lightsail.GetRelationalDatabasesInput
 	c := meta.(*client.Client)
 	svc := c.Services().Lightsail
@@ -30,7 +30,7 @@ func fetchLightsailDatabases(ctx context.Context, meta schema.ClientMeta, parent
 	}
 	return nil
 }
-func fetchLightsailDatabaseParameters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchLightsailDatabaseParameters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(types.RelationalDatabase)
 	input := lightsail.GetRelationalDatabaseParametersInput{
 		RelationalDatabaseName: r.Name,
@@ -50,7 +50,7 @@ func fetchLightsailDatabaseParameters(ctx context.Context, meta schema.ClientMet
 	}
 	return nil
 }
-func fetchLightsailDatabaseEvents(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchLightsailDatabaseEvents(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(types.RelationalDatabase)
 	input := lightsail.GetRelationalDatabaseEventsInput{
 		RelationalDatabaseName: r.Name,
@@ -71,7 +71,7 @@ func fetchLightsailDatabaseEvents(ctx context.Context, meta schema.ClientMeta, p
 	}
 	return nil
 }
-func fetchLightsailDatabaseLogEvents(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchLightsailDatabaseLogEvents(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(types.RelationalDatabase)
 	input := lightsail.GetRelationalDatabaseLogStreamsInput{
 		RelationalDatabaseName: r.Name,
@@ -100,7 +100,7 @@ func fetchLightsailDatabaseLogEvents(ctx context.Context, meta schema.ClientMeta
 	return nil
 }
 
-func fetchLogEvents(ctx context.Context, res chan<- interface{}, c *client.Client, database, stream string, startTime, endTime time.Time) error {
+func fetchLogEvents(ctx context.Context, res chan<- any, c *client.Client, database, stream string, startTime, endTime time.Time) error {
 	svc := c.Services().Lightsail
 	input := lightsail.GetRelationalDatabaseLogEventsInput{
 		RelationalDatabaseName: &database,

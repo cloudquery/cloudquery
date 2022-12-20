@@ -11,7 +11,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchIamPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchIamPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	config := iam.GetAccountAuthorizationDetailsInput{
 		Filter: []types.EntityType{
 			types.EntityTypeAWSManagedPolicy, types.EntityTypeLocalManagedPolicy,

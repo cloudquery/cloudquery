@@ -11,7 +11,7 @@ import (
 	pb "cloud.google.com/go/compute/apiv1/computepb"
 )
 
-func fetchProjects(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchProjects(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	req := &pb.GetProjectRequest{
 		Project: c.ProjectId,

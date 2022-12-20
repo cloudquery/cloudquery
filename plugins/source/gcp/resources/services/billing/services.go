@@ -53,7 +53,7 @@ func Services() *schema.Table {
 	}
 }
 
-func fetchServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	req := &pb.ListServicesRequest{}
 	gcpClient, err := billing.NewCloudCatalogClient(ctx, c.ClientOptions...)

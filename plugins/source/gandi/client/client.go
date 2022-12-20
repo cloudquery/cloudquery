@@ -16,7 +16,6 @@ import (
 type Services struct {
 	CertificateClient   CertificateClient
 	DomainClient        DomainClient
-	EmailClient         EmailClient
 	LiveDNSClient       LiveDNSClient
 	SimpleHostingClient SimpleHostingClient
 }
@@ -79,7 +78,6 @@ func getGandiServices(spec *Spec) (*Services, error) {
 	return &Services{
 		CertificateClient:   gandi.NewCertificateClient(gCfg),
 		DomainClient:        gandi.NewDomainClient(gCfg),
-		EmailClient:         gandi.NewEmailClient(gCfg),
 		LiveDNSClient:       gandi.NewLiveDNSClient(gCfg),
 		SimpleHostingClient: gandi.NewSimpleHostingClient(gCfg),
 	}, nil

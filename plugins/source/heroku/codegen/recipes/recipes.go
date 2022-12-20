@@ -13,12 +13,12 @@ type Resource struct {
 	// TableName can be used to override the default generated table name
 	TableName string
 	// HerokuStruct that will be used to generate the cloudquery table
-	HerokuStruct interface{}
+	HerokuStruct any
 	// HerokuStructName is the name of the HerokuStruct because it can't be inferred by reflection
 	HerokuStructName string
 	// HerokuPrimaryStructName is the primary struct that will be listed first, then used as an ID in additional list calls
 	// (applies only to relational resources)
-	HerokuPrimaryStruct interface{}
+	HerokuPrimaryStruct any
 	// HerokuPrimaryStructName is the name of the primary struct
 	// (applies only to relational resources)
 	HerokuPrimaryStructName string

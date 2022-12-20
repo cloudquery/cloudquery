@@ -46,7 +46,7 @@ func SecureScoreControlDefinitions() *schema.Table {
 	}
 }
 
-func fetchSecureScoreControlDefinitions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchSecureScoreControlDefinitions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armsecurity.NewSecureScoreControlDefinitionsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

@@ -96,7 +96,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/xray"
 )
 
-var clients = []interface{}{
+var clients = []any{
 	&accessanalyzer.Client{},
 	&account.Client{},
 	&acm.Client{},

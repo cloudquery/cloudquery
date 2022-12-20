@@ -9,7 +9,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchDmsReplicationInstances(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchDmsReplicationInstances(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Databasemigrationservice
 
@@ -31,10 +31,10 @@ func fetchDmsReplicationInstances(ctx context.Context, meta schema.ClientMeta, _
 	if err != nil {
 		return err
 	}
-	replicationInstanceTags := make(map[string]map[string]interface{})
+	replicationInstanceTags := make(map[string]map[string]any)
 	for _, tag := range listTagsForResourceOutput.TagList {
 		if replicationInstanceTags[*tag.ResourceArn] == nil {
-			replicationInstanceTags[*tag.ResourceArn] = make(map[string]interface{})
+			replicationInstanceTags[*tag.ResourceArn] = make(map[string]any)
 		}
 		replicationInstanceTags[*tag.ResourceArn][*tag.Key] = *tag.Value
 	}

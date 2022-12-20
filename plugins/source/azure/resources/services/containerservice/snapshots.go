@@ -61,7 +61,7 @@ func Snapshots() *schema.Table {
 	}
 }
 
-func fetchSnapshots(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchSnapshots(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armcontainerservice.NewSnapshotsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

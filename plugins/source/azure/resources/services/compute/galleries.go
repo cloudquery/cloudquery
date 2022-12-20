@@ -56,7 +56,7 @@ func Galleries() *schema.Table {
 	}
 }
 
-func fetchGalleries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchGalleries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armcompute.NewGalleriesClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

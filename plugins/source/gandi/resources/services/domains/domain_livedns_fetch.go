@@ -8,7 +8,7 @@ import (
 	"github.com/go-gandi/go-gandi/domain"
 )
 
-func fetchDomainLiveDNS(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchDomainLiveDNS(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	dom := parent.Item.(domain.Details)
 

@@ -66,7 +66,7 @@ func ServiceEndpointPolicies() *schema.Table {
 	}
 }
 
-func fetchServiceEndpointPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchServiceEndpointPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armnetwork.NewServiceEndpointPoliciesClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

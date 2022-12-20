@@ -56,7 +56,7 @@ func ProviderOperationsMetadata() *schema.Table {
 	}
 }
 
-func fetchProviderOperationsMetadata(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchProviderOperationsMetadata(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armauthorization.NewProviderOperationsMetadataClient(cl.Creds, cl.Options)
 	if err != nil {

@@ -8,7 +8,7 @@ import (
 	"github.com/go-gandi/go-gandi/simplehosting"
 )
 
-func fetchSimplehostingInstanceVhosts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchSimplehostingInstanceVhosts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	ins := parent.Item.(simplehosting.Instance)
 

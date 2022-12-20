@@ -11,7 +11,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchDocdbClusterParameters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchDocdbClusterParameters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Docdb
 	switch item := parent.Item.(type) {
@@ -23,7 +23,7 @@ func fetchDocdbClusterParameters(ctx context.Context, meta schema.ClientMeta, pa
 	return fmt.Errorf("wrong parrent type to fetch cluster parameters")
 }
 
-func fetchParameterGroupParameters(ctx context.Context, svc services.DocdbClient, item types.DBClusterParameterGroup, res chan<- interface{}) error {
+func fetchParameterGroupParameters(ctx context.Context, svc services.DocdbClient, item types.DBClusterParameterGroup, res chan<- any) error {
 	input := &docdb.DescribeDBClusterParametersInput{
 		DBClusterParameterGroupName: item.DBClusterParameterGroupName,
 	}
@@ -38,7 +38,7 @@ func fetchParameterGroupParameters(ctx context.Context, svc services.DocdbClient
 	return nil
 }
 
-func fetchEngineVersionParameters(ctx context.Context, svc services.DocdbClient, item types.DBEngineVersion, res chan<- interface{}) error {
+func fetchEngineVersionParameters(ctx context.Context, svc services.DocdbClient, item types.DBEngineVersion, res chan<- any) error {
 	input := &docdb.DescribeEngineDefaultClusterParametersInput{
 		DBParameterGroupFamily: item.DBParameterGroupFamily,
 	}

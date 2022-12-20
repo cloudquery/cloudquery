@@ -66,7 +66,7 @@ func AzureTrafficCollectorsBySubscription() *schema.Table {
 	}
 }
 
-func fetchAzureTrafficCollectorsBySubscription(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchAzureTrafficCollectorsBySubscription(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armnetworkfunction.NewAzureTrafficCollectorsBySubscriptionClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

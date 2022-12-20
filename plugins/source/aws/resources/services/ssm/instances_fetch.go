@@ -12,7 +12,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchSsmInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchSsmInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Ssm
 
@@ -31,7 +31,7 @@ func fetchSsmInstances(ctx context.Context, meta schema.ClientMeta, parent *sche
 	return nil
 }
 
-func fetchSsmInstanceComplianceItems(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchSsmInstanceComplianceItems(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	instance := parent.Item.(types.InstanceInformation)
 	cl := meta.(*client.Client)
 	svc := cl.Services().Ssm

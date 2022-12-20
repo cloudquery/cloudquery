@@ -12,7 +12,7 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
-func fetchLightsailDistributions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchLightsailDistributions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input lightsail.GetDistributionsInput
 	c := meta.(*client.Client)
 	svc := c.Services().Lightsail
@@ -46,7 +46,7 @@ func fetchLightsailDistributions(ctx context.Context, meta schema.ClientMeta, pa
 	return nil
 }
 
-func fetchCacheReset(ctx context.Context, res chan<- interface{}, c *client.Client, d types.LightsailDistribution) error {
+func fetchCacheReset(ctx context.Context, res chan<- any, c *client.Client, d types.LightsailDistribution) error {
 	svc := c.Services().Lightsail
 	resetInput := lightsail.GetDistributionLatestCacheResetInput{
 		DistributionName: d.Name,
