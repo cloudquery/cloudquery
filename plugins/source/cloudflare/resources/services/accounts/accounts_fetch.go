@@ -8,7 +8,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchAccounts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchAccounts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	svc := meta.(*client.Client)
 	opt := cloudflare.AccountsListParams{
 		PaginationOptions: cloudflare.PaginationOptions{
@@ -30,7 +30,7 @@ func fetchAccounts(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	}
 	return nil
 }
-func fetchAccountMembers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchAccountMembers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	svc := meta.(*client.Client)
 	account := parent.Item.(cloudflare.Account)
 
