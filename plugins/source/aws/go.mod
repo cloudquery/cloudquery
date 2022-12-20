@@ -36,9 +36,9 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.76.1
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.17.25
 	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.13.22
-	github.com/aws/aws-sdk-go-v2/service/ecs v1.20.1
+	github.com/aws/aws-sdk-go-v2/service/ecs v1.22.0
 	github.com/aws/aws-sdk-go-v2/service/efs v1.18.3
-	github.com/aws/aws-sdk-go-v2/service/eks v1.25.0
+	github.com/aws/aws-sdk-go-v2/service/eks v1.26.0
 	github.com/aws/aws-sdk-go-v2/service/elasticache v1.24.3
 	github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk v1.14.22
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.14.25
@@ -58,7 +58,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/inspector2 v1.9.2
 	github.com/aws/aws-sdk-go-v2/service/iot v1.32.2
 	github.com/aws/aws-sdk-go-v2/service/kafka v1.18.2
-	github.com/aws/aws-sdk-go-v2/service/kinesis v1.15.25
+	github.com/aws/aws-sdk-go-v2/service/kinesis v1.16.0
 	github.com/aws/aws-sdk-go-v2/service/kms v1.19.4
 	github.com/aws/aws-sdk-go-v2/service/lambda v1.26.2
 	github.com/aws/aws-sdk-go-v2/service/lightsail v1.24.2
@@ -69,7 +69,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/qldb v1.14.22
 	github.com/aws/aws-sdk-go-v2/service/quicksight v1.28.3
 	github.com/aws/aws-sdk-go-v2/service/ram v1.16.26
-	github.com/aws/aws-sdk-go-v2/service/rds v1.35.1
+	github.com/aws/aws-sdk-go-v2/service/rds v1.36.0
 	github.com/aws/aws-sdk-go-v2/service/redshift v1.26.18
 	github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.12.23
 	github.com/aws/aws-sdk-go-v2/service/route53 v1.25.2
@@ -131,7 +131,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.3.28 // indirect
 	github.com/aws/aws-sdk-go-v2/service/athena v1.20.3
 	github.com/aws/aws-sdk-go-v2/service/backup v1.18.2
-	github.com/aws/aws-sdk-go-v2/service/glue v1.37.1
+	github.com/aws/aws-sdk-go-v2/service/glue v1.38.1
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.9.11 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.7.21 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.21 // indirect
