@@ -1,7 +1,7 @@
 package recipes
 
 import (
-	pb "google.golang.org/genproto/googleapis/container/v1"
+	pb "cloud.google.com/go/container/apiv1/containerpb"
 )
 
 func init() {

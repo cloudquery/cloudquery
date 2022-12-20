@@ -11,6 +11,8 @@
   "heroku": "Heroku",
   "k8s": "Kubernetes",
   "okta": "Okta",
+  "slack": "Slack",
+  "pagerduty": "PagerDuty",
   "terraform": "Terraform",
   "vercel": "Vercel"
 }

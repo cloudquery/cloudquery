@@ -1,15 +1,3 @@
-default: true
-# Hard Tabs
-MD010:
-  # Disable in code blocks
-  code_blocks: false
-# Line Length
-MD013: false
-# Inline HTML
-MD033:
-  allowed_elements:
-    - Callout
-    - BlogHeader
-# Multiple top-level headings in the same documents
-MD025:
-  front_matter_title: ""
+default: false
+fenced-code-language:
+  enabled: true

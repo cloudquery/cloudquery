@@ -31,11 +31,7 @@ func buildElasticSearchDomains(t *testing.T, ctrl *gomock.Controller) client.Ser
 		gomock.Any(),
 	).Return(&elasticsearchservice.DescribeElasticsearchDomainOutput{DomainStatus: &ds}, nil)
 
-	var tags elasticsearchservice.ListTagsOutput
-	if err := faker.FakeObject(&tags); err != nil {
-		t.Fatal(err)
-	}
-	m.EXPECT().ListTags(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tags, nil)
+	addTagsCall(t, m)
 
 	return client.Services{Elasticsearchservice: m}
 }

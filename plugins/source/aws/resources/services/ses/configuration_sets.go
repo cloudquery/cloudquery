@@ -19,14 +19,16 @@ func ConfigurationSets() *schema.Table {
 				Name:     "account_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveAWSAccount,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
 				Name:     "region",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveAWSRegion,
+			},
+			{
+				Name:     "arn",
+				Type:     schema.TypeString,
+				Resolver: resolveConfigurationSetArn,
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
@@ -35,9 +37,6 @@ func ConfigurationSets() *schema.Table {
 				Name:     "name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ConfigurationSetName"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
 				Name:     "delivery_options",
