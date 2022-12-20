@@ -51,7 +51,7 @@ func ExternalSecuritySolutions() *schema.Table {
 	}
 }
 
-func fetchExternalSecuritySolutions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchExternalSecuritySolutions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armsecurity.NewExternalSecuritySolutionsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

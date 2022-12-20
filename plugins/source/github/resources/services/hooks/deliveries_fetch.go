@@ -8,7 +8,7 @@ import (
 	"github.com/google/go-github/v48/github"
 )
 
-func fetchDeliveries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchDeliveries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	id := *parent.Item.(*github.Hook).ID
 
 	c := meta.(*client.Client)

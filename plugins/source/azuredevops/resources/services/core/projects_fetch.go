@@ -8,7 +8,7 @@ import (
 	"github.com/microsoft/azure-devops-go-api/azuredevops/v6/core"
 )
 
-func fetchProjects(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchProjects(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	coreClient, err := core.NewClient(ctx, cl.Connection)
 	if err != nil {

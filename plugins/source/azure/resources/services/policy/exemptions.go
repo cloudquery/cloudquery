@@ -51,7 +51,7 @@ func Exemptions() *schema.Table {
 	}
 }
 
-func fetchExemptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchExemptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armpolicy.NewExemptionsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

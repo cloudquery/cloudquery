@@ -41,7 +41,7 @@ func ServiceCountries() *schema.Table {
 	}
 }
 
-func fetchServiceCountries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchServiceCountries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armpeering.NewServiceCountriesClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

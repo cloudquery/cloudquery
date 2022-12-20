@@ -9,7 +9,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchRamResourceTypes(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchRamResourceTypes(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	input := &ram.ListResourceTypesInput{MaxResults: aws.Int32(500)}
 	paginator := ram.NewListResourceTypesPaginator(meta.(*client.Client).Services().Ram, input)
 	for paginator.HasMorePages() {

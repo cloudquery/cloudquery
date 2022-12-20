@@ -67,7 +67,7 @@ func (s *Spec) Validate() error {
 }
 
 func isValidJson(content string) error {
-	var v map[string]interface{}
+	var v map[string]any
 	err := json.Unmarshal([]byte(content), &v)
 	if err != nil {
 		return err

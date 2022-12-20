@@ -8,7 +8,7 @@ import (
 	"github.com/slack-go/slack"
 )
 
-func fetchConversations(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchConversations(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	f := func() error {
 		teamID := c.TeamID

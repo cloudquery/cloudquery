@@ -10,7 +10,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchRamPrincipals(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchRamPrincipals(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	err := fetchRamPrincipalsByOwner(ctx, meta, types.ResourceOwnerSelf, res)
 	if err != nil {
 		return err
@@ -22,7 +22,7 @@ func fetchRamPrincipals(ctx context.Context, meta schema.ClientMeta, _ *schema.R
 	return nil
 }
 
-func fetchRamPrincipalsByOwner(ctx context.Context, meta schema.ClientMeta, shareType types.ResourceOwner, res chan<- interface{}) error {
+func fetchRamPrincipalsByOwner(ctx context.Context, meta schema.ClientMeta, shareType types.ResourceOwner, res chan<- any) error {
 	input := &ram.ListPrincipalsInput{
 		MaxResults:    aws.Int32(500),
 		ResourceOwner: shareType,

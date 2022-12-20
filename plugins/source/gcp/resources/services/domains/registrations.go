@@ -92,7 +92,7 @@ func Registrations() *schema.Table {
 	}
 }
 
-func fetchRegistrations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchRegistrations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	req := &pb.ListRegistrationsRequest{
 		Parent: fmt.Sprintf("projects/%s/locations/-", c.ProjectId),

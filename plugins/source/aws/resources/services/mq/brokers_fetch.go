@@ -15,7 +15,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchMqBrokers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchMqBrokers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config mq.ListBrokersInput
 	c := meta.(*client.Client)
 	svc := c.Services().Mq
@@ -47,7 +47,7 @@ func getMqBroker(ctx context.Context, meta schema.ClientMeta, resource *schema.R
 	return nil
 }
 
-func fetchMqBrokerConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchMqBrokerConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	broker := parent.Item.(*mq.DescribeBrokerOutput)
 	c := meta.(*client.Client)
 	svc := c.Services().Mq
@@ -86,7 +86,7 @@ func fetchMqBrokerConfigurations(ctx context.Context, meta schema.ClientMeta, pa
 	return nil
 }
 
-func fetchMqBrokerConfigurationRevisions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchMqBrokerConfigurationRevisions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cfg := parent.Item.(mq.DescribeConfigurationOutput)
 	c := meta.(*client.Client)
 	svc := c.Services().Mq
@@ -133,7 +133,7 @@ func resolveBrokerConfigurationRevisionsData(ctx context.Context, meta schema.Cl
 	if err != nil {
 		return err
 	}
-	unmarshalledJson := map[string]interface{}{}
+	unmarshalledJson := map[string]any{}
 	err = json.Unmarshal(marshalledJson.Bytes(), &unmarshalledJson)
 	if err != nil {
 		return err
@@ -141,7 +141,7 @@ func resolveBrokerConfigurationRevisionsData(ctx context.Context, meta schema.Cl
 	return resource.Set(c.Name, unmarshalledJson)
 }
 
-func fetchMqBrokerUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchMqBrokerUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	broker := parent.Item.(*mq.DescribeBrokerOutput)
 	c := meta.(*client.Client)
 	svc := c.Services().Mq

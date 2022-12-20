@@ -61,7 +61,7 @@ func DdosProtectionPlans() *schema.Table {
 	}
 }
 
-func fetchDdosProtectionPlans(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchDdosProtectionPlans(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armnetwork.NewDdosProtectionPlansClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

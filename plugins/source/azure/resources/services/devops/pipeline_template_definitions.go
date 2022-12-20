@@ -41,7 +41,7 @@ func PipelineTemplateDefinitions() *schema.Table {
 	}
 }
 
-func fetchPipelineTemplateDefinitions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchPipelineTemplateDefinitions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armdevops.NewPipelineTemplateDefinitionsClient(cl.Creds, cl.Options)
 	if err != nil {

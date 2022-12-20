@@ -13,7 +13,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchBackupVaults(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchBackupVaults(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Backup
 	params := backup.ListBackupVaultsInput{MaxResults: aws.Int32(1000)} // maximum value from https://docs.aws.amazon.com/aws-backup/latest/devguide/API_ListBackupVaults.html
@@ -79,7 +79,7 @@ func resolveVaultAccessPolicy(ctx context.Context, meta schema.ClientMeta, resou
 		return nil
 	}
 
-	var p map[string]interface{}
+	var p map[string]any
 	err = json.Unmarshal([]byte(*result.Policy), &p)
 	if err != nil {
 		return err
@@ -104,7 +104,7 @@ func resolveVaultNotifications(ctx context.Context, meta schema.ClientMeta, reso
 	return resource.Set(col.Name, result)
 }
 
-func fetchBackupVaultRecoveryPoints(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchBackupVaultRecoveryPoints(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Backup
 	vault := parent.Item.(types.BackupVaultListMember)

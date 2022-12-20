@@ -66,7 +66,7 @@ func Components() *schema.Table {
 	}
 }
 
-func fetchComponents(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchComponents(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armapplicationinsights.NewComponentsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

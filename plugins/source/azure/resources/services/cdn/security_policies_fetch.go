@@ -8,7 +8,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchSecurityPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchSecurityPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	item := parent.Item.(*armcdn.Profile)
 	svc, err := armcdn.NewSecurityPoliciesClient(cl.SubscriptionId, cl.Creds, cl.Options)

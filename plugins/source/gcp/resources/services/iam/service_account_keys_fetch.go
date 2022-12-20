@@ -8,7 +8,7 @@ import (
 	"google.golang.org/api/iam/v1"
 )
 
-func fetchServiceAccountKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchServiceAccountKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	p := parent.Item.(*iam.ServiceAccount)
 	iamClient, err := iam.NewService(ctx, c.ClientOptions...)

@@ -71,7 +71,7 @@ func LoadBalancers() *schema.Table {
 	}
 }
 
-func fetchLoadBalancers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchLoadBalancers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armnetwork.NewLoadBalancersClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

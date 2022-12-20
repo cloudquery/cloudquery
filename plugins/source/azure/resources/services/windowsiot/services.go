@@ -61,7 +61,7 @@ func Services() *schema.Table {
 	}
 }
 
-func fetchServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armwindowsiot.NewServicesClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

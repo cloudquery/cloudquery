@@ -61,7 +61,7 @@ func PrivateZones() *schema.Table {
 	}
 }
 
-func fetchPrivateZones(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchPrivateZones(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armprivatedns.NewPrivateZonesClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

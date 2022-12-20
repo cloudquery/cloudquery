@@ -66,7 +66,7 @@ func DnsForwardingRulesets() *schema.Table {
 	}
 }
 
-func fetchDnsForwardingRulesets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchDnsForwardingRulesets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armdnsresolver.NewDNSForwardingRulesetsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

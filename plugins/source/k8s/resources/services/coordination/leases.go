@@ -112,7 +112,7 @@ func Leases() *schema.Table {
 	}
 }
 
-func fetchLeases(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchLeases(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 
 	cl := meta.(*client.Client).Client().CoordinationV1().Leases("")
 

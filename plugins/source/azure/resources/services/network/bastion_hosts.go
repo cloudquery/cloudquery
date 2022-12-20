@@ -66,7 +66,7 @@ func BastionHosts() *schema.Table {
 	}
 }
 
-func fetchBastionHosts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchBastionHosts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armnetwork.NewBastionHostsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

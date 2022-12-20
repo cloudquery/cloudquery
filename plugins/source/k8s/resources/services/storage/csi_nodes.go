@@ -92,7 +92,7 @@ func CsiNodes() *schema.Table {
 	}
 }
 
-func fetchCsiNodes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchCsiNodes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 
 	cl := meta.(*client.Client).Client().StorageV1().CSINodes()
 
