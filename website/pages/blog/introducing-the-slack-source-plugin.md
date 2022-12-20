@@ -3,8 +3,8 @@ title: Introducing the Slack Source Plugin
 tag: announcement
 date: 2022/12/20
 description: >-
-  CloudQuery is an open-source, extensible framework that gives you a
-  single-pane-of-glass to your cloud-infrastructure using SQL. Today, we are
+  CloudQuery is an open source high performance data integration 
+  platform designed for security and infrastructure teams. Today, we are
   happy to announce the release of the Slack source plugin.
 author: hermanschaaf
 ---
