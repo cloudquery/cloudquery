@@ -33,7 +33,7 @@ select fqdn, dates->>'registry_ends_at' as registry_ends_at, date_trunc('day', (
 
 This query would output a table of domain names that are going to expire within the next 90 days:
 
-```
+```bash
       fqdn      |   registry_ends_at   | days_left
 ----------------+----------------------+-----------
  yourdomain.co  | 2023-01-28T08:09:41Z | 58 days
@@ -53,7 +53,7 @@ select d.fqdn from gandi_livedns_domains d left join gandi_livedns_snapshots s o
 
 This will return a list of domain names that don't have the automatic snapshots feature enabled. You can set up an alert on this query and make sure your domain configurations are automatically backed up.
 
-```
+```bash
      fqdn
 ---------------
  yourdomain.co
@@ -71,7 +71,7 @@ select fqdn, name, ips from gandi_domain_glue_records order by 1, 2;
 
 This will return:
 
-```
+```bash
      fqdn       | name |       ips
 ----------------+------+------------------
 yourdomain.com | ns1  | {8.8.8.8}
@@ -89,7 +89,7 @@ select fqdn, current, nameservers from gandi_domain_live_dns order by 1;
 
 The results look like:
 
-```
+```bash
        fqdn        | current |                        nameservers
 -------------------+---------+------------------------------------------------------------
  yourcomain.com    | livedns | {ns-168-a.gandi.net,ns-16-b.gandi.net,ns-53-c.gandi.net}

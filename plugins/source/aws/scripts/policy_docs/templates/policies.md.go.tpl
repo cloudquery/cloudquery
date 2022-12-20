@@ -10,7 +10,7 @@ This page documents the available CloudQuery SQL Policies for AWS. See the [read
 ### Requirements
 {{ .Name }} requires the following tables to be synced before the policy is executed:
 
-```
+```yaml
 tables:
 {{- range $table := .Tables }}
   - {{ $table }}
