@@ -35,7 +35,7 @@ func (*Client) Metrics() destination.Metrics {
 	return destination.Metrics{}
 }
 
-func (*Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- []interface{}) error {
+func (*Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- []any) error {
 	return nil
 }
 
@@ -62,6 +62,6 @@ func (*Client) DeleteStale(ctx context.Context, tables schema.Tables, sourceName
 	return nil
 }
 
-func (*Client) ReverseTransformValues(table *schema.Table, values []interface{}) (schema.CQTypes, error) {
+func (*Client) ReverseTransformValues(table *schema.Table, values []any) (schema.CQTypes, error) {
 	return nil, nil
 }
