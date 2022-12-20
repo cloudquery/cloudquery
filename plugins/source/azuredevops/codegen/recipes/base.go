@@ -24,7 +24,7 @@ var Resources []*Resource
 type Resource struct {
 	Service    string
 	SubService string
-	Struct     interface{}
+	Struct     any
 	Table      *codegen.TableDefinition
 }
 
@@ -49,7 +49,7 @@ func writeTemplateContentToFile(dir string, filePath string, buff bytes.Buffer) 
 	return nil
 }
 
-func renderTemplate(name string, filePath string, data interface{}) error {
+func renderTemplate(name string, filePath string, data any) error {
 	_, filename, _, ok := runtime.Caller(0)
 	if !ok {
 		return fmt.Errorf("failed to get caller information")
