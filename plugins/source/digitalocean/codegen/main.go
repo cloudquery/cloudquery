@@ -1,6 +1,8 @@
 package main
 
 import (
+	"log"
+
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/codegen/recipes"
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/resources/services/droplets"
@@ -387,6 +389,8 @@ var Resources = []*recipes.Resource{
 
 func main() {
 	for _, r := range Resources {
-		r.Generate()
+		if err := r.Generate(); err != nil {
+			log.Fatal(err)
+		}
 	}
 }

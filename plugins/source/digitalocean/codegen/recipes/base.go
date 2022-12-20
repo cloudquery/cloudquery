@@ -23,7 +23,7 @@ type Resource struct {
 	// Table is the table definition that will be used to generate the cloudquery table
 	Table *codegen.TableDefinition
 	// Struct that will be used to generate the cloudquery table
-	Struct interface{}
+	Struct any
 	// Service is the name of the digitalocean service the struct/api is residing
 	Service string
 	// SubService is the name of the subservice
@@ -109,13 +109,11 @@ func (r *Resource) Generate() error {
 	}
 
 	filePath := path.Join(dir, r.SubService+".go")
-	content := buff.Bytes()
-	formattedContent, err := format.Source(buff.Bytes())
+	content, err := format.Source(buff.Bytes())
 	if err != nil {
-		return fmt.Errorf("failed to format source: %s: %w\n", filePath, err)
-	} else {
-		content = formattedContent
+		return fmt.Errorf("failed to format source: %s: %w", filePath, err)
 	}
+
 	if err := os.WriteFile(filePath, content, 0644); err != nil {
 		return fmt.Errorf("failed to write file %s: %w", filePath, err)
 	}
