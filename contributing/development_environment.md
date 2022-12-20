@@ -15,7 +15,7 @@ git clone https://github.com/cloudquery/cloudquery
 
 Build the CLI and all plugins:
 
-```
+```bash
 make build
 ```
 
