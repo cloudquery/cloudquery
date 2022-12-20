@@ -71,7 +71,7 @@ func Reservation() *schema.Table {
 	}
 }
 
-func fetchReservation(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchReservation(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armreservations.NewReservationClient(cl.Creds, cl.Options)
 	if err != nil {

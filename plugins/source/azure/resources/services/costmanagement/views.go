@@ -51,7 +51,7 @@ func Views() *schema.Table {
 	}
 }
 
-func fetchViews(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchViews(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armcostmanagement.NewViewsClient(cl.Creds, cl.Options)
 	if err != nil {

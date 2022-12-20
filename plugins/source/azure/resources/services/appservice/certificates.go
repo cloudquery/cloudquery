@@ -61,7 +61,7 @@ func Certificates() *schema.Table {
 	}
 }
 
-func fetchCertificates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchCertificates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armappservice.NewCertificatesClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

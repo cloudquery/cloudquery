@@ -87,7 +87,7 @@ func TargetSslProxies() *schema.Table {
 	}
 }
 
-func fetchTargetSslProxies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchTargetSslProxies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	req := &pb.ListTargetSslProxiesRequest{
 		Project: c.ProjectId,

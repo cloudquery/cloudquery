@@ -97,7 +97,7 @@ func SslPolicies() *schema.Table {
 	}
 }
 
-func fetchSslPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchSslPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	req := &pb.ListSslPoliciesRequest{
 		Project: c.ProjectId,

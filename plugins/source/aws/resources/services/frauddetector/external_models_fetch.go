@@ -8,7 +8,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchFrauddetectorExternalModels(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchFrauddetectorExternalModels(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	paginator := frauddetector.NewGetExternalModelsPaginator(meta.(*client.Client).Services().Frauddetector, nil)
 	for paginator.HasMorePages() {
 		output, err := paginator.NextPage(ctx)

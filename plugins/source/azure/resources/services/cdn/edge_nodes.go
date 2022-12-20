@@ -51,7 +51,7 @@ func EdgeNodes() *schema.Table {
 	}
 }
 
-func fetchEdgeNodes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchEdgeNodes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armcdn.NewEdgeNodesClient(cl.Creds, cl.Options)
 	if err != nil {

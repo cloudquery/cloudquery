@@ -86,7 +86,7 @@ func Keys() *schema.Table {
 	}
 }
 
-func fetchKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	req := &pb.ListKeysRequest{
 		Parent: "projects/" + c.ProjectId + "/locations/global",

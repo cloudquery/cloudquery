@@ -46,7 +46,7 @@ func AutoProvisioningSettings() *schema.Table {
 	}
 }
 
-func fetchAutoProvisioningSettings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchAutoProvisioningSettings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armsecurity.NewAutoProvisioningSettingsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

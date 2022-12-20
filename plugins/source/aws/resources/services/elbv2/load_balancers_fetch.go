@@ -13,7 +13,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchElbv2LoadBalancers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchElbv2LoadBalancers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config elbv2.DescribeLoadBalancersInput
 	c := meta.(*client.Client)
 	svc := c.Services().Elasticloadbalancingv2
@@ -86,7 +86,7 @@ func resolveElbv2loadBalancerTags(ctx context.Context, meta schema.ClientMeta, r
 	return resource.Set(c.Name, tags)
 }
 
-func fetchElbv2LoadBalancerAttributes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchElbv2LoadBalancerAttributes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	lb := parent.Item.(types.LoadBalancer)
 	c := meta.(*client.Client)
 	svc := c.Services().Elasticloadbalancingv2

@@ -61,7 +61,7 @@ func DiskAccesses() *schema.Table {
 	}
 }
 
-func fetchDiskAccesses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchDiskAccesses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armcompute.NewDiskAccessesClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

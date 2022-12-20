@@ -10,7 +10,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchGlueRegistries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchGlueRegistries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Glue
 	input := glue.ListRegistriesInput{MaxResults: aws.Int32(100)}
@@ -42,7 +42,7 @@ func resolveGlueRegistryTags(ctx context.Context, meta schema.ClientMeta, resour
 	}
 	return resource.Set(c.Name, result.Tags)
 }
-func fetchGlueRegistrySchemas(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchGlueRegistrySchemas(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(types.RegistryListItem)
 	cl := meta.(*client.Client)
 	svc := cl.Services().Glue
@@ -95,7 +95,7 @@ func resolveGlueRegistrySchemaTags(ctx context.Context, meta schema.ClientMeta, 
 	return resource.Set(c.Name, result.Tags)
 }
 
-func fetchGlueRegistrySchemaVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchGlueRegistrySchemaVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	s := parent.Item.(*glue.GetSchemaOutput)
 	svc := cl.Services().Glue

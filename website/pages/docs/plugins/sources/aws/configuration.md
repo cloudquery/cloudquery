@@ -57,6 +57,7 @@ spec:
 
 ## AWS Organization Example
 
+CloudQuery supports discovery of AWS Accounts via AWS Organizations. This means that as Accounts get added or removed from your organization CloudQuery will be able to handle new or removed accounts without any configuration changes.
 
 ```yaml
 kind: source
@@ -77,92 +78,7 @@ spec:
       - '*'
   ```
 
-
-CloudQuery supports discovery of AWS Accounts via AWS Organizations. This means that as Accounts get added or removed from your organization CloudQuery will be able to handle new or removed accounts without any configuration changes.
-
-Prerequisites for using AWS Org functionality:
-1. Have a role (or user) in an Admin account with the following access:
-
-  - `organizations:ListAccounts`
-  - `organizations:ListAccountsForParent`
-  - `organizations:ListChildren`
-
-2. Have a role in each member account that has a trust policy with a single principal. The default profile name is `OrganizationAccountAccessRole`. More information can be found [here](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html#orgs_manage_accounts_create-cross-account-role), including how to create the role if it doesn't already exist in your account.
-
-
-
-
-
-
-Using AWS Organization:
-1. Specify member role name:
-
-```yaml copy
-    org:
-      member_role_name: OrganizationAccountAccessRole
-```
-
-2. Getting credentials that have  the necessary `organizations` permissions:
-
-    1. Sourcing Credentials from the default credential tool chain:
-    ```yaml copy
-        org:
-          member_role_name: OrganizationAccountAccessRole
-    ```
-
-    2. Sourcing credentials from a named profile in the shared configuration or credentials file
-
-    ```yaml copy
-        org:
-          member_role_name: OrganizationAccountAccessRole
-          admin_account:
-            local_profile: <Named-Profile>
-    ```
-
-    3. Assuming a role in admin account using credentials in the shared configuration or credentials file:
-
-    ```yaml copy
-        org:
-          member_role_name: OrganizationAccountAccessRole
-          admin_account:
-            local_profile: <Named-Profile>
-            role_arn: arn:aws:iam::<ACCOUNT_ID>:role/<ROLE_NAME>
-            
-            // Optional. Specify the name of the session 
-            // role_session_name: ""
-
-            // Optional. Specify the ExternalID if required for trust policy 
-            // external_id: ""
-    ```
-
-3. Optional. If the trust policy configured for the member accounts requires different credentials than you configured in the previous step, then you can specify the credentials to use in the `member_trusted_principal` block 
-
-```yaml copy
-    org:
-      member_role_name: OrganizationAccountAccessRole
-      admin_account:
-        local_profile: <Named-Profile-Admin>
-      member_trusted_principal:
-        local_profile: <Named-Profile-Member>
-      organization_units:
-        - ou-<ID-1>
-        - ou-<ID-2>
-```
-
-4. Optional. If you want to specify specific Organizational Units to fetch from you can add them to the `organization_units` list. 
-
-```yaml copy
-    org:
-      member_role_name: OrganizationAccountAccessRole
-      admin_account:
-        local_profile: <Named-Profile-Admin>
-      organization_units:
-        - ou-<ID-1>
-        - ou-<ID-2>
-```
-
-
-
+For full details, see the [Multi Account Configuration Tutorial](/docs/plugins/sources/aws/multi-account).
 
 ## AWS Spec
 

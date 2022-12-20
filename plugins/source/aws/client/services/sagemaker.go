@@ -72,6 +72,7 @@ type SagemakerClient interface {
 	GetSearchSuggestions(context.Context, *sagemaker.GetSearchSuggestionsInput, ...func(*sagemaker.Options)) (*sagemaker.GetSearchSuggestionsOutput, error)
 	ListActions(context.Context, *sagemaker.ListActionsInput, ...func(*sagemaker.Options)) (*sagemaker.ListActionsOutput, error)
 	ListAlgorithms(context.Context, *sagemaker.ListAlgorithmsInput, ...func(*sagemaker.Options)) (*sagemaker.ListAlgorithmsOutput, error)
+	ListAliases(context.Context, *sagemaker.ListAliasesInput, ...func(*sagemaker.Options)) (*sagemaker.ListAliasesOutput, error)
 	ListAppImageConfigs(context.Context, *sagemaker.ListAppImageConfigsInput, ...func(*sagemaker.Options)) (*sagemaker.ListAppImageConfigsOutput, error)
 	ListApps(context.Context, *sagemaker.ListAppsInput, ...func(*sagemaker.Options)) (*sagemaker.ListAppsOutput, error)
 	ListArtifacts(context.Context, *sagemaker.ListArtifactsInput, ...func(*sagemaker.Options)) (*sagemaker.ListArtifactsOutput, error)

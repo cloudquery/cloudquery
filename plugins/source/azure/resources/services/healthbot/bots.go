@@ -71,7 +71,7 @@ func Bots() *schema.Table {
 	}
 }
 
-func fetchBots(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchBots(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armhealthbot.NewBotsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

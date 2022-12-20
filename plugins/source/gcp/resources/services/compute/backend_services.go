@@ -228,7 +228,7 @@ func BackendServices() *schema.Table {
 	}
 }
 
-func fetchBackendServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchBackendServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	req := &pb.AggregatedListBackendServicesRequest{
 		Project: c.ProjectId,

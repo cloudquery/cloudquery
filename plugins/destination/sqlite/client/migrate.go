@@ -21,7 +21,7 @@ type columnInfo struct {
 	name         string
 	typ          string
 	notNull      bool
-	defaultValue interface{}
+	defaultValue any
 	pk           bool
 }
 

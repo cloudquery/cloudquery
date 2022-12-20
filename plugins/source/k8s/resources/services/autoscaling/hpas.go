@@ -132,7 +132,7 @@ func Hpas() *schema.Table {
 	}
 }
 
-func fetchHpas(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchHpas(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 
 	cl := meta.(*client.Client).Client().AutoscalingV1().HorizontalPodAutoscalers("")
 

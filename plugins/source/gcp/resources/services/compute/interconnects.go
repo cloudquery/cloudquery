@@ -147,7 +147,7 @@ func Interconnects() *schema.Table {
 	}
 }
 
-func fetchInterconnects(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchInterconnects(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	req := &pb.ListInterconnectsRequest{
 		Project: c.ProjectId,

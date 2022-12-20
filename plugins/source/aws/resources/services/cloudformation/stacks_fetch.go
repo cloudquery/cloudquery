@@ -10,7 +10,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchCloudformationStacks(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchCloudformationStacks(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	var config cloudformation.DescribeStacksInput
 	c := meta.(*client.Client)
 	svc := c.Services().Cloudformation
@@ -27,7 +27,7 @@ func fetchCloudformationStacks(ctx context.Context, meta schema.ClientMeta, _ *s
 	}
 	return nil
 }
-func fetchCloudformationStackResources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchCloudformationStackResources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	stack := parent.Item.(types.Stack)
 	config := cloudformation.ListStackResourcesInput{
 		StackName: stack.StackName,

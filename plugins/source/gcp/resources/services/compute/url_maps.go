@@ -108,7 +108,7 @@ func UrlMaps() *schema.Table {
 	}
 }
 
-func fetchUrlMaps(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchUrlMaps(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	req := &pb.AggregatedListUrlMapsRequest{
 		Project: c.ProjectId,

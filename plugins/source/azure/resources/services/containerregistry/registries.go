@@ -71,7 +71,7 @@ func Registries() *schema.Table {
 	}
 }
 
-func fetchRegistries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchRegistries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armcontainerregistry.NewRegistriesClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

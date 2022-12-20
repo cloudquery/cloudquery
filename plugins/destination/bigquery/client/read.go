@@ -77,7 +77,7 @@ func (*Client) createResultsArray(table *schema.Table) []bigquery.Value {
 	return results
 }
 
-func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- []interface{}) error {
+func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- []any) error {
 	stmt := fmt.Sprintf(readSQL, c.pluginSpec.ProjectID, c.pluginSpec.DatasetID, table.Name)
 	client, err := c.bqClient(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 		return fmt.Errorf("failed to read table %s: %w", table.Name, err)
 	}
 	values := c.createResultsArray(table)
-	v := make([]interface{}, len(values))
+	v := make([]any, len(values))
 	for {
 		err := it.Next(&values)
 		if err == iterator.Done {

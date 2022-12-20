@@ -8,7 +8,7 @@ import (
 	"github.com/okta/okta-sdk-golang/v3/okta"
 )
 
-func fetchApplicationGroupAssignments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchApplicationGroupAssignments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	app := parent.Item.(*okta.Application)
 

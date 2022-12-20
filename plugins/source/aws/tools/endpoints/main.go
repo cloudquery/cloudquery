@@ -53,10 +53,10 @@ func getPartitionRegionServiceData() (*client.SupportedServiceRegionsData, error
 	for _, p := range data.Partitions {
 		services := make(map[string]*client.AwsService)
 		for sk, s := range p.Services {
-			endpoints := make(map[string]*map[string]interface{})
+			endpoints := make(map[string]*map[string]any)
 			for ek, e := range s.Endpoints {
 				if !e.Deprecated {
-					endpoints[ek] = &map[string]interface{}{}
+					endpoints[ek] = &map[string]any{}
 				}
 			}
 			services[sk] = &client.AwsService{
