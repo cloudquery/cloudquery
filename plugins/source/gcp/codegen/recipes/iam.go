@@ -5,6 +5,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/iancoleman/strcase"
 	"google.golang.org/api/iam/v1"
+	iamv2Beta "google.golang.org/api/iam/v2beta"
 )
 
 func init() {
@@ -14,6 +15,7 @@ func init() {
 			Struct:      &iam.Role{},
 			PrimaryKeys: []string{ProjectIdColumn.Name, "name"},
 			Description: "https://cloud.google.com/iam/docs/reference/rest/v1/roles#Role",
+			MockImports: []string{"google.golang.org/api/iam/v1"},
 		},
 		{
 			SubService:      "service_accounts",
@@ -43,12 +45,17 @@ func init() {
 			SkipMock:    true,
 			Description: "https://cloud.google.com/iam/docs/reference/rest/v1/projects.serviceAccounts.keys#ServiceAccountKey",
 		},
+		{
+			SubService:  "deny_policies",
+			SkipMock:    true,
+			Struct:      &iamv2Beta.GoogleIamV2betaPolicy{},
+			Description: "https://cloud.google.com/iam/docs/reference/rest/v2beta/policies#Policy",
+		},
 	}
 
 	for _, resource := range resources {
 		resource.Service = "iam"
 		resource.SkipFetch = true
-		resource.MockImports = []string{"google.golang.org/api/iam/v1"}
 		resource.Template = "newapi_list"
 		resource.MockTemplate = "resource_list_mock"
 		if resource.OutputField == "" {
