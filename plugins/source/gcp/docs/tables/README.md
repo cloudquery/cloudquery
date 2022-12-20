@@ -36,6 +36,7 @@
 - [gcp_iam_roles](gcp_iam_roles.md)
 - [gcp_iam_service_accounts](gcp_iam_service_accounts.md)
   - [gcp_iam_service_account_keys](gcp_iam_service_account_keys.md)
+- [gcp_iam_deny_policies](gcp_iam_deny_policies.md)
 - [gcp_kms_keyrings](gcp_kms_keyrings.md)
   - [gcp_kms_crypto_keys](gcp_kms_crypto_keys.md)
 - [gcp_logging_metrics](gcp_logging_metrics.md)
