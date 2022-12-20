@@ -187,7 +187,7 @@ func Jobs() *schema.Table {
 	}
 }
 
-func fetchJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 
 	cl := meta.(*client.Client).Client().BatchV1().Jobs("")
 

@@ -97,7 +97,7 @@ func Secrets() *schema.Table {
 	}
 }
 
-func fetchSecrets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchSecrets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 
 	cl := meta.(*client.Client).Client().CoreV1().Secrets("")
 

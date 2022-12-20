@@ -102,7 +102,7 @@ func ServiceAccounts() *schema.Table {
 	}
 }
 
-func fetchServiceAccounts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchServiceAccounts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 
 	cl := meta.(*client.Client).Client().CoreV1().ServiceAccounts("")
 
