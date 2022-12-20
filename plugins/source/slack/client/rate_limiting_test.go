@@ -60,7 +60,7 @@ func TestRetryOnRateLimitError(t *testing.T) {
 		got := c.RetryOnError(ctx, "table_name", func() error {
 			if calls == 0 {
 				calls++
-				return errors.New("slack server error: 500 Internal Server Error")
+				return slack.StatusCodeError{Code: 500}
 			}
 			return nil
 		})

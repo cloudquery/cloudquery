@@ -39,7 +39,10 @@ func (c *Client) RetryOnError(ctx context.Context, tableName string, f func() er
 }
 
 func isRetryable(err error) bool {
-	if c, ok := err.(*slack.StatusCodeError); ok {
+	switch c := err.(type) {
+	case *slack.StatusCodeError:
+		return c.Retryable()
+	case slack.StatusCodeError:
 		return c.Retryable()
 	}
 	return false
