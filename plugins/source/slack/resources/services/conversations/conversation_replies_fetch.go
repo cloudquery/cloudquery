@@ -12,7 +12,7 @@ func fetchConversationReplies(ctx context.Context, meta schema.ClientMeta, paren
 	c := meta.(*client.Client)
 	f := func() error {
 		params := &slack.GetConversationRepliesParameters{
-			ChannelID:          parent.Item.(slack.Msg).Channel,
+			ChannelID:          parent.Get("channel_id").String(),
 			Timestamp:          parent.Item.(slack.Msg).Timestamp,
 			Limit:              1000,
 			IncludeAllMetadata: true,
@@ -37,5 +37,5 @@ func fetchConversationReplies(ctx context.Context, meta schema.ClientMeta, paren
 		}
 		return nil
 	}
-	return c.RetryOnError("slack_conversation_replies", f)
+	return c.RetryOnError(ctx, "slack_conversation_replies", f)
 }

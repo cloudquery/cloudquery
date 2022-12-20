@@ -21,7 +21,7 @@ The following tables depend on slack_conversations:
 |_cq_parent_id|UUID|
 |team_id (PK)|String|
 |id (PK)|String|
-|created|Int|
+|created|Timestamp|
 |is_open|Bool|
 |last_read|String|
 |unread_count|Int|

@@ -17,5 +17,5 @@ func fetchTeams(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource,
 		res <- teams
 		return nil
 	}
-	return c.RetryOnError("slack_teams", f)
+	return c.RetryOnError(ctx, "slack_teams", f)
 }

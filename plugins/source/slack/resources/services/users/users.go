@@ -3,6 +3,7 @@
 package users
 
 import (
+	"github.com/cloudquery/cloudquery/plugins/source/slack/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -111,19 +112,9 @@ func Users() *schema.Table {
 				Resolver: schema.PathResolver("IsInvitedUser"),
 			},
 			{
-				Name:     "has_2fa",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("Has2FA"),
-			},
-			{
 				Name:     "has_files",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("HasFiles"),
-			},
-			{
-				Name:     "presence",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Presence"),
 			},
 			{
 				Name:     "locale",
@@ -132,8 +123,8 @@ func Users() *schema.Table {
 			},
 			{
 				Name:     "updated",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("Updated"),
+				Type:     schema.TypeTimestamp,
+				Resolver: client.JSONTimeResolver("Updated"),
 			},
 			{
 				Name:     "enterprise_user",

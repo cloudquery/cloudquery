@@ -24,5 +24,5 @@ func fetchConversationBookmarks(ctx context.Context, meta schema.ClientMeta, par
 		res <- bookmarks
 		return nil
 	}
-	return c.RetryOnError("slack_conversation_bookmarks", f)
+	return c.RetryOnError(ctx, "slack_conversation_bookmarks", f)
 }

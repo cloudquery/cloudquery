@@ -2,6 +2,7 @@ package conversations
 
 import (
 	"testing"
+	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/slack/client"
 	"github.com/cloudquery/cloudquery/plugins/source/slack/client/mocks"
@@ -24,6 +25,7 @@ func buildConversationsMock(t *testing.T, ctrl *gomock.Controller) services.Slac
 	if err != nil {
 		t.Fatal(err)
 	}
+	d[0].Created = slack.JSONTime(time.Now().Unix())
 
 	m.EXPECT().GetConversationsContext(gomock.Any(), gomock.Any()).Times(1).Return(d, "cursor1", nil)
 	m.EXPECT().GetConversationsContext(gomock.Any(), gomock.Any()).Times(1).Return(d, "", nil)

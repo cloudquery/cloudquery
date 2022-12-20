@@ -14,8 +14,8 @@ The composite primary key for this table is (**team_id**, **id**).
 |_cq_parent_id|UUID|
 |team_id (PK)|String|
 |id (PK)|String|
-|created|Int|
-|timestamp|Int|
+|created|Timestamp|
+|timestamp|Timestamp|
 |name|String|
 |title|String|
 |mimetype|String|

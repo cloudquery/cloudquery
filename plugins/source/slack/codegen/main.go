@@ -8,6 +8,7 @@ import (
 	"log"
 	"os"
 	"path"
+	"reflect"
 	"runtime"
 	"strings"
 	"text/template"
@@ -16,6 +17,8 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/slack/codegen/services"
 	"github.com/cloudquery/cloudquery/plugins/source/slack/codegen/tables"
 	"github.com/cloudquery/plugin-sdk/codegen"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/slack-go/slack"
 )
 
 //go:embed templates/*.go.tpl
@@ -54,6 +57,26 @@ func main() {
 	}
 }
 
+func typeTransformer(f reflect.StructField) (schema.ValueType, error) {
+	jsonTimeType := reflect.TypeOf(slack.JSONTime(0))
+	isPointerOrInterface := f.Type.Kind() == reflect.Ptr || f.Type.Kind() == reflect.Interface
+	if f.Type == jsonTimeType || (isPointerOrInterface && f.Type.Elem() == jsonTimeType) {
+		// f is of type slack.JSONTime
+		return schema.TypeTimestamp, nil
+	}
+	return codegen.DefaultTypeTransformer(f)
+}
+
+func resolverTransformer(f reflect.StructField, path string) (string, error) {
+	jsonTimeType := reflect.TypeOf(slack.JSONTime(0))
+	isPointerOrInterface := f.Type.Kind() == reflect.Ptr || f.Type.Kind() == reflect.Interface
+	if f.Type == jsonTimeType || (isPointerOrInterface && f.Type.Elem() == jsonTimeType) {
+		// f is of type slack.JSONTime
+		return fmt.Sprintf(`client.JSONTimeResolver("%s")`, f.Name), nil
+	}
+	return codegen.DefaultResolverTransformer(f, path)
+}
+
 func generateTable(basedir string, r recipes.Resource) {
 	var err error
 
@@ -64,6 +87,8 @@ func generateTable(basedir string, r recipes.Resource) {
 		codegen.WithSkipFields(r.SkipFields),
 		codegen.WithExtraColumns(r.ExtraColumns),
 		codegen.WithPKColumns(r.PKColumns...),
+		codegen.WithTypeTransformer(typeTransformer),
+		codegen.WithResolverTransformer(resolverTransformer),
 	}
 	if r.UnwrapEmbeddedStructs {
 		opts = append(opts, codegen.WithUnwrapAllEmbeddedStructs())

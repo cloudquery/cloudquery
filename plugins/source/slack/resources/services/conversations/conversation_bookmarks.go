@@ -65,13 +65,13 @@ func ConversationBookmarks() *schema.Table {
 			},
 			{
 				Name:     "date_created",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("Created"),
+				Type:     schema.TypeTimestamp,
+				Resolver: client.JSONTimeResolver("Created"),
 			},
 			{
 				Name:     "date_updated",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("Updated"),
+				Type:     schema.TypeTimestamp,
+				Resolver: client.JSONTimeResolver("Updated"),
 			},
 			{
 				Name:     "rank",

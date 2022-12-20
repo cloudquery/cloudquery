@@ -22,4 +22,4 @@ This table depends on [slack_users](slack_users.md).
 |auto_away|Bool|
 |manual_away|Bool|
 |connection_count|Int|
-|last_activity|Int|
+|last_activity|Timestamp|

@@ -12,6 +12,10 @@ func UserResources() []*Resource {
 			DataStruct:  &slack.User{},
 			Description: "https://api.slack.com/methods/users.list",
 			PKColumns:   []string{"id"},
+			SkipFields: []string{
+				"Has2FA",   // not returned for bot tokens; skipping to avoid confusion
+				"Presence", // not returned by this API, but can be found in slack_user_presences table
+			},
 			Relations: []string{
 				`UserPresences()`,
 			},

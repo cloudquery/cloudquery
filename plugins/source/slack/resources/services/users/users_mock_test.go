@@ -2,6 +2,7 @@ package users
 
 import (
 	"testing"
+	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/slack/client"
 	"github.com/cloudquery/cloudquery/plugins/source/slack/client/mocks"
@@ -18,6 +19,7 @@ func buildUsersMock(t *testing.T, ctrl *gomock.Controller) services.SlackClient 
 	if err != nil {
 		t.Fatal(err)
 	}
+	d[0].Updated = slack.JSONTime(time.Now().Unix())
 	addUserPresencesMock(t, m)
 	m.EXPECT().GetUsersContext(gomock.Any(), gomock.Any()).Return(d, nil)
 	return m

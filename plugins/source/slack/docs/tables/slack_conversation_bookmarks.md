@@ -24,8 +24,8 @@ This table depends on [slack_conversations](slack_conversations.md).
 |emoji|String|
 |icon_url|String|
 |type|String|
-|date_created|Int|
-|date_updated|Int|
+|date_created|Timestamp|
+|date_updated|Timestamp|
 |rank|String|
 |last_updated_by_user_id|String|
 |last_updated_by_team_id|String|

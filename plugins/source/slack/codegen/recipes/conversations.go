@@ -44,7 +44,12 @@ func ConversationResources() []*Resource {
 			Description: "https://api.slack.com/methods/conversations.history",
 			DataStruct:  &slack.Msg{},
 			PKColumns:   []string{"team_id", "channel_id", "ts"},
-			SkipFields:  []string{"Team", "Blocks", "Replies"},
+			SkipFields: []string{
+				"Team",    // empty in API response
+				"Blocks",  // empty in API response
+				"Replies", // empty in API response
+				"Channel", // empty in API response
+			},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:     "channel_id",

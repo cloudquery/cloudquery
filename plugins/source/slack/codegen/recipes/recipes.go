@@ -59,15 +59,7 @@ var (
 
 func init() {
 	pluralizeClient = pluralize.NewClient()
-	for _, s := range []string{"livedns", "simplehosting"} {
-		pluralizeClient.AddUncountableRule(s)
-	}
-
 	csr = caser.New()
-}
-
-func toSnake(word string) string {
-	return csr.ToSnake(word)
 }
 
 func (r *Resource) Infer() {
@@ -81,7 +73,7 @@ func (r *Resource) Infer() {
 		ds = ds.Elem()
 	}
 	if r.SubService == "" {
-		r.SubService = toSnake(pluralizeClient.Singular(ds.Name()))
+		r.SubService = csr.ToSnake(pluralizeClient.Singular(ds.Name()))
 	}
 }
 
@@ -90,7 +82,7 @@ func (r *Resource) GenerateNames() {
 		r.TableName = tableNameForResource(r)
 	}
 
-	r.Filename = toSnake(r.TableName) + ".go"
+	r.Filename = csr.ToSnake(r.TableName) + ".go"
 	r.TableFuncName = csr.ToPascal(r.TableName)
 	r.ResolverFuncName = "fetch" + r.TableFuncName
 }

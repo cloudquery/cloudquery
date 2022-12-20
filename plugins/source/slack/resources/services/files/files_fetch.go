@@ -28,5 +28,5 @@ func fetchFiles(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource,
 		}
 		return nil
 	}
-	return c.RetryOnError("slack_files", f)
+	return c.RetryOnError(ctx, "slack_files", f)
 }

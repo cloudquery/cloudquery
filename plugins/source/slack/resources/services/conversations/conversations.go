@@ -32,8 +32,8 @@ func Conversations() *schema.Table {
 			},
 			{
 				Name:     "created",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("Created"),
+				Type:     schema.TypeTimestamp,
+				Resolver: client.JSONTimeResolver("Created"),
 			},
 			{
 				Name:     "is_open",

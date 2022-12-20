@@ -3,6 +3,7 @@
 package users
 
 import (
+	"github.com/cloudquery/cloudquery/plugins/source/slack/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -47,8 +48,8 @@ func UserPresences() *schema.Table {
 			},
 			{
 				Name:     "last_activity",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("LastActivity"),
+				Type:     schema.TypeTimestamp,
+				Resolver: client.JSONTimeResolver("LastActivity"),
 			},
 		},
 	}
