@@ -28,6 +28,8 @@ okta:
   - plugins/source/okta/**/*
 slack:
   - plugins/source/slack/**/*
+pagerduty:
+  - plugins/source/pagerduty/**/*
 terraform:
   - plugins/source/terraform/**/*
 vercel:

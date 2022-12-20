@@ -36,6 +36,7 @@
 - [gcp_iam_roles](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_iam_roles.md)
 - [gcp_iam_service_accounts](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_iam_service_accounts.md)
   - [gcp_iam_service_account_keys](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_iam_service_account_keys.md)
+- [gcp_iam_deny_policies](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_iam_deny_policies.md)
 - [gcp_kms_keyrings](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_kms_keyrings.md)
   - [gcp_kms_crypto_keys](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_kms_crypto_keys.md)
 - [gcp_logging_metrics](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_logging_metrics.md)
