@@ -10,7 +10,7 @@ import (
 	"google.golang.org/api/iterator"
 )
 
-func fetchServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	if len(c.EnabledServices) > 0 {
 		for _, svc := range c.EnabledServices[c.ProjectId] {
@@ -38,7 +38,6 @@ func fetchServices(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 		}
 
 		res <- resp
-
 	}
 	return nil
 }

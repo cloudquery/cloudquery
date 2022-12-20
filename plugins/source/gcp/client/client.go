@@ -37,7 +37,7 @@ type Client struct {
 	ClientOptions []option.ClientOption
 	CallOptions   []gax.CallOption
 
-	EnabledServices map[string]map[string]interface{}
+	EnabledServices map[string]map[string]any
 	// this is set by table client project multiplexer
 	ProjectId string
 	// this is set by table client Org multiplexer
@@ -88,7 +88,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 	var err error
 	c := Client{
 		logger:          logger,
-		EnabledServices: map[string]map[string]interface{}{},
+		EnabledServices: map[string]map[string]any{},
 	}
 	var gcpSpec Spec
 	if err := s.UnmarshalSpec(&gcpSpec); err != nil {
@@ -409,8 +409,8 @@ func (c *Client) configureEnabledServices(ctx context.Context) error {
 	return g.Wait()
 }
 
-func (c *Client) fetchEnabledServices(ctx context.Context) (map[string]interface{}, error) {
-	enabled := make(map[string]interface{})
+func (c *Client) fetchEnabledServices(ctx context.Context) (map[string]any, error) {
+	enabled := make(map[string]any)
 	req := &pb.ListServicesRequest{
 		Parent:   "projects/" + c.ProjectId,
 		PageSize: 200,
