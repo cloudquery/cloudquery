@@ -5,6 +5,13 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v5.1.2...plugins-source-gcp-v5.2.0) (2022-12-20)
+
+
+### Features
+
+* **gcp-resources:** Add deny policies ([#5653](https://github.com/cloudquery/cloudquery/issues/5653)) ([7cceb70](https://github.com/cloudquery/cloudquery/commit/7cceb70340473d0348d11eb8a7065d21cb981db1))
+
 ## [5.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v5.1.1...plugins-source-gcp-v5.1.2) (2022-12-20)
 
 
