@@ -86,9 +86,36 @@ func loadAccounts(ctx context.Context, awsConfig *Spec, accountsApi services.Org
 
 // Get Accounts for specific Organizational Units
 func getOUAccounts(ctx context.Context, accountsApi services.OrganizationsClient, awsOrg *AwsOrg) ([]orgTypes.Account, error) {
+	q := awsOrg.OrganizationUnits[:]
+	var ou string
 	var rawAccounts []orgTypes.Account
-	var allOus []orgTypes.Child
-	for _, ou := range awsOrg.OrganizationUnits {
+	for len(q) > 0 {
+		ou, q = q[0], q[1:]
+
+		// Skip any OUs that user has asked to skip
+		if funk.ContainsString(awsOrg.SkipOrganizationalUnits, ou) {
+			continue
+		}
+
+		// get accounts directly under this OU
+		accountsPaginator := organizations.NewListAccountsForParentPaginator(accountsApi, &organizations.ListAccountsForParentInput{
+			ParentId: aws.String(ou),
+		})
+		for accountsPaginator.HasMorePages() {
+			output, err := accountsPaginator.NextPage(ctx)
+			if err != nil {
+				return nil, err
+			}
+			for _, account := range output.Accounts {
+				// Skip any accounts that user has asked to skip
+				if funk.ContainsString(awsOrg.SkipAccounts, *account.Id) {
+					continue
+				}
+				rawAccounts = append(rawAccounts, account)
+			}
+		}
+
+		// get OUs directly under this OU, and add them to the queue
 		ouPaginator := organizations.NewListChildrenPaginator(accountsApi, &organizations.ListChildrenInput{
 			ChildType: orgTypes.ChildTypeOrganizationalUnit,
 			ParentId:  aws.String(ou),
@@ -98,26 +125,12 @@ func getOUAccounts(ctx context.Context, accountsApi services.OrganizationsClient
 			if err != nil {
 				return nil, err
 			}
-			allOus = append(allOus, output.Children...)
+			for _, child := range output.Children {
+				q = append(q, *child.Id)
+			}
 		}
 	}
 
-	for _, ou := range allOus {
-		// Skip any OUs that user has asked to skip
-		if funk.ContainsString(awsOrg.SkipOrganizationalUnits, *ou.Id) {
-			continue
-		}
-		accountsPaginator := organizations.NewListAccountsForParentPaginator(accountsApi, &organizations.ListAccountsForParentInput{
-			ParentId: aws.String(*ou.Id),
-		})
-		for accountsPaginator.HasMorePages() {
-			output, err := accountsPaginator.NextPage(ctx)
-			if err != nil {
-				return nil, err
-			}
-			rawAccounts = append(rawAccounts, output.Accounts...)
-		}
-	}
 	return rawAccounts, nil
 }
 
