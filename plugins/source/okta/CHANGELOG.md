@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-okta-v1.4.2...plugins-source-okta-v2.0.0) (2022-12-20)
+
+
+### ⚠ BREAKING CHANGES
+
+* **okta:** Don't unwrap `okta_users` table `type` column. `type` column is now a JSON type column, instead of unwrapped individuals columns. Please use JSON query syntax to access the data.
+
+### Features
+
+* **okta:** Don't unwrap `okta_users` table `credentials` column ([e5ff568](https://github.com/cloudquery/cloudquery/commit/e5ff568bc3e693964b57d8077997b92c867cde4f))
+* **okta:** Don't unwrap `okta_users` table `type` column ([e5ff568](https://github.com/cloudquery/cloudquery/commit/e5ff568bc3e693964b57d8077997b92c867cde4f))
+
 ## [1.4.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-okta-v1.4.1...plugins-source-okta-v1.4.2) (2022-12-20)
 
 
