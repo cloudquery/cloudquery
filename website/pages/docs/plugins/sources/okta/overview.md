@@ -42,7 +42,7 @@ spec:
 
 ### List all users in Okta
 
-```
+```sql
 select 
   id,
   profile->>'firstName' as first_name,
@@ -54,7 +54,7 @@ from okta_users;
 
 ### List all active users
 
-```
+```sql
 select
   id,
   profile->>'firstName' as first_name,
@@ -67,7 +67,7 @@ where
 
 ### List active Okta applications
 
-```
+```sql
 select
   id,
   name
@@ -78,7 +78,7 @@ where status = 'ACTIVE';
 
 ### List active Okta applications, ordered by number of users
 
-```
+```sql
 select 
   a.id,
   a.name,
