@@ -14,6 +14,7 @@ type Account struct {
 
 type AwsOrg struct {
 	OrganizationUnits           []string `json:"organization_units,omitempty"`
+	SkipOrganizationalUnits     []string `json:"skip_organization_units,omitempty"`
 	AdminAccount                *Account `json:"admin_account"`
 	MemberCredentials           *Account `json:"member_trusted_principal"`
 	ChildAccountRoleName        string   `json:"member_role_name,omitempty"`
