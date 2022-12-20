@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/services"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -44,7 +45,7 @@ func loadAccounts(ctx context.Context, awsConfig *Spec, accountsApi services.Org
 	var rawAccounts []orgTypes.Account
 	var err error
 	if len(awsConfig.Organization.OrganizationUnits) > 0 {
-		rawAccounts, err = getOUAccounts(ctx, accountsApi, awsConfig.Organization.OrganizationUnits)
+		rawAccounts, err = getOUAccounts(ctx, accountsApi, awsConfig.Organization.OrganizationUnits, awsConfig.Organization.SkipOrganizationalUnits)
 	} else {
 		rawAccounts, err = getAllAccounts(ctx, accountsApi)
 	}
@@ -83,24 +84,37 @@ func loadAccounts(ctx context.Context, awsConfig *Spec, accountsApi services.Org
 }
 
 // Get Accounts for specific Organizational Units
-func getOUAccounts(ctx context.Context, accountsApi services.OrganizationsClient, ous []string) ([]orgTypes.Account, error) {
+func getOUAccounts(ctx context.Context, accountsApi services.OrganizationsClient, ous []string, ousSkip []string) ([]orgTypes.Account, error) {
 	var rawAccounts []orgTypes.Account
-
+	var AllOus []orgTypes.Child
 	for _, ou := range ous {
-		var paginationToken *string
-		for {
-			resp, err := accountsApi.ListAccountsForParent(ctx, &organizations.ListAccountsForParentInput{
-				NextToken: paginationToken,
-				ParentId:  aws.String(ou),
-			})
+		ouPaginator := organizations.NewListChildrenPaginator(accountsApi, &organizations.ListChildrenInput{
+			ChildType: orgTypes.ChildTypeOrganizationalUnit,
+			ParentId:  aws.String(ou),
+		})
+		for ouPaginator.HasMorePages() {
+			output, err := ouPaginator.NextPage(ctx)
 			if err != nil {
 				return nil, err
 			}
-			rawAccounts = append(rawAccounts, resp.Accounts...)
-			if resp.NextToken == nil {
-				break
+			AllOus = append(AllOus, output.Children...)
+		}
+	}
+
+	for _, ou := range AllOus {
+		// Skip any OUs that user has asked to skip
+		if stringInSlice(*ou.Id, ousSkip) {
+			continue
+		}
+		accountsPaginator := organizations.NewListAccountsForParentPaginator(accountsApi, &organizations.ListAccountsForParentInput{
+			ParentId: aws.String(*ou.Id),
+		})
+		for accountsPaginator.HasMorePages() {
+			output, err := accountsPaginator.NextPage(ctx)
+			if err != nil {
+				return nil, err
 			}
-			paginationToken = resp.NextToken
+			rawAccounts = append(rawAccounts, output.Accounts...)
 		}
 	}
 	return rawAccounts, nil
@@ -109,20 +123,22 @@ func getOUAccounts(ctx context.Context, accountsApi services.OrganizationsClient
 // Get All accounts in a specific organization
 func getAllAccounts(ctx context.Context, accountsApi services.OrganizationsClient) ([]orgTypes.Account, error) {
 	var rawAccounts []orgTypes.Account
-	var paginationToken *string
-
-	for {
-		resp, err := accountsApi.ListAccounts(ctx, &organizations.ListAccountsInput{
-			NextToken: paginationToken,
-		})
+	accountsPaginator := organizations.NewListAccountsPaginator(accountsApi, &organizations.ListAccountsInput{})
+	for accountsPaginator.HasMorePages() {
+		output, err := accountsPaginator.NextPage(ctx)
 		if err != nil {
 			return nil, err
 		}
-		rawAccounts = append(rawAccounts, resp.Accounts...)
-		if resp.NextToken == nil {
-			break
-		}
-		paginationToken = resp.NextToken
+		rawAccounts = append(rawAccounts, output.Accounts...)
 	}
 	return rawAccounts, nil
+}
+
+func stringInSlice(a string, list []string) bool {
+	for _, b := range list {
+		if b == a {
+			return true
+		}
+	}
+	return false
 }
