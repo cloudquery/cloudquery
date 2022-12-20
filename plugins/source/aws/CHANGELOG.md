@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [8.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v8.0.0...plugins-source-aws-v8.1.0) (2022-12-20)
+
+
+### Features
+
+* **aws:** Add aws_organizations ([#5677](https://github.com/cloudquery/cloudquery/issues/5677)) ([06c57fd](https://github.com/cloudquery/cloudquery/commit/06c57fd8d36f4c1c84748e036bdd31c2bfd03392)), closes [#5621](https://github.com/cloudquery/cloudquery/issues/5621)
+
 ## [8.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v7.4.0...plugins-source-aws-v8.0.0) (2022-12-20)
 
 
