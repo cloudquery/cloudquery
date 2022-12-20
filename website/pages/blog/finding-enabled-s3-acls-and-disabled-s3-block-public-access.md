@@ -92,7 +92,7 @@ or ownership_controls is NULL;
 
 Note: Buckets created via Console with ObjectWriter Object Ownership Settings and Buckets created via CLI without the Object Ownership option specified will result in an empty Object Ownership `ownership_controls` field.  This seems to be a default setting and we're following up with AWS on this discrepancy.
 
-```
+```bash
 aws s3api create-bucket --bucket test-json-bucket  --profile myprofile --region us-east-1
  
 {
