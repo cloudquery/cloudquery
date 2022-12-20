@@ -12,6 +12,6 @@ const (
 )
 
 func main() {
-	p := destination.NewPlugin("csv", plugin.Version, client.New)
+	p := destination.NewPlugin("csv", plugin.Version, client.New, destination.WithMaxWorkers(1))
 	serve.Destination(p, serve.WithDestinationSentryDSN(sentryDSN))
 }

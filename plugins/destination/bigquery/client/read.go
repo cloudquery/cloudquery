@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	readSQL = "SELECT * FROM `%s.%s.%s` WHERE `_cq_source_name` = @cq_source_name order by _cq_sync_time desc"
+	readSQL = "SELECT * FROM `%s.%s.%s` WHERE `_cq_source_name` = @cq_source_name order by _cq_sync_time asc"
 )
 
 func (*Client) createResultsArray(table *schema.Table) []bigquery.Value {
@@ -90,9 +90,9 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 	if err != nil {
 		return fmt.Errorf("failed to read table %s: %w", table.Name, err)
 	}
-	values := c.createResultsArray(table)
-	v := make([]any, len(values))
 	for {
+		values := c.createResultsArray(table)
+		v := make([]interface{}, len(values))
 		err := it.Next(&values)
 		if err == iterator.Done {
 			break

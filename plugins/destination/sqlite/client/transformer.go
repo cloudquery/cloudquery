@@ -10,8 +10,8 @@ func (*Client) TransformBool(v *schema.Bool) any {
 	return v.String()
 }
 
-func (*Client) TransformBytea(v *schema.Bytea) any {
-	return v.String()
+func (*Client) TransformBytea(v *schema.Bytea) interface{} {
+	return v.Bytes
 }
 
 func (*Client) TransformFloat8(v *schema.Float8) any {
