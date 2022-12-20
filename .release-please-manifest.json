@@ -46,5 +46,6 @@
   "plugins/source/slack": "1.0.0",
   "plugins/source/slack+FILLER": "0.0.0",
   "plugins/source/crowdstrike": "1.0.0",
-  "plugins/source/crowdstrike+FILLER": "0.0.0"
+  "plugins/source/crowdstrike+FILLER": "0.0.0",
+  "plugins/source/pagerduty": "1.0.0"
 }
