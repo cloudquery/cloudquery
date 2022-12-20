@@ -26,6 +26,8 @@ heroku:
   - plugins/source/heroku/**/*
 okta:
   - plugins/source/okta/**/*
+slack:
+  - plugins/source/slack/**/*
 terraform:
   - plugins/source/terraform/**/*
 vercel:
