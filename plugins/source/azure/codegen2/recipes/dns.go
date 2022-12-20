@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armdns.ZonesClient{}).NewListPager,
 			NewFunc:        armdns.NewZonesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/dnszones",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_network)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

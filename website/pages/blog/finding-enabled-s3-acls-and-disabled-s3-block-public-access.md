@@ -1,0 +1,137 @@
+---
+title: S3 Security Settings for Enabling S3 Block Public Access and Disabling ACLs
+tag: security
+date: 2022/12/15
+description: >-
+  How CloudQuery can help find AWS S3 Bucket and Account Settings for Block Public Access and Access Control Lists (ACLs).  Amazon is changing S3 security default behavior to enable Block Public Access and disable Access Control Lists.
+author: jsonkao
+---
+
+import { BlogHeader } from "../../components/BlogHeader"
+
+<BlogHeader/>
+
+## Overview
+
+AWS recently [published a blog](https://aws.amazon.com/blogs/aws/heads-up-amazon-s3-security-changes-are-coming-in-april-of-2023/) regarding upcoming S3 security changes coming in April 2023.
+
+This update has 2 distinct changes in effect.   Once the changes are in effect for a target Region, all newly created buckets in that region will have:
+
+- S3 Block Public Access enabled by default.
+    - This includes all 4 Block Public Access Settings.
+- Access Control Lists (ACLs) disabled by default.
+    - The Bucket owner enforced setting is on.  With this setting, ACLs are disabled and no longer affect access permissions to the bucket.  Requests to set or update ACLs will fail, but requests to read ACLs are supported.
+
+This behavior is already default for console and will be default for buckets created by non-Console options including the S3 API, S3 CLI, AWS SDKs, or AWS CloudFormation.
+
+AWS recommends a deliberate and thoughtful approach to creating new buckets that rely on public buckets or ACLs.  We additionally recommend for customers to standardize existing buckets and settings if possible to enforce S3 Block Public Access on all buckets that do not need to be public and to disable ACLs and utilize IAM as a standard method of managing access to S3.
+
+## Finding Disabled Block Public Access and Enabled ACLs
+
+### S3 Block Public Access
+
+#### S3 Bucket Block Public Access Settings
+
+CloudQuery tables: [aws_s3_buckets](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_s3_buckets.md) 
+
+There are 4 different components for S3 Block Public Access Settings:
+
+- Block public access to buckets and objects granted through new access control lists (ACLs)
+- Block public access to buckets and objects granted through any access control lists (ACLs)
+- Block public access to buckets and objects granted through new public bucket policies
+- Block public and cross-account access to buckets and objects through any public bucket policies
+
+The below query will check for any S3 bucket where 1 or more of those 4 components are set to false (and thus where block public access is not fully enabled).
+
+```sql
+SELECT * 
+FROM aws_s3_buckets 
+where block_public_acls is false 
+or block_public_policy is false 
+or ignore_public_acls is false 
+or restrict_public_buckets is false;
+```
+
+#### Account Level Block Public Access Settings
+
+CloudQuery tables: [aws_s3_accounts](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_s3_accounts.md)
+
+Block Public Access can also be set at the Account level, which we recommend as an additional layer of security if the S3 buckets in the account do not need to be public.
+
+To check for this setting on accounts in CloudQuery, we can use the following query:
+
+```sql
+SELECT * 
+FROM aws_s3_accounts 
+WHERE block_public_acls is false 
+or block_public_policy is false 
+or ignore_public_acls is false 
+or restrict_public_buckets is false;
+```
+
+### S3 Access Control Lists (ACLs)
+
+#### Object Ownership Settings
+
+CloudQuery tables: [aws_s3_buckets](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_s3_buckets.md) and [aws_s3_bucket_grants](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_s3_bucket_grants.md)
+
+There are 3 different settings for object ownership: 
+
+- Bucket owner enforced (ACLs disabled)
+- Bucket owner preferred (ACLs enabled)
+- Object writer (ACLs enabled)
+
+To check for buckets with enabled ACLs (without disabled ACLs), we will look for bucket owner preferred, object writer settings, and empty values for object ownership.  The empty values for object ownership currently correlate to object writer.
+
+```sql
+SELECT * 
+FROM aws_s3_buckets 
+WHERE ownership_controls &&'{"BucketOwnerPreferred", "ObjectWriter"}' 
+or ownership_controls is NULL;
+```
+
+Note: Buckets created via Console with ObjectWriter Object Ownership Settings and Buckets created via CLI without the Object Ownership option specified will result in an empty Object Ownership `ownership_controls` field.  This seems to be a default setting and we're following up with AWS on this discrepancy.
+
+```bash
+aws s3api create-bucket --bucket test-json-bucket  --profile myprofile --region us-east-1
+ 
+{
+    "Location": "/test-json-bucket"
+}
+
+aws s3api get-bucket-ownership-controls --bucket test-json-bucket --profile myprofile
+
+An error occurred (OwnershipControlsNotFoundError) when calling the GetBucketOwnershipControls operation: The bucket ownership controls were not found
+```
+
+#### S3 Grants (ACLs)
+
+To look for grants within resource ACLs that are associated with S3 buckets with enabled ACLs (without disabled ACLs), we will cross reference our S3 buckets from the above query with S3 grants.
+
+```sql
+SELECT * 
+FROM aws_s3_bucket_grants 
+LEFT JOIN aws_s3_buckets 
+	on aws_s3_bucket_grants.bucket_arn = aws_s3_buckets.arn 
+WHERE ownership_controls && '{"BucketOwnerPreferred", "ObjectWriter"}'
+or ownership_controls is NULL;
+```
+
+## Contact Us
+
+If you have comments or questions about S3 security or using CloudQuery, we would love to hear from you! Reach out to us on [GitHub](https://github.com/cloudquery/cloudquery) or [Discord](https://cloudquery.io/discord)!
+
+## References
+
+[CloudQuery: AWS Source Plugin](https://www.cloudquery.io/docs/plugins/sources/aws/overview)
+
+[AWS News Blog: Amazon S3 Security Changes Are Coming in April of 2023](https://aws.amazon.com/blogs/aws/heads-up-amazon-s3-security-changes-are-coming-in-april-of-2023/)
+
+[AWS: S3 Block Public Access](https://aws.amazon.com/blogs/aws/amazon-s3-block-public-access-another-layer-of-protection-for-your-accounts-and-buckets/)
+
+[AWS News Blog: Simplify Access Management for Data Stored in Amazon S3](https://aws.amazon.com/blogs/aws/new-simplify-access-management-for-data-stored-in-amazon-s3/)
+
+[AWS News Blog: Amazon S3 Block Public Access](https://aws.amazon.com/blogs/aws/amazon-s3-block-public-access-another-layer-of-protection-for-your-accounts-and-buckets/) 
+
+[AWS S3: Controlling ownership of objects and disabling ACLs for your bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/about-object-ownership.html)
+

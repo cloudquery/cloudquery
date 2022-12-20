@@ -29,7 +29,7 @@ This will install `mockgen` and any other tools necessary to complete the proces
 
 1. Check in [client/services.go](client/services.go) that the service you need has an interface defined. If it does, you can skip to [2. Add a Code Generation Recipe](#2-add-a-code-generation-recipe). If not, read on to learn how to generate the interface.
 2. Inside [codegen/services/clients.go](codegen/services/clients.go), add the client for the AWS SDK you need to the `clients` slice. You may need to run `go get github.com/aws/aws-sdk-go-v2/service/<service-name>` (e.g. `go get github.com/aws/aws-sdk-go-v2/service/dynamodb`) to add the dependency first.
-3. Run `make gen`. This should add the interface for your client to [client/services.go](client/services.go) and create a mock for it that will be used in unit tests later.
+3. Run `make gen-mocks`. This should add the interface for your client to [client/services.go](client/services.go) and create a mock for it that will be used in unit tests later.
 
 ## 2. Add a Code Generation Recipe
 

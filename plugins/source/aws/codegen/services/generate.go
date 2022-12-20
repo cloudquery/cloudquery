@@ -13,7 +13,7 @@ import (
 	"strings"
 	"text/template"
 
-	caser "github.com/cloudquery/plugin-sdk/caser"
+	"github.com/cloudquery/plugin-sdk/caser"
 )
 
 //go:embed templates/*.go.tpl
@@ -156,7 +156,10 @@ func Generate() error {
 			return fmt.Errorf("failed to execute template: %w", err)
 		}
 		filePath := path.Join(path.Dir(filename), fmt.Sprintf("../../client/services/%s.go", service.PackageName))
-		formatAndWriteFile(filePath, buff)
+		err := formatAndWriteFile(filePath, buff)
+		if err != nil {
+			return fmt.Errorf("failed to format and write file for service %v: %w", service.Name, err)
+		}
 	}
 
 	for _, custom := range customClients {

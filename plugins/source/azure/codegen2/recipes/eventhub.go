@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armeventhub.NamespacesClient{}).NewListPager,
 			NewFunc:        armeventhub.NewNamespacesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.EventHub/namespaces",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_EventHub)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_eventhub)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armprivatedns.PrivateZonesClient{}).NewListPager,
 			NewFunc:        armprivatedns.NewPrivateZonesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/privateDnsZones",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_network)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

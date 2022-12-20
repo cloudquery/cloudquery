@@ -4,9 +4,8 @@ https://cloud.google.com/container-analysis/docs/reference/rest/v1beta1/projects
 
 The primary key for this table is **name**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

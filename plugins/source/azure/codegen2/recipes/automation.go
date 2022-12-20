@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armautomation.AccountClient{}).NewListPager,
 			NewFunc:        armautomation.NewAccountClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Automation/automationAccounts",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Automation)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_automation)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

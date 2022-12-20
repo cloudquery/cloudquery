@@ -1,7 +1,5 @@
 # Table: azure_mariadb_servers
 
-
-
 The primary key for this table is **id**.
 
 ## Relations
@@ -10,6 +8,7 @@ The following tables depend on azure_mariadb_servers:
   - [azure_mariadb_server_configurations](azure_mariadb_server_configurations.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

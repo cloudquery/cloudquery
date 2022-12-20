@@ -12,7 +12,7 @@ func ContainerGroups() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_containerinstance_container_groups",
 		Resolver:  fetchContainerGroups,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ContainerInstance),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_containerinstance),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

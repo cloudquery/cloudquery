@@ -11,6 +11,7 @@ The following tables depend on aws_elbv2_load_balancers:
   - [aws_elbv2_load_balancer_attributes](aws_elbv2_load_balancer_attributes.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

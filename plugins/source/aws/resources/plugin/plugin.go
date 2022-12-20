@@ -2,15 +2,15 @@ package plugin
 
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/plugins"
+	"github.com/cloudquery/plugin-sdk/plugins/source"
 )
 
 var (
 	Version = "Development"
 )
 
-func AWS() *plugins.SourcePlugin {
-	return plugins.NewSourcePlugin(
+func AWS() *source.Plugin {
+	return source.NewPlugin(
 		"aws",
 		Version,
 		tables(),

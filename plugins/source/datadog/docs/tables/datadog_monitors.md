@@ -1,7 +1,5 @@
 # Table: datadog_monitors
 
-
-
 The composite primary key for this table is (**account_name**, **id**).
 
 ## Relations
@@ -10,6 +8,7 @@ The following tables depend on datadog_monitors:
   - [datadog_monitor_downtimes](datadog_monitor_downtimes.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

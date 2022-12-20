@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armsaas.ResourcesClient{}).NewListPager,
 			NewFunc:        armsaas.NewResourcesClient,
 			URL:            "/providers/Microsoft.SaaS/saasresources",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_SaaS)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_saas)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

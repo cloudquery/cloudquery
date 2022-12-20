@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armappcomplianceautomation.ReportsClient{}).NewListPager,
 			NewFunc:        armappcomplianceautomation.NewReportsClient,
 			URL:            "/providers/Microsoft.AppComplianceAutomation/reports",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_AppComplianceAutomation)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_appcomplianceautomation)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

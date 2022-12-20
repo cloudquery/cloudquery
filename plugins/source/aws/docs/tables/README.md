@@ -1,5 +1,7 @@
 # Source Plugin: aws
+
 ## Tables
+
 - [aws_accessanalyzer_analyzers](aws_accessanalyzer_analyzers.md)
   - [aws_accessanalyzer_analyzer_findings](aws_accessanalyzer_analyzer_findings.md)
   - [aws_accessanalyzer_analyzer_archive_rules](aws_accessanalyzer_analyzer_archive_rules.md)
@@ -191,6 +193,9 @@
   - [aws_elasticbeanstalk_configuration_settings](aws_elasticbeanstalk_configuration_settings.md)
   - [aws_elasticbeanstalk_configuration_options](aws_elasticbeanstalk_configuration_options.md)
 - [aws_elasticsearch_domains](aws_elasticsearch_domains.md)
+- [aws_elastictranscoder_pipelines](aws_elastictranscoder_pipelines.md)
+  - [aws_elastictranscoder_pipeline_jobs](aws_elastictranscoder_pipeline_jobs.md)
+- [aws_elastictranscoder_presets](aws_elastictranscoder_presets.md)
 - [aws_elbv1_load_balancers](aws_elbv1_load_balancers.md)
   - [aws_elbv1_load_balancer_policies](aws_elbv1_load_balancer_policies.md)
 - [aws_elbv2_load_balancers](aws_elbv2_load_balancers.md)
@@ -413,11 +418,13 @@
 - [aws_servicecatalog_provisioned_products](aws_servicecatalog_provisioned_products.md)
 - [aws_servicequotas_services](aws_servicequotas_services.md)
   - [aws_servicequotas_quotas](aws_servicequotas_quotas.md)
-- [aws_ses_templates](aws_ses_templates.md)
+- [aws_ses_active_receipt_rule_sets](aws_ses_active_receipt_rule_sets.md)
 - [aws_ses_configuration_sets](aws_ses_configuration_sets.md)
   - [aws_ses_configuration_set_event_destinations](aws_ses_configuration_set_event_destinations.md)
 - [aws_ses_contact_lists](aws_ses_contact_lists.md)
+- [aws_ses_custom_verification_email_templates](aws_ses_custom_verification_email_templates.md)
 - [aws_ses_identities](aws_ses_identities.md)
+- [aws_ses_templates](aws_ses_templates.md)
 - [aws_shield_attacks](aws_shield_attacks.md)
 - [aws_shield_protection_groups](aws_shield_protection_groups.md)
 - [aws_shield_protections](aws_shield_protections.md)

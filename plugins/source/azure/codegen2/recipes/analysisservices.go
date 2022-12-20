@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armanalysisservices.ServersClient{}).NewListPager,
 			NewFunc:        armanalysisservices.NewServersClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.AnalysisServices/servers",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_AnalysisServices)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_analysisservices)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

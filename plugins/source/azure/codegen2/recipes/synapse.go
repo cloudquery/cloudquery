@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armsynapse.PrivateLinkHubsClient{}).NewListPager,
 			NewFunc:        armsynapse.NewPrivateLinkHubsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Synapse/privateLinkHubs",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Synapse)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_synapse)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -26,7 +26,7 @@ func init() {
 			ListFunc:       (&armsynapse.WorkspacesClient{}).NewListPager,
 			NewFunc:        armsynapse.NewWorkspacesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Synapse/workspaces",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Synapse)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_synapse)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

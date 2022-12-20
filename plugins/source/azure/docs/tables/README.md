@@ -1,5 +1,7 @@
 # Source Plugin: azure
+
 ## Tables
+
 - [azure_advisor_recommendation_metadata](azure_advisor_recommendation_metadata.md)
 - [azure_advisor_recommendations](azure_advisor_recommendations.md)
 - [azure_advisor_suppressions](azure_advisor_suppressions.md)
@@ -205,7 +207,6 @@
 - [azure_security_topology](azure_security_topology.md)
 - [azure_security_workspace_settings](azure_security_workspace_settings.md)
 - [azure_servicebus_namespaces](azure_servicebus_namespaces.md)
-- [azure_sql_deleted_servers](azure_sql_deleted_servers.md)
 - [azure_sql_instance_pools](azure_sql_instance_pools.md)
 - [azure_sql_managed_instances](azure_sql_managed_instances.md)
 - [azure_sql_servers](azure_sql_servers.md)
@@ -214,6 +215,7 @@
 - [azure_sqlvirtualmachine_sql_virtual_machines](azure_sqlvirtualmachine_sql_virtual_machines.md)
 - [azure_storage_accounts](azure_storage_accounts.md)
   - [azure_storage_tables](azure_storage_tables.md)
+  - [azure_storage_containers](azure_storage_containers.md)
 - [azure_storagecache_caches](azure_storagecache_caches.md)
 - [azure_streamanalytics_streaming_jobs](azure_streamanalytics_streaming_jobs.md)
 - [azure_subscription_subscriptions](azure_subscription_subscriptions.md)

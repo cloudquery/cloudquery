@@ -10,6 +10,7 @@ The following tables depend on aws_backup_vaults:
   - [aws_backup_vault_recovery_points](aws_backup_vault_recovery_points.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

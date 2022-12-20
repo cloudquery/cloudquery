@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armcosmos.LocationsClient{}).NewListPager,
 			NewFunc:        armcosmos.NewLocationsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DocumentDB)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_documentdb)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -26,7 +26,7 @@ func init() {
 			ListFunc:       (&armcosmos.RestorableDatabaseAccountsClient{}).NewListPager,
 			NewFunc:        armcosmos.NewRestorableDatabaseAccountsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/restorableDatabaseAccounts",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DocumentDB)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_documentdb)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

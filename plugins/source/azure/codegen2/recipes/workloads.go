@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armworkloads.MonitorsClient{}).NewListPager,
 			NewFunc:        armworkloads.NewMonitorsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Workloads/monitors",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Workloads)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_workloads)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

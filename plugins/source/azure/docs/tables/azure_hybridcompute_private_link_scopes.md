@@ -1,12 +1,9 @@
 # Table: azure_hybridcompute_private_link_scopes
 
-
-
 The primary key for this table is **id**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

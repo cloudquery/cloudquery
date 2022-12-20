@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armstreamanalytics.StreamingJobsClient{}).NewListPager,
 			NewFunc:        armstreamanalytics.NewStreamingJobsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.StreamAnalytics/streamingjobs",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_StreamAnalytics)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_streamanalytics)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

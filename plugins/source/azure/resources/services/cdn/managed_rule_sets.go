@@ -12,7 +12,7 @@ func ManagedRuleSets() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_cdn_managed_rule_sets",
 		Resolver:  fetchManagedRuleSets,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Cdn),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_cdn),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

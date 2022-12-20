@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armproviderhub.ProviderRegistrationsClient{}).NewListPager,
 			NewFunc:        armproviderhub.NewProviderRegistrationsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ProviderHub)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_providerhub)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

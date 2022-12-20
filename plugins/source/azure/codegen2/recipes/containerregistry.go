@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armcontainerregistry.RegistriesClient{}).NewListPager,
 			NewFunc:        armcontainerregistry.NewRegistriesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerRegistry/registries",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ContainerRegistry)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_containerregistry)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

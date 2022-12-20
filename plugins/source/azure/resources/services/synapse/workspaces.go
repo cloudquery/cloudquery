@@ -12,7 +12,7 @@ func Workspaces() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_synapse_workspaces",
 		Resolver:  fetchWorkspaces,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Synapse),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_synapse),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
