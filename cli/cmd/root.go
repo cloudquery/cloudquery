@@ -139,7 +139,7 @@ func NewCmdRoot() *cobra.Command {
 }
 
 // formats a timestamp in UTC and RFC3339
-func formatTimestampUtcRfc3339(timestamp interface{}) string {
+func formatTimestampUtcRfc3339(timestamp any) string {
 	timestampConcrete, ok := timestamp.(time.Time)
 	if !ok {
 		return fmt.Sprintf("%v", timestamp)
