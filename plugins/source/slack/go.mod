@@ -8,6 +8,7 @@ require (
 	github.com/golang/mock v1.6.0
 	github.com/rs/zerolog v1.28.0
 	github.com/slack-go/slack v0.12.0
+	github.com/thoas/go-funk v0.9.2
 )
 
 require (
@@ -24,7 +25,6 @@ require (
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/cobra v1.6.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/thoas/go-funk v0.9.2 // indirect
 	golang.org/x/exp v0.0.0-20221126150942-6ab00d035af9 // indirect
 	golang.org/x/mod v0.6.0 // indirect
 	golang.org/x/net v0.2.0 // indirect
