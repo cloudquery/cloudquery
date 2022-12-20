@@ -13,7 +13,7 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 <BlogHeader/>
 
-CloudQuery is an open-source, extendable framework that gives you a single-pane-of-glass to your cloud-infrastructure using SQL. Today, we are happy to announce the release of the Slack source plugin for CloudQuery.
+CloudQuery is an open source high performance data integration platform designed for security and infrastructure teams. Today, we are happy to announce the release of the Slack source plugin for CloudQuery.
 
 Slack is a popular communication tool used by many organizations. With the CloudQuery Slack source plugin, you can now load Slack workspace data into Postgres, Snowflake, BigQuery, SQLite, or any other destination supported by CloudQuery. 
 
