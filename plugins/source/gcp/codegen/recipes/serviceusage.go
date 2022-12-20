@@ -18,6 +18,7 @@ func init() {
 			UnimplementedServer: &pb.UnimplementedServiceUsageServer{},
 			PrimaryKeys:         []string{"name"},
 			Description:         "https://cloud.google.com/service-usage/docs/reference/rest/v1/services#Service",
+			SkipFetch:           true,
 		},
 	}
 
@@ -27,9 +28,6 @@ func init() {
 		resource.ProtobufImport = "cloud.google.com/go/serviceusage/apiv1/serviceusagepb"
 		resource.Template = "newapi_list"
 		resource.MockTemplate = "newapi_list_grpc_mock"
-		resource.RequestStructFields = `Parent: "projects/" + c.ProjectId,
-		PageSize: 200,
-		Filter: "state:ENABLED",`
 		resource.ServiceDNS = "serviceusage.googleapis.com"
 	}
 
