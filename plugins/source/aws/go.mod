@@ -129,7 +129,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.27 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.21 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.3.28 // indirect
-	github.com/aws/aws-sdk-go-v2/service/athena v1.20.3
+	github.com/aws/aws-sdk-go-v2/service/athena v1.21.0
 	github.com/aws/aws-sdk-go-v2/service/backup v1.18.2
 	github.com/aws/aws-sdk-go-v2/service/glue v1.37.1
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.9.11 // indirect
