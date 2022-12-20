@@ -3,6 +3,8 @@ title: Docker
 ---
 
 import { Callout } from 'nextra-theme-docs'
+import { getLatestVersion } from "../../../utils/versions";
+
 
 # Docker
 
@@ -10,10 +12,34 @@ It is possible to use CloudQuery in an isolated container. You can pull the rele
 
 ## Configuration
 
-CloudQuery uses YAML files as the primary means of configuration. For the CloudQuery docker container to use this configuration file you will need to mount the volume to the container like so:
+### Create a Config File on the Host Machine
 
-```docker copy
-docker run \
+CloudQuery uses YAML files as the primary means of configuration. A simple example `config.yml` file would look like:
+
+```yaml
+kind: source
+spec:
+  name: aws
+  path: cloudquery/aws
+  version: "VERSION_SOURCE_AWS"
+  tables: ["aws_ec2_*"]
+  destinations: ["postgresql"]
+---
+kind: destination
+spec:
+  name: postgresql
+  path: cloudquery/postgresql
+  version: "VERSION_DESTINATION_POSTGRESQL"
+  spec:
+    connection_string: "postgres://postgres:pass@host.docker.internal:5432/postgres?sslmode=disable"
+```
+
+### Run the Container
+
+For the CloudQuery docker container to use this configuration file you will need to mount the volume to the container like so:
+
+```bash 
+docker run --pull always \
   -v <ABSOLUTE_PATH_TO_CONFIG_FILE>:/config.yml \
   # set any env variable with -e <ENV_VAR_NAME>=<ENV_VAR_VALUE>
   ghcr.io/cloudquery/cloudquery:latest \
@@ -21,6 +47,8 @@ docker run \
 ```
 
 As with running any `cloudquery` command on your CLI you can override the config with the [optional flags](/docs/reference/cli/cloudquery) with the docker container. You will also need to make sure you load any ENV variables for source and destination plugins, such as your `AWS_*` keys etc.
+
+If you split the configuration between multiple files, you can mount the directory containing them, instead of just the `config.yml` file.
 
 <Callout type="info">
 
@@ -30,14 +58,15 @@ If you are running Docker on an ARM Apple device and you see a segmentation faul
 
 ## Caching
 
-Due to the way `cloudquery` is [architected](/docs/developers/architecture) it downloads all the components to interact with source and destination plugins. This means that with a docker container it runs the download step each state as the local cache is lost between executions. To avoid this we recommend mounting a volume to cache the data and configuring `cloudquery` to use this via the `--data-dir` optional flag. An example of this would be:
+Due to the way `cloudquery` is [designed](/docs/developers/architecture) it downloads all the components to interact with source and destination plugins. This means that with a docker container it runs the download step each time, as the local cache is lost between executions. To avoid this we recommend mounting a volume to cache the data and configuring `cloudquery` to use this via the `--cq-dir` optional flag. An example of this would be:
 
-```docker copy
-docker run \
-  -v <PATH TO CACHE>/.cq:/cache/.cq \
-  -v <PATH TO CONFIG>/cloudquery.yml:/config/cloudquery.yml \
+```bash
+docker run --pull always \
+  -v <ABSOLUTE_PATH_TO_CONFIG_FILE>:/config.yml \
+  -v <ABSOLUTE_PATH_TO_CACHE_DIRECTORY>:/cache/.cq \
+  # set any env variable with -e <ENV_VAR_NAME>=<ENV_VAR_VALUE>
   ghcr.io/cloudquery/cloudquery:latest \
-  fetch --config /config/cloudquery.yml \
+  sync /config.yml --cq-dir /cache/.cq
 ```
 
 <Callout type="info">
@@ -45,4 +74,3 @@ docker run \
 Depending on your operating system, the built components maybe different between your local system and the container. To avoid the different please use a separate cache directory for the container than a local instance of `cloudquery`.
 
 </Callout>
-
