@@ -8,7 +8,7 @@ This page documents the available CloudQuery SQL Policies for AWS. See the [read
 ### Requirements
 AWS CIS V1.2.0 requires the following tables to be synced before the policy is executed:
 
-```
+```yaml
 tables:
   - aws_cloudtrail_trail_event_selectors
   - aws_cloudtrail_trails
@@ -54,7 +54,7 @@ AWS CIS V1.2.0 performs the following checks:
 ### Requirements
 AWS PCI DSS v3.2.1 requires the following tables to be synced before the policy is executed:
 
-```
+```yaml
 tables:
   - aws_autoscaling_groups
   - aws_cloudtrail_trail_event_selectors
@@ -152,7 +152,7 @@ AWS PCI DSS v3.2.1 performs the following checks:
 ### Requirements
 AWS Foundational Security Best Practices requires the following tables to be synced before the policy is executed:
 
-```
+```yaml
 tables:
   - aws_acm_certificates
   - aws_apigateway_rest_apis
@@ -358,7 +358,7 @@ AWS Foundational Security Best Practices performs the following checks:
 ### Requirements
 AWS Public Egress requires the following tables to be synced before the policy is executed:
 
-```
+```yaml
 tables:
   - aws_ec2_instances
   - aws_ec2_route_tables
@@ -375,7 +375,7 @@ AWS Public Egress performs the following checks:
 ### Requirements
 AWS Publicly Available requires the following tables to be synced before the policy is executed:
 
-```
+```yaml
 tables:
   - aws_apigateway_rest_apis
   - aws_apigatewayv2_apis
@@ -402,7 +402,7 @@ AWS Publicly Available performs the following checks:
 ### Requirements
 AWS Unused Resources requires the following tables to be synced before the policy is executed:
 
-```
+```yaml
 tables:
   - aws_acm_certificates
   - aws_apigateway_api_keys
