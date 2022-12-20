@@ -48,7 +48,7 @@ func PermissionEntities() *schema.Table {
 	}
 }
 
-func fetchPermissionEntities(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchPermissionEntities(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	nextRange := &heroku.ListRange{
 		Field: "id",

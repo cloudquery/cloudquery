@@ -19,7 +19,7 @@ import (
 type AWSService string
 
 type AwsService struct {
-	Regions map[string]*map[string]interface{} `json:"regions"`
+	Regions map[string]*map[string]any `json:"regions"`
 }
 
 type AwsPartition struct {
@@ -34,10 +34,10 @@ type SupportedServiceRegionsData struct {
 }
 
 // ListResolver is responsible for iterating through entire list of resources that should be grabbed (if API is paginated). It should send list of items via the `resultsChan` so that the DetailResolver can grab the details of each item. All errors should be sent to the error channel.
-type ListResolverFunc func(ctx context.Context, meta schema.ClientMeta, detailChan chan<- interface{}) error
+type ListResolverFunc func(ctx context.Context, meta schema.ClientMeta, detailChan chan<- any) error
 
 // DetailResolveFunc is responsible for grabbing any and all metadata for a resource. All errors should be sent to the error channel.
-type DetailResolverFunc func(ctx context.Context, meta schema.ClientMeta, resultsChan chan<- interface{}, errorChan chan<- error, summary interface{})
+type DetailResolverFunc func(ctx context.Context, meta schema.ClientMeta, resultsChan chan<- any, errorChan chan<- error, summary any)
 
 const (
 	ApigatewayService           AWSService = "apigateway"
@@ -333,7 +333,7 @@ func IsAWSError(err error, code ...string) bool {
 }
 
 // TagsIntoMap expects []T (usually "[]Tag") where T has "Key" and "Value" fields (of type string or *string) and writes them into the given map
-func TagsIntoMap(tagSlice interface{}, dst map[string]string) {
+func TagsIntoMap(tagSlice any, dst map[string]string) {
 	stringify := func(v reflect.Value) string {
 		vt := v.Type()
 		if vt.Kind() == reflect.String {
@@ -377,7 +377,7 @@ func TagsIntoMap(tagSlice interface{}, dst map[string]string) {
 }
 
 // TagsToMap expects []T (usually "[]Tag") where T has "Key" and "Value" fields (of type string or *string) and returns a map
-func TagsToMap(tagSlice interface{}) map[string]string {
+func TagsToMap(tagSlice any) map[string]string {
 	if k := reflect.TypeOf(tagSlice).Kind(); k != reflect.Slice {
 		panic("invalid usage: Only slices are supported as input: " + k.String())
 	}

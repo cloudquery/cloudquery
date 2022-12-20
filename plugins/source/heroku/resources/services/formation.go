@@ -63,7 +63,7 @@ func Formations() *schema.Table {
 	}
 }
 
-func fetchFormations(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchFormations(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	nextRange := &heroku.ListRange{
 		Field: "id",

@@ -10,7 +10,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchLambdaLayers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchLambdaLayers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input lambda.ListLayersInput
 	c := meta.(*client.Client)
 	svc := c.Services().Lambda
@@ -29,7 +29,7 @@ func fetchLambdaLayers(ctx context.Context, meta schema.ClientMeta, parent *sche
 	}
 	return nil
 }
-func fetchLambdaLayerVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchLambdaLayerVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	p := parent.Item.(types.LayersListItem)
 	svc := meta.(*client.Client).Services().Lambda
 	config := lambda.ListLayerVersionsInput{
@@ -49,7 +49,7 @@ func fetchLambdaLayerVersions(ctx context.Context, meta schema.ClientMeta, paren
 	}
 	return nil
 }
-func fetchLambdaLayerVersionPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchLambdaLayerVersionPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	p := parent.Item.(types.LayerVersionsListItem)
 
 	pp := parent.Parent.Item.(types.LayersListItem)

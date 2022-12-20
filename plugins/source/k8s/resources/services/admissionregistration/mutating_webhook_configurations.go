@@ -92,7 +92,7 @@ func MutatingWebhookConfigurations() *schema.Table {
 	}
 }
 
-func fetchMutatingWebhookConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchMutatingWebhookConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 
 	cl := meta.(*client.Client).Client().AdmissionregistrationV1().MutatingWebhookConfigurations()
 

@@ -12,7 +12,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchIamGroupPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchIamGroupPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Iam
 	group := parent.Item.(types.Group)
@@ -60,7 +60,7 @@ func resolveIamGroupPolicyPolicyDocument(ctx context.Context, meta schema.Client
 		return err
 	}
 
-	var document map[string]interface{}
+	var document map[string]any
 	err = json.Unmarshal([]byte(decodedDocument), &document)
 	if err != nil {
 		return err

@@ -20,7 +20,7 @@ import (
 var templatesFS embed.FS
 
 // these clients will be used to generate interfaces
-var clients = []interface{}{
+var clients = []any{
 	&slack.Client{},
 }
 
@@ -38,7 +38,7 @@ var acceptedSuffixes = []string{
 var exceptions = []string{}
 
 // Adapted from https://stackoverflow.com/a/54129236
-func signature(name string, f interface{}) string {
+func signature(name string, f any) string {
 	t := reflect.TypeOf(f)
 	if t.Kind() != reflect.Func {
 		return "<not a function>"
@@ -115,7 +115,7 @@ type serviceInfo struct {
 	Signatures  []string
 }
 
-func getServiceInfo(client interface{}) serviceInfo {
+func getServiceInfo(client any) serviceInfo {
 	v := reflect.ValueOf(client)
 	t := v.Type()
 	pkgPath := t.Elem().PkgPath()

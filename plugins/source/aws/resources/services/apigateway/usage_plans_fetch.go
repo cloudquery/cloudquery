@@ -12,7 +12,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchApigatewayUsagePlans(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchApigatewayUsagePlans(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config apigateway.GetUsagePlansInput
 	c := meta.(*client.Client)
 	svc := c.Services().Apigateway
@@ -36,7 +36,7 @@ func resolveApigatewayUsagePlanArn(ctx context.Context, meta schema.ClientMeta, 
 		Resource:  fmt.Sprintf("/usageplans/%s", aws.ToString(up.Id)),
 	}.String())
 }
-func fetchApigatewayUsagePlanKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchApigatewayUsagePlanKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(types.UsagePlan)
 	c := meta.(*client.Client)
 	svc := c.Services().Apigateway

@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchUsers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchUsers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	f := func() error {
 		users, err := c.Slack.GetUsersContext(ctx)

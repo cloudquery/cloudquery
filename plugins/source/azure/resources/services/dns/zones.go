@@ -61,7 +61,7 @@ func Zones() *schema.Table {
 	}
 }
 
-func fetchZones(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchZones(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armdns.NewZonesClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

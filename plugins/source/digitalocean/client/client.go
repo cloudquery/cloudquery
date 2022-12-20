@@ -64,7 +64,7 @@ func (c *Client) WithSpacesRegion(region string) *Client {
 	}
 }
 
-func (SpacesEndpointResolver) ResolveEndpoint(_, region string, options ...interface{}) (aws.Endpoint, error) {
+func (SpacesEndpointResolver) ResolveEndpoint(_, region string, options ...any) (aws.Endpoint, error) {
 	return aws.Endpoint{
 		URL:    fmt.Sprintf("https://%s.digitaloceanspaces.com", region),
 		Source: aws.EndpointSourceCustom,
@@ -187,7 +187,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 	return &c, nil
 }
 
-func (a DoLogger) Logf(classification logging.Classification, format string, v ...interface{}) {
+func (a DoLogger) Logf(classification logging.Classification, format string, v ...any) {
 	if classification == logging.Warn {
 		a.l.Warn().Msg(fmt.Sprintf(format, v...))
 	} else {

@@ -172,7 +172,7 @@ func Nodes() *schema.Table {
 	}
 }
 
-func fetchNodes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchNodes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 
 	cl := meta.(*client.Client).Client().CoreV1().Nodes()
 

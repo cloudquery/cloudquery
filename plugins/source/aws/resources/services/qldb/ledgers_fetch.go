@@ -10,7 +10,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchQldbLedgers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchQldbLedgers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Qldb
 	config := qldb.ListLedgersInput{}
@@ -55,7 +55,7 @@ func resolveQldbLedgerTags(ctx context.Context, meta schema.ClientMeta, resource
 	}
 	return resource.Set(c.Name, response.Tags)
 }
-func fetchQldbLedgerJournalKinesisStreams(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchQldbLedgerJournalKinesisStreams(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	ledger := parent.Item.(*qldb.DescribeLedgerOutput)
 	cl := meta.(*client.Client)
 	config := &qldb.ListJournalKinesisStreamsForLedgerInput{
@@ -77,7 +77,7 @@ func fetchQldbLedgerJournalKinesisStreams(ctx context.Context, meta schema.Clien
 	return nil
 }
 
-func fetchQldbLedgerJournalS3Exports(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchQldbLedgerJournalS3Exports(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	ledger := parent.Item.(*qldb.DescribeLedgerOutput)
 	cl := meta.(*client.Client)
 	config := &qldb.ListJournalS3ExportsForLedgerInput{

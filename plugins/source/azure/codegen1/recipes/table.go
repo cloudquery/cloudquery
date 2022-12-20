@@ -1,7 +1,7 @@
 package recipes
 
 type Table struct {
-	NewFunc        interface{}
+	NewFunc        any
 	PkgPath        string
 	URL            string
 	Namespace      string

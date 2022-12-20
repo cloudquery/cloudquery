@@ -78,7 +78,7 @@ func TeamSpaces() *schema.Table {
 	}
 }
 
-func fetchTeamSpaces(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchTeamSpaces(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	nextRange := &heroku.ListRange{
 		Field: "id",

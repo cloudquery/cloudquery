@@ -46,7 +46,7 @@ func TenantConfigurations() *schema.Table {
 	}
 }
 
-func fetchTenantConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchTenantConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armportal.NewTenantConfigurationsClient(cl.Creds, cl.Options)
 	if err != nil {

@@ -71,7 +71,7 @@ func PostgresInstances() *schema.Table {
 	}
 }
 
-func fetchPostgresInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchPostgresInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armazurearcdata.NewPostgresInstancesClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

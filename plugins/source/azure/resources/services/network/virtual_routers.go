@@ -61,7 +61,7 @@ func VirtualRouters() *schema.Table {
 	}
 }
 
-func fetchVirtualRouters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchVirtualRouters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armnetwork.NewVirtualRoutersClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

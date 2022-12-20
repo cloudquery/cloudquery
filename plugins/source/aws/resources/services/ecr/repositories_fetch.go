@@ -12,7 +12,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchEcrRepositories(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchEcrRepositories(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	maxResults := int32(1000)
 	config := ecr.DescribeRepositoriesInput{
 		MaxResults: &maxResults,
@@ -64,7 +64,7 @@ func resolveRepositoryPolicy(ctx context.Context, meta schema.ClientMeta, resour
 	return resource.Set(c.Name, output.PolicyText)
 }
 
-func fetchEcrRepositoryImages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchEcrRepositoryImages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	config := ecr.DescribeImagesInput{
 		RepositoryName: parent.Item.(types.Repository).RepositoryName,
 		MaxResults:     aws.Int32(1000),
@@ -80,7 +80,7 @@ func fetchEcrRepositoryImages(ctx context.Context, meta schema.ClientMeta, paren
 	return nil
 }
 
-func fetchEcrRepositoryImageScanFindings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchEcrRepositoryImageScanFindings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	image := parent.Item.(types.ImageDetail)
 	repo := parent.Parent.Item.(types.Repository)
 	for _, tag := range image.ImageTags {

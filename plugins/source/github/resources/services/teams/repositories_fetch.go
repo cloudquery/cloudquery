@@ -10,7 +10,7 @@ import (
 	"github.com/google/go-github/v48/github"
 )
 
-func fetchRepositories(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchRepositories(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	t := parent.Item.(*github.Team)
 	c := meta.(*client.Client)
 	opts := &github.ListOptions{PerPage: 100}

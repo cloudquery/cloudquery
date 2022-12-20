@@ -46,7 +46,7 @@ func ProviderRegistrations() *schema.Table {
 	}
 }
 
-func fetchProviderRegistrations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchProviderRegistrations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armproviderhub.NewProviderRegistrationsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

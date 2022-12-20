@@ -73,7 +73,7 @@ func TeamFeatures() *schema.Table {
 	}
 }
 
-func fetchTeamFeatures(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchTeamFeatures(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	nextRange := &heroku.ListRange{
 		Field: "id",

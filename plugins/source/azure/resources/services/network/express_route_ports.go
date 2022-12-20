@@ -66,7 +66,7 @@ func ExpressRoutePorts() *schema.Table {
 	}
 }
 
-func fetchExpressRoutePorts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchExpressRoutePorts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armnetwork.NewExpressRoutePortsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {
