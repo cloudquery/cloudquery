@@ -8,7 +8,7 @@ import (
 	"google.golang.org/api/bigquery/v2"
 )
 
-func fetchTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	bigqueryService, err := bigquery.NewService(ctx, c.ClientOptions...)
