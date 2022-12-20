@@ -201,7 +201,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 	}
 	if gcpSpec.EnabledServicesOnly {
 		if err := c.configureEnabledServices(ctx); err != nil {
-			// TODO: log why we failed to grab enabled services
+			c.logger.Err(err).Msg("failed to list enabled services")
 			return nil, err
 		}
 	}
