@@ -46,7 +46,7 @@ func loadAccounts(ctx context.Context, awsConfig *Spec, accountsApi services.Org
 	var rawAccounts []orgTypes.Account
 	var err error
 	if len(awsConfig.Organization.OrganizationUnits) > 0 {
-		rawAccounts, err = getOUAccounts(ctx, accountsApi, awsConfig.Organization.OrganizationUnits, awsConfig.Organization.SkipOrganizationalUnits)
+		rawAccounts, err = getOUAccounts(ctx, accountsApi, awsConfig.Organization)
 	} else {
 		rawAccounts, err = getAllAccounts(ctx, accountsApi)
 	}
@@ -85,10 +85,10 @@ func loadAccounts(ctx context.Context, awsConfig *Spec, accountsApi services.Org
 }
 
 // Get Accounts for specific Organizational Units
-func getOUAccounts(ctx context.Context, accountsApi services.OrganizationsClient, ous []string, ousSkip []string) ([]orgTypes.Account, error) {
+func getOUAccounts(ctx context.Context, accountsApi services.OrganizationsClient, awsOrg *AwsOrg) ([]orgTypes.Account, error) {
 	var rawAccounts []orgTypes.Account
 	var allOus []orgTypes.Child
-	for _, ou := range ous {
+	for _, ou := range awsOrg.OrganizationUnits {
 		ouPaginator := organizations.NewListChildrenPaginator(accountsApi, &organizations.ListChildrenInput{
 			ChildType: orgTypes.ChildTypeOrganizationalUnit,
 			ParentId:  aws.String(ou),
@@ -104,7 +104,7 @@ func getOUAccounts(ctx context.Context, accountsApi services.OrganizationsClient
 
 	for _, ou := range allOus {
 		// Skip any OUs that user has asked to skip
-		if funk.ContainsString(ousSkip, *ou.Id) {
+		if funk.ContainsString(awsOrg.SkipOrganizationalUnits, *ou.Id) {
 			continue
 		}
 		accountsPaginator := organizations.NewListAccountsForParentPaginator(accountsApi, &organizations.ListAccountsForParentInput{
