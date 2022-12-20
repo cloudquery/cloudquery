@@ -51,7 +51,7 @@ func DiscoveredSecuritySolutions() *schema.Table {
 	}
 }
 
-func fetchDiscoveredSecuritySolutions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchDiscoveredSecuritySolutions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armsecurity.NewDiscoveredSecuritySolutionsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

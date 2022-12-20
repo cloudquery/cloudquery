@@ -66,7 +66,7 @@ func Clusters() *schema.Table {
 	}
 }
 
-func fetchClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armoperationalinsights.NewClustersClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

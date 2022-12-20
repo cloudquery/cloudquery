@@ -46,7 +46,7 @@ func TopicTypes() *schema.Table {
 	}
 }
 
-func fetchTopicTypes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchTopicTypes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armeventgrid.NewTopicTypesClient(cl.Creds, cl.Options)
 	if err != nil {

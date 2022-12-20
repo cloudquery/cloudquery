@@ -61,7 +61,7 @@ func SecurityPartnerProviders() *schema.Table {
 	}
 }
 
-func fetchSecurityPartnerProviders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchSecurityPartnerProviders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armnetwork.NewSecurityPartnerProvidersClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

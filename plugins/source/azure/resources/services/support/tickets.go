@@ -46,7 +46,7 @@ func Tickets() *schema.Table {
 	}
 }
 
-func fetchTickets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchTickets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armsupport.NewTicketsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

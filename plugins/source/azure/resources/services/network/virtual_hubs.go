@@ -66,7 +66,7 @@ func VirtualHubs() *schema.Table {
 	}
 }
 
-func fetchVirtualHubs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchVirtualHubs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armnetwork.NewVirtualHubsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

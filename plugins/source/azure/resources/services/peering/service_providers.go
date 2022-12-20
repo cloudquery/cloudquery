@@ -46,7 +46,7 @@ func ServiceProviders() *schema.Table {
 	}
 }
 
-func fetchServiceProviders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchServiceProviders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armpeering.NewServiceProvidersClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

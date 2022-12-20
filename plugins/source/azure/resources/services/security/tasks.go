@@ -46,7 +46,7 @@ func Tasks() *schema.Table {
 	}
 }
 
-func fetchTasks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchTasks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armsecurity.NewTasksClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

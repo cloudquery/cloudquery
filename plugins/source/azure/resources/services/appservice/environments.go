@@ -61,7 +61,7 @@ func Environments() *schema.Table {
 	}
 }
 
-func fetchEnvironments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchEnvironments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armappservice.NewEnvironmentsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {
