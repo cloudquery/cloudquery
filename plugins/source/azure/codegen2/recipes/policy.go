@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armpolicy.AssignmentsClient{}).NewListPager,
 			NewFunc:        armpolicy.NewAssignmentsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyAssignments",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Authorization)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_authorization)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -26,7 +26,7 @@ func init() {
 			ListFunc:       (&armpolicy.DataPolicyManifestsClient{}).NewListPager,
 			NewFunc:        armpolicy.NewDataPolicyManifestsClient,
 			URL:            "/providers/Microsoft.Authorization/dataPolicyManifests",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Authorization)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_authorization)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -38,7 +38,7 @@ func init() {
 			ListFunc:       (&armpolicy.DefinitionsClient{}).NewListPager,
 			NewFunc:        armpolicy.NewDefinitionsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyDefinitions",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Authorization)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_authorization)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -50,7 +50,7 @@ func init() {
 			ListFunc:       (&armpolicy.ExemptionsClient{}).NewListPager,
 			NewFunc:        armpolicy.NewExemptionsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyExemptions",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Authorization)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_authorization)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -62,7 +62,7 @@ func init() {
 			ListFunc:       (&armpolicy.SetDefinitionsClient{}).NewListPager,
 			NewFunc:        armpolicy.NewSetDefinitionsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Authorization)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_authorization)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

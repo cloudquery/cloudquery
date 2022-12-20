@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armdevhub.WorkflowClient{}).NewListPager,
 			NewFunc:        armdevhub.NewWorkflowClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DevHub/workflows",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DevHub)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_devhub)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

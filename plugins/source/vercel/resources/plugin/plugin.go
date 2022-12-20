@@ -6,7 +6,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/vercel/resources/services/domain"
 	"github.com/cloudquery/cloudquery/plugins/source/vercel/resources/services/project"
 	"github.com/cloudquery/cloudquery/plugins/source/vercel/resources/services/team"
-	"github.com/cloudquery/plugin-sdk/plugins"
+	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -14,8 +14,8 @@ var (
 	Version = "development"
 )
 
-func Plugin() *plugins.SourcePlugin {
-	return plugins.NewSourcePlugin(
+func Plugin() *source.Plugin {
+	return source.NewPlugin(
 		"vercel",
 		Version,
 		[]*schema.Table{

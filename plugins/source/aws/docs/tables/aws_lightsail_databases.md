@@ -12,6 +12,7 @@ The following tables depend on aws_lightsail_databases:
   - [aws_lightsail_database_log_events](aws_lightsail_database_log_events.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

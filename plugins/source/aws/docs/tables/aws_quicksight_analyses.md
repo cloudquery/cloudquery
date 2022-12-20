@@ -1,12 +1,9 @@
 # Table: aws_quicksight_analyses
 
-
-
 The primary key for this table is **arn**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

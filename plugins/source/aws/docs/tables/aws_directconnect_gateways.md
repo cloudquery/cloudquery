@@ -11,6 +11,7 @@ The following tables depend on aws_directconnect_gateways:
   - [aws_directconnect_gateway_attachments](aws_directconnect_gateway_attachments.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

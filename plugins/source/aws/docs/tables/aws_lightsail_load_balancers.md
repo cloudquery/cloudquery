@@ -10,6 +10,7 @@ The following tables depend on aws_lightsail_load_balancers:
   - [aws_lightsail_load_balancer_tls_certificates](aws_lightsail_load_balancer_tls_certificates.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

@@ -1,12 +1,9 @@
 # Table: k8s_core_resource_quotas
 
-
-
 The primary key for this table is **uid**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

@@ -5,10 +5,11 @@ https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_DiskSnapshot.
 The primary key for this table is **_cq_id**.
 
 ## Relations
+
 This table depends on [aws_lightsail_disks](aws_lightsail_disks.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

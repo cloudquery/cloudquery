@@ -10,6 +10,7 @@ The following tables depend on aws_elbv2_target_groups:
   - [aws_elbv2_target_group_target_health_descriptions](aws_elbv2_target_group_target_health_descriptions.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armsecurity.AlertsClient{}).NewListPager,
 			NewFunc:        armsecurity.NewAlertsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/alerts",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_security)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -26,7 +26,7 @@ func init() {
 			ListFunc:       (&armsecurity.AlertsSuppressionRulesClient{}).NewListPager,
 			NewFunc:        armsecurity.NewAlertsSuppressionRulesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/alertsSuppressionRules",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_security)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -38,7 +38,7 @@ func init() {
 			ListFunc:       (&armsecurity.AllowedConnectionsClient{}).NewListPager,
 			NewFunc:        armsecurity.NewAllowedConnectionsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/allowedConnections",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_security)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -50,7 +50,7 @@ func init() {
 			ListFunc:       (&armsecurity.ApplicationsClient{}).NewListPager,
 			NewFunc:        armsecurity.NewApplicationsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/applications",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_security)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -62,7 +62,7 @@ func init() {
 			ListFunc:       (&armsecurity.AssessmentsMetadataClient{}).NewListPager,
 			NewFunc:        armsecurity.NewAssessmentsMetadataClient,
 			URL:            "/providers/Microsoft.Security/assessmentMetadata",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_security)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -74,7 +74,7 @@ func init() {
 			ListFunc:       (&armsecurity.AutoProvisioningSettingsClient{}).NewListPager,
 			NewFunc:        armsecurity.NewAutoProvisioningSettingsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/autoProvisioningSettings",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_security)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -86,7 +86,7 @@ func init() {
 			ListFunc:       (&armsecurity.AutomationsClient{}).NewListPager,
 			NewFunc:        armsecurity.NewAutomationsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/automations",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_security)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -98,7 +98,7 @@ func init() {
 			ListFunc:       (&armsecurity.ConnectorsClient{}).NewListPager,
 			NewFunc:        armsecurity.NewConnectorsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/securityConnectors",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_security)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -110,7 +110,7 @@ func init() {
 			ListFunc:       (&armsecurity.DiscoveredSecuritySolutionsClient{}).NewListPager,
 			NewFunc:        armsecurity.NewDiscoveredSecuritySolutionsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/discoveredSecuritySolutions",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_security)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -122,7 +122,7 @@ func init() {
 			ListFunc:       (&armsecurity.ExternalSecuritySolutionsClient{}).NewListPager,
 			NewFunc:        armsecurity.NewExternalSecuritySolutionsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/externalSecuritySolutions",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_security)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -134,7 +134,7 @@ func init() {
 			ListFunc:       (&armsecurity.GovernanceRuleClient{}).NewListPager,
 			NewFunc:        armsecurity.NewGovernanceRuleClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/governanceRules",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_security)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -146,7 +146,7 @@ func init() {
 			ListFunc:       (&armsecurity.JitNetworkAccessPoliciesClient{}).NewListPager,
 			NewFunc:        armsecurity.NewJitNetworkAccessPoliciesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/jitNetworkAccessPolicies",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_security)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -158,7 +158,7 @@ func init() {
 			ListFunc:       (&armsecurity.LocationsClient{}).NewListPager,
 			NewFunc:        armsecurity.NewLocationsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_security)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -170,7 +170,7 @@ func init() {
 			ListFunc:       (&armsecurity.RegulatoryComplianceStandardsClient{}).NewListPager,
 			NewFunc:        armsecurity.NewRegulatoryComplianceStandardsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/regulatoryComplianceStandards",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_security)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -182,7 +182,7 @@ func init() {
 			ListFunc:       (&armsecurity.SecureScoreControlDefinitionsClient{}).NewListPager,
 			NewFunc:        armsecurity.NewSecureScoreControlDefinitionsClient,
 			URL:            "/providers/Microsoft.Security/secureScoreControlDefinitions",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_security)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -194,7 +194,7 @@ func init() {
 			ListFunc:       (&armsecurity.SecureScoreControlsClient{}).NewListPager,
 			NewFunc:        armsecurity.NewSecureScoreControlsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/secureScoreControls",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_security)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -206,7 +206,7 @@ func init() {
 			ListFunc:       (&armsecurity.SecureScoresClient{}).NewListPager,
 			NewFunc:        armsecurity.NewSecureScoresClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/secureScores",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_security)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -218,7 +218,7 @@ func init() {
 			ListFunc:       (&armsecurity.SolutionsClient{}).NewListPager,
 			NewFunc:        armsecurity.NewSolutionsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/securitySolutions",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_security)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -230,7 +230,7 @@ func init() {
 			ListFunc:       (&armsecurity.TasksClient{}).NewListPager,
 			NewFunc:        armsecurity.NewTasksClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/tasks",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_security)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -242,7 +242,7 @@ func init() {
 			ListFunc:       (&armsecurity.TopologyClient{}).NewListPager,
 			NewFunc:        armsecurity.NewTopologyClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/topologies",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_security)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -254,7 +254,7 @@ func init() {
 			ListFunc:       (&armsecurity.WorkspaceSettingsClient{}).NewListPager,
 			NewFunc:        armsecurity.NewWorkspaceSettingsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/workspaceSettings",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_security)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

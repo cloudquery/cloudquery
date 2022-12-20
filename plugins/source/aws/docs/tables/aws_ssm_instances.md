@@ -11,6 +11,7 @@ The following tables depend on aws_ssm_instances:
   - [aws_ssm_instance_patches](aws_ssm_instance_patches.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

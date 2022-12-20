@@ -5,10 +5,11 @@ https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#Table
 The primary key for this table is **_cq_id**.
 
 ## Relations
+
 This table depends on [gcp_bigquery_datasets](gcp_bigquery_datasets.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

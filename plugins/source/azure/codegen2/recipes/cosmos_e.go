@@ -13,7 +13,7 @@ func ArmcosmosE() []Table {
 			ListFunc:       (&armcosmos.DatabaseAccountsClient{}).NewListPager,
 			NewFunc:        armcosmos.NewDatabaseAccountsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/databaseAccounts",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DocumentDB)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_documentdb)`,
 			Relations: []*Table{
 				{
 					Service:        "armcosmos",

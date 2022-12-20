@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armdatamigration.ServicesClient{}).NewListPager,
 			NewFunc:        armdatamigration.NewServicesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DataMigration/services",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DataMigration)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_datamigration)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

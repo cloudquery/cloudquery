@@ -5,10 +5,11 @@ https://docs.aws.amazon.com/frauddetector/latest/api/API_RuleDetail.html
 The primary key for this table is **arn**.
 
 ## Relations
+
 This table depends on [aws_frauddetector_detectors](aws_frauddetector_detectors.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

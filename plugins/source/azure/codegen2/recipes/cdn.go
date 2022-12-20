@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armcdn.EdgeNodesClient{}).NewListPager,
 			NewFunc:        armcdn.NewEdgeNodesClient,
 			URL:            "/providers/Microsoft.Cdn/edgenodes",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Cdn)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_cdn)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -26,7 +26,7 @@ func init() {
 			ListFunc:       (&armcdn.ManagedRuleSetsClient{}).NewListPager,
 			NewFunc:        armcdn.NewManagedRuleSetsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/cdnWebApplicationFirewallManagedRuleSets",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Cdn)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_cdn)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

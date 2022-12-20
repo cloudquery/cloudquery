@@ -1,12 +1,9 @@
 # Table: aws_iot_security_profiles
 
-
-
 The primary key for this table is **arn**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

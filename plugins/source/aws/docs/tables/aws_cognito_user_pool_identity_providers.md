@@ -5,10 +5,11 @@ https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_
 The primary key for this table is **_cq_id**.
 
 ## Relations
+
 This table depends on [aws_cognito_user_pools](aws_cognito_user_pools.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

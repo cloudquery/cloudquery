@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armdevops.PipelineTemplateDefinitionsClient{}).NewListPager,
 			NewFunc:        armdevops.NewPipelineTemplateDefinitionsClient,
 			URL:            "/providers/Microsoft.DevOps/pipelineTemplateDefinitions",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DevOps)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_devops)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

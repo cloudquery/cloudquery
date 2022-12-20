@@ -12,7 +12,7 @@ func Namespaces() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_notificationhubs_namespaces",
 		Resolver:  fetchNamespaces,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_NotificationHubs),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_notificationhubs),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

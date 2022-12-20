@@ -8,7 +8,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 
-	pb "google.golang.org/genproto/googleapis/cloud/compute/v1"
+	pb "cloud.google.com/go/compute/apiv1/computepb"
 )
 
 func fetchProjects(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {

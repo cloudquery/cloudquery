@@ -5,10 +5,11 @@ https://docs.aws.amazon.com/AmazonECRPublic/latest/APIReference/API_ImageDetail.
 The primary key for this table is **arn**.
 
 ## Relations
+
 This table depends on [aws_ecrpublic_repositories](aws_ecrpublic_repositories.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

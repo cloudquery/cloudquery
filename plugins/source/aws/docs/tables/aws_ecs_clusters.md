@@ -12,6 +12,7 @@ The following tables depend on aws_ecs_clusters:
   - [aws_ecs_cluster_container_instances](aws_ecs_cluster_container_instances.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

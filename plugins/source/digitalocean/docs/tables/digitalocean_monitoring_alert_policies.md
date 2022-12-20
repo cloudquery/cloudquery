@@ -1,12 +1,9 @@
 # Table: digitalocean_monitoring_alert_policies
 
-
-
 The primary key for this table is **uuid**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

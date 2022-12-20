@@ -4,9 +4,8 @@ https://docs.aws.amazon.com/directconnect/latest/APIReference/API_Lag.html
 
 The primary key for this table is **arn**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

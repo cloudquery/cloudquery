@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armdatabox.JobsClient{}).NewListPager,
 			NewFunc:        armdatabox.NewJobsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DataBox/jobs",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DataBox)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_databox)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

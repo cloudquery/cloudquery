@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armstoragecache.CachesClient{}).NewListPager,
 			NewFunc:        armstoragecache.NewCachesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.StorageCache/caches",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_StorageCache)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_storagecache)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

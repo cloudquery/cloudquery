@@ -17,8 +17,8 @@ func init() {
 			ListFunc:       (&armcompute.ResourceSKUsClient{}).NewListPager,
 			NewFunc:        armcompute.NewResourceSKUsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/skus",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Compute)`,
-			ExtraColumns:   []codegen.ColumnDefinition{
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_compute)`,
+			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:     "id",
 					Type:     schema.TypeString,

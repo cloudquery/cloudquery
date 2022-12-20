@@ -4,9 +4,8 @@ https://cloud.google.com/secret-manager/docs/reference/rest/v1/projects.secrets#
 
 The primary key for this table is **name**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

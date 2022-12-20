@@ -13,7 +13,7 @@ func ArmcdnE() []Table {
 			ListFunc:       (&armcdn.ProfilesClient{}).NewListPager,
 			NewFunc:        armcdn.NewProfilesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/profiles",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Cdn)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_cdn)`,
 			Relations: []*Table{
 				{
 					Name:           "endpoints",

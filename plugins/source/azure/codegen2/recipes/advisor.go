@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armadvisor.RecommendationMetadataClient{}).NewListPager,
 			NewFunc:        armadvisor.NewRecommendationMetadataClient,
 			URL:            "/providers/Microsoft.Advisor/metadata",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Advisor)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_advisor)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -26,7 +26,7 @@ func init() {
 			ListFunc:       (&armadvisor.RecommendationsClient{}).NewListPager,
 			NewFunc:        armadvisor.NewRecommendationsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/recommendations",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Advisor)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_advisor)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -38,7 +38,7 @@ func init() {
 			ListFunc:       (&armadvisor.SuppressionsClient{}).NewListPager,
 			NewFunc:        armadvisor.NewSuppressionsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/suppressions",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Advisor)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_advisor)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

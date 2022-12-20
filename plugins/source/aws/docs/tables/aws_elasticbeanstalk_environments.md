@@ -11,6 +11,7 @@ The following tables depend on aws_elasticbeanstalk_environments:
   - [aws_elasticbeanstalk_configuration_options](aws_elasticbeanstalk_configuration_options.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
