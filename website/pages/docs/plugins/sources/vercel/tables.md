@@ -1,5 +1,7 @@
 # Source Plugin: vercel
+
 ## Tables
+
 - [vercel_domains](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/vercel/docs/tables/vercel_domains.md)
   - [vercel_domain_records](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/vercel/docs/tables/vercel_domain_records.md)
 - [vercel_teams](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/vercel/docs/tables/vercel_teams.md)

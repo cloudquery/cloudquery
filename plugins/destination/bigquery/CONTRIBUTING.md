@@ -4,7 +4,7 @@
 
 Similar to all other CQ plugins you can run the plugin in debug mode via:
 
-```
+```bash
 go run main.go serve
 ```
 
@@ -16,6 +16,6 @@ make test
 
 ## Lint
 
-```
+```bash
 make lint
 ```

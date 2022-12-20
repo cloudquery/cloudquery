@@ -1,5 +1,7 @@
 # Source Plugin: okta
+
 ## Tables
+
 - [okta_users](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/okta/docs/tables/okta_users.md)
 - [okta_groups](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/okta/docs/tables/okta_groups.md)
   - [okta_group_users](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/okta/docs/tables/okta_group_users.md)

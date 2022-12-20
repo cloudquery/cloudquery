@@ -42,6 +42,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing"
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2"
 	"github.com/aws/aws-sdk-go-v2/service/elasticsearchservice"
+	"github.com/aws/aws-sdk-go-v2/service/elastictranscoder"
 	"github.com/aws/aws-sdk-go-v2/service/emr"
 	"github.com/aws/aws-sdk-go-v2/service/eventbridge"
 	"github.com/aws/aws-sdk-go-v2/service/firehose"
@@ -80,6 +81,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalog"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry"
 	"github.com/aws/aws-sdk-go-v2/service/servicequotas"
+	"github.com/aws/aws-sdk-go-v2/service/ses"
 	"github.com/aws/aws-sdk-go-v2/service/sesv2"
 	"github.com/aws/aws-sdk-go-v2/service/sfn"
 	"github.com/aws/aws-sdk-go-v2/service/shield"
@@ -141,6 +143,7 @@ func initServices(region string, c aws.Config) Services {
 		Elasticloadbalancing:      elasticloadbalancing.NewFromConfig(awsCfg),
 		Elasticloadbalancingv2:    elasticloadbalancingv2.NewFromConfig(awsCfg),
 		Elasticsearchservice:      elasticsearchservice.NewFromConfig(awsCfg),
+		Elastictranscoder:         elastictranscoder.NewFromConfig(awsCfg),
 		Emr:                       emr.NewFromConfig(awsCfg),
 		Eventbridge:               eventbridge.NewFromConfig(awsCfg),
 		Firehose:                  firehose.NewFromConfig(awsCfg),
@@ -179,6 +182,7 @@ func initServices(region string, c aws.Config) Services {
 		Servicecatalog:            servicecatalog.NewFromConfig(awsCfg),
 		Servicecatalogappregistry: servicecatalogappregistry.NewFromConfig(awsCfg),
 		Servicequotas:             servicequotas.NewFromConfig(awsCfg),
+		Ses:                       ses.NewFromConfig(awsCfg),
 		Sesv2:                     sesv2.NewFromConfig(awsCfg),
 		Sfn:                       sfn.NewFromConfig(awsCfg),
 		Shield:                    shield.NewFromConfig(awsCfg),
@@ -237,6 +241,7 @@ type Services struct {
 	Elasticloadbalancing      services.ElasticloadbalancingClient
 	Elasticloadbalancingv2    services.Elasticloadbalancingv2Client
 	Elasticsearchservice      services.ElasticsearchserviceClient
+	Elastictranscoder         services.ElastictranscoderClient
 	Emr                       services.EmrClient
 	Eventbridge               services.EventbridgeClient
 	Firehose                  services.FirehoseClient
@@ -275,6 +280,7 @@ type Services struct {
 	Servicecatalog            services.ServicecatalogClient
 	Servicecatalogappregistry services.ServicecatalogappregistryClient
 	Servicequotas             services.ServicequotasClient
+	Ses                       services.SesClient
 	Sesv2                     services.Sesv2Client
 	Sfn                       services.SfnClient
 	Shield                    services.ShieldClient

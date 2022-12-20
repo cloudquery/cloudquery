@@ -1,5 +1,7 @@
 # Source Plugin: heroku
+
 ## Tables
+
 - [heroku_account_features](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/heroku/docs/tables/heroku_account_features.md)
 - [heroku_add_ons](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/heroku/docs/tables/heroku_add_ons.md)
 - [heroku_add_on_attachments](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/heroku/docs/tables/heroku_add_on_attachments.md)
