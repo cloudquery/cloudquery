@@ -28,7 +28,7 @@ type WrappedBucket struct {
 	Region                string
 	LoggingTargetBucket   *string
 	LoggingTargetPrefix   *string
-	Policy                map[string]interface{}
+	Policy                map[string]any
 	VersioningStatus      types.BucketVersioningStatus
 	VersioningMfaDelete   types.MFADeleteStatus
 	BlockPublicAcls       bool

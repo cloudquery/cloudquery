@@ -10,7 +10,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchElbv2Listeners(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchElbv2Listeners(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	lb := parent.Item.(types.LoadBalancer)
 	config := elbv2.DescribeListenersInput{
 		LoadBalancerArn: lb.LoadBalancerArn,
@@ -59,7 +59,7 @@ func resolveElbv2listenerTags(ctx context.Context, meta schema.ClientMeta, resou
 
 	return resource.Set(c.Name, tags)
 }
-func fetchElbv2ListenerCertificates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchElbv2ListenerCertificates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	region := c.Region
 	svc := c.Services().Elasticloadbalancingv2

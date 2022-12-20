@@ -112,7 +112,7 @@ func Ingresses() *schema.Table {
 	}
 }
 
-func fetchIngresses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchIngresses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 
 	cl := meta.(*client.Client).Client().NetworkingV1().Ingresses("")
 

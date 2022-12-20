@@ -61,7 +61,7 @@ func InstancePools() *schema.Table {
 	}
 }
 
-func fetchInstancePools(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchInstancePools(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armsql.NewInstancePoolsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

@@ -8,7 +8,7 @@ import (
 	"google.golang.org/api/dns/v1"
 )
 
-func fetchPolicies(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
+func fetchPolicies(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	dnsClient, err := dns.NewService(ctx, c.ClientOptions...)

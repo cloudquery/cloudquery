@@ -22,11 +22,11 @@ func ResolveAccountName(_ context.Context, meta schema.ClientMeta, r *schema.Res
 }
 
 type Nullable interface {
-	Get() interface{}
+	Get() any
 	IsSet() bool
 }
 
-func GetNullable(i interface{}) (interface{}, error) {
+func GetNullable(i any) (any, error) {
 	switch v := i.(type) {
 	case datadog.NullableTime:
 		return v.Get(), nil

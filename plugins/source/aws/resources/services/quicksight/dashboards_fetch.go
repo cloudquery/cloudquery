@@ -11,7 +11,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-func fetchQuicksightDashboards(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchQuicksightDashboards(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Quicksight
 	input := quicksight.ListDashboardsInput{

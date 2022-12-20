@@ -11,22 +11,22 @@ const (
 )
 
 type Deployment struct {
-	UID                 string      `json:"uid"`
-	Name                string      `json:"name"`
-	URL                 *string     `json:"url,omitempty"`
-	Source              *string     `json:"source,omitempty"`
-	State               *string     `json:"state,omitempty"`
-	Type                string      `json:"type"`
-	Creator             interface{} `json:"creator"`
-	InspectorURL        string      `json:"inspectorUrl"`
-	Meta                interface{} `json:"meta"`
-	Target              interface{} `json:"target"`
-	AliasError          interface{} `json:"aliasError"`
-	AliasAssigned       interface{} `json:"aliasAssigned"`
-	IsRollbackCandidate *bool       `json:"isRollbackCandidate,omitempty"`
-	Ready               *MilliTime  `json:"ready,omitempty"`
-	ChecksState         *string     `json:"checksState,omitempty"`
-	ChecksConclusion    *string     `json:"checksConclusion,omitempty"`
+	UID                 string     `json:"uid"`
+	Name                string     `json:"name"`
+	URL                 *string    `json:"url,omitempty"`
+	Source              *string    `json:"source,omitempty"`
+	State               *string    `json:"state,omitempty"`
+	Type                string     `json:"type"`
+	Creator             any        `json:"creator"`
+	InspectorURL        string     `json:"inspectorUrl"`
+	Meta                any        `json:"meta"`
+	Target              any        `json:"target"`
+	AliasError          any        `json:"aliasError"`
+	AliasAssigned       any        `json:"aliasAssigned"`
+	IsRollbackCandidate *bool      `json:"isRollbackCandidate,omitempty"`
+	Ready               *MilliTime `json:"ready,omitempty"`
+	ChecksState         *string    `json:"checksState,omitempty"`
+	ChecksConclusion    *string    `json:"checksConclusion,omitempty"`
 
 	// duplicate: Created             MilliTime       `json:"created"`
 	CreatedAt  MilliTime `json:"createdAt"`
@@ -34,19 +34,19 @@ type Deployment struct {
 }
 
 type DeploymentCheck struct {
-	ID            string      `json:"id"`
-	CreatedAt     MilliTime   `json:"createdAt"`
-	CompletedAt   *MilliTime  `json:"completedAt,omitempty"`
-	Conclusion    *string     `json:"conclusion,omitempty"`
-	DetailsURL    *string     `json:"detailsUrl,omitempty"`
-	IntegrationID *string     `json:"integrationId,omitempty"`
-	Name          *string     `json:"name,omitempty"`
-	Output        interface{} `json:"output"`
-	Path          *string     `json:"path,omitempty"`
-	Rerequestable bool        `json:"rererequestable"`
-	StartedAt     *MilliTime  `json:"startedAt,omitempty"`
-	UpdatedAt     *MilliTime  `json:"updatedAt,omitempty"`
-	Status        string      `json:"status"`
+	ID            string     `json:"id"`
+	CreatedAt     MilliTime  `json:"createdAt"`
+	CompletedAt   *MilliTime `json:"completedAt,omitempty"`
+	Conclusion    *string    `json:"conclusion,omitempty"`
+	DetailsURL    *string    `json:"detailsUrl,omitempty"`
+	IntegrationID *string    `json:"integrationId,omitempty"`
+	Name          *string    `json:"name,omitempty"`
+	Output        any        `json:"output"`
+	Path          *string    `json:"path,omitempty"`
+	Rerequestable bool       `json:"rererequestable"`
+	StartedAt     *MilliTime `json:"startedAt,omitempty"`
+	UpdatedAt     *MilliTime `json:"updatedAt,omitempty"`
+	Status        string     `json:"status"`
 }
 
 func (v *Client) ListDeployments(ctx context.Context, pag *Paginator) ([]Deployment, *Paginator, error) {

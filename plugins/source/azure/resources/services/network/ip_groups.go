@@ -61,7 +61,7 @@ func IpGroups() *schema.Table {
 	}
 }
 
-func fetchIpGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchIpGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armnetwork.NewIPGroupsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

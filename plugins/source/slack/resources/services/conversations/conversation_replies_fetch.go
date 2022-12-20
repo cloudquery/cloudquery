@@ -8,7 +8,7 @@ import (
 	"github.com/slack-go/slack"
 )
 
-func fetchConversationReplies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchConversationReplies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	f := func() error {
 		params := &slack.GetConversationRepliesParameters{

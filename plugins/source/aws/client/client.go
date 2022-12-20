@@ -452,7 +452,7 @@ func filterDisabledRegions(regions []string, enabledRegions []types.Region) []st
 	return filteredRegions
 }
 
-func (a AwsLogger) Logf(classification logging.Classification, format string, v ...interface{}) {
+func (a AwsLogger) Logf(classification logging.Classification, format string, v ...any) {
 	if classification == logging.Warn {
 		a.l.Warn().Msg(fmt.Sprintf(format, v...))
 	} else {

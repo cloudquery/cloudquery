@@ -51,7 +51,7 @@ func Reports() *schema.Table {
 	}
 }
 
-func fetchReports(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchReports(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armappcomplianceautomation.NewReportsClient(cl.Creds, cl.Options)
 	if err != nil {

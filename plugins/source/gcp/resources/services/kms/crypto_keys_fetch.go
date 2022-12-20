@@ -10,7 +10,7 @@ import (
 	"google.golang.org/api/iterator"
 )
 
-func fetchCryptoKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchCryptoKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	p := parent.Item.(*kmspb.KeyRing)
 	kmsClient, err := kms.NewKeyManagementClient(ctx, c.ClientOptions...)

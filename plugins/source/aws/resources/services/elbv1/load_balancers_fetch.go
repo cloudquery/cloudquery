@@ -11,7 +11,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchElbv1LoadBalancers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchElbv1LoadBalancers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Elasticloadbalancing
 	processLoadBalancers := func(loadBalancers []types.LoadBalancerDescription) error {
@@ -71,7 +71,7 @@ func fetchElbv1LoadBalancers(ctx context.Context, meta schema.ClientMeta, parent
 	return nil
 }
 
-func fetchElbv1LoadBalancerPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchElbv1LoadBalancerPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(models.ELBv1LoadBalancerWrapper)
 	c := meta.(*client.Client)
 	svc := c.Services().Elasticloadbalancing
@@ -85,7 +85,7 @@ func fetchElbv1LoadBalancerPolicies(ctx context.Context, meta schema.ClientMeta,
 func resolveElbv1loadBalancerPolicyAttributeDescriptions(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.PolicyDescription)
 
-	response := make(map[string]interface{}, len(r.PolicyAttributeDescriptions))
+	response := make(map[string]any, len(r.PolicyAttributeDescriptions))
 	for _, a := range r.PolicyAttributeDescriptions {
 		response[*a.AttributeName] = a.AttributeValue
 	}

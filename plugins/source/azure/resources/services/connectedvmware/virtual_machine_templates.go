@@ -71,7 +71,7 @@ func VirtualMachineTemplates() *schema.Table {
 	}
 }
 
-func fetchVirtualMachineTemplates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchVirtualMachineTemplates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armconnectedvmware.NewVirtualMachineTemplatesClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

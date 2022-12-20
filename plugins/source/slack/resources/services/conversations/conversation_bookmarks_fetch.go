@@ -8,7 +8,7 @@ import (
 	"github.com/slack-go/slack"
 )
 
-func fetchConversationBookmarks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchConversationBookmarks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	f := func() error {
 		channelID := parent.Item.(slack.Channel).ID

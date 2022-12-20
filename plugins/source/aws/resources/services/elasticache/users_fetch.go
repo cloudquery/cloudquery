@@ -8,7 +8,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchElasticacheUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchElasticacheUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	paginator := elasticache.NewDescribeUsersPaginator(meta.(*client.Client).Services().Elasticache, nil)
 	for paginator.HasMorePages() {
 		v, err := paginator.NextPage(ctx)
