@@ -8,7 +8,7 @@ This page documents the available CloudQuery SQL Policies for Kubernetes. See th
 ### Requirements
 Kubernetes NSA CISA v1 requires the following tables to be synced before the policy is executed:
 
-```
+```yaml
 tables:
   - k8s_apps_daemon_sets
   - k8s_apps_deployments

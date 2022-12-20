@@ -5,6 +5,17 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v3.1.2...plugins-source-digitalocean-v4.0.0) (2022-12-20)
+
+
+### ⚠ BREAKING CHANGES
+
+* **digitalocean:** Primary key column for `billing_history` changed from `invoice_id` to `_cq_id`
+
+### Bug Fixes
+
+* **digitalocean:** Remove invoice_id from PK for billing history ([0038381](https://github.com/cloudquery/cloudquery/commit/0038381a1a8d8c222f16ac63c1f9679be8afc646))
+
 ## [3.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v3.1.1...plugins-source-digitalocean-v3.1.2) (2022-12-20)
 
 
