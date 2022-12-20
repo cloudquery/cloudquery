@@ -131,19 +131,3 @@ accounts:
 ### Arguments for Accounts block
 
 See [AWS accounts configuration](/docs/plugins/sources/aws/configuration#accounts) for more information on all the arguments in the `accounts` block.
-
-### User Credentials with MFA
-
-In order to leverage IAM User credentials with MFA, the STS "get-session-token" command may be used with the IAM User's long-term security credentials (Access Key and Secret Access Key).  For more information, see [here](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sts/get-session-token.html).
-
-```bash
-aws sts get-session-token --serial-number <YOUR_MFA_SERIAL_NUMBER> --token-code <YOUR_MFA_TOKEN_CODE> --duration-seconds 3600
-```
-
-Then export the temporary credentials to your environment variables.
-
-```bash
-export AWS_ACCESS_KEY_ID=<YOUR_ACCESS_KEY_ID>
-export AWS_SECRET_ACCESS_KEY=<YOUR_SECRET_ACCESS_KEY>
-export AWS_SESSION_TOKEN=<YOUR_SESSION_TOKEN>
-```
