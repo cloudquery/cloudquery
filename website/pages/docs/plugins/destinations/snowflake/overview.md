@@ -38,7 +38,7 @@ This is the top level spec used by the Snowflake destination plugin.
 
   Example `connection_string`:
 
-  ```
+  ```bash
   // user[:password]@account/database/schema[?param1=value1&paramN=valueN]
   // or
   // user[:password]@account/database[?param1=value1&paramN=valueN]
