@@ -22,3 +22,6 @@ The following tables depend on okta_groups:
 |object_class|StringArray|
 |profile|JSON|
 |type|String|
+|_embedded|JSON|
+|_links|JSON|
+|additional_properties|JSON|
