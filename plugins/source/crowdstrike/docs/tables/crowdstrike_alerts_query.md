@@ -1,12 +1,9 @@
 # Table: crowdstrike_alerts_query
 
-
-
 The primary key for this table is **_cq_id**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

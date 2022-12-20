@@ -5,10 +5,11 @@ https://docs.aws.amazon.com/elasticbeanstalk/latest/api/API_ConfigurationSetting
 The primary key for this table is **_cq_id**.
 
 ## Relations
+
 This table depends on [aws_elasticbeanstalk_environments](aws_elasticbeanstalk_environments.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

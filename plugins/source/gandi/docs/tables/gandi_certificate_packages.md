@@ -1,12 +1,9 @@
 # Table: gandi_certificate_packages
 
-
-
 The primary key for this table is **name**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

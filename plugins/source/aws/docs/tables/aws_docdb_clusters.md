@@ -11,6 +11,7 @@ The following tables depend on aws_docdb_clusters:
   - [aws_docdb_instances](aws_docdb_instances.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

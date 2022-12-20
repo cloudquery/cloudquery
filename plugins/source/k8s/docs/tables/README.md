@@ -1,5 +1,7 @@
 # Source Plugin: k8s
+
 ## Tables
+
 - [k8s_discovery_endpoint_slices](k8s_discovery_endpoint_slices.md)
 - [k8s_admissionregistration_mutating_webhook_configurations](k8s_admissionregistration_mutating_webhook_configurations.md)
 - [k8s_admissionregistration_validating_webhook_configurations](k8s_admissionregistration_validating_webhook_configurations.md)

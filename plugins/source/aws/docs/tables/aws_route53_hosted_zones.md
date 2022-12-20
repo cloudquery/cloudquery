@@ -1,7 +1,5 @@
 # Table: aws_route53_hosted_zones
 
-
-
 The primary key for this table is **arn**.
 
 ## Relations
@@ -12,6 +10,7 @@ The following tables depend on aws_route53_hosted_zones:
   - [aws_route53_hosted_zone_traffic_policy_instances](aws_route53_hosted_zone_traffic_policy_instances.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

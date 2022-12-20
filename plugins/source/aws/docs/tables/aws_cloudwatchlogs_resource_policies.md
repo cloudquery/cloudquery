@@ -4,9 +4,8 @@ https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_Resourc
 
 The composite primary key for this table is (**account_id**, **region**, **policy_name**).
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

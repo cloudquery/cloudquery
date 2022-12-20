@@ -1,12 +1,9 @@
 # Table: azure_network_custom_ip_prefixes
 
-
-
 The primary key for this table is **id**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

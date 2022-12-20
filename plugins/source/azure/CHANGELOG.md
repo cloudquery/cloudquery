@@ -5,6 +5,22 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v2.1.1...plugins-source-azure-v2.2.0) (2022-12-20)
+
+
+### Features
+
+* **azure:** Add storage_containers ([#5759](https://github.com/cloudquery/cloudquery/issues/5759)) ([18003e9](https://github.com/cloudquery/cloudquery/commit/18003e9cf6ac036a33e88e6cdcd9b626a792c7de))
+
+
+### Bug Fixes
+
+* **azure:** Remove extra `fmt.Println` ([#5756](https://github.com/cloudquery/cloudquery/issues/5756)) ([4c588b1](https://github.com/cloudquery/cloudquery/commit/4c588b1afe5bf0b71b4c77884994a02cf4edca56))
+* **azure:** Use lowercase namespaces ([#5789](https://github.com/cloudquery/cloudquery/issues/5789)) ([b43e1bd](https://github.com/cloudquery/cloudquery/commit/b43e1bd3ca8e0e2e35c363385838fe170d7af59f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.12.5 ([#5661](https://github.com/cloudquery/cloudquery/issues/5661)) ([b354b8a](https://github.com/cloudquery/cloudquery/commit/b354b8a3683fa2bc918c1002afac487427d65a5f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.12.6 ([#5790](https://github.com/cloudquery/cloudquery/issues/5790)) ([8e2663c](https://github.com/cloudquery/cloudquery/commit/8e2663c17c3347afd5e53f665462adc3e709c96c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.12.7 ([#5797](https://github.com/cloudquery/cloudquery/issues/5797)) ([15da529](https://github.com/cloudquery/cloudquery/commit/15da5294786fa2656228ca5bbc48ef1fc44e486b))
+
 ## [2.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v2.1.0...plugins-source-azure-v2.1.1) (2022-12-14)
 
 

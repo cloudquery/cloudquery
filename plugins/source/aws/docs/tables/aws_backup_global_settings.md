@@ -4,9 +4,8 @@ https://docs.aws.amazon.com/aws-backup/latest/devguide/API_DescribeGlobalSetting
 
 The primary key for this table is **account_id**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

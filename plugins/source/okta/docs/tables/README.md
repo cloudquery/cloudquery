@@ -1,5 +1,7 @@
 # Source Plugin: okta
+
 ## Tables
+
 - [okta_users](okta_users.md)
 - [okta_groups](okta_groups.md)
   - [okta_group_users](okta_group_users.md)

@@ -13,7 +13,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/resources/services/worker_meta_data"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/resources/services/worker_routes"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/resources/services/zones"
-	"github.com/cloudquery/plugin-sdk/plugins"
+	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -21,8 +21,8 @@ var (
 	Version = "development"
 )
 
-func Plugin() *plugins.SourcePlugin {
-	return plugins.NewSourcePlugin(
+func Plugin() *source.Plugin {
+	return source.NewPlugin(
 		"cloudflare",
 		Version,
 		[]*schema.Table{

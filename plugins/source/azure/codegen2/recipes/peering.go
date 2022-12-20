@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armpeering.ServiceCountriesClient{}).NewListPager,
 			NewFunc:        armpeering.NewServiceCountriesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peeringServiceCountries",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Peering)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_peering)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -26,7 +26,7 @@ func init() {
 			ListFunc:       (&armpeering.ServiceLocationsClient{}).NewListPager,
 			NewFunc:        armpeering.NewServiceLocationsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peeringServiceLocations",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Peering)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_peering)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -38,7 +38,7 @@ func init() {
 			ListFunc:       (&armpeering.ServiceProvidersClient{}).NewListPager,
 			NewFunc:        armpeering.NewServiceProvidersClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peeringServiceProviders",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Peering)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_peering)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

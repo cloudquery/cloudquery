@@ -1,14 +1,13 @@
 # Table: aws_timestream_tables
 
-
-
 The primary key for this table is **arn**.
 
 ## Relations
+
 This table depends on [aws_timestream_databases](aws_timestream_databases.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

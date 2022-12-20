@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armrelay.NamespacesClient{}).NewListPager,
 			NewFunc:        armrelay.NewNamespacesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Relay/namespaces",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Relay)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_relay)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

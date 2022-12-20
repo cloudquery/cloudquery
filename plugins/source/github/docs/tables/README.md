@@ -1,5 +1,7 @@
 # Source Plugin: github
+
 ## Tables
+
 - [github_workflows](github_workflows.md)
 - [github_billing_action](github_billing_action.md)
 - [github_billing_storage](github_billing_storage.md)

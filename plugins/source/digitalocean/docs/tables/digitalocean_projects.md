@@ -1,7 +1,5 @@
 # Table: digitalocean_projects
 
-
-
 The primary key for this table is **id**.
 
 ## Relations
@@ -10,6 +8,7 @@ The following tables depend on digitalocean_projects:
   - [digitalocean_project_resources](digitalocean_project_resources.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

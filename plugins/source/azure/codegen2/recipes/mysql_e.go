@@ -13,7 +13,7 @@ func init() {
 			ListFunc:       (&armmysql.ServersClient{}).NewListPager,
 			NewFunc:        armmysql.NewServersClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/servers",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DBforMySQL)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_dbformysql)`,
 			ExtraColumns:   DefaultExtraColumns,
 			Relations: []*Table{
 				{

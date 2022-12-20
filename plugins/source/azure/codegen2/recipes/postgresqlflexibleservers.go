@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armpostgresqlflexibleservers.ServersClient{}).NewListPager,
 			NewFunc:        armpostgresqlflexibleservers.NewServersClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/flexibleServers",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DBforPostgreSQL)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_dbforpostgresql)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

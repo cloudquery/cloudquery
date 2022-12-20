@@ -6,7 +6,7 @@ import (
 	"crypto/x509"
 
 	"github.com/cloudquery/cloudquery/cli/internal/pb"
-	"github.com/cloudquery/plugin-sdk/plugins"
+	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"google.golang.org/grpc"
@@ -41,7 +41,7 @@ func initAnalytics() (*AnalyticsClient, error) {
 	}, nil
 }
 
-func (c *AnalyticsClient) SendSyncMetrics(ctx context.Context, sourceSpec specs.Source, destinationsSpecs []specs.Destination, invocationUUID string, metrics *plugins.SourceMetrics) error {
+func (c *AnalyticsClient) SendSyncMetrics(ctx context.Context, sourceSpec specs.Source, destinationsSpecs []specs.Destination, invocationUUID string, metrics *source.Metrics) error {
 	if c.client != nil {
 		syncSummary := &pb.SyncSummary{
 			Invocation_UUID: invocationUUID,

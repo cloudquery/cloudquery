@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armengagementfabric.AccountsClient{}).NewListPager,
 			NewFunc:        armengagementfabric.NewAccountsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.EngagementFabric/Accounts",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_EngagementFabric)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_engagementfabric)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

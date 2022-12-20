@@ -9,7 +9,7 @@ import (
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/julienschmidt/httprouter"
 
-	pb "google.golang.org/genproto/googleapis/cloud/compute/v1"
+	pb "cloud.google.com/go/compute/apiv1/computepb"
 )
 
 func createProjects(mux *httprouter.Router) error {

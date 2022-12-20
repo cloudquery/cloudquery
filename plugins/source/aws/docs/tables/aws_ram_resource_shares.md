@@ -10,6 +10,7 @@ The following tables depend on aws_ram_resource_shares:
   - [aws_ram_resource_share_permissions](aws_ram_resource_share_permissions.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

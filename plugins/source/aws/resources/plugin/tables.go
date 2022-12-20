@@ -39,6 +39,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/elasticache"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/elasticbeanstalk"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/elasticsearch"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/elastictranscoder"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/elbv1"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/elbv2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/emr"
@@ -224,6 +225,8 @@ func tables() []*schema.Table {
 		elasticbeanstalk.Applications(),
 		elasticbeanstalk.Environments(),
 		elasticsearch.Domains(),
+		elastictranscoder.Pipelines(),
+		elastictranscoder.Presets(),
 		elbv1.LoadBalancers(),
 		elbv2.LoadBalancers(),
 		elbv2.TargetGroups(),
@@ -375,10 +378,12 @@ func tables() []*schema.Table {
 		servicecatalog.Products(),
 		servicecatalog.ProvisionedProducts(),
 		servicequotas.Services(),
-		ses.Templates(),
+		ses.ActiveReceiptRuleSets(),
 		ses.ConfigurationSets(),
 		ses.ContactLists(),
+		ses.CustomVerificationEmailTemplates(),
 		ses.Identities(),
+		ses.Templates(),
 		shield.Attacks(),
 		shield.ProtectionGroups(),
 		shield.Protections(),

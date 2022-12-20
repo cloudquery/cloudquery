@@ -10,6 +10,7 @@ The following tables depend on aws_servicequotas_services:
   - [aws_servicequotas_quotas](aws_servicequotas_quotas.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

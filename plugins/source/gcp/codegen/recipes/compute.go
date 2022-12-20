@@ -6,8 +6,8 @@ import (
 	"strings"
 
 	compute "cloud.google.com/go/compute/apiv1"
+	pb "cloud.google.com/go/compute/apiv1/computepb"
 	"github.com/iancoleman/strcase"
-	pb "google.golang.org/genproto/googleapis/cloud/compute/v1"
 )
 
 var computeResourcesAggList = []*Resource{

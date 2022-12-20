@@ -1,7 +1,5 @@
 # Table: aws_glue_registries
 
-
-
 The primary key for this table is **arn**.
 
 ## Relations
@@ -10,6 +8,7 @@ The following tables depend on aws_glue_registries:
   - [aws_glue_registry_schemas](aws_glue_registry_schemas.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

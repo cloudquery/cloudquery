@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armhdinsight.ClustersClient{}).NewListPager,
 			NewFunc:        armhdinsight.NewClustersClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.HDInsight/clusters",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_HDInsight)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_hdinsight)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

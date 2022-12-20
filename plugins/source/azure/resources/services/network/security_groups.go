@@ -12,7 +12,7 @@ func SecurityGroups() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_security_groups",
 		Resolver:  fetchSecurityGroups,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_network),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

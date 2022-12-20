@@ -1,7 +1,5 @@
 # Table: vercel_teams
 
-
-
 The primary key for this table is **id**.
 
 ## Relations
@@ -10,6 +8,7 @@ The following tables depend on vercel_teams:
   - [vercel_team_members](vercel_team_members.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

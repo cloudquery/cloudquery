@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armeventgrid.TopicTypesClient{}).NewListPager,
 			NewFunc:        armeventgrid.NewTopicTypesClient,
 			URL:            "/providers/Microsoft.EventGrid/topicTypes",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_EventGrid)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_eventgrid)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

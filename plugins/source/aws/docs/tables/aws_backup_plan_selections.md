@@ -5,10 +5,11 @@ https://docs.aws.amazon.com/aws-backup/latest/devguide/API_GetBackupSelection.ht
 The primary key for this table is **_cq_id**.
 
 ## Relations
+
 This table depends on [aws_backup_plans](aws_backup_plans.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

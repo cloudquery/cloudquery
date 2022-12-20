@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armhanaonazure.SapMonitorsClient{}).NewListPager,
 			NewFunc:        armhanaonazure.NewSapMonitorsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.HanaOnAzure/sapMonitors",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_HanaOnAzure)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_hanaonazure)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

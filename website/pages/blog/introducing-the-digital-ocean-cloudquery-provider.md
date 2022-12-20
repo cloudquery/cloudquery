@@ -1,5 +1,5 @@
 ---
-title: Introducing The DigitalOcean CloudQuery Provider
+title: Introducing the DigitalOcean CloudQuery Provider
 tag: announcement
 date: 2021/09/17
 description: >-

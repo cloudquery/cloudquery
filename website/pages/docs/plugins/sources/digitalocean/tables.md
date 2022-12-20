@@ -1,5 +1,7 @@
 # Source Plugin: digitalocean
+
 ## Tables
+
 - [digitalocean_accounts](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/digitalocean/docs/tables/digitalocean_accounts.md)
 - [digitalocean_cdns](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/digitalocean/docs/tables/digitalocean_cdns.md)
 - [digitalocean_billing_history](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/digitalocean/docs/tables/digitalocean_billing_history.md)

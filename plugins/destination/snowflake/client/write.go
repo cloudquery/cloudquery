@@ -7,7 +7,7 @@ import (
 	"os"
 	"path"
 
-	"github.com/cloudquery/plugin-sdk/plugins"
+	"github.com/cloudquery/plugin-sdk/plugins/destination"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"golang.org/x/sync/errgroup"
 )
@@ -90,7 +90,7 @@ func (c *Client) writeResource(ctx context.Context, table *schema.Table, resourc
 	return err
 }
 
-func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *plugins.ClientResource) error {
+func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *destination.ClientResource) error {
 	eg, gctx := errgroup.WithContext(ctx)
 	workers := make(map[string]*worker, len(tables))
 

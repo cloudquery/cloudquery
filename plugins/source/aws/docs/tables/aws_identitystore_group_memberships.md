@@ -1,14 +1,13 @@
 # Table: aws_identitystore_group_memberships
 
-
-
 The primary key for this table is **_cq_id**.
 
 ## Relations
+
 This table depends on [aws_identitystore_groups](aws_identitystore_groups.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

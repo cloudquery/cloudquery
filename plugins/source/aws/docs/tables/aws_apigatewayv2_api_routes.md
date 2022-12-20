@@ -5,12 +5,14 @@ https://docs.aws.amazon.com/apigateway/latest/api/API_Route.html
 The primary key for this table is **_cq_id**.
 
 ## Relations
+
 This table depends on [aws_apigatewayv2_apis](aws_apigatewayv2_apis.md).
 
 The following tables depend on aws_apigatewayv2_api_routes:
   - [aws_apigatewayv2_api_route_responses](aws_apigatewayv2_api_route_responses.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

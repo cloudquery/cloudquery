@@ -1,14 +1,13 @@
 # Table: aws_lightsail_database_log_events
 
-
-
 The primary key for this table is **_cq_id**.
 
 ## Relations
+
 This table depends on [aws_lightsail_databases](aws_lightsail_databases.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

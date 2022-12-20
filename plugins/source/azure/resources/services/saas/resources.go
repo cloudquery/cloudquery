@@ -12,7 +12,7 @@ func Resources() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_saas_resources",
 		Resolver:  fetchResources,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_SaaS),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_saas),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

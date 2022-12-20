@@ -1,0 +1,27 @@
+diff --git a/plugins/source/gcp/docs/tables/gcp_resourcemanager_projects.md b/plugins/source/gcp/docs/tables/gcp_resourcemanager_projects.md
+index a39e930ae27..5c8b8b5ea39 100644
+--- a/plugins/source/gcp/docs/tables/gcp_resourcemanager_projects.md
++++ b/plugins/source/gcp/docs/tables/gcp_resourcemanager_projects.md
+@@ -2,7 +2,7 @@
+ 
+ 
+ 
+-The primary key for this table is **_cq_id**.
++The composite primary key for this table is (**project_id**, **name**).
+ 
+ 
+ 
+@@ -11,10 +11,10 @@ The primary key for this table is **_cq_id**.
+ | ------------- | ------------- |
+ |_cq_source_name|String|
+ |_cq_sync_time|Timestamp|
+-|_cq_id (PK)|UUID|
++|_cq_id|UUID|
+ |_cq_parent_id|UUID|
+-|project_id|String|
+-|name|String|
++|project_id (PK)|String|
++|name (PK)|String|
+ |parent|String|
+ |state|String|
+ |display_name|String|
