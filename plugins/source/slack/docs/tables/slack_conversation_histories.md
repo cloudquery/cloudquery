@@ -23,7 +23,6 @@ The following tables depend on slack_conversation_histories:
 |team_id (PK)|String|
 |client_msg_id|String|
 |type|String|
-|channel|String|
 |user|String|
 |text|String|
 |ts (PK)|String|

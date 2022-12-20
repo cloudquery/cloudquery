@@ -41,11 +41,6 @@ func ConversationHistories() *schema.Table {
 				Resolver: schema.PathResolver("Type"),
 			},
 			{
-				Name:     "channel",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Channel"),
-			},
-			{
 				Name:     "user",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("User"),
