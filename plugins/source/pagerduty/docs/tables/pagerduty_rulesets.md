@@ -10,6 +10,7 @@ The following tables depend on pagerduty_rulesets:
   - [pagerduty_ruleset_rules](pagerduty_ruleset_rules.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

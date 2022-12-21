@@ -14,7 +14,7 @@ import (
 	"time"
 
 	"github.com/PagerDuty/go-pagerduty"
-	"github.com/cloudquery/plugin-sdk/plugins"
+	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
@@ -58,14 +58,14 @@ func PagerdutyMockTestHelper(t *testing.T, table *schema.Table, buildMockHttpCli
 		return &cqClient, nil
 	}
 
-	p := plugins.NewSourcePlugin(
+	p := source.NewPlugin(
 		table.Name,
 		version,
 		[]*schema.Table{table},
 		configureTestExecutionClient,
 	)
 	p.SetLogger(logger)
-	plugins.TestSourcePluginSync(t, p, specs.Source{
+	source.TestPluginSync(t, p, specs.Source{
 		Name:         "dev",
 		Path:         "cloudquery/dev",
 		Version:      version,

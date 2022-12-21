@@ -4,9 +4,8 @@ https://developer.pagerduty.com/api-reference/0fa9ad52bf2d2-list-priorities
 
 The primary key for this table is **id**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
