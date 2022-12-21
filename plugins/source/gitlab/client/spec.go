@@ -18,4 +18,5 @@ func (s Spec) Validate() error {
 	if s.BaseURL == "gitlab.com" {
 		return errors.New("base URL cannot be `gitlab.com` this plugin only supports self hosted instances")
 	}
+	return nil
 }
