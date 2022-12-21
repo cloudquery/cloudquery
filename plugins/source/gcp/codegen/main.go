@@ -94,6 +94,59 @@ func InferListFunction(r *recipes.Resource) {
 	}
 }
 
+func getColumn(columns codegen.ColumnDefinitions, name string) *codegen.ColumnDefinition {
+	for i := range columns {
+		if columns[i].Name == name {
+			return &columns[i]
+		}
+	}
+	return nil
+}
+
+func listMethodSignature(method reflect.Method) string {
+	t := method.Type
+	buf := strings.Builder{}
+	buf.WriteString(method.Name + "(")
+	buf.WriteString(t.In(0).String())
+	buf.WriteString(", ")
+	buf.WriteString(t.In(1).String())
+	buf.WriteString(")")
+	buf.WriteString(" (")
+	buf.WriteString(t.Out(0).String())
+	buf.WriteString(", ")
+	buf.WriteString(t.Out(1).String())
+	buf.WriteString(")")
+	return buf.String()
+}
+
+func isValidListMethod(method reflect.Method) bool {
+	if !strings.HasPrefix(method.Name, "List") {
+		return false
+	}
+
+	_, responseHasNextPage := method.Type.Out(0).Elem().FieldByName("NextPageToken")
+	return responseHasNextPage
+}
+
+func generateMockTestData(r *recipes.Resource) {
+	registerServerPath := runtime.FuncForPC(reflect.ValueOf(r.RelationsTestData.RegisterServer).Pointer()).Name()
+	serverName := strings.Split(registerServerPath, "/")[4]
+	pbName := strings.Split(serverName, ".")[0]
+	pbPath := strings.Split(registerServerPath, pbName)[0]
+	r.RelationsTestData.ProtobufImport = fmt.Sprintf("%s%s", pbPath, pbName)
+	r.RelationsTestData.RegisterServerName = serverName
+	r.RelationsTestData.UnimplementedServerName = strings.Replace(serverName, "Register", "Unimplemented", 1)
+	server := reflect.TypeOf(r.RelationsTestData.RegisterServer).In(1)
+	for i := 0; i < server.NumMethod(); i++ {
+		method := server.Method(i)
+		if isValidListMethod(method) {
+			sig := listMethodSignature(method)
+			responseType := method.Type.Out(0).Elem().String()
+			r.RelationsTestData.ListFunctions = append(r.RelationsTestData.ListFunctions, recipes.ListFunctions{Signature: sig, ResponseStructName: responseType})
+		}
+	}
+}
+
 func generateResource(r recipes.Resource, mock bool) {
 	var err error
 	_, filename, _, ok := runtime.Caller(0)
@@ -143,6 +196,10 @@ func generateResource(r recipes.Resource, mock bool) {
 				r.ResponseStructName = r.StructName + r.ListFunctionName
 			}
 		}
+	}
+
+	if mock && r.RelationsTestData.RegisterServer != nil {
+		generateMockTestData(&r)
 	}
 
 	if r.ResponseStruct != nil {
@@ -220,10 +277,16 @@ func generateResource(r recipes.Resource, mock bool) {
 	}
 
 	for _, f := range r.PrimaryKeys {
-		for i := range r.Table.Columns {
-			if r.Table.Columns[i].Name == f {
-				r.Table.Columns[i].Options.PrimaryKey = true
-			}
+		column := getColumn(r.Table.Columns, f)
+		if column != nil {
+			column.Options.PrimaryKey = true
+		}
+	}
+
+	for _, f := range r.IgnoreInTestsColumns {
+		column := getColumn(r.Table.Columns, f)
+		if column != nil {
+			column.IgnoreInTests = true
 		}
 	}
 

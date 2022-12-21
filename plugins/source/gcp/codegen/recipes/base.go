@@ -4,11 +4,25 @@ import (
 	"reflect"
 	"strings"
 
+	"github.com/cloudquery/plugin-sdk/caser"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 var Resources []*Resource
+
+type ListFunctions struct {
+	ResponseStructName string
+	Signature          string
+}
+
+type RelationsTestData struct {
+	RegisterServer          any
+	RegisterServerName      string
+	UnimplementedServerName string
+	ListFunctions           []ListFunctions
+	ProtobufImport          string
+}
 
 type Resource struct {
 	Description string
@@ -36,6 +50,8 @@ type Resource struct {
 	ClientName string
 	// ListFunction
 	ListFunction any
+	// LocationsListFunction
+	LocationsListFunction any
 	// ListFunction name of the above function via Reflection
 	ListFunctionName string
 	// RequestStructName
@@ -50,6 +66,8 @@ type Resource struct {
 	RegisterServer any
 	// RegisterServerName is the name of the above function via Reflection
 	RegisterServerName string
+	// RelationsTestData has relations data used for creating tests
+	RelationsTestData RelationsTestData
 	// UnimplementedServerName is the name of the above function via Reflection
 	UnimplementedServerName string
 	// OutputField is field where the result is located in the output struct
@@ -84,6 +102,11 @@ type Resource struct {
 	ExtraColumns []codegen.ColumnDefinition
 	// NameTransformer custom name transformer for resource
 	NameTransformer func(field reflect.StructField) (string, error)
+	// ClientOptions is a list of options to pass to the client
+	ClientOptions []string
+	// IgnoreInTestsColumns is a list of columns to ignore in tests
+	IgnoreInTestsColumns []string
+	ParentFilterFunc     string
 }
 
 var ProjectIdColumn = codegen.ColumnDefinition{
@@ -91,6 +114,8 @@ var ProjectIdColumn = codegen.ColumnDefinition{
 	Type:     schema.TypeString,
 	Resolver: "client.ResolveProject",
 }
+
+var Caser = caser.New()
 
 func CreateReplaceTransformer(replace map[string]string) func(field reflect.StructField) (string, error) {
 	return func(field reflect.StructField) (string, error) {
