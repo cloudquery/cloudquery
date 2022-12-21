@@ -7,7 +7,7 @@ import (
 )
 
 func TestPlugin(t *testing.T) {
-	p := destination.NewPlugin("postgresql", "development", New, destination.WithMaxWorkers(1))
+	p := destination.NewPlugin("postgresql", "development", New)
 
 	destination.PluginTestSuiteRunner(t, p,
 		Spec{
