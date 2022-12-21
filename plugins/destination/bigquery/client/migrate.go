@@ -20,10 +20,6 @@ const (
 
 // Migrate tables. It is the responsibility of the CLI of the client to lock before running migrations.
 func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
-	// client, err := c.bqClient(ctx)
-	// if err != nil {
-	// 	return fmt.Errorf("failed to create client: %w", err)
-	// }
 	eg, gctx := errgroup.WithContext(context.Background())
 	eg.SetLimit(concurrentMigrations)
 	for _, table := range tables.FlattenTables() {
