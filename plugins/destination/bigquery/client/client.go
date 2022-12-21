@@ -54,13 +54,6 @@ func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination)
 		c.client.Location = c.pluginSpec.DatasetLocation
 	}
 
-	// create a client to test that we can do it, but new clients will also be instantiated
-	// for queries so that we can use a new context there.
-	// client, err := c.bqClient(ctx)
-	// if err != nil {
-	// 	return nil, fmt.Errorf("failed to create new BigQuery client: %w", err)
-	// }
-	// defer client.Close()
 
 	return c, nil
 }
