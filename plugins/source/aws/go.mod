@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/aws/aws-sdk-go-v2 v1.17.3
-	github.com/aws/aws-sdk-go-v2/config v1.18.6
+	github.com/aws/aws-sdk-go-v2/config v1.18.7
 	github.com/aws/aws-sdk-go-v2/credentials v1.13.7
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.45
 	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.18.2
@@ -19,7 +19,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/autoscaling v1.25.1
 	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.24.3
 	github.com/aws/aws-sdk-go-v2/service/cloudfront v1.22.2
-	github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.13.23
+	github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.13.24
 	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.21.1
 	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.23.1
 	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.17.3
