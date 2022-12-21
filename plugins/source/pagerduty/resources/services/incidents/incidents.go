@@ -174,6 +174,7 @@ func Incidents() *schema.Table {
 
 		Relations: []*schema.Table{
 			IncidentAlerts(),
+			IncidentNotes(),
 		},
 	}
 }
