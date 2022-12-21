@@ -26,11 +26,11 @@ spec:
 
 This is the (nested) spec used by the Tailscale source plugin.
 
-- `api_key` (string, required. Default: `TAILSCALE_API_KEY` environment variable):
+- `api_key` (string, required):
   An API key to access Tailscale resources.
   This can be obtained from [Tailscale Keys Settings Page](https://login.tailscale.com/admin/settings/keys).
 
-- `tailnet`  (string, required. Default: `TAILSCALE_TAILNET` environment variable):
+- `tailnet`  (string, required):
   This is your Tailscale tailnet name (also known as organization name).
 
 - `endpoint_url` (string, optional. Default: not used):
