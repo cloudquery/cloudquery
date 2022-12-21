@@ -86,13 +86,8 @@ func (*Client) TransformCIDR(v *schema.CIDR) any {
 	return v.IPNet
 }
 
-<<<<<<< HEAD
-func (*Client) TransformCIDRArray(v *schema.CIDRArray) any {
-	r := pgtype.Array[*net.IPNet]{}
-=======
 func (*Client) TransformCIDRArray(v *schema.CIDRArray) interface{} {
 	r := pgtype.FlatArray[*net.IPNet]{}
->>>>>>> a1307b114 (more wip)
 	for _, e := range v.Elements {
 		r = append(r, e.IPNet)
 	}
@@ -103,13 +98,8 @@ func (*Client) TransformInet(v *schema.Inet) any {
 	return v.IPNet
 }
 
-<<<<<<< HEAD
-func (*Client) TransformInetArray(v *schema.InetArray) any {
-	r := pgtype.Array[*net.IPNet]{}
-=======
 func (*Client) TransformInetArray(v *schema.InetArray) interface{} {
 	r := pgtype.FlatArray[*net.IPNet]{}
->>>>>>> a1307b114 (more wip)
 	for _, e := range v.Elements {
 		r = append(r, e.IPNet)
 	}
