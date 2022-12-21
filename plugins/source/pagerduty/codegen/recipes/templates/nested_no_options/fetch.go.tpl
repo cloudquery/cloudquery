@@ -12,7 +12,7 @@ import (
 
 func fetch{{.SubService | ToCamel}}(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
   cqClient := meta.(*client.Client)
-  concreteParent := parent.Item.(pagerduty.{{.Parent.StructName}})
+  concreteParent := parent.Item.({{if .ParentIsPointer }}*{{end}}pagerduty.{{.Parent.StructName}})
 
   response, err := cqClient.PagerdutyClient.{{if ne .ListFunctionNameOverride ""}}{{.ListFunctionNameOverride}}{{else}}List{{.StructName}}sWithContext{{end}}(ctx, concreteParent.ID)
   if err != nil {
