@@ -14,13 +14,24 @@ import (
 func buildElasticSearchDomains(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockElasticsearchserviceClient(ctrl)
 
+	var info types.DomainInfo
+	if err := faker.FakeObject(&info); err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().ListDomainNames(gomock.Any(), gomock.Any()).Return(
+		&elasticsearchservice.ListDomainNamesOutput{
+			DomainNames: []types.DomainInfo{info},
+		},
+		nil,
+	)
+
 	var ds types.ElasticsearchDomainStatus
 	if err := faker.FakeObject(&ds); err != nil {
 		t.Fatal(err)
 	}
-	m.EXPECT().DescribeElasticsearchDomains(gomock.Any(), gomock.Any()).Return(
-		&elasticsearchservice.DescribeElasticsearchDomainsOutput{
-			DomainStatusList: []types.ElasticsearchDomainStatus{ds},
+	m.EXPECT().DescribeElasticsearchDomain(gomock.Any(), gomock.Any()).Return(
+		&elasticsearchservice.DescribeElasticsearchDomainOutput{
+			DomainStatus: &ds,
 		},
 		nil,
 	)

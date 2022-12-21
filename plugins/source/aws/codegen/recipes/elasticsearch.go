@@ -9,10 +9,11 @@ import (
 func ElasticsearchResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService:  "domains",
-			Struct:      new(types.ElasticsearchDomainStatus),
-			Description: "https://docs.aws.amazon.com/opensearch-service/latest/APIReference/API_DomainStatus.html",
-			PKColumns:   []string{"arn"},
+			SubService:          "domains",
+			Struct:              new(types.ElasticsearchDomainStatus),
+			Description:         "https://docs.aws.amazon.com/opensearch-service/latest/APIReference/API_DomainStatus.html",
+			PreResourceResolver: "describeElasticsearchDomain",
+			PKColumns:           []string{"arn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				codegen.ColumnDefinition{

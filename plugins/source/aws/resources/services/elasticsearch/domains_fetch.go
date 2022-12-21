@@ -12,14 +12,28 @@ import (
 func fetchElasticsearchDomains(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	svc := meta.(*client.Client).Services().Elasticsearchservice
 
-	out, err := svc.DescribeElasticsearchDomains(ctx,
-		&elasticsearchservice.DescribeElasticsearchDomainsInput{DomainNames: []string{}},
+	domainNames, err := svc.ListDomainNames(ctx, nil)
+	if err != nil {
+		return err
+	}
+
+	res <- domainNames.DomainNames
+
+	return nil
+}
+
+func describeElasticsearchDomain(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	svc := meta.(*client.Client).Services().Elasticsearchservice
+	name := resource.Item.(types.DomainInfo).DomainName
+
+	out, err := svc.DescribeElasticsearchDomain(ctx,
+		&elasticsearchservice.DescribeElasticsearchDomainInput{DomainName: name},
 	)
 	if err != nil {
 		return err
 	}
 
-	res <- out.DomainStatusList
+	resource.SetItem(out.DomainStatus)
 
 	return nil
 }
@@ -29,7 +43,7 @@ func resolveDomainTags(ctx context.Context, meta schema.ClientMeta, resource *sc
 
 	tagsOutput, err := svc.ListTags(ctx,
 		&elasticsearchservice.ListTagsInput{
-			ARN: resource.Item.(types.ElasticsearchDomainStatus).ARN,
+			ARN: resource.Item.(*types.ElasticsearchDomainStatus).ARN,
 		},
 	)
 	if err != nil {
@@ -43,7 +57,7 @@ func resolveAuthorizedPrincipals(ctx context.Context, meta schema.ClientMeta, re
 	svc := meta.(*client.Client).Services().Elasticsearchservice
 
 	input := &elasticsearchservice.ListVpcEndpointAccessInput{
-		DomainName: resource.Item.(types.ElasticsearchDomainStatus).DomainName,
+		DomainName: resource.Item.(*types.ElasticsearchDomainStatus).DomainName,
 	}
 
 	var principals []types.AuthorizedPrincipal
