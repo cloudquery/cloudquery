@@ -5,10 +5,11 @@ https://developer.pagerduty.com/api-reference/4bc42e7ac0c59-list-alerts-for-an-i
 The primary key for this table is **id**.
 
 ## Relations
+
 This table depends on [pagerduty_incidents](pagerduty_incidents.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
