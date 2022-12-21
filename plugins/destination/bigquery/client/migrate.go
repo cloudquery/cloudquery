@@ -24,7 +24,7 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 	// if err != nil {
 	// 	return fmt.Errorf("failed to create client: %w", err)
 	// }
-	eg, gctx := errgroup.WithContext(ctx)
+	eg, gctx := errgroup.WithContext(context.Background())
 	eg.SetLimit(concurrentMigrations)
 	for _, table := range tables.FlattenTables() {
 		table := table
@@ -68,7 +68,7 @@ func (c *Client) doesTableExist(ctx context.Context, client *bigquery.Client, ta
 				return false, nil
 			}
 		}
-		c.logger.Error().Err(err).Msg("Got unexpected error while checking table metadata")
+		c.logger.Error().Str("dataset", c.pluginSpec.DatasetID).Str("table", table).Err(err).Msg("Got unexpected error while checking table metadata")
 		return false, err
 	}
 

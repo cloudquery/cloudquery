@@ -43,11 +43,10 @@ func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination)
 	c.pluginSpec = spec
 	c.batchSize = spec.BatchSize
 
-	opts := []option.ClientOption{option.WithRequestReason("CloudQuery BigQuery destination")}
-	if len(c.pluginSpec.ServiceAccountKeyJSON) != 0 {
-		opts = append(opts, option.WithCredentialsJSON([]byte(c.pluginSpec.ServiceAccountKeyJSON)))
-	}
-	c.client, err = bigquery.NewClient(ctx, c.pluginSpec.ProjectID, opts...)
+	// the context here is used for token refresh so this is workaround as suggested
+	// https://github.com/googleapis/google-cloud-go/issues/946
+	// https://github.com/googleapis/google-cloud-go/commit/2d59af0cb37fb29e5b7980a15088938778f117c7
+	c.client, err = c.bqClient(context.Background())
 	if err != nil {
 		return nil, err
 	}
@@ -66,20 +65,20 @@ func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination)
 	return c, nil
 }
 
-// func (c *Client) bqClient(ctx context.Context) (*bigquery.Client, error) {
-// 	opts := []option.ClientOption{option.WithRequestReason("CloudQuery BigQuery destination")}
-// 	if len(c.pluginSpec.ServiceAccountKeyJSON) != 0 {
-// 		opts = append(opts, option.WithCredentialsJSON([]byte(c.pluginSpec.ServiceAccountKeyJSON)))
-// 	}
-// 	client, err := bigquery.NewClient(ctx, c.pluginSpec.ProjectID, opts...)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	if c.pluginSpec.DatasetLocation != "" {
-// 		client.Location = c.pluginSpec.DatasetLocation
-// 	}
-// 	return client, nil
-// }
+func (c *Client) bqClient(ctx context.Context) (*bigquery.Client, error) {
+	opts := []option.ClientOption{option.WithRequestReason("CloudQuery BigQuery destination")}
+	if len(c.pluginSpec.ServiceAccountKeyJSON) != 0 {
+		opts = append(opts, option.WithCredentialsJSON([]byte(c.pluginSpec.ServiceAccountKeyJSON)))
+	}
+	client, err := bigquery.NewClient(ctx, c.pluginSpec.ProjectID, opts...)
+	if err != nil {
+		return nil, err
+	}
+	if c.pluginSpec.DatasetLocation != "" {
+		client.Location = c.pluginSpec.DatasetLocation
+	}
+	return client, nil
+}
 
 func (c *Client) Close(_ context.Context) error {
 	return c.client.Close()
