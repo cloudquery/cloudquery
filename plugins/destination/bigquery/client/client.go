@@ -19,7 +19,7 @@ type Client struct {
 	metrics    destination.Metrics
 	batchSize  int
 	pluginSpec Spec
-	client 	 *bigquery.Client
+	client     *bigquery.Client
 }
 
 func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination) (destination.Client, error) {
@@ -50,7 +50,6 @@ func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination)
 	if err != nil {
 		return nil, err
 	}
-
 
 	return c, nil
 }
