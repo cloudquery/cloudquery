@@ -147,6 +147,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
       - name: Set up Go 1.x
         uses: actions/setup-go@v3
         with:
