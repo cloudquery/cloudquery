@@ -17,16 +17,17 @@ import (
 
 // sets up test accounts with the following structure:
 // root
-//   ou-parent1
-//     ou-child1
-//       id-child1-account
-//     id-parent1-account
-//   ou-parent2
-//     ou-child2
-//       id-child2-account
-//     id-parent2-account
-//   id-top-level-account
-//   id-top-level-account-inactive
+//
+//	ou-parent1
+//	  ou-child1
+//	    id-child1-account
+//	  id-parent1-account
+//	ou-parent2
+//	  ou-child2
+//	    id-child2-account
+//	  id-parent2-account
+//	id-top-level-account
+//	id-top-level-account-inactive
 func setupTestAccounts(t *testing.T) *mocks.MockOrganizationsClient {
 	ctrl := gomock.NewController(t)
 	api := mocks.NewMockOrganizationsClient(ctrl)

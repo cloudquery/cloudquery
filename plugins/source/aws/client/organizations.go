@@ -86,7 +86,7 @@ func loadAccounts(ctx context.Context, awsConfig *Spec, accountsApi services.Org
 
 // Get Accounts for specific Organizational Units
 func getOUAccounts(ctx context.Context, accountsApi services.OrganizationsClient, awsOrg *AwsOrg) ([]orgTypes.Account, error) {
-	q := awsOrg.OrganizationUnits[:]
+	q := awsOrg.OrganizationUnits
 	var ou string
 	var rawAccounts []orgTypes.Account
 	for len(q) > 0 {
