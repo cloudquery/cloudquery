@@ -10,12 +10,12 @@ import (
   "github.com/PagerDuty/go-pagerduty"
 )
 
-func fetch{{.SubService | ToCamel}}(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetch{{.SubService | ToCamel}}(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
   cqClient := meta.(*client.Client)
   concreteParent := parent.Item.({{if .ParentIsPointer }}*{{end}}pagerduty.{{.Parent.StructName}})
 
   more := true
-  var offset uint = 0
+  var offset uint
   for more {
     response, err := cqClient.PagerdutyClient.{{if ne .ListFunctionNameOverride ""}}{{.ListFunctionNameOverride}}{{else}}List{{.StructName}}sWithContext{{end}}(ctx, concreteParent.ID, pagerduty.{{if ne .ListOptionsStructNameOverride ""}}{{.ListOptionsStructNameOverride}}{{else}}List{{.StructName}}sOptions{{end}}{
       Limit: client.MaxPaginationLimit,
