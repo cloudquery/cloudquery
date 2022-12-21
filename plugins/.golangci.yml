@@ -95,8 +95,6 @@ linters:
     - unused
 
 issues:
-  new-from-rev: HEAD~
-  whole-files: true
   exclude-rules:
     # Exclude some linters from running on tests files.
     - path: _test\.go
