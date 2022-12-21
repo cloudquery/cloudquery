@@ -54,7 +54,7 @@ jobs:
           cache: true
           cache-dependency-path: plugins/source/aws/go.sum
       - name: golangci-lint
-        uses: bbernays/golangci-lint-action@89515350f42d00b264542dbd1afc850294534388
+        uses: bbernays/golangci-lint-action@58bce521b66ed125524e24eeec9522d765a8c2a7
         with:
           version: v1.50.1
           working-directory: plugins/source/aws
