@@ -37,9 +37,9 @@ type Resource struct {
 }
 
 type Instance struct {
-	IndexKey interface{} `json:"index_key,omitempty"`
-	Status   string      `json:"status,omitempty"`
-	Deposed  string      `json:"deposed,omitempty"`
+	IndexKey any    `json:"index_key,omitempty"`
+	Status   string `json:"status,omitempty"`
+	Deposed  string `json:"deposed,omitempty"`
 
 	SchemaVersion           uint64            `json:"schema_version"`
 	AttributesRaw           json.RawMessage   `json:"attributes,omitempty"`

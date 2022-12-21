@@ -68,7 +68,7 @@ func Occurrences() *schema.Table {
 	}
 }
 
-func fetchOccurrences(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchOccurrences(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	req := &pb.ListOccurrencesRequest{
 		Parent: "projects/" + c.ProjectId,

@@ -147,7 +147,7 @@ func TFData() *schema.Table {
 //	Table Resolver Functions
 //
 // ====================================================================================================================
-func resolveTerraformMetaData(_ context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func resolveTerraformMetaData(_ context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	backend := c.Backend()
 	res <- backend.Data.State
@@ -166,7 +166,7 @@ func resolveBackendName(_ context.Context, meta schema.ClientMeta, resource *sch
 	return resource.Set("backend_name", backend.BackendName)
 }
 
-func resolveTerraformResources(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func resolveTerraformResources(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	state := parent.Item.(client.State)
 	for _, resource := range state.Resources {
 		res <- resource
@@ -174,7 +174,7 @@ func resolveTerraformResources(_ context.Context, _ schema.ClientMeta, parent *s
 	return nil
 }
 
-func resolveTerraformResourceInstances(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func resolveTerraformResourceInstances(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	resource := parent.Item.(client.Resource)
 	for _, instance := range resource.Instances {
 		res <- instance
@@ -194,7 +194,7 @@ func resolveProviderName(_ context.Context, _ schema.ClientMeta, resource *schem
 
 func resolveInstanceAttributes(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	instance := resource.Item.(client.Instance)
-	var attrs map[string]interface{}
+	var attrs map[string]any
 	if err := json.Unmarshal(instance.AttributesRaw, &attrs); err != nil {
 		return fmt.Errorf("not valid JSON attributes")
 	}
@@ -203,7 +203,7 @@ func resolveInstanceAttributes(_ context.Context, _ schema.ClientMeta, resource 
 
 func resolveInstanceInternalId(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	instance := resource.Item.(client.Instance)
-	var data map[string]interface{}
+	var data map[string]any
 	if err := json.Unmarshal(instance.AttributesRaw, &data); err != nil {
 		return fmt.Errorf("could not parse internal instance id")
 	}

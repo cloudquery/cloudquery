@@ -83,7 +83,7 @@ func TargetHttpProxies() *schema.Table {
 	}
 }
 
-func fetchTargetHttpProxies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchTargetHttpProxies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	req := &pb.AggregatedListTargetHttpProxiesRequest{
 		Project: c.ProjectId,

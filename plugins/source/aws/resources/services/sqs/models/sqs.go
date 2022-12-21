@@ -47,5 +47,5 @@ type Queue struct {
 	// The parameters for the dead-letter queue functionality of the source queue as a JSON object.
 	RedriveAllowPolicy *string
 
-	UnknownFields map[string]interface{} `mapstructure:",remain"`
+	UnknownFields map[string]any `mapstructure:",remain"`
 }

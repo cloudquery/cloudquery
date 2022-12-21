@@ -8,7 +8,7 @@ import (
 	"github.com/google/go-github/v48/github"
 )
 
-func fetchIssues(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchIssues(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	opts := &github.IssueListOptions{
 		Filter: "all",

@@ -46,7 +46,7 @@ func Suppressions() *schema.Table {
 	}
 }
 
-func fetchSuppressions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchSuppressions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armadvisor.NewSuppressionsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

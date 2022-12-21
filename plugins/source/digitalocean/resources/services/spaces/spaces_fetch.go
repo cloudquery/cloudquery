@@ -20,7 +20,7 @@ type WrappedBucket struct {
 	ACLs     []types.Grant
 }
 
-func fetchSpacesSpaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchSpacesSpaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	log := meta.(*client.Client).Logger()
 
@@ -83,7 +83,7 @@ func resolveSpacesAcls(ctx context.Context, meta schema.ClientMeta, space *Wrapp
 	return aclOutput.Grants, nil
 }
 
-func fetchSpacesCors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchSpacesCors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var ae smithy.APIError
 	r := parent.Item.(*WrappedBucket)
 	svc := meta.(*client.Client).Services

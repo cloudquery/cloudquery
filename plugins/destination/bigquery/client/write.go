@@ -17,7 +17,7 @@ const (
 )
 
 type worker struct {
-	writeChan chan []interface{}
+	writeChan chan []any
 }
 
 type item struct {
@@ -29,7 +29,7 @@ func (i *item) Save() (map[string]bigquery.Value, string, error) {
 	return i.cols, bigquery.NoDedupeID, nil
 }
 
-func (c *Client) writeResource(ctx context.Context, table *schema.Table, client *bigquery.Client, resources <-chan []interface{}) error {
+func (c *Client) writeResource(ctx context.Context, table *schema.Table, client *bigquery.Client, resources <-chan []any) error {
 	inserter := client.Dataset(c.pluginSpec.DatasetID).Table(table.Name).Inserter()
 	inserter.IgnoreUnknownValues = true
 	inserter.SkipInvalidRows = false
@@ -86,7 +86,7 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *de
 	}
 	for _, t := range tables.FlattenTables() {
 		t := t
-		writeChan := make(chan []interface{})
+		writeChan := make(chan []any)
 		workers[t.Name] = &worker{
 			writeChan: writeChan,
 		}

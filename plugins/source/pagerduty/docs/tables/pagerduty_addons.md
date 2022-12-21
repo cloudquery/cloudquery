@@ -4,9 +4,8 @@ https://developer.pagerduty.com/api-reference/e58b140202a57-list-installed-add-o
 
 The primary key for this table is **id**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

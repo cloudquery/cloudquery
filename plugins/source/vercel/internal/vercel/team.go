@@ -18,20 +18,20 @@ type Team struct {
 	CreatedAt MilliTime `json:"createdAt"`
 	// duplicate: Created                 time.Time        `json:"created"`
 
-	Membership              interface{}   `json:"membership"`
-	EnablePreviewFeedback   interface{}   `json:"enablePreviewFeedback"`
-	CreatorID               string        `json:"creatorId"`
-	UpdatedAt               *MilliTime    `json:"updatedAt"`
-	PlatformVersion         interface{}   `json:"platformVersion"`
-	Billing                 interface{}   `json:"billing"`
-	Description             interface{}   `json:"description"`
-	Profiles                []interface{} `json:"profiles"`
-	StagingPrefix           string        `json:"stagingPrefix"`
-	ResourceConfig          interface{}   `json:"resourceConfig"`
-	PreviewDeploymentSuffix interface{}   `json:"previewDeploymentSuffix"`
-	SoftBlock               interface{}   `json:"softBlock"`
-	RemoteCaching           interface{}   `json:"remoteCaching"`
-	EnabledInvoiceItems     interface{}   `json:"enabledInvoiceItems"`
+	Membership              any        `json:"membership"`
+	EnablePreviewFeedback   any        `json:"enablePreviewFeedback"`
+	CreatorID               string     `json:"creatorId"`
+	UpdatedAt               *MilliTime `json:"updatedAt"`
+	PlatformVersion         any        `json:"platformVersion"`
+	Billing                 any        `json:"billing"`
+	Description             any        `json:"description"`
+	Profiles                []any      `json:"profiles"`
+	StagingPrefix           string     `json:"stagingPrefix"`
+	ResourceConfig          any        `json:"resourceConfig"`
+	PreviewDeploymentSuffix any        `json:"previewDeploymentSuffix"`
+	SoftBlock               any        `json:"softBlock"`
+	RemoteCaching           any        `json:"remoteCaching"`
+	EnabledInvoiceItems     any        `json:"enabledInvoiceItems"`
 }
 
 type TeamMember struct {
@@ -47,9 +47,9 @@ type TeamMember struct {
 	Username string  `json:"username"`
 	Name     *string `json:"name"`
 
-	CreatedAt         MilliTime   `json:"createdAt"`
-	AccessRequestedAt *MilliTime  `json:"accessRequestedAt"`
-	JoinedFrom        interface{} `json:"joinedFrom"`
+	CreatedAt         MilliTime  `json:"createdAt"`
+	AccessRequestedAt *MilliTime `json:"accessRequestedAt"`
+	JoinedFrom        any        `json:"joinedFrom"`
 }
 
 type MemberSubAccount struct {

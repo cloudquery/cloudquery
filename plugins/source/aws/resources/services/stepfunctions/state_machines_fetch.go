@@ -9,7 +9,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchStepfunctionsStateMachines(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchStepfunctionsStateMachines(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	svc := meta.(*client.Client).Services().Sfn
 	config := sfn.ListStateMachinesInput{}
 	paginator := sfn.NewListStateMachinesPaginator(svc, &config)

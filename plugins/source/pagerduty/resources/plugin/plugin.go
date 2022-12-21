@@ -2,15 +2,15 @@ package plugin
 
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/pagerduty/client"
-	"github.com/cloudquery/plugin-sdk/plugins"
+	"github.com/cloudquery/plugin-sdk/plugins/source"
 )
 
 var (
 	Version = "Development"
 )
 
-func Plugin() *plugins.SourcePlugin {
-	return plugins.NewSourcePlugin(
+func Plugin() *source.Plugin {
+	return source.NewPlugin(
 		"pagerduty",
 		Version,
 		AllTables(),

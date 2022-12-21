@@ -84,7 +84,7 @@ func resolveVpcLinkArn() schema.ColumnResolver {
 		return []string{"vpclinks", *resource.Item.(types.VpcLink).VpcLinkId}, nil
 	})
 }
-func fetchApigatewayv2Apis(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchApigatewayv2Apis(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config apigatewayv2.GetApisInput
 	c := meta.(*client.Client)
 	svc := c.Services().Apigatewayv2
@@ -102,7 +102,7 @@ func fetchApigatewayv2Apis(ctx context.Context, meta schema.ClientMeta, parent *
 	}
 	return nil
 }
-func fetchApigatewayv2ApiAuthorizers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchApigatewayv2ApiAuthorizers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(types.Api)
 	config := apigatewayv2.GetAuthorizersInput{
 		ApiId: r.ApiId,
@@ -123,7 +123,7 @@ func fetchApigatewayv2ApiAuthorizers(ctx context.Context, meta schema.ClientMeta
 	}
 	return nil
 }
-func fetchApigatewayv2ApiDeployments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchApigatewayv2ApiDeployments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(types.Api)
 	config := apigatewayv2.GetDeploymentsInput{
 		ApiId: r.ApiId,
@@ -144,7 +144,7 @@ func fetchApigatewayv2ApiDeployments(ctx context.Context, meta schema.ClientMeta
 	}
 	return nil
 }
-func fetchApigatewayv2ApiIntegrations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchApigatewayv2ApiIntegrations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(types.Api)
 	config := apigatewayv2.GetIntegrationsInput{
 		ApiId: r.ApiId,
@@ -165,7 +165,7 @@ func fetchApigatewayv2ApiIntegrations(ctx context.Context, meta schema.ClientMet
 	}
 	return nil
 }
-func fetchApigatewayv2ApiIntegrationResponses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchApigatewayv2ApiIntegrationResponses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(types.Integration)
 	p := parent.Parent.Item.(types.Api)
 	config := apigatewayv2.GetIntegrationResponsesInput{
@@ -188,7 +188,7 @@ func fetchApigatewayv2ApiIntegrationResponses(ctx context.Context, meta schema.C
 	}
 	return nil
 }
-func fetchApigatewayv2ApiModels(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchApigatewayv2ApiModels(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(types.Api)
 	config := apigatewayv2.GetModelsInput{
 		ApiId: r.ApiId,
@@ -225,7 +225,7 @@ func resolveApigatewayv2apiModelModelTemplate(ctx context.Context, meta schema.C
 	}
 	return resource.Set(c.Name, response.Value)
 }
-func fetchApigatewayv2ApiRoutes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchApigatewayv2ApiRoutes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(types.Api)
 	config := apigatewayv2.GetRoutesInput{
 		ApiId: r.ApiId,
@@ -246,7 +246,7 @@ func fetchApigatewayv2ApiRoutes(ctx context.Context, meta schema.ClientMeta, par
 	}
 	return nil
 }
-func fetchApigatewayv2ApiRouteResponses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchApigatewayv2ApiRouteResponses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(types.Route)
 	p := parent.Parent.Item.(types.Api)
 	config := apigatewayv2.GetRouteResponsesInput{
@@ -269,7 +269,7 @@ func fetchApigatewayv2ApiRouteResponses(ctx context.Context, meta schema.ClientM
 	}
 	return nil
 }
-func fetchApigatewayv2ApiStages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchApigatewayv2ApiStages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(types.Api)
 	config := apigatewayv2.GetStagesInput{
 		ApiId: r.ApiId,

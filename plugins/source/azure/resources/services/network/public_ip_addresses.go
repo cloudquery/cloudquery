@@ -76,7 +76,7 @@ func PublicIpAddresses() *schema.Table {
 	}
 }
 
-func fetchPublicIpAddresses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchPublicIpAddresses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armnetwork.NewPublicIPAddressesClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

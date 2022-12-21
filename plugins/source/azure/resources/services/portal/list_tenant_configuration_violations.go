@@ -41,7 +41,7 @@ func ListTenantConfigurationViolations() *schema.Table {
 	}
 }
 
-func fetchListTenantConfigurationViolations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchListTenantConfigurationViolations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armportal.NewListTenantConfigurationViolationsClient(cl.Creds, cl.Options)
 	if err != nil {

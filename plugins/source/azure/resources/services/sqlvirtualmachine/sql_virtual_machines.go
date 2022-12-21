@@ -66,7 +66,7 @@ func SqlVirtualMachines() *schema.Table {
 	}
 }
 
-func fetchSqlVirtualMachines(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchSqlVirtualMachines(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armsqlvirtualmachine.NewSQLVirtualMachinesClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

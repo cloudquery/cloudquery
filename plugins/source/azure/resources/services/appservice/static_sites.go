@@ -71,7 +71,7 @@ func StaticSites() *schema.Table {
 	}
 }
 
-func fetchStaticSites(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchStaticSites(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armappservice.NewStaticSitesClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

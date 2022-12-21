@@ -10,6 +10,7 @@ import (
 func Domains() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_elasticsearch_domains",
+		Description:         `https://docs.aws.amazon.com/opensearch-service/latest/APIReference/API_DomainStatus.html`,
 		Resolver:            fetchElasticsearchDomains,
 		PreResourceResolver: getDomain,
 		Multiplex:           client.ServiceAccountRegionMultiplexer("es"),
@@ -25,9 +26,14 @@ func Domains() *schema.Table {
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
+				Name:     "authorized_principals",
+				Type:     schema.TypeJSON,
+				Resolver: resolveAuthorizedPrincipals,
+			},
+			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,
-				Resolver: resolveTags,
+				Resolver: resolveDomainTags,
 			},
 			{
 				Name:     "arn",

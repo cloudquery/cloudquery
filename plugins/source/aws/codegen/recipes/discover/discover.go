@@ -15,7 +15,7 @@ type DiscoveredMethod struct {
 }
 
 // MethodByName returns a method on the client that matches a specific name.
-func MethodByName(client interface{}, targetStruct interface{}, name string) (DiscoveredMethod, error) {
+func MethodByName(client any, targetStruct any, name string) (DiscoveredMethod, error) {
 	methods := FindMethods(client, targetStruct, []string{name})
 	for _, m := range methods {
 		if m.Method.Name == name {
@@ -28,7 +28,7 @@ func MethodByName(client interface{}, targetStruct interface{}, name string) (Di
 
 // FindMethods returns a slice of methods that return the targetStruct (either directly or as a field
 // of the returned struct) and start with one of the given prefixes.
-func FindMethods(client, targetStruct interface{}, prefixes []string) []DiscoveredMethod {
+func FindMethods(client, targetStruct any, prefixes []string) []DiscoveredMethod {
 	v := reflect.ValueOf(client)
 	t := v.Type()
 	var tt reflect.Type
@@ -97,7 +97,7 @@ func FindMethods(client, targetStruct interface{}, prefixes []string) []Discover
 }
 
 // FindMethod finds a single method and errors out if zero or more than one is discovered.
-func FindMethod(client, targetStruct interface{}, prefixes []string) (DiscoveredMethod, error) {
+func FindMethod(client, targetStruct any, prefixes []string) (DiscoveredMethod, error) {
 	f := FindMethods(client, targetStruct, prefixes)
 	if len(f) == 0 {
 		if targetStruct == nil {
@@ -120,14 +120,14 @@ func FindMethod(client, targetStruct interface{}, prefixes []string) (Discovered
 	return f[0], nil
 }
 
-func FindDescribeMethod(client, targetStruct interface{}) (DiscoveredMethod, error) {
+func FindDescribeMethod(client, targetStruct any) (DiscoveredMethod, error) {
 	return FindMethod(client, targetStruct, []string{"Describe", "Get"})
 }
 
-func FindListMethod(client, targetStruct interface{}) (DiscoveredMethod, error) {
+func FindListMethod(client, targetStruct any) (DiscoveredMethod, error) {
 	return FindMethod(client, targetStruct, []string{"List"})
 }
 
-func FindListTagsMethod(client interface{}) (DiscoveredMethod, error) {
+func FindListTagsMethod(client any) (DiscoveredMethod, error) {
 	return FindMethod(client, nil, []string{"ListTagsForResource", "ListTagsOfResource"})
 }

@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
 	"github.com/aws/aws-sdk-go-v2/service/account"
 	"github.com/aws/aws-sdk-go-v2/service/acm"
+	"github.com/aws/aws-sdk-go-v2/service/amp"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
 	"github.com/aws/aws-sdk-go-v2/service/applicationautoscaling"
@@ -96,10 +97,11 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/xray"
 )
 
-var clients = []interface{}{
+var clients = []any{
 	&accessanalyzer.Client{},
 	&account.Client{},
 	&acm.Client{},
+	&amp.Client{},
 	&apigateway.Client{},
 	&apigatewayv2.Client{},
 	&applicationautoscaling.Client{},

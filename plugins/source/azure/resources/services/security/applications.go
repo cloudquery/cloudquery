@@ -46,7 +46,7 @@ func Applications() *schema.Table {
 	}
 }
 
-func fetchApplications(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchApplications(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armsecurity.NewApplicationsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

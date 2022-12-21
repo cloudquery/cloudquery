@@ -5,10 +5,11 @@ https://developer.pagerduty.com/api-reference/c39605f86c5b7-list-event-rules
 The primary key for this table is **id**.
 
 ## Relations
+
 This table depends on [pagerduty_rulesets](pagerduty_rulesets.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

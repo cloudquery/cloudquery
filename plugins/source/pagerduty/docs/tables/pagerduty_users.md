@@ -11,6 +11,7 @@ The following tables depend on pagerduty_users:
   - [pagerduty_user_notification_rules](pagerduty_user_notification_rules.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

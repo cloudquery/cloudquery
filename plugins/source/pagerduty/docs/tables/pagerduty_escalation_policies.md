@@ -4,9 +4,8 @@ https://developer.pagerduty.com/api-reference/51b21014a4f5a-list-escalation-poli
 
 The primary key for this table is **id**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
