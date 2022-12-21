@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armcognitiveservices.AccountsClient{}).NewListPager,
 			NewFunc:        armcognitiveservices.NewAccountsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/accounts",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_CognitiveServices)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_cognitiveservices)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -26,7 +26,7 @@ func init() {
 			ListFunc:       (&armcognitiveservices.DeletedAccountsClient{}).NewListPager,
 			NewFunc:        armcognitiveservices.NewDeletedAccountsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/deletedAccounts",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_CognitiveServices)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_cognitiveservices)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

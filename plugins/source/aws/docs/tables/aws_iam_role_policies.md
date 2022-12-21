@@ -1,14 +1,13 @@
 # Table: aws_iam_role_policies
 
-
-
 The primary key for this table is **_cq_id**.
 
 ## Relations
+
 This table depends on [aws_iam_roles](aws_iam_roles.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

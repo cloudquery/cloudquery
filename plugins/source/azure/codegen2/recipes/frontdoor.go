@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armfrontdoor.FrontDoorsClient{}).NewListPager,
 			NewFunc:        armfrontdoor.NewFrontDoorsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/frontDoors",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_network)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -26,7 +26,7 @@ func init() {
 			ListFunc:       (&armfrontdoor.ManagedRuleSetsClient{}).NewListPager,
 			NewFunc:        armfrontdoor.NewManagedRuleSetsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/FrontDoorWebApplicationFirewallManagedRuleSets",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_network)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -38,7 +38,7 @@ func init() {
 			ListFunc:       (&armfrontdoor.NetworkExperimentProfilesClient{}).NewListPager,
 			NewFunc:        armfrontdoor.NewNetworkExperimentProfilesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/NetworkExperimentProfiles",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_network)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

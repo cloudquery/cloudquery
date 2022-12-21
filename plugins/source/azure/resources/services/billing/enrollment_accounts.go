@@ -12,7 +12,7 @@ func EnrollmentAccounts() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_billing_enrollment_accounts",
 		Resolver:  fetchEnrollmentAccounts,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Billing),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_billing),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -46,7 +46,7 @@ func EnrollmentAccounts() *schema.Table {
 	}
 }
 
-func fetchEnrollmentAccounts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchEnrollmentAccounts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armbilling.NewEnrollmentAccountsClient(cl.Creds, cl.Options)
 	if err != nil {

@@ -6,7 +6,7 @@ import (
 	"context"
 	"google.golang.org/api/iterator"
 
-	pb "google.golang.org/genproto/googleapis/cloud/domains/v1beta1"
+	pb "cloud.google.com/go/domains/apiv1beta1/domainspb"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
@@ -18,9 +18,10 @@ import (
 
 func Registrations() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_domains_registrations",
-		Resolver:  fetchRegistrations,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_domains_registrations",
+		Description: `https://cloud.google.com/domains/docs/reference/rest/v1beta1/projects.locations.registrations#Registration`,
+		Resolver:    fetchRegistrations,
+		Multiplex:   client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
@@ -91,7 +92,7 @@ func Registrations() *schema.Table {
 	}
 }
 
-func fetchRegistrations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchRegistrations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	req := &pb.ListRegistrationsRequest{
 		Parent: fmt.Sprintf("projects/%s/locations/-", c.ProjectId),

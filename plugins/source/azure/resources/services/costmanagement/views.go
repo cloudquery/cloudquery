@@ -12,7 +12,7 @@ func Views() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_costmanagement_views",
 		Resolver:  fetchViews,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_CostManagement),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_costmanagement),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -51,7 +51,7 @@ func Views() *schema.Table {
 	}
 }
 
-func fetchViews(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchViews(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armcostmanagement.NewViewsClient(cl.Creds, cl.Options)
 	if err != nil {

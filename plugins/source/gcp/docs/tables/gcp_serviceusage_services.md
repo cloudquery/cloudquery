@@ -1,12 +1,11 @@
 # Table: gcp_serviceusage_services
 
-
+https://cloud.google.com/service-usage/docs/reference/rest/v1/services#Service
 
 The primary key for this table is **name**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

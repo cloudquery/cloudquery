@@ -15,7 +15,7 @@ func domainClientOpts(options *route53domains.Options) {
 	options.Region = "us-east-1"
 }
 
-func fetchRoute53Domains(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchRoute53Domains(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Route53domains
 	var input route53domains.ListDomainsInput

@@ -12,7 +12,7 @@ func ServiceCountries() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_peering_service_countries",
 		Resolver:  fetchServiceCountries,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Peering),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_peering),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -41,7 +41,7 @@ func ServiceCountries() *schema.Table {
 	}
 }
 
-func fetchServiceCountries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchServiceCountries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armpeering.NewServiceCountriesClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

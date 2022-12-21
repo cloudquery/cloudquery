@@ -16,9 +16,10 @@ import (
 
 func Sinks() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_logging_sinks",
-		Resolver:  fetchSinks,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_logging_sinks",
+		Description: `https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks#LogSink`,
+		Resolver:    fetchSinks,
+		Multiplex:   client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
@@ -87,7 +88,7 @@ func Sinks() *schema.Table {
 	}
 }
 
-func fetchSinks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchSinks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	req := &pb.ListSinksRequest{
 		Parent: "projects/" + c.ProjectId,

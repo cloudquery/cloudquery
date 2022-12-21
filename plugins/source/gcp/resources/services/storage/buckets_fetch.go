@@ -9,7 +9,7 @@ import (
 	"google.golang.org/api/iterator"
 )
 
-func fetchBuckets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchBuckets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	storageClient, err := storage.NewClient(ctx, c.ClientOptions...)
 	if err != nil {

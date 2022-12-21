@@ -12,7 +12,7 @@ func Reports() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_appcomplianceautomation_reports",
 		Resolver:  fetchReports,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_AppComplianceAutomation),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_appcomplianceautomation),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -51,7 +51,7 @@ func Reports() *schema.Table {
 	}
 }
 
-func fetchReports(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchReports(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armappcomplianceautomation.NewReportsClient(cl.Creds, cl.Options)
 	if err != nil {

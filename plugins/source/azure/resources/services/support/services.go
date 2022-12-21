@@ -12,7 +12,7 @@ func Services() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_support_services",
 		Resolver:  fetchServices,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Support),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_support),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -46,7 +46,7 @@ func Services() *schema.Table {
 	}
 }
 
-func fetchServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armsupport.NewServicesClient(cl.Creds, cl.Options)
 	if err != nil {

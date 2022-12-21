@@ -1,12 +1,11 @@
 # Table: gcp_resourcemanager_project_policies
 
-
+https://cloud.google.com/resource-manager/reference/rest/Shared.Types/Policy
 
 The primary key for this table is **_cq_id**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

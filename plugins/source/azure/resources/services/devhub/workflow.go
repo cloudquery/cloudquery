@@ -12,7 +12,7 @@ func Workflow() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_devhub_workflow",
 		Resolver:  fetchWorkflow,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DevHub),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_devhub),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -61,7 +61,7 @@ func Workflow() *schema.Table {
 	}
 }
 
-func fetchWorkflow(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchWorkflow(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armdevhub.NewWorkflowClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

@@ -5,10 +5,11 @@ https://docs.aws.amazon.com/athena/latest/APIReference/API_PreparedStatement.htm
 The primary key for this table is **_cq_id**.
 
 ## Relations
+
 This table depends on [aws_athena_work_groups](aws_athena_work_groups.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

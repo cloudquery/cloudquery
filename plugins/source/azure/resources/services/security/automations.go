@@ -12,7 +12,7 @@ func Automations() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_security_automations",
 		Resolver:  fetchAutomations,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_security),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -66,7 +66,7 @@ func Automations() *schema.Table {
 	}
 }
 
-func fetchAutomations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchAutomations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armsecurity.NewAutomationsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

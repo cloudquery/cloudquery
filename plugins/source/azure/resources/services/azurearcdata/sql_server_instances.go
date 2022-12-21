@@ -12,7 +12,7 @@ func SqlServerInstances() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_azurearcdata_sql_server_instances",
 		Resolver:  fetchSqlServerInstances,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_AzureArcData),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_azurearcdata),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -61,7 +61,7 @@ func SqlServerInstances() *schema.Table {
 	}
 }
 
-func fetchSqlServerInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchSqlServerInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armazurearcdata.NewSQLServerInstancesClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

@@ -11,7 +11,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchEcsClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchEcsClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config ecs.ListClustersInput
 	svc := meta.(*client.Client).Services().Ecs
 	for {
@@ -39,7 +39,7 @@ func fetchEcsClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 	return nil
 }
 
-func fetchEcsClusterTasks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchEcsClusterTasks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cluster, ok := parent.Item.(types.Cluster)
 	if !ok {
 		return fmt.Errorf("expected to have types.Cluster but got %T", parent.Item)
@@ -94,7 +94,7 @@ func getEcsTaskProtection(ctx context.Context, meta schema.ClientMeta, resource 
 	return resource.Set(c.Name, resp.ProtectedTasks)
 }
 
-func fetchEcsClusterServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchEcsClusterServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cluster := parent.Item.(types.Cluster)
 	svc := meta.(*client.Client).Services().Ecs
 	config := ecs.ListServicesInput{
@@ -128,7 +128,7 @@ func fetchEcsClusterServices(ctx context.Context, meta schema.ClientMeta, parent
 	return nil
 }
 
-func fetchEcsClusterContainerInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchEcsClusterContainerInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cluster := parent.Item.(types.Cluster)
 	svc := meta.(*client.Client).Services().Ecs
 	config := ecs.ListContainerInstancesInput{

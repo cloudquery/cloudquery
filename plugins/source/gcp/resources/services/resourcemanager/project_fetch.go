@@ -9,7 +9,7 @@ import (
 	"github.com/cloudquery/plugins/source/gcp/client"
 )
 
-func fetchProjects(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
+func fetchProjects(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	req := &resourcemanagerpb.GetProjectRequest{
 		Name: "projects/" + c.ProjectId,

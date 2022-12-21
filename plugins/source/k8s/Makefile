@@ -8,11 +8,6 @@ gen-mocks: install-tools
 test:
 	go test -timeout 3m ./...
 
-# Install pre-commit hooks. This requires pre-commit to be installed (https://pre-commit.com/)
-.PHONY: install-hooks
-install-hooks:
-	pre-commit install
-
 # Install tools
 .PHONY: install-tools
 install-tools:
@@ -38,4 +33,4 @@ gen-code:
 
 # All gen targets
 .PHONY: gen
-gen: gen-code gen-mocks gen-docs
+gen: gen-code gen-docs

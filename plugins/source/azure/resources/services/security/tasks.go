@@ -12,7 +12,7 @@ func Tasks() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_security_tasks",
 		Resolver:  fetchTasks,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_security),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -46,7 +46,7 @@ func Tasks() *schema.Table {
 	}
 }
 
-func fetchTasks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchTasks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armsecurity.NewTasksClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

@@ -12,7 +12,7 @@ func VirtualNetworks() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_virtual_networks",
 		Resolver:  fetchVirtualNetworks,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_network),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -66,7 +66,7 @@ func VirtualNetworks() *schema.Table {
 	}
 }
 
-func fetchVirtualNetworks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchVirtualNetworks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armnetwork.NewVirtualNetworksClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

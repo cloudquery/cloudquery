@@ -12,7 +12,7 @@ func StaticSites() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_appservice_static_sites",
 		Resolver:  fetchStaticSites,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Web),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_web),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -71,7 +71,7 @@ func StaticSites() *schema.Table {
 	}
 }
 
-func fetchStaticSites(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchStaticSites(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armappservice.NewStaticSitesClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

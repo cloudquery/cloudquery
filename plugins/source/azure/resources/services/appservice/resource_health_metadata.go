@@ -12,7 +12,7 @@ func ResourceHealthMetadata() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_appservice_resource_health_metadata",
 		Resolver:  fetchResourceHealthMetadata,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Web),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_web),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -51,7 +51,7 @@ func ResourceHealthMetadata() *schema.Table {
 	}
 }
 
-func fetchResourceHealthMetadata(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchResourceHealthMetadata(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armappservice.NewResourceHealthMetadataClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

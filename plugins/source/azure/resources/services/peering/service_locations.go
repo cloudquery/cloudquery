@@ -12,7 +12,7 @@ func ServiceLocations() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_peering_service_locations",
 		Resolver:  fetchServiceLocations,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Peering),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_peering),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -46,7 +46,7 @@ func ServiceLocations() *schema.Table {
 	}
 }
 
-func fetchServiceLocations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchServiceLocations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armpeering.NewServiceLocationsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

@@ -26,13 +26,6 @@ func Networks() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
-				Name: "self_link",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
 				Name:     "ipv4_range",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("IPv4Range"),
@@ -108,6 +101,14 @@ func Networks() *schema.Table {
 				Resolver: schema.PathResolver("RoutingConfig"),
 			},
 			{
+				Name:     "self_link",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SelfLink"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
 				Name:     "self_link_with_id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("SelfLinkWithId"),
@@ -121,7 +122,7 @@ func Networks() *schema.Table {
 	}
 }
 
-func fetchNetworks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchNetworks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	req := &pb.ListNetworksRequest{
 		Project: c.ProjectId,

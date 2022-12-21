@@ -1,12 +1,9 @@
 # Table: azure_compute_virtual_machine_scale_sets
 
-
-
 The primary key for this table is **id**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

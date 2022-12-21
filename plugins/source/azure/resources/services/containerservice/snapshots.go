@@ -12,7 +12,7 @@ func Snapshots() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_containerservice_snapshots",
 		Resolver:  fetchSnapshots,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ContainerService),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_containerservice),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -61,7 +61,7 @@ func Snapshots() *schema.Table {
 	}
 }
 
-func fetchSnapshots(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchSnapshots(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armcontainerservice.NewSnapshotsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

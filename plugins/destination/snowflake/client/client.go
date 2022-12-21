@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/cloudquery/plugin-sdk/plugins"
+	"github.com/cloudquery/plugin-sdk/plugins/destination"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
 
@@ -14,14 +14,14 @@ import (
 )
 
 type Client struct {
-	plugins.DefaultReverseTransformer
+	destination.DefaultReverseTransformer
 	db      *sql.DB
 	logger  zerolog.Logger
 	spec    specs.Destination
-	metrics plugins.DestinationMetrics
+	metrics destination.Metrics
 }
 
-func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination) (plugins.DestinationClient, error) {
+func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination) (destination.Client, error) {
 	if destSpec.WriteMode != specs.WriteModeAppend {
 		return nil, fmt.Errorf("snowflake destination only supports append mode")
 	}

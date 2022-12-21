@@ -12,7 +12,7 @@ func SqlServerRegistrations() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_azuredata_sql_server_registrations",
 		Resolver:  fetchSqlServerRegistrations,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_AzureData),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_azuredata),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -61,7 +61,7 @@ func SqlServerRegistrations() *schema.Table {
 	}
 }
 
-func fetchSqlServerRegistrations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchSqlServerRegistrations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armazuredata.NewSQLServerRegistrationsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

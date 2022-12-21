@@ -1,5 +1,7 @@
 # Source Plugin: datadog
+
 ## Tables
+
 - [datadog_dashboard_lists](datadog_dashboard_lists.md)
 - [datadog_dashboards](datadog_dashboards.md)
 - [datadog_downtimes](datadog_downtimes.md)

@@ -13,7 +13,7 @@ import (
 	"strings"
 	"text/template"
 
-	caser "github.com/cloudquery/plugin-sdk/caser"
+	"github.com/cloudquery/plugin-sdk/caser"
 )
 
 //go:embed templates/*.go.tpl
@@ -31,7 +31,7 @@ var exceptions = []string{
 }
 
 // Adapted from https://stackoverflow.com/a/54129236
-func signature(name string, f interface{}) string {
+func signature(name string, f any) string {
 	t := reflect.TypeOf(f)
 	if t.Kind() != reflect.Func {
 		return "<not a function>"
@@ -92,7 +92,7 @@ type serviceInfo struct {
 	Signatures  []string
 }
 
-func getServiceInfo(client interface{}) serviceInfo {
+func getServiceInfo(client any) serviceInfo {
 	v := reflect.ValueOf(client)
 	t := v.Type()
 	pkgPath := t.Elem().PkgPath()
@@ -156,7 +156,10 @@ func Generate() error {
 			return fmt.Errorf("failed to execute template: %w", err)
 		}
 		filePath := path.Join(path.Dir(filename), fmt.Sprintf("../../client/services/%s.go", service.PackageName))
-		formatAndWriteFile(filePath, buff)
+		err := formatAndWriteFile(filePath, buff)
+		if err != nil {
+			return fmt.Errorf("failed to format and write file for service %v: %w", service.Name, err)
+		}
 	}
 
 	for _, custom := range customClients {

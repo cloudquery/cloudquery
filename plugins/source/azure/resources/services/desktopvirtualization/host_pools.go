@@ -12,7 +12,7 @@ func HostPools() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_desktopvirtualization_host_pools",
 		Resolver:  fetchHostPools,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DesktopVirtualization),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_desktopvirtualization),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -86,7 +86,7 @@ func HostPools() *schema.Table {
 	}
 }
 
-func fetchHostPools(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchHostPools(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armdesktopvirtualization.NewHostPoolsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

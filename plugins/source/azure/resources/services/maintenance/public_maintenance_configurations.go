@@ -12,7 +12,7 @@ func PublicMaintenanceConfigurations() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_maintenance_public_maintenance_configurations",
 		Resolver:  fetchPublicMaintenanceConfigurations,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Maintenance),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_maintenance),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -61,7 +61,7 @@ func PublicMaintenanceConfigurations() *schema.Table {
 	}
 }
 
-func fetchPublicMaintenanceConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchPublicMaintenanceConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armmaintenance.NewPublicMaintenanceConfigurationsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

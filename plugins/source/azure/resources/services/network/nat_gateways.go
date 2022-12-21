@@ -12,7 +12,7 @@ func NatGateways() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_nat_gateways",
 		Resolver:  fetchNatGateways,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_network),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -71,7 +71,7 @@ func NatGateways() *schema.Table {
 	}
 }
 
-func fetchNatGateways(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchNatGateways(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armnetwork.NewNatGatewaysClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

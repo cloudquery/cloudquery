@@ -1,12 +1,9 @@
 # Table: gcp_compute_projects
 
-
-
 The primary key for this table is **self_link**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -14,7 +11,6 @@ The primary key for this table is **self_link**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |project_id|String|
-|self_link (PK)|String|
 |common_instance_metadata|JSON|
 |creation_timestamp|String|
 |default_network_tier|String|
@@ -25,5 +21,6 @@ The primary key for this table is **self_link**.
 |kind|String|
 |name|String|
 |quotas|JSON|
+|self_link (PK)|String|
 |usage_export_location|JSON|
 |xpn_project_status|String|

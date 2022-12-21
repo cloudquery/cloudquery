@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armportal.ListTenantConfigurationViolationsClient{}).NewListPager,
 			NewFunc:        armportal.NewListTenantConfigurationViolationsClient,
 			URL:            "/providers/Microsoft.Portal/listTenantConfigurationViolations",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Portal)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_portal)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -26,7 +26,7 @@ func init() {
 			ListFunc:       (&armportal.TenantConfigurationsClient{}).NewListPager,
 			NewFunc:        armportal.NewTenantConfigurationsClient,
 			URL:            "/providers/Microsoft.Portal/tenantConfigurations",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Portal)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_portal)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

@@ -12,7 +12,7 @@ func Assignments() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_policy_assignments",
 		Resolver:  fetchAssignments,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Authorization),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_authorization),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -61,7 +61,7 @@ func Assignments() *schema.Table {
 	}
 }
 
-func fetchAssignments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchAssignments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armpolicy.NewAssignmentsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

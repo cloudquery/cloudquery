@@ -1,12 +1,9 @@
 # Table: azure_network_web_application_firewall_policies
 
-
-
 The primary key for this table is **id**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armdnsresolver.DNSForwardingRulesetsClient{}).NewListPager,
 			NewFunc:        armdnsresolver.NewDNSForwardingRulesetsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/dnsForwardingRulesets",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_network)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -26,7 +26,7 @@ func init() {
 			ListFunc:       (&armdnsresolver.DNSResolversClient{}).NewListPager,
 			NewFunc:        armdnsresolver.NewDNSResolversClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/dnsResolvers",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_network)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

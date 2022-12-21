@@ -7,7 +7,7 @@ import (
 	"os"
 	"path"
 
-	"github.com/cloudquery/plugin-sdk/plugins"
+	"github.com/cloudquery/plugin-sdk/plugins/destination"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"golang.org/x/sync/errgroup"
 )
@@ -22,10 +22,10 @@ const (
 )
 
 type worker struct {
-	writeChan chan []interface{}
+	writeChan chan []any
 }
 
-func (c *Client) writeResource(ctx context.Context, table *schema.Table, resources <-chan []interface{}) error {
+func (c *Client) writeResource(ctx context.Context, table *schema.Table, resources <-chan []any) error {
 	f, err := os.CreateTemp(os.TempDir(), table.Name+".json.*")
 	if err != nil {
 		return err
@@ -37,7 +37,7 @@ func (c *Client) writeResource(ctx context.Context, table *schema.Table, resourc
 
 	totalWritten := uint64(0)
 	for r := range resources {
-		jsonObj := make(map[string]interface{}, len(table.Columns))
+		jsonObj := make(map[string]any, len(table.Columns))
 		for i := range r {
 			jsonObj[table.Columns[i].Name] = r[i]
 		}
@@ -90,8 +90,8 @@ func (c *Client) writeResource(ctx context.Context, table *schema.Table, resourc
 	return err
 }
 
-func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *plugins.ClientResource) error {
-	eg := errgroup.Group{}
+func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *destination.ClientResource) error {
+	eg, gctx := errgroup.WithContext(ctx)
 	workers := make(map[string]*worker, len(tables))
 
 	if _, err := c.db.ExecContext(ctx, createOrReplaceFileFormat); err != nil {
@@ -104,17 +104,27 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *pl
 
 	for _, t := range tables.FlattenTables() {
 		t := t
-		writeChan := make(chan []interface{})
+		writeChan := make(chan []any)
 		workers[t.Name] = &worker{
 			writeChan: writeChan,
 		}
 		eg.Go(func() error {
-			return c.writeResource(ctx, t, writeChan)
+			return c.writeResource(gctx, t, writeChan)
 		})
 	}
 
-	for r := range res {
-		workers[r.TableName].writeChan <- r.Data
+	done := false
+	for !done {
+		select {
+		case r, ok := <-res:
+			if !ok {
+				done = true
+				break
+			}
+			workers[r.TableName].writeChan <- r.Data
+		case <-gctx.Done():
+			done = true
+		}
 	}
 	for _, w := range workers {
 		close(w.writeChan)

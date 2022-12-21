@@ -12,7 +12,7 @@ func Identities() *schema.Table {
 		Name:                "aws_ses_identities",
 		Description:         `https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_GetEmailIdentity.html`,
 		Resolver:            fetchSesIdentities,
-		PreResourceResolver: getEmailIdentity,
+		PreResourceResolver: getIdentity,
 		Multiplex:           client.ServiceAccountRegionMultiplexer("email"),
 		Columns: []schema.Column{
 			{
@@ -28,7 +28,7 @@ func Identities() *schema.Table {
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,
-				Resolver: resolveEmailIdentityArn,
+				Resolver: resolveIdentityArn,
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},

@@ -12,7 +12,7 @@ func Suppressions() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_advisor_suppressions",
 		Resolver:  fetchSuppressions,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Advisor),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_advisor),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -46,7 +46,7 @@ func Suppressions() *schema.Table {
 	}
 }
 
-func fetchSuppressions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchSuppressions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armadvisor.NewSuppressionsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

@@ -17,7 +17,6 @@ func init() {
 			ChildTable: true,
 			SkipMock:   true,
 			SkipFetch:  true,
-			SkipFields: []string{"RotationSchedule"},
 			ExtraColumns: codegen.ColumnDefinitions{
 				{
 					Name:     "rotation_period",
@@ -25,13 +24,15 @@ func init() {
 					Resolver: "resolveRotationPeriod",
 				},
 			},
+			Description: "https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys#CryptoKey",
 		},
 		{
-			SubService: "keyrings",
-			Struct:     &kmspb.KeyRing{},
-			Relations:  []string{"CryptoKeys()"},
-			SkipFetch:  true,
-			SkipMock:   true,
+			SubService:  "keyrings",
+			Struct:      &kmspb.KeyRing{},
+			Relations:   []string{"CryptoKeys()"},
+			SkipFetch:   true,
+			SkipMock:    true,
+			Description: "https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings#KeyRing",
 		},
 	}
 

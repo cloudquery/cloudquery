@@ -1,5 +1,7 @@
 # Source Plugin: gcp
+
 ## Tables
+
 - [gcp_apikeys_keys](gcp_apikeys_keys.md)
 - [gcp_bigquery_datasets](gcp_bigquery_datasets.md)
   - [gcp_bigquery_tables](gcp_bigquery_tables.md)
@@ -34,6 +36,7 @@
 - [gcp_iam_roles](gcp_iam_roles.md)
 - [gcp_iam_service_accounts](gcp_iam_service_accounts.md)
   - [gcp_iam_service_account_keys](gcp_iam_service_account_keys.md)
+- [gcp_iam_deny_policies](gcp_iam_deny_policies.md)
 - [gcp_kms_keyrings](gcp_kms_keyrings.md)
   - [gcp_kms_crypto_keys](gcp_kms_crypto_keys.md)
 - [gcp_logging_metrics](gcp_logging_metrics.md)
@@ -47,5 +50,6 @@
 - [gcp_secretmanager_secrets](gcp_secretmanager_secrets.md)
 - [gcp_serviceusage_services](gcp_serviceusage_services.md)
 - [gcp_sql_instances](gcp_sql_instances.md)
+  - [gcp_sql_users](gcp_sql_users.md)
 - [gcp_storage_buckets](gcp_storage_buckets.md)
   - [gcp_storage_bucket_policies](gcp_storage_bucket_policies.md)

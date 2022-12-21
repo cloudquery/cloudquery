@@ -10,7 +10,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchDynamodbTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchDynamodbTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Dynamodb
 
@@ -62,7 +62,7 @@ func resolveDynamodbTableTags(ctx context.Context, meta schema.ClientMeta, resou
 	}
 	return resource.Set(c.Name, client.TagsToMap(response.Tags))
 }
-func fetchDynamodbTableReplicaAutoScalings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchDynamodbTableReplicaAutoScalings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	par := parent.Item.(*types.TableDescription)
 
 	if aws.ToString(par.GlobalTableVersion) == "" {
@@ -88,7 +88,7 @@ func fetchDynamodbTableReplicaAutoScalings(ctx context.Context, meta schema.Clie
 	}
 	return nil
 }
-func fetchDynamodbTableContinuousBackups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchDynamodbTableContinuousBackups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	par := parent.Item.(*types.TableDescription)
 
 	c := meta.(*client.Client)

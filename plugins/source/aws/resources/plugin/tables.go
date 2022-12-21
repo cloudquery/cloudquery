@@ -6,6 +6,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/accessanalyzer"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/account"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/acm"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/amp"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/apigateway"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/apigatewayv2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/applicationautoscaling"
@@ -39,6 +40,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/elasticache"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/elasticbeanstalk"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/elasticsearch"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/elastictranscoder"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/elbv1"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/elbv2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/emr"
@@ -99,6 +101,7 @@ func tables() []*schema.Table {
 		account.AlternateContacts(),
 		account.Contacts(),
 		acm.Certificates(),
+		amp.Workspaces(),
 		apigateway.ApiKeys(),
 		apigateway.ClientCertificates(),
 		apigateway.DomainNames(),
@@ -224,6 +227,11 @@ func tables() []*schema.Table {
 		elasticbeanstalk.Applications(),
 		elasticbeanstalk.Environments(),
 		elasticsearch.Domains(),
+		elasticsearch.Packages(),
+		elasticsearch.Versions(),
+		elasticsearch.VpcEndpoints(),
+		elastictranscoder.Pipelines(),
+		elastictranscoder.Presets(),
 		elbv1.LoadBalancers(),
 		elbv2.LoadBalancers(),
 		elbv2.TargetGroups(),
@@ -327,6 +335,7 @@ func tables() []*schema.Table {
 		neptune.Instances(),
 		neptune.SubnetGroups(),
 		organizations.Accounts(),
+		organizations.Organizations(),
 		qldb.Ledgers(),
 		quicksight.Analyses(),
 		quicksight.Dashboards(),
@@ -375,10 +384,12 @@ func tables() []*schema.Table {
 		servicecatalog.Products(),
 		servicecatalog.ProvisionedProducts(),
 		servicequotas.Services(),
-		ses.Templates(),
+		ses.ActiveReceiptRuleSets(),
 		ses.ConfigurationSets(),
 		ses.ContactLists(),
+		ses.CustomVerificationEmailTemplates(),
 		ses.Identities(),
+		ses.Templates(),
 		shield.Attacks(),
 		shield.ProtectionGroups(),
 		shield.Protections(),

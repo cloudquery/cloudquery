@@ -4,9 +4,8 @@ https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_MetricAlarm
 
 The primary key for this table is **arn**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -27,6 +26,7 @@ The primary key for this table is **arn**.
 |datapoints_to_alarm|Int|
 |evaluate_low_sample_count_percentile|String|
 |evaluation_periods|Int|
+|evaluation_state|String|
 |extended_statistic|String|
 |insufficient_data_actions|StringArray|
 |metric_name|String|
@@ -36,6 +36,7 @@ The primary key for this table is **arn**.
 |period|Int|
 |state_reason|String|
 |state_reason_data|String|
+|state_transitioned_timestamp|Timestamp|
 |state_updated_timestamp|Timestamp|
 |state_value|String|
 |statistic|String|

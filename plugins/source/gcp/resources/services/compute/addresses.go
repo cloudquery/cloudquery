@@ -16,21 +16,15 @@ import (
 
 func Addresses() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_compute_addresses",
-		Resolver:  fetchAddresses,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_compute_addresses",
+		Description: `https://cloud.google.com/compute/docs/reference/rest/v1/addresses#Address`,
+		Resolver:    fetchAddresses,
+		Multiplex:   client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
-			},
-			{
-				Name: "self_link",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
 				Name:     "address",
@@ -103,6 +97,14 @@ func Addresses() *schema.Table {
 				Resolver: schema.PathResolver("Region"),
 			},
 			{
+				Name:     "self_link",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SelfLink"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
 				Name:     "status",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Status"),
@@ -121,7 +123,7 @@ func Addresses() *schema.Table {
 	}
 }
 
-func fetchAddresses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchAddresses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	req := &pb.AggregatedListAddressesRequest{
 		Project: c.ProjectId,

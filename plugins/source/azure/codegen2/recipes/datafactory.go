@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armdatafactory.FactoriesClient{}).NewListPager,
 			NewFunc:        armdatafactory.NewFactoriesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.DataFactory/factories",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DataFactory)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_datafactory)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

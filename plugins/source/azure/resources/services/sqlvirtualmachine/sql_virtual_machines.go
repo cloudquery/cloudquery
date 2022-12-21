@@ -12,7 +12,7 @@ func SqlVirtualMachines() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_sqlvirtualmachine_sql_virtual_machines",
 		Resolver:  fetchSqlVirtualMachines,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_SqlVirtualMachine),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_sqlvirtualmachine),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -66,7 +66,7 @@ func SqlVirtualMachines() *schema.Table {
 	}
 }
 
-func fetchSqlVirtualMachines(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchSqlVirtualMachines(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armsqlvirtualmachine.NewSQLVirtualMachinesClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

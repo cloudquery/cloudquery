@@ -12,7 +12,7 @@ func PipelineTemplateDefinitions() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_devops_pipeline_template_definitions",
 		Resolver:  fetchPipelineTemplateDefinitions,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DevOps),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_devops),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -41,7 +41,7 @@ func PipelineTemplateDefinitions() *schema.Table {
 	}
 }
 
-func fetchPipelineTemplateDefinitions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchPipelineTemplateDefinitions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armdevops.NewPipelineTemplateDefinitionsClient(cl.Creds, cl.Options)
 	if err != nil {

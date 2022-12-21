@@ -12,7 +12,7 @@ func Groups() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_sqlvirtualmachine_groups",
 		Resolver:  fetchGroups,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_SqlVirtualMachine),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_sqlvirtualmachine),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -61,7 +61,7 @@ func Groups() *schema.Table {
 	}
 }
 
-func fetchGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armsqlvirtualmachine.NewGroupsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

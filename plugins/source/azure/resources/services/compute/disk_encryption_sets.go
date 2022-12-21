@@ -12,7 +12,7 @@ func DiskEncryptionSets() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_compute_disk_encryption_sets",
 		Resolver:  fetchDiskEncryptionSets,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Compute),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_compute),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -61,7 +61,7 @@ func DiskEncryptionSets() *schema.Table {
 	}
 }
 
-func fetchDiskEncryptionSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchDiskEncryptionSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armcompute.NewDiskEncryptionSetsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armoperationalinsights.ClustersClient{}).NewListPager,
 			NewFunc:        armoperationalinsights.NewClustersClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.OperationalInsights/clusters",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_OperationalInsights)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_operationalinsights)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -26,7 +26,7 @@ func init() {
 			ListFunc:       (&armoperationalinsights.WorkspacesClient{}).NewListPager,
 			NewFunc:        armoperationalinsights.NewWorkspacesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.OperationalInsights/workspaces",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_OperationalInsights)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_operationalinsights)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

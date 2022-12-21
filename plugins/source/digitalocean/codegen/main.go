@@ -1,6 +1,8 @@
 package main
 
 import (
+	"log"
+
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/codegen/recipes"
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/resources/services/droplets"
@@ -38,17 +40,10 @@ var Resources = []*recipes.Resource{
 		SkipFields: []string{"ID"},
 	},
 	{
+		// BillingHistory has two types of entries: invoices and payments. Payments
+		// do not have a unique ID, so we assign no PK to this table.
 		Service: "billing_history",
 		Struct:  godo.BillingHistoryEntry{},
-		ExtraColumns: []codegen.ColumnDefinition{
-			{
-				Name:     "invoice_id",
-				Type:     schema.TypeString,
-				Resolver: `schema.PathResolver("InvoiceID")`,
-				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-			},
-		},
-		SkipFields: []string{"InvoiceID"},
 	},
 	{
 		Service:    "monitoring",
@@ -394,6 +389,8 @@ var Resources = []*recipes.Resource{
 
 func main() {
 	for _, r := range Resources {
-		r.Generate()
+		if err := r.Generate(); err != nil {
+			log.Fatal(err)
+		}
 	}
 }

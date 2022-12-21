@@ -12,7 +12,7 @@ func OpenShiftClusters() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_redhatopenshift_open_shift_clusters",
 		Resolver:  fetchOpenShiftClusters,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_RedHatOpenShift),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_redhatopenshift),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -61,7 +61,7 @@ func OpenShiftClusters() *schema.Table {
 	}
 }
 
-func fetchOpenShiftClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchOpenShiftClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armredhatopenshift.NewOpenShiftClustersClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

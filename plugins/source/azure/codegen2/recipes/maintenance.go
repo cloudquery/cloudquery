@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armmaintenance.ConfigurationsClient{}).NewListPager,
 			NewFunc:        armmaintenance.NewConfigurationsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/maintenanceConfigurations",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Maintenance)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_maintenance)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 		{
@@ -26,7 +26,7 @@ func init() {
 			ListFunc:       (&armmaintenance.PublicMaintenanceConfigurationsClient{}).NewListPager,
 			NewFunc:        armmaintenance.NewPublicMaintenanceConfigurationsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/publicMaintenanceConfigurations",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Maintenance)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_maintenance)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

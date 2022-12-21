@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cloudquery/plugin-sdk/plugins"
+	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/julienschmidt/httprouter"
@@ -54,11 +54,10 @@ func MockTestGrpcHelper(t *testing.T, table *schema.Table, createService func(*g
 			option.WithGRPCDialOption(grpc.WithTransportCredentials(insecure.NewCredentials())),
 		}
 		c := &Client{
-			// plugin: p,
-			logger: logger,
-			// logger:   t.Log(),
+			logger:        logger,
 			ClientOptions: clientOptions,
 			projects:      []string{"testProject"},
+			orgs:          []string{"testOrg"},
 		}
 
 		return c, nil
@@ -67,7 +66,7 @@ func MockTestGrpcHelper(t *testing.T, table *schema.Table, createService func(*g
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 
-	p := plugins.NewSourcePlugin(
+	p := source.NewPlugin(
 		table.Name,
 		version,
 		[]*schema.Table{
@@ -75,7 +74,7 @@ func MockTestGrpcHelper(t *testing.T, table *schema.Table, createService func(*g
 		},
 		newTestExecutionClient)
 	p.SetLogger(l)
-	plugins.TestSourcePluginSync(t, p, specs.Source{
+	source.TestPluginSync(t, p, specs.Source{
 		Name:         "dev",
 		Path:         "cloudquery/dev",
 		Version:      version,
@@ -111,11 +110,10 @@ func MockTestRestHelper(t *testing.T, table *schema.Table, createService func(*h
 			option.WithoutAuthentication(),
 		}
 		c := &Client{
-			// plugin: p,
-			logger: logger,
-			// logger:   t.Log(),
+			logger:        logger,
 			ClientOptions: clientOptions,
 			projects:      []string{"testProject"},
+			orgs:          []string{"testOrg"},
 		}
 
 		return c, nil
@@ -124,7 +122,7 @@ func MockTestRestHelper(t *testing.T, table *schema.Table, createService func(*h
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 
-	p := plugins.NewSourcePlugin(
+	p := source.NewPlugin(
 		table.Name,
 		version,
 		[]*schema.Table{
@@ -132,7 +130,7 @@ func MockTestRestHelper(t *testing.T, table *schema.Table, createService func(*h
 		},
 		newTestExecutionClient)
 	p.SetLogger(l)
-	plugins.TestSourcePluginSync(t, p, specs.Source{
+	source.TestPluginSync(t, p, specs.Source{
 		Name:         "dev",
 		Path:         "cloudquery/dev",
 		Version:      version,

@@ -12,7 +12,7 @@ func Namespaces() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_relay_namespaces",
 		Resolver:  fetchNamespaces,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Relay),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_relay),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -66,7 +66,7 @@ func Namespaces() *schema.Table {
 	}
 }
 
-func fetchNamespaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchNamespaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armrelay.NewNamespacesClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

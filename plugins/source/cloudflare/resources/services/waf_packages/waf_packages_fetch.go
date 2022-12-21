@@ -8,7 +8,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchWAFPackages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchWAFPackages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	svc := meta.(*client.Client)
 	zoneId := svc.ZoneId
 
@@ -20,7 +20,7 @@ func fetchWAFPackages(ctx context.Context, meta schema.ClientMeta, parent *schem
 
 	return nil
 }
-func fetchWAFGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchWAFGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	svc := meta.(*client.Client)
 	zoneId := svc.ZoneId
 	pack := parent.Item.(cloudflare.WAFPackage)
@@ -33,7 +33,7 @@ func fetchWAFGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.
 
 	return nil
 }
-func fetchWAFRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchWAFRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	svc := meta.(*client.Client)
 	zoneId := svc.ZoneId
 	pack := parent.Item.(cloudflare.WAFPackage)

@@ -14,28 +14,44 @@ import (
 func buildElasticSearchDomains(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockElasticsearchserviceClient(ctrl)
 
-	var di types.DomainInfo
-	if err := faker.FakeObject(&di); err != nil {
+	var info types.DomainInfo
+	if err := faker.FakeObject(&info); err != nil {
 		t.Fatal(err)
 	}
-	m.EXPECT().ListDomainNames(gomock.Any(), &elasticsearchservice.ListDomainNamesInput{}, gomock.Any()).Return(
-		&elasticsearchservice.ListDomainNamesOutput{DomainNames: []types.DomainInfo{di}}, nil)
+	m.EXPECT().ListDomainNames(gomock.Any(), gomock.Any()).Return(
+		&elasticsearchservice.ListDomainNamesOutput{
+			DomainNames: []types.DomainInfo{info},
+		},
+		nil,
+	)
 
 	var ds types.ElasticsearchDomainStatus
 	if err := faker.FakeObject(&ds); err != nil {
 		t.Fatal(err)
 	}
-	m.EXPECT().DescribeElasticsearchDomain(
-		gomock.Any(),
-		&elasticsearchservice.DescribeElasticsearchDomainInput{DomainName: di.DomainName},
-		gomock.Any(),
-	).Return(&elasticsearchservice.DescribeElasticsearchDomainOutput{DomainStatus: &ds}, nil)
+	m.EXPECT().DescribeElasticsearchDomain(gomock.Any(), gomock.Any()).Return(
+		&elasticsearchservice.DescribeElasticsearchDomainOutput{
+			DomainStatus: &ds,
+		},
+		nil,
+	)
+
+	var principal types.AuthorizedPrincipal
+	if err := faker.FakeObject(&principal); err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().ListVpcEndpointAccess(gomock.Any(), gomock.Any()).Return(
+		&elasticsearchservice.ListVpcEndpointAccessOutput{
+			AuthorizedPrincipalList: []types.AuthorizedPrincipal{principal},
+		},
+		nil,
+	)
 
 	var tags elasticsearchservice.ListTagsOutput
 	if err := faker.FakeObject(&tags); err != nil {
 		t.Fatal(err)
 	}
-	m.EXPECT().ListTags(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tags, nil)
+	m.EXPECT().ListTags(gomock.Any(), gomock.Any()).Return(&tags, nil)
 
 	return client.Services{Elasticsearchservice: m}
 }

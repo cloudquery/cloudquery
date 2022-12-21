@@ -16,21 +16,15 @@ import (
 
 func UrlMaps() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_compute_url_maps",
-		Resolver:  fetchUrlMaps,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_compute_url_maps",
+		Description: `https://cloud.google.com/compute/docs/reference/rest/v1/urlMaps#UrlMap`,
+		Resolver:    fetchUrlMaps,
+		Multiplex:   client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
-			},
-			{
-				Name: "self_link",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
 				Name:     "creation_timestamp",
@@ -98,6 +92,14 @@ func UrlMaps() *schema.Table {
 				Resolver: schema.PathResolver("Region"),
 			},
 			{
+				Name:     "self_link",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SelfLink"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
 				Name:     "tests",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Tests"),
@@ -106,7 +108,7 @@ func UrlMaps() *schema.Table {
 	}
 }
 
-func fetchUrlMaps(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchUrlMaps(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	req := &pb.AggregatedListUrlMapsRequest{
 		Project: c.ProjectId,

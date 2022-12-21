@@ -26,13 +26,6 @@ func Interconnects() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
-				Name: "self_link",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
 				Name:     "admin_enabled",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("AdminEnabled"),
@@ -138,6 +131,14 @@ func Interconnects() *schema.Table {
 				Resolver: schema.PathResolver("SatisfiesPzs"),
 			},
 			{
+				Name:     "self_link",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SelfLink"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
 				Name:     "state",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("State"),
@@ -146,7 +147,7 @@ func Interconnects() *schema.Table {
 	}
 }
 
-func fetchInterconnects(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchInterconnects(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	req := &pb.ListInterconnectsRequest{
 		Project: c.ProjectId,

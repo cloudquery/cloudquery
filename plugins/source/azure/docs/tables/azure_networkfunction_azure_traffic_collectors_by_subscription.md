@@ -1,12 +1,9 @@
 # Table: azure_networkfunction_azure_traffic_collectors_by_subscription
 
-
-
 The primary key for this table is **id**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

@@ -12,7 +12,7 @@ func AzureTrafficCollectorsBySubscription() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_networkfunction_azure_traffic_collectors_by_subscription",
 		Resolver:  fetchAzureTrafficCollectorsBySubscription,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_NetworkFunction),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_networkfunction),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -66,7 +66,7 @@ func AzureTrafficCollectorsBySubscription() *schema.Table {
 	}
 }
 
-func fetchAzureTrafficCollectorsBySubscription(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchAzureTrafficCollectorsBySubscription(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armnetworkfunction.NewAzureTrafficCollectorsBySubscriptionClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

@@ -12,7 +12,7 @@ func Configurations() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_maintenance_configurations",
 		Resolver:  fetchConfigurations,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Maintenance),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_maintenance),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -61,7 +61,7 @@ func Configurations() *schema.Table {
 	}
 }
 
-func fetchConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armmaintenance.NewConfigurationsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

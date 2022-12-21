@@ -12,7 +12,7 @@ func Accounts() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_storage_accounts",
 		Resolver:  fetchAccounts,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Storage),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_storage),
 		Columns: []schema.Column{
 			{
 				Name:     "location",
@@ -71,11 +71,12 @@ func Accounts() *schema.Table {
 
 		Relations: []*schema.Table{
 			tables(),
+			containers(),
 		},
 	}
 }
 
-func fetchAccounts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchAccounts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armstorage.NewAccountsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

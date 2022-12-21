@@ -12,7 +12,7 @@ func RestorePointCollections() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_compute_restore_point_collections",
 		Resolver:  fetchRestorePointCollections,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Compute),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_compute),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -56,7 +56,7 @@ func RestorePointCollections() *schema.Table {
 	}
 }
 
-func fetchRestorePointCollections(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchRestorePointCollections(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armcompute.NewRestorePointCollectionsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

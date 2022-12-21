@@ -12,7 +12,7 @@ func VpnGateways() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_vpn_gateways",
 		Resolver:  fetchVpnGateways,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_network),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -61,7 +61,7 @@ func VpnGateways() *schema.Table {
 	}
 }
 
-func fetchVpnGateways(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchVpnGateways(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armnetwork.NewVPNGatewaysClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

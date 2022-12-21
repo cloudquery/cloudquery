@@ -12,7 +12,7 @@ func LogProfiles() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_monitor_log_profiles",
 		Resolver:  fetchLogProfiles,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Insights),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_insights),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -56,7 +56,7 @@ func LogProfiles() *schema.Table {
 	}
 }
 
-func fetchLogProfiles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchLogProfiles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armmonitor.NewLogProfilesClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

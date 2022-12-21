@@ -1,14 +1,13 @@
 # Table: okta_application_users
 
-
-
 The composite primary key for this table is (**app_id**, **id**).
 
 ## Relations
+
 This table depends on [okta_applications](okta_applications.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -28,3 +27,6 @@ This table depends on [okta_applications](okta_applications.md).
 |status|String|
 |status_changed|Timestamp|
 |sync_state|String|
+|_embedded|JSON|
+|_links|JSON|
+|additional_properties|JSON|

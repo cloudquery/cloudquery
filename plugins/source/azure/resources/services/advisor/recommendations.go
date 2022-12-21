@@ -12,7 +12,7 @@ func Recommendations() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_advisor_recommendations",
 		Resolver:  fetchRecommendations,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Advisor),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_advisor),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -46,7 +46,7 @@ func Recommendations() *schema.Table {
 	}
 }
 
-func fetchRecommendations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchRecommendations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armadvisor.NewRecommendationsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

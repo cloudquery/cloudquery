@@ -13,3 +13,13 @@ func ProjectMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
 	}
 	return l
 }
+
+func OrgMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
+	client := meta.(*Client)
+
+	l := make([]schema.ClientMeta, len(client.orgs))
+	for i, orgId := range client.orgs {
+		l[i] = client.withOrg(orgId)
+	}
+	return l
+}

@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armredhatopenshift.OpenShiftClustersClient{}).NewListPager,
 			NewFunc:        armredhatopenshift.NewOpenShiftClustersClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.RedHatOpenShift/openShiftClusters",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_RedHatOpenShift)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_redhatopenshift)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

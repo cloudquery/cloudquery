@@ -12,7 +12,7 @@ func Profiles() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_cdn_profiles",
 		Resolver:  fetchProfiles,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Cdn),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_cdn),
 		Columns: []schema.Column{
 			{
 				Name:     "location",
@@ -72,7 +72,7 @@ func Profiles() *schema.Table {
 	}
 }
 
-func fetchProfiles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchProfiles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armcdn.NewProfilesClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

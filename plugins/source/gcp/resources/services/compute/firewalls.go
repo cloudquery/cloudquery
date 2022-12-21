@@ -26,13 +26,6 @@ func Firewalls() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
-				Name: "self_link",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
 				Name:     "allowed",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Allowed"),
@@ -98,6 +91,14 @@ func Firewalls() *schema.Table {
 				Resolver: schema.PathResolver("Priority"),
 			},
 			{
+				Name:     "self_link",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SelfLink"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
 				Name:     "source_ranges",
 				Type:     schema.TypeStringArray,
 				Resolver: schema.PathResolver("SourceRanges"),
@@ -126,7 +127,7 @@ func Firewalls() *schema.Table {
 	}
 }
 
-func fetchFirewalls(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchFirewalls(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	req := &pb.ListFirewallsRequest{
 		Project: c.ProjectId,

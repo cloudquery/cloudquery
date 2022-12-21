@@ -12,7 +12,7 @@ func WebApps() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_appservice_web_apps",
 		Resolver:  fetchWebApps,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Web),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_web),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -71,7 +71,7 @@ func WebApps() *schema.Table {
 	}
 }
 
-func fetchWebApps(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchWebApps(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armappservice.NewWebAppsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

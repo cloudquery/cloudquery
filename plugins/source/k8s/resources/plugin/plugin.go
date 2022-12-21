@@ -16,7 +16,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/nodes"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/rbac"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/storage"
-	"github.com/cloudquery/plugin-sdk/plugins"
+	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -24,8 +24,8 @@ var (
 	Version = "development"
 )
 
-func Plugin() *plugins.SourcePlugin {
-	return plugins.NewSourcePlugin(
+func Plugin() *source.Plugin {
+	return source.NewPlugin(
 		"k8s",
 		Version,
 		[]*schema.Table{

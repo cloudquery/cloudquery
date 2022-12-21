@@ -12,7 +12,7 @@ func Monitors() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_elastic_monitors",
 		Resolver:  fetchMonitors,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Elastic),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_elastic),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -71,7 +71,7 @@ func Monitors() *schema.Table {
 	}
 }
 
-func fetchMonitors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchMonitors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armelastic.NewMonitorsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

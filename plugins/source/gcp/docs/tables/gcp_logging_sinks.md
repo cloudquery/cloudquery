@@ -1,12 +1,11 @@
 # Table: gcp_logging_sinks
 
-
+https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks#LogSink
 
 The primary key for this table is **name**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

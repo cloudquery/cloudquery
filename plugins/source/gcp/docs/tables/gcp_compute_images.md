@@ -1,12 +1,9 @@
 # Table: gcp_compute_images
 
-
-
 The primary key for this table is **self_link**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -14,7 +11,6 @@ The primary key for this table is **self_link**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |project_id|String|
-|self_link (PK)|String|
 |architecture|String|
 |archive_size_bytes|Int|
 |creation_timestamp|String|
@@ -33,6 +29,7 @@ The primary key for this table is **self_link**.
 |name|String|
 |raw_disk|JSON|
 |satisfies_pzs|Bool|
+|self_link (PK)|String|
 |shielded_instance_initial_state|JSON|
 |source_disk|String|
 |source_disk_encryption_key|JSON|

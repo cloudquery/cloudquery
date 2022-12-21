@@ -12,7 +12,7 @@ func WebTests() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_applicationinsights_web_tests",
 		Resolver:  fetchWebTests,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Insights),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_insights),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -61,7 +61,7 @@ func WebTests() *schema.Table {
 	}
 }
 
-func fetchWebTests(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchWebTests(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armapplicationinsights.NewWebTestsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

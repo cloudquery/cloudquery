@@ -12,7 +12,7 @@ func PrivateStore() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_marketplace_private_store",
 		Resolver:  fetchPrivateStore,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Marketplace),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_marketplace),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -51,7 +51,7 @@ func PrivateStore() *schema.Table {
 	}
 }
 
-func fetchPrivateStore(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchPrivateStore(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armmarketplace.NewPrivateStoreClient(cl.Creds, cl.Options)
 	if err != nil {

@@ -12,7 +12,7 @@ func Hubs() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_customerinsights_hubs",
 		Resolver:  fetchHubs,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_CustomerInsights),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_customerinsights),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -56,7 +56,7 @@ func Hubs() *schema.Table {
 	}
 }
 
-func fetchHubs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchHubs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armcustomerinsights.NewHubsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

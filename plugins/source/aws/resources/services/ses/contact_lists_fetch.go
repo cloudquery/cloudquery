@@ -9,12 +9,11 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchSesContactLists(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchSesContactLists(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Sesv2
 
-	config := sesv2.ListContactListsInput{}
-	p := sesv2.NewListContactListsPaginator(svc, &config)
+	p := sesv2.NewListContactListsPaginator(svc, nil)
 	for p.HasMorePages() {
 		response, err := p.NextPage(ctx)
 		if err != nil {
@@ -22,6 +21,7 @@ func fetchSesContactLists(ctx context.Context, meta schema.ClientMeta, parent *s
 		}
 		res <- response.ContactLists
 	}
+
 	return nil
 }
 
@@ -34,6 +34,8 @@ func getContactList(ctx context.Context, meta schema.ClientMeta, resource *schem
 	if err != nil {
 		return err
 	}
-	resource.Item = getOutput
+
+	resource.SetItem(getOutput)
+
 	return nil
 }

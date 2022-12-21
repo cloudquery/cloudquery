@@ -12,7 +12,7 @@ func ClassicAdministrators() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_authorization_classic_administrators",
 		Resolver:  fetchClassicAdministrators,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Authorization),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_authorization),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -46,7 +46,7 @@ func ClassicAdministrators() *schema.Table {
 	}
 }
 
-func fetchClassicAdministrators(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchClassicAdministrators(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armauthorization.NewClassicAdministratorsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

@@ -12,7 +12,7 @@ func Capacities() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_powerbidedicated_capacities",
 		Resolver:  fetchCapacities,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_PowerBIDedicated),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_powerbidedicated),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -66,7 +66,7 @@ func Capacities() *schema.Table {
 	}
 }
 
-func fetchCapacities(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchCapacities(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armpowerbidedicated.NewCapacitiesClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

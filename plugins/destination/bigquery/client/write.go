@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"cloud.google.com/go/bigquery"
-	"github.com/cloudquery/plugin-sdk/plugins"
+	"github.com/cloudquery/plugin-sdk/plugins/destination"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"golang.org/x/sync/errgroup"
 )
@@ -17,7 +17,7 @@ const (
 )
 
 type worker struct {
-	writeChan chan []interface{}
+	writeChan chan []any
 }
 
 type item struct {
@@ -29,7 +29,7 @@ func (i *item) Save() (map[string]bigquery.Value, string, error) {
 	return i.cols, bigquery.NoDedupeID, nil
 }
 
-func (c *Client) writeResource(ctx context.Context, table *schema.Table, client *bigquery.Client, resources <-chan []interface{}) error {
+func (c *Client) writeResource(ctx context.Context, table *schema.Table, client *bigquery.Client, resources <-chan []any) error {
 	inserter := client.Dataset(c.pluginSpec.DatasetID).Table(table.Name).Inserter()
 	inserter.IgnoreUnknownValues = true
 	inserter.SkipInvalidRows = false
@@ -48,7 +48,7 @@ func (c *Client) writeResource(ctx context.Context, table *schema.Table, client 
 		}
 		c.logger.Debug().Interface("cols", saver.cols).Msg("got resource")
 		batch = append(batch, saver)
-		if len(batch) >= batchSize {
+		if len(batch) >= c.batchSize {
 			c.logger.Debug().Msg("Writing batch")
 			// we use a context with timeout here, because inserter.Put can retry indefinitely
 			// on retryable errors if not given a context timeout
@@ -77,7 +77,7 @@ func (c *Client) writeResource(ctx context.Context, table *schema.Table, client 
 	return nil
 }
 
-func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *plugins.ClientResource) error {
+func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *destination.ClientResource) error {
 	eg, gctx := errgroup.WithContext(ctx)
 	workers := make(map[string]*worker, len(tables))
 	client, err := c.bqClient(ctx)
@@ -86,7 +86,7 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *pl
 	}
 	for _, t := range tables.FlattenTables() {
 		t := t
-		writeChan := make(chan []interface{})
+		writeChan := make(chan []any)
 		workers[t.Name] = &worker{
 			writeChan: writeChan,
 		}
@@ -95,8 +95,18 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *pl
 		})
 	}
 
-	for r := range res {
-		workers[r.TableName].writeChan <- r.Data
+	done := false
+	for !done {
+		select {
+		case r, ok := <-res:
+			if !ok {
+				done = true
+				break
+			}
+			workers[r.TableName].writeChan <- r.Data
+		case <-gctx.Done():
+			done = true
+		}
 	}
 	for _, w := range workers {
 		close(w.writeChan)

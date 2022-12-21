@@ -12,7 +12,7 @@ func Services() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_healthcareapis_services",
 		Resolver:  fetchServices,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_HealthcareApis),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_healthcareapis),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -76,7 +76,7 @@ func Services() *schema.Table {
 	}
 }
 
-func fetchServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armhealthcareapis.NewServicesClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

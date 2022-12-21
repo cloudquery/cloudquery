@@ -12,7 +12,7 @@ func PrivateLinkScopes() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_hybridcompute_private_link_scopes",
 		Resolver:  fetchPrivateLinkScopes,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_HybridCompute),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_hybridcompute),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -61,7 +61,7 @@ func PrivateLinkScopes() *schema.Table {
 	}
 }
 
-func fetchPrivateLinkScopes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchPrivateLinkScopes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armhybridcompute.NewPrivateLinkScopesClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

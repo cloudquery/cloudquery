@@ -1,5 +1,5 @@
 ---
-title: Introducing The GitHub CloudQuery Provider
+title: Introducing the GitHub CloudQuery Provider
 tag: announcement
 date: 2022/08/08
 description: >-
@@ -24,7 +24,7 @@ In this tutorial, we will install CloudQuery and use it to fetch GitHub resource
 - [Download CloudQuery](https://www.cloudquery.io/docs/quickstart).
 - Acquire a GitHub (personal access token)[https://docs.github.com/en/enterprise-server@3.4/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token]
   with the scopes:
-  ```
+  ```ini
     read:org
     read:project
     public_repo

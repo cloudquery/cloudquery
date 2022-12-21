@@ -12,7 +12,7 @@ func DatabaseAccounts() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_cosmos_database_accounts",
 		Resolver:  fetchDatabaseAccounts,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DocumentDB),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_documentdb),
 		Columns: []schema.Column{
 			{
 				Name:     "identity",
@@ -71,7 +71,7 @@ func DatabaseAccounts() *schema.Table {
 	}
 }
 
-func fetchDatabaseAccounts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchDatabaseAccounts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armcosmos.NewDatabaseAccountsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

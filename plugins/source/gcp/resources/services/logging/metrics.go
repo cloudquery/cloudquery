@@ -16,9 +16,10 @@ import (
 
 func Metrics() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_logging_metrics",
-		Resolver:  fetchMetrics,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_logging_metrics",
+		Description: `https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.metrics#LogMetric`,
+		Resolver:    fetchMetrics,
+		Multiplex:   client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
@@ -87,7 +88,7 @@ func Metrics() *schema.Table {
 	}
 }
 
-func fetchMetrics(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchMetrics(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	req := &pb.ListLogMetricsRequest{
 		Parent: "projects/" + c.ProjectId,

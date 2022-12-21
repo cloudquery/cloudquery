@@ -13,7 +13,7 @@ func init() {
 			ListFunc:       (&armstorage.AccountsClient{}).NewListPager,
 			NewFunc:        armstorage.NewAccountsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Storage/storageAccounts",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Storage)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_storage)`,
 			Relations: []*Table{
 				{
 					Service:        "armstorage",
@@ -24,6 +24,17 @@ func init() {
 					ListFunc:       (&armstorage.TableClient{}).NewListPager,
 					NewFunc:        armstorage.NewTableClient,
 					URL:            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/tableServices/default/tables",
+					SkipFetch:      true,
+				},
+				{
+					Service:        "armstorage",
+					Name:           "containers",
+					Struct:         &armstorage.ListContainerItem{},
+					ResponseStruct: &armstorage.BlobContainersClientListResponse{},
+					Client:         &armstorage.BlobContainersClient{},
+					ListFunc:       (&armstorage.BlobContainersClient{}).NewListPager,
+					NewFunc:        armstorage.NewBlobContainersClient,
+					URL:            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers",
 					SkipFetch:      true,
 				},
 			},

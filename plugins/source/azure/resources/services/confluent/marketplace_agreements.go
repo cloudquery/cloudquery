@@ -12,7 +12,7 @@ func MarketplaceAgreements() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_confluent_marketplace_agreements",
 		Resolver:  fetchMarketplaceAgreements,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Confluent),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_confluent),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -51,7 +51,7 @@ func MarketplaceAgreements() *schema.Table {
 	}
 }
 
-func fetchMarketplaceAgreements(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchMarketplaceAgreements(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armconfluent.NewMarketplaceAgreementsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

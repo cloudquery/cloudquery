@@ -12,7 +12,7 @@ func Periods() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_billing_periods",
 		Resolver:  fetchPeriods,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Billing),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_billing),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -46,7 +46,7 @@ func Periods() *schema.Table {
 	}
 }
 
-func fetchPeriods(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchPeriods(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armbilling.NewPeriodsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

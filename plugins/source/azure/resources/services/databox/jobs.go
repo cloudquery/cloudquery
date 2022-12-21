@@ -12,7 +12,7 @@ func Jobs() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_databox_jobs",
 		Resolver:  fetchJobs,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DataBox),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_databox),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -71,7 +71,7 @@ func Jobs() *schema.Table {
 	}
 }
 
-func fetchJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armdatabox.NewJobsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

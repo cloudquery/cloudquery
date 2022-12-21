@@ -9,7 +9,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchXrayGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchXrayGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	paginator := xray.NewGetGroupsPaginator(meta.(*client.Client).Services().Xray, nil)
 	for paginator.HasMorePages() {
 		v, err := paginator.NextPage(ctx)

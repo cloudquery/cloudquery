@@ -12,7 +12,7 @@ func DataManagers() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_hybriddatamanager_data_managers",
 		Resolver:  fetchDataManagers,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_HybridData),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_hybriddata),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -61,7 +61,7 @@ func DataManagers() *schema.Table {
 	}
 }
 
-func fetchDataManagers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchDataManagers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armhybriddatamanager.NewDataManagersClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

@@ -12,7 +12,7 @@ func Solutions() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_security_solutions",
 		Resolver:  fetchSolutions,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Security),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_security),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -51,7 +51,7 @@ func Solutions() *schema.Table {
 	}
 }
 
-func fetchSolutions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchSolutions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armsecurity.NewSolutionsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

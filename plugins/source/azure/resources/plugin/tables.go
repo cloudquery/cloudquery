@@ -50,6 +50,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/healthcareapis"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/hybridcompute"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/hybriddatamanager"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/keyvault"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/kusto"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/maintenance"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/mariadb"
@@ -143,6 +144,7 @@ func generatedTables() []*schema.Table {
 		compute.Snapshots(),
 		compute.VirtualMachineScaleSets(),
 		compute.VirtualMachines(),
+		compute.Skus(),
 		confluent.MarketplaceAgreements(),
 		connectedvmware.Clusters(),
 		connectedvmware.Datastores(),
@@ -188,6 +190,8 @@ func generatedTables() []*schema.Table {
 		healthcareapis.Services(),
 		hybridcompute.PrivateLinkScopes(),
 		hybriddatamanager.DataManagers(),
+		keyvault.KeyvaultManagedHsms(),
+		keyvault.Keyvault(),
 		kusto.Clusters(),
 		maintenance.Configurations(),
 		maintenance.PublicMaintenanceConfigurations(),
@@ -237,6 +241,7 @@ func generatedTables() []*schema.Table {
 		network.VirtualWans(),
 		network.Watchers(),
 		network.WebApplicationFirewallPolicies(),
+		network.ExpressRouteGateways(),
 		networkfunction.AzureTrafficCollectorsBySubscription(),
 		nginx.Deployments(),
 		notificationhubs.Namespaces(),
@@ -286,14 +291,12 @@ func generatedTables() []*schema.Table {
 		security.Topology(),
 		security.WorkspaceSettings(),
 		servicebus.Namespaces(),
-		sql.DeletedServers(),
 		sql.InstancePools(),
 		sql.ManagedInstances(),
 		sql.Servers(),
 		sql.VirtualClusters(),
 		sqlvirtualmachine.Groups(),
 		sqlvirtualmachine.SqlVirtualMachines(),
-		storage.DeletedAccounts(),
 		storage.Accounts(),
 		storagecache.Caches(),
 		streamanalytics.StreamingJobs(),

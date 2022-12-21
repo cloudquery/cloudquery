@@ -12,7 +12,7 @@ func ListTenantConfigurationViolations() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_portal_list_tenant_configuration_violations",
 		Resolver:  fetchListTenantConfigurationViolations,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Portal),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_portal),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -41,7 +41,7 @@ func ListTenantConfigurationViolations() *schema.Table {
 	}
 }
 
-func fetchListTenantConfigurationViolations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchListTenantConfigurationViolations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armportal.NewListTenantConfigurationViolationsClient(cl.Creds, cl.Options)
 	if err != nil {

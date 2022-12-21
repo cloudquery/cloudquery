@@ -12,7 +12,7 @@ func PrivateLinkHubs() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_synapse_private_link_hubs",
 		Resolver:  fetchPrivateLinkHubs,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Synapse),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_synapse),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -56,7 +56,7 @@ func PrivateLinkHubs() *schema.Table {
 	}
 }
 
-func fetchPrivateLinkHubs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchPrivateLinkHubs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armsynapse.NewPrivateLinkHubsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

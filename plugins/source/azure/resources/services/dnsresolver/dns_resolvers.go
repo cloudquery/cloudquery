@@ -12,7 +12,7 @@ func DnsResolvers() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_dnsresolver_dns_resolvers",
 		Resolver:  fetchDnsResolvers,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_network),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -66,7 +66,7 @@ func DnsResolvers() *schema.Table {
 	}
 }
 
-func fetchDnsResolvers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchDnsResolvers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armdnsresolver.NewDNSResolversClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

@@ -12,7 +12,7 @@ func Definitions() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_policy_definitions",
 		Resolver:  fetchDefinitions,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Authorization),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_authorization),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -51,7 +51,7 @@ func Definitions() *schema.Table {
 	}
 }
 
-func fetchDefinitions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchDefinitions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armpolicy.NewDefinitionsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

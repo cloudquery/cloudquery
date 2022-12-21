@@ -6,7 +6,7 @@ import (
 	"context"
 	"google.golang.org/api/iterator"
 
-	pb "google.golang.org/genproto/googleapis/cloud/functions/v1"
+	pb "cloud.google.com/go/functions/apiv1/functionspb"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
@@ -16,9 +16,10 @@ import (
 
 func Functions() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_functions_functions",
-		Resolver:  fetchFunctions,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_functions_functions",
+		Description: `https://cloud.google.com/functions/docs/reference/rest/v1/projects.locations.functions#CloudFunction`,
+		Resolver:    fetchFunctions,
+		Multiplex:   client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
@@ -169,7 +170,7 @@ func Functions() *schema.Table {
 	}
 }
 
-func fetchFunctions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchFunctions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	req := &pb.ListFunctionsRequest{
 		Parent: "projects/" + c.ProjectId + "/locations/-",

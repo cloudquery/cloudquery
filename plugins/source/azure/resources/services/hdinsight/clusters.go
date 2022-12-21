@@ -12,7 +12,7 @@ func Clusters() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_hdinsight_clusters",
 		Resolver:  fetchClusters,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_HDInsight),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_hdinsight),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -76,7 +76,7 @@ func Clusters() *schema.Table {
 	}
 }
 
-func fetchClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armhdinsight.NewClustersClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

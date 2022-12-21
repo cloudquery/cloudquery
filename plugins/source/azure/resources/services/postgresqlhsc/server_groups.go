@@ -12,7 +12,7 @@ func ServerGroups() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_postgresqlhsc_server_groups",
 		Resolver:  fetchServerGroups,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DBForPostgreSql),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_dbforpostgresql),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -61,7 +61,7 @@ func ServerGroups() *schema.Table {
 	}
 }
 
-func fetchServerGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchServerGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armpostgresqlhsc.NewServerGroupsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

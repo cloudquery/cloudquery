@@ -12,7 +12,7 @@ func ExpressRouteCircuits() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_express_route_circuits",
 		Resolver:  fetchExpressRouteCircuits,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Network),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_network),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -66,7 +66,7 @@ func ExpressRouteCircuits() *schema.Table {
 	}
 }
 
-func fetchExpressRouteCircuits(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchExpressRouteCircuits(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armnetwork.NewExpressRouteCircuitsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

@@ -12,7 +12,7 @@ func Service() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_apimanagement_service",
 		Resolver:  fetchService,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_ApiManagement),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_apimanagement),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -81,7 +81,7 @@ func Service() *schema.Table {
 	}
 }
 
-func fetchService(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchService(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armapimanagement.NewServiceClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

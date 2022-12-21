@@ -1,5 +1,7 @@
 # Source Plugin: gcp
+
 ## Tables
+
 - [gcp_apikeys_keys](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_apikeys_keys.md)
 - [gcp_bigquery_datasets](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_bigquery_datasets.md)
   - [gcp_bigquery_tables](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_bigquery_tables.md)
@@ -34,6 +36,7 @@
 - [gcp_iam_roles](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_iam_roles.md)
 - [gcp_iam_service_accounts](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_iam_service_accounts.md)
   - [gcp_iam_service_account_keys](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_iam_service_account_keys.md)
+- [gcp_iam_deny_policies](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_iam_deny_policies.md)
 - [gcp_kms_keyrings](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_kms_keyrings.md)
   - [gcp_kms_crypto_keys](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_kms_crypto_keys.md)
 - [gcp_logging_metrics](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_logging_metrics.md)
@@ -47,5 +50,6 @@
 - [gcp_secretmanager_secrets](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_secretmanager_secrets.md)
 - [gcp_serviceusage_services](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_serviceusage_services.md)
 - [gcp_sql_instances](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_sql_instances.md)
+  - [gcp_sql_users](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_sql_users.md)
 - [gcp_storage_buckets](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_storage_buckets.md)
   - [gcp_storage_bucket_policies](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_storage_bucket_policies.md)

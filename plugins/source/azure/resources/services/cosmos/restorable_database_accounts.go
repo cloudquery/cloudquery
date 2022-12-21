@@ -12,7 +12,7 @@ func RestorableDatabaseAccounts() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_cosmos_restorable_database_accounts",
 		Resolver:  fetchRestorableDatabaseAccounts,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DocumentDB),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_documentdb),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -51,7 +51,7 @@ func RestorableDatabaseAccounts() *schema.Table {
 	}
 }
 
-func fetchRestorableDatabaseAccounts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchRestorableDatabaseAccounts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armcosmos.NewRestorableDatabaseAccountsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

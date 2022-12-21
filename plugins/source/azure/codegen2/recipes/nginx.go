@@ -14,7 +14,7 @@ func init() {
 			ListFunc:       (&armnginx.DeploymentsClient{}).NewListPager,
 			NewFunc:        armnginx.NewDeploymentsClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Nginx.NginxPlus/nginxDeployments",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceNginx_NginxPlus)`,
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacenginx_nginxplus)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
 	}

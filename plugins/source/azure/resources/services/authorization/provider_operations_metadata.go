@@ -12,7 +12,7 @@ func ProviderOperationsMetadata() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_authorization_provider_operations_metadata",
 		Resolver:  fetchProviderOperationsMetadata,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Authorization),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_authorization),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -56,7 +56,7 @@ func ProviderOperationsMetadata() *schema.Table {
 	}
 }
 
-func fetchProviderOperationsMetadata(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchProviderOperationsMetadata(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armauthorization.NewProviderOperationsMetadataClient(cl.Creds, cl.Options)
 	if err != nil {

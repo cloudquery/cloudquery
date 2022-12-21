@@ -7,7 +7,7 @@ SELECT
   subscription_id,
   id,
   case
-    when auto_provision = 'On'
+    when properties->>'autoProvision' = 'On'
     then 'pass' else 'fail'
   end
 FROM azure_security_auto_provisioning_settings asaps

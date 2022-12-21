@@ -1,14 +1,13 @@
 # Table: azure_storage_tables
 
-
-
 The primary key for this table is **id**.
 
 ## Relations
+
 This table depends on [azure_storage_accounts](azure_storage_accounts.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

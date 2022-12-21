@@ -12,7 +12,7 @@ func VirtualMachineScaleSets() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_compute_virtual_machine_scale_sets",
 		Resolver:  fetchVirtualMachineScaleSets,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Compute),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_compute),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -81,7 +81,7 @@ func VirtualMachineScaleSets() *schema.Table {
 	}
 }
 
-func fetchVirtualMachineScaleSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchVirtualMachineScaleSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armcompute.NewVirtualMachineScaleSetsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

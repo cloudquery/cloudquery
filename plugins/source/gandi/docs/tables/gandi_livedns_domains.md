@@ -1,7 +1,5 @@
 # Table: gandi_livedns_domains
 
-
-
 The primary key for this table is **fqdn**.
 
 ## Relations
@@ -10,6 +8,7 @@ The following tables depend on gandi_livedns_domains:
   - [gandi_livedns_domain_snapshots](gandi_livedns_domain_snapshots.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

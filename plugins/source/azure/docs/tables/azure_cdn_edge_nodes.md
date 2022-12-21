@@ -1,12 +1,9 @@
 # Table: azure_cdn_edge_nodes
 
-
-
 The primary key for this table is **id**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

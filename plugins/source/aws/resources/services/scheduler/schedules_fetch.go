@@ -11,7 +11,7 @@ import (
 	"github.com/thoas/go-funk"
 )
 
-func fetchSchedulerSchedules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchSchedulerSchedules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	config := scheduler.ListSchedulesInput{
 		MaxResults: aws.Int32(100),
 	}

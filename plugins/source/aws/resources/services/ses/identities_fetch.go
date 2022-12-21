@@ -10,12 +10,11 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchSesIdentities(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchSesIdentities(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Sesv2
 
-	config := sesv2.ListEmailIdentitiesInput{}
-	p := sesv2.NewListEmailIdentitiesPaginator(svc, &config)
+	p := sesv2.NewListEmailIdentitiesPaginator(svc, nil)
 	for p.HasMorePages() {
 		response, err := p.NextPage(ctx)
 		if err != nil {
@@ -23,10 +22,11 @@ func fetchSesIdentities(ctx context.Context, meta schema.ClientMeta, parent *sch
 		}
 		res <- response.EmailIdentities
 	}
+
 	return nil
 }
 
-func getEmailIdentity(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+func getIdentity(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Sesv2
 	ei := resource.Item.(types.IdentityInfo)
@@ -36,17 +36,17 @@ func getEmailIdentity(ctx context.Context, meta schema.ClientMeta, resource *sch
 		return err
 	}
 
-	resource.Item = &models.EmailIdentityWrapper{
-		IdentityName:   ei.IdentityName,
-		SendingEnabled: ei.SendingEnabled,
-
+	resource.SetItem(&models.EmailIdentity{
+		IdentityName:           ei.IdentityName,
+		SendingEnabled:         ei.SendingEnabled,
 		GetEmailIdentityOutput: getOutput,
-	}
+	})
+
 	return nil
 }
 
-func resolveEmailIdentityArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+func resolveIdentityArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	return client.ResolveARN(client.SESService, func(resource *schema.Resource) ([]string, error) {
-		return []string{"identity", *resource.Item.(*models.EmailIdentityWrapper).IdentityName}, nil
+		return []string{"identity", *resource.Item.(*models.EmailIdentity).IdentityName}, nil
 	})(ctx, meta, resource, c)
 }

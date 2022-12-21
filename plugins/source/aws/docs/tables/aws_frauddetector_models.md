@@ -10,6 +10,7 @@ The following tables depend on aws_frauddetector_models:
   - [aws_frauddetector_model_versions](aws_frauddetector_model_versions.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

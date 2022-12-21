@@ -4,9 +4,8 @@ https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_dax_Cluster.h
 
 The primary key for this table is **arn**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

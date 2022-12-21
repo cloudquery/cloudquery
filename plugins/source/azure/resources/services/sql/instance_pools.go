@@ -12,7 +12,7 @@ func InstancePools() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_sql_instance_pools",
 		Resolver:  fetchInstancePools,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Sql),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_sql),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -61,7 +61,7 @@ func InstancePools() *schema.Table {
 	}
 }
 
-func fetchInstancePools(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchInstancePools(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armsql.NewInstancePoolsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

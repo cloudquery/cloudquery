@@ -7,8 +7,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
-
 func init() {
 	resources := []*Resource{
 		{
@@ -17,15 +15,9 @@ func init() {
 			SkipFetch:       true,
 			SkipMock:        true,
 			NameTransformer: CreateReplaceTransformer(map[string]string{"c_o_r_s": "cors", "r_p_o": "rpo"}),
-			ExtraColumns: []codegen.ColumnDefinition{
-				{
-					Name:     "name",
-					Type:     schema.TypeString,
-					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					Resolver: `schema.PathResolver("Name")`,
-				},
-			},
-			Relations: []string{"BucketPolicies()"},
+			PrimaryKeys:     []string{"name"},
+			Relations:       []string{"BucketPolicies()"},
+			Description:     "https://cloud.google.com/storage/docs/json_api/v1/buckets#resource",
 		},
 		{
 			SubService: "bucket_policies",
@@ -41,6 +33,7 @@ func init() {
 					Resolver: `schema.ParentColumnResolver("name")`,
 				},
 			},
+			Description: "https://cloud.google.com/iam/docs/reference/rest/v1/Policy",
 		},
 	}
 

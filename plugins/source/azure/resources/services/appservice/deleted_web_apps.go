@@ -12,7 +12,7 @@ func DeletedWebApps() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_appservice_deleted_web_apps",
 		Resolver:  fetchDeletedWebApps,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Web),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_web),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -51,7 +51,7 @@ func DeletedWebApps() *schema.Table {
 	}
 }
 
-func fetchDeletedWebApps(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchDeletedWebApps(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armappservice.NewDeletedWebAppsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

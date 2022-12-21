@@ -2,12 +2,8 @@ package recipes
 
 import (
 	logging "cloud.google.com/go/logging/apiv2"
-	"github.com/cloudquery/plugin-sdk/codegen"
-	"github.com/cloudquery/plugin-sdk/schema"
-	pb "google.golang.org/genproto/googleapis/logging/v2"
+	pb "cloud.google.com/go/logging/apiv2/loggingpb"
 )
-
-
 
 func init() {
 	resources := []*Resource{
@@ -20,14 +16,8 @@ func init() {
 			RegisterServer:      pb.RegisterMetricsServiceV2Server,
 			ListFunction:        (&pb.UnimplementedMetricsServiceV2Server{}).ListLogMetrics,
 			UnimplementedServer: &pb.UnimplementedMetricsServiceV2Server{},
-			ExtraColumns: []codegen.ColumnDefinition{
-				{
-					Name:     "name",
-					Type:     schema.TypeString,
-					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					Resolver: `schema.PathResolver("Name")`,
-				},
-			},
+			PrimaryKeys:         []string{"name"},
+			Description:         "https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.metrics#LogMetric",
 		},
 		{
 			SubService:          "sinks",
@@ -38,15 +28,9 @@ func init() {
 			RegisterServer:      pb.RegisterConfigServiceV2Server,
 			ListFunction:        (&pb.UnimplementedConfigServiceV2Server{}).ListSinks,
 			UnimplementedServer: &pb.UnimplementedConfigServiceV2Server{},
-			ExtraColumns: []codegen.ColumnDefinition{
-				{
-					Name:     "name",
-					Type:     schema.TypeString,
-					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					Resolver: `schema.PathResolver("Name")`,
-				},
-			},
-			SkipFields: []string{"Options"},
+			PrimaryKeys:         []string{"name"},
+			SkipFields:          []string{"Options"},
+			Description:         "https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks#LogSink",
 		},
 	}
 

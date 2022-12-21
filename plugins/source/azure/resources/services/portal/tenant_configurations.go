@@ -12,7 +12,7 @@ func TenantConfigurations() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_portal_tenant_configurations",
 		Resolver:  fetchTenantConfigurations,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Portal),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_portal),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -46,7 +46,7 @@ func TenantConfigurations() *schema.Table {
 	}
 }
 
-func fetchTenantConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchTenantConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armportal.NewTenantConfigurationsClient(cl.Creds, cl.Options)
 	if err != nil {

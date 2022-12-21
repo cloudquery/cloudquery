@@ -12,7 +12,7 @@ func Deployments() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_nginx_deployments",
 		Resolver:  fetchDeployments,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceNginx_NginxPlus),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacenginx_nginxplus),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -71,7 +71,7 @@ func Deployments() *schema.Table {
 	}
 }
 
-func fetchDeployments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchDeployments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armnginx.NewDeploymentsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

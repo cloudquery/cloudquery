@@ -16,9 +16,10 @@ import (
 
 func Occurrences() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_containeranalysis_occurrences",
-		Resolver:  fetchOccurrences,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_containeranalysis_occurrences",
+		Description: `https://cloud.google.com/container-analysis/docs/reference/rest/v1beta1/projects.occurrences#Occurrence`,
+		Resolver:    fetchOccurrences,
+		Multiplex:   client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
@@ -67,7 +68,7 @@ func Occurrences() *schema.Table {
 	}
 }
 
-func fetchOccurrences(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchOccurrences(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	req := &pb.ListOccurrencesRequest{
 		Parent: "projects/" + c.ProjectId,

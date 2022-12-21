@@ -12,7 +12,7 @@ func ManagedRuleSets() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_cdn_managed_rule_sets",
 		Resolver:  fetchManagedRuleSets,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_Cdn),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_cdn),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -56,7 +56,7 @@ func ManagedRuleSets() *schema.Table {
 	}
 }
 
-func fetchManagedRuleSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchManagedRuleSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armcdn.NewManagedRuleSetsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchAthenaDataCatalogs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchAthenaDataCatalogs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Athena
 	input := athena.ListDataCatalogsInput{}
@@ -78,7 +78,7 @@ func resolveAthenaDataCatalogTags(ctx context.Context, meta schema.ClientMeta, r
 	}
 	return resource.Set(c.Name, tags)
 }
-func fetchAthenaDataCatalogDatabases(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchAthenaDataCatalogDatabases(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Athena
 	input := athena.ListDatabasesInput{
@@ -98,7 +98,7 @@ func fetchAthenaDataCatalogDatabases(ctx context.Context, meta schema.ClientMeta
 	}
 	return nil
 }
-func fetchAthenaDataCatalogDatabaseTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchAthenaDataCatalogDatabaseTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Athena
 	input := athena.ListTableMetadataInput{

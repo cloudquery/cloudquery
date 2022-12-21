@@ -6,7 +6,7 @@ import (
 	"context"
 	"google.golang.org/api/iterator"
 
-	pb "google.golang.org/genproto/googleapis/cloud/secretmanager/v1"
+	pb "cloud.google.com/go/secretmanager/apiv1/secretmanagerpb"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
@@ -16,9 +16,10 @@ import (
 
 func Secrets() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_secretmanager_secrets",
-		Resolver:  fetchSecrets,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_secretmanager_secrets",
+		Description: `https://cloud.google.com/secret-manager/docs/reference/rest/v1/projects.secrets#Secret`,
+		Resolver:    fetchSecrets,
+		Multiplex:   client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
@@ -72,7 +73,7 @@ func Secrets() *schema.Table {
 	}
 }
 
-func fetchSecrets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchSecrets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	req := &pb.ListSecretsRequest{
 		Parent: "projects/" + c.ProjectId,

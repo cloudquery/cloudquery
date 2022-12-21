@@ -90,6 +90,8 @@ SRE
 SREs
 API
 APIs
+ACL
+ACLs
 NACL
 NACLs
 CSPM
@@ -156,3 +158,5 @@ ELBs
 CMK
 CMKs
 serverless
+tailnet
+Vercel

@@ -12,7 +12,7 @@ func Factories() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_datafactory_factories",
 		Resolver:  fetchFactories,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.NamespaceMicrosoft_DataFactory),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_datafactory),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -71,7 +71,7 @@ func Factories() *schema.Table {
 	}
 }
 
-func fetchFactories(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchFactories(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armdatafactory.NewFactoriesClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {
