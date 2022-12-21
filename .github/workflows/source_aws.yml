@@ -58,7 +58,6 @@ jobs:
         with:
           version: v1.50.1
           working-directory: plugins/source/aws
-          skip-pkg-cache: true
           args: "--config ../../.golangci.yml"
       - name: Get dependencies
         run: go get -t -d ./...
