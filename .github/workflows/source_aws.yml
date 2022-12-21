@@ -58,7 +58,7 @@ jobs:
         with:
           version: v1.50.1
           working-directory: plugins/source/aws
-          args: "--config ../../.golangci.yml --new-from-rev=HEAD~"
+          args: "--config ../../.golangci.yml"
       - name: Get dependencies
         run: go get -t -d ./...
       - name: Build
