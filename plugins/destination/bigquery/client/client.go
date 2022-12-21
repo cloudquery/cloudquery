@@ -50,9 +50,6 @@ func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination)
 	if err != nil {
 		return nil, err
 	}
-	if c.pluginSpec.DatasetLocation != "" {
-		c.client.Location = c.pluginSpec.DatasetLocation
-	}
 
 
 	return c, nil
