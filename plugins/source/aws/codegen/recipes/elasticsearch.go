@@ -12,7 +12,7 @@ func ElasticsearchResources() []*Resource {
 			SubService:          "domains",
 			Struct:              new(types.ElasticsearchDomainStatus),
 			Description:         "https://docs.aws.amazon.com/opensearch-service/latest/APIReference/API_DomainStatus.html",
-			PreResourceResolver: "describeElasticsearchDomain",
+			PreResourceResolver: "getDomain",
 			PKColumns:           []string{"arn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,

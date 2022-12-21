@@ -12,22 +12,23 @@ import (
 func fetchElasticsearchDomains(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	svc := meta.(*client.Client).Services().Elasticsearchservice
 
-	domainNames, err := svc.ListDomainNames(ctx, nil)
+	out, err := svc.ListDomainNames(ctx, nil)
 	if err != nil {
 		return err
 	}
 
-	res <- domainNames.DomainNames
+	res <- out.DomainNames
 
 	return nil
 }
 
-func describeElasticsearchDomain(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+func getDomain(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	svc := meta.(*client.Client).Services().Elasticsearchservice
-	name := resource.Item.(types.DomainInfo).DomainName
 
 	out, err := svc.DescribeElasticsearchDomain(ctx,
-		&elasticsearchservice.DescribeElasticsearchDomainInput{DomainName: name},
+		&elasticsearchservice.DescribeElasticsearchDomainInput{
+			DomainName: resource.Item.(types.DomainInfo).DomainName,
+		},
 	)
 	if err != nil {
 		return err

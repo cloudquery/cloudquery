@@ -12,7 +12,7 @@ func Domains() *schema.Table {
 		Name:                "aws_elasticsearch_domains",
 		Description:         `https://docs.aws.amazon.com/opensearch-service/latest/APIReference/API_DomainStatus.html`,
 		Resolver:            fetchElasticsearchDomains,
-		PreResourceResolver: describeElasticsearchDomain,
+		PreResourceResolver: getDomain,
 		Multiplex:           client.ServiceAccountRegionMultiplexer("es"),
 		Columns: []schema.Column{
 			{
