@@ -5,7 +5,6 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/elasticsearchservice"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/client/services"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -32,31 +31,25 @@ func fetchElasticsearchVpcEndpoints(ctx context.Context, meta schema.ClientMeta,
 		listInput.NextToken = out.NextToken
 	}
 
-	if len(vpcEndpointIDs) == 0 {
-		return nil
-	}
-
-	return describeVPCEndpoints(ctx, svc, res, vpcEndpointIDs)
-}
-
-func describeVPCEndpoints(ctx context.Context, svc services.ElasticsearchserviceClient, res chan<- any, vpcEndpointIDs []string) error {
-	// DescribeVpcEndpoints supports amounts [5, 100], so, if we have > 100 endpoints to fetch, split in halves
+	// slice in parts
 	const maxLen = 100
-	if l := len(vpcEndpointIDs); l > maxLen {
-		if err := describeVPCEndpoints(ctx, svc, res, vpcEndpointIDs[:l/2]); err != nil {
+	for len(vpcEndpointIDs) > 0 {
+		var part []string
+		if len(vpcEndpointIDs) > maxLen {
+			part, vpcEndpointIDs = vpcEndpointIDs[:maxLen], vpcEndpointIDs[maxLen:]
+		} else {
+			part, vpcEndpointIDs = vpcEndpointIDs, nil
+		}
+
+		out, err := svc.DescribeVpcEndpoints(ctx,
+			&elasticsearchservice.DescribeVpcEndpointsInput{VpcEndpointIds: part},
+		)
+		if err != nil {
 			return err
 		}
-		return describeVPCEndpoints(ctx, svc, res, vpcEndpointIDs[l/2:])
-	}
 
-	out, err := svc.DescribeVpcEndpoints(ctx,
-		&elasticsearchservice.DescribeVpcEndpointsInput{VpcEndpointIds: vpcEndpointIDs},
-	)
-	if err != nil {
-		return err
+		res <- out.VpcEndpoints
 	}
-
-	res <- out.VpcEndpoints
 
 	return nil
 }
