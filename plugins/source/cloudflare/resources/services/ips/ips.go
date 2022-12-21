@@ -35,7 +35,7 @@ func IPs() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 
-func fetchIPs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchIPs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	resp, err := cloudflare.IPs()
 	if err != nil {
 		return err

@@ -66,7 +66,7 @@ func DnsResolvers() *schema.Table {
 	}
 }
 
-func fetchDnsResolvers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchDnsResolvers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armdnsresolver.NewDNSResolversClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

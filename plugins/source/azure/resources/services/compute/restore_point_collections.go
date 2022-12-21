@@ -56,7 +56,7 @@ func RestorePointCollections() *schema.Table {
 	}
 }
 
-func fetchRestorePointCollections(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchRestorePointCollections(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armcompute.NewRestorePointCollectionsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

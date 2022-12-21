@@ -10,7 +10,7 @@ import (
 	"github.com/google/go-github/v48/github"
 )
 
-func fetchMembers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchMembers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	t := parent.Item.(*github.Team)
 	c := meta.(*client.Client)
 	opts := &github.TeamListTeamMembersOptions{ListOptions: github.ListOptions{PerPage: 100}}

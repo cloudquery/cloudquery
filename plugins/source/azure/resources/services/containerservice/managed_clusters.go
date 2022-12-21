@@ -76,7 +76,7 @@ func ManagedClusters() *schema.Table {
 	}
 }
 
-func fetchManagedClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchManagedClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armcontainerservice.NewManagedClustersClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

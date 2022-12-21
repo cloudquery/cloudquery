@@ -8,7 +8,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchWorkerMetaData(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchWorkerMetaData(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	svc := meta.(*client.Client)
 
 	resp, err := svc.ClientApi.ListWorkerScripts(ctx)
@@ -19,7 +19,7 @@ func fetchWorkerMetaData(ctx context.Context, meta schema.ClientMeta, parent *sc
 
 	return nil
 }
-func fetchWorkerCronTriggers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchWorkerCronTriggers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	svc := meta.(*client.Client)
 	accountId := svc.AccountId
 	script := parent.Item.(cloudflare.WorkerMetaData)
@@ -32,7 +32,7 @@ func fetchWorkerCronTriggers(ctx context.Context, meta schema.ClientMeta, parent
 
 	return nil
 }
-func fetchWorkersSecrets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchWorkersSecrets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	svc := meta.(*client.Client)
 	script := parent.Item.(cloudflare.WorkerMetaData)
 

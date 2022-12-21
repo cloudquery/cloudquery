@@ -8,7 +8,7 @@ import (
 	"github.com/tailscale/tailscale-client-go/tailscale"
 )
 
-func fetchKeys(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchKeys(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 
 	result, err := c.Keys(ctx)

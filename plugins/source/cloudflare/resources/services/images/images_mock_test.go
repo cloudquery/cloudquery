@@ -17,7 +17,7 @@ func buildImages(t *testing.T, ctrl *gomock.Controller) client.Clients {
 	if err := faker.FakeObject(&image); err != nil {
 		t.Fatal(err)
 	}
-	image.Metadata = map[string]interface{}{"a": "b"}
+	image.Metadata = map[string]any{"a": "b"}
 
 	mock.EXPECT().ListImages(
 		gomock.Any(),

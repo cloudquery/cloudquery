@@ -5,6 +5,26 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v5.1.2...plugins-source-gcp-v5.2.0) (2022-12-20)
+
+
+### Features
+
+* **gcp-resources:** Add deny policies ([#5653](https://github.com/cloudquery/cloudquery/issues/5653)) ([7cceb70](https://github.com/cloudquery/cloudquery/commit/7cceb70340473d0348d11eb8a7065d21cb981db1))
+
+## [5.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v5.1.1...plugins-source-gcp-v5.1.2) (2022-12-20)
+
+
+### Bug Fixes
+
+* **deps:** Migrate GCP to new proto imports ([#5803](https://github.com/cloudquery/cloudquery/issues/5803)) ([78e8ab6](https://github.com/cloudquery/cloudquery/commit/78e8ab6882a49bae3ab63424d7d97c310250e25f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.12.5 ([#5661](https://github.com/cloudquery/cloudquery/issues/5661)) ([b354b8a](https://github.com/cloudquery/cloudquery/commit/b354b8a3683fa2bc918c1002afac487427d65a5f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.12.6 ([#5790](https://github.com/cloudquery/cloudquery/issues/5790)) ([8e2663c](https://github.com/cloudquery/cloudquery/commit/8e2663c17c3347afd5e53f665462adc3e709c96c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.12.7 ([#5797](https://github.com/cloudquery/cloudquery/issues/5797)) ([15da529](https://github.com/cloudquery/cloudquery/commit/15da5294786fa2656228ca5bbc48ef1fc44e486b))
+* **gcp-resources:** Add `projects/` prefix when listing IAM roles ([#5655](https://github.com/cloudquery/cloudquery/issues/5655)) ([23711be](https://github.com/cloudquery/cloudquery/commit/23711be4370fa9596be73b25c4bc0e0281f26e05))
+* **gcp:** Remove error wrapping ([#5654](https://github.com/cloudquery/cloudquery/issues/5654)) ([c2b4295](https://github.com/cloudquery/cloudquery/commit/c2b4295ea6f0b5978e4790be97351d81b862e3f4))
+* **gcp:** Remove error wrapping ([#5669](https://github.com/cloudquery/cloudquery/issues/5669)) ([721e588](https://github.com/cloudquery/cloudquery/commit/721e588853af3292814df3c7e813df237fd8988c))
+
 ## [5.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v5.1.0...plugins-source-gcp-v5.1.1) (2022-12-14)
 
 

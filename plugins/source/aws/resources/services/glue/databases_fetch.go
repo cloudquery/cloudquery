@@ -12,7 +12,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchGlueDatabases(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchGlueDatabases(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Glue
 	input := glue.GetDatabasesInput{}
@@ -46,7 +46,7 @@ func resolveGlueDatabaseTags(ctx context.Context, meta schema.ClientMeta, resour
 	}
 	return resource.Set(c.Name, response.Tags)
 }
-func fetchGlueDatabaseTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchGlueDatabaseTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(types.Database)
 	cl := meta.(*client.Client)
 	svc := cl.Services().Glue
@@ -66,7 +66,7 @@ func fetchGlueDatabaseTables(ctx context.Context, meta schema.ClientMeta, parent
 	}
 	return nil
 }
-func fetchGlueDatabaseTableIndexes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchGlueDatabaseTableIndexes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Glue
 	d := parent.Parent.Item.(types.Database)

@@ -19,7 +19,7 @@ gen-code:
 	go run codegen/main.go
 
 .PHONY: gen-mocks
-gen-mocks:
+gen-mocks: gen-code
 	go install github.com/golang/mock/mockgen@v1.6.0
 	rm -rf ./client/mocks/*
 	go generate ./client/...
@@ -35,4 +35,4 @@ gen-docs:
 
 # All gen targets
 .PHONY: gen
-gen: gen-code gen-mocks gen-docs
+gen: gen-mocks gen-docs

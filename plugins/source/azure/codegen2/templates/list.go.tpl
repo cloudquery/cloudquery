@@ -23,7 +23,7 @@ func {{.Name}}() *schema.Table {
 {{- end}}
 
 {{if not .SkipFetch}}
-func fetch{{.Name | ToCamel}}(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetch{{.Name | ToCamel}}(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	{{- if .NewFuncHasSubscriptionId}}
   svc, err := {{.Service}}.{{.NewFuncName}}(cl.SubscriptionId, cl.Creds, cl.Options)

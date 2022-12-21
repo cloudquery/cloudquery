@@ -61,7 +61,7 @@ func AzureFirewallFqdnTags() *schema.Table {
 	}
 }
 
-func fetchAzureFirewallFqdnTags(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchAzureFirewallFqdnTags(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armnetwork.NewAzureFirewallFqdnTagsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

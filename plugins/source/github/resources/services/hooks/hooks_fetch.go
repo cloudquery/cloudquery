@@ -8,7 +8,7 @@ import (
 	"github.com/google/go-github/v48/github"
 )
 
-func fetchHooks(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchHooks(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	opts := &github.ListOptions{PerPage: 100}
 	for {

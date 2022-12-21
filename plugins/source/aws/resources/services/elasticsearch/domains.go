@@ -18,35 +18,29 @@ func Domains() *schema.Table {
 				Name:     "account_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveAWSAccount,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
 				Name:     "region",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveAWSRegion,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,
-				Resolver: resolveElasticsearchDomainTags,
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("DomainId"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Resolver: resolveTags,
 			},
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ARN"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "domain_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("DomainId"),
 			},
 			{
 				Name:     "domain_name",

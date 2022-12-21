@@ -11,7 +11,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
     var input {{.Service}}.{{.ListMethod.Method.Name}}Input{{ if .CustomListInput }} = {{.CustomListInput}}{{ end }}
 	c := meta.(*client.Client)
 	svc := c.Services().{{.CloudQueryServiceName}}

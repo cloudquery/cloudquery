@@ -11,7 +11,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchRamResourceSharePermissions(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, res chan<- interface{}) error {
+func fetchRamResourceSharePermissions(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, res chan<- any) error {
 	input := &ram.ListResourceSharePermissionsInput{
 		MaxResults:       aws.Int32(500),
 		ResourceShareArn: resource.Item.(types.ResourceShare).ResourceShareArn,

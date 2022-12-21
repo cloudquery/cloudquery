@@ -98,7 +98,7 @@ func InstanceGroups() *schema.Table {
 	}
 }
 
-func fetchInstanceGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchInstanceGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	req := &pb.AggregatedListInstanceGroupsRequest{
 		Project: c.ProjectId,

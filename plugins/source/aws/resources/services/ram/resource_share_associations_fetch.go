@@ -10,7 +10,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchRamResourceShareAssociations(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchRamResourceShareAssociations(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	err := fetchRamResourceShareAssociationsByType(ctx, meta, &ram.GetResourceShareAssociationsInput{
 		AssociationType: types.ResourceShareAssociationTypeResource,
 		MaxResults:      aws.Int32(500),
@@ -29,7 +29,7 @@ func fetchRamResourceShareAssociations(ctx context.Context, meta schema.ClientMe
 	return nil
 }
 
-func fetchRamResourceShareAssociationsByType(ctx context.Context, meta schema.ClientMeta, resourceShareInput *ram.GetResourceShareAssociationsInput, res chan<- interface{}) error {
+func fetchRamResourceShareAssociationsByType(ctx context.Context, meta schema.ClientMeta, resourceShareInput *ram.GetResourceShareAssociationsInput, res chan<- any) error {
 	paginator := ram.NewGetResourceShareAssociationsPaginator(meta.(*client.Client).Services().Ram, resourceShareInput)
 	for paginator.HasMorePages() {
 		response, err := paginator.NextPage(ctx)

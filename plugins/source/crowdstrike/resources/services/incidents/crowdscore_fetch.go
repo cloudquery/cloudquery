@@ -9,7 +9,7 @@ import (
 	"github.com/crowdstrike/gofalcon/falcon/client/incidents"
 )
 
-func fetchCrowdscore(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchCrowdscore(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	desc := "timestamp.desc"
 	retval, err := c.Services.Incidents.CrowdScore(&incidents.CrowdScoreParams{

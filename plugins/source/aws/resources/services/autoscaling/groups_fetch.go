@@ -16,7 +16,7 @@ import (
 
 var groupNotFoundRegex = regexp.MustCompile(`AutoScalingGroup name not found|Group .* not found`)
 
-func fetchAutoscalingGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchAutoscalingGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Autoscaling
 	processGroupsBundle := func(groups []types.AutoScalingGroup) error {
@@ -82,7 +82,7 @@ func resolveAutoscalingGroupLoadBalancers(ctx context.Context, meta schema.Clien
 	cl := meta.(*client.Client)
 	svc := cl.Services().Autoscaling
 	config := autoscaling.DescribeLoadBalancersInput{AutoScalingGroupName: p.AutoScalingGroupName}
-	j := map[string]interface{}{}
+	j := map[string]any{}
 	for {
 		output, err := svc.DescribeLoadBalancers(ctx, &config)
 		if err != nil {
@@ -107,7 +107,7 @@ func resolveAutoscalingGroupLoadBalancerTargetGroups(ctx context.Context, meta s
 	cl := meta.(*client.Client)
 	svc := cl.Services().Autoscaling
 	config := autoscaling.DescribeLoadBalancerTargetGroupsInput{AutoScalingGroupName: p.AutoScalingGroupName}
-	j := map[string]interface{}{}
+	j := map[string]any{}
 	for {
 		output, err := svc.DescribeLoadBalancerTargetGroups(ctx, &config)
 		if err != nil {
@@ -127,7 +127,7 @@ func resolveAutoscalingGroupLoadBalancerTargetGroups(ctx context.Context, meta s
 	}
 	return resource.Set(c.Name, j)
 }
-func fetchAutoscalingGroupScalingPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchAutoscalingGroupScalingPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	p := parent.Item.(models.AutoScalingGroupWrapper)
 	cl := meta.(*client.Client)
 	svc := cl.Services().Autoscaling
@@ -150,7 +150,7 @@ func fetchAutoscalingGroupScalingPolicies(ctx context.Context, meta schema.Clien
 	}
 	return nil
 }
-func fetchAutoscalingGroupLifecycleHooks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchAutoscalingGroupLifecycleHooks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	p := parent.Item.(models.AutoScalingGroupWrapper)
 	cl := meta.(*client.Client)
 	svc := cl.Services().Autoscaling

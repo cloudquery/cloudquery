@@ -71,7 +71,7 @@ func Datastores() *schema.Table {
 	}
 }
 
-func fetchDatastores(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchDatastores(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armconnectedvmware.NewDatastoresClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

@@ -15,7 +15,7 @@ type WebACLWrapper struct {
 	LoggingConfiguration *types.LoggingConfiguration
 }
 
-func fetchWafWebAcls(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchWafWebAcls(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	service := c.Services().Waf
 	config := waf.ListWebACLsInput{}

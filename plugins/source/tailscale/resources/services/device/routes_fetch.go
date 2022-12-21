@@ -8,7 +8,7 @@ import (
 	"github.com/tailscale/tailscale-client-go/tailscale"
 )
 
-func fetchRoutes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchRoutes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 
 	device := parent.Item.(tailscale.Device)

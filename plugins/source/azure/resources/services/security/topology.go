@@ -51,7 +51,7 @@ func Topology() *schema.Table {
 	}
 }
 
-func fetchTopology(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchTopology(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armsecurity.NewTopologyClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

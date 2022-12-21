@@ -12,7 +12,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchWafv2RuleGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchWafv2RuleGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Wafv2
 
@@ -94,7 +94,7 @@ func resolveWafv2ruleGroupPolicy(ctx context.Context, meta schema.ClientMeta, re
 		}
 		return err
 	}
-	var p map[string]interface{}
+	var p map[string]any
 	err = json.Unmarshal([]byte(*policy.Policy), &p)
 	if err != nil {
 		return err

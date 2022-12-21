@@ -97,7 +97,7 @@ func ClusterRoles() *schema.Table {
 	}
 }
 
-func fetchClusterRoles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchClusterRoles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 
 	cl := meta.(*client.Client).Client().RbacV1().ClusterRoles()
 

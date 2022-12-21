@@ -56,7 +56,7 @@ func VirtualClusters() *schema.Table {
 	}
 }
 
-func fetchVirtualClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchVirtualClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armsql.NewVirtualClustersClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {
