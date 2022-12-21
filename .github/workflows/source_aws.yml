@@ -145,8 +145,7 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 2
       - name: Set up Go 1.x
@@ -156,7 +155,7 @@ jobs:
           cache: true
           cache-dependency-path: plugins/source/aws/go.sum
       - name: Get dependencies
-        run: go get -t -d ./...    
+        run: go get -t -d ./...
       - name: Build
         run: go build .
       - name: Setup CloudQuery
