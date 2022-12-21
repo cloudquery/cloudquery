@@ -3,25 +3,19 @@ package costmanagement
 import (
 	"encoding/json"
 	"net/http"
-	"testing"
-
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/gorilla/mux"
 )
 
-func createViews(router *mux.Router) error {
-	var item armcostmanagement.ViewsClientListResponse
+func createViewQueries(router *mux.Router) error {
+	var item armcostmanagement.QueryClientUsageResponse
 	if err := faker.FakeObject(&item); err != nil {
 		return err
 	}
 
-	emptyStr := ""
-	item.NextLink = &emptyStr
-
-	router.HandleFunc("/subscriptions/{subscriptionId}/providers/Microsoft.CostManagement/views", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/{scope}/providers/Microsoft.CostManagement/query", func(w http.ResponseWriter, r *http.Request) {
 		b, err := json.Marshal(&item)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)
@@ -32,10 +26,5 @@ func createViews(router *mux.Router) error {
 			return
 		}
 	})
-	createViewQueries(router)
 	return nil
-}
-
-func TestViews(t *testing.T) {
-	client.MockTestHelper(t, Views(), createViews)
 }
