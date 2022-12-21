@@ -23,7 +23,7 @@ func (i *item) Save() (map[string]bigquery.Value, string, error) {
 	return i.cols, bigquery.NoDedupeID, nil
 }
 
-func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, resources [][]interface{}) error {
+func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, resources [][]any) error {
 	inserter := c.client.Dataset(c.pluginSpec.DatasetID).Table(table.Name).Inserter()
 	inserter.IgnoreUnknownValues = true
 	inserter.SkipInvalidRows = false

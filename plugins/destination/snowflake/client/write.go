@@ -18,7 +18,7 @@ const (
 )
 
 
-func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, resources [][]interface{}) error {
+func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, resources [][]any) error {
 	f, err := os.CreateTemp(os.TempDir(), table.Name+".json.*")
 	if err != nil {
 		return err

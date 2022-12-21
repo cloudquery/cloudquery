@@ -92,7 +92,7 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 	}
 	for {
 		values := c.createResultsArray(table)
-		v := make([]interface{}, len(values))
+		v := make([]any, len(values))
 		err := it.Next(&values)
 		if err == iterator.Done {
 			break
