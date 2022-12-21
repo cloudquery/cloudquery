@@ -122,7 +122,7 @@ func StorageClasses() *schema.Table {
 	}
 }
 
-func fetchStorageClasses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchStorageClasses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 
 	cl := meta.(*client.Client).Client().StorageV1().StorageClasses()
 

@@ -10,7 +10,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchEmrClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchEmrClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	config := emr.ListClustersInput{
 		ClusterStates: []types.ClusterState{
 			types.ClusterStateRunning,

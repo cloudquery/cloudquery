@@ -17,9 +17,9 @@ func buildAccessGroups(t *testing.T, ctrl *gomock.Controller) client.Clients {
 	if err := faker.FakeObject(&accessGroup); err != nil {
 		t.Fatal(err)
 	}
-	accessGroup.Include = []interface{}{"a"}
-	accessGroup.Exclude = []interface{}{"b"}
-	accessGroup.Require = []interface{}{"c"}
+	accessGroup.Include = []any{"a"}
+	accessGroup.Exclude = []any{"b"}
+	accessGroup.Require = []any{"c"}
 	mock.EXPECT().ZoneLevelAccessGroups(
 		gomock.Any(),
 		client.TestZoneID,

@@ -10,7 +10,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchEventbridgeEventBuses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchEventbridgeEventBuses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input eventbridge.ListEventBusesInput
 	c := meta.(*client.Client)
 	svc := c.Services().Eventbridge
@@ -31,7 +31,7 @@ func resolveEventbridgeEventBusTags(ctx context.Context, meta schema.ClientMeta,
 	eventBusArn := resource.Item.(types.EventBus).Arn
 	return resolveEventBridgeTags(ctx, meta, resource, c, *eventBusArn)
 }
-func fetchEventbridgeEventBusRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchEventbridgeEventBusRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	p := parent.Item.(types.EventBus)
 	input := eventbridge.ListRulesInput{
 		EventBusName: p.Arn,

@@ -66,7 +66,7 @@ func ExpressRouteCircuits() *schema.Table {
 	}
 }
 
-func fetchExpressRouteCircuits(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchExpressRouteCircuits(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armnetwork.NewExpressRouteCircuitsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

@@ -8,7 +8,7 @@ import (
 	"github.com/cloudquery/plugins/source/gcp/client"
 )
 
-func fetchBucketPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchBucketPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	bkt := parent.Get("name").(*schema.Text).Str
 	storageClient, err := storage.NewClient(ctx, c.ClientOptions...)

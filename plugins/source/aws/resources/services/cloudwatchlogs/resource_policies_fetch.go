@@ -9,7 +9,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchCloudwatchlogsResourcePolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchCloudwatchlogsResourcePolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config cloudwatchlogs.DescribeResourcePoliciesInput
 	c := meta.(*client.Client)
 	svc := c.Services().Cloudwatchlogs

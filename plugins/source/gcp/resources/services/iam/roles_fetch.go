@@ -8,7 +8,7 @@ import (
 	"google.golang.org/api/iam/v1"
 )
 
-func fetchRoles(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
+func fetchRoles(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	iamClient, err := iam.NewService(ctx, c.ClientOptions...)

@@ -12,7 +12,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchGlueCrawlers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchGlueCrawlers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Glue
 	input := glue.GetCrawlersInput{}

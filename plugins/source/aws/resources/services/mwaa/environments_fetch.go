@@ -8,7 +8,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchMwaaEnvironments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchMwaaEnvironments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	config := mwaa.ListEnvironmentsInput{}
 	c := meta.(*client.Client)
 	svc := c.Services().Mwaa

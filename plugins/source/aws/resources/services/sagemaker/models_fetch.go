@@ -16,7 +16,7 @@ type WrappedSageMakerModel struct {
 	ModelName *string
 }
 
-func fetchSagemakerModels(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchSagemakerModels(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Sagemaker
 	config := sagemaker.ListModelsInput{}

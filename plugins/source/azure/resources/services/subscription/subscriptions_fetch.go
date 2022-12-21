@@ -8,7 +8,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchSubscriptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchSubscriptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	// if we already fetched it then no need to run it again.
 	if len(cl.SubscriptionsObjects) != 0 {

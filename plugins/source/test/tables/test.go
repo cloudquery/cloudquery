@@ -27,8 +27,8 @@ func TestSomeTable() *schema.Table {
 	}
 }
 
-func fetchTestData(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	res <- map[string]interface{}{
+func fetchTestData(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	res <- map[string]any{
 		"column1": "test_project_id",
 		"column2": "test_id",
 	}

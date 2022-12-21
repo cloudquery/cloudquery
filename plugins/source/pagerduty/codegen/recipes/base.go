@@ -45,6 +45,7 @@ type Resource struct {
 	ResponseStructOverride        string
 	ResponseFieldOverride         string
 	RestPathOverride              string
+	ParentIsPointer               bool
 
 	// used for generating resolver and mock tests, but set automatically
 	Parent   *Resource

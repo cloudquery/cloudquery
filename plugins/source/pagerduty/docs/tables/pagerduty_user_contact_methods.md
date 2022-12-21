@@ -5,10 +5,11 @@ https://developer.pagerduty.com/api-reference/50d46c0eb020d-list-a-user-s-contac
 The primary key for this table is **id**.
 
 ## Relations
+
 This table depends on [pagerduty_users](pagerduty_users.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

@@ -12,7 +12,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchAthenaWorkGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchAthenaWorkGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Athena
 	input := athena.ListWorkGroupsInput{}
@@ -76,7 +76,7 @@ func resolveAthenaWorkGroupTags(ctx context.Context, meta schema.ClientMeta, res
 	return resource.Set(c.Name, tags)
 }
 
-func fetchAthenaWorkGroupPreparedStatements(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchAthenaWorkGroupPreparedStatements(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Athena
 	wg := parent.Item.(types.WorkGroup)
@@ -112,7 +112,7 @@ func getWorkGroupPreparedStatement(ctx context.Context, meta schema.ClientMeta, 
 	return nil
 }
 
-func fetchAthenaWorkGroupQueryExecutions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchAthenaWorkGroupQueryExecutions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Athena
 	wg := parent.Item.(types.WorkGroup)
@@ -146,7 +146,7 @@ func getWorkGroupQueryExecution(ctx context.Context, meta schema.ClientMeta, res
 	return nil
 }
 
-func fetchAthenaWorkGroupNamedQueries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchAthenaWorkGroupNamedQueries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Athena
 	wg := parent.Item.(types.WorkGroup)

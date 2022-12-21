@@ -61,7 +61,7 @@ func Assignments() *schema.Table {
 	}
 }
 
-func fetchAssignments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchAssignments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armpolicy.NewAssignmentsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

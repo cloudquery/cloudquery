@@ -8,7 +8,7 @@ import (
 	"github.com/digitalocean/godo"
 )
 
-func fetchMonitoringAlertPolicies(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchMonitoringAlertPolicies(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	svc := meta.(*client.Client)
 
 	opt := &godo.ListOptions{

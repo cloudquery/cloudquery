@@ -10,7 +10,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchQuicksightIngestions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchQuicksightIngestions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	item := parent.Item.(types.DataSetSummary)
 	cl := meta.(*client.Client)
 	svc := cl.Services().Quicksight

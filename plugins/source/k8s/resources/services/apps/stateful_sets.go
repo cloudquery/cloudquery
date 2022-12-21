@@ -187,7 +187,7 @@ func StatefulSets() *schema.Table {
 	}
 }
 
-func fetchStatefulSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchStatefulSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 
 	cl := meta.(*client.Client).Client().AppsV1().StatefulSets("")
 

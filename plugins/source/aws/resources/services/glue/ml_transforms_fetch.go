@@ -12,7 +12,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchGlueMlTransforms(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchGlueMlTransforms(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Glue
 	input := glue.GetMLTransformsInput{}
@@ -57,7 +57,7 @@ func resolveMlTransformsSchema(ctx context.Context, meta schema.ClientMeta, reso
 	}
 	return resource.Set(c.Name, j)
 }
-func fetchGlueMlTransformTaskRuns(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchGlueMlTransformTaskRuns(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(types.MLTransform)
 	cl := meta.(*client.Client)
 	svc := cl.Services().Glue

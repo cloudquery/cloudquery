@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchStorage(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchStorage(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	billing, _, err := c.Github.Billing.GetStorageBillingOrg(ctx, c.Org)
 	if err != nil {

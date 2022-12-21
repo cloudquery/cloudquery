@@ -86,7 +86,7 @@ func HostPools() *schema.Table {
 	}
 }
 
-func fetchHostPools(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchHostPools(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armdesktopvirtualization.NewHostPoolsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

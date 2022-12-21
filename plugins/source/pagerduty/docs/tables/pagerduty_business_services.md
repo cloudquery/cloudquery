@@ -4,9 +4,8 @@ https://developer.pagerduty.com/api-reference/e67570b9d0e3d-list-business-servic
 
 The primary key for this table is **id**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

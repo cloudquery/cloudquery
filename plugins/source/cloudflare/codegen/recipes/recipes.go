@@ -16,7 +16,7 @@ type Resource struct {
 	// Table is the table definition that will be used to generate the cloudquery table
 	Table *codegen.TableDefinition
 	// DataStruct that will be used to generate the cloudquery table
-	DataStruct interface{}
+	DataStruct any
 	// SkipFields fields in go struct to skip when generating the table from the go struct
 	SkipFields []string
 	Template   string

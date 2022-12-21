@@ -4,9 +4,8 @@ https://developer.pagerduty.com/api-reference/4c0936c241cbb-list-maintenance-win
 
 The primary key for this table is **id**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

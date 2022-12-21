@@ -46,7 +46,7 @@ func GovernanceRule() *schema.Table {
 	}
 }
 
-func fetchGovernanceRule(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchGovernanceRule(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armsecurity.NewGovernanceRuleClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

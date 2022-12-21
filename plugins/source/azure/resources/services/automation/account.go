@@ -71,7 +71,7 @@ func Account() *schema.Table {
 	}
 }
 
-func fetchAccount(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchAccount(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armautomation.NewAccountClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

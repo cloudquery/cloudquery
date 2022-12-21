@@ -9,7 +9,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchKafkaClusterOperations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchKafkaClusterOperations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	if parent.Item.(*types.Cluster).ClusterType == types.ClusterTypeServerless {
 		// serverless clusters do not support cluster operations
 		return nil

@@ -11,7 +11,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchEc2CustomerGateways(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchEc2CustomerGateways(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Ec2
 	response, err := svc.DescribeCustomerGateways(ctx, nil, func(options *ec2.Options) {

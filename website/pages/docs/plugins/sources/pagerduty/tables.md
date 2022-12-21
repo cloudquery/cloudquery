@@ -1,8 +1,11 @@
 # Source Plugin: pagerduty
+
 ## Tables
+
 - [pagerduty_addons](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/pagerduty/docs/tables/pagerduty_addons.md)
 - [pagerduty_incidents](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/pagerduty/docs/tables/pagerduty_incidents.md)
   - [pagerduty_incident_alerts](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/pagerduty/docs/tables/pagerduty_incident_alerts.md)
+  - [pagerduty_incident_notes](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/pagerduty/docs/tables/pagerduty_incident_notes.md)
 - [pagerduty_business_services](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/pagerduty/docs/tables/pagerduty_business_services.md)
 - [pagerduty_escalation_policies](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/pagerduty/docs/tables/pagerduty_escalation_policies.md)
 - [pagerduty_extension_schemas](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/pagerduty/docs/tables/pagerduty_extension_schemas.md)

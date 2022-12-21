@@ -11,8 +11,11 @@ func IncidentResources() []*Resource {
 			PKColumns:   []string{"id"},
 			Relations: []string{
 				"IncidentAlerts()",
+				"IncidentNotes()",
 			},
 			Template: "basic",
+
+			SkipMockGeneration: true,
 		},
 		{
 			SubService:  "incident_alerts",
@@ -24,6 +27,15 @@ func IncidentResources() []*Resource {
 			ResponseStructOverride: "ListAlertsResponse",
 			ResponseFieldOverride:  "Alerts",
 			RestPathOverride:       "/alerts",
+		},
+		{
+			SubService:  "incident_notes",
+			Struct:      pagerduty.IncidentNote{},
+			Description: "https://developer.pagerduty.com/api-reference/a1ac30885eb7a-list-notes-for-an-incident",
+			PKColumns:   []string{"id"},
+			Template:    "nested_paginated_no_options",
+
+			ListFunctionNameOverride: "ListIncidentNotesWithContext",
 		},
 	}
 }

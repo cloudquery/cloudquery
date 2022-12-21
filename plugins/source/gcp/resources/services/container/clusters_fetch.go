@@ -10,7 +10,7 @@ import (
 	"github.com/cloudquery/plugins/source/gcp/client"
 )
 
-func fetchClusters(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
+func fetchClusters(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	req := &containerpb.ListClustersRequest{
 		Parent: fmt.Sprintf("projects/%s/locations/-", c.ProjectId),

@@ -11,7 +11,7 @@ import (
 	locationpb "google.golang.org/genproto/googleapis/cloud/location"
 )
 
-func fetchKeyrings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchKeyrings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	kmsClient, err := kms.NewKeyManagementClient(ctx, c.ClientOptions...)
 	if err != nil {

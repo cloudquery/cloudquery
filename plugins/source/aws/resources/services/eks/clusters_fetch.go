@@ -8,7 +8,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchEksClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchEksClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config eks.ListClustersInput
 	c := meta.(*client.Client)
 	svc := c.Services().Eks

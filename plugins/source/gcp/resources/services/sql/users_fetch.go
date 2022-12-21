@@ -8,7 +8,7 @@ import (
 	sql "google.golang.org/api/sqladmin/v1beta4"
 )
 
-func fetchUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	sqlClient, err := sql.NewService(ctx, c.ClientOptions...)
 	if err != nil {

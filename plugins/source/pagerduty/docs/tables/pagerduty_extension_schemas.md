@@ -4,9 +4,8 @@ https://developer.pagerduty.com/api-reference/6eef27c5b452f-list-extension-schem
 
 The primary key for this table is **id**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

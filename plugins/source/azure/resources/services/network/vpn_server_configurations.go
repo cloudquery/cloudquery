@@ -61,7 +61,7 @@ func VpnServerConfigurations() *schema.Table {
 	}
 }
 
-func fetchVpnServerConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchVpnServerConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armnetwork.NewVPNServerConfigurationsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

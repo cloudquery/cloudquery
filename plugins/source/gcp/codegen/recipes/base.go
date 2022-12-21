@@ -19,7 +19,7 @@ type Resource struct {
 	// Table is the table definition that will be used to generate the cloudquery table
 	Table *codegen.TableDefinition
 	// Struct that will be used to generate the cloudquery table
-	Struct interface{}
+	Struct any
 	// StructName is the name of the Struct because it can't be inferred by reflection
 	StructName string
 	// Service is the name of the gcp service the struct/api is residing
@@ -27,31 +27,31 @@ type Resource struct {
 	// SubService is the name of the gcp subservice the struct/api is residing (gcp is split into service.subservice.list)
 	SubService string
 	// NewFunction
-	NewFunction interface{}
+	NewFunction any
 	// NewFunctionName name of the above function via Reflection
 	NewFunctionName string
 	// ClientName name of the above client via Reflection
 	ClientName string
 	// ListFunction
-	ListFunction interface{}
+	ListFunction any
 	// ListFunction name of the above function via Reflection
 	ListFunctionName string
 	// RequestStruct fills the request struct for google api
-	RequestStruct interface{}
+	RequestStruct any
 	// RequestStructName
 	RequestStructName string
 	// RequestStructFields is the snippet that fills in the request struct
 	RequestStructFields string
 	// ResponseStruct
-	ResponseStruct interface{}
+	ResponseStruct any
 	// ResponseStructName is reflected name from the ResponseStruct
 	ResponseStructName string
 	// RegisterServer function to grpc register server
-	RegisterServer interface{}
+	RegisterServer any
 	// RegisterServerName is the name of the above function via Reflection
 	RegisterServerName string
 	// UnimplementedServer is the unimplemented server for the grpc server
-	UnimplementedServer interface{}
+	UnimplementedServer any
 	// UnimplementedServerName is the name of the above function via Reflection
 	UnimplementedServerName string
 	// OutputField is field where the result is located in the output struct

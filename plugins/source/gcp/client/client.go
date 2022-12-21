@@ -56,7 +56,7 @@ func (c *Client) withOrg(org string) *Client {
 }
 
 func isValidJson(content []byte) error {
-	var v map[string]interface{}
+	var v map[string]any
 	err := json.Unmarshal(content, &v)
 	if err != nil {
 		return err

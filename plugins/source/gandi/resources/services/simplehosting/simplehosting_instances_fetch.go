@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchSimplehostingInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchSimplehostingInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	list, err := cl.Services.SimpleHostingClient.ListInstances()
 	if err != nil {

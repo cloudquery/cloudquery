@@ -11,7 +11,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchRamResourceShareInvitations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchRamResourceShareInvitations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input ram.GetResourceShareInvitationsInput = getResourceShareInvitationsInput()
 	c := meta.(*client.Client)
 	svc := c.Services().Ram
