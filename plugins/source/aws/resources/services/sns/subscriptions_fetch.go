@@ -12,7 +12,7 @@ import (
 	"github.com/mitchellh/mapstructure"
 )
 
-func fetchSnsSubscriptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchSnsSubscriptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Sns
 	config := sns.ListSubscriptionsInput{}

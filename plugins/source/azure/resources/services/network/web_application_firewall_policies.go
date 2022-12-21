@@ -61,7 +61,7 @@ func WebApplicationFirewallPolicies() *schema.Table {
 	}
 }
 
-func fetchWebApplicationFirewallPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchWebApplicationFirewallPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armnetwork.NewWebApplicationFirewallPoliciesClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

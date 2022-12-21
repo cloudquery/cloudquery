@@ -9,7 +9,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchFrauddetectorRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchFrauddetectorRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	paginator := frauddetector.NewGetRulesPaginator(meta.(*client.Client).Services().Frauddetector,
 		&frauddetector.GetRulesInput{DetectorId: parent.Item.(types.Detector).DetectorId})
 	for paginator.HasMorePages() {

@@ -9,7 +9,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchLightsailDisks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchLightsailDisks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input lightsail.GetDisksInput
 	c := meta.(*client.Client)
 	svc := c.Services().Lightsail
@@ -26,7 +26,7 @@ func fetchLightsailDisks(ctx context.Context, meta schema.ClientMeta, parent *sc
 	}
 	return nil
 }
-func fetchLightsailDiskSnapshots(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchLightsailDiskSnapshots(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input lightsail.GetDiskSnapshotsInput
 	c := meta.(*client.Client)
 	svc := c.Services().Lightsail

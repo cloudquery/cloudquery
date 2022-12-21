@@ -61,7 +61,7 @@ func StreamingJobs() *schema.Table {
 	}
 }
 
-func fetchStreamingJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchStreamingJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armstreamanalytics.NewStreamingJobsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

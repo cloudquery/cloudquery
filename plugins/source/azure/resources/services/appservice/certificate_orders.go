@@ -61,7 +61,7 @@ func CertificateOrders() *schema.Table {
 	}
 }
 
-func fetchCertificateOrders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchCertificateOrders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armappservice.NewCertificateOrdersClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

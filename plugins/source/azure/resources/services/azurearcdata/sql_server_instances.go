@@ -61,7 +61,7 @@ func SqlServerInstances() *schema.Table {
 	}
 }
 
-func fetchSqlServerInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchSqlServerInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armazurearcdata.NewSQLServerInstancesClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

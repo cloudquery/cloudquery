@@ -38,8 +38,8 @@ func TestTfData(t *testing.T) {
 		Path:         "test/dev",
 		Tables:       []string{"*"},
 		Destinations: []string{"mock-destination"},
-		Spec: map[string]interface{}{
-			"backends": []map[string]interface{}{
+		Spec: map[string]any{
+			"backends": []map[string]any{
 				{
 					"name": "mylocal",
 					"type": "local",

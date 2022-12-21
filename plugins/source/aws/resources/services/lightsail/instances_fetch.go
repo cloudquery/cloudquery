@@ -10,7 +10,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchLightsailInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchLightsailInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Lightsail
 	input := lightsail.GetInstancesInput{}
@@ -39,7 +39,7 @@ func resolveLightsailInstanceAccessDetails(ctx context.Context, meta schema.Clie
 	}
 	return resource.Set(c.Name, output.AccessDetails)
 }
-func fetchLightsailInstancePortStates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchLightsailInstancePortStates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(types.Instance)
 	cli := meta.(*client.Client)
 	svc := cli.Services().Lightsail

@@ -14,7 +14,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchRoute53HostedZones(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchRoute53HostedZones(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config route53.ListHostedZonesInput
 	c := meta.(*client.Client)
 	svc := c.Services().Route53
@@ -75,7 +75,7 @@ func fetchRoute53HostedZones(ctx context.Context, meta schema.ClientMeta, parent
 	}
 	return nil
 }
-func fetchRoute53HostedZoneQueryLoggingConfigs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchRoute53HostedZoneQueryLoggingConfigs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(*models.Route53HostedZoneWrapper)
 	svc := meta.(*client.Client).Services().Route53
 	config := route53.ListQueryLoggingConfigsInput{HostedZoneId: r.Id}
@@ -92,7 +92,7 @@ func fetchRoute53HostedZoneQueryLoggingConfigs(ctx context.Context, meta schema.
 	}
 	return nil
 }
-func fetchRoute53HostedZoneResourceRecordSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchRoute53HostedZoneResourceRecordSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(*models.Route53HostedZoneWrapper)
 	svc := meta.(*client.Client).Services().Route53
 	config := route53.ListResourceRecordSetsInput{HostedZoneId: r.Id}
@@ -114,7 +114,7 @@ func fetchRoute53HostedZoneResourceRecordSets(ctx context.Context, meta schema.C
 
 	return nil
 }
-func fetchRoute53HostedZoneTrafficPolicyInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchRoute53HostedZoneTrafficPolicyInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(*models.Route53HostedZoneWrapper)
 	config := route53.ListTrafficPolicyInstancesByHostedZoneInput{HostedZoneId: r.Id}
 	svc := meta.(*client.Client).Services().Route53

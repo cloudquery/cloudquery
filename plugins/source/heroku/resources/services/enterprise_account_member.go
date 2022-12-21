@@ -53,7 +53,7 @@ func EnterpriseAccountMembers() *schema.Table {
 	}
 }
 
-func fetchEnterpriseAccountMembers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchEnterpriseAccountMembers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	nextRange := &heroku.ListRange{
 		Field: "id",

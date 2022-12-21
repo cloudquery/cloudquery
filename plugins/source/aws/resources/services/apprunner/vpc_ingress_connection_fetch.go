@@ -9,7 +9,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchApprunnerVpcIngressConnections(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchApprunnerVpcIngressConnections(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config apprunner.ListVpcIngressConnectionsInput
 	svc := meta.(*client.Client).Services().Apprunner
 	paginator := apprunner.NewListVpcIngressConnectionsPaginator(svc, &config)

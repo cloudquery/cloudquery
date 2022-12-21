@@ -10,6 +10,7 @@ The following tables depend on pagerduty_incidents:
   - [pagerduty_incident_alerts](pagerduty_incident_alerts.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

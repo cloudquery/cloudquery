@@ -71,7 +71,7 @@ func Connectors() *schema.Table {
 	}
 }
 
-func fetchConnectors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchConnectors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armsecurity.NewConnectorsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

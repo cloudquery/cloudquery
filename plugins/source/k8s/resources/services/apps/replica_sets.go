@@ -137,7 +137,7 @@ func ReplicaSets() *schema.Table {
 	}
 }
 
-func fetchReplicaSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchReplicaSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 
 	cl := meta.(*client.Client).Client().AppsV1().ReplicaSets("")
 

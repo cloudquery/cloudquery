@@ -9,7 +9,7 @@ import (
 	"github.com/crowdstrike/gofalcon/falcon/client/alerts"
 )
 
-func fetchQuery(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchQuery(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	desc := "timestamp.desc"
 	retval, err := c.Services.Alerts.GetQueriesAlertsV1(&alerts.GetQueriesAlertsV1Params{

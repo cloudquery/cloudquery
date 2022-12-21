@@ -25,7 +25,7 @@ type Table struct {
 	// Table is the table definition that will be used to generate the cloudquery table
 	Table *codegen.TableDefinition
 	// Struct that will be used to generate the cloudquery table
-	Struct interface{}
+	Struct any
 	// StructName is the name of the Struct because it can't be inferred by reflection
 	StructName string
 	// ImportPath need for each table
@@ -35,23 +35,23 @@ type Table struct {
 	// Name is the name of the azure subservice the struct/api is residing (gcp is split into service.subservice.list)
 	Name string
 	// NewFunction
-	Client interface{}
+	Client any
 	// ClientNameName name of the above function via Reflection
 	ClientName string
 	// ResponseStruct
-	ResponseStruct interface{}
+	ResponseStruct any
 	// ResponseStructName is reflected name from the ResponseStruct
 	ResponseStructName string
 	// Does responseStruct has NextLink field
 	ResponspeStructNextLink bool
 	// NewFunc
-	NewFunc interface{}
+	NewFunc any
 	// NewFuncName is reflected name from the ResponseStruct
 	NewFuncName string
 	// Does the newfunc get subscription_id as a first parameter
 	NewFuncHasSubscriptionId bool
 	// ListFunc
-	ListFunc interface{}
+	ListFunc any
 	// NewFuncName is reflected name from the ListFunc
 	ListFuncName string
 	// Does the ListFunc get subscription_id as a first parameter

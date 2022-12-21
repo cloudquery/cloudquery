@@ -8,7 +8,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchProjectEnvs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchProjectEnvs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	proj := parent.Item.(vercel.Project)
 
 	cl := meta.(*client.Client)

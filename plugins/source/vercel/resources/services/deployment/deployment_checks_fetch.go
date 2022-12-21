@@ -8,7 +8,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchDeploymentChecks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchDeploymentChecks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	d := parent.Item.(vercel.Deployment)
 
 	cl := meta.(*client.Client)

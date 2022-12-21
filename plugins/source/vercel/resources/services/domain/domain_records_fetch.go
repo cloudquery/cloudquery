@@ -8,7 +8,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchDomainRecords(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchDomainRecords(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	dom := parent.Item.(vercel.Domain)
 
 	cl := meta.(*client.Client)

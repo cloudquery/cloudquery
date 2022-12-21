@@ -71,7 +71,7 @@ func Factories() *schema.Table {
 	}
 }
 
-func fetchFactories(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchFactories(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armdatafactory.NewFactoriesClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

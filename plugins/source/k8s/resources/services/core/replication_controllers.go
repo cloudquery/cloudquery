@@ -137,7 +137,7 @@ func ReplicationControllers() *schema.Table {
 	}
 }
 
-func fetchReplicationControllers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchReplicationControllers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 
 	cl := meta.(*client.Client).Client().CoreV1().ReplicationControllers("")
 

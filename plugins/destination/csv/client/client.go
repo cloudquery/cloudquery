@@ -32,7 +32,7 @@ type readMsg struct {
 	table     *schema.Table
 	source    string
 	err       chan error
-	resources chan []interface{}
+	resources chan []any
 }
 
 type closeMsg struct {

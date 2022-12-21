@@ -5,10 +5,11 @@ https://developer.pagerduty.com/api-reference/043092de7e3e1-list-a-user-s-notifi
 The primary key for this table is **id**.
 
 ## Relations
+
 This table depends on [pagerduty_users](pagerduty_users.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

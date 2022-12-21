@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-vercel-v1.0.0...plugins-source-vercel-v1.0.1) (2022-12-20)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.12.6 ([#5790](https://github.com/cloudquery/cloudquery/issues/5790)) ([8e2663c](https://github.com/cloudquery/cloudquery/commit/8e2663c17c3347afd5e53f665462adc3e709c96c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.12.7 ([#5797](https://github.com/cloudquery/cloudquery/issues/5797)) ([15da529](https://github.com/cloudquery/cloudquery/commit/15da5294786fa2656228ca5bbc48ef1fc44e486b))
+
 ## 1.0.0 (2022-12-15)
 
 

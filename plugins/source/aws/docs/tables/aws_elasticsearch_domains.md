@@ -1,5 +1,7 @@
 # Table: aws_elasticsearch_domains
 
+https://docs.aws.amazon.com/opensearch-service/latest/APIReference/API_DomainStatus.html
+
 The primary key for this table is **arn**.
 
 ## Columns
@@ -12,6 +14,7 @@ The primary key for this table is **arn**.
 |_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
+|authorized_principals|JSON|
 |tags|JSON|
 |arn (PK)|String|
 |domain_id|String|

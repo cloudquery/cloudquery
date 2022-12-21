@@ -17,14 +17,6 @@ type DomainClient interface {
 	GetLiveDNS(domainname string) (domain.LiveDNS, error)
 }
 
-//go:generate mockgen -package=mocks -destination=./mocks/mock_email_client.go . EmailClient
-type EmailClient interface {
-	// not implemented
-	// ListMailboxes(domainname string) ([]email.ListMailboxResponse, error)
-	// GetMailbox(domainname, mailbox_id string) (email.MailboxResponse, error)
-	// GetForwards(domainname string) ([]email.GetForwardRequest, error)
-}
-
 //go:generate mockgen -package=mocks -destination=./mocks/mock_livedns_client.go . LiveDNSClient
 type LiveDNSClient interface {
 	ListDomains() ([]livedns.Domain, error)

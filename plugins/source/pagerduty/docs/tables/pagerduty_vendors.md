@@ -4,9 +4,8 @@ https://developer.pagerduty.com/api-reference/d2aa663abec79-list-vendors
 
 The primary key for this table is **id**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

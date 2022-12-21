@@ -91,7 +91,7 @@ func Resources() *schema.Table {
 	}
 }
 
-func fetchResources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchResources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armresources.NewClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

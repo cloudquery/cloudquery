@@ -5,7 +5,7 @@ import (
 	"github.com/DataDog/datadog-api-client-go/v2/api/datadogV2"
 )
 
-var clients = []interface{}{
+var clients = []any{
 	&datadogV1.DashboardListsApi{},
 	&datadogV1.DashboardsApi{},
 	&datadogV1.DowntimesApi{},

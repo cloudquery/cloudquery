@@ -61,7 +61,7 @@ func Workspaces() *schema.Table {
 	}
 }
 
-func fetchWorkspaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchWorkspaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armsynapse.NewWorkspacesClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {

@@ -11,7 +11,7 @@ import (
 	"github.com/mitchellh/mapstructure"
 )
 
-func fetchIamAccounts(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchIamAccounts(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	svc := meta.(*client.Client).Services().Iam
 
 	summary, err := svc.GetAccountSummary(ctx, &iam.GetAccountSummaryInput{})

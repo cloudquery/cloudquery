@@ -8,7 +8,7 @@ import (
 	sql "google.golang.org/api/sqladmin/v1beta4"
 )
 
-func fetchInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	sqlClient, err := sql.NewService(ctx, c.ClientOptions...)
