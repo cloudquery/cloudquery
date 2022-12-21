@@ -24,6 +24,7 @@ spec:
   version: "VERSION_SOURCE_AWS"
   tables: ["aws_ec2_*"]
   destinations: ["postgresql"]
+  
 ---
 kind: destination
 spec:
