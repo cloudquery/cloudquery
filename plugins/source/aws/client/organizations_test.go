@@ -124,6 +124,16 @@ func Test_loadAccounts(t *testing.T) {
 			want: []string{"id-child1-account", "id-child2-account", "id-parent1-account", "id-parent2-account", "id-top-level-account"},
 		},
 		{
+			name: "all_accounts_with_skip_accounts",
+			spec: &Spec{
+				Organization: &AwsOrg{
+					AdminAccount: &Account{},
+					SkipAccounts: []string{"id-child2-account", "id-parent1-account", "id-parent2-account", "id-top-level-account"},
+				},
+			},
+			want: []string{"id-child1-account"},
+		},
+		{
 			name: "org_root",
 			spec: &Spec{
 				Organization: &AwsOrg{
@@ -163,6 +173,17 @@ func Test_loadAccounts(t *testing.T) {
 				},
 			},
 			want: []string{"id-parent1-account"},
+		},
+		{
+			name: "ou_root_skip_parent1",
+			spec: &Spec{
+				Organization: &AwsOrg{
+					OrganizationUnits:       []string{"root"},
+					SkipOrganizationalUnits: []string{"ou-parent1"},
+					AdminAccount:            &Account{},
+				},
+			},
+			want: []string{"id-top-level-account", "id-parent2-account", "id-child2-account"},
 		},
 		{
 			name: "ou_root_skip_parent1",

@@ -48,7 +48,7 @@ func loadAccounts(ctx context.Context, awsConfig *Spec, accountsApi services.Org
 	if len(awsConfig.Organization.OrganizationUnits) > 0 {
 		rawAccounts, err = getOUAccounts(ctx, accountsApi, awsConfig.Organization)
 	} else {
-		rawAccounts, err = getAllAccounts(ctx, accountsApi)
+		rawAccounts, err = getAllAccounts(ctx, accountsApi, awsConfig.Organization)
 	}
 
 	if err != nil {
@@ -135,7 +135,7 @@ func getOUAccounts(ctx context.Context, accountsApi services.OrganizationsClient
 }
 
 // Get All accounts in a specific organization
-func getAllAccounts(ctx context.Context, accountsApi services.OrganizationsClient) ([]orgTypes.Account, error) {
+func getAllAccounts(ctx context.Context, accountsApi services.OrganizationsClient, org *AwsOrg) ([]orgTypes.Account, error) {
 	var rawAccounts []orgTypes.Account
 	accountsPaginator := organizations.NewListAccountsPaginator(accountsApi, &organizations.ListAccountsInput{})
 	for accountsPaginator.HasMorePages() {
@@ -143,7 +143,13 @@ func getAllAccounts(ctx context.Context, accountsApi services.OrganizationsClien
 		if err != nil {
 			return nil, err
 		}
-		rawAccounts = append(rawAccounts, output.Accounts...)
+		for _, account := range output.Accounts {
+			// Skip any accounts that user has asked to skip
+			if funk.ContainsString(org.SkipAccounts, *account.Id) {
+				continue
+			}
+			rawAccounts = append(rawAccounts, account)
+		}
 	}
 	return rawAccounts, nil
 }
