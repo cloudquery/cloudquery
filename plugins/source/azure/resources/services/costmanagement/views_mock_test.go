@@ -32,8 +32,7 @@ func createViews(router *mux.Router) error {
 			return
 		}
 	})
-	createViewQueries(router)
-	return nil
+	return createViewQueries(router)
 }
 
 func TestViews(t *testing.T) {
