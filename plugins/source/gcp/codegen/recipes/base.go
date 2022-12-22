@@ -36,8 +36,6 @@ type Resource struct {
 	ListFunction any
 	// ListFunction name of the above function via Reflection
 	ListFunctionName string
-	// RequestStruct fills the request struct for google api
-	RequestStruct any
 	// RequestStructName
 	RequestStructName string
 	// RequestStructFields is the snippet that fills in the request struct
@@ -50,8 +48,6 @@ type Resource struct {
 	RegisterServer any
 	// RegisterServerName is the name of the above function via Reflection
 	RegisterServerName string
-	// UnimplementedServer is the unimplemented server for the grpc server
-	UnimplementedServer any
 	// UnimplementedServerName is the name of the above function via Reflection
 	UnimplementedServerName string
 	// OutputField is field where the result is located in the output struct

@@ -13,8 +13,6 @@ func init() {
 			PrimaryKeys:         []string{"name"},
 			Template:            "newapi_list",
 			ListFunction:        (&containeranalysis.GrafeasV1Beta1Client{}).ListOccurrences,
-			RequestStruct:       &grafeaspb.ListOccurrencesRequest{},
-			ResponseStruct:      &grafeaspb.ListOccurrencesResponse{},
 			RequestStructFields: `Parent: "projects/" + c.ProjectId,`,
 			Description:         "https://cloud.google.com/container-analysis/docs/reference/rest/v1beta1/projects.occurrences#Occurrence",
 		},
@@ -29,7 +27,6 @@ func init() {
 
 		resource.MockTemplate = "newapi_list_grpc_mock"
 		resource.RegisterServer = grafeaspb.RegisterGrafeasV1Beta1Server
-		resource.UnimplementedServer = &grafeaspb.UnimplementedGrafeasV1Beta1Server{}
 	}
 
 	Resources = append(Resources, resources...)
