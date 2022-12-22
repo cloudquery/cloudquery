@@ -40,6 +40,9 @@
     "plugins/destination/bigquery": {
       "component": "plugins-destination-bigquery"
     },
+    "plugins/destination/mongodb": {
+      "component": "plugins-destination-mongodb"
+    },
     "plugins/destination/test": {
       "component": "plugins-destination-test"
     }

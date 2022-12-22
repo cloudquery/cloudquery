@@ -4,12 +4,10 @@ import (
 	"fmt"
 )
 
-
 type Spec struct {
-	ConnectionString 				string `json:"connection_string"`
-	Database 								string `json:"database"`
+	ConnectionString string `json:"connection_string"`
+	Database         string `json:"database"`
 }
-
 
 func (s *Spec) Validate() error {
 	if s.ConnectionString == "" {
@@ -20,4 +18,3 @@ func (s *Spec) Validate() error {
 	}
 	return nil
 }
-

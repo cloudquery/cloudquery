@@ -10,6 +10,12 @@ go run main.go serve
 
 ## Testing
 
+To run a mongodb instance in a docker please run:
+
+```bash
+run -d -p 27017:27017 mongo
+```
+
 ```bash
 make test
 ```

@@ -8,10 +8,10 @@ import (
 )
 
 const (
-	sentryDSN = "https://8856f7c90f284b0f912f5873a6448ca3@o1396617.ingest.sentry.io/4504220665577472"
+	sentryDSN = "https://f4351c889aae4dde9b87a916d44ce836@o1396617.ingest.sentry.io/4504374724657152"
 )
 
 func main() {
-	p := destination.NewPlugin("bigquery", plugin.Version, client.New, destination.WithManagedWriter())
+	p := destination.NewPlugin("mongodb", plugin.Version, client.New, destination.WithManagedWriter())
 	serve.Destination(p, serve.WithDestinationSentryDSN(sentryDSN))
 }

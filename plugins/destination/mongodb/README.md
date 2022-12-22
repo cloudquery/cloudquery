@@ -1,6 +1,6 @@
-# CloudQuery BigQuery Destination Plugin
+# CloudQuery MongoDB Destination Plugin
 
-This destination plugin lets you sync data from any CloudQuery source to a BigQuery database.
+This destination plugin lets you sync data from any CloudQuery source to a MongoDB database.
 
 ## Links
 

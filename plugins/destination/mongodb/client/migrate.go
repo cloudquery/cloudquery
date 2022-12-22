@@ -6,7 +6,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-// Migrate tables. It is the responsibility of the CLI of the client to lock before running migrations.
-func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
+// MongoDB. No migrations needed :)
+func (*Client) Migrate(context.Context, schema.Tables) error {
 	return nil
 }

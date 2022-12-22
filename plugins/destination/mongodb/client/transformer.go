@@ -34,7 +34,7 @@ func (*Client) TransformJSON(v *schema.JSON) any {
 	if v.Status != schema.Present {
 		return nil
 	}
-	var res interface{}
+	var res any
 	if err := json.Unmarshal(v.Bytes, &res); err != nil {
 		panic(err)
 	}

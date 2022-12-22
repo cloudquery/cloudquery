@@ -26,25 +26,22 @@ func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination)
 		logger: logger.With().Str("module", "bq-dest").Logger(),
 		spec:   destSpec,
 	}
-	
+
 	var spec Spec
 	if err := destSpec.UnmarshalSpec(&spec); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal BigQuery spec: %w", err)
+		return nil, fmt.Errorf("failed to unmarshal MongoDB spec: %w", err)
 	}
-	// spec.SetDefaults()
-	// if err := spec.Validate(); err != nil {
-		// return nil, err
-	// }
+	if err := spec.Validate(); err != nil {
+		return nil, err
+	}
 	c.client, err = mongo.NewClient(options.Client().ApplyURI(spec.ConnectionString))
 	if err != nil {
 		return nil, err
 	}
-	c.client.Connect(context.Background())
-	if err := c.client.Ping(ctx, nil); err != nil {
+	if err := c.client.Connect(context.Background()); err != nil {
 		return nil, err
 	}
 	c.pluginSpec = spec
-
 
 	return c, nil
 }
