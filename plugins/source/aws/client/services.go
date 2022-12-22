@@ -6,6 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
 	"github.com/aws/aws-sdk-go-v2/service/account"
 	"github.com/aws/aws-sdk-go-v2/service/acm"
+	"github.com/aws/aws-sdk-go-v2/service/amp"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
 	"github.com/aws/aws-sdk-go-v2/service/applicationautoscaling"
@@ -107,6 +108,7 @@ func initServices(region string, c aws.Config) Services {
 		Accessanalyzer:            accessanalyzer.NewFromConfig(awsCfg),
 		Account:                   account.NewFromConfig(awsCfg),
 		Acm:                       acm.NewFromConfig(awsCfg),
+		Amp:                       amp.NewFromConfig(awsCfg),
 		Apigateway:                apigateway.NewFromConfig(awsCfg),
 		Apigatewayv2:              apigatewayv2.NewFromConfig(awsCfg),
 		Applicationautoscaling:    applicationautoscaling.NewFromConfig(awsCfg),
@@ -205,6 +207,7 @@ type Services struct {
 	Accessanalyzer            services.AccessanalyzerClient
 	Account                   services.AccountClient
 	Acm                       services.AcmClient
+	Amp                       services.AmpClient
 	Apigateway                services.ApigatewayClient
 	Apigatewayv2              services.Apigatewayv2Client
 	Applicationautoscaling    services.ApplicationautoscalingClient

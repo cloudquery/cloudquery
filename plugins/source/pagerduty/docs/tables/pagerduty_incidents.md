@@ -8,8 +8,10 @@ The primary key for this table is **id**.
 
 The following tables depend on pagerduty_incidents:
   - [pagerduty_incident_alerts](pagerduty_incident_alerts.md)
+  - [pagerduty_incident_notes](pagerduty_incident_notes.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

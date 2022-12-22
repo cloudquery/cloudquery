@@ -10,6 +10,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.18.2
 	github.com/aws/aws-sdk-go-v2/service/account v1.7.13
 	github.com/aws/aws-sdk-go-v2/service/acm v1.16.5
+	github.com/aws/aws-sdk-go-v2/service/amp v1.15.9
 	github.com/aws/aws-sdk-go-v2/service/apigateway v1.15.27
 	github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.12.25
 	github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.15.25
@@ -53,7 +54,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/glacier v1.13.21
 	github.com/aws/aws-sdk-go-v2/service/guardduty v1.16.6
 	github.com/aws/aws-sdk-go-v2/service/iam v1.18.25
-	github.com/aws/aws-sdk-go-v2/service/identitystore v1.15.9
+	github.com/aws/aws-sdk-go-v2/service/identitystore v1.15.10
 	github.com/aws/aws-sdk-go-v2/service/inspector v1.12.21
 	github.com/aws/aws-sdk-go-v2/service/inspector2 v1.9.2
 	github.com/aws/aws-sdk-go-v2/service/iot v1.32.2
@@ -76,7 +77,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/route53domains v1.13.0
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.29.6
 	github.com/aws/aws-sdk-go-v2/service/s3control v1.28.2
-	github.com/aws/aws-sdk-go-v2/service/sagemaker v1.60.0
+	github.com/aws/aws-sdk-go-v2/service/sagemaker v1.61.0
 	github.com/aws/aws-sdk-go-v2/service/scheduler v1.0.3
 	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.16.10
 	github.com/aws/aws-sdk-go-v2/service/servicecatalog v1.15.2
@@ -138,7 +139,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.13.21 // indirect
 	github.com/aws/aws-sdk-go-v2/service/shield v1.17.13
 	github.com/aws/aws-sdk-go-v2/service/sso v1.11.28 // indirect
-	github.com/aws/aws-sdk-go-v2/service/transfer v1.25.2
+	github.com/aws/aws-sdk-go-v2/service/transfer v1.26.0
 	github.com/aws/aws-sdk-go-v2/service/wafregional v1.12.22
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect

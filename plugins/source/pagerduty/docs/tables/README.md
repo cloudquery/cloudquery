@@ -1,8 +1,11 @@
 # Source Plugin: pagerduty
+
 ## Tables
+
 - [pagerduty_addons](pagerduty_addons.md)
 - [pagerduty_incidents](pagerduty_incidents.md)
   - [pagerduty_incident_alerts](pagerduty_incident_alerts.md)
+  - [pagerduty_incident_notes](pagerduty_incident_notes.md)
 - [pagerduty_business_services](pagerduty_business_services.md)
 - [pagerduty_escalation_policies](pagerduty_escalation_policies.md)
 - [pagerduty_extension_schemas](pagerduty_extension_schemas.md)

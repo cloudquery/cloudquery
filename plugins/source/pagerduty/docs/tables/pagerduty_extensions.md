@@ -4,9 +4,8 @@ https://developer.pagerduty.com/api-reference/26b46f0092a55-list-extensions
 
 The primary key for this table is **id**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
