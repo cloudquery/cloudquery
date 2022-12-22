@@ -16,7 +16,7 @@ The primary key for this table is **id**.
 |location|String|
 |properties|JSON|
 |tags|JSON|
-|e_tag|String|
+|etag|String|
 |id (PK)|String|
 |name|String|
 |type|String|
