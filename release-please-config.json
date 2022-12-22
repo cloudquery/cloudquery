@@ -15,6 +15,7 @@
     "plugins/source/gandi": { "component": "plugins-source-gandi" },
     "plugins/source/gcp": { "component": "plugins-source-gcp" },
     "plugins/source/github": { "component": "plugins-source-github" },
+    "plugins/source/gitlab": { "component": "plugins-source-gitlab" },
     "plugins/source/heroku": { "component": "plugins-source-heroku" },
     "plugins/source/k8s": { "component": "plugins-source-k8s" },
     "plugins/source/okta": { "component": "plugins-source-okta" },
