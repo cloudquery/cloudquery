@@ -54,12 +54,20 @@ func loadAccounts(ctx context.Context, awsConfig *Spec, accountsApi services.Org
 	if err != nil {
 		return []Account{}, err
 	}
+	seen := map[string]struct{}{}
 	accounts := make([]Account, 0)
 	for _, account := range rawAccounts {
 		// Only load Active accounts
-		if account.Status != orgTypes.AccountStatusActive {
+		if account.Status != orgTypes.AccountStatusActive || account.Id == nil {
 			continue
 		}
+
+		// Skip duplicates
+		if _, found := seen[*account.Id]; found {
+			continue
+		}
+		seen[*account.Id] = struct{}{}
+
 		roleArn := arn.ARN{
 			Partition: "aws",
 			Service:   "iam",
@@ -89,8 +97,15 @@ func getOUAccounts(ctx context.Context, accountsApi services.OrganizationsClient
 	q := awsOrg.OrganizationUnits
 	var ou string
 	var rawAccounts []orgTypes.Account
+	seenOUs := map[string]struct{}{}
 	for len(q) > 0 {
 		ou, q = q[0], q[1:]
+
+		// Skip duplicates to avoid making duplicate API calls
+		if _, found := seenOUs[ou]; found {
+			continue
+		}
+		seenOUs[ou] = struct{}{}
 
 		// Skip any OUs that user has asked to skip
 		if funk.ContainsString(awsOrg.SkipOrganizationalUnits, ou) {
@@ -108,7 +123,7 @@ func getOUAccounts(ctx context.Context, accountsApi services.OrganizationsClient
 			}
 			for _, account := range output.Accounts {
 				// Skip any accounts that user has asked to skip
-				if funk.ContainsString(awsOrg.SkipAccounts, *account.Id) {
+				if funk.ContainsString(awsOrg.SkipMemberAccounts, *account.Id) {
 					continue
 				}
 				rawAccounts = append(rawAccounts, account)
@@ -145,7 +160,7 @@ func getAllAccounts(ctx context.Context, accountsApi services.OrganizationsClien
 		}
 		for _, account := range output.Accounts {
 			// Skip any accounts that user has asked to skip
-			if funk.ContainsString(org.SkipAccounts, *account.Id) {
+			if funk.ContainsString(org.SkipMemberAccounts, *account.Id) {
 				continue
 			}
 			rawAccounts = append(rawAccounts, account)

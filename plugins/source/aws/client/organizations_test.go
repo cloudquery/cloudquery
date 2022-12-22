@@ -125,11 +125,11 @@ func Test_loadAccounts(t *testing.T) {
 			want: []string{"id-child1-account", "id-child2-account", "id-parent1-account", "id-parent2-account", "id-top-level-account"},
 		},
 		{
-			name: "all_accounts_with_skip_accounts",
+			name: "all_accounts_with_skip_member_accounts",
 			spec: &Spec{
 				Organization: &AwsOrg{
-					AdminAccount: &Account{},
-					SkipAccounts: []string{"id-child2-account", "id-parent1-account", "id-parent2-account", "id-top-level-account"},
+					AdminAccount:       &Account{},
+					SkipMemberAccounts: []string{"id-child2-account", "id-parent1-account", "id-parent2-account", "id-top-level-account"},
 				},
 			},
 			want: []string{"id-child1-account"},
@@ -168,9 +168,9 @@ func Test_loadAccounts(t *testing.T) {
 			name: "ou_parent1_skip_child1",
 			spec: &Spec{
 				Organization: &AwsOrg{
-					OrganizationUnits: []string{"ou-parent1"},
-					SkipAccounts:      []string{"id-child1-account"},
-					AdminAccount:      &Account{},
+					OrganizationUnits:  []string{"ou-parent1"},
+					SkipMemberAccounts: []string{"id-child1-account"},
+					AdminAccount:       &Account{},
 				},
 			},
 			want: []string{"id-parent1-account"},
@@ -196,6 +196,17 @@ func Test_loadAccounts(t *testing.T) {
 				},
 			},
 			want: []string{"id-top-level-account", "id-parent2-account", "id-child2-account"},
+		},
+		{
+			name: "ou_root_and_parent1",
+			spec: &Spec{
+				Organization: &AwsOrg{
+					OrganizationUnits:       []string{"root", "ou-parent1"},
+					SkipOrganizationalUnits: []string{},
+					AdminAccount:            &Account{},
+				},
+			},
+			want: []string{"id-top-level-account", "id-parent1-account", "id-child1-account", "id-parent2-account", "id-child2-account"},
 		},
 	}
 	api := setupTestAccounts(t)

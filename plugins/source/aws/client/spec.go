@@ -1,5 +1,10 @@
 package client
 
+import (
+	"fmt"
+	"strings"
+)
+
 type Account struct {
 	ID              string   `json:"id"`
 	AccountName     string   `json:"account_name,omitempty"`
@@ -14,7 +19,7 @@ type Account struct {
 
 type AwsOrg struct {
 	OrganizationUnits           []string `json:"organization_units,omitempty"`
-	SkipAccounts                []string `json:"skip_accounts,omitempty"`
+	SkipMemberAccounts          []string `json:"skip_member_accounts,omitempty"`
 	SkipOrganizationalUnits     []string `json:"skip_organization_units,omitempty"`
 	AdminAccount                *Account `json:"admin_account"`
 	MemberCredentials           *Account `json:"member_trusted_principal"`
@@ -31,4 +36,26 @@ type Spec struct {
 	AWSDebug     bool      `json:"aws_debug,omitempty"`
 	MaxRetries   *int      `json:"max_retries,omitempty"`
 	MaxBackoff   *int      `json:"max_backoff,omitempty"`
+}
+
+func (s *Spec) Validate() error {
+	if s.Organization != nil {
+		if s.Organization.ChildAccountRoleName == "" {
+			return fmt.Errorf("member_role_name is required when using org configuration")
+		}
+		if err := validateOUs(s.Organization.OrganizationUnits); err != nil {
+			return fmt.Errorf("invalid organization_units: %w", err)
+		}
+		if err := validateOUs(s.Organization.SkipOrganizationalUnits); err != nil {
+			return fmt.Errorf("invalid skip_organization_units: %w", err)
+		}
+	}
+}
+
+func validateOUs(ous []string) error {
+	for _, ou := range ous {
+		if !strings.HasPrefix(ou, "ou-") {
+			return fmt.Errorf("invalid OU: %s (should match ou-*)", ou)
+		}
+	}
 }

@@ -180,6 +180,6 @@ This is used to specify one or more accounts to extract information from. Note t
 
   List of Organizational Units to skip. This is useful in conjunction with `organization_units` if there are child OUs that should be ignored.
 
-- `skip_accounts` ([]string)
+- `skip_member_accounts` ([]string)
 
-  List of accounts to skip. This is useful in conjunction with `organization_units` if there are accounts under the selected OUs that should be ignored.
+  List of OU member accounts to skip. This is useful in conjunction with `organization_units` if there are accounts under the selected OUs that should be ignored.
