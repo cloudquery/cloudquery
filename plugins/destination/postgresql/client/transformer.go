@@ -33,7 +33,7 @@ func (*Client) TransformInt8(v *schema.Int8) any {
 	}
 }
 
-func (*Client) TransformInt8Array(v *schema.Int8Array) interface{} {
+func (*Client) TransformInt8Array(v *schema.Int8Array) any {
 	r := pgtype.FlatArray[pgtype.Int8]{}
 	for _, e := range v.Elements {
 		r = append(r, pgtype.Int8{Int64: e.Int, Valid: e.Status == schema.Present})
@@ -52,7 +52,7 @@ func (*Client) TransformText(v *schema.Text) any {
 	}
 }
 
-func (*Client) TransformTextArray(v *schema.TextArray) interface{} {
+func (*Client) TransformTextArray(v *schema.TextArray) any {
 	r := pgtype.FlatArray[pgtype.Text]{}
 	for _, e := range v.Elements {
 		r = append(r, pgtype.Text{String: stripNulls(e.Str), Valid: e.Status == schema.Present})
@@ -74,7 +74,7 @@ func (*Client) TransformUUID(v *schema.UUID) any {
 	}
 }
 
-func (*Client) TransformUUIDArray(v *schema.UUIDArray) interface{} {
+func (*Client) TransformUUIDArray(v *schema.UUIDArray) any {
 	r := pgtype.FlatArray[pgtype.UUID]{}
 	for _, e := range v.Elements {
 		r = append(r, pgtype.UUID{Bytes: e.Bytes, Valid: e.Status == schema.Present})
@@ -86,7 +86,7 @@ func (*Client) TransformCIDR(v *schema.CIDR) any {
 	return v.IPNet
 }
 
-func (*Client) TransformCIDRArray(v *schema.CIDRArray) interface{} {
+func (*Client) TransformCIDRArray(v *schema.CIDRArray) any {
 	r := pgtype.FlatArray[*net.IPNet]{}
 	for _, e := range v.Elements {
 		r = append(r, e.IPNet)
@@ -98,7 +98,7 @@ func (*Client) TransformInet(v *schema.Inet) any {
 	return v.IPNet
 }
 
-func (*Client) TransformInetArray(v *schema.InetArray) interface{} {
+func (*Client) TransformInetArray(v *schema.InetArray) any {
 	r := pgtype.FlatArray[*net.IPNet]{}
 	for _, e := range v.Elements {
 		r = append(r, e.IPNet)

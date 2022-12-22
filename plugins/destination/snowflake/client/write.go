@@ -29,7 +29,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, resou
 	}()
 
 	for _, r := range resources {
-		jsonObj := make(map[string]interface{}, len(table.Columns))
+		jsonObj := make(map[string]any, len(table.Columns))
 		for i := range r {
 			jsonObj[table.Columns[i].Name] = r[i]
 		}
