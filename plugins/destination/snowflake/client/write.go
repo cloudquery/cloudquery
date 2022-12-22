@@ -17,7 +17,6 @@ const (
 	copyIntoTable             = `copy into %s from @cq_plugin_stage/%s file_format = (format_name = cq_plugin_json_format) match_by_column_name = case_insensitive`
 )
 
-
 func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, resources [][]any) error {
 	f, err := os.CreateTemp(os.TempDir(), table.Name+".json.*")
 	if err != nil {
