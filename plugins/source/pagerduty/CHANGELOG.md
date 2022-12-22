@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-pagerduty-v1.0.0...plugins-source-pagerduty-v1.1.0) (2022-12-22)
+
+
+### Features
+
+* Add PagerDuty IncidentLogs resource ([#5901](https://github.com/cloudquery/cloudquery/issues/5901)) ([b97d01f](https://github.com/cloudquery/cloudquery/commit/b97d01f9d3b72a6342807012d5b0794c950cab25))
+* Pagerduty incident notes ([#5896](https://github.com/cloudquery/cloudquery/issues/5896)) ([23b84dc](https://github.com/cloudquery/cloudquery/commit/23b84dcf762c4da7c1b84b3c23ed8b22193b430c))
+
+
+### Bug Fixes
+
+* Update pagerduty to sdk 1.12.7 ([#5890](https://github.com/cloudquery/cloudquery/issues/5890)) ([efc2252](https://github.com/cloudquery/cloudquery/commit/efc2252ff97b272fa951c7dca8361ca2db15e583))
+
 ## 1.0.0 (2022-12-20)
 
 
