@@ -5,10 +5,11 @@ https://developer.pagerduty.com/api-reference/d69ad7f1ec900-list-service-s-event
 The primary key for this table is **id**.
 
 ## Relations
+
 This table depends on [pagerduty_services](pagerduty_services.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
