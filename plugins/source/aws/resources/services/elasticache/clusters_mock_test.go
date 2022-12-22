@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/aws/aws-sdk-go-v2/service/elasticache"
+	"github.com/aws/aws-sdk-go-v2/service/elasticache/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/faker"
@@ -19,7 +20,13 @@ func buildElasticacheClusters(t *testing.T, ctrl *gomock.Controller) client.Serv
 		t.Fatal(err)
 	}
 
+	var ta types.Tag
+	if err = faker.FakeObject(&ta); err != nil {
+		t.Fatal(err)
+	}
+
 	mockElasticache.EXPECT().DescribeCacheClusters(gomock.Any(), gomock.Any(), gomock.Any()).Return(&output, nil)
+	mockElasticache.EXPECT().ListTagsForResource(gomock.Any(), &elasticache.ListTagsForResourceInput{ResourceName: output.CacheClusters[0].ARN}, gomock.Any()).Return(&elasticache.ListTagsForResourceOutput{TagList: []types.Tag{ta}}, nil)
 
 	return client.Services{
 		Elasticache: mockElasticache,

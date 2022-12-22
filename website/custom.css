@@ -13,7 +13,11 @@ code {
 .dark .invert-on-dark {
   filter: invert(1) brightness(1.8);
 }
-
+main ul > li > ul {
+  /* hacky: ensure nested lists in page content don't have extra margin-top. This should probably be
+     fixed in Nextra in the long run */
+  margin-top: 0 !important;
+}
 .hero-image-bg {
   background: linear-gradient(90deg, #0c8d65 0%, #0c3091 100%);
 }

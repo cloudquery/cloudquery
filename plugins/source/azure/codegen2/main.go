@@ -118,6 +118,12 @@ func initTable(parent *recipes.Table, r *recipes.Table) error {
 		codegen.WithSkipFields(r.SkipFields),
 		codegen.WithExtraColumns(r.ExtraColumns),
 		codegen.WithPKColumns("id"),
+		codegen.WithNameTransformer(func(f reflect.StructField) (string, error) {
+			if f.Name == "ETag" {
+				return "etag", nil
+			}
+			return codegen.DefaultNameTransformer(f)
+		}),
 	}
 	tableName := fmt.Sprintf("azure_%s_%s", r.PackageName, r.Name)
 	if len(tableName) > 63 {

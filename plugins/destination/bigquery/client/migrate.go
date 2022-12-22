@@ -20,35 +20,31 @@ const (
 
 // Migrate tables. It is the responsibility of the CLI of the client to lock before running migrations.
 func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
-	client, err := c.bqClient(ctx)
-	if err != nil {
-		return fmt.Errorf("failed to create client: %w", err)
-	}
 	eg, gctx := errgroup.WithContext(ctx)
 	eg.SetLimit(concurrentMigrations)
 	for _, table := range tables.FlattenTables() {
 		table := table
 		eg.Go(func() error {
 			c.logger.Debug().Str("table", table.Name).Msg("Migrating table")
-			tableExists, err := c.doesTableExist(gctx, client, table.Name)
+			tableExists, err := c.doesTableExist(gctx, c.client, table.Name)
 			if err != nil {
 				return fmt.Errorf("failed to check if table %s exists: %w", table.Name, err)
 			}
 			if tableExists {
 				c.logger.Debug().Str("table", table.Name).Msg("Table exists, auto-migrating")
-				if err := c.autoMigrateTable(gctx, client, table); err != nil {
+				if err := c.autoMigrateTable(gctx, c.client, table); err != nil {
 					return err
 				}
-				err = c.waitForSchemaToMatch(gctx, client, table)
+				err = c.waitForSchemaToMatch(gctx, c.client, table)
 				if err != nil {
 					return err
 				}
 			} else {
 				c.logger.Debug().Str("table", table.Name).Msg("Table doesn't exist, creating")
-				if err := c.createTable(gctx, client, table); err != nil {
+				if err := c.createTable(gctx, c.client, table); err != nil {
 					return err
 				}
-				err = c.waitForTableToExist(gctx, client, table)
+				err = c.waitForTableToExist(gctx, c.client, table)
 				if err != nil {
 					return err
 				}
@@ -68,7 +64,7 @@ func (c *Client) doesTableExist(ctx context.Context, client *bigquery.Client, ta
 				return false, nil
 			}
 		}
-		c.logger.Error().Err(err).Msg("Got unexpected error while checking table metadata")
+		c.logger.Error().Str("dataset", c.pluginSpec.DatasetID).Str("table", table).Err(err).Msg("Got unexpected error while checking table metadata")
 		return false, err
 	}
 

@@ -9,7 +9,7 @@ import (
   "github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetch{{.SubService | ToCamel}}(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetch{{.SubService | ToCamel}}(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
   cqClient := meta.(*client.Client)
 
   response, err := cqClient.PagerdutyClient.{{if ne .ListFunctionNameOverride ""}}{{.ListFunctionNameOverride}}{{else}}List{{.StructName}}sPaginated{{end}}(ctx)

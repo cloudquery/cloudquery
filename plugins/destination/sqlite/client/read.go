@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	readSQL = `SELECT * FROM "%s" WHERE _cq_source_name = $1`
+	readSQL = `SELECT * FROM "%s" WHERE _cq_source_name = $1 order by _cq_sync_time asc`
 )
 
 func (*Client) createResultsArray(table *schema.Table) []any {
@@ -77,8 +77,8 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 	if err != nil {
 		return err
 	}
-	values := c.createResultsArray(table)
 	for rows.Next() {
+		values := c.createResultsArray(table)
 		if err := rows.Scan(values...); err != nil {
 			return fmt.Errorf("failed to read from table %s: %w", table.Name, err)
 		}
