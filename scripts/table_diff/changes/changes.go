@@ -110,7 +110,7 @@ func getColumnChanges(file *gitdiff.File, table string) (changes []change) {
 			}
 			changes = append(changes, change{
 				Text:     fmt.Sprintf("Table %s: column added with name %s and type %s", backtickStrings(table, name, addedColumn.dataType)...),
-				Breaking: false,
+				Breaking: addedColumn.pk,
 			})
 		}
 	}
