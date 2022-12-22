@@ -154,8 +154,8 @@ github.com/aws/aws-sdk-go-v2/service/guardduty v1.16.6 h1:e3A56GKB/4VKCJ6bvHM7II
 github.com/aws/aws-sdk-go-v2/service/guardduty v1.16.6/go.mod h1:vivHPqk4e0/WY4rF3h2LRFeMV8QYIefHMXXEs8oPsTU=
 github.com/aws/aws-sdk-go-v2/service/iam v1.18.25 h1:Np+wTW2nuSBGyEu0WFsiu0LO05rxLFMh3hYVAjOzyVw=
 github.com/aws/aws-sdk-go-v2/service/iam v1.18.25/go.mod h1:OyAuvpFeSVNppcSsp1hFOVQcaTRc1LE24YIR7pMbbAA=
-github.com/aws/aws-sdk-go-v2/service/identitystore v1.15.9 h1:d93DFhdoRG59asXPsHRK4eJMrTFZkCSjF5VoVHqry0w=
-github.com/aws/aws-sdk-go-v2/service/identitystore v1.15.9/go.mod h1:mN2AeMZcyQWmPJhkrMU2fFUh2ZrUlLZER+V+YKplyMQ=
+github.com/aws/aws-sdk-go-v2/service/identitystore v1.15.10 h1:Dz0+Uux9AsYVrMOLf4MxfrAglld4NkvGuhPBx10W7tA=
+github.com/aws/aws-sdk-go-v2/service/identitystore v1.15.10/go.mod h1:mN2AeMZcyQWmPJhkrMU2fFUh2ZrUlLZER+V+YKplyMQ=
 github.com/aws/aws-sdk-go-v2/service/inspector v1.12.21 h1:tiYJi0XpdrVWWbBpGGKlBXmDTKT8FiL6I54hj6z71cM=
 github.com/aws/aws-sdk-go-v2/service/inspector v1.12.21/go.mod h1:yhb64vvxW/Op5JkExPqVAoRxYr/SF5x7mgddE5WP2K4=
 github.com/aws/aws-sdk-go-v2/service/inspector2 v1.9.2 h1:dRZvAVPbhVxhSmSXD7YYAwaGALZAEYxDYr48Q05dI6M=
@@ -210,8 +210,8 @@ github.com/aws/aws-sdk-go-v2/service/s3 v1.29.6 h1:W8pLcSn6Uy0eXgDBUUl8M8Kxv7JCo
 github.com/aws/aws-sdk-go-v2/service/s3 v1.29.6/go.mod h1:L2l2/q76teehcW7YEsgsDjqdsDTERJeX3nOMIFlgGUE=
 github.com/aws/aws-sdk-go-v2/service/s3control v1.28.2 h1:HILTJewyveEWszPKAN3C3gALrs2x13tCIN3BZZrUgkE=
 github.com/aws/aws-sdk-go-v2/service/s3control v1.28.2/go.mod h1:4DfdtJVYJj82pZdBoOwyA87ocrDYfQgAgbW6e17Xr2U=
-github.com/aws/aws-sdk-go-v2/service/sagemaker v1.60.0 h1:9rusNmt0H3HnN82EcdxNoL4zyOBjiz+7PJ9ZwguiPZY=
-github.com/aws/aws-sdk-go-v2/service/sagemaker v1.60.0/go.mod h1:v+qgYDefdlOgci1kvpeo9jwo0J66r/i+z1WJWher+cE=
+github.com/aws/aws-sdk-go-v2/service/sagemaker v1.61.0 h1:yQjFY8oQcFVXkCNNoQdolB/Rbq1KMtB64NxlfteaM/s=
+github.com/aws/aws-sdk-go-v2/service/sagemaker v1.61.0/go.mod h1:v+qgYDefdlOgci1kvpeo9jwo0J66r/i+z1WJWher+cE=
 github.com/aws/aws-sdk-go-v2/service/scheduler v1.0.3 h1:y06COYMS5OWfEv31VWaOCgTXsfWEZydwqqGvTkvl9nc=
 github.com/aws/aws-sdk-go-v2/service/scheduler v1.0.3/go.mod h1:ZnD5i/e5nCIh1w3ivCfifQ5r4PLh3aOCElnOrZz+WnQ=
 github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.16.10 h1:6obimjQAiRlEUZT7a2Q1ikH7ck4cPO3phGz4wqI5f2w=
@@ -234,8 +234,8 @@ github.com/aws/aws-sdk-go-v2/service/sns v1.18.8 h1:Iwbdihm8vAnNJhnggU1D98JD79ZI
 github.com/aws/aws-sdk-go-v2/service/sns v1.18.8/go.mod h1:iTh9DgwDnFqF5LfFHNXWAxLe9zV0/XcWaMCWXIRDqXA=
 github.com/aws/aws-sdk-go-v2/service/sqs v1.19.17 h1:bTr3F70BsgeJZW5QU0O4pVapJbgXuuiaaX9vQQfJAp8=
 github.com/aws/aws-sdk-go-v2/service/sqs v1.19.17/go.mod h1:jQhN5f4p3PALMNlUtfb/0wGIFlV7vGtJlPDVfxfNfPY=
-github.com/aws/aws-sdk-go-v2/service/ssm v1.33.3 h1:dU0tej1HVbqbpe8Mbe+8EeOBnjVNcTaPj/7HvY6zefA=
-github.com/aws/aws-sdk-go-v2/service/ssm v1.33.3/go.mod h1:Hf7wSogKP1XCJ9GgW8erZDL6IZ1NLwLN7bYdV/Gn/LI=
+github.com/aws/aws-sdk-go-v2/service/ssm v1.33.4 h1:s8o8aN6cOaYQ6oJ4D7DMV98iyNhkiY1PDFSk5uSbqF8=
+github.com/aws/aws-sdk-go-v2/service/ssm v1.33.4/go.mod h1:Hf7wSogKP1XCJ9GgW8erZDL6IZ1NLwLN7bYdV/Gn/LI=
 github.com/aws/aws-sdk-go-v2/service/sso v1.11.28 h1:gItLq3zBYyRDPmqAClgzTH8PBjDQGeyptYGHIwtYYNA=
 github.com/aws/aws-sdk-go-v2/service/sso v1.11.28/go.mod h1:wo/B7uUm/7zw/dWhBJ4FXuw1sySU5lyIhVg1Bu2yL9A=
 github.com/aws/aws-sdk-go-v2/service/ssoadmin v1.15.16 h1:l6aWoI8UnGII7yPEHdvAF84O0upQxPum6TFycIYtKkE=
@@ -246,8 +246,8 @@ github.com/aws/aws-sdk-go-v2/service/sts v1.17.7 h1:9Mtq1KM6nD8/+HStvWcvYnixJ5N8
 github.com/aws/aws-sdk-go-v2/service/sts v1.17.7/go.mod h1:+lGbb3+1ugwKrNTWcf2RT05Xmp543B06zDFTwiTLp7I=
 github.com/aws/aws-sdk-go-v2/service/timestreamwrite v1.14.8 h1:1FPvcg1m3K7bip7WLscELLF4RKZR0Ys1iUbomhtDYJY=
 github.com/aws/aws-sdk-go-v2/service/timestreamwrite v1.14.8/go.mod h1:CrQFb3Pn8vnj3GDpjKlv9ANunOJx75Km6JkP6pxc2b8=
-github.com/aws/aws-sdk-go-v2/service/transfer v1.25.2 h1:ewt9LTSib+zXjdAvye/PNQszNn6HhcbQDwH68SCbfdU=
-github.com/aws/aws-sdk-go-v2/service/transfer v1.25.2/go.mod h1:/Sg7CaZ5ua+MkOUGhg0yeVIgnpKc+/ehJcoik7Yikl8=
+github.com/aws/aws-sdk-go-v2/service/transfer v1.26.0 h1:hSb2cnr72Fx9hvEan2v1fuZ4VjFOPPXsMZgASZVIXaw=
+github.com/aws/aws-sdk-go-v2/service/transfer v1.26.0/go.mod h1:/Sg7CaZ5ua+MkOUGhg0yeVIgnpKc+/ehJcoik7Yikl8=
 github.com/aws/aws-sdk-go-v2/service/waf v1.11.21 h1:4g4cMwemkVh0kjgMbg4DLqYBprwzmVh7qI7bmljCcz0=
 github.com/aws/aws-sdk-go-v2/service/waf v1.11.21/go.mod h1:7/L+ejelv5nOhsD/4pbaVl6jAtCgtYwgud8Pb/SeheE=
 github.com/aws/aws-sdk-go-v2/service/wafregional v1.12.22 h1:KBjYyYqdS9F4g7NxMZ6yhFkHO/eaZUs03r/pHv9nlQE=

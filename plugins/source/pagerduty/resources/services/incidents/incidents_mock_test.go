@@ -52,6 +52,22 @@ func buildMockHttpClient() *client.MockHttpClient {
 			response.Incidents[0].ID),
 		incidentnoteResponse)
 
+	incidentlogentryResponse := pagerduty.ListIncidentLogEntriesResponse{}
+	if err := faker.FakeObject(&incidentlogentryResponse); err != nil {
+		panic(err)
+	}
+	incidentlogentryResponse.More = false
+	if err := client.FakeStringTimestamps(&incidentlogentryResponse.LogEntries[0]); err != nil {
+		panic(err)
+	}
+	if err := client.FakeStringTimestamps(&incidentlogentryResponse.LogEntries[0].CommonLogEntryField); err != nil {
+		panic(err)
+	}
+	mockHttpClient.AddMockResponse(
+		fmt.Sprintf("/incidents/%s/log_entries",
+			response.Incidents[0].ID),
+		incidentlogentryResponse)
+
 	return &mockHttpClient
 }
 

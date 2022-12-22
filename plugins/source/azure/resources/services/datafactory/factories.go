@@ -45,7 +45,7 @@ func Factories() *schema.Table {
 				Resolver: schema.PathResolver("Tags"),
 			},
 			{
-				Name:     "e_tag",
+				Name:     "etag",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ETag"),
 			},
