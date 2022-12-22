@@ -15,6 +15,7 @@ import (
 )
 
 type Client struct {
+	destination.UnimplementedManagedWriter
 	destination.DefaultReverseTransformer
 	db      *sql.DB
 	logger  zerolog.Logger
