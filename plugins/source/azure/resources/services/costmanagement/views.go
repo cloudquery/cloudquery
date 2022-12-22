@@ -20,7 +20,7 @@ func Views() *schema.Table {
 				Resolver: client.ResolveAzureSubscription,
 			},
 			{
-				Name:     "e_tag",
+				Name:     "etag",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ETag"),
 			},
