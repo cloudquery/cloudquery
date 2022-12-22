@@ -1,8 +1,11 @@
 package client
 
 import (
+	"errors"
 	"fmt"
-	"strings"
+	"regexp"
+
+	"github.com/thoas/go-funk"
 )
 
 type Account struct {
@@ -39,9 +42,15 @@ type Spec struct {
 }
 
 func (s *Spec) Validate() error {
+	if s.Organization != nil && len(s.Accounts) > 0 {
+		return errors.New("specifying accounts via both the Accounts and Org properties is not supported. To achieve both, use multiple source configurations")
+	}
 	if s.Organization != nil {
 		if s.Organization.ChildAccountRoleName == "" {
 			return fmt.Errorf("member_role_name is required when using org configuration")
+		}
+		if err := validateAccounts(s.Organization.SkipMemberAccounts); err != nil {
+			return fmt.Errorf("invalid skip_member_accounts: %w", err)
 		}
 		if err := validateOUs(s.Organization.OrganizationUnits); err != nil {
 			return fmt.Errorf("invalid organization_units: %w", err)
@@ -50,12 +59,30 @@ func (s *Spec) Validate() error {
 			return fmt.Errorf("invalid skip_organization_units: %w", err)
 		}
 	}
+	if s.Accounts != nil {
+		if err := validateAccounts(funk.Get(s.Accounts, "ID").([]string)); err != nil {
+			return fmt.Errorf("invalid accounts: %w", err)
+		}
+	}
+	return nil
+}
+
+func validateAccounts(accounts []string) error {
+	r := regexp.MustCompile(`^(\d{12})$`)
+	for _, account := range accounts {
+		if !r.MatchString(account) {
+			return fmt.Errorf("invalid account id: %s (should be 12 digits)", account)
+		}
+	}
+	return nil
 }
 
 func validateOUs(ous []string) error {
+	r := regexp.MustCompile(`^((ou\-[0-9a-z]{4,32}\-[a-z0-9]{8,32})|(r\-[0-9a-z]{4,32}))$`)
 	for _, ou := range ous {
-		if !strings.HasPrefix(ou, "ou-") {
-			return fmt.Errorf("invalid OU: %s (should match ou-*)", ou)
+		if !r.MatchString(ou) {
+			return fmt.Errorf(`invalid OU: %s (should match "ou-*-*" or "r-*" with lowercase letters or digits)`, ou)
 		}
 	}
+	return nil
 }

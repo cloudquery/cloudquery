@@ -307,11 +307,14 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source) (s
 		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
 	}
 
+	err = awsConfig.Validate()
+	if err != nil {
+		return nil, fmt.Errorf("spec validation failed: %w", err)
+	}
+
 	client := NewAwsClient(logger)
 	var adminAccountSts AssumeRoleAPIClient
-	if awsConfig.Organization != nil && len(awsConfig.Accounts) > 0 {
-		return nil, errors.New("specifying accounts via both the Accounts and Org properties is not supported. To achieve both, use multiple source configurations")
-	}
+
 	if awsConfig.Organization != nil {
 		var err error
 		awsConfig.Accounts, adminAccountSts, err = loadOrgAccounts(ctx, logger, &awsConfig)
