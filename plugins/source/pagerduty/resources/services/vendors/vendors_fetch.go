@@ -10,11 +10,11 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchVendors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchVendors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cqClient := meta.(*client.Client)
 
 	more := true
-	var offset uint = 0
+	var offset uint
 	for more {
 		response, err := cqClient.PagerdutyClient.ListVendorsWithContext(ctx, pagerduty.ListVendorOptions{
 			Limit:  client.MaxPaginationLimit,
