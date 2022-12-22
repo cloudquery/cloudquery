@@ -1,19 +1,27 @@
 package recipes
 
 import (
-	run "cloud.google.com/go/run/apiv2"
-	pb "cloud.google.com/go/run/apiv2/runpb"
+	pbv2 "cloud.google.com/go/run/apiv2/runpb"
+	runv1 "google.golang.org/api/run/v1"
 )
 
 func init() {
 	resources := []*Resource{
 		{
-			SubService:     "services",
-			Struct:         &pb.Service{},
-			NewFunction:    run.NewServicesClient,
-			RegisterServer: pb.RegisterServicesServer,
-			ListFunction:   (&pb.UnimplementedServicesServer{}).ListServices,
-			Description:    "https://cloud.google.com/run/docs/reference/rest/v2/projects.locations.services#Service",
+			SubService:  "locations",
+			Struct:      &runv1.Location{},
+			SkipFetch:   true,
+			SkipMock:    true,
+			Description: "https://cloud.google.com/api-gateway/docs/reference/rest/v1/projects.locations#Location",
+			Relations:   []string{"Services()"},
+		},
+		{
+			SubService:  "services",
+			Struct:      &pbv2.Service{},
+			Description: "https://cloud.google.com/run/docs/reference/rest/v2/projects.locations.services#Service",
+			ChildTable:  true,
+			SkipFetch:   true,
+			SkipMock:    true,
 		},
 	}
 
@@ -21,9 +29,6 @@ func init() {
 		resource.Service = "run"
 		resource.Template = "newapi_list"
 		resource.MockTemplate = "newapi_list_grpc_mock"
-		resource.MockImports = []string{"cloud.google.com/go/run/apiv2"}
-		resource.ProtobufImport = "cloud.google.com/go/run/apiv2/runpb"
-		resource.RequestStructFields = `Parent: "projects/" + c.ProjectId + "locations/-",`
 		resource.ServiceDNS = "run.googleapis.com"
 	}
 
