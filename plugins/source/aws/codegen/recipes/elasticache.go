@@ -22,6 +22,11 @@ func ElastiCacheResources() []*Resource {
 						Resolver: `schema.PathResolver("ARN")`,
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
+					{
+						Name:     "tags",
+						Type:     schema.TypeJSON,
+						Resolver: `resolveClusterTags`,
+					},
 				}...),
 		},
 		{

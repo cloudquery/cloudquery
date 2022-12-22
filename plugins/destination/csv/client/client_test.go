@@ -48,7 +48,7 @@ func TestPlugin(t *testing.T) {
 		Spec{
 			Directory: t.TempDir(),
 		},
-		destination.TestSuiteTests{
+		destination.PluginTestSuiteTests{
 			SkipOverwrite:   true,
 			SkipDeleteStale: true,
 		},
