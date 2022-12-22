@@ -8,7 +8,7 @@ import (
 )
 
 func TestPlugin(t *testing.T) {
-	p := destination.NewPlugin("bigquery", "development", New, destination.WithManagerWriter())
+	p := destination.NewPlugin("bigquery", "development", New, destination.WithManagedWriter())
 	destination.PluginTestSuiteRunner(t, p,
 		Spec{
 			ProjectID:        os.Getenv("BIGQUERY_PROJECT_ID"),
