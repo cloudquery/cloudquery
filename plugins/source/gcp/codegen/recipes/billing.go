@@ -5,6 +5,8 @@ import (
 	pb "cloud.google.com/go/billing/apiv1/billingpb"
 )
 
+var ProjectMultiplex = "client.ProjectMultiplex"
+
 func init() {
 	resources := []*Resource{
 		{
@@ -20,10 +22,12 @@ func init() {
 			SubService:     "services",
 			Struct:         &pb.Service{},
 			NewFunction:    billing.NewCloudCatalogClient,
+			ResponseStruct: &pb.ListServicesResponse{},
 			ListFunction:   (&billing.CloudCatalogClient{}).ListServices,
 			RegisterServer: pb.RegisterCloudCatalogServer,
 			PrimaryKeys:    []string{"name"},
 			Description:    "https://cloud.google.com/billing/docs/reference/rest/v1/services/list#Service",
+			Multiplex:      &ProjectMultiplex,
 		},
 	}
 
@@ -33,6 +37,7 @@ func init() {
 		resource.MockTemplate = "newapi_list_grpc_mock"
 		resource.MockImports = []string{"cloud.google.com/go/billing/apiv1"}
 		resource.ProtobufImport = "cloud.google.com/go/billing/apiv1/billingpb"
+		resource.ServiceDNS = "cloudbilling.googleapis.com"
 	}
 
 	Resources = append(Resources, resources...)

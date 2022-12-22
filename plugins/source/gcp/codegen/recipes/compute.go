@@ -200,6 +200,8 @@ func init() {
 		if resource.PrimaryKeys == nil {
 			resource.PrimaryKeys = []string{"self_link"}
 		}
+		resource.ServiceDNS = "compute.googleapis.com"
+
 	}
 
 	Resources = append(Resources, resources...)
