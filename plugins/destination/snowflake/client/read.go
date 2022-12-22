@@ -42,55 +42,55 @@ func (*Client) createResultsArray(values []any, table *schema.Table) []any {
 	for i, col := range table.Columns {
 		switch col.Type {
 		case schema.TypeBool:
-			r := (*values[i].(*interface{})).(bool)
+			r := (*values[i].(*any)).(bool)
 			results = append(results, r)
 		case schema.TypeInt:
-			r := (*values[i].(*interface{})).(string)
+			r := (*values[i].(*any)).(string)
 			results = append(results, r)
 		case schema.TypeFloat:
-			r := (*values[i].(*interface{})).(float64)
+			r := (*values[i].(*any)).(float64)
 			results = append(results, r)
 		case schema.TypeUUID:
-			r := (*values[i].(*interface{})).(string)
+			r := (*values[i].(*any)).(string)
 			results = append(results, r)
 		case schema.TypeString:
-			r := (*values[i].(*interface{})).(string)
+			r := (*values[i].(*any)).(string)
 			results = append(results, r)
 		case schema.TypeByteArray:
-			r := (*values[i].(*interface{})).([]uint8)
+			r := (*values[i].(*any)).([]uint8)
 			results = append(results, r)
 		case schema.TypeStringArray:
-			r := snowflakeStrToArray((*values[i].(*interface{})).(string))
+			r := snowflakeStrToArray((*values[i].(*any)).(string))
 			results = append(results, r)
 		case schema.TypeTimestamp:
-			r := (*values[i].(*interface{})).(time.Time)
+			r := (*values[i].(*any)).(time.Time)
 			results = append(results, r)
 		case schema.TypeJSON:
-			r := (*values[i].(*interface{})).(string)
+			r := (*values[i].(*any)).(string)
 			results = append(results, r)
 		case schema.TypeUUIDArray:
-			r := snowflakeStrToArray((*values[i].(*interface{})).(string))
+			r := snowflakeStrToArray((*values[i].(*any)).(string))
 			results = append(results, r)
 		case schema.TypeCIDR:
-			r := (*values[i].(*interface{})).(string)
+			r := (*values[i].(*any)).(string)
 			results = append(results, r)
 		case schema.TypeCIDRArray:
-			r := snowflakeStrToArray((*values[i].(*interface{})).(string))
+			r := snowflakeStrToArray((*values[i].(*any)).(string))
 			results = append(results, r)
 		case schema.TypeMacAddr:
-			r := (*values[i].(*interface{})).(string)
+			r := (*values[i].(*any)).(string)
 			results = append(results, r)
 		case schema.TypeMacAddrArray:
-			r := snowflakeStrToArray((*values[i].(*interface{})).(string))
+			r := snowflakeStrToArray((*values[i].(*any)).(string))
 			results = append(results, r)
 		case schema.TypeInet:
-			r := (*values[i].(*interface{})).(string)
+			r := (*values[i].(*any)).(string)
 			results = append(results, r)
 		case schema.TypeInetArray:
-			r := snowflakeStrToArray((*values[i].(*interface{})).(string))
+			r := snowflakeStrToArray((*values[i].(*any)).(string))
 			results = append(results, r)
 		case schema.TypeIntArray:
-			r := snowflakeStrToIntArray((*values[i].(*interface{})).(string))
+			r := snowflakeStrToIntArray((*values[i].(*any)).(string))
 			results = append(results, r)
 		}
 	}
