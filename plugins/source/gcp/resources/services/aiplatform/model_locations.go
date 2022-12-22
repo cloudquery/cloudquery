@@ -19,7 +19,7 @@ import (
 func ModelLocations() *schema.Table {
 	return &schema.Table{
 		Name:        "gcp_aiplatform_model_locations",
-		Description: `https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.models#Model`,
+		Description: `https://cloud.google.com/api-gateway/docs/reference/rest/v1/projects.locations#Location`,
 		Resolver:    fetchModelLocations,
 		Multiplex:   client.ProjectMultiplexEnabledServices("aiplatform.googleapis.com"),
 		Columns: []schema.Column{

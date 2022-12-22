@@ -19,7 +19,7 @@ import (
 func JobLocations() *schema.Table {
 	return &schema.Table{
 		Name:        "gcp_aiplatform_job_locations",
-		Description: `https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.batchPredictionJobs#BatchPredictionJob`,
+		Description: `https://cloud.google.com/api-gateway/docs/reference/rest/v1/projects.locations#Location`,
 		Resolver:    fetchJobLocations,
 		Multiplex:   client.ProjectMultiplexEnabledServices("aiplatform.googleapis.com"),
 		Columns: []schema.Column{

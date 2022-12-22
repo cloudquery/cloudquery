@@ -19,7 +19,7 @@ import (
 func EndpointLocations() *schema.Table {
 	return &schema.Table{
 		Name:        "gcp_aiplatform_endpoint_locations",
-		Description: `https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.endpoints#Endpoint`,
+		Description: `https://cloud.google.com/api-gateway/docs/reference/rest/v1/projects.locations#Location`,
 		Resolver:    fetchEndpointLocations,
 		Multiplex:   client.ProjectMultiplexEnabledServices("aiplatform.googleapis.com"),
 		Columns: []schema.Column{

@@ -19,7 +19,7 @@ import (
 func FeaturestoreLocations() *schema.Table {
 	return &schema.Table{
 		Name:        "gcp_aiplatform_featurestore_locations",
-		Description: `https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.featurestores#Featurestore`,
+		Description: `https://cloud.google.com/api-gateway/docs/reference/rest/v1/projects.locations#Location`,
 		Resolver:    fetchFeaturestoreLocations,
 		Multiplex:   client.ProjectMultiplexEnabledServices("aiplatform.googleapis.com"),
 		Columns: []schema.Column{

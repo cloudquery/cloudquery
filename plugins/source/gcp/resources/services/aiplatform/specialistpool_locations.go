@@ -19,7 +19,7 @@ import (
 func SpecialistpoolLocations() *schema.Table {
 	return &schema.Table{
 		Name:        "gcp_aiplatform_specialistpool_locations",
-		Description: `https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.specialistPools#SpecialistPool`,
+		Description: `https://cloud.google.com/api-gateway/docs/reference/rest/v1/projects.locations#Location`,
 		Resolver:    fetchSpecialistpoolLocations,
 		Multiplex:   client.ProjectMultiplexEnabledServices("aiplatform.googleapis.com"),
 		Columns: []schema.Column{

@@ -210,7 +210,7 @@ func init() {
 			locationResource.PrimaryKeys = []string{ProjectIdColumn.Name, "name"}
 			locationResource.NewFunction = resource.NewFunction
 			locationResource.RequestStructFields = `Name: "projects/" + c.ProjectId,`
-			locationResource.Description = resource.Description
+			locationResource.Description = "https://cloud.google.com/api-gateway/docs/reference/rest/v1/projects.locations#Location"
 			locationResource.RegisterServer = locationpb.RegisterLocationsServer
 			locationResource.ProtobufImport = "google.golang.org/genproto/googleapis/cloud/location"
 			locationResource.ClientOptions = []string{`option.WithEndpoint("us-central1-aiplatform.googleapis.com:443")`}

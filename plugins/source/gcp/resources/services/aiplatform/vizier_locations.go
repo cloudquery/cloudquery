@@ -19,7 +19,7 @@ import (
 func VizierLocations() *schema.Table {
 	return &schema.Table{
 		Name:        "gcp_aiplatform_vizier_locations",
-		Description: `https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.studies#Study`,
+		Description: `https://cloud.google.com/api-gateway/docs/reference/rest/v1/projects.locations#Location`,
 		Resolver:    fetchVizierLocations,
 		Multiplex:   client.ProjectMultiplexEnabledServices("aiplatform.googleapis.com"),
 		Columns: []schema.Column{
