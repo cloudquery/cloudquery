@@ -16,6 +16,7 @@ func init() {
 			PrimaryKeys:    []string{"name"},
 			Description:    "https://cloud.google.com/service-usage/docs/reference/rest/v1/services#Service",
 			SkipFetch:      true,
+			SkipMock:       true,
 		},
 	}
 
