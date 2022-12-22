@@ -154,8 +154,8 @@ github.com/aws/aws-sdk-go-v2/service/guardduty v1.16.6 h1:e3A56GKB/4VKCJ6bvHM7II
 github.com/aws/aws-sdk-go-v2/service/guardduty v1.16.6/go.mod h1:vivHPqk4e0/WY4rF3h2LRFeMV8QYIefHMXXEs8oPsTU=
 github.com/aws/aws-sdk-go-v2/service/iam v1.18.25 h1:Np+wTW2nuSBGyEu0WFsiu0LO05rxLFMh3hYVAjOzyVw=
 github.com/aws/aws-sdk-go-v2/service/iam v1.18.25/go.mod h1:OyAuvpFeSVNppcSsp1hFOVQcaTRc1LE24YIR7pMbbAA=
-github.com/aws/aws-sdk-go-v2/service/identitystore v1.15.9 h1:d93DFhdoRG59asXPsHRK4eJMrTFZkCSjF5VoVHqry0w=
-github.com/aws/aws-sdk-go-v2/service/identitystore v1.15.9/go.mod h1:mN2AeMZcyQWmPJhkrMU2fFUh2ZrUlLZER+V+YKplyMQ=
+github.com/aws/aws-sdk-go-v2/service/identitystore v1.15.10 h1:Dz0+Uux9AsYVrMOLf4MxfrAglld4NkvGuhPBx10W7tA=
+github.com/aws/aws-sdk-go-v2/service/identitystore v1.15.10/go.mod h1:mN2AeMZcyQWmPJhkrMU2fFUh2ZrUlLZER+V+YKplyMQ=
 github.com/aws/aws-sdk-go-v2/service/inspector v1.12.21 h1:tiYJi0XpdrVWWbBpGGKlBXmDTKT8FiL6I54hj6z71cM=
 github.com/aws/aws-sdk-go-v2/service/inspector v1.12.21/go.mod h1:yhb64vvxW/Op5JkExPqVAoRxYr/SF5x7mgddE5WP2K4=
 github.com/aws/aws-sdk-go-v2/service/inspector2 v1.9.2 h1:dRZvAVPbhVxhSmSXD7YYAwaGALZAEYxDYr48Q05dI6M=
