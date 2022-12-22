@@ -8,16 +8,13 @@ import (
 func init() {
 	resources := []*Resource{
 		{
-			SubService:          "instances",
-			Struct:              &pb.Instance{},
-			NewFunction:         redis.NewCloudRedisClient,
-			RequestStruct:       &pb.ListInstancesRequest{},
-			ResponseStruct:      &pb.ListInstancesResponse{},
-			RegisterServer:      pb.RegisterCloudRedisServer,
-			UnimplementedServer: &pb.UnimplementedCloudRedisServer{},
-			ListFunction:        (&pb.UnimplementedCloudRedisServer{}).ListInstances,
-			PrimaryKeys:         []string{"name"},
-			Description:         "https://cloud.google.com/memorystore/docs/redis/reference/rest/v1/projects.locations.instances#Instance",
+			SubService:     "instances",
+			Struct:         &pb.Instance{},
+			NewFunction:    redis.NewCloudRedisClient,
+			RegisterServer: pb.RegisterCloudRedisServer,
+			ListFunction:   (&pb.UnimplementedCloudRedisServer{}).ListInstances,
+			PrimaryKeys:    []string{"name"},
+			Description:    "https://cloud.google.com/memorystore/docs/redis/reference/rest/v1/projects.locations.instances#Instance",
 		},
 	}
 

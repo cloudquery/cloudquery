@@ -85,31 +85,41 @@ func generateResource(r recipes.Resource, mock bool) {
 	if r.RegisterServer != nil {
 		path := strings.Split(runtime.FuncForPC(reflect.ValueOf(r.RegisterServer).Pointer()).Name(), ".")
 		r.RegisterServerName = path[len(path)-1]
+		r.UnimplementedServerName = strings.Replace(r.RegisterServerName, "Register", "Unimplemented", 1)
 	}
-	if r.ResponseStruct != nil {
-		r.ResponseStructName = reflect.TypeOf(r.ResponseStruct).Elem().Name()
-	}
-	if r.RequestStruct != nil {
-		r.RequestStructName = reflect.TypeOf(r.RequestStruct).Elem().Name()
-	}
-	if r.UnimplementedServer != nil {
-		r.UnimplementedServerName = reflect.TypeOf(r.UnimplementedServer).Elem().Name()
-	}
+
 	if r.ClientName == "" && r.NewFunctionName != "" {
 		n := strings.Split(fmt.Sprintf("%v", reflect.TypeOf(r.NewFunction).Out(0)), ".")[1]
 		r.ClientName = n
 	}
 
-	if r.ListFunction != nil {
+	if r.StructName == "" {
+		r.StructName = reflect.TypeOf(r.Struct).Elem().Name()
+	}
+
+	if r.ListFunction != nil && !r.SkipFetch {
 		path := strings.Split(runtime.FuncForPC(reflect.ValueOf(r.ListFunction).Pointer()).Name(), ".")
 		r.ListFunctionName = path[len(path)-1]
 		// https://stackoverflow.com/questions/32925344/why-is-there-a-fm-suffix-when-getting-a-functions-name-in-go
 		r.ListFunctionName = strings.Split(r.ListFunctionName, "-")[0]
+		r.RequestStructName = reflect.TypeOf(r.ListFunction).In(1).Elem().Name()
+
+		switch {
+		case r.RegisterServer != nil:
+			server := reflect.TypeOf(r.RegisterServer).In(1)
+			method, _ := server.MethodByName(r.ListFunctionName)
+			r.ResponseStructName = method.Type.Out(0).Elem().Name()
+		case r.ListFunctionName == "Get":
+			r.ResponseStructName = r.StructName
+		default:
+			r.ResponseStructName = r.StructName + r.ListFunctionName
+		}
 	}
 
-	if r.StructName == "" {
-		r.StructName = reflect.TypeOf(r.Struct).Elem().Name()
+	if r.ResponseStruct != nil {
+		r.ResponseStructName = reflect.TypeOf(r.ResponseStruct).Elem().Name()
 	}
+
 	if r.MockListStruct == "" {
 		r.MockListStruct = strcase.ToCamel(r.StructName)
 	}

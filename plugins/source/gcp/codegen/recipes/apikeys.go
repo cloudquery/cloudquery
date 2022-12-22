@@ -12,8 +12,6 @@ func init() {
 			Struct:              &pb.Key{},
 			PrimaryKeys:         []string{ProjectIdColumn.Name, "uid"},
 			ListFunction:        (&apikeys.Client{}).ListKeys,
-			RequestStruct:       &pb.ListKeysRequest{},
-			ResponseStruct:      &pb.ListKeysResponse{},
 			RequestStructFields: `Parent: "projects/" + c.ProjectId + "/locations/global",`,
 			Description:         "https://cloud.google.com/api-keys/docs/reference/rest/v2/projects.locations.keys#Key",
 		},
@@ -28,7 +26,6 @@ func init() {
 		resource.MockImports = []string{"cloud.google.com/go/apikeys/apiv2"}
 		resource.NewFunction = apikeys.NewClient
 		resource.RegisterServer = pb.RegisterApiKeysServer
-		resource.UnimplementedServer = &pb.UnimplementedApiKeysServer{}
 		resource.ServiceDNS = "apikeys.googleapis.com"
 	}
 

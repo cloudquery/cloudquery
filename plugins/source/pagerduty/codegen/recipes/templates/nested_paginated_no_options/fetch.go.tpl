@@ -10,9 +10,9 @@ import (
   "github.com/PagerDuty/go-pagerduty"
 )
 
-func fetch{{.SubService | ToCamel}}(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetch{{.SubService | ToCamel}}(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
   cqClient := meta.(*client.Client)
-  concreteParent := parent.Item.(*pagerduty.{{.Parent.StructName}})
+  concreteParent := parent.Item.({{if .ParentIsPointer }}*{{end}}pagerduty.{{.Parent.StructName}})
 
   response, err := cqClient.PagerdutyClient.{{if ne .ListFunctionNameOverride ""}}{{.ListFunctionNameOverride}}{{else}}List{{.StructName}}sPaginated{{end}}(ctx, concreteParent.ID)
   if err != nil {

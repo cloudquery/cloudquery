@@ -8,17 +8,14 @@ import (
 func init() {
 	resources := []*Resource{
 		{
-			SubService:          "services",
-			Struct:              &pb.Service{},
-			NewFunction:         serviceusage.NewClient,
-			RequestStruct:       &pb.ListServicesRequest{},
-			ResponseStruct:      &pb.ListServicesResponse{},
-			RegisterServer:      pb.RegisterServiceUsageServer,
-			ListFunction:        (&pb.UnimplementedServiceUsageServer{}).ListServices,
-			UnimplementedServer: &pb.UnimplementedServiceUsageServer{},
-			PrimaryKeys:         []string{"name"},
-			Description:         "https://cloud.google.com/service-usage/docs/reference/rest/v1/services#Service",
-			SkipFetch:           true,
+			SubService:     "services",
+			Struct:         &pb.Service{},
+			NewFunction:    serviceusage.NewClient,
+			RegisterServer: pb.RegisterServiceUsageServer,
+			ListFunction:   (&pb.UnimplementedServiceUsageServer{}).ListServices,
+			PrimaryKeys:    []string{"name"},
+			Description:    "https://cloud.google.com/service-usage/docs/reference/rest/v1/services#Service",
+			SkipFetch:      true,
 		},
 	}
 

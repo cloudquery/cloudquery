@@ -54,7 +54,7 @@ jobs:
           cache: true
           cache-dependency-path: plugins/source/aws/go.sum
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v3
+        uses: cloudquery/golangci-lint-action@master
         with:
           version: v1.50.1
           working-directory: plugins/source/aws
@@ -87,7 +87,7 @@ jobs:
         if: startsWith(github.head_ref, 'release-please--branches--main--components')
         run: cloudquery sync test/sanity.yml --log-console
   validate-release:
-    timeout-minutes: 45
+    timeout-minutes: 60
     needs: [resolve-runner]
     runs-on: ${{ needs.resolve-runner.outputs.runner }}
     env:
@@ -119,7 +119,7 @@ jobs:
           install-only: true
       - name: Run GoReleaser Dry-Run
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        run: goreleaser release --snapshot --rm-dist --skip-validate --skip-publish --skip-sign -f ./plugins/source/aws/.goreleaser.yaml
+        run: goreleaser release --timeout 50m --snapshot --rm-dist --skip-validate --skip-publish --skip-sign -f ./plugins/source/aws/.goreleaser.yaml
         env:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
   test-policies:

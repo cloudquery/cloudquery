@@ -33,6 +33,11 @@ func Clusters() *schema.Table {
 				},
 			},
 			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: resolveClusterTags,
+			},
+			{
 				Name:     "at_rest_encryption_enabled",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("AtRestEncryptionEnabled"),

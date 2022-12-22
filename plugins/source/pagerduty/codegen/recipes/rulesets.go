@@ -23,6 +23,7 @@ func RulesetResources() []*Resource {
 
 			ResponseFieldOverride: "Rules",
 			RestPathOverride:      "/rules",
+			ParentIsPointer:       true,
 		},
 	}
 }

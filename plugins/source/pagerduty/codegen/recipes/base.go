@@ -22,7 +22,7 @@ import (
 
 type Resource struct {
 	SubService            string
-	Struct                interface{}
+	Struct                any
 	SkipFields            []string
 	Description           string
 	ExtraColumns          []codegen.ColumnDefinition
@@ -45,6 +45,7 @@ type Resource struct {
 	ResponseStructOverride        string
 	ResponseFieldOverride         string
 	RestPathOverride              string
+	ParentIsPointer               bool
 
 	// used for generating resolver and mock tests, but set automatically
 	Parent   *Resource
@@ -78,9 +79,6 @@ func (r *Resource) Generate() error {
 		codegen.WithPKColumns(r.PKColumns...),
 		codegen.WithUnwrapAllEmbeddedStructs(), // Unwrap the `APIObject` embedded-struct, that contains the `ID` PK.
 		codegen.WithTypeTransformer(pagerDutyTypeTransformer),
-	}
-	if r.UnwrapEmbeddedStructs {
-		opts = append(opts, codegen.WithUnwrapAllEmbeddedStructs())
 	}
 
 	name := fmt.Sprintf("pagerduty_%s", r.SubService)
@@ -239,6 +237,8 @@ func (r *Resource) generateMockTest(dir string) error {
 
 // SetParentChildRelationships calculates and sets the parent and children fields on resources.
 func SetParentChildRelationships(resources []*Resource) error {
+	manualRelations := []string{"incident_log_entries"}
+
 	m := map[string]*Resource{}
 	for _, r := range resources {
 		m[r.SubService] = r
@@ -247,6 +247,9 @@ func SetParentChildRelationships(resources []*Resource) error {
 	for _, r := range resources {
 		for _, ch := range r.Relations {
 			name := csr.ToSnake(strings.TrimSuffix(ch, "()"))
+			if slices.Contains(manualRelations, name) {
+				continue
+			}
 			v, ok := m[name]
 			if !ok {
 				return errors.New("child not found for " + r.SubService + " : " + name)

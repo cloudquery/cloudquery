@@ -4,9 +4,8 @@ https://developer.pagerduty.com/api-reference/846ecf84402bb-list-schedules
 
 The primary key for this table is **id**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
