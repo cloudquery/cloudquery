@@ -22,7 +22,7 @@ type fakeServicesServer struct {
 	pb.UnimplementedServiceUsageServer
 }
 
-func (f *fakeServicesServer) ListServices(context.Context, *pb.ListServicesRequest) (*pb.ListServicesResponse, error) {
+func (*fakeServicesServer) ListServices(context.Context, *pb.ListServicesRequest) (*pb.ListServicesResponse, error) {
 	resp := pb.ListServicesResponse{}
 	if err := faker.FakeObject(&resp); err != nil {
 		return nil, fmt.Errorf("failed to fake data: %w", err)
