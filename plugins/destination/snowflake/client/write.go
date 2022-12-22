@@ -56,13 +56,3 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, resou
 	}
 	return err
 }
-
-func (c *Client) PreWriteTableBatch(ctx context.Context, tables schema.Tables) error {
-	if _, err := c.db.ExecContext(ctx, createOrReplaceFileFormat); err != nil {
-		return fmt.Errorf("failed to create file format %s: %w", createOrReplaceFileFormat, err)
-	}
-	if _, err := c.db.ExecContext(ctx, createOrReplaceStage); err != nil {
-		return fmt.Errorf("failed to create stage %s: %w", createOrReplaceStage, err)
-	}
-	return nil
-}
