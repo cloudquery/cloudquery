@@ -16,7 +16,7 @@ func view_queries() *schema.Table {
 				Resolver: schema.PathResolver("Properties"),
 			},
 			{
-				Name:     "e_tag",
+				Name:     "etag",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ETag"),
 			},
