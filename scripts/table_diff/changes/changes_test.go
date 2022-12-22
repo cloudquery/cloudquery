@@ -179,6 +179,28 @@ func Test_getChanges(t *testing.T) {
 				},
 			},
 		},
+		{
+			name:         "Should mark newly added PK as breaking",
+			diffDataFile: "testdata/pr_5802_diff.txt",
+			wantChanges: []change{
+				{
+					Text:     "Table `aws_ses_configuration_sets`: column added with name `arn (PK)` and type `String`",
+					Breaking: true,
+				},
+				{
+					Text:     "Table `aws_ses_configuration_sets`: primary key constraint removed from column `account_id`",
+					Breaking: false,
+				},
+				{
+					Text:     "Table `aws_ses_configuration_sets`: primary key constraint removed from column `name`",
+					Breaking: false,
+				},
+				{
+					Text:     "Table `aws_ses_configuration_sets`: primary key constraint removed from column `region`",
+					Breaking: false,
+				},
+			},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
