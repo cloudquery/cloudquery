@@ -34,9 +34,9 @@ spec:
 Make sure you use environment variable expansion in production instead of committing the credentials to the configuration file directly.
 </Callout>
 
-### PostgreSQL Spec
+### MongoDB Spec
 
-This is the (nested) spec used by the PostgreSQL destination Plugin.
+This is the (nested) spec used by the MongoDB destination Plugin.
 
 - `connection_string` (string, required)
 
