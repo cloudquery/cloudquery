@@ -82,11 +82,6 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 		if err := rows.Scan(values...); err != nil {
 			return fmt.Errorf("failed to read from table %s: %w", table.Name, err)
 		}
-		for i, col := range table.Columns {
-			if col.Type == schema.TypeStringArray {
-				fmt.Println(*values[i].(*string))
-			}
-		}
 		res <- values
 	}
 	rows.Close()
