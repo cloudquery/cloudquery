@@ -200,7 +200,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 		c.ProjectId = projects[0]
 	}
 	if gcpSpec.EnabledServicesOnly {
-		if err := c.configureEnabledServices(ctx); err != nil {
+		if err := c.configureEnabledServices(ctx, s.Concurrency); err != nil {
 			c.logger.Err(err).Msg("failed to list enabled services")
 			return nil, err
 		}
@@ -386,11 +386,10 @@ func setUnion(a []string, b []string) []string {
 	return union
 }
 
-func (c *Client) configureEnabledServices(ctx context.Context) error {
+func (c *Client) configureEnabledServices(ctx context.Context, concurrency uint64) error {
 	var esLock sync.Mutex
 	g, ctx := errgroup.WithContext(ctx)
-	maxGoroutines := 10
-	goroutinesSem := semaphore.NewWeighted(int64(maxGoroutines))
+	goroutinesSem := semaphore.NewWeighted(int64(concurrency))
 	for _, p := range c.projects {
 		project := p
 		if err := goroutinesSem.Acquire(ctx, 1); err != nil {
