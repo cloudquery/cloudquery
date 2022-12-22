@@ -16,7 +16,7 @@ Supported database versions:
 
 ### Example
 
-This example configures a mongodb destination, located at `localhost:27017`. The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
+This example configures a MongoDB destination, located at `localhost:27017`. The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
 
 ```yaml
 kind: destination
