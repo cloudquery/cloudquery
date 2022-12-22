@@ -12,6 +12,11 @@ func Crowdscore() *schema.Table {
 		Resolver: fetchCrowdscore,
 		Columns: []schema.Column{
 			{
+				Name:     "timestamp",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Timestamp"),
+			},
+			{
 				Name:     "id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ID"),
@@ -23,11 +28,6 @@ func Crowdscore() *schema.Table {
 				Name:     "score",
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("Score"),
-			},
-			{
-				Name:     "timestamp",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Timestamp"),
 			},
 		},
 	}
