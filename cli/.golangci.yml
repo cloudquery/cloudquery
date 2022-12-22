@@ -60,6 +60,7 @@ linters-settings:
         disabled: true
 
   gofmt:
+    simplify: false
     rewrite-rules:
     - pattern:     'interface{}'
       replacement: 'any'
