@@ -8,10 +8,9 @@ description: >-
 author: benjamin
 ---
 
-import { BlogHeader } from "../../components/BlogHeader"
+import { HowToGuideHeader } from "../../components/HowToGuideHeader"
 
-<BlogHeader/>
-
+<HowToGuideHeader/>
 
 In this how-to guide we will walk through how to create a role in an external account that we want to AssumeRole into. In our example we will provide the new role in the external account with broad ReadOnly permissions (but you are free to change to whatever you want).
 
