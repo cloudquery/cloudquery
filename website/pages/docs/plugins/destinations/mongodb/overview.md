@@ -47,6 +47,5 @@ This is the (nested) spec used by the MongoDB destination Plugin.
   Required database to sync the data to
 
 
-Note: Make sure you use environment variable expansion in production instead of committing the credentials to the configuration file directly.
 
 
