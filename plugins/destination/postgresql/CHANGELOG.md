@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v1.9.0...plugins-destination-postgresql-v1.10.0) (2022-12-23)
+
+
+### Features
+
+* **destinations:** Migrate to managed batching SDK ([#5805](https://github.com/cloudquery/cloudquery/issues/5805)) ([2f130c1](https://github.com/cloudquery/cloudquery/commit/2f130c12c6e83ccd8a2d036ab5c47b55e2fb5280))
+
 ## [1.9.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v1.8.0...plugins-destination-postgresql-v1.9.0) (2022-12-20)
 
 
