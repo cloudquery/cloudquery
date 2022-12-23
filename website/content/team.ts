@@ -17,6 +17,12 @@ const CLOUDQUERY_TEAM = {
     twitterUsername: "",
     image_url: "/images/people/hermanschaaf.jpg",
   },
+  shimon: {
+    name: "Shimon Pats",
+    url: "https://www.linkedin.com/in/shimon-pats-592046177/",
+    twitterUsername: "",
+    image_url: "/images/people/shimon.jpg",
+  },
   roneliahu: {
     name: "Ron Eliahu",
     url: "https://twitter.com/p0werhead",
