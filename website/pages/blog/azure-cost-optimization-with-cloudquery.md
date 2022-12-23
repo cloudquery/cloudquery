@@ -26,19 +26,19 @@ Optimizing cloud costs is a never-ending task. There are many ways to do it, and
 
 First, we need to create a _Cost Analysis Report_ in Azure. To do that, go to the Cost Management section in the Azure Portal and click on the [Cost Analysis](https://portal.azure.com/#view/Microsoft_Azure_CostManagement/Menu/~/costanalysis/openedBy/AzurePortal) tab.
 
-![Azure Cost Analysis Start Page](/images/blog/azure-cost-optimization-with-cloudquery/azure-analysis-start.png)
+![Azure Cost Analysis Start Page](/images/blog/azure-cost-optimization-with-cloudquery/cost-analysis-cost-by-resource-report.png)
 
 Then, click on the _Cost by Resource_ button.
 
-![Azure Cost By Resource Menu](/images/blog/azure-cost-optimization-with-cloudquery/azure-analysis-cost-by-resource-menu.png)
+![Azure Cost By Resource Menu](/images/blog/azure-cost-optimization-with-cloudquery/cost-analysis-cost-by-resource-menu.png)
 
 Here you can make adjustments to your report. Make sure to select the time range you want to analyze. For this tutorial, we'll leave this at the default of current billing period. Make sure the _Group By_ option is set to **Resource**.
 
-![Azure Cost By Resource Report](/images/blog/azure-cost-optimization-with-cloudquery/azure-analysis-cost-by-resource-report-annotated.png)
+![Azure Cost By Resource Report](/images/blog/azure-cost-optimization-with-cloudquery/cost-analysis-cost-by-resource-report-annotated.png)
 
 Use the _Save as_ button to save this as a new report view. Give it a name and click _Save_.
 
-![Azure Cost By Resource Report Save Button](/images/blog/azure-cost-optimization-with-cloudquery/azure-analysis-cost-by-resource-report-save.png)
+![Azure Cost By Resource Report Save Button](/images/blog/azure-cost-optimization-with-cloudquery/cost-analysis-cost-by-resource-report-save.png)
 
 From now on every time we run a `cloudquery sync` command, the data from this report will be synced to PostgreSQL database. 
 
