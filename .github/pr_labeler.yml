@@ -46,6 +46,8 @@ snowflake:
   - plugins/destination/snowflake/**/*
 bigquery:
   - plugins/destination/bigquery/**/*
+mongodb:
+  - plugins/destination/mongodb/**/*
 website:
   - website/**/*
 cli:
