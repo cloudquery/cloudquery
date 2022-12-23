@@ -12,7 +12,7 @@ func Users() *schema.Table {
 		Name:        "gcp_sql_users",
 		Description: `https://cloud.google.com/sql/docs/mysql/admin-api/rest/v1beta4/users#User`,
 		Resolver:    fetchUsers,
-		Multiplex:   client.ProjectMultiplex,
+		Multiplex:   client.ProjectMultiplexEnabledServices("sqladmin.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

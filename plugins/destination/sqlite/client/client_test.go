@@ -13,5 +13,5 @@ func TestPlugin(t *testing.T) {
 		Spec{
 			ConnectionString: ":memory:",
 		},
-		destination.TestSuiteTests{})
+		destination.PluginTestSuiteTests{})
 }

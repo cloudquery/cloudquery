@@ -8,16 +8,13 @@ import (
 func init() {
 	resources := []*Resource{
 		{
-			SubService:          "alert_policies",
-			Struct:              &pb.AlertPolicy{},
-			NewFunction:         monitoring.NewAlertPolicyClient,
-			RequestStruct:       &pb.ListAlertPoliciesRequest{},
-			ResponseStruct:      &pb.ListAlertPoliciesResponse{},
-			RegisterServer:      pb.RegisterAlertPolicyServiceServer,
-			ListFunction:        (&pb.UnimplementedAlertPolicyServiceServer{}).ListAlertPolicies,
-			UnimplementedServer: &pb.UnimplementedAlertPolicyServiceServer{},
-			PrimaryKeys:         []string{"name"},
-			Description:         "https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.alertPolicies#AlertPolicy",
+			SubService:     "alert_policies",
+			Struct:         &pb.AlertPolicy{},
+			NewFunction:    monitoring.NewAlertPolicyClient,
+			RegisterServer: pb.RegisterAlertPolicyServiceServer,
+			ListFunction:   (&pb.UnimplementedAlertPolicyServiceServer{}).ListAlertPolicies,
+			PrimaryKeys:    []string{"name"},
+			Description:    "https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.alertPolicies#AlertPolicy",
 		},
 	}
 
@@ -28,6 +25,7 @@ func init() {
 		resource.Template = "newapi_list"
 		resource.MockTemplate = "newapi_list_grpc_mock"
 		resource.RequestStructFields = `Name: "projects/" + c.ProjectId,`
+		resource.ServiceDNS = "monitoring.googleapis.com"
 	}
 
 	Resources = append(Resources, resources...)

@@ -8,14 +8,14 @@ import (
 )
 
 func TestPlugin(t *testing.T) {
-	p := destination.NewPlugin("bigquery", "development", New)
+	p := destination.NewPlugin("bigquery", "development", New, destination.WithManagedWriter())
 	destination.PluginTestSuiteRunner(t, p,
 		Spec{
 			ProjectID:        os.Getenv("BIGQUERY_PROJECT_ID"),
 			DatasetID:        os.Getenv("BIGQUERY_DATASET_ID"),
 			TimePartitioning: "none",
 		},
-		destination.TestSuiteTests{
+		destination.PluginTestSuiteTests{
 			SkipOverwrite: true,
 		})
 }

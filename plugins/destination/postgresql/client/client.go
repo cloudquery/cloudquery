@@ -16,6 +16,7 @@ import (
 )
 
 type Client struct {
+	destination.UnimplementedManagedWriter
 	destination.DefaultReverseTransformer
 	conn                *pgxpool.Pool
 	logger              zerolog.Logger

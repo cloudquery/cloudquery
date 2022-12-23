@@ -196,8 +196,8 @@ github.com/aws/aws-sdk-go-v2/service/quicksight v1.28.3 h1:oOITThfr01t8r/v/RzRuH
 github.com/aws/aws-sdk-go-v2/service/quicksight v1.28.3/go.mod h1:wvJpr20R/imRPZsRJMkxCYV5zquGzJbASqARtCbiKKE=
 github.com/aws/aws-sdk-go-v2/service/ram v1.16.26 h1:N6sleYzj/LBqeTk53KPGA6+chMQj5m4txIavGZtPmtQ=
 github.com/aws/aws-sdk-go-v2/service/ram v1.16.26/go.mod h1:hKHJTTpBpOG9+TPPnRjsvXsPytZFmXX0FRDEMiBOcek=
-github.com/aws/aws-sdk-go-v2/service/rds v1.36.0 h1:vZpqgQhYoay+Qb+OfTxFLxoqBnDOFI3C8yx8c4T1pak=
-github.com/aws/aws-sdk-go-v2/service/rds v1.36.0/go.mod h1:Ume9NHqT871hUdxIRojWtWsPFyCswQmSjHHhyGot7v0=
+github.com/aws/aws-sdk-go-v2/service/rds v1.37.0 h1:8L3wxX9Iu+Cje65Dc8PNC/bS/PEyhOxdyiVzcOoHMl0=
+github.com/aws/aws-sdk-go-v2/service/rds v1.37.0/go.mod h1:Ume9NHqT871hUdxIRojWtWsPFyCswQmSjHHhyGot7v0=
 github.com/aws/aws-sdk-go-v2/service/redshift v1.26.18 h1:a/DqQAS4PqbnEgZj/BDIkc3c31jY3w+M+5/RuSXYKNk=
 github.com/aws/aws-sdk-go-v2/service/redshift v1.26.18/go.mod h1:cpzzZf+cK9kF7PAbJOU491GGQO/8+oD4jtbawDUG+pc=
 github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.12.23 h1:DcD2mZOpFmo3HOd4LaXcDuOzPcCYEhumLMSrde/tgFM=
@@ -214,8 +214,8 @@ github.com/aws/aws-sdk-go-v2/service/sagemaker v1.61.0 h1:yQjFY8oQcFVXkCNNoQdolB
 github.com/aws/aws-sdk-go-v2/service/sagemaker v1.61.0/go.mod h1:v+qgYDefdlOgci1kvpeo9jwo0J66r/i+z1WJWher+cE=
 github.com/aws/aws-sdk-go-v2/service/scheduler v1.0.3 h1:y06COYMS5OWfEv31VWaOCgTXsfWEZydwqqGvTkvl9nc=
 github.com/aws/aws-sdk-go-v2/service/scheduler v1.0.3/go.mod h1:ZnD5i/e5nCIh1w3ivCfifQ5r4PLh3aOCElnOrZz+WnQ=
-github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.16.10 h1:6obimjQAiRlEUZT7a2Q1ikH7ck4cPO3phGz4wqI5f2w=
-github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.16.10/go.mod h1:jAeo/PdIJZuDSwsvxJS94G4d6h8tStj7WXVuKwLHWU8=
+github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.16.11 h1:77V7vnw/NC4DORHVgA97+Ky2p1ri0+ZVYXh6ordUZU0=
+github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.16.11/go.mod h1:jAeo/PdIJZuDSwsvxJS94G4d6h8tStj7WXVuKwLHWU8=
 github.com/aws/aws-sdk-go-v2/service/servicecatalog v1.15.2 h1:z8OpD43IKDSDmYdKSLkV0/cLKhxosj82j/5klEExu3A=
 github.com/aws/aws-sdk-go-v2/service/servicecatalog v1.15.2/go.mod h1:r0xKT6nzw2oTEZ37LdnSCRA85zZwRFt0Cmc40+b9Rmk=
 github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.15.2 h1:o1yfwnYPIePeya0etsxv1qrc46WM6wyVZld1AuXhvYk=
