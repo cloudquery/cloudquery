@@ -12,7 +12,7 @@ func ProjectPolicies() *schema.Table {
 		Name:        "gcp_resourcemanager_project_policies",
 		Description: `https://cloud.google.com/resource-manager/reference/rest/Shared.Types/Policy`,
 		Resolver:    fetchProjectPolicies,
-		Multiplex:   client.ProjectMultiplex,
+		Multiplex:   client.ProjectMultiplexEnabledServices("cloudresourcemanager.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

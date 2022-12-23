@@ -61,6 +61,7 @@ The primary key for this table is **arn**.
 |iops|Int|
 |kms_key_id|String|
 |latest_restorable_time|Timestamp|
+|master_user_secret|JSON|
 |master_username|String|
 |monitoring_interval|Int|
 |monitoring_role_arn|String|

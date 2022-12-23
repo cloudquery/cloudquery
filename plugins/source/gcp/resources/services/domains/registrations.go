@@ -21,7 +21,7 @@ func Registrations() *schema.Table {
 		Name:        "gcp_domains_registrations",
 		Description: `https://cloud.google.com/domains/docs/reference/rest/v1beta1/projects.locations.registrations#Registration`,
 		Resolver:    fetchRegistrations,
-		Multiplex:   client.ProjectMultiplex,
+		Multiplex:   client.ProjectMultiplexEnabledServices("domains.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

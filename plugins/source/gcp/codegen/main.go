@@ -15,6 +15,7 @@ import (
 
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/cloudquery/plugins/source/gcp/codegen/recipes"
 	"github.com/iancoleman/strcase"
 	"google.golang.org/protobuf/reflect/protoreflect"
@@ -178,7 +179,10 @@ func generateResource(r recipes.Resource, mock bool) {
 		log.Fatal(fmt.Errorf("failed to create table for %s: %w", r.StructName, err))
 	}
 	if r.Multiplex == nil {
-		r.Table.Multiplex = "client.ProjectMultiplex"
+		if _, ok := client.GcpServices[r.ServiceDNS]; !ok {
+			panic("unknown service DNS: " + r.ServiceDNS)
+		}
+		r.Table.Multiplex = "client.ProjectMultiplexEnabledServices(\"" + r.ServiceDNS + "\")"
 	} else {
 		r.Table.Multiplex = *r.Multiplex
 	}

@@ -26,6 +26,7 @@ func init() {
 		resource.MockImports = []string{"cloud.google.com/go/apikeys/apiv2"}
 		resource.NewFunction = apikeys.NewClient
 		resource.RegisterServer = pb.RegisterApiKeysServer
+		resource.ServiceDNS = "apikeys.googleapis.com"
 	}
 
 	Resources = append(Resources, resources...)

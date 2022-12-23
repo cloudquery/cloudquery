@@ -42,6 +42,7 @@ func init() {
 		resource.ProtobufImport = "cloud.google.com/go/kms/apiv1/kmspb"
 		resource.Template = "newapi_list"
 		resource.MockTemplate = "newapi_list_grpc_mock"
+		resource.ServiceDNS = "cloudkms.googleapis.com"
 	}
 
 	Resources = append(Resources, resources...)
