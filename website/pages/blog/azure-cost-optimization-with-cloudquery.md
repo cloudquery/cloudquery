@@ -93,7 +93,7 @@ As you can see this only includes metadata about our report. Report contents are
 SELECT * FROM azure_costmanagement_view_queries LIMIT 1;
 ```
 
-Again, if we focus on the `properties` column and format it in [JSON Viewer](http://jsonviewer.stack.hu/):
+Again, if we focus on the `properties` column and format it in JSON Viewer:
 
 ![azure cost management view queries properties column](/images/blog/azure-cost-optimization-with-cloudquery/azure_costmanagement_view_queries_props.png)
 
