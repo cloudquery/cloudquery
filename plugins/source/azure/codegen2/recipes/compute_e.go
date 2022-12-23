@@ -39,9 +39,9 @@ func init() {
 			ExtraColumns:   DefaultExtraColumns,
 			Relations: []*Table{
 				{
-					Name:           "virtual_machine_instance_views",
-					Service:        "armcompute",
-					Struct:         &armcompute.VirtualMachineInstanceView{},
+					Name:    "virtual_machine_instance_views",
+					Service: "armcompute",
+					Struct:  &armcompute.VirtualMachineInstanceView{},
 					// ResponseStruct is just a stub for codegen not to fail
 					ResponseStruct: &armcompute.VirtualMachinesClientInstanceViewResponse{},
 					Client:         &armcompute.VirtualMachinesClient{},
