@@ -31,7 +31,7 @@ spec:
 ```
 
 <Callout type="info">
-Make sure you use environment variable expansion in production instead of committing the credentials to the configuration file directly.
+Make sure to use [environment variable substitution](/docs/advanced-topics/environment-variable-substitution) in production instead of committing the credentials to the configuration file directly.
 </Callout>
 
 ### MongoDB Spec
