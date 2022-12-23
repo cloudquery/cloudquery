@@ -6,7 +6,7 @@ import { Callout } from 'nextra-theme-docs'
 
 <Badge text={"Latest: " + getLatestVersion("destination", "mongodb")}/>
 
-This destination plugin lets you sync data from a CloudQuery source to a MongoDB.
+This destination plugin lets you sync data from any CloudQuery source to a MongoDB database.
 
 Supported database versions:
 
