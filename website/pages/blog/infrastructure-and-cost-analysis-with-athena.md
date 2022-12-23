@@ -55,31 +55,110 @@ This will write the AWS data to CSV files in the `cq_csv_output` directory. You 
 
 ### 5. Upload the files to S3
 
-Hopefully you now have a directory called `cq_csv_output` that contains a number of CSV files. We need to upload these to S3 so that Athena can query them. To do so, we'll use the AWS CLI in this tutorial, but you can also use the AWS web console if you prefer.
+You should now have a directory called `cq_csv_output` that contains a number of CSV files. We need to upload these to S3 so that Athena can query them. We'll use the AWS CLI to do this in this tutorial, but you can also use the AWS web console or Terraform/CloudFormation if you prefer.
 
 First, we'll create a bucket to store the data:
 
 ```bash copy
-aws s3 mb s3://cloudquery-athena-example
+export BUCKET_NAME=cloudquery-athena-example
+aws s3 mb s3://$BUCKET_NAME
 ```
 
-Now we can upload the files to the bucket. Athena requires every table to be in its own directory, so we'll use a little bash scripting to create upload each CSV file into its own directory:
+Now we can upload the files to the bucket. Athena requires every table to be in its own directory, so we'll use a little bash scripting to upload each CSV file into its own directory:
 
 ```bash copy
 for file in cq_csv_output/*.csv; do
     filename=$(basename "$file")
     foldername="${filename%.*}"
-    aws s3 cp "$file" "s3://cloudquery-athena-example/$foldername/$filename"
+    aws s3 cp "$file" "s3://$BUCKET_NAME/$foldername/$filename"
 done
 ```
 
-You should now see a large number of objects in the bucket, which you can verify by listing the items:
+You should now see a large number of objects in the bucket, which we can verify by listing the items:
 
-``bash copy
-aws s3 ls s3://cloudquery-athena-example
+```bash copy
+aws s3 ls s3://$BUCKET_NAME
+```
+
+### 7. Create a Glue Crawler
+
+Athena can query data in S3, but it needs to know the schema of the data in order to do so. We can use a Glue Crawler to automatically infer the schema of the data and create a table in the Athena database we created in the previous step. We'll use the AWS CLI again.
+
+First we'll create a role for the crawler to use. It will need access to the S3 bucket we created in the previous step. The following trust policy will give the role what it needs:
+
+```json copy title="crawler-trust-policy.json"
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "glue.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+        }
+    ]
+}
+```
+
+With the above policy saved as `crawler-trust-policy.json`, we can now create the role (make a note of the ARN for the newly created role):
+
+```bash copy
+aws iam create-role \
+    --role-name cloudquery-athena-example-crawler \
+    --assume-role-policy-document file://crawler-trust-policy.json
+```
+
+We should also attach a policy to the role that gives it access to the S3 bucket we created in the previous step. The following policy will give the role everything it needs, including the ability to write CloudWatch logs. You should review and fine-tune these permissions before applying them. Also make sure to update the bucket name to the value of `BUCKET_NAME` you chose earlier (in our example, `cloudquery-athena-example`):
+
+```json copy title="crawler-policy.json"
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:GetObject",
+                "s3:PutObject"
+            ],
+            "Resource": [
+                "arn:aws:s3:::cloudquery-athena-example*"
+            ]
+        }
+    ]
+}
+```
+
+Let's attach this policy to the role:
+
+```bash
+aws iam put-role-policy \
+    --role-name cloudquery-athena-example-crawler \
+    --policy-name cloudquery-athena-example-crawler-s3-access \
+    --policy-document file://crawler-policy.json
+```
+
+Now we can create the crawler, making sure to reference the ARN for the role we created above:
+
+```bash copy
+aws glue create-crawler \
+    --name cloudquery-athena-example \
+    --database-name cloudquery-athena-example \
+    --role arn:aws:iam::123456789012:role/cloudquery-athena-example-crawler \
+    --targets "S3Targets=[{Path=s3://$BUCKET_NAME}]" \
+    --schema-change-policy "UpdateBehavior=UPDATE_IN_DATABASE,DeleteBehavior=DEPRECATE_IN_DATABASE"
+```
+
+With our crawler created, we can run it any time:
+
+```text
+aws glue start-crawler --name cloudquery-athena-example
 ```
 
 ### 6. Create the Athena Database
 
-Now that we have our data in S3, we need to create a database in Athena that will allow us to query it. To do so, we'll use the AWS CLI again:
+Now that we have our data in S3, we need to create a database in Athena that will allow us to query it. We'll use the AWS CLI again:
 
+```bash copy
+aws athena create-data-catalog --name cloudquery --type GLUE
+```
