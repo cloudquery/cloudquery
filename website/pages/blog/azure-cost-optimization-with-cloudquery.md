@@ -20,7 +20,6 @@ Optimizing cloud costs is a never-ending task. There are many ways to do it, and
 - [Azure Source Plugin](https://www.cloudquery.io/docs/plugins/sources/azure/overview)
 - [PostgreSQL Destination Plugin](https://www.cloudquery.io/docs/plugins/destinations/postgresql/overview)
 - A running PostgreSQL instance (can be local or remote)
-- `azure_costmanagement_views` and `azure_costmanagement_view_queries` tables are set up to be synced along with resources you'd like to analyze cost for (or just `tables: [ "*" ]` in your config
 
 ## Create a Cost Analysis Report in Azure
 
@@ -103,7 +102,7 @@ We need to run one more thing before we can start correlating away though.
 
 ## The Azure Resources View
 
-The `azure_resources` view is useful for seeing all your Azure resources in one place or finding a specific resource, by id or name. It's a view, so it's not synced to the database, but we can create it by running the query provided [here](https://github.com/cloudquery/cq-provider-azure/blob/main/views/resource.sql). First query will drop the view if it exists, and the second query will create it. Run these queries in your PostgreSQL database.
+The `azure_resources` view is useful for seeing all your Azure resources in one place or finding a specific resource, by id or name. It's a view, so it's not synced to the database, but we can create it by running the queries provided [here](https://github.com/cloudquery/cq-provider-azure/blob/main/views/resource.sql). First query will drop the view if it exists, and the second query will create it. Run these queries in your PostgreSQL database.
 
 ## Correlating the data
 
@@ -160,7 +159,7 @@ SELECT
     r.name,
     r.kind,
     r.location
-FROM cost_by_res c JOIN azure_resources r ON lower(r.full_id)=lower(c.res_id);
+FROM cost_by_res c JOIN azure_resources r ON LOWER(r.full_id)=LOWER(c.res_id);
 ```
 
 ## Summary
