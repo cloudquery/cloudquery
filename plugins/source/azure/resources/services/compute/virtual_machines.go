@@ -78,6 +78,10 @@ func VirtualMachines() *schema.Table {
 				Resolver: schema.PathResolver("Type"),
 			},
 		},
+
+		Relations: []*schema.Table{
+			virtual_machine_instance_views(),
+		},
 	}
 }
 

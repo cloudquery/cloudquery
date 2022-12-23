@@ -145,7 +145,9 @@ func initTable(parent *recipes.Table, r *recipes.Table) error {
 	if r.Relations != nil {
 		for _, relation := range r.Relations {
 			r.Table.Relations = append(r.Table.Relations, relation.Name+"()")
-			initTable(r, relation)
+			if err := initTable(r, relation); err != nil {
+				return err
+			}
 		}
 	}
 	return nil
@@ -162,7 +164,8 @@ func generateTable(parent *recipes.Table, r *recipes.Table) error {
 	}
 	var buff bytes.Buffer
 	if err := tpl.Execute(&buff, r); err != nil {
-		return fmt.Errorf("failed to execute template for %s: %w", r.Table.Name, err)
+		return fmt.Errorf("failed to execute template for  %w", err)
+		// return fmt.Errorf("failed to execute template for %s: %w", r.Table.Name, err)
 	}
 
 	filePath := path.Join(currentDir, "../resources/services", r.PackageName)
