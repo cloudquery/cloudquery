@@ -35,7 +35,7 @@ Start `localstack`
 
 ```bash
 docker run --rm -it \
-    -p 4566:4566 \ 
+    -p 4566:4566 \
     -p 4510-4559:4510-4559 \
     -e DEBUG=1 \
     localstack/localstack
