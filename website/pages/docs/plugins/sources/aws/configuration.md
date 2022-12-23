@@ -104,7 +104,7 @@ This is the (nested) spec used by the AWS source plugin.
 
   Defines the maximum number of times an API request will be retried 
 
-- `max_retries` (int) (max_backoff: 30)
+- `max_backoff` (int) (default: 30)
   
   Defines the duration between retry attempts
 
