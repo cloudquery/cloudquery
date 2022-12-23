@@ -63,6 +63,7 @@ The primary key for this table is **arn**.
 |latest_restorable_time|Timestamp|
 |license_model|String|
 |listener_endpoint|JSON|
+|master_user_secret|JSON|
 |master_username|String|
 |max_allocated_storage|Int|
 |monitoring_interval|Int|
