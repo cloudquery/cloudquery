@@ -1,8 +1,14 @@
-# Infrastructure and Cost Analysis with Athena
+# How to Load Infrastructure Data into Athena  
 
 ## Introduction
 
-Athena is a serverless query service by AWS that allows you to query data in S3 using standard SQL. In this post, we will show you how to load your cloud infrastructure data into S3 using CloudQuery, combine it with cost reporting data, and query these together using Athena. This is a powerful combination that allows you to get fine-grained insight into the resources that cost you the most, all from a convenient serverless query environment. Let's get started!
+Athena is a serverless query service by AWS that allows you to query data in S3 using standard SQL. In this tutorial, we will show you how to load your cloud infrastructure data into S3 using CloudQuery and query it using Athena. This allows you to get fine-grained insight into your infrastructure data, all from the convenience of a serverless query environment running in AWS. 
+
+By the end of this post, you will be able to query your infrastructure data in Athena:
+
+
+
+Let's get started!
 
 ## Steps
 
@@ -80,7 +86,7 @@ You should now see a large number of objects in the bucket, which we can verify 
 aws s3 ls s3://$BUCKET_NAME
 ```
 
-### 7. Create a Glue Crawler
+### 6. Create a Glue Crawler
 
 Athena can query data in S3, but it needs to know the schema of the data in order to do so. We can use a Glue Crawler to automatically infer the schema of the data and create a table in the Athena database we created in the previous step. We'll use the AWS CLI again.
 
@@ -109,9 +115,9 @@ aws iam create-role \
     --assume-role-policy-document file://crawler-trust-policy.json
 ```
 
-We should also attach a policy to the role that gives it access to the S3 bucket we created in the previous step. The following policy will give the role everything it needs, including the ability to write CloudWatch logs. You should review and fine-tune these permissions before applying them. Also make sure to update the bucket name to the value of `BUCKET_NAME` you chose earlier (in our example, `cloudquery-athena-example`):
+We should also attach a policy to the role that gives it access to the S3 bucket we created in the previous step. The following policy will give the crawler access to the S3 bucket. Make sure to update the bucket name to the value of `BUCKET_NAME` you chose earlier (in our example, `cloudquery-athena-example`):
 
-```json copy title="crawler-policy.json"
+```json copy title="crawler-policy-s3-access.json"
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -135,6 +141,110 @@ Let's attach this policy to the role:
 aws iam put-role-policy \
     --role-name cloudquery-athena-example-crawler \
     --policy-name cloudquery-athena-example-crawler-s3-access \
+    --policy-document file://crawler-policy-s3-access.json
+```
+
+The crawler will also need additional permissions to perform all its tasks, such as writing CloudWatch logs. We attach another policy to the role to give it these permissions. You should review these permissions to ensure they are appropriate for your use case:
+
+
+```json copy title="crawler-policy.json"
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "glue:*",
+                "s3:GetBucketLocation",
+                "s3:ListBucket",
+                "s3:ListAllMyBuckets",
+                "s3:GetBucketAcl",
+                "ec2:DescribeVpcEndpoints",
+                "ec2:DescribeRouteTables",
+                "ec2:CreateNetworkInterface",
+                "ec2:DeleteNetworkInterface",
+                "ec2:DescribeNetworkInterfaces",
+                "ec2:DescribeSecurityGroups",
+                "ec2:DescribeSubnets",
+                "ec2:DescribeVpcAttribute",
+                "iam:ListRolePolicies",
+                "iam:GetRole",
+                "iam:GetRolePolicy",
+                "cloudwatch:PutMetricData"
+            ],
+            "Resource": [
+                "*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:CreateBucket"
+            ],
+            "Resource": [
+                "arn:aws:s3:::aws-glue-*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:GetObject",
+                "s3:PutObject",
+                "s3:DeleteObject"
+            ],
+            "Resource": [
+                "arn:aws:s3:::aws-glue-*/*",
+                "arn:aws:s3:::*/*aws-glue-*/*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:GetObject"
+            ],
+            "Resource": [
+                "arn:aws:s3:::crawler-public*",
+                "arn:aws:s3:::aws-glue-*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+            ],
+            "Resource": [
+                "arn:aws:logs:*:*:/aws-glue/*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ec2:CreateTags",
+                "ec2:DeleteTags"
+            ],
+            "Condition": {
+                "ForAllValues:StringEquals": {
+                    "aws:TagKeys": [
+                        "aws-glue-service-resource"
+                    ]
+                }
+            },
+            "Resource": [
+                "arn:aws:ec2:*:*:network-interface/*",
+                "arn:aws:ec2:*:*:security-group/*",
+                "arn:aws:ec2:*:*:instance/*"
+            ]
+        }
+    ]
+}
+```
+
+```bash
+aws iam put-role-policy \
+    --role-name cloudquery-athena-example-crawler \
+    --policy-name cloudquery-athena-example-crawler \
     --policy-document file://crawler-policy.json
 ```
 
@@ -149,16 +259,16 @@ aws glue create-crawler \
     --schema-change-policy "UpdateBehavior=UPDATE_IN_DATABASE,DeleteBehavior=DEPRECATE_IN_DATABASE"
 ```
 
-With our crawler created, we can run it any time:
+With our crawler created, we can run it on demand like this:
 
 ```text
 aws glue start-crawler --name cloudquery-athena-example
 ```
 
-### 6. Create the Athena Database
+(You can also run the crawler on a schedule, but we won't cover that here.)
 
-Now that we have our data in S3, we need to create a database in Athena that will allow us to query it. We'll use the AWS CLI again:
+### 7. Query the data
 
-```bash copy
-aws athena create-data-catalog --name cloudquery --type GLUE
-```
+The crawler should have created a database and tables in the Glue Data Catalog. Now we can query the data using Athena! Let's use the AWS Console for this step. Navigate to the Athena service in the AWS Console, go to the Query Editor page, and select the database we created earlier. You should see a list of tables in the database. Let's run a simple query to see what's in the `aws_iam_users` table:
+
+![Athena query editor](/images/tutorials/how-to-load-infrastructure-data-into-athena/athena-query-editor.png)
