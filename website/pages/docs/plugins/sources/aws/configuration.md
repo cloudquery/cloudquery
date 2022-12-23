@@ -148,10 +148,6 @@ This is used to specify one or more accounts to extract information from. Note t
 
 ## org
 
-- `organization_units` ([]string)
-
-  List of Organizational Units that CloudQuery should use to source accounts from. If you specify an OU, CloudQuery will not traverse nested OUs
-
 - `admin_account` ([Account](#account))
 
   Configuration for how to grab credentials from an Admin account
@@ -175,3 +171,15 @@ This is used to specify one or more accounts to extract information from. Note t
 - `member_regions` ([]string)
 
   Limit fetching resources within this specific account to only these regions. This will override any regions specified in the provider block. You can specify all regions by using the `*` character as the only argument in the array
+
+- `organization_units` ([]string)
+
+  List of Organizational Units that CloudQuery should use to source accounts from. If you specify an OU, CloudQuery will not traverse nested OUs
+
+- `skip_organization_units` ([]string)
+
+  List of Organizational Units to skip. This is useful in conjunction with `organization_units` if there are child OUs that should be ignored.
+
+- `skip_member_accounts` ([]string)
+
+  List of OU member accounts to skip. This is useful in conjunction with `organization_units` if there are accounts under the selected OUs that should be ignored.
