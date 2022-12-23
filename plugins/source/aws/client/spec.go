@@ -57,10 +57,7 @@ func (s *Spec) Validate() error {
 			return fmt.Errorf("custom_endpoint_hostname_immutable is required when custom_endpoint_url is set")
 		}
 	}
-	return nil
-}
 
-func (s *Spec) Validate() error {
 	if s.Organization != nil && len(s.Accounts) > 0 {
 		return errors.New("specifying accounts via both the Accounts and Org properties is not supported. To achieve both, use multiple source configurations")
 	}
