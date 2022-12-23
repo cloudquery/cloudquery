@@ -14,7 +14,7 @@ import { HowToGuideHeader } from "../../components/HowToGuideHeader"
 
 <HowToGuideHeader/>
 
-In this blog post, we will walk you through how to setup CloudQuery to build your cloud asset inventory in PostgreSQL and connect it to [Google Data Studio](https://marketingplatform.google.com/about/data-studio/) for visualization, monitoring and reporting.
+In this guide, we will walk you through how to set up CloudQuery to build your cloud asset inventory in PostgreSQL and connect it to [Google Data Studio](https://marketingplatform.google.com/about/data-studio/) for visualization, monitoring and reporting.
 
 ## General Architecture
 
