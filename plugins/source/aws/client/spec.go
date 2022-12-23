@@ -33,15 +33,31 @@ type AwsOrg struct {
 }
 
 type Spec struct {
-	Regions      []string  `json:"regions,omitempty"`
-	Accounts     []Account `json:"accounts"`
-	Organization *AwsOrg   `json:"org"`
-	AWSDebug     bool      `json:"aws_debug,omitempty"`
-	MaxRetries   *int      `json:"max_retries,omitempty"`
-	MaxBackoff   *int      `json:"max_backoff,omitempty"`
+	Regions           []string  `json:"regions,omitempty"`
+	Accounts          []Account `json:"accounts"`
+	Organization      *AwsOrg   `json:"org"`
+	AWSDebug          bool      `json:"aws_debug,omitempty"`
+	MaxRetries        *int      `json:"max_retries,omitempty"`
+	MaxBackoff        *int      `json:"max_backoff,omitempty"`
+	EndpointURL       string    `json:"custom_endpoint_url,omitempty"`
+	HostnameImmutable *bool     `json:"custom_endpoint_hostname_immutable,omitempty"`
+	PartitionID       string    `json:"custom_endpoint_partition_id,omitempty"`
+	SigningRegion     string    `json:"custom_endpoint_signing_region,omitempty"`
 }
 
 func (s *Spec) Validate() error {
+	if s.EndpointURL != "" {
+		if s.PartitionID == "" {
+			return fmt.Errorf("custom_endpoint_partition_id is required when custom_endpoint_url is set")
+		}
+		if s.SigningRegion == "" {
+			return fmt.Errorf("custom_endpoint_signing_region is required when custom_endpoint_url is set")
+		}
+		if s.HostnameImmutable == nil {
+			return fmt.Errorf("custom_endpoint_hostname_immutable is required when custom_endpoint_url is set")
+		}
+	}
+
 	if s.Organization != nil && len(s.Accounts) > 0 {
 		return errors.New("specifying accounts via both the Accounts and Org properties is not supported. To achieve both, use multiple source configurations")
 	}
