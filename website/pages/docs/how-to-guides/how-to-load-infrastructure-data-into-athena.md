@@ -6,7 +6,7 @@ Athena is a serverless query service by AWS that allows you to query data in S3 
 
 By the end of this post, you will be able to query your infrastructure data in Athena:
 
-
+<TODO: SCREENSHOT>
 
 Let's get started!
 
@@ -272,3 +272,9 @@ aws glue start-crawler --name cloudquery-athena-example
 The crawler should have created a database and tables in the Glue Data Catalog. Now we can query the data using Athena! Let's use the AWS Console for this step. Navigate to the Athena service in the AWS Console, go to the Query Editor page, and select the database we created earlier. You should see a list of tables in the database. Let's run a simple query to see what's in the `aws_iam_users` table:
 
 ![Athena query editor](/images/tutorials/how-to-load-infrastructure-data-into-athena/athena-query-editor.png)
+
+## Conclusion
+
+In this tutorial, we showed how to use CloudQuery to load infrastructure data into an S3 bucket, and then use Glue Crawler and Athena to query the data. This allows you to use the power of Athena to query your infrastructure data, and use the results to inform your security and compliance decisions.
+
+Going forward, we will continue making it easier to load data into Athena. One part of this will be adding support for the Parquet format soon. Stay tuned for more updates!
