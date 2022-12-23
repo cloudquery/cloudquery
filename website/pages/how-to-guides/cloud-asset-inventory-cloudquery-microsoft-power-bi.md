@@ -1,6 +1,6 @@
 ---
 title: >-
-  How to Build Open Source Cloud Asset Inventory with CloudQuery and Microsoft
+  How to Build an Open Source Cloud Asset Inventory with Microsoft
   Power BI
 tag: tutorial
 date: 2022/07/10
@@ -10,9 +10,9 @@ description: >-
 author: itay
 ---
 
-import { BlogHeader } from "../../components/BlogHeader"
+import { HowToGuideHeader } from "../../components/HowToGuideHeader"
 
-<BlogHeader/>
+<HowToGuideHeader/>
 
 In this blog post, we will walk you through how to setup CloudQuery to build your cloud asset inventory in PostgreSQL and connect it to [Microsoft Power BI](https://powerbi.microsoft.com/) for visualization, monitoring and reporting.
 

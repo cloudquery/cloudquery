@@ -1,16 +1,16 @@
 ---
-title: How to expose CloudQuery with PostGraphile
+title: How to Query CloudQuery with PostGraphile
 tag: tutorial
 date: 2022/06/16
 description: Search everything you have in the cloud with GraphQL.
 author: yevgenypats
 ---
 
-import { BlogHeader } from "../../components/BlogHeader"
+import { HowToGuideHeader } from "../../components/HowToGuideHeader"
 
-<BlogHeader/>
+<HowToGuideHeader/>
 
-In this blog post, we will walk you through how to setup [CloudQuery](https://github.com/cloudquery/cloudquery) to build your cloud asset inventory in PostgreSQL and build a GraphQL API query layer with [PostGraphile](https://github.com/graphile/postgraphile) on top of it. this can be used to build different use cases on from search to security, cost and infrastructure automation.
+In this how-to guide, we will walk you through how to set up [CloudQuery](https://github.com/cloudquery/cloudquery) to build your cloud asset inventory in PostgreSQL and build a GraphQL API query layer with [PostGraphile](https://github.com/graphile/postgraphile) on top of it. this can be used to build different use cases on from search to security, cost and infrastructure automation.
 
 ## **General Architecture**
 

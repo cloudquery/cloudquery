@@ -1,18 +1,18 @@
 ---
-title: 'Building Open Source CSPM with CloudQuery, PostgreSQL and Grafana'
-tag: security
+title: 'How to Build an Open Source CSPM with CloudQuery, PostgreSQL and Grafana'
+tag: tutorial
 date: 2022/07/24
 description: Unbundling the cloud security stack with a data platform
 author: yevgenypats
 ---
 
-import { BlogHeader } from "../../components/BlogHeader"
+import { HowToGuideHeader } from "../../components/HowToGuideHeader"
 
-<BlogHeader/>
+<HowToGuideHeader/>
 
-In this blog post, we will walk you through how to set up [CloudQuery](https://github.com/cloudquery/cloudquery) to build your own customizable compliance, CSPM (Cloud Security Posture Management) dashboard with PostgreSQL and Grafana.
+In this guide, we will walk you through how to set up [CloudQuery](https://github.com/cloudquery/cloudquery) to build your own customizable compliance, CSPM (Cloud Security Posture Management) dashboard with PostgreSQL and Grafana.
 
-CSPMs are probably the biggest offenders of yet another dashboard and here in CloudQuery we believe it’s time to unbundle those and apply the best practices in data engineering and the modern data stack to cloud security.
+CSPMs are probably the biggest offenders of yet-another-dashboard syndrome, and at CloudQuery we believe it’s time to unbundle those, applying the best practices in data engineering and the modern data stack to cloud security.
 
 ## General Architecture
 

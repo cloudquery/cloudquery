@@ -1,5 +1,5 @@
 ---
-title: Deploying CloudQuery into an AWS Organization
+title: How to Deploy CloudQuery into an AWS Organization
 tag: tutorial
 date: 2022/07/13
 description: >-
@@ -8,11 +8,11 @@ description: >-
 author: benjamin
 ---
 
-import { BlogHeader } from "../../components/BlogHeader"
+import { HowToGuideHeader } from "../../components/HowToGuideHeader"
 
-<BlogHeader/>
+<HowToGuideHeader/>
 
-CloudQuery makes fetching resources from your entire organization simple as long as you have the proper IAM trust relationships and permissions setup. In this blog post we will walk through one way of setting up these permissions so that you can have access to all of your configuration data in a single queryable database.
+CloudQuery makes fetching resources from your entire organization simple, as long as you have the proper IAM trust relationships and permissions set up. In this blog post we will walk through one way of setting up these permissions so that you can have access to all of your configuration data in a single queryable database.
 
 ## General Architecture
 
@@ -148,7 +148,7 @@ spec:
       - '*'      
 ```
 
-### Step 5: Run Fetch
+### Step 5: Run Sync
 
 Now you are all set to be able to execute a fetch and grab resources from your whole AWS Organization
 
