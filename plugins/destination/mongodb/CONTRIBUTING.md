@@ -17,6 +17,7 @@ docker run -d -p 27017:27017 mongo
 ```
 
 ```bash
+export CQ_DEST_MONGODB_TEST_CONN="mongodb://localhost:27017"
 make test
 ```
 

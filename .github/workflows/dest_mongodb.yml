@@ -43,7 +43,7 @@ jobs:
         run: go build .
       - name: Spin up MongoDB
         run: |
-          docker run -d -p 26257:26257 cockroachdb/cockroach:v22.1.8 start-single-node --insecure
+          docker run -d -p 27017:27017 mongo
       - name: Test
         run: make test
   validate-release:

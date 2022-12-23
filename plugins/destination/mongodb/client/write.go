@@ -30,13 +30,11 @@ func (c *Client) overwriteTableBatch(ctx context.Context, table *schema.Table, r
 	for i, resource := range resources {
 		operation := mongo.NewUpdateOneModel()
 		operation.SetUpsert(true)
-		if c.spec.WriteMode == specs.WriteModeOverwrite || c.spec.WriteMode == specs.WriteModeOverwriteDeleteStale {
-			filter := make(bson.M, len(table.PrimaryKeys()))
-			for _, pk := range pks {
-				filter[pk] = resource[table.Columns.Index(pk)]
-			}
-			operation.SetFilter(filter)
+		filter := make(bson.M, len(table.PrimaryKeys()))
+		for _, pk := range pks {
+			filter[pk] = resource[table.Columns.Index(pk)]
 		}
+		operation.SetFilter(filter)
 		update := make(bson.M, len(table.Columns))
 		for l, col := range table.Columns {
 			update[col.Name] = resource[l]
