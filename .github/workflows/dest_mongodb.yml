@@ -20,7 +20,6 @@ jobs:
     defaults:
       run:
         working-directory: ./plugins/destination/mongodb
-    services:
     steps:
       - uses: actions/checkout@v3
         with:
@@ -43,7 +42,7 @@ jobs:
         run: go build .
       - name: Spin up MongoDB
         run: |
-          docker run -d -p 27017:27017 mongo
+          docker run -d -p 27017:27017 mongo:3.6
       - name: Test
         run: make test
   validate-release:
