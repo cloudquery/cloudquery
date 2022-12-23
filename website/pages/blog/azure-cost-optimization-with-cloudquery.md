@@ -4,7 +4,7 @@ tag: tutorial
 date: 2022/12/23
 description: >-
   This tutorial will show how to correlate between Azure Cost Analysis data and CloudQuery to optimize cost
-author: disq
+author: kemal
 ---
 
 import { BlogHeader } from "../../components/BlogHeader"
