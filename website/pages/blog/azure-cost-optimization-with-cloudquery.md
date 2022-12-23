@@ -79,7 +79,7 @@ Once the data is synced we can move on to the next section.
 
 Now that we have the data synced, we can start writing queries. Let's start with a simple query to see what the data looks like. We'll start with the `azure_costmanagement_views` table. This table contains the data from the Cost Analysis report we created earlier. Let's see what the data looks like:
 
-```sql
+```sql copy
 SELECT * FROM azure_costmanagement_views LIMIT 1;
 ```
 
@@ -89,7 +89,7 @@ Focus on the `properties` column, which looks like this if formatted nicely:
 
 As you can see this only includes metadata about our report. Report contents are nowhere to be seen here. For that, we need to look at the `azure_costmanagement_view_queries` table. Let's see what the data looks like:
 
-```sql
+```sql copy
 SELECT * FROM azure_costmanagement_view_queries LIMIT 1;
 ```
 
@@ -111,7 +111,7 @@ The `azure_resources` view is useful for seeing all your Azure resources in one 
 
 As the first query we should correlate our specific named report with the data in the `azure_costmanagement_view_queries` table. We can do this by using the `azure_costmanagement_views` table to get the `_cq_id` of our report, and then using that `cq_id` (matching it with `_cq_parent_id`) to find the data in the `azure_costmanagement_view_queries` table. Something like:
 
-```sql
+```sql copy
 SELECT v.*, q.* FROM azure_costmanagement_views v, azure_costmanagement_view_queries q WHERE v.name = 'cost-matching' AND v._cq_id = q._cq_parent_id;
 ```
 
@@ -143,7 +143,7 @@ Looks complicated, but it's not too bad. Let's break it down:
 
 ### Final Query
 
-Now that we have a query that returns the ResourceId and CostUSD columns, we can use that to correlate the data with the `azure_resources` view. We can do this by using the above query to get the _Resource ID_, and then using that to find the data in the `azure_resources` view (match using `LOWER()`, as the ids don't always match case-wise). Something like:
+Now that we have a query that returns the `res_id` and `cost_usd` columns, we can use that to correlate the data with the `azure_resources` view. We can do this by using the above query to get the _Resource ID_, and then using that to find the data in the `azure_resources` view (match using `LOWER()`, as the ids don't always match case-wise). Something like:
 
 ```sql copy
 WITH cost_by_res AS (
