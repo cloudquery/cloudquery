@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-csv-v1.1.15...plugins-destination-csv-v1.2.0) (2022-12-23)
+
+
+### Features
+
+* **destinations:** Migrate to managed batching SDK ([#5805](https://github.com/cloudquery/cloudquery/issues/5805)) ([2f130c1](https://github.com/cloudquery/cloudquery/commit/2f130c12c6e83ccd8a2d036ab5c47b55e2fb5280))
+
 ## [1.1.15](https://github.com/cloudquery/cloudquery/compare/plugins-destination-csv-v1.1.14...plugins-destination-csv-v1.1.15) (2022-12-20)
 
 
