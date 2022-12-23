@@ -22,6 +22,8 @@ type Resource struct {
 	Struct any
 	// StructName is the name of the Struct because it can't be inferred by reflection
 	StructName string
+	// Service DNS
+	ServiceDNS string
 	// Service is the name of the gcp service the struct/api is residing
 	Service string
 	// SubService is the name of the gcp subservice the struct/api is residing (gcp is split into service.subservice.list)
@@ -36,8 +38,6 @@ type Resource struct {
 	ListFunction any
 	// ListFunction name of the above function via Reflection
 	ListFunctionName string
-	// RequestStruct fills the request struct for google api
-	RequestStruct any
 	// RequestStructName
 	RequestStructName string
 	// RequestStructFields is the snippet that fills in the request struct
@@ -50,8 +50,6 @@ type Resource struct {
 	RegisterServer any
 	// RegisterServerName is the name of the above function via Reflection
 	RegisterServerName string
-	// UnimplementedServer is the unimplemented server for the grpc server
-	UnimplementedServer any
 	// UnimplementedServerName is the name of the above function via Reflection
 	UnimplementedServerName string
 	// OutputField is field where the result is located in the output struct

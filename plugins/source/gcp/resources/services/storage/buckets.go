@@ -12,7 +12,7 @@ func Buckets() *schema.Table {
 		Name:        "gcp_storage_buckets",
 		Description: `https://cloud.google.com/storage/docs/json_api/v1/buckets#resource`,
 		Resolver:    fetchBuckets,
-		Multiplex:   client.ProjectMultiplex,
+		Multiplex:   client.ProjectMultiplexEnabledServices("storage.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

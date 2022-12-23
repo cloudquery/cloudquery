@@ -19,7 +19,7 @@ func AlertPolicies() *schema.Table {
 		Name:        "gcp_monitoring_alert_policies",
 		Description: `https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.alertPolicies#AlertPolicy`,
 		Resolver:    fetchAlertPolicies,
-		Multiplex:   client.ProjectMultiplex,
+		Multiplex:   client.ProjectMultiplexEnabledServices("monitoring.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

@@ -3,15 +3,8 @@
 package run
 
 import (
-	"context"
-	"google.golang.org/api/iterator"
-
-	pb "cloud.google.com/go/run/apiv2/runpb"
-
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
-
-	"cloud.google.com/go/run/apiv2"
 )
 
 func Services() *schema.Table {
@@ -19,7 +12,7 @@ func Services() *schema.Table {
 		Name:        "gcp_run_services",
 		Description: `https://cloud.google.com/run/docs/reference/rest/v2/projects.locations.services#Service`,
 		Resolver:    fetchServices,
-		Multiplex:   client.ProjectMultiplex,
+		Multiplex:   client.ProjectMultiplexEnabledServices("run.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
@@ -168,29 +161,4 @@ func Services() *schema.Table {
 			},
 		},
 	}
-}
-
-func fetchServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	req := &pb.ListServicesRequest{
-		Parent: "projects/" + c.ProjectId + "locations/-",
-	}
-	gcpClient, err := run.NewServicesClient(ctx, c.ClientOptions...)
-	if err != nil {
-		return err
-	}
-	it := gcpClient.ListServices(ctx, req, c.CallOptions...)
-	for {
-		resp, err := it.Next()
-		if err == iterator.Done {
-			break
-		}
-		if err != nil {
-			return err
-		}
-
-		res <- resp
-
-	}
-	return nil
 }

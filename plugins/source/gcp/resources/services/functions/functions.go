@@ -19,7 +19,7 @@ func Functions() *schema.Table {
 		Name:        "gcp_functions_functions",
 		Description: `https://cloud.google.com/functions/docs/reference/rest/v1/projects.locations.functions#CloudFunction`,
 		Resolver:    fetchFunctions,
-		Multiplex:   client.ProjectMultiplex,
+		Multiplex:   client.ProjectMultiplexEnabledServices("cloudfunctions.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
