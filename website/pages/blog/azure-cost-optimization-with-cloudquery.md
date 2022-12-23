@@ -85,7 +85,7 @@ SELECT * FROM azure_costmanagement_views LIMIT 1;
 
 Focus on the `properties` column, which looks like this if formatted nicely:
 
-![azure cost management properties column](/images/blog/azure-cost-optimization-with-cloudquery/azure_costmanagement_views_props.png)
+![azure cost management properties column](/images/blog/azure-cost-optimization-with-cloudquery/azure_costmanagement_views_props_small.png)
 
 As you can see this only includes metadata about our report. Report contents are nowhere to be seen here. For that, we need to look at the `azure_costmanagement_view_queries` table. Let's see what the data looks like:
 
