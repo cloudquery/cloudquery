@@ -153,7 +153,7 @@ WITH cost_by_res AS (
              JOIN JSONB_ARRAY_ELEMENTS(q.properties->'columns') WITH ORDINALITY cid(col, pos) ON cid.col->>'name'='ResourceId'
     JOIN JSONB_ARRAY_ELEMENTS(q.properties->'columns') WITH ORDINALITY ccost(col, pos) ON ccost.col->>'name'='CostUSD'
     JOIN azure_costmanagement_views v ON v._cq_id=q._cq_parent_id
-WHERE v.name='test3' -- <-- this is the name of your saved view with "resource" field
+WHERE v.name='cost-matching' -- <-- this is the name of your saved view with "resource" field
     )
 SELECT
     c.*,
