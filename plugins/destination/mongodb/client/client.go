@@ -23,7 +23,7 @@ type Client struct {
 func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination) (destination.Client, error) {
 	var err error
 	c := &Client{
-		logger: logger.With().Str("module", "bq-dest").Logger(),
+		logger: logger.With().Str("module", "mongo-dest").Logger(),
 		spec:   destSpec,
 	}
 
