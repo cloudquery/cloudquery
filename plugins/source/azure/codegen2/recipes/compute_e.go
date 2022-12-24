@@ -36,7 +36,7 @@ func init() {
 			NewFunc:        armcompute.NewVirtualMachinesClient,
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/virtualMachines",
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_compute)`,
-			SkipMock: 		 true,
+			SkipMock:       true,
 			ExtraColumns: []codegen.ColumnDefinition{
 				SubscriptionIdColumn,
 				{
