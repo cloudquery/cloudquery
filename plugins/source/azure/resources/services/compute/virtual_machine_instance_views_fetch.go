@@ -8,13 +8,13 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchVirtualMachineInstanceViews(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func getInstanceView(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	svc, err := armcompute.NewVirtualMachinesClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {
 		return err
 	}
-	item := parent.Item.(*armcompute.VirtualMachine)
+	item := resource.Item.(*armcompute.VirtualMachine)
 	group, err := client.ParseResourceGroup(*item.ID)
 	if err != nil {
 		return err
@@ -23,7 +23,5 @@ func fetchVirtualMachineInstanceViews(ctx context.Context, meta schema.ClientMet
 	if err != nil {
 		return err
 	}
-	// views := []any{instanceView}
-	res <- instanceView.VirtualMachineInstanceView
-	return nil
+	return resource.Set(c.Name, instanceView.VirtualMachineInstanceView)
 }

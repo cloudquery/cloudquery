@@ -20,6 +20,11 @@ func VirtualMachines() *schema.Table {
 				Resolver: client.ResolveAzureSubscription,
 			},
 			{
+				Name:     "instance_view",
+				Type:     schema.TypeJSON,
+				Resolver: getInstanceView,
+			},
+			{
 				Name:     "location",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Location"),
@@ -77,10 +82,6 @@ func VirtualMachines() *schema.Table {
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Type"),
 			},
-		},
-
-		Relations: []*schema.Table{
-			virtual_machine_instance_views(),
 		},
 	}
 }
