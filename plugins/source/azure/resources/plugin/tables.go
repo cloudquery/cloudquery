@@ -52,6 +52,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/hybriddatamanager"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/keyvault"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/kusto"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/logic"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/maintenance"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/mariadb"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/marketplace"
@@ -73,10 +74,12 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/privatedns"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/providerhub"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/redhatopenshift"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/redis"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/relay"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/reservations"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/resources"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/saas"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/search"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/security"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/servicebus"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/sql"
@@ -193,6 +196,7 @@ func generatedTables() []*schema.Table {
 		keyvault.KeyvaultManagedHsms(),
 		keyvault.Keyvault(),
 		kusto.Clusters(),
+		logic.Workflows(),
 		maintenance.Configurations(),
 		maintenance.PublicMaintenanceConfigurations(),
 		mariadb.Servers(),
@@ -200,6 +204,7 @@ func generatedTables() []*schema.Table {
 		monitor.LogProfiles(),
 		monitor.PrivateLinkScopes(),
 		monitor.TenantActivityLogs(),
+		monitor.TenantActivityLogAlerts(),
 		mysql.Servers(),
 		mysqlflexibleservers.Servers(),
 		network.ApplicationGateways(),
@@ -264,11 +269,13 @@ func generatedTables() []*schema.Table {
 		privatedns.PrivateZones(),
 		providerhub.ProviderRegistrations(),
 		redhatopenshift.OpenShiftClusters(),
+		redis.Caches(),
 		relay.Namespaces(),
 		reservations.Reservation(),
 		reservations.ReservationOrder(),
 		resources.Resources(),
 		saas.Resources(),
+		search.Services(),
 		security.Alerts(),
 		security.AlertsSuppressionRules(),
 		security.AllowedConnections(),
