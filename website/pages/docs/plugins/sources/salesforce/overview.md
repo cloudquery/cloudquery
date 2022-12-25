@@ -6,7 +6,7 @@ import { Callout } from 'nextra-theme-docs'
 
 <Badge text={"Latest: " + getLatestVersion("source", "salesforce")}/>
 
-The CloudQuery Salesforce plugin extracts information from your Salesforce organization(s) and loads it into any supported CloudQuery destination (e.g. PostgreSQL, Snowflake, BigQuery, ...).
+The CloudQuery Salesforce plugin extracts information from your Salesforce organization(s) and loads it into any supported CloudQuery destination (e.g. PostgreSQL, Snowflake, BigQuery, …).
 
 ## Setup
 

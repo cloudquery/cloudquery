@@ -21,7 +21,7 @@ Fill in the fields as the following and click `save`:
 
 ## Step 3: Copy Consumer Key and Consumer Secret
 
-Now that this is configured click `Manage Consumer Details` to view your Consumer Key and Consumer Secret (those will be used as `client_id` and `client_secret` to configure your CloudQuery Saleforce source plugin).
+Now that this is configured click `Manage Consumer Details` to view your Consumer Key and Consumer Secret (those will be used as `client_id` and `client_secret` to configure your CloudQuery Salesforce source plugin).
 
 ![step3](/images/docs/sf/step3.png)
 
