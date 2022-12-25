@@ -11,28 +11,28 @@ Full documentation is available [here](https://help.salesforce.com/articleView?i
 
 Go to Setup Screen and search for "App Manager" and click on "New Connected App".
 
-![step1](/images/salesforce/step1.png)
+![step1](/images/docs/sf/step1.png)
 
 ## Step 2: Create Connected App
 
 Fill in the fields as the following and click `save`:
 
-![step2](/images/salesforce/step2.png)
+![step2](/images/docs/sf/step2.png)
 
 ## Step 3: Copy Consumer Key and Consumer Secret
 
 Now that this is configured click `Manage Consumer Details` to view your Consumer Key and Consumer Secret (those will be used as `client_id` and `client_secret` to configure your CloudQuery Saleforce source plugin).
 
-![step3](/images/salesforce/step3.png)
+![step3](/images/docs/sf/step3.png)
 
 And copy the Consumer Key and Consumer Secret somewhere safe so you can provide them as environment variables to the Salesforce plugin.
 
-![step4](/images/salesforce/step4.png)
+![step4](/images/docs/sf/step4.png)
 
 ## Step 4: Final Configuration
 
 Depending on where you run CloudQuery your might need to change `IP Relxation` to `Relax IP restrictions` or configure the IP address of the machine you run CloudQuery on.
 
-![step5](/images/salesforce/step5.png)
+![step5](/images/docs/sf/step5.png)
 
 

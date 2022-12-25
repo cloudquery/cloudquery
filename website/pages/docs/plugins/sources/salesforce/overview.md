@@ -2,6 +2,7 @@
 
 import { getLatestVersion } from "../../../../../utils/versions";
 import { Badge } from "../../../../../components/Badge";
+import { Callout } from 'nextra-theme-docs'
 
 <Badge text={"Latest: " + getLatestVersion("source", "salesforce")}/>
 
@@ -79,5 +80,4 @@ select distinct(object_type) from salesforce_objects;
 
 ```sql
 select * from salesforce_objects where object_type = 'Account';
-```
 ```
