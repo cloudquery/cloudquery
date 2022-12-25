@@ -8,10 +8,10 @@ import (
 )
 
 type queryResponse struct {
-	TotalSize      int                      `json:"totalSize"`
+	TotalSize      int              `json:"totalSize"`
 	Records        []map[string]any `json:"records"`
-	Done           bool                     `json:"done"`
-	NextRecordsUrl string                   `json:"nextRecordsUrl"`
+	Done           bool             `json:"done"`
+	NextRecordsUrl string           `json:"nextRecordsUrl"`
 }
 
 func fetchQueryApi(ctx context.Context, c *client.Client, fields []string, res chan<- any) error {
