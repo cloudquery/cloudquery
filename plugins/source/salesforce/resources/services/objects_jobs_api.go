@@ -87,7 +87,7 @@ func fetchJobResults(ctx context.Context, c *client.Client, jobId string, fields
 		if response.StatusCode != http.StatusOK {
 			return fmt.Errorf("url: %s. returned: %d with body: %s", url, response.StatusCode, string(body))
 		}
-		jsonresults := make([]map[string]interface{}, 0)
+		jsonresults := make([]map[string]any, 0)
 		reader := csv.NewReader(bytes.NewReader(body))
 		// read header
 		_, err = reader.Read()
@@ -103,7 +103,7 @@ func fetchJobResults(ctx context.Context, c *client.Client, jobId string, fields
 			if err != nil {
 				return err
 			}
-			obj := make(map[string]interface{})
+			obj := make(map[string]any)
 			for i, field := range fields {
 				obj[field] = record[i]
 			}

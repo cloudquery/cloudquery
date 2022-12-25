@@ -11,7 +11,7 @@ import (
 
 func createObjectsBulkAPI(router *mux.Router) error {
 	describeRes := describeResponse{
-		Fields: []map[string]interface{}{
+		Fields: []map[string]any{
 			{
 				"name": "Id",
 				"type": "string",

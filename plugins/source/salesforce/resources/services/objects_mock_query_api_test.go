@@ -13,13 +13,13 @@ func createObjectsQueryAPI(router *mux.Router) error {
 	var queryRes queryResponse
 	queryRes.TotalSize = 1
 	queryRes.Done = true
-	queryRes.Records = make([]map[string]interface{}, 1)
-	queryRes.Records[0] = make(map[string]interface{})
+	queryRes.Records = make([]map[string]any, 1)
+	queryRes.Records[0] = make(map[string]any)
 	queryRes.Records[0]["Id"] = "0011x00001"
 	queryRes.Records[0]["Name"] = "Test"
 
 	describeRes := describeResponse{
-		Fields: []map[string]interface{}{
+		Fields: []map[string]any{
 			{
 				"name": "Id",
 				"type": "string",

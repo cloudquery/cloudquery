@@ -9,7 +9,7 @@ import (
 
 type queryResponse struct {
 	TotalSize      int                      `json:"totalSize"`
-	Records        []map[string]interface{} `json:"records"`
+	Records        []map[string]any `json:"records"`
 	Done           bool                     `json:"done"`
 	NextRecordsUrl string                   `json:"nextRecordsUrl"`
 }

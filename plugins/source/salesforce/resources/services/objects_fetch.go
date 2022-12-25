@@ -28,7 +28,7 @@ var notSupportedBulkObjects = map[string]bool{
 }
 
 type describeResponse struct {
-	Fields []map[string]interface{} `json:"fields"`
+	Fields []map[string]any `json:"fields"`
 }
 
 func fetchObjects(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
