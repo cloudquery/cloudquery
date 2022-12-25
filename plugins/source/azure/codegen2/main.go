@@ -165,7 +165,6 @@ func generateTable(parent *recipes.Table, r *recipes.Table) error {
 	var buff bytes.Buffer
 	if err := tpl.Execute(&buff, r); err != nil {
 		return fmt.Errorf("failed to execute template for  %w", err)
-		// return fmt.Errorf("failed to execute template for %s: %w", r.Table.Name, err)
 	}
 
 	filePath := path.Join(currentDir, "../resources/services", r.PackageName)
