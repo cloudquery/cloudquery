@@ -387,7 +387,7 @@ func LightsailResources() []*Resource {
 	for _, r := range resources {
 		r.Service = "lightsail"
 		r.Multiplex = `client.ServiceAccountRegionMultiplexer("lightsail")`
-		r.UnwrapEmbeddedStructs = true
+		r.UnwrapAllEmbeddedStructFields = true
 	}
 	return resources
 }

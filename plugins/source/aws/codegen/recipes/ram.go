@@ -52,15 +52,16 @@ func RAMResources() []*Resource {
 		},
 		{
 			TableDefinition: codegen.TableDefinition{
-				SubService:                  "resource_share_invitations",
-				Struct:                      new(types.ResourceShareInvitation),
-				Multiplex:                   mx,
-				PKColumns:                   []string{"arn"},
-				ExtraColumns:                defaultRegionalColumns,
-				ResolverAndMockTestTemplate: "describe_resources_1",
-				NameTransformer:             CreateReplaceTransformer(map[string]string{"resource_share_invitation_arn": "arn"}),
-				CustomDescribeInput:         `getResourceShareInvitationsInput()`,
+				SubService:   "resource_share_invitations",
+				Struct:       new(types.ResourceShareInvitation),
+				Multiplex:    mx,
+				PKColumns:    []string{"arn"},
+				ExtraColumns: defaultRegionalColumns,
+
+				NameTransformer: CreateReplaceTransformer(map[string]string{"resource_share_invitation_arn": "arn"}),
 			},
+			ResolverAndMockTestTemplate: "describe_resources_1",
+			CustomDescribeInput:         `getResourceShareInvitationsInput()`,
 		},
 		{
 			TableDefinition: codegen.TableDefinition{
@@ -76,18 +77,18 @@ func RAMResources() []*Resource {
 						Resolver: `resolveResourceSharePermissionDetailPermission`,
 					},
 				),
-				CustomListInput: `listResourceSharePermissionsInput()`,
 			},
+			CustomListInput: `listResourceSharePermissionsInput()`,
 		},
 		{
 			TableDefinition: codegen.TableDefinition{
-				SubService:      "resource_types",
-				Struct:          new(types.ServiceNameAndResourceType),
-				Multiplex:       mx,
-				PKColumns:       []string{"account_id", "resource_type", "service_name"},
-				ExtraColumns:    defaultRegionalColumns,
-				CustomListInput: `listResourceTypesInput()`,
+				SubService:   "resource_types",
+				Struct:       new(types.ServiceNameAndResourceType),
+				Multiplex:    mx,
+				PKColumns:    []string{"account_id", "resource_type", "service_name"},
+				ExtraColumns: defaultRegionalColumns,
 			},
+			CustomListInput: `listResourceTypesInput()`,
 		},
 	}
 	for _, r := range resources {

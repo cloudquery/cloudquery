@@ -11,7 +11,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func {{.Resolver}}(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
     var input {{.Service}}.{{.ListMethod.Method.Name}}Input{{ if .CustomListInput }} = {{.CustomListInput}}{{ end }}
 	c := meta.(*client.Client)
 	svc := c.Services().{{.CloudQueryServiceName}}
@@ -34,7 +34,7 @@ func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, parent *sc
     return nil
 }
 
-func {{.Table.PreResourceResolver}}(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+func {{.PreResourceResolver}}(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().{{.CloudQueryServiceName}}
 	var input {{.Service}}.{{.DescribeMethod.Method.Name}}Input{{ if .CustomDescribeInput }} = {{.CustomDescribeInput}}{{ end }}

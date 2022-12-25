@@ -25,8 +25,8 @@ func AppstreamResources() []*Resource {
 							Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 						},
 					}...),
-				ShouldGenerateResolverAndMockTest: true,
 			},
+			ShouldGenerateResolverAndMockTest: true,
 		},
 		{
 			TableDefinition: codegen.TableDefinition{
@@ -47,8 +47,8 @@ func AppstreamResources() []*Resource {
 				Relations: []string{
 					`ApplicationFleetAssociations()`,
 				},
-				ShouldGenerateResolverAndMockTest: false,
 			},
+			ShouldGenerateResolverAndMockTest: false,
 		},
 		{
 			TableDefinition: codegen.TableDefinition{
@@ -72,8 +72,8 @@ func AppstreamResources() []*Resource {
 							Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 						},
 					}...),
-				ShouldGenerateResolverAndMockTest: false,
 			},
+			ShouldGenerateResolverAndMockTest: false,
 		},
 		{
 			TableDefinition: codegen.TableDefinition{
@@ -90,8 +90,8 @@ func AppstreamResources() []*Resource {
 							Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 						},
 					}...),
-				ShouldGenerateResolverAndMockTest: true,
 			},
+			ShouldGenerateResolverAndMockTest: true,
 		},
 		{
 			TableDefinition: codegen.TableDefinition{
@@ -109,8 +109,8 @@ func AppstreamResources() []*Resource {
 							Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 						},
 					}...),
-				ShouldGenerateResolverAndMockTest: true,
 			},
+			ShouldGenerateResolverAndMockTest: true,
 		},
 		{
 			TableDefinition: codegen.TableDefinition{
@@ -128,8 +128,8 @@ func AppstreamResources() []*Resource {
 							Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 						},
 					}...),
-				ShouldGenerateResolverAndMockTest: true,
 			},
+			ShouldGenerateResolverAndMockTest: true,
 		},
 		{
 			TableDefinition: codegen.TableDefinition{
@@ -147,9 +147,9 @@ func AppstreamResources() []*Resource {
 							Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 						},
 					}...),
-				ShouldGenerateResolverAndMockTest: true,
-				CustomDescribeInput:               `appstream.DescribeImagesInput{MaxResults: aws.Int32(25)}`,
 			},
+			ShouldGenerateResolverAndMockTest: true,
+			CustomDescribeInput:               `appstream.DescribeImagesInput{MaxResults: aws.Int32(25)}`,
 		},
 		{
 			TableDefinition: codegen.TableDefinition{
@@ -171,8 +171,8 @@ func AppstreamResources() []*Resource {
 					`StackEntitlements()`,
 					`StackUserAssociations()`,
 				},
-				ShouldGenerateResolverAndMockTest: false,
 			},
+			ShouldGenerateResolverAndMockTest: false,
 		},
 		{
 			TableDefinition: codegen.TableDefinition{
@@ -195,8 +195,8 @@ func AppstreamResources() []*Resource {
 							Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 						},
 					}...),
-				ShouldGenerateResolverAndMockTest: false,
 			},
+			ShouldGenerateResolverAndMockTest: false,
 		},
 		{
 			TableDefinition: codegen.TableDefinition{
@@ -224,8 +224,8 @@ func AppstreamResources() []*Resource {
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
 				}...),
-				ShouldGenerateResolverAndMockTest: false,
 			},
+			ShouldGenerateResolverAndMockTest: false,
 		},
 		{
 			TableDefinition: codegen.TableDefinition{
@@ -242,8 +242,8 @@ func AppstreamResources() []*Resource {
 							Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 						},
 					}...),
-				ShouldGenerateResolverAndMockTest: true,
 			},
+			ShouldGenerateResolverAndMockTest: true,
 		},
 		{
 			TableDefinition: codegen.TableDefinition{
@@ -261,8 +261,8 @@ func AppstreamResources() []*Resource {
 							Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 						},
 					}...),
-				ShouldGenerateResolverAndMockTest: false,
 			},
+			ShouldGenerateResolverAndMockTest: false,
 		},
 	}
 

@@ -69,7 +69,7 @@ func ELBv1Resources() []*Resource {
 		r.Multiplex = `client.ServiceAccountRegionMultiplexer("elasticloadbalancing")`
 		structName := reflect.ValueOf(r.Struct).Elem().Type().Name()
 		if strings.Contains(structName, "Wrapper") {
-			r.UnwrapEmbeddedStructs = true
+			r.UnwrapAllEmbeddedStructFields = true
 		}
 	}
 	return resources

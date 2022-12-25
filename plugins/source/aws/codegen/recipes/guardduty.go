@@ -76,7 +76,7 @@ func GuarddutyResources() []*Resource {
 		r.Multiplex = `client.ServiceAccountRegionMultiplexer("guardduty")`
 		structName := reflect.ValueOf(r.Struct).Elem().Type().Name()
 		if strings.Contains(structName, "Wrapper") {
-			r.UnwrapEmbeddedStructs = true
+			r.UnwrapAllEmbeddedStructFields = true
 		}
 	}
 	return resources

@@ -35,7 +35,7 @@ func OrganizationsResources() []*Resource {
 		{
 			TableDefinition: codegen.TableDefinition{
 				SubService:   "organizations",
-				Name:         "aws_organizations",
+				NameOverride: "aws_organizations",
 				Struct:       &types.Organization{},
 				Description:  "https://docs.aws.amazon.com/organizations/latest/APIReference/API_Organization.html",
 				SkipFields:   []string{"AvailablePolicyTypes"}, // deprecated and misleading field according to docs

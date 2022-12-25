@@ -2,6 +2,7 @@ package recipes
 
 import (
 	types "github.com/aws/aws-sdk-go-v2/service/identitystore/types"
+	"github.com/cloudquery/plugin-sdk/codegen"
 )
 
 func IdentitystoreResources() []*Resource {

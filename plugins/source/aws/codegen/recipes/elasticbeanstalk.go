@@ -141,7 +141,7 @@ func ElasticbeanstalkResources() []*Resource {
 		r.Multiplex = `client.ServiceAccountRegionMultiplexer("elasticbeanstalk")`
 		structName := reflect.ValueOf(r.Struct).Elem().Type().Name()
 		if strings.Contains(structName, "Wrapper") {
-			r.UnwrapEmbeddedStructs = true
+			r.UnwrapAllEmbeddedStructFields = true
 		}
 	}
 	return resources

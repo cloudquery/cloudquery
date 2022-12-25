@@ -195,7 +195,7 @@ func WAFv2Resources() []*Resource {
 		r.Multiplex = `client.ServiceAccountRegionScopeMultiplexer("waf-regional")`
 		structName := reflect.ValueOf(r.Struct).Elem().Type().Name()
 		if strings.Contains(structName, "Wrapper") {
-			r.UnwrapEmbeddedStructs = true
+			r.UnwrapAllEmbeddedStructFields = true
 		}
 	}
 	return resources

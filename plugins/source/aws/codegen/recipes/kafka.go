@@ -28,10 +28,10 @@ func KafkaResources() []*Resource {
 					"Nodes()",
 					"ClusterOperations()",
 				},
-				ShouldGenerateResolverAndMockTest: true,
-				ResolverAndMockTestTemplate:       "list_and_describe_resources_1",
-				CustomDescribeInput:               `describeClustersInput(resource)`,
 			},
+			ShouldGenerateResolverAndMockTest: true,
+			ResolverAndMockTestTemplate:       "list_and_describe_resources_1",
+			CustomDescribeInput:               `describeClustersInput(resource)`,
 		},
 		{
 			TableDefinition: codegen.TableDefinition{
@@ -52,8 +52,8 @@ func KafkaResources() []*Resource {
 						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 				}...),
-				ShouldGenerateResolverAndMockTest: false,
 			},
+			ShouldGenerateResolverAndMockTest: false,
 		},
 		{
 			TableDefinition: codegen.TableDefinition{
@@ -79,8 +79,8 @@ func KafkaResources() []*Resource {
 						Resolver: `resolveKafkaTags("OperationArn")`,
 					},
 				}...),
-				ShouldGenerateResolverAndMockTest: false,
 			},
+			ShouldGenerateResolverAndMockTest: false,
 		},
 		{
 			TableDefinition: codegen.TableDefinition{
@@ -96,9 +96,9 @@ func KafkaResources() []*Resource {
 						Resolver: `schema.PathResolver("Arn")`,
 					},
 				}...),
-				ShouldGenerateResolverAndMockTest: true,
-				ResolverAndMockTestTemplate:       "list_resources_1",
 			},
+			ShouldGenerateResolverAndMockTest: true,
+			ResolverAndMockTestTemplate:       "list_resources_1",
 		},
 	}
 

@@ -42,7 +42,7 @@ func ResourceGroupsResources() []*Resource {
 		r.Multiplex = `client.ServiceAccountRegionMultiplexer("resource-groups")`
 		structName := reflect.ValueOf(r.Struct).Elem().Type().Name()
 		if strings.Contains(structName, "Wrapper") {
-			r.UnwrapEmbeddedStructs = true
+			r.UnwrapAllEmbeddedStructFields = true
 		}
 	}
 	return resources

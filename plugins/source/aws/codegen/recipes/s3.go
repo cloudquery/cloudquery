@@ -126,7 +126,7 @@ func S3Resources() []*Resource {
 		r.Multiplex = "client.AccountMultiplex"
 		structName := reflect.ValueOf(r.Struct).Elem().Type().Name()
 		if strings.Contains(structName, "Wrapper") {
-			r.UnwrapEmbeddedStructs = true
+			r.UnwrapAllEmbeddedStructFields = true
 		}
 	}
 	return resources

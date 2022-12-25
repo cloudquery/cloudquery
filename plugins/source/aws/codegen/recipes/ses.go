@@ -105,12 +105,12 @@ func SESResources() []*Resource {
 		},
 		{
 			TableDefinition: codegen.TableDefinition{
-				SubService:            "identities",
-				Struct:                &models.EmailIdentity{},
-				UnwrapEmbeddedStructs: true,
-				Description:           "https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_GetEmailIdentity.html",
-				PreResourceResolver:   "getIdentity",
-				SkipFields:            []string{"ResultMetadata"},
+				SubService:                    "identities",
+				Struct:                        &models.EmailIdentity{},
+				UnwrapAllEmbeddedStructFields: true,
+				Description:                   "https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_GetEmailIdentity.html",
+				PreResourceResolver:           "getIdentity",
+				SkipFields:                    []string{"ResultMetadata"},
 				ExtraColumns: append(
 					defaultRegionalColumns,
 					codegen.ColumnDefinition{
