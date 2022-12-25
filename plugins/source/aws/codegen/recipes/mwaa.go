@@ -9,21 +9,23 @@ import (
 func MWAAResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService:          "environments",
-			Description:         "https://docs.aws.amazon.com/mwaa/latest/API/API_Environment.html",
-			Struct:              &types.Environment{},
-			SkipFields:          []string{"Arn"},
-			PreResourceResolver: "getEnvironment",
-			ExtraColumns: append(
-				defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "arn",
-						Type:     schema.TypeString,
-						Resolver: `schema.PathResolver("Arn")`,
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-				}...),
+			TableDefinition: codegen.TableDefinition{
+				SubService:          "environments",
+				Description:         "https://docs.aws.amazon.com/mwaa/latest/API/API_Environment.html",
+				Struct:              &types.Environment{},
+				SkipFields:          []string{"Arn"},
+				PreResourceResolver: "getEnvironment",
+				ExtraColumns: append(
+					defaultRegionalColumns,
+					[]codegen.ColumnDefinition{
+						{
+							Name:     "arn",
+							Type:     schema.TypeString,
+							Resolver: `schema.PathResolver("Arn")`,
+							Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+						},
+					}...),
+			},
 		},
 	}
 

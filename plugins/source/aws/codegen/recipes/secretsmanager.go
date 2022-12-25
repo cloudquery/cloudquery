@@ -9,27 +9,29 @@ import (
 func SecretsManagerResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService:          "secrets",
-			Struct:              &secretsmanager.DescribeSecretOutput{},
-			Description:         "https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_ListSecrets.html",
-			SkipFields:          []string{"ARN", "ResultMetadata"},
-			PreResourceResolver: "getSecret",
-			ExtraColumns: append(
-				defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "arn",
-						Type:     schema.TypeString,
-						Resolver: `schema.PathResolver("ARN")`,
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:        "policy",
-						Description: "A JSON-formatted string that describes the permissions that are associated with the attached secret.",
-						Type:        schema.TypeJSON,
-						Resolver:    `fetchSecretsmanagerSecretPolicy`,
-					},
-				}...),
+			TableDefinition: codegen.TableDefinition{
+				SubService:          "secrets",
+				Struct:              &secretsmanager.DescribeSecretOutput{},
+				Description:         "https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_ListSecrets.html",
+				SkipFields:          []string{"ARN", "ResultMetadata"},
+				PreResourceResolver: "getSecret",
+				ExtraColumns: append(
+					defaultRegionalColumns,
+					[]codegen.ColumnDefinition{
+						{
+							Name:     "arn",
+							Type:     schema.TypeString,
+							Resolver: `schema.PathResolver("ARN")`,
+							Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+						},
+						{
+							Name:        "policy",
+							Description: "A JSON-formatted string that describes the permissions that are associated with the attached secret.",
+							Type:        schema.TypeJSON,
+							Resolver:    `fetchSecretsmanagerSecretPolicy`,
+						},
+					}...),
+			},
 		},
 	}
 

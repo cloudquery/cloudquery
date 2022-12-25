@@ -8,29 +8,30 @@ import (
 
 func TransferResources() []*Resource {
 	resources := []*Resource{
-
 		{
-			SubService:          "servers",
-			Struct:              &types.DescribedServer{},
-			Description:         "https://docs.aws.amazon.com/transfer/latest/userguide/API_DescribedServer.html",
-			SkipFields:          []string{"Arn", "Tags"},
-			PreResourceResolver: "getServer",
-			ExtraColumns: append(
-				defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "arn",
-						Type:     schema.TypeString,
-						Resolver: `schema.PathResolver("Arn")`,
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:        "tags",
-						Description: "Specifies the key-value pairs that you can use to search for and group servers that were assigned to the server that was described",
-						Type:        schema.TypeJSON,
-						Resolver:    `resolveServersTags`,
-					},
-				}...),
+			TableDefinition: codegen.TableDefinition{
+				SubService:          "servers",
+				Struct:              &types.DescribedServer{},
+				Description:         "https://docs.aws.amazon.com/transfer/latest/userguide/API_DescribedServer.html",
+				SkipFields:          []string{"Arn", "Tags"},
+				PreResourceResolver: "getServer",
+				ExtraColumns: append(
+					defaultRegionalColumns,
+					[]codegen.ColumnDefinition{
+						{
+							Name:     "arn",
+							Type:     schema.TypeString,
+							Resolver: `schema.PathResolver("Arn")`,
+							Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+						},
+						{
+							Name:        "tags",
+							Description: "Specifies the key-value pairs that you can use to search for and group servers that were assigned to the server that was described",
+							Type:        schema.TypeJSON,
+							Resolver:    `resolveServersTags`,
+						},
+					}...),
+			},
 		},
 	}
 

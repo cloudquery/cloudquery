@@ -13,46 +13,50 @@ import (
 func CloudtrailResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService:  "trails",
-			Struct:      &models.CloudTrailWrapper{},
-			Description: "https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_Trail.html",
-			SkipFields:  []string{"TrailARN"},
-			ExtraColumns: append(defaultRegionalColumns, []codegen.ColumnDefinition{
-				{
-					Name:     "cloudwatch_logs_log_group_name",
-					Type:     schema.TypeString,
-					Resolver: `resolveCloudtrailTrailCloudwatchLogsLogGroupName`,
+			TableDefinition: codegen.TableDefinition{
+				SubService:  "trails",
+				Struct:      &models.CloudTrailWrapper{},
+				Description: "https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_Trail.html",
+				SkipFields:  []string{"TrailARN"},
+				ExtraColumns: append(defaultRegionalColumns, []codegen.ColumnDefinition{
+					{
+						Name:     "cloudwatch_logs_log_group_name",
+						Type:     schema.TypeString,
+						Resolver: `resolveCloudtrailTrailCloudwatchLogsLogGroupName`,
+					},
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("TrailARN")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+					{
+						Name:     "status",
+						Type:     schema.TypeJSON,
+						Resolver: `resolveCloudTrailStatus`,
+					},
+				}...),
+				Relations: []string{
+					"TrailEventSelectors()",
 				},
-				{
-					Name:     "arn",
-					Type:     schema.TypeString,
-					Resolver: `schema.PathResolver("TrailARN")`,
-					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-				},
-				{
-					Name:     "status",
-					Type:     schema.TypeJSON,
-					Resolver: `resolveCloudTrailStatus`,
-				},
-			}...),
-			Relations: []string{
-				"TrailEventSelectors()",
 			},
 		},
 		{
-			SubService:  "trail_event_selectors",
-			Struct:      &types.EventSelector{},
-			Description: "https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_EventSelector.html",
-			SkipFields:  []string{},
-			ExtraColumns: append(
-				defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "trail_arn",
-						Type:     schema.TypeString,
-						Resolver: `schema.ParentColumnResolver("arn")`,
-					},
-				}...),
+			TableDefinition: codegen.TableDefinition{
+				SubService:  "trail_event_selectors",
+				Struct:      &types.EventSelector{},
+				Description: "https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_EventSelector.html",
+				SkipFields:  []string{},
+				ExtraColumns: append(
+					defaultRegionalColumns,
+					[]codegen.ColumnDefinition{
+						{
+							Name:     "trail_arn",
+							Type:     schema.TypeString,
+							Resolver: `schema.ParentColumnResolver("arn")`,
+						},
+					}...),
+			},
 		},
 	}
 

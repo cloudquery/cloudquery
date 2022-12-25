@@ -7,17 +7,23 @@ import (
 func IdentitystoreResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "groups",
-			Struct:     &types.Group{},
-			Relations:  []string{"GroupMemberships()"},
+			TableDefinition: codegen.TableDefinition{
+				SubService: "groups",
+				Struct:     &types.Group{},
+				Relations:  []string{"GroupMemberships()"},
+			},
 		},
 		{
-			SubService: "users",
-			Struct:     &types.User{},
+			TableDefinition: codegen.TableDefinition{
+				SubService: "users",
+				Struct:     &types.User{},
+			},
 		},
 		{
-			SubService: "group_memberships",
-			Struct:     &types.GroupMembership{},
+			TableDefinition: codegen.TableDefinition{
+				SubService: "group_memberships",
+				Struct:     &types.GroupMembership{},
+			},
 		},
 	}
 

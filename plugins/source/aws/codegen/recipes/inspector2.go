@@ -9,20 +9,22 @@ import (
 func Inspector2Resources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService:  "findings",
-			Struct:      &types.Finding{},
-			Description: "https://docs.aws.amazon.com/inspector/v2/APIReference/API_Finding.html",
-			SkipFields:  []string{"FindingArn"},
-			ExtraColumns: append(
-				defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "arn",
-						Type:     schema.TypeString,
-						Resolver: `schema.PathResolver("FindingArn")`,
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-				}...),
+			TableDefinition: codegen.TableDefinition{
+				SubService:  "findings",
+				Struct:      &types.Finding{},
+				Description: "https://docs.aws.amazon.com/inspector/v2/APIReference/API_Finding.html",
+				SkipFields:  []string{"FindingArn"},
+				ExtraColumns: append(
+					defaultRegionalColumns,
+					[]codegen.ColumnDefinition{
+						{
+							Name:     "arn",
+							Type:     schema.TypeString,
+							Resolver: `schema.PathResolver("FindingArn")`,
+							Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+						},
+					}...),
+			},
 		},
 	}
 

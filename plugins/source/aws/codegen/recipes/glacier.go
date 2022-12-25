@@ -9,88 +9,98 @@ import (
 func GlacierResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "vaults",
-			Struct:     &types.DescribeVaultOutput{},
-			SkipFields: []string{"VaultARN"},
-			ExtraColumns: append(
-				defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `resolveGlacierVaultTags`,
-					},
-					{
-						Name:     "arn",
-						Type:     schema.TypeString,
-						Resolver: `schema.PathResolver("VaultARN")`,
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-				}...),
-			Relations: []string{
-				"VaultAccessPolicies()",
-				"VaultLockPolicies()",
-				"VaultNotifications()",
+			TableDefinition: codegen.TableDefinition{
+				SubService: "vaults",
+				Struct:     &types.DescribeVaultOutput{},
+				SkipFields: []string{"VaultARN"},
+				ExtraColumns: append(
+					defaultRegionalColumns,
+					[]codegen.ColumnDefinition{
+						{
+							Name:     "tags",
+							Type:     schema.TypeJSON,
+							Resolver: `resolveGlacierVaultTags`,
+						},
+						{
+							Name:     "arn",
+							Type:     schema.TypeString,
+							Resolver: `schema.PathResolver("VaultARN")`,
+							Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+						},
+					}...),
+				Relations: []string{
+					"VaultAccessPolicies()",
+					"VaultLockPolicies()",
+					"VaultNotifications()",
+				},
 			},
 		},
 		{
-			SubService: "vault_access_policies",
-			Struct:     &types.VaultAccessPolicy{},
-			SkipFields: []string{"Policy"},
-			ExtraColumns: append(
-				defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "vault_arn",
-						Type:     schema.TypeString,
-						Resolver: `schema.ParentColumnResolver("arn")`,
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:     "policy",
-						Type:     schema.TypeJSON,
-						Resolver: `schema.PathResolver("Policy")`,
-					},
-				}...),
+			TableDefinition: codegen.TableDefinition{
+				SubService: "vault_access_policies",
+				Struct:     &types.VaultAccessPolicy{},
+				SkipFields: []string{"Policy"},
+				ExtraColumns: append(
+					defaultRegionalColumns,
+					[]codegen.ColumnDefinition{
+						{
+							Name:     "vault_arn",
+							Type:     schema.TypeString,
+							Resolver: `schema.ParentColumnResolver("arn")`,
+							Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+						},
+						{
+							Name:     "policy",
+							Type:     schema.TypeJSON,
+							Resolver: `schema.PathResolver("Policy")`,
+						},
+					}...),
+			},
 		},
 		{
-			SubService: "vault_lock_policies",
-			Struct:     &types.VaultLockPolicy{},
-			SkipFields: []string{"Policy"},
-			ExtraColumns: append(
-				defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "vault_arn",
-						Type:     schema.TypeString,
-						Resolver: `schema.ParentColumnResolver("arn")`,
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:     "policy",
-						Type:     schema.TypeJSON,
-						Resolver: `schema.PathResolver("Policy")`,
-					},
-				}...),
+			TableDefinition: codegen.TableDefinition{
+				SubService: "vault_lock_policies",
+				Struct:     &types.VaultLockPolicy{},
+				SkipFields: []string{"Policy"},
+				ExtraColumns: append(
+					defaultRegionalColumns,
+					[]codegen.ColumnDefinition{
+						{
+							Name:     "vault_arn",
+							Type:     schema.TypeString,
+							Resolver: `schema.ParentColumnResolver("arn")`,
+							Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+						},
+						{
+							Name:     "policy",
+							Type:     schema.TypeJSON,
+							Resolver: `schema.PathResolver("Policy")`,
+						},
+					}...),
+			},
 		},
 		{
-			SubService: "vault_notifications",
-			Struct:     &types.VaultNotificationConfig{},
-			ExtraColumns: append(
-				defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "vault_arn",
-						Type:     schema.TypeString,
-						Resolver: `schema.ParentColumnResolver("arn")`,
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-				}...),
+			TableDefinition: codegen.TableDefinition{
+				SubService: "vault_notifications",
+				Struct:     &types.VaultNotificationConfig{},
+				ExtraColumns: append(
+					defaultRegionalColumns,
+					[]codegen.ColumnDefinition{
+						{
+							Name:     "vault_arn",
+							Type:     schema.TypeString,
+							Resolver: `schema.ParentColumnResolver("arn")`,
+							Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+						},
+					}...),
+			},
 		},
 		{
-			SubService:   "data_retrieval_policies",
-			Struct:       &types.DataRetrievalPolicy{},
-			ExtraColumns: defaultRegionalColumnsPK,
+			TableDefinition: codegen.TableDefinition{
+				SubService:   "data_retrieval_policies",
+				Struct:       &types.DataRetrievalPolicy{},
+				ExtraColumns: defaultRegionalColumnsPK,
+			},
 		},
 	}
 

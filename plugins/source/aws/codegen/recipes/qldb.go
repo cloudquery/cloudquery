@@ -10,59 +10,65 @@ import (
 func QLDBResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService:          "ledgers",
-			Struct:              &qldb.DescribeLedgerOutput{},
-			SkipFields:          []string{"Arn"},
-			PreResourceResolver: "getLedger",
-			ExtraColumns: append(
-				defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:        "tags",
-						Description: "The tags associated with the pipeline.",
-						Type:        schema.TypeJSON,
-						Resolver:    `resolveQldbLedgerTags`,
-					},
-					{
-						Name:    "arn",
-						Type:    schema.TypeString,
-						Options: schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-				}...),
-			Relations: []string{
-				"LedgerJournalKinesisStreams()",
-				"LedgerJournalS3Exports()",
+			TableDefinition: codegen.TableDefinition{
+				SubService:          "ledgers",
+				Struct:              &qldb.DescribeLedgerOutput{},
+				SkipFields:          []string{"Arn"},
+				PreResourceResolver: "getLedger",
+				ExtraColumns: append(
+					defaultRegionalColumns,
+					[]codegen.ColumnDefinition{
+						{
+							Name:        "tags",
+							Description: "The tags associated with the pipeline.",
+							Type:        schema.TypeJSON,
+							Resolver:    `resolveQldbLedgerTags`,
+						},
+						{
+							Name:    "arn",
+							Type:    schema.TypeString,
+							Options: schema.ColumnCreationOptions{PrimaryKey: true},
+						},
+					}...),
+				Relations: []string{
+					"LedgerJournalKinesisStreams()",
+					"LedgerJournalS3Exports()",
+				},
 			},
 		},
 		{
-			SubService:  "ledger_journal_kinesis_streams",
-			Struct:      &types.JournalKinesisStreamDescription{},
-			Description: "https://docs.aws.amazon.com/qldb/latest/developerguide/API_JournalKinesisStreamDescription.html",
-			SkipFields:  []string{},
-			ExtraColumns: append(
-				defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "ledger_arn",
-						Type:     schema.TypeString,
-						Resolver: `schema.ParentColumnResolver("arn")`,
-					},
-				}...),
+			TableDefinition: codegen.TableDefinition{
+				SubService:  "ledger_journal_kinesis_streams",
+				Struct:      &types.JournalKinesisStreamDescription{},
+				Description: "https://docs.aws.amazon.com/qldb/latest/developerguide/API_JournalKinesisStreamDescription.html",
+				SkipFields:  []string{},
+				ExtraColumns: append(
+					defaultRegionalColumns,
+					[]codegen.ColumnDefinition{
+						{
+							Name:     "ledger_arn",
+							Type:     schema.TypeString,
+							Resolver: `schema.ParentColumnResolver("arn")`,
+						},
+					}...),
+			},
 		},
 		{
-			SubService:  "ledger_journal_s3_exports",
-			Struct:      &types.JournalS3ExportDescription{},
-			Description: "https://docs.aws.amazon.com/qldb/latest/developerguide/API_JournalS3ExportDescription.html",
-			SkipFields:  []string{},
-			ExtraColumns: append(
-				defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "ledger_arn",
-						Type:     schema.TypeString,
-						Resolver: `schema.ParentColumnResolver("arn")`,
-					},
-				}...),
+			TableDefinition: codegen.TableDefinition{
+				SubService:  "ledger_journal_s3_exports",
+				Struct:      &types.JournalS3ExportDescription{},
+				Description: "https://docs.aws.amazon.com/qldb/latest/developerguide/API_JournalS3ExportDescription.html",
+				SkipFields:  []string{},
+				ExtraColumns: append(
+					defaultRegionalColumns,
+					[]codegen.ColumnDefinition{
+						{
+							Name:     "ledger_arn",
+							Type:     schema.TypeString,
+							Resolver: `schema.ParentColumnResolver("arn")`,
+						},
+					}...),
+			},
 		},
 	}
 

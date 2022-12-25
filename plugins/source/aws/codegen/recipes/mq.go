@@ -10,78 +10,86 @@ import (
 func MQResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService:          "brokers",
-			Struct:              &mq.DescribeBrokerOutput{},
-			Description:         "https://docs.aws.amazon.com/amazon-mq/latest/api-reference/brokers.html",
-			SkipFields:          []string{"BrokerArn"},
-			PreResourceResolver: "getMqBroker",
-			ExtraColumns: append(
-				defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "arn",
-						Type:     schema.TypeString,
-						Resolver: `schema.PathResolver("BrokerArn")`,
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-				}...),
-			Relations: []string{
-				"BrokerConfigurations()",
-				"BrokerUsers()",
+			TableDefinition: codegen.TableDefinition{
+				SubService:          "brokers",
+				Struct:              &mq.DescribeBrokerOutput{},
+				Description:         "https://docs.aws.amazon.com/amazon-mq/latest/api-reference/brokers.html",
+				SkipFields:          []string{"BrokerArn"},
+				PreResourceResolver: "getMqBroker",
+				ExtraColumns: append(
+					defaultRegionalColumns,
+					[]codegen.ColumnDefinition{
+						{
+							Name:     "arn",
+							Type:     schema.TypeString,
+							Resolver: `schema.PathResolver("BrokerArn")`,
+							Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+						},
+					}...),
+				Relations: []string{
+					"BrokerConfigurations()",
+					"BrokerUsers()",
+				},
 			},
 		},
 		{
-			SubService:  "broker_configurations",
-			Struct:      &types.Configuration{},
-			Description: "https://docs.aws.amazon.com/amazon-mq/latest/api-reference/configurations-configuration-id.html",
-			SkipFields:  []string{},
-			ExtraColumns: append(
-				defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "broker_arn",
-						Type:     schema.TypeString,
-						Resolver: `schema.ParentColumnResolver("arn")`,
-					},
-				}...),
-			Relations: []string{
-				"BrokerConfigurationRevisions()",
+			TableDefinition: codegen.TableDefinition{
+				SubService:  "broker_configurations",
+				Struct:      &types.Configuration{},
+				Description: "https://docs.aws.amazon.com/amazon-mq/latest/api-reference/configurations-configuration-id.html",
+				SkipFields:  []string{},
+				ExtraColumns: append(
+					defaultRegionalColumns,
+					[]codegen.ColumnDefinition{
+						{
+							Name:     "broker_arn",
+							Type:     schema.TypeString,
+							Resolver: `schema.ParentColumnResolver("arn")`,
+						},
+					}...),
+				Relations: []string{
+					"BrokerConfigurationRevisions()",
+				},
 			},
 		},
 		{
-			SubService:          "broker_configuration_revisions",
-			Struct:              &mq.DescribeConfigurationRevisionOutput{},
-			Description:         "https://docs.aws.amazon.com/amazon-mq/latest/api-reference/configurations-configuration-id-revisions.html",
-			SkipFields:          []string{"Data"},
-			PreResourceResolver: "getMqBrokerConfigurationRevision",
-			ExtraColumns: append(
-				defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "broker_configuration_arn",
-						Type:     schema.TypeString,
-						Resolver: `schema.ParentColumnResolver("arn")`,
-					},
-					{
-						Name:     "data",
-						Type:     schema.TypeJSON,
-						Resolver: `resolveBrokerConfigurationRevisionsData`,
-					},
-				}...),
+			TableDefinition: codegen.TableDefinition{
+				SubService:          "broker_configuration_revisions",
+				Struct:              &mq.DescribeConfigurationRevisionOutput{},
+				Description:         "https://docs.aws.amazon.com/amazon-mq/latest/api-reference/configurations-configuration-id-revisions.html",
+				SkipFields:          []string{"Data"},
+				PreResourceResolver: "getMqBrokerConfigurationRevision",
+				ExtraColumns: append(
+					defaultRegionalColumns,
+					[]codegen.ColumnDefinition{
+						{
+							Name:     "broker_configuration_arn",
+							Type:     schema.TypeString,
+							Resolver: `schema.ParentColumnResolver("arn")`,
+						},
+						{
+							Name:     "data",
+							Type:     schema.TypeJSON,
+							Resolver: `resolveBrokerConfigurationRevisionsData`,
+						},
+					}...),
+			},
 		},
 		{
-			SubService: "broker_users",
-			Struct:     &mq.DescribeUserOutput{},
-			SkipFields: []string{},
-			ExtraColumns: append(
-				defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "broker_arn",
-						Type:     schema.TypeString,
-						Resolver: `schema.ParentColumnResolver("arn")`,
-					},
-				}...),
+			TableDefinition: codegen.TableDefinition{
+				SubService: "broker_users",
+				Struct:     &mq.DescribeUserOutput{},
+				SkipFields: []string{},
+				ExtraColumns: append(
+					defaultRegionalColumns,
+					[]codegen.ColumnDefinition{
+						{
+							Name:     "broker_arn",
+							Type:     schema.TypeString,
+							Resolver: `schema.ParentColumnResolver("arn")`,
+						},
+					}...),
+			},
 		},
 	}
 

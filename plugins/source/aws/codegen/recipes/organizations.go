@@ -9,36 +9,40 @@ import (
 func OrganizationsResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService:  "accounts",
-			Struct:      &types.Account{},
-			Description: "https://docs.aws.amazon.com/organizations/latest/APIReference/API_Account.html",
-			SkipFields:  []string{"Arn"},
-			Multiplex:   `client.AccountMultiplex`,
-			ExtraColumns: append(
-				defaultAccountColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "arn",
-						Type:     schema.TypeString,
-						Resolver: `schema.PathResolver("Arn")`,
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `resolveAccountTags`,
-					},
-				}...),
+			TableDefinition: codegen.TableDefinition{
+				SubService:  "accounts",
+				Struct:      &types.Account{},
+				Description: "https://docs.aws.amazon.com/organizations/latest/APIReference/API_Account.html",
+				SkipFields:  []string{"Arn"},
+				Multiplex:   `client.AccountMultiplex`,
+				ExtraColumns: append(
+					defaultAccountColumns,
+					[]codegen.ColumnDefinition{
+						{
+							Name:     "arn",
+							Type:     schema.TypeString,
+							Resolver: `schema.PathResolver("Arn")`,
+							Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+						},
+						{
+							Name:     "tags",
+							Type:     schema.TypeJSON,
+							Resolver: `resolveAccountTags`,
+						},
+					}...),
+			},
 		},
 		{
-			SubService:   "organizations",
-			Name:         "aws_organizations",
-			Struct:       &types.Organization{},
-			Description:  "https://docs.aws.amazon.com/organizations/latest/APIReference/API_Organization.html",
-			SkipFields:   []string{"AvailablePolicyTypes"}, // deprecated and misleading field according to docs
-			PKColumns:    []string{"account_id", "arn"},
-			Multiplex:    `client.AccountMultiplex`,
-			ExtraColumns: defaultAccountColumns,
+			TableDefinition: codegen.TableDefinition{
+				SubService:   "organizations",
+				Name:         "aws_organizations",
+				Struct:       &types.Organization{},
+				Description:  "https://docs.aws.amazon.com/organizations/latest/APIReference/API_Organization.html",
+				SkipFields:   []string{"AvailablePolicyTypes"}, // deprecated and misleading field according to docs
+				PKColumns:    []string{"account_id", "arn"},
+				Multiplex:    `client.AccountMultiplex`,
+				ExtraColumns: defaultAccountColumns,
+			},
 		},
 	}
 

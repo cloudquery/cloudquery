@@ -11,38 +11,42 @@ func SchedulerResources() []*Resource {
 	mx := `client.ServiceAccountRegionMultiplexer("scheduler")`
 	resources := []*Resource{
 		{
-			SubService: "schedule_groups",
-			Struct:     new(types.ScheduleGroupSummary),
-			Multiplex:  mx,
-			PKColumns:  []string{"arn"},
-			ExtraColumns: append(
-				defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
+			TableDefinition: codegen.TableDefinition{
+				SubService: "schedule_groups",
+				Struct:     new(types.ScheduleGroupSummary),
+				Multiplex:  mx,
+				PKColumns:  []string{"arn"},
+				ExtraColumns: append(
+					defaultRegionalColumns,
+					[]codegen.ColumnDefinition{
 
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `resolveSchedulerScheduleTags()`,
-					},
-				}...),
+						{
+							Name:     "tags",
+							Type:     schema.TypeJSON,
+							Resolver: `resolveSchedulerScheduleTags()`,
+						},
+					}...),
+			},
 		},
 		{
-			SubService: "schedules",
-			Struct:     new(scheduler.GetScheduleOutput),
-			Multiplex:  mx,
-			PKColumns:  []string{"arn"},
-			SkipFields: []string{"ResultMetadata"},
-			ExtraColumns: append(
-				defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
+			TableDefinition: codegen.TableDefinition{
+				SubService: "schedules",
+				Struct:     new(scheduler.GetScheduleOutput),
+				Multiplex:  mx,
+				PKColumns:  []string{"arn"},
+				SkipFields: []string{"ResultMetadata"},
+				ExtraColumns: append(
+					defaultRegionalColumns,
+					[]codegen.ColumnDefinition{
 
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `resolveSchedulerScheduleTags()`,
-					},
-				}...),
-			PreResourceResolver: "getSchedule",
+						{
+							Name:     "tags",
+							Type:     schema.TypeJSON,
+							Resolver: `resolveSchedulerScheduleTags()`,
+						},
+					}...),
+				PreResourceResolver: "getSchedule",
+			},
 		},
 	}
 	for _, r := range resources {

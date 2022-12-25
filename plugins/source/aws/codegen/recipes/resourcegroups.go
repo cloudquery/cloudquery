@@ -11,27 +11,28 @@ import (
 
 func ResourceGroupsResources() []*Resource {
 	resources := []*Resource{
-
 		{
-			SubService:          "resource_groups",
-			Struct:              &models.ResourceGroupWrapper{},
-			SkipFields:          []string{},
-			PreResourceResolver: "getResourceGroup",
-			ExtraColumns: append(
-				defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "arn",
-						Type:     schema.TypeString,
-						Resolver: `schema.PathResolver("GroupArn")`,
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `resolveResourcegroupsResourceGroupTags`,
-					},
-				}...),
+			TableDefinition: codegen.TableDefinition{
+				SubService:          "resource_groups",
+				Struct:              &models.ResourceGroupWrapper{},
+				SkipFields:          []string{},
+				PreResourceResolver: "getResourceGroup",
+				ExtraColumns: append(
+					defaultRegionalColumns,
+					[]codegen.ColumnDefinition{
+						{
+							Name:     "arn",
+							Type:     schema.TypeString,
+							Resolver: `schema.PathResolver("GroupArn")`,
+							Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+						},
+						{
+							Name:     "tags",
+							Type:     schema.TypeJSON,
+							Resolver: `resolveResourcegroupsResourceGroupTags`,
+						},
+					}...),
+			},
 		},
 	}
 

@@ -12,20 +12,22 @@ import (
 func DMSResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService:  "replication_instances",
-			Struct:      &models.ReplicationInstanceWrapper{},
-			Description: "https://docs.aws.amazon.com/dms/latest/APIReference/API_ReplicationInstance.html",
-			SkipFields:  []string{"ReplicationInstanceArn"},
-			ExtraColumns: append(
-				defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "arn",
-						Type:     schema.TypeString,
-						Resolver: `schema.PathResolver("ReplicationInstanceArn")`,
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-				}...),
+			TableDefinition: codegen.TableDefinition{
+				SubService:  "replication_instances",
+				Struct:      &models.ReplicationInstanceWrapper{},
+				Description: "https://docs.aws.amazon.com/dms/latest/APIReference/API_ReplicationInstance.html",
+				SkipFields:  []string{"ReplicationInstanceArn"},
+				ExtraColumns: append(
+					defaultRegionalColumns,
+					[]codegen.ColumnDefinition{
+						{
+							Name:     "arn",
+							Type:     schema.TypeString,
+							Resolver: `schema.PathResolver("ReplicationInstanceArn")`,
+							Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+						},
+					}...),
+			},
 		},
 	}
 

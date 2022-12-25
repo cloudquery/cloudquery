@@ -9,26 +9,28 @@ import (
 func KinesisResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService:          "streams",
-			Struct:              &types.StreamDescriptionSummary{},
-			Description:         "https://docs.aws.amazon.com/kinesis/latest/APIReference/API_StreamDescriptionSummary.html",
-			SkipFields:          []string{"StreamARN"},
-			PreResourceResolver: "getStream",
-			ExtraColumns: append(
-				defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "arn",
-						Type:     schema.TypeString,
-						Resolver: `schema.PathResolver("StreamARN")`,
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `resolveKinesisStreamTags`,
-					},
-				}...),
+			TableDefinition: codegen.TableDefinition{
+				SubService:          "streams",
+				Struct:              &types.StreamDescriptionSummary{},
+				Description:         "https://docs.aws.amazon.com/kinesis/latest/APIReference/API_StreamDescriptionSummary.html",
+				SkipFields:          []string{"StreamARN"},
+				PreResourceResolver: "getStream",
+				ExtraColumns: append(
+					defaultRegionalColumns,
+					[]codegen.ColumnDefinition{
+						{
+							Name:     "arn",
+							Type:     schema.TypeString,
+							Resolver: `schema.PathResolver("StreamARN")`,
+							Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+						},
+						{
+							Name:     "tags",
+							Type:     schema.TypeJSON,
+							Resolver: `resolveKinesisStreamTags`,
+						},
+					}...),
+			},
 		},
 	}
 

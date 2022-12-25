@@ -9,66 +9,73 @@ import (
 func ServiceCatalogResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService:  "portfolios",
-			Struct:      &types.PortfolioDetail{},
-			Description: "https://docs.aws.amazon.com/servicecatalog/latest/dg/API_PortfolioDetail.html",
-			SkipFields:  []string{"ARN"},
-			ExtraColumns: append(
-				defaultAccountColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "arn",
-						Type:     schema.TypeString,
-						Resolver: `schema.PathResolver("ARN")`,
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `resolvePortfolioTags`,
-					},
-				}...),
+			TableDefinition: codegen.TableDefinition{
+				SubService:  "portfolios",
+				Struct:      &types.PortfolioDetail{},
+				Description: "https://docs.aws.amazon.com/servicecatalog/latest/dg/API_PortfolioDetail.html",
+				SkipFields:  []string{"ARN"},
+				ExtraColumns: append(
+					defaultAccountColumns,
+					[]codegen.ColumnDefinition{
+						{
+							Name:     "arn",
+							Type:     schema.TypeString,
+							Resolver: `schema.PathResolver("ARN")`,
+							Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+						},
+						{
+							Name:     "tags",
+							Type:     schema.TypeJSON,
+							Resolver: `resolvePortfolioTags`,
+						},
+					}...),
+			},
 		},
 		{
-			SubService:  "products",
-			Struct:      &types.ProductViewDetail{},
-			Description: "https://docs.aws.amazon.com/servicecatalog/latest/dg/API_ProductViewDetail.html",
-			SkipFields:  []string{"ProductARN"},
-			ExtraColumns: append(
-				defaultAccountColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "arn",
-						Type:     schema.TypeString,
-						Resolver: `schema.PathResolver("ProductARN")`,
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `resolveProductTags`,
-					},
-				}...),
-		}, {
-			SubService:  "provisioned_products",
-			Struct:      &types.ProvisionedProductAttribute{},
-			Description: "https://docs.aws.amazon.com/servicecatalog/latest/dg/API_ProvisionedProductAttribute.html",
-			SkipFields:  []string{"Arn", "Tags"},
-			ExtraColumns: append(
-				defaultAccountColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "arn",
-						Type:     schema.TypeString,
-						Resolver: `schema.PathResolver("Arn")`,
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `resolveProvisionedProductTags`,
-					},
-				}...),
+			TableDefinition: codegen.TableDefinition{
+				SubService:  "products",
+				Struct:      &types.ProductViewDetail{},
+				Description: "https://docs.aws.amazon.com/servicecatalog/latest/dg/API_ProductViewDetail.html",
+				SkipFields:  []string{"ProductARN"},
+				ExtraColumns: append(
+					defaultAccountColumns,
+					[]codegen.ColumnDefinition{
+						{
+							Name:     "arn",
+							Type:     schema.TypeString,
+							Resolver: `schema.PathResolver("ProductARN")`,
+							Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+						},
+						{
+							Name:     "tags",
+							Type:     schema.TypeJSON,
+							Resolver: `resolveProductTags`,
+						},
+					}...),
+			},
+		},
+		{
+			TableDefinition: codegen.TableDefinition{
+				SubService:  "provisioned_products",
+				Struct:      &types.ProvisionedProductAttribute{},
+				Description: "https://docs.aws.amazon.com/servicecatalog/latest/dg/API_ProvisionedProductAttribute.html",
+				SkipFields:  []string{"Arn", "Tags"},
+				ExtraColumns: append(
+					defaultAccountColumns,
+					[]codegen.ColumnDefinition{
+						{
+							Name:     "arn",
+							Type:     schema.TypeString,
+							Resolver: `schema.PathResolver("Arn")`,
+							Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+						},
+						{
+							Name:     "tags",
+							Type:     schema.TypeJSON,
+							Resolver: `resolveProvisionedProductTags`,
+						},
+					}...),
+			},
 		},
 	}
 

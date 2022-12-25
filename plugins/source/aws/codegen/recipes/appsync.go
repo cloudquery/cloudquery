@@ -9,21 +9,23 @@ import (
 func AppSync() []*Resource {
 	resources := []*Resource{
 		{
-			SubService:  "graphql_apis",
-			Struct:      &types.GraphqlApi{},
-			Description: "https://docs.aws.amazon.com/appsync/latest/APIReference/API_GraphqlApi.html",
-			SkipFields:  []string{"Arn"},
-			Multiplex:   `client.ServiceAccountRegionMultiplexer("appsync")`,
-			ExtraColumns: append(
-				defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "arn",
-						Type:     schema.TypeString,
-						Resolver: `schema.PathResolver("Arn")`,
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-				}...),
+			TableDefinition: codegen.TableDefinition{
+				SubService:  "graphql_apis",
+				Struct:      &types.GraphqlApi{},
+				Description: "https://docs.aws.amazon.com/appsync/latest/APIReference/API_GraphqlApi.html",
+				SkipFields:  []string{"Arn"},
+				Multiplex:   `client.ServiceAccountRegionMultiplexer("appsync")`,
+				ExtraColumns: append(
+					defaultRegionalColumns,
+					[]codegen.ColumnDefinition{
+						{
+							Name:     "arn",
+							Type:     schema.TypeString,
+							Resolver: `schema.PathResolver("Arn")`,
+							Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+						},
+					}...),
+			},
 		},
 	}
 

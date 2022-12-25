@@ -9,30 +9,32 @@ import (
 func CloudwatchResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService:  "alarms",
-			Struct:      &types.MetricAlarm{},
-			Description: "https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_MetricAlarm.html",
-			SkipFields:  []string{"AlarmArn", "Dimensions"},
-			ExtraColumns: append(
-				defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `resolveCloudwatchAlarmTags`,
-					},
-					{
-						Name:     "arn",
-						Type:     schema.TypeString,
-						Resolver: `schema.PathResolver("AlarmArn")`,
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:     "dimensions",
-						Type:     schema.TypeJSON,
-						Resolver: `resolveCloudwatchAlarmDimensions`,
-					},
-				}...),
+			TableDefinition: codegen.TableDefinition{
+				SubService:  "alarms",
+				Struct:      &types.MetricAlarm{},
+				Description: "https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_MetricAlarm.html",
+				SkipFields:  []string{"AlarmArn", "Dimensions"},
+				ExtraColumns: append(
+					defaultRegionalColumns,
+					[]codegen.ColumnDefinition{
+						{
+							Name:     "tags",
+							Type:     schema.TypeJSON,
+							Resolver: `resolveCloudwatchAlarmTags`,
+						},
+						{
+							Name:     "arn",
+							Type:     schema.TypeString,
+							Resolver: `schema.PathResolver("AlarmArn")`,
+							Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+						},
+						{
+							Name:     "dimensions",
+							Type:     schema.TypeJSON,
+							Resolver: `resolveCloudwatchAlarmDimensions`,
+						},
+					}...),
+			},
 		},
 	}
 

@@ -9,25 +9,27 @@ import (
 func EFSResources() []*Resource {
 	var efsResources = []*Resource{
 		{
-			SubService:  "filesystems",
-			Struct:      &types.FileSystemDescription{},
-			Description: "https://docs.aws.amazon.com/efs/latest/ug/API_FileSystemDescription.html",
-			SkipFields:  []string{"FileSystemArn"},
-			ExtraColumns: append(
-				defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "arn",
-						Type:     schema.TypeString,
-						Resolver: `schema.PathResolver("FileSystemArn")`,
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:     "backup_policy_status",
-						Type:     schema.TypeString,
-						Resolver: `ResolveEfsFilesystemBackupPolicyStatus`,
-					},
-				}...),
+			TableDefinition: codegen.TableDefinition{
+				SubService:  "filesystems",
+				Struct:      &types.FileSystemDescription{},
+				Description: "https://docs.aws.amazon.com/efs/latest/ug/API_FileSystemDescription.html",
+				SkipFields:  []string{"FileSystemArn"},
+				ExtraColumns: append(
+					defaultRegionalColumns,
+					[]codegen.ColumnDefinition{
+						{
+							Name:     "arn",
+							Type:     schema.TypeString,
+							Resolver: `schema.PathResolver("FileSystemArn")`,
+							Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+						},
+						{
+							Name:     "backup_policy_status",
+							Type:     schema.TypeString,
+							Resolver: `ResolveEfsFilesystemBackupPolicyStatus`,
+						},
+					}...),
+			},
 		},
 	}
 

@@ -9,21 +9,23 @@ import (
 func EKSResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService:          "clusters",
-			Struct:              &types.Cluster{},
-			Description:         "https://docs.aws.amazon.com/eks/latest/APIReference/API_Cluster.html",
-			SkipFields:          []string{"Arn"},
-			PreResourceResolver: "getEksCluster",
-			ExtraColumns: append(
-				defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "arn",
-						Type:     schema.TypeString,
-						Resolver: `schema.PathResolver("Arn")`,
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-				}...),
+			TableDefinition: codegen.TableDefinition{
+				SubService:          "clusters",
+				Struct:              &types.Cluster{},
+				Description:         "https://docs.aws.amazon.com/eks/latest/APIReference/API_Cluster.html",
+				SkipFields:          []string{"Arn"},
+				PreResourceResolver: "getEksCluster",
+				ExtraColumns: append(
+					defaultRegionalColumns,
+					[]codegen.ColumnDefinition{
+						{
+							Name:     "arn",
+							Type:     schema.TypeString,
+							Resolver: `schema.PathResolver("Arn")`,
+							Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+						},
+					}...),
+			},
 		},
 	}
 

@@ -9,29 +9,31 @@ import (
 func InspectorResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService:  "findings",
-			Struct:      &types.Finding{},
-			Description: "https://docs.aws.amazon.com/inspector/v1/APIReference/API_Finding.html",
-			SkipFields:  []string{"Arn", "Attributes", "UserAttributes"},
-			ExtraColumns: append(
-				defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:    "arn",
-						Type:    schema.TypeString,
-						Options: schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:     "attributes",
-						Type:     schema.TypeJSON,
-						Resolver: `client.ResolveTagField("Attributes")`,
-					},
-					{
-						Name:     "user_attributes",
-						Type:     schema.TypeJSON,
-						Resolver: `client.ResolveTagField("UserAttributes")`,
-					},
-				}...),
+			TableDefinition: codegen.TableDefinition{
+				SubService:  "findings",
+				Struct:      &types.Finding{},
+				Description: "https://docs.aws.amazon.com/inspector/v1/APIReference/API_Finding.html",
+				SkipFields:  []string{"Arn", "Attributes", "UserAttributes"},
+				ExtraColumns: append(
+					defaultRegionalColumns,
+					[]codegen.ColumnDefinition{
+						{
+							Name:    "arn",
+							Type:    schema.TypeString,
+							Options: schema.ColumnCreationOptions{PrimaryKey: true},
+						},
+						{
+							Name:     "attributes",
+							Type:     schema.TypeJSON,
+							Resolver: `client.ResolveTagField("Attributes")`,
+						},
+						{
+							Name:     "user_attributes",
+							Type:     schema.TypeJSON,
+							Resolver: `client.ResolveTagField("UserAttributes")`,
+						},
+					}...),
+			},
 		},
 	}
 

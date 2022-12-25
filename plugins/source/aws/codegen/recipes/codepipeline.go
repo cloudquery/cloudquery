@@ -10,43 +10,47 @@ import (
 func CodePipelineResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService:  "webhooks",
-			Struct:      &types.ListWebhookItem{},
-			Description: "https://docs.aws.amazon.com/codepipeline/latest/APIReference/API_ListWebhookItem.html",
-			Multiplex:   `client.ServiceAccountRegionMultiplexer("codepipeline")`,
-			SkipFields:  []string{"Arn"},
-			ExtraColumns: append(
-				defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "arn",
-						Type:     schema.TypeString,
-						Resolver: `schema.PathResolver("Arn")`,
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-				}...),
+			TableDefinition: codegen.TableDefinition{
+				SubService:  "webhooks",
+				Struct:      &types.ListWebhookItem{},
+				Description: "https://docs.aws.amazon.com/codepipeline/latest/APIReference/API_ListWebhookItem.html",
+				Multiplex:   `client.ServiceAccountRegionMultiplexer("codepipeline")`,
+				SkipFields:  []string{"Arn"},
+				ExtraColumns: append(
+					defaultRegionalColumns,
+					[]codegen.ColumnDefinition{
+						{
+							Name:     "arn",
+							Type:     schema.TypeString,
+							Resolver: `schema.PathResolver("Arn")`,
+							Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+						},
+					}...),
+			},
 		},
 		{
-			SubService:          "pipelines",
-			Struct:              &codepipeline.GetPipelineOutput{},
-			Multiplex:           `client.ServiceAccountRegionMultiplexer("codepipeline")`,
-			PreResourceResolver: "getPipeline",
-			SkipFields:          []string{"ResultMetadata"},
-			ExtraColumns: append(
-				defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "arn",
-						Type:     schema.TypeString,
-						Resolver: `resolvePipelineArn`,
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `resolvePipelineTags`,
-					},
-				}...),
+			TableDefinition: codegen.TableDefinition{
+				SubService:          "pipelines",
+				Struct:              &codepipeline.GetPipelineOutput{},
+				Multiplex:           `client.ServiceAccountRegionMultiplexer("codepipeline")`,
+				PreResourceResolver: "getPipeline",
+				SkipFields:          []string{"ResultMetadata"},
+				ExtraColumns: append(
+					defaultRegionalColumns,
+					[]codegen.ColumnDefinition{
+						{
+							Name:     "arn",
+							Type:     schema.TypeString,
+							Resolver: `resolvePipelineArn`,
+							Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+						},
+						{
+							Name:     "tags",
+							Type:     schema.TypeJSON,
+							Resolver: `resolvePipelineTags`,
+						},
+					}...),
+			},
 		},
 	}
 

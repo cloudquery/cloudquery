@@ -13,72 +13,82 @@ import (
 func ConfigResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "configuration_recorders",
-			Struct:     &models.ConfigurationRecorderWrapper{},
-			SkipFields: []string{},
-			ExtraColumns: append(
-				defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "arn",
-						Type:     schema.TypeString,
-						Resolver: `generateConfigRecorderArn`,
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-				}...),
-		},
-		{
-			SubService:  "conformance_packs",
-			Struct:      &types.ConformancePackDetail{},
-			Description: "https://docs.aws.amazon.com/config/latest/APIReference/API_ConformancePackDetail.html",
-			SkipFields:  []string{"ConformancePackArn", "ConformancePackInputParameters"},
-			ExtraColumns: append(
-				defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "arn",
-						Type:     schema.TypeString,
-						Resolver: `schema.PathResolver("ConformancePackArn")`,
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-				}...),
-			Relations: []string{
-				"ConformancePackRuleCompliances()",
+			TableDefinition: codegen.TableDefinition{
+				SubService: "configuration_recorders",
+				Struct:     &models.ConfigurationRecorderWrapper{},
+				SkipFields: []string{},
+				ExtraColumns: append(
+					defaultRegionalColumns,
+					[]codegen.ColumnDefinition{
+						{
+							Name:     "arn",
+							Type:     schema.TypeString,
+							Resolver: `generateConfigRecorderArn`,
+							Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+						},
+					}...),
 			},
 		},
 		{
-			SubService: "conformance_pack_rule_compliances",
-			Struct:     &models.ConformancePackComplianceWrapper{},
-			SkipFields: []string{},
-			ExtraColumns: append(
-				defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "conformance_pack_arn",
-						Type:     schema.TypeString,
-						Resolver: `schema.ParentColumnResolver("arn")`,
-					},
-				}...),
+			TableDefinition: codegen.TableDefinition{
+				SubService:  "conformance_packs",
+				Struct:      &types.ConformancePackDetail{},
+				Description: "https://docs.aws.amazon.com/config/latest/APIReference/API_ConformancePackDetail.html",
+				SkipFields:  []string{"ConformancePackArn", "ConformancePackInputParameters"},
+				ExtraColumns: append(
+					defaultRegionalColumns,
+					[]codegen.ColumnDefinition{
+						{
+							Name:     "arn",
+							Type:     schema.TypeString,
+							Resolver: `schema.PathResolver("ConformancePackArn")`,
+							Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+						},
+					}...),
+				Relations: []string{
+					"ConformancePackRuleCompliances()",
+				},
+			},
 		},
 		{
-			SubService: "config_rules",
-			Struct:     new(types.ConfigRule),
-			SkipFields: []string{"ConfigRuleArn"},
-			ExtraColumns: append(defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "arn",
-						Type:     schema.TypeString,
-						Resolver: `schema.PathResolver("ConfigRuleArn")`,
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-				}...),
-			Relations: []string{"ConfigRuleCompliances()"},
+			TableDefinition: codegen.TableDefinition{
+				SubService: "conformance_pack_rule_compliances",
+				Struct:     &models.ConformancePackComplianceWrapper{},
+				SkipFields: []string{},
+				ExtraColumns: append(
+					defaultRegionalColumns,
+					[]codegen.ColumnDefinition{
+						{
+							Name:     "conformance_pack_arn",
+							Type:     schema.TypeString,
+							Resolver: `schema.ParentColumnResolver("arn")`,
+						},
+					}...),
+			},
 		},
 		{
-			SubService:   "config_rule_compliances",
-			Struct:       new(types.ComplianceByConfigRule),
-			ExtraColumns: defaultRegionalColumns,
+			TableDefinition: codegen.TableDefinition{
+				SubService: "config_rules",
+				Struct:     new(types.ConfigRule),
+				SkipFields: []string{"ConfigRuleArn"},
+				ExtraColumns: append(defaultRegionalColumns,
+					[]codegen.ColumnDefinition{
+						{
+							Name:     "arn",
+							Type:     schema.TypeString,
+							Resolver: `schema.PathResolver("ConfigRuleArn")`,
+							Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+						},
+					}...),
+				Relations: []string{"ConfigRuleCompliances()"},
+			},
+		},
+		{
+			TableDefinition: codegen.TableDefinition{
+				SubService:   "config_rule_compliances",
+				Struct:       new(types.ComplianceByConfigRule),
+				ExtraColumns: defaultRegionalColumns,
+			},
 		},
 	}
 

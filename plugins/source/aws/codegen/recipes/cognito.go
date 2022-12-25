@@ -10,81 +10,87 @@ import (
 func CognitoResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService:          "identity_pools",
-			Struct:              &cognitoidentity.DescribeIdentityPoolOutput{},
-			SkipFields:          []string{"IdentityPoolId"},
-			PreResourceResolver: "getIdentityPool",
-			ExtraColumns: []codegen.ColumnDefinition{
-				{
-					Name:     "account_id",
-					Type:     schema.TypeString,
-					Resolver: `client.ResolveAWSAccount`,
-					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-				},
-				{
-					Name:     "region",
-					Type:     schema.TypeString,
-					Resolver: "client.ResolveAWSRegion",
-					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-				},
-				{
-					Name:     "arn",
-					Type:     schema.TypeString,
-					Resolver: `resolveIdentityPoolARN()`,
-				},
-				{
-					Name:     "id",
-					Type:     schema.TypeString,
-					Resolver: `schema.PathResolver("IdentityPoolId")`,
-					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-				},
-			},
-		},
-		{
-			SubService:          "user_pools",
-			Struct:              &types.UserPoolType{},
-			Description:         "https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_UserPoolType.html",
-			SkipFields:          []string{"Id"},
-			PreResourceResolver: "getUserPool",
-			ExtraColumns: []codegen.ColumnDefinition{
-				{
-					Name:     "account_id",
-					Type:     schema.TypeString,
-					Resolver: `client.ResolveAWSAccount`,
-					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-				},
-				{
-					Name:     "region",
-					Type:     schema.TypeString,
-					Resolver: "client.ResolveAWSRegion",
-					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-				},
-				{
-					Name:     "id",
-					Type:     schema.TypeString,
-					Resolver: `schema.PathResolver("Id")`,
-					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-				},
-			},
-			Relations: []string{
-				"UserPoolIdentityProviders()",
-			},
-		},
-		{
-			SubService:          "user_pool_identity_providers",
-			Struct:              &types.IdentityProviderType{},
-			Description:         "https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_IdentityProviderType.html",
-			SkipFields:          []string{},
-			PreResourceResolver: "getUserPoolIdentityProvider",
-			ExtraColumns: append(
-				defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
+			TableDefinition: codegen.TableDefinition{
+				SubService:          "identity_pools",
+				Struct:              &cognitoidentity.DescribeIdentityPoolOutput{},
+				SkipFields:          []string{"IdentityPoolId"},
+				PreResourceResolver: "getIdentityPool",
+				ExtraColumns: []codegen.ColumnDefinition{
 					{
-						Name:     "user_pool_arn",
+						Name:     "account_id",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentColumnResolver("arn")`,
+						Resolver: `client.ResolveAWSAccount`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
-				}...),
+					{
+						Name:     "region",
+						Type:     schema.TypeString,
+						Resolver: "client.ResolveAWSRegion",
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `resolveIdentityPoolARN()`,
+					},
+					{
+						Name:     "id",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("IdentityPoolId")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				},
+			},
+		},
+		{
+			TableDefinition: codegen.TableDefinition{
+				SubService:          "user_pools",
+				Struct:              &types.UserPoolType{},
+				Description:         "https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_UserPoolType.html",
+				SkipFields:          []string{"Id"},
+				PreResourceResolver: "getUserPool",
+				ExtraColumns: []codegen.ColumnDefinition{
+					{
+						Name:     "account_id",
+						Type:     schema.TypeString,
+						Resolver: `client.ResolveAWSAccount`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+					{
+						Name:     "region",
+						Type:     schema.TypeString,
+						Resolver: "client.ResolveAWSRegion",
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+					{
+						Name:     "id",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("Id")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				},
+				Relations: []string{
+					"UserPoolIdentityProviders()",
+				},
+			},
+		},
+		{
+			TableDefinition: codegen.TableDefinition{
+				SubService:          "user_pool_identity_providers",
+				Struct:              &types.IdentityProviderType{},
+				Description:         "https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_IdentityProviderType.html",
+				SkipFields:          []string{},
+				PreResourceResolver: "getUserPoolIdentityProvider",
+				ExtraColumns: append(
+					defaultRegionalColumns,
+					[]codegen.ColumnDefinition{
+						{
+							Name:     "user_pool_arn",
+							Type:     schema.TypeString,
+							Resolver: `schema.ParentColumnResolver("arn")`,
+						},
+					}...),
+			},
 		},
 	}
 

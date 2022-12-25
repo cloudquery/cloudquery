@@ -9,26 +9,28 @@ import (
 func DaxResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService:  "clusters",
-			Struct:      &types.Cluster{},
-			Description: "https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_dax_Cluster.html",
-			SkipFields:  []string{"ClusterArn"},
-			Multiplex:   `client.ServiceAccountRegionMultiplexer("dax")`,
-			ExtraColumns: append(
-				defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "arn",
-						Type:     schema.TypeString,
-						Resolver: `schema.PathResolver("ClusterArn")`,
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `resolveClusterTags`,
-					},
-				}...),
+			TableDefinition: codegen.TableDefinition{
+				SubService:  "clusters",
+				Struct:      &types.Cluster{},
+				Description: "https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_dax_Cluster.html",
+				SkipFields:  []string{"ClusterArn"},
+				Multiplex:   `client.ServiceAccountRegionMultiplexer("dax")`,
+				ExtraColumns: append(
+					defaultRegionalColumns,
+					[]codegen.ColumnDefinition{
+						{
+							Name:     "arn",
+							Type:     schema.TypeString,
+							Resolver: `schema.PathResolver("ClusterArn")`,
+							Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+						},
+						{
+							Name:     "tags",
+							Type:     schema.TypeJSON,
+							Resolver: `resolveClusterTags`,
+						},
+					}...),
+			},
 		},
 	}
 

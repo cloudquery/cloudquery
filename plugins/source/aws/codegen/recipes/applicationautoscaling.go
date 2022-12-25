@@ -9,20 +9,22 @@ import (
 func ApplicationAutoScalingResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService:  "policies",
-			Struct:      &types.ScalingPolicy{},
-			Description: "https://docs.aws.amazon.com/autoscaling/plans/APIReference/API_ScalingPolicy.html",
-			SkipFields:  []string{"PolicyARN"},
-			ExtraColumns: append(
-				defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "arn",
-						Type:     schema.TypeString,
-						Resolver: `schema.PathResolver("PolicyARN")`,
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-				}...),
+			TableDefinition: codegen.TableDefinition{
+				SubService:  "policies",
+				Struct:      &types.ScalingPolicy{},
+				Description: "https://docs.aws.amazon.com/autoscaling/plans/APIReference/API_ScalingPolicy.html",
+				SkipFields:  []string{"PolicyARN"},
+				ExtraColumns: append(
+					defaultRegionalColumns,
+					[]codegen.ColumnDefinition{
+						{
+							Name:     "arn",
+							Type:     schema.TypeString,
+							Resolver: `schema.PathResolver("PolicyARN")`,
+							Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+						},
+					}...),
+			},
 		},
 	}
 

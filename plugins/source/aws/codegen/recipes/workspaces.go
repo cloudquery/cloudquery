@@ -9,34 +9,38 @@ import (
 func WorkspacesResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService:  "workspaces",
-			Struct:      &types.Workspace{},
-			Description: "https://docs.aws.amazon.com/workspaces/latest/api/API_Workspace.html",
-			ExtraColumns: append(
-				defaultAccountColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "arn",
-						Type:     schema.TypeString,
-						Resolver: `resolveWorkspaceArn`,
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-				}...),
+			TableDefinition: codegen.TableDefinition{
+				SubService:  "workspaces",
+				Struct:      &types.Workspace{},
+				Description: "https://docs.aws.amazon.com/workspaces/latest/api/API_Workspace.html",
+				ExtraColumns: append(
+					defaultAccountColumns,
+					[]codegen.ColumnDefinition{
+						{
+							Name:     "arn",
+							Type:     schema.TypeString,
+							Resolver: `resolveWorkspaceArn`,
+							Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+						},
+					}...),
+			},
 		},
 		{
-			SubService:  "directories",
-			Struct:      &types.WorkspaceDirectory{},
-			Description: "https://docs.aws.amazon.com/workspaces/latest/api/API_WorkspaceDirectory.html",
-			ExtraColumns: append(
-				defaultAccountColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "arn",
-						Type:     schema.TypeString,
-						Resolver: `resolveDirectoryArn`,
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-				}...),
+			TableDefinition: codegen.TableDefinition{
+				SubService:  "directories",
+				Struct:      &types.WorkspaceDirectory{},
+				Description: "https://docs.aws.amazon.com/workspaces/latest/api/API_WorkspaceDirectory.html",
+				ExtraColumns: append(
+					defaultAccountColumns,
+					[]codegen.ColumnDefinition{
+						{
+							Name:     "arn",
+							Type:     schema.TypeString,
+							Resolver: `resolveDirectoryArn`,
+							Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+						},
+					}...),
+			},
 		},
 	}
 
