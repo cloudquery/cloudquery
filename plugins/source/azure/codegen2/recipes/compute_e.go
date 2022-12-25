@@ -45,28 +45,6 @@ func init() {
 					Resolver: `getInstanceView`,
 				},
 			},
-			// ExtraColumns:   DefaultExtraColumns,
-			// Relations: []*Table{
-			// 	{
-			// 		Name:    "virtual_machine_instance_views",
-			// 		Service: "armcompute",
-			// 		Struct:  &armcompute.VirtualMachineInstanceView{},
-			// 		// ResponseStruct is just a stub for codegen not to fail
-			// 		ResponseStruct: &armcompute.VirtualMachinesClientInstanceViewResponse{},
-			// 		Client:         &armcompute.VirtualMachinesClient{},
-			// 		ListFunc:       (&armcompute.VirtualMachinesClient{}).InstanceView,
-			// 		NewFunc:        armcompute.NewVirtualMachinesClient,
-			// 		URL:            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/instanceView",
-			// 		SkipFetch:      true,
-			// 		ExtraColumns: []codegen.ColumnDefinition{
-			// 			{
-			// 				Name:     "id",
-			// 				Type:     schema.TypeString,
-			// 				Resolver: `schema.PathResolver("ComputerName")`,
-			// 			},
-			// 		},
-			// 	},
-			// },
 		},
 	}
 	Tables = append(Tables, tables...)
