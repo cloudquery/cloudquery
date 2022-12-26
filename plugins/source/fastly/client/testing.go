@@ -10,13 +10,17 @@ import (
 	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/fastly/go-fastly/v7/fastly"
 	"github.com/golang/mock/gomock"
 	"github.com/rs/zerolog"
 )
 
-type TestOptions struct{}
+type TestOptions struct {
+	Service *fastly.Service
+	Region  string
+}
 
-func MockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, *gomock.Controller) services.FastlyClient, _ TestOptions) {
+func MockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, *gomock.Controller) services.FastlyClient, opts TestOptions) {
 	version := "vDev"
 	table.IgnoreInTests = false
 	t.Helper()
@@ -25,9 +29,19 @@ func MockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, 
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source) (schema.ClientMeta, error) {
+		var services []*fastly.Service
+		if opts.Service != nil {
+			services = []*fastly.Service{opts.Service}
+		}
+		var regions []string
+		if opts.Region != "" {
+			regions = []string{opts.Region}
+		}
 		return &Client{
-			logger: l,
-			Fastly: builder(t, ctrl),
+			logger:   l,
+			Fastly:   builder(t, ctrl),
+			services: services,
+			regions:  regions,
 		}, nil
 	}
 	p := source.NewPlugin(

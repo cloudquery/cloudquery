@@ -6,31 +6,27 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/fastly/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/fastly/go-fastly/v7/fastly"
+	"github.com/thoas/go-funk"
 )
 
 func fetchServices(_ context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	p := c.Fastly.NewListServicesPaginator(&fastly.ListServicesInput{})
+	p := c.Fastly.NewListServicesPaginator(&fastly.ListServicesInput{
+		PerPage: 100,
+	})
+	cfg := c.Spec
 	if p.HasNext() {
 		services, err := p.GetNext()
 		if err != nil {
 			return err
 		}
-		res <- services
+		for _, s := range services {
+			if len(cfg.Services) > 0 && !funk.ContainsString(cfg.Services, s.ID) {
+				continue
+			}
+			res <- s
+		}
+
 	}
 	return nil
 }
-
-// Doesn't seem to provide any additional information?
-//
-//func getFastlyServiceDetails(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-//	r := resource.Item.(fastly.Service)
-//	svc, err := meta.(*client.Client).Fastly.GetServiceDetails(&fastly.GetServiceInput{
-//		ID: r.ID,
-//	})
-//	if err != nil {
-//		return err
-//	}
-//	resource.SetItem(svc)
-//	return nil
-//}

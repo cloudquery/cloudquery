@@ -1,6 +1,8 @@
 package recipes
 
-import "github.com/fastly/go-fastly/v7/fastly"
+import (
+	"github.com/fastly/go-fastly/v7/fastly"
+)
 
 func ServiceResources() []*Resource {
 	resources := []*Resource{

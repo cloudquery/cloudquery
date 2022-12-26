@@ -12,5 +12,6 @@ func tables() []*schema.Table {
 	return []*schema.Table{
 		services.Services(),
 		stats.StatsRegions(),
+		stats.StatsServices(),
 	}
 }
