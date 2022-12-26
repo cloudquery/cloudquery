@@ -1,16 +1,15 @@
 ---
-title: How To Run CloudQuery with PostgREST
+title: How to Run CloudQuery with PostgREST
 tag: tutorial
-date: 2022/06/26
 description: See everything you have in the cloud with PostgREST
 author: yevgenypats
 ---
 
-import { BlogHeader } from "../../components/BlogHeader"
+import { HowToGuideHeader } from "../../components/HowToGuideHeader"
 
-<BlogHeader/>
+<HowToGuideHeader/>
 
-In this blog post, we will walk you through how to set up [CloudQuery](https://github.com/cloudquery/cloudquery) to build your cloud asset inventory in PostgreSQL and build a fully automated Restful API query layer with [PostgREST](https://postgrest.org/en/stable/). This can be used as a base for many custom use cases: from infrastructure search to security, cost and infrastructure automation.
+In this how-to guide, we will walk you through how to set up [CloudQuery](https://github.com/cloudquery/cloudquery) to build your cloud asset inventory in PostgreSQL and build a fully automated Restful API query layer with [PostgREST](https://postgrest.org/en/stable/). This can be used as a base for many custom use cases: from infrastructure search to security, cost and infrastructure automation.
 
 ## General Architecture
 

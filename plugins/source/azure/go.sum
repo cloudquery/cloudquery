@@ -152,6 +152,8 @@ github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto v1.1.0 h1:0
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto v1.1.0/go.mod h1:2+xLw3wnpvSce83gQnAu42MVl3/tiSGcWtEuWe1nhbo=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/labservices/armlabservices v1.0.0 h1:uIjbZwtaWCNPCAu7EVlWKVokAS/+owCbv94sFF1QJyE=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/labservices/armlabservices v1.0.0/go.mod h1:gEopvGKHsDreOE1eiqDJoDIFslSDReh+lTvnlQsFfiE=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logic/armlogic v1.0.0 h1:zpvUxUvAyKXn3vhE9+huD0FEq1VIE6C5SuCKDQPaCcg=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logic/armlogic v1.0.0/go.mod h1:wKxEe9OvQk7W+/ZxqjitjvCo33uzbJ99zz3Azzytmu0=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning v1.0.0 h1:KWvCVjnOTKCZAlqED5KPNoN9AfcK2BhUeveLdiwy33Q=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning v1.0.0/go.mod h1:qNN4I5AKYbXMLriS9XKebBw8EVIQkX6tJzrdtjOoJ4I=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance v1.0.0 h1:dlpFQVi25aChz4Da4z/xqDZW1XaIrr2WdOLQCHKopg0=
@@ -198,6 +200,8 @@ github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota v0.5.0 h1:s
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota v0.5.0/go.mod h1:3f1KiBgDekWbbKxDF8gp+w6HSYxPugQzpOorMap4KwQ=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redhatopenshift/armredhatopenshift v1.0.0 h1:mPzD99b57uCHLvvDYRwoNcfC1Gh1vWapQpfxAvtwCDQ=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redhatopenshift/armredhatopenshift v1.0.0/go.mod h1:3TXTu2YxzFYxfjz5h+z+0DcxaFwGlSH84B6kFjcTWQ4=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis v1.0.0 h1:nmpTBgRg1HynngFYICRhceC7s5dmbKN9fJ/XQz/UQ2I=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis v1.0.0/go.mod h1:3yjiOtnkVociBTlF7UZrwAGfJrGaOCsvtVS4HzNajxQ=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/relay/armrelay v1.0.0 h1:MpzuhAA8DyFfJ2mcVnfBE+OsS7r2oWGnJ0zoCuZ2OYc=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/relay/armrelay v1.0.0/go.mod h1:mcgbqUk0SJX+X93DQdseYYzpbMcgx4yJp2qDeOj9OXA=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations v1.1.0 h1:0OO/3K+SKt45gXiOU4gHRILOLeNOUZdqeNO47Mq6iN8=
@@ -210,6 +214,8 @@ github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources v1.
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources v1.0.0/go.mod h1:s1tW/At+xHqjNFvWU4G0c0Qv33KOhvbGNj0RCTQDV8s=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/saas/armsaas v0.5.0 h1:Ago3lJWlCMt1lIuxVaFWIl/AAGFtNECG8uZzEmTlWas=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/saas/armsaas v0.5.0/go.mod h1:vnL/NzlNfo1wQD5OTFGXBmK+7c6AZ9sqP6R126eGMUo=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch v1.0.0 h1:21YCzWMNfJiVsnQYYhO+NEjl32kTnaN/izdHx4KMXwM=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch v1.0.0/go.mod h1:p4K6FOVWhIfLM3cUI+1okdBvNZQ9ypp+W46domhbvSc=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity v0.9.0 h1:leZbYXt1X1+IXOhinVq/eyCu4J/fR/RcgdF6lWeaa5o=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity v0.9.0/go.mod h1:iwDIDV5jIo+eXQf6RA7PwyJnycTQxX4s4MGKSy+m1LA=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus v1.0.0 h1:6UQQTUHvwuxb0DmRqLUsE7RnvKCxlrsCLpXcNePe64g=

@@ -33,6 +33,10 @@ var newFuncToSkipPerPackage = map[string]map[string]bool{
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql": {
 		"NewDeletedServersClient": true,
 	},
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute": {
+		// we migrated this to manual written client as it has childs
+		"NewVirtualMachinesClient": true,
+	},
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos": {
 		"NewDatabaseAccountsClient": true,
 	},

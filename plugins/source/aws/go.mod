@@ -50,13 +50,13 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/eventbridge v1.16.22
 	github.com/aws/aws-sdk-go-v2/service/firehose v1.15.2
 	github.com/aws/aws-sdk-go-v2/service/frauddetector v1.20.14
-	github.com/aws/aws-sdk-go-v2/service/fsx v1.26.2
+	github.com/aws/aws-sdk-go-v2/service/fsx v1.27.0
 	github.com/aws/aws-sdk-go-v2/service/glacier v1.13.21
 	github.com/aws/aws-sdk-go-v2/service/guardduty v1.16.6
 	github.com/aws/aws-sdk-go-v2/service/iam v1.18.25
 	github.com/aws/aws-sdk-go-v2/service/identitystore v1.15.10
 	github.com/aws/aws-sdk-go-v2/service/inspector v1.12.21
-	github.com/aws/aws-sdk-go-v2/service/inspector2 v1.9.2
+	github.com/aws/aws-sdk-go-v2/service/inspector2 v1.10.0
 	github.com/aws/aws-sdk-go-v2/service/iot v1.32.2
 	github.com/aws/aws-sdk-go-v2/service/kafka v1.18.2
 	github.com/aws/aws-sdk-go-v2/service/kinesis v1.16.0
