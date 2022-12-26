@@ -19,7 +19,7 @@ func Gateways() *schema.Table {
 		Name:        "gcp_apigateway_gateways",
 		Description: `https://cloud.google.com/api-gateway/docs/reference/rest/v1/projects.locations.gateways#Gateway`,
 		Resolver:    fetchGateways,
-		Multiplex:   client.ProjectMultiplex,
+		Multiplex:   client.ProjectMultiplexEnabledServices("apigateway.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
