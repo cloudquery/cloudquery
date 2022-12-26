@@ -1,0 +1,83 @@
+# Salesforce Source Plugin
+
+import { getLatestVersion } from "../../../../../utils/versions";
+import { Badge } from "../../../../../components/Badge";
+import { Callout } from 'nextra-theme-docs'
+
+<Badge text={"Latest: " + getLatestVersion("source", "salesforce")}/>
+
+The CloudQuery Salesforce plugin extracts information from your Salesforce organization(s) and loads it into any supported CloudQuery destination (e.g. PostgreSQL, Snowflake, BigQuery, …).
+
+## Setup
+
+First you must create a Salesforce Connected App. This is a Salesforce app that will be used to authenticate with Salesforce. You can create a Connected App in the Salesforce Setup UI. Checkout the [Salesforce documentation](https://help.salesforce.com/articleView?id=connected_app_create.htm&type=5) for more information. Or check out our latest guide to setup a connected app.
+
+## Configuration
+
+This example syncs from Salesforce to a specified CQ destination.
+
+```yaml
+kind: source
+# Common source-plugin configuration
+spec:
+  name: slack
+  path: cloudquery/salesforce
+  version: "VERSION_SOURCE_SALESFORCE"
+  tables: ["*"]
+  destinations: ["destination"]
+  # Salesforce specific configuration
+  spec:
+	client_id: "${SF_CLIENT_ID}"
+    client_secret: "${SF_CLIENT_SECRET}"
+    username: "${SF_USERNAME}"
+    password: "${SF_PASSWORD}"
+    # Optional
+    # include_objects: ["Account", "Contact"]
+    # exclude_objects: ["Account"]
+```
+
+<Callout type="info">
+Make sure you use environment variable expansion in production instead of committing the credentials to the configuration file directly.
+</Callout>
+
+## Salesforce Spec
+
+This is the (nested) spec used by the Slack source plugin.
+
+- `client_id` (string, required):
+   
+  This is the consumer key of the connected app. This can be obtained by [Creating a Salesforce connected app](/docs/plugins/sources/salesforce/creating_connected_app).
+
+- `client_secret` (string, required):
+
+  This is the consumer secreted of the connected app. This can be obtained by [Creating a Salesforce connected app](/docs/plugins/sources/salesforce/creating_connected_app).
+
+- `username` (string, required):
+
+  This is the username of the Salesforce user that will be used to authenticate with Salesforce. This user must have the permissions to access the Salesforce objects you want to sync. It is best to limit the permission of this user to read only.
+
+- `password` (string, required):
+  
+  This is the password of the above Salesforce user.
+
+- `include_objects` (string array, optional):
+
+  By default the plugin will sync all Salesforce objects. If you want to limit the objects that are synced you can specify the objects you want to sync in this array.
+
+- `exclude_objects` (string array, optional):
+    
+  By default the plugin will sync all Salesforce objects. If you want to exclude some objects from being synced you can specify the objects you want to exclude in this array.
+
+## Example Queries
+
+### List all Salesforce objects
+
+```sql
+select distinct(object_type) from salesforce_objects;
+```
+
+### List all Accounts
+
+```sql
+select * from salesforce_objects where object_type = 'Account';
+```
