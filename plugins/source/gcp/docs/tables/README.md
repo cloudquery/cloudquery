@@ -2,6 +2,8 @@
 
 ## Tables
 
+- [gcp_apigateway_apis](gcp_apigateway_apis.md)
+- [gcp_apigateway_gateways](gcp_apigateway_gateways.md)
 - [gcp_apikeys_keys](gcp_apikeys_keys.md)
 - [gcp_bigquery_datasets](gcp_bigquery_datasets.md)
   - [gcp_bigquery_tables](gcp_bigquery_tables.md)
