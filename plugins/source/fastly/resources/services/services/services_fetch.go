@@ -20,3 +20,17 @@ func fetchServices(_ context.Context, meta schema.ClientMeta, _ *schema.Resource
 	}
 	return nil
 }
+
+// Doesn't seem to provide any additional information?
+//
+//func getFastlyServiceDetails(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+//	r := resource.Item.(fastly.Service)
+//	svc, err := meta.(*client.Client).Fastly.GetServiceDetails(&fastly.GetServiceInput{
+//		ID: r.ID,
+//	})
+//	if err != nil {
+//		return err
+//	}
+//	resource.SetItem(svc)
+//	return nil
+//}

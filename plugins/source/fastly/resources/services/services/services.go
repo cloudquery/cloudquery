@@ -66,5 +66,9 @@ func Services() *schema.Table {
 				Resolver: schema.PathResolver("Versions"),
 			},
 		},
+
+		Relations: []*schema.Table{
+			ServiceVersions(),
+		},
 	}
 }
