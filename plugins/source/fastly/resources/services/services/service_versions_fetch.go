@@ -10,7 +10,7 @@ import (
 
 func fetchServiceVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	s := parent.Item.(fastly.Service)
+	s := parent.Item.(*fastly.Service)
 	versions, err := c.Fastly.ListVersions(&fastly.ListVersionsInput{
 		ServiceID: s.ID,
 	})

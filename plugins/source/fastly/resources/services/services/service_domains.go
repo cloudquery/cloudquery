@@ -6,17 +6,12 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func ServiceVersions() *schema.Table {
+func ServiceDomains() *schema.Table {
 	return &schema.Table{
-		Name:        "fastly_service_versions",
-		Description: `https://developer.fastly.com/reference/api/services/version/`,
-		Resolver:    fetchServiceVersions,
+		Name:        "fastly_service_domains",
+		Description: `https://developer.fastly.com/reference/api/services/domain/`,
+		Resolver:    fetchServiceDomains,
 		Columns: []schema.Column{
-			{
-				Name:     "active",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("Active"),
-			},
 			{
 				Name:     "comment",
 				Type:     schema.TypeString,
@@ -33,19 +28,9 @@ func ServiceVersions() *schema.Table {
 				Resolver: schema.PathResolver("DeletedAt"),
 			},
 			{
-				Name:     "deployed",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("Deployed"),
-			},
-			{
-				Name:     "locked",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("Locked"),
-			},
-			{
-				Name:     "number",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("Number"),
+				Name:     "name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Name"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
@@ -59,26 +44,18 @@ func ServiceVersions() *schema.Table {
 				},
 			},
 			{
-				Name:     "staging",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("Staging"),
-			},
-			{
-				Name:     "testing",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("Testing"),
+				Name:     "service_version",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("ServiceVersion"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "updated_at",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("UpdatedAt"),
 			},
-		},
-
-		Relations: []*schema.Table{
-			ServiceHealthChecks(),
-			ServiceDomains(),
-			ServiceBackends(),
 		},
 	}
 }
