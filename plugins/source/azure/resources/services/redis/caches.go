@@ -12,7 +12,7 @@ func Caches() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_redis_caches",
 		Resolver:  fetchCaches,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_cache),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_redis_caches", client.Namespacemicrosoft_cache),
 		Columns: []schema.Column{
 			{
 				Name:     "location",
