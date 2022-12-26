@@ -147,7 +147,7 @@
     },
     {
       "source": "/blog/cloud-asset-inventory-cloudquery-apache-superset",
-      "destination":"c/how-to-guides/loud-asset-inventory-cloudquery-apache-superset"
+      "destination":"/how-to-guides/cloud-asset-inventory-cloudquery-apache-superset"
     },
     {
       "source": "/blog/cloud-asset-inventory-cloudquery-aws-quicksight",
