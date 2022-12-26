@@ -1,12 +1,9 @@
 # Table: gitlab_settings
 
-
-
 The composite primary key for this table is (**base_url**, **id**).
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

@@ -1,14 +1,13 @@
 # Table: gitlab_projects_releases
 
-
-
 The composite primary key for this table is (**base_url**, **project_id**, **created_at**).
 
 ## Relations
+
 This table depends on [gitlab_projects](gitlab_projects.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

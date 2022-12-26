@@ -1,0 +1,10 @@
+{
+  "*": {
+    "//": "Disable sidebar and search for these pages",
+    "theme": {
+      "sidebar": false,
+      "typesetting": "article"
+    },
+    "searchable": false
+  }
+}
