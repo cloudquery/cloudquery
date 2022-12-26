@@ -6,6 +6,7 @@ require (
 	cloud.google.com/go/aiplatform v1.27.0
 	cloud.google.com/go/apigateway v1.4.0
 	cloud.google.com/go/apikeys v0.2.0
+	cloud.google.com/go/appengine v1.5.0
 	cloud.google.com/go/billing v1.7.0
 	cloud.google.com/go/compute v1.14.0
 	cloud.google.com/go/container v1.8.0
