@@ -23,7 +23,7 @@ type fakeServicesServer struct {
 	pb.UnimplementedServicesServer
 }
 
-func (f *fakeServicesServer) ListServices(context.Context, *pb.ListServicesRequest) (*pb.ListServicesResponse, error) {
+func (*fakeServicesServer) ListServices(context.Context, *pb.ListServicesRequest) (*pb.ListServicesResponse, error) {
 	resp := pb.ListServicesResponse{}
 	if err := faker.FakeObject(&resp); err != nil {
 		return nil, fmt.Errorf("failed to fake data: %w", err)
@@ -36,7 +36,7 @@ type fakeVersionsServer struct {
 	pb.UnimplementedVersionsServer
 }
 
-func (f *fakeVersionsServer) ListVersions(context.Context, *pb.ListVersionsRequest) (*pb.ListVersionsResponse, error) {
+func (*fakeVersionsServer) ListVersions(context.Context, *pb.ListVersionsRequest) (*pb.ListVersionsResponse, error) {
 	resp := pb.ListVersionsResponse{}
 	if err := faker.FakeObject(&resp); err != nil {
 		return nil, fmt.Errorf("failed to fake data: %w", err)
@@ -49,7 +49,7 @@ type fakeInstancesServer struct {
 	pb.UnimplementedInstancesServer
 }
 
-func (f *fakeInstancesServer) ListInstances(context.Context, *pb.ListInstancesRequest) (*pb.ListInstancesResponse, error) {
+func (*fakeInstancesServer) ListInstances(context.Context, *pb.ListInstancesRequest) (*pb.ListInstancesResponse, error) {
 	resp := pb.ListInstancesResponse{}
 	if err := faker.FakeObject(&resp); err != nil {
 		return nil, fmt.Errorf("failed to fake data: %w", err)

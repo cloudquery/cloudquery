@@ -22,7 +22,7 @@ type fakeAppsServer struct {
 	pb.UnimplementedApplicationsServer
 }
 
-func (f *fakeAppsServer) GetApplication(context.Context, *pb.GetApplicationRequest) (*pb.Application, error) {
+func (*fakeAppsServer) GetApplication(context.Context, *pb.GetApplicationRequest) (*pb.Application, error) {
 	resp := pb.Application{}
 	if err := faker.FakeObject(&resp); err != nil {
 		return nil, fmt.Errorf("failed to fake data: %w", err)
