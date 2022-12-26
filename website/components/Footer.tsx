@@ -157,9 +157,9 @@ export function Footer() {
             <div className="md:text-right mt-8">
               <span>Latest from our blog</span>
               <h2 className="block font-semibold nx-text-2xl dark:nx-text-white">
-                {getPagesUnderRoute("/blog").sort(sortByDate)?.map((page) => {
-                  return <a href={page.route}>{page.frontMatter.title}</a>
-                }).slice(0,1)}
+                {getPagesUnderRoute("/blog").sort(sortByDate)?.map((page: Page) => {
+                  return <a href={page.route}>{page.frontMatter?.title}</a>
+                })[0]}
               </h2>
             </div>
           </div>
