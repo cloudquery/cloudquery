@@ -1,5 +1,7 @@
 # Source Plugin: gitlab
+
 ## Tables
+
 - [gitlab_groups](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gitlab/docs/tables/gitlab_groups.md)
   - [gitlab_group_members](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gitlab/docs/tables/gitlab_group_members.md)
 - [gitlab_projects](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gitlab/docs/tables/gitlab_projects.md)
