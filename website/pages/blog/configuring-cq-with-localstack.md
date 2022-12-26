@@ -43,7 +43,7 @@ docker run --rm -it \
 ## Step 2
 
 Configure CloudQuery to use the LocalStack endpoint
-```yml
+```yaml
 kind: source
 spec:
   # Source spec section
