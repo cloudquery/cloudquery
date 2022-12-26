@@ -26,7 +26,6 @@ func init() {
 		resource.ProtobufImport = "cloud.google.com/go/serviceusage/apiv1/serviceusagepb"
 		resource.Template = "newapi_list"
 		resource.MockTemplate = "newapi_list_grpc_mock"
-		resource.ServiceDNS = "serviceusage.googleapis.com"
 	}
 
 	Resources = append(Resources, resources...)
