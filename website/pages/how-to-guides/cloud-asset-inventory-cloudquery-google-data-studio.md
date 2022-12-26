@@ -1,11 +1,9 @@
 ---
 title: >-
-  How to Build an Open Source Cloud Asset Inventory with Google Data
-  Studio
+  How to Visualize CloudQuery Data with Google Data Studio
 tag: tutorial
-date: 2022/06/15
 description: >-
-  How to setup CloudQuery to build your cloud asset inventory in PostgreSQL and
+  How to set up CloudQuery to build your cloud asset inventory in PostgreSQL and
   connect it to Google Data Studio for visualization, monitoring and reporting.
 author: itay
 ---

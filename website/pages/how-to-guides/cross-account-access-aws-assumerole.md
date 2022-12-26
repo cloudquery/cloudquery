@@ -1,7 +1,6 @@
 ---
 title: How to Set Up Cross Account Access in AWS with AssumeRole
 tag: security
-date: 2022/06/14
 description: >-
   How to set up cross account access in AWS for variety of use-cases such as
   audit, security and compliance at scale.

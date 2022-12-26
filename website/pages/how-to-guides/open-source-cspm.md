@@ -1,7 +1,6 @@
 ---
 title: 'How to Build an Open Source CSPM with CloudQuery, PostgreSQL and Grafana'
 tag: tutorial
-date: 2022/07/24
 description: Unbundling the cloud security stack with a data platform
 author: yevgenypats
 ---

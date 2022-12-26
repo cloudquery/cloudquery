@@ -1,7 +1,6 @@
 ---
 title: How to Deploy CloudQuery into an AWS Organization
 tag: tutorial
-date: 2022/07/13
 description: >-
   Tutorial for setting up AWS IAM permissions in an AWS Organization so that
   CloudQuery can fetch all resources in all accounts

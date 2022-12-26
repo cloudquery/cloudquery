@@ -1,9 +1,8 @@
 ---
-title: How to Build an Open Source Cloud Asset Inventory with Metabase
+title: How to Visualize CloudQuery Data with Metabase
 tag: tutorial
-date: 2022/06/01
 description: >-
-  How to setup CloudQuery to build your cloud asset inventory in PostgreSQL and
+  How to set up CloudQuery to build your cloud asset inventory in PostgreSQL and
   connect it to Metabase for visualization, monitoring and reporting.
 author: yevgenypats
 ---

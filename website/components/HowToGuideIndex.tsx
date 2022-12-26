@@ -9,16 +9,9 @@ interface Page {
   frontMatter?: any;
 }
 
-function sortByTitle(a: Page, b: Page) {
-  return (
-     b.frontMatter?.title?.toLowerCase() < a.frontMatter?.title?.toLowerCase() ? 1 : -1
-  );
-}
-
 export function HowToGuideIndex({ more = "Read the guide" }) {
   return getPagesUnderRoute("/how-to-guides")
     .slice()
-    .sort(sortByTitle)
     .map((page) => {
       return (
         <div key={page.route} className="mb-10">
@@ -36,9 +29,6 @@ export function HowToGuideIndex({ more = "Read the guide" }) {
               <Link href={page.route}>{more + " →"}</Link>
             </span>
           </p>
-          {page.meta?.date ? (
-            <p className="opacity-50 text-sm">{page.meta.date}</p>
-          ) : null}
         </div>
       );
     });

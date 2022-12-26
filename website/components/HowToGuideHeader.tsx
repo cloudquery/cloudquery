@@ -8,8 +8,6 @@ type PostMeta = {
   title: string;
   /** security */
   tag: string;
-  /** 2022/06/06 */
-  date: string;
   description: string;
   /** yevgenypats */
   author?: string;
@@ -36,7 +34,7 @@ function Authors({ data }: { data: PostMeta }) {
   );
 }
 
-function BlogTitle({ data }: { data: PostMeta }) {
+function GuideTitle({ data }: { data: PostMeta }) {
   const title = data.title;
 
   if (!title) {
@@ -54,7 +52,7 @@ export function HowToGuideHeader() {
     return null;
   }
 
-  const image = `https://www.cloudquery.io/og-image/${meta.title}`;
+  const image = `/og-image/${meta.title}`;
 
   return (
     <>
@@ -62,7 +60,7 @@ export function HowToGuideHeader() {
         <meta property="twitter:image" content={image} />
         <meta property="og:image" content={image} />
       </Head>
-      <BlogTitle data={meta} />
+      <GuideTitle data={meta} />
       <Authors data={meta} />
     </>
   );

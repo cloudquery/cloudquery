@@ -1,7 +1,6 @@
 ---
 title: How to Query CloudQuery with PostGraphile
 tag: tutorial
-date: 2022/06/16
 description: Search everything you have in the cloud with GraphQL.
 author: yevgenypats
 ---

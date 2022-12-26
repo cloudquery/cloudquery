@@ -1,7 +1,6 @@
 ---
 title: How to Run CloudQuery with PostgREST
 tag: tutorial
-date: 2022/06/26
 description: See everything you have in the cloud with PostgREST
 author: yevgenypats
 ---

@@ -6,20 +6,5 @@
       "typesetting": "article"
     },
     "searchable": false
-  },
-  "cloud-asset-inventory-cloudquery-apache-superset": {
-    "title": "How to Visualize CloudQuery Data with Apache Superset (Preset)"
-  },
-  "cloud-asset-inventory-cloudquery-aws-quicksight": {
-    "title": "How to Visualize CloudQuery Data with AWS QuickSight"
-  },
-  "cloud-asset-inventory-cloudquery-google-data-studio": {
-    "title": "How to Visualize CloudQuery Data with Google Data Studio"
-  },
-  "cloud-asset-inventory-cloudquery-metabase": {
-    "title": "How to Visualize CloudQuery Data with Metabase"
-  },
-  "cloud-asset-inventory-cloudquery-microsoft-power-bi": {
-    "title": "How to Visualize CloudQuery Data with Microsoft Power BI"
   }
 }
