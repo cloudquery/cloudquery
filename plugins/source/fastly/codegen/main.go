@@ -29,6 +29,7 @@ func main() {
 
 	var resources []*recipes.Resource
 	resources = append(resources, recipes.ServiceResources()...)
+	resources = append(resources, recipes.StatsResources()...)
 
 	for _, r := range resources {
 		r.Infer()

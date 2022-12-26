@@ -1,0 +1,10 @@
+# Source Plugin: fastly
+
+## Tables
+
+- [fastly_services](fastly_services.md)
+  - [fastly_service_versions](fastly_service_versions.md)
+    - [fastly_service_health_checks](fastly_service_health_checks.md)
+    - [fastly_service_domains](fastly_service_domains.md)
+    - [fastly_service_backends](fastly_service_backends.md)
+- [fastly_stats_regions](fastly_stats_regions.md)
