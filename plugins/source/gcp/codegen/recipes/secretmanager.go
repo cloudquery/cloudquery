@@ -12,7 +12,6 @@ func init() {
 			Struct:         &pb.Secret{},
 			NewFunction:    secretmanager.NewClient,
 			RegisterServer: pb.RegisterSecretManagerServiceServer,
-			ListFunction:   (&pb.UnimplementedSecretManagerServiceServer{}).ListSecrets,
 			PrimaryKeys:    []string{"name"},
 			SkipFields:     []string{"Expiration"},
 			Description:    "https://cloud.google.com/secret-manager/docs/reference/rest/v1/projects.secrets#Secret",

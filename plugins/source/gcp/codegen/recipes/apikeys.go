@@ -11,7 +11,6 @@ func init() {
 			SubService:          "keys",
 			Struct:              &pb.Key{},
 			PrimaryKeys:         []string{ProjectIdColumn.Name, "uid"},
-			ListFunction:        (&apikeys.Client{}).ListKeys,
 			RequestStructFields: `Parent: "projects/" + c.ProjectId + "/locations/global",`,
 			Description:         "https://cloud.google.com/api-keys/docs/reference/rest/v2/projects.locations.keys#Key",
 		},
