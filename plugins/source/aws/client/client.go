@@ -235,6 +235,18 @@ func configureAwsClient(ctx context.Context, logger zerolog.Logger, awsConfig *S
 			})
 		}),
 	}
+	if awsConfig.EndpointURL != "" {
+		configFns = append(configFns, config.WithEndpointResolverWithOptions(aws.EndpointResolverWithOptionsFunc(
+			func(service, region string, options ...any) (aws.Endpoint, error) {
+				return aws.Endpoint{
+					URL:               awsConfig.EndpointURL,
+					HostnameImmutable: aws.ToBool(awsConfig.HostnameImmutable),
+					PartitionID:       awsConfig.PartitionID,
+					SigningRegion:     awsConfig.SigningRegion,
+				}, nil
+			})),
+		)
+	}
 
 	if account.DefaultRegion != "" {
 		// According to the docs: If multiple WithDefaultRegion calls are made, the last call overrides the previous call values

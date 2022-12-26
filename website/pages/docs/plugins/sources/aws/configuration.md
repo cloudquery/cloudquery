@@ -100,6 +100,31 @@ This is the (nested) spec used by the AWS source plugin.
 
   If true, will log AWS debug logs, including retries and other request/response metadata
 
+- `max_retries` (int) (default: 10)
+
+  Defines the maximum number of times an API request will be retried 
+
+- `max_backoff` (int) (default: 30)
+  
+  Defines the duration between retry attempts
+
+- `custom_endpoint_url` (string) (default: not used)
+
+  The base URL endpoint the SDK API clients will use to make API calls to. The SDK will suffix URI path and query elements to this endpoint
+
+- `custom_endpoint_hostname_immutable` (bool) (default: not used)
+
+  Specifies if the endpoint's hostname can be modified by the SDK's API client. When using something like LocalStack make sure to set it equal to `True`
+
+- `custom_endpoint_partition_id` (string) (default: not used)
+
+  The AWS partition the endpoint belongs to
+
+- `custom_endpoint_signing_region` (string) (default: not used)
+
+  The region that should be used for signing the request to the endpoint
+
+
 ## accounts
 
 This is used to specify one or more accounts to extract information from. Note that it should be an array of objects, each with the following fields:
