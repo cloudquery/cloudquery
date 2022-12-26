@@ -95,15 +95,6 @@ func Armcompute() []*Table {
 			Pager:          `NewListAllPager`,
 			ResponseStruct: "VirtualMachineScaleSetsClientListAllResponse",
 		},
-		{
-			NewFunc:        armcompute.NewVirtualMachinesClient,
-			PkgPath:        "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute",
-			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/virtualMachines",
-			Namespace:      "microsoft.compute",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_compute)`,
-			Pager:          `NewListAllPager`,
-			ResponseStruct: "VirtualMachinesClientListAllResponse",
-		},
 	}
 	return tables
 }

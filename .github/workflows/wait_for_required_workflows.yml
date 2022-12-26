@@ -55,6 +55,7 @@ jobs:
                            "plugins/source/k8s",
                            "plugins/source/okta",
                            "plugins/source/slack",
+                           "plugins/source/salesforce",
                            "plugins/source/tailscale",
                            "plugins/source/pagerduty",
                            "plugins/source/terraform",

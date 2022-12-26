@@ -26,6 +26,26 @@ func init() {
 				},
 			},
 		},
+		{
+			Service:        "armcompute",
+			Name:           "virtual_machines",
+			Struct:         &armcompute.VirtualMachine{},
+			ResponseStruct: &armcompute.VirtualMachinesClientListAllResponse{},
+			Client:         &armcompute.VirtualMachinesClient{},
+			ListFunc:       (&armcompute.VirtualMachinesClient{}).NewListAllPager,
+			NewFunc:        armcompute.NewVirtualMachinesClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/virtualMachines",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_compute)`,
+			SkipMock:       true,
+			ExtraColumns: []codegen.ColumnDefinition{
+				SubscriptionIdColumn,
+				{
+					Name:     "instance_view",
+					Type:     schema.TypeJSON,
+					Resolver: `getInstanceView`,
+				},
+			},
+		},
 	}
 	Tables = append(Tables, tables...)
 }
