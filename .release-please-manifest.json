@@ -52,5 +52,6 @@
   "plugins/destination/mongodb+FILLTER": "0.0.0",
   "plugins/source/gitlab": "1.0.0",
   "plugins/source/gitlab+FILLER": "0.0.0",
-  "plugins/source/salesforce": "1.0.0"
+  "plugins/source/salesforce": "1.0.0",
+  "plugins/source/salesforce+FILLER": "0.0.0"
 }
