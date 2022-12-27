@@ -1,7 +1,7 @@
 ---
 title: Configuring CloudQuery with LocalStack
 tag: integration
-date: 2022/12/23
+date: 2022/12/27
 description: >-
   How to setup CloudQuery to work with LocalStack
 author: benjamin
