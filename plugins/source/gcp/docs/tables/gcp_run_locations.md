@@ -1,6 +1,6 @@
 # Table: gcp_run_locations
 
-https://cloud.google.com/api-gateway/docs/reference/rest/v1/projects.locations#Location
+https://cloud.google.com/run/docs/reference/rest/v1/projects.locations#Location
 
 The primary key for this table is **_cq_id**.
 
