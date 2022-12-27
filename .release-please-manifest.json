@@ -51,5 +51,6 @@
   "plugins/destination/mongodb": "1.0.0",
   "plugins/destination/mongodb+FILLTER": "0.0.0",
   "plugins/source/gitlab": "1.0.0",
-  "plugins/source/gitlab+FILLER": "0.0.0"
+  "plugins/source/gitlab+FILLER": "0.0.0",
+  "plugins/source/azuredevops": "1.0.0"
 }
