@@ -30,12 +30,10 @@ jobs:
         id: broken-links
         run: |
           # The paths here match the build ignore setting on Vercel
-          git diff --quiet HEAD^ HEAD website .github/workflows/broken_links.yml
-          has_changes=$?
-          if [ ${has_changes} = 1 ] ; then \
-              echo "check=true" >> $GITHUB_OUTPUT \
-          else \
-              echo "check=false" >> $GITHUB_OUTPUT \
+          if ! git diff --quiet HEAD^ HEAD website .github/workflows/broken_links.yml ; then
+              echo "check=true" >> $GITHUB_OUTPUT 
+          else
+              echo "check=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Setup node

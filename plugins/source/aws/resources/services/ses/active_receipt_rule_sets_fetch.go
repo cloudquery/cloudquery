@@ -15,7 +15,10 @@ func fetchSesActiveReceiptRuleSets(ctx context.Context, meta schema.ClientMeta, 
 	if err != nil {
 		return err
 	}
-	res <- set
+
+	if set.Metadata != nil && set.Metadata.Name != nil {
+		res <- set
+	}
 
 	return nil
 }
