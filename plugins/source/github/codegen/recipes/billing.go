@@ -1,6 +1,7 @@
 package recipes
 
 import (
+	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/google/go-github/v48/github"
 )
 
@@ -9,23 +10,23 @@ func Billing() []*Resource {
 		{
 			Service:      "billing",
 			SubService:   "action",
-			Multiplex:    orgMultiplex,
 			Struct:       new(github.ActionBilling),
-			ExtraColumns: orgColumns,
+			ExtraColumns: codegen.ColumnDefinitions{orgColumn},
+			Multiplex:    orgMultiplex,
 		},
 		{
 			Service:      "billing",
 			SubService:   "package",
-			Multiplex:    orgMultiplex,
 			Struct:       new(github.PackageBilling),
-			ExtraColumns: orgColumns,
+			ExtraColumns: codegen.ColumnDefinitions{orgColumn},
+			Multiplex:    orgMultiplex,
 		},
 		{
 			Service:      "billing",
 			SubService:   "storage",
-			Multiplex:    orgMultiplex,
 			Struct:       new(github.StorageBilling),
-			ExtraColumns: orgColumns,
+			ExtraColumns: codegen.ColumnDefinitions{orgColumn},
+			Multiplex:    orgMultiplex,
 		},
 	}
 }

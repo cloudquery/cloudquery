@@ -23,17 +23,17 @@ func Workflows() *schema.Table {
 				},
 			},
 			{
+				Name:     "contents",
+				Type:     schema.TypeString,
+				Resolver: resolveContents,
+			},
+			{
 				Name:     "id",
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("ID"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
-			},
-			{
-				Name:     "contents",
-				Type:     schema.TypeString,
-				Resolver: resolveContents,
 			},
 			{
 				Name:     "node_id",

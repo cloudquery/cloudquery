@@ -22,14 +22,6 @@ func Members() *schema.Table {
 				},
 			},
 			{
-				Name:     "id",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
 				Name:     "membership",
 				Type:     schema.TypeJSON,
 				Resolver: resolveMembership,
@@ -38,6 +30,14 @@ func Members() *schema.Table {
 				Name:     "login",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Login"),
+			},
+			{
+				Name:     "id",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("ID"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "node_id",
