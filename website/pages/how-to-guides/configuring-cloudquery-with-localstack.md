@@ -113,10 +113,15 @@ Note that it is important to skip `aws_route53_delegation_sets` and `aws_iam_pol
 
 Run CloudQuery sync to sync the data from LocalStack to your local Postgres database you started in step 2
 
+Make sure to use fake credentials LocalStack does not support temporary IAM credentials...
 
 ```bash copy
-cloudquery sync source.yml destination.yml
+AWS_ACCESS_KEY_ID=000000000002 AWS_SECRET_ACCESS_KEY=test cloudquery sync source.yml destination.yml
 ```
+
+<Callout>
+You can inject the desired AWS Account ID by setting it as the `AWS_ACCESS_KEY_ID` if you don't set a value then it will be `000000000000`. You can read more about this functionality in the [LocalStack docs](https://docs.localstack.cloud/user-guide/tools/multi-account-setups/)
+</Callout>
 
 
 ### Step 7
