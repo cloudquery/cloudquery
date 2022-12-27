@@ -36,6 +36,10 @@ This is the (nested) spec used by the Fastly source plugin.
    
   An API token to access Fastly resources. This can be obtained by [creating a Fastly API token](https://docs.fastly.com/en/guides/using-api-tokens). It should be a *User token* with the *Global:read* scope. Automation tokens do not allow the listing of service versions.
 
+- `services` ([]string, optional):
+
+  A list of Fastly service IDs to sync. If not specified, all services will be used.
+
 ## Example Queries
 
 ### List all services and their active versions
