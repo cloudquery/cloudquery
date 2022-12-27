@@ -289,6 +289,7 @@ func generatedTables() []*schema.Table {
 		security.GovernanceRule(),
 		security.JitNetworkAccessPolicies(),
 		security.Locations(),
+		security.Pricings(),
 		security.RegulatoryComplianceStandards(),
 		security.SecureScoreControlDefinitions(),
 		security.SecureScoreControls(),
