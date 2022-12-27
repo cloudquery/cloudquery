@@ -17,9 +17,9 @@ Optimizing cloud costs is a never-ending task. There are many ways to do it, and
 
 ## Prerequisites
 
-- [Azure Source Plugin](https://www.cloudquery.io/docs/plugins/sources/azure/overview)
-- [PostgreSQL Destination Plugin](https://www.cloudquery.io/docs/plugins/destinations/postgresql/overview)
-- A running PostgreSQL instance (can be local or remote)
+- [Azure Source Plugin](/docs/plugins/sources/azure/overview)
+- [PostgreSQL Destination Plugin](/docs/plugins/destinations/postgresql/overview)
+- A PostgreSQL instance (can be local or remote)
 
 ## Create a Cost Analysis Report in Azure
 
@@ -39,12 +39,12 @@ Use the _Save as_ button to save this as a new report view. Give it a name and c
 
 ![Azure Cost By Resource Report Save Button](/images/blog/azure-cost-optimization-with-cloudquery/cost-analysis-cost-by-resource-report-save.png)
 
-From now on every time we run a `cloudquery sync` command, the data from this report will be synced to PostgreSQL database. 
+Now we can configure CloudQuery so each time we run `cloudquery sync` the data from this report will be synced to a PostgreSQL database.
 
 
 ## Syncing data
 
-Before going off and writing queries, we need to sync the data from Azure to our PostgreSQL database. To do that, we'll use the `cloudquery sync` command. Let's start with writing (well, copy-pasting) a configuration file (For full config reference, checkout the [Azure Source Plugin](https://www.cloudquery.io/docs/plugins/sources/azure/configuration) and [PostgreSQL Destination Plugin](https://www.cloudquery.io/docs/plugins/destinations/postgresql/overview)):
+Before going off and writing queries, we need to sync the data from Azure to our PostgreSQL database. To do that, we'll use the `cloudquery sync` command. Let's start with creating a configuration file (For the full configuration reference, check out the [Azure Source Plugin](/docs/plugins/sources/azure/configuration) and [PostgreSQL Destination Plugin](/docs/plugins/destinations/postgresql/overview)):
 
 ```yaml copy
 kind: source
@@ -54,7 +54,7 @@ spec:
   path: "cloudquery/azure"
   version: "VERSION_SOURCE_AZURE"
   destinations: ["postgresql"]
-  concurrency: 100 # Azure is a beast: If you're running this on a beefy machine, you can increase this
+  concurrency: 100 # The Azure source plugin supports many resources and can fail on small machines. Increase this if you run it on a beefy machine
   tables: ["*"] # "azure_costmanagement_views" and "azure_costmanagement_view_queries" are required for this tutorial, but let's get them all
   spec:
     # We could specify a list of subscriptions to sync, but we'll just sync all of them
@@ -130,7 +130,7 @@ JOIN azure_costmanagement_views v ON v._cq_id=q._cq_parent_id
 WHERE v.name='cost-matching'
 ```
 
-Looks complicated, but it's not too bad. Let's break it down:
+Let's break it down:
 
   * `SELECT (r->>(cid.pos::int - 1))::text AS res_id, (r->>(ccost.pos::int - 1))::numeric AS cost_usd` - This is the meat of the query. We're selecting the ResourceId and CostUSD columns from the `azure_costmanagement_view_queries` table. We're using the `cid.pos` and `ccost.pos` values we got from the previous query to get the correct column indexes. We're also casting the values to the correct types. `- 1` because we're using 1-based indexing, and the `rows` array is 0-based.
   * `FROM azure_costmanagement_view_queries q` - We're selecting from the `azure_costmanagement_view_queries` table, and we're calling it `q` for the rest of the query.
