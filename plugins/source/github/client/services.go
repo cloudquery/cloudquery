@@ -9,6 +9,7 @@ import (
 type GithubServices struct {
 	Actions       ActionsService
 	Billing       BillingService
+	Dependabot    DependabotService
 	Issues        IssuesService
 	Organizations OrganizationsService
 	Repositories  RepositoriesService
@@ -55,4 +56,14 @@ type IssuesService interface {
 //go:generate mockgen -package=mocks -destination=./mocks/mock_actions.go . ActionsService
 type ActionsService interface {
 	ListWorkflows(ctx context.Context, owner, repo string, opts *github.ListOptions) (*github.Workflows, *github.Response, error)
+}
+
+//go:generate mockgen -package=mocks -destination=./mocks/mock_dependabot.go . DependabotService
+type DependabotService interface {
+	ListOrgAlerts(ctx context.Context, org string, opts *github.ListAlertsOptions) ([]*github.DependabotAlert, *github.Response, error)
+	ListRepoAlerts(ctx context.Context, owner, repo string, opts *github.ListAlertsOptions) ([]*github.DependabotAlert, *github.Response, error)
+	GetRepoAlert(ctx context.Context, owner, repo string, number int) (*github.DependabotAlert, *github.Response, error)
+
+	ListRepoSecrets(ctx context.Context, owner, repo string, opts *github.ListOptions) (*github.Secrets, *github.Response, error)
+	ListOrgSecrets(ctx context.Context, org string, opts *github.ListOptions) (*github.Secrets, *github.Response, error)
 }
