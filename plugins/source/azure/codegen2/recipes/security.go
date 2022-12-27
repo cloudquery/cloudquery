@@ -161,19 +161,7 @@ func init() {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_security)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
-		{
-			Service:        "armsecurity",
-			Name:           "pricings",
-			Struct:         &armsecurity.Pricing{},
-			ResponseStruct: &armsecurity.PricingsClientListResponse{},
-			Client:         &armsecurity.PricingsClient{},
-			ListFunc:       (&armsecurity.PricingsClient{}).List,
-			NewFunc:        armsecurity.NewPricingsClient,
-			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/pricings",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_security)`,
-			ExtraColumns:   DefaultExtraColumns,
-			SkipFetch:      true,
-		},
+
 		{
 			Service:        "armsecurity",
 			Name:           "regulatory_compliance_standards",
