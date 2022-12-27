@@ -28,6 +28,8 @@ func main() {
 	}
 
 	var resources []*recipes.Resource
+	resources = append(resources, recipes.AccountResources()...)
+	resources = append(resources, recipes.AuthResources()...)
 	resources = append(resources, recipes.ServiceResources()...)
 	resources = append(resources, recipes.StatsResources()...)
 

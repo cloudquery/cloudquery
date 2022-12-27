@@ -141,3 +141,42 @@ ORDER BY date_trunc('month', start_time) ASC
 | December  | 18767    | 180 MB     | 13414      | 2423       | 18         |
 +-----------+----------+------------+------------+------------+------------+
 ```
+
+### Select users that don't have 2FA enabled
+
+```sql copy
+SELECT name,
+       login,
+       two_factor_auth_enabled
+FROM   fastly_account_users
+WHERE  two_factor_auth_enabled IS FALSE
+```
+
+```text
++---------------+---------------------------+-------------------------+
+| name          | login                     | two_factor_auth_enabled |
+|---------------+---------------------------+-------------------------|
+| Rudolph       | rudolph@gmail.com         | False                   |
+| Santa         | santa.northpole@gmail.com | False                   |
++---------------+---------------------------+-------------------------+
+```
+
+### List all API tokens and their expiry dates
+
+```sql copy
+SELECT NAME,
+       scope,
+       created_at,
+       last_used_at,
+       expires_at
+FROM   fastly_auth_tokens 
+```
+
+```text
++-----------------------------------+-------------+---------------------+---------------------+---------------------+
+| name                              | scope       | created_at          | last_used_at        | expires_at          |
+|-----------------------------------+-------------+---------------------+---------------------+---------------------|
+| manage.fastly.com browser session | global      | 2022-12-26 12:24:01 | <null>              | <null>              |
+| Robot Santa Claus                 | global:read | 2022-11-25 00:00:00 | <null>              | 2024-12-25 00:00:00 |
++-----------------------------------+-------------+---------------------+---------------------+---------------------+
+```
