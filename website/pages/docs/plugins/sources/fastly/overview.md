@@ -101,3 +101,39 @@ ORDER  BY service_version DESC;
 | my-service-domain.com | /blog  | GET    | 10        | 1               | 40000          |
 +-----------------------+--------+--------+-----------+-----------------+----------------+
 ```
+
+### Retrieve stats for a service for a specific time period
+
+```sql copy
+SELECT   to_char(Date_trunc('month', start_time), 'Month')             AS month,
+         sum(requests)                                                 AS requests,
+         pg_size_pretty(Sum(resp_body_bytes) + sum(resp_header_bytes)) AS resp_bytes,
+         sum(status_ 2xx)                                              AS status_2xx,
+         sum(status_4xx)                                               AS status_4xx,
+         sum(status_5xx)                                               AS status_5xx
+FROM     fastly_stats_services
+WHERE    service_id = '1234567890abcdefghijkl'
+AND      start_time >= date '2022-01-01'
+AND      s tart_time < date '2023-01-01'
+GROUP BY date_trunc('month', start_time)
+ORDER BY date_trunc('month', start_time) ASC
+```
+
+```text
++-----------+----------+------------+------------+------------+------------+
+| month     | requests | resp_bytes | status_2xx | status_4xx | status_5xx |
+|-----------+----------+------------+------------+------------+------------|
+| January   | 24274    | 225 MB     | 17526      | 1937       | 43         |
+| February  | 26584    | 251 MB     | 17817      | 4232       | 14         |
+| March     | 24508    | 240 MB     | 18416      | 1788       | 18         |
+| April     | 25098    | 243 MB     | 17892      | 3066       | 142        |
+| May       | 25865    | 254 MB     | 18647      | 2849       | 18         |
+| June      | 18001    | 181 MB     | 12487      | 2711       | 5          |
+| July      | 22005    | 206 MB     | 14759      | 3414       | 30         |
+| August    | 19737    | 186 MB     | 12824      | 3344       | 14         |
+| September | 24001    | 235 MB     | 15944      | 4483       | 5          |
+| October   | 23244    | 240 MB     | 16180      | 3099       | 8          |
+| November  | 22119    | 201 MB     | 15237      | 3832       | 2          |
+| December  | 18767    | 180 MB     | 13414      | 2423       | 18         |
++-----------+----------+------------+------------+------------+------------+
+```

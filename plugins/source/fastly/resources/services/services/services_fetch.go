@@ -9,24 +9,27 @@ import (
 	"github.com/thoas/go-funk"
 )
 
-func fetchServices(_ context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchServices(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	p := c.Fastly.NewListServicesPaginator(&fastly.ListServicesInput{
-		PerPage: 100,
-	})
-	cfg := c.Spec
-	if p.HasNext() {
-		services, err := p.GetNext()
-		if err != nil {
-			return err
-		}
-		for _, s := range services {
-			if len(cfg.Services) > 0 && !funk.ContainsString(cfg.Services, s.ID) {
-				continue
+	f := func() error {
+		p := c.Fastly.NewListServicesPaginator(&fastly.ListServicesInput{
+			PerPage: 100,
+		})
+		cfg := c.Spec
+		if p.HasNext() {
+			services, err := p.GetNext()
+			if err != nil {
+				return err
 			}
-			res <- s
-		}
+			for _, s := range services {
+				if len(cfg.Services) > 0 && !funk.ContainsString(cfg.Services, s.ID) {
+					continue
+				}
+				res <- s
+			}
 
+		}
+		return nil
 	}
-	return nil
+	return c.RetryOnError(ctx, "fastly_services", f)
 }

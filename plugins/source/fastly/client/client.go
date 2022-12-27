@@ -14,8 +14,8 @@ import (
 )
 
 const (
-	defaultMaxRetries = 3
-	defaultBackoff    = 1 * time.Second
+	defaultMaxRetries = 5
+	defaultBackoff    = 10 * time.Second
 )
 
 type Client struct {

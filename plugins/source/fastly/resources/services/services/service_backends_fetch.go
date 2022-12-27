@@ -10,15 +10,18 @@ import (
 
 func fetchServiceBackends(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	v := parent.Item.(*fastly.Version)
-	backend, err := c.Fastly.ListBackends(&fastly.ListBackendsInput{
-		ServiceID:      v.ServiceID,
-		ServiceVersion: v.Number,
-	})
-	if err != nil {
-		return err
-	}
-	res <- backend
+	f := func() error {
+		v := parent.Item.(*fastly.Version)
 
-	return nil
+		backend, err := c.Fastly.ListBackends(&fastly.ListBackendsInput{
+			ServiceID:      v.ServiceID,
+			ServiceVersion: v.Number,
+		})
+		if err != nil {
+			return err
+		}
+		res <- backend
+		return nil
+	}
+	return c.RetryOnError(ctx, "fastly_service_backends", f)
 }

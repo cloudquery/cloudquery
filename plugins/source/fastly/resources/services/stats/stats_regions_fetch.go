@@ -9,12 +9,15 @@ import (
 
 func fetchStatsRegions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	r, err := c.Fastly.GetRegions()
-	if err != nil {
-		return err
+	f := func() error {
+		r, err := c.Fastly.GetRegions()
+		if err != nil {
+			return err
+		}
+		res <- r.Data
+		return nil
 	}
-	res <- r.Data
-	return nil
+	return c.RetryOnError(ctx, "fastly_stats_regions", f)
 }
 
 func setRegionName(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {

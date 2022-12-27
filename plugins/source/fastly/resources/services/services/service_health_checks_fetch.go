@@ -10,15 +10,18 @@ import (
 
 func fetchServiceHealthChecks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	v := parent.Item.(*fastly.Version)
-	healthChecks, err := c.Fastly.ListHealthChecks(&fastly.ListHealthChecksInput{
-		ServiceID:      v.ServiceID,
-		ServiceVersion: v.Number,
-	})
-	if err != nil {
-		return err
-	}
-	res <- healthChecks
+	f := func() error {
+		v := parent.Item.(*fastly.Version)
+		healthChecks, err := c.Fastly.ListHealthChecks(&fastly.ListHealthChecksInput{
+			ServiceID:      v.ServiceID,
+			ServiceVersion: v.Number,
+		})
+		if err != nil {
+			return err
+		}
+		res <- healthChecks
 
-	return nil
+		return nil
+	}
+	return c.RetryOnError(ctx, "fastly_service_health_checks", f)
 }
