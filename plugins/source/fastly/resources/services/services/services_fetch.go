@@ -9,7 +9,7 @@ import (
 	"github.com/thoas/go-funk"
 )
 
-func fetchServices(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchServices(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	f := func() error {
 		p := c.Fastly.NewListServicesPaginator(&fastly.ListServicesInput{
@@ -27,7 +27,6 @@ func fetchServices(ctx context.Context, meta schema.ClientMeta, _ *schema.Resour
 				}
 				res <- s
 			}
-
 		}
 		return nil
 	}

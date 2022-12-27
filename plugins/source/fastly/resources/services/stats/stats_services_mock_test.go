@@ -15,7 +15,7 @@ import (
 
 func buildServiceStatsMock(t *testing.T, ctrl *gomock.Controller) services.FastlyClient {
 	m := mocks.NewMockFastlyClient(ctrl)
-	m.EXPECT().GetStatsJSON(gomock.Any(), gomock.Any()).DoAndReturn(func(a, resp interface{}) error {
+	m.EXPECT().GetStatsJSON(gomock.Any(), gomock.Any()).DoAndReturn(func(a, resp any) error {
 		b, err := os.ReadFile("testdata/stats.json")
 		if err != nil {
 			return err

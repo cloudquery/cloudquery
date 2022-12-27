@@ -18,7 +18,7 @@ type statsResponse struct {
 	Status  string                 `mapstructure:"status"`
 }
 
-func fetchStatsServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchStatsServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	f := func() error {
 		startTime := *c.Service.CreatedAt

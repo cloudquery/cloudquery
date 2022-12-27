@@ -8,7 +8,7 @@ import (
 	"github.com/fastly/go-fastly/v7/fastly"
 )
 
-func fetchServiceBackends(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchServiceBackends(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	f := func() error {
 		v := parent.Item.(*fastly.Version)

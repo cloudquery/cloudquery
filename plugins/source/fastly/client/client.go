@@ -56,9 +56,9 @@ func (c *Client) withServiceAndRegion(service *fastly.Service, region string) sc
 	}
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.ClientMeta, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, sourceSpec specs.Source) (schema.ClientMeta, error) {
 	var config Spec
-	err := s.UnmarshalSpec(&config)
+	err := sourceSpec.UnmarshalSpec(&config)
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
 	}
@@ -67,7 +67,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (sche
 		return nil, fmt.Errorf("failed to create fastly client: %w", err)
 	}
 
-	services, err := listServices(client, config)
+	fastlyServices, err := listServices(client, config)
 	if err != nil {
 		return nil, fmt.Errorf("failed to list services: %w", err)
 	}
@@ -78,17 +78,17 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (sche
 
 	return &Client{
 		logger:     logger,
-		spec:       s,
+		spec:       sourceSpec,
 		Fastly:     client,
 		maxRetries: defaultMaxRetries,
 		backoff:    defaultBackoff,
-		services:   services,
+		services:   fastlyServices,
 		regions:    regions,
 	}, nil
 }
 
 func listServices(client services.FastlyClient, cfg Spec) ([]*fastly.Service, error) {
-	var services []*fastly.Service
+	var fastlyServices []*fastly.Service
 	p := client.NewListServicesPaginator(&fastly.ListServicesInput{
 		PerPage: 100,
 	})
@@ -101,10 +101,10 @@ func listServices(client services.FastlyClient, cfg Spec) ([]*fastly.Service, er
 			if len(cfg.Services) > 0 && !funk.ContainsString(cfg.Services, service.ID) {
 				continue
 			}
-			services = append(services, service)
+			fastlyServices = append(fastlyServices, service)
 		}
 	}
-	return services, nil
+	return fastlyServices, nil
 }
 
 func listRegions(client services.FastlyClient) ([]string, error) {

@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchStatsRegions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchStatsRegions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	f := func() error {
 		r, err := c.Fastly.GetRegions()
@@ -21,6 +21,5 @@ func fetchStatsRegions(ctx context.Context, meta schema.ClientMeta, parent *sche
 }
 
 func setRegionName(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	resource.Set(c.Name, resource.Item.(string))
-	return nil
+	return resource.Set(c.Name, resource.Item.(string))
 }

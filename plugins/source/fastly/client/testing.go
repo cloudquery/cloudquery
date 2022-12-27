@@ -29,9 +29,9 @@ func MockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, 
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source) (schema.ClientMeta, error) {
-		var services []*fastly.Service
+		var s []*fastly.Service
 		if opts.Service != nil {
-			services = []*fastly.Service{opts.Service}
+			s = []*fastly.Service{opts.Service}
 		}
 		var regions []string
 		if opts.Region != "" {
@@ -40,7 +40,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, 
 		return &Client{
 			logger:   l,
 			Fastly:   builder(t, ctrl),
-			services: services,
+			services: s,
 			regions:  regions,
 		}, nil
 	}
