@@ -7,47 +7,45 @@ import (
 )
 
 func Hooks() []*Resource {
-	const (
-		deliveredAt = "DeliveredAt"
-	)
-
 	return []*Resource{
 		{
+			TableName:    "hooks",
 			Service:      "hooks",
 			SubService:   "hooks",
-			Multiplex:    orgMultiplex,
 			Struct:       new(github.Hook),
-			TableName:    "hooks",
-			SkipFields:   skipID,
-			ExtraColumns: append(orgColumns, idColumn),
+			PKColumns:    []string{"id"},
+			ExtraColumns: codegen.ColumnDefinitions{orgColumn},
+			Multiplex:    orgMultiplex,
 			Relations:    []string{"Deliveries()"},
 		},
 		{
+			TableName:  "hook_deliveries",
 			Service:    "hooks",
 			SubService: "deliveries",
-			Multiplex:  "", // we skip multiplexing here as it's a relation
 			Struct:     new(github.HookDelivery),
-			TableName:  "hook_deliveries",
-			SkipFields: append(skipID, deliveredAt, "Request", "Response"),
-			ExtraColumns: append(orgColumns, idColumn,
-				codegen.ColumnDefinition{
+			PKColumns:  []string{"id"},
+			SkipFields: []string{"Request", "Response"},
+			ExtraColumns: codegen.ColumnDefinitions{
+				orgColumn,
+				{
 					Name:        "hook_id",
 					Type:        schema.TypeInt,
 					Resolver:    `client.ResolveParentColumn("ID")`,
 					Description: "Hook ID",
 					Options:     schema.ColumnCreationOptions{PrimaryKey: true},
 				},
-				codegen.ColumnDefinition{
+				{
 					Name:     "request",
 					Type:     schema.TypeString,
 					Resolver: `resolveRequest`,
 				},
-				codegen.ColumnDefinition{
+				{
 					Name:     "response",
 					Type:     schema.TypeString,
 					Resolver: `resolveResponse`,
 				},
-				timestampField("delivered_at", deliveredAt)),
+			},
+			Multiplex: "", // we skip multiplexing here as it's a relation
 		},
 	}
 }

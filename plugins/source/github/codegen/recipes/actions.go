@@ -9,19 +9,20 @@ import (
 func Actions() []*Resource {
 	return []*Resource{
 		{
+			TableName:  "workflows",
 			Service:    "actions",
 			SubService: "workflows",
-			Multiplex:  orgMultiplex,
 			Struct:     new(github.Workflow),
-			TableName:  "workflows",
-			SkipFields: skipID,
-			ExtraColumns: append(orgColumns, idColumn,
-				codegen.ColumnDefinition{
+			PKColumns:  []string{"id"},
+			ExtraColumns: codegen.ColumnDefinitions{
+				orgColumn,
+				{
 					Name:     "contents",
 					Type:     schema.TypeString,
 					Resolver: `resolveContents`,
 				},
-			),
+			},
+			Multiplex: orgMultiplex,
 		},
 	}
 }

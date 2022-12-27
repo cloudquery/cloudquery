@@ -23,14 +23,6 @@ func Hooks() *schema.Table {
 				},
 			},
 			{
-				Name:     "id",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
 				Name:     "created_at",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreatedAt"),
@@ -44,6 +36,14 @@ func Hooks() *schema.Table {
 				Name:     "url",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("URL"),
+			},
+			{
+				Name:     "id",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("ID"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "type",
