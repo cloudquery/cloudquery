@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [9.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v9.0.0...plugins-source-aws-v9.0.1) (2022-12-27)
+
+
+### Bug Fixes
+
+* **aws_ses_active_receipt_rule_sets:** Don't call DescribeActiveReceiptRuleSet on unsupported regions ([#5997](https://github.com/cloudquery/cloudquery/issues/5997)) ([6a63147](https://github.com/cloudquery/cloudquery/commit/6a631478014ee6cf2d21f3426fe903715e67e3c0))
+* **aws_ses_active_receipt_rule_sets:** Don't sync empty return values from DescribeActiveReceiptRuleSet ([#5992](https://github.com/cloudquery/cloudquery/issues/5992)) ([5837069](https://github.com/cloudquery/cloudquery/commit/58370697f69f10b3ada7c50b5dd6b5ce28cf0f91))
+
 ## [9.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v8.1.0...plugins-source-aws-v9.0.0) (2022-12-27)
 
 
