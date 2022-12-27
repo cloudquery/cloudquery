@@ -184,10 +184,6 @@
     {
       "source": "/blog/open-source-cspm",
       "destination": "/how-to-guides/open-source-cspm"
-    },
-    {
-      "source": "/blog/configuring-cq-with-localstack",
-      "destination": "/how-to-guides/configuring-cq-with-localstack"
-    }
+    }    
   ]
 }
