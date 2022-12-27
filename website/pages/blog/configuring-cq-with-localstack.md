@@ -1,5 +1,5 @@
 ---
-title: CloudQuery and LocalStack
+title: Configuring CloudQuery with LocalStack
 tag: integration
 date: 2022/12/23
 description: >-
@@ -19,7 +19,7 @@ In this guide we will walk through how to configure CloudQuery to sync from a Lo
 
 ## Introduction to LocalStack
 
-LocalStack is a fully functional local cloud stack that enables developers to Develop and test their cloud and serverless applications offline.  It allows developers to test their cloud applications locally, without the need for an internet connection or an AWS account. This can be particularly useful for development and testing, as it allows developers to work on their applications offline and avoid incurring any charges for using AWS services.
+[LocalStack](https://localstack.cloud/) is a fully functional local cloud stack that enables developers to Develop and test their cloud and serverless applications offline. It allows developers to test their cloud applications locally, without the need for an internet connection or an AWS account. This can be particularly useful for development and testing, as it allows developers to work on their applications offline and avoid incurring any charges for using AWS services.
 
 
 
@@ -27,14 +27,14 @@ LocalStack is a fully functional local cloud stack that enables developers to De
 
 Before beginning this tutorial make sure you have the following tools installed:
 - [Docker](https://www.docker.com/products/docker-desktop/)
-- [CloudQuery](https://www.cloudquery.io/docs/quickstart)
+- [CloudQuery](/docs/quickstart)
 
 
 ### Step 1
 
 Start LocalStack running on your machine:
 
-```bash
+```bash copy
 docker run --rm -it \
     -p 4566:4566 \
     -p 4510-4559:4510-4559 \
@@ -79,6 +79,6 @@ Note that it is important to skip `aws_route53_delegation_sets` and `aws_iam_pol
 Run CloudQuery
 
 
-``` bash
+```bash copy
 cloudquery sync config.yml
 ```
