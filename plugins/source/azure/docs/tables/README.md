@@ -202,6 +202,7 @@
 - [azure_security_governance_rule](azure_security_governance_rule.md)
 - [azure_security_jit_network_access_policies](azure_security_jit_network_access_policies.md)
 - [azure_security_locations](azure_security_locations.md)
+- [azure_security_pricings](azure_security_pricings.md)
 - [azure_security_regulatory_compliance_standards](azure_security_regulatory_compliance_standards.md)
 - [azure_security_secure_score_control_definitions](azure_security_secure_score_control_definitions.md)
 - [azure_security_secure_score_controls](azure_security_secure_score_controls.md)
