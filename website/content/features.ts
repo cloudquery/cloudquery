@@ -46,7 +46,7 @@ const FEATURES: Features = [
   },
   {
     name: "Database agnostic",
-    description: `CloudQuery can store your configuration in any supported destination such as database, datalake, streaming for further analysis.`,
+    description: `CloudQuery can store your configuration in any supported destination such as database, data lake or streaming platform for further analysis.`,
     Icon: DatabaseIcon,
     page: "all",
   },
