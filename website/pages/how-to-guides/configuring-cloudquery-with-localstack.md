@@ -1,7 +1,6 @@
 ---
 title: Configuring CloudQuery with LocalStack
 tag: integration
-date: 2022/12/27
 description: >-
   How to setup CloudQuery to work with LocalStack
 author: benjamin
@@ -41,10 +40,45 @@ docker run --rm -it \
     -e DEBUG=1 \
     localstack/localstack
 ```
+
+
 ## Step 2
 
-Configure CloudQuery to use the LocalStack endpoint
+Start a local Postgres Database for CloudQuery to use to store the data we will sync from LocalStack. The simplest way to do this is to start a database running locally in a docker container
+
+```bash copy
+#Create a database in Docker
+docker run -d --name postgresdb \
+-p 5432:5432 \
+-e POSTGRES_PASSWORD=pass \
+postgres
+```
+
+
+## Step 3
+
+Configure a destination for CloudQuery to use to store the data. For this tutorial we will use Postgresql, but many other destinations are [available here](/docs/plugins/destinations/overview)
+
 ```yaml
+# destination.yml
+kind: destination
+spec:
+  name: "postgresql"
+  registry: "github"
+  path: "cloudquery/postgresql"
+  version: "VERSION_DESTINATION_POSTGRESQL"
+  spec:
+    connection_string: "postgresql://postgres:pass@localhost:5432/postgres?sslmode=disable"
+```
+
+
+## Step 4
+
+Configure CloudQuery's AWS [source plugin](/docs/plugins/sources/aws/overview)  to use the LocalStack endpoint.
+
+
+```yaml
+# source.yml
 kind: source
 spec:
   # Source spec section
@@ -74,11 +108,25 @@ spec:
 Note that it is important to skip `aws_route53_delegation_sets` and `aws_iam_policies` as bugs in LocalStack force CloudQuery into an infinite loop
 </Callout>
 
-### Step 3
 
-Run CloudQuery
+### Step 5
+
+Run CloudQuery sync to sync the data from LocalStack to your local Postgres database you started in step 2
 
 
 ```bash copy
-cloudquery sync config.yml
+cloudquery sync source.yml destination.yml
+```
+
+
+### Step 7
+
+Query the data you just synced!
+
+```sql
+select * from aws_ec2_vpcs;
+
+-- or
+
+select * from aws_ec2_security_groups;
 ```
