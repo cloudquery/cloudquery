@@ -12,9 +12,6 @@ The composite primary key for this table is (**org**, **id**).
 |_cq_parent_id|UUID|
 |org (PK)|String|
 |id (PK)|Int|
-|created_at|Timestamp|
-|pushed_at|Timestamp|
-|updated_at|Timestamp|
 |node_id|String|
 |owner|JSON|
 |name|String|
@@ -24,6 +21,9 @@ The composite primary key for this table is (**org**, **id**).
 |code_of_conduct|JSON|
 |default_branch|String|
 |master_branch|String|
+|created_at|Timestamp|
+|pushed_at|Timestamp|
+|updated_at|Timestamp|
 |html_url|String|
 |clone_url|String|
 |git_url|String|
@@ -69,6 +69,7 @@ The composite primary key for this table is (**org**, **id**).
 |has_pages|Bool|
 |has_projects|Bool|
 |has_downloads|Bool|
+|has_discussions|Bool|
 |is_template|Bool|
 |license_template|String|
 |gitignore_template|String|

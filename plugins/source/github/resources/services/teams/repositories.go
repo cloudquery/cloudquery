@@ -22,32 +22,17 @@ func Repositories() *schema.Table {
 				},
 			},
 			{
-				Name:     "id",
+				Name:     "team_id",
 				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("ID"),
+				Resolver: client.ResolveParentColumn("ID"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
 			},
 			{
-				Name:     "created_at",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("CreatedAt.Time"),
-			},
-			{
-				Name:     "pushed_at",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("PushedAt.Time"),
-			},
-			{
-				Name:     "updated_at",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("UpdatedAt.Time"),
-			},
-			{
-				Name:     "team_id",
+				Name:     "id",
 				Type:     schema.TypeInt,
-				Resolver: client.ResolveParentColumn("ID"),
+				Resolver: schema.PathResolver("ID"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
@@ -96,6 +81,21 @@ func Repositories() *schema.Table {
 				Name:     "master_branch",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("MasterBranch"),
+			},
+			{
+				Name:     "created_at",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("CreatedAt"),
+			},
+			{
+				Name:     "pushed_at",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("PushedAt"),
+			},
+			{
+				Name:     "updated_at",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("UpdatedAt"),
 			},
 			{
 				Name:     "html_url",
@@ -321,6 +321,11 @@ func Repositories() *schema.Table {
 				Name:     "has_downloads",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("HasDownloads"),
+			},
+			{
+				Name:     "has_discussions",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("HasDiscussions"),
 			},
 			{
 				Name:     "is_template",

@@ -11,27 +11,28 @@ func Organizations() []*Resource {
 		{
 			Service:      "organizations",
 			SubService:   "organizations",
-			Multiplex:    orgMultiplex,
 			Struct:       new(github.Organization),
 			TableName:    "organizations",
-			SkipFields:   skipID,
-			ExtraColumns: append(orgColumns, idColumn),
+			PKColumns:    []string{"id"},
+			ExtraColumns: codegen.ColumnDefinitions{orgColumn},
+			Multiplex:    orgMultiplex,
 			Relations:    []string{"Members()"},
 		},
 		{
 			Service:    "organizations",
 			SubService: "members",
-			Multiplex:  "", // we skip multiplexing here as it's a relation
 			Struct:     new(github.User),
 			TableName:  "organization_members",
-			SkipFields: skipID,
-			ExtraColumns: append(orgColumns, idColumn, // we can use orgColumns here
-				codegen.ColumnDefinition{
+			PKColumns:  []string{"id"},
+			ExtraColumns: codegen.ColumnDefinitions{
+				orgColumn, // we can use orgColumn here
+				{
 					Name:     "membership",
 					Type:     schema.TypeJSON,
 					Resolver: "resolveMembership",
 				},
-			),
+			},
+			Multiplex: "", // we skip multiplexing here as it's a relation
 		},
 	}
 }
