@@ -30,7 +30,7 @@ func Hooks() []*Resource {
 				{
 					Name:        "hook_id",
 					Type:        schema.TypeInt,
-					Resolver:    `client.ResolveParentColumn("ID")`,
+					Resolver:    `client.ResolveParentColumn("id")`,
 					Description: "Hook ID",
 					Options:     schema.ColumnCreationOptions{PrimaryKey: true},
 				},
