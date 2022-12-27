@@ -8,3 +8,4 @@
     - [fastly_service_domains](fastly_service_domains.md)
     - [fastly_service_backends](fastly_service_backends.md)
 - [fastly_stats_regions](fastly_stats_regions.md)
+- [fastly_stats_services](fastly_stats_services.md)

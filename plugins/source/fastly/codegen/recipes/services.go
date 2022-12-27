@@ -10,7 +10,6 @@ func ServiceResources() []*Resource {
 			DataStruct:  &fastly.Service{},
 			Description: "https://developer.fastly.com/reference/api/services/service/",
 			PKColumns:   []string{"id"},
-			SkipFields:  []string{},
 			Relations: []string{
 				"ServiceVersions()",
 			},
