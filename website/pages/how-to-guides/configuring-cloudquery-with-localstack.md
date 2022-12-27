@@ -116,7 +116,7 @@ Run CloudQuery sync to sync the data from LocalStack to your local Postgres data
 Make sure to use fake credentials LocalStack does not support temporary IAM credentials…
 
 ```bash copy
-AWS_ACCESS_KEY_ID=000000000002 AWS_SECRET_ACCESS_KEY=test cloudquery sync source.yml destination.yml
+AWS_ACCESS_KEY_ID=012345678910 AWS_SECRET_ACCESS_KEY=test cloudquery sync source.yml destination.yml
 ```
 
 <Callout>
