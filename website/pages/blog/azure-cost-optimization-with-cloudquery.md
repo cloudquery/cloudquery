@@ -56,9 +56,6 @@ spec:
   destinations: ["postgresql"]
   concurrency: 100 # The Azure source plugin supports many resources and can fail on small machines. Increase this if you run it on a beefy machine
   tables: ["*"] # "azure_costmanagement_views" and "azure_costmanagement_view_queries" are required for this tutorial, but let's get them all
-  spec:
-    # We could specify a list of subscriptions to sync, but we'll just sync all of them
-    # subscriptions: ["00000000-0000-0000-0000-000000000000"]
 ---
 kind: destination
 spec:
