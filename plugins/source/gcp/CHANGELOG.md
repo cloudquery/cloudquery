@@ -5,6 +5,20 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v5.2.0...plugins-source-gcp-v5.3.0) (2022-12-27)
+
+
+### Features
+
+* **gcp:** Fetch Only enabled services ([#5534](https://github.com/cloudquery/cloudquery/issues/5534)) ([667b567](https://github.com/cloudquery/cloudquery/commit/667b5674d6ec4ad8f877a33365fafa4fc91e4dd5))
+* **resources:** Add API Gateway ([#5926](https://github.com/cloudquery/cloudquery/issues/5926)) ([7bb33a8](https://github.com/cloudquery/cloudquery/commit/7bb33a87ad42d98a091638888d40348edb76d9d8))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.13.1 ([#5897](https://github.com/cloudquery/cloudquery/issues/5897)) ([ad15915](https://github.com/cloudquery/cloudquery/commit/ad15915f2951a75729859f6f1377ed789f8ba115))
+* **gcp:** List locations before getting run services ([#5919](https://github.com/cloudquery/cloudquery/issues/5919)) ([7581466](https://github.com/cloudquery/cloudquery/commit/75814667cbe4f4b70690af5a5598c9ff3d52bd2b))
+
 ## [5.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v5.1.2...plugins-source-gcp-v5.2.0) (2022-12-20)
 
 
