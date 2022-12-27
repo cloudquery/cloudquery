@@ -10,7 +10,6 @@ func main() {
 	for _, f := range []func() []*recipes.Resource{
 		recipes.Actions,
 		recipes.Billing,
-		recipes.Dependabot,
 		recipes.External,
 		recipes.Hooks,
 		recipes.Installations,

@@ -62,7 +62,6 @@ type ActionsService interface {
 type DependabotService interface {
 	ListOrgAlerts(ctx context.Context, org string, opts *github.ListAlertsOptions) ([]*github.DependabotAlert, *github.Response, error)
 	ListRepoAlerts(ctx context.Context, owner, repo string, opts *github.ListAlertsOptions) ([]*github.DependabotAlert, *github.Response, error)
-	GetRepoAlert(ctx context.Context, owner, repo string, number int) (*github.DependabotAlert, *github.Response, error)
 
 	ListRepoSecrets(ctx context.Context, owner, repo string, opts *github.ListOptions) (*github.Secrets, *github.Response, error)
 	ListOrgSecrets(ctx context.Context, org string, opts *github.ListOptions) (*github.Secrets, *github.Response, error)

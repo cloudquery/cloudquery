@@ -35,22 +35,6 @@ func (m *MockDependabotService) EXPECT() *MockDependabotServiceMockRecorder {
 	return m.recorder
 }
 
-// GetRepoAlert mocks base method.
-func (m *MockDependabotService) GetRepoAlert(arg0 context.Context, arg1, arg2 string, arg3 int) (*github.DependabotAlert, *github.Response, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetRepoAlert", arg0, arg1, arg2, arg3)
-	ret0, _ := ret[0].(*github.DependabotAlert)
-	ret1, _ := ret[1].(*github.Response)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
-}
-
-// GetRepoAlert indicates an expected call of GetRepoAlert.
-func (mr *MockDependabotServiceMockRecorder) GetRepoAlert(arg0, arg1, arg2, arg3 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRepoAlert", reflect.TypeOf((*MockDependabotService)(nil).GetRepoAlert), arg0, arg1, arg2, arg3)
-}
-
 // ListOrgAlerts mocks base method.
 func (m *MockDependabotService) ListOrgAlerts(arg0 context.Context, arg1 string, arg2 *github.ListAlertsOptions) ([]*github.DependabotAlert, *github.Response, error) {
 	m.ctrl.T.Helper()
