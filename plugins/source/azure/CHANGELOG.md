@@ -5,6 +5,26 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v2.2.0...plugins-source-azure-v3.0.0) (2022-12-27)
+
+
+### ⚠ BREAKING CHANGES
+
+* **azure:** Rename e_tag to etag ([#5902](https://github.com/cloudquery/cloudquery/issues/5902))
+
+### Features
+
+* Add instance_view to azure_compute_virtual_machines table ([#5941](https://github.com/cloudquery/cloudquery/issues/5941)) ([d65d80f](https://github.com/cloudquery/cloudquery/commit/d65d80fc24bf2ae1fcda502da5de744f86491afd))
+* **azure:** Add search,logic,monitor,redis tables ([#5952](https://github.com/cloudquery/cloudquery/issues/5952)) ([9e16822](https://github.com/cloudquery/cloudquery/commit/9e168220a0e9b4883f6c182b5e4cc4b02f483801))
+
+
+### Bug Fixes
+
+* **azure:** Rename e_tag to etag ([#5902](https://github.com/cloudquery/cloudquery/issues/5902)) ([3c9daf5](https://github.com/cloudquery/cloudquery/commit/3c9daf58fccfc76f17aa1d49c04bfe935eb334f9))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.13.1 ([#5897](https://github.com/cloudquery/cloudquery/issues/5897)) ([ad15915](https://github.com/cloudquery/cloudquery/commit/ad15915f2951a75729859f6f1377ed789f8ba115))
+* Update Azure auto provisioning queries ([#5888](https://github.com/cloudquery/cloudquery/issues/5888)) ([cf838ed](https://github.com/cloudquery/cloudquery/commit/cf838ed2e2a7bc2f356dfeb8fbf728241795e2cd))
+* Update Azure Storage Queries ([#5908](https://github.com/cloudquery/cloudquery/issues/5908)) ([38690c6](https://github.com/cloudquery/cloudquery/commit/38690c617ddfb3b85b9e2ccb1814d407a7556e6c))
+
 ## [2.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v2.1.1...plugins-source-azure-v2.2.0) (2022-12-20)
 
 
