@@ -36,6 +36,10 @@ func Domains() *schema.Table {
 				Description: `A list of tags`,
 			},
 			{
+				Name: "transfer_lock",
+				Type: schema.TypeBool,
+			},
+			{
 				Name:     "abuse_contact_email",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("AbuseContactEmail"),
