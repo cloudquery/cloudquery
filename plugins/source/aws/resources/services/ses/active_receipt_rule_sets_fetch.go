@@ -7,6 +7,8 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
+// Supported regions based on https://docs.aws.amazon.com/ses/latest/dg/regions.html#region-receive-email
+// We hard code as there isn't a good way to automatically fetch this list
 var supportedRegions = []string{"us-east-1", "us-west-2", "eu-west-1"}
 
 func isRegionSupported(region string) bool {
@@ -22,12 +24,11 @@ func fetchSesActiveReceiptRuleSets(ctx context.Context, meta schema.ClientMeta, 
 	c := meta.(*client.Client)
 	svc := c.Services().Ses
 
-	if !isRegionSupported(c.Region) {
-		return nil
-	}
-
 	set, err := svc.DescribeActiveReceiptRuleSet(ctx, nil)
 	if err != nil {
+		if !isRegionSupported(c.Region) && client.IgnoreWithInvalidAction(err) {
+			return nil
+		}
 		return err
 	}
 	res <- set
