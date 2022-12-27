@@ -1,6 +1,7 @@
 package recipes
 
 import (
+	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/google/go-github/v48/github"
 )
 
@@ -14,22 +15,10 @@ func Repositories() []*Resource {
 }
 
 func repository() *Resource {
-	const (
-		createdAt = "CreatedAt"
-		pushedAt  = "PushedAt"
-		updatedAt = "UpdatedAt"
-	)
-
 	return &Resource{
-		SubService: "repositories",
-		Struct:     new(github.Repository),
-		SkipFields: append(skipID,
-			createdAt, pushedAt, updatedAt,
-		),
-		ExtraColumns: append(orgColumns, idColumn,
-			timestampField("created_at", createdAt),
-			timestampField("pushed_at", pushedAt),
-			timestampField("updated_at", updatedAt),
-		),
+		SubService:   "repositories",
+		Struct:       new(github.Repository),
+		PKColumns:    []string{"id"},
+		ExtraColumns: codegen.ColumnDefinitions{orgColumn},
 	}
 }
