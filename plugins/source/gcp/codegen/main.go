@@ -179,10 +179,15 @@ func generateResource(r recipes.Resource, mock bool) {
 		log.Fatal(fmt.Errorf("failed to create table for %s: %w", r.StructName, err))
 	}
 	if r.Multiplex == nil {
-		if _, ok := client.GcpServices[r.ServiceDNS]; !ok {
-			panic("unknown service DNS: " + r.ServiceDNS)
+		if r.ServiceDNS == "" {
+			r.Table.Multiplex = "client.ProjectMultiplex"
+		} else {
+			if _, ok := client.GcpServices[r.ServiceDNS]; !ok {
+				panic("unknown service DNS: " + r.ServiceDNS)
+			}
+			r.Table.Multiplex = "client.ProjectMultiplexEnabledServices(\"" + r.ServiceDNS + "\")"
 		}
-		r.Table.Multiplex = "client.ProjectMultiplexEnabledServices(\"" + r.ServiceDNS + "\")"
+
 	} else {
 		r.Table.Multiplex = *r.Multiplex
 	}
