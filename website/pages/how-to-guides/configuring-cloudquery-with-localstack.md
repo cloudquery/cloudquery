@@ -29,7 +29,7 @@ Before beginning this tutorial make sure you have the following tools installed:
 - [CloudQuery](/docs/quickstart)
 
 
-### Start LocalStack
+### Step 1: Start LocalStack
 
 The most straightforward way of running LocalStack is to use the provided `localstack` docker image that is maintained by LocalStack. To run the image use the following command to spin up the container and to map the correct ports
 
@@ -42,7 +42,7 @@ docker run --rm -it \
 ```
 
 
-### Start Postgresql Database
+### Step 2: Start Postgresql Database
 
 Start a local Postgres Database for CloudQuery to use to store the data we will sync from LocalStack. The simplest way to do this is to start a database running locally in a docker container
 
@@ -55,7 +55,7 @@ postgres
 ```
 
 
-### Configure CloudQuery Destination
+### Step 3: Configure CloudQuery Destination
 
 Configure a destination for CloudQuery to use to store the data. For this tutorial we will use Postgresql, but many other destinations are [available here](/docs/plugins/destinations/overview)
 
@@ -72,7 +72,7 @@ spec:
 ```
 
 
-### Configure CloudQuery Source
+### Step 4: Configure CloudQuery Source
 
 Configure CloudQuery's AWS [source plugin](/docs/plugins/sources/aws/overview) to use the LocalStack endpoint.
 
@@ -109,7 +109,7 @@ Note that it is important to skip `aws_route53_delegation_sets` and `aws_iam_pol
 </Callout>
 
 
-### Sync Data
+### Step 5: Sync Data
 
 Run CloudQuery sync to sync the data from LocalStack to your local Postgres database you started in step 2
 
@@ -124,7 +124,7 @@ You can inject the desired AWS Account ID by setting it as the `AWS_ACCESS_KEY_I
 </Callout>
 
 
-### Use the Data
+### Step 6: Use the Data
 
 Query the data you just synced!
 
