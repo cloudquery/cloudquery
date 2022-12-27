@@ -74,7 +74,7 @@ spec:
 
 ## Step 4
 
-Configure CloudQuery's AWS [source plugin](/docs/plugins/sources/aws/overview)  to use the LocalStack endpoint.
+Configure CloudQuery's AWS [source plugin](/docs/plugins/sources/aws/overview) to use the LocalStack endpoint.
 
 
 ```yaml
@@ -124,7 +124,7 @@ You can inject the desired AWS Account ID by setting it as the `AWS_ACCESS_KEY_I
 </Callout>
 
 
-### Step 7
+### Step 6
 
 Query the data you just synced!
 
