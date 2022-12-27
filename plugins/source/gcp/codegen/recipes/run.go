@@ -12,7 +12,7 @@ func init() {
 			Struct:      &runv1.Location{},
 			SkipFetch:   true,
 			SkipMock:    true,
-			Description: "https://cloud.google.com/api-gateway/docs/reference/rest/v1/projects.locations#Location",
+			Description: "https://cloud.google.com/run/docs/reference/rest/v1/projects.locations#Location",
 			Relations:   []string{"Services()"},
 		},
 		{
