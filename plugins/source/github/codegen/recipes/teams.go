@@ -10,7 +10,7 @@ func Teams() []*Resource {
 	teamID := codegen.ColumnDefinition{
 		Name:     "team_id",
 		Type:     schema.TypeInt,
-		Resolver: `client.ResolveParentColumn("ID")`,
+		Resolver: `client.ResolveParentColumn("id")`,
 		Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 	}
 
