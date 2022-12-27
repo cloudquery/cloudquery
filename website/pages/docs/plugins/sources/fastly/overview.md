@@ -3,7 +3,7 @@
 import { getLatestVersion } from "../../../../../utils/versions";
 import { Badge } from "../../../../../components/Badge";
 
-<Badge text={"Latest: " + getLatestVersion("source", "fastly")}/>
+<Badge text={"Latest: " + getLatestVersion("source", `fastly`)}/>
 
 The CloudQuery Fastly plugin reads information from your Fastly account(s) and loads it into any supported CloudQuery destination (e.g. PostgreSQL, Snowflake, BigQuery, etc).
 
