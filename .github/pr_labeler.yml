@@ -36,6 +36,8 @@ terraform:
   - plugins/source/terraform/**/*
 vercel:
   - plugins/source/vercel/**/*
+salesforce:
+  - plugins/source/salesforce/**/*
 postgresql:
   - plugins/destination/postgresql/**/*
 sqlite:
