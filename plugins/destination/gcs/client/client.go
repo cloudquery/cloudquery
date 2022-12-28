@@ -19,8 +19,8 @@ type Client struct {
 	spec       specs.Destination
 	pluginSpec Spec
 
-	gcsClient  *storage.Client
-	bucket 	 *storage.BucketHandle
+	gcsClient *storage.Client
+	bucket    *storage.BucketHandle
 
 	csvTransformer         *csv.Transformer
 	csvReverseTransformer  *csv.ReverseTransformer
@@ -63,7 +63,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 	if err := gcpWriter.Close(); err != nil {
 		return nil, fmt.Errorf("failed to close GCS writer: %w", err)
 	}
-	
+
 	return c, nil
 }
 

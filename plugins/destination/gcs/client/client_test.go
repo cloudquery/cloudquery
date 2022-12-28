@@ -14,7 +14,7 @@ func TestPluginCSV(t *testing.T) {
 	destination.PluginTestSuiteRunner(t, p,
 		Spec{
 			Bucket:   bucket,
-			Path:      t.TempDir(),
+			Path:     t.TempDir(),
 			Format:   FormatTypeCSV,
 			NoRotate: true,
 		},
