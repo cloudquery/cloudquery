@@ -11,7 +11,7 @@ import (
 func fetchReleases(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	repo := parent.Item.(*github.Repository)
-	opts := &github.ListOptions{PerPage: 100}
+	opts := &github.ListOptions{PerPage: 1000}
 	for {
 		releases, resp, err := c.Github.Repositories.ListReleases(ctx, c.Org, *repo.Name, opts)
 		if err != nil {
