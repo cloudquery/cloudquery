@@ -10,8 +10,6 @@ import (
 	"github.com/google/uuid"
 )
 
-const maxFileSize = 1024 * 1024 * 20
-
 func (c *Client) ReverseTransformValues(table *schema.Table, values []any) (schema.CQTypes, error) {
 	switch c.pluginSpec.Format {
 	case FormatTypeCSV:
