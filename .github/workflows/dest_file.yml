@@ -3,12 +3,14 @@ name: Destination Plugin File Workflow
 on:
   pull_request:
     paths:
+      - "plugins/destination/filetypes/**"
       - "plugins/destination/file/**"
       - ".github/workflows/dest_file.yml"
   push:
     branches:
       - main
     paths:
+      - "plugins/destination/filetypes/**"
       - "plugins/destination/file/**"
       - ".github/workflows/dest_file.yml"
 
