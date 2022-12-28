@@ -30,9 +30,30 @@ func Repositories() []*Resource {
 	repo.Service = "repositories"
 	repo.TableName = "repositories"
 	repo.Multiplex = orgMultiplex
-	repo.Relations = []string{"Alerts()", "Secrets()"}
+	repo.Relations = []string{"Alerts()", "Secrets()", "Releases()"}
 
-	return []*Resource{repo, alert, sec}
+	return []*Resource{
+		repo, alert, sec,
+		{
+			Service:      "repositories",
+			TableName:    "releases",
+			Multiplex:    orgMultiplex,
+			SubService:   "releases",
+			Struct:       new(github.RepositoryRelease),
+			PKColumns:    []string{"tag_name", "target_commitish"},
+			ExtraColumns: codegen.ColumnDefinitions{orgColumn},
+			Relations:    []string{"Assets()"},
+		},
+		{
+			Service:      "repositories",
+			TableName:    "release_assets",
+			Multiplex:    orgMultiplex,
+			SubService:   "assets",
+			Struct:       new(github.ReleaseAsset),
+			PKColumns:    []string{"id"},
+			ExtraColumns: codegen.ColumnDefinitions{orgColumn},
+		},
+	}
 }
 
 func repository() *Resource {
