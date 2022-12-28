@@ -61,9 +61,9 @@ Specifies the update method to use when inserting rows. The exact semantics depe
 - `overwrite`: Same as `overwrite-delete-stale`, but doesn't delete stale rows from previous `sync`s.
 - `append`: Rows are never overwritten or deleted, only appended.
 
-<!-- vale off -->
+{/*<!-- vale off -->*/}
 ### batch_size
-<!-- vale on -->
+{/*<!-- vale on -->*/}
 
 (`int`, optional, default: `10000`)
 
