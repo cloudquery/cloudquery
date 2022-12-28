@@ -104,7 +104,6 @@ func init() {
 		resource.MockTemplate = "newapi_list_grpc_mock"
 		resource.ProtobufImport = "cloud.google.com/go/appengine/apiv1/appenginepb"
 		resource.MockImports = []string{"cloud.google.com/go/appengine/apiv1"}
-		resource.ServiceDNS = "appengine.googleapis.com"
 	}
 
 	Resources = append(Resources, resources...)
