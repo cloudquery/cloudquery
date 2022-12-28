@@ -32,6 +32,8 @@ okta:
   - plugins/source/okta/**/*
 slack:
   - plugins/source/slack/**/*
+shopify:
+  - plugins/source/shopify/**/*
 pagerduty:
   - plugins/source/pagerduty/**/*
 terraform:
