@@ -14,7 +14,6 @@ const (
 type Spec struct {
 	Directory string     `json:"directory,omitempty"`
 	Format    FormatType `json:"format,omitempty"`
-	// This is used for debugging purposes only
 	NoRotate bool `json:"no_rotate,omitempty"`
 }
 
