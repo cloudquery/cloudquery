@@ -31,6 +31,7 @@ type migrateMsg struct {
 type readMsg struct {
 	table     *schema.Table
 	source    string
+	options   destination.ReadOptions
 	err       chan error
 	resources chan []any
 }
@@ -130,7 +131,7 @@ func (c *Client) listen() {
 		case msg := <-c.migrateChan:
 			msg.err <- c.migrate(msg.tables)
 		case msg := <-c.readChan:
-			msg.err <- c.read(msg.table, msg.source, msg.resources)
+			msg.err <- c.read(msg.table, msg.source, msg.resources, msg.options)
 		case msg := <-c.closeChan:
 			c.close()
 			msg.err <- nil

@@ -20,10 +20,13 @@ func getTestLogger(t *testing.T) zerolog.Logger {
 }
 
 func TestClient(t *testing.T) {
+	d := t.TempDir()
 	ctx := context.Background()
 	client, err := New(ctx, getTestLogger(t), specs.Destination{
 		WriteMode: specs.WriteModeAppend,
-		Spec:      Spec{},
+		Spec: Spec{
+			Directory: d,
+		},
 	})
 	if err != nil {
 		t.Fatal(err)
