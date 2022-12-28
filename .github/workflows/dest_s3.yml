@@ -22,10 +22,18 @@ jobs:
     defaults:
       run:
         working-directory: ./plugins/destination/s3
+    permissions:
+      id-token: write
+      contents: read # This is required for actions/checkout@v2
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 2
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: aarn:aws:iam::615713231484:role/destination-s3
+          aws-region: us-east-1
       - name: Set up Go 1.x
         uses: actions/setup-go@v3
         with:
