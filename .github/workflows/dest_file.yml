@@ -42,7 +42,7 @@ jobs:
         run: go get -t -d ./...
       - name: Build
         run: go build .
-      - name: Test PG
+      - name: Test file plugin
         run: make test
   validate-release:
     timeout-minutes: 30
