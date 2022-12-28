@@ -5,7 +5,5 @@ type Spec struct {
 	PgxLogLevel      LogLevel `json:"pgx_log_level,omitempty"`
 }
 
-const defaultBatchSize = 1000
-
-func (s *Spec) SetDefaults() {
+func (*Spec) SetDefaults() {
 }
