@@ -35,6 +35,9 @@
     "plugins/destination/file": {
       "component": "plugins-destination-file"
     },
+    "plugins/destination/gcs": {
+      "component": "plugins-destination-gcs"
+    },
     "plugins/destination/sqlite": {
       "component": "plugins-destination-sqlite"
     },
