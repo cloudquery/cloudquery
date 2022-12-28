@@ -42,7 +42,6 @@ func init() {
 		resource.MockImports = []string{"cloud.google.com/go/storage"}
 		resource.Template = "newapi_list"
 		resource.MockTemplate = "newapi_list_rest_mock"
-		resource.ServiceDNS = "storage.googleapis.com"
 	}
 
 	Resources = append(Resources, resources...)

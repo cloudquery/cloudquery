@@ -26,7 +26,6 @@ func init() {
 		resource.Template = "newapi_list"
 		resource.MockTemplate = "newapi_list_grpc_mock"
 		// resource.OutputField = strcase.ToCamel(resource.SubService)
-		resource.ServiceDNS = "domains.googleapis.com"
 	}
 
 	Resources = append(Resources, resources...)
