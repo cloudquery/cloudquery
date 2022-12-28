@@ -7,7 +7,7 @@ import { Badge } from "../../../../../components/Badge";
 
 This destination plugin lets you sync data from a CloudQuery source to remote S3 storage in various formats such as CSV, JSON.
 
-This is useful in various use-cases, especially in datalakes where you can query the data direct from Athena or load it to various data warehouses such as BigQuery, RedShift, Snowflake and others.
+This is useful in various use-cases, especially in data lakes where you can query the data direct from Athena or load it to various data warehouses such as BigQuery, RedShift, Snowflake and others.
 
 ## Example
 

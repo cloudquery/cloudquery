@@ -32,7 +32,7 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: aarn:aws:iam::615713231484:role/destination-s3
+          role-to-assume: arn:aws:iam::615713231484:role/destination-s3
           aws-region: us-east-1
       - name: Set up Go 1.x
         uses: actions/setup-go@v3
