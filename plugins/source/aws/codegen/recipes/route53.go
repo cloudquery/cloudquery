@@ -55,6 +55,10 @@ func Route53Resources() []*Resource {
 					Type:        schema.TypeJSON,
 					Resolver:    `resolveRoute53DomainTags`,
 				},
+				{
+					Name: "transfer_lock",
+					Type: schema.TypeBool,
+				},
 			},
 		},
 

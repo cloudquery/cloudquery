@@ -66,11 +66,12 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (sche
 		logger: logger,
 		Github: GithubServices{
 			Actions:       c.Actions,
-			Teams:         c.Teams,
 			Billing:       c.Billing,
-			Repositories:  c.Repositories,
-			Organizations: c.Organizations,
+			Dependabot:    c.Dependabot,
 			Issues:        c.Issues,
+			Organizations: c.Organizations,
+			Repositories:  c.Repositories,
+			Teams:         c.Teams,
 		},
 		Orgs: spec.Orgs,
 	}, nil

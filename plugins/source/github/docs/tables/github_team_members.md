@@ -1,6 +1,6 @@
 # Table: github_team_members
 
-The composite primary key for this table is (**org**, **id**, **team_id**).
+The composite primary key for this table is (**org**, **team_id**, **id**).
 
 ## Relations
 
@@ -15,10 +15,10 @@ This table depends on [github_teams](github_teams.md).
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |org (PK)|String|
-|id (PK)|Int|
 |team_id (PK)|Int|
 |membership|JSON|
 |login|String|
+|id (PK)|Int|
 |node_id|String|
 |avatar_url|String|
 |html_url|String|

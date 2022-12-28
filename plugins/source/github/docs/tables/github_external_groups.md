@@ -12,7 +12,7 @@ The composite primary key for this table is (**org**, **group_id**).
 |_cq_parent_id|UUID|
 |org (PK)|String|
 |group_id (PK)|Int|
-|updated_at|Timestamp|
 |group_name|String|
+|updated_at|Timestamp|
 |teams|JSON|
 |members|JSON|
