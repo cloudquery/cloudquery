@@ -9,7 +9,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.46
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.29.6
 	github.com/aws/aws-sdk-go-v2/service/sts v1.17.7
-	github.com/cloudquery/plugin-sdk v1.15.0
+	github.com/cloudquery/plugin-sdk v1.15.1
 	github.com/golang/mock v1.6.0
 	github.com/rs/zerolog v1.28.0
 )
