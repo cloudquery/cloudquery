@@ -44,6 +44,8 @@ sqlite:
   - plugins/destination/sqlite/**/*
 csv:
   - plugins/destination/csv/**/*
+file:
+  - plugins/destination/file/**/*
 snowflake:
   - plugins/destination/snowflake/**/*
 bigquery:
