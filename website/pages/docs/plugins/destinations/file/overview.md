@@ -42,5 +42,5 @@ This is the (nested) spec used by the CSV destination Plugin.
 
 - `no_rotate` (bool) (optional)
 
-  if set to true, the plugin will append to the same file for each table.
-  Otherwise, for every batch a new file will be created with `.uuid` suffix.
+  If set to true, the plugin will write to one file per table.
+  Otherwise, for every batch a new file will be created with a different `.<UUID>` suffix.
