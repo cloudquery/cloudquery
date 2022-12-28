@@ -91,7 +91,6 @@ func init() {
 		resource.MockImports = []string{"cloud.google.com/go/artifactregistry/apiv1"}
 		resource.NewFunction = artifactregistry.NewClient
 		resource.RegisterServer = pb.RegisterArtifactRegistryServer
-		resource.ServiceDNS = "artifactregistry.googleapis.com"
 	}
 
 	Resources = append(Resources, resources...)
