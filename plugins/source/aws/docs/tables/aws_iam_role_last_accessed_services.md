@@ -4,9 +4,8 @@ https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServiceLastAccessed.html
 
 The primary key for this table is **_cq_id**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
