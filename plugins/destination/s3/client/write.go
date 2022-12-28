@@ -37,10 +37,10 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data 
 	// we don't want to deal with that yet. in the future maybe we can run some benchmarks and see if adding parralization helps.
 	r := io.Reader(&b)
 	if _, err := c.uploader.Upload(ctx, &s3.PutObjectInput{
- 		Bucket: aws.String(c.pluginSpec.Bucket),
- 		Key:    aws.String(name),
- 		Body:   r,
- 	}); err != nil {
+		Bucket: aws.String(c.pluginSpec.Bucket),
+		Key:    aws.String(name),
+		Body:   r,
+	}); err != nil {
 		return err
 	}
 

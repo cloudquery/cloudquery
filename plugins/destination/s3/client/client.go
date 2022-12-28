@@ -23,7 +23,7 @@ type Client struct {
 	spec       specs.Destination
 	pluginSpec Spec
 
-	s3Client  *s3.Client
+	s3Client   *s3.Client
 	uploader   *manager.Uploader
 	downloader *manager.Downloader
 
@@ -54,7 +54,6 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 	}
 	c.pluginSpec.SetDefaults()
 
-
 	cfg, err := config.LoadDefaultConfig(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("unable to load AWS SDK config: %w", err)
@@ -69,9 +68,9 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 		Bucket: aws.String(c.pluginSpec.Bucket),
 		Key:    aws.String("cq-test-file"),
 		Body:   bytes.NewReader([]byte("test")),
-		}); err != nil {
-			return nil, fmt.Errorf("failed to write test file to S3: %w", err)
-		}
+	}); err != nil {
+		return nil, fmt.Errorf("failed to write test file to S3: %w", err)
+	}
 	return c, nil
 }
 

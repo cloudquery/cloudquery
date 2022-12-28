@@ -43,7 +43,7 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 		return err
 	}
 	r := bytes.NewReader(writerAtBuffer.Bytes())
-	
+
 	switch c.pluginSpec.Format {
 	case FormatTypeCSV:
 		if err := csv.Read(r, table, sourceName, res); err != nil {
