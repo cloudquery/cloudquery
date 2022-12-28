@@ -1,0 +1,44 @@
+name: Filetypes library Workflow
+
+on:
+  pull_request:
+    paths:
+      - "plugins/filetypes/**"
+      - ".github/workflows/filetypes.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "plugins/filetypes/**"
+      - ".github/workflows/filetypes.yml"
+
+jobs:
+  filetypes:
+    timeout-minutes: 30
+    name: "plugins/filetypes"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./plugins/filetypes
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: plugins/filetypes/go.mod
+          cache: true
+          cache-dependency-path: plugins/filetypes/go.sum
+      - name: golangci-lint
+        uses: cloudquery/golangci-lint-action@master
+        with:
+          version: v1.50.1
+          working-directory: plugins/filetypes
+          args: "--config ../.golangci.yml"
+      - name: Get dependencies
+        run: go get -t -d ./...
+      - name: Build
+        run: go build .
+      - name: Test PG
+        run: make test
