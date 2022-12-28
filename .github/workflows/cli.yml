@@ -54,7 +54,7 @@ jobs:
           cache: true
           cache-dependency-path: cli/go.sum
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v3
+        uses: cloudquery/golangci-lint-action@master
         if: matrix.os == 'ubuntu-latest'
         with:
           version: v1.50.1

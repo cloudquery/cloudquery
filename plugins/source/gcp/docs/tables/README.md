@@ -2,6 +2,8 @@
 
 ## Tables
 
+- [gcp_apigateway_apis](gcp_apigateway_apis.md)
+- [gcp_apigateway_gateways](gcp_apigateway_gateways.md)
 - [gcp_apikeys_keys](gcp_apikeys_keys.md)
 - [gcp_bigquery_datasets](gcp_bigquery_datasets.md)
   - [gcp_bigquery_tables](gcp_bigquery_tables.md)
@@ -46,7 +48,8 @@
 - [gcp_resourcemanager_folders](gcp_resourcemanager_folders.md)
 - [gcp_resourcemanager_projects](gcp_resourcemanager_projects.md)
 - [gcp_resourcemanager_project_policies](gcp_resourcemanager_project_policies.md)
-- [gcp_run_services](gcp_run_services.md)
+- [gcp_run_locations](gcp_run_locations.md)
+  - [gcp_run_services](gcp_run_services.md)
 - [gcp_secretmanager_secrets](gcp_secretmanager_secrets.md)
 - [gcp_serviceusage_services](gcp_serviceusage_services.md)
 - [gcp_sql_instances](gcp_sql_instances.md)

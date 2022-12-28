@@ -12,6 +12,7 @@ import (
 
 var (
 	columnRegex = regexp.MustCompile(`^\|(?P<name>.*)\|(?P<dataType>.*)\|`)
+	pkRegex     = regexp.MustCompile(`^The composite primary key for this table is \(([^)]+)\)\.`)
 )
 
 type change struct {
@@ -47,11 +48,33 @@ func parseColumnChange(line string) (name string, dataType string, pk bool) {
 	return cleanName, result["dataType"], result["name"] != cleanName
 }
 
+func parsePKChange(line string) (names []string) {
+	match := pkRegex.FindStringSubmatch(line)
+	if len(match) != 2 {
+		return nil
+	}
+	for _, part := range strings.Split(match[1], ", ") {
+		names = append(names, strings.Trim(part, "*"))
+	}
+	return
+}
+
 func getColumnChanges(file *gitdiff.File, table string) (changes []change) {
 	addedColumns := make(map[string]column)
 	deletedColumns := make(map[string]column)
+	var addedPK, deletedPK []string
 	for _, fragment := range file.TextFragments {
 		for _, line := range fragment.Lines {
+			pkChanges := parsePKChange(line.Line)
+			if len(pkChanges) > 0 {
+				switch line.Op {
+				case gitdiff.OpAdd:
+					addedPK = pkChanges
+				case gitdiff.OpDelete:
+					deletedPK = pkChanges
+				}
+				continue
+			}
 			name, dataType, pk := parseColumnChange(line.Line)
 			if name == "" || dataType == "" {
 				continue
@@ -110,21 +133,37 @@ func getColumnChanges(file *gitdiff.File, table string) (changes []change) {
 			}
 			changes = append(changes, change{
 				Text:     fmt.Sprintf("Table %s: column added with name %s and type %s", backtickStrings(table, name, addedColumn.dataType)...),
-				Breaking: false,
+				Breaking: addedColumn.pk,
 			})
 		}
 	}
 
+	// check PK:
+	if len(addedPK) > 0 && len(addedPK) == len(deletedPK) {
+		// if they are unequal the pk added/removed is correct.
+		changes = append(changes, change{
+			Text: fmt.Sprintf("Table %s: primary key order changed from %s to %s",
+				backtickStrings(
+					table,
+					strings.Join(deletedPK, ", "),
+					strings.Join(addedPK, ", "),
+				)...,
+			),
+			Breaking: true,
+		})
+	}
+
 	sort.SliceStable(changes, func(i, j int) bool {
-		iBreaking := changes[i].Breaking
-		jBreaking := changes[j].Breaking
-		if iBreaking && !jBreaking {
+		chI := changes[i]
+		chJ := changes[j]
+		switch {
+		case chI.Breaking && !chJ.Breaking:
 			return true
-		}
-		if !iBreaking && jBreaking {
+		case !chI.Breaking && chJ.Breaking:
 			return false
+		default:
+			return chI.Text < chJ.Text
 		}
-		return changes[i].Text < changes[j].Text
 	})
 	return changes
 }

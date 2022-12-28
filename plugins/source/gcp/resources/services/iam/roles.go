@@ -12,7 +12,7 @@ func Roles() *schema.Table {
 		Name:        "gcp_iam_roles",
 		Description: `https://cloud.google.com/iam/docs/reference/rest/v1/roles#Role`,
 		Resolver:    fetchRoles,
-		Multiplex:   client.ProjectMultiplex,
+		Multiplex:   client.ProjectMultiplexEnabledServices("iam.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

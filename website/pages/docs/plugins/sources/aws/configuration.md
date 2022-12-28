@@ -100,6 +100,31 @@ This is the (nested) spec used by the AWS source plugin.
 
   If true, will log AWS debug logs, including retries and other request/response metadata
 
+- `max_retries` (int) (default: 10)
+
+  Defines the maximum number of times an API request will be retried 
+
+- `max_backoff` (int) (default: 30)
+  
+  Defines the duration between retry attempts
+
+- `custom_endpoint_url` (string) (default: not used)
+
+  The base URL endpoint the SDK API clients will use to make API calls to. The SDK will suffix URI path and query elements to this endpoint
+
+- `custom_endpoint_hostname_immutable` (bool) (default: not used)
+
+  Specifies if the endpoint's hostname can be modified by the SDK's API client. When using something like LocalStack make sure to set it equal to `True`
+
+- `custom_endpoint_partition_id` (string) (default: not used)
+
+  The AWS partition the endpoint belongs to
+
+- `custom_endpoint_signing_region` (string) (default: not used)
+
+  The region that should be used for signing the request to the endpoint
+
+
 ## accounts
 
 This is used to specify one or more accounts to extract information from. Note that it should be an array of objects, each with the following fields:
@@ -148,10 +173,6 @@ This is used to specify one or more accounts to extract information from. Note t
 
 ## org
 
-- `organization_units` ([]string)
-
-  List of Organizational Units that CloudQuery should use to source accounts from. If you specify an OU, CloudQuery will not traverse nested OUs
-
 - `admin_account` ([Account](#account))
 
   Configuration for how to grab credentials from an Admin account
@@ -175,3 +196,15 @@ This is used to specify one or more accounts to extract information from. Note t
 - `member_regions` ([]string)
 
   Limit fetching resources within this specific account to only these regions. This will override any regions specified in the provider block. You can specify all regions by using the `*` character as the only argument in the array
+
+- `organization_units` ([]string)
+
+  List of Organizational Units that CloudQuery should use to source accounts from. If you specify an OU, CloudQuery will not traverse nested OUs
+
+- `skip_organization_units` ([]string)
+
+  List of Organizational Units to skip. This is useful in conjunction with `organization_units` if there are child OUs that should be ignored.
+
+- `skip_member_accounts` ([]string)
+
+  List of OU member accounts to skip. This is useful in conjunction with `organization_units` if there are accounts under the selected OUs that should be ignored.

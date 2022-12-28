@@ -12,6 +12,7 @@ func IncidentResources() []*Resource {
 			Relations: []string{
 				"IncidentAlerts()",
 				"IncidentNotes()",
+				"IncidentLogEntries()",
 			},
 			Template: "basic",
 
@@ -37,5 +38,18 @@ func IncidentResources() []*Resource {
 
 			ListFunctionNameOverride: "ListIncidentNotesWithContext",
 		},
+		// Incident-log-entries is manually-generated
+		// {
+		// 	SubService:                       "incident_log_entries",
+		// 	Struct:                           pagerduty.LogEntry{},
+		// 	Description:                      "https://developer.pagerduty.com/api-reference/367602cbc1c28-list-log-entries-for-an-incident",
+		// 	PKColumns:                        []string{"id"},
+		// 	UnwrapEmbeddedStructsRecursively: true,
+
+		// 	Template:                      "nested",
+		// 	ListFunctionNameOverride:      "ListIncidentLogEntriesWithContext",
+		// 	ListOptionsStructNameOverride: "ListIncidentLogEntriesOptions",
+		// 	ResponseFieldOverride:         "LogEntries",
+		// },
 	}
 }

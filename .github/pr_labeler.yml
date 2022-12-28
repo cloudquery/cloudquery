@@ -20,6 +20,8 @@ gcp:
   - plugins/source/gcp/**/*
 github:
   - plugins/source/github/**/*
+gitlab:
+  - plugins/source/gitlab/**/*
 k8s:
   - plugins/source/k8s/**/*
 heroku:
@@ -34,6 +36,8 @@ terraform:
   - plugins/source/terraform/**/*
 vercel:
   - plugins/source/vercel/**/*
+salesforce:
+  - plugins/source/salesforce/**/*
 postgresql:
   - plugins/destination/postgresql/**/*
 sqlite:
@@ -44,6 +48,8 @@ snowflake:
   - plugins/destination/snowflake/**/*
 bigquery:
   - plugins/destination/bigquery/**/*
+mongodb:
+  - plugins/destination/mongodb/**/*
 website:
   - website/**/*
 cli:

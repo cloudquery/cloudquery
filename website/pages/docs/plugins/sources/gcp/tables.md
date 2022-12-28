@@ -2,6 +2,8 @@
 
 ## Tables
 
+- [gcp_apigateway_apis](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_apigateway_apis.md)
+- [gcp_apigateway_gateways](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_apigateway_gateways.md)
 - [gcp_apikeys_keys](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_apikeys_keys.md)
 - [gcp_bigquery_datasets](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_bigquery_datasets.md)
   - [gcp_bigquery_tables](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_bigquery_tables.md)
@@ -46,7 +48,8 @@
 - [gcp_resourcemanager_folders](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_resourcemanager_folders.md)
 - [gcp_resourcemanager_projects](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_resourcemanager_projects.md)
 - [gcp_resourcemanager_project_policies](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_resourcemanager_project_policies.md)
-- [gcp_run_services](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_run_services.md)
+- [gcp_run_locations](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_run_locations.md)
+  - [gcp_run_services](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_run_services.md)
 - [gcp_secretmanager_secrets](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_secretmanager_secrets.md)
 - [gcp_serviceusage_services](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_serviceusage_services.md)
 - [gcp_sql_instances](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_sql_instances.md)

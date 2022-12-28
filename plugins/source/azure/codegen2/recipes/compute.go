@@ -113,18 +113,6 @@ func init() {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_compute)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
-		{
-			Service:        "armcompute",
-			Name:           "virtual_machines",
-			Struct:         &armcompute.VirtualMachine{},
-			ResponseStruct: &armcompute.VirtualMachinesClientListAllResponse{},
-			Client:         &armcompute.VirtualMachinesClient{},
-			ListFunc:       (&armcompute.VirtualMachinesClient{}).NewListAllPager,
-			NewFunc:        armcompute.NewVirtualMachinesClient,
-			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/virtualMachines",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_compute)`,
-			ExtraColumns:   DefaultExtraColumns,
-		},
 	}
 	Tables = append(Tables, tables...)
 }

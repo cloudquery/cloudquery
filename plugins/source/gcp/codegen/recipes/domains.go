@@ -11,11 +11,8 @@ func init() {
 			SubService:          "registrations",
 			Struct:              &pb.Registration{},
 			NewFunction:         domains.NewClient,
-			RequestStruct:       &pb.ListRegistrationsRequest{},
-			ResponseStruct:      &pb.ListRegistrationsResponse{},
 			RegisterServer:      pb.RegisterDomainsServer,
 			ListFunction:        (&pb.UnimplementedDomainsServer{}).ListRegistrations,
-			UnimplementedServer: &pb.UnimplementedDomainsServer{},
 			RequestStructFields: `Parent: fmt.Sprintf("projects/%s/locations/-", c.ProjectId),`,
 			Imports:             []string{"fmt"},
 			Description:         "https://cloud.google.com/domains/docs/reference/rest/v1beta1/projects.locations.registrations#Registration",
@@ -28,6 +25,8 @@ func init() {
 		resource.ProtobufImport = "cloud.google.com/go/domains/apiv1beta1/domainspb"
 		resource.Template = "newapi_list"
 		resource.MockTemplate = "newapi_list_grpc_mock"
+		// resource.OutputField = strcase.ToCamel(resource.SubService)
+		resource.ServiceDNS = "domains.googleapis.com"
 	}
 
 	Resources = append(Resources, resources...)

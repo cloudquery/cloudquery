@@ -4,6 +4,10 @@ https://cloud.google.com/run/docs/reference/rest/v2/projects.locations.services#
 
 The primary key for this table is **_cq_id**.
 
+## Relations
+
+This table depends on [gcp_run_locations](gcp_run_locations.md).
+
 ## Columns
 
 | Name          | Type          |

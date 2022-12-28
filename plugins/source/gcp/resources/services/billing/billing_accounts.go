@@ -19,7 +19,7 @@ func BillingAccounts() *schema.Table {
 		Name:        "gcp_billing_billing_accounts",
 		Description: `https://cloud.google.com/billing/docs/reference/rest/v1/billingAccounts#BillingAccount`,
 		Resolver:    fetchBillingAccounts,
-		Multiplex:   client.ProjectMultiplex,
+		Multiplex:   client.ProjectMultiplexEnabledServices("cloudbilling.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
