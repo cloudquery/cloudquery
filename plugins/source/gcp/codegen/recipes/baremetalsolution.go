@@ -61,7 +61,6 @@ func init() {
 		resource.MockImports = []string{"cloud.google.com/go/baremetalsolution/apiv2"}
 		resource.NewFunction = baremetalsolution.NewClient
 		resource.RegisterServer = pb.RegisterBareMetalSolutionServer
-		resource.ServiceDNS = "baremetalsolution.googleapis.com"
 	}
 
 	Resources = append(Resources, resources...)
