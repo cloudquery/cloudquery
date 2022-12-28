@@ -14,7 +14,7 @@ const (
 type Spec struct {
 	Directory string     `json:"directory,omitempty"`
 	Format    FormatType `json:"format,omitempty"`
-	NoRotate bool `json:"no_rotate,omitempty"`
+	NoRotate  bool       `json:"no_rotate,omitempty"`
 }
 
 func (*Spec) SetDefaults() {}
