@@ -42,6 +42,8 @@ postgresql:
   - plugins/destination/postgresql/**/*
 sqlite:
   - plugins/destination/sqlite/**/*
+s3:
+  - plugins/destination/s3/**/*
 csv:
   - plugins/destination/csv/**/*
 file:

@@ -32,6 +32,9 @@
     "plugins/destination/csv": {
       "component": "plugins-destination-csv"
     },
+    "plugins/destination/s3": {
+      "component": "plugins-destination-s3"
+    },
     "plugins/destination/file": {
       "component": "plugins-destination-file"
     },
