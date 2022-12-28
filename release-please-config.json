@@ -20,6 +20,7 @@
     "plugins/source/k8s": { "component": "plugins-source-k8s" },
     "plugins/source/okta": { "component": "plugins-source-okta" },
     "plugins/source/slack": { "component": "plugins-source-slack" },
+    "plugins/source/salesforce": { "component": "plugins-source-salesforce" },
     "plugins/source/tailscale": { "component": "plugins-source-tailscale" },
     "plugins/source/vercel": { "component": "plugins-source-vercel" },
     "plugins/source/pagerduty": {"component": "plugins-source-pagerduty"},
@@ -39,6 +40,9 @@
     },
     "plugins/destination/bigquery": {
       "component": "plugins-destination-bigquery"
+    },
+    "plugins/destination/mongodb": {
+      "component": "plugins-destination-mongodb"
     },
     "plugins/destination/test": {
       "component": "plugins-destination-test"

@@ -1,14 +1,13 @@
 # Table: gitlab_group_members
 
-
-
 The composite primary key for this table is (**base_url**, **group_id**, **id**).
 
 ## Relations
+
 This table depends on [gitlab_groups](gitlab_groups.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

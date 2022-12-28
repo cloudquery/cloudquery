@@ -1,19 +1,20 @@
 package recipes
 
 import (
+	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/google/go-github/v48/github"
 )
 
 func Installations() []*Resource {
 	return []*Resource{
 		{
+			TableName:    "installations",
 			Service:      "installations",
 			SubService:   "installations",
-			Multiplex:    orgMultiplex,
 			Struct:       new(github.Installation),
-			TableName:    "installations",
-			SkipFields:   skipID,
-			ExtraColumns: append(orgColumns, idColumn),
+			PKColumns:    []string{"id"},
+			ExtraColumns: codegen.ColumnDefinitions{orgColumn},
+			Multiplex:    orgMultiplex,
 		},
 	}
 }

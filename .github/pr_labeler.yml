@@ -36,6 +36,8 @@ terraform:
   - plugins/source/terraform/**/*
 vercel:
   - plugins/source/vercel/**/*
+salesforce:
+  - plugins/source/salesforce/**/*
 postgresql:
   - plugins/destination/postgresql/**/*
 sqlite:
@@ -46,6 +48,8 @@ snowflake:
   - plugins/destination/snowflake/**/*
 bigquery:
   - plugins/destination/bigquery/**/*
+mongodb:
+  - plugins/destination/mongodb/**/*
 website:
   - website/**/*
 cli:

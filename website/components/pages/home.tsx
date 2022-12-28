@@ -141,7 +141,7 @@ export default function Home() {
             Integrations
           </h2>
           <p className="mx-auto mt-4 font-medium text-gray-400 lg:max-w-3xl lg:nx-text-xl text-center">
-            Integrate with 10+ cloud providers and SaaS apps with more than 1,000 unique tables.
+            Integrate with a growing list of <a className="dark:text-white" href="/docs/plugins/sources/overview">20+ cloud providers and SaaS apps</a> with more than 1,000 unique tables. Sync to your <a href="/docs/plugins/destinations/overview" className="dark:text-white">favorite database, data warehouse or data lake</a>.
           </p>
           <Integrations />
         </div>

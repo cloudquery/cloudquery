@@ -79,13 +79,8 @@ Configuring AWS Organization:
    ```yaml copy
        org:
          member_role_name: OrganizationAccountAccessRole
-         admin_account:
-           local_profile: <Named-Profile-Admin>
          member_trusted_principal:
            local_profile: <Named-Profile-Member>
-         organization_units:
-           - ou-<ID-1>
-           - ou-<ID-2>
    ```
 
 4. Optional. If you want to specify specific Organizational Units to fetch from you can add them to the `organization_units` list. 
@@ -93,17 +88,29 @@ Configuring AWS Organization:
    ```yaml copy
        org:
          member_role_name: OrganizationAccountAccessRole
-         admin_account:
-           local_profile: <Named-Profile-Admin>
          organization_units:
            - ou-<ID-1>
            - ou-<ID-2>
+   ```
+   
+   Child OUs will also be included. To skip a child OU or account, use the `skip_organization_units` or `skip_member_accounts` options respectively:
+
+   ```yaml copy
+       org:
+         member_role_name: OrganizationAccountAccessRole
+         organization_units:
+           - ou-<ID-1>
+           - ou-<ID-2>
+         skip_organization_units:
+           - ou-<ID-3>
+         skip_member_accounts:
+           - <ACCOUNT_ID>
    ```
 
 import { Callout } from 'nextra-theme-docs'
 
 <Callout type="info">
-Note that if you specify an OU, CloudQuery will not traverse child OUs
+Note that in AWS plugin versions before v9.0.0, child OUs were not traversed when specifying an OU, and `skip_organization_units` and `skip_member_accounts` were not supported. These options are only available in v9.0.0 and above, and child OUs are now traversed by default.
 </Callout>
 
 ### Arguments for Org block

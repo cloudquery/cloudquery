@@ -1,0 +1,137 @@
+---
+title: Configuring CloudQuery with LocalStack
+tag: integration
+description: >-
+  How to setup CloudQuery to work with LocalStack
+author: benjamin
+---
+
+import { HowToGuideHeader } from "../../components/HowToGuideHeader"
+import { Callout } from 'nextra-theme-docs'
+
+<HowToGuideHeader/>
+
+
+In this guide we will walk through how to configure CloudQuery to sync from a LocalStack instance.
+
+
+
+## Introduction to LocalStack
+
+[LocalStack](https://localstack.cloud/) is a fully functional local cloud stack that enables developers to Develop and test their cloud and serverless applications offline. It allows developers to test their cloud applications locally, without the need for an internet connection or an AWS account. This can be particularly useful for development and testing, as it allows developers to work on their applications offline and avoid incurring any charges for using AWS services.
+
+
+
+## Walkthrough
+
+Before beginning this tutorial make sure you have the following tools installed:
+- [Docker](https://www.docker.com/products/docker-desktop/)
+- [CloudQuery](/docs/quickstart)
+
+
+### Step 1: Start LocalStack
+
+The most straightforward way of running LocalStack is to use the provided `localstack` docker image that is maintained by LocalStack. To run the image use the following command to spin up the container and to map the correct ports
+
+```bash copy
+docker run --rm -it \
+    -p 4566:4566 \
+    -p 4510-4559:4510-4559 \
+    -e DEBUG=1 \
+    localstack/localstack
+```
+
+
+### Step 2: Start Postgresql Database
+
+Start a local Postgres Database for CloudQuery to use to store the data we will sync from LocalStack. The simplest way to do this is to start a database running locally in a docker container
+
+```bash copy
+#Create a database in Docker
+docker run -d --name postgresdb \
+-p 5432:5432 \
+-e POSTGRES_PASSWORD=pass \
+postgres
+```
+
+
+### Step 3: Configure CloudQuery Destination
+
+Configure a destination for CloudQuery to use to store the data. For this tutorial we will use Postgresql, but many other destinations are [available here](/docs/plugins/destinations/overview)
+
+```yaml
+# destination.yml
+kind: destination
+spec:
+  name: "postgresql"
+  registry: "github"
+  path: "cloudquery/postgresql"
+  version: "VERSION_DESTINATION_POSTGRESQL"
+  spec:
+    connection_string: "postgresql://postgres:pass@localhost:5432/postgres?sslmode=disable"
+```
+
+
+### Step 4: Configure CloudQuery Source
+
+Configure CloudQuery's AWS [source plugin](/docs/plugins/sources/aws/overview) to use the LocalStack endpoint.
+
+
+```yaml
+# source.yml
+kind: source
+spec:
+  # Source spec section
+  name: "aws"
+  registry: "github"
+  path: "cloudquery/aws"
+  version: "VERSION_SOURCE_AWS"
+  destinations: ["postgresql"]
+  skip_tables:
+    - aws_route53_delegation_sets
+    - aws_iam_policies
+  tables:
+    - "*"
+  spec:
+    regions: 
+      - "us-east-1"
+    
+    # Configure the AWS SDK to use the localstack endpoint
+    custom_endpoint_url: http://localhost:4566
+    custom_endpoint_hostname_immutable: true
+    custom_endpoint_partition_id: "aws"
+    custom_endpoint_signing_region: "us-east-1"
+    # There is no reason to retry failed requests to localstack
+    max_retries: 0
+```
+<Callout>
+Note that it is important to skip `aws_route53_delegation_sets` and `aws_iam_policies` as bugs in LocalStack force CloudQuery into an infinite loop
+</Callout>
+
+
+### Step 5: Sync Data
+
+Run CloudQuery sync to sync the data from LocalStack to your local Postgres database you started in step 2
+
+Make sure to use fake credentials LocalStack does not support temporary IAM credentials…
+
+```bash copy
+AWS_ACCESS_KEY_ID=123456789100 AWS_SECRET_ACCESS_KEY=test cloudquery sync source.yml destination.yml
+```
+
+<Callout>
+You can inject the desired AWS Account ID by setting it as the `AWS_ACCESS_KEY_ID` if you don't set a value then it will be `000000000000`. You can read more about this functionality in the [LocalStack docs](https://docs.localstack.cloud/user-guide/tools/multi-account-setups/)
+</Callout>
+
+
+### Step 6: Use the Data
+
+Query the data you just synced!
+
+```sql
+select * from aws_ec2_vpcs;
+
+-- or
+
+select * from aws_ec2_security_groups;
+```

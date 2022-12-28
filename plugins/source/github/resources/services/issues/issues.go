@@ -41,6 +41,11 @@ func Issues() *schema.Table {
 				Resolver: schema.PathResolver("State"),
 			},
 			{
+				Name:     "state_reason",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("StateReason"),
+			},
+			{
 				Name:     "locked",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("Locked"),

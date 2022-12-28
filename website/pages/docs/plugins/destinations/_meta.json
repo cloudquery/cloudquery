@@ -2,6 +2,7 @@
   "overview": "Overview",
   "bigquery": "BigQuery",
   "csv": "CSV",
+  "mongodb": "MongoDB",
   "postgresql": "PostgreSQL",
   "snowflake": "Snowflake",
   "sqlite": "SQLite"

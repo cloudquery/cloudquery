@@ -55,6 +55,7 @@ jobs:
                            "plugins/source/k8s",
                            "plugins/source/okta",
                            "plugins/source/slack",
+                           "plugins/source/salesforce",
                            "plugins/source/tailscale",
                            "plugins/source/pagerduty",
                            "plugins/source/terraform",
@@ -67,6 +68,7 @@ jobs:
                            "plugins/destination/sqlite",
                            "plugins/destination/snowflake",
                            "plugins/destination/bigquery",
+                           "plugins/destination/mongodb",
                            ].filter(action => matchesFile(action))
             if (actions.length === 0) {
               console.log("No actions to wait for")
