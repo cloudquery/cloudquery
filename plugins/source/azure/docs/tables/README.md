@@ -74,6 +74,7 @@
   - [azure_cosmos_mongo_db_databases](azure_cosmos_mongo_db_databases.md)
   - [azure_cosmos_sql_databases](azure_cosmos_sql_databases.md)
 - [azure_costmanagement_views](azure_costmanagement_views.md)
+  - [azure_costmanagement_view_queries](azure_costmanagement_view_queries.md)
 - [azure_customerinsights_hubs](azure_customerinsights_hubs.md)
 - [azure_dashboard_grafana](azure_dashboard_grafana.md)
 - [azure_databox_jobs](azure_databox_jobs.md)
