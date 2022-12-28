@@ -161,7 +161,6 @@ func init() {
 			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_security)`,
 			ExtraColumns:   DefaultExtraColumns,
 		},
-
 		{
 			Service:        "armsecurity",
 			Name:           "regulatory_compliance_standards",
