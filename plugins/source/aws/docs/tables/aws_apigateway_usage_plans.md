@@ -10,6 +10,7 @@ The following tables depend on aws_apigateway_usage_plans:
   - [aws_apigateway_usage_plan_keys](aws_apigateway_usage_plan_keys.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

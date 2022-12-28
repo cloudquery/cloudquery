@@ -4,9 +4,8 @@ https://docs.aws.amazon.com/fsx/latest/APIReference/API_StorageVirtualMachine.ht
 
 The primary key for this table is **arn**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -25,5 +24,6 @@ The primary key for this table is **arn**.
 |name|String|
 |root_volume_security_style|String|
 |storage_virtual_machine_id|String|
+|subtype|String|
 |tags|JSON|
 |uuid|String|

@@ -12,7 +12,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchLambdaFunctions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchLambdaFunctions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input lambda.ListFunctionsInput
 	c := meta.(*client.Client)
 	svc := c.Services().Lambda
@@ -41,8 +41,7 @@ func getFunction(ctx context.Context, meta schema.ClientMeta, resource *schema.R
 		FunctionName: f.FunctionName,
 	})
 	if err != nil {
-		if c.IsNotFoundError(err) || c.IsAccessDeniedError(err) {
-			c.Logger().Warn().Err(err).Msg("Failed to get function")
+		if c.IsNotFoundError(err) {
 			resource.Item = &lambda.GetFunctionOutput{
 				Configuration: &f,
 			}
@@ -78,7 +77,7 @@ func resolvePolicyCodeSigningConfig(ctx context.Context, meta schema.ClientMeta,
 		if err := resource.Set("policy_revision_id", response.RevisionId); err != nil {
 			return err
 		}
-		var policyDocument map[string]interface{}
+		var policyDocument map[string]any
 		err = json.Unmarshal([]byte(*response.Policy), &policyDocument)
 		if err != nil {
 			return err
@@ -121,7 +120,7 @@ func resolvePolicyCodeSigningConfig(ctx context.Context, meta schema.ClientMeta,
 	return resource.Set("code_signing_config", signing.CodeSigningConfig)
 }
 
-func fetchLambdaFunctionEventInvokeConfigs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchLambdaFunctionEventInvokeConfigs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	p := parent.Item.(*lambda.GetFunctionOutput)
 	if p.Configuration == nil {
 		return nil
@@ -148,7 +147,7 @@ func fetchLambdaFunctionEventInvokeConfigs(ctx context.Context, meta schema.Clie
 	}
 	return nil
 }
-func fetchLambdaFunctionAliases(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchLambdaFunctionAliases(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	p := parent.Item.(*lambda.GetFunctionOutput)
 	if p.Configuration == nil {
 		return nil
@@ -199,7 +198,7 @@ func getFunctionAliasURLConfig(ctx context.Context, meta schema.ClientMeta, reso
 	return nil
 }
 
-func fetchLambdaFunctionVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchLambdaFunctionVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	p := parent.Item.(*lambda.GetFunctionOutput)
 	if p.Configuration == nil {
 		return nil
@@ -227,7 +226,7 @@ func fetchLambdaFunctionVersions(ctx context.Context, meta schema.ClientMeta, pa
 	return nil
 }
 
-func fetchLambdaFunctionConcurrencyConfigs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchLambdaFunctionConcurrencyConfigs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	p := parent.Item.(*lambda.GetFunctionOutput)
 	if p.Configuration == nil {
 		return nil
@@ -255,7 +254,7 @@ func fetchLambdaFunctionConcurrencyConfigs(ctx context.Context, meta schema.Clie
 	}
 	return nil
 }
-func fetchLambdaFunctionEventSourceMappings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchLambdaFunctionEventSourceMappings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	p := parent.Item.(*lambda.GetFunctionOutput)
 	if p.Configuration == nil {
 		return nil

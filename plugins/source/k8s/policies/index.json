@@ -1,0 +1,5 @@
+{
+  "policies": [
+    {"name": "Kubernetes NSA CISA v1", "path": "nsa_cisa_v1/policy.sql"}
+  ]
+}

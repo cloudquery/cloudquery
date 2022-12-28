@@ -1,12 +1,9 @@
 # Table: aws_cognito_identity_pools
 
-
-
 The composite primary key for this table is (**account_id**, **region**, **id**).
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

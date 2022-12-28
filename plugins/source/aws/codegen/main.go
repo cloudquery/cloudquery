@@ -7,6 +7,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/recipes"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/services"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/tables"
+	"golang.org/x/sync/errgroup"
 )
 
 func generateResources() ([]*recipes.Resource, error) {
@@ -14,6 +15,7 @@ func generateResources() ([]*recipes.Resource, error) {
 	resources = append(resources, recipes.AccessAnalyzerResources()...)
 	resources = append(resources, recipes.AccountResources()...)
 	resources = append(resources, recipes.ACMResources()...)
+	resources = append(resources, recipes.AMPResources()...)
 	resources = append(resources, recipes.APIGatewayResources()...)
 	resources = append(resources, recipes.APIGatewayV2Resources()...)
 	resources = append(resources, recipes.ApplicationAutoScalingResources()...)
@@ -47,6 +49,7 @@ func generateResources() ([]*recipes.Resource, error) {
 	resources = append(resources, recipes.ElastiCacheResources()...)
 	resources = append(resources, recipes.ElasticbeanstalkResources()...)
 	resources = append(resources, recipes.ElasticsearchResources()...)
+	resources = append(resources, recipes.ElastictranscoderResources()...)
 	resources = append(resources, recipes.ELBv1Resources()...)
 	resources = append(resources, recipes.ELBv2Resources()...)
 	resources = append(resources, recipes.EMRResources()...)
@@ -103,13 +106,12 @@ func generateResources() ([]*recipes.Resource, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to set parent-child relationships: %w", err)
 	}
+	grp := new(errgroup.Group)
 	for _, resource := range resources {
-		if err := resource.Generate(); err != nil {
-			return nil, err
-		}
+		grp.Go(resource.Generate)
 	}
 
-	return resources, nil
+	return resources, grp.Wait()
 }
 
 func main() {

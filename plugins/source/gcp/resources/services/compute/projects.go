@@ -3,32 +3,20 @@
 package compute
 
 import (
-	"context"
-	"github.com/pkg/errors"
-
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
-
-	pb "google.golang.org/genproto/googleapis/cloud/compute/v1"
 )
 
 func Projects() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_compute_projects",
 		Resolver:  fetchProjects,
-		Multiplex: client.ProjectMultiplex,
+		Multiplex: client.ProjectMultiplexEnabledServices("compute.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
-			},
-			{
-				Name: "self_link",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
 				Name:     "common_instance_metadata",
@@ -81,6 +69,14 @@ func Projects() *schema.Table {
 				Resolver: schema.PathResolver("Quotas"),
 			},
 			{
+				Name:     "self_link",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SelfLink"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
 				Name:     "usage_export_location",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("UsageExportLocation"),
@@ -92,17 +88,4 @@ func Projects() *schema.Table {
 			},
 		},
 	}
-}
-
-func fetchProjects(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	c := meta.(*client.Client)
-	req := &pb.GetProjectRequest{
-		Project: c.ProjectId,
-	}
-	resp, err := c.Services.ComputeProjectsClient.Get(ctx, req)
-	if err != nil {
-		return errors.WithStack(err)
-	}
-	res <- resp
-	return nil
 }

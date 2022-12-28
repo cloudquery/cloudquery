@@ -1,12 +1,9 @@
 # Table: aws_route53_domains
 
-
-
 The composite primary key for this table is (**account_id**, **domain_name**).
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -16,23 +13,25 @@ The composite primary key for this table is (**account_id**, **domain_name**).
 |account_id (PK)|String|
 |domain_name (PK)|String|
 |tags|JSON|
-|admin_contact|JSON|
-|nameservers|JSON|
-|registrant_contact|JSON|
-|tech_contact|JSON|
+|transfer_lock|Bool|
 |abuse_contact_email|String|
 |abuse_contact_phone|String|
+|admin_contact|JSON|
 |admin_privacy|Bool|
 |auto_renew|Bool|
 |creation_date|Timestamp|
 |dns_sec|String|
+|dnssec_keys|JSON|
 |expiration_date|Timestamp|
+|nameservers|JSON|
+|registrant_contact|JSON|
 |registrant_privacy|Bool|
 |registrar_name|String|
 |registrar_url|String|
 |registry_domain_id|String|
 |reseller|String|
 |status_list|StringArray|
+|tech_contact|JSON|
 |tech_privacy|Bool|
 |updated_date|Timestamp|
 |who_is_server|String|

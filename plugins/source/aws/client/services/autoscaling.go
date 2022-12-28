@@ -27,6 +27,7 @@ type AutoscalingClient interface {
 	DescribeScheduledActions(context.Context, *autoscaling.DescribeScheduledActionsInput, ...func(*autoscaling.Options)) (*autoscaling.DescribeScheduledActionsOutput, error)
 	DescribeTags(context.Context, *autoscaling.DescribeTagsInput, ...func(*autoscaling.Options)) (*autoscaling.DescribeTagsOutput, error)
 	DescribeTerminationPolicyTypes(context.Context, *autoscaling.DescribeTerminationPolicyTypesInput, ...func(*autoscaling.Options)) (*autoscaling.DescribeTerminationPolicyTypesOutput, error)
+	DescribeTrafficSources(context.Context, *autoscaling.DescribeTrafficSourcesInput, ...func(*autoscaling.Options)) (*autoscaling.DescribeTrafficSourcesOutput, error)
 	DescribeWarmPool(context.Context, *autoscaling.DescribeWarmPoolInput, ...func(*autoscaling.Options)) (*autoscaling.DescribeWarmPoolOutput, error)
 	GetPredictiveScalingForecast(context.Context, *autoscaling.GetPredictiveScalingForecastInput, ...func(*autoscaling.Options)) (*autoscaling.GetPredictiveScalingForecastOutput, error)
 }

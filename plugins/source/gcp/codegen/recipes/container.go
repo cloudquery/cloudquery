@@ -1,31 +1,21 @@
 package recipes
 
 import (
-	"github.com/cloudquery/plugin-sdk/codegen"
-	"github.com/cloudquery/plugin-sdk/schema"
-	pb "google.golang.org/genproto/googleapis/container/v1"
+	pb "cloud.google.com/go/container/apiv1/containerpb"
 )
 
-var containerResources = []*Resource{
-	{
-		SubService: "clusters",
-		Struct:     &pb.Cluster{},
-		SkipFetch:  true,
-		SkipMock:   true,
-		ExtraColumns: []codegen.ColumnDefinition{
-			{
-				Name:    "self_link",
-				Type:    schema.TypeString,
-				Options: schema.ColumnCreationOptions{PrimaryKey: true},
-			},
+func init() {
+	resources := []*Resource{
+		{
+			SubService:      "clusters",
+			Struct:          &pb.Cluster{},
+			SkipFetch:       true,
+			SkipMock:        true,
+			PrimaryKeys:     []string{"self_link"},
+			NameTransformer: CreateReplaceTransformer(map[string]string{"ipv_4": "ipv4"}),
+			Description:     "https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.locations.clusters#Cluster",
 		},
-		NameTransformer: CreateReplaceTransformer(map[string]string{"ipv_4": "ipv4"}),
-	},
-}
-
-func ContainerResources() []*Resource {
-	var resources []*Resource
-	resources = append(resources, containerResources...)
+	}
 
 	for _, resource := range resources {
 		resource.Service = "container"
@@ -33,7 +23,8 @@ func ContainerResources() []*Resource {
 		resource.ProtobufImport = "google.golang.org/genproto/googleapis/container/v1"
 		resource.Template = "newapi_list"
 		resource.MockTemplate = "newapi_list_grpc_mock"
+		resource.ServiceDNS = "container.googleapis.com"
 	}
 
-	return resources
+	Resources = append(Resources, resources...)
 }

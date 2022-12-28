@@ -9,21 +9,15 @@ import (
 
 func Roles() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_iam_roles",
-		Resolver:  fetchRoles,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_iam_roles",
+		Description: `https://cloud.google.com/iam/docs/reference/rest/v1/roles#Role`,
+		Resolver:    fetchRoles,
+		Multiplex:   client.ProjectMultiplexEnabledServices("iam.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name: "name",
-				Type: schema.TypeString,
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
@@ -47,6 +41,14 @@ func Roles() *schema.Table {
 				Name:     "included_permissions",
 				Type:     schema.TypeStringArray,
 				Resolver: schema.PathResolver("IncludedPermissions"),
+			},
+			{
+				Name:     "name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Name"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "stage",

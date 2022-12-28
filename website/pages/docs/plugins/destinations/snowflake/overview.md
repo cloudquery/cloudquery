@@ -13,6 +13,21 @@ There are two ways to sync data to Snowflake:
 
 2. Loading via CSV/JSON from a remote storage: This is the standard way of loading data into Snowflake, it is recommended for production and large data sets. This mode requires a remote storage (e.g. S3, GCS, Azure Blob Storage) and a Snowflake stage to be created. The CQ plugin will stream the results to the remote storage. You can then load those files via a cronjob or via SnowPipe. This method is still in the works and will be updated soon with a guide.
 
+## Example Config
+
+This example sets the connection string to a value read from the `SNOWFLAKE_CONNECTION_STRING` environment variable:
+
+```yaml
+kind: destination
+spec:
+  name: snowflake
+  path: cloudquery/snowflake
+  version: "VERSION_DESTINATION_SNOWFLAKE"
+  write_mode: "append"
+  spec:
+    connection_string: ${SNOWFLAKE_CONNECTION_STRING}
+```
+
 ## Snowflake Spec
 
 This is the top level spec used by the Snowflake destination plugin.
@@ -23,14 +38,14 @@ This is the top level spec used by the Snowflake destination plugin.
 
   Example `connection_string`:
 
-  ```
-  // user[:password]@account/database/schema[?param1=value1&paramN=valueN]
-  // or
-  // user[:password]@account/database[?param1=value1&paramN=valueN]
-  // or
-  // user[:password]@host:port/database/schema?account=user_account[?param1=value1&paramN=valueN]
-  // or
-  // host:port/database/schema?account=user_account[?param1=value1&paramN=valueN]
+  ```yaml
+  # user[:password]@account/database/schema[?param1=value1&paramN=valueN]
+  # or
+  # user[:password]@account/database[?param1=value1&paramN=valueN]
+  # or
+  # user[:password]@host:port/database/schema?account=user_account[?param1=value1&paramN=valueN]
+  # or
+  # host:port/database/schema?account=user_account[?param1=value1&paramN=valueN]
   ```
 
   From Snowflake documentation:

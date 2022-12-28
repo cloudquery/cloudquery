@@ -31,14 +31,14 @@ func Groups() *schema.Table {
 				},
 			},
 			{
-				Name:     "updated_at",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("UpdatedAt.Time"),
-			},
-			{
 				Name:     "group_name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("GroupName"),
+			},
+			{
+				Name:     "updated_at",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("UpdatedAt"),
 			},
 			{
 				Name:     "teams",

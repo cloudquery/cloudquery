@@ -1,12 +1,9 @@
 # Table: aws_glue_classifiers
 
-
-
 The composite primary key for this table is (**account_id**, **region**, **name**).
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

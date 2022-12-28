@@ -9,9 +9,10 @@ import (
 
 func ServiceAccountKeys() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_iam_service_account_keys",
-		Resolver:  fetchServiceAccountKeys,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_iam_service_account_keys",
+		Description: `https://cloud.google.com/iam/docs/reference/rest/v1/projects.serviceAccounts.keys#ServiceAccountKey`,
+		Resolver:    fetchServiceAccountKeys,
+		Multiplex:   client.ProjectMultiplexEnabledServices("iam.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
@@ -50,11 +51,6 @@ func ServiceAccountKeys() *schema.Table {
 				Name:     "name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Name"),
-			},
-			{
-				Name:     "private_key_type",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("PrivateKeyType"),
 			},
 			{
 				Name:     "public_key_data",

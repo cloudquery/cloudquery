@@ -28,7 +28,7 @@ type Resource struct {
 	Name                  string
 	Service               string
 	SubService            string
-	Struct                interface{}
+	Struct                any
 	SkipFields            []string
 	Description           string
 	ExtraColumns          []codegen.ColumnDefinition
@@ -45,9 +45,9 @@ type Resource struct {
 
 	// Used for generating the resolver and mock tests.
 	// --------------------------------
-	ShouldGenerateResolverAndMockTest bool        // if true, resolver and mock will be generated using the options below
-	ResolverAndMockTestTemplate       string      // required: name of template directory to use
-	Client                            interface{} // required: AWS client struct to use, e.g. &ec2.Client{}
+	ShouldGenerateResolverAndMockTest bool   // if true, resolver and mock will be generated using the options below
+	ResolverAndMockTestTemplate       string // required: name of template directory to use
+	Client                            any    // required: AWS client struct to use, e.g. &ec2.Client{}
 
 	// Applies only to list resources:
 	ListMethodName  string // optional: List method on the Client to use. Only required if we need to disambiguate between multiple options.
@@ -120,7 +120,7 @@ func awsResolverTransformer(f reflect.StructField, path string) (string, error) 
 
 	if path == "Tags" || path == "TagSet" {
 		switch f.Type {
-		case reflect.TypeOf(map[string]string{}), reflect.TypeOf(map[string]*string{}), reflect.TypeOf(map[string]interface{}{}), reflect.TypeOf([]types.TagDescription{}):
+		case reflect.TypeOf(map[string]string{}), reflect.TypeOf(map[string]*string{}), reflect.TypeOf(map[string]any{}), reflect.TypeOf([]types.TagDescription{}):
 			// valid tag types
 		default:
 			return "", fmt.Errorf("%q field is not of type []types.Tag or acceptable map: %s", path, f.Type.String())

@@ -19,7 +19,7 @@ import (
 type Resource struct {
 	Service              string
 	SubService           string
-	Struct               interface{}
+	Struct               any
 	SkipFields           []string
 	ExtraColumns         []codegen.ColumnDefinition
 	Table                *codegen.TableDefinition

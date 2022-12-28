@@ -10,7 +10,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchTimestreamDatabases(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchTimestreamDatabases(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	input := &timestreamwrite.ListDatabasesInput{MaxResults: aws.Int32(20)}
 	paginator := timestreamwrite.NewListDatabasesPaginator(meta.(*client.Client).Services().Timestreamwrite, input)
 	for paginator.HasMorePages() {

@@ -8,12 +8,19 @@ const patterns = {
   destinations: /VERSION_DESTINATION_([a-zA-Z0-9_]+)/,
 };
 
+function removeVersionPrefix(version) {
+  return version.slice(1);
+}
+
 function parseVersion(version) {
   const parts = version.split("-");
+  // plugins
   if (parts.length === 4) {
     return parts[3];
   }
-  return parts[1];
+
+  // cli, remove the `v` prefix
+  return removeVersionPrefix(parts[1]);
 }
 
 function parseName(name) {

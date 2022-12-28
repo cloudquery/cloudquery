@@ -3,15 +3,15 @@ package client
 import (
 	"testing"
 
-	"github.com/cloudquery/plugin-sdk/plugins"
+	"github.com/cloudquery/plugin-sdk/plugins/destination"
 )
 
 func TestPlugin(t *testing.T) {
-	p := plugins.NewDestinationPlugin("postgresql", "development", New)
+	p := destination.NewPlugin("postgresql", "development", New)
 
-	plugins.DestinationPluginTestSuiteRunner(t, p,
+	destination.PluginTestSuiteRunner(t, p,
 		Spec{
 			ConnectionString: ":memory:",
 		},
-		plugins.DestinationTestSuiteTests{})
+		destination.PluginTestSuiteTests{})
 }

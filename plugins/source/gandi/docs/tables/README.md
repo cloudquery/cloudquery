@@ -1,5 +1,7 @@
 # Source Plugin: gandi
+
 ## Tables
+
 - [gandi_certificates](gandi_certificates.md)
 - [gandi_certificate_packages](gandi_certificate_packages.md)
 - [gandi_domains](gandi_domains.md)

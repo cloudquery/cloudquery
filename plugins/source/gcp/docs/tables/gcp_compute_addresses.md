@@ -1,12 +1,11 @@
 # Table: gcp_compute_addresses
 
-
+https://cloud.google.com/compute/docs/reference/rest/v1/addresses#Address
 
 The primary key for this table is **self_link**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -14,7 +13,6 @@ The primary key for this table is **self_link**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |project_id|String|
-|self_link (PK)|String|
 |address|String|
 |address_type|String|
 |creation_timestamp|String|
@@ -29,6 +27,7 @@ The primary key for this table is **self_link**.
 |prefix_length|Int|
 |purpose|String|
 |region|String|
+|self_link (PK)|String|
 |status|String|
 |subnetwork|String|
 |users|StringArray|

@@ -9,9 +9,10 @@ import (
 
 func Keyrings() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_kms_keyrings",
-		Resolver:  fetchKeyrings,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_kms_keyrings",
+		Description: `https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings#KeyRing`,
+		Resolver:    fetchKeyrings,
+		Multiplex:   client.ProjectMultiplexEnabledServices("cloudkms.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

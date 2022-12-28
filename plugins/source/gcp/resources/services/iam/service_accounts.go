@@ -9,22 +9,15 @@ import (
 
 func ServiceAccounts() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_iam_service_accounts",
-		Resolver:  fetchServiceAccounts,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_iam_service_accounts",
+		Description: `https://cloud.google.com/iam/docs/reference/rest/v1/projects.serviceAccounts#ServiceAccount`,
+		Resolver:    fetchServiceAccounts,
+		Multiplex:   client.ProjectMultiplexEnabledServices("iam.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
-			},
-			{
-				Name:     "unique_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("UniqueId"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
 				Name:     "description",
@@ -60,6 +53,14 @@ func ServiceAccounts() *schema.Table {
 				Name:     "oauth2_client_id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Oauth2ClientId"),
+			},
+			{
+				Name:     "unique_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("UniqueId"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 		},
 

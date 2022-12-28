@@ -1,6 +1,6 @@
 # Table: gcp_storage_buckets
 
-
+https://cloud.google.com/storage/docs/json_api/v1/buckets#resource
 
 The primary key for this table is **name**.
 
@@ -10,6 +10,7 @@ The following tables depend on gcp_storage_buckets:
   - [gcp_storage_bucket_policies](gcp_storage_bucket_policies.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

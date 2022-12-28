@@ -13,7 +13,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchElasticbeanstalkEnvironments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchElasticbeanstalkEnvironments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config elasticbeanstalk.DescribeEnvironmentsInput
 	c := meta.(*client.Client)
 	svc := c.Services().Elasticbeanstalk
@@ -66,7 +66,7 @@ func resolveElasticbeanstalkEnvironmentListeners(ctx context.Context, meta schem
 	return resource.Set(c.Name, tags)
 }
 
-func fetchElasticbeanstalkConfigurationOptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchElasticbeanstalkConfigurationOptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	p := parent.Item.(types.EnvironmentDescription)
 	cl := meta.(*client.Client)
 	svc := cl.Services().Elasticbeanstalk
@@ -101,7 +101,7 @@ func fetchElasticbeanstalkConfigurationOptions(ctx context.Context, meta schema.
 	return nil
 }
 
-func fetchElasticbeanstalkConfigurationSettings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchElasticbeanstalkConfigurationSettings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	p := parent.Item.(types.EnvironmentDescription)
 	cl := meta.(*client.Client)
 	svc := cl.Services().Elasticbeanstalk

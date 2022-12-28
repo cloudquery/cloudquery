@@ -5,10 +5,11 @@ https://docs.aws.amazon.com/ram/latest/APIReference/API_ResourceSharePermissionS
 The primary key for this table is **arn**.
 
 ## Relations
+
 This table depends on [aws_ram_resource_shares](aws_ram_resource_shares.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

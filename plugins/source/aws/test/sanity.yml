@@ -1,0 +1,13 @@
+kind: source
+spec:
+  name: aws
+  version: v1.0.0
+  destinations: [sqlite]
+  path: ./aws
+  registry: local
+---
+kind: destination
+spec:
+  name: sqlite
+  path: cloudquery/sqlite
+  version: "v1.1.1" # latest version of sqlite plugin

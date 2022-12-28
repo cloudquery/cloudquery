@@ -1,0 +1,114 @@
+name: Summarize changes to source plugins docs
+
+on:
+  # Using pull_request_target works on forked PRs too. This is safe since we don't checkout the PR code (we only use the diff)
+  pull_request_target:
+    branches:
+      - main
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+jobs:
+  doc-changes:
+    defaults:
+      run:
+        working-directory: scripts/table_diff
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    outputs:
+      breaking: ${{ steps.breaking.outputs.status }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Get PR diff
+        run: |
+          curl -L ${{ github.event.pull_request.diff_url }} > pr.diff
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: scripts/table_diff/go.mod
+          cache: true
+          cache-dependency-path: scripts/table_diff/go.sum
+      - name: Generate docs changes file
+        run: |
+          go run main.go pr.diff changes.json
+      - uses: actions/github-script@v6
+        name: Get doc changes string
+        id: get-changes
+        with:
+          result-encoding: string
+          script: |
+            const { promises: fs } = require('fs')
+            const changes = JSON.parse(await fs.readFile('scripts/table_diff/changes.json', 'utf8'))
+            if (changes.length === 0) {
+              console.log('No changes to docs')
+              return ""
+            }
+            const changesList = changes.map(change => {
+              const { breaking, text } = change
+              if (breaking) {
+                return `- :warning: BREAKING CHANGE: ${text}`
+              }
+              return `- ${text}`
+            }).join('\n')
+            return changesList
+      - name: Find Comment
+        uses: peter-evans/find-comment@f4499a714d59013c74a08789b48abe4b704364a0
+        if: steps.get-changes.outputs.result != ''
+        id: find-comment
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: '### This PR has the following changes to source plugin(s) tables:'
+      - name: Create or update comment
+        uses: peter-evans/create-or-update-comment@5adcb0bb0f9fb3f95ef05400558bdb3f329ee808
+        if: steps.get-changes.outputs.result != ''
+        with:
+          comment-id: ${{ steps.find-comment.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ### This PR has the following changes to source plugin(s) tables:
+
+            ${{steps.get-changes.outputs.result}}
+          edit-mode: replace
+      - name: Mark as breaking
+        id: breaking
+        if: contains(steps.get-changes.outputs.result, 'BREAKING CHANGE')
+        run: echo "status=true" >> $GITHUB_OUTPUT
+  ensure-breaking-changes-released-as-major-bump:
+    runs-on: ubuntu-latest
+    needs: [doc-changes]
+    steps:
+      - name: Should enforce check
+        id: enforce
+        # Only enforce this check for renovate PRs that update dependencies
+        if: needs.doc-changes.outputs.breaking == 'true' && github.event.pull_request.user.login == 'cq-bot' && startsWith(github.event.pull_request.title, 'fix(deps)') && startsWith(github.head_ref, 'renovate/')
+        run: echo "status=true" >> $GITHUB_OUTPUT
+      - name: Install commit message parser
+        if: steps.enforce.outputs.status == 'true'
+        run: npm install @conventional-commits/parser
+      - uses: actions/github-script@v6
+        if: steps.enforce.outputs.status == 'true'
+        with:
+          script: |
+            const {
+              parser,
+              toConventionalChangelogFormat,
+            } = require("@conventional-commits/parser");
+            const { title } = context.payload.pull_request
+            try {
+              const ast = parser(title);
+              const { notes } = toConventionalChangelogFormat(ast);
+              const isBreaking = notes.some(({ title }) =>
+                title.includes("BREAKING CHANGE")
+              );
+              if (!isBreaking) {
+                const titleParts = title.split(":");
+                const expectedTitle = `${titleParts[0]}!:${titleParts[1]}`;
+                throw new Error(`PR title does not contain a breaking change, please update the title to '${expectedTitle}'`);
+              }
+            } catch (e) {
+              throw new Error(`PR title does not follow conventional commits format. Error: ${e}`);
+            }

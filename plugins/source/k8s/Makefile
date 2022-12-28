@@ -8,11 +8,6 @@ gen-mocks: install-tools
 test:
 	go test -timeout 3m ./...
 
-# Install pre-commit hooks. This requires pre-commit to be installed (https://pre-commit.com/)
-.PHONY: install-hooks
-install-hooks:
-	pre-commit install
-
 # Install tools
 .PHONY: install-tools
 install-tools:
@@ -24,6 +19,9 @@ gen-docs:
 	rm -rf ./docs/tables/*
 	go run main.go doc ./docs/tables
 	sed 's_(\(.*\))_(https://github.com/cloudquery/cloudquery/blob/main/plugins/source/k8s/docs/tables/\1)_' docs/tables/README.md > ../../../website/pages/docs/plugins/sources/k8s/tables.md
+	go run main.go doc --format json docs
+	go run scripts/policy_docs/main.go k8s policies ../../../website/pages/docs/plugins/sources/k8s/policies.md docs/__tables.json
+	rm docs/__tables.json
 
 .PHONY: lint
 lint:
@@ -35,4 +33,4 @@ gen-code:
 
 # All gen targets
 .PHONY: gen
-gen: gen-code gen-mocks gen-docs
+gen: gen-code gen-docs

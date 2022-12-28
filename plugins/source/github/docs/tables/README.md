@@ -1,5 +1,8 @@
 # Source Plugin: github
+
 ## Tables
+
+- [github_workflows](github_workflows.md)
 - [github_billing_action](github_billing_action.md)
 - [github_billing_storage](github_billing_storage.md)
 - [github_billing_package](github_billing_package.md)
@@ -9,8 +12,12 @@
   - [github_hook_deliveries](github_hook_deliveries.md)
 - [github_installations](github_installations.md)
 - [github_organizations](github_organizations.md)
+  - [github_organization_dependabot_alerts](github_organization_dependabot_alerts.md)
+  - [github_organization_dependabot_secrets](github_organization_dependabot_secrets.md)
   - [github_organization_members](github_organization_members.md)
 - [github_repositories](github_repositories.md)
+  - [github_repository_dependabot_alerts](github_repository_dependabot_alerts.md)
+  - [github_repository_dependabot_secrets](github_repository_dependabot_secrets.md)
 - [github_teams](github_teams.md)
   - [github_team_members](github_team_members.md)
   - [github_team_repositories](github_team_repositories.md)

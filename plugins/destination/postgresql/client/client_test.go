@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/cloudquery/plugin-sdk/plugins"
+	"github.com/cloudquery/plugin-sdk/plugins/destination"
 )
 
 func getTestConnection() string {
@@ -16,11 +16,11 @@ func getTestConnection() string {
 }
 
 func TestPgPlugin(t *testing.T) {
-	p := plugins.NewDestinationPlugin("postgresql", "development", New)
-	plugins.DestinationPluginTestSuiteRunner(t, p,
+	p := destination.NewPlugin("postgresql", "development", New)
+	destination.PluginTestSuiteRunner(t, p,
 		Spec{
 			ConnectionString: getTestConnection(),
 			PgxLogLevel:      LogLevelTrace,
 		},
-		plugins.DestinationTestSuiteTests{})
+		destination.PluginTestSuiteTests{})
 }

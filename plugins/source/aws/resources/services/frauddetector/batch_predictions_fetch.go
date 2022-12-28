@@ -8,7 +8,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchFrauddetectorBatchPredictions(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchFrauddetectorBatchPredictions(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	paginator := frauddetector.NewGetBatchPredictionJobsPaginator(meta.(*client.Client).Services().Frauddetector, nil)
 	for paginator.HasMorePages() {
 		output, err := paginator.NextPage(ctx)

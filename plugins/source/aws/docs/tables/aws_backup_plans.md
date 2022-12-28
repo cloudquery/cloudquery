@@ -10,6 +10,7 @@ The following tables depend on aws_backup_plans:
   - [aws_backup_plan_selections](aws_backup_plan_selections.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

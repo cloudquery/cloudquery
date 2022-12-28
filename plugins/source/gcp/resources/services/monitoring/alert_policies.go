@@ -4,20 +4,22 @@ package monitoring
 
 import (
 	"context"
-	"github.com/pkg/errors"
 	"google.golang.org/api/iterator"
 
-	pb "google.golang.org/genproto/googleapis/monitoring/v3"
+	pb "cloud.google.com/go/monitoring/apiv3/v2/monitoringpb"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
+
+	"cloud.google.com/go/monitoring/apiv3/v2"
 )
 
 func AlertPolicies() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_monitoring_alert_policies",
-		Resolver:  fetchAlertPolicies,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_monitoring_alert_policies",
+		Description: `https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.alertPolicies#AlertPolicy`,
+		Resolver:    fetchAlertPolicies,
+		Multiplex:   client.ProjectMultiplexEnabledServices("monitoring.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
@@ -25,8 +27,9 @@ func AlertPolicies() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
-				Name: "name",
-				Type: schema.TypeString,
+				Name:     "name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Name"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
@@ -90,19 +93,23 @@ func AlertPolicies() *schema.Table {
 	}
 }
 
-func fetchAlertPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchAlertPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	req := &pb.ListAlertPoliciesRequest{
 		Name: "projects/" + c.ProjectId,
 	}
-	it := c.Services.MonitoringAlertPolicyClient.ListAlertPolicies(ctx, req)
+	gcpClient, err := monitoring.NewAlertPolicyClient(ctx, c.ClientOptions...)
+	if err != nil {
+		return err
+	}
+	it := gcpClient.ListAlertPolicies(ctx, req, c.CallOptions...)
 	for {
 		resp, err := it.Next()
 		if err == iterator.Done {
 			break
 		}
 		if err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 
 		res <- resp

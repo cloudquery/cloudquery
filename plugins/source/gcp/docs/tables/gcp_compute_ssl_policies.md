@@ -1,12 +1,9 @@
 # Table: gcp_compute_ssl_policies
 
-
-
 The primary key for this table is **self_link**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -14,7 +11,6 @@ The primary key for this table is **self_link**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |project_id|String|
-|self_link (PK)|String|
 |creation_timestamp|String|
 |custom_features|StringArray|
 |description|String|
@@ -26,4 +22,5 @@ The primary key for this table is **self_link**.
 |name|String|
 |profile|String|
 |region|String|
+|self_link (PK)|String|
 |warnings|JSON|

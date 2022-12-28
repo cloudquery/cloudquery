@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cloudquery/plugin-sdk/plugins"
+	"github.com/cloudquery/plugin-sdk/plugins/destination"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
 )
@@ -42,13 +42,13 @@ func TestClient(t *testing.T) {
 }
 
 func TestPlugin(t *testing.T) {
-	p := plugins.NewDestinationPlugin("csv", "development", New)
+	p := destination.NewPlugin("csv", "development", New)
 
-	plugins.DestinationPluginTestSuiteRunner(t, p,
+	destination.PluginTestSuiteRunner(t, p,
 		Spec{
 			Directory: t.TempDir(),
 		},
-		plugins.DestinationTestSuiteTests{
+		destination.PluginTestSuiteTests{
 			SkipOverwrite:   true,
 			SkipDeleteStale: true,
 		},

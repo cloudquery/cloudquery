@@ -9,19 +9,26 @@ import (
 
 func Projects() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_resourcemanager_projects",
-		Resolver:  fetchProjects,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_resourcemanager_projects",
+		Description: `https://cloud.google.com/resource-manager/reference/rest/v3/projects#Project`,
+		Resolver:    fetchProjects,
+		Multiplex:   client.ProjectMultiplexEnabledServices("cloudresourcemanager.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Name"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "parent",

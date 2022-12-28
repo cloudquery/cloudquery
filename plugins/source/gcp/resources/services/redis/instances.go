@@ -4,20 +4,22 @@ package redis
 
 import (
 	"context"
-	"github.com/pkg/errors"
 	"google.golang.org/api/iterator"
 
-	pb "google.golang.org/genproto/googleapis/cloud/redis/v1"
+	pb "cloud.google.com/go/redis/apiv1/redispb"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
+
+	"cloud.google.com/go/redis/apiv1"
 )
 
 func Instances() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_redis_instances",
-		Resolver:  fetchInstances,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_redis_instances",
+		Description: `https://cloud.google.com/memorystore/docs/redis/reference/rest/v1/projects.locations.instances#Instance`,
+		Resolver:    fetchInstances,
+		Multiplex:   client.ProjectMultiplexEnabledServices("redis.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
@@ -181,19 +183,23 @@ func Instances() *schema.Table {
 	}
 }
 
-func fetchInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	req := &pb.ListInstancesRequest{
 		Parent: "projects/" + c.ProjectId + "/locations/-",
 	}
-	it := c.Services.RedisCloudRedisClient.ListInstances(ctx, req)
+	gcpClient, err := redis.NewCloudRedisClient(ctx, c.ClientOptions...)
+	if err != nil {
+		return err
+	}
+	it := gcpClient.ListInstances(ctx, req, c.CallOptions...)
 	for {
 		resp, err := it.Next()
 		if err == iterator.Done {
 			break
 		}
 		if err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 
 		res <- resp

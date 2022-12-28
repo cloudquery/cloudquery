@@ -1,14 +1,13 @@
 # Table: gandi_simplehosting_instance_vhosts
 
-
-
 The composite primary key for this table is (**instance_id**, **fqdn**).
 
 ## Relations
+
 This table depends on [gandi_simplehosting_instances](gandi_simplehosting_instances.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

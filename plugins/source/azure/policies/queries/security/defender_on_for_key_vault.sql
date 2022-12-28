@@ -1,9 +1,9 @@
 insert into azure_policy_results
 SELECT
-  :'execution_time',
-  :'framework',
-  :'check_id',
-  'Ensure that Windows Defender ATP (WDATP) integration with Security Center is selected (Automatic)',
+  :'execution_time' as execution_time,
+  :'framework' as framework,
+  :'check_id' as check_id,
+  'Ensure that Windows Defender ATP (WDATP) integration with Security Center is selected (Automatic)' as title,
   subscription_id,
   id,
   case

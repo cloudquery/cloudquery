@@ -13,7 +13,7 @@ func {{.SubService | ToCamel}}() *schema.Table {
     return &schema.Table{{template "table.go.tpl" .Table}}
 }
 
-func fetch{{.SubService | ToCamel}}(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetch{{.SubService | ToCamel}}(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	{{if .GlobalResource}}
 		cl := meta.(*client.Client).Client().{{.ServiceFuncName}}().{{.ResourceFuncName}}()
 	{{else}}

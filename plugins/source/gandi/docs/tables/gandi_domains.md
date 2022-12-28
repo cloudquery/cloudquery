@@ -1,7 +1,5 @@
 # Table: gandi_domains
 
-
-
 The primary key for this table is **id**.
 
 ## Relations
@@ -13,6 +11,7 @@ The following tables depend on gandi_domains:
   - [gandi_domain_dnssec_keys](gandi_domain_dnssec_keys.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

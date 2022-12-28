@@ -1,14 +1,13 @@
 # Table: gandi_domain_web_redirections
 
-
-
 The composite primary key for this table is (**fqdn**, **host**, **type**).
 
 ## Relations
+
 This table depends on [gandi_domains](gandi_domains.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

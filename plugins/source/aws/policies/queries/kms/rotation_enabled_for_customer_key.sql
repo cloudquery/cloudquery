@@ -1,9 +1,9 @@
 insert into aws_policy_results
 select
-  :'execution_time',
-  :'framework',
-  :'check_id',
-  'Ensure rotation for customer created CMKs is enabled (Scored)',
+  :'execution_time' as execution_time,
+  :'framework' as framework,
+  :'check_id' as check_id,
+  'Ensure rotation for customer created custom master keys is enabled (Scored)' as title,
   account_id,
   arn,
   case when

@@ -4,9 +4,8 @@ https://docs.aws.amazon.com/step-functions/latest/apireference/API_DescribeState
 
 The primary key for this table is **arn**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -22,6 +21,7 @@ The primary key for this table is **arn**.
 |name|String|
 |role_arn|String|
 |type|String|
+|label|String|
 |logging_configuration|JSON|
 |status|String|
 |tracing_configuration|JSON|

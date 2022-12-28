@@ -10,6 +10,7 @@ import (
 func Domains() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_elasticsearch_domains",
+		Description:         `https://docs.aws.amazon.com/opensearch-service/latest/APIReference/API_DomainStatus.html`,
 		Resolver:            fetchElasticsearchDomains,
 		PreResourceResolver: getDomain,
 		Multiplex:           client.ServiceAccountRegionMultiplexer("es"),
@@ -18,35 +19,34 @@ func Domains() *schema.Table {
 				Name:     "account_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveAWSAccount,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
 				Name:     "region",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveAWSRegion,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+			},
+			{
+				Name:     "authorized_principals",
+				Type:     schema.TypeJSON,
+				Resolver: resolveAuthorizedPrincipals,
 			},
 			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,
-				Resolver: resolveElasticsearchDomainTags,
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("DomainId"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Resolver: resolveDomainTags,
 			},
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ARN"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "domain_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("DomainId"),
 			},
 			{
 				Name:     "domain_name",

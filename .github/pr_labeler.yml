@@ -2,8 +2,12 @@ aws:
   - plugins/source/aws/**/*
 azure:
   - plugins/source/azure/**/*
+azuredevops:
+  - plugins/source/azuredevops/**/*
 cloudflare:
   - plugins/source/cloudflare/**/*
+crowdstrike:
+  - plugins/source/crowdstrike/**/*
 digitalocean:
   - plugins/source/digitalocean/**/*
 datadog:
@@ -16,14 +20,24 @@ gcp:
   - plugins/source/gcp/**/*
 github:
   - plugins/source/github/**/*
+gitlab:
+  - plugins/source/gitlab/**/*
 k8s:
   - plugins/source/k8s/**/*
 heroku:
   - plugins/source/heroku/**/*
 okta:
   - plugins/source/okta/**/*
+slack:
+  - plugins/source/slack/**/*
+pagerduty:
+  - plugins/source/pagerduty/**/*
 terraform:
   - plugins/source/terraform/**/*
+vercel:
+  - plugins/source/vercel/**/*
+salesforce:
+  - plugins/source/salesforce/**/*
 postgresql:
   - plugins/destination/postgresql/**/*
 sqlite:
@@ -32,6 +46,10 @@ csv:
   - plugins/destination/csv/**/*
 snowflake:
   - plugins/destination/snowflake/**/*
+bigquery:
+  - plugins/destination/bigquery/**/*
+mongodb:
+  - plugins/destination/mongodb/**/*
 website:
   - website/**/*
 cli:

@@ -1,12 +1,11 @@
 # Table: gcp_compute_instances
 
-
+https://cloud.google.com/compute/docs/reference/rest/v1/instances#Instance
 
 The primary key for this table is **self_link**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -14,7 +13,6 @@ The primary key for this table is **self_link**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |project_id|String|
-|self_link (PK)|String|
 |advanced_machine_features|JSON|
 |can_ip_forward|Bool|
 |confidential_instance_config|JSON|
@@ -48,6 +46,7 @@ The primary key for this table is **self_link**.
 |resource_status|JSON|
 |satisfies_pzs|Bool|
 |scheduling|JSON|
+|self_link (PK)|String|
 |service_accounts|JSON|
 |shielded_instance_config|JSON|
 |shielded_instance_integrity_policy|JSON|

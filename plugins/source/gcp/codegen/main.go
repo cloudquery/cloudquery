@@ -15,6 +15,7 @@ import (
 
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/cloudquery/plugins/source/gcp/codegen/recipes"
 	"github.com/iancoleman/strcase"
 	"google.golang.org/protobuf/reflect/protoreflect"
@@ -25,37 +26,15 @@ import (
 //go:embed templates/*.go.tpl
 var gcpTemplatesFS embed.FS
 
-var resources []*recipes.Resource
-
 func main() {
-	resources = append(resources, recipes.ApiKeysResources()...)
-	resources = append(resources, recipes.ComputeResources()...)
-	resources = append(resources, recipes.DnsResources()...)
-	resources = append(resources, recipes.DomainsResources()...)
-	resources = append(resources, recipes.IamResources()...)
-	resources = append(resources, recipes.KmsResources()...)
-	resources = append(resources, recipes.ContainerResources()...)
-	resources = append(resources, recipes.ContainerAnalysisResources()...)
-	resources = append(resources, recipes.LoggingResources()...)
-	resources = append(resources, recipes.RedisResources()...)
-	resources = append(resources, recipes.MonitoringResources()...)
-	resources = append(resources, recipes.SecretManagerResources()...)
-	resources = append(resources, recipes.ServiceusageResources()...)
-	resources = append(resources, recipes.SqlResources()...)
-	resources = append(resources, recipes.StorageResources()...)
-	resources = append(resources, recipes.BigqueryResources()...)
-	resources = append(resources, recipes.BillingResources()...)
-	resources = append(resources, recipes.ResourceManagerResources()...)
-	resources = append(resources, recipes.FunctionsResources()...)
-	resources = append(resources, recipes.RunResources()...)
 
-	for _, r := range resources {
+	for _, r := range recipes.Resources {
 		generateResource(*r, false)
 		if !r.SkipMock {
 			generateResource(*r, true)
 		}
 	}
-	generatePlugin(resources)
+	generatePlugin(recipes.Resources)
 }
 
 func generatePlugin(rr []*recipes.Resource) {
@@ -88,12 +67,7 @@ func generatePlugin(rr []*recipes.Resource) {
 }
 
 func needsProjectIDColumn(r recipes.Resource) bool {
-	for _, c := range r.ExtraColumns {
-		if c.Name == "project_id" {
-			return false
-		}
-	}
-	return true
+	return r.Multiplex != &recipes.OrgMultiplex
 }
 
 func generateResource(r recipes.Resource, mock bool) {
@@ -111,31 +85,41 @@ func generateResource(r recipes.Resource, mock bool) {
 	if r.RegisterServer != nil {
 		path := strings.Split(runtime.FuncForPC(reflect.ValueOf(r.RegisterServer).Pointer()).Name(), ".")
 		r.RegisterServerName = path[len(path)-1]
+		r.UnimplementedServerName = strings.Replace(r.RegisterServerName, "Register", "Unimplemented", 1)
 	}
-	if r.ResponseStruct != nil {
-		r.ResponseStructName = reflect.TypeOf(r.ResponseStruct).Elem().Name()
-	}
-	if r.RequestStruct != nil {
-		r.RequestStructName = reflect.TypeOf(r.RequestStruct).Elem().Name()
-	}
-	if r.UnimplementedServer != nil {
-		r.UnimplementedServerName = reflect.TypeOf(r.UnimplementedServer).Elem().Name()
-	}
+
 	if r.ClientName == "" && r.NewFunctionName != "" {
 		n := strings.Split(fmt.Sprintf("%v", reflect.TypeOf(r.NewFunction).Out(0)), ".")[1]
 		r.ClientName = n
 	}
 
-	if r.ListFunction != nil {
+	if r.StructName == "" {
+		r.StructName = reflect.TypeOf(r.Struct).Elem().Name()
+	}
+
+	if r.ListFunction != nil && !r.SkipFetch {
 		path := strings.Split(runtime.FuncForPC(reflect.ValueOf(r.ListFunction).Pointer()).Name(), ".")
 		r.ListFunctionName = path[len(path)-1]
 		// https://stackoverflow.com/questions/32925344/why-is-there-a-fm-suffix-when-getting-a-functions-name-in-go
 		r.ListFunctionName = strings.Split(r.ListFunctionName, "-")[0]
+		r.RequestStructName = reflect.TypeOf(r.ListFunction).In(1).Elem().Name()
+
+		switch {
+		case r.RegisterServer != nil:
+			server := reflect.TypeOf(r.RegisterServer).In(1)
+			method, _ := server.MethodByName(r.ListFunctionName)
+			r.ResponseStructName = method.Type.Out(0).Elem().Name()
+		case r.ListFunctionName == "Get":
+			r.ResponseStructName = r.StructName
+		default:
+			r.ResponseStructName = r.StructName + r.ListFunctionName
+		}
 	}
 
-	if r.StructName == "" {
-		r.StructName = reflect.TypeOf(r.Struct).Elem().Name()
+	if r.ResponseStruct != nil {
+		r.ResponseStructName = reflect.TypeOf(r.ResponseStruct).Elem().Name()
 	}
+
 	if r.MockListStruct == "" {
 		r.MockListStruct = strcase.ToCamel(r.StructName)
 	}
@@ -144,13 +128,9 @@ func generateResource(r recipes.Resource, mock bool) {
 		r.MockImports = []string{reflect.TypeOf(r.Struct).Elem().PkgPath()}
 	}
 
-	for _, f := range r.ExtraColumns {
-		r.SkipFields = append(r.SkipFields, strcase.ToCamel(f.Name))
-	}
-
 	extraColumns := r.ExtraColumns
 	if needsProjectIDColumn(r) {
-		extraColumns = append([]codegen.ColumnDefinition{recipes.ProjectIdColumn}, extraColumns...)
+		extraColumns = append([]codegen.ColumnDefinition{recipes.ProjectIdColumn}, r.ExtraColumns...)
 	}
 
 	opts := []codegen.TableOption{
@@ -199,10 +179,24 @@ func generateResource(r recipes.Resource, mock bool) {
 		log.Fatal(fmt.Errorf("failed to create table for %s: %w", r.StructName, err))
 	}
 	if r.Multiplex == nil {
-		r.Table.Multiplex = "client.ProjectMultiplex"
+		if _, ok := client.GcpServices[r.ServiceDNS]; !ok {
+			panic("unknown service DNS: " + r.ServiceDNS)
+		}
+		r.Table.Multiplex = "client.ProjectMultiplexEnabledServices(\"" + r.ServiceDNS + "\")"
 	} else {
 		r.Table.Multiplex = *r.Multiplex
 	}
+
+	for _, f := range r.PrimaryKeys {
+		for i := range r.Table.Columns {
+			if r.Table.Columns[i].Name == f {
+				r.Table.Columns[i].Options.PrimaryKey = true
+			}
+		}
+	}
+
+	r.Table.Description = r.Description
+
 	r.Table.Resolver = "fetch" + strcase.ToCamel(r.SubService)
 	if r.PreResourceResolver != "" {
 		r.Table.PreResourceResolver = r.PreResourceResolver

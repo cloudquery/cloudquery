@@ -11,6 +11,7 @@ The following tables depend on aws_autoscaling_groups:
   - [aws_autoscaling_group_lifecycle_hooks](aws_autoscaling_group_lifecycle_hooks.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -51,6 +52,7 @@ The following tables depend on aws_autoscaling_groups:
 |tags|JSON|
 |target_group_ar_ns|StringArray|
 |termination_policies|StringArray|
+|traffic_sources|JSON|
 |vpc_zone_identifier|String|
 |warm_pool_configuration|JSON|
 |warm_pool_size|Int|

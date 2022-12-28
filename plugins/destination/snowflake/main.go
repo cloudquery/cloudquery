@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/cloudquery/cloudquery/plugins/destination/snowflake/client"
 	"github.com/cloudquery/cloudquery/plugins/destination/snowflake/resources/plugin"
-	"github.com/cloudquery/plugin-sdk/plugins"
+	"github.com/cloudquery/plugin-sdk/plugins/destination"
 	"github.com/cloudquery/plugin-sdk/serve"
 )
 
@@ -12,6 +12,6 @@ const (
 )
 
 func main() {
-	p := plugins.NewDestinationPlugin("snowflake", plugin.Version, client.New)
+	p := destination.NewPlugin("snowflake", plugin.Version, client.New, destination.WithManagedWriter())
 	serve.Destination(p, serve.WithDestinationSentryDSN(sentryDSN))
 }

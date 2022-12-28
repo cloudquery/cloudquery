@@ -3,35 +3,20 @@ package kms
 import (
 	"context"
 	"fmt"
-	"net"
 	"testing"
 
-	kms "cloud.google.com/go/kms/apiv1"
 	"cloud.google.com/go/kms/apiv1/kmspb"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/cloudquery/plugins/source/gcp/client"
-	"google.golang.org/api/option"
 	locationpb "google.golang.org/genproto/googleapis/cloud/location"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-func createKeyrings() (*client.Services, error) {
+func createKeyrings(gsrv *grpc.Server) error {
 	fakeServer := &fakeKeyringsServer{}
-	l, err := net.Listen("tcp", "localhost:0")
-	if err != nil {
-		return nil, fmt.Errorf("failed to listen: %w", err)
-	}
-	gsrv := grpc.NewServer()
 	kmspb.RegisterKeyManagementServiceServer(gsrv, fakeServer)
 	locationpb.RegisterLocationsServer(gsrv, new(fakeLocationsServer))
-	fakeServerAddr := l.Addr().String()
-	go func() {
-		if err := gsrv.Serve(l); err != nil {
-			panic(err)
-		}
-	}()
 
 	location := &locationpb.Location{
 		DisplayName: "testLocation",
@@ -40,13 +25,13 @@ func createKeyrings() (*client.Services, error) {
 
 	var keyring kmspb.KeyRing
 	if err := faker.FakeObject(&keyring); err != nil {
-		return nil, err
+		return err
 	}
 	keyring.Name = fmt.Sprintf("projects/testProject/location/%s/keyring/%s", location.Name, keyring.Name)
 	keyring.CreateTime = timestamppb.Now()
 	var key kmspb.CryptoKey
 	if err := faker.FakeObject(&key); err != nil {
-		return nil, err
+		return err
 	}
 	key.Name = fmt.Sprintf("%s/cryptokey/%s", keyring.Name, "test")
 	key.CreateTime = timestamppb.Now()
@@ -57,19 +42,7 @@ func createKeyrings() (*client.Services, error) {
 	key.Primary.GenerateTime = timestamppb.Now()
 	key.Primary.ImportTime = timestamppb.Now()
 
-	// Create a client.
-	svc, err := kms.NewKeyManagementClient(context.Background(),
-		option.WithEndpoint(fakeServerAddr),
-		option.WithoutAuthentication(),
-		option.WithGRPCDialOption(grpc.WithTransportCredentials(insecure.NewCredentials())),
-	)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create grpc client: %w", err)
-	}
-
-	return &client.Services{
-		KmsKeyManagementClient: svc,
-	}, nil
+	return nil
 }
 
 type fakeKeyringsServer struct {
@@ -104,5 +77,5 @@ func (srv *fakeLocationsServer) ListLocations(context.Context, *locationpb.ListL
 }
 
 func TestKeyrings(t *testing.T) {
-	client.MockTestHelper(t, Keyrings(), createKeyrings, client.TestOptions{})
+	client.MockTestGrpcHelper(t, Keyrings(), createKeyrings, client.TestOptions{})
 }

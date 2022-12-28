@@ -4,20 +4,22 @@ package logging
 
 import (
 	"context"
-	"github.com/pkg/errors"
 	"google.golang.org/api/iterator"
 
 	pb "google.golang.org/genproto/googleapis/logging/v2"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
+
+	"cloud.google.com/go/logging/apiv2"
 )
 
 func Metrics() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_logging_metrics",
-		Resolver:  fetchMetrics,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_logging_metrics",
+		Description: `https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.metrics#LogMetric`,
+		Resolver:    fetchMetrics,
+		Multiplex:   client.ProjectMultiplexEnabledServices("logging.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
@@ -86,19 +88,23 @@ func Metrics() *schema.Table {
 	}
 }
 
-func fetchMetrics(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchMetrics(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	req := &pb.ListLogMetricsRequest{
 		Parent: "projects/" + c.ProjectId,
 	}
-	it := c.Services.LoggingMetricsClient.ListLogMetrics(ctx, req)
+	gcpClient, err := logging.NewMetricsClient(ctx, c.ClientOptions...)
+	if err != nil {
+		return err
+	}
+	it := gcpClient.ListLogMetrics(ctx, req, c.CallOptions...)
 	for {
 		resp, err := it.Next()
 		if err == iterator.Done {
 			break
 		}
 		if err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 
 		res <- resp

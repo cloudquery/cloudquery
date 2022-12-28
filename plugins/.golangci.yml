@@ -65,6 +65,13 @@ linters-settings:
       - name: nested-structs
         disabled: true
 
+  gofmt:
+    rewrite-rules:
+    - pattern:     'interface{}'
+      replacement: 'any'
+    - pattern:     'a[b:len(a)]'
+      replacement: 'a[b:]'
+
 linters:
   enable:
     - asciicheck

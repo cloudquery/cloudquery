@@ -17,7 +17,7 @@ import (
 // groupNameRegex extracts log group name from the ARN
 var groupNameRegex = regexp.MustCompile("arn:[a-zA-Z0-9-]+:logs:[a-z0-9-]+:[0-9]+:log-group:([a-zA-Z0-9-/]+):")
 
-func fetchCloudtrailTrails(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchCloudtrailTrails(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Cloudtrail
 	log := c.Logger()
@@ -135,7 +135,7 @@ func resolveCloudtrailTrailCloudwatchLogsLogGroupName(ctx context.Context, meta 
 	return resource.Set("cloudwatch_logs_log_group_name", groupName)
 }
 
-func fetchCloudtrailTrailEventSelectors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchCloudtrailTrailEventSelectors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(*models.CloudTrailWrapper)
 	c := meta.(*client.Client)
 	svc := c.Services().Cloudtrail

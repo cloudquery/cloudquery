@@ -62,6 +62,6 @@ To easy the deployment we release:
   that allows you to see data from all of your AWS Accounts
 
 - Connecting CloudQuery Database to a BI Tool:
-  - [Apache Superset](https://www.cloudquery.io/blog/cloud-asset-inventory-cloudquery-apache-superset)
-  - [AWS QuickSight](https://www.cloudquery.io/blog/cloud-asset-inventory-cloudquery-aws-quicksight)
-  - [Metabase](https://www.cloudquery.io/blog/cloud-asset-inventory-cloudquery-metabase)
+  - [Apache Superset](/how-to-guides/cloud-asset-inventory-cloudquery-apache-superset)
+  - [AWS QuickSight](/how-to-guides/cloud-asset-inventory-cloudquery-aws-quicksight)
+  - [Metabase](/how-to-guides/cloud-asset-inventory-cloudquery-metabase)

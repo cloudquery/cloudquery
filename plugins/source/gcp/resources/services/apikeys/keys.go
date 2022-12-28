@@ -4,20 +4,22 @@ package apikeys
 
 import (
 	"context"
-	"github.com/pkg/errors"
 	"google.golang.org/api/iterator"
 
 	pb "google.golang.org/genproto/googleapis/api/apikeys/v2"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
+
+	"cloud.google.com/go/apikeys/apiv2"
 )
 
 func Keys() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_apikeys_keys",
-		Resolver:  fetchKeys,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_apikeys_keys",
+		Description: `https://cloud.google.com/api-keys/docs/reference/rest/v2/projects.locations.keys#Key`,
+		Resolver:    fetchKeys,
+		Multiplex:   client.ProjectMultiplexEnabledServices("apikeys.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
@@ -28,17 +30,17 @@ func Keys() *schema.Table {
 				},
 			},
 			{
+				Name:     "name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Name"),
+			},
+			{
 				Name:     "uid",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Uid"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
-			},
-			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
 			},
 			{
 				Name:     "display_name",
@@ -84,19 +86,23 @@ func Keys() *schema.Table {
 	}
 }
 
-func fetchKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	req := &pb.ListKeysRequest{
 		Parent: "projects/" + c.ProjectId + "/locations/global",
 	}
-	it := c.Services.ApikeysClient.ListKeys(ctx, req)
+	gcpClient, err := apikeys.NewClient(ctx, c.ClientOptions...)
+	if err != nil {
+		return err
+	}
+	it := gcpClient.ListKeys(ctx, req, c.CallOptions...)
 	for {
 		resp, err := it.Next()
 		if err == iterator.Done {
 			break
 		}
 		if err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 
 		res <- resp

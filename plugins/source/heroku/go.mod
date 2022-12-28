@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/heroku
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v1.10.0
+	github.com/cloudquery/plugin-sdk v1.14.0
 	github.com/google/go-cmp v0.5.9
 	github.com/googleapis/gax-go/v2 v2.7.0
 	github.com/heroku/heroku-go/v5 v5.5.0
@@ -36,7 +36,7 @@ require (
 	github.com/spf13/cobra v1.6.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/thoas/go-funk v0.9.2 // indirect
-	golang.org/x/exp v0.0.0-20221111204811-129d8d6c17ab // indirect
+	golang.org/x/exp v0.0.0-20221126150942-6ab00d035af9 // indirect
 	golang.org/x/net v0.2.0 // indirect
 	golang.org/x/oauth2 v0.0.0-20221014153046-6fdb5e3db783 // indirect
 	golang.org/x/sync v0.1.0 // indirect

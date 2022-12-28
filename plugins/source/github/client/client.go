@@ -65,11 +65,13 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (sche
 	return &Client{
 		logger: logger,
 		Github: GithubServices{
-			Teams:         c.Teams,
+			Actions:       c.Actions,
 			Billing:       c.Billing,
-			Repositories:  c.Repositories,
-			Organizations: c.Organizations,
+			Dependabot:    c.Dependabot,
 			Issues:        c.Issues,
+			Organizations: c.Organizations,
+			Repositories:  c.Repositories,
+			Teams:         c.Teams,
 		},
 		Orgs: spec.Orgs,
 	}, nil

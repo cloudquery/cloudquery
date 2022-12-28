@@ -11,6 +11,7 @@ The following tables depend on aws_apprunner_services:
   - [aws_apprunner_custom_domains](aws_apprunner_custom_domains.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

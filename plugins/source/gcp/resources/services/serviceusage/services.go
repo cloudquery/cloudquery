@@ -3,21 +3,16 @@
 package serviceusage
 
 import (
-	"context"
-	"github.com/pkg/errors"
-	"google.golang.org/api/iterator"
-
-	pb "google.golang.org/genproto/googleapis/api/serviceusage/v1"
-
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 )
 
 func Services() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_serviceusage_services",
-		Resolver:  fetchServices,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_serviceusage_services",
+		Description: `https://cloud.google.com/service-usage/docs/reference/rest/v1/services#Service`,
+		Resolver:    fetchServices,
+		Multiplex:   client.ProjectMultiplexEnabledServices("serviceusage.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
@@ -25,8 +20,9 @@ func Services() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
-				Name: "name",
-				Type: schema.TypeString,
+				Name:     "name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Name"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
@@ -48,25 +44,4 @@ func Services() *schema.Table {
 			},
 		},
 	}
-}
-
-func fetchServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	c := meta.(*client.Client)
-	req := &pb.ListServicesRequest{
-		Parent: "projects/" + c.ProjectId,
-	}
-	it := c.Services.ServiceusageClient.ListServices(ctx, req)
-	for {
-		resp, err := it.Next()
-		if err == iterator.Done {
-			break
-		}
-		if err != nil {
-			return errors.WithStack(err)
-		}
-
-		res <- resp
-
-	}
-	return nil
 }

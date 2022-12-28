@@ -51,7 +51,7 @@ jobs:
           cache: true
           cache-dependency-path: plugins/source/gcp/go.sum
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v3
+        uses: cloudquery/golangci-lint-action@master
         with:
           version: v1.50.1
           working-directory: plugins/source/gcp
@@ -67,7 +67,7 @@ jobs:
         run: make gen
       - name: Fail if generation updated files
         if: github.event_name == 'pull_request'
-        run: test "$(git status -s | wc -l)" -eq 0
+        run: test "$(git status -s | wc -l)" -eq 0 || (git status -s; exit 1)
   validate-release:
     timeout-minutes: 30
     needs: [resolve-runner]

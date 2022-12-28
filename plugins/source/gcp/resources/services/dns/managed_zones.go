@@ -9,22 +9,15 @@ import (
 
 func ManagedZones() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_dns_managed_zones",
-		Resolver:  fetchManagedZones,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_dns_managed_zones",
+		Description: `https://cloud.google.com/dns/docs/reference/v1/managedZones#resource`,
+		Resolver:    fetchManagedZones,
+		Multiplex:   client.ProjectMultiplexEnabledServices("dns.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("Id"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
 				Name:     "cloud_logging_config",
@@ -55,6 +48,14 @@ func ManagedZones() *schema.Table {
 				Name:     "forwarding_config",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("ForwardingConfig"),
+			},
+			{
+				Name:     "id",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("Id"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "kind",

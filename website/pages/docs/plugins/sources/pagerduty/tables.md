@@ -1,0 +1,26 @@
+# Source Plugin: pagerduty
+
+## Tables
+
+- [pagerduty_addons](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/pagerduty/docs/tables/pagerduty_addons.md)
+- [pagerduty_incidents](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/pagerduty/docs/tables/pagerduty_incidents.md)
+  - [pagerduty_incident_alerts](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/pagerduty/docs/tables/pagerduty_incident_alerts.md)
+  - [pagerduty_incident_notes](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/pagerduty/docs/tables/pagerduty_incident_notes.md)
+  - [pagerduty_incident_log_entries](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/pagerduty/docs/tables/pagerduty_incident_log_entries.md)
+- [pagerduty_business_services](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/pagerduty/docs/tables/pagerduty_business_services.md)
+- [pagerduty_escalation_policies](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/pagerduty/docs/tables/pagerduty_escalation_policies.md)
+- [pagerduty_extension_schemas](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/pagerduty/docs/tables/pagerduty_extension_schemas.md)
+- [pagerduty_extensions](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/pagerduty/docs/tables/pagerduty_extensions.md)
+- [pagerduty_maintenance_windows](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/pagerduty/docs/tables/pagerduty_maintenance_windows.md)
+- [pagerduty_priorities](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/pagerduty/docs/tables/pagerduty_priorities.md)
+- [pagerduty_rulesets](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/pagerduty/docs/tables/pagerduty_rulesets.md)
+  - [pagerduty_ruleset_rules](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/pagerduty/docs/tables/pagerduty_ruleset_rules.md)
+- [pagerduty_schedules](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/pagerduty/docs/tables/pagerduty_schedules.md)
+- [pagerduty_services](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/pagerduty/docs/tables/pagerduty_services.md)
+  - [pagerduty_service_rules](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/pagerduty/docs/tables/pagerduty_service_rules.md)
+- [pagerduty_tags](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/pagerduty/docs/tables/pagerduty_tags.md)
+- [pagerduty_teams](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/pagerduty/docs/tables/pagerduty_teams.md)
+- [pagerduty_users](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/pagerduty/docs/tables/pagerduty_users.md)
+  - [pagerduty_user_contact_methods](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/pagerduty/docs/tables/pagerduty_user_contact_methods.md)
+  - [pagerduty_user_notification_rules](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/pagerduty/docs/tables/pagerduty_user_notification_rules.md)
+- [pagerduty_vendors](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/pagerduty/docs/tables/pagerduty_vendors.md)

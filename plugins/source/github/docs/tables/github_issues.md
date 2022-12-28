@@ -1,12 +1,9 @@
 # Table: github_issues
 
-
-
 The composite primary key for this table is (**org**, **id**).
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -17,6 +14,7 @@ The composite primary key for this table is (**org**, **id**).
 |id (PK)|Int|
 |number|Int|
 |state|String|
+|state_reason|String|
 |locked|Bool|
 |title|String|
 |body|String|

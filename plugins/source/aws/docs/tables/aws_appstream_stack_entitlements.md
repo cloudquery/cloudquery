@@ -5,10 +5,11 @@ https://docs.aws.amazon.com/appstream2/latest/APIReference/API_Entitlement.html
 The composite primary key for this table is (**account_id**, **region**, **stack_name**, **name**).
 
 ## Relations
+
 This table depends on [aws_appstream_stacks](aws_appstream_stacks.md).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

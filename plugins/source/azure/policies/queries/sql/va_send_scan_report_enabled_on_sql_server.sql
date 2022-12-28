@@ -13,10 +13,10 @@ emails_count AS (
 )
 insert into azure_policy_results
 SELECT
-  :'execution_time',
-  :'framework',
-  :'check_id',
-  'Ensure that VA setting Send scan reports to is configured for a SQL server (Automated)',
+  :'execution_time' as execution_time,
+  :'framework' as framework,
+  :'check_id' as check_id,
+  'Ensure that VA setting Send scan reports to is configured for a SQL server (Automated)' as title,
   s.subscription_id,
   s.id AS server_id,
   case

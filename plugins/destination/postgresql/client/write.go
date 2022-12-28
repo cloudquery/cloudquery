@@ -2,25 +2,19 @@ package client
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"strings"
 	"sync/atomic"
 
-	"github.com/cloudquery/plugin-sdk/plugins"
+	"github.com/cloudquery/plugin-sdk/plugins/destination"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
-	"github.com/jackc/pgconn"
-	"github.com/jackc/pgtype"
-	"github.com/jackc/pgx/v4"
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgconn"
 )
 
-var cqStatusToPgStatus = map[schema.Status]pgtype.Status{
-	schema.Null:      pgtype.Null,
-	schema.Undefined: pgtype.Null,
-	schema.Present:   pgtype.Present,
-}
-
-func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *plugins.ClientResource) error {
+func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *destination.ClientResource) error {
 	var sql string
 	batch := &pgx.Batch{}
 
@@ -34,17 +28,16 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *pl
 		} else {
 			sql = c.upsert(table)
 		}
-
 		batch.Queue(sql, r.Data...)
 		if batch.Len() >= c.batchSize {
 			br := c.conn.SendBatch(ctx, batch)
 			if err := br.Close(); err != nil {
-				if _, ok := err.(*pgconn.PgError); !ok {
+				var pgErr *pgconn.PgError
+				if !errors.As(err, &pgErr) {
 					// not recoverable error
 					return fmt.Errorf("failed to execute batch: %w", err)
 				}
-				atomic.AddUint64(&c.metrics.Errors, 1)
-				c.logger.Error().Err(err).Msgf("failed to execute batch with pgerror")
+				return fmt.Errorf("failed to execute batch with pgerror on table %s: %w", pgErr.TableName, err)
 			}
 			atomic.AddUint64(&c.metrics.Writes, uint64(c.batchSize))
 			batch = &pgx.Batch{}
@@ -54,11 +47,12 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *pl
 	if batch.Len() > 0 {
 		br := c.conn.SendBatch(ctx, batch)
 		if err := br.Close(); err != nil {
-			if _, ok := err.(*pgconn.PgError); !ok {
-				// no recoverable error
+			var pgErr *pgconn.PgError
+			if !errors.As(err, &pgErr) {
+				// not recoverable error
 				return fmt.Errorf("failed to execute batch: %w", err)
 			}
-			c.logger.Error().Err(err).Msgf("failed to execute batch with pgerror")
+			return fmt.Errorf("failed to execute batch with pgerror on table %s: %w", pgErr.TableName, err)
 		}
 		atomic.AddUint64(&c.metrics.Writes, uint64(c.batchSize))
 	}

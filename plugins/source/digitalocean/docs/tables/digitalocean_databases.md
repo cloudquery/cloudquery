@@ -1,7 +1,5 @@
 # Table: digitalocean_databases
 
-
-
 The primary key for this table is **id**.
 
 ## Relations
@@ -12,6 +10,7 @@ The following tables depend on digitalocean_databases:
   - [digitalocean_database_backups](digitalocean_database_backups.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

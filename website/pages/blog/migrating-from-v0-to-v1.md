@@ -29,7 +29,7 @@ V1 introduces a new config format that is closely related to the old one, but an
 
 The new config format for source plugins are as follows:
 
-```yaml copy
+```yaml
 kind: source
 spec:
   ## Required. name of the plugin to use
@@ -61,7 +61,7 @@ Check the [source spec documentation](/docs/reference/source-spec) for general l
 
 The new config format for destination plugins (e.g. PostgreSQL) is as follows:
 
-```yaml copy
+```yaml
 kind: destination
 spec:
   ## Required. name of the plugin
@@ -95,13 +95,13 @@ Users of CloudQuery v0 would be familiar with the main commands `init` and `fetc
 
 The previous `init` command also generated a full list of tables to fetch. In v1, you can fetch all tables by using a wildcard entry:
 
-```
+```yaml
 tables: ["*"]
 ```
 
 in the source configuration file. This can also be combined with the `skip_tables` option to fetch all tables except some subset:
 
-```
+```yaml
 tables: ["*"]
 skip_tables: ["aws_accessanalyzer_analyzers", "aws_acm_certificates"]
 ```
@@ -132,7 +132,7 @@ See `cloudquery sync --help` for more details, or check our [online reference](/
 
 The `sync` command supports loading config from files or directories, and you may choose to combine multiple source- and destination- configs in a single file using `---` on its own line to separate different sections. For example:
 
-```
+```yaml
 kind: source
 spec:
     name: "aws"

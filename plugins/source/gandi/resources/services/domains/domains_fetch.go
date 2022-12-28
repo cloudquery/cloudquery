@@ -8,7 +8,7 @@ import (
 	"github.com/go-gandi/go-gandi/domain"
 )
 
-func fetchDomains(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchDomains(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	list, err := cl.Services.DomainClient.ListDomains()
 	if err != nil {

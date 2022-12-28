@@ -9,21 +9,15 @@ import (
 
 func Clusters() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_container_clusters",
-		Resolver:  fetchClusters,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_container_clusters",
+		Description: `https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.locations.clusters#Cluster`,
+		Resolver:    fetchClusters,
+		Multiplex:   client.ProjectMultiplexEnabledServices("container.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
-			},
-			{
-				Name: "self_link",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
 				Name:     "name",
@@ -214,6 +208,14 @@ func Clusters() *schema.Table {
 				Name:     "identity_service_config",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("IdentityServiceConfig"),
+			},
+			{
+				Name:     "self_link",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SelfLink"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "zone",

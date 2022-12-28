@@ -27,9 +27,6 @@ import (
 type Client struct {
 	// Those are already normalized values after configure and this is why we don't want to hold
 	// config directly.
-	logLevel        *string
-	maxRetries      int
-	maxBackoff      int
 	ServicesManager ServicesManager
 	logger          zerolog.Logger
 	// this is set by table clientList
@@ -113,15 +110,6 @@ func NewAwsClient(logger zerolog.Logger) Client {
 	}
 }
 
-func (s ServicesPartitionAccountRegionMap) Accounts() []string {
-	accounts := make([]string, 0)
-	for partitions := range s {
-		for account := range s[partitions] {
-			accounts = append(accounts, account)
-		}
-	}
-	return accounts
-}
 func (c *Client) Logger() *zerolog.Logger {
 	return &c.logger
 }
@@ -146,9 +134,6 @@ func (c *Client) Services() *Services {
 func (c *Client) withPartitionAccountIDAndRegion(partition, accountID, region string) *Client {
 	return &Client{
 		Partition:            partition,
-		logLevel:             c.logLevel,
-		maxRetries:           c.maxRetries,
-		maxBackoff:           c.maxBackoff,
 		ServicesManager:      c.ServicesManager,
 		logger:               c.logger.With().Str("account_id", accountID).Str("region", region).Logger(),
 		AccountID:            accountID,
@@ -161,9 +146,6 @@ func (c *Client) withPartitionAccountIDAndRegion(partition, accountID, region st
 func (c *Client) withPartitionAccountIDRegionAndNamespace(partition, accountID, region, namespace string) *Client {
 	return &Client{
 		Partition:            partition,
-		logLevel:             c.logLevel,
-		maxRetries:           c.maxRetries,
-		maxBackoff:           c.maxBackoff,
 		ServicesManager:      c.ServicesManager,
 		logger:               c.logger.With().Str("account_id", accountID).Str("region", region).Str("autoscaling_namespace", namespace).Logger(),
 		AccountID:            accountID,
@@ -176,9 +158,6 @@ func (c *Client) withPartitionAccountIDRegionAndNamespace(partition, accountID, 
 func (c *Client) withPartitionAccountIDRegionAndScope(partition, accountID, region string, scope wafv2types.Scope) *Client {
 	return &Client{
 		Partition:            partition,
-		logLevel:             c.logLevel,
-		maxRetries:           c.maxRetries,
-		maxBackoff:           c.maxBackoff,
 		ServicesManager:      c.ServicesManager,
 		logger:               c.logger.With().Str("account_id", accountID).Str("region", region).Str("waf_scope", string(scope)).Logger(),
 		AccountID:            accountID,
@@ -256,6 +235,18 @@ func configureAwsClient(ctx context.Context, logger zerolog.Logger, awsConfig *S
 			})
 		}),
 	}
+	if awsConfig.EndpointURL != "" {
+		configFns = append(configFns, config.WithEndpointResolverWithOptions(aws.EndpointResolverWithOptionsFunc(
+			func(service, region string, options ...any) (aws.Endpoint, error) {
+				return aws.Endpoint{
+					URL:               awsConfig.EndpointURL,
+					HostnameImmutable: aws.ToBool(awsConfig.HostnameImmutable),
+					PartitionID:       awsConfig.PartitionID,
+					SigningRegion:     awsConfig.SigningRegion,
+				}, nil
+			})),
+		)
+	}
 
 	if account.DefaultRegion != "" {
 		// According to the docs: If multiple WithDefaultRegion calls are made, the last call overrides the previous call values
@@ -328,11 +319,14 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source) (s
 		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
 	}
 
+	err = awsConfig.Validate()
+	if err != nil {
+		return nil, fmt.Errorf("spec validation failed: %w", err)
+	}
+
 	client := NewAwsClient(logger)
 	var adminAccountSts AssumeRoleAPIClient
-	if awsConfig.Organization != nil && len(awsConfig.Accounts) > 0 {
-		return nil, errors.New("specifying accounts via both the Accounts and Org properties is not supported. To achieve both, use multiple source configurations")
-	}
+
 	if awsConfig.Organization != nil {
 		var err error
 		awsConfig.Accounts, adminAccountSts, err = loadOrgAccounts(ctx, logger, &awsConfig)
@@ -473,7 +467,7 @@ func filterDisabledRegions(regions []string, enabledRegions []types.Region) []st
 	return filteredRegions
 }
 
-func (a AwsLogger) Logf(classification logging.Classification, format string, v ...interface{}) {
+func (a AwsLogger) Logf(classification logging.Classification, format string, v ...any) {
 	if classification == logging.Warn {
 		a.l.Warn().Msg(fmt.Sprintf(format, v...))
 	} else {

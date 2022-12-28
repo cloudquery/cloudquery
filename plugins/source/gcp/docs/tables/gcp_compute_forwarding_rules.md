@@ -1,12 +1,11 @@
 # Table: gcp_compute_forwarding_rules
 
-
+https://cloud.google.com/compute/docs/reference/rest/v1/forwardingRules#ForwardingRule
 
 The primary key for this table is **self_link**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -14,7 +13,6 @@ The primary key for this table is **self_link**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |project_id|String|
-|self_link (PK)|String|
 |ip_address|String|
 |ip_protocol|String|
 |all_ports|Bool|
@@ -40,6 +38,7 @@ The primary key for this table is **self_link**.
 |psc_connection_id|Int|
 |psc_connection_status|String|
 |region|String|
+|self_link (PK)|String|
 |service_directory_registrations|JSON|
 |service_label|String|
 |service_name|String|

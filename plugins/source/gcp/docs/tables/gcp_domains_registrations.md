@@ -1,12 +1,11 @@
 # Table: gcp_domains_registrations
 
-
+https://cloud.google.com/domains/docs/reference/rest/v1beta1/projects.locations.registrations#Registration
 
 The primary key for this table is **_cq_id**.
 
-
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

@@ -9,9 +9,10 @@ import (
 
 func ProjectPolicies() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_resourcemanager_project_policies",
-		Resolver:  fetchProjectPolicies,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_resourcemanager_project_policies",
+		Description: `https://cloud.google.com/resource-manager/reference/rest/Shared.Types/Policy`,
+		Resolver:    fetchProjectPolicies,
+		Multiplex:   client.ProjectMultiplexEnabledServices("cloudresourcemanager.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

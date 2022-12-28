@@ -12,28 +12,38 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
-func fetchEc2Images(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchEc2Images(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 
 	svc := c.Services().Ec2
 	g, ctx := errgroup.WithContext(ctx)
 	g.Go(func() error {
 		// fetch ec2.Images owned by this account
-		response, err := svc.DescribeImages(ctx, &ec2.DescribeImagesInput{Owners: []string{"self"}})
-		if err != nil {
-			return err
+		pag := ec2.NewDescribeImagesPaginator(svc, &ec2.DescribeImagesInput{
+			Owners: []string{"self"},
+		})
+		for pag.HasMorePages() {
+			resp, err := pag.NextPage(ctx)
+			if err != nil {
+				return err
+			}
+			res <- resp.Images
 		}
-		res <- response.Images
 		return nil
 	})
 
 	g.Go(func() error {
 		// fetch ec2.Images that are shared with this account
-		response, err := svc.DescribeImages(ctx, &ec2.DescribeImagesInput{ExecutableUsers: []string{"self"}})
-		if err != nil {
-			return err
+		pag := ec2.NewDescribeImagesPaginator(svc, &ec2.DescribeImagesInput{
+			ExecutableUsers: []string{"self"},
+		})
+		for pag.HasMorePages() {
+			resp, err := pag.NextPage(ctx)
+			if err != nil {
+				return err
+			}
+			res <- resp.Images
 		}
-		res <- response.Images
 		return nil
 	})
 

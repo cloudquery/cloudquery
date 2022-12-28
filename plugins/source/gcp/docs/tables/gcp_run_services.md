@@ -1,12 +1,15 @@
 # Table: gcp_run_services
 
-
+https://cloud.google.com/run/docs/reference/rest/v2/projects.locations.services#Service
 
 The primary key for this table is **_cq_id**.
 
+## Relations
 
+This table depends on [gcp_run_locations](gcp_run_locations.md).
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

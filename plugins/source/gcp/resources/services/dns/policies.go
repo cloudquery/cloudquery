@@ -9,22 +9,15 @@ import (
 
 func Policies() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_dns_policies",
-		Resolver:  fetchPolicies,
-		Multiplex: client.ProjectMultiplex,
+		Name:        "gcp_dns_policies",
+		Description: `https://cloud.google.com/dns/docs/reference/v1/policies#resource`,
+		Resolver:    fetchPolicies,
+		Multiplex:   client.ProjectMultiplexEnabledServices("dns.googleapis.com"),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("Id"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
 				Name:     "alternative_name_server_config",
@@ -45,6 +38,14 @@ func Policies() *schema.Table {
 				Name:     "enable_logging",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("EnableLogging"),
+			},
+			{
+				Name:     "id",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("Id"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "kind",

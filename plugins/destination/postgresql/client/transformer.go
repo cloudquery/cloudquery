@@ -1,185 +1,126 @@
 package client
 
 import (
+	"net"
 	"strings"
 
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/jackc/pgtype"
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
-func (*Client) TransformBool(v *schema.Bool) interface{} {
+func (*Client) TransformBool(v *schema.Bool) any {
 	return &pgtype.Bool{
-		Bool:   v.Bool,
-		Status: cqStatusToPgStatus[v.Status],
+		Bool:  v.Bool,
+		Valid: v.Status == schema.Present,
 	}
 }
 
-func (*Client) TransformBytea(v *schema.Bytea) interface{} {
-	return &pgtype.Bytea{
-		Bytes:  v.Bytes,
-		Status: cqStatusToPgStatus[v.Status],
-	}
+func (*Client) TransformBytea(v *schema.Bytea) any {
+	return v.Bytes
 }
 
-func (*Client) TransformFloat8(v *schema.Float8) interface{} {
+func (*Client) TransformFloat8(v *schema.Float8) any {
 	return &pgtype.Float8{
-		Float:  v.Float,
-		Status: cqStatusToPgStatus[v.Status],
+		Float64: v.Float,
+		Valid:   v.Status == schema.Present,
 	}
 }
 
-func (*Client) TransformInt8(v *schema.Int8) interface{} {
+func (*Client) TransformInt8(v *schema.Int8) any {
 	return &pgtype.Int8{
-		Int:    v.Int,
-		Status: cqStatusToPgStatus[v.Status],
+		Int64: v.Int,
+		Valid: v.Status == schema.Present,
 	}
 }
 
-func (*Client) TransformInt8Array(v *schema.Int8Array) interface{} {
-	r := pgtype.Int8Array{}
+func (*Client) TransformInt8Array(v *schema.Int8Array) any {
+	r := pgtype.FlatArray[pgtype.Int8]{}
 	for _, e := range v.Elements {
-		r.Elements = append(r.Elements, pgtype.Int8{Int: e.Int, Status: cqStatusToPgStatus[e.Status]})
-	}
-	r.Status = cqStatusToPgStatus[v.Status]
-	for _, d := range v.Dimensions {
-		r.Dimensions = append(r.Dimensions, pgtype.ArrayDimension{Length: d.Length, LowerBound: d.LowerBound})
+		r = append(r, pgtype.Int8{Int64: e.Int, Valid: e.Status == schema.Present})
 	}
 	return &r
 }
 
-func (*Client) TransformJSON(v *schema.JSON) interface{} {
-	return &pgtype.JSON{
-		Bytes:  v.Bytes,
-		Status: cqStatusToPgStatus[v.Status],
-	}
+func (*Client) TransformJSON(v *schema.JSON) any {
+	return v.Bytes
 }
 
-func (*Client) TransformText(v *schema.Text) interface{} {
+func (*Client) TransformText(v *schema.Text) any {
 	return &pgtype.Text{
 		String: stripNulls(v.Str),
-		Status: cqStatusToPgStatus[v.Status],
+		Valid:  v.Status == schema.Present,
 	}
 }
 
-func (*Client) TransformTextArray(v *schema.TextArray) interface{} {
-	r := pgtype.TextArray{}
+func (*Client) TransformTextArray(v *schema.TextArray) any {
+	r := pgtype.FlatArray[pgtype.Text]{}
 	for _, e := range v.Elements {
-		r.Elements = append(r.Elements, pgtype.Text{String: stripNulls(e.Str), Status: cqStatusToPgStatus[e.Status]})
-	}
-	r.Status = cqStatusToPgStatus[v.Status]
-	for _, d := range v.Dimensions {
-		r.Dimensions = append(r.Dimensions, pgtype.ArrayDimension{Length: d.Length, LowerBound: d.LowerBound})
+		r = append(r, pgtype.Text{String: stripNulls(e.Str), Valid: e.Status == schema.Present})
 	}
 	return &r
 }
 
-func (*Client) TransformTimestamptz(v *schema.Timestamptz) interface{} {
+func (*Client) TransformTimestamptz(v *schema.Timestamptz) any {
 	return &pgtype.Timestamptz{
-		Time:   v.Time,
-		Status: cqStatusToPgStatus[v.Status],
+		Time:  v.Time,
+		Valid: v.Status == schema.Present,
 	}
 }
 
-func (*Client) TransformUUID(v *schema.UUID) interface{} {
+func (*Client) TransformUUID(v *schema.UUID) any {
 	return pgtype.UUID{
-		Bytes:  v.Bytes,
-		Status: cqStatusToPgStatus[v.Status],
+		Bytes: v.Bytes,
+		Valid: v.Status == schema.Present,
 	}
 }
 
-func (*Client) TransformUUIDArray(v *schema.UUIDArray) interface{} {
-	r := pgtype.UUIDArray{}
+func (*Client) TransformUUIDArray(v *schema.UUIDArray) any {
+	r := pgtype.FlatArray[pgtype.UUID]{}
 	for _, e := range v.Elements {
-		r.Elements = append(r.Elements, pgtype.UUID{Bytes: e.Bytes, Status: cqStatusToPgStatus[e.Status]})
-	}
-	r.Status = cqStatusToPgStatus[v.Status]
-	for _, d := range v.Dimensions {
-		r.Dimensions = append(r.Dimensions, pgtype.ArrayDimension{Length: d.Length, LowerBound: d.LowerBound})
+		r = append(r, pgtype.UUID{Bytes: e.Bytes, Valid: e.Status == schema.Present})
 	}
 	return &r
 }
 
-func (*Client) TransformCIDR(v *schema.CIDR) interface{} {
-	return &pgtype.CIDR{
-		IPNet:  v.IPNet,
-		Status: cqStatusToPgStatus[v.Status],
-	}
+func (*Client) TransformCIDR(v *schema.CIDR) any {
+	return v.IPNet
 }
 
-func (c *Client) TransformCIDRArray(v *schema.CIDRArray) interface{} {
+func (*Client) TransformCIDRArray(v *schema.CIDRArray) any {
+	r := pgtype.FlatArray[*net.IPNet]{}
+	for _, e := range v.Elements {
+		r = append(r, e.IPNet)
+	}
+	return &r
+}
+
+func (*Client) TransformInet(v *schema.Inet) any {
+	return v.IPNet
+}
+
+func (*Client) TransformInetArray(v *schema.InetArray) any {
+	r := pgtype.FlatArray[*net.IPNet]{}
+	for _, e := range v.Elements {
+		r = append(r, e.IPNet)
+	}
+	return &r
+}
+
+func (*Client) TransformMacaddr(v *schema.Macaddr) any {
+	return v.Addr
+}
+
+func (c *Client) TransformMacaddrArray(v *schema.MacaddrArray) any {
 	if c.pgType == pgTypeCockroachDB {
-		r := pgtype.InetArray{}
+		r := pgtype.FlatArray[pgtype.Text]{}
 		for _, e := range v.Elements {
-			r.Elements = append(r.Elements, pgtype.Inet{IPNet: e.IPNet, Status: cqStatusToPgStatus[e.Status]})
-		}
-		r.Status = cqStatusToPgStatus[v.Status]
-		for _, d := range v.Dimensions {
-			r.Dimensions = append(r.Dimensions, pgtype.ArrayDimension{Length: d.Length, LowerBound: d.LowerBound})
+			r = append(r, pgtype.Text{String: e.String(), Valid: e.Status == schema.Present})
 		}
 		return &r
 	}
-	r := pgtype.CIDRArray{}
+	r := pgtype.FlatArray[net.HardwareAddr]{}
 	for _, e := range v.Elements {
-		r.Elements = append(r.Elements, pgtype.CIDR{IPNet: e.IPNet, Status: cqStatusToPgStatus[e.Status]})
-	}
-	r.Status = cqStatusToPgStatus[v.Status]
-	for _, d := range v.Dimensions {
-		r.Dimensions = append(r.Dimensions, pgtype.ArrayDimension{Length: d.Length, LowerBound: d.LowerBound})
-	}
-	return &r
-}
-
-func (*Client) TransformInet(v *schema.Inet) interface{} {
-	return &pgtype.Inet{
-		IPNet:  v.IPNet,
-		Status: cqStatusToPgStatus[v.Status],
-	}
-}
-
-func (*Client) TransformInetArray(v *schema.InetArray) interface{} {
-	r := pgtype.InetArray{}
-	for _, e := range v.Elements {
-		r.Elements = append(r.Elements, pgtype.Inet{IPNet: e.IPNet, Status: cqStatusToPgStatus[e.Status]})
-	}
-	r.Status = cqStatusToPgStatus[v.Status]
-	for _, d := range v.Dimensions {
-		r.Dimensions = append(r.Dimensions, pgtype.ArrayDimension{Length: d.Length, LowerBound: d.LowerBound})
-	}
-	return &r
-}
-
-func (c *Client) TransformMacaddr(v *schema.Macaddr) interface{} {
-	if c.pgType == pgTypeCockroachDB {
-		return &pgtype.Text{
-			String: v.String(),
-			Status: cqStatusToPgStatus[v.Status],
-		}
-	}
-	return &pgtype.Macaddr{
-		Addr:   v.Addr,
-		Status: cqStatusToPgStatus[v.Status],
-	}
-}
-
-func (c *Client) TransformMacaddrArray(v *schema.MacaddrArray) interface{} {
-	if c.pgType == pgTypeCockroachDB {
-		r := pgtype.TextArray{}
-		for _, e := range v.Elements {
-			r.Elements = append(r.Elements, pgtype.Text{String: e.String(), Status: cqStatusToPgStatus[e.Status]})
-		}
-		r.Status = cqStatusToPgStatus[v.Status]
-		for _, d := range v.Dimensions {
-			r.Dimensions = append(r.Dimensions, pgtype.ArrayDimension{Length: d.Length, LowerBound: d.LowerBound})
-		}
-		return &r
-	}
-	r := pgtype.MacaddrArray{}
-	for _, e := range v.Elements {
-		r.Elements = append(r.Elements, pgtype.Macaddr{Addr: e.Addr, Status: cqStatusToPgStatus[e.Status]})
-	}
-	r.Status = cqStatusToPgStatus[v.Status]
-	for _, d := range v.Dimensions {
-		r.Dimensions = append(r.Dimensions, pgtype.ArrayDimension{Length: d.Length, LowerBound: d.LowerBound})
+		r = append(r, e.Addr)
 	}
 	return &r
 }

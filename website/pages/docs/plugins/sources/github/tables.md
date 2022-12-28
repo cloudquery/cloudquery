@@ -1,5 +1,8 @@
 # Source Plugin: github
+
 ## Tables
+
+- [github_workflows](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_workflows.md)
 - [github_billing_action](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_billing_action.md)
 - [github_billing_storage](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_billing_storage.md)
 - [github_billing_package](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_billing_package.md)
@@ -9,8 +12,12 @@
   - [github_hook_deliveries](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_hook_deliveries.md)
 - [github_installations](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_installations.md)
 - [github_organizations](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_organizations.md)
+  - [github_organization_dependabot_alerts](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_organization_dependabot_alerts.md)
+  - [github_organization_dependabot_secrets](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_organization_dependabot_secrets.md)
   - [github_organization_members](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_organization_members.md)
 - [github_repositories](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_repositories.md)
+  - [github_repository_dependabot_alerts](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_repository_dependabot_alerts.md)
+  - [github_repository_dependabot_secrets](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_repository_dependabot_secrets.md)
 - [github_teams](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_teams.md)
   - [github_team_members](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_team_members.md)
   - [github_team_repositories](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_team_repositories.md)
