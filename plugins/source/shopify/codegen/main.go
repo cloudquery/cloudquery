@@ -44,16 +44,6 @@ func main() {
 	}
 }
 
-//func milliTimeTransformer(field reflect.StructField) (schema.ValueType, error) {
-//	milliTime := vercel.MilliTime{}
-//	switch field.Type {
-//	case reflect.TypeOf(milliTime), reflect.TypeOf(&milliTime):
-//		return schema.TypeTimestamp, nil
-//	default:
-//		return schema.TypeInvalid, nil
-//	}
-//}
-
 func generateTable(basedir string, r recipes.Resource) {
 	var err error
 
@@ -64,7 +54,6 @@ func generateTable(basedir string, r recipes.Resource) {
 		codegen.WithSkipFields(r.SkipFields),
 		codegen.WithExtraColumns(r.ExtraColumns),
 		codegen.WithPKColumns(r.PKColumns...),
-		//codegen.WithTypeTransformer(milliTimeTransformer),
 	}
 	if r.UnwrapEmbeddedStructs {
 		opts = append(opts, codegen.WithUnwrapAllEmbeddedStructs())
