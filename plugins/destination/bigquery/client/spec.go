@@ -36,8 +36,6 @@ type Spec struct {
 	ServiceAccountKeyJSON string                 `json:"service_account_key_json"`
 }
 
-const defaultBatchSize = 1000
-
 func (s *Spec) SetDefaults() {
 	if s.TimePartitioning == "" {
 		s.TimePartitioning = TimePartitioningOptionNone
