@@ -26,7 +26,7 @@ type Client struct {
 
 func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (destination.Client, error) {
 	if spec.WriteMode != specs.WriteModeAppend {
-		return nil, fmt.Errorf("localfile destination only supports append mode")
+		return nil, fmt.Errorf("file destination only supports append mode")
 	}
 	c := &Client{
 		logger:                 logger.With().Str("module", "file").Logger(),
