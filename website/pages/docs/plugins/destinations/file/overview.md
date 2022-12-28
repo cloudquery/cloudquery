@@ -28,7 +28,7 @@ spec:
     format: "csv"
 ```
 
-## CSV Spec
+## File Spec
 
 This is the (nested) spec used by the CSV destination Plugin.
 
