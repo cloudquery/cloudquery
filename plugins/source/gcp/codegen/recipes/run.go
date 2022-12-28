@@ -29,7 +29,6 @@ func init() {
 		resource.Service = "run"
 		resource.Template = "newapi_list"
 		resource.MockTemplate = "newapi_list_grpc_mock"
-		resource.ServiceDNS = "run.googleapis.com"
 	}
 
 	Resources = append(Resources, resources...)

@@ -546,5 +546,10 @@ func Repositories() *schema.Table {
 				Resolver: schema.PathResolver("RoleName"),
 			},
 		},
+
+		Relations: []*schema.Table{
+			Alerts(),
+			Secrets(),
+		},
 	}
 }

@@ -303,6 +303,8 @@ func Organizations() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
+			Alerts(),
+			Secrets(),
 			Members(),
 		},
 	}

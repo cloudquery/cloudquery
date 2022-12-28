@@ -2,6 +2,12 @@
 
 The composite primary key for this table is (**org**, **id**).
 
+## Relations
+
+The following tables depend on github_repositories:
+  - [github_repository_dependabot_alerts](github_repository_dependabot_alerts.md)
+  - [github_repository_dependabot_secrets](github_repository_dependabot_secrets.md)
+
 ## Columns
 
 | Name          | Type          |
