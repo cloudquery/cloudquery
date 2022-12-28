@@ -65,9 +65,9 @@ Specifies the update method to use when inserting rows. The exact semantics depe
 ### batch_size
 {/*<!-- vale on -->*/}
 
-(`int`, optional, default: `10000`)
+(`int`, optional)
 
-The number of resources to insert in a single batch. Only relevant for plugins that utilize batching.
+The number of resources to insert in a single batch. Only relevant for plugins that utilize batching. Each plugin has its own default value.
 
 ### spec
 
