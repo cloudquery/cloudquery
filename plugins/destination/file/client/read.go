@@ -22,7 +22,7 @@ func (c *Client) ReverseTransformValues(table *schema.Table, values []any) (sche
 	}
 }
 
-func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- []interface{}) error {
+func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- []any) error {
 	name := fmt.Sprintf("%s/%s.%s.%s", c.pluginSpec.Directory, table.Name, c.pluginSpec.Format, uuid.NewString())
 	if c.pluginSpec.NoRotate {
 		name = fmt.Sprintf("%s/%s.%s", c.pluginSpec.Directory, table.Name, c.pluginSpec.Format)
