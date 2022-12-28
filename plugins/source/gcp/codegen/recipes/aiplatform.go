@@ -232,7 +232,6 @@ func init() {
 		resource.Template = "newapi_list"
 		resource.MockTemplate = "newapi_list_grpc_mock"
 		resource.MockImports = append(resource.MockImports, "cloud.google.com/go/aiplatform/apiv1")
-		resource.ServiceDNS = "aiplatform.googleapis.com"
 
 		structElem := reflect.TypeOf(resource.Struct).Elem()
 		for i := 0; i < structElem.NumField(); i++ {
