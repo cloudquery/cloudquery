@@ -26,7 +26,6 @@ func init() {
 		resource.Template = "newapi_list"
 		resource.MockTemplate = "newapi_list_grpc_mock"
 		resource.RequestStructFields = `Parent: "projects/" + c.ProjectId,`
-		resource.ServiceDNS = "secretmanager.googleapis.com"
 	}
 
 	Resources = append(Resources, resources...)

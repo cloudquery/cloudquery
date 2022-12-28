@@ -74,6 +74,7 @@
   - [azure_cosmos_mongo_db_databases](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_cosmos_mongo_db_databases.md)
   - [azure_cosmos_sql_databases](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_cosmos_sql_databases.md)
 - [azure_costmanagement_views](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_costmanagement_views.md)
+  - [azure_costmanagement_view_queries](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_costmanagement_view_queries.md)
 - [azure_customerinsights_hubs](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_customerinsights_hubs.md)
 - [azure_dashboard_grafana](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_dashboard_grafana.md)
 - [azure_databox_jobs](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_databox_jobs.md)

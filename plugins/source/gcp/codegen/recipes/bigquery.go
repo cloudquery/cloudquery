@@ -29,7 +29,6 @@ func init() {
 
 	for _, resource := range resources {
 		resource.Service = "bigquery"
-		resource.ServiceDNS = "bigquery.googleapis.com"
 		resource.Template = "newapi_list"
 	}
 
