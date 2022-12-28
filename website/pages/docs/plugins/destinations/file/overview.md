@@ -39,3 +39,8 @@ This is the (nested) spec used by the CSV destination Plugin.
 - `format` (string) (required)
 
   Format of the output file. `json` and `csv` are supported.
+
+- `no_rotate` (bool) (optional)
+
+  if set to true, the plugin will append to the same file for each table.
+  Otherwise, for every batch a new file will be created with `.uuid` suffix.

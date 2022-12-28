@@ -6,8 +6,6 @@ import (
 
 type FormatType string
 
-type BackendType string
-
 const (
 	FormatTypeCSV  = "csv"
 	FormatTypeJSON = "json"
