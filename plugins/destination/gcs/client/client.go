@@ -6,8 +6,8 @@ import (
 
 	"cloud.google.com/go/storage"
 
-	"github.com/cloudquery/cloudquery/plugins/filetypes/csv"
-	"github.com/cloudquery/cloudquery/plugins/filetypes/json"
+	"github.com/cloudquery/filetypes/csv"
+	"github.com/cloudquery/filetypes/json"
 	"github.com/cloudquery/plugin-sdk/plugins/destination"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
@@ -56,8 +56,8 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 	}
 	c.bucket = c.gcsClient.Bucket(c.pluginSpec.Bucket)
 	// we upload it because we want to fail early if we don't have permissions
-	gcpWriter := c.bucket.Object("/cq-test-file").NewWriter(ctx)
-	if _, err := gcpWriter.Write([]byte("test")); err != nil {
+	gcpWriter := c.bucket.Object("/tmp/.cq-test-file").NewWriter(ctx)
+	if _, err := gcpWriter.Write([]byte("")); err != nil {
 		return nil, fmt.Errorf("failed to write test file to GCS: %w", err)
 	}
 	if err := gcpWriter.Close(); err != nil {

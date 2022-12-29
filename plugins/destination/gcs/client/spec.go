@@ -24,6 +24,9 @@ func (s *Spec) Validate() error {
 	if s.Bucket == "" {
 		return fmt.Errorf("bucket is required")
 	}
+	if s.Path == "" {
+		return fmt.Errorf("path is required")
+	}
 	if s.Format == "" {
 		return fmt.Errorf("format is required")
 	}
