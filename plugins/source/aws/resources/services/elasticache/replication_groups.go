@@ -168,6 +168,11 @@ func ReplicationGroups() *schema.Table {
 				Resolver: schema.PathResolver("TransitEncryptionEnabled"),
 			},
 			{
+				Name:     "transit_encryption_mode",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("TransitEncryptionMode"),
+			},
+			{
 				Name:     "user_group_ids",
 				Type:     schema.TypeStringArray,
 				Resolver: schema.PathResolver("UserGroupIds"),
