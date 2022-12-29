@@ -31,8 +31,16 @@ func fetch{{.SubService | ToCamel}}(ctx context.Context, meta schema.ClientMeta,
 	c := meta.(*client.Client)
 	req := &pb.{{.RequestStructName}}{
 		{{if .RequestStructFields}}{{.RequestStructFields}}{{end}}
+	}{{ if .ParentFilterFunc }}
+	if {{.ParentFilterFunc}}(parent) {
+		return nil
 	}
-	gcpClient, err := {{.Service}}.{{.NewFunctionName}}(ctx, c.ClientOptions...)
+	{{ end }}
+	{{ if .ClientOptions }}
+	clientOptions := c.ClientOptions
+	clientOptions = append([]option.ClientOption{ {{ range .ClientOptions }}{{.}},{{end}} }, clientOptions...)
+	gcpClient, err := {{.Service}}.{{.NewFunctionName}}(ctx, clientOptions...)
+	{{ else }}gcpClient, err := {{.Service}}.{{.NewFunctionName}}(ctx, c.ClientOptions...){{ end }}
 	if err != nil {
 		return err
 	}

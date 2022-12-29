@@ -23,17 +23,17 @@ func Organizations() *schema.Table {
 				},
 			},
 			{
+				Name:     "login",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Login"),
+			},
+			{
 				Name:     "id",
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("ID"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
-			},
-			{
-				Name:     "login",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Login"),
 			},
 			{
 				Name:     "node_id",
@@ -303,6 +303,8 @@ func Organizations() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
+			Alerts(),
+			Secrets(),
 			Members(),
 		},
 	}

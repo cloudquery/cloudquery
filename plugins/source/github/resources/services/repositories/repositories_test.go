@@ -25,7 +25,12 @@ func buildRepositiories(t *testing.T, ctrl *gomock.Controller) client.GithubServ
 	mock.EXPECT().ListByOrg(gomock.Any(), "testorg", gomock.Any()).Return(
 		[]*github.Repository{&cs}, &github.Response{}, nil)
 
-	return client.GithubServices{Repositories: mock}
+	dependabot := buildDependabot(t, ctrl)
+
+	return client.GithubServices{
+		Dependabot:   dependabot,
+		Repositories: mock,
+	}
 }
 
 func TestRepos(t *testing.T) {

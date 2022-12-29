@@ -13,6 +13,7 @@ The composite primary key for this table is (**account_id**, **domain_name**).
 |account_id (PK)|String|
 |domain_name (PK)|String|
 |tags|JSON|
+|transfer_lock|Bool|
 |abuse_contact_email|String|
 |abuse_contact_phone|String|
 |admin_contact|JSON|

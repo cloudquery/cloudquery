@@ -1,5 +1,32 @@
 # Changelog
 
+## [2.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v1.10.2...plugins-destination-postgresql-v2.0.0) (2022-12-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* **postgres-spec:** Move `batch_size` from the plugin spec to the top level spec ([#6091](https://github.com/cloudquery/cloudquery/issues/6091))
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.16.0 ([#6098](https://github.com/cloudquery/cloudquery/issues/6098)) ([7bacdf3](https://github.com/cloudquery/cloudquery/commit/7bacdf3364716eab08fa1a84ae4047b42edeee7e))
+* **postgres-spec:** Move `batch_size` from the plugin spec to the top level spec ([#6091](https://github.com/cloudquery/cloudquery/issues/6091)) ([c504423](https://github.com/cloudquery/cloudquery/commit/c50442397e3e0ded68940f0d3121d00eae22d912))
+
+## [1.10.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v1.10.1...plugins-destination-postgresql-v1.10.2) (2022-12-28)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.15.0 ([#6071](https://github.com/cloudquery/cloudquery/issues/6071)) ([684b525](https://github.com/cloudquery/cloudquery/commit/684b525aaa285fcae70dd87af56679c1205adebe))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.15.1 ([#6079](https://github.com/cloudquery/cloudquery/issues/6079)) ([650659c](https://github.com/cloudquery/cloudquery/commit/650659c3c6766df571868e2ec3a2007cb76696eb))
+
+## [1.10.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v1.10.0...plugins-destination-postgresql-v1.10.1) (2022-12-28)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.14.0 ([#6025](https://github.com/cloudquery/cloudquery/issues/6025)) ([35b2cfc](https://github.com/cloudquery/cloudquery/commit/35b2cfc7fc7bcdaceb7ee674e3a17f0f5673b366))
+
 ## [1.10.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v1.9.0...plugins-destination-postgresql-v1.10.0) (2022-12-23)
 
 

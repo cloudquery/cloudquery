@@ -3,6 +3,7 @@ module github.com/cloudquery/plugins/source/gcp
 go 1.19
 
 require (
+	cloud.google.com/go/aiplatform v1.27.0
 	cloud.google.com/go/apigateway v1.4.0
 	cloud.google.com/go/apikeys v0.2.0
 	cloud.google.com/go/billing v1.7.0
@@ -14,6 +15,7 @@ require (
 	cloud.google.com/go/iam v0.9.0
 	cloud.google.com/go/kms v1.6.0
 	cloud.google.com/go/logging v1.6.1
+	cloud.google.com/go/longrunning v0.3.0
 	cloud.google.com/go/monitoring v1.9.0
 	cloud.google.com/go/redis v1.10.0
 	cloud.google.com/go/resourcemanager v1.4.0
@@ -21,7 +23,7 @@ require (
 	cloud.google.com/go/secretmanager v1.9.0
 	cloud.google.com/go/serviceusage v1.4.0
 	cloud.google.com/go/storage v1.28.0
-	github.com/cloudquery/plugin-sdk v1.13.1
+	github.com/cloudquery/plugin-sdk v1.16.0
 	github.com/golang/mock v1.6.0
 	github.com/googleapis/gax-go/v2 v2.7.0
 	github.com/grpc-ecosystem/go-grpc-middleware/providers/zerolog/v2 v2.0.0-rc.3
@@ -42,7 +44,6 @@ require (
 require (
 	cloud.google.com/go v0.107.0 // indirect
 	cloud.google.com/go/compute/metadata v0.2.2 // indirect
-	cloud.google.com/go/longrunning v0.3.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/getsentry/sentry-go v0.15.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect

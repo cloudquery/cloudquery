@@ -30,13 +30,13 @@ This means that a single policy cannot grant User in Account A access to a resou
 
 In this tutorial we will show you how to do in the console (ClickOps) but feel free to automate it via your favorite IaC.
 
-### Step 1
+### Step 1 
 
 Go to `iam→roles` and [click Create Role](https://us-east-1.console.aws.amazon.com/iamv2/home?region=us-east-1#/roles/create?step=selectEntities)
 
 ![](/images/blog/cross-account-access-aws-assumerole/step1.png)
 
-## Step 2
+### Step 2
 
 For **_Trusted Entity,_** Choose **_AWS account_**, click **_Another AWS account_** and fill-in the account id you want to access **from** and click next
 
