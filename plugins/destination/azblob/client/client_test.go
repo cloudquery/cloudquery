@@ -14,11 +14,11 @@ func TestPluginCSV(t *testing.T) {
 
 	destination.PluginTestSuiteRunner(t, p,
 		Spec{
-			Bucket:   bucket,
+			Bucket:    bucket,
 			Container: container,
-			Path:     t.TempDir(),
-			Format:   FormatTypeCSV,
-			NoRotate: true,
+			Path:      t.TempDir(),
+			Format:    FormatTypeCSV,
+			NoRotate:  true,
 		},
 		destination.PluginTestSuiteTests{
 			SkipOverwrite:    true,
@@ -33,11 +33,11 @@ func TestPluginJSON(t *testing.T) {
 
 	destination.PluginTestSuiteRunner(t, p,
 		Spec{
-			Bucket:   bucket,
+			Bucket:    bucket,
 			Container: container,
-			Path:     t.TempDir(),
-			Format:   FormatTypeJSON,
-			NoRotate: true,
+			Path:      t.TempDir(),
+			Format:    FormatTypeJSON,
+			NoRotate:  true,
 		},
 		destination.PluginTestSuiteTests{
 			SkipOverwrite:    true,
