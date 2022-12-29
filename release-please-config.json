@@ -32,6 +32,9 @@
     "plugins/destination/csv": {
       "component": "plugins-destination-csv"
     },
+    "plugins/destination/file": {
+      "component": "plugins-destination-file"
+    },
     "plugins/destination/sqlite": {
       "component": "plugins-destination-sqlite"
     },
