@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v1.3.2...plugins-destination-bigquery-v2.0.0) (2022-12-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* **bigquery-spec:** Move `batch_size` from the plugin spec to the top level spec ([#6092](https://github.com/cloudquery/cloudquery/issues/6092))
+
+### Bug Fixes
+
+* **bigquery-spec:** Move `batch_size` from the plugin spec to the top level spec ([#6092](https://github.com/cloudquery/cloudquery/issues/6092)) ([a1d706e](https://github.com/cloudquery/cloudquery/commit/a1d706e839d3c81d5cb2cbb5971bdbe05a25288e))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.16.0 ([#6098](https://github.com/cloudquery/cloudquery/issues/6098)) ([7bacdf3](https://github.com/cloudquery/cloudquery/commit/7bacdf3364716eab08fa1a84ae4047b42edeee7e))
+
 ## [1.3.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v1.3.1...plugins-destination-bigquery-v1.3.2) (2022-12-28)
 
 

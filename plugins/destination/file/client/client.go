@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/cloudquery/cloudquery/plugins/filetypes/csv"
-	"github.com/cloudquery/cloudquery/plugins/filetypes/json"
+	"github.com/cloudquery/filetypes/csv"
+	"github.com/cloudquery/filetypes/json"
 	"github.com/cloudquery/plugin-sdk/plugins/destination"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"

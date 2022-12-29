@@ -17,7 +17,6 @@ type Client struct {
 	logger     zerolog.Logger
 	spec       specs.Destination
 	metrics    destination.Metrics
-	batchSize  int
 	pluginSpec Spec
 	client     *bigquery.Client
 }
@@ -41,7 +40,6 @@ func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination)
 	}
 
 	c.pluginSpec = spec
-	c.batchSize = spec.BatchSize
 
 	// the context here is used for token refresh so this is workaround as suggested
 	// https://github.com/googleapis/google-cloud-go/issues/946
