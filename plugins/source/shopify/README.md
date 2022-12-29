@@ -1,6 +1,6 @@
 # Shopify Plugin
 
-The CloudQuery Shopify plugin pulls data out of Shopify resources and loads it into any supported CloudQuery destination (e.g. PostgreSQL).
+The CloudQuery Shopify plugin pulls data from Shopify and loads it into any supported CloudQuery destination (e.g. PostgreSQL).
 
 ## Links
 
