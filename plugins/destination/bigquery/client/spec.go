@@ -34,17 +34,11 @@ type Spec struct {
 	DatasetLocation       string                 `json:"dataset_location"`
 	TimePartitioning      TimePartitioningOption `json:"time_partitioning"`
 	ServiceAccountKeyJSON string                 `json:"service_account_key_json"`
-	BatchSize             int                    `json:"batch_size,omitempty"`
 }
-
-const defaultBatchSize = 1000
 
 func (s *Spec) SetDefaults() {
 	if s.TimePartitioning == "" {
 		s.TimePartitioning = TimePartitioningOptionNone
-	}
-	if s.BatchSize <= 0 {
-		s.BatchSize = defaultBatchSize
 	}
 }
 
