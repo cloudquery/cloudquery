@@ -8417,6 +8417,11 @@
             "us-gov-west-1": {}
           }
         },
+        "pi": {
+          "regions": {
+            "us-gov-east-1": {}
+          }
+        },
         "pinpoint": {
           "regions": {
             "fips-us-gov-west-1": {},
