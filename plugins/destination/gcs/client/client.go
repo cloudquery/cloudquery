@@ -10,6 +10,7 @@ import (
 	"github.com/cloudquery/filetypes/json"
 	"github.com/cloudquery/plugin-sdk/plugins/destination"
 	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/google/uuid"
 	"github.com/rs/zerolog"
 )
 
@@ -56,7 +57,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 	}
 	c.bucket = c.gcsClient.Bucket(c.pluginSpec.Bucket)
 	// we upload it because we want to fail early if we don't have permissions
-	gcpWriter := c.bucket.Object("/tmp/.cq-test-file").NewWriter(ctx)
+	gcpWriter := c.bucket.Object("/tmp/.cq-test-file-" + uuid.NewString()).NewWriter(ctx)
 	if _, err := gcpWriter.Write([]byte("test-string")); err != nil {
 		return nil, fmt.Errorf("failed to write test file to GCS: %w", err)
 	}
