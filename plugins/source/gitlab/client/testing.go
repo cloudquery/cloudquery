@@ -48,7 +48,7 @@ func GitlabMockTestHelper(t *testing.T, table *schema.Table, createService func(
 		}
 		c := &Client{
 			logger:  l,
-			Gitlab:  *client,
+			Gitlab:  client,
 			BaseURL: ts.URL,
 		}
 

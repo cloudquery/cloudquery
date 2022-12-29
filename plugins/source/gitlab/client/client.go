@@ -14,7 +14,7 @@ type Client struct {
 	// This is a client that you need to create and initialize in Configure
 	// It will be passed for each resource fetcher.
 	logger  zerolog.Logger
-	Gitlab  gitlab.Client
+	Gitlab  *gitlab.Client
 	spec    specs.Source
 	BaseURL string
 }
@@ -48,7 +48,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (sche
 
 	return &Client{
 		logger: logger,
-		Gitlab: *c,
+		Gitlab: c,
 		spec:   s,
 	}, nil
 }
