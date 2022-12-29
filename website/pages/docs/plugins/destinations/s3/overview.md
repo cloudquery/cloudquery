@@ -9,6 +9,10 @@ This destination plugin lets you sync data from a CloudQuery source to remote S3
 
 This is useful in various use-cases, especially in data lakes where you can query the data direct from Athena or load it to various data warehouses such as BigQuery, RedShift, Snowflake and others.
 
+## Authentication
+
+Authenitcation is similar to AWS CLI. See also [aws source plugin](../../sources/aws/overview.md#authentication) for more information.
+
 ## Example
 
 This example configures a CSV destination, to create CSV files in `s3://bucket_name/path/to/files`. Note that the S3 plugin only supports `append` write-mode.
@@ -25,7 +29,7 @@ spec:
 
   spec:
     bucket: "bucket_name"
-    key: "path/to/files"
+    path: "path/to/files"
     format: "csv"
 ```
 
@@ -37,7 +41,7 @@ This is the (nested) spec used by the CSV destination Plugin.
 
   Bucket where to sync the files.
 
-- `key` (string) (required)
+- `path` (string) (required)
 
   Path to where the files will be uploaded in the above bucket.
 
