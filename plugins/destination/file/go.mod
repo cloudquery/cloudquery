@@ -3,13 +3,11 @@ module github.com/cloudquery/cloudquery/plugins/destination/file
 go 1.19
 
 require (
-	github.com/cloudquery/cloudquery/plugins/filetypes v1.0.0
+	github.com/cloudquery/filetypes v1.0.0
 	github.com/cloudquery/plugin-sdk v1.15.0
 	github.com/google/uuid v1.3.0
 	github.com/rs/zerolog v1.28.0
 )
-
-replace github.com/cloudquery/cloudquery/plugins/filetypes => ../../filetypes
 
 require (
 	github.com/getsentry/sentry-go v0.15.0 // indirect
