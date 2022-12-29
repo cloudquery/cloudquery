@@ -4,13 +4,13 @@ on:
   pull_request:
     paths:
       - "plugins/destination/gcs/**"
-      - ".github/workflows/dest_file.yml"
+      - ".github/workflows/dest_gcs.yml"
   push:
     branches:
       - main
     paths:
       - "plugins/destination/gcs/**"
-      - ".github/workflows/dest_file.yml"
+      - ".github/workflows/dest_gcs.yml"
 
 jobs:
   plugins-destination-gcs:
