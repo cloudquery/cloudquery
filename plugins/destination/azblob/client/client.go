@@ -51,8 +51,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 	}
 	c.pluginSpec.SetDefaults()
 
-	// cred, err := azidentity.NewDefaultAzureCredential(nil)
-	cred, err := azidentity.NewAzureCLICredential(nil)
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create Azure credential: %w", err)
 	}

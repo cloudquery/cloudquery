@@ -42,6 +42,10 @@ jobs:
         run: go build .
       - name: Test azblob plugin
         run: make test
+        env:
+          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
   validate-release:
     timeout-minutes: 30
     runs-on: ubuntu-latest
