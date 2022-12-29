@@ -48,6 +48,8 @@ csv:
   - plugins/destination/csv/**/*
 file:
   - plugins/destination/file/**/*
+gcs:
+  - plugins/destination/gcs/**/*
 snowflake:
   - plugins/destination/snowflake/**/*
 bigquery:
