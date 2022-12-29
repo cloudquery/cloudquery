@@ -6,6 +6,7 @@ The composite primary key for this table is (**base_url**, **id**).
 
 The following tables depend on gitlab_projects:
   - [gitlab_projects_releases](gitlab_projects_releases.md)
+  - [gitlab_project_branches](gitlab_project_branches.md)
 
 ## Columns
 
