@@ -12,7 +12,6 @@ func init() {
 			Struct:              &pb.Registration{},
 			NewFunction:         domains.NewClient,
 			RegisterServer:      pb.RegisterDomainsServer,
-			ListFunction:        (&pb.UnimplementedDomainsServer{}).ListRegistrations,
 			RequestStructFields: `Parent: fmt.Sprintf("projects/%s/locations/-", c.ProjectId),`,
 			Imports:             []string{"fmt"},
 			Description:         "https://cloud.google.com/domains/docs/reference/rest/v1beta1/projects.locations.registrations#Registration",
