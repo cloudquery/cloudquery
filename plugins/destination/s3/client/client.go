@@ -10,8 +10,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 
-	"github.com/cloudquery/cloudquery/plugins/filetypes/csv"
-	"github.com/cloudquery/cloudquery/plugins/filetypes/json"
+	"github.com/cloudquery/filetypes/csv"
+	"github.com/cloudquery/filetypes/json"
 	"github.com/cloudquery/plugin-sdk/plugins/destination"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"

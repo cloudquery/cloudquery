@@ -8,8 +8,8 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
-	"github.com/cloudquery/cloudquery/plugins/filetypes/csv"
-	"github.com/cloudquery/cloudquery/plugins/filetypes/json"
+	"github.com/cloudquery/filetypes/csv"
+	"github.com/cloudquery/filetypes/json"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/google/uuid"
 )
