@@ -1,0 +1,14 @@
+variables:
+  component: source/fastly
+  binary: fastly
+
+project_name: plugins/source/fastly
+
+monorepo:
+  tag_prefix: plugins-source-fastly-
+  dir: plugins/source/fastly
+
+includes:
+  - from_file:
+      # Relative to the directory Go Releaser is run from (which is the root of the repository)
+      path: ./plugins/.goreleaser.yaml

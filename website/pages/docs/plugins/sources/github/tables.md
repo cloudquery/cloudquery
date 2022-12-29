@@ -18,6 +18,8 @@
 - [github_repositories](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_repositories.md)
   - [github_repository_dependabot_alerts](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_repository_dependabot_alerts.md)
   - [github_repository_dependabot_secrets](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_repository_dependabot_secrets.md)
+  - [github_releases](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_releases.md)
+    - [github_release_assets](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_release_assets.md)
 - [github_teams](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_teams.md)
   - [github_team_members](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_team_members.md)
   - [github_team_repositories](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_team_repositories.md)
