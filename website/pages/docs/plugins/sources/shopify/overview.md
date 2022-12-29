@@ -13,7 +13,7 @@ In order to fetch information from Shopify, `cloudquery` needs to be authenticat
 
 Refer to the Shopify Help Center article on [Custom apps](https://help.shopify.com/en/manual/apps/custom-apps) and create a custom app. Follow _Get the API credentials for a custom app_ section to get the credentials for _Admin API_ and put them in your plugin configuration as `api_key` and `api_secret`.
 
-If you have a large or busy store, API key/secret type credentials might not be enough due to the heavy rate limiting. In this case, you can use OAuth in your custom app to get an access token which allow many more requests a second. To use that token in your plugin configuration instead, just set it in `access_token` and remove `api_key` and `api_secret` sections.
+If you have a large or busy store, API key/secret type credentials might not be enough due to the heavy rate limiting. In this case, you can use OAuth in your custom app to get an access token which allow many more requests a second. To use that token in your plugin configuration instead, just set it in `access_token` and remove `api_key` and `api_secret` sections. For more information, refer to [Shopify.dev](https://shopify.dev/apps/distribution) on the subject.
 
 ## Query Examples
 

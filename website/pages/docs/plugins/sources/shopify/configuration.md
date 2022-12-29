@@ -18,7 +18,7 @@ spec:
   spec:
     api_key: "<YOUR_API_KEY_HERE>"
     api_secret: "<YOUR_API_SECRET_HERE>"
-    shop_url: https://<YOUR_SHOP>.myshopify.com
+    shop_url: "https://<YOUR_SHOP>.myshopify.com"
 ```
 
 ## Shopify Spec
