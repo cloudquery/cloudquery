@@ -11,7 +11,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/iam/models"
 )
 
-func fetchIamAccessDetails(ctx context.Context, res chan<- interface{}, svc services.IamClient, arn string) error {
+func fetchIamAccessDetails(ctx context.Context, res chan<- any, svc services.IamClient, arn string) error {
 	config := iam.GenerateServiceLastAccessedDetailsInput{
 		Arn:         &arn,
 		Granularity: types.AccessAdvisorUsageGranularityTypeActionLevel,

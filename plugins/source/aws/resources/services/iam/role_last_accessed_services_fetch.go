@@ -11,10 +11,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchIamRoleLastAccessedServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchIamRoleLastAccessedServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Iam
-	ch := make(chan interface{})
+	ch := make(chan any)
 
 	g, ctx := errgroup.WithContext(ctx)
 	g.Go(func() error {
