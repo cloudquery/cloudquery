@@ -3,16 +3,14 @@ name: Destination Plugin Azure Blob Storage Workflow
 on:
   pull_request:
     paths:
-      - "plugins/destination/filetypes/**"
       - "plugins/destination/azblob/**"
-      - ".github/workflows/dest_azb.yml"
+      - ".github/workflows/dest_azblob.yml"
   push:
     branches:
       - main
     paths:
-      - "plugins/destination/filetypes/**"
       - "plugins/destination/azblob/**"
-      - ".github/workflows/dest_azb.yml"
+      - ".github/workflows/dest_azblob.yml"
 
 jobs:
   plugins-destination-azblob:

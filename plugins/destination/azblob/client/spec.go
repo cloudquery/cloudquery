@@ -14,7 +14,7 @@ const (
 type Spec struct {
 	Bucket   string     `json:"bucket,omitempty"`
 	Container string `json:"container,omitempty"`
-	Path     string     `json:"key,omitempty"`
+	Path     string     `json:"path,omitempty"`
 	Format   FormatType `json:"format,omitempty"`
 	NoRotate bool       `json:"no_rotate,omitempty"`
 }
