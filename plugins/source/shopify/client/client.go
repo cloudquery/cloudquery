@@ -55,8 +55,8 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (sche
 }
 
 func getServiceClient(logger zerolog.Logger, spec *Spec) (*shopify.Client, error) {
-	if spec.AccessToken == "" && (spec.APIKey == "" || spec.APIPass == "") {
-		return nil, errors.New("no access token provided")
+	if spec.AccessToken == "" && (spec.APIKey == "" || spec.APISecret == "") {
+		return nil, errors.New("no credentials provided")
 	}
 	if spec.ShopURL == "" {
 		return nil, errors.New("no shop url provided")
@@ -78,7 +78,7 @@ func getServiceClient(logger zerolog.Logger, spec *Spec) (*shopify.Client, error
 			Timeout: time.Duration(spec.Timeout) * time.Second,
 		},
 		spec.APIKey,
-		spec.APIPass,
+		spec.APISecret,
 		spec.AccessToken,
 		spec.ShopURL,
 		spec.MaxRetries,

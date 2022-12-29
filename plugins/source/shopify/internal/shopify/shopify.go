@@ -30,7 +30,7 @@ type Client struct {
 	hc         HTTPDoer
 	maxRetries int64
 
-	apikey, apipass, accesstoken string
+	apiKey, apiSecret, accessToken string
 
 	lim *rate.Limiter
 }
@@ -39,9 +39,9 @@ type HTTPDoer interface {
 	Do(req *http.Request) (*http.Response, error)
 }
 
-func New(log zerolog.Logger, hc HTTPDoer, apiKey, apiPass, accessToken, shopURL string, maxRetries int64) (*Client, error) {
-	if accessToken == "" && (apiKey == "" || apiPass == "") {
-		return nil, fmt.Errorf("missing shopify access token, api key or password")
+func New(log zerolog.Logger, hc HTTPDoer, apiKey, apiSecret, accessToken, shopURL string, maxRetries int64) (*Client, error) {
+	if accessToken == "" && (apiKey == "" || apiSecret == "") {
+		return nil, fmt.Errorf("missing shopify access token, api key or secret")
 	}
 	if shopURL == "" {
 		return nil, fmt.Errorf("missing shop url")
@@ -53,9 +53,9 @@ func New(log zerolog.Logger, hc HTTPDoer, apiKey, apiPass, accessToken, shopURL 
 		hc:         hc,
 		maxRetries: maxRetries,
 
-		apikey:      apiKey,
-		apipass:     apiPass,
-		accesstoken: accessToken,
+		apiKey:      apiKey,
+		apiSecret:   apiSecret,
+		accessToken: accessToken,
 
 		lim: rate.NewLimiter(rate.Limit(80), 120),
 	}, nil
@@ -126,10 +126,10 @@ func (s *Client) retryableRequest(ctx context.Context, edge string) (*http.Respo
 		return nil, nil, err
 	}
 
-	if s.accesstoken != "" {
-		req.Header.Add("X-Shopify-Access-Token", s.accesstoken)
+	if s.accessToken != "" {
+		req.Header.Add("X-Shopify-Access-Token", s.accessToken)
 	} else {
-		req.SetBasicAuth(s.apikey, s.apipass)
+		req.SetBasicAuth(s.apiKey, s.apiSecret)
 	}
 	req.Header.Add("Content-type", "application/json")
 

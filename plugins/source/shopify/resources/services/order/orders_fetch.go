@@ -17,7 +17,6 @@ func fetchOrders(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 			return err
 		}
 		res <- ret.Orders
-		return nil
 
 		if len(ret.Orders) < ret.PageSize || cur == "" {
 			return nil
