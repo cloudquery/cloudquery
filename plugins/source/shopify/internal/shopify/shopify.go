@@ -253,6 +253,87 @@ func (s *Client) GetCustomers(ctx context.Context, pageUrl string) (*GetCustomer
 	return &ret, nextPage, nil
 }
 
+func (s *Client) GetAbandonedCheckouts(ctx context.Context, pageUrl string) (*GetCheckoutsResponse, string, error) {
+	var ret GetCheckoutsResponse
+
+	const pageSize = 20
+
+	if pageUrl == "" {
+		pageUrl = fmt.Sprintf("admin/api/%s/checkouts.json?limit=%v", APIVersion, pageSize)
+	}
+
+	resp, err := s.request(ctx, pageUrl)
+	if err != nil {
+		return nil, "", err
+	}
+	defer resp.Body.Close()
+
+	nextPage := getNextPage(resp.Header)
+
+	err = json.NewDecoder(resp.Body).Decode(&ret)
+	if err != nil {
+		return nil, "", err
+	}
+
+	ret.PageSize = pageSize
+
+	return &ret, nextPage, nil
+}
+
+func (s *Client) GetPriceRules(ctx context.Context, pageUrl string) (*GetPriceRulesResponse, string, error) {
+	var ret GetPriceRulesResponse
+
+	const pageSize = 250
+
+	if pageUrl == "" {
+		pageUrl = fmt.Sprintf("admin/api/%s/price_rules.json?limit=%v", APIVersion, pageSize)
+	}
+
+	resp, err := s.request(ctx, pageUrl)
+	if err != nil {
+		return nil, "", err
+	}
+	defer resp.Body.Close()
+
+	nextPage := getNextPage(resp.Header)
+
+	err = json.NewDecoder(resp.Body).Decode(&ret)
+	if err != nil {
+		return nil, "", err
+	}
+
+	ret.PageSize = pageSize
+
+	return &ret, nextPage, nil
+}
+
+func (s *Client) GetDiscountCodes(ctx context.Context, priceRuleID int64, pageUrl string) (*GetDiscountCodesResponse, string, error) {
+	var ret GetDiscountCodesResponse
+
+	const pageSize = 250
+
+	if pageUrl == "" {
+		pageUrl = fmt.Sprintf("admin/api/%s/price_rules/%d/discount_codes.json?limit=%v", APIVersion, priceRuleID, pageSize)
+	}
+
+	resp, err := s.request(ctx, pageUrl)
+	if err != nil {
+		return nil, "", err
+	}
+	defer resp.Body.Close()
+
+	nextPage := getNextPage(resp.Header)
+
+	err = json.NewDecoder(resp.Body).Decode(&ret)
+	if err != nil {
+		return nil, "", err
+	}
+
+	ret.PageSize = pageSize
+
+	return &ret, nextPage, nil
+}
+
 func getNextPage(hdr http.Header) string {
 	for _, link := range textproto.MIMEHeader(hdr)[textproto.CanonicalMIMEHeaderKey("link")] {
 		for _, part := range strings.Split(link, ",") {

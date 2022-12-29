@@ -7,3 +7,6 @@
 - [shopify_products](shopify_products.md)
   - [shopify_product_variants](shopify_product_variants.md)
   - [shopify_product_images](shopify_product_images.md)
+- [shopify_price_rules](shopify_price_rules.md)
+  - [shopify_price_rule_discount_codes](shopify_price_rule_discount_codes.md)
+- [shopify_abandoned_checkouts](shopify_abandoned_checkouts.md)

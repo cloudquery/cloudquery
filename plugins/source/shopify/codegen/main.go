@@ -24,6 +24,8 @@ func main() {
 	resources = append(resources, recipes.ProductResources()...)
 	resources = append(resources, recipes.CustomerResources()...)
 	resources = append(resources, recipes.OrderResources()...)
+	resources = append(resources, recipes.CheckoutResources()...)
+	resources = append(resources, recipes.PriceRuleResources()...)
 
 	for _, r := range resources {
 		r.Infer()
