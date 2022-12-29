@@ -6,7 +6,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/plugins/destination"
 )
 
-const bucket = "cqdestinationazblob"
+const storage_account = "cqdestinationazblob"
 const container = "test"
 
 func TestPluginCSV(t *testing.T) {
@@ -14,11 +14,11 @@ func TestPluginCSV(t *testing.T) {
 
 	destination.PluginTestSuiteRunner(t, p,
 		Spec{
-			Bucket:    bucket,
-			Container: container,
-			Path:      t.TempDir(),
-			Format:    FormatTypeCSV,
-			NoRotate:  true,
+			StorageAccount: storage_account,
+			Container:      container,
+			Path:           t.TempDir(),
+			Format:         FormatTypeCSV,
+			NoRotate:       true,
 		},
 		destination.PluginTestSuiteTests{
 			SkipOverwrite:    true,
@@ -33,11 +33,11 @@ func TestPluginJSON(t *testing.T) {
 
 	destination.PluginTestSuiteRunner(t, p,
 		Spec{
-			Bucket:    bucket,
-			Container: container,
-			Path:      t.TempDir(),
-			Format:    FormatTypeJSON,
-			NoRotate:  true,
+			StorageAccount: storage_account,
+			Container:      container,
+			Path:           t.TempDir(),
+			Format:         FormatTypeJSON,
+			NoRotate:       true,
 		},
 		destination.PluginTestSuiteTests{
 			SkipOverwrite:    true,

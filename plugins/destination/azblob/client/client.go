@@ -55,7 +55,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 	if err != nil {
 		return nil, fmt.Errorf("failed to create Azure credential: %w", err)
 	}
-	c.storageClient, err = azblob.NewClient("https://"+c.pluginSpec.Bucket+".blob.core.windows.net", cred, nil)
+	c.storageClient, err = azblob.NewClient("https://"+c.pluginSpec.StorageAccount+".blob.core.windows.net", cred, nil)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create Azure storage client: %w", err)
 	}

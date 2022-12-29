@@ -12,17 +12,17 @@ const (
 )
 
 type Spec struct {
-	Bucket    string     `json:"bucket,omitempty"`
-	Container string     `json:"container,omitempty"`
-	Path      string     `json:"path,omitempty"`
-	Format    FormatType `json:"format,omitempty"`
-	NoRotate  bool       `json:"no_rotate,omitempty"`
+	StorageAccount string     `json:"storage_account,omitempty"`
+	Container      string     `json:"container,omitempty"`
+	Path           string     `json:"path,omitempty"`
+	Format         FormatType `json:"format,omitempty"`
+	NoRotate       bool       `json:"no_rotate,omitempty"`
 }
 
 func (*Spec) SetDefaults() {}
 
 func (s *Spec) Validate() error {
-	if s.Bucket == "" {
+	if s.StorageAccount == "" {
 		return fmt.Errorf("bucket is required")
 	}
 	if s.Container == "" {
