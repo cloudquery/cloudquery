@@ -179,6 +179,9 @@ func generateResource(r recipes.Resource, mock bool) {
 		log.Fatal(fmt.Errorf("failed to create table for %s: %w", r.StructName, err))
 	}
 	if r.Multiplex == nil {
+		if r.ServiceDNS == "" {
+			r.ServiceDNS = r.Service + ".googleapis.com"
+		}
 		if _, ok := client.GcpServices[r.ServiceDNS]; !ok {
 			panic("unknown service DNS: " + r.ServiceDNS)
 		}

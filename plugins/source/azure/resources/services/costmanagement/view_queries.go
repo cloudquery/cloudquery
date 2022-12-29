@@ -2,30 +2,23 @@
 package costmanagement
 
 import (
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func Views() *schema.Table {
+func view_queries() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_costmanagement_views",
-		Resolver:  fetchViews,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_costmanagement),
+		Name:     "azure_costmanagement_view_queries",
+		Resolver: fetchViewQueries,
 		Columns: []schema.Column{
 			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
+				Name:     "properties",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties"),
 			},
 			{
 				Name:     "etag",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ETag"),
-			},
-			{
-				Name:     "properties",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Properties"),
 			},
 			{
 				Name:     "id",
@@ -36,19 +29,30 @@ func Views() *schema.Table {
 				},
 			},
 			{
+				Name:     "location",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Location"),
+			},
+			{
 				Name:     "name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Name"),
+			},
+			{
+				Name:     "sku",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SKU"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Tags"),
 			},
 			{
 				Name:     "type",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Type"),
 			},
-		},
-
-		Relations: []*schema.Table{
-			view_queries(),
 		},
 	}
 }

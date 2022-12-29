@@ -35,7 +35,6 @@ func init() {
 		resource.ProtobufImport = "google.golang.org/genproto/googleapis/logging/v2"
 		resource.Template = "newapi_list"
 		resource.MockTemplate = "newapi_list_grpc_mock"
-		resource.ServiceDNS = "logging.googleapis.com"
 	}
 
 	Resources = append(Resources, resources...)
