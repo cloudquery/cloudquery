@@ -9,9 +9,8 @@
     "plugins/source/cloudflare": { "component": "plugins-source-cloudflare" },
     "plugins/source/crowdstrike": { "component": "plugins-source-crowdstrike" },
     "plugins/source/datadog": { "component": "plugins-source-datadog" },
-    "plugins/source/digitalocean": {
-      "component": "plugins-source-digitalocean"
-    },
+    "plugins/source/digitalocean": { "component": "plugins-source-digitalocean" },
+    "plugins/source/fastly": { "component": "plugins-source-fastly" },
     "plugins/source/gandi": { "component": "plugins-source-gandi" },
     "plugins/source/gcp": { "component": "plugins-source-gcp" },
     "plugins/source/github": { "component": "plugins-source-github" },
@@ -19,8 +18,9 @@
     "plugins/source/heroku": { "component": "plugins-source-heroku" },
     "plugins/source/k8s": { "component": "plugins-source-k8s" },
     "plugins/source/okta": { "component": "plugins-source-okta" },
-    "plugins/source/slack": { "component": "plugins-source-slack" },
     "plugins/source/salesforce": { "component": "plugins-source-salesforce" },
+    "plugins/source/slack": { "component": "plugins-source-slack" },
+    "plugins/source/snyk": { "component": "plugins-source-snyk" },
     "plugins/source/tailscale": { "component": "plugins-source-tailscale" },
     "plugins/source/vercel": { "component": "plugins-source-vercel" },
     "plugins/source/pagerduty": {"component": "plugins-source-pagerduty"},
@@ -31,6 +31,12 @@
     },
     "plugins/destination/csv": {
       "component": "plugins-destination-csv"
+    },
+    "plugins/destination/file": {
+      "component": "plugins-destination-file"
+    },
+    "plugins/destination/gcs": {
+      "component": "plugins-destination-gcs"
     },
     "plugins/destination/sqlite": {
       "component": "plugins-destination-sqlite"

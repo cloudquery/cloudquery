@@ -192,6 +192,11 @@ func Clusters() *schema.Table {
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("TransitEncryptionEnabled"),
 			},
+			{
+				Name:     "transit_encryption_mode",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("TransitEncryptionMode"),
+			},
 		},
 	}
 }

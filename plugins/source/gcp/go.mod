@@ -3,8 +3,12 @@ module github.com/cloudquery/plugins/source/gcp
 go 1.19
 
 require (
+	cloud.google.com/go/aiplatform v1.27.0
 	cloud.google.com/go/apigateway v1.4.0
 	cloud.google.com/go/apikeys v0.2.0
+	cloud.google.com/go/appengine v1.5.0
+	cloud.google.com/go/artifactregistry v1.9.0
+	cloud.google.com/go/baremetalsolution v0.4.0
 	cloud.google.com/go/billing v1.7.0
 	cloud.google.com/go/compute v1.14.0
 	cloud.google.com/go/container v1.8.0
@@ -14,6 +18,7 @@ require (
 	cloud.google.com/go/iam v0.9.0
 	cloud.google.com/go/kms v1.6.0
 	cloud.google.com/go/logging v1.6.1
+	cloud.google.com/go/longrunning v0.3.0
 	cloud.google.com/go/monitoring v1.9.0
 	cloud.google.com/go/redis v1.10.0
 	cloud.google.com/go/resourcemanager v1.4.0
@@ -42,7 +47,6 @@ require (
 require (
 	cloud.google.com/go v0.107.0 // indirect
 	cloud.google.com/go/compute/metadata v0.2.2 // indirect
-	cloud.google.com/go/longrunning v0.3.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/getsentry/sentry-go v0.15.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
