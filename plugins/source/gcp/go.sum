@@ -21,6 +21,12 @@ cloud.google.com/go/apigateway v1.4.0 h1:IIoXKR7FKrEAQhMTz5hK2wiDz2WNFHS7eVr/L1l
 cloud.google.com/go/apigateway v1.4.0/go.mod h1:pHVY9MKGaH9PQ3pJ4YLzoj6U5FUDeDFBllIz7WmzJoc=
 cloud.google.com/go/apikeys v0.2.0 h1:s4nDYHB1cFBmo53BCX+iARtcSjK+6r/LH67lacUxWtQ=
 cloud.google.com/go/apikeys v0.2.0/go.mod h1:X11keBkNcspckbfFooIc9i2jZpyYt3YdWfMkkCVR2y4=
+cloud.google.com/go/appengine v1.5.0 h1:lmG+O5oaR9xNwaRBwE2XoMhwQHsHql5IoiGr1ptdDwU=
+cloud.google.com/go/appengine v1.5.0/go.mod h1:TfasSozdkFI0zeoxW3PTBLiNqRmzraodCWatWI9Dmak=
+cloud.google.com/go/artifactregistry v1.9.0 h1:3d0LRAU1K6vfqCahhl9fx2oGHcq+s5gftdix4v8Ibrc=
+cloud.google.com/go/artifactregistry v1.9.0/go.mod h1:2K2RqvA2CYvAeARHRkLDhMDJ3OXy26h3XW+3/Jh2uYc=
+cloud.google.com/go/baremetalsolution v0.4.0 h1:g9KO6SkakcYPcc/XjAzeuUrEOXlYPnMpuiaywYaGrmQ=
+cloud.google.com/go/baremetalsolution v0.4.0/go.mod h1:BymplhAadOO/eBa7KewQ0Ppg4A4Wplbn+PsFKRLo0uI=
 cloud.google.com/go/bigquery v1.0.1/go.mod h1:i/xbL2UlR5RvWAURpBYZTtm/cXjCha9lbfbpx4poX+o=
 cloud.google.com/go/bigquery v1.3.0/go.mod h1:PjpwJnslEMmckchkHFfq+HTD2DmtT67aNFKH1/VBDHE=
 cloud.google.com/go/bigquery v1.4.0/go.mod h1:S8dzgnTigyfTmLBfrtrhyYhwRxG72rYxvftPBK2Dvzc=
