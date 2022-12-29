@@ -4,4 +4,4 @@ This destination plugin lets you sync data from a CloudQuery source to remote AZ
 
 ## Links
 
-- [User Guide](https://cloudquery.io/docs/plugins/destinations/azb/overview)
+- [User Guide](https://cloudquery.io/docs/plugins/destinations/azblob/overview)
