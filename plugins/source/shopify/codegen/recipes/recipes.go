@@ -114,7 +114,6 @@ func SetParentChildRelationships(resources []*Resource) error {
 		} else {
 			key = r.Service + "_" + pluralizeClient.Plural(r.SubService)
 		}
-		//log.Printf("%s.%s => %s", r.Service, r.SubService, key)
 		m[key] = r
 	}
 	for _, r := range resources {

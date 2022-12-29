@@ -141,17 +141,15 @@ func (s *Client) retryableRequest(ctx context.Context, edge string) (*http.Respo
 	if dr := resp.Header.Get("X-Shopify-Api-Deprecated-Reason"); dr != "" {
 		log.Warn().Str("deprecated_reason", dr).Msg("Deprecated API call detected")
 	}
-	//if str := resp.Header.Get("X-Shopify-Shop-Api-Call-Limit"); str != "" && str != "1/40" {
-	//	s.log.Debug().Str("edge", edge).Str("call_limit", str).Msg("Unusual X-Shopify-Shop-Api-Call-Limit value")
-	//}
+
 	var wait *time.Duration
 	if ra := resp.Header.Get("Retry-After"); ra != "" {
 		rr, err := strconv.ParseFloat(ra, 64)
-		if err == nil {
+		if err != nil {
+			log.Warn().Str("retry_after", ra).Err(err).Msg("Unknown Retry-After received")
+		} else {
 			t := time.Duration(rr) * time.Second
 			wait = &t
-		} else {
-			log.Warn().Str("retry_after", ra).Msg("Unknown Retry-After received")
 		}
 	}
 
