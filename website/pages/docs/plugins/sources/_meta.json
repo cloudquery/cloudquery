@@ -15,7 +15,9 @@
   "okta": "Okta",
   "salesforce": "Salesforce",
   "slack": "Slack",
+  "snyk": "Snyk",
   "pagerduty": "PagerDuty",
+  "tailscale": "Tailscale",
   "terraform": "Terraform",
   "vercel": "Vercel"
 }
