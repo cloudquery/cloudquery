@@ -74,7 +74,7 @@ Specify the names of the destinations to sync the data of the source plugin to.
 
 ### concurrency
 
-(`int`, optional, default: `1000000`, introduced in CLI `v1.4.1`)
+(`int`, optional, default: `500000`, introduced in CLI `v1.4.1`)
 
 A best effort maximum number of Go routines to use. Lower this number to reduce memory usage.
 
