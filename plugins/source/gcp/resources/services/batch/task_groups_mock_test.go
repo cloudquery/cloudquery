@@ -22,7 +22,7 @@ type fakeTaskGroupsServer struct {
 	pb.UnimplementedBatchServiceServer
 }
 
-func (f *fakeTaskGroupsServer) ListJobs(context.Context, *pb.ListJobsRequest) (*pb.ListJobsResponse, error) {
+func (*fakeTaskGroupsServer) ListJobs(context.Context, *pb.ListJobsRequest) (*pb.ListJobsResponse, error) {
 	resp := pb.ListJobsResponse{}
 	if err := faker.FakeObject(&resp); err != nil {
 		return nil, fmt.Errorf("failed to fake data: %w", err)
@@ -31,7 +31,7 @@ func (f *fakeTaskGroupsServer) ListJobs(context.Context, *pb.ListJobsRequest) (*
 	return &resp, nil
 }
 
-func (f *fakeTaskGroupsServer) ListTasks(context.Context, *pb.ListTasksRequest) (*pb.ListTasksResponse, error) {
+func (*fakeTaskGroupsServer) ListTasks(context.Context, *pb.ListTasksRequest) (*pb.ListTasksResponse, error) {
 	resp := pb.ListTasksResponse{}
 	if err := faker.FakeObject(&resp); err != nil {
 		return nil, fmt.Errorf("failed to fake data: %w", err)
