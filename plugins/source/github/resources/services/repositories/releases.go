@@ -23,20 +23,22 @@ func Releases() *schema.Table {
 				},
 			},
 			{
-				Name:     "tag_name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("TagName"),
+				Name:     "repository_id",
+				Type:     schema.TypeInt,
+				Resolver: client.ResolveParentColumn("ID"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
 			},
 			{
+				Name:     "tag_name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("TagName"),
+			},
+			{
 				Name:     "target_commitish",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("TargetCommitish"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
 				Name:     "name",
@@ -77,6 +79,9 @@ func Releases() *schema.Table {
 				Name:     "id",
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("ID"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "created_at",

@@ -23,6 +23,14 @@ func Assets() *schema.Table {
 				},
 			},
 			{
+				Name:     "repository_id",
+				Type:     schema.TypeInt,
+				Resolver: client.ResolveGrandParentColumn("ID"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
 				Name:     "id",
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("ID"),

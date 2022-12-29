@@ -1,6 +1,6 @@
 # Table: github_releases
 
-The composite primary key for this table is (**org**, **tag_name**, **target_commitish**).
+The composite primary key for this table is (**org**, **repository_id**, **id**).
 
 ## Relations
 
@@ -18,8 +18,9 @@ The following tables depend on github_releases:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |org (PK)|String|
-|tag_name (PK)|String|
-|target_commitish (PK)|String|
+|repository_id (PK)|Int|
+|tag_name|String|
+|target_commitish|String|
 |name|String|
 |body|String|
 |draft|Bool|
@@ -27,7 +28,7 @@ The following tables depend on github_releases:
 |make_latest|String|
 |discussion_category_name|String|
 |generate_release_notes|Bool|
-|id|Int|
+|id (PK)|Int|
 |created_at|Timestamp|
 |published_at|Timestamp|
 |url|String|
