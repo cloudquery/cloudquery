@@ -47,6 +47,7 @@ jobs:
                            "plugins/source/crowdstrike",
                            "plugins/source/digitalocean",
                            "plugins/source/datadog",
+                           "plugins/source/fastly",
                            "plugins/source/gandi",
                            "plugins/source/gcp",
                            "plugins/source/github",

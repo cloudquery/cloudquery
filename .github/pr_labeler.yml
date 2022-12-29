@@ -12,6 +12,8 @@ digitalocean:
   - plugins/source/digitalocean/**/*
 datadog:
   - plugins/source/datadog/**/*
+fastly:
+  - plugins/source/fastly/**/*
 fuzz:
   - plugins/source/fuzz/**/*
 gandi:
