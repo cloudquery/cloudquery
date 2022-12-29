@@ -3,14 +3,12 @@ name: Destination Plugin GCS Workflow
 on:
   pull_request:
     paths:
-      - "plugins/destination/filetypes/**"
       - "plugins/destination/gcs/**"
       - ".github/workflows/dest_file.yml"
   push:
     branches:
       - main
     paths:
-      - "plugins/destination/filetypes/**"
       - "plugins/destination/gcs/**"
       - ".github/workflows/dest_file.yml"
 
