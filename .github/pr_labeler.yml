@@ -36,12 +36,16 @@ terraform:
   - plugins/source/terraform/**/*
 vercel:
   - plugins/source/vercel/**/*
+salesforce:
+  - plugins/source/salesforce/**/*
 postgresql:
   - plugins/destination/postgresql/**/*
 sqlite:
   - plugins/destination/sqlite/**/*
 csv:
   - plugins/destination/csv/**/*
+file:
+  - plugins/destination/file/**/*
 snowflake:
   - plugins/destination/snowflake/**/*
 bigquery:

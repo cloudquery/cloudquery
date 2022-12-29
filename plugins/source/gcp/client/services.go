@@ -1,6 +1,7 @@
 package client
 
 var GcpServices = map[string]bool{
+	"aiplatform.googleapis.com":            true,
 	"apikeys.googleapis.com":               true,
 	"apigateway.googleapis.com":            true,
 	"appengine.googleapis.com":             true,

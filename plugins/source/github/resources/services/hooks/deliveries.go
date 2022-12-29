@@ -22,14 +22,6 @@ func Deliveries() *schema.Table {
 				},
 			},
 			{
-				Name:     "id",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
 				Name:        "hook_id",
 				Type:        schema.TypeInt,
 				Resolver:    client.ResolveParentColumn("ID"),
@@ -49,14 +41,22 @@ func Deliveries() *schema.Table {
 				Resolver: resolveResponse,
 			},
 			{
-				Name:     "delivered_at",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("DeliveredAt.Time"),
+				Name:     "id",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("ID"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "guid",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("GUID"),
+			},
+			{
+				Name:     "delivered_at",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("DeliveredAt"),
 			},
 			{
 				Name:     "redelivery",

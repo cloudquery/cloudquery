@@ -2,6 +2,11 @@
 
 The primary key for this table is **id**.
 
+## Relations
+
+The following tables depend on azure_costmanagement_views:
+  - [azure_costmanagement_view_queries](azure_costmanagement_view_queries.md)
+
 ## Columns
 
 | Name          | Type          |

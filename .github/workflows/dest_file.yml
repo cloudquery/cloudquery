@@ -1,0 +1,81 @@
+name: Destination Plugin File Workflow
+
+on:
+  pull_request:
+    paths:
+      - "plugins/destination/filetypes/**"
+      - "plugins/destination/file/**"
+      - ".github/workflows/dest_file.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "plugins/destination/filetypes/**"
+      - "plugins/destination/file/**"
+      - ".github/workflows/dest_file.yml"
+
+jobs:
+  plugins-destination-file:
+    timeout-minutes: 30
+    name: "plugins/destination/file"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./plugins/destination/file
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: plugins/destination/file/go.mod
+          cache: true
+          cache-dependency-path: plugins/destination/file/go.sum
+      - name: golangci-lint
+        uses: cloudquery/golangci-lint-action@master
+        with:
+          version: v1.50.1
+          working-directory: plugins/destination/file
+          args: "--config ../../.golangci.yml"
+      - name: Get dependencies
+        run: go get -t -d ./...
+      - name: Build
+        run: go build .
+      - name: Test file plugin
+        run: make test
+  validate-release:
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    env:
+      CGO_ENABLED: 0
+    steps:
+      - name: Checkout
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-1.19.3-release-cache-${{ hashFiles('plugins/destination/file/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-1.19.3-release-cache-plugins-destination-file
+      - name: Set up Go
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: plugins/destination/file/go.mod
+      - name: Install GoReleaser
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        uses: goreleaser/goreleaser-action@v3
+        with:
+          distribution: goreleaser-pro
+          version: latest
+          install-only: true
+      - name: Run GoReleaser Dry-Run
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        run: goreleaser release --snapshot --rm-dist --skip-validate --skip-publish --skip-sign -f ./plugins/destination/file/.goreleaser.yaml
+        env:
+          GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}

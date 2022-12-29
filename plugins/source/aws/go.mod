@@ -40,7 +40,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/ecs v1.22.0
 	github.com/aws/aws-sdk-go-v2/service/efs v1.18.3
 	github.com/aws/aws-sdk-go-v2/service/eks v1.26.0
-	github.com/aws/aws-sdk-go-v2/service/elasticache v1.24.3
+	github.com/aws/aws-sdk-go-v2/service/elasticache v1.25.0
 	github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk v1.14.22
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.14.25
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.18.28
@@ -70,7 +70,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/qldb v1.14.22
 	github.com/aws/aws-sdk-go-v2/service/quicksight v1.28.3
 	github.com/aws/aws-sdk-go-v2/service/ram v1.16.26
-	github.com/aws/aws-sdk-go-v2/service/rds v1.37.0
+	github.com/aws/aws-sdk-go-v2/service/rds v1.38.0
 	github.com/aws/aws-sdk-go-v2/service/redshift v1.26.18
 	github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.12.23
 	github.com/aws/aws-sdk-go-v2/service/route53 v1.25.2
@@ -98,7 +98,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/xray v1.15.3
 	github.com/aws/smithy-go v1.13.5
 	github.com/basgys/goxml2json v1.1.0
-	github.com/cloudquery/plugin-sdk v1.13.1
+	github.com/cloudquery/plugin-sdk v1.16.0
 	github.com/gocarina/gocsv v0.0.0-20221105105431-c8ef78125b99
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.9
@@ -139,7 +139,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.13.21 // indirect
 	github.com/aws/aws-sdk-go-v2/service/shield v1.17.13
 	github.com/aws/aws-sdk-go-v2/service/sso v1.11.28 // indirect
-	github.com/aws/aws-sdk-go-v2/service/transfer v1.26.0
+	github.com/aws/aws-sdk-go-v2/service/transfer v1.27.0
 	github.com/aws/aws-sdk-go-v2/service/wafregional v1.12.22
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect

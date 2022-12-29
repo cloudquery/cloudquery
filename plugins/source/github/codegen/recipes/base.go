@@ -23,6 +23,7 @@ type Resource struct {
 	SubService           string
 	Struct               any
 	SkipFields           []string
+	PKColumns            []string
 	ExtraColumns         []codegen.ColumnDefinition
 	Table                *codegen.TableDefinition
 	TableName            string
@@ -59,6 +60,7 @@ func (r *Resource) Generate() error {
 	r.TableName = `github_` + r.TableName
 	r.Table, err = codegen.NewTableFromStruct(r.TableName, r.Struct,
 		codegen.WithSkipFields(r.SkipFields),
+		codegen.WithPKColumns(r.PKColumns...),
 		codegen.WithExtraColumns(r.ExtraColumns),
 		codegen.WithTypeTransformer(timestampTransformer),
 	)
