@@ -57,5 +57,6 @@
   "plugins/source/salesforce": "1.0.0",
   "plugins/source/salesforce+FILLER": "0.0.0",
   "plugins/source/fastly": "1.0.0",
-  "plugins/source/fastly+FILLER": "0.0.0"
+  "plugins/source/fastly+FILLER": "0.0.0",
+  "plugins/destination/gcs": "1.0.0"
 }
