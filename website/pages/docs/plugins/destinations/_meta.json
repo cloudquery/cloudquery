@@ -1,5 +1,6 @@
 {
   "overview": "Overview",
+  "azblob": "AzBlob",
   "bigquery": "BigQuery",
   "csv": "CSV",
   "file": "File",
