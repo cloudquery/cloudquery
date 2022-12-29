@@ -12,7 +12,7 @@ on:
     paths:
       - "plugins/destination/filetypes/**"
       - "plugins/destination/azblob/**"
-      - ".github/workflows/dest_file.yml"
+      - ".github/workflows/dest_azb.yml"
 
 jobs:
   plugins-destination-azblob:
