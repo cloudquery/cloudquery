@@ -8,20 +8,18 @@ import (
 func init() {
 	resources := []*Resource{
 		{
-			SubService:   "policies",
-			Struct:       &dns.Policy{},
-			NewFunction:  dns.NewService,
-			ListFunction: (&dns.PoliciesService{}).List,
-			PrimaryKeys:  []string{"id"},
-			Description:  "https://cloud.google.com/dns/docs/reference/v1/policies#resource",
+			SubService:  "policies",
+			Struct:      &dns.Policy{},
+			NewFunction: dns.NewService,
+			PrimaryKeys: []string{"id"},
+			Description: "https://cloud.google.com/dns/docs/reference/v1/policies#resource",
 		},
 		{
-			SubService:   "managed_zones",
-			Struct:       &dns.ManagedZone{},
-			NewFunction:  dns.NewManagedZoneOperationsService,
-			ListFunction: (&dns.ManagedZonesService{}).List,
-			PrimaryKeys:  []string{"id"},
-			Description:  "https://cloud.google.com/dns/docs/reference/v1/managedZones#resource",
+			SubService:  "managed_zones",
+			Struct:      &dns.ManagedZone{},
+			NewFunction: dns.NewManagedZoneOperationsService,
+			PrimaryKeys: []string{"id"},
+			Description: "https://cloud.google.com/dns/docs/reference/v1/managedZones#resource",
 		},
 	}
 

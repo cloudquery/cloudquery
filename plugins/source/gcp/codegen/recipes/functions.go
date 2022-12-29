@@ -12,7 +12,6 @@ func init() {
 			Struct:              &functionspb.CloudFunction{},
 			NewFunction:         functions.NewCloudFunctionsClient,
 			RegisterServer:      functionspb.RegisterCloudFunctionsServiceServer,
-			ListFunction:        (&functionspb.UnimplementedCloudFunctionsServiceServer{}).ListFunctions,
 			RequestStructFields: `Parent: "projects/" + c.ProjectId + "/locations/-",`,
 			SkipFields:          []string{"SourceCode", "Trigger"},
 			Description:         "https://cloud.google.com/functions/docs/reference/rest/v1/projects.locations.functions#CloudFunction",
