@@ -37,7 +37,7 @@
   "plugins/source/gandi+FILLER": "0.0.0",
   "plugins/source/datadog": "1.0.4",
   "plugins/source/datadog+FILLER": "0.0.0",
-  "plugins/destination/bigquery": "1.3.2",
+  "plugins/destination/bigquery": "2.0.0",
   "plugins/destination/bigquery+FILLER": "0.0.0",
   "plugins/source/tailscale": "1.0.2",
   "plugins/source/tailscale+FILLER": "0.0.0",
