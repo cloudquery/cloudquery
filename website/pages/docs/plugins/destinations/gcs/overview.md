@@ -11,7 +11,7 @@ This is useful in various use-cases, especially in data lakes where you can quer
 
 ## Example
 
-This example configures a CSV destination, to create CSV files in `gcs://bucket_name/path/to/files`. Note that the CSV plugin only supports `append` write-mode.
+This example configures a GCS destination, to create CSV files in `gcs://bucket_name/path/to/files`. Note that the GCS plugin only supports `append` write-mode.
 
 The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
 
