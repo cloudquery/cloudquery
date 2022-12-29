@@ -57,7 +57,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 	c.bucket = c.gcsClient.Bucket(c.pluginSpec.Bucket)
 	// we upload it because we want to fail early if we don't have permissions
 	gcpWriter := c.bucket.Object("/tmp/.cq-test-file").NewWriter(ctx)
-	if _, err := gcpWriter.Write([]byte("")); err != nil {
+	if _, err := gcpWriter.Write([]byte("test-string")); err != nil {
 		return nil, fmt.Errorf("failed to write test file to GCS: %w", err)
 	}
 	if err := gcpWriter.Close(); err != nil {
