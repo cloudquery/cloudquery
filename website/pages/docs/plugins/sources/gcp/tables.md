@@ -2,7 +2,6 @@
 
 ## Tables
 
-- [gcp_aiplatform_operations](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_aiplatform_operations.md)
 - [gcp_aiplatform_job_locations](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_aiplatform_job_locations.md)
   - [gcp_aiplatform_batch_prediction_jobs](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_aiplatform_batch_prediction_jobs.md)
   - [gcp_aiplatform_custom_jobs](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_aiplatform_custom_jobs.md)
@@ -32,6 +31,7 @@
   - [gcp_aiplatform_studies](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_aiplatform_studies.md)
 - [gcp_aiplatform_tensorboard_locations](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_aiplatform_tensorboard_locations.md)
   - [gcp_aiplatform_tensorboards](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_aiplatform_tensorboards.md)
+- [gcp_aiplatform_operations](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_aiplatform_operations.md)
 - [gcp_apigateway_apis](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_apigateway_apis.md)
 - [gcp_apigateway_gateways](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_apigateway_gateways.md)
 - [gcp_apikeys_keys](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_apikeys_keys.md)

@@ -50,8 +50,6 @@ type Resource struct {
 	ClientName string
 	// ListFunction
 	ListFunction any
-	// LocationsListFunction
-	LocationsListFunction any
 	// ListFunction name of the above function via Reflection
 	ListFunctionName string
 	// RequestStructName

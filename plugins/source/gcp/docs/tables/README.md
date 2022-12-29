@@ -2,7 +2,6 @@
 
 ## Tables
 
-- [gcp_aiplatform_operations](gcp_aiplatform_operations.md)
 - [gcp_aiplatform_job_locations](gcp_aiplatform_job_locations.md)
   - [gcp_aiplatform_batch_prediction_jobs](gcp_aiplatform_batch_prediction_jobs.md)
   - [gcp_aiplatform_custom_jobs](gcp_aiplatform_custom_jobs.md)
@@ -32,6 +31,7 @@
   - [gcp_aiplatform_studies](gcp_aiplatform_studies.md)
 - [gcp_aiplatform_tensorboard_locations](gcp_aiplatform_tensorboard_locations.md)
   - [gcp_aiplatform_tensorboards](gcp_aiplatform_tensorboards.md)
+- [gcp_aiplatform_operations](gcp_aiplatform_operations.md)
 - [gcp_apigateway_apis](gcp_apigateway_apis.md)
 - [gcp_apigateway_gateways](gcp_apigateway_gateways.md)
 - [gcp_apikeys_keys](gcp_apikeys_keys.md)
