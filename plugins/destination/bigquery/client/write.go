@@ -10,7 +10,6 @@ import (
 )
 
 const (
-	batchSize    = 1000
 	writeTimeout = 5 * time.Minute
 )
 

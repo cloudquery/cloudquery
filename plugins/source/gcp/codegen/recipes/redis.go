@@ -12,7 +12,6 @@ func init() {
 			Struct:         &pb.Instance{},
 			NewFunction:    redis.NewCloudRedisClient,
 			RegisterServer: pb.RegisterCloudRedisServer,
-			ListFunction:   (&pb.UnimplementedCloudRedisServer{}).ListInstances,
 			PrimaryKeys:    []string{"name"},
 			Description:    "https://cloud.google.com/memorystore/docs/redis/reference/rest/v1/projects.locations.instances#Instance",
 		},

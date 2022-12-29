@@ -3,6 +3,7 @@
   "bigquery": "BigQuery",
   "csv": "CSV",
   "file": "File",
+  "gcs": "GCS",
   "mongodb": "MongoDB",
   "postgresql": "PostgreSQL",
   "snowflake": "Snowflake",
