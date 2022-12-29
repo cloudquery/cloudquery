@@ -12,6 +12,8 @@ digitalocean:
   - plugins/source/digitalocean/**/*
 datadog:
   - plugins/source/datadog/**/*
+fastly:
+  - plugins/source/fastly/**/*
 fuzz:
   - plugins/source/fuzz/**/*
 gandi:
@@ -48,6 +50,8 @@ csv:
   - plugins/destination/csv/**/*
 file:
   - plugins/destination/file/**/*
+gcs:
+  - plugins/destination/gcs/**/*
 snowflake:
   - plugins/destination/snowflake/**/*
 bigquery:
