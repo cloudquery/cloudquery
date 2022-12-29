@@ -12,7 +12,7 @@ func (t *Tags) MarshalJSON() ([]byte, error) {
 		return []byte("[]"), nil
 	}
 
-	return json.Marshal([]string(*t))
+	return json.Marshal(strings.Join(*t, ", "))
 }
 
 func (t *Tags) UnmarshalJSON(data []byte) error {
