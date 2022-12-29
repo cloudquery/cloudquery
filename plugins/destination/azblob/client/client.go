@@ -61,7 +61,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 		return nil, fmt.Errorf("failed to create Azure storage client: %w", err)
 	}
 
-	_, err = c.storageClient.UploadStream(ctx, c.pluginSpec.Container, "cq-test-file", strings.NewReader("test"), nil)
+	_, err = c.storageClient.UploadStream(ctx, c.pluginSpec.Container, "cq-test-file", strings.NewReader(""), nil)
 	if err != nil {
 		return nil, fmt.Errorf("failed to write test file to Azure: %w", err)
 	}
