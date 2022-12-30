@@ -7,7 +7,7 @@ SELECT :'execution_time'                                              AS executi
        subscription_id                                                AS subscription_id,
        id                                                             AS resource_id,
        CASE
-           WHEN storage_profile -> 'osDisk' -> 'managedDisk' -> 'id' IS NULL
+           WHEN properties -> 'storageProfile' -> 'osDisk' -> 'managedDisk' -> 'id' IS NULL
                THEN 'fail'
            ELSE 'pass'
            END                                                        AS status

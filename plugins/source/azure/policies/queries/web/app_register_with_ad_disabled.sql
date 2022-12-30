@@ -10,4 +10,4 @@ SELECT :'execution_time'                                                        
                THEN 'fail'
            ELSE 'pass'
            END                                                                                  AS status
-FROM azure_web_apps
+FROM azure_appservice_web_apps

@@ -6,8 +6,8 @@ SELECT :'execution_time'                                                        
        subscription_id                                                                                        AS subscription_id,
        id                                                                                                     AS resource_id,
        CASE
-           WHEN kind LIKE 'app%' AND client_cert_enabled IS NOT TRUE
+           WHEN kind LIKE 'app%' AND (properties ->> 'clientCertEnabled')::boolean is distinct from  TRUE
                THEN 'fail'
            ELSE 'pass'
            END                                                                                                    AS status
-FROM azure_web_apps
+FROM azure_appservice_web_apps
