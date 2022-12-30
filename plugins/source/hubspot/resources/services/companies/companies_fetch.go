@@ -10,12 +10,26 @@ import (
 func fetchCompanies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 
-	out, _, err := c.Companies.Get().BatchApi.BatchRead(ctx).Execute()
-	if err != nil {
-		return err
-	}
+	var after string
+	for {
+		req := c.Companies.BasicApi.GetPage(c.AuthContext(ctx)).Limit(100)
+		if len(after) > 0 {
+			req.After(after)
+		}
+		out, _, err := req.Execute()
+		if err != nil {
+			return err
+		}
 
-	res <- out.Results
+		res <- out.Results
+
+		page := out.GetPaging()
+		next := page.GetNext()
+		after = next.GetAfter()
+		if after == "" {
+			break
+		}
+	}
 
 	return nil
 }

@@ -16,7 +16,7 @@ type Client struct {
 	id         string
 	host       string
 
-	Companies *lazy[companies.APIClient, companies.Configuration]
+	Companies *companies.APIClient
 
 	logger zerolog.Logger
 }
@@ -49,15 +49,21 @@ func Configure(_ context.Context, logger zerolog.Logger, spec specs.Source) (sch
 		return nil, fmt.Errorf("missing token in configuration")
 	}
 
-	return &Client{
+	client := &Client{
 		authorizer: hubspot.NewTokenAuthorizer(hsSpec.Token),
 		host:       hsSpec.Host,
 		id:         "",
 		logger:     logger,
+	}
 
-		Companies: &lazy[companies.APIClient, companies.Configuration]{
-			cfg:  &companies.Configuration{Host: hsSpec.Host},
-			init: companies.NewAPIClient,
-		},
-	}, nil
+	// companies
+	{
+		cfg := companies.NewConfiguration()
+		if len(hsSpec.Host) > 0 {
+			cfg.Host = hsSpec.Host
+		}
+		client.Companies = companies.NewAPIClient(cfg)
+	}
+
+	return client, nil
 }
