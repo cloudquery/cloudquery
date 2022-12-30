@@ -120,14 +120,16 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 	}
 
 	var done chan struct{}
-	go func() error {
+	var tickerDone chan struct{}
+	go func() {
 		t := time.NewTicker(500 * time.Millisecond).C
 		for {
 			select {
 			case <-t:
 				bar.Add(0)
 			case <-done:
-				break
+				tickerDone <- struct{}{}
+				return
 			}
 		}
 	}()
@@ -154,6 +156,8 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 		_ = bar.Finish()
 		return err
 	}
+	done <- struct{}{}
+	<-tickerDone
 
 	_ = bar.Finish()
 	syncTimeTook := time.Since(syncTime)
