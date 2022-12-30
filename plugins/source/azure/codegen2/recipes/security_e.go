@@ -31,6 +31,18 @@ func init() {
 			ExtraColumns:   DefaultExtraColumns,
 			SkipMock:       true,
 		},
+		{
+			Service:        "armsecurity",
+			Name:           "contacts",
+			Struct:         &armsecurity.Contact{},
+			ResponseStruct: &armsecurity.ContactsClientListResponse{},
+			Client:         &armsecurity.ContactsClient{},
+			ListFunc:       (&armsecurity.ContactsClient{}).NewListPager,
+			NewFunc:        armsecurity.NewContactsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/securityContacts",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_security)`,
+			ExtraColumns:   DefaultExtraColumns,
+		},
 	}
 	Tables = append(Tables, tables...)
 }
