@@ -15,6 +15,7 @@ Refer to the Shopify Help Center article on [Custom apps](https://help.shopify.c
 
 If you have a large or busy store, API key/secret type credentials might not be enough due to the heavy rate limiting. In this case, you can use OAuth in your custom app to get an access token which allow many more requests a second. To use that token in your plugin configuration instead, just set it in `access_token` and remove `api_key` and `api_secret` sections. For more information, refer to [Shopify.dev](https://shopify.dev/apps/distribution) on the subject.
 
+
 # Configuration Reference
 
 This is the (nested) spec used by the Shopify source plugin:
@@ -36,7 +37,7 @@ This is the (nested) spec used by the Shopify source plugin:
 - `max_retries` (integer, optional. Default: 30):
   Number of retries if a request was rate limited.
 
-### Example
+## Example
 
 This example syncs from Shopify to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](https://www.cloudquery.io/docs/reference/source-spec).
 
@@ -57,9 +58,9 @@ spec:
     shop_url: "https://<YOUR_SHOP>.myshopify.com"
 ```
 
-## Query Examples
+# Query Examples
 
-### Get all your active products with a specific tag
+## Get all your active products with a specific tag
 
 ```sql copy
 SELECT * FROM shopify_products WHERE status='active' AND 'your-tag' = ANY(tags);
