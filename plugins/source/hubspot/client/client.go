@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/clarkmcc/go-hubspot"
+	"github.com/clarkmcc/go-hubspot/generated/v3/companies"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
@@ -14,6 +15,8 @@ type Client struct {
 	authorizer hubspot.Authorizer
 	id         string
 	host       string
+
+	Companies *lazy[companies.APIClient, companies.Configuration]
 
 	logger zerolog.Logger
 }
@@ -51,5 +54,10 @@ func Configure(_ context.Context, logger zerolog.Logger, spec specs.Source) (sch
 		host:       hsSpec.Host,
 		id:         "",
 		logger:     logger,
+
+		Companies: &lazy[companies.APIClient, companies.Configuration]{
+			cfg:  &companies.Configuration{Host: hsSpec.Host},
+			init: companies.NewAPIClient,
+		},
 	}, nil
 }

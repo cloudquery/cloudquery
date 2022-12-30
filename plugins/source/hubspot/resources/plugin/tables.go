@@ -3,9 +3,12 @@
 package plugin
 
 import (
+	"github.com/cloudquery/cloudquery/plugins/source/hubspot/resources/services/companies"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func tables() []*schema.Table {
-	return []*schema.Table{}
+	return []*schema.Table{
+		companies.Companies(),
+	}
 }
