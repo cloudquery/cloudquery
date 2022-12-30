@@ -18,6 +18,19 @@ func init() {
 			ExtraColumns:   DefaultExtraColumns,
 			SkipFetch:      true,
 		},
+		{
+			Service:        "armsecurity",
+			Name:           "settings",
+			Struct:         &armsecurity.Setting{},
+			ResponseStruct: &armsecurity.SettingsClientListResponse{},
+			Client:         &armsecurity.SettingsClient{},
+			ListFunc:       (&armsecurity.SettingsClient{}).NewListPager,
+			NewFunc:        armsecurity.NewSettingsClient,
+			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/settings",
+			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_security)`,
+			ExtraColumns:   DefaultExtraColumns,
+			SkipMock:       true,
+		},
 	}
 	Tables = append(Tables, tables...)
 }

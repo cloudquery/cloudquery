@@ -298,6 +298,7 @@ func generatedTables() []*schema.Table {
 		security.Topology(),
 		security.WorkspaceSettings(),
 		security.Pricings(),
+		security.Settings(),
 		servicebus.Namespaces(),
 		sql.InstancePools(),
 		sql.ManagedInstances(),

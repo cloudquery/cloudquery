@@ -212,6 +212,7 @@
 - [azure_security_topology](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_security_topology.md)
 - [azure_security_workspace_settings](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_security_workspace_settings.md)
 - [azure_security_pricings](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_security_pricings.md)
+- [azure_security_settings](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_security_settings.md)
 - [azure_servicebus_namespaces](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_servicebus_namespaces.md)
 - [azure_sql_instance_pools](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_sql_instance_pools.md)
 - [azure_sql_managed_instances](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_sql_managed_instances.md)
