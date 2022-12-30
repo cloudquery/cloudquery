@@ -34,6 +34,8 @@ slack:
   - plugins/source/slack/**/*
 shopify:
   - plugins/source/shopify/**/*
+stripe:
+  - plugins/source/stripe/**/*
 pagerduty:
   - plugins/source/pagerduty/**/*
 terraform:

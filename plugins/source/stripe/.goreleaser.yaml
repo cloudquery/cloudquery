@@ -1,0 +1,14 @@
+variables:
+  component: source/stripe
+  binary: stripe
+
+project_name: plugins/source/stripe
+
+monorepo:
+  tag_prefix: plugins-source-stripe-
+  dir: plugins/source/stripe
+
+includes:
+  - from_file:
+      # Relative to the directory Go Releaser is run from (which is the root of the repository)
+      path: ./plugins/.goreleaser.yaml
