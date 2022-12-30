@@ -119,6 +119,18 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 		})
 	}
 
+	var done chan struct{}
+	go func() error {
+		t := time.NewTicker(500 * time.Millisecond).C
+		for {
+			select {
+			case <-t:
+				bar.Add(0)
+			case <-done:
+				break
+			}
+		}
+	}()
 	g.Go(func() error {
 		for resource := range resources {
 			totalResources++
@@ -138,6 +150,7 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 	})
 
 	if err := g.Wait(); err != nil {
+		done <- struct{}{}
 		_ = bar.Finish()
 		return err
 	}
