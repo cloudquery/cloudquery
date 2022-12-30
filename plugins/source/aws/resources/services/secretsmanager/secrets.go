@@ -80,6 +80,11 @@ func Secrets() *schema.Table {
 				Resolver: schema.PathResolver("Name"),
 			},
 			{
+				Name:     "next_rotation_date",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("NextRotationDate"),
+			},
+			{
 				Name:     "owning_service",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("OwningService"),
