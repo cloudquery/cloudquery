@@ -32,6 +32,7 @@ func createServers(router *mux.Router) error {
 			return
 		}
 	})
+	createServerDatabases(router)
 	return nil
 }
 

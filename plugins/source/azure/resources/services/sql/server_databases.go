@@ -2,23 +2,14 @@
 package sql
 
 import (
-	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func Servers() *schema.Table {
+func server_databases() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_sql_servers",
-		Resolver:  fetchServers,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_sql),
+		Name:     "azure_sql_server_databases",
+		Resolver: fetchServerDatabases,
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
 			{
 				Name:     "location",
 				Type:     schema.TypeString,
@@ -33,6 +24,11 @@ func Servers() *schema.Table {
 				Name:     "properties",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Properties"),
+			},
+			{
+				Name:     "sku",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("SKU"),
 			},
 			{
 				Name:     "tags",
@@ -53,6 +49,11 @@ func Servers() *schema.Table {
 				Resolver: schema.PathResolver("Kind"),
 			},
 			{
+				Name:     "managed_by",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ManagedBy"),
+			},
+			{
 				Name:     "name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Name"),
@@ -65,24 +66,7 @@ func Servers() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			server_databases(),
+			server_database_blob_auditing_policies(),
 		},
 	}
-}
-
-func fetchServers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	cl := meta.(*client.Client)
-	svc, err := armsql.NewServersClient(cl.SubscriptionId, cl.Creds, cl.Options)
-	if err != nil {
-		return err
-	}
-	pager := svc.NewListPager(nil)
-	for pager.More() {
-		p, err := pager.NextPage(ctx)
-		if err != nil {
-			return err
-		}
-		res <- p.Value
-	}
-	return nil
 }
