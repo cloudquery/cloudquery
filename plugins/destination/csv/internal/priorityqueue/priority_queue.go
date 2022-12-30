@@ -43,9 +43,9 @@ func (pq PriorityQueue) Less(i, j int) bool {
 		if !pq.items[i].Cols[col].Equal(pq.items[j].Cols[col]) {
 			less := pq.items[i].Cols[col].LessThan(pq.items[j].Cols[col])
 			if orderBy.Desc {
-				return less
+				return !less
 			}
-			return !less
+			return less
 		}
 	}
 	return false

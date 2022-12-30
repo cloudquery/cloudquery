@@ -2,7 +2,6 @@ package priorityqueue
 
 import (
 	"container/heap"
-	"sort"
 	"testing"
 
 	"github.com/cloudquery/plugin-sdk/plugins/destination"
@@ -66,8 +65,6 @@ func TestPriorityQueue(t *testing.T) {
 		heap.Pop(pq).(*Item),
 		heap.Pop(pq).(*Item),
 	}
-	// items will be popped in reverse priority order, so we reverse the slice
-	reverseSlice(items)
 
 	if items[0].Cols[0].(*schema.Int8).Int != 1 {
 		t.Fatalf("after pop, items[0] id = %d, want 1", items[0].Cols[0].(*schema.Int8).Int)
@@ -84,10 +81,8 @@ func TestPriorityQueue(t *testing.T) {
 	if items[2].Cols[1].(*schema.Int8).Int != 1 {
 		t.Fatalf("after pop, items[2] version = %d, want 1", items[2].Cols[1].(*schema.Int8).Int)
 	}
-}
 
-func reverseSlice[T comparable](s []T) {
-	sort.SliceStable(s, func(i, j int) bool {
-		return i > j
-	})
+	if pq.Len() != 0 {
+		t.Fatalf("after pop, pq.Len() = %d, want 0", pq.Len())
+	}
 }
