@@ -11,7 +11,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/account v1.7.13
 	github.com/aws/aws-sdk-go-v2/service/acm v1.16.5
 	github.com/aws/aws-sdk-go-v2/service/amp v1.15.9
-	github.com/aws/aws-sdk-go-v2/service/apigateway v1.15.27
+	github.com/aws/aws-sdk-go-v2/service/apigateway v1.15.28
 	github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.12.25
 	github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.15.25
 	github.com/aws/aws-sdk-go-v2/service/apprunner v1.15.2
@@ -46,7 +46,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.18.28
 	github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.17.4
 	github.com/aws/aws-sdk-go-v2/service/elastictranscoder v1.13.21
-	github.com/aws/aws-sdk-go-v2/service/emr v1.20.18
+	github.com/aws/aws-sdk-go-v2/service/emr v1.21.0
 	github.com/aws/aws-sdk-go-v2/service/eventbridge v1.16.22
 	github.com/aws/aws-sdk-go-v2/service/firehose v1.15.2
 	github.com/aws/aws-sdk-go-v2/service/frauddetector v1.20.14
@@ -79,7 +79,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/s3control v1.28.2
 	github.com/aws/aws-sdk-go-v2/service/sagemaker v1.61.0
 	github.com/aws/aws-sdk-go-v2/service/scheduler v1.0.3
-	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.16.11
+	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.17.0
 	github.com/aws/aws-sdk-go-v2/service/servicecatalog v1.15.2
 	github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.15.2
 	github.com/aws/aws-sdk-go-v2/service/servicequotas v1.13.23
