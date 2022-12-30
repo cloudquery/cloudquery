@@ -62,8 +62,8 @@ github.com/aws/aws-sdk-go-v2/service/acm v1.16.5 h1:soL2O7WWjedCgm5olvSkhl5n/l//
 github.com/aws/aws-sdk-go-v2/service/acm v1.16.5/go.mod h1:Wa9L0MGV8nzgqv0cvS0ju7hqEDv+yGikspSXVBUpnJQ=
 github.com/aws/aws-sdk-go-v2/service/amp v1.15.9 h1:qdr0dkHrVADizKxgkynGoNGRr9Bn77ECjkhF7v6EF+Y=
 github.com/aws/aws-sdk-go-v2/service/amp v1.15.9/go.mod h1:1h/HEqqBDBtTr+J2KuZCl8XtwpZzBoiQXma3WaOKYKk=
-github.com/aws/aws-sdk-go-v2/service/apigateway v1.15.27 h1:QnD9TGfP/36cPX9U6L+n/3iNw87l4IB3VJl+KQHSTQ8=
-github.com/aws/aws-sdk-go-v2/service/apigateway v1.15.27/go.mod h1:6UIKOkbI/NjVEszKrlgWDrlEPkpd2X+BBrzj0N/XTM4=
+github.com/aws/aws-sdk-go-v2/service/apigateway v1.15.28 h1:tzsVFhPi6VCp8eaY2BoYbaWsthrNIya2VyD28Bj2v7s=
+github.com/aws/aws-sdk-go-v2/service/apigateway v1.15.28/go.mod h1:6UIKOkbI/NjVEszKrlgWDrlEPkpd2X+BBrzj0N/XTM4=
 github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.12.25 h1:Q2fPOHnGq3xnBarRAq6x+lvmY7XdHAMg65Jr9aThX8A=
 github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.12.25/go.mod h1:Pyu5xH3gZR/XjaroZL9CF3aBMiYkn+fyZ+Rr0TNUp7I=
 github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.15.25 h1:FTcQlDrj7iVYRi7WWobJV02UEFU3jIIU+8Wt6os/6Ds=
@@ -136,8 +136,8 @@ github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.17.4 h1:Ax1F+gXewXH
 github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.17.4/go.mod h1:XBRdG4B+BnZjICBUIVLD4++5TkX19Y28f6+PNhXvWWc=
 github.com/aws/aws-sdk-go-v2/service/elastictranscoder v1.13.21 h1:IVjbpLCY3u4QauMHSt4Aw+1hDlZojB4NDpW7YD31cAg=
 github.com/aws/aws-sdk-go-v2/service/elastictranscoder v1.13.21/go.mod h1:+oD0h85OfgOl9bQuBPHKMkO4iLO0URj/orDtsrsnsUE=
-github.com/aws/aws-sdk-go-v2/service/emr v1.20.18 h1:FGvSJGescYnD2RvHX61ZN+Qd1OJ69JNCFcv1sX7zfnA=
-github.com/aws/aws-sdk-go-v2/service/emr v1.20.18/go.mod h1:bo7MVg6I469xv/PCz2FU45pRiWqXa9uNVFUJmQ0eMrM=
+github.com/aws/aws-sdk-go-v2/service/emr v1.21.0 h1:zS00brRiCTrzwbM9IoXATI56AYlSgW4mBPwotKmkslk=
+github.com/aws/aws-sdk-go-v2/service/emr v1.21.0/go.mod h1:bo7MVg6I469xv/PCz2FU45pRiWqXa9uNVFUJmQ0eMrM=
 github.com/aws/aws-sdk-go-v2/service/eventbridge v1.16.22 h1:9mefPSbUp/FdT01NJVvl+afbvUNhTiZ2td3rzOT02Hg=
 github.com/aws/aws-sdk-go-v2/service/eventbridge v1.16.22/go.mod h1:YLJlg6D8anm5tkNO68n5rSXo0N86Chp8HIGbdwL1dzk=
 github.com/aws/aws-sdk-go-v2/service/firehose v1.15.2 h1:LmYCmH3DedyWegzA5U86QMIAx8Ennt8ab4Fm4hPd2Xg=
