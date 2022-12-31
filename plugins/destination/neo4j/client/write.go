@@ -11,9 +11,9 @@ import (
 func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, resources [][]any) error {
 	session := c.client.NewSession(ctx, neo4j.SessionConfig{})
 	defer session.Close(ctx)
-	rows := make([]map[string]interface{}, len(resources))
+	rows := make([]map[string]any, len(resources))
 	for i, resource := range resources {
-		rows[i] = make(map[string]interface{})
+		rows[i] = make(map[string]any)
 		for j, column := range table.Columns {
 			rows[i][column.Name] = resource[j]
 		}
@@ -33,7 +33,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, resou
 	sb.WriteString("}) SET t = row")
 	stmt := sb.String()
 	if _, err := session.ExecuteWrite(ctx, func(tx neo4j.ManagedTransaction) (any, error) {
-		_, err := tx.Run(ctx, stmt, map[string]interface{}{"rows": rows})
+		_, err := tx.Run(ctx, stmt, map[string]any{"rows": rows})
 		if err != nil {
 			return nil, err
 		}

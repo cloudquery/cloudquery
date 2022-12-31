@@ -100,7 +100,7 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 	session := c.client.NewSession(ctx, neo4j.SessionConfig{})
 	defer session.Close(ctx)
 	session.ExecuteRead(ctx, func(tx neo4j.ManagedTransaction) (any, error) {
-		r, err := tx.Run(ctx, stmt, map[string]interface{}{"cq_source_name": sourceName})
+		r, err := tx.Run(ctx, stmt, map[string]any{"cq_source_name": sourceName})
 		if err != nil {
 			return nil, err
 		}
