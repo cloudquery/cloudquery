@@ -72,6 +72,8 @@ jobs:
                            "plugins/destination/bigquery",
                            "plugins/destination/mongodb",
                            "plugins/destination/file",
+                           "plugins/destination/azblob",
+                           "plugins/destination/gcs",
                            "plugins/destination/s3",
                            "plugins/destination/neo4j",
                            ].filter(action => matchesFile(action))
