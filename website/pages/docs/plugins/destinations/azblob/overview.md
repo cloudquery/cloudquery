@@ -11,7 +11,7 @@ This is useful in various use-cases, especially in data lakes where you can quer
 
 ## Authentication
 
-Authenitcation is similar to AWS CLI. See also [azure source plugin](../../sources/azure/overview#authentication) for more information.
+Authenitcation is similar to Azure CLI. See also [azure source plugin](../../sources/azure/overview#authentication) for more information.
 
 ## Example
 
