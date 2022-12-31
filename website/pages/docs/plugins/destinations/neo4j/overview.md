@@ -12,7 +12,7 @@ Supported database (tested) versions (We use the [official Neo4j Go driver](http
 
 - Neo4j >= 4.4
 
-As a sidenote graph databases can be quite useful for various networking use-cases, visualization, for read-teams, blue-teams and more.
+As a side note graph databases can be quite useful for various networking use-cases, visualization, for read-teams, blue-teams and more.
 
 ## Configuration
 
