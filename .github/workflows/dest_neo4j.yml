@@ -32,7 +32,6 @@ jobs:
           NEO4J_ACCEPT_LICENSE_AGREEMENT: "yes"
           NEO4J_dbms_security_auth__enabled: "false"
           NEO4J_dbms_connector_bolt_advertised__address: localhost:7687
-          # NEO4JLABS_PLUGINS: '["apoc"]'
         options: >-
           --health-cmd "cypher-shell 'match (n) return count(n)'"
           --health-timeout 10s
@@ -63,15 +62,6 @@ jobs:
         run: go build .
       - name: Test Neo4j
         run: make test
-      # cockroachdb doesn't support services right now
-      # https://stackoverflow.com/questions/73648218/github-action-setup-secure-cockroachdb
-      # - name: Spin CockroachDB
-      #   run: |
-      #     docker run -d -p 26257:26257 cockroachdb/cockroach:v22.1.8 start-single-node --insecure
-      #     sudo apt update && sudo apt install wait-for-it -y
-      #     wait-for-it -h localhost -p 26257
-      # - name: Test CockroachDB
-      #   run: CQ_DEST_PG_TEST_CONN="postgresql://root@localhost:26257/postgres?sslmode=disable" make test
   validate-release:
     timeout-minutes: 30
     runs-on: ubuntu-latest
