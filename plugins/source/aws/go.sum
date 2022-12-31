@@ -82,8 +82,8 @@ github.com/aws/aws-sdk-go-v2/service/backup v1.18.2 h1:c/Q5sRZrSeHD50p+Ek13+7Kam
 github.com/aws/aws-sdk-go-v2/service/backup v1.18.2/go.mod h1:m3jiAtnpDj6PjnzUdK7uM3hCfDG3uvQ5TTOGfxNZCe4=
 github.com/aws/aws-sdk-go-v2/service/cloudformation v1.24.3 h1:EgvLj8D2G8gHSPbFPTd/kTHKgHWR/TKh+cAhnhk4AbA=
 github.com/aws/aws-sdk-go-v2/service/cloudformation v1.24.3/go.mod h1:Apg7QSWLW1AGekfjYItJXemDl8GEeQYoUFlnw8WwBD8=
-github.com/aws/aws-sdk-go-v2/service/cloudfront v1.22.2 h1:XP88fE1Y8a5308lYzmTnC0be6prtaKAXc6qlD1e4YIE=
-github.com/aws/aws-sdk-go-v2/service/cloudfront v1.22.2/go.mod h1:xUOmvPrMKmH94stXswKsGSkL02vMpNU+rTG+eIzFfNQ=
+github.com/aws/aws-sdk-go-v2/service/cloudfront v1.23.0 h1:+isnazsCv87gmSUp97TNlRToz/K+8fncTo7nMh1qcYM=
+github.com/aws/aws-sdk-go-v2/service/cloudfront v1.23.0/go.mod h1:xUOmvPrMKmH94stXswKsGSkL02vMpNU+rTG+eIzFfNQ=
 github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.13.24 h1:n6SGGOXYQ2f6PSgtiQfZ1Lax0Xyg77eFb1McR8cethA=
 github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.13.24/go.mod h1:PUzxtyO8Pgq2MljHs4G/Zm4Z0+hIuVyZMjtXTC6JEzQ=
 github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.21.1 h1:4Yfx+qKzAUc0JEWfPIbua2vavgSnoiqa+NTm5eN60M0=
