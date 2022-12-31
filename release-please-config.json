@@ -53,6 +53,9 @@
     "plugins/destination/mongodb": {
       "component": "plugins-destination-mongodb"
     },
+    "plugins/destination/neo4j": {
+      "component": "plugins-destination-neo4j"
+    },
     "plugins/destination/test": {
       "component": "plugins-destination-test"
     }
