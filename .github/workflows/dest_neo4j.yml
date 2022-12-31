@@ -21,6 +21,8 @@ jobs:
       run:
         working-directory: ./plugins/destination/neo4j
     services:
+      neo4j:
+        image: neo4j:4.4
         env:
           NEO4J_dbms_security_procedures_unrestricted: apoc.*
           NEO4J_dbms_connector_bolt_enabled: "true"
