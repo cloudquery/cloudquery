@@ -34,7 +34,7 @@ spec:
     format: "csv"
 ```
 
-## S3 Spec
+## Azure Blob Spec
 
 This is the (nested) spec used by the CSV destination Plugin.
 
