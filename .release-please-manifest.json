@@ -61,5 +61,6 @@
   "plugins/source/snyk": "1.0.0",
   "plugins/destination/gcs": "1.0.1",
   "plugins/destination/s3": "1.0.1",
-  "plugins/destination/file": "1.0.1"
+  "plugins/destination/file": "1.0.1",
+  "plugins/destination/azblob": "1.0.0"
 }
