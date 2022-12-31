@@ -1,5 +1,6 @@
 {
   "overview": "Overview",
+  "azblob": "Azure Blob Storage",
   "bigquery": "BigQuery",
   "csv": "CSV",
   "file": "File",
