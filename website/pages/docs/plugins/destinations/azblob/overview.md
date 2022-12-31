@@ -14,7 +14,7 @@ Authenitcation is similar to Azure CLI. See also [azure source plugin](../../sou
 
 ## Example
 
-This example configures a Azure blob storage destination, to create CSV files in `https://cqdestinationazblob.blob.core.windows.net/test/path/to/files`. Note that the S3 plugin only supports `append` write-mode.
+This example configures a Azure blob storage destination, to create CSV files in `https://cqdestinationazblob.blob.core.windows.net/test/path/to/files`. Note that the Azure blob storage plugin only supports `append` write-mode.
 
 The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
 
