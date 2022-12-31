@@ -61,7 +61,7 @@ jobs:
         run: go get -t -d ./...
       - name: Build
         run: go build .
-      - name: Test PG
+      - name: Test Neo4j
         run: make test
       # cockroachdb doesn't support services right now
       # https://stackoverflow.com/questions/73648218/github-action-setup-secure-cockroachdb
