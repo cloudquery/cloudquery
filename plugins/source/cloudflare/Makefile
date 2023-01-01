@@ -1,6 +1,6 @@
 # Generate mocks for mock/unit testing 
 .PHONY: gen-mocks
-gen-mocks:
+gen-mocks: install-tools
 	go generate ./client/...
 
 # Test unit
@@ -31,4 +31,4 @@ gen-code:
 
 # All gen targets
 .PHONY: gen
-gen: gen-code gen-docs
+gen: gen-code gen-mocks gen-docs
