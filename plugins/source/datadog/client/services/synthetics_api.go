@@ -12,5 +12,5 @@ import (
 type SyntheticsAPIClient interface {
 	ListGlobalVariables(context.Context) (datadogV1.SyntheticsListGlobalVariablesResponse, *http.Response, error)
 	ListLocations(context.Context) (datadogV1.SyntheticsLocations, *http.Response, error)
-	ListTests(context.Context) (datadogV1.SyntheticsListTestsResponse, *http.Response, error)
+	ListTests(context.Context, ...datadogV1.ListTestsOptionalParameters) (datadogV1.SyntheticsListTestsResponse, *http.Response, error)
 }
