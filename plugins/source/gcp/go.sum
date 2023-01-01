@@ -27,6 +27,8 @@ cloud.google.com/go/artifactregistry v1.9.0 h1:3d0LRAU1K6vfqCahhl9fx2oGHcq+s5gft
 cloud.google.com/go/artifactregistry v1.9.0/go.mod h1:2K2RqvA2CYvAeARHRkLDhMDJ3OXy26h3XW+3/Jh2uYc=
 cloud.google.com/go/baremetalsolution v0.4.0 h1:g9KO6SkakcYPcc/XjAzeuUrEOXlYPnMpuiaywYaGrmQ=
 cloud.google.com/go/baremetalsolution v0.4.0/go.mod h1:BymplhAadOO/eBa7KewQ0Ppg4A4Wplbn+PsFKRLo0uI=
+cloud.google.com/go/batch v0.4.0 h1:1jvEBY55OH4Sd2FxEXQfxGExFWov1A/IaRe+Z5Z71Fw=
+cloud.google.com/go/batch v0.4.0/go.mod h1:WZkHnP43R/QCGQsZ+0JyG4i79ranE2u8xvjq/9+STPE=
 cloud.google.com/go/beyondcorp v0.3.1 h1:/qDHoN4kR7ZApiC2jp7nw5emwrtMSFf+DvCAESHWrp4=
 cloud.google.com/go/beyondcorp v0.3.1/go.mod h1:TgFMN7AYWcOYrGwgQWXIld+1YbI+BqY+1ckyfkFQ88g=
 cloud.google.com/go/bigquery v1.0.1/go.mod h1:i/xbL2UlR5RvWAURpBYZTtm/cXjCha9lbfbpx4poX+o=
