@@ -91,8 +91,8 @@ github.com/coreos/go-systemd v0.0.0-20190321100706-95778dfbb74e/go.mod h1:F5haX7
 github.com/coreos/go-systemd/v22 v22.3.3-0.20220203105225-a9a7ef127534/go.mod h1:Y58oyj3AT4RCenI/lSvhwexgC+NSVTIJ3seZv2GcEnc=
 github.com/cpuguy83/go-md2man/v2 v2.0.2/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=
 github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=
-github.com/crowdstrike/gofalcon v0.2.30 h1:NpupDJVoL/nmfZnYpBiGmG4bM8taJ0xfbWxMWv+1k1k=
-github.com/crowdstrike/gofalcon v0.2.30/go.mod h1:SEy/YvF++A05/y63LH9fBWeP8Bh0n+kVI5kDvE1qoRQ=
+github.com/crowdstrike/gofalcon v0.2.32 h1:iMsVCc2PMrXpPCjC+Nar7pjJ7cSuOjiZ3sJORZJfDe0=
+github.com/crowdstrike/gofalcon v0.2.32/go.mod h1:SEy/YvF++A05/y63LH9fBWeP8Bh0n+kVI5kDvE1qoRQ=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
