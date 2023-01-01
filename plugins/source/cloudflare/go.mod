@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/cloudflare
 go 1.19
 
 require (
-	github.com/cloudflare/cloudflare-go v0.55.0
+	github.com/cloudflare/cloudflare-go v0.57.1
 	github.com/cloudquery/plugin-sdk v1.16.0
 	github.com/gertd/go-pluralize v0.2.1
 	github.com/golang/mock v1.6.0
