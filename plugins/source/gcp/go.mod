@@ -20,7 +20,7 @@ require (
 	cloud.google.com/go/iam v0.9.0
 	cloud.google.com/go/kms v1.6.0
 	cloud.google.com/go/logging v1.6.1
-	cloud.google.com/go/longrunning v0.3.0
+	cloud.google.com/go/longrunning v0.107.0
 	cloud.google.com/go/monitoring v1.9.0
 	cloud.google.com/go/redis v1.10.0
 	cloud.google.com/go/resourcemanager v1.4.0
