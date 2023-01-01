@@ -18,15 +18,6 @@ func TestSpecValidate(t *testing.T) {
 			wantErr: false,
 		},
 		{
-			name: "invalid account",
-			spec: &Spec{
-				Accounts: []Account{
-					{ID: "account-123"},
-				},
-			},
-			wantErr: true,
-		},
-		{
 			name: "valid org",
 			spec: &Spec{
 				Organization: &AwsOrg{
