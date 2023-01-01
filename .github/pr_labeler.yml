@@ -58,6 +58,8 @@ bigquery:
   - plugins/destination/bigquery/**/*
 mongodb:
   - plugins/destination/mongodb/**/*
+neo4j:
+  - plugins/destination/neo4j/**/*
 website:
   - website/**/*
 cli:

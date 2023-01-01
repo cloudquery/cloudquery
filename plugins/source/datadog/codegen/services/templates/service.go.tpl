@@ -5,7 +5,9 @@ import (
     "context"
     "net/http"
 
-    "{{ $.Import }}"
+    {{ range .Imports }}
+		"{{ . }}"
+    {{ end }}
 )
 
 //go:generate mockgen -package=mocks -destination=../mocks/{{$.PackageName}}.go -source={{$.PackageName}}.go {{$.ClientName}}
