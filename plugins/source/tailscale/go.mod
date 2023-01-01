@@ -8,7 +8,7 @@ require (
 	github.com/julienschmidt/httprouter v1.3.0
 	github.com/rs/zerolog v1.28.0
 	github.com/tailscale/tailscale-client-go v1.8.0
-	golang.org/x/exp v0.0.0-20221212164502-fae10dda9338
+	golang.org/x/exp v0.0.0-20221230185412-738e83a70c30
 	golang.org/x/sync v0.1.0
 )
 
