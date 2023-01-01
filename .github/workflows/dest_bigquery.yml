@@ -34,7 +34,7 @@ jobs:
           workload_identity_provider: 'projects/151868820337/locations/global/workloadIdentityPools/integration-test-pool/providers/integration-test-provider'
           service_account: 'integration-service-account@cq-integration-tests.iam.gserviceaccount.com'
       - name: Set up Cloud SDK
-        uses: 'google-github-actions/setup-gcloud@v0.6.0'
+        uses: 'google-github-actions/setup-gcloud@v0.6.2'
       - name: Set up Go 1.x
         uses: actions/setup-go@v3
         with:
