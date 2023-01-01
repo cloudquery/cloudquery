@@ -6,6 +6,7 @@ var GcpServices = map[string]bool{
 	"apigateway.googleapis.com":            true,
 	"appengine.googleapis.com":             true,
 	"artifactregistry.googleapis.com":      true,
+	"batch.googleapis.com":                 true,
 	"baremetalsolution.googleapis.com":     true,
 	"beyondcorp.googleapis.com":            true,
 	"bigquery.googleapis.com":              true,
