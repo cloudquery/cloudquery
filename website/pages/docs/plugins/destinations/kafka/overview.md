@@ -5,7 +5,7 @@ import { Badge } from "../../../../../components/Badge";
 
 <Badge text={"Latest: " + getLatestVersion("destination", "kafka")}/>
 
-This destination plugin lets you sync data from a CloudQuery source to Kafka  in various formats such as CSV, JSON. Each table will be pushed to a separate topic.
+This destination plugin lets you sync data from a CloudQuery source to Kafka in various formats such as CSV, JSON. Each table will be pushed to a separate topic.
 
 ## Example
 
