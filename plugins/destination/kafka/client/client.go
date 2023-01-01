@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/tls"
 	"fmt"
+	"time"
 
 	"github.com/cloudquery/filetypes/csv"
 	"github.com/cloudquery/filetypes/json"
@@ -59,6 +60,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 	if c.pluginSpec.MaxMetadataRetries != 0 {
 		c.conf.Metadata.Retry.Max = c.pluginSpec.MaxMetadataRetries
 	}
+	c.conf.Metadata.Retry.Backoff = time.Millisecond * 500
 	c.conf.Producer.Retry.Max = 1
 	c.conf.Producer.RequiredAcks = sarama.WaitForAll
 	c.conf.Producer.Return.Successes = true
