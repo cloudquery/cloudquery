@@ -7,7 +7,7 @@ require (
 	github.com/cloudquery/plugin-sdk v1.16.0
 	github.com/iancoleman/strcase v0.2.0
 	github.com/rs/zerolog v1.28.0
-	golang.org/x/exp v0.0.0-20221126150942-6ab00d035af9
+	golang.org/x/exp v0.0.0-20221230185412-738e83a70c30
 	gopkg.in/yaml.v3 v3.0.1
 )
 
