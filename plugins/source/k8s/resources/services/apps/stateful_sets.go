@@ -134,6 +134,11 @@ func StatefulSets() *schema.Table {
 				Resolver: schema.PathResolver("Spec.PersistentVolumeClaimRetentionPolicy"),
 			},
 			{
+				Name:     "spec_ordinals",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Spec.Ordinals"),
+			},
+			{
 				Name:     "status_observed_generation",
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("Status.ObservedGeneration"),
