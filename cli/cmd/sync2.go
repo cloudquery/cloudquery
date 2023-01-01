@@ -120,28 +120,40 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 	}
 
 	g.Go(func() error {
-		for resource := range resources {
-			totalResources++
-			_ = bar.Add(1)
+		t := time.NewTicker(1 * time.Second)
+		defer func() {
 			for i := range destSubscriptions {
-				select {
-				case <-gctx.Done():
-					return gctx.Err()
-				case destSubscriptions[i] <- resource:
+				close(destSubscriptions[i])
+			}
+			t.Stop()
+		}()
+		for {
+			select {
+			case resource, ok := <-resources:
+				if !ok {
+					return nil
 				}
+				totalResources++
+				_ = bar.Add(1)
+				for i := range destSubscriptions {
+					select {
+					case <-gctx.Done():
+						return gctx.Err()
+					case destSubscriptions[i] <- resource:
+					}
+				}
+			case <-t.C:
+				_ = bar.Add(0)
+			case <-gctx.Done():
+				return nil
 			}
 		}
-		for i := range destSubscriptions {
-			close(destSubscriptions[i])
-		}
-		return nil
 	})
 
 	if err := g.Wait(); err != nil {
 		_ = bar.Finish()
 		return err
 	}
-
 	_ = bar.Finish()
 	syncTimeTook := time.Since(syncTime)
 
