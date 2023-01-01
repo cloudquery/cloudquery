@@ -9,6 +9,8 @@ require (
 	cloud.google.com/go/appengine v1.5.0
 	cloud.google.com/go/artifactregistry v1.9.0
 	cloud.google.com/go/baremetalsolution v0.4.0
+	cloud.google.com/go/batch v0.4.0
+	cloud.google.com/go/beyondcorp v0.3.1
 	cloud.google.com/go/billing v1.7.0
 	cloud.google.com/go/compute v1.14.0
 	cloud.google.com/go/container v1.8.0

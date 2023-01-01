@@ -50,6 +50,9 @@
     "plugins/destination/mongodb": {
       "component": "plugins-destination-mongodb"
     },
+    "plugins/destination/neo4j": {
+      "component": "plugins-destination-neo4j"
+    },
     "plugins/destination/azblob": {
       "component": "plugins-destination-azblob"
     },
