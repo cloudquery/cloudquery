@@ -10,6 +10,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
+	"github.com/thoas/go-funk"
 )
 
 type AccountZones map[string]struct {
@@ -90,6 +91,10 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (sche
 	}
 
 	for _, account := range accounts {
+		if len(cfSpec.Accounts) > 0 && !funk.ContainsString(cfSpec.Accounts, account.ID) {
+			continue
+		}
+
 		// Get available zones  for each account
 		zones, err := clientApi.ListZonesContext(ctx, cloudflare.WithZoneFilters("", account.ID, ""))
 		if err != nil {
