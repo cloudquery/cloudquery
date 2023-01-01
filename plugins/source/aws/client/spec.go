@@ -4,8 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"regexp"
-
-	"github.com/thoas/go-funk"
 )
 
 type Account struct {
@@ -75,11 +73,7 @@ func (s *Spec) Validate() error {
 			return fmt.Errorf("invalid skip_organization_units: %w", err)
 		}
 	}
-	if s.Accounts != nil {
-		if err := validateAccounts(funk.Get(s.Accounts, "ID").([]string)); err != nil {
-			return fmt.Errorf("invalid accounts: %w", err)
-		}
-	}
+
 	return nil
 }
 
