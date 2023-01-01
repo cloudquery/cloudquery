@@ -40,6 +40,8 @@ type Resource struct {
 	ServiceDNS string
 	// Service is the name of the gcp service the struct/api is residing
 	Service string
+	// For some APIs the package name is not the same as the service name
+	ServiceAPIOverride string
 	// SubService is the name of the gcp subservice the struct/api is residing (gcp is split into service.subservice.list)
 	SubService string
 	// NewFunction

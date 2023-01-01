@@ -1,0 +1,14 @@
+variables:
+  component: destination/azblob
+  binary: azblob
+
+project_name: plugins/destination/azblob
+
+monorepo:
+  tag_prefix: plugins-destination-azblob-
+  dir: plugins/destination/azblob
+
+includes:
+  - from_file:
+      # Relative to the directory Go Releaser is run from (which is the root of the repository)
+      path: ./plugins/.goreleaser.yaml

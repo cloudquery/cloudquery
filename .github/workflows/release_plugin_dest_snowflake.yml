@@ -34,9 +34,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.19.3-release-cache-${{ hashFiles('plugins/destination/snowflake/go.sum') }}
+          key: ${{ runner.os }}-go-1.19.4-release-cache-${{ hashFiles('plugins/destination/snowflake/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.19.3-release-cache-plugins-destination-snowflake
+            ${{ runner.os }}-go-1.19.4-release-cache-plugins-destination-snowflake
       - name: Set up Go 1.x
         uses: actions/setup-go@v3
         with:

@@ -19,7 +19,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/appsync v1.17.1
 	github.com/aws/aws-sdk-go-v2/service/autoscaling v1.25.1
 	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.24.3
-	github.com/aws/aws-sdk-go-v2/service/cloudfront v1.22.2
+	github.com/aws/aws-sdk-go-v2/service/cloudfront v1.23.0
 	github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.13.24
 	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.21.1
 	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.23.1
@@ -99,7 +99,7 @@ require (
 	github.com/aws/smithy-go v1.13.5
 	github.com/basgys/goxml2json v1.1.0
 	github.com/cloudquery/plugin-sdk v1.16.0
-	github.com/gocarina/gocsv v0.0.0-20221105105431-c8ef78125b99
+	github.com/gocarina/gocsv v0.0.0-20221216233619-1fea7ae8d380
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.9
 	github.com/mitchellh/mapstructure v1.5.0
