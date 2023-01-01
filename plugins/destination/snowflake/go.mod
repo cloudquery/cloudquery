@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/cloudquery/plugin-sdk v1.16.0
 	github.com/rs/zerolog v1.28.0
-	github.com/snowflakedb/gosnowflake v1.6.15
+	github.com/snowflakedb/gosnowflake v1.6.16
 )
 
 require (
