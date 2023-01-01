@@ -26,10 +26,10 @@ func (c *Client) createTopics(_ context.Context, tables schema.Tables) error {
 			NumPartitions:     1,
 			ReplicationFactor: 1,
 		}, false)
-		if strings.Contains(err.Error(), "Topic with this name already exists") {
-			continue
-		}
 		if err != nil {
+			if strings.Contains(err.Error(), "Topic with this name already exists") {
+				continue
+			}
 			return err
 		}
 	}

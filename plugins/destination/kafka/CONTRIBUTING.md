@@ -12,7 +12,7 @@ go run main.go serve
 
 To run the tests you will need a Kafka cluster
 
-Running a local kafka cluster
+Running a local Kafka cluster
 
 ```bash
 docker-compose up

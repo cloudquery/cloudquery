@@ -56,6 +56,9 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 	}
 
 	c.conf = sarama.NewConfig()
+	if c.pluginSpec.MaxMetadataRetries != 0 {
+		c.conf.Metadata.Retry.Max = c.pluginSpec.MaxMetadataRetries
+	}
 	c.conf.Producer.Retry.Max = 1
 	c.conf.Producer.RequiredAcks = sarama.WaitForAll
 	c.conf.Producer.Return.Successes = true
