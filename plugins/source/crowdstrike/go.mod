@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/cloudquery/plugin-sdk v1.16.0
-	github.com/crowdstrike/gofalcon v0.2.30
+	github.com/crowdstrike/gofalcon v0.2.32
 	github.com/go-openapi/runtime v0.24.2
 	github.com/golang/mock v1.6.0
 	github.com/iancoleman/strcase v0.2.0
