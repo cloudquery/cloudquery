@@ -7,10 +7,13 @@ description: >-
 author: mikeelsmore
 ---
 
-import { BlogHeader } from "../../components/BlogHeader"
+import { HowToGuideHeader } from "../../components/HowToGuideHeader"
 
-<BlogHeader/>
+<HowToGuideHeader/>
 
+In this guide, we will show you how to set up AWS Single Sign-On with Google Workspace as an IdP.
+
+## Introduction
 
 AWS SSO and AWS Organization were released around 2017 and are probably the best way to manage AWS access at scale.
 
@@ -26,8 +29,9 @@ This is a huge security and operational win, some highlights:
 
 In this article we, will go through a step-by-step guide to set-up AWS SSO with Google Workspace (previously G Suite) as an IdP. If you are using Google Workspace and use it as your central directory, this is the guide for you.
 
+## Walkthrough
 
-## Prerequisite
+### Prerequisites
 
 You should have the [AWS Organization](https://aws.amazon.com/organizations/) (If you are not using it, This service combined with AWS SSO is a real game changer) set-up.
 
@@ -35,7 +39,7 @@ You need to sign up from the main account (also called **"management account"** 
 
 You will also need to make sure that you have access to the Google Workspace Admin and the relevant permissions to manage it.
 
-### Setting up AWS
+### Step 1: Setting up AWS
 
 Now that you have all the relevant permissions, everything is ready to configure for AWS SSO. Here is the step by step to set it all up:
 
@@ -69,7 +73,7 @@ Now that you have all the relevant permissions, everything is ready to configure
 
 8. Don't close this screen, you will need it shortly after you have done the next section.
 
-### Google Workspace SAML setup
+### Step 2: Google Workspace SAML setup
 
 With the SSO URLs for our AWS organization, we can go to our Google Workspace Admin console and configure it.
 
@@ -111,7 +115,7 @@ With the SSO URLs for our AWS organization, we can go to our Google Workspace Ad
 
    ![ON for everyone](/images/blog/aws-sso-gsuite/image11.png)
 
-### Adding Google Workspace configuration to AWS SSO
+### Step 3: Adding Google Workspace configuration to AWS SSO
 
 Now that the AWS SSO service is enabled, and the Google Workspace SAML app exists, it's time to make them talk to each other.
 
@@ -127,7 +131,7 @@ Now that the AWS SSO service is enabled, and the Google Workspace SAML app exist
 
    ![Completed AWS SSO configuration](/images/blog/aws-sso-gsuite/image23.png)
 
-### Setting up Users and Permissions
+### Step 4: Setting up Users and Permissions
 
 As of writing this, you can't automatically sync users between AWS and Google (this is being worked on over at OpenID) so we are limited to two options; manually creating the user (which we will go through) and using [https://github.com/awslabs/ssosync](https://github.com/awslabs/ssosync) to automate the process.
 

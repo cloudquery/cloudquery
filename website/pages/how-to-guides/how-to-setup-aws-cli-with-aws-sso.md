@@ -10,22 +10,25 @@ import { HowToGuideHeader } from "../../components/HowToGuideHeader"
 
 <HowToGuideHeader/>
 
+In this guide, we will show you how to setup AWS CLI with AWS SSO.
+
+## Introduction
+
 AWS SSO makes it easy to centrally manage SSO Access to multiple AWS accounts, moves the authentication to the IdP (Identity Provider) and removes the need for managing static, long-lived credentials.
 
 AWS CLI added support for SSO [late 2019](https://aws.amazon.com/blogs/developer/aws-cli-v2-now-supports-aws-single-sign-on/) so you can use it seamlessly in your developer workflow from the CLI without going to the developers portal every time and paste short-lived credentials to the console.
 
+## Walkthrough
 
-## Prerequisite
-
-### Setup AWS SSO with an IDP
+### Step 1: Setup AWS SSO with an IDP
 
 The first step is to have AWS SSO setup and configured. This should be done by someone with the right admin access permissions to both the IdP and AWS. Check out how to set up [AWS SSO with G Suite as IDP](https://www.cloudquery.io/blog/aws-sso-tutorial-with-google-workspace-as-an-idp).
 
-### Install AWS CLI (v2)
+### Step 2: Install AWS CLI (v2)
 
 On your local machine, if you don’t already have it, install [AWS CLI v2](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html).
 
-## Configure an SSO Profile
+## Step 3: Configure an SSO Profile
 
 Similar to the `aws configure` command that creates a new profile in `~/.aws/config` with long-lived access keys `aws configure sso` command creates a new SSO profile.
 
@@ -73,7 +76,7 @@ aws s3 ls --profile cq-dev-admin
 ## wil output available s3 buckets
 ```
 
-## Configure Multiple SSO Profiles
+### Step 4: Configure Multiple SSO Profiles
 
 It is common to have multiple accounts available to you via SSO and the neat thing is that you only need to login **once** to any of those **accounts** and you can use any of them in the CLI. The only thing that you will need to do is to add the additional profiles either manually (which will probably be faster) or through the interactive CLI. In either your `~/.aws/config` should look something like the following:
 
@@ -104,7 +107,7 @@ you can run also without logging in specifically to other profiles!
 aws s3 ls --profile profile-name-2
 ```
 
-## Logging out
+### Step 5: Logging out
 
 You can also logout and clear the temporary credentials with `aws sso logout` but this will probably not be necessary most of the time as they expire every hour or so (or a maximum of 12 hours depending on what you admin [defined](https://docs.aws.amazon.com/singlesignon/latest/userguide/howtosessionduration.html) as session duration) so most probably you will have to re-run `aws sso login --profile profile-name-1` once a day or so.
 

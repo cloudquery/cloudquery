@@ -10,23 +10,23 @@ import { HowToGuideHeader } from "../../components/HowToGuideHeader"
 
 <HowToGuideHeader/>
 
-With this blog, we will show you how to access your AWS environment without storing IAM credentials in GitHub by using OpenID Connect (OIDC).
+In this guide, we will show you how to access your AWS environment without storing IAM credentials in GitHub by using OpenID Connect (OIDC).
 
-
-
-## What is OpenID Connect?
+## Introduction
 
 OpenID Connect has been around since 2014, and in reality, it’s a simplified identity layer on top of the OAuth 2.0 protocol. This gives your clients and applications an easy process to authenticate against an Authorization Server and get information about the end-users (in this case AWS) but in a process flow that’s easier for applications to do so. For a deeper look into OpenID Connect check out [https://openid.net/connect/](https://openid.net/connect/).
 
 So using OpenID Connect we can remove the need to have keys stored in GitHub Actions, saving the headache of [rotating the keys](https://github.com/cloudquery/cq-provider-aws/tree/main/policies/cis_v1.2.0) or the other headaches.
 
-## Setting up AWS OpenID Connect Identity Provider
+## Walkthrough
+
+### Step 1: Initial setup of AWS and OpenID Connect
 
 The first step to this whole process is to configure AWS to allow GitHub to communicate with it via OpenID Connect. Here are a few different ways to do it.
 
 We've got three different ways to do this [AWS Console](#aws-console), [AWS CLI](#aws-cli), and [Terraform](#terraform).
 
-### AWS Console
+#### AWS Console
 
 Once you are logged into the AWS Console, head to IAM and select `Identity providers`:
 
@@ -65,7 +65,7 @@ The final step in creating the Role is to name it and provide a relevant descrip
 
 ![Review role](/images/blog/keyless-access-to-aws-in-github-actions-with-oidc/image8.png)
 
-### AWS CLI
+#### AWS CLI
 
 When using the AWS Console, the console itself will attempt to do some of the steps for you, however, when using the AWS CLI you’ll have an initial step to do yourself. This first step is getting the `thumbprint` for the GitHub certificates used to authenticate the requests, that process is an entire blog itself so I would suggest following the guide provided by AWS called [Obtaining the thumbprint for an OpenID Connect Identity Provider](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_create_oidc_verify-thumbprint.html).
 
@@ -143,7 +143,7 @@ aws iam put-role-policy --role-name GitHub-Action-Role --policy-name Perms-Polic
 
 With this command, we’re attaching the `Perms-Policy-For-GitHub-Actions` to our `GitHub-Action-Role` with the `ListBucket` action.
 
-### Terraform
+#### Terraform
 
 If you’re using [Terraform](https://www.terraform.io/) already, it’s quite a straightforward terraform script to create an OpenID Connect Identity provider with its required role and permissions. Luckily, the Terraform registry contains a complete [AWS provider](https://registry.terraform.io/providers/hashicorp/aws/latest) to use. The script is as follows:
 
@@ -283,7 +283,7 @@ resource "aws_iam_role_policy" "github_actions_policy" {
 
 This permissions block is allowing the GitHub Action to Describe all EC2, which could be handy.
 
-## Setting up GitHub to use the OpenID Connect provider
+### Step 2: Setting up GitHub to use the OpenID Connect provider
 
 Now that we have a working OpenID Connect provider within AWS, we need to add the configuration to GitHub for use in our GitHub Actions. To do this, we simply add another step to the desired `yml` workflow.
 

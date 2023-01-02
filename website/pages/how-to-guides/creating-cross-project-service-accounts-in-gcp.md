@@ -3,7 +3,7 @@ title: Creating a Cross Project (or Account) Service Account in GCP Step-by-Step
 tag: security
 date: 2021/11/09
 description: >-
-  A walkthrough to add Service Accounts in Google Cloud Platform and make them cross-project
+  A guide to add Service Accounts in Google Cloud Platform and make them cross-project
 author: mikeelsmore
 ---
 
@@ -11,7 +11,7 @@ import { HowToGuideHeader } from "../../components/HowToGuideHeader"
 
 <HowToGuideHeader/>
 
-In this guide we will show you how to create one service account in GCP that can access multiple projects either under the same organization/account or even completely different accounts (for AWS users this is the GCP's assume role equivalent).
+In this guide, we will show you how to create one service account in GCP that can access multiple projects either under the same organization/account or even completely different accounts (for AWS users this is the GCP's assume role equivalent).
 
 ## Introduction 
 
