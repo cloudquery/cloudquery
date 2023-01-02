@@ -6,10 +6,9 @@ description: Configure Workload identity federation between GCP and AWS EKS
 author: danielspangenberg
 ---
 
-import { BlogHeader } from "../../components/BlogHeader"
+import { HowToGuideHeader } from "../../components/HowToGuideHeader"
 
-<BlogHeader/>
-
+<HowToGuideHeader/>
 
 [Workload identity federation](https://cloud.google.com/iam/docs/configuring-workload-identity-federation) is the process of impersonating an identity in one cloud provider from the other without long lived keys. In this blog post we will walk through how to setup federation between a workload running on AWS EKS (In this case CloudQuery so you can also fetch configuration from your GCP accounts) to GCP.
 
