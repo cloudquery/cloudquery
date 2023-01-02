@@ -2,11 +2,13 @@
   "overview": "Overview",
   "azblob": "Azure Blob Storage",
   "bigquery": "BigQuery",
-  "csv": "CSV (Deprecated)",
   "file": "File",
   "gcs": "GCS",
   "mongodb": "MongoDB",
+  "neo4j": "Neo4j",
   "postgresql": "PostgreSQL",
+  "s3": "S3",
   "snowflake": "Snowflake",
-  "sqlite": "SQLite"
+  "sqlite": "SQLite",
+  "csv": "CSV (Deprecated)"
 }

@@ -52,7 +52,18 @@ const TableRow = ({ type, name, id, stage, meta = () => null }) => {
 };
 
 export const PluginsTable = ({ plugins, type }) => {
-  const sortedPlugins = plugins.sort((a, b) => a.name.localeCompare(b.name));
+  const sortedPlugins = plugins.sort((a, b) => {
+    const isDeprecated = ({ stage }) => stage.startsWith("Deprecated");
+
+    if (isDeprecated(a) && !isDeprecated(b)) {
+      return 1;
+    }
+    if (!isDeprecated(a) && isDeprecated(b)) {
+      return -1;
+    }
+
+    return a.name.localeCompare(b.name);
+  });
   return (
     <Table className="nx-mt-6">
       <Th>
