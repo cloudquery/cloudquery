@@ -3,8 +3,7 @@ title: Creating a Cross Project (or Account) Service Account in GCP Step-by-Step
 tag: security
 date: 2021/11/09
 description: >-
-  A walkthrough to add Service Accounts in Google Cloud Platform and make them
-  cross-project
+  A walkthrough to add Service Accounts in Google Cloud Platform and make them cross-project
 author: mikeelsmore
 ---
 
@@ -12,17 +11,18 @@ import { HowToGuideHeader } from "../../components/HowToGuideHeader"
 
 <HowToGuideHeader/>
 
+In this guide we will show you how to create one service account in GCP that can access multiple projects either under the same organization/account or even completely different accounts (for AWS users this is the GCP's assume role equivalent).
+
+## Introduction 
 
 In Google Cloud Platform (GCP) it is common to have multiple projects for different environments (like `dev`, `staging`, `prod`, `prod-team1`, etc.). It is also a common use-case to have one set of credentials (service account) to access multiple accounts, For example:
 
 - **Auditing:** one service account with read-only access to all projects
 - **Multi-project access/communication:** one service in one project might need access/communicate to other services in different projects.
 
-In this tutorial we will show you how to create one service account in GCP that can access multiple projects either under the same organization/account or even completely different accounts (for AWS users this is the GCP's assume role equivalent).
+## Walkthrough
 
-
-
-## How do you set up a Service Account in GCP?
+### Step 1: Service Account Creation
 
 Assuming you’ve got your project setup (we are going to use Project A & Project B to test all this), you’ll want to navigate to Project A and then do the following steps:
 
@@ -54,7 +54,7 @@ Assuming you’ve got your project setup (we are going to use Project A & Projec
 
    ![List of your service accounts](/images/blog/gcp-cross-project-service-account/image14.png)
 
-## How does do we grant it access to other projects?
+### Step 2: Grant access to other projects
 
 Once we have a working Service Account, we now have to go through a slightly different process to add it to other projects.
 
