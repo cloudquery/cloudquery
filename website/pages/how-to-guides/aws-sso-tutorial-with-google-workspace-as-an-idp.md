@@ -1,10 +1,9 @@
 ---
-title: AWS SSO Tutorial with Google Workspace (Gsuite) as an IdP Step-by-Step
-tag: security
+title: How to set up AWS SSO with Google Workspace (Gsuite) as an IdP Step-by-Step
+tag: tutorial
 date: 2021/10/26
 description: >-
-  A tutorial walking you through setting up AWS Single Sign-On withGoogle
-  Workspace as an IdP
+  How to set up AWS Single Sign-On with Google Workspace as an IdP
 author: mikeelsmore
 ---
 
