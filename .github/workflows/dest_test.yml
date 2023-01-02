@@ -41,7 +41,7 @@ jobs:
       - name: Build
         run: go build .
       - name: Test
-        run: go test -race ./...
+        run: make test
   validate-release:
     timeout-minutes: 30
     runs-on: ubuntu-latest
