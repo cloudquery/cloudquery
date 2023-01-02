@@ -3,25 +3,20 @@ package storage
 
 import (
 	"encoding/json"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"net/http"
-	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/gorilla/mux"
 )
 
-func createAccounts(router *mux.Router) error {
-	var item armstorage.AccountsClientListResponse
+func createBlobServices(router *mux.Router) error {
+	var item armstorage.BlobServicesClientListResponse
 	if err := faker.FakeObject(&item); err != nil {
 		return err
 	}
 
-	emptyStr := ""
-	item.NextLink = &emptyStr
-
-	router.HandleFunc("/subscriptions/{subscriptionId}/providers/Microsoft.Storage/storageAccounts", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices", func(w http.ResponseWriter, r *http.Request) {
 		b, err := json.Marshal(&item)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)
@@ -32,12 +27,5 @@ func createAccounts(router *mux.Router) error {
 			return
 		}
 	})
-	createTables(router)
-	createContainers(router)
-	createBlobServices(router)
 	return nil
-}
-
-func TestAccounts(t *testing.T) {
-	client.MockTestHelper(t, Accounts(), createAccounts)
 }
