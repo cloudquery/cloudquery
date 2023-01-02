@@ -5,6 +5,7 @@
   "csv": "CSV (Deprecated)",
   "file": "File",
   "gcs": "GCS",
+  "kafka": "Kafka",
   "mongodb": "MongoDB",
   "postgresql": "PostgreSQL",
   "snowflake": "Snowflake",
