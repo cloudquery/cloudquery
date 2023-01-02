@@ -184,6 +184,26 @@
     {
       "source": "/blog/open-source-cspm",
       "destination": "/how-to-guides/open-source-cspm"
+    },
+    {
+      "source": "/blog/aws-sso-tutorial-with-google-workspace-as-an-idp",
+      "destination": "/how-to-guides/aws-sso-tutorial-with-google-workspace-as-an-idp"
+    }
+    {
+      "source": "/blog/configuring-workload-identity-federation-between-gcp-and-aws-eks",
+      "destination": "/how-to-guides/configuring-workload-identity-federation-between-gcp-and-aws-eks"
+    },
+    {
+      "source": "/blog/keyless-access-to-aws-in-github-actions-with-oidc",
+      "destination": "/how-to-guides/keyless-access-to-aws-in-github-actions-with-oidc"
+    },
+    {
+      "source": "/blog/how-to-setup-aws-cli-with-aws-sso",
+      "destination": "/how-to-guides/how-to-setup-aws-cli-with-aws-sso"
+    },
+    {
+      "source": "/blog/creating-cross-project-service-accounts-in-gcp",
+      "destination": "/how-to-guides/creating-cross-project-service-accounts-in-gcp"
     }
   ]
 }
