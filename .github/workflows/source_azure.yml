@@ -61,7 +61,7 @@ jobs:
       - name: Build
         run: go build .
       - name: Test
-        run: go test -race ./...
+        run: make test
       - name: gen
         if: github.event_name == 'pull_request'
         run: make gen
