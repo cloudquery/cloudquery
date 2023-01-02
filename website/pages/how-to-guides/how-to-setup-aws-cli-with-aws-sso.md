@@ -1,6 +1,6 @@
 ---
 title: How to setup AWS CLI with AWS SSO
-tag: security
+tag: tutorial
 date: 2022/01/04
 description: A step-by-step guide to setup AWS CLI with AWS SSO
 author: yevgenypats

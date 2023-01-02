@@ -1,6 +1,6 @@
 ---
 title: Keyless access to AWS in GitHub Actions with OIDC
-tag: security
+tag: tutorial
 date: 2022/03/28
 description: A guide to configuring OpenID Connect access to AWS from GitHub Actions
 author: mikeelsmore
