@@ -66,6 +66,7 @@
 - [gcp_bigquery_datasets](gcp_bigquery_datasets.md)
   - [gcp_bigquery_tables](gcp_bigquery_tables.md)
 - [gcp_billing_billing_accounts](gcp_billing_billing_accounts.md)
+  - [gcp_billing_budgets](gcp_billing_budgets.md)
 - [gcp_billing_services](gcp_billing_services.md)
 - [gcp_compute_addresses](gcp_compute_addresses.md)
 - [gcp_compute_autoscalers](gcp_compute_autoscalers.md)

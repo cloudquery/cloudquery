@@ -66,6 +66,7 @@
 - [gcp_bigquery_datasets](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_bigquery_datasets.md)
   - [gcp_bigquery_tables](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_bigquery_tables.md)
 - [gcp_billing_billing_accounts](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_billing_billing_accounts.md)
+  - [gcp_billing_budgets](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_billing_budgets.md)
 - [gcp_billing_services](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_billing_services.md)
 - [gcp_compute_addresses](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_compute_addresses.md)
 - [gcp_compute_autoscalers](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_compute_autoscalers.md)
