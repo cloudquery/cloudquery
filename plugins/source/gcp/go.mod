@@ -11,6 +11,7 @@ require (
 	cloud.google.com/go/baremetalsolution v0.4.0
 	cloud.google.com/go/batch v0.4.0
 	cloud.google.com/go/beyondcorp v0.3.1
+	cloud.google.com/go/bigtable v1.18.1
 	cloud.google.com/go/billing v1.7.0
 	cloud.google.com/go/compute v1.14.0
 	cloud.google.com/go/container v1.8.0
@@ -50,7 +51,13 @@ require (
 require (
 	cloud.google.com/go v0.107.0 // indirect
 	cloud.google.com/go/compute/metadata v0.2.2 // indirect
+	github.com/census-instrumentation/opencensus-proto v0.2.1 // indirect
+	github.com/cespare/xxhash/v2 v2.1.1 // indirect
+	github.com/cncf/udpa/go v0.0.0-20210930031921-04548b0d99d4 // indirect
+	github.com/cncf/xds/go v0.0.0-20211011173535-cb28da3451f1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/envoyproxy/go-control-plane v0.10.2-0.20220325020618-49ff273808a1 // indirect
+	github.com/envoyproxy/protoc-gen-validate v0.1.0 // indirect
 	github.com/getsentry/sentry-go v0.16.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
