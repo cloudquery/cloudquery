@@ -72,6 +72,7 @@ func Accounts() *schema.Table {
 		Relations: []*schema.Table{
 			tables(),
 			containers(),
+			blob_services(),
 		},
 	}
 }
