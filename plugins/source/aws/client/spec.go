@@ -63,9 +63,6 @@ func (s *Spec) Validate() error {
 		if s.Organization.ChildAccountRoleName == "" {
 			return fmt.Errorf("member_role_name is required when using org configuration")
 		}
-		if err := validateAccounts(s.Organization.SkipMemberAccounts); err != nil {
-			return fmt.Errorf("invalid skip_member_accounts: %w", err)
-		}
 		if err := validateOUs(s.Organization.OrganizationUnits); err != nil {
 			return fmt.Errorf("invalid organization_units: %w", err)
 		}
@@ -74,16 +71,6 @@ func (s *Spec) Validate() error {
 		}
 	}
 
-	return nil
-}
-
-func validateAccounts(accounts []string) error {
-	r := regexp.MustCompile(`^(\d{12})$`)
-	for _, account := range accounts {
-		if !r.MatchString(account) {
-			return fmt.Errorf("invalid account id: %s (should be 12 digits)", account)
-		}
-	}
 	return nil
 }
 
