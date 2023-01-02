@@ -64,7 +64,7 @@ jobs:
       - name: Build
         run: go build .
       - name: Test
-        run: go test -race ./...
+        run: make test
       - name: gen-docs
         if: matrix.os == 'ubuntu-latest'
         run: make gen-docs
