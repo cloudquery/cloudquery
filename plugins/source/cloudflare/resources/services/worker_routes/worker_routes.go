@@ -39,14 +39,9 @@ func WorkerRoutes() *schema.Table {
 				Resolver: schema.PathResolver("Pattern"),
 			},
 			{
-				Name:     "enabled",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("Enabled"),
-			},
-			{
 				Name:     "script",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Script"),
+				Resolver: schema.PathResolver("ScriptName"),
 			},
 		},
 	}

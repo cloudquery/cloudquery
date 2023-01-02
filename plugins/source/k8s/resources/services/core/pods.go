@@ -279,6 +279,16 @@ func Pods() *schema.Table {
 				Resolver: schema.PathResolver("Spec.HostUsers"),
 			},
 			{
+				Name:     "spec_scheduling_gates",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Spec.SchedulingGates"),
+			},
+			{
+				Name:     "spec_resource_claims",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Spec.ResourceClaims"),
+			},
+			{
 				Name:     "status_phase",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Status.Phase"),
