@@ -89,8 +89,9 @@ github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.9.11/go.mod h1:
 github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.1.18/go.mod h1:NS55eQ4YixUJPTC+INxi2/jCqe1y2Uw3rnh9wEOVJxY=
 github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.1.22 h1:kv5vRAl00tozRxSnI0IszPWGXsJOyA7hmEUHFYqsyvw=
 github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.1.22/go.mod h1:Od+GU5+Yx41gryN/ZGZzAJMZ9R1yn6lgA0fD5Lo5SkQ=
-github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.17 h1:Jrd/oMh0PKQc6+BowB+pLEwLIgaQF29eYbe7E1Av9Ug=
 github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.17/go.mod h1:4nYOrY41Lrbk2170/BGkcJKBhws9Pfn8MG3aGqjjeFI=
+github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.21 h1:5C6XgTViSb0bunmU57b3CT+MhxULqHH2721FVA+/kDM=
+github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.21/go.mod h1:lRToEJsn+DRA9lW4O9L9+/3hjTkUzlzyzHqn8MTds5k=
 github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.13.17/go.mod h1:YqMdV+gEKCQ59NrB7rzrJdALeBIsYiVi8Inj3+KcqHI=
 github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.13.21 h1:vY5siRXvW5TrOKm2qKEf9tliBfdLxdfy0i02LOcmqUo=
 github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.13.21/go.mod h1:WZvNXT1XuH8dnJM0HvOlvk+RNn7NbAPvA/ACO0QarSc=
