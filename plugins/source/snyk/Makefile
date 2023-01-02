@@ -5,7 +5,7 @@ test:
 
 .PHONY: lint
 lint:
-	@golangci-lint run --config ../../.golangci.yml
+	golangci-lint run --config ../../.golangci.yml
 
 .PHONY: gen-code
 gen-code:
