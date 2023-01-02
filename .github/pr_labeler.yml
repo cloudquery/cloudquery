@@ -46,6 +46,8 @@ postgresql:
   - plugins/destination/postgresql/**/*
 sqlite:
   - plugins/destination/sqlite/**/*
+s3:
+  - plugins/destination/s3/**/*
 csv:
   - plugins/destination/csv/**/*
 file:
@@ -58,6 +60,10 @@ bigquery:
   - plugins/destination/bigquery/**/*
 mongodb:
   - plugins/destination/mongodb/**/*
+neo4j:
+  - plugins/destination/neo4j/**/*
+kafka:
+  - plugins/destination/kafka/**/*
 website:
   - website/**/*
 cli:

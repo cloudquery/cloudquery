@@ -40,9 +40,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.19.3-release-cache-${{ hashFiles(format('{0}/{1}', steps.split.outputs.plugins_dir, 'go.sum')) }}
+          key: ${{ runner.os }}-go-1.19.4-release-cache-${{ hashFiles(format('{0}/{1}', steps.split.outputs.plugins_dir, 'go.sum')) }}
           restore-keys: |
-            ${{ runner.os }}-go-1.19.3-release-cache-plugins-${{ steps.split.outputs.plugin_type }}-${{ steps.split.outputs.plugin_name }}
+            ${{ runner.os }}-go-1.19.4-release-cache-plugins-${{ steps.split.outputs.plugin_type }}-${{ steps.split.outputs.plugin_name }}
       - name: Set up Go 1.x
         uses: actions/setup-go@v3
         with:

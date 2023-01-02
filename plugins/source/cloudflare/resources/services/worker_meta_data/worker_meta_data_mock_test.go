@@ -17,12 +17,12 @@ func buildWorkerMetaData(t *testing.T, ctrl *gomock.Controller) client.Clients {
 	if err := faker.FakeObject(&workerScript); err != nil {
 		t.Fatal(err)
 	}
-	mock.EXPECT().ListWorkerScripts(
-		gomock.Any(),
-	).Return(
-		cloudflare.WorkerListResponse{
-			WorkerList: []cloudflare.WorkerMetaData{workerScript},
-		},
+	response := cloudflare.WorkerListResponse{
+		WorkerList: []cloudflare.WorkerMetaData{workerScript},
+	}
+	mock.EXPECT().ListWorkers(gomock.Any(), cloudflare.AccountIdentifier(client.TestAccountID), cloudflare.ListWorkersParams{}).Return(
+		response,
+		&response.ResultInfo,
 		nil,
 	)
 
@@ -30,11 +30,7 @@ func buildWorkerMetaData(t *testing.T, ctrl *gomock.Controller) client.Clients {
 	if err := faker.FakeObject(&workerCronTrigger); err != nil {
 		t.Fatal(err)
 	}
-	mock.EXPECT().ListWorkerCronTriggers(
-		gomock.Any(),
-		client.TestAccountID,
-		workerScript.ID,
-	).Return(
+	mock.EXPECT().ListWorkerCronTriggers(gomock.Any(), cloudflare.AccountIdentifier(client.TestAccountID), cloudflare.ListWorkerCronTriggersParams{ScriptName: workerScript.ID}).Return(
 		[]cloudflare.WorkerCronTrigger{workerCronTrigger},
 		nil,
 	)
@@ -43,10 +39,7 @@ func buildWorkerMetaData(t *testing.T, ctrl *gomock.Controller) client.Clients {
 	if err := faker.FakeObject(&workerSecret); err != nil {
 		t.Fatal(err)
 	}
-	mock.EXPECT().ListWorkersSecrets(
-		gomock.Any(),
-		workerScript.ID,
-	).Return(
+	mock.EXPECT().ListWorkersSecrets(gomock.Any(), cloudflare.AccountIdentifier(client.TestAccountID), cloudflare.ListWorkersSecretsParams{ScriptName: workerScript.ID}).Return(
 		cloudflare.WorkersListSecretsResponse{
 			Result: []cloudflare.WorkersSecret{workerSecret},
 		},
