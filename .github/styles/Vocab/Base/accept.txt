@@ -126,6 +126,7 @@ sdk
 SDK
 serverless
 Severability
+Shopify
 skip_tables
 snyk
 Snyk
