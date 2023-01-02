@@ -7,11 +7,11 @@ import (
 	"github.com/cloudquery/plugins/source/gcp/client"
 )
 
-func Instances() *schema.Table {
+func Clusters() *schema.Table {
 	return &schema.Table{
-		Name:        "gcp_bigtableadmin_instances",
-		Description: `https://cloud.google.com/bigtable/docs/reference/admin/rest/v2/projects.instances#Instance`,
-		Resolver:    fetchInstances,
+		Name:        "gcp_bigtableadmin_clusters",
+		Description: `https://cloud.google.com/bigtable/docs/reference/admin/rest/v2/projects.instances.clusters#Cluster`,
+		Resolver:    fetchClusters,
 		Multiplex:   client.ProjectMultiplexEnabledServices("bigtableadmin.googleapis.com"),
 		Columns: []schema.Column{
 			{
@@ -31,29 +31,39 @@ func Instances() *schema.Table {
 				},
 			},
 			{
-				Name:     "display_name",
+				Name:     "zone",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("DisplayName"),
+				Resolver: schema.PathResolver("Zone"),
 			},
 			{
-				Name:     "instance_state",
+				Name:     "serve_nodes",
 				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("InstanceState"),
+				Resolver: schema.PathResolver("ServeNodes"),
 			},
 			{
-				Name:     "instance_type",
+				Name:     "state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("State"),
+			},
+			{
+				Name:     "storage_type",
 				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("InstanceType"),
+				Resolver: schema.PathResolver("StorageType"),
 			},
 			{
-				Name:     "labels",
+				Name:     "kms_key_name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("KMSKeyName"),
+			},
+			{
+				Name:     "autoscaling_config",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Labels"),
+				Resolver: schema.PathResolver("AutoscalingConfig"),
 			},
 		},
 
 		Relations: []*schema.Table{
-			AppProfiles(), Clusters(), Tables(),
+			Backups(),
 		},
 	}
 }

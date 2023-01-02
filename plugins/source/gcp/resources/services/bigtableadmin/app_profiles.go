@@ -7,11 +7,11 @@ import (
 	"github.com/cloudquery/plugins/source/gcp/client"
 )
 
-func Instances() *schema.Table {
+func AppProfiles() *schema.Table {
 	return &schema.Table{
-		Name:        "gcp_bigtableadmin_instances",
-		Description: `https://cloud.google.com/bigtable/docs/reference/admin/rest/v2/projects.instances#Instance`,
-		Resolver:    fetchInstances,
+		Name:        "gcp_bigtableadmin_app_profiles",
+		Description: `https://cloud.google.com/bigtable/docs/reference/admin/rest/v2/projects.instances.appProfiles#AppProfile`,
+		Resolver:    fetchAppProfiles,
 		Multiplex:   client.ProjectMultiplexEnabledServices("bigtableadmin.googleapis.com"),
 		Columns: []schema.Column{
 			{
@@ -31,29 +31,15 @@ func Instances() *schema.Table {
 				},
 			},
 			{
-				Name:     "display_name",
+				Name:     "etag",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("DisplayName"),
+				Resolver: schema.PathResolver("Etag"),
 			},
 			{
-				Name:     "instance_state",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("InstanceState"),
+				Name:     "description",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Description"),
 			},
-			{
-				Name:     "instance_type",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("InstanceType"),
-			},
-			{
-				Name:     "labels",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Labels"),
-			},
-		},
-
-		Relations: []*schema.Table{
-			AppProfiles(), Clusters(), Tables(),
 		},
 	}
 }
