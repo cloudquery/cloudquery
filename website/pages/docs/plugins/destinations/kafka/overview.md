@@ -22,7 +22,7 @@ spec:
   write_mode: "append" # only supports 'append'
 
   spec:
-    brokers: ["localhost:29092"]
+    brokers: ["<broker-host>:<broker-port>"]
     format: "json"
 ```
 
