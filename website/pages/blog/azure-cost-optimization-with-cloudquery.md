@@ -1,7 +1,7 @@
 ---
 title: Correlating Costs to Resources for Azure Cost Optimization with CloudQuery
 tag: tutorial
-date: 2022/12/23
+date: 2023/01/04
 description: >-
   This tutorial will show how to correlate between Azure Cost Analysis data and CloudQuery to optimize cost
 author: kemal
