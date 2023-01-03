@@ -6,10 +6,11 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"path/filepath"
+	"runtime"
 	"testing"
 	"time"
 
-	"github.com/cloudquery/cloudquery/plugins/source/stripe/resources/testdata"
 	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
@@ -70,17 +71,21 @@ func MockTestHelper(t *testing.T, table *schema.Table) {
 }
 
 func startMockServer() (*string, func() error, error) {
+	_, filename, _, ok := runtime.Caller(0)
+	if !ok {
+		return nil, nil, fmt.Errorf("failed to get current file")
+	}
+
+	stripeSpec, err := server.LoadSpec(nil, filepath.Join(filepath.Dir(filename), "..", "resources", "testdata", "spec3.json"))
+	if err != nil {
+		return nil, nil, err
+	}
+	fixtures, err := server.LoadFixtures(nil, filepath.Join(filepath.Dir(filename), "..", "resources", "testdata", "fixtures_gen.json"))
+	if err != nil {
+		return nil, nil, err
+	}
+
 	// This is mostly copied from the stripe-mock's main function at https://github.com/stripe/stripe-mock/blob/master/main.go
-
-	stripeSpec, err := server.LoadSpec(testdata.OpenAPISpec, "")
-	if err != nil {
-		return nil, nil, err
-	}
-	fixtures, err := server.LoadFixtures(testdata.OpenAPIFixtures, "")
-	if err != nil {
-		return nil, nil, err
-	}
-
 	stub, err := server.NewStubServer(fixtures, stripeSpec, false, false)
 	if err != nil {
 		return nil, nil, fmt.Errorf("Error initializing router: %w", err)
