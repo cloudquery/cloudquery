@@ -5,6 +5,28 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v3.0.0...plugins-source-azure-v3.1.0) (2023-01-03)
+
+
+### Features
+
+* Add azure security pricings resource ([#6023](https://github.com/cloudquery/cloudquery/issues/6023)) ([9648f26](https://github.com/cloudquery/cloudquery/commit/9648f2690cd070803b5c5aa33683ceab5680b358))
+* **azure:** Add storage_blob_services ([#6245](https://github.com/cloudquery/cloudquery/issues/6245)) ([0620ccd](https://github.com/cloudquery/cloudquery/commit/0620ccd6059818a9e560fd6a8657cb84e7da0ae3))
+* **azure:** Cost management view queries, query views by subscription scope ([#5898](https://github.com/cloudquery/cloudquery/issues/5898)) ([ace315f](https://github.com/cloudquery/cloudquery/commit/ace315ff62818449889ab7d2f927dc06b4c7f045))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/internal to v1.1.2 ([#6205](https://github.com/cloudquery/cloudquery/issues/6205)) ([154fa6f](https://github.com/cloudquery/cloudquery/commit/154fa6fccf41278ac395a1c8287634c4d65926d1))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redhatopenshift/armredhatopenshift to v1.1.0 ([#6183](https://github.com/cloudquery/cloudquery/issues/6183)) ([3395c09](https://github.com/cloudquery/cloudquery/commit/3395c0920d5425c74f3dbf3ad4efeab6e6a6cda4))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage to v1.2.0 ([#6184](https://github.com/cloudquery/cloudquery/issues/6184)) ([adc96f3](https://github.com/cloudquery/cloudquery/commit/adc96f37379ca480dc5599c882415b8a638412ab))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.14.0 ([#6025](https://github.com/cloudquery/cloudquery/issues/6025)) ([35b2cfc](https://github.com/cloudquery/cloudquery/commit/35b2cfc7fc7bcdaceb7ee674e3a17f0f5673b366))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.15.0 ([#6071](https://github.com/cloudquery/cloudquery/issues/6071)) ([684b525](https://github.com/cloudquery/cloudquery/commit/684b525aaa285fcae70dd87af56679c1205adebe))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.15.1 ([#6079](https://github.com/cloudquery/cloudquery/issues/6079)) ([650659c](https://github.com/cloudquery/cloudquery/commit/650659c3c6766df571868e2ec3a2007cb76696eb))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.16.0 ([#6098](https://github.com/cloudquery/cloudquery/issues/6098)) ([7bacdf3](https://github.com/cloudquery/cloudquery/commit/7bacdf3364716eab08fa1a84ae4047b42edeee7e))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.16.1 ([#6214](https://github.com/cloudquery/cloudquery/issues/6214)) ([53b2415](https://github.com/cloudquery/cloudquery/commit/53b241508d7511d4b5fa74cc4262d180c1e6df66))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.17.0 ([#6256](https://github.com/cloudquery/cloudquery/issues/6256)) ([b19f6cd](https://github.com/cloudquery/cloudquery/commit/b19f6cd8e2c39994aeb19d78e78e927d6c3cf580))
+
 ## [3.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v2.2.0...plugins-source-azure-v3.0.0) (2022-12-27)
 
 
