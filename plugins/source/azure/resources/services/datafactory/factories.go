@@ -29,6 +29,11 @@ func Factories() *schema.Table {
 					PrimaryKey: true,
 				},
 			},
+			{
+				Name:     "etag",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ETag"),
+			},
 		},
 	}
 }

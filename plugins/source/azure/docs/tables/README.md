@@ -230,4 +230,7 @@
   - [azure_storage_containers](azure_storage_containers.md)
   - [azure_storage_blob_services](azure_storage_blob_services.md)
 - [azure_subscription_subscriptions](azure_subscription_subscriptions.md)
+- [azure_redis_caches](azure_redis_caches.md)
+- [azure_resources_resources](azure_resources_resources.md)
 - [azure_subscription_tenants](azure_subscription_tenants.md)
+- [azure_search_services](azure_search_services.md)

@@ -15,4 +15,11 @@ This table depends on [azure_costmanagement_views](azure_costmanagement_views.md
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |id (PK)|String|
-|query_result|JSON|
+|etag|String|
+|properties|JSON|
+|e_tag|String|
+|location|String|
+|name|String|
+|sku|String|
+|tags|JSON|
+|type|String|

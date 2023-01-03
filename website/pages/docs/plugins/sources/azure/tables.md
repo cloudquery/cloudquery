@@ -230,4 +230,7 @@
   - [azure_storage_containers](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_storage_containers.md)
   - [azure_storage_blob_services](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_storage_blob_services.md)
 - [azure_subscription_subscriptions](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_subscription_subscriptions.md)
+- [azure_redis_caches](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_redis_caches.md)
+- [azure_resources_resources](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_resources_resources.md)
 - [azure_subscription_tenants](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_subscription_tenants.md)
+- [azure_search_services](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_search_services.md)

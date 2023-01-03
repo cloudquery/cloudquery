@@ -1,4 +1,4 @@
-# Table: azure_datafactory_factories
+# Table: azure_search_services
 
 The primary key for this table is **id**.
 
@@ -10,14 +10,11 @@ The primary key for this table is **id**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|subscription_id|String|
 |id (PK)|String|
-|etag|String|
-|additional_properties|JSON|
-|identity|JSON|
 |location|String|
+|identity|JSON|
 |properties|JSON|
+|sku|JSON|
 |tags|JSON|
-|e_tag|String|
 |name|String|
 |type|String|

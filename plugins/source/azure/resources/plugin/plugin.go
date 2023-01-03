@@ -13,6 +13,9 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/monitor"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/mysql"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/network"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/redis"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/resources"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/search"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/security"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/storage"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/subscription"
@@ -43,7 +46,10 @@ var customTables = []*schema.Table{
 	security.Pricings(),
 	storage.Accounts(),
 	subscription.Subscriptions(),
+	redis.Caches(),
+	resources.Resources(),
 	subscription.Tenants(),
+	search.Services(),
 }
 
 func Plugin() *source.Plugin {
