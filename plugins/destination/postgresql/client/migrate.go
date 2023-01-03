@@ -61,6 +61,26 @@ func (c *Client) isTableExistSQL(ctx context.Context, table string) (bool, error
 	return tableExist == 1, nil
 }
 
+func (c *Client) getStalePks(pgPKs map[string]bool, table *schema.Table) []string {
+	stalePks := []string{}
+	if c.enabledPks() {
+		for pk := range pgPKs {
+			stalePk := true
+			for _, col := range table.Columns {
+				if col.Name == pk && col.CreationOptions.PrimaryKey {
+					stalePk = false
+					break
+				}
+			}
+			if stalePk {
+				c.logger.Info().Str("table", table.Name).Str("column", pk).Msg("Column exists with primary key but is not in the schema")
+				stalePks = append(stalePks, pk)
+			}
+		}
+	}
+	return stalePks
+}
+
 func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) error {
 	var err error
 	var pgColumns *pgTableColumns
@@ -123,9 +143,13 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 			reCreatePrimaryKeys = true
 		}
 	}
+
+	stalePks := c.getStalePks(pgPKs, table)
+	reCreatePrimaryKeys = reCreatePrimaryKeys || len(stalePks) > 0
+
 	if reCreatePrimaryKeys {
 		c.logger.Info().Str("table", table.Name).Msg("Recreating primary keys")
-		if err := c.setNullOnPks(ctx, table); err != nil {
+		if err := c.setNotNullOnPks(ctx, table); err != nil {
 			return fmt.Errorf("failed to enforce not null on primary keys: %w", err)
 		}
 
@@ -152,15 +176,29 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 		if err := tx.Commit(ctx); err != nil {
 			return fmt.Errorf("failed to commit transaction to recreate primary keys: %w", err)
 		}
+
+		if err := c.dropNotNullOnStalePks(ctx, table, stalePks); err != nil {
+			return fmt.Errorf("failed to drop not null on stale primary keys: %w", err)
+		}
 	}
 	return nil
 }
 
-func (c *Client) setNullOnPks(ctx context.Context, table *schema.Table) error {
+func (c *Client) setNotNullOnPks(ctx context.Context, table *schema.Table) error {
 	for _, col := range table.PrimaryKeys() {
 		sql := "alter table " + pgx.Identifier{table.Name}.Sanitize() + " alter column " + pgx.Identifier{col}.Sanitize() + " set not null"
 		if _, err := c.conn.Exec(ctx, sql); err != nil {
 			return fmt.Errorf("failed to set not null on column %s on table %s: %w", col, table.Name, err)
+		}
+	}
+	return nil
+}
+
+func (c *Client) dropNotNullOnStalePks(ctx context.Context, table *schema.Table, stalePks []string) error {
+	for _, col := range stalePks {
+		sql := "alter table " + pgx.Identifier{table.Name}.Sanitize() + " alter column " + pgx.Identifier{col}.Sanitize() + " drop not null"
+		if _, err := c.conn.Exec(ctx, sql); err != nil {
+			return fmt.Errorf("failed to drop not null on column %s on table %s: %w", col, table.Name, err)
 		}
 	}
 	return nil
