@@ -15,7 +15,7 @@ import (
 
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugins/source/gcp/client"
+	"github.com/cloudquery/plugins/source/gcp/codegen/client"
 	"github.com/cloudquery/plugins/source/gcp/codegen/recipes"
 	"github.com/iancoleman/strcase"
 	"google.golang.org/protobuf/reflect/protoreflect"
@@ -27,6 +27,28 @@ import (
 var gcpTemplatesFS embed.FS
 
 func main() {
+	for _, arg := range os.Args {
+		if arg == "--services" {
+			genServices()
+			return
+		}
+	}
+	genResources()
+}
+
+func genServices() {
+	fmt.Println("Generating services")
+	serviceList, err := client.Discover()
+	if err != nil {
+		log.Fatal(err)
+	}
+	// We need both to avoid codegen referencing the client and creating a circular dependency
+	generateTemplate("services.go.tpl", "codegen/client/services.go", serviceList)
+	generateTemplate("services.go.tpl", "client/services.go", serviceList)
+}
+
+func genResources() {
+	fmt.Println("Generating resources")
 
 	for _, r := range recipes.Resources {
 		generateResource(*r, false)
