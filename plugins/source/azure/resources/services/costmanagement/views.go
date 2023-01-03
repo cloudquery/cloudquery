@@ -47,7 +47,7 @@ func fetchViews(ctx context.Context, meta schema.ClientMeta, parent *schema.Reso
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListByScopePager("subscriptions/" + cl.SubscriptionId, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {
