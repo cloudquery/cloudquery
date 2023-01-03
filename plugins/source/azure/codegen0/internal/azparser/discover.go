@@ -8,6 +8,7 @@ import (
 )
 
 var packagesToSkip = map[string]bool{
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement": true,
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge": true,
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform": true,	
 	// Manually generated recipes

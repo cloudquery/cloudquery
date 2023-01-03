@@ -64,6 +64,7 @@ func main() {
 		log.Fatal(err)
 	}
 	namespaces := make(map[string]string, 0)
+	var allTables []*azparser.Table
 	for _, armModule := range armModules {
 		tables, err := azparser.CreateTablesFromPackage(armModule)
 		if err != nil {
@@ -93,9 +94,10 @@ func main() {
 				log.Fatal(err)
 			}
 		}
-		if err := generateTables(tables); err != nil {
-			log.Fatal(err)
-		}
+		allTables = append(allTables, tables...)
+	}
+	if err := generateTables(allTables); err != nil {
+		log.Fatal(err)
 	}
 	if err := generateNamespaces(namespaces); err != nil {
 		log.Fatal(err)
