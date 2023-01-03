@@ -34,7 +34,7 @@ type Resource struct {
 	SkipServiceInTableName bool // Don't prepend service name to table name
 	SkipParentInTableName  bool // Don't prepend parent name to table name
 
-	GenerateResolver bool
+	GenerateResolver, SkipMocks bool
 
 	// These are inferred with reflection but can be overridden
 	SubService string // Inferred from DataStruct name
@@ -52,20 +52,15 @@ type Resource struct {
 }
 
 var (
+	AllResources []*Resource
+
 	pluralizeClient *pluralize.Client
 	csr             *caser.Caser
 )
 
 func init() {
 	pluralizeClient = pluralize.NewClient()
-	//for _, s := range []string{"dns", "waf"} {
-	//	pluralizeClient.AddUncountableRule(s)
-	//}
-
-	csr = caser.New(
-		caser.WithCustomInitialisms(map[string]bool{}),
-		caser.WithCustomExceptions(map[string]string{}),
-	)
+	csr = caser.New()
 }
 
 func (r *Resource) Infer() {

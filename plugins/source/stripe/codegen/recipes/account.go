@@ -4,12 +4,12 @@ import (
 	"github.com/stripe/stripe-go/v74"
 )
 
-func AccountResources() []*Resource {
-	return []*Resource{
+func init() {
+	AllResources = append(AllResources, []*Resource{
 		{
 			DataStruct: &stripe.Account{},
 			PKColumns:  []string{"id"},
 			Service:    "accounts",
 		},
-	}
+	}...)
 }

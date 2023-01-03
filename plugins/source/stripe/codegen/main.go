@@ -22,23 +22,14 @@ import (
 var templatesFS embed.FS
 
 func main() {
-	var resources []*recipes.Resource
-	resources = append(resources, recipes.AccountResources()...)
-	resources = append(resources, recipes.CustomerResources()...)
-	resources = append(resources, recipes.DisputeResources()...)
-	resources = append(resources, recipes.InvoiceResources()...)
-	resources = append(resources, recipes.ProductResources()...)
-	resources = append(resources, recipes.RefundResources()...)
-	resources = append(resources, recipes.SubscriptionResources()...)
-
-	for _, r := range resources {
+	for _, r := range recipes.AllResources {
 		r.SkipFields = append(r.SkipFields, "APIResource")
 		r.Infer()
 	}
-	if err := recipes.SetParentChildRelationships(resources); err != nil {
+	if err := recipes.SetParentChildRelationships(recipes.AllResources); err != nil {
 		log.Fatal(err)
 	}
-	for _, r := range resources {
+	for _, r := range recipes.AllResources {
 		r.GenerateNames()
 
 		_, filename, _, ok := runtime.Caller(0)
@@ -87,36 +78,50 @@ func generateTable(basedir string, r recipes.Resource) {
 	csr := caser.New()
 	pl := pluralize.NewClient()
 
-	mainTemplate := r.Template + ".go.tpl"
-	tpl, err := template.New(mainTemplate).Funcs(template.FuncMap{
-		"ToPascal":  csr.ToPascal,
-		"Pluralize": pl.Plural,
-	}).ParseFS(templatesFS, "templates/"+mainTemplate)
+	templates := []string{
+		r.Template + ".go.tpl",
+	}
+	if !r.SkipMocks {
+		templates = append(templates, r.Template+"_test.go.tpl")
+	}
+	for idx, templateName := range templates {
+		generatingMocks := idx == 1
 
-	if err != nil {
-		log.Fatal(fmt.Errorf("failed to parse templates: %w", err))
-	}
-	tpl, err = tpl.ParseFS(codegen.TemplatesFS, "templates/*.go.tpl")
-	if err != nil {
-		log.Fatal(fmt.Errorf("failed to parse recipes template: %w", err))
-	}
-	var buff bytes.Buffer
-	if err := tpl.Execute(&buff, r); err != nil {
-		log.Fatal(fmt.Errorf("failed to execute template: %w", err))
-	}
+		tpl, err := template.New(templateName).Funcs(template.FuncMap{
+			"ToPascal":  csr.ToPascal,
+			"Pluralize": pl.Plural,
+		}).ParseFS(templatesFS, "templates/"+templateName)
 
-	pkgPath := path.Join(basedir, r.Service)
-	if err := os.Mkdir(pkgPath, 0755); err != nil && !os.IsExist(err) {
-		log.Fatal(err)
-	}
+		if err != nil {
+			log.Fatal(fmt.Errorf("failed to parse templates: %w", err))
+		}
+		tpl, err = tpl.ParseFS(codegen.TemplatesFS, "templates/*.go.tpl")
+		if err != nil {
+			log.Fatal(fmt.Errorf("failed to parse recipes template: %w", err))
+		}
+		var buff bytes.Buffer
+		if err := tpl.Execute(&buff, r); err != nil {
+			log.Fatal(fmt.Errorf("failed to execute template: %w", err))
+		}
 
-	filePath := path.Join(pkgPath, r.Filename)
-	content, err := format.Source(buff.Bytes())
-	if err != nil {
-		fmt.Println(buff.String())
-		log.Fatal(fmt.Errorf("failed to format code for %s: %w", filePath, err))
-	}
-	if err := os.WriteFile(filePath, content, 0644); err != nil {
-		log.Fatal(fmt.Errorf("failed to write file %s: %w", filePath, err))
+		pkgPath := path.Join(basedir, r.Service)
+		if err := os.Mkdir(pkgPath, 0755); err != nil && !os.IsExist(err) {
+			log.Fatal(err)
+		}
+
+		var filePath string
+		if generatingMocks {
+			filePath = path.Join(pkgPath, strings.TrimSuffix(r.Filename, ".go")+"_test.go")
+		} else {
+			filePath = path.Join(pkgPath, r.Filename)
+		}
+		content, err := format.Source(buff.Bytes())
+		if err != nil {
+			fmt.Println(buff.String())
+			log.Fatal(fmt.Errorf("failed to format code for %s: %w", filePath, err))
+		}
+		if err := os.WriteFile(filePath, content, 0644); err != nil {
+			log.Fatal(fmt.Errorf("failed to write file %s: %w", filePath, err))
+		}
 	}
 }

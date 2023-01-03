@@ -3,38 +3,51 @@ package client
 import (
 	"context"
 	"fmt"
+	"net"
+	"net/http"
 	"os"
 	"testing"
 	"time"
 
+	"github.com/cloudquery/cloudquery/plugins/source/stripe/resources/testdata"
 	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
-	"github.com/golang/mock/gomock"
 	"github.com/rs/zerolog"
-	"github.com/stripe/stripe-go/v74/client"
+	"github.com/stripe/stripe-go/v74"
+	sclient "github.com/stripe/stripe-go/v74/client"
+	"github.com/stripe/stripe-mock/server"
 )
 
-func MockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, *gomock.Controller) *client.API) {
+func MockTestHelper(t *testing.T, table *schema.Table) {
 	version := "vDev"
 
 	t.Helper()
 	table.IgnoreInTests = false
 
-	ctrl := gomock.NewController(t)
-	defer ctrl.Finish()
 	logger := zerolog.New(zerolog.NewTestWriter(t)).Output(
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 
-	newTestExecutionClient := func(ctx context.Context, _ zerolog.Logger, spec specs.Source) (schema.ClientMeta, error) {
+	addr, teardown, err := startMockServer()
+	if err != nil {
+		t.Fatalf("startMockServer: %v", err)
+	}
+	defer func() {
+		if err := teardown(); err != nil {
+			t.Logf("Teardown error: %v", err)
+		}
+	}()
+
+	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source) (schema.ClientMeta, error) {
 		var stSpec Spec
 		if err := spec.UnmarshalSpec(&stSpec); err != nil {
 			return nil, fmt.Errorf("failed to unmarshal stripe spec: %w", err)
 		}
 
-		clients := builder(t, ctrl)
-		c := New(logger, spec, stSpec, clients)
+		setupMockClient(logger.Level(zerolog.InfoLevel), *addr)
+		cl := sclient.New(stripe.Key, nil)
+		c := New(logger, spec, stSpec, cl)
 		return &c, nil
 	}
 
@@ -54,4 +67,67 @@ func MockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, 
 		Tables:       []string{table.Name},
 		Destinations: []string{"mock-destination"},
 	})
+}
+
+func startMockServer() (*string, func() error, error) {
+	// This is mostly copied from the stripe-mock's main function at https://github.com/stripe/stripe-mock/blob/master/main.go
+
+	stripeSpec, err := server.LoadSpec(testdata.OpenAPISpec, "")
+	if err != nil {
+		return nil, nil, err
+	}
+	fixtures, err := server.LoadFixtures(testdata.OpenAPIFixtures, "")
+	if err != nil {
+		return nil, nil, err
+	}
+
+	stub, err := server.NewStubServer(fixtures, stripeSpec, false, false)
+	if err != nil {
+		return nil, nil, fmt.Errorf("Error initializing router: %w", err)
+	}
+
+	httpMux := http.NewServeMux()
+	httpMux.HandleFunc("/", stub.HandleRequest)
+
+	// Deduplicates doubled slashes in paths. e.g. `//v1/charges` becomes `/v1/charges`.
+	handler := &server.DoubleSlashFixHandler{Mux: httpMux}
+
+	listener, err := net.Listen("tcp", "localhost:0") // auto-choose port
+	if err != nil {
+		return nil, nil, fmt.Errorf("net.Listen: %w", err)
+	}
+
+	fmt.Printf("Listening for TCP at address: %v\n", listener.Addr())
+
+	srv := &http.Server{
+		Handler: handler,
+	}
+	go func() {
+		err := srv.Serve(listener)
+		if err != nil && err != http.ErrServerClosed {
+			panic(err.Error())
+		}
+	}()
+
+	addr := listener.Addr().String()
+	return &addr, func() error {
+		return srv.Shutdown(context.Background())
+	}, nil
+}
+
+func setupMockClient(logger zerolog.Logger, addr string) {
+	// This is mostly copied from stripe-go's testing package at https://github.com/stripe/stripe-go/blob/master/testing/testing.go
+	// Since the code is inside init() it can't be used directly without multiple headaches, and even if we do that we can't force it to run HTTP only.
+
+	stripe.Key = "sk_test_myTestKey"
+
+	stripeMockBackend := stripe.GetBackendWithConfig(
+		stripe.APIBackend,
+		&stripe.BackendConfig{
+			URL:           stripe.String("http://" + addr),
+			LeveledLogger: &LeveledLogger{Logger: logger},
+		},
+	)
+	stripe.SetBackend(stripe.APIBackend, stripeMockBackend)
+	stripe.SetBackend(stripe.UploadsBackend, stripeMockBackend)
 }

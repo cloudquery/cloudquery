@@ -4,8 +4,8 @@ import (
 	"github.com/stripe/stripe-go/v74"
 )
 
-func InvoiceResources() []*Resource {
-	return []*Resource{
+func init() {
+	AllResources = append(AllResources, []*Resource{
 		{
 			DataStruct: &stripe.Invoice{},
 			PKColumns:  []string{"id"},
@@ -15,6 +15,7 @@ func InvoiceResources() []*Resource {
 			DataStruct: &stripe.InvoiceItem{},
 			PKColumns:  []string{"id"},
 			Service:    "invoices",
+			SkipMocks:  true,
 		},
-	}
+	}...)
 }
