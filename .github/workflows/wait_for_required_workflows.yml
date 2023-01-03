@@ -55,6 +55,7 @@ jobs:
                            "plugins/source/heroku",
                            "plugins/source/k8s",
                            "plugins/source/okta",
+                           "plugins/source/shopify",
                            "plugins/source/slack",
                            "plugins/source/salesforce",
                            "plugins/source/snyk",
@@ -76,6 +77,7 @@ jobs:
                            "plugins/destination/gcs",
                            "plugins/destination/s3",
                            "plugins/destination/neo4j",
+                           "plugins/destination/kafka",
                            ].filter(action => matchesFile(action))
             if (actions.length === 0) {
               console.log("No actions to wait for")

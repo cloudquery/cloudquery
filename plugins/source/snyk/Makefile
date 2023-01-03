@@ -1,11 +1,11 @@
 # Unit tests
 .PHONY: test
 test:
-	go test -timeout 3m ./...
+	go test -race -timeout 3m ./...
 
 .PHONY: lint
 lint:
-	@golangci-lint run --config ../../.golangci.yml
+	golangci-lint run --config ../../.golangci.yml
 
 .PHONY: gen-code
 gen-code:
