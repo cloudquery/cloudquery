@@ -1,20 +1,20 @@
-package compute
+package mysql
 
 import (
 	"context"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func SKUs() *schema.Table {
+func Servers() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_compute_skus",
-		Resolver:  fetchResourceSKUs,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_compute),
-		Transform: transformers.TransformWithStruct(&armcompute.ResourceSKU{}),
+		Name:      "azure_mysql_servers",
+		Resolver:  fetchServers,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_dbformysql),
+		Transform: transformers.TransformWithStruct(&armmysql.Server{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -24,18 +24,22 @@ func SKUs() *schema.Table {
 			{
 				Name:     "id",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
+				Resolver: schema.PathResolver("ID"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
 			},
 		},
+
+		Relations: []*schema.Table{
+			server_configurations(),
+		},
 	}
 }
 
-func fetchResourceSKUs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchServers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc, err := armcompute.NewResourceSKUsClient(cl.SubscriptionId, cl.Creds, cl.Options)
+	svc, err := armmysql.NewServersClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {
 		return err
 	}
