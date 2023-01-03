@@ -92,7 +92,6 @@ func generateTemplate(name string, output string, data any) {
 	if err != nil {
 		log.Fatal(fmt.Errorf("failed to format code for %s: %w", filePath, err))
 	}
-
 	if err := os.WriteFile(filePath, content, 0644); err != nil {
 		log.Fatal(fmt.Errorf("failed to write file %s: %w", filePath, err))
 	}
