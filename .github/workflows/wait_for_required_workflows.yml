@@ -47,6 +47,7 @@ jobs:
                            "plugins/source/crowdstrike",
                            "plugins/source/digitalocean",
                            "plugins/source/datadog",
+                           "plugins/source/fastly",
                            "plugins/source/gandi",
                            "plugins/source/gcp",
                            "plugins/source/github",
@@ -54,8 +55,10 @@ jobs:
                            "plugins/source/heroku",
                            "plugins/source/k8s",
                            "plugins/source/okta",
+                           "plugins/source/shopify",
                            "plugins/source/slack",
                            "plugins/source/salesforce",
+                           "plugins/source/snyk",
                            "plugins/source/tailscale",
                            "plugins/source/pagerduty",
                            "plugins/source/terraform",
@@ -69,6 +72,12 @@ jobs:
                            "plugins/destination/snowflake",
                            "plugins/destination/bigquery",
                            "plugins/destination/mongodb",
+                           "plugins/destination/file",
+                           "plugins/destination/azblob",
+                           "plugins/destination/gcs",
+                           "plugins/destination/s3",
+                           "plugins/destination/neo4j",
+                           "plugins/destination/kafka",
                            ].filter(action => matchesFile(action))
             if (actions.length === 0) {
               console.log("No actions to wait for")

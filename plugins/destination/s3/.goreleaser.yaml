@@ -1,0 +1,14 @@
+variables:
+  component: destination/s3
+  binary: s3
+
+project_name: plugins/destination/s3
+
+monorepo:
+  tag_prefix: plugins-destination-s3-
+  dir: plugins/destination/s3
+
+includes:
+  - from_file:
+      # Relative to the directory Go Releaser is run from (which is the root of the repository)
+      path: ./plugins/.goreleaser.yaml

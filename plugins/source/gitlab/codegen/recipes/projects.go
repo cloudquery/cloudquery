@@ -13,7 +13,20 @@ func Projects() []*Resource {
 			SubService: "projects",
 			PKColumns:  []string{"base_url", "id"},
 			Struct:     &gitlab.Project{},
-			Relations:  []string{"ProjectsReleases()"},
+			Relations:  []string{"ProjectsReleases()", "ProjectBranches()"},
+		},
+		{
+			Service:    "projects",
+			SubService: "project_branches",
+			Struct:     &gitlab.Branch{},
+			PKColumns:  []string{"project_id", "name"},
+			ExtraColumns: []codegen.ColumnDefinition{
+				{
+					Name:     "project_id",
+					Type:     schema.TypeInt,
+					Resolver: `resolveProjectID`,
+				},
+			},
 		},
 		{
 			Service:    "projects",

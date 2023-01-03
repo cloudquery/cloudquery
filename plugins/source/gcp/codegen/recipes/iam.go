@@ -61,7 +61,6 @@ func init() {
 		if resource.OutputField == "" {
 			resource.OutputField = strcase.ToCamel(resource.SubService)
 		}
-		resource.ServiceDNS = "iam.googleapis.com"
 	}
 
 	Resources = append(Resources, resources...)
