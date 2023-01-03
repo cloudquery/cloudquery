@@ -117,6 +117,8 @@ require (
 
 require github.com/kylelemons/godebug v1.1.0 // indirect
 
+replace github.com/cloudquery/plugin-sdk => ../../../../plugin-sdk-split
+
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.1.2 // indirect; indirect // indirect
 	github.com/AzureAD/microsoft-authentication-library-for-go v0.7.0 // indirect
