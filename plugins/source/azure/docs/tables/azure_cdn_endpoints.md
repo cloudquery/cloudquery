@@ -15,3 +15,9 @@ This table depends on [azure_cdn_profiles](azure_cdn_profiles.md).
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |id (PK)|String|
+|location|String|
+|properties|JSON|
+|tags|JSON|
+|name|String|
+|system_data|JSON|
+|type|String|

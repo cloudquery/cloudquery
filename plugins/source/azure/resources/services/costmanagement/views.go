@@ -29,6 +29,11 @@ func Views() *schema.Table {
 					PrimaryKey: true,
 				},
 			},
+			{
+				Name:     "etag",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ETag"),
+			},
 		},
 		Relations: []*schema.Table{
 			view_queries(),
