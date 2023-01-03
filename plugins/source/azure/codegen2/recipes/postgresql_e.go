@@ -20,7 +20,7 @@ func PostgresqlE() []Table {
 			Relations: []*Table{
 				{
 					Service:        "armpostgresql",
-					Name:           "server_configurations",
+					Name:           "configurations",
 					Struct:         &armpostgresql.Configuration{},
 					ResponseStruct: &armpostgresql.ConfigurationsClientListByServerResponse{},
 					Client:         &armpostgresql.ConfigurationsClient{},

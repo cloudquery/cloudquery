@@ -10,7 +10,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func createServerConfigurations(router *mux.Router) error {
+func createConfigurations(router *mux.Router) error {
 	var item armpostgresql.ConfigurationsClientListByServerResponse
 	if err := faker.FakeObject(&item); err != nil {
 		return err

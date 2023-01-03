@@ -5,10 +5,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func server_configurations() *schema.Table {
+func configurations() *schema.Table {
 	return &schema.Table{
-		Name:     "azure_postgresql_server_configurations",
-		Resolver: fetchServerConfigurations,
+		Name:     "azure_postgresql_configurations",
+		Resolver: fetchConfigurations,
 		Columns: []schema.Column{
 			{
 				Name:     "properties",
