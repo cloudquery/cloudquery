@@ -38,3 +38,4 @@ require (
 )
 
 replace github.com/hermanschaaf/hackernews v1.0.0 => ../../../../hackernews
+replace github.com/cloudquery/plugin-sdk v1.16.1 => ../../../../plugin-sdk
