@@ -22,9 +22,12 @@ func buildEngineVersionsMock(t *testing.T, ctrl *gomock.Controller) client.Servi
 		t.Fatal(err)
 	}
 	ev.Marker = nil
-	ev.DBEngineVersions = append(ev.DBEngineVersions, types.DBEngineVersion{
-		DBParameterGroupFamily: aws.String("aurora-mysql5.7"),
-	})
+	var aurora types.DBEngineVersion
+	if err := faker.FakeObject(&aurora); err != nil {
+		t.Fatal(err)
+	}
+	aurora.DBParameterGroupFamily = aws.String("aurora-mysql5.7")
+	ev.DBEngineVersions = append(ev.DBEngineVersions, aurora)
 	m.EXPECT().DescribeDBEngineVersions(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&ev,
 		nil,
