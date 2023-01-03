@@ -37,6 +37,17 @@ func init() {
 					URL:            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers",
 					SkipFetch:      true,
 				},
+				{
+					Service:        "armstorage",
+					Name:           "blob_services",
+					Struct:         &armstorage.BlobServiceProperties{},
+					ResponseStruct: &armstorage.BlobServicesClientListResponse{},
+					Client:         &armstorage.BlobServicesClient{},
+					ListFunc:       (&armstorage.BlobServicesClient{}).NewListPager,
+					NewFunc:        armstorage.NewBlobServicesClient,
+					URL:            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices",
+					SkipFetch:      true,
+				},
 			},
 		},
 	}

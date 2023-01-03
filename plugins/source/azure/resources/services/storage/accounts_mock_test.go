@@ -34,6 +34,7 @@ func createAccounts(router *mux.Router) error {
 	})
 	createTables(router)
 	createContainers(router)
+	createBlobServices(router)
 	return nil
 }
 

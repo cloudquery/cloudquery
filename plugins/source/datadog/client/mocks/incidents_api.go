@@ -9,6 +9,7 @@ import (
 	http "net/http"
 	reflect "reflect"
 
+	datadog "github.com/DataDog/datadog-api-client-go/v2/api/datadog"
 	datadogV2 "github.com/DataDog/datadog-api-client-go/v2/api/datadogV2"
 	gomock "github.com/golang/mock/gomock"
 )
@@ -79,17 +80,16 @@ func (mr *MockIncidentsAPIClientMockRecorder) ListIncidents(arg0 interface{}, ar
 }
 
 // ListIncidentsWithPagination mocks base method.
-func (m *MockIncidentsAPIClient) ListIncidentsWithPagination(arg0 context.Context, arg1 ...datadogV2.ListIncidentsOptionalParameters) (<-chan datadogV2.IncidentResponseData, func(), error) {
+func (m *MockIncidentsAPIClient) ListIncidentsWithPagination(arg0 context.Context, arg1 ...datadogV2.ListIncidentsOptionalParameters) (<-chan datadog.PaginationResult[datadogV2.IncidentResponseData], func()) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0}
 	for _, a := range arg1 {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "ListIncidentsWithPagination", varargs...)
-	ret0, _ := ret[0].(<-chan datadogV2.IncidentResponseData)
+	ret0, _ := ret[0].(<-chan datadog.PaginationResult[datadogV2.IncidentResponseData])
 	ret1, _ := ret[1].(func())
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
+	return ret0, ret1
 }
 
 // ListIncidentsWithPagination indicates an expected call of ListIncidentsWithPagination.
