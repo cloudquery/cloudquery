@@ -2,6 +2,8 @@
 
 ## Tables
 
+- [stripe_accounts](stripe_accounts.md)
+- [stripe_customers](stripe_customers.md)
 - [stripe_disputes](stripe_disputes.md)
 - [stripe_invoices](stripe_invoices.md)
 - [stripe_invoice_items](stripe_invoice_items.md)

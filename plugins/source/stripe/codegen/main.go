@@ -23,6 +23,7 @@ var templatesFS embed.FS
 
 func main() {
 	var resources []*recipes.Resource
+	resources = append(resources, recipes.AccountResources()...)
 	resources = append(resources, recipes.CustomerResources()...)
 	resources = append(resources, recipes.DisputeResources()...)
 	resources = append(resources, recipes.InvoiceResources()...)
