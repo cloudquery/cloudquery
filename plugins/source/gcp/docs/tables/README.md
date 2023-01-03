@@ -66,6 +66,7 @@
 - [gcp_bigquery_datasets](gcp_bigquery_datasets.md)
   - [gcp_bigquery_tables](gcp_bigquery_tables.md)
 - [gcp_billing_billing_accounts](gcp_billing_billing_accounts.md)
+  - [gcp_billing_budgets](gcp_billing_budgets.md)
 - [gcp_billing_services](gcp_billing_services.md)
 - [gcp_clouderrorreporting_error_group_stats](gcp_clouderrorreporting_error_group_stats.md)
   - [gcp_clouderrorreporting_error_events](gcp_clouderrorreporting_error_events.md)
