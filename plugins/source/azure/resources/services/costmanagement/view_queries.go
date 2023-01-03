@@ -10,7 +10,7 @@ func view_queries() *schema.Table {
 	return &schema.Table{
 		Name:     "azure_costmanagement_view_queries",
 		Resolver: fetchViewQueries,
-		Transform: transformers.TransformWithStruct(&armcostmanagement.QueryResult{}),
+		Transform: transformers.TransformWithStruct(&armcostmanagement.QueryResult{}, transformers.WithSkipFields([]string{"ETag"})),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

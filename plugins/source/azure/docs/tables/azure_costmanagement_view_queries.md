@@ -17,7 +17,6 @@ This table depends on [azure_costmanagement_views](azure_costmanagement_views.md
 |id (PK)|String|
 |etag|String|
 |properties|JSON|
-|e_tag|String|
 |location|String|
 |name|String|
 |sku|String|
