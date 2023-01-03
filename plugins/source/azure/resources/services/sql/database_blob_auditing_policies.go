@@ -5,10 +5,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func server_database_blob_auditing_policies() *schema.Table {
+func database_blob_auditing_policies() *schema.Table {
 	return &schema.Table{
-		Name:     "azure_sql_server_database_blob_auditing_policies",
-		Resolver: fetchServerDatabaseBlobAuditingPolicies,
+		Name:     "azure_sql_database_blob_auditing_policies",
+		Resolver: fetchDatabaseBlobAuditingPolicies,
 		Columns: []schema.Column{
 			{
 				Name:     "properties",

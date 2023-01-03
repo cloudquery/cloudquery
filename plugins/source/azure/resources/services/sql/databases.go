@@ -5,10 +5,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func server_databases() *schema.Table {
+func databases() *schema.Table {
 	return &schema.Table{
-		Name:     "azure_sql_server_databases",
-		Resolver: fetchServerDatabases,
+		Name:     "azure_sql_databases",
+		Resolver: fetchDatabases,
 		Columns: []schema.Column{
 			{
 				Name:     "location",
@@ -66,7 +66,7 @@ func server_databases() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			server_database_blob_auditing_policies(),
+			database_blob_auditing_policies(),
 		},
 	}
 }

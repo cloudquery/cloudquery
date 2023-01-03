@@ -10,8 +10,8 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func createServerDatabaseBlobAuditingPolicies(router *mux.Router) error {
-	var item armsql.DatabaseBlobAuditingPolicyListResult
+func createDatabases(router *mux.Router) error {
+	var item armsql.DatabasesClientListByServerResponse
 	if err := faker.FakeObject(&item); err != nil {
 		return err
 	}
@@ -19,7 +19,7 @@ func createServerDatabaseBlobAuditingPolicies(router *mux.Router) error {
 	emptyStr := ""
 	item.NextLink = &emptyStr
 
-	router.HandleFunc("/subscriptions/{subscriptionId}/resourceGroups/debug/providers/Microsoft.Sql/servers/test string/databases/test string/auditingSettings", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/subscriptions/{subscriptionId}/resourceGroups/debug/providers/Microsoft.Sql/servers/test string/databases", func(w http.ResponseWriter, r *http.Request) {
 		b, err := json.Marshal(&item)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)
@@ -30,5 +30,6 @@ func createServerDatabaseBlobAuditingPolicies(router *mux.Router) error {
 			return
 		}
 	})
+	createDatabaseBlobAuditingPolicies(router)
 	return nil
 }

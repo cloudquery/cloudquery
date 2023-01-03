@@ -20,7 +20,18 @@ func SqlServersE() []Table {
 			Relations: []*Table{
 				{
 					Service:        "armsql",
-					Name:           "server_databases",
+					Name:           "server_vulnerability_assessments",
+					Struct:         &armsql.ServerVulnerabilityAssessment{},
+					ResponseStruct: &armsql.ServerVulnerabilityAssessmentsClientListByServerResponse{},
+					Client:         &armsql.ServerVulnerabilityAssessmentsClient{},
+					ListFunc:       (&armsql.ServerVulnerabilityAssessmentsClient{}).NewListByServerPager,
+					NewFunc:        armsql.NewServerVulnerabilityAssessmentsClient,
+					URL:            "/subscriptions/{subscriptionId}/resourceGroups/debug/providers/Microsoft.Sql/servers/test string/vulnerabilityAssessments",
+					SkipFetch:      true,
+				},
+				{
+					Service:        "armsql",
+					Name:           "databases",
 					Struct:         &armsql.Database{},
 					ResponseStruct: &armsql.DatabasesClientListByServerResponse{},
 					Client:         &armsql.DatabasesClient{},
@@ -31,7 +42,7 @@ func SqlServersE() []Table {
 					Relations: []*Table{
 						{
 							Service:        "armsql",
-							Name:           "server_database_blob_auditing_policies",
+							Name:           "database_blob_auditing_policies",
 							Struct:         &armsql.DatabaseBlobAuditingPolicy{},
 							ResponseStruct: &armsql.DatabaseBlobAuditingPolicyListResult{},
 							Client:         &armsql.DatabaseBlobAuditingPoliciesClient{},
