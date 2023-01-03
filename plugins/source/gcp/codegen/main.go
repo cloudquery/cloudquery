@@ -34,29 +34,38 @@ func main() {
 			generateResource(*r, true)
 		}
 	}
-	generatePlugin(recipes.Resources)
+	generateTemplate("autogen_tables.go.tpl", "resources/plugin/autogen_tables.go", recipes.Resources)
 }
 
-func generatePlugin(rr []*recipes.Resource) {
+func generateTemplate(name string, output string, data any) {
 	_, filename, _, ok := runtime.Caller(0)
 	if !ok {
 		log.Fatal("Failed to get caller information")
 	}
 	dir := path.Dir(filename)
-	tpl, err := template.New("autogen_tables.go.tpl").Funcs(template.FuncMap{
+	tpl, err := template.New(name).Funcs(template.FuncMap{
 		"ToCamel": strcase.ToCamel,
 		"ToLower": strings.ToLower,
-	}).ParseFS(gcpTemplatesFS, "templates/autogen_tables.go.tpl")
+	}).ParseFS(gcpTemplatesFS, "templates/"+name)
+
 	if err != nil {
-		log.Fatal(fmt.Errorf("failed to parse autogen_tables.go.tpl: %w", err))
+		log.Fatal(fmt.Errorf("failed to parse %s: %w", name, err))
+	}
+
+	tpl, err = tpl.ParseFS(codegen.TemplatesFS, "templates/*.go.tpl")
+	if err != nil {
+		log.Fatal(fmt.Errorf("failed to parse SDK template %s: %w", name, err))
 	}
 
 	var buff bytes.Buffer
-	if err := tpl.Execute(&buff, rr); err != nil {
+	if err := tpl.Execute(&buff, data); err != nil {
 		log.Fatal(fmt.Errorf("failed to execute template: %w", err))
 	}
 
-	filePath := path.Join(dir, "../resources/plugin/autogen_tables.go")
+	filePath := path.Join(dir, "..", output)
+	if err := os.MkdirAll(path.Dir(filePath), os.ModePerm); err != nil {
+		log.Fatal(fmt.Errorf("failed to create directory %s: %w", filePath, err))
+	}
 	content, err := format.Source(buff.Bytes())
 	if err != nil {
 		log.Fatal(fmt.Errorf("failed to format code for %s: %w", filePath, err))
@@ -148,13 +157,6 @@ func generateMockTestData(r *recipes.Resource) {
 }
 
 func generateResource(r recipes.Resource, mock bool) {
-	var err error
-	_, filename, _, ok := runtime.Caller(0)
-	if !ok {
-		log.Fatal("Failed to get caller information")
-	}
-	dir := path.Dir(filename)
-
 	if r.NewFunction != nil {
 		path := strings.Split(runtime.FuncForPC(reflect.ValueOf(r.NewFunction).Pointer()).Name(), ".")
 		r.NewFunctionName = path[len(path)-1]
@@ -256,6 +258,7 @@ func generateResource(r recipes.Resource, mock bool) {
 		opts = append(opts, codegen.WithNameTransformer(r.NameTransformer))
 	}
 
+	var err error
 	r.Table, err = codegen.NewTableFromStruct(
 		fmt.Sprintf("gcp_%s_%s", r.Service, r.SubService),
 		r.Struct,
@@ -307,43 +310,13 @@ func generateResource(r recipes.Resource, mock bool) {
 			mainTemplate = r.MockTemplate + ".go.tpl"
 		}
 	}
-	tpl, err := template.New(mainTemplate).Funcs(template.FuncMap{
-		"ToCamel": strcase.ToCamel,
-		"ToLower": strings.ToLower,
-	}).ParseFS(gcpTemplatesFS, "templates/"+mainTemplate)
-	if err != nil {
-		log.Fatal(fmt.Errorf("failed to parse gcp templates: %w", err))
-	}
-	tpl, err = tpl.ParseFS(codegen.TemplatesFS, "templates/*.go.tpl")
-	if err != nil {
-		log.Fatal(fmt.Errorf("failed to parse sdk template: %w", err))
-	}
-	var buff bytes.Buffer
-	if err := tpl.Execute(&buff, r); err != nil {
-		log.Fatal(fmt.Errorf("failed to execute template: %w", err))
-	}
-	filePath := path.Join(dir, "../resources/services", r.Service)
-	if err := os.MkdirAll(filePath, os.ModePerm); err != nil {
-		log.Fatal(err)
-	}
+
+	filePath := "resources/services/" + r.Service
 	if mock {
 		filePath = path.Join(filePath, r.SubService+"_mock_test.go")
 	} else {
 		filePath = path.Join(filePath, r.SubService+".go")
 	}
 
-	content := buff.Bytes()
-	formattedContent, err := format.Source(buff.Bytes())
-	if err != nil {
-		log.Printf("failed to format %s\n", filePath)
-	} else {
-		content = formattedContent
-	}
-	// if err != nil {
-	// 	fmt.Println(buff.String())
-	// 	log.Fatal(fmt.Errorf("failed to format code for %s: %w", filePath, err))
-	// }
-	if err := os.WriteFile(filePath, content, 0644); err != nil {
-		log.Fatal(fmt.Errorf("failed to write file %s: %w", filePath, err))
-	}
+	generateTemplate(mainTemplate, filePath, r)
 }
