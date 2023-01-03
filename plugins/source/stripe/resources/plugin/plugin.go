@@ -2,6 +2,7 @@ package plugin
 
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/stripe/client"
+	"github.com/cloudquery/cloudquery/plugins/source/stripe/resources/services/customers"
 	"github.com/cloudquery/cloudquery/plugins/source/stripe/resources/services/disputes"
 	"github.com/cloudquery/cloudquery/plugins/source/stripe/resources/services/invoices"
 	"github.com/cloudquery/cloudquery/plugins/source/stripe/resources/services/products"
@@ -20,6 +21,7 @@ func Plugin() *source.Plugin {
 		"stripe",
 		Version,
 		[]*schema.Table{
+			customers.Customers(),
 			disputes.Disputes(),
 			invoices.Invoices(),
 			invoices.InvoiceItems(),
