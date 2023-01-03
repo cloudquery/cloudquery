@@ -68,6 +68,8 @@
 - [gcp_billing_billing_accounts](gcp_billing_billing_accounts.md)
   - [gcp_billing_budgets](gcp_billing_budgets.md)
 - [gcp_billing_services](gcp_billing_services.md)
+- [gcp_clouderrorreporting_error_group_stats](gcp_clouderrorreporting_error_group_stats.md)
+  - [gcp_clouderrorreporting_error_events](gcp_clouderrorreporting_error_events.md)
 - [gcp_compute_addresses](gcp_compute_addresses.md)
 - [gcp_compute_autoscalers](gcp_compute_autoscalers.md)
 - [gcp_compute_backend_services](gcp_compute_backend_services.md)
