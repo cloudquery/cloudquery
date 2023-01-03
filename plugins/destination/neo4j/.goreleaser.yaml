@@ -1,0 +1,14 @@
+variables:
+  component: destination/neo4j
+  binary: neo4j
+
+project_name: plugins/destination/neo4j
+
+monorepo:
+  tag_prefix: plugins-destination-neo4j-
+  dir: plugins/destination/neo4j
+
+includes:
+  - from_file:
+      # Relative to the directory Go Releaser is run from (which is the root of the repository)
+      path: ./plugins/.goreleaser.yaml

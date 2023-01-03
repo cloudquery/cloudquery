@@ -550,6 +550,7 @@ func Repositories() *schema.Table {
 		Relations: []*schema.Table{
 			Alerts(),
 			Secrets(),
+			Releases(),
 		},
 	}
 }

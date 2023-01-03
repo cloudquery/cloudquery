@@ -12,7 +12,6 @@ func init() {
 			Struct:         &pb.AlertPolicy{},
 			NewFunction:    monitoring.NewAlertPolicyClient,
 			RegisterServer: pb.RegisterAlertPolicyServiceServer,
-			ListFunction:   (&pb.UnimplementedAlertPolicyServiceServer{}).ListAlertPolicies,
 			PrimaryKeys:    []string{"name"},
 			Description:    "https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.alertPolicies#AlertPolicy",
 		},

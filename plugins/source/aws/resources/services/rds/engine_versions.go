@@ -62,6 +62,11 @@ func EngineVersions() *schema.Table {
 				Resolver: schema.PathResolver("DBEngineDescription"),
 			},
 			{
+				Name:     "db_engine_media_type",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("DBEngineMediaType"),
+			},
+			{
 				Name:     "db_engine_version_arn",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("DBEngineVersionArn"),
@@ -95,6 +100,11 @@ func EngineVersions() *schema.Table {
 				Name:     "exportable_log_types",
 				Type:     schema.TypeStringArray,
 				Resolver: schema.PathResolver("ExportableLogTypes"),
+			},
+			{
+				Name:     "image",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Image"),
 			},
 			{
 				Name:     "kms_key_id",

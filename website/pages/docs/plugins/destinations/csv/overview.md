@@ -2,8 +2,13 @@
 
 import { getLatestVersion } from "../../../../../utils/versions";
 import { Badge } from "../../../../../components/Badge";
+import { Callout } from 'nextra-theme-docs'
 
 <Badge text={"Latest: " + getLatestVersion("destination", "csv")}/>
+
+<Callout type="error">
+This plugin was deprecated. Please use the [File plugin instead](/docs/plugins/destinations/file/overview).
+</Callout>
 
 This destination plugin lets you sync data from a CloudQuery source to CSV files.
 

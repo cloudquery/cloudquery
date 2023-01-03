@@ -1,10 +1,14 @@
 package client
 
 var GcpServices = map[string]bool{
+	"aiplatform.googleapis.com":            true,
 	"apikeys.googleapis.com":               true,
 	"apigateway.googleapis.com":            true,
 	"appengine.googleapis.com":             true,
 	"artifactregistry.googleapis.com":      true,
+	"batch.googleapis.com":                 true,
+	"baremetalsolution.googleapis.com":     true,
+	"beyondcorp.googleapis.com":            true,
 	"bigquery.googleapis.com":              true,
 	"bigquerydatatransfer.googleapis.com":  true,
 	"bigquerymigration.googleapis.com":     true,
