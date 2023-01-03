@@ -88,12 +88,9 @@ func generateTemplate(name string, output string, data any) {
 	if err := os.MkdirAll(path.Dir(filePath), os.ModePerm); err != nil {
 		log.Fatal(fmt.Errorf("failed to create directory %s: %w", filePath, err))
 	}
-	content := buff.Bytes()
-	if strings.HasSuffix(filePath, ".go") {
-		content, err = format.Source(content)
-		if err != nil {
-			log.Fatal(fmt.Errorf("failed to format code for %s: %w", filePath, err))
-		}
+	content, err := format.Source(buff.Bytes())
+	if err != nil {
+		log.Fatal(fmt.Errorf("failed to format code for %s: %w", filePath, err))
 	}
 
 	if err := os.WriteFile(filePath, content, 0644); err != nil {
