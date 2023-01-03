@@ -53,8 +53,8 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (sche
 }
 
 func getServiceClient(logger zerolog.Logger, spec *Spec) (*client.API, error) {
-	if spec.AccessToken == "" {
-		return nil, errors.New("no access_token provided")
+	if spec.APIKey == "" {
+		return nil, errors.New("no api_key provided")
 	}
 
 	sCfg := &stripe.BackendConfig{
@@ -67,7 +67,7 @@ func getServiceClient(logger zerolog.Logger, spec *Spec) (*client.API, error) {
 	}
 
 	c := &client.API{}
-	c.Init(spec.AccessToken, &stripe.Backends{
+	c.Init(spec.APIKey, &stripe.Backends{
 		API:     stripe.GetBackendWithConfig(stripe.APIBackend, sCfg),
 		Connect: stripe.GetBackendWithConfig(stripe.ConnectBackend, sCfg),
 		Uploads: stripe.GetBackendWithConfig(stripe.UploadsBackend, sCfg),

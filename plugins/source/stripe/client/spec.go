@@ -1,7 +1,7 @@
 package client
 
 type Spec struct {
-	AccessToken string `json:"access_token"`
+	APIKey string `json:"api_key"`
 
 	MaxRetries int64 `json:"max_retries"`
 }
