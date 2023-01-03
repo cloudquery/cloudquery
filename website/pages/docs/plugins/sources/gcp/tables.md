@@ -67,6 +67,8 @@
   - [gcp_bigquery_tables](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_bigquery_tables.md)
 - [gcp_billing_billing_accounts](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_billing_billing_accounts.md)
 - [gcp_billing_services](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_billing_services.md)
+- [gcp_clouderrorreporting_error_group_stats](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_clouderrorreporting_error_group_stats.md)
+  - [gcp_clouderrorreporting_error_events](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_clouderrorreporting_error_events.md)
 - [gcp_compute_addresses](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_compute_addresses.md)
 - [gcp_compute_autoscalers](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_compute_autoscalers.md)
 - [gcp_compute_backend_services](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_compute_backend_services.md)
