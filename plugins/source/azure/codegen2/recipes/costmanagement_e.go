@@ -1,8 +1,10 @@
 package recipes
 
-import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement"
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement"
+)
 
-func init() {
+func CostManagementE() []Table {
 	tables := []Table{
 		{
 			Service:        "armcostmanagement",
@@ -33,5 +35,9 @@ func init() {
 			},
 		},
 	}
-	Tables = append(Tables, tables...)
+	return tables
+}
+
+func init() {
+	Tables = append(Tables, CostManagementE()...)
 }

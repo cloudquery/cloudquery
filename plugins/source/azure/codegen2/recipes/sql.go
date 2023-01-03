@@ -31,18 +31,6 @@ func init() {
 		},
 		{
 			Service:        "armsql",
-			Name:           "servers",
-			Struct:         &armsql.Server{},
-			ResponseStruct: &armsql.ServersClientListResponse{},
-			Client:         &armsql.ServersClient{},
-			ListFunc:       (&armsql.ServersClient{}).NewListPager,
-			NewFunc:        armsql.NewServersClient,
-			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/servers",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_sql)`,
-			ExtraColumns:   DefaultExtraColumns,
-		},
-		{
-			Service:        "armsql",
 			Name:           "virtual_clusters",
 			Struct:         &armsql.VirtualCluster{},
 			ResponseStruct: &armsql.VirtualClustersClientListResponse{},

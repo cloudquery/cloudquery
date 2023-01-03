@@ -24,15 +24,6 @@ func Armsql() []*Table {
 			ResponseStruct: "ManagedInstancesClientListResponse",
 		},
 		{
-			NewFunc:        armsql.NewServersClient,
-			PkgPath:        "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql",
-			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/servers",
-			Namespace:      "microsoft.sql",
-			Multiplex:      `client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_sql)`,
-			Pager:          `NewListPager`,
-			ResponseStruct: "ServersClientListResponse",
-		},
-		{
 			NewFunc:        armsql.NewVirtualClustersClient,
 			PkgPath:        "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql",
 			URL:            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/virtualClusters",

@@ -32,6 +32,8 @@ var newFuncToSkipPerPackage = map[string]map[string]bool{
 	// seems this api is not working and always returning InvalidResourceType
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql": {
 		"NewDeletedServersClient": true,
+		// we migrated this to manual written client as it has childs
+		"NewServersClient": true,
 	},
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute": {
 		// we migrated this to manual written client as it has childs
@@ -76,6 +78,9 @@ var newFuncToSkipPerPackage = map[string]map[string]bool{
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservice": {
 		"NewDeletedAccountsClient": true,
 	},
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement": {
+		"NewViewsClient": true,
+	},
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction": {
 		// Too long table name we will handle this with manually written receipe
 		"NewMarketplaceRegistrationDefinitionsWithoutScopeClient": true,
@@ -90,6 +95,10 @@ var newFuncToSkipPerPackage = map[string]map[string]bool{
 		// we migrated this to manual written client as it has childs
 		"NewAccountsClient":        true,
 		"NewDeletedAccountsClient": true,
+	},
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql": {
+		// we migrated this to manual written client as it has childs
+		"NewServersClient": true,
 	},
 }
 
