@@ -42,6 +42,17 @@ func SqlServersE() []Table {
 				},
 				{
 					Service:        "armsql",
+					Name:           "encryption_protectors",
+					Struct:         &armsql.EncryptionProtector{},
+					ResponseStruct: &armsql.EncryptionProtectorsClientListByServerResponse{},
+					Client:         &armsql.EncryptionProtectorsClient{},
+					ListFunc:       (&armsql.EncryptionProtectorsClient{}).NewListByServerPager,
+					NewFunc:        armsql.NewEncryptionProtectorsClient,
+					URL:            "/subscriptions/{subscriptionId}/resourceGroups/debug/providers/Microsoft.Sql/servers/test string/encryptionProtector",
+					SkipFetch:      true,
+				},
+				{
+					Service:        "armsql",
 					Name:           "databases",
 					Struct:         &armsql.Database{},
 					ResponseStruct: &armsql.DatabasesClientListByServerResponse{},

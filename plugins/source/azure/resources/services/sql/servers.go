@@ -67,6 +67,7 @@ func Servers() *schema.Table {
 		Relations: []*schema.Table{
 			server_vulnerability_assessments(),
 			server_admins(),
+			encryption_protectors(),
 			databases(),
 		},
 	}
