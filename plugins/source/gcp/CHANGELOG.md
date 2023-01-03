@@ -5,6 +5,31 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v5.3.1...plugins-source-gcp-v5.4.0) (2023-01-03)
+
+
+### Features
+
+* **gcp-codegen:** Make ListFunction optional ([#5971](https://github.com/cloudquery/cloudquery/issues/5971)) ([5717f05](https://github.com/cloudquery/cloudquery/commit/5717f05ae15a13dcd0ca0bec0538daa0a7f941ec))
+* **gcp-resources:** Add AppEngine resources ([#5972](https://github.com/cloudquery/cloudquery/issues/5972)) ([d6b6c6a](https://github.com/cloudquery/cloudquery/commit/d6b6c6a9ab81853a032cf71c04e39b091a0ffc82))
+* **gcp-resources:** Add Artifact Registry ([#6020](https://github.com/cloudquery/cloudquery/issues/6020)) ([76faa06](https://github.com/cloudquery/cloudquery/commit/76faa0650878be9f4f03df2be3c9b53022d5961d))
+* **gcp-resources:** Add Bare Metal Solution ([#6044](https://github.com/cloudquery/cloudquery/issues/6044)) ([9a80b27](https://github.com/cloudquery/cloudquery/commit/9a80b270292bfd8c0d878d100281c8460a7ff178))
+* **gcp-resources:** Add Batch ([#6128](https://github.com/cloudquery/cloudquery/issues/6128)) ([43cd3be](https://github.com/cloudquery/cloudquery/commit/43cd3bed93a4b6ced65b4c87dda5cab65f0ba8a1))
+* **gcp-resources:** Add BeyondCorp ([#6133](https://github.com/cloudquery/cloudquery/issues/6133)) ([48aafd0](https://github.com/cloudquery/cloudquery/commit/48aafd0f353cd5352f1e953cd9d58500f7757817))
+* **gcp-resources:** Add Vertex-AI ([#5762](https://github.com/cloudquery/cloudquery/issues/5762)) ([d22b69d](https://github.com/cloudquery/cloudquery/commit/d22b69d68c201d6c6a5034763702cb48a3afd612))
+* **gcp:** Auto generate services list ([#5961](https://github.com/cloudquery/cloudquery/issues/5961)) ([0467de5](https://github.com/cloudquery/cloudquery/commit/0467de51153e141d1b22e0a808b7fcdb6b7669dd))
+
+
+### Bug Fixes
+
+* **deps:** Update google.golang.org/genproto digest to f9683d7 ([#6170](https://github.com/cloudquery/cloudquery/issues/6170)) ([0df29be](https://github.com/cloudquery/cloudquery/commit/0df29be135e580a3e3a5c6a093614b29ed4789fe))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.14.0 ([#6025](https://github.com/cloudquery/cloudquery/issues/6025)) ([35b2cfc](https://github.com/cloudquery/cloudquery/commit/35b2cfc7fc7bcdaceb7ee674e3a17f0f5673b366))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.15.0 ([#6071](https://github.com/cloudquery/cloudquery/issues/6071)) ([684b525](https://github.com/cloudquery/cloudquery/commit/684b525aaa285fcae70dd87af56679c1205adebe))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.15.1 ([#6079](https://github.com/cloudquery/cloudquery/issues/6079)) ([650659c](https://github.com/cloudquery/cloudquery/commit/650659c3c6766df571868e2ec3a2007cb76696eb))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.16.0 ([#6098](https://github.com/cloudquery/cloudquery/issues/6098)) ([7bacdf3](https://github.com/cloudquery/cloudquery/commit/7bacdf3364716eab08fa1a84ae4047b42edeee7e))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.16.1 ([#6214](https://github.com/cloudquery/cloudquery/issues/6214)) ([53b2415](https://github.com/cloudquery/cloudquery/commit/53b241508d7511d4b5fa74cc4262d180c1e6df66))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.17.0 ([#6256](https://github.com/cloudquery/cloudquery/issues/6256)) ([b19f6cd](https://github.com/cloudquery/cloudquery/commit/b19f6cd8e2c39994aeb19d78e78e927d6c3cf580))
+
 ## [5.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v5.3.0...plugins-source-gcp-v5.3.1) (2022-12-27)
 
 
