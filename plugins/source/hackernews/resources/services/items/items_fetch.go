@@ -75,7 +75,6 @@ func fetchItems(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource,
 	g2.Go(func() error {
 		h := &intheap.IntHeap{}
 		for v := range success {
-			c.Logger().Info().Msg("Done with" + strconv.Itoa(v))
 			heap.Push(h, v)
 			for h.Len() > 0 {
 				min := heap.Pop(h).(int)
@@ -90,7 +89,6 @@ func fetchItems(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource,
 		return nil
 	})
 	for i := cursor + 1; i <= maxID; i++ {
-		c.Logger().Info().Msg("Queuing item " + strconv.Itoa(i))
 		select {
 		case work <- i:
 		case <-gctx.Done():
@@ -108,7 +106,6 @@ func fetchItems(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource,
 }
 
 func fetchItem(ctx context.Context, c *client.Client, itemID int, res chan<- any) error {
-	c.Logger().Info().Msg("Fetching item " + strconv.Itoa(itemID))
 	item, err := c.HackerNews.GetItem(ctx, itemID)
 	if err != nil {
 		var httpErr hackernews.HTTPError
