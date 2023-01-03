@@ -31,6 +31,17 @@ func SqlServersE() []Table {
 				},
 				{
 					Service:        "armsql",
+					Name:           "server_admins",
+					Struct:         &armsql.ServerAzureADAdministrator{},
+					ResponseStruct: &armsql.ServerAzureADAdministratorsClientListByServerResponse{},
+					Client:         &armsql.ServerAzureADAdministratorsClient{},
+					ListFunc:       (&armsql.ServerAzureADAdministratorsClient{}).NewListByServerPager,
+					NewFunc:        armsql.NewServerAzureADAdministratorsClient,
+					URL:            "/subscriptions/{subscriptionId}/resourceGroups/debug/providers/Microsoft.Sql/servers/test string/administrators",
+					SkipFetch:      true,
+				},
+				{
+					Service:        "armsql",
 					Name:           "databases",
 					Struct:         &armsql.Database{},
 					ResponseStruct: &armsql.DatabasesClientListByServerResponse{},
