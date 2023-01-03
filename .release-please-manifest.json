@@ -50,7 +50,7 @@
   "plugins/source/pagerduty": "1.1.2",
   "plugins/destination/mongodb": "1.0.3",
   "plugins/destination/mongodb+FILLTER": "0.0.0",
-  "plugins/source/gitlab": "1.0.1",
+  "plugins/source/gitlab": "1.1.0",
   "plugins/source/gitlab+FILLER": "0.0.0",
   "plugins/source/azuredevops": "1.0.1",
   "plugins/source/azuredevops+FILLER": "0.0.0",
