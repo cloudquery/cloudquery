@@ -264,6 +264,7 @@ func generatedTables() []*schema.Table {
 		portal.ListTenantConfigurationViolations(),
 		portal.TenantConfigurations(),
 		postgresql.Servers(),
+		postgresql.Servers(),
 		postgresqlflexibleservers.Servers(),
 		postgresqlhsc.ServerGroups(),
 		powerbidedicated.Capacities(),
