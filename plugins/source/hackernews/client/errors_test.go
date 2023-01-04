@@ -62,5 +62,4 @@ func TestRetryOnRateLimitError(t *testing.T) {
 			t.Errorf("RetryOnError returned error: %v, want %v", got, nil)
 		}
 	})
-
 }

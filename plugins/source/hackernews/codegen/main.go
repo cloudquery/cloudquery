@@ -8,6 +8,7 @@ import (
 	"log"
 	"os"
 	"path"
+	"reflect"
 	"runtime"
 	"strings"
 	"text/template"
@@ -16,6 +17,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/hackernews/codegen/services"
 	"github.com/cloudquery/cloudquery/plugins/source/hackernews/codegen/tables"
 	"github.com/cloudquery/plugin-sdk/codegen"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 //go:embed templates/*.go.tpl
@@ -61,6 +63,8 @@ func generateTable(basedir string, r recipes.Resource) {
 		codegen.WithSkipFields(r.SkipFields),
 		codegen.WithExtraColumns(r.ExtraColumns),
 		codegen.WithPKColumns(r.PKColumns...),
+		codegen.WithTypeTransformer(typeTransformer),
+		codegen.WithResolverTransformer(resolverTransformer),
 	}
 	if r.UnwrapEmbeddedStructs {
 		opts = append(opts, codegen.WithUnwrapAllEmbeddedStructs())
@@ -78,6 +82,7 @@ func generateTable(basedir string, r recipes.Resource) {
 	r.Table.Relations = r.Relations
 	r.Table.PreResourceResolver = r.PreResourceResolver
 	r.Table.PostResourceResolver = r.PostResourceResolver
+	r.Table.IsIncremental = r.IsIncremental
 
 	for _, c := range r.Table.Columns {
 		if strings.HasPrefix(c.Resolver, "client.") {
@@ -113,4 +118,18 @@ func generateTable(basedir string, r recipes.Resource) {
 	if err := os.WriteFile(filePath, content, 0644); err != nil {
 		log.Fatal(fmt.Errorf("failed to write file %s: %w", filePath, err))
 	}
+}
+
+func typeTransformer(f reflect.StructField) (schema.ValueType, error) {
+	if f.Name == "Time" || f.Name == "Created" {
+		return schema.TypeTimestamp, nil
+	}
+	return codegen.DefaultTypeTransformer(f)
+}
+
+func resolverTransformer(f reflect.StructField, path string) (string, error) {
+	if f.Name == "Time" || f.Name == "Created" {
+		return fmt.Sprintf(`client.UnixTimeResolver("%s")`, f.Name), nil
+	}
+	return codegen.DefaultResolverTransformer(f, path)
 }

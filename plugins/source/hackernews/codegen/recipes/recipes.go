@@ -1,9 +1,7 @@
 package recipes
 
 import (
-	"log"
 	"reflect"
-	"strings"
 
 	"github.com/cloudquery/plugin-sdk/caser"
 	"github.com/cloudquery/plugin-sdk/codegen"
@@ -18,9 +16,10 @@ type Resource struct {
 	// DataStruct that will be used to generate the cloudquery table
 	DataStruct any
 	// SkipFields fields in go struct to skip when generating the table from the go struct
-	SkipFields []string
-	Template   string
-	Multiplex  string
+	SkipFields    []string
+	Template      string
+	Multiplex     string
+	IsIncremental bool
 
 	ExtraColumns []codegen.ColumnDefinition
 	PKColumns    []string
@@ -71,28 +70,7 @@ func (r *Resource) Infer() {
 }
 
 func (r *Resource) GenerateNames() {
-	if r.TableName == "" {
-		r.TableName = tableNameForResource(r)
-	}
-
 	r.Filename = csr.ToSnake(r.TableName) + ".go"
 	r.TableFuncName = csr.ToPascal(r.TableName)
 	r.ResolverFuncName = "fetch" + r.TableFuncName
-}
-
-func tableNameForResource(r *Resource) string {
-	var nParts []string
-	p := r.parent
-	for p != nil {
-		nParts = append(nParts, pluralizeClient.Singular(p.SubService))
-		p = p.parent
-	}
-	nParts = append(nParts, pluralizeClient.Plural(r.SubService))
-	switch len(nParts) {
-	case 1:
-		nParts[0] = pluralizeClient.Plural(nParts[0])
-	case 0:
-		log.Fatalf("Could not generate table name for %s.%s", r.Service, r.SubService)
-	}
-	return strings.Join(nParts, "_")
 }

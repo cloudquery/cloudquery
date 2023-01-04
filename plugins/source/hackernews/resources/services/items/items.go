@@ -3,14 +3,16 @@
 package items
 
 import (
+	"github.com/cloudquery/cloudquery/plugins/source/hackernews/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Items() *schema.Table {
 	return &schema.Table{
-		Name:        "hackernews_items",
-		Description: `https://github.com/HackerNews/API#items`,
-		Resolver:    fetchItems,
+		Name:          "hackernews_items",
+		Description:   `https://github.com/HackerNews/API#items`,
+		Resolver:      fetchItems,
+		IsIncremental: true,
 		Columns: []schema.Column{
 			{
 				Name:     "id",
@@ -37,8 +39,8 @@ func Items() *schema.Table {
 			},
 			{
 				Name:     "time",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("Time"),
+				Type:     schema.TypeTimestamp,
+				Resolver: client.UnixTimeResolver("Time"),
 			},
 			{
 				Name:     "text",

@@ -36,7 +36,7 @@ func (c *Client) ID() string {
 	return c.sourceSpec.Name
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, sourceSpec specs.Source, backend backend.Backend) (schema.ClientMeta, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, sourceSpec specs.Source, be backend.Backend) (schema.ClientMeta, error) {
 	var config Spec
 	err := sourceSpec.UnmarshalSpec(&config)
 	if err != nil {
@@ -56,6 +56,6 @@ func Configure(ctx context.Context, logger zerolog.Logger, sourceSpec specs.Sour
 		HackerNews: client,
 		maxRetries: defaultMaxRetries,
 		backoff:    defaultBackoff,
-		Backend:    backend,
+		Backend:    be,
 	}, nil
 }
