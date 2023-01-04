@@ -12,7 +12,7 @@ func ConfigurationRecorders() *schema.Table {
 		Name:      "aws_config_configuration_recorders",
 		Resolver:  fetchConfigConfigurationRecorders,
 		Multiplex: client.ServiceAccountRegionMultiplexer("config"),
-		Transform: transformers.TransformWithStruct(&models.ConfigurationRecorderWrapper{}),
+		Transform: transformers.TransformWithStruct(&models.ConfigurationRecorderWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

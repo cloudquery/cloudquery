@@ -13,7 +13,9 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
-|configuration_recorder|JSON|
+|name|String|
+|recording_group|JSON|
+|role_arn|String|
 |status_last_error_code|String|
 |status_last_error_message|String|
 |status_last_start_time|Timestamp|

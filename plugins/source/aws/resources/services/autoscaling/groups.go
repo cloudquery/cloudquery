@@ -13,7 +13,7 @@ func Groups() *schema.Table {
 		Description: `https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_AutoScalingGroup.html`,
 		Resolver:    fetchAutoscalingGroups,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("autoscaling"),
-		Transform: transformers.TransformWithStruct(&models.AutoScalingGroupWrapper{}),
+		Transform: transformers.TransformWithStruct(&models.AutoScalingGroupWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
