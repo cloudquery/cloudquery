@@ -17,7 +17,7 @@ It supports incremental syncs based on the **id** column.
 |deleted|Bool|
 |type|String|
 |by|String|
-|time|Timestamp|
+|time|Int|
 |text|String|
 |dead|Bool|
 |parent|Int|
