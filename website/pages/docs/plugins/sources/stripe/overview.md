@@ -9,14 +9,14 @@ The CloudQuery Stripe plugin pulls data from Stripe and loads it into any suppor
 
 ## Authentication
 
-In order to fetch information from Stripe, `cloudquery` needs to be authenticated. The Stripe API uses [API keys](https://stripe.com/docs/keys) to authenticate requests. You can view and manage your API keys in [the Stripe Dashboard](https://stripe.com/login?redirect=/account/apikeys).
+In order to fetch information from Stripe, `cloudquery` needs to be authenticated using a [secret API key](https://stripe.com/docs/keys) from your Stripe account. You can view and manage your API keys in [the Stripe Dashboard](https://stripe.com/login?redirect=/account/apikeys).
 
 # Configuration Reference
 
 This is the (nested) spec used by the Stripe source plugin:
 
 - `api_key` (string, required):
-  Your API key from the Stripe Dashboard.
+  Your secret API key from the Stripe Dashboard.
 
 - `max_retries` (integer, optional. Default: 2):
   Number of retries if a request was rate limited.
@@ -37,5 +37,5 @@ spec:
 
   # Stripe specific configuration
   spec:
-    api_key: "<YOUR_API_KEY_HERE>"
+    api_key: "<YOUR_SECRET_API_KEY_HERE>"
 ```
