@@ -109,8 +109,6 @@ require (
 	golang.org/x/sync v0.1.0
 )
 
-replace github.com/cloudquery/plugin-sdk => ../../../../plugin-sdk-split
-
 require (
 	github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.18 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.1.22 // indirect
@@ -147,7 +145,6 @@ require (
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/uuid v1.3.0 // indirect
-	github.com/iancoleman/strcase v0.2.0
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.17 // indirect

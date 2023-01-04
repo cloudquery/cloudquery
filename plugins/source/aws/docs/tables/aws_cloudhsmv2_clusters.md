@@ -29,4 +29,5 @@ The primary key for this table is **arn**.
 |state|String|
 |state_message|String|
 |subnet_mapping|JSON|
+|tag_list|JSON|
 |vpc_id|String|
