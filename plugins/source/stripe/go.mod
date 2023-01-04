@@ -3,10 +3,9 @@ module github.com/cloudquery/cloudquery/plugins/source/stripe
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v1.17.3-0.20230104090631-4b15afb2acc1
+	github.com/cloudquery/plugin-sdk v1.18.0
 	github.com/gertd/go-pluralize v0.2.1
 	github.com/rs/zerolog v1.28.0
-	github.com/stretchr/testify v1.8.1
 	github.com/stripe/stripe-go/v74 v74.4.0
 	github.com/stripe/stripe-mock v0.148.0
 )
@@ -30,7 +29,6 @@ require (
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.17 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
-	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/cobra v1.6.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
@@ -45,5 +43,4 @@ require (
 	google.golang.org/grpc v1.51.0 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
-	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

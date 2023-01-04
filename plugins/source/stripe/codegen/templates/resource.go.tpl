@@ -17,7 +17,7 @@ func {{.TableName | ToPascal}}() *schema.Table {
 		{{- if .Description}}
       Description: `{{.Description}}`,
     {{- end}}
-      Transform:   transformers.TransformWithStruct(&stripe.{{.StructName}}{}{{if .SkipFields}}, transformers.WithSkipFields([]string{ {{- .SkipFields | QuoteJoin -}} }){{end}}),
+      Transform:   transformers.TransformWithStruct(&stripe.{{.StructName}}{}{{if .SkipFields}}, transformers.WithSkipFields({{.SkipFields | QuoteJoin}}){{end}}),
       Resolver:    fetch{{.TableName | ToPascal}},
 		  Columns: []schema.Column{
 				 {

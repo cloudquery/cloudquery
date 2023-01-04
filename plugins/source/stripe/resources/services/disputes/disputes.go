@@ -15,7 +15,7 @@ func Disputes() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_disputes",
 		Description: `https://stripe.com/docs/api/disputes`,
-		Transform:   transformers.TransformWithStruct(&stripe.Dispute{}, transformers.WithSkipFields([]string{"ID", "APIResource"})),
+		Transform:   transformers.TransformWithStruct(&stripe.Dispute{}, transformers.WithSkipFields("ID", "APIResource")),
 		Resolver:    fetchDisputes,
 		Columns: []schema.Column{
 			{

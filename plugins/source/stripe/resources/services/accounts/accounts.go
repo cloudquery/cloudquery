@@ -15,7 +15,7 @@ func Accounts() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_accounts",
 		Description: `https://stripe.com/docs/api/accounts`,
-		Transform:   transformers.TransformWithStruct(&stripe.Account{}, transformers.WithSkipFields([]string{"ID", "APIResource"})),
+		Transform:   transformers.TransformWithStruct(&stripe.Account{}, transformers.WithSkipFields("ID", "APIResource")),
 		Resolver:    fetchAccounts,
 		Columns: []schema.Column{
 			{

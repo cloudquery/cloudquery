@@ -15,7 +15,7 @@ func Subscriptions() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_subscriptions",
 		Description: `https://stripe.com/docs/api/subscriptions`,
-		Transform:   transformers.TransformWithStruct(&stripe.Subscription{}, transformers.WithSkipFields([]string{"ID", "APIResource"})),
+		Transform:   transformers.TransformWithStruct(&stripe.Subscription{}, transformers.WithSkipFields("ID", "APIResource")),
 		Resolver:    fetchSubscriptions,
 		Columns: []schema.Column{
 			{

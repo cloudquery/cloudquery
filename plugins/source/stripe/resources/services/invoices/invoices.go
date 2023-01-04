@@ -15,7 +15,7 @@ func Invoices() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_invoices",
 		Description: `https://stripe.com/docs/api/invoices`,
-		Transform:   transformers.TransformWithStruct(&stripe.Invoice{}, transformers.WithSkipFields([]string{"ID", "APIResource"})),
+		Transform:   transformers.TransformWithStruct(&stripe.Invoice{}, transformers.WithSkipFields("ID", "APIResource")),
 		Resolver:    fetchInvoices,
 		Columns: []schema.Column{
 			{

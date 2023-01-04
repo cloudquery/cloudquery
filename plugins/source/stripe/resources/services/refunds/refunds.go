@@ -15,7 +15,7 @@ func Refunds() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_refunds",
 		Description: `https://stripe.com/docs/api/refunds`,
-		Transform:   transformers.TransformWithStruct(&stripe.Refund{}, transformers.WithSkipFields([]string{"ID", "APIResource"})),
+		Transform:   transformers.TransformWithStruct(&stripe.Refund{}, transformers.WithSkipFields("ID", "APIResource")),
 		Resolver:    fetchRefunds,
 		Columns: []schema.Column{
 			{
