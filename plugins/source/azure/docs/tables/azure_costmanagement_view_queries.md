@@ -14,9 +14,9 @@ This table depends on [azure_costmanagement_views](azure_costmanagement_views.md
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|properties|JSON|
-|etag|String|
 |id (PK)|String|
+|etag|String|
+|properties|JSON|
 |location|String|
 |name|String|
 |sku|String|
