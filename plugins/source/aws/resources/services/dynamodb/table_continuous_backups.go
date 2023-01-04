@@ -13,7 +13,7 @@ func TableContinuousBackups() *schema.Table {
 		Description: `https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_ContinuousBackupsDescription.html`,
 		Resolver:    fetchDynamodbTableContinuousBackups,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("dynamodb"),
-		Transform: transformers.TransformWithStruct(&types.ContinuousBackupsDescription{}),
+		Transform:   transformers.TransformWithStruct(&types.ContinuousBackupsDescription{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

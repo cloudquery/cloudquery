@@ -14,7 +14,7 @@ func AutoScalingConfigurations() *schema.Table {
 		Resolver:            fetchApprunnerAutoScalingConfigurations,
 		PreResourceResolver: getAutoScalingConfiguration,
 		Multiplex:           client.ServiceAccountRegionMultiplexer("apprunner"),
-		Transform: 				 	 transformers.TransformWithStruct(&types.AutoScalingConfiguration{}),
+		Transform:           transformers.TransformWithStruct(&types.AutoScalingConfiguration{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

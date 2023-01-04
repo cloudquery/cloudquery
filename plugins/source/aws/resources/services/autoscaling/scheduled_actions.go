@@ -13,7 +13,7 @@ func ScheduledActions() *schema.Table {
 		Description: `https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_ScheduledUpdateGroupAction.html`,
 		Resolver:    fetchAutoscalingScheduledActions,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("autoscaling"),
-		Transform:  transformers.TransformWithStruct(&types.ScheduledUpdateGroupAction{}),
+		Transform:   transformers.TransformWithStruct(&types.ScheduledUpdateGroupAction{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

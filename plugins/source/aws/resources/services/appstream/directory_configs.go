@@ -13,7 +13,7 @@ func DirectoryConfigs() *schema.Table {
 		Description: `https://docs.aws.amazon.com/appstream2/latest/APIReference/API_DirectoryConfig.html`,
 		Resolver:    fetchAppstreamDirectoryConfigs,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("appstream2"),
-		Transform: 	 transformers.TransformWithStruct(&types.DirectoryConfig{}),
+		Transform:   transformers.TransformWithStruct(&types.DirectoryConfig{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

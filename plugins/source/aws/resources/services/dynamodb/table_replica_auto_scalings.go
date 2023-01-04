@@ -13,7 +13,7 @@ func TableReplicaAutoScalings() *schema.Table {
 		Description: `https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_ReplicaAutoScalingDescription.html`,
 		Resolver:    fetchDynamodbTableReplicaAutoScalings,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("dynamodb"),
-		Transform: transformers.TransformWithStruct(&types.ReplicaAutoScalingDescription{}),
+		Transform:   transformers.TransformWithStruct(&types.ReplicaAutoScalingDescription{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

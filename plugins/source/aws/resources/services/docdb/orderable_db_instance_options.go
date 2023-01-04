@@ -13,8 +13,7 @@ func OrderableDbInstanceOptions() *schema.Table {
 		Description: `https://docs.aws.amazon.com/documentdb/latest/developerguide/API_OrderableDBInstanceOption.html`,
 		Resolver:    fetchDocdbOrderableDbInstanceOptions,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("docdb"),
-		Transform:  transformers.TransformWithStruct(&types.OrderableDBInstanceOption{}),
-		Columns: []schema.Column{
-		},
+		Transform:   transformers.TransformWithStruct(&types.OrderableDBInstanceOption{}),
+		Columns:     []schema.Column{},
 	}
 }

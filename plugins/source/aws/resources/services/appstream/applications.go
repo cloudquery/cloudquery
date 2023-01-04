@@ -13,7 +13,7 @@ func Applications() *schema.Table {
 		Description: `https://docs.aws.amazon.com/appstream2/latest/APIReference/API_Application.html`,
 		Resolver:    fetchAppstreamApplications,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("appstream2"),
-		Transform: transformers.TransformWithStruct(&types.Application{}),
+		Transform:   transformers.TransformWithStruct(&types.Application{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

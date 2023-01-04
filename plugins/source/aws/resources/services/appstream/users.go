@@ -13,7 +13,7 @@ func Users() *schema.Table {
 		Description: `https://docs.aws.amazon.com/appstream2/latest/APIReference/API_User.html`,
 		Resolver:    fetchAppstreamUsers,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("appstream2"),
-		Transform:  transformers.TransformWithStruct(&types.User{}),
+		Transform:   transformers.TransformWithStruct(&types.User{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

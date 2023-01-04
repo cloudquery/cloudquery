@@ -13,7 +13,7 @@ func RegionSettings() *schema.Table {
 		Description: `https://docs.aws.amazon.com/aws-backup/latest/devguide/API_DescribeRegionSettings.html`,
 		Resolver:    fetchBackupRegionSettings,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("backup"),
-		Transform:  transformers.TransformWithStruct(&backup.DescribeRegionSettingsOutput{}),
+		Transform:   transformers.TransformWithStruct(&backup.DescribeRegionSettingsOutput{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

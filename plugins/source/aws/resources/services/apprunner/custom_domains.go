@@ -12,7 +12,7 @@ func CustomDomains() *schema.Table {
 		Name:        "aws_apprunner_custom_domains",
 		Description: `https://docs.aws.amazon.com/apprunner/latest/api/API_CustomDomain.html`,
 		Resolver:    fetchApprunnerCustomDomains,
-		Transform: transformers.TransformWithStruct(&types.CustomDomain{}),
+		Transform:   transformers.TransformWithStruct(&types.CustomDomain{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

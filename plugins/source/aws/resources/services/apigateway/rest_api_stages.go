@@ -13,7 +13,7 @@ func RestApiStages() *schema.Table {
 		Description: `https://docs.aws.amazon.com/apigateway/latest/api/API_Stage.html`,
 		Resolver:    fetchApigatewayRestApiStages,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
-		Transform:  transformers.TransformWithStruct(&types.Stage{}),
+		Transform:   transformers.TransformWithStruct(&types.Stage{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

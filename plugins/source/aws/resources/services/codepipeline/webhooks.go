@@ -13,7 +13,7 @@ func Webhooks() *schema.Table {
 		Description: `https://docs.aws.amazon.com/codepipeline/latest/APIReference/API_ListWebhookItem.html`,
 		Resolver:    fetchCodepipelineWebhooks,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("codepipeline"),
-		Transform: transformers.TransformWithStruct(&types.ListWebhookItem{}),
+		Transform:   transformers.TransformWithStruct(&types.ListWebhookItem{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

@@ -13,7 +13,7 @@ func StackResources() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_StackResourceSummary.html`,
 		Resolver:    fetchCloudformationStackResources,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("cloudformation"),
-		Transform:  transformers.TransformWithStruct(&types.StackResourceSummary{}),
+		Transform:   transformers.TransformWithStruct(&types.StackResourceSummary{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

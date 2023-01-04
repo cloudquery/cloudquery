@@ -13,7 +13,7 @@ func VpcConnectors() *schema.Table {
 		Description: `https://docs.aws.amazon.com/apprunner/latest/api/API_VpcConnector.html`,
 		Resolver:    fetchApprunnerVpcConnectors,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("apprunner"),
-		Transform:  transformers.TransformWithStruct(&types.VpcConnector{}),
+		Transform:   transformers.TransformWithStruct(&types.VpcConnector{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

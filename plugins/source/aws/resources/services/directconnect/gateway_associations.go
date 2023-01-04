@@ -13,7 +13,7 @@ func GatewayAssociations() *schema.Table {
 		Description: `https://docs.aws.amazon.com/directconnect/latest/APIReference/API_DirectConnectGatewayAssociation.html`,
 		Resolver:    fetchDirectconnectGatewayAssociations,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("directconnect"),
-		Transform: transformers.TransformWithStruct(&types.DirectConnectGatewayAssociation{}),
+		Transform:   transformers.TransformWithStruct(&types.DirectConnectGatewayAssociation{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

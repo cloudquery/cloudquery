@@ -14,7 +14,7 @@ func DataCatalogs() *schema.Table {
 		Resolver:            fetchAthenaDataCatalogs,
 		PreResourceResolver: getDataCatalog,
 		Multiplex:           client.ServiceAccountRegionMultiplexer("athena"),
-		Transform: 				 transformers.TransformWithStruct(&types.DataCatalog{}),
+		Transform:           transformers.TransformWithStruct(&types.DataCatalog{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

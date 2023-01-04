@@ -13,7 +13,7 @@ func ClusterSnapshots() *schema.Table {
 		Description: `https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBClusterSnapshot.html`,
 		Resolver:    fetchDocdbClusterSnapshots,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("docdb"),
-		Transform:  transformers.TransformWithStruct(&types.DBClusterSnapshot{}),
+		Transform:   transformers.TransformWithStruct(&types.DBClusterSnapshot{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

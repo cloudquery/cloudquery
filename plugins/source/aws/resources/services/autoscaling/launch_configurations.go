@@ -13,7 +13,7 @@ func LaunchConfigurations() *schema.Table {
 		Description: `https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_LaunchConfiguration.html`,
 		Resolver:    fetchAutoscalingLaunchConfigurations,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("autoscaling"),
-		Transform:  transformers.TransformWithStruct(&types.LaunchConfiguration{}),
+		Transform:   transformers.TransformWithStruct(&types.LaunchConfiguration{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

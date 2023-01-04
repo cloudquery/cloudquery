@@ -14,7 +14,7 @@ func Distributions() *schema.Table {
 		Resolver:            fetchCloudfrontDistributions,
 		PreResourceResolver: getDistribution,
 		Multiplex:           client.AccountMultiplex,
-		Transform: 				 transformers.TransformWithStruct(&types.Distribution{}),
+		Transform:           transformers.TransformWithStruct(&types.Distribution{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

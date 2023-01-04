@@ -13,7 +13,7 @@ func Images() *schema.Table {
 		Description: `https://docs.aws.amazon.com/appstream2/latest/APIReference/API_Image.html`,
 		Resolver:    fetchAppstreamImages,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("appstream2"),
-		Transform: transformers.TransformWithStruct(&types.Image{}),
+		Transform:   transformers.TransformWithStruct(&types.Image{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

@@ -13,7 +13,7 @@ func UsageReportSubscriptions() *schema.Table {
 		Description: `https://docs.aws.amazon.com/appstream2/latest/APIReference/API_UsageReportSubscription.html`,
 		Resolver:    fetchAppstreamUsageReportSubscriptions,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("appstream2"),
-		Transform:  transformers.TransformWithStruct(&types.UsageReportSubscription{}),
+		Transform:   transformers.TransformWithStruct(&types.UsageReportSubscription{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

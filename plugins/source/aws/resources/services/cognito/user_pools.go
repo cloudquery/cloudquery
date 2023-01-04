@@ -14,7 +14,7 @@ func UserPools() *schema.Table {
 		Resolver:            fetchCognitoUserPools,
 		PreResourceResolver: getUserPool,
 		Multiplex:           client.ServiceAccountRegionMultiplexer("cognito-identity"),
-		Transform: transformers.TransformWithStruct(&types.UserPoolType{}),
+		Transform:           transformers.TransformWithStruct(&types.UserPoolType{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

@@ -14,7 +14,7 @@ func WorkGroupNamedQueries() *schema.Table {
 		Resolver:            fetchAthenaWorkGroupNamedQueries,
 		PreResourceResolver: getWorkGroupNamedQuery,
 		Multiplex:           client.ServiceAccountRegionMultiplexer("athena"),
-		Transform: 				 transformers.TransformWithStruct(&types.NamedQuery{}),
+		Transform:           transformers.TransformWithStruct(&types.NamedQuery{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

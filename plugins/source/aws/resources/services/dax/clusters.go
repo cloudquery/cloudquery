@@ -13,7 +13,7 @@ func Clusters() *schema.Table {
 		Description: `https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_dax_Cluster.html`,
 		Resolver:    fetchDaxClusters,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("dax"),
-		Transform: transformers.TransformWithStruct(&types.Cluster{}),
+		Transform:   transformers.TransformWithStruct(&types.Cluster{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

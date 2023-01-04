@@ -13,7 +13,7 @@ func Connections() *schema.Table {
 		Description: `https://docs.aws.amazon.com/directconnect/latest/APIReference/API_Connection.html`,
 		Resolver:    fetchDirectconnectConnections,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("directconnect"),
-		Transform: transformers.TransformWithStruct(&types.Connection{}),
+		Transform:   transformers.TransformWithStruct(&types.Connection{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

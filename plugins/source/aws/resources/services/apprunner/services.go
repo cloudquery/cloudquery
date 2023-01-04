@@ -14,7 +14,7 @@ func Services() *schema.Table {
 		Resolver:            fetchApprunnerServices,
 		PreResourceResolver: getService,
 		Multiplex:           client.ServiceAccountRegionMultiplexer("apprunner"),
-		Transform: transformers.TransformWithStruct(&types.Service{}),
+		Transform:           transformers.TransformWithStruct(&types.Service{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

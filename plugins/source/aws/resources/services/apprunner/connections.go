@@ -13,7 +13,7 @@ func Connections() *schema.Table {
 		Description: `https://docs.aws.amazon.com/apprunner/latest/api/API_Connection.html`,
 		Resolver:    fetchApprunnerConnections,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("apprunner"),
-		Transform:  transformers.TransformWithStruct(&types.ConnectionSummary{}),
+		Transform:   transformers.TransformWithStruct(&types.ConnectionSummary{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

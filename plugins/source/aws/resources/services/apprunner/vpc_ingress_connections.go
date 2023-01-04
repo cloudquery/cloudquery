@@ -17,7 +17,7 @@ Notes:
 		Resolver:            fetchApprunnerVpcIngressConnections,
 		PreResourceResolver: getVpcIngressConnection,
 		Multiplex:           client.ServiceAccountRegionMultiplexer("apprunner"),
-		Transform: 				 	 transformers.TransformWithStruct(&types.VpcIngressConnection{}),
+		Transform:           transformers.TransformWithStruct(&types.VpcIngressConnection{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
