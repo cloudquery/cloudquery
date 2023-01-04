@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"math/rand"
+	"net/http"
 	"time"
 
 	"github.com/hermanschaaf/hackernews"
@@ -33,7 +34,7 @@ func (c *Client) RetryOnError(ctx context.Context, tableName string, f func() er
 func isRetryable(err error) bool {
 	var httpErr hackernews.HTTPError
 	if errors.As(err, &httpErr) {
-		return httpErr.Code >= 500 || httpErr.Code == 429
+		return httpErr.Code >= http.StatusInternalServerError || httpErr.Code == http.StatusTooManyRequests
 	}
 	return false
 }
