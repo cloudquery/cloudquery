@@ -20,22 +20,21 @@ const pluralize = {
   destination: "destinations",
 };
 
-const TableRow = ({ type, plugin, stage, meta = () => null }) => {
-  const pluginLowercase = plugin.toLowerCase();
+const TableRow = ({ type, name, id, stage, meta = () => null }) => {
   return (
     <Tr>
       <Td>
         <TableLink
-          text={plugin}
-          href={`/docs/plugins/${pluralize[type]}/${pluginLowercase}/overview`}
+          text={name}
+          href={`/docs/plugins/${pluralize[type]}/${id}/overview`}
         />
         {meta()}
       </Td>
-      <Td>{getLatestVersion(type, plugin.toLowerCase())}</Td>
+      <Td>{getLatestVersion(type, id)}</Td>
       <Td>
         <TableLink
           text="Changelog"
-          href={`https://github.com/cloudquery/cloudquery/blob/main/plugins/${type}/${pluginLowercase}/CHANGELOG.md`}
+          href={`https://github.com/cloudquery/cloudquery/blob/main/plugins/${type}/${id}/CHANGELOG.md`}
           target="_blank"
         />
       </Td>
@@ -43,7 +42,7 @@ const TableRow = ({ type, plugin, stage, meta = () => null }) => {
         <Td>
           <TableLink
             text="Tables"
-            href={`/docs/plugins/sources/${pluginLowercase}/tables`}
+            href={`/docs/plugins/sources/${id}/tables`}
           />
         </Td>
       )}
@@ -63,11 +62,12 @@ export const PluginsTable = ({ plugins, type }) => {
       <Th>Changelog</Th>
       {type === "source" && <Th>Tables</Th>}
       <Th>Stage</Th>
-      {sortedPlugins.map(({ name, stage, meta }) => (
+      {sortedPlugins.map(({ name, stage, meta, id = name }) => (
         <TableRow
-          key={name}
+          key={id}
           type={type}
-          plugin={name}
+          name={name}
+          id={id.toLowerCase()}
           stage={stage}
           meta={meta}
         />

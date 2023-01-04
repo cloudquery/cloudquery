@@ -85,7 +85,7 @@ func shouldInclude(name string) bool {
 }
 
 type serviceInfo struct {
-	Import             string
+	Imports            []string
 	Alias              string
 	CreateFunctionName string
 	Name               string
@@ -98,6 +98,7 @@ func getServiceInfo(client any) serviceInfo {
 	v := reflect.ValueOf(client)
 	t := v.Type()
 	pkgPath := t.Elem().PkgPath()
+	imports := []string{pkgPath}
 	csr := caser.New()
 	alias := pkgPath[strings.LastIndex(pkgPath, "/")+1:]
 	pkgName := csr.ToSnake(t.Elem().Name())
@@ -108,11 +109,17 @@ func getServiceInfo(client any) serviceInfo {
 		method := t.Method(i)
 		if shouldInclude(method.Name) {
 			sig := signature(method.Name, v.Method(i).Interface())
-			signatures = append(signatures, sig)
+			// The following handles generic types in the signature
+			cleanSign := strings.Replace(sig, pkgPath, alias, 1)
+			// Add the import for pagination result
+			if strings.Contains(cleanSign, "datadog.PaginationResult") {
+				imports = append(imports, "github.com/DataDog/datadog-api-client-go/v2/api/datadog")
+			}
+			signatures = append(signatures, cleanSign)
 		}
 	}
 	return serviceInfo{
-		Import:             pkgPath,
+		Imports:            imports,
 		Alias:              alias,
 		CreateFunctionName: t.Elem().Name(),
 		Name:               name,

@@ -46,9 +46,9 @@ func createPipelineDeployments() (*heroku.Service, error) {
 		calls++
 	})
 	ts := httptest.NewServer(mux)
-	c := heroku.DefaultClient
+	c := *heroku.DefaultClient
 	c.Transport = client.NewPaginator(ts.Client().Transport)
-	s := heroku.NewService(c)
+	s := heroku.NewService(&c)
 	s.URL = ts.URL
 	return s, nil
 }

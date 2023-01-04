@@ -10,9 +10,9 @@ The primary key for this table is **id**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
+|id (PK)|String|
 |authorization_source|String|
 |subscription_policies|JSON|
 |display_name|String|
-|id (PK)|String|
 |state|String|
 |subscription_id|String|

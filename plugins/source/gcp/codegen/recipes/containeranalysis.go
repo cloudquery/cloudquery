@@ -27,7 +27,6 @@ func init() {
 
 		resource.MockTemplate = "newapi_list_grpc_mock"
 		resource.RegisterServer = grafeaspb.RegisterGrafeasV1Beta1Server
-		resource.ServiceDNS = "containeranalysis.googleapis.com"
 	}
 
 	Resources = append(Resources, resources...)

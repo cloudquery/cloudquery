@@ -12,7 +12,6 @@ func init() {
 			Struct:         &pb.Secret{},
 			NewFunction:    secretmanager.NewClient,
 			RegisterServer: pb.RegisterSecretManagerServiceServer,
-			ListFunction:   (&pb.UnimplementedSecretManagerServiceServer{}).ListSecrets,
 			PrimaryKeys:    []string{"name"},
 			SkipFields:     []string{"Expiration"},
 			Description:    "https://cloud.google.com/secret-manager/docs/reference/rest/v1/projects.secrets#Secret",
@@ -26,7 +25,6 @@ func init() {
 		resource.Template = "newapi_list"
 		resource.MockTemplate = "newapi_list_grpc_mock"
 		resource.RequestStructFields = `Parent: "projects/" + c.ProjectId,`
-		resource.ServiceDNS = "secretmanager.googleapis.com"
 	}
 
 	Resources = append(Resources, resources...)

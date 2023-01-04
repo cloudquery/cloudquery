@@ -31,21 +31,6 @@ func Repositories() *schema.Table {
 				},
 			},
 			{
-				Name:     "created_at",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("CreatedAt.Time"),
-			},
-			{
-				Name:     "pushed_at",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("PushedAt.Time"),
-			},
-			{
-				Name:     "updated_at",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("UpdatedAt.Time"),
-			},
-			{
 				Name:     "node_id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("NodeID"),
@@ -89,6 +74,21 @@ func Repositories() *schema.Table {
 				Name:     "master_branch",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("MasterBranch"),
+			},
+			{
+				Name:     "created_at",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("CreatedAt"),
+			},
+			{
+				Name:     "pushed_at",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("PushedAt"),
+			},
+			{
+				Name:     "updated_at",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("UpdatedAt"),
 			},
 			{
 				Name:     "html_url",
@@ -316,6 +316,11 @@ func Repositories() *schema.Table {
 				Resolver: schema.PathResolver("HasDownloads"),
 			},
 			{
+				Name:     "has_discussions",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("HasDiscussions"),
+			},
+			{
 				Name:     "is_template",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("IsTemplate"),
@@ -540,6 +545,12 @@ func Repositories() *schema.Table {
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("RoleName"),
 			},
+		},
+
+		Relations: []*schema.Table{
+			Alerts(),
+			Secrets(),
+			Releases(),
 		},
 	}
 }

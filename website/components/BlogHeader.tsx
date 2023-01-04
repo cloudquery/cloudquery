@@ -67,7 +67,7 @@ export function BlogHeader() {
     return null;
   }
 
-  const image = `https://www.cloudquery.io/og-image/${meta.title}`;
+  const image = `/og-image/${meta.title}`;
 
   return (
     <>

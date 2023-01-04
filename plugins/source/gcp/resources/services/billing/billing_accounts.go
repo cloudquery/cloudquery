@@ -50,6 +50,10 @@ func BillingAccounts() *schema.Table {
 				Resolver: schema.PathResolver("MasterBillingAccount"),
 			},
 		},
+
+		Relations: []*schema.Table{
+			Budgets(),
+		},
 	}
 }
 

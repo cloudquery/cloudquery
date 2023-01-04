@@ -173,7 +173,7 @@ func (mr *MockApiMockRecorder) ListWAFRules(arg0, arg1, arg2 interface{}) *gomoc
 }
 
 // ListWorkerCronTriggers mocks base method.
-func (m *MockApi) ListWorkerCronTriggers(arg0 context.Context, arg1, arg2 string) ([]cloudflare.WorkerCronTrigger, error) {
+func (m *MockApi) ListWorkerCronTriggers(arg0 context.Context, arg1 *cloudflare.ResourceContainer, arg2 cloudflare.ListWorkerCronTriggersParams) ([]cloudflare.WorkerCronTrigger, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ListWorkerCronTriggers", arg0, arg1, arg2)
 	ret0, _ := ret[0].([]cloudflare.WorkerCronTrigger)
@@ -188,48 +188,49 @@ func (mr *MockApiMockRecorder) ListWorkerCronTriggers(arg0, arg1, arg2 interface
 }
 
 // ListWorkerRoutes mocks base method.
-func (m *MockApi) ListWorkerRoutes(arg0 context.Context, arg1 string) (cloudflare.WorkerRoutesResponse, error) {
+func (m *MockApi) ListWorkerRoutes(arg0 context.Context, arg1 *cloudflare.ResourceContainer, arg2 cloudflare.ListWorkerRoutesParams) (cloudflare.WorkerRoutesResponse, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ListWorkerRoutes", arg0, arg1)
+	ret := m.ctrl.Call(m, "ListWorkerRoutes", arg0, arg1, arg2)
 	ret0, _ := ret[0].(cloudflare.WorkerRoutesResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // ListWorkerRoutes indicates an expected call of ListWorkerRoutes.
-func (mr *MockApiMockRecorder) ListWorkerRoutes(arg0, arg1 interface{}) *gomock.Call {
+func (mr *MockApiMockRecorder) ListWorkerRoutes(arg0, arg1, arg2 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListWorkerRoutes", reflect.TypeOf((*MockApi)(nil).ListWorkerRoutes), arg0, arg1)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListWorkerRoutes", reflect.TypeOf((*MockApi)(nil).ListWorkerRoutes), arg0, arg1, arg2)
 }
 
-// ListWorkerScripts mocks base method.
-func (m *MockApi) ListWorkerScripts(arg0 context.Context) (cloudflare.WorkerListResponse, error) {
+// ListWorkers mocks base method.
+func (m *MockApi) ListWorkers(arg0 context.Context, arg1 *cloudflare.ResourceContainer, arg2 cloudflare.ListWorkersParams) (cloudflare.WorkerListResponse, *cloudflare.ResultInfo, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ListWorkerScripts", arg0)
+	ret := m.ctrl.Call(m, "ListWorkers", arg0, arg1, arg2)
 	ret0, _ := ret[0].(cloudflare.WorkerListResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	ret1, _ := ret[1].(*cloudflare.ResultInfo)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
 }
 
-// ListWorkerScripts indicates an expected call of ListWorkerScripts.
-func (mr *MockApiMockRecorder) ListWorkerScripts(arg0 interface{}) *gomock.Call {
+// ListWorkers indicates an expected call of ListWorkers.
+func (mr *MockApiMockRecorder) ListWorkers(arg0, arg1, arg2 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListWorkerScripts", reflect.TypeOf((*MockApi)(nil).ListWorkerScripts), arg0)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListWorkers", reflect.TypeOf((*MockApi)(nil).ListWorkers), arg0, arg1, arg2)
 }
 
 // ListWorkersSecrets mocks base method.
-func (m *MockApi) ListWorkersSecrets(arg0 context.Context, arg1 string) (cloudflare.WorkersListSecretsResponse, error) {
+func (m *MockApi) ListWorkersSecrets(arg0 context.Context, arg1 *cloudflare.ResourceContainer, arg2 cloudflare.ListWorkersSecretsParams) (cloudflare.WorkersListSecretsResponse, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ListWorkersSecrets", arg0, arg1)
+	ret := m.ctrl.Call(m, "ListWorkersSecrets", arg0, arg1, arg2)
 	ret0, _ := ret[0].(cloudflare.WorkersListSecretsResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // ListWorkersSecrets indicates an expected call of ListWorkersSecrets.
-func (mr *MockApiMockRecorder) ListWorkersSecrets(arg0, arg1 interface{}) *gomock.Call {
+func (mr *MockApiMockRecorder) ListWorkersSecrets(arg0, arg1, arg2 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListWorkersSecrets", reflect.TypeOf((*MockApi)(nil).ListWorkersSecrets), arg0, arg1)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListWorkersSecrets", reflect.TypeOf((*MockApi)(nil).ListWorkersSecrets), arg0, arg1, arg2)
 }
 
 // ListZonesContext mocks base method.
