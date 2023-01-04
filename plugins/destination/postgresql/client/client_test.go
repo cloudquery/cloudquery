@@ -60,5 +60,12 @@ func TestPgPluginPrimaryKeyRename(t *testing.T) {
 	// Migrate the table again without the `stale_pk_1` and `stale_pk_2` columns
 	table := testdata.TestTable(tableName)
 	err := p.Migrate(ctx, []*schema.Table{table})
-	require.ErrorContains(t, err, fmt.Sprintf("the following primary keys were removed from the schema [\"stale_pk_1\" \"stale_pk_2\"] for table \"%s\"", tableName))
+	expected := `the following primary keys were removed from the schema ["stale_pk_1" "stale_pk_2"] for table "%s".
+You can migrate the table manually by running:
+-----------------------------------------------------------------------------------------
+alter table "%s" drop constraint if exists "%s_cqpk";
+alter table "%s" alter column "stale_pk_1" drop not null;
+alter table "%s" alter column "stale_pk_2" drop not null;
+-----------------------------------------------------------------------------------------`
+	require.ErrorContains(t, err, fmt.Sprintf(expected, tableName, tableName, tableName, tableName, tableName))
 }

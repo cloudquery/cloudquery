@@ -88,6 +88,7 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 
 	// create the new column as it doesn't exist
 	tableName := pgx.Identifier{table.Name}.Sanitize()
+
 	if pgColumns, err = c.getPgTableColumns(ctx, table.Name); err != nil {
 		return fmt.Errorf("failed to get table %s columns types: %w", table.Name, err)
 	}
@@ -97,9 +98,13 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 	}
 
 	stalePks := c.getStalePks(pgPKs, table)
+	constraintName := pgx.Identifier{table.Name + "_cqpk"}.Sanitize()
+	dropConstraintSQL := "alter table " + tableName + " drop constraint if exists " + constraintName
 	if len(stalePks) > 0 {
-		message := "the following primary keys were removed from the schema %q for table %q.\nEither drop the columns or remove their \"not null\" constraint"
-		return fmt.Errorf(message, stalePks, table.Name)
+		message := "the following primary keys were removed from the schema %q for table %q.\nYou can migrate the table manually by running:\n%s"
+		sep := strings.Repeat("-", len(dropConstraintSQL)+1)
+		query := fmt.Sprintf("%s\n%s;\n%s\n%s", sep, dropConstraintSQL, getDropNotNullQuery(table, stalePks), sep)
+		return fmt.Errorf(message, stalePks, table.Name, query)
 	}
 
 	reCreatePrimaryKeys := false
@@ -160,16 +165,14 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 		if err != nil {
 			return fmt.Errorf("failed to begin transaction to recreate primary keys: %w", err)
 		}
-		constraintName := pgx.Identifier{table.Name + "_cqpk"}.Sanitize()
-		sql := "alter table " + tableName + " drop constraint if exists " + constraintName
-		if _, err := tx.Exec(ctx, sql); err != nil {
+		if _, err := tx.Exec(ctx, dropConstraintSQL); err != nil {
 			if err := tx.Rollback(ctx); err != nil {
 				c.logger.Error().Err(err).Msg("failed to rollback transaction")
 			}
 			return fmt.Errorf("failed to drop primary key constraint on table %s: %w", table.Name, err)
 		}
 
-		sql = "alter table " + tableName + " add constraint " + constraintName + " primary key (" + strings.Join(table.PrimaryKeys(), ",") + ")"
+		sql := "alter table " + tableName + " add constraint " + constraintName + " primary key (" + strings.Join(table.PrimaryKeys(), ",") + ")"
 		if _, err := tx.Exec(ctx, sql); err != nil {
 			if err := tx.Rollback(ctx); err != nil {
 				c.logger.Error().Err(err).Msg("failed to rollback transaction")
@@ -192,6 +195,15 @@ func (c *Client) setNotNullOnPks(ctx context.Context, table *schema.Table) error
 		}
 	}
 	return nil
+}
+
+func getDropNotNullQuery(table *schema.Table, stalePks []string) string {
+	queries := []string{}
+	for _, col := range stalePks {
+		queries = append(queries, "alter table "+pgx.Identifier{table.Name}.Sanitize()+" alter column "+pgx.Identifier{col}.Sanitize()+" drop not null;")
+	}
+
+	return strings.Join(queries, "\n")
 }
 
 func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table) error {
