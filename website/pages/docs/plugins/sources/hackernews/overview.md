@@ -11,7 +11,9 @@ It can be used for real applications, but is mainly intended to serve as a refer
 
 ## Configuration
 
-The following configuration syncs from Hacker News to a Postgres destination, using API Key authentication. The (top level) source spec section is described in the [Source Spec Reference](https://www.cloudquery.io/docs/reference/source-spec).
+The following configuration syncs from Hacker News to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](https://www.cloudquery.io/docs/reference/source-spec). The `postgresql` destination is not shown here and needs to be separately defined.
+
+```yaml 
 
 ```yaml
 kind: source
