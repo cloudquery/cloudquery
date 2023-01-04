@@ -24,6 +24,11 @@ func ConformancePackRuleCompliances() *schema.Table {
 				Type:     schema.TypeString,
 				Resolver: client.ResolveAWSRegion,
 			},
+			{
+				Name:     "conformance_pack_arn",
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("arn"),
+			},
 		},
 	}
 }
