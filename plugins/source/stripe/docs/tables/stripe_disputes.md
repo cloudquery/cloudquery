@@ -1,5 +1,7 @@
 # Table: stripe_disputes
 
+https://stripe.com/docs/api/disputes
+
 The primary key for this table is **id**.
 
 ## Columns

@@ -11,10 +11,11 @@ func init() {
 			PKColumns:  []string{"id"},
 		},
 		{
-			DataStruct: &stripe.InvoiceItem{},
-			PKColumns:  []string{"id"},
-			SkipMocks:  true,
-			Service:    "invoices",
+			DataStruct:  &stripe.InvoiceItem{},
+			PKColumns:   []string{"id"},
+			SkipMocks:   true,
+			Service:     "invoices",
+			Description: "https://stripe.com/docs/api/invoiceitem",
 		},
 	}...)
 }

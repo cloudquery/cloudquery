@@ -1,5 +1,7 @@
 # Table: stripe_subscriptions
 
+https://stripe.com/docs/api/subscriptions
+
 The primary key for this table is **id**.
 
 ## Columns

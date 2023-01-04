@@ -13,9 +13,10 @@ import (
 
 func Customers() *schema.Table {
 	return &schema.Table{
-		Name:      "stripe_customers",
-		Transform: transformers.TransformWithStruct(&stripe.Customer{}, transformers.WithSkipFields([]string{"ID", "APIResource"})),
-		Resolver:  fetchCustomers,
+		Name:        "stripe_customers",
+		Description: `https://stripe.com/docs/api/customers`,
+		Transform:   transformers.TransformWithStruct(&stripe.Customer{}, transformers.WithSkipFields([]string{"ID", "APIResource"})),
+		Resolver:    fetchCustomers,
 		Columns: []schema.Column{
 			{
 				Name:     "id",

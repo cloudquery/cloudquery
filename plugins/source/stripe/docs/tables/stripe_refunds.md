@@ -1,5 +1,7 @@
 # Table: stripe_refunds
 
+https://stripe.com/docs/api/refunds
+
 The primary key for this table is **id**.
 
 ## Columns

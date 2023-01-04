@@ -1,5 +1,7 @@
 # Table: stripe_customers
 
+https://stripe.com/docs/api/customers
+
 The primary key for this table is **id**.
 
 ## Columns

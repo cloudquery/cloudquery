@@ -1,5 +1,7 @@
 # Table: stripe_invoice_items
 
+https://stripe.com/docs/api/invoiceitem
+
 The primary key for this table is **id**.
 
 ## Columns

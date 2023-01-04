@@ -16,7 +16,7 @@ type Resource struct {
 	SkipFields []string
 	PKColumns  []string
 
-	Description string
+	Description string // optional, auto generated from struct name if not provided
 	SkipMocks   bool
 
 	Service   string // optional
@@ -53,5 +53,8 @@ func (r *Resource) Infer() {
 	}
 	if r.Service == "" {
 		r.Service = pluralizeClient.Plural(csr.ToSnake(ds.Name()))
+	}
+	if r.Description == "" {
+		r.Description = "https://stripe.com/docs/api/" + pluralizeClient.Plural(csr.ToSnake(ds.Name()))
 	}
 }
