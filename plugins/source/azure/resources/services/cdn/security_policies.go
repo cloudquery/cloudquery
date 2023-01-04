@@ -8,8 +8,8 @@ import (
 
 func security_policies() *schema.Table {
 	return &schema.Table{
-		Name:     "azure_cdn_security_policies",
-		Resolver: fetchSecurityPolicies,
+		Name:      "azure_cdn_security_policies",
+		Resolver:  fetchSecurityPolicies,
 		Transform: transformers.TransformWithStruct(&armcdn.SecurityPolicy{}),
 		Columns: []schema.Column{
 			{

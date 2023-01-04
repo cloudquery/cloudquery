@@ -9,8 +9,8 @@ import (
 
 var packagesToSkip = map[string]bool{
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement": true,
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge": true,
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform": true,	
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge":       true,
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform":       true,
 	// Manually generated recipes
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault": true,
 	// This is a special API and we create those recipes manually

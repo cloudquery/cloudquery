@@ -8,8 +8,8 @@ import (
 
 func mongo_db_databases() *schema.Table {
 	return &schema.Table{
-		Name:     "azure_cosmos_mongo_db_databases",
-		Resolver: fetchMongoDbDatabases,
+		Name:      "azure_cosmos_mongo_db_databases",
+		Resolver:  fetchMongoDbDatabases,
 		Transform: transformers.TransformWithStruct(&armcosmos.MongoDBDatabaseGetResults{}),
 		Columns: []schema.Column{
 			{

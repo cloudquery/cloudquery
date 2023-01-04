@@ -32,9 +32,10 @@ func createKeyvault(router *mux.Router) error {
 			return
 		}
 	})
-	createKeyvaultKeys(router)
-	createKeyvaultSecrets(router)
-	return nil
+	if err := createKeyvaultKeys(router); err != nil {
+		return err
+	}
+	return createKeyvaultSecrets(router)
 }
 
 func TestKeyvault(t *testing.T) {

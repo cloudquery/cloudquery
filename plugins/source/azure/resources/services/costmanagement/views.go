@@ -14,7 +14,7 @@ func Views() *schema.Table {
 		Name:      "azure_costmanagement_views",
 		Resolver:  fetchViews,
 		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_costmanagement),
-		Transform: transformers.TransformWithStruct(&armcostmanagement.View{}, transformers.WithSkipFields([]string{"ETag"})),
+		Transform: transformers.TransformWithStruct(&armcostmanagement.View{}, transformers.WithSkipFields("ETag")),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -47,7 +47,7 @@ func fetchViews(ctx context.Context, meta schema.ClientMeta, parent *schema.Reso
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListByScopePager("subscriptions/" + cl.SubscriptionId, nil)
+	pager := svc.NewListByScopePager("subscriptions/"+cl.SubscriptionId, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

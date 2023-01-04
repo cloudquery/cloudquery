@@ -32,10 +32,13 @@ func createAccounts(router *mux.Router) error {
 			return
 		}
 	})
-	createTables(router)
-	createContainers(router)
-	createBlobServices(router)
-	return nil
+	if err := createTables(router); err != nil {
+		return err
+	}
+	if err := createContainers(router); err != nil {
+		return err
+	}
+	return createBlobServices(router)
 }
 
 func TestAccounts(t *testing.T) {

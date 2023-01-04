@@ -8,8 +8,8 @@ import (
 
 func endpoints() *schema.Table {
 	return &schema.Table{
-		Name:     "azure_cdn_endpoints",
-		Resolver: fetchEndpoints,
+		Name:      "azure_cdn_endpoints",
+		Resolver:  fetchEndpoints,
 		Transform: transformers.TransformWithStruct(&armcdn.Endpoint{}),
 		Columns: []schema.Column{
 			{

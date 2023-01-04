@@ -8,8 +8,8 @@ import (
 
 func containers() *schema.Table {
 	return &schema.Table{
-		Name:     "azure_storage_containers",
-		Resolver: fetchContainers,
+		Name:      "azure_storage_containers",
+		Resolver:  fetchContainers,
 		Transform: transformers.TransformWithStruct(&armstorage.ListContainerItem{}),
 		Columns: []schema.Column{
 			{

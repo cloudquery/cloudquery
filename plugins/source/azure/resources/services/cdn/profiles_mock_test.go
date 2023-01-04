@@ -32,10 +32,13 @@ func createProfiles(router *mux.Router) error {
 			return
 		}
 	})
-	createEndpoints(router)
-	createRuleSets(router)
-	createSecurityPolicies(router)
-	return nil
+	if err := createEndpoints(router); err != nil {
+		return err
+	}
+	if err := createRuleSets(router); err != nil {
+		return err
+	}
+	return createSecurityPolicies(router)
 }
 
 func TestProfiles(t *testing.T) {

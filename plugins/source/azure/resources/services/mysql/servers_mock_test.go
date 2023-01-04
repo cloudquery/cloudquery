@@ -29,8 +29,7 @@ func createServers(router *mux.Router) error {
 			return
 		}
 	})
-	createServerConfigurations(router)
-	return nil
+	return createServerConfigurations(router)
 }
 
 func TestServers(t *testing.T) {

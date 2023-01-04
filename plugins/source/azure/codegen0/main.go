@@ -199,7 +199,6 @@ func generateTableMock(r *azparser.Table) error {
 	return nil
 }
 
-
 func generateTables(rr []*azparser.Table) error {
 	tpl, err := template.New("tables.go.tpl").Funcs(templateFuncs).ParseFS(templateFS, "templates/tables.go.tpl")
 	if err != nil {

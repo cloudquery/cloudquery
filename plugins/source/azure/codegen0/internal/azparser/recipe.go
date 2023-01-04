@@ -18,9 +18,9 @@ type Table struct {
 	// Pager name to use
 	Pager string
 	// ResponseStruct
-	ResponseStruct string
+	ResponseStruct          string
 	ResponspeStructNextLink bool
-	ResponseValueStruct string
+	ResponseValueStruct     string
 	// URL is the one set by NewListAll or NewList, depending on which one is available
 	URL                      string
 	NewFuncHasSubscriptionId bool

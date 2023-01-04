@@ -29,9 +29,10 @@ func createDatabaseAccounts(router *mux.Router) error {
 			return
 		}
 	})
-	createMongoDbDatabases(router)
-	createSqlDatabases(router)
-	return nil
+	if err := createMongoDbDatabases(router); err != nil {
+		return err
+	}
+	return createSqlDatabases(router)
 }
 
 func TestDatabaseAccounts(t *testing.T) {

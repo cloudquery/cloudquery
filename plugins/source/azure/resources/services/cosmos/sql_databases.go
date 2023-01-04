@@ -8,8 +8,8 @@ import (
 
 func sql_databases() *schema.Table {
 	return &schema.Table{
-		Name:     "azure_cosmos_sql_databases",
-		Resolver: fetchSqlDatabases,
+		Name:      "azure_cosmos_sql_databases",
+		Resolver:  fetchSqlDatabases,
 		Transform: transformers.TransformWithStruct(&armcosmos.SQLDatabaseGetResults{}),
 		Columns: []schema.Column{
 			{

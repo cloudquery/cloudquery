@@ -8,8 +8,8 @@ import (
 
 func keyvault_secrets() *schema.Table {
 	return &schema.Table{
-		Name:     "azure_keyvault_keyvault_secrets",
-		Resolver: fetchKeyvaultSecrets,
+		Name:      "azure_keyvault_keyvault_secrets",
+		Resolver:  fetchKeyvaultSecrets,
 		Transform: transformers.TransformWithStruct(&armkeyvault.Secret{}),
 		Columns: []schema.Column{
 			{

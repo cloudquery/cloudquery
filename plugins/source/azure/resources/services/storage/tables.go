@@ -8,8 +8,8 @@ import (
 
 func tables() *schema.Table {
 	return &schema.Table{
-		Name:     "azure_storage_tables",
-		Resolver: fetchTables,
+		Name:      "azure_storage_tables",
+		Resolver:  fetchTables,
 		Transform: transformers.TransformWithStruct(&armstorage.Table{}),
 		Columns: []schema.Column{
 			{
