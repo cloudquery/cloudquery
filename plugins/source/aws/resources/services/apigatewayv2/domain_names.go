@@ -13,7 +13,7 @@ func DomainNames() *schema.Table {
 		Description: `https://docs.aws.amazon.com/apigateway/latest/api/API_DomainName.html`,
 		Resolver:    fetchApigatewayv2DomainNames,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
-		Transform:  transformers.TransformWithStruct(&types.DomainName{}),
+		Transform:   transformers.TransformWithStruct(&types.DomainName{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

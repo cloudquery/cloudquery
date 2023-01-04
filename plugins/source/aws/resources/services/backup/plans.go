@@ -14,7 +14,7 @@ func Plans() *schema.Table {
 		Resolver:            fetchBackupPlans,
 		PreResourceResolver: getPlan,
 		Multiplex:           client.ServiceAccountRegionMultiplexer("backup"),
-		Transform: 				 transformers.TransformWithStruct(&backup.GetBackupPlanOutput{}),
+		Transform:           transformers.TransformWithStruct(&backup.GetBackupPlanOutput{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

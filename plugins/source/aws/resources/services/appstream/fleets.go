@@ -13,7 +13,7 @@ func Fleets() *schema.Table {
 		Description: `https://docs.aws.amazon.com/appstream2/latest/APIReference/API_Fleet.html`,
 		Resolver:    fetchAppstreamFleets,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("appstream2"),
-		Transform: transformers.TransformWithStruct(&types.Fleet{}),
+		Transform:   transformers.TransformWithStruct(&types.Fleet{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

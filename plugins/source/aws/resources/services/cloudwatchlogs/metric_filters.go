@@ -13,7 +13,7 @@ func MetricFilters() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_MetricFilter.html`,
 		Resolver:    fetchCloudwatchlogsMetricFilters,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("logs"),
-		Transform: transformers.TransformWithStruct(&types.MetricFilter{}),
+		Transform:   transformers.TransformWithStruct(&types.MetricFilter{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

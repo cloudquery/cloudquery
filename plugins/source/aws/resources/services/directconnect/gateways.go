@@ -13,7 +13,7 @@ func Gateways() *schema.Table {
 		Description: `https://docs.aws.amazon.com/directconnect/latest/APIReference/API_DirectConnectGateway.html`,
 		Resolver:    fetchDirectconnectGateways,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("directconnect"),
-		Transform:  transformers.TransformWithStruct(&types.DirectConnectGateway{}),
+		Transform:   transformers.TransformWithStruct(&types.DirectConnectGateway{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

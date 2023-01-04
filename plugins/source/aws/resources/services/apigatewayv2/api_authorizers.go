@@ -13,7 +13,7 @@ func ApiAuthorizers() *schema.Table {
 		Description: `https://docs.aws.amazon.com/apigateway/latest/api/API_Authorizer.html`,
 		Resolver:    fetchApigatewayv2ApiAuthorizers,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
-		Transform: transformers.TransformWithStruct(&types.Authorizer{}),
+		Transform:   transformers.TransformWithStruct(&types.Authorizer{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

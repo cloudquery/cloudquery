@@ -13,7 +13,7 @@ func Stacks() *schema.Table {
 		Description: `https://docs.aws.amazon.com/appstream2/latest/APIReference/API_Stack.html`,
 		Resolver:    fetchAppstreamStacks,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("appstream2"),
-		Transform: 	 transformers.TransformWithStruct(&types.Stack{}),
+		Transform:   transformers.TransformWithStruct(&types.Stack{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

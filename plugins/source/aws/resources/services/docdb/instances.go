@@ -13,7 +13,7 @@ func Instances() *schema.Table {
 		Description: `https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBInstance.html`,
 		Resolver:    fetchDocdbInstances,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("docdb"),
-		Transform:  transformers.TransformWithStruct(&types.DBInstance{}),
+		Transform:   transformers.TransformWithStruct(&types.DBInstance{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

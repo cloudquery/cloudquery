@@ -13,7 +13,7 @@ func GlobalClusters() *schema.Table {
 		Description: `https://docs.aws.amazon.com/documentdb/latest/developerguide/API_GlobalCluster.html`,
 		Resolver:    fetchDocdbGlobalClusters,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("docdb"),
-		Transform:  transformers.TransformWithStruct(&types.GlobalCluster{}),
+		Transform:   transformers.TransformWithStruct(&types.GlobalCluster{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

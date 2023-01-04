@@ -13,7 +13,7 @@ func Lags() *schema.Table {
 		Description: `https://docs.aws.amazon.com/directconnect/latest/APIReference/API_Lag.html`,
 		Resolver:    fetchDirectconnectLags,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("directconnect"),
-		Transform:  transformers.TransformWithStruct(&types.Lag{}),
+		Transform:   transformers.TransformWithStruct(&types.Lag{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

@@ -13,7 +13,7 @@ func SubnetGroups() *schema.Table {
 		Description: `https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBSubnetGroup.html`,
 		Resolver:    fetchDocdbSubnetGroups,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("docdb"),
-		Transform: transformers.TransformWithStruct(&types.DBSubnetGroup{}),
+		Transform:   transformers.TransformWithStruct(&types.DBSubnetGroup{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

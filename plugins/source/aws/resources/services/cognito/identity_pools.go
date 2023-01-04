@@ -13,7 +13,7 @@ func IdentityPools() *schema.Table {
 		Resolver:            fetchCognitoIdentityPools,
 		PreResourceResolver: getIdentityPool,
 		Multiplex:           client.ServiceAccountRegionMultiplexer("cognito-identity"),
-		Transform: 					 transformers.TransformWithStruct(&cognitoidentity.DescribeIdentityPoolOutput{}),
+		Transform:           transformers.TransformWithStruct(&cognitoidentity.DescribeIdentityPoolOutput{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

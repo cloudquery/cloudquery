@@ -13,7 +13,7 @@ func Vaults() *schema.Table {
 		Description: `https://docs.aws.amazon.com/aws-backup/latest/devguide/API_BackupVaultListMember.html`,
 		Resolver:    fetchBackupVaults,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("backup"),
-		Transform:  transformers.TransformWithStruct(&types.BackupVaultListMember{}),
+		Transform:   transformers.TransformWithStruct(&types.BackupVaultListMember{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

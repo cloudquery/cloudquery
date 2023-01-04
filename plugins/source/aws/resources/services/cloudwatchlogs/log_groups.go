@@ -13,7 +13,7 @@ func LogGroups() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_LogGroup.html`,
 		Resolver:    fetchCloudwatchlogsLogGroups,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("logs"),
-		Transform: transformers.TransformWithStruct(&types.LogGroup{}),
+		Transform:   transformers.TransformWithStruct(&types.LogGroup{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

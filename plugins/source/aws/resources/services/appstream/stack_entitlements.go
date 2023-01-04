@@ -13,7 +13,7 @@ func StackEntitlements() *schema.Table {
 		Description: `https://docs.aws.amazon.com/appstream2/latest/APIReference/API_Entitlement.html`,
 		Resolver:    fetchAppstreamStackEntitlements,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("appstream2"),
-		Transform: transformers.TransformWithStruct(&types.Entitlement{}),
+		Transform:   transformers.TransformWithStruct(&types.Entitlement{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

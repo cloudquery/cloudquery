@@ -13,7 +13,7 @@ func UsagePlans() *schema.Table {
 		Description: `https://docs.aws.amazon.com/apigateway/latest/api/API_UsagePlan.html`,
 		Resolver:    fetchApigatewayUsagePlans,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
-		Transform:  transformers.TransformWithStruct(&types.UsagePlan{}),
+		Transform:   transformers.TransformWithStruct(&types.UsagePlan{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

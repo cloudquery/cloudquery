@@ -13,7 +13,7 @@ func Backups() *schema.Table {
 		Description: `https://docs.aws.amazon.com/cloudhsm/latest/APIReference/API_Backup.html`,
 		Resolver:    fetchCloudhsmv2Backups,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("cloudhsmv2"),
-		Transform: transformers.TransformWithStruct(&types.Backup{}),
+		Transform:   transformers.TransformWithStruct(&types.Backup{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

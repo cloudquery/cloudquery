@@ -13,7 +13,7 @@ func AppBlocks() *schema.Table {
 		Description: `https://docs.aws.amazon.com/appstream2/latest/APIReference/API_AppBlock.html`,
 		Resolver:    fetchAppstreamAppBlocks,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("appstream2"),
-		Transform: transformers.TransformWithStruct(&types.AppBlock{}),
+		Transform:   transformers.TransformWithStruct(&types.AppBlock{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

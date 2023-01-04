@@ -13,7 +13,7 @@ func RestApiResources() *schema.Table {
 		Description: `https://docs.aws.amazon.com/apigateway/latest/api/API_Resource.html`,
 		Resolver:    fetchApigatewayRestApiResources,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
-		Transform:  transformers.TransformWithStruct(&types.Resource{}),
+		Transform:   transformers.TransformWithStruct(&types.Resource{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

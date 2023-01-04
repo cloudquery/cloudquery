@@ -13,7 +13,7 @@ func ClusterParameters() *schema.Table {
 		Description: `https://docs.aws.amazon.com/documentdb/latest/developerguide/API_Parameter.html`,
 		Resolver:    fetchDocdbClusterParameters,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("docdb"),
-		Transform: transformers.TransformWithStruct(&types.Parameter{}),
+		Transform:   transformers.TransformWithStruct(&types.Parameter{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

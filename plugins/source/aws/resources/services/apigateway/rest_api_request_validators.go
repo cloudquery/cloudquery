@@ -13,7 +13,7 @@ func RestApiRequestValidators() *schema.Table {
 		Description: `https://docs.aws.amazon.com/apigateway/latest/api/API_RequestValidator.html`,
 		Resolver:    fetchApigatewayRestApiRequestValidators,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
-		Transform:  transformers.TransformWithStruct(&types.RequestValidator{}),
+		Transform:   transformers.TransformWithStruct(&types.RequestValidator{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

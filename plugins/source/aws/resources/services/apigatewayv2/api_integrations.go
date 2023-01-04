@@ -13,7 +13,7 @@ func ApiIntegrations() *schema.Table {
 		Description: `https://docs.aws.amazon.com/apigateway/latest/api/API_Integration.html`,
 		Resolver:    fetchApigatewayv2ApiIntegrations,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
-		Transform:  transformers.TransformWithStruct(&types.Integration{}),
+		Transform:   transformers.TransformWithStruct(&types.Integration{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

@@ -13,7 +13,7 @@ func GroupScalingPolicies() *schema.Table {
 		Description: `https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_ScalingPolicy.html`,
 		Resolver:    fetchAutoscalingGroupScalingPolicies,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("autoscaling"),
-		Transform: transformers.TransformWithStruct(&types.ScalingPolicy{}),
+		Transform:   transformers.TransformWithStruct(&types.ScalingPolicy{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

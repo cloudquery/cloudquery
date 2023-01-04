@@ -13,7 +13,7 @@ func Stacks() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_Stack.html`,
 		Resolver:    fetchCloudformationStacks,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("cloudformation"),
-		Transform:  transformers.TransformWithStruct(&types.Stack{}),
+		Transform:   transformers.TransformWithStruct(&types.Stack{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

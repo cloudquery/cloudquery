@@ -14,7 +14,7 @@ func Tables() *schema.Table {
 		Resolver:            fetchDynamodbTables,
 		PreResourceResolver: getTable,
 		Multiplex:           client.ServiceAccountRegionMultiplexer("dynamodb"),
-		Transform: transformers.TransformWithStruct(&types.TableDescription{}),
+		Transform:           transformers.TransformWithStruct(&types.TableDescription{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

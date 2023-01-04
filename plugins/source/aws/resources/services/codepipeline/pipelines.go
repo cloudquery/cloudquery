@@ -13,7 +13,7 @@ func Pipelines() *schema.Table {
 		Resolver:            fetchCodepipelinePipelines,
 		PreResourceResolver: getPipeline,
 		Multiplex:           client.ServiceAccountRegionMultiplexer("codepipeline"),
-		Transform: 				 	 transformers.TransformWithStruct(&codepipeline.GetPipelineOutput{}),
+		Transform:           transformers.TransformWithStruct(&codepipeline.GetPipelineOutput{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

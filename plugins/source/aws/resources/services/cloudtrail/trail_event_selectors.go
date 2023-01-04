@@ -13,7 +13,7 @@ func TrailEventSelectors() *schema.Table {
 		Description: `https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_EventSelector.html`,
 		Resolver:    fetchCloudtrailTrailEventSelectors,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("cloudtrail"),
-		Transform: transformers.TransformWithStruct(&types.EventSelector{}),
+		Transform:   transformers.TransformWithStruct(&types.EventSelector{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

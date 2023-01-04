@@ -14,7 +14,7 @@ func WorkGroupPreparedStatements() *schema.Table {
 		Resolver:            fetchAthenaWorkGroupPreparedStatements,
 		PreResourceResolver: getWorkGroupPreparedStatement,
 		Multiplex:           client.ServiceAccountRegionMultiplexer("athena"),
-		Transform: transformers.TransformWithStruct(&types.PreparedStatement{}),
+		Transform:           transformers.TransformWithStruct(&types.PreparedStatement{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

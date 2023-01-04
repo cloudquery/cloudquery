@@ -13,7 +13,7 @@ func VpcLinks() *schema.Table {
 		Description: `https://docs.aws.amazon.com/apigateway/latest/api/API_VpcLink.html`,
 		Resolver:    fetchApigatewayVpcLinks,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
-		Transform:  transformers.TransformWithStruct(&types.VpcLink{}),
+		Transform:   transformers.TransformWithStruct(&types.VpcLink{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

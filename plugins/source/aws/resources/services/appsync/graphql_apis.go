@@ -13,7 +13,7 @@ func GraphqlApis() *schema.Table {
 		Description: `https://docs.aws.amazon.com/appsync/latest/APIReference/API_GraphqlApi.html`,
 		Resolver:    fetchAppsyncGraphqlApis,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("appsync"),
-		Transform:  transformers.TransformWithStruct(&types.GraphqlApi{}),
+		Transform:   transformers.TransformWithStruct(&types.GraphqlApi{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

@@ -13,7 +13,7 @@ func Clusters() *schema.Table {
 		Description: `https://docs.aws.amazon.com/cloudhsm/latest/APIReference/API_Cluster.html`,
 		Resolver:    fetchCloudhsmv2Clusters,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("cloudhsmv2"),
-		Transform:  transformers.TransformWithStruct(&types.Cluster{}),
+		Transform:   transformers.TransformWithStruct(&types.Cluster{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

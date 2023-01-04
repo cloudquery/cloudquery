@@ -13,7 +13,7 @@ func Events() *schema.Table {
 		Description: `https://docs.aws.amazon.com/documentdb/latest/developerguide/API_Event.html`,
 		Resolver:    fetchDocdbEvents,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("docdb"),
-		Transform: transformers.TransformWithStruct(&types.Event{}),
+		Transform:   transformers.TransformWithStruct(&types.Event{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

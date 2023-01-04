@@ -14,7 +14,7 @@ func WorkGroups() *schema.Table {
 		Resolver:            fetchAthenaWorkGroups,
 		PreResourceResolver: getWorkGroup,
 		Multiplex:           client.ServiceAccountRegionMultiplexer("athena"),
-		Transform: transformers.TransformWithStruct(&types.WorkGroup{}),
+		Transform:           transformers.TransformWithStruct(&types.WorkGroup{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

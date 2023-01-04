@@ -13,7 +13,7 @@ func ApiRoutes() *schema.Table {
 		Description: `https://docs.aws.amazon.com/apigateway/latest/api/API_Route.html`,
 		Resolver:    fetchApigatewayv2ApiRoutes,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
-		Transform:  transformers.TransformWithStruct(&types.Route{}),
+		Transform:   transformers.TransformWithStruct(&types.Route{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

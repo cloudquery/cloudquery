@@ -13,7 +13,7 @@ func ApiModels() *schema.Table {
 		Description: `https://docs.aws.amazon.com/apigateway/latest/api/API_Model.html`,
 		Resolver:    fetchApigatewayv2ApiModels,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
-		Transform: transformers.TransformWithStruct(&types.Model{}),
+		Transform:   transformers.TransformWithStruct(&types.Model{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

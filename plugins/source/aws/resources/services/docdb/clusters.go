@@ -13,7 +13,7 @@ func Clusters() *schema.Table {
 		Description: `https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBCluster.html`,
 		Resolver:    fetchDocdbClusters,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("docdb"),
-		Transform:  transformers.TransformWithStruct(&types.DBCluster{}),
+		Transform:   transformers.TransformWithStruct(&types.DBCluster{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
