@@ -109,6 +109,8 @@ require (
 	golang.org/x/sync v0.1.0
 )
 
+replace github.com/cloudquery/plugin-sdk => ../../../../plugin-sdk-split
+
 require (
 	github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.18 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.1.22 // indirect

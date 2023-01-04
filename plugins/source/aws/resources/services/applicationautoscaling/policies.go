@@ -5,6 +5,8 @@ package applicationautoscaling
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/aws/aws-sdk-go-v2/service/applicationautoscaling/types"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Policies() *schema.Table {
@@ -13,6 +15,7 @@ func Policies() *schema.Table {
 		Description: `https://docs.aws.amazon.com/autoscaling/plans/APIReference/API_ScalingPolicy.html`,
 		Resolver:    fetchApplicationautoscalingPolicies,
 		Multiplex:   client.ServiceAccountRegionNamespaceMultiplexer("application-autoscaling"),
+		Transform: transformers.TransformWithStruct(&types.ScalingPolicy{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -31,51 +34,6 @@ func Policies() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
-			},
-			{
-				Name:     "creation_time",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("CreationTime"),
-			},
-			{
-				Name:     "policy_name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("PolicyName"),
-			},
-			{
-				Name:     "policy_type",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("PolicyType"),
-			},
-			{
-				Name:     "resource_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ResourceId"),
-			},
-			{
-				Name:     "scalable_dimension",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ScalableDimension"),
-			},
-			{
-				Name:     "service_namespace",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ServiceNamespace"),
-			},
-			{
-				Name:     "alarms",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Alarms"),
-			},
-			{
-				Name:     "step_scaling_policy_configuration",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("StepScalingPolicyConfiguration"),
-			},
-			{
-				Name:     "target_tracking_scaling_policy_configuration",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("TargetTrackingScalingPolicyConfiguration"),
 			},
 		},
 	}
