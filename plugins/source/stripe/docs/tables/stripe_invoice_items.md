@@ -10,6 +10,7 @@ The primary key for this table is **id**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
+|id (PK)|String|
 |amount|Int|
 |currency|String|
 |customer|JSON|
@@ -18,7 +19,6 @@ The primary key for this table is **id**.
 |description|String|
 |discountable|Bool|
 |discounts|JSON|
-|id (PK)|String|
 |invoice|JSON|
 |livemode|Bool|
 |metadata|JSON|

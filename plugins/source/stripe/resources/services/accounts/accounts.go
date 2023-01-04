@@ -4,86 +4,19 @@ package accounts
 
 import (
 	"context"
+
 	"github.com/cloudquery/cloudquery/plugins/source/stripe/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 	"github.com/stripe/stripe-go/v74"
 )
 
 func Accounts() *schema.Table {
 	return &schema.Table{
-		Name:     "stripe_accounts",
-		Resolver: fetchAccounts,
+		Name:      "stripe_accounts",
+		Transform: transformers.TransformWithStruct(&stripe.Account{}, transformers.WithSkipFields([]string{"ID", "APIResource"})),
+		Resolver:  fetchAccounts,
 		Columns: []schema.Column{
-			{
-				Name:     "business_profile",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("BusinessProfile"),
-			},
-			{
-				Name:     "business_type",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("BusinessType"),
-			},
-			{
-				Name:     "capabilities",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Capabilities"),
-			},
-			{
-				Name:     "charges_enabled",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("ChargesEnabled"),
-			},
-			{
-				Name:     "company",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Company"),
-			},
-			{
-				Name:     "controller",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Controller"),
-			},
-			{
-				Name:     "country",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Country"),
-			},
-			{
-				Name:     "created",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("Created"),
-			},
-			{
-				Name:     "default_currency",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("DefaultCurrency"),
-			},
-			{
-				Name:     "deleted",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("Deleted"),
-			},
-			{
-				Name:     "details_submitted",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("DetailsSubmitted"),
-			},
-			{
-				Name:     "email",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Email"),
-			},
-			{
-				Name:     "external_accounts",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ExternalAccounts"),
-			},
-			{
-				Name:     "future_requirements",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("FutureRequirements"),
-			},
 			{
 				Name:     "id",
 				Type:     schema.TypeString,
@@ -91,46 +24,6 @@ func Accounts() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
-			},
-			{
-				Name:     "individual",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Individual"),
-			},
-			{
-				Name:     "metadata",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Metadata"),
-			},
-			{
-				Name:     "object",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Object"),
-			},
-			{
-				Name:     "payouts_enabled",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("PayoutsEnabled"),
-			},
-			{
-				Name:     "requirements",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Requirements"),
-			},
-			{
-				Name:     "settings",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Settings"),
-			},
-			{
-				Name:     "tos_acceptance",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("TOSAcceptance"),
-			},
-			{
-				Name:     "type",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Type"),
 			},
 		},
 	}

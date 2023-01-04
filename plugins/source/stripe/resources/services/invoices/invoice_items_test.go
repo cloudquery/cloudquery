@@ -9,6 +9,9 @@ import (
 
 func TestInvoicesInvoiceItem(t *testing.T) {
 	tbl := invoices.InvoiceItems()
+	if err := tbl.Transform(tbl); err != nil {
+		t.Fatal(err)
+	}
 	for i, c := range tbl.Columns {
 		if c.Name == "plan" {
 			tbl.Columns[i].IgnoreInTests = true

@@ -9,7 +9,7 @@ import (
 	"os"
 	"path"
 	"runtime"
-	"strings"
+	"strconv"
 	"text/template"
 
 	"github.com/cloudquery/cloudquery/plugins/source/stripe/codegen/recipes"
@@ -22,74 +22,47 @@ import (
 var templatesFS embed.FS
 
 func main() {
+	_, filename, _, ok := runtime.Caller(0)
+	if !ok {
+		log.Fatal("Failed to get caller information")
+	}
+	codegenDir := path.Join(path.Dir(filename), "..", "resources", "services")
+
 	for _, r := range recipes.AllResources {
-		r.SkipFields = append(r.SkipFields, "APIResource")
 		r.Infer()
-	}
-	if err := recipes.SetParentChildRelationships(recipes.AllResources); err != nil {
-		log.Fatal(err)
-	}
-	for _, r := range recipes.AllResources {
-		r.GenerateNames()
-
-		_, filename, _, ok := runtime.Caller(0)
-		if !ok {
-			log.Fatal("Failed to get caller information")
-		}
-		codegenDir := path.Join(path.Dir(filename), "..", "resources", "services")
-
 		generateTable(codegenDir, *r)
 	}
 }
 
 func generateTable(basedir string, r recipes.Resource) {
-	var err error
-
-	r.TableName = "stripe_" + r.TableName
-
 	log.Println("Generating table", r.TableName)
-	opts := []codegen.TableOption{
-		codegen.WithSkipFields(r.SkipFields),
-		codegen.WithExtraColumns(r.ExtraColumns),
-		codegen.WithPKColumns(r.PKColumns...),
-	}
-	if r.UnwrapEmbeddedStructs {
-		opts = append(opts, codegen.WithUnwrapAllEmbeddedStructs())
-	}
-	r.Table, err = codegen.NewTableFromStruct(r.TableName, r.DataStruct, opts...)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	r.Table.Resolver = r.ResolverFuncName
-	r.Table.Multiplex = r.Multiplex
-	r.ImportClient = strings.HasPrefix(r.Multiplex, "client.") || r.GenerateResolver
-	r.Table.Relations = r.Relations
-	r.Table.PreResourceResolver = r.PreResourceResolver
-	r.Table.PostResourceResolver = r.PostResourceResolver
-
-	for _, c := range r.Table.Columns {
-		if strings.HasPrefix(c.Resolver, "client.") {
-			r.ImportClient = true
-		}
-	}
 
 	csr := caser.New()
 	pl := pluralize.NewClient()
 
 	templates := []string{
-		r.Template + ".go.tpl",
+		"resource.go.tpl",
 	}
 	if !r.SkipMocks {
-		templates = append(templates, r.Template+"_test.go.tpl")
+		templates = append(templates, "resource_test.go.tpl")
 	}
 	for idx, templateName := range templates {
 		generatingMocks := idx == 1
 
 		tpl, err := template.New(templateName).Funcs(template.FuncMap{
-			"ToPascal":  csr.ToPascal,
-			"Pluralize": pl.Plural,
+			"ToPascal":    csr.ToPascal,
+			"Pluralize":   pl.Plural,
+			"Singularize": pl.Singular,
+			"QuoteJoin": func(s []string) string {
+				var buf bytes.Buffer
+				for i, v := range s {
+					buf.WriteString(strconv.Quote(v))
+					if i != len(s)-1 {
+						buf.WriteString(", ")
+					}
+				}
+				return buf.String()
+			},
 		}).ParseFS(templatesFS, "templates/"+templateName)
 
 		if err != nil {
@@ -111,9 +84,9 @@ func generateTable(basedir string, r recipes.Resource) {
 
 		var filePath string
 		if generatingMocks {
-			filePath = path.Join(pkgPath, strings.TrimSuffix(r.Filename, ".go")+"_test.go")
+			filePath = path.Join(pkgPath, r.TableName+"_test.go")
 		} else {
-			filePath = path.Join(pkgPath, r.Filename)
+			filePath = path.Join(pkgPath, r.TableName+".go")
 		}
 		content, err := format.Source(buff.Bytes())
 		if err != nil {

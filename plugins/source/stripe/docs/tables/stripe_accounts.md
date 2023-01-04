@@ -10,6 +10,7 @@ The primary key for this table is **id**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
+|id (PK)|String|
 |business_profile|JSON|
 |business_type|String|
 |capabilities|JSON|
@@ -24,7 +25,6 @@ The primary key for this table is **id**.
 |email|String|
 |external_accounts|JSON|
 |future_requirements|JSON|
-|id (PK)|String|
 |individual|JSON|
 |metadata|JSON|
 |object|String|

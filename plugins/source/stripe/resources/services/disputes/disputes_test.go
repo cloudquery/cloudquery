@@ -9,6 +9,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/stripe/resources/services/disputes"
 )
 
-func TestDisputesDispute(t *testing.T) {
+func TestDisputes(t *testing.T) {
 	client.MockTestHelper(t, disputes.Disputes())
 }

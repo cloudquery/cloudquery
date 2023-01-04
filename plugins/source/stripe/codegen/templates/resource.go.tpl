@@ -3,29 +3,41 @@
 package {{.Service}}
 
 import (
-	"github.com/cloudquery/plugin-sdk/schema"
-{{- if .ImportClient}}
-	"github.com/cloudquery/cloudquery/plugins/source/stripe/client"
-{{- end}}
-{{- if .GenerateResolver}}
 	"context"
+
+	"github.com/cloudquery/plugin-sdk/schema"
+  "github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/cloudquery/plugins/source/stripe/client"
 	"github.com/stripe/stripe-go/v74"
-{{- end}}
 )
 
-func {{.TableFuncName}}() *schema.Table {
-    return &schema.Table{{template "table.go.tpl" .Table}}
+func {{.TableName | ToPascal}}() *schema.Table {
+    return &schema.Table{
+  		Name:        "{{.Plugin}}_{{.TableName}}",
+		{{- if .Description}}
+      Description: `{{.Description}}`,
+    {{- end}}
+      Transform:   transformers.TransformWithStruct(&stripe.{{.StructName}}{}{{if .SkipFields}}, transformers.WithSkipFields([]string{ {{- .SkipFields | QuoteJoin -}} }){{end}}),
+      Resolver:    fetch{{.TableName | ToPascal}},
+		  Columns: []schema.Column{
+				 {
+								 Name:     "id",
+								 Type:     schema.TypeString,
+								 Resolver: schema.PathResolver("ID"),
+								 CreationOptions: schema.ColumnCreationOptions{
+												 PrimaryKey: true,
+								 },
+				 },
+			},
+    }
 }
 
-{{- if .GenerateResolver}}
-
-func {{.ResolverFuncName}}(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetch{{.TableName | ToPascal}}(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 		cl := meta.(*client.Client)
 
-		it := cl.Services.{{.SubService | ToPascal | Pluralize}}.List(&stripe.{{.SubService | ToPascal}}ListParams{})
+		it := cl.Services.{{.TableName | ToPascal}}.List(&stripe.{{.TableName | ToPascal | Singularize}}ListParams{})
 		for it.Next() {
-			res <- it.{{.SubService | ToPascal}}()
+			res <- it.{{.TableName | ToPascal | Singularize}}()
 		}
 		return it.Err()
 }
-{{- end}}

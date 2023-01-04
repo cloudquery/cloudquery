@@ -9,6 +9,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/stripe/resources/services/refunds"
 )
 
-func TestRefundsRefund(t *testing.T) {
+func TestRefunds(t *testing.T) {
 	client.MockTestHelper(t, refunds.Refunds())
 }

@@ -9,6 +9,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/stripe/resources/services/invoices"
 )
 
-func TestInvoicesInvoice(t *testing.T) {
+func TestInvoices(t *testing.T) {
 	client.MockTestHelper(t, invoices.Invoices())
 }

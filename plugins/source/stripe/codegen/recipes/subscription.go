@@ -9,7 +9,6 @@ func init() {
 		{
 			DataStruct: &stripe.Subscription{},
 			PKColumns:  []string{"id"},
-			Service:    "subscriptions",
 		},
 	}...)
 }

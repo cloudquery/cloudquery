@@ -9,6 +9,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/stripe/resources/services/customers"
 )
 
-func TestCustomersCustomer(t *testing.T) {
+func TestCustomers(t *testing.T) {
 	client.MockTestHelper(t, customers.Customers())
 }

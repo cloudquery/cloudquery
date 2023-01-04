@@ -10,6 +10,7 @@ The primary key for this table is **id**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
+|id (PK)|String|
 |application|JSON|
 |application_fee_percent|Float|
 |automatic_tax|JSON|
@@ -31,7 +32,6 @@ The primary key for this table is **id**.
 |description|String|
 |discount|JSON|
 |ended_at|Int|
-|id (PK)|String|
 |items|JSON|
 |latest_invoice|JSON|
 |livemode|Bool|

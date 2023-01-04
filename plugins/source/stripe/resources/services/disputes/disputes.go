@@ -4,51 +4,19 @@ package disputes
 
 import (
 	"context"
+
 	"github.com/cloudquery/cloudquery/plugins/source/stripe/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 	"github.com/stripe/stripe-go/v74"
 )
 
 func Disputes() *schema.Table {
 	return &schema.Table{
-		Name:     "stripe_disputes",
-		Resolver: fetchDisputes,
+		Name:      "stripe_disputes",
+		Transform: transformers.TransformWithStruct(&stripe.Dispute{}, transformers.WithSkipFields([]string{"ID", "APIResource"})),
+		Resolver:  fetchDisputes,
 		Columns: []schema.Column{
-			{
-				Name:     "amount",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("Amount"),
-			},
-			{
-				Name:     "balance_transactions",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("BalanceTransactions"),
-			},
-			{
-				Name:     "charge",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Charge"),
-			},
-			{
-				Name:     "created",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("Created"),
-			},
-			{
-				Name:     "currency",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Currency"),
-			},
-			{
-				Name:     "evidence",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Evidence"),
-			},
-			{
-				Name:     "evidence_details",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("EvidenceDetails"),
-			},
 			{
 				Name:     "id",
 				Type:     schema.TypeString,
@@ -56,46 +24,6 @@ func Disputes() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
-			},
-			{
-				Name:     "is_charge_refundable",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("IsChargeRefundable"),
-			},
-			{
-				Name:     "livemode",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("Livemode"),
-			},
-			{
-				Name:     "metadata",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Metadata"),
-			},
-			{
-				Name:     "network_reason_code",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("NetworkReasonCode"),
-			},
-			{
-				Name:     "object",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Object"),
-			},
-			{
-				Name:     "payment_intent",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("PaymentIntent"),
-			},
-			{
-				Name:     "reason",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Reason"),
-			},
-			{
-				Name:     "status",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Status"),
 			},
 		},
 	}

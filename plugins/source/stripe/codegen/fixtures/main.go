@@ -5,9 +5,10 @@ import (
 	"log"
 	"os"
 	"path"
+	"reflect"
 	"runtime"
 
-	"github.com/cloudquery/cloudquery/plugins/source/stripe/codegen/recipes"
+	"github.com/cloudquery/plugin-sdk/caser"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/stripe/stripe-go/v74"
 )
@@ -25,7 +26,15 @@ func main() {
 		Resources: make(map[string]any),
 	}
 
-	extras := []any{
+	dataStructs := []any{
+		&stripe.Account{},
+		&stripe.Customer{},
+		&stripe.Dispute{},
+		&stripe.Invoice{},
+		&stripe.InvoiceItem{},
+		&stripe.Product{},
+		&stripe.Refund{},
+		&stripe.Subscription{},
 		&stripe.BankAccount{},
 		&stripe.SubscriptionItem{},
 		&stripe.LineItem{},
@@ -36,18 +45,9 @@ func main() {
 		"invoice_item": "invoiceitem",
 	}
 
-	for _, e := range extras {
-		recipes.AllResources = append(recipes.AllResources, &recipes.Resource{
-			DataStruct: e,
-			Service:    "extras", // only to make GenerateNames happy
-		})
-	}
-
-	for _, r := range recipes.AllResources {
-		r.Infer()
-		r.GenerateNames()
-
-		ds := r.DataStruct
+	csr := caser.New()
+	for _, ds := range dataStructs {
+		ds := ds
 		if err := faker.FakeObject(ds, faker.WithMaxDepth(6)); err != nil {
 			log.Fatal(err)
 		}
@@ -62,7 +62,11 @@ func main() {
 			item.DefaultSource = &stripe.PaymentSource{ID: "test"}
 		}
 
-		keyName := r.SubService
+		typ := reflect.TypeOf(ds)
+		if typ.Kind() == reflect.Ptr {
+			typ = typ.Elem()
+		}
+		keyName := csr.ToSnake(typ.Name())
 		if n := renames[keyName]; n != "" {
 			keyName = n
 		}

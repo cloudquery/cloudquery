@@ -4,71 +4,19 @@ package customers
 
 import (
 	"context"
+
 	"github.com/cloudquery/cloudquery/plugins/source/stripe/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 	"github.com/stripe/stripe-go/v74"
 )
 
 func Customers() *schema.Table {
 	return &schema.Table{
-		Name:     "stripe_customers",
-		Resolver: fetchCustomers,
+		Name:      "stripe_customers",
+		Transform: transformers.TransformWithStruct(&stripe.Customer{}, transformers.WithSkipFields([]string{"ID", "APIResource"})),
+		Resolver:  fetchCustomers,
 		Columns: []schema.Column{
-			{
-				Name:     "address",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Address"),
-			},
-			{
-				Name:     "balance",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("Balance"),
-			},
-			{
-				Name:     "cash_balance",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("CashBalance"),
-			},
-			{
-				Name:     "created",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("Created"),
-			},
-			{
-				Name:     "currency",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Currency"),
-			},
-			{
-				Name:     "default_source",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("DefaultSource"),
-			},
-			{
-				Name:     "deleted",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("Deleted"),
-			},
-			{
-				Name:     "delinquent",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("Delinquent"),
-			},
-			{
-				Name:     "description",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Description"),
-			},
-			{
-				Name:     "discount",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Discount"),
-			},
-			{
-				Name:     "email",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Email"),
-			},
 			{
 				Name:     "id",
 				Type:     schema.TypeString,
@@ -76,91 +24,6 @@ func Customers() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
-			},
-			{
-				Name:     "invoice_credit_balance",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("InvoiceCreditBalance"),
-			},
-			{
-				Name:     "invoice_prefix",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("InvoicePrefix"),
-			},
-			{
-				Name:     "invoice_settings",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("InvoiceSettings"),
-			},
-			{
-				Name:     "livemode",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("Livemode"),
-			},
-			{
-				Name:     "metadata",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Metadata"),
-			},
-			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
-			},
-			{
-				Name:     "next_invoice_sequence",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("NextInvoiceSequence"),
-			},
-			{
-				Name:     "object",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Object"),
-			},
-			{
-				Name:     "phone",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Phone"),
-			},
-			{
-				Name:     "preferred_locales",
-				Type:     schema.TypeStringArray,
-				Resolver: schema.PathResolver("PreferredLocales"),
-			},
-			{
-				Name:     "shipping",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Shipping"),
-			},
-			{
-				Name:     "sources",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Sources"),
-			},
-			{
-				Name:     "subscriptions",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Subscriptions"),
-			},
-			{
-				Name:     "tax",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tax"),
-			},
-			{
-				Name:     "tax_exempt",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("TaxExempt"),
-			},
-			{
-				Name:     "tax_ids",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("TaxIDs"),
-			},
-			{
-				Name:     "test_clock",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("TestClock"),
 			},
 		},
 	}

@@ -9,13 +9,12 @@ func init() {
 		{
 			DataStruct: &stripe.Invoice{},
 			PKColumns:  []string{"id"},
-			Service:    "invoices",
 		},
 		{
 			DataStruct: &stripe.InvoiceItem{},
 			PKColumns:  []string{"id"},
-			Service:    "invoices",
 			SkipMocks:  true,
+			Service:    "invoices",
 		},
 	}...)
 }

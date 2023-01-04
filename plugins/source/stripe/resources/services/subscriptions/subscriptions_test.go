@@ -9,6 +9,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/stripe/resources/services/subscriptions"
 )
 
-func TestSubscriptionsSubscription(t *testing.T) {
+func TestSubscriptions(t *testing.T) {
 	client.MockTestHelper(t, subscriptions.Subscriptions())
 }

@@ -9,6 +9,6 @@ import (
   "github.com/cloudquery/cloudquery/plugins/source/stripe/resources/services/{{.Service}}"
 )
 
-func Test{{.Service | ToPascal}}{{.SubService | ToPascal}}(t *testing.T) {
-  client.MockTestHelper(t, {{.Service}}.{{.SubService | ToPascal | Pluralize}}())
+func Test{{.TableName | ToPascal}}(t *testing.T) {
+  client.MockTestHelper(t, {{.Service}}.{{.TableName | ToPascal}}())
 }
