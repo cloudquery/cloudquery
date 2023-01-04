@@ -39,6 +39,11 @@ func ResourcePolicies() *schema.Table {
 					PrimaryKey: true,
 				},
 			},
+			{
+				Name:     "policy_document",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("PolicyDocument"),
+			},
 		},
 	}
 }
