@@ -1,4 +1,4 @@
-# GitLab Source Plugin
+# Hacker News Source Plugin
 
 import { getLatestVersion } from "../../../../../utils/versions";
 import { Badge } from "../../../../../components/Badge";
