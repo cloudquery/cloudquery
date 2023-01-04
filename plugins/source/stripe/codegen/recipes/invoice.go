@@ -15,7 +15,7 @@ func init() {
 			PKColumns:   []string{"id"},
 			SkipMocks:   true,
 			Service:     "invoices",
-			Description: "https://stripe.com/docs/api/invoiceitem",
+			Description: "https://stripe.com/docs/api/invoiceitems",
 		},
 	}...)
 }
