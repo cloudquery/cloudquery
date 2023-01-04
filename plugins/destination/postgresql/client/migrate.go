@@ -88,7 +88,6 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 
 	// create the new column as it doesn't exist
 	tableName := pgx.Identifier{table.Name}.Sanitize()
-
 	if pgColumns, err = c.getPgTableColumns(ctx, table.Name); err != nil {
 		return fmt.Errorf("failed to get table %s columns types: %w", table.Name, err)
 	}
