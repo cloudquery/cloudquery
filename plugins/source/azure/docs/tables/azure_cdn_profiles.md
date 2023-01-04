@@ -17,11 +17,11 @@ The following tables depend on azure_cdn_profiles:
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
+|id (PK)|String|
 |location|String|
 |sku|JSON|
 |properties|JSON|
 |tags|JSON|
-|id (PK)|String|
 |kind|String|
 |name|String|
 |system_data|JSON|
