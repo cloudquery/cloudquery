@@ -19,7 +19,6 @@ This table depends on [aws_apigatewayv2_api_routes](aws_apigatewayv2_api_routes.
 |account_id|String|
 |region|String|
 |api_route_arn|String|
-|route_id|String|
 |arn|String|
 |route_response_key|String|
 |model_selection_expression|String|

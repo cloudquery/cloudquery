@@ -16,7 +16,6 @@ This table depends on [aws_config_conformance_packs](aws_config_conformance_pack
 |_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
-|conformance_pack_arn|String|
 |compliance_type|String|
 |config_rule_name|String|
 |controls|StringArray|

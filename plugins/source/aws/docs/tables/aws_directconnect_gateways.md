@@ -23,6 +23,7 @@ The following tables depend on aws_directconnect_gateways:
 |arn (PK)|String|
 |id|String|
 |amazon_side_asn|Int|
+|direct_connect_gateway_id|String|
 |direct_connect_gateway_name|String|
 |direct_connect_gateway_state|String|
 |owner_account|String|
