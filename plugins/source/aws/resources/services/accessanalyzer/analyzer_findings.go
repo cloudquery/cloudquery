@@ -32,6 +32,11 @@ func AnalyzerFindings() *schema.Table {
 					PrimaryKey: true,
 				},
 			},
+			{
+				Name:     "analyzer_arn",
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("arn"),
+			},
 		},
 	}
 }

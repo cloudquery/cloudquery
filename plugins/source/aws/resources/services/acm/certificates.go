@@ -14,7 +14,7 @@ func Certificates() *schema.Table {
 		Resolver:            fetchAcmCertificates,
 		PreResourceResolver: getCertificate,
 		Multiplex:           client.ServiceAccountRegionMultiplexer("acm"),
-		Transform:           transformers.TransformWithStruct(&types.CertificateDetail{}),
+		Transform:           transformers.TransformWithStruct(&types.CertificateDetail{}, transformers.WithSkipFields("CertificateArn")),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

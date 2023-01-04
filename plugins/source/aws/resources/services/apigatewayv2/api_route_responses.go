@@ -31,6 +31,11 @@ func ApiRouteResponses() *schema.Table {
 				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
+				Name:     "route_id",
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("route_id"),
+			},
+			{
 				Name:     "arn",
 				Type:     schema.TypeString,
 				Resolver: resolveApiRouteResponseArn(),
