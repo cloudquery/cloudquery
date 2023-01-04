@@ -16,6 +16,11 @@ The primary key for this table is **arn**.
 |region|String|
 |arn (PK)|String|
 |tags|JSON|
+|created_at|Timestamp|
+|deleted_at|Timestamp|
+|latest|Bool|
 |observability_configuration_arn|String|
 |observability_configuration_name|String|
 |observability_configuration_revision|Int|
+|status|String|
+|trace_configuration|JSON|

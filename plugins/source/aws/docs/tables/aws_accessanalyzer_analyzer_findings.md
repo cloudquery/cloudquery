@@ -19,6 +19,7 @@ This table depends on [aws_accessanalyzer_analyzers](aws_accessanalyzer_analyzer
 |account_id|String|
 |region|String|
 |arn (PK)|String|
+|analyzer_arn|String|
 |analyzed_at|Timestamp|
 |condition|JSON|
 |created_at|Timestamp|

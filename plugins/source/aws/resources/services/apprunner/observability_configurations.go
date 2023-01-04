@@ -14,7 +14,7 @@ func ObservabilityConfigurations() *schema.Table {
 		Resolver:            fetchApprunnerObservabilityConfigurations,
 		PreResourceResolver: getObservabilityConfiguration,
 		Multiplex:           client.ServiceAccountRegionMultiplexer("apprunner"),
-		Transform: 				 	 transformers.TransformWithStruct(&types.ObservabilityConfigurationSummary{}),
+		Transform: 				 	 transformers.TransformWithStruct(&types.ObservabilityConfiguration{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
