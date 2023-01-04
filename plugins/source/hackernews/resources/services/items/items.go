@@ -19,7 +19,8 @@ func Items() *schema.Table {
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("ID"),
 				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
+					PrimaryKey:     true,
+					IncrementalKey: true,
 				},
 			},
 			{
