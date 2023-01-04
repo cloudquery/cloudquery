@@ -96,6 +96,12 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 		return fmt.Errorf("failed to get table %s primary key columns: %w", table.Name, err)
 	}
 
+	stalePks := c.getStalePks(pgPKs, table)
+	if len(stalePks) > 0 {
+		message := "the following primary keys were removed from the schema %q for table %q.\nEither drop the columns or remove their \"not null\" constraint"
+		return fmt.Errorf(message, stalePks, table.Name)
+	}
+
 	reCreatePrimaryKeys := false
 
 	for _, col := range table.Columns {
@@ -144,9 +150,6 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 		}
 	}
 
-	stalePks := c.getStalePks(pgPKs, table)
-	reCreatePrimaryKeys = reCreatePrimaryKeys || len(stalePks) > 0
-
 	if reCreatePrimaryKeys {
 		c.logger.Info().Str("table", table.Name).Msg("Recreating primary keys")
 		if err := c.setNotNullOnPks(ctx, table); err != nil {
@@ -176,11 +179,8 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 		if err := tx.Commit(ctx); err != nil {
 			return fmt.Errorf("failed to commit transaction to recreate primary keys: %w", err)
 		}
-
-		if err := c.dropNotNullOnStalePks(ctx, table, stalePks); err != nil {
-			return fmt.Errorf("failed to drop not null on stale primary keys: %w", err)
-		}
 	}
+
 	return nil
 }
 
@@ -189,16 +189,6 @@ func (c *Client) setNotNullOnPks(ctx context.Context, table *schema.Table) error
 		sql := "alter table " + pgx.Identifier{table.Name}.Sanitize() + " alter column " + pgx.Identifier{col}.Sanitize() + " set not null"
 		if _, err := c.conn.Exec(ctx, sql); err != nil {
 			return fmt.Errorf("failed to set not null on column %s on table %s: %w", col, table.Name, err)
-		}
-	}
-	return nil
-}
-
-func (c *Client) dropNotNullOnStalePks(ctx context.Context, table *schema.Table, stalePks []string) error {
-	for _, col := range stalePks {
-		sql := "alter table " + pgx.Identifier{table.Name}.Sanitize() + " alter column " + pgx.Identifier{col}.Sanitize() + " drop not null"
-		if _, err := c.conn.Exec(ctx, sql); err != nil {
-			return fmt.Errorf("failed to drop not null on column %s on table %s: %w", col, table.Name, err)
 		}
 	}
 	return nil
