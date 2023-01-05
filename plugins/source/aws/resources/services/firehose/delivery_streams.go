@@ -14,7 +14,7 @@ func DeliveryStreams() *schema.Table {
 		Resolver:            fetchFirehoseDeliveryStreams,
 		PreResourceResolver: getDeliveryStream,
 		Multiplex:           client.ServiceAccountRegionMultiplexer("firehose"),
-		Transform: 				 	transformers.TransformWithStruct(&types.DeliveryStreamDescription{}),
+		Transform:           transformers.TransformWithStruct(&types.DeliveryStreamDescription{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

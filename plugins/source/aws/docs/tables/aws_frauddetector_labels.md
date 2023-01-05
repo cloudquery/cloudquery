@@ -16,7 +16,3 @@ The primary key for this table is **arn**.
 |region|String|
 |arn (PK)|String|
 |tags|JSON|
-|created_time|String|
-|description|String|
-|last_updated_time|String|
-|name|String|
