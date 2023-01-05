@@ -35,6 +35,7 @@ The primary key for this table is **arn**.
 |copy_tags_to_snapshot|Bool|
 |cross_account_clone|Bool|
 |custom_endpoints|StringArray|
+|db_cluster_arn|String|
 |db_cluster_identifier|String|
 |db_cluster_instance_class|String|
 |db_cluster_members|JSON|
@@ -84,4 +85,5 @@ The primary key for this table is **arn**.
 |status|String|
 |storage_encrypted|Bool|
 |storage_type|String|
+|tag_list|JSON|
 |vpc_security_groups|JSON|

@@ -38,6 +38,7 @@ The primary key for this table is **arn**.
 |custom_iam_instance_profile|String|
 |customer_owned_ip_enabled|Bool|
 |db_cluster_identifier|String|
+|db_instance_arn|String|
 |db_instance_automated_backups_replications|JSON|
 |db_instance_class|String|
 |db_instance_identifier|String|
@@ -90,6 +91,7 @@ The primary key for this table is **arn**.
 |storage_encrypted|Bool|
 |storage_throughput|Int|
 |storage_type|String|
+|tag_list|JSON|
 |tde_credential_arn|String|
 |timezone|String|
 |vpc_security_groups|JSON|

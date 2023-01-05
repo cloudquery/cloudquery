@@ -21,6 +21,7 @@ The primary key for this table is **arn**.
 |availability_zones|StringArray|
 |cluster_create_time|Timestamp|
 |db_cluster_identifier|String|
+|db_cluster_snapshot_arn|String|
 |db_cluster_snapshot_identifier|String|
 |db_system_id|String|
 |engine|String|
@@ -37,4 +38,5 @@ The primary key for this table is **arn**.
 |source_db_cluster_snapshot_arn|String|
 |status|String|
 |storage_encrypted|Bool|
+|tag_list|JSON|
 |vpc_id|String|

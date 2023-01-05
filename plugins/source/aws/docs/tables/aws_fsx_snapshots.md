@@ -16,10 +16,11 @@ The primary key for this table is **arn**.
 |region|String|
 |arn (PK)|String|
 |administrative_actions|JSON|
+|tags|JSON|
 |creation_time|Timestamp|
 |lifecycle|String|
 |lifecycle_transition_reason|JSON|
 |name|String|
+|resource_arn|String|
 |snapshot_id|String|
-|tags|JSON|
 |volume_id|String|
