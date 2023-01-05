@@ -47,6 +47,11 @@ func getFunction(ctx context.Context, meta schema.ClientMeta, resource *schema.R
 			}
 			return nil
 		}
+		if client.IsAWSError(err, "AccessDenied") {
+			resource.Item = &lambda.GetFunctionOutput{
+				Configuration: &f,
+			}
+		}
 		return err
 	}
 
