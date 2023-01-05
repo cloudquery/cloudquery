@@ -147,10 +147,8 @@ func schemasMatch(haveSchema, wantSchema bigquery.Schema) bool {
 	for _, wf := range wantSchema {
 		if hf, ok := haveMap[wf.Name]; !ok {
 			return false
-		} else {
-			if hf.Type != wf.Type {
-				return false
-			}
+		} else if hf.Type != wf.Type {
+			return false
 		}
 	}
 	return true
