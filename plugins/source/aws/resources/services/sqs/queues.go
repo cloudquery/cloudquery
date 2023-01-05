@@ -34,6 +34,21 @@ func Queues() *schema.Table {
 				},
 			},
 			{
+				Name:     "policy",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Policy"),
+			},
+			{
+				Name:     "redrive_policy",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("RedrivePolicy"),
+			},
+			{
+				Name:     "redrive_allow_policy",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("RedriveAllowPolicy"),
+			},
+			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,
 				Resolver: resolveSqsQueueTags,

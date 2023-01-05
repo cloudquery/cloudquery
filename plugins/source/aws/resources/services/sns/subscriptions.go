@@ -33,6 +33,26 @@ func Subscriptions() *schema.Table {
 					PrimaryKey: true,
 				},
 			},
+			{
+				Name:     "delivery_policy",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("DeliveryPolicy"),
+			},
+			{
+				Name:     "effective_delivery_policy",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("EffectiveDeliveryPolicy"),
+			},
+			{
+				Name:     "filter_policy",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("FilterPolicy"),
+			},
+			{
+				Name:     "redrive_policy",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("RedrivePolicy"),
+			},
 		},
 	}
 }

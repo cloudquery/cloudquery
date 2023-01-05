@@ -38,6 +38,21 @@ func Topics() *schema.Table {
 				Type:     schema.TypeJSON,
 				Resolver: resolveSnsTopicTags,
 			},
+			{
+				Name:     "delivery_policy",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("DeliveryPolicy"),
+			},
+			{
+				Name:     "policy",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Policy"),
+			},
+			{
+				Name:     "effective_delivery_policy",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("EffectiveDeliveryPolicy"),
+			},
 		},
 	}
 }

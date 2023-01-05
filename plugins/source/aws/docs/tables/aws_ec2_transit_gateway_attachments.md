@@ -18,6 +18,7 @@ This table depends on [aws_ec2_transit_gateways](aws_ec2_transit_gateways.md).
 |_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
+|transit_gateway_arn|String|
 |tags|JSON|
 |association|JSON|
 |creation_time|Timestamp|
