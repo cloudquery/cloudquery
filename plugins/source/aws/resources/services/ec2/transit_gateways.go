@@ -13,7 +13,7 @@ func TransitGateways() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGateway.html`,
 		Resolver:    fetchEc2TransitGateways,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
-		Transform: transformers.TransformWithStruct(&types.TransitGateway{}),
+		Transform:   transformers.TransformWithStruct(&types.TransitGateway{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

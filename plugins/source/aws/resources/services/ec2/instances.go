@@ -13,7 +13,7 @@ func Instances() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Instance.html`,
 		Resolver:    fetchEc2Instances,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
-		Transform: transformers.TransformWithStruct(&types.Instance{}),
+		Transform:   transformers.TransformWithStruct(&types.Instance{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

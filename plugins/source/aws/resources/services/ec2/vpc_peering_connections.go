@@ -13,7 +13,7 @@ func VpcPeeringConnections() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_VpcPeeringConnection.html`,
 		Resolver:    fetchEc2VpcPeeringConnections,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
-		Transform: transformers.TransformWithStruct(&types.VpcPeeringConnection{}),
+		Transform:   transformers.TransformWithStruct(&types.VpcPeeringConnection{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

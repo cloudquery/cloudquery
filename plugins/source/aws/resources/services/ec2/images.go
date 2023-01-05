@@ -13,7 +13,7 @@ func Images() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Image.html`,
 		Resolver:    fetchEc2Images,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
-		Transform: transformers.TransformWithStruct(&types.Image{}),
+		Transform:   transformers.TransformWithStruct(&types.Image{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

@@ -13,7 +13,7 @@ func SecurityGroups() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_SecurityGroup.html`,
 		Resolver:    fetchEc2SecurityGroups,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
-		Transform:  transformers.TransformWithStruct(&types.SecurityGroup{}),
+		Transform:   transformers.TransformWithStruct(&types.SecurityGroup{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

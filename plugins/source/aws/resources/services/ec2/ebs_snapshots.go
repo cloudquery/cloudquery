@@ -13,7 +13,7 @@ func EbsSnapshots() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Snapshot.html`,
 		Resolver:    fetchEc2EbsSnapshots,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
-		Transform: transformers.TransformWithStruct(&types.Snapshot{}),
+		Transform:   transformers.TransformWithStruct(&types.Snapshot{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

@@ -13,7 +13,7 @@ func Regions() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Region.html`,
 		Resolver:    fetchEc2Regions,
 		Multiplex:   client.AccountMultiplex,
-		Transform: transformers.TransformWithStruct(&types.Region{}),
+		Transform:   transformers.TransformWithStruct(&types.Region{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

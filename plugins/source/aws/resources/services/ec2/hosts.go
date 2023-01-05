@@ -13,7 +13,7 @@ func Hosts() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Host.html`,
 		Resolver:    fetchEc2Hosts,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
-		Transform:  transformers.TransformWithStruct(&types.Host{}),
+		Transform:   transformers.TransformWithStruct(&types.Host{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

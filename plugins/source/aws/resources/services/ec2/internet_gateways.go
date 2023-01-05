@@ -13,7 +13,7 @@ func InternetGateways() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_InternetGateway.html`,
 		Resolver:    fetchEc2InternetGateways,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
-		Transform:  transformers.TransformWithStruct(&types.InternetGateway{}),
+		Transform:   transformers.TransformWithStruct(&types.InternetGateway{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

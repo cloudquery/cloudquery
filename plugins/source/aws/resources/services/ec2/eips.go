@@ -13,7 +13,7 @@ func Eips() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Address.html`,
 		Resolver:    fetchEc2Eips,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
-		Transform: 	 transformers.TransformWithStruct(&types.Address{}),
+		Transform:   transformers.TransformWithStruct(&types.Address{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

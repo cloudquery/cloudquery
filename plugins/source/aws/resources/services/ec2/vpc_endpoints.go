@@ -13,7 +13,7 @@ func VpcEndpoints() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_VpcEndpoint.html`,
 		Resolver:    fetchEc2VpcEndpoints,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
-		Transform:  transformers.TransformWithStruct(&types.VpcEndpoint{}),
+		Transform:   transformers.TransformWithStruct(&types.VpcEndpoint{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

@@ -13,7 +13,7 @@ func FlowLogs() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_FlowLog.html`,
 		Resolver:    fetchEc2FlowLogs,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
-		Transform: transformers.TransformWithStruct(&types.FlowLog{}),
+		Transform:   transformers.TransformWithStruct(&types.FlowLog{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

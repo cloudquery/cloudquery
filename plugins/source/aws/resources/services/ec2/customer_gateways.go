@@ -13,7 +13,7 @@ func CustomerGateways() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_CustomerGateway.html`,
 		Resolver:    fetchEc2CustomerGateways,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
-		Transform: transformers.TransformWithStruct(&types.CustomerGateway{}),
+		Transform:   transformers.TransformWithStruct(&types.CustomerGateway{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

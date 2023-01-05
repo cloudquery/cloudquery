@@ -13,7 +13,7 @@ func EbsVolumes() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Volume.html`,
 		Resolver:    fetchEc2EbsVolumes,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
-		Transform: transformers.TransformWithStruct(&types.Volume{}),
+		Transform:   transformers.TransformWithStruct(&types.Volume{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

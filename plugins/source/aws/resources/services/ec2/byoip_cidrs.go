@@ -13,7 +13,7 @@ func ByoipCidrs() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ByoipCidr.html`,
 		Resolver:    fetchEc2ByoipCidrs,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
-		Transform: transformers.TransformWithStruct(&types.ByoipCidr{}),
+		Transform:   transformers.TransformWithStruct(&types.ByoipCidr{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

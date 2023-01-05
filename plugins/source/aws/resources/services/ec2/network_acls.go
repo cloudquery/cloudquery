@@ -13,7 +13,7 @@ func NetworkAcls() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_NetworkAcl.html`,
 		Resolver:    fetchEc2NetworkAcls,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
-		Transform: transformers.TransformWithStruct(&types.NetworkAcl{}),
+		Transform:   transformers.TransformWithStruct(&types.NetworkAcl{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

@@ -13,7 +13,7 @@ func EgressOnlyInternetGateways() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_EgressOnlyInternetGateway.html`,
 		Resolver:    fetchEc2EgressOnlyInternetGateways,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
-		Transform:  transformers.TransformWithStruct(&types.EgressOnlyInternetGateway{}),
+		Transform:   transformers.TransformWithStruct(&types.EgressOnlyInternetGateway{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

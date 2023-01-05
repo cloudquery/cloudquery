@@ -13,7 +13,7 @@ func RouteTables() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_RouteTable.html`,
 		Resolver:    fetchEc2RouteTables,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
-		Transform:  transformers.TransformWithStruct(&types.RouteTable{}),
+		Transform:   transformers.TransformWithStruct(&types.RouteTable{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

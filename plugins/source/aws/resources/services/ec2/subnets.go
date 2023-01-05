@@ -13,7 +13,7 @@ func Subnets() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Subnet.html`,
 		Resolver:    fetchEc2Subnets,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
-		Transform: transformers.TransformWithStruct(&types.Subnet{}),
+		Transform:   transformers.TransformWithStruct(&types.Subnet{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
