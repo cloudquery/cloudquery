@@ -14,7 +14,7 @@ func Clusters() *schema.Table {
 		Resolver:            fetchEmrClusters,
 		PreResourceResolver: getCluster,
 		Multiplex:           client.ServiceAccountRegionMultiplexer("elasticmapreduce"),
-		Transform: 				 transformers.TransformWithStruct(&types.Cluster{}),
+		Transform:           transformers.TransformWithStruct(&types.Cluster{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
