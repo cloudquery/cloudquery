@@ -18,6 +18,7 @@ This table depends on [aws_lambda_functions](aws_lambda_functions.md).
 |region|String|
 |function_arn|String|
 |arn (PK)|String|
+|alias_arn|String|
 |description|String|
 |function_version|String|
 |name|String|
