@@ -7,7 +7,6 @@ import (
 	"github.com/cloudquery/filetypes/csv"
 	"github.com/cloudquery/filetypes/json"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/google/uuid"
 )
 
 func (c *Client) ReverseTransformValues(table *schema.Table, values []any) (schema.CQTypes, error) {
@@ -22,10 +21,10 @@ func (c *Client) ReverseTransformValues(table *schema.Table, values []any) (sche
 }
 
 func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- []any) error {
-	name := fmt.Sprintf("%s/%s.%s.%s", c.pluginSpec.Path, table.Name, c.pluginSpec.Format, uuid.NewString())
-	if c.pluginSpec.NoRotate {
-		name = fmt.Sprintf("%s/%s.%s", c.pluginSpec.Path, table.Name, c.pluginSpec.Format)
+	if !c.pluginSpec.NoRotate {
+		return fmt.Errorf("reading is not supported when no_rotate is false. Table: %q; Source: %q", table.Name, sourceName)
 	}
+	name := fmt.Sprintf("%s/%s.%s", c.pluginSpec.Path, table.Name, c.pluginSpec.Format)
 	r, err := c.bucket.Object(name).NewReader(ctx)
 	if err != nil {
 		return err

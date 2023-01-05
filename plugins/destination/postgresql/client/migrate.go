@@ -61,6 +61,26 @@ func (c *Client) isTableExistSQL(ctx context.Context, table string) (bool, error
 	return tableExist == 1, nil
 }
 
+func (c *Client) getStalePks(pgPKs map[string]bool, table *schema.Table) []string {
+	stalePks := []string{}
+	if c.enabledPks() {
+		for pk := range pgPKs {
+			stalePk := true
+			for _, col := range table.Columns {
+				if col.Name == pk && col.CreationOptions.PrimaryKey {
+					stalePk = false
+					break
+				}
+			}
+			if stalePk {
+				c.logger.Info().Str("table", table.Name).Str("column", pk).Msg("Column exists with primary key but is not in the schema")
+				stalePks = append(stalePks, pk)
+			}
+		}
+	}
+	return stalePks
+}
+
 func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) error {
 	var err error
 	var pgColumns *pgTableColumns
@@ -74,6 +94,16 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 
 	if pgPKs, err = c.getPgTablePrimaryKeys(ctx, table.Name); err != nil {
 		return fmt.Errorf("failed to get table %s primary key columns: %w", table.Name, err)
+	}
+
+	stalePks := c.getStalePks(pgPKs, table)
+	constraintName := pgx.Identifier{table.Name + "_cqpk"}.Sanitize()
+	dropConstraintSQL := "alter table " + tableName + " drop constraint if exists " + constraintName
+	if len(stalePks) > 0 {
+		message := "the following primary keys were removed from the schema %q for table %q.\nYou can migrate the table manually by running:\n%s"
+		sep := strings.Repeat("-", len(dropConstraintSQL)+1)
+		query := fmt.Sprintf("%s\n%s;\n%s\n%s", sep, dropConstraintSQL, getDropNotNullQuery(table, stalePks), sep)
+		return fmt.Errorf(message, stalePks, table.Name, query)
 	}
 
 	reCreatePrimaryKeys := false
@@ -123,9 +153,10 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 			reCreatePrimaryKeys = true
 		}
 	}
+
 	if reCreatePrimaryKeys {
 		c.logger.Info().Str("table", table.Name).Msg("Recreating primary keys")
-		if err := c.setNullOnPks(ctx, table); err != nil {
+		if err := c.setNotNullOnPks(ctx, table); err != nil {
 			return fmt.Errorf("failed to enforce not null on primary keys: %w", err)
 		}
 
@@ -133,16 +164,14 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 		if err != nil {
 			return fmt.Errorf("failed to begin transaction to recreate primary keys: %w", err)
 		}
-		constraintName := pgx.Identifier{table.Name + "_cqpk"}.Sanitize()
-		sql := "alter table " + tableName + " drop constraint if exists " + constraintName
-		if _, err := tx.Exec(ctx, sql); err != nil {
+		if _, err := tx.Exec(ctx, dropConstraintSQL); err != nil {
 			if err := tx.Rollback(ctx); err != nil {
 				c.logger.Error().Err(err).Msg("failed to rollback transaction")
 			}
 			return fmt.Errorf("failed to drop primary key constraint on table %s: %w", table.Name, err)
 		}
 
-		sql = "alter table " + tableName + " add constraint " + constraintName + " primary key (" + strings.Join(table.PrimaryKeys(), ",") + ")"
+		sql := "alter table " + tableName + " add constraint " + constraintName + " primary key (" + strings.Join(table.PrimaryKeys(), ",") + ")"
 		if _, err := tx.Exec(ctx, sql); err != nil {
 			if err := tx.Rollback(ctx); err != nil {
 				c.logger.Error().Err(err).Msg("failed to rollback transaction")
@@ -153,10 +182,11 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 			return fmt.Errorf("failed to commit transaction to recreate primary keys: %w", err)
 		}
 	}
+
 	return nil
 }
 
-func (c *Client) setNullOnPks(ctx context.Context, table *schema.Table) error {
+func (c *Client) setNotNullOnPks(ctx context.Context, table *schema.Table) error {
 	for _, col := range table.PrimaryKeys() {
 		sql := "alter table " + pgx.Identifier{table.Name}.Sanitize() + " alter column " + pgx.Identifier{col}.Sanitize() + " set not null"
 		if _, err := c.conn.Exec(ctx, sql); err != nil {
@@ -164,6 +194,15 @@ func (c *Client) setNullOnPks(ctx context.Context, table *schema.Table) error {
 		}
 	}
 	return nil
+}
+
+func getDropNotNullQuery(table *schema.Table, stalePks []string) string {
+	queries := []string{}
+	for _, col := range stalePks {
+		queries = append(queries, "alter table "+pgx.Identifier{table.Name}.Sanitize()+" alter column "+pgx.Identifier{col}.Sanitize()+" drop not null;")
+	}
+
+	return strings.Join(queries, "\n")
 }
 
 func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table) error {

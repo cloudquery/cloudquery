@@ -32,6 +32,8 @@ okta:
   - plugins/source/okta/**/*
 slack:
   - plugins/source/slack/**/*
+shopify:
+  - plugins/source/shopify/**/*
 pagerduty:
   - plugins/source/pagerduty/**/*
 terraform:
@@ -58,6 +60,10 @@ bigquery:
   - plugins/destination/bigquery/**/*
 mongodb:
   - plugins/destination/mongodb/**/*
+neo4j:
+  - plugins/destination/neo4j/**/*
+kafka:
+  - plugins/destination/kafka/**/*
 website:
   - website/**/*
 cli:
