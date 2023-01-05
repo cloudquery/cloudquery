@@ -11,7 +11,7 @@ func WebAcls() *schema.Table {
 		Name:        "aws_waf_web_acls",
 		Description: `https://docs.aws.amazon.com/waf/latest/APIReference/API_waf_WebACLSummary.html`,
 		Resolver:    fetchWafWebAcls,
-		Transform:   transformers.TransformWithStruct(&WebACLWrapper{}),
+		Transform:   transformers.TransformWithStruct(&WebACLWrapper{}, transformers.WithUnwrapStructFields("WebACL")),
 		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{
 			{

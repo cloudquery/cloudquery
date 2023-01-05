@@ -12,7 +12,7 @@ func WebAcls() *schema.Table {
 		Name:                "aws_wafv2_web_acls",
 		Resolver:            fetchWafv2WebAcls,
 		PreResourceResolver: getWebAcl,
-		Transform:           transformers.TransformWithStruct(&models.WebACLWrapper{}),
+		Transform:           transformers.TransformWithStruct(&models.WebACLWrapper{}, transformers.WithUnwrapStructFields("WebACL")),
 		Multiplex:           client.ServiceAccountRegionScopeMultiplexer("waf-regional"),
 		Columns: []schema.Column{
 			{

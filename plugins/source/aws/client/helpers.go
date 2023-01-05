@@ -13,6 +13,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/smithy-go"
+	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -394,5 +395,20 @@ func Sleep(ctx context.Context, dur time.Duration) error {
 		return ctx.Err()
 	case <-time.After(dur):
 		return nil
+	}
+}
+
+func CreateTrimPrefixTransformer(prefixes ...string) func(field reflect.StructField) (string, error) {
+	return func(field reflect.StructField) (string, error) {
+		name, err := codegen.DefaultNameTransformer(field)
+		if err != nil {
+			return "", err
+		}
+		for _, v := range prefixes {
+			if strings.HasPrefix(name, v) {
+				return name[len(v):], nil
+			}
+		}
+		return name, nil
 	}
 }
