@@ -47,7 +47,9 @@ func getFunction(ctx context.Context, meta schema.ClientMeta, resource *schema.R
 			}
 			return nil
 		}
-		if client.IsAWSError(err, "AccessDenied") {
+		// This is intended to handle the case where the user does not have GetFunction permission
+		// User should still get an error in the logs, but the data that was able to be fetched should be persisted
+		if client.IsAWSError(err, "AccessDenied") || client.IsAWSError(err, "AccessDeniedException") {
 			resource.Item = &lambda.GetFunctionOutput{
 				Configuration: &f,
 			}
