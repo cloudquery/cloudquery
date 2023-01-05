@@ -8,10 +8,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func VirtualClusters() *schema.Table {
+func Servers() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_sql_virtual_clusters",
-		Resolver:  fetchVirtualClusters,
+		Name:      "azure_sql_servers",
+		Resolver:  fetchServers,
 		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_sql),
 		Columns: []schema.Column{
 			{
@@ -23,6 +23,11 @@ func VirtualClusters() *schema.Table {
 				Name:     "location",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Location"),
+			},
+			{
+				Name:     "identity",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Identity"),
 			},
 			{
 				Name:     "properties",
@@ -43,6 +48,11 @@ func VirtualClusters() *schema.Table {
 				},
 			},
 			{
+				Name:     "kind",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Kind"),
+			},
+			{
 				Name:     "name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Name"),
@@ -53,12 +63,19 @@ func VirtualClusters() *schema.Table {
 				Resolver: schema.PathResolver("Type"),
 			},
 		},
+
+		Relations: []*schema.Table{
+			server_vulnerability_assessments(),
+			server_admins(),
+			encryption_protectors(),
+			databases(),
+		},
 	}
 }
 
-func fetchVirtualClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchServers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc, err := armsql.NewVirtualClustersClient(cl.SubscriptionId, cl.Creds, cl.Options)
+	svc, err := armsql.NewServersClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {
 		return err
 	}
