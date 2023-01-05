@@ -13,10 +13,12 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/monitor"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/mysql"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/network"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/postgresql"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/redis"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/resources"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/search"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/security"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/sql"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/storage"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/subscription"
 	"github.com/cloudquery/plugin-sdk/plugins/source"
@@ -43,13 +45,17 @@ var customTables = []*schema.Table{
 	monitor.TenantActivityLogAlerts(),
 	mysql.Servers(),
 	network.ExpressRouteGateways(),
+	security.Contacts(),
 	security.Pricings(),
+	security.Settings(),
 	storage.Accounts(),
 	subscription.Subscriptions(),
 	redis.Caches(),
 	resources.Resources(),
+	postgresql.Servers(),
 	subscription.Tenants(),
 	search.Services(),
+	sql.Servers(),
 }
 
 func Plugin() *source.Plugin {

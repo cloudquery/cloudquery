@@ -21,7 +21,6 @@ var packagesToSkip = map[string]bool{
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions": true,
 	// seems something is not right with that package
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementgroups/armmanagementgroups": true,
-
 	// skipping for now
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managedservices/armmanagedservices":                       true,
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/virtualmachineimagebuilder/armvirtualmachineimagebuilder": true,
