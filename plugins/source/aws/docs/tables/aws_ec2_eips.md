@@ -14,6 +14,7 @@ The primary key for this table is **_cq_id**.
 |_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
+|tags|JSON|
 |allocation_id|String|
 |association_id|String|
 |carrier_ip|String|
@@ -27,4 +28,3 @@ The primary key for this table is **_cq_id**.
 |private_ip_address|String|
 |public_ip|String|
 |public_ipv4_pool|String|
-|tags|JSON|
