@@ -12,11 +12,8 @@ func TrafficPolicyVersions() *schema.Table {
 		Name:        "aws_route53_traffic_policy_versions",
 		Description: `https://docs.aws.amazon.com/Route53/latest/APIReference/API_TrafficPolicy.html`,
 		Resolver:    fetchRoute53TrafficPolicyVersions,
-		Transform: transformers.TransformWithStruct(
-			&types.TrafficPolicy{},
-			// TODO add typetransformer: `document` needs to be JSON, not a string
-		),
-		Multiplex: client.AccountMultiplex,
+		Transform:   transformers.TransformWithStruct(&types.TrafficPolicy{}),
+		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -46,6 +43,11 @@ func TrafficPolicyVersions() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
+			},
+			{
+				Name:     "document",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Document"),
 			},
 		},
 	}
