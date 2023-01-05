@@ -12,7 +12,7 @@ func Clusters() *schema.Table {
 		Name:        "aws_rds_clusters",
 		Description: `https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBCluster.html`,
 		Resolver:    fetchRdsClusters,
-		Transform:   transformers.TransformWithStruct(&types.DBCluster{}),
+		Transform:   transformers.TransformWithStruct(&types.DBCluster{}, transformers.WithSkipFields("TagList")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("rds"),
 		Columns: []schema.Column{
 			{

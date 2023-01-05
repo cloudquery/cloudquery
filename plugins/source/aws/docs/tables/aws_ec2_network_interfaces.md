@@ -40,5 +40,4 @@ The primary key for this table is **arn**.
 |source_dest_check|Bool|
 |status|String|
 |subnet_id|String|
-|tag_set|JSON|
 |vpc_id|String|

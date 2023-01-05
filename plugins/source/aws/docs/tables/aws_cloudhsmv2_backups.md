@@ -26,4 +26,3 @@ The primary key for this table is **arn**.
 |source_backup|String|
 |source_cluster|String|
 |source_region|String|
-|tag_list|JSON|

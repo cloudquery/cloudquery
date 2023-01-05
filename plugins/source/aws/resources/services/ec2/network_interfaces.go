@@ -13,7 +13,7 @@ func NetworkInterfaces() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_NetworkInterface.html`,
 		Resolver:    fetchEc2NetworkInterfaces,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
-		Transform:   transformers.TransformWithStruct(&types.NetworkInterface{}),
+		Transform:   transformers.TransformWithStruct(&types.NetworkInterface{}, transformers.WithSkipFields("TagSet")),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

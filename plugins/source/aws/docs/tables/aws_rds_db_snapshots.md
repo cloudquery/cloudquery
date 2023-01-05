@@ -46,7 +46,6 @@ The primary key for this table is **arn**.
 |status|String|
 |storage_throughput|Int|
 |storage_type|String|
-|tag_list|JSON|
 |tde_credential_arn|String|
 |timezone|String|
 |vpc_id|String|
