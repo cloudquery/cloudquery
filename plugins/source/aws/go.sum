@@ -66,8 +66,8 @@ github.com/aws/aws-sdk-go-v2/service/apigateway v1.15.28 h1:tzsVFhPi6VCp8eaY2BoY
 github.com/aws/aws-sdk-go-v2/service/apigateway v1.15.28/go.mod h1:6UIKOkbI/NjVEszKrlgWDrlEPkpd2X+BBrzj0N/XTM4=
 github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.12.25 h1:Q2fPOHnGq3xnBarRAq6x+lvmY7XdHAMg65Jr9aThX8A=
 github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.12.25/go.mod h1:Pyu5xH3gZR/XjaroZL9CF3aBMiYkn+fyZ+Rr0TNUp7I=
-github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.15.25 h1:FTcQlDrj7iVYRi7WWobJV02UEFU3jIIU+8Wt6os/6Ds=
-github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.15.25/go.mod h1:oqEDtKHiPWc+ALMoT40ACfUPspOT0Rl5+NhyXTwWokE=
+github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.16.0 h1:ydt3AquMx5Nb6fgp6kp98yARQkf8qdii3zKSkOx8DJk=
+github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.16.0/go.mod h1:oqEDtKHiPWc+ALMoT40ACfUPspOT0Rl5+NhyXTwWokE=
 github.com/aws/aws-sdk-go-v2/service/apprunner v1.15.2 h1:AEn+xJPNHYUZrhzpgBtld2IeLJQzk8Hw51Kd6ZI7Zf4=
 github.com/aws/aws-sdk-go-v2/service/apprunner v1.15.2/go.mod h1:SZzq5PuLlmDBHFMf5Fvlq5nDWdfQI4H5o4gSWnN2wFk=
 github.com/aws/aws-sdk-go-v2/service/appstream v1.18.3 h1:HHCGjUom8ccK5jcvNKWr58OvPlVG9sTcIteqUDheulc=
@@ -270,8 +270,8 @@ github.com/chzyer/logex v1.1.10/go.mod h1:+Ywpsq7O8HXn0nuIou7OrIPyXbp3wmkHB+jjWR
 github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e/go.mod h1:nSuG5e5PlCu98SY8svDHJxuZscDgtXS6KTTbou5AhLI=
 github.com/chzyer/test v0.0.0-20180213035817-a1ea475d72b1/go.mod h1:Q3SI9o4m/ZMnBNeIyt5eFwwo7qiLfzFZmjNmxjkiQlU=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
-github.com/cloudquery/plugin-sdk v1.18.0 h1:8n78JWjqeunEaIT2WNTE/jMbAFvDxhX4f8TnwgUX48I=
-github.com/cloudquery/plugin-sdk v1.18.0/go.mod h1:teMPyCON3uPdMsHvzpSiOg+IK2sOR5Tf9dYLreoURzI=
+github.com/cloudquery/plugin-sdk v1.19.0 h1:rA2FHLgon5J+VB6tK+w3LLJyegsL/vAkj3Xi9N1Xk1c=
+github.com/cloudquery/plugin-sdk v1.19.0/go.mod h1:teMPyCON3uPdMsHvzpSiOg+IK2sOR5Tf9dYLreoURzI=
 github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGXZJjfX53e64911xZQV5JYwmTeXPW+k8Sc=
 github.com/cncf/udpa/go v0.0.0-20201120205902-5459f2c99403/go.mod h1:WmhPx2Nbnhtbo57+VJT5O0JRkEi1Wbu0z5j0R8u5Hbk=
 github.com/coreos/go-systemd v0.0.0-20190321100706-95778dfbb74e/go.mod h1:F5haX7vjVVG0kc13fIWeqUViNPyEJxv/OmvnBo0Yme4=

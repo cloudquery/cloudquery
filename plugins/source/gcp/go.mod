@@ -13,6 +13,8 @@ require (
 	cloud.google.com/go/beyondcorp v0.3.1
 	cloud.google.com/go/bigtable v1.18.1
 	cloud.google.com/go/billing v1.7.0
+	cloud.google.com/go/binaryauthorization v1.4.0
+	cloud.google.com/go/certificatemanager v1.4.0
 	cloud.google.com/go/compute v1.14.0
 	cloud.google.com/go/container v1.8.0
 	cloud.google.com/go/containeranalysis v0.6.0
@@ -21,6 +23,7 @@ require (
 	cloud.google.com/go/errorreporting v0.3.0
 	cloud.google.com/go/functions v1.9.0
 	cloud.google.com/go/iam v0.9.0
+	cloud.google.com/go/iot v1.4.0
 	cloud.google.com/go/kms v1.6.0
 	cloud.google.com/go/logging v1.6.1
 	cloud.google.com/go/longrunning v0.3.0
@@ -31,7 +34,7 @@ require (
 	cloud.google.com/go/secretmanager v1.9.0
 	cloud.google.com/go/serviceusage v1.4.0
 	cloud.google.com/go/storage v1.28.0
-	github.com/cloudquery/plugin-sdk v1.18.0
+	github.com/cloudquery/plugin-sdk v1.19.0
 	github.com/golang/mock v1.6.0
 	github.com/googleapis/gax-go/v2 v2.7.0
 	github.com/grpc-ecosystem/go-grpc-middleware/providers/zerolog/v2 v2.0.0-rc.3

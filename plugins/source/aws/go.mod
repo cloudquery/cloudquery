@@ -13,7 +13,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/amp v1.15.9
 	github.com/aws/aws-sdk-go-v2/service/apigateway v1.15.28
 	github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.12.25
-	github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.15.25
+	github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.16.0
 	github.com/aws/aws-sdk-go-v2/service/apprunner v1.15.2
 	github.com/aws/aws-sdk-go-v2/service/appstream v1.18.3
 	github.com/aws/aws-sdk-go-v2/service/appsync v1.17.1
@@ -98,7 +98,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/xray v1.15.3
 	github.com/aws/smithy-go v1.13.5
 	github.com/basgys/goxml2json v1.1.0
-	github.com/cloudquery/plugin-sdk v1.18.0
+	github.com/cloudquery/plugin-sdk v1.19.0
 	github.com/gocarina/gocsv v0.0.0-20221216233619-1fea7ae8d380
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.9
