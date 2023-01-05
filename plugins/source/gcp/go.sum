@@ -41,6 +41,8 @@ cloud.google.com/go/bigtable v1.18.1 h1:SxQk9Bj6OKxeiuvevG/KBjqGn/7X8heZbWfK0tYk
 cloud.google.com/go/bigtable v1.18.1/go.mod h1:NAVyfJot9jlo+KmgWLUJ5DJGwNDoChzAcrecLpmuAmY=
 cloud.google.com/go/billing v1.7.0 h1:Xkii76HWELHwBtkQVZvqmSo9GTr0O+tIbRNnMcGdlg4=
 cloud.google.com/go/billing v1.7.0/go.mod h1:q457N3Hbj9lYwwRbnlD7vUpyjq6u5U1RAOArInEiD5Y=
+cloud.google.com/go/binaryauthorization v1.4.0 h1:pL70vXWn9TitQYXBWTK2abHl2JHLwkFRjYw6VflRqEA=
+cloud.google.com/go/binaryauthorization v1.4.0/go.mod h1:tsSPQrBd77VLplV70GUhBf/Zm3FsKmgSqgm4UmiDItk=
 cloud.google.com/go/certificatemanager v1.4.0 h1:tzbR4UHBbgsewMWUD93JHi8EBi/gHBoSAcY1/sThFGk=
 cloud.google.com/go/certificatemanager v1.4.0/go.mod h1:vowpercVFyqs8ABSmrdV+GiFf2H/ch3KyudYQEMM590=
 cloud.google.com/go/compute v1.14.0 h1:hfm2+FfxVmnRlh6LpB7cg1ZNU+5edAHmW679JePztk0=

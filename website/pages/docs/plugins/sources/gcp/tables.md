@@ -73,6 +73,7 @@
 - [gcp_billing_billing_accounts](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_billing_billing_accounts.md)
   - [gcp_billing_budgets](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_billing_budgets.md)
 - [gcp_billing_services](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_billing_services.md)
+- [gcp_binaryauthorization_assertors](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_binaryauthorization_assertors.md)
 - [gcp_certificatemanager_certificate_issuance_configs](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_certificatemanager_certificate_issuance_configs.md)
 - [gcp_certificatemanager_certificate_maps](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_certificatemanager_certificate_maps.md)
   - [gcp_certificatemanager_certificate_map_entries](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_certificatemanager_certificate_map_entries.md)
