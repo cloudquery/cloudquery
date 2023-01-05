@@ -23,26 +23,6 @@ func Roles() *schema.Table {
 				},
 			},
 			{
-				Name:     "deleted",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("Deleted"),
-			},
-			{
-				Name:     "description",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Description"),
-			},
-			{
-				Name:     "etag",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Etag"),
-			},
-			{
-				Name:     "included_permissions",
-				Type:     schema.TypeStringArray,
-				Resolver: schema.PathResolver("IncludedPermissions"),
-			},
-			{
 				Name:     "name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Name"),
@@ -51,14 +31,34 @@ func Roles() *schema.Table {
 				},
 			},
 			{
-				Name:     "stage",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Stage"),
-			},
-			{
 				Name:     "title",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Title"),
+			},
+			{
+				Name:     "description",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Description"),
+			},
+			{
+				Name:     "included_permissions",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("IncludedPermissions"),
+			},
+			{
+				Name:     "stage",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveProtoEnum("Stage"),
+			},
+			{
+				Name:     "etag",
+				Type:     schema.TypeIntArray,
+				Resolver: schema.PathResolver("Etag"),
+			},
+			{
+				Name:     "deleted",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Deleted"),
 			},
 		},
 	}

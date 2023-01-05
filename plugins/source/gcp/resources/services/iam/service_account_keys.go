@@ -28,44 +28,44 @@ func ServiceAccountKeys() *schema.Table {
 				},
 			},
 			{
-				Name:     "disabled",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("Disabled"),
-			},
-			{
-				Name:     "key_algorithm",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("KeyAlgorithm"),
-			},
-			{
-				Name:     "key_origin",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("KeyOrigin"),
-			},
-			{
-				Name:     "key_type",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("KeyType"),
-			},
-			{
 				Name:     "name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Name"),
 			},
 			{
-				Name:     "public_key_data",
+				Name:     "key_algorithm",
 				Type:     schema.TypeString,
+				Resolver: client.ResolveProtoEnum("KeyAlgorithm"),
+			},
+			{
+				Name:     "public_key_data",
+				Type:     schema.TypeIntArray,
 				Resolver: schema.PathResolver("PublicKeyData"),
 			},
 			{
 				Name:     "valid_after_time",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ValidAfterTime"),
+				Type:     schema.TypeTimestamp,
+				Resolver: client.ResolveProtoTimestamp("ValidAfterTime"),
 			},
 			{
 				Name:     "valid_before_time",
+				Type:     schema.TypeTimestamp,
+				Resolver: client.ResolveProtoTimestamp("ValidBeforeTime"),
+			},
+			{
+				Name:     "key_origin",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ValidBeforeTime"),
+				Resolver: client.ResolveProtoEnum("KeyOrigin"),
+			},
+			{
+				Name:     "key_type",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveProtoEnum("KeyType"),
+			},
+			{
+				Name:     "disabled",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Disabled"),
 			},
 		},
 	}

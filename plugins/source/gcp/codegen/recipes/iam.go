@@ -3,36 +3,55 @@ package recipes
 import (
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/iancoleman/strcase"
-	"google.golang.org/api/iam/v1"
-	iamv2Beta "google.golang.org/api/iam/v2beta"
+
+	iamadmin "cloud.google.com/go/iam/admin/apiv1"
+	iampb "cloud.google.com/go/iam/admin/apiv1/adminpb"
+	policiespb "google.golang.org/genproto/googleapis/iam/v2"
 )
 
 func init() {
 	resources := []*Resource{
 		{
 			SubService:  "roles",
-			Struct:      &iam.Role{},
-			PrimaryKeys: []string{ProjectIdColumn.Name, "name"},
 			Description: "https://cloud.google.com/iam/docs/reference/rest/v1/roles#Role",
-			MockImports: []string{"google.golang.org/api/iam/v1"},
+
+			Struct:         &iampb.Role{},
+			RegisterServer: iampb.RegisterIAMServer,
+			ProtobufImport: "cloud.google.com/go/iam/admin/apiv1/adminpb",
+			ResponseStruct: &iampb.ListRolesResponse{},
+
+			PrimaryKeys: []string{ProjectIdColumn.Name, "name"},
+			SkipFetch:   true,
+
+			// These properties must be specified manually since they are only populated from reflection when SkipFetch is false
+			ListFunctionName:  "ListRoles",
+			RequestStructName: "ListRolesRequest",
 		},
 		{
-			SubService:      "service_accounts",
-			Struct:          &iam.ServiceAccount{},
-			OutputField:     "Accounts",
-			PrimaryKeys:     []string{"unique_id"},
-			SkipFields:      []string{"ProjectId"},
-			NameTransformer: CreateReplaceTransformer(map[string]string{"oauth_2": "oauth2"}),
-			Relations:       []string{"ServiceAccountKeys()"},
-			SkipMock:        true,
-			Description:     "https://cloud.google.com/iam/docs/reference/rest/v1/projects.serviceAccounts#ServiceAccount",
+			SubService:  "service_accounts",
+			Description: "https://cloud.google.com/iam/docs/reference/rest/v1/projects.serviceAccounts#ServiceAccount",
+
+			Struct:              &iampb.ServiceAccount{},
+			NewFunction:         iamadmin.NewIamClient,
+			MockImports:         []string{"cloud.google.com/go/iam/admin/apiv1"},
+			ProtobufImport:      "cloud.google.com/go/iam/admin/apiv1/adminpb",
+			ListFunction:        (&iamadmin.IamClient{}).ListServiceAccounts,
+			RequestStructFields: `Name: "projects/" + c.ProjectId,`,
+
+			NameTransformer:    CreateReplaceTransformer(map[string]string{"oauth_2": "oauth2"}),
+			PrimaryKeys:        []string{"unique_id"},
+			Relations:          []string{"ServiceAccountKeys()"},
+			ServiceAPIOverride: "admin",
+			SkipFields:         []string{"ProjectId"},
+			SkipMock:           true,
 		},
 		{
 			SubService:  "service_account_keys",
-			Struct:      &iam.ServiceAccountKey{},
-			ChildTable:  true,
-			OutputField: "AccountKeys",
+			Description: "https://cloud.google.com/iam/docs/reference/rest/v1/projects.serviceAccounts.keys#ServiceAccountKey",
+
+			Struct: &iampb.ServiceAccountKey{},
+
+			ChildTable: true,
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:     "service_account_unique_id",
@@ -41,26 +60,32 @@ func init() {
 					Resolver: `schema.ParentColumnResolver("unique_id")`,
 				},
 			},
+			PrimaryKeys: []string{"unique_id"},
+			SkipFetch:   true,
 			SkipFields:  []string{"ProjectId", "PrivateKeyData", "PrivateKeyType"},
 			SkipMock:    true,
-			Description: "https://cloud.google.com/iam/docs/reference/rest/v1/projects.serviceAccounts.keys#ServiceAccountKey",
 		},
 		{
 			SubService:  "deny_policies",
-			SkipMock:    true,
-			Struct:      &iamv2Beta.GoogleIamV2betaPolicy{},
 			Description: "https://cloud.google.com/iam/docs/reference/rest/v2beta/policies#Policy",
+
+			Struct:         &policiespb.Policy{},
+			RegisterServer: policiespb.RegisterPoliciesServer,
+			ProtobufImport: "google.golang.org/genproto/googleapis/iam/v2",
+			ResponseStruct: &policiespb.ListPoliciesResponse{},
+
+			SkipFetch: true,
+
+			// These properties must be specified manually since they are only populated from reflection when SkipFetch is false
+			ListFunctionName:  "ListPolicies",
+			RequestStructName: "ListPoliciesRequest",
 		},
 	}
 
 	for _, resource := range resources {
 		resource.Service = "iam"
-		resource.SkipFetch = true
 		resource.Template = "newapi_list"
-		resource.MockTemplate = "resource_list_mock"
-		if resource.OutputField == "" {
-			resource.OutputField = strcase.ToCamel(resource.SubService)
-		}
+		resource.MockTemplate = "newapi_list_grpc_mock"
 	}
 
 	Resources = append(Resources, resources...)

@@ -20,44 +20,9 @@ func DenyPolicies() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
-				Name:     "annotations",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Annotations"),
-			},
-			{
-				Name:     "create_time",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("CreateTime"),
-			},
-			{
-				Name:     "delete_time",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("DeleteTime"),
-			},
-			{
-				Name:     "display_name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("DisplayName"),
-			},
-			{
-				Name:     "etag",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Etag"),
-			},
-			{
-				Name:     "kind",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Kind"),
-			},
-			{
 				Name:     "name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Name"),
-			},
-			{
-				Name:     "rules",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Rules"),
 			},
 			{
 				Name:     "uid",
@@ -65,9 +30,49 @@ func DenyPolicies() *schema.Table {
 				Resolver: schema.PathResolver("Uid"),
 			},
 			{
-				Name:     "update_time",
+				Name:     "kind",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("UpdateTime"),
+				Resolver: schema.PathResolver("Kind"),
+			},
+			{
+				Name:     "display_name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("DisplayName"),
+			},
+			{
+				Name:     "annotations",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Annotations"),
+			},
+			{
+				Name:     "etag",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Etag"),
+			},
+			{
+				Name:     "create_time",
+				Type:     schema.TypeTimestamp,
+				Resolver: client.ResolveProtoTimestamp("CreateTime"),
+			},
+			{
+				Name:     "update_time",
+				Type:     schema.TypeTimestamp,
+				Resolver: client.ResolveProtoTimestamp("UpdateTime"),
+			},
+			{
+				Name:     "delete_time",
+				Type:     schema.TypeTimestamp,
+				Resolver: client.ResolveProtoTimestamp("DeleteTime"),
+			},
+			{
+				Name:     "rules",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Rules"),
+			},
+			{
+				Name:     "managing_authority",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ManagingAuthority"),
 			},
 		},
 	}

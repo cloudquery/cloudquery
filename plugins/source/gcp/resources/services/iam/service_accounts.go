@@ -3,8 +3,15 @@
 package iam
 
 import (
+	"context"
+	"google.golang.org/api/iterator"
+
+	pb "cloud.google.com/go/iam/admin/apiv1/adminpb"
+
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
+
+	"cloud.google.com/go/iam/admin/apiv1"
 )
 
 func ServiceAccounts() *schema.Table {
@@ -20,39 +27,9 @@ func ServiceAccounts() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
-				Name:     "description",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Description"),
-			},
-			{
-				Name:     "disabled",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("Disabled"),
-			},
-			{
-				Name:     "display_name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("DisplayName"),
-			},
-			{
-				Name:     "email",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Email"),
-			},
-			{
-				Name:     "etag",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Etag"),
-			},
-			{
 				Name:     "name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Name"),
-			},
-			{
-				Name:     "oauth2_client_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Oauth2ClientId"),
 			},
 			{
 				Name:     "unique_id",
@@ -62,10 +39,65 @@ func ServiceAccounts() *schema.Table {
 					PrimaryKey: true,
 				},
 			},
+			{
+				Name:     "email",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Email"),
+			},
+			{
+				Name:     "display_name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("DisplayName"),
+			},
+			{
+				Name:     "etag",
+				Type:     schema.TypeIntArray,
+				Resolver: schema.PathResolver("Etag"),
+			},
+			{
+				Name:     "description",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Description"),
+			},
+			{
+				Name:     "oauth2_client_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Oauth2ClientId"),
+			},
+			{
+				Name:     "disabled",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Disabled"),
+			},
 		},
 
 		Relations: []*schema.Table{
 			ServiceAccountKeys(),
 		},
 	}
+}
+
+func fetchServiceAccounts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	c := meta.(*client.Client)
+	req := &pb.ListServiceAccountsRequest{
+		Name: "projects/" + c.ProjectId,
+	}
+	gcpClient, err := admin.NewIamClient(ctx, c.ClientOptions...)
+	if err != nil {
+		return err
+	}
+	it := gcpClient.ListServiceAccounts(ctx, req, c.CallOptions...)
+	for {
+		resp, err := it.Next()
+		if err == iterator.Done {
+			break
+		}
+		if err != nil {
+			return err
+		}
+
+		res <- resp
+
+	}
+	return nil
 }
