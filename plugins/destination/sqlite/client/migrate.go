@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	isTableExistSQL = "SELECT count(name) FROM sqlite_master WHERE type='table' AND name=?;"
+	isTableExistSQL = "SELECT count(name) FROM sqlite_master WHERE type='table' AND name='?';"
 
 	// https://wiki.postgresql.org/wiki/Retrieve_primary_key_columns
 	sqlTableInfo = "PRAGMA table_info('%s');"
