@@ -1,6 +1,13 @@
-# Table: azure_sql_instance_pools
+# Table: azure_sql_databases
 
 The primary key for this table is **id**.
+
+## Relations
+
+This table depends on [azure_sql_servers](azure_sql_servers.md).
+
+The following tables depend on azure_sql_databases:
+  - [azure_sql_database_blob_auditing_policies](azure_sql_database_blob_auditing_policies.md)
 
 ## Columns
 
@@ -10,11 +17,13 @@ The primary key for this table is **id**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|subscription_id|String|
 |location|String|
+|identity|JSON|
 |properties|JSON|
 |sku|JSON|
 |tags|JSON|
 |id (PK)|String|
+|kind|String|
+|managed_by|String|
 |name|String|
 |type|String|

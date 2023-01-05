@@ -1,6 +1,12 @@
-# Table: azure_sql_instance_pools
+# Table: azure_keyvault_keyvault
 
 The primary key for this table is **id**.
+
+## Relations
+
+The following tables depend on azure_keyvault_keyvault:
+  - [azure_keyvault_keyvault_keys](azure_keyvault_keyvault_keys.md)
+  - [azure_keyvault_keyvault_secrets](azure_keyvault_keyvault_secrets.md)
 
 ## Columns
 
@@ -11,10 +17,8 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|location|String|
-|properties|JSON|
-|sku|JSON|
-|tags|JSON|
 |id (PK)|String|
+|location|String|
 |name|String|
+|tags|JSON|
 |type|String|

@@ -1,4 +1,4 @@
-# Table: azure_sql_instance_pools
+# Table: azure_subscription_tenants
 
 The primary key for this table is **id**.
 
@@ -10,11 +10,5 @@ The primary key for this table is **id**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|subscription_id|String|
-|location|String|
-|properties|JSON|
-|sku|JSON|
-|tags|JSON|
 |id (PK)|String|
-|name|String|
-|type|String|
+|tenant_id|String|

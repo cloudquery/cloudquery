@@ -1,4 +1,4 @@
-# Table: azure_sql_instance_pools
+# Table: azure_network_express_route_gateways
 
 The primary key for this table is **id**.
 
@@ -11,10 +11,10 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
+|id (PK)|String|
 |location|String|
 |properties|JSON|
-|sku|JSON|
 |tags|JSON|
-|id (PK)|String|
+|etag|String|
 |name|String|
 |type|String|

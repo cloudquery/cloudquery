@@ -2,6 +2,11 @@
 
 The primary key for this table is **id**.
 
+## Relations
+
+The following tables depend on azure_postgresql_servers:
+  - [azure_postgresql_configurations](azure_postgresql_configurations.md)
+
 ## Columns
 
 | Name          | Type          |

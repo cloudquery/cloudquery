@@ -1,4 +1,4 @@
-# Table: azure_sql_instance_pools
+# Table: azure_datalakestore_accounts
 
 The primary key for this table is **id**.
 
@@ -11,10 +11,9 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|location|String|
-|properties|JSON|
-|sku|JSON|
-|tags|JSON|
 |id (PK)|String|
+|location|String|
 |name|String|
+|properties|JSON|
+|tags|JSON|
 |type|String|
