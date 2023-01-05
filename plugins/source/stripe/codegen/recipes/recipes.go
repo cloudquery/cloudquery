@@ -27,8 +27,6 @@ type Resource struct {
 }
 
 var (
-	AllResources []*Resource
-
 	pluralizeClient *pluralize.Client
 	csr             *caser.Caser
 )
@@ -41,6 +39,10 @@ func init() {
 func (r *Resource) Infer() {
 	r.Plugin = path.Base(strings.TrimSuffix(reflect.TypeOf(r).Elem().PkgPath(), "/codegen/recipes")) // "stripe"
 	r.SkipFields = append(r.SkipFields, "ID", "APIResource")
+
+	if len(r.PKColumns) == 0 {
+		r.PKColumns = []string{"id"}
+	}
 
 	ds := reflect.TypeOf(r.DataStruct)
 	if ds.Kind() == reflect.Ptr {
