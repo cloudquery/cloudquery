@@ -23,7 +23,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.13.24
 	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.21.1
 	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.23.1
-	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.17.3
+	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.17.4
 	github.com/aws/aws-sdk-go-v2/service/codebuild v1.19.21
 	github.com/aws/aws-sdk-go-v2/service/codepipeline v1.13.21
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.14.6
@@ -88,7 +88,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sfn v1.16.2
 	github.com/aws/aws-sdk-go-v2/service/sns v1.18.8
 	github.com/aws/aws-sdk-go-v2/service/sqs v1.19.17
-	github.com/aws/aws-sdk-go-v2/service/ssm v1.33.4
+	github.com/aws/aws-sdk-go-v2/service/ssm v1.34.0
 	github.com/aws/aws-sdk-go-v2/service/ssoadmin v1.15.16
 	github.com/aws/aws-sdk-go-v2/service/sts v1.17.7
 	github.com/aws/aws-sdk-go-v2/service/timestreamwrite v1.14.8
