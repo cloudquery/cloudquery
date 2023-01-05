@@ -13,7 +13,7 @@ func Environments() *schema.Table {
 		Description: `https://docs.aws.amazon.com/elasticbeanstalk/latest/APIReference/API_EnvironmentDescription.html`,
 		Resolver:    fetchElasticbeanstalkEnvironments,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticbeanstalk"),
-		Transform: transformers.TransformWithStruct(&types.EnvironmentDescription{}),
+		Transform:   transformers.TransformWithStruct(&types.EnvironmentDescription{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

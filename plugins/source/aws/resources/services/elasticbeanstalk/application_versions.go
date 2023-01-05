@@ -13,7 +13,7 @@ func ApplicationVersions() *schema.Table {
 		Description: `https://docs.aws.amazon.com/elasticbeanstalk/latest/api/API_ApplicationVersionDescription.html`,
 		Resolver:    fetchElasticbeanstalkApplicationVersions,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticbeanstalk"),
-		Transform: transformers.TransformWithStruct(&types.ApplicationVersionDescription{}),
+		Transform:   transformers.TransformWithStruct(&types.ApplicationVersionDescription{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

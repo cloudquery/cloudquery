@@ -13,7 +13,7 @@ func Applications() *schema.Table {
 		Description: `https://docs.aws.amazon.com/elasticbeanstalk/latest/api/API_ApplicationDescription.html`,
 		Resolver:    fetchElasticbeanstalkApplications,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticbeanstalk"),
-		Transform:  transformers.TransformWithStruct(&types.ApplicationDescription{}),
+		Transform:   transformers.TransformWithStruct(&types.ApplicationDescription{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

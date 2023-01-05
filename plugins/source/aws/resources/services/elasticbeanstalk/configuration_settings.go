@@ -13,7 +13,7 @@ func ConfigurationSettings() *schema.Table {
 		Description: `https://docs.aws.amazon.com/elasticbeanstalk/latest/api/API_ConfigurationSettingsDescription.html`,
 		Resolver:    fetchElasticbeanstalkConfigurationSettings,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticbeanstalk"),
-		Transform: transformers.TransformWithStruct(models.ConfigurationSettingsDescriptionWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
+		Transform:   transformers.TransformWithStruct(models.ConfigurationSettingsDescriptionWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
