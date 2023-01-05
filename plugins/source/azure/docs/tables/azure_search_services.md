@@ -10,11 +10,11 @@ The primary key for this table is **id**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
+|id (PK)|String|
 |location|String|
 |identity|JSON|
 |properties|JSON|
 |sku|JSON|
 |tags|JSON|
-|id (PK)|String|
 |name|String|
 |type|String|

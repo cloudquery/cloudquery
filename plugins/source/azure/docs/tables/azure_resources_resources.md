@@ -10,6 +10,7 @@ The primary key for this table is **id**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
+|id (PK)|String|
 |extended_location|JSON|
 |identity|JSON|
 |kind|String|
@@ -20,7 +21,6 @@ The primary key for this table is **id**.
 |tags|JSON|
 |changed_time|Timestamp|
 |created_time|Timestamp|
-|id (PK)|String|
 |name|String|
 |provisioning_state|String|
 |type|String|
