@@ -105,13 +105,12 @@ func (c *Client) waitForSchemaToMatch(ctx context.Context, client *bigquery.Clie
 				return err
 			}
 			haveSchema := md.Schema
-			if schemasMatch(haveSchema, wantSchema) {
-				if j == tries-1 {
-					c.logger.Debug().Str("table", table.Name).Msg("Schemas match")
-					return nil
-				}
-			} else {
-				break
+			if !schemasMatch(haveSchema, wantSchema) {
+				continue
+			}
+			if j == tries-1 {
+				c.logger.Debug().Str("table", table.Name).Msg("Schemas match")
+				return nil
 			}
 		}
 		c.logger.Debug().Str("table", table.Name).Int("i", i).Msg("Waiting for schemas to match")
