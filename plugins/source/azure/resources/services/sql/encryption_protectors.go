@@ -2,13 +2,16 @@
 package sql
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func encryption_protectors() *schema.Table {
 	return &schema.Table{
-		Name:     "azure_sql_encryption_protectors",
-		Resolver: fetchEncryptionProtectors,
+		Name:      "azure_sql_encryption_protectors",
+		Resolver:  fetchEncryptionProtectors,
+		Transform: transformers.TransformWithStruct(&armsql.EncryptionProtector{}),
 		Columns: []schema.Column{
 			{
 				Name:     "properties",

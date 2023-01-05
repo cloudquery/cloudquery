@@ -2,13 +2,16 @@
 package sql
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func databases() *schema.Table {
 	return &schema.Table{
-		Name:     "azure_sql_databases",
-		Resolver: fetchDatabases,
+		Name:      "azure_sql_databases",
+		Resolver:  fetchDatabases,
+		Transform: transformers.TransformWithStruct(&armsql.Database{}),
 		Columns: []schema.Column{
 			{
 				Name:     "location",

@@ -2,13 +2,16 @@
 package postgresql
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func configurations() *schema.Table {
 	return &schema.Table{
-		Name:     "azure_postgresql_configurations",
-		Resolver: fetchConfigurations,
+		Name:      "azure_postgresql_configurations",
+		Resolver:  fetchConfigurations,
+		Transform: transformers.TransformWithStruct(&armpostgresql.Configuration{}),
 		Columns: []schema.Column{
 			{
 				Name:     "properties",

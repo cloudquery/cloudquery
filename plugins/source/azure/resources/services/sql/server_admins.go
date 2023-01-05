@@ -2,13 +2,16 @@
 package sql
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func server_admins() *schema.Table {
 	return &schema.Table{
-		Name:     "azure_sql_server_admins",
-		Resolver: fetchServerAdmins,
+		Name:      "azure_sql_server_admins",
+		Resolver:  fetchServerAdmins,
+		Transform: transformers.TransformWithStruct(&armsql.ServerAzureADAdministrator{}),
 		Columns: []schema.Column{
 			{
 				Name:     "properties",
