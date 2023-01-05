@@ -96,14 +96,21 @@ func (c *Client) waitForTableToExist(ctx context.Context, client *bigquery.Clien
 func (c *Client) waitForSchemaToMatch(ctx context.Context, client *bigquery.Client, table *schema.Table) error {
 	c.logger.Debug().Str("table", table.Name).Msg("Waiting for schemas to match")
 	wantSchema := c.bigQuerySchemaForTable(table)
+	want, err := wantSchema.ToJSONFields()
+	if err != nil {
+		return fmt.Errorf("failed to convert schema to JSON: %v", err)
+	}
 	for i := 0; i < maxTableChecks; i++ {
 		md, err := client.Dataset(c.pluginSpec.DatasetID).Table(table.Name).Metadata(ctx)
 		if err != nil {
 			return err
 		}
-		haveSchema := md.Schema
-		if schemasMatch(haveSchema, wantSchema) {
-			c.logger.Debug().Str("table", table.Name).Msg("Schemas match")
+		got, err := md.Schema.ToJSONFields()
+		if err != nil {
+			return fmt.Errorf("failed to convert schema to JSON: %v", err)
+		}
+		if string(got) == string(want) {
+			c.logger.Debug().Str("table", table.Name).Msg("Schemas matched")
 			return nil
 		}
 		c.logger.Debug().Str("table", table.Name).Int("i", i).Msg("Waiting for schemas to match")
@@ -113,78 +120,14 @@ func (c *Client) waitForSchemaToMatch(ctx context.Context, client *bigquery.Clie
 }
 
 func (c *Client) autoMigrateTable(ctx context.Context, client *bigquery.Client, table *schema.Table) error {
-	bqTable := client.Dataset(c.pluginSpec.DatasetID).Table(table.Name)
-	md, err := bqTable.Metadata(ctx)
-	if err != nil {
-		return fmt.Errorf("failed to get table metadata: %w", err)
-	}
-	haveSchema := md.Schema
-	wantSchema := c.bigQuerySchemaForTable(table)
-	wantSchema, err = mergeSchemas(haveSchema, wantSchema)
-	if err != nil {
-		return fmt.Errorf("failed to migrate table schema: %w", err)
-	}
+	bqSchema := c.bigQuerySchemaForTable(table)
 	tm := bigquery.TableMetadataToUpdate{
 		Name:        table.Name,
 		Description: table.Description,
-		Schema:      wantSchema,
+		Schema:      bqSchema,
 	}
-	_, err = bqTable.Update(ctx, tm, "")
-	if err != nil {
-		return fmt.Errorf("failed to update table schema: %w", err)
-	}
-	return nil
-}
-
-func schemasMatch(haveSchema, wantSchema bigquery.Schema) bool {
-	// Schemas are considered a match if everything in the want schema is in the have schema,
-	// and they have the same types.
-	// We don't mind if there are extra fields in the have schema.
-	haveMap := make(map[string]*bigquery.FieldSchema)
-	for _, f := range haveSchema {
-		haveMap[f.Name] = f
-	}
-	for _, wf := range wantSchema {
-		if hf, ok := haveMap[wf.Name]; !ok {
-			return false
-		} else if hf.Type != wf.Type {
-			return false
-		}
-	}
-	return true
-}
-
-// mergeSchemas merges the schema we want with the schema we have, to avoid
-// losing any existing data
-func mergeSchemas(haveSchema, wantSchema bigquery.Schema) (bigquery.Schema, error) {
-	haveMap := make(map[string]*bigquery.FieldSchema)
-	for _, f := range haveSchema {
-		haveMap[f.Name] = f
-	}
-	wantMap := make(map[string]*bigquery.FieldSchema)
-	for _, f := range wantSchema {
-		wantMap[f.Name] = f
-	}
-	merged := make(bigquery.Schema, 0, len(wantSchema))
-	// keep everything in the schema we have, as long as the types didn't change
-	// or an unknown column isn't required
-	for _, f := range haveSchema {
-		if want, ok := wantMap[f.Name]; ok {
-			if want.Type != f.Type {
-				return nil, fmt.Errorf("field %v changed type from %v to %v", f.Name, f.Type, want.Type)
-			}
-		} else if f.Required {
-			return nil, fmt.Errorf("field %v is required but not in new schema", f.Name)
-		}
-		merged = append(merged, f)
-	}
-	// add anything new
-	for _, f := range wantSchema {
-		if _, ok := haveMap[f.Name]; !ok {
-			merged = append(merged, f)
-		}
-	}
-	return merged, nil
+	_, err := client.Dataset(c.pluginSpec.DatasetID).Table(table.Name).Update(ctx, tm, "")
+	return err
 }
 
 func (c *Client) createTable(ctx context.Context, client *bigquery.Client, table *schema.Table) error {
