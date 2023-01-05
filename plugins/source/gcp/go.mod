@@ -13,6 +13,7 @@ require (
 	cloud.google.com/go/beyondcorp v0.3.1
 	cloud.google.com/go/bigtable v1.18.1
 	cloud.google.com/go/billing v1.7.0
+	cloud.google.com/go/binaryauthorization v1.4.0
 	cloud.google.com/go/certificatemanager v1.4.0
 	cloud.google.com/go/compute v1.14.0
 	cloud.google.com/go/container v1.8.0

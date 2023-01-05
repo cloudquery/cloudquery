@@ -73,6 +73,7 @@
 - [gcp_billing_billing_accounts](gcp_billing_billing_accounts.md)
   - [gcp_billing_budgets](gcp_billing_budgets.md)
 - [gcp_billing_services](gcp_billing_services.md)
+- [gcp_binaryauthorization_assertors](gcp_binaryauthorization_assertors.md)
 - [gcp_certificatemanager_certificate_issuance_configs](gcp_certificatemanager_certificate_issuance_configs.md)
 - [gcp_certificatemanager_certificate_maps](gcp_certificatemanager_certificate_maps.md)
   - [gcp_certificatemanager_certificate_map_entries](gcp_certificatemanager_certificate_map_entries.md)
