@@ -20,7 +20,7 @@ Usually this works out fine, as long as the cloud platform's rate limits are ali
 
 The following example config enables `round-robin` scheduling for the GCP source plugin, with a concurrency of 100000:
 
-```
+```yaml
 kind: source
 spec:
   name: "gcp"
