@@ -19,12 +19,20 @@ var newGlobalFuncsToSkip = map[string]bool{
 	// We are skipping operationsClient as this just list all operations available and it is quite static
 	// so don't think it's of any use and we can always enable it later
 	"NewOperationsClient": true,
+	// This is mostly not needed and if it is needed we add this resource manually
+	"NewSKUsClient": true,
 }
 
 var newFuncToSkipPerPackage = map[string]map[string]bool{
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse": {
+		"NewKustoOperationsClient": true,
+	},
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb": {
 		// we migrated this to manual written client as it has childs
 		"NewServersClient": true,
+	},
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement": {
+		"NewSKUsClient": true,
 	},
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql": {
 		"NewServersClient": true,
@@ -38,6 +46,7 @@ var newFuncToSkipPerPackage = map[string]map[string]bool{
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute": {
 		// we migrated this to manual written client as it has childs
 		"NewVirtualMachinesClient": true,
+		"NewResourceSKUsClient":    true,
 	},
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos": {
 		"NewDatabaseAccountsClient": true,
@@ -65,6 +74,8 @@ var newFuncToSkipPerPackage = map[string]map[string]bool{
 		"NewApplyUpdatesClient": true,
 	},
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity": {
+		// ManualResource
+		"NewSettingsClient": true,
 		// Seems like a buggy resource that always returns a marshal error. maybe will be fixed in future Azure SDK
 		"NewIngestionSettingsClient": true,
 		// Seems like a buggy resource that always returns a marshal error. maybe will be fixed in future Azure SDK
@@ -122,11 +133,6 @@ type function struct {
 	ast         *ast.FuncDecl
 	paramNames  []string
 	returnTypes []string
-}
-
-type structAST struct {
-	name string
-	ast  *ast.StructType
 }
 
 func parseURLFromFunc(fn *ast.FuncDecl) string {
@@ -191,6 +197,57 @@ func getReturnTypes(fn *ast.FieldList) []string {
 		}
 	}
 	return params
+}
+
+func getStructValueNameFromResponse(pkgs map[string]*ast.Package, name string) (string, bool, bool) {
+	st := getStruct(pkgs, name)
+	st1name := st.Fields.List[0].Type.(*ast.Ident).Name
+	st1 := getStruct(pkgs, st1name)
+	structName := ""
+	hasNextField := false
+	for _, f := range st1.Fields.List {
+		if f.Names[0].Name == "Value" {
+			arrType := f.Type.(*ast.ArrayType)
+			_, ok := arrType.Elt.(*ast.StarExpr)
+			if !ok {
+				structName = f.Type.(*ast.ArrayType).Elt.(*ast.Ident).Name
+			} else {
+				structName = f.Type.(*ast.ArrayType).Elt.(*ast.StarExpr).X.(*ast.Ident).Name
+			}
+		}
+		if f.Names[0].Name == "NextLink" {
+			hasNextField = true
+		}
+	}
+	hasId := false
+	st2 := getStruct(pkgs, structName)
+	for _, f := range st2.Fields.List {
+		if f.Names[0].Name == "ID" {
+			hasId = true
+		}
+	}
+	return structName, hasNextField, hasId
+}
+
+func getStruct(pkgs map[string]*ast.Package, name string) *ast.StructType {
+	for _, pack := range pkgs {
+		for _, f := range pack.Files {
+			for _, d := range f.Decls {
+				if gen, isGen := d.(*ast.GenDecl); isGen {
+					for _, spec := range gen.Specs {
+						if typeSpec, isTypeSpec := spec.(*ast.TypeSpec); isTypeSpec {
+							if structType, isStruct := typeSpec.Type.(*ast.StructType); isStruct {
+								if typeSpec.Name.Name == name {
+									return structType
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	return nil
 }
 
 // returns reciever and method name that matches re
@@ -263,7 +320,8 @@ func CreateTablesFromPackage(pkg string) ([]*Table, error) {
 			}
 		}
 		tables[strings.TrimPrefix(fn.name, "New")] = &Table{
-			NewFuncName: fn.name,
+			NewFuncName:     fn.name,
+			NewClientParams: fn.paramNames,
 		}
 	}
 	listMethods := findFunctions(pkgs, reListRequest)
@@ -321,8 +379,11 @@ func CreateTablesFromPackage(pkg string) ([]*Table, error) {
 		} else {
 			t.Multiplex = "client.SubscriptionMultiplex"
 		}
-
-		result = append(result, t)
+		hasId := false
+		t.ResponseValueStruct, t.ResponspeStructNextLink, hasId = getStructValueNameFromResponse(pkgs, t.ResponseStruct)
+		if hasId {
+			result = append(result, t)
+		}
 	}
 	sort.SliceStable(result, func(i, j int) bool {
 		return result[i].NewFuncName < result[j].NewFuncName
