@@ -12,7 +12,9 @@ var packagesToSkip = map[string]bool{
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge":       true,
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform":       true,
 	// Manually generated recipes
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault": true,
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault":           true,
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementgroups/armpostgresql": true,
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsight/armsql":         true,
 	// This is a special API and we create those recipes manually
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources": true,
 	// this can be written manually and potentially we can also get it from armresources
@@ -21,6 +23,7 @@ var packagesToSkip = map[string]bool{
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions": true,
 	// seems something is not right with that package
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementgroups/armmanagementgroups": true,
+
 	// skipping for now
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managedservices/armmanagedservices":                       true,
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/virtualmachineimagebuilder/armvirtualmachineimagebuilder": true,

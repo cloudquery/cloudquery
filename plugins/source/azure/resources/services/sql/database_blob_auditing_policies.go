@@ -1,4 +1,4 @@
-package security
+package sql
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity"
