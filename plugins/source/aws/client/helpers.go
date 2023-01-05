@@ -412,3 +412,16 @@ func CreateTrimPrefixTransformer(prefixes ...string) func(field reflect.StructFi
 		return name, nil
 	}
 }
+
+func CreateReplaceTransformer(replace map[string]string) func(field reflect.StructField) (string, error) {
+	return func(field reflect.StructField) (string, error) {
+		name, err := codegen.DefaultNameTransformer(field)
+		if err != nil {
+			return "", err
+		}
+		for k, v := range replace {
+			name = strings.ReplaceAll(name, k, v)
+		}
+		return name, nil
+	}
+}
