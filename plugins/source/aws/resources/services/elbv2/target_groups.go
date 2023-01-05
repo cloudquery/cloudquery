@@ -13,7 +13,7 @@ func TargetGroups() *schema.Table {
 		Description: `https://docs.aws.amazon.com/elasticloadbalancing/latest/APIReference/API_TargetGroup.html`,
 		Resolver:    fetchElbv2TargetGroups,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticloadbalancing"),
-		Transform:  transformers.TransformWithStruct(&types.TargetGroup{}),
+		Transform:   transformers.TransformWithStruct(&types.TargetGroup{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

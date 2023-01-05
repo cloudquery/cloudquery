@@ -13,7 +13,7 @@ func Presets() *schema.Table {
 		Description: `https://docs.aws.amazon.com/elastictranscoder/latest/developerguide/list-presets.html`,
 		Resolver:    fetchElastictranscoderPresets,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("elastictranscoder"),
-		Transform: transformers.TransformWithStruct(&types.Preset{}),
+		Transform:   transformers.TransformWithStruct(&types.Preset{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

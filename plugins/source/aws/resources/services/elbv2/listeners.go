@@ -13,7 +13,7 @@ func Listeners() *schema.Table {
 		Description: `https://docs.aws.amazon.com/elasticloadbalancing/latest/APIReference/API_Listener.html`,
 		Resolver:    fetchElbv2Listeners,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticloadbalancing"),
-		Transform: transformers.TransformWithStruct(&types.Listener{}),
+		Transform:   transformers.TransformWithStruct(&types.Listener{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

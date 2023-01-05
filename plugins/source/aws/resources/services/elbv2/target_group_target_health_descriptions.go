@@ -13,7 +13,7 @@ func TargetGroupTargetHealthDescriptions() *schema.Table {
 		Description: `https://docs.aws.amazon.com/elasticloadbalancing/latest/APIReference/API_TargetHealthDescription.html`,
 		Resolver:    fetchElbv2TargetGroupTargetHealthDescriptions,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticloadbalancing"),
-		Transform:  transformers.TransformWithStruct(&types.TargetHealthDescription{}),
+		Transform:   transformers.TransformWithStruct(&types.TargetHealthDescription{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

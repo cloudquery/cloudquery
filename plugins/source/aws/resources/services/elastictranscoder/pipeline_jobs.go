@@ -12,7 +12,7 @@ func PipelineJobs() *schema.Table {
 		Name:        "aws_elastictranscoder_pipeline_jobs",
 		Description: `https://docs.aws.amazon.com/elastictranscoder/latest/developerguide/list-jobs-by-pipeline.html`,
 		Resolver:    fetchElastictranscoderPipelineJobs,
-		Transform: transformers.TransformWithStruct(&types.Job{}),
+		Transform:   transformers.TransformWithStruct(&types.Job{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

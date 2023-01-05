@@ -13,7 +13,7 @@ func LoadBalancers() *schema.Table {
 		Description: `https://docs.aws.amazon.com/elasticloadbalancing/latest/APIReference/API_LoadBalancer.html`,
 		Resolver:    fetchElbv2LoadBalancers,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticloadbalancing"),
-		Transform: transformers.TransformWithStruct(&types.LoadBalancer{}),
+		Transform:   transformers.TransformWithStruct(&types.LoadBalancer{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

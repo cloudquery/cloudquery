@@ -13,7 +13,7 @@ func Pipelines() *schema.Table {
 		Description: `https://docs.aws.amazon.com/elastictranscoder/latest/developerguide/list-pipelines.html`,
 		Resolver:    fetchElastictranscoderPipelines,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("elastictranscoder"),
-		Transform: transformers.TransformWithStruct(&types.Pipeline{}),
+		Transform:   transformers.TransformWithStruct(&types.Pipeline{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
