@@ -32,20 +32,28 @@ import (
 func fetchItems(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	tableName := Items().Name
-	value, err := c.Backend.Get(ctx, tableName, "id")
+	value, err := c.Backend.Get(ctx, tableName, c.ID())
 	if err != nil {
 		return fmt.Errorf("failed to retrieve state from backend: %w", err)
 	}
 
 	// read the cursor from the state, or default to 0 if it's not set
 	cursor := 0
-	if value != "" {
+	if value == "" {
+		c.Logger().Info().
+			Str("table", tableName).
+			Str("client_id", c.ID()).
+			Msgf("No previous cursor found")
+	} else {
 		cursor, err = strconv.Atoi(value)
 		if err != nil {
 			return fmt.Errorf("failed to convert cursor to int: %w", err)
 		}
+		c.Logger().Info().
+			Str("table", tableName).
+			Str("client_id", c.ID()).
+			Msg("Found previous cursor with value " + strconv.Itoa(cursor))
 	}
-	c.Logger().Info().Msg("Found previous cursor, starting from " + strconv.Itoa(cursor))
 
 	// find the max item ID from the Hacker News API
 	work := make(chan int)
@@ -110,7 +118,7 @@ func fetchItems(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource,
 				}
 				cursor++
 			}
-			err = c.Backend.Set(g2ctx, tableName, "id", strconv.Itoa(cursor))
+			err = c.Backend.Set(g2ctx, tableName, c.ID(), strconv.Itoa(cursor))
 			if err != nil {
 				return fmt.Errorf("failed to update state backend: %w", err)
 			}

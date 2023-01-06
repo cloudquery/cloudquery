@@ -49,30 +49,30 @@ func (mr *MockBackendMockRecorder) Close(ctx interface{}) *gomock.Call {
 }
 
 // Get mocks base method.
-func (m *MockBackend) Get(ctx context.Context, table, key string) (string, error) {
+func (m *MockBackend) Get(ctx context.Context, table, clientID string) (string, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Get", ctx, table, key)
+	ret := m.ctrl.Call(m, "Get", ctx, table, clientID)
 	ret0, _ := ret[0].(string)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Get indicates an expected call of Get.
-func (mr *MockBackendMockRecorder) Get(ctx, table, key interface{}) *gomock.Call {
+func (mr *MockBackendMockRecorder) Get(ctx, table, clientID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockBackend)(nil).Get), ctx, table, key)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockBackend)(nil).Get), ctx, table, clientID)
 }
 
 // Set mocks base method.
-func (m *MockBackend) Set(ctx context.Context, table, key, value string) error {
+func (m *MockBackend) Set(ctx context.Context, table, clientID, value string) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Set", ctx, table, key, value)
+	ret := m.ctrl.Call(m, "Set", ctx, table, clientID, value)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // Set indicates an expected call of Set.
-func (mr *MockBackendMockRecorder) Set(ctx, table, key, value interface{}) *gomock.Call {
+func (mr *MockBackendMockRecorder) Set(ctx, table, clientID, value interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Set", reflect.TypeOf((*MockBackend)(nil).Set), ctx, table, key, value)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Set", reflect.TypeOf((*MockBackend)(nil).Set), ctx, table, clientID, value)
 }

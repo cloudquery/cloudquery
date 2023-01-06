@@ -3,13 +3,11 @@ module github.com/cloudquery/cloudquery/plugins/source/hackernews
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v1.16.1
-	github.com/gertd/go-pluralize v0.2.1
+	github.com/cloudquery/plugin-sdk v1.21.0
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.9
 	github.com/hermanschaaf/hackernews v1.0.1
 	github.com/rs/zerolog v1.28.0
-	github.com/thoas/go-funk v0.9.3
 	golang.org/x/sync v0.1.0
 )
 
@@ -26,6 +24,7 @@ require (
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/cobra v1.6.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
+	github.com/thoas/go-funk v0.9.3 // indirect
 	golang.org/x/exp v0.0.0-20221230185412-738e83a70c30 // indirect
 	golang.org/x/mod v0.6.0 // indirect
 	golang.org/x/net v0.4.0 // indirect
@@ -38,4 +37,4 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
 
-replace github.com/cloudquery/plugin-sdk v1.16.1 => ../../../../plugin-sdk
+replace github.com/cloudquery/plugin-sdk v1.21.0 => ../../../../plugin-sdk

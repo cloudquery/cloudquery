@@ -7,6 +7,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/hackernews/client/services"
 	"github.com/cloudquery/plugin-sdk/backend"
+	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/hermanschaaf/hackernews"
@@ -36,7 +37,7 @@ func (c *Client) ID() string {
 	return c.sourceSpec.Name
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, sourceSpec specs.Source, be backend.Backend) (schema.ClientMeta, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, sourceSpec specs.Source, opts ...source.Option) (schema.ClientMeta, error) {
 	var config Spec
 	err := sourceSpec.UnmarshalSpec(&config)
 	if err != nil {
@@ -49,6 +50,11 @@ func Configure(ctx context.Context, logger zerolog.Logger, sourceSpec specs.Sour
 		return nil, fmt.Errorf("failed to create hackernews client: %w", err)
 	}
 
+	o := source.Options{}
+	for _, opt := range opts {
+		opt(&o)
+	}
+
 	return &Client{
 		logger:     logger,
 		sourceSpec: sourceSpec,
@@ -56,6 +62,6 @@ func Configure(ctx context.Context, logger zerolog.Logger, sourceSpec specs.Sour
 		HackerNews: client,
 		maxRetries: defaultMaxRetries,
 		backoff:    defaultBackoff,
-		Backend:    be,
+		Backend:    o.Backend,
 	}, nil
 }

@@ -18,9 +18,9 @@ func buildItemsMockNoCursor(t *testing.T, ctrl *gomock.Controller) services.Hack
 	if err != nil {
 		t.Fatal(err)
 	}
-	maxID := 1
+	maxID := 5
 	m.EXPECT().MaxItemID(gomock.Any()).Return(maxID, nil)
-	m.EXPECT().GetItem(gomock.Any(), gomock.Any()).Return(f, nil)
+	m.EXPECT().GetItem(gomock.Any(), gomock.Any()).Times(5).Return(f, nil)
 	return m
 }
 
@@ -30,7 +30,7 @@ func TestItems_NoCursor(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	mbe := mocks.NewMockBackend(ctrl)
 	mbe.EXPECT().Get(gomock.Any(), gomock.Any(), gomock.Any()).Return("", nil)
-	mbe.EXPECT().Set(gomock.Any(), "hackernews_items", "id", "1").Return(nil)
+	mbe.EXPECT().Set(gomock.Any(), "hackernews_items", "id", gomock.Any()).Times(5).Return(nil)
 	client.MockTestHelper(t, Items(), buildItemsMockNoCursor, client.TestOptions{
 		Backend: mbe,
 	})
@@ -45,7 +45,7 @@ func buildItemsMockWithCursor(t *testing.T, ctrl *gomock.Controller) services.Ha
 	}
 	maxID := 10
 	m.EXPECT().MaxItemID(gomock.Any()).Return(maxID, nil)
-	m.EXPECT().GetItem(gomock.Any(), gomock.Any()).Return(f, nil)
+	m.EXPECT().GetItem(gomock.Any(), gomock.Any()).Times(5).Return(f, nil)
 	return m
 }
 
@@ -54,8 +54,8 @@ func buildItemsMockWithCursor(t *testing.T, ctrl *gomock.Controller) services.Ha
 func TestItems_WithCursor(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	mbe := mocks.NewMockBackend(ctrl)
-	mbe.EXPECT().Get(gomock.Any(), gomock.Any(), gomock.Any()).Return("9", nil)
-	mbe.EXPECT().Set(gomock.Any(), "hackernews_items", "id", "10").Return(nil)
+	mbe.EXPECT().Get(gomock.Any(), gomock.Any(), gomock.Any()).Return("5", nil)
+	mbe.EXPECT().Set(gomock.Any(), "hackernews_items", "id", gomock.Any()).Times(5).Return(nil)
 	client.MockTestHelper(t, Items(), buildItemsMockWithCursor, client.TestOptions{
 		Backend: mbe,
 	})
