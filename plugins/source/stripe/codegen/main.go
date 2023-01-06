@@ -26,11 +26,14 @@ func main() {
 	if !ok {
 		log.Fatal("Failed to get caller information")
 	}
-	codegenDir := path.Join(path.Dir(filename), "..", "resources", "services")
+	servicesDir := path.Join(path.Dir(filename), "..", "resources", "services")
 
 	for _, r := range recipes.AllResources {
 		r.Infer()
-		generateTable(codegenDir, *r)
+		generateTable(servicesDir, *r)
+	}
+	if err := generateTables(servicesDir, recipes.AllResources); err != nil {
+		log.Fatal(err)
 	}
 }
 
@@ -41,7 +44,7 @@ func generateTable(basedir string, r recipes.Resource) {
 	pl := pluralize.NewClient()
 
 	templates := []string{
-		"resource.go.tpl",
+		r.FetchTemplate + ".go.tpl",
 	}
 	if !r.SkipMocks {
 		templates = append(templates, "resource_test.go.tpl")
@@ -97,4 +100,33 @@ func generateTable(basedir string, r recipes.Resource) {
 			log.Fatal(fmt.Errorf("failed to write file %s: %w", filePath, err))
 		}
 	}
+}
+
+func generateTables(basedir string, rr []*recipes.Resource) error {
+	csr := caser.New()
+	pl := pluralize.NewClient()
+
+	tpl, err := template.New("tables.go.tpl").Funcs(template.FuncMap{
+		"ToPascal":    csr.ToPascal,
+		"Pluralize":   pl.Plural,
+		"Singularize": pl.Singular,
+	}).ParseFS(templatesFS, "templates/tables.go.tpl")
+
+	var buff bytes.Buffer
+	if err := tpl.Execute(&buff, rr); err != nil {
+		return fmt.Errorf("failed to execute tables template: %w", err)
+	}
+
+	filePath := path.Join(basedir, "../plugin/tables.go")
+	content := buff.Bytes()
+	formattedContent, err := format.Source(buff.Bytes())
+	if err != nil {
+		fmt.Printf("failed to format code for %s: %v\n", filePath, err)
+	} else {
+		content = formattedContent
+	}
+	if err := os.WriteFile(filePath, content, 0644); err != nil {
+		return fmt.Errorf("failed to write file %s: %w", filePath, err)
+	}
+	return nil
 }

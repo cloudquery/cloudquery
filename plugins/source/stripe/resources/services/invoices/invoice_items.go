@@ -15,8 +15,9 @@ func InvoiceItems() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_invoice_items",
 		Description: `https://stripe.com/docs/api/invoiceitems`,
-		Transform:   transformers.TransformWithStruct(&stripe.InvoiceItem{}, transformers.WithSkipFields("ID", "APIResource")),
+		Transform:   transformers.TransformWithStruct(&stripe.InvoiceItem{}, transformers.WithSkipFields("APIResource", "ID"), transformers.WithIgnoreInTestsTransformer(client.CreateIgnoreInTestsTransformer("Plan"))),
 		Resolver:    fetchInvoiceItems,
+
 		Columns: []schema.Column{
 			{
 				Name:     "id",

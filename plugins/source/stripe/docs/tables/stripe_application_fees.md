@@ -1,0 +1,28 @@
+# Table: stripe_application_fees
+
+https://stripe.com/docs/api/application_fees
+
+The primary key for this table is **id**.
+
+## Columns
+
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|id (PK)|String|
+|account|JSON|
+|amount|Int|
+|amount_refunded|Int|
+|application|JSON|
+|balance_transaction|JSON|
+|charge|JSON|
+|created|Int|
+|currency|String|
+|livemode|Bool|
+|object|String|
+|originating_transaction|JSON|
+|refunded|Bool|
+|refunds|JSON|

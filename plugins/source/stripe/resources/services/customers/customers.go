@@ -15,8 +15,9 @@ func Customers() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_customers",
 		Description: `https://stripe.com/docs/api/customers`,
-		Transform:   transformers.TransformWithStruct(&stripe.Customer{}, transformers.WithSkipFields("ID", "APIResource")),
+		Transform:   transformers.TransformWithStruct(&stripe.Customer{}, transformers.WithSkipFields("APIResource", "ID"), transformers.WithIgnoreInTestsTransformer(client.CreateIgnoreInTestsTransformer("DefaultSource"))),
 		Resolver:    fetchCustomers,
+
 		Columns: []schema.Column{
 			{
 				Name:     "id",

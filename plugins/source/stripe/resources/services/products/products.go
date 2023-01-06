@@ -15,8 +15,9 @@ func Products() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_products",
 		Description: `https://stripe.com/docs/api/products`,
-		Transform:   transformers.TransformWithStruct(&stripe.Product{}, transformers.WithSkipFields("ID", "APIResource")),
+		Transform:   transformers.TransformWithStruct(&stripe.Product{}, transformers.WithSkipFields("APIResource", "ID"), transformers.WithIgnoreInTestsTransformer(client.CreateIgnoreInTestsTransformer("Attributes", "DeactivateOn"))),
 		Resolver:    fetchProducts,
+
 		Columns: []schema.Column{
 			{
 				Name:     "id",
