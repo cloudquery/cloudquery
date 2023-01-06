@@ -17,19 +17,5 @@ The following tables depend on datadog_monitors:
 |_cq_parent_id|UUID|
 |account_name (PK)|String|
 |id (PK)|Int|
-|created|Timestamp|
-|creator|JSON|
-|deleted|JSON|
-|message|String|
-|modified|Timestamp|
-|multi|Bool|
-|name|String|
-|options|JSON|
-|overall_state|String|
-|priority|JSON|
-|query|String|
-|restricted_roles|StringArray|
-|state|JSON|
-|tags|StringArray|
-|type|String|
-|additional_properties|JSON|
+|deleted|Timestamp|
+|priority|Int|

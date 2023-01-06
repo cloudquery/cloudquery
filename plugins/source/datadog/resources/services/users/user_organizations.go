@@ -11,7 +11,7 @@ func UserOrganizations() *schema.Table {
 	return &schema.Table{
 		Name:      "datadog_user_organizations",
 		Resolver:  fetchUserOrganizations,
-		Transform: transformers.TransformWithStruct(&datadogV2.Organization{}),
+		Transform: transformers.TransformWithStruct(&datadogV2.User{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_name",

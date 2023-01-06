@@ -17,5 +17,6 @@ This table depends on [datadog_users](datadog_users.md).
 |account_name|String|
 |attributes|JSON|
 |id|String|
+|relationships|JSON|
 |type|String|
 |additional_properties|JSON|
