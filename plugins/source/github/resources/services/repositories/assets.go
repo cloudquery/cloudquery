@@ -3,6 +3,8 @@ package repositories
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/github/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/google/go-github/v48/github"
 )
 
 func Assets() *schema.Table {
@@ -10,6 +12,7 @@ func Assets() *schema.Table {
 		Name:      "github_release_assets",
 		Resolver:  fetchAssets,
 		Multiplex: client.OrgMultiplex,
+		Transform: transformers.TransformWithStruct(&github.ReleaseAsset{}),
 		Columns: []schema.Column{
 			{
 				Name:        "org",
