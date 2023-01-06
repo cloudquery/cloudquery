@@ -11,6 +11,8 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |account_id|String|
+|meta|JSON|
+|data|JSON|
 |id (PK)|String|
 |created_on|Timestamp|
 |modified_on|Timestamp|

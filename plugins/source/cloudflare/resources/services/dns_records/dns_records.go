@@ -21,6 +21,16 @@ func DNSRecords() *schema.Table {
 				Description: `The Account ID of the resource.`,
 			},
 			{
+				Name:        "meta",
+				Type:        schema.TypeJSON,
+				Description: `Extra Cloudflare-specific information about the record.`,
+			},
+			{
+				Name:        "data",
+				Type:        schema.TypeJSON,
+				Description: `Metadata about the record.`,
+			},
+			{
 				Name:     "id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ID"),
