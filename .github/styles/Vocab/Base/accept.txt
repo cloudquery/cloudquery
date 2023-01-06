@@ -37,13 +37,16 @@ CrowdStrike
 CSPM
 CSPMs
 Cybersecurity
+currentValue
 Datadog
 datasource
 Datasource
 datastore
 Datastore
+datasourceTemplate
 dbt
 Deidentified
+depNameTemplate
 discoverability
 Docusaurus
 ELB
@@ -55,10 +58,12 @@ ENV
 exfiltrate
 exploitability
 Exploitability
+extractVersionTemplate
 faceprints
 failover
 Fargate
 Fastly
+fileMatch
 Gandi
 gcp
 GCP
@@ -86,6 +91,7 @@ learnings
 licensors
 Lightsail
 Mailchimp
+matchStrings
 Metabase
 Monorepo
 NACL
@@ -98,6 +104,7 @@ okta
 Okta
 OpenAPI
 OUs
+packageNameTemplate
 parallelization
 performant
 PKs
@@ -153,6 +160,7 @@ upserted
 uuid
 UUID
 Vercel
+versioningTemplate
 Vogels
 voiceprints
 VPC

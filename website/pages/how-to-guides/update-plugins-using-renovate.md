@@ -24,7 +24,7 @@ This guide covers how to leverage Renovate to keep your CloudQuery source and de
 ### Step 1: **Identify Regex Capture Groups**
 
 While Renovate provides tons of built-in functionality to make most dependency management simple, it also provides a powerful functionality called 'RegexManager' which allows you to leverage custom regular expression statements to manually extract dependencies, their version, and updating mechanism. Click [here](https://docs.renovatebot.com/modules/manager/regex/) for more details on the specific configurations of RegexManager.
-{/*<!-- vale off -->*/}
+
 For our purposes, we're concerned about the following items:
 - **datasourceTemplate**: datasource is where the package's versions are managed.
 - **packageNameTemplate**: packageName for the datasource to use.
@@ -33,7 +33,7 @@ For our purposes, we're concerned about the following items:
 - **versioningTemplate**: what versioning 'format' the datasource follows
 - **fileMatch**: path to the cloudquery.yaml file in your repository.
 - **matchStrings**: regular expression to find the plugins in your cloudquery.yaml file.
-{/*<!-- vale on -->*/}
+
 Using a simplistic configuration file that looks like:
 
 ```yaml copy
