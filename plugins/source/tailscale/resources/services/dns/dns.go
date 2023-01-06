@@ -12,7 +12,7 @@ func Dns() *schema.Table {
 		Name:        "tailscale_dns",
 		Description: `https://pkg.go.dev/github.com/tailscale/tailscale-client-go/tailscale#DNSPreferences`,
 		Resolver:    fetchDns,
-		Transform: transformers.TransformWithStruct(&tailscale.DNSPreferences{}),
+		Transform:   transformers.TransformWithStruct(&tailscale.DNSPreferences{}),
 		Columns: []schema.Column{
 			{
 				Name:     "tailnet",

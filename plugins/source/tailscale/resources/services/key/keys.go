@@ -13,7 +13,7 @@ func Keys() *schema.Table {
 		Description:         `https://pkg.go.dev/github.com/tailscale/tailscale-client-go/tailscale#Key`,
 		Resolver:            fetchKeys,
 		PreResourceResolver: getKey,
-		Transform: transformers.TransformWithStruct(&tailscale.Key{}),
+		Transform:           transformers.TransformWithStruct(&tailscale.Key{}),
 		Columns: []schema.Column{
 			{
 				Name:     "tailnet",
