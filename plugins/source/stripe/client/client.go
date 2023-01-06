@@ -57,6 +57,10 @@ func getServiceClient(logger zerolog.Logger, spec *Spec) (*client.API, error) {
 		return nil, errors.New("no api_key provided")
 	}
 
+	if !spec.StripeDebug {
+		logger = logger.Level(zerolog.WarnLevel)
+	}
+
 	sCfg := &stripe.BackendConfig{
 		LeveledLogger: &LeveledLogger{
 			Logger: logger.With().Str("source", "stripe-client").Logger(),

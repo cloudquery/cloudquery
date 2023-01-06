@@ -24,6 +24,9 @@ spec:
   version: "VERSION_SOURCE_STRIPE"
   tables: ["*"]
   destinations: ["postgresql"]
+  skip_tables:
+    - stripe_issuing*  # Needs sign-up at https://stripe.com/issuing
+    - stripe_treasury* # Needs sign-up at https://stripe.com/treasury
 
   # Stripe specific configuration
   spec:
@@ -39,3 +42,6 @@ This is the (nested) spec used by the Stripe source plugin:
 
 - `max_retries` (integer, optional. Default: 2):
   Number of retries if a request was rate limited.
+
+- `stripe_debug` (boolean, optional. Default: false):
+  Enables verbose logging on the Stripe client.
