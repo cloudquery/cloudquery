@@ -8,10 +8,9 @@ import (
 
 func Query() *schema.Table {
 	return &schema.Table{
-		Name:     "crowdstrike_alerts_query",
-		Resolver: fetchQuery,
+		Name:      "crowdstrike_alerts_query",
+		Resolver:  fetchQuery,
 		Transform: transformers.TransformWithStruct(&models.MsaQueryResponse{}),
-		Columns: []schema.Column{
-		},
+		Columns:   []schema.Column{},
 	}
 }

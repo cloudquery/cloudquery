@@ -8,8 +8,8 @@ import (
 
 func Crowdscore() *schema.Table {
 	return &schema.Table{
-		Name:     "crowdstrike_incidents_crowdscore",
-		Resolver: fetchCrowdscore,
+		Name:      "crowdstrike_incidents_crowdscore",
+		Resolver:  fetchCrowdscore,
 		Transform: transformers.TransformWithStruct(&models.DomainEnvironmentScore{}),
 		Columns: []schema.Column{
 			{
