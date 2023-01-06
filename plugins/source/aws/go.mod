@@ -6,11 +6,11 @@ require (
 	github.com/aws/aws-sdk-go-v2 v1.17.3
 	github.com/aws/aws-sdk-go-v2/config v1.18.8
 	github.com/aws/aws-sdk-go-v2/credentials v1.13.8
-	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.46
+	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.47
 	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.19.0
-	github.com/aws/aws-sdk-go-v2/service/account v1.7.13
+	github.com/aws/aws-sdk-go-v2/service/account v1.8.0
 	github.com/aws/aws-sdk-go-v2/service/acm v1.17.0
-	github.com/aws/aws-sdk-go-v2/service/amp v1.15.9
+	github.com/aws/aws-sdk-go-v2/service/amp v1.16.0
 	github.com/aws/aws-sdk-go-v2/service/apigateway v1.16.0
 	github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.13.0
 	github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.17.0
@@ -18,12 +18,12 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/appstream v1.19.0
 	github.com/aws/aws-sdk-go-v2/service/appsync v1.17.1
 	github.com/aws/aws-sdk-go-v2/service/autoscaling v1.25.1
-	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.24.3
+	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.25.0
 	github.com/aws/aws-sdk-go-v2/service/cloudfront v1.23.0
-	github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.13.24
+	github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.21.1
 	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.23.1
-	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.17.4
+	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/codebuild v1.19.21
 	github.com/aws/aws-sdk-go-v2/service/codepipeline v1.13.21
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.14.6
@@ -75,7 +75,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.12.23
 	github.com/aws/aws-sdk-go-v2/service/route53 v1.25.2
 	github.com/aws/aws-sdk-go-v2/service/route53domains v1.13.0
-	github.com/aws/aws-sdk-go-v2/service/s3 v1.29.6
+	github.com/aws/aws-sdk-go-v2/service/s3 v1.30.0
 	github.com/aws/aws-sdk-go-v2/service/s3control v1.28.2
 	github.com/aws/aws-sdk-go-v2/service/sagemaker v1.61.0
 	github.com/aws/aws-sdk-go-v2/service/scheduler v1.0.3
@@ -130,7 +130,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.27 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.21 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.3.28 // indirect
-	github.com/aws/aws-sdk-go-v2/service/athena v1.21.0
+	github.com/aws/aws-sdk-go-v2/service/athena v1.22.0
 	github.com/aws/aws-sdk-go-v2/service/backup v1.18.2
 	github.com/aws/aws-sdk-go-v2/service/glue v1.38.1
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.9.11 // indirect
