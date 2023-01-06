@@ -33,6 +33,13 @@ func {{.TableName | ToPascal}}() *schema.Table {
 				 },
 			},
 {{end}}
+{{if .Children}}
+	Relations: []*schema.Table{
+	{{- range .Children}}
+		{{.TableName | ToPascal}}(),
+	{{- end}}
+	},
+{{end}}
     }
 }
 

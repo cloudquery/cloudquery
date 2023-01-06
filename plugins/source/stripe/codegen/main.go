@@ -29,15 +29,24 @@ func main() {
 	servicesDir := path.Join(path.Dir(filename), "..", "resources", "services")
 
 	for _, r := range recipes.AllResources {
-		r.Infer()
-		generateTable(servicesDir, *r)
+		r.Infer(nil)
 	}
+
+	generateResources(servicesDir, recipes.AllResources)
+
 	if err := generateTables(servicesDir, recipes.AllResources); err != nil {
 		log.Fatal(err)
 	}
 }
 
-func generateTable(basedir string, r recipes.Resource) {
+func generateResources(servicesDir string, rr []*recipes.Resource) {
+	for _, r := range rr {
+		generateResource(servicesDir, *r)
+		generateResources(servicesDir, r.Children)
+	}
+}
+
+func generateResource(servicesDir string, r recipes.Resource) {
 	log.Println("Generating table", r.TableName)
 
 	csr := caser.New()
@@ -80,7 +89,7 @@ func generateTable(basedir string, r recipes.Resource) {
 			log.Fatal(fmt.Errorf("failed to execute template: %w", err))
 		}
 
-		pkgPath := path.Join(basedir, r.Service)
+		pkgPath := path.Join(servicesDir, r.Service)
 		if err := os.Mkdir(pkgPath, 0755); err != nil && !os.IsExist(err) {
 			log.Fatal(err)
 		}
@@ -102,7 +111,7 @@ func generateTable(basedir string, r recipes.Resource) {
 	}
 }
 
-func generateTables(basedir string, rr []*recipes.Resource) error {
+func generateTables(servicesDir string, rr []*recipes.Resource) error {
 	csr := caser.New()
 	pl := pluralize.NewClient()
 
@@ -117,7 +126,7 @@ func generateTables(basedir string, rr []*recipes.Resource) error {
 		return fmt.Errorf("failed to execute tables template: %w", err)
 	}
 
-	filePath := path.Join(basedir, "../plugin/tables.go")
+	filePath := path.Join(servicesDir, "../plugin/tables.go")
 	content := buff.Bytes()
 	formattedContent, err := format.Source(buff.Bytes())
 	if err != nil {

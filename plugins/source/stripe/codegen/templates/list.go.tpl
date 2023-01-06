@@ -33,13 +33,25 @@ func {{.TableName | ToPascal}}() *schema.Table {
 				 },
 			},
 {{end}}
+{{if .Children}}
+	  			Relations: []*schema.Table{
+				{{- range .Children}}
+				{{.TableName | ToPascal}}(),
+				{{- end}}
+			},
+{{end}}
     }
 }
 
 func fetch{{.TableName | ToPascal}}(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 		cl := meta.(*client.Client)
+{{if and (.Parent) (.ListParams)}}
+		p := parent.Item.(*stripe.{{.Parent.StructName}})
+{{end}}
 
-		it := cl.Services.{{.TableName | ToPascal}}.List(&stripe.{{.TableName | ToPascal | Singularize}}ListParams{})
+		it := cl.Services.{{.TableName | ToPascal}}.List(&stripe.{{.TableName | ToPascal | Singularize}}ListParams{
+{{.ListParams}}
+		})
 		for it.Next() {
 			res <- it.{{.TableName | ToPascal | Singularize}}()
 		}

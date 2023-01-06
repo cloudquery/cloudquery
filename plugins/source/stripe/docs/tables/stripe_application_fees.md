@@ -4,6 +4,11 @@ https://stripe.com/docs/api/application_fees
 
 The primary key for this table is **id**.
 
+## Relations
+
+The following tables depend on stripe_application_fees:
+  - [stripe_fee_refunds](stripe_fee_refunds.md)
+
 ## Columns
 
 | Name          | Type          |

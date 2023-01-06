@@ -11,12 +11,12 @@ import (
 	"github.com/stripe/stripe-go/v74"
 )
 
-func ApplicationFees() *schema.Table {
+func FeeRefunds() *schema.Table {
 	return &schema.Table{
-		Name:        "stripe_application_fees",
-		Description: `https://stripe.com/docs/api/application_fees`,
-		Transform:   transformers.TransformWithStruct(&stripe.ApplicationFee{}, transformers.WithSkipFields("APIResource", "ID")),
-		Resolver:    fetchApplicationFees,
+		Name:        "stripe_fee_refunds",
+		Description: `https://stripe.com/docs/api/fee_refunds`,
+		Transform:   transformers.TransformWithStruct(&stripe.FeeRefund{}, transformers.WithSkipFields("APIResource", "ID")),
+		Resolver:    fetchFeeRefunds,
 
 		Columns: []schema.Column{
 			{
@@ -28,19 +28,19 @@ func ApplicationFees() *schema.Table {
 				},
 			},
 		},
-
-		Relations: []*schema.Table{
-			FeeRefunds(),
-		},
 	}
 }
 
-func fetchApplicationFees(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchFeeRefunds(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 
-	it := cl.Services.ApplicationFees.List(&stripe.ApplicationFeeListParams{})
+	p := parent.Item.(*stripe.ApplicationFee)
+
+	it := cl.Services.FeeRefunds.List(&stripe.FeeRefundListParams{
+		ID: stripe.String(p.ID),
+	})
 	for it.Next() {
-		res <- it.ApplicationFee()
+		res <- it.FeeRefund()
 	}
 	return it.Err()
 }

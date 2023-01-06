@@ -11,12 +11,12 @@ import (
 	"github.com/stripe/stripe-go/v74"
 )
 
-func Accounts() *schema.Table {
+func Capabilities() *schema.Table {
 	return &schema.Table{
-		Name:        "stripe_accounts",
-		Description: `https://stripe.com/docs/api/accounts`,
-		Transform:   transformers.TransformWithStruct(&stripe.Account{}, transformers.WithSkipFields("APIResource", "ID")),
-		Resolver:    fetchAccounts,
+		Name:        "stripe_capabilities",
+		Description: `https://stripe.com/docs/api/capabilities`,
+		Transform:   transformers.TransformWithStruct(&stripe.Capability{}, transformers.WithSkipFields("APIResource", "ID")),
+		Resolver:    fetchCapabilities,
 
 		Columns: []schema.Column{
 			{
@@ -28,19 +28,19 @@ func Accounts() *schema.Table {
 				},
 			},
 		},
-
-		Relations: []*schema.Table{
-			Capabilities(),
-		},
 	}
 }
 
-func fetchAccounts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchCapabilities(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 
-	it := cl.Services.Accounts.List(&stripe.AccountListParams{})
+	p := parent.Item.(*stripe.Account)
+
+	it := cl.Services.Capabilities.List(&stripe.CapabilityListParams{
+		Account: stripe.String(p.ID),
+	})
 	for it.Next() {
-		res <- it.Account()
+		res <- it.Capability()
 	}
 	return it.Err()
 }

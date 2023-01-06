@@ -4,6 +4,19 @@ https://stripe.com/docs/api/treasury_financial_accounts
 
 The primary key for this table is **id**.
 
+## Relations
+
+The following tables depend on stripe_treasury_financial_accounts:
+  - [stripe_treasury_credit_reversals](stripe_treasury_credit_reversals.md)
+  - [stripe_treasury_debit_reversals](stripe_treasury_debit_reversals.md)
+  - [stripe_treasury_inbound_transfers](stripe_treasury_inbound_transfers.md)
+  - [stripe_treasury_outbound_payments](stripe_treasury_outbound_payments.md)
+  - [stripe_treasury_outbound_transfers](stripe_treasury_outbound_transfers.md)
+  - [stripe_treasury_received_credits](stripe_treasury_received_credits.md)
+  - [stripe_treasury_received_debits](stripe_treasury_received_debits.md)
+  - [stripe_treasury_transaction_entries](stripe_treasury_transaction_entries.md)
+  - [stripe_treasury_transactions](stripe_treasury_transactions.md)
+
 ## Columns
 
 | Name          | Type          |

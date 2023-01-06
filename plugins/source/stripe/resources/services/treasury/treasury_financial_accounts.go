@@ -28,6 +28,18 @@ func TreasuryFinancialAccounts() *schema.Table {
 				},
 			},
 		},
+
+		Relations: []*schema.Table{
+			TreasuryCreditReversals(),
+			TreasuryDebitReversals(),
+			TreasuryInboundTransfers(),
+			TreasuryOutboundPayments(),
+			TreasuryOutboundTransfers(),
+			TreasuryReceivedCredits(),
+			TreasuryReceivedDebits(),
+			TreasuryTransactionEntries(),
+			TreasuryTransactions(),
+		},
 	}
 }
 

@@ -5,12 +5,24 @@ import "github.com/stripe/stripe-go/v74"
 var AllResources = []*Resource{
 	{
 		DataStruct: &stripe.Account{},
+		Children: []*Resource{
+			{
+				DataStruct: &stripe.Capability{},
+				ListParams: `Account: stripe.String(p.ID),`,
+			},
+		},
 	},
 	{
 		DataStruct: &stripe.ApplePayDomain{},
 	},
 	{
 		DataStruct: &stripe.ApplicationFee{},
+		Children: []*Resource{
+			{
+				DataStruct: &stripe.FeeRefund{},
+				ListParams: `ID: stripe.String(p.ID),`,
+			},
+		},
 	},
 	{
 		DataStruct: &stripe.Balance{},
@@ -185,6 +197,44 @@ var AllResources = []*Resource{
 	{
 		DataStruct: &stripe.TreasuryFinancialAccount{},
 		Service:    "treasury",
+		Children: []*Resource{
+			{
+				DataStruct: &stripe.TreasuryCreditReversal{},
+				ListParams: `FinancialAccount: stripe.String(p.ID),`,
+			},
+			{
+				DataStruct: &stripe.TreasuryDebitReversal{},
+				ListParams: `FinancialAccount: stripe.String(p.ID),`,
+			},
+			{
+				DataStruct: &stripe.TreasuryInboundTransfer{},
+				ListParams: `FinancialAccount: stripe.String(p.ID),`,
+			},
+			{
+				DataStruct: &stripe.TreasuryOutboundPayment{},
+				ListParams: `FinancialAccount: stripe.String(p.ID),`,
+			},
+			{
+				DataStruct: &stripe.TreasuryOutboundTransfer{},
+				ListParams: `FinancialAccount: stripe.String(p.ID),`,
+			},
+			{
+				DataStruct: &stripe.TreasuryReceivedCredit{},
+				ListParams: `FinancialAccount: stripe.String(p.ID),`,
+			},
+			{
+				DataStruct: &stripe.TreasuryReceivedDebit{},
+				ListParams: `FinancialAccount: stripe.String(p.ID),`,
+			},
+			{
+				DataStruct: &stripe.TreasuryTransactionEntry{},
+				ListParams: `FinancialAccount: stripe.String(p.ID),`,
+			},
+			{
+				DataStruct: &stripe.TreasuryTransaction{},
+				ListParams: `FinancialAccount: stripe.String(p.ID),`,
+			},
+		},
 	},
 	{
 		DataStruct: &stripe.WebhookEndpoint{},

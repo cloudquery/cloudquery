@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"os"
 	"path"
@@ -21,7 +22,6 @@ func main() {
 	extras := []any{
 		&stripe.BankAccount{},
 		&stripe.CreditNoteLineItem{},
-		&stripe.FeeRefund{},
 		&stripe.LineItem{},
 		&stripe.SubscriptionItem{},
 		&stripe.TaxID{},
@@ -62,11 +62,13 @@ func main() {
 
 	dataStructs = make(map[string]any)
 
-	for _, r := range recipes.AllResources {
-		traverseStructs(r.DataStruct, "", 0)
+	if err := traverseRecipes(recipes.AllResources); err != nil {
+		log.Fatal("traversing recipes: ", err)
 	}
 	for _, extra := range extras {
-		traverseStructs(extra, "", 0)
+		if err := traverseStructs(extra, "", 0); err != nil {
+			log.Fatal("traversing extras: ", err)
+		}
 	}
 
 	csr := caser.New()
@@ -109,36 +111,56 @@ func main() {
 	}
 }
 
-func traverseStructs(ds any, allowedPath string, depth int) {
+func traverseRecipes(rr []*recipes.Resource) error {
+	for _, r := range rr {
+		if err := traverseStructs(r.DataStruct, "", 0); err != nil {
+			return err
+		}
+		if err := traverseRecipes(r.Children); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func traverseStructs(ds any, allowedPath string, depth int) error {
 	if depth > 16 {
-		return
+		return nil
 	}
 	typ := reflect.TypeOf(ds)
 	if typ.Kind() == reflect.Ptr {
 		typ = typ.Elem()
 	}
 	if typ.Kind() != reflect.Struct {
-		return
+		return nil
 	}
 
 	if allowedPath == "" {
 		allowedPath = typ.PkgPath()
 	} else {
 		if typ.PkgPath() != allowedPath {
-			return
+			return nil
 		}
 	}
 
 	mapKey := typ.PkgPath() + "." + typ.Name()
 
 	if _, ok := dataStructs[mapKey]; ok {
-		return
+		if depth == 0 {
+			return fmt.Errorf("duplicate struct %s", mapKey)
+		}
+
+		return nil
 	}
 
 	dataStructs[mapKey] = ds
 
 	for i := 0; i < typ.NumField(); i++ {
 		f := typ.Field(i)
-		traverseStructs(reflect.New(f.Type).Interface(), allowedPath, depth+1)
+		if err := traverseStructs(reflect.New(f.Type).Interface(), allowedPath, depth+1); err != nil {
+			return err
+		}
 	}
+
+	return nil
 }

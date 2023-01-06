@@ -30,6 +30,11 @@ type Resource struct {
 	FetchTemplate string // optional, if not provided will use default template, decided by Single
 
 	HasIDPK bool // has "id" column as PK, auto generated, used in template
+
+	Children []*Resource
+	Parent   *Resource // auto calculated from Children
+
+	ListParams string // optional
 }
 
 var (
@@ -42,7 +47,13 @@ func init() {
 	csr = caser.New()
 }
 
-func (r *Resource) Infer() {
+func (r *Resource) Infer(parent *Resource) {
+	r.Parent = parent
+	if parent != nil {
+		r.Service = parent.Service
+		r.SkipMocks = true
+	}
+
 	r.Plugin = path.Base(strings.TrimSuffix(reflect.TypeOf(r).Elem().PkgPath(), "/codegen/recipes")) // "stripe"
 	r.SkipFields = append(r.SkipFields, "APIResource")
 
@@ -83,5 +94,9 @@ func (r *Resource) Infer() {
 		} else {
 			r.FetchTemplate = "list"
 		}
+	}
+
+	for i := range r.Children {
+		r.Children[i].Infer(r)
 	}
 }

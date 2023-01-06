@@ -4,6 +4,11 @@ https://stripe.com/docs/api/accounts
 
 The primary key for this table is **id**.
 
+## Relations
+
+The following tables depend on stripe_accounts:
+  - [stripe_capabilities](stripe_capabilities.md)
+
 ## Columns
 
 | Name          | Type          |

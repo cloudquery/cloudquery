@@ -86,7 +86,7 @@ func startMockServer() (*string, func() error, error) {
 	}
 
 	// This is mostly copied from the stripe-mock's main function at https://github.com/stripe/stripe-mock/blob/master/main.go
-	stub, err := server.NewStubServer(fixtures, stripeSpec, false, false)
+	stub, err := server.NewStubServer(fixtures, stripeSpec, false, true)
 	if err != nil {
 		return nil, nil, fmt.Errorf("Error initializing router: %w", err)
 	}
