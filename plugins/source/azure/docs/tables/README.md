@@ -222,7 +222,6 @@
 - [azure_mysql_servers](azure_mysql_servers.md)
   - [azure_mysql_server_configurations](azure_mysql_server_configurations.md)
 - [azure_network_express_route_gateways](azure_network_express_route_gateways.md)
-- [azure_security_contacts](azure_security_contacts.md)
 - [azure_security_pricings](azure_security_pricings.md)
 - [azure_security_settings](azure_security_settings.md)
 - [azure_storage_accounts](azure_storage_accounts.md)

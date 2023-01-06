@@ -222,7 +222,6 @@
 - [azure_mysql_servers](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_mysql_servers.md)
   - [azure_mysql_server_configurations](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_mysql_server_configurations.md)
 - [azure_network_express_route_gateways](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_network_express_route_gateways.md)
-- [azure_security_contacts](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_security_contacts.md)
 - [azure_security_pricings](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_security_pricings.md)
 - [azure_security_settings](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_security_settings.md)
 - [azure_storage_accounts](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_storage_accounts.md)
