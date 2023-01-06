@@ -72,7 +72,7 @@ You can see that we have three 'keys', meaning fields that are static across all
 
 Now that we've identified the fields we need to extract from the configuration file to create the custom regex, next we need to construct the regex statement to extract those 'keys' into named capture groups.
 
-For this it's recommended to use a regex testing tool to ensure your regex is actually working. [Regex101](https://regex101.com/) is a very popular one but feel free to use any others as long as they support the PCRE2 regex engine. So taking our sample configuration file from above, we begin to play around with various regexes until we meet the following criteria:
+For this it's recommended to use a regex testing tool to ensure your regex is actually working. [Regex101](https://regex101.com/) is a popular one but feel free to use any others as long as they support the PCRE2 regex engine. So taking our sample configuration file from above, we begin to play around with various regex until we meet the following criteria:
 
 - a named capture group for the plugin type (source or destination) which we will reference as 'kind' in this tutorial.
 - a named capture group for the plugin name (aws, gcp, etc..) which we will reference as 'plugin' in this tutorial.
@@ -87,9 +87,11 @@ This regular expression does the following:
 - captures the `kind: (source|destination)` into a named capture group called 'kind`
 - skips the `spec:` and `name:` lines of the file
 - captures the `path: cloudqery/(gcp, aws, etc...)` into a named capture group called `plugin` while escaping the `cloudquery/` prefix.
+{/*<!-- vale off -->*/}
 - skips to the next line and captures the `version: "vX.X.X" into the **required** named capture group 'currentValue' while optionally checking if the string is quoted or not.
+{/*<!-- vale on -->*/}
 
-On the Regex101 site we can verify the regex is working by viewing the explination section on the left side of the screen:
+On the Regex101 site we can verify the regex is working by viewing the explanation section on the left side of the screen:
 
 ![screenshot of regex101](/images/blog/manage-plugins-with-renovate/renovate-howto-regex101.png)
 
@@ -97,7 +99,7 @@ On the Regex101 site we can verify the regex is working by viewing the explinati
 
 ### Step 3: **Add Custom RegexManager to Renovate**
 
-The last thing we need to get this working is to simply add a block to the `regexManagers: []` in your `renovate.json` file in your code repo such as:
+The last thing we need to get this working is to simply add a block to the `regexManagers: []` in your `renovate.json` file in your code repository such as:
 
 ```json copy
 {
@@ -119,14 +121,14 @@ The last thing we need to get this working is to simply add a block to the `rege
 ```
 
 Things to be aware of when adding this regex to your `renovate.json` file:
-- Any regular expression token (such as `\s` or `\n`) needs to be escape in the configuration file as shown above. This does **not** apply to regular escapes such as escaping the `"` with a signular `\`.
+- Any regular expression token (such as `\s` or `\n`) needs to be escaped in the configuration file as shown above. This does **not** apply to regular escapes such as escaping the `"` with a singular `\`.
 - the `depNameTemplate` is the friendly name we'll see in PRs for the plugins. Our example simply uses the kind and plugin names from the capture group but feel free to use your own.
-- the `extractVersionTemplate` must match the releases in the CloudQuery github repo which at the time of this guide being written follows this format: `plugins-source-aws-v9.1.0`. We simply use the named capture groups to substitue into the string, simply think of them as 'variables' in this context.
-- the `packageNameTemplate` is simply the name of the GitHub repo for CloudQuery, this is just what the `github-releases` datasource expects as input.
+- the `extractVersionTemplate` must match the releases in the CloudQuery github repository which at the time of this guide being written follows this format: `plugins-source-aws-v9.1.0`. We simply use the named capture groups to substitute into the string, simply think of them as 'variables' in this context.
+- the `packageNameTemplate` is simply the name of the GitHub repository for CloudQuery, this is just what the `github-releases` datasource expects as input.
 
 Once you've done this and renovate successfully runs, you should see the following the next time a plugin is released on github (with different labels based on your git workflow and CI):
 
-![pull requets tab in GitHub](/images/blog/manage-plugins-with-renovate/renovate-pr-page.png)
+![pull request tab in GitHub](/images/blog/manage-plugins-with-renovate/renovate-pr-page.png)
 
 ![example pull request](/images/blog/manage-plugins-with-renovate/renovate-pr-example.png)
 
