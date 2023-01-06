@@ -22,6 +22,7 @@ func TestPluginCSV(t *testing.T) {
 			SkipOverwrite:    true,
 			SkipDeleteStale:  true,
 			SkipSecondAppend: true,
+			SkipMigrateAppend: true,
 		},
 	)
 }
