@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	readSQL = "SELECT * FROM %s WHERE \"_cq_source_name\" = ?"
+	readSQL = "SELECT %s FROM %s WHERE \"_cq_source_name\" = ?"
 )
 
 // https://github.com/snowflakedb/gosnowflake/issues/674
@@ -40,6 +40,10 @@ func snowflakeStrToArray(val string) []string {
 func (*Client) createResultsArray(values []any, table *schema.Table) []any {
 	results := make([]any, 0, len(table.Columns))
 	for i, col := range table.Columns {
+		if values[i] == nil {
+			results = append(results, nil)
+			continue
+		}
 		switch col.Type {
 		case schema.TypeBool:
 			r := (*values[i].(*any)).(bool)
@@ -98,7 +102,12 @@ func (*Client) createResultsArray(values []any, table *schema.Table) []any {
 }
 
 func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- []any) error {
-	stmt := fmt.Sprintf(readSQL, table.Name)
+	colNames := make([]string, 0, len(table.Columns))
+	for _, col := range table.Columns {
+		colNames = append(colNames, `"`+col.Name+`"`)
+	}
+	cols := strings.Join(colNames, ", ")
+	stmt := fmt.Sprintf(readSQL, cols, table.Name)
 	rows, err := c.db.Query(stmt, sourceName)
 	if err != nil {
 		return err
