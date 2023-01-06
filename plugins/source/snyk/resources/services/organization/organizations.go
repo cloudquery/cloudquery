@@ -13,7 +13,7 @@ func Organizations() *schema.Table {
 		Description: `https://pkg.go.dev/github.com/pavel-snyk/snyk-sdk-go/snyk#Organization`,
 		Resolver:    fetchOrganizations,
 		Multiplex:   client.SingleOrganization,
-		Transform: transformers.TransformWithStruct(&snyk.Organization{}),
+		Transform:   transformers.TransformWithStruct(&snyk.Organization{}),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

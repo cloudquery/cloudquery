@@ -13,7 +13,7 @@ func Projects() *schema.Table {
 		Description: `https://pkg.go.dev/github.com/pavel-snyk/snyk-sdk-go/snyk#Project`,
 		Resolver:    fetchProjects,
 		Multiplex:   client.ByOrganization,
-		Transform: transformers.TransformWithStruct(&snyk.Project{}),
+		Transform:   transformers.TransformWithStruct(&snyk.Project{}),
 		Columns: []schema.Column{
 			{
 				Name:     "organization_id",

@@ -14,7 +14,7 @@ func Integrations() *schema.Table {
 		Resolver:            fetchIntegrations,
 		PreResourceResolver: getIntegration,
 		Multiplex:           client.ByOrganization,
-		Transform: transformers.TransformWithStruct(&snyk.Integration{}),
+		Transform:           transformers.TransformWithStruct(&snyk.Integration{}),
 		Columns: []schema.Column{
 			{
 				Name:     "organization_id",

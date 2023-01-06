@@ -13,7 +13,7 @@ func Dependencies() *schema.Table {
 		Description: `https://pkg.go.dev/github.com/pavel-snyk/snyk-sdk-go/snyk#Dependency`,
 		Resolver:    fetchDependencies,
 		Multiplex:   client.ByOrganization,
-		Transform: transformers.TransformWithStruct(&snyk.Dependency{}),
+		Transform:   transformers.TransformWithStruct(&snyk.Dependency{}),
 		Columns: []schema.Column{
 			{
 				Name:     "id",
