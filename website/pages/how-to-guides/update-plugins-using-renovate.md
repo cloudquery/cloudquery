@@ -17,23 +17,23 @@ In this guide we will discuss how to leverage [Renovate](https://www.mend.io/fre
 
 [Renovate](https://www.mend.io/free-developer-tools/renovate/) is a tool for automated dependency management for your code repositories to help automate away the tasks of manual dependency versioning. For more information on the features and why you should use Renovate, please read [this](https://github.com/renovatebot/renovate#why-use-renovate.)
 
-This guide covers how to leverage Renovate to keep your CloudQuery source and destination plugins up-to-date but is not meant to be a tutorial on the innerworkings of Renovate. For instructions on how to setup Renovate, please reference their [getting started](https://docs.renovatebot.com/getting-started/running/) documentation. This how-to guide assumes you have Renovate configured and running already on your repo.
+This guide covers how to leverage Renovate to keep your CloudQuery source and destination plugins up-to-date but is not meant to be a comprehensive tutorial of Renovate. For instructions on how to setup Renovate, please reference their [getting started](https://docs.renovatebot.com/getting-started/running/) documentation. This how-to guide assumes you have Renovate configured and running already on your git based repository.
 
 ## Walkthrough
 
 ### Step 1: **Identify Regex Capture Groups**
 
-While Renovate provides tons of built-in functionality to make most dependency management simple, it also provides a very powerful functionality called 'RegexManager' which allows you to leverage custom regular expression statements to manually extract dependencies, their verision, and updating mechanism. Click [here](https://docs.renovatebot.com/modules/manager/regex/) for more details on the specific configurations of RegexManager.
-
+While Renovate provides tons of built-in functionality to make most dependency management simple, it also provides a powerful functionality called 'RegexManager' which allows you to leverage custom regular expression statements to manually extract dependencies, their version, and updating mechanism. Click [here](https://docs.renovatebot.com/modules/manager/regex/) for more details on the specific configurations of RegexManager.
+{/*<!-- vale off -->*/}
 For our purposes, we're concerned about the following items:
 - **datasourceTemplate**: datasource is where the package's versions are managed.
 - **packageNameTemplate**: packageName for the datasource to use.
 - **depNameTemplate**: depName being the 'friendly' name that is shown in renovate PRs.
 - **extractVersionTemplate**: regular expression for discovering plugin version in the datasource.
 - **versioningTemplate**: what versioning 'format' the datasource follows
-- **fileMatch**: path to the cloudquery.yaml file in your repo.
+- **fileMatch**: path to the cloudquery.yaml file in your repository.
 - **matchStrings**: regular expression to find the plugins in your cloudquery.yaml file.
-
+{/*<!-- vale on -->*/}
 Using a simplistic configuration file that looks like:
 
 ```yaml copy
