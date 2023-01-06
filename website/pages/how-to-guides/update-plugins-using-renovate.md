@@ -27,8 +27,8 @@ While Renovate provides tons of built-in functionality to make most dependency m
 
 For our purposes, we're concerned about the following items:
 - `datasourceTemplate`: datasource is where the package's versions are managed.
-- `packageNameTemplate`: packageName for the datasource to use.
-- `depNameTemplate`: depName being the 'friendly' name that is shown in renovate PRs.
+- `packageNameTemplate`:  this is the lookup name that is passed to the datasource.
+- `depNameTemplate`: this is the 'friendly' name that is shown in renovate PRs.
 - `extractVersionTemplate`: regular expression for discovering plugin version in the datasource.
 - `versioningTemplate`: what versioning 'format' the datasource follows
 - `fileMatch`: path to the cloudquery.yaml file in your repository.
