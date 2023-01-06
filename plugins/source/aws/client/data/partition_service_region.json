@@ -6744,6 +6744,11 @@
             "cn-northwest-1": {}
           }
         },
+        "kinesisvideo": {
+          "regions": {
+            "cn-north-1": {}
+          }
+        },
         "kms": {
           "regions": {
             "cn-north-1": {},
