@@ -37,9 +37,10 @@ END AS "execution_time"  \gset
 \set check_id "2.9"
 \echo "Executing check 2.9"
 \ir ../queries/security/defender_on_for_key_vault.sql
-\set check_id "2.10"
-\echo "Executing check 2.10"
-\ir ../queries/security/mcas_integration_with_security_center_enabled.sql
+-- security settings does not have "enabled" property
+-- \set check_id "2.10"
+-- \echo "Executing check 2.10"
+-- \ir ../queries/security/mcas_integration_with_security_center_enabled.sql
 \set check_id "2.11"
 \echo "Executing check 2.11"
 \ir ../queries/security/auto_provisioning_monitoring_agent_enabled.sql
