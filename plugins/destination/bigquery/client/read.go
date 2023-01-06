@@ -92,6 +92,7 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 			Value: sourceName,
 		},
 	}
+	q.Location = c.client.Location
 	it, err := q.Read(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to read table %s: %w", table.Name, err)
