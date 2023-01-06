@@ -18,19 +18,19 @@ func (*Client) createResultsArray(table *schema.Table) []any {
 	for _, col := range table.Columns {
 		switch col.Type {
 		case schema.TypeBool:
-			var r bool
+			var r *bool
 			results = append(results, &r)
 		case schema.TypeInt:
-			var r int
+			var r *int
 			results = append(results, &r)
 		case schema.TypeFloat:
-			var r float64
+			var r *float64
 			results = append(results, &r)
 		case schema.TypeUUID:
-			var r string
+			var r *string
 			results = append(results, &r)
 		case schema.TypeString:
-			var r string
+			var r *string
 			results = append(results, &r)
 		case schema.TypeByteArray:
 			var r sql.RawBytes
@@ -39,7 +39,7 @@ func (*Client) createResultsArray(table *schema.Table) []any {
 			var r string
 			results = append(results, &r)
 		case schema.TypeTimestamp:
-			var r string
+			var r *string
 			results = append(results, &r)
 		case schema.TypeJSON:
 			var r string
@@ -48,19 +48,19 @@ func (*Client) createResultsArray(table *schema.Table) []any {
 			var r string
 			results = append(results, &r)
 		case schema.TypeCIDR:
-			var r string
+			var r *string
 			results = append(results, &r)
 		case schema.TypeCIDRArray:
 			var r string
 			results = append(results, &r)
 		case schema.TypeMacAddr:
-			var r string
+			var r *string
 			results = append(results, &r)
 		case schema.TypeMacAddrArray:
 			var r string
 			results = append(results, &r)
 		case schema.TypeInet:
-			var r string
+			var r *string
 			results = append(results, &r)
 		case schema.TypeInetArray:
 			var r string
