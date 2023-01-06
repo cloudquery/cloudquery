@@ -11,11 +11,11 @@ import { Callout } from 'nextra-theme-docs'
 
 <HowToGuideHeader/>
 
-In this guide we will discuss how to leverage [Renovate](https://www.mend.io/free-developer-tools/renovate/) to keep all your source and destination plugins on the latest version.
+In this guide we will discuss how to leverage [Renovate](https://github.com/renovatebot/renovate) to keep all your source and destination plugins on the latest version.
 
 ## Introduction to Renovate
 
-[Renovate](https://www.mend.io/free-developer-tools/renovate/) is a tool for automated dependency management for your code repositories to help automate away the tasks of manual dependency versioning. For more information on the features and why you should use Renovate, please read [this](https://github.com/renovatebot/renovate#why-use-renovate.)
+[Renovate](https://github.com/renovatebot/renovate) is a tool for automated dependency management for your code repositories to help automate away the tasks of manual dependency versioning. For more information on the features and why you should use Renovate, please read [this](https://github.com/renovatebot/renovate#why-use-renovate).
 
 This guide covers how to leverage Renovate to keep your CloudQuery source and destination plugins up-to-date but is not meant to be a comprehensive tutorial of Renovate. For instructions on how to setup Renovate, please reference their [getting started](https://docs.renovatebot.com/getting-started/running/) documentation. This how-to guide assumes you have Renovate configured and running already on your git based repository.
 
