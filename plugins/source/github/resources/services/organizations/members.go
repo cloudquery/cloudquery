@@ -9,8 +9,8 @@ import (
 
 func Members() *schema.Table {
 	return &schema.Table{
-		Name:     "github_organization_members",
-		Resolver: fetchMembers,
+		Name:      "github_organization_members",
+		Resolver:  fetchMembers,
 		Transform: transformers.TransformWithStruct(&github.User{}),
 		Columns: []schema.Column{
 			{
