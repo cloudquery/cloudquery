@@ -9,8 +9,8 @@ import (
 
 func Projects() *schema.Table {
 	return &schema.Table{
-		Name:     "gitlab_projects",
-		Resolver: fetchProjects,
+		Name:      "gitlab_projects",
+		Resolver:  fetchProjects,
 		Transform: transformers.TransformWithStruct(&gitlab.Project{}),
 		Columns: []schema.Column{
 			{

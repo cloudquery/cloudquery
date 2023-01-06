@@ -23,6 +23,6 @@ This table depends on [gitlab_groups](gitlab_groups.md).
 |avatar_url|String|
 |web_url|String|
 |created_at|Timestamp|
-|expires_at|Timestamp|
+|expires_at|JSON|
 |access_level|Int|
 |group_saml_identity|JSON|

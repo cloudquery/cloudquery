@@ -9,8 +9,8 @@ import (
 
 func Settings() *schema.Table {
 	return &schema.Table{
-		Name:     "gitlab_settings",
-		Resolver: fetchSettings,
+		Name:      "gitlab_settings",
+		Resolver:  fetchSettings,
 		Transform: transformers.TransformWithStruct(&gitlab.Settings{}),
 		Columns: []schema.Column{
 			{

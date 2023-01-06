@@ -9,8 +9,8 @@ import (
 
 func Groups() *schema.Table {
 	return &schema.Table{
-		Name:     "gitlab_groups",
-		Resolver: fetchGroups,
+		Name:      "gitlab_groups",
+		Resolver:  fetchGroups,
 		Transform: transformers.TransformWithStruct(&gitlab.Group{}),
 		Columns: []schema.Column{
 			{

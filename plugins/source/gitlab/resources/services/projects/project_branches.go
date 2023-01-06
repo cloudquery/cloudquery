@@ -9,8 +9,8 @@ import (
 
 func ProjectBranches() *schema.Table {
 	return &schema.Table{
-		Name:     "gitlab_project_branches",
-		Resolver: fetchProjectBranches,
+		Name:      "gitlab_project_branches",
+		Resolver:  fetchProjectBranches,
 		Transform: transformers.TransformWithStruct(&gitlab.Branch{}),
 		Columns: []schema.Column{
 			{

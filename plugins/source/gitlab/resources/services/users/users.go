@@ -9,8 +9,8 @@ import (
 
 func Users() *schema.Table {
 	return &schema.Table{
-		Name:     "gitlab_users",
-		Resolver: fetchUsers,
+		Name:      "gitlab_users",
+		Resolver:  fetchUsers,
 		Transform: transformers.TransformWithStruct(&gitlab.User{}),
 		Columns: []schema.Column{
 			{
