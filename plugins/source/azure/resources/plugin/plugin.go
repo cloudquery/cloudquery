@@ -45,7 +45,8 @@ var customTables = []*schema.Table{
 	monitor.TenantActivityLogAlerts(),
 	mysql.Servers(),
 	network.ExpressRouteGateways(),
-	security.Contacts(),
+	//api is broken. Api returns `[data]` instead of `{value: [data]}`
+	//security.Contacts(),
 	security.Pricings(),
 	security.Settings(),
 	storage.Accounts(),
