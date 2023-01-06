@@ -5,24 +5,18 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"testing"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/gorilla/mux"
 )
 
-func createWebApps(router *mux.Router) error {
-	var item armappservice.WebAppsClientListResponse
+func createWebAppAuthSettings(router *mux.Router) error {
+	var item armappservice.WebAppsClientGetAuthSettingsResponse
 	if err := faker.FakeObject(&item); err != nil {
 		return err
 	}
 
-	emptyStr := ""
-	item.NextLink = &emptyStr
-
-	router.HandleFunc("/subscriptions/{subscriptionId}/providers/Microsoft.Web/sites", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/subscriptions/{subscriptionId}/resourceGroups/debug/providers/Microsoft.Web/sites/test string/config/authsettings/list", func(w http.ResponseWriter, r *http.Request) {
 		b, err := json.Marshal(&item)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)
@@ -33,10 +27,6 @@ func createWebApps(router *mux.Router) error {
 			return
 		}
 	})
-	createWebAppAuthSettings(router)
-	return nil
-}
 
-func TestWebApps(t *testing.T) {
-	client.MockTestHelper(t, WebApps(), createWebApps)
+	return nil
 }
