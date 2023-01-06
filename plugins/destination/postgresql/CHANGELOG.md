@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v2.0.1...plugins-destination-postgresql-v2.0.2) (2023-01-06)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.18.0 ([#6339](https://github.com/cloudquery/cloudquery/issues/6339)) ([158365a](https://github.com/cloudquery/cloudquery/commit/158365a78dfa4389074f716a0f581f18fedc1080))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.20.0 ([#6376](https://github.com/cloudquery/cloudquery/issues/6376)) ([d6187ec](https://github.com/cloudquery/cloudquery/commit/d6187ec584f13be4fe9362dd393385b19d386113))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.21.0 ([#6382](https://github.com/cloudquery/cloudquery/issues/6382)) ([5baea40](https://github.com/cloudquery/cloudquery/commit/5baea40d2aec4e807db839c928be2e037d572bef))
+* **deps:** Update plugin-sdk to v1.21.0 for destinations ([#6419](https://github.com/cloudquery/cloudquery/issues/6419)) ([f3b989f](https://github.com/cloudquery/cloudquery/commit/f3b989f7cbe335481dc01ad2a56cf7eff48e01d5))
+* Error if after the migration there are `not null` columns that are not part of the new schema ([#6282](https://github.com/cloudquery/cloudquery/issues/6282)) ([c5a4bf5](https://github.com/cloudquery/cloudquery/commit/c5a4bf596cc145295ae74add917c1d29c05cb493))
+* **pg:** Return more detailed pg errors ([#6421](https://github.com/cloudquery/cloudquery/issues/6421)) ([acb3e21](https://github.com/cloudquery/cloudquery/commit/acb3e216b73405763e1e3980f15d43e7166c3f5b))
+* **postgresql:** Revert [#6282](https://github.com/cloudquery/cloudquery/issues/6282) ([#6434](https://github.com/cloudquery/cloudquery/issues/6434)) ([2cecacd](https://github.com/cloudquery/cloudquery/commit/2cecacde39edb9dd16498d816415b4a1fb8efb4e))
+* **tests:** Postgresql: Read only columns defined in the schema ([#6371](https://github.com/cloudquery/cloudquery/issues/6371)) ([491941a](https://github.com/cloudquery/cloudquery/commit/491941a0c165ee18ce96d71c2e6aecf3d7830d50))
+
 ## [2.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v2.0.0...plugins-destination-postgresql-v2.0.1) (2023-01-03)
 
 
