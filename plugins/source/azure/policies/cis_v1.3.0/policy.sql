@@ -47,12 +47,13 @@ END AS "execution_time"  \gset
 \set check_id "2.12"
 \echo "Executing check 2.12"
 \ir ../queries/security/default_policy_disabled.sql
-\set check_id "2.13"
-\echo "Executing check 2.13"
-\ir ../queries/security/security_email_configured.sql
-\set check_id "2.14"
-\echo "Executing check 2.14"
-\ir ../queries/security/notify_high_severity_alerts.sql
+-- security contacts api is broken
+-- \set check_id "2.13"
+-- \echo "Executing check 2.13"
+-- \ir ../queries/security/security_email_configured.sql
+-- \set check_id "2.14"
+-- \echo "Executing check 2.14"
+-- \ir ../queries/security/notify_high_severity_alerts.sql
 
 \echo "Executing CIS V1.3.0 Section 4"
 \set check_id "4.1.1"
