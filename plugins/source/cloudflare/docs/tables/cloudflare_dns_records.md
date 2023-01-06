@@ -11,14 +11,12 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |account_id|String|
-|meta|JSON|
-|data|JSON|
+|id (PK)|String|
 |created_on|Timestamp|
 |modified_on|Timestamp|
 |type|String|
 |name|String|
 |content|String|
-|id (PK)|String|
 |zone_id|String|
 |zone_name|String|
 |priority|Int|
