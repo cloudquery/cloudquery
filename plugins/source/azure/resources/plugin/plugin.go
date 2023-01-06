@@ -45,7 +45,7 @@ var customTables = []*schema.Table{
 	monitor.TenantActivityLogAlerts(),
 	mysql.Servers(),
 	network.ExpressRouteGateways(),
-	//api is broken. Api returns `[data]` instead of `{value: [data]}`
+	//api is broken. Api returns `[data]` instead of `{value: [data]}` https://github.com/Azure/azure-sdk-for-go/issues/19740
 	//security.Contacts(),
 	security.Pricings(),
 	security.Settings(),
