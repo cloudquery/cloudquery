@@ -6,10 +6,12 @@ SELECT :'execution_time'                                                        
        awa.subscription_id                                                         AS subscription_id,
        awa.id                                                                      AS resource_id,
        CASE
-           WHEN awaas.enabled IS NULL OR awaas.enabled != TRUE
+           WHEN (awaas.properties ->> 'enabled')::boolean is distinct from TRUE
                THEN 'fail'
            ELSE 'pass'
            END                                                                     AS status
-FROM azure_web_apps awa
-         LEFT JOIN azure_web_site_auth_settings awaas ON
-    awa.id = awaas.web_app_id
+FROM azure_appservice_web_apps awa
+         LEFT JOIN azure_appservice_web_app_auth_settings awaas ON
+    awa._cq_id = awaas._cq_parent_id
+
+
