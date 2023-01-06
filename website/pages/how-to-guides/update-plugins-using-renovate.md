@@ -1,5 +1,5 @@
 ---
-title: Updating Plugins Using Renovate
+title: How to Automatically Update Plugins Using Renovate
 tag: tutorial
 description: >-
   How to setup Renovate to update plugins
@@ -21,7 +21,7 @@ This guide covers how to leverage Renovate to keep your CloudQuery source and de
 
 ## Walkthrough
 
-### Step 1: **Identify Regex Capture Groups**
+### Step 1: Identify Regex Capture Groups
 
 While Renovate provides tons of built-in functionality to make most dependency management simple, it also provides a powerful functionality called 'RegexManager' which allows you to leverage custom regular expression statements to manually extract dependencies, their version, and updating mechanism. Click [here](https://docs.renovatebot.com/modules/manager/regex/) for more details on the specific configurations of RegexManager.
 
@@ -68,7 +68,7 @@ You can see that we have three 'keys', meaning fields that are static across all
 - **path**: the 'name' of the plugin (such as gcp or aws).
 - **version**: the current version of the plugin.
 
-### Step 2: **Create Custom RegexManager**
+### Step 2: Create Custom RegexManager
 
 Now that we've identified the fields we need to extract from the configuration file to create the custom regex, next we need to construct the regex statement to extract those 'keys' into named capture groups.
 
@@ -96,7 +96,7 @@ On the Regex101 site we can verify the regex is working by viewing the explanati
 
 **Important Note**: This regex is _specific_ to the example shown in this how-to guide, if your configuration file is formatted different (such as lines in different orders or indented differently like in a helm values.yaml file) then you'll need to adjust the regex accordingly.
 
-### Step 3: **Add Custom RegexManager to Renovate**
+### Step 3: Add Custom RegexManager to Renovate
 
 The last thing we need to get this working is to simply add a block to the `regexManagers: []` in your `renovate.json` file in your code repository such as:
 
