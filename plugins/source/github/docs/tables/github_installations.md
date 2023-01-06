@@ -26,8 +26,8 @@ The composite primary key for this table is (**org**, **id**).
 |events|StringArray|
 |single_file_paths|StringArray|
 |permissions|JSON|
-|created_at|Timestamp|
-|updated_at|Timestamp|
+|created_at|JSON|
+|updated_at|JSON|
 |has_multiple_single_files|Bool|
 |suspended_by|JSON|
-|suspended_at|Timestamp|
+|suspended_at|JSON|

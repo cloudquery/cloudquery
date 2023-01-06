@@ -17,8 +17,8 @@ This table depends on [github_teams](github_teams.md).
 |org (PK)|String|
 |team_id (PK)|Int|
 |membership|JSON|
-|login|String|
 |id (PK)|Int|
+|login|String|
 |node_id|String|
 |avatar_url|String|
 |html_url|String|
@@ -35,9 +35,9 @@ This table depends on [github_teams](github_teams.md).
 |public_gists|Int|
 |followers|Int|
 |following|Int|
-|created_at|Timestamp|
-|updated_at|Timestamp|
-|suspended_at|Timestamp|
+|created_at|JSON|
+|updated_at|JSON|
+|suspended_at|JSON|
 |type|String|
 |site_admin|Bool|
 |total_private_repos|Int|

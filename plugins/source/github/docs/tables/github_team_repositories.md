@@ -26,9 +26,9 @@ This table depends on [github_teams](github_teams.md).
 |code_of_conduct|JSON|
 |default_branch|String|
 |master_branch|String|
-|created_at|Timestamp|
-|pushed_at|Timestamp|
-|updated_at|Timestamp|
+|created_at|JSON|
+|pushed_at|JSON|
+|updated_at|JSON|
 |html_url|String|
 |clone_url|String|
 |git_url|String|

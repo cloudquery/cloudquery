@@ -23,10 +23,10 @@ This table depends on [github_repositories](github_repositories.md).
 |security_vulnerability|JSON|
 |url|String|
 |html_url|String|
-|created_at|Timestamp|
-|updated_at|Timestamp|
-|dismissed_at|Timestamp|
+|created_at|JSON|
+|updated_at|JSON|
+|dismissed_at|JSON|
 |dismissed_by|JSON|
 |dismissed_reason|String|
 |dismissed_comment|String|
-|fixed_at|Timestamp|
+|fixed_at|JSON|

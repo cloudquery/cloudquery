@@ -16,7 +16,7 @@ This table depends on [github_organizations](github_organizations.md).
 |_cq_parent_id|UUID|
 |org (PK)|String|
 |name (PK)|String|
-|created_at|Timestamp|
-|updated_at|Timestamp|
+|created_at|JSON|
+|updated_at|JSON|
 |visibility|String|
 |selected_repositories_url|String|
