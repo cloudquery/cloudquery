@@ -6,6 +6,7 @@ The primary key for this table is **id**.
 
 The following tables depend on azure_sql_servers:
   - [azure_sql_server_vulnerability_assessments](azure_sql_server_vulnerability_assessments.md)
+  - [azure_sql_server_blob_auditing_policies](azure_sql_server_blob_auditing_policies.md)
   - [azure_sql_server_admins](azure_sql_server_admins.md)
   - [azure_sql_encryption_protectors](azure_sql_encryption_protectors.md)
   - [azure_sql_databases](azure_sql_databases.md)

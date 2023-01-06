@@ -14,7 +14,7 @@ func fetchKeyvaultKeys(ctx context.Context, meta schema.ClientMeta, parent *sche
 	if err != nil {
 		return err
 	}
-	item := parent.Item.(*armkeyvault.Resource)
+	item := parent.Item.(armkeyvault.Vault)
 	group, err := client.ParseResourceGroup(*item.ID)
 	if err != nil {
 		return err

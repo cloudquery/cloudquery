@@ -8,6 +8,8 @@ This table depends on [azure_sql_servers](azure_sql_servers.md).
 
 The following tables depend on azure_sql_databases:
   - [azure_sql_database_blob_auditing_policies](azure_sql_database_blob_auditing_policies.md)
+  - [azure_sql_transparent_data_encryptions](azure_sql_transparent_data_encryptions.md)
+  - [azure_sql_database_threat_protections](azure_sql_database_threat_protections.md)
 
 ## Columns
 

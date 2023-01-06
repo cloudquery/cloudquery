@@ -33,6 +33,7 @@ func createServers(router *mux.Router) error {
 		}
 	})
 	createServerVulnerabilityAssessments(router)
+	createServerBlobAuditingPolicies(router)
 	createServerAdmins(router)
 	createEncryptionProtectors(router)
 	createDatabases(router)

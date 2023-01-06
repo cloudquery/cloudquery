@@ -7,11 +7,11 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchDatabaseBlobAuditingPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchDatabaseThreatProtections(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	p := parent.Item.(*armsql.Database)
 	ps := parent.Parent.Item.(*armsql.Server)
 	cl := meta.(*client.Client)
-	svc, err := armsql.NewDatabaseBlobAuditingPoliciesClient(cl.SubscriptionId, cl.Creds, cl.Options)
+	svc, err := armsql.NewDatabaseAdvancedThreatProtectionSettingsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {
 		return err
 	}

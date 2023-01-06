@@ -7,11 +7,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchDatabaseBlobAuditingPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	p := parent.Item.(*armsql.Database)
-	ps := parent.Parent.Item.(*armsql.Server)
+func fetchServerBlobAuditingPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	p := parent.Item.(*armsql.Server)
 	cl := meta.(*client.Client)
-	svc, err := armsql.NewDatabaseBlobAuditingPoliciesClient(cl.SubscriptionId, cl.Creds, cl.Options)
+	svc, err := armsql.NewServerBlobAuditingPoliciesClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {
 		return err
 	}
@@ -19,7 +18,7 @@ func fetchDatabaseBlobAuditingPolicies(ctx context.Context, meta schema.ClientMe
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListByDatabasePager(group, *ps.Name, *p.Name, nil)
+	pager := svc.NewListByServerPager(group, *p.Name, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

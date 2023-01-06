@@ -6,6 +6,7 @@ The primary key for this table is **id**.
 
 The following tables depend on azure_postgresql_servers:
   - [azure_postgresql_configurations](azure_postgresql_configurations.md)
+  - [azure_postgresql_firewall_rules](azure_postgresql_firewall_rules.md)
 
 ## Columns
 

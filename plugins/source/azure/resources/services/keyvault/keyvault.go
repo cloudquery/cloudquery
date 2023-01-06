@@ -14,7 +14,7 @@ func Keyvault() *schema.Table {
 		Name:      "azure_keyvault_keyvault",
 		Resolver:  fetchKeyvault,
 		Multiplex: client.SubscriptionMultiplex,
-		Transform: transformers.TransformWithStruct(&armkeyvault.Resource{}),
+		Transform: transformers.TransformWithStruct(&armkeyvault.Vault{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -50,7 +50,18 @@ func fetchKeyvault(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 		if err != nil {
 			return err
 		}
-		res <- p.Value
+
+		for _, r := range p.Value {
+			group, err := client.ParseResourceGroup(*r.ID)
+			if err != nil {
+				return err
+			}
+			resp, err := svc.Get(ctx, *r.Name, group, nil)
+			if err != nil {
+				return err
+			}
+			res <- resp.Vault
+		}
 	}
 	return nil
 }

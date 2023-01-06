@@ -33,6 +33,7 @@ func Servers() *schema.Table {
 
 		Relations: []*schema.Table{
 			configurations(),
+			firewall_rules(),
 		},
 	}
 }

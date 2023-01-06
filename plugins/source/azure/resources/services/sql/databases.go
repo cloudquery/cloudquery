@@ -70,6 +70,8 @@ func databases() *schema.Table {
 
 		Relations: []*schema.Table{
 			database_blob_auditing_policies(),
+			transparent_data_encryptions(),
+			database_threat_protections(),
 		},
 	}
 }
