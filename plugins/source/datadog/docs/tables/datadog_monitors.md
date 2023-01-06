@@ -19,3 +19,17 @@ The following tables depend on datadog_monitors:
 |id (PK)|Int|
 |deleted|Timestamp|
 |priority|Int|
+|created|Timestamp|
+|creator|JSON|
+|message|String|
+|modified|Timestamp|
+|multi|Bool|
+|name|String|
+|options|JSON|
+|overall_state|String|
+|query|String|
+|restricted_roles|StringArray|
+|state|JSON|
+|tags|StringArray|
+|type|String|
+|additional_properties|JSON|
