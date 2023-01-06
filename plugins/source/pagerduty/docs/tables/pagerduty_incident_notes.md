@@ -19,4 +19,4 @@ This table depends on [pagerduty_incidents](pagerduty_incidents.md).
 |id (PK)|String|
 |user|JSON|
 |content|String|
-|created_at|Timestamp|
+|created_at|String|

@@ -13,19 +13,17 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |id (PK)|String|
-|type|String|
-|summary|String|
-|self|String|
 |html_url|String|
-|name|String|
 |logo_url|String|
-|long_name|String|
 |website_url|String|
+|thumbnail_url|String|
+|is_pd_cef|Bool|
+|api_object|JSON|
+|name|String|
+|long_name|String|
 |description|String|
 |connectable|Bool|
-|thumbnail_url|String|
 |generic_service_type|String|
 |integration_guide_url|String|
 |alert_creation_default|String|
 |alert_creation_editable|Bool|
-|is_pd_cef|Bool|

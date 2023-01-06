@@ -22,7 +22,7 @@ The following tables depend on pagerduty_rulesets:
 |type|String|
 |self|String|
 |routing_keys|StringArray|
-|created_at|Timestamp|
+|created_at|String|
 |creator|JSON|
 |updated_at|String|
 |updater|JSON|

@@ -19,17 +19,15 @@ The following tables depend on pagerduty_services:
 |_cq_parent_id|UUID|
 |dependencies|JSON|
 |id (PK)|String|
-|type|String|
-|summary|String|
-|self|String|
 |html_url|String|
+|api_object|JSON|
 |name|String|
 |description|String|
 |auto_resolve_timeout|Int|
 |acknowledgement_timeout|Int|
-|created_at|Timestamp|
+|created_at|String|
 |status|String|
-|last_incident_timestamp|Timestamp|
+|last_incident_timestamp|String|
 |integrations|JSON|
 |escalation_policy|JSON|
 |teams|JSON|

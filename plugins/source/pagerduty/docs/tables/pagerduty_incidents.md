@@ -20,20 +20,18 @@ The following tables depend on pagerduty_incidents:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |id (PK)|String|
-|type|String|
-|summary|String|
-|self|String|
 |html_url|String|
+|api_object|JSON|
 |incident_number|Int|
 |title|String|
 |description|String|
-|created_at|Timestamp|
+|created_at|String|
 |pending_actions|JSON|
 |incident_key|String|
 |service|JSON|
 |assignments|JSON|
 |acknowledgements|JSON|
-|last_status_change_at|Timestamp|
+|last_status_change_at|String|
 |last_status_change_by|JSON|
 |first_trigger_log_entry|JSON|
 |escalation_policy|JSON|

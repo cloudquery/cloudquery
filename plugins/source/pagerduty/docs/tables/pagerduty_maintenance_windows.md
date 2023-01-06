@@ -13,13 +13,11 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |id (PK)|String|
-|type|String|
-|summary|String|
-|self|String|
 |html_url|String|
+|api_object|JSON|
 |sequence_number|Int|
-|start_time|Timestamp|
-|end_time|Timestamp|
+|start_time|String|
+|end_time|String|
 |description|String|
 |services|JSON|
 |teams|JSON|
