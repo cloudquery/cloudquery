@@ -26,13 +26,13 @@ This guide covers how to leverage Renovate to keep your CloudQuery source and de
 While Renovate provides tons of built-in functionality to make most dependency management simple, it also provides a powerful functionality called 'RegexManager' which allows you to leverage custom regular expression statements to manually extract dependencies, their version, and updating mechanism. Click [here](https://docs.renovatebot.com/modules/manager/regex/) for more details on the specific configurations of RegexManager.
 
 For our purposes, we're concerned about the following items:
-- **datasourceTemplate**: datasource is where the package's versions are managed.
-- **packageNameTemplate**: packageName for the datasource to use.
-- **depNameTemplate**: depName being the 'friendly' name that is shown in renovate PRs.
-- **extractVersionTemplate**: regular expression for discovering plugin version in the datasource.
-- **versioningTemplate**: what versioning 'format' the datasource follows
-- **fileMatch**: path to the cloudquery.yaml file in your repository.
-- **matchStrings**: regular expression to find the plugins in your cloudquery.yaml file.
+- `datasourceTemplate`: datasource is where the package's versions are managed.
+- `packageNameTemplate`: packageName for the datasource to use.
+- `depNameTemplate`: depName being the 'friendly' name that is shown in renovate PRs.
+- `extractVersionTemplate`: regular expression for discovering plugin version in the datasource.
+- `versioningTemplate`: what versioning 'format' the datasource follows
+- `fileMatch`: path to the cloudquery.yaml file in your repository.
+  `matchStrings`: regular expression to find the plugins in your cloudquery.yaml file.
 
 Using a simplistic configuration file that looks like:
 
@@ -76,7 +76,7 @@ For this it's recommended to use a regex testing tool to ensure your regex is ac
 
 - a named capture group for the plugin type (source or destination) which we will reference as 'kind' in this tutorial.
 - a named capture group for the plugin name (aws, gcp, etc..) which we will reference as 'plugin' in this tutorial.
-- a named capture group for the plugin current version which **must** be named currentValue.
+- a named capture group for the plugin current version which **must** be named `currentValue`.
 
 For our sample configuration file this regex would look something like:
 
@@ -87,9 +87,8 @@ This regular expression does the following:
 - captures the `kind: (source|destination)` into a named capture group called 'kind`
 - skips the `spec:` and `name:` lines of the file
 - captures the `path: cloudqery/(gcp, aws, etc...)` into a named capture group called `plugin` while escaping the `cloudquery/` prefix.
-{/*<!-- vale off -->*/}
-- skips to the next line and captures the `version: "vX.X.X" into the **required** named capture group 'currentValue' while optionally checking if the string is quoted or not.
-{/*<!-- vale on -->*/}
+- skips to the next line and captures the `version: "vX.X.X"` into the **required** named capture group `currentValue` while optionally checking if the string is quoted or not.
+
 
 On the Regex101 site we can verify the regex is working by viewing the explanation section on the left side of the screen:
 
