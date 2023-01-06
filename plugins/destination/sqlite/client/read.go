@@ -4,13 +4,12 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"strings"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 const (
-	readSQL = `SELECT %s FROM "%s" WHERE _cq_source_name = $1 order by _cq_sync_time asc`
+	readSQL = `SELECT * FROM "%s" WHERE _cq_source_name = $1 order by _cq_sync_time asc`
 )
 
 func (*Client) createResultsArray(table *schema.Table) []any {
@@ -74,12 +73,7 @@ func (*Client) createResultsArray(table *schema.Table) []any {
 }
 
 func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- []any) error {
-	colNames := make([]string, 0, len(table.Columns))
-	for _, col := range table.Columns {
-		colNames = append(colNames, `"`+col.Name+`"`)
-	}
-	cols := strings.Join(colNames, ", ")
-	rows, err := c.db.Query(fmt.Sprintf(readSQL, cols, table.Name), sourceName)
+	rows, err := c.db.Query(fmt.Sprintf(readSQL, table.Name), sourceName)
 	if err != nil {
 		return err
 	}
