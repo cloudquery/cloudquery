@@ -21,6 +21,11 @@ func IncidentNotes() *schema.Table {
 					PrimaryKey: true,
 				},
 			},
+			{
+				Name:     "created_at",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("CreatedAt"),
+			},
 		},
 	}
 }

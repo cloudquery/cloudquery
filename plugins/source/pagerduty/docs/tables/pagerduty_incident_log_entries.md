@@ -21,8 +21,8 @@ This table depends on [pagerduty_incidents](pagerduty_incidents.md).
 |summary|String|
 |self|String|
 |html_url|String|
+|created_at|Timestamp|
 |api_object|JSON|
-|created_at|String|
 |agent|JSON|
 |channel|JSON|
 |teams|JSON|

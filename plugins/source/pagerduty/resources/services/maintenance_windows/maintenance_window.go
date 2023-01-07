@@ -26,6 +26,16 @@ func MaintenanceWindows() *schema.Table {
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("HTMLURL"),
 			},
+			{
+				Name:     "start_time",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("StartTime"),
+			},
+			{
+				Name:     "end_time",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("EndTime"),
+			},
 		},
 	}
 }

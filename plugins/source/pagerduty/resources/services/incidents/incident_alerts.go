@@ -22,6 +22,11 @@ func IncidentAlerts() *schema.Table {
 				},
 			},
 			{
+				Name:     "created_at",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("CreatedAt"),
+			},
+			{
 				Name:     "html_url",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("HTMLURL"),

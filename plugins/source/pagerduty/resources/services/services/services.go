@@ -11,7 +11,7 @@ func Services() *schema.Table {
 		Name:        "pagerduty_services",
 		Description: `https://developer.pagerduty.com/api-reference/e960cca205c0f-list-services`,
 		Resolver:    fetchServices,
-		Transform:   transformers.TransformWithStruct(&pagerduty.Service{}, transformers.WithSkipFields("HTMLURL")),
+		Transform:   transformers.TransformWithStruct(&pagerduty.Service{}, transformers.WithUnwrapAllEmbeddedStructs(), transformers.WithSkipFields("HTMLURL")),
 		Columns: []schema.Column{
 			{
 				Name:     "dependencies",
@@ -30,6 +30,11 @@ func Services() *schema.Table {
 				Name:     "html_url",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("HTMLURL"),
+			},
+			{
+				Name:     "last_incident_timestamp",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("LastIncidentTimestamp"),
 			},
 		},
 

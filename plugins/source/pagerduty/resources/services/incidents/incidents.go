@@ -11,7 +11,7 @@ func Incidents() *schema.Table {
 		Name:        "pagerduty_incidents",
 		Description: `https://developer.pagerduty.com/api-reference/9d0b4b12e36f9-list-incidents`,
 		Resolver:    fetchIncidents,
-		Transform:   transformers.TransformWithStruct(&pagerduty.Incident{}, transformers.WithSkipFields("HTMLURL")),
+		Transform:   transformers.TransformWithStruct(&pagerduty.Incident{}, transformers.WithUnwrapAllEmbeddedStructs(), transformers.WithSkipFields("HTMLURL")),
 		Columns: []schema.Column{
 			{
 				Name:     "id",
@@ -25,6 +25,16 @@ func Incidents() *schema.Table {
 				Name:     "html_url",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("HTMLURL"),
+			},
+			{
+				Name:     "created_at",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("CreatedAt"),
+			},
+			{
+				Name:     "last_status_change_at",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("LastStatusChangeAt"),
 			},
 		},
 

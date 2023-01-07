@@ -41,6 +41,11 @@ func IncidentLogEntries() *schema.Table {
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("HTMLURL"),
 			},
+			{
+				Name:     "created_at",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("CreatedAt"),
+			},
 		},
 	}
 }
