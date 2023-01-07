@@ -11,7 +11,7 @@ func Users() *schema.Table {
 		Name:        "pagerduty_users",
 		Description: `https://developer.pagerduty.com/api-reference/c96e889522dd6-list-users`,
 		Resolver:    fetchUsers,
-		Transform:   transformers.TransformWithStruct(&pagerduty.User{}, transformers.WithSkipFields("HTMLURL", "AvatarURL")),
+		Transform:   transformers.TransformWithStruct(&pagerduty.User{}, transformers.WithUnwrapAllEmbeddedStructs(), transformers.WithSkipFields("HTMLURL", "AvatarURL")),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

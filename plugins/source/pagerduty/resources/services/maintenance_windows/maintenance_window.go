@@ -11,7 +11,7 @@ func MaintenanceWindows() *schema.Table {
 		Name:        "pagerduty_maintenance_windows",
 		Description: `https://developer.pagerduty.com/api-reference/4c0936c241cbb-list-maintenance-windows`,
 		Resolver:    fetchMaintenanceWindows,
-		Transform:   transformers.TransformWithStruct(&pagerduty.MaintenanceWindow{}, transformers.WithSkipFields("HTMLURL")),
+		Transform:   transformers.TransformWithStruct(&pagerduty.MaintenanceWindow{}, transformers.WithUnwrapAllEmbeddedStructs(), transformers.WithSkipFields("HTMLURL")),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

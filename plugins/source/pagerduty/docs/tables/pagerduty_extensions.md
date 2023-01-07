@@ -15,7 +15,9 @@ The primary key for this table is **id**.
 |id (PK)|String|
 |html_url|String|
 |endpoint_url|String|
-|api_object|JSON|
+|type|String|
+|summary|String|
+|self|String|
 |name|String|
 |extension_objects|JSON|
 |extension_schema|JSON|

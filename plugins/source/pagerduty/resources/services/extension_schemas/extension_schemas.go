@@ -11,7 +11,7 @@ func ExtensionSchemas() *schema.Table {
 		Name:        "pagerduty_extension_schemas",
 		Description: `https://developer.pagerduty.com/api-reference/6eef27c5b452f-list-extension-schemas`,
 		Resolver:    fetchExtensionSchemas,
-		Transform:   transformers.TransformWithStruct(&pagerduty.ExtensionSchema{}, transformers.WithSkipFields("HTMLURL", "URL", "IconURL", "LogoURL")),
+		Transform:   transformers.TransformWithStruct(&pagerduty.ExtensionSchema{}, transformers.WithUnwrapAllEmbeddedStructs(), transformers.WithSkipFields("HTMLURL", "URL", "IconURL", "LogoURL")),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

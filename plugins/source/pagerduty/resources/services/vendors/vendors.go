@@ -11,7 +11,7 @@ func Vendors() *schema.Table {
 		Name:        "pagerduty_vendors",
 		Description: `https://developer.pagerduty.com/api-reference/d2aa663abec79-list-vendors`,
 		Resolver:    fetchVendors,
-		Transform:   transformers.TransformWithStruct(&pagerduty.Vendor{}, transformers.WithSkipFields("HTMLURL", "LogoURL", "WebsiteURL", "ThumbnailURL", "IsPDCEF")),
+		Transform:   transformers.TransformWithStruct(&pagerduty.Vendor{}, transformers.WithUnwrapAllEmbeddedStructs(), transformers.WithSkipFields("HTMLURL", "LogoURL", "WebsiteURL", "ThumbnailURL", "IsPDCEF")),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

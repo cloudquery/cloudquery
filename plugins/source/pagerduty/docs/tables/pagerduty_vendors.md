@@ -18,7 +18,9 @@ The primary key for this table is **id**.
 |website_url|String|
 |thumbnail_url|String|
 |is_pd_cef|Bool|
-|api_object|JSON|
+|type|String|
+|summary|String|
+|self|String|
 |name|String|
 |long_name|String|
 |description|String|

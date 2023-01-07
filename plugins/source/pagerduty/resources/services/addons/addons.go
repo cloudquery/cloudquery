@@ -11,7 +11,7 @@ func Addons() *schema.Table {
 		Name:        "pagerduty_addons",
 		Description: `https://developer.pagerduty.com/api-reference/e58b140202a57-list-installed-add-ons`,
 		Resolver:    fetchAddons,
-		Transform:   transformers.TransformWithStruct(&pagerduty.Addon{}),
+		Transform:   transformers.TransformWithStruct(&pagerduty.Addon{}, transformers.WithUnwrapAllEmbeddedStructs()),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

@@ -11,7 +11,7 @@ func IncidentAlerts() *schema.Table {
 		Name:        "pagerduty_incident_alerts",
 		Description: `https://developer.pagerduty.com/api-reference/4bc42e7ac0c59-list-alerts-for-an-incident`,
 		Resolver:    fetchIncidentAlerts,
-		Transform:   transformers.TransformWithStruct(&pagerduty.IncidentAlert{}, transformers.WithSkipFields("HTMLURL")),
+		Transform:   transformers.TransformWithStruct(&pagerduty.IncidentAlert{}, transformers.WithUnwrapAllEmbeddedStructs(), transformers.WithSkipFields("HTMLURL")),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

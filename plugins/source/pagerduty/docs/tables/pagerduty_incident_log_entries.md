@@ -18,7 +18,15 @@ This table depends on [pagerduty_incidents](pagerduty_incidents.md).
 |_cq_parent_id|UUID|
 |id (PK)|String|
 |html_url|String|
-|common_log_entry_field|JSON|
+|api_object|JSON|
+|created_at|String|
+|agent|JSON|
+|channel|JSON|
+|teams|JSON|
+|contexts|JSON|
+|acknowledgement_timeout|Int|
+|event_details|JSON|
+|assignees|JSON|
 |incident|JSON|
 |service|JSON|
 |user|JSON|

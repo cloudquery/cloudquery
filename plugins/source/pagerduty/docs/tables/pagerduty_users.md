@@ -21,7 +21,9 @@ The following tables depend on pagerduty_users:
 |id (PK)|String|
 |html_url|String|
 |avatar_url|String|
-|api_object|JSON|
+|type|String|
+|summary|String|
+|self|String|
 |name|String|
 |email|String|
 |time_zone|String|

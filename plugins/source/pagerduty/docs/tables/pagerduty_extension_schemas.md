@@ -18,7 +18,9 @@ The primary key for this table is **id**.
 |logo_url|String|
 |guide_url|String|
 |url|String|
-|api_object|JSON|
+|type|String|
+|summary|String|
+|self|String|
 |label|String|
 |key|String|
 |description|String|
