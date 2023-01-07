@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v2.0.0...plugins-destination-postgresql-v2.0.1) (2023-01-03)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/jackc/pgservicefile digest to 091c0ba ([#6192](https://github.com/cloudquery/cloudquery/issues/6192)) ([d73d03c](https://github.com/cloudquery/cloudquery/commit/d73d03c10ba1ca0414e7f6f8c82baac0e41ee4f7))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.16.1 ([#6214](https://github.com/cloudquery/cloudquery/issues/6214)) ([53b2415](https://github.com/cloudquery/cloudquery/commit/53b241508d7511d4b5fa74cc4262d180c1e6df66))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.17.2 ([#6260](https://github.com/cloudquery/cloudquery/issues/6260)) ([805972a](https://github.com/cloudquery/cloudquery/commit/805972aa67ce54e3358501c6b7ee5d85e5f65cac))
+
 ## [2.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v1.10.2...plugins-destination-postgresql-v2.0.0) (2022-12-29)
 
 
