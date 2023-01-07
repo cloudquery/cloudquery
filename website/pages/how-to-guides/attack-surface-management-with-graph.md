@@ -59,7 +59,7 @@ An IAM User can be granted permissions from:
 
 By running the following command, we create a relationship between IAM User nodes and IAM User Access Key nodes.
 
-```
+```cypher 
 MATCH
   (a:aws_iam_user_access_keys),
   (b:aws_iam_users)
@@ -70,7 +70,7 @@ RETURN type(r)
 
 Next, let's create a relationship between IAM Users and IAM Groups.  In AWS, IAM Users can be members of IAM Groups and inherit their IAM policies.
 
-```
+```cypher
 MATCH
   (iamusers:aws_iam_users),
   (usergroups:aws_iam_user_groups),
@@ -82,7 +82,7 @@ RETURN type(r)
 
 Now, we'll create relationships between IAM Users and all IAM User inline policies.
 
-```
+```cypher
 MATCH
 (iamusers:aws_iam_users),
 (inlinep:aws_iam_user_policies)
@@ -93,7 +93,7 @@ RETURN type(r)
 
 Now, we'll create relationships between IAM Users and directly attached managed policies. 
 
-```
+```cypher
 MATCH
 (iamusers:aws_iam_users),
 (attachp:aws_iam_user_attached_policies)
@@ -104,7 +104,7 @@ RETURN type(r)
 
 Next, we'll create relationships between IAM Groups and their inline policies.
 
-```
+```cypher
 MATCH
 (iamgroups:aws_iam_groups),
 (groupinline:aws_iam_group_policies)
@@ -115,7 +115,7 @@ RETURN type(r)
 
 Lastly, we'll create relationships between IAM Groups and their attached managed policies.
 
-``` 
+```cypher
 MATCH (n:aws_iam_groups), (policies:aws_iam_policies) 
 UNWIND (keys(apoc.convert.fromJsonMap(n.policies))) as y 
 WITH y, policies, n
