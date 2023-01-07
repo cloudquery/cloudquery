@@ -24,10 +24,6 @@ gen-docs:
 	go run main.go doc ./docs/tables
 	sed 's_(\(.*\))_(https://github.com/cloudquery/cloudquery/blob/main/plugins/source/digitalocean/docs/tables/\1)_' docs/tables/README.md > ../../../website/pages/docs/plugins/sources/digitalocean/tables.md
 
-.PHONY: gen-code
-gen-code:
-	go run codegen/main.go
-
 # All gen targets
 .PHONY: gen
-gen: gen-code gen-docs
+gen: gen-docs
