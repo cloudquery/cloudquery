@@ -18,7 +18,7 @@ In this guide, we will demonstrate how to set up CloudQuery for customizable Att
 
 In this guide, we will use Neo4j as a destination and AWS as a source.  For more information on how to set those up, see our documentation on [Neo4j](https://www.cloudquery.io/docs/plugins/destinations/neo4j/overview) and [AWS](https://www.cloudquery.io/docs/plugins/sources/aws/overview).
 
-Refer to Neo4j's installation documentation (https://neo4j.com/docs/operations-manual/current/installation/) for help setting up Neo4j. For this walkthrough, make sure a local instance of Neo4j is up and running. 
+Refer to Neo4j's installation documentation (https://neo4j.com/docs/operations-manual/current/installation/) for help setting up Neo4j. For this walkthrough, make sure a local instance of Neo4j is up and running.  Also make sure to install [Awesome Procedures on Cyper (APOC)](https://neo4j.com/labs/apoc/) for Neo4j as we'll be using useful functionality in APOC to assist with our attack surface management use cases.  
 
 ### Step 1: Install or Deploy CloudQuery
 
@@ -44,18 +44,97 @@ Let's start with a simple query to find all our IAM Roles.
 
 ![IAM Roles](/images/how-to-guides/attack-surface-management-with-graph/iam-roles.png)
 
-### Step 4: Create Relationships in Neo4j
+### Step 4: Run Custom ASM Queries and Create Relationships in Neo4j
 
-### Step 5: Run Custom ASM Queries
+* Example 1: IAM User Access Keys
 
-We will now go through 3 example queries:
+Let's start with IAM User Access Keys.  With this query, we'll look for the 4 distinct ways with identity policies an IAM User can be granted permissions and link those to the IAM Users and to the IAM User Access Keys.
 
-* IAM
+An IAM User can be granted permissions from:
+* Direct Inline Policies of the IAM User
+* Directly Attached Managed Policies to the IAM User
+* Inline Policies via IAM Group Membership
+* Attached Managed Policies via IAM Group Membership
 
-* Networking
 
-* Public Resources
+By running the following command, we create a relationship between IAM User nodes and IAM User Access Key nodes.
 
+```
+MATCH
+  (a:aws_iam_user_access_keys),
+  (b:aws_iam_users)
+WHERE a.`_cq_parent_id` =  b.`_cq_id`
+CREATE (b)-[r:has_access_keys]->(a)
+RETURN type(r)
+```
+
+Next, let's create a relationship between IAM Users and IAM Groups.  In AWS, IAM Users can be members of IAM Groups and inherit their IAM policies.
+
+```
+MATCH
+  (iamusers:aws_iam_users),
+  (usergroups:aws_iam_user_groups),
+  (iamgroups:aws_iam_groups)
+WHERE iamusers.arn = usergroups.user_arn and iamgroups.arn = usergroups.arn
+CREATE (iamusers)-[r:is_a_member_of]->(iamgroups)
+RETURN type(r)
+```
+
+Now, we'll create relationships between IAM Users and all IAM User inline policies.
+
+```
+MATCH
+(iamusers:aws_iam_users),
+(inlinep:aws_iam_user_policies)
+WHERE iamusers.arn = inlinep.user_arn
+CREATE (iamusers)-[r:has_inline_policy]->(inlinep)
+RETURN type(r)
+```
+
+Now, we'll create relationships between IAM Users and directly attached managed policies. 
+
+```
+MATCH
+(iamusers:aws_iam_users),
+(attachp:aws_iam_user_attached_policies)
+WHERE iamusers.arn = inlinep.user_arn
+CREATE (iamusers)-[r:has_attached_policy]->(attachp)
+RETURN type(r)
+```
+
+Next, we'll create relationships between IAM Groups and their inline policies.
+
+```
+MATCH
+(iamgroups:aws_iam_groups),
+(groupinline:aws_iam_group_policies)
+WHERE iamgroups.arn = groupinline.group_arn
+CREATE (iamgroups)-[r:has_inline_policy]->(groupinline)
+RETURN type(r)
+```
+
+Lastly, we'll create relationships between IAM Groups and their attached managed policies.
+
+``` 
+MATCH (n:aws_iam_groups), (policies:aws_iam_policies) 
+UNWIND (keys(apoc.convert.fromJsonMap(n.policies))) as y 
+WITH y, policies, n
+WHERE y = policies.arn
+CREATE (n)-[r:has_attached_policy]->(policies)
+RETURN type(r)
+```
+
+After all these relationships have been created, we can run a `MATCH (n:aws_iam_users) return n` to return all IAM Users.  
+
+In the UI, feel free to play around with node labels, colors, and expansion of nodes and relationships. 
+
+In our sample environment, I have 3 IAM Users.  The following image shows the following and their relationships:
+* IAM User Access Keys (Green)
+* 4 types of connections to IAM Policies (Policies are Red)
+* IAM Users are in Gray
+* IAM Groups are in Blue
+
+![Sample Graph of IAM Users](/images/how-to-guides/attack-surface-management-with-graph/graph-users.png)
 
 ## Summary
 
