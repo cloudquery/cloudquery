@@ -20,6 +20,7 @@ The following tables depend on pagerduty_services:
 |dependencies|JSON|
 |id (PK)|String|
 |html_url|String|
+|creatd_at|Timestamp|
 |last_incident_timestamp|Timestamp|
 |type|String|
 |summary|String|

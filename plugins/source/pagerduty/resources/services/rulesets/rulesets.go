@@ -21,6 +21,11 @@ func Rulesets() *schema.Table {
 					PrimaryKey: true,
 				},
 			},
+			{
+				Name:     "creatd_at",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("CreatedAt"),
+			},
 		},
 
 		Relations: []*schema.Table{

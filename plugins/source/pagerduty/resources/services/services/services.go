@@ -32,6 +32,11 @@ func Services() *schema.Table {
 				Resolver: schema.PathResolver("HTMLURL"),
 			},
 			{
+				Name:     "creatd_at",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("CreatedAt"),
+			},
+			{
 				Name:     "last_incident_timestamp",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("LastIncidentTimestamp"),

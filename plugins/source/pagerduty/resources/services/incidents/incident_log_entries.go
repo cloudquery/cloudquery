@@ -11,7 +11,7 @@ func IncidentLogEntries() *schema.Table {
 		Name:        "pagerduty_incident_log_entries",
 		Description: `https://developer.pagerduty.com/api-reference/367602cbc1c28-list-log-entries-for-an-incident`,
 		Resolver:    fetchIncidentLogEntries,
-		Transform:   transformers.TransformWithStruct(&pagerduty.LogEntry{}, transformers.WithUnwrapAllEmbeddedStructs(), transformers.WithSkipFields("HTMLURL")),
+		Transform:   transformers.TransformWithStruct(&pagerduty.LogEntry{}, transformers.WithUnwrapAllEmbeddedStructs(), transformers.WithSkipFields("HTMLURL", "APIObject")),
 		Columns: []schema.Column{
 			{
 				Name:     "id",
