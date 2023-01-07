@@ -14,5 +14,7 @@ The primary key for this table is **id**.
 |_cq_parent_id|UUID|
 |id (PK)|String|
 |html_url|String|
-|api_object|JSON|
+|type|String|
+|summary|String|
+|self|String|
 |label|String|

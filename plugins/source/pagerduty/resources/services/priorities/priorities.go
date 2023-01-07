@@ -11,7 +11,7 @@ func Priorities() *schema.Table {
 		Name:        "pagerduty_priorities",
 		Description: `https://developer.pagerduty.com/api-reference/0fa9ad52bf2d2-list-priorities`,
 		Resolver:    fetchPriorities,
-		Transform:   transformers.TransformWithStruct(&pagerduty.Priority{}, transformers.WithSkipFields("HTMLURL")),
+		Transform:   transformers.TransformWithStruct(&pagerduty.Priority{}, transformers.WithUnwrapAllEmbeddedStructs(), transformers.WithSkipFields("HTMLURL")),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

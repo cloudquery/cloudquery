@@ -15,7 +15,9 @@ The primary key for this table is **id**.
 |members|JSON|
 |id (PK)|String|
 |html_url|String|
-|api_object|JSON|
+|type|String|
+|summary|String|
+|self|String|
 |name|String|
 |description|String|
 |parent|JSON|

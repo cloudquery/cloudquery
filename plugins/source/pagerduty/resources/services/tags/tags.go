@@ -11,7 +11,7 @@ func Tags() *schema.Table {
 		Name:        "pagerduty_tags",
 		Description: `https://developer.pagerduty.com/api-reference/e44b160c69bf3-list-tags`,
 		Resolver:    fetchTags,
-		Transform:   transformers.TransformWithStruct(&pagerduty.Tag{}, transformers.WithSkipFields("HTMLURL")),
+		Transform:   transformers.TransformWithStruct(&pagerduty.Tag{}, transformers.WithSkipFields("HTMLURL"), transformers.WithUnwrapAllEmbeddedStructs()),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

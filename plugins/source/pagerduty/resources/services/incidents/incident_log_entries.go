@@ -22,6 +22,21 @@ func IncidentLogEntries() *schema.Table {
 				},
 			},
 			{
+				Name:     "type",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Type"),
+			},
+			{
+				Name:     "summary",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Summary"),
+			},
+			{
+				Name:     "self",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Self"),
+			},
+			{
 				Name:     "html_url",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("HTMLURL"),

@@ -11,7 +11,7 @@ func Schedules() *schema.Table {
 		Name:        "pagerduty_schedules",
 		Description: `https://developer.pagerduty.com/api-reference/846ecf84402bb-list-schedules`,
 		Resolver:    fetchSchedules,
-		Transform:   transformers.TransformWithStruct(&pagerduty.Schedule{}, transformers.WithSkipFields("HTMLURL")),
+		Transform:   transformers.TransformWithStruct(&pagerduty.Schedule{}, transformers.WithUnwrapAllEmbeddedStructs(), transformers.WithSkipFields("HTMLURL")),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

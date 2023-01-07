@@ -11,7 +11,7 @@ func Teams() *schema.Table {
 		Name:        "pagerduty_teams",
 		Description: `https://developer.pagerduty.com/api-reference/0138639504311-list-teams`,
 		Resolver:    fetchTeams,
-		Transform:   transformers.TransformWithStruct(&pagerduty.Team{}),
+		Transform:   transformers.TransformWithStruct(&pagerduty.Team{}, transformers.WithUnwrapAllEmbeddedStructs()),
 		Columns: []schema.Column{
 			{
 				Name:     "members",
