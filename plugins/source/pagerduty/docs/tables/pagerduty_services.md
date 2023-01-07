@@ -20,7 +20,7 @@ The following tables depend on pagerduty_services:
 |dependencies|JSON|
 |id (PK)|String|
 |html_url|String|
-|creatd_at|Timestamp|
+|created_at|Timestamp|
 |last_incident_timestamp|Timestamp|
 |type|String|
 |summary|String|
@@ -29,7 +29,6 @@ The following tables depend on pagerduty_services:
 |description|String|
 |auto_resolve_timeout|Int|
 |acknowledgement_timeout|Int|
-|created_at|String|
 |status|String|
 |integrations|JSON|
 |escalation_policy|JSON|

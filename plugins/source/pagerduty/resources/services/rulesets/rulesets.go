@@ -22,7 +22,7 @@ func Rulesets() *schema.Table {
 				},
 			},
 			{
-				Name:     "creatd_at",
+				Name:     "created_at",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreatedAt"),
 			},
