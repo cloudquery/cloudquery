@@ -33,16 +33,16 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/dax v1.12.0
 	github.com/aws/aws-sdk-go-v2/service/directconnect v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/docdb v1.20.0
-	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.17.9
+	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.77.0
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.18.0
-	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.13.22
+	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/ecs v1.23.0
-	github.com/aws/aws-sdk-go-v2/service/efs v1.18.3
+	github.com/aws/aws-sdk-go-v2/service/efs v1.19.0
 	github.com/aws/aws-sdk-go-v2/service/eks v1.27.0
-	github.com/aws/aws-sdk-go-v2/service/elasticache v1.25.0
+	github.com/aws/aws-sdk-go-v2/service/elasticache v1.26.0
 	github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk v1.15.0
-	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.14.25
+	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.18.28
 	github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/elastictranscoder v1.14.0
