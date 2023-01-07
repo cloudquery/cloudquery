@@ -15,5 +15,3 @@ The primary key for this table is **id**.
 |id (PK)|String|
 |name|String|
 |domain|String|
-|email_domain|String|
-|icon|JSON|
