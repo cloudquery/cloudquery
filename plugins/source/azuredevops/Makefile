@@ -13,4 +13,4 @@ gen-docs:
 	go run main.go doc ./docs/tables
 
 .PHONY: gen
-gen: gen-code gen-docs
+gen: gen-docs
