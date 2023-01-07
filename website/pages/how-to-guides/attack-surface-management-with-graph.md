@@ -18,7 +18,7 @@ In this guide, we will demonstrate how to set up CloudQuery for customizable Att
 
 In this guide, we will use Neo4j as a destination and AWS as a source.  For more information on how to set those up, see our documentation on [Neo4j](https://www.cloudquery.io/docs/plugins/destinations/neo4j/overview) and [AWS](https://www.cloudquery.io/docs/plugins/sources/aws/overview).
 
-Refer to Neo4j's installation documentation (https://neo4j.com/docs/operations-manual/current/installation/) for help setting up Neo4j. For this walkthrough, make sure a local instance of Neo4j is up and running.  Also make sure to install [Awesome Procedures on Cyper (APOC)](https://neo4j.com/labs/apoc/) for Neo4j as we'll be using useful functionality in APOC to assist with our attack surface management use cases.  
+Refer to Neo4j's installation documentation (https://neo4j.com/docs/operations-manual/current/installation/) for help setting up Neo4j. For this walkthrough, make sure a local instance of Neo4j is up and running.  Also make sure to install [Awesome Procedures on Cypher (APOC)](https://neo4j.com/labs/apoc/) for Neo4j as we'll be using useful functionality in APOC to assist with our attack surface management use cases.  
 
 ### Step 1: Install or Deploy CloudQuery
 
