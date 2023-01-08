@@ -13,7 +13,7 @@ func Teams() *schema.Table {
 		Description: `https://slack.com/api/team.info`,
 		Resolver:    fetchTeams,
 		Multiplex:   client.TeamMultiplex,
-		Transform:   transformers.TransformWithStruct(&slack.Team{}),
+		Transform:   transformers.TransformWithStruct(&slack.TeamInfo{}),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

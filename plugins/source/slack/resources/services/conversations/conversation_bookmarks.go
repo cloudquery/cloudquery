@@ -42,12 +42,12 @@ func ConversationBookmarks() *schema.Table {
 			{
 				Name:     "date_created",
 				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("Created"),
+				Resolver: client.JSONTimeResolver("Created"),
 			},
 			{
 				Name:     "date_updated",
 				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("Updated"),
+				Resolver: client.JSONTimeResolver("Updated"),
 			},
 		},
 	}
