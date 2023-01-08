@@ -35,7 +35,6 @@ func DaemonSets() *schema.Table {
 }
 
 func fetchDaemonSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-
 	cl := meta.(*client.Client).Client().AppsV1().DaemonSets("")
 
 	opts := metav1.ListOptions{}

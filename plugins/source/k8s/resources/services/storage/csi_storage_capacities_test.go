@@ -30,10 +30,10 @@ func createCsiStorageCapacities(t *testing.T, ctrl *gomock.Controller) kubernete
 
 	serviceClient.EXPECT().CSIStorageCapacities("").Return(resourceClient)
 
-	client := mocks.NewMockInterface(ctrl)
-	client.EXPECT().StorageV1().Return(serviceClient)
+	cl := mocks.NewMockInterface(ctrl)
+	cl.EXPECT().StorageV1().Return(serviceClient)
 
-	return client
+	return cl
 }
 
 func TestCsiStorageCapacities(t *testing.T) {

@@ -35,7 +35,6 @@ func CsiStorageCapacities() *schema.Table {
 }
 
 func fetchCsiStorageCapacities(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-
 	cl := meta.(*client.Client).Client().StorageV1().CSIStorageCapacities("")
 
 	opts := metav1.ListOptions{}

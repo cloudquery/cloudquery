@@ -30,10 +30,10 @@ func createCsiNodes(t *testing.T, ctrl *gomock.Controller) kubernetes.Interface 
 
 	serviceClient.EXPECT().CSINodes().Return(resourceClient)
 
-	client := mocks.NewMockInterface(ctrl)
-	client.EXPECT().StorageV1().Return(serviceClient)
+	cl := mocks.NewMockInterface(ctrl)
+	cl.EXPECT().StorageV1().Return(serviceClient)
 
-	return client
+	return cl
 }
 
 func TestCsiNodes(t *testing.T) {

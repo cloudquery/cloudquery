@@ -35,7 +35,6 @@ func SigningRequests() *schema.Table {
 }
 
 func fetchSigningRequests(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-
 	cl := meta.(*client.Client).Client().CertificatesV1().CertificateSigningRequests()
 
 	opts := metav1.ListOptions{}

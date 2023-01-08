@@ -30,10 +30,10 @@ func createEndpoints(t *testing.T, ctrl *gomock.Controller) kubernetes.Interface
 
 	serviceClient.EXPECT().Endpoints("").Return(resourceClient)
 
-	client := mocks.NewMockInterface(ctrl)
-	client.EXPECT().CoreV1().Return(serviceClient)
+	cl := mocks.NewMockInterface(ctrl)
+	cl.EXPECT().CoreV1().Return(serviceClient)
 
-	return client
+	return cl
 }
 
 func TestEndpoints(t *testing.T) {

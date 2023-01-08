@@ -35,7 +35,6 @@ func ValidatingWebhookConfigurations() *schema.Table {
 }
 
 func fetchValidatingWebhookConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-
 	cl := meta.(*client.Client).Client().AdmissionregistrationV1().ValidatingWebhookConfigurations()
 
 	opts := metav1.ListOptions{}

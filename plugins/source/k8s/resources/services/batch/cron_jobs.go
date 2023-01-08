@@ -35,7 +35,6 @@ func CronJobs() *schema.Table {
 }
 
 func fetchCronJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-
 	cl := meta.(*client.Client).Client().BatchV1().CronJobs("")
 
 	opts := metav1.ListOptions{}

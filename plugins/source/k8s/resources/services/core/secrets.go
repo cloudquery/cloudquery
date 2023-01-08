@@ -35,7 +35,6 @@ func Secrets() *schema.Table {
 }
 
 func fetchSecrets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-
 	cl := meta.(*client.Client).Client().CoreV1().Secrets("")
 
 	opts := metav1.ListOptions{}

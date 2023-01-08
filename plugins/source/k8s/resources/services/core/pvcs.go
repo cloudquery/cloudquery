@@ -35,7 +35,6 @@ func Pvcs() *schema.Table {
 }
 
 func fetchPvcs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-
 	cl := meta.(*client.Client).Client().CoreV1().PersistentVolumeClaims("")
 
 	opts := metav1.ListOptions{}

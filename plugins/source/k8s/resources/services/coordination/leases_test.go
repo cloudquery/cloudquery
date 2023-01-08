@@ -30,10 +30,10 @@ func createLeases(t *testing.T, ctrl *gomock.Controller) kubernetes.Interface {
 
 	serviceClient.EXPECT().Leases("").Return(resourceClient)
 
-	client := mocks.NewMockInterface(ctrl)
-	client.EXPECT().CoordinationV1().Return(serviceClient)
+	cl := mocks.NewMockInterface(ctrl)
+	cl.EXPECT().CoordinationV1().Return(serviceClient)
 
-	return client
+	return cl
 }
 
 func TestLeases(t *testing.T) {

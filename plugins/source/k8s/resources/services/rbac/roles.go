@@ -35,7 +35,6 @@ func Roles() *schema.Table {
 }
 
 func fetchRoles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-
 	cl := meta.(*client.Client).Client().RbacV1().Roles("")
 
 	opts := metav1.ListOptions{}

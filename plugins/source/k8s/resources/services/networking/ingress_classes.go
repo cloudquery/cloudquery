@@ -35,7 +35,6 @@ func IngressClasses() *schema.Table {
 }
 
 func fetchIngressClasses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-
 	cl := meta.(*client.Client).Client().NetworkingV1().IngressClasses()
 
 	opts := metav1.ListOptions{}

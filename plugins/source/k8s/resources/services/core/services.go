@@ -35,7 +35,6 @@ func Services() *schema.Table {
 }
 
 func fetchServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-
 	cl := meta.(*client.Client).Client().CoreV1().Services("")
 
 	opts := metav1.ListOptions{}

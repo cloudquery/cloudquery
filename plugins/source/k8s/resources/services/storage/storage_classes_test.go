@@ -30,10 +30,10 @@ func createStorageClasses(t *testing.T, ctrl *gomock.Controller) kubernetes.Inte
 
 	serviceClient.EXPECT().StorageClasses().Return(resourceClient)
 
-	client := mocks.NewMockInterface(ctrl)
-	client.EXPECT().StorageV1().Return(serviceClient)
+	cl := mocks.NewMockInterface(ctrl)
+	cl.EXPECT().StorageV1().Return(serviceClient)
 
-	return client
+	return cl
 }
 
 func TestStorageClasses(t *testing.T) {

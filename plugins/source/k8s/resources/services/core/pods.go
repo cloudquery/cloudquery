@@ -35,7 +35,6 @@ func Pods() *schema.Table {
 }
 
 func fetchPods(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-
 	cl := meta.(*client.Client).Client().CoreV1().Pods("")
 
 	opts := metav1.ListOptions{}

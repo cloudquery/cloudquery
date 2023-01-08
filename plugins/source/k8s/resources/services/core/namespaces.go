@@ -35,7 +35,6 @@ func Namespaces() *schema.Table {
 }
 
 func fetchNamespaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-
 	cl := meta.(*client.Client).Client().CoreV1().Namespaces()
 
 	opts := metav1.ListOptions{}

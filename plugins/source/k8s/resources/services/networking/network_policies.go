@@ -35,7 +35,6 @@ func NetworkPolicies() *schema.Table {
 }
 
 func fetchNetworkPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-
 	cl := meta.(*client.Client).Client().NetworkingV1().NetworkPolicies("")
 
 	opts := metav1.ListOptions{}

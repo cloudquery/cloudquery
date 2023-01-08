@@ -7,7 +7,6 @@ import (
 	mocks "github.com/cloudquery/cloudquery/plugins/source/k8s/mocks"
 
 	resourcemock "github.com/cloudquery/cloudquery/plugins/source/k8s/mocks/core/v1"
-	// k8sTesting "github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/testing"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	resource "k8s.io/api/core/v1"
@@ -32,10 +31,10 @@ func createReplicationControllers(t *testing.T, ctrl *gomock.Controller) kuberne
 
 	serviceClient.EXPECT().ReplicationControllers("").Return(resourceClient)
 
-	client := mocks.NewMockInterface(ctrl)
-	client.EXPECT().CoreV1().Return(serviceClient)
+	cl := mocks.NewMockInterface(ctrl)
+	cl.EXPECT().CoreV1().Return(serviceClient)
 
-	return client
+	return cl
 }
 
 func TestReplicationControllers(t *testing.T) {

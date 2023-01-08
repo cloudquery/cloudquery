@@ -35,7 +35,6 @@ func RuntimeClasses() *schema.Table {
 }
 
 func fetchRuntimeClasses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-
 	cl := meta.(*client.Client).Client().NodeV1().RuntimeClasses()
 
 	opts := metav1.ListOptions{}

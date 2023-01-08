@@ -35,7 +35,6 @@ func Deployments() *schema.Table {
 }
 
 func fetchDeployments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-
 	cl := meta.(*client.Client).Client().AppsV1().Deployments("")
 
 	opts := metav1.ListOptions{}
