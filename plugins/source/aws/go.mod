@@ -53,15 +53,15 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/fsx v1.27.0
 	github.com/aws/aws-sdk-go-v2/service/glacier v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/guardduty v1.16.6
-	github.com/aws/aws-sdk-go-v2/service/iam v1.18.25
+	github.com/aws/aws-sdk-go-v2/service/iam v1.19.0
 	github.com/aws/aws-sdk-go-v2/service/identitystore v1.15.10
-	github.com/aws/aws-sdk-go-v2/service/inspector v1.12.21
+	github.com/aws/aws-sdk-go-v2/service/inspector v1.13.0
 	github.com/aws/aws-sdk-go-v2/service/inspector2 v1.10.0
-	github.com/aws/aws-sdk-go-v2/service/iot v1.32.2
+	github.com/aws/aws-sdk-go-v2/service/iot v1.33.0
 	github.com/aws/aws-sdk-go-v2/service/kafka v1.18.2
-	github.com/aws/aws-sdk-go-v2/service/kinesis v1.16.0
+	github.com/aws/aws-sdk-go-v2/service/kinesis v1.17.0
 	github.com/aws/aws-sdk-go-v2/service/kms v1.19.4
-	github.com/aws/aws-sdk-go-v2/service/lambda v1.26.2
+	github.com/aws/aws-sdk-go-v2/service/lambda v1.27.0
 	github.com/aws/aws-sdk-go-v2/service/lightsail v1.24.2
 	github.com/aws/aws-sdk-go-v2/service/mq v1.13.18
 	github.com/aws/aws-sdk-go-v2/service/mwaa v1.13.14
