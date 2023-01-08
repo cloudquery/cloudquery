@@ -53,7 +53,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/fsx v1.27.0
 	github.com/aws/aws-sdk-go-v2/service/glacier v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/guardduty v1.16.6
-	github.com/aws/aws-sdk-go-v2/service/iam v1.18.25
+	github.com/aws/aws-sdk-go-v2/service/iam v1.19.0
 	github.com/aws/aws-sdk-go-v2/service/identitystore v1.15.10
 	github.com/aws/aws-sdk-go-v2/service/inspector v1.12.21
 	github.com/aws/aws-sdk-go-v2/service/inspector2 v1.10.0
