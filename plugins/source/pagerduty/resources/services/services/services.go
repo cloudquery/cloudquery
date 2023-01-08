@@ -34,7 +34,7 @@ func Services() *schema.Table {
 			{
 				Name:     "created_at",
 				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("CreatedAt"),
+				Resolver: schema.PathResolver("CreateAt"),
 			},
 			{
 				Name:     "last_incident_timestamp",
