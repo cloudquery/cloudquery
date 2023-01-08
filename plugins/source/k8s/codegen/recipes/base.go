@@ -250,4 +250,3 @@ func GeneratePlugin(resources []*Resource) error {
 	}
 	return nil
 }
-

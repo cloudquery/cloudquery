@@ -15,7 +15,7 @@ func ReplicaSets() *schema.Table {
 		Name:      "k8s_apps_replica_sets",
 		Resolver:  fetchReplicaSets,
 		Multiplex: client.ContextMultiplex,
-		Transform: transformers.TransformWithStruct(&v1.ReplicaSet{},	client.SharedTransformers()...),
+		Transform: transformers.TransformWithStruct(&v1.ReplicaSet{}, client.SharedTransformers()...),
 		Columns: []schema.Column{
 			{
 				Name:     "context",
