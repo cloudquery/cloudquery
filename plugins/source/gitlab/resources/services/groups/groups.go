@@ -37,6 +37,11 @@ func Groups() *schema.Table {
 					PrimaryKey: true,
 				},
 			},
+			{
+				Name:     "marked_for_deletion_on",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("MarkedForDeletionOn"),
+			},
 		},
 
 		Relations: []*schema.Table{

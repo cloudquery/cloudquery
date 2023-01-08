@@ -29,6 +29,11 @@ func Projects() *schema.Table {
 					PrimaryKey: true,
 				},
 			},
+			{
+				Name:     "marked_for_deletion_at",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("MarkedForDeletionAt"),
+			},
 		},
 
 		Relations: []*schema.Table{
