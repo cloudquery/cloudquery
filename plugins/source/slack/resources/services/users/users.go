@@ -1,6 +1,7 @@
 package users
 
 import (
+	"github.com/cloudquery/cloudquery/plugins/source/slack/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 	"github.com/slack-go/slack"
@@ -20,6 +21,11 @@ func Users() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
+			},
+			{
+				Name:     "updated",
+				Type:     schema.TypeTimestamp,
+				Resolver: client.JSONTimeResolver("Updated"),
 			},
 		},
 

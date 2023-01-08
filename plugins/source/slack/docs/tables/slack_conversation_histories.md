@@ -50,7 +50,6 @@ The following tables depend on slack_conversation_histories:
 |old_name|String|
 |members|StringArray|
 |reply_count|Int|
-|replies|JSON|
 |parent_user_id|String|
 |latest_reply|String|
 |files|JSON|

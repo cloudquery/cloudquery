@@ -18,6 +18,7 @@ The following tables depend on slack_users:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |id (PK)|String|
+|updated|Timestamp|
 |team_id|String|
 |name|String|
 |deleted|Bool|
@@ -40,5 +41,4 @@ The following tables depend on slack_users:
 |has_files|Bool|
 |presence|String|
 |locale|String|
-|updated|Int|
 |enterprise_user|JSON|

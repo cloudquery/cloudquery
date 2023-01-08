@@ -13,7 +13,7 @@ func Conversations() *schema.Table {
 		Description: `https://api.slack.com/methods/conversations.list`,
 		Resolver:    fetchConversations,
 		Multiplex:   client.TeamMultiplex,
-		Transform:   transformers.TransformWithStruct(&slack.Channel{}),
+		Transform:   transformers.TransformWithStruct(&slack.Channel{}, transformers.WithUnwrapAllEmbeddedStructs()),
 		Columns: []schema.Column{
 			{
 				Name:     "team_id",

@@ -13,7 +13,7 @@ func ConversationHistories() *schema.Table {
 		Description: `https://api.slack.com/methods/conversations.history`,
 		Resolver:    fetchConversationHistories,
 		Multiplex:   client.TeamMultiplex,
-		Transform:   transformers.TransformWithStruct(&slack.Msg{}, transformers.WithSkipFields("Blocks")),
+		Transform:   transformers.TransformWithStruct(&slack.Msg{}, transformers.WithSkipFields("Blocks", "Replies")),
 		Columns: []schema.Column{
 			{
 				Name:     "channel_id",

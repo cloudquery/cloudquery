@@ -39,6 +39,16 @@ func ConversationBookmarks() *schema.Table {
 					PrimaryKey: true,
 				},
 			},
+			{
+				Name:     "date_created",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Created"),
+			},
+			{
+				Name:     "date_updated",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Updated"),
+			},
 		},
 	}
 }
