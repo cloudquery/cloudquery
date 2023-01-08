@@ -2,9 +2,9 @@ package conversations
 
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/slack/client"
+	"github.com/cloudquery/cloudquery/plugins/source/slack/resources/services/conversations/models"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
-	"github.com/slack-go/slack"
 )
 
 func Conversations() *schema.Table {
@@ -13,7 +13,7 @@ func Conversations() *schema.Table {
 		Description: `https://api.slack.com/methods/conversations.list`,
 		Resolver:    fetchConversations,
 		Multiplex:   client.TeamMultiplex,
-		Transform:   transformers.TransformWithStruct(&slack.Channel{}, transformers.WithUnwrapAllEmbeddedStructs()),
+		Transform:   transformers.TransformWithStruct(&models.Conversation{}),
 		Columns: []schema.Column{
 			{
 				Name:     "team_id",

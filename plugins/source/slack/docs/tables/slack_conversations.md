@@ -22,7 +22,23 @@ The following tables depend on slack_conversations:
 |team_id (PK)|String|
 |id (PK)|String|
 |created|Timestamp|
-|conversation|JSON|
+|is_open|Bool|
+|last_read|String|
+|unread_count|Int|
+|unread_count_display|Int|
+|is_group|Bool|
+|is_shared|Bool|
+|is_im|Bool|
+|is_ext_shared|Bool|
+|is_org_shared|Bool|
+|is_pending_ext_shared|Bool|
+|is_private|Bool|
+|is_mpim|Bool|
+|unlinked|Int|
+|name_normalized|String|
+|num_members|Int|
+|priority|Float|
+|user|String|
 |name|String|
 |creator|String|
 |is_archived|Bool|
