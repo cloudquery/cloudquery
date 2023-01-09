@@ -33,6 +33,7 @@ The primary key for this table is **arn**.
 |backup_retention_period|Int|
 |backup_target|String|
 |ca_certificate_identifier|String|
+|certificate_details|JSON|
 |character_set_name|String|
 |copy_tags_to_snapshot|Bool|
 |custom_iam_instance_profile|String|
