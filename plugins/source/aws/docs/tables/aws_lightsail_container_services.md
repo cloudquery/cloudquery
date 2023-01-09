@@ -21,6 +21,7 @@ The following tables depend on aws_lightsail_container_services:
 |account_id|String|
 |region|String|
 |arn (PK)|String|
+|tags|JSON|
 |container_service_name|String|
 |created_at|Timestamp|
 |current_deployment|JSON|
@@ -37,5 +38,4 @@ The following tables depend on aws_lightsail_container_services:
 |scale|Int|
 |state|String|
 |state_detail|JSON|
-|tags|JSON|
 |url|String|

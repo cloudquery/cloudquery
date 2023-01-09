@@ -16,6 +16,7 @@ The primary key for this table is **arn**.
 |region|String|
 |tags|JSON|
 |arn (PK)|String|
+|delivery_stream_arn|String|
 |delivery_stream_name|String|
 |delivery_stream_status|String|
 |delivery_stream_type|String|

@@ -25,6 +25,5 @@ func fetchApps(ctx context.Context, meta schema.ClientMeta, parent *schema.Resou
 		return err
 	}
 	res <- resp
-
 	return nil
 }

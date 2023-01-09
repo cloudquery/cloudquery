@@ -19,4 +19,5 @@ The primary key for this table is **arn**.
 |members|StringArray|
 |pattern|String|
 |protection_group_id|String|
+|protection_group_arn|String|
 |resource_type|String|

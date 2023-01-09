@@ -39,6 +39,7 @@ The following tables depend on aws_cloudformation_stacks:
 |role_arn|String|
 |rollback_configuration|JSON|
 |root_id|String|
+|stack_id|String|
 |stack_status_reason|String|
 |tags|JSON|
 |timeout_in_minutes|Int|

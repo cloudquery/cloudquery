@@ -31,6 +31,7 @@ The following tables depend on aws_apigatewayv2_apis:
 |route_selection_expression|String|
 |api_endpoint|String|
 |api_gateway_managed|Bool|
+|api_id|String|
 |api_key_selection_expression|String|
 |cors_configuration|JSON|
 |created_date|Timestamp|

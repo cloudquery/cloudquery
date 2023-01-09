@@ -13,12 +13,12 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |id (PK)|String|
+|html_url|String|
+|endpoint_url|String|
 |type|String|
 |summary|String|
 |self|String|
-|html_url|String|
 |name|String|
-|endpoint_url|String|
 |extension_objects|JSON|
 |extension_schema|JSON|
 |temporarily_disabled|Bool|
