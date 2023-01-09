@@ -22,6 +22,7 @@ The primary key for this table is **arn**.
 |offering_type|String|
 |product_description|String|
 |recurring_charges|JSON|
+|reservation_arn|String|
 |reserved_cache_node_id|String|
 |reserved_cache_nodes_offering_id|String|
 |start_time|Timestamp|

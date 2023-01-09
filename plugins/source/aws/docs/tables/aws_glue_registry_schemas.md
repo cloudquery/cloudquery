@@ -29,6 +29,7 @@ The following tables depend on aws_glue_registry_schemas:
 |next_schema_version|Int|
 |registry_arn|String|
 |registry_name|String|
+|schema_arn|String|
 |schema_checkpoint|Int|
 |schema_name|String|
 |schema_status|String|

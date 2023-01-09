@@ -18,11 +18,11 @@ This table depends on [gcp_iam_service_accounts](gcp_iam_service_accounts.md).
 |_cq_parent_id|UUID|
 |project_id|String|
 |service_account_unique_id (PK)|String|
-|disabled|Bool|
+|name|String|
 |key_algorithm|String|
+|public_key_data|IntArray|
+|valid_after_time|Timestamp|
+|valid_before_time|Timestamp|
 |key_origin|String|
 |key_type|String|
-|name|String|
-|public_key_data|String|
-|valid_after_time|String|
-|valid_before_time|String|
+|disabled|Bool|

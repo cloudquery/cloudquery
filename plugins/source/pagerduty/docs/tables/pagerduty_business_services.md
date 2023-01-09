@@ -14,11 +14,11 @@ The primary key for this table is **id**.
 |_cq_parent_id|UUID|
 |dependencies|JSON|
 |id (PK)|String|
+|html_url|String|
 |name|String|
 |type|String|
 |summary|String|
 |self|String|
 |point_of_contact|String|
-|html_url|String|
 |description|String|
 |team|JSON|

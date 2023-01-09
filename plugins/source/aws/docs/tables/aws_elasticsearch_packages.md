@@ -14,12 +14,13 @@ The composite primary key for this table is (**account_id**, **region**, **id**)
 |_cq_parent_id|UUID|
 |account_id (PK)|String|
 |region (PK)|String|
+|id (PK)|String|
 |available_package_version|String|
 |created_at|Timestamp|
 |error_details|JSON|
 |last_updated_at|Timestamp|
 |package_description|String|
-|id (PK)|String|
+|package_id|String|
 |package_name|String|
 |package_status|String|
 |package_type|String|
