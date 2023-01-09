@@ -57,6 +57,10 @@ func typeTransformer(field reflect.StructField) (schema.ValueType, error) {
 }
 
 func resolverTransformer(field reflect.StructField, path string) schema.ColumnResolver {
+	if field.Name == "Etag" && field.Type == reflect.TypeOf([]byte{}) {
+		return resolveByteArrayAsHex(path)
+	}
+
 	switch reflect.New(field.Type).Elem().Interface().(type) {
 	case *timestamppb.Timestamp,
 		timestamppb.Timestamp:
