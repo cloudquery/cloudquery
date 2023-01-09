@@ -10,10 +10,10 @@ The primary key for this table is **id**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
+|id (PK)|String|
 |activated|Timestamp|
 |created|Timestamp|
 |credentials|JSON|
-|id (PK)|String|
 |last_login|Timestamp|
 |last_updated|Timestamp|
 |password_changed|Timestamp|
