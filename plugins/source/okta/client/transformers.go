@@ -11,20 +11,20 @@ import (
 
 func TransformerOptions() []transformers.StructTransformerOption {
 	return []transformers.StructTransformerOption{
-		transformers.WithTypeTransformer(TypeTransformer),
-		transformers.WithResolverTransformer(ResolverTransformer),
+		transformers.WithTypeTransformer(typeTransformer),
+		transformers.WithResolverTransformer(resolverTransformer),
 	}
 }
 
-func TypeTransformer(field reflect.StructField) (schema.ValueType, error) {
-	if reflect.TypeOf(field.Type) == reflect.TypeOf(okta.NullableTime{}) {
+func typeTransformer(field reflect.StructField) (schema.ValueType, error) {
+	if field.Type == reflect.TypeOf(okta.NullableTime{}) {
 		return schema.TypeTimestamp, nil
 	}
 	return codegen.DefaultTypeTransformer(field)
 }
 
-func ResolverTransformer(field reflect.StructField, path string) schema.ColumnResolver {
-	if reflect.TypeOf(field.Type) == reflect.TypeOf(okta.NullableTime{}) {
+func resolverTransformer(field reflect.StructField, path string) schema.ColumnResolver {
+	if field.Type == reflect.TypeOf(okta.NullableTime{}) {
 		return ResolveNullableTime(path)
 	}
 

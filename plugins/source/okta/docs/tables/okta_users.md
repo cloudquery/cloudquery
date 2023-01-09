@@ -11,15 +11,15 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |id (PK)|String|
-|activated|JSON|
+|activated|Timestamp|
 |created|Timestamp|
 |credentials|JSON|
-|last_login|JSON|
+|last_login|Timestamp|
 |last_updated|Timestamp|
-|password_changed|JSON|
+|password_changed|Timestamp|
 |profile|JSON|
 |status|String|
-|status_changed|JSON|
+|status_changed|Timestamp|
 |transitioning_to_status|String|
 |type|JSON|
 |_embedded|JSON|
