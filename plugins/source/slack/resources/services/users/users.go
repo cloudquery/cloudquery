@@ -12,7 +12,7 @@ func Users() *schema.Table {
 		Name:        "slack_users",
 		Description: `https://api.slack.com/methods/users.list`,
 		Resolver:    fetchUsers,
-		Transform:   transformers.TransformWithStruct(&slack.User{}),
+		Transform:   transformers.TransformWithStruct(&slack.User{}, transformers.WithSkipFields("Has2FA", "Presence")),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

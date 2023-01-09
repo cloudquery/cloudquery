@@ -37,8 +37,6 @@ The following tables depend on slack_users:
 |is_stranger|Bool|
 |is_app_user|Bool|
 |is_invited_user|Bool|
-|has_2fa|Bool|
 |has_files|Bool|
-|presence|String|
 |locale|String|
 |enterprise_user|JSON|
