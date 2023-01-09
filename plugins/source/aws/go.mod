@@ -43,7 +43,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/elasticache v1.26.0
 	github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.15.0
-	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.18.28
+	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.19.0
 	github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/elastictranscoder v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/emr v1.22.0
@@ -98,7 +98,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/xray v1.15.3
 	github.com/aws/smithy-go v1.13.5
 	github.com/basgys/goxml2json v1.1.0
-	github.com/cloudquery/plugin-sdk v1.22.0
+	github.com/cloudquery/plugin-sdk v1.23.0
 	github.com/gocarina/gocsv v0.0.0-20221216233619-1fea7ae8d380
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.9
