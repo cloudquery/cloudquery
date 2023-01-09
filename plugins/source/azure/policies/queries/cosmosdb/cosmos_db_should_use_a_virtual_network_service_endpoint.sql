@@ -1,6 +1,6 @@
 WITH valid_accounts AS (
   SELECT id
-  FROM azure_cosmosdb_accounts, jsonb_array_elements(virtual_network_rules) AS rule
+  FROM azure_cosmos_database_accounts, jsonb_array_elements(properties->'virtualNetworkRules') AS rule
   WHERE rule ->> 'id' IS NOT NULL
 ) -- TODO check
 insert into azure_policy_results
@@ -15,7 +15,7 @@ SELECT
     when v.id IS NULL then 'fail' else 'pass'
   end
 FROM
-  azure_cosmosdb_accounts a
+  azure_cosmos_database_accounts a
   LEFT OUTER JOIN valid_accounts v
   ON a.id = v.id
 

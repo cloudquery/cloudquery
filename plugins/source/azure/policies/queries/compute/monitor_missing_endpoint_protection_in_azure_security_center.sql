@@ -7,8 +7,8 @@ SELECT
   vm.id,
   case
     when a.name IS NULL OR (
-      a.code IS DISTINCT FROM 'NotApplicable'
-      AND a.code IS DISTINCT FROM 'Healthy')
+      a.properties -> 'status' ->>'code' IS DISTINCT FROM 'NotApplicable'
+      AND  a.properties -> 'status' ->>'code' IS DISTINCT FROM 'Healthy')
     then 'fail'
     else 'pass'
   end

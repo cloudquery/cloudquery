@@ -6,7 +6,7 @@ SELECT :'execution_time'                                                        
        subscription_id                                                                     AS subscription_id,
        id                                                                                  AS resource_id,
        CASE
-           WHEN a.code IS NULL
+           WHEN a.properties->>'code' IS NULL
                THEN 'fail'
            ELSE 'pass'
            END                                                                             AS status
@@ -15,5 +15,5 @@ FROM azure_subscription_subscriptions s
                          ON
                                      s.id = '/subscriptions/' || a.subscription_id
                                  AND a.name = 'c3b6ae71-f1f0-31b4-e6c1-d5951285d03d'
-                                 AND (a.code IS NOT DISTINCT FROM 'NotApplicable'
-                                 OR a.code IS NOT DISTINCT FROM 'Healthy')
+                                 AND (a.properties->>'code' IS NOT DISTINCT FROM 'NotApplicable'
+                                 OR a.properties->>'code' IS NOT DISTINCT FROM 'Healthy')

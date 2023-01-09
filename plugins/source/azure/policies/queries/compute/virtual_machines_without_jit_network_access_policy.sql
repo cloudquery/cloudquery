@@ -1,6 +1,6 @@
-WITH jit_vms AS (SELECT virtual_machines->>'id' AS vm_id
+WITH jit_vms AS (SELECT properties->'virtualMachines'->>'id' AS vm_id
                  FROM azure_security_jit_network_access_policies
-                 WHERE provisioning_state = 'Succeeded')
+                 WHERE properties->>'provisioningState' = 'Succeeded')
 
 INSERT
 INTO azure_policy_results (execution_time, framework, check_id, title, subscription_id, resource_id, status)

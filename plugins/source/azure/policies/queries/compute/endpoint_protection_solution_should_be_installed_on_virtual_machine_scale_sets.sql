@@ -9,8 +9,8 @@ SELECT
   case
     when a.name IS NULL
       OR (
-        a.status->>'code' IS DISTINCT FROM 'NotApplicable'
-        AND a.status->>'code' IS DISTINCT FROM 'Healthy'
+        a.properties -> 'status' ->>'code' IS DISTINCT FROM 'NotApplicable'
+        AND a.properties -> 'status' ->>'code' IS DISTINCT FROM 'Healthy'
       )
     then 'fail'
     else 'pass'
