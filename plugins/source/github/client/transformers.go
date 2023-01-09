@@ -24,5 +24,4 @@ func typeTransformer(field reflect.StructField) (schema.ValueType, error) {
 	default:
 		return schema.TypeInvalid, nil
 	}
-
 }
