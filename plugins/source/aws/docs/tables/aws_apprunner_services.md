@@ -26,6 +26,7 @@ The following tables depend on aws_apprunner_services:
 |created_at|Timestamp|
 |instance_configuration|JSON|
 |network_configuration|JSON|
+|service_arn|String|
 |service_id|String|
 |service_name|String|
 |source_configuration|JSON|

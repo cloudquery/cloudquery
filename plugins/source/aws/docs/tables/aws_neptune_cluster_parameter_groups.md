@@ -21,6 +21,7 @@ The following tables depend on aws_neptune_cluster_parameter_groups:
 |region|String|
 |arn (PK)|String|
 |tags|JSON|
+|db_cluster_parameter_group_arn|String|
 |db_cluster_parameter_group_name|String|
 |db_parameter_group_family|String|
 |description|String|

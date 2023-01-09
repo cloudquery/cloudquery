@@ -19,8 +19,8 @@ This table depends on [aws_ses_configuration_sets](aws_ses_configuration_sets.md
 |account_id (PK)|String|
 |region (PK)|String|
 |configuration_set_name (PK)|String|
-|matching_event_types|StringArray|
 |name (PK)|String|
+|matching_event_types|StringArray|
 |cloud_watch_destination|JSON|
 |enabled|Bool|
 |kinesis_firehose_destination|JSON|
