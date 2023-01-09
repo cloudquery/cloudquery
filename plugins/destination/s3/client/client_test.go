@@ -19,9 +19,10 @@ func TestPluginCSV(t *testing.T) {
 			NoRotate: true,
 		},
 		destination.PluginTestSuiteTests{
-			SkipOverwrite:    true,
-			SkipDeleteStale:  true,
-			SkipSecondAppend: true,
+			SkipOverwrite:     true,
+			SkipDeleteStale:   true,
+			SkipSecondAppend:  true,
+			SkipMigrateAppend: true,
 		},
 	)
 }
@@ -37,9 +38,10 @@ func TestPluginJSON(t *testing.T) {
 			NoRotate: true,
 		},
 		destination.PluginTestSuiteTests{
-			SkipOverwrite:    true,
-			SkipDeleteStale:  true,
-			SkipSecondAppend: true,
+			SkipOverwrite:     true,
+			SkipDeleteStale:   true,
+			SkipSecondAppend:  true,
+			SkipMigrateAppend: true,
 		},
 	)
 }
