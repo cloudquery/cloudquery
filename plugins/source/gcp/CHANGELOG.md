@@ -5,6 +5,30 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v5.5.0...plugins-source-gcp-v6.0.0) (2023-01-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* **gcp-resources:** `gcp_iam_roles` column `etag` type changed from `String` to `IntArray`
+* **gcp-resources:** `gcp_iam_service_account_keys` column `public_key_data` type changed from `String` to `IntArray` and columns `valid_after_time, valid_before_time` type changed from `String` to `Timestamp`
+* **gcp-resources:** `gcp_iam_service_accounts` column `etag` type changed from `String` to `IntArray`
+
+### Features
+
+* **gcp-resources:** Move `gcp_iam_deny_policies` to use `googleapis/google-cloud-go` ([58baafc](https://github.com/cloudquery/cloudquery/commit/58baafccfe7189f5f3da1790afd2253e719840ba))
+* **gcp-resources:** Move `gcp_iam_roles` to use `googleapis/google-cloud-go` ([58baafc](https://github.com/cloudquery/cloudquery/commit/58baafccfe7189f5f3da1790afd2253e719840ba))
+* **gcp-resources:** Move `gcp_iam_service_account_keys` to use `googleapis/google-cloud-go` ([58baafc](https://github.com/cloudquery/cloudquery/commit/58baafccfe7189f5f3da1790afd2253e719840ba))
+* **gcp-resources:** Move `gcp_iam_service_accounts` to use `googleapis/google-cloud-go` ([58baafc](https://github.com/cloudquery/cloudquery/commit/58baafccfe7189f5f3da1790afd2253e719840ba))
+* **gcp:** Remove codegen ([#6384](https://github.com/cloudquery/cloudquery/issues/6384)) ([b55b535](https://github.com/cloudquery/cloudquery/commit/b55b5359e711e5893131d47f60aad2434c0aafaf))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.21.0 ([#6382](https://github.com/cloudquery/cloudquery/issues/6382)) ([5baea40](https://github.com/cloudquery/cloudquery/commit/5baea40d2aec4e807db839c928be2e037d572bef))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.22.0 ([#6516](https://github.com/cloudquery/cloudquery/issues/6516)) ([b7e4e73](https://github.com/cloudquery/cloudquery/commit/b7e4e737a5f4d8f254960426ea8ba555d8f9b944))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.23.0 ([#6522](https://github.com/cloudquery/cloudquery/issues/6522)) ([ce24f1d](https://github.com/cloudquery/cloudquery/commit/ce24f1d64394cbb5ab07dcaa4af66c53f77f700f))
+
 ## [5.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v5.4.0...plugins-source-gcp-v5.5.0) (2023-01-05)
 
 
