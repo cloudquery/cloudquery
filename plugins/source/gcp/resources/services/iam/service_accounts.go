@@ -62,7 +62,6 @@ func fetchServiceAccounts(ctx context.Context, meta schema.ClientMeta, parent *s
 		}
 
 		res <- resp
-
 	}
 	return nil
 }
