@@ -5,6 +5,18 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v6.0.0...plugins-source-gcp-v6.1.0) (2023-01-09)
+
+
+### Features
+
+* **gcp:** Improve Error messages for Rate Limited ([#6392](https://github.com/cloudquery/cloudquery/issues/6392)) ([4cbeb84](https://github.com/cloudquery/cloudquery/commit/4cbeb84947716f9be2f282c567e32ffcd28bd832))
+
+
+### Bug Fixes
+
+* **gcp:** Etag to ByteArray ([#6530](https://github.com/cloudquery/cloudquery/issues/6530)) ([bd84240](https://github.com/cloudquery/cloudquery/commit/bd84240c008eea049bcfc1550bfc75f3b1933b1c))
+
 ## [6.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v5.5.0...plugins-source-gcp-v6.0.0) (2023-01-09)
 
 
