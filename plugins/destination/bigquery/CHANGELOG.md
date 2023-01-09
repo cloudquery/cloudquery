@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v2.0.1...plugins-destination-bigquery-v2.0.2) (2023-01-05)
+
+
+### Bug Fixes
+
+* **bigquery:** Migrations: ignore extra columns in the table ([#6370](https://github.com/cloudquery/cloudquery/issues/6370)) ([cab6e1e](https://github.com/cloudquery/cloudquery/commit/cab6e1e7e85ecf0aee19d6db4547261cdb7c9b19))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.18.0 ([#6339](https://github.com/cloudquery/cloudquery/issues/6339)) ([158365a](https://github.com/cloudquery/cloudquery/commit/158365a78dfa4389074f716a0f581f18fedc1080))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.19.0 ([#6363](https://github.com/cloudquery/cloudquery/issues/6363)) ([ae6967c](https://github.com/cloudquery/cloudquery/commit/ae6967c22002c554a083f444eb611ac3e6d2698f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.20.0 ([#6376](https://github.com/cloudquery/cloudquery/issues/6376)) ([d6187ec](https://github.com/cloudquery/cloudquery/commit/d6187ec584f13be4fe9362dd393385b19d386113))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.21.0 ([#6382](https://github.com/cloudquery/cloudquery/issues/6382)) ([5baea40](https://github.com/cloudquery/cloudquery/commit/5baea40d2aec4e807db839c928be2e037d572bef))
+
 ## [2.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v2.0.0...plugins-destination-bigquery-v2.0.1) (2023-01-03)
 
 

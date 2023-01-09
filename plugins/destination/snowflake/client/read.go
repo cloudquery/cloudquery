@@ -40,6 +40,10 @@ func snowflakeStrToArray(val string) []string {
 func (*Client) createResultsArray(values []any, table *schema.Table) []any {
 	results := make([]any, 0, len(table.Columns))
 	for i, col := range table.Columns {
+		if values[i] == nil {
+			results = append(results, nil)
+			continue
+		}
 		switch col.Type {
 		case schema.TypeBool:
 			r := (*values[i].(*any)).(bool)

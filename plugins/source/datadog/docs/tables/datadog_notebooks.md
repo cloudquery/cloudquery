@@ -14,3 +14,4 @@ The composite primary key for this table is (**account_name**, **id**).
 |id (PK)|Int|
 |attributes|JSON|
 |type|String|
+|additional_properties|JSON|

@@ -10,12 +10,12 @@ The primary key for this table is **id**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|droplet_ids|IntArray|
 |id (PK)|String|
 |name|String|
 |status|String|
 |inbound_rules|JSON|
 |outbound_rules|JSON|
+|droplet_ids|IntArray|
 |tags|StringArray|
 |created_at|String|
 |pending_changes|JSON|
