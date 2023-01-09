@@ -27,7 +27,6 @@ This table depends on [gcp_aiplatform_model_locations](gcp_aiplatform_model_loca
 |version_description|String|
 |predict_schemata|JSON|
 |metadata_schema_uri|String|
-|metadata|JSON|
 |supported_export_formats|JSON|
 |training_pipeline|String|
 |container_spec|JSON|
