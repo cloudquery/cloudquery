@@ -182,8 +182,8 @@ github.com/aws/aws-sdk-go-v2/service/lambda v1.27.0 h1:3PrEtnvtaZcIFpjOkm155oNe6
 github.com/aws/aws-sdk-go-v2/service/lambda v1.27.0/go.mod h1:swAeO/+tSUbMwB9EF2miaCxPDSQwzRjfnRsYaNwbeRk=
 github.com/aws/aws-sdk-go-v2/service/lightsail v1.25.0 h1:7sc6Mmr/Jx6OVC79PTwro3Y46e42ZzJmMdMU1BA983o=
 github.com/aws/aws-sdk-go-v2/service/lightsail v1.25.0/go.mod h1:6/SjaL8UNIHaMpaHIvuYk0jsMP////YmB/I5yHWginA=
-github.com/aws/aws-sdk-go-v2/service/mq v1.13.18 h1:tH4kxJT0HUGVmLmOvrC0/cGjpDC2g7vlueGF/xxBO9E=
-github.com/aws/aws-sdk-go-v2/service/mq v1.13.18/go.mod h1:zVok6IADzEtpRaHw5ZMh0GhBDCczGJRstMuvIxmhKag=
+github.com/aws/aws-sdk-go-v2/service/mq v1.14.0 h1:04SEqGxjXmRJ2C437T4o3GT8VOm7sYFgWfGQwjiMUaY=
+github.com/aws/aws-sdk-go-v2/service/mq v1.14.0/go.mod h1:zVok6IADzEtpRaHw5ZMh0GhBDCczGJRstMuvIxmhKag=
 github.com/aws/aws-sdk-go-v2/service/mwaa v1.14.0 h1:KSyaXsg1+VnX3ASoQ21/cIqz7l0NtjIqNAysmhvEvLI=
 github.com/aws/aws-sdk-go-v2/service/mwaa v1.14.0/go.mod h1:jalIW8gZHg5jsVAzlaOdgAcSNFUNBCQO2DC+QmXp6mw=
 github.com/aws/aws-sdk-go-v2/service/neptune v1.19.0 h1:ugVidYCmMOdCDnf+244pRn3uv+ob1NxdWBncan5sH/U=
