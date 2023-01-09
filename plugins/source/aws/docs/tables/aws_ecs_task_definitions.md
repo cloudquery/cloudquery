@@ -37,5 +37,6 @@ The primary key for this table is **arn**.
 |revision|Int|
 |runtime_platform|JSON|
 |status|String|
+|task_definition_arn|String|
 |task_role_arn|String|
 |volumes|JSON|

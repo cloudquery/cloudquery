@@ -21,6 +21,7 @@ The primary key for this table is **arn**.
 |max_size|Int|
 |min_size|Int|
 |recurrence|String|
+|scheduled_action_arn|String|
 |scheduled_action_name|String|
 |start_time|Timestamp|
 |time|Timestamp|

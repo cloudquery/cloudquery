@@ -20,5 +20,6 @@ The primary key for this table is **arn**.
 |files|JSON|
 |last_updated_at|Timestamp|
 |role_arn|String|
+|stream_arn|String|
 |stream_id|String|
 |stream_version|Int|
