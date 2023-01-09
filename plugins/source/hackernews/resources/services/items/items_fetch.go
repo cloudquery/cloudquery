@@ -1,14 +1,12 @@
 package items
 
 import (
-	"container/heap"
 	"context"
 	"errors"
 	"fmt"
 	"strconv"
 
 	"github.com/cloudquery/cloudquery/plugins/source/hackernews/client"
-	"github.com/cloudquery/cloudquery/plugins/source/hackernews/internal/intheap"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/hermanschaaf/hackernews"
 	"golang.org/x/sync/errgroup"
@@ -41,112 +39,61 @@ func fetchItems(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource,
 	cursor := 0
 	if value == "" {
 		c.Logger().Info().
-			Str("table", tableName).
-			Str("client_id", c.ID()).
-			Msgf("No previous cursor found")
+			Str("table", tableName).Str("client_id", c.ID()).Msgf("No previous cursor found")
 	} else {
 		cursor, err = strconv.Atoi(value)
 		if err != nil {
 			return fmt.Errorf("failed to convert cursor to int: %w", err)
 		}
 		c.Logger().Info().
-			Str("table", tableName).
-			Str("client_id", c.ID()).
-			Msg("Found previous cursor with value " + strconv.Itoa(cursor))
+			Str("table", tableName).Str("client_id", c.ID()).Msg("Found previous cursor with value " + strconv.Itoa(cursor))
 	}
 
 	// find the max item ID from the Hacker News API
-	work := make(chan int)
 	maxID, err := c.HackerNews.MaxItemID(ctx)
 	if err != nil {
 		return err
 	}
 	c.Logger().Info().Msg("Found max ID, reading up to " + strconv.Itoa(maxID))
 
-	// spin up worker goroutines that will fetch items concurrently by reading ids from
-	// the work channel
-	workers := c.Spec.ItemConcurrency
-	success := make(chan int)
+	// Fetch items in batches of (max) 1000.
+	// This is not necessarily the most efficient way of doing it, but this code
+	// is meant to be for instructional purposes as an example of updating cursors,
+	// so we're keeping the logic relatively simple.
+	// The important thing is that the state backend does not ensure that the cursor
+	// is strictly increasing--it is the responsibility of the resolver to ensure this.
+	for cursor < maxID {
+		endID := cursor + 1000
+		if endID > maxID {
+			endID = maxID
+		}
+		err := fetchBatch(ctx, c, tableName, cursor+1, endID, res)
+		if err != nil {
+			return err
+		}
+		// save the new cursor position after a batch has been successfully fetched
+		cursor = endID
+		err = c.Backend.Set(ctx, tableName, c.ID(), strconv.Itoa(cursor))
+		if err != nil {
+			return fmt.Errorf("failed to save state to backend: %w", err)
+		}
+	}
+	return nil
+}
+
+// fetchBatch fetches the items in the inclusive range [startID, endID] and sends them to the res channel. It blocks
+// until the entire batch has either succeeded or failed.
+func fetchBatch(ctx context.Context, c *client.Client, tableName string, startID, endID int, res chan<- any) error {
 	g, gctx := errgroup.WithContext(ctx)
-	for i := 0; i < workers; i++ {
+	g.SetLimit(c.Spec.ItemConcurrency)
+	for i := startID; i <= endID; i++ {
 		g.Go(func() error {
-			for {
-				select {
-				case <-gctx.Done():
-					return gctx.Err()
-				case itemID, ok := <-work:
-					if !ok {
-						return nil
-					}
-					fetchErr := c.RetryOnError(ctx, tableName, func() error {
-						return fetchItem(gctx, c, itemID, res)
-					})
-					if fetchErr != nil {
-						return fetchErr
-					}
-					success <- itemID
-				}
-			}
+			return c.RetryOnError(gctx, tableName, func() error {
+				return fetchItem(gctx, c, i, res)
+			})
 		})
 	}
-
-	// We use a min heap to keep track of the items that have finished fetching,
-	// but are ahead of where the cursor is. This allows us to guarantee at-least-once
-	// delivery of items, because the cursor is only moved on once we are sure all items
-	// up to the new position have been synced, and there are no gaps.
-	//
-	// This diagram attempts to explain the algorithm visually:
-	//
-	// itemID      | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |
-	// success     | y | y | ? | ? | y | y | y |   |   |
-	// cursor      |   | x |   |   |   |   |   |   |   |
-	// heap        |   |   |   |   | x | x | x |   |   |
-	//
-	// When item 3 is done, it will get added to the heap, but then immediately removed when the cursor
-	// is moved to position 3. When item 4 is done, it will also get added to the heap, but the cursor
-	// will now get moved to position 7, and the heap will be emptied.
-	g2, g2ctx := errgroup.WithContext(ctx)
-	g2.Go(func() error {
-		h := &intheap.IntHeap{}
-		for v := range success {
-			heap.Push(h, v)
-			for h.Len() > 0 {
-				min := heap.Pop(h).(int)
-				if min != cursor+1 {
-					heap.Push(h, min)
-					break
-				}
-				cursor++
-			}
-			err = c.Backend.Set(g2ctx, tableName, c.ID(), strconv.Itoa(cursor))
-			if err != nil {
-				return fmt.Errorf("failed to update state backend: %w", err)
-			}
-		}
-		return nil
-	})
-
-	// send work to the workers until we reach maxID.
-	for i := cursor + 1; i <= maxID; i++ {
-		select {
-		case work <- i:
-		case <-gctx.Done():
-			close(work)
-			return gctx.Err()
-		}
-	}
-	close(work)
-
-	// after the work channel is closed, we wait for the workers to finish
-	err = g.Wait()
-	if err != nil {
-		return err
-	}
-
-	// now we can close the success channel, and wait for the final cursor value
-	// to be set
-	close(success)
-	return g2.Wait()
+	return g.Wait()
 }
 
 // fetchItem fetches a single item from the Hacker News API and sends it to the CloudQuery SDK

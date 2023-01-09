@@ -34,7 +34,7 @@ func (c *Client) Logger() *zerolog.Logger {
 }
 
 func (c *Client) ID() string {
-	return c.sourceSpec.Name
+	return "hackernews"
 }
 
 func Configure(ctx context.Context, logger zerolog.Logger, sourceSpec specs.Source, opts ...source.Option) (schema.ClientMeta, error) {

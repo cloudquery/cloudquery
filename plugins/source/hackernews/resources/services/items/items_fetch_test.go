@@ -30,7 +30,7 @@ func TestItems_NoCursor(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	mbe := mocks.NewMockBackend(ctrl)
 	mbe.EXPECT().Get(gomock.Any(), gomock.Any(), gomock.Any()).Return("", nil)
-	mbe.EXPECT().Set(gomock.Any(), "hackernews_items", "id", gomock.Any()).Times(5).Return(nil)
+	mbe.EXPECT().Set(gomock.Any(), "hackernews_items", "hackernews", gomock.Any()).Times(1).Return(nil)
 	client.MockTestHelper(t, Items(), buildItemsMockNoCursor, client.TestOptions{
 		Backend: mbe,
 	})
@@ -55,7 +55,7 @@ func TestItems_WithCursor(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	mbe := mocks.NewMockBackend(ctrl)
 	mbe.EXPECT().Get(gomock.Any(), gomock.Any(), gomock.Any()).Return("5", nil)
-	mbe.EXPECT().Set(gomock.Any(), "hackernews_items", "id", gomock.Any()).Times(5).Return(nil)
+	mbe.EXPECT().Set(gomock.Any(), "hackernews_items", "hackernews", gomock.Any()).Times(1).Return(nil)
 	client.MockTestHelper(t, Items(), buildItemsMockWithCursor, client.TestOptions{
 		Backend: mbe,
 	})
