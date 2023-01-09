@@ -1,10 +1,10 @@
 package iam
 
 import (
+	pb "cloud.google.com/go/iam/admin/apiv1/adminpb"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 	"github.com/cloudquery/plugins/source/gcp/client"
-	pb "google.golang.org/api/iam/v1"
 )
 
 func Roles() *schema.Table {

@@ -4,7 +4,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 	"github.com/cloudquery/plugins/source/gcp/client"
-	pb "google.golang.org/api/iam/v2beta"
+	pb "google.golang.org/genproto/googleapis/iam/v2"
 )
 
 func DenyPolicies() *schema.Table {
@@ -13,7 +13,7 @@ func DenyPolicies() *schema.Table {
 		Description: `https://cloud.google.com/iam/docs/reference/rest/v2beta/policies#Policy`,
 		Resolver:    fetchDenyPolicies,
 		Multiplex:   client.ProjectMultiplexEnabledServices("iam.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.GoogleIamV2betaPolicy{}, client.Options()...),
+		Transform:   transformers.TransformWithStruct(&pb.Policy{}, client.Options()...),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
