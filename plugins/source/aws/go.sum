@@ -188,8 +188,8 @@ github.com/aws/aws-sdk-go-v2/service/mwaa v1.14.0 h1:KSyaXsg1+VnX3ASoQ21/cIqz7l0
 github.com/aws/aws-sdk-go-v2/service/mwaa v1.14.0/go.mod h1:jalIW8gZHg5jsVAzlaOdgAcSNFUNBCQO2DC+QmXp6mw=
 github.com/aws/aws-sdk-go-v2/service/neptune v1.19.0 h1:ugVidYCmMOdCDnf+244pRn3uv+ob1NxdWBncan5sH/U=
 github.com/aws/aws-sdk-go-v2/service/neptune v1.19.0/go.mod h1:kBudc/ZVbpqaZmWaZiQgyujuCgsPqh6kYlzGeW65wh4=
-github.com/aws/aws-sdk-go-v2/service/organizations v1.17.2 h1:ubTiUDDsayQOogwKbr7qlBac6pFEqEbeGfYuC/fF/HM=
-github.com/aws/aws-sdk-go-v2/service/organizations v1.17.2/go.mod h1:SiHyOVjKY74qa5H6RTexGKLjQLg43lZ/jZT5Z84FhU0=
+github.com/aws/aws-sdk-go-v2/service/organizations v1.18.0 h1:QoAzrTInIpXGHjaI5zuy1IfzKsbuB0eQucV2npoBDRY=
+github.com/aws/aws-sdk-go-v2/service/organizations v1.18.0/go.mod h1:SiHyOVjKY74qa5H6RTexGKLjQLg43lZ/jZT5Z84FhU0=
 github.com/aws/aws-sdk-go-v2/service/qldb v1.14.22 h1:/OCgIWXxvyw/f9904V5DwE8YtFi2XsGMmIVd3Aj4h6Y=
 github.com/aws/aws-sdk-go-v2/service/qldb v1.14.22/go.mod h1:yanKnbAjmnFTI9U5QxkN+ovlq/eXlew5rMhmfYDek2I=
 github.com/aws/aws-sdk-go-v2/service/quicksight v1.29.0 h1:iL7otrHmucGPfW2NzV4R4lCnRzJKxh8ePstzA3I+Iv8=
