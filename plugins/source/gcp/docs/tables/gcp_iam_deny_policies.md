@@ -13,13 +13,14 @@ The primary key for this table is **_cq_id**.
 |_cq_id (PK)|UUID|
 |_cq_parent_id|UUID|
 |project_id|String|
-|annotations|JSON|
-|create_time|String|
-|delete_time|String|
-|display_name|String|
-|etag|String|
-|kind|String|
 |name|String|
-|rules|JSON|
 |uid|String|
-|update_time|String|
+|kind|String|
+|display_name|String|
+|annotations|JSON|
+|etag|String|
+|create_time|Timestamp|
+|update_time|Timestamp|
+|delete_time|Timestamp|
+|rules|JSON|
+|managing_authority|String|

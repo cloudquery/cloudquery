@@ -25,3 +25,4 @@ The composite primary key for this table is (**account_name**, **id**).
 |sources|StringArray|
 |tags_by_source|JSON|
 |up|Bool|
+|additional_properties|JSON|

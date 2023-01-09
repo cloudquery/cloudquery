@@ -16,6 +16,7 @@ The composite primary key for this table is (**account_id**, **id**).
 |id (PK)|String|
 |arn|String|
 |path|String|
+|server_certificate_id|String|
 |server_certificate_name|String|
 |expiration|Timestamp|
 |upload_date|Timestamp|

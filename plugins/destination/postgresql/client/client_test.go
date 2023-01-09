@@ -34,7 +34,7 @@ func TestPgPlugin(t *testing.T) {
 }
 
 func TestPgPluginPrimaryKeyRename(t *testing.T) {
-	tableName := fmt.Sprintf("cq_test_pk_rename_%d", rand.Intn(100))
+	tableName := fmt.Sprintf("cq_test_pk_rename_%03d", rand.Intn(100))
 	tableWithStalePk := testdata.TestTable(tableName)
 	// We simulate that a primary column was renamed
 	tableWithStalePk.Columns = append(tableWithStalePk.Columns, schema.Column{Name: "stale_pk_1", Type: schema.TypeUUID, CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true}})
@@ -62,10 +62,10 @@ func TestPgPluginPrimaryKeyRename(t *testing.T) {
 	err := p.Migrate(ctx, []*schema.Table{table})
 	expected := `the following primary keys were removed from the schema ["stale_pk_1" "stale_pk_2"] for table "%s".
 You can migrate the table manually by running:
------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
 alter table "%s" drop constraint if exists "%s_cqpk";
 alter table "%s" alter column "stale_pk_1" drop not null;
 alter table "%s" alter column "stale_pk_2" drop not null;
------------------------------------------------------------------------------------------`
+-------------------------------------------------------------------------------------------`
 	require.ErrorContains(t, err, fmt.Sprintf(expected, tableName, tableName, tableName, tableName, tableName))
 }

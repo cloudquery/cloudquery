@@ -7,6 +7,7 @@ import (
 
 	"cloud.google.com/go/bigquery"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"google.golang.org/api/googleapi"
 )
 
 const (
@@ -43,8 +44,15 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, resou
 	// flush final rows
 	timeoutCtx, cancel := context.WithTimeout(ctx, writeTimeout)
 	defer cancel()
-	err := inserter.Put(timeoutCtx, batch)
-	if err != nil {
+
+	for err := inserter.Put(timeoutCtx, batch); err != nil; err = inserter.Put(timeoutCtx, batch) {
+		// check if bigquery error is 404 (table does not exist yet), then wait a bit and retry until it does exist
+		if e, ok := err.(*googleapi.Error); ok && e.Code == 404 {
+			// retry
+			c.logger.Info().Str("table", table.Name).Msg("Table does not exist yet, waiting for it to be created before retrying write")
+			time.Sleep(1 * time.Second)
+			continue
+		}
 		return fmt.Errorf("failed to put item into BigQuery table %s: %w", table.Name, err)
 	}
 

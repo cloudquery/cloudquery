@@ -5,6 +5,63 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v6.0.0...plugins-source-gcp-v6.1.0) (2023-01-09)
+
+
+### Features
+
+* **gcp:** Improve Error messages for Rate Limited ([#6392](https://github.com/cloudquery/cloudquery/issues/6392)) ([4cbeb84](https://github.com/cloudquery/cloudquery/commit/4cbeb84947716f9be2f282c567e32ffcd28bd832))
+
+
+### Bug Fixes
+
+* **gcp:** Etag to ByteArray ([#6530](https://github.com/cloudquery/cloudquery/issues/6530)) ([bd84240](https://github.com/cloudquery/cloudquery/commit/bd84240c008eea049bcfc1550bfc75f3b1933b1c))
+
+## [6.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v5.5.0...plugins-source-gcp-v6.0.0) (2023-01-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* **gcp-resources:** `gcp_iam_roles` column `etag` type changed from `String` to `IntArray`
+* **gcp-resources:** `gcp_iam_service_account_keys` column `public_key_data` type changed from `String` to `IntArray` and columns `valid_after_time, valid_before_time` type changed from `String` to `Timestamp`
+* **gcp-resources:** `gcp_iam_service_accounts` column `etag` type changed from `String` to `IntArray`
+
+### Features
+
+* **gcp-resources:** Move `gcp_iam_deny_policies` to use `googleapis/google-cloud-go` ([58baafc](https://github.com/cloudquery/cloudquery/commit/58baafccfe7189f5f3da1790afd2253e719840ba))
+* **gcp-resources:** Move `gcp_iam_roles` to use `googleapis/google-cloud-go` ([58baafc](https://github.com/cloudquery/cloudquery/commit/58baafccfe7189f5f3da1790afd2253e719840ba))
+* **gcp-resources:** Move `gcp_iam_service_account_keys` to use `googleapis/google-cloud-go` ([58baafc](https://github.com/cloudquery/cloudquery/commit/58baafccfe7189f5f3da1790afd2253e719840ba))
+* **gcp-resources:** Move `gcp_iam_service_accounts` to use `googleapis/google-cloud-go` ([58baafc](https://github.com/cloudquery/cloudquery/commit/58baafccfe7189f5f3da1790afd2253e719840ba))
+* **gcp:** Remove codegen ([#6384](https://github.com/cloudquery/cloudquery/issues/6384)) ([b55b535](https://github.com/cloudquery/cloudquery/commit/b55b5359e711e5893131d47f60aad2434c0aafaf))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.21.0 ([#6382](https://github.com/cloudquery/cloudquery/issues/6382)) ([5baea40](https://github.com/cloudquery/cloudquery/commit/5baea40d2aec4e807db839c928be2e037d572bef))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.22.0 ([#6516](https://github.com/cloudquery/cloudquery/issues/6516)) ([b7e4e73](https://github.com/cloudquery/cloudquery/commit/b7e4e737a5f4d8f254960426ea8ba555d8f9b944))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.23.0 ([#6522](https://github.com/cloudquery/cloudquery/issues/6522)) ([ce24f1d](https://github.com/cloudquery/cloudquery/commit/ce24f1d64394cbb5ab07dcaa4af66c53f77f700f))
+
+## [5.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v5.4.0...plugins-source-gcp-v5.5.0) (2023-01-05)
+
+
+### Features
+
+* **gcp-resources:** Add Bigtable admin resources ([#6250](https://github.com/cloudquery/cloudquery/issues/6250)) ([3fedb35](https://github.com/cloudquery/cloudquery/commit/3fedb359492e2cec1d9e9347643f256bdaef2e5b))
+* **gcp-resources:** Add Billing Budgets ([#6251](https://github.com/cloudquery/cloudquery/issues/6251)) ([8327d51](https://github.com/cloudquery/cloudquery/commit/8327d510634b0b8b335e330ee902ae71825aa4a7))
+* **gcp-resources:** Add Binary Authorization ([#6309](https://github.com/cloudquery/cloudquery/issues/6309)) ([ff0713a](https://github.com/cloudquery/cloudquery/commit/ff0713ad97367f83105f1daf6ea08eabd970113c))
+* **gcp-resources:** Add Certificate Manager ([#6311](https://github.com/cloudquery/cloudquery/issues/6311)) ([63a5681](https://github.com/cloudquery/cloudquery/commit/63a56814ee40cf389e004e5c4ca68b2415d9c4e1))
+* **gcp-resources:** Add Cloud Deploy ([#6321](https://github.com/cloudquery/cloudquery/issues/6321)) ([154d1e9](https://github.com/cloudquery/cloudquery/commit/154d1e966d1a6b5fdca056d8835a8141b3f5e662))
+* **gcp-resources:** Add Cloud IoT ([#6355](https://github.com/cloudquery/cloudquery/issues/6355)) ([28d6dcd](https://github.com/cloudquery/cloudquery/commit/28d6dcd24ed35586a98e0e50f4838dcc563abd2d))
+* **gcp-resources:** Add Error Reporting ([#6326](https://github.com/cloudquery/cloudquery/issues/6326)) ([1fae862](https://github.com/cloudquery/cloudquery/commit/1fae8624c0ba1b40cb5ef19884bfb9f41e06e124))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.17.2 ([#6260](https://github.com/cloudquery/cloudquery/issues/6260)) ([805972a](https://github.com/cloudquery/cloudquery/commit/805972aa67ce54e3358501c6b7ee5d85e5f65cac))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.18.0 ([#6339](https://github.com/cloudquery/cloudquery/issues/6339)) ([158365a](https://github.com/cloudquery/cloudquery/commit/158365a78dfa4389074f716a0f581f18fedc1080))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.19.0 ([#6363](https://github.com/cloudquery/cloudquery/issues/6363)) ([ae6967c](https://github.com/cloudquery/cloudquery/commit/ae6967c22002c554a083f444eb611ac3e6d2698f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.20.0 ([#6376](https://github.com/cloudquery/cloudquery/issues/6376)) ([d6187ec](https://github.com/cloudquery/cloudquery/commit/d6187ec584f13be4fe9362dd393385b19d386113))
+
 ## [5.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v5.3.1...plugins-source-gcp-v5.4.0) (2023-01-03)
 
 
