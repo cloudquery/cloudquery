@@ -15,6 +15,7 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
+|tags|JSON|
 |created_at|Timestamp|
 |from_attached_disks|JSON|
 |from_blueprint_id|String|
@@ -29,4 +30,3 @@ The primary key for this table is **arn**.
 |size_in_gb|Int|
 |state|String|
 |support_code|String|
-|tags|JSON|

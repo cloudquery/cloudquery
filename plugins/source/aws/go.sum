@@ -220,8 +220,8 @@ github.com/aws/aws-sdk-go-v2/service/servicecatalog v1.16.0 h1:Yo5zv0KriAoPCo4yW
 github.com/aws/aws-sdk-go-v2/service/servicecatalog v1.16.0/go.mod h1:r0xKT6nzw2oTEZ37LdnSCRA85zZwRFt0Cmc40+b9Rmk=
 github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.16.0 h1:FObz7TAV6hXLH9RPUgctQjBeXsQ9dlRlo+ob3s4Pbik=
 github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.16.0/go.mod h1:H/ErouUYrKFwuRLD4MIUeoyZgupytldUbDzCACH+Rys=
-github.com/aws/aws-sdk-go-v2/service/servicequotas v1.13.23 h1:QTbShmzWTmoF5dbd0K34aY1tXZV7LO6NJ1iRnJQ9v8I=
-github.com/aws/aws-sdk-go-v2/service/servicequotas v1.13.23/go.mod h1:8I7mkhR5OsSBE1FlKOZ7Etb5gtA9881M++HhCEhMj10=
+github.com/aws/aws-sdk-go-v2/service/servicequotas v1.14.0 h1:1Pcy9UdOu2d7iYokJDSVYBXnBb09660UrPlIwiVmuyY=
+github.com/aws/aws-sdk-go-v2/service/servicequotas v1.14.0/go.mod h1:8I7mkhR5OsSBE1FlKOZ7Etb5gtA9881M++HhCEhMj10=
 github.com/aws/aws-sdk-go-v2/service/ses v1.15.0 h1:hFlk7D1Y4OHaxTSbgGY19gso4tmAXuLi0JRlSZkgCjI=
 github.com/aws/aws-sdk-go-v2/service/ses v1.15.0/go.mod h1:yOTAnL3dDC5wYhxL6+PXAa/hvsia8ckCBqyhzptW5K8=
 github.com/aws/aws-sdk-go-v2/service/sesv2 v1.16.0 h1:ZVu7clQZjixs6IYUcpgkUoigjQn4HUToPiRd1AjmCl0=
@@ -270,8 +270,8 @@ github.com/chzyer/logex v1.1.10/go.mod h1:+Ywpsq7O8HXn0nuIou7OrIPyXbp3wmkHB+jjWR
 github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e/go.mod h1:nSuG5e5PlCu98SY8svDHJxuZscDgtXS6KTTbou5AhLI=
 github.com/chzyer/test v0.0.0-20180213035817-a1ea475d72b1/go.mod h1:Q3SI9o4m/ZMnBNeIyt5eFwwo7qiLfzFZmjNmxjkiQlU=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
-github.com/cloudquery/plugin-sdk v1.21.0 h1:Oon4fFeUpc/QNkSwLPaoHcv9EVzcXK/6Y3ZaAcg7VOk=
-github.com/cloudquery/plugin-sdk v1.21.0/go.mod h1:teMPyCON3uPdMsHvzpSiOg+IK2sOR5Tf9dYLreoURzI=
+github.com/cloudquery/plugin-sdk v1.22.0 h1:umevXZgRIr2IoEzRfZnbDw5XDaPcdz4q2gkuPIW3+08=
+github.com/cloudquery/plugin-sdk v1.22.0/go.mod h1:teMPyCON3uPdMsHvzpSiOg+IK2sOR5Tf9dYLreoURzI=
 github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGXZJjfX53e64911xZQV5JYwmTeXPW+k8Sc=
 github.com/cncf/udpa/go v0.0.0-20201120205902-5459f2c99403/go.mod h1:WmhPx2Nbnhtbo57+VJT5O0JRkEi1Wbu0z5j0R8u5Hbk=
 github.com/coreos/go-systemd v0.0.0-20190321100706-95778dfbb74e/go.mod h1:F5haX7vjVVG0kc13fIWeqUViNPyEJxv/OmvnBo0Yme4=
@@ -362,8 +362,6 @@ github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.0-rc.3 h1:o95KDiV/b1xdkumY5
 github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.0-rc.3/go.mod h1:hTxjzRcX49ogbTGVJ1sM5mz5s+SSgiGIyL3jjPxl32E=
 github.com/hashicorp/golang-lru v0.5.0/go.mod h1:/m3WP610KZHVQ1SGc6re/UDhFvYD7pJ4Ao+sR/qLZy8=
 github.com/hashicorp/golang-lru v0.5.1/go.mod h1:/m3WP610KZHVQ1SGc6re/UDhFvYD7pJ4Ao+sR/qLZy8=
-github.com/iancoleman/strcase v0.2.0 h1:05I4QRnGpI0m37iZQRuskXh+w77mr6Z41lwQzuHLwW0=
-github.com/iancoleman/strcase v0.2.0/go.mod h1:iwCmte+B7n89clKwxIoIXy/HfoL7AsD47ZCWhYzw7ho=
 github.com/ianlancetaylor/demangle v0.0.0-20181102032728-5e5cf60278f6/go.mod h1:aSSvb/t6k1mPoxDqO4vJh6VOCGPwU4O0C2/Eqndh1Sc=
 github.com/inconshreveable/mousetrap v1.0.1/go.mod h1:vpF70FUmC8bwa3OWnCshd2FqLfsEA9PFc4w1p2J65bw=
 github.com/inconshreveable/mousetrap v1.1.0 h1:wN+x4NVGpMsO7ErUn/mUI3vEoE6Jt13X2s0bqwp9tc8=
