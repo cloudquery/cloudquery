@@ -21,6 +21,7 @@ The following tables depend on aws_kafka_clusters:
 |account_id|String|
 |arn (PK)|String|
 |active_operation_arn|String|
+|cluster_arn|String|
 |cluster_name|String|
 |cluster_type|String|
 |creation_time|Timestamp|

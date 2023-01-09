@@ -16,3 +16,4 @@ The primary key for this table is **arn**.
 |tags|JSON|
 |metadata|JSON|
 |pipeline|JSON|
+|result_metadata|JSON|
