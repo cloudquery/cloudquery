@@ -22,7 +22,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/cloudfront v1.24.0
 	github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.22.0
-	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.23.1
+	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.24.0
 	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/codebuild v1.20.0
 	github.com/aws/aws-sdk-go-v2/service/codepipeline v1.14.0
@@ -43,7 +43,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/elasticache v1.26.0
 	github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.15.0
-	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.18.28
+	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.19.0
 	github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/elastictranscoder v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/emr v1.22.0
