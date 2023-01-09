@@ -23,6 +23,14 @@ func Groups() *schema.Table {
 					PrimaryKey: true,
 				},
 			},
+			{
+				Name:     "group_id",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("GroupID"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
 		},
 	}
 }

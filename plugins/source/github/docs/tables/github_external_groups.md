@@ -1,6 +1,6 @@
 # Table: github_external_groups
 
-The primary key for this table is **org**.
+The composite primary key for this table is (**org**, **group_id**).
 
 ## Columns
 
@@ -11,7 +11,7 @@ The primary key for this table is **org**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |org (PK)|String|
-|group_id|Int|
+|group_id (PK)|Int|
 |group_name|String|
 |updated_at|Timestamp|
 |teams|JSON|
