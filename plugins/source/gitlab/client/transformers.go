@@ -15,6 +15,7 @@ func SharedTransformers() []transformers.StructTransformerOption {
 		transformers.WithTypeTransformer(typeTransformer),
 	}
 }
+
 func typeTransformer(field reflect.StructField) (schema.ValueType, error) {
 	timestamp := gitlab.ISOTime{}
 	switch field.Type {
