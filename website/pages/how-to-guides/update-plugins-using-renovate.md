@@ -31,7 +31,7 @@ For our purposes, we're concerned about the following items:
 - `depNameTemplate`: this is the 'friendly' name that is shown in renovate PRs.
 - `extractVersionTemplate`: regular expression for discovering plugin version in the datasource.
 - `versioningTemplate`: what versioning 'format' the datasource follows
-- `fileMatch`: path to the cloudquery.yaml file in your repository.
+- `fileMatch`: path to the `cloudquery.yaml` file in your repository.
   `matchStrings`: regular expression to find the plugins in your cloudquery.yaml file.
 
 Using a simplistic configuration file that looks like:
