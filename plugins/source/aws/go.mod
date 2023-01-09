@@ -82,7 +82,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/servicecatalog v1.16.0
 	github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.16.0
-	github.com/aws/aws-sdk-go-v2/service/servicequotas v1.13.23
+	github.com/aws/aws-sdk-go-v2/service/servicequotas v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/ses v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/sesv2 v1.16.0
 	github.com/aws/aws-sdk-go-v2/service/sfn v1.17.0
