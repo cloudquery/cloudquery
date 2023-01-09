@@ -14,7 +14,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/stripe/codegen/recipes"
 	"github.com/cloudquery/plugin-sdk/caser"
-	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/gertd/go-pluralize"
 )
 
@@ -80,10 +79,7 @@ func generateResource(servicesDir string, r recipes.Resource) {
 		if err != nil {
 			log.Fatal(fmt.Errorf("failed to parse templates: %w", err))
 		}
-		tpl, err = tpl.ParseFS(codegen.TemplatesFS, "templates/*.go.tpl")
-		if err != nil {
-			log.Fatal(fmt.Errorf("failed to parse recipes template: %w", err))
-		}
+
 		var buff bytes.Buffer
 		if err := tpl.Execute(&buff, r); err != nil {
 			log.Fatal(fmt.Errorf("failed to execute template: %w", err))
