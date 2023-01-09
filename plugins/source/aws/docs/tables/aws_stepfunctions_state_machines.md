@@ -20,6 +20,7 @@ The primary key for this table is **arn**.
 |definition|String|
 |name|String|
 |role_arn|String|
+|state_machine_arn|String|
 |type|String|
 |label|String|
 |logging_configuration|JSON|

@@ -15,9 +15,11 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
+|tags|JSON|
 |applications|JSON|
 |auto_scaling_role|String|
 |auto_terminate|Bool|
+|cluster_arn|String|
 |configurations|JSON|
 |custom_ami_id|String|
 |ebs_root_volume_size|Int|
@@ -42,6 +44,5 @@ The primary key for this table is **arn**.
 |service_role|String|
 |status|JSON|
 |step_concurrency_level|Int|
-|tags|JSON|
 |termination_protected|Bool|
 |visible_to_all_users|Bool|

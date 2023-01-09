@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v2.0.2...plugins-destination-postgresql-v2.0.3) (2023-01-07)
+
+
+### Bug Fixes
+
+* **destinations:** Handle nulls in JSONs ([#6466](https://github.com/cloudquery/cloudquery/issues/6466)) ([f434f00](https://github.com/cloudquery/cloudquery/commit/f434f00285ed8fc5edbacf03194fb983d4d98f86))
+
 ## [2.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v2.0.1...plugins-destination-postgresql-v2.0.2) (2023-01-06)
 
 

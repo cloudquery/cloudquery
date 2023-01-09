@@ -20,11 +20,11 @@ The following tables depend on aws_ses_configuration_sets:
 |account_id|String|
 |region|String|
 |arn (PK)|String|
+|tags|JSON|
 |name|String|
 |delivery_options|JSON|
 |reputation_options|JSON|
 |sending_options|JSON|
 |suppression_options|JSON|
-|tags|JSON|
 |tracking_options|JSON|
 |vdm_options|JSON|
