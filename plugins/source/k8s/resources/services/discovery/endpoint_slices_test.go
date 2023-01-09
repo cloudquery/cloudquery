@@ -3,8 +3,8 @@ package discovery
 import (
 	"testing"
 
-	client "github.com/cloudquery/cloudquery/plugins/source/k8s/client"
-	mocks "github.com/cloudquery/cloudquery/plugins/source/k8s/mocks"
+	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
+	"github.com/cloudquery/cloudquery/plugins/source/k8s/mocks"
 
 	resourcemock "github.com/cloudquery/cloudquery/plugins/source/k8s/mocks/discovery/v1"
 	"github.com/cloudquery/plugin-sdk/faker"

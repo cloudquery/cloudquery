@@ -3,11 +3,10 @@ package coordination
 import (
 	"testing"
 
-	client "github.com/cloudquery/cloudquery/plugins/source/k8s/client"
-	mocks "github.com/cloudquery/cloudquery/plugins/source/k8s/mocks"
+	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
+	"github.com/cloudquery/cloudquery/plugins/source/k8s/mocks"
 
 	resourcemock "github.com/cloudquery/cloudquery/plugins/source/k8s/mocks/coordination/v1"
-	// k8sTesting "github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/testing"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	resource "k8s.io/api/coordination/v1"
