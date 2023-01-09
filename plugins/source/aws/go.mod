@@ -67,11 +67,11 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/mwaa v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/neptune v1.19.0
 	github.com/aws/aws-sdk-go-v2/service/organizations v1.18.0
-	github.com/aws/aws-sdk-go-v2/service/qldb v1.14.22
+	github.com/aws/aws-sdk-go-v2/service/qldb v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/quicksight v1.29.0
-	github.com/aws/aws-sdk-go-v2/service/ram v1.16.26
+	github.com/aws/aws-sdk-go-v2/service/ram v1.17.0
 	github.com/aws/aws-sdk-go-v2/service/rds v1.39.0
-	github.com/aws/aws-sdk-go-v2/service/redshift v1.26.18
+	github.com/aws/aws-sdk-go-v2/service/redshift v1.27.0
 	github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.13.0
 	github.com/aws/aws-sdk-go-v2/service/route53 v1.25.2
 	github.com/aws/aws-sdk-go-v2/service/route53domains v1.14.0
