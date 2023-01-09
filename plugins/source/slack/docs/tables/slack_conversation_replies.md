@@ -19,12 +19,12 @@ This table depends on [slack_conversation_histories](slack_conversation_historie
 |conversation_history_ts|String|
 |team_id (PK)|String|
 |channel_id (PK)|String|
+|ts (PK)|String|
 |client_msg_id|String|
 |type|String|
 |channel|String|
 |user|String|
 |text|String|
-|ts (PK)|String|
 |thread_ts|String|
 |is_starred|Bool|
 |pinned_to|StringArray|
@@ -56,6 +56,7 @@ This table depends on [slack_conversation_histories](slack_conversation_historie
 |comment|JSON|
 |item_type|String|
 |reply_to|Int|
+|team|String|
 |reactions|JSON|
 |response_type|String|
 |replace_original|Bool|
