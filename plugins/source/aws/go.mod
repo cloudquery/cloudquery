@@ -74,7 +74,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/redshift v1.26.18
 	github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.13.0
 	github.com/aws/aws-sdk-go-v2/service/route53 v1.25.2
-	github.com/aws/aws-sdk-go-v2/service/route53domains v1.13.0
+	github.com/aws/aws-sdk-go-v2/service/route53domains v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.30.0
 	github.com/aws/aws-sdk-go-v2/service/s3control v1.28.2
 	github.com/aws/aws-sdk-go-v2/service/sagemaker v1.61.0
