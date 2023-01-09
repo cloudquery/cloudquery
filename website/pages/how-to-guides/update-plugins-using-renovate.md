@@ -44,7 +44,7 @@ spec:
   path: cloudquery/gcp
   version: "v5.4.0"
   tables: ["*"]
-  sestinations: ["postgresql"]
+  destinations: ["postgresql"]
 ---
 kind: source
 spec:
