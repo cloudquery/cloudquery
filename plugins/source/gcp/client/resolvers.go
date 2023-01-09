@@ -93,17 +93,3 @@ func ResolveProtoEnum(path string) schema.ColumnResolver {
 		return resource.Set(c.Name, protoimpl.X.EnumStringOf(enum.Descriptor(), enum.Number()))
 	}
 }
-
-func resolveByteArrayAsHex(path string) schema.ColumnResolver {
-	return func(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-		data := funk.Get(resource.Item, path)
-		if data == nil {
-			return nil
-		}
-		b, ok := data.([]byte)
-		if !ok {
-			return fmt.Errorf("unexpected type, wanted \"[]byte\", have \"%T\"", data)
-		}
-		return resource.Set(c.Name, fmt.Sprintf("%x", b))
-	}
-}

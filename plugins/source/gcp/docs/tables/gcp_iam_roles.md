@@ -18,5 +18,5 @@ The composite primary key for this table is (**project_id**, **name**).
 |description|String|
 |included_permissions|StringArray|
 |stage|String|
-|etag|String|
+|etag|ByteArray|
 |deleted|Bool|
