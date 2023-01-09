@@ -38,6 +38,7 @@ The following tables depend on aws_dynamodb_tables:
 |restore_summary|JSON|
 |sse_description|JSON|
 |stream_specification|JSON|
+|table_arn|String|
 |table_class_summary|JSON|
 |table_id|String|
 |table_name|String|

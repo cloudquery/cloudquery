@@ -27,5 +27,6 @@ The following tables depend on aws_lambda_layer_versions:
 |compatible_runtimes|StringArray|
 |created_date|String|
 |description|String|
+|layer_version_arn|String|
 |license_info|String|
 |version|Int|

@@ -17,6 +17,7 @@ The primary key for this table is **arn**.
 |policies|StringArray|
 |arn (PK)|String|
 |ca_certificate_id|String|
+|certificate_arn|String|
 |certificate_id|String|
 |certificate_mode|String|
 |certificate_pem|String|

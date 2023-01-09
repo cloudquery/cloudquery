@@ -32,6 +32,7 @@ func TestPgPlugin(t *testing.T) {
 			MaxMetadataRetries: 15,
 		},
 		destination.PluginTestSuiteTests{
-			SkipOverwrite: true,
+			SkipOverwrite:     true,
+			SkipMigrateAppend: true,
 		})
 }

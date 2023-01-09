@@ -18,6 +18,7 @@ The following tables depend on gitlab_groups:
 |base_url (PK)|String|
 |id (PK)|Int|
 |name (PK)|String|
+|marked_for_deletion_on|Timestamp|
 |path|String|
 |description|String|
 |membership_lock|Bool|
@@ -53,5 +54,4 @@ The following tables depend on gitlab_groups:
 |shared_runners_minutes_limit|Int|
 |extra_shared_runners_minutes_limit|Int|
 |prevent_forking_outside_group|Bool|
-|marked_for_deletion_on|Timestamp|
 |created_at|Timestamp|

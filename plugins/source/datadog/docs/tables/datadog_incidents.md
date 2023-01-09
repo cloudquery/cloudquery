@@ -20,3 +20,4 @@ The following tables depend on datadog_incidents:
 |attributes|JSON|
 |relationships|JSON|
 |type|String|
+|additional_properties|JSON|
