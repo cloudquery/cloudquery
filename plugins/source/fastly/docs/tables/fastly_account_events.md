@@ -12,13 +12,13 @@ The primary key for this table is **id**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
+|id (PK)|String|
+|ip|String|
 |admin|Bool|
 |created_at|Timestamp|
 |customer_id|String|
 |description|String|
 |event_type|String|
-|id (PK)|String|
-|ip|String|
 |metadata|JSON|
 |service_id|String|
 |user_id|String|

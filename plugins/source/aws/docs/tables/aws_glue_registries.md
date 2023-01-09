@@ -21,6 +21,7 @@ The following tables depend on aws_glue_registries:
 |arn (PK)|String|
 |created_time|String|
 |description|String|
+|registry_arn|String|
 |registry_name|String|
 |status|String|
 |updated_time|String|

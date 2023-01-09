@@ -15,5 +15,7 @@ The primary key for this table is **arn**.
 |account_id|String|
 |arn (PK)|String|
 |tags|JSON|
-|name|String|
+|predicates|JSON|
 |rule_id|String|
+|metric_name|String|
+|name|String|

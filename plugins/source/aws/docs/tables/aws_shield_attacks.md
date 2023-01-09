@@ -15,6 +15,7 @@ The primary key for this table is **id**.
 |account_id|String|
 |id (PK)|String|
 |attack_counters|JSON|
+|attack_id|String|
 |attack_properties|JSON|
 |end_time|Timestamp|
 |mitigations|JSON|

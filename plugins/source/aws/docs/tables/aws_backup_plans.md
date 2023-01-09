@@ -23,6 +23,7 @@ The following tables depend on aws_backup_plans:
 |tags|JSON|
 |advanced_backup_settings|JSON|
 |backup_plan|JSON|
+|backup_plan_arn|String|
 |backup_plan_id|String|
 |creation_date|Timestamp|
 |creator_request_id|String|
