@@ -94,7 +94,7 @@ On the Regex101 site we can verify the regex is working by viewing the explanati
 
 ![screenshot of regex101](/images/blog/manage-plugins-with-renovate/renovate-howto-regex101.png)
 
-**Important Note**: This regex is _specific_ to the example shown in this how-to guide, if your configuration file is formatted different (such as lines in different orders or indented differently like in a helm values.yaml file) then you'll need to adjust the regex accordingly.
+**Important Note**: This regex is _specific_ to the example shown in this how-to guide, if your configuration file is formatted different (such as lines in different orders or indented differently like in a helm `values.yaml` file) then you'll need to adjust the regex accordingly.
 
 ### Step 3: Add Custom RegexManager to Renovate
 
