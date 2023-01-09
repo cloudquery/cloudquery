@@ -22,7 +22,7 @@ The following tables depend on gcp_iam_service_accounts:
 |name|String|
 |email|String|
 |display_name|String|
-|etag|IntArray|
+|etag|ByteArray|
 |description|String|
 |oauth2_client_id|String|
 |disabled|Bool|
