@@ -28,6 +28,7 @@ The primary key for this table is **uid**.
 |spec_expiration_seconds|Int|
 |spec_usages|StringArray|
 |spec_username|String|
+|spec_uid|String|
 |spec_groups|StringArray|
 |spec_extra|JSON|
 |status_conditions|JSON|
