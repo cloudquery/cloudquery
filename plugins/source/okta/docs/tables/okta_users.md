@@ -11,8 +11,6 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |id (PK)|String|
-|_embedded|JSON|
-|_links|JSON|
 |activated|JSON|
 |created|Timestamp|
 |credentials|JSON|
@@ -24,4 +22,6 @@ The primary key for this table is **id**.
 |status_changed|JSON|
 |transitioning_to_status|String|
 |type|JSON|
+|_embedded|JSON|
+|_links|JSON|
 |additional_properties|JSON|
