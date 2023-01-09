@@ -21,14 +21,14 @@ The following tables depend on fastly_service_versions:
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
+|number (PK)|Int|
+|service_id (PK)|String|
 |active|Bool|
 |comment|String|
 |created_at|Timestamp|
 |deleted_at|Timestamp|
 |deployed|Bool|
 |locked|Bool|
-|number (PK)|Int|
-|service_id (PK)|String|
 |staging|Bool|
 |testing|Bool|
 |updated_at|Timestamp|

@@ -21,6 +21,7 @@ The following tables depend on aws_rds_engine_versions:
 |region (PK)|String|
 |engine (PK)|String|
 |engine_version (PK)|String|
+|tag_list|JSON|
 |create_time|Timestamp|
 |custom_db_engine_version_manifest|String|
 |db_engine_description|String|
@@ -48,5 +49,4 @@ The following tables depend on aws_rds_engine_versions:
 |supports_log_exports_to_cloudwatch_logs|Bool|
 |supports_parallel_query|Bool|
 |supports_read_replica|Bool|
-|tag_list|JSON|
 |valid_upgrade_target|JSON|
