@@ -22,7 +22,7 @@ type fakeDenyPoliciesServer struct {
 	pb.UnimplementedPoliciesServer
 }
 
-func (f *fakeDenyPoliciesServer) ListPolicies(context.Context, *pb.ListPoliciesRequest) (*pb.ListPoliciesResponse, error) {
+func (*fakeDenyPoliciesServer) ListPolicies(context.Context, *pb.ListPoliciesRequest) (*pb.ListPoliciesResponse, error) {
 	resp := pb.ListPoliciesResponse{}
 	if err := faker.FakeObject(&resp); err != nil {
 		return nil, fmt.Errorf("failed to fake data: %w", err)

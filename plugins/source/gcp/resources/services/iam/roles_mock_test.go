@@ -22,7 +22,7 @@ type fakeRolesServer struct {
 	pb.UnimplementedIAMServer
 }
 
-func (f *fakeRolesServer) ListRoles(context.Context, *pb.ListRolesRequest) (*pb.ListRolesResponse, error) {
+func (*fakeRolesServer) ListRoles(context.Context, *pb.ListRolesRequest) (*pb.ListRolesResponse, error) {
 	resp := pb.ListRolesResponse{}
 	if err := faker.FakeObject(&resp); err != nil {
 		return nil, fmt.Errorf("failed to fake data: %w", err)
