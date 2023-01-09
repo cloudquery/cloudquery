@@ -3,9 +3,8 @@ module github.com/cloudquery/cloudquery/plugins/source/hackernews
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v1.21.0
+	github.com/cloudquery/plugin-sdk v1.24.0
 	github.com/golang/mock v1.6.0
-	github.com/google/go-cmp v0.5.9
 	github.com/hermanschaaf/hackernews v1.0.1
 	github.com/rs/zerolog v1.28.0
 	golang.org/x/sync v0.1.0
@@ -36,5 +35,3 @@ require (
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
-
-replace github.com/cloudquery/plugin-sdk v1.21.0 => ../../../../plugin-sdk
