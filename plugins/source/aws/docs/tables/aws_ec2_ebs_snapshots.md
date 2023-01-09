@@ -16,6 +16,7 @@ The primary key for this table is **arn**.
 |region|String|
 |arn (PK)|String|
 |attribute|JSON|
+|tags|JSON|
 |data_encryption_key_id|String|
 |description|String|
 |encrypted|Bool|
@@ -30,6 +31,5 @@ The primary key for this table is **arn**.
 |state|String|
 |state_message|String|
 |storage_tier|String|
-|tags|JSON|
 |volume_id|String|
 |volume_size|Int|

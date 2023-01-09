@@ -1,5 +1,7 @@
 # Table: aws_quicksight_ingestions
 
+https://docs.aws.amazon.com/quicksight/latest/APIReference/API_Ingestion.html
+
 The composite primary key for this table is (**arn**, **data_set_arn**).
 
 ## Relations
