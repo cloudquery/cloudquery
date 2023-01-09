@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.0.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v2.0.3...plugins-destination-postgresql-v2.0.4) (2023-01-09)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.22.0 ([#6516](https://github.com/cloudquery/cloudquery/issues/6516)) ([b7e4e73](https://github.com/cloudquery/cloudquery/commit/b7e4e737a5f4d8f254960426ea8ba555d8f9b944))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.23.0 ([#6522](https://github.com/cloudquery/cloudquery/issues/6522)) ([ce24f1d](https://github.com/cloudquery/cloudquery/commit/ce24f1d64394cbb5ab07dcaa4af66c53f77f700f))
+* **pg:** Dont overwrite _cq_id, _cq_parent_id on conflict ([#6521](https://github.com/cloudquery/cloudquery/issues/6521)) ([d1398a5](https://github.com/cloudquery/cloudquery/commit/d1398a5a081142db57291704c7f1df8479668b9c))
+
 ## [2.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v2.0.2...plugins-destination-postgresql-v2.0.3) (2023-01-07)
 
 
