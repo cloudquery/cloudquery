@@ -38,6 +38,10 @@ func replaceTransformer(field reflect.StructField) (string, error) {
 }
 
 func typeTransformer(field reflect.StructField) (schema.ValueType, error) {
+	if field.Name == "Etag" && field.Type == reflect.TypeOf([]byte{}) {
+		return schema.TypeByteArray, nil
+	}
+
 	switch reflect.New(field.Type).Elem().Interface().(type) {
 	case *timestamppb.Timestamp,
 		timestamppb.Timestamp:
