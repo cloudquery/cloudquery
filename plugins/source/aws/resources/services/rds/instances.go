@@ -123,6 +123,11 @@ func Instances() *schema.Table {
 				Resolver: schema.PathResolver("CACertificateIdentifier"),
 			},
 			{
+				Name:     "certificate_details",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("CertificateDetails"),
+			},
+			{
 				Name:     "character_set_name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("CharacterSetName"),
