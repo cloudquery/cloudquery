@@ -27,5 +27,6 @@ The following tables depend on aws_ecr_repositories:
 |image_scanning_configuration|JSON|
 |image_tag_mutability|String|
 |registry_id|String|
+|repository_arn|String|
 |repository_name|String|
 |repository_uri|String|

@@ -34,7 +34,7 @@ jobs:
           workload_identity_provider: 'projects/151868820337/locations/global/workloadIdentityPools/integration-test-pool/providers/integration-test-provider'
           service_account: 'integration-service-account@cq-integration-tests.iam.gserviceaccount.com'
       - name: Set up Cloud SDK
-        uses: 'google-github-actions/setup-gcloud@v0.6.0'
+        uses: 'google-github-actions/setup-gcloud@v0.6.2'
       - name: Set up Go 1.x
         uses: actions/setup-go@v3
         with:
@@ -47,6 +47,8 @@ jobs:
           version: v1.50.1
           working-directory: plugins/destination/bigquery
           args: "--config ../../.golangci.yml"
+          skip-pkg-cache: true
+          skip-build-cache: true
       - name: Get dependencies
         run: go get -t -d ./...
       - name: Build
@@ -69,9 +71,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.19.3-release-cache-${{ hashFiles('plugins/destination/bigquery/go.sum') }}
+          key: ${{ runner.os }}-go-1.19.4-release-cache-${{ hashFiles('plugins/destination/bigquery/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.19.3-release-cache-plugins-destination-bigquery
+            ${{ runner.os }}-go-1.19.4-release-cache-plugins-destination-bigquery
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/setup-go@v3

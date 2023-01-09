@@ -56,12 +56,14 @@ jobs:
           version: v1.50.1
           working-directory: plugins/source/azure
           args: "--config ../../.golangci.yml"
+          skip-pkg-cache: true
+          skip-build-cache: true
       - name: Get dependencies
         run: go get -t -d ./...
       - name: Build
         run: go build .
       - name: Test
-        run: go test ./...
+        run: make test
       - name: gen
         if: github.event_name == 'pull_request'
         run: make gen
@@ -84,9 +86,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.19.3-release-cache-${{ hashFiles('plugins/source/azure/go.sum') }}
+          key: ${{ runner.os }}-go-1.19.4-release-cache-${{ hashFiles('plugins/source/azure/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.19.3-release-cache-plugins-source-azure
+            ${{ runner.os }}-go-1.19.4-release-cache-plugins-source-azure
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/setup-go@v3

@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.0.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v1.0.3...plugins-destination-mongodb-v1.0.4) (2023-01-03)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/youmark/pkcs8 digest to 1326539 ([#6195](https://github.com/cloudquery/cloudquery/issues/6195)) ([b008227](https://github.com/cloudquery/cloudquery/commit/b0082273278ade535263e6410e5d969984532952))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.16.1 ([#6214](https://github.com/cloudquery/cloudquery/issues/6214)) ([53b2415](https://github.com/cloudquery/cloudquery/commit/53b241508d7511d4b5fa74cc4262d180c1e6df66))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.17.2 ([#6260](https://github.com/cloudquery/cloudquery/issues/6260)) ([805972a](https://github.com/cloudquery/cloudquery/commit/805972aa67ce54e3358501c6b7ee5d85e5f65cac))
+
+## [1.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v1.0.2...plugins-destination-mongodb-v1.0.3) (2022-12-31)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.16.0 ([#6098](https://github.com/cloudquery/cloudquery/issues/6098)) ([7bacdf3](https://github.com/cloudquery/cloudquery/commit/7bacdf3364716eab08fa1a84ae4047b42edeee7e))
+
 ## [1.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v1.0.1...plugins-destination-mongodb-v1.0.2) (2022-12-28)
 
 

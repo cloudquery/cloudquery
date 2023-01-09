@@ -56,24 +56,20 @@ jobs:
           version: v1.50.1
           working-directory: plugins/source/k8s
           args: "--config ../../.golangci.yml"
+          skip-pkg-cache: true
+          skip-build-cache: true
       - name: Get dependencies
         run: go get -t -d ./...
       - name: Build
         run: go build .
       - name: Test
         run: make test
-      - name: gen-docs
+      - name: gen
         if: github.event_name == 'pull_request'
-        run: make gen-docs
-      - name: Fail if docs are changed
+        run: make gen
+      - name: Fail if generation updated files
         if: github.event_name == 'pull_request'
-        run: test "$(git status -s ./docs/tables | wc -l)" -eq 0
-      - name: gen-code
-        if: github.event_name == 'pull_request'
-        run: make gen-code
-      - name: Fail if code generation changed services
-        if: github.event_name == 'pull_request'
-        run: test "$(git status -s ./resources/services | wc -l)" -eq 0
+        run: test "$(git status -s | wc -l)" -eq 0 || (git status -s; exit 1)
   validate-release:
     timeout-minutes: 30
     needs: [resolve-runner]
@@ -90,9 +86,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.19.3-release-cache-${{ hashFiles('plugins/source/k8s/go.sum') }}
+          key: ${{ runner.os }}-go-1.19.4-release-cache-${{ hashFiles('plugins/source/k8s/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.19.3-release-cache-plugins-source-k8s
+            ${{ runner.os }}-go-1.19.4-release-cache-plugins-source-k8s
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/setup-go@v3

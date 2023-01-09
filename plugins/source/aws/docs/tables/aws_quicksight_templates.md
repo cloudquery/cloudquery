@@ -1,5 +1,7 @@
 # Table: aws_quicksight_templates
 
+https://docs.aws.amazon.com/quicksight/latest/APIReference/API_TemplateSummary.html
+
 The primary key for this table is **arn**.
 
 ## Columns

@@ -53,6 +53,20 @@ func buildProjects(mux *httprouter.Router) error {
 	mux.GET("/api/v4/projects/:projectId/releases", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		fmt.Fprint(w, string(releaseResp))
 	})
+
+	var branch *gitlab.Branch
+	if err := faker.FakeObject(&branch); err != nil {
+		return err
+	}
+
+	branchResp, err := json.Marshal([]*gitlab.Branch{branch})
+	if err != nil {
+		return err
+	}
+
+	mux.GET("/api/v4/projects/:projectId/repository/branches", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+		fmt.Fprint(w, string(branchResp))
+	})
 	return nil
 }
 

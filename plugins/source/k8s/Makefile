@@ -6,7 +6,7 @@ gen-mocks: install-tools
 # Test unit
 .PHONY: test
 test:
-	go test -timeout 3m ./...
+	go test -race -timeout 3m ./...
 
 # Install tools
 .PHONY: install-tools
@@ -27,10 +27,6 @@ gen-docs:
 lint:
 	golangci-lint run --config ../../.golangci.yml 
 
-.PHONY: gen-code
-gen-code:
-	go run codegen/main.go
-
 # All gen targets
 .PHONY: gen
-gen: gen-code gen-docs
+gen: gen-mocks gen-docs

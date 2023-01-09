@@ -59,12 +59,14 @@ jobs:
         with:
           version: v1.50.1
           working-directory: cli
+          skip-pkg-cache: true
+          skip-build-cache: true
       - name: Get dependencies
         run: go get -t -d ./...
       - name: Build
         run: go build .
       - name: Test
-        run: go test ./...
+        run: make test
       - name: gen-docs
         if: matrix.os == 'ubuntu-latest'
         run: make gen-docs
@@ -87,9 +89,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.19.3-release-cache-${{ hashFiles('cli/go.sum') }}
+          key: ${{ runner.os }}-go-1.19.4-release-cache-${{ hashFiles('cli/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.19.3-release-cache-cli
+            ${{ runner.os }}-go-1.19.4-release-cache-cli
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/setup-go@v3

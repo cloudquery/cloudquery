@@ -126,7 +126,10 @@ sdk
 SDK
 serverless
 Severability
+Shopify
 skip_tables
+snyk
+Snyk
 SRE
 SREs
 Steampipe
@@ -145,6 +148,7 @@ trojan
 unbundle
 unencrypted
 unmarshalling
+upsert
 upserted
 uuid
 UUID

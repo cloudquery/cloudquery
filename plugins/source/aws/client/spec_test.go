@@ -9,22 +9,14 @@ func TestSpecValidate(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "valid account",
+			name: "valid accounts",
 			spec: &Spec{
 				Accounts: []Account{
 					{ID: "123456789012"},
+					{ID: "cq-playground"},
 				},
 			},
 			wantErr: false,
-		},
-		{
-			name: "invalid account",
-			spec: &Spec{
-				Accounts: []Account{
-					{ID: "account-123"},
-				},
-			},
-			wantErr: true,
 		},
 		{
 			name: "valid org",
