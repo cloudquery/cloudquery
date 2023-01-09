@@ -23,4 +23,8 @@ The primary key for this table is **uid**.
 |annotations|JSON|
 |owner_references|JSON|
 |finalizers|StringArray|
-|spec|JSON|
+|spec_holder_identity|String|
+|spec_lease_duration_seconds|Int|
+|spec_acquire_time|JSON|
+|spec_renew_time|JSON|
+|spec_lease_transitions|Int|

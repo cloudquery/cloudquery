@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"reflect"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/thoas/go-funk"
@@ -77,4 +78,19 @@ func StringToCidrPathResolver(path string) schema.ColumnResolver {
 		}
 		return r.Set(c.Name, nil)
 	}
+}
+
+// isK8sTimeStruct returns true if the given type is a metav1.Time struct or a pointer to it.
+func isK8sTimeStruct(fieldType reflect.Type) bool {
+	fieldKind := fieldType.Kind()
+
+	if fieldKind == reflect.Ptr {
+		return isK8sTimeStruct(fieldType.Elem())
+	}
+
+	if fieldKind == reflect.Struct && fieldType == reflect.TypeOf(v1.Time{}) {
+		return true
+	}
+
+	return false
 }

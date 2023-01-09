@@ -27,8 +27,8 @@ The primary key for this table is **uid**.
 |reason|String|
 |message|String|
 |source|JSON|
-|first_timestamp|JSON|
-|last_timestamp|JSON|
+|first_timestamp|Timestamp|
+|last_timestamp|Timestamp|
 |count|Int|
 |type|String|
 |event_time|JSON|

@@ -23,5 +23,14 @@ The primary key for this table is **uid**.
 |annotations|JSON|
 |owner_references|JSON|
 |finalizers|StringArray|
-|spec|JSON|
-|status|JSON|
+|spec_schedule|String|
+|spec_time_zone|String|
+|spec_starting_deadline_seconds|Int|
+|spec_concurrency_policy|String|
+|spec_suspend|Bool|
+|spec_job_template|JSON|
+|spec_successful_jobs_history_limit|Int|
+|spec_failed_jobs_history_limit|Int|
+|status_active|JSON|
+|status_last_schedule_time|Timestamp|
+|status_last_successful_time|Timestamp|

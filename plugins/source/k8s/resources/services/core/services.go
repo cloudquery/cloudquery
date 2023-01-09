@@ -30,6 +30,26 @@ func Services() *schema.Table {
 					PrimaryKey: true,
 				},
 			},
+			{
+				Name:     "spec_cluster_ip",
+				Type:     schema.TypeInet,
+				Resolver: client.StringToInetPathResolver("Spec.ClusterIP"),
+			},
+			{
+				Name:     "spec_cluster_ips",
+				Type:     schema.TypeInetArray,
+				Resolver: schema.PathResolver("Spec.ClusterIPs"),
+			},
+			{
+				Name:     "spec_external_ips",
+				Type:     schema.TypeInetArray,
+				Resolver: schema.PathResolver("Spec.ExternalIPs"),
+			},
+			{
+				Name:     "spec_load_balancer_ip",
+				Type:     schema.TypeInet,
+				Resolver: client.StringToInetPathResolver("Spec.LoadBalancerIP"),
+			},
 		},
 	}
 }

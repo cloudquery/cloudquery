@@ -23,5 +23,8 @@ The primary key for this table is **uid**.
 |annotations|JSON|
 |owner_references|JSON|
 |finalizers|StringArray|
-|spec|JSON|
-|status|JSON|
+|spec_hard|JSON|
+|spec_scopes|StringArray|
+|spec_scope_selector|JSON|
+|status_hard|JSON|
+|status_used|JSON|

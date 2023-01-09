@@ -23,4 +23,11 @@ The primary key for this table is **uid**.
 |annotations|JSON|
 |owner_references|JSON|
 |finalizers|StringArray|
-|spec|JSON|
+|spec_attach_required|Bool|
+|spec_pod_info_on_mount|Bool|
+|spec_volume_lifecycle_modes|StringArray|
+|spec_storage_capacity|Bool|
+|spec_fs_group_policy|String|
+|spec_token_requests|JSON|
+|spec_requires_republish|Bool|
+|spec_se_linux_mount|Bool|

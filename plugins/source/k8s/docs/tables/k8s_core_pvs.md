@@ -23,5 +23,15 @@ The primary key for this table is **uid**.
 |annotations|JSON|
 |owner_references|JSON|
 |finalizers|StringArray|
-|spec|JSON|
-|status|JSON|
+|spec_capacity|JSON|
+|spec_persistent_volume_source|JSON|
+|spec_access_modes|StringArray|
+|spec_claim_ref|JSON|
+|spec_persistent_volume_reclaim_policy|String|
+|spec_storage_class_name|String|
+|spec_mount_options|StringArray|
+|spec_volume_mode|String|
+|spec_node_affinity|JSON|
+|status_phase|String|
+|status_message|String|
+|status_reason|String|
