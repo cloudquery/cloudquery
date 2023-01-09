@@ -16,6 +16,10 @@ This table depends on [fastly_service_versions](fastly_service_versions.md).
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
+|name (PK)|String|
+|sslca_cert|String|
+|service_id (PK)|String|
+|service_version (PK)|Int|
 |address|String|
 |auto_loadbalance|Bool|
 |between_bytes_timeout|Int|
@@ -30,11 +34,9 @@ This table depends on [fastly_service_versions](fastly_service_versions.md).
 |max_conn|Int|
 |max_tls_version|String|
 |min_tls_version|String|
-|name (PK)|String|
 |override_host|String|
 |port|Int|
 |request_condition|String|
-|sslca_cert|String|
 |ssl_cert_hostname|String|
 |ssl_check_cert|Bool|
 |ssl_ciphers|String|
@@ -42,8 +44,6 @@ This table depends on [fastly_service_versions](fastly_service_versions.md).
 |ssl_client_key|String|
 |ssl_hostname|String|
 |sslsni_hostname|String|
-|service_id (PK)|String|
-|service_version (PK)|Int|
 |shield|String|
 |updated_at|Timestamp|
 |use_ssl|Bool|

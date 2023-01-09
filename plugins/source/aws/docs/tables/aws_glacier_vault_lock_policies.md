@@ -18,3 +18,6 @@ This table depends on [aws_glacier_vaults](aws_glacier_vaults.md).
 |region|String|
 |vault_arn (PK)|String|
 |policy|JSON|
+|creation_date|String|
+|expiration_date|String|
+|state|String|

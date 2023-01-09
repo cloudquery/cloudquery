@@ -17,6 +17,7 @@ The primary key for this table is **arn**.
 |arn (PK)|String|
 |aws_account_id|String|
 |description|String|
+|finding_arn|String|
 |first_observed_at|Timestamp|
 |last_observed_at|Timestamp|
 |remediation|JSON|

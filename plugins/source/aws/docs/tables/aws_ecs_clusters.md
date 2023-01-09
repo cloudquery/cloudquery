@@ -22,10 +22,12 @@ The following tables depend on aws_ecs_clusters:
 |account_id|String|
 |region|String|
 |arn (PK)|String|
+|tags|JSON|
 |active_services_count|Int|
 |attachments|JSON|
 |attachments_status|String|
 |capacity_providers|StringArray|
+|cluster_arn|String|
 |cluster_name|String|
 |configuration|JSON|
 |default_capacity_provider_strategy|JSON|
@@ -36,4 +38,3 @@ The following tables depend on aws_ecs_clusters:
 |settings|JSON|
 |statistics|JSON|
 |status|String|
-|tags|JSON|

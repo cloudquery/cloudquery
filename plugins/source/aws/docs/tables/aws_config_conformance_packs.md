@@ -20,8 +20,10 @@ The following tables depend on aws_config_conformance_packs:
 |account_id|String|
 |region|String|
 |arn (PK)|String|
+|conformance_pack_arn|String|
 |conformance_pack_id|String|
 |conformance_pack_name|String|
+|conformance_pack_input_parameters|JSON|
 |created_by|String|
 |delivery_s3_bucket|String|
 |delivery_s3_key_prefix|String|
