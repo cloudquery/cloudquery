@@ -78,7 +78,7 @@ For this it's recommended to use a regex testing tool to ensure your regex is ac
 - a named capture group for the plugin name (aws, gcp, etc..) which we will reference as 'plugin' in this tutorial.
 - a named capture group for the plugin current version which **must** be named `currentValue`.
 
-For our sample configuration file this regex would look something like:
+For our sample configuration file this regex will look like:
 
 ```shell copy
 kind:\s(?<kind>.*)\nspec:\n\s{2}name:.*?\w\n\s{2}path:\scloudquery\/(?<plugin>.*)\n\s{2}version:\s\"?v(?<currentValue>.*\d)\"?\n
