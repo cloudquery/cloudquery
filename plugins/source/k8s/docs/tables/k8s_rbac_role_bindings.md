@@ -15,9 +15,13 @@ The primary key for this table is **uid**.
 |kind|String|
 |api_version|String|
 |name|String|
+|generate_name|String|
 |namespace|String|
+|self_link|String|
 |resource_version|String|
 |generation|Int|
+|creation_timestamp|JSON|
+|deletion_timestamp|JSON|
 |deletion_grace_period_seconds|Int|
 |labels|JSON|
 |annotations|JSON|
