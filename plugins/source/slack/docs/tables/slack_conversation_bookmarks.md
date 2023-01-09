@@ -19,13 +19,13 @@ This table depends on [slack_conversations](slack_conversations.md).
 |team_id (PK)|String|
 |id (PK)|String|
 |channel_id (PK)|String|
+|date_created|Timestamp|
+|date_updated|Timestamp|
 |title|String|
 |link|String|
 |emoji|String|
 |icon_url|String|
 |type|String|
-|date_created|Timestamp|
-|date_updated|Timestamp|
 |rank|String|
 |last_updated_by_user_id|String|
 |last_updated_by_team_id|String|
