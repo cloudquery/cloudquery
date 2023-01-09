@@ -20,6 +20,7 @@ The primary key for this table is **arn**.
 |customer_aws_id|String|
 |enabled|Bool|
 |event_categories_list|StringArray|
+|event_subscription_arn|String|
 |sns_topic_arn|String|
 |source_ids_list|StringArray|
 |source_type|String|

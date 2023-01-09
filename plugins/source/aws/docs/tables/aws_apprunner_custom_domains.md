@@ -18,7 +18,7 @@ This table depends on [aws_apprunner_services](aws_apprunner_services.md).
 |_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
-|domain_name|String|
 |enable_www_subdomain|Bool|
+|domain_name|String|
 |status|String|
 |certificate_validation_records|JSON|

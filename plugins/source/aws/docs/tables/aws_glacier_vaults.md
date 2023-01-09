@@ -25,4 +25,5 @@ The following tables depend on aws_glacier_vaults:
 |last_inventory_date|String|
 |number_of_archives|Int|
 |size_in_bytes|Int|
+|vault_arn|String|
 |vault_name|String|

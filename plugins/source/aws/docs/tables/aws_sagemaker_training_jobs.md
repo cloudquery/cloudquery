@@ -20,6 +20,7 @@ The primary key for this table is **arn**.
 |resource_config|JSON|
 |secondary_status|String|
 |stopping_condition|JSON|
+|training_job_arn|String|
 |training_job_name|String|
 |training_job_status|String|
 |auto_ml_job_arn|String|
