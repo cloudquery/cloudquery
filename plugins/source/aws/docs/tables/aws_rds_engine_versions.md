@@ -36,12 +36,14 @@ The following tables depend on aws_rds_engine_versions:
 |kms_key_id|String|
 |major_engine_version|String|
 |status|String|
+|supported_ca_certificate_identifiers|StringArray|
 |supported_character_sets|JSON|
 |supported_engine_modes|StringArray|
 |supported_feature_names|StringArray|
 |supported_nchar_character_sets|JSON|
 |supported_timezones|JSON|
 |supports_babelfish|Bool|
+|supports_certificate_rotation_without_restart|Bool|
 |supports_global_databases|Bool|
 |supports_log_exports_to_cloudwatch_logs|Bool|
 |supports_parallel_query|Bool|
