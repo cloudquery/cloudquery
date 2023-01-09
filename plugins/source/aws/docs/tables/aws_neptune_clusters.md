@@ -26,6 +26,7 @@ The primary key for this table is **arn**.
 |cluster_create_time|Timestamp|
 |copy_tags_to_snapshot|Bool|
 |cross_account_clone|Bool|
+|db_cluster_arn|String|
 |db_cluster_identifier|String|
 |db_cluster_members|JSON|
 |db_cluster_option_group_memberships|JSON|

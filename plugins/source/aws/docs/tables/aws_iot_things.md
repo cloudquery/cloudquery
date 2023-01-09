@@ -17,6 +17,7 @@ The primary key for this table is **arn**.
 |principals|StringArray|
 |arn (PK)|String|
 |attributes|JSON|
+|thing_arn|String|
 |thing_name|String|
 |thing_type_name|String|
 |version|Int|

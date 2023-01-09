@@ -20,4 +20,5 @@ The primary key for this table is **arn**.
 |limits|JSON|
 |proactive_engagement_status|String|
 |start_time|Timestamp|
+|subscription_arn|String|
 |time_commitment_in_seconds|Int|
