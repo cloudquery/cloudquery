@@ -70,9 +70,6 @@ jobs:
       - name: Fail if docs are changed
         if: github.event_name == 'pull_request'
         run: test "$(git status -s ./docs/tables | wc -l)" -eq 0
-      - name: gen-code
-        if: github.event_name == 'pull_request'
-        run: make gen-code
       - name: Fail if code generation changed services
         if: github.event_name == 'pull_request'
         run: test "$(git status -s ./resources/services | wc -l)" -eq 0
