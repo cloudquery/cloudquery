@@ -21,12 +21,13 @@ The following tables depend on slack_conversation_histories:
 |_cq_parent_id|UUID|
 |channel_id (PK)|String|
 |team_id (PK)|String|
-|client_msg_id|String|
-|type|String|
-|user|String|
-|text|String|
 |ts (PK)|String|
 |thread_ts|String|
+|client_msg_id|String|
+|type|String|
+|channel|String|
+|user|String|
+|text|String|
 |is_starred|Bool|
 |pinned_to|StringArray|
 |attachments|JSON|
@@ -56,6 +57,7 @@ The following tables depend on slack_conversation_histories:
 |comment|JSON|
 |item_type|String|
 |reply_to|Int|
+|team|String|
 |reactions|JSON|
 |response_type|String|
 |replace_original|Bool|
