@@ -88,8 +88,8 @@ github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.14.0 h1:GMfZiWjkSnGJOTNwa57pZ
 github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.14.0/go.mod h1:PUzxtyO8Pgq2MljHs4G/Zm4Z0+hIuVyZMjtXTC6JEzQ=
 github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.22.0 h1:Hdql8h9SancrQPqJoDcaJQT01zwaSP4gYbe8rmrQRrw=
 github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.22.0/go.mod h1:1Li52ZBEvcubmtUtUFUjamRTQt4EoFzZpHDINdQ4Xso=
-github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.23.1 h1:6VwY6q6RZwxZTTTXjDmS8qbeBKvWwp8ugMKCEBjdgWA=
-github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.23.1/go.mod h1:th8fks2kW4FFCUKUQenuEG9TEzMLVxeL0ckdJn/QVbI=
+github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.24.0 h1:U7hDPPdDP7bptV6wJ5OJkshEw8P/K2k5WCjEYlVajLw=
+github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.24.0/go.mod h1:th8fks2kW4FFCUKUQenuEG9TEzMLVxeL0ckdJn/QVbI=
 github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.18.0 h1:Ai+CjJw+5/s3r6k5pggzDuFhWor2U3iwtsrmvN0Hczc=
 github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.18.0/go.mod h1:xHK1ta0bQEa5jL6rahKRJvsibjzDO7NTIs5itzsF4w8=
 github.com/aws/aws-sdk-go-v2/service/codebuild v1.20.0 h1:7v1hy+4DUc2mLhV4WMzv+YuShj0zbqLW+WMCHqzDPyk=
@@ -130,8 +130,8 @@ github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk v1.15.0 h1:cBiPqmKWJexeZ98
 github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk v1.15.0/go.mod h1:txSsTeuqHfPwicYkpg3PoOXFOpERUL5colZaCaaa8D0=
 github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.15.0 h1:FFfQypN9iItIrGhbl8em90uXMFBLrCkNC1yJ65+m9Sk=
 github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.15.0/go.mod h1:3OUv9SlYvymsCF3I5NftITc1+B09cF5lg4IsZgQQy1U=
-github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.18.28 h1:Ae7aH1PEbrVSg1fSQy33E/mILWd1Csncz95FMfxYWms=
-github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.18.28/go.mod h1:ix71C17la8K2MUJrqJzu+i7+aPoQYTAy14hKQbGDB9w=
+github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.19.0 h1:Fs+mQ2VSOH3YhNJcfImnl7dsKAm/gqw4Q9iqLRIiPWE=
+github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.19.0/go.mod h1:ix71C17la8K2MUJrqJzu+i7+aPoQYTAy14hKQbGDB9w=
 github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.18.0 h1:WvtC9K3UTI6EJSQzITax3/TElN4WGCaOB7Ptocj7AMY=
 github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.18.0/go.mod h1:XBRdG4B+BnZjICBUIVLD4++5TkX19Y28f6+PNhXvWWc=
 github.com/aws/aws-sdk-go-v2/service/elastictranscoder v1.14.0 h1:2AqNc84m2pGInkmtfbqxrU3CFfHUdP5Bi3/wvD8HVZM=
@@ -270,8 +270,8 @@ github.com/chzyer/logex v1.1.10/go.mod h1:+Ywpsq7O8HXn0nuIou7OrIPyXbp3wmkHB+jjWR
 github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e/go.mod h1:nSuG5e5PlCu98SY8svDHJxuZscDgtXS6KTTbou5AhLI=
 github.com/chzyer/test v0.0.0-20180213035817-a1ea475d72b1/go.mod h1:Q3SI9o4m/ZMnBNeIyt5eFwwo7qiLfzFZmjNmxjkiQlU=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
-github.com/cloudquery/plugin-sdk v1.22.0 h1:umevXZgRIr2IoEzRfZnbDw5XDaPcdz4q2gkuPIW3+08=
-github.com/cloudquery/plugin-sdk v1.22.0/go.mod h1:teMPyCON3uPdMsHvzpSiOg+IK2sOR5Tf9dYLreoURzI=
+github.com/cloudquery/plugin-sdk v1.23.0 h1:pjgxQdozJ9fgD1v7r+d4YQR73bhC0t7fjT52C5HTpkg=
+github.com/cloudquery/plugin-sdk v1.23.0/go.mod h1:teMPyCON3uPdMsHvzpSiOg+IK2sOR5Tf9dYLreoURzI=
 github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGXZJjfX53e64911xZQV5JYwmTeXPW+k8Sc=
 github.com/cncf/udpa/go v0.0.0-20201120205902-5459f2c99403/go.mod h1:WmhPx2Nbnhtbo57+VJT5O0JRkEi1Wbu0z5j0R8u5Hbk=
 github.com/coreos/go-systemd v0.0.0-20190321100706-95778dfbb74e/go.mod h1:F5haX7vjVVG0kc13fIWeqUViNPyEJxv/OmvnBo0Yme4=
