@@ -12,7 +12,7 @@ func Workflows() *schema.Table {
 		Name:      "github_workflows",
 		Resolver:  fetchWorkflows,
 		Multiplex: client.OrgMultiplex,
-		Transform: transformers.TransformWithStruct(&github.Workflow{}),
+		Transform: transformers.TransformWithStruct(&github.Workflow{}, client.SharedTransformers()...),
 		Columns: []schema.Column{
 			{
 				Name:        "org",

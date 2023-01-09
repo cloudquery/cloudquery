@@ -12,7 +12,7 @@ func Storage() *schema.Table {
 		Name:      "github_billing_storage",
 		Resolver:  fetchStorage,
 		Multiplex: client.OrgMultiplex,
-		Transform: transformers.TransformWithStruct(&github.StorageBilling{}),
+		Transform: transformers.TransformWithStruct(&github.StorageBilling{}, client.SharedTransformers()...),
 		Columns: []schema.Column{
 			{
 				Name:        "org",

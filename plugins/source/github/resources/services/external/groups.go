@@ -12,7 +12,7 @@ func Groups() *schema.Table {
 		Name:      "github_external_groups",
 		Resolver:  fetchGroups,
 		Multiplex: client.OrgMultiplex,
-		Transform: transformers.TransformWithStruct(&github.ExternalGroup{}),
+		Transform: transformers.TransformWithStruct(&github.ExternalGroup{}, client.SharedTransformers()...),
 		Columns: []schema.Column{
 			{
 				Name:        "org",
@@ -22,34 +22,6 @@ func Groups() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
-			},
-			{
-				Name:     "group_id",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("GroupID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "group_name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("GroupName"),
-			},
-			{
-				Name:     "updated_at",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("UpdatedAt"),
-			},
-			{
-				Name:     "teams",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Teams"),
-			},
-			{
-				Name:     "members",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Members"),
 			},
 		},
 	}

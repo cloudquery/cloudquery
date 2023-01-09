@@ -35,9 +35,9 @@ This table depends on [github_teams](github_teams.md).
 |public_gists|Int|
 |followers|Int|
 |following|Int|
-|created_at|JSON|
-|updated_at|JSON|
-|suspended_at|JSON|
+|created_at|Timestamp|
+|updated_at|Timestamp|
+|suspended_at|Timestamp|
 |type|String|
 |site_admin|Bool|
 |total_private_repos|Int|

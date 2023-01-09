@@ -12,7 +12,7 @@ func Assets() *schema.Table {
 		Name:      "github_release_assets",
 		Resolver:  fetchAssets,
 		Multiplex: client.OrgMultiplex,
-		Transform: transformers.TransformWithStruct(&github.ReleaseAsset{}),
+		Transform: transformers.TransformWithStruct(&github.ReleaseAsset{}, client.SharedTransformers()...),
 		Columns: []schema.Column{
 			{
 				Name:        "org",

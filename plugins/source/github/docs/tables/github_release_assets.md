@@ -24,8 +24,8 @@ This table depends on [github_releases](github_releases.md).
 |content_type|String|
 |size|Int|
 |download_count|Int|
-|created_at|JSON|
-|updated_at|JSON|
+|created_at|Timestamp|
+|updated_at|Timestamp|
 |browser_download_url|String|
 |uploader|JSON|
 |node_id|String|

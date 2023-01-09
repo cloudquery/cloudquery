@@ -12,7 +12,7 @@ func Hooks() *schema.Table {
 		Name:      "github_hooks",
 		Resolver:  fetchHooks,
 		Multiplex: client.OrgMultiplex,
-		Transform: transformers.TransformWithStruct(&github.Hook{}),
+		Transform: transformers.TransformWithStruct(&github.Hook{}, client.SharedTransformers()...),
 		Columns: []schema.Column{
 			{
 				Name:        "org",

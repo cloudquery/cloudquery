@@ -12,7 +12,7 @@ func Package() *schema.Table {
 		Name:      "github_billing_package",
 		Resolver:  fetchPackage,
 		Multiplex: client.OrgMultiplex,
-		Transform: transformers.TransformWithStruct(&github.PackageBilling{}),
+		Transform: transformers.TransformWithStruct(&github.PackageBilling{}, client.SharedTransformers()...),
 		Columns: []schema.Column{
 			{
 				Name:        "org",

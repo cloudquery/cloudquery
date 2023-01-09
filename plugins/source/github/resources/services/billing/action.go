@@ -12,7 +12,7 @@ func Action() *schema.Table {
 		Name:      "github_billing_action",
 		Resolver:  fetchAction,
 		Multiplex: client.OrgMultiplex,
-		Transform: transformers.TransformWithStruct(&github.ActionBilling{}),
+		Transform: transformers.TransformWithStruct(&github.ActionBilling{}, client.SharedTransformers()...),
 		Columns: []schema.Column{
 			{
 				Name:        "org",

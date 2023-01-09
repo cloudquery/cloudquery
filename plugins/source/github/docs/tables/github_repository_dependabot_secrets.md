@@ -17,7 +17,7 @@ This table depends on [github_repositories](github_repositories.md).
 |org (PK)|String|
 |repository_id (PK)|Int|
 |name (PK)|String|
-|created_at|JSON|
-|updated_at|JSON|
+|created_at|Timestamp|
+|updated_at|Timestamp|
 |visibility|String|
 |selected_repositories_url|String|

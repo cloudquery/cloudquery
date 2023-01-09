@@ -17,8 +17,8 @@ The composite primary key for this table is (**org**, **id**).
 |name|String|
 |path|String|
 |state|String|
-|created_at|JSON|
-|updated_at|JSON|
+|created_at|Timestamp|
+|updated_at|Timestamp|
 |url|String|
 |html_url|String|
 |badge_url|String|

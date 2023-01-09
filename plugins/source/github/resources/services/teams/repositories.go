@@ -11,7 +11,7 @@ func Repositories() *schema.Table {
 	return &schema.Table{
 		Name:      "github_team_repositories",
 		Resolver:  fetchRepositories,
-		Transform: transformers.TransformWithStruct(&github.Repository{}),
+		Transform: transformers.TransformWithStruct(&github.Repository{}, client.SharedTransformers()...),
 		Columns: []schema.Column{
 			{
 				Name:        "org",

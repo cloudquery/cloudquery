@@ -12,7 +12,7 @@ func Releases() *schema.Table {
 		Name:      "github_releases",
 		Resolver:  fetchReleases,
 		Multiplex: client.OrgMultiplex,
-		Transform: transformers.TransformWithStruct(&github.RepositoryRelease{}),
+		Transform: transformers.TransformWithStruct(&github.RepositoryRelease{}, client.SharedTransformers()...),
 		Columns: []schema.Column{
 			{
 				Name:        "org",

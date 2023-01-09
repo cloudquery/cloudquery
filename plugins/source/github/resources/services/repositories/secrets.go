@@ -11,7 +11,7 @@ func Secrets() *schema.Table {
 	return &schema.Table{
 		Name:      "github_repository_dependabot_secrets",
 		Resolver:  fetchSecrets,
-		Transform: transformers.TransformWithStruct(&github.Secret{}),
+		Transform: transformers.TransformWithStruct(&github.Secret{}, client.SharedTransformers()...),
 		Columns: []schema.Column{
 			{
 				Name:        "org",

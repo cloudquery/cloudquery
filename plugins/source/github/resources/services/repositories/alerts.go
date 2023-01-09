@@ -11,7 +11,7 @@ func Alerts() *schema.Table {
 	return &schema.Table{
 		Name:      "github_repository_dependabot_alerts",
 		Resolver:  fetchAlerts,
-		Transform: transformers.TransformWithStruct(&github.DependabotAlert{}),
+		Transform: transformers.TransformWithStruct(&github.DependabotAlert{}, client.SharedTransformers()...),
 		Columns: []schema.Column{
 			{
 				Name:        "org",

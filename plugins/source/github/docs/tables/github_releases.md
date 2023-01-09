@@ -29,8 +29,8 @@ The following tables depend on github_releases:
 |make_latest|String|
 |discussion_category_name|String|
 |generate_release_notes|Bool|
-|created_at|JSON|
-|published_at|JSON|
+|created_at|Timestamp|
+|published_at|Timestamp|
 |url|String|
 |html_url|String|
 |assets_url|String|

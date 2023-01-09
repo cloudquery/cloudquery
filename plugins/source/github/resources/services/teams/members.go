@@ -11,7 +11,7 @@ func Members() *schema.Table {
 	return &schema.Table{
 		Name:      "github_team_members",
 		Resolver:  fetchMembers,
-		Transform: transformers.TransformWithStruct(&github.User{}),
+		Transform: transformers.TransformWithStruct(&github.User{}, client.SharedTransformers()...),
 		Columns: []schema.Column{
 			{
 				Name:        "org",

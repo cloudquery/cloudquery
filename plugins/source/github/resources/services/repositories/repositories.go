@@ -12,7 +12,7 @@ func Repositories() *schema.Table {
 		Name:      "github_repositories",
 		Resolver:  fetchRepositories,
 		Multiplex: client.OrgMultiplex,
-		Transform: transformers.TransformWithStruct(&github.Repository{}),
+		Transform: transformers.TransformWithStruct(&github.Repository{}, client.SharedTransformers()...),
 		Columns: []schema.Column{
 			{
 				Name:        "org",
