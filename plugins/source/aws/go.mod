@@ -22,7 +22,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/cloudfront v1.24.0
 	github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.22.0
-	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.23.1
+	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.24.0
 	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/codebuild v1.20.0
 	github.com/aws/aws-sdk-go-v2/service/codepipeline v1.14.0
@@ -43,7 +43,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/elasticache v1.26.0
 	github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.15.0
-	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.18.28
+	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.19.0
 	github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/elastictranscoder v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/emr v1.22.0
@@ -63,7 +63,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/kms v1.20.0
 	github.com/aws/aws-sdk-go-v2/service/lambda v1.27.0
 	github.com/aws/aws-sdk-go-v2/service/lightsail v1.25.0
-	github.com/aws/aws-sdk-go-v2/service/mq v1.13.18
+	github.com/aws/aws-sdk-go-v2/service/mq v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/mwaa v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/neptune v1.19.0
 	github.com/aws/aws-sdk-go-v2/service/organizations v1.18.0
@@ -77,12 +77,12 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/route53domains v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.30.0
 	github.com/aws/aws-sdk-go-v2/service/s3control v1.29.0
-	github.com/aws/aws-sdk-go-v2/service/sagemaker v1.61.0
+	github.com/aws/aws-sdk-go-v2/service/sagemaker v1.62.0
 	github.com/aws/aws-sdk-go-v2/service/scheduler v1.1.0
 	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/servicecatalog v1.16.0
 	github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.16.0
-	github.com/aws/aws-sdk-go-v2/service/servicequotas v1.13.23
+	github.com/aws/aws-sdk-go-v2/service/servicequotas v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/ses v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/sesv2 v1.16.0
 	github.com/aws/aws-sdk-go-v2/service/sfn v1.17.0
@@ -98,7 +98,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/xray v1.15.3
 	github.com/aws/smithy-go v1.13.5
 	github.com/basgys/goxml2json v1.1.0
-	github.com/cloudquery/plugin-sdk v1.21.0
+	github.com/cloudquery/plugin-sdk v1.23.0
 	github.com/gocarina/gocsv v0.0.0-20221216233619-1fea7ae8d380
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.9
@@ -145,7 +145,6 @@ require (
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/uuid v1.3.0 // indirect
-	github.com/iancoleman/strcase v0.2.0
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.17 // indirect

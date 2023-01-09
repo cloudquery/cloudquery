@@ -83,6 +83,12 @@ const CLOUDQUERY_TEAM = {
     twitterUsername: "disq",
     image_url: "/images/people/kemal.jpg",
   },
+  cloudmatt: {
+    name: "cloudmatt",
+    url: "https://github.com/cloudmatt",
+    twitterUsername: "",
+    image_url: "/images/people/cloudmatt.png",
+  },
 };
 
 export type Author = keyof typeof CLOUDQUERY_TEAM;

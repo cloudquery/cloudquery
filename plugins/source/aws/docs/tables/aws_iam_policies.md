@@ -24,5 +24,6 @@ The composite primary key for this table is (**account_id**, **id**).
 |is_attachable|Bool|
 |path|String|
 |permissions_boundary_usage_count|Int|
+|policy_id|String|
 |policy_name|String|
 |update_date|Timestamp|
