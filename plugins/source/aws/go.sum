@@ -202,8 +202,8 @@ github.com/aws/aws-sdk-go-v2/service/redshift v1.27.0 h1:kJDkVPtkB+gLwahLNtWs0vn
 github.com/aws/aws-sdk-go-v2/service/redshift v1.27.0/go.mod h1:cpzzZf+cK9kF7PAbJOU491GGQO/8+oD4jtbawDUG+pc=
 github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.13.0 h1:YJCC58cjhiXvvKSOPTP1+K6fFKbZWo8eUpdQeCPZMHs=
 github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.13.0/go.mod h1:ZkZtG/eXl3leAzkIHhWJOkKaAObxOHtYe3lxUxW1WW0=
-github.com/aws/aws-sdk-go-v2/service/route53 v1.25.2 h1:MNL6bLDcwOGL9j+ANiejLYn/cBSku1m+pLWXri/FFF4=
-github.com/aws/aws-sdk-go-v2/service/route53 v1.25.2/go.mod h1:4SAHuLdh4v7pA2F6HdhUUgiLUDA6J89KWr7xAYCDiyc=
+github.com/aws/aws-sdk-go-v2/service/route53 v1.26.0 h1:Lt96i6l9YONN7X0KW5AgJJ84l3gAzBZcPqCbeEGhd3Y=
+github.com/aws/aws-sdk-go-v2/service/route53 v1.26.0/go.mod h1:4SAHuLdh4v7pA2F6HdhUUgiLUDA6J89KWr7xAYCDiyc=
 github.com/aws/aws-sdk-go-v2/service/route53domains v1.14.0 h1:I/rT8QFy58zw4A/tkTPsTjkIe3LaKI6UsvDn/YdJgE0=
 github.com/aws/aws-sdk-go-v2/service/route53domains v1.14.0/go.mod h1:TTvu6PV1OnaZWl5QWRgpP1iH79bEESwPnCNya1sDqyM=
 github.com/aws/aws-sdk-go-v2/service/s3 v1.30.0 h1:wddsyuESfviaiXk3w9N6/4iRwTg/a3gktjODY6jYQBo=
@@ -214,12 +214,12 @@ github.com/aws/aws-sdk-go-v2/service/sagemaker v1.61.0 h1:yQjFY8oQcFVXkCNNoQdolB
 github.com/aws/aws-sdk-go-v2/service/sagemaker v1.61.0/go.mod h1:v+qgYDefdlOgci1kvpeo9jwo0J66r/i+z1WJWher+cE=
 github.com/aws/aws-sdk-go-v2/service/scheduler v1.1.0 h1:4AYYktQrNoGvQS7hm6SYTUYIbFC/T23I54Dx8KIM5AY=
 github.com/aws/aws-sdk-go-v2/service/scheduler v1.1.0/go.mod h1:ZnD5i/e5nCIh1w3ivCfifQ5r4PLh3aOCElnOrZz+WnQ=
-github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.17.0 h1:6W6BLZcXytRJsVvc2gGwxKE4wbMSlWqdxZivBP/E+ys=
-github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.17.0/go.mod h1:jAeo/PdIJZuDSwsvxJS94G4d6h8tStj7WXVuKwLHWU8=
+github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.18.0 h1:UQDiRZyaHQGPXIuCYqKsz/wIVZknCiZdRmPW8buD/xc=
+github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.18.0/go.mod h1:jAeo/PdIJZuDSwsvxJS94G4d6h8tStj7WXVuKwLHWU8=
 github.com/aws/aws-sdk-go-v2/service/servicecatalog v1.16.0 h1:Yo5zv0KriAoPCo4yWCrcJ7IURim9PYNrAVZ3tP+IUfw=
 github.com/aws/aws-sdk-go-v2/service/servicecatalog v1.16.0/go.mod h1:r0xKT6nzw2oTEZ37LdnSCRA85zZwRFt0Cmc40+b9Rmk=
-github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.15.2 h1:o1yfwnYPIePeya0etsxv1qrc46WM6wyVZld1AuXhvYk=
-github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.15.2/go.mod h1:H/ErouUYrKFwuRLD4MIUeoyZgupytldUbDzCACH+Rys=
+github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.16.0 h1:FObz7TAV6hXLH9RPUgctQjBeXsQ9dlRlo+ob3s4Pbik=
+github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.16.0/go.mod h1:H/ErouUYrKFwuRLD4MIUeoyZgupytldUbDzCACH+Rys=
 github.com/aws/aws-sdk-go-v2/service/servicequotas v1.13.23 h1:QTbShmzWTmoF5dbd0K34aY1tXZV7LO6NJ1iRnJQ9v8I=
 github.com/aws/aws-sdk-go-v2/service/servicequotas v1.13.23/go.mod h1:8I7mkhR5OsSBE1FlKOZ7Etb5gtA9881M++HhCEhMj10=
 github.com/aws/aws-sdk-go-v2/service/ses v1.15.0 h1:hFlk7D1Y4OHaxTSbgGY19gso4tmAXuLi0JRlSZkgCjI=

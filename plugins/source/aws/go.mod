@@ -73,15 +73,15 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/rds v1.39.0
 	github.com/aws/aws-sdk-go-v2/service/redshift v1.27.0
 	github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.13.0
-	github.com/aws/aws-sdk-go-v2/service/route53 v1.25.2
+	github.com/aws/aws-sdk-go-v2/service/route53 v1.26.0
 	github.com/aws/aws-sdk-go-v2/service/route53domains v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.30.0
 	github.com/aws/aws-sdk-go-v2/service/s3control v1.29.0
 	github.com/aws/aws-sdk-go-v2/service/sagemaker v1.61.0
 	github.com/aws/aws-sdk-go-v2/service/scheduler v1.1.0
-	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.17.0
+	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/servicecatalog v1.16.0
-	github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.15.2
+	github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.16.0
 	github.com/aws/aws-sdk-go-v2/service/servicequotas v1.13.23
 	github.com/aws/aws-sdk-go-v2/service/ses v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/sesv2 v1.16.0
