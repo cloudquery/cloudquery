@@ -29,6 +29,7 @@ This table depends on [aws_autoscaling_groups](aws_autoscaling_groups.md).
 |metric_aggregation_type|String|
 |min_adjustment_magnitude|Int|
 |min_adjustment_step|Int|
+|policy_arn|String|
 |policy_name|String|
 |policy_type|String|
 |predictive_scaling_configuration|JSON|

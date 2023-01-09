@@ -24,6 +24,7 @@ This table depends on [aws_kafka_clusters](aws_kafka_clusters.md).
 |creation_time|Timestamp|
 |end_time|Timestamp|
 |error_info|JSON|
+|operation_arn|String|
 |operation_state|String|
 |operation_steps|JSON|
 |operation_type|String|
