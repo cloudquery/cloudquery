@@ -11,7 +11,7 @@ func Users() *schema.Table {
 	return &schema.Table{
 		Name:      "okta_users",
 		Resolver:  fetchUsers,
-		Transform: transformers.TransformWithStruct(&okta.User{}, client.TransformerOptions()...),
+		Transform: transformers.TransformWithStruct(&okta.User{}, client.SharedTransformers()...),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

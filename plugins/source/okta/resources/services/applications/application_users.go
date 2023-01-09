@@ -11,7 +11,7 @@ func ApplicationUsers() *schema.Table {
 	return &schema.Table{
 		Name:      "okta_application_users",
 		Resolver:  fetchApplicationUsers,
-		Transform: transformers.TransformWithStruct(&okta.AppUser{}, client.TransformerOptions()...),
+		Transform: transformers.TransformWithStruct(&okta.AppUser{}, client.SharedTransformers()...),
 		Columns: []schema.Column{
 			{
 				Name:     "app_id",

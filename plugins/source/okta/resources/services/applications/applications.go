@@ -11,7 +11,7 @@ func Applications() *schema.Table {
 	return &schema.Table{
 		Name:      "okta_applications",
 		Resolver:  fetchApplications,
-		Transform: transformers.TransformWithStruct(&okta.Application{}, client.TransformerOptions()...),
+		Transform: transformers.TransformWithStruct(&okta.Application{}, client.SharedTransformers()...),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

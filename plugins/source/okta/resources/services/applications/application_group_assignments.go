@@ -11,7 +11,7 @@ func ApplicationGroupAssignments() *schema.Table {
 	return &schema.Table{
 		Name:      "okta_application_group_assignments",
 		Resolver:  fetchApplicationGroupAssignments,
-		Transform: transformers.TransformWithStruct(&okta.ApplicationGroupAssignment{}, client.TransformerOptions()...),
+		Transform: transformers.TransformWithStruct(&okta.ApplicationGroupAssignment{}, client.SharedTransformers()...),
 		Columns: []schema.Column{
 			{
 				Name:     "app_id",

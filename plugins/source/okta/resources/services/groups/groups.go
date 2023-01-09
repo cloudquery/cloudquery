@@ -11,7 +11,7 @@ func Groups() *schema.Table {
 	return &schema.Table{
 		Name:      "okta_groups",
 		Resolver:  fetchGroups,
-		Transform: transformers.TransformWithStruct(&okta.Group{}, client.TransformerOptions()...),
+		Transform: transformers.TransformWithStruct(&okta.Group{}, client.SharedTransformers()...),
 		Columns: []schema.Column{
 			{
 				Name:     "id",
