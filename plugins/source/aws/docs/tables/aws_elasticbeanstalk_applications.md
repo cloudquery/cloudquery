@@ -16,6 +16,7 @@ The composite primary key for this table is (**arn**, **date_created**).
 |region|String|
 |arn (PK)|String|
 |date_created (PK)|Timestamp|
+|application_arn|String|
 |application_name|String|
 |configuration_templates|StringArray|
 |date_updated|Timestamp|
