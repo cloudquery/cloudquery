@@ -11,7 +11,7 @@ func Settings() *schema.Table {
 	return &schema.Table{
 		Name:      "gitlab_settings",
 		Resolver:  fetchSettings,
-		Transform: transformers.TransformWithStruct(&gitlab.Settings{}),
+		Transform: transformers.TransformWithStruct(&gitlab.Settings{}, client.SharedTransformers()...),
 		Columns: []schema.Column{
 			{
 				Name:     "base_url",

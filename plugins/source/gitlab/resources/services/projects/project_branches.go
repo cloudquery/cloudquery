@@ -11,7 +11,7 @@ func ProjectBranches() *schema.Table {
 	return &schema.Table{
 		Name:      "gitlab_project_branches",
 		Resolver:  fetchProjectBranches,
-		Transform: transformers.TransformWithStruct(&gitlab.Branch{}),
+		Transform: transformers.TransformWithStruct(&gitlab.Branch{}, client.SharedTransformers()...),
 		Columns: []schema.Column{
 			{
 				Name:     "base_url",

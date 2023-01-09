@@ -11,7 +11,7 @@ func GroupMembers() *schema.Table {
 	return &schema.Table{
 		Name:      "gitlab_group_members",
 		Resolver:  fetchGroupMembers,
-		Transform: transformers.TransformWithStruct(&gitlab.GroupMember{}),
+		Transform: transformers.TransformWithStruct(&gitlab.GroupMember{}, client.SharedTransformers()...),
 		Columns: []schema.Column{
 			{
 				Name:     "base_url",

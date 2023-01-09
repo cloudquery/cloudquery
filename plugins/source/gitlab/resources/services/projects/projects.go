@@ -11,7 +11,7 @@ func Projects() *schema.Table {
 	return &schema.Table{
 		Name:      "gitlab_projects",
 		Resolver:  fetchProjects,
-		Transform: transformers.TransformWithStruct(&gitlab.Project{}),
+		Transform: transformers.TransformWithStruct(&gitlab.Project{}, client.SharedTransformers()...),
 		Columns: []schema.Column{
 			{
 				Name:     "base_url",

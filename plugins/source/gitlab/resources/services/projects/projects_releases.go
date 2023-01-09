@@ -11,7 +11,7 @@ func ProjectsReleases() *schema.Table {
 	return &schema.Table{
 		Name:      "gitlab_projects_releases",
 		Resolver:  fetchProjectsReleases,
-		Transform: transformers.TransformWithStruct(&gitlab.Release{}),
+		Transform: transformers.TransformWithStruct(&gitlab.Release{}, client.SharedTransformers()...),
 		Columns: []schema.Column{
 			{
 				Name:     "base_url",

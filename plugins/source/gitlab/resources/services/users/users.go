@@ -11,7 +11,7 @@ func Users() *schema.Table {
 	return &schema.Table{
 		Name:      "gitlab_users",
 		Resolver:  fetchUsers,
-		Transform: transformers.TransformWithStruct(&gitlab.User{}),
+		Transform: transformers.TransformWithStruct(&gitlab.User{}, client.SharedTransformers()...),
 		Columns: []schema.Column{
 			{
 				Name:     "base_url",
