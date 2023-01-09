@@ -87,6 +87,7 @@ func fetchBatch(ctx context.Context, c *client.Client, tableName string, startID
 	g, gctx := errgroup.WithContext(ctx)
 	g.SetLimit(c.Spec.ItemConcurrency)
 	for i := startID; i <= endID; i++ {
+		i := i
 		g.Go(func() error {
 			return c.RetryOnError(gctx, tableName, func() error {
 				return fetchItem(gctx, c, i, res)
