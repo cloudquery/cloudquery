@@ -42,7 +42,6 @@ The following tables depend on slack_conversations:
 |name|String|
 |creator|String|
 |is_archived|Bool|
-|members|StringArray|
 |topic|JSON|
 |purpose|JSON|
 |is_channel|Bool|
