@@ -122,6 +122,11 @@ func EngineVersions() *schema.Table {
 				Resolver: schema.PathResolver("Status"),
 			},
 			{
+				Name:     "supported_ca_certificate_identifiers",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("SupportedCACertificateIdentifiers"),
+			},
+			{
 				Name:     "supported_character_sets",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("SupportedCharacterSets"),
@@ -150,6 +155,11 @@ func EngineVersions() *schema.Table {
 				Name:     "supports_babelfish",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("SupportsBabelfish"),
+			},
+			{
+				Name:     "supports_certificate_rotation_without_restart",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("SupportsCertificateRotationWithoutRestart"),
 			},
 			{
 				Name:     "supports_global_databases",
