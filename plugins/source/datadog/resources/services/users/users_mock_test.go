@@ -30,13 +30,6 @@ func buildUsersMock(t *testing.T, ctrl *gomock.Controller) client.DatadogService
 	}
 	m.EXPECT().ListUserPermissions(gomock.Any(), gomock.Any()).Return(permissions, nil, nil)
 
-	var orgs datadogV2.UserResponse
-	err = faker.FakeObject(&orgs)
-	if err != nil {
-		t.Fatal(err)
-	}
-	m.EXPECT().ListUserOrganizations(gomock.Any(), gomock.Any()).Return(orgs, nil, nil)
-
 	return services
 }
 

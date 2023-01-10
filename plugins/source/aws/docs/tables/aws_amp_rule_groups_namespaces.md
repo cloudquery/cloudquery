@@ -21,7 +21,7 @@ This table depends on [aws_amp_workspaces](aws_amp_workspaces.md).
 |workspace_arn|String|
 |arn (PK)|String|
 |created_at|Timestamp|
-|data|IntArray|
+|data|ByteArray|
 |modified_at|Timestamp|
 |name|String|
 |status|JSON|

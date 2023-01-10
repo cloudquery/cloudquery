@@ -34,7 +34,6 @@ func Users() *schema.Table {
 
 		Relations: []*schema.Table{
 			UserPermissions(),
-			UserOrganizations(),
 		},
 	}
 }
