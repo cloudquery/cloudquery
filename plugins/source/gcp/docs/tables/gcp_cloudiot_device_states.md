@@ -19,4 +19,4 @@ This table depends on [gcp_cloudiot_devices](gcp_cloudiot_devices.md).
 |project_id (PK)|String|
 |device_name (PK)|String|
 |update_time|Timestamp|
-|binary_data|IntArray|
+|binary_data|ByteArray|
