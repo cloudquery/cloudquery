@@ -12,9 +12,9 @@ The primary key for this table is **id**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
+|id (PK)|String|
 |addon|JSON|
 |created_at|Timestamp|
-|id (PK)|String|
 |token|String|
 |updated_at|Timestamp|
 |url|String|
