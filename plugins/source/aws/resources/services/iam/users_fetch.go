@@ -11,7 +11,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchIamUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchIamUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	config := iam.ListUsersInput{}
 	c := meta.(*client.Client)
 	svc := c.Services().Iam
@@ -39,7 +39,7 @@ func getUser(ctx context.Context, meta schema.ClientMeta, resource *schema.Resou
 	return nil
 }
 
-func fetchIamUserGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchIamUserGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config iam.ListGroupsForUserInput
 	p := parent.Item.(*types.User)
 	svc := meta.(*client.Client).Services().Iam
@@ -58,7 +58,7 @@ func fetchIamUserGroups(ctx context.Context, meta schema.ClientMeta, parent *sch
 	return nil
 }
 
-func fetchIamUserAccessKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchIamUserAccessKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config iam.ListAccessKeysInput
 	p := parent.Item.(*types.User)
 	svc := meta.(*client.Client).Services().Iam
@@ -110,7 +110,7 @@ func postIamUserAccessKeyResolver(ctx context.Context, meta schema.ClientMeta, r
 	return nil
 }
 
-func fetchIamUserAttachedPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchIamUserAttachedPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config iam.ListAttachedUserPoliciesInput
 	p := parent.Item.(*types.User)
 	svc := meta.(*client.Client).Services().Iam

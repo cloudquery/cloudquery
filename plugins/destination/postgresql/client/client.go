@@ -5,23 +5,26 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/plugins"
+	"github.com/cloudquery/plugin-sdk/plugins/destination"
 	"github.com/cloudquery/plugin-sdk/specs"
-	"github.com/jackc/pgx/v4"
-	"github.com/jackc/pgx/v4/log/zerologadapter"
-	"github.com/jackc/pgx/v4/pgxpool"
+
+	pgx_zero_log "github.com/jackc/pgx-zerolog"
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/jackc/pgx/v5/tracelog"
 	"github.com/rs/zerolog"
 )
 
 type Client struct {
-	plugins.DefaultReverseTransformer
+	destination.UnimplementedManagedWriter
+	destination.DefaultReverseTransformer
 	conn                *pgxpool.Pool
 	logger              zerolog.Logger
 	spec                specs.Destination
 	currentDatabaseName string
 	currentSchemaName   string
 	pgType              pgType
-	metrics             plugins.DestinationMetrics
+	metrics             destination.Metrics
 	batchSize           int
 }
 
@@ -61,7 +64,7 @@ const (
 	pgTypeCockroachDB
 )
 
-func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (plugins.DestinationClient, error) {
+func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (destination.Client, error) {
 	c := &Client{
 		logger: logger.With().Str("module", "pg-dest").Logger(),
 	}
@@ -71,14 +74,12 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (pl
 		return nil, fmt.Errorf("failed to unmarshal postgresql spec: %w", err)
 	}
 	specPostgreSql.SetDefaults()
-	c.batchSize = specPostgreSql.BatchSize
-
-	logLevel, err := pgx.LogLevelFromString(specPostgreSql.PgxLogLevel.String())
+	c.batchSize = spec.BatchSize
+	logLevel, err := tracelog.LogLevelFromString(specPostgreSql.PgxLogLevel.String())
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse pgx log level %s: %w", specPostgreSql.PgxLogLevel, err)
 	}
 	c.logger.Info().Str("pgx_log_level", specPostgreSql.PgxLogLevel.String()).Msg("Initializing postgresql destination")
-
 	pgxConfig, err := pgxpool.ParseConfig(specPostgreSql.ConnectionString)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse connection string %w", err)
@@ -86,12 +87,14 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (pl
 	pgxConfig.AfterConnect = func(ctx context.Context, conn *pgx.Conn) error {
 		return nil
 	}
-	l := zerologadapter.NewLogger(c.logger)
-	pgxConfig.ConnConfig.Logger = l
-	pgxConfig.ConnConfig.LogLevel = logLevel
+
+	pgxConfig.ConnConfig.Tracer = &tracelog.TraceLog{
+		Logger:   pgx_zero_log.NewLogger(c.logger),
+		LogLevel: logLevel,
+	}
 	// maybe expose this to the user?
 	pgxConfig.ConnConfig.RuntimeParams["timezone"] = "UTC"
-	c.conn, err = pgxpool.ConnectConfig(ctx, pgxConfig)
+	c.conn, err = pgxpool.NewWithConfig(ctx, pgxConfig)
 	if err != nil {
 		return nil, fmt.Errorf("failed to connect to postgresql: %w", err)
 	}

@@ -5,12 +5,14 @@ https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_RelationalDat
 The primary key for this table is **_cq_id**.
 
 ## Relations
+
 The following tables depend on aws_lightsail_databases:
   - [aws_lightsail_database_parameters](aws_lightsail_database_parameters.md)
   - [aws_lightsail_database_events](aws_lightsail_database_events.md)
   - [aws_lightsail_database_log_events](aws_lightsail_database_log_events.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -20,6 +22,7 @@ The following tables depend on aws_lightsail_databases:
 |account_id|String|
 |region|String|
 |arn|String|
+|tags|JSON|
 |backup_retention_enabled|Bool|
 |ca_certificate_identifier|String|
 |created_at|Timestamp|
@@ -44,4 +47,3 @@ The following tables depend on aws_lightsail_databases:
 |secondary_availability_zone|String|
 |state|String|
 |support_code|String|
-|tags|JSON|

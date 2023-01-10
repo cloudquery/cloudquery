@@ -1,0 +1,59 @@
+variables:
+  component: destination/snowflake
+  binary: snowflake
+
+project_name: plugins/destination/snowflake
+
+monorepo:
+  tag_prefix: plugins-destination-snowflake-
+  dir: plugins/destination/snowflake
+
+includes:
+  - from_file:
+      # Relative to the directory Go Releaser is run from (which is the root of the repository)
+      path: ./plugins/.goreleaser.template.yaml
+
+builds:
+  - flags:
+      - -buildmode=exe
+    env:
+      - CGO_ENABLED=0
+      - GO111MODULE=on
+      - CC=/usr/bin/gencc.sh
+      - CXX=/usr/bin/gencpp.sh
+    ldflags:
+      - -s -w -X github.com/cloudquery/cloudquery/plugins/{{ .Var.component }}/resources/plugin.Version={{.Version}}
+    goos:
+      - windows
+      - linux
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+    ignore:
+      - goos: windows
+        goarch: arm64
+      # linux arm64 has some issues with cross-compile
+      - goos: linux
+        goarch: arm64
+    overrides:
+      - goos: windows
+        goarch: amd64
+        goamd64: v1
+        env:
+          - CGO_ENABLED=1
+          - GO111MODULE=on
+          - CC=/usr/bin/gencc.sh
+          - CXX=/usr/bin/gencpp.sh
+after:
+  hooks:
+    - cmd: unzip -o {{ .Var.binary }}_darwin_arm64.zip
+      dir: dist
+    - cmd: unzip -o {{ .Var.binary }}_windows_amd64.zip
+      dir: dist
+    - cmd: unzip -o {{ .Var.binary }}_darwin_amd64.zip
+      dir: dist
+    - cmd: unzip -o {{ .Var.binary }}_linux_amd64.zip
+      dir: dist
+    - cmd: plugins/{{ .Var.component }} --version
+      dir: dist

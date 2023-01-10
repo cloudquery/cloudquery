@@ -1,0 +1,212 @@
+diff --git a/plugins/source/github/docs/tables/github_external_groups.md b/plugins/source/github/docs/tables/github_external_groups.md
+index c5ce498d0ae..2db91a4cf65 100644
+--- a/plugins/source/github/docs/tables/github_external_groups.md
++++ b/plugins/source/github/docs/tables/github_external_groups.md
+@@ -12,7 +12,7 @@ The composite primary key for this table is (**org**, **group_id**).
+ |_cq_parent_id|UUID|
+ |org (PK)|String|
+ |group_id (PK)|Int|
+-|updated_at|Timestamp|
+ |group_name|String|
++|updated_at|Timestamp|
+ |teams|JSON|
+ |members|JSON|
+\ No newline at end of file
+diff --git a/plugins/source/github/docs/tables/github_hook_deliveries.md b/plugins/source/github/docs/tables/github_hook_deliveries.md
+index fff22e6099f..7a4ec88911a 100644
+--- a/plugins/source/github/docs/tables/github_hook_deliveries.md
++++ b/plugins/source/github/docs/tables/github_hook_deliveries.md
+@@ -1,6 +1,6 @@
+ # Table: github_hook_deliveries
+ 
+-The composite primary key for this table is (**org**, **id**, **hook_id**).
++The composite primary key for this table is (**org**, **hook_id**, **id**).
+ 
+ ## Relations
+ 
+@@ -15,12 +15,12 @@ This table depends on [github_hooks](github_hooks.md).
+ |_cq_id|UUID|
+ |_cq_parent_id|UUID|
+ |org (PK)|String|
+-|id (PK)|Int|
+ |hook_id (PK)|Int|
+ |request|String|
+ |response|String|
+-|delivered_at|Timestamp|
++|id (PK)|Int|
+ |guid|String|
++|delivered_at|Timestamp|
+ |redelivery|Bool|
+ |duration|Float|
+ |status|String|
+diff --git a/plugins/source/github/docs/tables/github_hooks.md b/plugins/source/github/docs/tables/github_hooks.md
+index da0ed855d5f..97fcb1435d4 100644
+--- a/plugins/source/github/docs/tables/github_hooks.md
++++ b/plugins/source/github/docs/tables/github_hooks.md
+@@ -16,10 +16,10 @@ The following tables depend on github_hooks:
+ |_cq_id|UUID|
+ |_cq_parent_id|UUID|
+ |org (PK)|String|
+-|id (PK)|Int|
+ |created_at|Timestamp|
+ |updated_at|Timestamp|
+ |url|String|
++|id (PK)|Int|
+ |type|String|
+ |name|String|
+ |test_url|String|
+diff --git a/plugins/source/github/docs/tables/github_issues.md b/plugins/source/github/docs/tables/github_issues.md
+index 6650919479d..c2c470ae8ca 100644
+--- a/plugins/source/github/docs/tables/github_issues.md
++++ b/plugins/source/github/docs/tables/github_issues.md
+@@ -14,6 +14,7 @@ The composite primary key for this table is (**org**, **id**).
+ |id (PK)|Int|
+ |number|Int|
+ |state|String|
++|state_reason|String|
+ |locked|Bool|
+ |title|String|
+ |body|String|
+diff --git a/plugins/source/github/docs/tables/github_organization_members.md b/plugins/source/github/docs/tables/github_organization_members.md
+index a949e218af0..b661132e424 100644
+--- a/plugins/source/github/docs/tables/github_organization_members.md
++++ b/plugins/source/github/docs/tables/github_organization_members.md
+@@ -15,9 +15,9 @@ This table depends on [github_organizations](github_organizations.md).
+ |_cq_id|UUID|
+ |_cq_parent_id|UUID|
+ |org (PK)|String|
+-|id (PK)|Int|
+ |membership|JSON|
+ |login|String|
++|id (PK)|Int|
+ |node_id|String|
+ |avatar_url|String|
+ |html_url|String|
+diff --git a/plugins/source/github/docs/tables/github_organizations.md b/plugins/source/github/docs/tables/github_organizations.md
+index ad876dc69f1..b3d4fbbe8ab 100644
+--- a/plugins/source/github/docs/tables/github_organizations.md
++++ b/plugins/source/github/docs/tables/github_organizations.md
+@@ -16,8 +16,8 @@ The following tables depend on github_organizations:
+ |_cq_id|UUID|
+ |_cq_parent_id|UUID|
+ |org (PK)|String|
+-|id (PK)|Int|
+ |login|String|
++|id (PK)|Int|
+ |node_id|String|
+ |avatar_url|String|
+ |html_url|String|
+diff --git a/plugins/source/github/docs/tables/github_repositories.md b/plugins/source/github/docs/tables/github_repositories.md
+index 53cbd8e2072..ea7d7cc1031 100644
+--- a/plugins/source/github/docs/tables/github_repositories.md
++++ b/plugins/source/github/docs/tables/github_repositories.md
+@@ -12,9 +12,6 @@ The composite primary key for this table is (**org**, **id**).
+ |_cq_parent_id|UUID|
+ |org (PK)|String|
+ |id (PK)|Int|
+-|created_at|Timestamp|
+-|pushed_at|Timestamp|
+-|updated_at|Timestamp|
+ |node_id|String|
+ |owner|JSON|
+ |name|String|
+@@ -24,6 +21,9 @@ The composite primary key for this table is (**org**, **id**).
+ |code_of_conduct|JSON|
+ |default_branch|String|
+ |master_branch|String|
++|created_at|Timestamp|
++|pushed_at|Timestamp|
++|updated_at|Timestamp|
+ |html_url|String|
+ |clone_url|String|
+ |git_url|String|
+@@ -69,6 +69,7 @@ The composite primary key for this table is (**org**, **id**).
+ |has_pages|Bool|
+ |has_projects|Bool|
+ |has_downloads|Bool|
++|has_discussions|Bool|
+ |is_template|Bool|
+ |license_template|String|
+ |gitignore_template|String|
+diff --git a/plugins/source/github/docs/tables/github_team_members.md b/plugins/source/github/docs/tables/github_team_members.md
+index fb9f8080b5a..a3c9f98cf75 100644
+--- a/plugins/source/github/docs/tables/github_team_members.md
++++ b/plugins/source/github/docs/tables/github_team_members.md
+@@ -1,6 +1,6 @@
+ # Table: github_team_members
+ 
+-The composite primary key for this table is (**org**, **id**, **team_id**).
++The composite primary key for this table is (**org**, **team_id**, **id**).
+ 
+ ## Relations
+ 
+@@ -15,10 +15,10 @@ This table depends on [github_teams](github_teams.md).
+ |_cq_id|UUID|
+ |_cq_parent_id|UUID|
+ |org (PK)|String|
+-|id (PK)|Int|
+ |team_id (PK)|Int|
+ |membership|JSON|
+ |login|String|
++|id (PK)|Int|
+ |node_id|String|
+ |avatar_url|String|
+ |html_url|String|
+diff --git a/plugins/source/github/docs/tables/github_team_repositories.md b/plugins/source/github/docs/tables/github_team_repositories.md
+index b1134a16c41..addf1f88006 100644
+--- a/plugins/source/github/docs/tables/github_team_repositories.md
++++ b/plugins/source/github/docs/tables/github_team_repositories.md
+@@ -1,6 +1,6 @@
+ # Table: github_team_repositories
+ 
+-The composite primary key for this table is (**org**, **id**, **team_id**).
++The composite primary key for this table is (**org**, **team_id**, **id**).
+ 
+ ## Relations
+ 
+@@ -15,11 +15,8 @@ This table depends on [github_teams](github_teams.md).
+ |_cq_id|UUID|
+ |_cq_parent_id|UUID|
+ |org (PK)|String|
+-|id (PK)|Int|
+-|created_at|Timestamp|
+-|pushed_at|Timestamp|
+-|updated_at|Timestamp|
+ |team_id (PK)|Int|
++|id (PK)|Int|
+ |node_id|String|
+ |owner|JSON|
+ |name|String|
+@@ -29,6 +26,9 @@ This table depends on [github_teams](github_teams.md).
+ |code_of_conduct|JSON|
+ |default_branch|String|
+ |master_branch|String|
++|created_at|Timestamp|
++|pushed_at|Timestamp|
++|updated_at|Timestamp|
+ |html_url|String|
+ |clone_url|String|
+ |git_url|String|
+@@ -74,6 +74,7 @@ This table depends on [github_teams](github_teams.md).
+ |has_pages|Bool|
+ |has_projects|Bool|
+ |has_downloads|Bool|
++|has_discussions|Bool|
+ |is_template|Bool|
+ |license_template|String|
+ |gitignore_template|String|
+diff --git a/plugins/source/github/docs/tables/github_workflows.md b/plugins/source/github/docs/tables/github_workflows.md
+index a586400ac43..6b25d3179af 100644
+--- a/plugins/source/github/docs/tables/github_workflows.md
++++ b/plugins/source/github/docs/tables/github_workflows.md
+@@ -11,8 +11,8 @@ The composite primary key for this table is (**org**, **id**).
+ |_cq_id|UUID|
+ |_cq_parent_id|UUID|
+ |org (PK)|String|
+-|id (PK)|Int|
+ |contents|String|
++|id (PK)|Int|
+ |node_id|String|
+ |name|String|
+ |path|String|
+s

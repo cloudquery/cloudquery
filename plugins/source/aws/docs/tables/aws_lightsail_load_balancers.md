@@ -5,10 +5,12 @@ https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_LoadBalancer.
 The primary key for this table is **arn**.
 
 ## Relations
+
 The following tables depend on aws_lightsail_load_balancers:
   - [aws_lightsail_load_balancer_tls_certificates](aws_lightsail_load_balancer_tls_certificates.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -18,6 +20,7 @@ The following tables depend on aws_lightsail_load_balancers:
 |account_id|String|
 |region|String|
 |arn (PK)|String|
+|tags|JSON|
 |configuration_options|JSON|
 |created_at|Timestamp|
 |dns_name|String|
@@ -33,6 +36,5 @@ The following tables depend on aws_lightsail_load_balancers:
 |resource_type|String|
 |state|String|
 |support_code|String|
-|tags|JSON|
 |tls_certificate_summaries|JSON|
 |tls_policy_name|String|

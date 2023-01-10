@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_ReservedCa
 
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -22,6 +22,7 @@ The primary key for this table is **arn**.
 |offering_type|String|
 |product_description|String|
 |recurring_charges|JSON|
+|reservation_arn|String|
 |reserved_cache_node_id|String|
 |reserved_cache_nodes_offering_id|String|
 |start_time|Timestamp|

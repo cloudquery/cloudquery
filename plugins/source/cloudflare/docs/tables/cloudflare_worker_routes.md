@@ -1,11 +1,9 @@
 # Table: cloudflare_worker_routes
 
-
-
 The primary key for this table is **id**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -16,5 +14,4 @@ The primary key for this table is **id**.
 |zone_id|String|
 |id (PK)|String|
 |pattern|String|
-|enabled|Bool|
 |script|String|

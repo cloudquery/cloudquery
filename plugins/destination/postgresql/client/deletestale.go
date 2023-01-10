@@ -7,12 +7,12 @@ import (
 	"time"
 
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/jackc/pgx/v4"
+	"github.com/jackc/pgx/v5"
 )
 
 func (c *Client) DeleteStale(ctx context.Context, tables schema.Tables, source string, syncTime time.Time) error {
 	batch := &pgx.Batch{}
-	for _, table := range tables {
+	for _, table := range tables.FlattenTables() {
 		var sb strings.Builder
 		sb.WriteString("delete from ")
 		sb.WriteString(pgx.Identifier{table.Name}.Sanitize())

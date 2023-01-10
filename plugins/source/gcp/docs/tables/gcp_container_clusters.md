@@ -1,11 +1,11 @@
 # Table: gcp_container_clusters
 
-
+https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.locations.clusters#Cluster
 
 The primary key for this table is **self_link**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

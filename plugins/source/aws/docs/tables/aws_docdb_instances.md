@@ -5,9 +5,11 @@ https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBInstance.html
 The primary key for this table is **arn**.
 
 ## Relations
+
 This table depends on [aws_docdb_clusters](aws_docdb_clusters.md).
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -24,6 +26,7 @@ This table depends on [aws_docdb_clusters](aws_docdb_clusters.md).
 |ca_certificate_identifier|String|
 |copy_tags_to_snapshot|Bool|
 |db_cluster_identifier|String|
+|db_instance_arn|String|
 |db_instance_class|String|
 |db_instance_identifier|String|
 |db_instance_status|String|

@@ -12,7 +12,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchWafv2WebAcls(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchWafv2WebAcls(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	service := c.Services().Wafv2
 

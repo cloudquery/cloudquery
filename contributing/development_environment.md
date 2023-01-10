@@ -15,7 +15,7 @@ git clone https://github.com/cloudquery/cloudquery
 
 Build the CLI and all plugins:
 
-```
+```bash
 make build
 ```
 
@@ -46,7 +46,7 @@ Note that plugin logs will be output to the plugin process terminal.
 To run tests all unit tests for a plugin, inside the plugin directory run:
 
 ```shell
-make test-unit  # This runs go test ./...
+make test  # This runs go test -race ./...
 ```
 
 Unit Tests don't require any credentials, but some may require internet access.

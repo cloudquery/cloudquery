@@ -10,7 +10,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchElbv2TargetGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchElbv2TargetGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config elbv2.DescribeTargetGroupsInput
 	c := meta.(*client.Client)
 	svc := c.Services().Elasticloadbalancingv2
@@ -55,7 +55,7 @@ func resolveElbv2targetGroupTags(ctx context.Context, meta schema.ClientMeta, re
 	return resource.Set(c.Name, tags)
 }
 
-func fetchElbv2TargetGroupTargetHealthDescriptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchElbv2TargetGroupTargetHealthDescriptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Elasticloadbalancingv2
 	tg := parent.Item.(types.TargetGroup)

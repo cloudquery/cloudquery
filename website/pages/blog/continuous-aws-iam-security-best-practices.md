@@ -25,35 +25,7 @@ You can run all the following commands on a single AWS account. You can also run
 
 ## CloudQuery Setup
 
-To be able to run the following tutorial you need to install and configure CloudQuery:
-
-### Install
-
-You can download the pre-compiled binary from releases, or using CLI:
-
-```powershell
-export OS=Darwin # Possible values: Linux,Windows,Darwin
-curl -L https://github.com/cloudquery/cloudquery/releases/latest/download/cloudquery_${OS}_x86_64 -o cloudquery
-chmod a+x cloudquery
-```
-
-For mac you can use `homebrew`:
-
-```powershell
-brew install cloudquery/tap/cloudquery
-# After initial install you can upgrade the version via:
-brew upgrade cloudquery
-```
-
-### Run
-
-```powershell
-docker run -p 5432:5432 -e POSTGRES_PASSWORD=pass -d postgres
-cloudquery init aws
-cloudquery fetch --dsn "host=localhost user=postgres password=pass DB.name=postgres port=5432"
-```
-
-To use this on multiple account see [README.md](https://github.com/cloudquery/cloudquery#aws)
+To be able to run the following tutorial you need to [install and configure CloudQuery](/docs/quickstart).
 
 ## Security Best Practices in IAM
 
@@ -148,9 +120,10 @@ Or you can go even further by joining on the permissions table and alerting on a
 To list all access keys that weren’t rotated in the last 90 days you can run the following:
 
 ```sql
-SELECT account_id, arn, password_last_used, user_name, access_key_id, last_used, last_rotated FROM aws_iam_users
+SELECT aws_iam_users.account_id, aws_iam_users.arn AS user_arn, aws_iam_users.user_name, aws_iam_user_access_keys.access_key_id, MAX(last_rotated) FROM aws_iam_users
  JOIN aws_iam_user_access_keys on aws_iam_users.id = aws_iam_user_access_keys.user_id
 WHERE last_rotated < (now() - '90 days'::interval)
+GROUP BY aws_iam_users.account_id, aws_iam_users.arn, aws_iam_users.user_name, aws_iam_user_access_keys.access_key_id;
 ```
 
 ### Remove unnecessary credentials
@@ -158,45 +131,15 @@ WHERE last_rotated < (now() - '90 days'::interval)
 To list all IAM access keys that haven’t been used for more than 90 days:
 
 ```sql
-SELECT account_id, arn, password_last_used, user_name, access_key_id, last_used FROM aws_iam_users
+SELECT aws_iam_users.account_id, aws_iam_users.arn AS user_arn, aws_iam_users.user_name, aws_iam_user_access_keys.access_key_id, MAX(last_used) FROM aws_iam_users
  JOIN aws_iam_user_access_keys on aws_iam_users.id = aws_iam_user_access_keys.user_id
-WHERE (password_enabled AND password_last_used < (now() - '90 days'::interval) OR
-      (last_used < (now() - '90 days'::interval)))
+WHERE last_used < (now() - '90 days'::interval)
+GROUP BY aws_iam_users.account_id, aws_iam_users.arn, aws_iam_users.user_name, aws_iam_user_access_keys.access_key_id;
 ```
 
 ### CloudQuery Policies
 
-To be able to run all SQL checks together, you can use CloudQuery policies.
-These are YAML files with a simple structure:
-
-```sql
-views:
-name: “name_of_view”
-query: >
-   CREATE VIEW name_of_view AS
-    SELECT  …… JOIN … WHERE …
-queries:
-name: “name of check”
-query: >
-	SELECT … FROM …
-name: “name of check”
-invert: true
-query: >
-	SELECT … FROM ...
-```
-
-There are two sections:
-
-- **Views**: you can use this feature to create new views, which you can reuse later instead of having to duplicate joins across queries!
-- **Queries**: Here, you can write all your queries and checks. By default, if a query returns results, the check will fail with the violating results printed in the UI.
-
-You can run the policy with the following command
-
-```powershell
-cloudquery query --path policy.yml
-```
-
-It’s also possible to output the results in JSON format via --output flag, and to ingest it into a centralized logging system.
-You can view our past guest blog on how to deploy CloudQuery on AWS lambda to periodically fetch and query data [here](https://www.cloudquery.io/docs/deployment/overview).
+We implemented many compliance SQL queries that you can check out [here](/docs/core-concepts/policies). 
+These SQL queries will create an `aws_policy_results` table that you can then query.
 
 **Stay tuned for more blogs on cloud security, compliance and other cool stuff!**

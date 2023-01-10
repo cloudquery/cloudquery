@@ -15,7 +15,7 @@ func domainClientOpts(options *route53domains.Options) {
 	options.Region = "us-east-1"
 }
 
-func fetchRoute53Domains(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchRoute53Domains(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Route53domains
 	var input route53domains.ListDomainsInput
@@ -34,7 +34,6 @@ func fetchRoute53Domains(ctx context.Context, meta schema.ClientMeta, parent *sc
 	}
 	return nil
 }
-
 func getDomain(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Route53domains
@@ -46,7 +45,8 @@ func getDomain(ctx context.Context, meta schema.ClientMeta, resource *schema.Res
 	}
 
 	resource.Item = d
-	return nil
+
+	return resource.Set("transfer_lock", aws.ToBool(v.TransferLock))
 }
 
 func resolveRoute53DomainTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, col schema.Column) error {

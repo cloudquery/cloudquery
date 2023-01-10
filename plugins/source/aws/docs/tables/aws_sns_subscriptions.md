@@ -1,11 +1,9 @@
 # Table: aws_sns_subscriptions
 
-
-
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -22,6 +20,7 @@ The primary key for this table is **arn**.
 |endpoint|String|
 |owner|String|
 |protocol|String|
+|subscription_arn|String|
 |topic_arn|String|
 |confirmation_was_authenticated|Bool|
 |pending_confirmation|Bool|

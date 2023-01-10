@@ -1,0 +1,69 @@
+---
+title: Sources
+---
+
+import { PluginsTable } from "../../../../components/PluginsTable";
+
+# Source Plugins
+
+## Official
+
+Documentation, configuration and available tables for every plugin are available in the relevant GitHub repository.
+
+Official source plugins follow [release stages](#source-plugin-release-stages).
+
+<PluginsTable
+    type="source"
+    plugins={
+        [
+            { name: "AWS", stage:"GA" },
+            { name: "Azure", stage:"GA" },
+            { name: "GCP", stage:"GA" },
+            { name: "DigitalOcean", stage:"GA" },
+            { name: "Fastly", stage:"Preview" },
+            { name: "GitHub", stage:"GA" },
+            { name: "GitLab", stage:"Preview" },
+            { name: "Hacker News", stage:"Preview", id: `hackernews` },
+            { name: "Heroku", stage:"Preview" },
+            { name: "k8s", stage:"Preview" },
+            { name: "Okta", stage:"Preview" },
+            { name: "Terraform", stage:"Preview" },
+            { name: "Cloudflare", stage:"Preview" },
+            { name: "Gandi", stage:"Preview" },
+            { name: "Datadog", stage:"Preview" },
+            { name: "Salesforce", stage:"Preview" },
+            { name: "Slack", stage:"Preview" },
+            { name: "Shopify", stage:"Preview" },
+            { name: "PagerDuty", stage:"Preview"},
+            { name: "Tailscale", stage:"Preview" },
+            { name: "Vercel", stage:"Preview" },
+            { name: "Snyk", stage:"Preview" },
+        ]
+    }
+/>
+
+## Community
+
+| **Name**                                                     |
+|--------------------------------------------------------------|
+| [Yandex](https://github.com/yandex-cloud/cq-provider-yandex) |
+
+## Source Plugin Release Stages
+
+[Official source plugins](#official) go through two release stages: Preview, and GA.
+
+Both Preview and GA plugins follow [semantic versioning](#semantic-versioning).
+The main differences between the two stages are:
+
+1. Preview plugins are still experimental and may have frequent breaking changes.
+2. Preview plugins might get deprecated due to lack of usage.
+3. Long Term Support with community Discord and bug fixes is only guaranteed for GA plugins.
+
+### Semantic Versioning
+
+For version `Major.Minor.Patch`:
+
+- `Major` is incremented when there are breaking changes (e.g. breaking configuration spec structure, column type changes).
+- `Minor` is incremented when we add features in a backwards compatible way.
+- `Patch` is incremented when we fix bugs in a backwards compatible way.
+

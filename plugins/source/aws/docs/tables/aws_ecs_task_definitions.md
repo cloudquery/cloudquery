@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_TaskDefinition.htm
 
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -37,5 +37,6 @@ The primary key for this table is **arn**.
 |revision|Int|
 |runtime_platform|JSON|
 |status|String|
+|task_definition_arn|String|
 |task_role_arn|String|
 |volumes|JSON|

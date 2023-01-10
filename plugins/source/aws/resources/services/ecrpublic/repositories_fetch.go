@@ -11,7 +11,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchEcrpublicRepositories(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchEcrpublicRepositories(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	maxResults := int32(1000)
 	config := ecrpublic.DescribeRepositoriesInput{
 		MaxResults: &maxResults,
@@ -47,7 +47,7 @@ func resolveRepositoryTags(ctx context.Context, meta schema.ClientMeta, resource
 	return resource.Set(c.Name, client.TagsToMap(output.Tags))
 }
 
-func fetchEcrpublicRepositoryImages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchEcrpublicRepositoryImages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	maxResults := int32(1000)
 	p := parent.Item.(types.Repository)
 	config := ecrpublic.DescribeImagesInput{

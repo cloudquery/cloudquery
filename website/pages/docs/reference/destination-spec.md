@@ -6,12 +6,12 @@ This goes through all the available options for the destination plugin `spec` ob
 
 This example configures the `postgresql` plugin to connect to a PostgreSQL database located at `localhost:5432`.
 
-```yaml copy
+```yaml
 kind: destination
 spec:
   name: "postgresql"
   path: "cloudquery/postgresql"
-  version: "v1.7.11" # latest version of postgresql plugin
+  version: "VERSION_DESTINATION_POSTGRESQL"
 
   spec:
     connection_string: "postgresql://postgres:pass@localhost:5432/postgres?sslmode=disable"
@@ -23,7 +23,7 @@ spec:
 
 (`string`, required)
 
-Name of the plugin. If you have multiple destination plugins, this must be unique. 
+Name of the plugin. If you have multiple destination plugins, this must be unique.
 
 The name field may be used to uniquely identify a particular destination configuration. For example, if you have two configs for the PostgreSQL plugin for syncing different databases, one may be named `db-1` and the other `db-2`. In this case, the `path` option below must be used to specify the download path for the plugin.
 
@@ -61,8 +61,16 @@ Specifies the update method to use when inserting rows. The exact semantics depe
 - `overwrite`: Same as `overwrite-delete-stale`, but doesn't delete stale rows from previous `sync`s.
 - `append`: Rows are never overwritten or deleted, only appended.
 
+{/*<!-- vale off -->*/}
+### batch_size
+{/*<!-- vale on -->*/}
+
+(`int`, optional)
+
+The number of resources to insert in a single batch. Only relevant for plugins that utilize batching. Each plugin has its own default value.
+
 ### spec
 
 (`object`, optional)
 
-Plugin specific configurations. Visit [destination plugins](/docs/plugins/destinations) documentation for more information.
+Plugin specific configurations. Visit [destination plugins](/docs/plugins/destinations/overview) documentation for more information.

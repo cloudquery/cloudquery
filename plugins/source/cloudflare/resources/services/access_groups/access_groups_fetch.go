@@ -8,7 +8,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchAccessGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchAccessGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	svc := meta.(*client.Client)
 	zoneID := svc.ZoneId
 

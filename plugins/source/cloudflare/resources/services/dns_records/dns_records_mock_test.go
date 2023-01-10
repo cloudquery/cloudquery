@@ -18,11 +18,11 @@ func buildDNSRecords(t *testing.T, ctrl *gomock.Controller) client.Clients {
 		t.Fatal(err)
 	}
 
-	record.Meta = map[string]interface{}{
+	record.Meta = map[string]any{
 		"foo": "bar",
 	}
 
-	record.Data = map[string]interface{}{
+	record.Data = map[string]any{
 		"foo": "bar",
 	}
 

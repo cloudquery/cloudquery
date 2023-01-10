@@ -5,10 +5,12 @@ https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_Instance.html
 The primary key for this table is **arn**.
 
 ## Relations
+
 The following tables depend on aws_lightsail_instances:
   - [aws_lightsail_instance_port_states](aws_lightsail_instance_port_states.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -19,6 +21,7 @@ The following tables depend on aws_lightsail_instances:
 |region|String|
 |access_details|JSON|
 |arn (PK)|String|
+|tags|JSON|
 |add_ons|JSON|
 |blueprint_id|String|
 |blueprint_name|String|
@@ -38,5 +41,4 @@ The following tables depend on aws_lightsail_instances:
 |ssh_key_name|String|
 |state|JSON|
 |support_code|String|
-|tags|JSON|
 |username|String|

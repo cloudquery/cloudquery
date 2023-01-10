@@ -5,10 +5,12 @@ https://docs.aws.amazon.com/elasticloadbalancing/latest/APIReference/API_TargetG
 The primary key for this table is **arn**.
 
 ## Relations
+
 The following tables depend on aws_elbv2_target_groups:
   - [aws_elbv2_target_group_target_health_descriptions](aws_elbv2_target_group_target_health_descriptions.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -32,6 +34,7 @@ The following tables depend on aws_elbv2_target_groups:
 |port|Int|
 |protocol|String|
 |protocol_version|String|
+|target_group_arn|String|
 |target_group_name|String|
 |target_type|String|
 |unhealthy_threshold_count|Int|

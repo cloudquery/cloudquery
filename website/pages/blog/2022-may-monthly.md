@@ -26,7 +26,7 @@ DevOps/SRE/Security team.
 
 ## GCP Provider Improvements
 
-**Project Auto Discovery**: The [GCP Provider](/docs/plugins/sources)
+**Project Auto Discovery**: The [GCP Provider](/docs/plugins/sources/overview)
 can now auto-discover all projects under your organization and recursively fetch all the configuration from each project
 (and project sprawl in GCP is common!). This should significantly simplify CloudQuery configuration and maintenance as
 well as open-up opportunity to build new workflows and alert on things like project creation.
@@ -62,6 +62,6 @@ To easy the deployment we release:
   that allows you to see data from all of your AWS Accounts
 
 - Connecting CloudQuery Database to a BI Tool:
-  - [Apache Superset](https://www.cloudquery.io/blog/cloud-asset-inventory-cloudquery-apache-superset)
-  - [AWS QuickSight](https://www.cloudquery.io/blog/cloud-asset-inventory-cloudquery-aws-quicksight)
-  - [Metabase](https://www.cloudquery.io/blog/cloud-asset-inventory-cloudquery-metabase)
+  - [Apache Superset](/how-to-guides/cloud-asset-inventory-cloudquery-apache-superset)
+  - [AWS QuickSight](/how-to-guides/cloud-asset-inventory-cloudquery-aws-quicksight)
+  - [Metabase](/how-to-guides/cloud-asset-inventory-cloudquery-metabase)

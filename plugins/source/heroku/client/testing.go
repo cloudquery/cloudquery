@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cloudquery/plugin-sdk/plugins"
+	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	heroku "github.com/heroku/heroku-go/v5"
@@ -26,7 +26,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createService func() (*he
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 
-	newTestExecutionClient := func(ctx context.Context, _ zerolog.Logger, spec specs.Source) (schema.ClientMeta, error) {
+	newTestExecutionClient := func(ctx context.Context, _ zerolog.Logger, spec specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
 		svc, err := createService()
 		if err != nil {
 			return nil, fmt.Errorf("failed to createService %w", err)
@@ -43,7 +43,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createService func() (*he
 		return c, nil
 	}
 
-	p := plugins.NewSourcePlugin(
+	p := source.NewPlugin(
 		table.Name,
 		version,
 		[]*schema.Table{
@@ -51,7 +51,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createService func() (*he
 		},
 		newTestExecutionClient)
 	p.SetLogger(l)
-	plugins.TestSourcePluginSync(t, p, specs.Source{
+	source.TestPluginSync(t, p, specs.Source{
 		Name:         "dev",
 		Path:         "cloudquery/dev",
 		Version:      version,

@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/ram/latest/APIReference/API_ResourceShareAssociation
 
 The composite primary key for this table is (**associated_entity**, **resource_share_arn**).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -15,11 +15,11 @@ The composite primary key for this table is (**associated_entity**, **resource_s
 |account_id|String|
 |region|String|
 |associated_entity (PK)|String|
+|resource_share_arn (PK)|String|
 |association_type|String|
 |creation_time|Timestamp|
 |external|Bool|
 |last_updated_time|Timestamp|
-|resource_share_arn (PK)|String|
 |resource_share_name|String|
 |status|String|
 |status_message|String|

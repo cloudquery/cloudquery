@@ -9,7 +9,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchDocdbOrderableDbInstanceOptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchDocdbOrderableDbInstanceOptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	item := parent.Item.(types.DBEngineVersion)
 	c := meta.(*client.Client)
 	svc := c.Services().Docdb

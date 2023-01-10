@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_RelationalDat
 
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -15,6 +15,7 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
+|tags|JSON|
 |created_at|Timestamp|
 |engine|String|
 |engine_version|String|
@@ -28,4 +29,3 @@ The primary key for this table is **arn**.
 |size_in_gb|Int|
 |state|String|
 |support_code|String|
-|tags|JSON|

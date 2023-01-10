@@ -7,7 +7,7 @@ import (
 	"os"
 	"sync"
 
-	"github.com/cloudquery/plugin-sdk/plugins"
+	"github.com/cloudquery/plugin-sdk/plugins/destination"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
@@ -32,7 +32,7 @@ type readMsg struct {
 	table     *schema.Table
 	source    string
 	err       chan error
-	resources chan []interface{}
+	resources chan []any
 }
 
 type closeMsg struct {
@@ -40,15 +40,16 @@ type closeMsg struct {
 }
 
 type Client struct {
-	plugins.DefaultReverseTransformer
+	destination.UnimplementedManagedWriter
+	destination.DefaultReverseTransformer
 	logger  zerolog.Logger
 	spec    specs.Destination
 	csvSpec Spec
-	metrics plugins.DestinationMetrics
+	metrics destination.Metrics
 	writers map[string]*tableWriter
 
 	startWriteChan chan *startWriteMsg
-	writeChan      chan *plugins.ClientResource
+	writeChan      chan *destination.ClientResource
 	endWriteChan   chan *endWriteMsg
 	migrateChan    chan *migrateMsg
 	readChan       chan *readMsg
@@ -63,7 +64,7 @@ type tableWriter struct {
 	count  uint64
 }
 
-func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (plugins.DestinationClient, error) {
+func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (destination.Client, error) {
 	if spec.WriteMode != specs.WriteModeAppend {
 		return nil, fmt.Errorf("csv destination only supports append mode")
 	}
@@ -72,7 +73,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (pl
 		logger:         logger.With().Str("module", "csv-dest").Logger(),
 		spec:           spec,
 		startWriteChan: make(chan *startWriteMsg),
-		writeChan:      make(chan *plugins.ClientResource),
+		writeChan:      make(chan *destination.ClientResource),
 		endWriteChan:   make(chan *endWriteMsg),
 		migrateChan:    make(chan *migrateMsg),
 		readChan:       make(chan *readMsg),

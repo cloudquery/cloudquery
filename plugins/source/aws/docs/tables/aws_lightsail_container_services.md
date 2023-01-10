@@ -5,11 +5,13 @@ https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_ContainerServ
 The primary key for this table is **arn**.
 
 ## Relations
+
 The following tables depend on aws_lightsail_container_services:
   - [aws_lightsail_container_service_deployments](aws_lightsail_container_service_deployments.md)
   - [aws_lightsail_container_service_images](aws_lightsail_container_service_images.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -19,6 +21,7 @@ The following tables depend on aws_lightsail_container_services:
 |account_id|String|
 |region|String|
 |arn (PK)|String|
+|tags|JSON|
 |container_service_name|String|
 |created_at|Timestamp|
 |current_deployment|JSON|
@@ -35,5 +38,4 @@ The following tables depend on aws_lightsail_container_services:
 |scale|Int|
 |state|String|
 |state_detail|JSON|
-|tags|JSON|
 |url|String|

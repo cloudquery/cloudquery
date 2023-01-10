@@ -7,10 +7,10 @@ WITH value_check AS (
 )
 insert into azure_policy_results
 SELECT
-  :'execution_time',
-  :'framework',
-  :'check_id',
-  'Ensure server parameter "log_retention_days" is greater than 3 days for PostgreSQL Database Server (Automated)',
+  :'execution_time' as execution_time,
+  :'framework' as framework,
+  :'check_id' as check_id,
+  'Ensure server parameter "log_retention_days" is greater than 3 days for PostgreSQL Database Server (Automated)' as title,
   s.subscription_id,
   s.id AS server_id,
   case

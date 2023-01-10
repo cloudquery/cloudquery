@@ -5,9 +5,11 @@ https://docs.aws.amazon.com/msk/1.0/apireference/clusters-clusterarn-operations.
 The primary key for this table is **arn**.
 
 ## Relations
+
 This table depends on [aws_kafka_clusters](aws_kafka_clusters.md).
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -22,6 +24,7 @@ This table depends on [aws_kafka_clusters](aws_kafka_clusters.md).
 |creation_time|Timestamp|
 |end_time|Timestamp|
 |error_info|JSON|
+|operation_arn|String|
 |operation_state|String|
 |operation_steps|JSON|
 |operation_type|String|

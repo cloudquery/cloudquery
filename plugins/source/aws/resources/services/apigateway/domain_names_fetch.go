@@ -12,7 +12,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchApigatewayDomainNames(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchApigatewayDomainNames(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config apigateway.GetDomainNamesInput
 	c := meta.(*client.Client)
 	svc := c.Services().Apigateway
@@ -36,7 +36,7 @@ func resolveApigatewayDomainNameArn(ctx context.Context, meta schema.ClientMeta,
 		Resource:  fmt.Sprintf("/domainnames/%s", aws.ToString(domain.DomainName)),
 	}.String())
 }
-func fetchApigatewayDomainNameBasePathMappings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchApigatewayDomainNameBasePathMappings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(types.DomainName)
 	c := meta.(*client.Client)
 	svc := c.Services().Apigateway

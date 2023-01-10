@@ -9,7 +9,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchSsmInstancePatches(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchSsmInstancePatches(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Ssm
 	item := parent.Item.(types.InstanceInformation)

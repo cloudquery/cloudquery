@@ -9,7 +9,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchLightsailAlarms(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchLightsailAlarms(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input lightsail.GetAlarmsInput
 	c := meta.(*client.Client)
 	svc := c.Services().Lightsail

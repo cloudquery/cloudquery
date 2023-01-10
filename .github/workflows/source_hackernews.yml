@@ -1,0 +1,85 @@
+name: Source Plugin Hacker News Workflow
+
+on:
+  pull_request:
+    paths:
+      - "plugins/source/hackernews/**"
+      - ".github/workflows/source_hackernews.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "plugins/source/hackernews/**"
+      - ".github/workflows/source_hackernews.yml"
+
+jobs:
+  plugins-source-hackernews:
+    timeout-minutes: 30
+    name: "plugins/source/hackernews"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./plugins/source/hackernews
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: plugins/source/hackernews/go.mod
+          cache: true
+          cache-dependency-path: plugins/source/hackernews/go.sum
+      - name: golangci-lint
+        uses: cloudquery/golangci-lint-action@master
+        with:
+          version: v1.50.1
+          working-directory: plugins/source/hackernews
+          args: "--config ../../.golangci.yml"
+      - name: Get dependencies
+        run: go get -t -d ./...
+      - name: Build
+        run: go build .
+      - name: Test
+        run: make test
+      - name: gen
+        if: github.event_name == 'pull_request'
+        run: make gen
+      - name: Fail if generation updated files
+        if: github.event_name == 'pull_request'
+        run: test "$(git status -s | wc -l)" -eq 0 || (git status -s; exit 1)
+  validate-release:
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    env:
+      CGO_ENABLED: 0
+    steps:
+      - name: Checkout
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-1.19.4-release-cache-${{ hashFiles('plugins/source/hackernews/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-1.19.4-release-cache-plugins-source-hackernews
+      - name: Set up Go
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: plugins/source/hackernews/go.mod
+      - name: Install GoReleaser
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        uses: goreleaser/goreleaser-action@v3
+        with:
+          distribution: goreleaser-pro
+          version: latest
+          install-only: true
+      - name: Run GoReleaser Dry-Run
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        run: goreleaser release --snapshot --rm-dist --skip-validate --skip-publish --skip-sign -f ./plugins/source/hackernews/.goreleaser.yaml
+        env:
+          GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}

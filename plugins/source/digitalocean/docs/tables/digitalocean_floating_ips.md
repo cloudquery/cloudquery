@@ -1,11 +1,9 @@
 # Table: digitalocean_floating_ips
 
-
-
 The primary key for this table is **ip**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -15,3 +13,5 @@ The primary key for this table is **ip**.
 |ip (PK)|String|
 |region|JSON|
 |droplet|JSON|
+|project_id|String|
+|locked|Bool|

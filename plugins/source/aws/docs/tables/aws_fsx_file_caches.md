@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/fsx/latest/APIReference/API_FileCache.html
 
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -28,6 +28,7 @@ The primary key for this table is **arn**.
 |lustre_configuration|JSON|
 |network_interface_ids|StringArray|
 |owner_id|String|
+|resource_arn|String|
 |storage_capacity|Int|
 |subnet_ids|StringArray|
 |vpc_id|String|

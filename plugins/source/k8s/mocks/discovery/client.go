@@ -11,6 +11,7 @@ import (
 	openapi_v2 "github.com/google/gnostic/openapiv2"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	version "k8s.io/apimachinery/pkg/version"
+	discovery "k8s.io/client-go/discovery"
 	openapi "k8s.io/client-go/openapi"
 	rest "k8s.io/client-go/rest"
 )
@@ -170,4 +171,18 @@ func (m *MockDiscoveryInterface) ServerVersion() (*version.Info, error) {
 func (mr *MockDiscoveryInterfaceMockRecorder) ServerVersion() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerVersion", reflect.TypeOf((*MockDiscoveryInterface)(nil).ServerVersion))
+}
+
+// WithLegacy mocks base method.
+func (m *MockDiscoveryInterface) WithLegacy() discovery.DiscoveryInterface {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "WithLegacy")
+	ret0, _ := ret[0].(discovery.DiscoveryInterface)
+	return ret0
+}
+
+// WithLegacy indicates an expected call of WithLegacy.
+func (mr *MockDiscoveryInterfaceMockRecorder) WithLegacy() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "WithLegacy", reflect.TypeOf((*MockDiscoveryInterface)(nil).WithLegacy))
 }

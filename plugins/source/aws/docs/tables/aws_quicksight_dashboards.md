@@ -1,11 +1,11 @@
 # Table: aws_quicksight_dashboards
 
-
+https://docs.aws.amazon.com/quicksight/latest/APIReference/API_DashboardSummary.html
 
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

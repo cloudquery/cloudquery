@@ -10,7 +10,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchLightsailBuckets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchLightsailBuckets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input lightsail.GetBucketsInput
 	c := meta.(*client.Client)
 	svc := c.Services().Lightsail
@@ -27,7 +27,7 @@ func fetchLightsailBuckets(ctx context.Context, meta schema.ClientMeta, parent *
 	}
 	return nil
 }
-func fetchLightsailBucketAccessKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchLightsailBucketAccessKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(types.Bucket)
 	cl := meta.(*client.Client)
 	svc := cl.Services().Lightsail

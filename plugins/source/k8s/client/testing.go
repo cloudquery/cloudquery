@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cloudquery/plugin-sdk/plugins"
+	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/golang/mock/gomock"
@@ -26,7 +26,7 @@ func K8sMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.
 	l := zerolog.New(zerolog.NewTestWriter(t)).Output(
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
-	configureFunc := func(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.ClientMeta, error) {
+	configureFunc := func(ctx context.Context, logger zerolog.Logger, s specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
 		var k8sSpec Spec
 		if err := s.UnmarshalSpec(&k8sSpec); err != nil {
 			return nil, fmt.Errorf("failed to unmarshal k8s spec: %w", err)
@@ -42,7 +42,7 @@ func K8sMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.
 		return c, nil
 	}
 
-	plugin := plugins.NewSourcePlugin(
+	plugin := source.NewPlugin(
 		table.Name,
 		version,
 		[]*schema.Table{
@@ -51,7 +51,7 @@ func K8sMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.
 		configureFunc,
 	)
 	plugin.SetLogger(l)
-	plugins.TestSourcePluginSync(t, plugin, specs.Source{
+	source.TestPluginSync(t, plugin, specs.Source{
 		Name:         "dev",
 		Path:         "cloudquery/dev",
 		Version:      version,

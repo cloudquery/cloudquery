@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_VpcPeeringConnection.
 
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -15,9 +15,9 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
+|tags|JSON|
 |accepter_vpc_info|JSON|
 |expiration_time|Timestamp|
 |requester_vpc_info|JSON|
 |status|JSON|
-|tags|JSON|
 |vpc_peering_connection_id|String|

@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/apprunner/latest/api/API_AutoScalingConfiguration.ht
 
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -16,6 +16,7 @@ The primary key for this table is **arn**.
 |region|String|
 |arn (PK)|String|
 |tags|JSON|
+|auto_scaling_configuration_arn|String|
 |auto_scaling_configuration_name|String|
 |auto_scaling_configuration_revision|Int|
 |created_at|Timestamp|

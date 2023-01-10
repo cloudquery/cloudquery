@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/directconnect/latest/APIReference/API_VirtualInterfa
 
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -16,6 +16,7 @@ The primary key for this table is **arn**.
 |region|String|
 |arn (PK)|String|
 |id|String|
+|tags|JSON|
 |address_family|String|
 |amazon_address|String|
 |amazon_side_asn|Int|
@@ -34,8 +35,8 @@ The primary key for this table is **arn**.
 |owner_account|String|
 |route_filter_prefixes|JSON|
 |site_link_enabled|Bool|
-|tags|JSON|
 |virtual_gateway_id|String|
+|virtual_interface_id|String|
 |virtual_interface_name|String|
 |virtual_interface_state|String|
 |virtual_interface_type|String|

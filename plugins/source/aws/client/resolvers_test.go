@@ -13,7 +13,7 @@ import (
 
 func TestResolveTags(t *testing.T) {
 	cases := []struct {
-		InputItem    interface{}
+		InputItem    any
 		ExpectedTags map[string]string
 	}{
 		{

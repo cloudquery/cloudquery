@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/neptune/latest/userguide/api-instances.html#Describe
 
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -24,6 +24,7 @@ The primary key for this table is **arn**.
 |character_set_name|String|
 |copy_tags_to_snapshot|Bool|
 |db_cluster_identifier|String|
+|db_instance_arn|String|
 |db_instance_class|String|
 |db_instance_identifier|String|
 |db_instance_status|String|

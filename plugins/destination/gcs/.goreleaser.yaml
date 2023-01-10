@@ -1,0 +1,14 @@
+variables:
+  component: destination/gcs
+  binary: gcs
+
+project_name: plugins/destination/gcs
+
+monorepo:
+  tag_prefix: plugins-destination-gcs-
+  dir: plugins/destination/gcs
+
+includes:
+  - from_file:
+      # Relative to the directory Go Releaser is run from (which is the root of the repository)
+      path: ./plugins/.goreleaser.yaml

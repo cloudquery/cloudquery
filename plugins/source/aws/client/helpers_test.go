@@ -21,7 +21,7 @@ func TestResolveARN(t *testing.T) {
 		service    AWSService
 		resourceID func(resource *schema.Resource) ([]string, error)
 		resource   *schema.Resource
-		want       interface{}
+		want       any
 		wantErr    bool
 	}{
 		{
@@ -83,7 +83,7 @@ func TestTagsToMap(t *testing.T) {
 	}
 
 	tests := []struct {
-		Input    interface{}
+		Input    any
 		Expected map[string]string
 	}{
 		{

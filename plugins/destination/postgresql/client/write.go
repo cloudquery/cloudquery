@@ -2,25 +2,59 @@ package client
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"strconv"
 	"strings"
 	"sync/atomic"
 
-	"github.com/cloudquery/plugin-sdk/plugins"
+	"github.com/cloudquery/plugin-sdk/plugins/destination"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
-	"github.com/jackc/pgconn"
-	"github.com/jackc/pgtype"
-	"github.com/jackc/pgx/v4"
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgconn"
 )
 
-var cqStatusToPgStatus = map[schema.Status]pgtype.Status{
-	schema.Null:      pgtype.Null,
-	schema.Undefined: pgtype.Null,
-	schema.Present:   pgtype.Present,
+func pgErrToStr(err *pgconn.PgError) string {
+	var sb strings.Builder
+	sb.WriteString("severity: ")
+	sb.WriteString(err.Severity)
+	sb.WriteString(", code: ")
+	sb.WriteString(err.Code)
+	sb.WriteString(", message: ")
+	sb.WriteString(err.Message)
+	sb.WriteString(", detail :")
+	sb.WriteString(err.Detail)
+	sb.WriteString(", hint: ")
+	sb.WriteString(err.Hint)
+	sb.WriteString(", position: ")
+	sb.WriteString(strconv.FormatInt(int64(err.Position), 10))
+	sb.WriteString(", internal_position: ")
+	sb.WriteString(strconv.FormatInt(int64(err.InternalPosition), 10))
+	sb.WriteString(", internal_query: ")
+	sb.WriteString(err.InternalQuery)
+	sb.WriteString(", where: ")
+	sb.WriteString(err.Where)
+	sb.WriteString(", schema_name: ")
+	sb.WriteString(err.SchemaName)
+	sb.WriteString(", table_name: ")
+	sb.WriteString(err.TableName)
+	sb.WriteString(", column_name: ")
+	sb.WriteString(err.ColumnName)
+	sb.WriteString(", data_type_name: ")
+	sb.WriteString(err.DataTypeName)
+	sb.WriteString(", constraint_name: ")
+	sb.WriteString(err.ConstraintName)
+	sb.WriteString(", file: ")
+	sb.WriteString(err.File)
+	sb.WriteString(", line: ")
+	sb.WriteString(strconv.FormatUint(uint64(err.Line), 10))
+	sb.WriteString(", routine: ")
+	sb.WriteString(err.Routine)
+	return sb.String()
 }
 
-func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *plugins.ClientResource) error {
+func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *destination.ClientResource) error {
 	var sql string
 	batch := &pgx.Batch{}
 
@@ -34,17 +68,16 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *pl
 		} else {
 			sql = c.upsert(table)
 		}
-
 		batch.Queue(sql, r.Data...)
 		if batch.Len() >= c.batchSize {
 			br := c.conn.SendBatch(ctx, batch)
 			if err := br.Close(); err != nil {
-				if _, ok := err.(*pgconn.PgError); !ok {
+				var pgErr *pgconn.PgError
+				if !errors.As(err, &pgErr) {
 					// not recoverable error
 					return fmt.Errorf("failed to execute batch: %w", err)
 				}
-				atomic.AddUint64(&c.metrics.Errors, 1)
-				c.logger.Error().Err(err).Msgf("failed to execute batch with pgerror")
+				return fmt.Errorf("failed to execute batch with pgerror: %s: %w", pgErrToStr(pgErr), err)
 			}
 			atomic.AddUint64(&c.metrics.Writes, uint64(c.batchSize))
 			batch = &pgx.Batch{}
@@ -54,11 +87,12 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *pl
 	if batch.Len() > 0 {
 		br := c.conn.SendBatch(ctx, batch)
 		if err := br.Close(); err != nil {
-			if _, ok := err.(*pgconn.PgError); !ok {
-				// no recoverable error
+			var pgErr *pgconn.PgError
+			if !errors.As(err, &pgErr) {
+				// not recoverable error
 				return fmt.Errorf("failed to execute batch: %w", err)
 			}
-			c.logger.Error().Err(err).Msgf("failed to execute batch with pgerror")
+			return fmt.Errorf("failed to execute batch with pgerror: %s: %w", pgErrToStr(pgErr), err)
 		}
 		atomic.AddUint64(&c.metrics.Writes, uint64(c.batchSize))
 	}
@@ -104,6 +138,9 @@ func (c *Client) upsert(table *schema.Table) string {
 	sb.WriteString(constraintName)
 	sb.WriteString(" do update set ")
 	for i, column := range columns {
+		if column.Name == schema.CqIDColumn.Name || column.Name == schema.CqParentIDColumn.Name {
+			continue
+		}
 		sb.WriteString(pgx.Identifier{column.Name}.Sanitize())
 		sb.WriteString("=excluded.") // excluded references the new values
 		sb.WriteString(pgx.Identifier{column.Name}.Sanitize())

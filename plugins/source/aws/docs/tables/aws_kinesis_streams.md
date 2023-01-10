@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/kinesis/latest/APIReference/API_StreamDescriptionSum
 
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -19,6 +19,7 @@ The primary key for this table is **arn**.
 |enhanced_monitoring|JSON|
 |open_shard_count|Int|
 |retention_period_hours|Int|
+|stream_arn|String|
 |stream_creation_timestamp|Timestamp|
 |stream_name|String|
 |stream_status|String|

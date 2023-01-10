@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/apprunner/latest/api/API_Connection.html
 
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -16,6 +16,7 @@ The primary key for this table is **arn**.
 |region|String|
 |arn (PK)|String|
 |tags|JSON|
+|connection_arn|String|
 |connection_name|String|
 |created_at|Timestamp|
 |provider_type|String|

@@ -9,7 +9,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchLightsailContainerServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchLightsailContainerServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input lightsail.GetContainerServicesInput
 	c := meta.(*client.Client)
 	svc := c.Services().Lightsail
@@ -20,7 +20,7 @@ func fetchLightsailContainerServices(ctx context.Context, meta schema.ClientMeta
 	res <- response.ContainerServices
 	return nil
 }
-func fetchLightsailContainerServiceDeployments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchLightsailContainerServiceDeployments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(types.ContainerService)
 	input := lightsail.GetContainerServiceDeploymentsInput{
 		ServiceName: r.ContainerServiceName,
@@ -34,7 +34,7 @@ func fetchLightsailContainerServiceDeployments(ctx context.Context, meta schema.
 	res <- deployments.Deployments
 	return nil
 }
-func fetchLightsailContainerServiceImages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchLightsailContainerServiceImages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(types.ContainerService)
 	input := lightsail.GetContainerImagesInput{
 		ServiceName: r.ContainerServiceName,

@@ -1,11 +1,9 @@
 # Table: gcp_compute_networks
 
-
-
 The primary key for this table is **self_link**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

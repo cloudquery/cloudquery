@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_RouteTable.html
 
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -15,10 +15,10 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
+|tags|JSON|
 |associations|JSON|
 |owner_id|String|
 |propagating_vgws|JSON|
 |route_table_id|String|
 |routes|JSON|
-|tags|JSON|
 |vpc_id|String|

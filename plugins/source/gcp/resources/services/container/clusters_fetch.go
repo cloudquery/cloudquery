@@ -4,20 +4,24 @@ import (
 	"context"
 	"fmt"
 
+	container "cloud.google.com/go/container/apiv1"
 	"cloud.google.com/go/container/apiv1/containerpb"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
-	"github.com/pkg/errors"
 )
 
-func fetchClusters(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
+func fetchClusters(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	req := &containerpb.ListClustersRequest{
 		Parent: fmt.Sprintf("projects/%s/locations/-", c.ProjectId),
 	}
-	output, err := c.Services.ContainerClusterManagerClient.ListClusters(ctx, req)
+	containerClient, err := container.NewClusterManagerClient(ctx, c.ClientOptions...)
 	if err != nil {
-		return errors.WithStack(err)
+		return err
+	}
+	output, err := containerClient.ListClusters(ctx, req)
+	if err != nil {
+		return err
 	}
 	res <- output.Clusters
 	return nil

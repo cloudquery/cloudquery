@@ -13,7 +13,7 @@ bin/
 .release-env
 .terraform*
 *.log
-/.cq/
+.cq
 database-data/*
 dest/*
 outfile
@@ -27,3 +27,4 @@ go.work.backup
 go.work.sum.backup
 cli/examples
 cli/cli
+__tables.json

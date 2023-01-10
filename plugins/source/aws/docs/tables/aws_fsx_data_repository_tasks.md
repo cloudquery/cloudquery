@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/fsx/latest/APIReference/API_DataRepositoryTask.html
 
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -15,6 +15,7 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
+|tags|JSON|
 |creation_time|Timestamp|
 |lifecycle|String|
 |task_id|String|
@@ -26,6 +27,6 @@ The primary key for this table is **arn**.
 |file_system_id|String|
 |paths|StringArray|
 |report|JSON|
+|resource_arn|String|
 |start_time|Timestamp|
 |status|JSON|
-|tags|JSON|

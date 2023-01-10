@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_Connection.html
 
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -16,6 +16,7 @@ The primary key for this table is **arn**.
 |region|String|
 |arn (PK)|String|
 |authorization_type|String|
+|connection_arn|String|
 |connection_state|String|
 |creation_time|Timestamp|
 |last_authorized_time|Timestamp|

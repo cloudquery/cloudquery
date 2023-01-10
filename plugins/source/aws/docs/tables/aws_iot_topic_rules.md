@@ -1,11 +1,9 @@
 # Table: aws_iot_topic_rules
 
-
-
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -17,4 +15,5 @@ The primary key for this table is **arn**.
 |tags|JSON|
 |arn (PK)|String|
 |rule|JSON|
+|rule_arn|String|
 |result_metadata|JSON|

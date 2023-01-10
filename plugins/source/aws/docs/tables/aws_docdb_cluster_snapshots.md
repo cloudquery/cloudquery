@@ -5,9 +5,11 @@ https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBClusterSnapsh
 The primary key for this table is **arn**.
 
 ## Relations
+
 This table depends on [aws_docdb_clusters](aws_docdb_clusters.md).
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -19,10 +21,11 @@ This table depends on [aws_docdb_clusters](aws_docdb_clusters.md).
 |tags|JSON|
 |arn (PK)|String|
 |attributes|JSON|
-|availability_zones|StringArray|
-|cluster_create_time|Timestamp|
 |db_cluster_identifier|String|
 |db_cluster_snapshot_identifier|String|
+|availability_zones|StringArray|
+|cluster_create_time|Timestamp|
+|db_cluster_snapshot_arn|String|
 |engine|String|
 |engine_version|String|
 |kms_key_id|String|

@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/fsx/latest/APIReference/API_DataRepositoryAssociatio
 
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -15,6 +15,7 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
+|tags|JSON|
 |association_id|String|
 |batch_import_meta_data_on_create|Bool|
 |creation_time|Timestamp|
@@ -28,5 +29,5 @@ The primary key for this table is **arn**.
 |imported_file_chunk_size|Int|
 |lifecycle|String|
 |nfs|JSON|
+|resource_arn|String|
 |s3|JSON|
-|tags|JSON|

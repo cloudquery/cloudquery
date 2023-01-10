@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/waf/latest/APIReference/API_wafRegional_WebACL.html
 
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -22,3 +22,4 @@ The primary key for this table is **arn**.
 |web_acl_id|String|
 |metric_name|String|
 |name|String|
+|web_acl_arn|String|

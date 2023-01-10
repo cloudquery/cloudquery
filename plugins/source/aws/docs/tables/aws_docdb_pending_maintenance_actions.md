@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/documentdb/latest/developerguide/API_PendingMaintena
 
 The primary key for this table is **_cq_id**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -14,9 +14,5 @@ The primary key for this table is **_cq_id**.
 |_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
-|action|String|
-|auto_applied_after_date|Timestamp|
-|current_apply_date|Timestamp|
-|description|String|
-|forced_apply_date|Timestamp|
-|opt_in_status|String|
+|pending_maintenance_action_details|JSON|
+|resource_identifier|String|

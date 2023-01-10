@@ -9,8 +9,13 @@ author: mikeelsmore
 ---
 
 import { BlogHeader } from "../../components/BlogHeader"
+import { Callout } from 'nextra-theme-docs'
 
 <BlogHeader/>
+
+<Callout type="warning">
+HCL policies were deprecated - see up-to-date policy documentation [here](https://www.cloudquery.io/docs/core-concepts/policies).
+</Callout>
 
 Back in mid-2020 AWS Security Hub released a new security standard called AWS Foundational Security Best Practices. This new standard sets security controls to detect when an AWS account or deployed resources don’t match up to the best practices set out by the AWS security experts. The complete standard can be found in the [AWS Security Hub documentation](https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-standards-fsbp.html).
 

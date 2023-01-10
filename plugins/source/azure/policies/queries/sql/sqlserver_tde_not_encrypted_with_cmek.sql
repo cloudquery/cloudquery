@@ -1,9 +1,9 @@
 insert into azure_policy_results
 SELECT
-  :'execution_time',
-  :'framework',
-  :'check_id',
-  'Ensure SQL server"s TDE protector is encrypted with Customer-managed key (Automated)',
+  :'execution_time' as execution_time,
+  :'framework' as framework,
+  :'check_id' as check_id,
+  'Ensure SQL server"s TDE protector is encrypted with Customer-managed key (Automated)' as title,
   s.subscription_id,
   s.id AS server_id,
   case

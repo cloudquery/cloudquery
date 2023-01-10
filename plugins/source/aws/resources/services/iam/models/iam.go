@@ -48,7 +48,7 @@ type DateTime struct {
 
 func (d *DateTime) UnmarshalCSV(val string) (err error) {
 	switch val {
-	case "N/A", "not_supported":
+	case "N/A", "not_supported", "no_information":
 		d.Time = nil
 		return nil
 	}
@@ -92,7 +92,8 @@ type IamOpenIdIdentityProviderWrapper struct {
 
 type IAMSAMLIdentityProviderWrapper struct {
 	*iam.GetSAMLProviderOutput
-	Arn string
+	Arn  string
+	Tags map[string]string
 }
 
 type PasswordPolicyWrapper struct {

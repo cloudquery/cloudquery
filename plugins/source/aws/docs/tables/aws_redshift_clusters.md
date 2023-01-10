@@ -5,11 +5,13 @@ https://docs.aws.amazon.com/redshift/latest/APIReference/API_Cluster.html
 The primary key for this table is **arn**.
 
 ## Relations
+
 The following tables depend on aws_redshift_clusters:
   - [aws_redshift_snapshots](aws_redshift_snapshots.md)
   - [aws_redshift_cluster_parameter_groups](aws_redshift_cluster_parameter_groups.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

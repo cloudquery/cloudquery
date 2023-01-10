@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/waf/latest/APIReference/API_waf_WebACLSummary.html
 
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -15,6 +15,10 @@ The primary key for this table is **arn**.
 |account_id|String|
 |arn (PK)|String|
 |tags|JSON|
-|logging_configuration|JSON|
-|name|String|
+|default_action|JSON|
+|rules|JSON|
 |web_acl_id|String|
+|metric_name|String|
+|name|String|
+|web_acl_arn|String|
+|logging_configuration|JSON|

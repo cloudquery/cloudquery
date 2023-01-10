@@ -11,7 +11,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchEventbridgeEndpoints(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchEventbridgeEndpoints(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input eventbridge.ListEndpointsInput
 	c := meta.(*client.Client)
 	svc := c.Services().Eventbridge

@@ -3,15 +3,18 @@ package worker_routes
 import (
 	"context"
 
+	"github.com/cloudflare/cloudflare-go"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchWorkerRoutes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchWorkerRoutes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	svc := meta.(*client.Client)
 	zoneId := svc.ZoneId
 
-	resp, err := svc.ClientApi.ListWorkerRoutes(ctx, zoneId)
+	rc := cloudflare.ZoneIdentifier(zoneId)
+	params := cloudflare.ListWorkerRoutesParams{}
+	resp, err := svc.ClientApi.ListWorkerRoutes(ctx, rc, params)
 	if err != nil {
 		return err
 	}

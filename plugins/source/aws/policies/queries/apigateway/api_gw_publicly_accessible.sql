@@ -11,4 +11,4 @@ select
         else 'pass'
         end as status
 from
-    aws_apigateway_rest_apis, jsonb_array_elements_text(endpoint_configuration->'types') as t
+    aws_apigateway_rest_apis, jsonb_array_elements_text(endpoint_configuration->'Types') as t

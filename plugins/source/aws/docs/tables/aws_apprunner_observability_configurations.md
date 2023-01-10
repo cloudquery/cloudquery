@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/apprunner/latest/api/API_ObservabilityConfiguration.
 
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -19,6 +19,7 @@ The primary key for this table is **arn**.
 |created_at|Timestamp|
 |deleted_at|Timestamp|
 |latest|Bool|
+|observability_configuration_arn|String|
 |observability_configuration_name|String|
 |observability_configuration_revision|Int|
 |status|String|

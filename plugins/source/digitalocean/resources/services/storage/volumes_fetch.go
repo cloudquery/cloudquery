@@ -8,7 +8,7 @@ import (
 	"github.com/digitalocean/godo"
 )
 
-func fetchStorageVolumes(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchStorageVolumes(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	svc := meta.(*client.Client)
 	opt := &godo.ListVolumeParams{
 		ListOptions: &godo.ListOptions{PerPage: client.MaxItemsPerPage},

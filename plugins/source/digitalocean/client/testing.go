@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cloudquery/plugin-sdk/plugins"
+	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/golang/mock/gomock"
@@ -27,7 +27,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createService func(t *tes
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 
-	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source) (schema.ClientMeta, error) {
+	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
 		var doSpec Spec
 		if err := spec.UnmarshalSpec(&doSpec); err != nil {
 			return nil, fmt.Errorf("failed to unmarshal do spec: %w", err)
@@ -44,7 +44,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createService func(t *tes
 		return &c, nil
 	}
 
-	p := plugins.NewSourcePlugin(
+	p := source.NewPlugin(
 		table.Name,
 		version,
 		[]*schema.Table{
@@ -52,7 +52,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createService func(t *tes
 		},
 		newTestExecutionClient)
 	p.SetLogger(l)
-	plugins.TestSourcePluginSync(t, p, specs.Source{
+	source.TestPluginSync(t, p, specs.Source{
 		Name:         "dev",
 		Path:         "cloudquery/dev",
 		Version:      version,

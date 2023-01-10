@@ -35,10 +35,10 @@ allow_all_statements as (
 )
 
 select distinct
-    :'execution_time'::timestamp,
-    :'framework',
-    :'check_id',
-    'IAM policies should not allow full ''*'' administrative privileges' AS title,
+    :'execution_time'::timestamp as execution_time,
+    :'framework' as framework,
+    :'check_id' as check_id,
+    'IAM policies should not allow full ''*'' administrative privileges' as title,
     aws_iam_policies.account_id,
     aws_iam_policies.arn AS resource_id,
     CASE WHEN statements_count > 0 THEN 'fail' ELSE 'pass' END AS status

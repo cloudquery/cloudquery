@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/servicecatalog/latest/dg/API_ProductViewDetail.html
 
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -16,6 +16,7 @@ The primary key for this table is **arn**.
 |arn (PK)|String|
 |tags|JSON|
 |created_time|Timestamp|
+|product_arn|String|
 |product_view_summary|JSON|
 |source_connection|JSON|
 |status|String|

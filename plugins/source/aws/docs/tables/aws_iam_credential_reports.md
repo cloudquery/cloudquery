@@ -1,11 +1,9 @@
 # Table: aws_iam_credential_reports
 
-
-
 The composite primary key for this table is (**arn**, **user_creation_time**).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -23,6 +21,7 @@ The composite primary key for this table is (**arn**, **user_creation_time**).
 |access_key_1_last_used_date|Timestamp|
 |access_key_2_last_used_date|Timestamp|
 |password_last_used|Timestamp|
+|password_enabled|String|
 |user|String|
 |password_status|String|
 |mfa_active|Bool|

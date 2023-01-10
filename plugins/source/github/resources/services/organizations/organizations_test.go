@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/github/client/mocks"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
-	"github.com/google/go-github/v45/github"
+	"github.com/google/go-github/v48/github"
 )
 
 func buildOrganizations(t *testing.T, ctrl *gomock.Controller) client.GithubServices {
@@ -33,7 +33,12 @@ func buildOrganizations(t *testing.T, ctrl *gomock.Controller) client.GithubServ
 	mock.EXPECT().GetOrgMembership(gomock.Any(), *u.Login, gomock.Any()).Return(
 		&m, &github.Response{}, nil)
 
-	return client.GithubServices{Organizations: mock}
+	dependabot := buildDependabot(t, ctrl)
+
+	return client.GithubServices{
+		Dependabot:    dependabot,
+		Organizations: mock,
+	}
 }
 
 func TestOrganizations(t *testing.T) {

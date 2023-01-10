@@ -3,19 +3,22 @@ import { Tabs, Tab } from '../Tabs'
 <Tabs options={['Homebrew', 'Precompiled Binaries (amd64)', 'Precompiled Binaries (arm64)']}>
 <Tab>
 
-```bash copy
+```bash
 brew install cloudquery/tap/cloudquery
 
 # After initial install you can upgrade the version via:
 # brew upgrade cloudquery
+
+# To install a specific version use:
+# brew install cloudquery/tap/cloudquery@VERSION_CLI
 ```
 
 </Tab>
 
 <Tab>
 
-```bash copy
-curl -L https://versions.cloudquery.io/latest/v2/cloudquery_darwin_amd64 -o cloudquery
+```bash
+curl -L https://github.com/cloudquery/cloudquery/releases/download/cli-vVERSION_CLI/cloudquery_darwin_amd64 -o cloudquery
 chmod a+x cloudquery
 ```
 
@@ -23,8 +26,8 @@ chmod a+x cloudquery
 
 <Tab>
 
-```bash copy
-curl -L https://versions.cloudquery.io/latest/v2/cloudquery_darwin_arm64 -o cloudquery
+```bash
+curl -L https://github.com/cloudquery/cloudquery/releases/download/cli-vVERSION_CLI/cloudquery_darwin_arm64 -o cloudquery
 chmod a+x cloudquery
 ```
 

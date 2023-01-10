@@ -3,19 +3,28 @@ package iam
 import (
 	"context"
 
+	iamadmin "cloud.google.com/go/iam/admin/apiv1"
+	iampb "cloud.google.com/go/iam/admin/apiv1/adminpb"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
-	"github.com/pkg/errors"
-	"google.golang.org/api/iam/v1"
 )
 
-func fetchServiceAccountKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchServiceAccountKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
-	p := parent.Item.(*iam.ServiceAccount)
-
-	output, err := c.Services.Iam.Projects.ServiceAccounts.Keys.List(p.Name).Context(ctx).Do()
+	p := parent.Item.(*iampb.ServiceAccount)
+	iamClient, err := iamadmin.NewIamClient(ctx, c.ClientOptions...)
 	if err != nil {
-		return errors.WithStack(err)
+		return err
+	}
+	iamClient.CallOptions = &iamadmin.IamCallOptions{}
+
+	req := &iampb.ListServiceAccountKeysRequest{
+		Name: p.Name,
+	}
+
+	output, err := iamClient.ListServiceAccountKeys(ctx, req, c.CallOptions...)
+	if err != nil {
+		return err
 	}
 
 	res <- output.Keys

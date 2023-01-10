@@ -5,9 +5,11 @@ https://docs.aws.amazon.com/servicequotas/2019-06-24/apireference/API_ServiceQuo
 The primary key for this table is **arn**.
 
 ## Relations
+
 This table depends on [aws_servicequotas_services](aws_servicequotas_services.md).
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -21,6 +23,7 @@ This table depends on [aws_servicequotas_services](aws_servicequotas_services.md
 |error_reason|JSON|
 |global_quota|Bool|
 |period|JSON|
+|quota_arn|String|
 |quota_code|String|
 |quota_name|String|
 |service_code|String|

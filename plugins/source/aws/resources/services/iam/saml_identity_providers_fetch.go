@@ -10,7 +10,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchIamSamlIdentityProviders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchIamSamlIdentityProviders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	svc := meta.(*client.Client).Services().Iam
 	response, err := svc.ListSAMLProviders(ctx, &iam.ListSAMLProvidersInput{})
 	if err != nil {
@@ -30,6 +30,10 @@ func getSamlIdentityProvider(ctx context.Context, meta schema.ClientMeta, resour
 		return err
 	}
 
-	resource.Item = models.IAMSAMLIdentityProviderWrapper{GetSAMLProviderOutput: providerResponse, Arn: *p.Arn}
+	resource.Item = models.IAMSAMLIdentityProviderWrapper{
+		GetSAMLProviderOutput: providerResponse,
+		Arn:                   *p.Arn,
+		Tags:                  client.TagsToMap(providerResponse.Tags),
+	}
 	return nil
 }
