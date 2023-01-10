@@ -19,17 +19,6 @@ func Folders() *schema.Table {
 				Name:     "organization_id",
 				Type:     schema.TypeString,
 				Resolver: resolveOrganizationId,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 		},
 	}
