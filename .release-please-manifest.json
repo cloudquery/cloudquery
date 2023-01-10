@@ -13,7 +13,7 @@
   "plugins/source/gcp+FILLER": "0.0.0",
   "plugins/source/github": "2.0.0",
   "plugins/source/github+FILLER": "0.0.0",
-  "plugins/source/heroku": "3.1.4",
+  "plugins/source/heroku": "3.1.5",
   "plugins/source/heroku+FILLER": "0.0.0",
   "plugins/source/k8s": "2.5.4",
   "plugins/source/k8s+FILLER": "0.0.0",
