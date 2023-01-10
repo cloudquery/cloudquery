@@ -178,7 +178,7 @@ func mergeSchemas(haveSchema, wantSchema bigquery.Schema) (bigquery.Schema, erro
 	for _, f := range haveSchema {
 		if want, ok := wantMap[f.Name]; ok {
 			if want.Type != f.Type {
-				return nil, fmt.Errorf("field %v changed type from %v to %v", f.Name, f.Type, want.Type)
+				return nil, fmt.Errorf("field %v changed type from %v to %v. Try dropping the column and re-running", f.Name, f.Type, want.Type)
 			}
 		} else if f.Required {
 			return nil, fmt.Errorf("field %v is required but not in new schema", f.Name)
