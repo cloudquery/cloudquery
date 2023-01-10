@@ -39,9 +39,9 @@ The composite primary key for this table is (**base_url**, **id**).
 |can_create_project|Bool|
 |projects_limit|Int|
 |current_sign_in_at|Timestamp|
-|current_sign_in_ip|IntArray|
+|current_sign_in_ip|Inet|
 |last_sign_in_at|Timestamp|
-|last_sign_in_ip|IntArray|
+|last_sign_in_ip|Inet|
 |confirmed_at|Timestamp|
 |two_factor_enabled|Bool|
 |note|String|
