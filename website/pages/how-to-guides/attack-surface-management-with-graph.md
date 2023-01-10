@@ -10,7 +10,7 @@ import { HowToGuideHeader } from "../../components/HowToGuideHeader"
 
 <HowToGuideHeader/>
 
-In this guide, we will demonstrate how to set up CloudQuery for customizable Attack Surface Management (ASM) and how to get started with utilizing graph visualization to execute security queries.
+In this guide, we will demonstrate how to set up CloudQuery for customizable Attack Surface Management (ASM) and how to get started with utilizing graph visualization to execute security queries.  With cloud infrastructure and security, graph visualization can be used effectively to understand relationships between assets, attack paths, and attack surface to aid with Attack Surface Management and improving security posture of your organization.
 
 ## Walkthrough
 
