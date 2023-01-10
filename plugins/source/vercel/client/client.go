@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/vercel/internal/vercel"
+	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
@@ -57,7 +58,7 @@ func (c *Client) WithTeamID(teamID string) schema.ClientMeta {
 	}
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.ClientMeta, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
 	veSpec := &Spec{}
 	if err := s.UnmarshalSpec(veSpec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal vercel spec: %w", err)
