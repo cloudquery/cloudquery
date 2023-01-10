@@ -10,7 +10,7 @@ import (
 func Plans() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_savingsplans_plans",
-		Description: `https://docs.aws.amazon.com/redshift/latest/APIReference/API_Cluster.html`,
+		Description: `https://docs.aws.amazon.com/savingsplans/latest/APIReference/API_SavingsPlan.html`,
 		Resolver:    fetchSavingsPlans,
 		Transform:   transformers.TransformWithStruct(&types.SavingsPlan{}),
 		Multiplex:   client.AccountMultiplex,
@@ -29,11 +29,6 @@ func Plans() *schema.Table {
 					PrimaryKey: true,
 				},
 			},
-		},
-
-		Relations: []*schema.Table{
-			// Snapshots(),
-			// ClusterParameterGroups(),
 		},
 	}
 }
