@@ -133,11 +133,17 @@ In our sample environment, we have 3 IAM Users.  The following image shows the f
 * IAM Users are in Gray
 * IAM Groups are in Blue
 
+We'll use the following query to show our IAM Users: `MATCH (n:aws_iam_users) return n`:
+
 ![Sample Graph of IAM Users](/images/how-to-guides/attack-surface-management-with-graph/graph-users.png)
 
 * Example 2: Data in RDS
 
-Create RDS Instances Relationship with KMS Keys
+In this example, we will focus on Relational Databases (AWS RDS) and their data.  This will include network connectivity such as VPCs, Internet Gateways, and Security Groups.  We will also look at possible data access and encryption via KMS Keys, their KMS Key Policies, and KMS Key Grants.
+
+
+Let's first create relationships between RDS instances and their encryption from KMS Keys.
+
 ```cypher
 MATCH (rdsinstances:aws_rds_instances), (kmskeys:aws_kms_keys)
 WHERE rdsinstances.kms_key_id = kmskeys.arn
@@ -145,7 +151,7 @@ CREATE (rdsinstances)-[r:is_encrypted_by_key]->(kmskeys)
 RETURN type(r)
 ```
 
-Connect KMS Keys with all their Key Grants
+Let's connect KMS Keys with all their Key Grants and the access that the Key Grants may permit to those KMS Keys and data.
 ```cypher
 MATCH (keygrants:aws_kms_key_grants), (kmskeys:aws_kms_keys)
 WHERE keygrants.key_arn = kmskeys.arn
@@ -153,14 +159,14 @@ CREATE (kmskeys)-[r:has_kms_key_grant]->(keygrants)
 RETURN type(r)
 ```
 
-Connect RDS Instances with their Security Groups and Networking
-
+Let's now link Security Groups to the RDS instances.
 ```cypher
 MATCH (rds_is:aws_rds_instances), (sgs:aws_ec2_security_groups) WHERE apoc.convert.fromJsonList(rds_is.vpc_security_groups)[0]['VpcSecurityGroupId'] = sgs.group_id CREATE (rds_is)-[r:uses_security_group]->(sgs) 
 RETURN type(r)
 ```
 
-Connect KMS Keys with KMS Key Policies
+In the next cypher query, we will connect KMS Keys with their KMS Key Policies.
+
 ```cypher 
 MATCH (keypolicies:aws_kms_key_policies), (keys:aws_kms_keys) 
 WHERE keypolicies.key_arn = keys.arn
@@ -168,6 +174,27 @@ CREATE (keys)-[r:has_key_policy]->(keypolicies)
 RETURN type(r)
 ```
 
+Now, we'll create relationships between RDS Instances and the VPC networks they belong to.
+
+```cypher
+MATCH (rds_is:aws_rds_instances), (vpcs:aws_ec2_vpcs) 
+WHERE apoc.convert.fromJsonMap(rds_is.db_subnet_group)['VpcId'] = vpcs.vpc_id
+CREATE (rds_is)-[r:is_in_vpc]->(vpcs)
+return type(r)
+```
+
+Lastly, we'll create relationships between Internet Gateways and their VPCs.
+
+```
+MATCH (igws:aws_ec2_internet_gateways), (vpcs:aws_ec2_vpcs)
+WHERE apoc.convert.fromJsonList(igws.attachments)[0]['VpcId'] = vpcs.vpc_id
+CREATE (vpcs)-[r:has_internet_gateway]->(igws)
+return type(r)
+```
+
+We've now created relationships for encryption and networking.  To display our graph, the nodes, and relationships, we will use `MATCH (n:aws_rds_instances) return n;` to return a graph visualization of our data:
+
+![Sample Graph of RDS Instances](/images/how-to-guides/attack-surface-management-with-graph/graph-instances.png)
 
 ## Summary
 
