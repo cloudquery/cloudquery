@@ -1,6 +1,6 @@
 # Table: aws_savingsplans_plans
 
-https://docs.aws.amazon.com/redshift/latest/APIReference/API_Cluster.html
+https://docs.aws.amazon.com/savingsplans/latest/APIReference/API_SavingsPlan.html
 
 The primary key for this table is **arn**.
 
