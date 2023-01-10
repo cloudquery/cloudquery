@@ -55,11 +55,6 @@ This is the (nested) spec used by the PostgreSQL destination Plugin.
   Available: "error", "warn", "info", "debug", "trace"
   define if and in which level to log [`pgx`](https://github.com/jackc/pgx) call.
 
-- `batch_size` (int, optional. Default: 1000)
-
-  Number of rows to insert in a single batch.
-
-
 Note: Make sure you use environment variable expansion in production instead of committing the credentials to the configuration file directly.
 
 ### Verbose logging for debug

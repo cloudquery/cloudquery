@@ -16,6 +16,7 @@ The primary key for this table is **arn**.
 |region|String|
 |arn (PK)|String|
 |policy|JSON|
+|tags|JSON|
 |created_date|Timestamp|
 |deleted_date|Timestamp|
 |description|String|
@@ -24,11 +25,11 @@ The primary key for this table is **arn**.
 |last_changed_date|Timestamp|
 |last_rotated_date|Timestamp|
 |name|String|
+|next_rotation_date|Timestamp|
 |owning_service|String|
 |primary_region|String|
 |replication_status|JSON|
 |rotation_enabled|Bool|
 |rotation_lambda_arn|String|
 |rotation_rules|JSON|
-|tags|JSON|
 |version_ids_to_stages|JSON|

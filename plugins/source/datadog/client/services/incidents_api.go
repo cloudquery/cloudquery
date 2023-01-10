@@ -6,11 +6,13 @@ import (
 	"net/http"
 
 	"github.com/DataDog/datadog-api-client-go/v2/api/datadogV2"
+
+	"github.com/DataDog/datadog-api-client-go/v2/api/datadog"
 )
 
 //go:generate mockgen -package=mocks -destination=../mocks/incidents_api.go -source=incidents_api.go IncidentsAPIClient
 type IncidentsAPIClient interface {
 	ListIncidentAttachments(context.Context, string, ...datadogV2.ListIncidentAttachmentsOptionalParameters) (datadogV2.IncidentAttachmentsResponse, *http.Response, error)
 	ListIncidents(context.Context, ...datadogV2.ListIncidentsOptionalParameters) (datadogV2.IncidentsResponse, *http.Response, error)
-	ListIncidentsWithPagination(context.Context, ...datadogV2.ListIncidentsOptionalParameters) (<-chan datadogV2.IncidentResponseData, func(), error)
+	ListIncidentsWithPagination(context.Context, ...datadogV2.ListIncidentsOptionalParameters) (<-chan datadog.PaginationResult[datadogV2.IncidentResponseData], func())
 }

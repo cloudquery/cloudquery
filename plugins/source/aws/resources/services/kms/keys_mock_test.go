@@ -3,6 +3,7 @@ package kms
 import (
 	"testing"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/kms"
 	"github.com/aws/aws-sdk-go-v2/service/kms/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -46,6 +47,12 @@ func buildKmsKeys(t *testing.T, ctrl *gomock.Controller) client.Services {
 	}
 	g.NextMarker = nil
 	m.EXPECT().ListGrants(gomock.Any(), gomock.Any(), gomock.Any()).Return(&g, nil)
+
+	pj := `{"data":["data"]}`
+	m.EXPECT().GetKeyPolicy(gomock.Any(), &kms.GetKeyPolicyInput{
+		KeyId:      keyListEntry.KeyId,
+		PolicyName: aws.String("default"),
+	}, gomock.Any()).Return(&kms.GetKeyPolicyOutput{Policy: &pj}, nil)
 
 	return client.Services{
 		Kms: m,

@@ -36,12 +36,14 @@ jobs:
           version: v1.50.1
           working-directory: plugins/destination/test
           args: "--config ../../.golangci.yml"
+          skip-pkg-cache: true
+          skip-build-cache: true
       - name: Get dependencies
         run: go get -t -d ./...
       - name: Build
         run: go build .
       - name: Test
-        run: go test ./...
+        run: make test
   validate-release:
     timeout-minutes: 30
     runs-on: ubuntu-latest
@@ -57,9 +59,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.19.3-release-cache-${{ hashFiles('plugins/destination/test/go.sum') }}
+          key: ${{ runner.os }}-go-1.19.4-release-cache-${{ hashFiles('plugins/destination/test/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.19.3-release-cache-plugins-destination-test
+            ${{ runner.os }}-go-1.19.4-release-cache-plugins-destination-test
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/setup-go@v3

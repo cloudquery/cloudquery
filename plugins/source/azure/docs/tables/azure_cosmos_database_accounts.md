@@ -16,12 +16,12 @@ The following tables depend on azure_cosmos_database_accounts:
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
+|id (PK)|String|
 |identity|JSON|
 |kind|String|
 |location|String|
 |properties|JSON|
 |tags|JSON|
-|id (PK)|String|
 |name|String|
 |system_data|JSON|
 |type|String|

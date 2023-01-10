@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/cloudquery/cloudquery/plugins/source/gitlab/client/services"
+	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
@@ -15,16 +15,9 @@ type Client struct {
 	// This is a client that you need to create and initialize in Configure
 	// It will be passed for each resource fetcher.
 	logger  zerolog.Logger
-	Gitlab  Services
+	Gitlab  *gitlab.Client
 	spec    specs.Source
 	BaseURL string
-}
-type Services struct {
-	Users    services.UsersClient
-	Groups   services.GroupsClient
-	Projects services.ProjectsClient
-	Settings services.SettingsClient
-	Releases services.ReleasesClient
 }
 
 func (c *Client) Logger() *zerolog.Logger {
@@ -35,7 +28,7 @@ func (c *Client) ID() string {
 	return c.spec.Name
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.ClientMeta, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
 	gitlabSpec := &Spec{}
 	if err := s.UnmarshalSpec(gitlabSpec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal gitlab spec: %w", err)
@@ -56,18 +49,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (sche
 
 	return &Client{
 		logger: logger,
-		Gitlab: NewServices(c),
+		Gitlab: c,
 		spec:   s,
 	}, nil
-}
-
-// Take gitlab.Client as an argument and return an initialized Services struct
-func NewServices(c *gitlab.Client) Services {
-	return Services{
-		Users:    c.Users,
-		Groups:   c.Groups,
-		Projects: c.Projects,
-		Settings: c.Settings,
-		Releases: c.Releases,
-	}
 }

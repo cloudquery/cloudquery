@@ -31,6 +31,8 @@ The following tables depend on aws_elasticbeanstalk_environments:
 |date_updated|Timestamp|
 |description|String|
 |endpoint_url|String|
+|environment_arn|String|
+|environment_id|String|
 |environment_links|JSON|
 |environment_name|String|
 |health|String|

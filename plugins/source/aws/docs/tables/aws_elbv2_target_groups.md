@@ -34,6 +34,7 @@ The following tables depend on aws_elbv2_target_groups:
 |port|Int|
 |protocol|String|
 |protocol_version|String|
+|target_group_arn|String|
 |target_group_name|String|
 |target_type|String|
 |unhealthy_threshold_count|Int|

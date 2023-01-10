@@ -90,10 +90,6 @@ This is the top-level spec used by the BigQuery destination plugin.
 
   GCP service account key content. This allows for using different service accounts for the GCP source and BigQuery destination. If using service account keys, it is best to use [environment or file variable substitution](/docs/advanced-topics/environment-variable-substitution).
 
-- `batch_size` (int, optional. Default: 1000)
-
-  Number of rows to insert in a single batch.
-
 ## Underlying library
 
 We use the official [cloud.google.com/go/bigquery](https://pkg.go.dev/cloud.google.com/go/bigquery) package for database connection.

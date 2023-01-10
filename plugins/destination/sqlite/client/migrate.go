@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	isTableExistSQL = "SELECT count(name) FROM sqlite_master WHERE type='table' AND name='?';"
+	isTableExistSQL = "SELECT count(name) FROM sqlite_master WHERE type='table' AND name=?;"
 
 	// https://wiki.postgresql.org/wiki/Retrieve_primary_key_columns
 	sqlTableInfo = "PRAGMA table_info('%s');"
@@ -96,7 +96,7 @@ func (c *Client) autoMigrateTable(_ context.Context, table *schema.Table) error 
 				return fmt.Errorf("failed to add column %s on table %s: %w", col.Name, table.Name, err)
 			}
 		case sqliteColumn.typ != columnType:
-			return fmt.Errorf("column %s on table %s has different type than schema, expected %s got %s. trying dropping table and re-running", col.Name, table.Name, columnType, sqliteColumn.typ)
+			return fmt.Errorf("column %s on table %s has different type than schema, expected %s got %s. Try dropping the column and re-running", col.Name, table.Name, columnType, sqliteColumn.typ)
 		}
 	}
 	return nil

@@ -14,9 +14,10 @@ The primary key for this table is **id**.
 |_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
+|id (PK)|String|
 |domain_arn|String|
 |endpoint|String|
 |status|String|
-|id (PK)|String|
+|vpc_endpoint_id|String|
 |vpc_endpoint_owner|String|
 |vpc_options|JSON|

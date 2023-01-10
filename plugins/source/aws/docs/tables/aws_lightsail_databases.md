@@ -22,6 +22,7 @@ The following tables depend on aws_lightsail_databases:
 |account_id|String|
 |region|String|
 |arn|String|
+|tags|JSON|
 |backup_retention_enabled|Bool|
 |ca_certificate_identifier|String|
 |created_at|Timestamp|
@@ -46,4 +47,3 @@ The following tables depend on aws_lightsail_databases:
 |secondary_availability_zone|String|
 |state|String|
 |support_code|String|
-|tags|JSON|

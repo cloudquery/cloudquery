@@ -52,6 +52,8 @@ jobs:
           version: v1.50.1
           working-directory: plugins/destination/postgresql
           args: "--config ../../.golangci.yml"
+          skip-pkg-cache: true
+          skip-build-cache: true
       - name: Get dependencies
         run: go get -t -d ./...
       - name: Build
@@ -60,13 +62,13 @@ jobs:
         run: make test
       # cockroachdb doesn't support services right now
       # https://stackoverflow.com/questions/73648218/github-action-setup-secure-cockroachdb
-      # - name: Spin CockroachDB
-      #   run: |
-      #     docker run -d -p 26257:26257 cockroachdb/cockroach:v22.1.8 start-single-node --insecure
-      #     sudo apt update && sudo apt install wait-for-it -y
-      #     wait-for-it -h localhost -p 26257
-      # - name: Test CockroachDB
-      #   run: CQ_DEST_PG_TEST_CONN="postgresql://root@localhost:26257/postgres?sslmode=disable" make test
+      - name: Spin up CockroachDB
+        run: |
+          docker run -d -p 26257:26257 cockroachdb/cockroach:v22.1.8 start-single-node --insecure
+          sudo apt update && sudo apt install wait-for-it -y
+          wait-for-it -h localhost -p 26257
+      - name: Test CockroachDB
+        run: CQ_DEST_PG_TEST_CONN="postgresql://root@localhost:26257/postgres?sslmode=disable" make test
   validate-release:
     timeout-minutes: 30
     runs-on: ubuntu-latest
@@ -82,9 +84,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.19.3-release-cache-${{ hashFiles('plugins/destination/postgresql/go.sum') }}
+          key: ${{ runner.os }}-go-1.19.4-release-cache-${{ hashFiles('plugins/destination/postgresql/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.19.3-release-cache-plugins-destination-postgresql
+            ${{ runner.os }}-go-1.19.4-release-cache-plugins-destination-postgresql
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/setup-go@v3
