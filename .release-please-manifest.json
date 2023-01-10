@@ -41,7 +41,7 @@
   "plugins/destination/bigquery+FILLER": "0.0.0",
   "plugins/source/tailscale": "1.1.0",
   "plugins/source/tailscale+FILLER": "0.0.0",
-  "plugins/source/vercel": "1.0.3",
+  "plugins/source/vercel": "1.0.4",
   "plugins/source/vercel+FILLER": "0.0.0",
   "plugins/source/slack": "1.0.2",
   "plugins/source/slack+FILLER": "0.0.0",
