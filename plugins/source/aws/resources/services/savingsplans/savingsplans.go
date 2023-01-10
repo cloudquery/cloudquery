@@ -21,11 +21,6 @@ func Plans() *schema.Table {
 				Resolver: client.ResolveAWSAccount,
 			},
 			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
-			{
 				Name:        "arn",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("SavingsPlanArn"),
