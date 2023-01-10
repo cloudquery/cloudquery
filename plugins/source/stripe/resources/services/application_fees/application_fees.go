@@ -50,7 +50,7 @@ func fetchApplicationFees(tableName string) schema.TableResolver {
 			if value != "" {
 				vi, err := strconv.ParseInt(value, 10, 64)
 				if err != nil {
-					return fmt.Errorf("retrieved invalid state backend: %q %w", value, err)
+					return fmt.Errorf("retrieved invalid state value: %q %w", value, err)
 				}
 				lp.Created = &vi
 			}
