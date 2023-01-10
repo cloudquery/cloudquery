@@ -8,7 +8,7 @@ import (
 	"github.com/digitalocean/godo"
 )
 
-func fetchProjectsResources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchProjectsResources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	p := parent.Item.(godo.Project)
 	svc := meta.(*client.Client)
 

@@ -8,7 +8,7 @@ import (
 	"github.com/digitalocean/godo"
 )
 
-func fetchDatabasesReplicas(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchDatabasesReplicas(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	p := parent.Item.(godo.Database)
 	svc := meta.(*client.Client)
 

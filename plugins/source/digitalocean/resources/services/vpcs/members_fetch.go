@@ -8,7 +8,7 @@ import (
 	"github.com/digitalocean/godo"
 )
 
-func fetchVpcsMembers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchVpcsMembers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	p := parent.Item.(*godo.VPC)
 	svc := meta.(*client.Client)
 

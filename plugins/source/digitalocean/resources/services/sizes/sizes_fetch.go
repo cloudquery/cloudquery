@@ -8,7 +8,7 @@ import (
 	"github.com/digitalocean/godo"
 )
 
-func fetchSizesSizes(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchSizesSizes(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	svc := meta.(*client.Client)
 
 	opt := &godo.ListOptions{
