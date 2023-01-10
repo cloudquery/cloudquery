@@ -9,18 +9,13 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func WebApps() *schema.Table {
+func webAppVnetConnections() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_appservice_web_apps",
-		Resolver:  fetchWebApps,
+		Name:      "azure_appservice_web_app_vnet_connections",
+		Resolver:  fetchWebAppVnetConnections,
 		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_web),
-		Transform: transformers.TransformWithStruct(&armappservice.Site{}),
+		Transform: transformers.TransformWithStruct(&armappservice.VnetInfoResource{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
 			{
 				Name:     "id",
 				Type:     schema.TypeString,
@@ -30,25 +25,24 @@ func WebApps() *schema.Table {
 				},
 			},
 		},
-		Relations: []*schema.Table{
-			webAppVnetConnections(),
-		},
 	}
 }
 
-func fetchWebApps(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchWebAppVnetConnections(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	p := parent.Item.(*armappservice.Site)
 	cl := meta.(*client.Client)
 	svc, err := armappservice.NewWebAppsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
-	for pager.More() {
-		p, err := pager.NextPage(ctx)
-		if err != nil {
-			return err
-		}
-		res <- p.Value
+	group, err := client.ParseResourceGroup(*p.ID)
+	if err != nil {
+		return err
 	}
+	resp, err := svc.ListVnetConnections(ctx, group, *p.Name, nil)
+	if err != nil {
+		return err
+	}
+	res <- resp.VnetInfoResourceArray
 	return nil
 }

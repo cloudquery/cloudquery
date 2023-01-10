@@ -9,18 +9,13 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func Namespaces() *schema.Table {
+func networkRuleSets() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_eventhub_namespaces",
-		Resolver:  fetchNamespaces,
+		Name:      "azure_eventhub_network_rule_sets",
+		Resolver:  fetchNetworkRuleSets,
 		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_eventhub),
-		Transform: transformers.TransformWithStruct(&armeventhub.EHNamespace{}),
+		Transform: transformers.TransformWithStruct(&armeventhub.NetworkRuleSet{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
 			{
 				Name:     "id",
 				Type:     schema.TypeString,
@@ -30,25 +25,26 @@ func Namespaces() *schema.Table {
 				},
 			},
 		},
-		Relations: []*schema.Table{
-			networkRuleSets(),
-		},
 	}
 }
 
-func fetchNamespaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchNetworkRuleSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	p := parent.Item.(*armeventhub.EHNamespace)
 	cl := meta.(*client.Client)
 	svc, err := armeventhub.NewNamespacesClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
-	for pager.More() {
-		p, err := pager.NextPage(ctx)
-		if err != nil {
-			return err
-		}
-		res <- p.Value
+	group, err := client.ParseResourceGroup(*p.ID)
+	if err != nil {
+		return err
 	}
+
+	resp, err := svc.ListNetworkRuleSet(ctx, group, *p.Name, nil)
+	if err != nil {
+		return err
+	}
+	res <- resp.Value
+
 	return nil
 }

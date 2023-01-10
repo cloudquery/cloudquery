@@ -5,16 +5,13 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"testing"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/gorilla/mux"
 )
 
-func createNamespaces(router *mux.Router) error {
-	var item armeventhub.NamespacesClientListResponse
+func createNamespaceRuleSets(router *mux.Router) error {
+	var item armeventhub.NamespacesClientListNetworkRuleSetResponse
 	if err := faker.FakeObject(&item); err != nil {
 		return err
 	}
@@ -22,7 +19,7 @@ func createNamespaces(router *mux.Router) error {
 	emptyStr := ""
 	item.NextLink = &emptyStr
 
-	router.HandleFunc("/subscriptions/{subscriptionId}/providers/Microsoft.EventHub/namespaces", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/subscriptions/{subscriptionId}/resourceGroups/debug/providers/Microsoft.EventHub/namespaces/test string/networkRuleSets", func(w http.ResponseWriter, r *http.Request) {
 		b, err := json.Marshal(&item)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)
@@ -34,11 +31,5 @@ func createNamespaces(router *mux.Router) error {
 		}
 	})
 
-	createNamespaceRuleSets(router)
-
 	return nil
-}
-
-func TestNamespaces(t *testing.T) {
-	client.MockTestHelper(t, Namespaces(), createNamespaces)
 }
