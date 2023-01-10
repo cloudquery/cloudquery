@@ -15,10 +15,10 @@ This table depends on [gandi_domains](gandi_domains.md).
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |fqdn (PK)|String|
+|id (PK)|Int|
 |algorithm|Int|
 |digest|String|
 |digest_type|Int|
-|id (PK)|Int|
 |keytag|Int|
 |type|String|
 |public_key|String|

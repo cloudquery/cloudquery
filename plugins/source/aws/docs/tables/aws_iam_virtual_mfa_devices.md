@@ -15,7 +15,7 @@ The primary key for this table is **serial_number**.
 |account_id|String|
 |serial_number (PK)|String|
 |tags|JSON|
-|base32_string_seed|IntArray|
+|base32_string_seed|ByteArray|
 |enable_date|Timestamp|
-|qr_code_png|IntArray|
+|qr_code_png|ByteArray|
 |user|JSON|
