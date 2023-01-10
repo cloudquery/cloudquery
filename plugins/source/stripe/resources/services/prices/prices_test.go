@@ -8,5 +8,5 @@ import (
 )
 
 func TestPrices(t *testing.T) {
-	client.MockTestHelper(t, prices.Prices())
+	client.MockTestHelper(t, prices.Prices(), client.TestOptions{})
 }

@@ -14,7 +14,7 @@ func Capabilities() *schema.Table {
 		Name:        "stripe_capabilities",
 		Description: `https://stripe.com/docs/api/capabilities`,
 		Transform:   transformers.TransformWithStruct(&stripe.Capability{}, transformers.WithSkipFields("APIResource", "ID")),
-		Resolver:    fetchCapabilities,
+		Resolver:    fetchCapabilities("capabilities"),
 
 		Columns: []schema.Column{
 			{
@@ -29,16 +29,20 @@ func Capabilities() *schema.Table {
 	}
 }
 
-func fetchCapabilities(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	cl := meta.(*client.Client)
+func fetchCapabilities(tableName string) schema.TableResolver {
+	return func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+		cl := meta.(*client.Client)
 
-	p := parent.Item.(*stripe.Account)
+		p := parent.Item.(*stripe.Account)
 
-	it := cl.Services.Capabilities.List(&stripe.CapabilityListParams{
-		Account: stripe.String(p.ID),
-	})
-	for it.Next() {
-		res <- it.Capability()
+		lp := &stripe.CapabilityListParams{
+			Account: stripe.String(p.ID),
+		}
+
+		it := cl.Services.Capabilities.List(lp)
+		for it.Next() {
+			res <- it.Capability()
+		}
+		return it.Err()
 	}
-	return it.Err()
 }

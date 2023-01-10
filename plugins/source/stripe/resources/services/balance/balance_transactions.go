@@ -3,6 +3,9 @@ package balance
 import (
 	"context"
 
+	"fmt"
+	"strconv"
+
 	"github.com/cloudquery/cloudquery/plugins/source/stripe/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
@@ -14,7 +17,7 @@ func BalanceTransactions() *schema.Table {
 		Name:        "stripe_balance_transactions",
 		Description: `https://stripe.com/docs/api/balance_transactions`,
 		Transform:   transformers.TransformWithStruct(&stripe.BalanceTransaction{}, transformers.WithSkipFields("APIResource", "ID")),
-		Resolver:    fetchBalanceTransactions,
+		Resolver:    fetchBalanceTransactions("balance_transactions"),
 
 		Columns: []schema.Column{
 			{
@@ -29,12 +32,30 @@ func BalanceTransactions() *schema.Table {
 	}
 }
 
-func fetchBalanceTransactions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	cl := meta.(*client.Client)
+func fetchBalanceTransactions(tableName string) schema.TableResolver {
+	return func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+		cl := meta.(*client.Client)
 
-	it := cl.Services.BalanceTransactions.List(&stripe.BalanceTransactionListParams{})
-	for it.Next() {
-		res <- it.BalanceTransaction()
+		lp := &stripe.BalanceTransactionListParams{}
+
+		if cl.Backend != nil {
+			value, err := cl.Backend.Get(ctx, tableName, cl.ID())
+			if err != nil {
+				return fmt.Errorf("failed to retrieve state from backend: %w", err)
+			}
+			if value != "" {
+				vi, err := strconv.ParseInt(value, 10, 64)
+				if err != nil {
+					return fmt.Errorf("retrieved invalid state backend: %q %w", value, err)
+				}
+				lp.Created = &vi
+			}
+		}
+
+		it := cl.Services.BalanceTransactions.List(lp)
+		for it.Next() {
+			res <- it.BalanceTransaction()
+		}
+		return it.Err()
 	}
-	return it.Err()
 }

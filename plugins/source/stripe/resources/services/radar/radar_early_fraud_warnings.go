@@ -14,7 +14,7 @@ func RadarEarlyFraudWarnings() *schema.Table {
 		Name:        "stripe_radar_early_fraud_warnings",
 		Description: `https://stripe.com/docs/api/radar_early_fraud_warnings`,
 		Transform:   transformers.TransformWithStruct(&stripe.RadarEarlyFraudWarning{}, transformers.WithSkipFields("APIResource", "ID")),
-		Resolver:    fetchRadarEarlyFraudWarnings,
+		Resolver:    fetchRadarEarlyFraudWarnings("radar_early_fraud_warnings"),
 
 		Columns: []schema.Column{
 			{
@@ -29,12 +29,16 @@ func RadarEarlyFraudWarnings() *schema.Table {
 	}
 }
 
-func fetchRadarEarlyFraudWarnings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	cl := meta.(*client.Client)
+func fetchRadarEarlyFraudWarnings(tableName string) schema.TableResolver {
+	return func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+		cl := meta.(*client.Client)
 
-	it := cl.Services.RadarEarlyFraudWarnings.List(&stripe.RadarEarlyFraudWarningListParams{})
-	for it.Next() {
-		res <- it.RadarEarlyFraudWarning()
+		lp := &stripe.RadarEarlyFraudWarningListParams{}
+
+		it := cl.Services.RadarEarlyFraudWarnings.List(lp)
+		for it.Next() {
+			res <- it.RadarEarlyFraudWarning()
+		}
+		return it.Err()
 	}
-	return it.Err()
 }

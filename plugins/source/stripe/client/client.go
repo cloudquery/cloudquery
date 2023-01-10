@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/cloudquery/plugin-sdk/backend"
 	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
@@ -19,14 +20,16 @@ type Client struct {
 	stSpec     Spec
 
 	Services *client.API
+	Backend  backend.Backend
 }
 
-func New(logger zerolog.Logger, sourceSpec specs.Source, stSpec Spec, services *client.API) Client {
+func New(logger zerolog.Logger, sourceSpec specs.Source, stSpec Spec, services *client.API, bk backend.Backend) Client {
 	return Client{
 		logger:     logger,
 		sourceSpec: sourceSpec,
 		stSpec:     stSpec,
 		Services:   services,
+		Backend:    bk,
 	}
 }
 
@@ -38,10 +41,15 @@ func (c *Client) ID() string {
 	return c.sourceSpec.Name
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, opts ...source.Option) (schema.ClientMeta, error) {
 	stSpec := &Spec{}
 	if err := s.UnmarshalSpec(stSpec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal stripe spec: %w", err)
+	}
+
+	o := source.Options{}
+	for _, opt := range opts {
+		opt(&o)
 	}
 
 	services, err := getServiceClient(logger, stSpec)
@@ -49,7 +57,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ ...
 		return nil, err
 	}
 
-	cl := New(logger, s, *stSpec, services)
+	cl := New(logger, s, *stSpec, services, o.Backend)
 	return &cl, nil
 }
 

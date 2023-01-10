@@ -8,5 +8,5 @@ import (
 )
 
 func TestCountrySpecs(t *testing.T) {
-	client.MockTestHelper(t, country_specs.CountrySpecs())
+	client.MockTestHelper(t, country_specs.CountrySpecs(), client.TestOptions{})
 }

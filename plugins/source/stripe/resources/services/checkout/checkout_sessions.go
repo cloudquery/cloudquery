@@ -14,7 +14,7 @@ func CheckoutSessions() *schema.Table {
 		Name:        "stripe_checkout_sessions",
 		Description: `https://stripe.com/docs/api/checkout_sessions`,
 		Transform:   transformers.TransformWithStruct(&stripe.CheckoutSession{}, transformers.WithSkipFields("APIResource", "ID")),
-		Resolver:    fetchCheckoutSessions,
+		Resolver:    fetchCheckoutSessions("checkout_sessions"),
 
 		Columns: []schema.Column{
 			{
@@ -29,12 +29,16 @@ func CheckoutSessions() *schema.Table {
 	}
 }
 
-func fetchCheckoutSessions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	cl := meta.(*client.Client)
+func fetchCheckoutSessions(tableName string) schema.TableResolver {
+	return func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+		cl := meta.(*client.Client)
 
-	it := cl.Services.CheckoutSessions.List(&stripe.CheckoutSessionListParams{})
-	for it.Next() {
-		res <- it.CheckoutSession()
+		lp := &stripe.CheckoutSessionListParams{}
+
+		it := cl.Services.CheckoutSessions.List(lp)
+		for it.Next() {
+			res <- it.CheckoutSession()
+		}
+		return it.Err()
 	}
-	return it.Err()
 }

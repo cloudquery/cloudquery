@@ -8,5 +8,5 @@ import (
 )
 
 func TestSubscriptions(t *testing.T) {
-	client.MockTestHelper(t, subscription.Subscriptions())
+	client.MockTestHelper(t, subscription.Subscriptions(), client.TestOptions{})
 }

@@ -8,5 +8,5 @@ import (
 )
 
 func TestBillingPortalConfigurations(t *testing.T) {
-	client.MockTestHelper(t, billing_portal.BillingPortalConfigurations())
+	client.MockTestHelper(t, billing_portal.BillingPortalConfigurations(), client.TestOptions{})
 }

@@ -8,5 +8,5 @@ import (
 )
 
 func TestTerminalConfigurations(t *testing.T) {
-	client.MockTestHelper(t, terminal.TerminalConfigurations())
+	client.MockTestHelper(t, terminal.TerminalConfigurations(), client.TestOptions{})
 }

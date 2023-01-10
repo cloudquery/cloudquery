@@ -14,7 +14,7 @@ func BillingPortalConfigurations() *schema.Table {
 		Name:        "stripe_billing_portal_configurations",
 		Description: `https://stripe.com/docs/api/billing_portal_configurations`,
 		Transform:   transformers.TransformWithStruct(&stripe.BillingPortalConfiguration{}, transformers.WithSkipFields("APIResource", "ID")),
-		Resolver:    fetchBillingPortalConfigurations,
+		Resolver:    fetchBillingPortalConfigurations("billing_portal_configurations"),
 
 		Columns: []schema.Column{
 			{
@@ -29,12 +29,16 @@ func BillingPortalConfigurations() *schema.Table {
 	}
 }
 
-func fetchBillingPortalConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	cl := meta.(*client.Client)
+func fetchBillingPortalConfigurations(tableName string) schema.TableResolver {
+	return func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+		cl := meta.(*client.Client)
 
-	it := cl.Services.BillingPortalConfigurations.List(&stripe.BillingPortalConfigurationListParams{})
-	for it.Next() {
-		res <- it.BillingPortalConfiguration()
+		lp := &stripe.BillingPortalConfigurationListParams{}
+
+		it := cl.Services.BillingPortalConfigurations.List(lp)
+		for it.Next() {
+			res <- it.BillingPortalConfiguration()
+		}
+		return it.Err()
 	}
-	return it.Err()
 }

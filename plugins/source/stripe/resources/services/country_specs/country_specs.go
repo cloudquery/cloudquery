@@ -14,7 +14,7 @@ func CountrySpecs() *schema.Table {
 		Name:        "stripe_country_specs",
 		Description: `https://stripe.com/docs/api/country_specs`,
 		Transform:   transformers.TransformWithStruct(&stripe.CountrySpec{}, transformers.WithSkipFields("APIResource", "ID")),
-		Resolver:    fetchCountrySpecs,
+		Resolver:    fetchCountrySpecs("country_specs"),
 
 		Columns: []schema.Column{
 			{
@@ -29,12 +29,16 @@ func CountrySpecs() *schema.Table {
 	}
 }
 
-func fetchCountrySpecs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	cl := meta.(*client.Client)
+func fetchCountrySpecs(tableName string) schema.TableResolver {
+	return func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+		cl := meta.(*client.Client)
 
-	it := cl.Services.CountrySpecs.List(&stripe.CountrySpecListParams{})
-	for it.Next() {
-		res <- it.CountrySpec()
+		lp := &stripe.CountrySpecListParams{}
+
+		it := cl.Services.CountrySpecs.List(lp)
+		for it.Next() {
+			res <- it.CountrySpec()
+		}
+		return it.Err()
 	}
-	return it.Err()
 }

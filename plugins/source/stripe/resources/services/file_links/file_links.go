@@ -3,6 +3,9 @@ package file_links
 import (
 	"context"
 
+	"fmt"
+	"strconv"
+
 	"github.com/cloudquery/cloudquery/plugins/source/stripe/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
@@ -14,7 +17,7 @@ func FileLinks() *schema.Table {
 		Name:        "stripe_file_links",
 		Description: `https://stripe.com/docs/api/file_links`,
 		Transform:   transformers.TransformWithStruct(&stripe.FileLink{}, transformers.WithSkipFields("APIResource", "ID")),
-		Resolver:    fetchFileLinks,
+		Resolver:    fetchFileLinks("file_links"),
 
 		Columns: []schema.Column{
 			{
@@ -29,12 +32,30 @@ func FileLinks() *schema.Table {
 	}
 }
 
-func fetchFileLinks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	cl := meta.(*client.Client)
+func fetchFileLinks(tableName string) schema.TableResolver {
+	return func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+		cl := meta.(*client.Client)
 
-	it := cl.Services.FileLinks.List(&stripe.FileLinkListParams{})
-	for it.Next() {
-		res <- it.FileLink()
+		lp := &stripe.FileLinkListParams{}
+
+		if cl.Backend != nil {
+			value, err := cl.Backend.Get(ctx, tableName, cl.ID())
+			if err != nil {
+				return fmt.Errorf("failed to retrieve state from backend: %w", err)
+			}
+			if value != "" {
+				vi, err := strconv.ParseInt(value, 10, 64)
+				if err != nil {
+					return fmt.Errorf("retrieved invalid state backend: %q %w", value, err)
+				}
+				lp.Created = &vi
+			}
+		}
+
+		it := cl.Services.FileLinks.List(lp)
+		for it.Next() {
+			res <- it.FileLink()
+		}
+		return it.Err()
 	}
-	return it.Err()
 }

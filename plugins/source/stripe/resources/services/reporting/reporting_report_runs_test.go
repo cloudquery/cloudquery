@@ -8,5 +8,5 @@ import (
 )
 
 func TestReportingReportRuns(t *testing.T) {
-	client.MockTestHelper(t, reporting.ReportingReportRuns())
+	client.MockTestHelper(t, reporting.ReportingReportRuns(), client.TestOptions{})
 }

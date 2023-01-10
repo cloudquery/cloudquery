@@ -8,5 +8,5 @@ import (
 )
 
 func TestIssuingDisputes(t *testing.T) {
-	client.MockTestHelper(t, issuing.IssuingDisputes())
+	client.MockTestHelper(t, issuing.IssuingDisputes(), client.TestOptions{})
 }

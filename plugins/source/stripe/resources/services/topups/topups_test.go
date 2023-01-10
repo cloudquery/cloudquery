@@ -8,5 +8,5 @@ import (
 )
 
 func TestTopups(t *testing.T) {
-	client.MockTestHelper(t, topups.Topups())
+	client.MockTestHelper(t, topups.Topups(), client.TestOptions{})
 }

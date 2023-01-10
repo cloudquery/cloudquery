@@ -3,6 +3,9 @@ package payment
 import (
 	"context"
 
+	"fmt"
+	"strconv"
+
 	"github.com/cloudquery/cloudquery/plugins/source/stripe/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
@@ -14,7 +17,7 @@ func PaymentIntents() *schema.Table {
 		Name:        "stripe_payment_intents",
 		Description: `https://stripe.com/docs/api/payment_intents`,
 		Transform:   transformers.TransformWithStruct(&stripe.PaymentIntent{}, transformers.WithSkipFields("APIResource", "ID"), transformers.WithIgnoreInTestsTransformer(client.CreateIgnoreInTestsTransformer("Source"))),
-		Resolver:    fetchPaymentIntents,
+		Resolver:    fetchPaymentIntents("payment_intents"),
 
 		Columns: []schema.Column{
 			{
@@ -29,12 +32,30 @@ func PaymentIntents() *schema.Table {
 	}
 }
 
-func fetchPaymentIntents(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	cl := meta.(*client.Client)
+func fetchPaymentIntents(tableName string) schema.TableResolver {
+	return func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+		cl := meta.(*client.Client)
 
-	it := cl.Services.PaymentIntents.List(&stripe.PaymentIntentListParams{})
-	for it.Next() {
-		res <- it.PaymentIntent()
+		lp := &stripe.PaymentIntentListParams{}
+
+		if cl.Backend != nil {
+			value, err := cl.Backend.Get(ctx, tableName, cl.ID())
+			if err != nil {
+				return fmt.Errorf("failed to retrieve state from backend: %w", err)
+			}
+			if value != "" {
+				vi, err := strconv.ParseInt(value, 10, 64)
+				if err != nil {
+					return fmt.Errorf("retrieved invalid state backend: %q %w", value, err)
+				}
+				lp.Created = &vi
+			}
+		}
+
+		it := cl.Services.PaymentIntents.List(lp)
+		for it.Next() {
+			res <- it.PaymentIntent()
+		}
+		return it.Err()
 	}
-	return it.Err()
 }

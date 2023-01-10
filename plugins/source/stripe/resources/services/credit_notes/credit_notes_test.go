@@ -8,5 +8,5 @@ import (
 )
 
 func TestCreditNotes(t *testing.T) {
-	client.MockTestHelper(t, credit_notes.CreditNotes())
+	client.MockTestHelper(t, credit_notes.CreditNotes(), client.TestOptions{})
 }

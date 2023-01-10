@@ -8,5 +8,5 @@ import (
 )
 
 func TestTransfers(t *testing.T) {
-	client.MockTestHelper(t, transfers.Transfers())
+	client.MockTestHelper(t, transfers.Transfers(), client.TestOptions{})
 }

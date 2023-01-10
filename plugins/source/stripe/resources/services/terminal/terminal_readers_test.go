@@ -8,5 +8,5 @@ import (
 )
 
 func TestTerminalReaders(t *testing.T) {
-	client.MockTestHelper(t, terminal.TerminalReaders())
+	client.MockTestHelper(t, terminal.TerminalReaders(), client.TestOptions{})
 }

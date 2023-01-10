@@ -3,6 +3,9 @@ package issuing
 import (
 	"context"
 
+	"fmt"
+	"strconv"
+
 	"github.com/cloudquery/cloudquery/plugins/source/stripe/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
@@ -14,7 +17,7 @@ func IssuingTransactions() *schema.Table {
 		Name:        "stripe_issuing_transactions",
 		Description: `https://stripe.com/docs/api/issuing_transactions`,
 		Transform:   transformers.TransformWithStruct(&stripe.IssuingTransaction{}, transformers.WithSkipFields("APIResource", "ID")),
-		Resolver:    fetchIssuingTransactions,
+		Resolver:    fetchIssuingTransactions("issuing_transactions"),
 
 		Columns: []schema.Column{
 			{
@@ -29,12 +32,30 @@ func IssuingTransactions() *schema.Table {
 	}
 }
 
-func fetchIssuingTransactions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	cl := meta.(*client.Client)
+func fetchIssuingTransactions(tableName string) schema.TableResolver {
+	return func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+		cl := meta.(*client.Client)
 
-	it := cl.Services.IssuingTransactions.List(&stripe.IssuingTransactionListParams{})
-	for it.Next() {
-		res <- it.IssuingTransaction()
+		lp := &stripe.IssuingTransactionListParams{}
+
+		if cl.Backend != nil {
+			value, err := cl.Backend.Get(ctx, tableName, cl.ID())
+			if err != nil {
+				return fmt.Errorf("failed to retrieve state from backend: %w", err)
+			}
+			if value != "" {
+				vi, err := strconv.ParseInt(value, 10, 64)
+				if err != nil {
+					return fmt.Errorf("retrieved invalid state backend: %q %w", value, err)
+				}
+				lp.Created = &vi
+			}
+		}
+
+		it := cl.Services.IssuingTransactions.List(lp)
+		for it.Next() {
+			res <- it.IssuingTransaction()
+		}
+		return it.Err()
 	}
-	return it.Err()
 }

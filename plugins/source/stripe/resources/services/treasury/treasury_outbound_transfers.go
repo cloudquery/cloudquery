@@ -14,7 +14,7 @@ func TreasuryOutboundTransfers() *schema.Table {
 		Name:        "stripe_treasury_outbound_transfers",
 		Description: `https://stripe.com/docs/api/treasury_outbound_transfers`,
 		Transform:   transformers.TransformWithStruct(&stripe.TreasuryOutboundTransfer{}, transformers.WithSkipFields("APIResource", "ID")),
-		Resolver:    fetchTreasuryOutboundTransfers,
+		Resolver:    fetchTreasuryOutboundTransfers("treasury_outbound_transfers"),
 
 		Columns: []schema.Column{
 			{
@@ -29,16 +29,20 @@ func TreasuryOutboundTransfers() *schema.Table {
 	}
 }
 
-func fetchTreasuryOutboundTransfers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	cl := meta.(*client.Client)
+func fetchTreasuryOutboundTransfers(tableName string) schema.TableResolver {
+	return func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+		cl := meta.(*client.Client)
 
-	p := parent.Item.(*stripe.TreasuryFinancialAccount)
+		p := parent.Item.(*stripe.TreasuryFinancialAccount)
 
-	it := cl.Services.TreasuryOutboundTransfers.List(&stripe.TreasuryOutboundTransferListParams{
-		FinancialAccount: stripe.String(p.ID),
-	})
-	for it.Next() {
-		res <- it.TreasuryOutboundTransfer()
+		lp := &stripe.TreasuryOutboundTransferListParams{
+			FinancialAccount: stripe.String(p.ID),
+		}
+
+		it := cl.Services.TreasuryOutboundTransfers.List(lp)
+		for it.Next() {
+			res <- it.TreasuryOutboundTransfer()
+		}
+		return it.Err()
 	}
-	return it.Err()
 }

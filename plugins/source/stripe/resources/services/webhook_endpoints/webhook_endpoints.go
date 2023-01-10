@@ -14,7 +14,7 @@ func WebhookEndpoints() *schema.Table {
 		Name:        "stripe_webhook_endpoints",
 		Description: `https://stripe.com/docs/api/webhook_endpoints`,
 		Transform:   transformers.TransformWithStruct(&stripe.WebhookEndpoint{}, transformers.WithSkipFields("APIResource", "ID")),
-		Resolver:    fetchWebhookEndpoints,
+		Resolver:    fetchWebhookEndpoints("webhook_endpoints"),
 
 		Columns: []schema.Column{
 			{
@@ -29,12 +29,16 @@ func WebhookEndpoints() *schema.Table {
 	}
 }
 
-func fetchWebhookEndpoints(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	cl := meta.(*client.Client)
+func fetchWebhookEndpoints(tableName string) schema.TableResolver {
+	return func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+		cl := meta.(*client.Client)
 
-	it := cl.Services.WebhookEndpoints.List(&stripe.WebhookEndpointListParams{})
-	for it.Next() {
-		res <- it.WebhookEndpoint()
+		lp := &stripe.WebhookEndpointListParams{}
+
+		it := cl.Services.WebhookEndpoints.List(lp)
+		for it.Next() {
+			res <- it.WebhookEndpoint()
+		}
+		return it.Err()
 	}
-	return it.Err()
 }

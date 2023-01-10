@@ -8,5 +8,5 @@ import (
 )
 
 func TestApplePayDomains(t *testing.T) {
-	client.MockTestHelper(t, apple_pay_domains.ApplePayDomains())
+	client.MockTestHelper(t, apple_pay_domains.ApplePayDomains(), client.TestOptions{})
 }

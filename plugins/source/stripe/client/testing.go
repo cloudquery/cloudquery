@@ -11,6 +11,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/cloudquery/plugin-sdk/backend"
 	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
@@ -20,7 +21,11 @@ import (
 	"github.com/stripe/stripe-mock/server"
 )
 
-func MockTestHelper(t *testing.T, table *schema.Table) {
+type TestOptions struct {
+	Backend backend.Backend
+}
+
+func MockTestHelper(t *testing.T, table *schema.Table, opts TestOptions) {
 	version := "vDev"
 
 	t.Helper()
@@ -48,7 +53,7 @@ func MockTestHelper(t *testing.T, table *schema.Table) {
 
 		setupMockClient(logger.Level(zerolog.InfoLevel), *addr)
 		cl := sclient.New(stripe.Key, nil)
-		c := New(logger, spec, stSpec, cl)
+		c := New(logger, spec, stSpec, cl, opts.Backend)
 		return &c, nil
 	}
 

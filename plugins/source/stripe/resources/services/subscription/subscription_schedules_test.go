@@ -8,5 +8,5 @@ import (
 )
 
 func TestSubscriptionSchedules(t *testing.T) {
-	client.MockTestHelper(t, subscription.SubscriptionSchedules())
+	client.MockTestHelper(t, subscription.SubscriptionSchedules(), client.TestOptions{})
 }

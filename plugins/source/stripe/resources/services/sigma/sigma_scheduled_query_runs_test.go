@@ -8,5 +8,5 @@ import (
 )
 
 func TestSigmaScheduledQueryRuns(t *testing.T) {
-	client.MockTestHelper(t, sigma.SigmaScheduledQueryRuns())
+	client.MockTestHelper(t, sigma.SigmaScheduledQueryRuns(), client.TestOptions{})
 }

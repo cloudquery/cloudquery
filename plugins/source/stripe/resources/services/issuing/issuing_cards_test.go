@@ -8,5 +8,5 @@ import (
 )
 
 func TestIssuingCards(t *testing.T) {
-	client.MockTestHelper(t, issuing.IssuingCards())
+	client.MockTestHelper(t, issuing.IssuingCards(), client.TestOptions{})
 }

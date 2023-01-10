@@ -8,5 +8,5 @@ import (
 )
 
 func TestIssuingAuthorizations(t *testing.T) {
-	client.MockTestHelper(t, issuing.IssuingAuthorizations())
+	client.MockTestHelper(t, issuing.IssuingAuthorizations(), client.TestOptions{})
 }

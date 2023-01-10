@@ -34,7 +34,8 @@ type Resource struct {
 	Children []*Resource
 	Parent   *Resource // auto calculated from Children
 
-	ListParams string // optional
+	ListParams     string // optional
+	StateParamName string // optional *int64 param name. If empty, no state will be persisted. Only if Single is not true.
 }
 
 var (

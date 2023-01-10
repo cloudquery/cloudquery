@@ -14,7 +14,7 @@ func Quotes() *schema.Table {
 		Name:        "stripe_quotes",
 		Description: `https://stripe.com/docs/api/quotes`,
 		Transform:   transformers.TransformWithStruct(&stripe.Quote{}, transformers.WithSkipFields("APIResource", "ID")),
-		Resolver:    fetchQuotes,
+		Resolver:    fetchQuotes("quotes"),
 
 		Columns: []schema.Column{
 			{
@@ -29,12 +29,16 @@ func Quotes() *schema.Table {
 	}
 }
 
-func fetchQuotes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	cl := meta.(*client.Client)
+func fetchQuotes(tableName string) schema.TableResolver {
+	return func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+		cl := meta.(*client.Client)
 
-	it := cl.Services.Quotes.List(&stripe.QuoteListParams{})
-	for it.Next() {
-		res <- it.Quote()
+		lp := &stripe.QuoteListParams{}
+
+		it := cl.Services.Quotes.List(lp)
+		for it.Next() {
+			res <- it.Quote()
+		}
+		return it.Err()
 	}
-	return it.Err()
 }

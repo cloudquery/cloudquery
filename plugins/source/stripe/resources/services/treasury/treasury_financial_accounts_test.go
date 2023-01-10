@@ -8,5 +8,5 @@ import (
 )
 
 func TestTreasuryFinancialAccounts(t *testing.T) {
-	client.MockTestHelper(t, treasury.TreasuryFinancialAccounts())
+	client.MockTestHelper(t, treasury.TreasuryFinancialAccounts(), client.TestOptions{})
 }

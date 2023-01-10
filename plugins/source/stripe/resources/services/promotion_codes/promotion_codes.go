@@ -3,6 +3,9 @@ package promotion_codes
 import (
 	"context"
 
+	"fmt"
+	"strconv"
+
 	"github.com/cloudquery/cloudquery/plugins/source/stripe/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
@@ -14,7 +17,7 @@ func PromotionCodes() *schema.Table {
 		Name:        "stripe_promotion_codes",
 		Description: `https://stripe.com/docs/api/promotion_codes`,
 		Transform:   transformers.TransformWithStruct(&stripe.PromotionCode{}, transformers.WithSkipFields("APIResource", "ID")),
-		Resolver:    fetchPromotionCodes,
+		Resolver:    fetchPromotionCodes("promotion_codes"),
 
 		Columns: []schema.Column{
 			{
@@ -29,12 +32,30 @@ func PromotionCodes() *schema.Table {
 	}
 }
 
-func fetchPromotionCodes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	cl := meta.(*client.Client)
+func fetchPromotionCodes(tableName string) schema.TableResolver {
+	return func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+		cl := meta.(*client.Client)
 
-	it := cl.Services.PromotionCodes.List(&stripe.PromotionCodeListParams{})
-	for it.Next() {
-		res <- it.PromotionCode()
+		lp := &stripe.PromotionCodeListParams{}
+
+		if cl.Backend != nil {
+			value, err := cl.Backend.Get(ctx, tableName, cl.ID())
+			if err != nil {
+				return fmt.Errorf("failed to retrieve state from backend: %w", err)
+			}
+			if value != "" {
+				vi, err := strconv.ParseInt(value, 10, 64)
+				if err != nil {
+					return fmt.Errorf("retrieved invalid state backend: %q %w", value, err)
+				}
+				lp.Created = &vi
+			}
+		}
+
+		it := cl.Services.PromotionCodes.List(lp)
+		for it.Next() {
+			res <- it.PromotionCode()
+		}
+		return it.Err()
 	}
-	return it.Err()
 }

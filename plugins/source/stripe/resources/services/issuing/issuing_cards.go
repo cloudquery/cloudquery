@@ -3,6 +3,9 @@ package issuing
 import (
 	"context"
 
+	"fmt"
+	"strconv"
+
 	"github.com/cloudquery/cloudquery/plugins/source/stripe/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
@@ -14,7 +17,7 @@ func IssuingCards() *schema.Table {
 		Name:        "stripe_issuing_cards",
 		Description: `https://stripe.com/docs/api/issuing_cards`,
 		Transform:   transformers.TransformWithStruct(&stripe.IssuingCard{}, transformers.WithSkipFields("APIResource", "ID")),
-		Resolver:    fetchIssuingCards,
+		Resolver:    fetchIssuingCards("issuing_cards"),
 
 		Columns: []schema.Column{
 			{
@@ -29,12 +32,30 @@ func IssuingCards() *schema.Table {
 	}
 }
 
-func fetchIssuingCards(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	cl := meta.(*client.Client)
+func fetchIssuingCards(tableName string) schema.TableResolver {
+	return func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+		cl := meta.(*client.Client)
 
-	it := cl.Services.IssuingCards.List(&stripe.IssuingCardListParams{})
-	for it.Next() {
-		res <- it.IssuingCard()
+		lp := &stripe.IssuingCardListParams{}
+
+		if cl.Backend != nil {
+			value, err := cl.Backend.Get(ctx, tableName, cl.ID())
+			if err != nil {
+				return fmt.Errorf("failed to retrieve state from backend: %w", err)
+			}
+			if value != "" {
+				vi, err := strconv.ParseInt(value, 10, 64)
+				if err != nil {
+					return fmt.Errorf("retrieved invalid state backend: %q %w", value, err)
+				}
+				lp.Created = &vi
+			}
+		}
+
+		it := cl.Services.IssuingCards.List(lp)
+		for it.Next() {
+			res <- it.IssuingCard()
+		}
+		return it.Err()
 	}
-	return it.Err()
 }

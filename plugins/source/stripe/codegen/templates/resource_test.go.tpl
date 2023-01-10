@@ -8,5 +8,5 @@ import (
 )
 
 func Test{{.TableName | ToPascal}}(t *testing.T) {
-  client.MockTestHelper(t, {{.Service}}.{{.TableName | ToPascal}}())
+  client.MockTestHelper(t, {{.Service}}.{{.TableName | ToPascal}}(), client.TestOptions{})
 }

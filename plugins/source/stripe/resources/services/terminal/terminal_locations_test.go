@@ -8,5 +8,5 @@ import (
 )
 
 func TestTerminalLocations(t *testing.T) {
-	client.MockTestHelper(t, terminal.TerminalLocations())
+	client.MockTestHelper(t, terminal.TerminalLocations(), client.TestOptions{})
 }

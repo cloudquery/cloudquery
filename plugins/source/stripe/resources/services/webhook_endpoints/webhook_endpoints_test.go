@@ -8,5 +8,5 @@ import (
 )
 
 func TestWebhookEndpoints(t *testing.T) {
-	client.MockTestHelper(t, webhook_endpoints.WebhookEndpoints())
+	client.MockTestHelper(t, webhook_endpoints.WebhookEndpoints(), client.TestOptions{})
 }

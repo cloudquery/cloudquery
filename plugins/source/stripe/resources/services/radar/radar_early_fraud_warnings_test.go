@@ -8,5 +8,5 @@ import (
 )
 
 func TestRadarEarlyFraudWarnings(t *testing.T) {
-	client.MockTestHelper(t, radar.RadarEarlyFraudWarnings())
+	client.MockTestHelper(t, radar.RadarEarlyFraudWarnings(), client.TestOptions{})
 }

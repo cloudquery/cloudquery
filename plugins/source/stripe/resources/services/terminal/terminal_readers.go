@@ -14,7 +14,7 @@ func TerminalReaders() *schema.Table {
 		Name:        "stripe_terminal_readers",
 		Description: `https://stripe.com/docs/api/terminal_readers`,
 		Transform:   transformers.TransformWithStruct(&stripe.TerminalReader{}, transformers.WithSkipFields("APIResource", "ID")),
-		Resolver:    fetchTerminalReaders,
+		Resolver:    fetchTerminalReaders("terminal_readers"),
 
 		Columns: []schema.Column{
 			{
@@ -29,12 +29,16 @@ func TerminalReaders() *schema.Table {
 	}
 }
 
-func fetchTerminalReaders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	cl := meta.(*client.Client)
+func fetchTerminalReaders(tableName string) schema.TableResolver {
+	return func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+		cl := meta.(*client.Client)
 
-	it := cl.Services.TerminalReaders.List(&stripe.TerminalReaderListParams{})
-	for it.Next() {
-		res <- it.TerminalReader()
+		lp := &stripe.TerminalReaderListParams{}
+
+		it := cl.Services.TerminalReaders.List(lp)
+		for it.Next() {
+			res <- it.TerminalReader()
+		}
+		return it.Err()
 	}
-	return it.Err()
 }

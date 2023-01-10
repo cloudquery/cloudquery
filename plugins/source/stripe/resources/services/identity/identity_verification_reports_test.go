@@ -8,5 +8,5 @@ import (
 )
 
 func TestIdentityVerificationReports(t *testing.T) {
-	client.MockTestHelper(t, identity.IdentityVerificationReports())
+	client.MockTestHelper(t, identity.IdentityVerificationReports(), client.TestOptions{})
 }

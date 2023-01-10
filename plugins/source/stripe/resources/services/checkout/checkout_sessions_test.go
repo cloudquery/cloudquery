@@ -8,5 +8,5 @@ import (
 )
 
 func TestCheckoutSessions(t *testing.T) {
-	client.MockTestHelper(t, checkout.CheckoutSessions())
+	client.MockTestHelper(t, checkout.CheckoutSessions(), client.TestOptions{})
 }

@@ -14,7 +14,7 @@ func TreasuryCreditReversals() *schema.Table {
 		Name:        "stripe_treasury_credit_reversals",
 		Description: `https://stripe.com/docs/api/treasury_credit_reversals`,
 		Transform:   transformers.TransformWithStruct(&stripe.TreasuryCreditReversal{}, transformers.WithSkipFields("APIResource", "ID")),
-		Resolver:    fetchTreasuryCreditReversals,
+		Resolver:    fetchTreasuryCreditReversals("treasury_credit_reversals"),
 
 		Columns: []schema.Column{
 			{
@@ -29,16 +29,20 @@ func TreasuryCreditReversals() *schema.Table {
 	}
 }
 
-func fetchTreasuryCreditReversals(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	cl := meta.(*client.Client)
+func fetchTreasuryCreditReversals(tableName string) schema.TableResolver {
+	return func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+		cl := meta.(*client.Client)
 
-	p := parent.Item.(*stripe.TreasuryFinancialAccount)
+		p := parent.Item.(*stripe.TreasuryFinancialAccount)
 
-	it := cl.Services.TreasuryCreditReversals.List(&stripe.TreasuryCreditReversalListParams{
-		FinancialAccount: stripe.String(p.ID),
-	})
-	for it.Next() {
-		res <- it.TreasuryCreditReversal()
+		lp := &stripe.TreasuryCreditReversalListParams{
+			FinancialAccount: stripe.String(p.ID),
+		}
+
+		it := cl.Services.TreasuryCreditReversals.List(lp)
+		for it.Next() {
+			res <- it.TreasuryCreditReversal()
+		}
+		return it.Err()
 	}
-	return it.Err()
 }

@@ -8,5 +8,5 @@ import (
 )
 
 func TestBalanceTransactions(t *testing.T) {
-	client.MockTestHelper(t, balance.BalanceTransactions())
+	client.MockTestHelper(t, balance.BalanceTransactions(), client.TestOptions{})
 }

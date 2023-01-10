@@ -3,6 +3,9 @@ package subscription
 import (
 	"context"
 
+	"fmt"
+	"strconv"
+
 	"github.com/cloudquery/cloudquery/plugins/source/stripe/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
@@ -14,7 +17,7 @@ func SubscriptionSchedules() *schema.Table {
 		Name:        "stripe_subscription_schedules",
 		Description: `https://stripe.com/docs/api/subscription_schedules`,
 		Transform:   transformers.TransformWithStruct(&stripe.SubscriptionSchedule{}, transformers.WithSkipFields("APIResource", "ID")),
-		Resolver:    fetchSubscriptionSchedules,
+		Resolver:    fetchSubscriptionSchedules("subscription_schedules"),
 
 		Columns: []schema.Column{
 			{
@@ -29,12 +32,30 @@ func SubscriptionSchedules() *schema.Table {
 	}
 }
 
-func fetchSubscriptionSchedules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	cl := meta.(*client.Client)
+func fetchSubscriptionSchedules(tableName string) schema.TableResolver {
+	return func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+		cl := meta.(*client.Client)
 
-	it := cl.Services.SubscriptionSchedules.List(&stripe.SubscriptionScheduleListParams{})
-	for it.Next() {
-		res <- it.SubscriptionSchedule()
+		lp := &stripe.SubscriptionScheduleListParams{}
+
+		if cl.Backend != nil {
+			value, err := cl.Backend.Get(ctx, tableName, cl.ID())
+			if err != nil {
+				return fmt.Errorf("failed to retrieve state from backend: %w", err)
+			}
+			if value != "" {
+				vi, err := strconv.ParseInt(value, 10, 64)
+				if err != nil {
+					return fmt.Errorf("retrieved invalid state backend: %q %w", value, err)
+				}
+				lp.Created = &vi
+			}
+		}
+
+		it := cl.Services.SubscriptionSchedules.List(lp)
+		for it.Next() {
+			res <- it.SubscriptionSchedule()
+		}
+		return it.Err()
 	}
-	return it.Err()
 }

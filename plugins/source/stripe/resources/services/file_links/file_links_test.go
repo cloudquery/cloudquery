@@ -8,5 +8,5 @@ import (
 )
 
 func TestFileLinks(t *testing.T) {
-	client.MockTestHelper(t, file_links.FileLinks())
+	client.MockTestHelper(t, file_links.FileLinks(), client.TestOptions{})
 }

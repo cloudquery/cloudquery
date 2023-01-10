@@ -3,6 +3,9 @@ package refunds
 import (
 	"context"
 
+	"fmt"
+	"strconv"
+
 	"github.com/cloudquery/cloudquery/plugins/source/stripe/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
@@ -14,7 +17,7 @@ func Refunds() *schema.Table {
 		Name:        "stripe_refunds",
 		Description: `https://stripe.com/docs/api/refunds`,
 		Transform:   transformers.TransformWithStruct(&stripe.Refund{}, transformers.WithSkipFields("APIResource", "ID")),
-		Resolver:    fetchRefunds,
+		Resolver:    fetchRefunds("refunds"),
 
 		Columns: []schema.Column{
 			{
@@ -29,12 +32,30 @@ func Refunds() *schema.Table {
 	}
 }
 
-func fetchRefunds(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	cl := meta.(*client.Client)
+func fetchRefunds(tableName string) schema.TableResolver {
+	return func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+		cl := meta.(*client.Client)
 
-	it := cl.Services.Refunds.List(&stripe.RefundListParams{})
-	for it.Next() {
-		res <- it.Refund()
+		lp := &stripe.RefundListParams{}
+
+		if cl.Backend != nil {
+			value, err := cl.Backend.Get(ctx, tableName, cl.ID())
+			if err != nil {
+				return fmt.Errorf("failed to retrieve state from backend: %w", err)
+			}
+			if value != "" {
+				vi, err := strconv.ParseInt(value, 10, 64)
+				if err != nil {
+					return fmt.Errorf("retrieved invalid state backend: %q %w", value, err)
+				}
+				lp.Created = &vi
+			}
+		}
+
+		it := cl.Services.Refunds.List(lp)
+		for it.Next() {
+			res <- it.Refund()
+		}
+		return it.Err()
 	}
-	return it.Err()
 }
