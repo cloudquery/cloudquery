@@ -19,16 +19,30 @@ func ResourcePolicies() *schema.Table {
 				Name:     "account_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "region",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveAWSRegion,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
-				Name:     "arn",
+				Name:     "policy_name",
 				Type:     schema.TypeString,
-				Resolver: createXrayResourcePolicyArn,
+				Resolver: schema.PathResolver("PolicyName"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "policy_revision_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("PolicyRevisionId"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
