@@ -60,7 +60,7 @@
   "plugins/source/fastly+FILLER": "0.0.0",
   "plugins/source/snyk": "1.0.1",
   "plugins/source/snyk+FILLER": "0.0.0",
-  "plugins/destination/gcs": "1.0.2",
+  "plugins/destination/gcs": "1.0.3",
   "plugins/destination/gcs+FILLER": "0.0.0",
   "plugins/destination/s3": "1.0.2",
   "plugins/destination/s3+FILLER": "0.0.0",
