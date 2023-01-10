@@ -85,9 +85,9 @@ RETURN type(r)
 Now, we'll create relationships between IAM Users and all IAM User inline policies.
 
 ```sql
-MATCH
-(iamusers:aws_iam_users),
-(inlinep:aws_iam_user_policies)
+MATCH 
+  (iamusers:aws_iam_users),
+  (inlinep:aws_iam_user_policies)
 WHERE iamusers.arn = inlinep.user_arn
 CREATE (iamusers)-[r:has_inline_policy]->(inlinep)
 RETURN type(r)
@@ -96,9 +96,9 @@ RETURN type(r)
 Now, we'll create relationships between IAM Users and directly attached managed policies. 
 
 ```sql
-MATCH
-(iamusers:aws_iam_users),
-(attachp:aws_iam_user_attached_policies)
+MATCH 
+  (iamusers:aws_iam_users), 
+  (attachp:aws_iam_user_attached_policies)
 WHERE iamusers.arn = inlinep.user_arn
 CREATE (iamusers)-[r:has_attached_policy]->(attachp)
 RETURN type(r)
@@ -107,7 +107,9 @@ RETURN type(r)
 Next, we'll create relationships between IAM Groups and their inline policies.
 
 ```sql
-MATCH (iamgroups:aws_iam_groups), (groupinline:aws_iam_group_policies)
+MATCH 
+  (iamgroups:aws_iam_groups),
+  (groupinline:aws_iam_group_policies)
 WHERE iamgroups.arn = groupinline.group_arn
 CREATE (iamgroups)-[r:has_inline_policy]->(groupinline)
 RETURN type(r)
@@ -116,7 +118,9 @@ RETURN type(r)
 Lastly, we'll create relationships between IAM Groups and their attached managed policies.
 
 ```sql
-MATCH (n:aws_iam_groups), (policies:aws_iam_policies) 
+MATCH 
+  (n:aws_iam_groups), 
+  (policies:aws_iam_policies) 
 UNWIND (keys(apoc.convert.fromJsonMap(n.policies))) as y 
 WITH y, policies, n
 WHERE y = policies.arn
@@ -146,7 +150,9 @@ In this example, we will focus on Relational Databases (AWS RDS) and their data.
 Let's first create relationships between RDS instances and their encryption from KMS Keys.
 
 ```sql
-MATCH (rdsinstances:aws_rds_instances), (kmskeys:aws_kms_keys)
+MATCH 
+  (rdsinstances:aws_rds_instances), 
+  (kmskeys:aws_kms_keys)
 WHERE rdsinstances.kms_key_id = kmskeys.arn
 CREATE (rdsinstances)-[r:is_encrypted_by_key]->(kmskeys)
 RETURN type(r)
@@ -155,7 +161,9 @@ RETURN type(r)
 Let's connect KMS Keys with all their Key Grants and the [access that the Key Grants may permit](https://www.cloudquery.io/blog/aws-kms-key-grants-deep-dive) to those KMS Keys and data.
 
 ```sql
-MATCH (keygrants:aws_kms_key_grants), (kmskeys:aws_kms_keys)
+MATCH 
+  (keygrants:aws_kms_key_grants),
+  (kmskeys:aws_kms_keys)
 WHERE keygrants.key_arn = kmskeys.arn
 CREATE (kmskeys)-[r:has_kms_key_grant]->(keygrants)
 RETURN type(r)
@@ -164,14 +172,22 @@ RETURN type(r)
 Let's now link Security Groups to the RDS instances.
 
 ```sql
-MATCH (rds_is:aws_rds_instances), (sgs:aws_ec2_security_groups) WHERE apoc.convert.fromJsonList(rds_is.vpc_security_groups)[0]['VpcSecurityGroupId'] = sgs.group_id CREATE (rds_is)-[r:uses_security_group]->(sgs) 
+MATCH 
+  (rds_is:aws_rds_instances), 
+  (sgs:aws_ec2_security_groups) 
+WHERE 
+  apoc.convert.fromJsonList(rds_is.vpc_security_groups)[0]['VpcSecurityGroupId'] 
+  = sgs.group_id 
+CREATE (rds_is)-[r:uses_security_group]->(sgs) 
 RETURN type(r)
 ```
 
 In the next cypher query, we will connect KMS Keys with their KMS Key Policies.
 
 ```sql 
-MATCH (keypolicies:aws_kms_key_policies), (keys:aws_kms_keys) 
+MATCH 
+  (keypolicies:aws_kms_key_policies),
+  (keys:aws_kms_keys) 
 WHERE keypolicies.key_arn = keys.arn
 CREATE (keys)-[r:has_key_policy]->(keypolicies)
 RETURN type(r)
@@ -180,7 +196,9 @@ RETURN type(r)
 Now, we'll create relationships between RDS Instances and the VPC networks they belong to.
 
 ```sql
-MATCH (rds_is:aws_rds_instances), (vpcs:aws_ec2_vpcs) 
+MATCH 
+  (rds_is:aws_rds_instances), 
+  (vpcs:aws_ec2_vpcs) 
 WHERE apoc.convert.fromJsonMap(rds_is.db_subnet_group)['VpcId'] = vpcs.vpc_id
 CREATE (rds_is)-[r:is_in_vpc]->(vpcs)
 return type(r)
@@ -189,7 +207,9 @@ return type(r)
 Lastly, we'll create relationships between Internet Gateways and their VPCs.
 
 ```sql
-MATCH (igws:aws_ec2_internet_gateways), (vpcs:aws_ec2_vpcs)
+MATCH 
+  (igws:aws_ec2_internet_gateways), 
+  (vpcs:aws_ec2_vpcs)
 WHERE apoc.convert.fromJsonList(igws.attachments)[0]['VpcId'] = vpcs.vpc_id
 CREATE (vpcs)-[r:has_internet_gateway]->(igws)
 return type(r)
