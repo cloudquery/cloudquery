@@ -49,7 +49,7 @@ Let's start with a simple query to find all our IAM Roles.
 
 ### Step 4: Run Custom ASM Queries and Create Relationships in Neo4j
 
-* Example 1: IAM User Access Keys and their linked permissions.
+#### Example 1: IAM User Access Keys and their linked permissions.
 
 Let's start with IAM User Access Keys.  With this query, we'll look for the 4 distinct ways with identity policies an IAM User can be granted permissions and link those to the IAM Users and to the IAM User Access Keys.  In this example, we've already created the following resources in AWS: IAM Users, IAM Groups, Inline Policies for both Groups and Users, Managed Policies for both Groups and Users, and IAM User Access Keys.
 
@@ -61,7 +61,7 @@ An IAM User can be granted permissions from:
 
 By running the following command, we create a relationship between IAM User nodes and IAM User Access Key nodes.
 
-```cypher 
+```sql 
 MATCH
   (a:aws_iam_user_access_keys),
   (b:aws_iam_users)
@@ -72,7 +72,7 @@ RETURN type(r)
 
 Next, let's create a relationship between IAM Users and IAM Groups.  In AWS, IAM Users can be members of IAM Groups and inherit their IAM policies.
 
-```cypher
+```sql
 MATCH
   (iamusers:aws_iam_users),
   (usergroups:aws_iam_user_groups),
@@ -84,7 +84,7 @@ RETURN type(r)
 
 Now, we'll create relationships between IAM Users and all IAM User inline policies.
 
-```cypher
+```sql
 MATCH
 (iamusers:aws_iam_users),
 (inlinep:aws_iam_user_policies)
@@ -95,7 +95,7 @@ RETURN type(r)
 
 Now, we'll create relationships between IAM Users and directly attached managed policies. 
 
-```cypher
+```sql
 MATCH
 (iamusers:aws_iam_users),
 (attachp:aws_iam_user_attached_policies)
@@ -106,10 +106,8 @@ RETURN type(r)
 
 Next, we'll create relationships between IAM Groups and their inline policies.
 
-```cypher
-MATCH
-(iamgroups:aws_iam_groups),
-(groupinline:aws_iam_group_policies)
+```sql
+MATCH (iamgroups:aws_iam_groups), (groupinline:aws_iam_group_policies)
 WHERE iamgroups.arn = groupinline.group_arn
 CREATE (iamgroups)-[r:has_inline_policy]->(groupinline)
 RETURN type(r)
@@ -117,7 +115,7 @@ RETURN type(r)
 
 Lastly, we'll create relationships between IAM Groups and their attached managed policies.
 
-```cypher
+```sql
 MATCH (n:aws_iam_groups), (policies:aws_iam_policies) 
 UNWIND (keys(apoc.convert.fromJsonMap(n.policies))) as y 
 WITH y, policies, n
@@ -140,14 +138,14 @@ We'll use the following query to show our IAM Users: `MATCH (n:aws_iam_users) re
 
 ![Sample Graph of IAM Users](/images/how-to-guides/attack-surface-management-with-graph/graph-users.png)
 
-* Example 2: Data in RDS
+#### Example 2: Data in RDS
 
 In this example, we will focus on Relational Databases (AWS RDS) and their data.  This will include network connectivity such as VPCs, Internet Gateways, and Security Groups.  We will also look at possible data access and encryption via KMS Keys, their KMS Key Policies, and KMS Key Grants.  In this example, we've already created the following resources in AWS: RDS Databases, KMS Keys, KMS Key Policies, KMS Key Grants, an AWS VPC, Security Groups, and an Internet Gateway.
 
 
 Let's first create relationships between RDS instances and their encryption from KMS Keys.
 
-```cypher
+```sql
 MATCH (rdsinstances:aws_rds_instances), (kmskeys:aws_kms_keys)
 WHERE rdsinstances.kms_key_id = kmskeys.arn
 CREATE (rdsinstances)-[r:is_encrypted_by_key]->(kmskeys)
@@ -156,7 +154,7 @@ RETURN type(r)
 
 Let's connect KMS Keys with all their Key Grants and the [access that the Key Grants may permit](https://www.cloudquery.io/blog/aws-kms-key-grants-deep-dive) to those KMS Keys and data.
 
-```cypher
+```sql
 MATCH (keygrants:aws_kms_key_grants), (kmskeys:aws_kms_keys)
 WHERE keygrants.key_arn = kmskeys.arn
 CREATE (kmskeys)-[r:has_kms_key_grant]->(keygrants)
@@ -165,14 +163,14 @@ RETURN type(r)
 
 Let's now link Security Groups to the RDS instances.
 
-```cypher
+```sql
 MATCH (rds_is:aws_rds_instances), (sgs:aws_ec2_security_groups) WHERE apoc.convert.fromJsonList(rds_is.vpc_security_groups)[0]['VpcSecurityGroupId'] = sgs.group_id CREATE (rds_is)-[r:uses_security_group]->(sgs) 
 RETURN type(r)
 ```
 
 In the next cypher query, we will connect KMS Keys with their KMS Key Policies.
 
-```cypher 
+```sql 
 MATCH (keypolicies:aws_kms_key_policies), (keys:aws_kms_keys) 
 WHERE keypolicies.key_arn = keys.arn
 CREATE (keys)-[r:has_key_policy]->(keypolicies)
@@ -181,7 +179,7 @@ RETURN type(r)
 
 Now, we'll create relationships between RDS Instances and the VPC networks they belong to.
 
-```cypher
+```sql
 MATCH (rds_is:aws_rds_instances), (vpcs:aws_ec2_vpcs) 
 WHERE apoc.convert.fromJsonMap(rds_is.db_subnet_group)['VpcId'] = vpcs.vpc_id
 CREATE (rds_is)-[r:is_in_vpc]->(vpcs)
@@ -190,7 +188,7 @@ return type(r)
 
 Lastly, we'll create relationships between Internet Gateways and their VPCs.
 
-```cypher
+```sql
 MATCH (igws:aws_ec2_internet_gateways), (vpcs:aws_ec2_vpcs)
 WHERE apoc.convert.fromJsonList(igws.attachments)[0]['VpcId'] = vpcs.vpc_id
 CREATE (vpcs)-[r:has_internet_gateway]->(igws)
