@@ -137,3 +137,4 @@
   - [gcp_sql_users](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_sql_users.md)
 - [gcp_storage_buckets](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_storage_buckets.md)
   - [gcp_storage_bucket_policies](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_storage_bucket_policies.md)
+- [gcp_workflows_workflows](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_workflows_workflows.md)
