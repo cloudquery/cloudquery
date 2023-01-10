@@ -12,10 +12,10 @@ The primary key for this table is **id**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
+|id (PK)|String|
 |cidr|String|
 |created_at|Timestamp|
 |data_cidr|String|
-|id (PK)|String|
 |name|String|
 |organization|JSON|
 |region|JSON|

@@ -22,4 +22,4 @@ The following tables depend on gcp_run_locations:
 |display_name|String|
 |labels|JSON|
 |location_id|String|
-|metadata|IntArray|
+|metadata|ByteArray|
