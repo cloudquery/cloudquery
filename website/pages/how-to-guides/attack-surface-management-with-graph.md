@@ -131,10 +131,10 @@ After all these relationships have been created, we can run a `MATCH (n:aws_iam_
 In the UI, feel free to play around with node labels, colors, and expansion of nodes and relationships. 
 
 In our sample environment, we have 3 IAM Users.  The following image shows the following and their relationships:
-* IAM User Access Keys in Green
-* IAM Managed Policies and Inline Policies in Red 
-* IAM Users are in Gray
-* IAM Groups are in Blue
+* IAM User Access Keys in green.
+* IAM Managed Policies and Inline Policies in red.
+* IAM Users are in gray.
+* IAM Groups are in blue.
 
 We'll use the following query to show our IAM Users: `MATCH (n:aws_iam_users) return n`:
 
