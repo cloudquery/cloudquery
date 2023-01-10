@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"runtime"
 
-	"github.com/cloudquery/plugin-sdk/mockgen"
+	"github.com/cloudquery/codegen/interfaces"
 	"github.com/fastly/go-fastly/v7/fastly"
 )
 
@@ -15,10 +15,10 @@ func main() {
 	if !ok {
 		panic("failed to get caller information")
 	}
-	err := mockgen.GenerateInterfaces(
+	err := interfaces.Generate(
 		[]any{&fastly.Client{}},
 		path.Join(path.Dir(filename), "../client/services"),
-		mockgen.WithIncludeFunc(include),
+		interfaces.WithIncludeFunc(include),
 	)
 	if err != nil {
 		panic(err)
@@ -26,5 +26,5 @@ func main() {
 }
 
 func include(m reflect.Method) bool {
-	return mockgen.MethodHasAnyPrefix(m, []string{"Get", "List", "NewGet", "NewList"})
+	return interfaces.MethodHasAnyPrefix(m, []string{"Get", "List", "NewGet", "NewList"})
 }
