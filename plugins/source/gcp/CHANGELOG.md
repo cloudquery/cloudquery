@@ -5,6 +5,13 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v6.1.1...plugins-source-gcp-v6.1.2) (2023-01-10)
+
+
+### Bug Fixes
+
+* Revert "fix(gcp-resources): Add `organization_id` and `name` as PK of `gcp_resourcemanager_folders` ([#6576](https://github.com/cloudquery/cloudquery/issues/6576)) ([3434e42](https://github.com/cloudquery/cloudquery/commit/3434e4216aa74bba23cb9037e78c5152e5dc6b0e))
+
 ## [6.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v6.1.0...plugins-source-gcp-v6.1.1) (2023-01-10)
 
 
