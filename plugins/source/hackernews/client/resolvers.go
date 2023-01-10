@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -18,7 +19,8 @@ func UnixTimeResolver(fieldName string) schema.ColumnResolver {
 			return r.Set(col.Name, time.Unix(int64(v), 0))
 		case uint64:
 			return r.Set(col.Name, time.Unix(int64(v), 0))
+		default:
+			return fmt.Errorf("unhandled UnixTimeResolver of type %T", t)
 		}
-		panic("unknown type for UnixTimeResolver")
 	}
 }
