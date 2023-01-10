@@ -17,9 +17,10 @@ lint:
 lint-fix:
 	golangci-lint run --fix --config ../../.golangci.yml
 
-
 .PHONY: gen-mocks
 gen-mocks: install-tools
+	rm -rf ./client/services/*
+	go run codegen/main.go
 	rm -rf ./client/mocks/*
 	go generate ./client/...
 

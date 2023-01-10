@@ -18,6 +18,8 @@ The following tables depend on gandi_domains:
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
+|id (PK)|String|
+|sharing_id|String|
 |autorenew|JSON|
 |can_tld_lock|Bool|
 |contacts|JSON|
@@ -31,7 +33,5 @@ The following tables depend on gandi_domains:
 |status|StringArray|
 |tld|String|
 |authinfo|String|
-|id (PK)|String|
-|sharing_id|String|
 |tags|StringArray|
 |trustee_roles|StringArray|
