@@ -7,7 +7,7 @@ import { Badge } from "../../../../../components/Badge";
 
 The Hacker News Source plugin for CloudQuery extracts configuration from the [Hacker News API](https://github.com/HackerNews/API) and loads it into any supported CloudQuery destination (e.g. PostgreSQL).
 
-It can be used for real applications, but is mainly intended to serve as a reference for how to write an incremental CloudQuery Source plugin. 
+It can be used for real applications, but is mainly intended to serve as an example of an incremental CloudQuery Source plugin. 
 
 ## Configuration
 
@@ -28,4 +28,6 @@ spec:
 
 - `item_concurrency` (int, optional):
     The number of items to fetch concurrently. Defaults to 100.
- 
+
+- `start_time` (string, optional):
+    A date-time string in RFC3339 format. For example, `"2023-01-01T00:00:00Z"` will sync all items created on or after January 1, 2023. If not specified, the plugin will fetch all items. Note that because this is an incremental table, a previous cursor position will take precedence over this setting, unless the given start time is after the last cursor position.
