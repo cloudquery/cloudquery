@@ -39,7 +39,7 @@ func fetchAddOnWebhookDeliveries(ctx context.Context, meta schema.ClientMeta, _ 
 	// Roundtripper middleware in client/pagination.go
 	// sets the nextRange value after each request
 	for nextRange.Max != 0 {
-		ctxWithRange := context.WithValue(ctx, "nextRange", nextRange)
+		ctxWithRange := context.WithValue(ctx, "nextRange", nextRange) // nolint:revive,staticcheck
 		v, err := c.Heroku.AddOnList(ctxWithRange, nextRange)
 		if err != nil {
 			return errors.WithStack(err)
@@ -55,7 +55,7 @@ func fetchAddOnWebhookDeliveries(ctx context.Context, meta schema.ClientMeta, _ 
 		// Roundtripper middleware in client/pagination.go
 		// sets the nextRange value after each request
 		for nextRange.Max != 0 {
-			ctxWithRange := context.WithValue(ctx, "nextRange", nextRange)
+			ctxWithRange := context.WithValue(ctx, "nextRange", nextRange) // nolint:revive,staticcheck
 			v, err := c.Heroku.AddOnWebhookDeliveryList(ctxWithRange, it.ID, nextRange)
 			if err != nil {
 				return errors.WithStack(err)

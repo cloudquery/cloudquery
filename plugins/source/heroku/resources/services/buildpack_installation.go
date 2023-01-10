@@ -2,6 +2,7 @@ package services
 
 import (
 	"context"
+
 	"github.com/cloudquery/cloudquery/plugins/source/heroku/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
@@ -29,7 +30,7 @@ func fetchBuildpackInstallations(ctx context.Context, meta schema.ClientMeta, _ 
 	// Roundtripper middleware in client/pagination.go
 	// sets the nextRange value after each request
 	for nextRange.Max != 0 {
-		ctxWithRange := context.WithValue(ctx, "nextRange", nextRange)
+		ctxWithRange := context.WithValue(ctx, "nextRange", nextRange) // nolint:revive,staticcheck
 		v, err := c.Heroku.AppList(ctxWithRange, nextRange)
 		if err != nil {
 			return errors.WithStack(err)
@@ -45,7 +46,7 @@ func fetchBuildpackInstallations(ctx context.Context, meta schema.ClientMeta, _ 
 		// Roundtripper middleware in client/pagination.go
 		// sets the nextRange value after each request
 		for nextRange.Max != 0 {
-			ctxWithRange := context.WithValue(ctx, "nextRange", nextRange)
+			ctxWithRange := context.WithValue(ctx, "nextRange", nextRange) // nolint:revive,staticcheck
 			v, err := c.Heroku.BuildpackInstallationList(ctxWithRange, it.ID, nextRange)
 			if err != nil {
 				return errors.WithStack(err)
