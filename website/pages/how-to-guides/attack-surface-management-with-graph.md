@@ -49,7 +49,7 @@ Let's start with a simple query to find all our IAM Roles.
 
 ### Step 4: Run Custom ASM Queries and Create Relationships in Neo4j
 
-#### Example 1: IAM User Access Keys and their linked permissions.
+#### Example 1: IAM User Access Keys and their linked permissions
 
 Let's start with IAM User Access Keys.  With this query, we'll look for the 4 distinct ways with identity policies an IAM User can be granted permissions and link those to the IAM Users and to the IAM User Access Keys.  In this example, we've already created the following resources in AWS: IAM Users, IAM Groups, Inline Policies for both Groups and Users, Managed Policies for both Groups and Users, and IAM User Access Keys.
 
