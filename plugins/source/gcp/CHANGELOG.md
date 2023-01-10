@@ -5,6 +5,13 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v7.0.0...plugins-source-gcp-v7.1.0) (2023-01-10)
+
+
+### Features
+
+* **gcp-resources:** Add Workflows ([#6594](https://github.com/cloudquery/cloudquery/issues/6594)) ([bc16ee5](https://github.com/cloudquery/cloudquery/commit/bc16ee5dbef3e48f37028e881c003123442049f2))
+
 ## [7.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v6.1.2...plugins-source-gcp-v7.0.0) (2023-01-10)
 
 
