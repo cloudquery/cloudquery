@@ -19,6 +19,7 @@ The following tables depend on github_releases:
 |_cq_parent_id|UUID|
 |org (PK)|String|
 |repository_id (PK)|Int|
+|id (PK)|Int|
 |tag_name|String|
 |target_commitish|String|
 |name|String|
@@ -28,7 +29,6 @@ The following tables depend on github_releases:
 |make_latest|String|
 |discussion_category_name|String|
 |generate_release_notes|Bool|
-|id (PK)|Int|
 |created_at|Timestamp|
 |published_at|Timestamp|
 |url|String|

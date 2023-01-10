@@ -36,6 +36,7 @@ This table depends on [aws_backup_vaults](aws_backup_vaults.md).
 |last_restore_time|Timestamp|
 |lifecycle|JSON|
 |parent_recovery_point_arn|String|
+|recovery_point_arn|String|
 |resource_arn|String|
 |resource_type|String|
 |source_backup_vault_arn|String|

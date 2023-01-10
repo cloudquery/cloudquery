@@ -17,11 +17,11 @@ This table depends on [pagerduty_incidents](pagerduty_incidents.md).
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |id (PK)|String|
+|created_at|Timestamp|
+|html_url|String|
 |type|String|
 |summary|String|
 |self|String|
-|html_url|String|
-|created_at|Timestamp|
 |status|String|
 |alert_key|String|
 |service|JSON|

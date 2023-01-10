@@ -52,6 +52,7 @@ jobs:
                            "plugins/source/gcp",
                            "plugins/source/github",
                            "plugins/source/gitlab",
+                           "plugins/source/hackernews",
                            "plugins/source/heroku",
                            "plugins/source/k8s",
                            "plugins/source/okta",

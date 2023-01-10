@@ -18,8 +18,8 @@ The following tables depend on gcp_artifactregistry_locations:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |project_id (PK)|String|
+|name (PK)|String|
 |display_name|String|
 |labels|JSON|
 |location_id|String|
-|metadata|IntArray|
-|name (PK)|String|
+|metadata|ByteArray|
