@@ -152,6 +152,7 @@ RETURN type(r)
 ```
 
 Let's connect KMS Keys with all their Key Grants and the access that the Key Grants may permit to those KMS Keys and data.
+
 ```cypher
 MATCH (keygrants:aws_kms_key_grants), (kmskeys:aws_kms_keys)
 WHERE keygrants.key_arn = kmskeys.arn
@@ -160,6 +161,7 @@ RETURN type(r)
 ```
 
 Let's now link Security Groups to the RDS instances.
+
 ```cypher
 MATCH (rds_is:aws_rds_instances), (sgs:aws_ec2_security_groups) WHERE apoc.convert.fromJsonList(rds_is.vpc_security_groups)[0]['VpcSecurityGroupId'] = sgs.group_id CREATE (rds_is)-[r:uses_security_group]->(sgs) 
 RETURN type(r)
@@ -185,7 +187,7 @@ return type(r)
 
 Lastly, we'll create relationships between Internet Gateways and their VPCs.
 
-```
+```cypher
 MATCH (igws:aws_ec2_internet_gateways), (vpcs:aws_ec2_vpcs)
 WHERE apoc.convert.fromJsonList(igws.attachments)[0]['VpcId'] = vpcs.vpc_id
 CREATE (vpcs)-[r:has_internet_gateway]->(igws)
