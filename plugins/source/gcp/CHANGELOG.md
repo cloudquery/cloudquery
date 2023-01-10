@@ -5,6 +5,27 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v6.1.2...plugins-source-gcp-v7.0.0) (2023-01-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* **gcp-resources:** Add `project_id, instance_name, name` as PKs for `gcp_bigtableadmin_tables` ([#6536](https://github.com/cloudquery/cloudquery/issues/6536))
+* **deps:** `gcp_cloudiot_device_configs` column `binary_data` type changed from `IntArray` to `ByteArray`
+* **deps:** `gcp_cloudiot_device_states` column `binary_data` type changed from `IntArray` to `ByteArray`
+* **deps:** `gcp_iam_service_account_keys` column `public_key_data` type changed from `IntArray` to `ByteArray`
+* **deps:** `gcp_run_locations` column `metadata` type changed from `IntArray` to `ByteArray`
+* **deps:** `gcp_artifactregistry_locations` column `metadata` type changed from `IntArray` to `ByteArray`
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.24.1 ([aa818c5](https://github.com/cloudquery/cloudquery/commit/aa818c5cef004e2c539e110af0575bab6c6fe4c0))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.24.1 ([aa818c5](https://github.com/cloudquery/cloudquery/commit/aa818c5cef004e2c539e110af0575bab6c6fe4c0))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.24.1 ([aa818c5](https://github.com/cloudquery/cloudquery/commit/aa818c5cef004e2c539e110af0575bab6c6fe4c0))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.24.1 ([aa818c5](https://github.com/cloudquery/cloudquery/commit/aa818c5cef004e2c539e110af0575bab6c6fe4c0))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.24.1 ([aa818c5](https://github.com/cloudquery/cloudquery/commit/aa818c5cef004e2c539e110af0575bab6c6fe4c0))
+* **gcp-resources:** Add `project_id, instance_name, name` as PKs for `gcp_bigtableadmin_tables` ([#6536](https://github.com/cloudquery/cloudquery/issues/6536)) ([75cf1c5](https://github.com/cloudquery/cloudquery/commit/75cf1c57c151e7831c44c5da037d26c317376189))
+
 ## [6.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v6.1.1...plugins-source-gcp-v6.1.2) (2023-01-10)
 
 
