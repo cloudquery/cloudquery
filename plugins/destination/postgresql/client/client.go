@@ -5,30 +5,27 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/plugins"
+	"github.com/cloudquery/plugin-sdk/plugins/destination"
 	"github.com/cloudquery/plugin-sdk/specs"
-	"github.com/jackc/pgtype"
-	"github.com/jackc/pgx/v4"
-	"github.com/jackc/pgx/v4/log/zerologadapter"
-	"github.com/jackc/pgx/v4/pgxpool"
+
+	pgx_zero_log "github.com/jackc/pgx-zerolog"
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/jackc/pgx/v5/tracelog"
 	"github.com/rs/zerolog"
-	pgxUUID "github.com/vgarvardt/pgx-google-uuid/v4"
 )
 
 type Client struct {
+	destination.UnimplementedManagedWriter
+	destination.DefaultReverseTransformer
 	conn                *pgxpool.Pool
 	logger              zerolog.Logger
 	spec                specs.Destination
 	currentDatabaseName string
 	currentSchemaName   string
 	pgType              pgType
+	metrics             destination.Metrics
 	batchSize           int
-	batch               *pgx.Batch
-}
-
-type pgTablePrimaryKeys struct {
-	name    string
-	columns []string
 }
 
 type pgColumn struct {
@@ -67,10 +64,9 @@ const (
 	pgTypeCockroachDB
 )
 
-func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (plugins.DestinationClient, error) {
+func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (destination.Client, error) {
 	c := &Client{
 		logger: logger.With().Str("module", "pg-dest").Logger(),
-		batch:  &pgx.Batch{},
 	}
 	var specPostgreSql Spec
 	c.spec = spec
@@ -78,28 +74,27 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (pl
 		return nil, fmt.Errorf("failed to unmarshal postgresql spec: %w", err)
 	}
 	specPostgreSql.SetDefaults()
-	c.batchSize = specPostgreSql.BatchSize
-
-	logLevel, err := pgx.LogLevelFromString(specPostgreSql.PgxLogLevel.String())
+	c.batchSize = spec.BatchSize
+	logLevel, err := tracelog.LogLevelFromString(specPostgreSql.PgxLogLevel.String())
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse pgx log level %s: %w", specPostgreSql.PgxLogLevel, err)
 	}
 	c.logger.Info().Str("pgx_log_level", specPostgreSql.PgxLogLevel.String()).Msg("Initializing postgresql destination")
-
 	pgxConfig, err := pgxpool.ParseConfig(specPostgreSql.ConnectionString)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse connection string %w", err)
 	}
 	pgxConfig.AfterConnect = func(ctx context.Context, conn *pgx.Conn) error {
-		conn.ConnInfo().RegisterDataType(pgtype.DataType{Value: &pgxUUID.UUID{}, Name: "uuid", OID: pgtype.UUIDOID})
 		return nil
 	}
-	l := zerologadapter.NewLogger(c.logger)
-	pgxConfig.ConnConfig.Logger = l
-	pgxConfig.ConnConfig.LogLevel = logLevel
+
+	pgxConfig.ConnConfig.Tracer = &tracelog.TraceLog{
+		Logger:   pgx_zero_log.NewLogger(c.logger),
+		LogLevel: logLevel,
+	}
 	// maybe expose this to the user?
 	pgxConfig.ConnConfig.RuntimeParams["timezone"] = "UTC"
-	c.conn, err = pgxpool.ConnectConfig(ctx, pgxConfig)
+	c.conn, err = pgxpool.NewWithConfig(ctx, pgxConfig)
 	if err != nil {
 		return nil, fmt.Errorf("failed to connect to postgresql: %w", err)
 	}
@@ -120,11 +115,6 @@ func (c *Client) Close(ctx context.Context) error {
 	var err error
 	if c.conn == nil {
 		return fmt.Errorf("client already closed or not initialized")
-	}
-	if c.batch.Len() > 0 {
-		br := c.conn.SendBatch(ctx, c.batch)
-		err = br.Close()
-		c.batch = &pgx.Batch{}
 	}
 	if c.conn != nil {
 		c.conn.Close()
@@ -190,15 +180,6 @@ func (c *Client) getPgTableColumns(ctx context.Context, tableName string) (*pgTa
 		return nil, err
 	}
 	return &tc, nil
-}
-
-func (c *pgTablePrimaryKeys) columnExist(column string) bool {
-	for _, col := range c.columns {
-		if col == column {
-			return true
-		}
-	}
-	return false
 }
 
 func (c *pgTableColumns) getPgColumn(column string) *pgColumn {

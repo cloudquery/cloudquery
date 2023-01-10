@@ -1,15 +1,15 @@
 WITH protected_instances AS (SELECT s.id AS instance_id
                              FROM azure_sql_managed_instances s
                                       LEFT JOIN azure_sql_managed_instance_encryption_protectors ep
-                                                ON s.cq_id = ep.managed_instance_cq_id
+                                                ON s.id = ep.sql_managed_instance_id
                              WHERE ep.server_key_type = 'AzureKeyVault'
                                AND ep.uri IS NOT NULL)
 insert into azure_policy_results
 SELECT
-  :'execution_time',
-  :'framework',
-  :'check_id',
-  'SQL managed instances should use customer-managed keys to encrypt data at rest',
+  :'execution_time' as execution_time,
+  :'framework' as framework,
+  :'check_id' as check_id,
+  'SQL managed instances should use customer-managed keys to encrypt data at rest' as title,
   i.subscription_id,
   i.id AS instance_id,
   case

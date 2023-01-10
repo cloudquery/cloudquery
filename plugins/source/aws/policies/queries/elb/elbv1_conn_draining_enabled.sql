@@ -5,9 +5,9 @@ select
   :'check_id' as check_id,
   'Classic Load Balancers should have connection draining enabled' as title,
   account_id,
-  aws_elbv1_load_balancers.arn as resource_id,
+  arn as resource_id,
   case when
-    attributes_connection_draining_enabled is not true
+    (attributes->'ConnectionDraining'->>'Enabled')::boolean is not true
     then 'fail'
     else 'pass'
   end as status

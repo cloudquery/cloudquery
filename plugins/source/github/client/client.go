@@ -4,9 +4,10 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
-	"github.com/google/go-github/v45/github"
+	"github.com/google/go-github/v48/github"
 	"github.com/rs/zerolog"
 	"golang.org/x/oauth2"
 )
@@ -28,6 +29,10 @@ func (c *Client) Logger() *zerolog.Logger {
 	return &c.logger
 }
 
+func (c *Client) ID() string {
+	return c.Org
+}
+
 func (c Client) WithOrg(org string) schema.ClientMeta {
 	return &Client{
 		logger: c.logger.With().Str("org", org).Logger(),
@@ -37,7 +42,7 @@ func (c Client) WithOrg(org string) schema.ClientMeta {
 	}
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.ClientMeta, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
 	var spec Spec
 	err := s.UnmarshalSpec(&spec)
 	if err != nil {
@@ -61,11 +66,13 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (sche
 	return &Client{
 		logger: logger,
 		Github: GithubServices{
-			Teams:         c.Teams,
+			Actions:       c.Actions,
 			Billing:       c.Billing,
-			Repositories:  c.Repositories,
-			Organizations: c.Organizations,
+			Dependabot:    c.Dependabot,
 			Issues:        c.Issues,
+			Organizations: c.Organizations,
+			Repositories:  c.Repositories,
+			Teams:         c.Teams,
 		},
 		Orgs: spec.Orgs,
 	}, nil

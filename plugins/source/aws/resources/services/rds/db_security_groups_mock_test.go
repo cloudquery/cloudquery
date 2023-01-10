@@ -38,7 +38,7 @@ func buildRdsDbSecurityGroups(t *testing.T, ctrl *gomock.Controller) client.Serv
 		nil,
 	)
 
-	return client.Services{RDS: mock}
+	return client.Services{Rds: mock}
 }
 
 func TestRDSDBSecurityGroups(t *testing.T) {

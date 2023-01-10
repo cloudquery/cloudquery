@@ -1,12 +1,8 @@
-WITH secured_accounts AS (SELECT a.cq_id
-                          FROM azure_storage_accounts a
-                                   LEFT JOIN azure_storage_account_network_rule_set_virtual_network_rules r
-                                             ON a.cq_id = r.account_cq_id
-                                   LEFT JOIN azure_network_virtual_network_subnets s
-                                             ON r.virtual_network_resource_id = s.id
-                          WHERE a.network_rule_set_default_action = 'Deny'
-                            AND r.virtual_network_resource_id IS NOT NULL
-                            AND s.provisioning_state = 'Succeeded')
+WITH secured_accounts AS (SELECT a._cq_id
+                          FROM azure_storage_accounts a, jsonb_array_elements(a.network_acls->'virtualNetworkRules') AS vnet
+                          WHERE a.network_acls->>'defaultAction' = 'Deny'
+                            AND vnet->>'id' IS NOT NULL
+                            AND vnet->>'state' = 'succeeded')
 insert into azure_policy_results
 SELECT
   :'execution_time',
@@ -16,8 +12,8 @@ SELECT
   subscription_id,
   id,
   case
-    when s.cq_id IS NULL
+    when s._cq_id IS NULL
       then 'fail' else 'pass'
   end
 FROM azure_storage_accounts a
-  LEFT JOIN secured_accounts s ON a.cq_id = s.cq_id
+  LEFT JOIN secured_accounts s ON a._cq_id = s._cq_id

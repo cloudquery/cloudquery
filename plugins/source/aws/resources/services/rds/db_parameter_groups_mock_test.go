@@ -50,7 +50,7 @@ func buildRDSDBParameterGroups(t *testing.T, ctrl *gomock.Controller) client.Ser
 		&rds.DescribeDBParametersOutput{Parameters: []types.Parameter{p}},
 		nil,
 	)
-	return client.Services{RDS: mock}
+	return client.Services{Rds: mock}
 }
 
 func TestRDSDBParameterGroups(t *testing.T) {

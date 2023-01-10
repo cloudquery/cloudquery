@@ -14,7 +14,7 @@ import (
 )
 
 func buildGuardDutyDetectors(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockGuardDutyClient(ctrl)
+	m := mocks.NewMockGuarddutyClient(ctrl)
 
 	var d guardduty.GetDetectorOutput
 	if err := faker.FakeObject(&d); err != nil {
@@ -41,7 +41,7 @@ func buildGuardDutyDetectors(t *testing.T, ctrl *gomock.Controller) client.Servi
 		&guardduty.ListMembersOutput{Members: []gdTypes.Member{member}}, nil,
 	)
 	return client.Services{
-		GuardDuty: m,
+		Guardduty: m,
 	}
 }
 

@@ -1,14 +1,9 @@
 # Table: azure_network_watchers
 
-
-
 The primary key for this table is **id**.
 
-## Relations
-The following tables depend on azure_network_watchers:
-  - [azure_network_flow_logs](azure_network_flow_logs.md)
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -16,10 +11,10 @@ The following tables depend on azure_network_watchers:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|etag|String|
-|provisioning_state|String|
 |id (PK)|String|
+|location|String|
+|properties|JSON|
+|tags|JSON|
+|etag|String|
 |name|String|
 |type|String|
-|location|String|
-|tags|JSON|

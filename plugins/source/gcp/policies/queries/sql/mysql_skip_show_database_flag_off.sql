@@ -16,10 +16,9 @@ SELECT gsi.name                                                                 
        CASE
            WHEN
                        gsi.database_version LIKE 'MYSQL%'
-                   AND (gsi.settings_database_flags IS NULL
-                   OR gsi.settings_database_flags ->> 'skip_show_database' != 'on'
-                   OR gsi.settings_database_flags ->> 'skip_show_database' IS NULL)
+                   AND (f->>'value' IS NULL
+                   OR f->>'value' != 'on')
                THEN 'fail'
            ELSE 'pass'
            END                                                                                             AS status
-FROM gcp_sql_instances gsi;
+FROM gcp_sql_instances gsi LEFT JOIN JSONB_ARRAY_ELEMENTS(gsi.settings->'databaseFlags') AS f ON f->>'name'='skip_show_database';

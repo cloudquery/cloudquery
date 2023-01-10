@@ -13,7 +13,7 @@ SELECT gsi.name                                                                 
        CASE
            WHEN
                        gsi.database_version LIKE 'SQLSERVER%'
-                   AND gsi.settings_backup_enabled = FALSE
+                   AND (gsi.settings->'backupConfiguration'->>'enabled')::boolean = FALSE
                THEN 'fail'
            ELSE 'pass'
            END                                                                                      AS status

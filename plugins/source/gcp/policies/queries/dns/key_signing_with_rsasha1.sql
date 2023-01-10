@@ -15,11 +15,9 @@ SELECT DISTINCT gdmz.id                                                   AS res
                 gdmz.project_id                                           AS project_id,
                 CASE
                     WHEN
-                                gdmzdcdks."key_type" = 'keySigning'
-                            AND gdmzdcdks.algorithm = 'rsasha1'
+                                gdmzdcdks->>'keyType' = 'keySigning'
+                            AND gdmzdcdks->>'algorithm' = 'rsasha1'
                         THEN 'fail'
                     ELSE 'pass'
                     END                                                   AS status
-FROM gcp_dns_managed_zones gdmz
-         JOIN gcp_dns_managed_zone_dnssec_config_default_key_specs gdmzdcdks ON
-    gdmz.id = gdmzdcdks.managed_zone_id;
+FROM gcp_dns_managed_zones gdmz, JSONB_ARRAY_ELEMENTS(gdmz.dnssec_config->'defaultKeySpecs') AS gdmzdcdks;

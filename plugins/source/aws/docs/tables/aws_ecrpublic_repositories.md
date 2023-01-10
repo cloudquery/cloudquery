@@ -5,10 +5,12 @@ https://docs.aws.amazon.com/AmazonECRPublic/latest/APIReference/API_Repository.h
 The primary key for this table is **arn**.
 
 ## Relations
+
 The following tables depend on aws_ecrpublic_repositories:
   - [aws_ecrpublic_repository_images](aws_ecrpublic_repository_images.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -21,5 +23,6 @@ The following tables depend on aws_ecrpublic_repositories:
 |tags|JSON|
 |created_at|Timestamp|
 |registry_id|String|
+|repository_arn|String|
 |repository_name|String|
 |repository_uri|String|

@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_Certificate.html
 
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -15,6 +15,7 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
+|certificate_arn|String|
 |certificate_identifier|String|
 |certificate_type|String|
 |customer_override|Bool|

@@ -14,10 +14,10 @@ SELECT "filter"                                                                 
        project_id                                                                                             AS project_id,
        CASE
            WHEN
-                       enabled = TRUE
+                       disabled = FALSE
                    AND "filter" ~
                        '\s*resource.type\s*=\s*"gce_firewall_rule"\s*AND\s*protoPayload.methodName\s*=\s*"v1.compute.firewalls.patch"\s*OR\s*protoPayload.methodName\s*=\s*"v1.compute.firewalls.insert"\s*'
                THEN 'fail'
            ELSE 'pass'
            END                                                                                                AS status
-FROM gcp_log_metric_filters;
+FROM gcp_logging_metrics;

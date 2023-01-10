@@ -2,7 +2,6 @@ package iam
 
 import (
 	"context"
-	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
@@ -12,10 +11,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchIamUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchIamUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	config := iam.ListUsersInput{}
 	c := meta.(*client.Client)
-	svc := c.Services().IAM
+	svc := c.Services().Iam
 	p := iam.NewListUsersPaginator(svc, &config)
 	for p.HasMorePages() {
 		response, err := p.NextPage(ctx)
@@ -29,7 +28,7 @@ func fetchIamUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 
 func getUser(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	listUser := resource.Item.(types.User)
-	svc := meta.(*client.Client).Services().IAM
+	svc := meta.(*client.Client).Services().Iam
 	userDetail, err := svc.GetUser(ctx, &iam.GetUserInput{
 		UserName: aws.String(*listUser.UserName),
 	})
@@ -40,10 +39,10 @@ func getUser(ctx context.Context, meta schema.ClientMeta, resource *schema.Resou
 	return nil
 }
 
-func fetchIamUserGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchIamUserGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config iam.ListGroupsForUserInput
 	p := parent.Item.(*types.User)
-	svc := meta.(*client.Client).Services().IAM
+	svc := meta.(*client.Client).Services().Iam
 	config.UserName = p.UserName
 	for {
 		output, err := svc.ListGroupsForUser(ctx, &config)
@@ -59,10 +58,10 @@ func fetchIamUserGroups(ctx context.Context, meta schema.ClientMeta, parent *sch
 	return nil
 }
 
-func fetchIamUserAccessKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchIamUserAccessKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config iam.ListAccessKeysInput
 	p := parent.Item.(*types.User)
-	svc := meta.(*client.Client).Services().IAM
+	svc := meta.(*client.Client).Services().Iam
 	config.UserName = p.UserName
 	for {
 		output, err := svc.ListAccessKeys(ctx, &config)
@@ -74,19 +73,9 @@ func fetchIamUserAccessKeys(ctx context.Context, meta schema.ClientMeta, parent 
 		for i, key := range output.AccessKeyMetadata {
 			switch i {
 			case 0:
-				rotated := parent.Get("access_key_1_last_rotated")
-				if rotated != nil {
-					keys[i] = models.AccessKeyWrapper{AccessKeyMetadata: key, LastRotated: rotated.(time.Time)}
-				} else {
-					keys[i] = models.AccessKeyWrapper{AccessKeyMetadata: key, LastRotated: *key.CreateDate}
-				}
+				keys[i] = models.AccessKeyWrapper{AccessKeyMetadata: key, LastRotated: *key.CreateDate}
 			case 1:
-				rotated := parent.Get("access_key_2_last_rotated")
-				if rotated != nil {
-					keys[i] = models.AccessKeyWrapper{AccessKeyMetadata: key, LastRotated: rotated.(time.Time)}
-				} else {
-					keys[i] = models.AccessKeyWrapper{AccessKeyMetadata: key, LastRotated: *key.CreateDate}
-				}
+				keys[i] = models.AccessKeyWrapper{AccessKeyMetadata: key, LastRotated: *key.CreateDate}
 			default:
 				keys[i] = models.AccessKeyWrapper{AccessKeyMetadata: key}
 			}
@@ -105,7 +94,7 @@ func postIamUserAccessKeyResolver(ctx context.Context, meta schema.ClientMeta, r
 	if r.AccessKeyId == nil {
 		return nil
 	}
-	svc := meta.(*client.Client).Services().IAM
+	svc := meta.(*client.Client).Services().Iam
 	output, err := svc.GetAccessKeyLastUsed(ctx, &iam.GetAccessKeyLastUsedInput{AccessKeyId: r.AccessKeyId})
 	if err != nil {
 		return err
@@ -121,10 +110,10 @@ func postIamUserAccessKeyResolver(ctx context.Context, meta schema.ClientMeta, r
 	return nil
 }
 
-func fetchIamUserAttachedPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchIamUserAttachedPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config iam.ListAttachedUserPoliciesInput
 	p := parent.Item.(*types.User)
-	svc := meta.(*client.Client).Services().IAM
+	svc := meta.(*client.Client).Services().Iam
 	config.UserName = p.UserName
 	for {
 		output, err := svc.ListAttachedUserPolicies(ctx, &config)

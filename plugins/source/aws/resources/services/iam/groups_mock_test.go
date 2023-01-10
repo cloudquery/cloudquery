@@ -56,7 +56,7 @@ func buildIamGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().GetGroupPolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&gp, nil)
 	return client.Services{
-		IAM: m,
+		Iam: m,
 	}
 }
 

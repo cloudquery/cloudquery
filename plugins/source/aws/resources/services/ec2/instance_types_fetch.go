@@ -11,10 +11,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchEc2InstanceTypes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchEc2InstanceTypes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config ec2.DescribeInstanceTypesInput
 	c := meta.(*client.Client)
-	svc := c.Services().EC2
+	svc := c.Services().Ec2
 
 	for {
 		response, err := svc.DescribeInstanceTypes(ctx, &config, func(options *ec2.Options) {

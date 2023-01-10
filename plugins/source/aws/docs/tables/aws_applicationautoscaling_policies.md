@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/autoscaling/plans/APIReference/API_ScalingPolicy.htm
 
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -16,6 +16,7 @@ The primary key for this table is **arn**.
 |region|String|
 |arn (PK)|String|
 |creation_time|Timestamp|
+|policy_arn|String|
 |policy_name|String|
 |policy_type|String|
 |resource_id|String|

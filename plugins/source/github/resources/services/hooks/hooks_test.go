@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/github/client/mocks"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
-	"github.com/google/go-github/v45/github"
+	"github.com/google/go-github/v48/github"
 )
 
 func buildHooks(t *testing.T, ctrl *gomock.Controller) client.GithubServices {
@@ -17,8 +17,8 @@ func buildHooks(t *testing.T, ctrl *gomock.Controller) client.GithubServices {
 	if err := faker.FakeObject(&cs); err != nil {
 		t.Fatal(err)
 	}
-	cs.Config = make(map[string]interface{})
-	cs.LastResponse = make(map[string]interface{})
+	cs.Config = make(map[string]any)
+	cs.LastResponse = make(map[string]any)
 	mock.EXPECT().ListHooks(gomock.Any(), "testorg", gomock.Any()).Return([]*github.Hook{&cs}, &github.Response{}, nil)
 
 	var hd *github.HookDelivery

@@ -2,15 +2,17 @@ package glue
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchGlueTriggers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchGlueTriggers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Glue
 	input := glue.ListTriggersInput{MaxResults: aws.Int32(200)}
@@ -44,8 +46,7 @@ func getTrigger(ctx context.Context, meta schema.ClientMeta, resource *schema.Re
 
 func resolveGlueTriggerArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	arn := aws.String(triggerARN(cl, aws.ToString(resource.Item.(types.Trigger).Name)))
-	return resource.Set(c.Name, arn)
+	return resource.Set(c.Name, triggerARN(cl, aws.ToString(resource.Item.(types.Trigger).Name)))
 }
 
 func resolveGlueTriggerTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
@@ -64,5 +65,11 @@ func resolveGlueTriggerTags(ctx context.Context, meta schema.ClientMeta, resourc
 }
 
 func triggerARN(cl *client.Client, name string) string {
-	return cl.ARN(client.GlueService, "trigger", name)
+	return arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.GlueService),
+		Region:    cl.Region,
+		AccountID: cl.AccountID,
+		Resource:  fmt.Sprintf("trigger/%s", name),
+	}.String()
 }

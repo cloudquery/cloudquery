@@ -1,16 +1,18 @@
 insert into azure_policy_results
 SELECT
-  :'execution_time',
-  :'framework',
-  :'check_id',
-  'Ensure that "Data encryption" is set to "On" on a SQL Database (Automated)',
+  :'execution_time' as execution_time,
+  :'framework' as framework,
+  :'check_id' as check_id,
+  'Ensure that "Data encryption" is set to "On" on a SQL Database (Automated)' as title,
   s.subscription_id,
   asd.id AS database_id,
   case
-    when (asd.transparent_data_encryption -> 'properties' ->> 'status') is distinct from 'Enabled'
+    when tde.status is distinct from 'Enabled'
     then 'fail'
     else 'pass'
   end
 FROM azure_sql_servers s
     LEFT JOIN azure_sql_databases asd ON
-        s.cq_id = asd.server_cq_id
+        s.id = asd.sql_server_id
+    LEFT JOIN azure_sql_transparent_data_encryptions tde ON
+        asd.id = tde.sql_database_id

@@ -12,9 +12,9 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchIamRoles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchIamRoles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config iam.ListRolesInput
-	svc := meta.(*client.Client).Services().IAM
+	svc := meta.(*client.Client).Services().Iam
 	for {
 		response, err := svc.ListRoles(ctx, &config)
 		if err != nil {
@@ -31,7 +31,7 @@ func fetchIamRoles(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 
 func getRole(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	role := resource.Item.(types.Role)
-	svc := meta.(*client.Client).Services().IAM
+	svc := meta.(*client.Client).Services().Iam
 	roleDetails, err := svc.GetRole(ctx, &iam.GetRoleInput{
 		RoleName: role.RoleName,
 	})
@@ -45,7 +45,7 @@ func getRole(ctx context.Context, meta schema.ClientMeta, resource *schema.Resou
 func resolveIamRolePolicies(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(*types.Role)
 	cl := meta.(*client.Client)
-	svc := cl.Services().IAM
+	svc := cl.Services().Iam
 	input := iam.ListAttachedRolePoliciesInput{
 		RoleName: r.RoleName,
 	}
@@ -78,7 +78,7 @@ func resolveRolesAssumeRolePolicyDocument(ctx context.Context, meta schema.Clien
 	if err != nil {
 		return err
 	}
-	var d map[string]interface{}
+	var d map[string]any
 	err = json.Unmarshal([]byte(decodedDocument), &d)
 	if err != nil {
 		return err
@@ -86,9 +86,9 @@ func resolveRolesAssumeRolePolicyDocument(ctx context.Context, meta schema.Clien
 	return resource.Set("assume_role_policy_document", d)
 }
 
-func fetchIamRolePolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchIamRolePolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
-	svc := c.Services().IAM
+	svc := c.Services().Iam
 	role := parent.Item.(*types.Role)
 	config := iam.ListRolePoliciesInput{
 		RoleName: role.RoleName,
@@ -113,7 +113,7 @@ func fetchIamRolePolicies(ctx context.Context, meta schema.ClientMeta, parent *s
 
 func getRolePolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	c := meta.(*client.Client)
-	svc := c.Services().IAM
+	svc := c.Services().Iam
 	p := resource.Item.(string)
 	role := resource.Parent.Item.(*types.Role)
 
@@ -133,7 +133,7 @@ func resolveRolePoliciesPolicyDocument(ctx context.Context, meta schema.ClientMe
 		return err
 	}
 
-	var document map[string]interface{}
+	var document map[string]any
 	err = json.Unmarshal([]byte(decodedDocument), &document)
 	if err != nil {
 		return err

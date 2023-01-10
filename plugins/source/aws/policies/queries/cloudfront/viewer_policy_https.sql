@@ -1,20 +1,18 @@
-insert into aws_policy_results
-with data as (
-    select distinct distribution_cq_id
-    from aws_cloudfront_distribution_cache_behaviors
-    where viewer_protocol_policy = 'allow-all'
+with cachebeviors as (
+	-- Handle all non defaults as well as when there is only a default route
+	select distinct arn, account_id from (select arn,account_id, d as CacheBehavior from aws_cloudfront_distributions, jsonb_array_elements(distribution_config->'CacheBehaviors'->'Items') as d where distribution_config->'CacheBehaviors'->'Items' != 'null' 
+	union 
+	-- 	Handle default Cachebehaviors
+	select arn,account_id, distribution_config->'DefaultCacheBehavior' as CacheBehavior from aws_cloudfront_distributions) as cachebeviors where CacheBehavior->>'ViewerProtocolPolicy' = 'allow-all'
 )
+
+insert into aws_policy_results
 select
     :'execution_time' as execution_time,
     :'framework' as framework,
     :'check_id' as check_id,
     'CloudFront distributions should require encryption in transit' as title,
-    d.account_id,
-    d.arn as resource_id,
-    case
-        when data.distribution_cq_id is not null
-            or d.cache_behavior_viewer_protocol_policy = 'allow-all' then 'fail'
-        else 'pass'
-    end as status
-from aws_cloudfront_distributions d
-left join data on data.distribution_cq_id = d.cq_id
+    account_id,
+    arn as resource_id,
+    'fail' as status
+from cachebeviors

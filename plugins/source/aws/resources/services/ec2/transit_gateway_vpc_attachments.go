@@ -10,7 +10,7 @@ import (
 func TransitGatewayVpcAttachments() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_ec2_transit_gateway_vpc_attachments",
-		Description: "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGatewayVpcAttachment.html",
+		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGatewayVpcAttachment.html`,
 		Resolver:    fetchEc2TransitGatewayVpcAttachments,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Columns: []schema.Column{
@@ -28,11 +28,6 @@ func TransitGatewayVpcAttachments() *schema.Table {
 				Name:     "transit_gateway_arn",
 				Type:     schema.TypeString,
 				Resolver: schema.ParentColumnResolver("arn"),
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "creation_time",
@@ -53,6 +48,11 @@ func TransitGatewayVpcAttachments() *schema.Table {
 				Name:     "subnet_ids",
 				Type:     schema.TypeStringArray,
 				Resolver: schema.PathResolver("SubnetIds"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "transit_gateway_attachment_id",

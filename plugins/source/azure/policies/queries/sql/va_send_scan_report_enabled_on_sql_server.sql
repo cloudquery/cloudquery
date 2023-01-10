@@ -1,7 +1,7 @@
 WITH vulnerability_emails AS (
     SELECT
         id,
-        UNNEST(recurring_scans_emails) AS emails
+        UNNEST((recurring_scans->>'emails')::text[]) AS emails
     FROM azure_sql_server_vulnerability_assessments v
 ),
 emails_count AS (
@@ -13,10 +13,10 @@ emails_count AS (
 )
 insert into azure_policy_results
 SELECT
-  :'execution_time',
-  :'framework',
-  :'check_id',
-  'Ensure that VA setting Send scan reports to is configured for a SQL server (Automated)',
+  :'execution_time' as execution_time,
+  :'framework' as framework,
+  :'check_id' as check_id,
+  'Ensure that VA setting Send scan reports to is configured for a SQL server (Automated)' as title,
   s.subscription_id,
   s.id AS server_id,
   case
@@ -25,6 +25,6 @@ SELECT
   end
 FROM azure_sql_servers s
     LEFT JOIN azure_sql_server_vulnerability_assessments sv ON
-        s.cq_id = sv.server_cq_id
+        s.id = sv.sql_server_id
     LEFT JOIN emails_count c ON
         sv.id = c.id

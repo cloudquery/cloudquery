@@ -7,7 +7,7 @@ select
   account_id,
   arn as resource_id,
   case when
-    vpc_vpc_id is null
+    vpc_options->>'VPCId' is null
     then 'fail'
     else 'pass'
   end as status

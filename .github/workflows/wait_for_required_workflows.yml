@@ -7,13 +7,14 @@ on:
 
 jobs:
   wait_for_required_workflows:
+    timeout-minutes: 60
     name: wait-for-required-workflows
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - name: Get changed files
         id: changed-files
-        uses: Ana06/get-changed-files@v2.1.0
+        uses: Ana06/get-changed-files@v2.2.0
       - uses: actions/github-script@v6
         env:
           FILES: ${{ steps.changed-files.outputs.all }}
@@ -21,8 +22,12 @@ jobs:
           script: |
             const files = process.env.FILES.split(' ')
             console.log(files)
+            if (files.length >= 300) {
+              // This is a GitHub limitation https://github.com/cloudquery/cloudquery/issues/2688
+              throw new Error('Too many files changed. Skipping check. Please split your PR into multiple ones.')
+            }
             let now = new Date().getTime()
-            const deadline = now + 60 * 1000 * 15
+            const deadline = now + 60 * 1000 * 50
             const matchesWorkflow = (file, action) => {
               if (!file.startsWith('.github/workflows/')) {
                 return false
@@ -32,35 +37,75 @@ jobs:
               return contents.includes(`name: "${action}"`)
             }
             const matchesFile = (action) => {
-              return files.some(file => file.startsWith(action) || matchesWorkflow(file, action))
+              return files.some(file => file.startsWith(`${action}/`) || matchesWorkflow(file, action))
             }
             let actions = ["cli",
                            "plugins/source/aws",
                            "plugins/source/azure",
+                           "plugins/source/azuredevops",
                            "plugins/source/cloudflare",
+                           "plugins/source/crowdstrike",
                            "plugins/source/digitalocean",
+                           "plugins/source/datadog",
+                           "plugins/source/fastly",
+                           "plugins/source/gandi",
                            "plugins/source/gcp",
                            "plugins/source/github",
+                           "plugins/source/gitlab",
+                           "plugins/source/hackernews",
                            "plugins/source/heroku",
                            "plugins/source/k8s",
                            "plugins/source/okta",
+                           "plugins/source/shopify",
+                           "plugins/source/slack",
+                           "plugins/source/salesforce",
+                           "plugins/source/snyk",
+                           "plugins/source/tailscale",
+                           "plugins/source/pagerduty",
                            "plugins/source/terraform",
                            "plugins/source/test",
+                           "plugins/source/vercel",
                            
                            "plugins/destination/postgresql",
                            "plugins/destination/test",
+                           "plugins/destination/csv",
+                           "plugins/destination/sqlite",
+                           "plugins/destination/snowflake",
+                           "plugins/destination/bigquery",
+                           "plugins/destination/mongodb",
+                           "plugins/destination/file",
+                           "plugins/destination/azblob",
+                           "plugins/destination/gcs",
+                           "plugins/destination/s3",
+                           "plugins/destination/neo4j",
+                           "plugins/destination/kafka",
                            ].filter(action => matchesFile(action))
             if (actions.length === 0) {
               console.log("No actions to wait for")
               return
             }
+
+            // Each module should have a 'validate-release' job
+            for (const action of actions) {
+              actions = [...actions, 'validate-release']
+            }
+
             // We test the CLI on multiple OSes, so we need to wait for all of them
             if (actions.includes("cli")) {
               actions = actions.filter(action => action !== "cli")
               actions = ["cli (ubuntu-latest)", "cli (windows-latest)", "cli (macos-latest)", ...actions]
             }
-            actions = [...actions, 'validate-release']
-            console.log(`Waiting for ${actions.join(", ")}`)
+
+            // Enforce policy tests for AWS,GCP and K8s plugins
+            const pluginsWithPolicyTests = ["plugins/source/aws", "plugins/source/gcp", "plugins/source/k8s"]
+            for (const plugin of pluginsWithPolicyTests) {
+              if (actions.includes(plugin)) {
+                actions = [...actions, 'test-policies']
+              }
+            }
+
+            pendingActions = [...actions]
+            console.log(`Waiting for ${pendingActions.join(", ")}`)
             while (now <= deadline) {
               const checkRuns = await github.paginate(github.rest.checks.listForRef, {
                 owner: 'cloudquery',
@@ -81,9 +126,11 @@ jobs:
                 return
               }
               
+              pendingActions = actions.filter(action => !runs.some(({ name }) => name === action))
+              console.log(`Waiting for ${pendingActions.join(", ")}`)
               await new Promise(r => setTimeout(r, 5000));
               now = new Date().getTime()
             }
-            throw new Error(`Timed out waiting for ${actions.join(', ')}`)
+            throw new Error(`Timed out waiting for ${pendingActions.join(', ')}`)
 
             

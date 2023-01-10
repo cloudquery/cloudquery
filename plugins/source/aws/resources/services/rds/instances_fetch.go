@@ -10,10 +10,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchRdsInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchRdsInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config rds.DescribeDBInstancesInput
 	c := meta.(*client.Client)
-	svc := c.Services().RDS
+	svc := c.Services().Rds
 	for {
 		response, err := svc.DescribeDBInstances(ctx, &config)
 		if err != nil {

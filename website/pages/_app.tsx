@@ -18,10 +18,27 @@ if (typeof window !== "undefined" && !("requestIdleCallback" in window)) {
   window.cancelIdleCallback = (e) => clearTimeout(e);
 }
 
+declare global {
+  interface Window {
+    sa_event: any;
+  }
+}
+
 export default function Nextra({ Component, pageProps }) {
   return (
     <React.Fragment>
       <Component {...pageProps} />
+      <Script>
+        {typeof window !== "undefined" &&
+          (window.sa_event =
+            window.sa_event ||
+            function () {
+              var a = [].slice.call(arguments);
+              window.sa_event.q
+                ? window.sa_event.q.push(a)
+                : (window.sa_event.q = [a]);
+            })}
+      </Script>
       <Script src="https://scripts.simpleanalyticscdn.com/latest.js" />
       <noscript>
         {/* eslint-disable @next/next/no-img-element */}

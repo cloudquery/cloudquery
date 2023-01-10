@@ -9,6 +9,7 @@ import (
 	awscfg "github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/smithy-go/logging"
+	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/digitalocean/godo"
@@ -64,7 +65,7 @@ func (c *Client) WithSpacesRegion(region string) *Client {
 	}
 }
 
-func (SpacesEndpointResolver) ResolveEndpoint(_, region string) (aws.Endpoint, error) {
+func (SpacesEndpointResolver) ResolveEndpoint(_, region string, options ...any) (aws.Endpoint, error) {
 	return aws.Endpoint{
 		URL:    fmt.Sprintf("https://%s.digitaloceanspaces.com", region),
 		Source: aws.EndpointSourceCustom,
@@ -130,7 +131,7 @@ func (s *ServicesManager) ServicesByRegion(region string) *Services {
 	return s.services[region]
 }
 
-func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.ClientMeta, error) {
+func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
 	// providerConfig := config.(*Config)
 	var doSpec Spec
 	if err := s.UnmarshalSpec(&doSpec); err != nil {
@@ -158,7 +159,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 
 	awsCfg, err := awscfg.LoadDefaultConfig(context.Background(),
 		awscfg.WithCredentialsProvider(SpacesCredentialsProvider{doSpec.SpacesAccessKey, doSpec.SpacesAccessKeyId}),
-		awscfg.WithEndpointResolver(SpacesEndpointResolver{}),
+		awscfg.WithEndpointResolverWithOptions(SpacesEndpointResolver{}),
 	)
 
 	if err != nil {
@@ -187,7 +188,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 	return &c, nil
 }
 
-func (a DoLogger) Logf(classification logging.Classification, format string, v ...interface{}) {
+func (a DoLogger) Logf(classification logging.Classification, format string, v ...any) {
 	if classification == logging.Warn {
 		a.l.Warn().Msg(fmt.Sprintf(format, v...))
 	} else {
@@ -197,6 +198,10 @@ func (a DoLogger) Logf(classification logging.Classification, format string, v .
 
 func (c *Client) Logger() *zerolog.Logger {
 	return &c.logger
+}
+
+func (c *Client) ID() string {
+	return c.SpacesRegion
 }
 
 func initServices(doClient *godo.Client, spacesService SpacesService) *Services {

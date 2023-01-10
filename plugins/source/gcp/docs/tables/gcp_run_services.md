@@ -1,19 +1,23 @@
 # Table: gcp_run_services
 
+https://cloud.google.com/run/docs/reference/rest/v2/projects.locations.services#Service
 
+The composite primary key for this table is (**project_id**, **name**).
 
-The primary key for this table is **_cq_id**.
+## Relations
 
+This table depends on [gcp_run_locations](gcp_run_locations.md).
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
+|_cq_id|UUID|
 |_cq_parent_id|UUID|
-|project_id|String|
-|name|String|
+|project_id (PK)|String|
+|name (PK)|String|
 |description|String|
 |uid|String|
 |generation|Int|
@@ -27,8 +31,8 @@ The primary key for this table is **_cq_id**.
 |last_modifier|String|
 |client|String|
 |client_version|String|
-|ingress|Int|
-|launch_stage|Int|
+|ingress|String|
+|launch_stage|String|
 |binary_authorization|JSON|
 |template|JSON|
 |traffic|JSON|

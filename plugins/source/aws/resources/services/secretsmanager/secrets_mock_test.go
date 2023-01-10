@@ -12,7 +12,7 @@ import (
 )
 
 func buildSecretsmanagerModels(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockSecretsManagerClient(ctrl)
+	m := mocks.NewMockSecretsmanagerClient(ctrl)
 
 	secret := types.SecretListEntry{}
 	if err := faker.FakeObject(&secret); err != nil {
@@ -46,7 +46,7 @@ func buildSecretsmanagerModels(t *testing.T, ctrl *gomock.Controller) client.Ser
 	)
 
 	return client.Services{
-		SecretsManager: m,
+		Secretsmanager: m,
 	}
 }
 

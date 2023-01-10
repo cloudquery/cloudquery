@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/neptune/latest/userguide/api-clusters.html#DescribeD
 
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -26,6 +26,7 @@ The primary key for this table is **arn**.
 |cluster_create_time|Timestamp|
 |copy_tags_to_snapshot|Bool|
 |cross_account_clone|Bool|
+|db_cluster_arn|String|
 |db_cluster_identifier|String|
 |db_cluster_members|JSON|
 |db_cluster_option_group_memberships|JSON|
@@ -52,6 +53,7 @@ The primary key for this table is **arn**.
 |read_replica_identifiers|StringArray|
 |reader_endpoint|String|
 |replication_source_identifier|String|
+|serverless_v2_scaling_configuration|JSON|
 |status|String|
 |storage_encrypted|Bool|
 |vpc_security_groups|JSON|

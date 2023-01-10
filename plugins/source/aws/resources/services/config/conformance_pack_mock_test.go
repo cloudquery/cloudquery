@@ -12,7 +12,7 @@ import (
 )
 
 func buildConfigConformancePack(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockConfigServiceClient(ctrl)
+	m := mocks.NewMockConfigserviceClient(ctrl)
 
 	var cpd types.ConformancePackDetail
 	if err := faker.FakeObject(&cpd); err != nil {
@@ -41,7 +41,7 @@ func buildConfigConformancePack(t *testing.T, ctrl *gomock.Controller) client.Se
 		}, nil)
 
 	return client.Services{
-		ConfigService: m,
+		Configservice: m,
 	}
 }
 

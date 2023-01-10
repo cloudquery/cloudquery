@@ -7,7 +7,7 @@ SELECT
   s.id,
   s.id
 FROM
-  azure_subscription_subscriptions s
+  azure_subscriptions s
   LEFT OUTER JOIN azure_monitor_log_profiles p
   ON s.id = '/subscriptions/' || p.subscription_id
 WHERE

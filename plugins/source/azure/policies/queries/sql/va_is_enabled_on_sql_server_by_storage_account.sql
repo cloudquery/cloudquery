@@ -1,9 +1,9 @@
 insert into azure_policy_results
 SELECT
-  :'execution_time',
-  :'framework',
-  :'check_id',
-  'Ensure that Vulnerability Assessment (VA) is enabled on a SQL server by setting a Storage Account (Automated)',
+  :'execution_time' as execution_time,
+  :'framework' as framework,
+  :'check_id' as check_id,
+  'Ensure that Vulnerability Assessment (VA) is enabled on a SQL server by setting a Storage Account (Automated)' as title,
   s.subscription_id,
   s.id AS server_id,
   case
@@ -12,4 +12,4 @@ SELECT
   end
 FROM azure_sql_servers s
     LEFT JOIN azure_sql_server_vulnerability_assessments a ON
-        s.cq_id = a.server_cq_id
+        s.id = a.sql_server_id

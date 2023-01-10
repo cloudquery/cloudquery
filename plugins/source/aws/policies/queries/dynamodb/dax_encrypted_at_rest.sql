@@ -7,7 +7,7 @@ select
     account_id,
     arn as resource_id,
   case when
-    sse_description_status is distinct from 'ENABLED'
+    sse_description->>'Status' is distinct from 'ENABLED'
     then 'fail'
     else 'pass'
   end as status

@@ -1,6 +1,6 @@
-WITH secured_vms AS (SELECT virtual_machine_cq_id
-                     FROM azure_compute_virtual_machine_resources
-                     WHERE extension_type = 'DependencyAgentLinux'
+WITH secured_vms AS (SELECT compute_virtual_machine_id
+                     FROM azure_compute_virtual_machine_extensions
+                     WHERE type = 'DependencyAgentLinux'
                        AND publisher = 'Microsoft.Azure.Monitoring.DependencyAgent'
                        AND provisioning_state = 'Succeeded')
 insert into azure_policy_results
@@ -13,7 +13,7 @@ SELECT
   vms.id,
   case
     when vms.storage_profile -> 'osDisk' ->> 'osType' = 'Linux'
-      and s.virtual_machine_cq_id IS NULL then 'fail' else 'pass'
+      and s.compute_virtual_machine_id IS NULL then 'fail' else 'pass'
   end
 FROM azure_compute_virtual_machines vms
-         LEFT JOIN secured_vms s ON vms.cq_id = s.virtual_machine_cq_id
+         LEFT JOIN secured_vms s ON vms.id = s.compute_virtual_machine_id

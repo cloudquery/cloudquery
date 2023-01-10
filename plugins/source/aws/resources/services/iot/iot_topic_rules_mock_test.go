@@ -12,7 +12,7 @@ import (
 )
 
 func buildIotTopicRules(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockIOTClient(ctrl)
+	m := mocks.NewMockIotClient(ctrl)
 
 	lp := iot.ListTopicRulesOutput{}
 	if err := faker.FakeObject(&lp); err != nil {
@@ -38,7 +38,7 @@ func buildIotTopicRules(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&tags, nil)
 
 	return client.Services{
-		IOT: m,
+		Iot: m,
 	}
 }
 

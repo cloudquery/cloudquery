@@ -15,7 +15,7 @@ export default function Confirm() {
             <div className="max-w-md mx-auto rounded-lg shadow-xl dark:bg-gray-900 dark:bg-opacity-80">
               <div className="p-6 rounded-lg shadow-sm ">
                 <div className="mx-auto space-y-4 dark:text-white">
-                  <h2 className="text-xl font-bold">Thanks so much!</h2>
+                  <h2 className="nx-text-xl font-bold">Thanks so much!</h2>
                   <p>
                     Keep an eye on your inbox for product updates and
                     announcements from CloudQuery.

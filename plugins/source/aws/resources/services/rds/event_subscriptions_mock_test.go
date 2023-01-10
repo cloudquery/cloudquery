@@ -33,7 +33,7 @@ func buildRDSEventSubscriptions(t *testing.T, ctrl *gomock.Controller) client.Se
 		},
 		nil,
 	)
-	return client.Services{RDS: mock}
+	return client.Services{Rds: mock}
 }
 
 func TestRDSEventSubscriptions(t *testing.T) {

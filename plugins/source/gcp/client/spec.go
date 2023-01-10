@@ -7,6 +7,9 @@ type Spec struct {
 	FolderIDs             []string `json:"folder_ids"`
 	FolderRecursionDepth  *int     `json:"folder_recursion_depth"`
 	ProjectFilter         string   `json:"project_filter"`
+	BackoffDelay          int      `json:"backoff_delay"`
+	BackoffRetries        int      `json:"backoff_retries"`
+	EnabledServicesOnly   bool     `json:"enabled_services_only"`
 }
 
 func (spec *Spec) setDefaults() {

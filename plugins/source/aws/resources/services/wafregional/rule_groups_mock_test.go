@@ -14,7 +14,7 @@ import (
 )
 
 func buildRuleGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockWafRegionalClient(ctrl)
+	m := mocks.NewMockWafregionalClient(ctrl)
 
 	var g types.RuleGroup
 	if err := faker.FakeObject(&g); err != nil {
@@ -51,7 +51,7 @@ func buildRuleGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Services 
 		nil,
 	)
 
-	return client.Services{WafRegional: m}
+	return client.Services{Wafregional: m}
 }
 
 func TestRuleGroups(t *testing.T) {

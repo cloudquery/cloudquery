@@ -7,12 +7,13 @@ select
   account_id,
   cloud_watch_logs_log_group_arn as resource_id,
   case
-      when pattern = '{ ($.eventName = CreateCustomerGateway) '
-            || '|| ($.eventName = DeleteCustomerGateway) '
-            || '|| ($.eventName = AttachInternetGateway) '
-            || '|| ($.eventName = CreateInternetGateway) '
-            || '|| ($.eventName = DeleteInternetGateway) '
-            || '|| ($.eventName = DetachInternetGateway) }' then 'pass'
+      when pattern NOT LIKE '%NOT%'
+          AND pattern LIKE '%($.eventName = CreateCustomerGateway)%'
+          AND pattern LIKE '%($.eventName = DeleteCustomerGateway)%'
+          AND pattern LIKE '%($.eventName = AttachInternetGateway)%'
+          AND pattern LIKE '%($.eventName = CreateInternetGateway)%'
+          AND pattern LIKE '%($.eventName = DeleteInternetGateway)%'
+          AND pattern LIKE '%($.eventName = DetachInternetGateway)%' then 'pass'
       else 'fail'
   end as status
 from view_aws_log_metric_filter_and_alarm

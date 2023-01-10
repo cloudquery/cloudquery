@@ -13,9 +13,15 @@ const CLOUDQUERY_TEAM = {
   },
   hermanschaaf: {
     name: "Herman Schaaf",
-    url: "https://www.linkedin.com/in/hermanschaaf/",
+    url: "https://github.com/hermanschaaf",
     twitterUsername: "",
     image_url: "/images/people/hermanschaaf.jpg",
+  },
+  shimon: {
+    name: "Shimon Pats",
+    url: "https://www.linkedin.com/in/shimon-pats-592046177/",
+    twitterUsername: "",
+    image_url: "/images/people/shimon.jpg",
   },
   roneliahu: {
     name: "Ron Eliahu",
@@ -58,6 +64,30 @@ const CLOUDQUERY_TEAM = {
     url: "https://twitter.com/spangenberg_d",
     twitterUsername: "spangenberg_d",
     image_url: "/images/people/danielspangenberg.jpg",
+  },
+  SCKelemen: {
+    name: "Samuel Kelemen",
+    url: "https://www.linkedin.com/in/skelemen/",
+    twitterUsername: "",
+    image_url: "/images/people/samuel.png",
+  },
+  alex: {
+    name: "Aleksandr Shcherbakov",
+    url: "https://www.linkedin.com/in/alex-shcherbakov/",
+    twitterUsername: "candiduslynx",
+    image_url: "/images/people/alex.png",
+  },
+  kemal: {
+    name: "Kemal Hadimli",
+    url: "https://www.linkedin.com/in/kemalh/",
+    twitterUsername: "disq",
+    image_url: "/images/people/kemal.jpg",
+  },
+  cloudmatt: {
+    name: "cloudmatt",
+    url: "https://github.com/cloudmatt",
+    twitterUsername: "",
+    image_url: "/images/people/cloudmatt.png",
   },
 };
 

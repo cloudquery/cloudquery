@@ -1,11 +1,16 @@
 # Table: gcp_sql_instances
 
-
+https://cloud.google.com/sql/docs/mysql/admin-api/rest/v1beta4/instances#DatabaseInstance
 
 The primary key for this table is **self_link**.
 
+## Relations
+
+The following tables depend on gcp_sql_instances:
+  - [gcp_sql_users](gcp_sql_users.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

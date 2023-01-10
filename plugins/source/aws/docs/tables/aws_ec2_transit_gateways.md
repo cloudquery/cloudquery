@@ -2,9 +2,10 @@
 
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGateway.html
 
-The composite primary key for this table is (**id**, **arn**).
+The primary key for this table is **arn**.
 
 ## Relations
+
 The following tables depend on aws_ec2_transit_gateways:
   - [aws_ec2_transit_gateway_attachments](aws_ec2_transit_gateway_attachments.md)
   - [aws_ec2_transit_gateway_route_tables](aws_ec2_transit_gateway_route_tables.md)
@@ -13,6 +14,7 @@ The following tables depend on aws_ec2_transit_gateways:
   - [aws_ec2_transit_gateway_multicast_domains](aws_ec2_transit_gateway_multicast_domains.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -20,11 +22,14 @@ The following tables depend on aws_ec2_transit_gateways:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |account_id|String|
-|tags|JSON|
-|id (PK)|String|
+|region|String|
+|id|String|
 |arn (PK)|String|
+|tags|JSON|
 |creation_time|Timestamp|
 |description|String|
 |options|JSON|
 |owner_id|String|
 |state|String|
+|transit_gateway_arn|String|
+|transit_gateway_id|String|

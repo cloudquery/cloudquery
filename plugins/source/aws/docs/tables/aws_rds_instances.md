@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBInstance.html
 
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -33,11 +33,13 @@ The primary key for this table is **arn**.
 |backup_retention_period|Int|
 |backup_target|String|
 |ca_certificate_identifier|String|
+|certificate_details|JSON|
 |character_set_name|String|
 |copy_tags_to_snapshot|Bool|
 |custom_iam_instance_profile|String|
 |customer_owned_ip_enabled|Bool|
 |db_cluster_identifier|String|
+|db_instance_arn|String|
 |db_instance_automated_backups_replications|JSON|
 |db_instance_class|String|
 |db_instance_identifier|String|
@@ -46,6 +48,7 @@ The primary key for this table is **arn**.
 |db_parameter_groups|JSON|
 |db_security_groups|JSON|
 |db_subnet_group|JSON|
+|db_system_id|String|
 |db_instance_port|Int|
 |dbi_resource_id|String|
 |deletion_protection|Bool|
@@ -62,6 +65,7 @@ The primary key for this table is **arn**.
 |latest_restorable_time|Timestamp|
 |license_model|String|
 |listener_endpoint|JSON|
+|master_user_secret|JSON|
 |master_username|String|
 |max_allocated_storage|Int|
 |monitoring_interval|Int|
@@ -86,6 +90,7 @@ The primary key for this table is **arn**.
 |secondary_availability_zone|String|
 |status_infos|JSON|
 |storage_encrypted|Bool|
+|storage_throughput|Int|
 |storage_type|String|
 |tde_credential_arn|String|
 |timezone|String|

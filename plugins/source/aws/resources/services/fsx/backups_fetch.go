@@ -9,10 +9,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchFsxBackups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchFsxBackups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config fsx.DescribeBackupsInput
 	c := meta.(*client.Client)
-	svc := c.Services().FSX
+	svc := c.Services().Fsx
 	for {
 		response, err := svc.DescribeBackups(ctx, &config)
 		if err != nil {

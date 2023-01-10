@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/iot/latest/apireference/API_CertificateDescription.h
 
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -17,6 +17,7 @@ The primary key for this table is **arn**.
 |policies|StringArray|
 |arn (PK)|String|
 |ca_certificate_id|String|
+|certificate_arn|String|
 |certificate_id|String|
 |certificate_mode|String|
 |certificate_pem|String|

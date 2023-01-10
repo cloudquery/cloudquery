@@ -16,10 +16,9 @@ SELECT gsi.name                                                                 
        CASE
            WHEN
                        gsi.database_version LIKE 'SQLSERVER%'
-                   AND (gsi.settings_database_flags IS NULL
-                   OR gsi.settings_database_flags ->> 'external scripts enabled' != 'off'
-                   OR gsi.settings_database_flags ->> 'external scripts enabled' IS NULL)
+                   AND (f->>'value' IS NULL
+                   OR f->>'value' != 'off')
                THEN 'fail'
            ELSE 'pass'
            END                                                                                                         AS status
-FROM gcp_sql_instances gsi;
+FROM gcp_sql_instances gsi LEFT JOIN JSONB_ARRAY_ELEMENTS(gsi.settings->'databaseFlags') AS f ON f->>'name'='external scripts enabled';

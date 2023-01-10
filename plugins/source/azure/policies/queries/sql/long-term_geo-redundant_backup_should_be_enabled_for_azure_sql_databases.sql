@@ -1,16 +1,16 @@
 insert into azure_policy_results
 SELECT
-  :'execution_time',
-  :'framework',
-  :'check_id',
-  'Long-term geo-redundant backup should be enabled for Azure SQL Databases',
-  -- TODO: replace this with the subscription_id of the resource
-  id,
-  id,
+  :'execution_time' as execution_time,
+  :'framework' as framework,
+  :'check_id' as check_id,
+  'Long-term geo-redundant backup should be enabled for Azure SQL Databases' as title,
+  asd.subscription_id,
+  rp.id,
   case
-    when backup_long_term_retention_policy -> 'properties' ->> 'weeklyRetention' IS NOT DISTINCT FROM 'PT0S'
-      AND backup_long_term_retention_policy -> 'properties' ->> 'monthlyRetention' IS NOT DISTINCT FROM 'PT0S'
-      AND backup_long_term_retention_policy -> 'properties' ->> 'yearlyRetention' IS NOT DISTINCT FROM 'PT0S'
+    when rp.id IS NULL OR (rp.weekly_retention IS NOT DISTINCT FROM 'PT0S'
+      AND rp.monthly_retention IS NOT DISTINCT FROM 'PT0S'
+      AND rp.yearly_retention IS NOT DISTINCT FROM 'PT0S')
     then 'fail' else 'pass'
   end
-FROM azure_sql_databases
+FROM azure_sql_databases asd
+    LEFT JOIN azure_sql_backup_long_term_retention_policies rp ON asd.long_term_retention_backup_resource_id = rp.id AND asd.id = rp.sql_database_id

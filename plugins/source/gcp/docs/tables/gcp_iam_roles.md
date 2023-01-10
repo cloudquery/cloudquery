@@ -1,11 +1,11 @@
 # Table: gcp_iam_roles
 
-
+https://cloud.google.com/iam/docs/reference/rest/v1/roles#Role
 
 The composite primary key for this table is (**project_id**, **name**).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -14,9 +14,9 @@ The composite primary key for this table is (**project_id**, **name**).
 |_cq_parent_id|UUID|
 |project_id (PK)|String|
 |name (PK)|String|
-|deleted|Bool|
+|title|String|
 |description|String|
-|etag|String|
 |included_permissions|StringArray|
 |stage|String|
-|title|String|
+|etag|ByteArray|
+|deleted|Bool|

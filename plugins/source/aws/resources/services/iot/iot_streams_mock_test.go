@@ -11,7 +11,7 @@ import (
 )
 
 func buildIotStreamsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockIOTClient(ctrl)
+	m := mocks.NewMockIotClient(ctrl)
 
 	streams := iot.ListStreamsOutput{}
 	err := faker.FakeObject(&streams)
@@ -31,7 +31,7 @@ func buildIotStreamsMock(t *testing.T, ctrl *gomock.Controller) client.Services 
 		&streamOutput, nil)
 
 	return client.Services{
-		IOT: m,
+		Iot: m,
 	}
 }
 

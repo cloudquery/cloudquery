@@ -11,4 +11,4 @@ select
     then 'fail'
     else 'pass'
   end as status
-from aws_ec2_regional_config
+from aws_ec2_regional_configs

@@ -11,7 +11,7 @@ import (
 )
 
 func buildIotThingTypesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockIOTClient(ctrl)
+	m := mocks.NewMockIotClient(ctrl)
 
 	groupsOutput := iot.ListThingTypesOutput{}
 	err := faker.FakeObject(&groupsOutput)
@@ -32,7 +32,7 @@ func buildIotThingTypesMock(t *testing.T, ctrl *gomock.Controller) client.Servic
 		&tags, nil)
 
 	return client.Services{
-		IOT: m,
+		Iot: m,
 	}
 }
 

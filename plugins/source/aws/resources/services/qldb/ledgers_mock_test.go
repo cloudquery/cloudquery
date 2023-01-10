@@ -12,7 +12,7 @@ import (
 )
 
 func buildLedgersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockQLDBClient(ctrl)
+	m := mocks.NewMockQldbClient(ctrl)
 
 	ledger := types.LedgerSummary{}
 	if err := faker.FakeObject(&ledger); err != nil {
@@ -61,7 +61,7 @@ func buildLedgersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 			Streams: []types.JournalKinesisStreamDescription{ke},
 		}, nil)
 
-	return client.Services{QLDB: m}
+	return client.Services{Qldb: m}
 }
 
 func TestQldbLedgers(t *testing.T) {

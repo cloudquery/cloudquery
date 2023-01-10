@@ -15,7 +15,7 @@
 
 \set check_id 'EC2.4'
 \echo "Executing check EC2.4"
-\ir ../queries/ec2/stopped_more_thant_30_days_ago_instances.sql
+\ir ../queries/ec2/stopped_more_than_30_days_ago_instances.sql
 
 
 \set check_id 'EC2.6'

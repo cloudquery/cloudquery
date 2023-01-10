@@ -12,9 +12,9 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchIamUserPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchIamUserPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
-	svc := c.Services().IAM
+	svc := c.Services().Iam
 	user := parent.Item.(*types.User)
 	config := iam.ListUserPoliciesInput{UserName: user.UserName}
 	for {
@@ -36,7 +36,7 @@ func fetchIamUserPolicies(ctx context.Context, meta schema.ClientMeta, parent *s
 }
 
 func getUserPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	svc := meta.(*client.Client).Services().IAM
+	svc := meta.(*client.Client).Services().Iam
 	p := resource.Item.(string)
 	user := resource.Parent.Item.(*types.User)
 
@@ -57,7 +57,7 @@ func resolveIamUserPolicyPolicyDocument(ctx context.Context, meta schema.ClientM
 		return err
 	}
 
-	var document map[string]interface{}
+	var document map[string]any
 	err = json.Unmarshal([]byte(decodedDocument), &document)
 	if err != nil {
 		return err

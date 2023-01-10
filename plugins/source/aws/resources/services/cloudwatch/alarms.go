@@ -10,7 +10,7 @@ import (
 func Alarms() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_cloudwatch_alarms",
-		Description: "https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_MetricAlarm.html",
+		Description: `https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_MetricAlarm.html`,
 		Resolver:    fetchCloudwatchAlarms,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("logs"),
 		Columns: []schema.Column{
@@ -88,6 +88,11 @@ func Alarms() *schema.Table {
 				Resolver: schema.PathResolver("EvaluationPeriods"),
 			},
 			{
+				Name:     "evaluation_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("EvaluationState"),
+			},
+			{
 				Name:     "extended_statistic",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ExtendedStatistic"),
@@ -131,6 +136,11 @@ func Alarms() *schema.Table {
 				Name:     "state_reason_data",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("StateReasonData"),
+			},
+			{
+				Name:     "state_transitioned_timestamp",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("StateTransitionedTimestamp"),
 			},
 			{
 				Name:     "state_updated_timestamp",

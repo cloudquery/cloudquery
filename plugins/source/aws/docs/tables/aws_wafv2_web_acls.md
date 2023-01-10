@@ -1,11 +1,9 @@
 # Table: aws_wafv2_web_acls
 
-
-
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -23,6 +21,7 @@ The primary key for this table is **arn**.
 |visibility_config|JSON|
 |capacity|Int|
 |captcha_config|JSON|
+|challenge_config|JSON|
 |custom_response_bodies|JSON|
 |description|String|
 |label_namespace|String|
@@ -30,4 +29,5 @@ The primary key for this table is **arn**.
 |post_process_firewall_manager_rule_groups|JSON|
 |pre_process_firewall_manager_rule_groups|JSON|
 |rules|JSON|
+|token_domains|StringArray|
 |logging_configuration|JSON|

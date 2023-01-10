@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/iot/latest/apireference/API_Job.html
 
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -24,6 +24,7 @@ The primary key for this table is **arn**.
 |document_parameters|JSON|
 |force_canceled|Bool|
 |is_concurrent|Bool|
+|job_arn|String|
 |job_executions_retry_config|JSON|
 |job_executions_rollout_config|JSON|
 |job_id|String|
@@ -33,6 +34,7 @@ The primary key for this table is **arn**.
 |namespace_id|String|
 |presigned_url_config|JSON|
 |reason_code|String|
+|scheduling_config|JSON|
 |status|String|
 |target_selection|String|
 |targets|StringArray|

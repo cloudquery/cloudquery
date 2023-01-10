@@ -11,10 +11,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchCloudwatchlogsMetricFilters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchCloudwatchlogsMetricFilters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config cloudwatchlogs.DescribeMetricFiltersInput
 	c := meta.(*client.Client)
-	svc := c.Services().CloudwatchLogs
+	svc := c.Services().Cloudwatchlogs
 	for {
 		response, err := svc.DescribeMetricFilters(ctx, &config)
 		if err != nil {

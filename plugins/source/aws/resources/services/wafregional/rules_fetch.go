@@ -2,17 +2,19 @@ package wafregional
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/wafregional"
 	"github.com/aws/aws-sdk-go-v2/service/wafregional/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchWafregionalRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchWafregionalRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().WafRegional
+	svc := cl.Services().Wafregional
 	var params wafregional.ListRulesInput
 	for {
 		result, err := svc.ListRules(ctx, &params, func(o *wafregional.Options) {
@@ -51,9 +53,9 @@ func resolveWafregionalRuleArn(ctx context.Context, meta schema.ClientMeta, reso
 
 func resolveWafregionalRuleTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().WafRegional
-	arn := ruleARN(meta, *resource.Item.(types.Rule).RuleId)
-	params := wafregional.ListTagsForResourceInput{ResourceARN: &arn}
+	svc := cl.Services().Wafregional
+	arnStr := ruleARN(meta, *resource.Item.(types.Rule).RuleId)
+	params := wafregional.ListTagsForResourceInput{ResourceARN: &arnStr}
 	tags := make(map[string]string)
 	for {
 		result, err := svc.ListTagsForResource(ctx, &params)
@@ -73,5 +75,11 @@ func resolveWafregionalRuleTags(ctx context.Context, meta schema.ClientMeta, res
 
 func ruleARN(meta schema.ClientMeta, id string) string {
 	cl := meta.(*client.Client)
-	return cl.ARN(client.WAFRegional, "rule", id)
+	return arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.WAFRegional),
+		Region:    cl.Region,
+		AccountID: cl.AccountID,
+		Resource:  fmt.Sprintf("rule/%s", id),
+	}.String()
 }

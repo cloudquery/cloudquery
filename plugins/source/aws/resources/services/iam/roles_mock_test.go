@@ -72,7 +72,7 @@ func buildRoles(t *testing.T, ctrl *gomock.Controller) client.Services {
 	}
 
 	return client.Services{
-		IAM: m,
+		Iam: m,
 	}
 }
 

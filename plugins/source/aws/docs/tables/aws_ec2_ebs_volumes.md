@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Volume.html
 
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -15,6 +15,7 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
+|tags|JSON|
 |attachments|JSON|
 |availability_zone|String|
 |create_time|Timestamp|
@@ -27,7 +28,6 @@ The primary key for this table is **arn**.
 |size|Int|
 |snapshot_id|String|
 |state|String|
-|tags|JSON|
 |throughput|Int|
 |volume_id|String|
 |volume_type|String|

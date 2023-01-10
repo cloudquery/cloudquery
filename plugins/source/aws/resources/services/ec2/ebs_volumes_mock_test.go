@@ -21,7 +21,7 @@ func buildEc2EbsVolumes(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().DescribeVolumes(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&volumesOutput, nil)
 	return client.Services{
-		EC2: m,
+		Ec2: m,
 	}
 }
 

@@ -1,15 +1,17 @@
 # Table: aws_autoscaling_groups
 
-
+https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_AutoScalingGroup.html
 
 The primary key for this table is **arn**.
 
 ## Relations
+
 The following tables depend on aws_autoscaling_groups:
   - [aws_autoscaling_group_scaling_policies](aws_autoscaling_group_scaling_policies.md)
   - [aws_autoscaling_group_lifecycle_hooks](aws_autoscaling_group_lifecycle_hooks.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -29,6 +31,7 @@ The following tables depend on aws_autoscaling_groups:
 |health_check_type|String|
 |max_size|Int|
 |min_size|Int|
+|auto_scaling_group_arn|String|
 |capacity_rebalance|Bool|
 |context|String|
 |default_instance_warmup|Int|
@@ -50,6 +53,7 @@ The following tables depend on aws_autoscaling_groups:
 |tags|JSON|
 |target_group_ar_ns|StringArray|
 |termination_policies|StringArray|
+|traffic_sources|JSON|
 |vpc_zone_identifier|String|
 |warm_pool_configuration|JSON|
 |warm_pool_size|Int|

@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/fsx/latest/APIReference/API_Snapshot.html
 
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -15,11 +15,12 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
-|tags|JSON|
 |administrative_actions|JSON|
+|tags|JSON|
 |creation_time|Timestamp|
 |lifecycle|String|
 |lifecycle_transition_reason|JSON|
 |name|String|
+|resource_arn|String|
 |snapshot_id|String|
 |volume_id|String|

@@ -12,12 +12,12 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchConfigConformancePacks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchConfigConformancePacks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	config := configservice.DescribeConformancePacksInput{}
 	var ae smithy.APIError
 	for {
-		resp, err := c.Services().ConfigService.DescribeConformancePacks(ctx, &config)
+		resp, err := c.Services().Configservice.DescribeConformancePacks(ctx, &config)
 
 		// This is a workaround until this bug is fixed = https://github.com/aws/aws-sdk-go-v2/issues/1539
 		if (c.Region == "af-south-1" || c.Region == "ap-northeast-3") && errors.As(err, &ae) && ae.ErrorCode() == "AccessDeniedException" {
@@ -36,10 +36,10 @@ func fetchConfigConformancePacks(ctx context.Context, meta schema.ClientMeta, pa
 	return nil
 }
 
-func fetchConfigConformancePackRuleCompliances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchConfigConformancePackRuleCompliances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	conformancePackDetail := parent.Item.(types.ConformancePackDetail)
 	c := meta.(*client.Client)
-	cs := c.Services().ConfigService
+	cs := c.Services().Configservice
 	params := configservice.DescribeConformancePackComplianceInput{
 		ConformancePackName: conformancePackDetail.ConformancePackName,
 	}

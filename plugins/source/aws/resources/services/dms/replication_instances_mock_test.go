@@ -36,7 +36,7 @@ func buildDmsReplicationInstances(t *testing.T, ctrl *gomock.Controller) client.
 			TagList: []types.Tag{lt},
 		}, nil)
 	return client.Services{
-		DMS: m,
+		Databasemigrationservice: m,
 	}
 }
 

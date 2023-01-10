@@ -27,7 +27,7 @@ func resolveDomainNameRestApiMappingArn() schema.ColumnResolver {
 	})
 }
 
-func fetchApigatewayv2DomainNames(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchApigatewayv2DomainNames(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	var config apigatewayv2.GetDomainNamesInput
 	c := meta.(*client.Client)
 	svc := c.Services().Apigatewayv2
@@ -50,7 +50,7 @@ func fetchApigatewayv2DomainNames(ctx context.Context, meta schema.ClientMeta, _
 	return nil
 }
 
-func fetchApigatewayv2DomainNameRestApiMappings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchApigatewayv2DomainNameRestApiMappings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(types.DomainName)
 	config := apigatewayv2.GetApiMappingsInput{
 		DomainName: r.DomainName,

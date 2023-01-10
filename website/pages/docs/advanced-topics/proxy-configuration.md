@@ -6,7 +6,7 @@ If you run the CloudQuery CLI in an environment that requires a proxy server for
 
 Example:
 
-```bash
+```bash copy
 export HTTPS_PROXY=http://example.com:3128/proxy
 export HTTP_PROXY=http://example.com:3128/proxy
 cloudquery sync [files or directories]

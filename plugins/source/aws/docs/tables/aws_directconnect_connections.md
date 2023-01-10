@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/directconnect/latest/APIReference/API_Connection.htm
 
 The composite primary key for this table is (**arn**, **id**).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -16,11 +16,11 @@ The composite primary key for this table is (**arn**, **id**).
 |region|String|
 |arn (PK)|String|
 |id (PK)|String|
-|tags|JSON|
 |aws_device|String|
 |aws_device_v2|String|
 |aws_logical_device_id|String|
 |bandwidth|String|
+|connection_id|String|
 |connection_name|String|
 |connection_state|String|
 |encryption_mode|String|
@@ -35,4 +35,5 @@ The composite primary key for this table is (**arn**, **id**).
 |partner_name|String|
 |port_encryption_status|String|
 |provider_name|String|
+|tags|JSON|
 |vlan|Int|

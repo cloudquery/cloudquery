@@ -38,7 +38,7 @@
 \echo "Executing check 1.10"
 \ir ../queries/kms/keys_not_rotated_within_90_days.sql
 \set check_id '1.11'
-\echo "Executiong check 1.11"
+\echo "Executing check 1.11"
 \ir ../queries/iam/kms_separation_of_duties.sql
 -- MANUAL
 \set check_id '1.12'

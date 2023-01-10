@@ -13,8 +13,8 @@ where exists(select 1
                     from aws_redshift_cluster_parameter_groups as rscpg
     inner join aws_redshift_cluster_parameters as rscp
         on
-            rscpg.cq_id = rscp.cluster_parameter_group_cq_id
-    where rsc.cq_id = rscpg.cluster_cq_id
+            rscpg.cluster_arn = rscp.cluster_arn
+    where rsc.arn = rscpg.cluster_arn
         and (
             rscp.parameter_name = 'require_ssl' and rscp.parameter_value = 'false'
         )
@@ -23,6 +23,6 @@ where exists(select 1
         )
         or not exists((select 1
             from aws_redshift_cluster_parameters
-            where cluster_parameter_group_cq_id = rscpg.cq_id
+            where cluster_arn = rscpg.cluster_arn
                 and parameter_name = 'require_ssl'))
 )

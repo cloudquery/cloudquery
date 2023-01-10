@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/neptune/latest/userguide/api-snapshots.html#Describe
 
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -21,6 +21,7 @@ The primary key for this table is **arn**.
 |availability_zones|StringArray|
 |cluster_create_time|Timestamp|
 |db_cluster_identifier|String|
+|db_cluster_snapshot_arn|String|
 |db_cluster_snapshot_identifier|String|
 |engine|String|
 |engine_version|String|

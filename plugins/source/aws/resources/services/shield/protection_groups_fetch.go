@@ -10,7 +10,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchShieldProtectionGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchShieldProtectionGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Shield
 	config := shield.ListProtectionGroupsInput{}
@@ -47,8 +47,5 @@ func resolveShieldProtectionGroupTags(ctx context.Context, meta schema.ClientMet
 		return err
 	}
 
-	tags := map[string]string{}
-	client.TagsIntoMap(output.Tags, tags)
-
-	return resource.Set(c.Name, tags)
+	return resource.Set(c.Name, client.TagsToMap(output.Tags))
 }

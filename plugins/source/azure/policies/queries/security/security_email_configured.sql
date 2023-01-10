@@ -1,9 +1,9 @@
 insert into azure_policy_results
 SELECT
-  :'execution_time',
-  :'framework',
-  :'check_id',
-  'Ensure "Additional email addresses" is configured with a security contact email (Automated)',
+  :'execution_time' as execution_time,
+  :'framework' as framework,
+  :'check_id' as check_id,
+  'Ensure "Additional email addresses" is configured with a security contact email (Automated)' as title,
   subscription_id,
   id,
   case

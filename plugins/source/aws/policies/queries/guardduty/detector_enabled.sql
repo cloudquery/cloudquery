@@ -27,8 +27,10 @@ select
     account_id,
     region AS resource_id,
     case when
-        data_sources_s3_logs_status != 'ENABLED' and data_sources_cloud_trail_status != 'ENABLED'
-        and data_sources_dns_logs_status != 'ENABLED' and data_sources_flow_logs_status != 'ENABLED'
+        data_sources->'S3Logs'->>'Status' != 'ENABLED' AND
+        data_sources->'DNSLogs'->>'Status' != 'ENABLED' AND
+        data_sources->'CloudTrail'->>'Status' != 'ENABLED' AND
+        data_sources->'FlowLogs'->>'Status' != 'ENABLED'
     then 'fail' else 'pass' end AS status
 from aws_guardduty_detectors
 where

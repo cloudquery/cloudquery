@@ -10,7 +10,7 @@ select uid                                        AS resource_id,
        name                                       AS resource_name,
        CASE
            WHEN
-               template -> 'spec' ->> 'hostNetwork' = 'true'
+               spec_template -> 'spec' ->> 'hostNetwork' = 'true'
                THEN 'fail'
            ELSE 'pass'
            END                                    AS status

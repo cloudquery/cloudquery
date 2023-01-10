@@ -2,7 +2,10 @@ package config
 
 import (
 	"context"
+	"fmt"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/configservice"
 	"github.com/aws/aws-sdk-go-v2/service/configservice/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -10,10 +13,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchConfigConfigurationRecorders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchConfigConfigurationRecorders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 
-	resp, err := c.Services().ConfigService.DescribeConfigurationRecorders(ctx, &configservice.DescribeConfigurationRecordersInput{})
+	resp, err := c.Services().Configservice.DescribeConfigurationRecorders(ctx, &configservice.DescribeConfigurationRecordersInput{})
 	if err != nil {
 		return err
 	}
@@ -24,7 +27,7 @@ func fetchConfigConfigurationRecorders(ctx context.Context, meta schema.ClientMe
 	for i, configurationRecorder := range resp.ConfigurationRecorders {
 		names[i] = *configurationRecorder.Name
 	}
-	status, err := c.Services().ConfigService.DescribeConfigurationRecorderStatus(ctx, &configservice.DescribeConfigurationRecorderStatusInput{
+	status, err := c.Services().Configservice.DescribeConfigurationRecorderStatus(ctx, &configservice.DescribeConfigurationRecorderStatusInput{
 		ConfigurationRecorderNames: names,
 	})
 	if err != nil {
@@ -62,5 +65,11 @@ func fetchConfigConfigurationRecorders(ctx context.Context, meta schema.ClientMe
 func generateConfigRecorderArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	cfg := resource.Item.(models.ConfigurationRecorderWrapper)
-	return resource.Set(c.Name, cl.ARN("config", "config-recorder", *cfg.Name))
+	return resource.Set(c.Name, arn.ARN{
+		Partition: cl.Partition,
+		Service:   "config",
+		Region:    cl.Region,
+		AccountID: cl.AccountID,
+		Resource:  fmt.Sprintf("config-recorder/%s", aws.ToString(cfg.Name)),
+	}.String())
 }

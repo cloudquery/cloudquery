@@ -23,7 +23,7 @@ func buildEc2ByoipCidrsMock(t *testing.T, ctrl *gomock.Controller) client.Servic
 			ByoipCidrs: []types.ByoipCidr{l},
 		}, nil)
 	return client.Services{
-		EC2: m,
+		Ec2: m,
 	}
 }
 

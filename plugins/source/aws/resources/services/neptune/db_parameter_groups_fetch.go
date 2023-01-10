@@ -10,10 +10,12 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchNeptuneDbParameterGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchNeptuneDbParameterGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Neptune
-	var input neptune.DescribeDBParameterGroupsInput
+	input := neptune.DescribeDBParameterGroupsInput{
+		Filters: []types.Filter{{Name: aws.String("engine"), Values: []string{"neptune"}}},
+	}
 	for {
 		output, err := svc.DescribeDBParameterGroups(ctx, &input)
 		if err != nil {
@@ -28,7 +30,7 @@ func fetchNeptuneDbParameterGroups(ctx context.Context, meta schema.ClientMeta, 
 	return nil
 }
 
-func fetchNeptuneDbParameterGroupDbParameters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchNeptuneDbParameterGroupDbParameters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Neptune
 	g := parent.Item.(types.DBParameterGroup)

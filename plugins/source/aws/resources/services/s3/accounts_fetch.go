@@ -12,10 +12,10 @@ import (
 	"github.com/pkg/errors"
 )
 
-func fetchS3Accounts(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchS3Accounts(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 
-	svc := c.Services().S3Control
+	svc := c.Services().S3control
 	var accountConfig s3control.GetPublicAccessBlockInput
 	accountConfig.AccountId = aws.String(c.AccountID)
 	resp, err := svc.GetPublicAccessBlock(ctx, &accountConfig)

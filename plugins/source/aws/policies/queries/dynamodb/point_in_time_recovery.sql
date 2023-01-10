@@ -7,9 +7,9 @@ select
     t.account_id,
     t.arn as resource_id,
   case when
-    b.point_in_time_recovery_status is distinct from 'ENABLED'
+    b.point_in_time_recovery_description->>'ContinuousBackupsStatus' is distinct from 'ENABLED'
     then 'fail'
     else 'pass'
   end as status
 FROM aws_dynamodb_tables t
-  LEFT JOIN aws_dynamodb_table_continuous_backups b ON b.table_cq_id = t.cq_id
+  LEFT JOIN aws_dynamodb_table_continuous_backups b ON b.table_arn = t.arn

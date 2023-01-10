@@ -8,6 +8,7 @@ env:
 
 jobs:
   release-cli:
+    timeout-minutes: 30
     runs-on: ubuntu-latest
     steps:
       # Tag format is cli-<version>
@@ -15,11 +16,11 @@ jobs:
         id: split
         run: |
           tag=${{github.ref_name}}
-          echo ::set-output name=version::$(echo $tag | cut -d- -f2-)
+          echo "version=$(echo $tag | cut -d- -f2-)" >> $GITHUB_OUTPUT
       # Fail if not a valid SemVer string
       - name: Parse semver string
         id: semver_parser
-        uses: booxmedialtd/ws-action-parse-semver@e4a833cf5d612066a210bd9b62d1c3b20be3b325
+        uses: booxmedialtd/ws-action-parse-semver@e81ad80123156d7ddd4f6c8383e63f497f857deb
         with:
           input_string: ${{steps.split.outputs.version}}
       - name: Checkout
@@ -31,9 +32,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.19.1-release-cache-${{ hashFiles('cli/go.sum') }}
+          key: ${{ runner.os }}-go-1.19.4-release-cache-${{ hashFiles('cli/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.19.1-release-cache-cli
+            ${{ runner.os }}-go-1.19.4-release-cache-cli
       - name: Set up Go 1.x
         uses: actions/setup-go@v3
         with:
@@ -77,16 +78,7 @@ jobs:
 
       - name: Update version file
         if: steps.semver_parser.outputs.prerelease == ''
-        run: 'echo "{ \"latest\": \"${{github.ref_name}}\" }" > ./sites/versions/v2/cli.json'
-
-      - name: Update docs
-        if: steps.semver_parser.outputs.prerelease == ''
-        uses: jacobtomlinson/gha-find-replace@657b0d1fe020da9943d1702b576f5d37d43b9c03
-        continue-on-error: true
-        with:
-          include: "sites/versions/vercel.json"
-          find: 'releases\/download\/cli\-v[^\/]+[\s\S]+?},'
-          replace: 'releases/download/${{github.ref_name}}/:binary" },'
+        run: 'echo "{ \"latest\": \"${{github.ref_name}}\" }" > ./website/versions/cli.json'
           
       - name: Create Pull Request
         if: steps.semver_parser.outputs.prerelease == ''

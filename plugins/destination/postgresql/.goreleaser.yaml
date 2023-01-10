@@ -1,5 +1,6 @@
 variables:
   component: destination/postgresql
+  binary: postgresql
 
 project_name: plugins/destination/postgresql
 

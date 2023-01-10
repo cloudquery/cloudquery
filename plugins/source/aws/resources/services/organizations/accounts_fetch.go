@@ -10,7 +10,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchOrganizationsAccounts(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchOrganizationsAccounts(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Organizations
 	var input organizations.ListAccountsInput
@@ -30,7 +30,7 @@ func fetchOrganizationsAccounts(ctx context.Context, meta schema.ClientMeta, _ *
 func resolveAccountTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
 	cl := meta.(*client.Client)
 	account := resource.Item.(types.Account)
-	tags := make([]types.Tag, 0)
+	var tags []types.Tag
 	input := organizations.ListTagsForResourceInput{
 		ResourceId: account.Id,
 		NextToken:  nil,
@@ -46,5 +46,5 @@ func resolveAccountTags(ctx context.Context, meta schema.ClientMeta, resource *s
 		}
 		input.NextToken = response.NextToken
 	}
-	return resource.Set("tags", tags)
+	return resource.Set("tags", client.TagsToMap(tags))
 }

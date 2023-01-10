@@ -13,10 +13,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchAccessanalyzerAnalyzers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchAccessanalyzerAnalyzers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	config := accessanalyzer.ListAnalyzersInput{}
 	c := meta.(*client.Client)
-	svc := c.Services().Analyzer
+	svc := c.Services().Accessanalyzer
 	for {
 		response, err := svc.ListAnalyzers(ctx, &config, func(options *accessanalyzer.Options) {
 			options.APIOptions = append(options.APIOptions, func(stack *middleware.Stack) error {
@@ -44,10 +44,10 @@ func fetchAccessanalyzerAnalyzers(ctx context.Context, meta schema.ClientMeta, p
 	return nil
 }
 
-func fetchAccessanalyzerAnalyzerFindings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchAccessanalyzerAnalyzerFindings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	analyzer := parent.Item.(types.AnalyzerSummary)
 	c := meta.(*client.Client)
-	svc := c.Services().Analyzer
+	svc := c.Services().Accessanalyzer
 	config := accessanalyzer.ListFindingsInput{
 		AnalyzerArn: analyzer.Arn,
 	}
@@ -66,10 +66,10 @@ func fetchAccessanalyzerAnalyzerFindings(ctx context.Context, meta schema.Client
 	return nil
 }
 
-func fetchAccessanalyzerAnalyzerArchiveRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchAccessanalyzerAnalyzerArchiveRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	analyzer := parent.Item.(types.AnalyzerSummary)
 	c := meta.(*client.Client)
-	svc := c.Services().Analyzer
+	svc := c.Services().Accessanalyzer
 	config := accessanalyzer.ListArchiveRulesInput{
 		AnalyzerName: analyzer.Name,
 	}

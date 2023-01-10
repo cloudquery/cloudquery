@@ -1,11 +1,9 @@
 # Table: aws_iot_thing_groups
 
-
-
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -22,6 +20,7 @@ The primary key for this table is **arn**.
 |query_string|String|
 |query_version|String|
 |status|String|
+|thing_group_arn|String|
 |thing_group_id|String|
 |thing_group_metadata|JSON|
 |thing_group_name|String|

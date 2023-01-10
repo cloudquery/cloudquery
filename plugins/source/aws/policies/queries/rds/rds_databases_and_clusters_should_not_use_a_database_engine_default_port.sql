@@ -8,7 +8,7 @@ insert into aws_policy_results
     account_id,
     arn AS resource_id,
     case when
-        (engine in ('aurora', 'aurora-mysql', 'mysql') and port = 3306) or (engine like '%postgres%' and port = '5432')
+        (engine in ('aurora', 'aurora-mysql', 'mysql') and port = 3306) or (engine like '%postgres%' and port = 5432)
     then 'fail' else 'pass' end as status
     from aws_rds_clusters
 )
@@ -24,11 +24,11 @@ union
     case when
                  (
                              engine in ( 'aurora', 'aurora-mysql', 'mariadb', 'mysql' )
-                         and instance_port = 3306
+                         and db_instance_port = 3306
                      )
-                 or (engine like '%postgres%' and instance_port = '5432')
-                 or (engine like '%oracle%' and instance_port = '1521')
-                 or (engine like '%sqlserver%' and instance_port = '1433')
+                 or (engine like '%postgres%' and db_instance_port = 5432)
+                 or (engine like '%oracle%' and db_instance_port = 1521)
+                 or (engine like '%sqlserver%' and db_instance_port = 1433)
     then 'fail' else 'pass' end as status
     from aws_rds_instances
 )

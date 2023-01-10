@@ -11,9 +11,9 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchCloudhsmv2Backups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchCloudhsmv2Backups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().CloudHSMV2
+	svc := cl.Services().Cloudhsmv2
 	var input cloudhsmv2.DescribeBackupsInput
 	paginator := cloudhsmv2.NewDescribeBackupsPaginator(svc, &input)
 	for paginator.HasMorePages() {

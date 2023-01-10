@@ -9,13 +9,13 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchIotStreams(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchIotStreams(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	input := iot.ListStreamsInput{
 		MaxResults: aws.Int32(250),
 	}
 	c := meta.(*client.Client)
 
-	svc := c.Services().IOT
+	svc := c.Services().Iot
 	for {
 		response, err := svc.ListStreams(ctx, &input)
 		if err != nil {

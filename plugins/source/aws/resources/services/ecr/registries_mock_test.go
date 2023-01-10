@@ -32,7 +32,7 @@ func buildEcrRegistriesMock(t *testing.T, ctrl *gomock.Controller) client.Servic
 		}, nil)
 
 	return client.Services{
-		ECR: m,
+		Ecr: m,
 	}
 }
 

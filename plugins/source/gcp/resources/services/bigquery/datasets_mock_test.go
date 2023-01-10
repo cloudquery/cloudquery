@@ -1,26 +1,22 @@
 package bigquery
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"net/http/httptest"
 	"testing"
 
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/julienschmidt/httprouter"
 	"google.golang.org/api/bigquery/v2"
-	"google.golang.org/api/option"
 )
 
-func createBigqueryDatasets() (*client.Services, error) {
+func createBigqueryDatasets(mux *httprouter.Router) error {
 	id := "testDataset"
-	mux := httprouter.New()
 	var dataset bigquery.Dataset
 	if err := faker.FakeObject(&dataset); err != nil {
-		return nil, err
+		return err
 	}
 	dataset.Id = id
 	dataset.DatasetReference = &bigquery.DatasetReference{
@@ -81,7 +77,7 @@ func createBigqueryDatasets() (*client.Services, error) {
 
 	var table bigquery.Table
 	if err := faker.FakeObject(&table); err != nil {
-		return nil, err
+		return err
 	}
 	table.Id = id
 	table.TableReference = &bigquery.TableReference{
@@ -108,10 +104,10 @@ func createBigqueryDatasets() (*client.Services, error) {
 		Fields: []string{"test"},
 	}
 	if err := faker.FakeObject(&table.Description); err != nil {
-		return nil, err
+		return err
 	}
 	if err := faker.FakeObject(&table.EncryptionConfiguration); err != nil {
-		return nil, err
+		return err
 	}
 
 	mux.GET("/projects/testProject/datasets/testDataset/tables/:table", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
@@ -128,16 +124,9 @@ func createBigqueryDatasets() (*client.Services, error) {
 		}
 	})
 
-	ts := httptest.NewServer(mux)
-	svc, err := bigquery.NewService(context.Background(), option.WithoutAuthentication(), option.WithEndpoint(ts.URL))
-	if err != nil {
-		return nil, err
-	}
-	return &client.Services{
-		BigqueryService: svc,
-	}, nil
+	return nil
 }
 
 func TestBigqueryDatasets(t *testing.T) {
-	client.MockTestHelper(t, Datasets(), createBigqueryDatasets, client.TestOptions{})
+	client.MockTestRestHelper(t, Datasets(), createBigqueryDatasets, client.TestOptions{})
 }

@@ -10,7 +10,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/terraform/client"
 	"github.com/cloudquery/cloudquery/plugins/source/terraform/resources/services"
-	"github.com/cloudquery/plugin-sdk/plugins"
+	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
@@ -19,7 +19,7 @@ import (
 func TestTfData(t *testing.T) {
 	_, filename, _, _ := runtime.Caller(0)
 	pth := filepath.Dir(filename)
-	p := plugins.NewSourcePlugin(
+	p := source.NewPlugin(
 		"terraform",
 		"test",
 		[]*schema.Table{
@@ -31,13 +31,15 @@ func TestTfData(t *testing.T) {
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 
-	plugins.TestSourcePluginSync(t, p, logger, specs.Source{
+	p.SetLogger(logger)
+	source.TestPluginSync(t, p, specs.Source{
 		Name:         "dev",
 		Version:      "vDev",
+		Path:         "test/dev",
 		Tables:       []string{"*"},
 		Destinations: []string{"mock-destination"},
-		Spec: map[string]interface{}{
-			"backends": []map[string]interface{}{
+		Spec: map[string]any{
+			"backends": []map[string]any{
 				{
 					"name": "mylocal",
 					"type": "local",

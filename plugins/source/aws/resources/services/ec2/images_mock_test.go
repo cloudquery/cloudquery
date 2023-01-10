@@ -15,7 +15,7 @@ import (
 func buildEc2ImagesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 	services := client.Services{
-		EC2: m,
+		Ec2: m,
 	}
 	g := types.Image{}
 	err := faker.FakeObject(&g)

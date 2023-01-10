@@ -12,7 +12,7 @@ import (
 )
 
 func buildCognitoUserPools(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockCognitoUserPoolsClient(ctrl)
+	m := mocks.NewMockCognitoidentityproviderClient(ctrl)
 
 	var desc types.UserPoolDescriptionType
 	if err := faker.FakeObject(&desc); err != nil {
@@ -72,7 +72,7 @@ func buildCognitoUserPools(t *testing.T, ctrl *gomock.Controller) client.Service
 		nil,
 	)
 
-	return client.Services{CognitoUserPools: m}
+	return client.Services{Cognitoidentityprovider: m}
 }
 
 func TestCognitoUserPools(t *testing.T) {

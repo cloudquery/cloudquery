@@ -1,13 +1,13 @@
 # Table: github_team_repositories
 
-
-
-The composite primary key for this table is (**org**, **id**, **team_id**).
+The composite primary key for this table is (**org**, **team_id**, **id**).
 
 ## Relations
+
 This table depends on [github_teams](github_teams.md).
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -15,11 +15,8 @@ This table depends on [github_teams](github_teams.md).
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |org (PK)|String|
-|id (PK)|Int|
-|created_at|Timestamp|
-|pushed_at|Timestamp|
-|updated_at|Timestamp|
 |team_id (PK)|Int|
+|id (PK)|Int|
 |node_id|String|
 |owner|JSON|
 |name|String|
@@ -29,6 +26,9 @@ This table depends on [github_teams](github_teams.md).
 |code_of_conduct|JSON|
 |default_branch|String|
 |master_branch|String|
+|created_at|Timestamp|
+|pushed_at|Timestamp|
+|updated_at|Timestamp|
 |html_url|String|
 |clone_url|String|
 |git_url|String|
@@ -60,6 +60,10 @@ This table depends on [github_teams](github_teams.md).
 |allow_forking|Bool|
 |delete_branch_on_merge|Bool|
 |use_squash_pr_title_as_default|Bool|
+|squash_merge_commit_title|String|
+|squash_merge_commit_message|String|
+|merge_commit_title|String|
+|merge_commit_message|String|
 |topics|StringArray|
 |archived|Bool|
 |disabled|Bool|
@@ -70,6 +74,7 @@ This table depends on [github_teams](github_teams.md).
 |has_pages|Bool|
 |has_projects|Bool|
 |has_downloads|Bool|
+|has_discussions|Bool|
 |is_template|Bool|
 |license_template|String|
 |gitignore_template|String|

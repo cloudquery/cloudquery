@@ -1,5 +1,6 @@
 variables:
   component: source/github
+  binary: github
 
 project_name: plugins/source/github
 

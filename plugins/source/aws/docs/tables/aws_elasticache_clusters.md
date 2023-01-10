@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_CacheClust
 
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -15,6 +15,7 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
+|tags|JSON|
 |at_rest_encryption_enabled|Bool|
 |auth_token_enabled|Bool|
 |auth_token_last_modified_date|Timestamp|
@@ -31,7 +32,9 @@ The primary key for this table is **arn**.
 |configuration_endpoint|JSON|
 |engine|String|
 |engine_version|String|
+|ip_discovery|String|
 |log_delivery_configurations|JSON|
+|network_type|String|
 |notification_configuration|JSON|
 |num_cache_nodes|Int|
 |pending_modified_values|JSON|
@@ -44,3 +47,4 @@ The primary key for this table is **arn**.
 |snapshot_retention_limit|Int|
 |snapshot_window|String|
 |transit_encryption_enabled|Bool|
+|transit_encryption_mode|String|

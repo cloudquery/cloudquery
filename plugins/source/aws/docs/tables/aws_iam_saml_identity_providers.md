@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/IAM/latest/APIReference/API_SAMLProviderListEntry.ht
 
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -14,6 +14,7 @@ The primary key for this table is **arn**.
 |_cq_parent_id|UUID|
 |account_id|String|
 |arn (PK)|String|
-|tags|JSON|
 |create_date|Timestamp|
+|saml_metadata_document|String|
+|tags|JSON|
 |valid_until|Timestamp|

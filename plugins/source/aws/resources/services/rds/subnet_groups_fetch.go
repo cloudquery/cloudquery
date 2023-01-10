@@ -9,10 +9,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchRdsSubnetGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchRdsSubnetGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config rds.DescribeDBSubnetGroupsInput
 	c := meta.(*client.Client)
-	svc := c.Services().RDS
+	svc := c.Services().Rds
 	for {
 		response, err := svc.DescribeDBSubnetGroups(ctx, &config)
 		if err != nil {

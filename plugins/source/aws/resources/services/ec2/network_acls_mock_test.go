@@ -26,7 +26,7 @@ func buildEc2NetworkAcls(t *testing.T, ctrl *gomock.Controller) client.Services 
 			NetworkAcls: []types.NetworkAcl{l},
 		}, nil)
 	return client.Services{
-		EC2: m,
+		Ec2: m,
 	}
 }
 

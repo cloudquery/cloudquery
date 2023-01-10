@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/eks/latest/APIReference/API_Cluster.html
 
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -15,6 +15,7 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
+|tags|JSON|
 |certificate_authority|JSON|
 |client_request_token|String|
 |connector_config|JSON|
@@ -32,5 +33,4 @@ The primary key for this table is **arn**.
 |resources_vpc_config|JSON|
 |role_arn|String|
 |status|String|
-|tags|JSON|
 |version|String|

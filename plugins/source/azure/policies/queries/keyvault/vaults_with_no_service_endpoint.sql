@@ -1,10 +1,15 @@
-WITH secured_vaults AS (SELECT v.cq_id, subnet_id
+WITH subs AS (
+    SELECT subscription_id, jsonb_array_elements(subnets) AS subnet, provisioning_state
+    FROM azure_network_virtual_networks
+),
+secured_vaults AS (SELECT v._cq_id, nvr->>'id' AS subnet_id
                         FROM azure_keyvault_vaults v,
-                             UNNEST(v.network_acls_virtual_network_rules) AS subnet_id
-                                 LEFT JOIN azure_network_virtual_network_subnets sb
-                                           ON subnet_id = sb.id
-                        WHERE v.network_acls_default_action = 'Deny'
-                          AND sb.provisioning_state = 'Succeeded')
+                             jsonb_array_elements(v.properties_network_acls->'virtualNetworkRules') AS nvr
+                                 LEFT JOIN subs
+                                           ON nvr->>'id' = subs.subnet->>'id'
+                        WHERE v.properties_network_acls->>'defaultAction' = 'Deny'
+                          AND subs.provisioning_state = 'Succeeded')
+-- TODO check
 insert into azure_policy_results
 SELECT
   :'execution_time',
@@ -14,7 +19,7 @@ SELECT
   subscription_id,
   id,
   case
-    when sv.cq_id IS NULL then 'fail' else 'pass'
+    when sv._cq_id IS NULL then 'fail' else 'pass'
   end
 FROM azure_keyvault_vaults v
-  LEFT JOIN secured_vaults sv ON v.cq_id = sv.cq_id
+  LEFT JOIN secured_vaults sv ON v._cq_id = sv._cq_id

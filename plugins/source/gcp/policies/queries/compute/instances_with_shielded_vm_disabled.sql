@@ -13,8 +13,8 @@ SELECT "id"                                                                     
        project_id                                                                   AS project_id,
        CASE
            WHEN
-                       shielded_instance_config_enable_integrity_monitoring = FALSE
-                   OR shielded_instance_config_enable_vtpm = FALSE
+               (shielded_instance_config->>'enable_integrity_monitoring')::boolean = FALSE
+                   OR (shielded_instance_config->>'enable_vtpm')::boolean = FALSE
                THEN 'fail'
            ELSE 'pass'
            END                                                                      AS status

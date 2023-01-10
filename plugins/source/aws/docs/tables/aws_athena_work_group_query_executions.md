@@ -5,9 +5,11 @@ https://docs.aws.amazon.com/athena/latest/APIReference/API_QueryExecution.html
 The primary key for this table is **_cq_id**.
 
 ## Relations
+
 This table depends on [aws_athena_work_groups](aws_athena_work_groups.md).
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -23,6 +25,7 @@ This table depends on [aws_athena_work_groups](aws_athena_work_groups.md).
 |query_execution_context|JSON|
 |query_execution_id|String|
 |result_configuration|JSON|
+|result_reuse_configuration|JSON|
 |statement_type|String|
 |statistics|JSON|
 |status|JSON|

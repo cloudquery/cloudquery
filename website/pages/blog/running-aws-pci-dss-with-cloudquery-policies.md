@@ -9,8 +9,13 @@ author: yevgenypats
 ---
 
 import { BlogHeader } from "../../components/BlogHeader"
+import { Callout } from 'nextra-theme-docs'
 
 <BlogHeader/>
+
+<Callout type="warning">
+HCL policies were deprecated - see up-to-date policy documentation [here](https://www.cloudquery.io/docs/core-concepts/policies).
+</Callout>
 
 CloudQuery policies gives you a powerful way to automate, customize, codify, and run your cloud security & compliance continuously with HCL and SQL. In this blog we will show you how to run our open-source AWS PCI DSS (Payment Card Industry Data Security Standard) compliance policy. Official PCI DSS Guide is available [here](https://www.pcisecuritystandards.org/).
 

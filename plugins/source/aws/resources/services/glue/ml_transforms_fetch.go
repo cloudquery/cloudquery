@@ -2,15 +2,17 @@ package glue
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchGlueMlTransforms(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchGlueMlTransforms(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Glue
 	input := glue.GetMLTransformsInput{}
@@ -30,8 +32,7 @@ func fetchGlueMlTransforms(ctx context.Context, meta schema.ClientMeta, parent *
 func resolveGlueMlTransformArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	r := resource.Item.(types.MLTransform)
-	arn := aws.String(mlTransformARN(cl, &r))
-	return resource.Set(c.Name, arn)
+	return resource.Set(c.Name, mlTransformARN(cl, &r))
 }
 func resolveGlueMlTransformTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
@@ -56,7 +57,7 @@ func resolveMlTransformsSchema(ctx context.Context, meta schema.ClientMeta, reso
 	}
 	return resource.Set(c.Name, j)
 }
-func fetchGlueMlTransformTaskRuns(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchGlueMlTransformTaskRuns(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(types.MLTransform)
 	cl := meta.(*client.Client)
 	svc := cl.Services().Glue
@@ -78,5 +79,11 @@ func fetchGlueMlTransformTaskRuns(ctx context.Context, meta schema.ClientMeta, p
 }
 
 func mlTransformARN(cl *client.Client, tr *types.MLTransform) string {
-	return cl.ARN(client.GlueService, "mlTransform", *tr.TransformId)
+	return arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.GlueService),
+		Region:    cl.Region,
+		AccountID: cl.AccountID,
+		Resource:  fmt.Sprintf("mlTransform/%s", aws.ToString(tr.TransformId)),
+	}.String()
 }

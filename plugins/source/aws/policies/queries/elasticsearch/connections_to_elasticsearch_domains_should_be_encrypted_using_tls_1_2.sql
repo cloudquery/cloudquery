@@ -7,7 +7,7 @@ select
   account_id,
   arn as resource_id,
   case when
-    domain_endpoint_tls_security_policy is distinct from 'Policy-Min-TLS-1-2-2019-07'
+    domain_endpoint_options->>'TLSSecurityPolicy' is distinct from 'Policy-Min-TLS-1-2-2019-07'
     then 'fail'
     else 'pass'
   end as status

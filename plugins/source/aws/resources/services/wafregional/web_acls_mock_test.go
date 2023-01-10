@@ -12,7 +12,7 @@ import (
 )
 
 func buildWebACLsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockWafRegionalClient(ctrl)
+	m := mocks.NewMockWafregionalClient(ctrl)
 
 	var acl types.WebACL
 	if err := faker.FakeObject(&acl); err != nil {
@@ -62,7 +62,7 @@ func buildWebACLsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
-	return client.Services{WafRegional: m}
+	return client.Services{Wafregional: m}
 }
 
 func TestWebACLs(t *testing.T) {

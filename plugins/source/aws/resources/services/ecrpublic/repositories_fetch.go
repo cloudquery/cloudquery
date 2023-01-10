@@ -11,13 +11,13 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchEcrpublicRepositories(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchEcrpublicRepositories(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	maxResults := int32(1000)
 	config := ecrpublic.DescribeRepositoriesInput{
 		MaxResults: &maxResults,
 	}
 	c := meta.(*client.Client)
-	svc := c.Services().ECRPublic
+	svc := c.Services().Ecrpublic
 	for {
 		output, err := svc.DescribeRepositories(ctx, &config)
 		if err != nil {
@@ -34,7 +34,7 @@ func fetchEcrpublicRepositories(ctx context.Context, meta schema.ClientMeta, par
 
 func resolveRepositoryTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().ECRPublic
+	svc := cl.Services().Ecrpublic
 	repo := resource.Item.(types.Repository)
 
 	input := ecrpublic.ListTagsForResourceInput{
@@ -47,7 +47,7 @@ func resolveRepositoryTags(ctx context.Context, meta schema.ClientMeta, resource
 	return resource.Set(c.Name, client.TagsToMap(output.Tags))
 }
 
-func fetchEcrpublicRepositoryImages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchEcrpublicRepositoryImages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	maxResults := int32(1000)
 	p := parent.Item.(types.Repository)
 	config := ecrpublic.DescribeImagesInput{
@@ -55,7 +55,7 @@ func fetchEcrpublicRepositoryImages(ctx context.Context, meta schema.ClientMeta,
 		MaxResults:     &maxResults,
 	}
 	c := meta.(*client.Client)
-	svc := c.Services().ECRPublic
+	svc := c.Services().Ecrpublic
 	for {
 		output, err := svc.DescribeImages(ctx, &config)
 		if err != nil {

@@ -14,7 +14,7 @@ import (
 func buildEcsClusterMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockEcsClient(ctrl)
 	services := client.Services{
-		ECS: m,
+		Ecs: m,
 	}
 	c := ecsTypes.Cluster{}
 	err := faker.FakeObject(&c)
@@ -68,6 +68,14 @@ func buildEcsClusterMock(t *testing.T, ctrl *gomock.Controller) client.Services 
 		t.Fatal(err)
 	}
 	m.EXPECT().DescribeTasks(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tasks, nil)
+
+	protection := ecs.GetTaskProtectionOutput{}
+	err = faker.FakeObject(&protection)
+	if err != nil {
+		t.Fatal(err)
+	}
+	protection.Failures = nil
+	m.EXPECT().GetTaskProtection(gomock.Any(), gomock.Any(), gomock.Any()).Return(&protection, nil)
 
 	return services
 }

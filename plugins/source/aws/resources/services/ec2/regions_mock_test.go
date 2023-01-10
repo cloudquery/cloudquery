@@ -26,7 +26,7 @@ func buildRegionsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 		}, nil)
 
 	return client.Services{
-		EC2: m,
+		Ec2: m,
 	}
 }
 

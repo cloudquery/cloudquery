@@ -5,6 +5,302 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v4.0.1...plugins-source-digitalocean-v4.0.2) (2023-01-03)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.14.0 ([#6025](https://github.com/cloudquery/cloudquery/issues/6025)) ([35b2cfc](https://github.com/cloudquery/cloudquery/commit/35b2cfc7fc7bcdaceb7ee674e3a17f0f5673b366))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.15.0 ([#6071](https://github.com/cloudquery/cloudquery/issues/6071)) ([684b525](https://github.com/cloudquery/cloudquery/commit/684b525aaa285fcae70dd87af56679c1205adebe))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.15.1 ([#6079](https://github.com/cloudquery/cloudquery/issues/6079)) ([650659c](https://github.com/cloudquery/cloudquery/commit/650659c3c6766df571868e2ec3a2007cb76696eb))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.16.0 ([#6098](https://github.com/cloudquery/cloudquery/issues/6098)) ([7bacdf3](https://github.com/cloudquery/cloudquery/commit/7bacdf3364716eab08fa1a84ae4047b42edeee7e))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.16.1 ([#6214](https://github.com/cloudquery/cloudquery/issues/6214)) ([53b2415](https://github.com/cloudquery/cloudquery/commit/53b241508d7511d4b5fa74cc4262d180c1e6df66))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.17.0 ([#6256](https://github.com/cloudquery/cloudquery/issues/6256)) ([b19f6cd](https://github.com/cloudquery/cloudquery/commit/b19f6cd8e2c39994aeb19d78e78e927d6c3cf580))
+* **deps:** Update module github.com/digitalocean/godo to v1.93.0 ([#6187](https://github.com/cloudquery/cloudquery/issues/6187)) ([9a6a9f9](https://github.com/cloudquery/cloudquery/commit/9a6a9f9c29394823153cf5025d9e661dd264d7f7))
+
+## [4.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v4.0.0...plugins-source-digitalocean-v4.0.1) (2022-12-27)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/config to v1.18.7 ([#5879](https://github.com/cloudquery/cloudquery/issues/5879)) ([c2c082e](https://github.com/cloudquery/cloudquery/commit/c2c082e08adc1ec652dcb218f165e491ec5bd878))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.13.1 ([#5897](https://github.com/cloudquery/cloudquery/issues/5897)) ([ad15915](https://github.com/cloudquery/cloudquery/commit/ad15915f2951a75729859f6f1377ed789f8ba115))
+
+## [4.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v3.1.2...plugins-source-digitalocean-v4.0.0) (2022-12-20)
+
+
+### ⚠ BREAKING CHANGES
+
+* **digitalocean:** Primary key column for `billing_history` changed from `invoice_id` to `_cq_id`
+
+### Bug Fixes
+
+* **digitalocean:** Remove invoice_id from PK for billing history ([0038381](https://github.com/cloudquery/cloudquery/commit/0038381a1a8d8c222f16ac63c1f9679be8afc646))
+
+## [3.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v3.1.1...plugins-source-digitalocean-v3.1.2) (2022-12-20)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2 to v1.17.3 ([#5685](https://github.com/cloudquery/cloudquery/issues/5685)) ([e540ee5](https://github.com/cloudquery/cloudquery/commit/e540ee53c58b580f64d1317dbaffddf1b3950e20))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/config to v1.18.5 ([#5686](https://github.com/cloudquery/cloudquery/issues/5686)) ([72d50ea](https://github.com/cloudquery/cloudquery/commit/72d50ea25d1cd5018f163ead27909aee3872e0ed))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/config to v1.18.6 ([#5810](https://github.com/cloudquery/cloudquery/issues/5810)) ([6c5ef8d](https://github.com/cloudquery/cloudquery/commit/6c5ef8d8346248ed4efa8b714f662e3d97243103))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/s3 to v1.29.6 ([#5767](https://github.com/cloudquery/cloudquery/issues/5767)) ([c26d674](https://github.com/cloudquery/cloudquery/commit/c26d6745dc55ab5adfbbcd87cc6e53e2c1c2cb92))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.12.2 ([#5583](https://github.com/cloudquery/cloudquery/issues/5583)) ([d721c4e](https://github.com/cloudquery/cloudquery/commit/d721c4e06b8a97b5373215aca0e4ed64942ac489))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.12.3 ([#5639](https://github.com/cloudquery/cloudquery/issues/5639)) ([6452d0e](https://github.com/cloudquery/cloudquery/commit/6452d0ed5a44abad9d7530af6e79cde6504d0c4c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.12.4 ([#5649](https://github.com/cloudquery/cloudquery/issues/5649)) ([b4aa889](https://github.com/cloudquery/cloudquery/commit/b4aa889e396db3b0887d1684e4bc07da6050af43))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.12.5 ([#5661](https://github.com/cloudquery/cloudquery/issues/5661)) ([b354b8a](https://github.com/cloudquery/cloudquery/commit/b354b8a3683fa2bc918c1002afac487427d65a5f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.12.6 ([#5790](https://github.com/cloudquery/cloudquery/issues/5790)) ([8e2663c](https://github.com/cloudquery/cloudquery/commit/8e2663c17c3347afd5e53f665462adc3e709c96c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.12.7 ([#5797](https://github.com/cloudquery/cloudquery/issues/5797)) ([15da529](https://github.com/cloudquery/cloudquery/commit/15da5294786fa2656228ca5bbc48ef1fc44e486b))
+
+## [3.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v3.1.0...plugins-source-digitalocean-v3.1.1) (2022-12-13)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.11.1 ([#5458](https://github.com/cloudquery/cloudquery/issues/5458)) ([58b7432](https://github.com/cloudquery/cloudquery/commit/58b74321cd253c9a843c8c103f324abb93952195))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.11.2 ([#5497](https://github.com/cloudquery/cloudquery/issues/5497)) ([c1876cf](https://github.com/cloudquery/cloudquery/commit/c1876cf793b43d825a25fb3c9ba4996e4b09964f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.12.0 ([#5539](https://github.com/cloudquery/cloudquery/issues/5539)) ([fb71293](https://github.com/cloudquery/cloudquery/commit/fb71293d5cfe1b2ef32ba83d604ac3c48e662bce))
+
+## [3.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v3.0.4...plugins-source-digitalocean-v3.1.0) (2022-12-06)
+
+
+### Features
+
+* **website:** Add plugins tables ([#5259](https://github.com/cloudquery/cloudquery/issues/5259)) ([c336f4e](https://github.com/cloudquery/cloudquery/commit/c336f4e25e192ffdd4c211d4a35b67b71d01d1f8))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/avast/retry-go to v4 ([#5242](https://github.com/cloudquery/cloudquery/issues/5242)) ([f3769ed](https://github.com/cloudquery/cloudquery/commit/f3769ede1c302ed6d218cc75c020ee254d8fb230))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2 to v1.17.2 ([#5297](https://github.com/cloudquery/cloudquery/issues/5297)) ([001999e](https://github.com/cloudquery/cloudquery/commit/001999ee890f7ec11d3d422c3a130346f5fb6491))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/config to v1.18.4 ([#5298](https://github.com/cloudquery/cloudquery/issues/5298)) ([550558b](https://github.com/cloudquery/cloudquery/commit/550558b69fba25cfc5cb7767c6039aa1715b3564))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/s3 to v1.29.5 ([#5380](https://github.com/cloudquery/cloudquery/issues/5380)) ([3e3eb6b](https://github.com/cloudquery/cloudquery/commit/3e3eb6b33fbefa86632e1b63156ae76f4ae72db3))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.11.0 ([#5416](https://github.com/cloudquery/cloudquery/issues/5416)) ([2e7ca35](https://github.com/cloudquery/cloudquery/commit/2e7ca35922fdb14fd717f582aaaa9693dae2ef4c))
+* **deps:** Update module github.com/digitalocean/godo to v1.91.1 ([#5224](https://github.com/cloudquery/cloudquery/issues/5224)) ([4862538](https://github.com/cloudquery/cloudquery/commit/486253852c5ae29c52f9178018f7b1ca930d4b34))
+
+## [3.0.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v3.0.3...plugins-source-digitalocean-v3.0.4) (2022-11-30)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/s3 to v1.29.4 ([#5018](https://github.com/cloudquery/cloudquery/issues/5018)) ([37d9aa5](https://github.com/cloudquery/cloudquery/commit/37d9aa5e3d3b0fd619060f3d88f60ebda0612535))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.10.0 ([#5153](https://github.com/cloudquery/cloudquery/issues/5153)) ([ea1f77e](https://github.com/cloudquery/cloudquery/commit/ea1f77e910f430287600e74cedd7d3f4ae79eb18))
+* **deps:** Update plugin-sdk for digitalocean to v1.8.1 ([#5037](https://github.com/cloudquery/cloudquery/issues/5037)) ([acc8961](https://github.com/cloudquery/cloudquery/commit/acc896115392b7a3d742a7b23ef5700f2d6e543b))
+* **deps:** Update plugin-sdk for digitalocean to v1.9.0 ([#5079](https://github.com/cloudquery/cloudquery/issues/5079)) ([a851acc](https://github.com/cloudquery/cloudquery/commit/a851acc362d478ae5521d21cb2e93a4bf30af336))
+
+## [3.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v3.0.2...plugins-source-digitalocean-v3.0.3) (2022-11-23)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/config to v1.18.3 ([#4943](https://github.com/cloudquery/cloudquery/issues/4943)) ([e4aaf3f](https://github.com/cloudquery/cloudquery/commit/e4aaf3f0976a0836301b5de70a8e933c7abb5365))
+* **deps:** Update plugin-sdk for digitalocean to v1.7.0 ([#4908](https://github.com/cloudquery/cloudquery/issues/4908)) ([d78f127](https://github.com/cloudquery/cloudquery/commit/d78f1271801a2c1894d2d530306dac85efaf2abe))
+* **deps:** Update plugin-sdk for digitalocean to v1.8.0 ([#4971](https://github.com/cloudquery/cloudquery/issues/4971)) ([1af8cae](https://github.com/cloudquery/cloudquery/commit/1af8cae144893ff1ceca1d5d9e7f9e8c7de620c4))
+
+## [3.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v3.0.1...plugins-source-digitalocean-v3.0.2) (2022-11-21)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for digitalocean to v1.6.0 ([#4846](https://github.com/cloudquery/cloudquery/issues/4846)) ([8ef4e8b](https://github.com/cloudquery/cloudquery/commit/8ef4e8b5c8428e13ee2dbcb41d3adb282beb0e33))
+
+## [3.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v3.0.0...plugins-source-digitalocean-v3.0.1) (2022-11-18)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/config to v1.18.1 ([#4736](https://github.com/cloudquery/cloudquery/issues/4736)) ([db70d2a](https://github.com/cloudquery/cloudquery/commit/db70d2a602fc4edfc74ed61fd7d28ada6da6a3af))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/config to v1.18.2 ([#4775](https://github.com/cloudquery/cloudquery/issues/4775)) ([136fb42](https://github.com/cloudquery/cloudquery/commit/136fb4213da150f8f9e4a68019fbe7fe94397370))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/s3 to v1.29.3 ([#4779](https://github.com/cloudquery/cloudquery/issues/4779)) ([9332cfb](https://github.com/cloudquery/cloudquery/commit/9332cfbfbd7ec9b16e849f8ea28d2ae0e0e7508d))
+
+## [3.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v2.2.22...plugins-source-digitalocean-v3.0.0) (2022-11-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* **digitalocean:** Remove PK from `id` column in `digitalocean_space_cors` table. This is only a breaking change if you did not use spaces, and start using spaces after this version. Before updating you'll need to drop your database.
+
+### Bug Fixes
+
+* **digitalocean:** Remove PK from `id` column in `digitalocean_space_cors` table ([e43ea01](https://github.com/cloudquery/cloudquery/commit/e43ea014da595cb8cb7cdab2d268661c2b47db05))
+
+## [2.2.22](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v2.2.21...plugins-source-digitalocean-v2.2.22) (2022-11-15)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for digitalocean to v1.5.3 ([#4645](https://github.com/cloudquery/cloudquery/issues/4645)) ([d3ac14c](https://github.com/cloudquery/cloudquery/commit/d3ac14cc4372333f49099772da193718257905de))
+
+## [2.2.21](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v2.2.20...plugins-source-digitalocean-v2.2.21) (2022-11-14)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for digitalocean to v1.5.2 ([#4560](https://github.com/cloudquery/cloudquery/issues/4560)) ([da4bb2d](https://github.com/cloudquery/cloudquery/commit/da4bb2d85af7709208dd8a3d5bbb56bedef657c3))
+
+## [2.2.20](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v2.2.19...plugins-source-digitalocean-v2.2.20) (2022-11-14)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for digitalocean to v1.5.1 ([#4501](https://github.com/cloudquery/cloudquery/issues/4501)) ([59fba9d](https://github.com/cloudquery/cloudquery/commit/59fba9d8a5ae9c294b2486be193d550e15f9d5f9))
+
+## [2.2.19](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v2.2.18...plugins-source-digitalocean-v2.2.19) (2022-11-13)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/config to v1.18.0 ([#4447](https://github.com/cloudquery/cloudquery/issues/4447)) ([2453e88](https://github.com/cloudquery/cloudquery/commit/2453e880718bccd5ddeee5a046697495ddef23c9))
+
+## [2.2.18](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v2.2.17...plugins-source-digitalocean-v2.2.18) (2022-11-13)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/s3 to v1.29.2 ([#4458](https://github.com/cloudquery/cloudquery/issues/4458)) ([19cece0](https://github.com/cloudquery/cloudquery/commit/19cece035b31401b1d7786daf5299d638ec86689))
+
+## [2.2.17](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v2.2.16...plugins-source-digitalocean-v2.2.17) (2022-11-11)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for digitalocean to v1.5.0 ([#4390](https://github.com/cloudquery/cloudquery/issues/4390)) ([7bfad68](https://github.com/cloudquery/cloudquery/commit/7bfad68e9e8cccf4d545e27d684583cb831da3da))
+
+## [2.2.16](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v2.2.15...plugins-source-digitalocean-v2.2.16) (2022-11-10)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for digitalocean to v1.4.1 ([#4293](https://github.com/cloudquery/cloudquery/issues/4293)) ([40e3ab8](https://github.com/cloudquery/cloudquery/commit/40e3ab8aa6838e07bd7350d526400fb9807a972b))
+
+## [2.2.15](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v2.2.14...plugins-source-digitalocean-v2.2.15) (2022-11-10)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for digitalocean to v1.4.0 ([#4231](https://github.com/cloudquery/cloudquery/issues/4231)) ([6ed0913](https://github.com/cloudquery/cloudquery/commit/6ed0913856672a409dd21c240587868c665032ce))
+
+## [2.2.14](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v2.2.13...plugins-source-digitalocean-v2.2.14) (2022-11-10)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for digitalocean to v1.3.2 ([#4198](https://github.com/cloudquery/cloudquery/issues/4198)) ([bb7c0c9](https://github.com/cloudquery/cloudquery/commit/bb7c0c967479be6af2c1a81d4f53e39735c3ad3e))
+
+## [2.2.13](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v2.2.12...plugins-source-digitalocean-v2.2.13) (2022-11-10)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for digitalocean to v1.3.1 ([#4149](https://github.com/cloudquery/cloudquery/issues/4149)) ([38f34d2](https://github.com/cloudquery/cloudquery/commit/38f34d2fab7bbf202f31adbac5c7ee5052e1f003))
+
+## [2.2.12](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v2.2.11...plugins-source-digitalocean-v2.2.12) (2022-11-10)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2 to v1.17.1 ([#4124](https://github.com/cloudquery/cloudquery/issues/4124)) ([650b3be](https://github.com/cloudquery/cloudquery/commit/650b3beb358e429f3737c407ab012bd379021c29))
+* **deps:** Update module github.com/aws/smithy-go to v1.13.4 ([#4123](https://github.com/cloudquery/cloudquery/issues/4123)) ([b4b8372](https://github.com/cloudquery/cloudquery/commit/b4b83721a316bbaa2435004b28b3d6357bc7eb5f))
+
+## [2.2.11](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v2.2.10...plugins-source-digitalocean-v2.2.11) (2022-11-09)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for digitalocean to v1.3.0 ([#4073](https://github.com/cloudquery/cloudquery/issues/4073)) ([d9c6e73](https://github.com/cloudquery/cloudquery/commit/d9c6e732dcbe2b46d52106c6ce4fdbd3ace657a1))
+
+## [2.2.10](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v2.2.9...plugins-source-digitalocean-v2.2.10) (2022-11-09)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for digitalocean to v1.2.0 ([#4041](https://github.com/cloudquery/cloudquery/issues/4041)) ([1ab7ff0](https://github.com/cloudquery/cloudquery/commit/1ab7ff0187513778f93f515e89861c48364816d0))
+
+## [2.2.9](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v2.2.8...plugins-source-digitalocean-v2.2.9) (2022-11-09)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for csv to v1.1.0 ([#3918](https://github.com/cloudquery/cloudquery/issues/3918)) ([f1acd68](https://github.com/cloudquery/cloudquery/commit/f1acd688fcd90011cc9be1be2285e3fe9369e341))
+
+## [2.2.8](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v2.2.7...plugins-source-digitalocean-v2.2.8) (2022-11-08)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for digitalocean to v1.1.0 ([#3919](https://github.com/cloudquery/cloudquery/issues/3919)) ([3a2ee23](https://github.com/cloudquery/cloudquery/commit/3a2ee23358187f0a5133855f0031c4046a324de6))
+
+## [2.2.7](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v2.2.6...plugins-source-digitalocean-v2.2.7) (2022-11-08)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for digitalocean to v1.0.3 ([#3850](https://github.com/cloudquery/cloudquery/issues/3850)) ([5c96a8e](https://github.com/cloudquery/cloudquery/commit/5c96a8e629fc5b8a4b8326b68b6bcb612c777659))
+* **deps:** Upgrade plugin-sdk to v1.0.4 for plugins ([#3889](https://github.com/cloudquery/cloudquery/issues/3889)) ([6767243](https://github.com/cloudquery/cloudquery/commit/6767243ec70bfae7a4c457bf4b5edf013c54c392))
+
+## [2.2.6](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v2.2.5...plugins-source-digitalocean-v2.2.6) (2022-11-07)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for digitalocean to v1 ([#3779](https://github.com/cloudquery/cloudquery/issues/3779)) ([e5311b9](https://github.com/cloudquery/cloudquery/commit/e5311b92c73d505210a701cd847e564b329fa058))
+
+## [2.2.5](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v2.2.4...plugins-source-digitalocean-v2.2.5) (2022-11-07)
+
+
+### Bug Fixes
+
+* **deps:** Update SDK to v0.13.23 ([#3740](https://github.com/cloudquery/cloudquery/issues/3740)) ([5e66c6d](https://github.com/cloudquery/cloudquery/commit/5e66c6d5d1a0550e5722369eb90f77a949c1344c))
+
+## [2.2.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v2.2.3...plugins-source-digitalocean-v2.2.4) (2022-11-06)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for digitalocean to v0.13.22 ([#3682](https://github.com/cloudquery/cloudquery/issues/3682)) ([f7d95d0](https://github.com/cloudquery/cloudquery/commit/f7d95d034923f71675795955b803a5f73a753937))
+
+## [2.2.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v2.2.2...plugins-source-digitalocean-v2.2.3) (2022-11-06)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for digitalocean to v0.13.21 ([#3634](https://github.com/cloudquery/cloudquery/issues/3634)) ([101eabe](https://github.com/cloudquery/cloudquery/commit/101eabe30b456e4be937934428563844fb4def6f))
+
+## [2.2.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v2.2.1...plugins-source-digitalocean-v2.2.2) (2022-11-04)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for digitalocean to v0.13.20 ([#3574](https://github.com/cloudquery/cloudquery/issues/3574)) ([2c00e07](https://github.com/cloudquery/cloudquery/commit/2c00e07938ae3b537aaa905cf11184c607de0ca8))
+
+## [2.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v2.2.0...plugins-source-digitalocean-v2.2.1) (2022-11-03)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for digitalocean to v0.13.19 ([#3505](https://github.com/cloudquery/cloudquery/issues/3505)) ([9f3a1a4](https://github.com/cloudquery/cloudquery/commit/9f3a1a4ef51c759a2899802a9669eafae9c139a9))
+
+## [2.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v2.1.0...plugins-source-digitalocean-v2.2.0) (2022-11-01)
+
+
+### Features
+
+* Migrate cli, plugins and destinations to new type system ([#3323](https://github.com/cloudquery/cloudquery/issues/3323)) ([f265a94](https://github.com/cloudquery/cloudquery/commit/f265a94448ad55c968b26ba8a19681bc81086c11))
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for digitalocean to v0.13.17 ([#3403](https://github.com/cloudquery/cloudquery/issues/3403)) ([e2f2255](https://github.com/cloudquery/cloudquery/commit/e2f2255084c527c601ac82b515bfd722b5370952))
+* **deps:** Update plugin-sdk for digitalocean to v0.13.18 ([#3412](https://github.com/cloudquery/cloudquery/issues/3412)) ([9d19db1](https://github.com/cloudquery/cloudquery/commit/9d19db1313dfd4f97d6f7f9856d44467da8ac2b6))
+
+## [2.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v2.0.8...plugins-source-digitalocean-v2.1.0) (2022-10-31)
+
+
+### Features
+
+* Update all plugins to SDK with metrics and DFS scheduler ([#3286](https://github.com/cloudquery/cloudquery/issues/3286)) ([a35b8e8](https://github.com/cloudquery/cloudquery/commit/a35b8e89d625287a9b9406ff18cfac78ffdb1241))
+
 ## [2.0.8](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v2.0.7...plugins-source-digitalocean-v2.0.8) (2022-10-27)
 
 

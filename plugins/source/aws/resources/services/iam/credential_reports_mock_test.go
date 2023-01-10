@@ -29,7 +29,7 @@ func buildCredentialReports(_ *testing.T, ctrl *gomock.Controller) client.Servic
 		}, nil)
 
 	return client.Services{
-		IAM: m,
+		Iam: m,
 	}
 }
 
@@ -41,7 +41,7 @@ func buildCredentialReportsWithNilValues(ctrl *gomock.Controller) client.Service
 		}, nil)
 
 	return client.Services{
-		IAM: m,
+		Iam: m,
 	}
 }
 
@@ -59,7 +59,7 @@ func testCredentialReportsWithNilValues(t *testing.T) {
 		cl.Partition = "aws"
 		cl.Region = "us-east-1"
 		cl.AccountID = "testAccount"
-		res := make(chan interface{}, 1)
+		res := make(chan any, 1)
 		var wg sync.WaitGroup
 		wg.Add(1)
 		go func() {

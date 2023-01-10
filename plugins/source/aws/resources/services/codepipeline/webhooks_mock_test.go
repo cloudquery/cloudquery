@@ -12,7 +12,7 @@ import (
 )
 
 func buildWebhooks(t *testing.T, ctrl *gomock.Controller) client.Services {
-	mock := mocks.NewMockCodePipelineClient(ctrl)
+	mock := mocks.NewMockCodepipelineClient(ctrl)
 
 	var webhook types.ListWebhookItem
 	if err := faker.FakeObject(&webhook); err != nil {
@@ -27,7 +27,7 @@ func buildWebhooks(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
-	return client.Services{CodePipeline: mock}
+	return client.Services{Codepipeline: mock}
 }
 
 func TestCodePipelineWebhooks(t *testing.T) {

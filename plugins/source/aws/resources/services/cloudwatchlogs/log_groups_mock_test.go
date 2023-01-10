@@ -12,7 +12,7 @@ import (
 )
 
 func buildCloudwatchLogsLogGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockCloudwatchLogsClient(ctrl)
+	m := mocks.NewMockCloudwatchlogsClient(ctrl)
 	l := types.LogGroup{}
 	err := faker.FakeObject(&l)
 	if err != nil {
@@ -32,7 +32,7 @@ func buildCloudwatchLogsLogGroupsMock(t *testing.T, ctrl *gomock.Controller) cli
 	m.EXPECT().ListTagsLogGroup(gomock.Any(), gomock.Any(), gomock.Any()).Return(tags, nil)
 
 	return client.Services{
-		CloudwatchLogs: m,
+		Cloudwatchlogs: m,
 	}
 }
 

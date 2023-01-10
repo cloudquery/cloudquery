@@ -16,10 +16,10 @@ func buildEc2RegionalConfig(t *testing.T, ctrl *gomock.Controller) client.Servic
 	m.EXPECT().GetEbsEncryptionByDefault(gomock.Any(), gomock.Any(), gomock.Any()).Return(&ec2.GetEbsEncryptionByDefaultOutput{EbsEncryptionByDefault: aws.Bool(true)}, nil)
 
 	return client.Services{
-		EC2: m,
+		Ec2: m,
 	}
 }
 
 func TestEc2RegionalConfig(t *testing.T) {
-	client.AwsMockTestHelper(t, RegionalConfig(), buildEc2RegionalConfig, client.TestOptions{})
+	client.AwsMockTestHelper(t, RegionalConfigs(), buildEc2RegionalConfig, client.TestOptions{})
 }

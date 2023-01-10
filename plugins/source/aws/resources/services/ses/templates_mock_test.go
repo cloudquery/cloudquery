@@ -12,7 +12,7 @@ import (
 )
 
 func buildSESTemplates(t *testing.T, ctrl *gomock.Controller) client.Services {
-	sesClient := mocks.NewMockSESClient(ctrl)
+	sesClient := mocks.NewMockSesv2Client(ctrl)
 
 	tplMeta := types.EmailTemplateMetadata{}
 	err := faker.FakeObject(&tplMeta)
@@ -38,7 +38,7 @@ func buildSESTemplates(t *testing.T, ctrl *gomock.Controller) client.Services {
 	)
 
 	return client.Services{
-		SES: sesClient,
+		Sesv2: sesClient,
 	}
 }
 

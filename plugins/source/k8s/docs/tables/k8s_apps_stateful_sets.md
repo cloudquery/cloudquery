@@ -1,11 +1,9 @@
 # Table: k8s_apps_stateful_sets
 
-
-
 The primary key for this table is **uid**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -35,6 +33,7 @@ The primary key for this table is **uid**.
 |spec_revision_history_limit|Int|
 |spec_min_ready_seconds|Int|
 |spec_persistent_volume_claim_retention_policy|JSON|
+|spec_ordinals|JSON|
 |status_observed_generation|Int|
 |status_replicas|Int|
 |status_ready_replicas|Int|

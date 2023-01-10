@@ -12,9 +12,9 @@ import (
 )
 
 func buildDAXClustersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockDAXClient(ctrl)
+	m := mocks.NewMockDaxClient(ctrl)
 	services := client.Services{
-		DAX: m,
+		Dax: m,
 	}
 	c := types.Cluster{}
 	if err := faker.FakeObject(&c); err != nil {

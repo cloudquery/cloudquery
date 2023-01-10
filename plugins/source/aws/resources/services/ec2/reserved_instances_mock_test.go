@@ -23,7 +23,7 @@ func buildReservedEc2Instances(t *testing.T, ctrl *gomock.Controller) client.Ser
 			ReservedInstances: []types.ReservedInstances{l},
 		}, nil)
 	return client.Services{
-		EC2: m,
+		Ec2: m,
 	}
 }
 

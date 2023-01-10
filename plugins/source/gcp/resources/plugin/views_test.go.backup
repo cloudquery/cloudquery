@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/cloudquery/plugins/source/gcp/views"
-	"github.com/cloudquery/plugin-sdk/plugins"
+	"github.com/cloudquery/plugin-sdk/plugins/source"
 )
 
 func TestViews(t *testing.T) {

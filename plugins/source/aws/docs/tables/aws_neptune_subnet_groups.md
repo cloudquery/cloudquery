@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/neptune/latest/userguide/api-subnets.html#DescribeDB
 
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -21,3 +21,4 @@ The primary key for this table is **arn**.
 |subnet_group_status|String|
 |subnets|JSON|
 |vpc_id|String|
+|db_subnet_group_arn|String|

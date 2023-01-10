@@ -50,7 +50,7 @@ func buildSnsTopics(t *testing.T, ctrl *gomock.Controller) client.Services {
 			Tags: []types.Tag{tag},
 		}, nil)
 	return client.Services{
-		SNS: m,
+		Sns: m,
 	}
 }
 

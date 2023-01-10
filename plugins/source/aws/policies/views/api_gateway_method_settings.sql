@@ -1,9 +1,8 @@
 create or replace view view_aws_apigateway_method_settings as
 select
-    s.cq_id,
-    s.stage_name,
-    s.rest_api_cq_id,
     s.arn,
+    s.rest_api_arn,
+    s.stage_name,
     s.tracing_enabled as stage_data_trace_enabled,
     s.cache_cluster_enabled as stage_caching_enabled,
     s.web_acl_arn as waf,
@@ -20,4 +19,4 @@ select
     r.account_id
 from aws_apigateway_rest_api_stages s, aws_apigateway_rest_apis r,
     JSONB_EACH_TEXT(s.method_settings)
-where s.rest_api_cq_id=r.cq_id
+where s.rest_api_arn=r.arn

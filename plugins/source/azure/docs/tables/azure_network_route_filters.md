@@ -1,11 +1,9 @@
 # Table: azure_network_route_filters
 
-
-
 The primary key for this table is **id**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -13,13 +11,10 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|rules|JSON|
-|peerings|JSON|
-|ipv6_peerings|JSON|
-|provisioning_state|String|
-|etag|String|
 |id (PK)|String|
+|location|String|
+|properties|JSON|
+|tags|JSON|
+|etag|String|
 |name|String|
 |type|String|
-|location|String|
-|tags|JSON|

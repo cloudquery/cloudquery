@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/fsx/latest/APIReference/API_Volume.html
 
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -15,8 +15,8 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
-|tags|JSON|
 |administrative_actions|JSON|
+|tags|JSON|
 |creation_time|Timestamp|
 |file_system_id|String|
 |lifecycle|String|
@@ -24,5 +24,6 @@ The primary key for this table is **arn**.
 |name|String|
 |ontap_configuration|JSON|
 |open_zfs_configuration|JSON|
+|resource_arn|String|
 |volume_id|String|
 |volume_type|String|

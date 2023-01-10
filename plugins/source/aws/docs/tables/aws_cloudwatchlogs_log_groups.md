@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_LogGrou
 
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -17,6 +17,7 @@ The primary key for this table is **arn**.
 |arn (PK)|String|
 |tags|JSON|
 |creation_time|Int|
+|data_protection_status|String|
 |kms_key_id|String|
 |log_group_name|String|
 |metric_filter_count|Int|

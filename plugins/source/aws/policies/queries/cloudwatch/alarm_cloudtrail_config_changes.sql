@@ -7,11 +7,12 @@ select
     account_id,
     cloud_watch_logs_log_group_arn as resource_id,
     case
-      when pattern = '{ ($.eventName = CreateTrail) '
-          || '|| ($.eventName = UpdateTrail) '
-          || '|| ($.eventName = DeleteTrail) '
-          || '|| ($.eventName = StartLogging) '
-          || '|| ($.eventName = StopLogging) }' then 'pass'
+      when pattern NOT LIKE '%NOT%'
+          AND pattern LIKE '%($.eventName = CreateTrail)%'
+          AND pattern LIKE '%($.eventName = UpdateTrail)%'
+          AND pattern LIKE '%($.eventName = DeleteTrail)%'
+          AND pattern LIKE '%($.eventName = StartLogging)%'
+          AND pattern LIKE '%($.eventName = StopLogging)%' then 'pass'
       else 'fail'
     end as status
 from view_aws_log_metric_filter_and_alarm

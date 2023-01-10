@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBSecurityGroup.ht
 
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -16,6 +16,7 @@ The primary key for this table is **arn**.
 |region|String|
 |arn (PK)|String|
 |tags|JSON|
+|db_security_group_arn|String|
 |db_security_group_description|String|
 |db_security_group_name|String|
 |ec2_security_groups|JSON|

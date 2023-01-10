@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/workspaces/latest/api/API_WorkspaceDirectory.html
 
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -15,6 +15,7 @@ The primary key for this table is **arn**.
 |account_id|String|
 |arn (PK)|String|
 |alias|String|
+|certificate_based_auth_properties|JSON|
 |customer_user_name|String|
 |directory_id|String|
 |directory_name|String|

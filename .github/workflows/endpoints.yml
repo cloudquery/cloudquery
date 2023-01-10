@@ -9,6 +9,7 @@ defaults:
 
 jobs:
   endpoints:
+    timeout-minutes: 30
     name: aws endpoints verification
     runs-on: ubuntu-latest
     steps:

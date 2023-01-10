@@ -12,7 +12,7 @@ import (
 )
 
 func buildSageMakerNotebookInstances(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockSageMakerClient(ctrl)
+	m := mocks.NewMockSagemakerClient(ctrl)
 
 	summ := types.NotebookInstanceSummary{}
 	if err := faker.FakeObject(&summ); err != nil {
@@ -43,7 +43,7 @@ func buildSageMakerNotebookInstances(t *testing.T, ctrl *gomock.Controller) clie
 	)
 
 	return client.Services{
-		SageMaker: m,
+		Sagemaker: m,
 	}
 }
 

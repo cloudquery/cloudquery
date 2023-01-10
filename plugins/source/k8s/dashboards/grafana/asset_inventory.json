@@ -123,7 +123,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select count(*) from k8s_resources where context in (${contexts}) and cq_table in (${cq_tables}) ;",
+          "rawSql": "select count(*) from k8s_resources where context in (${contexts}) and _cq_table in (${cq_tables}) ;",
           "refId": "A"
         }
       ],
@@ -183,7 +183,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select context, count(*) from k8s_resources where cq_table in (${cq_tables}) group by context order by count desc;",
+          "rawSql": "select context, count(*) from k8s_resources where _cq_table in (${cq_tables}) group by context order by count desc;",
           "refId": "A"
         }
       ],
@@ -219,19 +219,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "cq_meta"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 392
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "cq_table"
+              "options": "_cq_table"
             },
             "properties": [
               {
@@ -255,7 +243,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "fetch_date"
+              "options": "_cq_sync_time"
             },
             "properties": [
               {
@@ -267,7 +255,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "cq_id"
+              "options": "_cq_id"
             },
             "properties": [
               {
@@ -307,7 +295,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select cq_id, cq_table, context, uid, fetch_date from k8s_resources where context in (${contexts}) and cq_table in (${cq_tables}) ;",
+          "rawSql": "select _cq_id, _cq_table, context, uid, _cq_sync_time from k8s_resources where context in (${contexts}) and _cq_table in (${cq_tables}) ;",
           "refId": "A",
           "select": [
             [
@@ -380,7 +368,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select cq_table, count(*) from k8s_resources where context in (${contexts}) group by cq_table order by count desc;",
+          "rawSql": "select _cq_table, count(*) from k8s_resources where context in (${contexts}) group by _cq_table order by count desc;",
           "refId": "A"
         }
       ],
@@ -414,13 +402,13 @@
       },
       {
         "current": {},
-        "definition": "select distinct(cq_table) from k8s_resources;",
+        "definition": "select distinct(_cq_table) from k8s_resources;",
         "hide": 0,
         "includeAll": true,
         "multi": true,
         "name": "cq_tables",
         "options": [],
-        "query": "select distinct(cq_table) from k8s_resources;",
+        "query": "select distinct(_cq_table) from k8s_resources;",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,

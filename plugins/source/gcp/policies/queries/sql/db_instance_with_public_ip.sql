@@ -1,11 +1,3 @@
--- SELECT gsi.project_id, gsi.name, gsiia."type", gsi.self_link AS link
--- FROM gcp_sql_instances gsi
---     JOIN gcp_sql_instance_ip_addresses gsiia ON
---         gsi.cq_id = gsiia.instance_cq_id
--- WHERE database_version LIKE 'SQLSERVER%'
---     AND gsiia.type = 'PRIMARY' OR backend_type != 'SECOND_GEN';
-
-
 INSERT INTO gcp_policy_results (resource_id, execution_time, framework, check_id, title, project_id, status)
 SELECT DISTINCT gsi.name                                                                      AS resource_id,
                 :'execution_time'::timestamp                                                  AS execution_time,
@@ -16,10 +8,8 @@ SELECT DISTINCT gsi.name                                                        
                 CASE
                     WHEN
                                     gsi.database_version LIKE 'SQLSERVER%'
-                                AND gsiia.type = 'PRIMARY' OR gsi.backend_type != 'SECOND_GEN'
+                                AND gsiia->>'type' = 'PRIMARY' OR gsi.backend_type != 'SECOND_GEN'
                         THEN 'fail'
                     ELSE 'pass'
                     END                                                                       AS status
-FROM gcp_sql_instances gsi
-         JOIN gcp_sql_instance_ip_addresses gsiia ON
-    gsi.cq_id = gsiia.instance_cq_id;
+FROM gcp_sql_instances gsi, JSONB_ARRAY_ELEMENTS(gsi.ip_addresses) AS gsiia;

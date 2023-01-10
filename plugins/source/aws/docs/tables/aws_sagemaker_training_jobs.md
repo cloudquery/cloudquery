@@ -1,11 +1,9 @@
 # Table: aws_sagemaker_training_jobs
 
-
-
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -22,6 +20,7 @@ The primary key for this table is **arn**.
 |resource_config|JSON|
 |secondary_status|String|
 |stopping_condition|JSON|
+|training_job_arn|String|
 |training_job_name|String|
 |training_job_status|String|
 |auto_ml_job_arn|String|

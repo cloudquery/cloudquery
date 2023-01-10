@@ -8,10 +8,12 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchWorkerMetaData(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchWorkerMetaData(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	svc := meta.(*client.Client)
 
-	resp, err := svc.ClientApi.ListWorkerScripts(ctx)
+	rc := cloudflare.AccountIdentifier(svc.AccountId)
+	params := cloudflare.ListWorkersParams{}
+	resp, _, err := svc.ClientApi.ListWorkers(ctx, rc, params)
 	if err != nil {
 		return err
 	}
@@ -19,12 +21,14 @@ func fetchWorkerMetaData(ctx context.Context, meta schema.ClientMeta, parent *sc
 
 	return nil
 }
-func fetchWorkerCronTriggers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchWorkerCronTriggers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	svc := meta.(*client.Client)
 	accountId := svc.AccountId
 	script := parent.Item.(cloudflare.WorkerMetaData)
 
-	resp, err := svc.ClientApi.ListWorkerCronTriggers(ctx, accountId, script.ID)
+	rc := cloudflare.AccountIdentifier(accountId)
+	params := cloudflare.ListWorkerCronTriggersParams{ScriptName: script.ID}
+	resp, err := svc.ClientApi.ListWorkerCronTriggers(ctx, rc, params)
 	if err != nil {
 		return err
 	}
@@ -32,11 +36,13 @@ func fetchWorkerCronTriggers(ctx context.Context, meta schema.ClientMeta, parent
 
 	return nil
 }
-func fetchWorkersSecrets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchWorkersSecrets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	svc := meta.(*client.Client)
 	script := parent.Item.(cloudflare.WorkerMetaData)
 
-	resp, err := svc.ClientApi.ListWorkersSecrets(ctx, script.ID)
+	rc := cloudflare.AccountIdentifier(svc.AccountId)
+	params := cloudflare.ListWorkersSecretsParams{ScriptName: script.ID}
+	resp, err := svc.ClientApi.ListWorkersSecrets(ctx, rc, params)
 	if err != nil {
 		return err
 	}

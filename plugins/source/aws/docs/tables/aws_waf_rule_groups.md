@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/waf/latest/APIReference/API_waf_RuleGroupSummary.htm
 
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -16,5 +16,6 @@ The primary key for this table is **arn**.
 |arn (PK)|String|
 |tags|JSON|
 |rule_ids|StringArray|
-|name|String|
 |rule_group_id|String|
+|metric_name|String|
+|name|String|

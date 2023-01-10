@@ -1,5 +1,6 @@
 variables:
   component: source/cloudflare
+  binary: cloudflare
 
 project_name: plugins/source/cloudflare
 

@@ -26,7 +26,7 @@ func buildStorageVmsMock(t *testing.T, ctrl *gomock.Controller) client.Services 
 		nil,
 	)
 	return client.Services{
-		FSX: m,
+		Fsx: m,
 	}
 }
 

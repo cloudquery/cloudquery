@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_LaunchConfiguration
 
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -28,6 +28,7 @@ The primary key for this table is **arn**.
 |instance_monitoring|JSON|
 |kernel_id|String|
 |key_name|String|
+|launch_configuration_arn|String|
 |metadata_options|JSON|
 |placement_tenancy|String|
 |ramdisk_id|String|

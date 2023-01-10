@@ -1,11 +1,11 @@
 # Table: gcp_compute_instances
 
-
+https://cloud.google.com/compute/docs/reference/rest/v1/instances#Instance
 
 The primary key for this table is **self_link**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -44,6 +44,7 @@ The primary key for this table is **self_link**.
 |private_ipv6_google_access|String|
 |reservation_affinity|JSON|
 |resource_policies|StringArray|
+|resource_status|JSON|
 |satisfies_pzs|Bool|
 |scheduling|JSON|
 |service_accounts|JSON|

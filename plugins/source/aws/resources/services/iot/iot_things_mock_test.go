@@ -12,7 +12,7 @@ import (
 )
 
 func buildIotThingsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockIOTClient(ctrl)
+	m := mocks.NewMockIotClient(ctrl)
 
 	thing := types.ThingAttribute{}
 	err := faker.FakeObject(&thing)
@@ -32,7 +32,7 @@ func buildIotThingsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&lp, nil)
 
 	return client.Services{
-		IOT: m,
+		Iot: m,
 	}
 }
 

@@ -5,10 +5,12 @@ https://docs.aws.amazon.com/IAM/latest/APIReference/API_Role.html
 The composite primary key for this table is (**account_id**, **id**).
 
 ## Relations
+
 The following tables depend on aws_iam_roles:
   - [aws_iam_role_policies](aws_iam_role_policies.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -23,6 +25,7 @@ The following tables depend on aws_iam_roles:
 |arn|String|
 |create_date|Timestamp|
 |path|String|
+|role_id|String|
 |role_name|String|
 |description|String|
 |max_session_duration|Int|

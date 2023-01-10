@@ -9,9 +9,9 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchFsxDataRepositoryTasks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchFsxDataRepositoryTasks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().FSX
+	svc := cl.Services().Fsx
 	input := fsx.DescribeDataRepositoryTasksInput{MaxResults: aws.Int32(1000)}
 	paginator := fsx.NewDescribeDataRepositoryTasksPaginator(svc, &input)
 	for paginator.HasMorePages() {

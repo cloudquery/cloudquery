@@ -14,11 +14,11 @@ SELECT DISTINCT d.id                                                            
                 d.project_id                                                                                                       AS project_id,
                 CASE
                     WHEN
-                                t.encryption_configuration_kms_key_name = '' OR
-                                d.default_encryption_configuration_kms_key_name IS NULL
+                                t.encryption_configuration->>'kmsKeyName' = '' OR
+                                d.default_encryption_configuration->>'kmsKeyName' IS NULL -- TODO check if valid
                         THEN 'fail'
                     ELSE 'pass'
                     END                                                                                                            AS status
 FROM gcp_bigquery_datasets d
-         JOIN gcp_bigquery_dataset_tables t ON
-    d.id = t.dataset_id;
+         JOIN gcp_bigquery_tables t ON
+    d.dataset_reference->>'datasetId' = t.table_reference->>'datasetId' AND d.dataset_reference->>'projectId' = t.table_reference->>'projectId';

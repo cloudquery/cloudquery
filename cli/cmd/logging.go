@@ -23,7 +23,7 @@ func initLogging(noLogFile bool, logLevel *enum.Enum, logFormat *enum.Enum, logC
 			return nil, err
 		}
 		if logFormat.String() == "text" {
-			// for file logging we dont need color. we can add it as an option but don't think it is useful
+			// for file logging we don't need color. we can add it as an option but don't think it is useful
 			writers = append(writers, zerolog.ConsoleWriter{
 				Out:             logFile,
 				NoColor:         true,

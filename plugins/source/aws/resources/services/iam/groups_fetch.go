@@ -10,9 +10,9 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchIamGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchIamGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config iam.ListGroupsInput
-	svc := meta.(*client.Client).Services().IAM
+	svc := meta.(*client.Client).Services().Iam
 	for {
 		response, err := svc.ListGroups(ctx, &config)
 		if err != nil {
@@ -28,7 +28,7 @@ func fetchIamGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.
 }
 func resolveIamGroupPolicies(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.Group)
-	svc := meta.(*client.Client).Services().IAM
+	svc := meta.(*client.Client).Services().Iam
 	config := iam.ListAttachedGroupPoliciesInput{
 		GroupName: r.GroupName,
 	}

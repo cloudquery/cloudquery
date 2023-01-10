@@ -3,16 +3,19 @@
 package backup
 
 import (
+	"github.com/aws/aws-sdk-go-v2/service/backup"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func PlanSelections() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_backup_plan_selections",
-		Description: "https://docs.aws.amazon.com/aws-backup/latest/devguide/API_GetBackupSelection.html",
+		Description: `https://docs.aws.amazon.com/aws-backup/latest/devguide/API_GetBackupSelection.html`,
 		Resolver:    fetchBackupPlanSelections,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("backup"),
+		Transform:   transformers.TransformWithStruct(&backup.GetBackupSelectionOutput{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -28,36 +31,6 @@ func PlanSelections() *schema.Table {
 				Name:     "plan_arn",
 				Type:     schema.TypeString,
 				Resolver: schema.ParentColumnResolver("arn"),
-			},
-			{
-				Name:     "backup_plan_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("BackupPlanId"),
-			},
-			{
-				Name:     "backup_selection",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("BackupSelection"),
-			},
-			{
-				Name:     "creation_date",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("CreationDate"),
-			},
-			{
-				Name:     "creator_request_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("CreatorRequestId"),
-			},
-			{
-				Name:     "selection_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("SelectionId"),
-			},
-			{
-				Name:     "result_metadata",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ResultMetadata"),
 			},
 		},
 	}

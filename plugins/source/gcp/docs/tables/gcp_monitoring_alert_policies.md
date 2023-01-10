@@ -1,11 +1,11 @@
 # Table: gcp_monitoring_alert_policies
 
-
+https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.alertPolicies#AlertPolicy
 
 The primary key for this table is **name**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -18,7 +18,7 @@ The primary key for this table is **name**.
 |documentation|JSON|
 |user_labels|JSON|
 |conditions|JSON|
-|combiner|Int|
+|combiner|String|
 |enabled|JSON|
 |validity|JSON|
 |notification_channels|StringArray|

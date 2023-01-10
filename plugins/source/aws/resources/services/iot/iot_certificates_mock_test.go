@@ -11,7 +11,7 @@ import (
 )
 
 func buildIotCertificatesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockIOTClient(ctrl)
+	m := mocks.NewMockIotClient(ctrl)
 
 	certs := iot.ListCertificatesOutput{}
 	err := faker.FakeObject(&certs)
@@ -40,7 +40,7 @@ func buildIotCertificatesMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 		&p, nil)
 
 	return client.Services{
-		IOT: m,
+		Iot: m,
 	}
 }
 

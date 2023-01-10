@@ -19,57 +19,57 @@ So here at CloudQuery we built a simple `aws_resources` view, to demonstrate the
 
 ## Getting Started
 
-As always, before we create this view, you should check out our [quickstart guide](/docs/quickstart) guide, and make sure you executed a sync.
+As always, before we create this view, you should check out our [quickstart guide](/docs/quickstart), and make sure you execute a sync.
 
-After our AWS provider is set up and we executed our fetch, run the following SQL in your database. This statement creates a view that extracts and transform each row in our `aws` tables with an `arn` column into a `aws_resource` form, and unites all of them rows into our singular view.
+After our AWS provider is set up and we executed our sync, run the following SQL in your database. This statement creates a view that extracts and transform each row in our `aws` tables with an `arn` column into a `aws_resource` form, and unites all of them rows into our singular view.
 
-```sql
+```sql copy
 DROP VIEW IF EXISTS aws_resources;
 
-do $$
-declare
-  tbl text;
-	strSQL text = '';
-begin
- -- iterate over every table in our information_schema that has an `arn` column available
- FOR tbl IN SELECT table_name
-            FROM information_schema.columns where table_name like 'aws_%s' and COLUMN_NAME  = 'arn'
- LOOP
-     -- UNION each table query to create one view
- 	 IF NOT (strSQL = ''::text) THEN
-	      strSQL = strSQL || ' UNION ALL ';
-	 END IF;
-	 -- create an SQL query to select from table and transform it into our resources view schema
-	 strSQL = strSQL || format('select  cq_id,  cq_meta, arn, %L as cq_table,
-							   split_part(arn, '':'', 2) as partition,
-			  				 split_part(arn, '':'', 3) as service,
-							   COALESCE(%s, split_part(arn, '':'', 4)) as region,
-							   COALESCE(%s, split_part(arn, '':'', 5)) as account_id,
-							   CASE WHEN split_part(arn, '':'', 6) like ''%%/%%''
-							   THEN split_part(split_part(arn, '':'', 6), ''/'', 1)
-							   ELSE split_part(arn, '':'', 6) END  as type,
-							   CASE WHEN split_part(arn, '':'', 6) like ''%%/%%''
-							   THEN split_part(split_part(arn, '':'', 6), ''/'', 2)
-							   ELSE reverse((string_to_array(reverse(arn), '':'')::text[])[1]) END as id,
-							  		COALESCE(%s, ''{}''::jsonb) as tags,
-		  					 COALESCE(%s, (cq_meta->>''last_updated'')::timestamp) as fetch_date
-							   FROM %s', tbl,
-							   CASE WHEN EXISTS (SELECT 1 FROM information_schema.columns WHERE column_name='region' AND table_name=tbl) THEN 'region' ELSE 'NULL' END,
-							   CASE WHEN EXISTS (SELECT 1 FROM information_schema.columns WHERE column_name='account_id' AND table_name=tbl) THEN 'account_id' ELSE 'NULL' END,
-							   CASE WHEN EXISTS (SELECT 1 FROM information_schema.columns WHERE column_name='tags' AND table_name=tbl) THEN 'tags' ELSE '''{}''::jsonb' END,
-							   CASE WHEN EXISTS (SELECT 1 FROM information_schema.columns WHERE column_name='fetch_date' AND table_name=tbl) THEN 'fetch_date' ELSE 'NULL::timestamp' END,
-							   tbl);
-
+DO $$
+DECLARE
+    tbl TEXT;
+    strSQL TEXT = '';
+BEGIN
+-- iterate over every table in our information_schema that has an `arn` column available
+FOR tbl IN
+    SELECT table_name
+    FROM information_schema.columns
+    WHERE table_name LIKE 'aws_%s' and COLUMN_NAME = 'account_id'
+    INTERSECT
+    SELECT table_name
+    FROM information_schema.columns
+    WHERE table_name LIKE 'aws_%s' and COLUMN_NAME = 'arn'
+LOOP 
+    -- UNION each table query to create one view
+ 	IF NOT (strSQL = ''::TEXT) THEN
+		strSQL = strSQL || ' UNION ALL ';
+	END IF;
+	-- create an SQL query to select from table and transform it into our resources view schema
+	strSQL = strSQL || FORMAT('
+        select _cq_id, _cq_source_name, _cq_sync_time, %L as _cq_table, account_id, %s as region, arn, %s as tags
+        FROM %s',
+        tbl,
+        CASE WHEN EXISTS (SELECT 1 FROM information_schema.columns WHERE column_name='region' AND table_name=tbl) THEN 'region' ELSE E'\'unavailable\'' END,
+        CASE WHEN EXISTS (SELECT 1 FROM information_schema.columns WHERE column_name='tags' AND table_name=tbl) THEN 'tags' ELSE '''{}''::jsonb' END,
+        tbl);
 END LOOP;
-execute format('CREATE VIEW aws_resources AS (%s)', strSQL);
 
-end $$;
+IF strSQL = ''::TEXT THEN
+    RAISE EXCEPTION 'No tables found with ARN and ACCOUNT_ID columns. Run a sync first and try again.';
+ELSE
+	EXECUTE FORMAT('CREATE VIEW aws_resources AS (%s)', strSQL);
+END IF;
+
+END $$;
 
 ```
 
+Up to date version of this query can be [found here](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/aws/views).
+
 ### Run the following query to view all your AWS resources:
 
-```sql
+```sql copy
 select * from aws_resources limit 100;
 ```
 
@@ -79,7 +79,7 @@ select * from aws_resources limit 100;
 
 ### What resources don’t have tags?
 
-```sql
+```sql copy
 select * from aws_resources where tags = '{}';
 ```
 
@@ -87,7 +87,7 @@ select * from aws_resources where tags = '{}';
 
 ### What resources don’t have any of these tags?
 
-```sql
+```sql copy
 select * from aws_resources where not tags ?| array['name', 'version'];
 ```
 
@@ -97,7 +97,7 @@ We can easily invert this or make sure that `all` of these tags exist with the `
 
 ### What resources of Type Z in service X exist in Region Y?
 
-```sql
+```sql copy
 SELECT * FROM aws_resources WHERE region LIKE 'us-east%'
 AND service = 'ec2' AND (type = 'instance' OR type = 'network-interface');
 ```
@@ -108,7 +108,7 @@ Here we can easily query all resources in the `ec2` service from the `us-east` r
 
 ### Join To existing tables
 
-```sql
+```sql copy
 SELECT instance_type, aws_resources.id, aws_resources.arn, launch_time,
 	public_ip_address, private_ip_address, state_name, vpc_id FROM aws_resources
 INNER JOIN aws_ec2_instances ON aws_resources.cq_id = aws_ec2_instances.cq_id
@@ -121,7 +121,7 @@ in this case, `launch_time`, `public_ip_address`, `vpc_id` etc’.
 
 ### Count total distinct resources by ARN
 
-```sql
+```sql copy
 select count(distinct arn) as distinct_resources, count(*) as total from aws_resources
 ```
 

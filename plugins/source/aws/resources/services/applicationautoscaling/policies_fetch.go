@@ -10,9 +10,9 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchApplicationautoscalingPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchApplicationautoscalingPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
-	svc := c.Services().ApplicationAutoscaling
+	svc := c.Services().Applicationautoscaling
 
 	config := applicationautoscaling.DescribeScalingPoliciesInput{
 		ServiceNamespace: types.ServiceNamespace(c.AutoscalingNamespace),

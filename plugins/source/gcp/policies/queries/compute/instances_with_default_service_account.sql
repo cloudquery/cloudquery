@@ -18,12 +18,10 @@ SELECT DISTINCT gci.name                                                        
                 CASE
                     WHEN
                                 gci."name" NOT LIKE 'gke-'
-                            AND gcisa.email = (SELECT default_service_account
+                            AND gcisa->>'email' = (SELECT default_service_account
                                                FROM gcp_compute_projects
                                                WHERE project_id = gci.project_id)
                         THEN 'fail'
                     ELSE 'pass'
                     END                                                                                   AS status
-FROM gcp_compute_instances gci
-         JOIN gcp_compute_instance_service_accounts gcisa ON
-    gci.id = gcisa.instance_id;
+FROM gcp_compute_instances gci, JSONB_ARRAY_ELEMENTS(gci.service_accounts) gcisa;

@@ -1,11 +1,9 @@
 # Table: aws_ecr_registries
 
-
-
 The composite primary key for this table is (**account_id**, **region**, **registry_id**).
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -16,3 +14,4 @@ The composite primary key for this table is (**account_id**, **region**, **regis
 |region (PK)|String|
 |registry_id (PK)|String|
 |replication_configuration|JSON|
+|result_metadata|JSON|

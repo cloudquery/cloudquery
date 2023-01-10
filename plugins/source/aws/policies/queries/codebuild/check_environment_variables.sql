@@ -7,19 +7,13 @@ select distinct
     account_id,
     arn as resource_id,
     case when
-            aws_codebuild_project_environment_variables.type = 'PLAINTEXT'
+            e->>'Type' = 'PLAINTEXT'
             and (
-                UPPER(
-                    aws_codebuild_project_environment_variables.name
-                ) like '%ACCESS_KEY%' or UPPER(
-                    aws_codebuild_project_environment_variables.name
-                ) like '%SECRET%' or UPPER(
-                    aws_codebuild_project_environment_variables.name
-                ) like '%PASSWORD%'
+                UPPER(e->>'Name') like '%ACCESS_KEY%' or
+                UPPER(e->>'Name') like '%SECRET%' or
+                UPPER(e->>'Name') like '%PASSWORD%'
             )
             then 'fail'
         else 'pass'
     end as status
-from aws_codebuild_projects
-     inner join aws_codebuild_project_environment_variables on
-    aws_codebuild_projects.cq_id = aws_codebuild_project_environment_variables.project_cq_id
+from aws_codebuild_projects, JSONB_ARRAY_ELEMENTS(environment->'EnvironmentVariables') as e

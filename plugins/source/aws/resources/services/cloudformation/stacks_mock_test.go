@@ -12,7 +12,7 @@ import (
 )
 
 func buildStacks(t *testing.T, ctrl *gomock.Controller) client.Services {
-	mock := mocks.NewMockCloudFormationClient(ctrl)
+	mock := mocks.NewMockCloudformationClient(ctrl)
 
 	var stack types.Stack
 	if err := faker.FakeObject(&stack); err != nil {

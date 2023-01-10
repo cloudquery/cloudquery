@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBCluster.html
 
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -35,12 +35,14 @@ The primary key for this table is **arn**.
 |copy_tags_to_snapshot|Bool|
 |cross_account_clone|Bool|
 |custom_endpoints|StringArray|
+|db_cluster_arn|String|
 |db_cluster_identifier|String|
 |db_cluster_instance_class|String|
 |db_cluster_members|JSON|
 |db_cluster_option_group_memberships|JSON|
 |db_cluster_parameter_group|String|
 |db_subnet_group|String|
+|db_system_id|String|
 |database_name|String|
 |db_cluster_resource_id|String|
 |deletion_protection|Bool|
@@ -60,6 +62,7 @@ The primary key for this table is **arn**.
 |iops|Int|
 |kms_key_id|String|
 |latest_restorable_time|Timestamp|
+|master_user_secret|JSON|
 |master_username|String|
 |monitoring_interval|Int|
 |monitoring_role_arn|String|

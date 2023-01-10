@@ -34,5 +34,5 @@ func buildEncryptionConfig(t *testing.T, ctrl *gomock.Controller) client.Service
 }
 
 func TestXrayEncryptionConfig(t *testing.T) {
-	client.AwsMockTestHelper(t, EncryptionConfig(), buildEncryptionConfig, client.TestOptions{})
+	client.AwsMockTestHelper(t, EncryptionConfigs(), buildEncryptionConfig, client.TestOptions{})
 }

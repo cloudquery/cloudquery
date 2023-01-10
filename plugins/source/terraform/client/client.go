@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
@@ -29,7 +30,11 @@ func (c *Client) Logger() *zerolog.Logger {
 	return &c.logger
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.ClientMeta, error) {
+func (c *Client) ID() string {
+	return c.CurrentBackend
+}
+
+func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
 	tfSpec := &Spec{}
 	if err := s.UnmarshalSpec(tfSpec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal terraform spec: %w", err)
@@ -45,11 +50,11 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (sche
 
 		logger.Info().Msg("creating new backend")
 		// create backend for each backend config
-		if b, err := NewBackend(&config); err == nil { //nolint:revive
-			backends[b.BackendName] = b
-		} else {
+		b, err := NewBackend(ctx, &config)
+		if err != nil {
 			return nil, fmt.Errorf("cannot initialize backend: %w", err)
 		}
+		backends[b.BackendName] = b
 	}
 
 	client := New(logger, backends)

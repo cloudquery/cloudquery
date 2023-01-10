@@ -1,9 +1,9 @@
 insert into azure_policy_results
 SELECT
-  :'execution_time',
-  :'framework',
-  :'check_id',
-  'Ensure that "Notify about alerts with the following severity" is set to "High" (Automated)',
+  :'execution_time' as execution_time,
+  :'framework' as framework,
+  :'check_id' as check_id,
+  'Ensure that "Notify about alerts with the following severity" is set to "High" (Automated)' as title,
   subscription_id,
   id,
   case

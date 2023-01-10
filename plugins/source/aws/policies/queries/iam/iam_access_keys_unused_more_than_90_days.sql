@@ -5,11 +5,8 @@ select
     :'check_id' as check_id,
     'Unused IAM user credentials should be removed' AS title,
     account_id,
-    aws_iam_user_access_keys.access_key_id AS resource_id,
+    access_key_id AS resource_id,
     case when date_part('day', now() - last_used) > 90 then 'fail'
          else 'pass'
     end as status
-from aws_iam_users
-     left join
-     aws_iam_user_access_keys on
-     aws_iam_users.cq_id = aws_iam_user_access_keys.user_cq_id
+from aws_iam_user_access_keys

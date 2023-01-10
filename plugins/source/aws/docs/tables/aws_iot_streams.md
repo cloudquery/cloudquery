@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/iot/latest/apireference/API_StreamInfo.html
 
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -20,5 +20,6 @@ The primary key for this table is **arn**.
 |files|JSON|
 |last_updated_at|Timestamp|
 |role_arn|String|
+|stream_arn|String|
 |stream_id|String|
 |stream_version|Int|

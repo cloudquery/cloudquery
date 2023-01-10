@@ -1,14 +1,14 @@
 # Table: aws_glue_databases
 
-
-
 The primary key for this table is **arn**.
 
 ## Relations
+
 The following tables depend on aws_glue_databases:
   - [aws_glue_database_tables](aws_glue_database_tables.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

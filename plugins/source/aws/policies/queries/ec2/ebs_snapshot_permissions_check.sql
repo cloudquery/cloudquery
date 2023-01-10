@@ -3,11 +3,11 @@ WITH snapshot_access_groups AS (
     SELECT account_id,
            region,
            snapshot_id,
-           JSONB_ARRAY_ELEMENTS(create_volume_permissions) ->> 'group' AS "group",
-           JSONB_ARRAY_ELEMENTS(create_volume_permissions) ->> 'user_id' AS user_id
+           JSONB_ARRAY_ELEMENTS(attribute->'CreateVolumePermissions') ->> 'Group' AS "group",
+           JSONB_ARRAY_ELEMENTS(attribute->'CreateVolumePermissions') ->> 'UserId' AS user_id
     FROM aws_ec2_ebs_snapshots
 )
-SELECT DISTINCT 
+SELECT DISTINCT
   :'execution_time'::timestamp as execution_time,
   :'framework' as framework,
   :'check_id' as check_id,

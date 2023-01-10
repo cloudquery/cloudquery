@@ -13,7 +13,7 @@ import (
 )
 
 func buildSSMDocuments(t *testing.T, ctrl *gomock.Controller) client.Services {
-	mock := mocks.NewMockSSMClient(ctrl)
+	mock := mocks.NewMockSsmClient(ctrl)
 
 	docName := "testDocName"
 	mock.EXPECT().ListDocuments(
@@ -53,7 +53,7 @@ func buildSSMDocuments(t *testing.T, ctrl *gomock.Controller) client.Services {
 		},
 		nil,
 	)
-	return client.Services{SSM: mock}
+	return client.Services{Ssm: mock}
 }
 
 func TestSSMDocuments(t *testing.T) {

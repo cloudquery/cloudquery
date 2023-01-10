@@ -5,9 +5,11 @@ https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_Task.html
 The primary key for this table is **arn**.
 
 ## Relations
+
 This table depends on [aws_ecs_clusters](aws_ecs_clusters.md).
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -18,6 +20,7 @@ This table depends on [aws_ecs_clusters](aws_ecs_clusters.md).
 |region|String|
 |arn (PK)|String|
 |tags|JSON|
+|task_protection|JSON|
 |attachments|JSON|
 |attributes|JSON|
 |availability_zone|String|
@@ -50,5 +53,6 @@ This table depends on [aws_ecs_clusters](aws_ecs_clusters.md).
 |stopped_at|Timestamp|
 |stopped_reason|String|
 |stopping_at|Timestamp|
+|task_arn|String|
 |task_definition_arn|String|
 |version|Int|

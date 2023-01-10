@@ -1,11 +1,9 @@
 # Table: aws_iot_billing_groups
 
-
-
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -17,6 +15,7 @@ The primary key for this table is **arn**.
 |things_in_group|StringArray|
 |tags|JSON|
 |arn (PK)|String|
+|billing_group_arn|String|
 |billing_group_id|String|
 |billing_group_metadata|JSON|
 |billing_group_name|String|

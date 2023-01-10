@@ -1,14 +1,17 @@
+WITH subs AS (
+    SELECT subscription_id, jsonb_array_elements(subnets) AS subnet
+    FROM azure_network_virtual_networks
+)
 insert into azure_policy_results
 SELECT
   :'execution_time',
   :'framework',
   :'check_id',
   'Gateway subnets should not be configured with a network security group',
-  -- todo change to subscription id
-  id,
-  id,
+  subscription_id,
+  subnet->>'id',
   case
-    when name = 'GatewaySubnet' AND network_security_group_id IS NOT NULL
+    when subnet->>'name' = 'GatewaySubnet' AND subnet->'networkSecurityGroup'->>'id' IS NOT NULL
     then 'fail' else 'pass'
   end
-FROM azure_network_virtual_network_subnets
+FROM subs

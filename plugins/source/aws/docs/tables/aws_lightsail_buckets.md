@@ -5,10 +5,12 @@ https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_Bucket.html
 The primary key for this table is **_cq_id**.
 
 ## Relations
+
 The following tables depend on aws_lightsail_buckets:
   - [aws_lightsail_bucket_access_keys](aws_lightsail_bucket_access_keys.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -17,8 +19,8 @@ The following tables depend on aws_lightsail_buckets:
 |_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
-|tags|JSON|
 |able_to_update_bundle|Bool|
+|tags|JSON|
 |access_log_config|JSON|
 |access_rules|JSON|
 |arn|String|

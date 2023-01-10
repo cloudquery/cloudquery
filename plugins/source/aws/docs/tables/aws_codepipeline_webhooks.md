@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/codepipeline/latest/APIReference/API_ListWebhookItem
 
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -15,9 +15,9 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
+|tags|JSON|
 |definition|JSON|
 |url|String|
 |error_code|String|
 |error_message|String|
 |last_triggered|Timestamp|
-|tags|JSON|

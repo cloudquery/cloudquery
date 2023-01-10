@@ -25,7 +25,9 @@ Open source data integration at scale.
 Find more information at:
 	https://www.cloudquery.io`
 
+	disableSentry   = false
 	analyticsClient *AnalyticsClient
+	logFile         *os.File
 )
 
 func NewCmdRoot() *cobra.Command {
@@ -50,7 +52,6 @@ func NewCmdRoot() *cobra.Command {
 		os.Exit(1)
 	}
 
-	var logFile *os.File
 	cmd := &cobra.Command{
 		Use:     "cloudquery",
 		Short:   rootShort,
@@ -88,17 +89,11 @@ func NewCmdRoot() *cobra.Command {
 					// we don't fail on sentry init errors as there might be no connection or sentry can be blocked.
 					log.Warn().Err(err).Msg("failed to initialize sentry")
 				}
+			} else {
+				disableSentry = true
 			}
 
 			return nil
-		},
-		PersistentPostRun: func(cmd *cobra.Command, args []string) {
-			if logFile != nil {
-				logFile.Close()
-			}
-			if analyticsClient != nil {
-				analyticsClient.Close()
-			}
 		},
 	}
 
@@ -123,22 +118,38 @@ func NewCmdRoot() *cobra.Command {
 	cmd.PersistentFlags().StringVar(&logFileName, "log-file-name", "cloudquery.log", "Log filename")
 
 	// Telemetry (analytics) flags
-	cmd.PersistentFlags().Var(telemetryLevel, "telemetry-level", "Telemetry level (none, errors, stats, all)")
+	f := cmd.PersistentFlags().VarPF(telemetryLevel, "telemetry-level", "", "Telemetry level (none, errors, stats, all)")
+	f.DefValue = "all"
 
 	cmd.SetHelpCommand(&cobra.Command{Hidden: true})
-	cmd.AddCommand(NewCmdSync(), newCmdDoc())
+	cmd.AddCommand(
+		NewCmdSync(),
+		NewCmdMigrate(),
+		newCmdDoc(),
+	)
 	cmd.CompletionOptions.HiddenDefaultCmd = true
 	cmd.DisableAutoGenTag = true
+	cobra.OnFinalize(func() {
+		if analyticsClient != nil {
+			analyticsClient.Close()
+		}
+	})
 
 	return cmd
 }
 
 // formats a timestamp in UTC and RFC3339
-func formatTimestampUtcRfc3339(timestamp interface{}) string {
+func formatTimestampUtcRfc3339(timestamp any) string {
 	timestampConcrete, ok := timestamp.(time.Time)
 	if !ok {
 		return fmt.Sprintf("%v", timestamp)
 	}
 
 	return timestampConcrete.UTC().Format(time.RFC3339)
+}
+
+func CloseLogFile() {
+	if logFile != nil {
+		logFile.Close()
+	}
 }

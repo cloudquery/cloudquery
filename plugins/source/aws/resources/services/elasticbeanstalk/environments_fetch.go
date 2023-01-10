@@ -2,8 +2,10 @@ package elasticbeanstalk
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk"
 	"github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -11,10 +13,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchElasticbeanstalkEnvironments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchElasticbeanstalkEnvironments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config elasticbeanstalk.DescribeEnvironmentsInput
 	c := meta.(*client.Client)
-	svc := c.Services().ElasticBeanstalk
+	svc := c.Services().Elasticbeanstalk
 	for {
 		response, err := svc.DescribeEnvironments(ctx, &config)
 		if err != nil {
@@ -42,7 +44,7 @@ func resolveElasticbeanstalkEnvironmentTags(ctx context.Context, meta schema.Cli
 func resolveElasticbeanstalkEnvironmentListeners(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(types.EnvironmentDescription)
 	cl := meta.(*client.Client)
-	svc := cl.Services().ElasticBeanstalk
+	svc := cl.Services().Elasticbeanstalk
 	tagsOutput, err := svc.ListTagsForResource(ctx, &elasticbeanstalk.ListTagsForResourceInput{
 		ResourceArn: p.EnvironmentArn,
 	}, func(o *elasticbeanstalk.Options) {})
@@ -64,10 +66,10 @@ func resolveElasticbeanstalkEnvironmentListeners(ctx context.Context, meta schem
 	return resource.Set(c.Name, tags)
 }
 
-func fetchElasticbeanstalkConfigurationOptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchElasticbeanstalkConfigurationOptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	p := parent.Item.(types.EnvironmentDescription)
-	c := meta.(*client.Client)
-	svc := c.Services().ElasticBeanstalk
+	cl := meta.(*client.Client)
+	svc := cl.Services().Elasticbeanstalk
 	configOptionsIn := elasticbeanstalk.DescribeConfigurationOptionsInput{
 		ApplicationName: p.ApplicationName,
 		EnvironmentName: p.EnvironmentName,
@@ -77,25 +79,32 @@ func fetchElasticbeanstalkConfigurationOptions(ctx context.Context, meta schema.
 		// It takes a few minutes for an environment to be terminated
 		// This ensures we don't error while trying to fetch related resources for a terminated environment
 		if client.IsInvalidParameterValueError(err) {
-			meta.Logger().Debug().Interface("environment", p.EnvironmentName).Interface("application", p.ApplicationName).Msg("Failed extracting configuration options for environment. It might be terminated")
 			return nil
 		}
 		return err
 	}
 
+	arnStr := arn.ARN{
+		Partition: cl.Partition,
+		Service:   "elasticbeanstalk",
+		Region:    cl.Region,
+		AccountID: cl.AccountID,
+		Resource:  fmt.Sprintf("application/%s", aws.ToString(p.ApplicationName)),
+	}.String()
+
 	for _, option := range output.Options {
 		res <- models.ConfigurationOptionDescriptionWrapper{
-			ConfigurationOptionDescription: option, ApplicationArn: c.ARN("elasticbeanstalk", "application", *p.ApplicationName),
+			ConfigurationOptionDescription: option, ApplicationArn: arnStr,
 		}
 	}
 
 	return nil
 }
 
-func fetchElasticbeanstalkConfigurationSettings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchElasticbeanstalkConfigurationSettings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	p := parent.Item.(types.EnvironmentDescription)
-	c := meta.(*client.Client)
-	svc := c.Services().ElasticBeanstalk
+	cl := meta.(*client.Client)
+	svc := cl.Services().Elasticbeanstalk
 
 	configOptionsIn := elasticbeanstalk.DescribeConfigurationSettingsInput{
 		ApplicationName: p.ApplicationName,
@@ -106,15 +115,22 @@ func fetchElasticbeanstalkConfigurationSettings(ctx context.Context, meta schema
 		// It takes a few minutes for an environment to be terminated
 		// This ensures we don't error while trying to fetch related resources for a terminated environment
 		if client.IsInvalidParameterValueError(err) {
-			meta.Logger().Debug().Interface("environment", p.EnvironmentName).Interface("application", p.ApplicationName).Msg("Failed extracting configuration settings for environment. It might be terminated")
 			return nil
 		}
 		return err
 	}
 
+	arnStr := arn.ARN{
+		Partition: cl.Partition,
+		Service:   "elasticbeanstalk",
+		Region:    cl.Region,
+		AccountID: cl.AccountID,
+		Resource:  fmt.Sprintf("application/%s", aws.ToString(p.ApplicationName)),
+	}.String()
+
 	for _, option := range output.ConfigurationSettings {
 		res <- models.ConfigurationSettingsDescriptionWrapper{
-			ConfigurationSettingsDescription: option, ApplicationArn: c.ARN("elasticbeanstalk", "application", *p.ApplicationName),
+			ConfigurationSettingsDescription: option, ApplicationArn: arnStr,
 		}
 	}
 

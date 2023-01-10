@@ -5,11 +5,13 @@ https://docs.aws.amazon.com/amazon-mq/latest/api-reference/brokers.html
 The primary key for this table is **arn**.
 
 ## Relations
+
 The following tables depend on aws_mq_brokers:
   - [aws_mq_broker_configurations](aws_mq_broker_configurations.md)
   - [aws_mq_broker_users](aws_mq_broker_users.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -22,6 +24,7 @@ The following tables depend on aws_mq_brokers:
 |actions_required|JSON|
 |authentication_strategy|String|
 |auto_minor_version_upgrade|Bool|
+|broker_arn|String|
 |broker_id|String|
 |broker_instances|JSON|
 |broker_name|String|

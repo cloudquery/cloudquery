@@ -1,0 +1,21 @@
+import { Tabs, Tab } from '../Tabs'
+
+<Tabs options={['Precompiled Binaries (CMD)', 'Precompiled Binaries (PowerShell)']}>
+
+<Tab>
+
+```bash
+curl -L https://github.com/cloudquery/cloudquery/releases/download/cli-vVERSION_CLI/cloudquery_windows_amd64.exe -o cloudquery.exe
+```
+
+</Tab>
+
+<Tab>
+
+```powershell
+Invoke-WebRequest https://github.com/cloudquery/cloudquery/releases/download/cli-vVERSION_CLI/cloudquery_windows_amd64.exe -o cloudquery.exe
+```
+
+</Tab>
+
+</Tabs>

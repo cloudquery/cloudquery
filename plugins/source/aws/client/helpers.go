@@ -7,7 +7,6 @@ import (
 	"errors"
 	"fmt"
 	"reflect"
-	"regexp"
 	"strings"
 	"sync"
 	"time"
@@ -15,12 +14,13 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/smithy-go"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 type AWSService string
 
 type AwsService struct {
-	Regions map[string]*map[string]interface{} `json:"regions"`
+	Regions map[string]*map[string]any `json:"regions"`
 }
 
 type AwsPartition struct {
@@ -35,10 +35,10 @@ type SupportedServiceRegionsData struct {
 }
 
 // ListResolver is responsible for iterating through entire list of resources that should be grabbed (if API is paginated). It should send list of items via the `resultsChan` so that the DetailResolver can grab the details of each item. All errors should be sent to the error channel.
-type ListResolverFunc func(ctx context.Context, meta schema.ClientMeta, detailChan chan<- interface{}) error
+type ListResolverFunc func(ctx context.Context, meta schema.ClientMeta, detailChan chan<- any) error
 
 // DetailResolveFunc is responsible for grabbing any and all metadata for a resource. All errors should be sent to the error channel.
-type DetailResolverFunc func(ctx context.Context, meta schema.ClientMeta, resultsChan chan<- interface{}, errorChan chan<- error, summary interface{})
+type DetailResolverFunc func(ctx context.Context, meta schema.ClientMeta, resultsChan chan<- any, errorChan chan<- error, summary any)
 
 const (
 	ApigatewayService           AWSService = "apigateway"
@@ -93,7 +93,7 @@ var accessDeniedErrorStrings = map[string]struct{}{
 	"Unauthorized":                    {},
 }
 
-func readSupportedServiceRegions() *SupportedServiceRegionsData {
+func ReadSupportedServiceRegions() *SupportedServiceRegionsData {
 	f, err := supportedServiceRegionFile.Open(PartitionServiceRegionFile)
 	if err != nil {
 		return nil
@@ -126,7 +126,7 @@ func readSupportedServiceRegions() *SupportedServiceRegionsData {
 
 func isSupportedServiceForRegion(service string, region string) bool {
 	readOnce.Do(func() {
-		supportedServiceRegion = readSupportedServiceRegions()
+		supportedServiceRegion = ReadSupportedServiceRegions()
 	})
 
 	if supportedServiceRegion == nil {
@@ -153,7 +153,7 @@ func isSupportedServiceForRegion(service string, region string) bool {
 
 func getAvailableRegions() (map[string]bool, error) {
 	readOnce.Do(func() {
-		supportedServiceRegion = readSupportedServiceRegions()
+		supportedServiceRegion = ReadSupportedServiceRegions()
 	})
 
 	regionsSet := make(map[string]bool)
@@ -179,7 +179,7 @@ func getAvailableRegions() (map[string]bool, error) {
 
 func RegionsPartition(region string) (string, bool) {
 	readOnce.Do(func() {
-		supportedServiceRegion = readSupportedServiceRegions()
+		supportedServiceRegion = ReadSupportedServiceRegions()
 	})
 
 	prt, ok := supportedServiceRegion.regionVsPartition[region]
@@ -231,19 +231,6 @@ func IgnoreNotAvailableRegion(err error) bool {
 	return false
 }
 
-// makeARN creates an ARN using supplied service name, partition, account id, region name and resource id parts.
-// Resource id parts are concatenated using forward slash (/).
-// See https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html for more information.
-func makeARN(service AWSService, partition, accountID, region string, idParts ...string) arn.ARN {
-	return arn.ARN{
-		Partition: partition,
-		Service:   string(service),
-		Region:    region,
-		AccountID: accountID,
-		Resource:  strings.Join(idParts, "/"),
-	}
-}
-
 func resolveARN(service AWSService, resourceID func(resource *schema.Resource) ([]string, error), useRegion, useAccountID bool) schema.ColumnResolver {
 	return func(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 		cl := meta.(*Client)
@@ -258,7 +245,13 @@ func resolveARN(service AWSService, resourceID func(resource *schema.Resource) (
 		if useRegion {
 			region = cl.Region
 		}
-		return resource.Set(c.Name, makeARN(service, cl.Partition, accountID, region, idParts...).String())
+		return resource.Set(c.Name, arn.ARN{
+			Partition: cl.Partition,
+			Service:   string(service),
+			Region:    region,
+			AccountID: accountID,
+			Resource:  strings.Join(idParts, "/"),
+		}.String())
 	}
 }
 
@@ -313,15 +306,6 @@ func isNotFoundError(err error) bool {
 	return false
 }
 
-// IsAccessDeniedError checks if api error should be classified as a permissions issue
-func (c *Client) IsAccessDeniedError(err error) bool {
-	if isAccessDeniedError(err) {
-		c.logger.Warn().Err(err).Msg("API returned an Access Denied error, ignoring it and continuing...")
-		return true
-	}
-	return false
-}
-
 func isAccessDeniedError(err error) bool {
 	var ae smithy.APIError
 	if !errors.As(err, &ae) {
@@ -349,19 +333,8 @@ func IsAWSError(err error, code ...string) bool {
 	return false
 }
 
-func IsErrorRegex(err error, code string, messageRegex *regexp.Regexp) bool {
-	var ae smithy.APIError
-	if !errors.As(err, &ae) {
-		return false
-	}
-	if ae.ErrorCode() == code && messageRegex.MatchString(ae.ErrorMessage()) {
-		return true
-	}
-	return false
-}
-
 // TagsIntoMap expects []T (usually "[]Tag") where T has "Key" and "Value" fields (of type string or *string) and writes them into the given map
-func TagsIntoMap(tagSlice interface{}, dst map[string]string) {
+func TagsIntoMap(tagSlice any, dst map[string]string) {
 	stringify := func(v reflect.Value) string {
 		vt := v.Type()
 		if vt.Kind() == reflect.String {
@@ -405,7 +378,7 @@ func TagsIntoMap(tagSlice interface{}, dst map[string]string) {
 }
 
 // TagsToMap expects []T (usually "[]Tag") where T has "Key" and "Value" fields (of type string or *string) and returns a map
-func TagsToMap(tagSlice interface{}) map[string]string {
+func TagsToMap(tagSlice any) map[string]string {
 	if k := reflect.TypeOf(tagSlice).Kind(); k != reflect.Slice {
 		panic("invalid usage: Only slices are supported as input: " + k.String())
 	}
@@ -422,5 +395,33 @@ func Sleep(ctx context.Context, dur time.Duration) error {
 		return ctx.Err()
 	case <-time.After(dur):
 		return nil
+	}
+}
+
+func CreateTrimPrefixTransformer(prefixes ...string) func(field reflect.StructField) (string, error) {
+	return func(field reflect.StructField) (string, error) {
+		name, err := transformers.DefaultNameTransformer(field)
+		if err != nil {
+			return "", err
+		}
+		for _, v := range prefixes {
+			if strings.HasPrefix(name, v) {
+				return name[len(v):], nil
+			}
+		}
+		return name, nil
+	}
+}
+
+func CreateReplaceTransformer(replace map[string]string) func(field reflect.StructField) (string, error) {
+	return func(field reflect.StructField) (string, error) {
+		name, err := transformers.DefaultNameTransformer(field)
+		if err != nil {
+			return "", err
+		}
+		for k, v := range replace {
+			name = strings.ReplaceAll(name, k, v)
+		}
+		return name, nil
 	}
 }

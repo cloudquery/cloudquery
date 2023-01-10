@@ -12,7 +12,7 @@ import (
 )
 
 func buildHSMBackups(t *testing.T, ctrl *gomock.Controller) client.Services {
-	mock := mocks.NewMockCloudHSMV2Client(ctrl)
+	mock := mocks.NewMockCloudhsmv2Client(ctrl)
 
 	var backups []types.Backup
 	if err := faker.FakeObject(&backups); err != nil {
@@ -28,7 +28,7 @@ func buildHSMBackups(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
-	return client.Services{CloudHSMV2: mock}
+	return client.Services{Cloudhsmv2: mock}
 }
 
 func TestBackups(t *testing.T) {

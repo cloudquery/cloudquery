@@ -12,7 +12,7 @@ import (
 )
 
 func buildEcrPublicRepositoriesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockEcrPublicClient(ctrl)
+	m := mocks.NewMockEcrpublicClient(ctrl)
 	l := types.Repository{}
 	err := faker.FakeObject(&l)
 	if err != nil {
@@ -42,7 +42,7 @@ func buildEcrPublicRepositoriesMock(t *testing.T, ctrl *gomock.Controller) clien
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tagResponse, nil)
 
 	return client.Services{
-		ECRPublic: m,
+		Ecrpublic: m,
 	}
 }
 

@@ -1,5 +1,6 @@
 variables:
   component: source/heroku
+  binary: heroku
 
 project_name: plugins/source/heroku
 

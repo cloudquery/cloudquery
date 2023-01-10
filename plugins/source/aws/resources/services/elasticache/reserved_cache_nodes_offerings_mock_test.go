@@ -11,7 +11,7 @@ import (
 )
 
 func buildElasticacheReservedCacheNodesOfferings(t *testing.T, ctrl *gomock.Controller) client.Services {
-	mockElasticache := mocks.NewMockElastiCache(ctrl)
+	mockElasticache := mocks.NewMockElasticacheClient(ctrl)
 	output := elasticache.DescribeReservedCacheNodesOfferingsOutput{}
 	err := faker.FakeObject(&output)
 	output.Marker = nil
@@ -22,7 +22,7 @@ func buildElasticacheReservedCacheNodesOfferings(t *testing.T, ctrl *gomock.Cont
 	mockElasticache.EXPECT().DescribeReservedCacheNodesOfferings(gomock.Any(), gomock.Any(), gomock.Any()).Return(&output, nil)
 
 	return client.Services{
-		ElastiCache: mockElasticache,
+		Elasticache: mockElasticache,
 	}
 }
 

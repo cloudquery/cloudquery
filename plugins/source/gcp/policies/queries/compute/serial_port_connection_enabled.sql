@@ -12,8 +12,8 @@ SELECT "name"                                                                   
        project_id                                                                       AS project_id,
        CASE
            WHEN
-                       metadata_items ->> 'serial-port-enable' = ANY ('{1,true,True,TRUE,y,yes}')
+             gcmi->>'key' = 'serial-port-enable' AND gcmi->>'value' = ANY ('{1,true,True,TRUE,y,yes}')
                THEN 'fail'
            ELSE 'pass'
            END                                                                          AS status
-FROM gcp_compute_instances;
+FROM gcp_compute_instances gci, JSONB_ARRAY_ELEMENTS(gci.metadata->'items') gcmi;

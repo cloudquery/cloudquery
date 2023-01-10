@@ -5,11 +5,14 @@ https://docs.aws.amazon.com/lambda/latest/dg/API_LayerVersionsListItem.html
 The primary key for this table is **_cq_id**.
 
 ## Relations
+
 This table depends on [aws_lambda_layers](aws_lambda_layers.md).
+
 The following tables depend on aws_lambda_layer_versions:
   - [aws_lambda_layer_version_policies](aws_lambda_layer_version_policies.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -24,5 +27,6 @@ The following tables depend on aws_lambda_layer_versions:
 |compatible_runtimes|StringArray|
 |created_date|String|
 |description|String|
+|layer_version_arn|String|
 |license_info|String|
 |version|Int|

@@ -1,34 +1,23 @@
-// Auto generated code - DO NOT EDIT.
-
 package security
 
 import (
-	"context"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Pricings() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_security_pricings",
-		Resolver:  fetchSecurityPricings,
-		Multiplex: client.SubscriptionMultiplex,
+		Resolver:  fetchPricings,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_security),
+		Transform: transformers.TransformWithStruct(&armsecurity.Pricing{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "pricing_tier",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("PricingTier"),
-			},
-			{
-				Name:     "free_trial_remaining_time",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("FreeTrialRemainingTime"),
 			},
 			{
 				Name:     "id",
@@ -38,31 +27,6 @@ func Pricings() *schema.Table {
 					PrimaryKey: true,
 				},
 			},
-			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
-			},
-			{
-				Name:     "type",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Type"),
-			},
 		},
 	}
-}
-
-func fetchSecurityPricings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().Security.Pricings
-
-	response, err := svc.List(ctx)
-	if err != nil {
-		return err
-	}
-	if response.Value == nil {
-		return nil
-	}
-	res <- *response.Value
-
-	return nil
 }

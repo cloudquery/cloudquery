@@ -12,3 +12,4 @@ END AS "execution_time"  \gset
 \ir foundational_security/policy.sql
 \ir public_egress/policy.sql
 \ir publicly_available/policy.sql
+\ir imds_v2/policy.sql

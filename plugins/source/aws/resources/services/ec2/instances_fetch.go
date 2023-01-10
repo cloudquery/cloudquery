@@ -15,10 +15,10 @@ import (
 
 var stateTransitionReasonTimeRegex = regexp.MustCompile(`\((.*)\)`)
 
-func fetchEc2Instances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchEc2Instances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config ec2.DescribeInstancesInput
 	c := meta.(*client.Client)
-	svc := c.Services().EC2
+	svc := c.Services().Ec2
 	for {
 		output, err := svc.DescribeInstances(ctx, &config, func(options *ec2.Options) {
 			options.Region = c.Region
@@ -64,8 +64,7 @@ func resolveEc2InstanceStateTransitionReasonTime(_ context.Context, meta schema.
 	const layout = "2006-01-02 15:04:05 MST"
 	tm, err := time.Parse(layout, match[1])
 	if err != nil {
-		meta.Logger().Warn().Err(err).Str("instance_id", aws.ToString(instance.InstanceId)).Msg("Failed to parse state_transition_reason_time")
-		return nil
+		return err
 	}
 	return resource.Set(c.Name, tm)
 }

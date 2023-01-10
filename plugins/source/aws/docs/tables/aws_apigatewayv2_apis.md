@@ -5,6 +5,7 @@ https://docs.aws.amazon.com/apigateway/latest/api/API_Api.html
 The primary key for this table is **_cq_id**.
 
 ## Relations
+
 The following tables depend on aws_apigatewayv2_apis:
   - [aws_apigatewayv2_api_authorizers](aws_apigatewayv2_api_authorizers.md)
   - [aws_apigatewayv2_api_deployments](aws_apigatewayv2_api_deployments.md)
@@ -14,6 +15,7 @@ The following tables depend on aws_apigatewayv2_apis:
   - [aws_apigatewayv2_api_stages](aws_apigatewayv2_api_stages.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -29,6 +31,7 @@ The following tables depend on aws_apigatewayv2_apis:
 |route_selection_expression|String|
 |api_endpoint|String|
 |api_gateway_managed|Bool|
+|api_id|String|
 |api_key_selection_expression|String|
 |cors_configuration|JSON|
 |created_date|Timestamp|

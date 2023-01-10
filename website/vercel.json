@@ -56,6 +56,134 @@
     {
       "source": "/docs/deployment/observability",
       "destination": "/docs/deployment/overview"
+    },
+    {
+      "source": "/docs/recipes/aws-postgresql",
+      "destination": "/docs/recipes/sources/aws"
+    },
+    {
+      "source": "/docs/recipes/gcp-postgresql",
+      "destination": "/docs/recipes/sources/gcp"
+    },
+    {
+      "source": "/docs/recipes/gcp-k8s-postgresql",
+      "destination": "/docs/recipes/sources/gcp-k8s"
+    },
+    {
+      "source": "/docs/recipes/azure-postgresql",
+      "destination": "/docs/recipes/sources/azure"
+    },
+    {
+      "source": "/docs/recipes/aws-csv",
+      "destination": "/docs/recipes/destinations/csv"
+    },
+    {
+      "source": "/docs/cli/fetch/overview",
+      "destination": "/docs/reference/cli/cloudquery"
+    },
+    {
+      "source": "/docs/cli/commands/provider-purge",
+      "destination": "/docs/reference/cli/cloudquery"
+    },
+    {
+      "source": "/docs/security",
+      "destination": "/docs/advanced-topics/security"
+    },
+    {
+      "source": "/docs/best-practices",
+      "destination": "/docs"
+    },
+    {
+      "source": "/docs/tutorials/assume_role",
+      "destination": "/blog/cross-account-access-aws-assumerole"
+    },
+    {
+      "source": "/docs/cq_vs_others/:other",
+      "destination": "/docs/cq-vs-others/:other"
+    },
+    {
+      "source": "/database-configuration",
+      "destination": "/docs/reference/destination-spec"
+    },
+    {
+      "source": "/docs/cli/commands/(.*)",
+      "destination": "/docs/reference/cli/cloudquery"
+    },
+    {
+      "source": "/developers/developing-new-provider",
+      "destination": "/docs/developers/creating-new-plugin"
+    },
+    {
+      "source": "/docs/plugins/sources",
+      "destination": "/docs/plugins/sources/overview"
+    },
+    {
+      "source": "/docs/plugins/destinations",
+      "destination": "/docs/plugins/destinations/overview"
+    },
+    {
+      "source": "/docs/plugins/source-plugin-release-stages",
+      "destination": "/docs/plugins/sources/overview#source-plugin-release-stages"
+    },
+    {
+      "source": "/docs/recipes/sources/:plugin",
+      "destination": "/docs/plugins/sources/:plugin/configuration"
+    },
+    {
+      "source": "/docs/recipes/destinations/:plugin",
+      "destination": "/docs/plugins/destinations/:plugin/overview"
+    },
+    {
+      "source": "/docs/recipes/overview",
+      "destination": "/docs/core-concepts/configuration"
+    },
+    {
+      "source": "/docs/core-concepts/migrations",
+      "destination": "/docs/advanced-topics/migrations"
+    },
+    {
+      "source": "/docs/plugins/sources/aws/multi_account",
+      "destination": "/docs/plugins/sources/aws/multi-account"
+    },
+    {
+      "source": "/blog/cloud-asset-inventory-cloudquery-apache-superset",
+      "destination":"/how-to-guides/cloud-asset-inventory-cloudquery-apache-superset"
+    },
+    {
+      "source": "/blog/cloud-asset-inventory-cloudquery-aws-quicksight",
+      "destination": "/how-to-guides/cloud-asset-inventory-cloudquery-aws-quicksight"
+    },
+    {
+      "source": "/blog/cloud-asset-inventory-cloudquery-google-data-studio",
+      "destination": "/how-to-guides/cloud-asset-inventory-cloudquery-google-data-studio"
+    },
+    {
+      "source": "/blog/cloud-asset-inventory-cloudquery-metabase",
+      "destination": "/how-to-guides/cloud-asset-inventory-cloudquery-metabase"
+    },
+    {
+      "source": "/blog/cloud-asset-inventory-cloudquery-microsoft-power-bi",
+      "destination": "/how-to-guides/cloud-asset-inventory-cloudquery-microsoft-power-bi"
+    },
+    {
+      "source": "/blog/cloudquery-postgraphile",
+      "destination": "/how-to-guides/cloudquery-postgraphile"
+    },
+    {
+      "source": "/blog/cloudquery-postgrest",
+      "destination": "/how-to-guides/cloudquery-postgrest"
+    },
+    {
+      "source": "/blog/cross-account-access-aws-assumerole",
+      "destination": "/how-to-guides/cross-account-access-aws-assumerole"
+    },
+    {
+      "source": "/blog/deploying-cloudquery-into-aws-org",
+      "destination": "/how-to-guides/deploying-cloudquery-into-aws-org"
+    },
+    {
+      "source": "/blog/open-source-cspm",
+      "destination": "/how-to-guides/open-source-cspm"
     }
   ]
 }

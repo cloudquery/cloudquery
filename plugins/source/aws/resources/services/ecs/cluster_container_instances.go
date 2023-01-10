@@ -10,7 +10,7 @@ import (
 func ClusterContainerInstances() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_ecs_cluster_container_instances",
-		Description: "https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ContainerInstance.html",
+		Description: `https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ContainerInstance.html`,
 		Resolver:    fetchEcsClusterContainerInstances,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ecs"),
 		Columns: []schema.Column{
@@ -28,11 +28,6 @@ func ClusterContainerInstances() *schema.Table {
 				Name:     "cluster_arn",
 				Type:     schema.TypeString,
 				Resolver: schema.ParentColumnResolver("arn"),
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "agent_connected",
@@ -108,6 +103,11 @@ func ClusterContainerInstances() *schema.Table {
 				Name:     "status_reason",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("StatusReason"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "version",

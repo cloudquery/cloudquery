@@ -41,7 +41,7 @@ func buildRDSClient(t *testing.T, ctrl *gomock.Controller) client.Services {
 		},
 		nil,
 	)
-	return client.Services{RDS: mock}
+	return client.Services{Rds: mock}
 }
 
 func TestRDSDBSnapshots(t *testing.T) {

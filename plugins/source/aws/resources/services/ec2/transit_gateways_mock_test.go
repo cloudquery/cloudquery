@@ -77,7 +77,7 @@ func buildEc2TransitGateways(t *testing.T, ctrl *gomock.Controller) client.Servi
 			TransitGateways: []types.TransitGateway{tgw},
 		}, nil)
 	return client.Services{
-		EC2: m,
+		Ec2: m,
 	}
 }
 

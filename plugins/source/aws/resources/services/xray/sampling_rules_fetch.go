@@ -9,7 +9,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchXraySamplingRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchXraySamplingRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	paginator := xray.NewGetSamplingRulesPaginator(meta.(*client.Client).Services().Xray, nil)
 	for paginator.HasMorePages() {
 		v, err := paginator.NextPage(ctx)
@@ -34,8 +34,5 @@ func resolveXraySamplingRuleTags(ctx context.Context, meta schema.ClientMeta, re
 		return err
 	}
 
-	tags := map[string]string{}
-	client.TagsIntoMap(output.Tags, tags)
-
-	return resource.Set(c.Name, tags)
+	return resource.Set(c.Name, client.TagsToMap(output.Tags))
 }

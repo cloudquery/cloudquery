@@ -10,9 +10,9 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchRdsClusterSnapshots(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchRdsClusterSnapshots(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
-	svc := c.Services().RDS
+	svc := c.Services().Rds
 	var input rds.DescribeDBClusterSnapshotsInput
 	for {
 		output, err := svc.DescribeDBClusterSnapshots(ctx, &input)
@@ -40,7 +40,7 @@ func resolveRDSClusterSnapshotTags(ctx context.Context, meta schema.ClientMeta, 
 func resolveRDSClusterSnapshotAttributes(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, column schema.Column) error {
 	s := resource.Item.(types.DBClusterSnapshot)
 	c := meta.(*client.Client)
-	svc := c.Services().RDS
+	svc := c.Services().Rds
 	out, err := svc.DescribeDBClusterSnapshotAttributes(
 		ctx,
 		&rds.DescribeDBClusterSnapshotAttributesInput{DBClusterSnapshotIdentifier: s.DBClusterSnapshotIdentifier},

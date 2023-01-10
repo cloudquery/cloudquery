@@ -10,7 +10,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchLightsailLoadBalancers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchLightsailLoadBalancers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input lightsail.GetLoadBalancersInput
 	c := meta.(*client.Client)
 	svc := c.Services().Lightsail
@@ -27,7 +27,7 @@ func fetchLightsailLoadBalancers(ctx context.Context, meta schema.ClientMeta, pa
 	}
 	return nil
 }
-func fetchLightsailLoadBalancerTlsCertificates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchLightsailLoadBalancerTlsCertificates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(types.LoadBalancer)
 	input := lightsail.GetLoadBalancerTlsCertificatesInput{
 		LoadBalancerName: r.Name,

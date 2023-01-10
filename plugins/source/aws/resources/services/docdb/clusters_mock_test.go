@@ -1,18 +1,19 @@
 package docdb
 
 import (
+	"testing"
+
 	"github.com/aws/aws-sdk-go-v2/service/docdb"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
-	"testing"
 )
 
 func buildClustersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockDocDBClient(ctrl)
+	m := mocks.NewMockDocdbClient(ctrl)
 	services := client.Services{
-		DocDB: m,
+		Docdb: m,
 	}
 	var clusters docdb.DescribeDBClustersOutput
 	if err := faker.FakeObject(&clusters); err != nil {
@@ -40,6 +41,16 @@ func buildClustersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	}
 	m.EXPECT().DescribeDBClusterSnapshotAttributes(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&snapshotAttributes,
+		nil,
+	)
+
+	var ev docdb.DescribeDBInstancesOutput
+	if err := faker.FakeObject(&ev); err != nil {
+		t.Fatal(err)
+	}
+	ev.Marker = nil
+	m.EXPECT().DescribeDBInstances(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&ev,
 		nil,
 	)
 

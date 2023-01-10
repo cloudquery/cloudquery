@@ -1,14 +1,14 @@
 # Table: digitalocean_registries
 
-
-
 The primary key for this table is **name**.
 
 ## Relations
+
 The following tables depend on digitalocean_registries:
   - [digitalocean_registry_repositories](digitalocean_registry_repositories.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|

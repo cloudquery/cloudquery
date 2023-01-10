@@ -26,7 +26,7 @@ func buildElasticbeanstalkApplications(t *testing.T, ctrl *gomock.Controller) cl
 		}, nil)
 
 	return client.Services{
-		ElasticBeanstalk: m,
+		Elasticbeanstalk: m,
 	}
 }
 

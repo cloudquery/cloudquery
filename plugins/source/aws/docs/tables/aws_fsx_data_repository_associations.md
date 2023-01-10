@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/fsx/latest/APIReference/API_DataRepositoryAssociatio
 
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -29,4 +29,5 @@ The primary key for this table is **arn**.
 |imported_file_chunk_size|Int|
 |lifecycle|String|
 |nfs|JSON|
+|resource_arn|String|
 |s3|JSON|

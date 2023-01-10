@@ -5,10 +5,12 @@ https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_
 The composite primary key for this table is (**account_id**, **region**, **id**).
 
 ## Relations
+
 The following tables depend on aws_cognito_user_pools:
   - [aws_cognito_user_pool_identity_providers](aws_cognito_user_pool_identity_providers.md)
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -25,6 +27,7 @@ The following tables depend on aws_cognito_user_pools:
 |auto_verified_attributes|StringArray|
 |creation_date|Timestamp|
 |custom_domain|String|
+|deletion_protection|String|
 |device_configuration|JSON|
 |domain|String|
 |email_configuration|JSON|

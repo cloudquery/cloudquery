@@ -2,7 +2,6 @@ package cloudformation
 
 import (
 	"context"
-	"regexp"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation"
@@ -11,11 +10,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-var (
-	validStackNotFoundRegex = regexp.MustCompile("Stack with id (.*) does not exist")
-)
-
-func fetchCloudformationStacks(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchCloudformationStacks(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	var config cloudformation.DescribeStacksInput
 	c := meta.(*client.Client)
 	svc := c.Services().Cloudformation
@@ -32,7 +27,7 @@ func fetchCloudformationStacks(ctx context.Context, meta schema.ClientMeta, _ *s
 	}
 	return nil
 }
-func fetchCloudformationStackResources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchCloudformationStackResources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	stack := parent.Item.(types.Stack)
 	config := cloudformation.ListStackResourcesInput{
 		StackName: stack.StackName,
@@ -42,10 +37,6 @@ func fetchCloudformationStackResources(ctx context.Context, meta schema.ClientMe
 	for {
 		output, err := svc.ListStackResources(ctx, &config)
 		if err != nil {
-			if client.IsErrorRegex(err, "ValidationError", validStackNotFoundRegex) {
-				meta.Logger().Debug().Err(err).Str("region", c.Region).Msg("received ValidationError on ListStackResources, stack does not exist")
-				return nil
-			}
 			return err
 		}
 		res <- output.StackResourceSummaries

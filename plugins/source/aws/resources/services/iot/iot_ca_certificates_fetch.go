@@ -10,13 +10,13 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchIotCaCertificates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchIotCaCertificates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	input := iot.ListCACertificatesInput{
 		PageSize: aws.Int32(250),
 	}
 	c := meta.(*client.Client)
 
-	svc := c.Services().IOT
+	svc := c.Services().Iot
 	for {
 		response, err := svc.ListCACertificates(ctx, &input)
 		if err != nil {
@@ -43,7 +43,7 @@ func fetchIotCaCertificates(ctx context.Context, meta schema.ClientMeta, parent 
 func ResolveIotCaCertificateCertificates(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*types.CACertificateDescription)
 	cl := meta.(*client.Client)
-	svc := cl.Services().IOT
+	svc := cl.Services().Iot
 	input := iot.ListCertificatesByCAInput{
 		CaCertificateId: i.CertificateId,
 		PageSize:        aws.Int32(250),

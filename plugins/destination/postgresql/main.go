@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/cloudquery/cloudquery/plugins/destination/postgresql/client"
 	"github.com/cloudquery/cloudquery/plugins/destination/postgresql/resources/plugin"
-	"github.com/cloudquery/plugin-sdk/plugins"
+	"github.com/cloudquery/plugin-sdk/plugins/destination"
 	"github.com/cloudquery/plugin-sdk/serve"
 )
 
@@ -12,6 +12,6 @@ const (
 )
 
 func main() {
-	p := plugins.NewDestinationPlugin("postgresql", plugin.Version, client.New)
+	p := destination.NewPlugin("postgresql", plugin.Version, client.New, destination.WithDefaultBatchSize(1000))
 	serve.Destination(p, serve.WithDestinationSentryDSN(sentryDSN))
 }

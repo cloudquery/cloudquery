@@ -1,5 +1,5 @@
 {
   "plugins": "Plugins",
-  "policies": "Policies",
-  "migrations": "Migrations"
+  "configuration": "Configuration",
+  "policies": "Policies"
 }

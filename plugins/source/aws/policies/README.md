@@ -1,7 +1,3 @@
-# Deprecation Notice
-
-These are the policy files for CloudQuery **v0.x.x**. Please use the [policies_v1/](../policies_v1/) directory for CloudQuery v1.x.x policies.
-
 # CloudQuery Policies
 CloudQuery SQL Policies for AWS
 
@@ -29,7 +25,7 @@ This will create all the results in `aws_policy_results` table which you can que
 
 You can also output it into CSV or HTML with the following built-in `psql` commands:
 
-```
+```bash
 # Set DSN to your PostgreSQL populated by CloudQuery
 export DSN=postgres://postgres:pass@localhost:5432/postgres
 # default tabular output

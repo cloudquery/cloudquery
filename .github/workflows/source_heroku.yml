@@ -14,6 +14,7 @@ on:
 
 jobs:
   plugins-source-heroku:
+    timeout-minutes: 30
     name: "plugins/source/heroku"
     runs-on: ubuntu-latest
     defaults:
@@ -30,30 +31,27 @@ jobs:
           cache: true
           cache-dependency-path: plugins/source/heroku/go.sum
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v3
+        uses: cloudquery/golangci-lint-action@master
         with:
-          version: v1.49.0
+          version: v1.50.1
           working-directory: plugins/source/heroku
           args: "--config ../../.golangci.yml"
+          skip-pkg-cache: true
+          skip-build-cache: true
       - name: Get dependencies
         run: go get -t -d ./...
       - name: Build
         run: go build .
       - name: Test
-        run: go test ./...
-      - name: gen-docs
+        run: make test
+      - name: gen
         if: github.event_name == 'pull_request'
-        run: make gen-docs
-      - name: Fail if docs are changed
+        run: make gen
+      - name: Fail if generation updated files
         if: github.event_name == 'pull_request'
-        run: test "$(git status -s ./docs/tables | wc -l)" -eq 0
-      - name: gen-code
-        if: github.event_name == 'pull_request'
-        run: make gen-code
-      - name: Fail if code generation changed services
-        if: github.event_name == 'pull_request'
-        run: test "$(git status -s ./resources/services | wc -l)" -eq 0
+        run: test "$(git status -s | wc -l)" -eq 0 || (git status -s; exit 1)
   validate-release:
+    timeout-minutes: 30
     runs-on: ubuntu-latest
     env:
       CGO_ENABLED: 0
@@ -67,9 +65,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.19.1-release-cache-${{ hashFiles('plugins/source/heroku/go.sum') }}
+          key: ${{ runner.os }}-go-1.19.4-release-cache-${{ hashFiles('plugins/source/heroku/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.19.1-release-cache-plugins-source-heroku
+            ${{ runner.os }}-go-1.19.4-release-cache-plugins-source-heroku
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/setup-go@v3

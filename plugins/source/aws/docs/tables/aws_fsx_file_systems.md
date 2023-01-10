@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/fsx/latest/APIReference/API_FileSystem.html
 
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -30,6 +30,7 @@ The primary key for this table is **arn**.
 |ontap_configuration|JSON|
 |open_zfs_configuration|JSON|
 |owner_id|String|
+|resource_arn|String|
 |storage_capacity|Int|
 |storage_type|String|
 |subnet_ids|StringArray|

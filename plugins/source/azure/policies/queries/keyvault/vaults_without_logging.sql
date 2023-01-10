@@ -1,12 +1,16 @@
-WITH vaults_with_logging_enabled AS (SELECT DISTINCT v.cq_id
-                                     FROM azure_keyvault_vaults v
-                                              LEFT JOIN azure_monitor_diagnostic_settings s ON v.id = s.resource_uri
-                                              LEFT JOIN azure_monitor_diagnostic_setting_logs l
-                                                        ON s.cq_id = l.diagnostic_setting_cq_id
-                                     WHERE l.enabled = TRUE
-                                       AND l.category = 'AuditEvent'
-                                       AND (s.storage_account_id IS NOT NULL OR s.storage_account_id IS DISTINCT FROM '')
-                                       AND retention_policy_enabled = TRUE)
+WITH
+    settings_with_logs AS (
+        SELECT resource_uri, storage_account_id, JSONB_ARRAY_ELEMENTS(logs) AS logs FROM azure_monitor_diagnostic_settings
+    ),
+    logging_enabled AS (
+        SELECT DISTINCT a._cq_id
+  FROM azure_keyvault_vaults a
+    LEFT JOIN settings_with_logs s ON a.id = s.resource_uri
+    WHERE (s.logs->>'enabled')::boolean IS TRUE
+    AND s.logs->>'category' = 'AuditEvent'
+    AND (s.storage_account_id IS NOT NULL OR s.storage_account_id IS DISTINCT FROM '')
+    AND (s.logs->'retentionPolicy'->>'enabled')::boolean IS TRUE
+)
 insert into azure_policy_results
 SELECT
   :'execution_time',
@@ -16,7 +20,7 @@ SELECT
   subscription_id,
   id,
   case
-    when e.cq_id is null then 'fail' else 'pass'
+    when e._cq_id is null then 'fail' else 'pass'
   end
 FROM azure_keyvault_vaults a
-  LEFT JOIN vaults_with_logging_enabled e ON a.cq_id = e.cq_id
+  LEFT JOIN logging_enabled e ON a._cq_id = e._cq_id

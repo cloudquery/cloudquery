@@ -1,5 +1,6 @@
 variables:
   component: source/terraform
+  binary: terraform
 
 project_name: plugins/source/terraform
 

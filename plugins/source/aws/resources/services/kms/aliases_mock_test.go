@@ -23,7 +23,7 @@ func buildKmsAliases(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&aliases, nil)
 
 	return client.Services{
-		KMS: m,
+		Kms: m,
 	}
 }
 

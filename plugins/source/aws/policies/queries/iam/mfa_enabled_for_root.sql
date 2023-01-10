@@ -4,10 +4,10 @@ select
   :'framework' as framework,
   :'check_id' as check_id,
   'Ensure MFA is enabled for the "root" account' as title,
-  account_id,
+  split_part(arn, ':', 5) as account_id,
   arn as resource_id,
-  case 
-    when user_name = '<root_account>' and not mfa_active then 'fail'
-    when user_name = '<root_account>' and mfa_active then 'pass'
+  case
+    when user = '<root_account>' and not mfa_active then 'fail' -- TODO check
+    when user = '<root_account>' and mfa_active then 'pass'
   end as status
-from aws_iam_users
+from aws_iam_credential_reports

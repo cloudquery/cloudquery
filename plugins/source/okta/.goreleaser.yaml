@@ -1,5 +1,6 @@
 variables:
   component: source/okta
+  binary: okta
 
 project_name: plugins/source/okta
 

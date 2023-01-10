@@ -13,7 +13,7 @@ insert into aws_policy_results
 from
     view_aws_apigateway_method_settings s
 left join
-    aws_apigateway_rest_apis r on s.rest_api_cq_id = r.cq_id
+    aws_apigateway_rest_apis r on s.rest_api_arn = r.arn
 )
 
 union
@@ -26,11 +26,11 @@ union
      a.account_id,
      'arn:' || 'aws' || ':apigateway:' || a.region || ':/apis/' || a.id as resource_id,
      case
-         when s.route_settings_logging_level in (NULL, 'OFF') then 'fail'
+         when s.route_settings->>'LoggingLevel' in (NULL, 'OFF') then 'fail'
          else 'pass'
          end as status
 from
     aws_apigatewayv2_api_stages s
 left join
-    aws_apigatewayv2_apis a on s.api_cq_id = a.cq_id
+    aws_apigatewayv2_apis a on s.api_arn = a.arn
 )

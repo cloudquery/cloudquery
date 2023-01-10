@@ -10,8 +10,8 @@ select uid                                                           AS resource
        name                                                          AS resource_name,
        CASE
            WHEN
-                               template -> 'spec' ->> 'hostPID' = 'true'
-                   OR template -> 'spec' ->> 'hostIPC' = 'true'
+                               spec_template -> 'spec' ->> 'hostPID' = 'true'
+                   OR spec_template -> 'spec' ->> 'hostIPC' = 'true'
                THEN 'fail'
            ELSE 'pass'
            END                                                       AS status

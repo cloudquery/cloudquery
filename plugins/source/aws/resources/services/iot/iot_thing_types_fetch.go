@@ -10,13 +10,13 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchIotThingTypes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchIotThingTypes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	input := iot.ListThingTypesInput{
 		MaxResults: aws.Int32(250),
 	}
 	c := meta.(*client.Client)
 
-	svc := c.Services().IOT
+	svc := c.Services().Iot
 	for {
 		response, err := svc.ListThingTypes(ctx, &input)
 		if err != nil {
@@ -35,7 +35,7 @@ func fetchIotThingTypes(ctx context.Context, meta schema.ClientMeta, parent *sch
 func ResolveIotThingTypeTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(types.ThingTypeDefinition)
 	cl := meta.(*client.Client)
-	svc := cl.Services().IOT
+	svc := cl.Services().Iot
 	input := iot.ListTagsForResourceInput{
 		ResourceArn: i.ThingTypeArn,
 	}

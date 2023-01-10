@@ -20,7 +20,9 @@ func buildNeptuneDBParameterGroups(t *testing.T, ctrl *gomock.Controller) client
 	}
 	mock.EXPECT().DescribeDBParameterGroups(
 		gomock.Any(),
-		&neptune.DescribeDBParameterGroupsInput{},
+		&neptune.DescribeDBParameterGroupsInput{
+			Filters: []types.Filter{{Name: aws.String("engine"), Values: []string{"neptune"}}},
+		},
 		gomock.Any(),
 	).Return(
 		&neptune.DescribeDBParameterGroupsOutput{DBParameterGroups: []types.DBParameterGroup{g}},

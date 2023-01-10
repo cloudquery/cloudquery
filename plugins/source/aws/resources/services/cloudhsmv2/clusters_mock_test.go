@@ -12,7 +12,7 @@ import (
 )
 
 func buildHSMClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
-	mock := mocks.NewMockCloudHSMV2Client(ctrl)
+	mock := mocks.NewMockCloudhsmv2Client(ctrl)
 
 	var clusters []types.Cluster
 	if err := faker.FakeObject(&clusters); err != nil {
@@ -28,7 +28,7 @@ func buildHSMClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
-	return client.Services{CloudHSMV2: mock}
+	return client.Services{Cloudhsmv2: mock}
 }
 
 func TestClusters(t *testing.T) {

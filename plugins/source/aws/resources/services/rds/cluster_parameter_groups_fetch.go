@@ -10,9 +10,9 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchRdsClusterParameterGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchRdsClusterParameterGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().RDS
+	svc := cl.Services().Rds
 	var input rds.DescribeDBClusterParameterGroupsInput
 	for {
 		output, err := svc.DescribeDBClusterParameterGroups(ctx, &input)
@@ -28,9 +28,9 @@ func fetchRdsClusterParameterGroups(ctx context.Context, meta schema.ClientMeta,
 	return nil
 }
 
-func fetchRdsClusterParameterGroupParameters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchRdsClusterParameterGroupParameters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().RDS
+	svc := cl.Services().Rds
 	g := parent.Item.(types.DBClusterParameterGroup)
 	input := rds.DescribeDBClusterParametersInput{DBClusterParameterGroupName: g.DBClusterParameterGroupName}
 	for {
@@ -50,7 +50,7 @@ func fetchRdsClusterParameterGroupParameters(ctx context.Context, meta schema.Cl
 func resolveRdsClusterParameterGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	g := resource.Item.(types.DBClusterParameterGroup)
 	cl := meta.(*client.Client)
-	svc := cl.Services().RDS
+	svc := cl.Services().Rds
 	out, err := svc.ListTagsForResource(ctx, &rds.ListTagsForResourceInput{ResourceName: g.DBClusterParameterGroupArn})
 	if err != nil {
 		return err

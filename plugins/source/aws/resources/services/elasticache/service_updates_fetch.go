@@ -11,8 +11,8 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchElasticacheServiceUpdates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	paginator := elasticache.NewDescribeServiceUpdatesPaginator(meta.(*client.Client).Services().ElastiCache, nil)
+func fetchElasticacheServiceUpdates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	paginator := elasticache.NewDescribeServiceUpdatesPaginator(meta.(*client.Client).Services().Elasticache, nil)
 	for paginator.HasMorePages() {
 		v, err := paginator.NextPage(ctx)
 		if err != nil {

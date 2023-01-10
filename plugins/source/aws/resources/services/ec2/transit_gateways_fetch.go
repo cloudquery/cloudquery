@@ -10,10 +10,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchEc2TransitGateways(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchEc2TransitGateways(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config ec2.DescribeTransitGatewaysInput
 	c := meta.(*client.Client)
-	svc := c.Services().EC2
+	svc := c.Services().Ec2
 	for {
 		output, err := svc.DescribeTransitGateways(ctx, &config)
 		if err != nil {
@@ -28,7 +28,7 @@ func fetchEc2TransitGateways(ctx context.Context, meta schema.ClientMeta, parent
 	return nil
 }
 
-func fetchEc2TransitGatewayAttachments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchEc2TransitGatewayAttachments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(types.TransitGateway)
 
 	config := ec2.DescribeTransitGatewayAttachmentsInput{
@@ -40,7 +40,7 @@ func fetchEc2TransitGatewayAttachments(ctx context.Context, meta schema.ClientMe
 		},
 	}
 	c := meta.(*client.Client)
-	svc := c.Services().EC2
+	svc := c.Services().Ec2
 	for {
 		output, err := svc.DescribeTransitGatewayAttachments(ctx, &config)
 		if err != nil {
@@ -55,7 +55,7 @@ func fetchEc2TransitGatewayAttachments(ctx context.Context, meta schema.ClientMe
 	return nil
 }
 
-func fetchEc2TransitGatewayRouteTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchEc2TransitGatewayRouteTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(types.TransitGateway)
 
 	config := ec2.DescribeTransitGatewayRouteTablesInput{
@@ -67,7 +67,7 @@ func fetchEc2TransitGatewayRouteTables(ctx context.Context, meta schema.ClientMe
 		},
 	}
 	c := meta.(*client.Client)
-	svc := c.Services().EC2
+	svc := c.Services().Ec2
 	for {
 		output, err := svc.DescribeTransitGatewayRouteTables(ctx, &config)
 		if err != nil {
@@ -82,7 +82,7 @@ func fetchEc2TransitGatewayRouteTables(ctx context.Context, meta schema.ClientMe
 	return nil
 }
 
-func fetchEc2TransitGatewayVpcAttachments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchEc2TransitGatewayVpcAttachments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(types.TransitGateway)
 
 	config := ec2.DescribeTransitGatewayVpcAttachmentsInput{
@@ -94,7 +94,7 @@ func fetchEc2TransitGatewayVpcAttachments(ctx context.Context, meta schema.Clien
 		},
 	}
 	c := meta.(*client.Client)
-	svc := c.Services().EC2
+	svc := c.Services().Ec2
 	for {
 		output, err := svc.DescribeTransitGatewayVpcAttachments(ctx, &config)
 		if err != nil {
@@ -109,7 +109,7 @@ func fetchEc2TransitGatewayVpcAttachments(ctx context.Context, meta schema.Clien
 	return nil
 }
 
-func fetchEc2TransitGatewayPeeringAttachments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchEc2TransitGatewayPeeringAttachments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(types.TransitGateway)
 
 	config := ec2.DescribeTransitGatewayPeeringAttachmentsInput{
@@ -122,7 +122,7 @@ func fetchEc2TransitGatewayPeeringAttachments(ctx context.Context, meta schema.C
 	}
 
 	c := meta.(*client.Client)
-	svc := c.Services().EC2
+	svc := c.Services().Ec2
 	for {
 		output, err := svc.DescribeTransitGatewayPeeringAttachments(ctx, &config)
 		if err != nil {
@@ -137,7 +137,7 @@ func fetchEc2TransitGatewayPeeringAttachments(ctx context.Context, meta schema.C
 	return nil
 }
 
-func fetchEc2TransitGatewayMulticastDomains(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchEc2TransitGatewayMulticastDomains(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(types.TransitGateway)
 
 	config := ec2.DescribeTransitGatewayMulticastDomainsInput{
@@ -150,7 +150,7 @@ func fetchEc2TransitGatewayMulticastDomains(ctx context.Context, meta schema.Cli
 	}
 
 	c := meta.(*client.Client)
-	svc := c.Services().EC2
+	svc := c.Services().Ec2
 	for {
 		output, err := svc.DescribeTransitGatewayMulticastDomains(ctx, &config)
 		if err != nil {

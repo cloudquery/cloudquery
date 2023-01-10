@@ -4,8 +4,8 @@ https://docs.aws.amazon.com/elasticbeanstalk/latest/api/API_ApplicationVersionDe
 
 The primary key for this table is **arn**.
 
-
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
@@ -16,6 +16,7 @@ The primary key for this table is **arn**.
 |region|String|
 |arn (PK)|String|
 |application_name|String|
+|application_version_arn|String|
 |build_arn|String|
 |date_created|Timestamp|
 |date_updated|Timestamp|

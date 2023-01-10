@@ -10,10 +10,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchEventbridgeEventBuses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchEventbridgeEventBuses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input eventbridge.ListEventBusesInput
 	c := meta.(*client.Client)
-	svc := c.Services().EventBridge
+	svc := c.Services().Eventbridge
 	for {
 		response, err := svc.ListEventBuses(ctx, &input)
 		if err != nil {
@@ -31,13 +31,13 @@ func resolveEventbridgeEventBusTags(ctx context.Context, meta schema.ClientMeta,
 	eventBusArn := resource.Item.(types.EventBus).Arn
 	return resolveEventBridgeTags(ctx, meta, resource, c, *eventBusArn)
 }
-func fetchEventbridgeEventBusRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchEventbridgeEventBusRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	p := parent.Item.(types.EventBus)
 	input := eventbridge.ListRulesInput{
 		EventBusName: p.Arn,
 	}
 	c := meta.(*client.Client)
-	svc := c.Services().EventBridge
+	svc := c.Services().Eventbridge
 	for {
 		response, err := svc.ListRules(ctx, &input)
 		if err != nil {
@@ -58,7 +58,7 @@ func resolveEventbridgeEventBusRuleTags(ctx context.Context, meta schema.ClientM
 
 func resolveEventBridgeTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column, resourceArn string) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().EventBridge
+	svc := cl.Services().Eventbridge
 	input := eventbridge.ListTagsForResourceInput{
 		ResourceARN: &resourceArn,
 	}

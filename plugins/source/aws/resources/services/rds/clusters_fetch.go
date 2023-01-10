@@ -10,10 +10,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchRdsClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchRdsClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config rds.DescribeDBClustersInput
 	c := meta.(*client.Client)
-	svc := c.Services().RDS
+	svc := c.Services().Rds
 	for {
 		response, err := svc.DescribeDBClusters(ctx, &config)
 		if err != nil {

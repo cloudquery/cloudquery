@@ -8,10 +8,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchKmsAliases(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchKmsAliases(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input kms.ListAliasesInput
 	c := meta.(*client.Client)
-	svc := c.Services().KMS
+	svc := c.Services().Kms
 	paginator := kms.NewListAliasesPaginator(svc, &input)
 	for paginator.HasMorePages() {
 		output, err := paginator.NextPage(ctx)

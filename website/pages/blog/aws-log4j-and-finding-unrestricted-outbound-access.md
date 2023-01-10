@@ -44,52 +44,44 @@ Following is a query to identify all security groups with unrestricted outbound 
 
 **Prerequisite**:
 
-- Run `cloudquery fetch`
+- Run `cloudquery sync` (See our [quickstart guide](https://www.cloudquery.io/docs/quickstart))
 - Create this view
 
 ```sql
 -- Create Temporary View
-CREATE TEMPORARY VIEW aws_security_group_egress_rules AS
-(
-    WITH sg_rules_ports AS (
-        SELECT sg.account_id,
-               sg.region,
-               sg.group_name,
-               sg.arn,
-               sg.id,
-               p.from_port,
-               p.to_port,
-               p.ip_protocol,
-               p.cq_id AS permission_id
-        FROM aws_ec2_security_groups sg
-                 LEFT JOIN aws_ec2_security_group_ip_permissions p
-                           ON sg.cq_id = p.security_group_cq_id
-    )
-    SELECT sgs.*, r.cidr AS ip
-    FROM sg_rules_ports sgs
-             LEFT JOIN aws_ec2_security_group_ip_permission_ip_ranges r
-                       ON sgs.permission_id = r.security_group_ip_permission_cq_id
-);
+create temporary view view_aws_security_group_egress_rules as
+select
+    account_id,
+    region,
+    group_name,
+    arn,
+    group_id as id,
+    vpc_id,
+    (i->>'FromPort')::integer AS from_port,
+        (i->>'ToPort')::integer AS to_port,
+        i->>'IpProtocol' AS ip_protocol,
+    ip_ranges->>'CidrIp' AS ip,
+    ip6_ranges->>'CidrIpv6' AS ip6
+from aws_ec2_security_groups, JSONB_ARRAY_ELEMENTS(aws_ec2_security_groups.ip_permissions_egress) as i
+    LEFT JOIN JSONB_ARRAY_ELEMENTS(i->'IpRanges') as ip_ranges ON true
+    LEFT JOIN JSONB_ARRAY_ELEMENTS(i->'Ipv6Ranges') as ip6_ranges ON true;
 ```
 
 - Run the following query
 
 ```sql
 -- Find all AWS instances that have a security group that allows unrestricted egress
-SELECT id,
-	region,
-	account_id,
-	vpc_id
-FROM aws_ec2_instances
-WHERE  cq_id in
-	-- 	Find all instances that have egress rule that allows access to all ip addresses
-	(SELECT instance_cq_id
-		FROM aws_ec2_instance_security_groups
-		JOIN aws_security_group_egress_rules ON group_id = id
-		WHERE (ip = '0.0.0.0/0' OR ip = '::/0'));
+select aws_ec2_instances.account_id, 
+       aws_ec2_instances.region, 
+       aws_ec2_instances.instance_id, 
+       sg->>'GroupId' AS security_group_id 
+from aws_ec2_instances, jsonb_array_elements(security_groups) sg
+    --  Find all instances that have egress rule that allows access to all ip addresses
+    inner join view_aws_security_group_egress_rules on id = sg->>'GroupId'
+where (ip = '0.0.0.0/0' or ip6 = '::/0');
 ```
 
-You can also run the query straight from the policy pack located on our [GitHub](https://github.com/cloudquery-policies/aws/blob/main/public_egress/policy.hcl)
+You can also run the `public_egress` query straight from the policy pack located on our [GitHub](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/aws/policies)
 
 ```bash
 cloudquery policy run aws//public_egress
@@ -109,70 +101,53 @@ The second requirement for outbound access is an internet gateway. Here is a que
 
 **Prerequisite**:
 
-- Run `cloudquery fetch`
+- Run `cloudquery sync` (See our [quickstart guide](https://www.cloudquery.io/docs/quickstart))
 - Create this view
 
 ```sql
 -- Create Temporary View
-CREATE TEMPORARY VIEW aws_security_group_egress_rules AS
-(
-    WITH sg_rules_ports AS (
-        SELECT sg.account_id,
-               sg.region,
-               sg.group_name,
-               sg.arn,
-               sg.id,
-               p.from_port,
-               p.to_port,
-               p.ip_protocol,
-               p.cq_id AS permission_id
-        FROM aws_ec2_security_groups sg
-                 LEFT JOIN aws_ec2_security_group_ip_permissions p
-                           ON sg.cq_id = p.security_group_cq_id
-    )
-    SELECT sgs.*, r.cidr AS ip
-    FROM sg_rules_ports sgs
-             LEFT JOIN aws_ec2_security_group_ip_permission_ip_ranges r
-                       ON sgs.permission_id = r.security_group_ip_permission_cq_id
-);
+create temporary view view_aws_security_group_egress_rules as
+select
+    account_id,
+    region,
+    group_name,
+    arn,
+    group_id as id,
+    vpc_id,
+    (i->>'FromPort')::integer AS from_port,
+        (i->>'ToPort')::integer AS to_port,
+        i->>'IpProtocol' AS ip_protocol,
+    ip_ranges->>'CidrIp' AS ip,
+    ip6_ranges->>'CidrIpv6' AS ip6
+from aws_ec2_security_groups, JSONB_ARRAY_ELEMENTS(aws_ec2_security_groups.ip_permissions_egress) as i
+    LEFT JOIN JSONB_ARRAY_ELEMENTS(i->'IpRanges') as ip_ranges ON true
+    LEFT JOIN JSONB_ARRAY_ELEMENTS(i->'Ipv6Ranges') as ip6_ranges ON true;
 ```
 
 - Run the following query
 
 ```sql
--- Find all AWS instances that are in a subnet that includes a catchall route
-SELECT id,
-       region,
-       account_id,
-       vpc_id
-FROM aws_ec2_instances
-WHERE subnet_id in
-    --  Find all subnets that include a route table that inclues a catchall route
-      (SELECT subnet_id
-       FROM aws_ec2_route_tables
-                JOIN aws_ec2_route_table_associations ON aws_ec2_route_table_associations.route_table_cq_id = aws_ec2_route_tables.cq_id
-       WHERE aws_ec2_route_tables.cq_id in
-                 --  Find all routes in any route table that contains a route to 0.0.0.0/0 or ::/0
-             (SELECT route_table_cq_id
-              FROM aws_ec2_route_table_routes
-              WHERE destination_cidr_block = '0.0.0.0/0'
-                 OR destination_ipv6_cidr_block = '::/0'))
-  AND cq_id in
-    -- 	Find all instances that have egress rule that allows access to all ip addresses
-      (SELECT instance_cq_id
-       FROM aws_ec2_instance_security_groups
-                JOIN aws_security_group_egress_rules ON group_id = id
-       WHERE (ip = '0.0.0.0/0' OR ip = '::/0'));
+-- Find all AWS instances that have a security group that allows unrestricted egress, and are in a VPC with an internet gateway
+select aws_ec2_instances.account_id, 
+       aws_ec2_instances.region, 
+       aws_ec2_instances.instance_id, 
+       sg->>'GroupId' AS security_group_id
+from aws_ec2_instances, jsonb_array_elements(security_groups) sg
+    --  Find all instances that have egress rule that allows access to all ip addresses
+    inner join view_aws_security_group_egress_rules on id = sg->>'GroupId'
+where (ip = '0.0.0.0/0' or ip6 = '::/0')
+and ((aws_ec2_instances.vpc_id in (
+    select value->>'VpcId' FROM aws_ec2_internet_gateways, jsonb_array_elements(aws_ec2_internet_gateways.attachments) AS value))
+  or (aws_ec2_instances.vpc_id in (
+    select value->>'VpcId' FROM aws_ec2_egress_only_internet_gateways, jsonb_array_elements(aws_ec2_egress_only_internet_gateways.attachments) AS value)));
 ```
-
-You can also run the query straight from the policy pack located on our [GitHub](https://github.com/cloudquery-policies/aws/blob/main/public_egress/policy.hcl)
 
 ### Other Methods
 
-This doesn’t cover all the methods but does cover pretty much the most popular connectivity structure. For example, there are ways to peer VPCs which enables VPCs to share an Internet Gateway, this will require different queries. If we missed some other connectivity scenarios please open an issue in our [GitHub](https://github.com/cloudquery-policies/aws)
+This doesn’t cover all the methods but does cover pretty much the most popular connectivity structure. For example, there are ways to peer VPCs which enables VPCs to share an Internet Gateway, this will require different queries. If we missed some other connectivity scenarios please open an issue in our [GitHub](https://github.com/cloudquery/cloudquery)
 
 ### Other Resources
 
 EC2 instances are just one type of compute resource that can run a vulnerable application. Applications can also be run on other services including ECS, Lambda, AppRunner, Lightsail, and more.
 
-If you found this tutorial/policy useful and you would like to see more of these feel free to either open an [issue](https://github.com/cloudquery-policies/aws), hop on [discord](https://www.cloudquery.io/discord) or [tweet](https://twitter.com/cloudqueryio) us.
+If you found this tutorial/policy useful and you would like to see more of these feel free to either open an [issue](https://github.com/cloudquery/cloudquery), hop on [discord](https://www.cloudquery.io/discord) or [tweet](https://twitter.com/cloudqueryio) us.

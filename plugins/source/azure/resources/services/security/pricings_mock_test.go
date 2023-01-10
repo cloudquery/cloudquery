@@ -1,37 +1,37 @@
-// Auto generated code - DO NOT EDIT.
-
 package security
 
 import (
+	"encoding/json"
+	"net/http"
 	"testing"
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
-	"github.com/golang/mock/gomock"
-	"github.com/stretchr/testify/require"
 
-	"github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity"
+	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/gorilla/mux"
 )
 
-func TestSecurityPricings(t *testing.T) {
-	client.MockTestHelper(t, Pricings(), createPricingsMock)
-}
-
-func createPricingsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockSecurityPricingsClient(ctrl)
-	s := services.Services{
-		Security: services.SecurityClient{
-			Pricings: mockClient,
-		},
+func createPricings(router *mux.Router) error {
+	var item armsecurity.PricingsClientListResponse
+	if err := faker.FakeObject(&item); err != nil {
+		return err
 	}
 
-	data := security.Pricing{}
-	require.Nil(t, faker.FakeObject(&data))
+	router.HandleFunc("/subscriptions/{subscriptionId}/providers/Microsoft.Security/pricings", func(w http.ResponseWriter, r *http.Request) {
+		b, err := json.Marshal(&item)
+		if err != nil {
+			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)
+			return
+		}
+		if _, err := w.Write(b); err != nil {
+			http.Error(w, "failed to write", http.StatusBadRequest)
+			return
+		}
+	})
+	return nil
+}
 
-	result := security.PricingList{Value: &[]security.Pricing{data}}
-
-	mockClient.EXPECT().List(gomock.Any()).Return(result, nil)
-	return s
+func TestPricings(t *testing.T) {
+	client.MockTestHelper(t, Pricings(), createPricings)
 }
