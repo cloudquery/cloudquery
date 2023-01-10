@@ -137,3 +137,4 @@
   - [gcp_sql_users](gcp_sql_users.md)
 - [gcp_storage_buckets](gcp_storage_buckets.md)
   - [gcp_storage_bucket_policies](gcp_storage_bucket_policies.md)
+- [gcp_workflows_workflows](gcp_workflows_workflows.md)
