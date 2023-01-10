@@ -12,8 +12,8 @@ The primary key for this table is **id**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|created_at|Timestamp|
 |id (PK)|String|
+|created_at|Timestamp|
 |identity_provider|JSON|
 |name|String|
 |permissions|StringArray|
