@@ -5,6 +5,29 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v6.1.0...plugins-source-gcp-v6.1.1) (2023-01-10)
+
+
+### Bug Fixes
+
+* **gcp-resources:** Add `organization_id` and `name` as PK of `gcp_resourcemanager_folders` ([#6547](https://github.com/cloudquery/cloudquery/issues/6547)) ([3c0e702](https://github.com/cloudquery/cloudquery/commit/3c0e7022fd9826236e952901b8fd05d6863ef12e))
+* **gcp-resources:** Add `project_id` and `id` as PKs of `gcp_bigquery_datasets` ([#6532](https://github.com/cloudquery/cloudquery/issues/6532)) ([fd00133](https://github.com/cloudquery/cloudquery/commit/fd001337c2c8c8d005b79148b063d758111aa697))
+* **gcp-resources:** Add `project_id` and `id` as PKs of `gcp_bigquery_tables` ([#6533](https://github.com/cloudquery/cloudquery/issues/6533)) ([523c84f](https://github.com/cloudquery/cloudquery/commit/523c84f381334f9aecf906761da5fcd9e71a827e))
+* **gcp-resources:** Add `project_id` and `name` as PKs of `gcp_domains_registrations` ([#6537](https://github.com/cloudquery/cloudquery/issues/6537)) ([47c87b4](https://github.com/cloudquery/cloudquery/commit/47c87b49c92c4beb37bc4ccf4a2915676cb47a3a))
+* **gcp-resources:** Add `project_id` and `name` as PKs of `gcp_functions_functions` ([#6538](https://github.com/cloudquery/cloudquery/issues/6538)) ([8552503](https://github.com/cloudquery/cloudquery/commit/855250380b5610c9292c4e1c900bbf086e26fd35))
+* **gcp-resources:** Add `project_id` and `name` as PKs of `gcp_iam_deny_policies` ([#6539](https://github.com/cloudquery/cloudquery/issues/6539)) ([d230ede](https://github.com/cloudquery/cloudquery/commit/d230ede4a6ebe5b37fd25aed22a46e52dc1ebe6a))
+* **gcp-resources:** Add `project_id` and `name` as PKs of `gcp_iam_service_account_keys`, remove `service_account_unique_id` from PKs ([#6541](https://github.com/cloudquery/cloudquery/issues/6541)) ([00ca437](https://github.com/cloudquery/cloudquery/commit/00ca4378da71e4fa0aee8d718590aa301e76504b))
+* **gcp-resources:** Add `project_id` and `name` as PKs of `gcp_kms_crypto_keys` ([#6542](https://github.com/cloudquery/cloudquery/issues/6542)) ([3d4d03c](https://github.com/cloudquery/cloudquery/commit/3d4d03ccbc05523c5c75bc01940c8352009f1aa2))
+* **gcp-resources:** Add `project_id` and `name` as PKs of `gcp_kms_keyrings` ([#6543](https://github.com/cloudquery/cloudquery/issues/6543)) ([fbde9e4](https://github.com/cloudquery/cloudquery/commit/fbde9e402a22e2bf384b41d1db08081634c5b244))
+* **gcp-resources:** Add `project_id` and `name` as PKs of `gcp_run_locations` ([#6548](https://github.com/cloudquery/cloudquery/issues/6548)) ([88c1993](https://github.com/cloudquery/cloudquery/commit/88c1993a8284ab366ebbd56074aa7ae28c616a36))
+* **gcp-resources:** Add `project_id` and `name` as PKs of `gcp_run_services` ([#6549](https://github.com/cloudquery/cloudquery/issues/6549)) ([237e28d](https://github.com/cloudquery/cloudquery/commit/237e28d086e3b242f7567f434ba988b5729dbe74))
+* **gcp-resources:** Add `project_id` as PK of `gcp_logging_metrics` ([#6544](https://github.com/cloudquery/cloudquery/issues/6544)) ([599b935](https://github.com/cloudquery/cloudquery/commit/599b935d8bcf79d5e5cc9602f213ccd24bed5c1d))
+* **gcp-resources:** Add `project_id` as PK of `gcp_logging_sinks` ([#6545](https://github.com/cloudquery/cloudquery/issues/6545)) ([d183b51](https://github.com/cloudquery/cloudquery/commit/d183b519b3a0c55f40467130c5cc40ec6c160293))
+* **gcp-resources:** Add `version` to PKs of `gcp_cloudiot_device_configs` ([#6551](https://github.com/cloudquery/cloudquery/issues/6551)) ([12252c3](https://github.com/cloudquery/cloudquery/commit/12252c319467f9e09cba04bb918fd1e54dd48818))
+* **gcp-resources:** Change `gcp_appengine_firewall_ingress_rules` PK to `_cq_id` ([#6531](https://github.com/cloudquery/cloudquery/issues/6531)) ([5d87911](https://github.com/cloudquery/cloudquery/commit/5d8791179d44fbf5bbd2906adf56f13942884c4a))
+* **gcp-resources:** Remove `bucket_name` as PK of `gcp_storage_bucket_policies` ([#6550](https://github.com/cloudquery/cloudquery/issues/6550)) ([fb6a2de](https://github.com/cloudquery/cloudquery/commit/fb6a2de387ec59a75fbb9ba3be7dd2c103f380e6))
+* **gcp-resources:** Remove `metadata` from `gcp_aiplatform_models` ([#6529](https://github.com/cloudquery/cloudquery/issues/6529)) ([e068e19](https://github.com/cloudquery/cloudquery/commit/e068e19e7210d4a7b00e9e01a9122a9375ac2c25))
+
 ## [6.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v6.0.0...plugins-source-gcp-v6.1.0) (2023-01-09)
 
 
