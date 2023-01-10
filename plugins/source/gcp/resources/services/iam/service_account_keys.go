@@ -1,10 +1,10 @@
 package iam
 
 import (
+	pb "cloud.google.com/go/iam/admin/apiv1/adminpb"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 	"github.com/cloudquery/plugins/source/gcp/client"
-	pb "google.golang.org/api/iam/v1"
 )
 
 func ServiceAccountKeys() *schema.Table {
@@ -19,11 +19,19 @@ func ServiceAccountKeys() *schema.Table {
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "service_account_unique_id",
 				Type:     schema.TypeString,
 				Resolver: schema.ParentColumnResolver("unique_id"),
+			},
+			{
+				Name:     "name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Name"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
