@@ -19,11 +19,19 @@ func ServiceAccountKeys() *schema.Table {
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "service_account_unique_id",
 				Type:     schema.TypeString,
 				Resolver: schema.ParentColumnResolver("unique_id"),
+			},
+			{
+				Name:     "name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Name"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
