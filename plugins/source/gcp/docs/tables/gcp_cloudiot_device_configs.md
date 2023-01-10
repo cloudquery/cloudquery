@@ -21,4 +21,4 @@ This table depends on [gcp_cloudiot_devices](gcp_cloudiot_devices.md).
 |version (PK)|Int|
 |cloud_update_time|Timestamp|
 |device_ack_time|Timestamp|
-|binary_data|IntArray|
+|binary_data|ByteArray|
