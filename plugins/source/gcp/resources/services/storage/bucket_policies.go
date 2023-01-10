@@ -24,9 +24,6 @@ func BucketPolicies() *schema.Table {
 				Name:     "bucket_name",
 				Type:     schema.TypeString,
 				Resolver: schema.ParentColumnResolver("name"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 		},
 	}
