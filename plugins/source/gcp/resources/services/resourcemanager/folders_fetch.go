@@ -41,7 +41,10 @@ func fetchFolders(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 func resolveOrganizationId(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
 	item := r.Item.(*pb.Folder)
 	if !strings.HasPrefix(item.Parent, "organizations/") {
-		return nil
+		cl := meta.(*client.Client)
+		cl.Logger().Warn().Str("parent", item.Parent).Str("folder", item.Name).Msg("folders parent is not an organization")
+
+		return r.Set(c.Name, cl.OrgId)
 	}
 
 	return r.Set(c.Name, strings.TrimPrefix(item.Parent, "organizations/"))
