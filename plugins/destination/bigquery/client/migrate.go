@@ -123,13 +123,13 @@ func (c *Client) autoMigrateTable(ctx context.Context, client *bigquery.Client, 
 	bqTable := client.Dataset(c.pluginSpec.DatasetID).Table(table.Name)
 	md, err := bqTable.Metadata(ctx)
 	if err != nil {
-		return fmt.Errorf("failed to get table metadata: %w", err)
+		return fmt.Errorf("failed to get metadata for table %q with error: %w", table.Name, err)
 	}
 	haveSchema := md.Schema
 	wantSchema := c.bigQuerySchemaForTable(table)
 	wantSchema, err = mergeSchemas(haveSchema, wantSchema)
 	if err != nil {
-		return fmt.Errorf("failed to migrate table schema: %w", err)
+		return fmt.Errorf("failed to migrate schema for table %q with error: %w", table.Name, err)
 	}
 	tm := bigquery.TableMetadataToUpdate{
 		Name:        table.Name,
@@ -138,7 +138,7 @@ func (c *Client) autoMigrateTable(ctx context.Context, client *bigquery.Client, 
 	}
 	_, err = bqTable.Update(ctx, tm, "")
 	if err != nil {
-		return fmt.Errorf("failed to update table schema: %w", err)
+		return fmt.Errorf("failed to update schema for table %q with error: %w", table.Name, err)
 	}
 	return nil
 }
