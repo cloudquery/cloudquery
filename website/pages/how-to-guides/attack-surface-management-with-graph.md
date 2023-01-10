@@ -51,7 +51,7 @@ Let's start with a simple query to find all our IAM Roles.
 
 * Example 1: IAM User Access Keys and their linked permissions.
 
-Let's start with IAM User Access Keys.  With this query, we'll look for the 4 distinct ways with identity policies an IAM User can be granted permissions and link those to the IAM Users and to the IAM User Access Keys.
+Let's start with IAM User Access Keys.  With this query, we'll look for the 4 distinct ways with identity policies an IAM User can be granted permissions and link those to the IAM Users and to the IAM User Access Keys.  In this example, we've already created the following resources in AWS: IAM Users, IAM Groups, Inline Policies for both Groups and Users, Managed Policies for both Groups and Users, and IAM User Access Keys.
 
 An IAM User can be granted permissions from:
 * Direct Inline Policies of the IAM User
@@ -142,7 +142,7 @@ We'll use the following query to show our IAM Users: `MATCH (n:aws_iam_users) re
 
 * Example 2: Data in RDS
 
-In this example, we will focus on Relational Databases (AWS RDS) and their data.  This will include network connectivity such as VPCs, Internet Gateways, and Security Groups.  We will also look at possible data access and encryption via KMS Keys, their KMS Key Policies, and KMS Key Grants.
+In this example, we will focus on Relational Databases (AWS RDS) and their data.  This will include network connectivity such as VPCs, Internet Gateways, and Security Groups.  We will also look at possible data access and encryption via KMS Keys, their KMS Key Policies, and KMS Key Grants.  In this example, we've already created the following resources in AWS: RDS Databases, KMS Keys, KMS Key Policies, KMS Key Grants, an AWS VPC, Security Groups, and an Internet Gateway.
 
 
 Let's first create relationships between RDS instances and their encryption from KMS Keys.
@@ -197,7 +197,18 @@ CREATE (vpcs)-[r:has_internet_gateway]->(igws)
 return type(r)
 ```
 
-We've now created relationships for encryption and networking.  To display our graph, the nodes, and relationships, we will use `MATCH (n:aws_rds_instances) return n;` to return a graph visualization of our data:
+We've now created relationships for encryption and networking for our RDS instances.  
+In our sample environment, we have 4 RDS Instances.  The following image shows the following and their relationships:
+* RDS Instances in yellow.
+* VPCs in blue.
+* Security Groups in green.
+* Internet Gateways in light blue.
+* KMS Keys in orange.
+* KMS Key Policies in light pink.
+* KMS Key Grants in dark pink.
+
+To display our graph, the nodes, and relationships, we will use `MATCH (n:aws_rds_instances) return n;` to return a graph visualization of our data.
+
 
 ![Sample Graph of RDS Instances](/images/how-to-guides/attack-surface-management-with-graph/graph-instances.png)
 
