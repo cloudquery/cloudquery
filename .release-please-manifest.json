@@ -54,7 +54,7 @@
   "plugins/source/gitlab+FILLER": "0.0.0",
   "plugins/source/azuredevops": "1.0.1",
   "plugins/source/azuredevops+FILLER": "0.0.0",
-  "plugins/source/salesforce": "1.0.1",
+  "plugins/source/salesforce": "1.0.2",
   "plugins/source/salesforce+FILLER": "0.0.0",
   "plugins/source/fastly": "1.0.1",
   "plugins/source/fastly+FILLER": "0.0.0",
