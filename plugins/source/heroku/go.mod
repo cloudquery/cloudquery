@@ -7,8 +7,6 @@ require (
 	github.com/google/go-cmp v0.5.9
 	github.com/googleapis/gax-go/v2 v2.7.0
 	github.com/heroku/heroku-go/v5 v5.5.0
-	github.com/iancoleman/strcase v0.2.0
-	github.com/jinzhu/inflection v1.0.0
 	github.com/julienschmidt/httprouter v1.3.0
 	github.com/pkg/errors v0.9.1
 	github.com/rs/zerolog v1.28.0
