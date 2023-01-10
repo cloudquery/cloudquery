@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### ⚠ BREAKING CHANGES
 
+* **deps:** `aws_amp_rule_groups_namespaces` column `data` type changed from `IntArray` to `ByteArray`
 * **deps:** `aws_iam_virtual_mfa_devices` column `base32_string_seed` type changed from `IntArray` to `ByteArray`
 * **deps:** `aws_iam_virtual_mfa_devices` column `qr_code_png` type changed from `IntArray` to `ByteArray`
 
