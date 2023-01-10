@@ -47,6 +47,15 @@ func buildKmsKeys(t *testing.T, ctrl *gomock.Controller) client.Services {
 	g.NextMarker = nil
 	m.EXPECT().ListGrants(gomock.Any(), gomock.Any(), gomock.Any()).Return(&g, nil)
 
+	pn := "test policy name"
+	pj := `{"data":["data"]}`
+	m.EXPECT().ListKeyPolicies(gomock.Any(), gomock.Any(), gomock.Any()).Return(&kms.ListKeyPoliciesOutput{PolicyNames: []string{pn}}, nil)
+
+	m.EXPECT().GetKeyPolicy(gomock.Any(), &kms.GetKeyPolicyInput{
+		KeyId:      keyListEntry.KeyId,
+		PolicyName: &pn,
+	}, gomock.Any()).Return(&kms.GetKeyPolicyOutput{Policy: &pj}, nil)
+
 	return client.Services{
 		Kms: m,
 	}

@@ -307,6 +307,7 @@
 - [aws_kms_aliases](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_kms_aliases.md)
 - [aws_kms_keys](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_kms_keys.md)
   - [aws_kms_key_grants](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_kms_key_grants.md)
+  - [aws_kms_key_policies](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_kms_key_policies.md)
 - [aws_lambda_functions](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_lambda_functions.md)
   - [aws_lambda_function_event_invoke_configs](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_lambda_function_event_invoke_configs.md)
   - [aws_lambda_function_aliases](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_lambda_function_aliases.md)
