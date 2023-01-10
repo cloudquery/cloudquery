@@ -3,6 +3,7 @@ package client
 import (
 	"reflect"
 
+	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
@@ -34,5 +35,5 @@ func typeTransformer(field reflect.StructField) (schema.ValueType, error) {
 		return schema.TypeTimestamp, nil
 	}
 
-	return transformers.DefaultTypeTransformer(field)
+	return codegen.DefaultTypeTransformer(field)
 }
