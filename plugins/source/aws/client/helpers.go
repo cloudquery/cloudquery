@@ -13,8 +13,8 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/smithy-go"
-	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 type AWSService string
@@ -400,7 +400,7 @@ func Sleep(ctx context.Context, dur time.Duration) error {
 
 func CreateTrimPrefixTransformer(prefixes ...string) func(field reflect.StructField) (string, error) {
 	return func(field reflect.StructField) (string, error) {
-		name, err := codegen.DefaultNameTransformer(field)
+		name, err := transformers.DefaultNameTransformer(field)
 		if err != nil {
 			return "", err
 		}
@@ -415,7 +415,7 @@ func CreateTrimPrefixTransformer(prefixes ...string) func(field reflect.StructFi
 
 func CreateReplaceTransformer(replace map[string]string) func(field reflect.StructField) (string, error) {
 	return func(field reflect.StructField) (string, error) {
-		name, err := codegen.DefaultNameTransformer(field)
+		name, err := transformers.DefaultNameTransformer(field)
 		if err != nil {
 			return "", err
 		}
