@@ -15,7 +15,7 @@ This table depends on [gandi_domains](gandi_domains.md).
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |name (PK)|String|
-|ips|StringArray|
 |fqdn (PK)|String|
+|ips|StringArray|
 |href|String|
 |fqdn_unicode|String|
