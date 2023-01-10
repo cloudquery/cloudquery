@@ -18,7 +18,10 @@ In this guide, we will demonstrate how to set up CloudQuery for customizable Att
 
 In this guide, we will use Neo4j as a destination and AWS as a source.  For more information on how to set those up, see our documentation on [Neo4j](https://www.cloudquery.io/docs/plugins/destinations/neo4j/overview) and [AWS](https://www.cloudquery.io/docs/plugins/sources/aws/overview).
 
+For the example queries, we'll be using AWS Identity and Access Management (IAM) Users and Amazon Relational Database Service (RDS) along with some common infrastructure associated with those resources that include IAM User Access Keys, IAM Managed and Inline Policies, IAM Groups, Amazon Virtual Private Cloud (VPC), Amazon VPC Security Groups, and Internet Gateways.  Our demo environment will have those resources precreated and the graph visualizations will look different than results from your walkthrough.
+
 Refer to Neo4j's installation documentation (https://neo4j.com/docs/operations-manual/current/installation/) for help setting up Neo4j. For this walkthrough, make sure a local instance of Neo4j is up and running.  Also make sure to install [Awesome Procedures on Cypher (APOC)](https://neo4j.com/labs/apoc/) for Neo4j as we'll be using useful functionality in APOC to assist with our attack surface management use cases.  
+
 
 ### Step 1: Install or Deploy CloudQuery
 
@@ -151,7 +154,7 @@ CREATE (rdsinstances)-[r:is_encrypted_by_key]->(kmskeys)
 RETURN type(r)
 ```
 
-Let's connect KMS Keys with all their Key Grants and the access that the Key Grants may permit to those KMS Keys and data.
+Let's connect KMS Keys with all their Key Grants and the [access that the Key Grants may permit](https://www.cloudquery.io/blog/aws-kms-key-grants-deep-dive) to those KMS Keys and data.
 
 ```cypher
 MATCH (keygrants:aws_kms_key_grants), (kmskeys:aws_kms_keys)
@@ -200,6 +203,6 @@ We've now created relationships for encryption and networking.  To display our g
 
 ## Summary
 
-We have demonstrated how to get started with Attack Surface Management (ASM) and graph visualization with Neo4j along with some starter queries.  Now you should be able to customize and create more queries, relationships, and utilize CloudQuery to help improve the security posture of your organization!
+We have demonstrated how to get started with Attack Surface Management (ASM) and graph visualization with Neo4j along with some starter queries regarding databases, data, and AWS Identity and Access Management.  Now you should be able to customize and create more queries, relationships, and utilize CloudQuery to help improve the security posture of your organization!
 
 If you have use cases, custom queries, and examples from using CloudQuery, we would love to hear from you! Reach out to us on [GitHub](https://github.com/cloudquery/cloudquery) or [Discord](https://cloudquery.io/discord)!
