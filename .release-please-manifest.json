@@ -68,7 +68,7 @@
   "plugins/destination/file+FILLER": "0.0.0",
   "plugins/destination/azblob": "1.0.1",
   "plugins/destination/azblob+FILLER": "0.0.0",
-  "plugins/destination/neo4j": "1.0.1",
+  "plugins/destination/neo4j": "1.0.2",
   "plugins/destination/neo4j+FILLER": "0.0.0",
   "plugins/destination/kafka": "1.0.0",
   "plugins/destination/kafka+FILLER": "0.0.0"
