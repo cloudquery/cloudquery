@@ -62,7 +62,7 @@
   "plugins/source/snyk+FILLER": "0.0.0",
   "plugins/destination/gcs": "1.0.2",
   "plugins/destination/gcs+FILLER": "0.0.0",
-  "plugins/destination/s3": "1.0.2",
+  "plugins/destination/s3": "1.0.3",
   "plugins/destination/s3+FILLER": "0.0.0",
   "plugins/destination/file": "1.0.2",
   "plugins/destination/file+FILLER": "0.0.0",
