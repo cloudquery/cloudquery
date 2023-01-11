@@ -44,7 +44,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/frontdoor"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/hanaonazure"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/hdinsight"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/healthbot"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/healthcareapis"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/hybridcompute"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/hybriddatamanager"
@@ -168,7 +167,6 @@ func generatedTables() []*schema.Table {
 		frontdoor.NetworkExperimentProfiles(),
 		hanaonazure.SapMonitors(),
 		hdinsight.Clusters(),
-		healthbot.Bots(),
 		healthcareapis.Services(),
 		hybridcompute.PrivateLinkScopes(),
 		hybriddatamanager.DataManagers(),
