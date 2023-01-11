@@ -4,7 +4,6 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 	"google.golang.org/protobuf/reflect/protoreflect"
@@ -27,7 +26,7 @@ var toReplace = map[string]string{
 }
 
 func replaceTransformer(field reflect.StructField) (string, error) {
-	name, err := codegen.DefaultNameTransformer(field)
+	name, err := transformers.DefaultNameTransformer(field)
 	if err != nil {
 		return "", err
 	}
@@ -38,10 +37,6 @@ func replaceTransformer(field reflect.StructField) (string, error) {
 }
 
 func typeTransformer(field reflect.StructField) (schema.ValueType, error) {
-	if field.Name == "Etag" && field.Type == reflect.TypeOf([]byte{}) {
-		return schema.TypeByteArray, nil
-	}
-
 	switch reflect.New(field.Type).Elem().Interface().(type) {
 	case *timestamppb.Timestamp,
 		timestamppb.Timestamp:
