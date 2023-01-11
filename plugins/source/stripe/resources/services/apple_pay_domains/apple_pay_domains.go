@@ -37,12 +37,9 @@ func fetchApplePayDomains(tableName string) schema.TableResolver {
 
 		it := cl.Services.ApplePayDomains.List(lp)
 		for it.Next() {
-
 			res <- it.ApplePayDomain()
-
 		}
 
 		return it.Err()
-
 	}
 }

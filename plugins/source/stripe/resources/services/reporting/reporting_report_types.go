@@ -37,12 +37,9 @@ func fetchReportingReportTypes(tableName string) schema.TableResolver {
 
 		it := cl.Services.ReportingReportTypes.List(lp)
 		for it.Next() {
-
 			res <- it.ReportingReportType()
-
 		}
 
 		return it.Err()
-
 	}
 }

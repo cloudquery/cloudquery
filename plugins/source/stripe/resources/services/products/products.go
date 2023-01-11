@@ -55,11 +55,9 @@ func fetchProducts(tableName string) schema.TableResolver {
 
 		it := cl.Services.Products.List(lp)
 		for it.Next() {
-
 			data := it.Product()
 			lp.Created = client.MaxInt64(lp.Created, &data.Created)
 			res <- data
-
 		}
 
 		err := it.Err()
@@ -67,6 +65,5 @@ func fetchProducts(tableName string) schema.TableResolver {
 			return cl.Backend.Set(ctx, tableName, cl.ID(), strconv.FormatInt(*lp.Created, 10))
 		}
 		return err
-
 	}
 }

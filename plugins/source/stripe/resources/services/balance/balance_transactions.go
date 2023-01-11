@@ -2,6 +2,7 @@ package balance
 
 import (
 	"context"
+
 	"fmt"
 	"strconv"
 
@@ -54,11 +55,9 @@ func fetchBalanceTransactions(tableName string) schema.TableResolver {
 
 		it := cl.Services.BalanceTransactions.List(lp)
 		for it.Next() {
-
 			data := it.BalanceTransaction()
 			lp.Created = client.MaxInt64(lp.Created, &data.Created)
 			res <- data
-
 		}
 
 		err := it.Err()
@@ -66,6 +65,5 @@ func fetchBalanceTransactions(tableName string) schema.TableResolver {
 			return cl.Backend.Set(ctx, tableName, cl.ID(), strconv.FormatInt(*lp.Created, 10))
 		}
 		return err
-
 	}
 }

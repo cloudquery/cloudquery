@@ -77,23 +77,23 @@ func fetch{{.TableName | ToPascal}}(tableName string) schema.TableResolver {
 
 		it := cl.Services.{{.TableName | ToPascal}}.List(lp)
 		for it.Next() {
-{{if .StateParamName}}
+{{if .StateParamName -}}
 			data := it.{{.TableName | ToPascal | Singularize}}()
 			lp.{{.StateParamName}} = client.MaxInt64(lp.{{.StateParamName}}, &data.{{.StateParamName}})
 			res <- data
-{{else}}
+{{else -}}
 			res <- it.{{.TableName | ToPascal | Singularize}}()
-{{end}}
+{{end -}}
 		}
 
-{{if .StateParamName}}
+{{if .StateParamName -}}
 		err := it.Err()
 		if cl.Backend != nil && err == nil && lp.{{.StateParamName}} != nil {
 			return cl.Backend.Set(ctx, tableName, cl.ID(), strconv.FormatInt(*lp.{{.StateParamName}}, 10))
 		}
 		return err
-{{else}}
+{{else -}}
 		return it.Err()
-{{end}}
+{{end -}}
 	}
 }

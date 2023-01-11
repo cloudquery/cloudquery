@@ -37,12 +37,9 @@ func fetchTerminalConfigurations(tableName string) schema.TableResolver {
 
 		it := cl.Services.TerminalConfigurations.List(lp)
 		for it.Next() {
-
 			res <- it.TerminalConfiguration()
-
 		}
 
 		return it.Err()
-
 	}
 }

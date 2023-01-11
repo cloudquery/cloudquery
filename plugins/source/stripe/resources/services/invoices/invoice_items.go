@@ -37,12 +37,9 @@ func fetchInvoiceItems(tableName string) schema.TableResolver {
 
 		it := cl.Services.InvoiceItems.List(lp)
 		for it.Next() {
-
 			res <- it.InvoiceItem()
-
 		}
 
 		return it.Err()
-
 	}
 }

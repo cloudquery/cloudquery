@@ -41,12 +41,9 @@ func fetchTreasuryCreditReversals(tableName string) schema.TableResolver {
 
 		it := cl.Services.TreasuryCreditReversals.List(lp)
 		for it.Next() {
-
 			res <- it.TreasuryCreditReversal()
-
 		}
 
 		return it.Err()
-
 	}
 }

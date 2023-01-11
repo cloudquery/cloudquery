@@ -37,12 +37,9 @@ func fetchRadarEarlyFraudWarnings(tableName string) schema.TableResolver {
 
 		it := cl.Services.RadarEarlyFraudWarnings.List(lp)
 		for it.Next() {
-
 			res <- it.RadarEarlyFraudWarning()
-
 		}
 
 		return it.Err()
-
 	}
 }

@@ -41,12 +41,9 @@ func fetchTreasuryInboundTransfers(tableName string) schema.TableResolver {
 
 		it := cl.Services.TreasuryInboundTransfers.List(lp)
 		for it.Next() {
-
 			res <- it.TreasuryInboundTransfer()
-
 		}
 
 		return it.Err()
-
 	}
 }

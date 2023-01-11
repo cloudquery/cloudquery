@@ -37,12 +37,9 @@ func fetchCheckoutSessions(tableName string) schema.TableResolver {
 
 		it := cl.Services.CheckoutSessions.List(lp)
 		for it.Next() {
-
 			res <- it.CheckoutSession()
-
 		}
 
 		return it.Err()
-
 	}
 }

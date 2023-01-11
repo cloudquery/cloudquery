@@ -41,12 +41,9 @@ func fetchTreasuryOutboundPayments(tableName string) schema.TableResolver {
 
 		it := cl.Services.TreasuryOutboundPayments.List(lp)
 		for it.Next() {
-
 			res <- it.TreasuryOutboundPayment()
-
 		}
 
 		return it.Err()
-
 	}
 }

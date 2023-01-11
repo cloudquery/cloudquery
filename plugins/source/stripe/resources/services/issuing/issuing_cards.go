@@ -55,11 +55,9 @@ func fetchIssuingCards(tableName string) schema.TableResolver {
 
 		it := cl.Services.IssuingCards.List(lp)
 		for it.Next() {
-
 			data := it.IssuingCard()
 			lp.Created = client.MaxInt64(lp.Created, &data.Created)
 			res <- data
-
 		}
 
 		err := it.Err()
@@ -67,6 +65,5 @@ func fetchIssuingCards(tableName string) schema.TableResolver {
 			return cl.Backend.Set(ctx, tableName, cl.ID(), strconv.FormatInt(*lp.Created, 10))
 		}
 		return err
-
 	}
 }

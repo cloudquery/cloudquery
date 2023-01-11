@@ -41,12 +41,9 @@ func fetchCapabilities(tableName string) schema.TableResolver {
 
 		it := cl.Services.Capabilities.List(lp)
 		for it.Next() {
-
 			res <- it.Capability()
-
 		}
 
 		return it.Err()
-
 	}
 }

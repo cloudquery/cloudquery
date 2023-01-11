@@ -37,12 +37,9 @@ func fetchCountrySpecs(tableName string) schema.TableResolver {
 
 		it := cl.Services.CountrySpecs.List(lp)
 		for it.Next() {
-
 			res <- it.CountrySpec()
-
 		}
 
 		return it.Err()
-
 	}
 }

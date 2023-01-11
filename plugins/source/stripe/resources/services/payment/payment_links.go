@@ -37,12 +37,9 @@ func fetchPaymentLinks(tableName string) schema.TableResolver {
 
 		it := cl.Services.PaymentLinks.List(lp)
 		for it.Next() {
-
 			res <- it.PaymentLink()
-
 		}
 
 		return it.Err()
-
 	}
 }
