@@ -13,7 +13,7 @@ func DnsResolvers() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_dnsresolver_dns_resolvers",
 		Resolver:  fetchDnsResolvers,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_network),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_dnsresolver_dns_resolvers", client.Namespacemicrosoft_network),
 		Transform: transformers.TransformWithStruct(&armdnsresolver.DNSResolver{}),
 		Columns: []schema.Column{
 			{

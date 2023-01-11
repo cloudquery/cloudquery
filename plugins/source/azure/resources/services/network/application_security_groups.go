@@ -13,7 +13,7 @@ func ApplicationSecurityGroups() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_application_security_groups",
 		Resolver:  fetchApplicationSecurityGroups,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_network),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_network_application_security_groups", client.Namespacemicrosoft_network),
 		Transform: transformers.TransformWithStruct(&armnetwork.ApplicationSecurityGroup{}),
 		Columns: []schema.Column{
 			{

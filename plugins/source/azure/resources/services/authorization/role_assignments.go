@@ -13,7 +13,7 @@ func RoleAssignments() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_authorization_role_assignments",
 		Resolver:  fetchRoleAssignments,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_authorization),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_authorization_role_assignments", client.Namespacemicrosoft_authorization),
 		Transform: transformers.TransformWithStruct(&armauthorization.RoleAssignment{}),
 		Columns: []schema.Column{
 			{

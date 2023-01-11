@@ -7,6 +7,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/compute"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/cosmos"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/costmanagement"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/datafactory"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/keyvault"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/logic"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/mariadb"
@@ -36,6 +37,7 @@ var customTables = []*schema.Table{
 	compute.SKUs(),
 	cosmos.DatabaseAccounts(),
 	costmanagement.Views(),
+	datafactory.Factories(),
 	keyvault.Keyvault(),
 	keyvault.KeyvaultManagedHsms(),
 	logic.Workflows(),

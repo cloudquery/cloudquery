@@ -108,7 +108,7 @@ func generateNamespaces(namespaces map[string]string) error {
 		"ToCamel": strcase.ToCamel,
 	}).ParseFS(templateFS, "templates/namespaces.go.tpl")
 	if err != nil {
-		return fmt.Errorf("failed to parse recipe.go.tpl: %w", err)
+		return fmt.Errorf("failed to parse namespaces.go.tpl: %w", err)
 	}
 
 	var buff bytes.Buffer

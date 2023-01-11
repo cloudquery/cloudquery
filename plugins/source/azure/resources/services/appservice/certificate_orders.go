@@ -13,7 +13,7 @@ func CertificateOrders() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_appservice_certificate_orders",
 		Resolver:  fetchCertificateOrders,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_certificateregistration),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_appservice_certificate_orders", client.Namespacemicrosoft_certificateregistration),
 		Transform: transformers.TransformWithStruct(&armappservice.CertificateOrder{}),
 		Columns: []schema.Column{
 			{

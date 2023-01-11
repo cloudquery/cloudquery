@@ -13,7 +13,7 @@ func {{.Name | ToCamel}}() *schema.Table {
     return &schema.Table{
 			Name: "azure_{{.PackageName}}_{{.Name}}",
 			Resolver: fetch{{.Name | ToCamel}},
-			Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespace{{.NamespaceConst}}),
+			Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_{{.PackageName}}_{{.Name}}", client.Namespace{{.NamespaceConst}}),
 			Transform: transformers.TransformWithStruct(&{{.BaseImportPath}}.{{.ResponseValueStruct}}{}),
 			Columns: []schema.Column{
 				{

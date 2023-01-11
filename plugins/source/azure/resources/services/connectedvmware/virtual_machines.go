@@ -13,7 +13,7 @@ func VirtualMachines() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_connectedvmware_virtual_machines",
 		Resolver:  fetchVirtualMachines,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_connectedvmwarevsphere),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_connectedvmware_virtual_machines", client.Namespacemicrosoft_connectedvmwarevsphere),
 		Transform: transformers.TransformWithStruct(&armconnectedvmware.VirtualMachine{}),
 		Columns: []schema.Column{
 			{

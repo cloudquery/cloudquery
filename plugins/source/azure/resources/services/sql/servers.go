@@ -13,7 +13,7 @@ func Servers() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_sql_servers",
 		Resolver:  fetchServers,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_sql),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_sql_servers", client.Namespacemicrosoft_sql),
 		Transform: transformers.TransformWithStruct(&armsql.Server{}),
 		Columns: []schema.Column{
 			{

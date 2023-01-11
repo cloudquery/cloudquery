@@ -13,7 +13,7 @@ func Locations() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_security_locations",
 		Resolver:  fetchLocations,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_security),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_security_locations", client.Namespacemicrosoft_security),
 		Transform: transformers.TransformWithStruct(&armsecurity.AscLocation{}),
 		Columns: []schema.Column{
 			{
