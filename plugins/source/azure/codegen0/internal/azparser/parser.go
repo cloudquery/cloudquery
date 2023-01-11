@@ -111,6 +111,10 @@ var newFuncToSkipPerPackage = map[string]map[string]bool{
 		// requires setting an API version explicitly
 		"NewDeploymentsClient": true,
 	},
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azuredata/armazuredata": {
+		// Requires setting the API version to 2019-05-10-preview
+		"NewSQLServerRegistrationsClient": true,
+	},
 }
 
 var reNewClient = regexp.MustCompile(`New[a-zA-Z]+Client`)
