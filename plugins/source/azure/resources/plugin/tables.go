@@ -55,7 +55,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/mysqlflexibleservers"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/network"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/networkfunction"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/nginx"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/notificationhubs"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/operationalinsights"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/peering"
@@ -222,7 +221,6 @@ func generatedTables() []*schema.Table {
 		network.Watchers(),
 		network.WebApplicationFirewallPolicies(),
 		networkfunction.AzureTrafficCollectorsBySubscription(),
-		nginx.Deployments(),
 		notificationhubs.Namespaces(),
 		operationalinsights.Clusters(),
 		operationalinsights.Workspaces(),

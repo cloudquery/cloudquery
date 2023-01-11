@@ -14,6 +14,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/monitor"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/mysql"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/network"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/nginx"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/redis"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/resources"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/search"
@@ -53,6 +54,7 @@ var customTables = []*schema.Table{
 	resources.Resources(),
 	subscription.Tenants(),
 	search.Services(),
+	nginx.Deployments(),
 }
 
 func Plugin() *source.Plugin {

@@ -107,6 +107,10 @@ var newFuncToSkipPerPackage = map[string]map[string]bool{
 		// requires renaming etag
 		"NewFactoriesClient": true,
 	},
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx/v2": {
+		// requires setting an API version explicitly
+		"NewDeploymentsClient": true,
+	},
 }
 
 var reNewClient = regexp.MustCompile(`New[a-zA-Z]+Client`)
