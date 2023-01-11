@@ -12,6 +12,9 @@ import { HowToGuideHeader } from "../../components/HowToGuideHeader"
 
 In this guide, we will demonstrate how to set up CloudQuery for customizable Attack Surface Management (ASM) and how to get started with utilizing graph visualization to execute security queries.  With cloud infrastructure and security, graph visualization can be used effectively to understand relationships between assets, attack paths, and attack surface to aid with Attack Surface Management and improving security posture of your organization.
 
+Once we're done with the post, you'll be able to create and build your own Attack Surface Management and Graph Visualization queries and relationships in Neo4j similar to the example graph of AWS IAM Users, their permissions, and IAM user access keys.  We'll show how to build the queries and relationships for this and other examples. 
+![Example visualization of IAM Users](/images/how-to-guides/attack-surface-management-with-graph/graph-users.png)
+
 ## Walkthrough
 
 ### Prerequisites
@@ -34,6 +37,39 @@ The following command will sync data from AWS as a source to Neo4J as a destinat
 `cloudquery sync aws-neo.yml neo4j.yml`
 
 For more information on configuration files, see [AWS source configuration](/docs/plugins/sources/aws/configuration) and [Neo4j destination configuration](/docs/plugins/destinations/neo4j/overview)
+
+The configuration we're running locally looks like this:
+
+Example aws-neo.yml source configuration file:
+```yaml
+kind: source
+spec:
+  name: "aws"
+  path: "cloudquery/aws"
+  version: "v9.2.0"
+  destinations: ["neo4j"]
+  tables: ["*"]
+  spec:
+    regions: 
+      - us-east-1
+    accounts:
+      - id: "123412341234" #Your AWS Account Number here
+      - local_profile: "test-neo4j-example"
+```
+
+Example neo4j.yml destination configuration file:
+```yaml
+  kind: destination
+  spec:
+    name: "neo4j"
+    registry: "github"
+    path: "cloudquery/neo4j"
+    version: "v1.0.1"
+    spec:
+      connection_string: "bolt://localhost:7687"
+      username: "${USERNAME}"
+      password: "${PASSWORD}"
+```
 
 You should see a `sync completed successfully` message.  CloudQuery has now synced your AWS data to Neo4j.
 
@@ -204,7 +240,7 @@ CREATE (rds_is)-[r:is_in_vpc]->(vpcs)
 return type(r)
 ```
 
-Lastly, we'll create relationships between Internet Gateways and their VPCs.
+Lastly, we'll create relationships between Internet Gateways and their VPCs.  In this cypher query, we use `[0]` to pull the first item in the list.  Internet Gateways can only be attached to 1 VPC, so this will return the only attachment in the attachment properties of the Internet Gateway resource.
 
 ```sql
 MATCH 
