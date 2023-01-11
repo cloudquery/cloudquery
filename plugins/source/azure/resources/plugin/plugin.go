@@ -35,6 +35,7 @@ var customTables = []*schema.Table{
 	cdn.Profiles(),
 	compute.VirtualMachines(),
 	compute.SKUs(),
+	compute.VirtualMachineScaleSets(),
 	cosmos.DatabaseAccounts(),
 	costmanagement.Views(),
 	datafactory.Factories(),
