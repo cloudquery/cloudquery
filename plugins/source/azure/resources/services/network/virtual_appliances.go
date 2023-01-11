@@ -13,7 +13,7 @@ func VirtualAppliances() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_virtual_appliances",
 		Resolver:  fetchVirtualAppliances,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_network),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_network_virtual_appliances", client.Namespacemicrosoft_network),
 		Transform: transformers.TransformWithStruct(&armnetwork.VirtualAppliance{}),
 		Columns: []schema.Column{
 			{

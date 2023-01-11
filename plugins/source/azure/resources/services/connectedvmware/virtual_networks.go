@@ -13,7 +13,7 @@ func VirtualNetworks() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_connectedvmware_virtual_networks",
 		Resolver:  fetchVirtualNetworks,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_connectedvmwarevsphere),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_connectedvmware_virtual_networks", client.Namespacemicrosoft_connectedvmwarevsphere),
 		Transform: transformers.TransformWithStruct(&armconnectedvmware.VirtualNetwork{}),
 		Columns: []schema.Column{
 			{

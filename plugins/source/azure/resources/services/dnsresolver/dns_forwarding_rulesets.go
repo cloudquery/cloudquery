@@ -13,7 +13,7 @@ func DnsForwardingRulesets() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_dnsresolver_dns_forwarding_rulesets",
 		Resolver:  fetchDnsForwardingRulesets,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_network),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_dnsresolver_dns_forwarding_rulesets", client.Namespacemicrosoft_network),
 		Transform: transformers.TransformWithStruct(&armdnsresolver.DNSForwardingRuleset{}),
 		Columns: []schema.Column{
 			{

@@ -13,7 +13,7 @@ func SKUs() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_compute_skus",
 		Resolver:  fetchResourceSKUs,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_compute),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_compute_skus", client.Namespacemicrosoft_compute),
 		Transform: transformers.TransformWithStruct(&armcompute.ResourceSKU{}),
 		Columns: []schema.Column{
 			{

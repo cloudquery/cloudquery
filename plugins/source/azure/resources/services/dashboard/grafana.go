@@ -13,7 +13,7 @@ func Grafana() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_dashboard_grafana",
 		Resolver:  fetchGrafana,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_dashboard),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_dashboard_grafana", client.Namespacemicrosoft_dashboard),
 		Transform: transformers.TransformWithStruct(&armdashboard.ManagedGrafana{}),
 		Columns: []schema.Column{
 			{

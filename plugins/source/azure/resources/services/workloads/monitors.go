@@ -13,7 +13,7 @@ func Monitors() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_workloads_monitors",
 		Resolver:  fetchMonitors,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_workloads),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_workloads_monitors", client.Namespacemicrosoft_workloads),
 		Transform: transformers.TransformWithStruct(&armworkloads.Monitor{}),
 		Columns: []schema.Column{
 			{

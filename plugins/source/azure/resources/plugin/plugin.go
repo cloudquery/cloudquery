@@ -7,12 +7,15 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/compute"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/cosmos"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/costmanagement"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/datafactory"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/keyvault"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/logic"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/mariadb"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/monitor"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/mysql"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/network"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/nginx"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/peering"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/redis"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/resources"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/search"
@@ -34,8 +37,10 @@ var customTables = []*schema.Table{
 	cdn.Profiles(),
 	compute.VirtualMachines(),
 	compute.SKUs(),
+	compute.VirtualMachineScaleSets(),
 	cosmos.DatabaseAccounts(),
 	costmanagement.Views(),
+	datafactory.Factories(),
 	keyvault.Keyvault(),
 	keyvault.KeyvaultManagedHsms(),
 	logic.Workflows(),
@@ -50,6 +55,8 @@ var customTables = []*schema.Table{
 	resources.Resources(),
 	subscription.Tenants(),
 	search.Services(),
+	nginx.Deployments(),
+	peering.ServiceProviders(),
 }
 
 func Plugin() *source.Plugin {

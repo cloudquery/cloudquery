@@ -13,7 +13,7 @@ func SecurityPartnerProviders() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_security_partner_providers",
 		Resolver:  fetchSecurityPartnerProviders,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_network),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_network_security_partner_providers", client.Namespacemicrosoft_network),
 		Transform: transformers.TransformWithStruct(&armnetwork.SecurityPartnerProvider{}),
 		Columns: []schema.Column{
 			{

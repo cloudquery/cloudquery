@@ -13,7 +13,7 @@ func DiskEncryptionSets() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_compute_disk_encryption_sets",
 		Resolver:  fetchDiskEncryptionSets,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_compute),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_compute_disk_encryption_sets", client.Namespacemicrosoft_compute),
 		Transform: transformers.TransformWithStruct(&armcompute.DiskEncryptionSet{}),
 		Columns: []schema.Column{
 			{

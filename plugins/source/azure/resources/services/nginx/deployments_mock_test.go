@@ -8,7 +8,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx/v2"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/gorilla/mux"
 )
