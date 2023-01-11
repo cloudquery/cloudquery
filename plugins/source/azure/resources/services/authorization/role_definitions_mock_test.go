@@ -20,8 +20,7 @@ func createRoleDefinitions(router *mux.Router) error {
 
 	emptyStr := ""
 	item.NextLink = &emptyStr
-
-	router.HandleFunc("/{scope}/providers/Microsoft.Authorization/roleDefinitions", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/subscriptions/"+client.TestSubscription+"/providers/Microsoft.Authorization/roleDefinitions", func(w http.ResponseWriter, r *http.Request) {
 		b, err := json.Marshal(&item)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)

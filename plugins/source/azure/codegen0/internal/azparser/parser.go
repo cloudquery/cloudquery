@@ -115,6 +115,10 @@ var newFuncToSkipPerPackage = map[string]map[string]bool{
 		// Requires setting the API version to 2019-05-10-preview
 		"NewSQLServerRegistrationsClient": true,
 	},
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthbot/armhealthbot": {
+		// Requires setting the API version to 2022-08-08
+		"NewBotsClient": true,
+	},
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering": {
 		// The primary key for this resource is Name and not ID
 		"NewServiceProvidersClient": true,
