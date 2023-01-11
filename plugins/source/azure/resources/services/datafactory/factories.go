@@ -13,8 +13,8 @@ func Factories() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_datafactory_factories",
 		Resolver:  fetchFactories,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_datafactory),
-		Transform: transformers.TransformWithStruct(&armdatafactory.Factory{}, transformers.WithSkipFields("ETag")),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_datafactory_factories", client.Namespacemicrosoft_datafactory),
+		Transform: transformers.TransformWithStruct(&armdatafactory.Factory{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -28,11 +28,6 @@ func Factories() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
-			},
-			{
-				Name:     "etag",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ETag"),
 			},
 		},
 	}

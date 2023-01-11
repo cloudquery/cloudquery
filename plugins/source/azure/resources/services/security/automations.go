@@ -13,7 +13,7 @@ func Automations() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_security_automations",
 		Resolver:  fetchAutomations,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_security),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_security_automations", client.Namespacemicrosoft_security),
 		Transform: transformers.TransformWithStruct(&armsecurity.Automation{}),
 		Columns: []schema.Column{
 			{

@@ -13,7 +13,7 @@ func VirtualRouters() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_virtual_routers",
 		Resolver:  fetchVirtualRouters,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_network),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_network_virtual_routers", client.Namespacemicrosoft_network),
 		Transform: transformers.TransformWithStruct(&armnetwork.VirtualRouter{}),
 		Columns: []schema.Column{
 			{
