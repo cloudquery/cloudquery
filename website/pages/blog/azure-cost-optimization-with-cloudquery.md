@@ -163,4 +163,4 @@ FROM cost_by_res c JOIN azure_resources r ON LOWER(r.full_id)=LOWER(c.res_id);
 
 In this blog post we just shared an example of what you can do by combining cost data with your infrastructure state/metadata synced by CloudQuery. The number of use cases around cost (aka "FinOps" :) ) is really infinite and it all depends on what you are trying to achieve and optimize for.
 
-We hope you enjoyed this tutorial and found it useful. If you have any questions or feedback, please reach out to us on [Discord](https://discord.gg/8qZ7Y4Z) or [Twitter](https://twitter.com/cloudqueryio).
+We hope you enjoyed this tutorial and found it useful. If you have any questions or feedback, please reach out to us on [Discord](https://www.cloudquery.io/discord) or [Twitter](https://twitter.com/cloudqueryio).
