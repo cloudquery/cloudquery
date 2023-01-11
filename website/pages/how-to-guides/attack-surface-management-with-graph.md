@@ -158,7 +158,7 @@ CREATE (rdsinstances)-[r:is_encrypted_by_key]->(kmskeys)
 RETURN type(r)
 ```
 
-Let's connect KMS Keys with all their Key Grants and the [access that the Key Grants may permit](https://www.cloudquery.io/blog/aws-kms-key-grants-deep-dive) to those KMS Keys and data.
+Let's connect KMS Keys with all their Key Grants and the [access that the Key Grants may permit](/blog/aws-kms-key-grants-deep-dive) to those KMS Keys and data.
 
 ```sql
 MATCH 
