@@ -1,6 +1,6 @@
 # Table: azure_peering_service_providers
 
-The primary key for this table is **id**.
+The primary key for this table is **name**.
 
 ## Columns
 
@@ -11,7 +11,7 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|id (PK)|String|
+|name (PK)|String|
 |properties|JSON|
-|name|String|
+|id|String|
 |type|String|

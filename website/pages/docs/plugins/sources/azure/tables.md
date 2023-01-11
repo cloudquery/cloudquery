@@ -142,7 +142,6 @@
 - [azure_operationalinsights_workspaces](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_operationalinsights_workspaces.md)
 - [azure_peering_service_countries](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_peering_service_countries.md)
 - [azure_peering_service_locations](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_peering_service_locations.md)
-- [azure_peering_service_providers](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_peering_service_providers.md)
 - [azure_portal_list_tenant_configuration_violations](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_portal_list_tenant_configuration_violations.md)
 - [azure_portal_tenant_configurations](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_portal_tenant_configurations.md)
 - [azure_postgresql_servers](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_postgresql_servers.md)
@@ -235,3 +234,4 @@
 - [azure_subscription_tenants](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_subscription_tenants.md)
 - [azure_search_services](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_search_services.md)
 - [azure_nginx_deployments](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_nginx_deployments.md)
+- [azure_peering_service_providers](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_peering_service_providers.md)
