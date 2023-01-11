@@ -3,6 +3,7 @@
 https://stripe.com/docs/api/tax_rates
 
 The primary key for this table is **id**.
+It supports incremental syncs.
 
 ## Columns
 

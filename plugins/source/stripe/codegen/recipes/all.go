@@ -89,11 +89,10 @@ var AllResources = []*Resource{
 		StateParamName: createdStateParam,
 	},
 	{
-		DataStruct:     &stripe.InvoiceItem{},
-		Service:        "invoices",
-		Description:    "https://stripe.com/docs/api/invoiceitems",
-		IgnoreInTests:  []string{"Plan"},
-		StateParamName: createdStateParam,
+		DataStruct:    &stripe.InvoiceItem{},
+		Service:       "invoices",
+		Description:   "https://stripe.com/docs/api/invoiceitems",
+		IgnoreInTests: []string{"Plan"},
 	},
 	{
 		DataStruct:     &stripe.IssuingAuthorization{},

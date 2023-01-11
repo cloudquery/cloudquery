@@ -37,8 +37,12 @@ func fetchPaymentMethods(tableName string) schema.TableResolver {
 
 		it := cl.Services.PaymentMethods.List(lp)
 		for it.Next() {
+
 			res <- it.PaymentMethod()
+
 		}
+
 		return it.Err()
+
 	}
 }

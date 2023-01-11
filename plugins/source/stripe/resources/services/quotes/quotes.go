@@ -37,8 +37,12 @@ func fetchQuotes(tableName string) schema.TableResolver {
 
 		it := cl.Services.Quotes.List(lp)
 		for it.Next() {
+
 			res <- it.Quote()
+
 		}
+
 		return it.Err()
+
 	}
 }

@@ -37,8 +37,12 @@ func fetchSigmaScheduledQueryRuns(tableName string) schema.TableResolver {
 
 		it := cl.Services.SigmaScheduledQueryRuns.List(lp)
 		for it.Next() {
+
 			res <- it.SigmaScheduledQueryRun()
+
 		}
+
 		return it.Err()
+
 	}
 }

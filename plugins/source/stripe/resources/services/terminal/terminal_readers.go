@@ -37,8 +37,12 @@ func fetchTerminalReaders(tableName string) schema.TableResolver {
 
 		it := cl.Services.TerminalReaders.List(lp)
 		for it.Next() {
+
 			res <- it.TerminalReader()
+
 		}
+
 		return it.Err()
+
 	}
 }

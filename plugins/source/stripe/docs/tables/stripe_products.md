@@ -3,6 +3,7 @@
 https://stripe.com/docs/api/products
 
 The primary key for this table is **id**.
+It supports incremental syncs.
 
 ## Columns
 

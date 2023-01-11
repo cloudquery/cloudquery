@@ -41,8 +41,12 @@ func fetchFeeRefunds(tableName string) schema.TableResolver {
 
 		it := cl.Services.FeeRefunds.List(lp)
 		for it.Next() {
+
 			res <- it.FeeRefund()
+
 		}
+
 		return it.Err()
+
 	}
 }

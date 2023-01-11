@@ -37,8 +37,12 @@ func fetchTaxCodes(tableName string) schema.TableResolver {
 
 		it := cl.Services.TaxCodes.List(lp)
 		for it.Next() {
+
 			res <- it.TaxCode()
+
 		}
+
 		return it.Err()
+
 	}
 }

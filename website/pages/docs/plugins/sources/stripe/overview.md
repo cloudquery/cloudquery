@@ -11,9 +11,14 @@ The CloudQuery Stripe plugin pulls data from Stripe and loads it into any suppor
 
 In order to fetch information from Stripe, `cloudquery` needs to be authenticated using a [secret API key](https://stripe.com/docs/keys) from your Stripe account. You can view and manage your API keys in [the Stripe Dashboard](https://stripe.com/login?redirect=/account/apikeys).
 
+## Incremental Syncing
+
+The Stripe plugin supports incremental syncing. This means that only new data will be fetched from Stripe and loaded into your destination for supported tables (support depending on API endpoint). This is done by keeping track of the last item fetched and only fetching data that has been created since then.
+To enable this, `backend` option must be set in the spec (as shown below). This is documented in the [Managing Incremental Tables](/docs/advanced-topics/managing-incremental-tables) section.
+
 ### Example
 
-This example syncs from Stripe to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](https://www.cloudquery.io/docs/reference/source-spec).
+This example syncs from Stripe to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec). Incremental syncing is enabled and will be saved to a `.cq/state/` directory by default.
 
 ```yaml
 kind: source
@@ -27,7 +32,7 @@ spec:
   skip_tables:
     - stripe_issuing*  # Needs sign-up at https://stripe.com/issuing
     - stripe_treasury* # Needs sign-up at https://stripe.com/treasury
-
+  backend: local
   # Stripe specific configuration
   spec:
     api_key: "<YOUR_SECRET_API_KEY_HERE>"

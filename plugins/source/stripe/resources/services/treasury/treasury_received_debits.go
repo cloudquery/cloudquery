@@ -41,8 +41,12 @@ func fetchTreasuryReceivedDebits(tableName string) schema.TableResolver {
 
 		it := cl.Services.TreasuryReceivedDebits.List(lp)
 		for it.Next() {
+
 			res <- it.TreasuryReceivedDebit()
+
 		}
+
 		return it.Err()
+
 	}
 }

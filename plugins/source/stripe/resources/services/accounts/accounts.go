@@ -29,6 +29,7 @@ func Accounts() *schema.Table {
 				},
 			},
 		},
+		IsIncremental: true,
 
 		Relations: []*schema.Table{
 			Capabilities(),
@@ -58,8 +59,18 @@ func fetchAccounts(tableName string) schema.TableResolver {
 
 		it := cl.Services.Accounts.List(lp)
 		for it.Next() {
-			res <- it.Account()
+
+			data := it.Account()
+			lp.Created = client.MaxInt64(lp.Created, &data.Created)
+			res <- data
+
 		}
-		return it.Err()
+
+		err := it.Err()
+		if cl.Backend != nil && err == nil && lp.Created != nil {
+			return cl.Backend.Set(ctx, tableName, cl.ID(), strconv.FormatInt(*lp.Created, 10))
+		}
+		return err
+
 	}
 }

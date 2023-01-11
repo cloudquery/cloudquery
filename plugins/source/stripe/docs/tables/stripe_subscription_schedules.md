@@ -3,6 +3,7 @@
 https://stripe.com/docs/api/subscription_schedules
 
 The primary key for this table is **id**.
+It supports incremental syncs.
 
 ## Columns
 

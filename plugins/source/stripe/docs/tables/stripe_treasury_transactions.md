@@ -3,7 +3,7 @@
 https://stripe.com/docs/api/treasury_transactions
 
 The primary key for this table is **id**.
-
+It supports incremental syncs.
 ## Relations
 
 This table depends on [stripe_treasury_financial_accounts](stripe_treasury_financial_accounts.md).

@@ -3,7 +3,7 @@
 https://stripe.com/docs/api/accounts
 
 The primary key for this table is **id**.
-
+It supports incremental syncs.
 ## Relations
 
 The following tables depend on stripe_accounts:

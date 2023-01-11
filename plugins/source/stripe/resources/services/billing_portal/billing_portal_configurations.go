@@ -37,8 +37,12 @@ func fetchBillingPortalConfigurations(tableName string) schema.TableResolver {
 
 		it := cl.Services.BillingPortalConfigurations.List(lp)
 		for it.Next() {
+
 			res <- it.BillingPortalConfiguration()
+
 		}
+
 		return it.Err()
+
 	}
 }

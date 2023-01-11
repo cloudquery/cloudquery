@@ -37,8 +37,12 @@ func fetchWebhookEndpoints(tableName string) schema.TableResolver {
 
 		it := cl.Services.WebhookEndpoints.List(lp)
 		for it.Next() {
+
 			res <- it.WebhookEndpoint()
+
 		}
+
 		return it.Err()
+
 	}
 }

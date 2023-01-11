@@ -16,3 +16,16 @@ func CreateIgnoreInTestsTransformer(fieldNames ...string) transformers.IgnoreInT
 		return false
 	}
 }
+
+func MaxInt64(a, b *int64) *int64 {
+	if a == nil {
+		return b
+	}
+	if b == nil {
+		return a
+	}
+	if *a > *b {
+		return a
+	}
+	return b
+}

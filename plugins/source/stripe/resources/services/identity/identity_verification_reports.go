@@ -29,6 +29,7 @@ func IdentityVerificationReports() *schema.Table {
 				},
 			},
 		},
+		IsIncremental: true,
 	}
 }
 
@@ -54,8 +55,18 @@ func fetchIdentityVerificationReports(tableName string) schema.TableResolver {
 
 		it := cl.Services.IdentityVerificationReports.List(lp)
 		for it.Next() {
-			res <- it.IdentityVerificationReport()
+
+			data := it.IdentityVerificationReport()
+			lp.Created = client.MaxInt64(lp.Created, &data.Created)
+			res <- data
+
 		}
-		return it.Err()
+
+		err := it.Err()
+		if cl.Backend != nil && err == nil && lp.Created != nil {
+			return cl.Backend.Set(ctx, tableName, cl.ID(), strconv.FormatInt(*lp.Created, 10))
+		}
+		return err
+
 	}
 }

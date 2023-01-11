@@ -37,8 +37,12 @@ func fetchTerminalLocations(tableName string) schema.TableResolver {
 
 		it := cl.Services.TerminalLocations.List(lp)
 		for it.Next() {
+
 			res <- it.TerminalLocation()
+
 		}
+
 		return it.Err()
+
 	}
 }

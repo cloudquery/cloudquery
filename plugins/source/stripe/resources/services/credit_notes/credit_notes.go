@@ -37,8 +37,12 @@ func fetchCreditNotes(tableName string) schema.TableResolver {
 
 		it := cl.Services.CreditNotes.List(lp)
 		for it.Next() {
+
 			res <- it.CreditNote()
+
 		}
+
 		return it.Err()
+
 	}
 }

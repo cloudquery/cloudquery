@@ -3,6 +3,7 @@
 https://stripe.com/docs/api/identity_verification_reports
 
 The primary key for this table is **id**.
+It supports incremental syncs.
 
 ## Columns
 
