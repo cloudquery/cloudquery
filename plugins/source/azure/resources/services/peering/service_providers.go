@@ -18,6 +18,9 @@ func ServiceProviders() *schema.Table {
 				Name:     "subscription_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveAzureSubscription,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "name",

@@ -1,6 +1,6 @@
 # Table: azure_peering_service_providers
 
-The primary key for this table is **name**.
+The composite primary key for this table is (**subscription_id**, **name**).
 
 ## Columns
 
@@ -10,7 +10,7 @@ The primary key for this table is **name**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|subscription_id|String|
+|subscription_id (PK)|String|
 |name (PK)|String|
 |properties|JSON|
 |id|String|
