@@ -12,7 +12,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/authorization"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/automation"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/azurearcdata"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/azuredata"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/batch"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/billing"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/botservice"
@@ -77,7 +76,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/streamanalytics"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/support"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/synapse"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/windowsesu"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/windowsiot"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/workloads"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -112,7 +110,6 @@ func generatedTables() []*schema.Table {
 		azurearcdata.PostgresInstances(),
 		azurearcdata.SqlManagedInstances(),
 		azurearcdata.SqlServerInstances(),
-		azuredata.SqlServerRegistrations(),
 		batch.Account(),
 		billing.Accounts(),
 		billing.EnrollmentAccounts(),
@@ -276,7 +273,6 @@ func generatedTables() []*schema.Table {
 		support.Tickets(),
 		synapse.PrivateLinkHubs(),
 		synapse.Workspaces(),
-		windowsesu.MultipleActivationKeys(),
 		windowsiot.Services(),
 		workloads.Monitors(),
 	}

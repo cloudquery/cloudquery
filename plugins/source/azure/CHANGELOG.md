@@ -5,6 +5,25 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v3.2.0...plugins-source-azure-v3.3.0) (2023-01-11)
+
+
+### Features
+
+* **azure-resources:** Add Virtual Machine Scale Set VMs ([#6718](https://github.com/cloudquery/cloudquery/issues/6718)) ([00a096f](https://github.com/cloudquery/cloudquery/commit/00a096f1fde3a91ff3030473b5c80047140cd232))
+* Log info message when namespace not registered for subscription ([#6705](https://github.com/cloudquery/cloudquery/issues/6705)) ([01a1e4c](https://github.com/cloudquery/cloudquery/commit/01a1e4c8d348c4411275b517790351aeaf8a645a))
+
+
+### Bug Fixes
+
+* **azure-resources:** Make `subscription_id, name` PKs of `azure_peering_service_providers` instead of `id` ([#6694](https://github.com/cloudquery/cloudquery/issues/6694)) ([d327465](https://github.com/cloudquery/cloudquery/commit/d327465a14defbde26356372b06348d2f5d38ddc))
+* **azure-resources:** Pass `subscriptions/&lt;id&gt;` when listing role definitions ([#6669](https://github.com/cloudquery/cloudquery/issues/6669)) ([2983a4d](https://github.com/cloudquery/cloudquery/commit/2983a4d74affe0409a5053f330bf8059da4c4ca8))
+* **azure-resources:** Remove non working `azure_windowsesu_multiple_activation_keys` ([#6680](https://github.com/cloudquery/cloudquery/issues/6680)) ([1fc3583](https://github.com/cloudquery/cloudquery/commit/1fc3583473d537f5bb31128f198b716186b889aa))
+* **azure-resources:** Set APIVersion to "2019-05-10-preview" when fetching SQL Server Registrations ([#6672](https://github.com/cloudquery/cloudquery/issues/6672)) ([42942e0](https://github.com/cloudquery/cloudquery/commit/42942e03bbb59c7ca28e88c6b8156531fe656aae))
+* **azure-resources:** Set APIVersion to "2022-08-08" when fetching Healthbots ([#6673](https://github.com/cloudquery/cloudquery/issues/6673)) ([ff79a3d](https://github.com/cloudquery/cloudquery/commit/ff79a3d2e28d574717780b85c584a28d9e6f7005))
+* **azure-resources:** Update `armnginx` to v2 ([#6682](https://github.com/cloudquery/cloudquery/issues/6682)) ([aef47b5](https://github.com/cloudquery/cloudquery/commit/aef47b5e74996ac5d8242139a4b985244a2a4476))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.24.2 ([#6695](https://github.com/cloudquery/cloudquery/issues/6695)) ([694ab9f](https://github.com/cloudquery/cloudquery/commit/694ab9f3e20473146e3620d7b03bb17eb259d697))
+
 ## [3.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v3.1.0...plugins-source-azure-v3.2.0) (2023-01-10)
 
 

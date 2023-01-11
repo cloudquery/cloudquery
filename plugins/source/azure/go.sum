@@ -214,8 +214,6 @@ github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport v1.0.0 
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport v1.0.0/go.mod h1:1cSbREmeSg3E0axaZjCa6PjG5LgxP+GNrsj+6x1CShk=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse v0.5.0 h1:CMHxfGGGbg9ua3uSBNRdhKa+fciYNavayBiG0I6LA34=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse v0.5.0/go.mod h1:0LrLPHG/bVyQWENxWqSj2ycnnrpTjeSFrKuWymCBceM=
-github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsesu/armwindowsesu v0.5.0 h1:3KqtRRZBq1l4VzJXMDl63EXdfAp4bQoULM39fIZITDM=
-github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsesu/armwindowsesu v0.5.0/go.mod h1:yEqTWOTAVoFRXM0b6XSb1xpN4HgplSMQYjsZz1PFtg0=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsiot/armwindowsiot v1.0.0 h1:gg1fn6y2Jd+fTUxMau0UINwLCjEzELbyzoy8+c26phU=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsiot/armwindowsiot v1.0.0/go.mod h1:kdl0zSso4qqJdaxAr31cwQXwBZLd+zUT5O3EQbC3Jc8=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads v0.2.0 h1:t6Ef1sDPDa/hPY6HWuATAYD7OEX4e3tz0sh32ecN+g8=
