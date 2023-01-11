@@ -60,6 +60,7 @@ const (
 	SESService                  AWSService = "ses"
 	WAFRegional                 AWSService = "waf-regional"
 	WorkspacesService           AWSService = "workspaces"
+	XRayService                 AWSService = "xray"
 )
 
 const (

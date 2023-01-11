@@ -474,3 +474,4 @@
 - [aws_xray_encryption_configs](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_xray_encryption_configs.md)
 - [aws_xray_groups](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_xray_groups.md)
 - [aws_xray_sampling_rules](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_xray_sampling_rules.md)
+- [aws_xray_resource_policies](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_xray_resource_policies.md)
