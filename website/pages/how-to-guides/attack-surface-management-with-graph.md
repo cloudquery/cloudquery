@@ -12,7 +12,8 @@ import { HowToGuideHeader } from "../../components/HowToGuideHeader"
 
 In this guide, we will demonstrate how to set up CloudQuery for customizable Attack Surface Management (ASM) and how to get started with utilizing graph visualization to execute security queries.  With cloud infrastructure and security, graph visualization can be used effectively to understand relationships between assets, attack paths, and attack surface to aid with Attack Surface Management and improving security posture of your organization.
 
-Once we're done with the post, you'll be able to create and build your own Attack Surface Management and Graph Visualization queries and relationships in Neo4j similar to the example graph of AWS IAM Users, their permissions, and IAM user access keys.  We'll show how to build the queries and relationships for this and other examples. 
+Once we're done with the post, you'll be able to create and build your own Attack Surface Management and Graph Visualization queries and relationships in Neo4j similar to the example graph of AWS IAM Users, their permissions, and IAM user access keys.  We'll show how to build the queries and relationships for the below graph visualization and other examples. 
+
 ![Example visualization of IAM Users](/images/how-to-guides/attack-surface-management-with-graph/graph-users.png)
 
 ## Walkthrough
