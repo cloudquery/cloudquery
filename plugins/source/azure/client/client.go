@@ -26,6 +26,7 @@ const Namespacemicrosoft_logic = "microsoft.logic"
 const Namespacemicrosoft_costmanagement = "microsoft.costmanagement"
 const Namespacemicrosoft_storage = "microsoft.storage"
 const Namespacenginx_nginxplus = "nginx.nginxplus"
+const Namespacemicrosoft_azuredata = "microsoft.azuredata"
 const Namespacemicrosoft_healthbot = "microsoft.healthbot"
 
 var otherNamespaces = []string{
@@ -38,6 +39,7 @@ var otherNamespaces = []string{
 	Namespacemicrosoft_costmanagement,
 	Namespacemicrosoft_storage,
 	Namespacenginx_nginxplus,
+	Namespacemicrosoft_azuredata,
 	Namespacemicrosoft_healthbot,
 }
 

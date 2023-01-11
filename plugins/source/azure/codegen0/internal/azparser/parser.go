@@ -115,6 +115,10 @@ var newFuncToSkipPerPackage = map[string]map[string]bool{
 		// Getting "The resource type could not be found in the namespace 'Microsoft.WindowsESU' for api version '2019-09-16-preview'". Seems like the API doesn't work
 		"NewMultipleActivationKeysClient": true,
 	},
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azuredata/armazuredata": {
+		// Requires setting the API version to 2019-05-10-preview
+		"NewSQLServerRegistrationsClient": true,
+	},
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthbot/armhealthbot": {
 		// Requires setting the API version to 2022-08-08
 		"NewBotsClient": true,
