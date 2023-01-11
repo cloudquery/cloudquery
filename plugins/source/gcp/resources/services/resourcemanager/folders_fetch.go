@@ -2,7 +2,6 @@ package resourcemanager
 
 import (
 	"context"
-	"strings"
 
 	"google.golang.org/api/iterator"
 
@@ -36,13 +35,4 @@ func fetchFolders(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 		res <- resp
 	}
 	return nil
-}
-
-func resolveOrganizationId(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
-	item := r.Item.(*pb.Folder)
-	if !strings.HasPrefix(item.Parent, "organizations/") {
-		return nil
-	}
-
-	return r.Set(c.Name, strings.TrimPrefix(item.Parent, "organizations/"))
 }

@@ -13,7 +13,7 @@ func Workflows() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_logic_workflows",
 		Resolver:  fetchWorkflows,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_logic),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_logic_workflows", client.Namespacemicrosoft_logic),
 		Transform: transformers.TransformWithStruct(&armlogic.Workflow{}),
 		Columns: []schema.Column{
 			{

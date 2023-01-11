@@ -29,7 +29,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/dashboard"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/databox"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/datadog"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/datafactory"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/datalakeanalytics"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/datalakestore"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/datamigration"
@@ -45,7 +44,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/frontdoor"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/hanaonazure"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/hdinsight"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/healthbot"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/healthcareapis"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/hybridcompute"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/hybriddatamanager"
@@ -56,7 +54,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/mysqlflexibleservers"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/network"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/networkfunction"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/nginx"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/notificationhubs"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/operationalinsights"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/peering"
@@ -133,7 +130,6 @@ func generatedTables() []*schema.Table {
 		compute.Images(),
 		compute.RestorePointCollections(),
 		compute.Snapshots(),
-		compute.VirtualMachineScaleSets(),
 		confluent.MarketplaceAgreements(),
 		connectedvmware.Clusters(),
 		connectedvmware.Datastores(),
@@ -154,7 +150,6 @@ func generatedTables() []*schema.Table {
 		databox.Jobs(),
 		datadog.MarketplaceAgreements(),
 		datadog.Monitors(),
-		datafactory.Factories(),
 		datalakeanalytics.Accounts(),
 		datalakestore.Accounts(),
 		datamigration.Services(),
@@ -173,7 +168,6 @@ func generatedTables() []*schema.Table {
 		frontdoor.NetworkExperimentProfiles(),
 		hanaonazure.SapMonitors(),
 		hdinsight.Clusters(),
-		healthbot.Bots(),
 		healthcareapis.Services(),
 		hybridcompute.PrivateLinkScopes(),
 		hybriddatamanager.DataManagers(),
@@ -225,13 +219,11 @@ func generatedTables() []*schema.Table {
 		network.Watchers(),
 		network.WebApplicationFirewallPolicies(),
 		networkfunction.AzureTrafficCollectorsBySubscription(),
-		nginx.Deployments(),
 		notificationhubs.Namespaces(),
 		operationalinsights.Clusters(),
 		operationalinsights.Workspaces(),
 		peering.ServiceCountries(),
 		peering.ServiceLocations(),
-		peering.ServiceProviders(),
 		portal.ListTenantConfigurationViolations(),
 		portal.TenantConfigurations(),
 		postgresql.Servers(),

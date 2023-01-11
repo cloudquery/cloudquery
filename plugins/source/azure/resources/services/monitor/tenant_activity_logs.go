@@ -13,7 +13,7 @@ func TenantActivityLogs() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_monitor_tenant_activity_logs",
 		Resolver:  fetchTenantActivityLogs,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_insights),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_monitor_tenant_activity_logs", client.Namespacemicrosoft_insights),
 		Transform: transformers.TransformWithStruct(&armmonitor.EventData{}),
 		Columns: []schema.Column{
 			{

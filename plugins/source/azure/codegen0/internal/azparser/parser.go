@@ -43,8 +43,9 @@ var newFuncToSkipPerPackage = map[string]map[string]bool{
 	},
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute": {
 		// we migrated this to manual written client as it has childs
-		"NewVirtualMachinesClient": true,
-		"NewResourceSKUsClient":    true,
+		"NewVirtualMachinesClient":         true,
+		"NewResourceSKUsClient":            true,
+		"NewVirtualMachineScaleSetsClient": true,
 	},
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos": {
 		"NewDatabaseAccountsClient": true,
@@ -101,6 +102,22 @@ var newFuncToSkipPerPackage = map[string]map[string]bool{
 		// we migrated this to manual written client as it has childs
 		"NewAccountsClient":        true,
 		"NewDeletedAccountsClient": true,
+	},
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory": {
+		// requires renaming etag
+		"NewFactoriesClient": true,
+	},
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx/v2": {
+		// requires setting an API version explicitly
+		"NewDeploymentsClient": true,
+	},
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthbot/armhealthbot": {
+		// Requires setting the API version to 2022-08-08
+		"NewBotsClient": true,
+	},
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering": {
+		// The primary key for this resource is Name and not ID
+		"NewServiceProvidersClient": true,
 	},
 }
 

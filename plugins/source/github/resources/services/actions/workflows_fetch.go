@@ -10,6 +10,11 @@ import (
 	"github.com/google/go-github/v48/github"
 )
 
+type Workflow struct {
+	*github.Workflow
+	Repository string `json:"repository"`
+}
+
 func fetchWorkflows(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	opts := &github.RepositoryListByOrgOptions{ListOptions: github.ListOptions{PerPage: 100}}
@@ -25,7 +30,9 @@ func fetchWorkflows(ctx context.Context, meta schema.ClientMeta, _ *schema.Resou
 				if err != nil {
 					return err
 				}
-				res <- workflows.Workflows
+				for _, w := range workflows.Workflows {
+					res <- Workflow{Workflow: w, Repository: *repo.Name}
+				}
 				opts.Page = resp.NextPage
 				if opts.Page == resp.LastPage {
 					break
@@ -42,7 +49,14 @@ func fetchWorkflows(ctx context.Context, meta schema.ClientMeta, _ *schema.Resou
 
 func resolveContents(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	workflow := resource.Item.(*github.Workflow)
+	workflow := resource.Item.(Workflow)
+	if *workflow.Path == "" {
+		// Workflow path is empty, so we cannot retrieve the contents.
+		// It is unclear when and why this happens in the GitHub API, but in this case we
+		// leave the content column empty out of necessity.
+		// See https://github.com/cloudquery/cloudquery/issues/6667 for details.
+		return nil
+	}
 
 	parsedUrl, err := url.Parse(*workflow.HTMLURL)
 	if err != nil {
@@ -50,7 +64,7 @@ func resolveContents(ctx context.Context, meta schema.ClientMeta, resource *sche
 	}
 
 	pathParts := strings.Split(parsedUrl.Path, "/")
-	if len(pathParts) < 2 {
+	if len(pathParts) < 5 {
 		return nil
 	}
 	owner := pathParts[1]

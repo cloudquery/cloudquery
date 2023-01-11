@@ -13,7 +13,7 @@ func BgpServiceCommunities() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_bgp_service_communities",
 		Resolver:  fetchBgpServiceCommunities,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_network),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_network_bgp_service_communities", client.Namespacemicrosoft_network),
 		Transform: transformers.TransformWithStruct(&armnetwork.BgpServiceCommunity{}),
 		Columns: []schema.Column{
 			{

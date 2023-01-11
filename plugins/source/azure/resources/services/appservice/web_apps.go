@@ -13,7 +13,7 @@ func WebApps() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_appservice_web_apps",
 		Resolver:  fetchWebApps,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_web),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_appservice_web_apps", client.Namespacemicrosoft_web),
 		Transform: transformers.TransformWithStruct(&armappservice.Site{}),
 		Columns: []schema.Column{
 			{

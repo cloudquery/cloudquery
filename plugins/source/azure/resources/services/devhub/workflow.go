@@ -13,7 +13,7 @@ func Workflow() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_devhub_workflow",
 		Resolver:  fetchWorkflow,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_devhub),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_devhub_workflow", client.Namespacemicrosoft_devhub),
 		Transform: transformers.TransformWithStruct(&armdevhub.Workflow{}),
 		Columns: []schema.Column{
 			{

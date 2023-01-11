@@ -13,7 +13,7 @@ func Namespaces() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_servicebus_namespaces",
 		Resolver:  fetchNamespaces,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_servicebus),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_servicebus_namespaces", client.Namespacemicrosoft_servicebus),
 		Transform: transformers.TransformWithStruct(&armservicebus.SBNamespace{}),
 		Columns: []schema.Column{
 			{

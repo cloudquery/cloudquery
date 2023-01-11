@@ -13,7 +13,7 @@ func EnrollmentAccounts() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_billing_enrollment_accounts",
 		Resolver:  fetchEnrollmentAccounts,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_billing),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_billing_enrollment_accounts", client.Namespacemicrosoft_billing),
 		Transform: transformers.TransformWithStruct(&armbilling.EnrollmentAccountSummary{}),
 		Columns: []schema.Column{
 			{
