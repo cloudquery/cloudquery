@@ -18,7 +18,7 @@ This table depends on [stripe_treasury_financial_accounts](stripe_treasury_finan
 |_cq_parent_id|UUID|
 |id (PK)|String|
 |amount|Int|
-|created|Int|
+|created|Timestamp|
 |currency|String|
 |financial_account|String|
 |hosted_regulatory_receipt_url|String|

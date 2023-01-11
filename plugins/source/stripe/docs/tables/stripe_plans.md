@@ -3,7 +3,7 @@
 https://stripe.com/docs/api/plans
 
 The primary key for this table is **id**.
-It supports incremental syncs.
+It supports incremental syncs based on the **created** column.
 
 ## Columns
 
@@ -14,12 +14,12 @@ It supports incremental syncs.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |id (PK)|String|
+|created (Incremental Key)|Timestamp|
 |active|Bool|
 |aggregate_usage|String|
 |amount|Int|
 |amount_decimal|Float|
 |billing_scheme|String|
-|created|Int|
 |currency|String|
 |deleted|Bool|
 |interval|String|

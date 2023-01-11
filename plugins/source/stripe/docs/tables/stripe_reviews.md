@@ -3,7 +3,7 @@
 https://stripe.com/docs/api/reviews
 
 The primary key for this table is **id**.
-It supports incremental syncs.
+It supports incremental syncs based on the **created** column.
 
 ## Columns
 
@@ -14,10 +14,10 @@ It supports incremental syncs.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |id (PK)|String|
+|created (Incremental Key)|Timestamp|
 |billing_zip|String|
 |charge|JSON|
 |closed_reason|String|
-|created|Int|
 |ip_address|String|
 |ip_address_location|JSON|
 |livemode|Bool|

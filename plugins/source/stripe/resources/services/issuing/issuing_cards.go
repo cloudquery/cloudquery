@@ -16,7 +16,7 @@ func IssuingCards() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_issuing_cards",
 		Description: `https://stripe.com/docs/api/issuing_cards`,
-		Transform:   transformers.TransformWithStruct(&stripe.IssuingCard{}, transformers.WithSkipFields("APIResource", "ID")),
+		Transform:   transformers.TransformWithStruct(&stripe.IssuingCard{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
 		Resolver:    fetchIssuingCards("issuing_cards"),
 
 		Columns: []schema.Column{
@@ -26,6 +26,14 @@ func IssuingCards() *schema.Table {
 				Resolver: schema.PathResolver("ID"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "created",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Created"),
+				CreationOptions: schema.ColumnCreationOptions{
+					IncrementalKey: true,
 				},
 			},
 		},

@@ -15,7 +15,7 @@ The primary key for this table is **id**.
 |id (PK)|String|
 |actionable|Bool|
 |charge|JSON|
-|created|Int|
+|created|Timestamp|
 |fraud_type|String|
 |livemode|Bool|
 |object|String|

@@ -14,7 +14,7 @@ The primary key for this table is **id**.
 |_cq_parent_id|UUID|
 |id (PK)|String|
 |amount|Int|
-|created|Int|
+|created|Timestamp|
 |currency|String|
 |customer|JSON|
 |customer_balance_transaction|JSON|

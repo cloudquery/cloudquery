@@ -21,7 +21,7 @@ The primary key for this table is **id**.
 |automatic_tax|JSON|
 |collection_method|String|
 |computed|JSON|
-|created|Int|
+|created|Timestamp|
 |currency|String|
 |customer|JSON|
 |default_tax_rates|JSON|

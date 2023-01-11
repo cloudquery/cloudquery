@@ -3,7 +3,7 @@
 https://stripe.com/docs/api/balance_transactions
 
 The primary key for this table is **id**.
-It supports incremental syncs.
+It supports incremental syncs based on the **created** column.
 
 ## Columns
 
@@ -14,9 +14,9 @@ It supports incremental syncs.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |id (PK)|String|
+|created (Incremental Key)|Timestamp|
 |amount|Int|
 |available_on|Int|
-|created|Int|
 |currency|String|
 |description|String|
 |exchange_rate|Float|

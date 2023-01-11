@@ -3,7 +3,7 @@
 https://stripe.com/docs/api/shipping_rates
 
 The primary key for this table is **id**.
-It supports incremental syncs.
+It supports incremental syncs based on the **created** column.
 
 ## Columns
 
@@ -14,8 +14,8 @@ It supports incremental syncs.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |id (PK)|String|
+|created (Incremental Key)|Timestamp|
 |active|Bool|
-|created|Int|
 |delivery_estimate|JSON|
 |display_name|String|
 |fixed_amount|JSON|

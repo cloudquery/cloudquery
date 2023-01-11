@@ -15,7 +15,7 @@ The primary key for this table is **id**.
 |id (PK)|String|
 |api_version|String|
 |application|String|
-|created|Int|
+|created|Timestamp|
 |deleted|Bool|
 |description|String|
 |enabled_events|StringArray|

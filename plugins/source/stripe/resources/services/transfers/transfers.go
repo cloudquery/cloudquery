@@ -16,7 +16,7 @@ func Transfers() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_transfers",
 		Description: `https://stripe.com/docs/api/transfers`,
-		Transform:   transformers.TransformWithStruct(&stripe.Transfer{}, transformers.WithSkipFields("APIResource", "ID")),
+		Transform:   transformers.TransformWithStruct(&stripe.Transfer{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
 		Resolver:    fetchTransfers("transfers"),
 
 		Columns: []schema.Column{
@@ -26,6 +26,14 @@ func Transfers() *schema.Table {
 				Resolver: schema.PathResolver("ID"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "created",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Created"),
+				CreationOptions: schema.ColumnCreationOptions{
+					IncrementalKey: true,
 				},
 			},
 		},

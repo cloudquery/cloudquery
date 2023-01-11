@@ -16,7 +16,7 @@ func Products() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_products",
 		Description: `https://stripe.com/docs/api/products`,
-		Transform:   transformers.TransformWithStruct(&stripe.Product{}, transformers.WithSkipFields("APIResource", "ID"), transformers.WithIgnoreInTestsTransformer(client.CreateIgnoreInTestsTransformer("Attributes", "DeactivateOn"))),
+		Transform:   transformers.TransformWithStruct(&stripe.Product{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"), transformers.WithIgnoreInTestsTransformer(client.CreateIgnoreInTestsTransformer("Attributes", "DeactivateOn")))...),
 		Resolver:    fetchProducts("products"),
 
 		Columns: []schema.Column{
@@ -26,6 +26,14 @@ func Products() *schema.Table {
 				Resolver: schema.PathResolver("ID"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "created",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Created"),
+				CreationOptions: schema.ColumnCreationOptions{
+					IncrementalKey: true,
 				},
 			},
 		},

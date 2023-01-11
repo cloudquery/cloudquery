@@ -16,7 +16,7 @@ func Accounts() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_accounts",
 		Description: `https://stripe.com/docs/api/accounts`,
-		Transform:   transformers.TransformWithStruct(&stripe.Account{}, transformers.WithSkipFields("APIResource", "ID")),
+		Transform:   transformers.TransformWithStruct(&stripe.Account{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
 		Resolver:    fetchAccounts("accounts"),
 
 		Columns: []schema.Column{
@@ -26,6 +26,14 @@ func Accounts() *schema.Table {
 				Resolver: schema.PathResolver("ID"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "created",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Created"),
+				CreationOptions: schema.ColumnCreationOptions{
+					IncrementalKey: true,
 				},
 			},
 		},

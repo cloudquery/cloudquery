@@ -3,7 +3,7 @@
 https://stripe.com/docs/api/invoices
 
 The primary key for this table is **id**.
-It supports incremental syncs.
+It supports incremental syncs based on the **created** column.
 
 ## Columns
 
@@ -14,6 +14,7 @@ It supports incremental syncs.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |id (PK)|String|
+|created (Incremental Key)|Timestamp|
 |account_country|String|
 |account_name|String|
 |account_tax_ids|JSON|
@@ -29,7 +30,6 @@ It supports incremental syncs.
 |billing_reason|String|
 |charge|JSON|
 |collection_method|String|
-|created|Int|
 |currency|String|
 |customer|JSON|
 |customer_address|JSON|

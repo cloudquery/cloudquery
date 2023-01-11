@@ -16,7 +16,7 @@ func Files() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_files",
 		Description: `https://stripe.com/docs/api/files`,
-		Transform:   transformers.TransformWithStruct(&stripe.File{}, transformers.WithSkipFields("APIResource", "ID")),
+		Transform:   transformers.TransformWithStruct(&stripe.File{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
 		Resolver:    fetchFiles("files"),
 
 		Columns: []schema.Column{
@@ -26,6 +26,14 @@ func Files() *schema.Table {
 				Resolver: schema.PathResolver("ID"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "created",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Created"),
+				CreationOptions: schema.ColumnCreationOptions{
+					IncrementalKey: true,
 				},
 			},
 		},

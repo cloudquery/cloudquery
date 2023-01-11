@@ -16,7 +16,7 @@ func ShippingRates() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_shipping_rates",
 		Description: `https://stripe.com/docs/api/shipping_rates`,
-		Transform:   transformers.TransformWithStruct(&stripe.ShippingRate{}, transformers.WithSkipFields("APIResource", "ID")),
+		Transform:   transformers.TransformWithStruct(&stripe.ShippingRate{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
 		Resolver:    fetchShippingRates("shipping_rates"),
 
 		Columns: []schema.Column{
@@ -26,6 +26,14 @@ func ShippingRates() *schema.Table {
 				Resolver: schema.PathResolver("ID"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "created",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Created"),
+				CreationOptions: schema.ColumnCreationOptions{
+					IncrementalKey: true,
 				},
 			},
 		},

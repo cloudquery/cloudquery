@@ -19,7 +19,7 @@ This table depends on [stripe_treasury_financial_accounts](stripe_treasury_finan
 |id (PK)|String|
 |amount|Int|
 |cancelable|Bool|
-|created|Int|
+|created|Timestamp|
 |currency|String|
 |customer|String|
 |description|String|

@@ -16,7 +16,7 @@ func TreasuryTransactionEntries() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_treasury_transaction_entries",
 		Description: `https://stripe.com/docs/api/treasury_transaction_entries`,
-		Transform:   transformers.TransformWithStruct(&stripe.TreasuryTransactionEntry{}, transformers.WithSkipFields("APIResource", "ID")),
+		Transform:   transformers.TransformWithStruct(&stripe.TreasuryTransactionEntry{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
 		Resolver:    fetchTreasuryTransactionEntries("treasury_transaction_entries"),
 
 		Columns: []schema.Column{
@@ -26,6 +26,14 @@ func TreasuryTransactionEntries() *schema.Table {
 				Resolver: schema.PathResolver("ID"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "created",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Created"),
+				CreationOptions: schema.ColumnCreationOptions{
+					IncrementalKey: true,
 				},
 			},
 		},

@@ -16,7 +16,7 @@ func BalanceTransactions() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_balance_transactions",
 		Description: `https://stripe.com/docs/api/balance_transactions`,
-		Transform:   transformers.TransformWithStruct(&stripe.BalanceTransaction{}, transformers.WithSkipFields("APIResource", "ID")),
+		Transform:   transformers.TransformWithStruct(&stripe.BalanceTransaction{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
 		Resolver:    fetchBalanceTransactions("balance_transactions"),
 
 		Columns: []schema.Column{
@@ -26,6 +26,14 @@ func BalanceTransactions() *schema.Table {
 				Resolver: schema.PathResolver("ID"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "created",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Created"),
+				CreationOptions: schema.ColumnCreationOptions{
+					IncrementalKey: true,
 				},
 			},
 		},

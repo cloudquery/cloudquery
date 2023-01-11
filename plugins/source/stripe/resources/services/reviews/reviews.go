@@ -16,7 +16,7 @@ func Reviews() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_reviews",
 		Description: `https://stripe.com/docs/api/reviews`,
-		Transform:   transformers.TransformWithStruct(&stripe.Review{}, transformers.WithSkipFields("APIResource", "ID")),
+		Transform:   transformers.TransformWithStruct(&stripe.Review{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
 		Resolver:    fetchReviews("reviews"),
 
 		Columns: []schema.Column{
@@ -26,6 +26,14 @@ func Reviews() *schema.Table {
 				Resolver: schema.PathResolver("ID"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "created",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Created"),
+				CreationOptions: schema.ColumnCreationOptions{
+					IncrementalKey: true,
 				},
 			},
 		},

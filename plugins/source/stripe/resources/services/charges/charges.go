@@ -16,7 +16,7 @@ func Charges() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_charges",
 		Description: `https://stripe.com/docs/api/charges`,
-		Transform:   transformers.TransformWithStruct(&stripe.Charge{}, transformers.WithSkipFields("APIResource", "ID"), transformers.WithIgnoreInTestsTransformer(client.CreateIgnoreInTestsTransformer("Destination", "Dispute", "Level3", "Source"))),
+		Transform:   transformers.TransformWithStruct(&stripe.Charge{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"), transformers.WithIgnoreInTestsTransformer(client.CreateIgnoreInTestsTransformer("Destination", "Dispute", "Level3", "Source")))...),
 		Resolver:    fetchCharges("charges"),
 
 		Columns: []schema.Column{
@@ -26,6 +26,14 @@ func Charges() *schema.Table {
 				Resolver: schema.PathResolver("ID"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "created",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Created"),
+				CreationOptions: schema.ColumnCreationOptions{
+					IncrementalKey: true,
 				},
 			},
 		},

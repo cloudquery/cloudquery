@@ -13,7 +13,7 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |id (PK)|String|
-|created|Int|
+|created|Timestamp|
 |deleted|Bool|
 |domain_name|String|
 |livemode|Bool|

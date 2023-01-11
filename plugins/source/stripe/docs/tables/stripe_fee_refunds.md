@@ -19,7 +19,7 @@ This table depends on [stripe_application_fees](stripe_application_fees.md).
 |id (PK)|String|
 |amount|Int|
 |balance_transaction|JSON|
-|created|Int|
+|created|Timestamp|
 |currency|String|
 |fee|JSON|
 |metadata|JSON|

@@ -3,7 +3,7 @@
 https://stripe.com/docs/api/subscription_schedules
 
 The primary key for this table is **id**.
-It supports incremental syncs.
+It supports incremental syncs based on the **created** column.
 
 ## Columns
 
@@ -14,10 +14,10 @@ It supports incremental syncs.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |id (PK)|String|
+|created (Incremental Key)|Timestamp|
 |application|JSON|
 |canceled_at|Int|
 |completed_at|Int|
-|created|Int|
 |current_phase|JSON|
 |customer|JSON|
 |default_settings|JSON|

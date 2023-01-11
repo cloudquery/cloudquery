@@ -16,7 +16,7 @@ func Payouts() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_payouts",
 		Description: `https://stripe.com/docs/api/payouts`,
-		Transform:   transformers.TransformWithStruct(&stripe.Payout{}, transformers.WithSkipFields("APIResource", "ID")),
+		Transform:   transformers.TransformWithStruct(&stripe.Payout{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
 		Resolver:    fetchPayouts("payouts"),
 
 		Columns: []schema.Column{
@@ -26,6 +26,14 @@ func Payouts() *schema.Table {
 				Resolver: schema.PathResolver("ID"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "created",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Created"),
+				CreationOptions: schema.ColumnCreationOptions{
+					IncrementalKey: true,
 				},
 			},
 		},

@@ -16,7 +16,7 @@ func ApplicationFees() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_application_fees",
 		Description: `https://stripe.com/docs/api/application_fees`,
-		Transform:   transformers.TransformWithStruct(&stripe.ApplicationFee{}, transformers.WithSkipFields("APIResource", "ID")),
+		Transform:   transformers.TransformWithStruct(&stripe.ApplicationFee{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
 		Resolver:    fetchApplicationFees("application_fees"),
 
 		Columns: []schema.Column{
@@ -26,6 +26,14 @@ func ApplicationFees() *schema.Table {
 				Resolver: schema.PathResolver("ID"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "created",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Created"),
+				CreationOptions: schema.ColumnCreationOptions{
+					IncrementalKey: true,
 				},
 			},
 		},

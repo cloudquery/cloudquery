@@ -3,7 +3,7 @@
 https://stripe.com/docs/api/reporting_report_runs
 
 The primary key for this table is **id**.
-It supports incremental syncs.
+It supports incremental syncs based on the **created** column.
 
 ## Columns
 
@@ -14,7 +14,7 @@ It supports incremental syncs.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |id (PK)|String|
-|created|Int|
+|created (Incremental Key)|Timestamp|
 |error|String|
 |livemode|Bool|
 |object|String|

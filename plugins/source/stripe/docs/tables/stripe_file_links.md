@@ -3,7 +3,7 @@
 https://stripe.com/docs/api/file_links
 
 The primary key for this table is **id**.
-It supports incremental syncs.
+It supports incremental syncs based on the **created** column.
 
 ## Columns
 
@@ -14,7 +14,7 @@ It supports incremental syncs.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |id (PK)|String|
-|created|Int|
+|created (Incremental Key)|Timestamp|
 |expired|Bool|
 |expires_at|Int|
 |file|JSON|

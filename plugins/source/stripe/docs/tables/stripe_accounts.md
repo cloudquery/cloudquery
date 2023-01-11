@@ -3,7 +3,7 @@
 https://stripe.com/docs/api/accounts
 
 The primary key for this table is **id**.
-It supports incremental syncs.
+It supports incremental syncs based on the **created** column.
 ## Relations
 
 The following tables depend on stripe_accounts:
@@ -18,6 +18,7 @@ The following tables depend on stripe_accounts:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |id (PK)|String|
+|created (Incremental Key)|Timestamp|
 |business_profile|JSON|
 |business_type|String|
 |capabilities|JSON|
@@ -25,7 +26,6 @@ The following tables depend on stripe_accounts:
 |company|JSON|
 |controller|JSON|
 |country|String|
-|created|Int|
 |default_currency|String|
 |deleted|Bool|
 |details_submitted|Bool|

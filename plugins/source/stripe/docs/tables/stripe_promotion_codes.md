@@ -3,7 +3,7 @@
 https://stripe.com/docs/api/promotion_codes
 
 The primary key for this table is **id**.
-It supports incremental syncs.
+It supports incremental syncs based on the **created** column.
 
 ## Columns
 
@@ -14,10 +14,10 @@ It supports incremental syncs.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |id (PK)|String|
+|created (Incremental Key)|Timestamp|
 |active|Bool|
 |code|String|
 |coupon|JSON|
-|created|Int|
 |customer|JSON|
 |expires_at|Int|
 |livemode|Bool|

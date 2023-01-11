@@ -16,7 +16,7 @@ func SubscriptionSchedules() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_subscription_schedules",
 		Description: `https://stripe.com/docs/api/subscription_schedules`,
-		Transform:   transformers.TransformWithStruct(&stripe.SubscriptionSchedule{}, transformers.WithSkipFields("APIResource", "ID")),
+		Transform:   transformers.TransformWithStruct(&stripe.SubscriptionSchedule{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
 		Resolver:    fetchSubscriptionSchedules("subscription_schedules"),
 
 		Columns: []schema.Column{
@@ -26,6 +26,14 @@ func SubscriptionSchedules() *schema.Table {
 				Resolver: schema.PathResolver("ID"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "created",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Created"),
+				CreationOptions: schema.ColumnCreationOptions{
+					IncrementalKey: true,
 				},
 			},
 		},

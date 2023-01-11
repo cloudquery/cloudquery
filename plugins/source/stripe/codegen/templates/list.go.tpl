@@ -19,9 +19,10 @@ func {{.TableName | ToPascal}}() *schema.Table {
 		{{- if .Description}}
       Description: `{{.Description}}`,
     {{- end}}
-      Transform:   transformers.TransformWithStruct(&stripe.{{.StructName}}{}
-{{- if .SkipFields}}, transformers.WithSkipFields({{.SkipFields | QuoteJoin}}){{end -}}
-{{- if .IgnoreInTests}}, transformers.WithIgnoreInTestsTransformer(client.CreateIgnoreInTestsTransformer({{.IgnoreInTests | QuoteJoin}})){{end -}}),
+      Transform:   transformers.TransformWithStruct(&stripe.{{.StructName}}{}, client.SharedTransformers(
+{{- if .SkipFields}}transformers.WithSkipFields({{.SkipFields | QuoteJoin}}),{{end -}}
+{{- if .IgnoreInTests}}transformers.WithIgnoreInTestsTransformer(client.CreateIgnoreInTestsTransformer({{.IgnoreInTests | QuoteJoin}})),{{end -}}
+				)...),
       Resolver:    fetch{{.TableName | ToPascal}}("{{.TableName}}"),
 {{if .HasIDPK}}
 		  Columns: []schema.Column{
@@ -33,6 +34,16 @@ func {{.TableName | ToPascal}}() *schema.Table {
 												 PrimaryKey: true,
 								 },
 				 },
+{{if .StateParamName -}}
+				 {
+								 Name:     "{{.StateParamName | ToSnake}}",
+								 Type:     schema.TypeTimestamp,
+								 Resolver: schema.PathResolver("{{.StateParamName}}"),
+								 CreationOptions: schema.ColumnCreationOptions{
+												 IncrementalKey: true,
+								 },
+				 },
+{{end -}}
 			},
 {{if .StateParamName -}}
 			IsIncremental: true,

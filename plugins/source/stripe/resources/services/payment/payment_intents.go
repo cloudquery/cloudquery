@@ -16,7 +16,7 @@ func PaymentIntents() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_payment_intents",
 		Description: `https://stripe.com/docs/api/payment_intents`,
-		Transform:   transformers.TransformWithStruct(&stripe.PaymentIntent{}, transformers.WithSkipFields("APIResource", "ID"), transformers.WithIgnoreInTestsTransformer(client.CreateIgnoreInTestsTransformer("Source"))),
+		Transform:   transformers.TransformWithStruct(&stripe.PaymentIntent{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"), transformers.WithIgnoreInTestsTransformer(client.CreateIgnoreInTestsTransformer("Source")))...),
 		Resolver:    fetchPaymentIntents("payment_intents"),
 
 		Columns: []schema.Column{
@@ -26,6 +26,14 @@ func PaymentIntents() *schema.Table {
 				Resolver: schema.PathResolver("ID"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "created",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Created"),
+				CreationOptions: schema.ColumnCreationOptions{
+					IncrementalKey: true,
 				},
 			},
 		},

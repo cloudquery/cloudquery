@@ -16,7 +16,7 @@ func ReportingReportRuns() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_reporting_report_runs",
 		Description: `https://stripe.com/docs/api/reporting_report_runs`,
-		Transform:   transformers.TransformWithStruct(&stripe.ReportingReportRun{}, transformers.WithSkipFields("APIResource", "ID")),
+		Transform:   transformers.TransformWithStruct(&stripe.ReportingReportRun{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
 		Resolver:    fetchReportingReportRuns("reporting_report_runs"),
 
 		Columns: []schema.Column{
@@ -26,6 +26,14 @@ func ReportingReportRuns() *schema.Table {
 				Resolver: schema.PathResolver("ID"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "created",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Created"),
+				CreationOptions: schema.ColumnCreationOptions{
+					IncrementalKey: true,
 				},
 			},
 		},

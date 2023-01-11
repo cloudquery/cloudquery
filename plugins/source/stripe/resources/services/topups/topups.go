@@ -16,7 +16,7 @@ func Topups() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_topups",
 		Description: `https://stripe.com/docs/api/topups`,
-		Transform:   transformers.TransformWithStruct(&stripe.Topup{}, transformers.WithSkipFields("APIResource", "ID"), transformers.WithIgnoreInTestsTransformer(client.CreateIgnoreInTestsTransformer("Source"))),
+		Transform:   transformers.TransformWithStruct(&stripe.Topup{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"), transformers.WithIgnoreInTestsTransformer(client.CreateIgnoreInTestsTransformer("Source")))...),
 		Resolver:    fetchTopups("topups"),
 
 		Columns: []schema.Column{
@@ -26,6 +26,14 @@ func Topups() *schema.Table {
 				Resolver: schema.PathResolver("ID"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "created",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Created"),
+				CreationOptions: schema.ColumnCreationOptions{
+					IncrementalKey: true,
 				},
 			},
 		},

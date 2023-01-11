@@ -16,7 +16,7 @@ func Refunds() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_refunds",
 		Description: `https://stripe.com/docs/api/refunds`,
-		Transform:   transformers.TransformWithStruct(&stripe.Refund{}, transformers.WithSkipFields("APIResource", "ID")),
+		Transform:   transformers.TransformWithStruct(&stripe.Refund{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
 		Resolver:    fetchRefunds("refunds"),
 
 		Columns: []schema.Column{
@@ -26,6 +26,14 @@ func Refunds() *schema.Table {
 				Resolver: schema.PathResolver("ID"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "created",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Created"),
+				CreationOptions: schema.ColumnCreationOptions{
+					IncrementalKey: true,
 				},
 			},
 		},

@@ -3,7 +3,7 @@
 https://stripe.com/docs/api/transfers
 
 The primary key for this table is **id**.
-It supports incremental syncs.
+It supports incremental syncs based on the **created** column.
 
 ## Columns
 
@@ -14,10 +14,10 @@ It supports incremental syncs.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |id (PK)|String|
+|created (Incremental Key)|Timestamp|
 |amount|Int|
 |amount_reversed|Int|
 |balance_transaction|JSON|
-|created|Int|
 |currency|String|
 |description|String|
 |destination|JSON|

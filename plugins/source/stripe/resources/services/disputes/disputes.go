@@ -16,7 +16,7 @@ func Disputes() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_disputes",
 		Description: `https://stripe.com/docs/api/disputes`,
-		Transform:   transformers.TransformWithStruct(&stripe.Dispute{}, transformers.WithSkipFields("APIResource", "ID")),
+		Transform:   transformers.TransformWithStruct(&stripe.Dispute{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
 		Resolver:    fetchDisputes("disputes"),
 
 		Columns: []schema.Column{
@@ -26,6 +26,14 @@ func Disputes() *schema.Table {
 				Resolver: schema.PathResolver("ID"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "created",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Created"),
+				CreationOptions: schema.ColumnCreationOptions{
+					IncrementalKey: true,
 				},
 			},
 		},

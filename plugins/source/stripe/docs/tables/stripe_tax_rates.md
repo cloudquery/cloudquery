@@ -3,7 +3,7 @@
 https://stripe.com/docs/api/tax_rates
 
 The primary key for this table is **id**.
-It supports incremental syncs.
+It supports incremental syncs based on the **created** column.
 
 ## Columns
 
@@ -14,9 +14,9 @@ It supports incremental syncs.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |id (PK)|String|
+|created (Incremental Key)|Timestamp|
 |active|Bool|
 |country|String|
-|created|Int|
 |description|String|
 |display_name|String|
 |inclusive|Bool|

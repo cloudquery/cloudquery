@@ -13,7 +13,7 @@ func TreasuryInboundTransfers() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_treasury_inbound_transfers",
 		Description: `https://stripe.com/docs/api/treasury_inbound_transfers`,
-		Transform:   transformers.TransformWithStruct(&stripe.TreasuryInboundTransfer{}, transformers.WithSkipFields("APIResource", "ID")),
+		Transform:   transformers.TransformWithStruct(&stripe.TreasuryInboundTransfer{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
 		Resolver:    fetchTreasuryInboundTransfers("treasury_inbound_transfers"),
 
 		Columns: []schema.Column{

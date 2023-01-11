@@ -23,7 +23,7 @@ The primary key for this table is **id**.
 |client_reference_id|String|
 |consent|JSON|
 |consent_collection|JSON|
-|created|Int|
+|created|Timestamp|
 |currency|String|
 |customer|JSON|
 |customer_creation|String|

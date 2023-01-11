@@ -16,7 +16,7 @@ func IdentityVerificationReports() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_identity_verification_reports",
 		Description: `https://stripe.com/docs/api/identity_verification_reports`,
-		Transform:   transformers.TransformWithStruct(&stripe.IdentityVerificationReport{}, transformers.WithSkipFields("APIResource", "ID")),
+		Transform:   transformers.TransformWithStruct(&stripe.IdentityVerificationReport{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
 		Resolver:    fetchIdentityVerificationReports("identity_verification_reports"),
 
 		Columns: []schema.Column{
@@ -26,6 +26,14 @@ func IdentityVerificationReports() *schema.Table {
 				Resolver: schema.PathResolver("ID"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "created",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Created"),
+				CreationOptions: schema.ColumnCreationOptions{
+					IncrementalKey: true,
 				},
 			},
 		},

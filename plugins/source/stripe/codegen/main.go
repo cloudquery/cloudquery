@@ -61,6 +61,7 @@ func generateResource(servicesDir string, r recipes.Resource) {
 		generatingMocks := idx == 1
 
 		tpl, err := template.New(templateName).Funcs(template.FuncMap{
+			"ToSnake":     csr.ToSnake,
 			"ToPascal":    csr.ToPascal,
 			"Pluralize":   pl.Plural,
 			"Singularize": pl.Singular,

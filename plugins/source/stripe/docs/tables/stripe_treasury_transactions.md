@@ -3,7 +3,7 @@
 https://stripe.com/docs/api/treasury_transactions
 
 The primary key for this table is **id**.
-It supports incremental syncs.
+It supports incremental syncs based on the **created** column.
 ## Relations
 
 This table depends on [stripe_treasury_financial_accounts](stripe_treasury_financial_accounts.md).
@@ -17,9 +17,9 @@ This table depends on [stripe_treasury_financial_accounts](stripe_treasury_finan
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |id (PK)|String|
+|created (Incremental Key)|Timestamp|
 |amount|Int|
 |balance_impact|JSON|
-|created|Int|
 |currency|String|
 |description|String|
 |entries|JSON|

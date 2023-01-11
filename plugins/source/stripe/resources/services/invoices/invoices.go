@@ -16,7 +16,7 @@ func Invoices() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_invoices",
 		Description: `https://stripe.com/docs/api/invoices`,
-		Transform:   transformers.TransformWithStruct(&stripe.Invoice{}, transformers.WithSkipFields("APIResource", "ID"), transformers.WithIgnoreInTestsTransformer(client.CreateIgnoreInTestsTransformer("DefaultSource"))),
+		Transform:   transformers.TransformWithStruct(&stripe.Invoice{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"), transformers.WithIgnoreInTestsTransformer(client.CreateIgnoreInTestsTransformer("DefaultSource")))...),
 		Resolver:    fetchInvoices("invoices"),
 
 		Columns: []schema.Column{
@@ -26,6 +26,14 @@ func Invoices() *schema.Table {
 				Resolver: schema.PathResolver("ID"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "created",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Created"),
+				CreationOptions: schema.ColumnCreationOptions{
+					IncrementalKey: true,
 				},
 			},
 		},

@@ -16,7 +16,7 @@ func Subscriptions() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_subscriptions",
 		Description: `https://stripe.com/docs/api/subscriptions`,
-		Transform:   transformers.TransformWithStruct(&stripe.Subscription{}, transformers.WithSkipFields("APIResource", "ID"), transformers.WithIgnoreInTestsTransformer(client.CreateIgnoreInTestsTransformer("DefaultSource"))),
+		Transform:   transformers.TransformWithStruct(&stripe.Subscription{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"), transformers.WithIgnoreInTestsTransformer(client.CreateIgnoreInTestsTransformer("DefaultSource")))...),
 		Resolver:    fetchSubscriptions("subscriptions"),
 
 		Columns: []schema.Column{
@@ -26,6 +26,14 @@ func Subscriptions() *schema.Table {
 				Resolver: schema.PathResolver("ID"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "created",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Created"),
+				CreationOptions: schema.ColumnCreationOptions{
+					IncrementalKey: true,
 				},
 			},
 		},

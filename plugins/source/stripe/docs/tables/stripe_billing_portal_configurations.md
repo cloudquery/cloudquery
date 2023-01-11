@@ -16,7 +16,7 @@ The primary key for this table is **id**.
 |active|Bool|
 |application|JSON|
 |business_profile|JSON|
-|created|Int|
+|created|Timestamp|
 |default_return_url|String|
 |features|JSON|
 |is_default|Bool|

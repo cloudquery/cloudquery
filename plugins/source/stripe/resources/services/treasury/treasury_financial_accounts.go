@@ -16,7 +16,7 @@ func TreasuryFinancialAccounts() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_treasury_financial_accounts",
 		Description: `https://stripe.com/docs/api/treasury_financial_accounts`,
-		Transform:   transformers.TransformWithStruct(&stripe.TreasuryFinancialAccount{}, transformers.WithSkipFields("APIResource", "ID")),
+		Transform:   transformers.TransformWithStruct(&stripe.TreasuryFinancialAccount{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
 		Resolver:    fetchTreasuryFinancialAccounts("treasury_financial_accounts"),
 
 		Columns: []schema.Column{
@@ -26,6 +26,14 @@ func TreasuryFinancialAccounts() *schema.Table {
 				Resolver: schema.PathResolver("ID"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "created",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Created"),
+				CreationOptions: schema.ColumnCreationOptions{
+					IncrementalKey: true,
 				},
 			},
 		},

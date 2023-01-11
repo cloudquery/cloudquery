@@ -16,7 +16,7 @@ func Coupons() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_coupons",
 		Description: `https://stripe.com/docs/api/coupons`,
-		Transform:   transformers.TransformWithStruct(&stripe.Coupon{}, transformers.WithSkipFields("APIResource", "ID")),
+		Transform:   transformers.TransformWithStruct(&stripe.Coupon{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
 		Resolver:    fetchCoupons("coupons"),
 
 		Columns: []schema.Column{
@@ -26,6 +26,14 @@ func Coupons() *schema.Table {
 				Resolver: schema.PathResolver("ID"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "created",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Created"),
+				CreationOptions: schema.ColumnCreationOptions{
+					IncrementalKey: true,
 				},
 			},
 		},
