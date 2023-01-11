@@ -16,7 +16,7 @@ In this guide, we will demonstrate how to set up CloudQuery for customizable Att
 
 ### Prerequisites
 
-In this guide, we will use Neo4j as a destination and AWS as a source.  For more information on how to set those up, see our documentation on [Neo4j](https://www.cloudquery.io/docs/plugins/destinations/neo4j/overview) and [AWS](https://www.cloudquery.io/docs/plugins/sources/aws/overview).
+In this guide, we will use Neo4j as a destination and AWS as a source.  For more information on how to set those up, see our documentation on [Neo4j](/docs/plugins/destinations/neo4j/overview) and [AWS](/docs/plugins/sources/aws/overview).
 
 For the example queries, we'll be using AWS Identity and Access Management (IAM) Users and Amazon Relational Database Service (RDS) along with some common infrastructure associated with those resources that include IAM User Access Keys, IAM Managed and Inline Policies, IAM Groups, Amazon Virtual Private Cloud (VPC), Amazon VPC Security Groups, and Internet Gateways.  Our demo environment will have those sample resources already created and the graph visualizations will look different than results from your walkthrough.  
 
