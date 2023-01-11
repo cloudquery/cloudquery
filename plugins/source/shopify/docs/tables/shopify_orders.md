@@ -1,7 +1,7 @@
 # Table: shopify_orders
 
 The primary key for this table is **id**.
-It supports incremental syncs.
+It supports incremental syncs based on the **updated_at** column.
 
 ## Columns
 
@@ -12,6 +12,7 @@ It supports incremental syncs.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |id (PK)|Int|
+|updated_at (Incremental Key)|Timestamp|
 |admin_graphql_api_id|String|
 |app_id|Int|
 |browser_ip|String|
@@ -62,7 +63,6 @@ It supports incremental syncs.
 |total_tax|String|
 |total_tip_received|String|
 |total_weight|Int|
-|updated_at|Timestamp|
 |user_id|Int|
 |customer|JSON|
 |discount_applications|JSON|

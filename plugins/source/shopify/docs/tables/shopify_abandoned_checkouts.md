@@ -1,7 +1,7 @@
 # Table: shopify_abandoned_checkouts
 
 The primary key for this table is **id**.
-It supports incremental syncs.
+It supports incremental syncs based on the **updated_at** column.
 
 ## Columns
 
@@ -12,13 +12,13 @@ It supports incremental syncs.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |id (PK)|Int|
+|updated_at (Incremental Key)|Timestamp|
 |token|String|
 |cart_token|String|
 |email|String|
 |gateway|String|
 |buyer_accepts_marketing|Bool|
 |created_at|Timestamp|
-|updated_at|Timestamp|
 |landing_site|String|
 |note_attributes|JSON|
 |referring_site|String|
