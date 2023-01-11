@@ -111,6 +111,10 @@ var newFuncToSkipPerPackage = map[string]map[string]bool{
 		// requires setting an API version explicitly
 		"NewDeploymentsClient": true,
 	},
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering": {
+		// The primary key for this resource is Name and not ID
+		"NewServiceProvidersClient": true,
+	},
 }
 
 var reNewClient = regexp.MustCompile(`New[a-zA-Z]+Client`)
