@@ -13,7 +13,7 @@ func PublicMaintenanceConfigurations() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_maintenance_public_maintenance_configurations",
 		Resolver:  fetchPublicMaintenanceConfigurations,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_maintenance),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_maintenance_public_maintenance_configurations", client.Namespacemicrosoft_maintenance),
 		Transform: transformers.TransformWithStruct(&armmaintenance.Configuration{}),
 		Columns: []schema.Column{
 			{

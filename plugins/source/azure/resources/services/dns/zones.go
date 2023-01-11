@@ -13,7 +13,7 @@ func Zones() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_dns_zones",
 		Resolver:  fetchZones,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_network),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_dns_zones", client.Namespacemicrosoft_network),
 		Transform: transformers.TransformWithStruct(&armdns.Zone{}),
 		Columns: []schema.Column{
 			{

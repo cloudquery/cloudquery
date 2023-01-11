@@ -137,3 +137,8 @@
   - [gcp_sql_users](gcp_sql_users.md)
 - [gcp_storage_buckets](gcp_storage_buckets.md)
   - [gcp_storage_bucket_policies](gcp_storage_bucket_policies.md)
+- [gcp_websecurityscanner_scan_configs](gcp_websecurityscanner_scan_configs.md)
+  - [gcp_websecurityscanner_scan_config_scan_runs](gcp_websecurityscanner_scan_config_scan_runs.md)
+    - [gcp_websecurityscanner_scan_config_scan_run_findings](gcp_websecurityscanner_scan_config_scan_run_findings.md)
+    - [gcp_websecurityscanner_scan_config_scan_run_crawled_urls](gcp_websecurityscanner_scan_config_scan_run_crawled_urls.md)
+- [gcp_workflows_workflows](gcp_workflows_workflows.md)

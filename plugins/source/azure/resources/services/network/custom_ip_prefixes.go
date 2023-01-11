@@ -13,7 +13,7 @@ func CustomIpPrefixes() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_custom_ip_prefixes",
 		Resolver:  fetchCustomIpPrefixes,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_network),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_network_custom_ip_prefixes", client.Namespacemicrosoft_network),
 		Transform: transformers.TransformWithStruct(&armnetwork.CustomIPPrefix{}),
 		Columns: []schema.Column{
 			{

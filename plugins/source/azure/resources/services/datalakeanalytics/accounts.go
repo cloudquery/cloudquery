@@ -13,7 +13,7 @@ func Accounts() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_datalakeanalytics_accounts",
 		Resolver:  fetchAccounts,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_datalakeanalytics),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_datalakeanalytics_accounts", client.Namespacemicrosoft_datalakeanalytics),
 		Transform: transformers.TransformWithStruct(&armdatalakeanalytics.AccountBasic{}),
 		Columns: []schema.Column{
 			{

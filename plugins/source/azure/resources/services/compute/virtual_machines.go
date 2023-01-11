@@ -13,7 +13,7 @@ func VirtualMachines() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_compute_virtual_machines",
 		Resolver:  fetchVirtualMachines,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_compute),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_compute_virtual_machines", client.Namespacemicrosoft_compute),
 		Transform: transformers.TransformWithStruct(&armcompute.VirtualMachine{}),
 		Columns: []schema.Column{
 			{

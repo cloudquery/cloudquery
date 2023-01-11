@@ -13,7 +13,7 @@ func KeyvaultManagedHsms() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_keyvault_keyvault_managed_hsms",
 		Resolver:  fetchKeyvaultManagedHsms,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_keyvault),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_keyvault_keyvault_managed_hsms", client.Namespacemicrosoft_keyvault),
 		Transform: transformers.TransformWithStruct(&armkeyvault.ManagedHsm{}),
 		Columns: []schema.Column{
 			{

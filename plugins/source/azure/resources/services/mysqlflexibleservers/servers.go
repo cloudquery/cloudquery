@@ -13,7 +13,7 @@ func Servers() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_mysqlflexibleservers_servers",
 		Resolver:  fetchServers,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_dbformysql),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_mysqlflexibleservers_servers", client.Namespacemicrosoft_dbformysql),
 		Transform: transformers.TransformWithStruct(&armmysqlflexibleservers.Server{}),
 		Columns: []schema.Column{
 			{

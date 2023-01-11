@@ -416,6 +416,7 @@
 - [aws_sagemaker_models](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_sagemaker_models.md)
 - [aws_sagemaker_notebook_instances](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_sagemaker_notebook_instances.md)
 - [aws_sagemaker_training_jobs](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_sagemaker_training_jobs.md)
+- [aws_savingsplans_plans](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_savingsplans_plans.md)
 - [aws_scheduler_schedule_groups](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_scheduler_schedule_groups.md)
 - [aws_scheduler_schedules](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_scheduler_schedules.md)
 - [aws_secretsmanager_secrets](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_secretsmanager_secrets.md)
@@ -473,3 +474,4 @@
 - [aws_xray_encryption_configs](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_xray_encryption_configs.md)
 - [aws_xray_groups](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_xray_groups.md)
 - [aws_xray_sampling_rules](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_xray_sampling_rules.md)
+- [aws_xray_resource_policies](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_xray_resource_policies.md)

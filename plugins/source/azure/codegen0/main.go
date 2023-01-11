@@ -14,7 +14,6 @@ import (
 	"text/template"
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/codegen0/internal/azparser"
-	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/iancoleman/strcase"
 )
 
@@ -109,7 +108,7 @@ func generateNamespaces(namespaces map[string]string) error {
 		"ToCamel": strcase.ToCamel,
 	}).ParseFS(templateFS, "templates/namespaces.go.tpl")
 	if err != nil {
-		return fmt.Errorf("failed to parse recipe.go.tpl: %w", err)
+		return fmt.Errorf("failed to parse namespaces.go.tpl: %w", err)
 	}
 
 	var buff bytes.Buffer
@@ -134,10 +133,6 @@ func generateTable(r *azparser.Table) error {
 	tpl, err := template.New("list.go.tpl").Funcs(templateFuncs).ParseFS(templateFS, "templates/*.go.tpl")
 	if err != nil {
 		return fmt.Errorf("failed to parse templates: %w", err)
-	}
-	tpl, err = tpl.ParseFS(codegen.TemplatesFS, "templates/*.go.tpl")
-	if err != nil {
-		return fmt.Errorf("failed to parse sdk template: %w", err)
 	}
 	var buff bytes.Buffer
 	if err := tpl.Execute(&buff, r); err != nil {

@@ -13,7 +13,7 @@ func Servers() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_postgresqlflexibleservers_servers",
 		Resolver:  fetchServers,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_dbforpostgresql),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_postgresqlflexibleservers_servers", client.Namespacemicrosoft_dbforpostgresql),
 		Transform: transformers.TransformWithStruct(&armpostgresqlflexibleservers.Server{}),
 		Columns: []schema.Column{
 			{

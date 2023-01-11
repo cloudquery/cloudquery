@@ -13,7 +13,7 @@ func StaticSites() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_appservice_static_sites",
 		Resolver:  fetchStaticSites,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_web),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_appservice_static_sites", client.Namespacemicrosoft_web),
 		Transform: transformers.TransformWithStruct(&armappservice.StaticSiteARMResource{}),
 		Columns: []schema.Column{
 			{

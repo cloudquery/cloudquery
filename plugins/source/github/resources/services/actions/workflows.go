@@ -4,7 +4,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/github/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
-	"github.com/google/go-github/v48/github"
 )
 
 func Workflows() *schema.Table {
@@ -12,13 +11,12 @@ func Workflows() *schema.Table {
 		Name:      "github_workflows",
 		Resolver:  fetchWorkflows,
 		Multiplex: client.OrgMultiplex,
-		Transform: transformers.TransformWithStruct(&github.Workflow{}, client.SharedTransformers()...),
+		Transform: transformers.TransformWithStruct(&Workflow{}, client.SharedTransformers()...),
 		Columns: []schema.Column{
 			{
-				Name:        "org",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveOrg,
-				Description: `The Github Organization of the resource.`,
+				Name:     "org",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveOrg,
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},

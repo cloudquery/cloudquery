@@ -13,7 +13,7 @@ func PipelineTemplateDefinitions() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_devops_pipeline_template_definitions",
 		Resolver:  fetchPipelineTemplateDefinitions,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_devops),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_devops_pipeline_template_definitions", client.Namespacemicrosoft_devops),
 		Transform: transformers.TransformWithStruct(&armdevops.PipelineTemplateDefinition{}),
 		Columns: []schema.Column{
 			{

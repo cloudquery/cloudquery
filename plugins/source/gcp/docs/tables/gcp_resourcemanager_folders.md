@@ -2,7 +2,7 @@
 
 https://cloud.google.com/resource-manager/reference/rest/v3/folders#Folder
 
-The composite primary key for this table is (**organization_id**, **name**).
+The primary key for this table is **_cq_id**.
 
 ## Columns
 
@@ -10,10 +10,10 @@ The composite primary key for this table is (**organization_id**, **name**).
 | ------------- | ------------- |
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
-|_cq_id|UUID|
+|_cq_id (PK)|UUID|
 |_cq_parent_id|UUID|
-|organization_id (PK)|String|
-|name (PK)|String|
+|organization_id|String|
+|name|String|
 |parent|String|
 |display_name|String|
 |state|String|

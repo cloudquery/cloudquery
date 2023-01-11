@@ -11,11 +11,13 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription"
+	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
 )
 
+const Namespacemicrosoft_datafactory = "microsoft.datafactory"
 const Namespacemicrosoft_dbformariadb = "microsoft.dbformariadb"
 const Namespacemicrosoft_keyvault = "microsoft.keyvault"
 const Namespacemicrosoft_cache = "microsoft.cache"
@@ -25,6 +27,7 @@ const Namespacemicrosoft_costmanagement = "microsoft.costmanagement"
 const Namespacemicrosoft_storage = "microsoft.storage"
 
 var otherNamespaces = []string{
+	Namespacemicrosoft_datafactory,
 	Namespacemicrosoft_dbformariadb,
 	Namespacemicrosoft_keyvault,
 	Namespacemicrosoft_cache,
@@ -121,7 +124,7 @@ func (c *Client) disocverResourceGroups(ctx context.Context) error {
 	return nil
 }
 
-func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.ClientMeta, error) {
+func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
 	var spec Spec
 	var err error
 	if err := s.UnmarshalSpec(&spec); err != nil {
