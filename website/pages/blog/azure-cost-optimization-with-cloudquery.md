@@ -99,7 +99,7 @@ We need to run one more thing before we can start correlating away though.
 
 ## The Azure Resources View
 
-The `azure_resources` view is useful for seeing all your Azure resources in one place or finding a specific resource, by id or name. It's a view, so it's not synced to the database, but we can create it by running the queries provided [here](https://github.com/cloudquery/cq-provider-azure/blob/main/views/resource.sql). First query will drop the view if it exists, and the second query will create it. Run these queries in your PostgreSQL database.
+The `azure_resources` view is useful for seeing all your Azure resources in one place or finding a specific resource, by id or name. It's a view, so it's not synced to the database, but we can create it by running the queries provided [here](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/views/resource.sql). First query will drop the view if it exists, and the second query will create it. Run these queries in your PostgreSQL database.
 
 ## Correlating the data
 
