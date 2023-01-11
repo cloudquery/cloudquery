@@ -33,7 +33,7 @@ The following command will sync data from AWS as a source to Neo4J as a destinat
 
 `cloudquery sync aws-neo.yml neo4j.yml`
 
-For more information on configuration files, see [AWS source configuration](https://www.cloudquery.io/docs/plugins/sources/aws/configuration) and [Neo4j destination configuration](https://www.cloudquery.io/docs/plugins/destinations/neo4j/overview)
+For more information on configuration files, see [AWS source configuration](/docs/plugins/sources/aws/configuration) and [Neo4j destination configuration](/docs/plugins/destinations/neo4j/overview)
 
 You should see a `sync completed successfully` message.  CloudQuery has now synced your AWS data to Neo4j.
 
