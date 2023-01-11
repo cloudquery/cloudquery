@@ -29,7 +29,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/dashboard"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/databox"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/datadog"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/datafactory"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/datalakeanalytics"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/datalakestore"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/datamigration"
@@ -154,7 +153,6 @@ func generatedTables() []*schema.Table {
 		databox.Jobs(),
 		datadog.MarketplaceAgreements(),
 		datadog.Monitors(),
-		datafactory.Factories(),
 		datalakeanalytics.Accounts(),
 		datalakestore.Accounts(),
 		datamigration.Services(),

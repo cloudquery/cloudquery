@@ -102,6 +102,10 @@ var newFuncToSkipPerPackage = map[string]map[string]bool{
 		"NewAccountsClient":        true,
 		"NewDeletedAccountsClient": true,
 	},
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory": {
+		// requires renaming etag
+		"NewFactoriesClient": true,
+	},
 }
 
 var reNewClient = regexp.MustCompile(`New[a-zA-Z]+Client`)
