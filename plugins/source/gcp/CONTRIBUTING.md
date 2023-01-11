@@ -49,10 +49,6 @@ Resource{
 }
 ```
 
-
-
-
-
 #### All Available Resource Fields
 
 All available Resource fields can be seen in [base.go](codegen/recipes/base.go). See the documentation for each field for an explanation of what it does.
