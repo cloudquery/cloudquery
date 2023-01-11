@@ -138,7 +138,6 @@
 - [azure_network_watchers](azure_network_watchers.md)
 - [azure_network_web_application_firewall_policies](azure_network_web_application_firewall_policies.md)
 - [azure_networkfunction_azure_traffic_collectors_by_subscription](azure_networkfunction_azure_traffic_collectors_by_subscription.md)
-- [azure_nginx_deployments](azure_nginx_deployments.md)
 - [azure_notificationhubs_namespaces](azure_notificationhubs_namespaces.md)
 - [azure_operationalinsights_clusters](azure_operationalinsights_clusters.md)
 - [azure_operationalinsights_workspaces](azure_operationalinsights_workspaces.md)
@@ -234,3 +233,4 @@
 - [azure_resources_resources](azure_resources_resources.md)
 - [azure_subscription_tenants](azure_subscription_tenants.md)
 - [azure_search_services](azure_search_services.md)
+- [azure_nginx_deployments](azure_nginx_deployments.md)

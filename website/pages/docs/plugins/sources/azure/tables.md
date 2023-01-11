@@ -138,7 +138,6 @@
 - [azure_network_watchers](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_network_watchers.md)
 - [azure_network_web_application_firewall_policies](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_network_web_application_firewall_policies.md)
 - [azure_networkfunction_azure_traffic_collectors_by_subscription](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_networkfunction_azure_traffic_collectors_by_subscription.md)
-- [azure_nginx_deployments](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_nginx_deployments.md)
 - [azure_notificationhubs_namespaces](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_notificationhubs_namespaces.md)
 - [azure_operationalinsights_clusters](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_operationalinsights_clusters.md)
 - [azure_operationalinsights_workspaces](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_operationalinsights_workspaces.md)
@@ -234,3 +233,4 @@
 - [azure_resources_resources](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_resources_resources.md)
 - [azure_subscription_tenants](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_subscription_tenants.md)
 - [azure_search_services](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_search_services.md)
+- [azure_nginx_deployments](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_nginx_deployments.md)
