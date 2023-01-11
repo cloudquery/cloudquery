@@ -212,17 +212,6 @@ Let's now link Security Groups to the RDS instances.
 MATCH 
   (rds_is:aws_rds_instances), 
   (sgs:aws_ec2_security_groups) 
-WHERE 
-  apoc.convert.fromJsonList(rds_is.vpc_security_groups)[0]['VpcSecurityGroupId'] 
-  = sgs.group_id 
-CREATE (rds_is)-[r:uses_security_group]->(sgs) 
-RETURN type(r)
-```
-
-```sql
-MATCH 
-  (rds_is:aws_rds_instances), 
-  (sgs:aws_ec2_security_groups) 
 UNWIND (apoc.convert.fromJsonList(rds_is.vpc_security_groups)) as secgroups
 WITH secgroups, rds_is, sgs
 WHERE
