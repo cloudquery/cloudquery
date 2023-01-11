@@ -225,7 +225,6 @@ func generatedTables() []*schema.Table {
 		operationalinsights.Workspaces(),
 		peering.ServiceCountries(),
 		peering.ServiceLocations(),
-		peering.ServiceProviders(),
 		portal.ListTenantConfigurationViolations(),
 		portal.TenantConfigurations(),
 		postgresql.Servers(),

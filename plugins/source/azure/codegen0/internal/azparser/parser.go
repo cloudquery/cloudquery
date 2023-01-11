@@ -115,6 +115,10 @@ var newFuncToSkipPerPackage = map[string]map[string]bool{
 		// Getting "The resource type could not be found in the namespace 'Microsoft.WindowsESU' for api version '2019-09-16-preview'". Seems like the API doesn't work
 		"NewMultipleActivationKeysClient": true,
 	},
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering": {
+		// The primary key for this resource is Name and not ID
+		"NewServiceProvidersClient": true,
+	},
 }
 
 var reNewClient = regexp.MustCompile(`New[a-zA-Z]+Client`)

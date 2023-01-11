@@ -142,7 +142,6 @@
 - [azure_operationalinsights_workspaces](azure_operationalinsights_workspaces.md)
 - [azure_peering_service_countries](azure_peering_service_countries.md)
 - [azure_peering_service_locations](azure_peering_service_locations.md)
-- [azure_peering_service_providers](azure_peering_service_providers.md)
 - [azure_portal_list_tenant_configuration_violations](azure_portal_list_tenant_configuration_violations.md)
 - [azure_portal_tenant_configurations](azure_portal_tenant_configurations.md)
 - [azure_postgresql_servers](azure_postgresql_servers.md)
@@ -234,3 +233,4 @@
 - [azure_subscription_tenants](azure_subscription_tenants.md)
 - [azure_search_services](azure_search_services.md)
 - [azure_nginx_deployments](azure_nginx_deployments.md)
+- [azure_peering_service_providers](azure_peering_service_providers.md)
