@@ -3,6 +3,7 @@ package plugin
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/authorization"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/azuredata"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/cdn"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/compute"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/cosmos"
@@ -35,6 +36,7 @@ var (
 
 var customTables = []*schema.Table{
 	authorization.RoleDefinitions(),
+	azuredata.SqlServerRegistrations(),
 	cdn.Profiles(),
 	compute.VirtualMachines(),
 	compute.SKUs(),
