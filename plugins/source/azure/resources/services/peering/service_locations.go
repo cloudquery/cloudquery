@@ -13,7 +13,7 @@ func ServiceLocations() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_peering_service_locations",
 		Resolver:  fetchServiceLocations,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_peering),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_peering_service_locations", client.Namespacemicrosoft_peering),
 		Transform: transformers.TransformWithStruct(&armpeering.ServiceLocation{}),
 		Columns: []schema.Column{
 			{

@@ -13,7 +13,7 @@ func AzureFirewallFqdnTags() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_azure_firewall_fqdn_tags",
 		Resolver:  fetchAzureFirewallFqdnTags,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_network),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_network_azure_firewall_fqdn_tags", client.Namespacemicrosoft_network),
 		Transform: transformers.TransformWithStruct(&armnetwork.AzureFirewallFqdnTag{}),
 		Columns: []schema.Column{
 			{

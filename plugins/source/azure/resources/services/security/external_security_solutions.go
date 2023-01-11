@@ -13,7 +13,7 @@ func ExternalSecuritySolutions() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_security_external_security_solutions",
 		Resolver:  fetchExternalSecuritySolutions,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_security),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_security_external_security_solutions", client.Namespacemicrosoft_security),
 		Transform: transformers.TransformWithStruct(&armsecurity.ExternalSecuritySolution{}),
 		Columns: []schema.Column{
 			{

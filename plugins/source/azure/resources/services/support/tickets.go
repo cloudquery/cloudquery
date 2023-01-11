@@ -13,7 +13,7 @@ func Tickets() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_support_tickets",
 		Resolver:  fetchTickets,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_support),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_support_tickets", client.Namespacemicrosoft_support),
 		Transform: transformers.TransformWithStruct(&armsupport.TicketDetails{}),
 		Columns: []schema.Column{
 			{

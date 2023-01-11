@@ -13,7 +13,7 @@ func Disks() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_compute_disks",
 		Resolver:  fetchDisks,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_compute),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_compute_disks", client.Namespacemicrosoft_compute),
 		Transform: transformers.TransformWithStruct(&armcompute.Disk{}),
 		Columns: []schema.Column{
 			{

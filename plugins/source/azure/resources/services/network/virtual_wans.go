@@ -13,7 +13,7 @@ func VirtualWans() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_virtual_wans",
 		Resolver:  fetchVirtualWans,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_network),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_network_virtual_wans", client.Namespacemicrosoft_network),
 		Transform: transformers.TransformWithStruct(&armnetwork.VirtualWAN{}),
 		Columns: []schema.Column{
 			{

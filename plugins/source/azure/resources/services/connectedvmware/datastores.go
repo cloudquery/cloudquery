@@ -13,7 +13,7 @@ func Datastores() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_connectedvmware_datastores",
 		Resolver:  fetchDatastores,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_connectedvmwarevsphere),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_connectedvmware_datastores", client.Namespacemicrosoft_connectedvmwarevsphere),
 		Transform: transformers.TransformWithStruct(&armconnectedvmware.Datastore{}),
 		Columns: []schema.Column{
 			{

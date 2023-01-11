@@ -13,7 +13,7 @@ func Recommendations() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_appservice_recommendations",
 		Resolver:  fetchRecommendations,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_web),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_appservice_recommendations", client.Namespacemicrosoft_web),
 		Transform: transformers.TransformWithStruct(&armappservice.Recommendation{}),
 		Columns: []schema.Column{
 			{

@@ -17,6 +17,7 @@ import (
 	"github.com/rs/zerolog"
 )
 
+const Namespacemicrosoft_datafactory = "microsoft.datafactory"
 const Namespacemicrosoft_dbformariadb = "microsoft.dbformariadb"
 const Namespacemicrosoft_keyvault = "microsoft.keyvault"
 const Namespacemicrosoft_cache = "microsoft.cache"
@@ -26,6 +27,7 @@ const Namespacemicrosoft_costmanagement = "microsoft.costmanagement"
 const Namespacemicrosoft_storage = "microsoft.storage"
 
 var otherNamespaces = []string{
+	Namespacemicrosoft_datafactory,
 	Namespacemicrosoft_dbformariadb,
 	Namespacemicrosoft_keyvault,
 	Namespacemicrosoft_cache,

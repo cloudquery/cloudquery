@@ -13,7 +13,7 @@ func Account() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_batch_account",
 		Resolver:  fetchAccount,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_batch),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_batch_account", client.Namespacemicrosoft_batch),
 		Transform: transformers.TransformWithStruct(&armbatch.Account{}),
 		Columns: []schema.Column{
 			{
