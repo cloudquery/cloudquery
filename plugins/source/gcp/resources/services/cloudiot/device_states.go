@@ -34,7 +34,7 @@ func DeviceStates() *schema.Table {
 			{
 				Name:     "update_time",
 				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("UpdateTime"),
+				Resolver: client.ResolveProtoTimestamp("UpdateTime"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
