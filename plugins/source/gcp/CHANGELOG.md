@@ -5,6 +5,13 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v7.1.0...plugins-source-gcp-v7.1.1) (2023-01-11)
+
+
+### Bug Fixes
+
+* **gcp-resources:** Add `update_time` to PKs of `gcp_cloudiot_device_states` ([#6552](https://github.com/cloudquery/cloudquery/issues/6552)) ([b78eca5](https://github.com/cloudquery/cloudquery/commit/b78eca595d386fbd5691d5c6c7ef5c4adeb2166a))
+
 ## [7.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v7.0.0...plugins-source-gcp-v7.1.0) (2023-01-10)
 
 
