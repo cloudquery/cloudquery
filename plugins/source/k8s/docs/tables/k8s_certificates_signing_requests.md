@@ -23,7 +23,7 @@ The primary key for this table is **uid**.
 |annotations|JSON|
 |owner_references|JSON|
 |finalizers|StringArray|
-|spec_request|IntArray|
+|spec_request|ByteArray|
 |spec_signer_name|String|
 |spec_expiration_seconds|Int|
 |spec_usages|StringArray|
@@ -32,4 +32,4 @@ The primary key for this table is **uid**.
 |spec_groups|StringArray|
 |spec_extra|JSON|
 |status_conditions|JSON|
-|status_certificate|IntArray|
+|status_certificate|ByteArray|
