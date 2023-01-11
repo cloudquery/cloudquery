@@ -135,8 +135,8 @@ In the UI, feel free to play around with node labels, colors, and expansion of n
 In our sample environment, we have 3 IAM Users.  The following image shows the following and their relationships:
 * IAM User Access Keys in green.
 * IAM Managed Policies and Inline Policies in red.
-* IAM Users are in gray.
-* IAM Groups are in blue.
+* IAM Users in gray.
+* IAM Groups in blue.
 
 We'll use the following query to show our IAM Users: `MATCH (n:aws_iam_users) return n`:
 
