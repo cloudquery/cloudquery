@@ -14,7 +14,7 @@ func PaymentLinks() *schema.Table {
 		Name:        "stripe_payment_links",
 		Description: `https://stripe.com/docs/api/payment_links`,
 		Transform:   transformers.TransformWithStruct(&stripe.PaymentLink{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
-		Resolver:    fetchPaymentLinks("payment_links"),
+		Resolver:    fetchPaymentLinks,
 
 		Columns: []schema.Column{
 			{
@@ -29,17 +29,15 @@ func PaymentLinks() *schema.Table {
 	}
 }
 
-func fetchPaymentLinks(tableName string) schema.TableResolver {
-	return func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-		cl := meta.(*client.Client)
+func fetchPaymentLinks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	cl := meta.(*client.Client)
 
-		lp := &stripe.PaymentLinkListParams{}
+	lp := &stripe.PaymentLinkListParams{}
 
-		it := cl.Services.PaymentLinks.List(lp)
-		for it.Next() {
-			res <- it.PaymentLink()
-		}
-
-		return it.Err()
+	it := cl.Services.PaymentLinks.List(lp)
+	for it.Next() {
+		res <- it.PaymentLink()
 	}
+
+	return it.Err()
 }

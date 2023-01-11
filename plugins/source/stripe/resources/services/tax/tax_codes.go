@@ -14,7 +14,7 @@ func TaxCodes() *schema.Table {
 		Name:        "stripe_tax_codes",
 		Description: `https://stripe.com/docs/api/tax_codes`,
 		Transform:   transformers.TransformWithStruct(&stripe.TaxCode{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
-		Resolver:    fetchTaxCodes("tax_codes"),
+		Resolver:    fetchTaxCodes,
 
 		Columns: []schema.Column{
 			{
@@ -29,17 +29,15 @@ func TaxCodes() *schema.Table {
 	}
 }
 
-func fetchTaxCodes(tableName string) schema.TableResolver {
-	return func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-		cl := meta.(*client.Client)
+func fetchTaxCodes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	cl := meta.(*client.Client)
 
-		lp := &stripe.TaxCodeListParams{}
+	lp := &stripe.TaxCodeListParams{}
 
-		it := cl.Services.TaxCodes.List(lp)
-		for it.Next() {
-			res <- it.TaxCode()
-		}
-
-		return it.Err()
+	it := cl.Services.TaxCodes.List(lp)
+	for it.Next() {
+		res <- it.TaxCode()
 	}
+
+	return it.Err()
 }

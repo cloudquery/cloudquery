@@ -14,7 +14,7 @@ func ApplePayDomains() *schema.Table {
 		Name:        "stripe_apple_pay_domains",
 		Description: `https://stripe.com/docs/api/apple_pay_domains`,
 		Transform:   transformers.TransformWithStruct(&stripe.ApplePayDomain{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
-		Resolver:    fetchApplePayDomains("apple_pay_domains"),
+		Resolver:    fetchApplePayDomains,
 
 		Columns: []schema.Column{
 			{
@@ -29,17 +29,15 @@ func ApplePayDomains() *schema.Table {
 	}
 }
 
-func fetchApplePayDomains(tableName string) schema.TableResolver {
-	return func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-		cl := meta.(*client.Client)
+func fetchApplePayDomains(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	cl := meta.(*client.Client)
 
-		lp := &stripe.ApplePayDomainListParams{}
+	lp := &stripe.ApplePayDomainListParams{}
 
-		it := cl.Services.ApplePayDomains.List(lp)
-		for it.Next() {
-			res <- it.ApplePayDomain()
-		}
-
-		return it.Err()
+	it := cl.Services.ApplePayDomains.List(lp)
+	for it.Next() {
+		res <- it.ApplePayDomain()
 	}
+
+	return it.Err()
 }

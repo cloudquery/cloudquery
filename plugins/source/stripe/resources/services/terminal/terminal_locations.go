@@ -14,7 +14,7 @@ func TerminalLocations() *schema.Table {
 		Name:        "stripe_terminal_locations",
 		Description: `https://stripe.com/docs/api/terminal_locations`,
 		Transform:   transformers.TransformWithStruct(&stripe.TerminalLocation{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
-		Resolver:    fetchTerminalLocations("terminal_locations"),
+		Resolver:    fetchTerminalLocations,
 
 		Columns: []schema.Column{
 			{
@@ -29,17 +29,15 @@ func TerminalLocations() *schema.Table {
 	}
 }
 
-func fetchTerminalLocations(tableName string) schema.TableResolver {
-	return func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-		cl := meta.(*client.Client)
+func fetchTerminalLocations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	cl := meta.(*client.Client)
 
-		lp := &stripe.TerminalLocationListParams{}
+	lp := &stripe.TerminalLocationListParams{}
 
-		it := cl.Services.TerminalLocations.List(lp)
-		for it.Next() {
-			res <- it.TerminalLocation()
-		}
-
-		return it.Err()
+	it := cl.Services.TerminalLocations.List(lp)
+	for it.Next() {
+		res <- it.TerminalLocation()
 	}
+
+	return it.Err()
 }

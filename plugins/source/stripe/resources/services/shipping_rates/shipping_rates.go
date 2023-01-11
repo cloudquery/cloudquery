@@ -17,7 +17,7 @@ func ShippingRates() *schema.Table {
 		Name:        "stripe_shipping_rates",
 		Description: `https://stripe.com/docs/api/shipping_rates`,
 		Transform:   transformers.TransformWithStruct(&stripe.ShippingRate{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
-		Resolver:    fetchShippingRates("shipping_rates"),
+		Resolver:    fetchShippingRates,
 
 		Columns: []schema.Column{
 			{
@@ -41,37 +41,37 @@ func ShippingRates() *schema.Table {
 	}
 }
 
-func fetchShippingRates(tableName string) schema.TableResolver {
-	return func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-		cl := meta.(*client.Client)
+func fetchShippingRates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	cl := meta.(*client.Client)
 
-		lp := &stripe.ShippingRateListParams{}
+	lp := &stripe.ShippingRateListParams{}
 
-		if cl.Backend != nil {
-			value, err := cl.Backend.Get(ctx, tableName, cl.ID())
+	const key = "shipping_rates"
+
+	if cl.Backend != nil {
+		value, err := cl.Backend.Get(ctx, key, cl.ID())
+		if err != nil {
+			return fmt.Errorf("failed to retrieve state from backend: %w", err)
+		}
+		if value != "" {
+			vi, err := strconv.ParseInt(value, 10, 64)
 			if err != nil {
-				return fmt.Errorf("failed to retrieve state from backend: %w", err)
+				return fmt.Errorf("retrieved invalid state value: %q %w", value, err)
 			}
-			if value != "" {
-				vi, err := strconv.ParseInt(value, 10, 64)
-				if err != nil {
-					return fmt.Errorf("retrieved invalid state value: %q %w", value, err)
-				}
-				lp.Created = &vi
-			}
+			lp.Created = &vi
 		}
-
-		it := cl.Services.ShippingRates.List(lp)
-		for it.Next() {
-			data := it.ShippingRate()
-			lp.Created = client.MaxInt64(lp.Created, &data.Created)
-			res <- data
-		}
-
-		err := it.Err()
-		if cl.Backend != nil && err == nil && lp.Created != nil {
-			return cl.Backend.Set(ctx, tableName, cl.ID(), strconv.FormatInt(*lp.Created, 10))
-		}
-		return err
 	}
+
+	it := cl.Services.ShippingRates.List(lp)
+	for it.Next() {
+		data := it.ShippingRate()
+		lp.Created = client.MaxInt64(lp.Created, &data.Created)
+		res <- data
+	}
+
+	err := it.Err()
+	if cl.Backend != nil && err == nil && lp.Created != nil {
+		return cl.Backend.Set(ctx, key, cl.ID(), strconv.FormatInt(*lp.Created, 10))
+	}
+	return err
 }

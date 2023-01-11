@@ -17,7 +17,7 @@ func Coupons() *schema.Table {
 		Name:        "stripe_coupons",
 		Description: `https://stripe.com/docs/api/coupons`,
 		Transform:   transformers.TransformWithStruct(&stripe.Coupon{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
-		Resolver:    fetchCoupons("coupons"),
+		Resolver:    fetchCoupons,
 
 		Columns: []schema.Column{
 			{
@@ -41,37 +41,37 @@ func Coupons() *schema.Table {
 	}
 }
 
-func fetchCoupons(tableName string) schema.TableResolver {
-	return func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-		cl := meta.(*client.Client)
+func fetchCoupons(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	cl := meta.(*client.Client)
 
-		lp := &stripe.CouponListParams{}
+	lp := &stripe.CouponListParams{}
 
-		if cl.Backend != nil {
-			value, err := cl.Backend.Get(ctx, tableName, cl.ID())
+	const key = "coupons"
+
+	if cl.Backend != nil {
+		value, err := cl.Backend.Get(ctx, key, cl.ID())
+		if err != nil {
+			return fmt.Errorf("failed to retrieve state from backend: %w", err)
+		}
+		if value != "" {
+			vi, err := strconv.ParseInt(value, 10, 64)
 			if err != nil {
-				return fmt.Errorf("failed to retrieve state from backend: %w", err)
+				return fmt.Errorf("retrieved invalid state value: %q %w", value, err)
 			}
-			if value != "" {
-				vi, err := strconv.ParseInt(value, 10, 64)
-				if err != nil {
-					return fmt.Errorf("retrieved invalid state value: %q %w", value, err)
-				}
-				lp.Created = &vi
-			}
+			lp.Created = &vi
 		}
-
-		it := cl.Services.Coupons.List(lp)
-		for it.Next() {
-			data := it.Coupon()
-			lp.Created = client.MaxInt64(lp.Created, &data.Created)
-			res <- data
-		}
-
-		err := it.Err()
-		if cl.Backend != nil && err == nil && lp.Created != nil {
-			return cl.Backend.Set(ctx, tableName, cl.ID(), strconv.FormatInt(*lp.Created, 10))
-		}
-		return err
 	}
+
+	it := cl.Services.Coupons.List(lp)
+	for it.Next() {
+		data := it.Coupon()
+		lp.Created = client.MaxInt64(lp.Created, &data.Created)
+		res <- data
+	}
+
+	err := it.Err()
+	if cl.Backend != nil && err == nil && lp.Created != nil {
+		return cl.Backend.Set(ctx, key, cl.ID(), strconv.FormatInt(*lp.Created, 10))
+	}
+	return err
 }

@@ -14,7 +14,7 @@ func CreditNotes() *schema.Table {
 		Name:        "stripe_credit_notes",
 		Description: `https://stripe.com/docs/api/credit_notes`,
 		Transform:   transformers.TransformWithStruct(&stripe.CreditNote{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
-		Resolver:    fetchCreditNotes("credit_notes"),
+		Resolver:    fetchCreditNotes,
 
 		Columns: []schema.Column{
 			{
@@ -29,17 +29,15 @@ func CreditNotes() *schema.Table {
 	}
 }
 
-func fetchCreditNotes(tableName string) schema.TableResolver {
-	return func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-		cl := meta.(*client.Client)
+func fetchCreditNotes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	cl := meta.(*client.Client)
 
-		lp := &stripe.CreditNoteListParams{}
+	lp := &stripe.CreditNoteListParams{}
 
-		it := cl.Services.CreditNotes.List(lp)
-		for it.Next() {
-			res <- it.CreditNote()
-		}
-
-		return it.Err()
+	it := cl.Services.CreditNotes.List(lp)
+	for it.Next() {
+		res <- it.CreditNote()
 	}
+
+	return it.Err()
 }

@@ -14,7 +14,7 @@ func ReportingReportTypes() *schema.Table {
 		Name:        "stripe_reporting_report_types",
 		Description: `https://stripe.com/docs/api/reporting_report_types`,
 		Transform:   transformers.TransformWithStruct(&stripe.ReportingReportType{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
-		Resolver:    fetchReportingReportTypes("reporting_report_types"),
+		Resolver:    fetchReportingReportTypes,
 
 		Columns: []schema.Column{
 			{
@@ -29,17 +29,15 @@ func ReportingReportTypes() *schema.Table {
 	}
 }
 
-func fetchReportingReportTypes(tableName string) schema.TableResolver {
-	return func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-		cl := meta.(*client.Client)
+func fetchReportingReportTypes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	cl := meta.(*client.Client)
 
-		lp := &stripe.ReportingReportTypeListParams{}
+	lp := &stripe.ReportingReportTypeListParams{}
 
-		it := cl.Services.ReportingReportTypes.List(lp)
-		for it.Next() {
-			res <- it.ReportingReportType()
-		}
-
-		return it.Err()
+	it := cl.Services.ReportingReportTypes.List(lp)
+	for it.Next() {
+		res <- it.ReportingReportType()
 	}
+
+	return it.Err()
 }

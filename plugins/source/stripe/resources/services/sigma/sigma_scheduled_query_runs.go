@@ -14,7 +14,7 @@ func SigmaScheduledQueryRuns() *schema.Table {
 		Name:        "stripe_sigma_scheduled_query_runs",
 		Description: `https://stripe.com/docs/api/sigma_scheduled_query_runs`,
 		Transform:   transformers.TransformWithStruct(&stripe.SigmaScheduledQueryRun{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
-		Resolver:    fetchSigmaScheduledQueryRuns("sigma_scheduled_query_runs"),
+		Resolver:    fetchSigmaScheduledQueryRuns,
 
 		Columns: []schema.Column{
 			{
@@ -29,17 +29,15 @@ func SigmaScheduledQueryRuns() *schema.Table {
 	}
 }
 
-func fetchSigmaScheduledQueryRuns(tableName string) schema.TableResolver {
-	return func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-		cl := meta.(*client.Client)
+func fetchSigmaScheduledQueryRuns(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	cl := meta.(*client.Client)
 
-		lp := &stripe.SigmaScheduledQueryRunListParams{}
+	lp := &stripe.SigmaScheduledQueryRunListParams{}
 
-		it := cl.Services.SigmaScheduledQueryRuns.List(lp)
-		for it.Next() {
-			res <- it.SigmaScheduledQueryRun()
-		}
-
-		return it.Err()
+	it := cl.Services.SigmaScheduledQueryRuns.List(lp)
+	for it.Next() {
+		res <- it.SigmaScheduledQueryRun()
 	}
+
+	return it.Err()
 }

@@ -14,7 +14,7 @@ func TreasuryReceivedCredits() *schema.Table {
 		Name:        "stripe_treasury_received_credits",
 		Description: `https://stripe.com/docs/api/treasury_received_credits`,
 		Transform:   transformers.TransformWithStruct(&stripe.TreasuryReceivedCredit{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
-		Resolver:    fetchTreasuryReceivedCredits("treasury_received_credits"),
+		Resolver:    fetchTreasuryReceivedCredits,
 
 		Columns: []schema.Column{
 			{
@@ -29,21 +29,19 @@ func TreasuryReceivedCredits() *schema.Table {
 	}
 }
 
-func fetchTreasuryReceivedCredits(tableName string) schema.TableResolver {
-	return func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-		cl := meta.(*client.Client)
+func fetchTreasuryReceivedCredits(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	cl := meta.(*client.Client)
 
-		p := parent.Item.(*stripe.TreasuryFinancialAccount)
+	p := parent.Item.(*stripe.TreasuryFinancialAccount)
 
-		lp := &stripe.TreasuryReceivedCreditListParams{
-			FinancialAccount: stripe.String(p.ID),
-		}
-
-		it := cl.Services.TreasuryReceivedCredits.List(lp)
-		for it.Next() {
-			res <- it.TreasuryReceivedCredit()
-		}
-
-		return it.Err()
+	lp := &stripe.TreasuryReceivedCreditListParams{
+		FinancialAccount: stripe.String(p.ID),
 	}
+
+	it := cl.Services.TreasuryReceivedCredits.List(lp)
+	for it.Next() {
+		res <- it.TreasuryReceivedCredit()
+	}
+
+	return it.Err()
 }

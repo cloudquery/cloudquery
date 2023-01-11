@@ -17,7 +17,7 @@ func Topups() *schema.Table {
 		Name:        "stripe_topups",
 		Description: `https://stripe.com/docs/api/topups`,
 		Transform:   transformers.TransformWithStruct(&stripe.Topup{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"), transformers.WithIgnoreInTestsTransformer(client.CreateIgnoreInTestsTransformer("Source")))...),
-		Resolver:    fetchTopups("topups"),
+		Resolver:    fetchTopups,
 
 		Columns: []schema.Column{
 			{
@@ -41,37 +41,37 @@ func Topups() *schema.Table {
 	}
 }
 
-func fetchTopups(tableName string) schema.TableResolver {
-	return func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-		cl := meta.(*client.Client)
+func fetchTopups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	cl := meta.(*client.Client)
 
-		lp := &stripe.TopupListParams{}
+	lp := &stripe.TopupListParams{}
 
-		if cl.Backend != nil {
-			value, err := cl.Backend.Get(ctx, tableName, cl.ID())
+	const key = "topups"
+
+	if cl.Backend != nil {
+		value, err := cl.Backend.Get(ctx, key, cl.ID())
+		if err != nil {
+			return fmt.Errorf("failed to retrieve state from backend: %w", err)
+		}
+		if value != "" {
+			vi, err := strconv.ParseInt(value, 10, 64)
 			if err != nil {
-				return fmt.Errorf("failed to retrieve state from backend: %w", err)
+				return fmt.Errorf("retrieved invalid state value: %q %w", value, err)
 			}
-			if value != "" {
-				vi, err := strconv.ParseInt(value, 10, 64)
-				if err != nil {
-					return fmt.Errorf("retrieved invalid state value: %q %w", value, err)
-				}
-				lp.Created = &vi
-			}
+			lp.Created = &vi
 		}
-
-		it := cl.Services.Topups.List(lp)
-		for it.Next() {
-			data := it.Topup()
-			lp.Created = client.MaxInt64(lp.Created, &data.Created)
-			res <- data
-		}
-
-		err := it.Err()
-		if cl.Backend != nil && err == nil && lp.Created != nil {
-			return cl.Backend.Set(ctx, tableName, cl.ID(), strconv.FormatInt(*lp.Created, 10))
-		}
-		return err
 	}
+
+	it := cl.Services.Topups.List(lp)
+	for it.Next() {
+		data := it.Topup()
+		lp.Created = client.MaxInt64(lp.Created, &data.Created)
+		res <- data
+	}
+
+	err := it.Err()
+	if cl.Backend != nil && err == nil && lp.Created != nil {
+		return cl.Backend.Set(ctx, key, cl.ID(), strconv.FormatInt(*lp.Created, 10))
+	}
+	return err
 }

@@ -14,7 +14,7 @@ func FeeRefunds() *schema.Table {
 		Name:        "stripe_fee_refunds",
 		Description: `https://stripe.com/docs/api/fee_refunds`,
 		Transform:   transformers.TransformWithStruct(&stripe.FeeRefund{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
-		Resolver:    fetchFeeRefunds("fee_refunds"),
+		Resolver:    fetchFeeRefunds,
 
 		Columns: []schema.Column{
 			{
@@ -29,21 +29,19 @@ func FeeRefunds() *schema.Table {
 	}
 }
 
-func fetchFeeRefunds(tableName string) schema.TableResolver {
-	return func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-		cl := meta.(*client.Client)
+func fetchFeeRefunds(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	cl := meta.(*client.Client)
 
-		p := parent.Item.(*stripe.ApplicationFee)
+	p := parent.Item.(*stripe.ApplicationFee)
 
-		lp := &stripe.FeeRefundListParams{
-			ID: stripe.String(p.ID),
-		}
-
-		it := cl.Services.FeeRefunds.List(lp)
-		for it.Next() {
-			res <- it.FeeRefund()
-		}
-
-		return it.Err()
+	lp := &stripe.FeeRefundListParams{
+		ID: stripe.String(p.ID),
 	}
+
+	it := cl.Services.FeeRefunds.List(lp)
+	for it.Next() {
+		res <- it.FeeRefund()
+	}
+
+	return it.Err()
 }

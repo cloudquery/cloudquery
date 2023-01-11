@@ -23,7 +23,7 @@ func {{.TableName | ToPascal}}() *schema.Table {
 {{- if .SkipFields}}transformers.WithSkipFields({{.SkipFields | QuoteJoin}}),{{end -}}
 {{- if .IgnoreInTests}}transformers.WithIgnoreInTestsTransformer(client.CreateIgnoreInTestsTransformer({{.IgnoreInTests | QuoteJoin}})),{{end -}}
 				)...),
-      Resolver:    fetch{{.TableName | ToPascal}}("{{.TableName}}"),
+      Resolver:    fetch{{.TableName | ToPascal}},
 {{if .HasIDPK}}
 		  Columns: []schema.Column{
 				 {
@@ -59,8 +59,7 @@ func {{.TableName | ToPascal}}() *schema.Table {
     }
 }
 
-func fetch{{.TableName | ToPascal}}(tableName string) schema.TableResolver {
-	return func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetch{{.TableName | ToPascal}}(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 		cl := meta.(*client.Client)
 {{if and (.Parent) (.ListParams)}}
 		p := parent.Item.(*stripe.{{.Parent.StructName}})
@@ -71,8 +70,10 @@ func fetch{{.TableName | ToPascal}}(tableName string) schema.TableResolver {
 		}
 
 {{if .StateParamName}}
+		const key = "{{.TableName}}"
+
 		if (cl.Backend != nil) {
-			value, err := cl.Backend.Get(ctx, tableName, cl.ID())
+			value, err := cl.Backend.Get(ctx, key, cl.ID())
 			if err != nil {
 				return fmt.Errorf("failed to retrieve state from backend: %w", err)
 			}
@@ -100,11 +101,10 @@ func fetch{{.TableName | ToPascal}}(tableName string) schema.TableResolver {
 {{if .StateParamName -}}
 		err := it.Err()
 		if cl.Backend != nil && err == nil && lp.{{.StateParamName}} != nil {
-			return cl.Backend.Set(ctx, tableName, cl.ID(), strconv.FormatInt(*lp.{{.StateParamName}}, 10))
+			return cl.Backend.Set(ctx, key, cl.ID(), strconv.FormatInt(*lp.{{.StateParamName}}, 10))
 		}
 		return err
 {{else -}}
 		return it.Err()
 {{end -}}
-	}
 }
