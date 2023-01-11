@@ -21,5 +21,6 @@ func Orders() *schema.Table {
 				},
 			},
 		},
+		IsIncremental: true,
 	}
 }

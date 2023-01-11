@@ -21,6 +21,7 @@ func PriceRules() *schema.Table {
 				},
 			},
 		},
+		IsIncremental: true,
 
 		Relations: []*schema.Table{
 			PriceRuleDiscountCodes(),

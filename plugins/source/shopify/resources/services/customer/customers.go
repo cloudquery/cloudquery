@@ -21,5 +21,6 @@ func Customers() *schema.Table {
 				},
 			},
 		},
+		IsIncremental: true,
 	}
 }

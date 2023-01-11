@@ -15,6 +15,10 @@ Refer to the Shopify Help Center article on [Custom apps](https://help.shopify.c
 
 If you have a large or busy store, API key/secret type credentials might not be enough due to the heavy rate limiting. In this case, you can use OAuth in your custom app to get an access token which allow many more requests a second. To use that token in your plugin configuration instead, just set it in `access_token` and remove `api_key` and `api_secret` sections. For more information, refer to [Shopify.dev](https://shopify.dev/apps/distribution) on the subject.
 
+## Incremental Syncing
+
+The Shopify plugin supports incremental syncing. This means that only new data will be fetched from Shopify and loaded into your destination for supported tables (support depending on API endpoint). This is done by keeping track of the last item fetched and only fetching data that has been created since then.
+To enable this, `backend` option must be set in the spec (as shown below). This is documented in the [Managing Incremental Tables](/docs/advanced-topics/managing-incremental-tables) section.
 
 # Configuration Reference
 
@@ -39,7 +43,7 @@ This is the (nested) spec used by the Shopify source plugin:
 
 ## Example
 
-This example syncs from Shopify to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](https://www.cloudquery.io/docs/reference/source-spec).
+This example syncs from Shopify to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](https://www.cloudquery.io/docs/reference/source-spec). Incremental syncing is enabled and will be saved to a `.cq/state/` directory by default.
 
 ```yaml
 kind: source
@@ -50,7 +54,7 @@ spec:
   version: "VERSION_SOURCE_SHOPIFY"
   tables: ["*"]
   destinations: ["postgresql"]
-
+  backend: local
   # Shopify specific configuration
   spec:
     api_key: "<YOUR_API_KEY_HERE>"

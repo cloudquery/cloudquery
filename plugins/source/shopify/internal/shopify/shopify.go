@@ -172,13 +172,13 @@ func (s *Client) retryableRequest(ctx context.Context, edge string) (*http.Respo
 	return resp, wait, nil
 }
 
-func (s *Client) GetProducts(ctx context.Context, pageUrl string) (*GetProductsResponse, string, error) {
+func (s *Client) GetProducts(ctx context.Context, pageUrl string, params url.Values) (*GetProductsResponse, string, error) {
 	var ret GetProductsResponse
 
 	const pageSize = 250
 
 	if pageUrl == "" {
-		pageUrl = fmt.Sprintf("admin/api/%s/products.json?limit=%v", APIVersion, pageSize)
+		pageUrl = fmt.Sprintf("admin/api/%s/products.json?limit=%v%s", APIVersion, pageSize, params.Encode())
 	}
 
 	resp, err := s.request(ctx, pageUrl)
@@ -199,13 +199,13 @@ func (s *Client) GetProducts(ctx context.Context, pageUrl string) (*GetProductsR
 	return &ret, nextPage, nil
 }
 
-func (s *Client) GetOrders(ctx context.Context, pageUrl string) (*GetOrdersResponse, string, error) {
+func (s *Client) GetOrders(ctx context.Context, pageUrl string, params url.Values) (*GetOrdersResponse, string, error) {
 	var ret GetOrdersResponse
 
 	const pageSize = 250
 
 	if pageUrl == "" {
-		pageUrl = fmt.Sprintf("admin/api/%s/orders.json?limit=%v", APIVersion, pageSize)
+		pageUrl = fmt.Sprintf("admin/api/%s/orders.json?limit=%v%s", APIVersion, pageSize, params.Encode())
 	}
 
 	resp, err := s.request(ctx, pageUrl)
@@ -226,13 +226,13 @@ func (s *Client) GetOrders(ctx context.Context, pageUrl string) (*GetOrdersRespo
 	return &ret, nextPage, nil
 }
 
-func (s *Client) GetCustomers(ctx context.Context, pageUrl string) (*GetCustomersResponse, string, error) {
+func (s *Client) GetCustomers(ctx context.Context, pageUrl string, params url.Values) (*GetCustomersResponse, string, error) {
 	var ret GetCustomersResponse
 
 	const pageSize = 250
 
 	if pageUrl == "" {
-		pageUrl = fmt.Sprintf("admin/api/%s/customers.json?limit=%v", APIVersion, pageSize)
+		pageUrl = fmt.Sprintf("admin/api/%s/customers.json?limit=%v%s", APIVersion, pageSize, params.Encode())
 	}
 
 	resp, err := s.request(ctx, pageUrl)
@@ -253,13 +253,13 @@ func (s *Client) GetCustomers(ctx context.Context, pageUrl string) (*GetCustomer
 	return &ret, nextPage, nil
 }
 
-func (s *Client) GetAbandonedCheckouts(ctx context.Context, pageUrl string) (*GetCheckoutsResponse, string, error) {
+func (s *Client) GetAbandonedCheckouts(ctx context.Context, pageUrl string, params url.Values) (*GetCheckoutsResponse, string, error) {
 	var ret GetCheckoutsResponse
 
 	const pageSize = 20
 
 	if pageUrl == "" {
-		pageUrl = fmt.Sprintf("admin/api/%s/checkouts.json?limit=%v", APIVersion, pageSize)
+		pageUrl = fmt.Sprintf("admin/api/%s/checkouts.json?limit=%v%s", APIVersion, pageSize, params.Encode())
 	}
 
 	resp, err := s.request(ctx, pageUrl)
@@ -280,13 +280,13 @@ func (s *Client) GetAbandonedCheckouts(ctx context.Context, pageUrl string) (*Ge
 	return &ret, nextPage, nil
 }
 
-func (s *Client) GetPriceRules(ctx context.Context, pageUrl string) (*GetPriceRulesResponse, string, error) {
+func (s *Client) GetPriceRules(ctx context.Context, pageUrl string, params url.Values) (*GetPriceRulesResponse, string, error) {
 	var ret GetPriceRulesResponse
 
 	const pageSize = 250
 
 	if pageUrl == "" {
-		pageUrl = fmt.Sprintf("admin/api/%s/price_rules.json?limit=%v", APIVersion, pageSize)
+		pageUrl = fmt.Sprintf("admin/api/%s/price_rules.json?limit=%v%s", APIVersion, pageSize, params.Encode())
 	}
 
 	resp, err := s.request(ctx, pageUrl)

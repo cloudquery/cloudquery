@@ -21,6 +21,7 @@ func Products() *schema.Table {
 				},
 			},
 		},
+		IsIncremental: true,
 
 		Relations: []*schema.Table{
 			ProductVariants(),

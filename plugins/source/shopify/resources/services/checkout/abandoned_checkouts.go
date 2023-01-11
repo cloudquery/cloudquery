@@ -21,5 +21,6 @@ func AbandonedCheckouts() *schema.Table {
 				},
 			},
 		},
+		IsIncremental: true,
 	}
 }

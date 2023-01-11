@@ -1,7 +1,7 @@
 # Table: shopify_products
 
 The primary key for this table is **id**.
-
+It supports incremental syncs.
 ## Relations
 
 The following tables depend on shopify_products:
