@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [10.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v10.0.0...plugins-source-aws-v10.1.0) (2023-01-11)
+
+
+### Features
+
+* **aws:** Add support for Savingsplans ([#6660](https://github.com/cloudquery/cloudquery/issues/6660)) ([6566ac5](https://github.com/cloudquery/cloudquery/commit/6566ac566816ab3de6d2a3433db88501b38b3564))
+
+
+### Bug Fixes
+
+* Update endpoints ([#6652](https://github.com/cloudquery/cloudquery/issues/6652)) ([6a53fa9](https://github.com/cloudquery/cloudquery/commit/6a53fa92f4e6b9097f5759384d07a513db1bdbbb))
+
 ## [10.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v9.2.0...plugins-source-aws-v10.0.0) (2023-01-10)
 
 
