@@ -1,5 +1,5 @@
 WITH subs AS (
-    SELECT subscription_id, jsonb_array_elements(subnets) AS subnet, provisioning_state
+    SELECT subscription_id, jsonb_array_elements(properties->'subnets') AS subnet, properties->>'provisioningState' as provisioning_state
     FROM azure_network_virtual_networks
 ), secured_servers AS (SELECT s._cq_id
                          FROM azure_sql_servers s
