@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v1.0.0...plugins-source-hackernews-v1.1.0) (2023-01-10)
+
+
+### Features
+
+* **hackernews:** Add ability to start from given date ([#6560](https://github.com/cloudquery/cloudquery/issues/6560)) ([977fa16](https://github.com/cloudquery/cloudquery/commit/977fa1693f07040daed9a77ed437bbced4f0b69c))
+
 ## 1.0.0 (2023-01-10)
 
 

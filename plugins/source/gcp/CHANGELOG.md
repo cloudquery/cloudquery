@@ -5,6 +5,13 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v7.1.0...plugins-source-gcp-v7.1.1) (2023-01-11)
+
+
+### Bug Fixes
+
+* **gcp-resources:** Add `update_time` to PKs of `gcp_cloudiot_device_states` ([#6552](https://github.com/cloudquery/cloudquery/issues/6552)) ([b78eca5](https://github.com/cloudquery/cloudquery/commit/b78eca595d386fbd5691d5c6c7ef5c4adeb2166a))
+
 ## [7.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v7.0.0...plugins-source-gcp-v7.1.0) (2023-01-10)
 
 
@@ -80,6 +87,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### ⚠ BREAKING CHANGES
 
+* **gcp-resources:** `gcp_iam_deny_policies` columns `create_time, delete_time, update_time` type changed from `String` to `Timestamp`
 * **gcp-resources:** `gcp_iam_roles` column `etag` type changed from `String` to `IntArray`
 * **gcp-resources:** `gcp_iam_service_account_keys` column `public_key_data` type changed from `String` to `IntArray` and columns `valid_after_time, valid_before_time` type changed from `String` to `Timestamp`
 * **gcp-resources:** `gcp_iam_service_accounts` column `etag` type changed from `String` to `IntArray`

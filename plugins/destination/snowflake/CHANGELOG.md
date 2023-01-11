@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v1.1.5...plugins-destination-snowflake-v1.1.6) (2023-01-10)
+
+
+### Bug Fixes
+
+* Correct error message in migration ([#6612](https://github.com/cloudquery/cloudquery/issues/6612)) ([434fe4d](https://github.com/cloudquery/cloudquery/commit/434fe4d15746277e903edd3ce5635fe2323ed413))
+
 ## [1.1.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v1.1.4...plugins-destination-snowflake-v1.1.5) (2023-01-10)
 
 
