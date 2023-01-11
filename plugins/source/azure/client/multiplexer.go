@@ -28,7 +28,7 @@ func SubscriptionMultiplexRegisteredNamespace(table, namespace string) func(sche
 					Str("subscription_id", subId).
 					Str("namespace", namespace).
 					Str("table", table).
-					Msg("Skipping subscription, namespace not registered")
+					Msg("Skipping namespace, not registered for subscription")
 			}
 		}
 		return c
