@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/cloudquery/cloudquery/plugins/filetypes/csv"
-	"github.com/cloudquery/cloudquery/plugins/filetypes/json"
+	"github.com/cloudquery/filetypes/csv"
+	"github.com/cloudquery/filetypes/json"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/google/uuid"
 )

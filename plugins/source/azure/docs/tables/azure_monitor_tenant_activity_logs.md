@@ -10,6 +10,8 @@ The primary key for this table is **id**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
+|subscription_id|String|
+|id (PK)|String|
 |authorization|JSON|
 |caller|String|
 |category|JSON|
@@ -20,7 +22,6 @@ The primary key for this table is **id**.
 |event_name|JSON|
 |event_timestamp|Timestamp|
 |http_request|JSON|
-|id (PK)|String|
 |level|String|
 |operation_id|String|
 |operation_name|JSON|
@@ -32,5 +33,4 @@ The primary key for this table is **id**.
 |status|JSON|
 |sub_status|JSON|
 |submission_timestamp|Timestamp|
-|subscription_id|String|
 |tenant_id|String|

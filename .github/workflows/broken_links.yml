@@ -23,14 +23,18 @@ jobs:
       - uses: actions/checkout@v3
         if: github.event_name == 'pull_request'
         with:
-          fetch-depth: 2
-
+          # By default actions/checkout puts us in detached HEAD state. We need to checkout the branch so git log works
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          # This matches the default on Vercel
+          fetch-depth: 10
+      
       - name: Should run broken links check
         if: github.event_name == 'pull_request'
         id: broken-links
+        working-directory: website
         run: |
-          # The paths here match the build ignore setting on Vercel
-          if ! git diff --quiet HEAD^ HEAD website .github/workflows/broken_links.yml ; then
+          if ! scripts/diff.sh ; then
               echo "check=true" >> $GITHUB_OUTPUT 
           else
               echo "check=false" >> $GITHUB_OUTPUT
@@ -77,5 +81,6 @@ jobs:
             --exclude support.google.com \
             --exclude work-bench.com \
             --exclude mailchimp.com \
+            --exclude returngis.net \
             ${{ steps.vercel.outputs.url }} \
             | grep -v '───OK───' | grep -v '──SKIP──' | grep -v '0 broken'

@@ -1,0 +1,101 @@
+name: Destination Plugin Neo4j Workflow
+
+on:
+  pull_request:
+    paths:
+      - "plugins/destination/neo4j/**"
+      - ".github/workflows/dest_neo4j.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "plugins/destination/neo4j/**"
+      - ".github/workflows/dest_neo4j.yml"
+
+jobs:
+  plugins-destination-neo4j:
+    timeout-minutes: 30
+    name: "plugins/destination/neo4j"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./plugins/destination/neo4j
+    services:
+      neo4j:
+        image: neo4j:4.4
+        env:
+          NEO4J_dbms_security_procedures_unrestricted: apoc.*
+          NEO4J_dbms_connector_bolt_enabled: "true"
+          NEO4J_apoc_import_file_enabled: "true"
+          NEO4J_apoc_export_file_enabled: "true"
+          NEO4J_apoc_import_file_use__neo4j__config: "true"
+          NEO4J_ACCEPT_LICENSE_AGREEMENT: "yes"
+          NEO4J_dbms_security_auth__enabled: "false"
+          NEO4J_dbms_connector_bolt_advertised__address: localhost:7687
+        options: >-
+          --health-cmd "cypher-shell 'match (n) return count(n)'"
+          --health-timeout 10s
+          --health-retries 20
+          --health-interval 10s
+          --health-start-period 30s
+        ports:
+          - 7687:7687
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: plugins/destination/neo4j/go.mod
+          cache: true
+          cache-dependency-path: plugins/destination/neo4j/go.sum
+      - name: golangci-lint
+        uses: cloudquery/golangci-lint-action@master
+        with:
+          version: v1.50.1
+          working-directory: plugins/destination/neo4j
+          args: "--config ../../.golangci.yml"
+          skip-pkg-cache: true
+          skip-build-cache: true
+      - name: Get dependencies
+        run: go get -t -d ./...
+      - name: Build
+        run: go build .
+      - name: Test Neo4j
+        run: make test
+  validate-release:
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    env:
+      CGO_ENABLED: 0
+    steps:
+      - name: Checkout
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-1.19.4-release-cache-${{ hashFiles('plugins/destination/neo4j/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-1.19.4-release-cache-plugins-destination-neo4j
+      - name: Set up Go
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: plugins/destination/neo4j/go.mod
+      - name: Install GoReleaser
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        uses: goreleaser/goreleaser-action@v3
+        with:
+          distribution: goreleaser-pro
+          version: latest
+          install-only: true
+      - name: Run GoReleaser Dry-Run
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        run: goreleaser release --snapshot --rm-dist --skip-validate --skip-publish --skip-sign -f ./plugins/destination/neo4j/.goreleaser.yaml
+        env:
+          GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}

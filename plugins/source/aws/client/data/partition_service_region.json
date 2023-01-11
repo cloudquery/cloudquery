@@ -3279,6 +3279,7 @@
         },
         "kendra": {
           "regions": {
+            "ap-south-1": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
             "ca-central-1": {},
@@ -3989,6 +3990,10 @@
             "eu-west-1": {},
             "eu-west-2": {},
             "eu-west-3": {},
+            "fips-us-east-1": {},
+            "fips-us-east-2": {},
+            "fips-us-west-1": {},
+            "fips-us-west-2": {},
             "me-south-1": {},
             "sa-east-1": {},
             "us-east-1": {},
@@ -6739,6 +6744,11 @@
             "cn-northwest-1": {}
           }
         },
+        "kinesisvideo": {
+          "regions": {
+            "cn-north-1": {}
+          }
+        },
         "kms": {
           "regions": {
             "cn-north-1": {},
@@ -8414,6 +8424,12 @@
         },
         "participant.connect": {
           "regions": {
+            "us-gov-west-1": {}
+          }
+        },
+        "pi": {
+          "regions": {
+            "us-gov-east-1": {},
             "us-gov-west-1": {}
           }
         },
