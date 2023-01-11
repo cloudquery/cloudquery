@@ -80,6 +80,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### ⚠ BREAKING CHANGES
 
+* **gcp-resources:** `gcp_iam_deny_policies` columns `create_time, delete_time, update_time` type changed from `String` to `Timestamp`
 * **gcp-resources:** `gcp_iam_roles` column `etag` type changed from `String` to `IntArray`
 * **gcp-resources:** `gcp_iam_service_account_keys` column `public_key_data` type changed from `String` to `IntArray` and columns `valid_after_time, valid_before_time` type changed from `String` to `Timestamp`
 * **gcp-resources:** `gcp_iam_service_accounts` column `etag` type changed from `String` to `IntArray`
