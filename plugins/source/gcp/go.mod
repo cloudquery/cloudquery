@@ -35,6 +35,7 @@ require (
 	cloud.google.com/go/serviceusage v1.4.0
 	cloud.google.com/go/storage v1.28.0
 	cloud.google.com/go/websecurityscanner v1.4.0
+	cloud.google.com/go/vpcaccess v1.5.0
 	cloud.google.com/go/workflows v1.9.0
 	github.com/cloudquery/plugin-sdk v1.24.1
 	github.com/golang/mock v1.6.0
