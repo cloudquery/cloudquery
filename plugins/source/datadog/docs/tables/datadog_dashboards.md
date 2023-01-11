@@ -20,3 +20,4 @@ The composite primary key for this table is (**account_name**, **id**).
 |modified_at|Timestamp|
 |title|String|
 |url|String|
+|additional_properties|JSON|

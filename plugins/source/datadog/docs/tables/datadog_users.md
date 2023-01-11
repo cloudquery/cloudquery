@@ -6,7 +6,6 @@ The composite primary key for this table is (**account_name**, **id**).
 
 The following tables depend on datadog_users:
   - [datadog_user_permissions](datadog_user_permissions.md)
-  - [datadog_user_organizations](datadog_user_organizations.md)
 
 ## Columns
 
@@ -21,3 +20,4 @@ The following tables depend on datadog_users:
 |attributes|JSON|
 |relationships|JSON|
 |type|String|
+|additional_properties|JSON|

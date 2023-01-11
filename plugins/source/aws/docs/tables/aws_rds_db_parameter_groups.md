@@ -21,6 +21,7 @@ The following tables depend on aws_rds_db_parameter_groups:
 |region|String|
 |arn (PK)|String|
 |tags|JSON|
+|db_parameter_group_arn|String|
 |db_parameter_group_family|String|
 |db_parameter_group_name|String|
 |description|String|

@@ -13,12 +13,15 @@ The composite primary key for this table is (**account_name**, **public_id**).
 |account_name (PK)|String|
 |public_id (PK)|String|
 |config|JSON|
+|creator|JSON|
 |locations|StringArray|
 |message|String|
 |monitor_id|Int|
 |name|String|
 |options|JSON|
 |status|String|
+|steps|JSON|
 |subtype|String|
 |tags|StringArray|
 |type|String|
+|additional_properties|JSON|

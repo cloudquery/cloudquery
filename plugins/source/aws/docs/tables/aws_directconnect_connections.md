@@ -20,6 +20,7 @@ The composite primary key for this table is (**arn**, **id**).
 |aws_device_v2|String|
 |aws_logical_device_id|String|
 |bandwidth|String|
+|connection_id|String|
 |connection_name|String|
 |connection_state|String|
 |encryption_mode|String|

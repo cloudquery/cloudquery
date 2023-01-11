@@ -26,4 +26,5 @@ The primary key for this table is **arn**.
 |ingress_vpc_configuration|JSON|
 |service_arn|String|
 |status|String|
+|vpc_ingress_connection_arn|String|
 |vpc_ingress_connection_name|String|

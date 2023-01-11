@@ -18,11 +18,11 @@ The following tables depend on gcp_iam_service_accounts:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |project_id|String|
-|description|String|
-|disabled|Bool|
-|display_name|String|
-|email|String|
-|etag|String|
-|name|String|
-|oauth2_client_id|String|
 |unique_id (PK)|String|
+|name|String|
+|email|String|
+|display_name|String|
+|etag|ByteArray|
+|description|String|
+|oauth2_client_id|String|
+|disabled|Bool|

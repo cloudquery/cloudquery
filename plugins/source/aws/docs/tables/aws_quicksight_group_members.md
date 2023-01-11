@@ -1,5 +1,7 @@
 # Table: aws_quicksight_group_members
 
+https://docs.aws.amazon.com/quicksight/latest/APIReference/API_GroupMember.html
+
 The composite primary key for this table is (**user_arn**, **group_arn**).
 
 ## Relations
@@ -18,4 +20,5 @@ This table depends on [aws_quicksight_groups](aws_quicksight_groups.md).
 |region|String|
 |user_arn (PK)|String|
 |group_arn (PK)|String|
+|arn|String|
 |member_name|String|

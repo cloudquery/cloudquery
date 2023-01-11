@@ -2,7 +2,7 @@
 
 https://cloud.google.com/iam/docs/reference/rest/v1/projects.serviceAccounts.keys#ServiceAccountKey
 
-The primary key for this table is **service_account_unique_id**.
+The composite primary key for this table is (**project_id**, **name**).
 
 ## Relations
 
@@ -16,13 +16,13 @@ This table depends on [gcp_iam_service_accounts](gcp_iam_service_accounts.md).
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|project_id|String|
-|service_account_unique_id (PK)|String|
-|disabled|Bool|
+|project_id (PK)|String|
+|service_account_unique_id|String|
+|name (PK)|String|
 |key_algorithm|String|
+|public_key_data|ByteArray|
+|valid_after_time|Timestamp|
+|valid_before_time|Timestamp|
 |key_origin|String|
 |key_type|String|
-|name|String|
-|public_key_data|String|
-|valid_after_time|String|
-|valid_before_time|String|
+|disabled|Bool|
