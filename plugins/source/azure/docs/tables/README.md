@@ -192,7 +192,6 @@
 - [azure_support_tickets](azure_support_tickets.md)
 - [azure_synapse_private_link_hubs](azure_synapse_private_link_hubs.md)
 - [azure_synapse_workspaces](azure_synapse_workspaces.md)
-- [azure_windowsesu_multiple_activation_keys](azure_windowsesu_multiple_activation_keys.md)
 - [azure_windowsiot_services](azure_windowsiot_services.md)
 - [azure_workloads_monitors](azure_workloads_monitors.md)
 - [azure_authorization_role_definitions](azure_authorization_role_definitions.md)

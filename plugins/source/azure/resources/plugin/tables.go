@@ -76,7 +76,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/streamanalytics"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/support"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/synapse"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/windowsesu"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/windowsiot"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/workloads"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -274,7 +273,6 @@ func generatedTables() []*schema.Table {
 		support.Tickets(),
 		synapse.PrivateLinkHubs(),
 		synapse.Workspaces(),
-		windowsesu.MultipleActivationKeys(),
 		windowsiot.Services(),
 		workloads.Monitors(),
 	}

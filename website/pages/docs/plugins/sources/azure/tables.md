@@ -192,7 +192,6 @@
 - [azure_support_tickets](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_support_tickets.md)
 - [azure_synapse_private_link_hubs](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_synapse_private_link_hubs.md)
 - [azure_synapse_workspaces](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_synapse_workspaces.md)
-- [azure_windowsesu_multiple_activation_keys](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_windowsesu_multiple_activation_keys.md)
 - [azure_windowsiot_services](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_windowsiot_services.md)
 - [azure_workloads_monitors](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_workloads_monitors.md)
 - [azure_authorization_role_definitions](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_authorization_role_definitions.md)
