@@ -219,6 +219,19 @@ CREATE (rds_is)-[r:uses_security_group]->(sgs)
 RETURN type(r)
 ```
 
+```sql
+MATCH 
+  (rds_is:aws_rds_instances), 
+  (sgs:aws_ec2_security_groups) 
+UNWIND (apoc.convert.fromJsonList(rds_is.vpc_security_groups)) as secgroups
+WITH secgroups, rds_is, sgs
+WHERE
+  secgroups['VpcSecurityGroupId'] 
+  = sgs.group_id 
+CREATE (rds_is)-[r:uses_security_group]->(sgs) 
+RETURN type(r)
+```
+
 In the next cypher query, we will connect KMS Keys with their KMS Key Policies.
 
 ```sql 
