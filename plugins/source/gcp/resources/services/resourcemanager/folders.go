@@ -18,7 +18,7 @@ func Folders() *schema.Table {
 			{
 				Name:     "organization_id",
 				Type:     schema.TypeString,
-				Resolver: resolveOrganizationId,
+				Resolver: client.ResolveOrganization,
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
