@@ -104,7 +104,7 @@ And you can run the same by replacing `Intel Broadwell` with `AMD Rome` and/or a
 
 In this short blog post we just shared a sample of what you can do by combining cost data with your infrastructure state/metadata synced by CloudQuery to BigQuery. The number of use cases around cost (aka "FinOps" :) ) is really infinite and it all depends on what you are trying to achieve and optimize for. CloudQuery with BigQuery is a powerful tool for analysis which ensures cheap storage and fast querying on large amount of data.
 
-We hope you enjoyed this tutorial and found it useful. If you have any questions or feedback, please reach out to us on [Discord](https://discord.gg/8qZ7Y4Z) or [Twitter](https://twitter.com/cloudqueryio).
+We hope you enjoyed this tutorial and found it useful. If you have any questions or feedback, please reach out to us on [Discord](https://www.cloudquery.io/discord) or [Twitter](https://twitter.com/cloudqueryio).
 
 
 
