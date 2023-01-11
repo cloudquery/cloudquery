@@ -13,7 +13,7 @@ func WebApplicationFirewallPolicies() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_web_application_firewall_policies",
 		Resolver:  fetchWebApplicationFirewallPolicies,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_network),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_network_web_application_firewall_policies", client.Namespacemicrosoft_network),
 		Transform: transformers.TransformWithStruct(&armnetwork.WebApplicationFirewallPolicy{}),
 		Columns: []schema.Column{
 			{

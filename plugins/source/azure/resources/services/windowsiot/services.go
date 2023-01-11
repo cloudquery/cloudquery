@@ -13,7 +13,7 @@ func Services() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_windowsiot_services",
 		Resolver:  fetchServices,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_windowsiot),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_windowsiot_services", client.Namespacemicrosoft_windowsiot),
 		Transform: transformers.TransformWithStruct(&armwindowsiot.DeviceService{}),
 		Columns: []schema.Column{
 			{

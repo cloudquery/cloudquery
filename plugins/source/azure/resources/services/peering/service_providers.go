@@ -13,7 +13,7 @@ func ServiceProviders() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_peering_service_providers",
 		Resolver:  fetchServiceProviders,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_peering),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_peering_service_providers", client.Namespacemicrosoft_peering),
 		Transform: transformers.TransformWithStruct(&armpeering.ServiceProvider{}),
 		Columns: []schema.Column{
 			{

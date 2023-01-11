@@ -13,7 +13,7 @@ func Service() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_apimanagement_service",
 		Resolver:  fetchService,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_apimanagement),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_apimanagement_service", client.Namespacemicrosoft_apimanagement),
 		Transform: transformers.TransformWithStruct(&armapimanagement.ServiceResource{}),
 		Columns: []schema.Column{
 			{

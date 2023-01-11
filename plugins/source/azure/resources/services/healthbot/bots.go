@@ -13,7 +13,7 @@ func Bots() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_healthbot_bots",
 		Resolver:  fetchBots,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_healthbot),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_healthbot_bots", client.Namespacemicrosoft_healthbot),
 		Transform: transformers.TransformWithStruct(&armhealthbot.HealthBot{}),
 		Columns: []schema.Column{
 			{

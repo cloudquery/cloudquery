@@ -13,7 +13,7 @@ func Interfaces() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_network_interfaces",
 		Resolver:  fetchInterfaces,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_network),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_network_interfaces", client.Namespacemicrosoft_network),
 		Transform: transformers.TransformWithStruct(&armnetwork.Interface{}),
 		Columns: []schema.Column{
 			{

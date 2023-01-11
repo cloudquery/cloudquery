@@ -13,7 +13,7 @@ func DataPolicyManifests() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_policy_data_policy_manifests",
 		Resolver:  fetchDataPolicyManifests,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_authorization),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_policy_data_policy_manifests", client.Namespacemicrosoft_authorization),
 		Transform: transformers.TransformWithStruct(&armpolicy.DataPolicyManifest{}),
 		Columns: []schema.Column{
 			{

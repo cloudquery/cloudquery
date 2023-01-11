@@ -13,7 +13,7 @@ func Connectors() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_security_connectors",
 		Resolver:  fetchConnectors,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_security),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_security_connectors", client.Namespacemicrosoft_security),
 		Transform: transformers.TransformWithStruct(&armsecurity.Connector{}),
 		Columns: []schema.Column{
 			{

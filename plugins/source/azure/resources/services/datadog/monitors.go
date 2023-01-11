@@ -13,7 +13,7 @@ func Monitors() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_datadog_monitors",
 		Resolver:  fetchMonitors,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_datadog),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_datadog_monitors", client.Namespacemicrosoft_datadog),
 		Transform: transformers.TransformWithStruct(&armdatadog.MonitorResource{}),
 		Columns: []schema.Column{
 			{
