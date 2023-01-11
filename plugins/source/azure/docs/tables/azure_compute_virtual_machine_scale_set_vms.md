@@ -1,11 +1,10 @@
-# Table: azure_compute_virtual_machine_scale_sets
+# Table: azure_compute_virtual_machine_scale_set_vms
 
 The primary key for this table is **id**.
 
 ## Relations
 
-The following tables depend on azure_compute_virtual_machine_scale_sets:
-  - [azure_compute_virtual_machine_scale_set_vms](azure_compute_virtual_machine_scale_set_vms.md)
+This table depends on [azure_compute_virtual_machine_scale_sets](azure_compute_virtual_machine_scale_sets.md).
 
 ## Columns
 
@@ -18,12 +17,13 @@ The following tables depend on azure_compute_virtual_machine_scale_sets:
 |subscription_id|String|
 |id (PK)|String|
 |location|String|
-|extended_location|JSON|
 |identity|JSON|
 |plan|JSON|
 |properties|JSON|
-|sku|JSON|
 |tags|JSON|
-|zones|StringArray|
+|instance_id|String|
 |name|String|
+|resources|JSON|
+|sku|JSON|
 |type|String|
+|zones|StringArray|
