@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"strconv"
+	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/hackernews/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -35,26 +36,42 @@ func fetchItems(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource,
 		return fmt.Errorf("failed to retrieve state from backend: %w", err)
 	}
 
-	// read the cursor from the state, or default to 0 if it's not set
-	cursor := 0
-	if value == "" {
-		c.Logger().Info().
-			Str("table", tableName).Str("client_id", c.ID()).Msgf("No previous cursor found")
-	} else {
-		cursor, err = strconv.Atoi(value)
-		if err != nil {
-			return fmt.Errorf("failed to convert cursor to int: %w", err)
-		}
-		c.Logger().Info().
-			Str("table", tableName).Str("client_id", c.ID()).Msg("Found previous cursor with value " + strconv.Itoa(cursor))
-	}
-
 	// find the max item ID from the Hacker News API
 	maxID, err := c.HackerNews.MaxItemID(ctx)
 	if err != nil {
 		return err
 	}
-	c.Logger().Info().Msg("Found max ID, reading up to " + strconv.Itoa(maxID))
+	c.Logger().Info().Int("max_id", maxID).Msg("Found max ID")
+
+	// read the cursor from the state, or default to 0 if it's not set
+	cursor := 0
+	if value == "" {
+		c.Logger().Info().Msg("No previous cursor found")
+	} else {
+		cursor, err = strconv.Atoi(value)
+		if err != nil {
+			return fmt.Errorf("failed to convert cursor to int: %w", err)
+		}
+		c.Logger().Info().Int("cursor", cursor).Msg("Found previous cursor")
+	}
+
+	// we allow the user to specify a start time for posts, so we need to find the first post after that time
+	if c.Spec.StartTime != "" {
+		startTime, _ := time.Parse(time.RFC3339, c.Spec.StartTime)
+		c.Logger().Info().Time("start_time", startTime).Msg("Finding first post after start_time")
+		startItemID, err := findFirstPostAfter(ctx, c, startTime, maxID)
+		if err != nil {
+			return err
+		}
+		c.Logger().Info().Time("start_time", startTime).Int("start_item_id", startItemID).Msg("Found first post after start_time")
+
+		// if the start ID is after the cursor, ignore the cursor and
+		// start from the start ID
+		if startItemID > cursor {
+			c.Logger().Info().Int("old_cursor", cursor).Int("new_cursor", startItemID).Msg("Start item ID is after cursor, updating cursor")
+			cursor = startItemID
+		}
+	}
 
 	// Fetch items in batches of (max) 1000.
 	// This is not necessarily the most efficient way of doing it, but this code
@@ -111,4 +128,22 @@ func fetchItem(ctx context.Context, c *client.Client, itemID int, res chan<- any
 	}
 	res <- item
 	return nil
+}
+
+// binary search to find the first post after the given date
+func findFirstPostAfter(ctx context.Context, c *client.Client, t time.Time, maxID int) (int, error) {
+	start, end := 1, maxID
+	for start < end {
+		mid := (end + start) / 2
+		it, err := c.HackerNews.GetItem(ctx, mid)
+		if err != nil {
+			return 0, err
+		}
+		if time.Unix(int64(it.Time), 0).After(t) {
+			end = mid
+		} else {
+			start = mid + 1
+		}
+	}
+	return start, nil
 }
