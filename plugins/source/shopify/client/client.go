@@ -75,6 +75,9 @@ func getServiceClient(logger zerolog.Logger, spec *Spec) (*shopify.Client, error
 	if spec.MaxRetries < 1 {
 		spec.MaxRetries = 30
 	}
+	if spec.PageSize < 1 {
+		spec.PageSize = 50
+	}
 
 	return shopify.New(
 		logger,
@@ -86,5 +89,6 @@ func getServiceClient(logger zerolog.Logger, spec *Spec) (*shopify.Client, error
 		spec.AccessToken,
 		spec.ShopURL,
 		spec.MaxRetries,
+		spec.PageSize,
 	)
 }

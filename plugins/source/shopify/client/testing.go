@@ -87,7 +87,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 			return nil, err
 		}
 
-		services, err := shopify.New(logger, mockClient, "", "", testToken, h.URL, 1)
+		services, err := shopify.New(logger, mockClient, "", "", testToken, h.URL, 1, 50)
 		if err != nil {
 			return nil, err
 		}

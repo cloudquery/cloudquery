@@ -41,6 +41,9 @@ This is the (nested) spec used by the Shopify source plugin:
 - `max_retries` (integer, optional. Default: 30):
   Number of retries if a request was rate limited.
 
+- `page_size` (integer, optional. Default: 50):
+  Maximum number of items queried each request. Find an optimum value to balance amount of data fetched and requests timing out. Maximum value 250.
+
 ## Example
 
 This example syncs from Shopify to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](https://www.cloudquery.io/docs/reference/source-spec). Incremental syncing is enabled and will be saved to a `.cq/state/` directory by default.
