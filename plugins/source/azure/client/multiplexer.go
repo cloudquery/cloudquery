@@ -23,6 +23,8 @@ func SubscriptionMultiplexRegisteredNamespace(namespace string) func(schema.Clie
 		for _, subId := range client.subscriptions {
 			if _, ok := client.registeredNamespaces[subId][namespace]; ok {
 				c = append(c, client.withSubscription(subId))
+			} else {
+				client.Logger().Info().Str("subscription_id", subId).Str("namespace", namespace).Msg("Skipping subscription, namespace not registered")
 			}
 		}
 		return c
