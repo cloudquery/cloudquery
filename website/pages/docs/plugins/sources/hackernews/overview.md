@@ -105,7 +105,7 @@ ORDER BY comments DESC limit 3;
 +---------+----------+
 ```
 
-### List recently posted remote YC startup jobs
+### List recently posted remote-friendly YC startup jobs
 
 ```sql
 SELECT   h.time,
