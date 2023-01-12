@@ -20,9 +20,16 @@ func BucketGrants() *schema.Table {
 				Resolver: client.ResolveAWSAccount,
 			},
 			{
-				Name:     "bucket_arn",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("arn"),
+				Name:            "bucket_arn",
+				Type:            schema.TypeString,
+				Resolver:        schema.ParentColumnResolver("arn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
+			},
+			{
+				Name:            "grantee_id",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("Grantee.ID"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 		},
 	}
