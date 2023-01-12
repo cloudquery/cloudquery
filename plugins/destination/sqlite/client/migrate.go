@@ -162,15 +162,19 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 	}
 
 	for _, tableChange := range schemaChanges {
+		table := tableChange.table
+		c.logger.Debug().Str("table", table.Name).Msg("Migrating table")
 		if tableChange.new {
+			c.logger.Debug().Str("table", table.Name).Msg("Table doesn't exist, creating")
 			err := c.createTableIfNotExist(ctx, tableChange.table)
 			if err != nil {
 				return err
 			}
 		} else {
+			c.logger.Debug().Str("table", table.Name).Msg("Table exists, auto-migrating")
 			for _, colChange := range tableChange.columnChanges {
 				if colChange.new {
-					table := tableChange.table
+					c.logger.Debug().Str("table", table.Name).Str("column", colChange.name).Msg("Column doesn't exist, creating")
 					sql := "alter table \"" + table.Name + "\" add column \"" + colChange.name + "\" \"" + colChange.newType + `"`
 					if _, err := c.db.Exec(sql); err != nil {
 						return fmt.Errorf("failed to add column %s on table %s: %w", colChange.name, table.Name, err)
