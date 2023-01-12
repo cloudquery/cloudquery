@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [11.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v11.0.0...plugins-source-aws-v11.0.1) (2023-01-12)
+
+
+### Bug Fixes
+
+* **aws:** Correctly fill in `grantee_id` column to `aws_s3_bucket_grants` ([#6772](https://github.com/cloudquery/cloudquery/issues/6772)) ([2cf0451](https://github.com/cloudquery/cloudquery/commit/2cf0451476faaaa014fa723be0e9732cb51d21da))
+* Update endpoints ([#6774](https://github.com/cloudquery/cloudquery/issues/6774)) ([0523a1a](https://github.com/cloudquery/cloudquery/commit/0523a1a0e2b7ccd01a5222f58bbc484cf6968ca4))
+
 ## [11.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v10.1.0...plugins-source-aws-v11.0.0) (2023-01-12)
 
 
