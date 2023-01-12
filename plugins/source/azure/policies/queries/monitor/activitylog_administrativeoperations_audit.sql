@@ -29,13 +29,13 @@ SELECT
   :'framework',
   :'check_id',
   'An activity log alert should exist for specific Administrative operations',
-	azure_subscriptions.id,
-	azure_subscriptions.id
+  sub.id,
+  sub.id
 FROM
-	azure_subscriptions
-	LEFT JOIN alert_condition A ON azure_subscriptions.id = A.subscription_id
+    azure_subscription_subscriptions sub
+	LEFT JOIN alert_condition A ON sub.id = A.subscription_id
 WHERE
 	A.subscription_id IS NULL
 GROUP BY
-	azure_subscriptions.id,
+    sub.id,
 	display_name;

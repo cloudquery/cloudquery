@@ -11,4 +11,4 @@ SELECT :'execution_time'                                                        
            ELSE 'pass'
            END                                                                             AS status
 FROM azure_container_managed_clusters AS mc
-         INNER JOIN azure_subscriptions AS sub ON sub.id = mc.subscription_id
+         INNER JOIN azure_subscription_subscriptions AS sub ON sub.id = mc.subscription_id
