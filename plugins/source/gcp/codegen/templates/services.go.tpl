@@ -5,6 +5,7 @@ package client
 var GcpServices = map[string]bool{
     // Non discoverable services
 	"aiplatform.googleapis.com": true,
+	"vpcaccess.googleapis.com":   true,
 	// Discoverable services
 	{{- range .}}
       "{{.}}": true,
