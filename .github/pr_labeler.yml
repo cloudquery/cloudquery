@@ -32,6 +32,8 @@ heroku:
   - plugins/source/heroku/**/*
 okta:
   - plugins/source/okta/**/*
+oracle:
+  - plugins/source/oracle/**/*
 slack:
   - plugins/source/slack/**/*
 shopify:
