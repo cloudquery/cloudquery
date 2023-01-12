@@ -3,6 +3,7 @@ package client
 import (
 	"context"
 	"fmt"
+	"sort"
 	"strings"
 
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -36,29 +37,149 @@ func (i *tableInfo) getColumn(name string) *columnInfo {
 	return nil
 }
 
+type columnChange struct {
+	name    string
+	oldType string
+	newType string
+	new     bool
+	oldPk   bool
+	newPk   bool
+}
+
+type tableChange struct {
+	table         *schema.Table
+	new           bool
+	columnChanges []*columnChange
+}
+
+func (c *Client) getColumnChange(col schema.Column, sqliteColumn *columnInfo) *columnChange {
+	columnName := col.Name
+	columnType := c.SchemaTypeToSqlite(col.Type)
+
+	if sqliteColumn == nil {
+		return &columnChange{name: columnName, oldType: columnType, newType: columnType, new: true, newPk: col.CreationOptions.PrimaryKey}
+	}
+
+	return &columnChange{name: columnName, oldType: sqliteColumn.typ, newType: columnType, oldPk: sqliteColumn.pk != 0, newPk: col.CreationOptions.PrimaryKey}
+}
+
+func (c *Client) getColumnChanges(table *schema.Table) ([]*columnChange, error) {
+	var err error
+	var info *tableInfo
+	if info, err = c.getTableInfo(table.Name); err != nil {
+		return nil, fmt.Errorf("failed to get table %s columns types: %w", table.Name, err)
+	}
+
+	columnChanges := make([]*columnChange, len(table.Columns))
+	for i, col := range table.Columns {
+		columnChanges[i] = c.getColumnChange(col, info.getColumn(col.Name))
+	}
+
+	// Changes that require dropping the table comes first
+	sort.SliceStable(columnChanges, func(i, j int) bool {
+		change1 := columnChanges[i]
+		change2 := columnChanges[j]
+
+		if change1.new && change1.newPk && !(change2.new && change2.newPk) {
+			return true
+		}
+
+		if !(change1.new && change1.newPk) && change2.new && change2.newPk {
+			return false
+		}
+
+		return change1.name < change2.name
+	})
+
+	return columnChanges, nil
+}
+
+func (c *Client) getTableChange(ctx context.Context, table *schema.Table) (*tableChange, error) {
+	tableExist, err := c.isTableExistSQL(ctx, table.Name)
+	if err != nil {
+		return nil, fmt.Errorf("failed to check if table %s exists: %w", table.Name, err)
+	}
+	tableChange := &tableChange{table: table, new: !tableExist}
+	if tableExist {
+		columnChanges, err := c.getColumnChanges(table)
+		if err != nil {
+			return nil, err
+		}
+		tableChange.columnChanges = columnChanges
+	}
+	return tableChange, nil
+}
+
+func (c *Client) getSchemaChanges(ctx context.Context, tables schema.Tables) ([]*tableChange, error) {
+	changes := make([]*tableChange, len(tables))
+	for i, table := range tables {
+		tableChange, err := c.getTableChange(ctx, table)
+		if err != nil {
+			return nil, err
+		}
+		changes[i] = tableChange
+		for _, relation := range table.Relations {
+			relationChanges, err := c.getTableChange(ctx, relation)
+			if err != nil {
+				return nil, err
+			}
+			changes = append(changes, relationChanges)
+		}
+	}
+	return changes, nil
+}
+
+func getMigrationErrors(changes []*tableChange) []string {
+	var errors []string
+	for _, tableChange := range changes {
+		if tableChange.new {
+			continue
+		}
+		for _, colChange := range tableChange.columnChanges {
+			if colChange.new && colChange.newPk {
+				errors = append(errors, fmt.Sprintf("can't migrate table %q since adding the new PK column %q is not supported. Try dropping this table", tableChange.table.Name, colChange.name))
+				// no need to report other errors as the user needs to drop the table altogether
+				break
+			}
+			if !colChange.new && colChange.oldType != colChange.newType {
+				errors = append(errors, fmt.Sprintf("can't migrate table %q since changing the type of column %q from %q to %q is not supported. Try dropping this column for this table", tableChange.table.Name, colChange.name, colChange.oldType, colChange.newType))
+			}
+		}
+	}
+	return errors
+}
+
 // This is the responsibility of the CLI of the client to lock before running migration
 func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
-	for _, table := range tables {
-		c.logger.Debug().Str("table", table.Name).Msg("Migrating table")
-		tableExist, err := c.isTableExistSQL(ctx, table.Name)
-		if err != nil {
-			return fmt.Errorf("failed to check if table %s exists: %w", table.Name, err)
-		}
-		if tableExist {
-			c.logger.Debug().Str("table", table.Name).Msg("Table exists, auto-migrating")
-			if err := c.autoMigrateTable(ctx, table); err != nil {
+	schemaChanges, err := c.getSchemaChanges(ctx, tables)
+	if err != nil {
+		return err
+	}
+
+	migrationErrors := getMigrationErrors(schemaChanges)
+	if len(migrationErrors) > 0 {
+		return fmt.Errorf("failed to migrate schema:\n%s", strings.Join(migrationErrors, "\n"))
+	}
+
+	for _, tableChange := range schemaChanges {
+		if tableChange.new {
+			err := c.createTableIfNotExist(ctx, tableChange.table)
+			if err != nil {
 				return err
 			}
 		} else {
-			c.logger.Debug().Str("table", table.Name).Msg("Table doesn't exist, creating")
-			if err := c.createTableIfNotExist(ctx, table); err != nil {
-				return err
+			for _, colChange := range tableChange.columnChanges {
+				if colChange.new {
+					table := tableChange.table
+					sql := "alter table \"" + table.Name + "\" add column \"" + colChange.name + "\" \"" + colChange.newType + `"`
+					if _, err := c.db.Exec(sql); err != nil {
+						return fmt.Errorf("failed to add column %s on table %s: %w", colChange.name, table.Name, err)
+					}
+				}
 			}
 		}
-		if err := c.Migrate(ctx, table.Relations); err != nil {
-			return err
-		}
 	}
+
 	return nil
 }
 
@@ -68,36 +189,6 @@ func (c *Client) isTableExistSQL(_ context.Context, table string) (bool, error) 
 		return false, fmt.Errorf("failed to check if table %s exists: %w", table, err)
 	}
 	return tableExist == 1, nil
-}
-
-func (c *Client) autoMigrateTable(_ context.Context, table *schema.Table) error {
-	var err error
-	var info *tableInfo
-
-	if info, err = c.getTableInfo(table.Name); err != nil {
-		return fmt.Errorf("failed to get table %s columns types: %w", table.Name, err)
-	}
-
-	for _, col := range table.Columns {
-		columnName := col.Name
-		columnType := c.SchemaTypeToSqlite(col.Type)
-		sqliteColumn := info.getColumn(columnName)
-
-		switch {
-		case sqliteColumn == nil:
-			c.logger.Debug().Str("table", table.Name).Str("column", col.Name).Msg("Column doesn't exist, creating")
-			sql := "alter table \"" + table.Name + "\" add column \"" + columnName + "\" \"" + columnType + `"`
-			if col.CreationOptions.PrimaryKey {
-				return fmt.Errorf("failed to auto-migrate table %s: primary key changes are not supported. please drop and re-run", table.Name)
-			}
-			if _, err := c.db.Exec(sql); err != nil {
-				return fmt.Errorf("failed to add column %s on table %s: %w", col.Name, table.Name, err)
-			}
-		case sqliteColumn.typ != columnType:
-			return fmt.Errorf("column %s on table %s has different type than schema, expected %s got %s. Try dropping the column and re-running", col.Name, table.Name, columnType, sqliteColumn.typ)
-		}
-	}
-	return nil
 }
 
 func (c *Client) createTableIfNotExist(_ context.Context, table *schema.Table) error {
