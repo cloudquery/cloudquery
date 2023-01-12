@@ -335,6 +335,7 @@ func tables() []*schema.Table {
 		neptune.SubnetGroups(),
 		organizations.Accounts(),
 		organizations.Organizations(),
+		organizations.ResourcePolicies(),
 		qldb.Ledgers(),
 		quicksight.Analyses(),
 		quicksight.Dashboards(),
@@ -427,5 +428,6 @@ func tables() []*schema.Table {
 		xray.EncryptionConfigs(),
 		xray.Groups(),
 		xray.SamplingRules(),
+		xray.ResourcePolicies(),
 	}
 }
