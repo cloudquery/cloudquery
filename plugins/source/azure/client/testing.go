@@ -80,7 +80,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 		}
 		registeredNamespaces := make(map[string]map[string]bool)
 		registeredNamespaces[TestSubscription] = make(map[string]bool)
-		for _, namespace := range allNamespaces {
+		for _, namespace := range namespaces {
 			registeredNamespaces[TestSubscription][namespace] = true
 		}
 		c := &Client{
