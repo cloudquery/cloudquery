@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/fastly
 go 1.19
 
 require (
-	github.com/cloudquery/codegen v0.2.0
+	github.com/cloudquery/codegen v0.2.1
 	github.com/cloudquery/plugin-sdk v1.25.0
 	github.com/fastly/go-fastly/v7 v7.0.0
 	github.com/golang/mock v1.6.0
