@@ -47,7 +47,7 @@ This is the (nested) spec used by the Stripe source plugin:
   Your secret API key from the Stripe Dashboard.
 
 - `rate_limit` (integer, optional. Default: varies):
-  Used to override number of requests allowed per second. Defaults to 100 req/sec for production environment keys, otherwise 25 req/sec.
+  Used to override number of requests allowed per second. Defaults to 90 req/sec for production environment keys, otherwise 20 req/sec.
 
 - `max_retries` (integer, optional. Default: 2):
   Number of retries if a request was rate limited at the API endpoint.

@@ -90,9 +90,9 @@ func getServiceClient(logger zerolog.Logger, spec *Spec) (*client.API, error) {
 	if spec.RateLimit < 1 {
 		// https://stripe.com/docs/rate-limits
 		if strings.HasPrefix(spec.APIKey, "sk_live") {
-			spec.RateLimit = 100
+			spec.RateLimit = 90
 		} else {
-			spec.RateLimit = 25
+			spec.RateLimit = 20
 		}
 	}
 
