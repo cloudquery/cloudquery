@@ -1,0 +1,1 @@
+ALTER TABLE `table_name` MODIFY COLUMN `my_col` Int64
