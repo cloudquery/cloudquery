@@ -6,7 +6,7 @@ WITH logging_enabled AS (
                      ON s.cq_id = l.diagnostic_setting_cq_id
   WHERE l.enabled = TRUE
     AND l.category = 'AuditEvent'
-    AND (s.storage_account_id IS NOT NULL OR s.storage_account_id IS DISTINCT FROM '')
+    AND (s.diagnostic_settings_resource -> 'properties' -> 'storageAccountId' as diagnostic_settings_resource -> 'properties' ->> 'storageAccountId' as storage_account_id IS NOT NULL OR s.storage_account_id IS DISTINCT FROM '')
     AND retention_policy_enabled = TRUE
 )
 SELECT 
