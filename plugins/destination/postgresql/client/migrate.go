@@ -123,7 +123,7 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 
 			sql := "alter table " + tableName + " add column " + columnName + " " + columnType
 			if col.CreationOptions.PrimaryKey {
-				reCreatePrimaryKeys = true
+				return fmt.Errorf("failed to auto-migrate table %s: adding the new column %s as a primary key to an existing table is not supported. Please drop the table and re-run", table.Name, col.Name)
 			}
 			if _, err := c.conn.Exec(ctx, sql); err != nil {
 				return fmt.Errorf("failed to add column %s on table %s: %w", col.Name, table.Name, err)
