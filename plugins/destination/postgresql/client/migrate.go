@@ -129,22 +129,7 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 				return fmt.Errorf("failed to add column %s on table %s: %w", col.Name, table.Name, err)
 			}
 		case pgColumn.typ != columnType:
-			c.logger.Info().Str("table", table.Name).Str("column", col.Name).Str("old_type", pgColumn.typ).Str("new_type", columnType).Msg("Column exists but type is different, re-creating")
-			// column exists but type is different
-
-			// if this column contains primary key we will need to recreate the primary key
-			if c.enabledPks() && col.CreationOptions.PrimaryKey {
-				reCreatePrimaryKeys = true
-			}
-			sql := "alter table " + tableName + " drop column " + columnName
-			// right now we will drop the column and re-create. in the future we will have an option to automigrate
-			if _, err := c.conn.Exec(ctx, sql); err != nil {
-				return fmt.Errorf("failed to drop column %s on table %s: %w", col.Name, table.Name, err)
-			}
-			sql = "alter table " + tableName + " add column " + columnName + " " + columnType
-			if _, err := c.conn.Exec(ctx, sql); err != nil {
-				return fmt.Errorf("failed to add column %s on table %s: %w", col.Name, table.Name, err)
-			}
+			return fmt.Errorf("column %q on table %q has different type than schema, expected %q got %q. Try dropping the column and re-running", col.Name, table.Name, columnType, pgColumn.typ)
 		}
 
 		// column exists and type is the same but constraints might differ
