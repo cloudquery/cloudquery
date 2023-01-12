@@ -32,6 +32,7 @@ spec:
   skip_tables:
     - stripe_issuing*  # Needs sign-up at https://stripe.com/issuing
     - stripe_treasury* # Needs sign-up at https://stripe.com/treasury
+    - stripe_sigma_scheduled_query_runs # Live keys only
   backend: local
   # Stripe specific configuration
   spec:
@@ -45,8 +46,11 @@ This is the (nested) spec used by the Stripe source plugin:
 - `api_key` (string, required):
   Your secret API key from the Stripe Dashboard.
 
+- `rate_limit` (integer, optional. Default: varies):
+  Used to override number of requests allowed per second. Defaults to 100 req/sec for production environment keys, otherwise 25 req/sec.
+
 - `max_retries` (integer, optional. Default: 2):
-  Number of retries if a request was rate limited.
+  Number of retries if a request was rate limited at the API endpoint.
 
 - `stripe_debug` (boolean, optional. Default: false):
   Enables verbose logging on the Stripe client.

@@ -4,6 +4,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net/http"
+	"strings"
+	"time"
 
 	"github.com/cloudquery/plugin-sdk/backend"
 	"github.com/cloudquery/plugin-sdk/plugins/source"
@@ -12,6 +15,7 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/stripe/stripe-go/v74"
 	"github.com/stripe/stripe-go/v74/client"
+	"golang.org/x/time/rate"
 )
 
 type Client struct {
@@ -23,8 +27,8 @@ type Client struct {
 	Backend  backend.Backend
 }
 
-func New(logger zerolog.Logger, sourceSpec specs.Source, stSpec Spec, services *client.API, bk backend.Backend) Client {
-	return Client{
+func New(logger zerolog.Logger, sourceSpec specs.Source, stSpec Spec, services *client.API, bk backend.Backend) *Client {
+	return &Client{
 		logger:     logger,
 		sourceSpec: sourceSpec,
 		stSpec:     stSpec,
@@ -62,7 +66,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, opts 
 	}
 
 	cl := New(logger, s, *stSpec, services, o.Backend)
-	return &cl, nil
+	return cl, nil
 }
 
 func getServiceClient(logger zerolog.Logger, spec *Spec) (*client.API, error) {
@@ -82,6 +86,20 @@ func getServiceClient(logger zerolog.Logger, spec *Spec) (*client.API, error) {
 	if spec.MaxRetries > 0 {
 		sCfg.MaxNetworkRetries = stripe.Int64(spec.MaxRetries)
 	}
+
+	if spec.RateLimit < 1 {
+		// https://stripe.com/docs/rate-limits
+		if strings.HasPrefix(spec.APIKey, "sk_live") {
+			spec.RateLimit = 100
+		} else {
+			spec.RateLimit = 25
+		}
+	}
+
+	sCfg.HTTPClient = RatelimitedHttpClient(logger,
+		&http.Client{Timeout: 80 * time.Second}, // default from stripe-go
+		rate.NewLimiter(rate.Limit(spec.RateLimit), int(spec.RateLimit)),
+	)
 
 	c := &client.API{}
 	c.Init(spec.APIKey, &stripe.Backends{

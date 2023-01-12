@@ -8,6 +8,7 @@ require (
 	github.com/rs/zerolog v1.28.0
 	github.com/stripe/stripe-go/v74 v74.4.0
 	github.com/stripe/stripe-mock v0.148.0
+	golang.org/x/time v0.3.0
 )
 
 require (

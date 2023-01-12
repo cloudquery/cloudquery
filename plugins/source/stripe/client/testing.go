@@ -53,8 +53,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, opts TestOptions) {
 
 		setupMockClient(logger.Level(zerolog.InfoLevel), *addr)
 		cl := sclient.New(stripe.Key, nil)
-		c := New(logger, spec, stSpec, cl, opts.Backend)
-		return &c, nil
+		return New(logger, spec, stSpec, cl, opts.Backend), nil
 	}
 
 	p := source.NewPlugin(
