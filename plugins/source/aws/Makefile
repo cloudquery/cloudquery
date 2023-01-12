@@ -16,6 +16,8 @@ lint:
 .PHONY: gen-mocks
 gen-mocks:
 	go install github.com/golang/mock/mockgen@v1.6.0
+	rm -rf ./client/services/*
+	go run codegen/main.go
 	rm -rf ./client/mocks/*
 	go generate ./client/...
 
