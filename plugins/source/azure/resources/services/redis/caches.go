@@ -17,6 +17,11 @@ func Caches() *schema.Table {
 		Transform: transformers.TransformWithStruct(&armredis.ResourceInfo{}),
 		Columns: []schema.Column{
 			{
+				Name:     "subscription_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAzureSubscription,
+			},
+			{
 				Name:     "id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ID"),
