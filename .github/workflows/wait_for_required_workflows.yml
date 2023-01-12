@@ -57,6 +57,7 @@ jobs:
                            "plugins/source/k8s",
                            "plugins/source/okta",
                            "plugins/source/shopify",
+                           "plugins/source/oracle",
                            "plugins/source/slack",
                            "plugins/source/salesforce",
                            "plugins/source/snyk",

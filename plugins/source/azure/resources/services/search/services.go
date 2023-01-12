@@ -11,7 +11,7 @@ func Services() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_search_services",
 		Resolver:  fetchServices,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_search),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_search_services", client.Namespacemicrosoft_search),
 		Transform: transformers.TransformWithStruct(&armsearch.Service{}),
 		Columns: []schema.Column{
 			{
