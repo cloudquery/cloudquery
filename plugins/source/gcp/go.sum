@@ -85,6 +85,8 @@ cloud.google.com/go/resourcemanager v1.4.0 h1:NDao6CHMwEZIaNsdWy+tuvHaavNeGP06o1
 cloud.google.com/go/resourcemanager v1.4.0/go.mod h1:MwxuzkumyTX7/a3n37gmsT3py7LIXwrShilPh3P1tR0=
 cloud.google.com/go/run v0.4.0 h1:EALS8nDZI6ju0Z/S3z45NaiiP+y02+aN74sGzclyagc=
 cloud.google.com/go/run v0.4.0/go.mod h1:h2rXOvAjVIqD9Z+m7pUC2rghxTDcUtj1pyBwBi9EDwY=
+cloud.google.com/go/scheduler v1.7.0 h1:K/mxOewgHGeKuATUJNGylT75Mhtjmx1TOkKukATqMT8=
+cloud.google.com/go/scheduler v1.7.0/go.mod h1:jyCiBqWW956uBjjPMMuX09n3x37mtyPJegEWKxRsn44=
 cloud.google.com/go/secretmanager v1.9.0 h1:xE6uXljAC1kCR8iadt9+/blg1fvSbmenlsDN4fT9gqw=
 cloud.google.com/go/secretmanager v1.9.0/go.mod h1:b71qH2l1yHmWQHt9LC80akm86mX8AL6X1MA01dW8ht4=
 cloud.google.com/go/serviceusage v1.4.0 h1:b0EwJxPJLpavSljMQh0RcdHsUrr5DQ+Nelt/3BAs5ro=
