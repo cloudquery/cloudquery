@@ -7,7 +7,7 @@ SELECT
     subscription_id,
 	id,
   case
-    when properties -> 'encryptionState' IS DISTINCT FROM 'Enabled'
+    when properties ->> 'encryptionState' IS DISTINCT FROM 'Enabled'
     then 'fail' else 'pass'
   end
 FROM
