@@ -41,7 +41,7 @@ This is the (nested) spec used by the Vercel source plugin:
 - `timeout_secs` (integer in seconds, optional. Default: 5):
   Timeout for requests against the Vercel REST API.
 
-- `max_retries` (integer in seconds, optional. Default: 5):
+- `max_retries` (integer in seconds, optional. Default: 10):
   Maximum number of retries for requests against the Vercel REST API.
 
 - `max_wait_secs` (integer in seconds, optional. Default: 300):
